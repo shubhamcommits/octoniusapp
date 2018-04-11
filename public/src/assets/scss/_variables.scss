@@ -1,0 +1,46 @@
+@import '../../../node_modules/bootstrap/scss/bootstrap';
+
+// variables
+$brand-primary: #005FD5;
+$card-radius: 0px;
+$border-gray: 1px solid #D9D7DA;
+$dark-text: #242D3A;
+$poppins: 'Poppins', sans-serif;
+$border-color:#E4EDF8;
+
+// shadows
+$card-shadow: 0 3px 5px -1px rgba(0,0,0,.2);
+
+
+// global stuff
+
+hr{
+  border-top: 1px solid #E4EDF8;
+}
+
+.icon-octo-logo{
+  color: #fff;
+  margin-right: 30px;
+}
+h1{
+  margin-bottom: 100px;
+}
+h4{
+  font-weight: 400;
+}
+.white{
+  color:#fff !important;
+}
+
+.welcome{
+  background: #005FD5;
+  height: -webkit-fill-available;
+@include media-breakpoint-down(sm) {
+  height: auto !important;
+}
+}
+
+.btn-outline-blue{
+  background: #fff !important;
+  color: $brand-primary;
+}

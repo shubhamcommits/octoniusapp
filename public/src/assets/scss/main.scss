@@ -1,0 +1,108 @@
+
+// @import "~style/variables";
+@import "../../assets/scss/variables";
+@import "global";
+@import '../../../node_modules/bootstrap/scss/bootstrap';
+@import "fontello2.css";
+
+body {
+    background-color: #f3f4f6;
+}
+
+.general-style{
+  width: 100% !important;
+}
+
+.feed-avatar{ //avatar image for in-feed display
+  width: 50px;
+  height: 50px;
+}
+.topnav-avatar{ //avatar image for in-feed display
+  width: 32px;
+  height:32px;
+}
+
+.list-group-item{
+  // background-color: transparent;
+  border: none;
+  // padding: 5px 0px;
+}
+
+
+h6{
+  font-family: $poppins;
+  font-size: 16px;
+  color: $dark-text;
+  font-weight: 300;
+}
+
+h2{
+  font-family: $poppins;
+  font-size: 24px;
+  color: $dark-text;
+  font-weight: 600;
+}
+
+.small {
+  font-size: 70%;
+}
+.group-overview-avatar{
+  width: 120px;
+  height: 100px;
+}
+
+.overview-post{
+  $dark-text: #242D3A;
+  font-family: $poppins;
+  font-size: 14px;
+}
+
+// main sticker from any page
+.user-sticky-card{
+  border: 1px solid $border-color;
+  background-color: #FFFFFF;
+  background-image: url('https://randomuser.me/api/portraits/med/women/49.jpg');
+  background-position:left;
+  background-repeat: no-repeat;
+  background-size: 80px 80px;
+  margin:100px 0 10px 0;
+  position: relative;
+  padding: 0 !important;
+  .col-md-12{
+    .inner{
+      margin: 10px 0 0 90px;
+    }
+    .feed-avatar{
+      margin-right: 20px;
+    }
+  }
+  .col-md-7{
+    padding:20px;
+  }
+  .feed-avatar{
+    width: 80px;
+    height: 80px;
+  }
+  .col-md-8{
+    padding: 10px 10px;
+    h2{
+      margin-left: 15px;
+    }
+  }
+}
+
+.muted{
+  color: #9b9b9b;
+}
+
+.user-list
+ li{
+  background: #fff;
+  border:$border-gray;
+  .feed-avatar{
+    float: left;
+  }
+  span h6{
+    float:left; margin-left: 20px; margin-top:13px;
+  }
+}
