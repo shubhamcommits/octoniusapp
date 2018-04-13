@@ -13,7 +13,7 @@
     }
   }
   .col-md-7 {
-    padding: 20px;
+    padding-top: 10px;
   }
 }
 
@@ -32,4 +32,18 @@
 
 .username {
   // margin-left: 20px;
+}
+.material-icons{
+  margin-top: 20px;
+  font-size: 40px;
+}
+.date{
+  font-size: 24px;
+  margin-top: -5px;
+  border: 1px solid white;
+  padding: 5px;
+}
+.event-title{
+  padding-top: 0;
+  margin-left: 20px;
 }
