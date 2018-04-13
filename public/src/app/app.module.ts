@@ -20,6 +20,12 @@ import { NavbarComponent } from './common/components/navbar/navbar.component';
 import { AdminPageHeaderComponent } from './dashboard/admin/admin-page-header/admin-page-header.component';
 import { GroupsPageHeaderComponent } from './dashboard/groups/groups-page-header/groups-page-header.component';
 import { OverviewPageHeaderComponent } from './dashboard/overview/overview-page-header/overview-page-header.component';
+import { UserProfileComponent } from './dashboard/user-profile/user-profile.component';
+import { UserProfileHeaderComponent } from './dashboard/user-profile/user-profile-header/user-profile-header.component';
+import { ProfileComponent } from './dashboard/user-profile/profile/profile.component';
+import { ActivityComponent } from './dashboard/user-profile/activity/activity.component';
+import { FilesComponent } from './dashboard/user-profile/files/files.component';
+import { CalendarComponent } from './dashboard/user-profile/calendar/calendar.component';
 
 const appRoutes: Routes = [
   { path: '', component: WelcomePageComponent },
@@ -31,11 +37,14 @@ const appRoutes: Routes = [
     path: 'dashboard', component: DashboardComponent,
     children: [{ path: 'overview', component: OverviewComponent },
     { path: 'groups', component: GroupsComponent },
-    { path: 'admin', component: AdminComponent }]
+    { path: 'admin', component: AdminComponent },
+    {
+      path: 'profile', component: UserProfileComponent,
+      children: [{ path: 'profile', component: ProfileComponent }]
+    }
+    ]
   }
-  /*  { path: 'dashboard/overview', component: OverviewComponent },
-   { path: 'dashboard/groups', component: GroupsComponent },
-   { path: 'dashboard/admin', component: AdminComponent } */
+
 ];
 
 @NgModule({
@@ -53,7 +62,13 @@ const appRoutes: Routes = [
     NavbarComponent,
     AdminPageHeaderComponent,
     GroupsPageHeaderComponent,
-    OverviewPageHeaderComponent
+    OverviewPageHeaderComponent,
+    UserProfileComponent,
+    UserProfileHeaderComponent,
+    ProfileComponent,
+    ActivityComponent,
+    FilesComponent,
+    CalendarComponent
   ],
   imports: [
     BrowserModule,
