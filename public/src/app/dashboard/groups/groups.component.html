@@ -1,6 +1,8 @@
 <div class="container">
   <app-groups-page-header></app-groups-page-header>
 
+
+
   <div class="row">
     <div class="card col-md-3 m-1">
       <div class="card-body">
@@ -16,9 +18,16 @@
 
     <div *ngFor="let group of groups" class="card col-md-3 m-1">
       <img class="card-img-top" src="https://source.unsplash.com/random">
+      <div class="card-body">
       <a routerLink="/">
         <h4 class="card-title">{{group.title}}</h4>
       </a>
+      <p class="card-text">{{gr.description}} <br>
+            <span class="badge badge-success">134 Members</span>
+            <span class="small">including you</span>
+
+            </p>
+    </div>
     </div>
   </div>
 </div>

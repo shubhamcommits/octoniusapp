@@ -1,4 +1,14 @@
 @import '../../../node_modules/bootstrap/scss/bootstrap';
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,600|Roboto:300,400,700');
+
+//font override
+
+$font-family-sans-serif: 'Poppins', sans-serif;
+$font-family-monospace: 'Roboto', sans-serif;
+$font-family-base: 'Roboto', sans-serif;
+$headings-font-family: 'Poppins', sans-serif;
+$headings-font-weight:  400 !important;
+
 
 // variables
 $brand-primary: #005FD5;
@@ -6,11 +16,26 @@ $card-radius: 0px;
 $border-gray: 1px solid #D9D7DA;
 $dark-text: #242D3A;
 $poppins: 'Poppins', sans-serif;
+$roboto:'Roboto', sans-serif;
 $border-color:#E4EDF8;
+$pink:#9D85D2;
 
+.pink{
+  color:$pink;
+}
+
+.bluebg{
+  background-color: $brand-primary !important;
+  color: white !important;
+}
 // shadows
 $card-shadow: 0 3px 5px -1px rgba(0,0,0,.2);
 
+.card-tile{
+  padding: 20px;
+  background: #fff;
+  margin-bottom: 20px;
+}
 
 // global stuff
 
@@ -25,16 +50,14 @@ hr{
 h1{
   margin-bottom: 100px;
 }
-h4{
-  font-weight: 400;
-}
+
 .white{
   color:#fff !important;
 }
 
 .welcome{
   background: #005FD5;
-  height: -webkit-fill-available;
+  height: stretch;
 @include media-breakpoint-down(sm) {
   height: auto !important;
 }

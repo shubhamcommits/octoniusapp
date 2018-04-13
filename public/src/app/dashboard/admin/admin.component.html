@@ -1,18 +1,31 @@
+
+
 <div class="container">
 
   <app-admin-page-header></app-admin-page-header>
-  <div class="jumbotron jumbotron-fluid">
-    <div class="admin-info">
-      <h4>company status</h4>
-      <p>12 Admin users</p>
-      <p>1200 Members</p>
-      <p>30 Guests</p>
-      <p>3 Groups</p>
+
+
+  <div class="row main-actvity">
+    <div class="col-md-4">
+  <div class="row sidecontent">
+
+    <div class="card sideinnercard">
+      <div class="card-block">
+        <h6 class="card-title">Group Info</h6>
+        <p class="card-text">{{group?.description}}</p>
+        <hr/>
+        <p class="card-text">43 Members</p>
+        <p class="card-text">125 Activities</p>
+        <p class="card-text">24 Followers</p>
+      </div>
     </div>
   </div>
 
-  <div class="jumbotron jumbotron-fluid">
-    <div class="workspace-signupmode">
+</div>
+
+
+  <div class="col-md-8">
+    <div class="card-tile workspace-signupmode">
       <h4>Workspace signup mode</h4>
       <p>Choose to make your workspace signup process invition only,or allow anyone else with a certain email adress format
         to signup</p>
@@ -23,11 +36,10 @@
         <label for="email">To allow eamil address from mulltiple domains,separate them commas. </label>
       </div>
     </div>
-  </div>
 
 
-  <div class="jumbotron jumbotron-fluid">
-    <div class="invite-users">
+
+    <div class="card-tile invite-users">
       <h4>Invite individual users by email</h4>
       <p>The option is mainly for inviting super-admins,group admins and external guests.</p>
 
@@ -37,10 +49,10 @@
       </div>
 
       <div class="dropdown">
-        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+        <button type="button" class="btn btn-primary-outline dropdown-toggle" data-toggle="dropdown" aria-haspopup="true">
           select role
         </button>
-        <div class="dropdown-menu">
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
           <a class="dropdown-item" href="#">admin</a>
           <a class="dropdown-item" href="#">member</a>
         </div>
@@ -50,5 +62,11 @@
 
 
     </div>
+
   </div>
+
+
+
+
+
 </div>
