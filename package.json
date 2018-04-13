@@ -7,5 +7,18 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "waqas",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^1.0.3",
+    "bluebird": "^3.5.1",
+    "body-parser": "^1.18.2",
+    "chalk": "^2.3.0",
+    "dir": "^0.1.2",
+    "express": "^4.16.2",
+    "express-fileupload": "^0.4.0",
+    "jsonwebtoken": "^8.1.1",
+    "mongoose": "^5.0.2",
+    "morgan": "^1.9.0"
+  }
+
 }

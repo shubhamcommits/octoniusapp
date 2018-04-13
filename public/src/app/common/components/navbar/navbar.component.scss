@@ -1,0 +1,37 @@
+@import "../../../../assets/scss/variables.scss";
+.navbar {
+  min-height: 80px;
+  flex-direction: row !important;
+  background-color: $brand-primary;
+  box-shadow: $card-shadow;
+}
+
+.nav-link {
+  font-family: $poppins;
+  font-weight: 600;
+  font-size: 14px;
+  color: #ffffff !important;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.active {
+  text-decoration: underline;
+}
+
+.form-inline {
+  span {
+    position: absolute;
+    margin-right: 5px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+  }
+}
+
+.navbar-brand .icon-octo-logo {
+  color: #ffffff;
+}
+
+.has-feedback {}

@@ -1,0 +1,24 @@
+<div class="container">
+  <app-page-header></app-page-header>
+
+  <div class="row">
+    <div class="card col-md-3 m-1">
+      <div class="card-body">
+        <a href="">
+          <h4 class="card-title text-center">
+            <i class="material-icons" style="font-size: 150px">add</i>
+          </h4>
+        </a>
+        <h4 class="card-title text-center">Create newgroup
+        </h4>
+      </div>
+    </div>
+
+    <div *ngFor="let group of groups" class="card col-md-3 m-1">
+      <img class="card-img-top" src="https://source.unsplash.com/random">
+      <a routerLink="/">
+        <h4 class="card-title">{{group.title}}</h4>
+      </a>
+    </div>
+  </div>
+</div>

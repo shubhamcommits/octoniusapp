@@ -12,7 +12,12 @@ import { SignupComponent } from './Authentication/signup/signup.component';
 import { SigninComponent } from './Authentication/signin/signin.component';
 import { NewWorkspacePage1Component } from './Authentication/new-workspace-page-1/new-workspace-page-1.component';
 import { NewWorkspacePage2Component } from './Authentication/new-workspace-page-2/new-workspace-page-2.component';
-
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { OverviewComponent } from './dashboard/overview/overview.component';
+import { AdminComponent } from './dashboard/admin/admin.component';
+import { GroupsComponent } from './dashboard/groups/groups.component';
+import { NavbarComponent } from './common/components/navbar/navbar.component';
+import { PageHeaderComponent } from './common/components/page-header/page-header.component';
 
 const appRoutes: Routes = [
   { path: '', component: WelcomePageComponent },
@@ -20,6 +25,15 @@ const appRoutes: Routes = [
   { path: 'signin', component: SigninComponent },
   { path: 'create-new-Workspace-page2', component: NewWorkspacePage2Component },
   { path: 'create-new-Workspace-page1', component: NewWorkspacePage1Component },
+  {
+    path: 'dashboard', component: DashboardComponent,
+    children: [{ path: 'overview', component: OverviewComponent },
+    { path: 'groups', component: GroupsComponent },
+    { path: 'admin', component: AdminComponent }]
+  }
+  /*  { path: 'dashboard/overview', component: OverviewComponent },
+   { path: 'dashboard/groups', component: GroupsComponent },
+   { path: 'dashboard/admin', component: AdminComponent } */
 ];
 
 @NgModule({
@@ -29,7 +43,13 @@ const appRoutes: Routes = [
     SignupComponent,
     SigninComponent,
     NewWorkspacePage1Component,
-    NewWorkspacePage2Component
+    NewWorkspacePage2Component,
+    DashboardComponent,
+    OverviewComponent,
+    AdminComponent,
+    GroupsComponent,
+    NavbarComponent,
+    PageHeaderComponent
   ],
   imports: [
     BrowserModule,
