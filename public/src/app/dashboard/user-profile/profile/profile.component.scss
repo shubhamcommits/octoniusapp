@@ -1,80 +1,122 @@
-@import url(http://fonts.googleapis.com/css?family=Lato:400,700);
-body {
-  font-family: 'Lato', 'sans-serif';
+@import "../../../../assets/scss/variables";
+
+
+.container {
+  margin-top: 40px;
 }
 
-.profile {
-  min-height: 355px;
-  display: inline-block;
-}
 
-figcaption.ratings {
-  margin-top: 20px;
+.main-actvity {
+    margin-top: 20px;
 }
-
-figcaption.ratings a {
-  color: #f1c40f;
-  font-size: 11px;
+.sidecontent {
+margin-left: 0px;
+margin-bottom: 20px;
 }
+.card {
+    padding:0px;
+    width:100%;
+    margin: 5px 0;
+    border: $border-color;
+    border-radius: $card-radius;
 
-figcaption.ratings a:hover {
-  color: #f39c12;
-  text-decoration: none;
 }
-
-.divider {
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.emphasis {
-  border-top: 4px solid transparent;
-}
-
-.emphasis:hover {
-  border-top: 4px solid #1abc9c;
-}
-
-.emphasis h2 {
-  margin-bottom: 0;
-}
-
-span.tags {
-  background: #1abc9c;
-  border-radius: 2px;
-  color: #f5f5f5;
-  font-weight: bold;
-  padding: 2px 4px;
-}
-
-.dropdown-menu {
-  background-color: #34495e;
-  box-shadow: none;
-  -webkit-box-shadow: none;
-  width: 250px;
-  margin-left: -125px;
-  left: 50%;
-}
-
-.dropdown-menu .divider {
-  background: none;
-}
-
-.dropdown-menu>li>a {
-  color: #f5f5f5;
-}
-
-.dropup .dropdown-menu {
+.card-footer{
+  background: transparent;
+  border: none;
+  span{
+    margin-right:20px;
+  }
   margin-bottom: 10px;
+  .material-icons{
+    font-size: 16px;
+    &:hover{
+      color: $brand-primary;
+    }
+  }
 }
 
-.dropup .dropdown-menu:before {
-  content: "";
-  border-top: 10px solid #34495e;
-  border-right: 10px solid transparent;
-  border-left: 10px solid transparent;
-  position: absolute;
-  bottom: -10px;
-  left: 50%;
-  margin-left: -10px;
-  z-index: 10;
+.card-title{
+  margin-top: 0px;
+  margin-bottom: 0;
+
+  .small {
+    font-size: 12px;
+    margin: 20px;
+    .material-icons{
+      font-size: 12px;
+    }
+  }
+  h6{
+    font-family: $poppins;
+    font-size: 16px;
+    color: $dark-text;
+    margin-top: 20px;
+    margin-left: 10px;
+  }
+}
+.innercard{
+  padding: 20px 20px 20px 60px;
+  width: 100%;
+}
+.sideinnercard{
+  padding: 20px;
+  width: 100%;
+}
+
+.post-card{
+  margin: 0px 0px 5px 0px;
+  background-color:#fff;
+  border: $border-color;
+  border-radius: $card-radius;
+  padding: 0px;
+  height: 52px;
+  .col-md-1{
+    padding-left: 0;
+  }
+  .feed-avatar{
+    margin: 0;
+  }
+  .text-muted{
+    font-family: $poppins;
+    line-height: 50px;
+  }
+}
+
+span i ,.postAction{
+  cursor:pointer;
+}
+.quick {
+    background-color: #9D85D2;
+    color:#FFFFFF;
+}
+li {
+        padding: 0;
+}
+.action-post span {
+        color: #9B9B9B;font-size: 12px;line-height: 19px;cursor:pointer;
+   }
+// for input datepicker https://stackoverflow.com/questions/14946091/are-there-any-style-options-for-the-html5-date-picker
+input[type="date"],input[type="time"] {
+     -webkit-align-items: center;
+     display: -webkit-inline-flex;
+     font-family: monospace;
+     overflow: hidden;
+     padding: 0;
+     -webkit-padding-start: 1px;
+}
+
+input::-webkit-datetime-edit {
+    -webkit-flex: 1;
+    -webkit-user-modify: read-only !important;
+    display: inline-block;
+    min-width: 0;
+    overflow: hidden;
+}
+
+input::-webkit-datetime-edit-fields-wrapper {
+    -webkit-user-modify: read-only !important;
+    display: inline-block;
+    padding: 1px 0;
+    white-space: pre;
 }
