@@ -17,7 +17,6 @@ import { OverviewComponent } from './dashboard/overview/overview.component';
 import { AdminComponent } from './dashboard/admin/admin.component';
 import { GroupsComponent } from './dashboard/groups/groups.component';
 import { NavbarComponent } from './common/components/navbar/navbar.component';
-import { PageHeaderComponent } from './common/components/page-header/page-header.component';
 import { AdminPageHeaderComponent } from './dashboard/admin/admin-page-header/admin-page-header.component';
 import { GroupsPageHeaderComponent } from './dashboard/groups/groups-page-header/groups-page-header.component';
 import { OverviewPageHeaderComponent } from './dashboard/overview/overview-page-header/overview-page-header.component';
@@ -52,7 +51,6 @@ const appRoutes: Routes = [
     AdminComponent,
     GroupsComponent,
     NavbarComponent,
-    PageHeaderComponent,
     AdminPageHeaderComponent,
     GroupsPageHeaderComponent,
     OverviewPageHeaderComponent
