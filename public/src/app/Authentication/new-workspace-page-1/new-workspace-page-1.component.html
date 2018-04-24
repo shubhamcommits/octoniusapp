@@ -13,26 +13,39 @@
     </div>
     <div class="col-md-4">
       <div class="signup-form" style="padding-top:100px">
-        <form>
+        <form [formGroup]="newWorkspaceForm" (ngSubmit)="onFormSubmit()">
+
           <h4>Create a new workspace</h4>
           <div class="form-group">
             <label for="company-name">What is the name of your company?</label>
-            <input type="text" class="form-control" id="company-name">
+            <input type="text" class="form-control" id="company-name" formControlName="companyName" [(ngModel)]="workspace.company_name"
+              name="companyName">
+            <div *ngIf="_companyName.invalid && _companyName.touched" class="alert alert-danger">
+              <div *ngIf="_companyName.errors.required">company name is required!</div>
+              <div *ngIf="_companyName.errors.fieldCannotBeEmpty">company name cannot be empty</div>
+              <!--   <div *ngIf="_companyName.errors.minlength">company should be min length of {{_companyName.errors.minlength.requiredLength}}</div> -->
+            </div>
           </div>
 
           <div class="form-group">
             <label for="workspace-name">Enter the workspace name</label>
-            <input type="text" class="form-control" id="workspace-name">
-          </div>
+            <input type="text" class="form-control" id="workspace-name" formControlName="workspaceName" [(ngModel)]="workspace.workspace_name"
+              name="workspaceName">
+            <div *ngIf="_workspaceName.invalid && _workspaceName.touched" class="alert alert-danger">
+              <div *ngIf="_workspaceName.errors.required">workspace name is required!</div>
+              <div *ngIf="_workspaceName.errors.fieldCannotBeEmpty">workspace name cannot be empty</div>
 
-          <button type="submit" class="btn btn-primary btn-block" routerLink="/create-new-Workspace-page2">Continue</button>
+            </div>
+          </div>
+          <button [disabled]="newWorkspaceForm.invalid" type="submit" class="btn btn-primary btn-block">Continue</button>
         </form>
+        <br>
+        <div *ngIf="newWorkspaceForm.errors" class="alert alert-danger">{{newWorkspaceForm.errors.message}}</div>
+
       </div>
+
     </div>
 
-
   </div>
-
-
 
 </div>

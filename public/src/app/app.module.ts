@@ -1,11 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
-
-
-
 import { RouterModule, Routes } from '@angular/router';
 
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { WelcomePageComponent } from './Authentication/welcome-page/welcome-page.component';
 import { SignupComponent } from './Authentication/signup/signup.component';
@@ -26,26 +23,13 @@ import { ProfileComponent } from './dashboard/user-profile/profile/profile.compo
 import { ActivityComponent } from './dashboard/user-profile/activity/activity.component';
 import { FilesComponent } from './dashboard/user-profile/files/files.component';
 import { CalendarComponent } from './dashboard/user-profile/calendar/calendar.component';
+import { AppRoutingModule } from './app-routing.module';
+import { GroupComponent } from './dashboard/groups/group/group.component';
+import { GroupHeaderComponent } from './dashboard/groups/group/group-header/group-header.component';
+import { HttpClientModule } from '@angular/common/http';
+import { AuthService } from './shared/services/auth.service';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
-const appRoutes: Routes = [
-  { path: '', component: WelcomePageComponent },
-  { path: 'signup', component: SignupComponent },
-  { path: 'signin', component: SigninComponent },
-  { path: 'create-new-Workspace-page2', component: NewWorkspacePage2Component },
-  { path: 'create-new-Workspace-page1', component: NewWorkspacePage1Component },
-  {
-    path: 'dashboard', component: DashboardComponent,
-    children: [{ path: 'overview', component: OverviewComponent },
-    { path: 'groups', component: GroupsComponent },
-    { path: 'admin', component: AdminComponent },
-    {
-      path: 'profile', component: UserProfileComponent,
-      children: [{ path: 'profile', component: ProfileComponent }]
-    }
-    ]
-  }
-
-];
 
 @NgModule({
   declarations: [
@@ -68,13 +52,18 @@ const appRoutes: Routes = [
     ProfileComponent,
     ActivityComponent,
     FilesComponent,
-    CalendarComponent
+    CalendarComponent,
+    GroupComponent,
+    GroupHeaderComponent
   ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(appRoutes)
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [AuthService, { provide: LocationStrategy, useClass: HashLocationStrategy }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

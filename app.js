@@ -4,35 +4,57 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 const fileUpload = require('express-fileupload');
 const path = require('path');
+const cors = require('cors');
 const app = express();
 
+
+const apis_workspace = require('./routes/workspace')
+const apis_auth = require('./routes/auth')
+
+//database and process envirnment configurations
 require('./nodemon_config')
 require('./config/db_connection')
 
-const apis = require('./Routes/api')
 
-// adding middlewares
-app.use(morgan("dev"));
+// cors middleware for orign and Headers
+app.use(cors());
+
+
+//bodyparser middleware
 app.use(bodyParser.urlencoded({
       extended: true
 }));
 app.use(bodyParser.json());
 
+// morga middleware for loging every request on console
+app.use(morgan("dev"));
+
 //file upload middleware
 app.use(fileUpload());
 app.use('/uploads', express.static('/home/ubuntu/octonius/uploads'));
 
+
+// staic folder
+app.use(express.static(__dirname + '/public/dist'));
+
+
+
 //Routes which should handle request
-app.use('/api', apis);
+app.all("/", (req, res, next) => {
+      res.sendfile(path.resolve("./public/dest/index.html"));
+});
 
-// handling invalid routes
+
+app.use('/api/workspace', apis_workspace);
+app.use('/api/auth', apis_auth);
+
+// Invalid routes handling middleware
 app.use((req, res, next) => {
-
       const error = new Error("404 not found");
       next(error);
 });
 
-// handling errors
+// Error handling middleware
 app.use((error, req, res, next) => {
 
       res.status(error.status || 500);
@@ -41,6 +63,6 @@ app.use((error, req, res, next) => {
                   message: error.message
             }
       });
-})
+});
 
 module.exports = app;

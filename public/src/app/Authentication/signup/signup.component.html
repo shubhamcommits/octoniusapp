@@ -9,46 +9,73 @@
         <p class="white">If you already have an account</p>
         <button type="submit" class="btn btn-outline-light" routerLink="/signin">Sign in</button>
       </div>
-    </div>
 
+      <div *ngIf="signupForm.errors" class="alert alert-danger" style="margin-top: 40px">{{signupForm.errors.message}}</div>
+
+    </div>
 
     <div class="col-md-4">
       <div class="signup-form" style="padding-top:100px">
-        <form>
+        <form [formGroup]="signupForm" (ngSubmit)="onSignupFormSubmit()">
           <h4>Join WORKSPACENAME</h4>
+
           <div class="form-group">
-            <label for="email">Enter your work Email</label>
-            <input type="email" class="form-control" id="email">
-          </div>
-          <div class="form-group">
-            <label for="pwd">Enter your Password</label>
-            <input type="password" class="form-control" id="pwd">
-          </div>
-          <div class="form-group">
-            <label for="pwd">Repeat your Password</label>
-            <input type="password" class="form-control" id="repeat-pwd">
-          </div>
-          <div class="form-group">
-            <label for="pwd">Enter your first name</label>
-            <input type="text" class="form-control" id="first-name">
-          </div>
-          <div class="form-group">
-            <label for="pwd">Enter your last name</label>
-            <input type="text" class="form-control" id="last-name">
+            <label for="worskapce-name">Enter workspace name</label>
+            <input type="text" class="form-control" id="worskapce-name" formControlName="workspaceName" [(ngModel)]="user.workspace_name"
+              name="workspaceName">
+
+            <div *ngIf="_workspaceName.invalid && _workspaceName.touched" style="color:red">
+              <div *ngIf="_workspaceName.errors.required">workspace name is required!</div>
+              <div *ngIf="_workspaceName.errors.fieldCannotBeEmpty">workspace cannot be empty!</div>
+            </div>
           </div>
 
-          <button type="submit" class="btn btn-primary btn-block">Sign up</button>
+          <div class="form-group">
+            <label for="email">Enter your work Email</label>
+            <input type="email" class="form-control" id="email" formControlName="userEmail" [(ngModel)]="user.email" name="userEmail">
+            <div *ngIf="_userEmail.invalid && _userEmail.touched" style="color:red">
+              <div *ngIf="_userEmail.errors.email">Invalid email format!</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="pwd">Enter your Password</label>
+            <input type="password" class="form-control" id="pwd" formControlName="userPassword" [(ngModel)]="user.password" name="userPassword">
+            <div *ngIf="_userPassword.invalid && _userPassword.touched" style="color:red">
+              <div *ngIf="_userPassword.errors.required">Password is required!</div>
+              <div *ngIf="_userPassword.errors.fieldCannotBeEmpty">Password cannot be empty</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="repeat-pwd">Repeat your Password</label>
+            <input type="password" class="form-control" id="repeat-pwd" formControlName="userPasswordRepeat">
+            <div *ngIf="_userPasswordRepeat.invalid && _userPasswordRepeat.touched" style="color:red">
+              <div *ngIf="_userPasswordRepeat.errors.required">Password is required!</div>
+              <div *ngIf="_userPasswordRepeat.errors.fieldCannotBeEmpty">Password cannot be empty</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="first-name">Enter your first name</label>
+            <input type="text" class="form-control" id="first-name" formControlName="userFirstName" [(ngModel)]="user.first_name" name="userFirstName">
+            <div *ngIf="_userFirstName.invalid && _userFirstName.touched" style="color:red">
+              <div *ngIf="_userFirstName.errors.required">First name is required!</div>
+              <div *ngIf="_userFirstName.errors.fieldCannotBeEmpty">First name cannot be empty</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="last-name">Enter your last name</label>
+            <input type="text" class="form-control" id="last-name" formControlName="userLastName" [(ngModel)]="user.last_name" name="userLastName">
+            <div *ngIf="_userLastName.invalid && _userLastName.touched" style="color:red">
+              <div *ngIf="_userLastName.errors.required">Last name is required!</div>
+              <div *ngIf="_userLastName.errors.fieldCannotBeEmpty">Last name cannot be empty</div>
+            </div>
+          </div>
+          <button [disabled]="signupForm.invalid" type="submit" class="btn btn-primary btn-block">Sign up</button>
         </form>
       </div>
 
     </div>
 
   </div>
-
-
-
-
-
-
 
 </div>

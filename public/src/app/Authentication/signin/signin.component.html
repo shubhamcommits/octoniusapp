@@ -4,33 +4,51 @@
 
       <h1 class="white">
         <i class="icon-octo-logo"></i>Octonius</h1>
-      <h4 class="white">Everything happening in your organizzation happens here.</h4>
+      <h4 class="white">Everything happening in your organization happens here.</h4>
 
       <div style="margin-top:30px">
         <p class="white">Are you new here?</p>
         <button type="submit" class="btn btn-outline-light" routerLink="/signup">Sign up</button>
       </div>
     </div>
+
     <div class="col-md-4">
       <div class="signup-form" style="padding-top:100px">
-        <form>
+        <form [formGroup]="signinForm" (ngSubmit)="OnSigninFormSubmit()">
           <h4>Sign in to your workspace</h4>
+
           <div class="form-group">
             <label for="pwd">Enter your workspace name</label>
-            <input type="password" class="form-control" id="pwd">
+            <input type="text" class="form-control" id="pwd" formControlName="userWorkspaceName" [(ngModel)]="user.workspace_name" name="workspaceName">
+
+            <div *ngIf="_workspaceName.invalid && _workspaceName.touched" style="color:red">
+              <div *ngIf="_workspaceName.errors.required">Workspace name is required!</div>
+              <div *ngIf="_workspaceName.errors.fieldCannotBeEmpty">Workspace name cannot be empty</div>
+            </div>
           </div>
 
           <div class="form-group">
             <label for="email">Enter your work Email</label>
-            <input type="email" class="form-control" id="email">
+            <input type="email" class="form-control" id="email" formControlName="userEmail" [(ngModel)]="user.email" name="userEmail">
+            <div *ngIf="_userEmail.invalid && _userEmail.touched" style="color:red">
+              <div *ngIf="_userEmail.errors.email">Invalid email format</div>
+              <div *ngIf="_userEmail.errors.fieldCannotBeEmpty">Email cannot be empty</div>
+            </div>
           </div>
 
           <div class="form-group">
             <label for="pwd">Enter your Password</label>
-            <input type="password" class="form-control" id="password">
+            <input type="password" class="form-control" id="password" formControlName="userPassword" [(ngModel)]="user.password" name="userPasswod">
+
+            <div *ngIf="_userPassword.invalid && _userPassword.touched" style="color:red">
+              <div *ngIf="_userPassword.errors.required">Password is required!</div>
+              <div *ngIf="_userPassword.errors.fieldCannotBeEmpty">Password cannot be empty</div>
+            </div>
           </div>
-          <button type="submit" class="btn btn-primary">Sign in</button>
+
+          <button [disabled]="signinForm.invalid" type="submit" class="btn btn-primary">Sign in</button>
         </form>
       </div>
+      <div *ngIf="signinForm.errors" class="alert alert-danger" style="margin-top:20px">{{signinForm.errors.message}}</div>
     </div>
   </div>
