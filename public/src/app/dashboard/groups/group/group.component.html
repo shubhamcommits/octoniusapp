@@ -2,81 +2,291 @@
 
 
 <div class="container">
+  <div class="row main-actvity">
+    <div class="col-md-4">
+      <div class="row sidecontent">
 
-
-
-  <ul class="list-group">
-    <li class="list-group-item">
-      <div class="row navig">
-        <div class="col-md-4 clearfix">
-
-          <img src="https://randomuser.me/api/portraits/med/women/49.jpg" alt="" class="feed-avatar float-left">
-          <div class="username float-left">
-            <h6>Eva Mendosa</h6>
-            <p class="small text-muted">10:00am</p>
+        <div class="card sideinnercard">
+          <div class="card-block">
+            <h6 class="card-title">Group Info</h6>
+            <hr/>
+            <p class="card-text">{{workspace?.members.length}} Members</p>
+            <p class="card-text">125 Activities</p>
+            <p class="card-text">24 Followers</p>
           </div>
         </div>
+      </div>
 
-        <div class="col-md-7">
-          <p>i like the new format of the dowuent, it gaves some strength to all this bla bla,i like the new format of the dowuent,
-            it gaves some strength to all this bla bla</p>
-        </div>
+    </div>
+    <div class="col-md-8">
+      <!-- <div class="card" >  -->
+      <!-- <div class="card-block"> -->
+      <div class="row post-card  postAction" (click)="showPosting()">
         <div class="col-md-1">
-          <i class="material-icons">chat</i>
+          <img src="https://randomuser.me/api/portraits/med/men/64.jpg" alt="" class="feed-avatar">
+        </div>
+        <div class="col-md-11" [hidden]="textHidden">
+          <p class="text-muted d-none d-sm-block">What Are You Working on?</p>
+        </div>
+
+      </div>
+      <div class="row">
+        <div class="col-md-8" [hidden]="postFormHide && eventFormHide">
+          <span><i class="material-icons muted" (click)="showPostingForm()">comment</i> </span>
+          <span><i class="material-icons muted" (click)="showEventForm()">event</i> </span>
+          <!-- <span><i class="material-icons muted">check_box</i> </span>
+          <span><i class="material-icons muted">description</i> </span> -->
 
         </div>
       </div>
-    </li>
+      <div class="row">
+        <div class="col-md-12" [hidden]="postFormHide">
 
-    <li class="list-group-item">
-      <div class="row navig">
-        <div class="col-md-4 clearfix">
-
-          <img src="https://randomuser.me/api/portraits/med/women/60.jpg" alt="" class="feed-avatar float-left">
-          <div class="username float-left">
-            <h6>Mara Marvin</h6>
-            <p class="small text-muted">10:00am</p>
-          </div>
-        </div>
-
-        <div class="col-md-7">
-          <h6 class="pink">assigned to you</h6>
-          <p>i like the new format of the dowuent, it gaves some strength to all this bla bla,i like the new format of the dowuent,
-            it gaves some strength to all this bla bla</p>
-        </div>
-        <div class="col-md-1">
-          <i class="material-icons">assignment_turned_in</i>
-
-        </div>
-      </div>
-    </li>
-
-    <li class="list-group-item">
-      <div class="row navig bluebg">
-        <div class="col-md-4 clearfix">
-
-          <img src="https://randomuser.me/api/portraits/med/men/9.jpg" alt="" class="feed-avatar float-left">
-          <div class="username float-left">
-            <h6>Jon Snow</h6>
-            <p class="small">10:00am</p>
-          </div>
-        </div>
-
-        <div class="col-md-7">
-          <div class="row">
-            <div class="col-md-2 date"> 20 April
-              <br>
-              <span>12:30</span>
+          <form [formGroup]="postForm" (ngSubmit)="onSubmitPost(group)">
+            <div class="form-group">
+              <textarea class="form-control" id="" rows="3" name="content" formControlName="content"></textarea>
             </div>
-            <div class="col-md-9 event-title">Team meeting in room 3 to discuss the new design Team meeting in room 3 to discuss the new design
-            </div>
-          </div>
 
+
+              <div class="row form-group">
+                <div class="col-sm-6">
+                  <input class="form-control" type="text" placeholder="Enter Tag" formControlName="tags">
+                </div>
+                <div class="col-sm-6">
+
+                  <label class="custom-file">
+                    <input type="file" id="" class="custom-file-input" formControlName="sharedFiles">
+                    <span class="custom-file-control"></span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="row form-group">
+
+                <div class="col-sm-6">
+                  <input class="btn btn-primary btn-sm btn-block" type="submit" value="Post">
+                </div>
+                <div class="col-sm-6">
+                  <input class="btn btn-danger btn-sm btn-block" type="button" value="Cancel">
+                </div>
+
+              </div>
+
+          </form>
         </div>
-        <div class="col-md-1">
-          <i class="material-icons">today</i>
+
+
+        <div class="col-md-12" [hidden]="eventFormHide">
+
+          <form [formGroup]="eventForm" (ngSubmit)="onSubmitEvent(group)">
+            <div class="form-group">
+              <textarea class="form-control col-sm-12" name="content" id="" cols="100" rows="3" formControlName="content"></textarea>
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-sm-6">
+
+                  <input class="form-control btn" type="date" formControlName="date">
+
+
+
+
+                </div>
+                <div class="col-sm-6">
+                  <input class="form-control" type="time" formControlName="time">
+                </div>
+              </div>
+              <div class="row">
+                  <div class="col-sm-6">
+                      <input class="btn btn-primary btn-sm btn-block" type="Post" value="Post">
+                    </div>
+                <div class="col-sm-6">
+                  <input class="btn btn-danger btn-sm btn-block" type="button" value="Cancel">
+                </div>
+
+              </div>
+
+
+
+            </div>
+          </form>
         </div>
       </div>
-    </li>
-  </ul>
+
+      <ul class="list-group">
+        <li *ngFor="let post of threads" class="list-group-item">
+          <div class="card">
+            <div class="card-block">
+              <div class="row card-title">
+                <div class="col-md-1">
+                  <img src="https://randomuser.me/api/portraits/med/men/64.jpg" class="feed-avatar">
+                </div>
+                <div class="col-md-8">
+                  <h6>{{post?.author.username}}</h6>
+                </div>
+                <div class="col-md-3">
+                  <p class="small font-weight-bold"><i class="material-icons">schedule</i>{{post?.created | date:'shortTime'}}</p>
+                </div>
+              </div>
+              <div class="col-md-12 innercard">
+                <p class="card-text">{{post?.content}}
+                </p>
+                <h6>Schedule: {{post?.date}} At {{post?.time}}</h6>
+              </div>
+              <!-- <div *ngIf="post instanceof Event" class="col-md-12">
+                  Schedule: {{post?.date}} At {{post?.time}}
+              </div>  -->
+
+              <div class="card-footer action-post innercard clearfix">
+                <hr>
+                <div class="col-md-6 pull-left">
+                  <span>3 Likes</span>
+                  <span>2 Comments</span>
+                </div>
+                <div class="col-md-3 pull-right">
+                  <span (click)="commentFormHide=!commentFormHide"><i class="material-icons">mode_comment</i> </span>
+                  <span><i class="material-icons">thumb_up</i></span>
+                  <span><i class="material-icons">more_horiz</i></span>
+                </div>
+              </div>
+              <div class="card-footer action-post innercard clearfix" >
+
+              <div class="list-group">
+                <!-- <div class="list-group-item">
+                  <p>Comment placeholder</p>
+                  <p></p>
+                </div> -->
+                <div *ngFor="let comment of post.comments" class="list-group-item">
+                  <p>This is a comment placeholder</p>
+                  <p>{{comment?.content}}</p>
+                </div>
+              </div>
+              <div class="row  col-md-9">
+                <form [formGroup]="commentForm" (ngSubmit)="onSubmitComment(post)" [hidden]="commentFormHide">
+                  <div class="form-group">
+                    <textarea class="form-control" name="content" id="" cols="40" rows="1" formControlName="content"></textarea>
+                  </div>
+                  <div class="form-group">
+                    <input class="form-control"  type="button" value="Cancel">
+                    <input class="form-control" type="submit">
+                  </div>
+                </form>
+              </div>
+
+              </div>
+            </div>
+          </div>
+        </li>
+        <!-- <li class="list-group-item">
+          <div class="card">
+            <div class="card-block">
+              <div class="row card-title">
+                <div class="col-md-1">
+                  <img src="https://randomuser.me/api/portraits/med/men/64.jpg" class="feed-avatar">
+                </div>
+                <div class="col-md-8">
+                  <h6>MARA Max</h6>
+                </div>
+                <div class="col-md-3">
+                  <p class="small font-weight-bold"><i class="material-icons">schedule</i> 12:24 PM</p>
+                </div>
+              </div>
+              <div class="col-md-12 innercard">
+                <p class="card-text">Lorem ipsum dolor sit amet, sea an phaedrum quaestio interesset. Nemore euismod mediocritatem cu sed. Vocent
+                  mentitum ut vim, vix possit minimum lucilius ea. Ius cu vocent explicari dissentias, porro nostrud veritus
+                  eu vis, mea eu dicant partem aliquip. Diam invenire pro no.
+                </p>
+              </div>
+
+              <div class="card-footer action-post innercard clearfix">
+                <hr>
+                <div class="col-md-6 pull-left">
+                <span>3 Likes</span>
+                <span>2 Comments</span>
+                </div>
+                <div class="col-md-3 pull-right">
+                <span><i class="material-icons">mode_comment</i> </span>
+                <span><i class="material-icons">thumb_up</i></span>
+                <span><i class="material-icons">more_horiz</i></span>
+              </div>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="card">
+            <div class="card-block">
+              <div class="row card-title">
+                <div class="col-md-1">
+                  <img src="https://randomuser.me/api/portraits/med/women/44.jpg" class="feed-avatar">
+                </div>
+                <div class="col-md-8">
+                  <h6>Ema Hils</h6>
+                </div>
+                <div class="col-md-3">
+                  <p class="small font-weight-bold"><i class="material-icons">schedule</i> 12:24 PM</p>
+                </div>
+              </div>
+              <div class="col-md-12 innercard">
+                <p class="card-text">Lorem ipsum dolor sit amet, sea an phaedrum quaestio interesset. Nemore euismod mediocritatem cu sed. Vocent
+                  mentitum ut vim, vix possit minimum lucilius ea. Ius cu vocent explicari dissentias, porro nostrud veritus
+                  eu vis, mea eu dicant partem aliquip. Diam invenire pro no.
+                </p>
+              </div>
+
+              <div class="card-footer action-post innercard clearfix">
+                <hr>
+                <div class="col-md-6 pull-left">
+                <span>3 Likes</span>
+                <span>2 Comments</span>
+                </div>
+                <div class="col-md-3 pull-right">
+                <span><i class="material-icons">mode_comment</i> </span>
+                <span><i class="material-icons">thumb_up</i></span>
+                <span><i class="material-icons">more_horiz</i></span>
+              </div>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="card">
+            <div class="card-block">
+              <div class="row card-title">
+                <div class="col-md-1">
+                  <img src="https://randomuser.me/api/portraits/med/women/64.jpg" class="feed-avatar">
+                </div>
+                <div class="col-md-8">
+                  <h6>MARA Max</h6>
+                </div>
+                <div class="col-md-3">
+                  <p class="small font-weight-bold"><i class="material-icons">schedule</i> 12:24 PM</p>
+                </div>
+              </div>
+              <div class="col-md-12 innercard">
+                <p class="card-text">Lorem ipsum dolor sit amet, sea an phaedrum quaestio interesset. Nemore euismod mediocritatem cu sed. Vocent
+                  mentitum ut vim, vix possit minimum lucilius ea. Ius cu vocent explicari dissentias, porro nostrud veritus
+                  eu vis, mea eu dicant partem aliquip. Diam invenire pro no.
+                </p>
+              </div>
+
+              <div class="card-footer action-post innercard clearfix">
+                <hr>
+                <div class="col-md-6 pull-left">
+                <span>3 Likes</span>
+                <span>2 Comments</span>
+                </div>
+                <div class="col-md-3 pull-right">
+                <span><i class="material-icons">mode_comment</i> </span>
+                <span><i class="material-icons">thumb_up</i></span>
+                <span><i class="material-icons">more_horiz</i></span>
+              </div>
+              </div>
+            </div>
+          </div>
+        </li> -->
+      </ul>
+    </div>
+  </div>
+
 </div>
