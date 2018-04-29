@@ -10,6 +10,7 @@ const app = express();
 
 const apis_workspace = require('./routes/workspace')
 const apis_auth = require('./routes/auth')
+const apis_user = require('./routes/user');
 
 //database and process envirnment configurations
 require('./nodemon_config')
@@ -47,6 +48,7 @@ app.all("/", (req, res, next) => {
 
 app.use('/api/workspace', apis_workspace);
 app.use('/api/auth', apis_auth);
+app.use('/api/user', apis_user);
 
 // Invalid routes handling middleware
 app.use((req, res, next) => {

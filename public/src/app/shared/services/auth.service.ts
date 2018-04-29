@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Workspace } from '../models/workspace.model';
 import { User } from '../models/user.model';
@@ -14,8 +14,6 @@ export class AuthService {
 
 
   signIn(user) {
-    console.log(user);
-
     return this._http.post<any>(this.BASE_API_URL + '/auth/signin', user);
   }
 
@@ -24,7 +22,7 @@ export class AuthService {
   }
 
   signout() {
-
+    return this._http.get<any>(this.BASE_API_URL + '/auth/signout');
   }
 
   createNewWorkspace(newWorksapce) {
@@ -41,5 +39,24 @@ export class AuthService {
 
   getWorkspace() {
     return this.workspace;
+  }
+
+  isLoggedIn() {
+    return !!localStorage.getItem('token');
+  }
+
+  setToken(token) {
+    localStorage.setItem('token', token);
+  }
+  getToken() {
+    return localStorage.getItem('token');
+  }
+
+  setUserData(user) {
+    this.user = user;
+    console.log('user in auth service:', this.user);
+  }
+  getUserData() {
+    return this.user;
   }
 }

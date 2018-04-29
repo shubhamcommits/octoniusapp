@@ -5,4 +5,6 @@ export interface Workspace {
   owner_email: string;
   owner_first_name: string;
   owner_last_name: string;
+  allowed_domains: string[];
+  invited_users: string[];
 }

@@ -35,12 +35,25 @@ const workspaceSchema = new Schema({
         ref: 'User'
     },
     members: [{
-        _user: {
-            type: Schema.Types.ObjectId,
-            ref: 'User'
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }],
+    allowed_domains: [{
+        type: String,
+        default: null,
+        trim: true
+    }],
+    invited_users: [{
+        email: {
+            type: String,
+            require: true
+        },
+        role: {
+            type: String,
+            require: true,
+            enum: ['member', 'admin']
         }
     }],
-    allowed_domains: [String],
     created_date: {
         type: Date,
         default: Date.now

@@ -11,19 +11,19 @@ import { Router } from '@angular/router';
   styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent implements OnInit {
-  user: User;
+  user = {
+    workspace_name: '',
+    email: '',
+    password: '',
+    first_name: '',
+    last_name: '',
+  };
+
   signupForm: FormGroup;
   constructor(private _auth: AuthService, private _router: Router) { }
 
   ngOnInit() {
 
-    this.user = {
-      workspace_name: '',
-      email: '',
-      password: '',
-      first_name: '',
-      last_name: '',
-    };
 
 
     this.signupForm = new FormGroup({
@@ -42,7 +42,7 @@ export class SignupComponent implements OnInit {
         this._auth.signUp(this.user)
           .subscribe((signup_response) => {
 
-            localStorage.setItem('token', signup_response.token);
+            this._auth.setToken(signup_response.token);
             this._router.navigate(['/dashboard/overview']);
 
           }, (signup_err) => {

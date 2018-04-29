@@ -26,7 +26,9 @@ export class NewWorkspacePage1Component implements OnInit {
       owner_password: '',
       owner_email: '',
       owner_first_name: '',
-      owner_last_name: ''
+      owner_last_name: '',
+      invited_users: [],
+      allowed_domains: []
     };
 
     this.newWorkspaceForm = new FormGroup({

@@ -19,7 +19,7 @@
             <span class="sr-only">(current)</span>
           </a>
         </li>
-        <li class="nav-item">
+        <li *ngIf="user?.role=='admin' || user?.role=='owner'" class="nav-item">
           <a class="nav-link" routerLink="/dashboard/admin">Admin
             <span class="sr-only">(current)</span>
           </a>
@@ -37,7 +37,8 @@
       <a class="nav-link" routerLink="/dashboard/admin" (click)="onSignOut()">Logout
         <span class="sr-only">(current)</span>
       </a>
-
     </div>
+    <ng-flash-message></ng-flash-message>
+
   </div>
 </nav>

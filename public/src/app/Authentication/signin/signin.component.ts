@@ -4,6 +4,7 @@ import { InputValidators } from '../../common/validators/input.validator';
 import { THROW_IF_NOT_FOUND } from '@angular/core/src/di/injector';
 import { AuthService } from '../../shared/services/auth.service';
 import { Router } from '@angular/router';
+import { User } from '../../shared/models/user.model';
 
 @Component({
   selector: 'app-signin',
@@ -34,8 +35,14 @@ export class SigninComponent implements OnInit {
 
     this._auth.signIn(this.user)
       .subscribe((res) => {
-        localStorage.setItem('token', res.token);
+        this._auth.setToken(res.token);
+        console.log('reponse:"', res.user);
+        this._auth.setUserData(res.user);
+
+        console.log('this._auth.getUserData()', this._auth.getUserData());
+
         this._router.navigate(['/dashboard/overview']);
+
       }, (err) => {
 
         if (err.status) {
@@ -43,7 +50,6 @@ export class SigninComponent implements OnInit {
             message: err.error.message
           });
         }
-
       });
 
   }

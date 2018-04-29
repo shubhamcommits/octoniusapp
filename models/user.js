@@ -31,7 +31,9 @@ const UserSchema = new Schema({
     },
     role: {
         type: String,
+        required: true,
         default: 'member',
+        enum: ['owner', 'member', 'admin']
     },
     phone_number: {
         type: String,
@@ -63,7 +65,8 @@ const UserSchema = new Schema({
     },
     skills: [{
         type: String,
-        default: null
+        default: null,
+        trim: true
     }],
     files: [{
         type: String,

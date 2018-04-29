@@ -1,31 +1,35 @@
-const Wrokspace = require("../../models/workspace")
+const Wrokspace = require("../../models/workspace");
+var nodemailer = require('nodemailer');
+
 
 module.exports = {
 
 
     updateAllowedEmailDomains(req, res, next) {
-        let workspace_id = req.params.workspaceId;
-        let allowed_domains = req.body.domains.split(',');
-
+        let workspace_id = req.body.workspace_id;
+        let allowed_domains = req.body.domains.split(',').map(function (e) {
+            return e.trim();
+        });
+        // adding new doamins and preventing to add duplicate values
         Wrokspace.findByIdAndUpdate({
                 _id: workspace_id
             }, {
-                $push: {
+                $addToSet: {
                     allowed_domains: allowed_domains
                 }
             }, {
                 new: true
             })
-            .then((workspace) => {
+            .then((updated_workspace) => {
 
-                if (workspace == null) {
+                if (updated_workspace == null) {
                     res.status(404).json({
                         message: "Invalid workspace id error,workspace not found.",
                     });
                 } else {
                     res.status(200).json({
-                        message: "Domains data have Updated successfully",
-                        workspace
+                        message: "Domains data has Updated successfully",
+                        doamins: allowed_domains
                     })
                 }
             })
@@ -37,7 +41,73 @@ module.exports = {
                 })
 
             })
+    },
+
+    inviteUserViaEmail(req, res, next) {
+        let workspace_id = req.body.workspace_id;
+        let invited_user_email = req.body.email;
+        let invited_user_role = req.body.role;
+        Wrokspace.findByIdAndUpdate({
+                _id: workspace_id
+            }, {
+                $push: {
+                    invited_users: {
+                        email: invited_user_email,
+                        role: invited_user_role
+                    }
+                }
+            }, {
+                new: true
+            })
+            .then((updated_workspace) => {
+                if (updated_workspace == null) {
+                    res.status(404).json({
+                        message: "Error! workspace not found, invalid workspace id"
+                    });
+                } else {
+                    let sender = 'dev@octonius.com';
+                    let receiver = invited_user_email;
+                    // nodemailer configrations 
+                    var transporter = nodemailer.createTransport({
+                        service: 'Gmail',
+                        auth: {
+                            user: sender,
+                            pass: 'Yaiza13@'
+                        }
+                    });
+
+                    // nodemailer configurations
+                    var mailOptions = {
+                        from: sender,
+                        to: receiver,
+                        subject: 'Workspace invitation request',
+                        text: `workspace name "${updated_workspace.workspace_name}"
+                        "http://localhost:3000/#/signup" Click on the link to Join the worksapce`
+                    };
+                    transporter.sendMail(mailOptions, function (err, info) {
+                        if (err) {
+                            res.status(404).json({
+                                status: "404",
+                                message: "Error! Invalid email id",
+                                error: err
+                            })
+                        } else {
+                            res.status(200).json({
+                                message: "Invitation has sent successfully!",
+                                workspace: updated_workspace
+                            });
+                        }
+                    });
+
+
+                }
+            })
+            .catch((err) => {
+                res.status(500).json({
+                    message: "soemthing went wrong | internal server error!",
+                    err
+                })
+            })
 
     }
-
 }

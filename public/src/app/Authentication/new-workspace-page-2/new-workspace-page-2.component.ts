@@ -26,7 +26,9 @@ export class NewWorkspacePage2Component implements OnInit {
       owner_password: '',
       owner_email: '',
       owner_first_name: '',
-      owner_last_name: ''
+      owner_last_name: '',
+      allowed_domains: [],
+      invited_users: []
     };
 
     console.log(this.workspace);
@@ -45,7 +47,7 @@ export class NewWorkspacePage2Component implements OnInit {
 
     this._auth.createNewWorkspace(this.workspace)
       .subscribe((res) => {
-        localStorage.setItem('token', res.token);
+        this._auth.setToken(res.token);
         this._router.navigate(['/dashboard/overview']);
       }, (err) => {
 

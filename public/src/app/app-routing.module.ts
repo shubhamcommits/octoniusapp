@@ -1,10 +1,4 @@
 import { GroupComponent } from './dashboard/groups/group/group.component';
-
-
-
-
-
-
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -21,17 +15,22 @@ import { OverviewComponent } from './dashboard/overview/overview.component';
 import { ProfileComponent } from './dashboard/user-profile/profile/profile.component';
 import { SignupComponent } from './Authentication/signup/signup.component';
 
+import { AuthGuard } from './shared/guards/auth.guard';
+import { NotAuthGuard } from './shared/guards/not-auth.guard';
+import { PageNotFoundComponent } from './common/components/page-not-found/page-not-found.component';
+
 
 const appRoutes: Routes = [
-  { path: '', component: WelcomePageComponent },
-  { path: 'signup', component: SignupComponent },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: 'signup', component: SignupComponent, canActivate: [NotAuthGuard] },
   {
-    path: 'signin', component: SigninComponent
+    path: 'signin', component: SigninComponent, canActivate: [NotAuthGuard]
   },
-  { path: 'create-new-Workspace-page2', component: NewWorkspacePage2Component },
-  { path: 'create-new-Workspace-page1', component: NewWorkspacePage1Component },
+  { path: 'home', component: WelcomePageComponent, canActivate: [NotAuthGuard] },
+  { path: 'create-new-Workspace-page2', component: NewWorkspacePage2Component, canActivate: [NotAuthGuard] },
+  { path: 'create-new-Workspace-page1', component: NewWorkspacePage1Component, canActivate: [NotAuthGuard] },
   {
-    path: 'dashboard', component: DashboardComponent,
+    path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard],
     children: [
       { path: 'overview', component: OverviewComponent },
       { path: 'groups', component: GroupsComponent },
@@ -40,10 +39,10 @@ const appRoutes: Routes = [
         path: 'profile', component: UserProfileComponent,
         children: [{ path: 'profile', component: ProfileComponent }]
       },
-
       { path: 'group', component: GroupComponent }
     ]
-  }
+  },
+  { path: '**', component: PageNotFoundComponent }
 ];
 
 @NgModule({
@@ -53,3 +52,6 @@ const appRoutes: Routes = [
 })
 
 export class AppRoutingModule { }
+export const routingComponents = [UserProfileComponent, AdminComponent, GroupsComponent, NewWorkspacePage1Component,
+  NewWorkspacePage2Component, SigninComponent, WelcomePageComponent, DashboardComponent, OverviewComponent,
+  ProfileComponent, SignupComponent, PageNotFoundComponent];
