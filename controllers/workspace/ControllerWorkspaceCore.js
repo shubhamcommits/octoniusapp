@@ -120,6 +120,7 @@ module.exports = {
         Workspace.findOne({
                 _id: workspace_id
             })
+            .populate('members', 'first_name last_name role')
             .then((workspace) => {
 
                 if (workspace == null) {

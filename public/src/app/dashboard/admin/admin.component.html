@@ -22,7 +22,8 @@
     <div class="col-md-8">
       <div class="card-tile workspace-signupmode">
         <h4>Workspace signup mode</h4>
-        <p>Choose to make your workspace signup process invition only,or allow anyone else with a certain email adress format to signup</p>
+        <p>Choose to make your workspace signup process invition only,or allow anyone else with a certain email adress format
+          to signup</p>
         <div style="position: fixed; margin-top: 20px">
           <flash-messages></flash-messages>
         </div>
@@ -59,36 +60,18 @@
 
       </div>
 
-      <div class="media card-tile">
+      <div class="media card-tile" *ngFor="let member of workspace.members">
         <img class="mr-3" src="https://randomuser.me/api/portraits/med/women/49.jpg" alt="Generic placeholder image">
         <div class="media-body">
           <div class="float-left">
-            <h4 class="mt-0">Mara Max</h4>
-            <p>Role: ADMIN</p>
+            <h4 class="mt-0">{{member?.first_name}}  {{member?.last_name}}</h4>
+            <p>Role: {{member?.role}}</p>
           </div>
           <i class="material-icons float-right">more_horiz</i>
         </div>
       </div>
-      <div class="media card-tile">
-        <img class="mr-3" src="https://randomuser.me/api/portraits/med/women/49.jpg" alt="Generic placeholder image">
-        <div class="media-body">
-          <div class="float-left">
-            <h4 class="mt-0">Mara Max</h4>
-            <p>Role: ADMIN</p>
-          </div>
-          <i class="material-icons float-right">more_horiz</i>
-        </div>
-      </div>
-      <div class="media card-tile">
-        <img class="mr-3" src="https://randomuser.me/api/portraits/med/women/49.jpg" alt="Generic placeholder image">
-        <div class="media-body">
-          <div class="float-left">
-            <h4 class="mt-0">Mara Max</h4>
-            <p>Role: ADMIN</p>
-          </div>
-          <i class="material-icons float-right">more_horiz</i>
-        </div>
-      </div>
+
+
 
     </div>
   </div>
