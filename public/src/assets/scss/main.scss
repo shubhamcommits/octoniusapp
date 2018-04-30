@@ -61,33 +61,16 @@ h2{
 .user-sticky-card{
   border: 1px solid $border-color;
   background-color: #FFFFFF;
-  background-image: url('https://randomuser.me/api/portraits/med/women/49.jpg');
-  background-position:left;
-  background-repeat: no-repeat;
-  background-size: 80px 80px;
   margin:100px 0 10px 0;
   position: relative;
-  padding: 0 !important;
-  .col-md-12{
-    .inner{
-      margin: 0px 0 0 90px;
-    }
+  padding: 10px;
     .feed-avatar{
       margin-right: 20px;
-    }
+      width: 80px;
+      height: 80px;
   }
-  .col-md-7{
-    padding:20px;
-  }
-  .feed-avatar{
-    width: 80px;
-    height: 80px;
-  }
-  .col-md-8{
-    padding: 10px 10px;
-    h2{
-      margin-left: 15px;
-    }
+  .nav-link{
+    padding-left: 0;
   }
 }
 
