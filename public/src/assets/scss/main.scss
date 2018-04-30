@@ -78,14 +78,7 @@ h2{
   color: #9b9b9b;
 }
 
-.user-list
- li{
-  background: #fff;
-  border:$border-gray;
-  .feed-avatar{
-    float: left;
-  }
-  span h6{
-    float:left; margin-left: 20px; margin-top:13px;
-  }
+.user-list{
+border-bottom: 1px solid $border-color;
+padding:0px;
 }
