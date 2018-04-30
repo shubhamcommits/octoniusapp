@@ -7,8 +7,6 @@ import { NgFlashMessagesModule } from 'ng-flash-messages';
 import { FlashMessagesModule } from 'angular2-flash-messages';
 
 
-
-
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './common/components/navbar/navbar.component';
 import { AdminPageHeaderComponent } from './dashboard/admin/admin-page-header/admin-page-header.component';
@@ -30,7 +28,6 @@ import { TokenInterceptorService } from './shared/services/token-interceptor.ser
 import { UserService } from './shared/services/user.service';
 import { AdminService } from './shared/services/admin.service';
 import { WorkspaceService } from './shared/services/workspace.service';
-
 
 @NgModule({
   declarations: [

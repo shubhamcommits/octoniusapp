@@ -1,8 +1,6 @@
 import { GroupComponent } from './dashboard/groups/group/group.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-
-
 import { UserProfileComponent } from './dashboard/user-profile/user-profile.component';
 import { AdminComponent } from './dashboard/admin/admin.component';
 import { GroupsComponent } from './dashboard/groups/groups.component';
@@ -18,6 +16,11 @@ import { SignupComponent } from './Authentication/signup/signup.component';
 import { AuthGuard } from './shared/guards/auth.guard';
 import { NotAuthGuard } from './shared/guards/not-auth.guard';
 import { PageNotFoundComponent } from './common/components/page-not-found/page-not-found.component';
+import { GroupActivityComponent } from './dashboard/groups/group/group-activity/group-activity.component';
+import { GroupAdminComponent } from './dashboard/groups/group/group-admin/group-admin.component';
+import { GroupMembersComponent } from './dashboard/groups/group/group-members/group-members.component';
+import { GroupCalendarComponent } from './dashboard/groups/group/group-calendar/group-calendar.component';
+import { GroupFilesComponent } from './dashboard/groups/group/group-files/group-files.component';
 
 
 const appRoutes: Routes = [
@@ -33,13 +36,24 @@ const appRoutes: Routes = [
     path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard],
     children: [
       { path: 'overview', component: OverviewComponent },
-      { path: 'groups', component: GroupsComponent },
+      {
+        path: 'groups', component: GroupsComponent,
+      },
+      {
+        path: 'group', component: GroupComponent,
+        children: [
+          { path: 'activity', component: GroupActivityComponent },
+          { path: 'files', component: GroupFilesComponent },
+          { path: 'calendar', component: GroupCalendarComponent },
+          { path: 'members', component: GroupMembersComponent },
+          { path: 'admin', component: GroupAdminComponent }
+        ]
+      },
       { path: 'admin', component: AdminComponent },
       {
         path: 'profile', component: UserProfileComponent,
         children: [{ path: 'profile', component: ProfileComponent }]
-      },
-      { path: 'group', component: GroupComponent }
+      }
     ]
   },
   { path: '**', component: PageNotFoundComponent }
@@ -54,4 +68,5 @@ const appRoutes: Routes = [
 export class AppRoutingModule { }
 export const routingComponents = [UserProfileComponent, AdminComponent, GroupsComponent, NewWorkspacePage1Component,
   NewWorkspacePage2Component, SigninComponent, WelcomePageComponent, DashboardComponent, OverviewComponent,
-  ProfileComponent, SignupComponent, PageNotFoundComponent];
+  ProfileComponent, SignupComponent, PageNotFoundComponent, GroupActivityComponent, GroupAdminComponent, GroupFilesComponent,
+  GroupCalendarComponent, GroupMembersComponent];
