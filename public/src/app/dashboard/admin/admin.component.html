@@ -44,16 +44,8 @@
           <label for="usr">Email:</label>
           <input type="text" class="form-control" id="usr" [(ngModel)]="invitionData.email" name="email">
         </div>
-        <div>
-          <label>Select role:</label>
-          <select [(ngModel)]="optionSelected" #role (change)="onChange($event, role.value)">
-            <option *ngFor="let i of options">{{i}}</option>
-          </select>
-        </div>
 
-
-        <br>
-        <br>
+    
         <button type="button" class="btn btn-primary" (click)="onInviteNewUserViaEmail()">Invite</button>
 
       </div>
@@ -67,7 +59,19 @@
           <h4 class="mt-0">{{member?.first_name}}  {{member?.last_name}}</h4>
           <p>Role: {{member?.role}}</p>
         </div>
-        <i class="material-icons float-right">more_horiz</i>
+
+        <div class="dropdown">
+          <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="material-icons float-right">more_horiz</i>
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <a class="dropdown-item" href="#">Something else here</a>
+          </div>
+        </div>
+
+
       </div>
     </div>
     </div>
