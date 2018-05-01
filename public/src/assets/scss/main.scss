@@ -23,6 +23,7 @@ body {
 }
 
 .list-group-item{
+  margin-bottom: 10px;
   // background-color: transparent;
   border: none;
   // padding: 5px 0px;
@@ -81,4 +82,79 @@ h2{
 .user-list{
 border-bottom: 1px solid $border-color;
 padding:0px;
+}
+
+
+.sidecontent {
+margin-left: 0px;
+margin-bottom: 20px;
+}
+.card {
+    padding:0px;
+    width:100%;
+    margin: 5px 0;
+    border: $border-color;
+    border-radius: $card-radius;
+
+}
+.card-footer{
+  background: transparent;
+  border: none;
+  span{
+    margin-right:20px;
+  }
+  margin-bottom: 10px;
+  .material-icons{
+    font-size: 16px;
+    &:hover{
+      color: $brand-primary;
+    }
+  }
+}
+
+.card-title{
+  margin-top: 0px;
+  margin-bottom: 0;
+
+  .small {
+    font-size: 12px;
+    margin: 20px;
+    .material-icons{
+      font-size: 12px;
+    }
+  }
+  h6{
+    font-family: $poppins;
+    font-size: 16px;
+    color: $dark-text;
+    margin-top: 20px;
+    margin-left: 10px;
+  }
+}
+.innercard{
+  padding: 20px 20px 20px 60px;
+  width: 100%;
+}
+.sideinnercard{
+  padding: 20px;
+  width: 100%;
+}
+
+.post-card{
+  margin: 0px 0px 5px 0px;
+  background-color:#fff;
+  border: $border-color;
+  border-radius: $card-radius;
+  padding: 0px;
+  height: 52px;
+  .col-md-1{
+    padding-left: 0;
+  }
+  .feed-avatar{
+    margin: 0;
+  }
+  .text-muted{
+    font-family: $poppins;
+    line-height: 50px;
+  }
 }
