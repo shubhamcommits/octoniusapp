@@ -31,19 +31,30 @@
           </div>
         </div>
         <div class="col-md-12 innercard">
-          <span>
-            <i class="material-icons muted">comment</i>
-          </span>
-          <span>
-            <i class="material-icons muted">event</i>
-          </span>
-          <span>
-            <i class="material-icons muted">check_box</i>
-          </span>
-          <span>
-            <i class="material-icons muted">description</i>
-          </span>
           <div class="row">
+            <div class="col-md-6">
+              <span>
+                <a href="#"> <i class="material-icons muted">comment</i></a>
+              </span>
+              <span>
+              <a href="#">  <i class="material-icons muted">event</i></a>
+              </span>
+              <span>
+                <a href="#"><i class="material-icons muted">check_box</i></a>
+              </span>
+            </div>
+            <div class="col-md-6 text-right">
+              <button type="button" class="btn btn-outline-warning task">
+                <i class="material-icons">perm_identity</i> unassigned
+              </button>
+              <button type="button" class="btn btn-outline-warning task">
+                <i class="material-icons">event</i> due date
+              </button>
+            </div>
+
+          </div>
+
+          <div class="row" style="margin-top: 10px;">
             <div class="col-md">
               <div class="form-group">
                 <textarea class="form-control" id="" rows="3" name="content" formControlName="content"></textarea>

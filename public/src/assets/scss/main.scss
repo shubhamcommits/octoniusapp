@@ -134,6 +134,9 @@ margin-bottom: 20px;
 .innercard{
   padding: 20px 20px 20px 60px;
   width: 100%;
+  .material-icons{
+    font-size: 28px;
+  }
 }
 .sideinnercard{
   padding: 20px;
@@ -156,5 +159,13 @@ margin-bottom: 20px;
   .text-muted{
     font-family: $poppins;
     line-height: 50px;
+  }
+}
+
+.task{
+  line-height: 20px;
+  .material-icons{
+    vertical-align: bottom;
+    font-size: 24px;
   }
 }
