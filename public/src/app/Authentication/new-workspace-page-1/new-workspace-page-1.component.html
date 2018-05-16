@@ -34,16 +34,13 @@
             <div *ngIf="_workspaceName.invalid && _workspaceName.touched" class="alert alert-danger">
               <div *ngIf="_workspaceName.errors.required">workspace name is required!</div>
               <div *ngIf="_workspaceName.errors.fieldCannotBeEmpty">workspace name cannot be empty</div>
-
             </div>
           </div>
-          <button [disabled]="newWorkspaceForm.invalid" type="submit" class="btn btn-primary btn-block">Continue</button>
+          <button [disabled]="newWorkspaceForm.invalid || processing" type="submit" class="btn btn-primary btn-block">Continue</button>
         </form>
         <br>
-        <div *ngIf="newWorkspaceForm.errors" class="alert alert-danger">{{newWorkspaceForm.errors.message}}</div>
-
+        <div *ngIf="alert.message" [ngClass]="alert.class">{{alert.message}}</div>
       </div>
-
     </div>
 
   </div>

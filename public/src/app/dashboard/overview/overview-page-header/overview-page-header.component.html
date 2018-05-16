@@ -21,7 +21,11 @@
         </li>
 
       </ul>
+
+      <div *ngIf="alert.message" [ngClass]="alert.class">{{alert.message}}</div>
     </div>
+
+
 
   </div>
 </div>

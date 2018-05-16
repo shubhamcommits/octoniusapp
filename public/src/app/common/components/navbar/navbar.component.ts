@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../../shared/services/auth.service';
 import { Router } from '@angular/router';
-import { NgFlashMessageService } from 'ng-flash-messages';
 import { UserService } from '../../../shared/services/user.service';
 import { User } from '../../../shared/models/user.model';
 
@@ -12,48 +11,61 @@ import { User } from '../../../shared/models/user.model';
 })
 export class NavbarComponent implements OnInit {
   user: User;
+  alert = {
+    class: '',
+    message: ''
+  };
 
   constructor(private _auth: AuthService, private _userService: UserService, private _router: Router,
-    private router: Router, private ngFlashMessageService: NgFlashMessageService) { }
+    private router: Router) { }
 
   ngOnInit() {
-
+    this.getUserProfile();
+  }
+  getUserProfile() {
     this._userService.getUser()
       .subscribe((res) => {
         this.user = res.user;
       }, (err) => {
-        localStorage.removeItem('token');
-        this._router.navigate(['']);
+        this.alert.class = 'alert alert-danger';
+        if (err.status === 401) {
+          this.alert.message = err.error.message;
+          setTimeout(() => {
+            localStorage.clear();
+            this._router.navigate(['']);
+          }, 3000);
+        } else if (err.status) {
+          this.alert.class = err.error.message;
+        } else {
+          this.alert.message = 'Error! either server is down or no internet connection';
+        }
       });
-
   }
   onSignOut() {
     this._auth.signout()
       .subscribe((res) => {
-        localStorage.removeItem('token');
+        localStorage.clear();
         this.router.navigate(['']);
-        this.ngFlashMessageService.showFlashMessage({
-          // Array of messages each will be displayed in new line
-          messages: ['User successfully Logged out!'],
-          // Whether the flash can be dismissed by the user defaults to false
-          dismissible: true,
-          // Time after which the flash disappears defaults to 2000ms
-          timeout: false,
-          // Type of flash message, it defaults to info and success, warning, danger types can also be used
-          type: 'success'
-        });
+
       }, (err) => {
-        this.ngFlashMessageService.showFlashMessage({
-          // Array of messages each will be displayed in new line
-          messages: ['Some thing went wrong, check your internet connection!'],
-          // Whether the flash can be dismissed by the user defaults to false
-          dismissible: true,
-          // Time after which the flash disappears defaults to 2000ms
-          timeout: false,
-          // Type of flash message, it defaults to info and success, warning, danger types can also be used
-          type: 'danger'
-        });
+        this.alert.class = 'danger';
+
+        if (err.status === 401) {
+          this.alert.message = err.error.message;
+          setTimeout(() => {
+            localStorage.clear();
+            this.router.navigate(['']);
+          }, 2000);
+        } else if (err.status) {
+          this.alert.message = err.error.message;
+        } else {
+          this.alert.message = 'Error! either server is down or you internet is not working';
+        }
+
       });
+  }
+  public closeAlert() {
+    this.alert.message = '';
   }
 
 }

@@ -6,9 +6,10 @@ export class WorkspaceService {
 
   constructor(private _http: HttpClient) { }
   BASE_URL = 'http://localhost:3000/api';
-  getWorkspace(user) {
+  getWorkspace(workspace) {
+    console.log('workapce insdie workspace service : ', workspace);
 
-    return this._http.get<any>(this.BASE_URL + '/workspace/' + user._workspace);
+     return this._http.get<any>(this.BASE_URL + '/workspace/' + workspace._id);
   }
 
 }

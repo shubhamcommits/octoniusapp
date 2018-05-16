@@ -5,8 +5,6 @@ import { User } from '../models/user.model';
 
 @Injectable()
 export class AuthService {
-  workspace: Workspace;
-  user: User;
   BASE_URL = 'http://localhost:3000';
   BASE_API_URL = 'http://localhost:3000/api';
 
@@ -26,19 +24,15 @@ export class AuthService {
   }
 
   createNewWorkspace(newWorksapce) {
-    return this._http.post<any>(this.BASE_API_URL + '/workspace/createNewWorkspace', newWorksapce);
+    return this._http.post<any>(this.BASE_API_URL + '/auth/createNewWorkspace', newWorksapce);
   }
 
-  checkWorkspaceNameAvailbility(workspace) {
-    this.workspace = workspace;
-    return this._http.post<any>(this.BASE_API_URL + '/auth/searchWorkspaceNameAvailability', workspace);
+  checkWorkspaceName(workspace) {
+    localStorage.setItem('newWorkspace', JSON.stringify(workspace));
+    return this._http.post<any>(this.BASE_API_URL + '/auth/checkWorkspaceName', workspace);
   }
-  searchUserAvailability(user) {
-    return this._http.post<any>(this.BASE_API_URL + '/auth/searchUserAvailability', user);
-  }
-
-  getWorkspace() {
-    return this.workspace;
+  chechUserAvailability(user) {
+    return this._http.post<any>(this.BASE_API_URL + '/auth/checkUserAvailability', user);
   }
 
   isLoggedIn() {
@@ -52,11 +46,11 @@ export class AuthService {
     return localStorage.getItem('token');
   }
 
-  setUserData(user) {
-    this.user = user;
-    console.log('user in auth service:', this.user);
+
+  storeUserData(token, user) {
+    console.log('current user data', user);
+    localStorage.setItem('token', token);
+    localStorage.setItem('user', JSON.stringify(user));
   }
-  getUserData() {
-    return this.user;
-  }
+
 }

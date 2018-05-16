@@ -19,10 +19,21 @@ export class SigninComponent implements OnInit {
     workspace_name: ''
   };
 
+  alert = {
+    message: '',
+    class: ''
+  };
+
+
+  processing = false;
+
   constructor(private _auth: AuthService, private _router: Router) { }
 
   ngOnInit() {
+    this.createSignInForm();
+  }
 
+  createSignInForm() {
     this.signinForm = new FormGroup({
       'userEmail': new FormControl(null, [Validators.email, InputValidators.fieldCannotBeEmpty]),
       'userPassword': new FormControl(null, [Validators.required, InputValidators.fieldCannotBeEmpty]),
@@ -31,24 +42,39 @@ export class SigninComponent implements OnInit {
   }
 
 
+  enableSignInForm() {
+    this.signinForm.enable();
+  }
+
+  disableSignInForm() {
+    this.signinForm.disable();
+  }
+
   OnSigninFormSubmit() {
+    this.disableSignInForm();
+    this.processing = true;
 
     this._auth.signIn(this.user)
       .subscribe((res) => {
-        this._auth.setToken(res.token);
-        console.log('reponse:"', res.user);
-        this._auth.setUserData(res.user);
+        // this._auth.setToken(res.token);
+        this.alert.class = 'alert alert-success';
+        this.alert.message = res.message;
+        this._auth.storeUserData(res.token, res.user);
+        console.log('Inside signin: ', res.user);
 
-        console.log('this._auth.getUserData()', this._auth.getUserData());
+        setTimeout(() => {
+          this._router.navigate(['/dashboard/overview']);
+        }, 2000);
 
-        this._router.navigate(['/dashboard/overview']);
 
       }, (err) => {
-
+        this.alert.class = 'alert alert-danger';
+        this.processing = false;
+        this.enableSignInForm();
         if (err.status) {
-          this.signinForm.setErrors({
-            message: err.error.message
-          });
+          this.alert.message = err.error.message;
+        } else {
+          this.alert.message = 'Error! either server is down or you internet is not working';
         }
       });
 

@@ -10,19 +10,11 @@ import { User } from '../../shared/models/user.model';
   styleUrls: ['./overview.component.scss']
 })
 export class OverviewComponent implements OnInit {
-  user: User;
 
   constructor(private _userService: UserService, private _authService: AuthService, private _router: Router) { }
 
   ngOnInit() {
 
-    // console.log('inside overview component', this._authService.getUserData());
-    this._userService.getUser()
-      .subscribe((res) => {
-        this.user = res.user;
-      }, (err) => {
-        this._router.navigate(['']);
-      });
   }
 
 }

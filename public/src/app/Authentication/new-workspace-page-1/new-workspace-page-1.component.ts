@@ -1,5 +1,5 @@
 import { AuthService } from './../../shared/services/auth.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, enableProdMode } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { InputValidators } from '../../common/validators/input.validator';
 import { HttpHeaders } from '@angular/common/http';
@@ -13,52 +13,60 @@ import { Workspace } from '../../shared/models/workspace.model';
 })
 export class NewWorkspacePage1Component implements OnInit {
   newWorkspaceForm: FormGroup;
-  workspace: Workspace;
+  alert = {
+    message: '',
+    class: ''
+  };
+  processing = false;
+
+  workspace = {
+    company_name: '',
+    workspace_name: '',
+    owner_password: '',
+    owner_email: '',
+    owner_first_name: '',
+    owner_last_name: '',
+  };
 
 
   constructor(private _authService: AuthService, private _router: Router) { }
 
   ngOnInit() {
+    this.createNewWorkspaceForm();
+  }
 
-    this.workspace = {
-      company_name: '',
-      workspace_name: '',
-      owner_password: '',
-      owner_email: '',
-      owner_first_name: '',
-      owner_last_name: '',
-      invited_users: [],
-      allowed_domains: []
-    };
-
+  createNewWorkspaceForm() {
     this.newWorkspaceForm = new FormGroup({
       'companyName': new FormControl(null, [Validators.required, InputValidators.fieldCannotBeEmpty]),
       'workspaceName': new FormControl(null, [Validators.required, InputValidators.fieldCannotBeEmpty]),
     });
-
   }
-
-
+  enableForm() {
+    this.newWorkspaceForm.enable();
+  }
+  disablleForm() {
+    this.newWorkspaceForm.disable();
+  }
   onFormSubmit() {
-
-    this._authService.checkWorkspaceNameAvailbility(this.workspace)
+    this.processing = true;
+    this.disablleForm();
+    this._authService.checkWorkspaceName(this.workspace)
       .subscribe((res) => {
-        console.log('response : ', res);
-        if (res) {
+        this.alert.class = 'alert alert-success';
+        this.alert.message = res.message;
+        setTimeout(() => {
+          this.processing = false;
           this._router.navigate(['/create-new-Workspace-page2']);
-        }
-
-
-
-
+        }, 2000);
       }, (error) => {
-
+        this.processing = false;
+        this.enableForm();
+        this.alert.class = 'alert alert-danger';
         if (error.status) {
-          this.newWorkspaceForm.setErrors({
-            message: error.error.message
-          });
+          this.alert.message = error.error.message;
+        } else {
+          this.alert.message = 'Error! either sever is down or no internet connection!';
         }
-
       });
   }
 

@@ -47,11 +47,6 @@ const workspaceSchema = new Schema({
         email: {
             type: String,
             require: true
-        },
-        role: {
-            type: String,
-            require: true,
-            enum: ['member', 'admin']
         }
     }],
     created_date: {

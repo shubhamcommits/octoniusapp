@@ -18,8 +18,9 @@
           <h4>Sign in to your workspace</h4>
 
           <div class="form-group">
-            <label for="pwd">Enter your workspace name</label>
-            <input type="text" class="form-control" id="pwd" formControlName="userWorkspaceName" [(ngModel)]="user.workspace_name" name="workspaceName">
+            <label for="workspace_name">Enter your workspace name</label>
+            <input type="text" class="form-control" id="workspace_name" formControlName="userWorkspaceName" [(ngModel)]="user.workspace_name"
+              name="workspaceName">
 
             <div *ngIf="_workspaceName.invalid && _workspaceName.touched" style="color:red">
               <div *ngIf="_workspaceName.errors.required">Workspace name is required!</div>
@@ -46,9 +47,9 @@
             </div>
           </div>
 
-          <button [disabled]="signinForm.invalid" type="submit" class="btn btn-primary">Sign in</button>
+          <button [disabled]="signinForm.invalid || processing " type="submit" class="btn btn-primary">Sign in</button>
         </form>
       </div>
-      <div *ngIf="signinForm.errors" class="alert alert-danger" style="margin-top:20px">{{signinForm.errors.message}}</div>
+      <div *ngIf="alert.message" [ngClass]="alert.class" style="margin-top:20px">{{alert.message}}</div>
     </div>
   </div>

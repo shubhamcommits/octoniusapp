@@ -2,7 +2,9 @@ const jwt = require('jsonwebtoken');
 const Auth = require('../models/auth');
 module.exports = {
 
-    // token verification in request header
+    /*  ======================================================
+        Middleware for token verification in request header
+        ====================================================== */
     verifyToken(req, res, next) {
 
         if (!req.headers.authorization) {
@@ -34,8 +36,9 @@ module.exports = {
             }
         });
     },
-
-    // verifying that either user is logged in or not 
+    /*===========================================================
+       Middleware to verify that either user is logged in or not 
+      =========================================================== */
     isLoggedIn(req, res, next) {
 
         Auth.findOne({
@@ -44,7 +47,6 @@ module.exports = {
                 token: req.headers.authorization.split(' ')[1]
             })
             .then((auth) => {
-
                 if (auth !== null) {
                     next();
                 } else {

@@ -3,8 +3,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AppRoutingModule, routingComponents } from './app-routing.module';
-import { NgFlashMessagesModule } from 'ng-flash-messages';
-import { FlashMessagesModule } from 'angular2-flash-messages';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 import { AppComponent } from './app.component';
@@ -42,7 +41,7 @@ import { WorkspaceService } from './shared/services/workspace.service';
     CalendarComponent,
     GroupComponent,
     GroupHeaderComponent,
-    routingComponents,
+    routingComponents
   ],
   imports: [
     BrowserModule,
@@ -50,9 +49,7 @@ import { WorkspaceService } from './shared/services/workspace.service';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    NgFlashMessagesModule.forRoot(),
-    FlashMessagesModule.forRoot()
-
+    NgbModule.forRoot()
   ],
   providers: [AuthService, UserService, WorkspaceService, AdminService, AuthGuard, NotAuthGuard,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true },

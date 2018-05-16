@@ -46,14 +46,12 @@ module.exports = {
     inviteUserViaEmail(req, res, next) {
         let workspace_id = req.body.workspace_id;
         let invited_user_email = req.body.email;
-        let invited_user_role = req.body.role;
         Wrokspace.findByIdAndUpdate({
                 _id: workspace_id
             }, {
                 $push: {
                     invited_users: {
                         email: invited_user_email,
-                        role: invited_user_role
                     }
                 }
             }, {

@@ -19,13 +19,20 @@ export class SignupComponent implements OnInit {
     last_name: '',
   };
 
+  alert = {
+    message: '',
+    class: ''
+  };
+  processing = false;
+
   signupForm: FormGroup;
   constructor(private _auth: AuthService, private _router: Router) { }
 
   ngOnInit() {
+    this.createSignupForm();
+  }
 
-
-
+  createSignupForm() {
     this.signupForm = new FormGroup({
       'workspaceName': new FormControl(null, [Validators.required, InputValidators.fieldCannotBeEmpty]),
       'userEmail': new FormControl(null, [Validators.email, InputValidators.fieldCannotBeEmpty]),
@@ -34,33 +41,62 @@ export class SignupComponent implements OnInit {
       'userFirstName': new FormControl(null, [Validators.required, InputValidators.fieldCannotBeEmpty]),
       'userLastName': new FormControl(null, [Validators.required, InputValidators.fieldCannotBeEmpty])
     });
-  }
 
+  }
   onSignupFormSubmit() {
-    this._auth.searchUserAvailability(this.user)
+    this.processing = true;
+    this.disableSignUpForm();
+
+    this._auth.chechUserAvailability(this.user)
       .subscribe((res) => {
+
         this._auth.signUp(this.user)
           .subscribe((signup_response) => {
 
-            this._auth.setToken(signup_response.token);
-            this._router.navigate(['/dashboard/overview']);
+            this.alert.class = 'alert alert-success';
+            this.alert.message = signup_response.message;
+
+            console.log('res', signup_response);
+
+            setTimeout(() => {
+              this.processing = false;
+              // this._auth.setToken(signup_response.token);
+              this._auth.storeUserData(signup_response.token, signup_response.user);
+              this._router.navigate(['/dashboard/overview']);
+            }, 3000);
 
           }, (signup_err) => {
+            this.processing = false;
+            this.enableSignUpForm();
+            this.alert.class = 'alert alert-danger';
+
             if (signup_err.status) {
-              this.signupForm.setErrors({
-                message: signup_err.error.message
-              });
+              this.alert.message = signup_err.error.message;
+            } else {
+              this.alert.message = 'Error! either server is down or no internent connection';
             }
           });
       }, (err) => {
-        console.log(err);
+        this.enableSignUpForm();
+        this.processing = false;
+        this.alert.class = 'alert alert-danger';
+
         if (err.status) {
-          this.signupForm.setErrors({
-            message: err.error.message
-          });
+          this.alert.message = err.error.message;
+        } else {
+          this.alert.message = 'Error! either server is down or no internet connection';
         }
       });
 
+  }
+
+
+  enableSignUpForm() {
+    this.signupForm.enable();
+  }
+
+  disableSignUpForm() {
+    this.signupForm.disable();
   }
 
 

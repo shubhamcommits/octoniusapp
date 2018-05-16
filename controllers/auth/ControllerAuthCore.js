@@ -1,12 +1,11 @@
 const User = require("../../models/user");
 const Workspace = require("../../models/workspace");
-const Auth = require('../../models/auth')
+const Group = require("../../models/group");
+const Auth = require('../../models/auth');
 const helper_password = require("../../helpers/password");
-const helper_signup = require("../../helpers/signup_helper");
 const jwt = require("jsonwebtoken");
 
 module.exports = {
-
     signin(req, res, next) {
         console.log("--------Workspace Sign in Controller Api---------");
 
@@ -16,7 +15,8 @@ module.exports = {
         User.findOne({
                 workspace_name: login_user.workspace_name,
                 email: login_user.email
-            }, )
+            })
+            .populate('_workspace', 'workspace_name _id')
             .then((user) => {
                 // user not found error
                 if (user == null) {
@@ -39,17 +39,22 @@ module.exports = {
 
                                 // initialition new auth record
                                 let new_auth = {
-                                    workspace_name: login_user.workspace_name,
+                                    workspace_name: user.workspace_name,
                                     _user: user,
                                     token: token
                                 }
                                 // creating new auth record
                                 Auth.create(new_auth)
                                     .then((auth) => {
+                                        let current_user = {
+                                            user_id: user._id,
+                                            workspace_name: user.workspace_name,
+                                            workspace: user._workspace
+                                        }
                                         res.status(200).json({
-                                            message: "user has signed in successfully!",
+                                            message: "Sign in Successfull!",
                                             token: token,
-                                            user: user
+                                            user: current_user
                                         });
                                     })
                                     // auth creation error
@@ -116,82 +121,77 @@ module.exports = {
                     //encrypting user password
                     helper_password.encryptPassword(user_data.password)
                         .then((response) => {
-                            helper_signup.setUserRole(workspace.invited_users, user_email)
-                                //setting user role     
-                                .then((userRole_response) => {
 
-                                    user_data.password = response.password;
-                                    user_data._workspace = workspace;
-                                    user_data.role = userRole_response.role;
+                            user_data.password = response.password;
+                            user_data._workspace = workspace;
+                            user_data.role = 'member';
 
-                                    // creating new user 
-                                    User.create(user_data)
-                                        .then((user) => {
-                                            // updating workspace's memebers list wih new user
-                                            Workspace.findByIdAndUpdate({
-                                                    _id: workspace._id
-                                                }, {
-                                                    $push: {
-                                                        members: user
+                            // creating new user 
+                            User.create(user_data)
+                                .then((user) => {
+                                    // updating workspace's memebers list wih new user
+                                    Workspace.findByIdAndUpdate({
+                                            _id: workspace._id
+                                        }, {
+                                            $push: {
+                                                members: user
+                                            }
+                                        }, {
+                                            new: true
+                                        })
+                                        .then((updated_workspace) => {
+                                            // generating jsonwebtoken 
+                                            const payload = {
+                                                subject: user._id
+                                            };
+                                            const token = jwt.sign(payload, process.env.JWT_KEY);
+
+                                            // initialition new auth record
+                                            let new_auth = {
+                                                workspace_name: workspace.workspace_name,
+                                                _user: user,
+                                                token: token
+                                            }
+                                            // creating new auth record
+                                            Auth.create(new_auth)
+                                                .then((auth) => {
+                                                    //console.log("inside auth then")
+                                                    let current_user = {
+                                                        user_id: user._id,
+                                                        wroksapce_name: user.workspace_name,
+                                                        workspace_id: user._workspace._id
                                                     }
-                                                }, {
-                                                    new: true
-                                                })
-                                                .then((updated_workspace) => {
-                                                    // generating jsonwebtoken 
-                                                    const payload = {
-                                                        subject: user._id
-                                                    };
-                                                    const token = jwt.sign(payload, process.env.JWT_KEY);
+                                                    // everything is correct and now user can signup on workspace
+                                                    res.status(200).json({
+                                                        message: "Congratulations! you are now member of our workspace.",
+                                                        token: token,
+                                                        user: current_user
 
-                                                    // initialition new auth record
-                                                    let new_auth = {
-                                                        workspace_name: workspace.workspace_name,
-                                                        _user: user,
-                                                        token: token
-                                                    }
-                                                    // creating new auth record
-                                                    Auth.create(new_auth)
-                                                        .then((auth) => {
-                                                            console.log("inside auth then")
-                                                            // everything is correct and now user can signup on workspace
-                                                            res.status(200).json({
-                                                                message: "Congratulations! you are now member of our workspace.",
-                                                                token: token
-                                                            });
-                                                        })
-                                                        // auth creation error
-                                                        .catch((err) => {
-                                                            console.log("inside auth catch");
-                                                            res.status(500).json({
-                                                                message: "something went wrong | internal server error auth creation error",
-                                                                error: err
-                                                            });
-                                                        })
+                                                    });
                                                 })
-                                                // workspace updating error
+                                                // auth creation error
                                                 .catch((err) => {
+                                                    console.log("inside auth catch");
                                                     res.status(500).json({
-                                                        message: "something went wrong | Internal server error",
+                                                        message: "something went wrong | internal server error auth creation error",
                                                         error: err
                                                     });
                                                 })
                                         })
-                                        // user creating error
+                                        // workspace updating error
                                         .catch((err) => {
                                             res.status(500).json({
-                                                message: "something went wrong at user signup | Internal server error",
+                                                message: "something went wrong | Internal server error",
                                                 error: err
                                             });
                                         })
                                 })
-                                // user role setting error
+                                // user creating error
                                 .catch((err) => {
                                     res.status(500).json({
-                                        message: "something went wrong | internal server error",
+                                        message: "something went wrong at user signup | Internal server error",
                                         error: err
                                     });
-
                                 })
                         })
                         // password encryption error
@@ -242,8 +242,10 @@ module.exports = {
             });
 
     },
-    // checking the wrokspace name availbility
-    SearchWorkspaceNameAvailablity(req, res, next) {
+    /*===================================================
+       Route to check the wrokspace name availbility
+      ===================================================*/
+    checkWorkspaceName(req, res, next) {
         let workspace_data = req.body;
         console.log(workspace_data);
 
@@ -272,10 +274,146 @@ module.exports = {
             }))
     },
 
-    // checking either user can join the workspace or he is already member of that workspace
-    SearchUserAvailability(req, res, next) {
-        let user_data = req.body;
+    // creating new workspace and new user with owner rights
+    createNewWorkSpace(req, res, next) {
 
+        console.log("--------Creating New Workspace Api--------");
+        // generating hash password fist
+        helper_password.encryptPassword(req.body.owner_password)
+            .then((hashPassword) => {
+
+                let new_workspace = req.body;
+                new_workspace.owner_password = hashPassword.password;
+                // creating new workspace
+                Workspace.create(new_workspace)
+                    .then((workspace) => {
+
+                        let new_user = {
+                            first_name: req.body.owner_first_name,
+                            last_name: req.body.owner_last_name,
+                            email: req.body.owner_email,
+                            password: hashPassword.password,
+                            workspace_name: req.body.workspace_name,
+                            company_name: req.body.company_name,
+                            _workspace: workspace,
+                            role: 'owner'
+                        }
+                        // creating new user with owner rights
+                        User.create(new_user)
+                            .then((user) => {
+                                // updating  memebers and _owener fields of workspace
+                                Workspace.findByIdAndUpdate({
+                                        _id: workspace._id
+                                    }, {
+                                        $set: {
+                                            _owner: user,
+                                        },
+                                        $push: {
+                                            members: user
+                                        }
+                                    }, {
+                                        new: true
+                                    })
+                                    .then((updated_workspace) => {
+
+                                        // initialization of global group
+                                        let global_group = {
+                                            group_name: 'Global',
+                                            _workspace: workspace,
+                                            _members: user,
+                                            workspace_name: workspace.workspace_name,
+                                        }
+                                        // creating new gloabal group
+                                        Group.create(global_group)
+                                            .then((new_group) => {
+
+                                                // generating jsonwebtoken 
+                                                const payload = {
+                                                    subject: user._id
+                                                };
+                                                const token = jwt.sign(payload, process.env.JWT_KEY);
+
+                                                // initialition new auth record 
+                                                let new_auth = {
+                                                    workspace_name: workspace.workspace_name,
+                                                    _user: user,
+                                                    token: token
+                                                }
+                                                // creating new auth record
+                                                Auth.create(new_auth)
+                                                    .then((auth) => {
+                                                        // everything is correct,user can create new workspace
+                                                        let current_user = {
+                                                            user_id: user._id,
+                                                            wroksapce_name: user.workspace_name,
+                                                            workspace_id: user._workspace._id
+                                                        }
+                                                        res.status(200).json({
+                                                            message: "Workspace has created successfully!",
+                                                            token: token,
+                                                            user: current_user
+                                                        });
+                                                    })
+                                                    // auth creation error
+                                                    .catch((err) => {
+                                                        res.status(500).json({
+                                                            message: "something went wrong | internal server error",
+                                                            error: err
+                                                        });
+                                                    })
+
+
+                                            })
+                                            // gloabl group creation error
+                                            .catch((err) => {
+                                                res.status(500).json({
+                                                    error: err,
+                                                    message: "something went wrong | internal server error occured!"
+                                                })
+                                            })
+
+                                    })
+                                    // workspace update error
+                                    .catch((error) => {
+                                        res.status(500).json({
+                                            message: "something went wrong | internal server error occured",
+                                            error: error
+                                        });
+                                    })
+                            })
+                            // user creation error 
+                            .catch((err) => {
+                                res.status(500).json({
+                                    message: "something went wrong | internal server error occured",
+                                    error: err
+                                });
+                            });
+
+                    })
+                    // workspace creation error
+                    .catch((err) => {
+                        res.status(500).json({
+                            message: "something went wrong | internal server error occured",
+                            error: err
+                        });
+                    });
+            })
+            // password encryption error
+            .catch((err) => {
+                return res.status(403).json({
+                    message: "something went wrong with your password, Please try another one",
+                    error: err.message
+                });
+            })
+    },
+
+
+
+    /*=======================================================
+    Route to check the user availability
+    ======================================================= */
+    checkUserAvailability(req, res, next) {
+        let user_data = req.body;
 
         Workspace.findOne({
                 workspace_name: user_data.workspace_name
@@ -322,6 +460,5 @@ module.exports = {
                 });
             })
     }
-
 
 }

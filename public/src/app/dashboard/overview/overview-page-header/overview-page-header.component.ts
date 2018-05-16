@@ -11,6 +11,10 @@ import { User } from '../../../shared/models/user.model';
 export class OverviewPageHeaderComponent implements OnInit {
 
   user: User;
+  alert = {
+    class: '',
+    message: ''
+  };
 
   constructor(private _userService: UserService, private _router: Router) { }
 
@@ -19,8 +23,15 @@ export class OverviewPageHeaderComponent implements OnInit {
       .subscribe((res) => {
         this.user = res.user;
       }, (err) => {
-        localStorage.removeItem('token');
-        this._router.navigate(['']);
+        this.alert.class = 'alert alert-danger';
+        if (err.status === 401) {
+            localStorage.clear();
+            this._router.navigate(['']);
+        } else if (err.status) {
+
+        } else {
+        }
+
       });
   }
 

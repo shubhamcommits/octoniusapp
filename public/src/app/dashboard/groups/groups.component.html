@@ -2,31 +2,65 @@
   <app-groups-page-header></app-groups-page-header>
 
   <div class="row">
-    <div class="card col-md-3 m-1">
-      <div class="card-body">
-        <a href="">
-          <h4 class="card-title text-center">
-            <i class="material-icons" style="font-size: 150px">add</i>
+    <div *ngIf="user?.role== 'admin' || user?.role== 'owner'" (click)="openLg(content)" class="card col-md-3 m-1 ">
+      <div class="card-body ">
+        <a>
+          <h4 class="card-title text-center ">
+            <i class="material-icons " style="font-size: 150px ">add</i>
           </h4>
         </a>
-        <h4 class="card-title text-center">Create newgroup
+        <h4 class="card-title text-center ">Create New Group
         </h4>
       </div>
     </div>
 
-    <div *ngFor="let group of groups" class="card col-md-3 m-1">
-      <img routerLink="/dashboard/group/activity" class="card-img-top" src="https://source.unsplash.com/random">
-      <div class="card-body">
-        <a routerLink="/">
-          <h4 class="card-title">{{group.title}}</h4>
+    <div class="card col-md-3 m-1 ">
+      <img class="card-img-top " src="https://source.unsplash.com/random ">
+      <div class="card-body ">
+        <a routerLink="/ ">
+          <h4 class="card-title ">Global</h4>
         </a>
-        <p class="card-text">{{group.desc}}
+        <p class="card-text ">{{'This is Gloabl group'}}
           <br>
-          <span class="badge badge-success">134 Members</span>
-          <span class="small">including you</span>
-
+          <span class="badge badge-success ">1 Members</span>
+          <span class="small ">including you</span>
         </p>
       </div>
     </div>
+    <div *ngFor="let group of groups " class="card col-md-3 m-1 ">
+      <img class="card-img-top " src="https://source.unsplash.com/random ">
+      <div class="card-body ">
+        <a>
+          <h4 class="card-title ">{{group.title}}</h4>
+        </a>
+        <p class="card-text ">{{group.desc}}
+          <br>
+          <span class="badge badge-success ">134 Members</span>
+          <span class="small ">including you</span>
+        </p>
+      </div>
+    </div>
+    <ng-template #content let-c="close" let-d="dismiss">
+      <div class="modal-header">
+        <h4 class="modal-title">Create New Group</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="createNewGroupForm">
+
+          <div class="form-group">
+            <label for="group_name">Enter your workspace name</label>
+            <input type="text" class="form-control" id="group_name" formControlName="groupName" [(ngModel)]="group.name" name="groupName">
+
+          </div>
+        </form>
+
+      </div>
+      <div class="modal-footer">
+        <button [disabled]="createNewGroupForm.invalid" class="btn btn-outline-primary mb-2 mr-2">create</button>
+      </div>
+    </ng-template>
   </div>
 </div>

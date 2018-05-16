@@ -12,7 +12,6 @@ export class NotAuthGuard implements CanActivate {
     if (!this._auth.isLoggedIn()) {
       return true;
     } else {
-
       this._router.navigate(['/dashboard/overview']);
       return false;
 
