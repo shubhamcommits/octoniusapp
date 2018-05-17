@@ -9,6 +9,8 @@ import { UserService } from '../../shared/services/user.service';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { InputValidators } from '../../common/validators/input.validator';
 import { Validators, FormControl, FormGroup } from '@angular/forms';
+import { GroupsService } from '../../shared/services/groups.service';
+import { Group } from '../../shared/models/group.model';
 @Component({
   selector: 'app-groups',
   templateUrl: './groups.component.html',
@@ -16,11 +18,8 @@ import { Validators, FormControl, FormGroup } from '@angular/forms';
  */  styleUrls: ['./groups.component.scss']
 })
 export class GroupsComponent implements OnInit {
-  groups = [{ title: 'group1', desc: 'this is group 1' }, { title: 'group2 ', desc: 'this is group 2' }];
-  constructor(private _workspaceService: WorkspaceService,
-    private _router: Router,
-    private _userService: UserService,
-    private modalService: NgbModal) { }
+  groups = new Array();
+
   workspace: Workspace;
   user_data;
   user: User;
@@ -31,26 +30,28 @@ export class GroupsComponent implements OnInit {
     message: ''
   };
   group = {
-    name: '',
-    user_id:''
-    
+    group_name: '',
+
   };
   createNewGroupForm: FormGroup;
+
+  constructor(private _workspaceService: WorkspaceService,
+    private _router: Router,
+    private _userService: UserService,
+    private _groupsService: GroupsService,
+    private modalService: NgbModal) { }
+
+
   ngOnInit() {
 
     this.user_data = JSON.parse(localStorage.getItem('user'));
     this.createNewGroupFrom();
 
-    // this.loadWorkspace();
+    this.loadWorkspace();
     this.getUserProfile();
+    this.getUserGroups();
 
-    setTimeout(() => this.staticAlertClosed = true, 20000);
-
-    this._message.subscribe((message) => this.alert.message = message);
-    this._message.pipe(
-      debounceTime(3000)
-    ).subscribe(() => this.alert.message = null);
-
+    this.alertMessageSettings();
   }
 
   // Create New group form initialization inside the modal
@@ -61,10 +62,80 @@ export class GroupsComponent implements OnInit {
   }
 
 
+  alertMessageSettings() {
+    setTimeout(() => this.staticAlertClosed = true, 20000);
+
+    this._message.subscribe((message) => this.alert.message = message);
+    this._message.pipe(
+      debounceTime(3000)
+    ).subscribe(() => this.alert.message = null);
+
+  }
+  // creating new group
   onCreateNewGroup() {
+    const new_group = {
+      group_name: this.group.group_name,
+      _workspace: this.workspace._id,
+      _members: { _user: this.user._id, role: 'admin' },
+      workspace_name: this.workspace.workspace_name
+    };
+    this._groupsService.createNewGroup(new_group)
+      .subscribe((res) => {
+        this.groups.push(res.group);
+        // console.log('response:', res);
+        this.alert.class = 'success';
+        this._message.next(res.message);
+        this.createNewGroupForm.reset();
+      }, (err) => {
+        this.alert.class = 'danger';
+        if (err.status === 401) {
+          this._message.next(err.error.message);
+          setTimeout(() => {
+            localStorage.clear();
+            this._router.navigate(['']);
+          }, 3000);
+        } else if (err.status) {
+          this._message.next(err.error.message);
+        } else {
+          this._message.next('Error! either server is down or no internet connection');
+        }
+
+      });
 
   }
 
+  // getting all user's group
+  getUserGroups() {
+
+    const user = {
+      user_id: this.user_data.user_id,
+      workspace_id: this.user_data.workspace._id,
+    };
+
+    this._groupsService.getUserGroups(user)
+      .subscribe((res) => {
+        // this.groups.push(res.group);
+        // console.log('get all user groups:', res);
+        this.groups = res.groups;
+      }, (err) => {
+        console.log(err);
+        this.alert.class = 'alert alert-danger';
+        if (err.status === 401) {
+          this.alert.message = err.error.message;
+          setTimeout(() => {
+            localStorage.clear();
+            this._router.navigate(['']);
+          }, 3000);
+        } else if (err.status) {
+          this.alert.message = err.error.message;
+        } else {
+          this.alert.message = 'Error! either server is down or no internet connection';
+        }
+
+      });
+
+  }
+  // getting currently logged in user's profile
   getUserProfile() {
     this._userService.getUser()
       .subscribe((res) => {
@@ -80,18 +151,18 @@ export class GroupsComponent implements OnInit {
             this._router.navigate(['']);
           }, 3000);
         } else if (err.status) {
-          this.alert.class = err.error.message;
+          this.alert.message = err.error.message;
         } else {
           this.alert.message = 'Error! either server is down or no internet connection';
         }
       });
   }
-
+  // loading workspace form server
   loadWorkspace() {
     this._workspaceService.getWorkspace(this.user_data.workspace)
       .subscribe((res) => {
         this.workspace = res.workspace;
-        console.log('response: ', res);
+        // console.log('workspace: ', res);
         // console.log('domains: ', this.domainData.domains);
 
       }, (err) => {

@@ -48,7 +48,6 @@ module.exports = {
                                     .then((auth) => {
                                         let current_user = {
                                             user_id: user._id,
-                                            workspace_name: user.workspace_name,
                                             workspace: user._workspace
                                         }
                                         res.status(200).json({
@@ -158,8 +157,10 @@ module.exports = {
                                                     //console.log("inside auth then")
                                                     let current_user = {
                                                         user_id: user._id,
-                                                        wroksapce_name: user.workspace_name,
-                                                        workspace_id: user._workspace._id
+                                                        workspace: {
+                                                            _id: workspace._id,
+                                                            workspace_name: workspace.workspace_name
+                                                        }
                                                     }
                                                     // everything is correct and now user can signup on workspace
                                                     res.status(200).json({
@@ -345,8 +346,10 @@ module.exports = {
                                                         // everything is correct,user can create new workspace
                                                         let current_user = {
                                                             user_id: user._id,
-                                                            wroksapce_name: user.workspace_name,
-                                                            workspace_id: user._workspace._id
+                                                            workspace: {
+                                                                _id: workspace._id,
+                                                                workspace_name: workspace.workspace_name
+                                                            }
                                                         }
                                                         res.status(200).json({
                                                             message: "Workspace has created successfully!",

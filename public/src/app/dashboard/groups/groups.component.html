@@ -1,6 +1,9 @@
 <div class="container">
   <app-groups-page-header></app-groups-page-header>
 
+
+
+  <div *ngIf="alert.message" [ngClass]="alert.class">{{alert.message}}</div>
   <div class="row">
     <div *ngIf="user?.role== 'admin' || user?.role== 'owner'" (click)="openLg(content)" class="card col-md-3 m-1 ">
       <div class="card-body ">
@@ -22,7 +25,7 @@
         </a>
         <p class="card-text ">{{'This is Gloabl group'}}
           <br>
-          <span class="badge badge-success ">1 Members</span>
+          <span class="badge badge-success ">{{workspace?.members.length}} Members</span>
           <span class="small ">including you</span>
         </p>
       </div>
@@ -31,11 +34,12 @@
       <img class="card-img-top " src="https://source.unsplash.com/random ">
       <div class="card-body ">
         <a>
-          <h4 class="card-title ">{{group.title}}</h4>
+          <h4 class="card-title ">{{group?.group_name}}</h4>
         </a>
-        <p class="card-text ">{{group.desc}}
+        <p class="card-text ">
+          <!-- {{group.desc}} -->
           <br>
-          <span class="badge badge-success ">134 Members</span>
+          <span class="badge badge-success ">{{group?._members.length}} Members</span>
           <span class="small ">including you</span>
         </p>
       </div>
@@ -47,19 +51,21 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+      <ngb-alert *ngIf="alert.message" [type]="alert.class" (close)="successMessage = null">{{ alert.message}}</ngb-alert>
+
       <div class="modal-body">
         <form [formGroup]="createNewGroupForm">
 
           <div class="form-group">
-            <label for="group_name">Enter your workspace name</label>
-            <input type="text" class="form-control" id="group_name" formControlName="groupName" [(ngModel)]="group.name" name="groupName">
-
+            <label for="group_name">Group Name</label>
+            <input type="text" class="form-control" id="group_name" formControlName="groupName" [(ngModel)]="group.group_name" name="groupName">
           </div>
         </form>
 
       </div>
       <div class="modal-footer">
-        <button [disabled]="createNewGroupForm.invalid" class="btn btn-outline-primary mb-2 mr-2">create</button>
+        <button [disabled]="createNewGroupForm.invalid" class="btn btn-outline-primary mb-2 mr-2" (click)="onCreateNewGroup()">create</button>
+        <button type="button" class="btn btn-outline-primary mb-2 mr-2" (click)="c('Close click')">Close</button>
       </div>
     </ng-template>
   </div>

@@ -1,4 +1,5 @@
 export interface Workspace {
+  _id: string;
   company_name: string;
   workspace_name: string;
   owner_password: string;

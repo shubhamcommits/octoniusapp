@@ -27,6 +27,7 @@ import { TokenInterceptorService } from './shared/services/token-interceptor.ser
 import { UserService } from './shared/services/user.service';
 import { AdminService } from './shared/services/admin.service';
 import { WorkspaceService } from './shared/services/workspace.service';
+import { GroupsService } from './shared/services/groups.service';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,7 @@ import { WorkspaceService } from './shared/services/workspace.service';
     HttpClientModule,
     NgbModule.forRoot()
   ],
-  providers: [AuthService, UserService, WorkspaceService, AdminService, AuthGuard, NotAuthGuard,
+  providers: [AuthService, UserService, WorkspaceService, GroupsService, AdminService, AuthGuard, NotAuthGuard,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true },
     { provide: LocationStrategy, useClass: HashLocationStrategy }],
   bootstrap: [AppComponent]
