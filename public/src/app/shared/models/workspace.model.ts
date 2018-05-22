@@ -7,5 +7,6 @@ export interface Workspace {
   owner_first_name: string;
   owner_last_name: string;
   allowed_domains: string[];
+  members: any[];
   invited_users: string[];
 }

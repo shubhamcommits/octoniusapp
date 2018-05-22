@@ -79,13 +79,19 @@ export class GroupsComponent implements OnInit {
       _members: { _user: this.user._id, role: 'admin' },
       workspace_name: this.workspace.workspace_name
     };
+
     this._groupsService.createNewGroup(new_group)
-      .subscribe((res) => {
-        this.groups.push(res.group);
-        // console.log('response:', res);
+      .subscribe((response) => {
+        this.groups.push(response['group']);
+        // console.log('create new group response:', response);
+        // this.getUserGroups();
+
         this.alert.class = 'success';
-        this._message.next(res.message);
+        this._message.next(response['message']);
         this.createNewGroupForm.reset();
+        setTimeout(() => {
+
+        }, 3000);
       }, (err) => {
         this.alert.class = 'danger';
         if (err.status === 401) {
@@ -106,6 +112,7 @@ export class GroupsComponent implements OnInit {
 
   // getting all user's group
   getUserGroups() {
+    console.log('Inside get user groups');
 
     const user = {
       user_id: this.user_data.user_id,
@@ -114,9 +121,8 @@ export class GroupsComponent implements OnInit {
 
     this._groupsService.getUserGroups(user)
       .subscribe((res) => {
-        // this.groups.push(res.group);
-        // console.log('get all user groups:', res);
-        this.groups = res.groups;
+         console.log('All groups:', res);
+        this.groups = res['groups'];
       }, (err) => {
         console.log(err);
         this.alert.class = 'alert alert-danger';
@@ -163,7 +169,7 @@ export class GroupsComponent implements OnInit {
       .subscribe((res) => {
         this.workspace = res.workspace;
         // console.log('workspace: ', res);
-        // console.log('domains: ', this.domainData.domains);
+
 
       }, (err) => {
         this.alert.class = 'alert alert-danger';

@@ -44,7 +44,7 @@ const appRoutes: Routes = [
       {
         path: 'group', component: GroupComponent,
         children: [
-          { path: 'activity', component: GroupActivityComponent },
+          { path: 'activity/:id/:groupName', component: GroupActivityComponent },
           { path: 'files', component: GroupFilesComponent },
           { path: 'calendar', component: GroupCalendarComponent },
           { path: 'members', component: GroupMembersComponent },

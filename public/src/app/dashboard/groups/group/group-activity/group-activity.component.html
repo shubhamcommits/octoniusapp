@@ -5,7 +5,7 @@
         <div class="card-block">
           <h6 class="card-title">Group Info</h6>
           <hr/>
-          <p class="card-text">{{workspace?.members.length}} Members</p>
+          <p class="card-text">1 Members</p>
           <p class="card-text">125 Activities</p>
           <p class="card-text">24 Followers</p>
         </div>
@@ -15,6 +15,8 @@
   </div>
   <div class="col-md-8">
     <!-- postbox-->
+
+
     <div class="card">
       <div class="card-block">
         <div class="row card-title">
@@ -34,96 +36,143 @@
           <div class="row">
             <div class="col-md-6">
               <span>
-                <a href="#"> <i class="material-icons muted">comment</i></a>
+                <a (click)="onSelectPostType('normal')">
+                  <i class="material-icons muted">comment</i>
+                </a>
               </span>
               <span>
-              <a href="#">  <i class="material-icons muted">event</i></a>
+                <a (click)="onSelectPostType('calendar')">
+                  <i class="material-icons muted">event</i>
+                </a>
               </span>
               <span>
-                <a href="#"><i class="material-icons muted">check_box</i></a>
+                <a (click)="onSelectPostType('event')">
+                  <i class="material-icons muted">check_box</i>
+                </a>
               </span>
             </div>
             <div class="col-md-6 text-right">
-              <button type="button" class="btn btn-outline-warning task">
-                <i class="material-icons">perm_identity</i> unassigned
+
+
+              <button type="button " class="btn btn-outline-warning task" *ngIf="post_type == 'calendar' || post_type== 'event'">
+                <i class="material-icons ">perm_identity</i> unassigned
               </button>
-              <button type="button" class="btn btn-outline-warning task">
-                <i class="material-icons">event</i> due date
-              </button>
+
+              <form class="form-inline" *ngIf="post_type == 'calendar' ||  post_type=='event'" style="margin-top: 10px">
+                <div class="form-group">
+                  <div class="input-group">
+                    <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker">
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-warning task" (click)="d.toggle()" type="button">
+                        Due Date
+                        <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+              <div>
+
+                <div class="input-group-append" *ngIf="post_type == 'calendar'">
+                  <ngb-timepicker [(ngModel)]="time" [meridian]="true "></ngb-timepicker>
+                  <button class="btn btn-outline-warning task" (click)="d.toggle()" type="button" style="height: 40px; margin-top: 40px; margin-left: 10px">
+                    Time
+                    <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;" />
+                  </button>
+
+                </div>
+
+
+              </div>
+
+              <!--   <form class="form-inline" *ngIf="post_type == 'calendar'">
+                <div class="form-group">
+                  <div class="input-group">
+
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-warning task" (click)="d.toggle()" type="button">
+                        <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </form> -->
+
             </div>
 
           </div>
 
-          <div class="row" style="margin-top: 10px;">
-            <div class="col-md">
-              <div class="form-group">
-                <textarea class="form-control" id="" rows="3" name="content" formControlName="content"></textarea>
+          <div class="row " style="margin-top: 10px; ">
+            <div class="col-md ">
+              <div class="form-group ">
+                <textarea class="form-control " id=" " rows="3 " name="content " formControlName="content "></textarea>
               </div>
             </div>
           </div>
 
-          <div class="row">
-            <div class="col-md-8">
-              <button type="button" class="btn btn-link">
-                <i class="material-icons">attach_file</i>
+          <div class="row ">
+            <div class="col-md-8 ">
+              <button type="button " class="btn btn-link ">
+                <i class="material-icons ">attach_file</i>
               </button>
 
             </div>
-            <div class="col-md-4 text-right">
-              <button type="button" name="button" class="btn btn-default">Cancel</button>
-              <button type="button" name="button" class="btn btn-primary">Post</button>
+            <div class="col-md-4 text-right ">
+              <button type="button " name="button " class="btn btn-default ">Cancel</button>
+              <button type="button " name="button " class="btn btn-primary ">Post</button>
             </div>
           </div>
-
 
         </div>
       </div>
     </div>
+
+
     <!-- postbox-->
 
 
 
 
-    <ul class="list-group">
+    <ul class="list-group ">
 
-      <li class="list-group-item">
-        <div class="card">
-          <div class="card-block">
-            <div class="row card-title">
-              <div class="col-md-1">
-                <img src="https://randomuser.me/api/portraits/med/men/64.jpg" class="feed-avatar">
+      <li class="list-group-item ">
+        <div class="card ">
+          <div class="card-block ">
+            <div class="row card-title ">
+              <div class="col-md-1 ">
+                <img src="https://randomuser.me/api/portraits/med/men/64.jpg " class="feed-avatar ">
               </div>
-              <div class="col-md-7">
+              <div class="col-md-7 ">
                 <h6>MARA Max</h6>
               </div>
-              <div class="col-md-4 text-right">
-                <p class="small font-weight-bold">
-                  <i class="material-icons">schedule</i>April 12, 12:24 PM</p>
+              <div class="col-md-4 text-right ">
+                <p class="small font-weight-bold ">
+                  <i class="material-icons ">schedule</i>April 12, 12:24 PM</p>
               </div>
             </div>
-            <div class="col-md-12 innercard">
-              <p class="card-text">Lorem ipsum dolor sit amet, sea an phaedrum quaestio interesset. Nemore euismod mediocritatem cu sed. Vocent
+            <div class="col-md-12 innercard ">
+              <p class="card-text ">Lorem ipsum dolor sit amet, sea an phaedrum quaestio interesset. Nemore euismod mediocritatem cu sed. Vocent
                 mentitum ut vim, vix possit minimum lucilius ea. Ius cu vocent explicari dissentias, porro nostrud veritus
                 eu vis, mea eu dicant partem aliquip. Diam invenire pro no.
               </p>
             </div>
 
-            <div class="card-footer action-post innercard clearfix">
+            <div class="card-footer action-post innercard clearfix ">
               <hr>
-              <div class="row">
-                <div class="col-md-6">
+              <div class="row ">
+                <div class="col-md-6 ">
                   <span>3 Likes</span>
                   <span>2 Comments</span>
                 </div>
-                <div class="col-md-6 text-right">
+                <div class="col-md-6 text-right ">
                   <span>
-                    <i class="material-icons">mode_comment</i>
+                    <i class="material-icons ">mode_comment</i>
                   </span>
                   <span>
-                    <i class="material-icons">thumb_up</i>
+                    <i class="material-icons ">thumb_up</i>
                   </span>
                   <span>
-                    <i class="material-icons">more_horiz</i>
+                    <i class="material-icons ">more_horiz</i>
                   </span>
                 </div>
               </div>
@@ -131,44 +180,44 @@
           </div>
         </div>
       </li>
-      <li class="list-group-item">
-        <div class="card">
-          <div class="card-block">
-            <div class="row card-title">
-              <div class="col-md-1">
-                <img src="https://randomuser.me/api/portraits/med/women/44.jpg" class="feed-avatar">
+      <li class="list-group-item ">
+        <div class="card ">
+          <div class="card-block ">
+            <div class="row card-title ">
+              <div class="col-md-1 ">
+                <img src="https://randomuser.me/api/portraits/med/women/44.jpg " class="feed-avatar ">
               </div>
-              <div class="col-md-7">
+              <div class="col-md-7 ">
                 <h6>Ema Hils</h6>
               </div>
-              <div class="col-md-4 text-right">
-                <p class="small font-weight-bold">
-                  <i class="material-icons">schedule</i>April 12, 12:24 PM</p>
+              <div class="col-md-4 text-right ">
+                <p class="small font-weight-bold ">
+                  <i class="material-icons ">schedule</i>April 12, 12:24 PM</p>
               </div>
             </div>
-            <div class="col-md-12 innercard">
-              <p class="card-text">Lorem ipsum dolor sit amet, sea an phaedrum quaestio interesset. Nemore euismod mediocritatem cu sed. Vocent
+            <div class="col-md-12 innercard ">
+              <p class="card-text ">Lorem ipsum dolor sit amet, sea an phaedrum quaestio interesset. Nemore euismod mediocritatem cu sed. Vocent
                 mentitum ut vim, vix possit minimum lucilius ea. Ius cu vocent explicari dissentias, porro nostrud veritus
                 eu vis, mea eu dicant partem aliquip. Diam invenire pro no.
               </p>
             </div>
 
-            <div class="card-footer action-post innercard clearfix">
+            <div class="card-footer action-post innercard clearfix ">
               <hr>
-              <div class="row">
-                <div class="col-md-6">
+              <div class="row ">
+                <div class="col-md-6 ">
                   <span>3 Likes</span>
                   <span>2 Comments</span>
                 </div>
-                <div class="col-md-6 text-right">
+                <div class="col-md-6 text-right ">
                   <span>
-                    <i class="material-icons">mode_comment</i>
+                    <i class="material-icons ">mode_comment</i>
                   </span>
                   <span>
-                    <i class="material-icons">thumb_up</i>
+                    <i class="material-icons ">thumb_up</i>
                   </span>
                   <span>
-                    <i class="material-icons">more_horiz</i>
+                    <i class="material-icons ">more_horiz</i>
                   </span>
                 </div>
               </div>
@@ -176,44 +225,44 @@
           </div>
         </div>
       </li>
-      <li class="list-group-item">
-        <div class="card">
-          <div class="card-block">
-            <div class="row card-title">
-              <div class="col-md-1">
-                <img src="https://randomuser.me/api/portraits/med/women/64.jpg" class="feed-avatar">
+      <li class="list-group-item ">
+        <div class="card ">
+          <div class="card-block ">
+            <div class="row card-title ">
+              <div class="col-md-1 ">
+                <img src="https://randomuser.me/api/portraits/med/women/64.jpg " class="feed-avatar ">
               </div>
-              <div class="col-md-7">
+              <div class="col-md-7 ">
                 <h6>MARA Max</h6>
               </div>
-              <div class="col-md-4 text-right">
-                <p class="small font-weight-bold">
-                  <i class="material-icons">schedule</i>April 11, 12:24 PM</p>
+              <div class="col-md-4 text-right ">
+                <p class="small font-weight-bold ">
+                  <i class="material-icons ">schedule</i>April 11, 12:24 PM</p>
               </div>
             </div>
-            <div class="col-md-12 innercard">
-              <p class="card-text">Lorem ipsum dolor sit amet, sea an phaedrum quaestio interesset. Nemore euismod mediocritatem cu sed. Vocent
+            <div class="col-md-12 innercard ">
+              <p class="card-text ">Lorem ipsum dolor sit amet, sea an phaedrum quaestio interesset. Nemore euismod mediocritatem cu sed. Vocent
                 mentitum ut vim, vix possit minimum lucilius ea. Ius cu vocent explicari dissentias, porro nostrud veritus
                 eu vis, mea eu dicant partem aliquip. Diam invenire pro no.
               </p>
             </div>
 
-            <div class="card-footer action-post innercard clearfix">
+            <div class="card-footer action-post innercard clearfix ">
               <hr>
-              <div class="row">
-                <div class="col-md-6">
+              <div class="row ">
+                <div class="col-md-6 ">
                   <span>3 Likes</span>
                   <span>2 Comments</span>
                 </div>
-                <div class="col-md-6 text-right">
+                <div class="col-md-6 text-right ">
                   <span>
-                    <i class="material-icons">mode_comment</i>
+                    <i class="material-icons ">mode_comment</i>
                   </span>
                   <span>
-                    <i class="material-icons">thumb_up</i>
+                    <i class="material-icons ">thumb_up</i>
                   </span>
                   <span>
-                    <i class="material-icons">more_horiz</i>
+                    <i class="material-icons ">more_horiz</i>
                   </span>
                 </div>
               </div>

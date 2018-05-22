@@ -23,14 +23,14 @@ module.exports = {
                             res.status(200).json({
                                 message: "Group Created Successfully!",
                                 group: group
-                            })
+                            });
                         })
                         // group creating error
                         .catch((err) => {
                             res.status(500).json({
                                 message: "something went wrong | internal server error",
                                 err
-                            })
+                            });
                         })
                 }
             })
@@ -56,21 +56,20 @@ module.exports = {
                 if (groups == null) {
                     return res.status(404).json({
                         message: "Error! invalid workspace id or user id",
-                    })
+                    });
                 } else {
                     res.status(200).json({
                         message: "Groups found successfully!",
                         groups: groups
-                    })
+                    });
                 }
-
             })
             // groups finding error
             .catch((err) => {
                 res.status(500).json({
                     message: "something went wrong | internal server error",
                     err
-                })
+                });
             })
     }
 }

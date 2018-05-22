@@ -17,10 +17,10 @@
       </div>
     </div>
 
-    <div class="card col-md-3 m-1 ">
-      <img class="card-img-top " src="https://source.unsplash.com/random ">
+    <div class="card col-md-3 m-1" [routerLink]="['/dashboard/group/activity',group._id,group.group_name]">
+      <img class="card-img-top " src="https://source.unsplash.com/random">
       <div class="card-body ">
-        <a routerLink="/ ">
+        <a>
           <h4 class="card-title ">Global</h4>
         </a>
         <p class="card-text ">{{'This is Gloabl group'}}
@@ -30,8 +30,9 @@
         </p>
       </div>
     </div>
-    <div *ngFor="let group of groups " class="card col-md-3 m-1 ">
-      <img class="card-img-top " src="https://source.unsplash.com/random ">
+
+    <div *ngFor="let group of groups " class="card col-md-3 m-1" [routerLink]="['/dashboard/group/activity',group._id,group.group_name]">
+      <img class="card-img-top " src="https://source.unsplash.com/random">
       <div class="card-body ">
         <a>
           <h4 class="card-title ">{{group?.group_name}}</h4>
@@ -44,6 +45,7 @@
         </p>
       </div>
     </div>
+
     <ng-template #content let-c="close" let-d="dismiss">
       <div class="modal-header">
         <h4 class="modal-title">Create New Group</h4>
@@ -64,8 +66,8 @@
 
       </div>
       <div class="modal-footer">
-        <button [disabled]="createNewGroupForm.invalid" class="btn btn-outline-primary mb-2 mr-2" (click)="onCreateNewGroup()">create</button>
-        <button type="button" class="btn btn-outline-primary mb-2 mr-2" (click)="c('Close click')">Close</button>
+        <button [disabled]="createNewGroupForm.invalid" class="btn btn-outline-primary mb-2 mr-2" (click)="onCreateNewGroup()">Create Group</button>
+        <button type="button" class="btn btn-outline-primary mb-2 mr-2" (click)="c('Close click')">Cancel</button>
       </div>
     </ng-template>
   </div>

@@ -1,15 +1,39 @@
 import { Component, OnInit } from '@angular/core';
-
+import { ActivatedRoute } from '@angular/router';
+import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-group-activity',
   templateUrl: './group-activity.component.html',
   styleUrls: ['./group-activity.component.scss']
 })
 export class GroupActivityComponent implements OnInit {
+  group_id;
+  group_name;
+  post_type;
+  time = { hour: 13, minute: 30 };
+  model: NgbDateStruct;
+  date: { year: number, month: number };
 
-  constructor() { }
+  constructor(private _activedRoute: ActivatedRoute) { }
+
+
+
 
   ngOnInit() {
+
+    /*      this.group_id = this._activedRoute.snapshot.paramMap.get('id');
+         this.group_name = this._activedRoute.snapshot.paramMap.get('groupName');
+
+         console.log('group_id in group activity: ', this.group_id, 'group_name group activity: ', this.group_name);
+         console.log('this._activedRoute.snapshot.paramMap', this._activedRoute.snapshot.paramMap); */
+
   }
+
+  onSelectPostType(type) {
+    this.post_type = type;
+    console.log('post type: ', type);
+
+  }
+
 
 }
