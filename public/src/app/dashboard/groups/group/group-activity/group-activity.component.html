@@ -35,23 +35,33 @@
         <div class="col-md-12 innercard">
           <div class="row">
             <div class="col-md-6">
-              <span>
-                <a (click)="onSelectPostType('normal')">
-                  <i class="material-icons muted">comment</i>
-                </a>
-              </span>
-              <span>
-                <a (click)="onSelectPostType('calendar')">
-                  <i class="material-icons muted">event</i>
-                </a>
-              </span>
-              <span>
-                <a (click)="onSelectPostType('event')">
-                  <i class="material-icons muted">check_box</i>
-                </a>
-              </span>
+              <ul class="nav nav-pills">
+                <li class="nav-item">
+                  <button (click)="onSelectPostType('normal')" class="btn btn-link">
+                    <i class="material-icons muted">comment</i>
+                  </button>
+                </li>
+                <li class="nav-item">
+
+                  <button (click)="onSelectPostType('calendar')" class="btn btn-link">
+                    <i class="material-icons muted">event</i>
+                  </button>
+                </li>
+                <li class="nav-item">
+
+                  <button (click)="onSelectPostType('event')" class="btn btn-link">
+                    <i class="material-icons muted">check_box</i>
+                  </button>
+                </li>
+
+              </ul>
+
+
+
+
+
             </div>
-            <div class="col-md-6 text-right">
+            <div class="col-md-12">
 
 
               <button type="button " class="btn btn-outline-warning task" *ngIf="post_type == 'calendar' || post_type== 'event'">
@@ -64,8 +74,8 @@
                     <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker">
                     <div class="input-group-append">
                       <button class="btn btn-outline-warning task" (click)="d.toggle()" type="button">
-                        Due Date
-                        <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;" />
+                        <i class="material-icons">event</i> Due Date
+
                       </button>
                     </div>
                   </div>
@@ -76,8 +86,8 @@
                 <div class="input-group-append" *ngIf="post_type == 'calendar'">
                   <ngb-timepicker [(ngModel)]="time" [meridian]="true "></ngb-timepicker>
                   <button class="btn btn-outline-warning task" (click)="d.toggle()" type="button" style="height: 40px; margin-top: 40px; margin-left: 10px">
-                    Time
-                    <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;" />
+                    <i class="material-icons">alarm_on</i> Time
+
                   </button>
 
                 </div>
@@ -103,7 +113,7 @@
           </div>
 
           <div class="row " style="margin-top: 10px; ">
-            <div class="col-md ">
+            <div class="col-md-12">
               <div class="form-group ">
                 <textarea class="form-control " id=" " rows="3 " name="content " formControlName="content "></textarea>
               </div>
