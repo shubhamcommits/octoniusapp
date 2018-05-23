@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-group-activity',
   templateUrl: './group-activity.component.html',
@@ -12,9 +12,11 @@ export class GroupActivityComponent implements OnInit {
   post_type;
   time = { hour: 13, minute: 30 };
   model: NgbDateStruct;
+  due_date = 'Due Date';
+
   date: { year: number, month: number };
 
-  constructor(private _activedRoute: ActivatedRoute) { }
+  constructor(private _activedRoute: ActivatedRoute, private modalService: NgbModal) { }
 
 
 
@@ -31,9 +33,21 @@ export class GroupActivityComponent implements OnInit {
 
   onSelectPostType(type) {
     this.post_type = type;
+    this.due_date = 'Due Date';
     console.log('post type: ', type);
 
   }
 
+  onDateSelcted() {
+    const temp = this.model;
+
+    this.due_date = temp.day.toString() + '-' + temp.month.toString() + '-' + temp.year.toString();
+  }
+
+
+
+  openVerticallyCentered(content) {
+    this.modalService.open(content, { centered: true });
+  }
 
 }

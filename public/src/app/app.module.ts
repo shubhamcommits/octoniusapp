@@ -1,9 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AppRoutingModule, routingComponents } from './app-routing.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
 
 import { AppComponent } from './app.component';
@@ -50,8 +51,11 @@ import { GroupsService } from './shared/services/groups.service';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    NgbModule.forRoot()
+    NgbModule.forRoot(),
+    MDBBootstrapModule.forRoot()
   ],
+  schemas: [NO_ERRORS_SCHEMA],
+
   providers: [AuthService, UserService, WorkspaceService, GroupsService, AdminService, AuthGuard, NotAuthGuard,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true },
     { provide: LocationStrategy, useClass: HashLocationStrategy }],

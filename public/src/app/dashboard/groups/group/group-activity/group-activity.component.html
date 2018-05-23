@@ -56,44 +56,61 @@
 
               </ul>
 
-
-
-
-
             </div>
             <div class="col-md-12">
-
 
               <button type="button " class="btn btn-outline-warning task" *ngIf="post_type == 'calendar' || post_type== 'event'">
                 <i class="material-icons ">perm_identity</i> unassigned
               </button>
 
-              <form class="form-inline" *ngIf="post_type == 'calendar' ||  post_type=='event'" style="margin-top: 10px">
-                <div class="form-group">
-                  <div class="input-group">
-                    <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker">
-                    <div class="input-group-append">
-                      <button class="btn btn-outline-warning task" (click)="d.toggle()" type="button">
-                        <i class="material-icons">event</i> Due Date
 
-                      </button>
-                    </div>
-                  </div>
+
+
+
+              <form *ngIf="post_type == 'calendar' ||  post_type=='event'" style="margin-top: 10px">
+
+                <div class="btn btn-outline-warning task" style="width:138px">
+                  <i class="material-icons">event</i>
+                  <input name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()" placeholder="Due Date" style="width:90px; border:none;   color: #ffc107">
                 </div>
+
+
+               <!--  <button class="btn btn-outline-warning task" (click)="d.toggle(); onDateSelcted()" type="button">
+                  <i class="material-icons">event</i>
+                  {{ due_date }}
+                </button> -->
+
               </form>
-              <div>
 
-                <div class="input-group-append" *ngIf="post_type == 'calendar'">
-                  <ngb-timepicker [(ngModel)]="time" [meridian]="true "></ngb-timepicker>
-                  <button class="btn btn-outline-warning task" (click)="d.toggle()" type="button" style="height: 40px; margin-top: 40px; margin-left: 10px">
-                    <i class="material-icons">alarm_on</i> Time
+              <button class="btn btn-outline-warning task" type="button" (click)="openVerticallyCentered(content)">
+                <i class="material-icons">event</i>Due Time
+              </button>
 
+
+              <ng-template #content let-c="close" let-d="dismiss">
+
+
+                <div style="margin-left: 20px;" class="modal-header">
+                  <h4 class="modal-title">Select Time</h4>
+                  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                    <span aria-hidden="true">&times;</span>
                   </button>
+                </div>
+
+                <div class="modal-body" >
+                  <ngb-timepicker [(ngModel)]="time" [meridian]="true "></ngb-timepicker>
 
                 </div>
 
+                <div class="modal-footer">
+                  <button class="btn btn-outline-primary mb-2 mr-2">Done</button>
+                  <button type="button" class="btn btn-outline-primary mb-2 mr-2" (click)="c('Close click')">Cancel</button>
+                </div>
 
-              </div>
+
+              </ng-template>
+
+
 
               <!--   <form class="form-inline" *ngIf="post_type == 'calendar'">
                 <div class="form-group">
