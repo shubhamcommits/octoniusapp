@@ -17,7 +17,7 @@
       </div>
     </div>
 
-    <div class="card col-md-3 m-1" [routerLink]="['/dashboard/group/activity',group._id,group.group_name]">
+    <div class="card col-md-3 m-1" [routerLink]="['/dashboard/group/',group._id,'activity']">
       <img class="card-img-top " src="https://source.unsplash.com/random">
       <div class="card-body ">
         <a>
@@ -31,7 +31,7 @@
       </div>
     </div>
 
-    <div *ngFor="let group of groups " class="card col-md-3 m-1" [routerLink]="['/dashboard/group/activity',group._id,group.group_name]">
+    <div *ngFor="let group of groups " class="card col-md-3 m-1" [routerLink]="['/dashboard/group/',group._id,'activity']">
       <img class="card-img-top " src="https://source.unsplash.com/random">
       <div class="card-body ">
         <a>
@@ -40,7 +40,7 @@
         <p class="card-text ">
           <!-- {{group.desc}} -->
           <br>
-          <span class="badge badge-success ">{{group?._members.length}} Members</span>
+          <span class="badge badge-success ">{{group._members?.length + group._admins?.length}} Members</span>
           <span class="small ">including you</span>
         </p>
       </div>

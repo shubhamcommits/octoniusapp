@@ -1,9 +1,11 @@
 const express = require("express");
 const router = express.Router();
 
-const controller_workspace_core = require("../controllers/workspace/ControllerWorkspaceCore")
-const controller_workspace_admin = require("../controllers/workspace/ControllerWorkspaceAdmin")
-const controller_workspace_groups = require("../controllers/workspace/ControllerGroups")
+const controller_workspace_core = require("../controllers/workspace/ControllerWorkspaceCore");
+const controller_workspace_admin = require("../controllers/workspace/ControllerWorkspaceAdmin");
+const controller_workspace_groups = require("../controllers/workspace/ControllerGroups");
+const controller_workspace_group = require("../controllers/workspace/ControllerGroup");
+const controller_post = require("../controllers/workspace/ControllerPost");
 const middleware_auth = require('../middlewares/auth')
 
 
@@ -20,9 +22,8 @@ router.get("/:workspace_id", controller_workspace_core.getWorkspace);
 router.post("/updateAllowedEmailsDomains", controller_workspace_admin.updateAllowedEmailDomains);
 router.post("/inviteUserViaEmail", controller_workspace_admin.inviteUserViaEmail);
 
-// workspace group routes
+// workspace groups routes
 router.post("/groups", controller_workspace_groups.createNewGroup);
 router.get("/groups/:user_id/:workspace_id", controller_workspace_groups.getUserGroups);
-
 
 module.exports = router;

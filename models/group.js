@@ -25,15 +25,12 @@ const GroupSchema = new Schema({
         required: true
     },
     _members: [{
-        _user: {
-            type: Schema.Types.ObjectId,
-            ref: 'User',
-        },
-        role: {
-            type: String,
-            require: true,
-            enum: ['member', 'admin']
-        }
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+    }],
+    _admins: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User',
     }],
     created_date: {
         type: Date,

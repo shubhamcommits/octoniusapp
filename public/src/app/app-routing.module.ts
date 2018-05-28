@@ -42,9 +42,10 @@ const appRoutes: Routes = [
         path: 'groups', component: GroupsComponent,
       },
       {
-        path: 'group', component: GroupComponent,
+        path: 'group/:id', component: GroupComponent,
+
         children: [
-          { path: 'activity/:id/:groupName', component: GroupActivityComponent },
+          { path: 'activity', component: GroupActivityComponent },
           { path: 'files', component: GroupFilesComponent },
           { path: 'calendar', component: GroupCalendarComponent },
           { path: 'members', component: GroupMembersComponent },

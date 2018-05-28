@@ -31,7 +31,6 @@ export class GroupsComponent implements OnInit {
   };
   group = {
     group_name: '',
-
   };
   createNewGroupForm: FormGroup;
 
@@ -76,7 +75,7 @@ export class GroupsComponent implements OnInit {
     const new_group = {
       group_name: this.group.group_name,
       _workspace: this.workspace._id,
-      _members: { _user: this.user._id, role: 'admin' },
+      _admins: this.user._id,
       workspace_name: this.workspace.workspace_name
     };
 
@@ -121,7 +120,7 @@ export class GroupsComponent implements OnInit {
 
     this._groupsService.getUserGroups(user)
       .subscribe((res) => {
-         console.log('All groups:', res);
+        console.log('All groups:', res);
         this.groups = res['groups'];
       }, (err) => {
         console.log(err);

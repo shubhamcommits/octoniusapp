@@ -3,11 +3,12 @@
     <div class="row sidecontent">
       <div class="card sideinnercard">
         <div class="card-block">
-          <h6 class="card-title">Group Info</h6>
+          <h6 class="card-title">Group Info </h6>
           <hr/>
-          <p class="card-text">1 Members</p>
-          <p class="card-text">125 Activities</p>
+          <p class="card-text">{{groupDataService.group?._admins?.length + groupDataService.group?._members?.length}} Members</p>
+          <!--        <p class="card-text">125 Activities</p>
           <p class="card-text">24 Followers</p>
+   -->
         </div>
       </div>
     </div>
@@ -43,13 +44,13 @@
                 </li>
                 <li class="nav-item">
 
-                  <button (click)="onSelectPostType('calendar')" class="btn btn-link">
+                  <button (click)="onSelectPostType('event')" class="btn btn-link">
                     <i class="material-icons muted">event</i>
                   </button>
                 </li>
                 <li class="nav-item">
 
-                  <button (click)="onSelectPostType('event')" class="btn btn-link">
+                  <button (click)="onSelectPostType('task')" class="btn btn-link">
                     <i class="material-icons muted">check_box</i>
                   </button>
                 </li>
@@ -59,29 +60,20 @@
             </div>
             <div class="col-md-12">
 
-              <button type="button " class="btn btn-outline-warning task" *ngIf="post_type == 'calendar' || post_type== 'event'">
+              <button type="button " class="btn btn-outline-warning task" *ngIf="post_type == 'event' || post_type== 'task'" (click)="openAssignPicker(assignContent)">
                 <i class="material-icons ">perm_identity</i> unassigned
               </button>
 
 
-              <!--     <form *ngIf="post_type == 'calendar' ||  post_type=='event'" style="margin-top: 10px">
-
-                <div class="btn btn-outline-warning task" style="width:138px">
-                  <i class="material-icons">event</i>
-                  <input name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()" placeholder="Due Date" style="width:90px; border:none;   color: #ffc107">
-                </div>
-
-
-                 <button class="btn btn-outline-warning task" (click)="d.toggle(); onDateSelcted()" type="button">
-                  <i class="material-icons">event</i>
-                  {{ due_date }}
-                </button>
-
-              </form> -->
-
-              <button *ngIf="post_type == 'calendar'|| post_type=='event'" class="btn btn-outline-warning task" type="button" (click)="openDatePicker(dateContent)">
+              <button *ngIf="post_type == 'event'|| post_type=='task'" class="btn btn-outline-warning task" type="button" (click)="openDatePicker(dateContent)">
                 <i class="material-icons">event</i>{{ due_date }}
               </button>
+
+              <button *ngIf="post_type=='event'" class="btn btn-outline-warning task" type="button" (click)="openTimePicker(timeContent)">
+                <i class="material-icons">event</i>{{due_time}}
+              </button>
+
+              <!-- Moal to pick a due date-->
 
               <ng-template style="margin-top: 10px" #dateContent let-c="close" let-d="dismiss">
 
@@ -105,10 +97,9 @@
 
               </ng-template>
 
-              <button *ngIf="post_type=='event'" class="btn btn-outline-warning task" type="button" (click)="openTimePicker(timeContent)">
-                <i class="material-icons">event</i>{{due_time}}
-              </button>
 
+
+              <!--  Modal to pick a time -->
 
               <ng-template style="margin-top: 10px" #timeContent let-c="close" let-d="dismiss">
 
@@ -124,6 +115,40 @@
                   <ngb-timepicker [(ngModel)]="modal_time" [meridian]="true "></ngb-timepicker>
 
                 </div>
+
+                <div class="modal-footer">
+                  <button class="btn btn-outline-primary mb-2 mr-2" (click)="onTimeSelected();c('Close click')">Done</button>
+                  <button type="button" class="btn btn-outline-primary mb-2 mr-2" (click)="c('Close click')">Cancel</button>
+                </div>
+
+
+              </ng-template>
+
+              <!--  Modal to Assign calendar event or task to group memeber -->
+              <ng-template style="margin-top: 10px" #assignContent let-c="close" let-d="dismiss">
+
+
+                <div style="margin-left: 20px;" class="modal-header">
+                  <h4 class="modal-title">Search User</h4>
+                  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+
+                <div class="modal-body">
+
+                  <div class="form-group">
+                    <input class="form-control" type="text" [(ngModel)]="term" placeholder="Name, Email, Username or Phone">
+
+                    <!--  <div *ngFor="let item of items |  filter:term">
+                        <p>
+                          {{item.name}}
+                        </p>
+                      </div> -->
+                  </div>
+
+                </div>
+
 
                 <div class="modal-footer">
                   <button class="btn btn-outline-primary mb-2 mr-2" (click)="onTimeSelected();c('Close click')">Done</button>
@@ -182,144 +207,109 @@
 
 
 
+    <div *ngFor="let post of posts">
+      <ul class="list-group ">
 
-    <ul class="list-group ">
-
-      <li class="list-group-item ">
-        <div class="card ">
-          <div class="card-block ">
-            <div class="row card-title ">
-              <div class="col-md-1 ">
-                <img src="https://randomuser.me/api/portraits/med/men/64.jpg " class="feed-avatar ">
-              </div>
-              <div class="col-md-7 ">
-                <h6>MARA Max</h6>
-              </div>
-              <div class="col-md-4 text-right ">
-                <p class="small font-weight-bold ">
-                  <i class="material-icons ">schedule</i>April 12, 12:24 PM</p>
-              </div>
-            </div>
-            <div class="col-md-12 innercard ">
-              <p class="card-text ">Lorem ipsum dolor sit amet, sea an phaedrum quaestio interesset. Nemore euismod mediocritatem cu sed. Vocent
-                mentitum ut vim, vix possit minimum lucilius ea. Ius cu vocent explicari dissentias, porro nostrud veritus
-                eu vis, mea eu dicant partem aliquip. Diam invenire pro no.
-              </p>
-            </div>
-
-            <div class="card-footer action-post innercard clearfix ">
-              <hr>
-              <div class="row ">
-                <div class="col-md-6 ">
-                  <span>3 Likes</span>
-                  <span>2 Comments</span>
+        <li class="list-group-item " *ngIf="post.type== 'normal'">
+          <div class="card ">
+            <div class="card-block ">
+              <div class="row card-title ">
+                <div class="col-md-1 ">
+                  <img src="https://randomuser.me/api/portraits/med/men/64.jpg " class="feed-avatar ">
                 </div>
-                <div class="col-md-6 text-right ">
-                  <span>
-                    <i class="material-icons ">mode_comment</i>
-                  </span>
-                  <span>
-                    <i class="material-icons ">thumb_up</i>
-                  </span>
-                  <span>
-                    <i class="material-icons ">more_horiz</i>
-                  </span>
+                <div class="col-md-7 ">
+                  <h6>{{post._posted_by?.first_name}} {{post._posted_by?.last_name}}</h6>
+                </div>
+                <div class="col-md-4 text-right ">
+                  <p class="small font-weight-bold ">
+                    <i class="material-icons ">schedule</i>April 12, 12:24 PM</p>
+                </div>
+              </div>
+              <div class="col-md-12 innercard ">
+                <p class="card-text ">
+                  {{post?.content}}
+                </p>
+              </div>
+
+              <div class="card-footer action-post innercard clearfix ">
+                <hr>
+                <div class="row ">
+                  <div class="col-md-6 ">
+                    <span>{{post?.likes_count}} Likes</span>
+                    <span>{{post?.comments_count}} Comments</span>
+                  </div>
+                  <div class="col-md-6 text-right">
+                    <span>
+                      <i class="material-icons ">mode_comment</i>
+                    </span>
+                    <span>
+                      <i class="material-icons ">thumb_up</i>
+                    </span>
+                    <span>
+                      <i class="material-icons ">more_horiz</i>
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </li>
-      <li class="list-group-item ">
-        <div class="card ">
-          <div class="card-block ">
-            <div class="row card-title ">
-              <div class="col-md-1 ">
-                <img src="https://randomuser.me/api/portraits/med/women/44.jpg " class="feed-avatar ">
+        </li>
+
+        <li class="list-group-item" *ngIf="post.type=='task'">
+          <div class="row navig">
+            <div class="col-md-4 clearfix">
+
+              <img src="https://randomuser.me/api/portraits/med/women/60.jpg" alt="" class="feed-avatar float-left">
+              <div class="username float-left">
+                <h6>Mara Marvin</h6>
+                <p class="small text-muted">10:00am</p>
               </div>
-              <div class="col-md-7 ">
-                <h6>Ema Hils</h6>
-              </div>
-              <div class="col-md-4 text-right ">
-                <p class="small font-weight-bold ">
-                  <i class="material-icons ">schedule</i>April 12, 12:24 PM</p>
-              </div>
-            </div>
-            <div class="col-md-12 innercard ">
-              <p class="card-text ">Lorem ipsum dolor sit amet, sea an phaedrum quaestio interesset. Nemore euismod mediocritatem cu sed. Vocent
-                mentitum ut vim, vix possit minimum lucilius ea. Ius cu vocent explicari dissentias, porro nostrud veritus
-                eu vis, mea eu dicant partem aliquip. Diam invenire pro no.
-              </p>
             </div>
 
-            <div class="card-footer action-post innercard clearfix ">
-              <hr>
-              <div class="row ">
-                <div class="col-md-6 ">
-                  <span>3 Likes</span>
-                  <span>2 Comments</span>
-                </div>
-                <div class="col-md-6 text-right ">
-                  <span>
-                    <i class="material-icons ">mode_comment</i>
-                  </span>
-                  <span>
-                    <i class="material-icons ">thumb_up</i>
-                  </span>
-                  <span>
-                    <i class="material-icons ">more_horiz</i>
-                  </span>
-                </div>
-              </div>
+            <div class="col-md-7">
+              <h6 class="pink">assigned to you</h6>
+              <p>i like the new format of the dowuent, it gaves some strength to all this bla bla,i like the new format of the
+                dowuent, it gaves some strength to all this bla bla</p>
+            </div>
+            <div class="col-md-1">
+              <i class="material-icons">assignment_turned_in</i>
+
             </div>
           </div>
-        </div>
-      </li>
-      <li class="list-group-item ">
-        <div class="card ">
-          <div class="card-block ">
-            <div class="row card-title ">
-              <div class="col-md-1 ">
-                <img src="https://randomuser.me/api/portraits/med/women/64.jpg " class="feed-avatar ">
+        </li>
+        <br>
+
+        <li class="list-group-item" *ngIf="post.type == 'calendar'">
+          <div class="row navig bluebg">
+            <div class="col-md-4 clearfix">
+
+              <img src="https://randomuser.me/api/portraits/med/men/9.jpg" alt="" class="feed-avatar float-left">
+              <div class="username float-left">
+                <h6>Jon Snow</h6>
+                <p class="small">10:00am</p>
               </div>
-              <div class="col-md-7 ">
-                <h6>MARA Max</h6>
-              </div>
-              <div class="col-md-4 text-right ">
-                <p class="small font-weight-bold ">
-                  <i class="material-icons ">schedule</i>April 11, 12:24 PM</p>
-              </div>
-            </div>
-            <div class="col-md-12 innercard ">
-              <p class="card-text ">Lorem ipsum dolor sit amet, sea an phaedrum quaestio interesset. Nemore euismod mediocritatem cu sed. Vocent
-                mentitum ut vim, vix possit minimum lucilius ea. Ius cu vocent explicari dissentias, porro nostrud veritus
-                eu vis, mea eu dicant partem aliquip. Diam invenire pro no.
-              </p>
             </div>
 
-            <div class="card-footer action-post innercard clearfix ">
-              <hr>
-              <div class="row ">
-                <div class="col-md-6 ">
-                  <span>3 Likes</span>
-                  <span>2 Comments</span>
+            <div class="col-md-7">
+              <div class="row">
+                <div class="col-md-2 date"> 20 April
+                  <br>
+                  <span>12:30</span>
                 </div>
-                <div class="col-md-6 text-right ">
-                  <span>
-                    <i class="material-icons ">mode_comment</i>
-                  </span>
-                  <span>
-                    <i class="material-icons ">thumb_up</i>
-                  </span>
-                  <span>
-                    <i class="material-icons ">more_horiz</i>
-                  </span>
+                <div class="col-md-9 event-title">Team meeting in room 3 to discuss the new design Team meeting in room 3 to discuss the new design
                 </div>
               </div>
+
+            </div>
+            <div class="col-md-1">
+              <i class="material-icons">today</i>
             </div>
           </div>
-        </div>
-      </li>
-    </ul>
+        </li>
+
+
+      </ul>
+
+    </div>
   </div>
 </div>

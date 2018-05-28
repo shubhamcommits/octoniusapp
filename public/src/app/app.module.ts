@@ -1,11 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AppRoutingModule, routingComponents } from './app-routing.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { MDBBootstrapModule } from 'angular-bootstrap-md';
-
+import { SelectDropDownModule } from 'ngx-select-dropdown';
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './common/components/navbar/navbar.component';
@@ -29,6 +29,9 @@ import { UserService } from './shared/services/user.service';
 import { AdminService } from './shared/services/admin.service';
 import { WorkspaceService } from './shared/services/workspace.service';
 import { GroupsService } from './shared/services/groups.service';
+import { PostService } from './shared/services/post.service';
+import { GroupService } from './shared/services/group.service';
+import { GroupDataService } from './shared/services/group-data.service';
 
 @NgModule({
   declarations: [
@@ -51,12 +54,14 @@ import { GroupsService } from './shared/services/groups.service';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    NgbModule.forRoot(),
-    MDBBootstrapModule.forRoot()
+    SelectDropDownModule,
+    AngularMultiSelectModule,
+    NgbModule.forRoot()
   ],
-  schemas: [NO_ERRORS_SCHEMA],
 
-  providers: [AuthService, UserService, WorkspaceService, GroupsService, AdminService, AuthGuard, NotAuthGuard,
+  providers: [AuthService, UserService, PostService, GroupService,
+    GroupDataService, WorkspaceService, GroupsService, AdminService,
+    AuthGuard, NotAuthGuard,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true },
     { provide: LocationStrategy, useClass: HashLocationStrategy }],
   bootstrap: [AppComponent]

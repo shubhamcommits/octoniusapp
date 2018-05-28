@@ -48,7 +48,11 @@ module.exports = {
 
         Group.find({
                 _workspace: workspace_id,
-                '_members._user': user_id
+                $or: [{
+                    '_members': user_id
+                }, {
+                    '_admins': user_id
+                }]
             })
             .populate('_members')
             .then((groups) => {

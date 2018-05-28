@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { GroupService } from '../../../../shared/services/group.service';
+import { GroupDataService } from '../../../../shared/services/group-data.service';
 
 @Component({
   selector: 'app-group-header',
@@ -7,34 +9,15 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
   styleUrls: ['./group-header.component.scss']
 })
 export class GroupHeaderComponent implements OnInit {
-  group_name;
+  group;
   group_id;
-  constructor(private _activedRoute: ActivatedRoute, private _router: Router) { }
+  constructor(private groupService: GroupService,
+    private groupDataService: GroupDataService) { }
 
   ngOnInit() {
 
-    console.log('Group Heder');
-
-    /* this.group_id = this._activedRoute.snapshot.paramMap.get('id');
-    this.group_name = this._activedRoute.snapshot.paramMap.get('groupName');
-    /* */
-       /*  console.log('group_id: ', this.group_id, 'group_name: ', this.group_name);
-        console.log('this._activedRoute.snapshot.paramMap', this._activedRoute.snapshot.paramMap);
-
-        console.log('this._activedRoute.root.firstChild', this._activedRoute.root.firstChild);
-
- */
-    /* console.log('    this.result = router.routerState.snapshot.root.children[0]',
-      this._activedRoute.snapshot.root.children
-    ); */
-
-    /*
-        this._activedRoute.params.subscribe((params) => {
-          console.log('params["id"]', params['id']);
-
-        }); */
-
+    this.group_id = this.groupDataService.groupId;
 
   }
-
 }
+

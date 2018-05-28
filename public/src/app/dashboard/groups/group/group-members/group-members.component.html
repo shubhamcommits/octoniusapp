@@ -1,3 +1,57 @@
-<p>
-  group-members works!
-</p>
+<div class="card-tile">
+  <h4>Group Members</h4>
+  <hr>
+
+
+  <div class="media card-tile user-list" *ngFor=" let member of group_members">
+    <img class="mr-3" src="https://randomuser.me/api/portraits/med/women/49.jpg" alt="Generic placeholder image">
+    <div class="media-body">
+      <div class="float-left">
+        <h4 class="mt-0">{{member?.first_name}} {{member?.last_name}}</h4>
+        <!-- <p>Role: {{member?.role}}</p> -->
+      </div>
+
+      <div class="dropdown">
+        <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          <i class="material-icons float-right">more_horiz</i>
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" href="#">Action</a>
+          <a class="dropdown-item" href="#">Another action</a>
+          <a class="dropdown-item" href="#">Something else here</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <h4>Group Admins</h4>
+  <hr>
+
+
+  <div class="media card-tile user-list" *ngFor=" let admin of group_admins">
+    <img class="mr-3" src="https://randomuser.me/api/portraits/med/women/49.jpg" alt="Generic placeholder image">
+    <div class="media-body">
+      <div class="float-left">
+        <h4 class="mt-0">{{admin?.first_name}} {{admin?.last_name}}</h4>
+        <!-- <p>Role: {{admin?.role}}</p> -->
+      </div>
+
+      <div class="dropdown">
+        <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          <i class="material-icons float-right">more_horiz</i>
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" href="#">Action</a>
+          <a class="dropdown-item" href="#">Another action</a>
+          <a class="dropdown-item" href="#">Something else here</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+</div>

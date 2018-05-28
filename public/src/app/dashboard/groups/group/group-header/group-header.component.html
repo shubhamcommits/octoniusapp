@@ -2,34 +2,34 @@
   <img class="mr-3 feed-avatar" src="https://randomuser.me/api/portraits/med/women/49.jpg">
   <div class="media-body">
     <div>
-      <h2>Design team</h2>
+      <h2>{{groupDataService.group?.group_name}}</h2>
       <ul class="nav">
         <li class="nav-item">
-          <a class="nav-link active" [routerLink]="['/dashboard/group/activity',group_id, group_name ]">Activity
+          <a class="nav-link active" [routerLink]="['/dashboard/group/',group_id,'activity' ]">Activity
             <span class="sr-only">(current)</span>
           </a>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" routerLink="/dashboard/group/files">Files
+          <a class="nav-link" [routerLink]="['/dashboard/group/',group_id,'files' ]">Files
             <span class="sr-only">(current)</span>
           </a>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" routerLink="/dashboard/group/calendar">Calendar
+          <a class="nav-link" [routerLink]="['/dashboard/group/',group_id,'calendar']">Calendar
             <span class="sr-only">(current)</span>
           </a>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" routerLink="/dashboard/group/members">Members
+          <a class="nav-link" [routerLink]="['/dashboard/group/',group_id,'members']">Members
             <span class="sr-only">(current)</span>
           </a>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" routerLink="/dashboard/group/admin">Admin
+          <a class="nav-link" [routerLink]="['/dashboard/group/',group_id,'admin' ]">Admin
             <span class="sr-only">(current)</span>
           </a>
         </li>
