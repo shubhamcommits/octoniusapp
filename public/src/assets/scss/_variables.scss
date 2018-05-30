@@ -27,6 +27,10 @@ $pink:#9D85D2;
   border: 3px solid $pink !important;
 }
 
+.gray-border{
+  box-shadow: 0 3px 5px -1px rgba(0,0,0,.2);
+}
+
 .blue{
   color:$brand-primary;
 }
@@ -38,6 +42,11 @@ $pink:#9D85D2;
   background-color: $brand-primary !important;
   //color: white !important
 }
+
+.comment{
+  background: #E4EDF8 !important;
+}
+
 // shadows
 $card-shadow: 0 3px 5px -1px rgba(0,0,0,.2);
 
