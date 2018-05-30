@@ -1,7 +1,7 @@
 <div class="card-tile">
   <h4>Users</h4>
 
-
+<hr>
   <div class="media card-tile user-list" *ngFor="let member of workspace?.members">
     <img class="feed-avatar " src="assets/images/user.png" alt="User">
     <div class="media-body">
@@ -10,27 +10,15 @@
         <p>Role: {{member?.role}}</p>
       </div>
 
-      <!--   <div class="dropdown">
-        <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-          aria-expanded="false">
-          <i class="material-icons float-right">more_horiz</i>
-        </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <a class="dropdown-item" href="#">Action</a>
-          <a class="dropdown-item" href="#">Another action</a>
-          <a class="dropdown-item" href="#">Something else here</a>
-        </div>
-      </div> -->
-      <div class="btn-group mr-3">
-        <button type="button" class="btn btn-primary"></button>
+     
+      <div class="btn-group mr-3 float-right" style="margin-left:10px">
+        
         <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
-          <button class="btn btn-primary dropdown-toggle-split" ngbDropdownToggle></button>
+          <button class="btn btn-secondary dropdown-toggle-split btn-sm" ngbDropdownToggle>Manage user </button>
           <div class="dropdown-menu" ngbDropdownMenu>
-            <button class="dropdown-item">Change Role</button>
-            <hr>
-            <button class="dropdown-item">Admin</button>
-            <button class="dropdown-item">Member</button>
-            <hr>
+            <button class="dropdown-item">Change to Admin</button>
+            <button class="dropdown-item">Change to Member</button>
+            <div class="dropdown-divider"></div>
             <button class="dropdown-item">Delete Member</button>
 
           </div>
