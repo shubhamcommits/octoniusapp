@@ -3,14 +3,14 @@
 
 
   <div class="media card-tile user-list" *ngFor="let member of workspace?.members">
-    <img class="mr-3" src="https://randomuser.me/api/portraits/med/women/49.jpg" alt="Generic placeholder image">
+    <img class="feed-avatar " src="assets/images/user.png" alt="User">
     <div class="media-body">
       <div class="float-left">
         <h4 class="mt-0">{{member?.first_name}} {{member?.last_name}}</h4>
         <p>Role: {{member?.role}}</p>
       </div>
 
-      <div class="dropdown">
+      <!--   <div class="dropdown">
         <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
           aria-expanded="false">
           <i class="material-icons float-right">more_horiz</i>
@@ -19,6 +19,21 @@
           <a class="dropdown-item" href="#">Action</a>
           <a class="dropdown-item" href="#">Another action</a>
           <a class="dropdown-item" href="#">Something else here</a>
+        </div>
+      </div> -->
+      <div class="btn-group mr-3">
+        <button type="button" class="btn btn-primary"></button>
+        <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+          <button class="btn btn-primary dropdown-toggle-split" ngbDropdownToggle></button>
+          <div class="dropdown-menu" ngbDropdownMenu>
+            <button class="dropdown-item">Change Role</button>
+            <hr>
+            <button class="dropdown-item">Admin</button>
+            <button class="dropdown-item">Member</button>
+            <hr>
+            <button class="dropdown-item">Delete Member</button>
+
+          </div>
         </div>
       </div>
 
