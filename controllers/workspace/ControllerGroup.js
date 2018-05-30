@@ -2,9 +2,9 @@ const Group = require('../../models/group');
 const User = require('../../models/user');
 module.exports = {
 
-    searchGroupUser(req, res, next) {
+    searchWorkspaceUsers(req, res, next) {
         const key_word = req.params.key_word;
-        const workspace = req.params.workspace;
+        const workspace = req.params.workspace_id;
         let regex = new RegExp(key_word, 'i');
         User.aggregate([{
                     $project: {
@@ -54,7 +54,73 @@ module.exports = {
 
         console.log("this is search user contoller");
     },
+    /*  searchGroupUsers(req, res, next) {
+         const key_word = req.params.key_word;
+         const workspace = req.params.workspace;
+         let regex = new RegExp(key_word, 'i');
+         User.aggregate([{
+                     $project: {
+                         fullname: {
+                             $concat: ['$first_name', ' ', '$last_name']
+                         },
+                         doc: '$$ROOT',
+                         "_workspace": workspace
+                     },
 
+                 }, {
+                     $match: {
+                         fullname: regex,
+                     }
+
+                 }],
+
+                
+             )
+
+             .then((users) => {
+                 res.status(200).json({
+                     message: "search successfull!",
+                     users: users
+                 });
+             })
+             .catch((err) => {
+                 res.status(500).json({
+                     message: "Error! something went wrong | internal server error",
+                     err
+                 });
+             })
+
+         console.log("this is search user contoller");
+     }, */
+
+    // temp method for group user's searching 
+    searchGroupUsers(req, res, next) {
+        // const key_word = req.params.key_word;
+        const group = req.params.group_id;
+
+        Group.find({
+                _id: group
+            })
+            .populate('_members', 'first_name last_name')
+            .populate('_admins', 'first_name last_name')
+            .then((group) => {
+
+
+                // const members = group._admins;
+                res.status(200).json({
+                    message: "group found successfully!",
+                    group: group
+                });
+
+            })
+            .catch((err) => {
+                res.status(500).json({
+                    message: "Error! something went wrong | internal server error",
+                    err
+                });
+            })
+
+    },
     getUserGroup(req, res, next) {
 
         const group_id = req.params.group_id;

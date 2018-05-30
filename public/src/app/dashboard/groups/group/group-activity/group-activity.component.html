@@ -20,192 +20,173 @@
 
     <div class="card">
       <div class="card-block">
-        <div class="row card-title">
-          <div class="col-md-1">
-            <img src="https://randomuser.me/api/portraits/med/men/64.jpg" class="feed-avatar">
-          </div>
-          <div class="col-md-10">
-            <h6>What are you working on?</h6>
-          </div>
-          <div class="col-md-1">
-            <!-- <button type="button" class="close" aria-label="Close">
+        <form [formGroup]="postForm">
+          <div class="row card-title">
+            <div class="col-md-1">
+              <img src="https://randomuser.me/api/portraits/med/men/64.jpg" class="feed-avatar">
+            </div>
+            <div class="col-md-10">
+              <h6>What are you working on?</h6>
+            </div>
+
+            <div class="col-md-1">
+              <!-- <button type="button" class="close" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button> -->
-          </div>
-        </div>
-        <div class="col-md-12 innercard">
-          <div class="row">
-            <div class="col-md-6">
-              <ul class="nav nav-pills">
-                <li class="nav-item">
-                  <button (click)="onSelectPostType('normal')" class="btn btn-link">
-                    <i class="material-icons muted">comment</i>
-                  </button>
-                </li>
-                <li class="nav-item">
-
-                  <button (click)="onSelectPostType('event')" class="btn btn-link">
-                    <i class="material-icons muted">event</i>
-                  </button>
-                </li>
-                <li class="nav-item">
-
-                  <button (click)="onSelectPostType('task')" class="btn btn-link">
-                    <i class="material-icons muted">check_box</i>
-                  </button>
-                </li>
-
-              </ul>
-
             </div>
-            <div class="col-md-12">
-
-              <button type="button " class="btn btn-outline-warning task" *ngIf="post_type == 'event' || post_type== 'task'" (click)="openAssignPicker(assignContent)">
-                <i class="material-icons ">perm_identity</i> unassigned
-              </button>
-
-
-              <button *ngIf="post_type == 'event'|| post_type=='task'" class="btn btn-outline-warning task" type="button" (click)="openDatePicker(dateContent)">
-                <i class="material-icons">event</i>{{ due_date }}
-              </button>
-
-              <button *ngIf="post_type=='event'" class="btn btn-outline-warning task" type="button" (click)="openTimePicker(timeContent)">
-                <i class="material-icons">event</i>{{due_time}}
-              </button>
-
-              <!-- Moal to pick a due date-->
-
-              <ng-template style="margin-top: 10px" #dateContent let-c="close" let-d="dismiss">
-
-
-                <div style="margin-left: 20px;" class="modal-header">
-                  <h4 class="modal-title">Select Due Date</h4>
-                  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-
-                <div class="modal-body">
-                  <ngb-datepicker #dp [(ngModel)]="modal_date" (navigate)="date = $event.next"></ngb-datepicker>
-                </div>
-
-                <div class="modal-footer">
-                  <button class="btn btn-outline-primary mb-2 mr-2" (click)="onDateSelected();c('Close click');">Done</button>
-
-                  <button type="button" class="btn btn-outline-primary mb-2 mr-2" (click)="c('Close click')">Cancel</button>
-                </div>
-
-              </ng-template>
-
-
-
-              <!--  Modal to pick a time -->
-
-              <ng-template style="margin-top: 10px" #timeContent let-c="close" let-d="dismiss">
-
-
-                <div style="margin-left: 20px;" class="modal-header">
-                  <h4 class="modal-title">Select Time</h4>
-                  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-
-                <div class="modal-body">
-                  <ngb-timepicker [(ngModel)]="modal_time" [meridian]="true "></ngb-timepicker>
-
-                </div>
-
-                <div class="modal-footer">
-                  <button class="btn btn-outline-primary mb-2 mr-2" (click)="onTimeSelected();c('Close click')">Done</button>
-                  <button type="button" class="btn btn-outline-primary mb-2 mr-2" (click)="c('Close click')">Cancel</button>
-                </div>
-
-
-              </ng-template>
-
-              <!--  Modal to Assign calendar event or task to group memeber -->
-              <ng-template style="margin-top: 10px" #assignContent let-c="close" let-d="dismiss">
-
-
-                <div style="margin-left: 20px;" class="modal-header">
-                  <h4 class="modal-title">Search User</h4>
-                  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-
-                <div class="modal-body">
-
-                  <div class="form-group">
-                    <input class="form-control" type="text" [(ngModel)]="term" placeholder="Name, Email, Username or Phone">
-
-                    <!--  <div *ngFor="let item of items |  filter:term">
-                        <p>
-                          {{item.name}}
-                        </p>
-                      </div> -->
-                  </div>
-
-                </div>
-
-
-                <div class="modal-footer">
-                  <button class="btn btn-outline-primary mb-2 mr-2" (click)="onTimeSelected();c('Close click')">Done</button>
-                  <button type="button" class="btn btn-outline-primary mb-2 mr-2" (click)="c('Close click')">Cancel</button>
-                </div>
-
-
-              </ng-template>
-
-
-
-              <!--   <form class="form-inline" *ngIf="post_type == 'calendar'">
-                <div class="form-group">
-                  <div class="input-group">
-
-                    <div class="input-group-append">
-                      <button class="btn btn-outline-warning task" (click)="d.toggle()" type="button">
-                        <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;" />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </form> -->
-
-            </div>
-
           </div>
+          <div class="col-md-12 innercard">
+            <div class="row">
+              <div class="col-md-6">
+                <ul class="nav nav-pills">
+                  <li class="nav-item">
+                    <button (click)="onSelectPostType('normal')" class="btn btn-link">
+                      <i class="material-icons muted">comment</i>
+                    </button>
+                  </li>
+                  <li class="nav-item">
 
-          <div class="row " style="margin-top: 10px; ">
-            <div class="col-md-12">
-              <div class="form-group ">
-                <textarea class="form-control " id=" " rows="3 " name="content " formControlName="content "></textarea>
+                    <button (click)="onSelectPostType('event')" class="btn btn-link">
+                      <i class="material-icons muted">event</i>
+                    </button>
+                  </li>
+                  <li class="nav-item">
+
+                    <button (click)="onSelectPostType('task')" class="btn btn-link">
+                      <i class="material-icons muted">check_box</i>
+                    </button>
+                  </li>
+                </ul>
+
+              </div>
+              <div class="col-md-12">
+
+                <button type="button " class="btn btn-outline-warning task" *ngIf="post.type == 'event' || post.type== 'task'" (click)="openAssignPicker(assignContent)">
+                  <i class="material-icons ">perm_identity</i> unassigned
+                </button>
+
+
+                <button *ngIf="post.type == 'event'|| post.type=='task'" class="btn btn-outline-warning task" type="button" (click)="openDatePicker(dateContent)">
+                  <i class="material-icons">event</i>{{ due_date }}
+                </button>
+
+                <button *ngIf="post.type=='event'" class="btn btn-outline-warning task" type="button" (click)="openTimePicker(timeContent)">
+                  <i class="material-icons">event</i>{{due_time}}
+                </button>
+
+                <ngb-alert *ngIf="alert.message" [type]="alert.class" (close)="successMessage = null">{{ alert.message}}</ngb-alert>
+
               </div>
             </div>
-          </div>
 
-          <div class="row ">
-            <div class="col-md-8 ">
-              <button type="button " class="btn btn-link ">
-                <i class="material-icons ">attach_file</i>
-              </button>
+            <div class="row " style="margin-top: 10px; ">
+              <div class="col-md-12">
+                <div class="form-group ">
+                  <textarea class="form-control " id="post-content" rows="3" [(ngModel)]="post.content" name="postContent" formControlName="postContent"></textarea>
+                </div>
+              </div>
+            </div>
 
+            <div class="row ">
+              <div class="col-md-8 ">
+                <button type="button " class="btn btn-link ">
+                  <i class="material-icons ">attach_file</i>
+                </button>
+              </div>
+
+              <div class="col-md-4 text-right ">
+                <button type="button " name="button " class="btn btn-default ">Cancel</button>
+                <button [disabled]="postForm.invalid || processing" type="button " name="button" (click)="OnAddNewPost()" class="btn btn-primary">Post</button>
+              </div>
             </div>
-            <div class="col-md-4 text-right ">
-              <button type="button " name="button " class="btn btn-default ">Cancel</button>
-              <button type="button " name="button " class="btn btn-primary ">Post</button>
-            </div>
+
           </div>
+        </form>
+      </div>
+      <!-- Moal to pick a due date-->
+
+      <ng-template style="margin-top: 10px" #dateContent let-c="close" let-d="dismiss">
+
+        <div style="margin-left: 20px;" class="modal-header">
+          <h4 class="modal-title">Select Due Date</h4>
+          <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <ngb-datepicker #dp [(ngModel)]="modal_date" (navigate)="date = $event.next"></ngb-datepicker>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-outline-primary mb-2 mr-2" (click)="onDateSelected();c('Close click');">Done</button>
+
+          <button type="button" class="btn btn-outline-primary mb-2 mr-2" (click)="c('Close click')">Cancel</button>
+        </div>
+
+      </ng-template>
+
+      <!--  Modal to pick a time -->
+
+      <ng-template style="margin-top: 10px" #timeContent let-c="close" let-d="dismiss">
+
+        <div style="margin-left: 20px;" class="modal-header">
+          <h4 class="modal-title">Select Time</h4>
+          <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <ngb-timepicker [(ngModel)]="modal_time" [meridian]="true "></ngb-timepicker>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-outline-primary mb-2 mr-2" (click)="onTimeSelected();c('Close click')">Done</button>
+          <button type="button" class="btn btn-outline-primary mb-2 mr-2" (click)="c('Close click')">Cancel</button>
+        </div>
+
+      </ng-template>
+
+      <!--  Modal to Assign calendar event or task to group memeber -->
+      <ng-template style="margin-top:10px; height:300px" #assignContent let-c="close" let-d="dismiss">
+
+        <div style="margin-left: 20px;" class="modal-header">
+          <h4 class="modal-title">Search User</h4>
+          <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" style="height: 300px;">
+          <angular2-multiselect [data]="groupUsersList" [(ngModel)]="selectedGroupUsers" [settings]="settings" (onSelect)="onItemSelect($event)"
+            (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)">
+            <c-search>
+              <ng-template>
+                <input type="text" (click)="onSearch($event)" placeholder="Name, Email, Username or Phone" style="border: none;width: 100%; height: 100%;outline: none;"
+                />
+              </ng-template>
+            </c-search>
+            <c-item>
+              <ng-template let-item="item">
+                <label style="color: #333;width: 150px;">{{item.first_name}} {{item.last_name }}</label>
+                <!--                 <img [src]="item.flag" style="width: 30px; border: 1px solid #efefef;margin-right: 0px;"/>
+ -->
+                <label>{{item.capital}}</label>
+              </ng-template>
+            </c-item>
+          </angular2-multiselect>
 
         </div>
-      </div>
+        <div class="modal-footer">
+          <button [disabled]="selectedGroupUsers.length == 0 " class="btn btn-outline-primary mb-2 mr-2" (click)="onTimeSelected();c('Close click')">Done</button>
+          <button type="button" class="btn btn-outline-primary mb-2 mr-2" (click)="c('Close click')">Cancel</button>
+        </div>
+      </ng-template>
+
     </div>
 
 
     <!-- postbox-->
-
-
 
     <div *ngFor="let post of posts">
       <ul class="list-group ">

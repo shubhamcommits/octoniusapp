@@ -11,8 +11,8 @@ module.exports = {
         Post.create(post_data)
             .then((post) => {
                 res.status(200).json({
-                    message: "new post added  successfully",
-                    date: post
+                    message: "post has been added successfully",
+                    post: post
                 });
 
             })
@@ -23,10 +23,10 @@ module.exports = {
                 });
             })
     },
-    addNewCalendarPost(req, res, next) {
+    addNewEventPost(req, res, next) {
         console.log("add new calendar post controller");
     },
-    addNewEventPost(req, res, next) {
+    addNewTaskPost(req, res, next) {
         console.log("add new event type post");
     },
 
@@ -36,6 +36,7 @@ module.exports = {
         Post.find({
                 _group: group_id
             })
+            .sort('-created_date')
             .populate('_posted_by', 'first_name last_name')
             .then((posts) => {
 

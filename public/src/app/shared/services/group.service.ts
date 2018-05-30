@@ -10,12 +10,9 @@ import 'rxjs/add/operator/switchMap';
 @Injectable()
 export class GroupService {
 
-  baseUrl = 'https://api.cdnjs.com/libraries';
-  queryUrl = '?search=';
 
   BASE_URL = 'http://localhost:3000';
   BASE_API_URL = 'http://localhost:3000/api';
-  group_id;
 
   constructor(private _http: HttpClient) { }
 
@@ -29,12 +26,14 @@ export class GroupService {
 
 
   searchWorkspaceUsers(query, workspace) {
-    return this._http.get(this.BASE_API_URL + '/group/' + workspace + '/' + query);
+    return this._http.get(this.BASE_API_URL + `/group/searchWorkspaceUsers/${workspace}/${query}`);
   }
 
-  searchGroupUsers(term) {
-    return this._http
-      .get(this.baseUrl + this.queryUrl + term);
+  searchGroupUsers(group_id) {
+    console.log('Inside searchGroupUsers');
+
+    //  return this._http.get(this.BASE_API_URL + `/group/searchGroupUsers/${group_id}/${query}`);
+    return this._http.get(`${this.BASE_API_URL}/group/searchGroupUsers/${group_id}`);
   }
 
 

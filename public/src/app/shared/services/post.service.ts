@@ -21,4 +21,10 @@ export class PostService {
   addNewNormalPost(post) {
     return this._http.post(this.BASE_API_URL + '/post/normal', post);
   }
+  addNewEventPost(post) {
+    return this._http.post(this.BASE_API_URL + '/post/event', post);
+  }
+  addNewTaskPost(post) {
+    return this._http.post(this.BASE_API_URL + '/post/task', post);
+  }
 }

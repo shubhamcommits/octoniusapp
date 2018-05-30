@@ -47,7 +47,7 @@
             </div>
           </div>
 
-          <button [disabled]="signinForm.invalid || processing " type="submit" class="btn btn-primary">Sign in</button>
+          <button [disabled]="signinForm.invalid || processing" type="submit" class="btn btn-primary">Sign in</button>
         </form>
       </div>
       <div *ngIf="alert.message" [ngClass]="alert.class" style="margin-top:20px">{{alert.message}}</div>
