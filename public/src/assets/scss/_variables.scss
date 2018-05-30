@@ -23,10 +23,20 @@ $pink:#9D85D2;
 .pink{
   color:$pink;
 }
+.pink-border{
+  border: 3px solid $pink !important;
+}
 
+.blue{
+  color:$brand-primary;
+}
+
+.blue-border{
+  border: 3px solid $brand-primary !important;
+}
 .bluebg{
   background-color: $brand-primary !important;
-  color: white !important;
+  //color: white !important
 }
 // shadows
 $card-shadow: 0 3px 5px -1px rgba(0,0,0,.2);
