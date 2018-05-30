@@ -6,9 +6,12 @@ import { GroupService } from '../../../../shared/services/group.service';
 import { GroupDataService } from '../../../../shared/services/group-data.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { InputValidators } from '../../../../common/validators/input.validator';
+import { debounceTime } from 'rxjs/operators';
 import { ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Subject } from 'rxjs';
-import { debounceTime } from 'rxjs/operators'; @Component({
+
+
+@Component({
   selector: 'app-group-activity',
   templateUrl: './group-activity.component.html',
   styleUrls: ['./group-activity.component.scss']
@@ -78,10 +81,10 @@ export class GroupActivityComponent implements OnInit {
       unSelectAllText: 'UnSelect All',
       classes: 'myclass custom-class',
       primaryKey: '_id',
-     // labelKey: 'first_name',
+      // labelKey: 'first_name',
       noDataLabel: 'Search Members...',
       enableSearchFilter: true,
-     // searchBy: ['first_name', 'capital']
+      // searchBy: ['first_name', 'capital']
 
 
     };

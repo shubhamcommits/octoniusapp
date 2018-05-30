@@ -8,11 +8,16 @@ export class AdminService {
   constructor(private _http: HttpClient) { }
 
   allowDomains(data) {
-    console.log(data);
+    // console.log(data);
     return this._http.post<any>(this.BASE_API_URL + '/workspace/updateAllowedEmailsDomains', data);
   }
   inviteNewUserViewEmail(data) {
-    console.log(data);
+    // console.log(data);
     return this._http.post<any>(this.BASE_API_URL + '/workspace/inviteUserViaEmail', data);
+  }
+
+  updateUserRole(data) {
+    return this._http.put<any>(this.BASE_API_URL + '/workspace/updateUserRole', data);
+
   }
 }

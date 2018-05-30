@@ -1,4 +1,5 @@
 const Wrokspace = require("../../models/workspace");
+const User = require("../../models/user");
 var nodemailer = require('nodemailer');
 
 
@@ -106,6 +107,35 @@ module.exports = {
                     err
                 })
             })
+
+    },
+    updateUserRole(req, res, next) {
+        let user_id = req.body.user_id;
+        let role = req.body.role;
+
+        User.findByIdAndUpdate({
+                _id: user_id
+            }, {
+                role: role
+            }, {
+                new: true
+            })
+            .then((user) => {
+                res.status(200).json({
+                    message: "User role has been updated successfully!",
+                });
+
+            })
+            .catch((err) => {
+                res.status(500).json({
+                    message: "something went wrong | internal server error",
+                    err
+                });
+            })
+
+    },
+
+    deleteWorkspaceUser(req, res, next) {
 
     }
 }
