@@ -236,51 +236,57 @@
           </div>
 
           <!-- post comment block make this invisible -->
+
+
           <div *ngIf="showComments.id == post._id && showComments.normal">
             <div class="card muted">
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="form-group ">
-                    <h6>Add a comment</h6>
-                    <textarea class="form-control " id="post-content" rows="3" [(ngModel)]="post.content" name="postContent" formControlName="postContent"></textarea>
+              <form [formGroup]="commentForm">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group ">
+                      <h6>Add a comment</h6>
+                      <textarea class="form-control" id="post-content" rows="3" [(ngModel)]="comment.content" name="commentContent" formControlName="commentContent"></textarea>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div class="row ">
-                <div class="col-md-12 text-right ">
-                  <button type="button " name="button " class="btn btn-default ">Cancel</button>
-                  <button [disabled]="postForm.invalid || processing" type="button " name="button" (click)="OnAddNewPost()" class="btn btn-primary">Post</button>
+                <div class="row ">
+                  <div class="col-md-12 text-right ">
+                    <button type="button " name="button " class="btn btn-default ">Cancel</button>
+                    <button [disabled]="commentForm.invalid" type="button " name="button" (click)="onAddNewComment(post._id)" class="btn btn-primary">Comment</button>
+                  </div>
                 </div>
-              </div>
-
+              </form>
             </div>
-            <!-- post comment block-->
-
-            <!-- all comments block-->
-
-            <div class="card muted comment">
-              <div class="card-block">
-                <div class="row card-title ">
-                  <div class="col-md-1">
-                    <img src="assets/images/user.png" class="feed-avatar">
-                  </div>
-                  <div class="col-md-7 ">
-                    <h6>{{post._posted_by?.first_name}} {{post._posted_by?.last_name}} replied</h6>
-                  </div>
-                  <div class="col-md-4 text-right ">
-                    <p class="small font-weight-bold">
-                      <i class="material-icons ">schedule</i>April 12, 12:24 PM</p>
-                  </div>
-                </div>
-                <div class="col-md-12 innercard ">
-                  <p class="card-text ">
-                  </p>
-                </div>
-              </div>
-            </div>
-
           </div>
+
+          <!-- post comment block-->
+
+          <!-- all comments block-->
+
+          <div class="card muted comment" *ngFor="let comment of post.comments">
+            <div class="card-block">
+              <div class="row card-title ">
+                <div class="col-md-1">
+                  <img src="assets/images/user.png" class="feed-avatar">
+                </div>
+                <div class="col-md-7 ">
+                  <h6>{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}} replied</h6>
+                </div>
+                <div class="col-md-4 text-right ">
+                  <p class="small font-weight-bold">
+                    <i class="material-icons ">schedule</i>{{comment.created_date}}</p>
+                </div>
+              </div>
+              <div class="col-md-12 innercard ">
+                <p class="card-text ">
+                  {{comment.content}}
+                </p>
+              </div>
+            </div>
+          </div>
+
+
 
           <!-- all comments block-->
 

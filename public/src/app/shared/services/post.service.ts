@@ -27,4 +27,7 @@ export class PostService {
   addNewTaskPost(post) {
     return this._http.post(this.BASE_API_URL + '/post/task', post);
   }
+  addNewComment(comment) {
+    return this._http.post(this.BASE_API_URL + '/post/addComment', comment);
+  }
 }

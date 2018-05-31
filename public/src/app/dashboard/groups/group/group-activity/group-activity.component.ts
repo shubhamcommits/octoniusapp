@@ -23,10 +23,19 @@ export class GroupActivityComponent implements OnInit {
 
   user_data;
   postForm: FormGroup;
+  commentForm: FormGroup;
   post = {
     type: 'normal',
     content: ''
   };
+
+  comment = {
+    content: '',
+    _commented_by: '',
+    post_id: ''
+  };
+
+
   processing = false;
   post_type;
   time = { hour: 13, minute: 30 };
@@ -76,6 +85,7 @@ export class GroupActivityComponent implements OnInit {
 
     // console.log('Group Activity _group:', this.groupDataService.group);
     this.inilizePostForm();
+    this.inilizeCommentForm();
     this.loadGroupPosts();
     this.alertMessageSettings();
     this.initializeGroupMembersSearchForm();
@@ -107,10 +117,42 @@ export class GroupActivityComponent implements OnInit {
 
   }
 
+  inilizeCommentForm() {
+    this.commentForm = new FormGroup({
+      'commentContent': new FormControl(null, [Validators.required, InputValidators.fieldCannotBeEmpty]),
+    });
+  }
+
+
   inilizePostForm() {
     this.postForm = new FormGroup({
       'postContent': new FormControl(null, [Validators.required, InputValidators.fieldCannotBeEmpty]),
     });
+  }
+
+  onAddNewComment(post_id) {
+    console.log('post._id: ', post_id);
+
+    this.comment.post_id = post_id;
+    this.comment._commented_by = this.user_data.user_id;
+
+    this.postService.addNewComment(this.comment)
+      .subscribe((res) => {
+
+        this.loadGroupPosts();
+
+      }, (err) => {
+        this.alert.class = 'danger';
+
+        if (err.status) {
+          this._message.next(err.error.message);
+        } else {
+          this._message.next('Error! either server is down or no internet connection');
+        }
+
+      });
+
+
   }
 
 

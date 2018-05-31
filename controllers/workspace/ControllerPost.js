@@ -1,29 +1,29 @@
-const Group = require('../../models/group')
-const User = require('../../models/user');
-const Workspace = require('../../models/workspace');
-const Post = require('../../models/post');
+    const Group = require('../../models/group')
+    const User = require('../../models/user');
+    const Workspace = require('../../models/workspace');
+    const Post = require('../../models/post');
 
-console.log("===========Post Controller===========");
+    console.log("===========Post Controller===========");
 
-module.exports = {
+    module.exports = {
 
-    addNewNormalPost(req, res, next) {
-        let post_data = req.body;
+        addNewNormalPost(req, res, next) {
+            let post_data = req.body;
 
-        Post.create(post_data)
-            .then((post) => res.status(200).json({
-                message: "post has been added successfully",
-                post: post
-            }))
-            .catch((err) => res.status(500).json({
-                message: "something went wrong | internal server error ",
-                err
-            }))
-    },
-    addNewEventPost(req, res, next) {
-        console.log("add new calendar post controller");
-    },
-    addNewTaskPost(req, res, next) {
+            Post.create(post_data)
+                .then((post) => res.status(200).json({
+                    message: "post has been added successfully",
+                    post: post
+                }))
+                .catch((err) => res.status(500).json({
+                    message: "something went wrong | internal server error ",
+                    err
+                }))
+        },
+        addNewEventPost(req, res, next) {
+            console.log("add new calendar post controller");
+        },
+        addNewTaskPost(req, res, next) {
         console.log("add new event type post");
     },
     addCommentOnPost(req, res, next) {
