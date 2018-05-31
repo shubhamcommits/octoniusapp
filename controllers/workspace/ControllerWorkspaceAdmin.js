@@ -1,5 +1,6 @@
 const Wrokspace = require("../../models/workspace");
 const User = require("../../models/user");
+const Post = require("../../models/post");
 var nodemailer = require('nodemailer');
 
 
@@ -136,6 +137,24 @@ module.exports = {
     },
 
     deleteWorkspaceUser(req, res, next) {
+
+        let user_id = req.body.user_id;
+        Post.remove({
+                _posted_by: user_id
+            })
+            .then((res) => {
+                res.status(200).json({
+                    message: "posts removed successfully!",
+                    err
+                });
+            })
+            .catch((err) => {
+                res.status(500).json({
+                    message: "something went wrong | internal server error",
+                    err
+                });
+
+            })
 
     }
 }

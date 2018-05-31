@@ -22,7 +22,7 @@ router.get("/:workspace_id", controller_workspace_core.getWorkspace);
 router.post("/updateAllowedEmailsDomains", controller_workspace_admin.updateAllowedEmailDomains);
 router.post("/inviteUserViaEmail", controller_workspace_admin.inviteUserViaEmail);
 router.put("/updateUserRole", controller_workspace_admin.updateUserRole);
-// router.delete("/deleteWorkspaceUser", controller_workspace_admin.deleteWorkspaceUser);
+router.delete("/deleteWorkspaceUser", controller_workspace_admin.deleteWorkspaceUser);
 
 // workspace groups routes
 router.post("/groups", controller_workspace_groups.createNewGroup);

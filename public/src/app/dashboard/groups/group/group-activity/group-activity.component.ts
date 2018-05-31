@@ -36,6 +36,13 @@ export class GroupActivityComponent implements OnInit {
   due_date = 'Due Date';
   due_time = 'Due Time';
 
+  showComments = {
+    id: '',
+    normal: false,
+    event: false,
+    task: false
+  };
+
   // alert variable
   staticAlertClosed = false;
   private _message = new Subject<string>();
