@@ -2,114 +2,49 @@ const Group = require('../../models/group');
 const User = require('../../models/user');
 module.exports = {
 
-    searchWorkspaceUsers(req, res, next) {
-        const key_word = req.params.key_word;
-        const workspace = req.params.workspace_id;
-        let regex = new RegExp(key_word, 'i');
-        User.aggregate([{
-                    $project: {
-                        fullname: {
-                            $concat: ['$first_name', ' ', '$last_name']
-                        },
-                        doc: '$$ROOT',
-                        "_workspace": workspace
-                    },
 
-                }, {
-                    $match: {
-                        fullname: regex,
-                    }
 
-                }],
+    /*     searchGroupUsers(req, res, next) {
+            const key_word = req.params.key_word;
+            const group_id = req.params.group_id;
 
-                /* {"_workspace": workspace
-                               } */
-                /*  {
-                       $or: [{
-                          "first_name": {
-                              "$regex": key_word,
-                              "$options": "i"
-                          },
-                          "last_name": {
-                              "$regex": key_word,
-                              "$options": "i"
-                          }
-                      }],
-                      "_workspace": workspace 
-                 } */
-            )
+            Group.findOne({
+                    _id: group_id
+                })
+                .populate('_members _admins', 'first_name last_name')
+                .then((group) => {
+                    res.status(200).json({
+                        message: "search successfull!",
+                        users: group._members.concat(group._admins)
+                    });
+                })
+                .catch((err) => {
+                    res.status(500).json({
+                        message: "Error! something went wrong | internal server error",
+                        err
+                    });
+                })
 
-            .then((users) => {
-                res.status(200).json({
-                    message: "search successfull!",
-                    users: users
-                });
-            })
-            .catch((err) => {
-                res.status(500).json({
-                    message: "Error! something went wrong | internal server error",
-                    err
-                });
-            })
-
-        console.log("this is search user contoller");
-    },
-    /*  searchGroupUsers(req, res, next) {
-         const key_word = req.params.key_word;
-         const workspace = req.params.workspace;
-         let regex = new RegExp(key_word, 'i');
-         User.aggregate([{
-                     $project: {
-                         fullname: {
-                             $concat: ['$first_name', ' ', '$last_name']
-                         },
-                         doc: '$$ROOT',
-                         "_workspace": workspace
-                     },
-
-                 }, {
-                     $match: {
-                         fullname: regex,
-                     }
-
-                 }],
-
-                
-             )
-
-             .then((users) => {
-                 res.status(200).json({
-                     message: "search successfull!",
-                     users: users
-                 });
-             })
-             .catch((err) => {
-                 res.status(500).json({
-                     message: "Error! something went wrong | internal server error",
-                     err
-                 });
-             })
-
-         console.log("this is search user contoller");
-     }, */
-
+        },
+     */
     // temp method for group user's searching 
     searchGroupUsers(req, res, next) {
-        // const key_word = req.params.key_word;
+        const query = req.params.query;
         const group = req.params.group_id;
 
-        Group.find({
-                _id: group
+        User.find({
+                _groups: group,
+                full_name: {
+                    $regex: new RegExp(query, 'i')
+                }
             })
-            .populate('_members', 'first_name last_name')
-            .populate('_admins', 'first_name last_name')
-            .then((group) => {
 
+            .then((users) => {
 
                 // const members = group._admins;
                 res.status(200).json({
-                    message: "group found successfully!",
-                    group: group
+                    message: "users found successfully!",
+                    users: users
                 });
 
             })
@@ -154,9 +89,9 @@ module.exports = {
         let group = req.body.group;
         let members = req.body.members;
         let _members = members.map(result => {
-
             return result._id;
         });
+
         Group.findByIdAndUpdate({
                 _id: group
             }, {
@@ -167,12 +102,27 @@ module.exports = {
                 new: true
             })
             .then((updated_group) => {
-                res.status(200).json({
-                    message: "Group Data has updated successfully!",
-                    group: updated_group
-                });
-            })
+                User.updateMany({
+                        _id: _members
+                    }, {
+                        $addToSet: {
+                            _groups: group
+                        }
+                    })
+                    .then((updated_users) => {
+                        res.status(200).json({
+                            message: "Group Data has updated successfully!",
+                            group: updated_group
+                        });
 
+                    })
+                    .catch((err) => {
+                        res.status(500).json({
+                            message: "Error! something went wrong | internal server error",
+                            err
+                        });
+                    })
+            })
             .catch((err) => {
                 res.status(500).json({
                     message: "Error! something went wrong | internal server error",

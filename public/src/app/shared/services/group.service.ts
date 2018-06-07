@@ -26,14 +26,14 @@ export class GroupService {
 
 
   searchWorkspaceUsers(query, workspace) {
-    return this._http.get(this.BASE_API_URL + `/group/searchWorkspaceUsers/${workspace}/${query}`);
+    return this._http.get(this.BASE_API_URL + `/workspace/searchWorkspaceUsers/${workspace}/${query}`);
   }
 
-  searchGroupUsers(group_id) {
+  searchGroupUsers(group_id, query) {
     console.log('Inside searchGroupUsers');
 
     //  return this._http.get(this.BASE_API_URL + `/group/searchGroupUsers/${group_id}/${query}`);
-    return this._http.get(`${this.BASE_API_URL}/group/searchGroupUsers/${group_id}`);
+    return this._http.get(`${this.BASE_API_URL}/group/searchGroupUsers/${group_id}/${query}`);
   }
 
 

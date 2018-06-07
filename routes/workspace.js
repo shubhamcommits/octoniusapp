@@ -16,6 +16,8 @@ router.use(middleware_auth.isLoggedIn);
 
 //workspace core routes
 router.get("/:workspace_id", controller_workspace_core.getWorkspace);
+router.get('/searchWorkspaceUsers/:workspace_id/:query', controller_workspace_core.searchWorkspaceUsers);
+
 
 
 //workspace Admin routes

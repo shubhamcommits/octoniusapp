@@ -15,7 +15,7 @@ const PostSchema = new Schema({
     type: {
         type: String,
         required: true,
-        enum: ['normal', 'event', 'calendar']
+        enum: ['normal', 'event', 'task']
     },
     likes_count: {
         type: Number,
@@ -54,7 +54,30 @@ const PostSchema = new Schema({
         ref: 'User',
         required: true
     },
-
+    task: {
+        due_date: {
+            type: Date,
+            default: null
+        },
+        _assigned_to: {
+            type: Schema.Types.ObjectId,
+            ref: 'User'
+        }
+    },
+    event: {
+        due_date: {
+            type: Date,
+            default: null
+        },
+        due_time: {
+            type: String,
+            default: null
+        },
+        _assigned_to: [{
+            type: Schema.Types.ObjectId,
+            ref: 'User'
+        }]
+    },
     created_date: {
         type: Date,
         default: Date.now,
@@ -65,7 +88,6 @@ const PostSchema = new Schema({
     }]
 
 });
-
 
 const Post = mongoose.model('Post', PostSchema);
 module.exports = Post;

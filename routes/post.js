@@ -15,8 +15,8 @@ router.use(middleware_auth.isLoggedIn);
 
 // Post Routes 
 router.post('/normal', controller_post.addNewNormalPost);
-/* router.post('/calander', controller_post.addNewCalendarPost);
-router.post('/event', controller_post.addNewEventPost);*/
+router.post('/task', controller_post.addNewTaskPost);
+router.post('/event', controller_post.addNewEventPost);
 router.post('/addComment', controller_post.addCommentOnPost);
 router.get('/:group_id', controller_post.getGroupPosts);
 

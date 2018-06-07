@@ -22,7 +22,7 @@
     </div>
 
 
-    <div class="card-tile invite-users">
+    <div [hidden]="groupDataService?.group.group_name =='Global'" class="card-tile invite-users">
 
       <h4>Add new member</h4>
       <p>You can search for persons inside the organization Workplace and add them to your group.</p>
@@ -38,7 +38,7 @@
         </c-search>
         <c-item>
           <ng-template let-item="item">
-            <label style="color: #333;width: 150px;">{{item.fullname}}</label>
+            <label style="color: #333;width: 150px;">{{item.full_name}}</label>
             <!--  <img [src]="item.flag" style="width: 30px; border: 1px solid #efefef;margin-right: 0px;" /> -->
             <label>{{item.capital}}</label>
           </ng-template>

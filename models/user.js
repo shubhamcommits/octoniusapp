@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const Workspace = require("../models/workspace")
+const Workspace = require("../models/workspace");
+const Group = require("../models/group");
 
 
 const UserSchema = new Schema({
@@ -13,6 +14,11 @@ const UserSchema = new Schema({
         type: String,
         required: true,
     },
+    full_name: {
+        type: String,
+        required: true,
+        lowercase: true
+    },
     email: {
         type: String,
         required: true,
@@ -20,6 +26,10 @@ const UserSchema = new Schema({
     password: {
         type: String,
         required: true,
+    },
+    profile_pic: {
+        type: String,
+        default: null
     },
     workspace_name: {
         type: String,
@@ -71,11 +81,12 @@ const UserSchema = new Schema({
     files: [{
         type: String,
         default: null
+    }],
+    _groups: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Group'
     }]
-
-    //groups field will add later
 });
-
 
 const User = mongoose.model('User', UserSchema);
 module.exports = User;

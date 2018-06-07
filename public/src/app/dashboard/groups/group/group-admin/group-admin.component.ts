@@ -64,10 +64,10 @@ export class GroupAdminComponent implements OnInit {
       unSelectAllText: 'UnSelect All',
       classes: 'myclass custom-class',
       primaryKey: '_id',
-      labelKey: 'fullname',
+      labelKey: 'full_name',
       noDataLabel: 'Search Members...',
       enableSearchFilter: true,
-      searchBy: ['fullname', 'capital']
+      searchBy: ['full_name', 'capital']
     };
   }
 

@@ -87,7 +87,7 @@
               </div>
             </div>
 
-            <div class="row ">
+            <div class="row">
               <div class="col-md-8 ">
                 <button type="button " class="btn btn-link ">
                   <i class="material-icons ">attach_file</i>
@@ -96,7 +96,8 @@
 
               <div class="col-md-4 text-right ">
                 <button type="button " name="button " class="btn btn-default ">Cancel</button>
-                <button [disabled]="postForm.invalid || processing" type="button " name="button" (click)="OnAddNewPost()" class="btn btn-primary">Post</button>
+                <button [disabled]="(postForm.invalid && post.type=='normal' ) || processing || (selectedGroupUsers.length == 0 && post.type=='event' ) ||(selectedGroupUsers.length == 0 && post.type=='task') "
+                  type="button " name="button" (click)="OnAddNewPost()" class="btn btn-primary">Post</button>
               </div>
             </div>
 
@@ -119,7 +120,7 @@
         </div>
 
         <div class="modal-footer">
-          <button class="btn btn-outline-primary mb-2 mr-2" (click)="onDateSelected();c('Close click');">Done</button>
+          <button [disabled]="selectedGroupUsers.length == 0" class="btn btn-outline-primary mb-2 mr-2" (click)="onDateSelected();c('Close click')">Done</button>
 
           <button type="button" class="btn btn-outline-primary mb-2 mr-2" (click)="c('Close click')">Cancel</button>
         </div>
@@ -162,15 +163,15 @@
             (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)">
             <c-search>
               <ng-template>
-                <input type="text" (click)="onSearch($event)" placeholder="Name, Email, Username or Phone" style="border: none;width: 100%; height: 100%;outline: none;"
+                <input type="text" (keyup)="onSearch($event)" placeholder="Name, Email, Username or Phone" style="border: none;width: 100%; height: 100%;outline: none;"
                 />
               </ng-template>
             </c-search>
             <c-item>
               <ng-template let-item="item">
-                <label style="color: #333;width: 150px;">{{item.first_name}} {{item.last_name }}</label>
-                <!--                 <img [src]="item.flag" style="width: 30px; border: 1px solid #efefef;margin-right: 0px;"/>
- -->
+                <label style="color: #333;width: 150px;">{{item.full_name }}</label>
+                <!--                 <img [src]="item.flag" style="width: 30px; border: 1px solid #efefef;margin-right: 0px;"/> -->
+
                 <label>{{item.capital}}</label>
               </ng-template>
             </c-item>
@@ -203,7 +204,7 @@
                 </div>
                 <div class="col-md-4 text-right ">
                   <p class="small font-weight-bold">
-                    <i class="material-icons ">schedule</i>{{post?.created_date}}</p>
+                    <i class="material-icons ">schedule</i>{{post?.created_date | date : 'medium' }}</p>
                 </div>
               </div>
               <div class="col-md-12 innercard ">
@@ -275,7 +276,7 @@
                 </div>
                 <div class="col-md-4 text-right ">
                   <p class="small font-weight-bold">
-                    <i class="material-icons ">schedule</i>{{comment.created_date}}</p>
+                    <i class="material-icons ">schedule</i>{{comment.created_date | date : 'medium'}}</p>
                 </div>
               </div>
               <div class="col-md-12 innercard ">
@@ -287,29 +288,30 @@
           </div>
 
 
-
           <!-- all comments block-->
 
         </li>
-        <br>
+
 
         <!--TASK post-->
-        <!-- <li class="list-group-item">
+        <li class="list-group-item" *ngIf="post.type== 'task'">
           <div class="card pink-border">
             <div class="card-block ">
               <div class="row card-title ">
                 <div class="col-md-1 ">
-                  <img src="assets/images/user.png" class="feed-avatar ">
+                  <img src="assets/images/user.png" class="feed-avatar">
                 </div>
                 <div class="col-md-7 ">
                   <h6>{{post._posted_by?.first_name}} {{post._posted_by?.last_name}}
                     <br>
-                    <span class="pink"> assigned to you - due on 26th May.</span>
+                    <span class="pink"> Assigned to {{post.task._assigned_to?.first_name}} {{post.task._assigned_to?.last_name}} - due on {{post.task?.due_date|
+                      date}}
+                    </span>
                   </h6>
                 </div>
                 <div class="col-md-4 text-right ">
                   <p class="small font-weight-bold ">
-                    <i class="material-icons ">schedule</i>April 12, 12:24 PM</p>
+                    <i class="material-icons ">schedule</i>{{post?.created_date | date : 'medium'}}</p>
                 </div>
               </div>
               <div class="col-md-12 innercard ">
@@ -326,7 +328,7 @@
                     <span>{{post?.comments_count}} Comments</span>
                   </div>
                   <div class="col-md-6 text-right">
-                    <span (click)="showcomments=!showcomments">
+                    <span (click)="showComments.id=post._id;showComments.task=!showComments.task;">
                       <i class="material-icons ">mode_comment</i>
                     </span>
                     <span>
@@ -341,10 +343,65 @@
             </div>
           </div>
 
-        </li> -->
+
+          <!-- post comment block make this invisible -->
+
+
+          <div *ngIf="showComments.id == post._id && showComments.task">
+            <div class="card muted">
+              <form [formGroup]="commentForm">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group ">
+                      <h6>Add a comment</h6>
+                      <textarea class="form-control" id="post-content" rows="3" [(ngModel)]="comment.content" name="commentContent" formControlName="commentContent"></textarea>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row ">
+                  <div class="col-md-12 text-right ">
+                    <button type="button " name="button " class="btn btn-default ">Cancel</button>
+                    <button [disabled]="commentForm.invalid" type="button " name="button" (click)="onAddNewComment(post._id)" class="btn btn-primary">Comment</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- post comment block-->
+
+          <!-- all comments block-->
+
+          <div class="card muted comment" *ngFor="let comment of post.comments">
+            <div class="card-block">
+              <div class="row card-title ">
+                <div class="col-md-1">
+                  <img src="assets/images/user.png" class="feed-avatar">
+                </div>
+                <div class="col-md-7 ">
+                  <h6>{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}} replied</h6>
+                </div>
+                <div class="col-md-4 text-right ">
+                  <p class="small font-weight-bold">
+                    <i class="material-icons ">schedule</i>{{comment.created_date | date : 'medium'}}</p>
+                </div>
+              </div>
+              <div class="col-md-12 innercard ">
+                <p class="card-text ">
+                  {{comment.content}}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- all comments block-->
+
+        </li>
+        <br>
 
         <!--EVENT post-->
-        <!--   <li class="list-group-item" *ngIf="post.type== 'normal'">
+        <li class="list-group-item">
           <div class="card blue-border">
             <div class="card-block ">
               <div class="row card-title ">
@@ -353,20 +410,22 @@
                 </div>
                 <div class="col-md-7 ">
                   <h6>{{post._posted_by?.first_name}} {{post._posted_by?.last_name}}</h6>
+                  <span class="pink"> Assigned to {{post.event._assigned_to?.length}} Group Members
+                  </span>
                 </div>
+
                 <div class="col-md-4 text-right ">
                   <p class="small font-weight-bold ">
-                    <i class="material-icons ">schedule</i>April 12, 12:24 PM</p>
+                    <i class="material-icons ">schedule</i>{{post?.created_date| date : 'medium'}}</p>
                 </div>
               </div>
               <div class="col-md-12 innercard ">
                 <div class="row">
-                  <div class="col-md-2 date blue"> 20 April
+                  <div class="col-md-2 date blue"> {{post.event.due_date| date }}
                     <br>
-                    <span>12:30</span>
+                    <span>{{post.event?.due_time}}</span>
                   </div>
-                  <div class="col-md-9 event-title">Team meeting in room 3 to discuss the new design Team meeting in room 3 to discuss the new design
-                  </div>
+                  <div class="col-md-9 event-title"> {{post.content}} </div>
                 </div>
               </div>
 
@@ -378,7 +437,7 @@
                     <span>{{post?.comments_count}} Comments</span>
                   </div>
                   <div class="col-md-6 text-right">
-                    <span>
+                    <span (click)="showComments.id=post._id;showComments.event=!showComments.event;">
                       <i class="material-icons ">mode_comment</i>
                     </span>
                     <span>
@@ -392,7 +451,60 @@
               </div>
             </div>
           </div>
-        </li> -->
+
+
+          <!-- post comment block make this invisible -->
+
+
+          <div *ngIf="showComments.id == post._id && showComments.event">
+            <div class="card muted">
+              <form [formGroup]="commentForm">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group ">
+                      <h6>Add a comment</h6>
+                      <textarea class="form-control" id="post-content" rows="3" [(ngModel)]="comment.content" name="commentContent" formControlName="commentContent"></textarea>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row ">
+                  <div class="col-md-12 text-right ">
+                    <button type="button " name="button " class="btn btn-default ">Cancel</button>
+                    <button [disabled]="commentForm.invalid" type="button " name="button" (click)="onAddNewComment(post._id)" class="btn btn-primary">Comment</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- post comment block-->
+
+          <!-- all comments block-->
+
+          <div class="card muted comment" *ngFor="let comment of post.comments">
+            <div class="card-block">
+              <div class="row card-title ">
+                <div class="col-md-1">
+                  <img src="assets/images/user.png" class="feed-avatar">
+                </div>
+                <div class="col-md-7 ">
+                  <h6>{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}} replied</h6>
+                </div>
+                <div class="col-md-4 text-right ">
+                  <p class="small font-weight-bold">
+                    <i class="material-icons ">schedule</i>{{comment.created_date | date : 'medium'}}</p>
+                </div>
+              </div>
+              <div class="col-md-12 innercard ">
+                <p class="card-text ">
+                  {{comment.content}}
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </li>
 
       </ul>
 

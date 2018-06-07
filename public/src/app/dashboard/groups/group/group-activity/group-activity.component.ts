@@ -65,7 +65,7 @@ export class GroupActivityComponent implements OnInit {
     displayKey: 'description', // if objects array passed which key to be displayed defaults to description,
     search: false // enables the search plugin to search in the list
   };
-  groupUsersList: any = [];
+  groupUsersList: any = new Array();
   selectedGroupUsers = [];
   settings = {};
 
@@ -98,10 +98,10 @@ export class GroupActivityComponent implements OnInit {
       unSelectAllText: 'UnSelect All',
       classes: 'myclass custom-class',
       primaryKey: '_id',
-      // labelKey: 'first_name',
+      labelKey: 'full_name',
       noDataLabel: 'Search Members...',
       enableSearchFilter: true,
-      // searchBy: ['first_name', 'capital']
+      searchBy: ['full_name', 'capital']
 
 
     };
@@ -131,14 +131,14 @@ export class GroupActivityComponent implements OnInit {
   }
 
   onAddNewComment(post_id) {
-    console.log('post._id: ', post_id);
+    // console.log('post._id: ', post_id);
 
     this.comment.post_id = post_id;
     this.comment._commented_by = this.user_data.user_id;
 
     this.postService.addNewComment(this.comment)
       .subscribe((res) => {
-
+        this.commentForm.reset();
         this.loadGroupPosts();
 
       }, (err) => {
@@ -217,9 +217,84 @@ export class GroupActivityComponent implements OnInit {
 
   addNewEventPost() {
 
+    const post = {
+      content: this.post.content,
+      type: this.post.type,
+      _posted_by: this.user_data.user_id,
+      _group: this.group_id,
+      event: {
+        due_date: new Date(this.due_date),
+        due_time: this.due_time,
+        _assigned_to: this.selectedGroupUsers
+      }
+
+    };
+    this.processing = true;
+    this.disblePostForm();
+    this.postService.addNewEventPost(post)
+      .subscribe((res) => {
+        this.processing = false;
+        this.enablePostForm();
+        this.postForm.reset();
+        this.alert.class = 'success';
+        this._message.next(res['message']);
+        // console.log('Normal post response: ', res);
+        this.loadGroupPosts();
+
+      }, (err) => {
+        this.processing = false;
+        this.alert.class = 'danger';
+        this.enablePostForm();
+
+        if (err.status) {
+          this._message.next(err.error.message);
+        } else {
+          this._message.next('Error! either server is down or no internet connection');
+        }
+
+      });
+
+
   }
 
   addNewTaskPost() {
+    console.log('Inside addNewTaskPost');
+
+    const post = {
+      content: this.post.content,
+      type: this.post.type,
+      _posted_by: this.user_data.user_id,
+      _group: this.group_id,
+      task: {
+        due_date: new Date(this.due_date),
+        _assigned_to: this.selectedGroupUsers[0]._id
+      }
+
+    };
+    this.processing = true;
+    this.disblePostForm();
+    this.postService.addNewTaskPost(post)
+      .subscribe((res) => {
+        this.processing = false;
+        this.enablePostForm();
+        this.postForm.reset();
+        this.alert.class = 'success';
+        this._message.next(res['message']);
+        // console.log('Normal post response: ', res);
+        this.loadGroupPosts();
+
+      }, (err) => {
+        this.processing = false;
+        this.alert.class = 'danger';
+        this.enablePostForm();
+
+        if (err.status) {
+          this._message.next(err.error.message);
+        } else {
+          this._message.next('Error! either server is down or no internet connection');
+        }
+
+      });
 
   }
   loadGroupPosts() {
@@ -240,15 +315,39 @@ export class GroupActivityComponent implements OnInit {
     this.post.type = type;
     this.due_date = 'Due Date';
     this.due_time = 'Due Time';
+    switch (this.post.type) {
+      case 'event':
+        this.settings = {
+          text: 'Select Group Members',
+          selectAllText: 'Select All',
+          unSelectAllText: 'UnSelect All',
+          classes: 'myclass custom-class',
+          primaryKey: '_id',
+          labelKey: 'full_name',
+          noDataLabel: 'Search Members...',
+          enableSearchFilter: true,
+          searchBy: ['full_name', 'capital']
+        };
+        break;
+      case 'task':
+        this.settings = {
+          text: 'Select Group Members',
+          classes: 'myclass custom-class',
+          singleSelection: true,
+          primaryKey: '_id',
+          labelKey: 'full_name',
+          noDataLabel: 'Search Members...',
+          enableSearchFilter: true,
+          searchBy: ['full_name', 'capital']
+        };
+        break;
+
+      default:
+        break;
+    }
     // console.log('post type: ', this.post.type);
 
   }
-
-  onDateSelcted() {
-    const temp = this.modal_date;
-    this.due_date = temp.day.toString() + '-' + temp.month.toString() + '-' + temp.year.toString();
-  }
-
 
 
   openTimePicker(content) {
@@ -266,7 +365,8 @@ export class GroupActivityComponent implements OnInit {
     const temp = this.modal_date;
     this.due_date = temp.day.toString() + '-' + temp.month.toString() + '-' + temp.year.toString();
 
-    // console.log('oneDateSelected');
+    // console.log('oneDateSelected temp', temp);
+    console.log('onDateSelected', this.due_date);
 
   }
 
@@ -279,22 +379,24 @@ export class GroupActivityComponent implements OnInit {
   }
 
   onTimeSelected() {
-    // console.log('on time selection');
-    // console.log(this.modal_time);
+    console.log('on time selection');
+    console.log(this.modal_time);
 
     this.due_time = this.modal_time.hour.toString() + ':' + this.modal_time.minute.toString();
+    console.log(' this.due_time', this.due_time);
+
   }
 
   onSearch(evt: any) {
     console.log(evt.target.value);
     this.groupUsersList = [];
-    this.groupService.searchGroupUsers(this.group_id)
+    this.groupService.searchGroupUsers(this.group_id, evt.target.value)
       .subscribe((res) => {
         // console.log('workspace users: ', res);
-        console.log('Group Users: ', res);
+        // console.log('Group Users: ', res);
 
-        this.groupUsersList = res['group'][0]['_members'];
-        // this.groupUsersList = res['users'];
+        this.groupUsersList = res['users'];
+
       }, (err) => {
 
       });

@@ -35,5 +35,29 @@ module.exports = {
                     err
                 });
             })
-    }
+    },
+    searchWorkspaceUsers(req, res, next) {
+        const query = req.params.query;
+        const workspace = req.params.workspace_id;
+        // let regex = new RegExp(query, 'i');
+        User.find({
+                _workspace: workspace,
+                full_name: {
+                    $regex: new RegExp(query, 'i')
+                }
+            })
+            .limit(10)
+            .then((users) => {
+                res.status(200).json({
+                    message: "search successfull!",
+                    users: users
+                });
+            })
+            .catch((err) => {
+                res.status(500).json({
+                    message: "Error! something went wrong | internal server error",
+                    err
+                });
+            })
+    },
 }

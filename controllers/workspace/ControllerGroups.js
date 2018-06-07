@@ -1,8 +1,7 @@
 const Group = require("../../models/group");
+const User = require("../../models/user");
 
 module.exports = {
-
-
 
     createNewGroup(req, res, next) {
         let new_group = req.body;
@@ -20,10 +19,33 @@ module.exports = {
                 } else {
                     Group.create(new_group)
                         .then((group) => {
-                            res.status(200).json({
-                                message: "Group Created Successfully!",
-                                group: group
-                            });
+
+                            User.findByIdAndUpdate({
+                                    _id: req.body._admins,
+                                    _workspace: req.body._workspace
+                                }, {
+                                    $push: {
+                                        _groups: group
+                                    }
+                                }, {
+                                    new: true
+                                })
+                                .then((updated_user) => {
+
+                                    res.status(200).json({
+                                        message: "Group Created Successfully!",
+                                        group: group,
+                                        user: updated_user
+                                    });
+                                })
+                                // user updation error 
+                                .catch((err) => {
+                                    res.status(500).json({
+                                        message: "something went wrong | internal server error",
+                                        err
+                                    });
+                                })
+
                         })
                         // group creating error
                         .catch((err) => {

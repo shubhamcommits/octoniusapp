@@ -14,8 +14,8 @@ router.use(middleware_auth.isLoggedIn);
 
 
 // Group Routes 
-router.get('/searchGroupUsers/:group_id', controller_group.searchGroupUsers);
-router.get('/searchWorkspaceUsers/:workspace_id/:key_word', controller_group.searchWorkspaceUsers);
+// router.get('/searchGroupUsers/:group_id', controller_group.searchGroupUsers);
+router.get('/searchGroupUsers/:group_id/:query', controller_group.searchGroupUsers);
 router.get('/:group_id', controller_group.getUserGroup);
 router.post('/addNewUsers', controller_group.addNewUsersInGroup);
 
