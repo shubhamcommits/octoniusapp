@@ -287,14 +287,13 @@
             </div>
           </div>
 
-
           <!-- all comments block-->
 
         </li>
 
-
+        <br>
         <!--TASK post-->
-        <li class="list-group-item" *ngIf="post.type== 'task'">
+        <li class="list-group-item" *ngIf="post.type=='task'">
           <div class="card pink-border">
             <div class="card-block ">
               <div class="row card-title ">
@@ -398,10 +397,10 @@
           <!-- all comments block-->
 
         </li>
-        <br>
 
+        <br>
         <!--EVENT post-->
-        <li class="list-group-item">
+        <li class="list-group-item" *ngIf="post.type=='event'">
           <div class="card blue-border">
             <div class="card-block ">
               <div class="row card-title ">
@@ -503,9 +502,7 @@
               </div>
             </div>
           </div>
-
         </li>
-
       </ul>
 
     </div>

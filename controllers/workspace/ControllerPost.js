@@ -51,7 +51,6 @@
         },
         addCommentOnPost(req, res, next) {
 
-
             let post_id = req.body.post_id;
             let _commented_by = req.body._commented_by;
             let content = req.body.content;
@@ -109,11 +108,44 @@
                     message: "posts found successfully!",
                     posts: posts
                 }))
-                .catch((err) => res.status(500).json({
-                    message: "something went wrong | internal server error ",
-                    err
-                }))
+                .catch((err) => {
+                    res.status(500).json({
+                        message: "something went wrong | internal server error ",
+                        err
+                    })
+                })
+        },
 
+        likePost(req, res, next) {
+            let post_id = req.body.post_id;
+            let liked_by = req.body.post_id;
+
+            Post.findByIdAndRemove({
+                    _id: post_id
+                }, {
+                    $push: {
+                        _liked_by: liked_by
+                    },
+                    $inc: {
+                        likes_count: 1
+                    }
+                }, {
+                    new: true
+                })
+                .then((updated_post) => {
+                    res.status(200).json({
+                        message: "Post has been liked Successflly!",
+                        post: updated_post
+                    })
+
+                })
+                .catch((err) => {
+                    res.status(500).json({
+                        message: "something went wrong | internal server error ",
+                        err
+                    })
+
+                })
         }
 
 
