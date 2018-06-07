@@ -6,9 +6,7 @@
           <h6 class="card-title">Group Info </h6>
           <hr/>
           <p class="card-text">{{groupDataService.group?._admins?.length + groupDataService.group?._members?.length}} Members</p>
-          <!--        <p class="card-text">125 Activities</p>
-          <p class="card-text">24 Followers</p>
-   -->
+
         </div>
       </div>
     </div>
@@ -18,7 +16,7 @@
     <!-- postbox-->
 
 
-    <div class="card">
+    <div class="card" style="margin-bottom: 10px">
       <div class="card-block">
         <form [formGroup]="postForm">
           <div class="row card-title">
@@ -108,7 +106,7 @@
 
       <ng-template style="margin-top: 10px" #dateContent let-c="close" let-d="dismiss">
 
-        <div style="margin-left: 20px;" class="modal-header">
+        <div style="width:100%" class="modal-header">
           <h4 class="modal-title">Select Due Date</h4>
           <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
             <span aria-hidden="true">&times;</span>
@@ -170,7 +168,7 @@
             <c-item>
               <ng-template let-item="item">
                 <label style="color: #333;width: 150px;">{{item.full_name }}</label>
-                <!--                 <img [src]="item.flag" style="width: 30px; border: 1px solid #efefef;margin-right: 0px;"/> -->
+                <!--  <img [src]="item.flag" style="width: 30px; border: 1px solid #efefef;margin-right: 0px;"/> -->
 
                 <label>{{item.capital}}</label>
               </ng-template>
@@ -291,7 +289,7 @@
 
         </li>
 
-        <br>
+  
         <!--TASK post-->
         <li class="list-group-item" *ngIf="post.type=='task'">
           <div class="card pink-border">
@@ -398,7 +396,7 @@
 
         </li>
 
-        <br>
+    
         <!--EVENT post-->
         <li class="list-group-item" *ngIf="post.type=='event'">
           <div class="card blue-border">
