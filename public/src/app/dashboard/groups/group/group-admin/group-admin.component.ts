@@ -35,7 +35,7 @@ export class GroupAdminComponent implements OnInit {
     search: true // enables the search plugin to search in the list
   };
   dataModel;
-  constructor(private groupService: GroupService, private groupDataService: GroupDataService) { }
+  constructor(private groupService: GroupService, public groupDataService: GroupDataService) { }
 
   ngOnInit() {
     this.user_data = JSON.parse(localStorage.getItem('user'));

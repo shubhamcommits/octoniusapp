@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class GroupDataService {
-  private _groupId;
-  private _group: any;
+  public _groupId;
+  public _group: any;
   constructor() { }
 
   set groupId(groupId) {

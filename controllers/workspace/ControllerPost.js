@@ -118,13 +118,13 @@
 
         likePost(req, res, next) {
             let post_id = req.body.post_id;
-            let liked_by = req.body.post_id;
+            let user_id = req.body.user_id;
 
             Post.findByIdAndRemove({
                     _id: post_id
                 }, {
                     $push: {
-                        _liked_by: liked_by
+                        _liked_by: user_id
                     },
                     $inc: {
                         likes_count: 1
@@ -146,6 +146,37 @@
                     })
 
                 })
+        },
+        unlikePost(req, res, next) {
+
+            let post_id = req.params.post_id;
+            let user_id = req.body.user_id;
+
+
+            Post.findByIdAndUpdate({
+                _id: post_id
+            }, {
+                $pull: {
+                    liked_by: {
+                        user_id
+                    },
+                },
+                $inc: {
+                    likes_count: -1
+                }
+            }).then((updated_post) => {
+                res.status(200).json({
+                    message: "post successfully unliked",
+                    post: updated_post
+                });
+
+            }).catch((err) => {
+                res.status(500).json({
+                    message: "something went wrong on server | mongdb server error",
+                    err
+                });
+            })
+
         }
 
 

@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class GroupsService {
 
   BASE_URL = 'http://localhost:3000';
-  BASE_API_URL = 'http://localhost:3000/api';
 
+  BASE_API_URL = environment.BASE_API_URL;
   constructor(private _http: HttpClient) { }
 
   createNewGroup(group) {

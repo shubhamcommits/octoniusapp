@@ -111,13 +111,13 @@ export class AdminMembersComponent implements OnInit {
       });
   }
   deleteWorkspaceUser(user_id) {
-     this.modalReference.close();
-     this.openVerticallyCentered(this.content);
+    this.modalReference.close();
+    this.openVerticallyCentered(this.content);
 
-     setTimeout(() => {
+    setTimeout(() => {
       this.modalReference.close();
 
-     }, 2000);
+    }, 2000);
 
   /*   console.log('Role: ', role, 'user_id', user_id);
     const data = {

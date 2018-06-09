@@ -70,7 +70,7 @@ export class GroupActivityComponent implements OnInit {
   settings = {};
 
   constructor(private _activatedRoute: ActivatedRoute,
-    private groupDataService: GroupDataService,
+    public groupDataService: GroupDataService,
     private router: Router, private groupService: GroupService,
     private modalService: NgbModal, private postService: PostService) { }
 

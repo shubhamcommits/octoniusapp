@@ -12,7 +12,7 @@ export class GroupHeaderComponent implements OnInit {
   group;
   group_id;
   constructor(private groupService: GroupService,
-    private groupDataService: GroupDataService) { }
+    public groupDataService: GroupDataService) { }
 
   ngOnInit() {
 

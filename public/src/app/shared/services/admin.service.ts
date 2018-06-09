@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from '../../../environments/environment';
 @Injectable()
 export class AdminService {
-  BASE_URL = 'http://localhost:3000';
-  BASE_API_URL = 'http://localhost:3000/api';
+
+  BASE_API_URL = environment.BASE_API_URL;
 
   constructor(private _http: HttpClient) { }
 
@@ -18,6 +19,5 @@ export class AdminService {
 
   updateUserRole(data) {
     return this._http.put<any>(this.BASE_API_URL + '/workspace/updateUserRole', data);
-
   }
 }

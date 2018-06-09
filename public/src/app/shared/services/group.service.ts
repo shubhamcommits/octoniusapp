@@ -7,12 +7,14 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
+import { environment } from '../../../environments/environment';
+
 @Injectable()
 export class GroupService {
 
 
   BASE_URL = 'http://localhost:3000';
-  BASE_API_URL = 'http://localhost:3000/api';
+  BASE_API_URL = environment.BASE_API_URL;
 
   constructor(private _http: HttpClient) { }
 

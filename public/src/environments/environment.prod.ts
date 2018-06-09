@@ -1,3 +1,5 @@
 export const environment = {
-  production: true
+  production: true,
+  // BASE_API_URL: 'http://13.126.127.51/api'
+  BASE_API_URL: 'http://13.126.127.51/api'
 };
