@@ -44,7 +44,7 @@ app.use(express.static(__dirname + '/public/dist'));
 
 //Routes which should handle request
 app.all("/", (req, res, next) => {
-      res.sendfile(path.resolve("./public/dist/index.html"));
+      return res.sendfile(path.join(__dirname, ("./public/dist/index.html")));
 });
 
 
