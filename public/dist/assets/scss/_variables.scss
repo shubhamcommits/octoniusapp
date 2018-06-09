@@ -1,0 +1,99 @@
+@import '../../../node_modules/bootstrap/scss/bootstrap';
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,600|Roboto:300,400,700');
+
+//font override
+
+$font-family-sans-serif: 'Poppins', sans-serif;
+$font-family-monospace: 'Roboto', sans-serif;
+$font-family-base: 'Roboto', sans-serif;
+$headings-font-family: 'Poppins', sans-serif;
+$headings-font-weight:  400 !important;
+
+
+// variables
+$brand-primary: #005FD5;
+$card-radius: 0px;
+$border-gray: 1px solid #D9D7DA;
+$dark-text: #242D3A;
+$poppins: 'Poppins', sans-serif;
+$roboto:'Roboto', sans-serif;
+$border-color:#E4EDF8;
+$pink:#9D85D2;
+
+.pink{
+  color:$pink;
+}
+.pink-border{
+  border: 3px solid $pink !important;
+}
+
+.gray-border{
+  box-shadow: 0 3px 5px -1px rgba(0,0,0,.2);
+}
+
+.blue{
+  color:$brand-primary;
+}
+
+.blue-border{
+  border: 3px solid $brand-primary !important;
+}
+.bluebg{
+  background-color: $brand-primary !important;
+  //color: white !important
+}
+
+.comment{
+  background: #E4EDF8 !important;
+}
+
+// shadows
+$card-shadow: 0 3px 5px -1px rgba(0,0,0,.2);
+
+.card-tile{
+  padding: 20px;
+  background: #fff;
+  margin-bottom: 20px;
+}
+
+// global stuff
+
+hr{
+  border-top: 1px solid #E4EDF8;
+}
+
+.icon-octo-logo{
+  color: #fff;
+  margin-right: 30px;
+}
+h1{
+  margin-bottom: 100px;
+}
+
+.white{
+  color:#fff !important;
+  font-family: $headings-font-family;
+  font-weight: 600;
+}
+
+.welcome{
+  background: #005FD5;
+  height: stretch;
+@include media-breakpoint-down(sm) {
+  height: auto !important;
+}
+}
+
+.btn-outline-blue{
+  background: #fff !important;
+  color: $brand-primary;
+}
+
+
+//date picker fix
+[_nghost-c6], .ngb-dp-month[_ngcontent-c6]{
+  width: 100%;
+}
+.ngb-dp-day[_ngcontent-c11], .ngb-dp-weekday[_ngcontent-c11], .ngb-dp-week-number[_ngcontent-c11]{
+  margin: 0 1rem;
+}
