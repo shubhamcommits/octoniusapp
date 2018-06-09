@@ -288,6 +288,7 @@ module.exports = {
       ===================================================*/
     checkWorkspaceName(req, res, next) {
         let workspace_data = req.body;
+        console.log("============checking worksapce Name Availablity===========");
         console.log(workspace_data);
 
         Workspace.findOne({
@@ -318,7 +319,9 @@ module.exports = {
     // creating new workspace and new user with owner rights
     createNewWorkSpace(req, res, next) {
 
-        console.log("--------Creating New Workspace Api--------");
+        console.log("============Creating New Workspace===========");
+        console.log(req.body);
+
         // generating hash password fist
         helper_password.encryptPassword(req.body.owner_password)
             .then((hashPassword) => {
@@ -401,7 +404,7 @@ module.exports = {
                                                     // auth creation error
                                                     .catch((err) => {
                                                         res.status(500).json({
-                                                            message: "something went wrong | internal server error",
+                                                            message: "something went wrong auth creation error | internal server error",
                                                             error: err
                                                         });
                                                     })
@@ -412,7 +415,7 @@ module.exports = {
                                             .catch((err) => {
                                                 res.status(500).json({
                                                     error: err,
-                                                    message: "something went wrong | internal server error occured!"
+                                                    message: "something went wrong group creation error | internal server error occured!"
                                                 })
                                             })
 
@@ -420,7 +423,7 @@ module.exports = {
                                     // workspace update error
                                     .catch((error) => {
                                         res.status(500).json({
-                                            message: "something went wrong | internal server error occured",
+                                            message: "something went wrong workspace update error | internal server error occured",
                                             error: error
                                         });
                                     })
@@ -428,7 +431,7 @@ module.exports = {
                             // user creation error 
                             .catch((err) => {
                                 res.status(500).json({
-                                    message: "something went wrong | internal server error occured",
+                                    message: "something went wrong user creation error  | internal server error occured",
                                     error: err
                                 });
                             });
@@ -437,7 +440,7 @@ module.exports = {
                     // workspace creation error
                     .catch((err) => {
                         res.status(500).json({
-                            message: "something went wrong | internal server error occured",
+                            message: "something went wrong  workspace creation error | internal server error occured",
                             error: err
                         });
                     });
