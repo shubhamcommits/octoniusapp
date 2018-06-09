@@ -34,7 +34,7 @@ app.use(morgan("dev"));
 
 //file upload middleware
 app.use(fileUpload());
-app.use('/uploads', express.static('/home/ubuntu/octonius/uploads'));
+// app.use('/uploads', express.static('/home/ubuntu/octonius/uploads'));
 
 
 // staic folder
@@ -44,7 +44,7 @@ app.use(express.static(__dirname + '/public/dist'));
 
 //Routes which should handle request
 app.all("/", (req, res, next) => {
-      res.sendfile(path.resolve("./public/dest/index.html"));
+      res.sendfile(path.resolve("./public/dist/index.html"));
 });
 
 
