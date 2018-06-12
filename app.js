@@ -38,13 +38,13 @@ app.use(fileUpload());
 
 
 // staic folder
-app.use(express.static(__dirname + './public/dist'));
+app.use(express.static(__dirname + '/public/dist'));
 
 
 
 //Routes which should handle request
 app.get("/", (req, res, next) => {
-      res.sendFile(__dirname + './public/dist/index.html');
+      res.sendFile(__dirname + '/public/dist/index.html');
 });
 
 
