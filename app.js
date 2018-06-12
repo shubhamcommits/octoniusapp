@@ -38,7 +38,7 @@ app.use(fileUpload());
 
 
 // staic folder
-app.use(express.static('/home/ubuntu/octonius/public'));
+app.use(express.static('/home/ubuntu/octonius/public/dist'));
 
 
 
