@@ -51,9 +51,13 @@ export class AdminMembersComponent implements OnInit {
     this._workspaceService.getWorkspace(this.user_data.workspace)
       .subscribe((res) => {
         this.workspace = res.workspace;
+        console.log('loadworkspace res: ', res);
+
       }, (err) => {
 
         this.alert.class = 'alert alert-danger';
+        console.log('err: ', err);
+
         if (err.status === 401) {
           this.alert.message = err.error.message;
           setTimeout(() => {

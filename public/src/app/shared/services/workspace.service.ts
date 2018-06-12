@@ -6,10 +6,10 @@ import { environment } from '../../../environments/environment';
 export class WorkspaceService {
 
   constructor(private _http: HttpClient) { }
-  BASE_URL = this.BASE_URL;
+  BASE_API_URL = environment.BASE_API_URL;
   getWorkspace(workspace) {
     console.log('workapce insdie workspace service : ', workspace);
 
-    return this._http.get<any>(this.BASE_URL + '/workspace/' + workspace._id);
+    return this._http.get<any>(this.BASE_API_URL + '/workspace/' + workspace._id);
   }
 }

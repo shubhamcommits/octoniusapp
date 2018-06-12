@@ -74,9 +74,9 @@ export class GroupsComponent implements OnInit {
   onCreateNewGroup() {
     const new_group = {
       group_name: this.group.group_name,
-      _workspace: this.workspace._id,
-      _admins: this.user._id,
-      workspace_name: this.workspace.workspace_name
+      _workspace: this.user_data.workspace._id,
+      _admins: this.user_data.user_id,
+      workspace_name: this.user_data.workspace.workspace_name
     };
 
     this._groupsService.createNewGroup(new_group)

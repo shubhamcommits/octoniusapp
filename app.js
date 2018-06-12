@@ -14,8 +14,8 @@ const apis_user = require('./routes/user');
 const apis_post = require('./routes/post');
 const apis_group = require('./routes/group');
 
-//database and process envirnment configurations
-// require('./nodemon_config')
+//database and local envirnment configurations
+require('./nodemon_config')
 require('./config/db_connection')
 
 

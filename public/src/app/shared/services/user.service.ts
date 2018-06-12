@@ -10,7 +10,6 @@ export class UserService {
   workspace: Workspace;
   user: User;
 
-  BASE_URL = 'http://localhost:3000';
   BASE_API_URL = environment.BASE_API_URL;
 
   constructor(private _http: HttpClient, private _authService: AuthService) { }

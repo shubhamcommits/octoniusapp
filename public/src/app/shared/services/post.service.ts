@@ -5,7 +5,6 @@ import { environment } from '../../../environments/environment';
 @Injectable()
 export class PostService {
 
-  BASE_URL = 'http://localhost:3000';
   BASE_API_URL = environment.BASE_API_URL;
 
 

@@ -13,7 +13,6 @@ import { environment } from '../../../environments/environment';
 export class GroupService {
 
 
-  BASE_URL = 'http://localhost:3000';
   BASE_API_URL = environment.BASE_API_URL;
 
   constructor(private _http: HttpClient) { }
