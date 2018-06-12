@@ -38,7 +38,7 @@ app.use(fileUpload());
 
 
 // staic folder
-app.use(express.static(__dirname + ('/public/dist')));
+app.use(express.static(__dirname + './public/dist'));
 
 
 
