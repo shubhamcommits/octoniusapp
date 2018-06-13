@@ -38,13 +38,19 @@ app.use(fileUpload());
 
 
 // staic folder
-app.use(express.static('/home/ubuntu/octonius/public/dist'));
+app.use(express.static(path.join(__dirname, 'public/dist')));
+
 
 
 
 //Routes which should handle request
 app.get('/', function (req, res, next) {
-      res.sendFile('/home/ubuntu/octonius//public/dist/index.html');
+    /*   console.log("__dirname: ", __dirname);
+      console.log("__dirname: ", __dirname);
+      console.log("__dirname: ", __dirname);
+ */
+      res.sendFile(path.join(__dirname, 'public/dist/index.html'));
+
 });
 
 
