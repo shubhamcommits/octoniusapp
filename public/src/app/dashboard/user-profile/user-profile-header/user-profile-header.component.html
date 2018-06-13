@@ -5,12 +5,12 @@
       <h2>Mara max</h2>
       <ul class="nav">
         <li class="nav-item">
-          <a class="nav-link active" routerLink="/dashboard/profile/profile">Activity
+          <a class="nav-link active" routerLink="/dashboard/profile/profile">Profile
             <span class="sr-only">(current)</span>
           </a>
         </li>
 
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a class="nav-link">Files
             <span class="sr-only">(current)</span>
           </a>
@@ -20,19 +20,11 @@
           <a class="nav-link">Calendar
             <span class="sr-only">(current)</span>
           </a>
-        </li>
+        </li> -->
 
-        <li class="nav-item">
-          <a class="nav-link">Members
-            <span class="sr-only">(current)</span>
-          </a>
-        </li>
+    
 
-        <li class="nav-item">
-          <a class="nav-link">Admin
-            <span class="sr-only">(current)</span>
-          </a>
-        </li>
+     
       </ul>
     </div>
 
@@ -56,7 +48,11 @@
       <!--         <ngb-alert *ngIf="alert.message" [type]="alert.class" (close)="successMessage = null">{{alert.message}}</ngb-alert>
      -->
 
-      <div class="form-group">
+     <div class="form-group">
+      <img src="http://via.placeholder.com/100x100" alt="" style="width: 100px; height: 100px">
+     <button class="btn btn-outline-secondary">Change image</button>
+    </div> 
+     <div class="form-group">
         <label for="user_phone">Phone</label>
         <input type="tel" class="form-control" id="user_phone" [(ngModel)]="user.phone" placeholder="0421231231" name="phone">
       </div>
@@ -76,7 +72,7 @@
           <input id="dateOfBirth" class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker #dp="ngbDatepicker">
           <div class="input-group-append">
             <button class="btn btn-outline-secondary" (click)="dp.toggle()" type="button">
-              <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;" />
+             <i class="material-icons">event</i>
             </button>
           </div>
         </div>
@@ -93,7 +89,7 @@
 
     <div class="modal-footer">
       <button type="button" class="btn btn-danger" (click)="deleteWorkspaceUser('as')">Save</button>
-      <button type="button" class="btn btn-primary" (click)="c('Close click')">Cancle</button>
+      <button type="button" class="btn btn-primary" (click)="c('Close click')">Cancel</button>
     </div>
 
   </ng-template>
