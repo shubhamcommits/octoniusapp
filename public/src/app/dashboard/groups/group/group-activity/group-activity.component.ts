@@ -44,6 +44,8 @@ export class GroupActivityComponent implements OnInit {
   modal_time = { hour: 13, minute: 30 };
   due_date = 'Due Date';
   due_time = 'Due Time';
+  assignment = 'UnAssigned';
+  selected_date: Date;
 
   showComments = {
     id: '',
@@ -223,7 +225,7 @@ export class GroupActivityComponent implements OnInit {
       _posted_by: this.user_data.user_id,
       _group: this.group_id,
       event: {
-        due_date: new Date(this.due_date),
+        due_date: this.selected_date,
         due_time: this.due_time,
         _assigned_to: this.selectedGroupUsers
       }
@@ -238,6 +240,7 @@ export class GroupActivityComponent implements OnInit {
         this.postForm.reset();
         this.alert.class = 'success';
         this._message.next(res['message']);
+        this.resetNewPostForm();
         // console.log('Normal post response: ', res);
         this.loadGroupPosts();
 
@@ -259,6 +262,7 @@ export class GroupActivityComponent implements OnInit {
 
   addNewTaskPost() {
     console.log('Inside addNewTaskPost');
+    console.log('this.due_date:', this.selected_date);
 
     const post = {
       content: this.post.content,
@@ -266,11 +270,15 @@ export class GroupActivityComponent implements OnInit {
       _posted_by: this.user_data.user_id,
       _group: this.group_id,
       task: {
-        due_date: new Date(this.due_date),
+        due_date: this.selected_date,
         _assigned_to: this.selectedGroupUsers[0]._id
       }
-
     };
+
+
+    // console.log('post: ', post);
+
+
     this.processing = true;
     this.disblePostForm();
     this.postService.addNewTaskPost(post)
@@ -280,6 +288,7 @@ export class GroupActivityComponent implements OnInit {
         this.postForm.reset();
         this.alert.class = 'success';
         this._message.next(res['message']);
+        this.resetNewPostForm();
         // console.log('Normal post response: ', res);
         this.loadGroupPosts();
 
@@ -296,6 +305,11 @@ export class GroupActivityComponent implements OnInit {
 
       });
 
+  }
+  resetNewPostForm() {
+    this.due_date = 'Due Date';
+    this.due_time = 'Due Time';
+    this.assignment = 'UnAssigned';
   }
   loadGroupPosts() {
 
@@ -364,9 +378,11 @@ export class GroupActivityComponent implements OnInit {
   onDateSelected() {
     const temp = this.modal_date;
     this.due_date = temp.day.toString() + '-' + temp.month.toString() + '-' + temp.year.toString();
+    this.selected_date = new Date(temp.year, temp.month, temp.day);
 
-    // console.log('oneDateSelected temp', temp);
-    console.log('onDateSelected', this.due_date);
+    console.log('selected date:', this.selected_date);
+    // console.log('oneDateSelected temp Date', new Date(temp.year, temp.month, temp.day));
+    // console.log('this.due_date', this.due_date);
 
   }
 
@@ -379,16 +395,16 @@ export class GroupActivityComponent implements OnInit {
   }
 
   onTimeSelected() {
-    console.log('on time selection');
-    console.log(this.modal_time);
+    // console.log('on time selection');
+    // console.log(this.modal_time);
 
     this.due_time = this.modal_time.hour.toString() + ':' + this.modal_time.minute.toString();
-    console.log(' this.due_time', this.due_time);
+    // console.log(' this.due_time', this.due_time);
 
   }
 
   onSearch(evt: any) {
-    console.log(evt.target.value);
+    // console.log(evt.target.value);
     this.groupUsersList = [];
     this.groupService.searchGroupUsers(this.group_id, evt.target.value)
       .subscribe((res) => {
@@ -404,18 +420,28 @@ export class GroupActivityComponent implements OnInit {
   }
 
   onItemSelect(item: any) {
-    console.log(item);
-    console.log('selected items: ', this.selectedGroupUsers);
+    // console.log(item);
+    // console.log('selected items: ', this.selectedGroupUsers);
+    if (this.selectedGroupUsers.length >= 1) {
+      this.assignment = 'Assigned';
+    }
   }
   OnItemDeSelect(item: any) {
-    console.log(item);
-    console.log(this.selectedGroupUsers);
+    // console.log(item);
+    // console.log(this.selectedGroupUsers);
+    if (this.selectedGroupUsers.length < 1) {
+      this.assignment = 'UnAssigned';
+    }
+
   }
   onSelectAll(items: any) {
-    console.log(items);
+    // console.log(items);
+    this.assignment = 'Assigned';
   }
   onDeSelectAll(items: any) {
-    console.log(items);
+    // console.log(items);
+    this.assignment = 'UnAssigned';
+
   }
 
 }

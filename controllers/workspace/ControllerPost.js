@@ -45,7 +45,7 @@
                     post: post
                 }))
                 .catch((err) => res.status(500).json({
-                    message: "something went wrong | internal server error ",
+                    message: "something went wrong | internal server error " + err.message,
                     err
                 }))
         },

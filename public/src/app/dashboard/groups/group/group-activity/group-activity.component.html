@@ -60,7 +60,7 @@
               <div class="col-md-12">
 
                 <button type="button " class="btn btn-outline-warning task" *ngIf="post.type == 'event' || post.type== 'task'" (click)="openAssignPicker(assignContent)">
-                  <i class="material-icons ">perm_identity</i> unassigned
+                  <i class="material-icons ">perm_identity</i> {{assignment}}
                 </button>
 
 
@@ -289,7 +289,7 @@
 
         </li>
 
-  
+
         <!--TASK post-->
         <li class="list-group-item" *ngIf="post.type=='task'">
           <div class="card pink-border">
@@ -301,8 +301,7 @@
                 <div class="col-md-7 ">
                   <h6>{{post._posted_by?.first_name}} {{post._posted_by?.last_name}}
                     <br>
-                    <span class="pink"> Assigned to {{post.task._assigned_to?.first_name}} {{post.task._assigned_to?.last_name}} - due on {{post.task?.due_date|
-                      date}}
+                    <span class="pink"> Assigned to {{post.task._assigned_to?.first_name}} {{post.task._assigned_to?.last_name}} - due on {{post.task?.due_date | date}}
                     </span>
                   </h6>
                 </div>
@@ -396,7 +395,7 @@
 
         </li>
 
-    
+
         <!--EVENT post-->
         <li class="list-group-item" *ngIf="post.type=='event'">
           <div class="card blue-border">

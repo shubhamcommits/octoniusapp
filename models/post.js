@@ -9,7 +9,6 @@ const PostSchema = new Schema({
 
     content: {
         type: String,
-        required: true,
         trim: true
     },
     type: {
