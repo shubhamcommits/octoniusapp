@@ -15,7 +15,7 @@ const apis_post = require('./routes/post');
 const apis_group = require('./routes/group');
 
 //database and local envirnment configurations
-// require('./nodemon_config')
+require('./nodemon_config')
 require('./config/db_connection')
 
 
@@ -45,7 +45,7 @@ app.use(express.static(path.join(__dirname, 'public/dist')));
 
 //Routes which should handle request
 app.get('/', function (req, res, next) {
-    /*   console.log("__dirname: ", __dirname);
+      /*   console.log("__dirname: ", __dirname);
       console.log("__dirname: ", __dirname);
       console.log("__dirname: ", __dirname);
  */

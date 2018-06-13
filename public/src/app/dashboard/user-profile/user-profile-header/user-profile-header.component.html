@@ -36,5 +36,65 @@
       </ul>
     </div>
 
+
+
   </div>
+  <div class="col-md-3 text-right">
+    <button type="button" name="button" class="btn btn-link" (click)="openLg(contentEditUserProfile)">
+      <i class="material-icons">create</i>
+    </button>
+  </div>
+
+  <ng-template #contentEditUserProfile let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title">Profile Update</h4>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body" style=" max-height: calc(100vh - 200px);overflow-y: auto">
+      <!--         <ngb-alert *ngIf="alert.message" [type]="alert.class" (close)="successMessage = null">{{alert.message}}</ngb-alert>
+     -->
+
+      <div class="form-group">
+        <label for="user_phone">Phone</label>
+        <input type="tel" class="form-control" id="user_phone" [(ngModel)]="user.phone" placeholder="0421231231" name="phone">
+      </div>
+      <div class="form-group">
+        <label for="user_phone">Mobile</label>
+        <input type="tel" class="form-control" id="user_mobile" [(ngModel)]="user.mobile" name="mobile" placeholder="e.g 03001231231">
+      </div>
+
+      <div class="form-group">
+        <label for="user_phone">Current Position</label>
+        <input type="text" class="form-control" id="user_phone" [(ngModel)]="user.current_position" name="position" placeholder="Project Manager">
+      </div>
+
+      <div class="form-group">
+        <label for="dateOfBirth">Joined Date</label>
+        <div class="input-group">
+          <input id="dateOfBirth" class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker #dp="ngbDatepicker">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" (click)="dp.toggle()" type="button">
+              <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;" />
+            </button>
+          </div>
+        </div>
+      </div>
+      <!--  <div class="form-group">
+        <label for="user_phone">Joined Date</label>
+        <input type="text" class="form-control" id="user_mobile" [(ngModel)]="user.mobile" name="mobile">
+      </div> -->
+      <div class="form-group">
+        <label for="email">Bio:</label>
+        <textarea class="form-control" rows="5" id="" name=""></textarea>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" (click)="deleteWorkspaceUser('as')">Save</button>
+      <button type="button" class="btn btn-primary" (click)="c('Close click')">Cancle</button>
+    </div>
+
+  </ng-template>
 </div>
