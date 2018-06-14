@@ -17,16 +17,16 @@
     <div class="col-md-4">
       <div class="signup-form" style="padding-top:100px">
         <form [formGroup]="signupForm" (ngSubmit)="onSignupFormSubmit()">
-          <h4>Join WORKSPACENAME</h4>
+          <h4>Join a workplace</h4>
 
           <div class="form-group">
-            <label for="worskapce-name">Enter workspace name</label>
+            <label for="worskapce-name">Enter workplace name</label>
             <input type="text" class="form-control" id="worskapce-name" formControlName="workspaceName" [(ngModel)]="user.workspace_name"
               name="workspaceName">
 
             <div *ngIf="_workspaceName.invalid && _workspaceName.touched" style="color:red">
-              <div *ngIf="_workspaceName.errors.required">workspace name is required!</div>
-              <div *ngIf="_workspaceName.errors.fieldCannotBeEmpty">workspace cannot be empty!</div>
+              <div *ngIf="_workspaceName.errors.required">workplace name is required!</div>
+              <div *ngIf="_workspaceName.errors.fieldCannotBeEmpty">workplace cannot be empty!</div>
             </div>
           </div>
 

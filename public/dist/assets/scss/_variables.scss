@@ -93,8 +93,8 @@ h1{
 
 //date picker fix
 [_nghost-c6], .ngb-dp-month[_ngcontent-c6]{
-  width: 100%;
+  width: 100% !important;
 }
 .ngb-dp-day[_ngcontent-c11], .ngb-dp-weekday[_ngcontent-c11], .ngb-dp-week-number[_ngcontent-c11]{
-  margin: 0 1rem;
+  margin: 0 1rem !important;
 }
