@@ -17,6 +17,9 @@ export class UserService {
 
   getUser() {
     return this._http.get<any>(this.BASE_API_URL + `/user`);
+  }
+  updateUser(user) {
+    return this._http.put<any>(this.BASE_API_URL + `/user`, user);
 
   }
 

@@ -1,12 +1,13 @@
-const User = require("../../models/user")
+const User = require("../../models/user");
 module.exports = {
 
     getUser(req, res, next) {
         let userId = req.userId;
+
         User.findOne({
                 _id: userId
             })
-            .select('_id first_name last_name email workspace_name bio company_join_date role phone_number mobile_number company_name _workspace')
+            .select('_id first_name last_name email workspace_name bio company_join_date current_position role phone_number mobile_number company_name _workspace')
             .then((user) => {
                 // user not found error
                 if (user == null) {
@@ -28,6 +29,35 @@ module.exports = {
                 });
             })
 
+
+    },
+
+    updateUser(req, res, next) {
+        // let userId = req.userId;
+        let userId = req.userId;
+        let user = req.body;
+
+        delete req.body.userId
+
+        User.findByIdAndUpdate({
+                _id: userId
+            }, {
+                $set: user
+            }, {
+                new: true
+            })
+            .then((updated_user) => {
+                res.status(200).json({
+                    message: "Your Profile has been Updated Successfully!",
+                    user: updated_user
+                });
+            })
+            .catch((err) => {
+                res.status(500).json({
+                    message: "something went wrong | interval server error",
+                    err
+                });
+            })
 
     }
 

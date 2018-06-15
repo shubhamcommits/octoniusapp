@@ -2,7 +2,7 @@
   <img class="mr-3 feed-avatar" src="https://randomuser.me/api/portraits/med/women/49.jpg">
   <div class="media-body">
     <div>
-      <h2>Mara max</h2>
+      <h2>{{user?.first_name + ' ' }}{{user?.last_name}}</h2>
       <ul class="nav">
         <li class="nav-item">
           <a class="nav-link active" routerLink="/dashboard/profile/profile">Profile
@@ -22,9 +22,9 @@
           </a>
         </li> -->
 
-    
 
-     
+
+
       </ul>
     </div>
 
@@ -36,11 +36,35 @@
       <i class="material-icons">create</i>
     </button>
   </div>
+  <!-- pop up modal for user profile updation -->
+  <ng-template #content let-c="close" let-d="dismiss">
 
-  <ng-template #contentEditUserProfile let-c="close" let-d="dismiss">
+      <div class="modal-header">
+          <h4 class="modal-title">Profile Update</h4>
+          <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+    <!-- <div class="modal-header">
+        <h4 class="modal-title">Update User Role</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div> -->
+
+
+    <div class="modal-body">
+      <!--  <ngb-alert *ngIf="alert.message" [type]="alert.class" (close)="successMessage = null">{{alert.message}}</ngb-alert> -->
+      <div *ngIf="alert.message" [ngClass]="alert.class">{{alert.message}}</div>
+
+    </div>
+
+  </ng-template>
+
+  <ng-template #contentEditUserProfile let-c="close" let-dd="dismiss">
     <div class="modal-header">
       <h4 class="modal-title">Profile Update</h4>
-      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <button type="button" class="close" aria-label="Close" (click)="dd('Cross click')">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
@@ -48,17 +72,31 @@
       <!--         <ngb-alert *ngIf="alert.message" [type]="alert.class" (close)="successMessage = null">{{alert.message}}</ngb-alert>
      -->
 
-     <div class="form-group">
-      <img src="http://via.placeholder.com/100x100" alt="" style="width: 100px; height: 100px">
-     <button class="btn btn-outline-secondary">Change image</button>
-    </div> 
-     <div class="form-group">
+      <div class="form-group">
+        <!--  <input type="file" alt="http://via.placeholder.com/100x100" style="width: 100px; height: 100px">
+     <button class="btn btn-outline-secondary">Change image</button> -->
+
+        <img [src]="imageUrl" style="width:15% ; height:15%;">
+        <input type="file" #Image accept="image/*" (change)="handleFileInput($event.target.files)">
+      </div>
+
+      <div class="form-group">
+        <label for="user_phone">First Name</label>
+        <input type="text" class="form-control" id="firt_name" [(ngModel)]="user.first_name" placeholder="Mark" name="firstName">
+      </div>
+
+      <div class="form-group">
+        <label for="last_name">Last Name</label>
+        <input type="text" class="form-control" id="last_name" [(ngModel)]="user.last_name" placeholder="Zakar" name="lastName">
+      </div>
+
+      <div class="form-group">
         <label for="user_phone">Phone</label>
-        <input type="tel" class="form-control" id="user_phone" [(ngModel)]="user.phone" placeholder="0421231231" name="phone">
+        <input type="tel" class="form-control" id="user_phone" [(ngModel)]="user.phone_number" placeholder="0421231231" name="phone">
       </div>
       <div class="form-group">
         <label for="user_phone">Mobile</label>
-        <input type="tel" class="form-control" id="user_mobile" [(ngModel)]="user.mobile" name="mobile" placeholder="e.g 03001231231">
+        <input type="tel" class="form-control" id="user_mobile" [(ngModel)]="user.mobile_number" name="mobile" placeholder="e.g 03001231231">
       </div>
 
       <div class="form-group">
@@ -68,14 +106,17 @@
 
       <div class="form-group">
         <label for="dateOfBirth">Joined Date</label>
+
         <div class="input-group">
-          <input id="dateOfBirth" class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker #dp="ngbDatepicker">
+          <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="user.company_join_date" ngbDatepicker #d="ngbDatepicker">
           <div class="input-group-append">
-            <button class="btn btn-outline-secondary" (click)="dp.toggle()" type="button">
-             <i class="material-icons">event</i>
+            <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+
+              <i class="material-icons">event</i>
             </button>
           </div>
         </div>
+
       </div>
       <!--  <div class="form-group">
         <label for="user_phone">Joined Date</label>
@@ -83,12 +124,12 @@
       </div> -->
       <div class="form-group">
         <label for="email">Bio:</label>
-        <textarea class="form-control" rows="5" id="" name=""></textarea>
+        <textarea class="form-control" [(ngModel)]="user.bio" rows="5" id="" name=""></textarea>
       </div>
     </div>
 
     <div class="modal-footer">
-      <button type="button" class="btn btn-danger" (click)="deleteWorkspaceUser('as')">Save</button>
+      <button type="button" class="btn btn-success" (click)="onUpdateUser()">Save</button>
       <button type="button" class="btn btn-primary" (click)="c('Close click')">Cancel</button>
     </div>
 

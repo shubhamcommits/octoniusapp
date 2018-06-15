@@ -27,12 +27,12 @@
   </div>
 
   <ng-template #content let-c="close" let-d="dismiss">
-    <div class="modal-header">
+    <!-- <div class="modal-header">
       <h4 class="modal-title">Update User Role</h4>
       <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
         <span aria-hidden="true">&times;</span>
       </button>
-    </div>
+    </div> -->
     <div class="modal-body">
       <ngb-alert *ngIf="alert.message" [type]="alert.class" (close)="successMessage = null">{{alert.message}}</ngb-alert>
     </div>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbAlertConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { WorkspaceService } from '../../../shared/services/workspace.service';
+import { UserService } from '../../../shared/services/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -10,17 +10,38 @@ import { WorkspaceService } from '../../../shared/services/workspace.service';
 export class ProfileComponent implements OnInit {
   alert = {
     message: '',
-    clas: ''
+    class: ''
   };
-  constructor(private _workspaceService: WorkspaceService, private alertConfig: NgbAlertConfig,
-    private modalService: NgbModal) { }
+  user: any;
+  join_date;
+  constructor(private _userService: UserService, private _router: Router) { }
 
   ngOnInit() {
+    this.getUserProfile();
   }
 
+  getUserProfile() {
+    this._userService.getUser()
+      .subscribe((res) => {
+        this.user = res.user;
 
-  openVerticallyCentered(content) {
+        this.join_date = new Date(res.user['company_join_date'].year,
+          (res.user['company_join_date'].month) - 1, res.user['company_join_date'].day);
+        // console.log('user Inside profile:', res);
 
-    this.modalService.open(content, { centered: true });
+      }, (err) => {
+        this.alert.class = 'alert alert-danger';
+        if (err.status === 401) {
+          this.alert.message = err.error.message;
+          setTimeout(() => {
+            localStorage.clear();
+            this._router.navigate(['']);
+          }, 3000);
+        } else if (err.status) {
+          //  this.alert.class = err.error.message;
+        } else {
+          // this.alert.message = 'Error! either server is down or no internet connection';
+        }
+      });
   }
 }

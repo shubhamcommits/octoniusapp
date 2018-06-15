@@ -66,8 +66,9 @@ const UserSchema = new Schema({
         default: null
     },
     company_join_date: {
-        type: Date,
-        default: Date.now,
+        year: Number,
+        month: Number,
+        day: Number
     },
     created_date: {
         type: Date,
