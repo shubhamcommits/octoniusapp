@@ -15,11 +15,7 @@ const apis_post = require('./routes/post');
 const apis_group = require('./routes/group');
 
 //database and local envirnment configurations
-<<<<<<< HEAD
  // require('./nodemon_config')
-=======
-//require('./nodemon_config')
->>>>>>> a3746ae574c13345db6266c4f02cc5cbe8ade1b4
 require('./config/db_connection')
 
 
