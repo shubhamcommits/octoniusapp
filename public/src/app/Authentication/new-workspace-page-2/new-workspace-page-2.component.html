@@ -16,10 +16,10 @@
     <div class="col-md-4 ">
       <div class="signup-form " style="padding-top:100px ">
         <form [formGroup]="newWorkspaceForm " (ngSubmit)="onNewWorkspaceFormSubmit() ">
-          <h4>Create a new workspace</h4>
+          <h4>Create a new workplace</h4>
 
           <div class="form-group ">
-            <label for="work-email ">Enter your wrok email</label>
+            <label for="work-email ">Enter your work email</label>
             <input type="email" class="form-control" id="work-email" formControlName="ownerEmail" [(ngModel)]="workspace.owner_email"
               name="ownerEmail">
             <div *ngIf="_ownerEmail.invalid && _ownerEmail.touched" style="color:red ">
