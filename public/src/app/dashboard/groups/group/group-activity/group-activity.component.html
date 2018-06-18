@@ -102,7 +102,7 @@
           </div>
         </form>
       </div>
-      <!-- Moal to pick a due date-->
+      <!-- Modal to pick a due date-->
 
       <ng-template style="margin-top: 10px" #dateContent let-c="close" let-d="dismiss">
 
@@ -197,12 +197,13 @@
                 <div class="col-md-1 ">
                   <img src="assets/images/user.png" class="feed-avatar">
                 </div>
-                <div class="col-md-7 ">
+                <div class="col-md-7">
                   <h6>{{post._posted_by?.first_name}} {{post._posted_by?.last_name}}</h6>
+                  <p class="small lightgray date">
+                  {{post?.created_date | date : 'medium' }}</p>
                 </div>
                 <div class="col-md-4 text-right ">
-                  <p class="small font-weight-bold">
-                    <i class="material-icons ">schedule</i>{{post?.created_date | date : 'medium' }}</p>
+                  
                 </div>
               </div>
               <div class="col-md-12 innercard ">
@@ -220,13 +221,13 @@
                   </div>
                   <div class="col-md-6 text-right">
                     <span (click)="showComments.id=post._id;showComments.normal=!showComments.normal;">
-                      <i class="material-icons">mode_comment</i>
+                      <i class="material-icons action">mode_comment</i>
                     </span>
                     <span>
-                      <i class="material-icons ">thumb_up</i>
+                      <i class="material-icons action">thumb_up</i>
                     </span>
                     <span>
-                      <i class="material-icons ">more_horiz</i>
+                      <i class="material-icons action">more_horiz</i>
                     </span>
                   </div>
                 </div>
@@ -263,7 +264,7 @@
 
           <!-- all comments block-->
 
-          <div class="card muted comment" *ngFor="let comment of post.comments">
+          <div class="comment" *ngFor="let comment of post.comments">
             <div class="card-block">
               <div class="row card-title ">
                 <div class="col-md-1">
@@ -271,10 +272,11 @@
                 </div>
                 <div class="col-md-7 ">
                   <h6>{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}} replied</h6>
+                  <p class="small lightgray date">
+                    {{comment.created_date | date : 'medium'}}</p>
                 </div>
                 <div class="col-md-4 text-right ">
-                  <p class="small font-weight-bold">
-                    <i class="material-icons ">schedule</i>{{comment.created_date | date : 'medium'}}</p>
+                 
                 </div>
               </div>
               <div class="col-md-12 innercard ">
@@ -292,7 +294,7 @@
 
         <!--TASK post-->
         <li class="list-group-item" *ngIf="post.type=='task'">
-          <div class="card pink-border">
+          <div class="card">
             <div class="card-block ">
               <div class="row card-title ">
                 <div class="col-md-1 ">
@@ -300,14 +302,15 @@
                 </div>
                 <div class="col-md-7 ">
                   <h6>{{post._posted_by?.first_name}} {{post._posted_by?.last_name}}
-                    <br>
-                    <span class="pink"> Assigned to {{post.task._assigned_to?.first_name}} {{post.task._assigned_to?.last_name}} - due on {{post.task?.due_date | date}}
-                    </span>
                   </h6>
+                  <p class="small lightgray date ">
+                    {{post?.created_date | date : 'medium'}}</p>
+                    <span class="pink small"> ASSIGNED TO {{post.task._assigned_to?.first_name}} {{post.task._assigned_to?.last_name}}
+                    </span>
                 </div>
                 <div class="col-md-4 text-right ">
-                  <p class="small font-weight-bold ">
-                    <i class="material-icons ">schedule</i>{{post?.created_date | date : 'medium'}}</p>
+                  <button class="btn btn-outline-secondary btn-sm">Mark complete</button>
+                  <p class="pink font-weight-bold" style="margin-top: 5px"> due {{post.task?.due_date | date}}</p>
                 </div>
               </div>
               <div class="col-md-12 innercard ">
@@ -325,13 +328,13 @@
                   </div>
                   <div class="col-md-6 text-right">
                     <span (click)="showComments.id=post._id;showComments.task=!showComments.task;">
-                      <i class="material-icons ">mode_comment</i>
+                      <i class="material-icons action">mode_comment</i>
                     </span>
                     <span>
-                      <i class="material-icons ">thumb_up</i>
+                      <i class="material-icons action">thumb_up</i>
                     </span>
                     <span>
-                      <i class="material-icons ">more_horiz</i>
+                      <i class="material-icons action">more_horiz</i>
                     </span>
                   </div>
                 </div>
@@ -398,7 +401,7 @@
 
         <!--EVENT post-->
         <li class="list-group-item" *ngIf="post.type=='event'">
-          <div class="card blue-border">
+          <div class="card">
             <div class="card-block ">
               <div class="row card-title ">
                 <div class="col-md-1 ">
@@ -406,20 +409,23 @@
                 </div>
                 <div class="col-md-7 ">
                   <h6>{{post._posted_by?.first_name}} {{post._posted_by?.last_name}}</h6>
-                  <span class="pink"> Assigned to {{post.event._assigned_to?.length}} Group Members
+                  <p class="small lightgray date ">
+                      {{post?.created_date| date : 'medium'}}</p>
+                  <span class="pink small"> ASSIGNED TO {{post.event._assigned_to?.length}} members
                   </span>
                 </div>
 
                 <div class="col-md-4 text-right ">
-                  <p class="small font-weight-bold ">
-                    <i class="material-icons ">schedule</i>{{post?.created_date| date : 'medium'}}</p>
+                    <button class="btn btn-outline-secondary btn-sm">Mark complete</button>
+                    
                 </div>
               </div>
               <div class="col-md-12 innercard ">
                 <div class="row">
-                  <div class="col-md-2 date blue"> {{post.event.due_date| date }}
+                  <div class="col-md-2 dateblock"> <span class="bigdate">29</span>
                     <br>
-                    <span>{{post.event?.due_time}}</span>
+                    <span class="time">July</span><br>
+                    <span class="time">{{post.event?.due_time}}</span>
                   </div>
                   <div class="col-md-9 event-title"> {{post.content}} </div>
                 </div>
@@ -434,13 +440,13 @@
                   </div>
                   <div class="col-md-6 text-right">
                     <span (click)="showComments.id=post._id;showComments.event=!showComments.event;">
-                      <i class="material-icons ">mode_comment</i>
+                      <i class="material-icons action ">mode_comment</i>
                     </span>
                     <span>
-                      <i class="material-icons ">thumb_up</i>
+                      <i class="material-icons action">thumb_up</i>
                     </span>
                     <span>
-                      <i class="material-icons ">more_horiz</i>
+                      <i class="material-icons action">more_horiz</i>
                     </span>
                   </div>
                 </div>

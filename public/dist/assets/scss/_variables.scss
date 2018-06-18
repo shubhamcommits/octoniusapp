@@ -20,6 +20,7 @@ $poppins: 'Poppins', sans-serif;
 $roboto:'Roboto', sans-serif;
 $border-color:#E4EDF8;
 $pink:#9D85D2;
+$lightgray:#9B9B9B;
 
 .pink{
   color:$pink;
@@ -45,7 +46,16 @@ $pink:#9D85D2;
 }
 
 .comment{
-  background: #E4EDF8 !important;
+  background: #F3F4F6 !important;
+  margin:5px -10px;
+}
+
+.lightgray{
+  color:$lightgray !important;
+}
+
+.date{
+  margin: 0 !important;
 }
 
 // shadows
