@@ -169,3 +169,11 @@ margin-bottom: 20px;
     font-size: 24px;
   }
 }
+
+//date picker fix
+[_nghost-c6], .ngb-dp-month{
+  width: 100% !important;
+}
+.ngb-dp-day, .ngb-dp-weekday, .ngb-dp-week-number{
+  margin: 0 1rem !important;
+}
