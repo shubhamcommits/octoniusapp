@@ -200,7 +200,7 @@
                 <div class="col-md-7">
                   <h6>{{post._posted_by?.first_name}} {{post._posted_by?.last_name}}</h6>
                   <p class="small lightgray date">
-                  {{post?.created_date | date : 'medium' }}</p>
+                    {{post?.created_date | date : 'medium' }}</p>
                 </div>
                 <div class="col-md-4 text-right ">
 
@@ -302,18 +302,15 @@
                 </div>
                 <div class="col-md-7 ">
                   <h6>{{post._posted_by?.first_name}} {{post._posted_by?.last_name}}
-<<<<<<< HEAD
                     <br>
                     <span class="pink"> Assigned to {{post.task._assigned_to?.first_name}} {{post.task._assigned_to?.last_name}} - due on {{post.task?.due_date
                       | date}}
                     </span>
-=======
->>>>>>> 55eb7ec036bf00648fc0a548e9095f3c244e80c8
                   </h6>
                   <p class="small lightgray date ">
                     {{post?.created_date | date : 'medium'}}</p>
-                    <span class="pink small"> ASSIGNED TO {{post.task._assigned_to?.first_name}} {{post.task._assigned_to?.last_name}}
-                    </span>
+                  <span class="pink small"> ASSIGNED TO {{post.task._assigned_to?.first_name}} {{post.task._assigned_to?.last_name}}
+                  </span>
                 </div>
                 <div class="col-md-4 text-right ">
                   <button class="btn btn-outline-secondary btn-sm">Mark complete</button>
@@ -417,21 +414,23 @@
                 <div class="col-md-7 ">
                   <h6>{{post._posted_by?.first_name}} {{post._posted_by?.last_name}}</h6>
                   <p class="small lightgray date ">
-                      {{post?.created_date| date : 'medium'}}</p>
+                    {{post?.created_date| date : 'medium'}}</p>
                   <span class="pink small"> ASSIGNED TO {{post.event._assigned_to?.length}} members
                   </span>
                 </div>
 
                 <div class="col-md-4 text-right ">
-                    <button class="btn btn-outline-secondary btn-sm">Mark complete</button>
+                  <button class="btn btn-outline-secondary btn-sm">Mark complete</button>
 
                 </div>
               </div>
               <div class="col-md-12 innercard ">
                 <div class="row">
-                  <div class="col-md-2 dateblock"> <span class="bigdate">291231</span>
+                  <div class="col-md-2 dateblock">
+                    <span class="bigdate">{{post?.event.due_date | date :'dd' }}</span>
                     <br>
-                    <span class="time">July</span><br>
+                    <span class="time">{{post?.event.due_date | date: 'MMMM' }}</span>
+                    <br>
                     <span class="time">{{post.event?.due_time}}</span>
                   </div>
                   <div class="col-md-9 event-title"> {{post.content}} </div>
