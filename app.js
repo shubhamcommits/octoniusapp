@@ -15,7 +15,7 @@ const apis_post = require('./routes/post');
 const apis_group = require('./routes/group');
 
 //database and local envirnment configurations
-//require('./nodemon_config')
+// require('./nodemon_config')
 require('./config/db_connection')
 
 
@@ -34,21 +34,16 @@ app.use(morgan("dev"));
 
 //file upload middleware
 app.use(fileUpload());
-// app.use('/uploads', express.static('/home/ubuntu/octonius/uploads'));
+app.use('/uploads', express.static('./uploads'));
 
 
 // staic folder
 app.use(express.static(path.join(__dirname, 'public/dist')));
 
 
-
-
 //Routes which should handle request
 app.all('/', function (req, res, next) {
-      /*   console.log("__dirname: ", __dirname);
-      console.log("__dirname: ", __dirname);
-      console.log("__dirname: ", __dirname);
- */
+
       res.sendFile(path.join(__dirname, 'public/dist/index.html'));
 
 });

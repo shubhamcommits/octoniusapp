@@ -7,7 +7,7 @@ module.exports = {
         User.findOne({
                 _id: userId
             })
-            .select('_id first_name last_name email workspace_name bio company_join_date current_position role phone_number mobile_number company_name _workspace')
+            .select('_id first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number mobile_number company_name _workspace')
             .then((user) => {
                 // user not found error
                 if (user == null) {
@@ -51,6 +51,37 @@ module.exports = {
                     message: "Your Profile has been Updated Successfully!",
                     user: updated_user
                 });
+            })
+            .catch((err) => {
+                res.status(500).json({
+                    message: "something went wrong | interval server error",
+                    err
+                });
+            })
+
+    },
+
+
+    updateUserImage(req, res, next) {
+
+
+        console.log("=============Update Users Profile Image=============");
+
+
+        User.findByIdAndUpdate({
+                _id: req.userId
+            }, {
+                profile_pic: req.fileName
+            }, {
+                new: true
+            })
+            .then((updated_user) => {
+
+                res.status(200).json({
+                    message: "User Profile has been updating successfully!",
+                    user: updated_user
+                });
+
             })
             .catch((err) => {
                 res.status(500).json({

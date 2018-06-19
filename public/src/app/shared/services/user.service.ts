@@ -23,4 +23,14 @@ export class UserService {
 
   }
 
+  updateUserProfileImage(fileToUpload: File) {
+    const formData: FormData = new FormData();
+    formData.append('profileImage', fileToUpload, fileToUpload.name);
+    console.log('formData:', formData);
+    console.log('fileToUpload:', fileToUpload);
+
+    return this._http.post<any>(this.BASE_API_URL + `/user/updateImage`, formData);
+
+  }
+
 }

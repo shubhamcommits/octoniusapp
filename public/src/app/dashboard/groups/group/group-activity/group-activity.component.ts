@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, Route } from '@angular/router';
 import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PostService } from '../../../../shared/services/post.service';
 import { GroupService } from '../../../../shared/services/group.service';
@@ -9,6 +9,8 @@ import { InputValidators } from '../../../../common/validators/input.validator';
 import { debounceTime } from 'rxjs/operators';
 import { ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Subject } from 'rxjs';
+import { User } from '../../../../shared/models/user.model';
+import { UserService } from '../../../../shared/services/user.service';
 
 
 @Component({
@@ -22,6 +24,8 @@ export class GroupActivityComponent implements OnInit {
   group;
 
   user_data;
+  user: User;
+  profileImage;
   postForm: FormGroup;
   commentForm: FormGroup;
   post = {
@@ -71,7 +75,8 @@ export class GroupActivityComponent implements OnInit {
   selectedGroupUsers = [];
   settings = {};
 
-  constructor(private _activatedRoute: ActivatedRoute,
+  constructor(private _activatedRoute: ActivatedRoute, private _router: Router,
+    private _userService: UserService,
     public groupDataService: GroupDataService,
     private router: Router, private groupService: GroupService,
     private modalService: NgbModal, private postService: PostService) { }
@@ -86,11 +91,36 @@ export class GroupActivityComponent implements OnInit {
     this.group = this.groupDataService.group;
 
     // console.log('Group Activity _group:', this.groupDataService.group);
+    this.getUserProfile();
     this.inilizePostForm();
     this.inilizeCommentForm();
     this.loadGroupPosts();
     this.alertMessageSettings();
     this.initializeGroupMembersSearchForm();
+
+  }
+
+
+  getUserProfile() {
+    this._userService.getUser()
+      .subscribe((res) => {
+        this.user = res.user;
+        this.profileImage = res.user['profile_pic'];
+        this.profileImage = `http://localhost:3000/uploads/${this.profileImage}`;
+      }, (err) => {
+        this.alert.class = 'alert alert-danger';
+        if (err.status === 401) {
+          this.alert.message = err.error.message;
+          setTimeout(() => {
+            localStorage.clear();
+            this._router.navigate(['']);
+          }, 3000);
+        } else if (err.status) {
+          this.alert.class = err.error.message;
+        } else {
+          this.alert.message = 'Error! either server is down or no internet connection';
+        }
+      });
   }
   // group memebrs search setting when user add new event or taks type post
   initializeGroupMembersSearchForm() {

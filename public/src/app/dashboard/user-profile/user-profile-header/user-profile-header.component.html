@@ -1,5 +1,11 @@
 <div class="media user-sticky-card">
-  <img class="mr-3 feed-avatar" src="https://randomuser.me/api/portraits/med/women/49.jpg">
+
+
+
+
+  <img class="mr-3 feed-avatar" [src]="user?.profile_pic">
+  <!--   <h1>{{user.profile_pic}}</h1>
+ -->
   <div class="media-body">
     <div>
       <h2>{{user?.first_name + ' ' }}{{user?.last_name}}</h2>
@@ -39,12 +45,12 @@
   <!-- pop up modal for user profile updation -->
   <ng-template #content let-c="close" let-d="dismiss">
 
-      <div class="modal-header">
+    <!-- <div class="modal-header">
           <h4 class="modal-title">Profile Update</h4>
           <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
             <span aria-hidden="true">&times;</span>
           </button>
-        </div>
+        </div> -->
     <!-- <div class="modal-header">
         <h4 class="modal-title">Update User Role</h4>
         <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
@@ -77,7 +83,7 @@
      <button class="btn btn-outline-secondary">Change image</button> -->
 
         <img [src]="imageUrl" style="width:15% ; height:15%;">
-        <input type="file" #Image accept="image/*" (change)="handleFileInput($event.target.files)">
+        <input type="file" #Image accept="image/*" (change)="handleFileInput($event.target.files)" name="profile_image">
       </div>
 
       <div class="form-group">
@@ -129,7 +135,7 @@
     </div>
 
     <div class="modal-footer">
-      <button type="button" class="btn btn-success" (click)="onUpdateUser()">Save</button>
+      <button type="button" class="btn btn-success" (click)="onUpdateUserProfileImage();onUpdateUser()">Save</button>
       <button type="button" class="btn btn-primary" (click)="c('Close click')">Cancel</button>
     </div>
 

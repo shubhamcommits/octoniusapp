@@ -28,7 +28,8 @@ export class UserProfileHeaderComponent implements OnInit {
     mobile_number: '',
     bio: '',
     current_position: '',
-    company_join_date: ''
+    company_join_date: '',
+    profile_pic: ''
   };
 
   constructor(private _userService: UserService, private _router: Router, private modalService: NgbModal) { }
@@ -48,10 +49,15 @@ export class UserProfileHeaderComponent implements OnInit {
           first_name: res.user['first_name'],
           last_name: res.user['last_name'],
           current_position: res.user['current_position'],
-          company_join_date: res.user['company_join_date']
-
+          company_join_date: res.user['company_join_date'],
+          profile_pic: res.user['profile_pic']
         };
-        console.log('user Inside profile header:', res);
+        //  console.log('user Inside profile header:', res);
+        this.imageUrl = `http://localhost:3000/uploads/${this.user.profile_pic}`;
+
+        this.user.profile_pic = `http://localhost:3000/uploads/${this.user.profile_pic}`;
+
+
 
       }, (err) => {
         this.alert.class = 'alert alert-danger';
@@ -71,6 +77,9 @@ export class UserProfileHeaderComponent implements OnInit {
 
   onUpdateUser() {
 
+
+    console.log('user: ', this.user);
+
     this._userService.updateUser(this.user)
       .subscribe((res) => {
         this.alert.class = 'alert alert-success';
@@ -80,12 +89,10 @@ export class UserProfileHeaderComponent implements OnInit {
         this.openLg(this.content);
         setTimeout(() => {
           this.modalReference.close();
-        }, 3000);
+        }, 2000);
 
-        console.log('user Inside profile header:', res);
 
       }, (err) => {
-        // console.log('User updation Error: ', err);
 
         this.alert.class = 'alert alert-danger';
 
@@ -107,12 +114,56 @@ export class UserProfileHeaderComponent implements OnInit {
 
   }
 
+  onUpdateUserProfileImage() {
+
+    if (this.fileToUpload !== null) {
+
+      console.log('Inside the onUpdateUserProfileImage');
+
+
+      this._userService.updateUserProfileImage(this.fileToUpload)
+        .subscribe((res) => {
+          this.alert.class = 'alert alert-success';
+          this.alert.message = res.message;
+
+          this.modalReference.close();
+          this.openLg(this.content);
+          setTimeout(() => {
+            this.modalReference.close();
+          }, 2000);
+
+
+        }, (err) => {
+
+          this.alert.class = 'alert alert-danger';
+
+          if (err.status === 401) {
+            this.alert.message = err.error.message;
+            this.openLg(this.content);
+            setTimeout(() => {
+              localStorage.clear();
+              this._router.navigate(['']);
+            }, 3000);
+          } else if (err.status) {
+            this.alert.class = err.error.message;
+            this.openLg(this.content);
+          } else {
+            this.alert.message = 'Error! either server is down or no internet connection';
+            this.openLg(this.content);
+          }
+        });
+    }
+
+  }
+
   openLg(content) {
     this.modalReference = this.modalService.open(content, { size: 'lg', centered: true });
   }
 
 
   handleFileInput(file: FileList) {
+
+
     this.fileToUpload = file.item(0);
 
     // Show image preview

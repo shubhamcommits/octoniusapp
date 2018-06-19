@@ -11,6 +11,7 @@ import { User } from '../../../shared/models/user.model';
 })
 export class NavbarComponent implements OnInit {
   user: User;
+  userProfileImage;
   alert = {
     class: '',
     message: ''
@@ -26,6 +27,8 @@ export class NavbarComponent implements OnInit {
     this._userService.getUser()
       .subscribe((res) => {
         this.user = res.user;
+        this.userProfileImage = res.user['profile_pic'];
+        this.userProfileImage = `http://localhost:3000/uploads/${this.userProfileImage}`;
       }, (err) => {
         this.alert.class = 'alert alert-danger';
         if (err.status === 401) {
