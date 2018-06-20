@@ -6,6 +6,7 @@ import { AppRoutingModule, routingComponents } from './app-routing.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SelectDropDownModule } from 'ngx-select-dropdown';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
+import { NgxMyDatePickerModule } from 'ngx-mydatepicker';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './common/components/navbar/navbar.component';
@@ -56,6 +57,7 @@ import { GroupDataService } from './shared/services/group-data.service';
     HttpClientModule,
     SelectDropDownModule,
     AngularMultiSelectModule,
+    NgxMyDatePickerModule.forRoot(),
     NgbModule.forRoot()
   ],
 

@@ -64,20 +64,49 @@
                 </button>
 
 
-                <button *ngIf="post.type == 'event'|| post.type=='task'" class="btn btn-outline-warning task" type="button" (click)="openDatePicker(dateContent)">
+                <!--   <button *ngIf="post.type == 'event'|| post.type=='task'" class="btn btn-outline-warning task" type="button" (click)="openDatePicker(dateContent)">
                   <i class="material-icons">event</i>{{ due_date }}
-                </button>
+                </button> -->
+
+                <!--
+
+                <form class="form-inline" *ngIf="post.type == 'event'|| post.type=='task'">
+                  <div class="form-group">
+                    <div class="input-group">
+                      <input hidden class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="model_date" ngbDatepicker #d="ngbDatepicker"
+                        d.dateSelect="onDateSelected(d)">
+                      <div class="input-group-append">
+                        <button class="btn btn-outline-warning task" (click)="d.toggle()" (select)="onDateSelected($event)" type="button">
+                          <i class="material-icons">event</i>{{ model_date | json }} </button>
+                      </div>
+                    </div>
+                  </div>
+                </form> -->
+
+
+                <div class="input-group" *ngIf="post.type == 'event'|| post.type=='task'">
+                  <input hidden class="form-control" style="float:none" placeholder="Select a date" ngx-mydatepicker name="mydate" [(ngModel)]="model"
+                    [options]="myOptions" #dp="ngx-mydatepicker" (dateChanged)="onDateChanged($event)" />
+
+                  <span class="input-group-btn">
+                    <!-- <button type="button" class="btn btn-default" (click)="dp.clearDate()">
+                        <i class="glyphicon glyphicon-remove"></i>
+                      </button> -->
+                    <button type="button" class="btn btn-outline-warning task" (click)="dp.toggleCalendar()">
+                      <i class="material-icons">event</i>{{ due_date }} </button>
+                  </span>
+                </div>
 
                 <button *ngIf="post.type=='event'" class="btn btn-outline-warning task" type="button" (click)="openTimePicker(timeContent)">
                   <i class="material-icons">event</i>{{due_time}}
                 </button>
 
-                <ngb-alert *ngIf="alert.message" [type]="alert.class" (close)="successMessage = null">{{ alert.message}}</ngb-alert>
+                <ngb-alert *ngIf="alert.message" [type]="alert.class" (close)="successMessage = null">{{alert.message}}</ngb-alert>
 
               </div>
             </div>
 
-            <div class="row " style="margin-top: 10px; ">
+            <div class="row " style="margin-top: 10px">
               <div class="col-md-12">
                 <div class="form-group ">
                   <textarea class="form-control " id="post-content" rows="3" [(ngModel)]="post.content" name="postContent" formControlName="postContent"></textarea>
@@ -104,7 +133,7 @@
       </div>
       <!-- Modal to pick a due date-->
 
-      <ng-template style="margin-top: 10px" #dateContent let-c="close" let-d="dismiss">
+      <!-- <ng-template style="margin-top: 10px" #dateContent let-c="close" let-d="dismiss">
 
         <div style="width:100%" class="modal-header">
           <h4 class="modal-title">Select Due Date</h4>
@@ -114,7 +143,7 @@
         </div>
 
         <div class="modal-body">
-          <ngb-datepicker #dp [(ngModel)]="modal_date" (navigate)="date = $event.next"></ngb-datepicker>
+          <ngb-datepicker #dp [(ngModel)]="model_date" (navigate)="date = $event.next"></ngb-datepicker>
         </div>
 
         <div class="modal-footer">
@@ -123,7 +152,7 @@
           <button type="button" class="btn btn-outline-primary mb-2 mr-2" (click)="c('Close click')">Cancel</button>
         </div>
 
-      </ng-template>
+      </ng-template> -->
 
       <!--  Modal to pick a time -->
 
@@ -137,7 +166,7 @@
         </div>
 
         <div class="modal-body">
-          <ngb-timepicker [(ngModel)]="modal_time" [meridian]="true "></ngb-timepicker>
+          <ngb-timepicker [(ngModel)]="model_time" [meridian]="true "></ngb-timepicker>
         </div>
 
         <div class="modal-footer">

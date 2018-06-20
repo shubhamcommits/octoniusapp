@@ -8,14 +8,14 @@ const cors = require('cors');
 const app = express();
 
 
-const apis_workspace = require('./routes/workspace')
-const apis_auth = require('./routes/auth')
+const apis_workspace = require('./routes/workspace');
+const apis_auth = require('./routes/auth');
 const apis_user = require('./routes/user');
 const apis_post = require('./routes/post');
 const apis_group = require('./routes/group');
 
 //database and local envirnment configurations
-// require('./nodemon_config')
+//require('./nodemon_config')
 require('./config/db_connection')
 
 

@@ -11,6 +11,7 @@ import { ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Subject } from 'rxjs';
 import { User } from '../../../../shared/models/user.model';
 import { UserService } from '../../../../shared/services/user.service';
+import { INgxMyDpOptions, IMyDateModel } from 'ngx-mydatepicker';
 
 
 @Component({
@@ -43,9 +44,9 @@ export class GroupActivityComponent implements OnInit {
   processing = false;
   post_type;
   time = { hour: 13, minute: 30 };
-  modal_date: NgbDateStruct;
+  model_date;
   date: { year: number, month: number };
-  modal_time = { hour: 13, minute: 30 };
+  model_time = { hour: 13, minute: 30 };
   due_date = 'Due Date';
   due_time = 'Due Time';
   assignment = 'UnAssigned';
@@ -57,6 +58,13 @@ export class GroupActivityComponent implements OnInit {
     event: false,
     task: false
   };
+
+  // date picker
+  myOptions: INgxMyDpOptions = {
+    // other options...
+    dateFormat: 'dd.mm.yyyy',
+  };
+  model: any = { date: { year: 2018, month: 10, day: 9 } };
 
   // alert variable
   staticAlertClosed = false;
@@ -134,8 +142,6 @@ export class GroupActivityComponent implements OnInit {
       noDataLabel: 'Search Members...',
       enableSearchFilter: true,
       searchBy: ['full_name', 'capital']
-
-
     };
   }
 
@@ -405,15 +411,35 @@ export class GroupActivityComponent implements OnInit {
   openAssignPicker(content) {
     this.modalService.open(content, { size: 'lg' });
   }
+
   onDateSelected() {
-    const temp = this.modal_date;
+
+    console.log('model_date:', this.model_date);
+
+    const temp = this.model_date;
     this.due_date = temp.day.toString() + '-' + temp.month.toString() + '-' + temp.year.toString();
     this.selected_date = new Date(temp.year, temp.month, temp.day);
 
-    console.log('selected date:', this.selected_date);
+    console.log('model_date:', this.model_date);
+    // console.log('selected date:', this.selected_date);
+    // console.log('selected date:', this.due_date);
     // console.log('oneDateSelected temp Date', new Date(temp.year, temp.month, temp.day));
     // console.log('this.due_date', this.due_date);
 
+  }
+
+  dateSelect() {
+    console.log('model_date:', this.model_date);
+
+  }
+  open() {
+    console.log('model_date:', this.model_date);
+
+  }
+
+  // optional date changed callback
+  onDateChanged(event: IMyDateModel): void {
+    this.due_date = event.formatted;
   }
 
   enablePostForm() {
@@ -428,7 +454,7 @@ export class GroupActivityComponent implements OnInit {
     // console.log('on time selection');
     // console.log(this.modal_time);
 
-    this.due_time = this.modal_time.hour.toString() + ':' + this.modal_time.minute.toString();
+    this.due_time = this.model_time.hour.toString() + ':' + this.model_time.minute.toString();
     // console.log(' this.due_time', this.due_time);
 
   }
