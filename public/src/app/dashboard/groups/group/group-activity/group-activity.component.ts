@@ -11,9 +11,6 @@ import { ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Subject } from 'rxjs';
 import { User } from '../../../../shared/models/user.model';
 import { UserService } from '../../../../shared/services/user.service';
-import { INgxMyDpOptions, IMyDateModel } from 'ngx-mydatepicker';
-
-
 @Component({
   selector: 'app-group-activity',
   templateUrl: './group-activity.component.html',
@@ -40,7 +37,7 @@ export class GroupActivityComponent implements OnInit {
     post_id: ''
   };
 
-
+  form: FormGroup;
   processing = false;
   post_type;
   time = { hour: 13, minute: 30 };
@@ -59,12 +56,7 @@ export class GroupActivityComponent implements OnInit {
     task: false
   };
 
-  // date picker
-  myOptions: INgxMyDpOptions = {
-    // other options...
-    dateFormat: 'dd.mm.yyyy',
-  };
-  model: any = { date: { year: 2018, month: 10, day: 9 } };
+
 
   // alert variable
   staticAlertClosed = false;
@@ -87,7 +79,9 @@ export class GroupActivityComponent implements OnInit {
     private _userService: UserService,
     public groupDataService: GroupDataService,
     private router: Router, private groupService: GroupService,
-    private modalService: NgbModal, private postService: PostService) { }
+    private modalService: NgbModal, private postService: PostService) {
+
+  }
 
 
 
@@ -105,7 +99,6 @@ export class GroupActivityComponent implements OnInit {
     this.loadGroupPosts();
     this.alertMessageSettings();
     this.initializeGroupMembersSearchForm();
-
   }
 
 
@@ -297,8 +290,7 @@ export class GroupActivityComponent implements OnInit {
   }
 
   addNewTaskPost() {
-    console.log('Inside addNewTaskPost');
-    console.log('this.due_date:', this.selected_date);
+
 
     const post = {
       content: this.post.content,
@@ -313,7 +305,6 @@ export class GroupActivityComponent implements OnInit {
 
 
     // console.log('post: ', post);
-
 
     this.processing = true;
     this.disblePostForm();
@@ -414,33 +405,21 @@ export class GroupActivityComponent implements OnInit {
 
   onDateSelected() {
 
-    console.log('model_date:', this.model_date);
+    // console.log('model_date:', this.model_date);
+    console.log('this.date:', this.date);
 
     const temp = this.model_date;
-    this.due_date = temp.day.toString() + '-' + temp.month.toString() + '-' + temp.year.toString();
-    this.selected_date = new Date(temp.year, temp.month, temp.day);
+    this.due_date = temp.day.toString() + '-' + this.date.month.toString() + '-' + temp.year.toString();
+    this.selected_date = new Date(this.date.year, (this.date.month - 1), temp.day);
 
-    console.log('model_date:', this.model_date);
-    // console.log('selected date:', this.selected_date);
+    // console.log('model_date:', this.model_date);
+    console.log('selected date:', this.selected_date);
     // console.log('selected date:', this.due_date);
     // console.log('oneDateSelected temp Date', new Date(temp.year, temp.month, temp.day));
     // console.log('this.due_date', this.due_date);
 
   }
 
-  dateSelect() {
-    console.log('model_date:', this.model_date);
-
-  }
-  open() {
-    console.log('model_date:', this.model_date);
-
-  }
-
-  // optional date changed callback
-  onDateChanged(event: IMyDateModel): void {
-    this.due_date = event.formatted;
-  }
 
   enablePostForm() {
     this.postForm.enable();

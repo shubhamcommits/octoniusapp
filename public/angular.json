@@ -23,7 +23,6 @@
             "styles": [
               "node_modules/bootstrap/scss/bootstrap.scss",
               "src/assets/scss/main.scss",
-              "node_modules/ngx-select-dropdown/dist/assets/style.css"
             ],
             "scripts": []
           },
@@ -73,7 +72,6 @@
             "styles": [
               "node_modules/bootstrap/scss/bootstrap.scss",
               "src/assets/scss/main.scss",
-              "node_modules/ngx-select-dropdown/dist/assets/style.css"
             ],
             "assets": [
               "src/assets",
