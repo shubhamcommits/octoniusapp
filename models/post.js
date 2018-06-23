@@ -82,8 +82,14 @@ const PostSchema = new Schema({
         default: Date.now,
     },
     files: [{
-        type: String,
-        default: null
+        orignal_name: {
+            type: String,
+            default: null
+        },
+        modified_name: {
+            type: String,
+            default: null
+        }
     }]
 
 });

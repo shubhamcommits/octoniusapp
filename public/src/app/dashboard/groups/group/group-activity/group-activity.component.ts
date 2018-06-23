@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, Route } from '@angular/router';
 import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PostService } from '../../../../shared/services/post.service';
@@ -11,6 +11,7 @@ import { ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Subject } from 'rxjs';
 import { User } from '../../../../shared/models/user.model';
 import { UserService } from '../../../../shared/services/user.service';
+
 @Component({
   selector: 'app-group-activity',
   templateUrl: './group-activity.component.html',
@@ -49,6 +50,7 @@ export class GroupActivityComponent implements OnInit {
   assignment = 'UnAssigned';
   selected_date: Date;
 
+
   showComments = {
     id: '',
     normal: false,
@@ -74,6 +76,10 @@ export class GroupActivityComponent implements OnInit {
   groupUsersList: any = new Array();
   selectedGroupUsers = [];
   settings = {};
+
+  // post's attahced files
+  filesToUpload: Array<File> = [];
+
 
   constructor(private _activatedRoute: ActivatedRoute, private _router: Router,
     private _userService: UserService,
@@ -101,6 +107,14 @@ export class GroupActivityComponent implements OnInit {
     this.initializeGroupMembersSearchForm();
   }
 
+
+
+  fileChangeEvent(fileInput: any) {
+    this.filesToUpload = <Array<File>>fileInput.target.files;
+    console.log('files', this.filesToUpload);
+
+    // this.product.photo = fileInput.target.files[0]['name'];
+  }
 
   getUserProfile() {
     this._userService.getUser()
@@ -188,23 +202,23 @@ export class GroupActivityComponent implements OnInit {
 
 
   OnAddNewPost() {
-    console.log('on addnew post');
-    console.log('on addnew post.type', this.post.type);
+    // console.log('on addnew post');
+    // console.log('on addnew post.type', this.post.type);
 
 
     switch (this.post.type) {
       case 'normal':
-        console.log('NOrmal post adding');
+        // console.log('NOrmal post adding');
 
         this.addNewNormalPost();
         break;
       case 'event':
-        console.log('Event post adding');
+        // console.log('Event post adding');
 
         this.addNewEventPost();
         break;
       case 'task':
-        console.log('Task post adding');
+        // console.log('Task post adding');
 
         this.addNewTaskPost();
         break;
@@ -212,6 +226,14 @@ export class GroupActivityComponent implements OnInit {
   }
 
   addNewNormalPost() {
+
+    const formData: any = new FormData();
+    const files: Array<File> = this.filesToUpload;
+    console.log(files);
+
+    for (let i = 0; i < files.length; i++) {
+      formData.append('attachments', files[i], files[i]['name']);
+    }
     const post = {
       content: this.post.content,
       type: this.post.type,
@@ -219,15 +241,22 @@ export class GroupActivityComponent implements OnInit {
       _group: this.group_id
 
     };
+    formData.append('content', post.content);
+    formData.append('type', post.type);
+    formData.append('_posted_by', post._posted_by);
+    formData.append('_group', post._group);
+
     this.processing = true;
     this.disblePostForm();
-    this.postService.addNewNormalPost(post)
+    this.postService.addNewNormalPost(formData)
       .subscribe((res) => {
         this.processing = false;
         this.enablePostForm();
         this.postForm.reset();
         this.alert.class = 'success';
         this._message.next(res['message']);
+        this.filesToUpload = null;
+
         // console.log('Normal post response: ', res);
         this.loadGroupPosts();
 
@@ -248,6 +277,22 @@ export class GroupActivityComponent implements OnInit {
 
   addNewEventPost() {
 
+    const formData: any = new FormData();
+    const files: Array<File> = this.filesToUpload;
+    // console.log(files);
+    const assignedUsers = new Array();
+    for (let i = 0; i < files.length; i++) {
+      formData.append('attachments', files[i], files[i]['name']);
+    }
+    for (let i = 0; i < this.selectedGroupUsers.length; i++) {
+      // assignedUsers.push(this.selectedGroupUsers[i]._id);
+      formData.append('event._assigned_to', this.selectedGroupUsers[i]._id);
+
+    }
+
+
+    // console.log('assignedUsers: ', assignedUsers);
+
     const post = {
       content: this.post.content,
       type: this.post.type,
@@ -256,13 +301,26 @@ export class GroupActivityComponent implements OnInit {
       event: {
         due_date: this.selected_date,
         due_time: this.due_time,
-        _assigned_to: this.selectedGroupUsers
-      }
-
+        _assigned_to: assignedUsers
+      },
+      files: this.filesToUpload
     };
+    // console.log(this.selectedGroupUsers);
+
+
+    formData.append('content', post.content);
+    formData.append('type', post.type);
+    formData.append('_posted_by', post._posted_by);
+    formData.append('_group', post._group);
+    formData.append('event.due_date', post.event.due_date);
+    formData.append('event.due_time', post.event.due_time);
+    // formData.append('event._assigned_to', assignedUsers);
+
+
+
     this.processing = true;
     this.disblePostForm();
-    this.postService.addNewEventPost(post)
+    this.postService.addNewEventPost(formData)
       .subscribe((res) => {
         this.processing = false;
         this.enablePostForm();
@@ -277,6 +335,7 @@ export class GroupActivityComponent implements OnInit {
         this.processing = false;
         this.alert.class = 'danger';
         this.enablePostForm();
+        console.log(err);
 
         if (err.status) {
           this._message.next(err.error.message);
@@ -291,6 +350,15 @@ export class GroupActivityComponent implements OnInit {
 
   addNewTaskPost() {
 
+    const formData: any = new FormData();
+    const files: Array<File> = this.filesToUpload;
+    console.log(files);
+
+    for (let i = 0; i < files.length; i++) {
+      formData.append('attachments', files[i], files[i]['name']);
+    }
+
+
 
     const post = {
       content: this.post.content,
@@ -304,11 +372,20 @@ export class GroupActivityComponent implements OnInit {
     };
 
 
+    formData.append('content', post.content);
+    formData.append('type', post.type);
+    formData.append('_posted_by', post._posted_by);
+    formData.append('_group', post._group);
+    formData.append('task.due_date', post.task.due_date);
+    formData.append('task._assigned_to', post.task._assigned_to);
+
+
+
     // console.log('post: ', post);
 
     this.processing = true;
     this.disblePostForm();
-    this.postService.addNewTaskPost(post)
+    this.postService.addNewTaskPost(formData)
       .subscribe((res) => {
         this.processing = false;
         this.enablePostForm();
@@ -337,6 +414,7 @@ export class GroupActivityComponent implements OnInit {
     this.due_date = 'Due Date';
     this.due_time = 'Due Time';
     this.assignment = 'UnAssigned';
+    this.filesToUpload = null;
   }
   loadGroupPosts() {
 
@@ -406,14 +484,14 @@ export class GroupActivityComponent implements OnInit {
   onDateSelected() {
 
     // console.log('model_date:', this.model_date);
-    console.log('this.date:', this.date);
+    // console.log('this.date:', this.date);
 
     const temp = this.model_date;
     this.due_date = temp.day.toString() + '-' + this.date.month.toString() + '-' + temp.year.toString();
     this.selected_date = new Date(this.date.year, (this.date.month - 1), temp.day);
 
     // console.log('model_date:', this.model_date);
-    console.log('selected date:', this.selected_date);
+    // console.log('selected date:', this.selected_date);
     // console.log('selected date:', this.due_date);
     // console.log('oneDateSelected temp Date', new Date(temp.year, temp.month, temp.day));
     // console.log('this.due_date', this.due_date);

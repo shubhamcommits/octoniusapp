@@ -7,6 +7,9 @@
     module.exports = {
 
         addNewNormalPost(req, res, next) {
+
+            console.log("===========NORMAL TYPE POST CONTROLLER===========");
+
             let post_data = req.body;
 
             Post.create(post_data)
@@ -15,12 +18,12 @@
                     post: post
                 }))
                 .catch((err) => res.status(500).json({
-                    message: "something went wrong | internal server error ",
+                    message: "something went wrong | internal server error",
                     err
                 }))
         },
         addNewEventPost(req, res, next) {
-            console.log("add new calendar post controller");
+            console.log("===========EVENT TYPE POST CONTROLLER===========");
             let post_data = req.body;
 
 
@@ -36,7 +39,9 @@
                 }))
         },
         addNewTaskPost(req, res, next) {
-            console.log("add new task type post");
+
+            console.log("===========TASK TYPE POST CONTROLLER===========");
+
             let post_data = req.body;
 
             Post.create(post_data)

@@ -91,13 +91,21 @@
 
             <div class="row">
               <div class="col-md-8 ">
-                <button type="button " class="btn btn-link ">
-                  <i class="material-icons ">attach_file</i>
+
+
+                <button type="button" class="btn btn-link ">
+                  <input id="cin" #fileInput type="file" class="btn btn-outline-warning task" style="display: none" (change)="fileChangeEvent($event)"
+                    placeholder="File" multiple/>
+                  <i class="material-icons" (click)="fileInput.click()">attach_file</i>
                 </button>
+                <div *ngFor="let file of filesToUpload">
+                  <p>{{file.name}}</p>
+                </div>
+
               </div>
 
               <div class="col-md-4 text-right ">
-                <button type="button " name="button " class="btn btn-default ">Cancel</button>
+                <button type="button " name="button" class="btn btn-default ">Cancel</button>
                 <button [disabled]="(postForm.invalid && post.type=='normal' ) || processing || (selectedGroupUsers.length == 0 && post.type=='event' ) ||(selectedGroupUsers.length == 0 && post.type=='task') "
                   type="button " name="button" (click)="OnAddNewPost()" class="btn btn-primary">Post</button>
               </div>
@@ -193,7 +201,7 @@
 
     <div *ngFor="let post of posts">
       <ul class="list-group ">
-
+        <!-- Normal post -->
         <li class="list-group-item " *ngIf="post.type== 'normal'">
           <div class="card ">
             <div class="card-block ">
@@ -211,9 +219,14 @@
                 </div>
               </div>
               <div class="col-md-12 innercard ">
+
                 <p class="card-text ">
                   {{post?.content}}
                 </p>
+
+                <div *ngFor="let file of post.files">
+                  <p>{{file?.orignal_name}}</p>
+                </div>
               </div>
 
               <div class="card-footer action-post innercard clearfix ">
@@ -325,6 +338,10 @@
                 <p class="card-text ">
                   {{post?.content}}
                 </p>
+
+                <div *ngFor="let file of post.files">
+                  <p>{{file?.orignal_name}}</p>
+                </div>
               </div>
 
               <div class="card-footer action-post innercard clearfix ">
@@ -437,7 +454,12 @@
                     <br>
                     <span class="time">{{post.event?.due_time}}</span>
                   </div>
-                  <div class="col-md-9 event-title"> {{post.content}} </div>
+                  <div class="col-md-9 event-title"> {{post.content}}
+
+                    <div *ngFor="let file of post.files">
+                      <p>{{file?.orignal_name}}</p>
+                    </div>
+                  </div>
                 </div>
               </div>
 
