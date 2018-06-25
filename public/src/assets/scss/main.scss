@@ -208,3 +208,7 @@ margin-bottom: 20px;
   font-weight: bold;
   color: $brand-primary;
 }
+
+.card-footer .dropdown-toggle::after{
+  display: none;
+}
