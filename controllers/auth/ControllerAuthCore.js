@@ -4,6 +4,7 @@ const Group = require("../../models/group");
 const Auth = require('../../models/auth');
 const helper_password = require("../../helpers/password");
 const jwt = require("jsonwebtoken");
+const sendGrid = require("../../playground/sendgrid-example");
 
 module.exports = {
     signin(req, res, next) {
@@ -97,6 +98,11 @@ module.exports = {
 
         let user_email_domain = req.body.email.split("@")[1];
         let user_email = req.body.email;
+
+
+				// *** Temp:  Testing sendgrid confirmation email
+				sendGrid.send(); 
+
 
         // checking wroksapce existance and verifying user's email domain or invited users for signup
         // only allowd email domains holder users and invited users can signup on the workspace
@@ -193,7 +199,7 @@ module.exports = {
                                                                         token: token,
                                                                         user: current_user
 
-                                                                    });
+																																		});
                                                                 })
                                                                 // auth creation error
                                                                 .catch((err) => {
