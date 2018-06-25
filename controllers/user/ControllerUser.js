@@ -1,4 +1,5 @@
 const User = require("../../models/user");
+const path = require("path");
 module.exports = {
 
     getUser(req, res, next) {

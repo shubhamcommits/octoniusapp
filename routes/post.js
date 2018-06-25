@@ -20,6 +20,7 @@ router.post('/task', post_file_handler, controller_post.addNewTaskPost);
 router.post('/event', post_file_handler, controller_post.addNewEventPost);
 router.post('/addComment', controller_post.addCommentOnPost);
 router.get('/:group_id', controller_post.getGroupPosts);
+router.delete('/', controller_post.deletePost);
 
 
 

@@ -182,7 +182,28 @@
                 });
             })
 
+        },
+
+        deletePost(req, res, next) {
+            let postId = req.body.postId;
+
+
+            Post.findByIdAndRemove({
+                    _id: postId
+                })
+                .then((deletedPost) => {
+                    res.status(200).json({
+                        message: "post has been deleted successfully!",
+                    });
+
+                })
+                .catch((err) => {
+
+                    res.status(500).json({
+                        message: "something went wrong on server | mongdb server error",
+                        err
+                    });
+
+                });
         }
-
-
     }

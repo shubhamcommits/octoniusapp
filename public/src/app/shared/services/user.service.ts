@@ -22,6 +22,9 @@ export class UserService {
     return this._http.put<any>(this.BASE_API_URL + `/user`, user);
 
   }
+  downloadFile(file) {
+    return this._http.post(this.BASE_API_URL + `/file/download`, file, { responseType: 'blob' });
+  }
 
   updateUserProfileImage(fileToUpload: File) {
     const formData: FormData = new FormData();

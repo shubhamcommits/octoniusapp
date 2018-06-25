@@ -13,6 +13,7 @@ const apis_auth = require('./routes/auth');
 const apis_user = require('./routes/user');
 const apis_post = require('./routes/post');
 const apis_group = require('./routes/group');
+const apis_file = require('./routes/file');
 
 //database and local envirnment configurations
 // require('./nodemon_config')
@@ -54,6 +55,8 @@ app.use('/api/auth', apis_auth);
 app.use('/api/user', apis_user);
 app.use('/api/post', apis_post);
 app.use('/api/group', apis_group);
+app.use('/api/file', apis_file);
+
 
 // Invalid routes handling middleware
 app.use((req, res, next) => {

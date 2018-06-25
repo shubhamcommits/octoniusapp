@@ -11,6 +11,7 @@ import { ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Subject } from 'rxjs';
 import { User } from '../../../../shared/models/user.model';
 import { UserService } from '../../../../shared/services/user.service';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-group-activity',
@@ -409,6 +410,23 @@ export class GroupActivityComponent implements OnInit {
 
       });
 
+  }
+
+  onDownlaodFile(fileName) {
+
+    const fileData = {
+      'fileName': fileName
+    };
+    this._userService.downloadFile(fileData)
+      .subscribe((file) => {
+
+        //   console.log('Downloaded File', file);
+        saveAs(file, fileName);
+
+      }, (err) => {
+        console.log('Downloaded File err', err);
+
+      });
   }
   resetNewPostForm() {
     this.due_date = 'Due Date';
