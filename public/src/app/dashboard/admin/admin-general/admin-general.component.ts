@@ -32,8 +32,8 @@ export class AdminGeneralComponent implements OnInit {
     email: '',
     workspace_id: ''
   };
-    constructor(private _workspaceService: WorkspaceService,
-      private _adminService: AdminService, private _router: Router) { }
+  constructor(private _workspaceService: WorkspaceService,
+    private _adminService: AdminService, private _router: Router) { }
 
   ngOnInit() {
 

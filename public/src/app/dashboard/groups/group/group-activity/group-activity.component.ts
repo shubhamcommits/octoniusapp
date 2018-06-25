@@ -380,8 +380,6 @@ export class GroupActivityComponent implements OnInit {
     formData.append('task.due_date', post.task.due_date);
     formData.append('task._assigned_to', post.task._assigned_to);
 
-
-
     // console.log('post: ', post);
 
     this.processing = true;
@@ -412,7 +410,7 @@ export class GroupActivityComponent implements OnInit {
 
   }
 
-  onDownlaodFile(fileName) {
+  onDownlaodFile(fileName, fileName_orignal) {
 
     const fileData = {
       'fileName': fileName
@@ -421,13 +419,51 @@ export class GroupActivityComponent implements OnInit {
       .subscribe((file) => {
 
         //   console.log('Downloaded File', file);
-        saveAs(file, fileName);
+        saveAs(file, fileName_orignal);
 
       }, (err) => {
         console.log('Downloaded File err', err);
 
       });
   }
+
+
+  onDeletePost(postId) {
+
+
+   // console.log('postId: ', postId);
+
+    const post = {
+      'postId': postId
+    };
+
+    console.log('post: ', post);
+
+
+
+    this.postService.deletePost(post)
+      .subscribe((res) => {
+
+        this.alert.class = 'success';
+        this._message.next(res['message']);
+        this.resetNewPostForm();
+        // console.log('Normal post response: ', res);
+        this.loadGroupPosts();
+
+      }, (err) => {
+
+        this.alert.class = 'danger';
+
+        if (err.status) {
+          this._message.next(err.error.message);
+        } else {
+          this._message.next('Error! either server is down or no internet connection');
+        }
+
+      });
+
+  }
+
   resetNewPostForm() {
     this.due_date = 'Due Date';
     this.due_time = 'Due Time';

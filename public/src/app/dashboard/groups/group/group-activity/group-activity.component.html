@@ -225,7 +225,7 @@
                 </p>
 
                 <div *ngFor="let file of post.files">
-                  <p (click)="onDownlaodFile(file.modified_name)">{{file?.orignal_name}}</p>
+                  <p (click)="onDownlaodFile(file.modified_name,file.orignal_name)">{{file?.orignal_name}}</p>
                 </div>
               </div>
 
@@ -244,13 +244,13 @@
                       <i class="material-icons action">thumb_up</i>
                     </span>
                     <span>
-                          <div ngbDropdown class="d-inline-block">
-                            <i class="material-icons action" id="dropdownBasic1" ngbDropdownToggle>more_horiz</i>
-                            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                              <button class="dropdown-item">Edit Post</button>
-                              <button class="dropdown-item">Delete Post</button>
-                            </div>
-                          </div>
+                      <div ngbDropdown class="d-inline-block">
+                        <i class="material-icons action" id="dropdownBasic1" ngbDropdownToggle>more_horiz</i>
+                        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                          <button class="dropdown-item">Edit Post</button>
+                          <button class="dropdown-item" (click)="onDeletePost(post._id)">Delete Post</button>
+                        </div>
+                      </div>
                     </span>
                   </div>
                 </div>
@@ -325,7 +325,7 @@
                 </div>
                 <div class="col-md-7 ">
                   <h6>{{post._posted_by?.first_name}} {{post._posted_by?.last_name}}
-                  
+
                   </h6>
                   <p class="small lightgray date ">
                     {{post?.created_date | date : 'medium'}}</p>
@@ -343,7 +343,7 @@
                 </p>
 
                 <div *ngFor="let file of post.files">
-                  <p (click)="onDownlaodFile(file.modified_name)"> {{file?.orignal_name}} </p>
+                  <p (click)="onDownlaodFile(file.modified_name,file.orignal_name)"> {{file?.orignal_name}} </p>
                 </div>
               </div>
 
@@ -366,10 +366,10 @@
                         <i class="material-icons action" id="dropdownBasic1" ngbDropdownToggle>more_horiz</i>
                         <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
                           <button class="dropdown-item">Edit Post</button>
-                          <button class="dropdown-item">Delete Post</button>
+                          <button class="dropdown-item" (click)="onDeletePost(post._id)">Delete Post</button>
                         </div>
                       </div>
-                </span>
+                    </span>
                   </div>
                 </div>
               </div>
@@ -466,7 +466,7 @@
                   <div class="col-md-9 event-title"> {{post.content}}
 
                     <div *ngFor="let file of post.files">
-                      <p (click)="onDownlaodFile(file.modified_name)">{{file?.orignal_name}}</p>
+                      <p (click)="onDownlaodFile(file.modified_name,file.orignal_name)">{{file?.orignal_name}}</p>
                     </div>
                   </div>
                 </div>
@@ -491,10 +491,10 @@
                         <i class="material-icons action" id="dropdownBasic1" ngbDropdownToggle>more_horiz</i>
                         <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
                           <button class="dropdown-item">Edit Post</button>
-                          <button class="dropdown-item">Delete Post</button>
+                          <button class="dropdown-item" (click)="onDeletePost(post._id)">Delete Post</button>
                         </div>
                       </div>
-                </span>
+                    </span>
                   </div>
                 </div>
               </div>

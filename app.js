@@ -16,7 +16,7 @@ const apis_group = require('./routes/group');
 const apis_file = require('./routes/file');
 
 //database and local envirnment configurations
-//require('./nodemon_config')
+// require('./nodemon_config')
 require('./config/db_connection')
 
 
