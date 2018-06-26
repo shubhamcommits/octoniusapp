@@ -4,6 +4,7 @@ import { ReactiveFormsModule, FormsModule, FormGroup } from '@angular/forms';
 import { AppRoutingModule, routingComponents } from './app-routing.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 
 
 import { AppComponent } from './app.component';
@@ -54,6 +55,8 @@ import { GroupDataService } from './shared/services/group-data.service';
     ReactiveFormsModule,
     HttpClientModule,
     AngularMultiSelectModule,
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule,
     NgbModule.forRoot()
   ],
 

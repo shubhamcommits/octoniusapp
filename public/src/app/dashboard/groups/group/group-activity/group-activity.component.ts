@@ -230,10 +230,13 @@ export class GroupActivityComponent implements OnInit {
 
     const formData: any = new FormData();
     const files: Array<File> = this.filesToUpload;
-    console.log(files);
+    // console.log(files);
 
-    for (let i = 0; i < files.length; i++) {
-      formData.append('attachments', files[i], files[i]['name']);
+    if (files !== null) {
+      for (let i = 0; i < files.length; i++) {
+        formData.append('attachments', files[i], files[i]['name']);
+      }
+
     }
     const post = {
       content: this.post.content,
@@ -282,9 +285,12 @@ export class GroupActivityComponent implements OnInit {
     const files: Array<File> = this.filesToUpload;
     // console.log(files);
     const assignedUsers = new Array();
-    for (let i = 0; i < files.length; i++) {
-      formData.append('attachments', files[i], files[i]['name']);
+    if (files !== null) {
+      for (let i = 0; i < files.length; i++) {
+        formData.append('attachments', files[i], files[i]['name']);
+      }
     }
+
     for (let i = 0; i < this.selectedGroupUsers.length; i++) {
       // assignedUsers.push(this.selectedGroupUsers[i]._id);
       formData.append('event._assigned_to', this.selectedGroupUsers[i]._id);
@@ -353,11 +359,13 @@ export class GroupActivityComponent implements OnInit {
 
     const formData: any = new FormData();
     const files: Array<File> = this.filesToUpload;
-    console.log(files);
-
-    for (let i = 0; i < files.length; i++) {
-      formData.append('attachments', files[i], files[i]['name']);
+    // console.log(files);
+    if (files !== null) {
+      for (let i = 0; i < files.length; i++) {
+        formData.append('attachments', files[i], files[i]['name']);
+      }
     }
+
 
 
 
@@ -431,7 +439,7 @@ export class GroupActivityComponent implements OnInit {
   onDeletePost(postId) {
 
 
-   // console.log('postId: ', postId);
+    // console.log('postId: ', postId);
 
     const post = {
       'postId': postId
