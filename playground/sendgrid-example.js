@@ -1,4 +1,5 @@
 const http = require("https");
+const contentBody = require("./templates/sign-up.js")
 
 const options = {
 	"method": "POST",
@@ -30,7 +31,7 @@ req.write(JSON.stringify(
 			{
 				to: [ 
 					{ 
-						email: 'octonius-test@pm.me',
+						email: 'cosmin@octonius.com',
 						name: 'Octonius User' 
 					} 
 				],
@@ -47,8 +48,8 @@ req.write(JSON.stringify(
 		},
 		content: [
 			{ 
-				type: 'text/plain',
-				value: 'It is Working'
+				type: 'text/html',
+				value: contentBody
 			}
 		]
 	}
