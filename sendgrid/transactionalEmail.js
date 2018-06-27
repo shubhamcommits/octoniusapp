@@ -29,6 +29,9 @@ const sendTrMail = (template, to, from, replyTo) => {
 		});
 	});
 
+	// Pass data to the template
+	let htmlContent = generateHtmlContent(template, to);
+
 	// Pass email content
 	req.write(JSON.stringify(
 		{ 
@@ -55,13 +58,20 @@ const sendTrMail = (template, to, from, replyTo) => {
 			content: [
 				{ 
 					type: 'text/html',
-					value: template.template
+					value: htmlContent
 				}
 			]
 		}
 	));
 
 	req.end();
+};
+
+// Fulfill the template with user data
+const generateHtmlContent = (template, to) => {
+	const userNamePlaceholder = /<%body%>/;
+
+	return template.template.replace(userNamePlaceholder, to.name);
 };
 
 module.exports = sendTrMail;
