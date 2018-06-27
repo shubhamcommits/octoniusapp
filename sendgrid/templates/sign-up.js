@@ -1,4 +1,6 @@
-module.exports = `
+module.exports = {
+	subject: 'Welcome to Octonius!',
+	template: `
 <!DOCTYPE html>
 <html>
 	<head>
@@ -47,13 +49,10 @@ input[type=radio] {-webkit-appearance: radio;}
 /* Customizable Theme Bits */
 body {background-color:#fff; }
 
-
-
 h1.title {font-family:'Open Sans'; color:#2b2b2b; text-align: center}
 .byline {font-family:'Open Sans'; color:#2b2b2b; text-align: center;}
 .description, label, .fake-label {font-family:'Open Sans'; color:#666666;}
 .button {font-family:Helvetica, Arial, sans-serif; color:#FFFFFF; background-color:#ee3d58;}
-
 
 /* apply a natural box layout model to all elements */
 *, *:before, *:after {
@@ -102,3 +101,4 @@ h1.title {font-family:'Open Sans'; color:#2b2b2b; text-align: center}
 	</body>
 </html>
 `
+};
