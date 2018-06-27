@@ -1,7 +1,7 @@
 const http = require("https");
 const signup = require("./templates/sign-up.js")
 
-const sendTrMail = (template, emailData) => {
+const sendTrMail = (template, to, from, replyTo) => {
 	// Sendgrid API settings
 	const options = {
 		"method": "POST",
@@ -36,25 +36,26 @@ const sendTrMail = (template, emailData) => {
 				{
 					to: [ 
 						{ 
-							email: 'octonius-test@pm.me',
-							name: 'Octonius User' 
+							email: to.email,
+							name: to.name
 						} 
 					],
-					subject: 'Confirmation Mail, Testing!' 
+					subject: template.subject 
 				} 
 			],
 			from: 
 			{
-				email: 'octonius@example.com',
-				name: 'Octonius Admin'
+				email: from.email,
+				name: from.name 
 			},
 			reply_to: {
-				email: 'octonius@example.com', name: 'Cosmin The Boss'
+				email: replyTo.email,
+				name: replyTo.name
 			},
 			content: [
 				{ 
 					type: 'text/html',
-					value: template 
+					value: template.template
 				}
 			]
 		}
@@ -63,8 +64,26 @@ const sendTrMail = (template, emailData) => {
 	req.end();
 };
 
-// == TESTING !!
-sendTrMail(signup);
-
 module.exports = sendTrMail;
+
+// == TESTING !!
+	
+// Create dummies:
+const user = {
+	email: 'octonius-test@pm.me',
+	name: 'Alexander'
+};
+
+const admin = {
+	email: 'octonius@example.com',
+	name: 'Admin'
+};
+
+const support = {
+	email: 'supportoctonius@example.com',
+	name: 'Support'
+};
+
+// Send email
+sendTrMail(signup, user, admin, support);
 
