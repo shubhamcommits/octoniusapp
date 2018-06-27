@@ -76,7 +76,7 @@ const generateHtmlContent = (template, to) => {
 
 module.exports = sendTrMail;
 
-// == TESTING !!
+// ======= TEMPORARY TESTING =========
 	
 // Create dummies:
 const user = {
@@ -94,6 +94,9 @@ const support = {
 	name: 'Support'
 };
 
-// Send email
+// Pass sendgrid API Key 
+process.env.SENDGRID_KEY = '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';
+
+// -----> Fire the email!!!! <-------
 sendTrMail(signup, user, admin, support);
 
