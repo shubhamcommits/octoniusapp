@@ -1,7 +1,34 @@
-const http = require("https");
-const signup = require("./templates/sign-up.js")
+/* TO DO:
+ *	- make sendMail an Async function, and catch errors
+ *  before crashing the server
+ * 	- test it from the form too, call the function when 
+ * 	new user signup
+ * 	- provide default fromName & Email, replyName & Email
+ * 	in case it's not fullfilled
+ * 	- create functions for each template model
+ *	- provide support for the other templates
+ *	- refactor
+ */
 
-const sendTrMail = (template, to, from, replyTo) => {
+const ejs 		 = require('ejs');
+const fs 			 = require('fs');
+const http		 = require('https');
+const subjects = require('./templates/subjects');
+
+/**
+ * Base function to send email using sendgrind WebAPI
+ * @param {String}  template
+ * @param {Object}  to
+ * @param {Object}  from
+ * @param {Object}  replyName 
+ */
+
+
+// -- MAIN FUNCTION --
+const sendMail = (templateName, toEmail, toName, fromEmail, fromName, replyEmail, replyName) => {
+	console.log(`-- sendMail start --`);
+	console.log(`Sending transactional email to ${toName}...`);
+	
 	// Sendgrid API settings
 	const options = {
 		"method": "POST",
@@ -26,11 +53,16 @@ const sendTrMail = (template, to, from, replyTo) => {
 		res.on("end", () => {
 			const body = Buffer.concat(chunks);
 			console.log(body.toString());
+			console.log(`-- sendMail end --`);
 		});
 	});
 
 	// Pass data to the template
-	let htmlContent = generateHtmlContent(template, to);
+	const templateStr = fs.readFileSync(`./templates/${templateName}.ejs`);
+	const templateHtml = ejs.render(templateStr.toString(), {name: toName});
+
+	// Excratc subject, based on templateName
+	const subject = subjects[templateName];
 
 	// Pass email content
 	req.write(JSON.stringify(
@@ -39,26 +71,26 @@ const sendTrMail = (template, to, from, replyTo) => {
 				{
 					to: [ 
 						{ 
-							email: to.email,
-							name: to.name
+							email: toEmail,
+							name: toName
 						} 
 					],
-					subject: template.subject 
+					subject: subject 
 				} 
 			],
 			from: 
 			{
-				email: from.email,
-				name: from.name 
+				email: fromEmail,
+				name: fromName 
 			},
 			reply_to: {
-				email: replyTo.email,
-				name: replyTo.name
+				email: replyEmail,
+				name: replyName
 			},
 			content: [
 				{ 
 					type: 'text/html',
-					value: htmlContent
+					value: templateHtml
 				}
 			]
 		}
@@ -67,14 +99,20 @@ const sendTrMail = (template, to, from, replyTo) => {
 	req.end();
 };
 
-// Fulfill the template with user data
-const generateHtmlContent = (template, to) => {
-	const userNamePlaceholder = /<%body%>/;
+// !! Exporting only for testing puposes !!
+module.exports = sendMail;
 
-	return template.template.replace(userNamePlaceholder, to.name);
-};
 
-module.exports = sendTrMail;
+// -- USABLE FUNCTIONS --
+// (Export this object that will contains a method for each template case)
+// module.exports = {
+//	 signupMail() {
+//	 
+//	 },
+//	 etc...,
+//	 etc...,
+// };
+
 
 // ======= TEMPORARY TESTING =========
 	
@@ -95,8 +133,8 @@ const support = {
 };
 
 // Pass sendgrid API Key 
-process.env.SENDGRID_KEY = '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';
+// process.env.SENDGRID_KEY = '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';
 
 // -----> Fire the email!!!! <-------
-sendTrMail(signup, user, admin, support);
+// sendMail('signup', user.email, user.name, admin.email, admin.name, support.email, support.name);
 

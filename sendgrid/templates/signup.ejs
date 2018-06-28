@@ -1,6 +1,3 @@
-module.exports = {
-	subject: 'Welcome to Octonius!',
-	template: `
 <!DOCTYPE html>
 <html>
 	<head>
@@ -58,16 +55,16 @@ h1.title {font-family:'Open Sans'; color:#2b2b2b; text-align: center}
 *, *:before, *:after {
 	-moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
 }
-		@media only screen and (max-width:64em) {
-			body { padding-top: 30px; min-width: 100%; }
-			.wrapper { width: 96% }
-			.container { padding: 30px 15px }
-		}
-		@media only screen and (max-width:40em) {
-			body { background-image: none!important; }
-			.email-group input { float: none; width: 100%; margin: 0 0 12px 0; min-width: inherit;}
-			.email-group .button { width: 100%; }
-		}
+			@media only screen and (max-width:64em) {
+				body { padding-top: 30px; min-width: 100%; }
+				.wrapper { width: 96% }
+				.container { padding: 30px 15px }
+			}
+			@media only screen and (max-width:40em) {
+				body { background-image: none!important; }
+				.email-group input { float: none; width: 100%; margin: 0 0 12px 0; min-width: inherit;}
+				.email-group .button { width: 100%; }
+			}
 		</style>
 		<!--[if IE]>
 			<style type="text/css">
@@ -80,7 +77,7 @@ h1.title {font-family:'Open Sans'; color:#2b2b2b; text-align: center}
 		<div class="wrapper">
 			<div class="container">
 				<div class="header">
-					<h1 class="title"> <img src="http://alpha.octoni.us/static/img/avatar.jpeg" alt="user avatar" style="width: 42px; height: 42px; border-radius: 24px" /> <br><%body%></h1>
+					<h1 class="title"> <img src="http://alpha.octoni.us/static/img/avatar.jpeg" alt="user avatar" style="width: 42px; height: 42px; border-radius: 24px" /> <br><%= name %></h1>
 					<span class="byline"> Thank you for joining Octonius! </span>
 				</div>
 				<div class="description"> <p> This email is simply to confirm that your account was succesfully created. No action is required from your side.</p>
@@ -100,5 +97,4 @@ h1.title {font-family:'Open Sans'; color:#2b2b2b; text-align: center}
 		</div>
 	</body>
 </html>
-`
-};
+
