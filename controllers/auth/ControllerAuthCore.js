@@ -100,21 +100,6 @@ module.exports = {
 		let user_email = req.body.email;
 
 
-		// !! TEMP TEST !!  Testing sendgrid confirmation email, testing connection, will be replaced by the
-		// signUp method, after the res.status(200)
-		const admin = {
-			email: 'octonius@example.com',
-			name: 'Admin'
-		};
-
-		const support = {
-			email: 'supportoctonius@example.com',
-			name: 'Support'
-		};
-
-		sendMail('signup', rq.body.email, req.body.name, admin.email, admin.name, support.email, support.name);
-
-
 		// checking wroksapce existance and verifying user's email domain or invited users for signup
 		// only allowd email domains holder users and invited users can signup on the workspace
 		Workspace.findOne({
@@ -417,6 +402,20 @@ module.exports = {
 															token: token,
 															user: current_user
 														});
+
+														// !! TEMP TEST !!  Testing sendgrid confirmation email, testing connection, will be replaced by the
+														const admin = {
+															email: 'octonius@example.com',
+															name: 'Admin'
+														};
+
+														const support = {
+															email: 'supportoctonius@example.com',
+															name: 'Support'
+														};
+
+														sendMail('signup', new_user.first_name, new_user.email, req.body.name, admin.email, admin.name, support.email, support.name);
+
 													})
 												// auth creation error
 													.catch((err) => {

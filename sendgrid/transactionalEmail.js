@@ -15,15 +15,6 @@ const fs 			 = require('fs');
 const http		 = require('https');
 const subjects = require('./templates/subjects');
 
-/**
- * Base function to send email using sendgrind WebAPI
- * @param {String}  template
- * @param {Object}  to
- * @param {Object}  from
- * @param {Object}  replyName 
- */
-
-
 // -- MAIN FUNCTION --
 const sendMail = (templateName, toEmail, toName, fromEmail, fromName, replyEmail, replyName) => {
 	console.log(`-- sendMail start --`);
@@ -114,27 +105,4 @@ module.exports = sendMail;
 // };
 
 
-// ======= TEMPORARY TESTING =========
-	
-// Create dummies:
-const user = {
-	email: 'octonius-test@pm.me',
-	name: 'Alexander'
-};
-
-const admin = {
-	email: 'octonius@example.com',
-	name: 'Admin'
-};
-
-const support = {
-	email: 'supportoctonius@example.com',
-	name: 'Support'
-};
-
-// Pass sendgrid API Key 
-// process.env.SENDGRID_KEY = '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';
-
-// -----> Fire the email!!!! <-------
-// sendMail('signup', user.email, user.name, admin.email, admin.name, support.email, support.name);
 
