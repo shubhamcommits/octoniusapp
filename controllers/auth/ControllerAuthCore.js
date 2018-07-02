@@ -4,7 +4,7 @@ const Group = require("../../models/group");
 const Auth = require('../../models/auth');
 const helper_password = require("../../helpers/password");
 const jwt = require("jsonwebtoken");
-const sendMail = require("../../sendgrid/transactionalEmail");
+const sendMail = require("../../sendgrid/sendMail");
 
 module.exports = {
 	signin(req, res, next) {
@@ -414,7 +414,9 @@ module.exports = {
 															name: 'Support'
 														};
 
-														sendMail('signup', new_user.first_name, new_user.email, req.body.name, admin.email, admin.name, support.email, support.name);
+														sendMail('signup', new_user.email, new_user.first_name, admin.email, admin.name, support.email, support.name)
+															.then((msg) => console.log(msg))
+															.catch((err) => console.log(` ${err}`));
 
 													})
 												// auth creation error
