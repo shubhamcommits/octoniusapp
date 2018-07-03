@@ -1,23 +1,16 @@
-/* TO DO:
- * 	- provide default fromName & Email, replyName & Email
- * 	in case it's not fullfilled
- * 	- create functions for each template model
- *	- provide support for the other templates
- *	- refactor
- *
- * 	- test it from the form too, call the function when 
- * 	new user signup
- * 	- test it from the form too, call the function when 
- * 	new user signup
- */
-
 const ejs 		 = require('ejs');
 const fs 			 = require('fs');
 const http		 = require('axios');
 const subjects = require('./templates/subjects');
+const defaultEmails = require('./defaultEmails');
 
-// -- MAIN FUNCTION --
-const sendMail = async (templateName, toEmail, toName, fromEmail, fromName, replyEmail, replyName) => {
+
+/*	===================
+ *	-- MAIN FUNCTION --
+ *	===================
+ */
+
+const sendMail = async (templateName, toEmail, toName, fromEmail, fromName, replyToEmail, replyToName) => {
 	console.log(`Sending transactional email to ${toName}...`);
 
 	try {
@@ -56,12 +49,12 @@ const sendMail = async (templateName, toEmail, toName, fromEmail, fromName, repl
 				],
 				from: 
 				{
-					email: fromEmail,
-					name: fromName 
+					email: fromEmail || defaultEmails.fromEmail,
+					name: fromName || defaultEmails.fromName
 				},
 				reply_to: {
-					email: replyEmail,
-					name: replyName
+					email: replyToEmail || defaultEmails.replyToEmail,
+					name: replyToName || defaultEmails.replyToName
 				},
 				content: [
 					{ 
@@ -74,29 +67,42 @@ const sendMail = async (templateName, toEmail, toName, fromEmail, fromName, repl
 
 		// Fire the request to sendgrid server, check the reponse
 		const res = await http.request(config);
-
-		if (res.status === 202) {
-			return `Email sent to ${toName}`;
-		} 
+		return res; 
 
 	} catch (err) {
 		console.log(err);
 	}
 };
 
-// !! Exporting only for testing puposes !!
-module.exports = sendMail;
+
+/*	=====================
+ *	-- METHODS TO USE  --
+ *	=====================
+ */
+
+// Sign up confirmation email
+const signup = async (toEmail, toName, fromEmail, fromName, replyToEmail, replyToName) => {
+	try {
+		const template = 'signup';
+
+		const send = await sendMail(template, toEmail, toName, fromEmail, fromName, replyToEmail, replyToName);
+
+		if (send.status === 202) {
+			console.log(`Email sent to ${toName}`);
+		}
+
+	} catch (err) {
+		console.log(err);
+	}
+};
 
 
-// -- USABLE FUNCTIONS --
-// (Export this object that will contains a method for each template case)
-// module.exports = {
-//	 signupMail() {
-//	 
-//	 },
-//	 etc...,
-//	 etc...,
-// };
+/*	====================
+ *	-- EXPORT METHODS --
+ *	====================
+ */
 
-
+module.exports = {
+	signup,
+};
 
