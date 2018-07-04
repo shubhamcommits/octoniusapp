@@ -1,6 +1,6 @@
-const ejs 		 = require('ejs');
-const fs 			 = require('fs');
-const http		 = require('axios');
+const ejs = require('ejs');
+const fs = require('fs');
+const http = require('axios');
 const subjects = require('./templates/subjects');
 const defaultEmails = require('./defaultEmails');
 
@@ -19,7 +19,9 @@ const sendMail = async (templateName, toEmail, toName, fromEmail, fromName, repl
 
 		// Pass user data to the template
 		const templateStr = await fs.readFileSync(`./sendgrid/templates/${templateName}.ejs`);
-		const templateHtml = await ejs.render(templateStr.toString(), {name: toName});
+		const templateHtml = await ejs.render(templateStr.toString(), {
+			name: toName
+		});
 
 		// Sendgrid API settings
 		const config = {
@@ -27,7 +29,7 @@ const sendMail = async (templateName, toEmail, toName, fromEmail, fromName, repl
 			method: 'post',
 			baseURL: 'https://api.sendgrid.com',
 			'port': null,
-			transformRequest: [function(data) {
+			transformRequest: [function (data) {
 				strData = JSON.stringify(data);
 				return strData;
 			}],
@@ -35,20 +37,15 @@ const sendMail = async (templateName, toEmail, toName, fromEmail, fromName, repl
 				'authorization': 'Bearer ' + process.env.SENDGRID_KEY,
 				'content-type': 'application/json'
 			},
-			data: { 
-				personalizations: [
-					{
-						to: [ 
-							{ 
-								email: toEmail,
-								name: toName
-							} 
-						],
-						subject: subject 
-					} 
-				],
-				from: 
-				{
+			data: {
+				personalizations: [{
+					to: [{
+						email: toEmail,
+						name: toName
+					}],
+					subject: subject
+				}],
+				from: {
 					email: fromEmail || defaultEmails.fromEmail,
 					name: fromName || defaultEmails.fromName
 				},
@@ -56,18 +53,16 @@ const sendMail = async (templateName, toEmail, toName, fromEmail, fromName, repl
 					email: replyToEmail || defaultEmails.replyToEmail,
 					name: replyToName || defaultEmails.replyToName
 				},
-				content: [
-					{ 
-						type: 'text/html',
-						value: templateHtml
-					}
-				]
+				content: [{
+					type: 'text/html',
+					value: templateHtml
+				}]
 			}
 		};
 
 		// Fire the request to sendgrid server, check the reponse
 		const res = await http.request(config);
-		return res; 
+		return res;
 
 	} catch (err) {
 		console.log(err);
@@ -105,4 +100,3 @@ const signup = async (toEmail, toName, fromEmail, fromName, replyToEmail, replyT
 module.exports = {
 	signup,
 };
-

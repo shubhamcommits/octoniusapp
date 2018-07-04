@@ -1,5 +1,5 @@
 module.exports = {
-	fromEmail: 'octonius@example.com',
+	fromEmail: 'dev@octonius.com',
 	fromName: 'Admin',
 	replyToEmail: 'supportoctonius@example.com',
 	replyToMail: 'Support'
