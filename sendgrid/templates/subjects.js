@@ -1,3 +1,5 @@
 module.exports = {
-	signup: ' - Welcome to Octonius! -'
-};
+	joinWorkspace: `- You're 'invited to join a worskpace in Octonius! -`,
+	newWorkspace: `- You've created a new workspace in Octonius! -`,
+	signup: `- Welcome to Octonius! -`
+}; 
