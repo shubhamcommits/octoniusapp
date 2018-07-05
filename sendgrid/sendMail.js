@@ -59,32 +59,6 @@ const sendMail = async (emailData, toEmail, toName, fromEmail, fromName, replyTo
 				'authorization': 'Bearer ' + process.env.SENDGRID_KEY,
 				'content-type': 'application/json'
 			},
-<<<<<<< HEAD
-			data: {
-				personalizations: [{
-					to: [{
-						email: toEmail,
-						name: toName
-					}],
-					subject: subject
-				}],
-				from: {
-||||||| merged common ancestors
-			data: { 
-				personalizations: [
-					{
-						to: [ 
-							{ 
-								email: toEmail,
-								name: toName
-							} 
-						],
-						subject: subject 
-					} 
-				],
-				from: 
-				{
-=======
 			data: { 
 				personalizations: [
 					{
@@ -99,7 +73,6 @@ const sendMail = async (emailData, toEmail, toName, fromEmail, fromName, replyTo
 				],
 				from: 
 				{
->>>>>>> create generateEmailData, finish methods creation joinWorkspace and newWorkspace, send signup and newWorkspace email
 					email: fromEmail || defaultEmails.fromEmail,
 					name: fromName || defaultEmails.fromName
 				},
@@ -107,26 +80,12 @@ const sendMail = async (emailData, toEmail, toName, fromEmail, fromName, replyTo
 					email: replyToEmail || defaultEmails.replyToEmail,
 					name: replyToName || defaultEmails.replyToName
 				},
-<<<<<<< HEAD
-				content: [{
-					type: 'text/html',
-					value: templateHtml
-				}]
-||||||| merged common ancestors
-				content: [
-					{ 
-						type: 'text/html',
-						value: templateHtml
-					}
-				]
-=======
 				content: [
 					{ 
 						type: 'text/html',
 						value: emailData.content
 					}
 				]
->>>>>>> create generateEmailData, finish methods creation joinWorkspace and newWorkspace, send signup and newWorkspace email
 			}
 		};
 
