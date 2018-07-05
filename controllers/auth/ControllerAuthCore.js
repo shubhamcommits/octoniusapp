@@ -403,18 +403,11 @@ module.exports = {
 															user: current_user
 														});
 
-														// !! TEMP TEST !!  Testing sendgrid confirmation email, testing connection, will be replaced by the
-														const admin = {
-															email: 'octonius@example.com',
-															name: 'Admin'
-														};
+														// Send new workspace confirmation email
+														sendMail.newWorkspace(new_user.email, new_user.first_name, null, null, null, null, workspace.workspace_name);
 
-														const support = {
-															email: 'supportoctonius@example.com',
-															name: 'Support'
-														};
-
-														sendMail.signup(new_user.email, new_user.first_name);
+														// Send signup confirmation email
+														sendMail.signup(new_user.email, new_user.first_name, null, null, null, null, workspace.workspace_name);
 
 													})
 													// auth creation error
