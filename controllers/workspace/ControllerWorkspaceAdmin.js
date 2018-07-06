@@ -1,7 +1,6 @@
 const Wrokspace = require("../../models/workspace");
 const User = require("../../models/user");
 const Post = require("../../models/post");
-var nodemailer = require('nodemailer');
 const sendMail = require("../../sendgrid/sendMail");
 
 
@@ -68,37 +67,6 @@ module.exports = {
 				} else {
 					let sender = 'dev@octonius.com';
 					let receiver = invited_user_email;
-					// nodemailer configrations 
-					var transporter = nodemailer.createTransport({
-						service: 'Gmail',
-						auth: {
-							user: sender,
-							pass: 'Yaiza13@'
-						}
-					});
-
-					// nodemailer configurations
-					var mailOptions = {
-						from: sender,
-						to: receiver,
-						subject: 'Workspace invitation request',
-						text: `workspace name "${updated_workspace.workspace_name}"
-												"http://localhost:3000/#/signup" Click on the link to Join the worksapce`
-					};
-					transporter.sendMail(mailOptions, function (err, info) {
-						if (err) {
-							res.status(404).json({
-								status: "404",
-								message: "Error! Invalid email id",
-								error: err
-							})
-						} else {
-							res.status(200).json({
-								message: "Invitation has sent successfully!",
-								workspace: updated_workspace
-							});
-						}
-					});
 
 					// Send invitation email (using sendgrid)
 					sendMail.joinWorkspace(receiver, null, sender, null, null, null, updated_workspace.workspace_name, 'http://localhost:3000/#/signup');
