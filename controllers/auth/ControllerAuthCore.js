@@ -14,9 +14,9 @@ module.exports = {
 
 
 		User.findOne({
-				workspace_name: login_user.workspace_name,
-				email: login_user.email
-			})
+			workspace_name: login_user.workspace_name,
+			email: login_user.email
+		})
 			.populate('_workspace', 'workspace_name _id')
 			.then((user) => {
 				// user not found error
@@ -57,7 +57,7 @@ module.exports = {
 											user: current_user
 										});
 									})
-									// auth creation error
+								// auth creation error
 									.catch((err) => {
 										res.status(500).json({
 											message: "something went wrong | internal server error",
@@ -72,7 +72,7 @@ module.exports = {
 							}
 
 						})
-						// password decryption error
+					// password decryption error
 						.catch((error) => {
 							res.status(401).json({
 								message: "Auth failed,Invalid email or password!",
@@ -80,7 +80,7 @@ module.exports = {
 						});
 				}
 			})
-			// user finding error 
+		// user finding error 
 			.catch((error) => {
 				res.status(500).json({
 					message: "something went wrong | internal server error",
@@ -103,16 +103,16 @@ module.exports = {
 		// checking wroksapce existance and verifying user's email domain or invited users for signup
 		// only allowed email domains holder users and invited users can signup on the workspace
 		Workspace.findOne({
-				$or: [{
-					workspace_name: user_data.workspace_name,
-					allowed_domains: user_email_domain
-				}, {
-					workspace_name: user_data.workspace_name,
-					'invited_users.email': {
-						$in: user_email
-					}
-				}]
-			})
+			$or: [{
+				workspace_name: user_data.workspace_name,
+				allowed_domains: user_email_domain
+			}, {
+				workspace_name: user_data.workspace_name,
+				'invited_users.email': {
+					$in: user_email
+				}
+			}]
+		})
 			.then((workspace) => {
 				// if workspace does not exist
 				if (workspace == null) {
@@ -135,36 +135,36 @@ module.exports = {
 
 									// adding the new user in Global group of workspace
 									Group.findOneAndUpdate({
-											group_name: 'Global',
-											workspace_name: req.body.workspace_name
-										}, {
-											$push: {
-												_members: user
-											}
-										})
+										group_name: 'Global',
+										workspace_name: req.body.workspace_name
+									}, {
+										$push: {
+											_members: user
+										}
+									})
 										.then((global_group) => {
 											// Updating user's groups list
 											User.findByIdAndUpdate({
-													_id: user._id
-												}, {
-													$push: {
-														_groups: global_group
-													}
-												}, {
-													new: true
-												})
+												_id: user._id
+											}, {
+												$push: {
+													_groups: global_group
+												}
+											}, {
+												new: true
+											})
 												.then((updated_user) => {
 
 													// updating workspace's memebers list wih new user
 													Workspace.findByIdAndUpdate({
-															_id: workspace._id
-														}, {
-															$push: {
-																members: user
-															}
-														}, {
-															new: true
-														})
+														_id: workspace._id
+													}, {
+														$push: {
+															members: user
+														}
+													}, {
+														new: true
+													})
 														.then((updated_workspace) => {
 															// generating jsonwebtoken 
 															const payload = {
@@ -196,8 +196,11 @@ module.exports = {
 																		user: current_user
 
 																	});
+																	// Send signup confirmation email
+																	sendMail.signup(user.email, user.first_name, null, null, null, null, workspace.workspace_name);
+
 																})
-																// auth creation error
+															// auth creation error
 																.catch((err) => {
 																	console.log("inside auth catch");
 																	res.status(500).json({
@@ -206,7 +209,7 @@ module.exports = {
 																	});
 																})
 														})
-														// workspace updating error
+													// workspace updating error
 														.catch((err) => {
 															res.status(500).json({
 																message: "something went wrong | Internal server error",
@@ -214,7 +217,7 @@ module.exports = {
 															});
 														})
 												})
-												// User's group list updation error
+											// User's group list updation error
 												.catch((err) => {
 													res.status(500).json({
 														message: "something went wrong | internal server error auth creation error",
@@ -222,7 +225,7 @@ module.exports = {
 													});
 												})
 										})
-										// Global group updation error
+									// Global group updation error
 										.catch((err) => {
 											res.status(500).json({
 												message: "something went wrong | internal server error",
@@ -230,7 +233,7 @@ module.exports = {
 											});
 										})
 								})
-								// user creating error
+							// user creating error
 								.catch((err) => {
 									res.status(500).json({
 										message: "something went wrong at user signup | Internal server error",
@@ -238,7 +241,7 @@ module.exports = {
 									});
 								})
 						})
-						// password encryption error
+					// password encryption error
 						.catch((err) => {
 							res.status(401).json({
 								message: "something went wrong with your password,try another password",
@@ -247,7 +250,7 @@ module.exports = {
 						})
 				}
 			})
-			// workspace finding error
+		// workspace finding error
 			.catch((error) => res.status(500).json({
 				message: "something went wrong | internal server error",
 				error
@@ -260,16 +263,16 @@ module.exports = {
 		let user_id = req.userId;
 
 		Auth.findOneAndUpdate({
-				_user: user_id,
-				token: req.headers.authorization.split(' ')[1]
-			}, {
-				$set: {
-					token: null,
-					isLoggedIn: false
-				}
-			}, {
-				new: true
-			})
+			_user: user_id,
+			token: req.headers.authorization.split(' ')[1]
+		}, {
+			$set: {
+				token: null,
+				isLoggedIn: false
+			}
+		}, {
+			new: true
+		})
 			.then((user) => {
 				res.status(200).json({
 					message: "User successfully! logged out",
@@ -294,8 +297,8 @@ module.exports = {
 		console.log(workspace_data);
 
 		Workspace.findOne({
-				workspace_name: workspace_data.workspace_name
-			})
+			workspace_name: workspace_data.workspace_name
+		})
 			.then((workspace) => {
 				// workspace does not found
 				if (workspace == null) {
@@ -350,17 +353,17 @@ module.exports = {
 							.then((user) => {
 								// updating  memebers and _owener fields of workspace
 								Workspace.findByIdAndUpdate({
-										_id: workspace._id
-									}, {
-										$set: {
-											_owner: user,
-										},
-										$push: {
-											members: user
-										}
-									}, {
-										new: true
-									})
+									_id: workspace._id
+								}, {
+									$set: {
+										_owner: user,
+									},
+									$push: {
+										members: user
+									}
+								}, {
+									new: true
+								})
 									.then((updated_workspace) => {
 
 										// initialization of global group
@@ -403,14 +406,14 @@ module.exports = {
 															user: current_user
 														});
 
-														// Send new workspace confirmation email
-														sendMail.newWorkspace(new_user.email, new_user.first_name, null, null, null, null, workspace.workspace_name);
-
 														// Send signup confirmation email
 														sendMail.signup(new_user.email, new_user.first_name, null, null, null, null, workspace.workspace_name);
 
+														// Send new workspace confirmation email
+														sendMail.newWorkspace(new_user.email, new_user.first_name, null, null, null, null, workspace.workspace_name);
+
 													})
-													// auth creation error
+												// auth creation error
 													.catch((err) => {
 														res.status(500).json({
 															message: "something went wrong auth creation error | internal server error",
@@ -420,7 +423,7 @@ module.exports = {
 
 
 											})
-											// gloabl group creation error
+										// gloabl group creation error
 											.catch((err) => {
 												res.status(500).json({
 													error: err,
@@ -429,7 +432,7 @@ module.exports = {
 											})
 
 									})
-									// workspace update error
+								// workspace update error
 									.catch((error) => {
 										res.status(500).json({
 											message: "something went wrong workspace update error | internal server error occured",
@@ -437,7 +440,7 @@ module.exports = {
 										});
 									})
 							})
-							// user creation error 
+						// user creation error 
 							.catch((err) => {
 								res.status(500).json({
 									message: "something went wrong user creation error  | internal server error occured",
@@ -446,7 +449,7 @@ module.exports = {
 							});
 
 					})
-					// workspace creation error
+				// workspace creation error
 					.catch((err) => {
 						res.status(500).json({
 							message: "something went wrong  workspace creation error | internal server error occured",
@@ -454,7 +457,7 @@ module.exports = {
 						});
 					});
 			})
-			// password encryption error
+		// password encryption error
 			.catch((err) => {
 				return res.status(403).json({
 					message: "something went wrong with your password, Please try another one",
@@ -472,8 +475,8 @@ module.exports = {
 		let user_data = req.body;
 
 		Workspace.findOne({
-				workspace_name: user_data.workspace_name
-			})
+			workspace_name: user_data.workspace_name
+		})
 			.then((workspace) => {
 				// if workspace does not exists
 				if (workspace == null) {
@@ -483,9 +486,9 @@ module.exports = {
 
 				} else {
 					User.findOne({
-							workspace_name: user_data.workspace_name,
-							email: user_data.email
-						})
+						workspace_name: user_data.workspace_name,
+						email: user_data.email
+					})
 						.then((user) => {
 							// if user is not the member of workspace now he/she can signup
 							if (user == null) {
@@ -499,7 +502,7 @@ module.exports = {
 								});
 							}
 						})
-						// user find error
+					// user find error
 						.catch((error) => {
 							res.status(500).json({
 								message: "something went wrong | internal server error",
@@ -508,7 +511,7 @@ module.exports = {
 						})
 				}
 			})
-			// workspace find error
+		// workspace find error
 			.catch((error) => {
 				res.status(500).json({
 					message: "something went wrong | internal server error",
