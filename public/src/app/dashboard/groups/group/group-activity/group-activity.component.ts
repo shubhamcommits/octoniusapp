@@ -245,6 +245,7 @@ export class GroupActivityComponent implements OnInit {
       _group: this.group_id
 
     };
+
     formData.append('content', post.content);
     formData.append('type', post.type);
     formData.append('_posted_by', post._posted_by);
@@ -352,7 +353,6 @@ export class GroupActivityComponent implements OnInit {
 
       });
 
-
   }
 
   addNewTaskPost() {
@@ -367,8 +367,6 @@ export class GroupActivityComponent implements OnInit {
     }
 
 
-
-
     const post = {
       content: this.post.content,
       type: this.post.type,
@@ -379,7 +377,6 @@ export class GroupActivityComponent implements OnInit {
         _assigned_to: this.selectedGroupUsers[0]._id
       }
     };
-
 
     formData.append('content', post.content);
     formData.append('type', post.type);

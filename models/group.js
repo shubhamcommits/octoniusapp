@@ -11,7 +11,7 @@ const GroupSchema = new Schema({
         required: true,
         trim: true
     },
-    group_image: {
+    group_avatar: {
         type: String,
         default: null,
     },
@@ -32,6 +32,10 @@ const GroupSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User',
     }],
+    description: {
+        type: String,
+        default: null
+    },
     created_date: {
         type: Date,
         default: Date.now,
@@ -40,7 +44,6 @@ const GroupSchema = new Schema({
         type: String,
         default: null
     }]
-
 });
 
 

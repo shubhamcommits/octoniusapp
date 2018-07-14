@@ -1,12 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { GroupService } from '../../../../shared/services/group.service';
-import { FormControl } from '@angular/forms';
-import { Workspace } from '../../../../shared/models/workspace.model';
 import { GroupDataService } from '../../../../shared/services/group-data.service';
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-group-admin',
@@ -15,8 +12,9 @@ import { Router } from '@angular/router';
 })
 export class GroupAdminComponent implements OnInit {
 
+  group;
   user_data;
-
+  modalReference;
   itemList: any = [];
   selectedItems = [];
   settings = {};
@@ -42,7 +40,26 @@ export class GroupAdminComponent implements OnInit {
     this.group_id = this.groupDataService.groupId;
     this.alertMessageSettings();
     this.inilizeWrokspaceMembersSearchForm();
+    this.loadGroup();
   }
+
+
+  loadGroup() {
+    this.groupService.getGroup(this.group_id)
+      .subscribe((res) => {
+        console.log('Group: ', res);
+        this.group = res['group'];
+
+        this.group.description = res['group']['description'];
+
+      }, (err) => {
+
+      //  console.log('err: ', err);
+
+      });
+
+  }
+  
 
 
   alertMessageSettings() {
@@ -78,7 +95,7 @@ export class GroupAdminComponent implements OnInit {
     };
     this.groupService.addMembersInGroup(data)
       .subscribe((res) => {
-        console.log('add new user response:', res);
+        // console.log('add new user response:', res);
         this.selectedItems = [];
         this.alert.class = 'success';
         this._message.next(res['message']);
@@ -102,28 +119,27 @@ export class GroupAdminComponent implements OnInit {
       .subscribe((res) => {
         // console.log('workspace users: ', res);
 
-        console.log(res);
+        // console.log(res);
         this.itemList = res['users'];
 
       }, (err) => {
 
       });
-
   }
 
   onItemSelect(item: any) {
-    console.log(item);
-    console.log('selected items: ', this.selectedItems);
+    // console.log(item);
+    // console.log('selected items: ', this.selectedItems);
   }
   OnItemDeSelect(item: any) {
-    console.log(item);
-    console.log(this.selectedItems);
+    // console.log(item);
+    // console.log(this.selectedItems);
   }
   onSelectAll(items: any) {
-    console.log(items);
+    // console.log(items);
   }
   onDeSelectAll(items: any) {
-    console.log(items);
+    // console.log(items);
   }
 
 }

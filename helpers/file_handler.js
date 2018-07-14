@@ -5,9 +5,6 @@ module.exports = (req, res, next) => {
     console.log("================= FILE HANDLER ==================");
 
 
-
-
-
     let fileName = Date.now().toString() + req.files.profileImage.name;
     let file = req.files.profileImage;
     // const server_address = '/home/ubuntu/tutor_server/uploads/';

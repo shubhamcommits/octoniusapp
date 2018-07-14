@@ -37,9 +37,11 @@ export class GroupService {
     return this._http.get(`${this.BASE_API_URL}/group/searchGroupUsers/${group_id}/${query}`);
   }
 
-
   addMembersInGroup(data) {
     return this._http.post(this.BASE_API_URL + '/group/addNewUsers', data);
+  }
+  updateGroup(group_id, group) {
+    return this._http.put(this.BASE_API_URL + `/group/${group_id}`, group);
   }
 
 }

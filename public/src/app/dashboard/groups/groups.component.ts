@@ -11,6 +11,7 @@ import { InputValidators } from '../../common/validators/input.validator';
 import { Validators, FormControl, FormGroup } from '@angular/forms';
 import { GroupsService } from '../../shared/services/groups.service';
 import { Group } from '../../shared/models/group.model';
+import { environment } from '../../../environments/environment';
 @Component({
   selector: 'app-groups',
   templateUrl: './groups.component.html',
@@ -19,6 +20,7 @@ import { Group } from '../../shared/models/group.model';
 })
 export class GroupsComponent implements OnInit {
   groups = new Array();
+
 
   workspace: Workspace;
   user_data;
@@ -82,8 +84,6 @@ export class GroupsComponent implements OnInit {
     this._groupsService.createNewGroup(new_group)
       .subscribe((response) => {
         this.groups.push(response['group']);
-        // console.log('create new group response:', response);
-        // this.getUserGroups();
 
         this.alert.class = 'success';
         this._message.next(response['message']);
@@ -111,7 +111,6 @@ export class GroupsComponent implements OnInit {
 
   // getting all user's group
   getUserGroups() {
-    console.log('Inside get user groups');
 
     const user = {
       user_id: this.user_data.user_id,
@@ -120,8 +119,18 @@ export class GroupsComponent implements OnInit {
 
     this._groupsService.getUserGroups(user)
       .subscribe((res) => {
-        console.log('All groups:', res);
+        // console.log('All groups:', res);
         this.groups = res['groups'];
+
+        for (let i = 0; i < this.groups.length; i++) {
+          if (this.groups[i]['group_avatar'] == null) {
+            this.groups[i]['group_avatar'] = '/assets/images/group.png';
+
+          } else {
+
+            this.groups[i]['group_avatar'] = environment.BASE_URL + `/uploads/${this.groups[i]['group_avatar']}`;
+          }
+        }
       }, (err) => {
         console.log(err);
         this.alert.class = 'alert alert-danger';
@@ -145,7 +154,7 @@ export class GroupsComponent implements OnInit {
     this._userService.getUser()
       .subscribe((res) => {
         this.user = res.user;
-        console.log('user: ', this.user);
+        // console.log('user: ', this.user);
 
       }, (err) => {
         this.alert.class = 'alert alert-danger';

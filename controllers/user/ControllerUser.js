@@ -65,7 +65,6 @@ module.exports = {
 
     updateUserImage(req, res, next) {
 
-
         console.log("=============Update Users Profile Image=============");
 
 

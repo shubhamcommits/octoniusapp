@@ -3,7 +3,7 @@
 
 
 
-  <img class="mr-3 feed-avatar" [src]="user?.profile_pic">
+  <img class="mr-3 feed-avatar" [src]="profilePic">
   <!--   <h1>{{user.profile_pic}}</h1>
  -->
   <div class="media-body">
@@ -15,22 +15,6 @@
             <span class="sr-only">(current)</span>
           </a>
         </li>
-
-        <!-- <li class="nav-item">
-          <a class="nav-link">Files
-            <span class="sr-only">(current)</span>
-          </a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link">Calendar
-            <span class="sr-only">(current)</span>
-          </a>
-        </li> -->
-
-
-
-
       </ul>
     </div>
 
@@ -44,20 +28,6 @@
   </div>
   <!-- pop up modal for user profile updation -->
   <ng-template #content let-c="close" let-d="dismiss">
-
-    <!-- <div class="modal-header">
-          <h4 class="modal-title">Profile Update</h4>
-          <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div> -->
-    <!-- <div class="modal-header">
-        <h4 class="modal-title">Update User Role</h4>
-        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div> -->
-
 
     <div class="modal-body">
       <!--  <ngb-alert *ngIf="alert.message" [type]="alert.class" (close)="successMessage = null">{{alert.message}}</ngb-alert> -->
@@ -82,7 +52,7 @@
         <!--  <input type="file" alt="http://via.placeholder.com/100x100" style="width: 100px; height: 100px">
      <button class="btn btn-outline-secondary">Change image</button> -->
 
-        <img [src]="imageUrl" style="width:15% ; height:15%;">
+        <img [src]="userImageUrl" style="width:15% ; height:15%;">
         <input type="file" #Image accept="image/*" (change)="handleFileInput($event.target.files)" name="profile_image">
       </div>
 

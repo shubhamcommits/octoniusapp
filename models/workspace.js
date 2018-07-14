@@ -12,6 +12,10 @@ const workspaceSchema = new Schema({
         unique: true,
         required: true
     },
+    workspace_avatar: {
+        type: String,
+        default: null
+    },
     owner_email: {
         type: String,
         required: true,

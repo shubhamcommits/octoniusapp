@@ -156,5 +156,29 @@ module.exports = {
 
             })
 
+    },
+    updateWorkspace(req, res, next) {
+        let workspace_id = req.params.workspace_id;
+        let data = req.body;
+
+        Wrokspace.findOneAndUpdate({
+                _id: workspace_id
+            }, {
+                $set: data
+            }, {
+                new: true
+            })
+            .then((updated_workspace) => {
+                res.status(200).json({
+                    message: "Workspace has been updated successfully!",
+                });
+            })
+            .catch((err) => {
+                res.status(500).json({
+                    message: "Something went wrong | internal server error!",
+                    err
+                });
+            })
+
     }
 }

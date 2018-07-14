@@ -1,10 +1,14 @@
 <div class="media user-sticky-card">
 
-
-
-
-  <img class="mr-3 feed-avatar" src="assets/images/group.png">
+  <img class="mr-3 feed-avatar" [src]="groupImageUrl">
   <div class="media-body">
+
+    <div class="col-md-3 text-right">
+      <button type="button" name="button" class="btn btn-link" (click)="openLg(contentEditGroup)">
+        <i class="material-icons">create</i>
+      </button>
+    </div>
+
     <div>
       <h2>{{groupDataService.group?.group_name}}</h2>
       <ul class="nav">
@@ -21,19 +25,19 @@
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/dashboard/group/',group_id,'calendar']"  routerLinkActive="active">Calendar
+          <a class="nav-link" [routerLink]="['/dashboard/group/',group_id,'calendar']" routerLinkActive="active">Calendar
             <span class="sr-only">(current)</span>
           </a>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/dashboard/group/',group_id,'members']"  routerLinkActive="active">Members
+          <a class="nav-link" [routerLink]="['/dashboard/group/',group_id,'members']" routerLinkActive="active">Members
             <span class="sr-only">(current)</span>
           </a>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/dashboard/group/',group_id,'admin' ]"  routerLinkActive="active">Admin
+          <a class="nav-link" [routerLink]="['/dashboard/group/',group_id,'admin' ]" routerLinkActive="active">Admin
             <span class="sr-only">(current)</span>
           </a>
         </li>
@@ -41,4 +45,44 @@
     </div>
 
   </div>
+
+  <ng-template #content let-c="close" let-d="dismiss">
+
+    <div class="modal-body">
+      <!--  <ngb-alert *ngIf="alert.message" [type]="alert.class" (close)="successMessage = null">{{alert.message}}</ngb-alert> -->
+      <div *ngIf="alert.message" [ngClass]="alert.class">{{alert.message}}</div>
+
+    </div>
+
+  </ng-template>
+
+  <ng-template #contentEditGroup let-c="close" let-dd="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title">Group Update</h4>
+      <button type="button" class="close" aria-label="Close" (click)="dd('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body" style=" max-height: calc(100vh - 200px);overflow-y: auto">
+      <!--         <ngb-alert *ngIf="alert.message" [type]="alert.class" (close)="successMessage = null">{{alert.message}}</ngb-alert>
+       -->
+      <div class="form-group">
+
+        <img [src]="groupImageUrl" style="width:15% ; height:15%;">
+        <input type="file" #Image accept="image/*" (change)="handleFileInput($event.target.files)" name="profile_image">
+      </div>
+
+
+      <div class="form-group">
+        <label for="email">Group Description:</label>
+        <textarea class="form-control" [(ngModel)]="group.description" rows="5" id="" name=""></textarea>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-success" (click)="onUpdateGroup()">Save</button>
+      <button type="button" class="btn btn-primary" (click)="c('Close click')">Cancel</button>
+    </div>
+
+  </ng-template>
 </div>
