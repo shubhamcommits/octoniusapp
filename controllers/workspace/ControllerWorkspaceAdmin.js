@@ -1,7 +1,7 @@
 const Wrokspace = require("../../models/workspace");
 const User = require("../../models/user");
 const Post = require("../../models/post");
-var nodemailer = require('nodemailer');
+const sendMail = require("../../sendgrid/sendMail");
 
 
 module.exports = {
