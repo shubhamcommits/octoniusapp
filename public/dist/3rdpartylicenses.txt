@@ -124,11 +124,11 @@ THE SOFTWARE.
 MIT
 MIT
 
-@angular/compiler@5.2.10
+@angular/compiler@5.2.11
 MIT
 MIT
 
-@angular/core@5.2.10
+@angular/core@5.2.11
 MIT
 MIT
 

@@ -10,7 +10,7 @@ module.exports = (req, res, next) => {
         const fileName = Date.now().toString() + req.files.workspace_avatar.name;
         const file = req.files.workspace_avatar;
         // const folder = '/home/ubuntu/octonius/uploads/';
-        const folder = './uploads/';
+        const folder = process.env.FILE_UPLOAD_FOLDER;
 
         file.mv(folder + fileName, (err) => {
             if (err) {
