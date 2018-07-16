@@ -32,7 +32,7 @@ export class PostService {
   }
   deletePost(post) {
 
-    console.log('post inside the delete service: ', post);
+    // console.log('post inside the delete service: ', post);
 
     return this._http.put<any>(this.BASE_API_URL + '/post', post);
   }

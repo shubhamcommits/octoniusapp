@@ -3,8 +3,10 @@
 
 
 
-  <img class="mr-3 feed-avatar" src="assets/images/organization.png">
+  <img class="mr-3 feed-avatar" [src]="workspaceImageUrl">
   <div class="media-body">
+
+
     <div>
       <h2>Workspace settings</h2>
       <ul class="nav">
@@ -18,9 +20,49 @@
             <span class="sr-only">(current)</span>
           </a>
         </li>
-
       </ul>
     </div>
 
   </div>
+
+  <div class="col-md-3 text-right">
+    <button type="button" name="button" class="btn btn-link" (click)="openLg(contentEditWorkspace)">
+      <i class="material-icons">create</i>
+    </button>
+  </div>
+
+  <ng-template #content let-c="close" let-d="dismiss">
+
+    <div class="modal-body">
+      <!--  <ngb-alert *ngIf="alert.message" [type]="alert.class" (close)="successMessage = null">{{alert.message}}</ngb-alert> -->
+      <div *ngIf="alert.message" [ngClass]="alert.class">{{alert.message}}</div>
+
+    </div>
+
+  </ng-template>
+
+  <ng-template #contentEditWorkspace let-c="close" let-dd="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title">Workspace Update</h4>
+      <button type="button" class="close" aria-label="Close" (click)="dd('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body" style=" max-height: calc(100vh - 200px);overflow-y: auto">
+      <!--         <ngb-alert *ngIf="alert.message" [type]="alert.class" (close)="successMessage = null">{{alert.message}}</ngb-alert>
+         -->
+      <div class="form-group">
+
+        <img [src]="workspaceImageUrl" style="width:15% ; height:15%;">
+        <input type="file" #Image accept="image/*" (change)="handleFileInput($event.target.files)" name="profile_image">
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-success" (click)="onUpdateWorkspace()">Save</button>
+      <button type="button" class="btn btn-primary" (click)="c('Close click')">Cancel</button>
+    </div>
+
+  </ng-template>
+
 </div>

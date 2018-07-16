@@ -129,6 +129,42 @@ module.exports = {
                     err
                 });
             })
+    },
+    updateGroup(req, res, next) {
+        console.log("===============Update Group===============");
+        let group_id = req.params.group_id;
+        let data = req.body;
+
+        Group.findOneAndUpdate({
+                _id: group_id
+            }, {
+                $set: data
+            }, {
+                new: true
+            })
+            .then((updated_group) => {
+
+                if (updated_group == null) {
+                    res.status(404).json({
+                        message: "Error! group not found,Invalid group id"
+                    });
+                } else {
+                    res.status(200).json({
+                        message: "Group has been updated successfully!",
+                        group: updated_group
+                    });
+                }
+
+            })
+            .catch((err) => {
+
+                res.status(500).json({
+                    message: "something went wrong | internal server error!",
+                    err: err
+                });
+
+
+            })
     }
 
 }

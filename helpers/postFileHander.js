@@ -18,10 +18,10 @@ module.exports = (req, res, next) => {
 
             let fileName = Date.now().toString() + file_current.name;
             let file = file_current;
-            // const server_address = '/home/ubuntu/octonius/uploads/';
-            let local_address = './uploads/';
+            // const folder = '/home/ubuntu/octonius/uploads/';
+            const folder = process.env.FILE_UPLOAD_FOLDER;
 
-            file_current.mv(local_address + fileName, (err) => {
+            file_current.mv(folder + fileName, (err) => {
                 if (err) {
                     fileName = null;
                     return res.status(500).json({
@@ -37,7 +37,7 @@ module.exports = (req, res, next) => {
             }
 
             req.body.files.push(f);
-        
+
         });
 
         next();
@@ -47,9 +47,9 @@ module.exports = (req, res, next) => {
         const fileName = Date.now().toString() + req.files.attachments.name;
         const file = req.files.attachments;
         // const server_address = '/home/ubuntu/octonius/uploads/';
-        const local_address = './uploads/';
+        const folder = process.env.FILE_UPLOAD_FOLDER;
 
-        file.mv(local_address + fileName, (err) => {
+        file.mv(folder + fileName, (err) => {
             if (err) {
                 fileName = null;
                 return res.status(500).json({

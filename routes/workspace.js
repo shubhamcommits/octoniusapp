@@ -6,7 +6,8 @@ const controller_workspace_admin = require("../controllers/workspace/ControllerW
 const controller_workspace_groups = require("../controllers/workspace/ControllerGroups");
 const controller_workspace_group = require("../controllers/workspace/ControllerGroup");
 const controller_post = require("../controllers/workspace/ControllerPost");
-const middleware_auth = require('../middlewares/auth')
+const middleware_auth = require('../middlewares/auth');
+const workspace_file_handler = require('../helpers/workspace_avatar_handler');
 
 
 // JWT Token verification middleware
@@ -25,6 +26,7 @@ router.post("/updateAllowedEmailsDomains", controller_workspace_admin.updateAllo
 router.post("/inviteUserViaEmail", controller_workspace_admin.inviteUserViaEmail);
 router.put("/updateUserRole", controller_workspace_admin.updateUserRole);
 router.delete("/deleteWorkspaceUser", controller_workspace_admin.deleteWorkspaceUser);
+router.put("/:workspace_id", workspace_file_handler, controller_workspace_admin.updateWorkspace);
 
 // workspace groups routes
 router.post("/groups", controller_workspace_groups.createNewGroup);

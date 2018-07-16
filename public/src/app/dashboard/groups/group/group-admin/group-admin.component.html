@@ -5,24 +5,13 @@
         <div class="col-md-9">
           <h4>Group description</h4>
         </div>
-        <div class="col-md-3 text-right">
-          <button type="button" name="button" class="btn btn-link">
-            <i class="material-icons">create</i>
-          </button>
-        </div>
       </div>
 
-
-      <p>Choose to make your workspace signup process invition only,or allow anyone else with a certain email adress format
-        to signup. Choose to make your workspace signup process invition only,or allow anyone else with a certain email adress
-        format to signup</p>
-      <p>Choose to make your workspace signup process invition only,or allow anyone else with a certain email adress format
-        to signup. Choose to make your workspace signup process invition only,or allow anyone else with a certain email adress
-        format to signup</p>
+      <p>{{group?.description}}</p>
     </div>
 
 
-    <div [hidden]="groupDataService?.group.group_name =='Global'" class="card-tile invite-users">
+    <div [hidden]="groupDataService.group?.group_name =='Global'" class="card-tile invite-users">
 
       <h4>Add new member</h4>
       <p>You can search for persons inside the organization Workplace and add them to your group.</p>
@@ -49,22 +38,6 @@
       <p>If you want to invite someone from outside the organization, send them an invite from the Workplace Settings. </p>
 
     </div>
-
-    <!--
-  <div class="card-tile ">
-    <h4>Group members</h4>
-  <div class="media card-tile user-list " *ngFor="let member of workspace.members ">
-    <img class="mr-3 " src="https://randomuser.me/api/portraits/med/women/49.jpg " alt="Generic placeholder image ">
-    <div class="media-body ">
-      <div class="float-left ">
-        <h4 class="mt-0 ">{{member?.first_name}}  {{member?.last_name}}</h4>
-        <p>Role: {{member?.role}}</p>
-      </div>
-      <i class="material-icons float-right ">more_horiz</i>
-    </div>
-  </div>
-  </div>
- -->
 
   </div>
 

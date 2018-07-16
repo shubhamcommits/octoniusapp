@@ -6,6 +6,7 @@
           <h6 class="card-title">Group Info </h6>
           <hr/>
           <p class="card-text">{{groupDataService.group?._admins?.length + groupDataService.group?._members?.length}} Members</p>
+          <p class="card-text">{{groupDataService.group?.description}}</p>
 
         </div>
       </div>
@@ -38,8 +39,6 @@
               <div class="col-md-6">
                 <ul class="nav nav-pills">
 
-
-
                   <li class="nav-item">
                     <button (click)="onSelectPostType('normal')" class="btn btn-link">
                       <i class="material-icons muted">comment</i>
@@ -67,7 +66,7 @@
                 </button>
 
                 <!-- <input [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" placeholder="Date Time"> -->
-              <!--   <owl-date-time #dt1></owl-date-time> -->
+                <!--   <owl-date-time #dt1></owl-date-time> -->
 
 
                 <button *ngIf="post.type == 'event'|| post.type=='task'" class="btn btn-outline-warning task" type="button" (click)="openDatePicker(dateContent)">
