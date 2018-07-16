@@ -19,13 +19,13 @@ export class PostService {
   }
 
   addNewNormalPost(post) {
-    return this._http.post(this.BASE_API_URL + '/post/normal', post);
+    return this._http.post(this.BASE_API_URL + '/post/add', post);
   }
   addNewEventPost(post) {
-    return this._http.post(this.BASE_API_URL + '/post/event', post);
+    return this._http.post(this.BASE_API_URL + '/post/add', post);
   }
   addNewTaskPost(post) {
-    return this._http.post(this.BASE_API_URL + '/post/task', post);
+    return this._http.post(this.BASE_API_URL + '/post/add', post);
   }
   addNewComment(comment) {
     return this._http.post(this.BASE_API_URL + '/post/addComment', comment);

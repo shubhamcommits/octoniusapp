@@ -24,8 +24,10 @@ module.exports = {
 	},
 	editPost(req, res, next) {
 
-		let post_type = req.body.type;
-		let post_update = req.body;
+		const post_type = req.body.type;
+		const post_update = req.body;
+
+		// to do: Handle post editing
 
 	},
 	addCommentOnPost(req, res, next) {
