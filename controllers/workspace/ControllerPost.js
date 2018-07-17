@@ -26,8 +26,6 @@
             console.log("===========EVENT TYPE POST CONTROLLER===========");
             let post_data = req.body;
 
-
-
             Post.create(post_data)
                 .then((post) => res.status(200).json({
                     message: "Event has created successfully!",
@@ -52,7 +50,7 @@
                 .catch((err) => res.status(500).json({
                     message: "something went wrong | internal server error " + err.message,
                     err
-                }))
+                }));
         },
         addCommentOnPost(req, res, next) {
 

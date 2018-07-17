@@ -35,7 +35,7 @@ app.use(morgan("dev"));
 
 //file upload middleware
 app.use(fileUpload());
-app.use('/uploads', express.static(path.join(__dirname, './uploads')));
+app.use('/uploads', express.static(process.env.FILE_UPLOAD_FOLDER));
 
 
 // static folder
