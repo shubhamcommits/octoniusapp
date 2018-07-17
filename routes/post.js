@@ -15,9 +15,9 @@ router.use(middleware_auth.isLoggedIn);
 
 
 // Post Routes 
-router.post('/normal', post_file_handler, controller_post.addNewNormalPost);
-router.post('/task', post_file_handler, controller_post.addNewTaskPost);
-router.post('/event', post_file_handler, controller_post.addNewEventPost);
+router.post('/add', post_file_handler, controller_post.addNewPost);
+// edit route still in progress
+router.post('/edit', controller_post.editPost);
 router.post('/addComment', controller_post.addCommentOnPost);
 router.get('/:group_id', controller_post.getGroupPosts);
 router.put('/', controller_post.deletePost);
