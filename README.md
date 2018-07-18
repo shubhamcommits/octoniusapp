@@ -13,7 +13,7 @@ Please follow these steps to run app on your local machine.
 
 1. Go to home/ubuntu/ and run 'pm2 run ecosystem.config.js'
 
-###### Refereshing variable updates after changing 'ecosystem.config.js' file:
+###### Refreshing environment variables updates after changing 'ecosystem.config.js' file:
 
 1. Go to home/ubuntu/ and run 'pm2 restart ecosystem.config.js --env production --update-env'
 
