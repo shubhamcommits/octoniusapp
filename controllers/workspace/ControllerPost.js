@@ -77,6 +77,30 @@ module.exports = {
 		const post_update = req.body;
 
 		// to do: Handle post editing
+		Post.findByIdAndUpdate({
+			_id: post_id
+		}, { 
+			$set : 
+			// Update only the fields allowed to be updated to each kind on post type:
+			// normal post: content, check what more??
+			// task post: content, due date, assigned to , what more ???
+			// event post: content, dates, assigned to, what more ??
+		
+		}, {
+			new: true
+		})
+			.then((updated_post) => {
+				res.status(200).json({
+					message: "Post task has been completed Successfully!",
+					post: updated_post
+				})
+			})
+			.catch((err) => {
+				res.status(500).json({
+					message: "something went wrong | internal server error ",
+					err
+				})
+			});
 
 	},
 
