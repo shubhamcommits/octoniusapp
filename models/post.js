@@ -61,6 +61,14 @@ const PostSchema = new Schema({
 		_assigned_to: {
 			type: Schema.Types.ObjectId,
 			ref: 'User'
+		},
+		completed: {
+			type:	Boolean,
+			default: false
+		},
+		completion_date: {
+			type: Date,
+			default: null
 		}
 	},
 	event: {
