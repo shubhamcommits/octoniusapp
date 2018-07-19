@@ -23,7 +23,7 @@ const generateEmailData = async (templateName, user, admin, workspace, link) => 
 		const subject = subjects[templateName];
 
 		// Pass email data to the template
-		const templateStr = await fs.readFileSync(`./sendgrid/templates/${templateName}.ejs`);
+		const templateStr = await fs.readFileSync(`${__dirname}/templates/${templateName}.ejs`);
 		const content = await ejs.render(templateStr.toString(), data);
 
 		return {
