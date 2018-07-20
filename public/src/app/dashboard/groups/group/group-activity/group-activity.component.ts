@@ -122,7 +122,7 @@ export class GroupActivityComponent implements OnInit {
       .subscribe((res) => {
         this.user = res.user;
         this.profileImage = res.user['profile_pic'];
-        this.profileImage = `http://localhost:3000/uploads/${this.profileImage}`;
+        this.profileImage = `/uploads/${this.profileImage}`;
       }, (err) => {
         this.alert.class = 'alert alert-danger';
         if (err.status === 401) {
