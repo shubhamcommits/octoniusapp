@@ -209,7 +209,8 @@
             <div class="card-block ">
               <div class="row card-title ">
                 <div class="col-md-1 ">
-                  <img src="assets/images/user.png" class="feed-avatar">
+                    <img [src]="profileImage" class="feed-avatar">
+                  <!--<img src="assets/images/user.png" class="feed-avatar">-->
                 </div>
                 <div class="col-md-7">
                   <h6>{{post._posted_by?.first_name}} {{post._posted_by?.last_name}}</h6>
@@ -293,7 +294,8 @@
             <div class="card-block">
               <div class="row card-title ">
                 <div class="col-md-1">
-                  <img src="assets/images/user.png" class="feed-avatar">
+                    <img [src]="profileImage" class="feed-avatar">
+                  <!--<img src="assets/images/user.png" class="feed-avatar">-->
                 </div>
                 <div class="col-md-7 ">
                   <h6>{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}} replied</h6>
@@ -323,7 +325,8 @@
             <div class="card-block ">
               <div class="row card-title ">
                 <div class="col-md-1 ">
-                  <img src="assets/images/user.png" class="feed-avatar">
+                    <img [src]="profileImage" class="feed-avatar">
+                  <!--<img src="assets/images/user.png" class="feed-avatar">-->
                 </div>
                 <div class="col-md-7 ">
                   <h6>{{post._posted_by?.first_name}} {{post._posted_by?.last_name}}
@@ -412,7 +415,8 @@
             <div class="card-block">
               <div class="row card-title ">
                 <div class="col-md-1">
-                  <img src="assets/images/user.png" class="feed-avatar">
+                    <img [src]="profileImage" class="feed-avatar">
+                  <!--<img src="assets/images/user.png" class="feed-avatar">-->
                 </div>
                 <div class="col-md-7 ">
                   <h6>{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}} replied</h6>
