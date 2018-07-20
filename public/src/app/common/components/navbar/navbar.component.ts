@@ -28,7 +28,7 @@ export class NavbarComponent implements OnInit {
       .subscribe((res) => {
         this.user = res.user;
         this.userProfileImage = res.user['profile_pic'];
-        this.userProfileImage = `http://localhost:3000/uploads/${this.userProfileImage}`;
+        this.userProfileImage = `/uploads/${this.userProfileImage}`;
       }, (err) => {
         this.alert.class = 'alert alert-danger';
         if (err.status === 401) {
