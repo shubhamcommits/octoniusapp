@@ -1,13 +1,9 @@
 <div class="media user-sticky-card">
 
   <img class="mr-3 feed-avatar" [src]="groupImageUrl">
+
   <div class="media-body">
 
-    <div class="col-md-3 text-right">
-      <button type="button" name="button" class="btn btn-link" (click)="openLg(contentEditGroup)">
-        <i class="material-icons">create</i>
-      </button>
-    </div>
 
     <div>
       <h2>{{groupDataService.group?.group_name}}</h2>
@@ -44,6 +40,11 @@
       </ul>
     </div>
 
+  </div>
+  <div class="col-md-3 text-right">
+    <button type="button" name="button" class="btn btn-link" (click)="openLg(contentEditGroup)">
+      <i class="material-icons">create</i>
+    </button>
   </div>
 
   <ng-template #content let-c="close" let-d="dismiss">
