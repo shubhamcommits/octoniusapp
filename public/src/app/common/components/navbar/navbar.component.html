@@ -33,7 +33,8 @@
       <div class="form-inline has-feedback">
         <input type="text" class="form-control" placeholder="Search Everything ..." />
         <!-- <i class="fa form-control-feedback fa-microphone" aria-hidden="true"></i> -->
-        <img [src]="userProfileImage" alt="" class="topnav-avatar" routerLink="/dashboard/profile/profile">
+
+        <img [src]="userProfileImage" onerror="this.src='/uploads/user.png'" alt="" class="topnav-avatar" routerLink="/dashboard/profile/profile">
       </div>
 
       <a class="nav-link" routerLink="/dashboard/admin" (click)="onSignOut()">Logout

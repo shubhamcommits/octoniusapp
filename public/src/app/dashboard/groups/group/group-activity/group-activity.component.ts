@@ -481,7 +481,7 @@ export class GroupActivityComponent implements OnInit {
       .subscribe((res) => {
         // console.log('Group posts:', res);
         this.posts = res['posts'];
-        // console.log('Group posts:', this.posts);
+       console.log('Group posts:', this.posts);
 
       }, (err) => {
 
