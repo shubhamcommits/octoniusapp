@@ -12,6 +12,8 @@ import { Subject } from 'rxjs';
 import { User } from '../../../../shared/models/user.model';
 import { UserService } from '../../../../shared/services/user.service';
 import { saveAs } from 'file-saver';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { style, animate, trigger, transition } from '@angular/animations';
 
 @Component({
   selector: 'app-group-activity',
@@ -481,7 +483,7 @@ export class GroupActivityComponent implements OnInit {
       .subscribe((res) => {
         // console.log('Group posts:', res);
         this.posts = res['posts'];
-        // console.log('Group posts:', this.posts);
+       console.log('Group posts:', this.posts);
 
       }, (err) => {
 

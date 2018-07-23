@@ -15,6 +15,7 @@ import { NgbModal, NgbAlertConfig } from '@ng-bootstrap/ng-bootstrap';
 export class AdminMembersComponent implements OnInit {
   workspace: Workspace;
   user_data;
+  profileImage;
 
   modalReference: any;
   @ViewChild('content') private content;
@@ -51,6 +52,9 @@ export class AdminMembersComponent implements OnInit {
     this._workspaceService.getWorkspace(this.user_data.workspace)
       .subscribe((res) => {
         this.workspace = res.workspace;
+        console.log(this.workspace);
+        this.profileImage = res.workspace['profile_pic'];
+        this.profileImage = `http://localhost:3000/uploads/${this.profileImage}`;
         console.log('loadworkspace res: ', res);
 
 

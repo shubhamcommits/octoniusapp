@@ -15,44 +15,43 @@
   </div>
   <div class="col-md-8">
     <!-- postbox-->
-
-
     <div class="card" style="margin-bottom: 10px">
       <div class="card-block">
         <form [formGroup]="postForm">
           <div class="row card-title">
-            <div class="col-md-1">
-              <img [src]="profileImage" class="feed-avatar">
-            </div>
-            <div class="col-md-10">
-              <h6>What are you working on?</h6>
+              <div class="col-md-1">
+                  <!--/uploads/user.png-->
+                  <img [src]="profileImage" onerror="this.src='../../../../../assets/images/153209974203722540028_1652393308150333_5266153581756151410_n.jpg'" class="feed-avatar">
+                </div>
+
+            <div>
+              <!--<h6>What are you working on?</h6>-->
+              <input type="text" class="feed-avatar form-control" style="width: 292%;" placeholder="What are you working on?"
+    onfocus="document.getElementById('show_hide').style.display='block';"
+    onblur="document.getElementById('show_hide').style.display='none';">
             </div>
 
-            <div class="col-md-1">
-              <!-- <button type="button" class="close" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button> -->
-            </div>
+
           </div>
-          <div class="col-md-12 innercard">
+          <div id="show_hide" class="col-md-12 innercard" style="display: none;">
             <div class="row">
               <div class="col-md-6">
                 <ul class="nav nav-pills">
 
                   <li class="nav-item">
-                    <button (click)="onSelectPostType('normal')" class="btn btn-link">
+                    <button (click)="onSelectPostType('normal')" @fade class="btn btn-link">
                       <i class="material-icons muted">comment</i>
                     </button>
                   </li>
                   <li class="nav-item">
 
-                    <button (click)="onSelectPostType('event')" class="btn btn-link">
+                    <button (click)="onSelectPostType('event')" @fade class="btn btn-link">
                       <i class="material-icons muted">event</i>
                     </button>
                   </li>
                   <li class="nav-item">
 
-                    <button (click)="onSelectPostType('task')" class="btn btn-link">
+                    <button (click)="onSelectPostType('task')" @fade  class="btn btn-link">
                       <i class="material-icons muted">check_box</i>
                     </button>
                   </li>
@@ -83,7 +82,7 @@
               </div>
             </div>
 
-            <div class="row " style="margin-top: 10px">
+            <div class="row" style="margin-top: 10px">
               <div class="col-md-12">
                 <div class="form-group ">
                   <textarea class="form-control " id="post-content" rows="3" [(ngModel)]="post.content" name="postContent" formControlName="postContent"></textarea>
@@ -209,8 +208,8 @@
             <div class="card-block ">
               <div class="row card-title ">
                 <div class="col-md-1 ">
-                    <img [src]="profileImage" class="feed-avatar">
-                  <!--<img src="assets/images/user.png" class="feed-avatar">-->
+                    <!--<img [src]="profileImage" class="feed-avatar">-->
+                  <img src="/uploads/user.png" class="feed-avatar">
                 </div>
                 <div class="col-md-7">
                   <h6>{{post._posted_by?.first_name}} {{post._posted_by?.last_name}}</h6>
