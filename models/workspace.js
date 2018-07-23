@@ -14,7 +14,7 @@ const workspaceSchema = new Schema({
     },
     workspace_avatar: {
         type: String,
-        default: null
+        default: 'default_organization.png'
     },
     owner_email: {
         type: String,
