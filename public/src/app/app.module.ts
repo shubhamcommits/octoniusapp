@@ -5,6 +5,7 @@ import { AppRoutingModule, routingComponents } from './app-routing.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './common/components/navbar/navbar.component';
@@ -54,6 +55,7 @@ import { GroupDataService } from './shared/services/group-data.service';
     ReactiveFormsModule,
     HttpClientModule,
     AngularMultiSelectModule,
+    BrowserAnimationsModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     NgbModule.forRoot()
