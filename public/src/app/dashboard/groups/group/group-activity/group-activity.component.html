@@ -21,59 +21,58 @@
           <div class="row card-title">
               <div class="col-md-1">
                   <!--/uploads/user.png-->
-                  <img [src]="profileImage" onerror="this.src='../../../../../assets/images/153209974203722540028_1652393308150333_5266153581756151410_n.jpg'" class="feed-avatar">
+                  <img [src]="profileImage" onerror="this.src='/uploads/user.png'" class="feed-avatar">
                 </div>
 
             <div>
               <!--<h6>What are you working on?</h6>-->
-              <input type="text" class="feed-avatar form-control" style="width: 292%;" placeholder="What are you working on?"
-    onfocus="document.getElementById('show_hide').style.display='block';"
-    onblur="document.getElementById('show_hide').style.display='none';">
+              <!--<input type="text" class="feed-avatar form-control" style="width: 292%;" placeholder="What are you working on?"
+    onfocus="document.getElementById('show_hide').style.display='block';">-->
+    <button type="text" class="feed-avatar form-control btn-lg" style="width: 253%;" placeholder="What are you working on?"
+    (click)="show_hide_working_bar()">What are you working on?</button>
             </div>
-
-
           </div>
-          <div id="show_hide" class="col-md-12 innercard" style="display: none;">
+          <div id="show_hide" class="col-md-12 innercard fade-in" style="display: none;">
             <div class="row">
               <div class="col-md-6">
                 <ul class="nav nav-pills">
 
                   <li class="nav-item">
-                    <button (click)="onSelectPostType('normal')" @fade class="btn btn-link">
+                    <button (click)="onSelectPostType('normal')" class="btn fade-in btn-link">
                       <i class="material-icons muted">comment</i>
                     </button>
                   </li>
                   <li class="nav-item">
 
-                    <button (click)="onSelectPostType('event')" @fade class="btn btn-link">
+                    <button (click)="onSelectPostType('event')" class="btn fade-in btn-link">
                       <i class="material-icons muted">event</i>
                     </button>
                   </li>
                   <li class="nav-item">
 
-                    <button (click)="onSelectPostType('task')" @fade  class="btn btn-link">
+                    <button (click)="onSelectPostType('task')"  class="btn fade-in btn-link">
                       <i class="material-icons muted">check_box</i>
                     </button>
                   </li>
                 </ul>
 
               </div>
-              <div class="col-md-12">
+              <div class="col-md-12 fade-in">
 
-                <button type="button " class="btn btn-outline-warning task" *ngIf="post.type == 'event' || post.type== 'task'" (click)="openAssignPicker(assignContent)">
-                  <i class="material-icons ">perm_identity</i> {{assignment}}
+                <button type="button" class="btn btn-outline-warning task fade-in" *ngIf="post.type == 'event' || post.type== 'task'" (click)="openAssignPicker(assignContent)">
+                  <i class="material-icons">perm_identity</i> {{assignment}}
                 </button>
 
                 <!-- <input [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" placeholder="Date Time"> -->
                 <!--   <owl-date-time #dt1></owl-date-time> -->
 
 
-                <button *ngIf="post.type == 'event'|| post.type=='task'" class="btn btn-outline-warning task" type="button" (click)="openDatePicker(dateContent)">
+                <button *ngIf="post.type == 'event'|| post.type=='task'" class="btn btn-outline-warning task fade-in" type="button" (click)="openDatePicker(dateContent)">
                   <i class="material-icons">event</i>{{ due_date }}
                 </button>
 
 
-                <button *ngIf="post.type=='event'" class="btn btn-outline-warning task" type="button" (click)="openTimePicker(timeContent)">
+                <button *ngIf="post.type=='event'" class="btn btn-outline-warning task fade-in" type="button" (click)="openTimePicker(timeContent)">
                   <i class="material-icons">event</i>{{due_time}}
                 </button>
 
@@ -84,7 +83,7 @@
 
             <div class="row" style="margin-top: 10px">
               <div class="col-md-12">
-                <div class="form-group ">
+                <div class="form-group fade-in">
                   <textarea class="form-control " id="post-content" rows="3" [(ngModel)]="post.content" name="postContent" formControlName="postContent"></textarea>
                 </div>
               </div>
@@ -209,7 +208,7 @@
               <div class="row card-title ">
                 <div class="col-md-1 ">
                     <!--<img [src]="profileImage" class="feed-avatar">-->
-                  <img src="/uploads/user.png" class="feed-avatar">
+                  <img src="/uploads/{{post._posted_by?.profile_pic}}" class="feed-avatar">
                 </div>
                 <div class="col-md-7">
                   <h6>{{post._posted_by?.first_name}} {{post._posted_by?.last_name}}</h6>

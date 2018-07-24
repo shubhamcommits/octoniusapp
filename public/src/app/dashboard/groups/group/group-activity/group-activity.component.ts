@@ -119,6 +119,17 @@ export class GroupActivityComponent implements OnInit {
     // this.product.photo = fileInput.target.files[0]['name'];
   }
 
+  show_hide_working_bar() {
+
+    const x = document.getElementById('show_hide');
+    if (x.style.display === 'none') {
+        x.style.display = 'block';
+    } else {
+        x.style.display = 'none';
+    }
+
+  }
+
   getUserProfile() {
     this._userService.getUser()
       .subscribe((res) => {
@@ -140,6 +151,7 @@ export class GroupActivityComponent implements OnInit {
         }
       });
   }
+
   // group memebrs search setting when user add new event or taks type post
   initializeGroupMembersSearchForm() {
     this.settings = {
