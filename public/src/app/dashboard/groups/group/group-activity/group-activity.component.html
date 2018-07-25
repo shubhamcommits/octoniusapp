@@ -21,14 +21,12 @@
           <div class="row card-title">
               <div class="col-md-1">
                   <!--/uploads/user.png-->
-                  <img [src]="profileImage" onerror="this.src='/uploads/user.png'" class="feed-avatar">
+                  <img [src]="profileImage" onerror="this.src='/uploads/default_user.png'" class="feed-avatar">
                 </div>
 
-            <div>
-              <!--<h6>What are you working on?</h6>-->
-              <!--<input type="text" class="feed-avatar form-control" style="width: 292%;" placeholder="What are you working on?"
-    onfocus="document.getElementById('show_hide').style.display='block';">-->
-    <button type="text" class="feed-avatar form-control btn-lg" style="width: 253%;" placeholder="What are you working on?"
+            <div class="col-md-11">
+           
+    <button type="text" class="form-control btn-lg noborder-btn" placeholder="What are you working on?"
     (click)="show_hide_working_bar()">What are you working on?</button>
             </div>
           </div>
