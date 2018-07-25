@@ -82,7 +82,7 @@ module.exports = {
 			_group: group_id
 		})
 			.sort('-created_date')
-			.populate('_posted_by', 'first_name last_name')
+			.populate('_posted_by', 'first_name last_name profile_pic')
 			.populate('comments._commented_by', 'first_name last_name')
 			.populate('task._assigned_to', 'first_name last_name')
 			.then((posts) => res.status(200).json({

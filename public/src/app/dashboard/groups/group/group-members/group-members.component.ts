@@ -28,6 +28,7 @@ export class GroupMembersComponent implements OnInit {
     this.groupService.getGroup(this.group_id)
       .subscribe((res) => {
         this.group_members = res['group']._members;
+        console.log('test' + this.group_members._members[0]);
         this.group_admins = res['group']._admins;
 
       }, (err) => {

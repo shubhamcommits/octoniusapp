@@ -1,0 +1,30 @@
+.fade-in {
+	opacity: 1;
+	animation-name: fadeInOpacity;
+	animation-iteration-count: 1;
+	animation-timing-function: ease-in;
+	animation-duration: 1s;
+}
+
+@keyframes fadeInOpacity {
+	0% {
+		opacity: 0;
+    height: 0%;
+	}
+	100% {
+		opacity: 1;
+    height: 100%;
+	}
+}
+.slider {
+	overflow-y: hidden;
+	max-height: 500px; /* approximate max height */
+  box-sizing: border-box;
+
+	transition-property: all;
+	transition-duration: .5s;
+	transition-timing-function: ease;
+}
+.slider.closed {
+	max-height: 0;
+}

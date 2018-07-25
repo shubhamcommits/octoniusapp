@@ -63,8 +63,8 @@ module.exports = {
         Group.findOne({
                 _id: group_id
             })
-            .populate('_members', 'first_name last_name')
-            .populate('_admins', 'first_name last_name')
+            .populate('_members', 'first_name last_name profile_pic')
+            .populate('_admins', 'first_name last_name profile_pic')
             .then((group) => {
                 if (group == null) {
                     res.status(404).json({

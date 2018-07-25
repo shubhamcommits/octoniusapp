@@ -212,3 +212,8 @@ margin-bottom: 20px;
 .card-footer .dropdown-toggle::after{
   display: none;
 }
+
+.no-margin{
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
