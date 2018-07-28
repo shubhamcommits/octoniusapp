@@ -26,7 +26,6 @@ module.exports = {
 
 		const post_type = req.body.type;
 		const post_update = req.body;
-
 		// to do: Handle post editing
 
 	},

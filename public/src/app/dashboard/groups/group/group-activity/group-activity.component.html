@@ -57,7 +57,7 @@
               </div>
               <div class="col-md-12 fade-in">
 
-                <button type="button" class="btn btn-outline-warning task fade-in" *ngIf="post.type == 'event' || post.type== 'task'" (click)="openAssignPicker(assignContent)">
+                <button type="button" class="btn btn-outline-warning task" *ngIf="post.type == 'event' || post.type== 'task'" (click)="openAssignPicker(assignContent)">
                   <i class="material-icons">perm_identity</i> {{assignment}}
                 </button>
 
@@ -65,12 +65,12 @@
                 <!--   <owl-date-time #dt1></owl-date-time> -->
 
 
-                <button *ngIf="post.type == 'event'|| post.type=='task'" class="btn btn-outline-warning task fade-in" type="button" (click)="openDatePicker(dateContent)">
+                <button *ngIf="post.type == 'event'|| post.type=='task'" class="btn btn-outline-warning task" type="button" (click)="openDatePicker(dateContent)">
                   <i class="material-icons">event</i>{{ due_date }}
                 </button>
 
 
-                <button *ngIf="post.type=='event'" class="btn btn-outline-warning task fade-in" type="button" (click)="openTimePicker(timeContent)">
+                <button *ngIf="post.type=='event'" class="btn btn-outline-warning task" type="button" (click)="openTimePicker(timeContent)">
                   <i class="material-icons">event</i>{{due_time}}
                 </button>
 
@@ -217,11 +217,10 @@
 
                 </div>
               </div>
-              <div class="col-md-12 innercard ">
+              <div class="col-md-12 innercard" ng-bind-html="blog.plinky">
 
-                <p class="card-text ">
-                  {{post?.content}}
-                </p>
+                <pre class="card-text" ng-bind-html="linky">{{post?.content}}
+                </pre>
 
                 <div *ngFor="let file of post.files">
                   <p (click)="onDownlaodFile(file.modified_name,file.orignal_name)">{{file?.orignal_name}}</p>
