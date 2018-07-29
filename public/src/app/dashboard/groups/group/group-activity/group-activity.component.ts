@@ -503,12 +503,45 @@ export class GroupActivityComponent implements OnInit {
 
   }
 
+  icon_comment_change_color() {
+    const x = document.getElementById('icon_comment');
+    x.style.color = "#005fd5";
+    const y = document.getElementById('icon_event');
+    y.style.color = "#9b9b9b";
+    const z = document.getElementById('icon_check_box');
+    z.style.color = "#9b9b9b";
+
+  }
+
+  icon_event_change_color() {
+    const x = document.getElementById('icon_event');
+    x.style.color = "#005fd5";
+    const y = document.getElementById('icon_comment');
+    y.style.color = "#9b9b9b";
+    const z = document.getElementById('icon_check_box');
+    z.style.color = "#9b9b9b";
+
+  }
+
+  icon_check_box_change_color() {
+    const x = document.getElementById('icon_check_box');
+    x.style.color = "#005fd5";
+    const y = document.getElementById('icon_comment');
+    y.style.color = "#9b9b9b";
+    const z = document.getElementById('icon_event');
+    z.style.color = "#9b9b9b";
+
+  }
+
+  
+
   onSelectPostType(type) {
     this.post.type = type;
     this.due_date = 'Due Date';
     this.due_time = 'Due Time';
     switch (this.post.type) {
       case 'event':
+      this.icon_event_change_color();
         this.settings = {
           text: 'Select Group Members',
           selectAllText: 'Select All',
@@ -520,8 +553,10 @@ export class GroupActivityComponent implements OnInit {
           enableSearchFilter: true,
           searchBy: ['full_name', 'capital']
         };
+        
         break;
       case 'task':
+      this.icon_check_box_change_color();
         this.settings = {
           text: 'Select Group Members',
           classes: 'myclass custom-class',
@@ -535,6 +570,7 @@ export class GroupActivityComponent implements OnInit {
         break;
 
       default:
+      this.icon_comment_change_color();
         break;
     }
     // console.log('post type: ', this.post.type);
