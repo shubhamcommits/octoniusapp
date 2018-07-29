@@ -221,8 +221,6 @@
 
                 <pre class="card-text">{{post?.content}}
                 </pre>
-                <p id="url">{{post?.content}}</p>
-                <p id="converted_url"></p>
 
                 <div *ngFor="let file of post.files">
                   <p (click)="onDownlaodFile(file.modified_name,file.orignal_name)">{{file?.orignal_name}}</p>
@@ -412,11 +410,12 @@
             <div class="card-block">
               <div class="row card-title ">
                 <div class="col-md-1">
-                    <img [src]="profileImage" class="feed-avatar">
+                    <img src="/uploads/{{comment._commented_by?.profile_pic}}" class="feed-avatar">
+                    <!--<img [src]="profileImage" class="feed-avatar">-->
                   <!--<img src="assets/images/user.png" class="feed-avatar">-->
                 </div>
                 <div class="col-md-7 ">
-                  <h6>{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}} replied</h6>
+                  <h6>{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}} {{comment._commented_by?.profile_pic}}" replied</h6>
                 </div>
                 <div class="col-md-4 text-right ">
                   <p class="small font-weight-bold">
@@ -441,7 +440,7 @@
             <div class="card-block ">
               <div class="row card-title ">
                 <div class="col-md-1 ">
-                    <img [src]="profileImage" class="feed-avatar">
+                    <img src="/uploads/{{post._posted_by?.profile_pic}}" class="feed-avatar">
                 </div>
                 <div class="col-md-7 ">
                   <h6>{{post._posted_by?.first_name}} {{post._posted_by?.last_name}}</h6>
@@ -537,10 +536,11 @@
             <div class="card-block">
               <div class="row card-title ">
                 <div class="col-md-1">
-                    <img [src]="profileImage" class="feed-avatar">
+                    <img src="/uploads/{{comment._commented_by?.profile_pic}}" class="feed-avatar">
+                    <!--<img [src]="profileImage" class="feed-avatar">-->
                 </div>
                 <div class="col-md-7 ">
-                  <h6>{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}} replied</h6>
+                  <h6>{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}} {{comment._commented_by?.profile_pic}} replied</h6>
                 </div>
                 <div class="col-md-4 text-right ">
                   <p class="small font-weight-bold">
