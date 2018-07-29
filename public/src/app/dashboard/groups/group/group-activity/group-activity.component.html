@@ -192,9 +192,10 @@
       </ng-template>
 
     </div>
-
-
     <!-- postbox-->
+  
+ 
+    
 
     <div *ngFor="let post of posts">
       <ul class="list-group ">
@@ -216,10 +217,12 @@
 
                 </div>
               </div>
-              <div class="col-md-12 innercard" ng-bind-html="linky">
+              <div class="col-md-12 innercard">
 
-                <pre class="card-text" ng-bind-html="linky">{{post?.content}}
+                <pre class="card-text">{{post?.content}}
                 </pre>
+                <p id="url">{{post?.content}}</p>
+                <p id="converted_url"></p>
 
                 <div *ngFor="let file of post.files">
                   <p (click)="onDownlaodFile(file.modified_name,file.orignal_name)">{{file?.orignal_name}}</p>
@@ -235,10 +238,10 @@
                   </div>
                   <div class="col-md-6 text-right">
                     <span (click)="showComments.id=post._id;showComments.normal=!showComments.normal;">
-                      <i class="material-icons action">mode_comment</i>
+                      <i class="material-icons action" id="icon_comment_post">mode_comment</i>
                     </span>
-                    <span>
-                      <i class="material-icons action">thumb_up</i>
+                    <span style="color: #005fd5;">
+                      <i class="material-icons action icon-blue" >thumb_up</i>
                     </span>
                     <span>
                       <div ngbDropdown class="d-inline-block">
@@ -288,7 +291,9 @@
             <div class="card-block">
               <div class="row card-title ">
                 <div class="col-md-1">
-                    <img [src]="profileImage" class="feed-avatar">
+                   
+                    <img src="/uploads/{{comment._commented_by?.profile_pic}}" class="feed-avatar">
+                    <!--<img [src]="profileImage" class="feed-avatar">-->
                   <!--<img src="assets/images/user.png" class="feed-avatar">-->
                 </div>
                 <div class="col-md-7 ">
@@ -318,7 +323,7 @@
             <div class="card-block ">
               <div class="row card-title ">
                 <div class="col-md-1 ">
-                    <img [src]="profileImage" class="feed-avatar">
+                    <img src="/uploads/{{post._posted_by?.profile_pic}}" class="feed-avatar">
                   <!--<img src="assets/images/user.png" class="feed-avatar">-->
                 </div>
                 <div class="col-md-7 ">

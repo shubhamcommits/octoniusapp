@@ -108,9 +108,17 @@ export class GroupActivityComponent implements OnInit {
     this.loadGroupPosts();
     this.alertMessageSettings();
     this.initializeGroupMembersSearchForm();
+    this.convert();
+    console.log('hey');
   }
 
+  convert()
+  {
+    var text = this.posts[0].content;
+    text = text.replace(/((http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?)/g,'<a href="$1">$1</a>');
+    return console.log('abc:'+ text);
 
+  }
 
   fileChangeEvent(fileInput: any) {
     this.filesToUpload = <Array<File>>fileInput.target.files;
@@ -530,6 +538,24 @@ export class GroupActivityComponent implements OnInit {
     y.style.color = "#9b9b9b";
     const z = document.getElementById('icon_event');
     z.style.color = "#9b9b9b";
+
+  }
+  
+  icon_comment_post_change_color() {
+    const x = document.getElementById('icon_comment_post');
+    x.style.color = "#005fd5";
+    if (x.style.color === "#005fd5"){
+   
+      x.style.color = "#9b9b9b";
+
+    }
+    else ( x.style.color === "#9b9b9b")
+    {
+      x.style.color = "#005fd5";
+    }
+    
+
+   
 
   }
 
