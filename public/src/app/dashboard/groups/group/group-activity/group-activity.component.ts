@@ -108,17 +108,11 @@ export class GroupActivityComponent implements OnInit {
     this.loadGroupPosts();
     this.alertMessageSettings();
     this.initializeGroupMembersSearchForm();
-    this.convert();
-    console.log('hey');
+   
+    
   }
 
-  convert()
-  {
-    var text = this.posts[0].content;
-    text = text.replace(/((http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?)/g,'<a href="$1">$1</a>');
-    return console.log('abc:'+ text);
 
-  }
 
   fileChangeEvent(fileInput: any) {
     this.filesToUpload = <Array<File>>fileInput.target.files;
