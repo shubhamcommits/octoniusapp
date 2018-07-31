@@ -1,6 +1,6 @@
 module.exports = {
 	fromEmail: 'dev@octonius.com',
 	fromName: 'Team Octonius',
-	replyToEmail: 'supportoctonius@example.com',
+	replyToEmail: 'support@octonius.com',
 	replyToMail: 'Support'
 };
