@@ -2,7 +2,7 @@ const ejs = require('ejs');
 const fs = require('fs');
 const http = require('axios');
 const subjects = require('./templates/subjects');
-const defaultEmails = require('./defaultEmails');
+const defaults = require('./defaults');
 
 
 /*	=============
@@ -73,12 +73,12 @@ const sendMail = async (emailData, toEmail, toName, fromEmail, fromName, replyTo
 				],
 				from: 
 				{
-					email: fromEmail || defaultEmails.fromEmail,
-					name: fromName || defaultEmails.fromName
+					email: fromEmail || defaults.fromEmail,
+					name: fromName || defaults.fromName
 				},
 				reply_to: {
-					email: replyToEmail || defaultEmails.replyToEmail,
-					name: replyToName || defaultEmails.replyToName
+					email: replyToEmail || defaults.replyToEmail,
+					name: replyToName || defaults.replyToName
 				},
 				content: [
 					{ 
