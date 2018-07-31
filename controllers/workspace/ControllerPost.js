@@ -73,24 +73,21 @@ module.exports = {
 
 	editPost(req, res, next) {
 
-		const post_type = req.body.type;
-		const post_update = req.body;
-		// to do: Handle post editing
-		/*Post.findByIdAndUpdate({
+		const post_id = req.body.post_id;
+		const updatedContent = req.body.content;
+
+		Post.findByIdAndUpdate({
 			_id: post_id
 		}, { 
-			$set : 
-			// Update only the fields allowed to be updated to each kind on post type:
-			// normal post: content, check what more??
-			// task post: content, due date, assigned to , what more ???
-			// event post: content, dates, assigned to, what more ??
-		
+			$set : {
+				content: updatedContent
+			}
 		}, {
 			new: true
 		})
 			.then((updated_post) => {
 				res.status(200).json({
-					message: "Post task has been completed Successfully!",
+					message: "Post updated!",
 					post: updated_post
 				})
 			})
@@ -99,8 +96,7 @@ module.exports = {
 					message: "something went wrong | internal server error ",
 					err
 				})
-			});*/
-
+			});
 	},
 
 	addCommentOnPost(req, res, next) {
