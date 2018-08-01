@@ -585,10 +585,7 @@ export class GroupActivityComponent implements OnInit {
     {
       x.style.color = "#005fd5";
     }
-    
-
-   
-
+  
   }
 
   

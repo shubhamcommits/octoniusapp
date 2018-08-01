@@ -102,7 +102,7 @@
               </div>
 
               <div class="col-md-4 text-right ">
-                <button type="button " name="button" class="btn btn-default ">Cancel</button>
+                <button type="button " name="button" class="btn btn-default " (click)="show_hide_working_bar()">Cancel</button>
                 <button [disabled]="(postForm.invalid && post.type=='normal' ) || processing || (selectedGroupUsers.length == 0 && post.type=='event' ) ||(selectedGroupUsers.length == 0 && post.type=='task') "
                   type="button " name="button" (click)="OnAddNewPost()" class="btn btn-primary">Post</button>
               </div>
@@ -215,7 +215,7 @@
                 </div>
                 <div class="col-md-4 text-right ">
                     
-                        <button class="btn btn-secondary btn-sm" id="post-{{$index}}"(click)="mark_complete_task_post()">Mark complete</button>
+                        <!--<button class="btn btn-secondary btn-sm" id="post-{{$index}}"(click)="mark_complete_task_post()">Mark complete</button>-->
       
                      
                 </div>
@@ -418,7 +418,7 @@
                   <!--<img src="assets/images/user.png" class="feed-avatar">-->
                 </div>
                 <div class="col-md-7 ">
-                  <h6>{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}}" replied</h6>
+                  <h6>{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}} replied</h6>
                 </div>
                 <div class="col-md-4 text-right ">
                   <p class="small font-weight-bold">
