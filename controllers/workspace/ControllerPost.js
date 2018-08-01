@@ -73,25 +73,21 @@ module.exports = {
 
 	editPost(req, res, next) {
 
-		const post_type = req.body.type;
-		const post_update = req.body;
+		const post_id = req.body.post_id;
+		const updatedContent = req.body.content;
 
-		// to do: Handle post editing
 		Post.findByIdAndUpdate({
 			_id: post_id
 		}, { 
-			$set : 
-			// Update only the fields allowed to be updated to each kind on post type:
-			// normal post: content, check what more??
-			// task post: content, due date, assigned to , what more ???
-			// event post: content, dates, assigned to, what more ??
-		
+			$set : {
+				content: updatedContent
+			}
 		}, {
 			new: true
 		})
 			.then((updated_post) => {
 				res.status(200).json({
-					message: "Post task has been completed Successfully!",
+					message: "Post updated!",
 					post: updated_post
 				})
 			})
@@ -101,7 +97,6 @@ module.exports = {
 					err
 				})
 			});
-
 	},
 
 	addCommentOnPost(req, res, next) {
@@ -155,7 +150,7 @@ module.exports = {
 		})
 			.sort('-created_date')
 			.populate('_posted_by', 'first_name last_name profile_pic')
-			.populate('comments._commented_by', 'first_name last_name')
+			.populate('comments._commented_by', 'first_name last_name profile_pic')
 			.populate('task._assigned_to', 'first_name last_name')
 			.then((posts) => res.status(200).json({
 				message: "posts found successfully!",

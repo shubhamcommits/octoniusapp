@@ -2,7 +2,7 @@ const Wrokspace = require("../../models/workspace");
 const User = require("../../models/user");
 const Post = require("../../models/post");
 const sendMail = require("../../sendgrid/sendMail");
-
+const defaults = require("../../sendgrid/defaults");
 
 module.exports = {
 
@@ -69,7 +69,7 @@ module.exports = {
 					let receiver = invited_user_email;
 
 					// Send invitation email (using sendgrid)
-					sendMail.joinWorkspace(receiver, null, sender, null, null, null, updated_workspace.workspace_name, 'http://localhost:3000/#/signup');
+					sendMail.joinWorkspace(receiver, null, sender, null, null, null, updated_workspace.workspace_name, defaults.signupLink);
 
 				}
 			})

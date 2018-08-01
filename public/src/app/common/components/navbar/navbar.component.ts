@@ -23,6 +23,36 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
     this.getUserProfile();
   }
+
+  underline_navbar_overview(){
+    const x = document.getElementById("li_overview");
+    const y = document.getElementById("li_group");
+    const z = document.getElementById("li_admin");
+    x.className = "active";
+    y.className = "none";
+    z.className = "none";
+  }
+
+  
+  underline_navbar_group(){
+    const x = document.getElementById("li_overview");
+    const y = document.getElementById("li_group");
+    const z = document.getElementById("li_admin");
+    y.className = "active";
+    x.className = "none";
+    z.className = "none";
+  }
+
+  
+  underline_navbar_admin(){
+    const x = document.getElementById("li_overview");
+    const y = document.getElementById("li_group");
+    const z = document.getElementById("li_admin");
+    z.className = "active";
+    y.className = "none";
+    x.className = "none";
+  }
+
   getUserProfile() {
     this._userService.getUser()
       .subscribe((res) => {

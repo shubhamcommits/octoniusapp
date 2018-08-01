@@ -30,7 +30,8 @@ export class AdminGeneralComponent implements OnInit {
 
   invitationData = {
     email: '',
-    workspace_id: ''
+    workspace_id: '',
+    first_name: ''
   };
   constructor(private _workspaceService: WorkspaceService,
     private _adminService: AdminService, private _router: Router) { }
@@ -96,15 +97,16 @@ export class AdminGeneralComponent implements OnInit {
         } else if (err.status) {
           this._message.next(err.error.message);
         } else {
-          this._message.next('Erorr! either server is down or no internet connection');
+          this._message.next('Error! either server is down or no internet connection');
 
         }
       });
   }
 
   onInviteNewUserViaEmail() {
-    console.log('insdie invitaito');
+    console.log('inside invitation');
     this.invitationData.workspace_id = this.user_data.workspace._id;
+    console.log(this.invitationData);
     this._adminService.inviteNewUserViewEmail(this.invitationData)
       .subscribe((res) => {
         this.alert.class = 'success';

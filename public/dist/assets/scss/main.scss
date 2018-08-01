@@ -217,3 +217,10 @@ margin-bottom: 20px;
   margin-left: 0 !important;
   margin-right: 0 !important;
 }
+
+.noborder-btn{
+  border:0 !important;
+  :focus{
+    border: 0! important;
+  }
+}

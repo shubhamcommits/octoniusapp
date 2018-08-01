@@ -14,6 +14,7 @@ import { UserService } from '../../../../shared/services/user.service';
 import { saveAs } from 'file-saver';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { style, animate, trigger, transition } from '@angular/animations';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-group-activity',
@@ -108,6 +109,8 @@ export class GroupActivityComponent implements OnInit {
     this.loadGroupPosts();
     this.alertMessageSettings();
     this.initializeGroupMembersSearchForm();
+   
+    
   }
 
 
@@ -214,6 +217,7 @@ export class GroupActivityComponent implements OnInit {
 
 
   }
+
 
 
   OnAddNewPost() {
@@ -446,6 +450,43 @@ export class GroupActivityComponent implements OnInit {
       });
   }
 
+  oncompleteTaskPost(post_id) {
+    // console.log('post._id: ', post_id);
+    const post = {
+      'postId': post_id
+    };
+    this.postService.completeTaskPost(post)
+    .subscribe((res) => {
+
+      this.alert.class = 'success';
+      this._message.next(res['message']);
+      this.resetNewPostForm();
+      // console.log('Normal post response: ', res);
+      this.loadGroupPosts();
+
+    }, (err) => {
+
+      this.alert.class = 'danger';
+
+      if (err.status) {
+        this._message.next(err.error.message);
+      } else {
+        this._message.next('Error! either server is down or no internet connection');
+      }
+
+    });
+  }
+
+  mark_complete_task_post() {
+
+  const element = document.getElementById("id1");
+  element.style.backgroundColor = "#4cae4c";
+  element.style.color = "#fff";
+  element.style.border = "none";
+  element.style.outline = "none";
+      element.classList.toggle("btn-success");
+
+  }
 
   onDeletePost(postId) {
 
@@ -503,12 +544,92 @@ export class GroupActivityComponent implements OnInit {
 
   }
 
+  icon_comment_change_color() {
+    const x = document.getElementById('icon_comment');
+    x.style.color = "#005fd5";
+    const y = document.getElementById('icon_event');
+    y.style.color = "#9b9b9b";
+    const z = document.getElementById('icon_check_box');
+    z.style.color = "#9b9b9b";
+
+  }
+
+  icon_event_change_color() {
+    const x = document.getElementById('icon_event');
+    x.style.color = "#005fd5";
+    const y = document.getElementById('icon_comment');
+    y.style.color = "#9b9b9b";
+    const z = document.getElementById('icon_check_box');
+    z.style.color = "#9b9b9b";
+
+  }
+
+  icon_check_box_change_color() {
+    const x = document.getElementById('icon_check_box');
+    x.style.color = "#005fd5";
+    const y = document.getElementById('icon_comment');
+    y.style.color = "#9b9b9b";
+    const z = document.getElementById('icon_event');
+    z.style.color = "#9b9b9b";
+
+  }
+  
+  icon_comment_post_change_color() {
+    const x = document.getElementById('icon_comment_post');
+    x.style.color = "#005fd5";
+    if (x.style.color === "#005fd5"){
+   
+      x.style.color = "#9b9b9b";
+
+    }
+    else ( x.style.color === "#9b9b9b")
+    {
+      x.style.color = "#005fd5";
+    }
+  
+  }
+
+  refreshPage() {
+    location.reload();
+}
+
+OnEditPost(index) {
+
+  const x = document.getElementById(index);
+  const y = document.getElementById("button_edit_post"+index);
+  
+ if(x.style.borderStyle ==="none"){
+  x.setAttribute('contenteditable', 'true');
+x.style.borderWidth="thin";
+x.style.borderStyle="solid";
+x.style.borderColor="#007bff";
+y.style.display="block";
+ }
+ else {
+ x.style.borderStyle="none";
+ x.setAttribute('contenteditable', 'false');
+ y.style.display="none";
+ x.blur();
+}
+
+  } 
+
+  OnSaveEditPost(index) {
+    const x = document.getElementById(index);
+  const y = document.getElementById("button_edit_post"+index);
+  x.style.borderStyle="none";
+  x.setAttribute('contenteditable', 'false');
+  y.style.display="none";
+  x.blur();
+  }
+
   onSelectPostType(type) {
     this.post.type = type;
     this.due_date = 'Due Date';
     this.due_time = 'Due Time';
     switch (this.post.type) {
       case 'event':
+      this.icon_event_change_color();
         this.settings = {
           text: 'Select Group Members',
           selectAllText: 'Select All',
@@ -520,8 +641,10 @@ export class GroupActivityComponent implements OnInit {
           enableSearchFilter: true,
           searchBy: ['full_name', 'capital']
         };
+        
         break;
       case 'task':
+      this.icon_check_box_change_color();
         this.settings = {
           text: 'Select Group Members',
           classes: 'myclass custom-class',
@@ -535,6 +658,7 @@ export class GroupActivityComponent implements OnInit {
         break;
 
       default:
+      this.icon_comment_change_color();
         break;
     }
     // console.log('post type: ', this.post.type);
