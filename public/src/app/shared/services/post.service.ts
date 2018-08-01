@@ -30,6 +30,9 @@ export class PostService {
   addNewComment(comment) {
     return this._http.post(this.BASE_API_URL + '/post/addComment', comment);
   }
+  editPost(post){
+    return this._http.post(this.BASE_API_URL + '/post/edit ', post);
+  }
   deletePost(post) {
 
     // console.log('post inside the delete service: ', post);
