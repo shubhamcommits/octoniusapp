@@ -593,6 +593,36 @@ export class GroupActivityComponent implements OnInit {
     location.reload();
 }
 
+OnEditPost(index) {
+
+  const x = document.getElementById(index);
+  const y = document.getElementById("button_edit_post"+index);
+  
+ if(x.style.borderStyle ==="none"){
+  x.setAttribute('contenteditable', 'true');
+x.style.borderWidth="thin";
+x.style.borderStyle="solid";
+x.style.borderColor="#007bff";
+y.style.display="block";
+ }
+ else {
+ x.style.borderStyle="none";
+ x.setAttribute('contenteditable', 'false');
+ y.style.display="none";
+ x.blur();
+}
+
+  } 
+
+  OnSaveEditPost(index) {
+    const x = document.getElementById(index);
+  const y = document.getElementById("button_edit_post"+index);
+  x.style.borderStyle="none";
+  x.setAttribute('contenteditable', 'false');
+  y.style.display="none";
+  x.blur();
+  }
+
   onSelectPostType(type) {
     this.post.type = type;
     this.due_date = 'Due Date';

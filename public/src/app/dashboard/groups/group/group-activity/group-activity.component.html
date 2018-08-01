@@ -197,7 +197,7 @@
  
     
 
-    <div *ngFor="let post of posts">
+    <div *ngFor="let post of posts; let i = index;">
       <ul class="list-group ">
         <!-- Normal post -->
         <li class="list-group-item " *ngIf="post.type== 'normal'" ng-repeat="post in posts" data-show="????">
@@ -213,17 +213,17 @@
                   <p class="small lightgray date">
                     {{post?.created_date | date : 'medium' }}</p>
                 </div>
-                <div class="col-md-4 text-right ">
-                    
-                        <!--<button class="btn btn-secondary btn-sm" (click)="refreshPage()">Mark complete</button>-->
-      
-                     
-                </div>
+             
               </div>
-              <div class="col-md-12 innercard">
+              <div class="col-md-12 text-right " id="button_edit_post{{i}}" style="display: none; padding-bottom: 1em;">
+                  <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditPost(i)">Save</button>
+                </div>
+              <div class="col-md-12 innercard" [id]="(i)" style="border: none;">
+                  
 
                 <pre class="card-text">{{post?.content}}
                 </pre>
+          
 
                 <div *ngFor="let file of post.files">
                   <p (click)="onDownlaodFile(file.modified_name,file.orignal_name)">{{file?.orignal_name}}</p>
@@ -248,7 +248,7 @@
                       <div ngbDropdown class="d-inline-block">
                         <i class="material-icons action" id="dropdownBasic1" ngbDropdownToggle>more_horiz</i>
                         <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                          <button class="dropdown-item">Edit Post</button>
+                          <button class="dropdown-item"  (click)="OnEditPost(i)">Edit Post</button>
                           <button class="dropdown-item" (click)="onDeletePost(post._id)">Delete Post</button>
                         </div>
                       </div>
