@@ -100,7 +100,8 @@ export class UserProfileHeaderComponent implements OnInit {
         this.openLg(this.content);
         setTimeout(() => {
           this.modalReference.close();
-        }, 2000);
+        }, 3000);
+        this.refreshPage();
 
       }, (err) => {
 
