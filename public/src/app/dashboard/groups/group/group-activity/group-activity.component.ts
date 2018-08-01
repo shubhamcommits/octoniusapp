@@ -14,6 +14,7 @@ import { UserService } from '../../../../shared/services/user.service';
 import { saveAs } from 'file-saver';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { style, animate, trigger, transition } from '@angular/animations';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-group-activity',
@@ -588,7 +589,9 @@ export class GroupActivityComponent implements OnInit {
   
   }
 
-  
+  refreshPage() {
+    location.reload();
+}
 
   onSelectPostType(type) {
     this.post.type = type;

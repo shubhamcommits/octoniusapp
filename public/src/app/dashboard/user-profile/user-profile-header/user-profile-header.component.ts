@@ -43,6 +43,9 @@ export class UserProfileHeaderComponent implements OnInit {
     this.getUserProfile();
   }
 
+  refreshPage() {
+    location.reload();
+}
   getUserProfile() {
     this._userService.getUser()
       .subscribe((res) => {
@@ -130,6 +133,7 @@ export class UserProfileHeaderComponent implements OnInit {
       this._userService.updateUserProfileImage(this.fileToUpload)
         .subscribe((res) => {
           this.alert.class = 'alert alert-success';
+          
           this.alert.message = res.message;
 
           this.modalReference.close();
@@ -139,6 +143,7 @@ export class UserProfileHeaderComponent implements OnInit {
           setTimeout(() => {
             this.modalReference.close();
           }, 2000);
+          this.refreshPage();
 
         }, (err) => {
 
