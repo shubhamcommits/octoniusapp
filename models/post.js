@@ -72,6 +72,10 @@ const PostSchema = new Schema({
 		}
 	},
 	event: {
+		completed: {
+			type:	Boolean,
+			default: false
+		},
 		due_date: {
 			type: Date,
 			default: null

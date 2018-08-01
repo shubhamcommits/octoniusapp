@@ -51,6 +51,34 @@ module.exports = {
 			});
 	},
 
+	completeEventPost(req, res, next) {
+
+		let post_id = req.body.post_id;
+		let user_id = req.body.user_id;
+
+		Post.findByIdAndUpdate({
+			_id: post_id
+		}, { 
+			$set : { event: {
+				completed: true
+			},
+		}}, {
+			new: true
+		})
+			.then((updated_post) => {
+				res.status(200).json({
+					message: "Post task has been completed Successfully!",
+					post: updated_post
+				})
+			})
+			.catch((err) => {
+				res.status(500).json({
+					message: "something went wrong | internal server error ",
+					err
+				})
+			});
+	},
+
 	deletePost(req, res, next) {
 
 		let postId = req.body.postId;
