@@ -19,8 +19,8 @@ router.use(middleware_auth.isLoggedIn);
 router.post('/add', post_file_handler, controller_post.addNewPost);
 // edit route still in progress
 router.post('/edit', checkUserPermission.toEditPost, controller_post.editPost);
-router.post('/completeTask', controller_post.completeTaskPost);
-router.post('/completeEvent', controller_post.completeEventPost);
+router.post('/completeTask', checkUserPermission.toCompleteTask, controller_post.completeTaskPost);
+router.post('/completeEvent', checkUserPermission.toCompleteEvent, controller_post.completeEventPost);
 router.post('/addComment', controller_post.addCommentOnPost);
 router.get('/:group_id', controller_post.getGroupPosts);
 router.put('/', controller_post.deletePost);
