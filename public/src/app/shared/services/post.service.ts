@@ -36,4 +36,7 @@ export class PostService {
 
     return this._http.put<any>(this.BASE_API_URL + '/post', post);
   }
+  completeTaskPost(post) {
+    return this._http.post(this.BASE_API_URL + '/post/completeTask', post);
+  }
 }

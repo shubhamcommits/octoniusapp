@@ -218,6 +218,7 @@ export class GroupActivityComponent implements OnInit {
   }
 
 
+
   OnAddNewPost() {
     // console.log('on addnew post');
     // console.log('on addnew post.type', this.post.type);
@@ -448,6 +449,43 @@ export class GroupActivityComponent implements OnInit {
       });
   }
 
+  oncompleteTaskPost(post_id) {
+    // console.log('post._id: ', post_id);
+    const post = {
+      'postId': post_id
+    };
+    this.postService.completeTaskPost(post)
+    .subscribe((res) => {
+
+      this.alert.class = 'success';
+      this._message.next(res['message']);
+      this.resetNewPostForm();
+      // console.log('Normal post response: ', res);
+      this.loadGroupPosts();
+
+    }, (err) => {
+
+      this.alert.class = 'danger';
+
+      if (err.status) {
+        this._message.next(err.error.message);
+      } else {
+        this._message.next('Error! either server is down or no internet connection');
+      }
+
+    });
+  }
+
+  mark_complete_task_post() {
+
+  const element = document.getElementById("id1");
+  element.style.backgroundColor = "#4cae4c";
+  element.style.color = "#fff";
+  element.style.border = "none";
+  element.style.outline = "none";
+      element.classList.toggle("btn-success");
+
+  }
 
   onDeletePost(postId) {
 

@@ -200,7 +200,7 @@
     <div *ngFor="let post of posts">
       <ul class="list-group ">
         <!-- Normal post -->
-        <li class="list-group-item " *ngIf="post.type== 'normal'">
+        <li class="list-group-item " *ngIf="post.type== 'normal'" ng-repeat="post in posts" data-show="????">
           <div class="card ">
             <div class="card-block ">
               <div class="row card-title ">
@@ -214,7 +214,10 @@
                     {{post?.created_date | date : 'medium' }}</p>
                 </div>
                 <div class="col-md-4 text-right ">
-
+                    
+                        <button class="btn btn-secondary btn-sm" id="post-{{$index}}"(click)="mark_complete_task_post()">Mark complete</button>
+      
+                     
                 </div>
               </div>
               <div class="col-md-12 innercard">
@@ -415,7 +418,7 @@
                   <!--<img src="assets/images/user.png" class="feed-avatar">-->
                 </div>
                 <div class="col-md-7 ">
-                  <h6>{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}} {{comment._commented_by?.profile_pic}}" replied</h6>
+                  <h6>{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}}" replied</h6>
                 </div>
                 <div class="col-md-4 text-right ">
                   <p class="small font-weight-bold">
