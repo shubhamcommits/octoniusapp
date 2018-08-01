@@ -276,7 +276,7 @@
 
                 <div class="row ">
                   <div class="col-md-12 text-right ">
-                    <button type="button " name="button " class="btn btn-default ">Cancel</button>
+                    <button type="button " name="button " class="btn btn-default " (click)="showComments.id=post._id;showComments.normal=!showComments.normal;">Cancel</button>
                     <button [disabled]="commentForm.invalid" type="button " name="button" (click)="onAddNewComment(post._id)" class="btn btn-primary">Comment</button>
                   </div>
                 </div>
@@ -397,7 +397,7 @@
 
                 <div class="row ">
                   <div class="col-md-12 text-right ">
-                    <button type="button " name="button " class="btn btn-default ">Cancel</button>
+                    <button type="button " name="button " class="btn btn-default " (click)="showComments.id=post._id;showComments.task=!showComments.task;">Cancel</button>
                     <button [disabled]="commentForm.invalid" type="button " name="button" (click)="onAddNewComment(post._id)" class="btn btn-primary">Comment</button>
                   </div>
                 </div>
@@ -523,7 +523,7 @@
 
                 <div class="row ">
                   <div class="col-md-12 text-right ">
-                    <button type="button " name="button " class="btn btn-default ">Cancel</button>
+                    <button type="button " name="button " class="btn btn-default " (click)="showComments.id=post._id;showComments.event=!showComments.event;">Cancel</button>
                     <button [disabled]="commentForm.invalid" type="button " name="button" (click)="onAddNewComment(post._id)" class="btn btn-primary">Comment</button>
                   </div>
                 </div>
