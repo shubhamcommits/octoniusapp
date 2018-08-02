@@ -21,7 +21,7 @@
           <div class="row card-title">
               <div class="col-md-1">
                   <!--/uploads/user.png-->
-                  <img [src]="profileImage" onerror="this.src='/uploads/default_user.png'" class="feed-avatar">
+                  <img [src]="profileImage" onerror="this.src='/assets/images/user.png'" class="feed-avatar">
               </div>
             <div class="col-md-11">
            
@@ -206,7 +206,7 @@
               <div class="row card-title ">
                 <div class="col-md-1 ">
                     <!--<img [src]="profileImage" class="feed-avatar">-->
-                  <img src="/uploads/{{post._posted_by?.profile_pic}}" class="feed-avatar">
+                  <img src="/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'" class="feed-avatar">
                 </div>
                 <div class="col-md-7">
                   <h6>{{post._posted_by?.first_name}} {{post._posted_by?.last_name}}</h6>
@@ -216,12 +216,12 @@
              
               </div>
               <div class="col-md-12 text-right " id="button_edit_post{{i}}" style="display: none; padding-bottom: 1em;">
-                  <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditPost(i)">Save</button>
+                  <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditPost(i, post._id,post?.content)">Save</button>
                 </div>
               <div class="col-md-12 innercard" [id]="(i)" style="border: none;">
                   
 
-                <pre class="card-text">{{post?.content}}
+                <pre class="card-text" id="pre_edit_post{{i}}" data-ng-value="firstvalue">{{post?.content}}
                 </pre>
           
 
