@@ -760,11 +760,6 @@ y.style.display="block";
 
   OnMarkEventCompleted(index, post_id){
 
-    const button = document.getElementById("button_event_mark_completed_"+index);
-    button.style.background="#005fd5";
-    button.style.color="#ffffff";
-    button.innerHTML="Completed";
-    button.setAttribute('disabled', 'true');
     const post = {
       'post_id': post_id,
       'user_id': this.user_data.user_id
@@ -791,15 +786,16 @@ y.style.display="block";
 
     });
     
-  }
-
-  OnMarkTaskCompleted(index, post_id){
-
-    const button = document.getElementById("button_task_mark_completed_"+index);
+    const button = document.getElementById("button_event_mark_completed_"+index);
     button.style.background="#005fd5";
     button.style.color="#ffffff";
     button.innerHTML="Completed";
     button.setAttribute('disabled', 'true');
+    
+  }
+
+  OnMarkTaskCompleted(index, post_id){
+
     const post = {
       'post_id': post_id,
       'user_id': this.user_data.user_id
@@ -825,6 +821,11 @@ y.style.display="block";
       }
 
     });
+    const button = document.getElementById("button_task_mark_completed_"+index);
+    button.style.background="#005fd5";
+    button.style.color="#ffffff";
+    button.innerHTML="Completed";
+    button.setAttribute('disabled', 'true');
     
   }
 
