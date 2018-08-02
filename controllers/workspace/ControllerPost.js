@@ -168,13 +168,11 @@ module.exports = {
 		let post_id = req.body.post_id;
 		let user_id = req.body.user_id;
 
-		Post.findByIdAndRemove({
+		Post.findByIdAndUpdate({
+			_id: post_id
 		}, {
-			$push: {
+			$addToSet: {
 				_liked_by: user_id
-			},
-			$inc: {
-				likes_count: 1
 			}
 		}, {
 			new: true
@@ -195,20 +193,17 @@ module.exports = {
 
 	unlikePost(req, res, next) {
 
-		let post_id = req.params.post_id;
+		let post_id = req.body.post_id;
 		let user_id = req.body.user_id;
 
 		Post.findByIdAndUpdate({
 			_id: post_id
 		}, {
 			$pull: {
-				liked_by: {
-					user_id
-				},
-			},
-			$inc: {
-				likes_count: -1
+				_liked_by: user_id
 			}
+		}, {
+			new: true
 		}).then((updated_post) => {
 			res.status(200).json({
 				message: "post successfully unliked",

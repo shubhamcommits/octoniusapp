@@ -16,10 +16,6 @@ const PostSchema = new Schema({
 		required: true,
 		enum: ['normal', 'event', 'task']
 	},
-	likes_count: {
-		type: Number,
-		default: 0,
-	},
 	_liked_by: [{
 		type: Schema.Types.ObjectId,
 		ref: 'User',

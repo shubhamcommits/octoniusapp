@@ -19,8 +19,8 @@ router.post('/add', post_file_handler, controller_post.addNewPost);
 router.post('/edit', checkUserPermission.toEditPost, controller_post.editPost);
 router.post('/complete', checkUserPermission.toCompletePost, controller_post.completePost);
 router.post('/addComment', controller_post.addCommentOnPost);
-// router.post('/like', controller_post.likePost);
-// router.post('/unlike', controller_post.unlikePost);
+router.post('/like', controller_post.likePost);
+router.post('/unlike', controller_post.unlikePost);
 router.get('/:group_id', controller_post.getGroupPosts);
 router.put('/', controller_post.deletePost);
 
