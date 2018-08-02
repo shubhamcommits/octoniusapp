@@ -614,7 +614,36 @@ y.style.display="block";
 
   } 
 
-  OnSaveEditPost(index) {
+  OnSaveEditPost(index, post_id, content) {
+
+    
+  const post = {
+    'post_id': post_id,
+    'content': document.getElementById('pre_edit_post'+index).innerHTML,
+    'user_id': this.user_data.user_id
+  };
+  console.log('post: ', post);
+  this.postService.editPost(post)
+  .subscribe((res) => {
+
+    this.alert.class = 'success';
+    this._message.next(res['message']);
+    this.resetNewPostForm();
+    // console.log('Normal post response: ', res);
+    this.loadGroupPosts();
+    console.log("Post Updated, Successfully!")
+
+  }, (err) => {
+
+    this.alert.class = 'danger';
+
+    if (err.status) {
+      this._message.next(err.error.message);
+    } else {
+      this._message.next('Error! either server is down or no internet connection');
+    }
+
+  });
     const x = document.getElementById(index);
   const y = document.getElementById("button_edit_post"+index);
   x.style.borderStyle="none";
