@@ -758,21 +758,28 @@ y.style.display="block";
 
   }
 
+
   OnMarkEventCompleted(index, post_id){
 
+    const button = document.getElementById("button_event_mark_completed_"+index);
+  
     const post = {
       'post_id': post_id,
       'user_id': this.user_data.user_id
     };
     this.postService.complete(post)
     .subscribe((res) => {
-
       this.alert.class = 'success';
       this._message.next(res['message']);
-      this.resetNewPostForm();
+      //this.resetNewPostForm();
       // console.log('Normal post response: ', res);
-      this.loadGroupPosts();
-      console.log('Post Completed');
+      //this.loadGroupPosts();
+      console.log('Post Marked as Completed');
+     
+      button.style.background="#005fd5";
+      button.style.color="#ffffff";
+      button.innerHTML="Completed";
+      button.setAttribute('disabled', 'true');
 
     }, (err) => {
 
@@ -785,30 +792,34 @@ y.style.display="block";
       }
 
     });
-    
-    const button = document.getElementById("button_event_mark_completed_"+index);
     button.style.background="#005fd5";
     button.style.color="#ffffff";
     button.innerHTML="Completed";
-    button.setAttribute('disabled', 'true');
+    //button.setAttribute('disabled', 'true');
     
   }
 
   OnMarkTaskCompleted(index, post_id){
-
+    const button = document.getElementById("button_task_mark_completed_"+index);
     const post = {
       'post_id': post_id,
       'user_id': this.user_data.user_id
     };
     this.postService.complete(post)
     .subscribe((res) => {
+      
+   
 
       this.alert.class = 'success';
       this._message.next(res['message']);
-      this.resetNewPostForm();
+     // this.resetNewPostForm();
       // console.log('Normal post response: ', res);
-      this.loadGroupPosts();
-      console.log('Post Completed');
+     // this.loadGroupPosts();
+      console.log('Post Marked as Completed');
+      button.style.background="#005fd5";
+      button.style.color="#ffffff";
+      button.innerHTML="Completed";
+      button.setAttribute('disabled', 'true');
 
     }, (err) => {
 
@@ -821,7 +832,6 @@ y.style.display="block";
       }
 
     });
-    const button = document.getElementById("button_task_mark_completed_"+index);
     button.style.background="#005fd5";
     button.style.color="#ffffff";
     button.innerHTML="Completed";
