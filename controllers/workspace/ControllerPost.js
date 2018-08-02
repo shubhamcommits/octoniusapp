@@ -58,11 +58,9 @@ module.exports = {
 
 		Post.findByIdAndUpdate({
 			_id: post_id
-		}, { 
-			$set : { event: {
-				completed: true
-			},
-		}}, {
+		}, {
+			'event.completed': true
+		}, {
 			new: true
 		})
 			.then((updated_post) => {
