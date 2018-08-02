@@ -213,6 +213,7 @@
                   <p class="small lightgray date">
                     {{post?.created_date | date : 'medium' }}</p>
                 </div>
+               
              
               </div>
               <div class="col-md-12 text-right " id="button_edit_post{{i}}" style="display: none; padding-bottom: 1em;">
@@ -337,10 +338,11 @@
                   </span>
                 </div>
                 <div class="col-md-4 text-right ">
-                  <button class="btn btn-outline-secondary btn-sm">Mark complete</button>
+                  <button class="btn btn-outline-secondary btn-sm" id="button_task_mark_completed_{{i}}" (click)="OnMarkTaskCompleted(i, post._id)">Mark complete</button>
                   <p class="pink font-weight-bold" style="margin-top: 5px"> due {{post.task?.due_date | date}}</p>
                 </div>
               </div>
+          
               <div class="col-md-12 innercard ">
                 <pre class="card-text ">{{post?.content}}
                 </pre>
@@ -454,7 +456,7 @@
                 </div>
 
                 <div class="col-md-4 text-right ">
-                  <button class="btn btn-outline-secondary btn-sm">Mark complete</button>
+                  <button class="btn btn-outline-secondary btn-sm" id="button_event_mark_completed_{{i}}" (click)="OnMarkEventCompleted(i, post._id)">Mark complete</button>
 
                 </div>
               </div>

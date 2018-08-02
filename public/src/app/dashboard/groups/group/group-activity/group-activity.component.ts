@@ -450,32 +450,7 @@ export class GroupActivityComponent implements OnInit {
       });
   }
 
-  oncompleteTaskPost(post_id) {
-    // console.log('post._id: ', post_id);
-    const post = {
-      'postId': post_id
-    };
-    this.postService.completeTaskPost(post)
-    .subscribe((res) => {
-
-      this.alert.class = 'success';
-      this._message.next(res['message']);
-      this.resetNewPostForm();
-      // console.log('Normal post response: ', res);
-      this.loadGroupPosts();
-
-    }, (err) => {
-
-      this.alert.class = 'danger';
-
-      if (err.status) {
-        this._message.next(err.error.message);
-      } else {
-        this._message.next('Error! either server is down or no internet connection');
-      }
-
-    });
-  }
+ 
 
   mark_complete_task_post() {
 
@@ -782,5 +757,76 @@ y.style.display="block";
     this.assignment = 'UnAssigned';
 
   }
+
+  OnMarkEventCompleted(index, post_id){
+
+    const button = document.getElementById("button_event_mark_completed_"+index);
+    button.style.background="#005fd5";
+    button.style.color="#ffffff";
+    button.innerHTML="Completed";
+    button.setAttribute('disabled', 'true');
+    const post = {
+      'post_id': post_id,
+      'user_id': this.user_data.user_id
+    };
+    this.postService.complete(post)
+    .subscribe((res) => {
+
+      this.alert.class = 'success';
+      this._message.next(res['message']);
+      this.resetNewPostForm();
+      // console.log('Normal post response: ', res);
+      this.loadGroupPosts();
+      console.log('Post Completed');
+
+    }, (err) => {
+
+      this.alert.class = 'danger';
+
+      if (err.status) {
+        this._message.next(err.error.message);
+      } else {
+        this._message.next('Error! either server is down or no internet connection');
+      }
+
+    });
+    
+  }
+
+  OnMarkTaskCompleted(index, post_id){
+
+    const button = document.getElementById("button_task_mark_completed_"+index);
+    button.style.background="#005fd5";
+    button.style.color="#ffffff";
+    button.innerHTML="Completed";
+    button.setAttribute('disabled', 'true');
+    const post = {
+      'post_id': post_id,
+      'user_id': this.user_data.user_id
+    };
+    this.postService.complete(post)
+    .subscribe((res) => {
+
+      this.alert.class = 'success';
+      this._message.next(res['message']);
+      this.resetNewPostForm();
+      // console.log('Normal post response: ', res);
+      this.loadGroupPosts();
+      console.log('Post Completed');
+
+    }, (err) => {
+
+      this.alert.class = 'danger';
+
+      if (err.status) {
+        this._message.next(err.error.message);
+      } else {
+        this._message.next('Error! either server is down or no internet connection');
+      }
+
+    });
+    
+  }
+
 
 }
