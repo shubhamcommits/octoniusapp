@@ -14,17 +14,15 @@ router.use(middleware_auth.verifyToken);
 router.use(middleware_auth.isLoggedIn);
 
 
-
 // Post Routes 
 router.post('/add', post_file_handler, controller_post.addNewPost);
-// edit route still in progress
 router.post('/edit', checkUserPermission.toEditPost, controller_post.editPost);
-router.post('/completeTask', checkUserPermission.toCompleteTask, controller_post.completeTaskPost);
-router.post('/completeEvent', checkUserPermission.toCompleteEvent, controller_post.completeEventPost);
+router.post('/complete', checkUserPermission.toCompletePost, controller_post.completePost);
 router.post('/addComment', controller_post.addCommentOnPost);
+router.post('/like', controller_post.likePost);
+router.post('/unlike', controller_post.unlikePost);
 router.get('/:group_id', controller_post.getGroupPosts);
 router.put('/', controller_post.deletePost);
-
 
 
 module.exports = router;

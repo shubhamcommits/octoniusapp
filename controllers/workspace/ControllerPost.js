@@ -23,35 +23,7 @@ module.exports = {
 			}))
 	},
 
-	completeTaskPost(req, res, next) {
-
-		let post_id = req.body.post_id;
-
-		Post.findByIdAndUpdate({
-			_id: post_id
-		}, { 
-			$set : { task: {
-				completed: true,
-				completion_date: new Date()
-			},
-		}}, {
-			new: true
-		})
-			.then((updated_post) => {
-				res.status(200).json({
-					message: "Post task has been completed Successfully!",
-					post: updated_post
-				})
-			})
-			.catch((err) => {
-				res.status(500).json({
-					message: "something went wrong | internal server error ",
-					err
-				})
-			});
-	},
-
-	completeEventPost(req, res, next) {
+	completePost(req, res, next) {
 
 		let post_id = req.body.post_id;
 		let user_id = req.body.user_id;
@@ -59,13 +31,14 @@ module.exports = {
 		Post.findByIdAndUpdate({
 			_id: post_id
 		}, {
-			'event.completed': true
+				completed: true,
+				completion_date: new Date()
 		}, {
 			new: true
 		})
 			.then((updated_post) => {
 				res.status(200).json({
-					message: "Post task has been completed Successfully!",
+					message: "Post has been completed Successfully!",
 					post: updated_post
 				})
 			})
@@ -195,13 +168,11 @@ module.exports = {
 		let post_id = req.body.post_id;
 		let user_id = req.body.user_id;
 
-		Post.findByIdAndRemove({
+		Post.findByIdAndUpdate({
+			_id: post_id
 		}, {
-			$push: {
+			$addToSet: {
 				_liked_by: user_id
-			},
-			$inc: {
-				likes_count: 1
 			}
 		}, {
 			new: true
@@ -222,20 +193,17 @@ module.exports = {
 
 	unlikePost(req, res, next) {
 
-		let post_id = req.params.post_id;
+		let post_id = req.body.post_id;
 		let user_id = req.body.user_id;
 
 		Post.findByIdAndUpdate({
 			_id: post_id
 		}, {
 			$pull: {
-				liked_by: {
-					user_id
-				},
-			},
-			$inc: {
-				likes_count: -1
+				_liked_by: user_id
 			}
+		}, {
+			new: true
 		}).then((updated_post) => {
 			res.status(200).json({
 				message: "post successfully unliked",

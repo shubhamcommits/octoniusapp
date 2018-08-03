@@ -213,7 +213,7 @@
                   <p class="small lightgray date">
                     {{post?.created_date | date : 'medium' }}</p>
                 </div>
-             
+               
               </div>
               <div class="col-md-12 text-right " id="button_edit_post{{i}}" style="display: none; padding-bottom: 1em;">
                   <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditPost(i, post._id,post?.content)">Save</button>
@@ -336,11 +336,19 @@
                   <span class="pink small"> ASSIGNED TO {{post.task._assigned_to?.first_name}} {{post.task._assigned_to?.last_name}}
                   </span>
                 </div>
-                <div class="col-md-4 text-right ">
-                  <button class="btn btn-outline-secondary btn-sm">Mark complete</button>
-                  <p class="pink font-weight-bold" style="margin-top: 5px"> due {{post.task?.due_date | date}}</p>
+                <div class="col-md-4 text-right " *ngIf="post.completed== true; else taskif">
+                    <button class="btn btn-primary btn-sm" disabled>Completed</button>
+               
                 </div>
+                <ng-template #taskif>
+                    <div class="col-md-4 text-right ">
+                        <button class="btn btn-outline-secondary btn-sm" id="button_task_mark_completed_{{i}}" (click)="OnMarkTaskCompleted(i, post._id)">Mark complete</button>
+                        <p class="pink font-weight-bold" style="margin-top: 5px"> due {{post.task?.due_date | date}}</p>
+                    </div>
+                </ng-template>
+                
               </div>
+          
               <div class="col-md-12 innercard ">
                 <pre class="card-text ">{{post?.content}}
                 </pre>
@@ -453,10 +461,16 @@
                   </span>
                 </div>
 
-                <div class="col-md-4 text-right ">
-                  <button class="btn btn-outline-secondary btn-sm">Mark complete</button>
-
-                </div>
+                <div class="col-md-4 text-right " *ngIf="post.completed== true; else eventif">
+                  
+                    <button class="btn btn-primary btn-sm" disabled>Completed</button>
+  
+                  </div>
+                  <ng-template #eventif>
+                    <div class="col-md-4 text-right ">
+                    <button class="btn btn-outline-secondary btn-sm" id="button_event_mark_completed_{{i}}" (click)="OnMarkEventCompleted(i, post._id)">Mark complete</button>
+                    </div>
+                </ng-template>
               </div>
               <div class="col-md-12 innercard ">
                 <div class="row">

@@ -16,10 +16,6 @@ const PostSchema = new Schema({
 		required: true,
 		enum: ['normal', 'event', 'task']
 	},
-	likes_count: {
-		type: Number,
-		default: 0,
-	},
 	_liked_by: [{
 		type: Schema.Types.ObjectId,
 		ref: 'User',
@@ -43,6 +39,14 @@ const PostSchema = new Schema({
 			require: true
 		}
 	}],
+	completed: {
+		type:	Boolean,
+		default: false
+	},
+	completion_date: {
+		type: Date,
+		default: null
+	},
 	_group: {
 		type: Schema.Types.ObjectId,
 		ref: 'Group',
@@ -61,21 +65,9 @@ const PostSchema = new Schema({
 		_assigned_to: {
 			type: Schema.Types.ObjectId,
 			ref: 'User'
-		},
-		completed: {
-			type:	Boolean,
-			default: false
-		},
-		completion_date: {
-			type: Date,
-			default: null
 		}
 	},
 	event: {
-		completed: {
-			type:	Boolean,
-			default: false
-		},
 		due_date: {
 			type: Date,
 			default: null
