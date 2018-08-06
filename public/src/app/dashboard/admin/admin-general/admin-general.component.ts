@@ -31,7 +31,7 @@ export class AdminGeneralComponent implements OnInit {
   invitationData = {
     email: '',
     workspace_id: '',
-    first_name: ''
+    user_id:''
   };
   constructor(private _workspaceService: WorkspaceService,
     private _adminService: AdminService, private _router: Router) { }
@@ -106,7 +106,9 @@ export class AdminGeneralComponent implements OnInit {
   onInviteNewUserViaEmail() {
     console.log('inside invitation');
     this.invitationData.workspace_id = this.user_data.workspace._id;
+    this.invitationData.user_id= this.user_data.user_id;
     console.log(this.invitationData);
+    //console.log(this.user_data.user_id);
     this._adminService.inviteNewUserViewEmail(this.invitationData)
       .subscribe((res) => {
         this.alert.class = 'success';

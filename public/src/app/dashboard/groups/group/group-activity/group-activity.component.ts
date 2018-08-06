@@ -773,13 +773,14 @@ y.style.display="block";
       this._message.next(res['message']);
       //this.resetNewPostForm();
       // console.log('Normal post response: ', res);
-      //this.loadGroupPosts();
+      //
       console.log('Post Marked as Completed');
      
       button.style.background="#005fd5";
       button.style.color="#ffffff";
       button.innerHTML="Completed";
       button.setAttribute('disabled', 'true');
+      this.loadGroupPosts();
 
     }, (err) => {
 
@@ -792,9 +793,9 @@ y.style.display="block";
       }
 
     });
-    button.style.background="#005fd5";
+    /*button.style.background="#005fd5";
     button.style.color="#ffffff";
-    button.innerHTML="Completed";
+    button.innerHTML="Completed";*/
     //button.setAttribute('disabled', 'true');
     
   }
@@ -814,12 +815,13 @@ y.style.display="block";
       this._message.next(res['message']);
      // this.resetNewPostForm();
       // console.log('Normal post response: ', res);
-     // this.loadGroupPosts();
+     
       console.log('Post Marked as Completed');
       button.style.background="#005fd5";
       button.style.color="#ffffff";
       button.innerHTML="Completed";
       button.setAttribute('disabled', 'true');
+      this.loadGroupPosts();
 
     }, (err) => {
 
@@ -832,10 +834,10 @@ y.style.display="block";
       }
 
     });
-    button.style.background="#005fd5";
+    /*button.style.background="#005fd5";
     button.style.color="#ffffff";
     button.innerHTML="Completed";
-    button.setAttribute('disabled', 'true');
+    button.setAttribute('disabled', 'true');*/
     
   }
 
