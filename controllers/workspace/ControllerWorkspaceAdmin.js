@@ -46,8 +46,10 @@ module.exports = {
 	},
 
 	inviteUserViaEmail(req, res, next) {
+
 		let workspace_id = req.body.workspace_id;
 		let invited_user_email = req.body.email;
+
 		Wrokspace.findByIdAndUpdate({
 			_id: workspace_id
 		}, {
@@ -65,12 +67,22 @@ module.exports = {
 						message: "Error! workspace not found, invalid workspace id"
 					});
 				} else {
-					let sender = 'dev@octonius.com';
-					let receiver = invited_user_email;
+					// Send invitation by email
+					const sendInvitation = async () => {
+						try {
+							let receiver = invited_user_email;
 
-					// Send invitation email (using sendgrid)
-					sendMail.joinWorkspace(receiver, null, sender, null, null, null, updated_workspace.workspace_name, defaults.signupLink);
+							// Find the name of who invited or pass a default sender
+							const sender = await User.findById({ _id: req.body.user_id });
 
+							// Send invitation email (using sendgrid)
+							return sendMail.joinWorkspace(receiver, null, sender.email, sender.first_name, null, null, updated_workspace.workspace_name, defaults.signupLink);
+						} catch (err) {
+							console.log(err);
+						}
+
+					}
+					sendInvitation();
 				}
 			})
 			.catch((err) => {
