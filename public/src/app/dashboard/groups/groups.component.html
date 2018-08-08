@@ -7,8 +7,8 @@
   <div *ngIf="alert.message" [ngClass]="alert.class">{{alert.message}}</div>
   <div class="row no-margin">
 
-    <div *ngIf="user?.role== 'admin' || user?.role== 'owner'" (click)="openLg(content)" class="card col-md-3 m-1 ">
-      <div class="card-body ">
+    <div *ngIf="user?.role== 'admin' || user?.role== 'owner'" (click)="openLg(content)" class="card col-md-3">
+      <div class="card-body">
         <a>
           <h4 class="card-title text-center ">
             <i class="material-icons " style="font-size: 150px ">add</i>
@@ -33,7 +33,7 @@
       </div>
     </div> -->
 
-    <div *ngFor="let group of groups " class="card col-md-3 m-1" [routerLink]="['/dashboard/group/',group._id,'activity']">
+    <div *ngFor="let group of groups " class="card col-md-3" [routerLink]="['/dashboard/group/',group._id,'activity']">
       <img class="card-img-top " [src] = "group.group_avatar  " >
       <div class="card-body ">
         <a>
