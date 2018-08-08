@@ -4,10 +4,10 @@
 
 
   <div class="media card-tile user-list" *ngFor=" let member of group_members">
-    <img class="mr-3" src="/uploads/{{post._posted_by?.profile_pic}}" alt="Generic placeholder image">
+    <img class="mr-3" src="/uploads/{{member?.profile_pic}}" alt="Generic placeholder image" onerror="this.src='/assets/images/user.png'" class="feed-avatar">
     <div class="media-body">
       <div class="float-left">
-        <h4 class="mt-0">{{member?.first_name}} {{member?.last_name}} {{member?.profile_pic}}</h4>
+        <h4 class="mt-0">{{member?.first_name}} {{member?.last_name}}</h4>
         <!-- <p>Role: {{member?.role}}</p> -->
       </div>
 
