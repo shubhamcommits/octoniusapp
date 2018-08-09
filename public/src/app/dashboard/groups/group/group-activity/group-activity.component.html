@@ -269,7 +269,7 @@
 
 
           <div *ngIf="showComments.id == post._id && showComments.normal">
-            <div class="card muted">
+            <div class="card muted margin5">
               <form [formGroup]="commentForm">
                 <div class="row">
                   <div class="col-md-12">
@@ -294,7 +294,7 @@
 
           <!-- all comments block-->
 
-          <div class="comment" *ngFor="let comment of post.comments">
+          <div class="card muted comment" *ngFor="let comment of post.comments">
             <div class="card-block">
               <div class="row card-title ">
                 <div class="col-md-1">
@@ -347,7 +347,7 @@
                
                 </div>
                 <ng-template #taskif>
-                    <div class="col-md-4 text-right ">
+                    <div class="col-md-4 text-right padding-topright">
                         <button class="btn btn-outline-secondary btn-sm" id="button_task_mark_completed_{{i}}" (click)="OnMarkTaskCompleted(i, post._id)">Mark complete</button>
                         <p class="pink font-weight-bold" style="margin-top: 5px"> due {{post.task?.due_date | date}}</p>
                     </div>
@@ -398,7 +398,7 @@
 
 
           <div *ngIf="showComments.id == post._id && showComments.task">
-            <div class="card muted">
+            <div class="card muted margin5">
               <form [formGroup]="commentForm">
                 <div class="row">
                   <div class="col-md-12">
@@ -433,10 +433,11 @@
                 </div>
                 <div class="col-md-7 ">
                   <h6>{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}} replied</h6>
+                  <p class="small lightgray date">
+                    {{comment.created_date | date : 'medium'}}</p>
                 </div>
                 <div class="col-md-4 text-right ">
-                  <p class="small font-weight-bold">
-                    <i class="material-icons ">schedule</i>{{comment.created_date | date : 'medium'}}</p>
+                  
                 </div>
               </div>
               <div class="col-md-12 innercard ">
@@ -473,7 +474,7 @@
   
                   </div>
                   <ng-template #eventif>
-                    <div class="col-md-4 text-right ">
+                    <div class="col-md-4 text-right padding-topright">
                     <button class="btn btn-outline-secondary btn-sm" id="button_event_mark_completed_{{i}}" (click)="OnMarkEventCompleted(i, post._id)">Mark complete</button>
                     </div>
                 </ng-template>
@@ -530,7 +531,7 @@
 
 
           <div *ngIf="showComments.id == post._id && showComments.event">
-            <div class="card muted">
+            <div class="card muted margin5">
               <form [formGroup]="commentForm">
                 <div class="row">
                   <div class="col-md-12">
@@ -564,10 +565,11 @@
                 </div>
                 <div class="col-md-7 ">
                   <h6>{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}}  replied</h6>
+                  <p class="small lightgray date">
+                    {{comment.created_date | date : 'medium'}}</p>
                 </div>
                 <div class="col-md-4 text-right ">
-                  <p class="small font-weight-bold">
-                    <i class="material-icons ">schedule</i>{{comment.created_date | date : 'medium'}}</p>
+                
                 </div>
               </div>
               <div class="col-md-12 innercard ">
