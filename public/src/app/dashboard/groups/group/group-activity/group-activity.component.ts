@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Testability } from '@angular/core';
 import { ActivatedRoute, Router, Route } from '@angular/router';
 import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PostService } from '../../../../shared/services/post.service';
@@ -93,8 +93,6 @@ export class GroupActivityComponent implements OnInit {
 
   }
 
-
-
   ngOnInit() {
 
     this.group_id = this.groupDataService.groupId;
@@ -108,11 +106,9 @@ export class GroupActivityComponent implements OnInit {
     this.inilizeCommentForm();
     this.loadGroupPosts();
     this.alertMessageSettings();
-    this.initializeGroupMembersSearchForm();
-   
+    this.initializeGroupMembersSearchForm();  
     
   }
-
 
 
   fileChangeEvent(fileInput: any) {
@@ -244,10 +240,29 @@ export class GroupActivityComponent implements OnInit {
     }
   }
 
+
+
+linkify(text) {
+  const urlRegex =/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+  return text.replace(urlRegex, function(url) {
+      return '<a href="' + url + '">' + url + '</a>';
+  });
+}
+
+test(index) {
+  const text = document.getElementById("div_text"+index);
+  text.innerHTML= this.linkify(text.innerHTML);
+
+}
+
+
+
+
   addNewNormalPost() {
 
     const formData: any = new FormData();
     const files: Array<File> = this.filesToUpload;
+    
     // console.log(files);
 
     if (files !== null) {
@@ -512,11 +527,16 @@ export class GroupActivityComponent implements OnInit {
         // console.log('Group posts:', res);
         this.posts = res['posts'];
        console.log('Group posts:', this.posts);
+      
 
       }, (err) => {
 
       });
 
+  }
+
+  abc(){
+    console.log('clicked');
   }
 
   icon_comment_change_color() {
@@ -808,9 +828,7 @@ y.style.display="block";
     };
     this.postService.complete(post)
     .subscribe((res) => {
-      
-   
-
+    
       this.alert.class = 'success';
       this._message.next(res['message']);
      // this.resetNewPostForm();
@@ -839,6 +857,73 @@ y.style.display="block";
     button.innerHTML="Completed";
     button.setAttribute('disabled', 'true');*/
     
+  }
+
+  likepost(post){
+
+    this.postService.like(post)
+    .subscribe((res) => {
+      this.alert.class = 'success';
+      this._message.next(res['message']);     
+      console.log('Post Liked!');
+      this.loadGroupPosts();
+
+    }, (err) => {
+
+      this.alert.class = 'danger';
+
+      if (err.status) {
+        this._message.next(err.error.message);
+      } else {
+        this._message.next('Error! either server is down or no internet connection');
+      }
+
+    });
+    
+  }
+
+  unlikepost(post){
+
+    this.postService.unlike(post)
+    .subscribe((res) => {
+      this.alert.class = 'success';
+      this._message.next(res['message']);     
+      console.log('Post Unliked!');
+      this.loadGroupPosts();
+
+    }, (err) => {
+
+      this.alert.class = 'danger';
+
+      if (err.status) {
+        this._message.next(err.error.message);
+      } else {
+        this._message.next('Error! either server is down or no internet connection');
+      }
+
+    });
+    
+  }
+
+
+
+  OnClickLikePost(index, post_id, like_length, liked_by){
+
+    const like_icon = document.getElementById('icon_like_post_'+index);
+    const post = {
+      'post_id': post_id,
+      'user_id': this.user_data.user_id
+    };
+
+  this.likepost(post);
+  var i ;
+  for(i = 0; i < like_length; i++){
+
+    if(liked_by[i]=this.user_data.user_id){
+      this.unlikepost(post);
+    }
+  }
+
   }
 
 
