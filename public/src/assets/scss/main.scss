@@ -16,10 +16,12 @@ body {
 .feed-avatar{ //avatar image for in-feed display
   width: 50px;
   height: 50px;
+  object-fit: cover;
 }
 .topnav-avatar{ //avatar image for in-feed display
   width: 32px;
   height:32px;
+  object-fit: cover;
 }
 
 .list-group-item{
@@ -50,6 +52,7 @@ h2{
 .group-overview-avatar{
   width: 120px;
   height: 100px;
+  object-fit: cover;
 }
 
 .overview-post{
@@ -69,6 +72,7 @@ h2{
       margin-right: 20px;
       width: 80px;
       height: 80px;
+      object-fit: cover;
   }
   .nav-link{
     padding-left: 0;
