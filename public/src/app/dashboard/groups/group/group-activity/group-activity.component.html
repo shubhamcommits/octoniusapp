@@ -193,10 +193,7 @@
 
     </div>
     <!-- postbox-->
-  
- 
     
-
     <div *ngFor="let post of posts; let i = index;">
       <ul class="list-group ">
         <!-- Normal post -->
@@ -212,6 +209,7 @@
                   <h6>{{post._posted_by?.first_name}} {{post._posted_by?.last_name}}</h6>
                   <p class="small lightgray date">
                     {{post?.created_date | date : 'medium' }}</p>
+                   <!-- <button class="btn btn-primary btn-sm" id="testhaibc" contenteditable="false" (click)="test(i); abc();">Save</button>-->
                 </div>
                
               </div>
@@ -220,9 +218,16 @@
                 </div>
               <div class="col-md-12 innercard" [id]="(i)" style="border: none;">
                   
+                      <!--<textarea id="pre_edit_post{{i}}" data-ng-value="firstvalue">{{post?.content}}</textarea>--> 
+              
+              
+                  
 
                 <pre class="card-text" id="pre_edit_post{{i}}" data-ng-value="firstvalue">{{post?.content}}
                 </pre>
+                <!--<p id="para{{i}}">{{post?.content}}</p>-->
+                <!--<div id="div_text{{i}}" ng-init="test(i)">{{post?.content}}</div>
+                <p id="demo"></p>-->
           
 
                 <div *ngFor="let file of post.files">
@@ -234,7 +239,7 @@
                 <hr>
                 <div class="row ">
                   <div class="col-md-6 ">
-                    <span>{{post?.likes_count}} Likes</span>
+                    <span>{{post?._liked_by.length}} Likes</span>
                     <span>{{post?.comments_count}} Comments</span>
                   </div>
                   <div class="col-md-6 text-right">
@@ -242,7 +247,8 @@
                       <i class="material-icons action" id="icon_comment_post">mode_comment</i>
                     </span>
                     <span style="color: #005fd5;">
-                      <i class="material-icons action icon-blue" >thumb_up</i>
+                        <i class="fas fa-thumbs-up"></i>
+                      <i class="material-icons action icon-blue" style="color: #005fd5;" id="icon_like_post_{{i}}" (click)="OnClickLikePost(i, post._id, post._liked_by.length, post._liked_by)" >thumb_up</i>
                     </span>
                     <span>
                       <div ngbDropdown class="d-inline-block">

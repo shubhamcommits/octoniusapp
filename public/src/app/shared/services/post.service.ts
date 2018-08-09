@@ -42,4 +42,10 @@ export class PostService {
   complete(post) {
     return this._http.post(this.BASE_API_URL + '/post/complete', post);
   }
+  like(post) {
+    return this._http.post(this.BASE_API_URL + '/post/like', post);
+  }
+  unlike(post) {
+    return this._http.post(this.BASE_API_URL + '/post/unlike', post);
+  }
 }
