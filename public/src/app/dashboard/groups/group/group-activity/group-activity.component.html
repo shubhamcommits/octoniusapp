@@ -232,7 +232,7 @@
         
               </div>
               <div class="col-md-12 innercard" *ngFor="let file of post.files">
-                  <a href="javascript:location.reload();" (click)="onDownlaodFile(file.modified_name,file.orignal_name)">{{file?.orignal_name}}</a>
+                  <a role="button" href="javascript:void(null);" (click)="onDownlaodFile(file.modified_name,file.orignal_name)">{{file?.orignal_name}}</a>
                 </div>
 
               <div class="card-footer action-post innercard clearfix">
@@ -373,7 +373,7 @@
                 </pre>-->
               </div>
               <div class="col-md-12 innercard" *ngFor="let file of post.files">
-                  <a href="javascript:location.reload();" (click)="onDownlaodFile(file.modified_name,file.orignal_name)">{{file?.orignal_name}}</a>
+                  <a role="button" href="javascript:void(null);" (click)="onDownlaodFile(file.modified_name,file.orignal_name)">{{file?.orignal_name}}</a>
                 </div>
 
               <div class="card-footer action-post innercard clearfix ">
@@ -517,7 +517,7 @@
                   
                 </div>
                 <div class="col-md-12 innercard" *ngFor="let file of post.files">
-                    <a href="javascript:location.reload();" (click)="onDownlaodFile(file.modified_name,file.orignal_name)">{{file?.orignal_name}}</a>
+                    <a role="button" href="javascript:void(null);" (click)="onDownlaodFile(file.modified_name,file.orignal_name)">{{file?.orignal_name}}</a>
                   </div>
               </div>
 
