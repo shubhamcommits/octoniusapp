@@ -2,7 +2,7 @@ const Group = require('../../models/group')
 const User = require('../../models/user');
 const Workspace = require('../../models/workspace');
 const Post = require('../../models/post');
-
+const sendMail = require("../../sendgrid/sendMail");
 
 module.exports = {
 
@@ -10,13 +10,29 @@ module.exports = {
 		console.log(`--> Creating new ${req.body.type} post...`);
 
 		const post_data = req.body;
+		const post_created;
 
 		Post.create(post_data)
-			.then((post) => res.status(200).json({
-				message: "post has been added successfully",
-				post: post
-			}))
-			.then(() => console.log('--> ...post has been created!'))
+			.then((post) => {
+
+				post_created = post;
+
+				return res.status(200).json({
+					message: "post has been added successfully",
+					post: post
+				});
+			})
+			.then(() => {
+				console.log('--> ...post has been created!')
+
+				// Send Email notification
+				switch(post_created.type) {
+					case 'task':
+						sendMail.taskAssigned(post_created);
+					case 'event':
+						// sendMail.eventAssigned(post_created);
+				};
+			})
 			.catch((err) => res.status(500).json({
 				message: "something went wrong | internal server error",
 				err
@@ -31,8 +47,8 @@ module.exports = {
 		Post.findByIdAndUpdate({
 			_id: post_id
 		}, {
-				completed: true,
-				completion_date: new Date()
+			completed: true,
+			completion_date: new Date()
 		}, {
 			new: true
 		})
