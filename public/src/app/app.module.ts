@@ -6,6 +6,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgxEditorModule } from 'ngx-editor';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './common/components/navbar/navbar.component';
@@ -55,6 +58,9 @@ import { GroupDataService } from './shared/services/group-data.service';
     ReactiveFormsModule,
     HttpClientModule,
     AngularMultiSelectModule,
+    NgxEditorModule,
+    FontAwesomeModule,
+    TooltipModule.forRoot(),
     BrowserAnimationsModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,

@@ -81,7 +81,8 @@
             <div class="row" style="margin-top: 10px">
               <div class="col-md-12">
                 <div class="form-group fade-in">
-                  <textarea class="form-control " id="post-content" rows="3" [(ngModel)]="post.content" name="postContent" formControlName="postContent"></textarea>
+                  <!--<textarea class="form-control " id="post-content" rows="3" [(ngModel)]="post.content" name="postContent" formControlName="postContent"></textarea>-->
+                  <app-ngx-editor [placeholder]="'Enter text here...'" [spellcheck]="true" id="post-content" rows="3" [(ngModel)]="post.content" name="postContent" formControlName="postContent"></app-ngx-editor>
                 </div>
               </div>
             </div>
@@ -216,15 +217,15 @@
               <div class="col-md-12 text-right " id="button_edit_post{{i}}" style="display: none; padding-bottom: 1em;">
                   <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditPost(i, post._id,post?.content)">Save</button>
                 </div>
-              <div class="col-md-12 innercard" [id]="(i)" style="border: none;">
+              <div class="col-md-12 innercard" [id]="(i)" style="border: none;" ng-bind-html="post?.content">
                   
                       <!--<textarea id="pre_edit_post{{i}}" data-ng-value="firstvalue">{{post?.content}}</textarea>--> 
               
               
-                  
+                  {{post?.content}}
 
-                <pre class="card-text" id="pre_edit_post{{i}}" data-ng-value="firstvalue">{{post?.content}}
-                </pre>
+                <!--<pre class="card-text" id="pre_edit_post{{i}}" data-ng-value="firstvalue">{{post?.content}}
+                </pre>-->
                 <!--<p id="para{{i}}">{{post?.content}}</p>-->
                 <!--<div id="div_text{{i}}" ng-init="test(i)">{{post?.content}}</div>
                 <p id="demo"></p>-->
