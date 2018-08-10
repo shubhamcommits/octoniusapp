@@ -258,15 +258,16 @@
                     </span>
                  
                     <span>
-                      <div ngbDropdown class="d-inline-block">
+                      <div ngbDropdown class="d-inline-block" *ngIf="post?._posted_by?._id == this.user_data.user_id; else editpostif">
                         <i class="material-icons action" id="dropdownBasic1" ngbDropdownToggle>more_horiz</i>
                         <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                          <button class="dropdown-item" *ngIf="post?._posted_by?._id == this.user_data.user_id; else editpostif" (click)="OnEditPost(i)">Edit Post</button>
-                          <ng-template #editpostif>
-                            </ng-template>
+                          <button class="dropdown-item"  (click)="OnEditPost(i)">Edit Post</button>
+                          
                           <button class="dropdown-item" (click)="onDeletePost(post._id)">Delete Post</button>
                         </div>
                       </div>
+                      <ng-template #editpostif>
+                        </ng-template>
                     </span>
                   </div>
                 </div>
@@ -395,15 +396,16 @@
                           </button>
                     </span>
                     <span>
-                      <div ngbDropdown class="d-inline-block">
+                      <div ngbDropdown class="d-inline-block" *ngIf="post?._posted_by?._id == this.user_data.user_id; else edittaskif">
                         <i class="material-icons action" id="dropdownBasic1" ngbDropdownToggle>more_horiz</i>
                         <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                            <button class="dropdown-item" *ngIf="post?._posted_by?._id == this.user_data.user_id; else edittaskif" (click)="OnEditPost(i)">Edit Post</button>
-                          <ng-template #edittaskif>
-                            </ng-template>
+                            <button class="dropdown-item" (click)="OnEditPost(i)">Edit Post</button>
+                          
                           <button class="dropdown-item" (click)="onDeletePost(post._id)">Delete Post</button>
                         </div>
                       </div>
+                      <ng-template #edittaskif>
+                        </ng-template>
                     </span>
                   </div>
                 </div>
@@ -540,15 +542,16 @@
                       </button>    
                     </span>
                     <span>
-                      <div ngbDropdown class="d-inline-block">
+                      <div ngbDropdown class="d-inline-block" *ngIf="post?._posted_by?._id == this.user_data.user_id; else editeventif" >
                         <i class="material-icons action" id="dropdownBasic1" ngbDropdownToggle>more_horiz</i>
                         <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                            <button class="dropdown-item" *ngIf="post?._posted_by?._id == this.user_data.user_id; else editeventif" (click)="OnEditPost(i)">Edit Post</button>
-                            <ng-template #editeventif>
-                              </ng-template>
+                            <button class="dropdown-item" (click)="OnEditPost(i)">Edit Post</button>
+                            
                           <button class="dropdown-item" (click)="onDeletePost(post._id)">Delete Post</button>
                         </div>
                       </div>
+                      <ng-template #editeventif>
+                        </ng-template>
                     </span>
                   </div>
                 </div>
