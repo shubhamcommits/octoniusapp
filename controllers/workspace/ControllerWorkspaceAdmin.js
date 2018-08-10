@@ -67,22 +67,8 @@ module.exports = {
 						message: "Error! workspace not found, invalid workspace id"
 					});
 				} else {
-					// Send invitation by email
-					const sendInvitation = async () => {
-						try {
-							let receiver = invited_user_email;
-
-							// Find the name of who invited or pass a default sender
-							const sender = await User.findById({ _id: req.body.user_id });
-
-							// Send invitation email (using sendgrid)
-							return sendMail.joinWorkspace(receiver, null, sender.email, sender.first_name, null, null, updated_workspace.workspace_name, defaults.signupLink);
-						} catch (err) {
-							console.log(err);
-						}
-
-					}
-					sendInvitation();
+					// Send invitation via email
+					sendMail.joinWorkspace(req.body);
 				}
 			})
 			.catch((err) => {

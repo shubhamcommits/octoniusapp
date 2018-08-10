@@ -98,14 +98,32 @@ const sendMail = async (emailBody, emailData) => {
  */
 
 // Join workspace invitation email
-const joinWorkspace = async (toEmail, toName, fromEmail, fromName, replyToEmail, replyToName, workspace, link) => {
+const joinWorkspace = async (reqData) => {
 	try {
-		const emailData = await generateEmailData('joinWorkspace', toName, fromName, workspace, null, link);
+		const emailType = 'joinWorkspace';
 
-		const send = await sendMail(emailData, toEmail, toName, fromEmail, fromName, replyToEmail, replyToName);
+		// Generate email data
+		const from = await User.findById({ _id: reqData.user_id });
+		const workspace = await Workspace.findById({ _id: reqData.workspace_id });
+
+		const emailData = {
+			subject: subjects[emailType],
+			toName: '',
+			toEmail: reqData.email,
+			fromName: from.first_name,
+			fromEmail: from.email,
+			workspace: workspace.workspace_name,
+			link: defaults.signupLink
+		};
+
+		// Generate email body from template
+		const emailBody = await generateEmailBody(emailType, emailData);
+
+		// Send email
+		const send = await sendMail(emailBody, emailData);
 
 		if (send.status === 202) {
-			console.log(`Email sent to ${toName}`);
+			console.log(`Email sent to ${emailData.toName}`);
 		}
 
 	} catch (err) {
