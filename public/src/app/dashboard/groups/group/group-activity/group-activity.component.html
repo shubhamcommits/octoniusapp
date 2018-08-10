@@ -479,6 +479,8 @@
                     {{post?.created_date| date : 'medium'}}</p>
                   <span class="pink small"> ASSIGNED TO {{post.event._assigned_to?.length}} members
                   </span>
+                  <span class="pink small"> {{post.event._assigned_to?.length}} members
+                    </span>
                 </div>
 
                 <div class="col-md-4 text-right " *ngIf="post.completed== true; else eventif">
