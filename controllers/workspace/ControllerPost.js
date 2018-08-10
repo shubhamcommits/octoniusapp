@@ -10,7 +10,7 @@ module.exports = {
 		console.log(`--> Creating new ${req.body.type} post...`);
 
 		const post_data = req.body;
-		const post_created;
+		let post_created;
 
 		Post.create(post_data)
 			.then((post) => {

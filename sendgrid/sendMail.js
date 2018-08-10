@@ -1,6 +1,11 @@
 const ejs = require('ejs');
 const fs = require('fs');
 const http = require('axios');
+
+const Group = require('../models/group');
+const User = require('../models/user');
+const Workspace = require('../models/workspace');
+const Post = require('../models/post');
 const subjects = require('./templates/subjects');
 const defaults = require('./defaults');
 
@@ -29,8 +34,8 @@ const generateEmailBody = async (type, data) => {
  *	===================
  */
 
-const sendMail = async (emailData, toEmail, toName, fromEmail, fromName, replyToEmail, replyToName) => {
-	console.log(`Sending transactional email to ${toName}...`);
+const sendMail = async (emailBody, emailData) => {
+	console.log(`Sending transactional email to ${emailData.toName}...`);
 
 	try {
 		// Sendgrid API settings
@@ -52,8 +57,8 @@ const sendMail = async (emailData, toEmail, toName, fromEmail, fromName, replyTo
 					{
 						to: [ 
 							{ 
-								email: toEmail,
-								name: toName
+								email: emailData.toEmail,
+								name: emailData.toName
 							} 
 						],
 						subject: emailData.subject 
@@ -61,12 +66,12 @@ const sendMail = async (emailData, toEmail, toName, fromEmail, fromName, replyTo
 				],
 				from: 
 				{
-					email: fromEmail || defaults.fromEmail,
-					name: fromName || defaults.fromName
+					email: emailData.fromEmail || defaults.fromEmail,
+					name: emailData.fromName || defaults.fromName
 				},
 				reply_to: {
-					email: replyToEmail || defaults.replyToEmail,
-					name: replyToName || defaults.replyToName
+					email: emailData.replyToEmail || defaults.replyToEmail,
+					name: emailData.replyToName || defaults.replyToName
 				},
 				content: [
 					{ 
@@ -125,14 +130,26 @@ const newWorkspace = async (toEmail, toName, fromEmail, fromName, replyToEmail, 
 };
 
 // Sign up confirmation email
-const signup = async (toEmail, toName, fromEmail, fromName, replyToEmail, replyToName, workspace) => {
+const signup = async (user) => {
 	try {
-		const emailData = await generateEmailData('signup', toName, fromName, workspace);
+		const emailType = 'signup';
 
-		const send = await sendMail(emailData, toEmail, toName, fromEmail, fromName, replyToEmail, replyToName);
+		// Generate email data
+		const emailData = {
+			subject: subjects[emailType],
+			toName: user.first_name,
+			toEmail: user.email,
+			workspace: user.workspace_name,
+		};
+
+		// Generate email body from template
+		const emailBody = await generateEmailBody(emailType, emailData);
+
+		// Send email
+		const send = await sendMail(emailBody, emailData);
 
 		if (send.status === 202) {
-			console.log(`Email sent to ${toName}`);
+			console.log(`Email sent to ${emailData.toName}`);
 		}
 
 	} catch (err) {
@@ -140,7 +157,7 @@ const signup = async (toEmail, toName, fromEmail, fromName, replyToEmail, replyT
 	}
 };
 
-// EMAIL ==> Task assigned to a user
+// Send email when a task assigned to a user
 const taskAssigned = async (taskPost) => {
 	try {
 		const emailType = 'taskAssigned';
@@ -166,7 +183,6 @@ const taskAssigned = async (taskPost) => {
 
 		// Send email
 		const send = await sendMail(emailBody, emailData);
-		// toEmail, toName, fromEmail, fromName, replyToEmail, replyToName
 
 		if (send.status === 202) {
 			console.log(`Email sent to ${to.first_name}`);
