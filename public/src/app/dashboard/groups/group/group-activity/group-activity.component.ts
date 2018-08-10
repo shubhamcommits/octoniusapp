@@ -548,6 +548,18 @@ test(index) {
     z.style.color = "#9b9b9b";
 
   }
+  icon_comment_post_color(index) {
+    const x = document.getElementById('icon_comment_post_'+index);
+    
+     if(x.style.color == "#005fd5"){
+      x.style.color = "#9b9b9b";
+    }
+
+    else if(x.style.color == "#9b9b9b"){
+      x.style.color = "#005fd5";
+    }
+
+  }
 
   icon_event_change_color() {
     const x = document.getElementById('icon_event');
@@ -907,7 +919,7 @@ y.style.display="block";
 
 
 
-  OnClickLikePost(index, post_id, like_length, liked_by){
+  OnClickLikePost(index, post_id, like_length, liked_by, user_id){
 
     const like_icon = document.getElementById('icon_like_post_'+index);
     const post = {
@@ -915,14 +927,19 @@ y.style.display="block";
       'user_id': this.user_data.user_id
     };
 
+    console.log(user_id);
+
   this.likepost(post);
+  like_icon.style.color="#005FD5";
   var i ;
   for(i = 0; i < like_length; i++){
 
     if(liked_by[i]=this.user_data.user_id){
       this.unlikepost(post);
+      like_icon.style.color = "#9b9b9b";
     }
   }
+  
 
   }
 
