@@ -132,14 +132,28 @@ const joinWorkspace = async (reqData) => {
 };
 
 // 	New workspace confirmation email 
-const newWorkspace = async (toEmail, toName, fromEmail, fromName, replyToEmail, replyToName, workspace) => {
+const newWorkspace = async (workspace) => {
 	try {
-		const emailData = await generateEmailData('newWorkspace', toName, fromName, workspace);
+		const emailType = 'newWorkspace';
 
-		const send = await sendMail(emailData, toEmail, toName, fromEmail, fromName, replyToEmail, replyToName);
+		// Generate email data
+		const to = await User.findById({ _id: workspace._owner });
+
+		const emailData = {
+			subject: subjects[emailType],
+			toName: to.first_name,
+			toEmail: to.email,
+			workspace: workspace.workspace_name,
+		};
+
+		// Generate email body from template
+		const emailBody = await generateEmailBody(emailType, emailData);
+
+		// Send email
+		const send = await sendMail(emailBody, emailData);
 
 		if (send.status === 202) {
-			console.log(`Email sent to ${toName}`);
+			console.log(`Email sent to ${emailData.toName}`);
 		}
 
 	} catch (err) {
@@ -203,7 +217,7 @@ const taskAssigned = async (taskPost) => {
 		const send = await sendMail(emailBody, emailData);
 
 		if (send.status === 202) {
-			console.log(`Email sent to ${to.first_name}`);
+			console.log(`Email sent to ${emailData.toName}`);
 		}
 
 	} catch (err) {

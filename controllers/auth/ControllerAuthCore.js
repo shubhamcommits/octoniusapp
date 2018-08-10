@@ -328,6 +328,10 @@ module.exports = {
 		console.log("============Creating New Workspace===========");
 		console.log(req.body);
 
+
+		let userCreated;
+		let workspaceCreated;
+
 		// generating hash password fist
 		helper_password.encryptPassword(req.body.owner_password)
 			.then((hashPassword) => {
@@ -352,6 +356,9 @@ module.exports = {
 						// creating new user with owner rights
 						User.create(new_user)
 							.then((user) => {
+
+								userCreated = user;
+
 								// updating  memebers and _owener fields of workspace
 								Workspace.findByIdAndUpdate({
 									_id: workspace._id
@@ -366,6 +373,8 @@ module.exports = {
 									new: true
 								})
 									.then((updated_workspace) => {
+
+										workspaceCreated = workspace;
 
 										// initialization of global group
 										let global_group = {
@@ -408,10 +417,10 @@ module.exports = {
 														});
 
 														// Send signup confirmation email
-														sendMail.signup(new_user.email, new_user.first_name, null, null, null, null, workspace.workspace_name);
+														sendMail.signup(userCreated);
 
 														// Send new workspace confirmation email
-														sendMail.newWorkspace(new_user.email, new_user.first_name, null, null, null, null, workspace.workspace_name);
+														sendMail.newWorkspace(workspaceCreated);
 
 													})
 												// auth creation error
