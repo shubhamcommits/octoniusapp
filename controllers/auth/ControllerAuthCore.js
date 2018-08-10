@@ -196,8 +196,9 @@ module.exports = {
 																		user: current_user
 
 																	});
+
 																	// Send signup confirmation email
-																	sendMail.signup(user.email, user.first_name, null, null, null, null, workspace.workspace_name);
+																	sendMail.signup(user);
 
 																})
 															// auth creation error
