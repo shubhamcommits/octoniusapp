@@ -626,7 +626,7 @@ y.style.display="block";
     
   const post = {
     'post_id': post_id,
-    'content': document.getElementById('pre_edit_post'+index).innerHTML,
+    'content': document.getElementById(index).innerHTML,
     'user_id': this.user_data.user_id
   };
   console.log('post: ', post);

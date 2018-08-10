@@ -217,24 +217,23 @@
               <div class="col-md-12 text-right " id="button_edit_post{{i}}" style="display: none; padding-bottom: 1em;">
                   <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditPost(i, post._id,post?.content)">Save</button>
                 </div>
-              <div class="col-md-12 innercard" [id]="(i)" style="border: none;" ng-bind-html="post?.content">
+              <div class="col-md-12 innercard" [id]="(i)" style="border: none;" [innerHTML]="post?.content">
                   
                       <!--<textarea id="pre_edit_post{{i}}" data-ng-value="firstvalue">{{post?.content}}</textarea>--> 
               
               
-                  {{post?.content}}
+                  
 
                 <!--<pre class="card-text" id="pre_edit_post{{i}}" data-ng-value="firstvalue">{{post?.content}}
                 </pre>-->
                 <!--<p id="para{{i}}">{{post?.content}}</p>-->
                 <!--<div id="div_text{{i}}" ng-init="test(i)">{{post?.content}}</div>
                 <p id="demo"></p>-->
-          
-
-                <div *ngFor="let file of post.files">
-                  <p (click)="onDownlaodFile(file.modified_name,file.orignal_name)">{{file?.orignal_name}}</p>
-                </div>
+        
               </div>
+              <div class="col-md-12 innercard" *ngFor="let file of post.files">
+                  <a href="javascript:location.reload();" (click)="onDownlaodFile(file.modified_name,file.orignal_name)">{{file?.orignal_name}}</a>
+                </div>
 
               <div class="card-footer action-post innercard clearfix">
                 <hr>
@@ -262,7 +261,9 @@
                       <div ngbDropdown class="d-inline-block">
                         <i class="material-icons action" id="dropdownBasic1" ngbDropdownToggle>more_horiz</i>
                         <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                          <button class="dropdown-item"  (click)="OnEditPost(i)">Edit Post</button>
+                          <button class="dropdown-item" *ngIf="post?._posted_by?._id == this.user_data.user_id; else editpostif" (click)="OnEditPost(i)">Edit Post</button>
+                          <ng-template #editpostif>
+                            </ng-template>
                           <button class="dropdown-item" (click)="onDeletePost(post._id)">Delete Post</button>
                         </div>
                       </div>
@@ -363,14 +364,13 @@
                 
               </div>
           
-              <div class="col-md-12 innercard ">
-                <pre class="card-text ">{{post?.content}}
-                </pre>
-
-                <div *ngFor="let file of post.files">
-                  <p (click)="onDownlaodFile(file.modified_name,file.orignal_name)"> {{file?.orignal_name}} </p>
-                </div>
+              <div class="col-md-12 innercard " [id]="(i)" [innerHTML]="post?.content">
+                <!--<pre class="card-text ">{{post?.content}}
+                </pre>-->
               </div>
+              <div class="col-md-12 innercard" *ngFor="let file of post.files">
+                  <a href="javascript:location.reload();" (click)="onDownlaodFile(file.modified_name,file.orignal_name)">{{file?.orignal_name}}</a>
+                </div>
 
               <div class="card-footer action-post innercard clearfix ">
                 <hr>
@@ -395,7 +395,9 @@
                       <div ngbDropdown class="d-inline-block">
                         <i class="material-icons action" id="dropdownBasic1" ngbDropdownToggle>more_horiz</i>
                         <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                          <button class="dropdown-item">Edit Post</button>
+                            <button class="dropdown-item" *ngIf="post?._posted_by?._id == this.user_data.user_id; else edittaskif" (click)="OnEditPost(i)">Edit Post</button>
+                          <ng-template #edittaskif>
+                            </ng-template>
                           <button class="dropdown-item" (click)="onDeletePost(post._id)">Delete Post</button>
                         </div>
                       </div>
@@ -501,13 +503,14 @@
                     <br>
                     <span class="time">{{post.event?.due_time}}</span>
                   </div>
-                  <div class="col-md-9 event-title"> {{post.content}}
+                  <div class="col-md-9 event-title" [id]="(i)" [innerHTML]="post?.content">
 
-                    <div *ngFor="let file of post.files">
-                      <p (click)="onDownlaodFile(file.modified_name,file.orignal_name)">{{file?.orignal_name}}</p>
-                    </div>
                   </div>
+                  
                 </div>
+                <div class="col-md-12 innercard" *ngFor="let file of post.files">
+                    <a href="javascript:location.reload();" (click)="onDownlaodFile(file.modified_name,file.orignal_name)">{{file?.orignal_name}}</a>
+                  </div>
               </div>
 
               <div class="card-footer action-post innercard clearfix ">
@@ -534,7 +537,9 @@
                       <div ngbDropdown class="d-inline-block">
                         <i class="material-icons action" id="dropdownBasic1" ngbDropdownToggle>more_horiz</i>
                         <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                          <button class="dropdown-item">Edit Post</button>
+                            <button class="dropdown-item" *ngIf="post?._posted_by?._id == this.user_data.user_id; else editeventif" (click)="OnEditPost(i)">Edit Post</button>
+                            <ng-template #editeventif>
+                              </ng-template>
                           <button class="dropdown-item" (click)="onDeletePost(post._id)">Delete Post</button>
                         </div>
                       </div>
