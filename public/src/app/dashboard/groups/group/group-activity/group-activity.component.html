@@ -363,6 +363,9 @@
                 </ng-template>
                 
               </div>
+              <div class="col-md-12 text-right " id="button_edit_post{{i}}" style="display: none; padding-bottom: 1em;">
+                  <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditPost(i, post._id,post?.content)">Save</button>
+                </div>
           
               <div class="col-md-12 innercard " [id]="(i)" [innerHTML]="post?.content">
                 <!--<pre class="card-text ">{{post?.content}}
@@ -494,6 +497,9 @@
                     </div>
                 </ng-template>
               </div>
+              <div class="col-md-12 text-right " id="button_edit_post{{i}}" style="display: none; padding-bottom: 1em;">
+                  <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditPost(i, post._id,post?.content)">Save</button>
+                </div>
               <div class="col-md-12 innercard ">
                 <div class="row">
                   <div class="col-md-2 dateblock">
