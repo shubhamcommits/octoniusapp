@@ -15,9 +15,17 @@ const apis_post = require('./routes/post');
 const apis_group = require('./routes/group');
 const apis_file = require('./routes/file');
 
-//database and local envirnment configurations
-require('./nodemon_config')
-require('./config/db_connection')
+// environment configurations
+// if env is not production...
+if (process.env.NODE_ENV !== 'production') {
+	// ...load 'development' env configuration.
+	require('./nodemon_config');
+}
+console.log('--> NODE_ENV:\n-->', process.env.NODE_ENV);
+
+
+// database config
+require('./config/db_connection');
 
 
 // cors middleware for orign and Headers
