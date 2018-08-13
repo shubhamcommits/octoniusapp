@@ -17,11 +17,11 @@ const apis_file = require('./routes/file');
 
 // environment configurations
 // if env is not production...
-if (!process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV !== 'production') {
 	// ...load 'development' env configuration.
 	require('./nodemon_config');
 }
-console.log('--> NODE_ENV:\n', process.env.NODE_ENV);
+console.log('--> NODE_ENV:\n-->', process.env.NODE_ENV);
 
 
 // database config
