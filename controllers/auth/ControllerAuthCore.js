@@ -374,8 +374,6 @@ module.exports = {
 								})
 									.then((updated_workspace) => {
 
-										workspaceCreated = workspace;
-
 										// initialization of global group
 										let global_group = {
 											group_name: 'Global',
@@ -420,7 +418,7 @@ module.exports = {
 														sendMail.signup(userCreated);
 
 														// Send new workspace confirmation email
-														sendMail.newWorkspace(workspaceCreated);
+														sendMail.newWorkspace(workspace);
 
 													})
 												// auth creation error
