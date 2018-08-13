@@ -137,12 +137,10 @@ const newWorkspace = async (workspace) => {
 		const emailType = 'newWorkspace';
 
 		// Generate email data
-		const to = await User.findById({ _id: workspace._owner });
-
 		const emailData = {
 			subject: subjects[emailType],
-			toName: to.first_name,
-			toEmail: to.email,
+			toName: workspace.owner_first_name,
+			toEmail: workspace.owner_email,
 			workspace: workspace.workspace_name,
 		};
 
