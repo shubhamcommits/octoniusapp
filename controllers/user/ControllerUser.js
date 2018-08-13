@@ -8,7 +8,7 @@ module.exports = {
         User.findOne({
                 _id: userId
             })
-            .select('_id first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number mobile_number company_name _workspace')
+            .select('_id first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number mobile_number company_name _workspace _groups')
             .then((user) => {
                 // user not found error
                 if (user == null) {
