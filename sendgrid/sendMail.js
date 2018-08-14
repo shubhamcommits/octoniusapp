@@ -232,8 +232,8 @@ const eventAssigned = async (eventPost) => {
 		const from = await User.findById({ _id: eventPost._posted_by });
 		const group = await Group.findById({ _id: eventPost._group });
 
-		// Send email to each one of the users
-		eventPost.event._assigned_to.forEach((userId) => {
+
+		for (let userId of eventPost.event._assigned_to) {
 
 			const to = await User.findById({ _id: userId });
 
@@ -258,7 +258,7 @@ const eventAssigned = async (eventPost) => {
 			if (send.status === 202) {
 				console.log(`Email sent to ${emailData.toName}`);
 			}
-		});
+		};
 
 	} catch (err) {
 		console.log(err);
