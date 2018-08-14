@@ -30,7 +30,7 @@ module.exports = {
 					case 'task':
 						sendMail.taskAssigned(post_created);
 					case 'event':
-						// sendMail.eventAssigned(post_created);
+						sendMail.eventAssigned(post_created);
 				};
 			})
 			.catch((err) => res.status(500).json({
