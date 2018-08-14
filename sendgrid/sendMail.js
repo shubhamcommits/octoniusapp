@@ -223,6 +223,48 @@ const taskAssigned = async (taskPost) => {
 	}
 };
 
+// Send email when a task assigned to a user
+const eventAssigned = async (eventPost) => {
+	try {
+		const emailType = 'eventAssigned';
+
+		// Generate common email data
+		const from = await User.findById({ _id: eventPost._posted_by });
+		const group = await Group.findById({ _id: eventPost._group });
+
+
+		for (let userId of eventPost.event._assigned_to) {
+
+			const to = await User.findById({ _id: userId });
+
+			// Generate email data
+			const emailData = {
+				subject: subjects[emailType],
+				toName: to.first_name,
+				toEmail: to.email,
+				fromName: from.first_name,
+				fromEmail: from.email,
+				workspace: group.workspace_name,
+				group: group.group_name,
+				link: defaults.signinLink
+			};
+
+			// Generate email body from template
+			const emailBody = await generateEmailBody(emailType, emailData);
+
+			// Send email
+			const send = await sendMail(emailBody, emailData);
+
+			if (send.status === 202) {
+				console.log(`Email sent to ${emailData.toName}`);
+			}
+		};
+
+	} catch (err) {
+		console.log(err);
+	}
+};
+
 /*	====================
  *	-- EXPORT METHODS --
  *	====================
@@ -232,6 +274,7 @@ module.exports = {
 	joinWorkspace,
 	newWorkspace,
 	signup,
-	taskAssigned
+	taskAssigned,
+	eventAssigned
 };
 
