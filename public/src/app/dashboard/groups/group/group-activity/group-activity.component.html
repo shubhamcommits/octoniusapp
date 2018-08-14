@@ -221,6 +221,7 @@
                 </div>
                 <div class="col-md-12 innercard"><quill-editor id="edit-content-{{i}}" type="text" [(ngModel)]="post.content" [spellcheck]="true" value="post?.content" style="display: none;"></quill-editor></div>
                 
+                <!--<quill-editor id="edit-content" type="text" [(ngModel)]="post.content" [spellcheck]="true" name="postContent" formControlName="postContent" style="display: none;">{{post.content}}</quill-editor>-->
               <div class="col-md-12 innercard" [id]="(i)" style="border: none;" [innerHTML]="post?.content | safe: 'html'">
                  
 
