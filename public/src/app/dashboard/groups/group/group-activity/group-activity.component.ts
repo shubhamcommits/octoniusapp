@@ -26,6 +26,8 @@ export class GroupActivityComponent implements OnInit {
   group_id;
   group;
 
+  public editor;
+
   user_data;
   user: User;
   profileImage;
@@ -92,6 +94,23 @@ export class GroupActivityComponent implements OnInit {
     private modalService: NgbModal, private postService: PostService) {
 
   }
+  onEditorBlured(quill) {
+    console.log('editor blur!', quill);
+  }
+
+  onEditorFocused(quill) {
+    console.log('editor focus!', quill);
+  }
+
+  onEditorCreated(quill) {
+    this.editor = quill;
+    console.log('quill is ready! this is current quill instance object', quill);
+  }
+
+  onContentChanged({ quill, html, text }) {
+    console.log('quill content is changed!', quill, html, text);
+  }
+
 
   ngOnInit() {
 
@@ -106,8 +125,8 @@ export class GroupActivityComponent implements OnInit {
     this.inilizeCommentForm();
     this.loadGroupPosts();
     this.alertMessageSettings();
-    this.initializeGroupMembersSearchForm();  
-    
+    this.initializeGroupMembersSearchForm();
+
   }
 
 
@@ -262,7 +281,7 @@ test(index) {
 
     const formData: any = new FormData();
     const files: Array<File> = this.filesToUpload;
-    
+
     // console.log(files);
 
     if (files !== null) {
@@ -465,7 +484,7 @@ test(index) {
       });
   }
 
- 
+
 
   mark_complete_task_post() {
 
@@ -527,7 +546,7 @@ test(index) {
         // console.log('Group posts:', res);
         this.posts = res['posts'];
        console.log('Group posts:', this.posts);
-      
+
 
       }, (err) => {
 
@@ -550,7 +569,7 @@ test(index) {
   }
   icon_comment_post_color(index) {
     const x = document.getElementById('icon_comment_post_'+index);
-    
+
      if(x.style.color == "#005fd5"){
       x.style.color = "#9b9b9b";
     }
@@ -580,12 +599,12 @@ test(index) {
     z.style.color = "#9b9b9b";
 
   }
-  
+
   icon_comment_post_change_color() {
     const x = document.getElementById('icon_comment_post');
     x.style.color = "#005fd5";
     if (x.style.color === "#005fd5"){
-   
+
       x.style.color = "#9b9b9b";
 
     }
@@ -593,7 +612,7 @@ test(index) {
     {
       x.style.color = "#005fd5";
     }
-  
+
   }
 
   refreshPage() {
@@ -603,10 +622,12 @@ test(index) {
 OnEditPost(index) {
 
   const x = document.getElementById(index);
+  const editor = document.getElementById('edit-content');
   const y = document.getElementById("button_edit_post"+index);
-  
+
  if(x.style.borderStyle ==="none"){
   x.setAttribute('contenteditable', 'true');
+  //editor.style.display = 'block';
 x.style.borderWidth="thin";
 x.style.borderStyle="solid";
 x.style.borderColor="#007bff";
@@ -619,11 +640,11 @@ y.style.display="block";
  x.blur();
 }
 
-  } 
+  }
 
   OnSaveEditPost(index, post_id, content) {
 
-    
+
   const post = {
     'post_id': post_id,
     'content': document.getElementById(index).innerHTML,
@@ -677,7 +698,7 @@ y.style.display="block";
           enableSearchFilter: true,
           searchBy: ['full_name', 'capital']
         };
-        
+
         break;
       case 'task':
       this.icon_check_box_change_color();
@@ -794,7 +815,7 @@ y.style.display="block";
   OnMarkEventCompleted(index, post_id){
 
     const button = document.getElementById("button_event_mark_completed_"+index);
-  
+
     const post = {
       'post_id': post_id,
       'user_id': this.user_data.user_id
@@ -807,7 +828,7 @@ y.style.display="block";
       // console.log('Normal post response: ', res);
       //
       console.log('Post Marked as Completed');
-     
+
       button.style.background="#005fd5";
       button.style.color="#ffffff";
       button.innerHTML="Completed";
@@ -829,7 +850,7 @@ y.style.display="block";
     button.style.color="#ffffff";
     button.innerHTML="Completed";*/
     //button.setAttribute('disabled', 'true');
-    
+
   }
 
   OnMarkTaskCompleted(index, post_id){
@@ -840,12 +861,12 @@ y.style.display="block";
     };
     this.postService.complete(post)
     .subscribe((res) => {
-    
+
       this.alert.class = 'success';
       this._message.next(res['message']);
      // this.resetNewPostForm();
       // console.log('Normal post response: ', res);
-     
+
       console.log('Post Marked as Completed');
       button.style.background="#005fd5";
       button.style.color="#ffffff";
@@ -868,7 +889,7 @@ y.style.display="block";
     button.style.color="#ffffff";
     button.innerHTML="Completed";
     button.setAttribute('disabled', 'true');*/
-    
+
   }
 
   likepost(post){
@@ -876,7 +897,7 @@ y.style.display="block";
     this.postService.like(post)
     .subscribe((res) => {
       this.alert.class = 'success';
-      this._message.next(res['message']);     
+      this._message.next(res['message']);
       console.log('Post Liked!');
       this.loadGroupPosts();
 
@@ -891,7 +912,7 @@ y.style.display="block";
       }
 
     });
-    
+
   }
 
   unlikepost(post){
@@ -899,7 +920,7 @@ y.style.display="block";
     this.postService.unlike(post)
     .subscribe((res) => {
       this.alert.class = 'success';
-      this._message.next(res['message']);     
+      this._message.next(res['message']);
       console.log('Post Unliked!');
       this.loadGroupPosts();
 
@@ -914,7 +935,7 @@ y.style.display="block";
       }
 
     });
-    
+
   }
 
 
@@ -939,7 +960,7 @@ y.style.display="block";
       like_icon.style.color = "#9b9b9b";
     }
   }
-  
+
 
   }
 

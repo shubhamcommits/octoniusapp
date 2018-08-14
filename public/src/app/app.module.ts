@@ -9,6 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxEditorModule } from 'ngx-editor';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { QuillModule } from 'ngx-quill';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './common/components/navbar/navbar.component';
@@ -58,6 +59,7 @@ import { GroupDataService } from './shared/services/group-data.service';
     ReactiveFormsModule,
     HttpClientModule,
     AngularMultiSelectModule,
+    QuillModule,
     NgxEditorModule,
     FontAwesomeModule,
     TooltipModule.forRoot(),

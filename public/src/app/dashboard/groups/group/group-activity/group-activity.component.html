@@ -24,7 +24,7 @@
                   <img [src]="profileImage" onerror="this.src='/assets/images/user.png'" class="feed-avatar">
               </div>
             <div class="col-md-11">
-           
+
     <button type="text" class="form-control btn-lg noborder-btn" style="outline: none; box-shadow: none !important; border: 0px solid #ccc !important; text-align: left" placeholder="What are you working on?"
     (click)="show_hide_working_bar()">What are you working on?</button>
             </div>
@@ -82,7 +82,8 @@
               <div class="col-md-12">
                 <div class="form-group fade-in">
                   <!--<textarea class="form-control " id="post-content" rows="3" [(ngModel)]="post.content" name="postContent" formControlName="postContent"></textarea>-->
-                  <app-ngx-editor [placeholder]="'Enter text here...'" [spellcheck]="true" id="post-content" rows="3" [(ngModel)]="post.content" name="postContent" formControlName="postContent"></app-ngx-editor>
+                  <!--<app-ngx-editor [placeholder]="'Enter text here...'" [spellcheck]="true" id="post-content" rows="3" [(ngModel)]="post.content" name="postContent" formControlName="postContent"></app-ngx-editor>-->
+                  <quill-editor id="post-content" [(ngModel)]="post.content" (blur)="onEditorBlured($event)" [spellcheck]="true" name="postContent" (focus)="onEditorFocused($event)" formControlName="postContent" (ready)="onEditorCreated($event)" (change)="onContentChanged($event)"></quill-editor>
                 </div>
               </div>
             </div>
@@ -194,7 +195,7 @@
 
     </div>
     <!-- postbox-->
-    
+
     <div *ngFor="let post of posts; let i = index;">
       <ul class="list-group ">
         <!-- Normal post -->
@@ -212,24 +213,21 @@
                     {{post?.created_date | date : 'medium' }}</p>
                    <!-- <button class="btn btn-primary btn-sm" id="testhaibc" contenteditable="false" (click)="test(i); abc();">Save</button>-->
                 </div>
-               
+
               </div>
               <div class="col-md-12 text-right " id="button_edit_post{{i}}" style="display: none; padding-bottom: 1em;">
                   <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditPost(i, post._id,post?.content)">Save</button>
                 </div>
+                <!--<quill-editor id="edit-content" type="text" [(ngModel)]="post.content" [spellcheck]="true" name="postContent" formControlName="postContent" style="display: none;">{{post.content}}</quill-editor>-->
               <div class="col-md-12 innercard" [id]="(i)" style="border: none;" [innerHTML]="post?.content">
-                  
-                      <!--<textarea id="pre_edit_post{{i}}" data-ng-value="firstvalue">{{post?.content}}</textarea>--> 
-              
-              
-                  
 
+                      <!--<textarea id="pre_edit_post{{i}}" data-ng-value="firstvalue">{{post?.content}}</textarea>-->
                 <!--<pre class="card-text" id="pre_edit_post{{i}}" data-ng-value="firstvalue">{{post?.content}}
                 </pre>-->
                 <!--<p id="para{{i}}">{{post?.content}}</p>-->
                 <!--<div id="div_text{{i}}" ng-init="test(i)">{{post?.content}}</div>
                 <p id="demo"></p>-->
-        
+
               </div>
               <div class="col-md-12 innercard" *ngFor="let file of post.files">
                   <a role="button" href="javascript:void(null);" (click)="onDownlaodFile(file.modified_name,file.orignal_name)">{{file?.orignal_name}}</a>
@@ -243,26 +241,26 @@
                     <span>{{post?.comments_count}} Comments</span>
                   </div>
                   <div class="col-md-6 text-right">
-                   
+
                     <span>
                         <button class="btn btn-link">
                       <i class="material-icons muted" id="icon_comment_post_{{i}}" (click)="showComments.id=post._id;showComments.normal=!showComments.normal;">mode_comment</i>
                     </button>
                     </span>
-                    
+
                     <span>
                         <button class="btn btn-link" (click)="OnClickLikePost(i, post._id, post._liked_by.length, post._liked_by, user._id)">
                             <i class="material-icons muted" *ngIf="post?._liked_by.includes(this.user_data.user_id)==false; else likeif" id="icon_like_post_{{i}}">thumb_up</i>
                             <ng-template #likeif><i class="material-icons active" id="icon_like_post_{{i}}">thumb_up</i></ng-template>
-                          </button>      
+                          </button>
                     </span>
-                 
+
                     <span>
                       <div ngbDropdown class="d-inline-block" *ngIf="post?._posted_by?._id == this.user_data.user_id; else editpostif">
                         <i class="material-icons action" id="dropdownBasic1" ngbDropdownToggle>more_horiz</i>
                         <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
                           <button class="dropdown-item"  (click)="OnEditPost(i)">Edit Post</button>
-                          
+
                           <button class="dropdown-item" (click)="onDeletePost(post._id)">Delete Post</button>
                         </div>
                       </div>
@@ -308,7 +306,7 @@
             <div class="card-block">
               <div class="row card-title ">
                 <div class="col-md-1">
-                   
+
                     <img src="/uploads/{{comment._commented_by?.profile_pic}}" class="feed-avatar">
                     <!--<img [src]="profileImage" class="feed-avatar">-->
                   <!--<img src="assets/images/user.png" class="feed-avatar">-->
@@ -354,7 +352,7 @@
                 </div>
                 <div class="col-md-4 text-right " *ngIf="post.completed== true; else taskif">
                     <button class="btn btn-primary btn-sm" disabled style="background: #005fd5;">Completed</button>
-               
+
                 </div>
                 <ng-template #taskif>
                     <div class="col-md-4 text-right padding-topright">
@@ -362,12 +360,12 @@
                         <p class="pink font-weight-bold" style="margin-top: 5px"> due {{post.task?.due_date | date}}</p>
                     </div>
                 </ng-template>
-                
+
               </div>
               <div class="col-md-12 text-right " id="button_edit_post{{i}}" style="display: none; padding-bottom: 1em;">
                   <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditPost(i, post._id,post?.content)">Save</button>
                 </div>
-          
+
               <div class="col-md-12 innercard " [id]="(i)" [innerHTML]="post?.content">
                 <!--<pre class="card-text ">{{post?.content}}
                 </pre>-->
@@ -400,7 +398,7 @@
                         <i class="material-icons action" id="dropdownBasic1" ngbDropdownToggle>more_horiz</i>
                         <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
                             <button class="dropdown-item" (click)="OnEditPost(i)">Edit Post</button>
-                          
+
                           <button class="dropdown-item" (click)="onDeletePost(post._id)">Delete Post</button>
                         </div>
                       </div>
@@ -457,7 +455,7 @@
                     {{comment.created_date | date : 'medium'}}</p>
                 </div>
                 <div class="col-md-4 text-right ">
-                  
+
                 </div>
               </div>
               <div class="col-md-12 innercard ">
@@ -489,9 +487,9 @@
                 </div>
 
                 <div class="col-md-4 text-right " *ngIf="post.completed== true; else eventif">
-                  
+
                     <button class="btn btn-primary btn-sm" disabled style="background: #005fd5;">Completed</button>
-  
+
                   </div>
                   <ng-template #eventif>
                     <div class="col-md-4 text-right padding-topright">
@@ -514,7 +512,7 @@
                   <div class="col-md-9 event-title" [id]="(i)" [innerHTML]="post?.content">
 
                   </div>
-                  
+
                 </div>
                 <div class="col-md-12 innercard" *ngFor="let file of post.files">
                     <a role="button" href="javascript:void(null);" (click)="onDownlaodFile(file.modified_name,file.orignal_name)">{{file?.orignal_name}}</a>
@@ -529,7 +527,7 @@
                     <span>{{post?.comments_count}} Comments</span>
                   </div>
                   <div class="col-md-6 text-right">
-                    
+
                     <span>
                         <button class="btn btn-link" (click)="showComments.id=post._id;showComments.event=!showComments.event;">
                       <i class="material-icons muted ">mode_comment</i>
@@ -539,14 +537,14 @@
                       <button class="btn btn-link" (click)="OnClickLikePost(i, post._id, post._liked_by.length, post._liked_by, user._id)">
                         <i class="material-icons muted" *ngIf="post?._liked_by.includes(this.user_data.user_id)==false; else likeif" id="icon_like_post_{{i}}">thumb_up</i>
                         <ng-template #likeif><i class="material-icons active" id="icon_like_post_{{i}}">thumb_up</i></ng-template>
-                      </button>    
+                      </button>
                     </span>
                     <span>
                       <div ngbDropdown class="d-inline-block" *ngIf="post?._posted_by?._id == this.user_data.user_id; else editeventif" >
                         <i class="material-icons action" id="dropdownBasic1" ngbDropdownToggle>more_horiz</i>
                         <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
                             <button class="dropdown-item" (click)="OnEditPost(i)">Edit Post</button>
-                            
+
                           <button class="dropdown-item" (click)="onDeletePost(post._id)">Delete Post</button>
                         </div>
                       </div>
@@ -602,7 +600,7 @@
                     {{comment.created_date | date : 'medium'}}</p>
                 </div>
                 <div class="col-md-4 text-right ">
-                
+
                 </div>
               </div>
               <div class="col-md-12 innercard ">
