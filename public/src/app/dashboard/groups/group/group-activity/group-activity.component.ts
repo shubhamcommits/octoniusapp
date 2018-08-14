@@ -106,6 +106,7 @@ export class GroupActivityComponent implements OnInit {
   onEditorCreated(quill) {
     this.editor = quill;
     console.log('quill is ready! this is current quill instance object', quill);
+    quill.insertText(0,'hello', 'bold', true);
   }
 
   onContentChanged({ quill, html, text }) {
@@ -626,12 +627,13 @@ test(index) {
 OnEditPost(index) {
 
   const x = document.getElementById(index);
-  const editor = document.getElementById('edit-content');
+  const editor = document.getElementById('edit-content-'+index);
   const y = document.getElementById("button_edit_post"+index);
 
  if(x.style.borderStyle ==="none"){
-  x.setAttribute('contenteditable', 'true');
-  //editor.style.display = 'block';
+x.setAttribute('contenteditable', 'true');
+  editor.style.display = 'block';
+  x.style.display='none';
 x.style.borderWidth="thin";
 x.style.borderStyle="solid";
 x.style.borderColor="#007bff";
@@ -640,15 +642,17 @@ y.style.display="block";
  else {
  x.style.borderStyle="none";
  x.setAttribute('contenteditable', 'false');
+ editor.style.display='none';
+ x.style.display='block';
  y.style.display="none";
  x.blur();
-}
+ }
 
   }
 
   OnSaveEditPost(index, post_id, content) {
 
-
+    const editor = document.getElementById('edit-content-'+index);
   const post = {
     'post_id': post_id,
     'content': document.getElementById(index).innerHTML,
@@ -679,6 +683,8 @@ y.style.display="block";
     const x = document.getElementById(index);
   const y = document.getElementById("button_edit_post"+index);
   x.style.borderStyle="none";
+  x.style.display="block";
+  editor.style.display='none';
   x.setAttribute('contenteditable', 'false');
   y.style.display="none";
   x.blur();
