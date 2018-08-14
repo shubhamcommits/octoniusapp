@@ -15,6 +15,7 @@ import { saveAs } from 'file-saver';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { style, animate, trigger, transition } from '@angular/animations';
 import { Location } from '@angular/common';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-group-activity',
@@ -91,7 +92,7 @@ export class GroupActivityComponent implements OnInit {
     private _userService: UserService,
     public groupDataService: GroupDataService,
     private router: Router, private groupService: GroupService,
-    private modalService: NgbModal, private postService: PostService) {
+    private modalService: NgbModal, private postService: PostService, private _sanitizer: DomSanitizer) {
 
   }
   onEditorBlured(quill) {
@@ -110,6 +111,9 @@ export class GroupActivityComponent implements OnInit {
   onContentChanged({ quill, html, text }) {
     console.log('quill content is changed!', quill, html, text);
   }
+  transform(html: string) : SafeHtml {
+    return this._sanitizer.bypassSecurityTrustHtml(html); 
+ } 
 
 
   ngOnInit() {

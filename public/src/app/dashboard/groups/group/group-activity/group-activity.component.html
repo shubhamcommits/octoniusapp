@@ -215,11 +215,13 @@
                 </div>
 
               </div>
+            
               <div class="col-md-12 text-right " id="button_edit_post{{i}}" style="display: none; padding-bottom: 1em;">
                   <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditPost(i, post._id,post?.content)">Save</button>
                 </div>
                 <!--<quill-editor id="edit-content" type="text" [(ngModel)]="post.content" [spellcheck]="true" name="postContent" formControlName="postContent" style="display: none;">{{post.content}}</quill-editor>-->
-              <div class="col-md-12 innercard" [id]="(i)" style="border: none;" [innerHTML]="post?.content">
+              <div class="col-md-12 innercard" [id]="(i)" style="border: none;" [innerHTML]="post?.content | safe: 'html'">
+                 
 
                       <!--<textarea id="pre_edit_post{{i}}" data-ng-value="firstvalue">{{post?.content}}</textarea>-->
                 <!--<pre class="card-text" id="pre_edit_post{{i}}" data-ng-value="firstvalue">{{post?.content}}
