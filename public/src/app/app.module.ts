@@ -34,6 +34,7 @@ import { GroupsService } from './shared/services/groups.service';
 import { PostService } from './shared/services/post.service';
 import { GroupService } from './shared/services/group.service';
 import { GroupDataService } from './shared/services/group-data.service';
+import { SafePipe } from './safe.pipe';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { GroupDataService } from './shared/services/group-data.service';
     CalendarComponent,
     GroupComponent,
     GroupHeaderComponent,
-    routingComponents
+    routingComponents,
+    SafePipe
   ],
   imports: [
     BrowserModule,
