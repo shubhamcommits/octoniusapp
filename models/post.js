@@ -79,7 +79,6 @@ const PostSchema = new Schema({
 		_assigned_to: [{
 			type: Schema.Types.ObjectId,
 			ref: 'User',
-			unique: true
 		}]
 	},
 	created_date: {
