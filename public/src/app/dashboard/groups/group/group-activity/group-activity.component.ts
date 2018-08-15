@@ -381,7 +381,7 @@ test(index) {
     formData.append('_group', post._group);
     formData.append('event.due_date', post.event.due_date);
     formData.append('event.due_time', post.event.due_time);
-    // formData.append('event._assigned_to', assignedUsers);
+    //formData.append('event._assigned_to', assignedUsers);
 
 
 
