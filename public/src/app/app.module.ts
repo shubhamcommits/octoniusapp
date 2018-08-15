@@ -8,6 +8,7 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { QuillModule } from 'ngx-quill';
+import { LoadingModule, ANIMATION_TYPES } from 'ngx-loading';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './common/components/navbar/navbar.component';
@@ -60,6 +61,14 @@ import { SafePipe } from './safe.pipe';
     HttpClientModule,
     AngularMultiSelectModule,
     QuillModule,
+    LoadingModule.forRoot({
+      animationType: ANIMATION_TYPES.wanderingCubes,
+      backdropBackgroundColour: 'rgba(0,0,0,0.1)', 
+      backdropBorderRadius: '4px',
+      primaryColour: '#ffffff', 
+      secondaryColour: '#ffffff', 
+      tertiaryColour: '#ffffff'
+  }),
     FontAwesomeModule,
     BrowserAnimationsModule,
     OwlDateTimeModule,
