@@ -499,7 +499,7 @@
                   </div>
                   <ng-template #eventif>
                     <div class="col-md-4 text-right padding-topright">
-                    <button class="btn btn-outline-secondary btn-sm" id="button_event_mark_completed_{{i}}" (click)="OnMarkEventCompleted(i, post._id)">Mark complete</button>
+                    <button class="btn btn-outline-secondary btn-sm" id="button_event_mark_completed_{{i}}" (click)="OnMarkEventCompleted(i, post._id, post.event._assigned_to.length, post.event._assigned_to, post._posted_by._id)">Mark complete</button>
                     </div>
                 </ng-template>
               </div>

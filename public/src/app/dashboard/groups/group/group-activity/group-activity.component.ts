@@ -822,7 +822,7 @@ y.style.display="block";
   }
 
 
-  OnMarkEventCompleted(index, post_id){
+  OnMarkEventCompleted(index, post_id, assigned_length, assigned_to, post_user_id){
 
     const button = document.getElementById("button_event_mark_completed_"+index);
 
@@ -856,6 +856,34 @@ y.style.display="block";
       }
 
     });
+    var i ;
+    for(i = 0; i < assigned_length; i++){
+  
+      if(assigned_to[i]=this.user_data.user_id){
+        this.postService.complete(post)
+        .subscribe((res) => {
+          this.alert.class = 'success';
+          this._message.next(res['message']);
+          console.log('Post Marked as Completed');
+          button.style.background="#005fd5";
+          button.style.color="#ffffff";
+          button.innerHTML="Completed";
+          button.setAttribute('disabled', 'true');
+          this.loadGroupPosts();
+    
+        }, (err) => {
+    
+          this.alert.class = 'danger';
+    
+          if (err.status) {
+            this._message.next(err.error.message);
+          } else {
+            this._message.next('Error! either server is down or no internet connection');
+          }
+    
+        });
+      }
+    }
     /*button.style.background="#005fd5";
     button.style.color="#ffffff";
     button.innerHTML="Completed";*/
