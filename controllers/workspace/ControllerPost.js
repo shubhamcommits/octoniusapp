@@ -167,6 +167,7 @@ module.exports = {
 			.populate('_posted_by', 'first_name last_name profile_pic')
 			.populate('comments._commented_by', 'first_name last_name profile_pic')
 			.populate('task._assigned_to', 'first_name last_name')
+			.populate('task._assigned_to.user', 'first_name last_name')
 			.then((posts) => res.status(200).json({
 				message: "posts found successfully!",
 				posts: posts
