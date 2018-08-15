@@ -28,6 +28,7 @@ export class GroupActivityComponent implements OnInit {
   group;
 
   public editor;
+  public loading = false;
 
   user_data;
   user: User;
@@ -118,6 +119,7 @@ export class GroupActivityComponent implements OnInit {
 
 
   ngOnInit() {
+    this.loading = true;
 
     this.group_id = this.groupDataService.groupId;
     this.user_data = JSON.parse(localStorage.getItem('user'));
