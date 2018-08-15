@@ -478,9 +478,9 @@
 
         <!--EVENT post-->
         <li class="list-group-item" *ngIf="post.type=='event'">
-          <div class="card">
+          <div class="card" >
             <div class="card-block ">
-              <div class="row card-title ">
+              <div class="row card-title " >
                 <div class="col-md-1 ">
                     <img src="/uploads/{{post._posted_by?.profile_pic}}" class="feed-avatar">
                 </div>
@@ -488,7 +488,9 @@
                   <h6>{{post._posted_by?.first_name}} {{post._posted_by?.last_name}}</h6>
                   <p class="small lightgray date ">
                     {{post?.created_date| date : 'medium'}}</p>
-                  <span class="pink small"> ASSIGNED TO {{post.event._assigned_to.user?.first_name}} members
+                    <span class="pink small">ASSIGNED TO
+                      </span>  
+                  <span class="pink small" *ngFor="let element of post.event._assigned_to;">{{element.first_name}},
                   </span>
                 </div>
 
