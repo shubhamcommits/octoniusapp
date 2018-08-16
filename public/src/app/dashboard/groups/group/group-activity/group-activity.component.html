@@ -195,7 +195,13 @@
 
     </div>
     <!-- postbox-->
-
+    <div *ngIf="isLoading$ | async">  
+        <div class="load-8">
+          <h6><b>Loading Data...</b></h6>
+            <div class="line"></div>
+        </div>
+    </div>
+    <div *ngIf="!(isLoading$ | async)">
     <div *ngFor="let post of posts; let i = index;">
       <ul class="list-group ">
         <!-- Normal post -->
@@ -637,6 +643,7 @@
         </li>
       </ul>
 
+    </div>
     </div>
   </div>
 </div>

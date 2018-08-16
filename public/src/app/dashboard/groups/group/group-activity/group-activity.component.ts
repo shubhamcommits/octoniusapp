@@ -8,7 +8,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { InputValidators } from '../../../../common/validators/input.validator';
 import { debounceTime } from 'rxjs/operators';
 import { ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import { Subject } from 'rxjs';
+import { Subject, Observable, BehaviorSubject } from 'rxjs';
 import { User } from '../../../../shared/models/user.model';
 import { UserService } from '../../../../shared/services/user.service';
 import { saveAs } from 'file-saver';
@@ -32,6 +32,8 @@ export class GroupActivityComponent implements OnInit {
   group;
 
   public editor;
+
+   isLoading$ = new BehaviorSubject(false);
 
   style = 'material';
   title = 'Snotify title!';
@@ -165,13 +167,13 @@ onSuccess() {
 
 
   ngOnInit() {
-    this.ngxService.start(); // start foreground loading with 'default' id
+   /* this.ngxService.start(); // start foreground loading with 'default' id
  
     // Stop the foreground loading after 5s
     setTimeout(() => {
       this.ngxService.stop(); // stop foreground loading with 'default' id
     }, 2000);
-
+*/
     this.group_id = this.groupDataService.groupId;
     this.user_data = JSON.parse(localStorage.getItem('user'));
 
@@ -600,11 +602,14 @@ test(index) {
   }
   loadGroupPosts() {
 
+    this.isLoading$.next(true);
+
     this.postService.getGroupPosts(this.group_id)
       .subscribe((res) => {
         // console.log('Group posts:', res);
         this.posts = res['posts'];
        console.log('Group posts:', this.posts);
+       this.isLoading$.next(false);
 
 
       }, (err) => {
