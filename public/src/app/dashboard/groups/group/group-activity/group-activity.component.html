@@ -241,8 +241,8 @@
                 <hr>
                 <div class="row ">
                   <div class="col-md-6 ">
-                    <span>{{post?._liked_by.length}} Likes  </span>
-                    <span>{{post?.comments_count}} Comments</span>
+                    <span [ngbPopover]="likepopcontent"><b>{{post?._liked_by.length}}</b> Likes  </span>
+                    <span><b>{{post?.comments_count}}</b> Comments</span>
                   </div>
                   <div class="col-md-6 text-right">
 
@@ -273,6 +273,11 @@
                     </span>
                   </div>
                 </div>
+                <ng-template #likepopcontent>
+                    <ul class="list-group">
+                      <li class="list-group-item" *ngFor="let liked_member of post._liked_by;">{{liked_member.first_name}}</li>
+                    </ul> 
+                    </ng-template>
               </div>
             </div>
           </div>
@@ -384,8 +389,13 @@
                 <hr>
                 <div class="row ">
                   <div class="col-md-6 ">
-                    <span>{{post?._liked_by.length}} Likes</span>
-                    <span>{{post?.comments_count}} Comments</span>
+                    <span [ngbPopover]="likepopcontent"><b>{{post?._liked_by.length}}</b> Likes</span>
+                    <span><b>{{post?.comments_count}}</b> Comments</span>
+                    <ng-template #likepopcontent>
+                        <ul class="list-group">
+                          <li class="list-group-item" *ngFor="let liked_member of post._liked_by;">{{liked_member.first_name}}</li>
+                        </ul> 
+                        </ng-template>
                   </div>
                   <div class="col-md-6 text-right">
                     <span>
@@ -532,8 +542,13 @@
                 <hr>
                 <div class="row">
                   <div class="col-md-6 ">
-                    <span>{{post?._liked_by.length}} Likes</span>
-                    <span>{{post?.comments_count}} Comments</span>
+                    <span [ngbPopover]="likepopcontent"><b>{{post?._liked_by.length}}</b> Likes</span>
+                    <span><b>{{post?.comments_count}}</b> Comments</span>
+                    <ng-template #likepopcontent>
+                        <ul class="list-group">
+                          <li class="list-group-item" *ngFor="let liked_member of post._liked_by;">{{liked_member.first_name}}</li>
+                        </ul> 
+                        </ng-template>
                   </div>
                   <div class="col-md-6 text-right">
 

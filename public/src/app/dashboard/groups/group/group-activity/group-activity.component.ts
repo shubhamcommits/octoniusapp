@@ -18,11 +18,13 @@ import { Location } from '@angular/common';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { NgxUiLoaderService } from 'ngx-ui-loader'; 
 import {SnotifyService, SnotifyPosition, SnotifyToastConfig} from 'ng-snotify';
+import {NgbPopoverConfig} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-group-activity',
   templateUrl: './group-activity.component.html',
-  styleUrls: ['./group-activity.component.scss']
+  styleUrls: ['./group-activity.component.scss'],
+  providers: [NgbPopoverConfig]
 })
 export class GroupActivityComponent implements OnInit {
   posts = new Array();
@@ -111,7 +113,9 @@ export class GroupActivityComponent implements OnInit {
     public groupDataService: GroupDataService,
     private router: Router, private groupService: GroupService,
     private modalService: NgbModal, private postService: PostService, private _sanitizer: DomSanitizer,
-    private ngxService: NgxUiLoaderService, private snotifyService: SnotifyService) {
+    private ngxService: NgxUiLoaderService, private snotifyService: SnotifyService, config: NgbPopoverConfig) {
+      config.placement = 'top';
+      config.triggers = 'hover';
 
   }
   onEditorBlured(quill) {
