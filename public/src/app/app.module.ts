@@ -10,6 +10,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { QuillModule } from 'ngx-quill';
 import { LoadingModule, ANIMATION_TYPES } from 'ngx-loading';
 import { NgxUiLoaderModule, NgxUiLoaderConfig, SPINNER, POSITION, PB_DIRECTION } from  'ngx-ui-loader';
+import { SnotifyModule, SnotifyService, ToastDefaults } from 'ng-snotify';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './common/components/navbar/navbar.component';
@@ -89,6 +90,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     HttpClientModule,
     AngularMultiSelectModule,
     QuillModule,
+    SnotifyModule,
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
     LoadingModule.forRoot({
       animationType: ANIMATION_TYPES.wanderingCubes,
@@ -108,6 +110,8 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   providers: [AuthService, UserService, PostService, GroupService,
     GroupDataService, WorkspaceService, GroupsService, AdminService,
     AuthGuard, NotAuthGuard,
+    { provide: 'SnotifyToastConfig', useValue: ToastDefaults},
+    SnotifyService,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true },
     { provide: LocationStrategy, useClass: HashLocationStrategy }],
   bootstrap: [AppComponent]

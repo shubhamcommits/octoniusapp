@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Testability } from '@angular/core';
+import { Component, OnInit, ViewChild, Testability, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router, Route } from '@angular/router';
 import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PostService } from '../../../../shared/services/post.service';
@@ -17,6 +17,7 @@ import { style, animate, trigger, transition } from '@angular/animations';
 import { Location } from '@angular/common';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { NgxUiLoaderService } from 'ngx-ui-loader'; 
+import {SnotifyService, SnotifyPosition, SnotifyToastConfig} from 'ng-snotify';
 
 @Component({
   selector: 'app-group-activity',
@@ -29,6 +30,22 @@ export class GroupActivityComponent implements OnInit {
   group;
 
   public editor;
+
+  style = 'material';
+  title = 'Snotify title!';
+  body = 'Lorem ipsum dolor sit amet!';
+  timeout = 3000;
+  position: SnotifyPosition = SnotifyPosition.rightBottom;
+  progressBar = true;
+  closeClick = true;
+  newTop = true;
+  filterDuplicates = false;
+  backdrop = -1;
+  dockMax = 8;
+  blockMax = 6;
+  pauseHover = true;
+  titleMaxLength = 15;
+  bodyMaxLength = 80;
 
   user_data;
   user: User;
@@ -94,7 +111,7 @@ export class GroupActivityComponent implements OnInit {
     public groupDataService: GroupDataService,
     private router: Router, private groupService: GroupService,
     private modalService: NgbModal, private postService: PostService, private _sanitizer: DomSanitizer,
-    private ngxService: NgxUiLoaderService) {
+    private ngxService: NgxUiLoaderService, private snotifyService: SnotifyService) {
 
   }
   onEditorBlured(quill) {
@@ -118,6 +135,30 @@ export class GroupActivityComponent implements OnInit {
     return this._sanitizer.bypassSecurityTrustHtml(html); 
  } 
 
+ getConfig(): SnotifyToastConfig {
+  this.snotifyService.setDefaults({
+    global: {
+      newOnTop: this.newTop,
+      maxAtPosition: this.blockMax,
+      maxOnScreen: this.dockMax
+    }
+  });
+  return {
+    bodyMaxLength: this.bodyMaxLength,
+    titleMaxLength: this.titleMaxLength,
+    backdrop: this.backdrop,
+    position: this.position,
+    timeout: this.timeout,
+    showProgressBar: this.progressBar,
+    closeOnClick: this.closeClick,
+    pauseOnHover: this.pauseHover
+  };
+}
+
+onSuccess() {
+  this.snotifyService.success(this.body, this.title, this.getConfig());
+}
+
 
   ngOnInit() {
     this.ngxService.start(); // start foreground loading with 'default' id
@@ -126,7 +167,6 @@ export class GroupActivityComponent implements OnInit {
     setTimeout(() => {
       this.ngxService.stop(); // stop foreground loading with 'default' id
     }, 2000);
-    console.log('date:'+ Date.now());
 
     this.group_id = this.groupDataService.groupId;
     this.user_data = JSON.parse(localStorage.getItem('user'));
@@ -140,6 +180,7 @@ export class GroupActivityComponent implements OnInit {
     this.loadGroupPosts();
     this.alertMessageSettings();
     this.initializeGroupMembersSearchForm();
+    //this.onSuccess();
 
   }
 

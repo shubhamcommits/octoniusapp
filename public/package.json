@@ -41,6 +41,7 @@
     "moment": "^2.22.2",
     "ng-animate": "^0.3.3",
     "ng-pick-datetime": "^6.0.7",
+    "ng-snotify": "^4.3.1",
     "ngx-loading": "^1.0.14",
     "ngx-quill": "^3.4.0",
     "ngx-quill-editor": "^2.2.2",
