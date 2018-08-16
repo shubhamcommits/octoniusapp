@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { AdminService } from '../../../shared/services/admin.service';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { NgxUiLoaderService } from 'ngx-ui-loader'; 
 @Component({
   selector: 'app-admin-general',
   templateUrl: './admin-general.component.html',
@@ -34,9 +35,16 @@ export class AdminGeneralComponent implements OnInit {
     user_id:''
   };
   constructor(private _workspaceService: WorkspaceService,
-    private _adminService: AdminService, private _router: Router) { }
+    private _adminService: AdminService, private _router: Router, private ngxService: NgxUiLoaderService) { }
 
   ngOnInit() {
+
+    this.ngxService.start(); // start foreground loading with 'default' id
+ 
+    // Stop the foreground loading after 5s
+    setTimeout(() => {
+      this.ngxService.stop(); // stop foreground loading with 'default' id
+    }, 500);
 
     this.user_data = JSON.parse(localStorage.getItem('user'));
     this.loadWorkspace();

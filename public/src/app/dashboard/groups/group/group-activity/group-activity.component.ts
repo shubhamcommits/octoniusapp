@@ -16,6 +16,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { style, animate, trigger, transition } from '@angular/animations';
 import { Location } from '@angular/common';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { NgxUiLoaderService } from 'ngx-ui-loader'; 
 
 @Component({
   selector: 'app-group-activity',
@@ -28,7 +29,6 @@ export class GroupActivityComponent implements OnInit {
   group;
 
   public editor;
-  public loading = false;
 
   user_data;
   user: User;
@@ -93,7 +93,8 @@ export class GroupActivityComponent implements OnInit {
     private _userService: UserService,
     public groupDataService: GroupDataService,
     private router: Router, private groupService: GroupService,
-    private modalService: NgbModal, private postService: PostService, private _sanitizer: DomSanitizer) {
+    private modalService: NgbModal, private postService: PostService, private _sanitizer: DomSanitizer,
+    private ngxService: NgxUiLoaderService) {
 
   }
   onEditorBlured(quill) {
@@ -119,7 +120,12 @@ export class GroupActivityComponent implements OnInit {
 
 
   ngOnInit() {
-    this.loading = true;
+    this.ngxService.start(); // start foreground loading with 'default' id
+ 
+    // Stop the foreground loading after 5s
+    setTimeout(() => {
+      this.ngxService.stop(); // stop foreground loading with 'default' id
+    }, 4000);
 
     this.group_id = this.groupDataService.groupId;
     this.user_data = JSON.parse(localStorage.getItem('user'));
@@ -631,8 +637,10 @@ OnEditPost(index) {
   const x = document.getElementById(index);
   const editor = document.getElementById('edit-content-'+index);
   const y = document.getElementById("button_edit_post"+index);
+  y.style.display="block";
+  editor.style.display = 'block';
 
- if(x.style.borderStyle ==="none"){
+ /*if(x.style.borderStyle ==="none"){
 x.setAttribute('contenteditable', 'true');
   editor.style.display = 'block';
   x.style.display='none';
@@ -648,7 +656,7 @@ y.style.display="block";
  x.style.display='block';
  y.style.display="none";
  x.blur();
- }
+ }*/
 
   }
 
@@ -824,7 +832,7 @@ y.style.display="block";
   }
 
 
-  OnMarkEventCompleted(index, post_id, assigned_length, assigned_to, post_user_id){
+  OnMarkEventCompleted(index, post_id){
 
     const button = document.getElementById("button_event_mark_completed_"+index);
 
@@ -858,7 +866,7 @@ y.style.display="block";
       }
 
     });
-    var i ;
+    /*var i ;
     for(i = 0; i < assigned_length; i++){
   
       if(assigned_to[i]=this.user_data.user_id){
@@ -885,7 +893,7 @@ y.style.display="block";
     
         });
       }
-    }
+    }*/
     /*button.style.background="#005fd5";
     button.style.color="#ffffff";
     button.innerHTML="Completed";*/

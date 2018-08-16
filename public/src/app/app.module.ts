@@ -9,6 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { QuillModule } from 'ngx-quill';
 import { LoadingModule, ANIMATION_TYPES } from 'ngx-loading';
+import { NgxUiLoaderModule, NgxUiLoaderConfig, SPINNER, POSITION, PB_DIRECTION } from  'ngx-ui-loader';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './common/components/navbar/navbar.component';
@@ -37,6 +38,33 @@ import { GroupService } from './shared/services/group.service';
 import { GroupDataService } from './shared/services/group-data.service';
 import { SafePipe } from './safe.pipe';
 
+const ngxUiLoaderConfig: NgxUiLoaderConfig = {
+
+  "bgsColor": "#00ACC1",
+  "bgsOpacity": 0.5,
+  "bgsPosition": "bottom-right",
+  "bgsSize": 100,
+  "bgsType": "rectangle-bounce",
+  "blur": 15,
+  "fgsColor": "#fff",
+  "fgsPosition": "center-center",
+  "fgsSize": 100,
+  "fgsType": "three-strings",
+  "gap": 24,
+  "logoPosition": "center-center",
+  "logoSize": 120,
+  //"logoUrl": "https://octhub.com/uploads/1533793279271512px logo.png",
+  "overlayColor": "rgb(0, 95, 213, 1.0)",
+  "pbColor": "#fff",
+  "pbDirection": "ltr",
+  "pbThickness": 5,
+  "hasProgressBar": true,
+  "text": "Bringing you up to date...",
+  "textColor": "#FFFFFF",
+  "textPosition": "center-center",
+  "threshold": 500 // progress bar thickness
+};
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -61,6 +89,7 @@ import { SafePipe } from './safe.pipe';
     HttpClientModule,
     AngularMultiSelectModule,
     QuillModule,
+    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
     LoadingModule.forRoot({
       animationType: ANIMATION_TYPES.wanderingCubes,
       backdropBackgroundColour: 'rgba(0,0,0,0.1)', 
