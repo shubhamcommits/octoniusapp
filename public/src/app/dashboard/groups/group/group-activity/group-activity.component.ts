@@ -125,7 +125,8 @@ export class GroupActivityComponent implements OnInit {
     // Stop the foreground loading after 5s
     setTimeout(() => {
       this.ngxService.stop(); // stop foreground loading with 'default' id
-    }, 4000);
+    }, 2000);
+    console.log('date:'+ Date.now());
 
     this.group_id = this.groupDataService.groupId;
     this.user_data = JSON.parse(localStorage.getItem('user'));
