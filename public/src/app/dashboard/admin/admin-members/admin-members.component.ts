@@ -7,6 +7,7 @@ import { ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { NgbModal, NgbAlertConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgxUiLoaderService } from 'ngx-ui-loader'; 
 @Component({
   selector: 'app-admin-members',
   templateUrl: './admin-members.component.html',
@@ -29,9 +30,15 @@ export class AdminMembersComponent implements OnInit {
   };
 
   constructor(private _workspaceService: WorkspaceService, private _router: Router, private alertConfig: NgbAlertConfig,
-    private adminService: AdminService, private modalService: NgbModal) { }
+    private adminService: AdminService, private modalService: NgbModal, private ngxService: NgxUiLoaderService) { }
 
   ngOnInit() {
+    this.ngxService.start(); // start foreground loading with 'default' id
+ 
+    // Stop the foreground loading after 5s
+    setTimeout(() => {
+      this.ngxService.stop(); // stop foreground loading with 'default' id
+    }, 500);
     this.user_data = JSON.parse(localStorage.getItem('user'));
     this.loadWorkspace();
     this.alertMessageSettings();

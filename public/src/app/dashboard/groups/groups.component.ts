@@ -12,6 +12,7 @@ import { Validators, FormControl, FormGroup } from '@angular/forms';
 import { GroupsService } from '../../shared/services/groups.service';
 import { Group } from '../../shared/models/group.model';
 import { environment } from '../../../environments/environment';
+import { NgxUiLoaderService } from 'ngx-ui-loader'; 
 @Component({
   selector: 'app-groups',
   templateUrl: './groups.component.html',
@@ -40,10 +41,17 @@ export class GroupsComponent implements OnInit {
     private _router: Router,
     private _userService: UserService,
     private _groupsService: GroupsService,
-    private modalService: NgbModal) { }
+    private modalService: NgbModal,  private ngxService: NgxUiLoaderService) { }
 
 
   ngOnInit() {
+
+    this.ngxService.start(); // start foreground loading with 'default' id
+ 
+    // Stop the foreground loading after 5s
+    setTimeout(() => {
+      this.ngxService.stop(); // stop foreground loading with 'default' id
+    }, 500);
 
     this.user_data = JSON.parse(localStorage.getItem('user'));
     this.createNewGroupFrom();
