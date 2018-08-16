@@ -43,7 +43,7 @@ app.use(morgan("dev"));
 
 //file upload middleware
 app.use(fileUpload({
-	limits: { fileSize: 10 * 1024 * 1024 },
+	limits: { fileSize: 50 * 1024 * 1024 },
 }));
 app.use('/uploads', express.static(process.env.FILE_UPLOAD_FOLDER));
 
