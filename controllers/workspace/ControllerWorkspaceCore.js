@@ -15,7 +15,7 @@ module.exports = {
         Workspace.findOne({
                 _id: workspace_id
             })
-            .populate('members', 'first_name last_name role profile_pic')
+            .populate('members', 'first_name last_name role profile_pic email')
             .then((workspace) => {
 
                 if (workspace == null) {
