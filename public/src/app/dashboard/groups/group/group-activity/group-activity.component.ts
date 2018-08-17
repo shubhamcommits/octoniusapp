@@ -1054,7 +1054,7 @@ y.style.display="block";
   var i ;
   for(i = 0; i < like_length; i++){
 
-    if(liked_by[i]=this.user_data.user_id){
+    if(liked_by[i]._id=this.user_data.user_id){
       this.unlikepost(post);
       like_icon.style.color = "#9b9b9b";
     }
