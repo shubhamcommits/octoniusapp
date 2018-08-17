@@ -4,6 +4,7 @@
 @import "global";
 @import '../../../node_modules/bootstrap/scss/bootstrap';
 @import "fontello2.css";
+@import "~ng-snotify/styles/material";
 
 body {
     background-color: #f3f4f6;
@@ -226,5 +227,11 @@ margin-bottom: 20px;
   border:0 !important;
   :focus{
     border: 0! important;
+  }
+}
+
+.media-body{
+  .float-left{
+    margin-left: 15px;
   }
 }

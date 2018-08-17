@@ -17,15 +17,15 @@
     <div class="card-tile workspace-signupmode">
       <ngb-alert *ngIf="alert.message" [type]="alert.class" (close)="successMessage = null">{{ alert.message}}</ngb-alert>
 
-      <h4>Workspace signup mode</h4>
-      <p>Choose to make your workspace signup process invition only,or allow anyone else with a certain email adress format
+      <h4>Workplace signup mode</h4>
+      <p>Choose to make your workplace signup process invition only,or allow anyone else with a certain email adress format
         to signup</p>
       <div style="position: fixed; margin-top: 20px">
       </div>
       <div class="form-group">
-        <label for="email">Using the WORKSPACE NAME,any email adress from these domain can signup:</label>
+        <label for="email">Using the WORKPLACE NAME, any email adress from these domain can signup:</label>
         <textarea class="form-control" rows="5" id="domains" [(ngModel)]="domainData.domains" name="domains"></textarea>
-        <label for="domains">To allow eamil address from mulltiple domains,separate them commas.</label>
+        <label for="domains">To allow eamil address from mulltiple domains, separate them with commas.</label>
       </div>
       <button class="btn btn-primary" (click)="onDoaminsSave()">Save</button>
     </div>

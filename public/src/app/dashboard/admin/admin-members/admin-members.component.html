@@ -1,5 +1,5 @@
 <div class="card-tile">
-  <h4>Users</h4>
+  <h4>All members from your workplace</h4>
 
   <hr>
   <div class="media card-tile user-list" *ngFor="let member of workspace?.members">
@@ -8,7 +8,7 @@
     <div class="media-body">
       <div class="float-left">
         <h4 class="mt-0">{{member?.first_name}} {{member?.last_name}}</h4>
-        <p>Role: {{member?.role}}</p>
+        <p>Role: {{member?.role}}, email@email.com</p>
       </div>
       <div class="btn-group mr-3 float-right" style="margin-left:10px">
 
