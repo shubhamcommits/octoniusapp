@@ -25,7 +25,7 @@ router.get('/searchWorkspaceUsers/:workspace_id/:query', controller_workspace_co
 router.post("/updateAllowedEmailsDomains", controller_workspace_admin.updateAllowedEmailDomains);
 router.post("/inviteUserViaEmail", controller_workspace_admin.inviteUserViaEmail);
 router.put("/updateUserRole", controller_workspace_admin.updateUserRole);
-router.delete("/removeUserFromWorkspace", controller_workspace_admin.removeUserFromWorkspace);
+router.post("/removeUser", controller_workspace_admin.removeUserFromWorkspace);
 router.put("/:workspace_id", workspace_file_handler, controller_workspace_admin.updateWorkspace);
 
 // workspace groups routes

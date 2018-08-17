@@ -20,6 +20,7 @@ router.get('/searchGroupUsers/:group_id/:query', controller_group.searchGroupUse
 router.get('/:group_id', controller_group.getUserGroup);
 router.post('/addNewUsers', controller_group.addNewUsersInGroup);
 router.put('/:group_id', group_file_handler, controller_group.updateGroup);
+router.post('/removeUser', controller_group.removeUserFromGroup);
 
 
 
