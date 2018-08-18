@@ -3,6 +3,7 @@ import { GroupService } from '../../../../shared/services/group.service';
 import { GroupDataService } from '../../../../shared/services/group-data.service';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { NgxUiLoaderService } from 'ngx-ui-loader'; 
 
 
 @Component({
@@ -33,9 +34,15 @@ export class GroupAdminComponent implements OnInit {
     search: true // enables the search plugin to search in the list
   };
   dataModel;
-  constructor(private groupService: GroupService, public groupDataService: GroupDataService) { }
+  constructor(private groupService: GroupService, public groupDataService: GroupDataService, private ngxService: NgxUiLoaderService) { }
 
   ngOnInit() {
+    this.ngxService.start(); // start foreground loading with 'default' id
+ 
+    // Stop the foreground loading after 5s
+    setTimeout(() => {
+      this.ngxService.stop(); // stop foreground loading with 'default' id
+    }, 500);
     this.user_data = JSON.parse(localStorage.getItem('user'));
     this.group_id = this.groupDataService.groupId;
     this.alertMessageSettings();

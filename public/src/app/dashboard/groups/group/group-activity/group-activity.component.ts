@@ -167,13 +167,12 @@ onSuccess() {
 
 
   ngOnInit() {
-   /* this.ngxService.start(); // start foreground loading with 'default' id
+    this.ngxService.start(); // start foreground loading with 'default' id
  
     // Stop the foreground loading after 5s
     setTimeout(() => {
       this.ngxService.stop(); // stop foreground loading with 'default' id
-    }, 2000);
-*/
+    }, 500);
     this.group_id = this.groupDataService.groupId;
     this.user_data = JSON.parse(localStorage.getItem('user'));
 
