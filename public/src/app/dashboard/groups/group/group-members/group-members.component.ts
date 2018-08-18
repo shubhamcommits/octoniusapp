@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Group } from '../../../../shared/models/group.model';
 import { GroupDataService } from '../../../../shared/services/group-data.service';
 import { GroupService } from '../../../../shared/services/group.service';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 @Component({
   selector: 'app-group-members',
   templateUrl: './group-members.component.html',
@@ -13,9 +14,16 @@ export class GroupMembersComponent implements OnInit {
   group_admins;
 
 
-  constructor(private groupDataService: GroupDataService, private groupService: GroupService) { }
+  constructor(private groupDataService: GroupDataService, private groupService: GroupService, private ngxService: NgxUiLoaderService) { }
 
   ngOnInit() {
+
+    this.ngxService.start(); // start foreground loading with 'default' id
+ 
+    // Stop the foreground loading after 5s
+    setTimeout(() => {
+      this.ngxService.stop(); // stop foreground loading with 'default' id
+    }, 500);
 
     this.group_id = this.groupDataService.groupId;
 
