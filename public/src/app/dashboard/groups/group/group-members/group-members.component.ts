@@ -53,6 +53,7 @@ export class GroupMembersComponent implements OnInit {
     this.groupService.removeUserFromGroup(data)
     .subscribe((res) =>{
       console.log('Group Member is Removed!');
+      this.loadGroup();
     });
   }
 
