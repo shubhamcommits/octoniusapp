@@ -1046,18 +1046,27 @@ y.style.display="block";
       'user_id': this.user_data.user_id
     };
 
-    console.log(user_id);
+    if(like_length == 0){
+      this.likepost(post);
+      like_icon.style.color="#005FD5";
 
-  this.likepost(post);
-  like_icon.style.color="#005FD5";
-  var i ;
+    }
+
+  else{
+    var i ;
   for(i = 0; i < like_length; i++){
 
-    if(liked_by[i]._id=this.user_data.user_id){
+    if(liked_by[i]._id==this.user_data.user_id){
       this.unlikepost(post);
       like_icon.style.color = "#9b9b9b";
     }
+    else {
+      this.likepost(post);
+    }
   }
+
+  }
+  
 
 
   }
