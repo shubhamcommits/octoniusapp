@@ -196,6 +196,6 @@ module.exports = {
 					err: err
 				});
 			})
-	}
+	},
 
 }

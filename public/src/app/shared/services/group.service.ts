@@ -43,5 +43,9 @@ export class GroupService {
   updateGroup(group_id, group) {
     return this._http.put(this.BASE_API_URL + `/group/${group_id}`, group);
   }
+  
+  removeUserFromGroup(data){
+    return this._http.post(this.BASE_API_URL + '/group/removeUser', data);
+  }
 
 }

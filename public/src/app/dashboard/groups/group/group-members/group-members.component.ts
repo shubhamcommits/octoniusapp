@@ -44,5 +44,18 @@ export class GroupMembersComponent implements OnInit {
       });
   }
 
+  removeUserfromGroup(user_id){
+    const data = {
+      'user_id':user_id,
+      'group_id':this.groupDataService.groupId
+  
+    };
+    this.groupService.removeUserFromGroup(data)
+    .subscribe((res) =>{
+      console.log('Group Member is Removed!');
+      this.loadGroup();
+    });
+  }
+
 }
 
