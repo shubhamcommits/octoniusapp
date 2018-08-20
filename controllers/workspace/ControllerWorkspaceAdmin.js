@@ -106,8 +106,13 @@ module.exports = {
 
 	},
 
-	deleteWorkspaceUser(req, res, next) {
+	removeUserFromWorkspace(req, res, next) {
 
+		// remove user from workspace
+		// remove user from all groups
+		// keep the user data, but remove his email address
+		// make the user blocked
+		//
 		let user_id = req.body.user_id;
 		Post.remove({
 			_posted_by: user_id
@@ -127,6 +132,7 @@ module.exports = {
 			})
 
 	},
+
 	updateWorkspace(req, res, next) {
 		let workspace_id = req.params.workspace_id;
 		let data = req.body;
