@@ -180,32 +180,39 @@ const getGroupPosts = (req, res, next) => {
 		})
 };
 
-const getUserOverview = (req, res, next) => {
-	const user_id = req.userId;
-	console.log(req.userId);
-	console.log(user_id);
+const getUserOverview = async (req, res, next) => {
+	try {
+		const user_id = req.userId;
+		console.log(user_id);
 
-	Post.find({
-		//		$or: [
-		//			{ _posted_by: user_id },
-		//			{ 'task._assigned_to': user_id },
-		//			{ 'event._assigned_to': user_id }
-		//		]
-	})
-		.sort('type')
-		.populate('_posted_by', 'first_name last_name profile_pic')
-		.populate('comments._commented_by', 'first_name last_name profile_pic')
-		.populate('task._assigned_to', 'first_name last_name')
-		.populate('event._assigned_to', 'first_name last_name')
-		.populate('_liked_by', 'first_name last_name')
-		.then((posts) => res.status(200).json({
-			message: 'posts found successfully!',
-			posts
-		}))
-		.catch((err) => res.status(500).json({
+		const overviewPosts = await Post.find({
+			$or: [
+				{ _posted_by: user_id },
+				{ 'task._assigned_to': user_id },
+				{ 'event._assigned_to': user_id }
+			]
+		})
+			.sort('-created_date')
+			.populate('_posted_by', 'first_name last_name profile_pic')
+			.populate('comments._commented_by', 'first_name last_name profile_pic')
+			.populate('task._assigned_to', 'first_name last_name')
+			.populate('event._assigned_to', 'first_name last_name')
+			.populate('_liked_by', 'first_name last_name')
+			.then((posts) => posts);
+
+		console.log(overviewPosts);
+
+		return res.status(200).json({
+				message: 'posts found successfully!',
+				posts: overviewPosts
+			});
+
+	} catch (err) {
+		res.status(500).json({
 			message: 'something went wrong | internal server error ',
 			err
-		}));
+		});
+	}
 };
 
 const likePost = (req, res, next) => {
