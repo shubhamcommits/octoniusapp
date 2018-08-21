@@ -38,7 +38,8 @@
         <label for="usr">Email:</label>
         <input type="text" class="form-control" id="usr" [(ngModel)]="invitationData.email" name="email">
       </div>
-      <button type="button" class="btn btn-primary" (click)="onInviteNewUserViaEmail()">Invite</button>
+      <button class="btn btn-primary" onclick="document.getElementById('usr').value = ''" (click)="onInviteNewUserViaEmail()">Invite</button>
+     
     </div>
   </div>
 </div>

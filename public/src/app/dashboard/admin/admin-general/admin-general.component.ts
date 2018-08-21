@@ -6,6 +6,8 @@ import { AdminService } from '../../../shared/services/admin.service';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { NgxUiLoaderService } from 'ngx-ui-loader'; 
+import swal from 'sweetalert';
+
 @Component({
   selector: 'app-admin-general',
   templateUrl: './admin-general.component.html',
@@ -45,6 +47,8 @@ export class AdminGeneralComponent implements OnInit {
     setTimeout(() => {
       this.ngxService.stop(); // stop foreground loading with 'default' id
     }, 500);
+
+    
 
     this.user_data = JSON.parse(localStorage.getItem('user'));
     this.loadWorkspace();
@@ -93,6 +97,7 @@ export class AdminGeneralComponent implements OnInit {
       .subscribe((res) => {
         this.alert.class = 'success';
         this._message.next(res.message);
+        swal("Good job!", "You have added new email-address & domain data updated, successfully!", "success");
       }, (err) => {
         this.alert.class = 'danger';
         if (err.status === 401) {
@@ -112,15 +117,58 @@ export class AdminGeneralComponent implements OnInit {
   }
 
   onInviteNewUserViaEmail() {
-    console.log('inside invitation');
-    this.invitationData.workspace_id = this.user_data.workspace._id;
+
+     if(this.invitationData.email != '')
+     {
+
+      this.invitationData.workspace_id = this.user_data.workspace._id;
     this.invitationData.user_id= this.user_data.user_id;
     console.log(this.invitationData);
+    this._adminService.inviteNewUserViewEmail(this.invitationData)
+      .subscribe((res) => {
+        this.alert.class = 'success';
+        this._message.next(res.message);
+      }, (err) => {
+        this.alert.class = 'danger';
+        if (err.status === 401) {
+          this._message.next(err.error.message);
+          setTimeout(() => {
+            localStorage.clear();
+            this._router.navigate(['']);
+          }, 3000);
+
+        } else if (err.status) {
+          this._message.next(err.error.message);
+          swal("Good job!", "You clicked the button!", "error");
+        } else {
+          this._message.next('Error! either server is down or no internet connection');
+
+        }
+      });
+
+      swal("Good job!", "You have invited the member successfully!", "success");
+
+
+     }
+
+     
+     else
+     {
+      swal("Error!", "Please enter a valid email-address!", "error");
+     }
+    
+  }
+
+  /*onInviteNewUserViaEmail() {
+    //console.log('inside invitation');
+    this.invitationData.workspace_id = this.user_data.workspace._id;
+    this.invitationData.user_id= this.user_data.user_id;
     //console.log(this.user_data.user_id);
     this._adminService.inviteNewUserViewEmail(this.invitationData)
       .subscribe((res) => {
         this.alert.class = 'success';
         this._message.next(res.message);
+        swal("Good job!", "You clicked the button!", "success");
       }
         , (err) => {
           this.alert.class = 'danger';
@@ -137,6 +185,6 @@ export class AdminGeneralComponent implements OnInit {
           }
 
         });
-  }
+  }*/
 
 }
