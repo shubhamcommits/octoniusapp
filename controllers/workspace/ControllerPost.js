@@ -156,34 +156,36 @@ const addCommentOnPost = (req, res, next) => {
 		}))
 };
 
-const getGroupPosts = (req, res, next) => {
-	const group_id = req.params.group_id;
+const getGroupPosts = async (req, res, next) => {
+	try {
+		const group_id = req.params.group_id;
 
-	Post.find({
-		_group: group_id
-	})
-		.sort('-created_date')
-		.populate('_posted_by', 'first_name last_name profile_pic')
-		.populate('comments._commented_by', 'first_name last_name profile_pic')
-		.populate('task._assigned_to', 'first_name last_name')
-		.populate('event._assigned_to', 'first_name last_name')
-		.populate('_liked_by', 'first_name last_name')
-		.then((posts) => res.status(200).json({
-			message: 'posts found successfully!',
-			posts: posts
-		}))
-		.catch((err) => {
-			res.status(500).json({
-				message: 'something went wrong | internal server error ',
-				err
-			})
+		const groupPosts = await Post.find({
+			_group: group_id
 		})
+			.sort('-created_date')
+			.populate('_posted_by', 'first_name last_name profile_pic')
+			.populate('comments._commented_by', 'first_name last_name profile_pic')
+			.populate('task._assigned_to', 'first_name last_name')
+			.populate('event._assigned_to', 'first_name last_name')
+			.populate('_liked_by', '_id first_name last_name');
+
+		return res.status(200).json({
+			message: 'posts found successfully!',
+			posts: groupPosts
+		});
+
+	} catch (err) {
+		return res.status(500).json({
+			message: 'something went wrong | internal server error ',
+			err
+		});
+	}
 };
 
 const getUserOverview = async (req, res, next) => {
 	try {
 		const user_id = req.userId;
-		console.log(user_id);
 
 		const overviewPosts = await Post.find({
 			$or: [
@@ -197,15 +199,12 @@ const getUserOverview = async (req, res, next) => {
 			.populate('comments._commented_by', 'first_name last_name profile_pic')
 			.populate('task._assigned_to', 'first_name last_name')
 			.populate('event._assigned_to', 'first_name last_name')
-			.populate('_liked_by', 'first_name last_name')
-			.then((posts) => posts);
-
-		console.log(overviewPosts);
+			.populate('_liked_by', 'first_name last_name');
 
 		return res.status(200).json({
-				message: 'posts found successfully!',
-				posts: overviewPosts
-			});
+			message: 'posts found successfully!',
+			posts: overviewPosts
+		});
 
 	} catch (err) {
 		res.status(500).json({
