@@ -4,6 +4,7 @@ import { GroupDataService } from '../../../../shared/services/group-data.service
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { NgxUiLoaderService } from 'ngx-ui-loader'; 
+import swal from 'sweetalert';
 
 
 @Component({
@@ -83,7 +84,7 @@ export class GroupAdminComponent implements OnInit {
   inilizeWrokspaceMembersSearchForm() {
 
     this.settings = {
-      text: 'Select Wrokspace Members',
+      text: 'Select Workspace Members',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
       classes: 'myclass custom-class',
@@ -104,8 +105,8 @@ export class GroupAdminComponent implements OnInit {
       .subscribe((res) => {
         // console.log('add new user response:', res);
         this.selectedItems = [];
-        this.alert.class = 'success';
-        this._message.next(res['message']);
+        //this._message.next(res['message']);
+        swal("Good Job!", "You have added "+data.members.length+" new member(s)!", "success");
 
       }, (err) => {
         this.alert.class = 'danger';

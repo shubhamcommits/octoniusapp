@@ -15,7 +15,7 @@
 
       <h4>Add new member</h4>
       <p>You can search for persons inside the organization Workplace and add them to your group.</p>
-      <ngb-alert *ngIf="alert.message" [type]="alert.class" (close)="successMessage = null">{{ alert.message}}</ngb-alert>
+      <!--<ngb-alert *ngIf="alert.message" [type]="alert.class" (close)="successMessage = null">{{ alert.message}}</ngb-alert>-->
 
       <angular2-multiselect [data]="itemList" [(ngModel)]="selectedItems" [settings]="settings" (onSelect)="onItemSelect($event)"
         (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)">
