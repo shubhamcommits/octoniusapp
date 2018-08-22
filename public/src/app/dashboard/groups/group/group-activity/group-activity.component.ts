@@ -568,29 +568,41 @@ test(index) {
 
     console.log('post: ', post);
 
+  
 
-
-    this.postService.deletePost(post)
-      .subscribe((res) => {
-
-        this.alert.class = 'success';
-        this._message.next(res['message']);
-        this.resetNewPostForm();
-        // console.log('Normal post response: ', res);
-        this.loadGroupPosts();
-
-      }, (err) => {
-
-        this.alert.class = 'danger';
-
-        if (err.status) {
-          this._message.next(err.error.message);
-        } else {
-          this._message.next('Error! either server is down or no internet connection');
-        }
-
+    swal({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      dangerMode: true,
+      buttons: ["Cancel", "Yes, delete it!"],
+      
+      })
+      .then(willDelete => {
+      if (willDelete) {
+        this.postService.deletePost(post)
+        .subscribe((res) => {
+  
+          this.alert.class = 'success';
+          this._message.next(res['message']);
+          this.resetNewPostForm();
+          // console.log('Normal post response: ', res);
+          this.loadGroupPosts();
+  
+        }, (err) => {
+  
+          this.alert.class = 'danger';
+  
+          if (err.status) {
+            this._message.next(err.error.message);
+          } else {
+            this._message.next('Error! either server is down or no internet connection');
+          }
+  
+        });
+        swal("Deleted!", "The following post has been deleted!", "success");
+      }
       });
-
   }
 
   resetNewPostForm() {

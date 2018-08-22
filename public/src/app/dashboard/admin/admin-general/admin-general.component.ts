@@ -95,9 +95,18 @@ export class AdminGeneralComponent implements OnInit {
 
     this._adminService.allowDomains(this.domainData)
       .subscribe((res) => {
-        this.alert.class = 'success';
-        this._message.next(res.message);
-        swal("Good job!", "You have added new email-address & domain data updated, successfully!", "success");
+        //this.alert.class = 'success';
+        //this._message.next(res.message);
+        swal({
+          title: "Good Job!",
+          text: "Domain data updated, successfully!",
+          icon: "success"
+        })
+        .then(willreload => {
+          if (willreload) {
+            location.reload();
+          }
+        });
       }, (err) => {
         this.alert.class = 'danger';
         if (err.status === 401) {
@@ -139,16 +148,23 @@ export class AdminGeneralComponent implements OnInit {
 
         } else if (err.status) {
           this._message.next(err.error.message);
-          swal("Good job!", "You clicked the button!", "error");
+          swal("Error!", "There was some problem, please try again!", "error");
         } else {
           this._message.next('Error! either server is down or no internet connection');
 
         }
       });
 
-      swal("Good job!", "You have invited the member successfully!", "success");
-
-
+      swal({
+        title: "Good Job!",
+        text: "You have invited the member successfully!",
+        icon: "success",
+      })
+      .then(willreload => {
+        if (willreload) {
+          location.reload();
+        }
+      });
      }
 
      
