@@ -8,6 +8,7 @@ import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { NgbModal, NgbAlertConfig } from '@ng-bootstrap/ng-bootstrap';
 import { NgxUiLoaderService } from 'ngx-ui-loader'; 
+import swal from 'sweetalert';
 @Component({
   selector: 'app-admin-members',
   templateUrl: './admin-members.component.html',
@@ -86,44 +87,56 @@ export class AdminMembersComponent implements OnInit {
   }
 
 
-  updateUserRole(role, user_id) {
+  updateUserRole(role, user_id, first_name, last_name) {
     console.log('Role: ', role, 'user_id', user_id);
     const data = {
       user_id: user_id,
       role: role
     };
-    this.adminService.updateUserRole(data)
-      .subscribe((res) => {
-        console.log('update respose: ', res);
-        this.alert.class = 'success';
-        this._message.next(res['message']);
-        this.openVerticallyCentered(this.content);
 
-        setTimeout(() => {
-          this.modalReference.close();
-        }, 3000);
-
-
-        this.loadWorkspace();
-
-      }, (err) => {
-        console.log('update respose err: ', err);
-        this.alert.class = 'danger';
-
-        if (err.status) {
-          this._message.next(err.error.message);
-          this.openVerticallyCentered(this.content);
-
+    swal({
+      title: "Are you sure?",
+      text: "You want to make "+first_name+" "+last_name+" as - "+role,
+      icon: "info",
+      dangerMode: true,
+      buttons: ["No, cancel it!", "Yes, sure!"],
+      
+      })
+      .then(willupdate => {
+      if (willupdate) {
+        this.adminService.updateUserRole(data)
+        .subscribe((res) => {
+          console.log('update respose: ', res);
+  
           setTimeout(() => {
             this.modalReference.close();
           }, 3000);
-        } else {
-          this._message.next('Error! either server is down or no internet connection');
-          this.openVerticallyCentered(this.content);
-          setTimeout(() => {
-            this.modalReference.close();
-          }, 3000);
-        }
+  
+  
+          this.loadWorkspace();
+  
+        }, (err) => {
+          console.log('update respose err: ', err);
+          this.alert.class = 'danger';
+  
+          if (err.status) {
+            this._message.next(err.error.message);
+            this.openVerticallyCentered(this.content);
+  
+            setTimeout(() => {
+              this.modalReference.close();
+            }, 3000);
+          } else {
+            this._message.next('Error! either server is down or no internet connection');
+            this.openVerticallyCentered(this.content);
+            setTimeout(() => {
+              this.modalReference.close();
+            }, 3000);
+          }
+        });
+       
+        swal("Done!", first_name+"'s role has been updated to - "+role+"!", "success");
+      }
       });
   }
   deleteWorkspaceUser(user_id) {
