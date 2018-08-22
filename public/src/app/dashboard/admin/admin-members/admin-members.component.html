@@ -13,10 +13,10 @@
       <div class="btn-group mr-3 float-right" style="margin-left:10px">
 
         <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
-          <button class="btn btn-secondary dropdown-toggle-split btn-sm" ngbDropdownToggle>Manage user </button>
+          <button class="btn btn-primary dropdown-toggle-split btn-sm" ngbDropdownToggle>Manage user </button>
           <div class="dropdown-menu" ngbDropdownMenu>
-            <button class="dropdown-item" (click)="updateUserRole('admin',member._id)">Change to Admin</button>
-            <button class="dropdown-item" (click)="updateUserRole('member ',member._id)">Change to Member</button>
+            <button class="dropdown-item" (click)="updateUserRole('admin',member._id, member.first_name, member.last_name)">Change to Admin</button>
+            <button class="dropdown-item" (click)="updateUserRole('member ',member._id, member.first_name, member.last_name)">Change to Member</button>
             <div class="dropdown-divider"></div>
             <button class="dropdown-item" (click)="openVerticallyCentered(contentDeleteUser)">Delete Member</button>
           </div>
