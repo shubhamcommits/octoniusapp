@@ -3,6 +3,7 @@ import { Group } from '../../../../shared/models/group.model';
 import { GroupDataService } from '../../../../shared/services/group-data.service';
 import { GroupService } from '../../../../shared/services/group.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
+import swal from 'sweetalert';
 @Component({
   selector: 'app-group-members',
   templateUrl: './group-members.component.html',
@@ -44,18 +45,32 @@ export class GroupMembersComponent implements OnInit {
       });
   }
 
-  removeUserfromGroup(user_id){
+  removeUserfromGroup(user_id, first_name, last_name){
     const data = {
       'user_id':user_id,
       'group_id':this.groupDataService.groupId
   
     };
-    this.groupService.removeUserFromGroup(data)
-    .subscribe((res) =>{
-      console.log('Group Member is Removed!');
-      this.loadGroup();
+    swal({
+      title: "Are you sure?",
+      text: "You want to remove "+first_name+" "+last_name+" from the group?",
+      icon: "warning",
+      dangerMode: true,
+      buttons: ["Cancel", "Yes, please!"],
+    })
+    .then(willDelete => {
+      if (willDelete) {
+        this.groupService.removeUserFromGroup(data)
+        .subscribe((res) =>{
+          console.log('Group Member is Removed!');
+          this.loadGroup();
+        });
+        swal("Removed!", first_name+" "+last_name+", has been removed!", "success");
+      }
     });
   }
+
+
 
 }
 
