@@ -414,7 +414,7 @@ test(index) {
     // console.log('assignedUsers: ', assignedUsers);
 
     const post = {
-      content: this.post.content,
+      content: this.linkify(this.post.content),
       type: this.post.type,
       _posted_by: this.user_data.user_id,
       _group: this.group_id,
@@ -480,7 +480,7 @@ test(index) {
 
 
     const post = {
-      content: this.post.content,
+      content: this.linkify(this.post.content),
       type: this.post.type,
       _posted_by: this.user_data.user_id,
       _group: this.group_id,
