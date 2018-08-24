@@ -225,7 +225,7 @@
               <div class="col-md-12 text-right " id="button_edit_post{{i}}" style="display: none; padding-bottom: 1em;">
                   <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditPost(i, post._id,post?.content)">Save</button>
                 </div>
-                <div class="col-md-12 innercard"><quill-editor id="edit-content-{{i}}" type="text" [(ngModel)]="post.content" [spellcheck]="true" value="post?.content" style="display: none;"></quill-editor></div>
+                <div class="col-md-12 innercard"><quill-editor id="edit-content-{{i}}" type="text" [(ngModel)]="post.content" [spellcheck]="true" value="post?.content" style="display: none;" (blur)="onEditorBlured($event)" (focus)="onEditorFocused($event)" (ready)="onEditorCreated($event)" (change)="onContentChanged($event)"></quill-editor></div>
                 
                 <!--<quill-editor id="edit-content" type="text" [(ngModel)]="post.content" [spellcheck]="true" name="postContent" formControlName="postContent" style="display: none;">{{post.content}}</quill-editor>-->
               <div class="col-md-12 innercard" [id]="(i)" style="border: none;" [innerHTML]="post?.content | safe: 'html'">
@@ -299,7 +299,8 @@
                   <div class="col-md-12">
                     <div class="form-group ">
                       <h6>Add a comment</h6>
-                      <textarea class="form-control" id="post-content" rows="3" [(ngModel)]="comment.content" name="commentContent" formControlName="commentContent"></textarea>
+                      <!--<textarea class="form-control" id="post-content" rows="3" [(ngModel)]="comment.content" name="commentContent" formControlName="commentContent"></textarea>-->
+                      <quill-editor id="comment-content{{i}}" [(ngModel)]="comment.content" (blur)="onEditorBlured($event)" [spellcheck]="true" class="form-control" name="commentContent" (focus)="onEditorFocused($event)" formControlName="commentContent" (ready)="onEditorCreated($event)" (change)="onContentChanged($event)"></quill-editor>
                     </div>
                   </div>
                 </div>
@@ -336,9 +337,8 @@
 
                 </div>
               </div>
-              <div class="col-md-12 innercard ">
-                <pre class="card-text ">{{comment.content}}
-                </pre>
+              <div class="col-md-12 innercard " [innerHTML]="comment?.content" style="color:black;">
+                
               </div>
             </div>
           </div>
@@ -382,7 +382,7 @@
                   <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditPost(i, post._id,post?.content)">Save</button>
                 </div>
 
-                <div class="col-md-12 innercard"><quill-editor id="edit-content-{{i}}" type="text" [(ngModel)]="post.content" [spellcheck]="true" value="post?.content" style="display: none;"></quill-editor></div>
+                <div class="col-md-12 innercard"><quill-editor id="edit-content-{{i}}" type="text" [(ngModel)]="post.content" [spellcheck]="true" value="post?.content" style="display: none;" (blur)="onEditorBlured($event)" (focus)="onEditorFocused($event)" (ready)="onEditorCreated($event)" (change)="onContentChanged($event)"></quill-editor></div>
 
               <div class="col-md-12 innercard " [id]="(i)" [innerHTML]="post?.content | safe: 'html'">
                 <!--<pre class="card-text ">{{post?.content}}
@@ -446,7 +446,8 @@
                   <div class="col-md-12">
                     <div class="form-group ">
                       <h6>Add a comment</h6>
-                      <textarea class="form-control" id="post-content" rows="3" [(ngModel)]="comment.content" name="commentContent" formControlName="commentContent"></textarea>
+                      <!--<textarea class="form-control" id="post-content" rows="3" [(ngModel)]="comment.content" name="commentContent" formControlName="commentContent"></textarea>-->
+                      <quill-editor id="comment-content{{i}}" [(ngModel)]="comment.content" (blur)="onEditorBlured($event)" [spellcheck]="true" class="form-control" name="commentContent" (focus)="onEditorFocused($event)" formControlName="commentContent" (ready)="onEditorCreated($event)" (change)="onContentChanged($event)"></quill-editor>
                     </div>
                   </div>
                 </div>
@@ -482,9 +483,7 @@
 
                 </div>
               </div>
-              <div class="col-md-12 innercard ">
-                <pre class="card-text ">{{comment.content}}
-                </pre>
+              <div class="col-md-12 innercard " [innerHTML]="comment?.content" style="color:black;">s
               </div>
             </div>
           </div>
@@ -527,7 +526,7 @@
               <div class="col-md-12 text-right " id="button_edit_post{{i}}" style="display: none; padding-bottom: 1em;">
                   <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditPost(i, post._id,post?.content)">Save</button>
                 </div>
-                <div class="col-md-12 innercard"><quill-editor id="edit-content-{{i}}" type="text" [(ngModel)]="post.content" [spellcheck]="true" value="post?.content" style="display: none;"></quill-editor></div>
+                <div class="col-md-12 innercard"><quill-editor id="edit-content-{{i}}" type="text" [(ngModel)]="post.content" [spellcheck]="true" value="post?.content" style="display: none;" (blur)="onEditorBlured($event)" (focus)="onEditorFocused($event)" (ready)="onEditorCreated($event)" (change)="onContentChanged($event)"></quill-editor></div>
               <div class="col-md-12 innercard ">
                 <div class="row">
                   <div class="col-md-2 dateblock">
@@ -603,7 +602,8 @@
                   <div class="col-md-12">
                     <div class="form-group ">
                       <h6>Add a comment</h6>
-                      <textarea class="form-control" id="post-content" rows="3" [(ngModel)]="comment.content" name="commentContent" formControlName="commentContent"></textarea>
+                      <!--<textarea class="form-control" id="post-content" rows="3" [(ngModel)]="comment.content" name="commentContent" formControlName="commentContent"></textarea>-->
+                      <quill-editor id="comment-content{{i}}" [(ngModel)]="comment.content" (blur)="onEditorBlured($event)" [spellcheck]="true" class="form-control" name="commentContent" (focus)="onEditorFocused($event)" formControlName="commentContent" (ready)="onEditorCreated($event)" (change)="onContentChanged($event)"></quill-editor>
                     </div>
                   </div>
                 </div>
@@ -638,9 +638,7 @@
 
                 </div>
               </div>
-              <div class="col-md-12 innercard ">
-                <pre class="card-text ">{{comment.content}}
-                </pre>
+              <div class="col-md-12 innercard " [innerHTML]="comment?.content" style="color:black;">
               </div>
             </div>
           </div>

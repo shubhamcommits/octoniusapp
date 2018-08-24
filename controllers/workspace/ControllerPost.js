@@ -3,39 +3,31 @@ const User = require('../../models/user');
 const Workspace = require('../../models/workspace');
 const Post = require('../../models/post');
 const sendMail = require('../../sendgrid/sendMail');
+const sendErr = require('../../helpers/sendErr');
 
+const addNewPost = async (req, res, next) => {
+	try { 
 
-const addNewPost = (req, res, next) => {
-	console.log(`--> Creating new ${req.body.type} post...`);
+		const post_data = req.body;
+		
+		const newPost = await Post.create(post_data);
 
-	const post_data = req.body;
-	let post_created;
+		// Send Email notification
+		switch(newPost.type) {
+			case 'task':
+				sendMail.taskAssigned(newPost);
+			case 'event':
+				sendMail.eventAssigned(newPost);
+		};
 
-	Post.create(post_data)
-		.then((post) => {
+		return res.status(200).json({
+			message: 'post has been added successfully',
+			post: newPost
+		});
 
-			post_created = post;
-
-			return res.status(200).json({
-				message: 'post has been added successfully',
-				post: post
-			});
-		})
-		.then(() => {
-			console.log('--> ...post has been created!')
-
-			// Send Email notification
-			switch(post_created.type) {
-				case 'task':
-					sendMail.taskAssigned(post_created);
-				case 'event':
-					sendMail.eventAssigned(post_created);
-			};
-		})
-		.catch((err) => res.status(500).json({
-			message: 'something went wrong | internal server error',
-			err
-		}))
+	} catch (err) {
+		return sendErr(res, err);
+	}
 };
 
 const completePost = (req, res, next) => {
@@ -158,12 +150,14 @@ const addCommentOnPost = (req, res, next) => {
 
 const getGroupPosts = async (req, res, next) => {
 	try {
+
 		const group_id = req.params.group_id;
 
 		const groupPosts = await Post.find({
 			_group: group_id
 		})
 			.sort('-created_date')
+		//		.aggregate([ { $addFields: { _liked_by_ids: '_liked_by' }}])
 			.populate('_posted_by', 'first_name last_name profile_pic')
 			.populate('comments._commented_by', 'first_name last_name profile_pic')
 			.populate('task._assigned_to', 'first_name last_name')
@@ -176,24 +170,39 @@ const getGroupPosts = async (req, res, next) => {
 		});
 
 	} catch (err) {
-		return res.status(500).json({
-			message: 'something went wrong | internal server error ',
-			err
-		});
+		return sendErr(res, err);
 	}
 };
 
 const getUserOverview = async (req, res, next) => {
 	try {
-		const user_id = req.userId;
 
+		const user_id = req.params.user_id;
+
+		// Get day of today and zero the hours
+		const today = new Date();
+		today.setHours(0,0,0,0);
+		
 		const overviewPosts = await Post.find({
 			$or: [
-				{ _posted_by: user_id },
-				{ 'task._assigned_to': user_id },
-				{ 'event._assigned_to': user_id }
-			]
-		})
+				// From this user...
+					{ $and: [
+						// Find normal posts that has comments
+						{ _posted_by: user_id },
+						{ type: 'normal' },
+						{ comments: { $exists: true, $ne: []}}
+					]},
+					 // Find tasks due to today
+					{ $and: [
+						{ 'task._assigned_to': user_id },
+						{ 'task.due_date': today }
+					]},
+				// Find events due to today
+					{ $and: [
+						{ 'event._assigned_to': user_id },
+						{ 'event.due_date': today }
+					]}
+				]})
 			.sort('-created_date')
 			.populate('_posted_by', 'first_name last_name profile_pic')
 			.populate('comments._commented_by', 'first_name last_name profile_pic')
@@ -207,10 +216,7 @@ const getUserOverview = async (req, res, next) => {
 		});
 
 	} catch (err) {
-		res.status(500).json({
-			message: 'something went wrong | internal server error ',
-			err
-		});
+		return sendErr(res, err);
 	}
 };
 
