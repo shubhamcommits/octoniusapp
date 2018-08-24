@@ -21,8 +21,6 @@ if (process.env.NODE_ENV !== 'production') {
 	// ...load 'development' env configuration.
 	require('./nodemon_config');
 }
-console.log('--> NODE_ENV:\n-->', process.env.NODE_ENV);
-
 
 // database config
 require('./config/db_connection');
