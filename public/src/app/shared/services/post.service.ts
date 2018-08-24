@@ -48,4 +48,7 @@ export class PostService {
   unlike(post) {
     return this._http.post(this.BASE_API_URL + '/post/unlike', post);
   }
+  useroverviewposts(user_id){
+    return this._http.get(this.BASE_API_URL + '/post/userOverview/'+ user_id);
+  }
 }
