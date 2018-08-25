@@ -1,77 +1,112 @@
 <div class="container">
   <app-overview-page-header></app-overview-page-header>
+  <div *ngFor="let post of posts; let i = index;">
   <ul class="list-group">
-    <li class="list-group-item">
+    <li class="list-group-item" *ngIf="post.type== 'normal'">
+        <div class="row">
+          <div class="col-md-6">
+            <h3><i class="material-icons active" style=" color: #005fd5;">chat</i> Posts Notifications</h3>
+            
+            </div>
+  
+          </div>
+      <div *ngFor="let comment of post.comments">
       <div class="row navig">
         <div class="col-md-4 clearfix">
 
-          <img src="https://randomuser.me/api/portraits/med/women/49.jpg" alt="" class="feed-avatar float-left">
+            <img src="/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'" class="feed-avatar">
           <div class="username float-left">
-            <h6>Eva Mendosa</h6>
-            <p class="small text-muted">10:00am</p>
+            <h6>{{comment._commented_by?.first_name}}</h6>
+            
+            <p class="small text-muted">{{comment.created_date | date:'shortTime' }}</p>
           </div>
         </div>
 
         <div class="col-md-7">
-          <p>i like the new format of the dowuent, it gaves some strength to all this bla bla,i like the new format of the dowuent,
-            it gaves some strength to all this bla bla</p>
+            <div class="event-title" style="font-size:20px">Replied to your Post</div>
+            <div class="event-title" style="color:black; font-weight: normal; font-size: 16px" [innerHTML]="comment.content"></div>
         </div>
+       
         <div class="col-md-1">
           <i class="material-icons">chat</i>
+          <p class="small text-muted">{{comment.created_date | date:'MMM d' }}</p>
 
+        </div>
         </div>
       </div>
     </li>
 
-    <li class="list-group-item">
+    <li class="list-group-item" *ngIf="post.type== 'task'">
+        <div class="row">
+            <div class="col-md-6">
+              <h3><i class="material-icons active" style=" color: #005fd5;">assignment_turned_in</i> Today's Due Tasks</h3>
+              
+              </div>
+    
+            </div>
       <div class="row navig">
         <div class="col-md-4 clearfix">
 
-          <img src="https://randomuser.me/api/portraits/med/women/60.jpg" alt="" class="feed-avatar float-left">
+            <img src="/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar">
           <div class="username float-left">
-            <h6>Mara Marvin</h6>
-            <p class="small text-muted">10:00am</p>
+            <h6>{{post._posted_by?.first_name}} </h6>
+            <p class="small text-muted">{{post.created_date | date:'shortTime' }}</p>
           </div>
         </div>
 
         <div class="col-md-7">
-          <h6 class="pink">assigned to you</h6>
-          <p>i like the new format of the dowuent, it gaves some strength to all this bla bla,i like the new format of the dowuent,
-            it gaves some strength to all this bla bla</p>
+          <div class="event-title" style="color: #005fd5; font-size: 20px;">Assigned a Task to you</div>
+          <div class="event-title" style="color:black; font-weight: normal; font-size: 16px" [innerHTML]="post.content"></div>
         </div>
         <div class="col-md-1">
           <i class="material-icons">assignment_turned_in</i>
+          <p class="small text-muted">{{post.created_date | date:'MMM d' }}</p>
 
         </div>
       </div>
     </li>
 
-    <li class="list-group-item">
-      <div class="row navig bluebg">
+    <li class="list-group-item" *ngIf="post.type== 'event'">
+        <div class="row">
+            <div class="col-md-6">
+              <h3><i class="material-icons active" style=" color: #005fd5;">today</i> Today's Events</h3>
+              
+              </div>
+    
+            </div>
+      <div class="row navig">
+       
         <div class="col-md-4 clearfix">
-
-          <img src="https://randomuser.me/api/portraits/med/men/9.jpg" alt="" class="feed-avatar float-left">
+           
+            <img src="/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar">
           <div class="username float-left">
-            <h6>Jon Snow</h6>
-            <p class="small">10:00am</p>
+            <h5>{{post._posted_by?.first_name}}</h5>
+            <p class="small">{{post.created_date | date:'shortTime' }}</p>
           </div>
         </div>
 
         <div class="col-md-7">
-          <div class="row">
-            <div class="col-md-2 date"> 20 April
-              <br>
-              <span>12:30</span>
-            </div>
-            <div class="col-md-9 event-title">Team meeting in room 3 to discuss the new design Team meeting in room 3 to discuss the new design
-            </div>
-          </div>
+            <div class="row">
+                <div class="col-md-2 dateblock">
+                  <span class="bigdate">{{post?.event.due_date | date :'dd' }}</span>
+                  <br>
+                  <span class="time">{{post?.event.due_date | date: 'MMMM' }}</span>
+                </div>
+                <div class="col-md-8 event-title" >
+              
+                  <div class="row" style="font-size:20px" [innerHTML]="post?.content | safe: 'html' "></div>
+                  <div class="row"> {{post?.event.due_time}}</div>
 
+                </div>
+                </div>
+  
         </div>
         <div class="col-md-1">
           <i class="material-icons">today</i>
+          <p class="small text-muted">{{post.created_date | date:'MMM d' }}</p>
         </div>
       </div>
     </li>
   </ul>
+</div>
 </div>

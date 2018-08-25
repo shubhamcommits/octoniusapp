@@ -11,6 +11,7 @@ import { QuillModule } from 'ngx-quill';
 import { LoadingModule, ANIMATION_TYPES } from 'ngx-loading';
 import { NgxUiLoaderModule, NgxUiLoaderConfig, SPINNER, POSITION, PB_DIRECTION } from  'ngx-ui-loader';
 import { SnotifyModule, SnotifyService, ToastDefaults } from 'ng-snotify';
+import { DatePipe } from '@angular/common';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './common/components/navbar/navbar.component';
@@ -38,6 +39,7 @@ import { PostService } from './shared/services/post.service';
 import { GroupService } from './shared/services/group.service';
 import { GroupDataService } from './shared/services/group-data.service';
 import { SafePipe } from './safe.pipe';
+import { NiceDateFormatPipePipe } from './nice-date-format-pipe.pipe';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 
@@ -80,7 +82,8 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     GroupComponent,
     GroupHeaderComponent,
     routingComponents,
-    SafePipe
+    SafePipe,
+    NiceDateFormatPipePipe
   ],
   imports: [
     BrowserModule,

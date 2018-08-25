@@ -5,6 +5,7 @@ import { UserService } from '../../shared/services/user.service';
 import { User } from '../../shared/models/user.model';
 import { NgxUiLoaderService } from 'ngx-ui-loader'; 
 import { PostService } from '../../shared/services/post.service';
+import { GroupsService } from '../../shared/services/groups.service';
 
 @Component({
   selector: 'app-overview',
@@ -14,12 +15,17 @@ import { PostService } from '../../shared/services/post.service';
 export class OverviewComponent implements OnInit {
 
   posts = new Array();
+  groups = new Array();
 
   user_data;
   user: User;
 
+  group = {
+    group_name: '',
+  };
+
   constructor(private _userService: UserService, private _authService: AuthService, private _router: Router,  private ngxService: NgxUiLoaderService,
-  private _postservice: PostService) { }
+  private _postservice: PostService, private _groupservice: GroupsService) { }
 
   ngOnInit() {
     this.ngxService.start(); // start foreground loading with 'default' id
@@ -39,6 +45,11 @@ export class OverviewComponent implements OnInit {
       // console.log('Group posts:', res);
       this.posts = res['posts'];
      console.log('User Post:', this.posts);
+     for(var i = 0; i < this.posts.length; i++){
+       this.groups[i]=this.posts[i]._group;
+     }
+     console.log('User Group:', this.groups);
+  
 
 
     }, (err) => {
@@ -46,5 +57,7 @@ export class OverviewComponent implements OnInit {
     });
 
   }
+
+
 
 }
