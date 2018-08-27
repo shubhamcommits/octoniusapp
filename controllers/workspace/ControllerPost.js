@@ -14,6 +14,13 @@ const addNewPost = async (req, res, next) => {
 	try { 
 		const postData = req.body;
 
+		// If it's a task/event zero the hours, leave only the date
+		if (postData.type === 'event' || postData.type === 'task') { 
+			let date = new Date(postData[`${postData.type}.due_date`]);
+			date.setHours(0,0,0,0);
+			postData[`${postData.type}.due_date`] = date.toString();
+		}
+
 		const post = await Post.create(postData);
 
 		// Send Email notification after post creation
