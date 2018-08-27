@@ -39,6 +39,7 @@ export class GroupMembersComponent implements OnInit {
         this.group_members = res['group']._members;
         console.log(this.group_members);
         this.group_admins = res['group']._admins;
+        console.log(this.group_admins);
 
       }, (err) => {
 
