@@ -2,11 +2,11 @@
   <app-overview-page-header></app-overview-page-header>
   <div *ngFor="let post of posts; let i = index;">
   <ul class="list-group">
-    <li *ngIf="post.type== 'normal'">
+    <li style="list-style-type: none;" *ngIf="post.type== 'normal'">
        
       <div *ngFor="let comment of post.comments">
       <div class="row navig">
-        <div class="col-md-4 clearfix">
+        <div class="col-md-4 clearfix" style="background-image: url('/assets/images/group.png')">
 
             <img src="/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'" class="feed-avatar">
           <div class="username float-left">
@@ -30,9 +30,9 @@
       </div>
     </li>
 
-    <li *ngIf="post.type== 'task'">
+    <li style="list-style-type: none;" *ngIf="post.type== 'task'">
       <div class="row navig">
-        <div class="col-md-4 clearfix">
+        <div class="col-md-4 clearfix" style="background-image: url('/assets/images/group.png')">
 
             <img src="/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar">
           <div class="username float-left">
@@ -53,10 +53,10 @@
       </div>
     </li>
 
-    <li *ngIf="post.type== 'event'">
+    <li style="list-style-type: none;" *ngIf="post.type== 'event'">
       <div class="row navig">
        
-        <div class="col-md-4 clearfix">
+        <div class="col-md-4 clearfix" style="background-image: url('/assets/images/group.png')">
            
             <img src="/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar">
           <div class="username float-left">

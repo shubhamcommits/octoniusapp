@@ -3,7 +3,6 @@
   border: 1px solid $border-color;
   background: white; // box-shadow: $card-shadow;
   .col-md-4 {
-    background-image: url('https://spectrum.ieee.org/image/Mjg4NTE0MA.jpg');
     background-position: left;
     background-repeat: no-repeat;
     background-size: 120px 100px;
@@ -30,9 +29,6 @@
   padding: 0 !important;
 }
 
-.username {
-  // margin-left: 20px;
-}
 .material-icons{
   margin-top: 20px;
   font-size: 40px;
