@@ -5,24 +5,28 @@ const Post = require('../../models/post');
 const sendMail = require('../../sendgrid/sendMail');
 const sendErr = require('../../helpers/sendErr');
 
+/*	==================
+ *	-- POST METHODS --
+ *	==================
+ */
+
 const addNewPost = async (req, res, next) => {
 	try { 
+		const postData = req.body;
 
-		const post_data = req.body;
-		
-		const newPost = await Post.create(post_data);
+		const post = await Post.create(postData);
 
-		// Send Email notification
-		switch(newPost.type) {
+		// Send Email notification after post creation
+		switch(post.type) {
 			case 'task':
-				sendMail.taskAssigned(newPost);
+				sendMail.taskAssigned(post);
 			case 'event':
-				sendMail.eventAssigned(newPost);
+				sendMail.eventAssigned(post);
 		};
 
 		return res.status(200).json({
-			message: 'post has been added successfully',
-			post: newPost
+			message: 'New post created!',
+			post,
 		});
 
 	} catch (err) {
@@ -30,92 +34,79 @@ const addNewPost = async (req, res, next) => {
 	}
 };
 
-const completePost = (req, res, next) => {
+const completePost = async (req, res, next) => {
+	try {
+		let postId = req.body.post_id;
 
-	let post_id = req.body.post_id;
-	let user_id = req.body.user_id;
-
-	Post.findByIdAndUpdate({
-		_id: post_id
-	}, {
-		completed: true,
-		completion_date: new Date()
-	}, {
-		new: true
-	})
-		.then((updated_post) => {
-			res.status(200).json({
-				message: 'Post has been completed Successfully!',
-				post: updated_post
-			})
-		})
-		.catch((err) => {
-			res.status(500).json({
-				message: 'something went wrong | internal server error ',
-				err
-			})
+		const post = await Post.findByIdAndUpdate({
+			_id: postId
+		}, {
+			completed: true,
+			completion_date: new Date()
+		}, {
+			new: true
 		});
+
+		return res.status(200).json({
+			message: 'Post completed!',
+			post,
+		});
+
+	} catch (err) {
+		return sendErr(res, err);
+	}
 };
 
-const deletePost = (req, res, next) => {
+const deletePost = async (req, res, next) => {
+	try {
+		const postId = req.body.postId;
 
-	let postId = req.body.postId;
+		const post = await Post.findByIdAndRemove({ _id: postId });
 
-	Post.findByIdAndRemove({
-		_id: postId
-	})
-		.then((deletedPost) => {
-			res.status(200).json({
-				message: 'post has been deleted successfully!',
-			});
-		})
-		.catch((err) => {
-			res.status(500).json({
-				message: 'something went wrong on server | mongdb server error',
-				err
-			});
+		return res.status(200).json({
+			message: 'Post deleted!',
 		});
+
+	} catch (err) {
+		return sendErr(res, err);
+	}
 };
 
-const editPost = (req, res, next) => {
+const editPost = async (req, res, next) => {
+	try {
+		const postId = req.body.post_id;
+		const updatedContent = req.body.content;
 
-	const post_id = req.body.post_id;
-	const updatedContent = req.body.content;
-
-	Post.findByIdAndUpdate({
-		_id: post_id
-	}, { 
-		$set : {
-			content: updatedContent
-		}
-	}, {
-		new: true
-	})
-		.then((updated_post) => {
-			res.status(200).json({
-				message: 'Post updated!',
-				post: updated_post
-			})
-		})
-		.catch((err) => {
-			res.status(500).json({
-				message: 'something went wrong | internal server error ',
-				err
-			})
+		const post = await Post.findByIdAndUpdate({
+			_id: postId
+		}, { 
+			$set : {
+				content: updatedContent
+			}
+		}, {
+			new: true
 		});
+
+		return res.status(200).json({
+			message: 'Post updated!',
+			post,
+		});
+
+	} catch (err) {
+		return sendErr(res, err);
+	}
 };
 
-const addCommentOnPost = (req, res, next) => {
+const addCommentOnPost = async (req, res, next) => {
+	try {
+		const postId = req.body.post_id;
+		const commentedBy = req.body._commented_by;
+		const content = req.body.content;
 
-	let post_id = req.body.post_id;
-	let _commented_by = req.body._commented_by;
-	let content = req.body.content;
+		const user = await User.findById({ _id: commentedBy });
 
-	User.findById({
-		_id: _commented_by
-	}).then((user) => {
-		Post.findByIdAndUpdate({
-			_id: post_id
+		const post = await Post.findByIdAndUpdate({
+			_id: postId
 		}, {
 			$push: {
 				comments: {
@@ -128,36 +119,26 @@ const addCommentOnPost = (req, res, next) => {
 			},
 		}, {
 			new: true
-		})
-			.then((post) => {
-				res.status(200).json({
-					message: 'comment added on post successfully',
-					post: post
-				});
-			})
-			.catch((err) => {
-				res.status(500).json({
-					message: 'something went wrong | internal server error',
-					error: err
-				});
-			})
-	})
-		.catch((err) => res.status(500).json({
-			message: 'something went wrong | internal server error',
-			error: err
-		}))
+		});
+
+		return res.status(200).json({
+			message: 'Comment added!',
+			post,
+		});
+
+	} catch (err) {
+		return sendErr(res, err);
+	}
 };
 
 const getGroupPosts = async (req, res, next) => {
 	try {
+		const groupId = req.params.group_id;
 
-		const group_id = req.params.group_id;
-
-		const groupPosts = await Post.find({
-			_group: group_id
+		const posts = await Post.find({
+			_group: groupId
 		})
 			.sort('-created_date')
-		//		.aggregate([ { $addFields: { _liked_by_ids: '_liked_by' }}])
 			.populate('_posted_by', 'first_name last_name profile_pic')
 			.populate('comments._commented_by', 'first_name last_name profile_pic')
 			.populate('task._assigned_to', 'first_name last_name')
@@ -165,8 +146,8 @@ const getGroupPosts = async (req, res, next) => {
 			.populate('_liked_by', '_id first_name last_name');
 
 		return res.status(200).json({
-			message: 'posts found successfully!',
-			posts: groupPosts
+			message: `Found ${posts.length} posts!`,
+			posts,
 		});
 
 	} catch (err) {
@@ -176,43 +157,43 @@ const getGroupPosts = async (req, res, next) => {
 
 const getUserOverview = async (req, res, next) => {
 	try {
-
-		const user_id = req.params.user_id;
+		const userId = req.params.user_id;
 
 		// Get day of today and zero the hours
-		const today = new Date();
-		today.setHours(0,0,0,0);
-		
-		const overviewPosts = await Post.find({
+		const today = await new Date();
+		await today.setHours(0,0,0,0);
+
+		const posts = await Post.find({
 			$or: [
 				// From this user...
-					{ $and: [
-						// Find normal posts that has comments
-						{ _posted_by: user_id },
-						{ type: 'normal' },
-						{ comments: { $exists: true, $ne: []}}
-					]},
-					 // Find tasks due to today
-					{ $and: [
-						{ 'task._assigned_to': user_id },
-						{ 'task.due_date': today }
-					]},
+				{ $and: [
+					// Find normal posts that has comments
+					{ _posted_by: userId },
+					{ type: 'normal' },
+					{ comments: { $exists: true, $ne: []}}
+				]},
+				// Find tasks due to today
+				{ $and: [
+					{ 'task._assigned_to': userId },
+					{ 'task.due_date': today }
+				]},
 				// Find events due to today
-					{ $and: [
-						{ 'event._assigned_to': user_id },
-						{ 'event.due_date': today }
-					]}
-				]})
+				{ $and: [
+					{ 'event._assigned_to': userId },
+					{ 'event.due_date': today }
+				]}
+			]})
 			.sort('-created_date')
 			.populate('_posted_by', 'first_name last_name profile_pic')
 			.populate('comments._commented_by', 'first_name last_name profile_pic')
 			.populate('task._assigned_to', 'first_name last_name')
 			.populate('event._assigned_to', 'first_name last_name')
+			.populate('_group', 'group_name group_avatar')
 			.populate('_liked_by', 'first_name last_name');
 
 		return res.status(200).json({
-			message: 'posts found successfully!',
-			posts: overviewPosts
+			message: `Found ${posts.length} posts!`,
+			posts,
 		});
 
 	} catch (err) {
@@ -220,60 +201,60 @@ const getUserOverview = async (req, res, next) => {
 	}
 };
 
-const likePost = (req, res, next) => {
+const likePost = async (req, res, next) => {
+	try {
+		const postId = req.body.post_id;
+		const userId = req.body.user_id;
 
-	let post_id = req.body.post_id;
-	let user_id = req.body.user_id;
+		const post = await Post.findByIdAndUpdate({
+			_id: postId
+		}, {
+			$addToSet: {
+				_liked_by: userId
+			}
+		}, {
+			new: true
+		});
 
-	Post.findByIdAndUpdate({
-		_id: post_id
-	}, {
-		$addToSet: {
-			_liked_by: user_id
-		}
-	}, {
-		new: true
-	})
-		.then((updated_post) => {
-			res.status(200).json({
-				message: 'Post has been liked Successflly!',
-				post: updated_post
-			})
-		})
-		.catch((err) => {
-			res.status(500).json({
-				message: 'something went wrong | internal server error ',
-				err
-			})
-		})
+		return res.status(200).json({
+			message: 'Post liked!',
+			post,
+		});
+
+	} catch (err) {
+		return sendErr(res, err);
+	}
 };
 
-const unlikePost = (req, res, next) => {
+const unlikePost = async (req, res, next) => {
+	try {
+	const postId = req.body.post_id;
+	const userId = req.body.user_id;
 
-	let post_id = req.body.post_id;
-	let user_id = req.body.user_id;
-
-	Post.findByIdAndUpdate({
-		_id: post_id
+	const post = await Post.findByIdAndUpdate({
+		_id: postId
 	}, {
 		$pull: {
-			_liked_by: user_id
+			_liked_by: userId
 		}
 	}, {
 		new: true
-	}).then((updated_post) => {
-		res.status(200).json({
-			message: 'post successfully unliked',
-			post: updated_post
+	});
+
+		return res.status(200).json({
+			message: 'Post unliked!',
+			post,
 		});
-	}).catch((err) => {
-		res.status(500).json({
-			message: 'something went wrong on server | mongdb server error',
-			err
-		});
-	})
+
+	} catch (err) {
+		return sendErr(res, err);
+	}
 };
 
+/*	=============
+ *	-- EXPORTS --
+ *	=============
+ */
 
 module.exports = {
 	addNewPost,

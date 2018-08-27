@@ -6,15 +6,16 @@
        
       <div *ngFor="let comment of post.comments">
         <div class="media card-tile">
-            <img src="/assets/images/group.png" onerror="this.src='/uploads/user.png'" class="mr-3 feed-avatar">
+            <img src="/uploads/{{post._group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" class="mr-3 feed-avatar">
         <div class=" row media-body">
             <div class="col-md-1">
                 <img src="/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'" class="feed-avatar">
             </div>
-          <div class="col-md-1">
+          <div class="col-md-2">
             <h5>{{comment._commented_by?.first_name}}</h5>
             
             <p class="small text-muted">{{comment.created_date | date:'shortTime' }}</p>
+            <h5 style="color: #005fd5;"><b>{{post._group?.group_name}} Group</b></h5>
           </div>
 
           <div class="col-md-8">
@@ -36,47 +37,53 @@
     </li>
 
     <li style="list-style-type: none;" *ngIf="post.type== 'task'">
-      <div class="row navig">
-        <div class="col-md-4 clearfix" style="background-image: url('/assets/images/group.png')">
-          <div class="row card-title"> 
-          <div class="col-md-5">
-            <h5>{{post._posted_by?.first_name}} </h5>
-            <p class="small text-muted">{{post.created_date | date:'shortTime' }}</p>
+        <div class="media card-tile">
+            <img src="/uploads/{{post._group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" class="mr-3 feed-avatar">
+        <div class=" row media-body">
+            <div class="col-md-1">
+                <img src="/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar">
+            </div>
+          <div class="col-md-2">
+              <h5>{{post._posted_by?.first_name}} </h5>
+            
+              <p class="small text-muted">{{post?.created_date | date:'shortTime' }}</p>
+              <h5 style="color: #005fd5;"><b>{{post._group?.group_name}} Group</b></h5>
           </div>
+
+          <div class="col-md-8">
+              <div class="event-title" style="color: #005fd5; font-size: 20px;">Assigned a Task to you</div>
+              <div class="event-title" style="color:black; font-weight: normal; font-size: 16px" [innerHTML]="post.content"></div>
+          </div>
+         
           <div class="col-md-1">
-              <img src="/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar">
+            <i class="material-icons">chat</i>
+            <p class="small text-muted">Posted<br /><b>{{post.created_date | date:'MMM d' }}</b></p>
+  
           </div>
-          </div>
-        </div>
+          
+         </div>
 
-        <div class="col-md-7">
-          <div class="event-title" style="color: #005fd5; font-size: 20px;">Assigned a Task to you</div>
-          <div class="event-title" style="color:black; font-weight: normal; font-size: 16px" [innerHTML]="post.content"></div>
+    
         </div>
-        <div class="col-md-1">
-          <i class="material-icons">assignment_turned_in</i>
-          <p class="small text-muted">Posted<br /><b>{{post.created_date | date:'MMM d' }}</b></p>
-
-        </div>
-      </div>
     </li>
 
     <li style="list-style-type: none;" *ngIf="post.type== 'event'">
-      <div class="row navig">
-       
-        <div class="col-md-4 clearfix" style="background-image: url('/assets/images/group.png')">
-          <div class="row card-title"> 
-              <div class="col-md-5">
-                <h5>{{post._posted_by?.first_name}} </h5>
-                <p class="small text-muted">{{post.created_date | date:'shortTime' }}</p>
-              </div>
-              <div class="col-md-1">
-                  <img src="/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar">
-              </div>
-              </div>
-        </div>
 
-        <div class="col-md-7">
+       
+        <div class="media card-tile">
+            <img src="/uploads/{{post._group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" class="mr-3 feed-avatar">
+        <div class=" row media-body">
+            <div class="col-md-1">
+                <img src="/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar">
+            </div>
+          <div class="col-md-2">
+              <h5>{{post._posted_by?.first_name}} </h5>
+            
+              <p class="small text-muted">{{post.created_date | date:'shortTime' }}</p>
+              <h5 style="color: #005fd5;"><b>{{post._group?.group_name}} Group</b></h5>
+          </div>
+
+        <div class="col-md-8">
             <div class="row event-title">
                 <div class="col-md-2 dateblock">
                   <span class="bigdate">{{post?.event.due_date | date :'dd' }}</span>
@@ -96,7 +103,8 @@
           <i class="material-icons">today</i>
           <p class="small text-muted">Posted<br /><b>{{post.created_date | date:'MMM d' }}</b></p>
         </div>
-      </div>
+        </div>
+        </div>
     </li>
   </ul>
 </div>
