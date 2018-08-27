@@ -1,8 +1,8 @@
-const sendErr = (res, err, message) => {
+const sendErr = (res, err, message, status) => {
 
 	console.log(`\n⛔️ Error:\n ${err}`);
 
-	return res.status(500).json({
+	return res.status(status || 500).json({
 		message: message || 'Internal server error!',
 		err
 	});
