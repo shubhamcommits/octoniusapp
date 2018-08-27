@@ -1,270 +1,221 @@
-const User = require("../../models/user");
-const Workspace = require("../../models/workspace");
-const Group = require("../../models/group");
+const User = require('../../models/user');
+const Workspace = require('../../models/workspace');
+const Group = require('../../models/group');
 const Auth = require('../../models/auth');
-const helper_password = require("../../helpers/password");
-const jwt = require("jsonwebtoken");
-const sendMail = require("../../sendgrid/sendMail");
+const helper_password = require('../../helpers/password');
+const jwt = require('jsonwebtoken');
+const sendMail = require('../../sendgrid/sendMail');
+const sendErr = require('../../helpers/sendErr');
 
-module.exports = {
-	signin(req, res, next) {
-		console.log("--------Workspace Sign in Controller Api---------");
+/*	==================
+ *	-- AUTH METHODS --
+ *	==================
+ */
 
-		let login_user = req.body;
+const signIn = async (req, res, next) => {
+	try {
+		console.log('--> User signing in...');
 
+		const loginUser = req.body;
 
-		User.findOne({
-			workspace_name: login_user.workspace_name,
-			email: login_user.email
-		})
-			.populate('_workspace', 'workspace_name _id')
-			.then((user) => {
-				// user not found error
-				if (user == null) {
-					res.status(401).json({
-						message: "Auth failed,Invalid Wrokspace name or user email!",
-					});
+		const user = await User.findOne({
+			workspace_name: loginUser.workspace_name,
+			email: loginUser.email
+		}).populate('_workspace', 'workspace_name _id');
 
-				} else {
+		// If user wasn't found, return error
+		if (!user) {
+			return sendErr(res, '', 'Please enter a valid Workspace name or user email!', 401);
+		} 
 
-					let plainPassword = req.body.password;
+		const plainPassword = req.body.password;
 
-					helper_password.decryptPassword(plainPassword, user.password)
-						.then((response) => {
-							if (response.password == true) {
-								// generating jsonwebtoken 
-								const payload = {
-									subject: user._id
-								};
-								const token = jwt.sign(payload, process.env.JWT_KEY);
+		const passDecrypted = await helper_password.decryptPassword(plainPassword, user.password);
 
-								// initialition new auth record
-								let new_auth = {
-									workspace_name: user.workspace_name,
-									_user: user,
-									token: token
-								}
-								// creating new auth record
-								Auth.create(new_auth)
-									.then((auth) => {
-										let current_user = {
-											user_id: user._id,
-											workspace: user._workspace
-										}
-										res.status(200).json({
-											message: "Sign in Successfull!",
-											token: token,
-											user: current_user
-										});
-									})
-								// auth creation error
-									.catch((err) => {
-										res.status(500).json({
-											message: "something went wrong | internal server error",
-											error: err
-										});
-									})
-							} else {
-								res.status(401).json({
-									message: "Auth failed,Invalid email or password!",
-									password: response.password
-								});
-							}
+		if (!passDecrypted.password) {
+			return sendErr(res, '', 'Please enter a valid email or password!', 401);
+		}
 
-						})
-					// password decryption error
-						.catch((error) => {
-							res.status(401).json({
-								message: "Auth failed,Invalid email or password!",
-							});
-						});
-				}
-			})
-		// user finding error 
-			.catch((error) => {
-				res.status(500).json({
-					message: "something went wrong | internal server error",
-					error: error
-				});
-			})
-	},
+		// Generate jsonwebtoken 
+		const payload = {
+			subject: user._id
+		};
+		const token = await jwt.sign(payload, process.env.JWT_KEY);
 
-	// new user signup on existing workspace
-	signup(req, res, next) {
-		console.log("----------Workspace Sign up Controller Apis----------");
-		console.log(req.user_role);
-		let user_data = req.body;
-		user_data.full_name = req.body.first_name + ' ' + req.body.last_name;
+		// Initialize new auth record
+		const newAuth = {
+			workspace_name: user.workspace_name,
+			_user: user,
+			token: token
+		}
 
-		let user_email_domain = req.body.email.split("@")[1];
-		let user_email = req.body.email;
+		// Create new auth record
+		const auth = await Auth.create(newAuth);
 
+		const currentUser = {
+			user_id: user._id,
+			workspace: user._workspace
+		}
 
-		// checking wroksapce existance and verifying user's email domain or invited users for signup
-		// only allowed email domains holder users and invited users can signup on the workspace
-		Workspace.findOne({
+		return res.status(200).json({
+			message: `User signed in ${user.workspace_name} Workspace!`,
+			token: token,
+			user: currentUser
+		});
+
+	} catch (err) {
+		return sendErr(res, err, 'Error, username');
+	}
+};
+
+// New user sign up on an existing workspace
+const signUp = async (req, res, next) => {
+	try {
+		console.log('--> New user signing up...');
+
+		const userData = req.body;
+		const userEmailDomain = req.body.email.split('@')[1];
+		const userEmail = req.body.email;
+
+		userData.full_name = `${req.body.first_name} ${req.body.last_name}`;
+
+		// Check if: 
+		//  - Workspace exists
+		//  - User's email domain is allowed
+		//  - User was invited to sign up
+		const workspace = await Workspace.findOne({
 			$or: [{
-				workspace_name: user_data.workspace_name,
-				allowed_domains: user_email_domain
+				workspace_name: userData.workspace_name,
+				allowed_domains: userEmailDomain
 			}, {
-				workspace_name: user_data.workspace_name,
+				workspace_name: userData.workspace_name,
 				'invited_users.email': {
-					$in: user_email
+					$in: userEmail
 				}
 			}]
-		})
-			.then((workspace) => {
-				// if workspace does not exist
-				if (workspace == null) {
-					return res.status(404).json({
-						message: "Error! workspace name is invalid or your email is not allowed to join this workspace"
-					});
-					// workspace exists and also user can join the workspace
-				} else {
-					//encrypting user password
-					helper_password.encryptPassword(user_data.password)
-						.then((response) => {
+		});
 
-							user_data.password = response.password;
-							user_data._workspace = workspace;
-							user_data.role = 'member';
+		// Workspace not found!
+		if (!workspace) {
+			return sendErr(res, '', 'Workspace does not exist or this email is not allowed to join this workspace', 404);
+		}
 
-							// creating new user 
-							User.create(user_data)
-								.then((user) => {
+		// Encrypting user password
+		const passEncrypted = await helper_password.encryptPassword(userData.password);
 
-									// adding the new user in Global group of workspace
-									Group.findOneAndUpdate({
-										group_name: 'Global',
-										workspace_name: req.body.workspace_name
-									}, {
-										$push: {
-											_members: user
-										}
-									})
-										.then((global_group) => {
-											// Updating user's groups list
-											User.findByIdAndUpdate({
-												_id: user._id
-											}, {
-												$push: {
-													_groups: global_group
-												}
-											}, {
-												new: true
-											})
-												.then((updated_user) => {
+		// Error creating the password
+		if (!passEncrypted) {
+			return sendErr(res, '', 'An error ocurred trying to create the password, please choose another password!', 401);
+		}
 
-													// updating workspace's memebers list wih new user
-													Workspace.findByIdAndUpdate({
-														_id: workspace._id
-													}, {
-														$push: {
-															members: user
-														}
-													}, {
-														new: true
-													})
-														.then((updated_workspace) => {
-															// generating jsonwebtoken 
-															const payload = {
-																subject: user._id
-															};
-															const token = jwt.sign(payload, process.env.JWT_KEY);
+		userData.password = passEncrypted.password;
+		userData._workspace = workspace;
+		userData.role = 'member';
 
-															// initialition new auth record
-															let new_auth = {
-																workspace_name: workspace.workspace_name,
-																_user: user,
-																token: token
-															}
-															// creating new auth record
-															Auth.create(new_auth)
-																.then((auth) => {
-																	//console.log("inside auth then")
-																	let current_user = {
-																		user_id: user._id,
-																		workspace: {
-																			_id: workspace._id,
-																			workspace_name: workspace.workspace_name
-																		}
-																	}
-																	// everything is correct and now user can signup on workspace
-																	res.status(200).json({
-																		message: "Congratulations! you are now member of our workspace.",
-																		token: token,
-																		user: current_user
+		// Create new user 
+		const user = await User.create(userData);
 
-																	});
+		// Error creating the new user
+		if (!user) {
+			return sendErr(res, '', 'Some error ocurred trying to create the new user!');
+		}
 
-																	// Send signup confirmation email
-																	sendMail.signup(user);
+		// Add new user to workspace's Global group
+		const globalGroupUpdate = await Group.findOneAndUpdate({
+			group_name: 'Global',
+			workspace_name: req.body.workspace_name
+		}, {
+			$push: {
+				_members: user
+			}
+		});
 
-																})
-															// auth creation error
-																.catch((err) => {
-																	console.log("inside auth catch");
-																	res.status(500).json({
-																		message: "something went wrong | internal server error auth creation error",
-																		error: err
-																	});
-																})
-														})
-													// workspace updating error
-														.catch((err) => {
-															res.status(500).json({
-																message: "something went wrong | Internal server error",
-																error: err
-															});
-														})
-												})
-											// User's group list updation error
-												.catch((err) => {
-													res.status(500).json({
-														message: "something went wrong | internal server error auth creation error",
-														error: err
-													});
-												})
-										})
-									// Global group updation error
-										.catch((err) => {
-											res.status(500).json({
-												message: "something went wrong | internal server error",
-												error: err
-											});
-										})
-								})
-							// user creating error
-								.catch((err) => {
-									res.status(500).json({
-										message: "something went wrong at user signup | Internal server error",
-										error: err
-									});
-								})
-						})
-					// password encryption error
-						.catch((err) => {
-							res.status(401).json({
-								message: "something went wrong with your password,try another password",
-								error: err.message
-							});
-						})
-				}
-			})
-		// workspace finding error
-			.catch((error) => res.status(500).json({
-				message: "something went wrong | internal server error",
-				error
-			}))
-	},
+		// Error updating the Global group
+		if (!globalGroupUpdate) {
+			return sendErr(res, '', 'Some error ocurred trying to update the Global group!');
+		}
 
-	// signout user
-	signOut(req, res, next) {
+		// Add Global group to user's groups
+		const userUpdate = await User.findByIdAndUpdate({
+			_id: user._id
+		}, {
+			$push: {
+				_groups: globalGroupUpdate
+			}
+		}, {
+			new: true
+		});
 
-		let user_id = req.userId;
+		// Error updating the user
+		if (!userUpdate) {
+			return sendErr(res, '', 'Some error ocurred trying to update the user!');
+		}
 
-		Auth.findOneAndUpdate({
-			_user: user_id,
+		// Add new user to workpace members
+		const workspaceUpdate = await Workspace.findByIdAndUpdate({
+			_id: workspace._id
+		}, {
+			$push: {
+				members: user
+			}
+		}, {
+			new: true
+		});
+
+		// Error updating the Workspace
+		if (!workspaceUpdate) {
+			return sendErr(res, '', 'Some error ocurred trying to update the Workspace!');
+		}
+
+		// Generate jsonwebtoken 
+		const payload = {
+			subject: user._id
+		};
+		const token = await jwt.sign(payload, process.env.JWT_KEY);
+
+		// Initialize new auth record
+		const newAuth = {
+			workspace_name: workspaceUpdate.workspace_name,
+			_user: user,
+			token: token
+		};
+
+		// Create new auth record
+		const auth = await Auth.create(newAuth)
+
+		// Error on auth creation
+		if (!auth) {
+			return sendErr(res, '', 'Something went wrong on Auth creation!');
+		}
+
+		const currentUser = {
+			user_id: user._id,
+			workspace: {
+				_id: workspaceUpdate._id,
+				workspace_name: workspaceUpdate.workspace_name
+			}
+		};
+
+		// Send signup confirmation email
+		sendMail.signup(userUpdate);
+
+		// Signup user and return the token
+		return res.status(200).json({
+			message: `Welcome to ${workspaceUpdate.workspace_name} Workspace!`,
+			token: token,
+			user: currentUser
+		});
+
+	} catch (err) {
+		return sendErr(res, err);
+	}
+};
+
+const signOut = async (req, res, next) => {
+	try {
+
+		const user = await Auth.findOneAndUpdate({
+			_user: req.userId,
 			token: req.headers.authorization.split(' ')[1]
 		}, {
 			$set: {
@@ -273,259 +224,235 @@ module.exports = {
 			}
 		}, {
 			new: true
-		})
-			.then((user) => {
-				res.status(200).json({
-					message: "User successfully! logged out",
-				});
+		});
 
-			})
-			.catch((err) => {
-				res.status(500).json({
-					message: "something went wrong | internal server error",
-					err
-				});
+		return res.status(200).json({
+			message: 'User logged out!',
+		});
 
-			});
-
-	},
-	/*===================================================
-			 Route to check the wrokspace name availbility
-			===================================================*/
-	checkWorkspaceName(req, res, next) {
-		let workspace_data = req.body;
-		console.log("============checking worksapce Name Availablity===========");
-		console.log(workspace_data);
-
-		Workspace.findOne({
-			workspace_name: workspace_data.workspace_name
-		})
-			.then((workspace) => {
-				// workspace does not found
-				if (workspace == null) {
-
-					res.status(200).json({
-						message: "workspace name is available.",
-						workspace
-					});
-				}
-				// if workspace alread exists 
-				else {
-					res.status(409).json({
-						message: "workspace name has already been taken,Please pick another name."
-					});
-				}
-			})
-			.catch((error) => res.status(500).json({
-				message: "something went wrong | internal server error",
-				error
-			}))
-	},
-
-	// creating new workspace and new user with owner rights
-	createNewWorkSpace(req, res, next) {
-
-		console.log("============Creating New Workspace===========");
-		console.log(req.body);
-
-
-		let userCreated;
-		let workspaceCreated;
-
-		// generating hash password fist
-		helper_password.encryptPassword(req.body.owner_password)
-			.then((hashPassword) => {
-
-				let new_workspace = req.body;
-				new_workspace.owner_password = hashPassword.password;
-				// creating new workspace
-				Workspace.create(new_workspace)
-					.then((workspace) => {
-
-						let new_user = {
-							first_name: req.body.owner_first_name,
-							last_name: req.body.owner_last_name,
-							full_name: req.body.owner_first_name + ' ' + req.body.owner_last_name,
-							email: req.body.owner_email,
-							password: hashPassword.password,
-							workspace_name: req.body.workspace_name,
-							company_name: req.body.company_name,
-							_workspace: workspace,
-							role: 'owner'
-						}
-						// creating new user with owner rights
-						User.create(new_user)
-							.then((user) => {
-
-								userCreated = user;
-
-								// updating  memebers and _owener fields of workspace
-								Workspace.findByIdAndUpdate({
-									_id: workspace._id
-								}, {
-									$set: {
-										_owner: user,
-									},
-									$push: {
-										members: user
-									}
-								}, {
-									new: true
-								})
-									.then((updated_workspace) => {
-
-										// initialization of global group
-										let global_group = {
-											group_name: 'Global',
-											_workspace: workspace,
-											_members: user,
-											workspace_name: workspace.workspace_name,
-										}
-										// creating new gloabal group
-										Group.create(global_group)
-											.then((new_group) => {
-
-												// generating jsonwebtoken 
-												const payload = {
-													subject: user._id
-												};
-												const token = jwt.sign(payload, process.env.JWT_KEY);
-
-												// initialition new auth record 
-												let new_auth = {
-													workspace_name: workspace.workspace_name,
-													_user: user,
-													token: token
-												}
-												// creating new auth record
-												Auth.create(new_auth)
-													.then((auth) => {
-														// everything is correct,user can create new workspace
-														let current_user = {
-															user_id: user._id,
-															workspace: {
-																_id: workspace._id,
-																workspace_name: workspace.workspace_name
-															}
-														}
-														res.status(200).json({
-															message: "Workspace has created successfully!",
-															token: token,
-															user: current_user
-														});
-
-														// Send signup confirmation email
-														sendMail.signup(userCreated);
-
-														// Send new workspace confirmation email
-														sendMail.newWorkspace(workspace);
-
-													})
-												// auth creation error
-													.catch((err) => {
-														res.status(500).json({
-															message: "something went wrong auth creation error | internal server error",
-															error: err
-														});
-													})
-
-
-											})
-										// gloabl group creation error
-											.catch((err) => {
-												res.status(500).json({
-													error: err,
-													message: "something went wrong group creation error | internal server error occured!"
-												})
-											})
-
-									})
-								// workspace update error
-									.catch((error) => {
-										res.status(500).json({
-											message: "something went wrong workspace update error | internal server error occured",
-											error: error
-										});
-									})
-							})
-						// user creation error 
-							.catch((err) => {
-								res.status(500).json({
-									message: "something went wrong user creation error  | internal server error occured",
-									error: err
-								});
-							});
-
-					})
-				// workspace creation error
-					.catch((err) => {
-						res.status(500).json({
-							message: "something went wrong  workspace creation error | internal server error occured",
-							error: err
-						});
-					});
-			})
-		// password encryption error
-			.catch((err) => {
-				return res.status(403).json({
-					message: "something went wrong with your password, Please try another one",
-					error: err.message
-				});
-			})
-	},
-
-
-
-	/*=======================================================
-		Route to check the user availability
-		======================================================= */
-	checkUserAvailability(req, res, next) {
-		let user_data = req.body;
-
-		Workspace.findOne({
-			workspace_name: user_data.workspace_name
-		})
-			.then((workspace) => {
-				// if workspace does not exists
-				if (workspace == null) {
-					return res.status(401).json({
-						message: "Error! Invalid workspace name"
-					})
-
-				} else {
-					User.findOne({
-						workspace_name: user_data.workspace_name,
-						email: user_data.email
-					})
-						.then((user) => {
-							// if user is not the member of workspace now he/she can signup
-							if (user == null) {
-								res.status(200).json({
-									message: "user can sign up with this email and workspace name"
-								});
-							} else {
-								// if user alredy member of workspace then he can not signup again
-								res.status(409).json({
-									message: "you are already member of this workspace,go for sign in."
-								});
-							}
-						})
-					// user find error
-						.catch((error) => {
-							res.status(500).json({
-								message: "something went wrong | internal server error",
-								error
-							});
-						})
-				}
-			})
-		// workspace find error
-			.catch((error) => {
-				res.status(500).json({
-					message: "something went wrong | internal server error",
-					error
-				});
-			})
+	} catch (err) {
+		return sendErr(res, err);
 	}
+};
 
+/*	=========================================
+ *	-- WORKSPACE AVAILABILITY AND CREATION --
+ *	=========================================
+ */
+
+const checkWorkspaceName = async (req, res, next) => {
+	try {
+		console.log('--> Checking workspace name availablity...');
+
+		const workspace = await Workspace.findOne({ workspace_name: req.body.workspace_name });
+
+		// Workspace name already exists
+		if (workspace) {
+			return sendErr(res, '', 'This Workspace name has already been taken, please pick another name!', 409);
+
+		} else {
+
+			// Allow user to pick this name
+			return res.status(200).json({
+				message: 'This Workspace name is available.',
+				workspace
+			});
+		}
+
+	} catch (err) {
+		return sendErr(res, err);
+	}
+};
+
+const createNewWorkspace = async (req, res, next) => {
+	try {
+		console.log('--> Creating new workspace...');
+
+		// Generate hash password
+		const passEncrypted = await helper_password.encryptPassword(req.body.owner_password);
+
+		// Error creating the password
+		if (!passEncrypted) {
+			return sendErr(res, '', 'An error ocurred trying to create the password, please choose another password!', 401);
+		}
+
+		// Prepare workspace data before creation
+		const new_workspace = req.body;
+		new_workspace.owner_password = passEncrypted.password;
+
+		// Create new workspace
+		const workspace = await	Workspace.create(new_workspace);
+
+		// Error creating workspace
+		if (!workspace) {
+			return sendErr(res, '', 'Some error ocurred trying to create the workspace!');
+		}
+
+		// Prepare new user data
+		const newUser = {
+			first_name: req.body.owner_first_name,
+			last_name: req.body.owner_last_name,
+			full_name: `${req.body.owner_first_name} ${req.body.owner_last_name}`,
+			email: req.body.owner_email,
+			password: passEncrypted.password,
+			workspace_name: req.body.workspace_name,
+			company_name: req.body.company_name,
+			_workspace: workspace,
+			role: 'owner'
+		}
+
+		// Create new user with owner rights
+		const user = await User.create(newUser);
+
+		// Error creating user
+		if (!user) {
+			return sendErr(res, '', 'Some error ocurred trying to create the user!');
+		}
+
+		// Pass user as workspace member and _owner
+		const workspaceUpdate = await Workspace.findByIdAndUpdate({
+			_id: workspace._id
+		}, {
+			$set: {
+				_owner: user,
+			},
+			$push: {
+				members: user
+			}
+		}, {
+			new: true
+		});
+
+		// Error updating the workspace
+		if (!workspaceUpdate) {
+			return sendErr(res, '', 'Some error ocurred trying to update the workspace!');
+		}
+
+		// Pepare global group data
+		const globalGroup = {
+			group_name: 'Global',
+			_workspace: workspaceUpdate,
+			_members: user,
+			workspace_name: workspaceUpdate.workspace_name, 
+		}
+
+		// Create new global group
+		const group = await Group.create(globalGroup);
+
+		// Error creating global group
+		if (!group) {
+			return sendErr(res, '', 'Some error ocurred trying to create the global group!');
+		}
+
+		// Add Global group to user's groups
+		const userUpdate = await User.findByIdAndUpdate({
+			_id: user._id
+		}, {
+			$push: {
+				_groups: group
+			}
+		}, {
+			new: true
+		});
+
+		// Error updating the user
+		if (!userUpdate) {
+			return sendErr(res, '', 'Some error ocurred trying to update the user!');
+		}
+
+		// generating jsonwebtoken 
+		const payload = {
+			subject: userUpdate._id
+		};
+
+		const token = await jwt.sign(payload, process.env.JWT_KEY);
+
+		// Initialize new auth record
+		const new_auth = {
+			workspace_name: workspaceUpdate.workspace_name,
+			_user: userUpdate,
+			token: token
+		};
+
+		// Create new auth record
+		const auth = await Auth.create(new_auth);
+
+		// Error on auth creation
+		if (!auth) {
+			return sendErr(res, '', 'Something went wrong on Auth creation!');
+		}
+
+		// everything is correct,user can create new workspace
+		const currentUser = {
+			user_id: userUpdate._id,
+			workspace: {
+				_id: workspaceUpdate._id,
+				workspace_name: workspaceUpdate.workspace_name
+			}
+		};
+
+		// Send signup confirmation email
+		sendMail.signup(userUpdate);
+
+		// Send new workspace confirmation email
+		sendMail.newWorkspace(workspaceUpdate);
+
+		return res.status(200).json({
+			message: 'Workspace created!',
+			token: token,
+			user: currentUser
+		});
+
+	} catch (err) {
+		return sendErr(res, err);
+	}
+};
+
+/*	=======================
+ *	-- USER AVAILABILITY --
+ *	=======================
+ */
+
+const checkUserAvailability = async (req, res, next) => {
+	try {
+		const userData = req.body;
+
+		const workspace = await Workspace.findOne({ workspace_name: userData.workspace_name });
+
+		// Workspace not found
+		if (!workspace) {
+			return sendErr(res, err, 'Invalid workspace name!', 401);
+		} 
+
+		const user = await User.findOne({
+			workspace_name: userData.workspace_name,
+			email: userData.email
+		});
+
+		// If user is already a member, user must sign in
+		if (user) {
+			return sendErr(res, err, 'You are alreadyi a member of this workspace, please sign in!', 409);
+		}
+
+		return res.status(200).json({
+			message: 'user can sign up with this email and workspace name'
+		});
+
+	} catch (err) {
+		return sendErr(res, err);
+	}
+};
+
+/*	=============
+ *	-- EXPORTS --
+ *	=============
+ */
+
+module.exports = {
+	signIn,
+	signUp,
+	signOut,
+	checkWorkspaceName,
+	createNewWorkspace,
+	checkUserAvailability
 }
