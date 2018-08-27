@@ -7,12 +7,15 @@
       <div *ngFor="let comment of post.comments">
       <div class="row navig">
         <div class="col-md-4 clearfix" style="background-image: url('/assets/images/group.png')">
-
-            <img src="/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'" class="feed-avatar">
-          <div class="username float-left">
-            <h6>{{comment._commented_by?.first_name}}</h6>
+          <div class="row card-title"> 
+          <div class="col-md-5">
+            <h5>{{comment._commented_by?.first_name}}</h5>
             
             <p class="small text-muted">{{comment.created_date | date:'shortTime' }}</p>
+          </div>
+          <div class="col-md-1">
+              <img src="/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'" class="feed-avatar">
+          </div>
           </div>
         </div>
 
@@ -33,11 +36,14 @@
     <li style="list-style-type: none;" *ngIf="post.type== 'task'">
       <div class="row navig">
         <div class="col-md-4 clearfix" style="background-image: url('/assets/images/group.png')">
-
-            <img src="/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar">
-          <div class="username float-left">
-            <h6>{{post._posted_by?.first_name}} </h6>
+          <div class="row card-title"> 
+          <div class="col-md-5">
+            <h5>{{post._posted_by?.first_name}} </h5>
             <p class="small text-muted">{{post.created_date | date:'shortTime' }}</p>
+          </div>
+          <div class="col-md-1">
+              <img src="/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar">
+          </div>
           </div>
         </div>
 
@@ -57,12 +63,15 @@
       <div class="row navig">
        
         <div class="col-md-4 clearfix" style="background-image: url('/assets/images/group.png')">
-           
-            <img src="/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar">
-          <div class="username float-left">
-            <h5>{{post._posted_by?.first_name}}</h5>
-            <p class="small">{{post.created_date | date:'shortTime' }}</p>
-          </div>
+          <div class="row card-title"> 
+              <div class="col-md-5">
+                <h5>{{post._posted_by?.first_name}} </h5>
+                <p class="small text-muted">{{post.created_date | date:'shortTime' }}</p>
+              </div>
+              <div class="col-md-1">
+                  <img src="/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar">
+              </div>
+              </div>
         </div>
 
         <div class="col-md-7">
