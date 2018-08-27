@@ -160,8 +160,8 @@ const getUserOverview = async (req, res, next) => {
 		const userId = req.params.user_id;
 
 		// Get day of today and zero the hours
-		const today = new Date();
-		today.setHours(0,0,0,0);
+		const today = await new Date();
+		await today.setHours(0,0,0,0);
 
 		const posts = await Post.find({
 			$or: [
@@ -188,10 +188,11 @@ const getUserOverview = async (req, res, next) => {
 			.populate('comments._commented_by', 'first_name last_name profile_pic')
 			.populate('task._assigned_to', 'first_name last_name')
 			.populate('event._assigned_to', 'first_name last_name')
+			.populate('_group', 'group_name group_avatar')
 			.populate('_liked_by', 'first_name last_name');
 
 		return res.status(200).json({
-			message: `Found ${post.length} posts!`,
+			message: `Found ${posts.length} posts!`,
 			posts,
 		});
 
