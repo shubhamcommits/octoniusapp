@@ -2,42 +2,50 @@
   <app-overview-page-header></app-overview-page-header>
   <div *ngFor="let post of posts; let i = index;">
   <ul class="list-group">
-    <li *ngIf="post.type== 'normal'">
+    <li style="list-style-type: none;" *ngIf="post.type== 'normal'">
        
       <div *ngFor="let comment of post.comments">
-      <div class="row navig">
-        <div class="col-md-4 clearfix">
-
-            <img src="/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'" class="feed-avatar">
-          <div class="username float-left">
-            <h6>{{comment._commented_by?.first_name}}</h6>
+        <div class="media card-tile">
+            <img src="/assets/images/group.png" onerror="this.src='/uploads/user.png'" class="mr-3 feed-avatar">
+        <div class=" row media-body">
+            <div class="col-md-1">
+                <img src="/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'" class="feed-avatar">
+            </div>
+          <div class="col-md-1">
+            <h5>{{comment._commented_by?.first_name}}</h5>
             
             <p class="small text-muted">{{comment.created_date | date:'shortTime' }}</p>
           </div>
-        </div>
 
-        <div class="col-md-7">
-            <div class="event-title" style="font-size:20px">Replied to your Post</div>
-            <div class="event-title" style="color:black; font-weight: normal; font-size: 16px" [innerHTML]="comment.content"></div>
-        </div>
-       
-        <div class="col-md-1">
-          <i class="material-icons">chat</i>
-          <p class="small text-muted">Posted<br /><b>{{comment.created_date | date:'MMM d' }}</b></p>
+          <div class="col-md-8">
+              <div class="event-title" style="font-size:20px">Replied to your Post</div>
+              <div class="event-title" style="color:black; font-weight: normal; font-size: 16px" [innerHTML]="comment.content"></div>
+          </div>
+         
+          <div class="col-md-1">
+            <i class="material-icons">chat</i>
+            <p class="small text-muted">Posted<br /><b>{{comment.created_date | date:'MMM d' }}</b></p>
+  
+          </div>
+          
+         </div>
 
-        </div>
+    
         </div>
       </div>
     </li>
 
-    <li *ngIf="post.type== 'task'">
+    <li style="list-style-type: none;" *ngIf="post.type== 'task'">
       <div class="row navig">
-        <div class="col-md-4 clearfix">
-
-            <img src="/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar">
-          <div class="username float-left">
-            <h6>{{post._posted_by?.first_name}} </h6>
+        <div class="col-md-4 clearfix" style="background-image: url('/assets/images/group.png')">
+          <div class="row card-title"> 
+          <div class="col-md-5">
+            <h5>{{post._posted_by?.first_name}} </h5>
             <p class="small text-muted">{{post.created_date | date:'shortTime' }}</p>
+          </div>
+          <div class="col-md-1">
+              <img src="/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar">
+          </div>
           </div>
         </div>
 
@@ -53,16 +61,19 @@
       </div>
     </li>
 
-    <li *ngIf="post.type== 'event'">
+    <li style="list-style-type: none;" *ngIf="post.type== 'event'">
       <div class="row navig">
        
-        <div class="col-md-4 clearfix">
-           
-            <img src="/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar">
-          <div class="username float-left">
-            <h5>{{post._posted_by?.first_name}}</h5>
-            <p class="small">{{post.created_date | date:'shortTime' }}</p>
-          </div>
+        <div class="col-md-4 clearfix" style="background-image: url('/assets/images/group.png')">
+          <div class="row card-title"> 
+              <div class="col-md-5">
+                <h5>{{post._posted_by?.first_name}} </h5>
+                <p class="small text-muted">{{post.created_date | date:'shortTime' }}</p>
+              </div>
+              <div class="col-md-1">
+                  <img src="/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar">
+              </div>
+              </div>
         </div>
 
         <div class="col-md-7">
