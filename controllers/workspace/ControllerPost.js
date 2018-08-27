@@ -143,11 +143,16 @@ const getGroupPosts = async (req, res, next) => {
 			.populate('comments._commented_by', 'first_name last_name profile_pic')
 			.populate('task._assigned_to', 'first_name last_name')
 			.populate('event._assigned_to', 'first_name last_name')
-			.populate('_liked_by', '_id first_name last_name');
+			.populate('_liked_by', '_id first_name last_name').lean();
+
+		const postsUpdate = await posts.map((post) => {
+			post.liked_by = post._liked_by.map(user => user._id);
+			return post;
+		});
 
 		return res.status(200).json({
 			message: `Found ${posts.length} posts!`,
-			posts,
+			posts: postsUpdate
 		});
 
 	} catch (err) {
