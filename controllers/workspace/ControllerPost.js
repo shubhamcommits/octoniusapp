@@ -250,9 +250,9 @@ const unlikePost = async (req, res, next) => {
 	}
 };
 
-/*	====================
- *	-- EXPORT METHODS --
- *	====================
+/*	=============
+ *	-- EXPORTS --
+ *	=============
  */
 
 module.exports = {
