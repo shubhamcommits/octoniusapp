@@ -53,87 +53,80 @@ const getUserGroup = async (req, res, next) => {
 	}
 };
 
-// STOPPED HERE!!!!!!!!
-addNewUsersInGroup(req, res, next) {
-	let group = req.body.group;
-	let members = req.body.members;
-	let _members = members.map(result => {
-		return result._id;
-	});
+const addNewUsersInGroup = async (req, res, next) => {
+	try {
+		const group = req.body.group;
+		const members = req.body.members;
 
-	Group.findByIdAndUpdate({
-		_id: group
-	}, {
-		$addToSet: {
-			_members: _members
+		const _members = members.map(result => result._id);
+
+		const groupUpdate = await Group.findByIdAndUpdate({
+			_id: group
+		}, {
+			$addToSet: {
+				_members: _members
+			}
+		}, {
+			new: true
+		});
+		const usersUpdate = await User.updateMany({
+			_id: _members
+		}, {
+			$addToSet: {
+				_groups: group
+			}
+		});
+
+		// STOOPPPEEEDDDD HERE!!!!
+		for (user of usersUpdate) {
+
 		}
+
+		return res.status(200).json({
+			message: 'Group Data has updated successfully!',
+			group: groupUpdate
+		});
+
+	} catch (err) {
+		return sendErr(res, err);
+	}
+
+};
+
+updateGroup(req, res, next) {
+	console.log('===============Update Group===============');
+	let group_id = req.params.group_id;
+	let data = req.body;
+
+	Group.findOneAndUpdate({
+		_id: group_id
+	}, {
+		$set: data
 	}, {
 		new: true
 	})
 		.then((updated_group) => {
-			User.updateMany({
-				_id: _members
-			}, {
-				$addToSet: {
-					_groups: group
-				}
-			})
-				.then((updated_users) => {
-					res.status(200).json({
-						message: 'Group Data has updated successfully!',
-						group: updated_group
-					});
 
-				})
-				.catch((err) => {
-					res.status(500).json({
-						message: 'Error! something went wrong | internal server error',
-						err
-					});
-				})
+			if (updated_group == null) {
+				res.status(404).json({
+					message: 'Error! group not found,Invalid group id'
+				});
+			} else {
+				res.status(200).json({
+					message: 'Group has been updated successfully!',
+					group: updated_group
+				});
+			}
+
 		})
 		.catch((err) => {
+
 			res.status(500).json({
-				message: 'Error! something went wrong | internal server error',
-				err
+				message: 'something went wrong | internal server error!',
+				err: err
 			});
 		})
 },
-
-	updateGroup(req, res, next) {
-		console.log('===============Update Group===============');
-		let group_id = req.params.group_id;
-		let data = req.body;
-
-		Group.findOneAndUpdate({
-			_id: group_id
-		}, {
-			$set: data
-		}, {
-			new: true
-		})
-			.then((updated_group) => {
-
-				if (updated_group == null) {
-					res.status(404).json({
-						message: 'Error! group not found,Invalid group id'
-					});
-				} else {
-					res.status(200).json({
-						message: 'Group has been updated successfully!',
-						group: updated_group
-					});
-				}
-
-			})
-			.catch((err) => {
-
-				res.status(500).json({
-					message: 'something went wrong | internal server error!',
-					err: err
-				});
-			})
-	},
 
 	removeUserFromGroup(req, res, next) {
 
