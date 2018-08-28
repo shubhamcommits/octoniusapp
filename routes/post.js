@@ -1,8 +1,8 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
 
 
-const controller_post = require("../controllers/workspace/ControllerPost");
+const controller_post = require('../controllers/workspace/ControllerPost');
 const middleware_auth = require('../middlewares/auth')
 const post_file_handler = require('../helpers/postFileHander')
 const checkUserPermission = require('../middlewares/checkUserPermission');
@@ -22,7 +22,7 @@ router.post('/addComment', controller_post.addCommentOnPost);
 router.post('/like', controller_post.likePost);
 router.post('/unlike', controller_post.unlikePost);
 router.get('/:group_id', controller_post.getGroupPosts);
-router.get('/userOverview/:user_id', controller_post.getUserOverview);
+router.get('/userOverview/:user_id/:today', controller_post.getUserOverview);
 router.put('/', controller_post.deletePost);
 
 
