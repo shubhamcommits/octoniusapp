@@ -171,6 +171,7 @@ const getUserOverview = async (req, res, next) => {
 	try {
 		const userId = req.params.user_id;
 		const today = new Date(new Number(req.params.today));
+		today.setHours(0,0,0,0);
 
 		const posts = await Post.find({
 			$or: [
