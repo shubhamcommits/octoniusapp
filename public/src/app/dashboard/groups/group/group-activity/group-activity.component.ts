@@ -19,6 +19,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { NgxUiLoaderService } from 'ngx-ui-loader'; 
 import {SnotifyService, SnotifyPosition, SnotifyToastConfig} from 'ng-snotify';
 import {NgbPopoverConfig} from '@ng-bootstrap/ng-bootstrap';
+import { ScrollToService } from 'ng2-scroll-to-el';
 
 @Component({
   selector: 'app-group-activity',
@@ -115,7 +116,8 @@ export class GroupActivityComponent implements OnInit {
     public groupDataService: GroupDataService,
     private router: Router, private groupService: GroupService,
     private modalService: NgbModal, private postService: PostService, private _sanitizer: DomSanitizer,
-    private ngxService: NgxUiLoaderService, private snotifyService: SnotifyService, config: NgbPopoverConfig) {
+    private ngxService: NgxUiLoaderService, private snotifyService: SnotifyService, config: NgbPopoverConfig,
+    private scrollService: ScrollToService) {
       config.placement = 'top';
       config.triggers = 'hover';
 
@@ -185,6 +187,8 @@ onSuccess() {
     this.loadGroupPosts();
     this.alertMessageSettings();
     this.initializeGroupMembersSearchForm();
+   this.scrollToTop('#card-normal-post-4');
+    
     //this.onSuccess();
 
   }
@@ -268,7 +272,7 @@ onSuccess() {
     });
   }
 
-  onAddNewComment(post_id) {
+  onAddNewComment(post_id, index) {
     // console.log('post._id: ', post_id);
 
     this.comment.post_id = post_id;
@@ -278,6 +282,9 @@ onSuccess() {
       .subscribe((res) => {
         this.commentForm.reset();
         this.loadGroupPosts();
+        this.scrollToTop('#card-normal-post-'+index);
+        this.scrollToTop('#card-event-post-'+index);
+        this.scrollToTop('#card-task-post-'+index);
 
       }, (err) => {
         this.alert.class = 'danger';
@@ -629,6 +636,18 @@ test(index) {
 
   }
 
+  scrollToTop(element) {
+    this.scrollService.scrollTo(element).subscribe(data => {
+      console.log('next');
+      console.log(data);
+}, error => {
+      console.error('error');
+      console.log(error);
+}, () => {
+      console.log('complete');
+});
+}
+
   abc(){
     console.log('clicked');
   }
@@ -739,6 +758,9 @@ y.style.display="block";
     this.resetNewPostForm();
     // console.log('Normal post response: ', res);
     this.loadGroupPosts();
+    this.scrollToTop('#card-normal-post-'+index);
+    this.scrollToTop('#card-event-post-'+index);
+    this.scrollToTop('#card-task-post-'+index);
     console.log("Post Updated, Successfully!")
 
   }, (err) => {
@@ -916,6 +938,9 @@ y.style.display="block";
       button.innerHTML="Completed";
       button.setAttribute('disabled', 'true');
       this.loadGroupPosts();
+      this.scrollToTop('#card-normal-post-'+index);
+      this.scrollToTop('#card-event-post-'+index);
+      this.scrollToTop('#card-task-post-'+index);
 
     }, (err) => {
 
@@ -983,6 +1008,9 @@ y.style.display="block";
       button.innerHTML="Completed";
       button.setAttribute('disabled', 'true');
       this.loadGroupPosts();
+      this.scrollToTop('#card-normal-post-'+index);
+      this.scrollToTop('#card-event-post-'+index);
+      this.scrollToTop('#card-task-post-'+index);
 
     }, (err) => {
 
@@ -1060,6 +1088,9 @@ y.style.display="block";
 
     if(like_length == 0){
       this.likepost(post);
+      this.scrollToTop('#card-normal-post-'+index);
+      this.scrollToTop('#card-event-post-'+index);
+      this.scrollToTop('#card-task-post-'+index);
       like_icon.style.color="#005FD5";
 
     }
@@ -1070,10 +1101,16 @@ y.style.display="block";
 
     if(liked_by[i]._id==this.user_data.user_id){
       this.unlikepost(post);
+      this.scrollToTop('#card-normal-post-'+index);
+      this.scrollToTop('#card-event-post-'+index);
+      this.scrollToTop('#card-task-post-'+index);
       like_icon.style.color = "#9b9b9b";
     }
     else {
       this.likepost(post);
+      this.scrollToTop('#card-normal-post-'+index);
+      this.scrollToTop('#card-event-post-'+index);
+      this.scrollToTop('#card-task-post-'+index);
     }
   }
 

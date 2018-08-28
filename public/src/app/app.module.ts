@@ -12,6 +12,7 @@ import { LoadingModule, ANIMATION_TYPES } from 'ngx-loading';
 import { NgxUiLoaderModule, NgxUiLoaderConfig, SPINNER, POSITION, PB_DIRECTION } from  'ngx-ui-loader';
 import { SnotifyModule, SnotifyService, ToastDefaults } from 'ng-snotify';
 import { DatePipe } from '@angular/common';
+import { ScrollToModule } from 'ng2-scroll-to-el';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './common/components/navbar/navbar.component';
@@ -107,7 +108,8 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     BrowserAnimationsModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
-    NgbModule.forRoot()
+    NgbModule.forRoot(),
+    ScrollToModule.forRoot()
   ],
 
   providers: [AuthService, UserService, PostService, GroupService,
