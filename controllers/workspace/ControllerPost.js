@@ -170,9 +170,7 @@ const getGroupPosts = async (req, res, next) => {
 const getUserOverview = async (req, res, next) => {
 	try {
 		const userId = req.params.user_id;
-		const today = req.params.today;
-
-		// Get day of today and zero the hours
+		const today = new Date(new Number(req.params.today));
 
 		const posts = await Post.find({
 			$or: [
