@@ -20,6 +20,8 @@ export class OverviewComponent implements OnInit {
   user_data;
   user: User;
 
+  today = new Date();
+
   group = {
     group_name: '',
   };
@@ -40,7 +42,7 @@ export class OverviewComponent implements OnInit {
   }
 
   getRecentPosts(){
-    this._postservice.useroverviewposts(this.user_data.user_id)
+    this._postservice.useroverviewposts(this.user_data.user_id, this.today.setHours(0,0,0,0))
     .subscribe((res) => {
       // console.log('Group posts:', res);
       this.posts = res['posts'];
