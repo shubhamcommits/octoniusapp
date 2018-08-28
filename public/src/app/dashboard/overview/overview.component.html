@@ -15,17 +15,17 @@
             <h5>{{comment._commented_by?.first_name}}</h5>
             
             <p class="small text-muted">{{comment.created_date | date:'shortTime' }}</p>
-            <h5 style="color: #005fd5;"><b>{{post._group?.group_name}} Group</b></h5>
+           
           </div>
 
           <div class="col-md-8">
-              <div class="event-title" style="font-size:20px">Replied to your Post</div>
-              <div class="event-title" style="color:black; font-weight: normal; font-size: 16px" [innerHTML]="comment.content"></div>
+              <p class="blue">Replied in <b>{{post._group?.group_name}} group</b></p>
+              <div class="" [innerHTML]="comment.content"></div>
           </div>
          
           <div class="col-md-1">
-            <i class="material-icons">chat</i>
-            <p class="small text-muted">Posted<br /><b>{{comment.created_date | date:'MMM d' }}</b></p>
+          
+            <p class="small text-muted">  <i class="material-icons">chat</i><br> {{comment.created_date | date:'MMM d' }}</p>
   
           </div>
           
@@ -47,17 +47,17 @@
               <h5>{{post._posted_by?.first_name}} </h5>
             
               <p class="small text-muted">{{post?.created_date | date:'shortTime' }}</p>
-              <h5 style="color: #005fd5;"><b>{{post._group?.group_name}} Group</b></h5>
+             
           </div>
 
           <div class="col-md-8">
-              <div class="event-title" style="color: #005fd5; font-size: 20px;">Assigned a Task to you</div>
-              <div class="event-title" style="color:black; font-weight: normal; font-size: 16px" [innerHTML]="post.content"></div>
+              <p class="pink">Assigned a task to you in <b>{{post._group?.group_name}} group</b> for today</p>
+              <div [innerHTML]="post.content"></div>
           </div>
          
           <div class="col-md-1">
-            <i class="material-icons">chat</i>
-            <p class="small text-muted">Posted<br /><b>{{post.created_date | date:'MMM d' }}</b></p>
+            
+            <p class="small text-muted"><i class="material-icons pink">check_box</i><br /><b>{{post.created_date | date:'MMM d' }}</b></p>
   
           </div>
           
@@ -80,19 +80,19 @@
               <h5>{{post._posted_by?.first_name}} </h5>
             
               <p class="small text-muted">{{post.created_date | date:'shortTime' }}</p>
-              <h5 style="color: #005fd5;"><b>{{post._group?.group_name}} Group</b></h5>
           </div>
 
         <div class="col-md-8">
+            <p class="blue">New event in <b>{{post._group?.group_name}} group</b></p>
             <div class="row event-title">
                 <div class="col-md-2 dateblock">
                   <span class="bigdate">{{post?.event.due_date | date :'dd' }}</span>
                   <br>
                   <span class="time">{{post?.event.due_date | date: 'MMMM' }}</span>
                 </div>
-                <div class="col-md-8 event-title" >
+                <div class="col-md-8 event-title">
               
-                  <div class="row" style="font-size:20px" [innerHTML]="post?.content | safe: 'html' "></div>
+                  <div class="row" style="font-size:20px" [innerHTML]="post?.content | safe: 'html' "> </div>
                   <div class="row"> {{post?.event.due_time}}</div>
 
                 </div>
@@ -100,8 +100,8 @@
   
         </div>
         <div class="col-md-1">
-          <i class="material-icons">today</i>
-          <p class="small text-muted">Posted<br /><b>{{post.created_date | date:'MMM d' }}</b></p>
+         
+          <p class="small text-muted"> <i class="material-icons blue">today</i><br /><b>{{post.created_date | date:'MMM d' }}</b></p>
         </div>
         </div>
         </div>

@@ -33,8 +33,8 @@ body {
 }
 
 
-h6{
-  font-family: $poppins;
+h6, h5{
+  font-family: $poppins !important;
   font-size: 16px;
   color: $dark-text;
   font-weight: 300;
