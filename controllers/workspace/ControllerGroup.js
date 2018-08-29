@@ -57,7 +57,7 @@ const addNewUsersInGroup = async (req, res, next) => {
 	try {
 		const group = req.body.group;
 		const members = req.body.members;
-		const adminId = req.params.userId;
+		const adminId = req.userId;
 
 		const _members = members.map(result => result._id);
 
@@ -82,9 +82,8 @@ const addNewUsersInGroup = async (req, res, next) => {
 		});
 
 		// Send email to each user, welcoming to the group
-		for (let member of _members) {
-			const user = await User.findById({ _id: member });
-			sendMail.joinedGroup(user, groupUpdate, adminId);
+		for (let memberId of _members) {
+			sendMail.joinedGroup(memberId, groupUpdate, adminId);
 		}
 
 		return res.status(200).json({
@@ -133,7 +132,7 @@ const removeUserFromGroup = async (req, res, next) => {
 		const groupUpdate = await Group.findOneAndUpdate({
 			_id: groupId
 		}, {
-			$pull: { _members: user_id, _admins: user_id }
+			$pull: { _members: userId, _admins: userId }
 		}, {
 			new: true
 		});
