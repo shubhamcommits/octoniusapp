@@ -1,175 +1,169 @@
 <div class="container">
-  <app-overview-page-header></app-overview-page-header>
-  <div *ngFor="let post of posts; let i = index;">
-  <ul class="list-group">
-        <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/activity">
-    <li style="list-style-type: none;" *ngIf="post.type== 'normal'">
-       
-      <div *ngFor="let comment of post.comments">
-        <div class="media card-tile overview-post">
-            <!-- <img src="/uploads/{{post._group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" class="mr-3 feed-avatar-big"> -->
-        <div class=" row media-body">
-            <div class="col-md-1">
-                <img src="/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'" class="feed-avatar">
-            </div>
-          <div class="col-md-2">
-            <h5>{{comment._commented_by?.first_name}}</h5>
-            
-            <p class="small text-muted">{{comment.created_date | date:'shortTime' }}</p>
-           
-          </div>
-
-          <div class="col-md-8">
-              <p class="blue">Replied in <b>{{post._group?.group_name}} group</b></p>
-              <div class="" [innerHTML]="comment.content"></div>
-          </div>
-         
-          <div class="col-md-1">
-          
-            <p class="small text-muted">  <i class="material-icons">chat</i><br> {{comment.created_date | date:'MMM d' }}</p>
-  
-          </div>
-          
-         </div>
-
+    <app-overview-page-header></app-overview-page-header>
+    <div *ngFor="let post of posts; let i = index;">
     
+          <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/activity">
+      <div *ngIf="post.type== 'normal'">
+         
+        <div *ngFor="let comment of post.comments">
+          <div class="media card-tile overview-post">
+              <!-- <img src="/uploads/{{post._group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" class="mr-3 feed-avatar-big"> -->
+          <div class=" row media-body">
+              <div class="col-md-1">
+                  <img src="/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'" class="feed-avatar">
+              </div>
+            <div class="col-md-2">
+              <h5>{{comment._commented_by?.first_name}}</h5>
+              
+              <p class="small text-muted">{{comment.created_date | date:'shortTime' }}</p>
+             
+            </div>
+            <div class="col-md-8">
+                <p class="blue">Replied in <b>{{post._group?.group_name}} group</b></p>
+                <div class="" [innerHTML]="comment.content"></div>
+            </div>
+           
+            <div class="col-md-1">
+            
+              <p class="small text-muted">  <i class="material-icons">chat</i><br> {{comment.created_date | date:'MMM d' }}</p>
+    
+            </div>
+            
+           </div>
+      
+          </div>
         </div>
       </div>
-    </li>
-    </a>
-
-    <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/activity"><li style="list-style-type: none;" *ngIf="post.type== 'task'">
-        <div class="media card-tile overview-task">
-            <!-- <img src="/uploads/{{post._group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" class="mr-3 feed-avatar-big"> -->
-        <div class=" row media-body">
-            <div class="col-md-1">
-                <img src="/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar">
-            </div>
-          <div class="col-md-2">
-              <h5>{{post._posted_by?.first_name}} </h5>
-            
-              <p class="small text-muted">{{post?.created_date | date:'shortTime' }}</p>
-             
-          </div>
-
-          <div class="col-md-8">
-              <p class="pink">Assigned a task to you in <b>{{post._group?.group_name}} group</b> for today</p>
-              <div [innerHTML]="post.content"></div>
-          </div>
-         
-          <div class="col-md-1">
-            
-            <p class="small text-muted"><i class="material-icons pink">check_box</i><br /><b>{{post.created_date | date:'MMM d' }}</b></p>
-  
-          </div>
-          
-         </div>
-
-    
-        </div>
-        <div *ngFor="let comment of post.comments">
-                <div class="media card-tile">
-                    <!-- <img src="/uploads/{{post._group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" class="mr-3 feed-avatar-big"> -->
-                <div class=" row media-body">
-                    <div class="col-md-1">
-                        <img src="/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'" class="feed-avatar">
-                    </div>
-                  <div class="col-md-2">
-                    <h5>{{comment._commented_by?.first_name}}</h5>
-                    
-                    <p class="small text-muted">{{comment.created_date | date:'shortTime' }}</p>
-                   
-                  </div>
-        
-                  <div class="col-md-8">
-                      <p class="blue">Replied in <b>{{post._group?.group_name}} group</b> to the task assigned to you.</p>
-                      <div class="" [innerHTML]="comment.content"></div>
-                  </div>
-                 
-                  <div class="col-md-1">
-                  
-                    <p class="small text-muted">  <i class="material-icons">chat</i><br> {{comment.created_date | date:'MMM d' }}</p>
-          
-                  </div>
-                  
-                 </div>
-        
-            
-                </div>
+      </a>
+      <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/activity">
+          <div *ngIf="post.type== 'task'">
+          <div class="media card-tile overview-task">
+              <!-- <img src="/uploads/{{post._group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" class="mr-3 feed-avatar-big"> -->
+          <div class=" row media-body">
+              <div class="col-md-1">
+                  <img src="/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar">
               </div>
-    </li>
-    </a>
-    <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/activity">
-    <li style="list-style-type: none;" *ngIf="post.type== 'event'">
-
-       
-        <div class="media card-tile overview-event">
-            <!-- <img src="/uploads/{{post._group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" class="mr-3 feed-avatar-big"> -->
-        <div class=" row media-body">
-            <div class="col-md-1">
-                <img src="/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar">
-            </div>
-          <div class="col-md-2">
-              <h5>{{post._posted_by?.first_name}} </h5>
-            
-              <p class="small text-muted">{{post.created_date | date:'shortTime' }}</p>
-          </div>
-
-        <div class="col-md-8">
-            <p class="blue">New event in <b>{{post._group?.group_name}} group</b></p>
-            <div class="row event-title">
-                <div class="col-md-2 dateblock">
-                  <span class="bigdate">{{post?.event.due_date | date :'dd' }}</span>
-                  <br>
-                  <span class="time">{{post?.event.due_date | date: 'MMMM' }}</span>
-                </div>
-                <div class="col-md-8 event-title">
+            <div class="col-md-2">
+                <h5>{{post._posted_by?.first_name}} </h5>
               
-                  <div class="row" style="font-size:20px" [innerHTML]="post?.content | safe: 'html' "> </div>
-                  <div class="row"> {{post?.event.due_time}}</div>
-
-                </div>
-                </div>
-  
-        </div>
-        <div class="col-md-1">
-         
-          <p class="small text-muted"> <i class="material-icons blue">today</i><br /><b>{{post.created_date | date:'MMM d' }}</b></p>
-        </div>
-        </div>
-        </div>
-        <div *ngFor="let comment of post.comments">
-                <div class="media card-tile">
-                    <img src="/uploads/{{post._group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" class="mr-3 feed-avatar">
-                <div class=" row media-body">
-                    <div class="col-md-1">
-                        <img src="/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'" class="feed-avatar">
-                    </div>
-                  <div class="col-md-2">
-                    <h5>{{comment._commented_by?.first_name}}</h5>
-                    
-                    <p class="small text-muted">{{comment.created_date | date:'shortTime' }}</p>
-                   
-                  </div>
-        
-                  <div class="col-md-8">
-                      <p class="blue">Replied in <b>{{post._group?.group_name}} group</b> to the Event assigned to you</p>
-                      <div class="" [innerHTML]="comment.content"></div>
-                  </div>
-                 
-                  <div class="col-md-1">
-                  
-                    <p class="small text-muted">  <i class="material-icons">chat</i><br> {{comment.created_date | date:'MMM d' }}</p>
-          
-                  </div>
-                  
-                 </div>
-        
+                <p class="small text-muted">{{post?.created_date | date:'shortTime' }}</p>
+               
+            </div>
+            <div class="col-md-8">
+                <p class="pink">Assigned a task to you in <b>{{post._group?.group_name}} group</b> for today</p>
+                <div [innerHTML]="post.content"></div>
+            </div>
+           
+            <div class="col-md-1">
+              
+              <p class="small text-muted"><i class="material-icons pink">check_box</i><br /><b>{{post.created_date | date:'MMM d' }}</b></p>
+    
+            </div>
             
+           </div>
+      
+          </div>
+          <div *ngFor="let comment of post.comments">
+                  <div class="media card-tile">
+                      <!-- <img src="/uploads/{{post._group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" class="mr-3 feed-avatar-big"> -->
+                  <div class=" row media-body">
+                      <div class="col-md-1">
+                          <img src="/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'" class="feed-avatar">
+                      </div>
+                    <div class="col-md-2">
+                      <h5>{{comment._commented_by?.first_name}}</h5>
+                      
+                      <p class="small text-muted">{{comment.created_date | date:'shortTime' }}</p>
+                     
+                    </div>
+          
+                    <div class="col-md-8">
+                        <p class="blue">Replied in <b>{{post._group?.group_name}} group</b> to the task assigned to you.</p>
+                        <div class="" [innerHTML]="comment.content"></div>
+                    </div>
+                   
+                    <div class="col-md-1">
+                    
+                      <p class="small text-muted">  <i class="material-icons">chat</i><br> {{comment.created_date | date:'MMM d' }}</p>
+            
+                    </div>
+                    
+                   </div>
+          
+              
+                  </div>
                 </div>
+      </div>
+      </a>
+      <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/activity">
+      <div *ngIf="post.type== 'event'">
+         
+          <div class="media card-tile overview-event">
+              <!-- <img src="/uploads/{{post._group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" class="mr-3 feed-avatar-big"> -->
+          <div class=" row media-body">
+              <div class="col-md-1">
+                  <img src="/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar">
               </div>
-    </li>
-</a>
-  </ul>
-</div>
-</div>
+            <div class="col-md-2">
+                <h5>{{post._posted_by?.first_name}} </h5>
+              
+                <p class="small text-muted">{{post.created_date | date:'shortTime' }}</p>
+            </div>
+          <div class="col-md-8">
+              <p class="blue">New event in <b>{{post._group?.group_name}} group</b></p>
+              <div class="row event-title">
+                  <div class="col-md-2 dateblock">
+                    <span class="bigdate">{{post?.event.due_date | date :'dd' }}</span>
+                    <br>
+                    <span class="time">{{post?.event.due_date | date: 'MMMM' }}</span>
+                  </div>
+                  <div class="col-md-8 event-title">
+                
+                    <div class="row" style="font-size:20px" [innerHTML]="post?.content | safe: 'html' "> </div>
+                    <div class="row"> {{post?.event.due_time}}</div>
+                  </div>
+                  </div>
+    
+          </div>
+          <div class="col-md-1">
+           
+            <p class="small text-muted"> <i class="material-icons blue">today</i><br /><b>{{post.created_date | date:'MMM d' }}</b></p>
+          </div>
+          </div>
+          </div>
+          <div *ngFor="let comment of post.comments">
+                  <div class="media card-tile">
+                      <img src="/uploads/{{post._group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" class="mr-3 feed-avatar">
+                  <div class=" row media-body">
+                      <div class="col-md-1">
+                          <img src="/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'" class="feed-avatar">
+                      </div>
+                    <div class="col-md-2">
+                      <h5>{{comment._commented_by?.first_name}}</h5>
+                      
+                      <p class="small text-muted">{{comment.created_date | date:'shortTime' }}</p>
+                     
+                    </div>
+          
+                    <div class="col-md-8">
+                        <p class="blue">Replied in <b>{{post._group?.group_name}} group</b> to the Event assigned to you</p>
+                        <div class="" [innerHTML]="comment.content"></div>
+                    </div>
+                   
+                    <div class="col-md-1">
+                    
+                      <p class="small text-muted">  <i class="material-icons">chat</i><br> {{comment.created_date | date:'MMM d' }}</p>
+            
+                    </div>
+                    
+                   </div>
+          
+              
+                  </div>
+                </div>
+      </div>
+  </a>
+   
+  </div>
+  </div>
+  
