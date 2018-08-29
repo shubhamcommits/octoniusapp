@@ -19,6 +19,13 @@ body {
   height: 50px;
   object-fit: cover;
 }
+
+.feed-avatar-big{ //avatar image for group img display
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}
+
 .topnav-avatar{ //avatar image for in-feed display
   width: 32px;
   height:32px;

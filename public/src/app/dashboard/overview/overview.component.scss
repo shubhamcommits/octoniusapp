@@ -43,3 +43,13 @@
   padding-top: 0;
   margin-left: 20px;
 }
+
+.overview-post{
+  border-left:4px solid #fff !important;
+}
+.overview-event{
+  border-left:4px solid #005FD5 !important;
+}
+.overview-task{
+  border-left:4px solid $pink !important;
+}
