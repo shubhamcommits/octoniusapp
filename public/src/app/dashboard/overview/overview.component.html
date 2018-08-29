@@ -133,7 +133,7 @@
           </div>
           <div *ngFor="let comment of post.comments">
                   <div class="media card-tile">
-                      <img src="/uploads/{{post._group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" class="mr-3 feed-avatar">
+                      <!-- <img src="/uploads/{{post._group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" class="mr-3 feed-avatar"> -->
                   <div class=" row media-body">
                       <div class="col-md-1">
                           <img src="/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'" class="feed-avatar">
