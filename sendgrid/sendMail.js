@@ -132,18 +132,19 @@ const joinWorkspace = async (reqData) => {
 };
 
 // Welcome user when user is added to a group
-const joinedGroup = async (userData, groupData, adminId) => {
+const joinedGroup = async (memberId, groupData, adminId) => {
 	try {
 		const emailType = 'joinedGroup';
 
 		// Generate email data
 
 		const adminData = await User.findById({ _id: adminId });
+		const memberData = await User.findById({ _id: memberId });
 
 		const emailData = {
 			subject: subjects[emailType],
-			toName: userData.first_name,
-			toEmail: userData.email,
+			toName: memberData.first_name,
+			toEmail: memberData.email,
 			fromName: adminData.first_name,
 			fromEmail: adminData.email,
 			group: groupData.group_name,
