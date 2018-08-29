@@ -58,7 +58,7 @@ const PostSchema = new Schema({
 		required: true
 	},
 	task: {
-		due_date: {
+		due_to: {
 			type: Date,
 			default: null
 		},
@@ -68,12 +68,8 @@ const PostSchema = new Schema({
 		}
 	},
 	event: {
-		due_date: {
+		due_to: {
 			type: Date,
-			default: null
-		},
-		due_time: {
-			type: String,
 			default: null
 		},
 		_assigned_to: [{
