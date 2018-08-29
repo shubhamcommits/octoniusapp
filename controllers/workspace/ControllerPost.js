@@ -1,3 +1,4 @@
+const moment = require('moment');
 const Group = require('../../models/group')
 const User = require('../../models/user');
 const Workspace = require('../../models/workspace');
@@ -14,21 +15,31 @@ const addNewPost = async (req, res, next) => {
 	try { 
 		const postData = req.body;
 
+		// await console.log(`req.body.${postData.type}.due_date ===>`, req.body[`${postData.type}.due_date`]);
+
 		// If it's a task/event zero the hours, leave only the date
 		if (postData.type === 'event' || postData.type === 'task') { 
-			let date = new Date(postData[`${postData.type}.due_date`]);
-			date.setHours(0,0,0,0);
-			postData[`${postData.type}.due_date`] = date.toString();
+			// let date = moment().format();
+			// console.log ('date no UTC', date);
+
+			// date = moment.utc(date).format();
+
+			// console.log('date yes utc', date);
+
+			//  postData[`${postData.type}.due_date`] = date;
 		}
+
+		// await console.log(`req.body.${postData.type}.due_date ===>`, req.body[`${postData.type}.due_date`]);
+		// await console.log(`date ===>`, postData[`${postData.type}.due_date`]);
 
 		const post = await Post.create(postData);
 
 		// Send Email notification after post creation
 		switch(post.type) {
 			case 'task':
-				sendMail.taskAssigned(post);
+				// sendMail.taskAssigned(post);
 			case 'event':
-				sendMail.eventAssigned(post);
+				// sendMail.eventAssigned(post);
 		};
 
 		return res.status(200).json({
