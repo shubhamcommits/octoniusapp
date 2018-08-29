@@ -131,6 +131,41 @@ const joinWorkspace = async (reqData) => {
 	}
 };
 
+// Welcome user when user is added to a group
+const joinedGroup = async (userData, groupData, adminId) => {
+	try {
+		const emailType = 'joinedGroup';
+
+		// Generate email data
+
+		const adminData = await User.findById({ _id: adminId });
+
+		const emailData = {
+			subject: subjects[emailType],
+			toName: userData.first_name
+			toEmail: reqData.email,
+			fromName: adminData.first_name,
+			fromEmail: adminData.email,
+			group: groupData.group_name,
+			workspace: groupData.workspace_name,
+			link: defaults.signinLink
+		};
+
+		// Generate email body from template
+		const emailBody = await generateEmailBody(emailType, emailData);
+
+		// Send email
+		const send = await sendMail(emailBody, emailData);
+
+		if (send.status === 202) {
+			console.log(`Email sent to ${emailData.toName}`);
+		}
+
+	} catch (err) {
+		console.log(err);
+	}
+};
+
 // 	New workspace confirmation email 
 const newWorkspace = async (workspace) => {
 	try {
@@ -272,6 +307,7 @@ const eventAssigned = async (eventPost) => {
 
 module.exports = {
 	joinWorkspace,
+	joinedGroup,
 	newWorkspace,
 	signup,
 	taskAssigned,
