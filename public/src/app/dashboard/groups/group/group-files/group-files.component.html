@@ -22,7 +22,9 @@
         <div class="btn-group mr-3 float-right" style="margin-left:10px">
   
           <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+              <a role="button" class="btn btn-primary dropdown-toggle-split btn-sm" href="/uploads/{{post.files[0].modified_name}}" target="_blank" >Preview</a>
             <button class="btn btn-success dropdown-toggle-split btn-sm" (click)="onDownlaodFile(post.files[0].modified_name,post.files[0].orignal_name)">Download File</button>
+            
           </div>
         </div>
   
