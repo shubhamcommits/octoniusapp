@@ -1,97 +1,69 @@
 const Group = require('../../models/group');
 const User = require('../../models/user');
+const sendMail = require('../../sendgrid/sendMail');
+const sendErr = require('../../helpers/sendErr');
 
-module.exports = {
-	/*     searchGroupUsers(req, res, next) {
-						const key_word = req.params.key_word;
-						const group_id = req.params.group_id;
+/*	===================
+ *	-- GROUP METHODS --
+ *	===================
+ */ 
 
-						Group.findOne({
-										_id: group_id
-								})
-								.populate('_members _admins', 'first_name last_name')
-								.then((group) => {
-										res.status(200).json({
-												message: "search successfull!",
-												users: group._members.concat(group._admins)
-										});
-								})
-								.catch((err) => {
-										res.status(500).json({
-												message: "Error! something went wrong | internal server error",
-												err
-										});
-								})
-
-				},
-				*/
-	// temp method for group user's searching 
-	searchGroupUsers(req, res, next) {
+const searchGroupUsers = async (req,res, next) => {
+	try {
 		const query = req.params.query;
 		const group = req.params.group_id;
 
-		User.find({
+		const users = await User.find({
 			_groups: group,
 			full_name: {
 				$regex: new RegExp(query, 'i')
 			}
-		})
+		});
 
-			.then((users) => {
+		return res.status(200).json({
+			message: `Found ${users.length} users!`,
+			users
+		});
 
-				// const members = group._admins;
-				res.status(200).json({
-					message: "users found successfully!",
-					users: users
-				});
+	} catch (err) {
+		return sendErr(res, err);
+	}
+};
 
-			})
-			.catch((err) => {
-				res.status(500).json({
-					message: "Error! something went wrong | internal server error",
-					err
-				});
-			})
+const getUserGroup = async (req, res, next) => {
+	try {
+		const groupId = req.params.group_id;
 
-	},
-
-	getUserGroup(req, res, next) {
-
-		const group_id = req.params.group_id;
-
-		Group.findOne({
-			_id: group_id
+		const group = await Group.findOne({
+			_id: groupId
 		})
 			.populate('_members', 'first_name last_name profile_pic role email')
 			.populate('_admins', 'first_name last_name profile_pic role email')
-			.then((group) => {
-				if (group == null) {
-					res.status(404).json({
-						message: "Error! group not found,Invalid group id"
-					});
-				} else {
-					res.status(200).json({
-						message: "group found successfully!",
-						group: group
-					});
-				}
-			})
-			.catch((err) => {
-				res.status(500).json({
-					message: "Error! something went wrong | internal server error",
-					err
-				});
-			});
-	},
 
-	addNewUsersInGroup(req, res, next) {
-		let group = req.body.group;
-		let members = req.body.members;
-		let _members = members.map(result => {
-			return result._id;
+		if (!group) {
+			return sendErr(res, err, 'Group not found, invalid group id!', 404)
+		}
+
+		return res.status(200).json({
+			message: 'Group found!',
+			group
 		});
+	} catch (err) {
+		return sendErr(res, err);
+	}
+};
 
-		Group.findByIdAndUpdate({
+const addNewUsersInGroup = async (req, res, next) => {
+	try {
+		const group = req.body.group;
+		const members = req.body.members;
+		const adminId = req.userId;
+
+		const _members = members.map(result => result._id);
+
+		console.log(_members);
+
+		const groupUpdate = await Group.findByIdAndUpdate({
 			_id: group
 		}, {
 			$addToSet: {
@@ -99,103 +71,108 @@ module.exports = {
 			}
 		}, {
 			new: true
-		})
-			.then((updated_group) => {
-				User.updateMany({
-					_id: _members
-				}, {
-					$addToSet: {
-						_groups: group
-					}
-				})
-					.then((updated_users) => {
-						res.status(200).json({
-							message: "Group Data has updated successfully!",
-							group: updated_group
-						});
+		});
 
-					})
-					.catch((err) => {
-						res.status(500).json({
-							message: "Error! something went wrong | internal server error",
-							err
-						});
-					})
-			})
-			.catch((err) => {
-				res.status(500).json({
-					message: "Error! something went wrong | internal server error",
-					err
-				});
-			})
-	},
+		const usersUpdate = await User.updateMany({
+			_id: _members
+		}, {
+			$addToSet: {
+				_groups: group
+			}
+		});
 
-	updateGroup(req, res, next) {
-		console.log("===============Update Group===============");
-		let group_id = req.params.group_id;
-		let data = req.body;
+		// Send email to each user, welcoming to the group
+		for (let memberId of _members) {
+			sendMail.joinedGroup(memberId, groupUpdate, adminId);
+		}
 
-		Group.findOneAndUpdate({
-			_id: group_id
+		return res.status(200).json({
+			message: 'Group Data has updated successfully!',
+			group: groupUpdate
+		});
+
+	} catch (err) {
+		return sendErr(res, err);
+	}
+};
+
+const updateGroup = async (req, res, next) => {
+	try {
+		const groupId = req.params.group_id;
+		const data = req.body;
+
+		const groupUpdate = await Group.findOneAndUpdate({
+			_id: groupId
 		}, {
 			$set: data
 		}, {
 			new: true
-		})
-			.then((updated_group) => {
+		});
 
-				if (updated_group == null) {
-					res.status(404).json({
-						message: "Error! group not found,Invalid group id"
-					});
-				} else {
-					res.status(200).json({
-						message: "Group has been updated successfully!",
-						group: updated_group
-					});
-				}
+		if (!groupUpdate) {
+			return sendErr(res, err, 'Group not found, invalid group id!', 404)
+		}
 
-			})
-			.catch((err) => {
+		return res.status(200).json({
+			message: `${groupUpdate.group_name} group was updated successfully!`,
+			group: groupUpdate
+		});
 
-				res.status(500).json({
-					message: "something went wrong | internal server error!",
-					err: err
-				});
-			})
-	},
+	} catch (err) {
+		return sendErr(res, err);
+	}
+};
 
-	removeUserFromGroup(req, res, next) {
+const removeUserFromGroup = async (req, res, next) => {
+	try {
+		const groupId = req.body.group_id;
+		const userId = req.body.user_id;
 
-		let group_id = req.body.group_id;
-		let user_id = req.body.user_id;
-
-		Group.findOneAndUpdate({
-			_id: group_id
+		// Remove user id from group users 
+		const groupUpdate = await Group.findOneAndUpdate({
+			_id: groupId
 		}, {
-			$pull: { _members: user_id, _admins: user_id }
+			$pull: { _members: userId, _admins: userId }
 		}, {
 			new: true
-		})
-			.then((updated_group) => {
+		});
 
-				if (updated_group == null) {
-					res.status(404).json({
-						message: "Group not found!"
-					});
-				} else {
-					res.status(200).json({
-						message: `User has been removed from ${updated_group.group_name} group.`,
-						group: updated_group
-					});
-				}
-			})
-			.catch((err) => {
-				res.status(500).json({
-					message: "Something went wrong | internal server error!",
-					err: err
-				});
-			})
-	},
+		// Remove group id from user groups
+		const userUpdate = await User.findOneAndUpdate({
+			_id: userId
+		}, {
+			$pull: { _groups: groupId }
+		}, {
+			new: true
+		});
 
-}
+		// If group wasn't found or user wasn't found return invalid id error
+		if (!groupUpdate || !userUpdate) {
+			let msg;
+			!groupUpdate ? msg = 'Group' : msg = 'User';
+			return sendErr(res, err, `${msg} not found, invalid id!`, 404)
+		}
+
+		return res.status(200).json({
+			message: `User has been removed from ${groupUpdate.group_name} group.`,
+			group: groupUpdate
+		});
+
+	} catch (err) {
+		return sendErr(res, err);
+	}
+};
+
+/*	=============
+ *	-- EXPORTS --
+ *	=============
+ */
+
+module.exports = {
+	searchGroupUsers,
+	getUserGroup,
+	addNewUsersInGroup,
+	updateGroup,
+	removeUserFromGroup
+};
+
