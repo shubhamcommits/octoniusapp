@@ -7,7 +7,7 @@
        
       <div *ngFor="let comment of post.comments">
         <div class="media card-tile overview-post">
-            <img src="/uploads/{{post._group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" class="mr-3 feed-avatar-big">
+            <!-- <img src="/uploads/{{post._group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" class="mr-3 feed-avatar-big"> -->
         <div class=" row media-body">
             <div class="col-md-1">
                 <img src="/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'" class="feed-avatar">
@@ -40,7 +40,7 @@
 
     <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/activity"><li style="list-style-type: none;" *ngIf="post.type== 'task'">
         <div class="media card-tile overview-task">
-            <img src="/uploads/{{post._group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" class="mr-3 feed-avatar-big">
+            <!-- <img src="/uploads/{{post._group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" class="mr-3 feed-avatar-big"> -->
         <div class=" row media-body">
             <div class="col-md-1">
                 <img src="/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar">
@@ -69,7 +69,7 @@
         </div>
         <div *ngFor="let comment of post.comments">
                 <div class="media card-tile">
-                    <img src="/uploads/{{post._group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" class="mr-3 feed-avatar-big">
+                    <!-- <img src="/uploads/{{post._group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" class="mr-3 feed-avatar-big"> -->
                 <div class=" row media-body">
                     <div class="col-md-1">
                         <img src="/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'" class="feed-avatar">
@@ -104,7 +104,7 @@
 
        
         <div class="media card-tile overview-event">
-            <img src="/uploads/{{post._group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" class="mr-3 feed-avatar-big">
+            <!-- <img src="/uploads/{{post._group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" class="mr-3 feed-avatar-big"> -->
         <div class=" row media-body">
             <div class="col-md-1">
                 <img src="/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar">

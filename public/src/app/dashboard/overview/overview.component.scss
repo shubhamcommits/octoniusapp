@@ -23,6 +23,8 @@
 .list-group-item {
   border: none;
   background: transparent;
+  padding: 0;
+ 
 }
 
 .group-img {
@@ -52,4 +54,15 @@
 }
 .overview-task{
   border-left:4px solid $pink !important;
+}
+
+.card-tile{
+  padding: 0;
+  .media-body{
+    padding: 10px;
+  }
+  &:hover{  
+      box-shadow: $card-shadow !important;
+    }
+  
 }
