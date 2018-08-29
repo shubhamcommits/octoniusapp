@@ -77,7 +77,7 @@ export class GroupActivityComponent implements OnInit {
   model_time = { hour: 13, minute: 30 };
   due_date = 'Due Date';
   due_time = 'Due Time';
-  assignment = 'UnAssigned';
+  assignment = 'Unassigned';
   selected_date: Date;
 
 

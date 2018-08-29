@@ -242,3 +242,15 @@ margin-bottom: 20px;
     margin-left: 15px;
   }
 }
+
+.btn{
+  border-radius: 1rem;
+
+}
+.cool{
+  &:hover{
+    background: rgb(245, 246, 247);
+    border-radius: 2rem;
+  }
+  
+}

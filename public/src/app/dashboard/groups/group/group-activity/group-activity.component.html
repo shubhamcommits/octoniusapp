@@ -35,19 +35,19 @@
                 <ul class="nav nav-pills">
 
                   <li class="nav-item">
-                    <button (click)="onSelectPostType('normal')" class="btn fade-in btn-link">
+                    <button (click)="onSelectPostType('normal')" class="btn fade-in btn-link cool">
                       <i class="material-icons muted" id="icon_comment" style="color: #005fd5; ">comment</i>
                     </button>
                   </li>
                   <li class="nav-item">
 
-                    <button (click)="onSelectPostType('event')" class="btn fade-in btn-link">
+                    <button (click)="onSelectPostType('event')" class="btn fade-in btn-link cool">
                       <i class="material-icons muted" id="icon_event">event</i>
                     </button>
                   </li>
                   <li class="nav-item">
 
-                    <button (click)="onSelectPostType('task')"  class="btn fade-in btn-link">
+                    <button (click)="onSelectPostType('task')"  class="btn fade-in btn-link cool">
                       <i class="material-icons muted" id="icon_check_box">check_box</i>
                     </button>
                   </li>
@@ -92,7 +92,7 @@
               <div class="col-md-8 ">
 
 
-                <button type="button" class="btn btn-link ">
+                <button type="button" class="btn btn-link cool">
                   <input id="cin" #fileInput type="file" class="btn btn-outline-warning task" style="display: none" (change)="fileChangeEvent($event)"
                     placeholder="File" multiple/>
                   <i class="material-icons" (click)="fileInput.click()">attach_file</i>
