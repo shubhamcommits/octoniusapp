@@ -61,6 +61,8 @@ const addNewUsersInGroup = async (req, res, next) => {
 
 		const _members = members.map(result => result._id);
 
+		console.log(_members);
+
 		const groupUpdate = await Group.findByIdAndUpdate({
 			_id: group
 		}, {
@@ -80,7 +82,8 @@ const addNewUsersInGroup = async (req, res, next) => {
 		});
 
 		// Send email to each user, welcoming to the group
-		for (user of usersUpdate) {
+		for (let member of _members) {
+			const user = await User.findById({ _id: member });
 			sendMail.joinedGroup(user, groupUpdate, adminId);
 		}
 
