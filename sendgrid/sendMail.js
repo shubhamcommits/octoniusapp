@@ -142,8 +142,8 @@ const joinedGroup = async (userData, groupData, adminId) => {
 
 		const emailData = {
 			subject: subjects[emailType],
-			toName: userData.first_name
-			toEmail: reqData.email,
+			toName: userData.first_name,
+			toEmail: userData.email,
 			fromName: adminData.first_name,
 			fromEmail: adminData.email,
 			group: groupData.group_name,
