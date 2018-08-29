@@ -1,6 +1,13 @@
 <div class="card-tile">
   <h4>All files from {{groupDataService.group?.group_name}} group</h4>
   <hr>
+  <div *ngIf="isLoading$ | async">  
+      <div class="load-8">
+        <h6><b>Loading Data...</b></h6>
+          <div class="line"></div>
+      </div>
+  </div>
+  <div *ngIf="!(isLoading$ | async)">
   <div *ngFor="let post of posts">
 <div class="media card-tile user-list" *ngIf="post.files.length != 0" >
       
@@ -24,6 +31,6 @@
   </div>
 
 </div>
-
+</div>
 
 </div>
