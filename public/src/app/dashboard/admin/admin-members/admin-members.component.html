@@ -4,7 +4,7 @@
   <hr>
   <div class="media card-tile user-list" *ngFor="let member of workspace?.members">
 <!--<img class="feed-avatar " src="assets/images/user.png" alt="User">-->
-    <img src="/uploads/{{member?.profile_pic}}" onerror="this.src='/uploads/user.png'" class="feed-avatar">
+    <img src="/uploads/{{member?.profile_pic}}" onerror="this.src='/assets/images/user.png'" class="feed-avatar">
     <div class="media-body">
       <div class="float-left">
         <h4 class="mt-0">{{member?.first_name}} {{member?.last_name}}</h4>
