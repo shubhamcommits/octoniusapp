@@ -34,7 +34,7 @@
     </div> -->
 
     <div *ngFor="let group of groups " class="card col-md-3" [routerLink]="['/dashboard/group/',group._id,'activity']">
-      <img class="card-img-top" [src] = "group.group_avatar  " >
+      <img class="card-img-top" [src] = "group.group_avatar  " onerror="this.src='/assets/images/group.png'" >
       <div class="card-body ">
         <a>
           <h4 class="card-title ">{{group?.group_name}}</h4>
