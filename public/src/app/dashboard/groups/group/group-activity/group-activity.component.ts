@@ -430,8 +430,7 @@ test(index) {
       event: {
         due_date: this.selected_date,
         due_time: this.due_time,
-	// MOMENT!!!
-	due_to: moment(`${this.due_date} ${this.due_time}`).format(),
+        due_to: this.due_to,
         _assigned_to: assignedUsers
       },
       files: this.filesToUpload
@@ -857,12 +856,10 @@ y.style.display="block";
   
 
     // console.log('model_date:', this.model_date);
-     console.log('selected date:', this.selected_date);
+    // console.log('selected date:', this.selected_date);
     // console.log('selected date:', this.due_date);
     // console.log('oneDateSelected temp Date', new Date(temp.year, temp.month, temp.day));
-    console.log('this.due_date', this.due_date);
-    console.log(this.due_to);
-    // console.log('this date', this.date);
+    // console.log('this.due_date', this.due_date);
 
   }
 
@@ -877,7 +874,7 @@ y.style.display="block";
 
   onTimeSelected() {
     // console.log('on time selection');
-    // console.log(this.model_time);
+    // console.log(this.modal_time);
 
     this.due_time = this.model_time.hour.toString() + ':' + this.model_time.minute.toString();
     // console.log(' this.due_time', this.due_time);
