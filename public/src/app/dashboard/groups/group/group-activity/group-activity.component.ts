@@ -441,8 +441,8 @@ test(index) {
     formData.append('type', post.type);
     formData.append('_posted_by', post._posted_by);
     formData.append('_group', post._group);
-    formData.append('event.due_date', post.event.due_date);
-    formData.append('event.due_time', post.event.due_time);
+    formData.append('event.due_to', post.event.due_to);
+    //formData.append('event.due_time', post.event.due_time);
     //formData.append('event._assigned_to', assignedUsers);
 
 
@@ -504,7 +504,7 @@ test(index) {
     formData.append('type', post.type);
     formData.append('_posted_by', post._posted_by);
     formData.append('_group', post._group);
-    formData.append('task.due_date', post.task.due_date);
+    formData.append('task.due_to', post.task.due_to);
     formData.append('task._assigned_to', post.task._assigned_to);
 
     // console.log('post: ', post);
