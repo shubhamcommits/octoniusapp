@@ -2,6 +2,10 @@ const moment = require('moment');
 
 const toUTC = (date) => {
 
+	if (!date) {
+		throw new Error('You must provide a valid Date!');
+	}
+
 	// Create date in moment.js default format 
 	let dateFormatted = moment(date).format();
 	// Convert it to UTC
