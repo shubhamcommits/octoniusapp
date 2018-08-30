@@ -129,9 +129,9 @@
         </div>
 
         <div class="modal-footer">
-          <button [disabled]="selectedGroupUsers.length == 0" class="btn btn-outline-primary mb-2 mr-2" (click)="onDateSelected();c('Close click')">Done</button>
+          <button [disabled]="selectedGroupUsers.length == 0" class="btn btn-primary mb-2 mr-2" (click)="onDateSelected();c('Close click')">Done</button>
 
-          <button type="button" class="btn btn-outline-primary mb-2 mr-2" (click)="c('Close click')">Cancel</button>
+          <button type="button" class="btn btn-default mb-2 mr-2" (click)="c('Close click')">Cancel</button>
         </div>
 
       </ng-template>
@@ -140,7 +140,7 @@
 
       <ng-template style="margin-top: 10px" #timeContent let-c="close" let-d="dismiss">
 
-        <div style="margin-left: 20px;" class="modal-header">
+        <div class="modal-header">
           <h4 class="modal-title">Select Time</h4>
           <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
             <span aria-hidden="true">&times;</span>
@@ -152,22 +152,22 @@
         </div>
 
         <div class="modal-footer">
-          <button class="btn btn-outline-primary mb-2 mr-2" (click)="onTimeSelected();c('Close click')">Done</button>
-          <button type="button" class="btn btn-outline-primary mb-2 mr-2" (click)="c('Close click')">Cancel</button>
+          <button class="btn btn-primary mb-2 mr-2" (click)="onTimeSelected();c('Close click')">Done</button>
+          <button type="button" class="btn btn-default mb-2 mr-2" (click)="c('Close click')">Cancel</button>
         </div>
 
       </ng-template>
 
       <!--  Modal to Assign calendar event or task to group memeber -->
-      <ng-template style="margin-top:10px; height:300px" #assignContent let-c="close" let-d="dismiss">
-
-        <div style="margin-left: 20px;" class="modal-header">
+      <ng-template  #assignContent let-c="close" let-d="dismiss">
+  
+        <div class="modal-header">
           <h4 class="modal-title">Search User</h4>
           <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body" style="height: 300px;">
+        <div class="modal-body">
           <angular2-multiselect [data]="groupUsersList" [(ngModel)]="selectedGroupUsers" [settings]="settings" (onSelect)="onItemSelect($event)"
             (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)">
             <c-search>
@@ -188,9 +188,11 @@
 
         </div>
         <div class="modal-footer">
-          <button [disabled]="selectedGroupUsers.length == 0 " class="btn btn-outline-primary mb-2 mr-2" (click)="onTimeSelected();c('Close click')">Done</button>
-          <button type="button" class="btn btn-outline-primary mb-2 mr-2" (click)="c('Close click')">Cancel</button>
+          <button [disabled]="selectedGroupUsers.length == 0 " class="btn btn-primary mb-2 mr-2" (click)="onTimeSelected();c('Close click')">Done</button>
+          <button type="button" class="btn btn-default mb-2 mr-2" (click)="c('Close click')">Cancel</button>
         </div>
+
+
       </ng-template>
 
     </div>
