@@ -76,6 +76,7 @@ export class GroupActivityComponent implements OnInit {
   date: { year: number, month: number };
   model_time = { hour: 13, minute: 30 };
   due_date = 'Due Date';
+  due_to = '';
   due_time = 'Due Time';
   assignment = 'UnAssigned';
   selected_date: Date;
@@ -428,6 +429,7 @@ test(index) {
       event: {
         due_date: this.selected_date,
         due_time: this.due_time,
+        due_to: this.due_to,
         _assigned_to: assignedUsers
       },
       files: this.filesToUpload
@@ -493,6 +495,7 @@ test(index) {
       _group: this.group_id,
       task: {
         due_date: this.selected_date,
+        due_to: this.due_to,
         _assigned_to: this.selectedGroupUsers[0]._id
       }
     };
@@ -845,14 +848,19 @@ y.style.display="block";
     // console.log('this.date:', this.date);
 
     const temp = this.model_date;
-    this.due_date = temp.day.toString() + '-' + this.date.month.toString() + '-' + temp.year.toString();
-    this.selected_date = new Date(this.date.year, (this.date.month - 1), temp.day);
+    this.due_date =  temp.year.toString() + '-' + this.date.month.toString() + '-' + temp.day.toString();
+    this.selected_date = new Date(this.date.year, (this.date.month - 1), temp.day, this.model_time.hour, this.model_time.minute);
+    this.due_to =  temp.year.toString() + '-' + this.date.month.toString() + '-' + temp.day.toString() +'T'+ this.model_time.hour + ':' + this.model_time.minute+ ':'+'00'+ this.selected_date.getTimezoneOffset();
+    
+  
 
     // console.log('model_date:', this.model_date);
-    // console.log('selected date:', this.selected_date);
+     console.log('selected date:', this.selected_date);
     // console.log('selected date:', this.due_date);
     // console.log('oneDateSelected temp Date', new Date(temp.year, temp.month, temp.day));
-    // console.log('this.due_date', this.due_date);
+    console.log('this.due_date', this.due_date);
+    console.log(this.due_to);
+    // console.log('this date', this.date);
 
   }
 
@@ -867,7 +875,7 @@ y.style.display="block";
 
   onTimeSelected() {
     // console.log('on time selection');
-    // console.log(this.modal_time);
+    // console.log(this.model_time);
 
     this.due_time = this.model_time.hour.toString() + ':' + this.model_time.minute.toString();
     // console.log(' this.due_time', this.due_time);
