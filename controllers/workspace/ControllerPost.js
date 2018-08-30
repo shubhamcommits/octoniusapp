@@ -1,10 +1,10 @@
-const moment = require('moment');
 const Group = require('../../models/group')
 const User = require('../../models/user');
 const Workspace = require('../../models/workspace');
 const Post = require('../../models/post');
 const sendMail = require('../../sendgrid/sendMail');
 const sendErr = require('../../helpers/sendErr');
+const toUTC = require('../../helpers/convertDateToUTC');
 
 /*	==================
  *	-- POST METHODS --
@@ -15,22 +15,10 @@ const addNewPost = async (req, res, next) => {
 	try { 
 		const postData = req.body;
 
-		// await console.log(`req.body.${postData.type}.due_date ===>`, req.body[`${postData.type}.due_date`]);
-
-		// If it's a task/event zero the hours, leave only the date
+		// Id it's event/task post, convert due_to date to UTC before storing 
 		if (postData.type === 'event' || postData.type === 'task') { 
-			// let date = moment().format();
-			// console.log ('date no UTC', date);
-
-			// date = moment.utc(date).format();
-
-			// console.log('date yes utc', date);
-
-			//  postData[`${postData.type}.due_date`] = date;
+			 postData[`${postData.type}.due_to`] = await toUTC(postData[`${postData.type}.due_to`]);
 		}
-
-		// await console.log(`req.body.${postData.type}.due_date ===>`, req.body[`${postData.type}.due_date`]);
-		// await console.log(`date ===>`, postData[`${postData.type}.due_date`]);
 
 		const post = await Post.create(postData);
 
