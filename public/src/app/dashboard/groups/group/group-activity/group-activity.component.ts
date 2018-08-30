@@ -1,3 +1,4 @@
+import * as moment from 'moment';
 import { Component, OnInit, ViewChild, Testability, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router, Route } from '@angular/router';
 import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -429,7 +430,8 @@ test(index) {
       event: {
         due_date: this.selected_date,
         due_time: this.due_time,
-        due_to: this.due_to,
+	// MOMENT!!!
+	due_to: moment(`${this.due_date} ${this.due_time}`).format(),
         _assigned_to: assignedUsers
       },
       files: this.filesToUpload
