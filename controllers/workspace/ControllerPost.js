@@ -4,7 +4,7 @@ const Workspace = require('../../models/workspace');
 const Post = require('../../models/post');
 const sendMail = require('../../sendgrid/sendMail');
 const sendErr = require('../../helpers/sendErr');
-const toUTC = require('../../helpers/convertDateToUTC');
+const convertDate = require('../../helpers/convertDateToUTC');
 
 /*	==================
  *	-- POST METHODS --
@@ -17,7 +17,7 @@ const addNewPost = async (req, res, next) => {
 
 		// Id it's event/task post, convert due_to date to UTC before storing 
 		if (postData.type === 'event' || postData.type === 'task') { 
-			 postData[`${postData.type}.due_to`] = await toUTC(postData[`${postData.type}.due_to`]);
+			 postData[`${postData.type}.due_to`] = await convertDate.toUTC(postData[`${postData.type}.due_to`]);
 		}
 
 		const post = await Post.create(postData);
@@ -169,7 +169,7 @@ const getGroupPosts = async (req, res, next) => {
 const getUserOverview = async (req, res, next) => {
 	try {
 		const userId = req.params.user_id;
-		const today = toUTC(req.params.today);
+		const today = convertDate.unixToUTC(req.params.today);
 
 		const posts = await Post.find({
 			$or: [
