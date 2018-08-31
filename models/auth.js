@@ -1,3 +1,4 @@
+const moment = require('moment');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const Workspace = require('../models/workspace');
@@ -23,7 +24,7 @@ const AuthSchema = new Schema({
     },
     last_login: {
         type: Date,
-        default: Date.now
+        default: moment().format()
     },
     isLoggedIn: {
         type: Boolean,
@@ -31,7 +32,7 @@ const AuthSchema = new Schema({
     },
     created_date: {
         type: Date,
-        default: Date.now
+        default: moment().format()
     }
 });
 
