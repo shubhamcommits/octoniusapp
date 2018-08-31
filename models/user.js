@@ -1,3 +1,4 @@
+const moment = require('moment');
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const Workspace = require("../models/workspace");
@@ -72,7 +73,7 @@ const UserSchema = new Schema({
 	},
 	created_date: {
 		type: Date,
-		default: Date.now,
+		default: moment().format(),
 	},
 	skills: [{
 		type: String,
