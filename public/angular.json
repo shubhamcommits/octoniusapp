@@ -39,8 +39,16 @@
               "buildOptimizer": true,
               "fileReplacements": [{
                 "replace": "src/environments/environment.ts",
-                "with": "src/environments/environment.prod.ts"
+                 "with": "src/environments/environment.prod.ts"
               }]
+            },
+            "hmr": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.hmr.ts"
+                }
+              ]
             }
           }
         },
@@ -52,7 +60,11 @@
           "configurations": {
             "production": {
               "browserTarget": "octonius6:build:production"
-            }
+            },
+            "hmr": {
+              "hmr": true,
+              "browserTarget": "octonius6:build:hmr"
+            }      
           }
         },
         "extract-i18n": {
