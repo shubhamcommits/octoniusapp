@@ -169,10 +169,7 @@ const getGroupPosts = async (req, res, next) => {
 const getUserOverview = async (req, res, next) => {
 	try {
 		const userId = req.params.user_id;
-		
-		// REFACTOR THIS FUNCTION AFTER MIGRATE ALL APP DATES TO MOMENT.JS
-		// const today = moment().format()(new Number(req.params.today));
-		// today.setHours(0,0,0,0);
+		const today = toUTC(req.params.today);
 
 		const posts = await Post.find({
 			$or: [
