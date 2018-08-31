@@ -1,12 +1,11 @@
 const Post = require('../models/post');
+const sendErr = require('../helpers/sendErr');
 
-module.exports = { 
-
-	toEditPost(req, res, next) {
-
+const toEditPost = async (req, res, next) => {
+	try {
 		console.log('--> Checking user permisson...');
 
-		Post.findById(req.body.post_id, (err, foundPost) => {
+		await Post.findById(req.body.post_id, (err, foundPost) => {
 			if (err || !foundPost) {
 				console.log('--> There was an error trying to find the post: \n', err);
 			} else {
@@ -19,13 +18,17 @@ module.exports = {
 				}
 			}
 		});
-	},
 
-	toCompletePost(req, res, next) {
+	} catch (err) {
+		return sendErr(res, err);
+	}
+};
 
+const toCompletePost = async (req, res, next) => {
+	try {
 		console.log('--> Checking user permisson...');
 
-		Post.findById(req.body.post_id, (err, foundPost) => {
+		await Post.findById(req.body.post_id, (err, foundPost) => {
 			if (err || !foundPost) {
 				console.log('--> There was an error trying to find the post: \n', err);
 			} else {
@@ -51,7 +54,14 @@ module.exports = {
 				}
 			}
 		});
-	},
 
+	} catch (err) {
+		return sendErr(res, err);
+	}
+};
+
+module.exports = {
+	toEditPost,
+	toCompletePost
 };
 
