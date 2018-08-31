@@ -48,7 +48,7 @@ const completePost = async (req, res, next) => {
 			_id: postId
 		}, {
 			completed: true,
-			completion_date: new Date()
+			completion_date: moment().format()
 		}, {
 			new: true
 		});
@@ -169,8 +169,10 @@ const getGroupPosts = async (req, res, next) => {
 const getUserOverview = async (req, res, next) => {
 	try {
 		const userId = req.params.user_id;
-		const today = new Date(new Number(req.params.today));
-		today.setHours(0,0,0,0);
+		
+		// REFACTOR THIS FUNCTION AFTER MIGRATE ALL APP DATES TO MOMENT.JS
+		// const today = moment().format()(new Number(req.params.today));
+		// today.setHours(0,0,0,0);
 
 		const posts = await Post.find({
 			$or: [
