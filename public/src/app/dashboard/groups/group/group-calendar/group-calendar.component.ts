@@ -8,6 +8,10 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 })
 export class GroupCalendarComponent implements OnInit {
 
+  viewDate: Date = new Date();
+  view: string = 'month';
+  events = [];
+
   constructor(private ngxService: NgxUiLoaderService) { }
 
   ngOnInit() {

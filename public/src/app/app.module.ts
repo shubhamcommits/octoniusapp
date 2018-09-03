@@ -13,6 +13,7 @@ import { NgxUiLoaderModule, NgxUiLoaderConfig, SPINNER, POSITION, PB_DIRECTION }
 import { SnotifyModule, SnotifyService, ToastDefaults } from 'ng-snotify';
 import { DatePipe } from '@angular/common';
 import { ScrollToModule } from 'ng2-scroll-to-el';
+import { CalendarModule } from 'angular-calendar';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './common/components/navbar/navbar.component';
@@ -109,7 +110,8 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     NgbModule.forRoot(),
-    ScrollToModule.forRoot()
+    ScrollToModule.forRoot(), 
+    CalendarModule.forRoot()
   ],
 
   providers: [AuthService, UserService, PostService, GroupService,
