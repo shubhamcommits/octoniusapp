@@ -42,7 +42,7 @@ export class OverviewComponent implements OnInit {
   }
 
   getRecentPosts(){
-    this._postservice.useroverviewposts(this.user_data.user_id, this.today.setHours(0,0,0,0))
+    this._postservice.useroverviewposts(this.user_data.user_id)
     .subscribe((res) => {
       // console.log('Group posts:', res);
       this.posts = res['posts'];
