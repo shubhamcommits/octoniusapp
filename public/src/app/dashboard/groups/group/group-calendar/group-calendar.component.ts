@@ -11,6 +11,7 @@ export class GroupCalendarComponent implements OnInit {
   viewDate: Date = new Date();
   view: string = 'month';
   events = [];
+  activeDayIsOpen: boolean = true;
 
   constructor(private ngxService: NgxUiLoaderService) { }
 
