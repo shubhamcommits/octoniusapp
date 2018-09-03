@@ -1,10 +1,10 @@
+const moment = require('moment');
 const Group = require('../../models/group')
 const User = require('../../models/user');
 const Workspace = require('../../models/workspace');
 const Post = require('../../models/post');
 const sendMail = require('../../sendgrid/sendMail');
 const sendErr = require('../../helpers/sendErr');
-const convertDate = require('../../helpers/convertDateToUTC');
 
 /*	==================
  *	-- POST METHODS --
@@ -17,7 +17,9 @@ const addNewPost = async (req, res, next) => {
 
 		// Id it's event/task post, convert due_to date to UTC before storing 
 		if (postData.type === 'event' || postData.type === 'task') { 
-			 postData[`${postData.type}.due_to`] = await convertDate.toUTC(postData[`${postData.type}.due_to`]);
+
+			postData[`${postData.type}.due_to`] = moment.utc(postData[`${postData.type}.due_to`]).format();
+
 		}
 
 		const post = await Post.create(postData);
@@ -169,7 +171,11 @@ const getGroupPosts = async (req, res, next) => {
 const getUserOverview = async (req, res, next) => {
 	try {
 		const userId = req.params.user_id;
-		const today = convertDate.unixToUTC(req.params.today);
+
+		// Generate the actual time in utc format 
+		const now = moment.utc().format();
+		// Generate the +48h time un utc format
+		const nowPlus48 = moment.utc().add(48, 'hours').format();
 
 		const posts = await Post.find({
 			$or: [
@@ -183,15 +189,15 @@ const getUserOverview = async (req, res, next) => {
 				// Find tasks due to today
 				{ $and: [
 					{ 'task._assigned_to': userId },
-					{ 'task.due_date': today }
+					{ 'task.due_to': { $gte: now, $lt: nowPlus48 }}
 				]},
 				// Find events due to today
 				{ $and: [
 					{ 'event._assigned_to': userId },
-					{ 'event.due_date': today }
+					{ 'event.due_to': { $gte: now, $lt: nowPlus48 }}
 				]}
 			]})
-			.sort('-created_date')
+			.sort('event.due_to task.due_to -comments.created_date')
 			.populate('_posted_by', 'first_name last_name profile_pic')
 			.populate('comments._commented_by', 'first_name last_name profile_pic')
 			.populate('task._assigned_to', 'first_name last_name')
