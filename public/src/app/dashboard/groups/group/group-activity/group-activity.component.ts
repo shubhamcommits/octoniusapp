@@ -435,14 +435,7 @@ test(index) {
       },
       files: this.filesToUpload
     };
-    // console.log(this.selectedGroupUsers);
-        _assigned_to: assignedUsers
-      },
-      files: this.filesToUpload
-    };
-    // console.log(this.selectedGroupUsers);
-
-
+ 
     formData.append('content', post.content);
     formData.append('type', post.type);
     formData.append('_posted_by', post._posted_by);
