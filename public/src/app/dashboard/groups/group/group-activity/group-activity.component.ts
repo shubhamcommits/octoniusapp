@@ -430,7 +430,7 @@ test(index) {
       event: {
         due_date: this.selected_date,
         due_time: this.due_time,
-	      due_to: moment(`${this.selected_date} ${this.due_time}`).format(), 
+	      due_to: moment(`${this.due_date} ${this.due_time}`).format(), 
         _assigned_to: assignedUsers
       },
       files: this.filesToUpload
@@ -448,7 +448,7 @@ test(index) {
 
     this.processing = true;
     this.disblePostForm();
-    this.postService.addNewEventPost(post)
+    this.postService.addNewEventPost(formData)
       .subscribe((res) => {
         this.processing = false;
         this.enablePostForm();
