@@ -113,11 +113,11 @@
               <!-- <p class="blue">New event in <b>{{post._group?.group_name}} group</b></p> -->
               <div class="row event-title" style="margin-left:0px">
                   <div class="col-md-2 dateblock">
-                    <span class="bigdate">{{post?.event.due_date | date :'dd' }}</span>
+                    <span class="bigdate">{{post?.event.due_to | date :'dd' }}</span>
                     <br>
-                    <span class="time">{{post?.event.due_date | date: 'MMMM' }}</span>
+                    <span class="time">{{post?.event.due_to | date: 'MMMM' }}</span>
                     <br>
-                    <span class="time"> {{post?.event.due_time}}</span>
+                    <span class="time"> {{post?.event.due_to | date: 'hh:mm'}}</span>
                   </div>
                   <div class="col-md-8 event-title">
                     <p class="blue">New event in <b>{{post._group?.group_name}} group</b></p>
