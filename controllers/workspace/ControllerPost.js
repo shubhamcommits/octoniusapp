@@ -173,11 +173,7 @@ const getUserOverview = async (req, res, next) => {
 		const userId = req.params.user_id;
 
 		// Generate the actual time in utc format 
-		const now = moment.utc().format();
-		console.log('NOW-->', now);
-		// Set hours, minutes and seconds to zero
-		now.hours(0).minutes(0).seconds(0).milliseconds(0);
-		console.log('NOW-->', now);
+		const now = moment.utc().hours(0).minutes(0).seconds(0).milliseconds(0).format();
 
 		// Generate the +48h time un utc format
 		const nowPlus48 = moment.utc().add(48, 'hours').format();
