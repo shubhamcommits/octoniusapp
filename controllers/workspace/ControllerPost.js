@@ -1,3 +1,4 @@
+const moment = require('moment');
 const Group = require('../../models/group')
 const User = require('../../models/user');
 const Workspace = require('../../models/workspace');
@@ -14,11 +15,11 @@ const addNewPost = async (req, res, next) => {
 	try { 
 		const postData = req.body;
 
-		// If it's a task/event zero the hours, leave only the date
+		// Id it's event/task post, convert due_to date to UTC before storing 
 		if (postData.type === 'event' || postData.type === 'task') { 
-			let date = new Date(postData[`${postData.type}.due_date`]);
-			date.setHours(0,0,0,0);
-			postData[`${postData.type}.due_date`] = date.toString();
+
+			postData[`${postData.type}.due_to`] = moment.utc(postData[`${postData.type}.due_to`]).format();
+
 		}
 
 		const post = await Post.create(postData);
@@ -26,9 +27,9 @@ const addNewPost = async (req, res, next) => {
 		// Send Email notification after post creation
 		switch(post.type) {
 			case 'task':
-				sendMail.taskAssigned(post);
+				// sendMail.taskAssigned(post);
 			case 'event':
-				sendMail.eventAssigned(post);
+				// sendMail.eventAssigned(post);
 		};
 
 		return res.status(200).json({
@@ -49,7 +50,7 @@ const completePost = async (req, res, next) => {
 			_id: postId
 		}, {
 			completed: true,
-			completion_date: new Date()
+			completion_date: moment().format()
 		}, {
 			new: true
 		});
@@ -170,8 +171,11 @@ const getGroupPosts = async (req, res, next) => {
 const getUserOverview = async (req, res, next) => {
 	try {
 		const userId = req.params.user_id;
-		const today = new Date(new Number(req.params.today));
-		today.setHours(0,0,0,0);
+
+		// Generate the actual time in utc format 
+		const now = moment.utc().format();
+		// Generate the +48h time un utc format
+		const nowPlus48 = moment.utc().add(48, 'hours').format();
 
 		const posts = await Post.find({
 			$or: [
@@ -185,15 +189,15 @@ const getUserOverview = async (req, res, next) => {
 				// Find tasks due to today
 				{ $and: [
 					{ 'task._assigned_to': userId },
-					{ 'task.due_date': today }
+					{ 'task.due_to': { $gte: now, $lt: nowPlus48 }}
 				]},
 				// Find events due to today
 				{ $and: [
 					{ 'event._assigned_to': userId },
-					{ 'event.due_date': today }
+					{ 'event.due_to': { $gte: now, $lt: nowPlus48 }}
 				]}
 			]})
-			.sort('-created_date')
+			.sort('event.due_to task.due_to -comments.created_date')
 			.populate('_posted_by', 'first_name last_name profile_pic')
 			.populate('comments._commented_by', 'first_name last_name profile_pic')
 			.populate('task._assigned_to', 'first_name last_name')

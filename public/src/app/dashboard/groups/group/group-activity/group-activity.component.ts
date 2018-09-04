@@ -1,3 +1,4 @@
+import * as moment from 'moment';
 import { Component, OnInit, ViewChild, Testability, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router, Route } from '@angular/router';
 import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -76,6 +77,7 @@ export class GroupActivityComponent implements OnInit {
   date: { year: number, month: number };
   model_time = { hour: 13, minute: 30 };
   due_date = 'Due Date';
+  due_to = '';
   due_time = 'Due Time';
   assignment = 'Unassigned';
   selected_date: Date;
@@ -428,6 +430,12 @@ test(index) {
       event: {
         due_date: this.selected_date,
         due_time: this.due_time,
+        due_to: this.due_to,
+        _assigned_to: assignedUsers
+      },
+      files: this.filesToUpload
+    };
+    // console.log(this.selectedGroupUsers);
         _assigned_to: assignedUsers
       },
       files: this.filesToUpload
@@ -439,8 +447,8 @@ test(index) {
     formData.append('type', post.type);
     formData.append('_posted_by', post._posted_by);
     formData.append('_group', post._group);
-    formData.append('event.due_date', post.event.due_date);
-    formData.append('event.due_time', post.event.due_time);
+    formData.append('event.due_to', post.event.due_to);
+    //formData.append('event.due_time', post.event.due_time);
     //formData.append('event._assigned_to', assignedUsers);
 
 
@@ -493,6 +501,7 @@ test(index) {
       _group: this.group_id,
       task: {
         due_date: this.selected_date,
+        due_to: moment(`${this.due_date}`).format(),
         _assigned_to: this.selectedGroupUsers[0]._id
       }
     };
@@ -501,7 +510,7 @@ test(index) {
     formData.append('type', post.type);
     formData.append('_posted_by', post._posted_by);
     formData.append('_group', post._group);
-    formData.append('task.due_date', post.task.due_date);
+    formData.append('task.due_to', post.task.due_to);
     formData.append('task._assigned_to', post.task._assigned_to);
 
     // console.log('post: ', post);
@@ -845,8 +854,11 @@ y.style.display="block";
     // console.log('this.date:', this.date);
 
     const temp = this.model_date;
-    this.due_date = temp.day.toString() + '-' + this.date.month.toString() + '-' + temp.year.toString();
-    this.selected_date = new Date(this.date.year, (this.date.month - 1), temp.day);
+    this.due_date =  temp.year.toString() + '-' + this.date.month.toString() + '-' + temp.day.toString();
+    this.selected_date = new Date(this.date.year, (this.date.month - 1), temp.day, this.model_time.hour, this.model_time.minute);
+    this.due_to =  temp.year.toString() + '-' + this.date.month.toString() + '-' + temp.day.toString() +'T'+ this.model_time.hour + ':' + this.model_time.minute+ ':'+'00'+ this.selected_date.getTimezoneOffset();
+    
+  
 
     // console.log('model_date:', this.model_date);
     // console.log('selected date:', this.selected_date);

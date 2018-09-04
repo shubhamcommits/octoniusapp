@@ -1,3 +1,4 @@
+const moment = require('moment');
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const Workspace = require("../models/workspace")
@@ -31,7 +32,7 @@ const PostSchema = new Schema({
 		},
 		created_date: {
 			type: Date,
-			default: Date.now
+			default: moment().format(),
 		},
 		_commented_by: {
 			type: Schema.Types.ObjectId,
@@ -58,7 +59,7 @@ const PostSchema = new Schema({
 		required: true
 	},
 	task: {
-		due_date: {
+		due_to: {
 			type: Date,
 			default: null
 		},
@@ -68,12 +69,8 @@ const PostSchema = new Schema({
 		}
 	},
 	event: {
-		due_date: {
+		due_to: {
 			type: Date,
-			default: null
-		},
-		due_time: {
-			type: String,
 			default: null
 		},
 		_assigned_to: [{
@@ -83,7 +80,7 @@ const PostSchema = new Schema({
 	},
 	created_date: {
 		type: Date,
-		default: Date.now,
+		default: moment().format(),
 	},
 	files: [{
 		orignal_name: {
