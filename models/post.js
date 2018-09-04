@@ -32,7 +32,7 @@ const PostSchema = new Schema({
 		},
 		created_date: {
 			type: Date,
-			default: moment().format(),
+			default: Date.now,
 		},
 		_commented_by: {
 			type: Schema.Types.ObjectId,
@@ -80,7 +80,7 @@ const PostSchema = new Schema({
 	},
 	created_date: {
 		type: Date,
-		default: moment().format(),
+		default: Date.now,
 	},
 	files: [{
 		orignal_name: {
