@@ -430,7 +430,7 @@ test(index) {
       event: {
         due_date: this.selected_date,
         due_time: this.due_time,
-        due_to: this.due_to,
+	      due_to: moment(`${this.selected_date} ${this.due_time}`).format(), 
         _assigned_to: assignedUsers
       },
       files: this.filesToUpload
