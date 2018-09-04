@@ -448,7 +448,7 @@ test(index) {
 
     this.processing = true;
     this.disblePostForm();
-    this.postService.addNewEventPost(formData)
+    this.postService.addNewEventPost(post)
       .subscribe((res) => {
         this.processing = false;
         this.enablePostForm();
