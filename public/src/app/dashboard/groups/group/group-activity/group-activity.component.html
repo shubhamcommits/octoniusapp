@@ -375,7 +375,7 @@
                 <ng-template #taskif>
                     <div class="col-md-4 text-right padding-topright">
                         <button class="btn btn-outline-secondary btn-sm" id="button_task_mark_completed_{{i}}" (click)="OnMarkTaskCompleted(i, post._id)">Mark complete</button>
-                        <p class="pink font-weight-bold" style="margin-top: 5px"> due {{post.task?.due_date | date}}</p>
+                        <p class="pink font-weight-bold" style="margin-top: 5px"> due {{post.task?.due_to | date}}</p>
                     </div>
                 </ng-template>
 
@@ -532,9 +532,9 @@
               <div class="col-md-12 innercard ">
                 <div class="row">
                   <div class="col-md-2 dateblock">
-                    <span class="bigdate">{{post?.event.due_date | date :'dd' }}</span>
+                    <span class="bigdate">{{post?.event.due_to | date :'dd' }}</span>
                     <br>
-                    <span class="time">{{post?.event.due_date | date: 'MMMM' }}</span>
+                    <span class="time">{{post?.event.due_to | date: 'MMMM' }}</span>
                     <br>
                     <span class="time">{{post.event?.due_time}}</span>
                   </div>
