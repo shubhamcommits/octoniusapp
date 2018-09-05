@@ -28,9 +28,9 @@ const addNewPost = async (req, res, next) => {
 		// Send Email notification after post creation
 		switch(post.type) {
 			case 'task':
-				// sendMail.taskAssigned(post);
+				sendMail.taskAssigned(post);
 			case 'event':
-				// sendMail.eventAssigned(post);
+				sendMail.eventAssigned(post);
 		};
 
 		return res.status(200).json({
