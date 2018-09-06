@@ -6,6 +6,7 @@ import { User } from '../../shared/models/user.model';
 import { NgxUiLoaderService } from 'ngx-ui-loader'; 
 import { PostService } from '../../shared/services/post.service';
 import { GroupsService } from '../../shared/services/groups.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-overview',
@@ -21,6 +22,8 @@ export class OverviewComponent implements OnInit {
   user: User;
 
   today = new Date();
+
+  isLoading$ = new BehaviorSubject(false);
 
   group = {
     group_name: '',
@@ -42,15 +45,22 @@ export class OverviewComponent implements OnInit {
   }
 
   getRecentPosts(){
+
+    this.isLoading$.next(true);
     this._postservice.useroverviewposts(this.user_data.user_id)
     .subscribe((res) => {
       // console.log('Group posts:', res);
       this.posts = res['posts'];
      console.log('User Post:', this.posts);
-     for(var i = 0; i < this.posts.length; i++){
-       this.groups[i]=this.posts[i]._group;
+     if(this.posts.length == 0)
+     {
+      this.isLoading$.next(true);
      }
-     console.log('User Group:', this.groups);
+     
+
+     else{
+      this.isLoading$.next(false);
+     }
   
 
 

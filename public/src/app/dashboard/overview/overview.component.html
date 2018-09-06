@@ -1,7 +1,12 @@
 <div class="container">
     <app-overview-page-header></app-overview-page-header>
+    <div *ngIf="posts.length == 0">
+        <img src='../../../assets/images/empty.svg'>
+    </div>
+    <div *ngIf="posts.length > 0">         
     <div><h2>Next Events</h2></div>
     <div *ngFor="let post of posts; let i = index;">
+        {{posts.length}}
             <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/activity">
                 <div *ngIf="post.type== 'event'">
                    
@@ -173,6 +178,7 @@
     </div>
     </a>
    
+  </div>
   </div>
   </div>
   
