@@ -42,6 +42,7 @@ import { GroupService } from './shared/services/group.service';
 import { GroupDataService } from './shared/services/group-data.service';
 import { SafePipe } from './safe.pipe';
 import { NiceDateFormatPipePipe } from './nice-date-format-pipe.pipe';
+import { OrderByPipePipe  } from './order-by-pipe.pipe';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 
@@ -85,7 +86,8 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     GroupHeaderComponent,
     routingComponents,
     SafePipe,
-    NiceDateFormatPipePipe
+    NiceDateFormatPipePipe,
+    OrderByPipePipe 
   ],
   imports: [
     BrowserModule,
