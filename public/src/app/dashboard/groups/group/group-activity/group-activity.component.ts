@@ -494,7 +494,7 @@ test(index) {
       _group: this.group_id,
       task: {
         due_date: this.selected_date,
-        due_to: moment(`${this.due_date}`).format(),
+        due_to: moment(`${this.selected_date}`).format('YYYY-MM-DD'),
         _assigned_to: this.selectedGroupUsers[0]._id
       }
     };

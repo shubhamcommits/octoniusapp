@@ -18,9 +18,6 @@ const addNewPost = async (req, res, next) => {
 		// Id it's event post, convert due_to date to UTC before storing 
 		if (postData.type === 'event') {
 			postData[`event.due_to`] = moment.utc(postData[`event.due_to`]).format();
-		// Id it's event post, convert due_to date to UTC, and set hours to 20:00 before storing 
-		} else if (postData.type === 'task') { 
-			postData[`task.due_to`] = moment.utc(postData[`task.due_to`]).hours(20).minutes(0).seconds(0).milliseconds(0).format();
 		}
 
 		const post = await Post.create(postData);
@@ -173,11 +170,13 @@ const getUserOverview = async (req, res, next) => {
 	try {
 		const userId = req.params.user_id;
 
-		// Generate the actual time in utc format 
-		const now = moment.utc().hours(0).minutes(0).seconds(0).milliseconds(0).format();
+		// Generate the actual time
+		const todayForEvent = moment.utc().hours(0).minutes(0).seconds(0).milliseconds(0).format();
+		const today = moment().format('YYYY-MM-DD');
 
-		// Generate the +48h time un utc format
-		const nowPlus48 = moment.utc().add(48, 'hours').format();
+		// Generate the +48h time
+		const todayPlus48ForEvent = moment.utc().add(48, 'hours').format();
+		const tomorrow = moment().add(1, 'days').format('YYYY-MM-DD');
 
 		const posts = await Post.find({
 			$or: [
@@ -191,12 +190,12 @@ const getUserOverview = async (req, res, next) => {
 				// Find tasks due to today
 				{ $and: [
 					{ 'task._assigned_to': userId },
-					{ 'task.due_to': { $gte: now, $lt: nowPlus48 }}
+					{ 'task.due_to': { $in: [ today, tomorrow ]}}
 				]},
 				// Find events due to today
 				{ $and: [
 					{ 'event._assigned_to': userId },
-					{ 'event.due_to': { $gte: now, $lt: nowPlus48 }}
+					{ 'event.due_to': { $gte: todayForEvent, $lt: todayPlus48ForEvent }}
 				]}
 			]})
 			.sort('event.due_to task.due_to -comments.created_date')
