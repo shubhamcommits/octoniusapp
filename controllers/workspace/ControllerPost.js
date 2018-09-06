@@ -17,10 +17,10 @@ const addNewPost = async (req, res, next) => {
 
 		// Id it's event post, convert due_to date to UTC before storing 
 		if (postData.type === 'event') {
-			postData[`event.due_to`] = moment(postData[`event.due_to`]).format();
-		// Id it's task post don't convert hours
+			postData[`event.due_to`] = moment.utc(postData[`event.due_to`]).format();
+		// Id it's event post, convert due_to date to UTC, and set hours to 20:00 before storing 
 		} else if (postData.type === 'task') { 
-			postData[`task.due_to`] = moment(postData[`task.due_to`]).format();
+			postData[`task.due_to`] = moment.utc(postData[`task.due_to`]).hours(20).minutes(0).seconds(0).milliseconds(0).format();
 		}
 
 		const post = await Post.create(postData);
