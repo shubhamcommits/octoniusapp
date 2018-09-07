@@ -3,8 +3,12 @@
     <div *ngIf="posts.length == 0">
         <img src='../../../assets/images/overview-emptystate.svg' style=" margin: 0 auto">
     </div>
-    <div *ngIf="posts.length > 0">         
-    <h5 class="title-overview">Upcoming events</h5>
+    <div *ngIf="posts.length > 0">
+        <div  *ngIf="this.event_count == 1; else postif">
+                <h5 class="title-overview">Upcoming events</h5>
+        </div>         
+   
+    <ng-template #postif></ng-template>
     <div *ngFor="let post of posts; let i = index;">
             <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/activity">
                 <div *ngIf="post.type== 'event'">
@@ -77,8 +81,12 @@
                 </div>
             </a>
             </div>
+
+            <div  *ngIf="this.task_count == 1; else postif">
+                    <h5 class="title-overview">Upcoming tasks</h5>
+            </div>  
             
-            <h5 class="title-overview">Upcoming tasks</h5>
+   
             <div *ngFor="let post of posts; let i = index;">
       <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/activity">
           <div *ngIf="post.type== 'task'">
@@ -141,8 +149,11 @@
       </div>
       </a>
       </div>
+      <div  *ngIf="this.normal_count == 1; else postif">
+            <h5 class="title-overview">Recent interactions</h5>
+    </div>  
      
-      <h5 class="title-overview">Recent interactions</h5>
+    
    <div *ngFor="let post of posts; let i = index;">
 
   <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/activity">
