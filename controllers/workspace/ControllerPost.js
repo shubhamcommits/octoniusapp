@@ -184,7 +184,6 @@ const getUserOverview = async (req, res, next) => {
 				{ $and: [
 					// Find normal posts that has comments
 					{ _posted_by: userId },
-					{ type: 'normal' },
 					{ comments: { $exists: true, $ne: []}},
 					{ 'comments.created_date': { $gte: todayForEvent }}
 				]},
