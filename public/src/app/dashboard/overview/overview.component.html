@@ -94,7 +94,7 @@
                
             </div>
             <div class="col-md-8">
-                <p class="pink">Assigned a task to you in <b>{{post._group?.group_name}} group</b> for today</p>
+                <p class="pink">Assigned a task to you in <b>{{post._group?.group_name}} group</b> for <b>{{post.task.due_to | date:'d MMMM' }}</b></p>
                 <div [innerHTML]="post.content"></div>
             </div>
            
