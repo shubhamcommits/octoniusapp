@@ -18,6 +18,10 @@ export class OverviewComponent implements OnInit {
   posts = new Array();
   groups = new Array();
 
+  event_count = 0;
+  task_count = 0;
+  normal_count = 0;
+
   user_data;
   user: User;
 
@@ -51,7 +55,21 @@ export class OverviewComponent implements OnInit {
     .subscribe((res) => {
       // console.log('Group posts:', res);
       this.posts = res['posts'];
+      for(var i = 0 ; i < this.posts.length; i ++){
+        if(this.posts[i].type=='task'){
+          this.task_count=1;
+        }
+        if(this.posts[i].type=='event'){
+          this.event_count=1;
+        }
+        if(this.posts[i].type=='normal'){
+          this.normal_count=1;
+        }
+      }
      console.log('User Post:', this.posts);
+     console.log('Event Response:', this.event_count);
+     console.log('Task Response:', this.task_count);
+     console.log('Normal Response:', this.normal_count);
      if(this.posts.length == 0)
      {
       this.isLoading$.next(true);
