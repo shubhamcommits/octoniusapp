@@ -17,6 +17,7 @@ import { CalendarModule } from 'angular-calendar';
 import 'core-js/es6/reflect';
 import 'core-js/es7/reflect';
 import 'zone.js/dist/zone';
+import { MentionModule } from 'angular-mentions/mention';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './common/components/navbar/navbar.component';
@@ -101,6 +102,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     AngularMultiSelectModule,
     QuillModule,
     SnotifyModule,
+    MentionModule,
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
     LoadingModule.forRoot({
       animationType: ANIMATION_TYPES.wanderingCubes,
