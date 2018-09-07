@@ -14,6 +14,9 @@ import { SnotifyModule, SnotifyService, ToastDefaults } from 'ng-snotify';
 import { DatePipe } from '@angular/common';
 import { ScrollToModule } from 'ng2-scroll-to-el';
 import { CalendarModule } from 'angular-calendar';
+import 'core-js/es6/reflect';
+import 'core-js/es7/reflect';
+import 'zone.js/dist/zone';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './common/components/navbar/navbar.component';
