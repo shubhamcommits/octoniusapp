@@ -186,7 +186,7 @@ const getUserOverview = async (req, res, next) => {
 					{ _posted_by: userId },
 					{ type: 'normal' },
 					{ comments: { $exists: true, $ne: []}},
-					{ 'comment.created_date': { $gte: todayForEvent }}
+					{ 'comments.created_date': { $gte: todayForEvent }}
 				]},
 				// Find tasks due to today
 				{ $and: [
