@@ -204,6 +204,9 @@
           </div>
       </div>
       <div *ngIf="!(isLoading$ | async)">
+          <div *ngIf="posts.length == 0">
+              <img src='../../../assets/images/overview-emptystate.svg' style=" margin: 0 auto">
+          </div>
       <div *ngFor="let post of posts; let i = index;">
         <ul class="list-group ">
           <!-- Normal post -->

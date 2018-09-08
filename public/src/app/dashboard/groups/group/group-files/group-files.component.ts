@@ -20,6 +20,8 @@ export class GroupFilesComponent implements OnInit {
   groupImageUrl = '';
   posts = new Array();
 
+  has_file;
+
   group = {
     description: ''
   };
@@ -49,7 +51,18 @@ export class GroupFilesComponent implements OnInit {
       .subscribe((res) => {
         // console.log('Group posts:', res);
         this.posts = res['posts'];
+        for(var i = 0; i < this.posts.length; i++){
+          if(this.posts[i].files.length != 0){
+            this.has_file=true;
+            break;
+
+          }
+          else{
+            this.has_file=false;
+          }
+        }
        console.log('Group posts:', this.posts);
+       console.log('Has File:', this.has_file);
        this.isLoading$.next(false);
 
 
