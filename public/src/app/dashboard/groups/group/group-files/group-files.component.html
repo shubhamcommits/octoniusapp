@@ -8,6 +8,7 @@
       </div>
   </div>
   <div *ngIf="!(isLoading$ | async)">
+    <div *ngIf="this.has_file == true; else svg">
   <div *ngFor="let post of posts">
 <div class="media card-tile user-list" *ngIf="post.files.length != 0" >
       
@@ -33,6 +34,10 @@
   </div>
 
 </div>
+</div>
+<ng-template #svg>
+    <img src='../../../../../assets/images/empty.svg' style=" margin: 0 auto">
+</ng-template>
 </div>
 
 </div>
