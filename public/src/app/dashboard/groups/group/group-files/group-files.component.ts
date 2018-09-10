@@ -52,7 +52,7 @@ export class GroupFilesComponent implements OnInit {
         // console.log('Group posts:', res);
         this.posts = res['posts'];
         for(var i = 0; i < this.posts.length; i++){
-          if(this.posts[i].files.length != 0){
+          if(this.posts[i].files.length > 0){
             this.has_file=true;
             break;
 
