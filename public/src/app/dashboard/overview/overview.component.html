@@ -3,6 +3,9 @@
     <div *ngIf="posts.length == 0">
         <img src='../../../assets/images/overview-emptystate.svg' style=" margin: 0 auto">
     </div>
+    <div *ngIf="posts.length > 0 && (this.event_count == 0 && this.normal_count == 0 && this.task_count == 0)">
+            <img src='../../../assets/images/overview-emptystate.svg' style=" margin: 0 auto">
+        </div>
     <div *ngIf="posts.length > 0">
         <div  *ngIf="this.event_count == 1; else postif">
                 <h5 class="title-overview">Upcoming events</h5>
@@ -11,7 +14,7 @@
     <ng-template #postif></ng-template>
     <div *ngFor="let post of posts; let i = index;">
             <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/activity">
-                <div *ngIf="post.type== 'event'">
+                <div *ngIf="post.type== 'event' && post.completed == false">
                    
                     <div class="media card-tile overview-event">
                         <!-- <img src="/uploads/{{post._group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" class="mr-3 feed-avatar-big"> -->
@@ -89,7 +92,7 @@
    
             <div *ngFor="let post of posts; let i = index;">
       <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/activity">
-          <div *ngIf="post.type== 'task'">
+          <div *ngIf="post.type== 'task' && post.completed == false">
           <div class="media card-tile overview-task">
               <!-- <img src="/uploads/{{post._group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" class="mr-3 feed-avatar-big"> -->
           <div class=" row media-body">

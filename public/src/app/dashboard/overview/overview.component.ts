@@ -56,10 +56,10 @@ export class OverviewComponent implements OnInit {
       // console.log('Group posts:', res);
       this.posts = res['posts'];
       for(var i = 0 ; i < this.posts.length; i ++){
-        if(this.posts[i].type=='task'){
+        if(this.posts[i].type=='task' && this.posts[i].completed == false){
           this.task_count=1;
         }
-        if(this.posts[i].type=='event'){
+        if(this.posts[i].type=='event' && this.posts[i].completed == false){
           this.event_count=1;
         }
         if(this.posts[i].type=='normal'){
