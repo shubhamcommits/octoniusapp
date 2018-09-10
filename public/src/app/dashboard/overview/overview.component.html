@@ -152,7 +152,10 @@
         </div>
         </a>
         </div>
-        <div  *ngIf="this.normal_count == 1; else postif">
+        <div  *ngIf="this.normal_count == 1 && this.event_count == 0 && this.task_count == 0; else postif">
+                <h5 class="title-overview">Recent interactions</h5>
+        </div>  
+        <div  *ngIf="this.normal_count == 1 && (this.normal_count == 1 && this.task_count == 1); else postif">
                 <h5 class="title-overview">Recent interactions</h5>
         </div>  
 
