@@ -62,6 +62,12 @@ export class OverviewComponent implements OnInit {
         if(this.posts[i].type=='event' && this.posts[i].completed == false){
           this.event_count=1;
         }
+        if(this.posts[i].type=='event' && this.posts[i].comments_count > 0){
+          this.normal_count=1;
+        }
+        if(this.posts[i].type=='task' && this.posts[i].comments_count > 0){
+          this.normal_count=1;
+        }
         if(this.posts[i].type=='normal'){
           this.normal_count=1;
         }
