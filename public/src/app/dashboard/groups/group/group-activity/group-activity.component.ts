@@ -372,7 +372,7 @@
 
       };
 
-      formData.append('content', post.content);
+      formData.append('content', this.linkify(post.content));
       formData.append('type', post.type);
       formData.append('_posted_by', post._posted_by);
       formData.append('_group', post._group);
@@ -441,7 +441,7 @@
         files: this.filesToUpload
       };
   
-      formData.append('content', post.content);
+      formData.append('content', this.linkify(post.content));
       formData.append('type', post.type);
       formData.append('_posted_by', post._posted_by);
       formData.append('_group', post._group);
@@ -504,7 +504,7 @@
         }
       };
 
-      formData.append('content', post.content);
+      formData.append('content', this.linkify(post.content));
       formData.append('type', post.type);
       formData.append('_posted_by', post._posted_by);
       formData.append('_group', post._group);
