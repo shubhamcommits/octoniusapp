@@ -22,6 +22,7 @@ router.post('/addComment', controller_post.addCommentOnPost);
 router.post('/like', controller_post.likePost);
 router.post('/unlike', controller_post.unlikePost);
 router.get('/:group_id', controller_post.getGroupPosts);
+router.get('/next/:group_id/:last_post_id', controller_post.getGroupNextPosts);
 router.get('/userOverview/:user_id', controller_post.getUserOverview);
 router.put('/', controller_post.deletePost);
 
