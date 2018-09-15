@@ -18,6 +18,10 @@ export class PostService {
     return this._http.get(this.BASE_API_URL + '/group/' + group_id);
   }
 
+  getNextPosts(group_id, last_post_id) {
+    return this._http.get(this.BASE_API_URL + '/post/next/' + group_id +'/'+ last_post_id);
+  }
+
   addNewNormalPost(post) {
     return this._http.post(this.BASE_API_URL + '/post/add', post);
   }

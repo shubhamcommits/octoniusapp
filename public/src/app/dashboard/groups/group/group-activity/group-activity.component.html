@@ -203,7 +203,11 @@
               <div class="line"></div>
           </div>
       </div>
-      <div *ngIf="!(isLoading$ | async)">
+      <div class="search-results"
+      infiniteScroll
+      [infiniteScrollDistance]="2"
+      [infiniteScrollThrottle]="50"
+      (scrolled)="onScroll()">
           <div *ngIf="posts.length == 0">
               <img src='../../../assets/images/empty-activity.svg' style=" margin: 0 auto">
           </div>
