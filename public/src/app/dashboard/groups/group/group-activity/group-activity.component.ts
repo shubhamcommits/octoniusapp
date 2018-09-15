@@ -662,17 +662,20 @@
     }
 
     onScroll() {
-      this.isLoading$.next(true);
 
       this.postService.getGroupPosts(this.group_id)
         .subscribe((res) => {
           // console.log('Group posts:', res);
           //this.posts = res['posts'];
         //console.log('Group posts:', this.posts);
-        var last_post_id = this.posts[this.posts.length - 1]._id
-        console.log('Last Post Id', last_post_id)
-        this.loadNextPosts(last_post_id);
-        this.isLoading$.next(false);
+        if(this.posts.length != 0){
+          this.isLoading$.next(true);
+          var last_post_id = this.posts[this.posts.length - 1]._id
+          console.log('Last Post Id', last_post_id)
+          this.loadNextPosts(last_post_id);
+          this.isLoading$.next(false);
+        }
+
 
 
         }, (err) => {
@@ -680,6 +683,7 @@
         });
       console.log('scrolled!!');
     }
+    
 
     scrollToTop(element) {
       this.scrollService.scrollTo(element).subscribe(data => {
@@ -1086,6 +1090,7 @@
         this._message.next(res['message']);
         console.log('Post Liked!');
         this.loadGroupPosts();
+        this.onScroll();
 
       }, (err) => {
 
@@ -1109,6 +1114,7 @@
         this._message.next(res['message']);
         console.log('Post Unliked!');
         this.loadGroupPosts();
+        this.onScroll();
 
       }, (err) => {
 
