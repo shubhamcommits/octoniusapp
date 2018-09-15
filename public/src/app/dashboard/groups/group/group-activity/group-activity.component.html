@@ -371,7 +371,7 @@
                     </span>
                   </div>
                   <div class="col-md-4 text-right " *ngIf="post.completed== true; else taskif">
-                      <button class="btn btn-primary btn-sm" disabled style="background: #005fd5;">Completed</button>
+                    <a class="btn btn-sm" style="background: #00CC66; color: white;">Completed</a>
 
                   </div>
                   <ng-template #taskif>
@@ -516,9 +516,14 @@
                     </ng-template>
                   </div>
 
-                  <div class="col-md-4 text-right " *ngIf="post.completed== true; else eventif">
+                  <!--<div class="col-md-4 text-right " *ngIf="post.completed== true; else eventif">
 
                       <button class="btn btn-primary btn-sm" disabled style="background: #005fd5;">Completed</button>
+
+                    </div>-->
+                    <div class="col-md-4 text-right " *ngIf="post.completed== true; else eventif">
+ 
+                      <a class="btn btn-sm" style="background: #00CC66; color: white;">Completed</a>
 
                     </div>
                     <ng-template #eventif>

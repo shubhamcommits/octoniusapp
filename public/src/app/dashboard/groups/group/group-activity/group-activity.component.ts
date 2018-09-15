@@ -372,7 +372,7 @@
 
       };
 
-      formData.append('content', this.linkify(post.content));
+      formData.append('content', post.content);
       formData.append('type', post.type);
       formData.append('_posted_by', post._posted_by);
       formData.append('_group', post._group);
@@ -980,9 +980,6 @@
       .subscribe((res) => {
         this.alert.class = 'success';
         this._message.next(res['message']);
-        //this.resetNewPostForm();
-        // console.log('Normal post response: ', res);
-        //
         console.log('Post Marked as Completed');
 
         button.style.background="#005fd5";
@@ -990,6 +987,7 @@
         button.innerHTML="Completed";
         button.setAttribute('disabled', 'true');
         this.loadGroupPosts();
+        this.onScroll();
         this.scrollToTop('#card-normal-post-'+index);
         this.scrollToTop('#card-event-post-'+index);
         this.scrollToTop('#card-task-post-'+index);
@@ -1005,39 +1003,7 @@
         }
 
       });
-      /*var i ;
-      for(i = 0; i < assigned_length; i++){
-    
-        if(assigned_to[i]=this.user_data.user_id){
-          this.postService.complete(post)
-          .subscribe((res) => {
-            this.alert.class = 'success';
-            this._message.next(res['message']);
-            console.log('Post Marked as Completed');
-            button.style.background="#005fd5";
-            button.style.color="#ffffff";
-            button.innerHTML="Completed";
-            button.setAttribute('disabled', 'true');
-            this.loadGroupPosts();
-      
-          }, (err) => {
-      
-            this.alert.class = 'danger';
-      
-            if (err.status) {
-              this._message.next(err.error.message);
-            } else {
-              this._message.next('Error! either server is down or no internet connection');
-            }
-      
-          });
-        }
-      }*/
-      /*button.style.background="#005fd5";
-      button.style.color="#ffffff";
-      button.innerHTML="Completed";*/
-      //button.setAttribute('disabled', 'true');
-
+ 
     }
 
     OnMarkTaskCompleted(index, post_id){
@@ -1060,6 +1026,7 @@
         button.innerHTML="Completed";
         button.setAttribute('disabled', 'true');
         this.loadGroupPosts();
+        this.onScroll();
         this.scrollToTop('#card-normal-post-'+index);
         this.scrollToTop('#card-event-post-'+index);
         this.scrollToTop('#card-task-post-'+index);
@@ -1177,12 +1144,7 @@
 
       this.groupService.getGroup(this.group_id)
         .subscribe((res) => {
-        /* this.group_members = res['group']._members;
-          console.log(this.group_members);
-          this.group_admins = res['group']._admins;
-          console.log(this.group_admins);*/
-          //this.members= res['group'];
-//this.members.push(res['group']._admins);
+
           for(var i = 0; i < res['group']._members.length; i++ ){
             this.members.push(res['group']._members[i].first_name + ' ' + res['group']._members[i].last_name);
           }
