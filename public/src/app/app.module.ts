@@ -19,6 +19,7 @@ import 'core-js/es7/reflect';
 import 'zone.js/dist/zone';
 import { MentionModule } from 'angular-mentions/mention';
 import { DragAndDropModule } from 'angular-draggable-droppable';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './common/components/navbar/navbar.component';
@@ -104,6 +105,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     QuillModule,
     SnotifyModule,
     MentionModule,
+    InfiniteScrollModule,
     DragAndDropModule.forRoot(),
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
     LoadingModule.forRoot({

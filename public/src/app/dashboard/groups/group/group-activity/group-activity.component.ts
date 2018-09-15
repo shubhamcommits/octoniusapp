@@ -643,6 +643,44 @@
 
     }
 
+    loadNextPosts(last_post_id)
+    {
+
+      this.isLoading$.next(true);
+
+      this.postService.getNextPosts(this.group_id, last_post_id)
+        .subscribe((res) => {
+           console.log('Group posts:', res);
+          this.posts = this.posts.concat(res['posts']);
+        console.log('Group posts:', this.posts);
+        this.isLoading$.next(false);
+
+
+        }, (err) => {
+
+        });
+    }
+
+    onScroll() {
+      this.isLoading$.next(true);
+
+      this.postService.getGroupPosts(this.group_id)
+        .subscribe((res) => {
+          // console.log('Group posts:', res);
+          //this.posts = res['posts'];
+        //console.log('Group posts:', this.posts);
+        var last_post_id = this.posts[this.posts.length - 1]._id
+        console.log('Last Post Id', last_post_id)
+        this.loadNextPosts(last_post_id);
+        this.isLoading$.next(false);
+
+
+        }, (err) => {
+
+        });
+      console.log('scrolled!!');
+    }
+
     scrollToTop(element) {
       this.scrollService.scrollTo(element).subscribe(data => {
         console.log('next');
