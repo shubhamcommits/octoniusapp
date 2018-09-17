@@ -7,16 +7,15 @@
   <div *ngIf="alert.message" [ngClass]="alert.class">{{alert.message}}</div>
   <div class="row no-margin">
 
-    <div *ngIf="user?.role== 'admin' || user?.role== 'owner'" (click)="openLg(content)" class="card col-md-3">
-      <div class="card-body">
+    <div *ngIf="user?.role== 'admin' || user?.role== 'owner'" (click)="openLg(content)" class="card col-md-3" style="cursor: pointer;">
+     
         <a>
-          <h4 class="card-title text-center ">
-            <i class="material-icons " style="font-size: 150px ">add</i>
-          </h4>
+          
+           <button class="btn btn-primary btn-block btn-lg"> <i class="material-icons" style="font-size: 3.5rem">add_circle_outline</i><br> New Group</button>
+          
         </a>
-        <h4 class="card-title text-center ">Create New Group
-        </h4>
-      </div>
+ 
+      
     </div>
 
     <!--     <div class="card col-md-3 m-1" [routerLink]="['/dashboard/group/',group._id,'activity']">
@@ -34,7 +33,7 @@
     </div> -->
 
     <div *ngFor="let group of groups " class="card col-md-3" [routerLink]="['/dashboard/group/',group._id,'activity']">
-      <img class="card-img-top" [src] = "group.group_avatar  " onerror="this.src='/assets/images/group.png'" >
+      <img class="card-img-top" [src] = "group.group_avatar" onerror="this.src='/assets/images/group.png'" >
       <div class="card-body ">
         <a>
           <h4 class="card-title ">{{group?.group_name}}</h4>
@@ -42,7 +41,7 @@
         <p class="card-text ">
           <!-- {{group.desc}} -->
           <br>
-          <span class="badge badge-success ">{{group._members?.length + group._admins?.length}} Members</span>
+          <span class="badge badge-warning ">{{group._members?.length + group._admins?.length}} Members</span>
           <span class="small ">including you</span>
         </p>
       </div>
