@@ -21,6 +21,7 @@
   import {SnotifyService, SnotifyPosition, SnotifyToastConfig} from 'ng-snotify';
   import {NgbPopoverConfig} from '@ng-bootstrap/ng-bootstrap';
   import { ScrollToService } from 'ng2-scroll-to-el';
+  import 'quill-mention';
 
   @Component({
     selector: 'app-group-activity',
@@ -33,7 +34,12 @@
     group_id;
     group;
 
-    members: string[]=[];
+   values = [
+      { id: 1, value: 'Fredrik Sundqvist' },
+      { id: 2, value: 'Patrik Sjölin' }
+    ];
+
+    members = [];
 
     public editor;
 
@@ -113,6 +119,8 @@
 
     // post's attahced files
     filesToUpload: Array<File> = [];
+
+    modules = {};
 
 
     constructor(private _activatedRoute: ActivatedRoute, private _router: Router,
@@ -194,9 +202,79 @@
     
       this.scrollToTop('#card-normal-post-4');
 
-      this.loadGroupMembers();
+     // this.loadGroupMembers();
       
       //this.onSuccess();
+
+      const hashValues = [
+        { id: 3, value: 'File 1' },
+        { id: 4, value: 'File 2' }
+      ];
+
+      var Value = [];
+      
+      this.groupService.getGroup(this.group_id)
+      .subscribe((res) => {
+
+        for(var i = 0; i < res['group']._members.length; i++ ){
+          this.members.push(res['group']._members[i].first_name + ' ' + res['group']._members[i].last_name);
+          Value.push({id:res['group']._members[i]._id, value: res['group']._members[i].first_name + ' ' + res['group']._members[i].last_name});
+        }
+        for(var i = 0; i < res['group']._admins.length; i++ ){
+          this.members.push(res['group']._admins[i].first_name + ' ' + res['group']._admins[i].last_name);
+          Value.push({id:res['group']._members[i]._id, value: res['group']._members[i].first_name + ' ' + res['group']._members[i].last_name});
+        }
+     
+      }, (err) => {
+
+      });
+  
+  
+      this.modules = {
+        toolbar:[ ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+        ['blockquote', 'code-block'],
+    
+        [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+        [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+        [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+        [{ 'direction': 'rtl' }],                         // text direction
+    
+        [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+    
+        [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+        [{ 'font': [] }],
+        [{ 'align': [] }],
+    
+        ['clean'],                                         // remove formatting button
+    
+        ['link', 'image', 'video']                         // link and image, video],
+      ],
+        mention: {
+          allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
+          mentionDenotationChars: ["@", "#"],
+          source: function (searchTerm, renderList, mentionChar) {
+            let values;
+
+            if (mentionChar === "@") {
+              values = Value;
+            } else {
+              values = hashValues;
+            }
+            
+            if (searchTerm.length === 0) {
+              renderList(values, searchTerm);
+            } else {
+              const matches = [];
+              for (var i = 0; i < values.length; i++)
+                if (~values[i].value.toLowerCase().indexOf(searchTerm.toLowerCase())) matches.push(values[i]);
+              renderList(matches, searchTerm);
+            }
+          },
+        },
+      }
+
 
     }
 
@@ -1152,7 +1230,7 @@
             this.members.push(res['group']._admins[i].first_name + ' ' + res['group']._admins[i].last_name);
           }
        
-          console.log('Members', this.members);
+         console.log('Members', this.members);
 
         }, (err) => {
 
