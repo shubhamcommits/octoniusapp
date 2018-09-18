@@ -1,4 +1,4 @@
-    <div class="container">
+    <div class="container" style="margin-bottom: 30px">
         <app-overview-page-header></app-overview-page-header>
         <div *ngIf="posts.length == 0">
             <img src='../../../assets/images/overview-emptystate.svg' style=" margin: 0 auto; display:block; width: 600px">
@@ -39,7 +39,7 @@
                                 </div>
                                 <div class="col-md-8 event-title">
                                 <p class="blue">New event in <b>{{post._group?.group_name}} group</b></p>
-                                <div [innerHTML]="post?.content | safe: 'html' "> </div>
+                                <div [innerHTML]="post?.content | safe: 'html' " class="overview-item"> </div>
                                 
                                 </div>
                                 </div>
@@ -107,7 +107,7 @@
                 </div>
                 <div class="col-md-8">
                     <p class="pink">Assigned a task to you in <b>{{post._group?.group_name}} group</b> for <b>{{post.task.due_to | date:'d MMMM' }}</b></p>
-                    <div [innerHTML]="post.content"></div>
+                    <div [innerHTML]="post.content" class="overview-item"></div>
                 </div>
             
                 <div class="col-md-1">
@@ -135,7 +135,7 @@
             
                         <div class="col-md-8">
                             <p class="blue">Replied in <b>{{post._group?.group_name}} group</b> to the task assigned to you.</p>
-                            <div class="" [innerHTML]="comment.content"></div>
+                            <div [innerHTML]="comment.content" class="overview-item"></div>
                         </div>
                     
                         <div class="col-md-1">
@@ -187,7 +187,7 @@
             </div>
             <div class="col-md-8">
                 <p class="blue">Replied in <b>{{post._group?.group_name}} group</b></p>
-                <div class="" [innerHTML]="comment.content"></div>
+                <div class="" [innerHTML]="comment.content" class="overview-item"></div>
             </div>
             
             <div class="col-md-1">
@@ -220,7 +220,7 @@
         
                 <div class="col-md-8">
                     <p class="blue">Replied in <b>{{post._group?.group_name}} group</b> to the task assigned to you.</p>
-                    <div class="" [innerHTML]="comment.content"></div>
+                    <div class="" [innerHTML]="comment.content" class="overview-item"></div>
                 </div>
                 
                 <div class="col-md-1">
@@ -254,7 +254,7 @@
             
                     <div class="col-md-8">
                         <p class="blue">Replied in <b>{{post._group?.group_name}} group</b> to the Event assigned to you</p>
-                        <div class="" [innerHTML]="comment.content"></div>
+                        <div class="" [innerHTML]="comment.content" class="overview-item"></div>
                     </div>
                     
                     <div class="col-md-1">
