@@ -60,7 +60,7 @@ require('./nodemon_config');
 
 2.1.	Start MongoDB with `mongod` command or, `mongod --dbpath PATH_TO_YOUR_DATA_DB_FOLDER` passing the path to default MongoDB data folder.
 
-2.2.	Go to `octonius/` folder and run `nodemon server.js`  command.
+2.2.	Go to `octonius/` folder and run `npm run dev`  command.
 
 2.3.	Open your browser and go to `localhost:3000`.
 
