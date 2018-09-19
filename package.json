@@ -5,7 +5,7 @@
   "main": "src/api/app.js",
   "scripts": {
     "test": "jest",
-    "dev": "nodemon src/server"
+    "dev": "nodemon server"
   },
   "author": "waqas",
   "license": "ISC",
@@ -21,7 +21,8 @@
     "jsonwebtoken": "^8.1.1",
     "moment": "^2.22.2",
     "mongoose": "^5.0.2",
-    "morgan": "^1.9.0"
+    "morgan": "^1.9.0",
+    "socket.io": "^2.1.1"
   },
   "devDependencies": {
     "eslint": "^4.19.1",
