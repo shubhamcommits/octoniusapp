@@ -1,0 +1,35 @@
+// ./
+const passwordHelper = require('./password');
+const sendErr = require('./sendErr');
+
+// auth/
+const auth = require('./auth/auth');
+const authorization = require('./auth/authorization');
+
+// filehandler/
+const fileHandler = require('./filehandlers/filehandler');
+const groupFileHandler = require('./filehandlers/group.filehandler');
+const postFileHandler = require('./filehandlers/post.filehandler');
+const workspaceFileHandler = require('./filehandlers/workspace.filehandler');
+
+// sendmail/
+const sendMail = require('./sendmail/sendMail');
+
+module.exports = {
+  // ./
+  passwordHelper,
+  sendErr,
+
+  // auth/
+  auth,
+  authorization,
+
+  // filehandler/
+  fileHandler,
+  groupFileHandler,
+  postFileHandler,
+  workspaceFileHandler,
+
+  // sendmail/
+  sendMail
+};
