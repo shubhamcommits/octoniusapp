@@ -1,6 +1,7 @@
 // ./
 const passwordHelper = require('./password');
 const sendErr = require('./sendErr');
+const socket = require('./socket');
 
 // auth/
 const auth = require('./auth/auth');
@@ -19,6 +20,7 @@ module.exports = {
   // ./
   passwordHelper,
   sendErr,
+  socket,
 
   // auth/
   auth,
