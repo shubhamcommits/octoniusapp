@@ -2,17 +2,16 @@
   "name": "octonius6",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/api/app.js",
   "scripts": {
     "test": "jest",
-    "start": "nodemon server.js"
+    "dev": "nodemon src/server"
   },
   "author": "waqas",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.18.0",
     "bcrypt": "^1.0.3",
-    "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
     "dir": "^0.1.2",
@@ -25,7 +24,7 @@
     "morgan": "^1.9.0"
   },
   "devDependencies": {
-    "eslint": "^4.9.0",
+    "eslint": "^4.19.1",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.1",
