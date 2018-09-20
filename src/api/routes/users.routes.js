@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { userController } = require('../controllers');
+const { users } = require('../controllers');
 const { auth, fileHandler } = require('../../utils');
 
 const router = express.Router();
@@ -10,8 +10,8 @@ router.use(auth.verifyToken);
 router.use(auth.isLoggedIn);
 
 // User routes
-router.get('/', userController.getUser);
-router.put('/', userController.updateUser);
-router.post('/updateImage', fileHandler, userController.updateUserImage);
+router.get('/', users.getUser);
+router.put('/', users.updateUser);
+router.post('/updateImage', fileHandler, users.updateUserImage);
 
 module.exports = router;

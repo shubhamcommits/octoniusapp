@@ -8,7 +8,7 @@ const { sendMail, sendErr } = require('../../utils');
  *	==================
  */
 
-const addNewPost = async (req, res, next) => {
+const add = async (req, res, next) => {
   try { 
     const postData = req.body;
 
@@ -304,7 +304,8 @@ const unlikePost = async (req, res, next) => {
  */
 
 module.exports = {
-  addNewPost,
+  add,
+  addNewPost: add, // !! remove this name after 'add' implementation
   completePost,
   deletePost,
   editPost,

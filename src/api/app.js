@@ -6,13 +6,25 @@ const morgan = require('morgan');
 const path = require('path');
 
 const devEnv = require('../../development.config');
+
+// Correct REST naming
 const {
-  authRoutes,
-  fileRoutes,
-  groupRoutes,
-  postRoutes,
-  userRoutes,
-  workspaceRoutes
+  authsRoutes,
+  filesRoutes,
+  groupsRoutes,
+  postsRoutes,
+  usersRoutes,
+  workspacesRoutes
+} = require('./routes');
+
+// -->!!!! TO BE REMOVED !!!!
+const {
+  authsRoutes: authRoutes,
+  filesRoutes: fileRoutes,
+  groupsRoutes: groupRoutes,
+  postsRoutes: postRoutes,
+  usersRoutes: userRoutes,
+  workspacesRoutes: workspaceRoutes
 } = require('./routes');
 
 const app = express();
@@ -49,6 +61,15 @@ app.all('/', (req, res, next) => {
   res.sendFile(path.join(__dirname, '../../public/dist/index.html'));
 });
 
+// Correct REST naming
+app.use('/api/auths', authsRoutes);
+app.use('/api/files', filesRoutes);
+app.use('/api/groups', groupsRoutes);
+app.use('/api/posts', postsRoutes);
+app.use('/api/users', usersRoutes);
+app.use('/api/workspaces', workspacesRoutes);
+
+// -->!!!! TO BE REMOVED !!!!
 app.use('/api/auth', authRoutes);
 app.use('/api/file', fileRoutes);
 app.use('/api/group', groupRoutes);
