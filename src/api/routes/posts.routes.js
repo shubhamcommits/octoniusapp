@@ -50,8 +50,8 @@ router.post('/like', postsController.likePost); // ! TO BE REMOVED
 router.post('/unlike', postsController.unlikePost); // ! TO BE REMOVED
 
 // !!! move this ones to groups routes !!!
-router.get('/:group_id', postsController.getGrouppostsController); // ! TO BE REMOVED
-router.get('/next/:group_id/:last_post_id', postsController.getGroupNextpostsController); // ! TO BE REMOVED
+router.get('/:group_id', postsController.getGroupPosts); // ! TO BE REMOVED
+router.get('/next/:group_id/:last_post_id', postsController.getGroupNextPosts); // ! TO BE REMOVED
 
 // !!! move this one to groups routes !!!
 router.get('/userOverview/:user_id', postsController.getUserOverview); // ! TO BE REMOVED
