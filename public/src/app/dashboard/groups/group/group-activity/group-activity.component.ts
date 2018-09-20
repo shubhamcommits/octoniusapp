@@ -1,4 +1,5 @@
   import * as moment from 'moment';
+  import * as io from 'socket.io-client';
   import { Component, OnInit, ViewChild, Testability, ViewContainerRef } from '@angular/core';
   import { ActivatedRoute, Router, Route } from '@angular/router';
   import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -202,80 +203,48 @@
     
       this.scrollToTop('#card-normal-post-4');
 
+      this.mentionmembers();
+
+      this.socketio();
+
      // this.loadGroupMembers();
       
       //this.onSuccess();
 
-      const hashValues = [
-        { id: 3, value: 'File 1' },
-        { id: 4, value: 'File 2' }
-      ];
 
-      var Value = [];
+
+    }
+
+    socketio()
+    {
       
-      this.groupService.getGroup(this.group_id)
-      .subscribe((res) => {
+			// start socket!
+			var socket = io();
 
-        for(var i = 0; i < res['group']._members.length; i++ ){
-          this.members.push(res['group']._members[i].first_name + ' ' + res['group']._members[i].last_name);
-          Value.push({id:res['group']._members[i]._id, value: res['group']._members[i].first_name + ' ' + res['group']._members[i].last_name});
-        }
-        for(var i = 0; i < res['group']._admins.length; i++ ){
-          this.members.push(res['group']._admins[i].first_name + ' ' + res['group']._admins[i].last_name);
-          Value.push({id:res['group']._members[i]._id, value: res['group']._members[i].first_name + ' ' + res['group']._members[i].last_name});
-        }
-     
-      }, (err) => {
+			// On connect, join the Group room
+			socket.on('connect', () => {
+				console.log(`Socket connected!`);
 
-      });
-  
-  
-      this.modules = {
-        toolbar:[ ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-        ['blockquote', 'code-block'],
-    
-        [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-        [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-        [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-        [{ 'direction': 'rtl' }],                         // text direction
-    
-        [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-    
-        [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-        [{ 'font': [] }],
-        [{ 'align': [] }],
-    
-        ['clean'],                                         // remove formatting button
-    
-        ['link', 'image', 'video']                         // link and image, video],
-      ],
-        mention: {
-          allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
-          mentionDenotationChars: ["@", "#"],
-          source: function (searchTerm, renderList, mentionChar) {
-            let values;
+				// get workspace and group names
+				const room = {
+					workspace: 'octonius',
+					group: 'global'
+				}
 
-            if (mentionChar === "@") {
-              values = Value;
-            } else {
-              values = hashValues;
-            }
-            
-            if (searchTerm.length === 0) {
-              renderList(values, searchTerm);
-            } else {
-              const matches = [];
-              for (var i = 0; i < values.length; i++)
-                if (~values[i].value.toLowerCase().indexOf(searchTerm.toLowerCase())) matches.push(values[i]);
-              renderList(matches, searchTerm);
-            }
-          },
-        },
-      }
+				// join room to get notifications for this group
+				socket.emit('join', room, (err) => {
 
+				});
+			});
 
+			// Alert on screen when newPost is created
+			socket.on('newPost', (post) => {
+				console.log(`New Post:\n${post.content}`);
+			});
+
+			socket.on('disconnect', () => {
+				console.log(`Socket disconnected from group`);
+			});
     }
 
 
@@ -1235,6 +1204,79 @@
         }, (err) => {
 
         });
+    }
+
+    mentionmembers()
+    {
+      const hashValues = [
+        { id: 3, value: 'File 1' },
+        { id: 4, value: 'File 2' }
+      ];
+
+      var Value = [];
+      
+      this.groupService.getGroup(this.group_id)
+      .subscribe((res) => {
+
+        for(var i = 0; i < res['group']._members.length; i++ ){
+          this.members.push(res['group']._members[i].first_name + ' ' + res['group']._members[i].last_name);
+          Value.push({id:res['group']._members[i]._id, value: res['group']._members[i].first_name + ' ' + res['group']._members[i].last_name});
+        }
+        for(var i = 0; i < res['group']._admins.length; i++ ){
+          this.members.push(res['group']._admins[i].first_name + ' ' + res['group']._admins[i].last_name);
+          Value.push({id:res['group']._members[i]._id, value: res['group']._members[i].first_name + ' ' + res['group']._members[i].last_name});
+        }
+     
+      }, (err) => {
+
+      });
+  
+  
+      this.modules = {
+        toolbar:[ ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+        ['blockquote', 'code-block'],
+    
+        [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+        [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+        [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+        [{ 'direction': 'rtl' }],                         // text direction
+    
+        [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+    
+        [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+        [{ 'font': [] }],
+        [{ 'align': [] }],
+    
+        ['clean'],                                         // remove formatting button
+    
+        ['link', 'image', 'video']                         // link and image, video],
+      ],
+        mention: {
+          allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
+          mentionDenotationChars: ["@", "#"],
+          source: function (searchTerm, renderList, mentionChar) {
+            let values;
+
+            if (mentionChar === "@") {
+              values = Value;
+            } else {
+              values = hashValues;
+            }
+            
+            if (searchTerm.length === 0) {
+              renderList(values, searchTerm);
+            } else {
+              const matches = [];
+              for (var i = 0; i < values.length; i++)
+                if (~values[i].value.toLowerCase().indexOf(searchTerm.toLowerCase())) matches.push(values[i]);
+              renderList(matches, searchTerm);
+            }
+          },
+        },
+      }
+
     }
 
 
