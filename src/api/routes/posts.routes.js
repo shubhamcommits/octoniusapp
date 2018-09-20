@@ -1,6 +1,10 @@
 const express = require('express');
 
-const { posts, postsController } = require('../controllers');
+const {
+  posts,
+  postsController // ! TO BE REMOVED
+} = require('../controllers');
+
 const { auth, authorization, postFileHandler } = require('../../utils');
 
 const router = express.Router();
