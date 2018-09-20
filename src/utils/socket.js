@@ -28,12 +28,13 @@ const init = (server) => {
     });
 
     // For every new post added, user emit to room, room broadcast to group
-    socket.on('newPostAdded', (room, userId) => {
+    socket.on('newPost', (room, userName) => {
       // generate room name
       const roomName = `${room.workspace}_${room.group}`;
 
+      console.log(room, userName);
       // broadcast new post to group
-      io.to(roomName).broadcast('newPostOnGroup', userId);
+      io.to(roomName).broadcast('newPostOnGroup', userName);
     });
 
     socket.on('disconnect', () => {
