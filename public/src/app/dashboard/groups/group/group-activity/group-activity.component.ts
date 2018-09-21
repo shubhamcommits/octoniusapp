@@ -364,7 +364,7 @@
       switch (this.post.type) {
         case 'normal':
           // console.log('NOrmal post adding');
-
+     
           this.addNewNormalPost();
           break;
         case 'event':
@@ -434,6 +434,15 @@
           this.alert.class = 'success';
           this._message.next(res['message']);
           this.filesToUpload = null;
+                			// start socket!
+      var socket = io();
+      const room = {
+        workspace: 'octonius',
+        group: 'global'
+      };
+      socket.emit('newPost', room, (err) => {
+
+      });
 
           // console.log('Normal post response: ', res);
           this.loadGroupPosts();
