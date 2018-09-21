@@ -34,7 +34,7 @@ const init = (server) => {
 
       console.log(data);
       // broadcast new post to group
-      socket.broadcast.to(roomName).emit('newPostOnGroup', data.userName);
+      socket.broadcast.to(roomName).emit('newPostOnGroup', data);
     });
 
     socket.on('disconnect', () => {
