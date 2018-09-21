@@ -238,8 +238,8 @@
 			});
 
 			// Alert on screen when newPost is created
-			socket.on('newPost', (post) => {
-				console.log(`New Post:\n${post.content}`);
+			socket.on('newPostOnGroup', (userName) => {
+				alert(`New Post From:\n${userName}`);
 			});
 
 			socket.on('disconnect', () => {
@@ -434,15 +434,16 @@
           this.alert.class = 'success';
           this._message.next(res['message']);
           this.filesToUpload = null;
-                			// start socket!
-      var socket = io();
-      const room = {
+      // start socket!
+      const socket = io();
+      const data = {
+        // it should get automatically, something like workspace: this.workspace_name
         workspace: 'octonius',
-        group: 'global'
+        // it should get automatically, something like group: this.group_name
+        group: 'global',
+        userName: this.user.first_name
       };
-      socket.emit('newPost', room, (err) => {
-
-      });
+      socket.emit('newPost', data);
 
           // console.log('Normal post response: ', res);
           this.loadGroupPosts();
