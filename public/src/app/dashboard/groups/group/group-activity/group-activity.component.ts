@@ -190,10 +190,11 @@
       }, 500);
       this.group_id = this.groupDataService.groupId;
       this.user_data = JSON.parse(localStorage.getItem('user'));
+     // console.log('user', this.user_data);
 
       this.group = this.groupDataService.group;
 
-      // console.log('Group Activity _group:', this.groupDataService.group);
+     //console.log('Group Activity _group:', this.groupDataService);
       this.getUserProfile();
       this.inilizePostForm();
       this.inilizeCommentForm();
@@ -209,7 +210,7 @@
 
      // this.loadGroupMembers();
       
-      //this.onSuccess();
+    //  this.onSuccess();
 
 
 
@@ -238,8 +239,8 @@
 			});
 
 			// Alert on screen when newPost is created
-			socket.on('newPostOnGroup', (userName) => {
-				alert(`New Post From:\n${userName}`);
+			socket.on('newPostOnGroup', (username) => {
+			  this.snotifyService.success('Post Added', 'New Post by'+username, this.getConfig());
 			});
 
 			socket.on('disconnect', () => {
@@ -438,10 +439,10 @@
       const socket = io();
       const data = {
         // it should get automatically, something like workspace: this.workspace_name
-        workspace: 'octonius',
+        workspace: this.user_data.workspace.workspace_name,
         // it should get automatically, something like group: this.group_name
-        group: 'global',
-        userName: this.user.first_name
+        group: this.groupDataService._group.group_name,
+        user: this.user.first_name
       };
       socket.emit('newPost', data);
 
