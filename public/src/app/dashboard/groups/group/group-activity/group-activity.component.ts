@@ -228,8 +228,8 @@
 
 				// get workspace and group names
 				const room = {
-					workspace: 'octonius',
-					group: 'global'
+        workspace: this.user_data.workspace.workspace_name,
+        group: this.groupDataService._group.group_name,
 				}
 
 				// join room to get notifications for this group
@@ -239,8 +239,10 @@
 			});
 
 			// Alert on screen when newPost is created
-			socket.on('newPostOnGroup', (username) => {
-			  this.snotifyService.success('Post Added', 'New Post by'+username, this.getConfig());
+			socket.on('newPostOnGroup', (data) => {
+                                alert(data);
+                                console.log(data);
+                                // this.snotifyService.success('Post Added', 'New Post by'+username, this.getConfig());
 			});
 
 			socket.on('disconnect', () => {
