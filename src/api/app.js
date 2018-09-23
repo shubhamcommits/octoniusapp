@@ -17,16 +17,6 @@ const {
   workspacesRoutes
 } = require('./routes');
 
-// -->!!!! TO BE REMOVED !!!!
-const {
-  authsRoutes: authRoutes,
-  filesRoutes: fileRoutes,
-  groupsRoutes: groupRoutes,
-  postsRoutes: postRoutes,
-  usersRoutes: userRoutes,
-  workspacesRoutes: workspaceRoutes
-} = require('./routes');
-
 const app = express();
 
 // Load 'development' configs for dev environment
@@ -70,12 +60,12 @@ app.use('/api/users', usersRoutes);
 app.use('/api/workspaces', workspacesRoutes);
 
 // -->!!!! TO BE REMOVED !!!!
-app.use('/api/auth', authRoutes);
-app.use('/api/file', fileRoutes);
-app.use('/api/group', groupRoutes);
-app.use('/api/post', postRoutes);
-app.use('/api/user', userRoutes);
-app.use('/api/workspace', workspaceRoutes);
+app.use('/api/auth', authsRoutes);
+app.use('/api/file', filesRoutes);
+app.use('/api/group', groupsRoutes);
+app.use('/api/post', postsRoutes);
+app.use('/api/user', usersRoutes);
+app.use('/api/workspace', workspacesRoutes);
 
 // Invalid routes handling middleware
 app.use((req, res, next) => {

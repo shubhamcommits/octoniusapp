@@ -9,11 +9,14 @@ const { auth, authorization, postFileHandler } = require('../../utils');
 
 const router = express.Router();
 
-// Authentication
+// -| Authentication |-
+
+// Verify token and add current userId to request data
 router.use(auth.verifyToken);
+// Check if user is logged in
 router.use(auth.isLoggedIn);
 
-// Post Routes
+// -| Post Routes |-
 
 // POST api/posts/ - add new post
 router.post('/', postFileHandler, posts.add); // To do
@@ -41,12 +44,12 @@ router.post('/addComment', postsController.addCommentOnPost); // ! TO BE REMOVED
 // router.put('/:postId/complete', authorization.toCompletePost, posts.complete); // To do
 router.post('/complete', authorization.toCompletePost, postsController.completePost); // ! TO BE REMOVED
 
-// PUT api/posts/:postId/like/:userId - like post
-// router.put('/:postId/like/:userId', posts.like); // To do
+// PUT api/posts/:postId/like - like post
+// router.put('/:postId/like', posts.like); // To do
 router.post('/like', postsController.likePost); // ! TO BE REMOVED
 
-// PUT api/posts/:postId/unlike/:userId - unlike post
-// router.put('/:postId/unlike/:userId', posts.unlike); // To do
+// PUT api/posts/:postId/unlike - unlike post
+// router.put('/:postId/unlike', posts.unlike); // To do
 router.post('/unlike', postsController.unlikePost); // ! TO BE REMOVED
 
 // !!! move this ones to groups routes !!!

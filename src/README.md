@@ -21,6 +21,13 @@
 
 '
 
+## | 3. `api/groups` routes
+
+'
+
+#### 3.x. ❗️ GET `api/groups/:groupId/files` get user's files that belongs to this group
+
+'
 
 ## | 4. `api/posts` routes
 
@@ -40,8 +47,8 @@
 
 #### 4.7. ❗️❗️POST `api/posts/:postId/complete` mark post as complete
 
-#### 4.8. ❗️❗️PUT `api/posts/:postId/like/:userId` like post
+#### 4.8. ❗️❗️PUT `api/posts/:postId/like` like post
 
-#### 4.8. ❗️❗️PUT `api/posts/:postId/unlike/:userId` unlike post
+#### 4.8. ❗️❗️PUT `api/posts/:postId/unlike` unlike post
 
 '
