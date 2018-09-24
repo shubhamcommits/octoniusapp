@@ -41,6 +41,7 @@
     ];
 
     members = [];
+    files = [];
 
     public editor;
 
@@ -1236,10 +1237,7 @@
 
     mentionmembers()
     {
-      const hashValues = [
-        { id: 3, value: 'File 1' },
-        { id: 4, value: 'File 2' }
-      ];
+      var hashValues = [];
 
       var Value = [];
       
@@ -1255,6 +1253,22 @@
           Value.push({id:res['group']._members[i]._id, value: res['group']._members[i].first_name + ' ' + res['group']._members[i].last_name});
         }
      
+      }, (err) => {
+
+      });
+
+      this.groupService.getGroupFiles(this.group_id)
+      .subscribe((res) => {
+        console.log('Group Files:', res['posts']);
+        this.files = res['posts'];
+        for(var i = 0; i < res['posts'].length; i++){
+          if(res['posts'][i].files.length > 0) {
+            hashValues.push({id:res['posts'][i].files[0]._id, value: res['posts'][i].files[0].orignal_name})
+          }
+   
+        }
+
+
       }, (err) => {
 
       });
