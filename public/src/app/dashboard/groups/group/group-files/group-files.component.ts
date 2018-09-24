@@ -51,9 +51,9 @@ export class GroupFilesComponent implements OnInit {
     this.groupService.getGroupFiles(this.group_id)
       .subscribe((res) => {
         console.log('Group posts:', res);
-        this.posts = res['files'];
+        this.posts = res['posts'];
         for(var i = 0; i < this.posts.length; i++){
-          if(this.posts[i].length > 0){
+          if(this.posts[i].files.length > 0){
             this.has_file=true;
             break;
 
