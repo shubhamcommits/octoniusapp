@@ -1,4 +1,5 @@
   import * as moment from 'moment';
+  import * as io from 'socket.io-client';
   import { Component, OnInit, ViewChild, Testability, ViewContainerRef } from '@angular/core';
   import { ActivatedRoute, Router, Route } from '@angular/router';
   import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -189,10 +190,11 @@
       }, 500);
       this.group_id = this.groupDataService.groupId;
       this.user_data = JSON.parse(localStorage.getItem('user'));
+     // console.log('user', this.user_data);
 
       this.group = this.groupDataService.group;
 
-      // console.log('Group Activity _group:', this.groupDataService.group);
+     //console.log('Group Activity _group:', this.groupDataService);
       this.getUserProfile();
       this.inilizePostForm();
       this.inilizeCommentForm();
@@ -202,80 +204,54 @@
     
       this.scrollToTop('#card-normal-post-4');
 
+      this.mentionmembers();
+
+      this.socketio();
+
      // this.loadGroupMembers();
       
-      //this.onSuccess();
+    //  this.onSuccess();
 
-      const hashValues = [
-        { id: 3, value: 'File 1' },
-        { id: 4, value: 'File 2' }
-      ];
 
-      var Value = [];
+
+    }
+
+    socketio()
+    {
       
-      this.groupService.getGroup(this.group_id)
-      .subscribe((res) => {
+			// start socket!
+			var socket = io();
 
-        for(var i = 0; i < res['group']._members.length; i++ ){
-          this.members.push(res['group']._members[i].first_name + ' ' + res['group']._members[i].last_name);
-          Value.push({id:res['group']._members[i]._id, value: res['group']._members[i].first_name + ' ' + res['group']._members[i].last_name});
-        }
-        for(var i = 0; i < res['group']._admins.length; i++ ){
-          this.members.push(res['group']._admins[i].first_name + ' ' + res['group']._admins[i].last_name);
-          Value.push({id:res['group']._members[i]._id, value: res['group']._members[i].first_name + ' ' + res['group']._members[i].last_name});
-        }
-     
-      }, (err) => {
+			// On connect, join the Group room
+			socket.on('connect', () => {
+				console.log(`Socket connected!`);
 
-      });
-  
-  
-      this.modules = {
-        toolbar:[ ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-        ['blockquote', 'code-block'],
-    
-        [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-        [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-        [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-        [{ 'direction': 'rtl' }],                         // text direction
-    
-        [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-    
-        [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-        [{ 'font': [] }],
-        [{ 'align': [] }],
-    
-        ['clean'],                                         // remove formatting button
-    
-        ['link', 'image', 'video']                         // link and image, video],
-      ],
-        mention: {
-          allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
-          mentionDenotationChars: ["@", "#"],
-          source: function (searchTerm, renderList, mentionChar) {
-            let values;
+				// get workspace and group names
+				const room = {
+        workspace: this.user_data.workspace.workspace_name,
+        group: this.groupDataService._group.group_name,
+				}
 
-            if (mentionChar === "@") {
-              values = Value;
-            } else {
-              values = hashValues;
-            }
-            
-            if (searchTerm.length === 0) {
-              renderList(values, searchTerm);
-            } else {
-              const matches = [];
-              for (var i = 0; i < values.length; i++)
-                if (~values[i].value.toLowerCase().indexOf(searchTerm.toLowerCase())) matches.push(values[i]);
-              renderList(matches, searchTerm);
-            }
-          },
-        },
-      }
+				// join room to get notifications for this group
+				socket.emit('join', room, (err) => {
 
+				});
+			});
 
+			// Alert on screen when newPost is created
+			socket.on('newPostOnGroup', (data) => {
+                               // alert(data);
+                                console.log(data);
+                                if(this.user_data.user_id != data.user._id)
+                                {
+                                  this.snotifyService.success(data.group +' Group', 'New Post in ');
+                                }
+                              
+			});
+
+			socket.on('disconnect', () => {
+				console.log(`Socket disconnected from group`);
+			});
     }
 
 
@@ -395,7 +371,7 @@
       switch (this.post.type) {
         case 'normal':
           // console.log('NOrmal post adding');
-
+     
           this.addNewNormalPost();
           break;
         case 'event':
@@ -465,6 +441,19 @@
           this.alert.class = 'success';
           this._message.next(res['message']);
           this.filesToUpload = null;
+      // start socket!
+      const socket = io();
+      const data = {
+        // it should get automatically, something like workspace: this.workspace_name
+        workspace: this.user_data.workspace.workspace_name,
+        // it should get automatically, something like group: this.group_name
+        group: this.groupDataService._group.group_name,
+        user: this.user
+      };
+
+        socket.emit('newPost', data);  
+  
+      
 
           // console.log('Normal post response: ', res);
           this.loadGroupPosts();
@@ -1235,6 +1224,79 @@
         }, (err) => {
 
         });
+    }
+
+    mentionmembers()
+    {
+      const hashValues = [
+        { id: 3, value: 'File 1' },
+        { id: 4, value: 'File 2' }
+      ];
+
+      var Value = [];
+      
+      this.groupService.getGroup(this.group_id)
+      .subscribe((res) => {
+
+        for(var i = 0; i < res['group']._members.length; i++ ){
+          this.members.push(res['group']._members[i].first_name + ' ' + res['group']._members[i].last_name);
+          Value.push({id:res['group']._members[i]._id, value: res['group']._members[i].first_name + ' ' + res['group']._members[i].last_name});
+        }
+        for(var i = 0; i < res['group']._admins.length; i++ ){
+          this.members.push(res['group']._admins[i].first_name + ' ' + res['group']._admins[i].last_name);
+          Value.push({id:res['group']._members[i]._id, value: res['group']._members[i].first_name + ' ' + res['group']._members[i].last_name});
+        }
+     
+      }, (err) => {
+
+      });
+  
+  
+      this.modules = {
+        toolbar:[ ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+        ['blockquote', 'code-block'],
+    
+        [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+        [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+        [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+        [{ 'direction': 'rtl' }],                         // text direction
+    
+        [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+    
+        [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+        [{ 'font': [] }],
+        [{ 'align': [] }],
+    
+        ['clean'],                                         // remove formatting button
+    
+        ['link', 'image', 'video']                         // link and image, video],
+      ],
+        mention: {
+          allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
+          mentionDenotationChars: ["@", "#"],
+          source: function (searchTerm, renderList, mentionChar) {
+            let values;
+
+            if (mentionChar === "@") {
+              values = Value;
+            } else {
+              values = hashValues;
+            }
+            
+            if (searchTerm.length === 0) {
+              renderList(values, searchTerm);
+            } else {
+              const matches = [];
+              for (var i = 0; i < values.length; i++)
+                if (~values[i].value.toLowerCase().indexOf(searchTerm.toLowerCase())) matches.push(values[i]);
+              renderList(matches, searchTerm);
+            }
+          },
+        },
+      }
+
     }
 
 

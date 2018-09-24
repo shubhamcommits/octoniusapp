@@ -6,13 +6,15 @@ const morgan = require('morgan');
 const path = require('path');
 
 const devEnv = require('../../development.config');
+
+// Correct REST naming
 const {
-  authRoutes,
-  fileRoutes,
-  groupRoutes,
-  postRoutes,
-  userRoutes,
-  workspaceRoutes
+  authsRoutes,
+  filesRoutes,
+  groupsRoutes,
+  postsRoutes,
+  usersRoutes,
+  workspacesRoutes
 } = require('./routes');
 
 const app = express();
@@ -49,12 +51,21 @@ app.all('/', (req, res, next) => {
   res.sendFile(path.join(__dirname, '../../public/dist/index.html'));
 });
 
-app.use('/api/auth', authRoutes);
-app.use('/api/file', fileRoutes);
-app.use('/api/group', groupRoutes);
-app.use('/api/post', postRoutes);
-app.use('/api/user', userRoutes);
-app.use('/api/workspace', workspaceRoutes);
+// Correct REST naming
+app.use('/api/auths', authsRoutes);
+app.use('/api/files', filesRoutes);
+app.use('/api/groups', groupsRoutes);
+app.use('/api/posts', postsRoutes);
+app.use('/api/users', usersRoutes);
+app.use('/api/workspaces', workspacesRoutes);
+
+// -->!!!! TO BE REMOVED !!!!
+app.use('/api/auth', authsRoutes);
+app.use('/api/file', filesRoutes);
+app.use('/api/group', groupsRoutes);
+app.use('/api/post', postsRoutes);
+app.use('/api/user', usersRoutes);
+app.use('/api/workspace', workspacesRoutes);
 
 // Invalid routes handling middleware
 app.use((req, res, next) => {

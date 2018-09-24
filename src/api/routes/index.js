@@ -1,15 +1,15 @@
-const authRoutes = require('./auth.routes');
-const fileRoutes = require('./file.routes');
-const groupRoutes = require('./group.routes');
-const postRoutes = require('./post.routes');
-const userRoutes = require('./user.routes');
-const workspaceRoutes = require('./workspace.routes');
+const authsRoutes = require('./auths.routes');
+const filesRoutes = require('./files.routes');
+const groupsRoutes = require('./groups.routes');
+const postsRoutes = require('./posts.routes');
+const usersRoutes = require('./users.routes');
+const workspacesRoutes = require('./workspaces.routes');
 
 module.exports = {
-  authRoutes,
-  fileRoutes,
-  groupRoutes,
-  postRoutes,
-  userRoutes,
-  workspaceRoutes
+  authsRoutes,
+  filesRoutes,
+  groupsRoutes,
+  postsRoutes,
+  usersRoutes,
+  workspacesRoutes
 };
