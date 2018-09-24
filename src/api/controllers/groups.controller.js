@@ -17,20 +17,18 @@ const getFiles = async (req, res, next) => {
           // Find normal posts that has comments
           { _posted_by: userId },
           { files: { $exists: true, $ne: []}},
-        ]}, {
-          _id: 0,
-          files: 1
-        }).lean();
-
-    // Gererate the files array
-    const files = [];
-    
-    // Push every file from every post
-    posts.forEach(post => { files.push(...post.files); });
+        ]})
+      .sort('event.due_to task.due_to -comments.created_date')
+      .populate('_posted_by', 'first_name last_name profile_pic')
+      .populate('comments._commented_by', 'first_name last_name profile_pic')
+      .populate('task._assigned_to', 'first_name last_name')
+      .populate('event._assigned_to', 'first_name last_name')
+      .populate('_group', 'group_name group_avatar')
+      .populate('_liked_by', 'first_name last_name');
 
     return res.status(200).json({
-      message: `Found ${files.length} posts!`,
-      files,
+      message: `Found ${posts.length} posts containing files!`,
+      posts,
     });
 
   } catch (err) {
