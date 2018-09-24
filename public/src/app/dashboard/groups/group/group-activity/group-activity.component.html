@@ -303,7 +303,7 @@
                     <div class="col-md-12">
                       <div class="form-group ">
                         <h6>Add a comment</h6>
-                        <!--<textarea class="form-control" id="post-content" rows="3" [(ngModel)]="comment.content" name="commentContent" formControlName="commentContent"></textarea>-->
+                        
                         <quill-editor id="comment-content{{i}}" [modules]="modules" [(ngModel)]="comment.content" (blur)="onEditorBlured($event)" [spellcheck]="true" class="form-control" name="commentContent" (focus)="onEditorFocused($event)" formControlName="commentContent" (ready)="onEditorCreated($event)" (change)="onContentChanged($event)"></quill-editor>
                       </div>
                     </div>
