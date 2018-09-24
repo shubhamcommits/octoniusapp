@@ -40,7 +40,37 @@ export class GroupFilesComponent implements OnInit {
     }, 500);
 
     this.group_id = this.groupDataService.groupId;
-    this.loadGroupPosts();
+    this.loadFiles();
+    // this.loadGroupPosts();
+  }
+
+  loadFiles() {
+
+    this.isLoading$.next(true);
+
+    this.groupService.getGroupFiles(this.group_id)
+      .subscribe((res) => {
+        console.log('Group posts:', res);
+        this.posts = res['files'];
+        for(var i = 0; i < this.posts.length; i++){
+          if(this.posts[i].length > 0){
+            this.has_file=true;
+            break;
+
+          }
+          else{
+            this.has_file=false;
+          }
+        }
+       console.log('Group posts:', this.posts);
+       console.log('Has File:', this.has_file);
+       this.isLoading$.next(false);
+
+
+      }, (err) => {
+
+      });
+
   }
 
   loadGroupPosts() {

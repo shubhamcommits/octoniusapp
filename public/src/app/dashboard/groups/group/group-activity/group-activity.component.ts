@@ -240,9 +240,13 @@
 
 			// Alert on screen when newPost is created
 			socket.on('newPostOnGroup', (data) => {
-                                alert(data);
+                               // alert(data);
                                 console.log(data);
-                                // this.snotifyService.success('Post Added', 'New Post by'+username, this.getConfig());
+                                if(this.user_data.user_id != data.user._id)
+                                {
+                                  this.snotifyService.success(data.group +' Group', 'New Post in ');
+                                }
+                              
 			});
 
 			socket.on('disconnect', () => {
@@ -444,9 +448,12 @@
         workspace: this.user_data.workspace.workspace_name,
         // it should get automatically, something like group: this.group_name
         group: this.groupDataService._group.group_name,
-        user: this.user.first_name
+        user: this.user
       };
-      socket.emit('newPost', data);
+
+        socket.emit('newPost', data);  
+  
+      
 
           // console.log('Normal post response: ', res);
           this.loadGroupPosts();
