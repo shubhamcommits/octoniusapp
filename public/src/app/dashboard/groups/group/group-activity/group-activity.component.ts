@@ -237,6 +237,7 @@
 
 				});
 			});
+      const {timeout, closeOnClick, ...config} = this.getConfig(); 
 
 			// Alert on screen when newPost is created
 			socket.on('newPostOnGroup', (data) => {
@@ -244,7 +245,14 @@
                                 console.log(data);
                                 if(this.user_data.user_id != data.user._id)
                                 {
-                                  this.snotifyService.success(data.group +' Group', 'New Post in ');
+                                 // this.snotifyService.success(data.group +' Group', 'New Post in ');
+                                  this.snotifyService.confirm('By '+ data.user.first_name+' in '+ data.group +' Group', 'New Post', {
+                                   ...config ,
+                                    buttons: [
+                                      {text: 'Yes', action: () => {console.log('Clicked: Yes'); this.refreshPage(); }, bold: false},
+                                      {text: 'Not now', action: (toast) => {console.log('Clicked: Later'); this.snotifyService.remove(toast.id); } },
+                                    ]
+                                  });
                                 }
                               
 			});
