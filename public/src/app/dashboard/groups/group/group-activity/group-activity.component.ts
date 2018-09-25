@@ -23,6 +23,7 @@
   import {NgbPopoverConfig} from '@ng-bootstrap/ng-bootstrap';
   import { ScrollToService } from 'ng2-scroll-to-el';
   import 'quill-mention';
+  import { environment } from '../../../../../environments/environment';
 
   @Component({
     selector: 'app-group-activity',
@@ -34,6 +35,9 @@
     posts = new Array();
     group_id;
     group;
+
+    socket = io(environment.BASE_URL);
+    BASE_URL = environment.BASE_URL;
 
    values = [
       { id: 1, value: 'Fredrik Sundqvist' },
@@ -134,6 +138,7 @@
       private scrollService: ScrollToService) {
         config.placement = 'top';
         config.triggers = 'hover';
+        this.socketio();
 
     }
     onEditorBlured(quill) {
@@ -207,11 +212,11 @@
 
       this.mentionmembers();
 
-      this.socketio();
+     
 
      // this.loadGroupMembers();
       
-    //  this.onSuccess();
+   //  this.onSuccess();
 
 
 
@@ -221,10 +226,10 @@
     {
       
 			// start socket!
-			var socket = io();
+		//	var socket = io();
 
 			// On connect, join the Group room
-			socket.on('connect', () => {
+			  this.socket.on('connect', () => {
 				console.log(`Socket connected!`);
 
 				// get workspace and group names
@@ -234,23 +239,28 @@
 				}
 
 				// join room to get notifications for this group
-				socket.emit('join', room, (err) => {
+				this.socket.emit('join', room, (err) => {
 
 				});
 			});
       const {timeout, closeOnClick, ...config} = this.getConfig(); 
 
 			// Alert on screen when newPost is created
-			socket.on('newPostOnGroup', (data) => {
+		this.socket.on('newPostOnGroup', (data) => {
                                // alert(data);
                                 console.log(data);
+                                console.log(data.groupId);
+
+                                       // access groupId as data.groupId !!
+
+
                                 if(this.user_data.user_id != data.user._id)
                                 {
                                  // this.snotifyService.success(data.group +' Group', 'New Post in ');
                                   this.snotifyService.confirm('By '+ data.user.first_name+' in '+ data.group +' Group', 'New Post', {
                                    ...config ,
                                     buttons: [
-                                      {text: 'Yes', action: () => {console.log('Clicked: Yes'); this.refreshPage(); }, bold: false},
+                                      {text: 'Yes', action: () => {this.navigate_to_group(data.groupId); this.refreshPage(); }, bold: false},
                                       {text: 'Not now', action: (toast) => {console.log('Clicked: Later'); this.snotifyService.remove(toast.id); } },
                                     ]
                                   });
@@ -258,7 +268,7 @@
                               
 			});
 
-			socket.on('disconnect', () => {
+			this.socket.on('disconnect', () => {
 				console.log(`Socket disconnected from group`);
 			});
     }
@@ -280,6 +290,12 @@
           x.style.display = 'none';
       }
 
+    }
+
+    navigate_to_group(group_id){
+      //this.router.navigate(['../dashboard','group',group_id,'activity']);
+      window.location.href = this.BASE_URL+'#/dashboard/group/'+group_id+'/activity'; 
+      console.log('routed');
     }
 
     getUserProfile() {
@@ -451,16 +467,17 @@
           this._message.next(res['message']);
           this.filesToUpload = null;
       // start socket!
-      const socket = io();
+     // const socket = io();
       const data = {
         // it should get automatically, something like workspace: this.workspace_name
         workspace: this.user_data.workspace.workspace_name,
         // it should get automatically, something like group: this.group_name
         group: this.groupDataService._group.group_name,
-        user: this.user
+              user: this.user,
+              groupId: this.groupDataService.group._id // Pass group id here!!!
       };
 
-        socket.emit('newPost', data);  
+        this.socket.emit('newPost', data);  
   
       
 

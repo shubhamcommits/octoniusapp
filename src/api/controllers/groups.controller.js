@@ -8,17 +8,14 @@ const { sendErr, sendMail } = require('../../utils');
 
 const getFiles = async (req, res, next) => {
   try {
-    // Get user Id added by user authentication midleware
-    const userId = req.userId;
-    
-    // Find user's posts that files and belongs to this group
+    // Find all posts that has files and belongs to this group
     const posts = await Post.find({
         $and: [
           // Find normal posts that has comments
-          { _posted_by: userId },
+          { _group: req.params.groupId},
           { files: { $exists: true, $ne: []}},
         ]})
-      .sort('event.due_to task.due_to -comments.created_date')
+      .sort('-created_date')
       .populate('_posted_by', 'first_name last_name profile_pic')
       .populate('comments._commented_by', 'first_name last_name profile_pic')
       .populate('task._assigned_to', 'first_name last_name')
