@@ -52,3 +52,17 @@
 #### 4.8. ❗️❗️PUT `api/posts/:postId/unlike` unlike post
 
 '
+
+## | 6. `api/workspaces` routes
+
+'
+
+#### 6.x. ❗️ POST `api/workspaces/:workspaceId/domains` add new domain to workpsace's allowed domains
+
+#### 6.x. ❗️ DELETE `api/workspaces/:workspaceId/domains` remove domain from workpsace's allowed domains
+
+#### 6.x. ❗️❗️ GET `api/workspaces/:workspaceId/domains` get all workspace domains
+
+
+
+'
