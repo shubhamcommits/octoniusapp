@@ -244,6 +244,10 @@
 			socket.on('newPostOnGroup', (data) => {
                                // alert(data);
                                 console.log(data);
+
+                                       // access groupId as data.groupId !!
+
+
                                 if(this.user_data.user_id != data.user._id)
                                 {
                                  // this.snotifyService.success(data.group +' Group', 'New Post in ');
@@ -457,7 +461,8 @@
         workspace: this.user_data.workspace.workspace_name,
         // it should get automatically, something like group: this.group_name
         group: this.groupDataService._group.group_name,
-        user: this.user
+              user: this.user,
+              groupId: // Pass group id here!!!
       };
 
         socket.emit('newPost', data);  
