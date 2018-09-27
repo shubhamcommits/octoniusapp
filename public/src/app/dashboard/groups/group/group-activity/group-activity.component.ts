@@ -38,6 +38,7 @@
 
     socket = io(environment.BASE_URL);
     BASE_URL = environment.BASE_URL;
+    show_new_posts_badge = 0;
 
    values = [
       { id: 1, value: 'Fredrik Sundqvist' },
@@ -234,7 +235,7 @@
       this.scrollToTop('#card-normal-post-4');
 
       this.mentionmembers();
-     // this.socketio();
+      this.socketio();
 
      
 
@@ -267,30 +268,13 @@
 
 				});
 			});
-      const {timeout, closeOnClick, ...config} = this.getConfig(); 
 
 			// Alert on screen when newPost is created
 		this.socket.on('newPostOnGroup', (data) => {
-                               // alert(data);
-                                console.log(data);
-                                console.log(data.groupId);
-
-                                       // access groupId as data.groupId !!
-
-
-                                if(this.user_data.user_id != data.user._id)
-                                {
-                                 // this.snotifyService.success(data.group +' Group', 'New Post in ');
-                                  this.snotifyService.confirm('By '+ data.user.first_name+' in '+ data.group +' Group', 'New Post', {
-                                   ...config ,
-                                    buttons: [
-                                      {text: 'Yes', action: () => {this.navigate_to_group(data.groupId); this.refreshPage(); }, bold: false},
-                                      {text: 'Not now', action: (toast) => {console.log('Clicked: Later'); this.snotifyService.remove(toast.id); } },
-                                    ]
-                                  });
-                                }
-                              
-			});
+      this.show_new_posts_badge=1;
+     // alert(data);
+      console.log('value', this.show_new_posts_badge);
+    	});
 
 			this.socket.on('disconnect', () => {
 				console.log(`Socket disconnected from group`);
@@ -752,6 +736,7 @@
           this.posts = res['posts'];
         console.log('Group posts:', this.posts);
         this.isLoading$.next(false);
+        this.show_new_posts_badge = 0;
 
 
         }, (err) => {
@@ -886,24 +871,6 @@
     const y = document.getElementById("button_edit_post"+index);
     y.style.display="block";
     editor.style.display = 'block';
-
-  /*if(x.style.borderStyle ==="none"){
-  x.setAttribute('contenteditable', 'true');
-    editor.style.display = 'block';
-    x.style.display='none';
-  x.style.borderWidth="thin";
-  x.style.borderStyle="solid";
-  x.style.borderColor="#007bff";
-  y.style.display="block";
-  }
-  else {
-  x.style.borderStyle="none";
-  x.setAttribute('contenteditable', 'false');
-  editor.style.display='none';
-  x.style.display='block';
-  y.style.display="none";
-  x.blur();
-  }*/
 
     }
 
