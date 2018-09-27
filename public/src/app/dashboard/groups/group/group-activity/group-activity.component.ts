@@ -35,9 +35,11 @@
     posts = new Array();
     group_id;
     group;
+    group_name;
 
     socket = io(environment.BASE_URL);
     BASE_URL = environment.BASE_URL;
+    show_new_posts_badge = 0;
 
    values = [
       { id: 1, value: 'Fredrik Sundqvist' },
@@ -138,6 +140,15 @@
       private scrollService: ScrollToService) {
         config.placement = 'top';
         config.triggers = 'hover';
+        this.group_id = this.groupDataService.groupId;
+        this.user_data = JSON.parse(localStorage.getItem('user'));
+       // console.log('user', this.user_data);
+
+        this.group = this.groupDataService.group;
+        this.socket.on('connect', () => {
+          console.log(`Socket connected!`);});
+          this.loadGroup();
+          this.socketio();
 
     }
     onEditorBlured(quill) {
@@ -197,54 +208,41 @@
       this.user_data = JSON.parse(localStorage.getItem('user'));
      // console.log('user', this.user_data);
 
-      this.group = this.groupDataService.group;
+      this.group = this.groupDataService._group;
+      console.log('Group bkl', this.group_id);
 
-     /* this.socket.on('connect', () => {
-        console.log(`Socket connected!`);
-      });
-
-          // get workspace and group names
-          const room = {
-            workspace: this.user_data.workspace.workspace_name,
-            group: this.groupDataService._group.group_name,
-            }
-    
-            // join room to get notifications for this group
-            this.socket.emit('join', room, (err) => {
-              console.log('Message Emiited');
-            });
-
-            this.socket.on('newPostOnGroup', (data) => {
-              alert(data);
-              console.log(`Log data`, data);
-            });
-
-            this.socket.on('disconnect', () => {
-              console.log(`Socket disconnected from group`);
-            });*/
-
-     //console.log('Group Activity _group:', this.groupDataService);
       this.getUserProfile();
       this.inilizePostForm();
       this.inilizeCommentForm();
       this.loadGroupPosts();
       this.alertMessageSettings();
       this.initializeGroupMembersSearchForm();
-    
       this.scrollToTop('#card-normal-post-4');
-
       this.mentionmembers();
-     // this.socketio();
+
 
      
-
-     // this.loadGroupMembers();
-      
-   //  this.onSuccess();
-
-
-
     }
+
+    ngAfterViewChecked(){
+     // this.socketio();
+    }
+
+    loadGroup() {
+      this.groupService.getGroup(this.group_id)
+        .subscribe((res) => {
+         // console.log('Group: ', res);
+          this.group_name = res['group'].group_name;
+
+  
+        }, (err) => {
+  
+          console.log('err: ', err);
+  
+        });
+  
+    }
+  
 
     socketio()
     {
@@ -253,44 +251,26 @@
 		//	var socket = io();
 
 			// On connect, join the Group room
-			  this.socket.on('connect', () => {
-				console.log(`Socket connected!`);
+		
 
 				// get workspace and group names
 				const room = {
         workspace: this.user_data.workspace.workspace_name,
-        group: this.groupDataService._group.group_name,
+        group: this.group_name,
 				}
 
 				// join room to get notifications for this group
 				this.socket.emit('join', room, (err) => {
+          console.log(`Socket Joined`);
 
 				});
-			});
-      const {timeout, closeOnClick, ...config} = this.getConfig(); 
 
 			// Alert on screen when newPost is created
 		this.socket.on('newPostOnGroup', (data) => {
-                               // alert(data);
-                                console.log(data);
-                                console.log(data.groupId);
-
-                                       // access groupId as data.groupId !!
-
-
-                                if(this.user_data.user_id != data.user._id)
-                                {
-                                 // this.snotifyService.success(data.group +' Group', 'New Post in ');
-                                  this.snotifyService.confirm('By '+ data.user.first_name+' in '+ data.group +' Group', 'New Post', {
-                                   ...config ,
-                                    buttons: [
-                                      {text: 'Yes', action: () => {this.navigate_to_group(data.groupId); this.refreshPage(); }, bold: false},
-                                      {text: 'Not now', action: (toast) => {console.log('Clicked: Later'); this.snotifyService.remove(toast.id); } },
-                                    ]
-                                  });
-                                }
-                              
-			});
+      this.show_new_posts_badge=1;
+     // alert(data);
+      console.log('value', this.show_new_posts_badge);
+    	});
 
 			this.socket.on('disconnect', () => {
 				console.log(`Socket disconnected from group`);
@@ -496,9 +476,9 @@
         // it should get automatically, something like workspace: this.workspace_name
         workspace: this.user_data.workspace.workspace_name,
         // it should get automatically, something like group: this.group_name
-        group: this.groupDataService._group.group_name,
-              user: this.user,
-              groupId: this.groupDataService.group._id // Pass group id here!!!
+        group: this.group_name,
+        user: this.user,
+        groupId: this.groupDataService.group._id // Pass group id here!!!
       };
 
         this.socket.emit('newPost', data);  
@@ -752,6 +732,7 @@
           this.posts = res['posts'];
         console.log('Group posts:', this.posts);
         this.isLoading$.next(false);
+        this.show_new_posts_badge = 0;
 
 
         }, (err) => {
@@ -886,24 +867,6 @@
     const y = document.getElementById("button_edit_post"+index);
     y.style.display="block";
     editor.style.display = 'block';
-
-  /*if(x.style.borderStyle ==="none"){
-  x.setAttribute('contenteditable', 'true');
-    editor.style.display = 'block';
-    x.style.display='none';
-  x.style.borderWidth="thin";
-  x.style.borderStyle="solid";
-  x.style.borderColor="#007bff";
-  y.style.display="block";
-  }
-  else {
-  x.style.borderStyle="none";
-  x.setAttribute('contenteditable', 'false');
-  editor.style.display='none';
-  x.style.display='block';
-  y.style.display="none";
-  x.blur();
-  }*/
 
     }
 
