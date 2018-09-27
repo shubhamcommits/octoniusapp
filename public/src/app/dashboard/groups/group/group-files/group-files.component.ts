@@ -107,10 +107,10 @@ export class GroupFilesComponent implements OnInit {
     const fileData = {
       'fileName': fileName
     };
-    this._userService.downloadFile(fileData)
+    this.groupService.downloadGroupFile(this.group_id,fileName)
       .subscribe((file) => {
 
-        //   console.log('Downloaded File', file);
+        console.log('Downloaded File', file);
         saveAs(file, fileName_orignal);
 
       }, (err) => {

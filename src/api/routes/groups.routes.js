@@ -29,4 +29,7 @@ router.post('/removeUser', groupsController.removeUserFromGroup); // ! TO BE REM
 // GET api/groups/:groupId/files - get user's files that belongs to this group
 router.get('/:groupId/files', groups.getFiles);
 
+// GET api/groups/:groupId/files/:fileName/download - download file from group
+router.get('/:groupId/files/:fileName/download', groups.downloadFile);
+
 module.exports = router;
