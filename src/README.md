@@ -25,7 +25,9 @@
 
 '
 
-#### 3.x. ❗️ GET `api/groups/:groupId/files` get user's files that belongs to this group
+#### 3.x. GET `api/groups/:groupId/files` get user's files that belongs to this group
+
+#### 3.x. GET `api/groups/:groupId/files/:fileName/download` download file from group
 
 '
 
