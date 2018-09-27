@@ -31,7 +31,7 @@ export class GroupService {
   }
 
   downloadGroupFile(group_id, file){
-    return this._http.get(this.BASE_API_URL + '/groups/' + group_id + '/files/'+file+'/download');
+    return this._http.get(this.BASE_API_URL + '/groups/' + group_id + '/files/'+file+'/download', {responseType: 'blob' });
 
   }
 
