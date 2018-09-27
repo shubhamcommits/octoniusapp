@@ -11,7 +11,7 @@ const { sendErr, sendMail } = require('../../utils');
 const downloadFile = async (req, res, next) => {
   try {
     const { fileName, groupId } = req.params;
-    const filepath = `${process.env.FILE_UPLOAD_FOLDER}/uploads/${fileName}`;
+    const filepath = `${process.env.FILE_UPLOAD_FOLDER}/${fileName}`;
 
     // Check if user belongs to this group, prevent hardcoded requests 
     const group = await Group.find({
