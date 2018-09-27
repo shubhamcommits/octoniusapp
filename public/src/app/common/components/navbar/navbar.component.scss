@@ -11,13 +11,17 @@
   // font-weight: 600;
   font-size: 14px;
   color: #ffffff !important;
+  text-align: center;
   &:hover {
-    text-decoration: underline;
+    text-decoration: none;
+    background: #ffffff;
+    color: $brand-primary !important;
+    border-radius: 6px;
   }
 }
 
 .active {
-  text-decoration: underline;
+  text-decoration: none;
 }
 a:active{
   text-decoration: none;
