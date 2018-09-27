@@ -35,6 +35,7 @@
     posts = new Array();
     group_id;
     group;
+    group_name;
 
     socket = io(environment.BASE_URL);
     BASE_URL = environment.BASE_URL;
@@ -139,6 +140,15 @@
       private scrollService: ScrollToService) {
         config.placement = 'top';
         config.triggers = 'hover';
+        this.group_id = this.groupDataService.groupId;
+        this.user_data = JSON.parse(localStorage.getItem('user'));
+       // console.log('user', this.user_data);
+
+        this.group = this.groupDataService.group;
+        this.socket.on('connect', () => {
+          console.log(`Socket connected!`);});
+          this.loadGroup();
+          this.socketio();
 
     }
     onEditorBlured(quill) {
@@ -198,54 +208,41 @@
       this.user_data = JSON.parse(localStorage.getItem('user'));
      // console.log('user', this.user_data);
 
-      this.group = this.groupDataService.group;
+      this.group = this.groupDataService._group;
+      console.log('Group bkl', this.group_id);
 
-     /* this.socket.on('connect', () => {
-        console.log(`Socket connected!`);
-      });
-
-          // get workspace and group names
-          const room = {
-            workspace: this.user_data.workspace.workspace_name,
-            group: this.groupDataService._group.group_name,
-            }
-    
-            // join room to get notifications for this group
-            this.socket.emit('join', room, (err) => {
-              console.log('Message Emiited');
-            });
-
-            this.socket.on('newPostOnGroup', (data) => {
-              alert(data);
-              console.log(`Log data`, data);
-            });
-
-            this.socket.on('disconnect', () => {
-              console.log(`Socket disconnected from group`);
-            });*/
-
-     //console.log('Group Activity _group:', this.groupDataService);
       this.getUserProfile();
       this.inilizePostForm();
       this.inilizeCommentForm();
       this.loadGroupPosts();
       this.alertMessageSettings();
       this.initializeGroupMembersSearchForm();
-    
       this.scrollToTop('#card-normal-post-4');
-
       this.mentionmembers();
-      this.socketio();
+
 
      
-
-     // this.loadGroupMembers();
-      
-   //  this.onSuccess();
-
-
-
     }
+
+    ngAfterViewChecked(){
+     // this.socketio();
+    }
+
+    loadGroup() {
+      this.groupService.getGroup(this.group_id)
+        .subscribe((res) => {
+         // console.log('Group: ', res);
+          this.group_name = res['group'].group_name;
+
+  
+        }, (err) => {
+  
+          console.log('err: ', err);
+  
+        });
+  
+    }
+  
 
     socketio()
     {
@@ -254,20 +251,19 @@
 		//	var socket = io();
 
 			// On connect, join the Group room
-			  this.socket.on('connect', () => {
-				console.log(`Socket connected!`);
+		
 
 				// get workspace and group names
 				const room = {
         workspace: this.user_data.workspace.workspace_name,
-        group: this.groupDataService._group.group_name,
+        group: this.group_name,
 				}
 
 				// join room to get notifications for this group
 				this.socket.emit('join', room, (err) => {
+          console.log(`Socket Joined`);
 
 				});
-			});
 
 			// Alert on screen when newPost is created
 		this.socket.on('newPostOnGroup', (data) => {
@@ -480,9 +476,9 @@
         // it should get automatically, something like workspace: this.workspace_name
         workspace: this.user_data.workspace.workspace_name,
         // it should get automatically, something like group: this.group_name
-        group: this.groupDataService._group.group_name,
-              user: this.user,
-              groupId: this.groupDataService.group._id // Pass group id here!!!
+        group: this.group_name,
+        user: this.user,
+        groupId: this.groupDataService.group._id // Pass group id here!!!
       };
 
         this.socket.emit('newPost', data);  
