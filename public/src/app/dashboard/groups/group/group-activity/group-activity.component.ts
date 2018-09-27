@@ -36,6 +36,7 @@
     group_id;
     group;
     group_name;
+    group_socket_id;
 
     socket = io(environment.BASE_URL);
     BASE_URL = environment.BASE_URL;
@@ -147,8 +148,7 @@
         this.group = this.groupDataService.group;
         this.socket.on('connect', () => {
           console.log(`Socket connected!`);});
-          this.loadGroup();
-          this.socketio();
+
 
     }
     onEditorBlured(quill) {
@@ -209,7 +209,7 @@
      // console.log('user', this.user_data);
 
       this.group = this.groupDataService._group;
-      console.log('Group bkl', this.group_id);
+     // console.log('Group bkl', this.group_id);
 
       this.getUserProfile();
       this.inilizePostForm();
@@ -219,6 +219,8 @@
       this.initializeGroupMembersSearchForm();
       this.scrollToTop('#card-normal-post-4');
       this.mentionmembers();
+      this.socketio();
+      console.log('Group ID: ', this.group_socket_id);
 
 
      
@@ -231,9 +233,10 @@
     loadGroup() {
       this.groupService.getGroup(this.group_id)
         .subscribe((res) => {
-         // console.log('Group: ', res);
+         console.log('Group: ', res);
           this.group_name = res['group'].group_name;
-
+          this.group_socket_id = res['group']._id;
+        
   
         }, (err) => {
   
@@ -480,11 +483,8 @@
         user: this.user,
         groupId: this.groupDataService.group._id // Pass group id here!!!
       };
-
-        this.socket.emit('newPost', data);  
-  
-      
-
+        console.log(data);
+        this.socket.emit('newPost', data);
           // console.log('Normal post response: ', res);
           this.loadGroupPosts();
 
