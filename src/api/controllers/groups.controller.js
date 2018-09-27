@@ -11,10 +11,10 @@ const { sendErr, sendMail } = require('../../utils');
 const downloadFile = async (req, res, next) => {
   try {
     const { fileName, groupId } = req.params;
-    const filepath = `${process.env.FILE_UPLOAD_FOLDER}/uploads/${fileName}`;
+    const filepath = `${process.env.FILE_UPLOAD_FOLDER}/${fileName}`;
 
     // Check if user belongs to this group, prevent hardcoded requests 
-    const Group = await Group.find({
+    const group = await Group.find({
       $and: [
         // Find normal posts that has comments
         { _id: groupId},
@@ -24,7 +24,7 @@ const downloadFile = async (req, res, next) => {
         ]}
       ]});
 
-    if (!Group) {
+    if (!group) {
       return sendErr(res, err, 'User not allowed to access this file!', 403);
     }
 
