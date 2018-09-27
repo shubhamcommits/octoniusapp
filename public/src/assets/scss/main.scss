@@ -290,3 +290,24 @@ h4{
 .ql-mention-list-container{
   z-index: 999;
 }
+
+.feed-new-update-pill {
+  position: absolute;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.inner-news{
+  height: 32px;
+  width: 130px;
+  margin: 0px auto;
+  .news-badge{
+    z-index: 99999;
+    position: fixed;
+    box-shadow: 0 0 0 1px rgba(0,0,0,.15), 0 6px 9px rgba(0,0,0,.2);
+    .material-icons{
+      font-size: 14px;
+    }
+  }
+}
+
