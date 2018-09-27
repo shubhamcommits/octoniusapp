@@ -10,7 +10,6 @@ const devEnv = require('../../development.config');
 // Correct REST naming
 const {
   authsRoutes,
-  filesRoutes,
   groupsRoutes,
   postsRoutes,
   usersRoutes,
@@ -53,7 +52,6 @@ app.all('/', (req, res, next) => {
 
 // Correct REST naming
 app.use('/api/auths', authsRoutes);
-app.use('/api/files', filesRoutes);
 app.use('/api/groups', groupsRoutes);
 app.use('/api/posts', postsRoutes);
 app.use('/api/users', usersRoutes);
@@ -61,7 +59,6 @@ app.use('/api/workspaces', workspacesRoutes);
 
 // -->!!!! TO BE REMOVED !!!!
 app.use('/api/auth', authsRoutes);
-app.use('/api/file', filesRoutes);
 app.use('/api/group', groupsRoutes);
 app.use('/api/post', postsRoutes);
 app.use('/api/user', usersRoutes);
