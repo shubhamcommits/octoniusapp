@@ -289,6 +289,13 @@ h4{
 
 .ql-mention-list-container{
   z-index: 999;
+  border-radius: 6px;
+  border: 1px solid $border-color;
+  box-shadow: $box-shadow;
+  .ql-mention-list-item.selected{
+    background: $brand-primary;
+    color:#fff;
+  }
 }
 
 .feed-new-update-pill {
@@ -309,5 +316,11 @@ h4{
       font-size: 14px;
     }
   }
+}
+
+.mention{
+  background: transparent;
+  color: $brand-primary;
+  font-weight: 700;
 }
 
