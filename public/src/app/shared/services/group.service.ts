@@ -30,6 +30,11 @@ export class GroupService {
     return this._http.get(this.BASE_API_URL + '/groups/' + group_id + '/files');
   }
 
+  downloadGroupFile(group_id, file){
+    return this._http.get(this.BASE_API_URL + '/groups/' + group_id + '/files/'+file+'/download');
+
+  }
+
 
   searchWorkspaceUsers(query, workspace) {
     return this._http.get(this.BASE_API_URL + `/workspace/searchWorkspaceUsers/${workspace}/${query}`);

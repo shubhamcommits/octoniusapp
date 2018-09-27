@@ -138,7 +138,6 @@
       private scrollService: ScrollToService) {
         config.placement = 'top';
         config.triggers = 'hover';
-        this.socketio();
 
     }
     onEditorBlured(quill) {
@@ -200,6 +199,30 @@
 
       this.group = this.groupDataService.group;
 
+     /* this.socket.on('connect', () => {
+        console.log(`Socket connected!`);
+      });
+
+          // get workspace and group names
+          const room = {
+            workspace: this.user_data.workspace.workspace_name,
+            group: this.groupDataService._group.group_name,
+            }
+    
+            // join room to get notifications for this group
+            this.socket.emit('join', room, (err) => {
+              console.log('Message Emiited');
+            });
+
+            this.socket.on('newPostOnGroup', (data) => {
+              alert(data);
+              console.log(`Log data`, data);
+            });
+
+            this.socket.on('disconnect', () => {
+              console.log(`Socket disconnected from group`);
+            });*/
+
      //console.log('Group Activity _group:', this.groupDataService);
       this.getUserProfile();
       this.inilizePostForm();
@@ -211,6 +234,7 @@
       this.scrollToTop('#card-normal-post-4');
 
       this.mentionmembers();
+     // this.socketio();
 
      
 
