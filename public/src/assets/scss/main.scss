@@ -294,7 +294,7 @@ h4{
   box-shadow: $box-shadow;
   .ql-mention-list-item.selected{
     background: $brand-primary;
-    color:#fff;
+    color:#fff !important;
   }
 }
 
