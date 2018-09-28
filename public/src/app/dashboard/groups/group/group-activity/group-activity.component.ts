@@ -1247,7 +1247,7 @@
       
       this.groupService.getGroup(this.group_id)
       .subscribe((res) => {
-        Value.push({id:'all', value: 'Everyone'});
+        Value.push({id:'all', value: 'here'});
 
         for(var i = 0; i < res['group']._members.length; i++ ){
           this.members.push(res['group']._members[i].first_name + ' ' + res['group']._members[i].last_name);
