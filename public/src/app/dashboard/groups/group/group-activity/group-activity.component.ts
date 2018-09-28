@@ -1247,6 +1247,7 @@
       
       this.groupService.getGroup(this.group_id)
       .subscribe((res) => {
+        Value.push({id:'all', value: 'Everyone'});
 
         for(var i = 0; i < res['group']._members.length; i++ ){
           this.members.push(res['group']._members[i].first_name + ' ' + res['group']._members[i].last_name);
@@ -1256,6 +1257,7 @@
           this.members.push(res['group']._admins[i].first_name + ' ' + res['group']._admins[i].last_name);
           Value.push({id:res['group']._members[i]._id, value: res['group']._members[i].first_name + ' ' + res['group']._members[i].last_name});
         }
+      
      
       }, (err) => {
 
@@ -1267,7 +1269,7 @@
         this.files = res['posts'];
         for(var i = 0; i < res['posts'].length; i++){
           if(res['posts'][i].files.length > 0) {
-            hashValues.push({id:res['posts'][i].files[0]._id, value: res['posts'][i].files[0].orignal_name})
+            hashValues.push({id:res['posts'][i].files[0]._id, value: '<a target="_blank" href="'+this.BASE_URL+'/uploads/'+res['posts'][i].files[0].modified_name+'"'+'>'+res['posts'][i].files[0].orignal_name+'</a>'})
           }
    
         }
