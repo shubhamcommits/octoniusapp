@@ -43,8 +43,8 @@
         <h4>Allowed Domains</h4>
         <p>List of all allowed domains from where user can sign up to this workplace.</p>
   
-        <div class="row">
-         <div class="col-md-6" *ngFor= "let allowed_domain of allowed_domains">
+        <div class="row" *ngFor= "let allowed_domain of allowed_domains">
+         <div class="col-md-6">
            <b>@{{allowed_domain}}</b>
          </div>
 

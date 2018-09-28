@@ -1269,7 +1269,7 @@
         this.files = res['posts'];
         for(var i = 0; i < res['posts'].length; i++){
           if(res['posts'][i].files.length > 0) {
-            hashValues.push({id:res['posts'][i].files[0]._id, value: '<a target="_blank" href="'+this.BASE_URL+'/uploads/'+res['posts'][i].files[0].modified_name+'"'+'>'+res['posts'][i].files[0].orignal_name+'</a>'})
+            hashValues.push({id:res['posts'][i].files[0]._id, value: '<a style="color:inherit;" target="_blank" href="'+this.BASE_URL+'/uploads/'+res['posts'][i].files[0].modified_name+'"'+'>'+res['posts'][i].files[0].orignal_name+'</a>'})
           }
    
         }
