@@ -25,11 +25,35 @@
       <div class="form-group">
         <label for="email">Using the WORKPLACE NAME, any email adress from these domain can signup:</label>
         <textarea class="form-control" rows="5" id="domains" [(ngModel)]="domainData.domains" name="domains"></textarea>
-        <label for="domains">To allow eamil address from mulltiple domains, separate them with commas.</label>
+        <label for="domains">To allow email address from mulltiple domains, separate them with commas.</label>
       </div>
-      <button class="btn btn-primary" (click)="onDoaminsSave()">Save</button>
+      <button class="btn btn-primary" (click)="onDomainsSave()">Save</button>
+      <!--<div class="row">
+        <div class="col-md-6">
+            <input type="text" class="form-control" id="usr" [(ngModel)]="domainData.domains" name="domain">
+        </div>
+        <div class="col-md-6">
+            <button class="btn btn-primary" (click)="onDomainsSave()">Save</button>
+          </div>
+      </div>-->
+    
     </div>
 
+    <div class="card-tile invite-users">
+        <h4>Allowed Domains</h4>
+        <p>List of all allowed domains from where user can sign up to this workplace.</p>
+  
+        <div class="row">
+         <div class="col-md-6" *ngFor= "let allowed_domain of allowed_domains">
+           <b>@{{allowed_domain}}</b>
+         </div>
+
+         <div class="col-md-6">
+           <button class="btn btn-danger btn-sm">Remove Domain</button>
+          </div>
+       
+      </div>
+</div>
     <div class="card-tile invite-users">
       <h4>Invite individual users by email</h4>
       <p>The option is mainly for inviting super-admins,group admins and external guests.</p>

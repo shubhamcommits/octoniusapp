@@ -16,6 +16,7 @@ import swal from 'sweetalert';
 export class AdminGeneralComponent implements OnInit {
   workspace: Workspace;
   user_data;
+  allowed_domains = new Array();
 
   staticAlertClosed = false;
   private _message = new Subject<string>();
@@ -59,16 +60,28 @@ export class AdminGeneralComponent implements OnInit {
     this._message.pipe(
       debounceTime(3000)
     ).subscribe(() => this.alert.message = null);
+    this.loadAllowedDomains();
 
+  }
+
+  loadAllowedDomains() {
+    this._adminService.allowedDomains(this.user_data.workspace._id)
+    .subscribe((res) => {
+      console.log('Allowed Domains', res);
+    }, (err) => {
+      console.log('Error in Allowed Domains', err);
+    })
   }
 
   loadWorkspace() {
     this._workspaceService.getWorkspace(this.user_data.workspace)
       .subscribe((res) => {
         this.workspace = res.workspace;
-        // console.log('response: ', res);
-        this.domainData.domains = this.workspace.allowed_domains.toString();
-        // console.log('domains: ', this.domainData.domains);
+      //  console.log('response: ', res);
+        this.allowed_domains = res['workspace'].allowed_domains;
+       // console.log('Allowed domains', this.allowed_domains);
+       this.domainData.domains = this.workspace.allowed_domains.toString();
+       // console.log('domains: ', this.domainData.domains);
 
       }, (err) => {
         this.alert.class = 'alert alert-danger';
@@ -88,12 +101,12 @@ export class AdminGeneralComponent implements OnInit {
 
 
 
-  onDoaminsSave() {
+  onDomainsSave() {
     this.domainData.workspace_id = this.user_data.workspace._id;
     // console.log('this.domainData', this.domainData);
     // console.log('user_data', this.user_data);
-
-    this._adminService.allowDomains(this.domainData)
+    if(this.domainData.domains != ''){
+      this._adminService.allowDomain(this.user_data.workspace._id)
       .subscribe((res) => {
         //this.alert.class = 'success';
         //this._message.next(res.message);
@@ -108,6 +121,7 @@ export class AdminGeneralComponent implements OnInit {
           }
         });
       }, (err) => {
+        console.log('Error in Saving Domain', err);
         this.alert.class = 'danger';
         if (err.status === 401) {
           this._message.next(err.error.message);
@@ -123,6 +137,14 @@ export class AdminGeneralComponent implements OnInit {
 
         }
       });
+    }
+    else
+    {
+     swal("Error!", "Please enter a valid email-address!", "error");
+    }
+   
+
+   
   }
 
   onInviteNewUserViaEmail() {
@@ -174,33 +196,5 @@ export class AdminGeneralComponent implements OnInit {
      }
     
   }
-
-  /*onInviteNewUserViaEmail() {
-    //console.log('inside invitation');
-    this.invitationData.workspace_id = this.user_data.workspace._id;
-    this.invitationData.user_id= this.user_data.user_id;
-    //console.log(this.user_data.user_id);
-    this._adminService.inviteNewUserViewEmail(this.invitationData)
-      .subscribe((res) => {
-        this.alert.class = 'success';
-        this._message.next(res.message);
-        swal("Good job!", "You clicked the button!", "success");
-      }
-        , (err) => {
-          this.alert.class = 'danger';
-          if (err.status === 401) {
-            this._message.next(err.error.message);
-            setTimeout(() => {
-              localStorage.clear();
-              this._router.navigate(['']);
-            }, 3000);
-          } else if (err.status) {
-            this._message.next(err.error.message);
-          } else {
-            this._message.next('Error! either server is down or no internet connection');
-          }
-
-        });
-  }*/
 
 }
