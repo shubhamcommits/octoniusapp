@@ -24,6 +24,10 @@ const NotificationSchema = new Schema({
     type: Date,
     default: Date.now
   },
+  message: {
+    type: String,
+    required: true
+  },
   read: {
     type: Boolean,
     default: false

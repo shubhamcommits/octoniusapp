@@ -91,10 +91,6 @@ const PostSchema = new Schema({
       default: null
     }
   }],
-  _notifications: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Notification'
-  }]
 });
 
 const Post = mongoose.model('Post', PostSchema);

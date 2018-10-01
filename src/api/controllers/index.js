@@ -1,5 +1,6 @@
 const auths = require('./auths.controller');
 const groups = require('./groups.controller');
+const notifications = require('./notifications.controller');
 const posts = require('./posts.controller');
 const users = require('./users.controller');
 const workspaces = require('./workspaces.controller');
@@ -21,6 +22,7 @@ module.exports = {
   // Controllers
   auths,
   groups,
+  notifications,
   posts,
   users,
   workspaces
