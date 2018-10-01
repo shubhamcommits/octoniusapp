@@ -272,6 +272,7 @@
 			// Alert on screen when newPost is created
 		this.socket.on('newPostOnGroup', (data) => {
       this.show_new_posts_badge=1;
+      this.playAudio();
      // alert(data);
      // console.log('value', this.show_new_posts_badge);
     	});
@@ -1330,6 +1331,13 @@
         },
       }
 
+    }
+
+    playAudio(){
+      let audio = new Audio();
+      audio.src = "/assets/audio/intuition.ogg";
+      audio.load();
+      audio.play();
     }
 
 
