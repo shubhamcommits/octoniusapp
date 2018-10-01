@@ -3,9 +3,9 @@ const moment = require('moment');
 const { Group, Post, User, Workspace } = require('../models');
 const { sendMail, sendErr } = require('../../utils');
 
-/*	==================
- *	-- POST METHODS --
- *	==================
+/*	======================
+ *	-- POST CONTROLLERS --
+ *	======================
  */
 
 const add = async (req, res, next) => {
@@ -45,7 +45,7 @@ const edit = async (req, res, next) => {
     }, { 
       $set : {
         content: req.body.content,
-        _content_mentions: req.body.content_mentions
+        _content_mentions: req.body._content_mentions
       }
     }, {
       new: true

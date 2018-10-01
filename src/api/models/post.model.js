@@ -36,7 +36,7 @@ const PostSchema = new Schema({
     _commented_by: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      require: true
+      required: true
     }
   }],
   completed: {
@@ -91,10 +91,6 @@ const PostSchema = new Schema({
       default: null
     }
   }],
-  _notifications: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Notification'
-  }]
 });
 
 const Post = mongoose.model('Post', PostSchema);

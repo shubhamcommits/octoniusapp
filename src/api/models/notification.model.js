@@ -3,17 +3,43 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const NotificationSchema = new Schema({
+  _actor: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  },
   _owner: {
     type: Schema.Types.ObjectId,
     ref: 'User',
-    require: true
+    required: true
   },
-  // Link user that created post or assigned task/event, or mentioned in a comment
-  // Link post or comment where the user was related
-  // Other cases???
+  // _origin_comment: {
+
+  // },
+  _origin_post: {
+    type: Schema.Types.ObjectId,
+    ref: 'Post',
+    required: true
+  },
+  created_date: {
+    type: Date,
+    default: Date.now
+  },
+  message: {
+    type: String,
+    required: true
+  },
   read: {
     type: Boolean,
     default: false
+  },
+  read_date: {
+    type: Date,
+    default: null
+  },
+  type: {
+    type: String,
+    required: true,
+    enum: ['assignment', 'mention']
   }
 });
 
