@@ -9,7 +9,7 @@ const PostSchema = new Schema({
     type: String,
     trim: true
   },
-  content_mentions: [{
+  _content_mentions: [{
     type: Schema.Types.ObjectId,
     ref: 'User'
   }],
