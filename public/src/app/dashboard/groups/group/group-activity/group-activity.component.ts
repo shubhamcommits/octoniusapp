@@ -462,13 +462,27 @@
 
       };
       var postId;
+      const scanned_content = post.content;
+      var el = document.createElement( 'html' );
+      el.innerHTML = scanned_content;
+
+      if(el.getElementsByClassName( 'mention' ).length > 0)
+      {
+       //  console.log('Element',  el.getElementsByClassName( 'mention' ));
+      for(var i = 0; i < el.getElementsByClassName( 'mention' ).length; i++)
+      {
+        this.content_mentions.push(el.getElementsByClassName( 'mention' )[i]['dataset']['id'].toString());
+      }
+       // console.log('Content Mention', this.content_mentions); 
+      //  console.log('This post', postId);
+      }
 
 
       formData.append('content', post.content);
       formData.append('type', post.type);
       formData.append('_posted_by', post._posted_by);
       formData.append('_group', post._group);
-  //    formData.append('_content_mentions', this.content_mentions );
+      formData.append('_content_mentions', post._content_mentions );
 
       this.processing = true;
       this.disblePostForm();
@@ -494,7 +508,7 @@
       //  console.log(data);
         this.socket.emit('newPost', data);
          //  console.log('Normal post response: ', res);
-           postId = res['post']['_id'];
+         /*  postId = res['post']['_id'];
            const scanned_content = post.content;
            var el = document.createElement( 'html' );
            el.innerHTML = scanned_content;
@@ -525,7 +539,7 @@
          
              });
      
-           }
+           }*/
           this.loadGroupPosts();
 
         }, (err) => {
