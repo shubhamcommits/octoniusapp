@@ -36,7 +36,7 @@ const PostSchema = new Schema({
     _commented_by: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      require: true
+      required: true
     }
   }],
   completed: {
