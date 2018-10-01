@@ -14,21 +14,6 @@ const { sendErr } = require('../');
  *	=========================
  */
 
-const toEditPost = async (req, res, next) =>  {
-  try {
-    const post = await Post.findById(req.body.post_id);
-
-    if (post._posted_by.equals(req.body.user_id)) {
-      next();
-    } else if (!!post && !post._posted_by.equals(req.body.user_id)) {
-      return sendErr(res, err, 'User not allowed to edit this post!', 401);
-    }
-
-  } catch (err) {
-    return sendErr(res, err);
-  }
-};
-
 const toCompletePost = async (req, res, next) => {
   try {
     const post = await Post.findById(req.body.post_id);
@@ -58,7 +43,6 @@ const toCompletePost = async (req, res, next) => {
 
 module.exports = {
   // Post authorizations
-  toEditPost,
   toCompletePost
 };
 

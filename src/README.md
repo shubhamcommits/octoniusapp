@@ -37,7 +37,7 @@
 
 #### 4.1. ❗️ POST `api/posts` add new post
 
-#### 4.2. ❗️❗️PUT `api/posts/:postId` edit/update post
+#### 4.2. ❗️PUT `api/posts/:postId` edit/update post
 
 #### 4.3. ❗️❗️DELETE `api/posts/:postId` delete post
 

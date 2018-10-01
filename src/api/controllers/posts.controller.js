@@ -37,11 +37,40 @@ const add = async (req, res, next) => {
   }
 };
 
+const edit = async (req, res, next) => {
+  try {
+    const post = await Post.findByIdAndUpdate({
+      _id: req.params.postId
+      _posted_by: req.userId
+    }, { 
+      $set : {
+        content: req.body.content,
+        content_mentions: req.body.content_mentions
+      }
+    }, {
+      new: true
+    });
+    
+    if (!post) {
+      return sendErr(res, err, 'User not allowed to edit this post!', 403);
+    }
+
+    return res.status(200).json({
+      message: 'Post updated!',
+      post,
+    });
+
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
 /*	=============
  *	-- EXPORTS --
  *	=============
  */
 
 module.exports = {
-  add
+  add,
+  edit
 };

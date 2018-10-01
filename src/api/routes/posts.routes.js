@@ -23,7 +23,7 @@ router.post('/', postFileHandler, posts.add); // To do
 router.post('/add', postFileHandler, postsController.addNewPost); // ! TO BE REMOVED
 
 // PUT api/posts/:postId - edit post
-// router.put('/:postId', authorization.toEditPost, posts.edit); // To do
+router.put('/:postId', posts.edit); // To do
 router.post('/edit', authorization.toEditPost, postsController.editPost); // ! TO BE REMOVED
 
 // DELETE api/posts/:postId - delete post

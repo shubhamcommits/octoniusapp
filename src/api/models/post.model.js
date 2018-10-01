@@ -9,6 +9,10 @@ const PostSchema = new Schema({
     type: String,
     trim: true
   },
+  content_mentions: [{
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  }],
   type: {
     type: String,
     required: true,
