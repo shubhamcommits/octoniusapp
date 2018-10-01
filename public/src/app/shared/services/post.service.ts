@@ -23,19 +23,19 @@ export class PostService {
   }
 
   addNewNormalPost(post) {
-    return this._http.post(this.BASE_API_URL + '/post/add', post);
+    return this._http.post(this.BASE_API_URL + '/posts', post);
   }
   addNewEventPost(post) {
-    return this._http.post(this.BASE_API_URL + '/post/add', post);
+    return this._http.post(this.BASE_API_URL + '/posts', post);
   }
   addNewTaskPost(post) {
-    return this._http.post(this.BASE_API_URL + '/post/add', post);
+    return this._http.post(this.BASE_API_URL + '/posts', post);
   }
   addNewComment(comment) {
     return this._http.post(this.BASE_API_URL + '/post/addComment', comment);
   }
-  editPost(post){
-    return this._http.post(this.BASE_API_URL + '/post/edit ', post);
+  editPost(postId, post){
+    return this._http.put<any>(this.BASE_API_URL + `/posts/${postId}`, post);
   }
   deletePost(post) {
 
