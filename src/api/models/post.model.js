@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
 
-// const { Group, User,  Workspace } = require('./');
-
 const { Schema } = mongoose;
 
 const PostSchema = new Schema({
@@ -92,6 +90,10 @@ const PostSchema = new Schema({
       type: String,
       default: null
     }
+  }],
+  _notifications: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Notification'
   }]
 });
 

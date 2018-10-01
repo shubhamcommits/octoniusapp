@@ -45,7 +45,7 @@ const edit = async (req, res, next) => {
     }, { 
       $set : {
         content: req.body.content,
-        content_mentions: req.body.content_mentions
+        _content_mentions: req.body.content_mentions
       }
     }, {
       new: true
