@@ -49,6 +49,7 @@
 
     members = [];
     files = [];
+    content_mentions = new Array();
 
     public editor;
 
@@ -460,10 +461,27 @@
 
       };
 
+      
+      const scanned_content = post.content;
+      var el = document.createElement( 'html' );
+      el.innerHTML = scanned_content;
+
+      if(el.getElementsByClassName( 'mention' ).length > 0)
+      {
+       //  console.log('Element',  el.getElementsByClassName( 'mention' ));
+      for(var i = 0; i < el.getElementsByClassName( 'mention' ).length; i++)
+      {
+        this.content_mentions.push(el.getElementsByClassName( 'mention' )[i]['dataset']['id'].toString());
+      }
+      //  console.log('Content Mention', this.content_mentions); 
+
+      }
+
       formData.append('content', post.content);
       formData.append('type', post.type);
       formData.append('_posted_by', post._posted_by);
       formData.append('_group', post._group);
+//      formData.append('_content_mentions', this.content_mentions );
 
       this.processing = true;
       this.disblePostForm();
@@ -482,12 +500,13 @@
         workspace: this.user_data.workspace.workspace_name,
         // it should get automatically, something like group: this.group_name
         group: this.group_name,
-        user: this.user,
+        userId: this.user_data.user_id,
+
         groupId: this.groupDataService.group._id // Pass group id here!!!
       };
       //  console.log(data);
         this.socket.emit('newPost', data);
-          // console.log('Normal post response: ', res);
+      //     console.log('Normal post response: ', res);
           this.loadGroupPosts();
 
         }, (err) => {
@@ -502,6 +521,9 @@
           }
 
         });
+
+
+       
 
     }
 
@@ -561,7 +583,19 @@
           this._message.next(res['message']);
           this.resetNewPostForm();
           // console.log('Normal post response: ', res);
+          const data = {
+            // it should get automatically, something like workspace: this.workspace_name
+            workspace: this.user_data.workspace.workspace_name,
+            // it should get automatically, something like group: this.group_name
+            group: this.group_name,
+            userId: this.user_data.user_id,
+            
+            groupId: this.groupDataService.group._id // Pass group id here!!!
+          };
+          //  console.log(data);
+            this.socket.emit('newPost', data);
           this.loadGroupPosts();
+          
 
         }, (err) => {
           this.processing = false;
@@ -623,6 +657,17 @@
           this._message.next(res['message']);
           this.resetNewPostForm();
           // console.log('Normal post response: ', res);
+          const data = {
+            // it should get automatically, something like workspace: this.workspace_name
+            workspace: this.user_data.workspace.workspace_name,
+            // it should get automatically, something like group: this.group_name
+            group: this.group_name,
+            userId: this.user_data.user_id,
+            
+            groupId: this.groupDataService.group._id // Pass group id here!!!
+          };
+          //  console.log(data);
+            this.socket.emit('newPost', data);
           this.loadGroupPosts();
 
         }, (err) => {
@@ -876,12 +921,10 @@
 
       const editor = document.getElementById('edit-content-'+index);
     const post = {
-      'post_id': post_id,
-      'content': document.getElementById(index).innerHTML,
-      'user_id': this.user_data.user_id
+      'content': document.getElementById(index).innerHTML
     };
   //  console.log('post: ', post);
-    this.postService.editPost(post)
+    this.postService.editPost(post_id, post)
     .subscribe((res) => {
 
       this.alert.class = 'success';

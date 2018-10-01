@@ -8,35 +8,6 @@ const { sendMail, sendErr } = require('../../utils');
  *	==================
  */
 
-const addNewPost = async (req, res, next) => {
-  try { 
-    const postData = req.body;
-
-    // Id it's event post, convert due_to date to UTC before storing 
-    if (postData.type === 'event') {
-      postData[`event.due_to`] = moment.utc(postData[`event.due_to`]).format();
-    }
-
-    const post = await Post.create(postData);
-
-    // Send Email notification after post creation
-    switch(post.type) {
-      case 'task':
-        sendMail.taskAssigned(post);
-      case 'event':
-        sendMail.eventAssigned(post);
-    };
-
-    return res.status(200).json({
-      message: 'New post created!',
-      post,
-    });
-
-  } catch (err) {
-    return sendErr(res, err);
-  }
-};
-
 const completePost = async (req, res, next) => {
   try {
     let postId = req.body.post_id;
@@ -68,31 +39,6 @@ const deletePost = async (req, res, next) => {
 
     return res.status(200).json({
       message: 'Post deleted!',
-    });
-
-  } catch (err) {
-    return sendErr(res, err);
-  }
-};
-
-const editPost = async (req, res, next) => {
-  try {
-    const postId = req.body.post_id;
-    const updatedContent = req.body.content;
-
-    const post = await Post.findByIdAndUpdate({
-      _id: postId
-    }, { 
-      $set : {
-        content: updatedContent
-      }
-    }, {
-      new: true
-    });
-
-    return res.status(200).json({
-      message: 'Post updated!',
-      post,
     });
 
   } catch (err) {
@@ -304,10 +250,8 @@ const unlikePost = async (req, res, next) => {
  */
 
 module.exports = {
-  addNewPost,
   completePost,
   deletePost,
-  editPost,
   addCommentOnPost,
   getGroupPosts,
   getGroupNextPosts,

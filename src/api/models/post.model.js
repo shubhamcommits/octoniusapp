@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
 
-// const { Group, User,  Workspace } = require('./');
-
 const { Schema } = mongoose;
 
 const PostSchema = new Schema({
@@ -9,6 +7,10 @@ const PostSchema = new Schema({
     type: String,
     trim: true
   },
+  _content_mentions: [{
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  }],
   type: {
     type: String,
     required: true,
@@ -34,7 +36,7 @@ const PostSchema = new Schema({
     _commented_by: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      require: true
+      required: true
     }
   }],
   completed: {
@@ -88,7 +90,7 @@ const PostSchema = new Schema({
       type: String,
       default: null
     }
-  }]
+  }],
 });
 
 const Post = mongoose.model('Post', PostSchema);
