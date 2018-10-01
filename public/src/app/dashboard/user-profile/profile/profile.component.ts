@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../../shared/services/user.service';
 import { Router } from '@angular/router';
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-profile',
@@ -24,13 +25,24 @@ export class ProfileComponent implements OnInit {
     this._userService.getUser()
       .subscribe((res) => {
         this.user = res.user;
-
+      //  console.log('User', this.user);
+      if(res.user['company_join_date'] == null){
+        swal("Oops!", "Seems like you have been missing out, please update your profile to stay updated!", "warning");
+      }
+      else{
         this.join_date = new Date(res.user['company_join_date'].year,
           (res.user['company_join_date'].month) - 1, res.user['company_join_date'].day);
+          
+      }
+
+     
+
+
         // console.log('user Inside profile:', res);
 
       }, (err) => {
         this.alert.class = 'alert alert-danger';
+        swal("Error!", "Please try again!", "error");
         if (err.status === 401) {
           this.alert.message = err.error.message;
           setTimeout(() => {

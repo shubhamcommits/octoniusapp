@@ -33,7 +33,7 @@ export class NewWorkspacePage2Component implements OnInit {
 
   ngOnInit() {
     this.createNewWorkspaceForm();
-    console.log('new form ngOnInit', this.workspace);
+   // console.log('new form ngOnInit', this.workspace);
   }
 
   createNewWorkspaceForm() {

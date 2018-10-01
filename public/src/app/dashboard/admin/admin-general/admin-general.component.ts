@@ -67,9 +67,9 @@ export class AdminGeneralComponent implements OnInit {
   loadAllowedDomains() {
     this._adminService.allowedDomains(this.user_data.workspace._id)
     .subscribe((res) => {
-      console.log('Allowed Domains', res);
+   //   console.log('Allowed Domains', res);
     }, (err) => {
-      console.log('Error in Allowed Domains', err);
+   //   console.log('Error in Allowed Domains', err);
     })
   }
 
@@ -121,7 +121,7 @@ export class AdminGeneralComponent implements OnInit {
           }
         });
       }, (err) => {
-        console.log('Error in Saving Domain', err);
+      //  console.log('Error in Saving Domain', err);
         this.alert.class = 'danger';
         if (err.status === 401) {
           this._message.next(err.error.message);
@@ -154,7 +154,7 @@ export class AdminGeneralComponent implements OnInit {
 
       this.invitationData.workspace_id = this.user_data.workspace._id;
     this.invitationData.user_id= this.user_data.user_id;
-    console.log(this.invitationData);
+  //  console.log(this.invitationData);
     this._adminService.inviteNewUserViewEmail(this.invitationData)
       .subscribe((res) => {
         this.alert.class = 'success';

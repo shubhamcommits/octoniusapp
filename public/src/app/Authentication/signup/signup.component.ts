@@ -56,7 +56,7 @@ export class SignupComponent implements OnInit {
             this.alert.class = 'alert alert-success';
             this.alert.message = signup_response.message;
 
-            console.log('res', signup_response);
+          //  console.log('res', signup_response);
 
             setTimeout(() => {
               this.processing = false;

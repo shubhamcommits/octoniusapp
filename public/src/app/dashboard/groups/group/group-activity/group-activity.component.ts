@@ -147,26 +147,27 @@
 
         this.group = this.groupDataService.group;
         this.socket.on('connect', () => {
-          console.log(`Socket connected!`);});
+         // console.log(`Socket connected!`);
+        });
 
 
     }
     onEditorBlured(quill) {
-      console.log('editor blur!', quill);
+    //  console.log('editor blur!', quill);
     }
 
     onEditorFocused(quill) {
-      console.log('editor focus!', quill);
+    //  console.log('editor focus!', quill);
     }
 
     onEditorCreated(quill) {
       this.editor = quill;
-      console.log('quill is ready! this is current quill instance object', quill);
+    //  console.log('quill is ready! this is current quill instance object', quill);
       quill.insertText(0,'hello', 'bold', true);
     }
 
     onContentChanged({ quill, html, text }) {
-      console.log('quill content is changed!', quill, html, text);
+    //  console.log('quill content is changed!', quill, html, text);
     }
     transform(html: string) : SafeHtml {
       return this._sanitizer.bypassSecurityTrustHtml(html); 
@@ -220,7 +221,7 @@
       this.scrollToTop('#card-normal-post-4');
       this.mentionmembers();
       this.socketio();
-      console.log('Group ID: ', this.group_socket_id);
+     // console.log('Group ID: ', this.group_socket_id);
 
 
      
@@ -233,14 +234,14 @@
     loadGroup() {
       this.groupService.getGroup(this.group_id)
         .subscribe((res) => {
-         console.log('Group: ', res);
+       //  console.log('Group: ', res);
           this.group_name = res['group'].group_name;
           this.group_socket_id = res['group']._id;
         
   
         }, (err) => {
   
-          console.log('err: ', err);
+        //  console.log('err: ', err);
   
         });
   
@@ -264,7 +265,7 @@
 
 				// join room to get notifications for this group
 				this.socket.emit('join', room, (err) => {
-          console.log(`Socket Joined`);
+       //   console.log(`Socket Joined`);
 
 				});
 
@@ -272,18 +273,18 @@
 		this.socket.on('newPostOnGroup', (data) => {
       this.show_new_posts_badge=1;
      // alert(data);
-      console.log('value', this.show_new_posts_badge);
+     // console.log('value', this.show_new_posts_badge);
     	});
 
 			this.socket.on('disconnect', () => {
-				console.log(`Socket disconnected from group`);
+			//	console.log(`Socket disconnected from group`);
 			});
     }
 
 
     fileChangeEvent(fileInput: any) {
       this.filesToUpload = <Array<File>>fileInput.target.files;
-      console.log('files', this.filesToUpload);
+     // console.log('files', this.filesToUpload);
 
       // this.product.photo = fileInput.target.files[0]['name'];
     }
@@ -302,7 +303,7 @@
     navigate_to_group(group_id){
       //this.router.navigate(['../dashboard','group',group_id,'activity']);
       window.location.href = this.BASE_URL+'#/dashboard/group/'+group_id+'/activity'; 
-      console.log('routed');
+    //  console.log('routed');
     }
 
     getUserProfile() {
@@ -310,7 +311,7 @@
         .subscribe((res) => {
           this.user = res.user;
           this.profileImage = res.user['profile_pic'];
-          this.profileImage = `/uploads/${this.profileImage}`;
+          this.profileImage = this.BASE_URL + `/uploads/${this.profileImage}`;
         }, (err) => {
           this.alert.class = 'alert alert-danger';
           if (err.status === 401) {
@@ -483,7 +484,7 @@
         user: this.user,
         groupId: this.groupDataService.group._id // Pass group id here!!!
       };
-        console.log(data);
+      //  console.log(data);
         this.socket.emit('newPost', data);
           // console.log('Normal post response: ', res);
           this.loadGroupPosts();
@@ -565,7 +566,7 @@
           this.processing = false;
           this.alert.class = 'danger';
           this.enablePostForm();
-          console.log(err);
+        //  console.log(err);
 
           if (err.status) {
             this._message.next(err.error.message);
@@ -650,7 +651,7 @@
           saveAs(file, fileName_orignal);
 
         }, (err) => {
-          console.log('Downloaded File err', err);
+        //  console.log('Downloaded File err', err);
 
         });
     }
@@ -677,7 +678,7 @@
         'postId': postId
       };
 
-      console.log('post: ', post);
+    //  console.log('post: ', post);
 
     
 
@@ -730,7 +731,7 @@
         .subscribe((res) => {
           // console.log('Group posts:', res);
           this.posts = res['posts'];
-        console.log('Group posts:', this.posts);
+     //   console.log('Group posts:', this.posts);
         this.isLoading$.next(false);
         this.show_new_posts_badge = 0;
 
@@ -748,9 +749,9 @@
 
       this.postService.getNextPosts(this.group_id, last_post_id)
         .subscribe((res) => {
-           console.log('Group posts:', res);
+      //    console.log('Group posts:', res);
           this.posts = this.posts.concat(res['posts']);
-        console.log('Group posts:', this.posts);
+      //  console.log('Group posts:', this.posts);
         this.isLoading$.next(false);
 
 
@@ -769,7 +770,7 @@
         if(this.posts.length != 0){
           this.isLoading$.next(true);
           var last_post_id = this.posts[this.posts.length - 1]._id
-          console.log('Last Post Id', last_post_id)
+       //   console.log('Last Post Id', last_post_id)
           this.loadNextPosts(last_post_id);
           this.isLoading$.next(false);
         }
@@ -779,24 +780,24 @@
         }, (err) => {
 
         });
-      console.log('scrolled!!');
+    //  console.log('scrolled!!');
     }
     
 
     scrollToTop(element) {
       this.scrollService.scrollTo(element).subscribe(data => {
-        console.log('next');
-        console.log(data);
+     //   console.log('next');
+     //   console.log(data);
   }, error => {
-        console.error('error');
-        console.log(error);
+       // console.error('error');
+      //  console.log(error);
   }, () => {
-        console.log('complete');
+      //  console.log('complete');
   });
   }
 
     abc(){
-      console.log('clicked');
+    //  console.log('clicked');
     }
 
     icon_comment_change_color() {
@@ -878,7 +879,7 @@
       'content': document.getElementById(index).innerHTML,
       'user_id': this.user_data.user_id
     };
-    console.log('post: ', post);
+  //  console.log('post: ', post);
     this.postService.editPost(post)
     .subscribe((res) => {
 
@@ -890,7 +891,7 @@
       this.scrollToTop('#card-normal-post-'+index);
       this.scrollToTop('#card-event-post-'+index);
       this.scrollToTop('#card-task-post-'+index);
-      console.log("Post Updated, Successfully!")
+    //  console.log("Post Updated, Successfully!")
 
     }, (err) => {
 
@@ -1060,7 +1061,7 @@
       .subscribe((res) => {
         this.alert.class = 'success';
         this._message.next(res['message']);
-        console.log('Post Marked as Completed');
+    //    console.log('Post Marked as Completed');
 
         button.style.background="#005fd5";
         button.style.color="#ffffff";
@@ -1100,7 +1101,7 @@
       // this.resetNewPostForm();
         // console.log('Normal post response: ', res);
 
-        console.log('Post Marked as Completed');
+      //  console.log('Post Marked as Completed');
         button.style.background="#005fd5";
         button.style.color="#ffffff";
         button.innerHTML="Completed";
@@ -1135,7 +1136,7 @@
       .subscribe((res) => {
         this.alert.class = 'success';
         this._message.next(res['message']);
-        console.log('Post Liked!');
+     //   console.log('Post Liked!');
         this.loadGroupPosts();
         this.onScroll();
 
@@ -1159,7 +1160,7 @@
       .subscribe((res) => {
         this.alert.class = 'success';
         this._message.next(res['message']);
-        console.log('Post Unliked!');
+     //   console.log('Post Unliked!');
         this.loadGroupPosts();
         this.onScroll();
 
@@ -1232,7 +1233,7 @@
             this.members.push(res['group']._admins[i].first_name + ' ' + res['group']._admins[i].last_name);
           }
        
-         console.log('Members', this.members);
+      //   console.log('Members', this.members);
 
         }, (err) => {
 
@@ -1265,7 +1266,7 @@
 
       this.groupService.getGroupFiles(this.group_id)
       .subscribe((res) => {
-        console.log('Group Files:', res['posts']);
+      //  console.log('Group Files:', res['posts']);
         this.files = res['posts'];
         for(var i = 0; i < res['posts'].length; i++){
           if(res['posts'][i].files.length > 0) {

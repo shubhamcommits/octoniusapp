@@ -49,7 +49,7 @@ export class GroupCalendarComponent implements OnInit {
     this.events= this.events;
   }
   eventClicked({ event }: { event: CalendarEvent }): void {
-    console.log('Event clicked', event);
+    //console.log('Event clicked', event);
   }
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
     if (isSameMonth(date, this.viewDate)) {
@@ -101,8 +101,8 @@ export class GroupCalendarComponent implements OnInit {
          
           }
         }
-       console.log('Group posts:', this.posts);
-       console.log('Events posts:', this.events);
+      // console.log('Group posts:', this.posts);
+      // console.log('Events posts:', this.events);
 
 
       }, (err) => {

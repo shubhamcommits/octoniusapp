@@ -72,10 +72,10 @@ export class OverviewComponent implements OnInit {
           this.normal_count=1;
         }
       }
-     console.log('User Post:', this.posts);
-     console.log('Event Response:', this.event_count);
-     console.log('Task Response:', this.task_count);
-     console.log('Normal Response:', this.normal_count);
+    // console.log('User Post:', this.posts);
+    // console.log('Event Response:', this.event_count);
+    // console.log('Task Response:', this.task_count);
+    // console.log('Normal Response:', this.normal_count);
      if(this.posts.length == 0)
      {
       this.isLoading$.next(true);

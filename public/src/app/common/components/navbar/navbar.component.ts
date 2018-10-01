@@ -3,6 +3,7 @@ import { AuthService } from '../../../shared/services/auth.service';
 import { Router } from '@angular/router';
 import { UserService } from '../../../shared/services/user.service';
 import { User } from '../../../shared/models/user.model';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-navbar',
@@ -16,11 +17,18 @@ export class NavbarComponent implements OnInit {
     class: '',
     message: ''
   };
+  height = 10;
+  width = 10;
+  url='https://i.cloudup.com/Zqeq2GhGjt-3000x3000.jpeg'
+  Date = new Date;
 
   constructor(private _auth: AuthService, private _userService: UserService, private _router: Router,
     private router: Router) { }
 
   ngOnInit() {
+
+    console.log("%c   Octonius Inc \u00A9 " + this.Date.getFullYear() +". All Right Reserved!", "background-repeat: no-repeat; background-image: url('https://octhub.com/favicon.ico')");
+
     this.getUserProfile();
   }
 
