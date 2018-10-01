@@ -69,7 +69,7 @@
                   </ul>
 
                 </div>
-                <div class="col-md-8">
+                <div class="col-md-8 text-right">
                     <button type="button" class="btn btn-outline-warning task" *ngIf="post.type == 'event' || post.type== 'task'" (click)="openAssignPicker(assignContent)">
                         <i class="material-icons">perm_identity</i> {{assignment}}
                       </button>
@@ -84,7 +84,7 @@
     
     
                       <button *ngIf="post.type=='event'" class="btn btn-outline-warning task" type="button" (click)="openTimePicker(timeContent)">
-                        <i class="material-icons">event</i>{{due_time}}
+                        <i class="material-icons">alarm</i>{{due_time}}
                       </button>
 
                 </div>
@@ -99,7 +99,7 @@
 
               <div class="row" style="margin-top: 10px">
                 <div class="col-md-12">
-                  <div class="form-group">
+                  <div class="form-group editor">
                       <div class="triangle" *ngIf="post.type=='normal'" ></div>
                       <div class="triangle-event" *ngIf="post.type=='event'" ></div>
                       <div class="triangle-task" *ngIf="post.type=='task'" ></div>

@@ -335,3 +335,12 @@ h4{
     border-radius: 6px;
   }
 }
+
+.ql-container.ql-snow {
+  height: 100px !important;
+  border: none !important;
+}
+.editor{
+  border: 1px solid $brand-primary;
+  border-radius: $card-radius;
+}
