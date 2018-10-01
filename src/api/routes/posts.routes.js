@@ -20,11 +20,9 @@ router.use(auth.isLoggedIn);
 
 // POST api/posts/ - add new post
 router.post('/', postFileHandler, posts.add); // To do
-router.post('/add', postFileHandler, postsController.addNewPost); // ! TO BE REMOVED
 
 // PUT api/posts/:postId - edit post
 router.put('/:postId', posts.edit); // To do
-router.post('/edit', authorization.toEditPost, postsController.editPost); // ! TO BE REMOVED
 
 // DELETE api/posts/:postId - delete post
 // router.delete('/:postId', authorization.todDeletePost, posts.delete); // To do
