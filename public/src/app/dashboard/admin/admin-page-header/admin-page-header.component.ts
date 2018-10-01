@@ -47,7 +47,7 @@ export class AdminPageHeaderComponent implements OnInit {
       }, (err) => {
 
         this.alert.class = 'alert alert-danger';
-        console.log('err: ', err);
+     //   console.log('err: ', err);
 
         if (err.status === 401) {
           this.alert.message = err.error.message;
@@ -81,10 +81,10 @@ export class AdminPageHeaderComponent implements OnInit {
           setTimeout(() => {
             this.modalReference.close();
           }, 2000);
-          console.log('workspace updated response:', res);
+        //  console.log('workspace updated response:', res);
 
         }, (err) => {
-          console.log('err:', err);
+       //   console.log('err:', err);
 
           this.alert.class = 'alert alert-danger';
 

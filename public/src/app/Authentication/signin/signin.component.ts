@@ -60,7 +60,7 @@ export class SigninComponent implements OnInit {
         this.alert.class = 'alert alert-success';
         this.alert.message = res.message;
         this._auth.storeUserData(res.token, res.user);
-        console.log('Inside signin: ', res.user);
+       // console.log('Inside signin: ', res.user);
 
         setTimeout(() => {
           this._router.navigate(['/dashboard/overview']);

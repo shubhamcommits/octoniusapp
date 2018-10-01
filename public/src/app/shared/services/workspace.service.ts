@@ -14,8 +14,8 @@ export class WorkspaceService {
   updateWorkspace(workspce_id, data) {
 
 
-    console.log('workspace_id', workspce_id);
-    console.log('data', data);
+  //  console.log('workspace_id', workspce_id);
+  //  console.log('data', data);
 
 
     return this._http.put(this.BASE_API_URL + `/workspace/${workspce_id}`, data);

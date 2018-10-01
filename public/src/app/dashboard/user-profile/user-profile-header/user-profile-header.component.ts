@@ -3,6 +3,7 @@ import { UserService } from '../../../shared/services/user.service';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../../../../environments/environment';
+import swal from 'sweetalert';
 
 
 @Component({
@@ -21,10 +22,6 @@ export class UserProfileHeaderComponent implements OnInit {
   userImageUrl = '';
   profilePic = '';
   fileToUpload: File = null;
-  alert = {
-    message: '',
-    class: ''
-  };
 
   user = {
     first_name: '',
@@ -72,9 +69,7 @@ export class UserProfileHeaderComponent implements OnInit {
 
 
       }, (err) => {
-        this.alert.class = 'alert alert-danger';
         if (err.status === 401) {
-          this.alert.message = err.error.message;
           setTimeout(() => {
             localStorage.clear();
             this._router.navigate(['']);
@@ -93,32 +88,29 @@ export class UserProfileHeaderComponent implements OnInit {
 
     this._userService.updateUser(this.user)
       .subscribe((res) => {
-        this.alert.class = 'alert alert-success';
-        this.alert.message = res.message;
-
-        this.modalReference.close();
-        this.openLg(this.content);
-        setTimeout(() => {
-          this.modalReference.close();
-        }, 3000);
-        this.refreshPage();
+        swal("Good Job!", "You have updated your profile, successfully!", "success")
+        .then( (onclick) => {
+          this.getUserProfile();
+          this.refreshPage();
+        });
+        
 
       }, (err) => {
+       
 
-        this.alert.class = 'alert alert-danger';
+       // this.alert.class = 'alert alert-danger';
 
         if (err.status === 401) {
-          this.alert.message = err.error.message;
+          swal("Error!", "Seems like there's an error, please try again!", "danger");
           this.openLg(this.content);
           setTimeout(() => {
             localStorage.clear();
             this._router.navigate(['']);
           }, 3000);
         } else if (err.status) {
-          this.alert.message = err.error.message;
           this.openLg(this.content);
         } else {
-          this.alert.message = 'Error! either server is down or no internet connection';
+          swal("Error!", "Either server is down, or no Internet connection!", "danger");
           this.openLg(this.content);
         }
       });
@@ -133,9 +125,7 @@ export class UserProfileHeaderComponent implements OnInit {
 
       this._userService.updateUserProfileImage(this.fileToUpload)
         .subscribe((res) => {
-          this.alert.class = 'alert alert-success';
           
-          this.alert.message = res.message;
 
           this.modalReference.close();
           this.openLg(this.content);
@@ -148,20 +138,18 @@ export class UserProfileHeaderComponent implements OnInit {
 
         }, (err) => {
 
-          this.alert.class = 'alert alert-danger';
 
           if (err.status === 401) {
-            this.alert.message = err.error.message;
+            swal("Error!", "Seems like there's an error, please try again!", "danger");
             this.openLg(this.content);
             setTimeout(() => {
               localStorage.clear();
               this._router.navigate(['']);
             }, 3000);
           } else if (err.status) {
-            this.alert.class = err.error.message;
             this.openLg(this.content);
           } else {
-            this.alert.message = 'Error! either server is down or no internet connection';
+            swal("Error!", "Either server is down, or no Internet connection!", "danger");
             this.openLg(this.content);
           }
         });

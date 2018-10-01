@@ -49,7 +49,7 @@ export class AuthService {
 
 
   storeUserData(token, user) {
-    console.log('current user data', user);
+    //console.log('current user data', user);
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(user));
   }

@@ -140,7 +140,7 @@ export class GroupsComponent implements OnInit {
           }
         }
       }, (err) => {
-        console.log(err);
+       // console.log(err);
         this.alert.class = 'alert alert-danger';
         if (err.status === 401) {
           this.alert.message = err.error.message;

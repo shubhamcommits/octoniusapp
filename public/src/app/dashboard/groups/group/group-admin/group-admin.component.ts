@@ -55,7 +55,7 @@ export class GroupAdminComponent implements OnInit {
   loadGroup() {
     this.groupService.getGroup(this.group_id)
       .subscribe((res) => {
-        console.log('Group: ', res);
+       // console.log('Group: ', res);
         this.group = res['group'];
 
         this.group.description = res['group']['description'];
@@ -120,7 +120,7 @@ export class GroupAdminComponent implements OnInit {
   }
 
   onSearch(evt: any) {
-    console.log(evt.target.value);
+  //  console.log(evt.target.value);
     this.itemList = [];
 
     this.groupService.searchWorkspaceUsers(evt.target.value, this.user_data.workspace._id)

@@ -50,7 +50,7 @@ export class GroupFilesComponent implements OnInit {
 
     this.groupService.getGroupFiles(this.group_id)
       .subscribe((res) => {
-        console.log('Group posts:', res);
+       // console.log('Group posts:', res);
         this.posts = res['posts'];
         for(var i = 0; i < this.posts.length; i++){
           if(this.posts[i].files.length > 0){
@@ -62,8 +62,8 @@ export class GroupFilesComponent implements OnInit {
             this.has_file=false;
           }
         }
-       console.log('Group posts:', this.posts);
-       console.log('Has File:', this.has_file);
+      // console.log('Group posts:', this.posts);
+     //  console.log('Has File:', this.has_file);
        this.isLoading$.next(false);
 
 
@@ -91,8 +91,8 @@ export class GroupFilesComponent implements OnInit {
             this.has_file=false;
           }
         }
-       console.log('Group posts:', this.posts);
-       console.log('Has File:', this.has_file);
+    //   console.log('Group posts:', this.posts);
+      // console.log('Has File:', this.has_file);
        this.isLoading$.next(false);
 
 
@@ -110,11 +110,11 @@ export class GroupFilesComponent implements OnInit {
     this.groupService.downloadGroupFile(this.group_id,fileName)
       .subscribe((file) => {
 
-        console.log('Downloaded File', file);
+    //    console.log('Downloaded File', file);
         saveAs(file, fileName_orignal);
 
       }, (err) => {
-        console.log('Downloaded File err', err);
+     //   console.log('Downloaded File err', err);
 
       });
   }
@@ -122,9 +122,9 @@ export class GroupFilesComponent implements OnInit {
   loadGroup() {
     this.groupService.getGroup(this.group_id)
       .subscribe((res) => {
-        console.log('Group: ', res);
+    //    console.log('Group: ', res);
         if (res['group']['group_avatar'] == null) {
-          console.log('Inside if: ', this.groupImageUrl);
+      //    console.log('Inside if: ', this.groupImageUrl);
 
           this.groupImageUrl = '/assets/images/group.png';
         } else {
@@ -136,7 +136,7 @@ export class GroupFilesComponent implements OnInit {
 
       }, (err) => {
 
-        console.log('err: ', err);
+     //   console.log('err: ', err);
 
       });
 

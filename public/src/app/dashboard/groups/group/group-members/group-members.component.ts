@@ -37,9 +37,9 @@ export class GroupMembersComponent implements OnInit {
     this.groupService.getGroup(this.group_id)
       .subscribe((res) => {
         this.group_members = res['group']._members;
-        console.log(this.group_members);
+      //  console.log(this.group_members);
         this.group_admins = res['group']._admins;
-        console.log(this.group_admins);
+      //  console.log(this.group_admins);
 
       }, (err) => {
 
@@ -63,7 +63,7 @@ export class GroupMembersComponent implements OnInit {
       if (willDelete) {
         this.groupService.removeUserFromGroup(data)
         .subscribe((res) =>{
-          console.log('Group Member is Removed!');
+        //  console.log('Group Member is Removed!');
           this.loadGroup();
         });
         swal("Removed!", first_name+" "+last_name+", has been removed!", "success");

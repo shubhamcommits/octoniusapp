@@ -2,7 +2,7 @@
 
 
 
-  <img class="mr-3 feed-avatar" [src]="workspaceImageUrl">
+  <img class="mr-3 feed-avatar" [src]="workspaceImageUrl" onerror="this.src='/assets/images/organization.png'">
   <div class="media-body">
     <div>
       <h2>{{user?.workspace_name}}</h2>
