@@ -25,8 +25,7 @@ router.post('/', postFileHandler, posts.add); // To do
 router.put('/:postId', posts.edit); // To do
 
 // DELETE api/posts/:postId - delete post
-// router.delete('/:postId', authorization.todDeletePost, posts.delete); // To do
-router.delete('/', postsController.deletePost); // ! TO BE REMOVED
+router.delete('/:postId', posts.remove); // To do
 
 // POST api/posts/:postId/comment - add new comment on post
 // router.post('/:postId/comment', posts.addComment); // To do

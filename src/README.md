@@ -39,7 +39,7 @@
 
 #### 4.2. PUT `api/posts/:postId` edit/update post
 
-#### 4.3. ❗️❗️DELETE `api/posts/:postId` delete post
+#### 4.3. DELETE `api/posts/:postId` delete post
 
 #### 4.4. ❗️❗️POST `api/posts/:postId/comment` add new comment on post
 

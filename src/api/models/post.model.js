@@ -90,7 +90,7 @@ const PostSchema = new Schema({
       type: String,
       default: null
     }
-  }],
+  }]
 });
 
 const Post = mongoose.model('Post', PostSchema);

@@ -50,7 +50,7 @@ const edit = async (req, res, next) => {
     }, {
       new: true
     });
-    
+
     if (!post) {
       return sendErr(res, err, 'User not allowed to edit this post!', 403);
     }
@@ -65,6 +65,42 @@ const edit = async (req, res, next) => {
   }
 };
 
+const remove = async (req, res, next) => {
+  try {
+    const { userId, params: { postId } } = req;
+
+    // Get post data
+    const post = await Post.findOne({
+      _id: postId,
+    });
+
+    // Get group data
+    const group = Group.findOne({
+      _id: post._group,
+    });
+
+    if (
+      // If user is not one of group's admins... and...
+      !group._admins.includes(String(userId)) &&
+      // ...user is not the post author...
+      !post._posted_by.equals(userId)
+    ) {
+      // Deny access!
+      return sendErr(res, err, 'User not allowed to remove this post!', 403);
+    }
+
+    const postRemoved = await Post.findByIdAndDelete(postId);
+
+    return res.status(200).json({
+      message: 'Post deleted!',
+      postRemoved
+    });
+
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
 /*	=============
  *	-- EXPORTS --
  *	=============
@@ -72,5 +108,6 @@ const edit = async (req, res, next) => {
 
 module.exports = {
   add,
-  edit
+  edit,
+  remove
 };
