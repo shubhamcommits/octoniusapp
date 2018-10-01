@@ -40,7 +40,7 @@ const add = async (req, res, next) => {
 const edit = async (req, res, next) => {
   try {
     const post = await Post.findByIdAndUpdate({
-      _id: req.params.postId
+      _id: req.params.postId,
       _posted_by: req.userId
     }, { 
       $set : {
