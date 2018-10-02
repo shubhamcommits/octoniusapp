@@ -72,12 +72,12 @@ const remove = async (req, res, next) => {
     // Get post data
     const post = await Post.findOne({
       _id: postId,
-    });
+    }).lean();
 
     // Get group data
-    const group = Group.findOne({
+    const group = await Group.findOne({
       _id: post._group,
-    });
+    }).lean();
 
     if (
       // If user is not one of group's admins... and...
@@ -89,7 +89,7 @@ const remove = async (req, res, next) => {
       return sendErr(res, err, 'User not allowed to remove this post!', 403);
     }
 
-    const postRemoved = await Post.findByIdAndDelete(postId);
+    const postRemoved = await Post.findByIdAndRemove(postId);
 
     return res.status(200).json({
       message: 'Post deleted!',
