@@ -1,5 +1,6 @@
 const moment = require('moment');
 
+const notifications = require('./notifications.controller');
 const { Group, Post, User, Workspace } = require('../models');
 const { sendMail, sendErr } = require('../../utils');
 
@@ -18,6 +19,12 @@ const add = async (req, res, next) => {
     }
 
     const post = await Post.create(postData);
+
+    // Create Notifications
+    // ...for mentions in post content
+    if (post._content_mentions.length !== 0) {
+      notifications.newPostMentions(post); 
+    }
 
     // Send Email notification after post creation
     switch(post.type) {
