@@ -1,6 +1,6 @@
 const socketIO = require('socket.io');
 
-const { notifications } = require('../api/controllers');
+const notifications = require('../api/controllers/notifications.controller');
 
 const init = (server) => {
   const io = socketIO(server);
@@ -40,7 +40,6 @@ const init = (server) => {
       socket.broadcast.to(roomName).emit('newPostOnGroup', data);
 
       // Create Notification ??
-
     });
 
     socket.on('disconnect', () => {
