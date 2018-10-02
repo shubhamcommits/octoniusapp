@@ -330,7 +330,7 @@ const createNewWorkspace = async (req, res, next) => {
 		const globalGroup = {
 			group_name: 'Global',
 			_workspace: workspaceUpdate,
-			_members: user,
+			_admins: user,
 			workspace_name: workspaceUpdate.workspace_name, 
 		}
 
