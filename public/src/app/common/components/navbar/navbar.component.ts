@@ -15,6 +15,7 @@ import { environment } from '../../../../environments/environment'
 export class NavbarComponent implements OnInit {
   user: User;
   userProfileImage;
+  userId;
   alert = {
     class: '',
     message: ''
@@ -31,6 +32,7 @@ export class NavbarComponent implements OnInit {
       this.socket.on('connect', () => {
          console.log(`Socket connected!`);
        });
+ 
      }
 
   ngOnInit() {
@@ -38,6 +40,14 @@ export class NavbarComponent implements OnInit {
     console.log("%c   Octonius Inc \u00A9 " + this.Date.getFullYear() +". All Right Reserved!", "background-repeat: no-repeat; background-image: url('https://octhub.com/favicon.ico')");
 
     this.getUserProfile();
+    const user = {
+      'userId': this.userId 
+      }
+      this.socket.on('notificationsFeed', (user) => {
+        console.log('Get Notifications socket on', user);
+      });
+      this.socket.emit('getNotifications', this.userId);
+
   }
 
   underline_navbar_overview(){
@@ -74,6 +84,7 @@ export class NavbarComponent implements OnInit {
       .subscribe((res) => {
         this.user = res.user;
         this.userProfileImage = res.user['profile_pic'];
+        this.userId = res.user['_id'];
         this.userProfileImage = `/uploads/${this.userProfileImage}`;
       }, (err) => {
         this.alert.class = 'alert alert-danger';
