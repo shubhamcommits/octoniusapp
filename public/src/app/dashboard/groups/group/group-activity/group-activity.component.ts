@@ -49,7 +49,7 @@
 
     members = [];
     files = [];
-    content_mentions = new Array();
+    content_mentions = [];
 
     public editor;
 
@@ -147,9 +147,9 @@
        // console.log('user', this.user_data);
 
         this.group = this.groupDataService.group;
-        this.socket.on('connect', () => {
+       // this.socket.on('connect', () => {
          // console.log(`Socket connected!`);
-        });
+       // });
 
 
     }
@@ -457,11 +457,11 @@
         content: this.post.content,
         type: this.post.type,
         _posted_by: this.user_data.user_id,
-        _group: this.group_id
+        _group: this.group_id,
+        _content_mentions: this.content_mentions
 
       };
-
-      
+      var postId;
       const scanned_content = post.content;
       var el = document.createElement( 'html' );
       el.innerHTML = scanned_content;
@@ -471,22 +471,31 @@
        //  console.log('Element',  el.getElementsByClassName( 'mention' ));
       for(var i = 0; i < el.getElementsByClassName( 'mention' ).length; i++)
       {
-        this.content_mentions.push(el.getElementsByClassName( 'mention' )[i]['dataset']['id'].toString());
+        this.content_mentions.push(el.getElementsByClassName( 'mention' )[i]['dataset']['id']);
+        
       }
-      //  console.log('Content Mention', this.content_mentions); 
 
+      for (var i = 0; i < this.content_mentions.length; i++)
+      {
+        formData.append('_content_mentions', this.content_mentions[i]);
       }
+      
+       console.log('Content Mention', post._content_mentions); 
+      //  console.log('This post', postId);
+      }
+
 
       formData.append('content', post.content);
       formData.append('type', post.type);
       formData.append('_posted_by', post._posted_by);
       formData.append('_group', post._group);
-//      formData.append('_content_mentions', this.content_mentions );
+      
 
       this.processing = true;
       this.disblePostForm();
       this.postService.addNewNormalPost(formData)
         .subscribe((res) => {
+          console.log('Post', res);
           this.processing = false;
           this.enablePostForm();
           this.postForm.reset();
@@ -506,7 +515,39 @@
       };
       //  console.log(data);
         this.socket.emit('newPost', data);
-      //     console.log('Normal post response: ', res);
+         //  console.log('Normal post response: ', res);
+         /*  postId = res['post']['_id'];
+           const scanned_content = post.content;
+           var el = document.createElement( 'html' );
+           el.innerHTML = scanned_content;
+     
+           if(el.getElementsByClassName( 'mention' ).length > 0)
+           {
+            //  console.log('Element',  el.getElementsByClassName( 'mention' ));
+           for(var i = 0; i < el.getElementsByClassName( 'mention' ).length; i++)
+           {
+             this.content_mentions.push(el.getElementsByClassName( 'mention' )[i]['dataset']['id'].toString());
+           }
+            // console.log('Content Mention', this.content_mentions); 
+           //  console.log('This post', postId);
+             this.postService.editPost(postId, post)
+             .subscribe((res) => {
+             console.log('Normal post response: ', res);
+             //  console.log("Post Updated, Successfully!")
+         
+             }, (err) => {
+         
+               this.alert.class = 'danger';
+         
+               if (err.status) {
+                 this._message.next(err.error.message);
+               } else {
+                 this._message.next('Error! either server is down or no internet connection');
+               }
+         
+             });
+     
+           }*/
           this.loadGroupPosts();
 
         }, (err) => {
@@ -521,6 +562,8 @@
           }
 
         });
+
+      
 
 
        
@@ -738,7 +781,7 @@
         })
         .then(willDelete => {
         if (willDelete) {
-          this.postService.deletePost(post)
+          this.postService.deletePost(postId)
           .subscribe((res) => {
     
             this.alert.class = 'success';
@@ -921,8 +964,23 @@
 
       const editor = document.getElementById('edit-content-'+index);
     const post = {
-      'content': document.getElementById(index).innerHTML
+      'content': document.getElementById(index).innerHTML,
+      '_content_mentions': this.content_mentions
     };
+    const scanned_content = post.content;
+    var el = document.createElement( 'html' );
+    el.innerHTML = scanned_content;
+
+    if(el.getElementsByClassName( 'mention' ).length > 0)
+    {
+     //  console.log('Element',  el.getElementsByClassName( 'mention' ));
+    for(var i = 0; i < el.getElementsByClassName( 'mention' ).length; i++)
+    {
+      this.content_mentions.push(el.getElementsByClassName( 'mention' )[i]['dataset']['id'].toString());
+    }
+  
+    }
+     // console.log('Content Mention', this.content_mentions); 
   //  console.log('post: ', post);
     this.postService.editPost(post_id, post)
     .subscribe((res) => {

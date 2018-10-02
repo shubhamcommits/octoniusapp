@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { UserService } from '../../../shared/services/user.service';
 import { User } from '../../../shared/models/user.model';
 import * as moment from 'moment';
+import * as io from 'socket.io-client';
+import { environment } from '../../../../environments/environment'
 
 @Component({
   selector: 'app-navbar',
@@ -22,8 +24,14 @@ export class NavbarComponent implements OnInit {
   url='https://i.cloudup.com/Zqeq2GhGjt-3000x3000.jpeg'
   Date = new Date;
 
+  socket = io(environment.BASE_URL);
+
   constructor(private _auth: AuthService, private _userService: UserService, private _router: Router,
-    private router: Router) { }
+    private router: Router) {
+      this.socket.on('connect', () => {
+         console.log(`Socket connected!`);
+       });
+     }
 
   ngOnInit() {
 
