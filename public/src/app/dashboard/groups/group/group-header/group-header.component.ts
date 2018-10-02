@@ -40,9 +40,9 @@ export class GroupHeaderComponent implements OnInit {
   loadGroup() {
     this.groupService.getGroup(this.group_id)
       .subscribe((res) => {
-        console.log('Group: ', res);
+       // console.log('Group: ', res);
         if (res['group']['group_avatar'] == null) {
-          console.log('Inside if: ', this.groupImageUrl);
+        //  console.log('Inside if: ', this.groupImageUrl);
 
           this.groupImageUrl = '/assets/images/group.png';
         } else {
@@ -54,7 +54,7 @@ export class GroupHeaderComponent implements OnInit {
 
       }, (err) => {
 
-        console.log('err: ', err);
+     //   console.log('err: ', err);
 
       });
 
@@ -83,7 +83,7 @@ export class GroupHeaderComponent implements OnInit {
         setTimeout(() => {
           this.modalReference.close();
         }, 2000);
-        console.log('group updated response:', res);
+      //  console.log('group updated response:', res);
 
       }, (err) => {
 

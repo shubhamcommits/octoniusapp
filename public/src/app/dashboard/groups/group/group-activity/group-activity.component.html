@@ -43,47 +43,54 @@
             </div>
             <div id="show_hide" class="col-md-12 innercard fade-in" style="display: none;">
               <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                   <ul class="nav nav-pills">
 
                     <li class="nav-item">
-                      <button (click)="onSelectPostType('normal')" class="btn fade-in btn-link cool" placement="bottom" ngbTooltip="Normal Post">
+                      <button (click)="onSelectPostType('normal')" class="btn btn-link cool" placement="top" ngbTooltip="Normal Post">
                         <i class="material-icons muted" id="icon_comment" style="color: #005fd5; ">comment</i>
+                       
                       </button>
+                      
                     </li>
+                   
                     <li class="nav-item">
 
-                      <button (click)="onSelectPostType('event')" class="btn fade-in btn-link cool"  placement="bottom" ngbTooltip="Event Post">
+                      <button (click)="onSelectPostType('event')" class="btn btn-link cool"  placement="top" ngbTooltip="Event Post">
                         <i class="material-icons muted" id="icon_event">event</i>
                       </button>
                     </li>
                     <li class="nav-item">
 
-                      <button (click)="onSelectPostType('task')"  class="btn fade-in btn-link cool"  placement="bottom" ngbTooltip="Task Post">
+                      <button (click)="onSelectPostType('task')"  class="btn btn-link cool"  placement="top" ngbTooltip="Task Post">
                         <i class="material-icons muted" id="icon_check_box">check_box</i>
                       </button>
                     </li>
                   </ul>
 
                 </div>
+                <div class="col-md-8 text-right">
+                    <button type="button" class="btn btn-outline-warning task" *ngIf="post.type == 'event' || post.type== 'task'" (click)="openAssignPicker(assignContent)">
+                        <i class="material-icons">perm_identity</i> {{assignment}}
+                      </button>
+    
+                      <!-- <input [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" placeholder="Date Time"> -->
+                      <!--   <owl-date-time #dt1></owl-date-time> -->
+    
+    
+                      <button *ngIf="post.type == 'event'|| post.type=='task'" class="btn btn-outline-warning task" type="button" (click)="openDatePicker(dateContent)">
+                        <i class="material-icons">event</i>{{ due_date }}
+                      </button>
+    
+    
+                      <button *ngIf="post.type=='event'" class="btn btn-outline-warning task" type="button" (click)="openTimePicker(timeContent)">
+                        <i class="material-icons">alarm</i>{{due_time}}
+                      </button>
+
+                </div>
                 <div class="col-md-12">
 
-                  <button type="button" class="btn btn-outline-warning task" *ngIf="post.type == 'event' || post.type== 'task'" (click)="openAssignPicker(assignContent)">
-                    <i class="material-icons">perm_identity</i> {{assignment}}
-                  </button>
 
-                  <!-- <input [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" placeholder="Date Time"> -->
-                  <!--   <owl-date-time #dt1></owl-date-time> -->
-
-
-                  <button *ngIf="post.type == 'event'|| post.type=='task'" class="btn btn-outline-warning task" type="button" (click)="openDatePicker(dateContent)">
-                    <i class="material-icons">event</i>{{ due_date }}
-                  </button>
-
-
-                  <button *ngIf="post.type=='event'" class="btn btn-outline-warning task" type="button" (click)="openTimePicker(timeContent)">
-                    <i class="material-icons">event</i>{{due_time}}
-                  </button>
 
                   <ngb-alert *ngIf="alert.message" [type]="alert.class" (close)="successMessage = null">{{alert.message}}</ngb-alert>
 
@@ -92,7 +99,11 @@
 
               <div class="row" style="margin-top: 10px">
                 <div class="col-md-12">
-                  <div class="form-group fade-in">
+                  <div class="form-group editor">
+                      <div class="triangle" *ngIf="post.type=='normal'" ></div>
+                      <div class="triangle-event" *ngIf="post.type=='event'" ></div>
+                      <div class="triangle-task" *ngIf="post.type=='task'" ></div>
+                     
                     <!--<textarea class="form-control " id="post-content" rows="3" [(ngModel)]="post.content" name="postContent" formControlName="postContent"></textarea>-->
                     <!--<app-ngx-editor [placeholder]="'Enter text here...'" [spellcheck]="true" id="post-content" rows="3" [(ngModel)]="post.content" name="postContent" formControlName="postContent"></app-ngx-editor>-->
                     <quill-editor id="post-content" [modules]="modules" [(ngModel)]="post.content" (blur)="onEditorBlured($event)" [spellcheck]="true" name="postContent" (focus)="onEditorFocused($event)" formControlName="postContent" (ready)="onEditorCreated($event)" (change)="onContentChanged($event)"></quill-editor>

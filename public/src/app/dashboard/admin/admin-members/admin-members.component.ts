@@ -60,16 +60,16 @@ export class AdminMembersComponent implements OnInit {
     this._workspaceService.getWorkspace(this.user_data.workspace)
       .subscribe((res) => {
         this.workspace = res.workspace;
-        console.log(this.workspace);
+      //  console.log(this.workspace);
         this.profileImage = res.workspace['profile_pic'];
         this.profileImage = `http://localhost:3000/uploads/${this.profileImage}`;
-        console.log('loadworkspace res: ', res);
+      //  console.log('loadworkspace res: ', res);
 
 
       }, (err) => {
 
         this.alert.class = 'alert alert-danger';
-        console.log('err: ', err);
+       // console.log('err: ', err);
 
         if (err.status === 401) {
           this.alert.message = err.error.message;
@@ -88,7 +88,7 @@ export class AdminMembersComponent implements OnInit {
 
 
   updateUserRole(role, user_id, first_name, last_name) {
-    console.log('Role: ', role, 'user_id', user_id);
+   // console.log('Role: ', role, 'user_id', user_id);
     const data = {
       user_id: user_id,
       role: role
@@ -106,7 +106,7 @@ export class AdminMembersComponent implements OnInit {
       if (willupdate) {
         this.adminService.updateUserRole(data)
         .subscribe((res) => {
-          console.log('update respose: ', res);
+        //  console.log('update respose: ', res);
   
           setTimeout(() => {
             this.modalReference.close();
@@ -116,7 +116,7 @@ export class AdminMembersComponent implements OnInit {
           this.loadWorkspace();
   
         }, (err) => {
-          console.log('update respose err: ', err);
+        //  console.log('update respose err: ', err);
           this.alert.class = 'danger';
   
           if (err.status) {
@@ -147,46 +147,7 @@ export class AdminMembersComponent implements OnInit {
       this.modalReference.close();
 
     }, 2000);
-
-  /*   console.log('Role: ', role, 'user_id', user_id);
-    const data = {
-      user_id: user_id,
-      role: role
-    };
-    this.adminService.updateUserRole(data)
-      .subscribe((res) => {
-        console.log('update respose: ', res);
-        this.alert.class = 'success';
-        this._message.next(res['message']);
-        this.openVerticallyCentered(this.content);
-
-        setTimeout(() => {
-          this.modalReference.close();
-        }, 3000);
-
-
-        this.loadWorkspace();
-
-      }, (err) => {
-        console.log('update respose err: ', err);
-        this.alert.class = 'danger';
-
-        if (err.status) {
-          this._message.next(err.error.message);
-          this.openVerticallyCentered(this.content);
-
-          setTimeout(() => {
-            this.modalReference.close();
-          }, 3000);
-        } else {
-          this._message.next('Error! either server is down or no internet connection');
-          this.openVerticallyCentered(this.content);
-          setTimeout(() => {
-            this.modalReference.close();
-          }, 3000);
-        }
-      });
- */  }
+}
 
   openVerticallyCentered(content) {
 

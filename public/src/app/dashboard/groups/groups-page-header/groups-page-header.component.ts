@@ -21,7 +21,7 @@ export class GroupsPageHeaderComponent implements OnInit {
   loadWorkspace() {
     this._workspaceService.getWorkspace(this.user_data.workspace)
       .subscribe((res) => {
-        if (res['workspace']['workspace_avatar'] == null) {
+        if (res['workspace']['workspace_avatar'] == '') {
           this.workspaceImageUrl = '/assets/images/organization.png';
         } else {
           this.workspaceImageUrl = environment.BASE_URL + `/uploads/${res['workspace']['workspace_avatar']}`;

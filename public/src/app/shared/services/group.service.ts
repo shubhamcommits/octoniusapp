@@ -41,7 +41,7 @@ export class GroupService {
   }
 
   searchGroupUsers(group_id, query) {
-    console.log('Inside searchGroupUsers');
+   // console.log('Inside searchGroupUsers');
 
     //  return this._http.get(this.BASE_API_URL + `/group/searchGroupUsers/${group_id}/${query}`);
     return this._http.get(`${this.BASE_API_URL}/group/searchGroupUsers/${group_id}/${query}`);
