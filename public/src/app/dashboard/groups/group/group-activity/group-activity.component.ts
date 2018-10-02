@@ -1103,6 +1103,7 @@
       };
       this.postService.complete(post)
       .subscribe((res) => {
+        this.playAudio();
         this.alert.class = 'success';
         this._message.next(res['message']);
     //    console.log('Post Marked as Completed');
@@ -1139,6 +1140,8 @@
       };
       this.postService.complete(post)
       .subscribe((res) => {
+
+        this.playAudio();
 
         this.alert.class = 'success';
         this._message.next(res['message']);
@@ -1234,6 +1237,7 @@
 
       if(like_length == 0){
         this.likepost(post);
+        this.playAudio();
         this.scrollToTop('#card-normal-post-'+index);
         this.scrollToTop('#card-event-post-'+index);
         this.scrollToTop('#card-task-post-'+index);
