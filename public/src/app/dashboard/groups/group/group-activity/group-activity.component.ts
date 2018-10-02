@@ -147,9 +147,9 @@
        // console.log('user', this.user_data);
 
         this.group = this.groupDataService.group;
-        this.socket.on('connect', () => {
+       // this.socket.on('connect', () => {
          // console.log(`Socket connected!`);
-        });
+       // });
 
 
     }
