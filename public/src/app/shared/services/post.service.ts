@@ -41,7 +41,7 @@ export class PostService {
 
     // console.log('post inside the delete service: ', post);
 
-    return this._http.put<any>(this.BASE_API_URL + `/posts/${postId}`,'');
+    return this._http.delete(this.BASE_API_URL + `/posts/${postId}`);
   }
   complete(post) {
     return this._http.post(this.BASE_API_URL + '/post/complete', post);
