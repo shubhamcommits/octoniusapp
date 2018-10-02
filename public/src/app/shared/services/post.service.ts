@@ -37,11 +37,11 @@ export class PostService {
   editPost(postId, post){
     return this._http.put<any>(this.BASE_API_URL + `/posts/${postId}`, post);
   }
-  deletePost(post) {
+  deletePost(postId) {
 
     // console.log('post inside the delete service: ', post);
 
-    return this._http.put<any>(this.BASE_API_URL + '/post', post);
+    return this._http.put<any>(this.BASE_API_URL + `/posts/${postId}`,'');
   }
   complete(post) {
     return this._http.post(this.BASE_API_URL + '/post/complete', post);

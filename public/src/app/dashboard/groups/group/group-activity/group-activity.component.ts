@@ -49,7 +49,7 @@
 
     members = [];
     files = [];
-    content_mentions = new Array();
+    content_mentions = [];
 
     public editor;
 
@@ -471,9 +471,16 @@
        //  console.log('Element',  el.getElementsByClassName( 'mention' ));
       for(var i = 0; i < el.getElementsByClassName( 'mention' ).length; i++)
       {
-        this.content_mentions.push(el.getElementsByClassName( 'mention' )[i]['dataset']['id'].toString());
+        this.content_mentions.push(el.getElementsByClassName( 'mention' )[i]['dataset']['id']);
+        
       }
-       // console.log('Content Mention', this.content_mentions); 
+
+      for (var i = 0; i < this.content_mentions.length; i++)
+      {
+        formData.append('_content_mentions', this.content_mentions[i]);
+      }
+      
+       console.log('Content Mention', post._content_mentions); 
       //  console.log('This post', postId);
       }
 
@@ -482,12 +489,13 @@
       formData.append('type', post.type);
       formData.append('_posted_by', post._posted_by);
       formData.append('_group', post._group);
-      formData.append('_content_mentions', post._content_mentions );
+      
 
       this.processing = true;
       this.disblePostForm();
       this.postService.addNewNormalPost(formData)
         .subscribe((res) => {
+          console.log('Post', res);
           this.processing = false;
           this.enablePostForm();
           this.postForm.reset();
@@ -773,7 +781,7 @@
         })
         .then(willDelete => {
         if (willDelete) {
-          this.postService.deletePost(post)
+          this.postService.deletePost(postId)
           .subscribe((res) => {
     
             this.alert.class = 'success';
