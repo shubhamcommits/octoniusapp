@@ -964,8 +964,23 @@
 
       const editor = document.getElementById('edit-content-'+index);
     const post = {
-      'content': document.getElementById(index).innerHTML
+      'content': document.getElementById(index).innerHTML,
+      '_content_mentions': this.content_mentions
     };
+    const scanned_content = post.content;
+    var el = document.createElement( 'html' );
+    el.innerHTML = scanned_content;
+
+    if(el.getElementsByClassName( 'mention' ).length > 0)
+    {
+     //  console.log('Element',  el.getElementsByClassName( 'mention' ));
+    for(var i = 0; i < el.getElementsByClassName( 'mention' ).length; i++)
+    {
+      this.content_mentions.push(el.getElementsByClassName( 'mention' )[i]['dataset']['id'].toString());
+    }
+  
+    }
+     // console.log('Content Mention', this.content_mentions); 
   //  console.log('post: ', post);
     this.postService.editPost(post_id, post)
     .subscribe((res) => {
