@@ -23,9 +23,9 @@ export class NavbarComponent implements OnInit {
     class: '',
     message: ''
   };
-  height = 10;
-  width = 10;
-  url='https://i.cloudup.com/Zqeq2GhGjt-3000x3000.jpeg'
+
+  notifications_data;
+
   Date = new Date;
 
   socket = io(environment.BASE_URL);
@@ -50,6 +50,7 @@ export class NavbarComponent implements OnInit {
         }
         this.socket.on('notificationsFeed', (user) => {
           console.log('Get Notifications socket on', user);
+          this.notifications_data = user;
         });
         this.socket.emit('getNotifications', this.user_data.user_id);
 
@@ -57,7 +58,7 @@ export class NavbarComponent implements OnInit {
 
   }
 
-  underline_navbar_overview(){
+  underline_navbar_overview(){  
     const x = document.getElementById("li_overview");
     const y = document.getElementById("li_group");
     const z = document.getElementById("li_admin");
