@@ -37,8 +37,8 @@ const getRead = async (userId) => {
       .limit(20)
       .sort('-created_date')
       .populate('_actor', 'first_name last_name profile_pic')
-      .populate('_owner', 'first_name last_name profile_pic');
-
+      .populate('_owner', 'first_name last_name profile_pic').lean();
+    
     return notifications;
 
   } catch (err) {
@@ -54,7 +54,7 @@ const getUnread = async (userId) => {
     })
       .sort('-created_date')
       .populate('_actor', 'first_name last_name profile_pic')
-      .populate('_owner', 'first_name last_name profile_pic');
+      .populate('_owner', 'first_name last_name profile_pic').lean();
 
     return notifications;
 
