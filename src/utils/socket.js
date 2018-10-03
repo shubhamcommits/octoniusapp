@@ -11,16 +11,24 @@ const init = (server) => {
    */
 
   io.on('connection', (socket) => {
-    // User notification center feed
+
+    // -| USER NOTIFICATION CENTER |-
+
     socket.on('getNotifications', async (userId) => {
-      const feed = {
-        unreadNotifications: await notifications.getUnread(userId),
-        readNotifications: await notifications.getRead(userId)
-      };
+      const feed = await generateFeed(userId);
 
       socket.emit('notificationsFeed', feed);
     });
 
+    socket.on('markRead', async (topListId) => {
+      await notifications.markRead(topListId);
+
+      const feed = await generateFeed(userId);
+
+      socket.emit('notificationsFeed', feed);
+    });
+
+    // -| GROUP ACTIVITY NOTIFICATIONS |-
 
     // Join user on specific group room
     socket.on('join', (room) => {
@@ -31,7 +39,7 @@ const init = (server) => {
       socket.join(roomName);
     });
 
-    // -| NEW POST ON GROUP |-
+    // Notify new posts on group
     socket.on('newPost', (data) => {
       // generate room name
       const roomName = `${data.workspace}_${data.group}`;
@@ -39,13 +47,25 @@ const init = (server) => {
       // broadcast new post to group
       socket.broadcast.to(roomName).emit('newPostOnGroup', data);
 
-      // Create Notification ??
+      // ?? Create Notification for each user ??
     });
 
     socket.on('disconnect', () => {
       // do nothing...
     });
   });
+};
+
+/* ===========
+ * - HELPERS -
+ * ===========
+ */
+
+const generateFeed = async (userId) => {
+  return {
+    unreadNotifications: await notifications.getUnread(userId),
+    readNotifications: await notifications.getRead(userId)
+  };
 };
 
 module.exports = { init };

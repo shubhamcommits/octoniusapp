@@ -63,15 +63,20 @@ const getUnread = async (userId) => {
   }
 };
 
-const markRead = async (notificationsIds) => {
+const markRead = async (topListId) => {
   try {
     const markRead = await Notification.updateMany({
-      _id: notificationsIds
+      $and: [
+        { read: false },
+        { _id: { $lte: topListId }}
+        ]
     }, {
       $set: {
         read: true
       }
     });
+
+    return true;
 
   } catch (err) {
     return err;
