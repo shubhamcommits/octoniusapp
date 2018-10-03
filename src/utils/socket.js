@@ -1,6 +1,7 @@
 const socketIO = require('socket.io');
 
 const notifications = require('../api/controllers/notifications.controller');
+const { Post } = require('../api/models');
 
 const init = (server) => {
   const io = socketIO(server);
@@ -15,20 +16,18 @@ const init = (server) => {
     // -| USER NOTIFICATION CENTER |-
 
     socket.on('getNotifications', async (userId) => {
-      const feed = await generateFeed(userId);
-
-      socket.emit('notificationsFeed', feed);
+      sendNotificationsFeed(socket, userId);
     });
 
-    socket.on('markRead', async (topListId) => {
+    socket.on('markRead', async (topListId, userId) => {
       await notifications.markRead(topListId);
 
-      const feed = await generateFeed(userId);
-
-      socket.emit('notificationsFeed', feed);
+      // !! HARD CODED FOR TESTING !!
+      const userIdd = '5b834ccc0664441f56a03a54';
+      sendNotificationsFeed(socket, userIdd);
     });
 
-    // -| GROUP ACTIVITY NOTIFICATIONS |-
+    // -| GROUP ACTIVITY ROOM |-
 
     // Join user on specific group room
     socket.on('join', (room) => {
@@ -39,15 +38,12 @@ const init = (server) => {
       socket.join(roomName);
     });
 
-    // Notify new posts on group
+    // -| POSTS NOTIFICATIONS |-
+
+    // Listen to new post creation
     socket.on('newPost', (data) => {
-      // generate room name
-      const roomName = `${data.workspace}_${data.group}`;
-
-      // broadcast new post to group
-      socket.broadcast.to(roomName).emit('newPostOnGroup', data);
-
-      // ?? Create Notification for each user ??
+      notifyRelatedUsers(socket, data);
+      notifyGroupPage(socket, data);
     });
 
     socket.on('disconnect', () => {
@@ -61,11 +57,38 @@ const init = (server) => {
  * ===========
  */
 
-const generateFeed = async (userId) => {
-  return {
+const sendNotificationsFeed = async (socket, userId) => {
+  const feed = {
     unreadNotifications: await notifications.getUnread(userId),
     readNotifications: await notifications.getRead(userId)
   };
+
+  socket.emit('notificationsFeed', feed);
+};
+
+const notifyGroupPage = (socket, data) => {
+  // generate room name
+  const roomName = `${data.workspace}_${data.group}`;
+
+  // broadcast new post to group activity page
+  socket.broadcast.to(roomName).emit('newPostOnGroup', data);
+};
+
+const notifyRelatedUsers = async (socket, data) => {
+  try {
+    const post = await Post.findById(data.postId).lean();
+
+    // If there's mentions on post content...
+    if (post._content_mentions.length !== 0) {
+      // ...emit notificationsFeed for every user mentioned
+      for (userId of post._content_mentions) {
+        sendNotificationsFeed(socket, userId);
+      };
+    }
+
+  } catch (err) {
+    return err
+  }
 };
 
 module.exports = { init };

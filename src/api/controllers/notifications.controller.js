@@ -16,14 +16,10 @@ const newPostMentions = async (post) => {
         message: 'mentioned you in a post.',
         type: 'mention'
       });
-      
-      // Somehow tell socket that there's a new notifiction
     });
 
-    //  !! TRIGGER NOTIFICATION TO USER'S CENTRAL NOTIFICATION !!
-
   } catch (err) {
-    return { err }
+    return err;
   }
 };
 
