@@ -6,6 +6,8 @@ import { User } from '../../../shared/models/user.model';
 import * as moment from 'moment';
 import * as io from 'socket.io-client';
 import { environment } from '../../../../environments/environment'
+import { BehaviorSubject } from 'rxjs';
+import { async } from '@angular/core/testing';
 
 @Component({
   selector: 'app-navbar',
@@ -15,7 +17,8 @@ import { environment } from '../../../../environments/environment'
 export class NavbarComponent implements OnInit {
   user: User;
   userProfileImage;
-  userId;
+  user_data;
+  isLoading$ = new BehaviorSubject(false);
   alert = {
     class: '',
     message: ''
@@ -32,21 +35,25 @@ export class NavbarComponent implements OnInit {
       this.socket.on('connect', () => {
          console.log(`Socket connected!`);
        });
+       
+       this.user_data = JSON.parse(localStorage.getItem('user'));
+      // console.log('Stuff', this.user_data);
  
      }
 
   ngOnInit() {
 
     console.log("%c   Octonius Inc \u00A9 " + this.Date.getFullYear() +". All Right Reserved!", "background-repeat: no-repeat; background-image: url('https://octhub.com/favicon.ico')");
-
     this.getUserProfile();
-    const user = {
-      'userId': this.userId 
-      }
-      this.socket.on('notificationsFeed', (user) => {
-        console.log('Get Notifications socket on', user);
-      });
-      this.socket.emit('getNotifications', this.userId);
+      const user = {
+        'userId': this.user_data.user_id 
+        }
+        this.socket.on('notificationsFeed', (user) => {
+          console.log('Get Notifications socket on', user);
+        });
+        this.socket.emit('getNotifications', this.user_data.user_id);
+
+  
 
   }
 
@@ -80,12 +87,14 @@ export class NavbarComponent implements OnInit {
   }
 
   getUserProfile() {
+    this.isLoading$.next(false);
     this._userService.getUser()
       .subscribe((res) => {
         this.user = res.user;
         this.userProfileImage = res.user['profile_pic'];
-        this.userId = res.user['_id'];
+      //  console.log(this.user._id);
         this.userProfileImage = `/uploads/${this.userProfileImage}`;
+        this.isLoading$.next(true);
       }, (err) => {
         this.alert.class = 'alert alert-danger';
         if (err.status === 401) {
