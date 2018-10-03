@@ -23,8 +23,7 @@ const init = (server) => {
       await notifications.markRead(topListId);
 
       // !! HARD CODED FOR TESTING !!
-      const userIdd = '5b834ccc0664441f56a03a54';
-      sendNotificationsFeed(socket, userIdd);
+      sendNotificationsFeed(socket, userId);
     });
 
     // -| GROUP ACTIVITY ROOM |-
