@@ -495,7 +495,7 @@
       this.disblePostForm();
       this.postService.addNewNormalPost(formData)
         .subscribe((res) => {
-          console.log('Post', res);
+         // console.log('Post', res);
           this.processing = false;
           this.enablePostForm();
           this.postForm.reset();
@@ -510,7 +510,7 @@
         // it should get automatically, something like group: this.group_name
         group: this.group_name,
         userId: this.user_data.user_id,
-
+        postId: res['post']._id,
         groupId: this.groupDataService.group._id // Pass group id here!!!
       };
       //  console.log(data);
