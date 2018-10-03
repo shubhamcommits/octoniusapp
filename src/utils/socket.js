@@ -12,10 +12,10 @@ const init = (server) => {
 
   io.on('connection', (socket) => {
     // User notification center feed
-    socket.on('getNotifications', (userId) => {
+    socket.on('getNotifications', async (userId) => {
       const feed = {
-        unreadNotifications: notifications.getUnread(userId),
-        readNotifications: notifications.getRead(userId)
+        unreadNotifications: await notifications.getUnread(userId),
+        readNotifications: await notifications.getRead(userId)
       };
 
       socket.emit('notificationsFeed', feed);
