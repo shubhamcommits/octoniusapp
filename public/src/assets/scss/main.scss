@@ -339,6 +339,11 @@ h4{
 .ql-container {
   min-height: 100px !important;
 }
+.ql-video{
+  width: 100% !important;
+  height: 360px !important;
+}
+
 .editor{
   border: 1px solid $brand-primary;
   border-radius: $card-radius;
