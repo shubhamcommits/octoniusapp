@@ -340,8 +340,18 @@ h4{
   min-height: 100px !important;
 }
 .ql-video{
-  width: 100% !important;
-  height: 360px !important;
+  width: 100% ;
+  height: 360px;
+}
+.ql-video button{
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+  float: left;
+  height: 24px;
+  padding: 3px 5px;
+  width: 28px;
 }
 
 .editor{
