@@ -265,7 +265,7 @@
 				}
 
 				// join room to get notifications for this group
-				this.socket.emit('join', room, (err) => {
+				this.socket.emit('joinGroup', room, (err) => {
        //   console.log(`Socket Joined`);
 
 				});
