@@ -15,6 +15,13 @@ const init = (server) => {
 
     // -| USER NOTIFICATION CENTER |-
 
+    // Join user on private user room
+    socket.on('joinUser', (userId) => {
+
+      // join room
+      socket.join(userId);
+    });
+
     socket.on('getNotifications', async (userId) => {
       sendNotificationsFeed(socket, userId);
     });
@@ -22,14 +29,13 @@ const init = (server) => {
     socket.on('markRead', async (topListId, userId) => {
       await notifications.markRead(topListId);
 
-      // !! HARD CODED FOR TESTING !!
       sendNotificationsFeed(socket, userId);
     });
 
     // -| GROUP ACTIVITY ROOM |-
 
     // Join user on specific group room
-    socket.on('join', (room) => {
+    socket.on('joinGroup', (room) => {
       // generate room name
       const roomName = `${room.workspace}_${room.group}`;
 
@@ -41,7 +47,7 @@ const init = (server) => {
 
     // Listen to new post creation
     socket.on('newPost', (data) => {
-      notifyRelatedUsers(socket, data);
+      notifyRelatedUsers(io, socket, data);
       notifyGroupPage(socket, data);
     });
 
@@ -56,11 +62,15 @@ const init = (server) => {
  * ===========
  */
 
-const sendNotificationsFeed = async (socket, userId) => {
-  const feed = {
+const generateFeed = async (userId) => {
+  return {
     unreadNotifications: await notifications.getUnread(userId),
     readNotifications: await notifications.getRead(userId)
   };
+};
+
+const sendNotificationsFeed = async (socket, userId) => {
+  const feed = await generateFeed(userId);
 
   socket.emit('notificationsFeed', feed);
 };
@@ -73,7 +83,7 @@ const notifyGroupPage = (socket, data) => {
   socket.broadcast.to(roomName).emit('newPostOnGroup', data);
 };
 
-const notifyRelatedUsers = async (socket, data) => {
+const notifyRelatedUsers = async (io, socket, data) => {
   try {
     const post = await Post.findById(data.postId).lean();
 
@@ -81,7 +91,9 @@ const notifyRelatedUsers = async (socket, data) => {
     if (post._content_mentions.length !== 0) {
       // ...emit notificationsFeed for every user mentioned
       for (userId of post._content_mentions) {
-        sendNotificationsFeed(socket, userId);
+        const feed = await generateFeed(userId);
+
+        io.sockets.in(userId).emit('notificationsFeed', feed);
       };
     }
 
