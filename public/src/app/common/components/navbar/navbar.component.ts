@@ -32,11 +32,15 @@ export class NavbarComponent implements OnInit {
 
   constructor(private _auth: AuthService, private _userService: UserService, private _router: Router,
     private router: Router) {
+      
+      this.user_data = JSON.parse(localStorage.getItem('user'));
+
       this.socket.on('connect', () => {
          console.log(`Socket connected!`);
+         this.socket.emit('joinUser', this.user_data.user_id);
        });
        
-       this.user_data = JSON.parse(localStorage.getItem('user'));
+      
       // console.log('Stuff', this.user_data);
  
      }
