@@ -46,7 +46,7 @@
             <div class="dropdown-menu dropdown-menu-right pull-right"  ngbDropdownMenu aria-labelledby="notificationDrop">
                 <div class="triangle"></div>
                 <div *ngIf="this.notifications_data?.unreadNotifications.length == 0">
-                    <button class="dropdown-item">Nothing new as of now.</button>
+                    <button class="dropdown-item">There is nothing new.</button>
                 </div>
                 <div *ngIf="this.notifications_data?.unreadNotifications.length != 0">
                     <button class="dropdown-item" *ngFor="let notifications of notifications_data?.unreadNotifications"> 

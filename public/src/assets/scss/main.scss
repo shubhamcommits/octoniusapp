@@ -328,6 +328,7 @@ h4{
  color:#fff !important;
  margin-right: 15px;
  padding: 5px;
+ width: 45px;
   &:hover {
     text-decoration: none;
     background: #ffffff;
@@ -359,10 +360,9 @@ h4{
   border-radius: $card-radius; 
 }
 .notif-bullet{
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
   background: red;
   border-radius: 50%;
   float: right;
-  margin-left: -14px;
 }
