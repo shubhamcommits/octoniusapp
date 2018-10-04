@@ -39,6 +39,7 @@
   <div class="btn-group nav-item" placement="bottom-left"  ngbDropdown  #notificationDrop="ngbDropdown" (openChange)="toggled($event)">
     <a class="notifications btn dropdown-toggle-split" ngbDropdownToggle>             
       <div class="notif-bullet" *ngIf="this.notifications_data?.unreadNotifications.length > 0"></div>
+      <div class="notif-bullet notif-bullet-transparent" *ngIf="this.notifications_data?.unreadNotifications.length == 0"></div>
       <i class="material-icons">notifications</i> 
     </a> 
            <!-- <button class="btn btn-primary dropdown-toggle-split btn-sm" ngbDropdownToggle>Manage user </button>-->
