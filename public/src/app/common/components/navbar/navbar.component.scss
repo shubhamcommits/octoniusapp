@@ -52,6 +52,16 @@ a:active{
 	border-right: 8px solid transparent;
 	border-bottom: 8px solid white;
 	top: -8px;
-	left: 5%;
+	left: 10%;
 	margin-left: -8px;
+}
+
+.notification-back {
+  background: #005fd5;
+  color: inherit;
+}
+
+a.notifications.btn.dropdown-toggle-split.dropdown-toggle::after
+{
+  color: transparent;
 }
