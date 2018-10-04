@@ -327,7 +327,7 @@ h4{
 .notifications{
  color:#fff !important;
  margin-right: 15px;
- padding: 0 5px;
+ padding: 5px;
   &:hover {
     text-decoration: none;
     background: #ffffff;
@@ -356,5 +356,12 @@ h4{
 
 .editor{
   border: 1px solid $brand-primary;
-  border-radius: $card-radius;
+  border-radius: $card-radius; 
+}
+.notif-bullet{
+  width: 12px;
+  height: 12px;
+  background: red;
+  border-radius: 50%;
+  float: right;
 }

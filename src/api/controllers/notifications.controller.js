@@ -6,20 +6,20 @@ const { sendErr } = require('../../utils');
  *	===============================
  */
 
-const add = async (type, ownerId, actorId, postId) => {
-  try { 
-    const notification = await Notification.create({
-      _actor: actorId,
-      _owner: ownerId,
-      _origin_post: postId,
-      message: generateNotificationMsg(type),
-      type: type
+const newPostMentions = async (post) => {
+  try {
+    await post._content_mentions.forEach( async (user) => {
+      const notification = await Notification.create({
+        _actor: post._posted_by,
+        _owner: user,
+        _origin_post: post._id,
+        message: 'mentioned you in a post.',
+        type: 'mention'
+      });
     });
 
-    //  !! TRIGGER NOTIFICATION TO USER'S CENTRAL NOTIFICATION !!
-
-      } catch (err) {
-    return { err }
+  } catch (err) {
+    return err;
   }
 };
 
@@ -29,16 +29,16 @@ const getRead = async (userId) => {
     const notifications = await Notification.find({
       _owner: userId,
       read: true
-      })
+    })
       .limit(20)
       .sort('-created_date')
       .populate('_actor', 'first_name last_name profile_pic')
-      .populate('_owner', 'first_name last_name profile_pic');
-
-    return { notifications };
+      .populate('_owner', 'first_name last_name profile_pic').lean();
+    
+    return notifications;
 
   } catch (err) {
-    return { err };
+    return err;
   }
 };
 
@@ -47,43 +47,35 @@ const getUnread = async (userId) => {
     const notifications = await Notification.find({
       _owner: userId,
       read: false
-      })
+    })
       .sort('-created_date')
       .populate('_actor', 'first_name last_name profile_pic')
-      .populate('_owner', 'first_name last_name profile_pic');
+      .populate('_owner', 'first_name last_name profile_pic').lean();
 
-    return { notifications };
+    return notifications;
 
   } catch (err) {
-    return { err };
+    return err;
   }
 };
 
-const markRead = async (notificationsIds) => {
+const markRead = async (topListId) => {
   try {
     const markRead = await Notification.updateMany({
-			_id: notificationsIds
-		}, {
-			$set: {
-				read: true
-			}
-		});
+      $and: [
+        { read: false },
+        { _id: { $lte: topListId }}
+        ]
+    }, {
+      $set: {
+        read: true
+      }
+    });
+
+    return true;
 
   } catch (err) {
-    return { err };
-  }
-};
-
-/*	=============
- *	-- HELPERS --
- *	=============
- */
-
-const generateNotificationMsg = (type, post) => {
-  if (type === 'assignment') {
-    return `created a new ${post.type} assigned to you.`; 
-  } else if (type === 'mention') {
-    return `has mentioned you on a post.`; 
+    return err;
   }
 };
 
@@ -93,7 +85,7 @@ const generateNotificationMsg = (type, post) => {
  */
 
 module.exports = {
-  add,
+  newPostMentions,
   getRead,
   getUnread,
   markRead

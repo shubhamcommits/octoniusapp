@@ -6,6 +6,8 @@ import { User } from '../../../shared/models/user.model';
 import * as moment from 'moment';
 import * as io from 'socket.io-client';
 import { environment } from '../../../../environments/environment'
+import { BehaviorSubject } from 'rxjs';
+import { async } from '@angular/core/testing';
 
 @Component({
   selector: 'app-navbar',
@@ -15,13 +17,15 @@ import { environment } from '../../../../environments/environment'
 export class NavbarComponent implements OnInit {
   user: User;
   userProfileImage;
+  user_data;
+  isLoading$ = new BehaviorSubject(false);
   alert = {
     class: '',
     message: ''
   };
-  height = 10;
-  width = 10;
-  url='https://i.cloudup.com/Zqeq2GhGjt-3000x3000.jpeg'
+
+  notifications_data;
+
   Date = new Date;
 
   socket = io(environment.BASE_URL);
@@ -31,16 +35,44 @@ export class NavbarComponent implements OnInit {
       this.socket.on('connect', () => {
          console.log(`Socket connected!`);
        });
+       
+       this.user_data = JSON.parse(localStorage.getItem('user'));
+      // console.log('Stuff', this.user_data);
+ 
      }
 
   ngOnInit() {
 
     console.log("%c   Octonius Inc \u00A9 " + this.Date.getFullYear() +". All Right Reserved!", "background-repeat: no-repeat; background-image: url('https://octhub.com/favicon.ico')");
-
     this.getUserProfile();
+      const user = {
+        'userId': this.user_data.user_id 
+        }
+        this.socket.on('notificationsFeed', (user) => {
+          console.log('Get Notifications socket on', user);
+          this.notifications_data = user;
+        });
+        this.socket.emit('getNotifications', this.user_data.user_id);
+
+  
+
   }
 
-  underline_navbar_overview(){
+  toggled(event) {
+    if (event) {
+       // console.log('is open');
+    } else {
+     // console.log('is closed');
+      if(this.notifications_data['unreadNotifications'].length > 0){
+
+        this.socket.emit('markRead', this.notifications_data['unreadNotifications'][0]._id , this.user_data.user_id);
+
+      }
+      
+    }
+  }
+
+  underline_navbar_overview(){  
     const x = document.getElementById("li_overview");
     const y = document.getElementById("li_group");
     const z = document.getElementById("li_admin");
@@ -70,11 +102,14 @@ export class NavbarComponent implements OnInit {
   }
 
   getUserProfile() {
+    this.isLoading$.next(false);
     this._userService.getUser()
       .subscribe((res) => {
         this.user = res.user;
         this.userProfileImage = res.user['profile_pic'];
+      //  console.log(this.user._id);
         this.userProfileImage = `/uploads/${this.userProfileImage}`;
+        this.isLoading$.next(true);
       }, (err) => {
         this.alert.class = 'alert alert-danger';
         if (err.status === 401) {
