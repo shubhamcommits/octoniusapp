@@ -272,8 +272,12 @@
 
 			// Alert on screen when newPost is created
 		this.socket.on('newPostOnGroup', (data) => {
-      this.show_new_posts_badge=1;
-      this.playAudio();
+      if(this.groupDataService.group._id == data.groupId)
+      {
+        this.show_new_posts_badge=1;
+        this.playAudio();  
+      }
+      
      // alert(data);
      // console.log('value', this.show_new_posts_badge);
     	});
