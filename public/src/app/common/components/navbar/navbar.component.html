@@ -45,18 +45,36 @@
        
             <div class="dropdown-menu dropdown-menu-right pull-right"  ngbDropdownMenu aria-labelledby="notificationDrop">
                 <div class="triangle"></div>
-                <div *ngIf="this.notifications_data?.unreadNotifications.length == 0">
-                    <button class="dropdown-item">Nothing new as of now.</button>
-                </div>
+                <button class="dropdown-item" style="pointer-events: none;"><b>Unseen Notifications</b></button>
+                <div class="dropdown-divider"></div>
                 <div *ngIf="this.notifications_data?.unreadNotifications.length != 0">
-                    <button class="dropdown-item" *ngFor="let notifications of notifications_data?.unreadNotifications"> 
-                        <img src="/uploads/{{notifications._actor.profile_pic}}" onerror="this.src='/assets/images/user.png'" alt="" class="topnav-avatar" routerLink="/dashboard/profile/profile" style="margin-right:15px">
-                      {{notifications._actor.first_name}} {{notifications.message}}
-                      </button>
+                <button class="dropdown-item" *ngFor="let notifications of notifications_data?.unreadNotifications"> 
+                  <img src="/uploads/{{notifications._actor.profile_pic}}" onerror="this.src='/assets/images/user.png'" alt="" class="topnav-avatar" routerLink="/dashboard/profile/profile" style="margin-right:15px">
+                {{notifications._actor.first_name}} {{notifications.message}}
+                </button>
+                </div>
+                <div *ngIf="this.notifications_data?.unreadNotifications.length == 0">
+                  <button class="dropdown-item">Nothing new as of now.</button>
+                </div>
+                <div class="dropdown-divider"></div>
+                <button class="dropdown-item" style="pointer-events: none;"><b>Seen Notifications</b></button>
+                <div class="dropdown-divider"></div>
+                <div *ngIf="this.notifications_data?.readNotifications.length != 0">
+                  <button class="dropdown-item" *ngFor="let notifications of notifications_data?.readNotifications"> 
+                    <img src="/uploads/{{notifications._actor.profile_pic}}" onerror="this.src='/assets/images/user.png'" alt="" class="topnav-avatar" routerLink="/dashboard/profile/profile" style="margin-right:15px">
+                  {{notifications._actor.first_name}} {{notifications.message}}
+                  </button>
+                  </div>
+                  <div *ngIf="this.notifications_data?.readNotifications.length == 0">
+                    <button class="dropdown-item">Nothing new as of now.</button>
+                  </div>
+                <!---->
+                <!---->
+
         
                       <div class="dropdown-divider"></div>
                       <button class="dropdown-item">View all notifications</button>
-                    </div>
+                    <!--</div>-->
                 </div>
 
 
