@@ -58,6 +58,20 @@ export class NavbarComponent implements OnInit {
 
   }
 
+  toggled(event) {
+    if (event) {
+       // console.log('is open');
+    } else {
+     // console.log('is closed');
+      if(this.notifications_data['unreadNotifications'].length > 0){
+
+        this.socket.emit('markRead', this.notifications_data['unreadNotifications'][0]._id , this.user_data.user_id);
+
+      }
+      
+    }
+  }
+
   underline_navbar_overview(){  
     const x = document.getElementById("li_overview");
     const y = document.getElementById("li_group");
