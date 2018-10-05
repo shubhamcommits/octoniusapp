@@ -1,18 +1,37 @@
-const { Post } = require('../../api/models');
+const { Post, Group } = require('../../api/models');
 const { sendErr } = require('../');
-
-// REFACTOR !!!!!!!
-// - Improve function code pattern
-// - Create methods do check authorization & permissions
-//  -- postOwner
-//  -- taskAssignee
-//  -- eventAssignee
-//  (group and workspace authorizations, etc...)
 
 /*	=========================
  *	-- POST AUTHORIZATIONS --
  *	=========================
  */
+
+// -| Group Authorizations |-
+
+const groupAcess = async (req, res, next) => {
+  try {
+    const group = await Group.find({
+      $and: [
+        { _id: req.params.groupId},
+        { $or: [
+          { _members: req.userId},
+          { _admins: req.userId}
+        ]}
+      ]});
+
+    if (!group) {
+      return sendErr(res, err,
+        'User not allowed to access content from this group!', 403);
+    }
+
+    next ();
+
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+// -| Post Authorizations |-
 
 const toCompletePost = async (req, res, next) => {
   try {
@@ -42,6 +61,8 @@ const toCompletePost = async (req, res, next) => {
 };
 
 module.exports = {
+  // Group authorizations
+  groupAccess,
   // Post authorizations
   toCompletePost
 };

@@ -5,7 +5,11 @@ const {
   postsController // ! TO BE REMOVED
 } = require('../controllers');
 
-const { auth, authorization, postFileHandler } = require('../../utils');
+const {
+  auth,
+  authorization,
+  postFileHandler
+} = require('../../utils');
 
 const router = express.Router();
 
@@ -19,7 +23,7 @@ router.use(auth.isLoggedIn);
 // -| Post Routes |-
 
 // GET api/posts/:postId - get one post
-router.get('/:postId', postFileHandler, posts.get);
+router.get('/:postId', posts.get);
 
 // POST api/posts/ - add new post
 router.post('/', postFileHandler, posts.add);

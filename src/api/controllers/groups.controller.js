@@ -8,31 +8,11 @@ const { sendErr, sendMail } = require('../../utils');
 
 // -| Group files controllers |-
 
-const downloadFile = async (req, res, next) => {
-  try {
-    const { fileName, groupId } = req.params;
+const downloadFile = (req, res, next) => {
+    const { fileName } = req.params;
     const filepath = `${process.env.FILE_UPLOAD_FOLDER}/${fileName}`;
 
-    // Check if user belongs to this group, prevent hardcoded requests 
-    const group = await Group.find({
-      $and: [
-        // Find normal posts that has comments
-        { _id: groupId},
-        { $or: [
-          { _members: req.userId},
-          { _admins: req.userId}
-        ]}
-      ]});
-
-    if (!group) {
-      return sendErr(res, err, 'User not allowed to access this file!', 403);
-    }
-
-    return res.sendFile(filepath);
-
-  } catch (err) {
-    return sendErr(res, err);
-  }
+    res.sendFile(filepath);
 };
 
 const getFiles = async (req, res, next) => {
@@ -66,13 +46,12 @@ const getFiles = async (req, res, next) => {
 
 const getNextPosts = async (req, res, next) => {
   try {
-    const groupId = req.params.group_id;
-    const lastPostId = req.params.last_post_id;
+    const { groupId, postId }  = req.params;
 
     const posts = await Post.find({
       $and: [
         { _group: groupId },
-        { _id: { $lt: lastPostId }}
+        { _id: { $lt: postId }}
       ]
     })
       .sort('-_id')
@@ -100,10 +79,8 @@ const getNextPosts = async (req, res, next) => {
 
 const getPosts = async (req, res, next) => {
   try {
-    const groupId = req.params.group_id;
-
     const posts = await Post.find({
-      _group: groupId
+      _group: req.params.groupId
     })
       .sort('-_id')
       .limit(10)
