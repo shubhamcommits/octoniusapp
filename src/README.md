@@ -35,6 +35,8 @@
 
 '
 
+#### 4.x. GET `api/posts/:postId` get post
+
 #### 4.1. POST `api/posts` add new post
 
 #### 4.2. PUT `api/posts/:postId` edit/update post

@@ -18,14 +18,17 @@ router.use(auth.isLoggedIn);
 
 // -| Post Routes |-
 
+// GET api/posts/:postId - get one post
+router.get('/:postId', postFileHandler, posts.get);
+
 // POST api/posts/ - add new post
-router.post('/', postFileHandler, posts.add); // To do
+router.post('/', postFileHandler, posts.add);
 
 // PUT api/posts/:postId - edit post
-router.put('/:postId', posts.edit); // To do
+router.put('/:postId', posts.edit);
 
 // DELETE api/posts/:postId - delete post
-router.delete('/:postId', posts.remove); // To do
+router.delete('/:postId', posts.remove);
 
 // POST api/posts/:postId/comment - add new comment on post
 // router.post('/:postId/comment', posts.addComment); // To do

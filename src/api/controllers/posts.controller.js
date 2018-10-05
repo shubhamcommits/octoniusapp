@@ -29,9 +29,11 @@ const add = async (req, res, next) => {
     // Send Email notification after post creation
     switch(post.type) {
       case 'task':
-        sendMail.taskAssigned(post);
+        await notifications.newTaskAssignment(post); 
+        await sendMail.taskAssigned(post);
       case 'event':
-        sendMail.eventAssigned(post);
+        await notifications.newEventAssignments(post); 
+        await sendMail.eventAssigned(post);
     };
 
     return res.status(200).json({
@@ -65,6 +67,40 @@ const edit = async (req, res, next) => {
     return res.status(200).json({
       message: 'Post updated!',
       post,
+    });
+
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+const get = async (req, res, next) => {
+  try {
+    const { userId, params: { postId } } = req;
+
+    // Get post data
+    const post = await Post.findOne({
+      _id: postId,
+    }).lean();
+
+    // Get group data
+    const group = await Group.findOne({
+      _id: post._group,
+    }).lean();
+
+    if (
+      // If user is not one of group's admins... and...
+      !group._admins.includes(String(userId)) &&
+      // ...user is not one of group's members
+      !group._members.includes(String(userId)) &&
+    ) {
+      // Deny access!
+      return sendErr(res, err, 'User not allowed to see this post!', 403);
+    }
+
+    return res.status(200).json({
+      message: 'Post found!',
+      post
     });
 
   } catch (err) {
@@ -116,5 +152,6 @@ const remove = async (req, res, next) => {
 module.exports = {
   add,
   edit,
+  get,
   remove
 };
