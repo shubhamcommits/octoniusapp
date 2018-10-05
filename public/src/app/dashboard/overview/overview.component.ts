@@ -7,6 +7,8 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { PostService } from '../../shared/services/post.service';
 import { GroupsService } from '../../shared/services/groups.service';
 import { BehaviorSubject } from 'rxjs';
+import * as io from 'socket.io-client';
+import { environment } from '../../../environments/environment'
 
 @Component({
   selector: 'app-overview',
@@ -27,6 +29,10 @@ export class OverviewComponent implements OnInit {
 
   today = new Date();
 
+  socket = io(environment.BASE_URL);
+
+  notifications_data;
+
   isLoading$ = new BehaviorSubject(false);
 
   group = {
@@ -34,7 +40,12 @@ export class OverviewComponent implements OnInit {
   };
 
   constructor(private _userService: UserService, private _authService: AuthService, private _router: Router,  private ngxService: NgxUiLoaderService,
-  private _postservice: PostService, private _groupservice: GroupsService) { }
+  private _postservice: PostService, private _groupservice: GroupsService) { 
+
+    this.user_data = JSON.parse(localStorage.getItem('user'));
+
+
+  }
 
   ngOnInit() {
     this.ngxService.start(); // start foreground loading with 'default' id
@@ -43,8 +54,19 @@ export class OverviewComponent implements OnInit {
     setTimeout(() => {
       this.ngxService.stop(); // stop foreground loading with 'default' id
     }, 500);
-    this.user_data = JSON.parse(localStorage.getItem('user'));
+    
     this.getRecentPosts();
+    const user = {
+      'userId': this.user_data.user_id 
+      }
+      this.socket.on('notificationsFeed', (user) => {
+        console.log('Get Notifications socket on', user);
+        this.notifications_data = user;
+      });
+      this.socket.emit('getNotifications', this.user_data.user_id);
+
+  
+    
 
   }
 
