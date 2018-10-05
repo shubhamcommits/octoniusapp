@@ -32,4 +32,10 @@ router.get('/:groupId/files', groups.getFiles);
 // GET api/groups/:groupId/files/:fileName/download - download file from group
 router.get('/:groupId/files/:fileName/download', groups.downloadFile);
 
+// GET api/groups/:groupId/posts - get ten most recent group posts
+router.get('/:groupId/posts', groups.getPosts);
+
+// GET api/groups/:groupId/nextPosts/:postId - get next ten most recent posts (after :postId)
+router.get('/:groupId/nextPosts/:postId', groups.getNextPosts);
+
 module.exports = router;

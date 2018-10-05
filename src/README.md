@@ -29,6 +29,10 @@
 
 #### 3.x. GET `api/groups/:groupId/files/:fileName/download` download file from group
 
+#### 3.x. GET `api/groups/:groupId/posts` get ten most recent group posts
+
+#### 3.x. GET `api/groups/:groupId/nextPosts/:postId` get next ten most recent posts (after `:postId`)
+
 '
 
 ## | 4. `api/posts` routes

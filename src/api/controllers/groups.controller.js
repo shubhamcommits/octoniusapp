@@ -6,7 +6,7 @@ const { sendErr, sendMail } = require('../../utils');
  *	=======================
  */ 
 
-  // -| Group files controllers |-
+// -| Group files controllers |-
 
 const downloadFile = async (req, res, next) => {
   try {
@@ -62,6 +62,72 @@ const getFiles = async (req, res, next) => {
   }
 };
 
+// -| Group posts controllers |-
+
+const getNextPosts = async (req, res, next) => {
+  try {
+    const groupId = req.params.group_id;
+    const lastPostId = req.params.last_post_id;
+
+    const posts = await Post.find({
+      $and: [
+        { _group: groupId },
+        { _id: { $lt: lastPostId }}
+      ]
+    })
+      .sort('-_id')
+      .limit(10)
+      .populate('_posted_by', 'first_name last_name profile_pic')
+      .populate('comments._commented_by', 'first_name last_name profile_pic')
+      .populate('task._assigned_to', 'first_name last_name')
+      .populate('event._assigned_to', 'first_name last_name')
+      .populate('_liked_by', '_id first_name last_name').lean();
+
+    const postsUpdate = await posts.map((post) => {
+      post.liked_by = post._liked_by.map(user => user._id);
+      return post;
+    });
+
+    return res.status(200).json({
+      message: `The next ${posts.length} most recent posts!`,
+      posts: postsUpdate
+    });
+
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+const getPosts = async (req, res, next) => {
+  try {
+    const groupId = req.params.group_id;
+
+    const posts = await Post.find({
+      _group: groupId
+    })
+      .sort('-_id')
+      .limit(10)
+      .populate('_posted_by', 'first_name last_name profile_pic')
+      .populate('comments._commented_by', 'first_name last_name profile_pic')
+      .populate('task._assigned_to', 'first_name last_name')
+      .populate('event._assigned_to', 'first_name last_name')
+      .populate('_liked_by', '_id first_name last_name').lean();
+
+    const postsUpdate = await posts.map((post) => {
+      post.liked_by = post._liked_by.map(user => user._id);
+      return post;
+    });
+
+    return res.status(200).json({
+      message: `The ${posts.length} most recent posts!`,
+      posts: postsUpdate
+    });
+
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
 /*	=============
  *	-- EXPORTS --
  *	=============
@@ -70,5 +136,8 @@ const getFiles = async (req, res, next) => {
 module.exports = {
   // Group files controllers
   downloadFile,
-  getFiles
+  getFiles,
+  // Group posts controllers
+  getNextPosts,
+  getPosts
 };
