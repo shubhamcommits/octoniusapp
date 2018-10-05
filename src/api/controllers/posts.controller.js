@@ -92,7 +92,7 @@ const get = async (req, res, next) => {
       // If user is not one of group's admins... and...
       !group._admins.includes(String(userId)) &&
       // ...user is not one of group's members
-      !group._members.includes(String(userId)) &&
+      !group._members.includes(String(userId))
     ) {
       // Deny access!
       return sendErr(res, err, 'User not allowed to see this post!', 403);
