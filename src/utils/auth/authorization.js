@@ -8,7 +8,7 @@ const { sendErr } = require('../');
 
 // -| Group Authorizations |-
 
-const groupAcess = async (req, res, next) => {
+const groupAccess = async (req, res, next) => {
   try {
     const group = await Group.find({
       $and: [
