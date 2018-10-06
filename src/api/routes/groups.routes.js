@@ -33,25 +33,25 @@ router.post('/removeUser', groupsController.removeUserFromGroup); // ! TO BE REM
 // GET api/groups/:groupId/files
 // - get user's files that belongs to this group
 router.get('/:groupId/files',
-  authorization.groupAcess,
+  authorization.groupAccess,
   groups.getFiles);
 
 // GET api/groups/:groupId/files/:fileName/download
 // - download file from group
 router.get('/:groupId/files/:fileName/download',
-  authorization.groupAcess,
+  authorization.groupAccess,
   groups.downloadFile);
 
 // GET api/groups/:groupId/posts
 // - get ten most recent group posts
 router.get('/:groupId/posts',
-  authorization.groupAcess,
+  authorization.groupAccess,
   groups.getPosts);
 
 // GET api/groups/:groupId/nextPosts/:postId
 // - get next ten most recent posts (after :postId)
 router.get('/:groupId/nextPosts/:postId',
-  authorization.groupAcess,
+  authorization.groupAccess,
   groups.getNextPosts);
 
 module.exports = router;
