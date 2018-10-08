@@ -10,9 +10,19 @@ const { sendErr } = require('../');
 
 const groupAccess = async (req, res, next) => {
   try {
+    let groupId;
+
+    if (!!req.params.postId) {
+      const post = Post.findById(req.params.postId);
+
+      groupId = post._group;
+    } else {
+      groupId = req.params.groupId;
+    }
+
     const group = await Group.find({
       $and: [
-        { _id: req.params.groupId},
+        { _id: groupId},
         { $or: [
           { _members: req.userId},
           { _admins: req.userId}
