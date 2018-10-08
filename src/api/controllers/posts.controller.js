@@ -101,7 +101,7 @@ const remove = async (req, res, next) => {
     const post = await Post.findOne({
       _id: postId,
     })
-      .populate('comments._commented_by', 'first_name last_name profile_pic')
+      .populate('_posted_by', 'first_name last_name profile_pic')
       .lean();
 
     // Get group data
