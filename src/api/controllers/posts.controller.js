@@ -81,7 +81,9 @@ const get = async (req, res, next) => {
     // Get post data
     const post = await Post.findOne({
       _id: postId,
-    }).lean();
+    })
+      .populate('_posted_by', 'first_name last_name profile_pic')
+      .lean();
 
     return res.status(200).json({
       message: 'Post found!',
@@ -100,9 +102,7 @@ const remove = async (req, res, next) => {
     // Get post data
     const post = await Post.findOne({
       _id: postId,
-    })
-      .populate('_posted_by', 'first_name last_name profile_pic')
-      .lean();
+    }).lean();
 
     // Get group data
     const group = await Group.findOne({
