@@ -83,21 +83,6 @@ const get = async (req, res, next) => {
       _id: postId,
     }).lean();
 
-    // Get group data
-    const group = await Group.findOne({
-      _id: post._group,
-    }).lean();
-
-    if (
-      // If user is not one of group's admins... and...
-      !group._admins.includes(String(userId)) &&
-      // ...user is not one of group's members
-      !group._members.includes(String(userId))
-    ) {
-      // Deny access!
-      return sendErr(res, err, 'User not allowed to see this post!', 403);
-    }
-
     return res.status(200).json({
       message: 'Post found!',
       post

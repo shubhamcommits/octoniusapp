@@ -23,7 +23,7 @@ router.use(auth.isLoggedIn);
 // -| Post Routes |-
 
 // GET api/posts/:postId - get one post
-router.get('/:postId', posts.get);
+router.get('/:postId', authorization.groupAccess, posts.get);
 
 // POST api/posts/ - add new post
 router.post('/', postFileHandler, posts.add);
