@@ -57,7 +57,6 @@ const newTaskAssignment = async (post) => {
 
 const getRead = async (userId) => {
   try {
-    // Find all posts that has files and belongs to this group
     const notifications = await Notification.find({
       _owner: userId,
       read: true
