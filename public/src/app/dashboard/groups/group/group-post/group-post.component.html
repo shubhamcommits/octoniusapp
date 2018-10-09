@@ -48,7 +48,7 @@
                 </span>
 
                 <span>
-                    <button class="btn btn-link">
+                    <button class="btn btn-link" (click)="likepost();">
                         <i class="material-icons muted" *ngIf="this.post._liked_by.includes(this.user_data.user_id)==false; else likeif">thumb_up</i>
                         <ng-template #likeif><i class="material-icons active">thumb_up</i></ng-template>
                       </button>
@@ -96,7 +96,7 @@
             <div class="row ">
               <div class="col-md-12 text-right ">
                 <button type="button " name="button " class="btn btn-default " (click)="showComments.id=this.post._id;showComments.normal=!showComments.normal;">Cancel</button>
-                <button [disabled]="commentForm.invalid" type="button " name="button" class="btn btn-primary">Comment</button>
+                <button [disabled]="commentForm.invalid" type="button " name="button" (click)="onAddNewComment(this.post._id)" class="btn btn-primary">Comment</button>
               </div>
             </div>
           </form>
@@ -134,6 +134,132 @@
       <!-- all comments block-->
 
     </li>
+
+    <li class="list-group-item" *ngIf="this.post?.type=='task'">
+        <div class="card">
+          <div class="card-block ">
+            <div class="row card-title ">
+              <div class="col-md-1 ">
+                  <img src="/uploads/{{this.post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'" class="feed-avatar">
+                <!--<img src="assets/images/user.png" class="feed-avatar">-->
+              </div>
+              <div class="col-md-7 ">
+                <h6>{{post._posted_by?.first_name}} {{post._posted_by?.last_name}}
+
+                </h6>
+                <p class="small lightgray date ">
+                  {{post?.created_date | date : 'medium'}}</p>
+                <span class="pink small"> ASSIGNED TO {{post.task?._assigned_to?.first_name}} {{post.task._assigned_to?.last_name}}
+                </span>
+              </div>
+              <div class="col-md-4 text-right " *ngIf="this.post.completed== true; else taskif">
+                <a class="btn btn-success btn-sm">Completed</a>
+
+              </div>
+              <ng-template #taskif>
+                  <div class="col-md-4 text-right padding-topright">
+                      <button class="btn btn-pink btn-sm" (click)="OnMarkTaskCompleted(i, post._id)">Mark complete</button>
+                      <p class="small font-weight-bold" style="margin-top: 5px"> due {{post.task?.due_to | date}}</p>
+                  </div>
+              </ng-template>
+
+            </div>
+            <div class="col-md-12 innercard" *ngFor="let file of this.post.files">
+                <div class="col-md-12 event-title">Attachment:</div>
+                <div class="col-md-12"> <a role="button" href="javascript:void(null);" (click)="onDownlaodFile(file.modified_name,file.orignal_name)">{{file?.orignal_name}}</a></div>
+              </div>
+
+            <div class="card-footer action-post innercard clearfix ">
+              <hr>
+              <div class="row ">
+                <div class="col-md-6 ">
+                  <span [ngbPopover]="likepopcontent"><b>{{post?._liked_by.length}}</b> Likes</span>
+                  <span><b>{{post?.comments_count}}</b> Comments</span>
+                  <ng-template #likepopcontent>
+                      <ul class="list-group">
+                        <li class="list-group-item" *ngFor="let liked_member of this.post._liked_by;">{{liked_member.first_name}}</li>
+                      </ul> 
+                      </ng-template>
+                </div>
+                <div class="col-md-6 text-right">
+                  <span>
+                    <button class="btn btn-link" (click)="showComments.id=post._id;showComments.task=!showComments.task;">
+                    <i class="material-icons muted">mode_comment</i>
+                    </button>
+                  </span>
+                  <span>
+                      <button class="btn btn-link" (click)="likepost();">
+                          <i class="material-icons muted" *ngIf="this.post._liked_by.includes(this.user_data.user_id)==false; else likeif">thumb_up</i>
+                          <ng-template #likeif><i class="material-icons active">thumb_up</i></ng-template>
+                        </button>
+                  </span>
+                  <span>
+
+                    <ng-template #edittaskif>
+                      </ng-template>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- post comment block make this invisible -->
+
+
+        <div *ngIf="showComments.id == post._id && showComments.task">
+          <div class="card muted margin5">
+            <form [formGroup]="commentForm">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group ">
+                    <h6>Add a comment</h6>
+                    <!--<textarea class="form-control" id="post-content" rows="3" [(ngModel)]="comment.content" name="commentContent" formControlName="commentContent"></textarea>-->
+                    <quill-editor [modules]="modules" [(ngModel)]="comment.content" (blur)="onEditorBlured($event)" [spellcheck]="true" class="form-control" name="commentContent" (focus)="onEditorFocused($event)" formControlName="commentContent" (ready)="onEditorCreated($event)" (change)="onContentChanged($event)"></quill-editor>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row ">
+                <div class="col-md-12 text-right ">
+                  <button type="button " name="button " class="btn btn-default " (click)="showComments.id=post._id;showComments.task=!showComments.task;">Cancel</button>
+                  <button [disabled]="commentForm.invalid" type="button " name="button" (click)="onAddNewComment(post._id)" class="btn btn-primary">Comment</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- post comment block-->
+
+        <!-- all comments block-->
+
+        <div class="card muted comment" *ngFor="let comment of post.comments">
+          <div class="card-block">
+            <div class="row card-title ">
+              <div class="col-md-1">
+                  <img src="/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'" class="feed-avatar">
+                  <!--<img [src]="profileImage" class="feed-avatar">-->
+                <!--<img src="assets/images/user.png" class="feed-avatar">-->
+              </div>
+              <div class="col-md-7 ">
+                <h6>{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}} replied</h6>
+                <p class="small lightgray date">
+                  {{comment.created_date | date : 'medium'}}</p>
+              </div>
+              <div class="col-md-4 text-right ">
+
+              </div>
+            </div>
+            <div class="col-md-12 innercard " [innerHTML]="comment?.content" style="color:black;">s
+            </div>
+          </div>
+        </div>
+
+        <!-- all comments block-->
+
+      </li>
 
 
     

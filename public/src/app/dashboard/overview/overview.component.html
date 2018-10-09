@@ -1,20 +1,20 @@
     <div class="container" style="margin-bottom: 30px">
         <app-overview-page-header></app-overview-page-header>
        
-        <div *ngIf="posts.length == 0 && this.notifications_data?.unreadNotifications == 0 && this.notifications_data?.readNotifications == 0">
+        <div *ngIf="posts.length == 0 ">
             <img src='../../../assets/images/overview-emptystate.svg' style=" margin: 0 auto; display:block; width: 600px">
         </div>
-        <div *ngIf="posts.length > 0 && (this.event_count == 0 && this.normal_count == 0 && this.task_count == 0 && this.notifications_data?.unreadNotifications == 0 && this.notifications_data?.readNotifications == 0)">
+        <div *ngIf="posts.length > 0 && (this.event_count == 0 && this.normal_count == 0 && this.task_count == 0)">
                 <img src='../../../assets/images/overview-emptystate.svg' style=" margin: 0 auto; display:block; width: 600px">
             </div>
-        <div *ngIf="posts.length > 0 || this.notifications_data?.unreadNotifications.length > 0 || this.notifications_data?.readNotifications.length > 0">
+        <div *ngIf="posts.length > 0">
             <div  *ngIf="this.event_count == 1; else postif">
                     <h5 class="title-overview">Upcoming events</h5>
             </div>         
     
         <ng-template #postif></ng-template>
         <div *ngFor="let post of posts; let i = index;">
-                <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/activity">
+                <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/post/{{post._id}}">
                     <div *ngIf="post.type== 'event' && post.completed == false">
                     
                         <div class="media card-tile overview-event">
@@ -63,7 +63,7 @@
                 
     
                 <div *ngFor="let post of posts; let i = index;">
-        <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/activity">
+        <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/post/{{post._id}}">
             <div *ngIf="post.type== 'task' && post.completed == false">
             <div class="media card-tile overview-task">
                 
@@ -95,17 +95,17 @@
         </div>
         </a>
         </div>
-        <div  *ngIf="this.normal_count == 1 || this.notifications_data?.unreadNotifications.length > 0 || this.notifications_data?.readNotifications.length > 0 ; else postif">
+        <div  *ngIf="this.normal_count == 1 ; else postif">
                 <h5 class="title-overview">Recent interactions</h5>
         </div>  
        
-        <div *ngFor="let notifications of notifications_data?.unreadNotifications">
+        <!--<div *ngFor="let notifications of notifications_data?.unreadNotifications">
                 <a style="text-decoration:none; color:inherit;" routerLink="/dashboard/overview">
                     
 
                         <div class="media card-tile overview-post">
-                            <!-- <img src="/uploads/{{post._group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" class="mr-3 feed-avatar-big"> -->
-                        <div class=" row media-body">
+                             <img src="/uploads/{{post._group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" class="mr-3 feed-avatar-big"> -->
+                        <!--<div class=" row media-body">
                             <div class="col-md-1">
                                 <img src="/uploads/{{notifications._actor.profile_pic}}" onerror="this.src='/assets/images/user.png'" alt="" class="feed-avatar">
                             </div>
@@ -117,8 +117,8 @@
                         </div>
                         <div class="col-md-8">
                             <p class="blue"><b>{{notifications.message}}</b></p>
-                           <!-- <div class="" [innerHTML]="comment.content" class="overview-item"></div>-->
-                        </div>
+                            <div class="" [innerHTML]="comment.content" class="overview-item"></div>-->
+                        <!--</div>
                         
                         <div class="col-md-1">
                         
@@ -132,12 +132,12 @@
 
 
                     </a>
-        </div>
+        </div>-->
 
-        <div *ngFor="let notifications of notifications_data?.readNotifications">
+        <!--<div *ngFor="let notifications of notifications_data?.readNotifications">
                 <a style="text-decoration:none; color:inherit;" routerLink="/dashboard/overview"  >
                         <div class="media card-tile overview-post">
-                            <!-- <img src="/uploads/{{post._group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" class="mr-3 feed-avatar-big"> -->
+                             <img src="/uploads/{{post._group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" class="mr-3 feed-avatar-big">
                         <div class=" row media-body">
                             <div class="col-md-1">
                                 <img src="/uploads/{{notifications._actor.profile_pic}}" onerror="this.src='/assets/images/user.png'" alt="" class="feed-avatar">
@@ -151,7 +151,7 @@
                         <div class="col-md-8">
                             <p class="blue"><b>Notification</b></p>
                             <div>Recently, <b>{{notifications.message}}</b></div>
-                           <!-- <div class="" [innerHTML]="comment.content" class="overview-item"></div>-->
+                            <div class="" [innerHTML]="comment.content" class="overview-item"></div>
                         </div>
                         
                         <div class="col-md-1">
@@ -166,11 +166,11 @@
 
 
                     </a>
-        </div>
+        </div>-->
         
     <div *ngFor="let post of posts; let i = index;">
 
-    <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/activity">
+    <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/post/{{post._id}}">
         <div *ngIf="post.type== 'normal'">
         
         <div *ngFor="let comment of post.comments" >
@@ -203,7 +203,7 @@
         </div>
         </div>
         </a>
-        <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/activity">
+        <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/post/{{post._id}}">
         <div *ngIf="post.type== 'task' && post.completed == false && post.comments_count > 0">
         <div *ngFor="let comment of post.comments">
                 <div class="media card-tile">
@@ -237,7 +237,7 @@
             </div>
             </div>
             </a>
-            <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/activity">
+            <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/post/{{post._id}}">
             <div *ngIf="post.type== 'event' && post.completed == false && post.comments_count > 0">
             <div *ngFor="let comment of post.comments">
                     <div class="media card-tile">

@@ -3,6 +3,7 @@ import { PostService } from '../../../../shared/services/post.service';
 import { ActivatedRoute } from '@angular/router';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { InputValidators } from '../../../../common/validators/input.validator';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Component({
   selector: 'app-group-post',
@@ -11,9 +12,11 @@ import { InputValidators } from '../../../../common/validators/input.validator';
 })
 export class GroupPostComponent implements OnInit {
 
-  post;
   user_data;
+
+  post;
   postId;
+
   showComments = {
     id: '',
     normal: false,
@@ -26,15 +29,22 @@ export class GroupPostComponent implements OnInit {
     post_id: ''
   };
   commentForm;
+
   content_mentions = [];
 
-  constructor(private postService: PostService, private _activatedRoute: ActivatedRoute) {
+  constructor(private ngxService: NgxUiLoaderService, private postService: PostService, private _activatedRoute: ActivatedRoute) {
     this.postId = this._activatedRoute.snapshot.paramMap.get('postId');
    
     this.user_data = JSON.parse(localStorage.getItem('user'));
    }
 
   ngOnInit() {
+    this.ngxService.start(); // start foreground loading with 'default' id
+ 
+    // Stop the foreground loading after 5s
+    setTimeout(() => {
+      this.ngxService.stop(); // stop foreground loading with 'default' id
+    }, 500);
     this.getPost(this.postId);
     this.inilizeCommentForm();
 
@@ -57,59 +67,124 @@ export class GroupPostComponent implements OnInit {
     });
   }
 
+  onAddNewComment(post_id) {
+    // console.log('post._id: ', post_id);
 
-  OnSaveEditPost(index, post_id, content) {
+    this.comment.post_id = post_id;
+    this.comment._commented_by = this.user_data.user_id;
 
-    const editor = document.getElementById('edit-content-'+index);
-  const post = {
-    'content': document.getElementById(index).innerHTML,
-    '_content_mentions': this.content_mentions
-  };
-  const scanned_content = post.content;
-  var el = document.createElement( 'html' );
-  el.innerHTML = scanned_content;
+    this.postService.addNewComment(this.comment)
+      .subscribe((res) => {
+        this.commentForm.reset();
+        this.getPost(post_id);
 
-  if(el.getElementsByClassName( 'mention' ).length > 0)
-  {
-   //  console.log('Element',  el.getElementsByClassName( 'mention' ));
-  for(var i = 0; i < el.getElementsByClassName( 'mention' ).length; i++)
-  {
-    this.content_mentions.push(el.getElementsByClassName( 'mention' )[i]['dataset']['id'].toString());
+      }, (err) => {
+        
+
+        if (err.status) {
+         
+        } else {
+        
+        }
+
+      });
+
+
   }
 
-  }
-   // console.log('Content Mention', this.content_mentions); 
-//  console.log('post: ', post);
-  this.postService.editPost(post_id, post)
-  .subscribe((res) => {
-    // console.log('Normal post response: ', res);
-  //  console.log("Post Updated, Successfully!")
+  likepost(){
 
-  }, (err) => {
+    if(this.post._liked_by.length == 0) {
+      const post = {
+        'post_id': this.postId,
+        'user_id': this.user_data.user_id
+      };
+  
+      this.postService.like(post)
+      .subscribe((res) => {
+     //   console.log('Post Liked!');
+        this.getPost(this.postId);
+  
+      }, (err) => {
+  
+        
+  
+        if (err.status) {
+          
+        } else {
+        
+        }
+  
+      });
 
-
-    if (err.status) {
-      
-    } else {
-      
     }
 
-  });
-    const x = document.getElementById(index);
-    const y = document.getElementById("button_edit_post"+index);
+    else {
+      if(this.post._liked_by.includes(this.user_data.user_id) ==  true){
+        this.unlikepost();
+      }
   
-    x.style.borderStyle="none";
+      else
+      {
+        const post = {
+          'post_id': this.postId,
+          'user_id': this.user_data.user_id
+        };
+    
+        this.postService.like(post)
+        .subscribe((res) => {
+       //   console.log('Post Liked!');
+          this.getPost(this.postId);
+    
+        }, (err) => {
+    
+          
+    
+          if (err.status) {
+            
+          } else {
+          
+          }
+    
+        });
+      }
   
-    x.style.display="block";
+      
   
-    editor.style.display='none';
+
+    }
+
   
-    x.setAttribute('contenteditable', 'false');
-  
-    y.style.display="none";
-  
-    x.blur();
   }
+
+  unlikepost(){
+
+    const post = {
+      'post_id': this.postId,
+      'user_id': this.user_data.user_id
+    };
+
+    this.postService.unlike(post)
+    .subscribe((res) => {
+
+   //   console.log('Post Unliked!');
+      this.getPost(this.postId);
+
+
+    }, (err) => {
+
+  
+
+      if (err.status) {
+      
+      } else {
+       
+      }
+
+    });
+
+  }
+
 
 
 }
