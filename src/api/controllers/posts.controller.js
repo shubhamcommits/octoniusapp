@@ -83,6 +83,7 @@ const get = async (req, res, next) => {
       _id: postId,
     })
       .populate('_posted_by', 'first_name last_name profile_pic')
+      .populate('comments._commented_by', 'first_name last_name profile_pic')
       .lean();
 
     return res.status(200).json({
