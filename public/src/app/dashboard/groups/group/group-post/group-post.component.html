@@ -1,4 +1,140 @@
-<router-outlet></router-outlet>
-<p>
-  this works!
-  </p>
+  <ul class="list-group ">
+    <!-- Normal post -->
+    <li class="list-group-item "  *ngIf="this.post?.type== 'normal'">
+      <div class="card " >
+        <div class="card-block " >
+          <div class="row card-title ">
+            <div class="col-md-1 ">
+                <!--<img [src]="profileImage" class="feed-avatar">-->
+              <img src="/uploads/{{this.post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'" class="feed-avatar">
+            </div>
+            <div class="col-md-7">
+             <h6>{{this.post._posted_by?.first_name}} {{this.post._posted_by?.last_name}}</h6>
+              <p class="small lightgray date">
+                {{this.post?.created_date | date : 'medium' }}</p>
+      
+            </div>
+
+          </div>
+        
+          <div class="col-md-12 text-right " style="display: none; padding-bottom: 1em;">
+              <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditPost(i, post._id,post?.content)">Save</button>
+            </div>
+            <div class="col-md-12 innercard">
+              <quill-editor [modules]="modules" type="text" [(ngModel)]="this.post.content" [spellcheck]="true" value="this.post?.content" style="display: none;" (blur)="onEditorBlured($event)" (focus)="onEditorFocused($event)" (ready)="onEditorCreated($event)" (change)="onContentChanged($event)"></quill-editor>
+            </div>
+            
+          <div class="col-md-12 innercard" style="border: none;" [innerHTML]="this.post.content | safe: 'html'">
+          </div>
+          <div class="col-md-12 innercard" *ngFor="let file of this.post?.files">
+            <div class="col-md-12 event-title">Attachment:</div>
+            <div class="col-md-12"> 
+              <a role="button" href="javascript:void(null);">{{file?.orignal_name}}</a></div>
+            </div>
+
+          <div class="card-footer action-post innercard clearfix">
+            <hr>
+            <div class="row ">
+              <div class="col-md-6 ">
+                <span [ngbPopover]="likepopcontent"><b>{{this.post?._liked_by.length}}</b> Likes </span>
+                <span><b>{{this.post?.comments_count}}</b> Comments</span>
+              </div>
+              <div class="col-md-6 text-right">
+
+                <span>
+                    <button class="btn btn-link">
+                  <i class="material-icons muted" (click)="this.showComments.id = this.post._id; this.showComments.normal =! this.showComments.normal;">mode_comment</i>
+                </button>
+                </span>
+
+                <span>
+                    <button class="btn btn-link">
+                        <i class="material-icons muted" *ngIf="this.post._liked_by.includes(this.user_data.user_id)==false; else likeif">thumb_up</i>
+                        <ng-template #likeif><i class="material-icons active">thumb_up</i></ng-template>
+                      </button>
+                </span>
+
+                <span>
+                  <!--<div ngbDropdown class="d-inline-block">
+                    <i class="material-icons action" id="dropdownBasic1" ngbDropdownToggle>more_horiz</i>
+                    <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                      <button class="dropdown-item">Edit Post</button>
+
+                      <button class="dropdown-item">Delete Post</button>
+                    </div>
+                  </div>-->
+                  <ng-template #editpostif>
+                    </ng-template>
+                </span>
+              </div>
+            </div>
+            <ng-template #likepopcontent>
+                <ul class="list-group">
+                  <li class="list-group-item" *ngFor="let liked_member of this.post._liked_by;">{{liked_member.first_name}}</li>
+                </ul> 
+                </ng-template>
+          </div>
+        </div>
+      </div>
+
+      <!-- post comment block make this invisible -->
+
+
+      <div *ngIf="showComments.id == this.post._id && showComments.normal">
+        <div class="card muted margin5">
+          <form [formGroup]="commentForm">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group ">
+                  <h6>Add a comment</h6>
+                  
+                  <quill-editor [modules]="modules" [(ngModel)]="comment.content" (blur)="onEditorBlured($event)" [spellcheck]="true" class="form-control" name="commentContent" (focus)="onEditorFocused($event)" formControlName="commentContent" (ready)="onEditorCreated($event)" (change)="onContentChanged($event)"></quill-editor>
+                </div>
+              </div>
+            </div>
+
+            <div class="row ">
+              <div class="col-md-12 text-right ">
+                <button type="button " name="button " class="btn btn-default " (click)="showComments.id=this.post._id;showComments.normal=!showComments.normal;">Cancel</button>
+                <button [disabled]="commentForm.invalid" type="button " name="button" class="btn btn-primary">Comment</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- post comment block-->
+
+      <!-- all comments block-->
+
+      <div class="card muted comment" *ngFor="let comment of this.post.comments">
+        <div class="card-block">
+          <div class="row card-title ">
+            <div class="col-md-1">
+
+                <img src="/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'" class="feed-avatar">
+                <!--<img [src]="profileImage" class="feed-avatar">-->
+              <!--<img src="assets/images/user.png" class="feed-avatar">-->
+            </div>
+            <div class="col-md-7 ">
+              <h6>{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}} replied</h6>
+              <p class="small lightgray date">
+                {{comment.created_date | date : 'medium'}}</p>
+            </div>
+            <div class="col-md-4 text-right ">
+
+            </div>
+          </div>
+          <div class="col-md-12 innercard " [innerHTML]="comment?.content" style="color:black;">
+            
+          </div>
+        </div>
+      </div>
+
+      <!-- all comments block-->
+
+    </li>
+
+
+    
+  </ul>

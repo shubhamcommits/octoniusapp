@@ -51,7 +51,7 @@ const appRoutes: Routes = [
           { path: 'calendar', component: GroupCalendarComponent },
           { path: 'members', component: GroupMembersComponent },
           { path: 'admin', component: GroupAdminComponent },
-          { path: 'post/:id', component: GroupPostComponent }
+          { path: 'post/:postId', component: GroupPostComponent }
         ]
       },
       {
