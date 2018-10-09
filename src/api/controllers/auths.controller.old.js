@@ -413,9 +413,7 @@ const createNewWorkspace = async (req, res, next) => {
 
 const checkUserAvailability = async (req, res, next) => {
 	try {
-		const userData = req.body;
-
-		const workspace = await Workspace.findOne({ workspace_name: userData.workspace_name });
+		const workspace = await Workspace.findOne({ workspace_name: req.body.workspace_name });
 
 		// Workspace not found
 		if (!workspace) {
@@ -423,12 +421,12 @@ const checkUserAvailability = async (req, res, next) => {
 		} 
 
 		const user = await User.findOne({
-			workspace_name: userData.workspace_name,
-			email: userData.email
+			workspace_name: req.body.workspace_name,
+			email: req.body.email
 		});
 
 		// If user is already a member, user must sign in
-		if (user) {
+		if (!!user) {
 			return sendErr(res, err, 'You are already a member of this workspace, please sign in!', 409);
 		}
 

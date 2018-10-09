@@ -604,7 +604,8 @@
           due_date: this.selected_date,
           due_time: this.due_time,
           due_to: moment(`${this.due_date} ${this.due_time}`).format(), 
-          _assigned_to: assignedUsers
+          _assigned_to: assignedUsers,
+          _content_mentions: this.content_mentions
         },
         files: this.filesToUpload
       };
@@ -614,6 +615,27 @@
       formData.append('_posted_by', post._posted_by);
       formData.append('_group', post._group);
       formData.append('event.due_to', post.event.due_to);
+
+      const scanned_content = post.content;
+      var el = document.createElement( 'html' );
+      el.innerHTML = scanned_content;
+
+      if(el.getElementsByClassName( 'mention' ).length > 0)
+      {
+       //  console.log('Element',  el.getElementsByClassName( 'mention' ));
+      for(var i = 0; i < el.getElementsByClassName( 'mention' ).length; i++)
+      {
+        this.content_mentions.push(el.getElementsByClassName( 'mention' )[i]['dataset']['id']);
+        
+      }
+
+      for (var i = 0; i < this.content_mentions.length; i++)
+      {
+        formData.append('_content_mentions', this.content_mentions[i]);
+      }
+      
+      //  console.log('This post', postId);
+      }
       //formData.append('event.due_time', post.event.due_time);
       //formData.append('event._assigned_to', assignedUsers);
 
@@ -631,13 +653,13 @@
           this.resetNewPostForm();
           // console.log('Normal post response: ', res);
           const data = {
-            // it should get automatically, something like workspace: this.workspace_name
-            workspace: this.user_data.workspace.workspace_name,
-            // it should get automatically, something like group: this.group_name
-            group: this.group_name,
-            userId: this.user_data.user_id,
-            
-            groupId: this.groupDataService.group._id // Pass group id here!!!
+          // it should get automatically, something like workspace: this.workspace_name
+        workspace: this.user_data.workspace.workspace_name,
+        // it should get automatically, something like group: this.group_name
+        group: this.group_name,
+        userId: this.user_data.user_id,
+        postId: res['post']._id,
+        groupId: this.groupDataService.group._id // Pass group id here!!!
           };
           //  console.log(data);
             this.socket.emit('newPost', data);
@@ -680,7 +702,8 @@
         task: {
           due_date: this.selected_date,
           due_to: moment(`${this.selected_date}`).format('YYYY-MM-DD'),
-          _assigned_to: this.selectedGroupUsers[0]._id
+          _assigned_to: this.selectedGroupUsers[0]._id,
+          _content_mentions: this.content_mentions
         }
       };
 
@@ -690,6 +713,27 @@
       formData.append('_group', post._group);
       formData.append('task.due_to', post.task.due_to);
       formData.append('task._assigned_to', post.task._assigned_to);
+
+      const scanned_content = post.content;
+      var el = document.createElement( 'html' );
+      el.innerHTML = scanned_content;
+
+      if(el.getElementsByClassName( 'mention' ).length > 0)
+      {
+       //  console.log('Element',  el.getElementsByClassName( 'mention' ));
+      for(var i = 0; i < el.getElementsByClassName( 'mention' ).length; i++)
+      {
+        this.content_mentions.push(el.getElementsByClassName( 'mention' )[i]['dataset']['id']);
+        
+      }
+
+      for (var i = 0; i < this.content_mentions.length; i++)
+      {
+        formData.append('_content_mentions', this.content_mentions[i]);
+      }
+      
+      //  console.log('This post', postId);
+      }
 
       // console.log('post: ', post);
 
@@ -706,13 +750,13 @@
           // console.log('Normal post response: ', res);
           const data = {
             // it should get automatically, something like workspace: this.workspace_name
-            workspace: this.user_data.workspace.workspace_name,
-            // it should get automatically, something like group: this.group_name
-            group: this.group_name,
-            userId: this.user_data.user_id,
-            
-            groupId: this.groupDataService.group._id // Pass group id here!!!
-          };
+          workspace: this.user_data.workspace.workspace_name,
+          // it should get automatically, something like group: this.group_name
+          group: this.group_name,
+          userId: this.user_data.user_id,
+          postId: res['post']._id,
+          groupId: this.groupDataService.group._id // Pass group id here!!!
+            };
           //  console.log(data);
             this.socket.emit('newPost', data);
           this.loadGroupPosts();

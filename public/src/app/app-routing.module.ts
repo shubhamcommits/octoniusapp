@@ -21,6 +21,7 @@ import { GroupAdminComponent } from './dashboard/groups/group/group-admin/group-
 import { GroupMembersComponent } from './dashboard/groups/group/group-members/group-members.component';
 import { GroupCalendarComponent } from './dashboard/groups/group/group-calendar/group-calendar.component';
 import { GroupFilesComponent } from './dashboard/groups/group/group-files/group-files.component';
+import { GroupPostComponent } from './dashboard/groups/group/group-post/group-post.component';
 import { AdminGeneralComponent } from './dashboard/admin/admin-general/admin-general.component';
 import { AdminMembersComponent } from './dashboard/admin/admin-members/admin-members.component';
 
@@ -49,7 +50,8 @@ const appRoutes: Routes = [
           { path: 'files', component: GroupFilesComponent },
           { path: 'calendar', component: GroupCalendarComponent },
           { path: 'members', component: GroupMembersComponent },
-          { path: 'admin', component: GroupAdminComponent }
+          { path: 'admin', component: GroupAdminComponent },
+          { path: 'post/:postId', component: GroupPostComponent }
         ]
       },
       {
@@ -78,4 +80,4 @@ export class AppRoutingModule { }
 export const routingComponents = [UserProfileComponent, AdminComponent, GroupsComponent, NewWorkspacePage1Component,
   NewWorkspacePage2Component, SigninComponent, WelcomePageComponent, DashboardComponent, OverviewComponent,
   ProfileComponent, SignupComponent, PageNotFoundComponent, GroupActivityComponent, GroupAdminComponent, GroupFilesComponent,
-  GroupCalendarComponent, GroupMembersComponent, AdminGeneralComponent, AdminMembersComponent];
+  GroupCalendarComponent, GroupMembersComponent, AdminGeneralComponent, AdminMembersComponent, GroupPostComponent];

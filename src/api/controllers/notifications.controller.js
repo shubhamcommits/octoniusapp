@@ -6,6 +6,23 @@ const { sendErr } = require('../../utils');
  *	===============================
  */
 
+const newEventAssignments = async (post) => {
+  try {
+    await post.event._assigned_to.forEach( async (user) => {
+      const notification = await Notification.create({
+        _actor: post._posted_by,
+        _owner: user,
+        _origin_post: post._id,
+        message: 'assigned an event to you.',
+        type: 'assignment'
+      });
+    });
+
+  } catch (err) {
+    return err;
+  }
+};
+
 const newPostMentions = async (post) => {
   try {
     await post._content_mentions.forEach( async (user) => {
@@ -23,9 +40,23 @@ const newPostMentions = async (post) => {
   }
 };
 
+const newTaskAssignment = async (post) => {
+  try {
+    const notification = await Notification.create({
+      _actor: post._posted_by,
+      _owner: post.task._assigned_to,
+      _origin_post: post._id,
+      message: 'assigned a task to you.',
+      type: 'assignment'
+    });
+
+  } catch (err) {
+    return err;
+  }
+};
+
 const getRead = async (userId) => {
   try {
-    // Find all posts that has files and belongs to this group
     const notifications = await Notification.find({
       _owner: userId,
       read: true
@@ -33,6 +64,7 @@ const getRead = async (userId) => {
       .limit(20)
       .sort('-created_date')
       .populate('_actor', 'first_name last_name profile_pic')
+      .populate('_origin_post', '_group')
       .populate('_owner', 'first_name last_name profile_pic').lean();
     
     return notifications;
@@ -50,6 +82,7 @@ const getUnread = async (userId) => {
     })
       .sort('-created_date')
       .populate('_actor', 'first_name last_name profile_pic')
+      .populate('_origin_post', '_group')
       .populate('_owner', 'first_name last_name profile_pic').lean();
 
     return notifications;
@@ -85,7 +118,9 @@ const markRead = async (topListId) => {
  */
 
 module.exports = {
+  newEventAssignments,
   newPostMentions,
+  newTaskAssignment,
   getRead,
   getUnread,
   markRead

@@ -11,7 +11,7 @@ export class PostService {
   constructor(private _http: HttpClient) { }
 
   getGroupPosts(group_id) {
-    return this._http.get(this.BASE_API_URL + '/post/' + group_id);
+    return this._http.get(this.BASE_API_URL + '/groups/' + group_id + '/posts');
   }
 
   getGroup(group_id) {
@@ -19,7 +19,7 @@ export class PostService {
   }
 
   getNextPosts(group_id, last_post_id) {
-    return this._http.get(this.BASE_API_URL + '/post/next/' + group_id +'/'+ last_post_id);
+    return this._http.get(this.BASE_API_URL + '/groups/' + group_id +'/nextPosts/'+ last_post_id);
   }
 
   addNewNormalPost(post) {
@@ -54,5 +54,9 @@ export class PostService {
   }
   useroverviewposts(user_id){
     return this._http.get(this.BASE_API_URL + '/post/userOverview/'+ user_id);
+  }
+
+  getPost(postId){
+    return this._http.get(this.BASE_API_URL + '/posts/'+ postId);
   }
 }

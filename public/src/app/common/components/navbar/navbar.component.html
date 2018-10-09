@@ -50,8 +50,10 @@
                 <div class="dropdown-divider"></div>
                 <div *ngIf="this.notifications_data?.unreadNotifications.length != 0">
                 <button class="dropdown-item" *ngFor="let notifications of notifications_data?.unreadNotifications"> 
-                  <img src="/uploads/{{notifications._actor.profile_pic}}" onerror="this.src='/assets/images/user.png'" alt="" class="topnav-avatar" routerLink="/dashboard/profile/profile" style="margin-right:15px">
-                {{notifications._actor.first_name}} {{notifications.message}}
+                    <a style="text-decoration:none; color:inherit;" target="_blank" href="/#/dashboard/group/{{notifications._origin_post._group}}/post/{{notifications._origin_post._id}}">
+                      <img src="/uploads/{{notifications._actor.profile_pic}}" onerror="this.src='/assets/images/user.png'" alt="" class="topnav-avatar" style="margin-right:15px">
+                  {{notifications._actor.first_name}} {{notifications.message}}
+                    </a>
                 </button>
                 </div>
                 <div *ngIf="this.notifications_data?.unreadNotifications.length == 0">
@@ -62,8 +64,11 @@
                 <div class="dropdown-divider"></div>
                 <div *ngIf="this.notifications_data?.readNotifications.length != 0">
                   <button class="dropdown-item" *ngFor="let notifications of notifications_data?.readNotifications"> 
-                    <img src="/uploads/{{notifications._actor.profile_pic}}" onerror="this.src='/assets/images/user.png'" alt="" class="topnav-avatar" routerLink="/dashboard/profile/profile" style="margin-right:15px">
+                    <a style="text-decoration:none; color:inherit;" target="_blank" href="/#/dashboard/group/{{notifications._origin_post._group}}/post/{{notifications._origin_post._id}}">
+                      <img src="/uploads/{{notifications._actor.profile_pic}}" onerror="this.src='/assets/images/user.png'" alt="" class="topnav-avatar" routerLink="/dashboard/profile/profile" style="margin-right:15px">
                   {{notifications._actor.first_name}} {{notifications.message}}
+                    </a>
+                    
                   </button>
                   </div>
                   <div *ngIf="this.notifications_data?.readNotifications.length == 0">
@@ -80,8 +85,11 @@
 
 
             </div>
+            <a class="nav-link"  routerLink="/dashboard/profile/profile">
+                <img [src]="userProfileImage" onerror="this.src='/assets/images/user.png'" alt="" class="topnav-avatar" style="margin-right:15px">
+            </a>
        
-        <img [src]="userProfileImage" onerror="this.src='/assets/images/user.png'" alt="" class="topnav-avatar" routerLink="/dashboard/profile/profile" style="margin-right:15px">
+        
      
 
       <a class="nav-link" routerLink="/dashboard/admin" (click)="onSignOut()">Logout

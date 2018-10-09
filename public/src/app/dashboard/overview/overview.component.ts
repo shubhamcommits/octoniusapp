@@ -27,6 +27,8 @@ export class OverviewComponent implements OnInit {
   user_data;
   user: User;
 
+  ///#/dashboard/group/{{notifications._origin_post._group}}/post/{{notifications._origin_post._id}}
+
   today = new Date();
 
   socket = io(environment.BASE_URL);

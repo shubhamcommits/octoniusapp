@@ -5,7 +5,11 @@ const {
   postsController // ! TO BE REMOVED
 } = require('../controllers');
 
-const { auth, authorization, postFileHandler } = require('../../utils');
+const {
+  auth,
+  authorization,
+  postFileHandler
+} = require('../../utils');
 
 const router = express.Router();
 
@@ -18,14 +22,17 @@ router.use(auth.isLoggedIn);
 
 // -| Post Routes |-
 
+// GET api/posts/:postId - get one post
+router.get('/:postId', authorization.groupAccess, posts.get);
+
 // POST api/posts/ - add new post
-router.post('/', postFileHandler, posts.add); // To do
+router.post('/', postFileHandler, posts.add);
 
 // PUT api/posts/:postId - edit post
-router.put('/:postId', posts.edit); // To do
+router.put('/:postId', posts.edit);
 
 // DELETE api/posts/:postId - delete post
-router.delete('/:postId', posts.remove); // To do
+router.delete('/:postId', posts.remove);
 
 // POST api/posts/:postId/comment - add new comment on post
 // router.post('/:postId/comment', posts.addComment); // To do
@@ -48,10 +55,6 @@ router.post('/like', postsController.likePost); // ! TO BE REMOVED
 // PUT api/posts/:postId/unlike - unlike post
 // router.put('/:postId/unlike', posts.unlike); // To do
 router.post('/unlike', postsController.unlikePost); // ! TO BE REMOVED
-
-// !!! move this ones to groups routes !!!
-router.get('/:group_id', postsController.getGroupPosts); // ! TO BE REMOVED
-router.get('/next/:group_id/:last_post_id', postsController.getGroupNextPosts); // ! TO BE REMOVED
 
 // !!! move this one to groups routes !!!
 router.get('/userOverview/:user_id', postsController.getUserOverview); // ! TO BE REMOVED
