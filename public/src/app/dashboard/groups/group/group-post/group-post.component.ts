@@ -55,7 +55,7 @@ export class GroupPostComponent implements OnInit {
     this.postService.getPost(postId)
         .subscribe((res) => {
           this.post = res['post'];
-          console.log('Post', this.post);
+        //  console.log('Post', this.post);
 
         });
 
@@ -90,6 +90,76 @@ export class GroupPostComponent implements OnInit {
       });
 
 
+  }
+
+  OnMarkEventCompleted(){
+
+    const button = document.getElementById("button_event_mark_completed");
+
+    const post = {
+      'post_id': this.postId,
+      'user_id': this.user_data.user_id
+    };
+    this.postService.complete(post)
+    .subscribe((res) => {
+      this.playAudio();
+  //    console.log('Post Marked as Completed');
+
+      button.style.background="#005fd5";
+      button.style.color="#ffffff";
+      button.innerHTML="Completed";
+      button.setAttribute('disabled', 'true');
+      this.getPost(this.postId);
+
+    }, (err) => {
+
+
+      if (err.status) {
+      } else {
+      }
+
+    });
+
+  }
+
+  OnMarkTaskCompleted(){
+    const button = document.getElementById("button_task_mark_completed");
+    const post = {
+      'post_id': this.postId,
+      'user_id': this.user_data.user_id
+    };
+    this.postService.complete(post)
+    .subscribe((res) => {
+
+      this.playAudio();
+    // this.resetNewPostForm();
+      // console.log('Normal post response: ', res);
+
+    //  console.log('Post Marked as Completed');
+      button.style.background="#005fd5";
+      button.style.color="#ffffff";
+      button.innerHTML="Completed";
+      button.setAttribute('disabled', 'true');
+      this.getPost(this.postId);
+
+    }, (err) => {
+
+ 
+
+      if (err.status) {
+      } else {
+       
+      }
+
+    });
+
+  }
+
+  playAudio(){
+    let audio = new Audio();
+    audio.src = "/assets/audio/intuition.ogg";
+    audio.load();
+    audio.play();
   }
 
   likepost(){
