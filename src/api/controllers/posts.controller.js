@@ -84,6 +84,8 @@ const get = async (req, res, next) => {
     })
       .populate('_posted_by', 'first_name last_name profile_pic')
       .populate('comments._commented_by', 'first_name last_name profile_pic')
+      .populate('task._assigned_to', 'first_name last_name')
+      .populate('event._assigned_to', 'first_name last_name')
       .lean();
 
     return res.status(200).json({
