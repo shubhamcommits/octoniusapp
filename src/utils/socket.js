@@ -91,11 +91,29 @@ const notifyRelatedUsers = async (io, socket, data) => {
     if (post._content_mentions.length !== 0) {
       // ...emit notificationsFeed for every user mentioned
       for (userId of post._content_mentions) {
-        const feed = await generateFeed(userId);
+        let feed = await generateFeed(userId);
 
         io.sockets.in(userId).emit('notificationsFeed', feed);
       };
     }
+
+    // Send Email notification after post creation
+    switch(post.type) {
+      case 'task':
+        if (post.task._assigned_to.length !== 0) {
+          let feed = await generateFeed(post._id);
+
+          io.sockets.in(post._id).emit('notificationsFeed', feed);
+        }
+      case 'event':
+        if (post.event._assigned_to.length !== 0) {
+          for (userId of post.event._assigned_to) {
+            let feed = await generateFeed(userId);
+
+            io.sockets.in(userId).emit('notificationsFeed', feed);
+          };
+        }
+    };
 
   } catch (err) {
     return err
