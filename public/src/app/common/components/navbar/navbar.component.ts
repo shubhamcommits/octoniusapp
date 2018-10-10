@@ -62,6 +62,10 @@ export class NavbarComponent implements OnInit {
 
   }
 
+  refreshPage() {
+    location.reload();
+}
+
   toggled(event) {
     if (event) {
        // console.log('is open');
