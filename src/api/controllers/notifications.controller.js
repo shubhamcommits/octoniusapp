@@ -61,7 +61,7 @@ const getRead = async (userId) => {
       _owner: userId,
       read: true
     })
-      .limit(20)
+      .limit(5)
       .sort('-created_date')
       .populate('_actor', 'first_name last_name profile_pic')
       .populate('_origin_post', '_group')
