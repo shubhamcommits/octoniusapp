@@ -20,6 +20,9 @@ import 'zone.js/dist/zone';
 import { MentionModule } from 'angular-mentions/mention';
 import { DragAndDropModule } from 'angular-draggable-droppable';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji';
+import { PickerModule } from '@ctrl/ngx-emoji-mart';
+
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './common/components/navbar/navbar.component';
@@ -108,6 +111,8 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     SnotifyModule,
     MentionModule,
     InfiniteScrollModule,
+    PickerModule,
+    EmojiModule,
     DragAndDropModule.forRoot(),
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
     LoadingModule.forRoot({
