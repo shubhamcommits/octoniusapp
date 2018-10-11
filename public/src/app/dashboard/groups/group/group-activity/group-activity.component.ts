@@ -49,6 +49,7 @@
     ];
 
     members = [];
+    allMembersId = [];
     files = [];
     content_mentions = [];
 
@@ -488,10 +489,21 @@
 
       if(el.getElementsByClassName( 'mention' ).length > 0)
       {
-       //  console.log('Element',  el.getElementsByClassName( 'mention' ));
+        
+       // console.log('Element',  el.getElementsByClassName( 'mention' ));
       for(var i = 0; i < el.getElementsByClassName( 'mention' ).length; i++)
       {
-        this.content_mentions.push(el.getElementsByClassName( 'mention' )[i]['dataset']['id']);
+        if(el.getElementsByClassName( 'mention' )[i]['dataset']['value'] == "all"){
+          for(var i = 0; i < this.allMembersId.length; i++){
+            this.content_mentions.push(this.allMembersId[i]);
+          }
+          //this.content_mentions = this.allMembersId;
+        }
+        else{
+          if (!this.content_mentions.includes(el.getElementsByClassName( 'mention' )[i]['dataset']['id']))
+          this.content_mentions.push(el.getElementsByClassName( 'mention' )[i]['dataset']['id']);
+        }
+        
         
       }
 
@@ -500,7 +512,7 @@
         formData.append('_content_mentions', this.content_mentions[i]);
       }
       
-       console.log('Content Mention', post._content_mentions); 
+      // console.log('Content Mention', post._content_mentions); 
       //  console.log('This post', postId);
       }
 
@@ -535,43 +547,12 @@
       };
       //  console.log(data);
         this.socket.emit('newPost', data);
-         //  console.log('Normal post response: ', res);
-         /*  postId = res['post']['_id'];
-           const scanned_content = post.content;
-           var el = document.createElement( 'html' );
-           el.innerHTML = scanned_content;
-     
-           if(el.getElementsByClassName( 'mention' ).length > 0)
-           {
-            //  console.log('Element',  el.getElementsByClassName( 'mention' ));
-           for(var i = 0; i < el.getElementsByClassName( 'mention' ).length; i++)
-           {
-             this.content_mentions.push(el.getElementsByClassName( 'mention' )[i]['dataset']['id'].toString());
-           }
-            // console.log('Content Mention', this.content_mentions); 
-           //  console.log('This post', postId);
-             this.postService.editPost(postId, post)
-             .subscribe((res) => {
-             console.log('Normal post response: ', res);
-             //  console.log("Post Updated, Successfully!")
-         
-             }, (err) => {
-         
-               this.alert.class = 'danger';
-         
-               if (err.status) {
-                 this._message.next(err.error.message);
-               } else {
-                 this._message.next('Error! either server is down or no internet connection');
-               }
-         
-             });
-     
-           }*/
           this.loadGroupPosts();
+          this.content_mentions = [];
 
         }, (err) => {
           this.processing = false;
+          this.content_mentions = [];
           this.alert.class = 'danger';
           this.enablePostForm();
 
@@ -1418,17 +1399,20 @@
       
       this.groupService.getGroup(this.group_id)
       .subscribe((res) => {
-        Value.push({id:'all', value: 'here'});
+      //  console.log('Group', res);
+        Value.push({id:'', value: 'all'});
 
         for(var i = 0; i < res['group']._members.length; i++ ){
           this.members.push(res['group']._members[i].first_name + ' ' + res['group']._members[i].last_name);
+          this.allMembersId.push(res['group']._members[i]._id);
           Value.push({id:res['group']._members[i]._id, value: res['group']._members[i].first_name + ' ' + res['group']._members[i].last_name});
         }
         for(var i = 0; i < res['group']._admins.length; i++ ){
           this.members.push(res['group']._admins[i].first_name + ' ' + res['group']._admins[i].last_name);
-          Value.push({id:res['group']._members[i]._id, value: res['group']._members[i].first_name + ' ' + res['group']._members[i].last_name});
+          this.allMembersId.push(res['group']._admins[i]._id);
+          Value.push({id:res['group']._admins[i]._id, value: res['group']._admins[i].first_name + ' ' + res['group']._admins[i].last_name});
         }
-      
+      console.log('All members ID', this.allMembersId);
      
       }, (err) => {
 
