@@ -587,7 +587,7 @@
                     <h6>{{post._posted_by?.first_name}} {{post._posted_by?.last_name}}</h6>
                     <p class="small lightgray date ">
                       {{post?.created_date| date : 'medium'}}</p>
-                      <span class="pink small" [ngbPopover]="eventassignedmembers">ASSIGNED TO {{post.event._assigned_to.length}} MEMBERS
+                      <span class="pink small" [ngbPopover]="eventassignedmembers" triggers="mouseenter:mouseleave">ASSIGNED TO {{post.event._assigned_to.length}} MEMBERS
                         </span>  
                     <ng-template #eventassignedmembers>
                         <ul class="list-group"><li class="list-group-item" *ngFor="let element of post.event._assigned_to; let j = index;"> {{element.first_name}}</li></ul>
