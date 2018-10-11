@@ -619,10 +619,21 @@
 
       if(el.getElementsByClassName( 'mention' ).length > 0)
       {
-       //  console.log('Element',  el.getElementsByClassName( 'mention' ));
+        
+       // console.log('Element',  el.getElementsByClassName( 'mention' ));
       for(var i = 0; i < el.getElementsByClassName( 'mention' ).length; i++)
       {
-        this.content_mentions.push(el.getElementsByClassName( 'mention' )[i]['dataset']['id']);
+        if(el.getElementsByClassName( 'mention' )[i]['dataset']['value'] == "all"){
+          for(var i = 0; i < this.allMembersId.length; i++){
+            this.content_mentions.push(this.allMembersId[i]);
+          }
+          //this.content_mentions = this.allMembersId;
+        }
+        else{
+          if (!this.content_mentions.includes(el.getElementsByClassName( 'mention' )[i]['dataset']['id']))
+          this.content_mentions.push(el.getElementsByClassName( 'mention' )[i]['dataset']['id']);
+        }
+        
         
       }
 
@@ -631,8 +642,10 @@
         formData.append('_content_mentions', this.content_mentions[i]);
       }
       
+      // console.log('Content Mention', post._content_mentions); 
       //  console.log('This post', postId);
       }
+
       //formData.append('event.due_time', post.event.due_time);
       //formData.append('event._assigned_to', assignedUsers);
 
@@ -661,9 +674,11 @@
           //  console.log(data);
             this.socket.emit('newPost', data);
           this.loadGroupPosts();
+          this.content_mentions = [];
           
 
         }, (err) => {
+          this.content_mentions = [];
           this.processing = false;
           this.alert.class = 'danger';
           this.enablePostForm();
@@ -717,10 +732,21 @@
 
       if(el.getElementsByClassName( 'mention' ).length > 0)
       {
-       //  console.log('Element',  el.getElementsByClassName( 'mention' ));
+        
+       // console.log('Element',  el.getElementsByClassName( 'mention' ));
       for(var i = 0; i < el.getElementsByClassName( 'mention' ).length; i++)
       {
-        this.content_mentions.push(el.getElementsByClassName( 'mention' )[i]['dataset']['id']);
+        if(el.getElementsByClassName( 'mention' )[i]['dataset']['value'] == "all"){
+          for(var i = 0; i < this.allMembersId.length; i++){
+            this.content_mentions.push(this.allMembersId[i]);
+          }
+          //this.content_mentions = this.allMembersId;
+        }
+        else{
+          if (!this.content_mentions.includes(el.getElementsByClassName( 'mention' )[i]['dataset']['id']))
+          this.content_mentions.push(el.getElementsByClassName( 'mention' )[i]['dataset']['id']);
+        }
+        
         
       }
 
@@ -729,8 +755,10 @@
         formData.append('_content_mentions', this.content_mentions[i]);
       }
       
+      // console.log('Content Mention', post._content_mentions); 
       //  console.log('This post', postId);
       }
+
 
       // console.log('post: ', post);
 
@@ -757,8 +785,10 @@
           //  console.log(data);
             this.socket.emit('newPost', data);
           this.loadGroupPosts();
+          this.content_mentions = [];
 
         }, (err) => {
+          this.content_mentions = [];
           this.processing = false;
           this.alert.class = 'danger';
           this.enablePostForm();
