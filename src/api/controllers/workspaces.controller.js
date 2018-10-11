@@ -24,14 +24,13 @@ const addDomain = async (req, res, next) => {
     });
 
     if (!workspace) {
-      return sendErr(res, '', `Invalid workspace id or user in not the workspace owner`, 404);
-    };
+      return sendErr(res, '', 'Invalid workspace id or user in not the workspace owner', 404);
+    }
 
     return res.status(200).json({
-      message: `New domain was added to workspace's allowed domains!`,
-      allowedDomains: workspace.allowed_domains,
+      message: "New domain was added to workspace's allowed domains!",
+      allowedDomains: workspace.allowed_domains
     });
-
   } catch (err) {
     return sendErr(res, err);
   }
@@ -52,21 +51,20 @@ const getDomains = async (req, res, next) => {
 
     if (!workspace) {
       return sendErr(res, '', 'Invalid workspace id!', 404);
-    };
+    }
 
     return res.status(200).json({
       message: `Found ${workspace.allowed_domains.length} domains allowed on this workspace!`,
-      allowedDomains: workspace.allowed_domains,
+      allowedDomains: workspace.allowed_domains
     });
-
   } catch (err) {
     return sendErr(res, err);
   }
 };
 
-/*	=============
- *	-- EXPORTS --
- *	=============
+/*  =============
+ *  -- EXPORTS --
+ *  =============
  */
 
 module.exports = {
