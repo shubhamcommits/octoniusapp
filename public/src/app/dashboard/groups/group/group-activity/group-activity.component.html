@@ -296,7 +296,7 @@
                   <hr>
                   <div class="row ">
                     <div class="col-md-6 ">
-                      <span [ngbPopover]="likepopcontent"><b>{{post?._liked_by.length}}</b> Likes </span>
+                      <span [ngbPopover]="likepopcontent" triggers="mouseenter:mouseleave"><b>{{post?._liked_by.length}}</b> Likes </span>
                       <span><b>{{post?.comments_count}}</b> Comments</span>
                     </div>
                     <div class="col-md-6 text-right">
@@ -328,7 +328,7 @@
                       </span>
                     </div>
                   </div>
-                  <ng-template #likepopcontent>
+                  <ng-template #likepopcontent >
                       <ul class="list-group">
                         <li class="list-group-item" *ngFor="let liked_member of post._liked_by;">{{liked_member.first_name}}</li>
                       </ul> 
@@ -462,7 +462,7 @@
                   <hr>
                   <div class="row ">
                     <div class="col-md-6 ">
-                      <span [ngbPopover]="likepopcontent"><b>{{post?._liked_by.length}}</b> Likes</span>
+                      <span [ngbPopover]="likepopcontent" triggers="mouseenter:mouseleave"><b>{{post?._liked_by.length}}</b> Likes</span>
                       <span><b>{{post?.comments_count}}</b> Comments</span>
                       <ng-template #likepopcontent>
                           <ul class="list-group">
@@ -639,7 +639,7 @@
                   <hr>
                   <div class="row">
                     <div class="col-md-6 ">
-                      <span [ngbPopover]="likepopcontent"><b>{{post?._liked_by.length}}</b> Likes</span>
+                      <span [ngbPopover]="likepopcontent" triggers="mouseenter:mouseleave"><b>{{post?._liked_by.length}}</b> Likes</span>
                       <span><b>{{post?.comments_count}}</b> Comments</span>
                       <ng-template #likepopcontent>
                           <ul class="list-group">
