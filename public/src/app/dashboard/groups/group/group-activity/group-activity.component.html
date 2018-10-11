@@ -41,7 +41,7 @@
       (click)="show_hide_working_bar()">What are you working on?</button>
               </div>
             </div>
-            <div id="show_hide" class="col-md-12 innercard fade-in" style="display: none;">
+            <div id="show_hide" class="col-md-12 innercard" style="display: none;">
               <div class="row">
                 <div class="col-md-4">
                   <ul class="nav nav-pills">
@@ -107,16 +107,26 @@
                     <!--<textarea class="form-control " id="post-content" rows="3" [(ngModel)]="post.content" name="postContent" formControlName="postContent"></textarea>-->
                     <!--<app-ngx-editor [placeholder]="'Enter text here...'" [spellcheck]="true" id="post-content" rows="3" [(ngModel)]="post.content" name="postContent" formControlName="postContent"></app-ngx-editor>-->
                     <quill-editor id="post-content" [modules]="modules" [(ngModel)]="post.content" (blur)="onEditorBlured($event)" [spellcheck]="true" name="postContent" (focus)="onEditorFocused($event)" formControlName="postContent" (ready)="onEditorCreated($event)" (onEditorCreated)="onEditorCreated($event)" (change)="onContentChanged($event)" (onContentChanged)="onContentChanged($event)"></quill-editor>
-                    <div class="col-12 text-center">
-                      <emoji-mart
-                      [set]="emojiSet"
-                      isNative = "false"
-                      [hideRecent]="false"
-                      (emojiSelect)="handleClick($event)"
-                      title="Pick your emoji…"
-                      emoji='point_up'>
-                    </emoji-mart>
-                    </div>
+                    
+
+                    <div ngbDropdown class="btn-group">
+                      <a id="emojiDrop" class="btn" ngbDropdownToggle>
+                          <i  class="material-icons">
+                              sentiment_satisfied_alt
+                          </i>
+                        </a>
+                      
+                            <emoji-mart ngbDropdownMenu aria-labelledby="emojiDrop"
+                            [set]="emojiSet"
+                            isNative = "false"
+                            [hideRecent]="false"
+                            (emojiSelect)="handleClick($event)"
+                            title="Pick your emoji…"
+                            emoji='point_up'>
+                          </emoji-mart>
+                     
+                        </div>
+                   
 
                   </div>
                 </div>
@@ -339,16 +349,23 @@
                         <h6>Add a comment</h6>
                         
                         <quill-editor id="comment-content{{i}}" [modules]="modules" [(ngModel)]="comment.content" (blur)="onEditorBlured($event)" [spellcheck]="true" class="form-control" name="commentContent" (focus)="onEditorFocused($event)" formControlName="commentContent" (ready)="onEditorCreated($event)" (change)="onContentChanged($event)" (onEditorCreated)="onEditorCreated($event)" (onContentChanged) = "onContentChanged($event)"></quill-editor>
-                        <div class="col-12 text-center">
-                          <emoji-mart
-                          [set]="emojiSet"
-                          isNative = "false"
-                          [hideRecent]="false"
-                          (emojiSelect)="handleClick($event)"
-                          title="Pick your emoji…"
-                          emoji='point_up'>
-                        </emoji-mart>
-                        </div>
+                        <div ngbDropdown class="btn-group">
+                            <a id="emojiDrop" class="btn" ngbDropdownToggle>
+                                <i  class="material-icons">
+                                    sentiment_satisfied_alt
+                                </i>
+                              </a>
+                            
+                                  <emoji-mart ngbDropdownMenu aria-labelledby="emojiDrop"
+                                  [set]="emojiSet"
+                                  isNative = "false"
+                                  [hideRecent]="false"
+                                  (emojiSelect)="handleClick($event)"
+                                  title="Pick your emoji…"
+                                  emoji='point_up'>
+                                </emoji-mart>
+                           
+                              </div>
                       </div>
                     </div>
                   </div>
@@ -496,16 +513,23 @@
                         <h6>Add a comment</h6>
                         <!--<textarea class="form-control" id="post-content" rows="3" [(ngModel)]="comment.content" name="commentContent" formControlName="commentContent"></textarea>-->
                         <quill-editor id="comment-content{{i}}" [modules]="modules" [(ngModel)]="comment.content" (blur)="onEditorBlured($event)" [spellcheck]="true" class="form-control" name="commentContent" (focus)="onEditorFocused($event)" formControlName="commentContent" (ready)="onEditorCreated($event)" (change)="onContentChanged($event)" (onEditorCreated)="onEditorCreated($event)" (onContentChanged) = "onContentChanged($event)"></quill-editor>
-                        <div class="col-12 text-center">
-                          <emoji-mart
-                          [set]="emojiSet"
-                          isNative = "false"
-                          [hideRecent]="false"
-                          (emojiSelect)="handleClick($event)"
-                          title="Pick your emoji…"
-                          emoji='point_up'>
-                        </emoji-mart>
-                        </div>
+                        <div ngbDropdown class="btn-group">
+                            <a id="emojiDrop" class="btn" ngbDropdownToggle>
+                                <i  class="material-icons">
+                                    sentiment_satisfied_alt
+                                </i>
+                              </a>
+                            
+                                  <emoji-mart ngbDropdownMenu aria-labelledby="emojiDrop"
+                                  [set]="emojiSet"
+                                  isNative = "false"
+                                  [hideRecent]="false"
+                                  (emojiSelect)="handleClick($event)"
+                                  title="Pick your emoji…"
+                                  emoji='point_up'>
+                                </emoji-mart>
+                           
+                              </div>
                       </div>
                     </div>
                   </div>
@@ -667,16 +691,23 @@
                         <h6>Add a comment</h6>
                         <!--<textarea class="form-control" id="post-content" rows="3" [(ngModel)]="comment.content" name="commentContent" formControlName="commentContent"></textarea>-->
                         <quill-editor id="comment-content{{i}}" [modules]="modules" [(ngModel)]="comment.content" (blur)="onEditorBlured($event)" [spellcheck]="true" class="form-control" name="commentContent" (focus)="onEditorFocused($event)" formControlName="commentContent" (ready)="onEditorCreated($event)" (onEditorCreated)="onEditorCreated($event)" (onContentChanged) = "onContentChanged($event)" (change)="onContentChanged($event)"></quill-editor>
-                        <div class="col-12 text-center">
-                          <emoji-mart
-                          [set]="emojiSet"
-                          isNative = "false"
-                          [hideRecent]="false"
-                          (emojiSelect)="handleClick($event)"
-                          title="Pick your emoji…"
-                          emoji='point_up'>
-                        </emoji-mart>
-                        </div>
+                        <div ngbDropdown class="btn-group">
+                            <a id="emojiDrop" class="btn" ngbDropdownToggle>
+                                <i  class="material-icons">
+                                    sentiment_satisfied_alt
+                                </i>
+                              </a>
+                            
+                                  <emoji-mart ngbDropdownMenu aria-labelledby="emojiDrop"
+                                  [set]="emojiSet"
+                                  isNative = "false"
+                                  [hideRecent]="false"
+                                  (emojiSelect)="handleClick($event)"
+                                  title="Pick your emoji…"
+                                  emoji='point_up'>
+                                </emoji-mart>
+                           
+                              </div>
                       </div>
                     </div>
                   </div>

@@ -57,6 +57,17 @@ i.icon-blue {
 	background-color: #005fd5;
 }
 
+.emoji-drop-transparent {
+
+	color: transparent;
+	background: transparent;
+  
+  }
+  a.btn.dropdown-toggle::after
+{
+  color: transparent;
+}
+
 
 .l-8 {animation-delay: 1.32s;}
 

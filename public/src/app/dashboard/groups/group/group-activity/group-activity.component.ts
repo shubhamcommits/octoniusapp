@@ -24,13 +24,13 @@
   import { ScrollToService } from 'ng2-scroll-to-el';
   import 'quill-mention';
   import { environment } from '../../../../../environments/environment';
-import { $ } from 'protractor';
+  import {NgbDropdownConfig} from '@ng-bootstrap/ng-bootstrap';
 
   @Component({
     selector: 'app-group-activity',
     templateUrl: './group-activity.component.html',
     styleUrls: ['./group-activity.component.scss'],
-    providers: [NgbPopoverConfig]
+    providers: [NgbPopoverConfig, NgbDropdownConfig]
   })
   export class GroupActivityComponent implements OnInit {
     posts = new Array();
@@ -151,10 +151,11 @@ import { $ } from 'protractor';
       public groupDataService: GroupDataService,
       private router: Router, private groupService: GroupService,
       private modalService: NgbModal, private postService: PostService, private _sanitizer: DomSanitizer,
-      private ngxService: NgxUiLoaderService, private snotifyService: SnotifyService, config: NgbPopoverConfig,
-      private scrollService: ScrollToService) {
-        config.placement = 'top';
-        config.triggers = 'hover';
+      private ngxService: NgxUiLoaderService, private snotifyService: SnotifyService, config: NgbDropdownConfig,
+      private scrollService: ScrollToService ) {
+        config.placement = 'left';
+        config.autoClose = false;
+        //config.triggers = 'hover';
         this.group_id = this.groupDataService.groupId;
         this.user_data = JSON.parse(localStorage.getItem('user'));
        // console.log('user', this.user_data);
@@ -1471,7 +1472,7 @@ import { $ } from 'protractor';
       
           ['link', 'image', 'video'] ]
         }
-  
+        
   
       this.modules = {
         toolbar: toolbaroptions,
