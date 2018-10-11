@@ -24,6 +24,7 @@
   import { ScrollToService } from 'ng2-scroll-to-el';
   import 'quill-mention';
   import { environment } from '../../../../../environments/environment';
+import { $ } from 'protractor';
 
   @Component({
     selector: 'app-group-activity',
@@ -52,6 +53,18 @@
     content_mentions = [];
 
     public editor;
+    public editorTextLength;
+
+    emojiThemes = [
+      'apple',
+      'google',
+      'twitter',
+      'emojione',
+      'messenger',
+      'facebook',
+    ];
+    emojiSet = 'google';
+    emojiNative = false;
 
     isLoading$ = new BehaviorSubject(false);
 
@@ -154,21 +167,23 @@
 
     }
     onEditorBlured(quill) {
-    //  console.log('editor blur!', quill);
+     console.log('editor blur!', quill);
     }
 
     onEditorFocused(quill) {
-    //  console.log('editor focus!', quill);
+      console.log('editor focus!', quill);
     }
 
     onEditorCreated(quill) {
       this.editor = quill;
-    //  console.log('quill is ready! this is current quill instance object', quill);
-      quill.insertText(0,'hello', 'bold', true);
+  //console.log('quill is ready! this is current quill instance object', quill);
+     // quill.insertText(0,'hello', 'bold', true);
     }
 
-    onContentChanged({ quill, html, text }) {
-    //  console.log('quill content is changed!', quill, html, text);
+    onContentChanged(quill) {
+    // console.log('quill content is changed!', quill);
+     this.editorTextLength = quill.text.length
+    // console.log('length', this.editorTextLength);
     }
     transform(html: string) : SafeHtml {
       return this._sanitizer.bypassSecurityTrustHtml(html); 
@@ -1491,6 +1506,20 @@
       audio.src = "/assets/audio/intuition.ogg";
       audio.load();
       audio.play();
+    }
+
+
+  
+    setTheme(set: string) {
+      this.emojiNative = set === 'google';
+      this.emojiSet = set;
+    }
+    handleClick($event) {
+      console.log($event.emoji.native);
+      this.editor.insertText(this.editorTextLength-1, $event.emoji.native);
+      //this.onEditorCreated($event);
+    
+
     }
 
 
