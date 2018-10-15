@@ -39,6 +39,7 @@ const PostSchema = new Schema({
       required: true
     }
   }],
+  // !! TO BE MODIFIED, handle tasks statuses: to do/in progress/done
   completed: {
     type: Boolean,
     default: false

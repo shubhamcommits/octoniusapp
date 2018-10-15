@@ -33,6 +33,12 @@
 
 #### 3.x. GET `api/groups/:groupId/nextPosts/:postId` get next ten most recent posts (after `:postId`)
 
+#### 3.x. ❗️❗️GET `api/groups/:groupId/tasks` get group's *to do/in progress* tasks
+
+#### 3.x. ❗️❗️GET `api/group/:groupId/tasksDone` get 20 most recently created group's tasks that are completed
+
+#### 3.x. ❗️❗️GET `api/groups/:groupId/nextTasksDone/:postId` get next 20 most recently created group's tasks that are completed
+
 '
 
 ## | 4. `api/posts` routes
@@ -58,6 +64,18 @@
 #### 4.8. ❗️❗️PUT `api/posts/:postId/like` like post
 
 #### 4.8. ❗️❗️PUT `api/posts/:postId/unlike` unlike post
+
+'
+
+## | 5. `api/users` routes
+
+'
+
+#### 5.x. ❗️❗️GET `api/users/:userId/tasks` get user's *to do/in progress* tasks
+
+#### 5.x. ❗️❗️GET `api/users/:userId/tasksDone` get 20 most recently created user's tasks that are completed
+
+#### 5.x. ❗️❗️GET `api/users/:userId/nextTasksDone/:postId` get next 20 most recently created users's tasks that are completed
 
 '
 

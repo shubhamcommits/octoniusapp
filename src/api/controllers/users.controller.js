@@ -1,76 +1,86 @@
-const { User } = require('../models');
+const { Post } = require('../models');
 
-const  getUser = async (req, res, next) => {
+const { sendErr } = require('../../utils');
+
+const getNextTasksDone = async (req, res, next) => {
   try {
-    const userId = req.userId;
+    const { userId, params: { postId } } = req;
 
-    const user = await User.findOne({
-      _id: userId
+    const posts = await Post.find({
+      $and: [
+        { 'task._assigned_to': userId },
+        // !! TO BE MODIFIED, handle tasks statuses: to do/in progress/done
+        { completed: false },
+        { _id: { $lt: postId } }
+      ]
     })
-      .select('_id first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number mobile_number company_name _workspace _groups');
-
-    // User not found
-    if (!user) {
-      return sendErr(res, err, 'Error! User not found, invalid id or unauthorized request', 404);
-    }
+      .sort('-_id')
+      .limit(20)
+      .populate('_posted_by', 'first_name last_name profile_pic')
+      .populate('task._assigned_to', 'first_name last_name')
+      .lean();
 
     return res.status(200).json({
-      message: `User found!`,
-      user
+      message: `The next ${posts.length} most recent completed tasks!`,
+      posts
     });
-
   } catch (err) {
     return sendErr(res, err);
   }
 };
 
-const updateUser = async (req, res, next) => {
+const getTasks = async (req, res, next) => {
   try {
-    const userId = req.userId;
-    const userData = req.body;
+    const { userId } = req;
 
-    delete req.body.userId
-
-    const user = await User.findByIdAndUpdate({
-      _id: userId
-    }, {
-      $set: userData
-    }, {
-      new: true
-    });
+    const posts = await Post.find({
+      'task._assigned_to': userId,
+      // !! TO BE MODIFIED, handle tasks statuses: to do/in progress/done
+      completed: false
+    })
+      .sort('-task.due_to')
+      .populate('_posted_by', 'first_name last_name profile_pic')
+      .populate('task._assigned_to', 'first_name last_name')
+      .lean();
 
     return res.status(200).json({
-      message: 'Profile updated!',
-      user
+      message: `Found ${posts.length} pending tasks.`,
+      posts
     });
-
   } catch (err) {
     return sendErr(res, err);
   }
 };
 
-const updateUserImage = async (req, res, next) => {
+const getTasksDone = async (req, res, next) => {
   try {
-    const user = await User.findByIdAndUpdate({
-      _id: req.userId
-    }, {
-      profile_pic: req.fileName
-    }, {
-      new: true
-    });
+    const { userId } = req;
+
+    const posts = await Post.find({
+      $and: [
+        { 'task._assigned_to': userId },
+        // !! TO BE MODIFIED, handle tasks statuses: to do/in progress/done
+        { completed: false }
+      ]
+    })
+      .sort('-_id')
+      .limit(20)
+      .populate('_posted_by', 'first_name last_name profile_pic')
+      .populate('task._assigned_to', 'first_name last_name')
+      .lean();
 
     return res.status(200).json({
-      message: 'User profile picture updated!',
-      user
+      message: `The ${posts.length} most recent completed tasks!`,
+      posts
     });
-
   } catch (err) {
     return sendErr(res, err);
   }
 };
 
 module.exports = {
-  getUser,
-  updateUser,
-  updateUserImage
+  // tasks
+  getNextTasksDone,
+  getTasks,
+  getTasksDone
 };
