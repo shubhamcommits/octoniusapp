@@ -40,6 +40,10 @@ const deleteDomain = async (req, res, next) => {
   try {
   // TO DO !!!
 
+    // Delete domain from the list
+    // Disable all users from that domain
+    
+    return 0;
   } catch (err) {
     return sendErr(res, err);
   }
