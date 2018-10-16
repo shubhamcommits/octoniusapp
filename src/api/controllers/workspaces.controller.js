@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 
 const { Auth, Group, User, Workspace } = require('../models');
 const { password, sendMail, sendErr } = require('../../utils');
+const { user } = require('./');
 
 /*  =============================
  *  -- WORKSPACE ADMIN METHODS --
@@ -38,12 +39,31 @@ const addDomain = async (req, res, next) => {
 
 const deleteDomain = async (req, res, next) => {
   try {
-  // TO DO !!!
+    const { userId, params: { workspaceId, domain } } = req;
 
-    // Delete domain from the list
+    // Remove domain from domains array
+    const workspace = await Workspace.findByIdAndUpdate({
+      _id: workspaceId,
+      _owner: userId
+    }, {
+      $pull: {
+        allowed_domains: domain
+      }
+    }, {
+      new: true
+    });
+
+    if (!workspace) {
+      return sendErr(res, '', 'Invalid workspace id or user in not the workspace owner', 404);
+    }
+
     // Disable all users from that domain
+    // Delete all users from that domain, from workspace users/admins/members
     
-    return 0;
+    return res.status(200).json({
+      message: 'Domain removed from workspace. All users from this domain are disabled!',
+      allowedDomains: workspace.allowed_domains
+    });
   } catch (err) {
     return sendErr(res, err);
   }

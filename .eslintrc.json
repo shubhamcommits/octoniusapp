@@ -1,7 +1,7 @@
 {
   "extends": "airbnb",
   "parserOptions": {
-    "ecmaVersion": 8,
+    "ecmaVersion": 6,
     "ecmaFeatures": {
       "jsx": true
     }
@@ -23,11 +23,6 @@
         "vars": "local",
         "args": "none"
       }
-    ],
-    "object-curly-newline": ["error", {
-      "ObjectPattern": { "multiline": true },
-      "ImportDeclaration": { "multiline": true },
-      "ExportDeclaration": { "multiline": true }
-    }]
+    ]
   }
 }
