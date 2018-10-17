@@ -2,16 +2,6 @@ const { Post } = require('../models');
 
 const { sendErr } = require('../../utils');
 
-// -| User status controllers |-
-
-const disable = async (email) => {
-  try {
-
-  } catch (err) {
-
-  }
-};
-
 // -| User tasks controllers |-
 
 const getNextTasksDone = async (req, res, next) => {
@@ -91,8 +81,6 @@ const getTasksDone = async (req, res, next) => {
 };
 
 module.exports = {
-  // status
-  disable,
   // tasks
   getNextTasksDone,
   getTasks,
