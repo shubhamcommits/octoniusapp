@@ -275,11 +275,15 @@ const createNewWorkspace = async (req, res, next) => {
     }
 
     // Prepare workspace data before creation
-    const new_workspace = req.body;
-    new_workspace.owner_password = passEncrypted.password;
+    const newWorkspace = req.body;
+    newWorkspace.owner_password = passEncrypted.password;
+
+    // Pass user email domain to allowed domains
+    const userEmailDomain = req.body.owner_email.split('@')[1];
+    newWorkspace.allowed_domains = [userEmailDomain];
 
     // Create new workspace
-    const workspace = await	Workspace.create(new_workspace);
+    const workspace = await Workspace.create(newWorkspace);
 
     // Error creating workspace
     if (!workspace) {
@@ -297,7 +301,7 @@ const createNewWorkspace = async (req, res, next) => {
       company_name: req.body.company_name,
       _workspace: workspace,
       role: 'owner'
-    }
+    };
 
     // Create new user with owner rights
     const user = await User.create(newUser);
@@ -331,8 +335,8 @@ const createNewWorkspace = async (req, res, next) => {
       group_name: 'Global',
       _workspace: workspaceUpdate,
       _admins: user,
-      workspace_name: workspaceUpdate.workspace_name, 
-    }
+      workspace_name: workspaceUpdate.workspace_name
+    };
 
     // Create new global group
     const group = await Group.create(globalGroup);
@@ -358,7 +362,7 @@ const createNewWorkspace = async (req, res, next) => {
       return sendErr(res, '', 'Some error ocurred trying to update the user!');
     }
 
-    // generating jsonwebtoken 
+    // generating jsonwebtoken
     const payload = {
       subject: userUpdate._id
     };
@@ -397,18 +401,17 @@ const createNewWorkspace = async (req, res, next) => {
 
     return res.status(200).json({
       message: 'Workspace created!',
-      token: token,
+      token,
       user: currentUser
     });
-
   } catch (err) {
     return sendErr(res, err);
   }
 };
 
-/*	=======================
- *	-- USER AVAILABILITY --
- *	=======================
+/*  =======================
+ *  -- USER AVAILABILITY --
+ *  =======================
  */
 
 const checkUserAvailability = async (req, res, next) => {

@@ -47,12 +47,11 @@ const workspaceSchema = new Schema({
   }],
   allowed_domains: [{
     type: String,
-    default: null,
-    trim: true
+    required: true
   }],
   invited_users: [{
     type: String,
-    require: true
+    required: true
   }],
   created_date: {
     type: Date,

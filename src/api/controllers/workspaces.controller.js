@@ -10,13 +10,19 @@ const { sendErr } = require('../../utils');
 
 const addDomain = async (req, res, next) => {
   try {
+    const {
+      userId,
+      params: { workspaceId },
+      body: { domain }
+    } = req;
+
     // Add new domains, prevent to add duplicate values
-    const workspace = await Workspace.findByIdAndUpdate({
-      _id: req.params.workspaceId,
-      _owner: req.userId
+    const workspace = await Workspace.findOneAndUpdate({
+      _id: workspaceId,
+      _owner: userId
     }, {
       $addToSet: {
-        allowed_domains: req.body.domain
+        $allowed_domains: domain
       }
     }, {
       new: true
@@ -25,6 +31,8 @@ const addDomain = async (req, res, next) => {
     if (!workspace) {
       return sendErr(res, '', 'Invalid workspace id or user in not the workspace owner', 404);
     }
+
+    console.log(workspace);
 
     return res.status(200).json({
       message: "New domain was added to workspace's allowed domains!",
@@ -40,11 +48,11 @@ const deleteDomain = async (req, res, next) => {
     const { userId, params: { workspaceId, domain } } = req;
 
     // Remove domain from domains array
-    const workspace = await Workspace.findByIdAndUpdate({
+    const workspace = await Workspace.findOneAndUpdate({
       _id: workspaceId,
       _owner: userId
     }, {
-      $pull: {
+      $pullAll: {
         allowed_domains: domain
       }
     }, {
@@ -110,15 +118,18 @@ const deleteDomain = async (req, res, next) => {
 
 const getDomains = async (req, res, next) => {
   try {
-    const workspace = await Workspace.find({ _id: req.params.workspaceId });
+    const workspace = await Workspace.find({ _id: req.params.workspaceId })
+      .lean();
 
     if (!workspace) {
       return sendErr(res, '', 'Invalid workspace id!', 404);
     }
 
+    console.log(workspace);
+
     return res.status(200).json({
-      message: `Found ${workspace.allowed_domains.length} domains allowed on this workspace!`,
-      allowedDomains: workspace.allowed_domains
+      message: `Found ${!workspace.allowed_domains ? 0 : workspace.allowed_domains.length} domains allowed on this workspace!`,
+      domains: workspace.allowed_domains
     });
   } catch (err) {
     return sendErr(res, err);
