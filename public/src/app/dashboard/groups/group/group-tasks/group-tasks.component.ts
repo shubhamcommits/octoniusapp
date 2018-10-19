@@ -15,6 +15,8 @@ export class GroupTasksComponent implements OnInit {
 
   constructor(private userService: UserService, private dragulaService: DragulaService, private postService: PostService) {
     this.user_data = JSON.parse(localStorage.getItem('user')); 
+    this.getTasks();
+    this.getCompletedTasks();
 
   }
 
@@ -44,8 +46,7 @@ export class GroupTasksComponent implements OnInit {
       console.log(args);
 
     });
-    this.getTasks();
-    this.getCompletedTasks();
+
   }
 
   ngOnDestroy(){
