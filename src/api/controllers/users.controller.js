@@ -11,8 +11,7 @@ const getNextTasksDone = async (req, res, next) => {
     const posts = await Post.find({
       $and: [
         { 'task._assigned_to': userId },
-        // !! TO BE MODIFIED, handle tasks statuses: to do/in progress/done
-        { completed: false },
+        { 'task.status': 'done' },
         { _id: { $lt: postId } }
       ]
     })
@@ -37,8 +36,10 @@ const getTasks = async (req, res, next) => {
 
     const posts = await Post.find({
       'task._assigned_to': userId,
-      // !! TO BE MODIFIED, handle tasks statuses: to do/in progress/done
-      completed: false
+      $or: [
+        { 'task.status': 'to do' },
+        { 'task.status': 'in progress' }
+      ]
     })
       .sort('-task.due_to')
       .populate('_posted_by', 'first_name last_name profile_pic')
@@ -61,8 +62,7 @@ const getTasksDone = async (req, res, next) => {
     const posts = await Post.find({
       $and: [
         { 'task._assigned_to': userId },
-        // !! TO BE MODIFIED, handle tasks statuses: to do/in progress/done
-        { completed: false }
+        { 'task.status': 'done' }
       ]
     })
       .sort('-_id')

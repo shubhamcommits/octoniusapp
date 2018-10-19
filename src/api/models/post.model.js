@@ -39,15 +39,6 @@ const PostSchema = new Schema({
       required: true
     }
   }],
-  // !! TO BE MODIFIED, handle tasks statuses: to do/in progress/done
-  completed: {
-    type: Boolean,
-    default: false
-  },
-  completion_date: {
-    type: Date,
-    default: null
-  },
   _group: {
     type: Schema.Types.ObjectId,
     ref: 'Group',
@@ -66,6 +57,10 @@ const PostSchema = new Schema({
     _assigned_to: {
       type: Schema.Types.ObjectId,
       ref: 'User'
+    },
+    status: {
+      type: String,
+      enum: ['to do', 'in progress', 'done']
     }
   },
   event: {

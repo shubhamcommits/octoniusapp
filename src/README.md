@@ -47,23 +47,25 @@
 
 #### 4.x. GET `api/posts/:postId` get post
 
-#### 4.1. POST `api/posts` add new post
+#### 4.x. POST `api/posts` add new post
 
-#### 4.2. PUT `api/posts/:postId` edit/update post
+#### 4.x. PUT `api/posts/:postId` edit/update post
 
-#### 4.3. DELETE `api/posts/:postId` delete post
+#### 4.x. DELETE `api/posts/:postId` delete post
 
-#### 4.4. ❗️❗️POST `api/posts/:postId/comment` add new comment on post
+#### 4.x. ❗️❗️POST `api/posts/:postId/comment` add new comment on post
 
-#### 4.5. ❗️❗️PUT `api/posts/:postId/comment/:commentId` update comment
+#### 4.x. ❗️❗️PUT `api/posts/:postId/comment/:commentId` update comment
 
-#### 4.6. ❗️❗️DELETE `api/posts/:post_id/comment/:commentId` delete comment
+#### 4.x. ❗️❗️DELETE `api/posts/:post_id/comment/:commentId` delete comment
 
-#### 4.7. ❗️❗️POST `api/posts/:postId/complete` mark post as complete
+#### 4.x. ❗️❗️POST `api/posts/:postId/complete` mark post as complete
 
-#### 4.8. ❗️❗️PUT `api/posts/:postId/like` like post
+#### 4.x. ❗️❗️PUT `api/posts/:postId/like` like post
 
-#### 4.8. ❗️❗️PUT `api/posts/:postId/unlike` unlike post
+#### 4.x. ❗️❗️PUT `api/posts/:postId/unlike` unlike post
+
+#### 4.x. ❗️❗️PUT `api/posts/:postId/taskStatus` change task status
 
 '
 
@@ -71,11 +73,11 @@
 
 '
 
-#### 5.x. ❗️❗️GET `api/users/:userId/tasks` get user's *to do/in progress* tasks
+#### 5.x. ❗️❗️GET `api/users/tasks` get user's *to do/in progress* tasks
 
-#### 5.x. ❗️❗️GET `api/users/:userId/tasksDone` get 20 most recently created user's tasks that are completed
+#### 5.x. ❗️❗️GET `api/users/tasksDone` get 20 most recently created user's tasks that are completed
 
-#### 5.x. ❗️❗️GET `api/users/:userId/nextTasksDone/:postId` get next 20 most recently created users's tasks that are completed
+#### 5.x. ❗️❗️GET `api/users/nextTasksDone/:postId` get next 20 most recently created users's tasks that are completed
 
 '
 

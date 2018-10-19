@@ -34,6 +34,9 @@ router.put('/:postId', posts.edit);
 // DELETE api/posts/:postId - delete post
 router.delete('/:postId', posts.remove);
 
+// PUT api/posts/:postId/taskStatus - change task status
+router.put('/:postId/taskStatus', posts.changeTaskStatus);
+
 // POST api/posts/:postId/comment - add new comment on post
 // router.post('/:postId/comment', posts.addComment); // To do
 router.post('/addComment', postsController.addCommentOnPost); // ! TO BE REMOVED
