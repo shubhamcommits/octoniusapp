@@ -1,0 +1,49 @@
+<!--<div class="row container">
+<div class="col-md-4 col-sm-4 col-xs-4">
+  <h2>To do</h2>
+
+  <div class="example-list"  mwlDraggable (dragEnd)="dragEnd($event)">
+    <div class="example-box">item</div>
+  </div>
+</div>
+
+<div class="col-md-4 col-sm-4 col-xs-4">
+  <h2>In Progress</h2>
+
+  <div class="example-list"  mwlDraggable (dragEnd)="dragEnd($event)">
+    <div class="example-box">item</div>
+  </div>
+</div>
+
+<div class="col-md-4 col-sm-4 col-xs-4">
+  <h2>Done</h2>
+
+  <div class="example-list" mwlDroppable
+  (drop)="this.droppedData = $event.dropData">
+    <div class="example-box" >item</div>
+  </div>
+</div>
+</div>-->
+
+
+<div class="flex row">
+  <div class="col-md-6 col-xs-6 col-sm-6">
+      <h2>To do</h2>
+      <div class="container" dragula="VAMPIRES" [(dragulaModel)]="pendingTasks">
+        <div class="vamp" *ngFor="let pendingTask of pendingTasks" [innerHTML]="pendingTask.content"></div>
+      </div>  
+  </div>
+  <!--<div class="col-md-4 col-xs-4 col-sm-4">
+      <h2>In Progress</h2>
+      <div class="container" dragula="VAMPIRES" [(dragulaModel)]="pendingTasks">
+          <div class="vamp" *ngFor="let pendingTask of pendingTasks" [innerHTML]="pendingTask.content"></div>
+        </div>  
+  </div>-->
+  
+  <div class="col-md-6 col-xs-6 col-sm-6">
+      <h2>Completed</h2>
+    <div class="container" dragula="VAMPIRES" [(dragulaModel)]="completedTasks">
+      <div class="vamp" *ngFor="let completedTask of completedTasks" [innerHTML]="completedTask.content"></div>
+    </div>
+    </div>
+  </div>
