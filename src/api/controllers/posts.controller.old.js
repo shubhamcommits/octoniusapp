@@ -8,29 +8,6 @@ const { sendMail, sendErr } = require('../../utils');
  *	==================
  */
 
-const completePost = async (req, res, next) => {
-  try {
-    let postId = req.body.post_id;
-
-    const post = await Post.findByIdAndUpdate({
-      _id: postId
-    }, {
-      completed: true,
-      completion_date: moment().format()
-    }, {
-      new: true
-    });
-
-    return res.status(200).json({
-      message: 'Post completed!',
-      post,
-    });
-
-  } catch (err) {
-    return sendErr(res, err);
-  }
-};
-
 const addCommentOnPost = async (req, res, next) => {
   try {
     const postId = req.body.post_id;
@@ -171,7 +148,6 @@ const unlikePost = async (req, res, next) => {
  */
 
 module.exports = {
-  completePost,
   addCommentOnPost,
   getUserOverview,
   likePost,

@@ -47,10 +47,6 @@ router.post('/addComment', postsController.addCommentOnPost); // ! TO BE REMOVED
 // DELETE api/posts/:post_id/comment/:commentId - delete comment
 // router.delete('/:postId/comment/:commentId', posts.editComment); // To do
 
-// PUT api/posts/:postId/complete - mark post as complete
-// router.put('/:postId/complete', authorization.toCompletePost, posts.complete); // To do
-router.post('/complete', authorization.toCompletePost, postsController.completePost); // ! TO BE REMOVED
-
 // PUT api/posts/:postId/like - like post
 // router.put('/:postId/like', posts.like); // To do
 router.post('/like', postsController.likePost); // ! TO BE REMOVED
