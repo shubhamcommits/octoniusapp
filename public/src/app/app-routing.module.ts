@@ -22,6 +22,7 @@ import { GroupMembersComponent } from './dashboard/groups/group/group-members/gr
 import { GroupCalendarComponent } from './dashboard/groups/group/group-calendar/group-calendar.component';
 import { GroupFilesComponent } from './dashboard/groups/group/group-files/group-files.component';
 import { GroupPostComponent } from './dashboard/groups/group/group-post/group-post.component';
+import { GroupTasksComponent } from './dashboard/groups/group/group-tasks/group-tasks.component';
 import { AdminGeneralComponent } from './dashboard/admin/admin-general/admin-general.component';
 import { AdminMembersComponent } from './dashboard/admin/admin-members/admin-members.component';
 
@@ -51,7 +52,8 @@ const appRoutes: Routes = [
           { path: 'calendar', component: GroupCalendarComponent },
           { path: 'members', component: GroupMembersComponent },
           { path: 'admin', component: GroupAdminComponent },
-          { path: 'post/:postId', component: GroupPostComponent }
+          { path: 'post/:postId', component: GroupPostComponent },
+          { path: 'tasks', component: GroupTasksComponent }
         ]
       },
       {

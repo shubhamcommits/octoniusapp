@@ -10,11 +10,15 @@ const { sendErr, sendMail, passwordHelper } = require('../../utils');
 
 const signIn = async (req, res, next) => {
 	try {
-		const loginUser = req.body;
+    const {
+      email,
+      password,
+      workspace_name
+    } = req.body;
 
 		const user = await User.findOne({
-			workspace_name: loginUser.workspace_name,
-			email: loginUser.email
+			workspace_name: workspace_name,
+			email: email
 		}).populate('_workspace', 'workspace_name _id');
 
     // If user wasn't found or user was previsously removed/disabled, return error
@@ -22,9 +26,7 @@ const signIn = async (req, res, next) => {
 			return sendErr(res, '', 'Please enter a valid Workspace name or user email!', 401);
 		} 
 
-		const plainPassword = req.body.password;
-
-		const passDecrypted = await passwordHelper.decryptPassword(plainPassword, user.password);
+		const passDecrypted = await passwordHelper.decryptPassword(password, user.password);
 
 		if (!passDecrypted.password) {
 			return sendErr(res, '', 'Please enter a valid email or password!', 401);
@@ -202,7 +204,7 @@ const signUp = async (req, res, next) => {
 		sendMail.signup(userUpdate);
 
 		// Signup user and return the token
-		return res.status(200).json({
+		return res.status(201).json({
 			message: `Welcome to ${workspaceUpdate.workspace_name} Workspace!`,
 			token: token,
 			user: currentUser

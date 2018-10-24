@@ -619,10 +619,21 @@
 
       if(el.getElementsByClassName( 'mention' ).length > 0)
       {
-       //  console.log('Element',  el.getElementsByClassName( 'mention' ));
+        
+       // console.log('Element',  el.getElementsByClassName( 'mention' ));
       for(var i = 0; i < el.getElementsByClassName( 'mention' ).length; i++)
       {
-        this.content_mentions.push(el.getElementsByClassName( 'mention' )[i]['dataset']['id']);
+        if(el.getElementsByClassName( 'mention' )[i]['dataset']['value'] == "all"){
+          for(var i = 0; i < this.allMembersId.length; i++){
+            this.content_mentions.push(this.allMembersId[i]);
+          }
+          //this.content_mentions = this.allMembersId;
+        }
+        else{
+          if (!this.content_mentions.includes(el.getElementsByClassName( 'mention' )[i]['dataset']['id']))
+          this.content_mentions.push(el.getElementsByClassName( 'mention' )[i]['dataset']['id']);
+        }
+        
         
       }
 
@@ -631,8 +642,10 @@
         formData.append('_content_mentions', this.content_mentions[i]);
       }
       
+      // console.log('Content Mention', post._content_mentions); 
       //  console.log('This post', postId);
       }
+
       //formData.append('event.due_time', post.event.due_time);
       //formData.append('event._assigned_to', assignedUsers);
 
@@ -661,9 +674,11 @@
           //  console.log(data);
             this.socket.emit('newPost', data);
           this.loadGroupPosts();
+          this.content_mentions = [];
           
 
         }, (err) => {
+          this.content_mentions = [];
           this.processing = false;
           this.alert.class = 'danger';
           this.enablePostForm();
@@ -710,6 +725,7 @@
       formData.append('_group', post._group);
       formData.append('task.due_to', post.task.due_to);
       formData.append('task._assigned_to', post.task._assigned_to);
+      formData.append('task.status', 'to do');
 
       const scanned_content = post.content;
       var el = document.createElement( 'html' );
@@ -717,10 +733,21 @@
 
       if(el.getElementsByClassName( 'mention' ).length > 0)
       {
-       //  console.log('Element',  el.getElementsByClassName( 'mention' ));
+        
+       // console.log('Element',  el.getElementsByClassName( 'mention' ));
       for(var i = 0; i < el.getElementsByClassName( 'mention' ).length; i++)
       {
-        this.content_mentions.push(el.getElementsByClassName( 'mention' )[i]['dataset']['id']);
+        if(el.getElementsByClassName( 'mention' )[i]['dataset']['value'] == "all"){
+          for(var i = 0; i < this.allMembersId.length; i++){
+            this.content_mentions.push(this.allMembersId[i]);
+          }
+          //this.content_mentions = this.allMembersId;
+        }
+        else{
+          if (!this.content_mentions.includes(el.getElementsByClassName( 'mention' )[i]['dataset']['id']))
+          this.content_mentions.push(el.getElementsByClassName( 'mention' )[i]['dataset']['id']);
+        }
+        
         
       }
 
@@ -729,8 +756,10 @@
         formData.append('_content_mentions', this.content_mentions[i]);
       }
       
+      // console.log('Content Mention', post._content_mentions); 
       //  console.log('This post', postId);
       }
+
 
       // console.log('post: ', post);
 
@@ -744,7 +773,7 @@
           this.alert.class = 'success';
           this._message.next(res['message']);
           this.resetNewPostForm();
-          // console.log('Normal post response: ', res);
+           console.log('Normal post response: ', res);
           const data = {
             // it should get automatically, something like workspace: this.workspace_name
           workspace: this.user_data.workspace.workspace_name,
@@ -757,8 +786,10 @@
           //  console.log(data);
             this.socket.emit('newPost', data);
           this.loadGroupPosts();
+          this.content_mentions = [];
 
         }, (err) => {
+          this.content_mentions = [];
           this.processing = false;
           this.alert.class = 'danger';
           this.enablePostForm();
@@ -1201,10 +1232,10 @@
       const button = document.getElementById("button_event_mark_completed_"+index);
 
       const post = {
-        'post_id': post_id,
+        'status': 'done',
         'user_id': this.user_data.user_id
       };
-      this.postService.complete(post)
+      this.postService.complete(post_id, post)
       .subscribe((res) => {
         this.playAudio();
         this.alert.class = 'success';
@@ -1223,7 +1254,7 @@
 
       }, (err) => {
 
-        this.alert.class = 'danger';
+        console.log('Error:', err);
 
         if (err.status) {
           this._message.next(err.error.message);
@@ -1235,36 +1266,80 @@
  
     }
 
+    
+  OnMarkTaskToDo(index, post_id){
+    const post = {
+      'status': 'to do'
+    };
+    this.postService.complete(post_id,post)
+    .subscribe((res) => {
+      console.log('Post Marked as to do', res);
+      this.playAudio();
+      this.loadGroupPosts();
+      this.onScroll();
+      this.scrollToTop('#card-normal-post-'+index);
+      this.scrollToTop('#card-event-post-'+index);
+      this.scrollToTop('#card-task-post-'+index);
+      swal("Good Job!", "The status of task has been updated sucessfully!", "success");
+
+
+    }, (err) => {
+
+      console.log('Error:', err);
+
+    });
+
+  }
+
+  OnMarkTaskInProgress(index, post_id){
+    const post = {
+      'status': 'in progress'
+    };
+    this.postService.complete(post_id,post)
+    .subscribe((res) => {
+      console.log('Post Marked as in Progress', res);
+      this.playAudio();
+      this.loadGroupPosts();
+      this.onScroll();
+      this.scrollToTop('#card-normal-post-'+index);
+      this.scrollToTop('#card-event-post-'+index);
+      this.scrollToTop('#card-task-post-'+index);
+      swal("Good Job!", "The status of task has been updated sucessfully!", "success");
+    }, (err) => {
+
+      console.log('Error:', err);
+
+    });
+
+  }
+
+
     OnMarkTaskCompleted(index, post_id){
       const button = document.getElementById("button_task_mark_completed_"+index);
       const post = {
-        'post_id': post_id,
-        'user_id': this.user_data.user_id
+        'status': 'done'
+       // 'user_id': this.user_data.user_id
       };
-      this.postService.complete(post)
+      this.postService.complete(post_id,post)
       .subscribe((res) => {
 
         this.playAudio();
 
         this.alert.class = 'success';
         this._message.next(res['message']);
-      // this.resetNewPostForm();
-        // console.log('Normal post response: ', res);
+         console.log('Normal post response: ', res);
 
-      //  console.log('Post Marked as Completed');
-        button.style.background="#005fd5";
-        button.style.color="#ffffff";
-        button.innerHTML="Completed";
-        button.setAttribute('disabled', 'true');
+        console.log('Post Marked as Completed');
         this.loadGroupPosts();
         this.onScroll();
         this.scrollToTop('#card-normal-post-'+index);
         this.scrollToTop('#card-event-post-'+index);
         this.scrollToTop('#card-task-post-'+index);
+        swal("Good Job!", "The status of task has been updated sucessfully!", "success");
 
       }, (err) => {
 
-        this.alert.class = 'danger';
+        console.log('Error:', err);
 
         if (err.status) {
           this._message.next(err.error.message);
@@ -1273,11 +1348,6 @@
         }
 
       });
-      /*button.style.background="#005fd5";
-      button.style.color="#ffffff";
-      button.innerHTML="Completed";
-      button.setAttribute('disabled', 'true');*/
-
     }
 
     likepost(post){

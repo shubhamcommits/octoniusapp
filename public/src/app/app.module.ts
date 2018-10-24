@@ -23,7 +23,6 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
 
-
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './common/components/navbar/navbar.component';
 import { AdminPageHeaderComponent } from './dashboard/admin/admin-page-header/admin-page-header.component';
@@ -53,6 +52,7 @@ import { SafePipe } from './safe.pipe';
 import { NiceDateFormatPipePipe } from './nice-date-format-pipe.pipe';
 import { OrderByPipePipe  } from './order-by-pipe.pipe';
 import { GroupPostComponent } from './dashboard/groups/group/group-post/group-post.component';
+import { GroupTasksComponent } from './dashboard/groups/group/group-tasks/group-tasks.component';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 
@@ -98,7 +98,8 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     SafePipe,
     NiceDateFormatPipePipe,
     OrderByPipePipe,
-    GroupPostComponent 
+    GroupPostComponent,
+    GroupTasksComponent
   ],
   imports: [
     BrowserModule,

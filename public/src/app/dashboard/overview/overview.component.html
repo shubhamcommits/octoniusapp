@@ -15,7 +15,7 @@
         <ng-template #postif></ng-template>
         <div *ngFor="let post of posts; let i = index;">
                 <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/post/{{post._id}}">
-                    <div *ngIf="post.type== 'event' && post.completed == false">
+                    <div *ngIf="post.type== 'event'">
                     
                         <div class="media card-tile overview-event">
                             <!-- <img src="/uploads/{{post._group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" class="mr-3 feed-avatar-big"> -->
@@ -64,7 +64,7 @@
     
                 <div *ngFor="let post of posts; let i = index;">
         <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/post/{{post._id}}">
-            <div *ngIf="post.type== 'task' && post.completed == false">
+            <div *ngIf="post.type== 'task' && post.task.status != 'done'">
             <div class="media card-tile overview-task">
                 
             <div class=" row media-body">
@@ -204,7 +204,7 @@
         </div>
         </a>
         <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/post/{{post._id}}">
-        <div *ngIf="post.type== 'task' && post.completed == false && post.comments_count > 0">
+        <div *ngIf="post.type== 'task' && post.task.status != 'done' && post.comments_count > 0">
         <div *ngFor="let comment of post.comments">
                 <div class="media card-tile">
                     <!-- <img src="/uploads/{{post._group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" class="mr-3 feed-avatar-big"> -->
@@ -238,7 +238,7 @@
             </div>
             </a>
             <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/post/{{post._id}}">
-            <div *ngIf="post.type== 'event' && post.completed == false && post.comments_count > 0">
+            <div *ngIf="post.type== 'event' && post.comments_count > 0">
             <div *ngFor="let comment of post.comments">
                     <div class="media card-tile">
                         <!-- <img src="/uploads/{{post._group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" class="mr-3 feed-avatar"> -->

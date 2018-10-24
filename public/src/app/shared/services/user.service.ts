@@ -36,4 +36,17 @@ export class UserService {
 
   }
 
+  getUserTasks() {
+    return this._http.get<any>(this.BASE_API_URL + `/users/tasks`);
+  }
+
+  getCompletedUserTasks() {
+    return this._http.get<any>(this.BASE_API_URL + `/users/tasksDone`);
+  }
+
+  getRecentUserTasks(postId) {
+    return this._http.get<any>(this.BASE_API_URL + `/users/nextTasksDone/${postId}`);
+  }
+
+
 }

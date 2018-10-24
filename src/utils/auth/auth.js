@@ -2,6 +2,9 @@ const jwt = require('jsonwebtoken');
 
 const { Auth } = require('../../api/models');
 
+// !! CHECK IF USER WAS NOT DISABLED !!
+//
+
 const verifyToken = async (req, res, next) => {
   try {
     // Authorization header is not present on request

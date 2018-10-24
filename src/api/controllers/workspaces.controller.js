@@ -1,37 +1,40 @@
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-
-const { Auth, Group, User, Workspace } = require('../models');
-const { password, sendMail, sendErr } = require('../../utils');
+const { User, Workspace } = require('../models');
+const { sendErr } = require('../../utils');
 
 /*  =============================
  *  -- WORKSPACE ADMIN METHODS --
  *  =============================
  */
 
+// -| Workspace domains controllers |-
+
 const addDomain = async (req, res, next) => {
   try {
-    // Add new domains, prevent to add duplicate values
-    const workspace = await Workspace.findByIdAndUpdate({
-      _id: req.params.workspaceId,
-      _owner: req.userId
+    const {
+      userId,
+      params: { workspaceId },
+      body: { domain }
+    } = req;
+
+    const workspace = await Workspace.findOneAndUpdate({
+      _id: workspaceId,
+      _owner: userId
     }, {
       $addToSet: {
-        allowed_domains: req.body.domain
+        allowed_domains: domain
       }
     }, {
       new: true
     });
 
     if (!workspace) {
-      return sendErr(res, '', `Invalid workspace id or user in not the workspace owner`, 404);
-    };
+      return sendErr(res, '', 'Invalid workspace id or user in not the workspace owner', 404);
+    }
 
     return res.status(200).json({
-      message: `New domain was added to workspace's allowed domains!`,
-      allowedDomains: workspace.allowed_domains,
+      message: "New domain was added to workspace's allowed domains!",
+      allowedDomains: workspace.allowed_domains
     });
-
   } catch (err) {
     return sendErr(res, err);
   }
@@ -39,8 +42,68 @@ const addDomain = async (req, res, next) => {
 
 const deleteDomain = async (req, res, next) => {
   try {
-  // TO DO !!!
+    const {
+      userId,
+      params: { workspaceId },
+      body: { domain }
+    } = req;
 
+    // Remove domain from domains array
+    const workspace = await Workspace.findOneAndUpdate({
+      _id: workspaceId,
+      _owner: userId
+    }, {
+      $pull: {
+        allowed_domains: domain
+      }
+    }, {
+      new: true
+    });
+
+    if (!workspace) {
+      return sendErr(res, '', 'Invalid workspace id or user in not the workspace owner', 404);
+    }
+
+    // Disable all users from that domain
+    const disabledUsers = await User.updateMany({
+      workspace_name: workspace.workspace_name,
+      email: { $regex: domain, $options: 'i' }
+    }, {
+      $set: { active: false }
+    });
+
+    // Delete all users from that domain, from workspace users/admins/members
+    const membersToRemove = await User.find({
+      workspace_name: workspace.workspace_name,
+      email: { $regex: domain, $options: 'i' }
+    }, {
+      first_name: 1,
+      email: 1
+    })
+      .lean();
+
+    const idsToRemove = [];
+
+    for (let member of membersToRemove) {
+      idsToRemove.push(member._id);
+    }
+
+    const workspaceUpdated = await Workspace.findByIdAndUpdate({
+      _id: workspaceId,
+      _owner: userId
+    }, {
+      $pull: {
+        members: idsToRemove
+      }
+    }, {
+      new: true
+    });
+
+    return res.status(200).json({
+      message: 'Domain removed from workspace. All users from this domain are disabled!',
+      allowedDomains: workspaceUpdated.allowed_domains,
+      disabledUsers
+    });
   } catch (err) {
     return sendErr(res, err);
   }
@@ -48,25 +111,24 @@ const deleteDomain = async (req, res, next) => {
 
 const getDomains = async (req, res, next) => {
   try {
-    const workspace = await Workspace.find({ _id: req.params.workspaceId });
+    const workspace = await Workspace.findOne({ _id: req.params.workspaceId });
 
     if (!workspace) {
       return sendErr(res, '', 'Invalid workspace id!', 404);
-    };
+    }
 
     return res.status(200).json({
       message: `Found ${workspace.allowed_domains.length} domains allowed on this workspace!`,
-      allowedDomains: workspace.allowed_domains,
+      domains: workspace.allowed_domains
     });
-
   } catch (err) {
     return sendErr(res, err);
   }
 };
 
-/*	=============
- *	-- EXPORTS --
- *	=============
+/*  =============
+ *  -- EXPORTS --
+ *  =============
  */
 
 module.exports = {

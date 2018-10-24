@@ -34,6 +34,9 @@ router.put('/:postId', posts.edit);
 // DELETE api/posts/:postId - delete post
 router.delete('/:postId', posts.remove);
 
+// PUT api/posts/:postId/taskStatus - change task status
+router.put('/:postId/taskStatus', posts.changeTaskStatus);
+
 // POST api/posts/:postId/comment - add new comment on post
 // router.post('/:postId/comment', posts.addComment); // To do
 router.post('/addComment', postsController.addCommentOnPost); // ! TO BE REMOVED
@@ -43,10 +46,6 @@ router.post('/addComment', postsController.addCommentOnPost); // ! TO BE REMOVED
 
 // DELETE api/posts/:post_id/comment/:commentId - delete comment
 // router.delete('/:postId/comment/:commentId', posts.editComment); // To do
-
-// PUT api/posts/:postId/complete - mark post as complete
-// router.put('/:postId/complete', authorization.toCompletePost, posts.complete); // To do
-router.post('/complete', authorization.toCompletePost, postsController.completePost); // ! TO BE REMOVED
 
 // PUT api/posts/:postId/like - like post
 // router.put('/:postId/like', posts.like); // To do

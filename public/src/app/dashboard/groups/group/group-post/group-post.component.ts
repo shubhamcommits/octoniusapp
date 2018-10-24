@@ -100,7 +100,7 @@ export class GroupPostComponent implements OnInit {
       'post_id': this.postId,
       'user_id': this.user_data.user_id
     };
-    this.postService.complete(post)
+    this.postService.complete(this.postId, post)
     .subscribe((res) => {
       this.playAudio();
   //    console.log('Post Marked as Completed');
@@ -122,39 +122,67 @@ export class GroupPostComponent implements OnInit {
 
   }
 
-  OnMarkTaskCompleted(){
-    const button = document.getElementById("button_task_mark_completed");
+  OnMarkTaskToDo(post_id){
     const post = {
-      'post_id': this.postId,
-      'user_id': this.user_data.user_id
+      'status': 'to do'
     };
-    this.postService.complete(post)
+    this.postService.complete(post_id,post)
     .subscribe((res) => {
-
+      console.log('Post Marked as to do', res);
       this.playAudio();
-    // this.resetNewPostForm();
-      // console.log('Normal post response: ', res);
-
-    //  console.log('Post Marked as Completed');
-      button.style.background="#005fd5";
-      button.style.color="#ffffff";
-      button.innerHTML="Completed";
-      button.setAttribute('disabled', 'true');
       this.getPost(this.postId);
+      swal("Good Job!", "The status of task has been updated sucessfully!", "success");
+
 
     }, (err) => {
 
- 
-
-      if (err.status) {
-      } else {
-       
-      }
+      console.log('Error:', err);
 
     });
 
   }
 
+  OnMarkTaskInProgress(post_id){
+    const post = {
+      'status': 'in progress'
+    };
+    this.postService.complete(post_id,post)
+    .subscribe((res) => {
+      console.log('Post Marked as in Progress', res);
+      this.playAudio();
+      this.getPost(this.postId);
+      swal("Good Job!", "The status of task has been updated sucessfully!", "success");
+    }, (err) => {
+
+      console.log('Error:', err);
+
+    });
+
+  }
+
+
+    OnMarkTaskCompleted(post_id){
+      const post = {
+        'status': 'done'
+       // 'user_id': this.user_data.user_id
+      };
+      this.postService.complete(post_id,post)
+      .subscribe((res) => {
+
+        this.playAudio();
+         console.log('Normal post response: ', res);
+
+        console.log('Post Marked as Completed');
+        this.getPost(this.postId);
+
+        swal("Good Job!", "The status of task has been updated sucessfully!", "success");
+
+      }, (err) => {
+
+        console.log('Error:', err);
+
+      });
+    }
   playAudio(){
     let audio = new Audio();
     audio.src = "/assets/audio/intuition.ogg";
