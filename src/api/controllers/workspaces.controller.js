@@ -16,13 +16,12 @@ const addDomain = async (req, res, next) => {
       body: { domain }
     } = req;
 
-    // Add new domains, prevent to add duplicate values
     const workspace = await Workspace.findOneAndUpdate({
       _id: workspaceId,
       _owner: userId
     }, {
       $addToSet: {
-        $allowed_domains: domain
+        allowed_domains: domain
       }
     }, {
       new: true
@@ -31,8 +30,6 @@ const addDomain = async (req, res, next) => {
     if (!workspace) {
       return sendErr(res, '', 'Invalid workspace id or user in not the workspace owner', 404);
     }
-
-    console.log(workspace);
 
     return res.status(200).json({
       message: "New domain was added to workspace's allowed domains!",
@@ -118,17 +115,14 @@ const deleteDomain = async (req, res, next) => {
 
 const getDomains = async (req, res, next) => {
   try {
-    const workspace = await Workspace.find({ _id: req.params.workspaceId })
-      .lean();
+    const workspace = await Workspace.findOne({ _id: req.params.workspaceId });
 
     if (!workspace) {
       return sendErr(res, '', 'Invalid workspace id!', 404);
     }
 
-    console.log(workspace);
-
     return res.status(200).json({
-      message: `Found ${!workspace.allowed_domains ? 0 : workspace.allowed_domains.length} domains allowed on this workspace!`,
+      message: `Found ${workspace.allowed_domains.length} domains allowed on this workspace!`,
       domains: workspace.allowed_domains
     });
   } catch (err) {
