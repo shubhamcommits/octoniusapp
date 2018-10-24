@@ -154,7 +154,7 @@
               </div>
               <div class="col-md-4 text-right padding-topright" style=" object-fit: cover;">
                   <div ngbDropdown class="d-inline-block">      
-                      <button class="btn btn-pink btn-sm" id="dropdownDone" style="background: mediumslateblue; color: white;" ngbDropdownToggle>Status</button>
+                      <button class="btn btn-pink btn-sm" id="dropdownDone" style="background: mediumslateblue; color: white;" ngbDropdownToggle>{{post.task.status}}</button>
       <div ngbDropdownMenu aria-labelledby="dropdownToDo">
           <button class="dropdown-item" (click)="OnMarkTaskToDo(this.post._id)">To Do</button>
           <button class="dropdown-item" (click)="OnMarkTaskInProgress(this.post._id)">In Progress</button>
