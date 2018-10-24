@@ -725,6 +725,7 @@
       formData.append('_group', post._group);
       formData.append('task.due_to', post.task.due_to);
       formData.append('task._assigned_to', post.task._assigned_to);
+      formData.append('task.status', 'to do');
 
       const scanned_content = post.content;
       var el = document.createElement( 'html' );
@@ -772,7 +773,7 @@
           this.alert.class = 'success';
           this._message.next(res['message']);
           this.resetNewPostForm();
-          // console.log('Normal post response: ', res);
+           console.log('Normal post response: ', res);
           const data = {
             // it should get automatically, something like workspace: this.workspace_name
           workspace: this.user_data.workspace.workspace_name,
@@ -1265,10 +1266,58 @@
  
     }
 
+    
+  OnMarkTaskToDo(index, post_id){
+    const post = {
+      'status': 'to do'
+    };
+    this.postService.complete(post_id,post)
+    .subscribe((res) => {
+      console.log('Post Marked as to do', res);
+      this.playAudio();
+      this.loadGroupPosts();
+      this.onScroll();
+      this.scrollToTop('#card-normal-post-'+index);
+      this.scrollToTop('#card-event-post-'+index);
+      this.scrollToTop('#card-task-post-'+index);
+      swal("Good Job!", "The status of task has been updated sucessfully!", "success");
+
+
+    }, (err) => {
+
+      console.log('Error:', err);
+
+    });
+
+  }
+
+  OnMarkTaskInProgress(index, post_id){
+    const post = {
+      'status': 'in progress'
+    };
+    this.postService.complete(post_id,post)
+    .subscribe((res) => {
+      console.log('Post Marked as in Progress', res);
+      this.playAudio();
+      this.loadGroupPosts();
+      this.onScroll();
+      this.scrollToTop('#card-normal-post-'+index);
+      this.scrollToTop('#card-event-post-'+index);
+      this.scrollToTop('#card-task-post-'+index);
+      swal("Good Job!", "The status of task has been updated sucessfully!", "success");
+    }, (err) => {
+
+      console.log('Error:', err);
+
+    });
+
+  }
+
+
     OnMarkTaskCompleted(index, post_id){
       const button = document.getElementById("button_task_mark_completed_"+index);
       const post = {
-        'status': 'done',
+        'status': 'done'
        // 'user_id': this.user_data.user_id
       };
       this.postService.complete(post_id,post)
@@ -1278,19 +1327,15 @@
 
         this.alert.class = 'success';
         this._message.next(res['message']);
-      // this.resetNewPostForm();
-        // console.log('Normal post response: ', res);
+         console.log('Normal post response: ', res);
 
         console.log('Post Marked as Completed');
-        button.style.background="#005fd5";
-        button.style.color="#ffffff";
-        button.innerHTML="Completed";
-        button.setAttribute('disabled', 'true');
         this.loadGroupPosts();
         this.onScroll();
         this.scrollToTop('#card-normal-post-'+index);
         this.scrollToTop('#card-event-post-'+index);
         this.scrollToTop('#card-task-post-'+index);
+        swal("Good Job!", "The status of task has been updated sucessfully!", "success");
 
       }, (err) => {
 
@@ -1303,11 +1348,6 @@
         }
 
       });
-      /*button.style.background="#005fd5";
-      button.style.color="#ffffff";
-      button.innerHTML="Completed";
-      button.setAttribute('disabled', 'true');*/
-
     }
 
     likepost(post){

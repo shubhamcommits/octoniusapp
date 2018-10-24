@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../../../shared/services/user.service';
 import { PostService } from '../../../../shared/services/post.service';
-import { DragulaService } from 'ng2-dragula';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { BehaviorSubject } from 'rxjs';
 
 
 @Component({
@@ -12,51 +13,29 @@ import { DragulaService } from 'ng2-dragula';
 export class GroupTasksComponent implements OnInit {
 
   user_data;
+  lastPostId;
+  isLoading$ = new BehaviorSubject(false);
 
-  constructor(private userService: UserService, private dragulaService: DragulaService, private postService: PostService) {
+  constructor(private ngxService: NgxUiLoaderService, private userService: UserService, private postService: PostService) {
     this.user_data = JSON.parse(localStorage.getItem('user')); 
     this.getTasks();
     this.getCompletedTasks();
 
   }
 
-  droppedData: string;
 
   pendingTasks = new Array();
   completedTasks = new Array();
 
 
   ngOnInit() {
-    this.dragulaService.createGroup("VAMPIRES", {
-      removeOnSpill: true
-    });
-
-    this.dragulaService.dropModel("VAMPIRES").subscribe(args => {
-      
-      const post = {
-        //'post_id': args['item']['_id'],
-        'status':'done',
-        'user_id': this.user_data.user_id
-      };
-      this.postService.complete(args['item']['_id'],post)
-      .subscribe((res) => {
-        console.log('Task Marked Completed', res);
-      }, (err) => {
-        console.log('Error in Completing a task', err);
-      });
-      console.log(args);
-
-    });
-
-  }
-
-  ngOnDestroy(){
-    this.dragulaService.destroy("VAMPIRES");
-  }
-
+    this.ngxService.start(); // start foreground loading with 'default' id
  
-  dragEnd(event) {
-    console.log('Element was dragged', event);
+    // Stop the foreground loading after 5s
+    setTimeout(() => {
+      this.ngxService.stop(); // stop foreground loading with 'default' id
+    }, 500);
+
   }
 
   getTasks() {
@@ -69,6 +48,84 @@ export class GroupTasksComponent implements OnInit {
       console.log('Error Fetching the Pending Tasks Posts', err)
     });
   }
+
+  loadNextPosts(lastPostId)
+  {
+
+    this.isLoading$.next(true);
+
+    this.userService.getRecentUserTasks(lastPostId)
+      .subscribe((res) => {
+       console.log('CompletedTasks', res);
+        this.completedTasks = this.completedTasks.concat(res['posts']);
+       this.isLoading$.next(false);
+
+      }, (err) => {
+        console.log('Error Fetching the Next Completed Tasks Posts', err)
+
+      });
+  }
+
+  OnFetchNextPosts(){
+    var lastPostId = this.completedTasks[this.completedTasks.length - 1]._id;
+    this.loadNextPosts(lastPostId);
+  }
+
+  
+  OnMarkTaskCompleted(post_id){
+    const post = {
+      'status': 'done'
+    };
+    this.postService.complete(post_id,post)
+    .subscribe((res) => {
+      console.log('Post Marked as Completed', res);
+      this.getCompletedTasks();
+      this.getTasks();
+
+    }, (err) => {
+
+      console.log('Error:', err);
+
+    });
+
+  }
+
+  OnMarkTaskToDo(post_id){
+    const post = {
+      'status': 'to do'
+    };
+    this.postService.complete(post_id,post)
+    .subscribe((res) => {
+      console.log('Post Marked as to do', res);
+      this.getCompletedTasks();
+      this.getTasks();
+
+    }, (err) => {
+
+      console.log('Error:', err);
+
+    });
+
+  }
+
+  OnMarkTaskInProgress(post_id){
+    const post = {
+      'status': 'in progress'
+    };
+    this.postService.complete(post_id,post)
+    .subscribe((res) => {
+      console.log('Post Marked as in Progress', res);
+      this.getCompletedTasks();
+      this.getTasks();
+
+    }, (err) => {
+
+      console.log('Error:', err);
+
+    });
+
+  }
+
 
   getCompletedTasks() {
     this.userService.getCompletedUserTasks()

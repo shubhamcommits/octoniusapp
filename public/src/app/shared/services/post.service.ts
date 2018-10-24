@@ -44,7 +44,7 @@ export class PostService {
     return this._http.delete(this.BASE_API_URL + `/posts/${postId}`);
   }
   complete(postId, status) {
-    return this._http.post(this.BASE_API_URL + `/posts/${postId}/taskStatus`, status);
+    return this._http.put(this.BASE_API_URL + `/posts/${postId}/taskStatus`, status);
   }
   like(post) {
     return this._http.post(this.BASE_API_URL + '/post/like', post);

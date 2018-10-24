@@ -431,14 +431,24 @@
                     <span class="pink small"> ASSIGNED TO {{post.task._assigned_to?.first_name}} {{post.task._assigned_to?.last_name}}
                     </span>
                   </div>
-                  <div class="col-md-4 text-right " *ngIf="post.completed== true; else taskif">
-                    <a class="btn btn-success btn-sm">Completed</a>
-
-                  </div>
+                  <div class="col-md-4 text-right padding-topright" style=" object-fit: cover;">
+                      <div ngbDropdown class="d-inline-block">      
+                          <button class="btn btn-pink btn-sm" id="dropdownDone" style="background: mediumslateblue; color: white;" ngbDropdownToggle>Status</button>
+          <div ngbDropdownMenu aria-labelledby="dropdownToDo">
+              <button class="dropdown-item" (click)="OnMarkTaskToDo(i, this.post._id)">To Do</button>
+              <button class="dropdown-item" (click)="OnMarkTaskInProgress(i, this.post._id)">In Progress</button>
+              <button class="dropdown-item" (click)="OnMarkTaskCompleted(i, this.post._id)">Done</button>
+          </div>
+        </div>
+        <p class="small font-weight-bold" style="margin-top: 5px"> due {{post.task?.due_to | date}}</p>
+        <p class="small font-weight-bold" style="margin-top: 5px"> status- {{post.task?.status}}</p>
+      
+            </div>
                   <ng-template #taskif>
                       <div class="col-md-4 text-right padding-topright">
                           <button class="btn btn-pink btn-sm" id="button_task_mark_completed_{{i}}" (click)="OnMarkTaskCompleted(i, post._id)">Mark complete</button>
-                          <p class="small font-weight-bold" style="margin-top: 5px"> due {{post.task?.due_to | date}}</p>
+                          <p class="small font-weight-bold" style="margin-top: 5px"> Due- {{post.task?.due_to | date}}</p>
+                          <p class="small font-weight-bold" style="margin-top: 5px"> Status - {{post.task?.status}}</p>
                       </div>
                   </ng-template>
 
@@ -599,7 +609,7 @@
                       <button class="btn btn-success btn-sm" disabled>Completed</button>
 
                     </div>-->
-                    <div class="col-md-4 text-right " *ngIf="post.completed== true; else eventif">
+                    <!--<div class="col-md-4 text-right " *ngIf="post.completed== true; else eventif">
  
                       <a class="btn btn-success btn-sm">Completed</a>
 
@@ -608,7 +618,7 @@
                       <div class="col-md-4 text-right padding-topright">
                       <button class="btn btn-pink btn-sm" id="button_event_mark_completed_{{i}}" (click)="OnMarkEventCompleted(i, post._id)">Mark complete</button>
                       </div>
-                  </ng-template>
+                  </ng-template>-->
                 </div>
                 <div class="col-md-12 text-right " id="button_edit_post{{i}}" style="display: none; padding-bottom: 1em;">
                     <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditPost(i, post._id,post?.content)">Save</button>

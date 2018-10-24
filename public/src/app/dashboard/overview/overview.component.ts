@@ -80,16 +80,16 @@ export class OverviewComponent implements OnInit {
       // console.log('Group posts:', res);
       this.posts = res['posts'];
       for(var i = 0 ; i < this.posts.length; i ++){
-        if(this.posts[i].type=='task' && this.posts[i].completed == false){
+        if(this.posts[i].type=='task' && this.posts[i].task.status != 'done'){
           this.task_count=1;
         }
-        if(this.posts[i].type=='event' && this.posts[i].completed == false){
+        if(this.posts[i].type=='event'){
           this.event_count=1;
         }
-        if(this.posts[i].type=='event' && this.posts[i].comments_count > 0 && this.posts[i].completed == false){
+        if(this.posts[i].type=='event' && this.posts[i].comments_count > 0){
           this.normal_count=1;
         }
-        if(this.posts[i].type=='task' && this.posts[i].comments_count > 0 && this.posts[i].completed == false){
+        if(this.posts[i].type=='task' && this.posts[i].comments_count > 0 && this.posts[i].task.status != 'done'){
           this.normal_count=1;
         }
         if(this.posts[i].type=='normal'){

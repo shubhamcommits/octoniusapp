@@ -22,7 +22,6 @@ import { DragAndDropModule } from 'angular-draggable-droppable';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
-import { DragulaModule } from 'ng2-dragula';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './common/components/navbar/navbar.component';
@@ -115,7 +114,6 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     InfiniteScrollModule,
     PickerModule,
     EmojiModule,
-    DragulaModule.forRoot(),
     DragAndDropModule.forRoot(),
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
     LoadingModule.forRoot({
