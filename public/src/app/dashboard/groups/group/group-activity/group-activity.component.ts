@@ -1231,10 +1231,10 @@
       const button = document.getElementById("button_event_mark_completed_"+index);
 
       const post = {
-        'post_id': post_id,
+        'status': 'done',
         'user_id': this.user_data.user_id
       };
-      this.postService.complete(post)
+      this.postService.complete(post_id, post)
       .subscribe((res) => {
         this.playAudio();
         this.alert.class = 'success';
@@ -1253,7 +1253,7 @@
 
       }, (err) => {
 
-        this.alert.class = 'danger';
+        console.log('Error:', err);
 
         if (err.status) {
           this._message.next(err.error.message);
@@ -1268,10 +1268,10 @@
     OnMarkTaskCompleted(index, post_id){
       const button = document.getElementById("button_task_mark_completed_"+index);
       const post = {
-        'post_id': post_id,
-        'user_id': this.user_data.user_id
+        'status': 'done',
+       // 'user_id': this.user_data.user_id
       };
-      this.postService.complete(post)
+      this.postService.complete(post_id,post)
       .subscribe((res) => {
 
         this.playAudio();
@@ -1281,7 +1281,7 @@
       // this.resetNewPostForm();
         // console.log('Normal post response: ', res);
 
-      //  console.log('Post Marked as Completed');
+        console.log('Post Marked as Completed');
         button.style.background="#005fd5";
         button.style.color="#ffffff";
         button.innerHTML="Completed";
@@ -1294,7 +1294,7 @@
 
       }, (err) => {
 
-        this.alert.class = 'danger';
+        console.log('Error:', err);
 
         if (err.status) {
           this._message.next(err.error.message);

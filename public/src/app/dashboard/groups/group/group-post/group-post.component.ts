@@ -100,7 +100,7 @@ export class GroupPostComponent implements OnInit {
       'post_id': this.postId,
       'user_id': this.user_data.user_id
     };
-    this.postService.complete(post)
+    this.postService.complete(this.postId, post)
     .subscribe((res) => {
       this.playAudio();
   //    console.log('Post Marked as Completed');
@@ -125,10 +125,10 @@ export class GroupPostComponent implements OnInit {
   OnMarkTaskCompleted(){
     const button = document.getElementById("button_task_mark_completed");
     const post = {
-      'post_id': this.postId,
+      'status': 'done',
       'user_id': this.user_data.user_id
     };
-    this.postService.complete(post)
+    this.postService.complete(this.postId, post)
     .subscribe((res) => {
 
       this.playAudio();

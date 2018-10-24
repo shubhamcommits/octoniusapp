@@ -34,10 +34,11 @@ export class GroupTasksComponent implements OnInit {
     this.dragulaService.dropModel("VAMPIRES").subscribe(args => {
       
       const post = {
-        'post_id': args['item']['_id'],
+        //'post_id': args['item']['_id'],
+        'status':'done',
         'user_id': this.user_data.user_id
       };
-      this.postService.complete(post)
+      this.postService.complete(args['item']['_id'],post)
       .subscribe((res) => {
         console.log('Task Marked Completed', res);
       }, (err) => {
