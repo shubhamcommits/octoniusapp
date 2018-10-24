@@ -42,20 +42,23 @@ const addDomain = async (req, res, next) => {
 
 const deleteDomain = async (req, res, next) => {
   try {
-    const { userId, params: { workspaceId, domain } } = req;
+    const {
+      userId,
+      params: { workspaceId },
+      body: { domain }
+    } = req;
 
     // Remove domain from domains array
     const workspace = await Workspace.findOneAndUpdate({
       _id: workspaceId,
       _owner: userId
     }, {
-      $pullAll: {
+      $pull: {
         allowed_domains: domain
       }
     }, {
       new: true
-    })
-      .lean();
+    });
 
     if (!workspace) {
       return sendErr(res, '', 'Invalid workspace id or user in not the workspace owner', 404);
@@ -79,29 +82,22 @@ const deleteDomain = async (req, res, next) => {
     })
       .lean();
 
-    // LOG TO REMOVE
-    console.log(membersToRemove);
-
     const idsToRemove = [];
 
     for (let member of membersToRemove) {
       idsToRemove.push(member._id);
     }
 
-    // LOG TO REMOVE
-    console.log(idsToRemove);
-
     const workspaceUpdated = await Workspace.findByIdAndUpdate({
       _id: workspaceId,
       _owner: userId
     }, {
-      $pullAll: {
+      $pull: {
         members: idsToRemove
       }
     }, {
       new: true
-    })
-      .lean();
+    });
 
     return res.status(200).json({
       message: 'Domain removed from workspace. All users from this domain are disabled!',
