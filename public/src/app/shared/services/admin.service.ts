@@ -19,7 +19,7 @@ export class AdminService {
 
   removeDomain(workspace_id, domainName) {
     // console.log(data);
-    return this._http.delete(this.BASE_API_URL + `/workspaces/${workspace_id}/domains`, domainName);
+    return this._http.delete(this.BASE_API_URL + `/workspaces/${workspace_id}/domains/${domainName}`);
   }
 
   allowedDomains(workspace_id) {

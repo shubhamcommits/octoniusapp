@@ -155,17 +155,19 @@ export class AdminGeneralComponent implements OnInit {
    
   }
 
-  OnRemoveDomain(index, allowDomain){
+  OnRemoveDomain(allowDomain){
     const domainName = {
-      'domain': allowDomain.toString()
+      domain: allowDomain,
+      userId: this.user_data.workspace._id
     };
-    const domainId = document.getElementById('domainName' + index);
-    console.log('Domain Element', domainName);
-    this._adminService.removeDomain(this.user_data.workspace._id, domainName)
+    
+   this._adminService.removeDomain(domainName.userId, domainName.domain)
     .subscribe((res) => {
       console.log('Domain has been removed', res);
+      console.log('Domain Element', domainName);
     }, (err) => {
       console.log('Error while removing the domain', err);
+      console.log('Domain Element', domainName);
     })
   }
 
