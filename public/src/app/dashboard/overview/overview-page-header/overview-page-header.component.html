@@ -14,17 +14,21 @@
 
           This is your daily inbox. Everything that's relevant to your work.
         </li>
-        <!-- <li class="nav-item">
-          <a class="nav-link" routerLink="./peoplefollow">People I Follow
-            <span class="sr-only">(current)</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="./suggestions">Suggestion
-            <span class="sr-only">(current)</span>
-          </a>
-        </li> -->
 
+
+      </ul>
+      <ul class="nav">
+          <li class="nav-item">
+              <a class="nav-link" routerLink="/dashboard/overview/" routerLinkActive="active" >Notifications
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/dashboard/overview/mytasks">My tasks
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+    
       </ul>
 
       <div *ngIf="alert.message" [ngClass]="alert.class">{{alert.message}}</div>

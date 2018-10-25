@@ -25,6 +25,7 @@ import { GroupPostComponent } from './dashboard/groups/group/group-post/group-po
 import { GroupTasksComponent } from './dashboard/groups/group/group-tasks/group-tasks.component';
 import { AdminGeneralComponent } from './dashboard/admin/admin-general/admin-general.component';
 import { AdminMembersComponent } from './dashboard/admin/admin-members/admin-members.component';
+import { OverviewMyTasksComponent } from './dashboard/overview/overview-my-tasks/overview-my-tasks.component';
 
 
 const appRoutes: Routes = [
@@ -39,7 +40,8 @@ const appRoutes: Routes = [
   {
     path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard],
     children: [
-      { path: 'overview', component: OverviewComponent },
+      { path: 'overview', component: OverviewComponent},
+      {path: 'overview/mytasks', component: OverviewMyTasksComponent},
       {
         path: 'groups', component: GroupsComponent,
       },
