@@ -85,12 +85,12 @@
 
 '
 
-#### 6.x. ❗️ POST `api/workspaces/:workspaceId/domains` add new domain to workpsace's allowed domains
+#### 6.x. ❗️ POST `api/workspaces/:workspaceId/domains` add new domain to workspace's allowed domains
 
-#### 6.x. ❗️ DELETE `api/workspaces/:workspaceId/domains` remove domain from workpsace's allowed domains
+#### 6.x. ❗️ DELETE `api/workspaces/:workspaceId/domains/:domain` remove domain from workspace's allowed domains
 
 #### 6.x. ❗️ GET `api/workspaces/:workspaceId/domains` get all workspace domains
 
-
+#### 6.x. ❗️❗️ DELETE `api/workspaces/:workspaceId/users/:userId` remove user from workspace
 
 '

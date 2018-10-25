@@ -1,11 +1,6 @@
 const { Post, Group } = require('../../api/models');
 const { sendErr } = require('../');
 
-/*	=========================
- *	-- POST AUTHORIZATIONS --
- *	=========================
- */
-
 // -| Group Authorizations |-
 
 const groupAccess = async (req, res, next) => {
