@@ -53,6 +53,7 @@ import { NiceDateFormatPipePipe } from './nice-date-format-pipe.pipe';
 import { OrderByPipePipe  } from './order-by-pipe.pipe';
 import { GroupPostComponent } from './dashboard/groups/group/group-post/group-post.component';
 import { GroupTasksComponent } from './dashboard/groups/group/group-tasks/group-tasks.component';
+import { OverviewMyTasksComponent } from './dashboard/overview/overview-my-tasks/overview-my-tasks.component';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 
@@ -99,7 +100,8 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     NiceDateFormatPipePipe,
     OrderByPipePipe,
     GroupPostComponent,
-    GroupTasksComponent
+    GroupTasksComponent,
+    OverviewMyTasksComponent
   ],
   imports: [
     BrowserModule,
