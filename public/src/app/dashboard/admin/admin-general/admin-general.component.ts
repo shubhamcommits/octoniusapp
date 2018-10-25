@@ -157,7 +157,7 @@ export class AdminGeneralComponent implements OnInit {
 
   OnRemoveDomain(index, allowDomain){
     const domainName = {
-      'domain': allowDomain
+      'domain': allowDomain.toString()
     };
     const domainId = document.getElementById('domainName' + index);
     console.log('Domain Element', domainName);
