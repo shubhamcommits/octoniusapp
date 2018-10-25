@@ -26,6 +26,9 @@ export class AdminGeneralComponent implements OnInit {
     message: ''
   };
 
+  domainName = '';
+  removeThisDomain = '';
+
 
   domainData = {
     domains: '',
@@ -103,11 +106,15 @@ export class AdminGeneralComponent implements OnInit {
 
   onDomainsSave() {
     this.domainData.workspace_id = this.user_data.workspace._id;
-    // console.log('this.domainData', this.domainData);
+     console.log('this.domainData', this.domainName);
+     const domainName = {
+       'domain': this.domainName.toString()
+     };
     // console.log('user_data', this.user_data);
-    if(this.domainData.domains != ''){
-      this._adminService.allowDomain(this.user_data.workspace._id)
+    if(this.domainName != ''){
+      this._adminService.allowDomain(this.user_data.workspace._id, domainName )
       .subscribe((res) => {
+        console.log("Domain Added", res)
         //this.alert.class = 'success';
         //this._message.next(res.message);
         swal({
@@ -117,11 +124,12 @@ export class AdminGeneralComponent implements OnInit {
         })
         .then(willreload => {
           if (willreload) {
-            location.reload();
+            this.ngOnInit();
+            this.domainName = '';
           }
         });
       }, (err) => {
-      //  console.log('Error in Saving Domain', err);
+        console.log('Error in Saving Domain', err);
         this.alert.class = 'danger';
         if (err.status === 401) {
           this._message.next(err.error.message);
@@ -145,6 +153,20 @@ export class AdminGeneralComponent implements OnInit {
    
 
    
+  }
+
+  OnRemoveDomain(index, allowDomain){
+    const domainName = {
+      'domain': allowDomain
+    };
+    const domainId = document.getElementById('domainName' + index);
+    console.log('Domain Element', domainName);
+    this._adminService.removeDomain(this.user_data.workspace._id, domainName)
+    .subscribe((res) => {
+      console.log('Domain has been removed', res);
+    }, (err) => {
+      console.log('Error while removing the domain', err);
+    })
   }
 
   onInviteNewUserViaEmail() {
@@ -184,7 +206,8 @@ export class AdminGeneralComponent implements OnInit {
       })
       .then(willreload => {
         if (willreload) {
-          location.reload();
+          this.invitationData.email = '';
+         this.ngOnInit();
         }
       });
      }

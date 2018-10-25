@@ -12,9 +12,14 @@ export class AdminService {
 
   constructor(private _http: HttpClient) { }
 
-  allowDomain(workspace_id) {
+  allowDomain(workspace_id, domainName) {
     // console.log(data);
-    return this._http.post(this.BASE_API_URL + `/workspaces/`,`${workspace_id}`+'/domains');
+    return this._http.post(this.BASE_API_URL + `/workspaces/${workspace_id}/domains`, domainName);
+  }
+
+  removeDomain(workspace_id, domainName) {
+    // console.log(data);
+    return this._http.delete(this.BASE_API_URL + `/workspaces/${workspace_id}/domains`, domainName);
   }
 
   allowedDomains(workspace_id) {
