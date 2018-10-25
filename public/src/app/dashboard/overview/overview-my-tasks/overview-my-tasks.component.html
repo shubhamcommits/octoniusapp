@@ -41,10 +41,12 @@
                             </div>
                         </ng-template>
                   
-                        <div class="col-md-12 innercard " [innerHTML]="post?.content | safe: 'html'">
-                            <!--<pre class="card-text ">{{post?.content}}
-                            </pre>-->
-                          </div>
+                        <a style="text-decoration:none; color:inherit;"  href="/#/dashboard/group/{{post._group}}/post/{{post._id}}">
+                          <div class="col-md-12 innercard " [innerHTML]="post?.content | safe: 'html'">
+                              <!--<pre class="card-text ">{{post?.content}}
+                              </pre>-->
+                            </div>
+                          </a>
                       </div>
                   
                     </div>
@@ -95,11 +97,12 @@
                             <p class="small font-weight-bold" style="margin-top: 5px"> due {{post.task?.due_to | date}}</p>
                         </div>
                     </ng-template>
-              
-                    <div class="col-md-12 innercard " [innerHTML]="post?.content | safe: 'html'">
-                        <!--<pre class="card-text ">{{post?.content}}
-                        </pre>-->
-                      </div>
+                    <a style="text-decoration:none; color:inherit;"  href="/#/dashboard/group/{{post._group}}/post/{{post._id}}">
+                      <div class="col-md-12 innercard " [innerHTML]="post?.content | safe: 'html'">
+                          <!--<pre class="card-text ">{{post?.content}}
+                          </pre>-->
+                        </div>
+                      </a>
                   </div>
               
                 </div>
@@ -113,8 +116,9 @@
         <div class="card btn-pink" style="background: mediumslateblue; color: white;">
             <h3 class="text-center" style="font-weight: bold; padding: 5px 5px 5px 5px; pointer-events: none;">DONE</h3>
         </div>
-    
-        <div class="card" *ngFor="let post of completedTasks">
+        <div *ngFor="let post of completedTasks">
+
+        <div class="card">
             <div class="card-block ">
               <div class="row card-title ">
                 <div class="col-md-1 ">
@@ -133,6 +137,7 @@
                 <div class="col-md-4 text-right padding-topright" style=" object-fit: cover;">
                           <div ngbDropdown class="d-inline-block">      
                       <button class="btn btn-pink btn-sm" id="dropdownDone" style="background: mediumslateblue; color: white;" ngbDropdownToggle>{{post.task.status}}</button>
+                    
               <div ngbDropdownMenu aria-labelledby="dropdownDone">
                   <button class="dropdown-item" (click)="OnMarkTaskToDo(this.post._id)">To Do</button>
                   <button class="dropdown-item" (click)="OnMarkTaskInProgress(this.post._id)">In Progress</button>
@@ -147,15 +152,19 @@
                         <p class="small font-weight-bold" style="margin-top: 5px"> due {{post.task?.due_to | date}}</p>
                     </div>
                 </ng-template>
-          
+                <a style="text-decoration:none; color:inherit;"  href="/#/dashboard/group/{{post._group}}/post/{{post._id}}">
                 <div class="col-md-12 innercard " [innerHTML]="post?.content | safe: 'html'">
                     <!--<pre class="card-text ">{{post?.content}}
                     </pre>-->
                   </div>
+                </a>
               </div>
           
             </div>
+     
           </div>
+  
+        </div>
     
           <a type="button" (click)="OnFetchNextPosts()" class="card btn" style="background: mediumslateblue; color: white;">
           Load More...

@@ -23,11 +23,10 @@
       <div style="position: fixed; margin-top: 20px">
       </div>
       <div class="form-group">
-        <label for="email">Using the WORKPLACE NAME, any email adress from these domain can signup:</label>
-        <textarea class="form-control" rows="5" id="domains" [(ngModel)]="domainData.domains" name="domains"></textarea>
-        <label for="domains">To allow email address from mulltiple domains, separate them with commas.</label>
+        <label for="domain">Using the WORKPLACE NAME, any email adress from these domain can signup:</label>
+        <input type="text" class="form-control" id="domainInput" [(ngModel)]="domainName" name="domain">
       </div>
-      <button class="btn btn-primary" (click)="onDomainsSave()">Save</button>
+      <button class="btn btn-primary" (click)="onDomainsSave()">Add this Domain</button>
       <!--<div class="row">
         <div class="col-md-6">
             <input type="text" class="form-control" id="usr" [(ngModel)]="domainData.domains" name="domain">
@@ -43,13 +42,13 @@
         <h4>Allowed Domains</h4>
         <p>List of all allowed domains from where user can sign up to this workplace.</p>
   
-        <div class="container"  *ngFor= "let allowed_domain of allowed_domains">
+        <div class="container" id="domainName{{i}}" *ngFor= "let allowed_domain of allowed_domains; let i = index;">
         <div class="row">
          <div class="col-md-6">
-           <b>@{{allowed_domain}}</b>
+           <b [innerHTML]="allowed_domain"></b>
          </div>
          <div class="col-md-6">
-           <button class="btn btn-danger btn-sm">Remove Domain</button>
+           <button class="btn btn-danger btn-sm" (click)="OnRemoveDomain(i, allowed_domain)">Remove Domain</button>
           </div> 
       </div>
         <br />
