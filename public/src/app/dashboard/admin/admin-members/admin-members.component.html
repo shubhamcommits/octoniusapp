@@ -18,7 +18,7 @@
             <button class="dropdown-item" (click)="updateUserRole('admin',member._id, member.first_name, member.last_name)">Change to Admin</button>
             <button class="dropdown-item" (click)="updateUserRole('member ',member._id, member.first_name, member.last_name)">Change to Member</button>
             <div class="dropdown-divider"></div>
-            <button class="dropdown-item" (click)="openVerticallyCentered(contentDeleteUser)">Delete Member</button>
+            <button class="dropdown-item" (click)="removeUserfromWorkspace(member._id, member.first_name, member.last_name)">Delete Member</button>
           </div>
         </div>
       </div>
