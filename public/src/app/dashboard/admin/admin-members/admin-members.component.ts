@@ -149,6 +149,32 @@ export class AdminMembersComponent implements OnInit {
     }, 2000);
 }
 
+removeUserfromWorkspace(user_id, first_name, last_name){
+  const data = {
+    'user_id':user_id,
+    'workspace_id':this.user_data.workspace._id
+
+  };
+  console.log('Data', data);
+  swal({
+    title: "Are you sure?",
+    text: "You want to remove "+first_name+" "+last_name+" from the workspace?",
+    icon: "warning",
+    dangerMode: true,
+    buttons: ["Cancel", "Yes, please!"],
+  })
+  .then(willDelete => {
+    if (willDelete) {
+      this.adminService.removeUser(data.workspace_id, data.user_id)
+      .subscribe((res) =>{
+       console.log('Group Member is Removed!', res);
+        this.loadWorkspace();
+      });
+      swal("Removed!", first_name+" "+last_name+", has been removed!", "success");
+    }
+  });
+}
+
   openVerticallyCentered(content) {
 
     this.modalReference = this.modalService.open(content, { centered: true });

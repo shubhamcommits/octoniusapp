@@ -155,18 +155,42 @@ export class AdminGeneralComponent implements OnInit {
    
   }
 
-  OnRemoveDomain(index, allowDomain){
+  OnRemoveDomain(allowDomain){
     const domainName = {
-      'domain': allowDomain
+      domain: allowDomain,
+      userId: this.user_data.workspace._id
     };
-    const domainId = document.getElementById('domainName' + index);
-    console.log('Domain Element', domainName);
-    this._adminService.removeDomain(this.user_data.workspace._id, domainName)
-    .subscribe((res) => {
-      console.log('Domain has been removed', res);
-    }, (err) => {
-      console.log('Error while removing the domain', err);
+    swal({
+      title: "Are you sure?",
+      text: "You want to remove "+domainName.domain+" from the workspace? Doing this, will automatically block all the users signed In from this domain!",
+      icon: "warning",
+      dangerMode: true,
+      buttons: ["Cancel", "Yes, please!"],
     })
+    .then(willDelete => {
+      if (willDelete) {
+        this._adminService.removeDomain(domainName.userId, domainName.domain)
+        .subscribe((res) => {
+          console.log('Domain has been removed', res);
+          console.log('Domain Element', domainName);
+          this.loadAllowedDomains();
+        }, (err) => {
+          console.log('Error while removing the domain', err);
+          console.log('Domain Element', domainName);
+        })
+        swal("Removed!", domainName.domain +" has been removed!", "success")
+        .then(willDelete => {
+          if(willDelete){
+            this.ngOnInit();
+          }
+        });
+       
+      }
+     
+    });
+
+    
+
   }
 
   onInviteNewUserViaEmail() {

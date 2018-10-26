@@ -22,22 +22,28 @@ router.use(auth.isLoggedIn);
 
 // -| Post Routes |-
 
-// GET api/posts/:postId - get one post
+// GET api/posts/:postId
+// - get one post
 router.get('/:postId', authorization.groupAccess, posts.get);
 
-// POST api/posts/ - add new post
+// POST api/posts/
+// - add new post
 router.post('/', postFileHandler, posts.add);
 
-// PUT api/posts/:postId - edit post
+// PUT api/posts/:postId
+// - edit post
 router.put('/:postId', posts.edit);
 
-// DELETE api/posts/:postId - delete post
+// DELETE api/posts/:postId
+// - delete post
 router.delete('/:postId', posts.remove);
 
-// PUT api/posts/:postId/taskStatus - change task status
+// PUT api/posts/:postId/taskStatus
+// - change task status
 router.put('/:postId/taskStatus', posts.changeTaskStatus);
 
-// POST api/posts/:postId/comment - add new comment on post
+// POST api/posts/:postId/comment
+// - add new comment on post
 // router.post('/:postId/comment', posts.addComment); // To do
 router.post('/addComment', postsController.addCommentOnPost); // ! TO BE REMOVED
 

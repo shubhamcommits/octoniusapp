@@ -9,38 +9,6 @@ const { password, sendMail, sendErr } = require('../../utils');
  *  =============================
  */
 
-const updateAllowedEmailDomains = async (req, res, next) => {
-  // - create 2 routes: GET domains, POST removeDomain, POST addDomain
-  try {
-    const workspaceId = req.body.workspace_id;
-    const allowedDomains = req.body.domains.split(',').map(e => e.trim());
-
-    // Add new domains, prevent to add duplicate values
-    const workspace = await Workspace.findByIdAndUpdate({
-      _id: workspaceId
-    }, {
-      $addToSet: {
-        allowed_domains: allowedDomains
-      }
-    }, {
-      new: true
-    });
-
-    if (!workspace) {
-      return sendErr(res, '', 'Please enter a valid workspace id', 404);
-    };
-
-    return res.status(200).json({
-      message: `Workspace's allowed domains updated!`,
-      // !!! PREVENT ERROR !!! FrontEnd Error prevention: property was named by 'doamins' 
-      allowedDomains,
-    });
-
-  } catch (err) {
-    return sendErr(res, err);
-  }
-};
-
 const inviteUserViaEmail = async (req, res, next) => {
   try {
     const workspaceId = req.body.workspace_id;
@@ -89,51 +57,6 @@ const updateUserRole = async (req, res, next) => {
     return res.status(200).json({
       message: `Role updated for user ${user.fisrt_name}`,
       user
-    });
-
-  } catch (err) {
-    return sendErr(res, err);
-  }
-};
-
-const removeUserFromWorkspace = async (req, res, next) => {
-  try {
-    const workspaceName = req.body.workspace_name;
-    const userId = req.body.user_id;
-
-    // Remove user from workspace members (and from invited users list)
-    const workspace = await Workspace.findOneAndUpdate({
-      workspace_name: workspaceName
-    }, {
-      $pull: { members: userId, invited_users: userId }
-    }, {
-      new: true
-    });
-
-    // Remove user from all groups _members , _admins 
-    const group = await Group.update({ $or: {
-      _members: userId,
-      _admins: userId
-    }}, {
-      $pull: { _members: user_id, _admins: user_id }
-    }, {
-      multi: true,
-    });
-
-    // Disable user
-    const user = await User.findByIdAndUpdate({
-      _id: userId
-    }, {
-      $set: {
-        active: false
-      }
-    }, {
-      new: true
-    });
-
-    return res.status(200).json({
-      message: `User ${user.fisrt_name} was removed from workspace!`,
-      workspace
     });
 
   } catch (err) {
@@ -292,10 +215,8 @@ const getUserGroups = async (req, res, next) => {
 
 module.exports = {
   // admin
-  updateAllowedEmailDomains,
   inviteUserViaEmail,
   updateUserRole,
-  removeUserFromWorkspace,
   updateWorkspace,
   // core
   getWorkspace,

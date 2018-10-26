@@ -19,7 +19,7 @@ export class AdminService {
 
   removeDomain(workspace_id, domainName) {
     // console.log(data);
-    return this._http.delete(this.BASE_API_URL + `/workspaces/${workspace_id}/domains`, domainName);
+    return this._http.delete(this.BASE_API_URL + `/workspaces/${workspace_id}/domains/${domainName}`);
   }
 
   allowedDomains(workspace_id) {
@@ -33,5 +33,9 @@ export class AdminService {
 
   updateUserRole(data) {
     return this._http.put<any>(this.BASE_API_URL + '/workspace/updateUserRole', data);
+  }
+
+  removeUser(workspaceId, userId){
+    return this._http.delete(this.BASE_API_URL + `/workspaces/${workspaceId}/users/${userId}`);
   }
 }

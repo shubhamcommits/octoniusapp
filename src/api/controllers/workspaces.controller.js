@@ -1,4 +1,4 @@
-const { User, Workspace } = require('../models');
+const { Group, User, Workspace } = require('../models');
 const { sendErr } = require('../../utils');
 
 /*  =============================
@@ -44,8 +44,7 @@ const deleteDomain = async (req, res, next) => {
   try {
     const {
       userId,
-      params: { workspaceId },
-      body: { domain }
+      params: { workspaceId, domain }
     } = req;
 
     // Remove domain from domains array
@@ -72,9 +71,9 @@ const deleteDomain = async (req, res, next) => {
       $set: { active: false }
     });
 
-    // Delete all users from that domain, from workspace users/admins/members
+    // Get workspace members that must be deleted
     const membersToRemove = await User.find({
-      workspace_name: workspace.workspace_name,
+      _workspace: workspace._id,
       email: { $regex: domain, $options: 'i' }
     }, {
       first_name: 1,
@@ -82,21 +81,42 @@ const deleteDomain = async (req, res, next) => {
     })
       .lean();
 
+    // Generate an array of their ids
     const idsToRemove = [];
 
     for (let member of membersToRemove) {
-      idsToRemove.push(member._id);
+      // Don't push workspace owner
+      if (!workspace._owner.equals(member._id)) {
+        idsToRemove.push(member._id);
+      }
     }
 
-    const workspaceUpdated = await Workspace.findByIdAndUpdate({
+    // Remove users ids from workspace's members & invited users
+    const workspaceUpdated = await Workspace.findOneAndUpdate({
       _id: workspaceId,
       _owner: userId
     }, {
-      $pull: {
-        members: idsToRemove
+      $pullAll: {
+        members: idsToRemove,
+        invited_users: idsToRemove
       }
     }, {
       new: true
+    });
+
+    // Remove users from all group's _members & _admins
+    await Group.update({
+      $or: [
+        { _members: req.params.userId },
+        { _admins: req.params.userId }
+      ]
+    }, {
+      $pullAll: {
+        _members: idsToRemove,
+        _admins: idsToRemove
+      }
+    }, {
+      multi: true
     });
 
     return res.status(200).json({
@@ -126,6 +146,70 @@ const getDomains = async (req, res, next) => {
   }
 };
 
+// -| Workspace users controllers |-
+
+const deleteUser = async (req, res, next) => {
+  try {
+    const {
+      userId,
+      params: { workspaceId }
+    } = req;
+
+    // Check if user is the workspace owner
+    const workspace = await Workspace.find({
+      _id: workspaceId,
+      _owner: userId
+    });
+
+    if (!workspace) {
+      return sendErr(res, '', 'Invalid workspace id or user in not the workspace owner', 404);
+    }
+
+    // Disable user
+    const disabledUser = await User.findOneAndUpdate({
+      _workspace: workspace._id,
+      _id: req.params.userId
+    }, {
+      $set: { active: false }
+    });
+
+    // Remove user from workspace's members & invited users
+    await Workspace.findOneAndUpdate({
+      _id: workspaceId,
+      _owner: userId
+    }, {
+      $pull: {
+        members: req.params.userId,
+        invited_users: req.params.userId
+      }
+    }, {
+      new: true
+    });
+
+    // Remove user from all group's _members & _admins
+    await Group.update({
+      $or: [
+        { _members: req.params.userId },
+        { _admins: req.params.userId }
+      ]
+    }, {
+      $pull: {
+        _members: req.params.userId,
+        _admins: req.params.userId
+      }
+    }, {
+      multi: true
+    });
+
+    return res.status(200).json({
+      message: 'User removed from workspace!',
+      disabledUser
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
 /*  =============
  *  -- EXPORTS --
  *  =============
@@ -135,5 +219,7 @@ module.exports = {
   // domains
   addDomain,
   deleteDomain,
-  getDomains
+  getDomains,
+  // users
+  deleteUser
 };
