@@ -106,10 +106,10 @@ const deleteDomain = async (req, res, next) => {
 
     // Remove users from all group's _members & _admins
     await Group.update({
-      $or: {
-        _members: { $in: idsToRemove },
-        _admins: { $in: idsToRemove }
-      }
+      $or: [
+        { _members: req.params.userId },
+        { _admins: req.params.userId }
+      ]
     }, {
       $pullAll: {
         _members: idsToRemove,
@@ -188,10 +188,10 @@ const deleteUser = async (req, res, next) => {
 
     // Remove user from all group's _members & _admins
     await Group.update({
-      $or: {
-        _members: req.params.userId,
-        _admins: req.params.userId
-      }
+      $or: [
+        { _members: req.params.userId },
+        { _admins: req.params.userId }
+      ]
     }, {
       $pull: {
         _members: req.params.userId,
