@@ -18,20 +18,21 @@ router.use(auth.isLoggedIn);
 
 // -| Users Routes |-
 
-// GET api/users/tasks - get user's to do/in progress tasks
-router.get('/tasks', users.getTasks);
-
-// GET api/users/tasksDone - get 20 most recently created user's tasks
-// that are completed
-router.get('/tasksDone', users.getTasksDone);
-
-// GET api/users/nextTasksDone/:postId - get next 20 most recently created
-// users's tasks that are completed
-router.get('/nextTasksDone/:postId', users.getNextTasksDone);
-
-// !! TO BE REMOVED - User routes
+// vvvv| BAD REST PATTERN, to be replaced! |vvvv
 router.get('/', usersController.getUser); // ! TO BE REMOVED
 router.put('/', usersController.updateUser); // ! TO BE REMOVED
 router.post('/updateImage', fileHandler, usersController.updateUserImage); // ! TO BE REMOVED
+// ^^^^| BAD REST PATTERN, to be replaced! |^^^^
+
+// - Tasks -
+
+// Get user's to do/in progress tasks
+router.get('/tasks', users.getTasks);
+
+// Get 20 most recently created user's completed tasks
+router.get('/tasksDone', users.getTasksDone);
+
+// Get next 20 most recently created user's completed tasks
+router.get('/nextTasksDone/:postId', users.getNextTasksDone);
 
 module.exports = router;
