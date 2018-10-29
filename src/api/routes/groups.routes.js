@@ -58,12 +58,12 @@ router.get('/:groupId/nextPosts/:postId',
 // - Tasks -
 
 // Get group's to do/in progress tasks
-router.get('/tasks', groups.getTasks);
+router.get(':groupId/tasks', groups.getTasks);
 
 // Get 20 most recently created group's completed tasks
-router.get('/tasksDone', groups.getTasksDone);
+router.get(':groupId/tasksDone', groups.getTasksDone);
 
 // Get next 20 most recently created group's completed tasks
-router.get('/nextTasksDone/:postId', groups.getNextTasksDone);
+router.get(':groupId/nextTasksDone/:postId', groups.getNextTasksDone);
 
 module.exports = router;
