@@ -32,14 +32,14 @@
       </div>
     </div> -->
 
-    <div *ngFor="let group of groups " class="card col-md-4" [routerLink]="['/dashboard/group/',group._id,'activity']">
-      <span class="badge badge-members " style="width: 70px;">{{group._members?.length + group._admins?.length}} Members</span>
+    <div *ngFor="let group of groups " class="card col-md-4 groups" [routerLink]="['/dashboard/group/',group._id,'activity']">
+      <span class="badge badge-members " >{{group._members?.length + group._admins?.length}} Members</span>
       <img class="card-img-top" [src] = "group.group_avatar" onerror="this.src='/assets/images/group.png'" >
       <div class="card-body ">
         <a>
           <h2 class="card-title ">{{group?.group_name}}</h2>
         </a>
-        <p class="card-text">Group description</p>
+        <!-- <p class="card-text">Group description</p>  -->
       </div>
     </div>
 
