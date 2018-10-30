@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-dark fixed-top">
+<nav class="navbar navbar-expand-md fixed-top">
   <div class="container">
 
     <a class="navbar-brand" routerLink="/dashboard/overview">
@@ -46,7 +46,7 @@
        
             <div class="dropdown-menu dropdown-menu-right pull-right"  ngbDropdownMenu aria-labelledby="notificationDrop">
                 <div class="triangle"></div>
-                <button class="dropdown-item" style="pointer-events: none;"><b>Unseen Notifications</b></button>
+                <button class="dropdown-item" style="pointer-events: none;"><b>Notifications</b></button>
                 <div class="dropdown-divider"></div>
                 <div *ngIf="this.notifications_data?.unreadNotifications.length != 0">
                 <button class="dropdown-item" *ngFor="let notifications of notifications_data?.unreadNotifications"> 
@@ -57,10 +57,10 @@
                 </button>
                 </div>
                 <div *ngIf="this.notifications_data?.unreadNotifications.length == 0">
-                  <button class="dropdown-item">Nothing new as of now.</button>
+                  <button class="dropdown-item">All up to date</button>
                 </div>
                 <div class="dropdown-divider"></div>
-                <button class="dropdown-item" style="pointer-events: none;"><b>Seen Notifications</b></button>
+                <button class="dropdown-item" style="pointer-events: none;"><b>Older notifications</b></button>
                 <div class="dropdown-divider"></div>
                 <div *ngIf="this.notifications_data?.readNotifications.length != 0">
                   <button class="dropdown-item" *ngFor="let notifications of notifications_data?.readNotifications"> 
@@ -86,7 +86,7 @@
 
             </div>
             <a class="nav-link"  routerLink="/dashboard/profile/profile">
-                <img [src]="userProfileImage" onerror="this.src='/assets/images/user.png'" alt="" class="topnav-avatar" style="margin-right:15px">
+                <img [src]="userProfileImage" onerror="this.src='/assets/images/user.png'" alt="" class="topnav-avatar">
             </a>
        
         

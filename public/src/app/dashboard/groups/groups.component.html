@@ -7,7 +7,7 @@
   <div *ngIf="alert.message" [ngClass]="alert.class">{{alert.message}}</div>
   <div class="row no-margin">
 
-    <div *ngIf="user?.role== 'admin' || user?.role== 'owner'" (click)="openLg(content)" class="card col-md-3" style="cursor: pointer;">
+    <div *ngIf="user?.role== 'admin' || user?.role== 'owner'" (click)="openLg(content)" class="card col-md-4" style="cursor: pointer;">
      
         <a>
           
@@ -32,18 +32,14 @@
       </div>
     </div> -->
 
-    <div *ngFor="let group of groups " class="card col-md-3" [routerLink]="['/dashboard/group/',group._id,'activity']">
+    <div *ngFor="let group of groups " class="card col-md-4 groups" [routerLink]="['/dashboard/group/',group._id,'activity']">
+      <span class="badge badge-members " >{{group._members?.length + group._admins?.length}} Members</span>
       <img class="card-img-top" [src] = "group.group_avatar" onerror="this.src='/assets/images/group.png'" >
       <div class="card-body ">
         <a>
-          <h4 class="card-title ">{{group?.group_name}}</h4>
+          <h2 class="card-title ">{{group?.group_name}}</h2>
         </a>
-        <p class="card-text ">
-          <!-- {{group.desc}} -->
-          <br>
-          <span class="badge badge-warning ">{{group._members?.length + group._admins?.length}} Members</span>
-          <span class="small ">including you</span>
-        </p>
+        <!-- <p class="card-text">Group description</p>  -->
       </div>
     </div>
 
