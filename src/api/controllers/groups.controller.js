@@ -147,8 +147,8 @@ const getTasks = async (req, res, next) => {
     } = req;
 
     const posts = await Post.find({
-        type: 'task',
-        _group: groupId,
+      type: 'task',
+      _group: groupId,
       $or: [
         { 'task.status': 'to do' },
         { 'task.status': 'in progress' }
