@@ -44,7 +44,7 @@ body {
 
 
 h6, h5{
-  font-family: $poppins !important;
+  
   font-size: 16px;
   color: $dark-text;
   font-weight: 300;
@@ -259,12 +259,27 @@ margin-bottom: 20px;
 }
 
 h1,h2,h3,h4,h5,h6{
-  font-family: $poppins !important;
+  font-family: $headings-font-family;
+}
+h1 {
+  font-family: $headings-font-family;
+  font-size: 28px;
+  font-weight: 400;
+  color: $headings-color;
+}
+h2 {
+  font-family: $headings-font-family;
+  font-size: 24px;
+  font-weight: 400;
+  color: $headings-color;
 }
 
 h4{
   font-size: 1rem !important;
 }
+
+
+
 
 .btn-pink{
   color:$pink;
@@ -326,7 +341,7 @@ h4{
 }
 
 .notifications{
- color:#fff !important;
+color:#787878 !important;
  margin-right: 15px;
  padding: 5px;
  width: 45px;

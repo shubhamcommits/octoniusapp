@@ -2,15 +2,15 @@
 .navbar {
   min-height: 80px;
   flex-direction: row !important;
-  background-color: $brand-primary;
-  box-shadow: $card-shadow;
+  background-color: #fff;
+  box-shadow: 0 4px 24px 0 rgba(37, 38, 94, 0.1);
 }
 
 .nav-link {
   font-family: $poppins;
-  // font-weight: 600;
+  font-weight: 400;
   font-size: 14px;
-  color: #ffffff !important;
+  color:#787878;
   text-align: center;
   &:hover {
     text-decoration: none;
@@ -41,7 +41,7 @@ a:active{
 }
 
 .navbar-brand .icon-octo-logo {
-  color: #ffffff;
+  color:$brand-primary;
 }
 
 .triangle {
@@ -50,7 +50,7 @@ a:active{
 	position: absolute;
 	border-left: 8px solid transparent;
 	border-right: 8px solid transparent;
-	border-bottom: 8px solid white;
+	border-bottom: 8px solid #787878;
 	top: -8px;
 	left: 6%;
 	margin-left: -8px;
