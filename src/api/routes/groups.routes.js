@@ -20,38 +20,50 @@ router.use(auth.verifyToken);
 // Check if user is logged in
 router.use(auth.isLoggedIn);
 
-// !! - OLD To be removed !!
+// vvvv| BAD REST PATTERN, to be replaced! |vvvv
 // router.get('/searchGroupUsers/:group_id', groupsController.searchGroupUsers);
-router.get('/searchGroupUsers/:group_id/:query', groupsController.searchGroupUsers); // ! TO BE REMOVED
-router.get('/:group_id', groupsController.getUserGroup); // ! TO BE REMOVED
-router.post('/addNewUsers', groupsController.addNewUsersInGroup); // ! TO BE REMOVED
-router.put('/:group_id', groupFileHandler, groupsController.updateGroup); // ! TO BE REMOVED
-router.post('/removeUser', groupsController.removeUserFromGroup); // ! TO BE REMOVED
+router.get('/searchGroupUsers/:group_id/:query', groupsController.searchGroupUsers);
+router.get('/:group_id', groupsController.getUserGroup);
+router.post('/addNewUsers', groupsController.addNewUsersInGroup);
+router.put('/:group_id', groupFileHandler, groupsController.updateGroup);
+router.post('/removeUser', groupsController.removeUserFromGroup);
+// ^^^^| BAD REST PATTERN, to be replaced! |^^^^
 
 // -| Groups routes |-
 
-// GET api/groups/:groupId/files
-// - get user's files that belongs to this group
+// - Files -
+
+// Get user's files that belongs to this group
 router.get('/:groupId/files',
   authorization.groupAccess,
   groups.getFiles);
 
-// GET api/groups/:groupId/files/:fileName/download
-// - download file from group
+// Download file from group
 router.get('/:groupId/files/:fileName/download',
   authorization.groupAccess,
   groups.downloadFile);
 
-// GET api/groups/:groupId/posts
-// - get ten most recent group posts
+// - Posts -
+
+// Get ten most recent group posts
 router.get('/:groupId/posts',
   authorization.groupAccess,
   groups.getPosts);
 
-// GET api/groups/:groupId/nextPosts/:postId
-// - get next ten most recent posts (after :postId)
+// Get next ten most recent posts (after :postId)
 router.get('/:groupId/nextPosts/:postId',
   authorization.groupAccess,
   groups.getNextPosts);
+
+// - Tasks -
+
+// Get group's to do/in progress tasks
+router.get('/:groupId/tasks', groups.getTasks);
+
+// Get 20 most recently created group's completed tasks
+router.get('/:groupId/tasksDone', groups.getTasksDone);
+
+// Get next 20 most recently created group's completed tasks
+router.get('/:groupId/nextTasksDone/:postId', groups.getNextTasksDone);
 
 module.exports = router;

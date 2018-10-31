@@ -58,4 +58,16 @@ export class GroupService {
     return this._http.post(this.BASE_API_URL + '/group/removeUser', data);
   }
 
+  getGroupTasks(groupId) {
+    return this._http.get<any>(this.BASE_API_URL + `/groups/${groupId}/tasks`);
+  }
+
+  getCompletedGroupTasks(groupId) {
+    return this._http.get<any>(this.BASE_API_URL + `/groups/${groupId}/tasksDone`);
+  }
+
+  getRecentGroupTasks(postId, groupId) {
+    return this._http.get<any>(this.BASE_API_URL + `/groups/${groupId}/nextTasksDone/${postId}`);
+  }
+
 }

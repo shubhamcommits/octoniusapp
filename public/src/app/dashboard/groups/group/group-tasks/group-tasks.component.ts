@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../../../shared/services/user.service';
 import { PostService } from '../../../../shared/services/post.service';
+import { GroupService } from '../../../../shared/services/group.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { BehaviorSubject } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { GroupDataService } from '../../../../shared/services/group-data.service';
 
 
 @Component({
@@ -14,12 +17,13 @@ export class GroupTasksComponent implements OnInit {
 
   user_data;
   lastPostId;
+  groupId;
   isLoading$ = new BehaviorSubject(false);
 
-  constructor(private ngxService: NgxUiLoaderService, private userService: UserService, private postService: PostService) {
+  constructor(private groupDataService: GroupDataService, private ngxService: NgxUiLoaderService, private _activatedRoute: ActivatedRoute, private userService: UserService,private groupService: GroupService, private postService: PostService) {
     this.user_data = JSON.parse(localStorage.getItem('user')); 
-    this.getTasks();
-    this.getCompletedTasks();
+
+
 
   }
 
@@ -35,11 +39,17 @@ export class GroupTasksComponent implements OnInit {
     setTimeout(() => {
       this.ngxService.stop(); // stop foreground loading with 'default' id
     }, 500);
+    this.groupId = this.groupDataService.groupId;
+    //console.log('Data', this.groupDataService)
+   // console.log('Id', this.groupId);
+    this.getTasks();
+    this.getCompletedTasks();
+
 
   }
 
   getTasks() {
-    this.userService.getUserTasks()
+    this.groupService.getGroupTasks(this.groupId)
     .subscribe((res) => {
       this.pendingTasks = res['posts'];
       console.log('Tasks', res);
@@ -54,7 +64,7 @@ export class GroupTasksComponent implements OnInit {
 
     this.isLoading$.next(true);
 
-    this.userService.getRecentUserTasks(lastPostId)
+    this.groupService.getRecentGroupTasks(lastPostId, this.groupId)
       .subscribe((res) => {
        console.log('CompletedTasks', res);
         this.completedTasks = this.completedTasks.concat(res['posts']);
@@ -128,7 +138,7 @@ export class GroupTasksComponent implements OnInit {
 
 
   getCompletedTasks() {
-    this.userService.getCompletedUserTasks()
+    this.groupService.getCompletedGroupTasks(this.groupId)
     .subscribe((res) => {
       this.completedTasks = res['posts'];
       console.log('Completed Tasks', res);
