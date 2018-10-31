@@ -33,11 +33,11 @@
 
 #### 3.x. GET `api/groups/:groupId/nextPosts/:postId` get next ten most recent posts (after `:postId`)
 
-#### 3.x. ❗️GET `api/groups/:groupId/tasks` get group's *to do/in progress* tasks
+#### 3.x. GET `api/groups/:groupId/tasks` get group's *to do/in progress* tasks
 
-#### 3.x. ❗️GET `api/group/:groupId/tasksDone` get 20 most recently created group's tasks that are completed
+#### 3.x. GET `api/group/:groupId/tasksDone` get 20 most recently created group's completed tasks
 
-#### 3.x. ❗️GET `api/groups/:groupId/nextTasksDone/:postId` get next 20 most recently created group's tasks that are completed
+#### 3.x. GET `api/groups/:groupId/nextTasksDone/:postId` get next 20 most recently created group's completed tasks
 
 '
 
@@ -93,4 +93,4 @@
 
 #### 6.x. ❗️❗️ DELETE `api/workspaces/:workspaceId/users/:userId` remove user from workspace
 
-'
+'kk

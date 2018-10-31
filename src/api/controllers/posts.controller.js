@@ -156,16 +156,26 @@ const changeTaskStatus = async (req, res, next) => {
       _id: post._group
     }).lean();
 
+    console.log('userId', userId);
+    console.log('group._admins', group._admins);
+    console.log('post._posted_by', post._posted_by);
+    console.log('post.task._assigned_to', post.task._assigned_to);
+
+    console.log(!group._admins.includes(String(userId)));
+    console.log(!post._posted_by.equals(userId));
+    console.log(!post.task._assigned_to.equals(userId));
+
+
     if (
       // If user is not one of group's admins... and...
       !group._admins.includes(String(userId)) &&
-      // ...user is not the post author... or...
-      (!post._posted_by.equals(userId) ||
+      // ...user is not the post author... and...
+      (!post._posted_by.equals(userId) &&
         // ...user is not the task assignee
         !post.task._assigned_to.equals(userId))
     ) {
       // Deny access!
-      return sendErr(res, null, 'User not allowed to remove this post!', 403);
+      return sendErr(res, null, 'User not allowed to update this post!', 403);
     }
 
     const postUpdated = await Post.findOneAndUpdate({
