@@ -1,166 +1,180 @@
 <div class="row">
-<!--TODO TASKS-->
-  <div class="col-md-4">
-      <div class="card btn-pink" style="background: mediumslateblue; color: white;">
-          <h3 class="text-center" style="font-weight: bold; padding: 5px 5px 5px 5px; pointer-events: none;">TODO</h3>
-      </div>
-      <div *ngFor="let post of pendingTasks">
-          <div class="card" *ngIf="post.task.status == 'to do'">
-              <div class="card-block ">
-                  <div class="row card-title ">
-                    <div class="col-md-1 ">
-                        <img src="/uploads/{{this.post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'" class="topnav-avatar">
-                      <!--<img src="assets/images/user.png" class="feed-avatar">-->
+    <!--TODO TASKS-->
+    <div class="col-md-4">
+        <div class="kanbanheader kbn-todo">
+            To Do
+        </div>
+        <div *ngFor="let post of pendingTasks">
+            <div class="card" *ngIf="post.task.status == 'to do'">
+                <div class="card-block ">
+                    <div class="card-title">
+
+                        <img src="/uploads/{{this.post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"
+                            class="topnav-avatar float-left kbn">
+                        <!--<img src="assets/images/user.png" class="feed-avatar">-->
+                        <h6 class="kbn">{{post._posted_by?.first_name}} {{post._posted_by?.last_name}} <br><span class="small lightgray date">
+                                {{post?.created_date | date : 'medium'}}</span>
+                        </h6>
+
                     </div>
-                    <div class="col-md-7 ">
-                      <h6>{{post._posted_by?.first_name}} {{post._posted_by?.last_name}}
-              
-                      </h6>
-                      <p class="small lightgray date ">
-                        {{post?.created_date | date : 'medium'}}</p>
-                      <span class="pink small"> ASSIGNED TO {{post.task._assigned_to.first_name}} {{this.post.task?._assigned_to?.last_name}}
-                      </span>
+                    <div class="card-body">
+
+                        <span class="assigned"> Assigned to {{post.task._assigned_to.first_name}}
+                            {{this.post.task?._assigned_to?.last_name}}
+                        </span>
+
+                        <div ngbDropdown class="d-inline-block float-right">
+                            <button class="btn btn-sm" id="dropdownDone" ngbDropdownToggle>{{post.task.status}}</button>
+                            <div ngbDropdownMenu aria-labelledby="dropdownToDo">
+                                <button class="dropdown-item" (click)="OnMarkTaskToDo(this.post._id)">To Do</button>
+                                <button class="dropdown-item" (click)="OnMarkTaskInProgress(this.post._id)">In
+                                    Progress</button>
+                                <button class="dropdown-item" (click)="OnMarkTaskCompleted(this.post._id)">Done</button>
+                            </div>
+                        </div>
+
+
+                        <ng-template #taskif>
+                            <div class="col-md-4 text-right padding-topright">
+                                <button class="btn btn-pink btn-sm" id="button_task_mark_completed" (click)="OnMarkTaskCompleted()">Mark
+                                    complete</button>
+                                <p class="small font-weight-bold" style="margin-top: 5px"> due {{post.task?.due_to
+                                    | date}}</p>
+                            </div>
+                        </ng-template>
+                        <hr>
+                        <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group}}/post/{{post._id}}">
+                            <div class="col-md-12 innercard " [innerHTML]="post?.content | safe: 'html'">
+                                <!--<pre class="card-text ">{{post?.content}}
+                      </pre>-->
+                            </div>
+                        </a>
                     </div>
-                    <div class="col-md-4 text-right padding-topright" style=" object-fit: cover;">
-                              <div ngbDropdown class="d-inline-block">      
-                                  <button class="btn btn-pink btn-sm" id="dropdownDone" style="background: mediumslateblue; color: white;" ngbDropdownToggle>{{post.task.status}}</button>
-                  <div ngbDropdownMenu aria-labelledby="dropdownToDo">
-                      <button class="dropdown-item" (click)="OnMarkTaskToDo(this.post._id)">To Do</button>
-                      <button class="dropdown-item" (click)="OnMarkTaskInProgress(this.post._id)">In Progress</button>
-                      <button class="dropdown-item" (click)="OnMarkTaskCompleted(this.post._id)">Done</button>
-                  </div>
+
                 </div>
-              
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <!--INPROGRESS TASKS-->
+    <div class="col-md-4">
+        <div class="kanbanheader kbn-working">
+            In Progress
+        </div>
+
+        <div *ngFor="let post of pendingTasks">
+            <div class="card" *ngIf="post.task.status == 'in progress'">
+                <div class="card-block ">
+                    <div class="card-title">
+
+                        <img src="/uploads/{{this.post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"
+                            class="topnav-avatar float-left kbn">
+                        <!--<img src="assets/images/user.png" class="feed-avatar">-->
+                        <h6 class="kbn">{{post._posted_by?.first_name}} {{post._posted_by?.last_name}} <br><span class="small lightgray date">
+                                {{post?.created_date | date : 'medium'}}</span>
+                        </h6>
+
                     </div>
+                    <div class="card-body">
+
+                        <span class="assigned"> Assigned to {{post.task._assigned_to.first_name}}
+                            {{this.post.task?._assigned_to?.last_name}}
+                        </span>
+
+                        <div ngbDropdown class="d-inline-block float-right">
+                            <button class="btn btn-sm" id="dropdownDone" ngbDropdownToggle>{{post.task.status}}</button>
+                            <div ngbDropdownMenu aria-labelledby="dropdownToDo">
+                                <button class="dropdown-item" (click)="OnMarkTaskToDo(this.post._id)">To Do</button>
+                                <button class="dropdown-item" (click)="OnMarkTaskInProgress(this.post._id)">In
+                                    Progress</button>
+                                <button class="dropdown-item" (click)="OnMarkTaskCompleted(this.post._id)">Done</button>
+                            </div>
+                        </div>
+
+
+                        <ng-template #taskif>
+                            <div class="col-md-4 text-right padding-topright">
+                                <button class="btn btn-pink btn-sm" id="button_task_mark_completed" (click)="OnMarkTaskCompleted()">Mark
+                                    complete</button>
+                                <p class="small font-weight-bold" style="margin-top: 5px"> due {{post.task?.due_to
+                                    | date}}</p>
+                            </div>
+                        </ng-template>
+                        <hr>
+                        <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group}}/post/{{post._id}}">
+                            <div class="col-md-12 innercard " [innerHTML]="post?.content | safe: 'html'">
+                                <!--<pre class="card-text ">{{post?.content}}
+                  </pre>-->
+                            </div>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <!--COMPLETED TASKS-->
+    <div class="col-md-4">
+        <div class="kanbanheader kbn-done">Completed</div>
+
+        <div class="card" *ngFor="let post of completedTasks">
+            <div class="card-block ">
+                <div class="card-title">
+
+                    <img src="/uploads/{{this.post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"
+                        class="topnav-avatar float-left kbn">
+                    <!--<img src="assets/images/user.png" class="feed-avatar">-->
+                    <h6 class="kbn">{{post._posted_by?.first_name}} {{post._posted_by?.last_name}} <br><span class="small lightgray date">
+                            {{post?.created_date | date : 'medium'}}</span>
+                    </h6>
+
+                </div>
+                <div class="card-body">
+
+                    <span class="assigned"> Assigned to {{post.task._assigned_to.first_name}}
+                        {{this.post.task?._assigned_to?.last_name}}
+                    </span>
+
+                    <div ngbDropdown class="d-inline-block float-right">
+                        <button class="btn btn-sm" id="dropdownDone" ngbDropdownToggle>{{post.task.status}}</button>
+                        <div ngbDropdownMenu aria-labelledby="dropdownToDo">
+                            <button class="dropdown-item" (click)="OnMarkTaskToDo(this.post._id)">To Do</button>
+                            <button class="dropdown-item" (click)="OnMarkTaskInProgress(this.post._id)">In
+                                Progress</button>
+                            <button class="dropdown-item" (click)="OnMarkTaskCompleted(this.post._id)">Done</button>
+                        </div>
+                    </div>
+
+
                     <ng-template #taskif>
                         <div class="col-md-4 text-right padding-topright">
-                            <button class="btn btn-pink btn-sm" id="button_task_mark_completed" (click)="OnMarkTaskCompleted()">Mark complete</button>
-                            <p class="small font-weight-bold" style="margin-top: 5px"> due {{post.task?.due_to | date}}</p>
+                            <button class="btn btn-pink btn-sm" id="button_task_mark_completed" (click)="OnMarkTaskCompleted()">Mark
+                                complete</button>
+                            <p class="small font-weight-bold" style="margin-top: 5px"> due {{post.task?.due_to
+                                | date}}</p>
                         </div>
                     </ng-template>
-              
-                    <div class="col-md-12 innercard " [innerHTML]="post?.content | safe: 'html'">
-                        <!--<pre class="card-text ">{{post?.content}}
-                        </pre>-->
-                      </div>
-                  </div>
-              
+                    <hr>
+                    <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group}}/post/{{post._id}}">
+                        <div class="col-md-12 innercard " [innerHTML]="post?.content | safe: 'html'">
+                            <!--<pre class="card-text ">{{post?.content}}
+                  </pre>-->
+                        </div>
+                    </a>
                 </div>
-          </div>
-    
-          </div>
-    
 
-</div>
-
-<!--INPROGRESS TASKS-->
-<div class="col-md-4">
-    <div class="card btn-pink" style="background: mediumslateblue; color: white;">
-        <h3 class="text-center" style="font-weight: bold; padding: 5px 5px 5px 5px; pointer-events: none;">IN PROGRESS</h3>
-    </div>
-
-    <div *ngFor="let post of pendingTasks">
-      <div class="card" *ngIf="post.task.status == 'in progress'">
-          <div class="card-block ">
-              <div class="row card-title ">
-                <div class="col-md-1 ">
-                    <img src="/uploads/{{this.post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'" class="topnav-avatar">
-                  <!--<img src="assets/images/user.png" class="feed-avatar">-->
-                </div>
-                <div class="col-md-7 ">
-                  <h6>{{post._posted_by?.first_name}} {{post._posted_by?.last_name}}
-          
-                  </h6>
-                  <p class="small lightgray date ">
-                    {{post?.created_date | date : 'medium'}}</p>
-                  <span class="pink small"> ASSIGNED TO {{post.task._assigned_to.first_name}} {{this.post.task?._assigned_to?.last_name}}
-                  </span>
-                </div>
-                <div class="col-md-4 text-right padding-topright" style=" object-fit: cover;">
-                          <div ngbDropdown class="d-inline-block">      
-                              <button class="btn btn-pink btn-sm" id="dropdownDone" style="background: mediumslateblue; color: white;" ngbDropdownToggle>{{post.task.status}}</button>
-              <div ngbDropdownMenu aria-labelledby="dropdownInProgress">
-                  <button class="dropdown-item" (click)="OnMarkTaskToDo(this.post._id)">To Do</button>
-                  <button class="dropdown-item" (click)="OnMarkTaskInProgress(this.post._id)">In Progress</button>
-                  <button class="dropdown-item" (click)="OnMarkTaskCompleted(this.post._id)">Done</button>
-              </div>
             </div>
-          
-                </div>
-                <ng-template #taskif>
-                    <div class="col-md-4 text-right padding-topright">
-                        <button class="btn btn-pink btn-sm" id="button_task_mark_completed" (click)="OnMarkTaskCompleted()">Mark complete</button>
-                        <p class="small font-weight-bold" style="margin-top: 5px"> due {{post.task?.due_to | date}}</p>
-                    </div>
-                </ng-template>
-          
-                <div class="col-md-12 innercard " [innerHTML]="post?.content | safe: 'html'">
-                    <!--<pre class="card-text ">{{post?.content}}
-                    </pre>-->
-                  </div>
-              </div>
-          
-            </div>
-      </div>
-
-      </div>
-
-</div>
-<!--COMPLETED TASKS-->
-<div class="col-md-4">
-    <div class="card btn-pink" style="background: mediumslateblue; color: white;">
-        <h3 class="text-center" style="font-weight: bold; padding: 5px 5px 5px 5px; pointer-events: none;">DONE</h3>
-    </div>
-
-    <div class="card" *ngFor="let post of completedTasks">
-        <div class="card-block ">
-          <div class="row card-title ">
-            <div class="col-md-1 ">
-                <img src="/uploads/{{this.post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'" class="topnav-avatar">
-              <!--<img src="assets/images/user.png" class="feed-avatar">-->
-            </div>
-            <div class="col-md-7 ">
-              <h6>{{post._posted_by?.first_name}} {{post._posted_by?.last_name}}
-      
-              </h6>
-              <p class="small lightgray date ">
-                {{post?.created_date | date : 'medium'}}</p>
-              <span class="pink small"> ASSIGNED TO {{post.task._assigned_to.first_name}} {{this.post.task?._assigned_to?.last_name}}
-              </span>
-            </div>
-            <div class="col-md-4 text-right padding-topright" style=" object-fit: cover;">
-                      <div ngbDropdown class="d-inline-block">      
-                  <button class="btn btn-pink btn-sm" id="dropdownDone" style="background: mediumslateblue; color: white;" ngbDropdownToggle>{{post.task.status}}</button>
-          <div ngbDropdownMenu aria-labelledby="dropdownDone">
-              <button class="dropdown-item" (click)="OnMarkTaskToDo(this.post._id)">To Do</button>
-              <button class="dropdown-item" (click)="OnMarkTaskInProgress(this.post._id)">In Progress</button>
-              <button class="dropdown-item" (click)="OnMarkTaskCompleted(this.post._id)">Done</button>
-          </div>
         </div>
-      
-            </div>
-            <ng-template #taskif>
-                <div class="col-md-4 text-right padding-topright">
-                    <button class="btn btn-pink btn-sm" id="button_task_mark_completed" (click)="OnMarkTaskCompleted()">Mark complete</button>
-                    <p class="small font-weight-bold" style="margin-top: 5px"> due {{post.task?.due_to | date}}</p>
-                </div>
-            </ng-template>
-      
-            <div class="col-md-12 innercard " [innerHTML]="post?.content | safe: 'html'">
-                <!--<pre class="card-text ">{{post?.content}}
-                </pre>-->
-              </div>
-          </div>
-      
-        </div>
-      </div>
 
-      <a type="button" (click)="OnFetchNextPosts()" class="card btn" style="background: mediumslateblue; color: white;">
-      Load More...
-      </a>
+        <button type="button" (click)="OnFetchNextPosts()" class="btn btn-link">
+            Load More...
+        </button>
 
-      
 
+    </div>
 </div>
-</div>
-
