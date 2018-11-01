@@ -15,6 +15,7 @@
                         <h6 class="kbn">{{post._posted_by?.first_name}} {{post._posted_by?.last_name}} <br><span class="small lightgray date">
                                 {{post?.created_date | date : 'medium'}}</span>
                         </h6>
+                        <p class="small font-weight-bold" style="margin-top: 5px"> due {{post.task?.due_to | date}}</p>
 
                     </div>
                     <div class="card-body">
@@ -76,6 +77,7 @@
                         <h6 class="kbn">{{post._posted_by?.first_name}} {{post._posted_by?.last_name}} <br><span class="small lightgray date">
                                 {{post?.created_date | date : 'medium'}}</span>
                         </h6>
+                        <p class="small font-weight-bold" style="margin-top: 5px"> due {{post.task?.due_to | date}}</p>
 
                     </div>
                     <div class="card-body">
@@ -132,6 +134,7 @@
                     <h6 class="kbn">{{post._posted_by?.first_name}} {{post._posted_by?.last_name}} <br><span class="small lightgray date">
                             {{post?.created_date | date : 'medium'}}</span>
                     </h6>
+                    <p class="small font-weight-bold" style="margin-top: 5px"> due {{post.task?.due_to | date}}</p>
 
                 </div>
                 <div class="card-body">
