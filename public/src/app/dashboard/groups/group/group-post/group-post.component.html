@@ -3,7 +3,7 @@
   <li class="list-group-item " *ngIf="this.post?.type== 'normal'">
     <div class="card ">
       <div class="card-block ">
-        <div class="card-title ">
+        <div class="card-title ">  
 
           <!--<img [src]="profileImage" class="feed-avatar">-->
           <img src="/uploads/{{this.post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'" class="feed-avatar float-left">
@@ -173,8 +173,6 @@
               </div>
             </div>
             <p class="small font-weight-bold" style="margin-top: 5px"> due {{post.task?.due_to | date}}</p>
-
-
           </div>
           <ng-template #taskif>
             <div class="col-md-4 text-right padding-topright">
