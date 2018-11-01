@@ -93,4 +93,4 @@
 
 #### 6.x. ❗️❗️ DELETE `api/workspaces/:workspaceId/users/:userId` remove user from workspace
 
-'kk
+'
