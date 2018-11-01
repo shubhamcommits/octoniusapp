@@ -188,8 +188,14 @@
 #### 6.x. ❗️❗️ DELETE `api/workspaces/:workspaceId/users/:userId` remove user from workspace
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 ||||||| merged common ancestors
 '
 =======
 '
 >>>>>>> add comments controllers and routes, not completed
+||||||| merged common ancestors
+'kk
+=======
+'
+>>>>>>> create comments model, set up post model
