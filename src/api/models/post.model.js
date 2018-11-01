@@ -25,19 +25,8 @@ const PostSchema = new Schema({
     default: 0
   },
   comments: [{
-    content: {
-      type: String,
-      default: null
-    },
-    created_date: {
-      type: Date,
-      default: Date.now
-    },
-    _commented_by: {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
-      required: true
-    }
+    type: Schema.Types.ObjectId,
+    ref: 'Comment'
   }],
   _group: {
     type: Schema.Types.ObjectId,
