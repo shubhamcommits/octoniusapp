@@ -25,9 +25,10 @@
 
                             <span class="assigned"> Assigned to {{post.task._assigned_to.first_name}}
                                 {{this.post.task?._assigned_to?.last_name}}
+                                <br> <span class="lightgray">in Group Name</span>
                             </span>
 
-                            <div ngbDropdown class="d-inline-block float-right">
+                            <div ngbDropdown class="d-inline-block float-right" style="margin-top:-15px">
                                 <button class="btn btn-sm" id="dropdownDone" ngbDropdownToggle>{{post.task.status}}</button>
                                 <div ngbDropdownMenu aria-labelledby="dropdownToDo">
                                     <button class="dropdown-item" (click)="OnMarkTaskToDo(this.post._id)">To Do</button>
@@ -89,9 +90,10 @@
 
                             <span class="assigned"> Assigned to {{post.task._assigned_to.first_name}}
                                 {{this.post.task?._assigned_to?.last_name}}
+                                <br> <span class="lightgray">in Group Name</span>
                             </span>
 
-                            <div ngbDropdown class="d-inline-block float-right">
+                            <div ngbDropdown class="d-inline-block float-right" style="margin-top:-15px">
                                 <button class="btn btn-sm" id="dropdownDone" ngbDropdownToggle>{{post.task.status}}</button>
                                 <div ngbDropdownMenu aria-labelledby="dropdownToDo">
                                     <button class="dropdown-item" (click)="OnMarkTaskToDo(this.post._id)">To Do</button>
@@ -148,9 +150,10 @@
 
                             <span class="assigned"> Assigned to {{post.task._assigned_to.first_name}}
                                 {{this.post.task?._assigned_to?.last_name}}
+                                <br> <span class="lightgray">in Group Name</span>
                             </span>
 
-                            <div ngbDropdown class="d-inline-block float-right">
+                            <div ngbDropdown class="d-inline-block float-right" style="margin-top:-15px">
                                 <button class="btn btn-sm" id="dropdownDone" ngbDropdownToggle>{{post.task.status}}</button>
                                 <div ngbDropdownMenu aria-labelledby="dropdownToDo">
                                     <button class="dropdown-item" (click)="OnMarkTaskToDo(this.post._id)">To Do</button>
