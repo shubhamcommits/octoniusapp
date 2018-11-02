@@ -25,7 +25,7 @@
 
                             <span class="assigned"> Assigned to {{post.task._assigned_to.first_name}}
                                 {{this.post.task?._assigned_to?.last_name}}
-                                <br> <span class="lightgray">in Group Name</span>
+                                <br><span class="lightgray">in {{this.post._group?.group_name}} group</span>
                             </span>
 
                             <div ngbDropdown class="d-inline-block float-right" style="margin-top:-15px">
@@ -90,7 +90,7 @@
 
                             <span class="assigned"> Assigned to {{post.task._assigned_to.first_name}}
                                 {{this.post.task?._assigned_to?.last_name}}
-                                <br> <span class="lightgray">in Group Name</span>
+                                <br> <span class="lightgray">in {{this.post._group?.group_name}} group</span>
                             </span>
 
                             <div ngbDropdown class="d-inline-block float-right" style="margin-top:-15px">
@@ -150,7 +150,7 @@
 
                             <span class="assigned"> Assigned to {{post.task._assigned_to.first_name}}
                                 {{this.post.task?._assigned_to?.last_name}}
-                                <br> <span class="lightgray">in Group Name</span>
+                                <br> <span class="lightgray">in {{this.post._group?.group_name}} group</span>
                             </span>
 
                             <div ngbDropdown class="d-inline-block float-right" style="margin-top:-15px">
