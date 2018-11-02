@@ -185,6 +185,53 @@ const changeTaskStatus = async (req, res, next) => {
   }
 };
 
+const changeTaskAssignee = async (req, res, next) => {
+  try {
+    const {
+      userId,
+      params: { postId },
+      body: { assigneeId }
+    } = req;
+
+    // Get post data
+    const post = await Post.findOne({
+      _id: postId
+    }).lean();
+
+    // Get group data
+    const group = await Group.findOne({
+      _id: post._group
+    }).lean();
+
+    if (
+      // If user is not one of group's admins... and...
+      !group._admins.includes(String(userId)) &&
+      // ...user is not the post author... and...
+      (!post._posted_by.equals(userId) &&
+        // ...user is not the task assignee
+        !post.task._assigned_to.equals(userId))
+    ) {
+      // Deny access!
+      return sendErr(res, null, 'User not allowed to update this post!', 403);
+    }
+
+    const postUpdated = await Post.findOneAndUpdate({
+      _id: postId
+    }, {
+      'task._assigned_to': assigneeId
+    }, {
+      new: true
+    });
+
+    return res.status(200).json({
+      message: 'Task assignee updated!',
+      post: postUpdated
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
 /*  =============
  *  -- EXPORTS --
  *  =============
@@ -197,5 +244,6 @@ module.exports = {
   get,
   remove,
   // Post tasks controllers
+  changeTaskAssignee,
   changeTaskStatus
 };
