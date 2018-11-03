@@ -65,7 +65,9 @@
 
 #### 4.x. ❗️❗️PUT `api/posts/:postId/unlike` unlike post
 
-#### 4.x. ❗️❗️PUT `api/posts/:postId/taskStatus` change task status
+#### 4.x. PUT `api/posts/:postId/taskStatus` change task status
+
+#### 4.x. PUT `api/posts/:postId/taskAssignee` change task assignee
 
 '
 

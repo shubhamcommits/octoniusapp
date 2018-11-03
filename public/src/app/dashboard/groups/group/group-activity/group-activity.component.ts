@@ -122,6 +122,9 @@
       task: false
     };
 
+    datePickedCount = 0;
+    timePickedCount = 0;
+
 
 
     // alert variable
@@ -394,6 +397,9 @@
 
       this.comment.post_id = post_id;
       this.comment._commented_by = this.user_data.user_id;
+      var cardTaskPost = document.getElementById('card-task-post-comment-' + index);
+      var cardNormalPost = document.getElementById('card-normal-post-comment-' + index);
+      var cardEventPost = document.getElementById('card-event-post-comment-' + index);
 
       this.postService.addNewComment(this.comment)
         .subscribe((res) => {
@@ -402,6 +408,12 @@
           this.scrollToTop('#card-normal-post-'+index);
           this.scrollToTop('#card-event-post-'+index);
           this.scrollToTop('#card-task-post-'+index);
+          this.showComments.id=post_id;
+          this.showComments.task=! this.showComments.task;
+          this.showComments.normal=! this.showComments.normal;
+          this.showComments.event=! this.showComments.event;
+         // cardTaskPost.style.display = 'none';
+          // cardNormalPost.style.display = 'none';
 
         }, (err) => {
           this.alert.class = 'danger';
@@ -413,6 +425,16 @@
           }
 
         });
+        if(cardNormalPost == null && cardEventPost == null){
+          cardTaskPost.style.display = 'none';
+        }
+        if(cardTaskPost == null && cardEventPost == null){
+          cardNormalPost.style.display = 'none';
+        }
+        if(cardNormalPost == null && cardTaskPost == null){
+          cardEventPost.style.display = 'none';
+        }
+      
 
 
     }
@@ -1137,10 +1159,12 @@
 
     openTimePicker(content) {
       this.modalService.open(content, { centered: true });
+      this.timePickedCount;
     }
 
     openDatePicker(content) {
       this.modalService.open(content, { centered: true });
+      this.datePickedCount = 1;
     }
 
     openAssignPicker(content) {

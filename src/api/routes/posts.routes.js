@@ -62,6 +62,9 @@ router.delete('/:postId', posts.remove);
 
 // - Tasks -
 
+// Change task assignee
+router.put('/:postId/taskAssignee', posts.changeTaskAssignee);
+
 // Change task status
 router.put('/:postId/taskStatus', posts.changeTaskStatus);
 
