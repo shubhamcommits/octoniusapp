@@ -151,7 +151,7 @@
 
               <div class="col-md-4 text-right ">
                 <button type="button " name="button" class="btn btn-default " (click)="show_hide_working_bar()">Cancel</button>
-                <button [disabled]="(postForm.invalid && post.type=='normal' ) || processing || (selectedGroupUsers.length == 0 && post.type=='event' ) ||(selectedGroupUsers.length == 0 && post.type=='task') "
+                <button [disabled]="(postForm.invalid && post.type=='normal' ) || processing || (datePickedCount == 0 && timePickedCount == 0 && post.type=='event') ||(selectedGroupUsers.length == 0 && post.type=='task') "
                   type="button " name="button" (click)="OnAddNewPost()" class="btn btn-primary">Post</button>
               </div>
             </div>
@@ -346,8 +346,8 @@
             <!-- post comment block make this invisible -->
 
 
-            <div *ngIf="showComments.id == post._id && showComments.normal">
-              <div class="card muted margin5">
+            <div *ngIf="showComments.id == post._id && showComments.normal" >
+              <div class="card muted margin5" id="card-normal-post-comment-{{i}}">
                 <form [formGroup]="commentForm">
                   <div class="row">
                     <div class="col-md-12">
@@ -531,12 +531,12 @@
             <!-- post comment block make this invisible -->
 
 
-            <div *ngIf="showComments.id == post._id && showComments.task">
-              <div class="card muted margin5">
+            <div *ngIf="showComments.id == post._id && showComments.task" id="card-task-post-comment-{{i}}">
+              <div class="card muted margin5" >
                 <form [formGroup]="commentForm">
                   <div class="row">
                     <div class="col-md-12">
-                      <div class="form-group ">
+                      <div class="form-group " >
                         <h6>Add a comment</h6>
                         <!--<textarea class="form-control" id="post-content" rows="3" [(ngModel)]="comment.content" name="commentContent" formControlName="commentContent"></textarea>-->
                         <quill-editor id="comment-content{{i}}" [modules]="modules" [(ngModel)]="comment.content"
@@ -721,7 +721,7 @@
             <!-- post comment block make this invisible -->
 
 
-            <div *ngIf="showComments.id == post._id && showComments.event">
+            <div *ngIf="showComments.id == post._id && showComments.event" id="card-event-post-comment-{{i}}">
               <div class="card muted margin5">
                 <form [formGroup]="commentForm">
                   <div class="row">
