@@ -85,13 +85,25 @@
 #### 4.x. ❗️❗️DELETE `api/posts/:post_id/comments/:commentId` delete comment
 >>>>>>> create comments routes and controllers sturctures, refactor posts/users routes and controllers
 
+<<<<<<< HEAD
 #### 4.x. ❗️PUT `api/posts/comments/:commentId` update comment
+||||||| merged common ancestors
+#### 4.x. ❗️❗️PUT `api/posts/:postId/like` like post
+=======
+#### 4.x. ❗️PUT `api/posts/:postId/like` like post
+>>>>>>> refactor user and posts controllers and routes, eliminated old user controllers and routes
 
+<<<<<<< HEAD
 #### 4.x. ❗️DELETE `api/posts/comments/:commentId` delete comment
 
 #### 4.x. ❗️PUT `api/posts/:postId/like` like post
 
 #### 4.x. ❗️PUT `api/posts/:postId/unlike` unlike post
+||||||| merged common ancestors
+#### 4.x. ❗️❗️PUT `api/posts/:postId/unlike` unlike post
+=======
+#### 4.x. ❗️PUT `api/posts/:postId/unlike` unlike post
+>>>>>>> refactor user and posts controllers and routes, eliminated old user controllers and routes
 
 #### 4.x. PUT `api/posts/:postId/taskStatus` change task status
 
@@ -104,6 +116,7 @@
 '
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 #### 5.x. ❗️GET `api/users/` get current user
 
 #### 5.x. ❗️PUT `api/users/` Edit/Update user
@@ -114,6 +127,15 @@
 
 ||||||| merged common ancestors
 =======
+||||||| merged common ancestors
+=======
+#### 5.x. ❗️GET `api/users/` get current user
+
+#### 5.x. ❗️PUT `api/users/` Edit/Update user
+
+#### 5.x. ❗️PUT `api/users/updateImage` Update user profile image
+
+>>>>>>> refactor user and posts controllers and routes, eliminated old user controllers and routes
 #### 5.x. ❗️GET `api/users/overview` get user's overview
 
 >>>>>>> create comments routes and controllers sturctures, refactor posts/users routes and controllers
