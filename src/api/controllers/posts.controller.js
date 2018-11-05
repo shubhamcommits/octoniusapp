@@ -9,7 +9,7 @@ const { sendMail, sendErr } = require('../../utils');
  *  ======================
  */
 
-// -| Post main controllers |-
+// -| MAIN |-
 
 const add = async (req, res, next) => {
   try {
@@ -430,7 +430,7 @@ const changeTaskAssignee = async (req, res, next) => {
  */
 
 module.exports = {
-  // Post Main controllers
+  // Main
   add,
   edit,
   get,
