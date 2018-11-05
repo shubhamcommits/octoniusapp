@@ -84,7 +84,9 @@ const getTasksDone = async (req, res, next) => {
 };
 
 module.exports = {
-  // tasks
+  // Main
+  getOverview,
+  // Tasks
   getNextTasksDone,
   getTasks,
   getTasksDone

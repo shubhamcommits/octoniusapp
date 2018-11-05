@@ -243,7 +243,15 @@ module.exports = {
   edit,
   get,
   remove,
-  // Post tasks controllers
+  // Comments
+  addComment,
+  editComment,
+  getComments,
+  removeComment,
+  // Likes
+  like,
+  unlike,
+  // Tasks
   changeTaskAssignee,
   changeTaskStatus
 };
