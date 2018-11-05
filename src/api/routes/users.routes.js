@@ -24,6 +24,11 @@ router.put('/', usersController.updateUser); // ! TO BE REMOVED
 router.post('/updateImage', fileHandler, usersController.updateUserImage); // ! TO BE REMOVED
 // ^^^^| BAD REST PATTERN, to be replaced! |^^^^
 
+// - Main -
+
+// Get user's overview
+router.get('/overview', users.getOverview);
+
 // - Tasks -
 
 // Get user's to do/in progress tasks

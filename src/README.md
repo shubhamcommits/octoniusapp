@@ -53,13 +53,13 @@
 
 #### 4.x. DELETE `api/posts/:postId` delete post
 
-#### 4.x. ❗️❗️POST `api/posts/:postId/comment` add new comment on post
+#### 4.x. ❗️❗️GET `api/posts/:postId/comments` get post
 
-#### 4.x. ❗️❗️PUT `api/posts/:postId/comment/:commentId` update comment
+#### 4.x. ❗️❗️POST `api/posts/:postId/comments` add new comment on post
 
-#### 4.x. ❗️❗️DELETE `api/posts/:post_id/comment/:commentId` delete comment
+#### 4.x. ❗️❗️PUT `api/posts/:postId/comments/:commentId` update comment
 
-#### 4.x. ❗️❗️POST `api/posts/:postId/complete` mark post as complete
+#### 4.x. ❗️❗️DELETE `api/posts/:post_id/comments/:commentId` delete comment
 
 #### 4.x. ❗️❗️PUT `api/posts/:postId/like` like post
 
@@ -75,6 +75,8 @@
 
 '
 
+#### 5.x. ❗️GET `api/users/overview` get user's overview
+
 #### 5.x. GET `api/users/tasks` get user's *to do/in progress* tasks
 
 #### 5.x. GET `api/users/tasksDone` get 20 most recently created user's tasks that are completed
@@ -87,11 +89,11 @@
 
 '
 
-#### 6.x. ❗️ POST `api/workspaces/:workspaceId/domains` add new domain to workspace's allowed domains
+#### 6.x. POST `api/workspaces/:workspaceId/domains` add new domain to workspace's allowed domains
 
-#### 6.x. ❗️ DELETE `api/workspaces/:workspaceId/domains/:domain` remove domain from workspace's allowed domains
+#### 6.x. DELETE `api/workspaces/:workspaceId/domains/:domain` remove domain from workspace's allowed domains
 
-#### 6.x. ❗️ GET `api/workspaces/:workspaceId/domains` get all workspace domains
+#### 6.x. GET `api/workspaces/:workspaceId/domains` get all workspace domains
 
 #### 6.x. ❗️❗️ DELETE `api/workspaces/:workspaceId/users/:userId` remove user from workspace
 
