@@ -61,9 +61,9 @@
 
 #### 4.x. ❗️❗️DELETE `api/posts/:post_id/comments/:commentId` delete comment
 
-#### 4.x. ❗️❗️PUT `api/posts/:postId/like` like post
+#### 4.x. ❗️PUT `api/posts/:postId/like` like post
 
-#### 4.x. ❗️❗️PUT `api/posts/:postId/unlike` unlike post
+#### 4.x. ❗️PUT `api/posts/:postId/unlike` unlike post
 
 #### 4.x. PUT `api/posts/:postId/taskStatus` change task status
 
@@ -74,6 +74,12 @@
 ## | 5. `api/users` routes
 
 '
+
+#### 5.x. ❗️GET `api/users/` get current user
+
+#### 5.x. ❗️PUT `api/users/` Edit/Update user
+
+#### 5.x. ❗️PUT `api/users/updateImage` Update user profile image
 
 #### 5.x. ❗️GET `api/users/overview` get user's overview
 
