@@ -8,7 +8,7 @@ const { sendErr } = require('../../utils');
 
 const getOverview = async (req, res, next) => {
   try {
-    const userId = req.params.user_id;
+    const { userId } = req;
 
     // Generate the actual time
     const todayForEvent = moment.utc()
@@ -22,25 +22,28 @@ const getOverview = async (req, res, next) => {
     const tomorrow = moment().add(1, 'days').format('YYYY-MM-DD');
 
     const posts = await Post.find({
-      $or: [
+      $or: [{
         // From this user...
-        { $and: [
+        $and: [
           // Find normal posts that has comments
           { _posted_by: userId },
-          { comments: { $exists: true, $ne: []}},
-          { 'comments.created_date': { $gte: todayForEvent }}
-        ]},
-        // Find tasks due to today
-        { $and: [
+          { comments: { $exists: true, $ne: [] } },
+          { 'comments.created_date': { $gte: todayForEvent } }
+        ]
+      }, {
+        $and: [
+          // Find tasks due to today
           { 'task._assigned_to': userId },
-          { 'task.due_to': { $in: [ today, tomorrow ]}}
-        ]},
-        // Find events due to today
-        { $and: [
+          { 'task.due_to': { $in: [today, tomorrow] } }
+        ]
+      }, {
+        $and: [
+          // Find events due to today
           { 'event._assigned_to': userId },
-          { 'event.due_to': { $gte: todayForEvent, $lt: todayPlus48ForEvent }}
-        ]}
-      ]})
+          { 'event.due_to': { $gte: todayForEvent, $lt: todayPlus48ForEvent } }
+        ]
+      }]
+    })
       .sort('event.due_to task.due_to -comments.created_date')
       .populate('_posted_by', 'first_name last_name profile_pic')
       .populate('comments._commented_by', 'first_name last_name profile_pic')

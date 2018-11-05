@@ -180,11 +180,12 @@ const removeComment = async (req, res, next) => {};
 
 // -| LIKES |-
 
-// !!!! REFACTOR !!!!
 const like = async (req, res, next) => {
   try {
-    const postId = req.body.post_id;
-    const userId = req.body.user_id;
+    const {
+      userId,
+      params: { postId }
+    } = req;
 
     const post = await Post.findByIdAndUpdate({
       _id: postId
@@ -198,19 +199,19 @@ const like = async (req, res, next) => {
 
     return res.status(200).json({
       message: 'Post liked!',
-      post,
+      post
     });
-
   } catch (err) {
     return sendErr(res, err);
   }
 };
 
-// !!!! REFACTOR !!!!
 const unlike = async (req, res, next) => {
   try {
-    const postId = req.body.post_id;
-    const userId = req.body.user_id;
+    const {
+      userId,
+      params: { postId }
+    } = req;
 
     const post = await Post.findByIdAndUpdate({
       _id: postId
@@ -224,9 +225,8 @@ const unlike = async (req, res, next) => {
 
     return res.status(200).json({
       message: 'Post unliked!',
-      post,
+      post
     });
-
   } catch (err) {
     return sendErr(res, err);
   }
