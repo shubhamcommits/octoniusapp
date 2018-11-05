@@ -29,11 +29,6 @@ router.put('/updateImage', fileHandler, users.updateImage);
 // Get user's overview
 router.get('/overview', users.getOverview);
 
-// - Main -
-
-// Get user's overview
-router.get('/overview', users.getOverview);
-
 // - Tasks -
 
 // Get user's to do/in progress tasks
