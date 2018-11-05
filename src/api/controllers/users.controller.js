@@ -1,10 +1,77 @@
 const moment = require('moment');
 
-const { Post } = require('../models');
+const { Post, User } = require('../models');
 
 const { sendErr } = require('../../utils');
 
 // -| MAIN |-
+
+const edit = async (req, res, next) => {
+  try {
+    const { userId, body: { userData } } = req;
+
+    delete req.body.userId;
+
+    const user = await User.findByIdAndUpdate({
+      _id: userId
+    }, {
+      $set: userData
+    }, {
+      new: true
+    });
+
+    return res.status(200).json({
+      message: 'Profile updated!',
+      user
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+const get = async (req, res, next) => {
+  try {
+    const { userId } = req;
+
+    const user = await User.findOne({
+      _id: userId
+    })
+      .select('_id first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number mobile_number company_name _workspace _groups');
+
+    // User not found
+    if (!user) {
+      return sendErr(res, null, 'Error! User not found, invalid id or unauthorized request', 404);
+    }
+
+    return res.status(200).json({
+      message: 'User found!',
+      user
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+const updateImage = async (req, res, next) => {
+  try {
+    const { userId, fileName } = req;
+
+    const user = await User.findByIdAndUpdate({
+      _id: userId
+    }, {
+      profile_pic: fileName
+    }, {
+      new: true
+    });
+
+    return res.status(200).json({
+      message: 'User profile picture updated!',
+      user
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
 
 const getOverview = async (req, res, next) => {
   try {
@@ -144,7 +211,10 @@ const getTasksDone = async (req, res, next) => {
 
 module.exports = {
   // Main
+  edit,
+  get,
   getOverview,
+  updateImage,
   // Tasks
   getNextTasksDone,
   getTasks,

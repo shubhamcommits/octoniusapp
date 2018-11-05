@@ -1,9 +1,6 @@
 const express = require('express');
 
-const {
-  posts,
-  postsController // ! TO BE REMOVED
-} = require('../controllers');
+const { posts } = require('../controllers');
 
 const {
   auth,
