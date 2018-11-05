@@ -1,9 +1,6 @@
 const express = require('express');
 
-const {
-  users,
-  usersController // ! TO BE REMOVED
-} = require('../controllers');
+const { users } = require('../controllers');
 
 const { auth, fileHandler } = require('../../utils');
 
@@ -18,12 +15,32 @@ router.use(auth.isLoggedIn);
 
 // -| Users Routes |-
 
-// vvvv| BAD REST PATTERN, to be replaced! |vvvv
-router.get('/', usersController.getUser); // ! TO BE REMOVED
-router.put('/', usersController.updateUser); // ! TO BE REMOVED
-router.post('/updateImage', fileHandler, usersController.updateUserImage); // ! TO BE REMOVED
-// ^^^^| BAD REST PATTERN, to be replaced! |^^^^
+// - Main -
 
+// Get current user
+router.get('/', users.get);
+
+// Edit/Update user
+router.put('/', users.edit);
+
+// Update user profile image
+router.put('/updateImage', fileHandler, users.updateImage);
+
+// Get user's overview
+router.get('/overview', users.getOverview);
+
+// - Tasks -
+
+// Get user's to do/in progress tasks
+router.get('/tasks', users.getTasks);
+
+// Get 20 most recently created user's completed tasks
+router.get('/tasksDone', users.getTasksDone);
+
+// Get next 20 most recently created user's completed tasks
+router.get('/nextTasksDone/:postId', users.getNextTasksDone);
+
+module.exports = router;
 // - Tasks -
 
 // Get user's to do/in progress tasks
