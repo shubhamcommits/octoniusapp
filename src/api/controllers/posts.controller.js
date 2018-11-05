@@ -9,7 +9,7 @@ const { sendMail, sendErr } = require('../../utils');
  *  ======================
  */
 
-// -| Post main controllers |-
+// -| MAIN |-
 
 const add = async (req, res, next) => {
   try {
@@ -136,7 +136,103 @@ const remove = async (req, res, next) => {
   }
 };
 
-// -| Post tasks controllers |-
+// -| COMMENTS |-
+
+// !!!! REFACTOR !!!!
+const addComment = async (req, res, next) => {
+  try {
+    const postId = req.body.post_id;
+    const commentedBy = req.body._commented_by;
+    const content = req.body.content;
+
+    const user = await User.findById({ _id: commentedBy });
+
+    const post = await Post.findByIdAndUpdate({
+      _id: postId
+    }, {
+      $push: {
+        comments: {
+          content: content,
+          _commented_by: user
+        }
+      },
+      $inc: {
+        comments_count: 1
+      },
+    }, {
+      new: true
+    });
+
+    return res.status(200).json({
+      message: 'Comment added!',
+      post,
+    });
+
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+// !!!! REFACTOR !!!!
+const editComment = async (req, res, next) => {};
+const getComments = async (req, res, next) => {};
+const removeComment = async (req, res, next) => {};
+
+// -| LIKES |-
+
+// !!!! REFACTOR !!!!
+const like = async (req, res, next) => {
+  try {
+    const postId = req.body.post_id;
+    const userId = req.body.user_id;
+
+    const post = await Post.findByIdAndUpdate({
+      _id: postId
+    }, {
+      $addToSet: {
+        _liked_by: userId
+      }
+    }, {
+      new: true
+    });
+
+    return res.status(200).json({
+      message: 'Post liked!',
+      post,
+    });
+
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+// !!!! REFACTOR !!!!
+const unlike = async (req, res, next) => {
+  try {
+    const postId = req.body.post_id;
+    const userId = req.body.user_id;
+
+    const post = await Post.findByIdAndUpdate({
+      _id: postId
+    }, {
+      $pull: {
+        _liked_by: userId
+      }
+    }, {
+      new: true
+    });
+
+    return res.status(200).json({
+      message: 'Post unliked!',
+      post,
+    });
+
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+// -| TASKS |-
 
 const changeTaskStatus = async (req, res, next) => {
   try {
@@ -238,12 +334,20 @@ const changeTaskAssignee = async (req, res, next) => {
  */
 
 module.exports = {
-  // Post Main controllers
+  // Main
   add,
   edit,
   get,
   remove,
-  // Post tasks controllers
+  // Comments
+  addComment,
+  editComment,
+  getComments,
+  removeComment,
+  // Likes
+  like,
+  unlike,
+  // Tasks
   changeTaskAssignee,
   changeTaskStatus
 };
