@@ -54,13 +54,20 @@
 #### 4.x. DELETE `api/posts/:postId` delete post
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 #### 4.x. ❗️GET `api/posts/comments/:commentId` get a single comment
 ||||||| merged common ancestors
 #### 4.x. ❗️❗️POST `api/posts/:postId/comment` add new comment on post
 =======
 #### 4.x. ❗️❗️GET `api/posts/:postId/comments` get post
 >>>>>>> create comments routes and controllers sturctures, refactor posts/users routes and controllers
+||||||| merged common ancestors
+#### 4.x. ❗️❗️GET `api/posts/:postId/comments` get post
+=======
+#### 4.x. ❗️❗️GET `api/posts/comments/:commentId` get a single comment
+>>>>>>> add comments controllers and routes, not completed
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 #### 4.x. ❗️GET `api/posts/:postId/comments` get first N post's comments
 ||||||| merged common ancestors
@@ -68,7 +75,13 @@
 =======
 #### 4.x. ❗️❗️POST `api/posts/:postId/comments` add new comment on post
 >>>>>>> create comments routes and controllers sturctures, refactor posts/users routes and controllers
+||||||| merged common ancestors
+#### 4.x. ❗️❗️POST `api/posts/:postId/comments` add new comment on post
+=======
+#### 4.x. ❗️GET `api/posts/:postId/comments` get first N post's comments
+>>>>>>> add comments controllers and routes, not completed
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 #### 4.x. ❗️GET `api/posts/:postId/nextComments` get next N post's comments
 ||||||| merged common ancestors
@@ -76,7 +89,13 @@
 =======
 #### 4.x. ❗️❗️PUT `api/posts/:postId/comments/:commentId` update comment
 >>>>>>> create comments routes and controllers sturctures, refactor posts/users routes and controllers
+||||||| merged common ancestors
+#### 4.x. ❗️❗️PUT `api/posts/:postId/comments/:commentId` update comment
+=======
+#### 4.x. ❗️GET `api/posts/:postId/nextComments` get next N post's comments
+>>>>>>> add comments controllers and routes, not completed
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 #### 4.x. ❗️POST `api/posts/:postId/comments` add new comment on post
 ||||||| merged common ancestors
@@ -95,6 +114,15 @@
 
 <<<<<<< HEAD
 #### 4.x. ❗️DELETE `api/posts/comments/:commentId` delete comment
+||||||| merged common ancestors
+#### 4.x. ❗️❗️DELETE `api/posts/:post_id/comments/:commentId` delete comment
+=======
+#### 4.x. ❗️POST `api/posts/:postId/comments` add new comment on post
+
+#### 4.x. ❗️PUT `api/posts/comments/:commentId` update comment
+
+#### 4.x. ❗️❗️DELETE `api/posts/comments/:commentId` delete comment
+>>>>>>> add comments controllers and routes, not completed
 
 #### 4.x. ❗️PUT `api/posts/:postId/like` like post
 
@@ -159,3 +187,9 @@
 
 #### 6.x. ❗️❗️ DELETE `api/workspaces/:workspaceId/users/:userId` remove user from workspace
 
+<<<<<<< HEAD
+||||||| merged common ancestors
+'
+=======
+'
+>>>>>>> add comments controllers and routes, not completed
