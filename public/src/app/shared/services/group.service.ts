@@ -70,4 +70,8 @@ export class GroupService {
     return this._http.get<any>(this.BASE_API_URL + `/groups/${groupId}/nextTasksDone/${postId}`);
   }
 
+  changeTaskAssignee(postId, assigneeId){
+    return this._http.put(this.BASE_API_URL + `/posts/${postId}/taskAssignee`, assigneeId);
+  }
+
 }
