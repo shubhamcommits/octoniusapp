@@ -66,13 +66,16 @@ export class GroupTasksComponent implements OnInit {
   }
 
   getTasks() {
+    this.isLoading$.next(true);
     this.groupService.getGroupTasks(this.groupId)
     .subscribe((res) => {
       this.pendingTasks = res['posts'];
+      this.isLoading$.next(false);
       console.log('Tasks', res);
     },    
     (err) => {
-      console.log('Error Fetching the Pending Tasks Posts', err)
+      console.log('Error Fetching the Pending Tasks Posts', err);
+      this.isLoading$.next(false);
     });
   }
 
@@ -171,13 +174,16 @@ export class GroupTasksComponent implements OnInit {
 
 
   getCompletedTasks() {
+    this.isLoading$.next(true);
     this.groupService.getCompletedGroupTasks(this.groupId)
     .subscribe((res) => {
       this.completedTasks = res['posts'];
+      this.isLoading$.next(false);
       console.log('Completed Tasks', res);
     }, 
     (err) => {
-      console.log('Error Fetching the Completed Tasks Posts', err)
+      console.log('Error Fetching the Completed Tasks Posts', err);
+      this.isLoading$.next(false);
     });
 
   }

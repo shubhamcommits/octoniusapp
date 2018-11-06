@@ -74,13 +74,16 @@ export class OverviewMyTasksComponent implements OnInit {
   }
 
   getTasks() {
+    this.isLoading$.next(true);
     this.userService.getUserTasks()
     .subscribe((res) => {
       this.pendingTasks = res['posts'];
+      this.isLoading$.next(false);
       console.log('Tasks', res);
     },    
     (err) => {
-      console.log('Error Fetching the Pending Tasks Posts', err)
+      console.log('Error Fetching the Pending Tasks Posts', err);
+      this.isLoading$.next(false);
     });
   }
 
@@ -163,13 +166,16 @@ export class OverviewMyTasksComponent implements OnInit {
 
 
   getCompletedTasks() {
+    this.isLoading$.next(true);
     this.userService.getCompletedUserTasks()
     .subscribe((res) => {
       this.completedTasks = res['posts'];
       console.log('Completed Tasks', res);
+      this.isLoading$.next(false);
     }, 
     (err) => {
-      console.log('Error Fetching the Completed Tasks Posts', err)
+      console.log('Error Fetching the Completed Tasks Posts', err);
+      this.isLoading$.next(false);
     });
 
   }
