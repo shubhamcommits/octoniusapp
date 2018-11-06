@@ -17,6 +17,8 @@ export class GroupTasksComponent implements OnInit {
 
   user_data;
   lastPostId;
+  group_members;
+  group_admins;
   groupId;
   isLoading$ = new BehaviorSubject(false);
 
@@ -44,8 +46,23 @@ export class GroupTasksComponent implements OnInit {
    // console.log('Id', this.groupId);
     this.getTasks();
     this.getCompletedTasks();
+    this.loadGroup();
 
 
+  }
+
+  loadGroup() {
+
+    this.groupService.getGroup(this.groupId)
+      .subscribe((res) => {
+        this.group_members = res['group']._members;
+      // console.log(this.group_members);
+        this.group_admins = res['group']._admins;
+      //  console.log(this.group_admins);
+
+      }, (err) => {
+
+      });
   }
 
   getTasks() {

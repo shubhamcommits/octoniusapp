@@ -3,6 +3,8 @@ import { UserService } from '../../../shared/services/user.service';
 import { PostService } from '../../../shared/services/post.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { BehaviorSubject } from 'rxjs';
+import { GroupDataService } from '../../../shared/services/group-data.service';
+import { GroupService } from '../../../shared/services/group.service';
 
 @Component({
   selector: 'app-overview-my-tasks',
@@ -13,13 +15,18 @@ export class OverviewMyTasksComponent implements OnInit {
 
   user_data;
   lastPostId;
+  group_members;
+  group_admins;
+  groupId;
   isLoading$ = new BehaviorSubject(false);
   pendingTasks = new Array();
   completedTasks = new Array();
 
-  constructor( private ngxService: NgxUiLoaderService, private userService: UserService, private postService: PostService) { 
+  constructor(private groupDataService: GroupDataService, private groupService: GroupService, private ngxService: NgxUiLoaderService, private userService: UserService, private postService: PostService) { 
 
     this.user_data = JSON.parse(localStorage.getItem('user')); 
+    this.groupId = this.groupDataService.groupId;
+    this.loadGroup();
     this.getTasks();
     this.getCompletedTasks();
   }
@@ -31,7 +38,23 @@ export class OverviewMyTasksComponent implements OnInit {
     setTimeout(() => {
       this.ngxService.stop(); // stop foreground loading with 'default' id
     }, 500);
+
     
+  }
+
+  loadGroup() {
+
+    this.groupService.getGroup(this.groupId)
+      .subscribe((res) => {
+        this.group_members = res['group']._members;
+       console.log(this.group_members);
+        this.group_admins = res['group']._admins;
+        console.log(this.group_admins);
+
+      }, (err) => {
+        console.log('Error fetching the members and admins', err);
+
+      });
   }
 
   getTasks() {
