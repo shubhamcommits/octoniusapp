@@ -19,7 +19,7 @@ const getNextTasksDone = async (req, res, next) => {
       .limit(20)
       .populate('_group', 'group_name')
       .populate('_posted_by', 'first_name last_name profile_pic')
-      .populate('task._assigned_to', 'first_name last_name')
+      .populate('task._assigned_to', 'first_name last_name profile_pic')
       .lean();
 
     return res.status(200).json({
@@ -45,7 +45,7 @@ const getTasks = async (req, res, next) => {
       .sort('-task.due_to')
       .populate('_group', 'group_name')
       .populate('_posted_by', 'first_name last_name profile_pic')
-      .populate('task._assigned_to', 'first_name last_name')
+      .populate('task._assigned_to', 'first_name last_name profile_pic')
       .lean();
 
     return res.status(200).json({
@@ -71,7 +71,7 @@ const getTasksDone = async (req, res, next) => {
       .limit(20)
       .populate('_group', 'group_name')
       .populate('_posted_by', 'first_name last_name profile_pic')
-      .populate('task._assigned_to', 'first_name last_name')
+      .populate('task._assigned_to', 'first_name last_name profile_pic')
       .lean();
 
     return res.status(200).json({
