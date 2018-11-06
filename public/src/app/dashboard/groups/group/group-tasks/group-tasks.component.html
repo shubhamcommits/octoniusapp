@@ -9,18 +9,33 @@
                 <div class="card-block ">
                     <div class="card-title">
 
-                        <img src="/uploads/{{this.post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"
-                            class="topnav-avatar float-left kbn">
-                        <!--<img src="assets/images/user.png" class="feed-avatar">-->
+                            <div ngbDropdown #myDrop="ngbDropdown">
+                                
+                        <img (click)="$event.stopPropagation(); myDrop.toggle();" src="/uploads/{{this.post._posted_by?.profile_pic}}" id="dropdownToDo" ngbDropdownAnchor (focus)="myDrop.open()" onerror="this.src='/assets/images/user.png'"
+                        class="topnav-avatar float-left kbn">
                         <h6 class="kbn">{{post._posted_by?.first_name}} {{post._posted_by?.last_name}} <br><span class="small lightgray date">
                                 {{post?.created_date | date : 'medium'}}</span>
                         </h6>
                         <p class="small font-weight-bold" style="margin-top: 5px"> due {{post.task?.due_to | date}}</p>
+                                 
+                                    <div ngbDropdownMenu aria-labelledby="dropdownTodo">
+                                        <div *ngFor="let admin of group_admins">
+                                                <button class="dropdown-item">{{admin?.first_name}} {{admin?.last_name}}</button>
+                                        </div>
+                                        <div *ngFor="let member of group_members">
+                                                <button class="dropdown-item">{{member?.first_name}} {{member?.last_name}}</button>
+                                        </div>
+                                  
+                                    </div>
+                                  
+                                  </div>
+                        <!--<img src="assets/images/user.png" class="feed-avatar">-->
+
 
                     </div>
                     <div class="card-body">
 
-                        <span class="assigned"> Assigned to {{post.task._assigned_to.first_name}}
+                        <span class="assigned"> Assigned by {{post.task._assigned_to.first_name}}
                             {{this.post.task?._assigned_to?.last_name}}
                         </span>
 
@@ -71,18 +86,32 @@
                 <div class="card-block ">
                     <div class="card-title">
 
-                        <img src="/uploads/{{this.post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"
-                            class="topnav-avatar float-left kbn">
-                        <!--<img src="assets/images/user.png" class="feed-avatar">-->
-                        <h6 class="kbn">{{post._posted_by?.first_name}} {{post._posted_by?.last_name}} <br><span class="small lightgray date">
-                                {{post?.created_date | date : 'medium'}}</span>
-                        </h6>
-                        <p class="small font-weight-bold" style="margin-top: 5px"> due {{post.task?.due_to | date}}</p>
+
+                            <div ngbDropdown #myDrop="ngbDropdown">
+                                
+                                    <img (click)="$event.stopPropagation(); myDrop.toggle();" src="/uploads/{{this.post._posted_by?.profile_pic}}" id="dropdownToDo" ngbDropdownAnchor (focus)="myDrop.open()" onerror="this.src='/assets/images/user.png'"
+                                    class="topnav-avatar float-left kbn">
+                                    <h6 class="kbn">{{post._posted_by?.first_name}} {{post._posted_by?.last_name}} <br><span class="small lightgray date">
+                                            {{post?.created_date | date : 'medium'}}</span>
+                                    </h6>
+                                    <p class="small font-weight-bold" style="margin-top: 5px"> due {{post.task?.due_to | date}}</p>
+                                             
+                                                <div ngbDropdownMenu aria-labelledby="dropdownTodo">
+                                                    <div *ngFor="let admin of group_admins">
+                                                            <button class="dropdown-item">{{admin?.first_name}} {{admin?.last_name}}</button>
+                                                    </div>
+                                                    <div *ngFor="let member of group_members">
+                                                            <button class="dropdown-item">{{member?.first_name}} {{member?.last_name}}</button>
+                                                    </div>
+                                              
+                                                </div>
+                                              
+                                              </div>
 
                     </div>
                     <div class="card-body">
 
-                        <span class="assigned"> Assigned to {{post.task._assigned_to.first_name}}
+                        <span class="assigned"> Assigned by {{post.task._assigned_to.first_name}}
                             {{this.post.task?._assigned_to?.last_name}}
                         </span>
 
@@ -128,18 +157,32 @@
             <div class="card-block ">
                 <div class="card-title">
 
-                    <img src="/uploads/{{this.post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"
-                        class="topnav-avatar float-left kbn">
-                    <!--<img src="assets/images/user.png" class="feed-avatar">-->
-                    <h6 class="kbn">{{post._posted_by?.first_name}} {{post._posted_by?.last_name}} <br><span class="small lightgray date">
-                            {{post?.created_date | date : 'medium'}}</span>
-                    </h6>
-                    <p class="small font-weight-bold" style="margin-top: 5px"> due {{post.task?.due_to | date}}</p>
+
+                        <div ngbDropdown #myDrop="ngbDropdown">
+                                
+                                <img (click)="$event.stopPropagation(); myDrop.toggle();" src="/uploads/{{this.post._posted_by?.profile_pic}}" id="dropdownToDo" ngbDropdownAnchor (focus)="myDrop.open()" onerror="this.src='/assets/images/user.png'"
+                                class="topnav-avatar float-left kbn">
+                                <h6 class="kbn">{{post._posted_by?.first_name}} {{post._posted_by?.last_name}} <br><span class="small lightgray date">
+                                        {{post?.created_date | date : 'medium'}}</span>
+                                </h6>
+                                <p class="small font-weight-bold" style="margin-top: 5px"> due {{post.task?.due_to | date}}</p>
+                                         
+                                            <div ngbDropdownMenu aria-labelledby="dropdownTodo">
+                                                <div *ngFor="let admin of group_admins">
+                                                        <button class="dropdown-item">{{admin?.first_name}} {{admin?.last_name}}</button>
+                                                </div>
+                                                <div *ngFor="let member of group_members">
+                                                        <button class="dropdown-item">{{member?.first_name}} {{member?.last_name}}</button>
+                                                </div>
+                                          
+                                            </div>
+                                          
+                                          </div>
 
                 </div>
                 <div class="card-body">
 
-                    <span class="assigned"> Assigned to {{post.task._assigned_to.first_name}}
+                    <span class="assigned"> Assigned by {{post.task._assigned_to.first_name}}
                         {{this.post.task?._assigned_to?.last_name}}
                     </span>
 
