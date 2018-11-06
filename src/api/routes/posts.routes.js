@@ -40,14 +40,23 @@ router.delete('/:postId', posts.remove);
 
 // - Comments -
 
+// Get a single comment
+router.get('/comments/:commentId', posts.getComment);
+
+// Get first N post's comments
+router.get('/:postId/comments', posts.getComments);
+
+// Get next N post's comments
+router.get('/:postId/nextComments/:commentId', posts.getNextComments);
+
 // Add new comment on post
 // router.post('/:postId/comment', posts.addComment); // To do
 
 // Edit comment on post
-// router.put('/:postId/comment/:commentId', posts.editComment); // To do
+router.put('/comments/:commentId', posts.editComment);
 
 // Delete comment on post
-// router.delete('/:postId/comment/:commentId', posts.editComment); // To do
+router.delete('/comments/:commentId', posts.removeComment);
 
 // - Likes -
 
