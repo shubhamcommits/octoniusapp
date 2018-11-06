@@ -53,13 +53,17 @@
 
 #### 4.x. DELETE `api/posts/:postId` delete post
 
-#### 4.x. ❗️❗️GET `api/posts/:postId/comments` get post
+#### 4.x. ❗️❗️GET `api/posts/comments/:commentId` get a single comment
 
-#### 4.x. ❗️❗️POST `api/posts/:postId/comments` add new comment on post
+#### 4.x. ❗️GET `api/posts/:postId/comments` get first N post's comments
 
-#### 4.x. ❗️❗️PUT `api/posts/:postId/comments/:commentId` update comment
+#### 4.x. ❗️GET `api/posts/:postId/nextComments` get next N post's comments
 
-#### 4.x. ❗️❗️DELETE `api/posts/:post_id/comments/:commentId` delete comment
+#### 4.x. ❗️POST `api/posts/:postId/comments` add new comment on post
+
+#### 4.x. ❗️PUT `api/posts/comments/:commentId` update comment
+
+#### 4.x. ❗️❗️DELETE `api/posts/comments/:commentId` delete comment
 
 #### 4.x. ❗️PUT `api/posts/:postId/like` like post
 

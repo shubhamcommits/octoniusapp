@@ -22,8 +22,7 @@ const add = async (req, res, next) => {
 
     const post = await Post.create(postData);
 
-    // Create Notifications
-    // ...for mentions in post content
+    // Create Notification for mentions on post content
     if (post._content_mentions.length !== 0) {
       notifications.newPostMentions(post);
     }
@@ -53,7 +52,7 @@ const add = async (req, res, next) => {
 
 const edit = async (req, res, next) => {
   try {
-    const post = await Post.findByIdAndUpdate({
+    const post = await Post.findOneAndUpdate({
       _id: req.params.postId,
       _posted_by: req.userId
     }, {
@@ -138,34 +137,109 @@ const remove = async (req, res, next) => {
 
 // -| COMMENTS |-
 
-// !!!! REFACTOR !!!!
 const addComment = async (req, res, next) => {
   try {
-    const postId = req.body.post_id;
-    const commentedBy = req.body._commented_by;
-    const content = req.body.content;
+    const {
+      userId,
+      params: { postId },
+      body: { content, contentMentions }
+    } = req;
 
-    const user = await User.findById({ _id: commentedBy });
+    // Generate comment data
+    const commentData = {
+      content,
+      _content_mentions: contentMentions,
+      _commented_by: userId,
+      _post: postId
+    };
 
-    const post = await Post.findByIdAndUpdate({
+    // Create comment
+    const comment = await Comment.create(commentData);
+
+    // Update post: add new comment id, increase post count
+    const post = await Post.findOneAndUpdate({
       _id: postId
     }, {
       $push: {
-        comments: {
-          content: content,
-          _commented_by: user
-        }
+        comments: comment._id
       },
       $inc: {
         comments_count: 1
-      },
+      }
     }, {
       new: true
     });
 
+    // Create Notification for mentions on post comments
+    if (comment._content_mentions.length !== 0) {
+      // !! To be created !!
+      // notifications.newCommentMentions(comment);
+    }
+
     return res.status(200).json({
       message: 'Comment added!',
-      post,
+      comment
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+const editComment = async (req, res, next) => {
+  try {
+    const {
+      userId,
+      params: { commentId },
+      body: { content, contentMentions }
+    } = req;
+
+    // Update comment
+    const comment = await Post.findOneAndUpdate({
+      _id: commentId,
+      _commented_by: userId
+    }, {
+      $set: {
+        content,
+        _content_mentions: contentMentions,
+        created_date: moment.utc().format()
+      }
+    }, {
+      new: true
+    });
+
+    // Create Notification for mentions on post comments
+    if (comment._content_mentions.length !== 0) {
+      // !! To be created !!
+      // notifications.newCommentMentions(comment);
+    }
+
+    return res.status(200).json({
+      message: 'Comment updated!',
+      comment
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+// !! TO DO !!
+const getComment = async (req, res, next) => {};
+
+const getComments = async (req, res, next) => {
+  try {
+    const { postId } = req.params;
+
+    const comments = await Comment.find({
+      _post: postId
+    })
+      .sort('_id')
+      .limit(10)
+      .populate('comments._commented_by', 'first_name last_name profile_pic')
+      .lean();
+
+    return res.status(200).json({
+      message: `First ${comments.length} comments!`,
+      comments
     });
 
   } catch (err) {
@@ -173,9 +247,31 @@ const addComment = async (req, res, next) => {
   }
 };
 
-// !!!! REFACTOR !!!!
-const editComment = async (req, res, next) => {};
-const getComments = async (req, res, next) => {};
+const getNextComments = async (req, res, next) => {
+  try {
+    const { postId, commentId } = req.params;
+
+    const comments = await Comment.find({
+      $and: [
+        { _post: postId },
+        { _id: { $lt: commentId } }
+      ]
+    })
+      .sort('_id')
+      .limit(10)
+      .populate('comments._commented_by', 'first_name last_name profile_pic')
+      .lean();
+
+    return res.status(200).json({
+      message: `Next ${comments.length} comments!`,
+      comments
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+// !! TO DO !!
 const removeComment = async (req, res, next) => {};
 
 // -| LIKES |-
@@ -187,7 +283,7 @@ const like = async (req, res, next) => {
       params: { postId }
     } = req;
 
-    const post = await Post.findByIdAndUpdate({
+    const post = await Post.findOneAndUpdate({
       _id: postId
     }, {
       $addToSet: {
@@ -213,7 +309,7 @@ const unlike = async (req, res, next) => {
       params: { postId }
     } = req;
 
-    const post = await Post.findByIdAndUpdate({
+    const post = await Post.findOneAndUpdate({
       _id: postId
     }, {
       $pull: {
@@ -343,6 +439,7 @@ module.exports = {
   addComment,
   editComment,
   getComments,
+  getNextComments,
   removeComment,
   // Likes
   like,
