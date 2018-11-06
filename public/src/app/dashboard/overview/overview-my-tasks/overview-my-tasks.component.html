@@ -6,6 +6,12 @@
                 <div class="kanbanheader kbn-todo">
                     To Do
                 </div>
+                <div *ngIf="isLoading$ | async">
+                        <div class="load-8">
+                          <h6><b>Loading Data...</b></h6>
+                          <div class="line"></div>
+                        </div>
+                      </div>
                 <div *ngFor="let post of pendingTasks">
                     <div class="card" *ngIf="post.task.status == 'to do'">
                         <div class="card-block ">
@@ -38,7 +44,7 @@
                             <div class="card-body">
         
                                 <span class="assigned"> Assigned by {{this.post._posted_by?.first_name}}
-                                    {{this.post._posted_by?.last_name}}
+                                    {{this.post._posted_by?.last_name}}<br /> in {{this.post._group?.group_name}} group
                                 </span>
         
                                 <div ngbDropdown class="d-inline-block float-right">
@@ -82,6 +88,12 @@
                 <div class="kanbanheader kbn-working">
                     In Progress
                 </div>
+                <div *ngIf="isLoading$ | async">
+                        <div class="load-8">
+                          <h6><b>Loading Data...</b></h6>
+                          <div class="line"></div>
+                        </div>
+                      </div>
         
                 <div *ngFor="let post of pendingTasks">
                     <div class="card" *ngIf="post.task.status == 'in progress'">
@@ -114,9 +126,9 @@
                             <div class="card-body">
         
                                     <span class="assigned"> Assigned by {{this.post._posted_by?.first_name}}
-                                            {{this.post._posted_by?.last_name}}
+                                            {{this.post._posted_by?.last_name}}<br /> in {{this.post._group?.group_name}} group
                                         </span>
-        
+                
                                 <div ngbDropdown class="d-inline-block float-right">
                                     <button class="btn btn-sm" id="dropdownDone" ngbDropdownToggle>{{post.task.status}}</button>
                                     <div ngbDropdownMenu aria-labelledby="dropdownToDo">
@@ -154,6 +166,12 @@
             <!--COMPLETED TASKS-->
             <div class="col-md-4">
                 <div class="kanbanheader kbn-done">Completed</div>
+                <div *ngIf="isLoading$ | async">
+                        <div class="load-8">
+                          <h6><b>Loading Data...</b></h6>
+                          <div class="line"></div>
+                        </div>
+                      </div>
         
                 <div class="card" *ngFor="let post of completedTasks">
                     <div class="card-block ">
@@ -185,8 +203,8 @@
                         <div class="card-body">
         
                                 <span class="assigned"> Assigned by {{this.post._posted_by?.first_name}}
-                                        {{this.post._posted_by?.last_name}}
-                                    </span>
+                                        {{this.post._posted_by?.last_name}}<br /> in {{this.post._group?.group_name}} group
+                                    </span>    
         
                             <div ngbDropdown class="d-inline-block float-right">
                                 <button class="btn btn-sm" id="dropdownDone" ngbDropdownToggle>{{post.task.status}}</button>
