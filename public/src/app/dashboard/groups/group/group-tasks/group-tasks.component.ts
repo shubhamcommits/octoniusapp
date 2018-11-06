@@ -76,7 +76,10 @@ export class GroupTasksComponent implements OnInit {
     });
   }
 
-  changeTaskAssignee(postId, assigneeId){
+  changeTaskAssignee(postId, AssigneeId){
+    const assigneeId ={
+      'assigneeId':AssigneeId
+    }
     this.groupService.changeTaskAssignee(postId, assigneeId)
     .subscribe((res) => {
       console.log('Post ID', postId);

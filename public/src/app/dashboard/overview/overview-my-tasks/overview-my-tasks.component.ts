@@ -42,6 +42,22 @@ export class OverviewMyTasksComponent implements OnInit {
     
   }
 
+  changeTaskAssignee(postId, AssigneeId){
+    const assigneeId ={
+      'assigneeId':AssigneeId
+    }
+    this.groupService.changeTaskAssignee(postId, assigneeId)
+    .subscribe((res) => {
+      console.log('Post ID', postId);
+      console.log('Assignee ID', assigneeId);
+      console.log('Task Assignee', res);  
+      this.getTasks();
+      this.getCompletedTasks();  
+    }, (err) => {
+      console.log('Error changing the Task Assignee', err);
+    });
+  }
+
   loadGroup() {
 
     this.groupService.getGroup(this.groupId)

@@ -13,19 +13,19 @@
         
                                     <div ngbDropdown #myDrop="ngbDropdown">
                                         
-                                <img (click)="$event.stopPropagation(); myDrop.toggle();" src="/uploads/{{this.post._posted_by?.profile_pic}}" id="dropdownToDo" ngbDropdownAnchor (focus)="myDrop.open()" onerror="this.src='/assets/images/user.png'"
+                                <img (click)="$event.stopPropagation(); myDrop.toggle();" src="/uploads/{{this.post.task?._assigned_to?.profile_pic}}" id="dropdownToDo" ngbDropdownAnchor (focus)="myDrop.open()" onerror="this.src='/assets/images/user.png'"
                                 class="topnav-avatar float-left kbn">
-                                <h6 class="kbn">{{post._posted_by?.first_name}} {{post._posted_by?.last_name}} <br><span class="small lightgray date">
+                                <h6 class="kbn">{{post.task?._assigned_to?.first_name}} {{post.task?._assigned_to?.last_name}} <br><span class="small lightgray date">
                                         {{post?.created_date | date : 'medium'}}</span>
                                 </h6>
                                 <p class="small font-weight-bold" style="margin-top: 5px"> due {{post.task?.due_to | date}}</p>
                                          
                                             <div ngbDropdownMenu aria-labelledby="dropdownTodo">
                                                 <div *ngFor="let admin of group_admins">
-                                                        <button class="dropdown-item">{{admin?.first_name}} {{admin?.last_name}}</button>
+                                                        <button class="dropdown-item" (click)="changeTaskAssignee(post._id, admin._id)">{{admin?.first_name}} {{admin?.last_name}}</button>
                                                 </div>
                                                 <div *ngFor="let member of group_members">
-                                                        <button class="dropdown-item">{{member?.first_name}} {{member?.last_name}}</button>
+                                                        <button class="dropdown-item" (click)="changeTaskAssignee(post._id, member._id)">{{member?.first_name}} {{member?.last_name}}</button>
                                                 </div>
                                           
                                             </div>
@@ -37,9 +37,9 @@
                             </div>
                             <div class="card-body">
         
-                                    <span class="assigned"> Assigned by {{this.post._posted_by?.first_name}}
-                                            {{this.post._posted_by?.last_name}}
-                                        </span>
+                                <span class="assigned"> Assigned by {{this.post._posted_by?.first_name}}
+                                    {{this.post._posted_by?.last_name}}
+                                </span>
         
                                 <div ngbDropdown class="d-inline-block float-right">
                                     <button class="btn btn-sm" id="dropdownDone" ngbDropdownToggle>{{post.task.status}}</button>
@@ -91,22 +91,22 @@
         
                                     <div ngbDropdown #myDrop="ngbDropdown">
                                         
-                                            <img (click)="$event.stopPropagation(); myDrop.toggle();" src="/uploads/{{this.post._posted_by?.profile_pic}}" id="dropdownToDo" ngbDropdownAnchor (focus)="myDrop.open()" onerror="this.src='/assets/images/user.png'"
+                                            <img (click)="$event.stopPropagation(); myDrop.toggle();" src="/uploads/{{this.post.task?._assigned_to?.profile_pic}}" id="dropdownToDo" ngbDropdownAnchor (focus)="myDrop.open()" onerror="this.src='/assets/images/user.png'"
                                             class="topnav-avatar float-left kbn">
-                                            <h6 class="kbn">{{post._posted_by?.first_name}} {{post._posted_by?.last_name}} <br><span class="small lightgray date">
+                                            <h6 class="kbn">{{post.task?._assigned_to?.first_name}} {{post.task?._assigned_to?.last_name}} <br><span class="small lightgray date">
                                                     {{post?.created_date | date : 'medium'}}</span>
                                             </h6>
                                             <p class="small font-weight-bold" style="margin-top: 5px"> due {{post.task?.due_to | date}}</p>
                                                      
-                                                        <div ngbDropdownMenu aria-labelledby="dropdownTodo">
-                                                            <div *ngFor="let admin of group_admins">
-                                                                    <button class="dropdown-item">{{admin?.first_name}} {{admin?.last_name}}</button>
-                                                            </div>
-                                                            <div *ngFor="let member of group_members">
-                                                                    <button class="dropdown-item">{{member?.first_name}} {{member?.last_name}}</button>
-                                                            </div>
-                                                      
-                                                        </div>
+                                            <div ngbDropdownMenu aria-labelledby="dropdownTodo">
+                                                    <div *ngFor="let admin of group_admins">
+                                                            <button class="dropdown-item" (click)="changeTaskAssignee(post._id, admin._id)">{{admin?.first_name}} {{admin?.last_name}}</button>
+                                                    </div>
+                                                    <div *ngFor="let member of group_members">
+                                                            <button class="dropdown-item" (click)="changeTaskAssignee(post._id, member._id)">{{member?.first_name}} {{member?.last_name}}</button>
+                                                    </div>
+                                              
+                                                </div>
                                                       
                                                       </div>
         
@@ -162,22 +162,22 @@
         
                                 <div ngbDropdown #myDrop="ngbDropdown">
                                         
-                                        <img (click)="$event.stopPropagation(); myDrop.toggle();" src="/uploads/{{this.post._posted_by?.profile_pic}}" id="dropdownToDo" ngbDropdownAnchor (focus)="myDrop.open()" onerror="this.src='/assets/images/user.png'"
+                                        <img (click)="$event.stopPropagation(); myDrop.toggle();" src="/uploads/{{this.post.task?._assigned_to?.profile_pic}}" id="dropdownToDo" ngbDropdownAnchor (focus)="myDrop.open()" onerror="this.src='/assets/images/user.png'"
                                         class="topnav-avatar float-left kbn">
-                                        <h6 class="kbn">{{post._posted_by?.first_name}} {{post._posted_by?.last_name}} <br><span class="small lightgray date">
+                                        <h6 class="kbn">{{post.task?._assigned_to?.first_name}} {{post.task?._assigned_to?.last_name}} <br><span class="small lightgray date">
                                                 {{post?.created_date | date : 'medium'}}</span>
                                         </h6>
                                         <p class="small font-weight-bold" style="margin-top: 5px"> due {{post.task?.due_to | date}}</p>
                                                  
-                                                    <div ngbDropdownMenu aria-labelledby="dropdownTodo">
-                                                        <div *ngFor="let admin of group_admins">
-                                                                <button class="dropdown-item">{{admin?.first_name}} {{admin?.last_name}}</button>
-                                                        </div>
-                                                        <div *ngFor="let member of group_members">
-                                                                <button class="dropdown-item">{{member?.first_name}} {{member?.last_name}}</button>
-                                                        </div>
-                                                  
-                                                    </div>
+                                        <div ngbDropdownMenu aria-labelledby="dropdownTodo">
+                                                <div *ngFor="let admin of group_admins">
+                                                        <button class="dropdown-item" (click)="changeTaskAssignee(post._id, admin._id)">{{admin?.first_name}} {{admin?.last_name}}</button>
+                                                </div>
+                                                <div *ngFor="let member of group_members">
+                                                        <button class="dropdown-item" (click)="changeTaskAssignee(post._id, member._id)">{{member?.first_name}} {{member?.last_name}}</button>
+                                                </div>
+                                          
+                                            </div>
                                                   
                                                   </div>
         
