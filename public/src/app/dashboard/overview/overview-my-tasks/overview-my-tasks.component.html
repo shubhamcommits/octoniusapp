@@ -37,9 +37,9 @@
                             </div>
                             <div class="card-body">
         
-                                <span class="assigned"> Assigned by {{post.task._assigned_to.first_name}}
-                                    {{this.post.task?._assigned_to?.last_name}}
-                                </span>
+                                    <span class="assigned"> Assigned by {{this.post._posted_by?.first_name}}
+                                            {{this.post._posted_by?.last_name}}
+                                        </span>
         
                                 <div ngbDropdown class="d-inline-block float-right">
                                     <button class="btn btn-sm" id="dropdownDone" ngbDropdownToggle>{{post.task.status}}</button>
@@ -113,9 +113,9 @@
                             </div>
                             <div class="card-body">
         
-                                <span class="assigned"> Assigned by {{post.task._assigned_to.first_name}}
-                                    {{this.post.task?._assigned_to?.last_name}}
-                                </span>
+                                    <span class="assigned"> Assigned by {{this.post._posted_by?.first_name}}
+                                            {{this.post._posted_by?.last_name}}
+                                        </span>
         
                                 <div ngbDropdown class="d-inline-block float-right">
                                     <button class="btn btn-sm" id="dropdownDone" ngbDropdownToggle>{{post.task.status}}</button>
@@ -184,9 +184,9 @@
                         </div>
                         <div class="card-body">
         
-                            <span class="assigned"> Assigned by {{post.task._assigned_to.first_name}}
-                                {{this.post.task?._assigned_to?.last_name}}
-                            </span>
+                                <span class="assigned"> Assigned by {{this.post._posted_by?.first_name}}
+                                        {{this.post._posted_by?.last_name}}
+                                    </span>
         
                             <div ngbDropdown class="d-inline-block float-right">
                                 <button class="btn btn-sm" id="dropdownDone" ngbDropdownToggle>{{post.task.status}}</button>
