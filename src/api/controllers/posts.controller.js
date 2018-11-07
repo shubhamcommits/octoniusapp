@@ -222,8 +222,24 @@ const editComment = async (req, res, next) => {
   }
 };
 
-// !! TO DO !!
-const getComment = async (req, res, next) => {};
+const getComment = async (req, res, next) => {
+  try {
+    const { commentId } = req.params;
+
+    const comment = await Comment.findOne({
+      _id: commentId
+    })
+      .populate('comments._commented_by', 'first_name last_name profile_pic')
+      .lean();
+
+    return res.status(200).json({
+      message: 'Comment found!',
+      comment
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
 
 const getComments = async (req, res, next) => {
   try {
@@ -241,7 +257,6 @@ const getComments = async (req, res, next) => {
       message: `First ${comments.length} comments!`,
       comments
     });
-
   } catch (err) {
     return sendErr(res, err);
   }
@@ -271,8 +286,47 @@ const getNextComments = async (req, res, next) => {
   }
 };
 
-// !! TO DO !!
-const removeComment = async (req, res, next) => {};
+const removeComment = async (req, res, next) => {
+  try {
+    const { userId, params: { commentId } } = req;
+
+    // Get comment data
+    const comment = await Comment.findOne({
+      _id: commentId
+    }).lean();
+
+    // Get post data
+    const post = await Post.findOne({
+      _id: comment._post
+    }).lean();
+
+    // Get group data
+    const group = await Group.findOne({
+      _id: post._group
+    }).lean();
+
+    if (
+      // If user is not one of group's admins... and...
+      !group._admins.includes(String(userId)) &&
+      // ...user is not the post author... and...
+      (!post._posted_by.equals(userId) &&
+        // ...user is not the cooment author
+        !comment._commented_by.equals(userId))
+    ) {
+      // Deny access!
+      return sendErr(res, null, 'User not allowed to delete this comment!', 403);
+    }
+
+    const commentRemoved = await Comment.findByIdAndRemove(commentId);
+
+    return res.status(200).json({
+      message: 'Comment deleted!',
+      commentRemoved
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
 
 // -| LIKES |-
 
@@ -438,6 +492,7 @@ module.exports = {
   // Comments
   addComment,
   editComment,
+  getComment,
   getComments,
   getNextComments,
   removeComment,
