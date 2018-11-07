@@ -61,7 +61,7 @@
                                 <div class="col-md-4 text-right padding-topright">
                                     <button class="btn btn-pink btn-sm" id="button_task_mark_completed" (click)="OnMarkTaskCompleted()">Mark
                                         complete</button>
-                                    <p class="small font-weight-bold" style="margin-top: 5px"> due {{post.task?.due_to
+                                    <p class="small font-weight-bold" style="margin-top: 5px" *ngIf="post.task?.due_to != 'Invalid date'"> due {{post.task?.due_to
                                         | date}}</p>
                                 </div>
                             </ng-template>
@@ -108,7 +108,7 @@
                                         <h6 class="kbn">{{post.task?._assigned_to?.first_name}} {{post.task?._assigned_to?.last_name}} <br><span class="small lightgray date">
                                                 {{post?.created_date | date : 'medium'}}</span>
                                         </h6>
-                                        <p class="small font-weight-bold" style="margin-top: 5px"> due {{post.task?.due_to | date}}</p>
+                                        <p class="small font-weight-bold" style="margin-top: 5px" *ngIf="post.task?.due_to != 'Invalid date'"> due {{post.task?.due_to | date}}</p>
                                                  
                                         <div ngbDropdownMenu aria-labelledby="dropdownTodo">
                                                 <div *ngFor="let admin of group_admins">
@@ -144,7 +144,7 @@
                                 <div class="col-md-4 text-right padding-topright">
                                     <button class="btn btn-pink btn-sm" id="button_task_mark_completed" (click)="OnMarkTaskCompleted()">Mark
                                         complete</button>
-                                    <p class="small font-weight-bold" style="margin-top: 5px"> due {{post.task?.due_to
+                                    <p class="small font-weight-bold" style="margin-top: 5px" *ngIf="post.task?.due_to != 'Invalid date'"> due {{post.task?.due_to
                                         | date}}</p>
                                 </div>
                             </ng-template>
@@ -187,7 +187,7 @@
                                     <h6 class="kbn">{{post.task?._assigned_to?.first_name}} {{post.task?._assigned_to?.last_name}} <br><span class="small lightgray date">
                                             {{post?.created_date | date : 'medium'}}</span>
                                     </h6>
-                                    <p class="small font-weight-bold" style="margin-top: 5px"> due {{post.task?.due_to | date}}</p>
+                                    <p class="small font-weight-bold" style="margin-top: 5px" *ngIf="post.task?.due_to != 'Invalid date'"> due {{post.task?.due_to | date}}</p>
                                              
                                     <div ngbDropdownMenu aria-labelledby="dropdownTodo">
                                             <div *ngFor="let admin of group_admins">
@@ -223,7 +223,7 @@
                             <div class="col-md-4 text-right padding-topright">
                                 <button class="btn btn-pink btn-sm" id="button_task_mark_completed" (click)="OnMarkTaskCompleted()">Mark
                                     complete</button>
-                                <p class="small font-weight-bold" style="margin-top: 5px"> due {{post.task?.due_to
+                                <p class="small font-weight-bold" style="margin-top: 5px" *ngIf="post.task?.due_to != 'Invalid date'"> due {{post.task?.due_to
                                     | date}}</p>
                             </div>
                         </ng-template>
