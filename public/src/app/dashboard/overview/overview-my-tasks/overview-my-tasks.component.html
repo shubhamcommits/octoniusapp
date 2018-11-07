@@ -12,6 +12,7 @@
                           <div class="line"></div>
                         </div>
                       </div>
+                      <div *ngIf="!(isLoading$ | async)">
                 <div *ngFor="let post of pendingTasks">
                     <div class="card" *ngIf="post.task.status == 'to do'">
                         <div class="card-block ">
@@ -79,6 +80,7 @@
                     </div>
         
                 </div>
+            </div>
         
         
             </div>
@@ -94,7 +96,7 @@
                           <div class="line"></div>
                         </div>
                       </div>
-        
+                      <div *ngIf="!(isLoading$ | async)">
                 <div *ngFor="let post of pendingTasks">
                     <div class="card" *ngIf="post.task.status == 'in progress'">
                         <div class="card-block ">
@@ -161,6 +163,7 @@
                     </div>
         
                 </div>
+                </div>
         
             </div>
             <!--COMPLETED TASKS-->
@@ -172,7 +175,8 @@
                           <div class="line"></div>
                         </div>
                       </div>
-        
+                      
+                      <div *ngIf="!(isLoading$ | async)">
                 <div class="card" *ngFor="let post of completedTasks">
                     <div class="card-block ">
                         <div class="card-title">
@@ -236,6 +240,7 @@
         
                     </div>
                 </div>
+            </div>
         
                 <button type="button" (click)="OnFetchNextPosts()" class="btn btn-link">
                     Load More...
