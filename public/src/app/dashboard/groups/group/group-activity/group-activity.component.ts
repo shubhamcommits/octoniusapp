@@ -463,6 +463,7 @@
           this.addNewTaskPost();
           break;
       }
+      this.show_hide_working_bar();
     }
 
 

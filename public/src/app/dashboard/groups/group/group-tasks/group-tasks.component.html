@@ -23,7 +23,7 @@
                             <h6 class="kbn">{{post.task?._assigned_to?.first_name}} {{post.task?._assigned_to?.last_name}} <br><span class="small lightgray date">
                                     {{post?.created_date | date : 'medium'}}</span>
                             </h6>
-                            <p class="small font-weight-bold" style="margin-top: 5px"> due {{post.task?.due_to | date}}</p>
+                            <p class="small font-weight-bold" style="margin-top: 5px" *ngIf="post.task?.due_to != 'Invalid date'"> due {{post.task?.due_to | date}}</p>
                                      
                                         <div ngbDropdownMenu aria-labelledby="dropdownTodo">
                                             <div *ngFor="let admin of group_admins">
@@ -66,7 +66,7 @@
                                 </div>
                             </ng-template>
                             <hr>
-                            <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group}}/post/{{post._id}}">
+                            <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/post/{{post._id}}">
                                 <div class="col-md-12 innercard " [innerHTML]="post?.content | safe: 'html'">
                                     <!--<pre class="card-text ">{{post?.content}}
                           </pre>-->
@@ -149,7 +149,7 @@
                                 </div>
                             </ng-template>
                             <hr>
-                            <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group}}/post/{{post._id}}">
+                            <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/post/{{post._id}}">
                                 <div class="col-md-12 innercard " [innerHTML]="post?.content | safe: 'html'">
                                     <!--<pre class="card-text ">{{post?.content}}
                       </pre>-->
@@ -228,7 +228,7 @@
                             </div>
                         </ng-template>
                         <hr>
-                        <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group}}/post/{{post._id}}">
+                        <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/post/{{post._id}}">
                             <div class="col-md-12 innercard " [innerHTML]="post?.content | safe: 'html'">
                                 <!--<pre class="card-text ">{{post?.content}}
                       </pre>-->

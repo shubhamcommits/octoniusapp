@@ -450,7 +450,7 @@
                         <button class="dropdown-item" (click)="OnMarkTaskCompleted(i, this.post._id)">Done</button>
                       </div>
                     </div>
-                    <p class="small font-weight-bold" style="margin-top: 5px"> due {{post.task?.due_to | date}}</p>
+                    <p class="small font-weight-bold" style="margin-top: 5px" *ngIf="post.task?.due_to != 'Invalid date'"> due {{post.task?.due_to | date}}</p>
                     <!-- <p class="small font-weight-bold" style="margin-top: 5px"> status- {{post.task?.status}}</p> -->
 
                   </div>
