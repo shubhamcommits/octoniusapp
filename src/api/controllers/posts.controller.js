@@ -319,6 +319,21 @@ const removeComment = async (req, res, next) => {
 
     const commentRemoved = await Comment.findByIdAndRemove(commentId);
 
+    // Update post: remove new comment id, decrease post count
+    const post = await Post.findOneAndUpdate({
+      _id: postId
+    }, {
+      $pull: {
+        comments: comment._id
+      },
+      $inc: {
+        comments_count: -1
+      }
+    }, {
+      new: true
+    });
+
+
     return res.status(200).json({
       message: 'Comment deleted!',
       commentRemoved

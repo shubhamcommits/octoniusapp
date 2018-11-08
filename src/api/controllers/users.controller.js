@@ -113,7 +113,6 @@ const getOverview = async (req, res, next) => {
     })
       .sort('event.due_to task.due_to -comments.created_date')
       .populate('_posted_by', 'first_name last_name profile_pic')
-      .populate('comments._commented_by', 'first_name last_name profile_pic')
       .populate('task._assigned_to', 'first_name last_name')
       .populate('event._assigned_to', 'first_name last_name')
       .populate('_group', 'group_name group_avatar')
