@@ -57,6 +57,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 #### 4.x. ❗️GET `api/posts/comments/:commentId` get a single comment
 ||||||| merged common ancestors
 #### 4.x. ❗️❗️POST `api/posts/:postId/comment` add new comment on post
@@ -68,6 +69,11 @@
 =======
 #### 4.x. ❗️❗️GET `api/posts/comments/:commentId` get a single comment
 >>>>>>> add comments controllers and routes, not completed
+||||||| merged common ancestors
+#### 4.x. ❗️❗️GET `api/posts/comments/:commentId` get a single comment
+=======
+#### 4.x. ❗️GET `api/posts/comments/:commentId` get a single comment
+>>>>>>> changes squashed
 
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -146,6 +152,7 @@
 
 #### 4.x. ❗️PUT `api/posts/comments/:commentId` update comment
 
+<<<<<<< HEAD
 #### 4.x. ❗️❗️DELETE `api/posts/comments/:commentId` delete comment
 >>>>>>> add comments controllers and routes, not completed
 ||||||| merged common ancestors
@@ -157,6 +164,11 @@
 
 #### 4.x. ❗️❗️DELETE `api/posts/comments/:commentId` delete comment
 >>>>>>> add comments controllers and routes, not completed
+||||||| merged common ancestors
+#### 4.x. ❗️❗️DELETE `api/posts/comments/:commentId` delete comment
+=======
+#### 4.x. ❗️DELETE `api/posts/comments/:commentId` delete comment
+>>>>>>> changes squashed
 
 #### 4.x. ❗️PUT `api/posts/:postId/like` like post
 
