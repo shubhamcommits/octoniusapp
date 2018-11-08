@@ -53,17 +53,21 @@
 
 #### 4.x. DELETE `api/posts/:postId` delete post
 
-#### 4.x. ❗️❗️POST `api/posts/:postId/comment` add new comment on post
+#### 4.x. ❗️GET `api/posts/comments/:commentId` get a single comment
 
-#### 4.x. ❗️❗️PUT `api/posts/:postId/comment/:commentId` update comment
+#### 4.x. ❗️GET `api/posts/:postId/comments` get first N post's comments
 
-#### 4.x. ❗️❗️DELETE `api/posts/:post_id/comment/:commentId` delete comment
+#### 4.x. ❗️GET `api/posts/:postId/nextComments` get next N post's comments
 
-#### 4.x. ❗️❗️POST `api/posts/:postId/complete` mark post as complete
+#### 4.x. ❗️POST `api/posts/:postId/comments` add new comment on post
 
-#### 4.x. ❗️❗️PUT `api/posts/:postId/like` like post
+#### 4.x. ❗️PUT `api/posts/comments/:commentId` update comment
 
-#### 4.x. ❗️❗️PUT `api/posts/:postId/unlike` unlike post
+#### 4.x. ❗️DELETE `api/posts/comments/:commentId` delete comment
+
+#### 4.x. ❗️PUT `api/posts/:postId/like` like post
+
+#### 4.x. ❗️PUT `api/posts/:postId/unlike` unlike post
 
 #### 4.x. PUT `api/posts/:postId/taskStatus` change task status
 
@@ -74,6 +78,14 @@
 ## | 5. `api/users` routes
 
 '
+
+#### 5.x. ❗️GET `api/users/` get current user
+
+#### 5.x. ❗️PUT `api/users/` Edit/Update user
+
+#### 5.x. ❗️PUT `api/users/updateImage` Update user profile image
+
+#### 5.x. ❗️GET `api/users/overview` get user's overview
 
 #### 5.x. GET `api/users/tasks` get user's *to do/in progress* tasks
 
@@ -87,12 +99,12 @@
 
 '
 
-#### 6.x. ❗️ POST `api/workspaces/:workspaceId/domains` add new domain to workspace's allowed domains
+#### 6.x. POST `api/workspaces/:workspaceId/domains` add new domain to workspace's allowed domains
 
-#### 6.x. ❗️ DELETE `api/workspaces/:workspaceId/domains/:domain` remove domain from workspace's allowed domains
+#### 6.x. DELETE `api/workspaces/:workspaceId/domains/:domain` remove domain from workspace's allowed domains
 
-#### 6.x. ❗️ GET `api/workspaces/:workspaceId/domains` get all workspace domains
+#### 6.x. GET `api/workspaces/:workspaceId/domains` get all workspace domains
 
 #### 6.x. ❗️❗️ DELETE `api/workspaces/:workspaceId/users/:userId` remove user from workspace
 
-'kk
+'
