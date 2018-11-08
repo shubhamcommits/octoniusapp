@@ -48,7 +48,7 @@
                                     {{this.post._posted_by?.last_name}}<br /> in {{this.post._group?.group_name}} group
                                 </span>
         
-                                <div ngbDropdown class="d-inline-block float-right">
+                                <div ngbDropdown class="d-inline-block float-right status">
                                     <button class="btn btn-sm" id="dropdownDone" ngbDropdownToggle>{{post.task.status}}</button>
                                     <div ngbDropdownMenu aria-labelledby="dropdownToDo">
                                         <button class="dropdown-item" (click)="OnMarkTaskToDo(this.post._id)">To Do</button>
@@ -131,7 +131,7 @@
                                             {{this.post._posted_by?.last_name}}<br /> in {{this.post._group?.group_name}} group
                                         </span>
                 
-                                <div ngbDropdown class="d-inline-block float-right">
+                                <div ngbDropdown class="d-inline-block float-right status">
                                     <button class="btn btn-sm" id="dropdownDone" ngbDropdownToggle>{{post.task.status}}</button>
                                     <div ngbDropdownMenu aria-labelledby="dropdownToDo">
                                         <button class="dropdown-item" (click)="OnMarkTaskToDo(this.post._id)">To Do</button>
@@ -210,7 +210,7 @@
                                         {{this.post._posted_by?.last_name}}<br /> in {{this.post._group?.group_name}} group
                                     </span>    
         
-                            <div ngbDropdown class="d-inline-block float-right">
+                            <div ngbDropdown class="d-inline-block float-right status">
                                 <button class="btn btn-sm" id="dropdownDone" ngbDropdownToggle>{{post.task.status}}</button>
                                 <div ngbDropdownMenu aria-labelledby="dropdownToDo">
                                     <button class="dropdown-item" (click)="OnMarkTaskToDo(this.post._id)">To Do</button>

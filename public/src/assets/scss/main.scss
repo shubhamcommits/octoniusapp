@@ -429,3 +429,12 @@ color:#787878 !important;
   border-radius: $card-radius;
   object-fit: cover;
 }
+.topnav-avatar.float-left.kbn{
+  &:hover {
+    border: 1px solid $brand-primary;
+    cursor: pointer;
+  }
+}
+.status{
+  margin-top: -15px;
+}

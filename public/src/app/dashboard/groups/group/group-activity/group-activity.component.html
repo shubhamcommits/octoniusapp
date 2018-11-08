@@ -39,7 +39,7 @@
             </div>
             <div class="col-md-11">
 
-              <button type="text" class="form-control btn-lg noborder-btn" style="outline: none; box-shadow: none !important; border: 0px solid #ccc !important; text-align: left; cursor: pointer;"
+              <button type="text" class="form-control btn-lg noborder-btn" style="outline: none; box-shadow: none !important; margin-top: 8px;border: 0px solid #ccc !important; text-align: left; cursor: pointer;"
                 placeholder="What are you working on?" (click)="show_hide_working_bar()">What are you working on?</button>
             </div>
           </div>
@@ -116,7 +116,7 @@
                     (onContentChanged)="onContentChanged($event)"></quill-editor>
 
 
-                  <div ngbDropdown class="btn-group">
+                  <div ngbDropdown class="btn-group" style="width:100%">
                     <a id="emojiDrop" class="btn" ngbDropdownToggle>
                       <i class="material-icons">
                         sentiment_satisfied_alt
@@ -126,6 +126,11 @@
                     <emoji-mart ngbDropdownMenu aria-labelledby="emojiDrop" [set]="emojiSet" isNative="false"
                       [hideRecent]="false" (emojiSelect)="handleClick($event)" title="Pick your emoji…" emoji='point_up'>
                     </emoji-mart>
+                    <button type="button" class="btn btn-link">
+                      <input id="cin" #fileInput type="file" class="btn btn-outline-warning task" style="display: none"
+                        (change)="fileChangeEvent($event)" placeholder="File" multiple />
+                      <i class="material-icons" (click)="fileInput.click()">attach_file</i>
+                    </button>
 
                   </div>
 
@@ -138,11 +143,7 @@
               <div class="col-md-8 ">
 
 
-                <button type="button" class="btn btn-link cool">
-                  <input id="cin" #fileInput type="file" class="btn btn-outline-warning task" style="display: none"
-                    (change)="fileChangeEvent($event)" placeholder="File" multiple />
-                  <i class="material-icons" (click)="fileInput.click()">attach_file</i>
-                </button>
+                
                 <div *ngFor="let file of filesToUpload">
                   <p>{{file.name}}</p>
                 </div>
@@ -155,7 +156,7 @@
                   type="button " name="button" (click)="OnAddNewPost()" class="btn btn-primary">Post</button>
               </div>
             </div>
-
+            <br>
           </div>
         </form>
       </div>
@@ -262,9 +263,10 @@
                       class="feed-avatar">
                   </div>
                   <div class="col-md-7">
-                    <h6>{{post._posted_by?.first_name}} {{post._posted_by?.last_name}}</h6>
-                    <p class="small lightgray date">
-                      {{post?.created_date | date : 'medium' }}</p>
+                    <h6>{{post._posted_by?.first_name}} {{post._posted_by?.last_name}} <br>
+                    <span class="small lightgray date"> {{post?.created_date | date : 'medium' }}</span>
+                    </h6>
+                   
                     <!-- <button class="btn btn-primary btn-sm" id="testhaibc" contenteditable="false" (click)="test(i); abc();">Save</button>-->
                   </div>
 
@@ -347,18 +349,18 @@
 
 
             <div *ngIf="showComments.id == post._id && showComments.normal" >
-              <div class="card muted margin5" id="card-normal-post-comment-{{i}}">
+              <div class="card margin5" id="card-normal-post-comment-{{i}}">
                 <form [formGroup]="commentForm">
-                  <div class="row">
+                  <div class="row no-margin">
                     <div class="col-md-12">
-                      <div class="form-group ">
+                      <div class="form-group">
                         <h6>Add a comment</h6>
 
                         <quill-editor id="comment-content{{i}}" [modules]="modules" [(ngModel)]="comment.content"
                           (blur)="onEditorBlured($event)" [spellcheck]="true" class="form-control" name="commentContent"
                           (focus)="onEditorFocused($event)" formControlName="commentContent" (ready)="onEditorCreated($event)"
                           (change)="onContentChanged($event)" (onEditorCreated)="onEditorCreated($event)"
-                          (onContentChanged)="onContentChanged($event)"></quill-editor>
+                          (onContentChanged)="onContentChanged($event)" ></quill-editor>
                         <div ngbDropdown class="btn-group">
                           <a id="emojiDrop" class="btn" ngbDropdownToggle>
                             <i class="material-icons">
@@ -372,16 +374,19 @@
 
                         </div>
                       </div>
+                      
                     </div>
                   </div>
 
-                  <div class="row ">
-                    <div class="col-md-12 text-right ">
+                  <div class="row">
+                    <div class="col-md-8"></div>
+                    <div class="col-md-4 text-right" style="padding-right:30px">
                       <button type="button " name="button " class="btn btn-default " (click)="showComments.id=post._id;showComments.normal=!showComments.normal;">Cancel</button>
                       <button [disabled]="commentForm.invalid" type="button " name="button" (click)="onAddNewComment(post._id, i)"
                         class="btn btn-primary">Comment</button>
                     </div>
                   </div>
+                  <br>
                 </form>
               </div>
             </div>
@@ -401,9 +406,10 @@
                     <!--<img src="assets/images/user.png" class="feed-avatar">-->
                   </div>
                   <div class="col-md-7 ">
-                    <h6>{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}} replied</h6>
-                    <p class="small lightgray date">
-                      {{comment.created_date | date : 'medium'}}</p>
+                    <h6>{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}} replied
+                    <br> <span class="small lightgray date">
+                      {{comment.created_date | date : 'medium'}}</span>
+                    </h6>
                   </div>
                   <div class="col-md-4 text-right ">
 
@@ -431,11 +437,11 @@
                     <!--<img src="assets/images/user.png" class="feed-avatar">-->
                   </div>
                   <div class="col-md-7 ">
-                    <h6>{{post._posted_by?.first_name}} {{post._posted_by?.last_name}}
-
+                    <h6>{{post._posted_by?.first_name}} {{post._posted_by?.last_name}} <br>
+                        <span class="small lightgray date">
+                            {{post?.created_date | date : 'medium'}}</span>
                     </h6>
-                    <p class="small lightgray date ">
-                      {{post?.created_date | date : 'medium'}}</p>
+                    
                     <span class="assigned"> Assigned to {{post.task._assigned_to?.first_name}}
                       {{post.task._assigned_to?.last_name}}
                     </span>
@@ -534,9 +540,9 @@
             <div *ngIf="showComments.id == post._id && showComments.task" id="card-task-post-comment-{{i}}">
               <div class="card muted margin5" >
                 <form [formGroup]="commentForm">
-                  <div class="row">
+                  <div class="row no-margin">
                     <div class="col-md-12">
-                      <div class="form-group " >
+                      <div class="form-group" >
                         <h6>Add a comment</h6>
                         <!--<textarea class="form-control" id="post-content" rows="3" [(ngModel)]="comment.content" name="commentContent" formControlName="commentContent"></textarea>-->
                         <quill-editor id="comment-content{{i}}" [modules]="modules" [(ngModel)]="comment.content"
@@ -561,12 +567,14 @@
                   </div>
 
                   <div class="row ">
-                    <div class="col-md-12 text-right ">
+                      <div class="col-md-8"></div>
+                    <div class="col-md-4 text-right" style="padding-right:30px">
                       <button type="button " name="button " class="btn btn-default " (click)="showComments.id=post._id;showComments.task=!showComments.task;">Cancel</button>
                       <button [disabled]="commentForm.invalid" type="button " name="button" (click)="onAddNewComment(post._id, i)"
                         class="btn btn-primary">Comment</button>
                     </div>
                   </div>
+                  <br>
                 </form>
               </div>
             </div>
@@ -613,9 +621,11 @@
                       class="feed-avatar">
                   </div>
                   <div class="col-md-7 ">
-                    <h6>{{post._posted_by?.first_name}} {{post._posted_by?.last_name}}</h6>
-                    <p class="small lightgray date ">
-                      {{post?.created_date| date : 'medium'}}</p>
+                    <h6>{{post._posted_by?.first_name}} {{post._posted_by?.last_name}} <br>
+                    <span class="small lightgray date ">
+                      {{post?.created_date| date : 'medium'}}</span>
+                    </h6>
+
                     <span class="assigned" [ngbPopover]="eventassignedmembers" triggers="mouseenter:mouseleave">Assigned
                       to {{post.event._assigned_to.length}} MEMBERS
                     </span>
@@ -751,12 +761,14 @@
                   </div>
 
                   <div class="row ">
-                    <div class="col-md-12 text-right ">
+                      <div class="col-md-8"></div>
+                    <div class="col-md-4 text-right" style="padding-right:30px">
                       <button type="button " name="button " class="btn btn-default " (click)="showComments.id=post._id;showComments.event=!showComments.event;">Cancel</button>
                       <button [disabled]="commentForm.invalid" type="button " name="button" (click)="onAddNewComment(post._id, i)"
                         class="btn btn-primary">Comment</button>
                     </div>
                   </div>
+                  <br>
                 </form>
               </div>
             </div>
@@ -774,9 +786,10 @@
                     <!--<img [src]="profileImage" class="feed-avatar">-->
                   </div>
                   <div class="col-md-7 ">
-                    <h6>{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}} replied</h6>
-                    <p class="small lightgray date">
-                      {{comment.created_date | date : 'medium'}}</p>
+                    <h6>{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}} replied <br>
+                    <span class="small lightgray date">
+                      {{comment.created_date | date : 'medium'}}</span>
+                    </h6>
                   </div>
                   <div class="col-md-4 text-right ">
 
