@@ -53,7 +53,7 @@
 
 #### 4.x. DELETE `api/posts/:postId` delete post
 
-#### 4.x. ❗️❗️GET `api/posts/comments/:commentId` get a single comment
+#### 4.x. ❗️GET `api/posts/comments/:commentId` get a single comment
 
 #### 4.x. ❗️GET `api/posts/:postId/comments` get first N post's comments
 
@@ -63,7 +63,7 @@
 
 #### 4.x. ❗️PUT `api/posts/comments/:commentId` update comment
 
-#### 4.x. ❗️❗️DELETE `api/posts/comments/:commentId` delete comment
+#### 4.x. ❗️DELETE `api/posts/comments/:commentId` delete comment
 
 #### 4.x. ❗️PUT `api/posts/:postId/like` like post
 
