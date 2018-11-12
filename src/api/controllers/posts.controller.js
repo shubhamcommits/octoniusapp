@@ -320,14 +320,14 @@ const removeComment = async (req, res, next) => {
     const commentRemoved = await Comment.findByIdAndRemove(commentId);
 
     // Update post: remove new comment id, decrease post count
-    const post = await Post.findOneAndUpdate({
-      _id: postId
+    const updatedPost = await Post.findOneAndUpdate({
+      _id: post._id
     }, {
       $pull: {
         comments: comment._id
       },
       $inc: {
-        comments_count: -1
+        comments_count: 1
       }
     }, {
       new: true
