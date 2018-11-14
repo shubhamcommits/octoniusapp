@@ -26,11 +26,13 @@
 }
 
 .badge-members{
-background: #fff;
-font-weight: 700;
+background: $pink;
+padding:5px;
+font-weight: 400;
 text-align: center;
-color: #005fd5;
+color: #fff;
 position: absolute;
 right:20px;
 top:20px;
+box-shadow: 0 4px 10px 0 rgba(37, 38, 94, 0.1); 
 }

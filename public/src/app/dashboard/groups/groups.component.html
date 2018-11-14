@@ -33,7 +33,7 @@
     </div> -->
 
     <div *ngFor="let group of groups " class="card col-md-3 groups" [routerLink]="['/dashboard/group/',group._id,'activity']">
-      <span class="badge badge-members " >{{group._members?.length + group._admins?.length}} Members</span>
+      <span class="badge badge-members" >{{group._members?.length + group._admins?.length}} Members</span>
       <img class="card-img-top" [src] = "group.group_avatar" onerror="this.src='/assets/images/group.png'" >
       <div class="card-body ">
         <a>
