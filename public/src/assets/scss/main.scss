@@ -415,10 +415,12 @@ color:#787878 !important;
 }
 
 .groups{
+  transition: all 0.3s ease 0s;
   &:hover{
     cursor: pointer;
     box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.07);
     padding: 0 !important;
+    transition: opacity .25s ease-in-out;
   }
 }
 
