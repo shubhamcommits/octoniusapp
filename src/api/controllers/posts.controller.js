@@ -194,7 +194,7 @@ const editComment = async (req, res, next) => {
     } = req;
 
     // Update comment
-    const comment = await Post.findOneAndUpdate({
+    const comment = await Comment.findOneAndUpdate({
       _id: commentId,
       _commented_by: userId
     }, {
