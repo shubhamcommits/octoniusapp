@@ -1,7 +1,7 @@
 const moment = require('moment');
 
 const notifications = require('./notifications.controller');
-const { Group, Post } = require('../models');
+const { Comment, Group, Post } = require('../models');
 const { sendMail, sendErr } = require('../../utils');
 
 /*  ======================
