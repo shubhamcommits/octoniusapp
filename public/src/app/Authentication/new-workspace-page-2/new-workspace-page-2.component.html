@@ -4,7 +4,7 @@
 
       <h1 class="white">
         <i class="icon-octo-logo white"></i>Octonius</h1>
-      <h4 class="white">Everything happening in your organization happens here.</h4>
+      <h4 class="white">Everything happening in your organization is here.</h4>
 
       <div style="margin-top:30px">
         <p class="white">If you already have an account</p>
@@ -16,10 +16,10 @@
     <div class="col-md-4 ">
       <div class="signup-form " style="padding-top:100px ">
         <form [formGroup]="newWorkspaceForm " (ngSubmit)="onNewWorkspaceFormSubmit() ">
-          <h4>Create a new workplace</h4>
+          <h3>Create your Workplace</h3>
 
           <div class="form-group ">
-            <label for="work-email ">Enter your work email</label>
+            <label for="work-email ">Work email</label>
             <input type="email" class="form-control" id="work-email" formControlName="ownerEmail" [(ngModel)]="workspace.owner_email"
               name="ownerEmail">
             <div *ngIf="_ownerEmail.invalid && _ownerEmail.touched" style="color:red ">
@@ -28,7 +28,7 @@
           </div>
 
           <div class="form-group ">
-            <label for="password">Enter your password</label>
+            <label for="password">Password</label>
             <input type="password" class="form-control " id="password " formControlName="ownerPassword" [(ngModel)]="workspace.owner_password "
               name="ownerPassword">
 
@@ -41,7 +41,7 @@
           </div>
 
           <div class="form-group">
-            <label for="repeat-password ">Repeat your password</label>
+            <label for="repeat-password ">Repeat  password</label>
             <input type="password" class="form-control" id="repeat-password" formControlName="ownerPasswordRepeat">
 
             <div *ngIf="_ownerPasswordRepeat.invalid && _ownerPasswordRepeat.touched" style="color:red ">
@@ -51,7 +51,7 @@
           </div>
 
           <div class="form-group ">
-            <label for="first-name ">Enter your first name</label>
+            <label for="first-name ">First name</label>
             <input type="text" class="form-control" id="first-name" formControlName="ownerFirstName" [(ngModel)]="workspace.owner_first_name"
               name="ownerFirstName ">
 
@@ -62,7 +62,7 @@
           </div>
 
           <div class="form-group ">
-            <label for="last-name ">Enter your last name</label>
+            <label for="last-name ">Last name</label>
             <input type="text" class="form-control" id="last-name" formControlName="ownerLastName" [(ngModel)]="workspace.owner_last_name"
               name="ownerLastName">
 
