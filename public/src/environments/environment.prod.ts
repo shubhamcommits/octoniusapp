@@ -3,6 +3,6 @@ export const environment = {
   hmr: false,
 
   //  BASE_API_URL: 'http://localhost:3000/api'
-  BASE_API_URL: 'https://octhub.com/api',
-  BASE_URL: 'https://octhub.com'
+  BASE_API_URL: 'https://workplace.octonius.com/api',
+  BASE_URL: 'https://workplace.octonius.com'
 };
