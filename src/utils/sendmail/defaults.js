@@ -1,7 +1,7 @@
 const generateLink = (linkType) => {
 	return process.env.NODE_ENV === 'development' ?
 	`http://localhost:3000/#/${linkType}` :
-	`https://octhub.com/#/${linkType}`;
+	`https://workplace.octonius.com/#/${linkType}`;
 };
 
 module.exports = {
