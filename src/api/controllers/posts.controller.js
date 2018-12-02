@@ -210,10 +210,10 @@ const editComment = async (req, res, next) => {
       .lean();
 
     // Create Notification for mentions on post comments
-    if (comment._content_mentions.length !== 0) {
+    // if (comment._content_mentions.length !== 0) {
       // !! To be created !!
       // notifications.newCommentMentions(comment);
-    }
+    // }
 
     return res.status(200).json({
       message: 'Comment updated!',
