@@ -430,7 +430,7 @@ export class GroupActivityComponent implements OnInit {
               this.alert.class = 'success';
               this._message.next(res['message']);
               this.resetNewPostForm();
-              // console.log('Normal post response: ', res);
+              console.log('Normal post response: ', res);
               this.loadGroupPosts();
 
             }, (err) => {
@@ -1171,6 +1171,51 @@ export class GroupActivityComponent implements OnInit {
     const button = document.getElementById('button_edit_comment'+index);
     editor.style.display = 'block';
     button.style.display = 'block';
+  }
+
+  OnSaveEditComment(index, commentId, postId){
+    const editor = document.getElementById('edit-comment-'+index);
+    const comment ={
+      content: document.getElementById('commentContent-'+index).innerHTML,
+      contentMentions: this.content_mentions
+    };
+    
+    var scanned_content = comment.content;
+    var el = document.createElement('html');
+    el.innerHTML = scanned_content;
+
+    if (el.getElementsByClassName('mention').length > 0) {
+
+      // console.log('Element',  el.getElementsByClassName( 'mention' ));
+      for (var i = 0; i < el.getElementsByClassName('mention').length; i++) {
+        if (el.getElementsByClassName('mention')[i]['dataset']['value'] == "all") {
+          for (var i = 0; i < this.allMembersId.length; i++) {
+            this.content_mentions.push(this.allMembersId[i]);
+          }
+          //this.content_mentions = this.allMembersId;
+        }
+        else {
+          if (!this.content_mentions.includes(el.getElementsByClassName('mention')[i]['dataset']['id']))
+            this.content_mentions.push(el.getElementsByClassName('mention')[i]['dataset']['id']);
+        }
+      }
+
+      // console.log('Content Mention', post._content_mentions); 
+      //  console.log('This post', postId);
+    }
+
+      //console.log('Content Mention', this.content_mentions); 
+      console.log('Comment:', comment);
+    this.postService.updateComment(commentId, comment)
+    .subscribe((res) => {
+      console.log('Comment Updated', res);
+      this.loadComments(postId);
+      this.content_mentions = [];
+    }, (err) =>{
+      this.content_mentions = [];
+      console.log('Error while updating the comment', err);
+      swal("Error!", "Error while updating the comment " + err, "danger");
+    })
 
   }
 
@@ -1185,7 +1230,6 @@ export class GroupActivityComponent implements OnInit {
   }
 
   OnSaveEditPost(index, post_id, content) {
-
     const editor = document.getElementById('edit-content-' + index);
     const post = {
       'content': document.getElementById(index).innerHTML,
@@ -1212,6 +1256,7 @@ export class GroupActivityComponent implements OnInit {
         this.resetNewPostForm();
         // console.log('Normal post response: ', res);
         this.loadGroupPosts();
+        this.content_mentions = [];
         this.scrollToTop('#card-normal-post-' + index);
         this.scrollToTop('#card-event-post-' + index);
         this.scrollToTop('#card-task-post-' + index);
@@ -1220,6 +1265,7 @@ export class GroupActivityComponent implements OnInit {
       }, (err) => {
 
         this.alert.class = 'danger';
+        this.content_mentions = [];
 
         if (err.status) {
           this._message.next(err.error.message);
