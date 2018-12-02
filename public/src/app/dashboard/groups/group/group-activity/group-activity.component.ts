@@ -99,7 +99,7 @@ export class GroupActivityComponent implements OnInit {
   comment = {
     content: '',
     _commented_by: '',
-    post_id: ''
+    _post_id: ''
   };
 
   form: FormGroup;
@@ -371,7 +371,7 @@ export class GroupActivityComponent implements OnInit {
     };
     //  console.log('Comment Content', commentContent);
 
-    this.comment.post_id = post_id;
+    this.comment._post_id = post_id;
     this.comment._commented_by = this.user_data.user_id;
     var cardTaskPost = document.getElementById('card-task-post-comment-' + index);
     var cardNormalPost = document.getElementById('card-normal-post-comment-' + index);
@@ -1105,6 +1105,15 @@ export class GroupActivityComponent implements OnInit {
   // !--SCROLL TO AN ELEMENT--! // 
 
 
+  toggled(event) {
+    if (event) {
+        console.log('is open');
+    } else {
+      console.log('is closed');
+      
+    }
+  }
+
   icon_comment_change_color() {
     const x = document.getElementById('icon_comment');
     x.style.color = "#005fd5";
@@ -1206,6 +1215,7 @@ export class GroupActivityComponent implements OnInit {
 
       //console.log('Content Mention', this.content_mentions); 
       console.log('Comment:', comment);
+      console.log('Post Id', postId);
     this.postService.updateComment(commentId, comment)
     .subscribe((res) => {
       console.log('Comment Updated', res);

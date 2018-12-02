@@ -414,10 +414,11 @@
                   </div>
                   <div class="col-md-4 text-right card-footer action-post innercard">
                       <span>
-                          <div ngbDropdown class="d-inline-block" *ngIf="post?._posted_by?._id == this.user_data.user_id; else editpostif">
+                          <div ngbDropdown class="d-inline-block" #commentsDrop="ngbDropdown"
+                          (openChange)="toggled($event)" *ngIf="post?._posted_by?._id == this.user_data.user_id; else editpostif">
                             <i class="material-icons action" id="dropdownComment" ngbDropdownToggle>more_horiz</i>
                             <div ngbDropdownMenu aria-labelledby="dropdownComment">
-                                <button class="dropdown-item" (click)="OnEditComment(i, comment._id, post._id)">Edit Comment</button>
+                                <button class="dropdown-item" (click)="OnEditComment(i, comment._id, comment)">Edit Comment</button>
                               <button class="dropdown-item" (click)="OnDeleteComment(comment._id)">Delete Comment</button>
                             </div>
                           </div>
