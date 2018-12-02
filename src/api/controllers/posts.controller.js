@@ -229,7 +229,7 @@ const getComment = async (req, res, next) => {
     const comment = await Comment.findOne({
       _id: commentId
     })
-      .populate('comments._commented_by', 'first_name last_name profile_pic')
+      .populate('_commented_by', 'first_name last_name profile_pic')
       .lean();
 
     return res.status(200).json({
@@ -250,7 +250,7 @@ const getComments = async (req, res, next) => {
     })
       .sort('_id')
       .limit(10)
-      .populate('comments._commented_by', 'first_name last_name profile_pic')
+      .populate('_commented_by', 'first_name last_name profile_pic')
       .lean();
 
     return res.status(200).json({
@@ -274,7 +274,7 @@ const getNextComments = async (req, res, next) => {
     })
       .sort('_id')
       .limit(10)
-      .populate('comments._commented_by', 'first_name last_name profile_pic')
+      .populate('_commented_by', 'first_name last_name profile_pic')
       .lean();
 
     return res.status(200).json({
