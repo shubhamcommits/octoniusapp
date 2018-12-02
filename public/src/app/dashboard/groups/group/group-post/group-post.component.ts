@@ -73,7 +73,7 @@ export class GroupPostComponent implements OnInit {
     this.comment.post_id = post_id;
     this.comment._commented_by = this.user_data.user_id;
 
-    this.postService.addNewComment(this.comment)
+    this.postService.addNewComment(post_id,this.comment)
       .subscribe((res) => {
         this.commentForm.reset();
         this.getPost(post_id);
