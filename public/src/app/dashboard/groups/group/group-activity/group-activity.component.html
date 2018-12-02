@@ -396,7 +396,7 @@
             <!-- all comments block-->
 
             <div id="normalComments{{i}}" style="display: none;">
-            <div class="card muted comment" *ngFor="let comment of this.comments">
+            <div class="card muted comment" id="normalComment-{{j}}" *ngFor="let comment of this.comments; let j = index;">
               <div class="card-block">
                 <div class="row card-title ">
                   <div class="col-md-1">
@@ -418,7 +418,7 @@
                           (openChange)="toggled($event)" *ngIf="post?._posted_by?._id == this.user_data.user_id; else editpostif">
                             <i class="material-icons action" id="dropdownComment" ngbDropdownToggle>more_horiz</i>
                             <div ngbDropdownMenu aria-labelledby="dropdownComment">
-                                <button class="dropdown-item" (click)="OnEditComment(i, comment._id, comment)">Edit Comment</button>
+                                <button class="dropdown-item" (click)="OnEditComment(j)">Edit Comment</button>
                               <button class="dropdown-item" (click)="OnDeleteComment(comment._id)">Delete Comment</button>
                             </div>
                           </div>
@@ -426,16 +426,16 @@
 
                   </div>
                 </div>
-                <div class="col-md-12 text-right " id="button_edit_comment{{i}}" style="display: none; padding-bottom: 1em;">
-                    <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditComment(i, post._id,post?.content)">Save</button>
+                <div class="col-md-12 text-right " id="button_edit_comment{{j}}" style="display: none; padding-bottom: 1em;">
+                    <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditComment(j, comment._id, comment._post)">Save</button>
                   </div>
                   <div class="col-md-12 innercard">
-                    <quill-editor [modules]="modules" id="edit-comment-{{i}}" type="text" [(ngModel)]="comment.content"
+                    <quill-editor [modules]="modules" id="edit-comment-{{j}}" type="text" [(ngModel)]="comment.content"
                       [spellcheck]="true" value="comment?.content" style="display: none;" (blur)="onEditorBlured($event)"
                       (focus)="onEditorFocused($event)" (ready)="onEditorCreated($event)" (change)="onContentChanged($event)">
                     </quill-editor>
                   </div>
-                <div class="col-md-12 innercard " id="commentContent-{{i}}" [innerHTML]="comment?.content" style="color:black;">
+                <div class="col-md-12 innercard " id="commentContent-{{j}}" [innerHTML]="comment?.content" style="color:black;">
 
                 </div>
               </div>
@@ -604,7 +604,7 @@
 
             <!-- all comments block-->
             <div id="taskComments{{i}}" style="display: none;">
-            <div class="card muted comment" *ngFor="let comment of this.comments">
+            <div class="card muted comment" id="taskComment-{{j}}" *ngFor="let comment of this.comments; let j = index;">
               <div class="card-block">
                 <div class="row card-title ">
                   <div class="col-md-1">
@@ -623,7 +623,7 @@
                           <div ngbDropdown class="d-inline-block" *ngIf="post?._posted_by?._id == this.user_data.user_id; else editpostif">
                             <i class="material-icons action" id="dropdownComment" ngbDropdownToggle>more_horiz</i>
                             <div ngbDropdownMenu aria-labelledby="dropdownComment">
-                                <button class="dropdown-item" (click)="OnEditComment(comment._id)">Edit Comment</button>
+                                <button class="dropdown-item" (click)="OnEditComment(j)">Edit Comment</button>
                               <button class="dropdown-item" (click)="OnDeleteComment(comment)">Delete Comment</button>
                             </div>
                           </div>
@@ -631,16 +631,17 @@
 
                   </div>
                 </div>
-                <div class="col-md-12 text-right " id="button_edit_comment{{i}}" style="display: none; padding-bottom: 1em;">
-                    <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditComment(i, post._id,post?.content)">Save</button>
+                <div class="col-md-12 text-right " id="button_edit_comment{{j}}" style="display: none; padding-bottom: 1em;">
+                    <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditComment(j, comment._id, comment._post)">Save</button>
                   </div>
                   <div class="col-md-12 innercard">
-                    <quill-editor [modules]="modules" id="edit-comment-{{i}}" type="text" [(ngModel)]="comment.content"
+                    <quill-editor [modules]="modules" id="edit-comment-{{j}}" type="text" [(ngModel)]="comment.content"
                       [spellcheck]="true" value="comment?.content" style="display: none;" (blur)="onEditorBlured($event)"
                       (focus)="onEditorFocused($event)" (ready)="onEditorCreated($event)" (change)="onContentChanged($event)">
                     </quill-editor>
                   </div>
-                <div class="col-md-12 innercard " [innerHTML]="comment?.content" style="color:black;">s
+                <div class="col-md-12 innercard " id="commentContent-{{j}}" [innerHTML]="comment?.content" style="color:black;">
+
                 </div>
               </div>
             </div>
@@ -800,7 +801,7 @@
 
             <!-- all comments block-->
             <div id="eventComments{{i}}" style="display: none;">
-            <div class="card muted comment"  *ngFor="let comment of this.comments">
+            <div class="card muted comment"  id="eventComment-{{j}}" *ngFor="let comment of this.comments; let j = index;">
               <div class="card-block">
                 <div class="row card-title ">
                   <div class="col-md-1">
@@ -820,7 +821,7 @@
                             
                             <i ngbDropdownToggle class="material-icons action" id="dropdownComment{{i}}">more_horiz</i>
                             <div ngbDropdownMenu>
-                                <button class="dropdown-item" (click)="OnEditComment(i)">Edit Comment</button>
+                                <button class="dropdown-item" (click)="OnEditComment(j)">Edit Comment</button>
                               <button class="dropdown-item" (click)="OnDeleteComment(comment._id)">Delete Comment</button>
                             </div>
                           </div>
@@ -828,16 +829,17 @@
 
                   </div>
                 </div>
-                <div class="col-md-12 text-right " id="button_edit_comment{{i}}" style="display: none; padding-bottom: 1em;">
-                    <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditComment(i, post._id,post?.content)">Save</button>
+                <div class="col-md-12 text-right " id="button_edit_comment{{j}}" style="display: none; padding-bottom: 1em;">
+                    <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditComment(j, comment._id, comment._post)">Save</button>
                   </div>
                   <div class="col-md-12 innercard">
-                    <quill-editor [modules]="modules" id="edit-comment-{{i}}" type="text" [(ngModel)]="comment.content"
+                    <quill-editor [modules]="modules" id="edit-comment-{{j}}" type="text" [(ngModel)]="comment.content"
                       [spellcheck]="true" value="comment?.content" style="display: none;" (blur)="onEditorBlured($event)"
                       (focus)="onEditorFocused($event)" (ready)="onEditorCreated($event)" (change)="onContentChanged($event)">
                     </quill-editor>
                   </div>
-                <div class="col-md-12 innercard " [innerHTML]="comment?.content" style="color:black;">
+                <div class="col-md-12 innercard " id="commentContent-{{j}}" [innerHTML]="comment?.content" style="color:black;">
+
                 </div>
               </div>
             </div>
