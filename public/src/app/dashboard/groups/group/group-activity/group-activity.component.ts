@@ -485,27 +485,15 @@ export class GroupActivityComponent implements OnInit {
     });
   }
 
-  test(index) {
-    const text = document.getElementById("div_text" + index);
-    text.innerHTML = this.linkify(text.innerHTML);
 
-  }
-
-
-
-
+  // !--ADD NEW NORMAL POST--! //  
   addNewNormalPost() {
-
     const formData: any = new FormData();
     const files: Array<File> = this.filesToUpload;
-
-    // console.log(files);
-
     if (files !== null) {
       for (let i = 0; i < files.length; i++) {
         formData.append('attachments', files[i], files[i]['name']);
       }
-
     }
     const post = {
       content: this.post.content,
@@ -513,37 +501,27 @@ export class GroupActivityComponent implements OnInit {
       _posted_by: this.user_data.user_id,
       _group: this.group_id,
       _content_mentions: this.content_mentions
-
     };
-    var postId;
     const scanned_content = post.content;
     var el = document.createElement('html');
     el.innerHTML = scanned_content;
 
     if (el.getElementsByClassName('mention').length > 0) {
-
-      // console.log('Element',  el.getElementsByClassName( 'mention' ));
       for (var i = 0; i < el.getElementsByClassName('mention').length; i++) {
         if (el.getElementsByClassName('mention')[i]['dataset']['value'] == "all") {
           for (var i = 0; i < this.allMembersId.length; i++) {
             this.content_mentions.push(this.allMembersId[i]);
           }
-          //this.content_mentions = this.allMembersId;
         }
         else {
           if (!this.content_mentions.includes(el.getElementsByClassName('mention')[i]['dataset']['id']))
             this.content_mentions.push(el.getElementsByClassName('mention')[i]['dataset']['id']);
         }
-
-
       }
 
       for (var i = 0; i < this.content_mentions.length; i++) {
         formData.append('_content_mentions', this.content_mentions[i]);
       }
-
-      // console.log('Content Mention', post._content_mentions); 
-      //  console.log('This post', postId);
     }
 
 
@@ -593,11 +571,6 @@ export class GroupActivityComponent implements OnInit {
         }
 
       });
-
-
-
-
-
 
   }
 
@@ -1214,7 +1187,7 @@ export class GroupActivityComponent implements OnInit {
     }
 
       //console.log('Content Mention', this.content_mentions); 
-      console.log('Comment:', comment);
+      console.log('Comment:', commentId);
       console.log('Post Id', postId);
     this.postService.updateComment(commentId, comment)
     .subscribe((res) => {
