@@ -205,7 +205,9 @@ const editComment = async (req, res, next) => {
       }
     }, {
       new: true
-    });
+    })
+      .populate('_commented_by', 'first_name last_name profile_pic')
+      .lean();
 
     // Create Notification for mentions on post comments
     if (comment._content_mentions.length !== 0) {
