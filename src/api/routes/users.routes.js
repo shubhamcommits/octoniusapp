@@ -1,6 +1,9 @@
 const express = require('express');
 
-const { users } = require('../controllers');
+const {
+  users,
+  usersController // ! TO BE REMOVED
+} = require('../controllers');
 
 const { auth, fileHandler } = require('../../utils');
 
@@ -15,19 +18,11 @@ router.use(auth.isLoggedIn);
 
 // -| Users Routes |-
 
-// - Main -
-
-// Get current user
-router.get('/', users.get);
-
-// Edit/Update user
-router.put('/', users.edit);
-
-// Update user profile image
-router.put('/updateImage', fileHandler, users.updateImage);
-
-// Get user's overview
-router.get('/overview', users.getOverview);
+// vvvv| BAD REST PATTERN, to be replaced! |vvvv
+router.get('/', usersController.getUser); // ! TO BE REMOVED
+router.put('/', usersController.updateUser); // ! TO BE REMOVED
+router.post('/updateImage', fileHandler, usersController.updateUserImage); // ! TO BE REMOVED
+// ^^^^| BAD REST PATTERN, to be replaced! |^^^^
 
 // - Tasks -
 

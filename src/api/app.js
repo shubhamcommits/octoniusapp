@@ -60,6 +60,8 @@ app.use('/api/workspaces', workspacesRoutes);
 // -->!!!! TO BE REMOVED !!!!
 app.use('/api/auth', authsRoutes);
 app.use('/api/group', groupsRoutes);
+app.use('/api/post', postsRoutes);
+app.use('/api/user', usersRoutes);
 app.use('/api/workspace', workspacesRoutes);
 
 // Invalid routes handling middleware

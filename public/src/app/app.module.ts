@@ -22,7 +22,6 @@ import { DragAndDropModule } from 'angular-draggable-droppable';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
-import { ClickOutsideModule } from 'ng-click-outside';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './common/components/navbar/navbar.component';
@@ -58,11 +57,11 @@ import { OverviewMyTasksComponent } from './dashboard/overview/overview-my-tasks
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 
-  "bgsColor": "#005fd5",
-  "bgsOpacity": 0.9,
-  "bgsPosition": "center-center",
+  "bgsColor": "#00ACC1",
+  "bgsOpacity": 0.5,
+  "bgsPosition": "bottom-right",
   "bgsSize": 100,
-  "bgsType": "three-bounce",
+  "bgsType": "rectangle-bounce",
   "blur": 15,
   "fgsColor": "#fff",
   "fgsPosition": "center-center",
@@ -71,6 +70,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   "gap": 24,
   "logoPosition": "center-center",
   "logoSize": 120,
+  //"logoUrl": "https://octhub.com/uploads/1533793279271512px logo.png",
   "overlayColor": "rgb(0, 95, 213, 1.0)",
   "pbColor": "#fff",
   "pbDirection": "ltr",
@@ -115,7 +115,6 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     MentionModule,
     InfiniteScrollModule,
     PickerModule,
-    ClickOutsideModule,
     EmojiModule,
     DragAndDropModule.forRoot(),
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),

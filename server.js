@@ -9,10 +9,6 @@ const server = http.createServer(app);
 
 socket.init(server);
 
-const migration = require('./src/utils/commentsMigrationHelper');
-
-// migration.createComments();
-
 server.listen(port, (req, res) => {
   // eslint-disable-next-line no-console
   console.log(`
