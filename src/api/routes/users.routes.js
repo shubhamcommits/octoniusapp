@@ -41,15 +41,3 @@ router.get('/tasksDone', users.getTasksDone);
 router.get('/nextTasksDone/:postId', users.getNextTasksDone);
 
 module.exports = router;
-// - Tasks -
-
-// Get user's to do/in progress tasks
-router.get('/tasks', users.getTasks);
-
-// Get 20 most recently created user's completed tasks
-router.get('/tasksDone', users.getTasksDone);
-
-// Get next 20 most recently created user's completed tasks
-router.get('/nextTasksDone/:postId', users.getNextTasksDone);
-
-module.exports = router;
