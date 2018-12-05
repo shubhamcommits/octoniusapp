@@ -124,6 +124,16 @@ const remove = async (req, res, next) => {
       return sendErr(res, null, 'User not allowed to remove this post!', 403);
     }
 
+    await post.comments.forEach(async (commentId) => {
+      try {
+        await Comment.findByIdAndRemove(commentId);
+
+        return true;
+      } catch (err) {
+        return sendErr(res, err);
+      }
+    });
+
     const postRemoved = await Post.findByIdAndRemove(postId);
 
     return res.status(200).json({
@@ -211,8 +221,8 @@ const editComment = async (req, res, next) => {
 
     // Create Notification for mentions on post comments
     // if (comment._content_mentions.length !== 0) {
-      // !! To be created !!
-      // notifications.newCommentMentions(comment);
+    // !! To be created !!
+    // notifications.newCommentMentions(comment);
     // }
 
     return res.status(200).json({
