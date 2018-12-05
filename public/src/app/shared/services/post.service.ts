@@ -31,6 +31,9 @@ export class PostService {
   addNewTaskPost(post) {
     return this._http.post(this.BASE_API_URL + '/posts', post);
   }
+  addNewComment(comment) {
+    return this._http.post(this.BASE_API_URL + '/post/addComment', comment);
+  }
   editPost(postId, post){
     return this._http.put<any>(this.BASE_API_URL + `/posts/${postId}`, post);
   }
@@ -55,24 +58,5 @@ export class PostService {
 
   getPost(postId){
     return this._http.get(this.BASE_API_URL + '/posts/'+ postId);
-  }
-
-  addNewComment(postId, comment) {
-    return this._http.post(this.BASE_API_URL + `/posts/${postId}/comments`, comment);
-  }
-  getComment(commentId){
-    return this._http.get(this.BASE_API_URL + `/posts/comments/${commentId}`);
-  }
-  getComments(postId) {
-    return this._http.get(this.BASE_API_URL + `/posts/${postId}/comments`);
-  }
-  getNextComments(postId,commentId){
-    return this._http.get(this.BASE_API_URL + `/posts/${postId}/nextComments/${commentId}`);
-  }
-  updateComment(commentId, comment){
-    return this._http.put(this.BASE_API_URL + `/posts/comments/${commentId}`, comment);
-  }
-  deleteComment(commentId){
-    return this._http.delete(this.BASE_API_URL + `/posts/comments/${commentId}`);
   }
 }

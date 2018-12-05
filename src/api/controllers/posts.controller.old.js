@@ -1,0 +1,155 @@
+const moment = require('moment');
+
+const { Group, Post, User, Workspace } = require('../models');
+const { sendMail, sendErr } = require('../../utils');
+
+/*	==================
+ *	-- POST METHODS --
+ *	==================
+ */
+
+const addCommentOnPost = async (req, res, next) => {
+  try {
+    const postId = req.body.post_id;
+    const commentedBy = req.body._commented_by;
+    const content = req.body.content;
+
+    const user = await User.findById({ _id: commentedBy });
+
+    const post = await Post.findByIdAndUpdate({
+      _id: postId
+    }, {
+      $push: {
+        comments: {
+          content: content,
+          _commented_by: user
+        }
+      },
+      $inc: {
+        comments_count: 1
+      },
+    }, {
+      new: true
+    });
+
+    return res.status(200).json({
+      message: 'Comment added!',
+      post,
+    });
+
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+const getUserOverview = async (req, res, next) => {
+  try {
+    const userId = req.params.user_id;
+
+    // Generate the actual time
+    const todayForEvent = moment.utc().hours(0).minutes(0).seconds(0).milliseconds(0).format();
+    const today = moment().format('YYYY-MM-DD');
+
+    // Generate the +48h time
+    const todayPlus48ForEvent = moment.utc().add(48, 'hours').format();
+    const tomorrow = moment().add(1, 'days').format('YYYY-MM-DD');
+
+    const posts = await Post.find({
+      $or: [
+        // From this user...
+        { $and: [
+          // Find normal posts that has comments
+          { _posted_by: userId },
+          { comments: { $exists: true, $ne: []}},
+          { 'comments.created_date': { $gte: todayForEvent }}
+        ]},
+        // Find tasks due to today
+        { $and: [
+          { 'task._assigned_to': userId },
+          { 'task.due_to': { $in: [ today, tomorrow ]}}
+        ]},
+        // Find events due to today
+        { $and: [
+          { 'event._assigned_to': userId },
+          { 'event.due_to': { $gte: todayForEvent, $lt: todayPlus48ForEvent }}
+        ]}
+      ]})
+      .sort('event.due_to task.due_to -comments.created_date')
+      .populate('_posted_by', 'first_name last_name profile_pic')
+      .populate('comments._commented_by', 'first_name last_name profile_pic')
+      .populate('task._assigned_to', 'first_name last_name')
+      .populate('event._assigned_to', 'first_name last_name')
+      .populate('_group', 'group_name group_avatar')
+      .populate('_liked_by', 'first_name last_name');
+
+    return res.status(200).json({
+      message: `Found ${posts.length} posts!`,
+      posts,
+    });
+
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+const likePost = async (req, res, next) => {
+  try {
+    const postId = req.body.post_id;
+    const userId = req.body.user_id;
+
+    const post = await Post.findByIdAndUpdate({
+      _id: postId
+    }, {
+      $addToSet: {
+        _liked_by: userId
+      }
+    }, {
+      new: true
+    });
+
+    return res.status(200).json({
+      message: 'Post liked!',
+      post,
+    });
+
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+const unlikePost = async (req, res, next) => {
+  try {
+    const postId = req.body.post_id;
+    const userId = req.body.user_id;
+
+    const post = await Post.findByIdAndUpdate({
+      _id: postId
+    }, {
+      $pull: {
+        _liked_by: userId
+      }
+    }, {
+      new: true
+    });
+
+    return res.status(200).json({
+      message: 'Post unliked!',
+      post,
+    });
+
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+/*	=============
+ *	-- EXPORTS --
+ *	=============
+ */
+
+module.exports = {
+  addCommentOnPost,
+  getUserOverview,
+  likePost,
+  unlikePost
+};
