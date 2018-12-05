@@ -10,52 +10,60 @@ const createComments = async () => {
       .populate('task._assigned_to', 'first_name last_name profile_pic')
       .lean();
 
+    // eslint-disable-next-line no-console
+    console.log(posts);
+
     // Update posts to the new comments strategy
     const postsUpdated = await posts.map(async (post) => {
       try {
         // For each post, update the comments array
         const commentsUpdated = await post.comments.map(async (comment) => {
-          const commentData = {
-            content: ,
-            _content_mentions: [],
-            created_date: ,
-            _commented_by: ,
-            _post: 
-          }
+          try {
+            const commentData = {
+              content: comment.content,
+              _content_mentions: [],
+              created_date: comment.created_date,
+              _commented_by: comment._commented_by,
+              _post: post._id
+            };
 
+            // For each comment, create a comment document
+            const newComment = await Comment.create(commentData);
+
+            // Return the newComment ID to replace the previous comment object
+            return newComment._id
+          } catch (e) {
+            // eslint-disable-next-line no-console
+            console.log(e);
+          }
         });
 
-        if (newComment) {
-          return postUpdated;
-        }
+        // Update post.comments array with commentsUpdated
+        const postUpdated = await Post.findOneAndUpdate({
+          _id: post._id
+        }, {
+          $set: {
+            comments: commentsUpdated
+          }
+        }, {
+          new: true
+        })
+          .lean();
+
+        // return comments array updated to each post
+        return postUpdated;
       } catch (e) {
         // eslint-disable-next-line no-console
         console.log(e);
       }
     });
-    // For each comment, create a comment document
 
-    // Save the comment ID on a comments array, ordered
-
-    // Replace the post comments by the comments ids array
     // eslint-disable-next-line no-console
-    console.log(posts, postsUpdated);
+    console.log(postsUpdated);
   } catch (e) {
     // eslint-disable-next-line no-console
     console.log(e);
   }
 };
 
-const insertCIdsOnPosts = async () => {
-  try {
-
-  } catch (e) {
-    // eslint-disable-next-line no-console
-    console.log(e);
-  }
-};
-
-module.exports = {
-  createComments,
-  insertCIdsOnPosts
-};
+module.exports = { createComments };
