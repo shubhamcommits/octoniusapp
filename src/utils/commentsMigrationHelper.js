@@ -1,6 +1,10 @@
 const { Comment, Post } = require('../api/models');
 
 const createComments = async () => {
+
+  // eslint-disable-next-line no-console
+  console.log('---- Starting Migration -----');
+
   try {
     // Find all posts, sort by creation date
     const posts = await Post.find({})
@@ -60,6 +64,9 @@ const createComments = async () => {
 
     // eslint-disable-next-line no-console
     console.log(postsUpdated);
+
+    // eslint-disable-next-line no-console
+    console.log('---- Migration Finished! -----');
   } catch (e) {
     // eslint-disable-next-line no-console
     console.log(e);
