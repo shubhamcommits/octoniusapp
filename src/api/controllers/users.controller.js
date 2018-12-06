@@ -8,14 +8,14 @@ const { sendErr } = require('../../utils');
 
 const edit = async (req, res, next) => {
   try {
-    const { userId, body: { userData } } = req;
+    const { userId, body } = req;
 
     delete req.body.userId;
 
     const user = await User.findByIdAndUpdate({
       _id: userId
     }, {
-      $set: userData
+      $set: body
     }, {
       new: true
     });
