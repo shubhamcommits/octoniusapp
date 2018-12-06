@@ -1,4 +1,6 @@
-const { Post } = require('../models');
+const moment = require('moment');
+
+const { Post, User } = require('../models');
 
 const { sendErr } = require('../../utils');
 
@@ -6,14 +8,14 @@ const { sendErr } = require('../../utils');
 
 const edit = async (req, res, next) => {
   try {
-    const { userId, body } = req;
+    const { userId, body: { userData } } = req;
 
     delete req.body.userId;
 
     const user = await User.findByIdAndUpdate({
       _id: userId
     }, {
-      $set: body  
+      $set: userData
     }, {
       new: true
     });
@@ -207,7 +209,12 @@ const getTasksDone = async (req, res, next) => {
 };
 
 module.exports = {
-  // tasks
+  // Main
+  edit,
+  get,
+  getOverview,
+  updateImage,
+  // Tasks
   getNextTasksDone,
   getTasks,
   getTasksDone

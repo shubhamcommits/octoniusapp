@@ -53,21 +53,131 @@
 
 #### 4.x. DELETE `api/posts/:postId` delete post
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 #### 4.x. ❗️GET `api/posts/comments/:commentId` get a single comment
+||||||| merged common ancestors
+#### 4.x. ❗️❗️POST `api/posts/:postId/comment` add new comment on post
+=======
+#### 4.x. ❗️❗️GET `api/posts/:postId/comments` get post
+>>>>>>> create comments routes and controllers sturctures, refactor posts/users routes and controllers
+||||||| merged common ancestors
+#### 4.x. ❗️❗️GET `api/posts/:postId/comments` get post
+=======
+#### 4.x. ❗️❗️GET `api/posts/comments/:commentId` get a single comment
+>>>>>>> add comments controllers and routes, not completed
+||||||| merged common ancestors
+#### 4.x. ❗️❗️GET `api/posts/comments/:commentId` get a single comment
+=======
+#### 4.x. ❗️GET `api/posts/comments/:commentId` get a single comment
+>>>>>>> changes squashed
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+#### 4.x. ❗️GET `api/posts/:postId/comments` get first N post's comments
+||||||| merged common ancestors
+#### 4.x. ❗️❗️PUT `api/posts/:postId/comment/:commentId` update comment
+=======
+#### 4.x. ❗️❗️POST `api/posts/:postId/comments` add new comment on post
+>>>>>>> create comments routes and controllers sturctures, refactor posts/users routes and controllers
+||||||| merged common ancestors
+#### 4.x. ❗️❗️POST `api/posts/:postId/comments` add new comment on post
+=======
+#### 4.x. ❗️GET `api/posts/:postId/comments` get first N post's comments
+>>>>>>> add comments controllers and routes, not completed
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+#### 4.x. ❗️GET `api/posts/:postId/nextComments` get next N post's comments
+||||||| merged common ancestors
+#### 4.x. ❗️❗️DELETE `api/posts/:post_id/comment/:commentId` delete comment
+=======
+#### 4.x. ❗️❗️PUT `api/posts/:postId/comments/:commentId` update comment
+>>>>>>> create comments routes and controllers sturctures, refactor posts/users routes and controllers
+||||||| merged common ancestors
+#### 4.x. ❗️❗️PUT `api/posts/:postId/comments/:commentId` update comment
+=======
+#### 4.x. ❗️GET `api/posts/:postId/nextComments` get next N post's comments
+>>>>>>> add comments controllers and routes, not completed
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+#### 4.x. ❗️POST `api/posts/:postId/comments` add new comment on post
+||||||| merged common ancestors
+#### 4.x. ❗️❗️POST `api/posts/:postId/complete` mark post as complete
+=======
+#### 4.x. ❗️❗️DELETE `api/posts/:post_id/comments/:commentId` delete comment
+>>>>>>> create comments routes and controllers sturctures, refactor posts/users routes and controllers
+||||||| merged common ancestors
+#### 4.x. ❗️❗️POST `api/posts/:postId/comment` add new comment on post
+
+#### 4.x. ❗️❗️PUT `api/posts/:postId/comment/:commentId` update comment
+
+#### 4.x. ❗️❗️DELETE `api/posts/:post_id/comment/:commentId` delete comment
+
+#### 4.x. ❗️❗️POST `api/posts/:postId/complete` mark post as complete
+=======
+#### 4.x. ❗️❗️GET `api/posts/:postId/comments` get post
+||||||| merged common ancestors
+#### 4.x. ❗️❗️GET `api/posts/:postId/comments` get post
+=======
+#### 4.x. ❗️❗️GET `api/posts/comments/:commentId` get a single comment
+>>>>>>> add comments controllers and routes, not completed
 
 #### 4.x. ❗️GET `api/posts/:postId/comments` get first N post's comments
 
 #### 4.x. ❗️GET `api/posts/:postId/nextComments` get next N post's comments
 
+<<<<<<< HEAD
+#### 4.x. ❗️❗️DELETE `api/posts/:post_id/comments/:commentId` delete comment
+>>>>>>> create comments routes and controllers sturctures, refactor posts/users routes and controllers
+
+<<<<<<< HEAD
+#### 4.x. ❗️PUT `api/posts/comments/:commentId` update comment
+||||||| merged common ancestors
+#### 4.x. ❗️❗️PUT `api/posts/:postId/like` like post
+=======
+#### 4.x. ❗️PUT `api/posts/:postId/like` like post
+>>>>>>> refactor user and posts controllers and routes, eliminated old user controllers and routes
+
+<<<<<<< HEAD
+#### 4.x. ❗️DELETE `api/posts/comments/:commentId` delete comment
+||||||| merged common ancestors
+#### 4.x. ❗️❗️DELETE `api/posts/:post_id/comments/:commentId` delete comment
+=======
 #### 4.x. ❗️POST `api/posts/:postId/comments` add new comment on post
 
 #### 4.x. ❗️PUT `api/posts/comments/:commentId` update comment
 
+<<<<<<< HEAD
+#### 4.x. ❗️❗️DELETE `api/posts/comments/:commentId` delete comment
+>>>>>>> add comments controllers and routes, not completed
+||||||| merged common ancestors
+#### 4.x. ❗️❗️DELETE `api/posts/:post_id/comments/:commentId` delete comment
+=======
+#### 4.x. ❗️POST `api/posts/:postId/comments` add new comment on post
+
+#### 4.x. ❗️PUT `api/posts/comments/:commentId` update comment
+
+#### 4.x. ❗️❗️DELETE `api/posts/comments/:commentId` delete comment
+>>>>>>> add comments controllers and routes, not completed
+||||||| merged common ancestors
+#### 4.x. ❗️❗️DELETE `api/posts/comments/:commentId` delete comment
+=======
 #### 4.x. ❗️DELETE `api/posts/comments/:commentId` delete comment
+>>>>>>> changes squashed
 
 #### 4.x. ❗️PUT `api/posts/:postId/like` like post
 
 #### 4.x. ❗️PUT `api/posts/:postId/unlike` unlike post
+||||||| merged common ancestors
+#### 4.x. ❗️❗️PUT `api/posts/:postId/unlike` unlike post
+=======
+#### 4.x. ❗️PUT `api/posts/:postId/unlike` unlike post
+>>>>>>> refactor user and posts controllers and routes, eliminated old user controllers and routes
 
 #### 4.x. PUT `api/posts/:postId/taskStatus` change task status
 
@@ -79,6 +189,9 @@
 
 '
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 #### 5.x. ❗️GET `api/users/` get current user
 
 #### 5.x. ❗️PUT `api/users/` Edit/Update user
@@ -87,6 +200,25 @@
 
 #### 5.x. ❗️GET `api/users/overview` get user's overview
 
+||||||| merged common ancestors
+=======
+||||||| merged common ancestors
+=======
+#### 5.x. ❗️GET `api/users/` get current user
+
+#### 5.x. ❗️PUT `api/users/` Edit/Update user
+
+#### 5.x. ❗️PUT `api/users/updateImage` Update user profile image
+
+>>>>>>> refactor user and posts controllers and routes, eliminated old user controllers and routes
+#### 5.x. ❗️GET `api/users/overview` get user's overview
+
+>>>>>>> create comments routes and controllers sturctures, refactor posts/users routes and controllers
+||||||| merged common ancestors
+=======
+#### 5.x. ❗️GET `api/users/overview` get user's overview
+
+>>>>>>> create comments routes and controllers sturctures, refactor posts/users routes and controllers
 #### 5.x. GET `api/users/tasks` get user's *to do/in progress* tasks
 
 #### 5.x. GET `api/users/tasksDone` get 20 most recently created user's tasks that are completed
@@ -107,4 +239,21 @@
 
 #### 6.x. ❗️❗️ DELETE `api/workspaces/:workspaceId/users/:userId` remove user from workspace
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+||||||| merged common ancestors
 '
+=======
+'
+>>>>>>> add comments controllers and routes, not completed
+||||||| merged common ancestors
+'kk
+=======
+'
+>>>>>>> create comments model, set up post model
+||||||| merged common ancestors
+'
+=======
+'
+>>>>>>> add comments controllers and routes, not completed
