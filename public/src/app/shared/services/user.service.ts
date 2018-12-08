@@ -16,10 +16,10 @@ export class UserService {
 
 
   getUser() {
-    return this._http.get<any>(this.BASE_API_URL + `/user`);
+    return this._http.get<any>(this.BASE_API_URL + `/users`);
   }
   updateUser(user) {
-    return this._http.put<any>(this.BASE_API_URL + `/user`, user);
+    return this._http.put<any>(this.BASE_API_URL + `/users`, user);
 
   }
   downloadFile(file) {
@@ -32,7 +32,7 @@ export class UserService {
   // console.log('formData:', formData);
   //  console.log('fileToUpload:', fileToUpload);
 
-    return this._http.post<any>(this.BASE_API_URL + `/user/updateImage`, formData);
+    return this._http.post<any>(this.BASE_API_URL + `/users/updateImage`, formData);
 
   }
 
