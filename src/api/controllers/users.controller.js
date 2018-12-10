@@ -16,7 +16,7 @@ const edit = async (req, res, next) => {
     const user = await User.findByIdAndUpdate({
       _id: userId
     }, {
-      $set: body  
+      $set: body
     }, {
       new: true
     });
