@@ -1,9 +1,6 @@
 const express = require('express');
 
-const {
-  posts,
-  postsController // ! TO BE REMOVED
-} = require('../controllers');
+const { posts } = require('../controllers');
 
 const {
   auth,
@@ -22,12 +19,7 @@ router.use(auth.isLoggedIn);
 
 // -| Post Routes |-
 
-// vvvv| BAD REST PATTERN, to be replaced! |vvvv
-router.post('/addComment', postsController.addCommentOnPost);
-router.post('/like', postsController.likePost);
-router.post('/unlike', postsController.unlikePost);
-router.get('/userOverview/:user_id', postsController.getUserOverview);
-// ^^^^| BAD REST PATTERN, to be replaced! |^^^^
+// - Main -
 
 // Get one post
 router.get('/:postId', authorization.groupAccess, posts.get);
@@ -43,22 +35,31 @@ router.delete('/:postId', posts.remove);
 
 // - Comments -
 
+// Get a single comment
+router.get('/comments/:commentId', posts.getComment);
+
+// Get first N post's comments
+router.get('/:postId/comments', posts.getComments);
+
+// Get next N post's comments
+router.get('/:postId/nextComments/:commentId', posts.getNextComments);
+
 // Add new comment on post
-// router.post('/:postId/comment', posts.addComment); // To do
+router.post('/:postId/comments', posts.addComment);
 
 // Edit comment on post
-// router.put('/:postId/comment/:commentId', posts.editComment); // To do
+router.put('/comments/:commentId', posts.editComment);
 
 // Delete comment on post
-// router.delete('/:postId/comment/:commentId', posts.editComment); // To do
+router.delete('/comments/:commentId', posts.removeComment);
 
 // - Likes -
 
 // Like post
-// router.put('/:postId/like', posts.like); // To do
+router.put('/:postId/like', posts.like);
 
 // Unlike post
-// router.put('/:postId/unlike', posts.unlike); // To do
+router.put('/:postId/unlike', posts.unlike);
 
 // - Tasks -
 
