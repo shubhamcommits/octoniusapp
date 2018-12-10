@@ -63,5 +63,3 @@ const createComments = async () => {
     console.log(e);
   }
 };
-
-module.exports = { createComments };
