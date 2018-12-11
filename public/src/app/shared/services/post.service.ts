@@ -44,10 +44,10 @@ export class PostService {
     return this._http.put(this.BASE_API_URL + `/posts/${postId}/taskStatus`, status);
   }
   like(post) {
-    return this._http.post(this.BASE_API_URL + '/post/like', post);
+    return this._http.put(this.BASE_API_URL + `/posts/${post.post_id}/like`, post);
   }
   unlike(post) {
-    return this._http.post(this.BASE_API_URL + '/post/unlike', post);
+    return this._http.put(this.BASE_API_URL + `/posts/${post.post_id}/unlike`, post);
   }
   useroverviewposts(user_id){
     return this._http.get(this.BASE_API_URL + '/users/overview/');

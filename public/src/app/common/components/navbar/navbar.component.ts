@@ -57,9 +57,11 @@ export class NavbarComponent implements OnInit {
           this.notifications_data = user;
         });
         this.socket.emit('getNotifications', this.user_data.user_id);
+    }
 
-  
-
+  gotToPostPage(groupId, postId){
+   // console.log(groupId, postId);
+   this.router.navigate(['dashboard', 'group', groupId, 'post', postId]);
   }
 
   refreshPage() {
