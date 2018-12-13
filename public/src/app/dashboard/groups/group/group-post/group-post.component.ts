@@ -29,7 +29,8 @@ export class GroupPostComponent implements OnInit {
   comment = {
     content: '',
     _commented_by: '',
-    post_id: ''
+    post_id: '',
+    _content_mentions: []
   };
   commentForm;
 
@@ -99,23 +100,58 @@ export class GroupPostComponent implements OnInit {
   }
 
   onAddNewComment(post_id) {
-    this.comment.post_id = post_id;
-    this.comment._commented_by = this.user_data.user_id;
+   const comment={
+     "content":this.comment.content,
+     "_commented_by": this.user_data.user_id,
+     "post_id": post_id,
+     "_content_mentions": this.content_mentions
+   };
 
-    this.postService.addNewComment(post_id,this.comment)
-      .subscribe((res) => {
-        this.commentForm.reset();
-        this.getPost(post_id);
-      }, (err) => {
-        swal("Error!", "Error received while adding the new comment " + err, "danger");
-      });
-      this.loadComments(post_id);
-      this.showComments.id=this.post._id;
-      this.showComments.normal=!this.showComments.normal;
-      this.comment.content = '';
-      this.comment._commented_by = '';
-      this.comment.post_id = '';
-      
+   const formData = new FormData();
+   formData.append('content', comment.content);
+   formData.append('_commented_by', comment._commented_by);
+   formData.append('post_id', comment.post_id);
+   const scanned_content = comment.content;
+    var el = document.createElement('html');
+    el.innerHTML = scanned_content;
+
+    if (el.getElementsByClassName('mention').length > 0) {
+      for (var i = 0; i < el.getElementsByClassName('mention').length; i++) {
+        if (el.getElementsByClassName('mention')[i]['dataset']['value'] == "all") {
+          for (var i = 0; i < this.allMembersId.length; i++) {
+            this.content_mentions.push(this.allMembersId[i]);
+          }
+        }
+        else {
+          if (!this.content_mentions.includes(el.getElementsByClassName('mention')[i]['dataset']['id']))
+            this.content_mentions.push(el.getElementsByClassName('mention')[i]['dataset']['id']);
+        }
+      }
+
+      for (var i = 0; i < this.content_mentions.length; i++) {
+        comment._content_mentions[i] = this.content_mentions[i];
+        formData.append('_content_mentions', this.content_mentions[i]);
+      }
+    }
+   console.log('Comment', comment);
+   this.postService.addNewComment(post_id, formData)
+   .subscribe((res) =>{
+     console.log(res);
+     //this.getPost(post_id);
+     this.loadComments(post_id);
+   }, (err)=>{
+    swal("Error!", "Error received adding comment to the post " + err, "danger");
+   })
+   this.comment.content='';
+   this.comment.post_id= '';
+   this.comment._content_mentions=[];
+   this.comment._commented_by='';
+
+   this.showComments.id=this.post._id;
+   this.showComments.event=!this.showComments.event;
+   this.showComments.task=!this.showComments.task;
+   this.showComments.normal=!this.showComments.normal;
+   console.log('Comment after post', this.comment);
   }
 
   OnMarkEventCompleted(){
