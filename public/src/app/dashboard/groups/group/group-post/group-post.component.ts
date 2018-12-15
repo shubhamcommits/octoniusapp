@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PostService } from '../../../../shared/services/post.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { InputValidators } from '../../../../common/validators/input.validator';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
@@ -51,22 +51,27 @@ export class GroupPostComponent implements OnInit {
   modules={};
 
   constructor(private ngxService: NgxUiLoaderService, private postService: PostService,
-    private groupService: GroupService, private _activatedRoute: ActivatedRoute, public groupDataService: GroupDataService) {
+    private groupService: GroupService, private _activatedRoute: ActivatedRoute, public groupDataService: GroupDataService
+    , private _router: Router) {
     this.postId = this._activatedRoute.snapshot.paramMap.get('postId');
     this.user_data = JSON.parse(localStorage.getItem('user'));
     this.group_id = this._activatedRoute.snapshot['_urlSegment']['segments'][2].path;
-    this._activatedRoute.params
-    .subscribe((res)=>{
-     
-      //console.log(this._activatedRoute);
-      this.ngOnInit();
-    });
    
 
     //this.ngOnInit();
    }
 
   ngOnInit() {
+    this._router.routeReuseStrategy.shouldReuseRoute = function(){
+      return false;
+  };
+  
+  this._router.events.subscribe((evt) => {
+      if (evt instanceof NavigationEnd) {
+          this._router.navigated = false;
+          window.scrollTo(0, 0);
+      }
+  });
     this.ngxService.start(); // start foreground loading with 'default' id
  
     // Stop the foreground loading after 5s

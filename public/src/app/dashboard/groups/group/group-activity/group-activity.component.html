@@ -245,7 +245,7 @@
     </div>
     <!-- postbox-->
 
-    <div class="search-results" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="5" (scrolled)="onScroll()">
+    <div class="search-results" infiniteScroll [infiniteScrollDistance]="0" [immediateCheck]="true" (scrolled)="onScroll()">
       <div *ngIf="posts.length == 0">
         <img src='../../../assets/images/empty-activity.svg' style=" margin: 0 auto">
       </div>
