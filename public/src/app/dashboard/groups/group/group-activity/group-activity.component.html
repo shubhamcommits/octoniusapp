@@ -131,6 +131,12 @@
                         (change)="fileChangeEvent($event)" placeholder="File" multiple />
                       <i class="material-icons" (click)="fileInput.click()">attach_file</i>
                     </button>
+                    <button type="button" class="btn btn-link">
+                        <i class="material-icons" (click)="loadGoogleDrive();">
+                          cloud_upload
+                          </i>
+                    </button>
+
 
                   </div>
 
@@ -142,10 +148,10 @@
             <div class="row">
               <div class="col-md-8 ">
 
-
+                <div id="google-drive-file" style="display:none;"></div>
                 
                 <div *ngFor="let file of filesToUpload">
-                  <p>{{file.name}}</p>
+                  <p><b>Uploaded file(s): </b>{{file.name}}</p>
                 </div>
 
               </div>

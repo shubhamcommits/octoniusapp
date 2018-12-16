@@ -25,6 +25,8 @@ import { ScrollToService } from 'ng2-scroll-to-el';
 import 'quill-mention';
 import { environment } from '../../../../../environments/environment';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
+declare var gapi: any;
+declare var google: any;
 
 @Component({
   selector: 'app-group-activity',
@@ -148,7 +150,24 @@ export class GroupActivityComponent implements OnInit {
   // post's attahced files
   filesToUpload: Array<File> = [];
 
+  googleDriveFiles=[];
+
   modules = {};
+
+
+    // !--GOOGLE DEVELOPER CONSOLE CREDENTIALS--! //
+    developerKey = 'AIzaSyDGM66BZhGSmBApm3PKL-xCrri-3Adb06I';
+
+    clientId = "971238950983-aef7kjl23994hjj9e8m5tch4a22b5dut.apps.googleusercontent.com";
+    
+    scope = [
+      'https://www.googleapis.com/auth/drive'//insert scope here
+    ].join(' ');
+  
+    pickerApiLoaded = false;
+  
+    oauthToken?: any;
+    // !--GOOGLE DEVELOPER CONSOLE CREDENTIALS--! //
 
 
   constructor(private _activatedRoute: ActivatedRoute, private _router: Router, private _userService: UserService,
@@ -280,7 +299,8 @@ export class GroupActivityComponent implements OnInit {
 
   fileChangeEvent(fileInput: any) {
     this.filesToUpload = <Array<File>>fileInput.target.files;
-    // console.log('files', this.filesToUpload);
+     console.log('files', this.filesToUpload);
+    // console.log('input', fileInput);
 
     // this.product.photo = fileInput.target.files[0]['name'];
   }
@@ -524,8 +544,18 @@ export class GroupActivityComponent implements OnInit {
       }
     }
 
+    const driveDivision = document.getElementById('google-drive-file');
+    console.log(driveDivision.innerHTML);
 
-    formData.append('content', post.content);
+    if(driveDivision.innerHTML == '' || driveDivision.innerHTML == null){
+      formData.append('content', post.content);
+    }
+
+    else{
+      formData.append('content', post.content+driveDivision.innerHTML);
+    }
+    
+    
     formData.append('type', post.type);
     formData.append('_posted_by', post._posted_by);
     formData.append('_group', post._group);
@@ -535,13 +565,16 @@ export class GroupActivityComponent implements OnInit {
     this.disblePostForm();
     this.postService.addNewNormalPost(formData)
       .subscribe((res) => {
-        // console.log('Post', res);
+         console.log('Post', res);
         this.processing = false;
         this.enablePostForm();
         this.postForm.reset();
         this.alert.class = 'success';
         this._message.next(res['message']);
         this.filesToUpload = null;
+        driveDivision.innerHTML = '';
+        driveDivision.style.display = 'none';
+        this.googleDriveFiles = [];
         // start socket!
         // const socket = io();
         const data = {
@@ -561,14 +594,12 @@ export class GroupActivityComponent implements OnInit {
       }, (err) => {
         this.processing = false;
         this.content_mentions = [];
+        driveDivision.innerHTML = '';
+        driveDivision.style.display = 'none';
+        this.googleDriveFiles = [];
         this.alert.class = 'danger';
         this.enablePostForm();
-
-        if (err.status) {
-          this._message.next(err.error.message);
-        } else {
-          this._message.next('Error! either server is down or no internet connection');
-        }
+        console.log('Error while creating a new post', err);
 
       });
 
@@ -610,7 +641,16 @@ export class GroupActivityComponent implements OnInit {
       files: this.filesToUpload
     };
 
-    formData.append('content', this.linkify(post.content));
+    const driveDivision = document.getElementById('google-drive-file');
+    console.log(driveDivision.innerHTML);
+
+    if(driveDivision.innerHTML == '' || driveDivision.innerHTML == null){
+      formData.append('content', post.content);
+    }
+
+    else{
+      formData.append('content', post.content+driveDivision.innerHTML);
+    }
     formData.append('type', post.type);
     formData.append('_posted_by', post._posted_by);
     formData.append('_group', post._group);
@@ -661,6 +701,9 @@ export class GroupActivityComponent implements OnInit {
         this.alert.class = 'success';
         this._message.next(res['message']);
         this.resetNewPostForm();
+        driveDivision.innerHTML = '';
+        driveDivision.style.display = 'none';
+        this.googleDriveFiles = [];
         // console.log('Normal post response: ', res);
         const data = {
           // it should get automatically, something like workspace: this.workspace_name
@@ -682,6 +725,9 @@ export class GroupActivityComponent implements OnInit {
         this.processing = false;
         this.alert.class = 'danger';
         this.enablePostForm();
+        driveDivision.innerHTML = '';
+        driveDivision.style.display = 'none';
+        this.googleDriveFiles = [];
         //  console.log(err);
 
         if (err.status) {
@@ -719,7 +765,16 @@ export class GroupActivityComponent implements OnInit {
       }
     };
 
-    formData.append('content', this.linkify(post.content));
+    const driveDivision = document.getElementById('google-drive-file');
+    console.log(driveDivision.innerHTML);
+
+    if(driveDivision.innerHTML == '' || driveDivision.innerHTML == null){
+      formData.append('content', post.content);
+    }
+
+    else{
+      formData.append('content', post.content+driveDivision.innerHTML);
+    }
     formData.append('type', post.type);
     formData.append('_posted_by', post._posted_by);
     formData.append('_group', post._group);
@@ -770,6 +825,9 @@ export class GroupActivityComponent implements OnInit {
         this.alert.class = 'success';
         this._message.next(res['message']);
         this.resetNewPostForm();
+        driveDivision.innerHTML = '';
+        driveDivision.style.display = 'none';
+        this.googleDriveFiles = [];
         console.log('Normal post response: ', res);
         const data = {
           // it should get automatically, something like workspace: this.workspace_name
@@ -790,6 +848,9 @@ export class GroupActivityComponent implements OnInit {
         this.processing = false;
         this.alert.class = 'danger';
         this.enablePostForm();
+        driveDivision.innerHTML = '';
+        driveDivision.style.display = 'none';
+        this.googleDriveFiles = [];
 
         if (err.status) {
           this._message.next(err.error.message);
@@ -1732,9 +1793,60 @@ export class GroupActivityComponent implements OnInit {
     console.log($event.emoji.native);
     this.editor.insertText(this.editorTextLength - 1, $event.emoji.native);
     //this.onEditorCreated($event);
-
-
   }
 
+// !--GOOGLE PICKER IMPLEMENTATION--! //
+  loadGoogleDrive() {
+    gapi.load('auth', { 'callback': this.onAuthApiLoad.bind(this) });
+    gapi.load('picker', { 'callback': this.onPickerApiLoad.bind(this) });
+  }
+
+  onAuthApiLoad() {
+    gapi.auth.authorize(
+      {
+        'client_id': this.clientId,
+        'scope': this.scope,
+        'immediate': false
+      },
+      this.handleAuthResult);
+      console.log('Auth')
+  }
+
+  onPickerApiLoad() {
+    this.pickerApiLoaded = true;
+    console.log('Picker', this.pickerApiLoaded);
+  }
+
+  handleAuthResult(authResult) {
+    let src;
+    if (authResult && !authResult.error) {
+      if (authResult.access_token) {
+        let view = new google.picker.View(google.picker.ViewId.DOCS);
+        //view.setMimeTypes("image/png,image/jpeg,image/jpg,video/mp4, application/vnd.ms-excel ,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/pdf, text/plain, application/msword, text/js, application/zip, application/rar, application/tar, text/html");
+        let pickerBuilder = new google.picker.PickerBuilder();
+        let picker = pickerBuilder.
+          enableFeature(google.picker.Feature.NAV_HIDDEN).
+          setOAuthToken(authResult.access_token).
+          addView(view).
+          addView(new google.picker.DocsUploadView()).
+          setCallback(function (e) {
+            if (e[google.picker.Response.ACTION] == google.picker.Action.PICKED) {
+              let doc = e[google.picker.Response.DOCUMENTS][0];
+              src = doc[google.picker.Document.URL];
+              console.log("Document selected is", doc,"and URL is ",src);
+              this.googleDriveFiles = e[google.picker.Response.DOCUMENTS];
+              
+              const driveDivision = document.getElementById('google-drive-file');
+              driveDivision.style.display= 'block';
+              driveDivision.innerHTML = '<b>Drive File Upload: </b>'+'<a href=\''+src+'\' target=\'_blank\'>'+this.googleDriveFiles[0]['name']+'</a>';
+            }
+          }).
+          build();
+        picker.setVisible(true);
+      }
+    }
+    
+  }
+// !--GOOGLE PICKER IMPLEMENTATION--! //
 
 }
