@@ -180,10 +180,9 @@ const addComment = async (req, res, next) => {
       new: true
     });
 
-    // Create Notification for mentions on post comments
+    // Create Notification for mentions on comments
     if (comment._content_mentions.length !== 0) {
-      // !! To be created !!
-      // notifications.newCommentMentions(comment);
+      notifications.newCommentMentions(comment);
     }
 
     return res.status(200).json({
@@ -219,11 +218,10 @@ const editComment = async (req, res, next) => {
       .populate('_commented_by', 'first_name last_name profile_pic')
       .lean();
 
-    // Create Notification for mentions on post comments
-    // if (comment._content_mentions.length !== 0) {
-    // !! To be created !!
-    // notifications.newCommentMentions(comment);
-    // }
+    // Create Notification for mentions on comments
+    if (comment._content_mentions.length !== 0) {
+      notifications.newCommentMentions(comment);
+    }
 
     return res.status(200).json({
       message: 'Comment updated!',

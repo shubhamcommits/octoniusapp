@@ -12,13 +12,13 @@ const NotificationSchema = new Schema({
     ref: 'User',
     required: true
   },
-  // _origin_comment: {
-
-  // },
+  _origin_comment: {
+    type: Schema.Types.ObjectId,
+    ref: 'Comment'
+  },
   _origin_post: {
     type: Schema.Types.ObjectId,
-    ref: 'Post',
-    required: true
+    ref: 'Post'
   },
   created_date: {
     type: Date,

@@ -1050,6 +1050,7 @@ export class GroupActivityComponent implements OnInit {
     this.postService.getGroupPosts(this.group_id)
       .subscribe((res) => {
         if (this.posts.length != 0) {
+          console.log('Scroll Response', res);
           var last_post_id = this.posts[this.posts.length - 1]._id
           this.loadNextPosts(last_post_id);
           this.isLoading$.next(false);

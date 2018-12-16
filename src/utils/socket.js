@@ -86,35 +86,55 @@ const notifyGroupPage = (socket, data) => {
 const notifyRelatedUsers = async (io, socket, data) => {
   try {
     const post = await Post.findById(data.postId).lean();
+    const comment = await Comment.findById(data.commentId).lean();
 
-    // If there's mentions on post content...
-    if (post._content_mentions.length !== 0) {
-      // ...emit notificationsFeed for every user mentioned
-      for (userId of post._content_mentions) {
-        let feed = await generateFeed(userId);
+    // If it's a comment creation/update
+    if (comment) {
+      // If there's mentions on comments content...
+      if (comment._content_mentions.length !== 0) {
+        // ...emit notificationsFeed for every user mentioned
+        for (let userId of comment._content_mentions) {
+          const feed = generateFeed(userId);
 
-        io.sockets.in(userId).emit('notificationsFeed', feed);
-      };
+          io.sockets.in(userId).emit('notificationsFeed', feed);
+        }
+      }
     }
 
-    // Send Email notification after post creation
-    switch(post.type) {
-      case 'task':
-        if (post.task._assigned_to.length !== 0) {
-          let feed = await generateFeed(post._id);
+    // If it's a post creation/update
+    if (post) {
+      // If there's mentions on post content...
+      if (post._content_mentions.length !== 0) {
+        // ...emit notificationsFeed for every user mentioned
+        for (let userId of post._content_mentions) {
+          const feed = generateFeed(userId);
 
-          io.sockets.in(post._id).emit('notificationsFeed', feed);
+          io.sockets.in(userId).emit('notificationsFeed', feed);
         }
-      case 'event':
-        if (post.event._assigned_to.length !== 0) {
-          for (userId of post.event._assigned_to) {
-            let feed = await generateFeed(userId);
+      }
 
-            io.sockets.in(userId).emit('notificationsFeed', feed);
-          };
-        }
-    };
+      // Send Email notification after post creation
+      switch (post.type) {
+        case 'task':
+          if (post.task._assigned_to.length !== 0) {
+            const feed = generateFeed(post._id);
 
+            io.sockets.in(post._id).emit('notificationsFeed', feed);
+          }
+          break;
+        case 'event':
+          if (post.event._assigned_to.length !== 0) {
+            for (let userId of post.event._assigned_to) {
+              const feed = generateFeed(userId);
+
+              io.sockets.in(userId).emit('notificationsFeed', feed);
+            }
+          }
+          break;
+        default:
+          // do nothing!
+      }
+    }
   } catch (err) {
     return err
   }

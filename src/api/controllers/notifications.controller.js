@@ -1,14 +1,29 @@
 const { Notification } = require('../models');
-const { sendErr } = require('../../utils');
 
-/*	===============================
- *	-- NOTIFICATIONS CONTROLLERS --
- *	===============================
+/*  ===============================
+ *  -- NOTIFICATIONS CONTROLLERS --
+ *  ===============================
  */
+
+const newCommentMentions = async (comment) => {
+  try {
+    await comment._content_mentions.forEach(async (user) => {
+      const notification = await Notification.create({
+        _actor: comment._commented_by,
+        _owner: user,
+        _origin_comment: comment._id,
+        message: 'mentioned you in a comment.',
+        type: 'mention'
+      });
+    });
+  } catch (err) {
+    return err;
+  }
+};
 
 const newEventAssignments = async (post) => {
   try {
-    await post.event._assigned_to.forEach( async (user) => {
+    await post.event._assigned_to.forEach(async (user) => {
       const notification = await Notification.create({
         _actor: post._posted_by,
         _owner: user,
@@ -17,7 +32,6 @@ const newEventAssignments = async (post) => {
         type: 'assignment'
       });
     });
-
   } catch (err) {
     return err;
   }
@@ -25,7 +39,7 @@ const newEventAssignments = async (post) => {
 
 const newPostMentions = async (post) => {
   try {
-    await post._content_mentions.forEach( async (user) => {
+    await post._content_mentions.forEach(async (user) => {
       const notification = await Notification.create({
         _actor: post._posted_by,
         _owner: user,
@@ -34,7 +48,6 @@ const newPostMentions = async (post) => {
         type: 'mention'
       });
     });
-
   } catch (err) {
     return err;
   }
@@ -49,7 +62,6 @@ const newTaskAssignment = async (post) => {
       message: 'assigned a task to you.',
       type: 'assignment'
     });
-
   } catch (err) {
     return err;
   }
@@ -65,10 +77,11 @@ const getRead = async (userId) => {
       .sort('-created_date')
       .populate('_actor', 'first_name last_name profile_pic')
       .populate('_origin_post', '_group')
-      .populate('_owner', 'first_name last_name profile_pic').lean();
-    
-    return notifications;
+      .populate('_origin_comment', '_post')
+      .populate('_owner', 'first_name last_name profile_pic')
+      .lean();
 
+    return notifications;
   } catch (err) {
     return err;
   }
@@ -83,10 +96,11 @@ const getUnread = async (userId) => {
       .sort('-created_date')
       .populate('_actor', 'first_name last_name profile_pic')
       .populate('_origin_post', '_group')
-      .populate('_owner', 'first_name last_name profile_pic').lean();
+      .populate('_origin_comment', '_post')
+      .populate('_owner', 'first_name last_name profile_pic')
+      .lean();
 
     return notifications;
-
   } catch (err) {
     return err;
   }
@@ -97,8 +111,8 @@ const markRead = async (topListId) => {
     const markRead = await Notification.updateMany({
       $and: [
         { read: false },
-        { _id: { $lte: topListId }}
-        ]
+        { _id: { $lte: topListId } }
+      ]
     }, {
       $set: {
         read: true
@@ -106,18 +120,18 @@ const markRead = async (topListId) => {
     });
 
     return true;
-
   } catch (err) {
     return err;
   }
 };
 
-/*	=============
- *	-- EXPORTS --
- *	=============
+/*  =============
+ *  -- EXPORTS --
+ *  =============
  */
 
 module.exports = {
+  newCommentMentions,
   newEventAssignments,
   newPostMentions,
   newTaskAssignment,

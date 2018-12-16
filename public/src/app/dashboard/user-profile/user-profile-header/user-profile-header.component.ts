@@ -41,7 +41,7 @@ export class UserProfileHeaderComponent implements OnInit {
   }
 
   refreshPage() {
-    location.reload();
+    this.ngOnInit();
 }
   getUserProfile() {
     this._userService.getUser()
@@ -69,6 +69,7 @@ export class UserProfileHeaderComponent implements OnInit {
 
 
       }, (err) => {
+        console.log(err);
         if (err.status === 401) {
           setTimeout(() => {
             localStorage.clear();
@@ -102,16 +103,13 @@ export class UserProfileHeaderComponent implements OnInit {
 
         if (err.status === 401) {
           swal("Error!", "Seems like there's an error, please try again!", "danger");
-          this.openLg(this.content);
           setTimeout(() => {
             localStorage.clear();
             this._router.navigate(['']);
           }, 3000);
         } else if (err.status) {
-          this.openLg(this.content);
         } else {
           swal("Error!", "Either server is down, or no Internet connection!", "danger");
-          this.openLg(this.content);
         }
       });
 
@@ -125,32 +123,15 @@ export class UserProfileHeaderComponent implements OnInit {
 
       this._userService.updateUserProfileImage(this.fileToUpload)
         .subscribe((res) => {
-          
-
-          this.modalReference.close();
-          this.openLg(this.content);
           this.profilePic = `${this.BASE_URL}/uploads/${res.user['profile_pic']}`;
-
-          setTimeout(() => {
-            this.modalReference.close();
-          }, 2000);
-          this.refreshPage();
+          console.log(res);
 
         }, (err) => {
-
-
+          swal("Error!", "Seems like there's an error- "+ err, "danger");
           if (err.status === 401) {
             swal("Error!", "Seems like there's an error, please try again!", "danger");
-            this.openLg(this.content);
-            setTimeout(() => {
-              localStorage.clear();
-              this._router.navigate(['']);
-            }, 3000);
-          } else if (err.status) {
-            this.openLg(this.content);
           } else {
             swal("Error!", "Either server is down, or no Internet connection!", "danger");
-            this.openLg(this.content);
           }
         });
     }
