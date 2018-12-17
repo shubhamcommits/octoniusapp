@@ -9,6 +9,7 @@ import { GroupDataService } from '../../../../shared/services/group-data.service
 import { environment } from '../../../../../environments/environment';
 declare var gapi: any;
 declare var google: any;
+import * as io from 'socket.io-client';
 
 @Component({
   selector: 'app-group-post',
@@ -21,6 +22,9 @@ export class GroupPostComponent implements OnInit {
 
   post;
   postId;
+
+  socket = io(environment.BASE_URL);
+  group_name;
 
   showComments = {
     id: '',
@@ -116,6 +120,21 @@ export class GroupPostComponent implements OnInit {
 
   }
 
+  loadGroup() {
+    this.groupService.getGroup(this.group_id)
+      .subscribe((res) => {
+        //  console.log('Group: ', res);
+        this.group_name = res['group'].group_name;
+
+
+      }, (err) => {
+
+        
+
+      });
+
+  }
+
   inilizeCommentForm() {
     this.commentForm = new FormGroup({
       'commentContent': new FormControl(null, [Validators.required, InputValidators.fieldCannotBeEmpty]),
@@ -127,7 +146,7 @@ export class GroupPostComponent implements OnInit {
      "content":this.comment.content,
      "_commented_by": this.user_data.user_id,
      "post_id": post_id,
-     "_content_mentions": this.content_mentions
+     "contentMentions": this.content_mentions
    };
 
    const formData = new FormData();
@@ -152,8 +171,8 @@ export class GroupPostComponent implements OnInit {
       }
 
       for (var i = 0; i < this.content_mentions.length; i++) {
-        comment._content_mentions[i] = this.content_mentions[i];
-        formData.append('_content_mentions', this.content_mentions[i]);
+        comment.contentMentions[i] = this.content_mentions[i];
+        formData.append('contentMentions', this.content_mentions[i]);
       }
     }
    console.log('Comment', comment);
@@ -161,6 +180,17 @@ export class GroupPostComponent implements OnInit {
    .subscribe((res) =>{
      console.log(res);
      //this.getPost(post_id);
+     const data = {
+      // it should get automatically, something like workspace: this.workspace_name
+      workspace: this.user_data.workspace.workspace_name,
+      // it should get automatically, something like group: this.group_name
+      group: this.group_name,
+      userId: this.user_data.user_id,
+      commentId: res['comment']._id,
+      groupId: this.groupDataService.group._id // Pass group id here!!!
+    };
+       // console.log(data);
+    this.socket.emit('newPost', data);
      this.loadComments(post_id);
    }, (err)=>{
     swal("Error!", "Error received adding comment to the post " + err, "danger");
@@ -428,6 +458,8 @@ export class GroupPostComponent implements OnInit {
     }
     // !--TOGGLE THE EVENT FOR ANY ENTINTY--! //
 
+
+    // !--EDIT A COMMENT--! //
     OnEditComment(index){
       const editor = document.getElementById('edit-comment-'+index);
       const button = document.getElementById('button_edit_comment'+index);
@@ -477,6 +509,7 @@ export class GroupPostComponent implements OnInit {
       })
   
     }
+    // !--EDIT A COMMENT--! //
 
     OnDeleteComment(commentId) {
       swal({
