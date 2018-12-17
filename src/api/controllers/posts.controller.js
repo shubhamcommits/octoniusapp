@@ -155,6 +155,8 @@ const addComment = async (req, res, next) => {
       body: { content, contentMentions }
     } = req;
 
+    console.log('--> req.body -->\n', req.body);
+
     // Generate comment data
     const commentData = {
       content,
@@ -162,6 +164,8 @@ const addComment = async (req, res, next) => {
       _commented_by: userId,
       _post: postId
     };
+
+    console.log('--> commentData -->\n', commentData);
 
     // Create comment
     const comment = await Comment.create(commentData);
@@ -201,6 +205,8 @@ const editComment = async (req, res, next) => {
       params: { commentId },
       body: { content, contentMentions }
     } = req;
+
+    console.log('--> req.body -->\n', req.body);
 
     // Update comment
     const comment = await Comment.findOneAndUpdate({
@@ -259,7 +265,7 @@ const getComments = async (req, res, next) => {
       _post: postId
     })
       .sort('_id')
-      .limit(10)
+      .limit(5)
       .populate('_commented_by', 'first_name last_name profile_pic')
       .lean();
 
@@ -283,7 +289,7 @@ const getNextComments = async (req, res, next) => {
       ]
     })
       .sort('_id')
-      .limit(10)
+      .limit(5)
       .populate('_commented_by', 'first_name last_name profile_pic')
       .lean();
 
