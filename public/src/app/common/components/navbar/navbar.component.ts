@@ -60,7 +60,7 @@ export class NavbarComponent implements OnInit {
     }
 
   gotToPostPage(groupId, postId){
-   // console.log(groupId, postId);
+ //   console.log(groupId, postId);
    this.router.navigate(['dashboard', 'group', groupId, 'post', postId]);
   }
 

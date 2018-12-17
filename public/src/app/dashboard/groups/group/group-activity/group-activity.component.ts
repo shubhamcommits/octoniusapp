@@ -386,8 +386,10 @@ export class GroupActivityComponent implements OnInit {
     // console.log('post._id: ', post_id);
 
     const commentContent = {
-      content: this.comment.content,
-      contentMentions: this.content_mentions
+      "content":this.comment.content,
+     "_commented_by": this.user_data.user_id,
+     "post_id": post_id,
+     "contentMentions": this.content_mentions
     };
     //  console.log('Comment Content', commentContent);
 
@@ -397,9 +399,42 @@ export class GroupActivityComponent implements OnInit {
     var cardNormalPost = document.getElementById('card-normal-post-comment-' + index);
     var cardEventPost = document.getElementById('card-event-post-comment-' + index);
 
+    const scanned_content = commentContent.content;
+    var el = document.createElement('html');
+    el.innerHTML = scanned_content;
+
+    if (el.getElementsByClassName('mention').length > 0) {
+      for (var i = 0; i < el.getElementsByClassName('mention').length; i++) {
+        if (el.getElementsByClassName('mention')[i]['dataset']['value'] == "all") {
+          for (var i = 0; i < this.allMembersId.length; i++) {
+            this.content_mentions.push(this.allMembersId[i]);
+          }
+        }
+        else {
+          if (!this.content_mentions.includes(el.getElementsByClassName('mention')[i]['dataset']['id']))
+            this.content_mentions.push(el.getElementsByClassName('mention')[i]['dataset']['id']);
+        }
+      }
+
+      for (var i = 0; i < this.content_mentions.length; i++) {
+        commentContent.contentMentions[i] = this.content_mentions[i];
+      }
+    }
+
     this.postService.addNewComment(post_id, commentContent)
       .subscribe((res) => {
         console.log('Add Comment Response', res);
+        const data = {
+          // it should get automatically, something like workspace: this.workspace_name
+          workspace: this.user_data.workspace.workspace_name,
+          // it should get automatically, something like group: this.group_name
+          group: this.group_name,
+          userId: this.user_data.user_id,
+          commentId: res['comment']._id,
+          groupId: this.groupDataService.group._id // Pass group id here!!!
+        };
+           // console.log(data);
+        this.socket.emit('newPost', data);
         this.commentForm.reset();
         this.loadGroupPosts();
         this.scrollToTop('#card-normal-post-' + index);

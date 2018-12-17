@@ -54,7 +54,7 @@ const getNextPosts = async (req, res, next) => {
       ]
     })
       .sort('-_id')
-      .limit(10)
+      .limit(5)
       .populate('_posted_by', 'first_name last_name profile_pic')
       .populate('task._assigned_to', 'first_name last_name')
       .populate('event._assigned_to', 'first_name last_name')
@@ -81,7 +81,7 @@ const getPosts = async (req, res, next) => {
       _group: req.params.groupId
     })
       .sort('-_id')
-      .limit(10)
+      .limit(5)
       .populate('_posted_by', 'first_name last_name profile_pic')
       .populate('task._assigned_to', 'first_name last_name')
       .populate('event._assigned_to', 'first_name last_name')

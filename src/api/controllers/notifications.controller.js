@@ -12,6 +12,7 @@ const newCommentMentions = async (comment) => {
         _actor: comment._commented_by,
         _owner: user,
         _origin_comment: comment._id,
+        _origin_post: comment._post,
         message: 'mentioned you in a comment.',
         type: 'mention'
       });
