@@ -53,7 +53,7 @@ export class GroupService {
   updateGroup(group_id, group) {
     return this._http.put(this.BASE_API_URL + `/group/${group_id}`, group);
   }
-  
+
   removeUserFromGroup(data){
     return this._http.post(this.BASE_API_URL + '/group/removeUser', data);
   }
@@ -72,6 +72,10 @@ export class GroupService {
 
   changeTaskAssignee(postId, assigneeId){
     return this._http.put(this.BASE_API_URL + `/posts/${postId}/taskAssignee`, assigneeId);
+  }
+
+  getPrivateGroup(workspace_name) {
+    return this._http.get<any>(this.BASE_API_URL + `/groups/getPrivateGroup/${workspace_name}`);
   }
 
 }

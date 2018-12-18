@@ -1,5 +1,6 @@
 const { Group, User } = require('../models');
 const { sendErr, sendMail } = require('../../utils');
+const jwt = require('jsonwebtoken');
 
 /*	===================
  *	-- GROUP METHODS --
@@ -159,6 +160,47 @@ const removeUserFromGroup = async (req, res, next) => {
 	}
 };
 
+const getPrivateGroup = async (req, res) => {
+	try {
+		const token = await req.headers.authorization.split(' ')[1];
+
+        if (!token) {
+            return res.status(401).json({
+                message: 'Unauthorized request, it must include an authorization token!'
+            });
+        }
+
+        const decodedToken = await jwt.verify(token, process.env.JWT_KEY);
+
+        if (!decodedToken) {
+            return res.status(401).json({
+                message: 'Unauthorized request, it must have a valid authorization token!'
+            });
+		}
+
+        const privateGroup = await Group.findOne({$and: [
+				{'_admins': decodedToken.subject},
+				{'workplace_name': req.params.workplace_name},
+				{'group_name': 'personal'}
+			]})
+            .populate('_members', 'first_name last_name profile_pic role email')
+            .populate('_admins', 'first_name last_name profile_pic role email');
+
+        if (!privateGroup) {
+            return sendErr(res, err, 'Group not found, invalid group id!', 404)
+        }
+
+        return res.status(200).json({
+            message: 'Group found!',
+            privateGroup
+        });
+
+
+		} catch(err) {
+        return sendErr(res, err);
+		}
+};
+
 /*	=============
  *	-- EXPORTS --
  *	=============
@@ -169,5 +211,6 @@ module.exports = {
 	getUserGroup,
 	addNewUsersInGroup,
 	updateGroup,
-	removeUserFromGroup
+	removeUserFromGroup,
+	getPrivateGroup
 };

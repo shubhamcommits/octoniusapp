@@ -1,5 +1,5 @@
 <div class="row main-actvity" id="top-card">
-  <div class="col-md-4">
+  <div [ngStyle]="{'display': isItMyWorkplace ? 'none' : 'block'}" class="col-md-4">
     <div class="row sidecontent">
       <div class="card sideinnercard">
         <div class="card-block">
@@ -15,7 +15,7 @@
     </div>
   </div>
 
-  <div class="col-md-8">
+  <div [ngClass]="{'col-md-8': !isItMyWorkplace, 'col-md-12': isItMyWorkplace}">
     <!-- news badge-->
     <div class="feed-new-update-pill" style="display:block" *ngIf="this.show_new_posts_badge == 1; else newsbadge">
       <div class="inner-news">
@@ -143,7 +143,7 @@
               <div class="col-md-8 ">
 
 
-                
+
                 <div *ngFor="let file of filesToUpload">
                   <p>{{file.name}}</p>
                 </div>
@@ -266,7 +266,7 @@
                     <h6>{{post._posted_by?.first_name}} {{post._posted_by?.last_name}} <br>
                     <span class="small lightgray date"> {{post?.created_date | date : 'medium' }}</span>
                     </h6>
-                   
+
                     <!-- <button class="btn btn-primary btn-sm" id="testhaibc" contenteditable="false" (click)="test(i); abc();">Save</button>-->
                   </div>
 
@@ -374,7 +374,7 @@
 
                         </div>
                       </div>
-                      
+
                     </div>
                   </div>
 
@@ -462,7 +462,7 @@
                         <span class="small lightgray date">
                             {{post?.created_date | date : 'medium'}}</span>
                     </h6>
-                    
+
                     <span class="assigned"> Assigned to {{post.task._assigned_to?.first_name}}
                       {{post.task._assigned_to?.last_name}}
                     </span>
@@ -818,7 +818,7 @@
                   <div class="col-md-4 text-right card-footer action-post innercard">
                       <span>
                           <div ngbDropdown class="d-inline-block" *ngIf="post?._posted_by?._id == this.user_data.user_id; else editpostif">
-                            
+
                             <i ngbDropdownToggle class="material-icons action" id="dropdownComment{{i}}">more_horiz</i>
                             <div ngbDropdownMenu>
                                 <button class="dropdown-item" (click)="OnEditComment(j)">Edit Comment</button>
