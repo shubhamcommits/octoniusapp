@@ -31,10 +31,10 @@
       <div class="card-tile">
         <p>
           <strong>Skills: </strong>
-          <span class="tags">html5</span>
-          <span class="tags">css3</span>
-          <span class="tags">jquery</span>
-          <span class="tags">bootstrap3</span>
+          <span class="tags" *ngFor="let skill of user?.skills;">{{skill}} </span>
+          <button type="button" name="button" style="float:right;" class="btn btn-link" (click)="addSkills()">
+            <i class="material-icons">create</i>
+          </button>
         </p>
         
       </div>
