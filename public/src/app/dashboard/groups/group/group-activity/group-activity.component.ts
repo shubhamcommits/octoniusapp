@@ -154,6 +154,8 @@ export class GroupActivityComponent implements OnInit {
 
   modules = {};
 
+  isItMyWorkplace = false;
+
 
     // !--GOOGLE DEVELOPER CONSOLE CREDENTIALS--! //
     developerKey = 'AIzaSyDGM66BZhGSmBApm3PKL-xCrri-3Adb06I';
@@ -181,7 +183,7 @@ export class GroupActivityComponent implements OnInit {
     //config.triggers = 'hover';
     this.group_id = this.groupDataService.groupId;
     this.user_data = JSON.parse(localStorage.getItem('user'));
-    // console.log('user', this.user_data); 
+    // console.log('user', this.user_data);
     this.group = this.groupDataService.group;
   }
 
@@ -233,27 +235,32 @@ export class GroupActivityComponent implements OnInit {
   }
 
 
-  ngOnInit() {
+  async ngOnInit() {
     this.ngxService.start();
 
     setTimeout(() => {
       this.ngxService.stop();
     }, 500);
 
-    this.group_id = this.groupDataService.groupId;
-    this.user_data = JSON.parse(localStorage.getItem('user'));
-    this.group = this.groupDataService._group;
+    // here we test if the section we entered is a group of my personal workplace
+    this.isItMyWorkplace = this._activatedRoute.snapshot.queryParamMap.get('myworkplace') == 'true' || false;
 
     this.getUserProfile();
     this.inilizePostForm();
     this.inilizeCommentForm();
+
+    // my-workplace depends on a private group and we need to fetch that group and edit
+    // the group data before we proceed and get the group post
+    if (this.isItMyWorkplace) {
+      await this.getPrivateGroup();
+    }
+
     this.loadGroupPosts();
     this.alertMessageSettings();
     this.initializeGroupMembersSearchForm();
     this.mentionmembers();
     this.socketio();
   }
-
 
   loadGroup() {
     this.groupService.getGroup(this.group_id)
@@ -265,7 +272,7 @@ export class GroupActivityComponent implements OnInit {
 
       }, (err) => {
 
-        
+
 
       });
 
@@ -273,27 +280,30 @@ export class GroupActivityComponent implements OnInit {
 
 
   socketio() {
-    const room = {
-      workspace: this.user_data.workspace.workspace_name,
-      group: this.group_name,
-    }
 
-    // join room to get notifications for this group
-    this.socket.emit('joinGroup', room, (err) => {
-      //   console.log(`Socket Joined`);
-    });
 
-    // Alert on screen when newPost is created
-    this.socket.on('newPostOnGroup', (data) => {
-      if (this.groupDataService.group._id == data.groupId) {
-        this.show_new_posts_badge = 1;
-        this.playAudio();
+      const room = {
+        workspace: this.user_data.workspace.workspace_name,
+        group: this.group_name,
       }
-    });
 
-    this.socket.on('disconnect', () => {
-      //	console.log(`Socket disconnected from group`);
-    });
+      // join room to get notifications for this group
+      this.socket.emit('joinGroup', room, (err) => {
+        //   console.log(`Socket Joined`);
+      });
+
+      // Alert on screen when newPost is created
+      this.socket.on('newPostOnGroup', (data) => {
+        if (this.groupDataService.group._id == data.groupId) {
+          this.show_new_posts_badge = 1;
+          this.playAudio();
+        }
+      });
+
+      this.socket.on('disconnect', () => {
+        //	console.log(`Socket disconnected from group`);
+      });
+
   }
 
 
@@ -322,10 +332,11 @@ export class GroupActivityComponent implements OnInit {
     //  console.log('routed');
   }
 
-  getUserProfile() {
+   getUserProfile() {
     this._userService.getUser()
       .subscribe((res) => {
         this.user = res.user;
+        console.log('log user', this.user);
         this.profileImage = res.user['profile_pic'];
         this.profileImage = this.BASE_URL + `/uploads/${this.profileImage}`;
       }, (err) => {
@@ -541,7 +552,7 @@ export class GroupActivityComponent implements OnInit {
   }
 
 
-  // !--ADD NEW NORMAL POST--! //  
+  // !--ADD NEW NORMAL POST--! //
   addNewNormalPost() {
     const formData: any = new FormData();
     const files: Array<File> = this.filesToUpload;
@@ -717,7 +728,7 @@ export class GroupActivityComponent implements OnInit {
         formData.append('_content_mentions', this.content_mentions[i]);
       }
 
-      // console.log('Content Mention', post._content_mentions); 
+      // console.log('Content Mention', post._content_mentions);
       //  console.log('This post', postId);
     }
 
@@ -747,7 +758,7 @@ export class GroupActivityComponent implements OnInit {
           group: this.group_name,
           userId: this.user_data.user_id,
           postId: res['post']._id,
-          groupId: this.groupDataService.group._id // Pass group id here!!!
+          groupId: this.group_id // Pass group id here!!!
         };
         //  console.log(data);
         this.socket.emit('newPost', data);
@@ -843,7 +854,7 @@ export class GroupActivityComponent implements OnInit {
         formData.append('_content_mentions', this.content_mentions[i]);
       }
 
-      // console.log('Content Mention', post._content_mentions); 
+      // console.log('Content Mention', post._content_mentions);
       //  console.log('This post', postId);
     }
 
@@ -871,7 +882,7 @@ export class GroupActivityComponent implements OnInit {
           group: this.group_name,
           userId: this.user_data.user_id,
           postId: res['post']._id,
-          groupId: this.groupDataService.group._id // Pass group id here!!!
+          groupId: this.group_id // Pass group id here!!!
         };
         //  console.log(data);
         this.socket.emit('newPost', data);
@@ -1009,6 +1020,23 @@ export class GroupActivityComponent implements OnInit {
   }
   // !--FETCH DATA OF SINGLE COMMENT--! //
 
+  getPrivateGroup() {
+    return new Promise((resolve, reject) => {
+      const workspace_name = JSON.parse(localStorage.getItem('user')).workspace.workspace_name;
+
+      this.groupService.getPrivateGroup(workspace_name)
+        .subscribe((res) => {
+          console.log('REEEEEEEEEEEES', res);
+          this.group = res.privateGroup
+          this.group_id = res.privateGroup._id;
+          this.group_name = res.privateGroup.group_name;
+          resolve();
+        }, (err) => {
+          reject(err);
+        })
+    })
+  }
+
 
 
   // !--HIDE/SHOW THE NORMAL TYPE POST COMMENTS BOX--! //
@@ -1017,7 +1045,7 @@ export class GroupActivityComponent implements OnInit {
     const allTaskCommentBox = document.getElementById('taskComments' + index);
     const allNormalCommentBox = document.getElementById('normalComments' + index);
 
-    for(var i = 0; i < index+50; i++){    
+    for(var i = 0; i < index+50; i++){
       if(i == index){
         if(allNormalCommentBox.style.display == 'block'){
           allNormalCommentBox.style.display = 'none';
@@ -1047,7 +1075,7 @@ export class GroupActivityComponent implements OnInit {
     const allTaskCommentBox = document.getElementById('taskComments' + index);
     const allNormalCommentBox = document.getElementById('normalComments' + index);
 
-    for(var i = 0; i < index+50; i++){    
+    for(var i = 0; i < index+50; i++){
       if(i == index){
         if(allTaskCommentBox.style.display == 'block'){
           allTaskCommentBox.style.display = 'none';
@@ -1077,7 +1105,7 @@ export class GroupActivityComponent implements OnInit {
     const allTaskCommentBox = document.getElementById('taskComments' + index);
     const allNormalCommentBox = document.getElementById('normalComments' + index);
 
-    for(var i = 0; i < index+50; i++){    
+    for(var i = 0; i < index+50; i++){
       if(i == index){
         if(allEventCommentBox.style.display == 'block'){
           allEventCommentBox.style.display = 'none';
@@ -1138,7 +1166,7 @@ export class GroupActivityComponent implements OnInit {
 
 
 
-  // !--ON SCROLL FETCHES THE NEXT RECENT GROUP POSTS--! //  
+  // !--ON SCROLL FETCHES THE NEXT RECENT GROUP POSTS--! //
   onScroll() {
     this.isLoading$.next(true);
     this.ngxService.startBackground();
@@ -1156,11 +1184,11 @@ export class GroupActivityComponent implements OnInit {
         swal("Error!", "Error while retrieving the next recent posts & Scrolling " + err, "danger");
       });
   }
-  // !--ON SCROLL FETCHES THE NEXT RECENT GROUP POSTS--! // 
+  // !--ON SCROLL FETCHES THE NEXT RECENT GROUP POSTS--! //
 
 
 
-  // !--SCROLL TO AN ELEMENT--! // 
+  // !--SCROLL TO AN ELEMENT--! //
   scrollToTop(element) {
     this.scrollService.scrollTo(element)
     .subscribe((res) => {
@@ -1172,7 +1200,7 @@ export class GroupActivityComponent implements OnInit {
       //  console.log('complete');
     });
   }
-  // !--SCROLL TO AN ELEMENT--! // 
+  // !--SCROLL TO AN ELEMENT--! //
 
 
   toggled(event) {
@@ -1180,7 +1208,7 @@ export class GroupActivityComponent implements OnInit {
         console.log('is open');
     } else {
       console.log('is closed');
-      
+
     }
   }
 
@@ -1258,7 +1286,7 @@ export class GroupActivityComponent implements OnInit {
       content: document.getElementById('commentContent-'+index).innerHTML,
       contentMentions: this.content_mentions
     };
-    
+
     var scanned_content = comment.content;
     var el = document.createElement('html');
     el.innerHTML = scanned_content;
@@ -1279,11 +1307,11 @@ export class GroupActivityComponent implements OnInit {
         }
       }
 
-      // console.log('Content Mention', post._content_mentions); 
+      // console.log('Content Mention', post._content_mentions);
       //  console.log('This post', postId);
     }
 
-      //console.log('Content Mention', this.content_mentions); 
+      //console.log('Content Mention', this.content_mentions);
       console.log('Comment:', commentId);
       console.log('Post Id', postId);
     this.postService.updateComment(commentId, comment)
@@ -1326,7 +1354,7 @@ export class GroupActivityComponent implements OnInit {
       }
 
     }
-    // console.log('Content Mention', this.content_mentions); 
+    // console.log('Content Mention', this.content_mentions);
     //  console.log('post: ', post);
     this.postService.editPost(post_id, post)
       .subscribe((res) => {

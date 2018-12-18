@@ -33,7 +33,6 @@ const verifyToken = async (req, res, next) => {
         next();
       }
     });
-
   } catch (err) {
     return sendErr(res, err);
   }

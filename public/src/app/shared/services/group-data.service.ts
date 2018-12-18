@@ -18,7 +18,6 @@ export class GroupDataService {
 
     this._group = group;
     // console.log('_group in data group data service: ', this._group);
-
   }
 
   get group() {

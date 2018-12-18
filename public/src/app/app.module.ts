@@ -55,6 +55,7 @@ import { OrderByPipePipe  } from './order-by-pipe.pipe';
 import { GroupPostComponent } from './dashboard/groups/group/group-post/group-post.component';
 import { GroupTasksComponent } from './dashboard/groups/group/group-tasks/group-tasks.component';
 import { OverviewMyTasksComponent } from './dashboard/overview/overview-my-tasks/overview-my-tasks.component';
+import { OverviewMyWorkplaceComponent } from './dashboard/overview/overview-my-workplace/overview-my-workplace.component';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 
@@ -101,7 +102,8 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     OrderByPipePipe,
     GroupPostComponent,
     GroupTasksComponent,
-    OverviewMyTasksComponent
+    OverviewMyTasksComponent,
+    OverviewMyWorkplaceComponent
   ],
   imports: [
     BrowserModule,
