@@ -30,6 +30,27 @@ const edit = async (req, res, next) => {
   }
 };
 
+const editSkills = async (req, res, next) => {
+  try {
+    const { userId, body: { skills } } = req;
+
+    const user = await User.findByIdAndUpdate({
+      _id: userId
+    }, {
+      skills
+    }, {
+      new: true
+    });
+
+    return res.status(200).json({
+      message: 'User skills updated!',
+      user
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
 const get = async (req, res, next) => {
   try {
     const { userId } = req;
@@ -212,6 +233,7 @@ const getTasksDone = async (req, res, next) => {
 module.exports = {
   // Main
   edit,
+  editSkills,
   get,
   getOverview,
   updateImage,

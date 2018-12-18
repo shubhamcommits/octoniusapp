@@ -29,6 +29,9 @@ router.put('/updateImage', fileHandler, users.updateImage);
 // Get user's overview
 router.get('/overview', users.getOverview);
 
+// Edit user skills
+router.put('/skills', users.editSkills);
+
 // - Tasks -
 
 // Get user's to do/in progress tasks
