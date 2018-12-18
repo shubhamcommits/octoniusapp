@@ -1,6 +1,12 @@
 const jwt = require('jsonwebtoken');
 
-const { Auth, Group, User, Workspace } = require('../models');
+const {
+  Auth,
+  Group,
+  User,
+  Workspace
+} = require('../models');
+
 const { sendErr, sendMail, passwordHelper } = require('../../utils');
 
 /*  ==================
@@ -17,14 +23,14 @@ const signIn = async (req, res, next) => {
     } = req.body;
 
     const user = await User.findOne({
-      workspace_name: workspace_name,
-      email: email
+      workspace_name,
+      email
     }).populate('_workspace', 'workspace_name _id');
 
     // If user wasn't found or user was previsously removed/disabled, return error
     if (!user || user.active === false) {
       return sendErr(res, '', 'Please enter a valid Workspace name or user email!', 401);
-    } 
+    }
 
     const passDecrypted = await passwordHelper.decryptPassword(password, user.password);
 
@@ -32,7 +38,7 @@ const signIn = async (req, res, next) => {
       return sendErr(res, '', 'Please enter a valid email or password!', 401);
     }
 
-    // Generate jsonwebtoken 
+    // Generate jsonwebtoken
     const payload = {
       subject: user._id
     };
@@ -55,7 +61,7 @@ const signIn = async (req, res, next) => {
 
     return res.status(200).json({
       message: `User signed in ${user.workspace_name} Workspace!`,
-      token: token,
+      token,
       user: currentUser
     });
   } catch (err) {
@@ -112,7 +118,7 @@ const signUp = async (req, res, next) => {
     userData._workspace = workspace;
     userData.role = 'member';
 
-    // Create new user 
+    // Create new user
     const user = await User.create(userData);
 
     // Error creating the new user
@@ -135,12 +141,31 @@ const signUp = async (req, res, next) => {
       return sendErr(res, '', 'Some error ocurred trying to update the Global group!');
     }
 
-    // Add Global group to user's groups
+    // Generate pivate group data
+    const privateGroupData = {
+      group_name: 'private',
+      _workspace: user._workspace,
+      _admins: user._id,
+      workspace_name: user.workspace_name
+    };
+
+    // Create user's private group
+    const privateGroup = await Group.create(privateGroupData);
+
+    // Error creating the private group
+    if (!privateGroup) {
+      return sendErr(res, '', 'Some error ocurred trying to create the private group!');
+    }
+
+    // Add Global group & private group to user
     const userUpdate = await User.findByIdAndUpdate({
       _id: user._id
     }, {
       $push: {
         _groups: globalGroupUpdate
+      },
+      $set: {
+        _private_group: privateGroup
       }
     }, {
       new: true
@@ -170,7 +195,7 @@ const signUp = async (req, res, next) => {
       return sendErr(res, '', 'Some error ocurred trying to update the Workspace!');
     }
 
-    // Generate jsonwebtoken 
+    // Generate jsonwebtoken
     const payload = {
       subject: user._id
     };
@@ -180,7 +205,7 @@ const signUp = async (req, res, next) => {
     const newAuth = {
       workspace_name: workspaceUpdate.workspace_name,
       _user: user,
-      token: token
+      token
     };
 
     // Create new auth record
@@ -205,10 +230,9 @@ const signUp = async (req, res, next) => {
     // Signup user and return the token
     return res.status(201).json({
       message: `Welcome to ${workspaceUpdate.workspace_name} Workspace!`,
-      token: token,
+      token,
       user: currentUser
     });
-
   } catch (err) {
     return sendErr(res, err);
   }
@@ -216,8 +240,7 @@ const signUp = async (req, res, next) => {
 
 const signOut = async (req, res, next) => {
   try {
-
-    const user = await Auth.findOneAndUpdate({
+    await Auth.findOneAndUpdate({
       _user: req.userId,
       token: req.headers.authorization.split(' ')[1]
     }, {
@@ -230,17 +253,16 @@ const signOut = async (req, res, next) => {
     });
 
     return res.status(200).json({
-      message: 'User logged out!',
+      message: 'User logged out!'
     });
-
   } catch (err) {
     return sendErr(res, err);
   }
 };
 
-/*	=========================================
- *	-- WORKSPACE AVAILABILITY AND CREATION --
- *	=========================================
+/*  =========================================
+ *  -- WORKSPACE AVAILABILITY AND CREATION --
+ *  =========================================
  */
 
 const checkWorkspaceName = async (req, res, next) => {
@@ -250,16 +272,13 @@ const checkWorkspaceName = async (req, res, next) => {
     // Workspace name already exists
     if (workspace) {
       return sendErr(res, '', 'This Workspace name has already been taken, please pick another name!', 409);
-
-    } else {
-
-      // Allow user to pick this name
-      return res.status(200).json({
-        message: 'This Workspace name is available.',
-        workspace
-      });
     }
 
+    // Allow user to pick this name
+    return res.status(200).json({
+      message: 'This Workspace name is available.',
+      workspace
+    });
   } catch (err) {
     return sendErr(res, err);
   }
@@ -280,7 +299,7 @@ const createNewWorkspace = async (req, res, next) => {
     new_workspace.owner_password = passEncrypted.password;
 
     // Create new workspace
-    const workspace = await	Workspace.create(new_workspace);
+    const workspace = await Workspace.create(new_workspace);
 
     // Error creating workspace
     if (!workspace) {
@@ -313,7 +332,7 @@ const createNewWorkspace = async (req, res, next) => {
       _id: workspace._id
     }, {
       $set: {
-        _owner: user,
+        _owner: user
       },
       $push: {
         members: user
@@ -332,8 +351,8 @@ const createNewWorkspace = async (req, res, next) => {
       group_name: 'Global',
       _workspace: workspaceUpdate,
       _members: user,
-      workspace_name: workspaceUpdate.workspace_name, 
-    }
+      workspace_name: workspaceUpdate.workspace_name
+    };
 
     // Create new global group
     const group = await Group.create(globalGroup);
@@ -359,7 +378,7 @@ const createNewWorkspace = async (req, res, next) => {
       return sendErr(res, '', 'Some error ocurred trying to update the user!');
     }
 
-    // generating jsonwebtoken 
+    // Generate jsonwebtoken
     const payload = {
       subject: userUpdate._id
     };
@@ -370,7 +389,7 @@ const createNewWorkspace = async (req, res, next) => {
     const new_auth = {
       workspace_name: workspaceUpdate.workspace_name,
       _user: userUpdate,
-      token: token
+      token
     };
 
     // Create new auth record
@@ -398,18 +417,17 @@ const createNewWorkspace = async (req, res, next) => {
 
     return res.status(200).json({
       message: 'Workspace created!',
-      token: token,
+      token,
       user: currentUser
     });
-
   } catch (err) {
     return sendErr(res, err);
   }
 };
 
-/*	=======================
- *	-- USER AVAILABILITY --
- *	=======================
+/*  =======================
+ *  -- USER AVAILABILITY --
+ *  =======================
  */
 
 const checkUserAvailability = async (req, res, next) => {
@@ -420,8 +438,8 @@ const checkUserAvailability = async (req, res, next) => {
 
     // Workspace not found
     if (!workspace) {
-      return sendErr(res, err, 'Invalid workspace name!', 401);
-    } 
+      return sendErr(res, '', 'Invalid workspace name!', 401);
+    }
 
     const user = await User.findOne({
       workspace_name: userData.workspace_name,
@@ -430,21 +448,20 @@ const checkUserAvailability = async (req, res, next) => {
 
     // If user is already a member, user must sign in
     if (user) {
-      return sendErr(res, err, 'You are already a member of this workspace, please sign in!', 409);
+      return sendErr(res, '', 'You are already a member of this workspace, please sign in!', 409);
     }
 
     return res.status(200).json({
       message: 'user can sign up with this email and workspace name'
     });
-
   } catch (err) {
     return sendErr(res, err);
   }
 };
 
-/*	=============
- *	-- EXPORTS --
- *	=============
+/*  =============
+ *  -- EXPORTS --
+ *  =============
  */
 
 module.exports = {
@@ -454,4 +471,4 @@ module.exports = {
   checkWorkspaceName,
   createNewWorkspace,
   checkUserAvailability
-}
+};
