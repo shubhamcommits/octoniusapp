@@ -117,7 +117,6 @@ export class GroupActivityComponent implements OnInit {
   assignment = 'Unassigned';
   selected_date: Date;
 
-
   showComments = {
     id: '',
     normal: false,
@@ -127,8 +126,6 @@ export class GroupActivityComponent implements OnInit {
 
   datePickedCount = 0;
   timePickedCount = 0;
-
-
 
   // alert variable
   staticAlertClosed = false;
@@ -182,9 +179,11 @@ export class GroupActivityComponent implements OnInit {
     config.autoClose = false;
     //config.triggers = 'hover';
     this.group_id = this.groupDataService.groupId;
+    console.log('group ID', this.group_id);
     this.user_data = JSON.parse(localStorage.getItem('user'));
     // console.log('user', this.user_data);
     this.group = this.groupDataService.group;
+    console.log('GROUP', this.group);
   }
 
   onEditorBlured(quill) {
@@ -248,6 +247,13 @@ export class GroupActivityComponent implements OnInit {
     this.getUserProfile();
     this.inilizePostForm();
     this.inilizeCommentForm();
+
+    //initial group initialization for normal groups
+    // this pattern needs improvement because it
+    this.group_id = this.groupDataService.groupId;
+    console.log('group ID', this.group_id);
+    this.group = this.groupDataService.group;
+    console.log('this.group');
 
     // my-workplace depends on a private group and we need to fetch that group and edit
     // the group data before we proceed and get the group post
@@ -657,6 +663,7 @@ export class GroupActivityComponent implements OnInit {
     const files: Array<File> = this.filesToUpload;
     // console.log(files);
     const assignedUsers = new Array();
+
     if (files !== null) {
       for (let i = 0; i < files.length; i++) {
         formData.append('attachments', files[i], files[i]['name']);
@@ -1131,19 +1138,35 @@ export class GroupActivityComponent implements OnInit {
 
   // !--LOAD ALL THE GROUP POSTS ON INIT--! //
   loadGroupPosts() {
+    // we count the attempts to avoid infinity attempts
+    let count = 0;
     this.isLoading$.next(true);
 
-    this.postService.getGroupPosts(this.group_id)
-      .subscribe((res) => {
-        // console.log('Group posts:', res);
-        this.posts = res['posts'];
-        console.log('Group posts:', this.posts);
-        this.isLoading$.next(false);
-        this.show_new_posts_badge = 0;
-      }, (err) => {
-        swal("Error!", "Error while retrieving the posts " + err, "danger");
-      });
-  }
+    // we only want to make a server request when the group properties are defined
+    if (this.group || count > 6) {
+      // reset the count
+      count = 0;
+      this.postService.getGroupPosts(this.group_id)
+        .subscribe((res) => {
+          // console.log('Group posts:', res);
+          this.posts = res['posts'];
+          console.log('Group posts:', this.posts);
+          this.isLoading$.next(false);
+          this.show_new_posts_badge = 0;
+        }, (err) => {
+          swal("Error!", "Error while retrieving the posts " + err, "danger");
+        });
+    } else {
+      // When this.group is undefined we try to define it every .5seconds until the values are ready
+      setTimeout(() => {
+        this.group = this.groupDataService.group;
+        this.group_id = this.groupDataService.groupId;
+        this.loadGroupPosts();
+        count++
+      }, 500)
+    }
+    }
+
   // !--LOAD ALL THE GROUP POSTS ON INIT--! //
 
 
