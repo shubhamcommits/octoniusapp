@@ -91,7 +91,11 @@ const UserSchema = new Schema({
   _groups: [{
     type: Schema.Types.ObjectId,
     ref: 'Group'
-  }]
+  }],
+  _private_group: {
+    type: Schema.Types.ObjectId,
+    ref: 'Group'
+  }
 });
 
 const User = mongoose.model('User', UserSchema);
