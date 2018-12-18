@@ -21,7 +21,6 @@ router.use(auth.verifyToken);
 router.use(auth.isLoggedIn);
 
 // vvvv| BAD REST PATTERN, to be replaced! |vvvv
-router.get('/getPrivateGroup/:workspace_name', groupsController.getPrivateGroup);
 router.get('/searchGroupUsers/:group_id/:query', groupsController.searchGroupUsers);
 router.get('/:group_id', groupsController.getUserGroup);
 router.post('/addNewUsers', groupsController.addNewUsersInGroup);
@@ -31,6 +30,11 @@ router.post('/removeUser', groupsController.removeUserFromGroup);
 // ^^^^| BAD REST PATTERN, to be replaced! |^^^^
 
 // -| Groups routes |-
+
+// - Main -
+
+// Get user's private group
+router.get('/private', groups.getPrivate);
 
 // - Files -
 
