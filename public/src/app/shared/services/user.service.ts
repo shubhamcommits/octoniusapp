@@ -26,6 +26,10 @@ export class UserService {
     return this._http.post(this.BASE_API_URL + `/file/download`, file, { responseType: 'blob' });
   }
 
+  addSkills(skills){
+    return this._http.put(this.BASE_API_URL+'/users/skills', skills);
+  }
+
   updateUserProfileImage(fileToUpload: File) {
     const formData: FormData = new FormData();
     formData.append('profileImage', fileToUpload, fileToUpload.name);
