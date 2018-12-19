@@ -8,6 +8,29 @@ const { sendErr, sendMail } = require('../../utils');
 
 // -| MAIN |-
 
+const get = async (req, res, next) => {
+  try {
+    const groupId = req.params.group_id;
+
+    const group = await Group.findOne({
+      _id: groupId
+    })
+      .populate('_members', 'first_name last_name profile_pic role email')
+      .populate('_admins', 'first_name last_name profile_pic role email')
+
+    if (!group) {
+      return sendErr(res, err, 'Group not found, invalid group id!', 404)
+    }
+
+    return res.status(200).json({
+      message: 'Group found!',
+      group
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
 const getPrivate = async (req, res) => {
   try {
     const { userId } = req;
@@ -231,6 +254,7 @@ const getTasksDone = async (req, res, next) => {
 
 module.exports = {
   // Main
+  get,
   getPrivate,
   // Files
   downloadFile,
