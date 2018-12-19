@@ -72,6 +72,7 @@ const signIn = async (req, res, next) => {
 // New user sign up on an existing workspace
 const signUp = async (req, res, next) => {
   try {
+
     const userData = req.body;
     const userEmailDomain = req.body.email.split('@')[1];
     const userEmail = req.body.email;

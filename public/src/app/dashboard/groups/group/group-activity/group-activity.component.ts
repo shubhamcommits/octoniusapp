@@ -25,6 +25,7 @@ import { ScrollToService } from 'ng2-scroll-to-el';
 import 'quill-mention';
 import { environment } from '../../../../../environments/environment';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
+import {Group} from "../../../../shared/models/group.model";
 
 @Component({
   selector: 'app-group-activity',
@@ -40,7 +41,7 @@ export class GroupActivityComponent implements OnInit {
   comments = new Array();
   /* It Stores the Group data of a group*/
   group_id;
-  group;
+  group: Group;
   group_name;
   group_socket_id;
 
@@ -272,6 +273,7 @@ export class GroupActivityComponent implements OnInit {
           workspace: this.user_data.workspace.workspace_name,
           group: this.group_name,
         };
+        console.log('room', room);
 
         // join room to get notifications for this group
         this.socket.emit('joinGroup', room, (err) => {
@@ -280,7 +282,10 @@ export class GroupActivityComponent implements OnInit {
 
         // Alert on screen when newPost is created
         this.socket.on('newPostOnGroup', (data) => {
-          if (this.groupDataService.group._id == data.groupId) {
+          console.log('received new post from socket', data);
+          console.log('test group_id', this.group_id);
+          console.log('data.groupId', data.groupId);
+          if (this.group_id == data.groupId) {
             this.show_new_posts_badge = 1;
             this.playAudio();
           }
