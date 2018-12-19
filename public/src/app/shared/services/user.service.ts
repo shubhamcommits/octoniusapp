@@ -36,7 +36,7 @@ export class UserService {
   // console.log('formData:', formData);
   //  console.log('fileToUpload:', fileToUpload);
 
-    return this._http.post<any>(this.BASE_API_URL + `/users/updateImage`, formData);
+    return this._http.put<any>(this.BASE_API_URL + `/users/updateImage`, formData);
 
   }
 
