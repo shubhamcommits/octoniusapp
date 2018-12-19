@@ -1,4 +1,4 @@
-<div class="container">
+
   <div class="row main-actvity">
 
     <div class="col-md-4">
@@ -7,6 +7,8 @@
         <div class="card sideinnercard">
 
           <div class="card-block">
+            <h2>Contact Information:</h2>
+            <hr>
             <p class="card-text">
               <strong>Email: </strong> {{user?.email}}</p>
 
@@ -20,6 +22,8 @@
     </div>
     <div class="col-md-8">
       <div class="card-tile">
+<h2>Professional information:</h2>
+<hr>
         <p>
           <strong>Current position: </strong> {{user?.current_position}} </p>
         <p>
@@ -29,16 +33,25 @@
         </p>
       </div>
       <div class="card-tile">
-        <p>
-          <strong>Skills: </strong>
-          <span class="tags" *ngFor="let skill of user?.skills;">{{skill}} </span>
-          <button type="button" name="button" style="float:right;" class="btn btn-link" (click)="addSkills()">
-            <i class="material-icons">create</i>
-          </button>
-        </p>
+        <div class="card-title" style="clear:both">
+            <h2 class="float-left">
+                Skills:</h2>
+                <button type="button" name="button" style="float:right;" class="btn btn-primary" (click)="addSkills()">
+                     Add new
+                  </button>
+        </div>
+       
+
+          <ul class="skills" style="clear:both">
+            <li class="tags" *ngFor="let skill of user?.skills;">{{skill}} </li>
+
+          </ul>
+          
+          
+        
         
       </div>
     </div>
   </div>
 
-</div>
+
