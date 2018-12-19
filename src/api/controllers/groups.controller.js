@@ -13,12 +13,12 @@ const getPrivate = async (req, res) => {
     const { userId } = req;
 
     const user = await User.findOne({ _id: userId });
-
     const privateGroup = await Group.findOne({
       _id: user._private_group
     })
       .populate('_members', 'first_name last_name profile_pic role email')
       .populate('_admins', 'first_name last_name profile_pic role email');
+
 
     return res.status(200).json({
       message: 'Private group found!',

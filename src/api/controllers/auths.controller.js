@@ -362,16 +362,37 @@ const createNewWorkspace = async (req, res, next) => {
       return sendErr(res, '', 'Some error ocurred trying to create the global group!');
     }
 
-    // Add Global group to user's groups
-    const userUpdate = await User.findByIdAndUpdate({
-      _id: user._id
-    }, {
-      $push: {
-        _groups: group
+      // Generate private group data
+      const privateGroupData = {
+          group_name: 'private',
+          _workspace: user._workspace,
+          _admins: user._id,
+          workspace_name: user.workspace_name
+      };
+
+      // Create user's private group
+      const privateGroup = await Group.create(privateGroupData);
+
+      // Error creating the private group
+      if (!privateGroup) {
+          return sendErr(res, '', 'Some error ocurred trying to create the private group!');
       }
-    }, {
-      new: true
-    });
+
+      // Add Global group & private group to user
+      const userUpdate = await User.findByIdAndUpdate({
+          _id: user._id
+      }, {
+          $push: {
+              _groups: group
+          },
+          $set: {
+              _private_group: privateGroup
+          }
+      }, {
+          new: true
+      });
+
+
 
     // Error updating the user
     if (!userUpdate) {

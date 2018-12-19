@@ -74,8 +74,8 @@ export class GroupService {
     return this._http.put(this.BASE_API_URL + `/posts/${postId}/taskAssignee`, assigneeId);
   }
 
-  getPrivateGroup(workspace_name) {
-    return this._http.get<any>(this.BASE_API_URL + `/groups/getPrivateGroup/${workspace_name}`);
+  getPrivateGroup() {
+    return this._http.get<any>(this.BASE_API_URL + `/groups/private`);
   }
 
 }

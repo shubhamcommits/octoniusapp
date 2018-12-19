@@ -1,4 +1,5 @@
 const postFileHandler = (req, res, next) => {
+  console.log('first checkpoint', req.files);
   if (!req.files) {
     next();
     req.body.files = null;
@@ -12,6 +13,7 @@ const postFileHandler = (req, res, next) => {
 
       currentFile.mv(folder + fileName, (error) => {
         if (error) {
+          console.log('checkpoint 2 error');
           fileName = null;
           return res.status(500).json({
             status: '500',
@@ -19,6 +21,7 @@ const postFileHandler = (req, res, next) => {
             error
           });
         }
+        console.log('checkpoint 3 passed through without error');
       });
 
       const f = {
@@ -53,6 +56,7 @@ const postFileHandler = (req, res, next) => {
       };
 
       req.body.files.push(f);
+      console.log('reached end file upload', req.body.files);
       next();
     });
   }
