@@ -20,9 +20,10 @@ router.use(auth.verifyToken);
 // Check if user is logged in
 router.use(auth.isLoggedIn);
 
-// vvvv| BAD REST PATTERN, to be replaced! |vvvv
+// vvvv| BAD REST PATTERN, to be replaced! |
+
 router.get('/searchGroupUsers/:group_id/:query', groupsController.searchGroupUsers);
-router.get('/:group_id', groupsController.getUserGroup);
+
 router.post('/addNewUsers', groupsController.addNewUsersInGroup);
 router.put('/:group_id', groupFileHandler, groupsController.updateGroup);
 router.post('/removeUser', groupsController.removeUserFromGroup);
@@ -33,8 +34,12 @@ router.post('/removeUser', groupsController.removeUserFromGroup);
 
 // - Main -
 
-// Get user's private group
+// // Get user's private group
 router.get('/private', groups.getPrivate);
+
+// this is one of the routes that's one of the bad patterns, but this route on the top made me not able
+// to acces the /private route, so I temporarily moved it down here, but it still needs to be replaced
+router.get('/:group_id', groupsController.getUserGroup);
 
 // - Files -
 

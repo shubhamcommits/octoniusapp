@@ -179,11 +179,9 @@ export class GroupActivityComponent implements OnInit {
     config.autoClose = false;
     //config.triggers = 'hover';
     this.group_id = this.groupDataService.groupId;
-    console.log('group ID', this.group_id);
     this.user_data = JSON.parse(localStorage.getItem('user'));
     // console.log('user', this.user_data);
     this.group = this.groupDataService.group;
-    console.log('GROUP', this.group);
   }
 
   onEditorBlured(quill) {
@@ -251,9 +249,8 @@ export class GroupActivityComponent implements OnInit {
     //initial group initialization for normal groups
     // this pattern needs improvement because it
     this.group_id = this.groupDataService.groupId;
-    console.log('group ID', this.group_id);
     this.group = this.groupDataService.group;
-    console.log('this.group');
+    this.group_name = this.group ? this.group.group_name : null;
 
     // my-workplace depends on a private group and we need to fetch that group and edit
     // the group data before we proceed and get the group post
@@ -286,29 +283,36 @@ export class GroupActivityComponent implements OnInit {
 
 
   socketio() {
+  let count = 0;
 
+      // We add this so that the groupname is definitely available when we make the connection to the socket.
+      if (this.group || count > 6) {
+        count = 0;
+        const room = {
+          workspace: this.user_data.workspace.workspace_name,
+          group: this.group_name,
+        };
 
-      const room = {
-        workspace: this.user_data.workspace.workspace_name,
-        group: this.group_name,
+        // join room to get notifications for this group
+        this.socket.emit('joinGroup', room, (err) => {
+          console.log(`Socket Joined`);
+        });
+
+        // Alert on screen when newPost is created
+        this.socket.on('newPostOnGroup', (data) => {
+          if (this.groupDataService.group._id == data.groupId) {
+            this.show_new_posts_badge = 1;
+            this.playAudio();
+          }
+        });
+
+        this.socket.on('disconnect', () => {
+          //	console.log(`Socket disconnected from group`);
+        });
+
+      } else {
+        setTimeout(() => {this.socketio(); count++}, 500);
       }
-
-      // join room to get notifications for this group
-      this.socket.emit('joinGroup', room, (err) => {
-        //   console.log(`Socket Joined`);
-      });
-
-      // Alert on screen when newPost is created
-      this.socket.on('newPostOnGroup', (data) => {
-        if (this.groupDataService.group._id == data.groupId) {
-          this.show_new_posts_badge = 1;
-          this.playAudio();
-        }
-      });
-
-      this.socket.on('disconnect', () => {
-        //	console.log(`Socket disconnected from group`);
-      });
 
   }
 
@@ -342,7 +346,6 @@ export class GroupActivityComponent implements OnInit {
     this._userService.getUser()
       .subscribe((res) => {
         this.user = res.user;
-        console.log('log user', this.user);
         this.profileImage = res.user['profile_pic'];
         this.profileImage = this.BASE_URL + `/uploads/${this.profileImage}`;
       }, (err) => {
@@ -1029,12 +1032,10 @@ export class GroupActivityComponent implements OnInit {
 
   getPrivateGroup() {
     return new Promise((resolve, reject) => {
-      const workspace_name = JSON.parse(localStorage.getItem('user')).workspace.workspace_name;
 
-      this.groupService.getPrivateGroup(workspace_name)
+      this.groupService.getPrivateGroup()
         .subscribe((res) => {
-          console.log('REEEEEEEEEEEES', res);
-          this.group = res.privateGroup
+          this.group = res.privateGroup;
           this.group_id = res.privateGroup._id;
           this.group_name = res.privateGroup.group_name;
           resolve();
@@ -1150,7 +1151,6 @@ export class GroupActivityComponent implements OnInit {
         .subscribe((res) => {
           // console.log('Group posts:', res);
           this.posts = res['posts'];
-          console.log('Group posts:', this.posts);
           this.isLoading$.next(false);
           this.show_new_posts_badge = 0;
         }, (err) => {
@@ -1161,6 +1161,7 @@ export class GroupActivityComponent implements OnInit {
       setTimeout(() => {
         this.group = this.groupDataService.group;
         this.group_id = this.groupDataService.groupId;
+        this.group_name = this.group ? this.group.group_name : null;
         this.loadGroupPosts();
         count++
       }, 500)
@@ -1335,11 +1336,8 @@ export class GroupActivityComponent implements OnInit {
     }
 
       //console.log('Content Mention', this.content_mentions);
-      console.log('Comment:', commentId);
-      console.log('Post Id', postId);
     this.postService.updateComment(commentId, comment)
     .subscribe((res) => {
-      console.log('Comment Updated', res);
       this.loadComments(postId);
       this.content_mentions = [];
     }, (err) =>{

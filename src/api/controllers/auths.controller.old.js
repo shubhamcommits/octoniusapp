@@ -397,7 +397,7 @@ const createNewWorkspace = async (req, res, next) => {
 
     // Create new personal group
 
-      console.log('start create personal group');
+
       const newGroupData = {
           group_name: 'personal',
           _workspace: workspaceUpdate,
@@ -405,14 +405,14 @@ const createNewWorkspace = async (req, res, next) => {
           workspace_name: workspaceUpdate.workspace_name
       };
 
-      console.log('log1 newgroupdata', newGroupData);
+
       const groupExist = await Group.findOne({
           group_name: newGroupData.group_name,
           _admins: newGroupData._admins,
           workspace_name: newGroupData.workspace_name
       });
 
-      console.log('log2 groupexist', groupExist);
+
 
       if (!!groupExist) {
           return sendErr(res, err, 'Group name already taken, please choose another name!', 409);
@@ -431,7 +431,6 @@ const createNewWorkspace = async (req, res, next) => {
           }, {
               new: true
           });
-          console.log('log 5 user', user);
       }
 
 
