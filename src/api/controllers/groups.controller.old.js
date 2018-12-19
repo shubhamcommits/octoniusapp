@@ -139,7 +139,6 @@ const removeUserFromGroup = async (req, res, next) => {
 
 module.exports = {
   searchGroupUsers,
-  getUserGroup,
   addNewUsersInGroup,
   updateGroup,
   removeUserFromGroup
