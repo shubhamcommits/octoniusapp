@@ -75,7 +75,7 @@ export class GroupService {
   }
 
   getPrivateGroup() {
-    return this._http.get<any>(this.BASE_API_URL + `/groups/private`);
+    return this._http.get<any>(this.BASE_API_URL + `/groups/user/private`);
   }
 
 }
