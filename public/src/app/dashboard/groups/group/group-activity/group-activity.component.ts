@@ -228,7 +228,6 @@ export class GroupActivityComponent implements OnInit {
     this.inilizeCommentForm();
 
     //initial group initialization for normal groups
-    // this pattern needs improvement because it
     this.group_id = this.groupDataService.groupId;
     this.group = this.groupDataService.group;
     this.group_name = this.group ? this.group.group_name : null;
