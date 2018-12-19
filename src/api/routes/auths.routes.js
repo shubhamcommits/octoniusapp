@@ -17,11 +17,7 @@ router.post('/checkUserAvailability', authsController.checkUserAvailability); //
 
 router.post('/checkWorkspaceName', authsController.checkWorkspaceName); // ! TO BE REMOVED
 
-
-
-
-
 // Create a new workspace
-router.post('/createNewWorkspace', auths.createNewWorkspace); // ! TO BE REMOVED
+router.post('/createNewWorkspace', auths.createNewWorkspace);
 
 module.exports = router;

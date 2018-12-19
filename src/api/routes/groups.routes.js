@@ -34,12 +34,11 @@ router.post('/removeUser', groupsController.removeUserFromGroup);
 
 // - Main -
 
-// // Get user's private group
-router.get('/private', groups.getPrivate);
+// Get group
+router.get('/:group_id', groups.get);
 
-// this is one of the routes that's one of the bad patterns, but this route on the top made me not able
-// to acces the /private route, so I temporarily moved it down here, but it still needs to be replaced
-router.get('/:group_id', groupsController.getUserGroup);
+// Get user's private group
+router.get('/user/private', groups.getPrivate);
 
 // - Files -
 
