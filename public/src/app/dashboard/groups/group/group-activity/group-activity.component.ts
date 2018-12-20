@@ -643,7 +643,7 @@ export class GroupActivityComponent implements OnInit {
           group: this.group_name,
           userId: this.user_data.user_id,
           postId: res['post']._id,
-          groupId: this.groupDataService.group._id // Pass group id here!!!
+          groupId: this.group_id  // Pass group id here!!!
         };
         //  console.log(data);
         this.socket.emit('newPost', data);
@@ -1040,9 +1040,15 @@ export class GroupActivityComponent implements OnInit {
 
       this.groupService.getPrivateGroup()
         .subscribe((res) => {
-          this.group = res.privateGroup;
-          this.group_id = res.privateGroup._id;
-          this.group_name = res.privateGroup.group_name;
+
+          console.log(res);
+          this.group = res['privateGroup'];
+          this.group_id = res['privateGroup']['_id'];
+          this.group_name = res['privateGroup']['group_name'];
+          this.loadGroupPosts();
+          console.log(this.group);
+          console.log(this.group_id);
+          console.log(this.group_name);
           resolve();
         }, (err) => {
           reject(err);
