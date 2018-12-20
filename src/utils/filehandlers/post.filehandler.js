@@ -54,7 +54,6 @@ const postFileHandler = (req, res, next) => {
       };
 
       req.body.files.push(f);
-      console.log('reached end file upload', req.body.files);
       next();
     });
   }
