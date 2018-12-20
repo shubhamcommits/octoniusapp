@@ -26,6 +26,7 @@ import { GroupTasksComponent } from './dashboard/groups/group/group-tasks/group-
 import { AdminGeneralComponent } from './dashboard/admin/admin-general/admin-general.component';
 import { AdminMembersComponent } from './dashboard/admin/admin-members/admin-members.component';
 import { OverviewMyTasksComponent } from './dashboard/overview/overview-my-tasks/overview-my-tasks.component';
+import {OverviewMyWorkplaceComponent} from "./dashboard/overview/overview-my-workplace/overview-my-workplace.component";
 
 
 const appRoutes: Routes = [
@@ -42,6 +43,7 @@ const appRoutes: Routes = [
     children: [
       { path: 'overview', component: OverviewComponent},
       {path: 'overview/mytasks', component: OverviewMyTasksComponent},
+      {path: 'overview/myworkplace', component: OverviewMyWorkplaceComponent},
       {
         path: 'groups', component: GroupsComponent,
       },

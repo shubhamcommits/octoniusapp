@@ -1,5 +1,5 @@
 <div class="row main-actvity" id="top-card">
-  <div class="col-md-4">
+  <div [ngStyle]="{'display': isItMyWorkplace ? 'none' : 'block'}" class="col-md-4">
     <div class="row sidecontent">
       <div class="card sideinnercard">
         <div class="card-block">
@@ -15,7 +15,7 @@
     </div>
   </div>
 
-  <div class="col-md-8">
+  <div [ngClass]="{'col-md-8': !isItMyWorkplace, 'col-md-12': isItMyWorkplace}">
     <!-- news badge-->
     <div class="feed-new-update-pill" style="display:block" *ngIf="this.show_new_posts_badge == 1; else newsbadge">
       <div class="inner-news">
@@ -72,7 +72,7 @@
 
               </div>
               <div class="col-md-8 text-right">
-                <button type="button" class="btn btn-outline-warning task" *ngIf="post.type == 'event' || post.type== 'task'"
+                <button type="button" class="btn btn-outline-warning task" *ngIf="(post.type == 'event' || post.type== 'task') && !isItMyWorkplace"
                   (click)="openAssignPicker(assignContent)">
                   <i class="material-icons">perm_identity</i> {{assignment}}
                 </button>
@@ -150,6 +150,8 @@
 
                 <div id="google-drive-file" style="display:none;"></div>
                 
+
+
                 <div *ngFor="let file of filesToUpload">
                   <p><b>Uploaded file(s): </b>{{file.name}}</p>
                 </div>
@@ -182,7 +184,8 @@
         </div>
 
         <div class="modal-footer">
-          <button [disabled]="selectedGroupUsers.length == 0" class="btn btn-primary mb-2 mr-2" (click)="onDateSelected();c('Close click')">Done</button>
+          <!-- in the personal workspace we don't use the assigned members function-->
+          <button [disabled]="selectedGroupUsers.length == 0 && !isItMyWorkplace" class="btn btn-primary mb-2 mr-2" (click)="onDateSelected();c('Close click')">Done</button>
 
           <button type="button" class="btn btn-default mb-2 mr-2" (click)="c('Close click')">Cancel</button>
         </div>
@@ -272,7 +275,7 @@
                     <h6>{{post._posted_by?.first_name}} {{post._posted_by?.last_name}} <br>
                     <span class="small lightgray date"> {{post?.created_date | date : 'medium' }}</span>
                     </h6>
-                   
+
                     <!-- <button class="btn btn-primary btn-sm" id="testhaibc" contenteditable="false" (click)="test(i); abc();">Save</button>-->
                   </div>
 
@@ -380,7 +383,7 @@
 
                         </div>
                       </div>
-                      
+
                     </div>
                   </div>
 
@@ -468,8 +471,8 @@
                         <span class="small lightgray date">
                             {{post?.created_date | date : 'medium'}}</span>
                     </h6>
-                    
-                    <span class="assigned"> Assigned to {{post.task._assigned_to?.first_name}}
+
+                    <span *ngIf="!isItMyWorkplace" class="assigned"> Assigned to {{post.task._assigned_to?.first_name}}
                       {{post.task._assigned_to?.last_name}}
                     </span>
                   </div>
@@ -513,7 +516,7 @@
                 </div>
                 <div class="col-md-12 innercard" *ngFor="let file of post.files">
                   <div class="col-md-12 event-title">Attachment:</div>
-                  <div class="col-md-12"> <a role="button" href="javascript:void(null);" (click)="onDownlaodFile(file.modified_name,file.orignal_name)">{{file?.orignal_name}}</a></div>
+                  <div class="col-md-12"> <a role="button" href="javascript:void(null);" (click)="onDownlaodFile(file)">{{file?.orignal_name}}</a></div>
                 </div>
 
                 <div class="card-footer action-post innercard clearfix ">
@@ -673,7 +676,7 @@
                       {{post?.created_date| date : 'medium'}}</span>
                     </h6>
 
-                    <span class="assigned" [ngbPopover]="eventassignedmembers" triggers="mouseenter:mouseleave">Assigned
+                    <span *ngIf="!isItMyWorkplace" class="assigned" [ngbPopover]="eventassignedmembers" triggers="mouseenter:mouseleave">Assigned
                       to {{post.event._assigned_to.length}} MEMBERS
                     </span>
                     <ng-template #eventassignedmembers>
@@ -824,7 +827,7 @@
                   <div class="col-md-4 text-right card-footer action-post innercard">
                       <span>
                           <div ngbDropdown class="d-inline-block" *ngIf="post?._posted_by?._id == this.user_data.user_id; else editpostif">
-                            
+
                             <i ngbDropdownToggle class="material-icons action" id="dropdownComment{{i}}">more_horiz</i>
                             <div ngbDropdownMenu>
                                 <button class="dropdown-item" (click)="OnEditComment(j)">Edit Comment</button>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { PostService } from '../../../../shared/services/post.service'; 
+import { PostService } from '../../../../shared/services/post.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { GroupService } from '../../../../shared/services/group.service';
 import { GroupDataService } from '../../../../shared/services/group-data.service';
@@ -33,7 +33,7 @@ export class GroupFilesComponent implements OnInit {
 
   ngOnInit() {
     this.ngxService.start(); // start foreground loading with 'default' id
- 
+
     // Stop the foreground loading after 5s
     setTimeout(() => {
       this.ngxService.stop(); // stop foreground loading with 'default' id
@@ -52,14 +52,14 @@ export class GroupFilesComponent implements OnInit {
       .subscribe((res) => {
        // console.log('Group posts:', res);
         this.posts = res['posts'];
-        for(var i = 0; i < this.posts.length; i++){
+        for(let i = 0; i < this.posts.length; i++){
           if(this.posts[i].files.length > 0){
-            this.has_file=true;
+            this.has_file = true;
             break;
 
           }
           else{
-            this.has_file=false;
+            this.has_file = false;
           }
         }
       // console.log('Group posts:', this.posts);

@@ -150,7 +150,45 @@ const signUp = async (req, res, next) => {
       return sendErr(res, '', 'Some error ocurred trying to update the user!');
     }
 
-    // Add new user to workpace members and remove user email from invited users
+    // Create personal group
+      console.log('start create personal group');
+      const newGroupData = {
+      group_name: 'personal',
+          _workspace: user._workspace,
+          _admins: user._id,
+          workspace_name: user.workspace_name
+      };
+
+      console.log('log1 newgroupdata', newGroupData);
+      const groupExist = await Group.findOne({
+          group_name: newGroupData.group_name,
+          _admins: newGroupData._admins,
+          workspace_name: newGroupData.workspace_name
+      });
+
+      console.log('log2 groupexist', groupExist);
+
+      if (!!groupExist) {
+          return sendErr(res, err, 'Group name already taken, please choose another name!', 409);
+      } else {
+        console.log('log3 group did not exist');
+          const group = await Group.create(newGroupData);
+          console.log('log4 group', group);
+          // add personal group to user's groups
+          const user = await User.findByIdAndUpdate({
+              _id: newGroupData._admins,
+              _workspace: newGroupData._workspace
+          }, {
+              $push: {
+                  _groups: group
+              }
+          }, {
+              new: true
+          });
+          console.log('log 5 user', user);
+      }
+
+    // Add new user to workspace members and remove user email from invited users
     const workspaceUpdate = await Workspace.findByIdAndUpdate({
       _id: workspace._id
     }, {
@@ -357,7 +395,46 @@ const createNewWorkspace = async (req, res, next) => {
       new: true
     });
 
-    // Error updating the user
+    // Create new personal group
+
+
+      const newGroupData = {
+          group_name: 'personal',
+          _workspace: workspaceUpdate,
+          _admins: user._id,
+          workspace_name: workspaceUpdate.workspace_name
+      };
+
+
+      const groupExist = await Group.findOne({
+          group_name: newGroupData.group_name,
+          _admins: newGroupData._admins,
+          workspace_name: newGroupData.workspace_name
+      });
+
+
+
+      if (!!groupExist) {
+          return sendErr(res, err, 'Group name already taken, please choose another name!', 409);
+      } else {
+          console.log('log3 group did not exist');
+          const group = await Group.create(newGroupData);
+          console.log('log4 group', group);
+          // add personal group to user's groups
+          const user = await User.findByIdAndUpdate({
+              _id: newGroupData._admins,
+              _workspace: newGroupData._workspace
+          }, {
+              $push: {
+                  _groups: group
+              }
+          }, {
+              new: true
+          });
+      }
+
+
+      // Error updating the user
     if (!userUpdate) {
       return sendErr(res, '', 'Some error ocurred trying to update the user!');
     }

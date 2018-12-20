@@ -12,7 +12,7 @@ import { Validators, FormControl, FormGroup } from '@angular/forms';
 import { GroupsService } from '../../shared/services/groups.service';
 import { Group } from '../../shared/models/group.model';
 import { environment } from '../../../environments/environment';
-import { NgxUiLoaderService } from 'ngx-ui-loader'; 
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 @Component({
   selector: 'app-groups',
   templateUrl: './groups.component.html',
@@ -47,7 +47,7 @@ export class GroupsComponent implements OnInit {
   ngOnInit() {
 
     this.ngxService.start(); // start foreground loading with 'default' id
- 
+
     // Stop the foreground loading after 5s
     setTimeout(() => {
       this.ngxService.stop(); // stop foreground loading with 'default' id
@@ -82,12 +82,15 @@ export class GroupsComponent implements OnInit {
   }
   // creating new group
   onCreateNewGroup() {
+
+    console.log(this.user_data);
     const new_group = {
       group_name: this.group.group_name,
       _workspace: this.user_data.workspace._id,
       _admins: this.user_data.user_id,
       workspace_name: this.user_data.workspace.workspace_name
     };
+
 
     this._groupsService.createNewGroup(new_group)
       .subscribe((response) => {

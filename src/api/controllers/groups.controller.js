@@ -1,4 +1,4 @@
-const { Group, Post } = require('../models');
+const { Group, Post, User } = require('../models');
 const { sendErr, sendMail } = require('../../utils');
 
 /*  =======================
@@ -6,7 +6,53 @@ const { sendErr, sendMail } = require('../../utils');
  *  =======================
  */
 
-// -| Group files controllers |-
+// -| MAIN |-
+
+const get = async (req, res, next) => {
+  try {
+    const groupId = req.params.group_id;
+
+    const group = await Group.findOne({
+      _id: groupId
+    })
+      .populate('_members', 'first_name last_name profile_pic role email')
+      .populate('_admins', 'first_name last_name profile_pic role email')
+
+    if (!group) {
+      return sendErr(res, err, 'Group not found, invalid group id!', 404)
+    }
+
+    return res.status(200).json({
+      message: 'Group found!',
+      group
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+const getPrivate = async (req, res) => {
+  try {
+    const { userId } = req;
+
+    const user = await User.findOne({ _id: userId });
+    const privateGroup = await Group.findOne({
+      _id: user._private_group
+    })
+      .populate('_members', 'first_name last_name profile_pic role email')
+      .populate('_admins', 'first_name last_name profile_pic role email');
+
+
+    return res.status(200).json({
+      message: 'Private group found!',
+      privateGroup
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+// -| FILES |-
 
 const downloadFile = (req, res, next) => {
   const { fileName } = req.params;
@@ -41,7 +87,7 @@ const getFiles = async (req, res, next) => {
   }
 };
 
-// -| Group posts controllers |-
+// -| POSTS |-
 
 const getNextPosts = async (req, res, next) => {
   try {
@@ -101,6 +147,8 @@ const getPosts = async (req, res, next) => {
     return sendErr(res, err);
   }
 };
+
+// -| TASKS |-
 
 const getNextTasksDone = async (req, res, next) => {
   try {
@@ -205,13 +253,16 @@ const getTasksDone = async (req, res, next) => {
  */
 
 module.exports = {
-  // files
+  // Main
+  get,
+  getPrivate,
+  // Files
   downloadFile,
   getFiles,
-  // posts
+  // Posts
   getNextPosts,
   getPosts,
-  // tasks
+  // Tasks
   getNextTasksDone,
   getTasks,
   getTasksDone

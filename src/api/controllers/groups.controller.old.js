@@ -1,173 +1,145 @@
 const { Group, User } = require('../models');
 const { sendErr, sendMail } = require('../../utils');
 
-/*	===================
- *	-- GROUP METHODS --
- *	===================
- */ 
+/*  ===================
+ *  -- GROUP METHODS --
+ *  ===================
+ */
 
-const searchGroupUsers = async (req,res, next) => {
-	try {
-		const query = req.params.query;
-		const group = req.params.group_id;
+const searchGroupUsers = async (req, res, next) => {
+  try {
+    const query = req.params.query;
+    const group = req.params.group_id;
 
-		const users = await User.find({
-			_groups: group,
-			full_name: {
-				$regex: new RegExp(query, 'i')
-			}
-		});
+    const users = await User.find({
+      _groups: group,
+      full_name: {
+        $regex: new RegExp(query, 'i')
+      }
+    });
 
-		return res.status(200).json({
-			message: `Found ${users.length} users!`,
-			users
-		});
-
-	} catch (err) {
-		return sendErr(res, err);
-	}
-};
-
-const getUserGroup = async (req, res, next) => {
-	try {
-		const groupId = req.params.group_id;
-
-		const group = await Group.findOne({
-			_id: groupId
-		})
-			.populate('_members', 'first_name last_name profile_pic role email')
-			.populate('_admins', 'first_name last_name profile_pic role email')
-
-		if (!group) {
-			return sendErr(res, err, 'Group not found, invalid group id!', 404)
-		}
-
-		return res.status(200).json({
-			message: 'Group found!',
-			group
-		});
-	} catch (err) {
-		return sendErr(res, err);
-	}
+    return res.status(200).json({
+      message: `Found ${users.length} users!`,
+      users
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
 };
 
 const addNewUsersInGroup = async (req, res, next) => {
-	try {
-		const group = req.body.group;
-		const members = req.body.members;
-		const adminId = req.userId;
+  try {
+    const group = req.body.group;
+    const members = req.body.members;
+    const adminId = req.userId;
 
-		const _members = members.map(result => result._id);
+    const _members = members.map(result => result._id);
 
-		const groupUpdate = await Group.findByIdAndUpdate({
-			_id: group
-		}, {
-			$addToSet: {
-				_members: _members
-			}
-		}, {
-			new: true
-		});
+    const groupUpdate = await Group.findByIdAndUpdate({
+      _id: group
+    }, {
+      $addToSet: {
+        _members: _members
+      }
+    }, {
+      new: true
+    });
 
-		const usersUpdate = await User.updateMany({
-			_id: _members
-		}, {
-			$addToSet: {
-				_groups: group
-			}
-		});
+    const usersUpdate = await User.updateMany({
+      _id: _members
+    }, {
+      $addToSet: {
+        _groups: group
+      }
+    });
 
-		// Send email to each user, welcoming to the group
-		for (let memberId of _members) {
-			sendMail.joinedGroup(memberId, groupUpdate, adminId);
-		}
+    // Send email to each user, welcoming to the group
+    for (let memberId of _members) {
+      sendMail.joinedGroup(memberId, groupUpdate, adminId);
+    }
 
-		return res.status(200).json({
-			message: 'Group Data has updated successfully!',
-			group: groupUpdate
-		});
-
-	} catch (err) {
-		return sendErr(res, err);
-	}
+    return res.status(200).json({
+      message: 'Group Data has updated successfully!',
+      group: groupUpdate
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
 };
 
 const updateGroup = async (req, res, next) => {
-	try {
-		const groupId = req.params.group_id;
-		const data = req.body;
+  try {
+    const groupId = req.params.group_id;
+    const data = req.body;
 
-		const groupUpdate = await Group.findOneAndUpdate({
-			_id: groupId
-		}, {
-			$set: data
-		}, {
-			new: true
-		});
+    const groupUpdate = await Group.findOneAndUpdate({
+      _id: groupId
+    }, {
+      $set: data
+    }, {
+      new: true
+    });
 
-		if (!groupUpdate) {
-			return sendErr(res, err, 'Group not found, invalid group id!', 404)
-		}
+    if (!groupUpdate) {
+      return sendErr(res, err, 'Group not found, invalid group id!', 404)
+    }
 
-		return res.status(200).json({
-			message: `${groupUpdate.group_name} group was updated successfully!`,
-			group: groupUpdate
-		});
-
-	} catch (err) {
-		return sendErr(res, err);
-	}
+    return res.status(200).json({
+      message: `${groupUpdate.group_name} group was updated successfully!`,
+      group: groupUpdate
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
 };
 
 const removeUserFromGroup = async (req, res, next) => {
-	try {
-		const groupId = req.body.group_id;
-		const userId = req.body.user_id;
+  try {
+    const groupId = req.body.group_id;
+    const userId = req.body.user_id;
 
-		// Remove user id from group users 
-		const groupUpdate = await Group.findOneAndUpdate({
-			_id: groupId
-		}, {
-			$pull: { _members: userId, _admins: userId }
-		}, {
-			new: true
-		});
+    // Remove user id from group users
+    const groupUpdate = await Group.findOneAndUpdate({
+      _id: groupId
+    }, {
+      $pull: { _members: userId, _admins: userId }
+    }, {
+      new: true
+    });
 
-		// Remove group id from user groups
-		const userUpdate = await User.findOneAndUpdate({
-			_id: userId
-		}, {
-			$pull: { _groups: groupId }
-		}, {
-			new: true
-		});
+    // Remove group id from user groups
+    const userUpdate = await User.findOneAndUpdate({
+      _id: userId
+    }, {
+      $pull: { _groups: groupId }
+    }, {
+      new: true
+    });
 
-		// If group wasn't found or user wasn't found return invalid id error
-		if (!groupUpdate || !userUpdate) {
-			let msg;
-			!groupUpdate ? msg = 'Group' : msg = 'User';
-			return sendErr(res, err, `${msg} not found, invalid id!`, 404)
-		}
+    // If group wasn't found or user wasn't found return invalid id error
+    if (!groupUpdate || !userUpdate) {
+      let msg;
+      groupUpdate ? msg = 'Group' : msg = 'User';
+      return sendErr(res, err, `${msg} not found, invalid id!`, 404)
+    }
 
-		return res.status(200).json({
-			message: `User has been removed from ${groupUpdate.group_name} group.`,
-			group: groupUpdate
-		});
-
-	} catch (err) {
-		return sendErr(res, err);
-	}
+    return res.status(200).json({
+      message: `User has been removed from ${groupUpdate.group_name} group.`,
+      group: groupUpdate
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
 };
 
-/*	=============
- *	-- EXPORTS --
- *	=============
+/*  =============
+ *  -- EXPORTS --
+ *  =============
  */
 
 module.exports = {
-	searchGroupUsers,
-	getUserGroup,
-	addNewUsersInGroup,
-	updateGroup,
-	removeUserFromGroup
+  searchGroupUsers,
+  addNewUsersInGroup,
+  updateGroup,
+  removeUserFromGroup
 };

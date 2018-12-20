@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { GroupService } from '../../../shared/services/group.service';
 import { ActivatedRoute } from '@angular/router';
 import { GroupDataService } from '../../../shared/services/group-data.service';
-import { NgxUiLoaderService } from 'ngx-ui-loader'; 
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Component({
   selector: 'app-group',
@@ -30,13 +30,11 @@ export class GroupComponent implements OnInit {
       .subscribe((res) => {
         // console.log('response in group component:', res);
         this.groupDataService.group = res['group'];
+        console.log('GROUP TEST 1', this.groupDataService.group)
 
       }, (err) => {
 
       });
 
   }
-
-
-
 }

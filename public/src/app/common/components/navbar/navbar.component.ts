@@ -32,28 +32,26 @@ export class NavbarComponent implements OnInit {
 
   constructor(private _auth: AuthService, private _userService: UserService, private _router: Router,
     private router: Router) {
-      
+
       this.user_data = JSON.parse(localStorage.getItem('user'));
 
       this.socket.on('connect', () => {
          console.log(`Socket connected!`);
          this.socket.emit('joinUser', this.user_data.user_id);
        });
-       
-      
+
+
       // console.log('Stuff', this.user_data);
- 
+
      }
 
   ngOnInit() {
 
-    console.log("%c   Octonius Inc \u00A9 " + this.Date.getFullYear() +". All Right Reserved!", "background-repeat: no-repeat; background-image: url('https://octhub.com/favicon.ico')");
     this.getUserProfile();
       const user = {
-        'userId': this.user_data.user_id 
+        'userId': this.user_data.user_id
         }
         this.socket.on('notificationsFeed', (user) => {
-          console.log('Get Notifications socket on', user);
           this.notifications_data = user;
         });
         this.socket.emit('getNotifications', this.user_data.user_id);
@@ -78,11 +76,11 @@ export class NavbarComponent implements OnInit {
         this.socket.emit('markRead', this.notifications_data['unreadNotifications'][0]._id , this.user_data.user_id);
 
       }
-      
+
     }
   }
 
-  underline_navbar_overview(){  
+  underline_navbar_overview(){
     const x = document.getElementById("li_overview");
     const y = document.getElementById("li_group");
     const z = document.getElementById("li_admin");
@@ -91,7 +89,7 @@ export class NavbarComponent implements OnInit {
     z.className = "none";
   }
 
-  
+
   underline_navbar_group(){
     const x = document.getElementById("li_overview");
     const y = document.getElementById("li_group");
@@ -101,7 +99,7 @@ export class NavbarComponent implements OnInit {
     z.className = "none";
   }
 
-  
+
   underline_navbar_admin(){
     const x = document.getElementById("li_overview");
     const y = document.getElementById("li_group");
