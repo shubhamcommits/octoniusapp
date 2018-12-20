@@ -922,17 +922,17 @@ export class GroupActivityComponent implements OnInit {
 
   }
 
-  onDownlaodFile(file) {
+  onDownlaodFile(fileName) {
 
     // const fileData = {
     //   'fileName': fileName
     // };
 
-    this.groupService.downloadGroupFile(this.group_id, file.original_name)
+    this.groupService.downloadGroupFile(this.group_id, fileName)
       .subscribe((file_toDownload) => {
 
         //   console.log('Downloaded File', file);
-        saveAs(file_toDownload, file.original_name);
+        saveAs(file_toDownload, fileName);
 
       }, (err) => {
         //  console.log('Downloaded File err', err);
