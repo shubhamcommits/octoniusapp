@@ -516,7 +516,7 @@
                 </div>
                 <div class="col-md-12 innercard" *ngFor="let file of post.files">
                   <div class="col-md-12 event-title">Attachment:</div>
-                  <div class="col-md-12"> <a role="button" href="javascript:void(null);" (click)="onDownlaodFile(file.modified_name,file.orignal_name)">{{file?.orignal_name}}</a></div>
+                  <div class="col-md-12"> <a role="button" href="javascript:void(null);" (click)="onDownlaodFile(file)">{{file?.orignal_name}}</a></div>
                 </div>
 
                 <div class="card-footer action-post innercard clearfix ">

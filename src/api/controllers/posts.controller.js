@@ -13,7 +13,9 @@ const { sendMail, sendErr } = require('../../utils');
 
 const add = async (req, res, next) => {
   try {
+
     const postData = req.body;
+    console.log('postData', postData);
 
     // Id it's event post, convert due_to date to UTC before storing
     if (postData.type === 'event') {
