@@ -9,11 +9,6 @@ const server = http.createServer(app);
 
 socket.init(server);
 
-// Private section migration helper
-const helper = require('./src/utils/privateSectionMigrationHelper');
-
-// helper.createPrivateGroups();
-
 server.listen(port, (req, res) => {
   // eslint-disable-next-line no-console
   console.log(`
