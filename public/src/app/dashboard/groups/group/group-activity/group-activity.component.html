@@ -160,7 +160,11 @@
 
               <div class="col-md-4 text-right ">
                 <button type="button " name="button" class="btn btn-default " (click)="show_hide_working_bar()">Cancel</button>
-                <button [disabled]="(postForm.invalid && post.type=='normal' ) || processing || (datePickedCount == 0 && timePickedCount == 0 && post.type=='event') ||(!isItMyWorkplace && selectedGroupUsers.length == 0 && post.type=='task') "
+                <button [disabled]="(
+                  postForm.invalid && post.type=='normal' )
+                  || processing
+                  || (datePickedCount == 0 && timePickedCount == 0 && post.type=='event')
+                  ||(!isItMyWorkplace && selectedGroupUsers.length == 0 && post.type=='task')"
                   type="button " name="button" (click)="OnAddNewPost()" class="btn btn-primary">Post</button>
               </div>
             </div>
