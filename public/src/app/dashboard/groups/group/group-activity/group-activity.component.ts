@@ -302,9 +302,6 @@ export class GroupActivityComponent implements OnInit {
 
         // Alert on screen when newPost is created
         this.socket.on('newPostOnGroup', (data) => {
-          console.log('received new post from socket', data);
-          console.log('test group_id', this.group_id);
-          console.log('data.groupId', data.groupId);
           if (this.group_id == data.groupId) {
             this.show_new_posts_badge = 1;
             this.playAudio();
