@@ -149,7 +149,7 @@
               <div class="col-md-8 ">
 
                 <div id="google-drive-file" style="display:none;"></div>
-                
+
 
 
                 <div *ngFor="let file of filesToUpload">
@@ -160,7 +160,7 @@
 
               <div class="col-md-4 text-right ">
                 <button type="button " name="button" class="btn btn-default " (click)="show_hide_working_bar()">Cancel</button>
-                <button [disabled]="(postForm.invalid && post.type=='normal' ) || processing || (datePickedCount == 0 && timePickedCount == 0 && post.type=='event') ||(selectedGroupUsers.length == 0 && post.type=='task') "
+                <button [disabled]="(postForm.invalid && post.type=='normal' ) || processing || (datePickedCount == 0 && timePickedCount == 0 && post.type=='event') ||(!isItMyWorkplace && selectedGroupUsers.length == 0 && post.type=='task') "
                   type="button " name="button" (click)="OnAddNewPost()" class="btn btn-primary">Post</button>
               </div>
             </div>
@@ -364,7 +364,6 @@
                     <div class="col-md-12">
                       <div class="form-group">
                         <h6>Add a comment</h6>
-
                         <quill-editor id="comment-content{{i}}" [modules]="modules" [(ngModel)]="comment.content"
                           (blur)="onEditorBlured($event)" [spellcheck]="true" class="form-control" name="commentContent"
                           (focus)="onEditorFocused($event)" formControlName="commentContent" (ready)="onEditorCreated($event)"
@@ -472,7 +471,7 @@
                             {{post?.created_date | date : 'medium'}}</span>
                     </h6>
 
-                    <span *ngIf="!isItMyWorkplace" class="assigned"> Assigned to {{post.task._assigned_to?.first_name}}
+                    <span class="assigned"> Assigned to {{post.task._assigned_to?.first_name}}
                       {{post.task._assigned_to?.last_name}}
                     </span>
                   </div>
@@ -676,7 +675,7 @@
                       {{post?.created_date| date : 'medium'}}</span>
                     </h6>
 
-                    <span *ngIf="!isItMyWorkplace" class="assigned" [ngbPopover]="eventassignedmembers" triggers="mouseenter:mouseleave">Assigned
+                    <span class="assigned" [ngbPopover]="eventassignedmembers" triggers="mouseenter:mouseleave">Assigned
                       to {{post.event._assigned_to.length}} MEMBERS
                     </span>
                     <ng-template #eventassignedmembers>
