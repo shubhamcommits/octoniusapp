@@ -368,11 +368,13 @@
                     <div class="col-md-12">
                       <div class="form-group">
                         <h6>Add a comment</h6>
-                        <quill-editor id="comment-content{{i}}" [modules]="modules" [(ngModel)]="comment.content"
-                          (blur)="onEditorBlured($event)" [spellcheck]="true" class="form-control" name="commentContent"
-                          (focus)="onEditorFocused($event)" formControlName="commentContent" (ready)="onEditorCreated($event)"
-                          (change)="onContentChanged($event)" (onEditorCreated)="onEditorCreated($event)"
-                          (onContentChanged)="onContentChanged($event)" ></quill-editor>
+                        <div class="quill-container">
+                          <quill-editor id="comment-content{{i}}" [modules]="modules" [(ngModel)]="comment.content"
+                                        (blur)="onEditorBlured($event)" [spellcheck]="true" class="form-control" name="commentContent"
+                                        (focus)="onEditorFocused($event)" formControlName="commentContent" (ready)="onEditorCreated($event)"
+                                        (change)="onContentChanged($event)" (onEditorCreated)="onEditorCreated($event)"
+                                        (onContentChanged)="onContentChanged($event)" ></quill-editor>
+                        </div>
                         <div ngbDropdown class="btn-group">
                           <a id="emojiDrop" class="btn" ngbDropdownToggle>
                             <i class="material-icons">
