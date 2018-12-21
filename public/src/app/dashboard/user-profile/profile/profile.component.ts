@@ -24,8 +24,45 @@ export class ProfileComponent implements OnInit {
     this.getUserProfile();
   }
 
+  closeSkills(){
+    const skill = document.getElementById('skills-input');
+    const skillContent = document.getElementById('skills-content');
+
+    skill['value'] = null;
+    skillContent.innerHTML = null;
+    this.ngOnInit();
+
+  }
+
+  saveSkills(){
+      const skills = {
+        skills: this.skills
+      };
+      this._userService.addSkills(skills)
+      .subscribe((res)=>{
+        console.log('Skills Added', res);
+        swal("Good Job!", "You have updated your skills, successfully!", "success")
+        .then((res)=>{
+          this.getUserProfile();
+        })    
+      },(err) =>{
+        console.log('Error while updating the skills', err);
+      })
+
+  }
+
   addSkills(){
-    swal({
+
+    const skill = document.getElementById('skills-input');
+    const skillContent = document.getElementById('skills-content');
+
+    skillContent.innerHTML += '<b><br />' + skill['value']+'</b>';
+
+    this.skills.push(skill['value']);
+
+    skill['value'] = '';
+
+   /* swal({
       title: "Enter your skill",
       closeOnClickOutside: false,
       buttons:{
@@ -36,7 +73,7 @@ export class ProfileComponent implements OnInit {
         element: "input",
         attributes: {
           placeholder: "Type your skill",
-          type: "text",
+          type: "text"
         },
       },
     }).then((res) =>{
@@ -57,7 +94,7 @@ export class ProfileComponent implements OnInit {
       else{
         console.log('nothing');
       }
-    })
+    })*/
   }
 
   getUserProfile() {
