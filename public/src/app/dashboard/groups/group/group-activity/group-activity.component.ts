@@ -150,7 +150,8 @@ export class GroupActivityComponent implements OnInit {
 
   googleDriveFiles=[];
 
-  modules = {};
+  modules;
+  modulesLoaded = false;
 
   isItMyWorkplace = false;
 
@@ -1058,7 +1059,7 @@ export class GroupActivityComponent implements OnInit {
           this.group = res['privateGroup'];
           this.group_id = res['privateGroup']['_id'];
           this.group_name = res['privateGroup']['group_name'];
-          this.loadGroupPosts();
+          // this.loadGroupPosts();
           resolve();
         }, (err) => {
           reject(err);
@@ -1821,10 +1822,7 @@ export class GroupActivityComponent implements OnInit {
           if (res['posts'][i].files.length > 0) {
             hashValues.push({ id: res['posts'][i].files[0]._id, value: '<a style="color:inherit;" target="_blank" href="' + this.BASE_URL + '/uploads/' + res['posts'][i].files[0].modified_name + '"' + '>' + res['posts'][i].files[0].orignal_name + '</a>' })
           }
-
         }
-
-
       }, (err) => {
 
       });
@@ -1840,17 +1838,17 @@ export class GroupActivityComponent implements OnInit {
         [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
         [{ 'direction': 'rtl' }],                         // text direction
 
-        [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+        // [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
         [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
 
         [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
         [{ 'font': [] }],
         [{ 'align': [] }],
 
-        ['clean'],                                         // remove formatting button
+        ['clean'],                                        // remove formatting button
 
         ['link', 'image', 'video']]
-    }
+    };
 
 
     this.modules = {
@@ -1860,6 +1858,7 @@ export class GroupActivityComponent implements OnInit {
         mentionDenotationChars: ["@", "#"],
         source: function (searchTerm, renderList, mentionChar) {
           let values;
+
 
           if (mentionChar === "@") {
             values = Value;
@@ -1875,14 +1874,14 @@ export class GroupActivityComponent implements OnInit {
               if (~values[i].value.toLowerCase().indexOf(searchTerm.toLowerCase())) matches.push(values[i]);
             renderList(matches, searchTerm);
           }
-        },
+        }
       },
-    }
+    };
 
   }
 
   playAudio() {
-    let audio = new Audio();
+    const audio = new Audio();
     audio.src = "/assets/audio/intuition.ogg";
     audio.load();
     audio.play();
