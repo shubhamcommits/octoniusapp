@@ -443,3 +443,11 @@ color:#787878 !important;
 .white.icon-octo-logo{
   color:white !important;
 }
+
+.skills{
+  li{
+    list-style-type: none;
+    border-bottom: 1px solid $border-color;
+    margin-bottom: 10px;
+  }
+}

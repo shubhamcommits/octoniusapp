@@ -30,6 +30,27 @@ const edit = async (req, res, next) => {
   }
 };
 
+const editSkills = async (req, res, next) => {
+  try {
+    const { userId, body: { skills } } = req;
+
+    const user = await User.findByIdAndUpdate({
+      _id: userId
+    }, {
+      skills
+    }, {
+      new: true
+    });
+
+    return res.status(200).json({
+      message: 'User skills updated!',
+      user
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
 const get = async (req, res, next) => {
   try {
     const { userId } = req;
@@ -37,7 +58,7 @@ const get = async (req, res, next) => {
     const user = await User.findOne({
       _id: userId
     })
-      .select('_id first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number mobile_number company_name _workspace _groups');
+      .select('_id first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups');
 
     // User not found
     if (!user) {
@@ -212,6 +233,7 @@ const getTasksDone = async (req, res, next) => {
 module.exports = {
   // Main
   edit,
+  editSkills,
   get,
   getOverview,
   updateImage,

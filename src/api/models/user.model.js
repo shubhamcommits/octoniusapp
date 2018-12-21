@@ -81,8 +81,7 @@ const UserSchema = new Schema({
   },
   skills: [{
     type: String,
-    default: null,
-    trim: true
+    default: null
   }],
   files: [{
     type: String,
