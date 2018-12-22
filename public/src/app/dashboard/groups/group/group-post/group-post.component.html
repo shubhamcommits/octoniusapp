@@ -171,7 +171,11 @@
 
           <div class="col-md-2 float-right text-right padding-topright">
             <div ngbDropdown class="d-inline-block">
-              <button class="btn btn-pink btn-sm" id="dropdownDone" style="background: mediumslateblue; color: white;"
+              <button class="btn btn-sm kbn-todo" *ngIf="post.task.status == 'to do'" id="dropdownDone" style=" color: white;"
+                ngbDropdownToggle>{{post.task.status}}</button>
+                <button class="btn btn-sm kbn-working" *ngIf="post.task.status == 'in progress'" id="dropdownDone" style=" color: white;"
+                ngbDropdownToggle>{{post.task.status}}</button>
+                <button class="btn btn-sm kbn-done" *ngIf="post.task.status == 'done'" id="dropdownDone" style=" color: white;"
                 ngbDropdownToggle>{{post.task.status}}</button>
               <div ngbDropdownMenu aria-labelledby="dropdownToDo">
                 <button class="dropdown-item" (click)="OnMarkTaskToDo(this.post._id)">To Do</button>
