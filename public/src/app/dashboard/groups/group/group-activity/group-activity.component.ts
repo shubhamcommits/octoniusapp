@@ -150,7 +150,8 @@ export class GroupActivityComponent implements OnInit {
 
   googleDriveFiles=[];
 
-  modules = {};
+  modules;
+  modulesLoaded = false;
 
   isItMyWorkplace = false;
 
@@ -159,13 +160,13 @@ export class GroupActivityComponent implements OnInit {
     developerKey = 'AIzaSyDGM66BZhGSmBApm3PKL-xCrri-3Adb06I';
 
     clientId = "971238950983-aef7kjl23994hjj9e8m5tch4a22b5dut.apps.googleusercontent.com";
-    
+
     scope = [
       'https://www.googleapis.com/auth/drive'//insert scope here
     ].join(' ');
-  
+
     pickerApiLoaded = false;
-  
+
     oauthToken?: any;
     // !--GOOGLE DEVELOPER CONSOLE CREDENTIALS--! //
 
@@ -247,7 +248,7 @@ export class GroupActivityComponent implements OnInit {
     this.inilizePostForm();
     this.inilizeCommentForm();
 
-    //initial group initialization for normal groups
+    // initial group initialization for normal groups
     this.group_id = this.groupDataService.groupId;
     this.group = this.groupDataService.group;
     this.group_name = this.group ? this.group.group_name : null;
@@ -455,7 +456,7 @@ export class GroupActivityComponent implements OnInit {
           group: this.group_name,
           userId: this.user_data.user_id,
           commentId: res['comment']._id,
-          groupId: this.groupDataService.group._id // Pass group id here!!!
+          groupId: this.group_id // Pass group id here!!!
         };
            // console.log(data);
         this.socket.emit('newPost', data);
@@ -613,8 +614,8 @@ export class GroupActivityComponent implements OnInit {
     else{
       formData.append('content', post.content+driveDivision.innerHTML);
     }
-    
-    
+
+
     formData.append('type', post.type);
     formData.append('_posted_by', post._posted_by);
     formData.append('_group', post._group);
@@ -677,12 +678,16 @@ export class GroupActivityComponent implements OnInit {
       }
     }
 
-    for (let i = 0; i < this.selectedGroupUsers.length; i++) {
-      // assignedUsers.push(this.selectedGroupUsers[i]._id);
-      formData.append('event._assigned_to', this.selectedGroupUsers[i]._id);
-
+    // if it is my workplace section I want to assign the event to only the current user
+    // if it's not I use all the members of the group that the user has selected
+    if (!this.isItMyWorkplace) {
+      for (let i = 0; i < this.selectedGroupUsers.length; i++) {
+        // assignedUsers.push(this.selectedGroupUsers[i]._id);
+        formData.append('event._assigned_to', this.selectedGroupUsers[i]._id);
+      }
+    } else {
+      formData.append('event._assigned_to', JSON.parse(localStorage.getItem('user')).user_id);
     }
-
 
     // console.log('assignedUsers: ', assignedUsers);
 
@@ -695,6 +700,7 @@ export class GroupActivityComponent implements OnInit {
         due_date: this.selected_date,
         due_time: this.due_time,
         due_to: moment(`${this.due_date} ${this.due_time}`).format(),
+        // problem: assignedUsers will always be empty
         _assigned_to: assignedUsers,
         _content_mentions: this.content_mentions
       },
@@ -820,7 +826,12 @@ export class GroupActivityComponent implements OnInit {
       task: {
         due_date: this.selected_date,
         due_to: moment(`${this.selected_date}`).format('YYYY-MM-DD'),
-        _assigned_to: this.selectedGroupUsers[0]._id,
+        // there are two scenarios:
+        // 1. personal workspace task post: doesn't need assigned members so selectGroupUsers will be undefined
+        // 2. group task post: needs one assigned member so selectgorupusers will be defined
+        // assign_to become the id of the selected group user in groups
+        // assign_to becomes the current user ID in the personal workspace
+        _assigned_to: this.selectedGroupUsers[0] ? this.selectedGroupUsers[0]._id : JSON.parse(localStorage.getItem('user')).user_id,
         _content_mentions: this.content_mentions
       }
     };
@@ -830,16 +841,20 @@ export class GroupActivityComponent implements OnInit {
 
     if(driveDivision.innerHTML == '' || driveDivision.innerHTML == null){
       formData.append('content', post.content);
-    }
-
-    else{
+    } else {
       formData.append('content', post.content+driveDivision.innerHTML);
     }
+
     formData.append('type', post.type);
     formData.append('_posted_by', post._posted_by);
     formData.append('_group', post._group);
     formData.append('task.due_to', post.task.due_to);
+
+    // if the user is using his personal workspace I want to automatically assign the task to him/her
+    // If the user is posting a task in a group I want to assign it to the member he/she chose.
     formData.append('task._assigned_to', post.task._assigned_to);
+    console.log('FORMDATA CHECK', formData);
+
     formData.append('task.status', 'to do');
 
     const scanned_content = post.content;
@@ -855,8 +870,7 @@ export class GroupActivityComponent implements OnInit {
             this.content_mentions.push(this.allMembersId[i]);
           }
           //this.content_mentions = this.allMembersId;
-        }
-        else {
+        } else {
           if (!this.content_mentions.includes(el.getElementsByClassName('mention')[i]['dataset']['id']))
             this.content_mentions.push(el.getElementsByClassName('mention')[i]['dataset']['id']);
         }
@@ -1045,17 +1059,13 @@ export class GroupActivityComponent implements OnInit {
           this.group = res['privateGroup'];
           this.group_id = res['privateGroup']['_id'];
           this.group_name = res['privateGroup']['group_name'];
-          this.loadGroupPosts();
-          console.log(this.group);
-          console.log(this.group_id);
-          console.log(this.group_name);
+          // this.loadGroupPosts();
           resolve();
         }, (err) => {
           reject(err);
         })
     })
   }
-
 
 
   // !--HIDE/SHOW THE NORMAL TYPE POST COMMENTS BOX--! //
@@ -1150,7 +1160,8 @@ export class GroupActivityComponent implements OnInit {
 
   // !--LOAD ALL THE GROUP POSTS ON INIT--! //
   loadGroupPosts() {
-    // we count the attempts to avoid infinity attempts
+    // we count the attempts to avoid infinitive attempts
+    console.log('fetching posts');
     let count = 0;
     this.isLoading$.next(true);
 
@@ -1811,10 +1822,7 @@ export class GroupActivityComponent implements OnInit {
           if (res['posts'][i].files.length > 0) {
             hashValues.push({ id: res['posts'][i].files[0]._id, value: '<a style="color:inherit;" target="_blank" href="' + this.BASE_URL + '/uploads/' + res['posts'][i].files[0].modified_name + '"' + '>' + res['posts'][i].files[0].orignal_name + '</a>' })
           }
-
         }
-
-
       }, (err) => {
 
       });
@@ -1830,17 +1838,17 @@ export class GroupActivityComponent implements OnInit {
         [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
         [{ 'direction': 'rtl' }],                         // text direction
 
-        [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+        // [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
         [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
 
         [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
         [{ 'font': [] }],
         [{ 'align': [] }],
 
-        ['clean'],                                         // remove formatting button
+        ['clean'],                                        // remove formatting button
 
         ['link', 'image', 'video']]
-    }
+    };
 
 
     this.modules = {
@@ -1850,6 +1858,7 @@ export class GroupActivityComponent implements OnInit {
         mentionDenotationChars: ["@", "#"],
         source: function (searchTerm, renderList, mentionChar) {
           let values;
+
 
           if (mentionChar === "@") {
             values = Value;
@@ -1865,14 +1874,14 @@ export class GroupActivityComponent implements OnInit {
               if (~values[i].value.toLowerCase().indexOf(searchTerm.toLowerCase())) matches.push(values[i]);
             renderList(matches, searchTerm);
           }
-        },
+        }
       },
-    }
+    };
 
   }
 
   playAudio() {
-    let audio = new Audio();
+    const audio = new Audio();
     audio.src = "/assets/audio/intuition.ogg";
     audio.load();
     audio.play();
@@ -1930,7 +1939,7 @@ export class GroupActivityComponent implements OnInit {
               src = doc[google.picker.Document.URL];
               console.log("Document selected is", doc,"and URL is ",src);
               this.googleDriveFiles = e[google.picker.Response.DOCUMENTS];
-              
+
               const driveDivision = document.getElementById('google-drive-file');
               driveDivision.style.display= 'block';
               driveDivision.innerHTML = '<b>Drive File Upload: </b>'+'<a href=\''+src+'\' target=\'_blank\'>'+this.googleDriveFiles[0]['name']+'</a>';
@@ -1940,7 +1949,7 @@ export class GroupActivityComponent implements OnInit {
         picker.setVisible(true);
       }
     }
-    
+
   }
 // !--GOOGLE PICKER IMPLEMENTATION--! //
 
