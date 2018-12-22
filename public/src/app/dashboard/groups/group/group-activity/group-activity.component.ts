@@ -1214,21 +1214,24 @@ export class GroupActivityComponent implements OnInit {
 
   // !--ON SCROLL FETCHES THE NEXT RECENT GROUP POSTS--! //
   onScroll() {
-    this.isLoading$.next(true);
-    this.ngxService.startBackground();
+    if(this.posts.length != 0){
+      this.isLoading$.next(true);
+      this.ngxService.startBackground();
+  
+      this.postService.getGroupPosts(this.group_id)
+        .subscribe((res) => {
+          if (this.posts.length != 0) {
+            console.log('Scroll Response', res);
+            var last_post_id = this.posts[this.posts.length - 1]._id
+            this.loadNextPosts(last_post_id);
+            this.isLoading$.next(false);
+            this.ngxService.stopBackground();
+          }
+        }, (err) => {
+          swal("Error!", "Error while retrieving the next recent posts & Scrolling " + err, "danger");
+        });
+    }
 
-    this.postService.getGroupPosts(this.group_id)
-      .subscribe((res) => {
-        if (this.posts.length != 0) {
-          console.log('Scroll Response', res);
-          var last_post_id = this.posts[this.posts.length - 1]._id
-          this.loadNextPosts(last_post_id);
-          this.isLoading$.next(false);
-          this.ngxService.stopBackground();
-        }
-      }, (err) => {
-        swal("Error!", "Error while retrieving the next recent posts & Scrolling " + err, "danger");
-      });
   }
   // !--ON SCROLL FETCHES THE NEXT RECENT GROUP POSTS--! //
 

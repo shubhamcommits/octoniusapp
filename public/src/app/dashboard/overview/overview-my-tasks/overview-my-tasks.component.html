@@ -13,6 +13,7 @@
                         </div>
                       </div>
                       <div *ngIf="!(isLoading$ | async)">
+                            <div *ngIf="toDoTaskCount !=0; else noToDoTasks;">    
                 <div *ngFor="let post of pendingTasks">
                     <div class="card" *ngIf="post.task.status == 'to do'">
                         <div class="card-block ">
@@ -80,6 +81,10 @@
                     </div>
         
                 </div>
+                </div>
+                <ng-template #noToDoTasks>
+                        <p><b>No tasks are pending</b></p>
+                    </ng-template>
             </div>
         
         
@@ -97,7 +102,9 @@
                         </div>
                       </div>
                       <div *ngIf="!(isLoading$ | async)">
+                          <div *ngIf="inProgressTaskCount!= 0; else noInProgressTasks">
                 <div *ngFor="let post of pendingTasks">
+                   
                     <div class="card" *ngIf="post.task.status == 'in progress'">
                         <div class="card-block ">
                             <div class="card-title">
@@ -161,8 +168,12 @@
         
                         </div>
                     </div>
-        
+                 
                 </div>
+                </div>
+                <ng-template #noInProgressTasks>
+                    <p><b>No tasks are in progress</b></p>
+                </ng-template>
                 </div>
         
             </div>
@@ -177,6 +188,7 @@
                       </div>
                       
                       <div *ngIf="!(isLoading$ | async)">
+                          <div *ngIf="this.completedTasks.length != 0; else noCompletedTasks">
                 <div class="card" *ngFor="let post of completedTasks">
                     <div class="card-block ">
                         <div class="card-title">
@@ -240,9 +252,13 @@
         
                     </div>
                 </div>
+                </div>
+                <ng-template #noCompletedTasks>
+                        <p><b>No completed tasks are there</b></p>
+                    </ng-template>
             </div>
         
-                <button type="button" (click)="OnFetchNextPosts()" class="btn btn-link">
+                <button *ngIf="this.loadCount == 1;" type="button" (click)="OnFetchNextPosts()" class="btn btn-link">
                     Load More...
                 </button>
         

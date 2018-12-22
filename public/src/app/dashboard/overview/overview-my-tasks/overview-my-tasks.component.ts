@@ -21,6 +21,10 @@ export class OverviewMyTasksComponent implements OnInit {
   isLoading$ = new BehaviorSubject(false);
   pendingTasks = new Array();
   completedTasks = new Array();
+  loadCount = 1;
+  toDoTaskCount = 0;
+  inProgressTaskCount = 0;
+  completedTaskCount = 0;
 
   constructor(private groupDataService: GroupDataService, private groupService: GroupService, private ngxService: NgxUiLoaderService, private userService: UserService, private postService: PostService) { 
 
@@ -74,10 +78,25 @@ export class OverviewMyTasksComponent implements OnInit {
   }
 
   getTasks() {
+    this.toDoTaskCount = 0;
+    this.inProgressTaskCount = 0;
     this.isLoading$.next(true);
     this.userService.getUserTasks()
     .subscribe((res) => {
       this.pendingTasks = res['posts'];
+      if(this.pendingTasks.length != 0){
+        for(var i = 0; i< this.pendingTasks.length; i++){
+          if(this.pendingTasks[i]['task']['status'] === 'to do'){
+            this.toDoTaskCount = 1;
+            break;
+          }
+          else if(this.pendingTasks[i]['task']['status'] === 'in progress'){
+            this.inProgressTaskCount = 1;
+            break;
+          }
+        }
+      }
+
       this.isLoading$.next(false);
       console.log('Tasks', res);
     },    
@@ -97,16 +116,26 @@ export class OverviewMyTasksComponent implements OnInit {
        console.log('CompletedTasks', res);
         this.completedTasks = this.completedTasks.concat(res['posts']);
        this.isLoading$.next(false);
+       if(res['posts'].length == 0){
+         this.loadCount = 0;
+       }
+
+       else{
+         this.loadCount = 1;
+       }
 
       }, (err) => {
         console.log('Error Fetching the Next Completed Tasks Posts', err)
 
       });
+
+      
   }
 
   OnFetchNextPosts(){
     var lastPostId = this.completedTasks[this.completedTasks.length - 1]._id;
     this.loadNextPosts(lastPostId);
+    console.log(this.loadNextPosts(lastPostId));
   }
 
   
@@ -172,6 +201,14 @@ export class OverviewMyTasksComponent implements OnInit {
       this.completedTasks = res['posts'];
       console.log('Completed Tasks', res);
       this.isLoading$.next(false);
+      if(res['posts'].length == 0){
+        this.loadCount = 0;
+      }
+
+      else{
+        this.loadCount = 1;
+      }
+
     }, 
     (err) => {
       console.log('Error Fetching the Completed Tasks Posts', err);
