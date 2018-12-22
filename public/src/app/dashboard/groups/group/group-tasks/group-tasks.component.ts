@@ -33,6 +33,11 @@ export class GroupTasksComponent implements OnInit {
   pendingTasks = new Array();
   completedTasks = new Array();
 
+  loadCount = 1;
+
+  pendingToDoTaskCount = 0;
+  pendingInProgressTaskCount = 0;
+
 
   ngOnInit() {
     this.ngxService.start(); // start foreground loading with 'default' id
@@ -66,10 +71,20 @@ export class GroupTasksComponent implements OnInit {
   }
 
   getTasks() {
+    this.pendingToDoTaskCount = 0;
+    this.pendingInProgressTaskCount = 0;
     this.isLoading$.next(true);
     this.groupService.getGroupTasks(this.groupId)
     .subscribe((res) => {
       this.pendingTasks = res['posts'];
+      for(var i = 0; i < this.pendingTasks.length; i++){
+        if(this.pendingTasks[i]['task']['status'] == 'to do'){
+          this.pendingToDoTaskCount = 1;  
+        }
+       if(this.pendingTasks[i]['task']['status'] == 'in progress'){
+          this.pendingInProgressTaskCount = 1; 
+        }
+      }
       this.isLoading$.next(false);
       console.log('Tasks', res);
     },    
@@ -105,6 +120,13 @@ export class GroupTasksComponent implements OnInit {
        console.log('CompletedTasks', res);
         this.completedTasks = this.completedTasks.concat(res['posts']);
        this.isLoading$.next(false);
+       if(res['posts'].length == 0){
+        this.loadCount = 0;
+      }
+
+      else{
+        this.loadCount = 1;
+      }
 
       }, (err) => {
         console.log('Error Fetching the Next Completed Tasks Posts', err)
@@ -178,6 +200,13 @@ export class GroupTasksComponent implements OnInit {
     this.groupService.getCompletedGroupTasks(this.groupId)
     .subscribe((res) => {
       this.completedTasks = res['posts'];
+      if(res['posts'].length == 0){
+        this.loadCount = 0;
+      }
+
+      else{
+        this.loadCount = 1;
+      }
       this.isLoading$.next(false);
       console.log('Completed Tasks', res);
     }, 

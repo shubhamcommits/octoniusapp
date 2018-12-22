@@ -22,9 +22,9 @@ export class OverviewMyTasksComponent implements OnInit {
   pendingTasks = new Array();
   completedTasks = new Array();
   loadCount = 1;
-  toDoTaskCount = 0;
-  inProgressTaskCount = 0;
-  completedTaskCount = 0;
+
+  pendingToDoTaskCount = 0;
+  pendingInProgressTaskCount = 0;
 
   constructor(private groupDataService: GroupDataService, private groupService: GroupService, private ngxService: NgxUiLoaderService, private userService: UserService, private postService: PostService) { 
 
@@ -78,27 +78,24 @@ export class OverviewMyTasksComponent implements OnInit {
   }
 
   getTasks() {
-    this.toDoTaskCount = 0;
-    this.inProgressTaskCount = 0;
+    this.pendingToDoTaskCount = 0;
+    this.pendingInProgressTaskCount = 0;
     this.isLoading$.next(true);
     this.userService.getUserTasks()
     .subscribe((res) => {
       this.pendingTasks = res['posts'];
-      if(this.pendingTasks.length != 0){
-        for(var i = 0; i< this.pendingTasks.length; i++){
-          if(this.pendingTasks[i]['task']['status'] === 'to do'){
-            this.toDoTaskCount = 1;
-            break;
-          }
-          else if(this.pendingTasks[i]['task']['status'] === 'in progress'){
-            this.inProgressTaskCount = 1;
-            break;
-          }
-        }
-      }
-
       this.isLoading$.next(false);
       console.log('Tasks', res);
+      for(var i = 0; i < this.pendingTasks.length; i++){
+        if(this.pendingTasks[i]['task']['status'] == 'to do'){
+          this.pendingToDoTaskCount = 1;  
+        }
+       if(this.pendingTasks[i]['task']['status'] == 'in progress'){
+          this.pendingInProgressTaskCount = 1; 
+        }
+      }
+      console.log('In progress',this.pendingInProgressTaskCount)
+      console.log('To Do',this.pendingToDoTaskCount)
     },    
     (err) => {
       console.log('Error Fetching the Pending Tasks Posts', err);
