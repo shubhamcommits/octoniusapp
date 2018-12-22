@@ -159,13 +159,13 @@ export class GroupActivityComponent implements OnInit {
     developerKey = 'AIzaSyDGM66BZhGSmBApm3PKL-xCrri-3Adb06I';
 
     clientId = "971238950983-aef7kjl23994hjj9e8m5tch4a22b5dut.apps.googleusercontent.com";
-    
+
     scope = [
       'https://www.googleapis.com/auth/drive'//insert scope here
     ].join(' ');
-  
+
     pickerApiLoaded = false;
-  
+
     oauthToken?: any;
     // !--GOOGLE DEVELOPER CONSOLE CREDENTIALS--! //
 
@@ -419,9 +419,9 @@ export class GroupActivityComponent implements OnInit {
 
     this.comment._post_id = post_id;
     this.comment._commented_by = this.user_data.user_id;
-    var cardTaskPost = document.getElementById('card-task-post-comment-' + index);
-    var cardNormalPost = document.getElementById('card-normal-post-comment-' + index);
-    var cardEventPost = document.getElementById('card-event-post-comment-' + index);
+    const cardTaskPost = document.getElementById('card-task-post-comment-' + index);
+    const cardNormalPost = document.getElementById('card-normal-post-comment-' + index);
+    const cardEventPost = document.getElementById('card-event-post-comment-' + index);
 
     const scanned_content = commentContent.content;
     var el = document.createElement('html');
@@ -455,7 +455,8 @@ export class GroupActivityComponent implements OnInit {
           group: this.group_name,
           userId: this.user_data.user_id,
           commentId: res['comment']._id,
-          groupId: this.groupDataService.group._id // Pass group id here!!!
+          groupId: this.groupDataService.group._id, // Pass group id here!!!
+          type: 'comment' // this is used to differentiate between posts and comment for emitting notification
         };
            // console.log(data);
         this.socket.emit('newPost', data);
@@ -613,8 +614,8 @@ export class GroupActivityComponent implements OnInit {
     else{
       formData.append('content', post.content+driveDivision.innerHTML);
     }
-    
-    
+
+
     formData.append('type', post.type);
     formData.append('_posted_by', post._posted_by);
     formData.append('_group', post._group);
@@ -643,7 +644,8 @@ export class GroupActivityComponent implements OnInit {
           group: this.group_name,
           userId: this.user_data.user_id,
           postId: res['post']._id,
-          groupId: this.group_id  // Pass group id here!!!
+          groupId: this.group_id,  // Pass group id here!!!
+          type: 'post' // used to differentiate between post and comment notifications
         };
         //  console.log(data);
         this.socket.emit('newPost', data);
@@ -772,7 +774,8 @@ export class GroupActivityComponent implements OnInit {
           group: this.group_name,
           userId: this.user_data.user_id,
           postId: res['post']._id,
-          groupId: this.group_id // Pass group id here!!!
+          groupId: this.group_id, // Pass group id here!!!
+          type: 'post'
         };
         //  console.log(data);
         this.socket.emit('newPost', data);
@@ -896,7 +899,8 @@ export class GroupActivityComponent implements OnInit {
           group: this.group_name,
           userId: this.user_data.user_id,
           postId: res['post']._id,
-          groupId: this.group_id // Pass group id here!!!
+          groupId: this.group_id,
+          type: 'post'// Pass group id here!!!
         };
         //  console.log(data);
         this.socket.emit('newPost', data);
@@ -1930,7 +1934,7 @@ export class GroupActivityComponent implements OnInit {
               src = doc[google.picker.Document.URL];
               console.log("Document selected is", doc,"and URL is ",src);
               this.googleDriveFiles = e[google.picker.Response.DOCUMENTS];
-              
+
               const driveDivision = document.getElementById('google-drive-file');
               driveDivision.style.display= 'block';
               driveDivision.innerHTML = '<b>Drive File Upload: </b>'+'<a href=\''+src+'\' target=\'_blank\'>'+this.googleDriveFiles[0]['name']+'</a>';
@@ -1940,7 +1944,7 @@ export class GroupActivityComponent implements OnInit {
         picker.setVisible(true);
       }
     }
-    
+
   }
 // !--GOOGLE PICKER IMPLEMENTATION--! //
 
