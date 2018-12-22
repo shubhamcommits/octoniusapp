@@ -11,6 +11,7 @@
                     </div>
                   </div>
                   <div *ngIf="!(isLoading$ | async)">
+                  <div *ngIf="pendingToDoTaskCount == 1; else noToDoTasks;">     
             <div *ngFor="let post of pendingTasks">
                 <div class="card" *ngIf="post.task.status == 'to do'">
                     <div class="card-block ">
@@ -24,7 +25,6 @@
                                     {{post?.created_date | date : 'medium'}}</span>
                             </h6>
                             <p class="small font-weight-bold" style="margin-top: 5px" *ngIf="post.task?.due_to != 'Invalid date'"> due {{post.task?.due_to | date}}</p>
-                            
                                      
                                         <div ngbDropdownMenu aria-labelledby="dropdownTodo">
                                             <div *ngFor="let admin of group_admins">
@@ -48,7 +48,7 @@
                             </span>
     
                             <div ngbDropdown class="d-inline-block float-right status">
-                                <button class="btn btn-sm" id="dropdownDone" ngbDropdownToggle>{{post.task.status}}</button>
+                                <button class="btn btn-sm kbn-todo" id="dropdownDone" ngbDropdownToggle>{{post.task.status}}</button>
                                 <div ngbDropdownMenu aria-labelledby="dropdownToDo">
                                     <button class="dropdown-item" (click)="OnMarkTaskToDo(this.post._id)">To Do</button>
                                     <button class="dropdown-item" (click)="OnMarkTaskInProgress(this.post._id)">In
@@ -79,6 +79,12 @@
                 </div>
     
             </div>
+
+            </div>
+                          
+            <ng-template #noToDoTasks>
+                    <p><b>No tasks are pending</b></p>
+                </ng-template>
         </div>
     
     
@@ -96,7 +102,9 @@
                     </div>
                   </div>
                   <div *ngIf="!(isLoading$ | async)">
-            <div *ngFor="let post of pendingTasks">
+                        <div *ngIf="pendingInProgressTaskCount == 1; else noInProgressTasks;">  
+                    <div *ngFor="let post of pendingTasks">
+               
                 <div class="card" *ngIf="post.task.status == 'in progress'">
                     <div class="card-block ">
                         <div class="card-title">
@@ -131,7 +139,7 @@
                                     </span>
             
                             <div ngbDropdown class="d-inline-block float-right status">
-                                <button class="btn btn-sm" id="dropdownDone" ngbDropdownToggle>{{post.task.status}}</button>
+                                <button class="btn btn-sm kbn-working" id="dropdownDone" ngbDropdownToggle>{{post.task.status}}</button>
                                 <div ngbDropdownMenu aria-labelledby="dropdownToDo">
                                     <button class="dropdown-item" (click)="OnMarkTaskToDo(this.post._id)">To Do</button>
                                     <button class="dropdown-item" (click)="OnMarkTaskInProgress(this.post._id)">In
@@ -160,8 +168,11 @@
     
                     </div>
                 </div>
-    
-            </div>
+             </div>
+                  </div>
+            <ng-template #noInProgressTasks>
+                <p><b>No tasks are in progress</b></p>
+            </ng-template>
             </div>
     
         </div>
@@ -176,6 +187,7 @@
                   </div>
                   
                   <div *ngIf="!(isLoading$ | async)">
+                      <div *ngIf="this.completedTasks.length != 0; else noCompletedTasks">
             <div class="card" *ngFor="let post of completedTasks">
                 <div class="card-block ">
                     <div class="card-title">
@@ -210,7 +222,7 @@
                                 </span>    
     
                         <div ngbDropdown class="d-inline-block float-right status">
-                            <button class="btn btn-sm" id="dropdownDone" ngbDropdownToggle>{{post.task.status}}</button>
+                            <button class="btn btn-sm kbn-done" id="dropdownDone" ngbDropdownToggle>{{post.task.status}}</button>
                             <div ngbDropdownMenu aria-labelledby="dropdownToDo">
                                 <button class="dropdown-item" (click)="OnMarkTaskToDo(this.post._id)">To Do</button>
                                 <button class="dropdown-item" (click)="OnMarkTaskInProgress(this.post._id)">In
@@ -239,9 +251,13 @@
     
                 </div>
             </div>
+            </div>
+            <ng-template #noCompletedTasks>
+                    <p><b>No completed tasks are there</b></p>
+                </ng-template>
         </div>
     
-            <button type="button" (click)="OnFetchNextPosts()" class="btn btn-link">
+            <button *ngIf="this.loadCount == 1;" type="button" (click)="OnFetchNextPosts()" class="btn btn-link">
                 Load More...
             </button>
     
