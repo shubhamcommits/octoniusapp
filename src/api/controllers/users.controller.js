@@ -1,5 +1,15 @@
 const moment = require('moment');
 
+// // REDIS STUFF
+// require redis and utils
+const redis = require('redis');
+const util = require('util');
+// Connect to redis server
+const redisUrl = 'redis://127.0.0.1:6379';
+const client = redis.createClient(redisUrl)
+// Overwrite client.get function to return a promise
+client.get = util.promisify(client.get);
+
 const { Post, User } = require('../models');
 
 
@@ -55,6 +65,20 @@ const get = async (req, res, next) => {
   try {
     const { userId } = req;
 
+    // Do we have any cache data in redis related to this query
+    const cachedUser = await client.get(userId);
+
+    // if yes then respond to the request and return
+    if (cachedUser) {
+      console.log('GOT IT FROM REDIS');
+
+      return res.status(200).json({
+        message: 'User found!',
+        user: JSON.parse(cachedUser)
+      });
+    }
+
+    // if no, we need to respond to request and update our cache to store the data
     const user = await User.findOne({
       _id: userId
     })
@@ -64,6 +88,11 @@ const get = async (req, res, next) => {
     if (!user) {
       return sendErr(res, null, 'Error! User not found, invalid id or unauthorized request', 404);
     }
+
+    console.log('GOT IT FROM MONGO');
+
+    // Cache user in redis
+    client.set(userId, JSON.stringify(user));
 
     return res.status(200).json({
       message: 'User found!',
