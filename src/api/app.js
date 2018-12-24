@@ -23,8 +23,11 @@ if (process.env.NODE_ENV !== 'production') {
   devEnv.init();
 }
 
-// Open MOngoose connection to db
+// Open Mongoose connection to db
 require('../db');
+
+// Start caching logic
+require('../utils/cache');
 
 // cors middleware for orign and Headers
 app.use(cors());
