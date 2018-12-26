@@ -7,7 +7,15 @@ import * as moment from 'moment';
 import * as io from 'socket.io-client';
 import { environment } from '../../../../environments/environment'
 import { BehaviorSubject } from 'rxjs';
-import { async } from '@angular/core/testing';
+import { async } from '@angular/core/testing'
+
+
+
+
+// Further ideas for notifications under consideration
+// 1. when the user gets mentioned and assigned a task at the same time we should maybe just display 1 notification instead of two?
+// 2. we might want to change name generateFeed to generateFeedAndEmitToUser
+// 3. when you click the notification in the feed and you relocate, the red sign doesn't disappear until you click outside the feed window
 
 @Component({
   selector: 'app-navbar',
@@ -34,18 +42,16 @@ export class NavbarComponent implements OnInit {
     private router: Router) {
 
       this.user_data = JSON.parse(localStorage.getItem('user'));
-
-      this.socket.on('connect', () => {
-         console.log(`Socket connected!`);
-         this.socket.emit('joinUser', this.user_data.user_id);
-       });
-
-
       // console.log('Stuff', this.user_data);
-
      }
 
-  ngOnInit() {
+  async ngOnInit() {
+
+    await this.socket.on('connect', async () => {
+      console.log(`Socket connected!`);
+      // we can probably delete this  second parameter since every server request already has access to the current userId
+      await this.socket.emit('joinUser', this.user_data.user_id);
+    });
 
     this.getUserProfile();
       const user = {
@@ -57,7 +63,7 @@ export class NavbarComponent implements OnInit {
         this.socket.emit('getNotifications', this.user_data.user_id);
     }
 
-  gotToPostPage(groupId, postId){
+  gotToPostPage(groupId, postId) {
  //   console.log(groupId, postId);
    this.router.navigate(['dashboard', 'group', groupId, 'post', postId]);
   }

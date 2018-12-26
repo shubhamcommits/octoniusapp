@@ -12,24 +12,22 @@ const init = (server) => {
    */
 
   io.on('connection', (socket) => {
-
     // -| USER NOTIFICATION CENTER |-
 
     // Join user on private user room
     socket.on('joinUser', (userId) => {
-
       // join room
       socket.join(userId);
     });
 
     socket.on('getNotifications', async (userId) => {
-      sendNotificationsFeed(socket, userId);
+      sendNotificationsFeed(socket, userId, io);
     });
 
     socket.on('markRead', async (topListId, userId) => {
       await notifications.markRead(topListId);
 
-      sendNotificationsFeed(socket, userId);
+      sendNotificationsFeed(socket, userId, io);
     });
 
     // -| GROUP ACTIVITY ROOM |-
@@ -47,6 +45,8 @@ const init = (server) => {
 
     // Listen to new post creation
     socket.on('newPost', (data) => {
+      console.log('reached socket newPost');
+      console.log('data', data);
       notifyRelatedUsers(io, socket, data);
       notifyGroupPage(socket, data);
     });
@@ -62,17 +62,22 @@ const init = (server) => {
  * ===========
  */
 
-const generateFeed = async (userId) => {
-  return {
-    unreadNotifications: await notifications.getUnread(userId),
-    readNotifications: await notifications.getRead(userId)
-  };
+const generateFeed = async (userId, io) => {
+  try {
+    const unreadNotifications = await notifications.getUnread(userId);
+    const readNotifications = await notifications.getRead(userId);
+
+    const feed = { unreadNotifications, readNotifications };
+
+    io.sockets.in(userId).emit('notificationsFeed', feed);
+  } catch (err) {
+    console.log('err', err);
+  }
 };
 
-const sendNotificationsFeed = async (socket, userId) => {
-  const feed = await generateFeed(userId);
-
-  socket.emit('notificationsFeed', feed);
+const sendNotificationsFeed = async (socket, userId, io) => {
+  //  here the same as before: I deleted the emit code
+  generateFeed(userId, io);
 };
 
 const notifyGroupPage = (socket, data) => {
@@ -85,58 +90,59 @@ const notifyGroupPage = (socket, data) => {
 
 const notifyRelatedUsers = async (io, socket, data) => {
   try {
-    const post = await Post.findById(data.postId).lean();
-    const comment = await Comment.findById(data.commentId).lean();
 
-    // If it's a comment creation/update
-    if (comment) {
-      // If there's mentions on comments content...
-      if (comment._content_mentions.length !== 0) {
-        // ...emit notificationsFeed for every user mentioned
-        for (let userId of comment._content_mentions) {
-          const feed = generateFeed(userId);
+    let post;
+    let comment;
 
-          io.sockets.in(userId).emit('notificationsFeed', feed);
-        }
-      }
-    }
+    // we had a problem that the flow got interrupted because of the db search
+    //  by adding type property (at the moment post or comment) to data  we can specify which database to search through
+    if (data.type === 'post') {
+      post = await Post.findById(data.postId).lean();
 
-    // If it's a post creation/update
-    if (post) {
-      // If there's mentions on post content...
+      // If there are mentions on post content...
       if (post._content_mentions.length !== 0) {
-        // ...emit notificationsFeed for every user mentioned
-        for (let userId of post._content_mentions) {
-          const feed = generateFeed(userId);
 
-          io.sockets.in(userId).emit('notificationsFeed', feed);
+        // ...emit notificationsFeed for every user mentioned
+        //  generateFeed seems to always be followed by emitting it to the specified user, so I placed the socket.emit function inside the generateFeed function
+        //  this way I wouldn't put an await inside a for function
+        //  proposal: we might want to change name generateFeed to generateFeedAndEmitToUser
+        for (const userId of post._content_mentions) {
+            generateFeed(userId, io);
         }
       }
 
-      // Send Email notification after post creation
       switch (post.type) {
+        //  task posts have only one assigned member so generatefeed needs to only be called once
         case 'task':
           if (post.task._assigned_to.length !== 0) {
-            const feed = generateFeed(post._id);
-
-            io.sockets.in(post._id).emit('notificationsFeed', feed);
+            generateFeed(post.task._assigned_to, io);
           }
           break;
         case 'event':
           if (post.event._assigned_to.length !== 0) {
-            for (let userId of post.event._assigned_to) {
-              const feed = generateFeed(userId);
-
-              io.sockets.in(userId).emit('notificationsFeed', feed);
+            for (const userId of post.event._assigned_to) {
+              generateFeed(userId, io);
             }
           }
           break;
         default:
-          // do nothing!
+            // do nothing!
+      }
+    //  if we mentioned someone in a comment we trigger this part
+    //    same process, we generate the feed and emit it to the mentioned user, tiggering a notification in real-time
+    } else if (data.type === 'comment') {
+      comment = await Comment.findById(data.commentId).lean();
+
+      // If there's mentions on comments content...
+      if (comment._content_mentions.length !== 0) {
+        // ...emit notificationsFeed for every user mentioned
+        for (const userId of comment._content_mentions) {
+          generateFeed(userId, io);
+        }
       }
     }
   } catch (err) {
-    return err
+    return err;
   }
 };
 
