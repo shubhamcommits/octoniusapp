@@ -56,6 +56,7 @@ import { GroupPostComponent } from './dashboard/groups/group/group-post/group-po
 import { GroupTasksComponent } from './dashboard/groups/group/group-tasks/group-tasks.component';
 import { OverviewMyTasksComponent } from './dashboard/overview/overview-my-tasks/overview-my-tasks.component';
 import { OverviewMyWorkplaceComponent } from './dashboard/overview/overview-my-workplace/overview-my-workplace.component';
+import { QuillAutoLinkService } from './shared/services/quill-auto-link.service';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 
@@ -140,7 +141,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 
   providers: [AuthService, UserService, PostService, GroupService,
     GroupDataService, WorkspaceService, GroupsService, AdminService,
-    AuthGuard, NotAuthGuard,
+    AuthGuard, NotAuthGuard,QuillAutoLinkService,
     { provide: 'SnotifyToastConfig', useValue: ToastDefaults},
     SnotifyService,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true },
