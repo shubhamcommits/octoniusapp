@@ -28,6 +28,7 @@ import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 declare var gapi: any;
 declare var google: any;
 import {Group} from "../../../../shared/models/group.model";
+import { QuillAutoLinkService } from '../../../../shared/services/quill-auto-link.service';
 
 @Component({
   selector: 'app-group-activity',
@@ -175,7 +176,7 @@ export class GroupActivityComponent implements OnInit {
     public groupDataService: GroupDataService, private router: Router, private groupService: GroupService,
     private modalService: NgbModal, private postService: PostService, private _sanitizer: DomSanitizer,
     private ngxService: NgxUiLoaderService, private snotifyService: SnotifyService, config: NgbDropdownConfig,
-    private scrollService: ScrollToService) {
+    private scrollService: ScrollToService, private quillInitializeService: QuillAutoLinkService) {
 
     config.placement = 'left';
     config.autoClose = false;
@@ -201,8 +202,8 @@ export class GroupActivityComponent implements OnInit {
   }
 
   onContentChanged(quill) {
-    // console.log('quill content is changed!', quill);
-    this.editorTextLength = quill.text.length
+   //  console.log('quill content is changed!', quill);
+      this.editorTextLength = quill.text.length
     // console.log('length', this.editorTextLength);
   }
   transform(html: string): SafeHtml {
@@ -1860,6 +1861,7 @@ export class GroupActivityComponent implements OnInit {
 
     this.modules = {
       toolbar: toolbaroptions,
+      autoLink: true,
       mention: {
         allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
         mentionDenotationChars: ["@", "#"],
