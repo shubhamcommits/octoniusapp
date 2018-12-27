@@ -688,17 +688,15 @@ export class GroupActivityComponent implements OnInit {
       formData.append('event._assigned_to', JSON.parse(localStorage.getItem('user')).user_id);
     }
 
-
-
     const post = {
       content: this.post.content,
       type: this.post.type,
       _posted_by: this.user_data.user_id,
       _group: this.group_id,
       event: {
-        due_date: moment(`${this.selected_date}`).format('YYYY-MM-DD'),
-        due_time: moment(`${this.selected_date}`).format('hh:mm:ss.SSS'),
-        due_to: moment(`${this.selected_date}`).format('YYYY-MM-DD hh:mm:ss.SSS'),
+        due_date: moment(`${this.selected_date.toISOString()}`).format('YYYY-MM-DD'),
+        due_time: moment(`${this.selected_date.toISOString()}`).format('hh:mm:ss.SSS'),
+        due_to: moment(`${this.selected_date.toISOString()}`).format('YYYY-MM-DD hh:mm:ss.SSS'),
         // problem: assignedUsers will always be empty
         _assigned_to: assignedUsers,
         _content_mentions: this.content_mentions
@@ -803,7 +801,6 @@ export class GroupActivityComponent implements OnInit {
   }
 
   addNewTaskPost() {
-
     const formData: any = new FormData();
     const files: Array<File> = this.filesToUpload;
 
@@ -819,8 +816,8 @@ export class GroupActivityComponent implements OnInit {
       _posted_by: this.user_data.user_id,
       _group: this.group_id,
       task: {
-        due_date: moment(`${this.selected_date}`).format('YYYY-MM-DD hh:mm:ss.SSS'),
-        due_to: moment(`${this.selected_date}`).format('YYYY-MM-DD'),
+        due_date: moment(`${this.selected_date.toISOString()}`).format('YYYY-MM-DD hh:mm:ss.SSS'),
+        due_to: moment(`${this.selected_date.toISOString()}`).format('YYYY-MM-DD'),
         // there are two scenarios:
         // 1. personal workspace task post: doesn't need assigned members so selectGroupUsers will be undefined
         // 2. group task post: needs one assigned member so selectgorupusers will be defined
@@ -1325,9 +1322,9 @@ export class GroupActivityComponent implements OnInit {
   }
 
   OnSaveEditComment(index, commentId, postId){
-    const editor = document.getElementById('edit-comment-'+index);
+    const editor = document.getElementById('edit-comment-' + index);
     const comment ={
-      content: document.getElementById('commentContent-'+index).innerHTML,
+      content: document.getElementById('commentContent-' + index).innerHTML,
       contentMentions: this.content_mentions
     };
 
@@ -1552,7 +1549,8 @@ if (post && post.type === 'task') {
   }
 
   onDateSelected() {
-    const temp = this.model_date;
+    console.log('date', this.model_date);
+    const temp = this.model_date
     this.due_date = temp.year.toString() + '-' + this.date.month.toString() + '-' + temp.day.toString();
     this.selected_date = new Date(this.date.year, (this.date.month - 1), temp.day, this.model_time.hour, this.model_time.minute);
     this.due_to = temp.year.toString() + '-' + this.date.month.toString() + '-' + temp.day.toString() + 'T' + this.model_time.hour + ':' + this.model_time.minute + ':' + '00' + this.selected_date.getTimezoneOffset();

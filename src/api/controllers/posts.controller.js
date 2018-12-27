@@ -27,6 +27,8 @@ const add = async (req, res, next) => {
       notifications.newPostMentions(post);
     }
 
+    console.log('POST', post);
+
     // Send Email notification after post creation
     switch (post.type) {
       case 'task':
