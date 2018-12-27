@@ -123,7 +123,6 @@ const edit = async (req, res, next) => {
         break;
     }
 
-
     return res.status(200).json({
       message: 'Post updated!',
       post
