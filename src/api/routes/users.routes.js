@@ -2,7 +2,7 @@ const express = require('express');
 
 const { users } = require('../controllers');
 
-const { auth, fileHandler } = require('../../utils');
+const { auth, cleanCache, fileHandler } = require('../../utils');
 
 const router = express.Router();
 
@@ -21,16 +21,16 @@ router.use(auth.isLoggedIn);
 router.get('/', users.get);
 
 // Edit/Update user
-router.put('/', users.edit);
+router.put('/', cleanCache, users.edit);
 
 // Update user profile image
-router.put('/updateImage', fileHandler, users.updateImage);
+router.put('/updateImage', fileHandler, cleanCache, users.updateImage);
 
 // Get user's overview
 router.get('/overview', users.getOverview);
 
 // Edit user skills
-router.put('/skills', users.editSkills);
+router.put('/skills', cleanCache, users.editSkills);
 
 // - Tasks -
 
