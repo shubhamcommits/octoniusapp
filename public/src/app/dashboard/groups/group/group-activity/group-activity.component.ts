@@ -186,7 +186,7 @@ export class GroupActivityComponent implements OnInit {
     //config.triggers = 'hover';
     this.group_id = this.groupDataService.groupId;
     this.user_data = JSON.parse(localStorage.getItem('user'));
-    // console.log('user', this.user_data);
+
     this.group = this.groupDataService.group;
   }
 
@@ -299,7 +299,7 @@ export class GroupActivityComponent implements OnInit {
           workspace: this.user_data.workspace.workspace_name,
           group: this.group_name,
         };
-        console.log('room', room);
+
 
         // join room to get notifications for this group
         this.socket.emit('joinGroup', room, (err) => {
@@ -308,9 +308,6 @@ export class GroupActivityComponent implements OnInit {
 
         // Alert on screen when newPost is created
         this.socket.on('newPostOnGroup', (data) => {
-          console.log('received new post from socket', data);
-          console.log('test group_id', this.group_id);
-          console.log('data.groupId', data.groupId);
           if (this.group_id == data.groupId) {
             this.show_new_posts_badge = 1;
             this.playAudio();
@@ -330,8 +327,7 @@ export class GroupActivityComponent implements OnInit {
 
   fileChangeEvent(fileInput: any) {
     this.filesToUpload = <Array<File>>fileInput.target.files;
-     console.log('files', this.filesToUpload);
-    // console.log('input', fileInput);
+
 
     // this.product.photo = fileInput.target.files[0]['name'];
   }
@@ -455,7 +451,7 @@ export class GroupActivityComponent implements OnInit {
 
     this.postService.addNewComment(post_id, commentContent)
       .subscribe((res) => {
-        console.log('Add Comment Response', res);
+
         const data = {
           // it should get automatically, something like workspace: this.workspace_name
           workspace: this.user_data.workspace.workspace_name,
@@ -466,7 +462,7 @@ export class GroupActivityComponent implements OnInit {
           groupId: this.groupDataService.group._id, // Pass group id here!!!
           type: 'comment' // this is used to differentiate between posts and comment for emitting notification
         };
-           // console.log(data);
+
         this.socket.emit('newPost', data);
         this.commentForm.reset();
         this.loadGroupPosts();
@@ -518,7 +514,6 @@ export class GroupActivityComponent implements OnInit {
               this.alert.class = 'success';
               this._message.next(res['message']);
               this.resetNewPostForm();
-              console.log('Normal post response: ', res);
               this.loadGroupPosts();
 
             }, (err) => {
@@ -540,9 +535,6 @@ export class GroupActivityComponent implements OnInit {
 
 
   OnAddNewPost() {
-    // console.log('on addnew post');
-    // console.log('on addnew post.type', this.post.type);
-
 
     switch (this.post.type) {
       case 'normal':
@@ -613,7 +605,7 @@ export class GroupActivityComponent implements OnInit {
     }
 
     const driveDivision = document.getElementById('google-drive-file');
-    console.log(driveDivision.innerHTML);
+
 
     if(driveDivision.innerHTML == '' || driveDivision.innerHTML == null){
       formData.append('content', post.content);
@@ -633,7 +625,6 @@ export class GroupActivityComponent implements OnInit {
     this.disblePostForm();
     this.postService.addNewNormalPost(formData)
       .subscribe((res) => {
-         console.log('Post', res);
         this.processing = false;
         this.enablePostForm();
         this.postForm.reset();
@@ -655,7 +646,7 @@ export class GroupActivityComponent implements OnInit {
           groupId: this.group_id,  // Pass group id here!!!
           type: 'post' // used to differentiate between post and comment notifications
         };
-        //  console.log(data);
+
         this.socket.emit('newPost', data);
         this.loadGroupPosts();
         this.content_mentions = [];
@@ -668,7 +659,7 @@ export class GroupActivityComponent implements OnInit {
         this.googleDriveFiles = [];
         this.alert.class = 'danger';
         this.enablePostForm();
-        console.log('Error while creating a new post', err);
+
 
       });
 
@@ -678,7 +669,6 @@ export class GroupActivityComponent implements OnInit {
 
     const formData: any = new FormData();
     const files: Array<File> = this.filesToUpload;
-    // console.log(files);
     const assignedUsers = new Array();
 
     if (files !== null) {
@@ -698,7 +688,7 @@ export class GroupActivityComponent implements OnInit {
       formData.append('event._assigned_to', JSON.parse(localStorage.getItem('user')).user_id);
     }
 
-    // console.log('assignedUsers: ', assignedUsers);
+
 
     const post = {
       content: this.post.content,
@@ -717,7 +707,6 @@ export class GroupActivityComponent implements OnInit {
     };
 
     const driveDivision = document.getElementById('google-drive-file');
-    console.log(driveDivision.innerHTML);
 
     if(driveDivision.innerHTML == '' || driveDivision.innerHTML == null){
       formData.append('content', post.content);
@@ -737,7 +726,6 @@ export class GroupActivityComponent implements OnInit {
 
     if (el.getElementsByClassName('mention').length > 0) {
 
-      // console.log('Element',  el.getElementsByClassName( 'mention' ));
       for (var i = 0; i < el.getElementsByClassName('mention').length; i++) {
         if (el.getElementsByClassName('mention')[i]['dataset']['value'] == "all") {
           for (var i = 0; i < this.allMembersId.length; i++) {
@@ -757,8 +745,6 @@ export class GroupActivityComponent implements OnInit {
         formData.append('_content_mentions', this.content_mentions[i]);
       }
 
-      // console.log('Content Mention', post._content_mentions);
-      //  console.log('This post', postId);
     }
 
     //formData.append('event.due_time', post.event.due_time);
@@ -779,7 +765,7 @@ export class GroupActivityComponent implements OnInit {
         driveDivision.innerHTML = '';
         driveDivision.style.display = 'none';
         this.googleDriveFiles = [];
-        // console.log('Normal post response: ', res);
+
         const data = {
           // it should get automatically, something like workspace: this.workspace_name
           workspace: this.user_data.workspace.workspace_name,
@@ -790,7 +776,7 @@ export class GroupActivityComponent implements OnInit {
           groupId: this.group_id, // Pass group id here!!!
           type: 'post'
         };
-        //  console.log(data);
+
         this.socket.emit('newPost', data);
         this.loadGroupPosts();
         this.content_mentions = [];
@@ -804,7 +790,7 @@ export class GroupActivityComponent implements OnInit {
         driveDivision.innerHTML = '';
         driveDivision.style.display = 'none';
         this.googleDriveFiles = [];
-        //  console.log(err);
+
 
         if (err.status) {
           this._message.next(err.error.message);
@@ -820,7 +806,7 @@ export class GroupActivityComponent implements OnInit {
 
     const formData: any = new FormData();
     const files: Array<File> = this.filesToUpload;
-    // console.log(files);
+
     if (files !== null) {
       for (let i = 0; i < files.length; i++) {
         formData.append('attachments', files[i], files[i]['name']);
@@ -846,7 +832,7 @@ export class GroupActivityComponent implements OnInit {
     };
 
     const driveDivision = document.getElementById('google-drive-file');
-    console.log(driveDivision.innerHTML);
+
 
     if(driveDivision.innerHTML == '' || driveDivision.innerHTML == null){
       formData.append('content', post.content);
@@ -862,7 +848,7 @@ export class GroupActivityComponent implements OnInit {
     // if the user is using his personal workspace I want to automatically assign the task to him/her
     // If the user is posting a task in a group I want to assign it to the member he/she chose.
     formData.append('task._assigned_to', post.task._assigned_to);
-    console.log('FORMDATA CHECK', formData);
+
 
     formData.append('task.status', 'to do');
 
@@ -911,7 +897,7 @@ export class GroupActivityComponent implements OnInit {
         driveDivision.innerHTML = '';
         driveDivision.style.display = 'none';
         this.googleDriveFiles = [];
-        console.log('Normal post response: ', res);
+
         const data = {
           // it should get automatically, something like workspace: this.workspace_name
           workspace: this.user_data.workspace.workspace_name,
@@ -922,7 +908,7 @@ export class GroupActivityComponent implements OnInit {
           groupId: this.group_id,
           type: 'post'// Pass group id here!!!
         };
-        //  console.log(data);
+
         this.socket.emit('newPost', data);
         this.loadGroupPosts();
         this.content_mentions = [];
@@ -1065,7 +1051,7 @@ export class GroupActivityComponent implements OnInit {
       this.groupService.getPrivateGroup()
         .subscribe((res) => {
 
-          console.log(res);
+
           this.group = res['privateGroup'];
           this.group_id = res['privateGroup']['_id'];
           this.group_name = res['privateGroup']['group_name'];
@@ -1171,7 +1157,7 @@ export class GroupActivityComponent implements OnInit {
   // !--LOAD ALL THE GROUP POSTS ON INIT--! //
   loadGroupPosts() {
     // we count the attempts to avoid infinitive attempts
-    console.log('fetching posts');
+
     let count = 0;
     this.isLoading$.next(true);
 
@@ -1181,7 +1167,6 @@ export class GroupActivityComponent implements OnInit {
       count = 0;
       this.postService.getGroupPosts(this.group_id)
         .subscribe((res) => {
-          // console.log('Group posts:', res);
           this.posts = res['posts'];
           this.isLoading$.next(false);
           this.show_new_posts_badge = 0;
@@ -1231,7 +1216,7 @@ export class GroupActivityComponent implements OnInit {
       this.postService.getGroupPosts(this.group_id)
         .subscribe((res) => {
           if (this.posts.length != 0) {
-            console.log('Scroll Response', res);
+
             const last_post_id = this.posts[this.posts.length - 1]._id
             this.loadNextPosts(last_post_id);
             this.isLoading$.next(false);
@@ -1536,7 +1521,7 @@ export class GroupActivityComponent implements OnInit {
         this.icon_comment_change_color();
         break;
     }
-    // console.log('post type: ', this.post.type);
+
 
   }
 
@@ -1562,7 +1547,7 @@ if (post && post.type === 'task') {
   });
 }
 
-console.log('this selectedgroup users', this.selectedGroupUsers);
+
   }
 
   onDateSelected() {
@@ -1586,13 +1571,9 @@ console.log('this selectedgroup users', this.selectedGroupUsers);
   }
 
   onSearch(evt: any) {
-    // console.log(evt.target.value);
     this.groupUsersList = [];
     this.groupService.searchGroupUsers(this.group_id, evt.target.value)
       .subscribe((res) => {
-        // console.log('workspace users: ', res);
-        // console.log('Group Users: ', res);
-
         this.groupUsersList = res['users'];
 
       }, (err) => {
@@ -1602,26 +1583,20 @@ console.log('this selectedgroup users', this.selectedGroupUsers);
   }
 
   onItemSelect(item: any) {
-    console.log('selectedGroupusers', this.selectedGroupUsers);
-    console.log('groupUsers', this.groupUsersList);
     if (this.selectedGroupUsers.length >= 1) {
       this.assignment = 'Assigned';
     }
   }
   OnItemDeSelect(item: any) {
-    // console.log(item);
-    // console.log(this.selectedGroupUsers);
     if (this.selectedGroupUsers.length < 1) {
       this.assignment = 'UnAssigned';
     }
 
   }
   onSelectAll(items: any) {
-    // console.log(items);
     this.assignment = 'Assigned';
   }
   onDeSelectAll(items: any) {
-    // console.log(items);
     this.assignment = 'UnAssigned';
 
   }
@@ -1639,7 +1614,6 @@ console.log('this selectedgroup users', this.selectedGroupUsers);
         this.playAudio();
         this.alert.class = 'success';
         this._message.next(res['message']);
-        //    console.log('Post Marked as Completed');
 
         button.style.background = "#005fd5";
         button.style.color = "#ffffff";
@@ -1672,7 +1646,6 @@ console.log('this selectedgroup users', this.selectedGroupUsers);
     };
     this.postService.complete(post_id, post)
       .subscribe((res) => {
-        console.log('Post Marked as to do', res);
         this.playAudio();
         this.loadGroupPosts();
         this.onScroll();
@@ -1696,7 +1669,6 @@ console.log('this selectedgroup users', this.selectedGroupUsers);
     };
     this.postService.complete(post_id, post)
       .subscribe((res) => {
-        console.log('Post Marked as in Progress', res);
         this.playAudio();
         this.loadGroupPosts();
         this.onScroll();
@@ -1726,9 +1698,6 @@ console.log('this selectedgroup users', this.selectedGroupUsers);
 
         this.alert.class = 'success';
         this._message.next(res['message']);
-        console.log('Normal post response: ', res);
-
-        console.log('Post Marked as Completed');
         this.loadGroupPosts();
         this.onScroll();
         this.scrollToTop('#card-normal-post-' + index);
@@ -1755,7 +1724,6 @@ console.log('this selectedgroup users', this.selectedGroupUsers);
       .subscribe((res) => {
         this.alert.class = 'success';
         this._message.next(res['message']);
-        //   console.log('Post Liked!');
         this.loadGroupPosts();
         this.onScroll();
 
@@ -1779,7 +1747,6 @@ console.log('this selectedgroup users', this.selectedGroupUsers);
       .subscribe((res) => {
         this.alert.class = 'success';
         this._message.next(res['message']);
-        //   console.log('Post Unliked!');
         this.loadGroupPosts();
         this.onScroll();
 
@@ -1867,7 +1834,6 @@ console.log('this selectedgroup users', this.selectedGroupUsers);
 
     this.groupService.getGroup(this.group_id)
       .subscribe((res) => {
-        //  console.log('Group', res);
         Value.push({ id: '', value: 'all' });
 
         for (var i = 0; i < res['group']._members.length; i++) {
@@ -1880,7 +1846,7 @@ console.log('this selectedgroup users', this.selectedGroupUsers);
           this.allMembersId.push(res['group']._admins[i]._id);
           Value.push({ id: res['group']._admins[i]._id, value: res['group']._admins[i].first_name + ' ' + res['group']._admins[i].last_name });
         }
-        // console.log('All members ID', this.allMembersId);
+
 
       }, (err) => {
 
@@ -1888,7 +1854,6 @@ console.log('this selectedgroup users', this.selectedGroupUsers);
 
     this.groupService.getGroupFiles(this.group_id)
       .subscribe((res) => {
-        //  console.log('Group Files:', res['posts']);
         this.files = res['posts'];
         for (var i = 0; i < res['posts'].length; i++) {
           if (res['posts'][i].files.length > 0) {
@@ -1967,7 +1932,6 @@ console.log('this selectedgroup users', this.selectedGroupUsers);
     this.emojiSet = set;
   }
   handleClick($event) {
-    console.log($event.emoji.native);
     this.editor.insertText(this.editorTextLength - 1, $event.emoji.native);
   }
 
@@ -1985,12 +1949,10 @@ console.log('this selectedgroup users', this.selectedGroupUsers);
         'immediate': false
       },
       this.handleAuthResult);
-      console.log('Auth')
   }
 
   onPickerApiLoad() {
     this.pickerApiLoaded = true;
-    console.log('Picker', this.pickerApiLoaded);
   }
 
   handleAuthResult(authResult) {
@@ -2009,7 +1971,7 @@ console.log('this selectedgroup users', this.selectedGroupUsers);
             if (e[google.picker.Response.ACTION] == google.picker.Action.PICKED) {
               let doc = e[google.picker.Response.DOCUMENTS][0];
               src = doc[google.picker.Document.URL];
-              console.log("Document selected is", doc,"and URL is ",src);
+
               this.googleDriveFiles = e[google.picker.Response.DOCUMENTS];
 
               const driveDivision = document.getElementById('google-drive-file');

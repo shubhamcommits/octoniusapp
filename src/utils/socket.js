@@ -67,8 +67,6 @@ const generateFeed = async (userId, io) => {
 
     const feed = { unreadNotifications, readNotifications };
 
-    console.log('feed', feed);
-
     // I moved this line from outside this function to inside
     io.sockets.in(userId).emit('notificationsFeed', feed);
   } catch (err) {
