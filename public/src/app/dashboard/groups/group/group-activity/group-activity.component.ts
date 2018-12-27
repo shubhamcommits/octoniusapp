@@ -696,8 +696,8 @@ export class GroupActivityComponent implements OnInit {
       _posted_by: this.user_data.user_id,
       _group: this.group_id,
       event: {
-        due_date: this.selected_date,
-        due_time: this.due_time,
+        due_date: moment(`${this.selected_date}`).format('YYYY-MM-DD'),
+        due_time: moment(`${this.selected_date}`).format('hh:mm:ss.SSS'),
         due_to: moment(`${this.selected_date}`).format('YYYY-MM-DD hh:mm:ss.SSS'),
         // problem: assignedUsers will always be empty
         _assigned_to: assignedUsers,
