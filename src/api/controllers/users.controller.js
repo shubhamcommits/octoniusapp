@@ -57,6 +57,7 @@ const get = async (req, res, next) => {
     const user = await User.findOne({
       _id: userId
     })
+      .cache()
       .select('_id first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups');
 
     // User not found
