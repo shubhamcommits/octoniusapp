@@ -64,3 +64,11 @@ mongoose.Query.prototype.exec = async function () {
     console.log(err);
   }
 };
+
+const clearHash = (hashKey) => {
+  client.del(JSON.stringify(hashKey));
+};
+
+module.exports = {
+  clearHash
+};

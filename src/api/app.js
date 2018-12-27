@@ -27,7 +27,7 @@ if (process.env.NODE_ENV !== 'production') {
 require('../db');
 
 // Start caching logic
-require('../utils/cache');
+require('../utils/cache/cache');
 
 // cors middleware for orign and Headers
 app.use(cors());
