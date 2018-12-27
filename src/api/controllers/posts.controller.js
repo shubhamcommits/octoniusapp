@@ -56,7 +56,6 @@ const edit = async (req, res, next) => {
     const postData = req.body;
 
     switch (postData.type) {
-
       case 'task':
         post = await Post.findOneAndUpdate({
           _id: req.params.postId,
@@ -67,7 +66,8 @@ const edit = async (req, res, next) => {
             _content_mentions: postData._content_mentions,
             task: {
               due_to: postData.date_due_to,
-              _assigned_to: postData.assigned_to[0]._id
+              _assigned_to: postData.assigned_to[0]._id,
+              status: 'to do'
             }
           }
         }, {
@@ -75,7 +75,7 @@ const edit = async (req, res, next) => {
         });
         break;
 
-        case 'event':
+      case 'event':
         // transform due_to time to UTC
         req.body.date_due_to = moment.utc(postData.date_due_to).format();
 

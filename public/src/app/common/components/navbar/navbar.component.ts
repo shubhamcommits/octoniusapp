@@ -40,15 +40,12 @@ export class NavbarComponent implements OnInit {
 
   constructor(private _auth: AuthService, private _userService: UserService, private _router: Router,
     private router: Router) {
-
       this.user_data = JSON.parse(localStorage.getItem('user'));
-      // console.log('Stuff', this.user_data);
      }
 
   async ngOnInit() {
 
     await this.socket.on('connect', async () => {
-      console.log(`Socket connected!`);
       // we can probably delete this  second parameter since every server request already has access to the current userId
       await this.socket.emit('joinUser', this.user_data.user_id);
     });
@@ -58,14 +55,12 @@ export class NavbarComponent implements OnInit {
         'userId': this.user_data.user_id
         }
         this.socket.on('notificationsFeed', (user) => {
-          console.log('received the notificationsFeed', user);
           this.notifications_data = user;
         });
         this.socket.emit('getNotifications', this.user_data.user_id);
     }
 
   gotToPostPage(groupId, postId) {
- //   console.log(groupId, postId);
    this.router.navigate(['dashboard', 'group', groupId, 'post', postId]);
   }
 
