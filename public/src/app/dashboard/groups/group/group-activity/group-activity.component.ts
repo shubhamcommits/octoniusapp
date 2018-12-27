@@ -698,7 +698,7 @@ export class GroupActivityComponent implements OnInit {
       event: {
         due_date: this.selected_date,
         due_time: this.due_time,
-        due_to: new Date(this.model_date.year, this.model_date.month - 1 , this.model_date.day, this.model_time.hour, this.model_time.minute),
+        due_to: moment(`${this.selected_date}`).format('YYYY-MM-DD hh:mm:ss.SSS'),
         // problem: assignedUsers will always be empty
         _assigned_to: assignedUsers,
         _content_mentions: this.content_mentions
@@ -1368,6 +1368,7 @@ export class GroupActivityComponent implements OnInit {
   }
 
   OnEditPost(index, post) {
+    // note: this might be easier if I used the moment library
 
     // we first need to convert these backend date strings into JS date objects
     const task_due = post.task.due_to ? new Date(post.task.due_to) : null;
