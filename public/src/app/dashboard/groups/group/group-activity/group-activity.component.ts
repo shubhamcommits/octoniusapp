@@ -819,7 +819,7 @@ export class GroupActivityComponent implements OnInit {
       _posted_by: this.user_data.user_id,
       _group: this.group_id,
       task: {
-        due_date: this.selected_date,
+        due_date: moment(`${this.selected_date}`).format('YYYY-MM-DD hh:mm:ss.SSS'),
         due_to: moment(`${this.selected_date}`).format('YYYY-MM-DD'),
         // there are two scenarios:
         // 1. personal workspace task post: doesn't need assigned members so selectGroupUsers will be undefined
