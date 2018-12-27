@@ -18,19 +18,19 @@ router.use(auth.isLoggedIn);
 // - Main -
 
 // Get current user
-router.get('/', cleanCache, users.get);
+router.get('/', users.get);
 
 // Edit/Update user
-router.put('/', users.edit);
+router.put('/', cleanCache, users.edit);
 
 // Update user profile image
-router.put('/updateImage', fileHandler, users.updateImage);
+router.put('/updateImage', fileHandler, cleanCache, users.updateImage);
 
 // Get user's overview
 router.get('/overview', users.getOverview);
 
 // Edit user skills
-router.put('/skills', users.editSkills);
+router.put('/skills', cleanCache, users.editSkills);
 
 // - Tasks -
 
