@@ -129,8 +129,8 @@ const getPosts = async (req, res, next) => {
       .sort('-_id')
       .limit(5)
       .populate('_posted_by', 'first_name last_name profile_pic')
-      .populate('task._assigned_to', 'first_name last_name')
-      .populate('event._assigned_to', 'first_name last_name')
+      .populate('task._assigned_to')
+      .populate('event._assigned_to')
       .populate('_liked_by', '_id first_name last_name')
       .lean();
 

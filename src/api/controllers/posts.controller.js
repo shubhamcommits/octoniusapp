@@ -13,7 +13,6 @@ const { sendMail, sendErr } = require('../../utils');
 
 const add = async (req, res, next) => {
   try {
-
     const postData = req.body;
     console.log('postData', postData);
 
@@ -54,17 +53,44 @@ const add = async (req, res, next) => {
 
 const edit = async (req, res, next) => {
   try {
-    const post = await Post.findOneAndUpdate({
-      _id: req.params.postId,
-      _posted_by: req.userId
-    }, {
-      $set: {
-        content: req.body.content,
-        _content_mentions: req.body._content_mentions
-      }
-    }, {
-      new: true
-    });
+    let post;
+
+    if (req.body.type === 'task') {
+      post = await Post.findOneAndUpdate({
+        _id: req.params.postId,
+        _posted_by: req.userId
+      }, {
+        $set: {
+          content: req.body.content,
+          _content_mentions: req.body._content_mentions,
+          task: {
+            due_to: req.body.date_due_to,
+            _assigned_to: req.body.assigned_to[0]._id
+          }
+        }
+      }, {
+        new: true
+      });
+    } else if (req.body.type === 'event') {
+      // make arr with ids user who got assigned to event
+      const assignedUsers = req.body.assigned_to.map((item, index) => item._id);
+
+      post = await Post.findOneAndUpdate({
+        _id: req.params.postId,
+        _posted_by: req.userId
+      }, {
+        $set: {
+          content: req.body.content,
+          _content_mentions: req.body._content_mentions,
+          event: {
+            due_to: req.body.date_due_to,
+            _assigned_to: assignedUsers
+          }
+        }
+      }, {
+        new: true
+      });
+    }
 
     if (!post) {
       return sendErr(res, null, 'User not allowed to edit this post!', 403);
@@ -118,9 +144,9 @@ const remove = async (req, res, next) => {
 
     if (
       // If user is not one of group's admins... and...
-      !group._admins.includes(String(userId)) &&
+      !group._admins.includes(String(userId))
       // ...user is not the post author...
-      !post._posted_by.equals(userId)
+      && !post._posted_by.equals(userId)
     ) {
       // Deny access!
       return sendErr(res, null, 'User not allowed to remove this post!', 403);
@@ -319,11 +345,11 @@ const removeComment = async (req, res, next) => {
 
     if (
       // If user is not one of group's admins... and...
-      !group._admins.includes(String(userId)) &&
+      !group._admins.includes(String(userId))
       // ...user is not the post author... and...
-      (!post._posted_by.equals(userId) &&
+      && (!post._posted_by.equals(userId)
         // ...user is not the cooment author
-        !comment._commented_by.equals(userId))
+        && !comment._commented_by.equals(userId))
     ) {
       // Deny access!
       return sendErr(res, null, 'User not allowed to delete this comment!', 403);
@@ -431,11 +457,11 @@ const changeTaskStatus = async (req, res, next) => {
 
     if (
       // If user is not one of group's admins... and...
-      !group._admins.includes(String(userId)) &&
+      !group._admins.includes(String(userId))
       // ...user is not the post author... and...
-      (!post._posted_by.equals(userId) &&
+      && (!post._posted_by.equals(userId)
         // ...user is not the task assignee
-        !post.task._assigned_to.equals(userId))
+        && !post.task._assigned_to.equals(userId))
     ) {
       // Deny access!
       return sendErr(res, null, 'User not allowed to update this post!', 403);
@@ -478,11 +504,11 @@ const changeTaskAssignee = async (req, res, next) => {
 
     if (
       // If user is not one of group's admins... and...
-      !group._admins.includes(String(userId)) &&
+      !group._admins.includes(String(userId))
       // ...user is not the post author... and...
-      (!post._posted_by.equals(userId) &&
+      && (!post._posted_by.equals(userId)
         // ...user is not the task assignee
-        !post.task._assigned_to.equals(userId))
+        && !post.task._assigned_to.equals(userId))
     ) {
       // Deny access!
       return sendErr(res, null, 'User not allowed to update this post!', 403);

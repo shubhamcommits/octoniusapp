@@ -69,6 +69,9 @@ const generateFeed = async (userId, io) => {
 
     const feed = { unreadNotifications, readNotifications };
 
+    console.log('feed', feed);
+
+    // I moved this line from outside this function to inside
     io.sockets.in(userId).emit('notificationsFeed', feed);
   } catch (err) {
     console.log('err', err);
@@ -90,7 +93,7 @@ const notifyGroupPage = (socket, data) => {
 
 const notifyRelatedUsers = async (io, socket, data) => {
   try {
-
+    console.log('we are notifying the related users')
     let post;
     let comment;
 

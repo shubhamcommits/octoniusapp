@@ -29,6 +29,8 @@ declare var gapi: any;
 declare var google: any;
 import {Group} from "../../../../shared/models/group.model";
 import { QuillAutoLinkService } from '../../../../shared/services/quill-auto-link.service';
+import {months} from "../../../../common/data";
+
 
 @Component({
   selector: 'app-group-activity',
@@ -115,9 +117,10 @@ export class GroupActivityComponent implements OnInit {
   model_time = { hour: 13, minute: 30 };
   due_date = 'Due Date';
   due_to = '';
-  due_time = 'Due Time';
+  due_time = {hour: 13, minutes: 30};
   assignment = 'Unassigned';
   selected_date: Date;
+  months = months;
 
   showComments = {
     id: '',
@@ -245,6 +248,8 @@ export class GroupActivityComponent implements OnInit {
     // here we test if the section we entered is a group of my personal workplace
     this.isItMyWorkplace = this._activatedRoute.snapshot.queryParamMap.get('myworkplace') == 'true' || false;
 
+    this.model_date = {year: (new Date()).getFullYear(), month: (new Date()).getMonth() + 1, day: (new Date()).getDate()};
+
     this.getUserProfile();
     this.inilizePostForm();
     this.inilizeCommentForm();
@@ -332,6 +337,7 @@ export class GroupActivityComponent implements OnInit {
   }
 
   show_hide_working_bar() {
+    this.resetNewPostForm();
 
     const x = document.getElementById('show_hide');
     if (x.style.display === 'none') {
@@ -821,7 +827,6 @@ export class GroupActivityComponent implements OnInit {
       }
     }
 
-
     const post = {
       content: this.post.content,
       type: this.post.type,
@@ -938,8 +943,8 @@ export class GroupActivityComponent implements OnInit {
         }
 
       });
-
   }
+
 
   onDownlaodFile(fileName) {
 
@@ -1021,8 +1026,8 @@ export class GroupActivityComponent implements OnInit {
   }
 
   resetNewPostForm() {
-    this.due_date = 'Due Date';
-    this.due_time = 'Due Time';
+    this.model_date = {year: (new Date()).getFullYear(), month: (new Date()).getMonth() + 1, day: (new Date()).getDate()};
+    this.model_time = {hour: 13, minute: 30};
     this.assignment = 'UnAssigned';
     this.filesToUpload = null;
   }
@@ -1222,7 +1227,7 @@ export class GroupActivityComponent implements OnInit {
     if(this.posts.length != 0){
       this.isLoading$.next(true);
       this.ngxService.startBackground();
-  
+
       this.postService.getGroupPosts(this.group_id)
         .subscribe((res) => {
           if (this.posts.length != 0) {
@@ -1375,10 +1380,37 @@ export class GroupActivityComponent implements OnInit {
       console.log('Error while updating the comment', err);
       swal("Error!", "Error while updating the comment " + err, "danger");
     })
-
   }
 
-  OnEditPost(index) {
+  OnEditPost(index, post) {
+
+    // we need to convert these date strings into date objects
+    const task_due = post.task.due_to ? new Date(post.task.due_to) : null;
+    const event_due = post.event.due_to ? new Date(post.event.due_to) : null;
+
+    // set the date and time according to the post's data
+    // if this post is a task post (has a property task with a defined due_to property
+    this.model_date = post.task.due_to ?
+      // then we build the model_date property according to post.task.due_to
+      { year: task_due.getFullYear(), month: task_due.getMonth() + 1, day: task_due.getDate()}
+      // if not we build it based on post.event.due_to
+      : { year: event_due.getFullYear(), month: event_due.getMonth() + 1, day: event_due.getDate()}
+
+
+      this.model_time = post.event.due_to ?
+      { hour: event_due.getHours(), minute: event_due.getMinutes()}
+      : {hour: 13, minute: 30};
+
+    // Reset the selectedGroupUsers
+    this.selectedGroupUsers = [];
+
+    // we display the users he previously selected
+    if (post.task._assigned_to) {
+      this.selectedGroupUsers.push(post.task._assigned_to);
+    } else if (post.event._assigned_to.length > 0) {
+      this.selectedGroupUsers = [...post.event._assigned_to];
+    }
+    this.assignment = 'Assigned';
 
     const x = document.getElementById(index);
     const editor = document.getElementById('edit-content-' + index);
@@ -1388,32 +1420,55 @@ export class GroupActivityComponent implements OnInit {
 
   }
 
-  OnSaveEditPost(index, post_id, content) {
+  OnSaveEditPost(index, post_id, content, type) {
     const editor = document.getElementById('edit-content-' + index);
+
+    // we create a new date object based on whether we added time
+    const date_due_to = type === 'event' ?
+      new Date(this.model_date.year, this.model_date.month - 1, this.model_date.day, this.model_time.hour, this.model_time.minute)
+      : new Date(this.model_date.year, this.model_date.month - 1, this.model_date.day);
+
     const post = {
       'content': document.getElementById(index).innerHTML,
-      '_content_mentions': this.content_mentions
+      '_content_mentions': this.content_mentions,
+      'type': type,
+      'date_due_to': date_due_to,
+      'assigned_to': this.selectedGroupUsers
     };
+
     const scanned_content = post.content;
-    var el = document.createElement('html');
+    let el = document.createElement('html');
     el.innerHTML = scanned_content;
 
     if (el.getElementsByClassName('mention').length > 0) {
       //  console.log('Element',  el.getElementsByClassName( 'mention' ));
-      for (var i = 0; i < el.getElementsByClassName('mention').length; i++) {
+      for (let i = 0; i < el.getElementsByClassName('mention').length; i++) {
         this.content_mentions.push(el.getElementsByClassName('mention')[i]['dataset']['id'].toString());
       }
 
     }
-    // console.log('Content Mention', this.content_mentions);
-    //  console.log('post: ', post);
+
     this.postService.editPost(post_id, post)
       .subscribe((res) => {
-
+        console.log('result server', res);
         this.alert.class = 'success';
         this._message.next(res['message']);
         this.resetNewPostForm();
         // console.log('Normal post response: ', res);
+
+        // socket notifications
+        const data = {
+          // it should get automatically, something like workspace: this.workspace_name
+          workspace: this.user_data.workspace.workspace_name,
+          // it should get automatically, something like group: this.group_name
+          group: this.group_name,
+          userId: this.user_data.user_id,
+          postId: res['post']._id,
+          groupId: this.group_id,
+          type: 'post'// Pass group id here!!!
+        };
+
+        this.socket.emit('newPost', data);
         this.loadGroupPosts();
         this.content_mentions = [];
         this.scrollToTop('#card-normal-post-' + index);
@@ -1445,8 +1500,8 @@ export class GroupActivityComponent implements OnInit {
 
   onSelectPostType(type) {
     this.post.type = type;
-    this.due_date = 'Due Date';
-    this.due_time = 'Due Time';
+    this.model_date = {year: (new Date()).getFullYear(), month: (new Date()).getMonth() + 1, day: (new Date()).getDate()}
+    this.model_time = {hour: 13, minute: 30};
     switch (this.post.type) {
       case 'event':
         this.icon_event_change_color();
@@ -1496,8 +1551,18 @@ export class GroupActivityComponent implements OnInit {
     this.datePickedCount = 1;
   }
 
-  openAssignPicker(content) {
+  openAssignPicker(content, post) {
     this.modalService.open(content, { centered: true });
+
+if (post && post.type === 'task') {
+  this.selectedGroupUsers = [post.task._assigned_to];
+} else if (post && post.type === 'event') {
+  this.selectedGroupUsers = post.event._assigned_to.map((item, i) => {
+    return item;
+  });
+}
+
+console.log('this selectedgroup users', this.selectedGroupUsers);
   }
 
   onDateSelected() {
@@ -1517,7 +1582,7 @@ export class GroupActivityComponent implements OnInit {
   }
 
   onTimeSelected() {
-    this.due_time = this.model_time.hour.toString() + ':' + this.model_time.minute.toString();
+    // this.due_time = this.model_time.hour.toString() + ':' + this.model_time.minute.toString();
   }
 
   onSearch(evt: any) {
@@ -1537,8 +1602,8 @@ export class GroupActivityComponent implements OnInit {
   }
 
   onItemSelect(item: any) {
-    // console.log(item);
-    // console.log('selected items: ', this.selectedGroupUsers);
+    console.log('selectedGroupusers', this.selectedGroupUsers);
+    console.log('groupUsers', this.groupUsersList);
     if (this.selectedGroupUsers.length >= 1) {
       this.assignment = 'Assigned';
     }
@@ -1560,7 +1625,6 @@ export class GroupActivityComponent implements OnInit {
     this.assignment = 'UnAssigned';
 
   }
-
 
   OnMarkEventCompleted(index, post_id) {
 
@@ -1905,7 +1969,6 @@ export class GroupActivityComponent implements OnInit {
   handleClick($event) {
     console.log($event.emoji.native);
     this.editor.insertText(this.editorTextLength - 1, $event.emoji.native);
-    //this.onEditorCreated($event);
   }
 
 // !--GOOGLE PICKER IMPLEMENTATION--! //

@@ -7,7 +7,6 @@ export class PostService {
 
   BASE_API_URL = environment.BASE_API_URL;
 
-
   constructor(private _http: HttpClient) { }
 
   getGroupPosts(group_id) {
