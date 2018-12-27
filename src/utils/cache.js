@@ -7,14 +7,15 @@ const redisUrl = 'redis://127.0.0.1:6379';
 const client = redis.createClient(redisUrl);
 
 // Ovewrite get method to return a promise
-client.get = util.promisify(client.get);
+client.hget = util.promisify(client.hget);
 
 // Save the default exec prototype method
 const exec = mongoose.Query.prototype.exec;
 
 // Cache method flags he query to be cached
-mongoose.Query.prototype.cache = function () {
+mongoose.Query.prototype.cache = function (options = {}) {
   this.useCache = true;
+  this.hashKey = JSON.stringify(options.key || '');
 
   // Allow the method to be chainable
   return this;
@@ -35,7 +36,7 @@ mongoose.Query.prototype.exec = async function () {
     }));
 
     // Check if redis has a value for 'key'
-    const cacheValue = await client.get(key);
+    const cacheValue = await client.hget(this.hashKey, key);
 
     // If it has, return that
     if (cacheValue) {
@@ -54,7 +55,7 @@ mongoose.Query.prototype.exec = async function () {
     // Otherwise, issue the query and store the result in redis
     const result = await exec.apply(this, arguments);
 
-    client.set(key, JSON.stringify(result));
+    client.hset(this.hashKey, key, JSON.stringify(result));
 
     console.log('FROM MONGO');
 
