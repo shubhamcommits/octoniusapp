@@ -1,4 +1,5 @@
 // ./
+const cleanCache = require('./cache/cleanCache');
 const passwordHelper = require('./password');
 const sendErr = require('./sendErr');
 const socket = require('./socket');
@@ -18,6 +19,7 @@ const sendMail = require('./sendmail/sendMail');
 
 module.exports = {
   // ./
+  cleanCache,
   passwordHelper,
   sendErr,
   socket,

@@ -2,7 +2,7 @@ const express = require('express');
 
 const { users } = require('../controllers');
 
-const { auth, fileHandler } = require('../../utils');
+const { auth, cleanCache, fileHandler } = require('../../utils');
 
 const router = express.Router();
 
@@ -18,7 +18,7 @@ router.use(auth.isLoggedIn);
 // - Main -
 
 // Get current user
-router.get('/', users.get);
+router.get('/', cleanCache, users.get);
 
 // Edit/Update user
 router.put('/', users.edit);
