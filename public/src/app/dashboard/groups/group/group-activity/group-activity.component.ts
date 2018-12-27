@@ -708,7 +708,7 @@ export class GroupActivityComponent implements OnInit {
       event: {
         due_date: this.selected_date,
         due_time: this.due_time,
-        due_to: moment(`${this.due_date} ${this.due_time}`).format(),
+        due_to: new Date(this.model_date.year, this.model_date.month - 1 , this.model_date.day, this.model_time.hour, this.model_time.minute),
         // problem: assignedUsers will always be empty
         _assigned_to: assignedUsers,
         _content_mentions: this.content_mentions
@@ -1232,7 +1232,7 @@ export class GroupActivityComponent implements OnInit {
         .subscribe((res) => {
           if (this.posts.length != 0) {
             console.log('Scroll Response', res);
-            var last_post_id = this.posts[this.posts.length - 1]._id
+            const last_post_id = this.posts[this.posts.length - 1]._id
             this.loadNextPosts(last_post_id);
             this.isLoading$.next(false);
             this.ngxService.stopBackground();
@@ -1384,47 +1384,43 @@ export class GroupActivityComponent implements OnInit {
 
   OnEditPost(index, post) {
 
-    // we need to convert these date strings into date objects
+    // we first need to convert these backend date strings into JS date objects
     const task_due = post.task.due_to ? new Date(post.task.due_to) : null;
     const event_due = post.event.due_to ? new Date(post.event.due_to) : null;
 
-    // set the date and time according to the post's data
-    // if this post is a task post (has a property task with a defined due_to property
-    this.model_date = post.task.due_to ?
-      // then we build the model_date property according to post.task.due_to
-      { year: task_due.getFullYear(), month: task_due.getMonth() + 1, day: task_due.getDate()}
-      // if not we build it based on post.event.due_to
-      : { year: event_due.getFullYear(), month: event_due.getMonth() + 1, day: event_due.getDate()}
-
-
-      this.model_time = post.event.due_to ?
-      { hour: event_due.getHours(), minute: event_due.getMinutes()}
-      : {hour: 13, minute: 30};
-
-    // Reset the selectedGroupUsers
+    // Reset the selectedGroupUsers before we add users to it
     this.selectedGroupUsers = [];
 
-    // we display the users he previously selected
-    if (post.task._assigned_to) {
-      this.selectedGroupUsers.push(post.task._assigned_to);
-    } else if (post.event._assigned_to.length > 0) {
-      this.selectedGroupUsers = [...post.event._assigned_to];
+    // we display the user's previously selected values in the buttons and select menu
+    switch (post.type) {
+      case 'task':
+        this.model_date = { year: task_due.getFullYear(), month: task_due.getMonth() + 1, day: task_due.getDate()};
+        this.selectedGroupUsers.push(post.task._assigned_to);
+        break;
+      case 'event':
+        this.model_date = { year: event_due.getFullYear(), month: event_due.getMonth() + 1, day: event_due.getDate()};
+        this.model_time = { hour: event_due.getHours(), minute: event_due.getMinutes()};
+        this.selectedGroupUsers = [...post.event._assigned_to];
+        break;
     }
+
+    // Because we edit the post, the previous step will always end with selected users, thus we assigned someone
     this.assignment = 'Assigned';
 
+    // manipulate the DOM
     const x = document.getElementById(index);
     const editor = document.getElementById('edit-content-' + index);
     const y = document.getElementById("button_edit_post" + index);
     y.style.display = "block";
     editor.style.display = 'block';
-
   }
 
   OnSaveEditPost(index, post_id, content, type) {
     const editor = document.getElementById('edit-content-' + index);
 
     // we create a new date object based on whether we added time
-    const date_due_to = type === 'event' ?
+    const date_due_to =
+      type === 'event' ?
       new Date(this.model_date.year, this.model_date.month - 1, this.model_date.day, this.model_time.hour, this.model_time.minute)
       : new Date(this.model_date.year, this.model_date.month - 1, this.model_date.day);
 
@@ -1445,12 +1441,10 @@ export class GroupActivityComponent implements OnInit {
       for (let i = 0; i < el.getElementsByClassName('mention').length; i++) {
         this.content_mentions.push(el.getElementsByClassName('mention')[i]['dataset']['id'].toString());
       }
-
     }
 
     this.postService.editPost(post_id, post)
       .subscribe((res) => {
-        console.log('result server', res);
         this.alert.class = 'success';
         this._message.next(res['message']);
         this.resetNewPostForm();
@@ -1465,7 +1459,7 @@ export class GroupActivityComponent implements OnInit {
           userId: this.user_data.user_id,
           postId: res['post']._id,
           groupId: this.group_id,
-          type: 'post'// Pass group id here!!!
+          type: 'post'
         };
 
         this.socket.emit('newPost', data);
@@ -1504,6 +1498,9 @@ export class GroupActivityComponent implements OnInit {
     this.model_time = {hour: 13, minute: 30};
     switch (this.post.type) {
       case 'event':
+        // reset selected users
+        this.selectedGroupUsers = [];
+
         this.icon_event_change_color();
         this.settings = {
           text: 'Select Group Members',
@@ -1519,6 +1516,9 @@ export class GroupActivityComponent implements OnInit {
 
         break;
       case 'task':
+        // reset selected users
+        this.selectedGroupUsers = [];
+
         this.icon_check_box_change_color();
         this.settings = {
           text: 'Select Group Members',

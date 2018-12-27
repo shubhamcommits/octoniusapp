@@ -45,8 +45,6 @@ const init = (server) => {
 
     // Listen to new post creation
     socket.on('newPost', (data) => {
-      console.log('reached socket newPost');
-      console.log('data', data);
       notifyRelatedUsers(io, socket, data);
       notifyGroupPage(socket, data);
     });
@@ -93,7 +91,6 @@ const notifyGroupPage = (socket, data) => {
 
 const notifyRelatedUsers = async (io, socket, data) => {
   try {
-    console.log('we are notifying the related users')
     let post;
     let comment;
 

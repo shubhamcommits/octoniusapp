@@ -14,7 +14,6 @@ const { sendMail, sendErr } = require('../../utils');
 const add = async (req, res, next) => {
   try {
     const postData = req.body;
-    console.log('postData', postData);
 
     // Id it's event post, convert due_to date to UTC before storing
     if (postData.type === 'event') {
@@ -54,47 +53,76 @@ const add = async (req, res, next) => {
 const edit = async (req, res, next) => {
   try {
     let post;
+    const postData = req.body;
 
-    if (req.body.type === 'task') {
-      post = await Post.findOneAndUpdate({
-        _id: req.params.postId,
-        _posted_by: req.userId
-      }, {
-        $set: {
-          content: req.body.content,
-          _content_mentions: req.body._content_mentions,
-          task: {
-            due_to: req.body.date_due_to,
-            _assigned_to: req.body.assigned_to[0]._id
-          }
-        }
-      }, {
-        new: true
-      });
-    } else if (req.body.type === 'event') {
-      // make arr with ids user who got assigned to event
-      const assignedUsers = req.body.assigned_to.map((item, index) => item._id);
+    switch (postData.type) {
 
-      post = await Post.findOneAndUpdate({
-        _id: req.params.postId,
-        _posted_by: req.userId
-      }, {
-        $set: {
-          content: req.body.content,
-          _content_mentions: req.body._content_mentions,
-          event: {
-            due_to: req.body.date_due_to,
-            _assigned_to: assignedUsers
+      case 'task':
+        post = await Post.findOneAndUpdate({
+          _id: req.params.postId,
+          _posted_by: req.userId
+        }, {
+          $set: {
+            content: postData.content,
+            _content_mentions: postData._content_mentions,
+            task: {
+              due_to: postData.date_due_to,
+              _assigned_to: postData.assigned_to[0]._id
+            }
           }
-        }
-      }, {
-        new: true
-      });
+        }, {
+          new: true
+        });
+        break;
+
+        case 'event':
+        // transform due_to time to UTC
+        req.body.date_due_to = moment.utc(postData.date_due_to).format();
+
+        // make arr with ids user who got assigned to event
+        const assignedUsers = postData.assigned_to.map((item, index) => item._id);
+
+        post = await Post.findOneAndUpdate({
+          _id: req.params.postId,
+          _posted_by: req.userId
+        }, {
+          $set: {
+            content: postData.content,
+            _content_mentions: postData._content_mentions,
+            event: {
+              due_to: postData.date_due_to,
+              _assigned_to: assignedUsers
+            }
+          }
+        }, {
+          new: true
+        });
+        break;
     }
 
     if (!post) {
       return sendErr(res, null, 'User not allowed to edit this post!', 403);
     }
+
+    // Create Notification for mentions on post content
+    if (post._content_mentions.length !== 0) {
+      notifications.newPostMentions(post);
+    }
+
+    // Send Email notification after post creation
+    switch (post.type) {
+      case 'task':
+        await notifications.newTaskAssignment(post);
+        await sendMail.taskAssigned(post);
+        break;
+      case 'event':
+        await notifications.newEventAssignments(post);
+        await sendMail.eventAssigned(post);
+        break;
+      default:
+        break;
+    }
+
 
     return res.status(200).json({
       message: 'Post updated!',

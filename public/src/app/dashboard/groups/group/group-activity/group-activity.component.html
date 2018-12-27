@@ -508,16 +508,13 @@
 
                 </div>
                 <div class="col-md-12 text-right" id="button_edit_post{{i}}" style="display: none; padding-bottom: 1em;">
-                  <button type="button" class="btn btn-sm btn-outline-warning task" *ngIf="!isItMyWorkplace && (post.type === 'task' || post.type === 'event')"
+                  <button type="button" class="btn btn-sm btn-outline-warning task" *ngIf="!isItMyWorkplace && post.type === 'task'"
                           (click)="openAssignPicker(assignContent)">
                     <i class="material-icons">perm_identity</i> {{assignment}}
                   </button>
                   <button class="btn btn-sm btn-outline-warning task" type="button" *ngIf="(post.type === 'task' || post.type === 'event')"
                           (click)="openDatePicker(dateContent)">
                     <i class="material-icons">event</i> {{model_date?.day}}-{{model_date?.month}}-{{model_date?.year}}
-                  </button>
-                  <button *ngIf="post.type=='event'" class="btn btn-sm btn-outline-warning task" type="button" (click)="openTimePicker(timeContent)">
-                    <i class="material-icons">alarm</i>{{model_time.hour}}:{{model_time.minute}}
                   </button>
                   <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditPost(i, post._id,post?.content, post.type)">Save</button>
                 </div>
@@ -706,7 +703,7 @@
                   </div>
                 </div>
                 <div class="col-md-12 text-right " id="button_edit_post{{i}}" style="display: none; padding-bottom: 1em;">
-                  <button type="button" class="btn btn-sm btn-outline-warning task" *ngIf="!isItMyWorkplace && (post.type === 'task' || post.type === 'event')"
+                  <button type="button" class="btn btn-sm btn-outline-warning task" *ngIf="!isItMyWorkplace &&  post.type === 'event'"
                           (click)="openAssignPicker(assignContent)">
                     <i class="material-icons">perm_identity</i> {{assignment}}
                   </button>
