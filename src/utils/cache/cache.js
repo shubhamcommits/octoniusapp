@@ -40,8 +40,6 @@ mongoose.Query.prototype.exec = async function () {
 
     // If it has, return that
     if (cacheValue) {
-      console.log('FROM REDIS');
-
       const doc = JSON.parse(cacheValue);
 
       // If doc is an array of records transform each element
@@ -57,10 +55,9 @@ mongoose.Query.prototype.exec = async function () {
 
     client.hset(this.hashKey, key, JSON.stringify(result));
 
-    console.log('FROM MONGO');
-
     return result;
   } catch (err) {
+    // eslint-disable-next-line no-console
     console.log(err);
   }
 };
