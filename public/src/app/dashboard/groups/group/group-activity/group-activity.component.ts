@@ -1371,6 +1371,8 @@ export class GroupActivityComponent implements OnInit {
     const task_due = post.task.due_to ? new Date(post.task.due_to) : null;
     const event_due = post.event.due_to ? new Date(post.event.due_to) : null;
 
+    console.log('task Due', task_due);
+
     // Reset the selectedGroupUsers before we add users to it
     this.selectedGroupUsers = [];
 
