@@ -83,18 +83,16 @@
 
                 <button *ngIf="post.type == 'event'|| post.type=='task'" class="btn btn-outline-warning task" type="button"
                   (click)="openDatePicker(dateContent)">
-                  <i class="material-icons">event</i>{{ due_date }}
+                  <i class="material-icons">event</i>{{model_date?.day}}-{{model_date?.month}}-{{model_date?.year}}
                 </button>
 
 
                 <button *ngIf="post.type=='event'" class="btn btn-outline-warning task" type="button" (click)="openTimePicker(timeContent)">
-                  <i class="material-icons">alarm</i>{{due_time}}
+                  <i class="material-icons">alarm</i>{{model_time.hour}}:{{model_time.minute}}
                 </button>
 
               </div>
               <div class="col-md-12">
-
-
 
                 <ngb-alert *ngIf="alert.message" [type]="alert.class" (close)="successMessage = null">{{alert.message}}</ngb-alert>
 
@@ -286,7 +284,7 @@
                 </div>
 
                 <div class="col-md-12 text-right " id="button_edit_post{{i}}" style="display: none; padding-bottom: 1em;">
-                  <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditPost(i, post._id,post?.content)">Save</button>
+                  <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditPost(i, post._id,post?.content, post.type)">Save</button>
                 </div>
                 <div class="col-md-12 innercard">
                   <quill-editor id="edit-content-{{i}}" [modules]="modules" type="text" [(ngModel)]="post.content"
@@ -339,7 +337,7 @@
                         <div ngbDropdown class="d-inline-block" *ngIf="post?._posted_by?._id == this.user_data.user_id; else editpostif">
                           <i class="material-icons action" id="dropdownBasic1" ngbDropdownToggle>more_horiz</i>
                           <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                            <button class="dropdown-item" (click)="OnEditPost(i)">Edit Post</button>
+                            <button class="dropdown-item" (click)="OnEditPost(i, post)">Edit Post</button>
 
                             <button class="dropdown-item" (click)="onDeletePost(post._id)">Delete Post</button>
                           </div>
@@ -509,8 +507,16 @@
                   </ng-template>
 
                 </div>
-                <div class="col-md-12 text-right " id="button_edit_post{{i}}" style="display: none; padding-bottom: 1em;">
-                  <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditPost(i, post._id,post?.content)">Save</button>
+                <div class="col-md-12 text-right" id="button_edit_post{{i}}" style="display: none; padding-bottom: 1em;">
+                  <button type="button" class="btn btn-sm btn-outline-warning task" *ngIf="!isItMyWorkplace && post.type === 'task'"
+                          (click)="openAssignPicker(assignContent)">
+                    <i class="material-icons">perm_identity</i> {{assignment}}
+                  </button>
+                  <button class="btn btn-sm btn-outline-warning task" type="button" *ngIf="(post.type === 'task' || post.type === 'event')"
+                          (click)="openDatePicker(dateContent)">
+                    <i class="material-icons">event</i> {{model_date?.day}}-{{model_date?.month}}-{{model_date?.year}}
+                  </button>
+                  <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditPost(i, post._id,post?.content, post.type)">Save</button>
                 </div>
 
                 <div class="col-md-12 innercard">
@@ -558,7 +564,7 @@
                         <div ngbDropdown class="d-inline-block" *ngIf="post?._posted_by?._id == this.user_data.user_id; else edittaskif">
                           <i class="material-icons action" id="dropdownBasic1" ngbDropdownToggle>more_horiz</i>
                           <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                            <button class="dropdown-item" (click)="OnEditPost(i)">Edit Post</button>
+                            <button class="dropdown-item" (click)="OnEditPost(i, post)">Edit Post</button>
 
                             <button class="dropdown-item" (click)="onDeletePost(post._id)">Delete Post</button>
                           </div>
@@ -697,7 +703,19 @@
                   </div>
                 </div>
                 <div class="col-md-12 text-right " id="button_edit_post{{i}}" style="display: none; padding-bottom: 1em;">
-                  <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditPost(i, post._id,post?.content)">Save</button>
+                  <button type="button" class="btn btn-sm btn-outline-warning task" *ngIf="!isItMyWorkplace &&  post.type === 'event'"
+                          (click)="openAssignPicker(assignContent)">
+                    <i class="material-icons">perm_identity</i> {{assignment}}
+                  </button>
+                  <button class="btn btn-sm btn-outline-warning task" type="button" *ngIf="post.type === 'event'"
+                          (click)="openDatePicker(dateContent)">
+                    <i class="material-icons">event</i> {{model_date?.day}}-{{model_date?.month}}-{{model_date?.year}}
+                  </button>
+                  <button *ngIf="post.type === 'event'" class="btn btn-sm btn-outline-warning task" type="button" (click)="openTimePicker(timeContent)">
+                    <i class="material-icons">alarm</i>{{model_time.hour}}:{{model_time.minute}}
+                  </button>
+
+                  <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditPost(i, post._id,post?.content, post.type)">Save</button>
                 </div>
                 <div class="col-md-12 innercard">
                   <quill-editor [modules]="modules" id="edit-content-{{i}}" type="text" [(ngModel)]="post.content"
@@ -756,7 +774,7 @@
                         <div ngbDropdown class="d-inline-block" *ngIf="post?._posted_by?._id == this.user_data.user_id; else editeventif">
                           <i class="material-icons action" id="dropdownBasic1" ngbDropdownToggle>more_horiz</i>
                           <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                            <button class="dropdown-item" (click)="OnEditPost(i)">Edit Post</button>
+                            <button class="dropdown-item" (click)="OnEditPost(i, post)">Edit Post</button>
                             <button class="dropdown-item" (click)="onDeletePost(post._id)">Delete Post</button>
                           </div>
                         </div>

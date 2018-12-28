@@ -7,7 +7,6 @@ export class PostService {
 
   BASE_API_URL = environment.BASE_API_URL;
 
-
   constructor(private _http: HttpClient) { }
 
   getGroupPosts(group_id) {
@@ -31,7 +30,7 @@ export class PostService {
   addNewTaskPost(post) {
     return this._http.post(this.BASE_API_URL + '/posts', post);
   }
-  editPost(postId, post){
+  editPost(postId, post) {
     return this._http.put<any>(this.BASE_API_URL + `/posts/${postId}`, post);
   }
   deletePost(postId) {

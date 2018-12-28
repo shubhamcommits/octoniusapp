@@ -29,6 +29,8 @@ declare var gapi: any;
 declare var google: any;
 import {Group} from "../../../../shared/models/group.model";
 import { QuillAutoLinkService } from '../../../../shared/services/quill-auto-link.service';
+import {months} from "../../../../common/data";
+
 
 @Component({
   selector: 'app-group-activity',
@@ -115,9 +117,10 @@ export class GroupActivityComponent implements OnInit {
   model_time = { hour: 13, minute: 30 };
   due_date = 'Due Date';
   due_to = '';
-  due_time = 'Due Time';
+  due_time = {hour: 13, minutes: 30};
   assignment = 'Unassigned';
   selected_date: Date;
+  months = months;
 
   showComments = {
     id: '',
@@ -183,7 +186,7 @@ export class GroupActivityComponent implements OnInit {
     //config.triggers = 'hover';
     this.group_id = this.groupDataService.groupId;
     this.user_data = JSON.parse(localStorage.getItem('user'));
-    // console.log('user', this.user_data);
+
     this.group = this.groupDataService.group;
   }
 
@@ -245,6 +248,8 @@ export class GroupActivityComponent implements OnInit {
     // here we test if the section we entered is a group of my personal workplace
     this.isItMyWorkplace = this._activatedRoute.snapshot.queryParamMap.get('myworkplace') == 'true' || false;
 
+    this.model_date = {year: (new Date()).getFullYear(), month: (new Date()).getMonth() + 1, day: (new Date()).getDate()};
+
     this.getUserProfile();
     this.inilizePostForm();
     this.inilizeCommentForm();
@@ -294,7 +299,7 @@ export class GroupActivityComponent implements OnInit {
           workspace: this.user_data.workspace.workspace_name,
           group: this.group_name,
         };
-        console.log('room', room);
+
 
         // join room to get notifications for this group
         this.socket.emit('joinGroup', room, (err) => {
@@ -303,9 +308,6 @@ export class GroupActivityComponent implements OnInit {
 
         // Alert on screen when newPost is created
         this.socket.on('newPostOnGroup', (data) => {
-          console.log('received new post from socket', data);
-          console.log('test group_id', this.group_id);
-          console.log('data.groupId', data.groupId);
           if (this.group_id == data.groupId) {
             this.show_new_posts_badge = 1;
             this.playAudio();
@@ -325,13 +327,13 @@ export class GroupActivityComponent implements OnInit {
 
   fileChangeEvent(fileInput: any) {
     this.filesToUpload = <Array<File>>fileInput.target.files;
-     console.log('files', this.filesToUpload);
-    // console.log('input', fileInput);
+
 
     // this.product.photo = fileInput.target.files[0]['name'];
   }
 
   show_hide_working_bar() {
+    this.resetNewPostForm();
 
     const x = document.getElementById('show_hide');
     if (x.style.display === 'none') {
@@ -449,7 +451,7 @@ export class GroupActivityComponent implements OnInit {
 
     this.postService.addNewComment(post_id, commentContent)
       .subscribe((res) => {
-        console.log('Add Comment Response', res);
+
         const data = {
           // it should get automatically, something like workspace: this.workspace_name
           workspace: this.user_data.workspace.workspace_name,
@@ -460,7 +462,7 @@ export class GroupActivityComponent implements OnInit {
           groupId: this.groupDataService.group._id, // Pass group id here!!!
           type: 'comment' // this is used to differentiate between posts and comment for emitting notification
         };
-           // console.log(data);
+
         this.socket.emit('newPost', data);
         this.commentForm.reset();
         this.loadGroupPosts();
@@ -512,7 +514,6 @@ export class GroupActivityComponent implements OnInit {
               this.alert.class = 'success';
               this._message.next(res['message']);
               this.resetNewPostForm();
-              console.log('Normal post response: ', res);
               this.loadGroupPosts();
 
             }, (err) => {
@@ -534,9 +535,6 @@ export class GroupActivityComponent implements OnInit {
 
 
   OnAddNewPost() {
-    // console.log('on addnew post');
-    // console.log('on addnew post.type', this.post.type);
-
 
     switch (this.post.type) {
       case 'normal':
@@ -607,7 +605,7 @@ export class GroupActivityComponent implements OnInit {
     }
 
     const driveDivision = document.getElementById('google-drive-file');
-    console.log(driveDivision.innerHTML);
+
 
     if(driveDivision.innerHTML == '' || driveDivision.innerHTML == null){
       formData.append('content', post.content);
@@ -627,7 +625,6 @@ export class GroupActivityComponent implements OnInit {
     this.disblePostForm();
     this.postService.addNewNormalPost(formData)
       .subscribe((res) => {
-         console.log('Post', res);
         this.processing = false;
         this.enablePostForm();
         this.postForm.reset();
@@ -649,7 +646,7 @@ export class GroupActivityComponent implements OnInit {
           groupId: this.group_id,  // Pass group id here!!!
           type: 'post' // used to differentiate between post and comment notifications
         };
-        //  console.log(data);
+
         this.socket.emit('newPost', data);
         this.loadGroupPosts();
         this.content_mentions = [];
@@ -662,7 +659,7 @@ export class GroupActivityComponent implements OnInit {
         this.googleDriveFiles = [];
         this.alert.class = 'danger';
         this.enablePostForm();
-        console.log('Error while creating a new post', err);
+
 
       });
 
@@ -672,7 +669,6 @@ export class GroupActivityComponent implements OnInit {
 
     const formData: any = new FormData();
     const files: Array<File> = this.filesToUpload;
-    // console.log(files);
     const assignedUsers = new Array();
 
     if (files !== null) {
@@ -692,7 +688,8 @@ export class GroupActivityComponent implements OnInit {
       formData.append('event._assigned_to', JSON.parse(localStorage.getItem('user')).user_id);
     }
 
-    // console.log('assignedUsers: ', assignedUsers);
+    // create date object for this event
+    const date = new Date(this.model_date.year, this.model_date.month, this.model_date.day, this.model_time.hour, this.model_time.minute);
 
     const post = {
       content: this.post.content,
@@ -700,9 +697,9 @@ export class GroupActivityComponent implements OnInit {
       _posted_by: this.user_data.user_id,
       _group: this.group_id,
       event: {
-        due_date: this.selected_date,
-        due_time: this.due_time,
-        due_to: moment(`${this.due_date} ${this.due_time}`).format(),
+        due_date: moment(`${date.toISOString()}`).format('YYYY-MM-DD'),
+        due_time: moment(`${date.toISOString()}`).format('hh:mm:ss.SSS'),
+        due_to: moment(`${date.toISOString()}`).format('YYYY-MM-DD hh:mm:ss.SSS'),
         // problem: assignedUsers will always be empty
         _assigned_to: assignedUsers,
         _content_mentions: this.content_mentions
@@ -711,7 +708,6 @@ export class GroupActivityComponent implements OnInit {
     };
 
     const driveDivision = document.getElementById('google-drive-file');
-    console.log(driveDivision.innerHTML);
 
     if(driveDivision.innerHTML == '' || driveDivision.innerHTML == null){
       formData.append('content', post.content);
@@ -731,7 +727,6 @@ export class GroupActivityComponent implements OnInit {
 
     if (el.getElementsByClassName('mention').length > 0) {
 
-      // console.log('Element',  el.getElementsByClassName( 'mention' ));
       for (var i = 0; i < el.getElementsByClassName('mention').length; i++) {
         if (el.getElementsByClassName('mention')[i]['dataset']['value'] == "all") {
           for (var i = 0; i < this.allMembersId.length; i++) {
@@ -751,8 +746,6 @@ export class GroupActivityComponent implements OnInit {
         formData.append('_content_mentions', this.content_mentions[i]);
       }
 
-      // console.log('Content Mention', post._content_mentions);
-      //  console.log('This post', postId);
     }
 
     //formData.append('event.due_time', post.event.due_time);
@@ -773,7 +766,7 @@ export class GroupActivityComponent implements OnInit {
         driveDivision.innerHTML = '';
         driveDivision.style.display = 'none';
         this.googleDriveFiles = [];
-        // console.log('Normal post response: ', res);
+
         const data = {
           // it should get automatically, something like workspace: this.workspace_name
           workspace: this.user_data.workspace.workspace_name,
@@ -784,7 +777,7 @@ export class GroupActivityComponent implements OnInit {
           groupId: this.group_id, // Pass group id here!!!
           type: 'post'
         };
-        //  console.log(data);
+
         this.socket.emit('newPost', data);
         this.loadGroupPosts();
         this.content_mentions = [];
@@ -798,7 +791,7 @@ export class GroupActivityComponent implements OnInit {
         driveDivision.innerHTML = '';
         driveDivision.style.display = 'none';
         this.googleDriveFiles = [];
-        //  console.log(err);
+
 
         if (err.status) {
           this._message.next(err.error.message);
@@ -811,16 +804,17 @@ export class GroupActivityComponent implements OnInit {
   }
 
   addNewTaskPost() {
-
     const formData: any = new FormData();
     const files: Array<File> = this.filesToUpload;
-    // console.log(files);
+
     if (files !== null) {
       for (let i = 0; i < files.length; i++) {
         formData.append('attachments', files[i], files[i]['name']);
       }
     }
 
+    // create due date
+    const date = new Date(this.model_date.year, this.model_date.month, this.model_date.day);
 
     const post = {
       content: this.post.content,
@@ -828,8 +822,8 @@ export class GroupActivityComponent implements OnInit {
       _posted_by: this.user_data.user_id,
       _group: this.group_id,
       task: {
-        due_date: this.selected_date,
-        due_to: moment(`${this.selected_date}`).format('YYYY-MM-DD'),
+        due_date: moment(`${date.toISOString()}`).format('YYYY-MM-DD hh:mm:ss.SSS'),
+        due_to: moment(`${date.toISOString()}`).format('YYYY-MM-DD'),
         // there are two scenarios:
         // 1. personal workspace task post: doesn't need assigned members so selectGroupUsers will be undefined
         // 2. group task post: needs one assigned member so selectgorupusers will be defined
@@ -841,7 +835,7 @@ export class GroupActivityComponent implements OnInit {
     };
 
     const driveDivision = document.getElementById('google-drive-file');
-    console.log(driveDivision.innerHTML);
+
 
     if(driveDivision.innerHTML == '' || driveDivision.innerHTML == null){
       formData.append('content', post.content);
@@ -857,7 +851,7 @@ export class GroupActivityComponent implements OnInit {
     // if the user is using his personal workspace I want to automatically assign the task to him/her
     // If the user is posting a task in a group I want to assign it to the member he/she chose.
     formData.append('task._assigned_to', post.task._assigned_to);
-    console.log('FORMDATA CHECK', formData);
+
 
     formData.append('task.status', 'to do');
 
@@ -906,7 +900,7 @@ export class GroupActivityComponent implements OnInit {
         driveDivision.innerHTML = '';
         driveDivision.style.display = 'none';
         this.googleDriveFiles = [];
-        console.log('Normal post response: ', res);
+
         const data = {
           // it should get automatically, something like workspace: this.workspace_name
           workspace: this.user_data.workspace.workspace_name,
@@ -917,7 +911,7 @@ export class GroupActivityComponent implements OnInit {
           groupId: this.group_id,
           type: 'post'// Pass group id here!!!
         };
-        //  console.log(data);
+
         this.socket.emit('newPost', data);
         this.loadGroupPosts();
         this.content_mentions = [];
@@ -938,8 +932,8 @@ export class GroupActivityComponent implements OnInit {
         }
 
       });
-
   }
+
 
   onDownlaodFile(fileName) {
 
@@ -1021,8 +1015,8 @@ export class GroupActivityComponent implements OnInit {
   }
 
   resetNewPostForm() {
-    this.due_date = 'Due Date';
-    this.due_time = 'Due Time';
+    this.model_date = {year: (new Date()).getFullYear(), month: (new Date()).getMonth() + 1, day: (new Date()).getDate()};
+    this.model_time = {hour: 13, minute: 30};
     this.assignment = 'UnAssigned';
     this.filesToUpload = null;
   }
@@ -1060,7 +1054,7 @@ export class GroupActivityComponent implements OnInit {
       this.groupService.getPrivateGroup()
         .subscribe((res) => {
 
-          console.log(res);
+
           this.group = res['privateGroup'];
           this.group_id = res['privateGroup']['_id'];
           this.group_name = res['privateGroup']['group_name'];
@@ -1166,7 +1160,7 @@ export class GroupActivityComponent implements OnInit {
   // !--LOAD ALL THE GROUP POSTS ON INIT--! //
   loadGroupPosts() {
     // we count the attempts to avoid infinitive attempts
-    console.log('fetching posts');
+
     let count = 0;
     this.isLoading$.next(true);
 
@@ -1176,7 +1170,6 @@ export class GroupActivityComponent implements OnInit {
       count = 0;
       this.postService.getGroupPosts(this.group_id)
         .subscribe((res) => {
-          // console.log('Group posts:', res);
           this.posts = res['posts'];
           this.isLoading$.next(false);
           this.show_new_posts_badge = 0;
@@ -1219,15 +1212,15 @@ export class GroupActivityComponent implements OnInit {
 
   // !--ON SCROLL FETCHES THE NEXT RECENT GROUP POSTS--! //
   onScroll() {
-    if(this.posts.length != 0){
+    if ( this.posts.length != 0 ) {
       this.isLoading$.next(true);
       this.ngxService.startBackground();
-  
+
       this.postService.getGroupPosts(this.group_id)
         .subscribe((res) => {
           if (this.posts.length != 0) {
-            console.log('Scroll Response', res);
-            var last_post_id = this.posts[this.posts.length - 1]._id
+
+            const last_post_id = this.posts[this.posts.length - 1]._id
             this.loadNextPosts(last_post_id);
             this.isLoading$.next(false);
             this.ngxService.stopBackground();
@@ -1335,9 +1328,9 @@ export class GroupActivityComponent implements OnInit {
   }
 
   OnSaveEditComment(index, commentId, postId){
-    const editor = document.getElementById('edit-comment-'+index);
+    const editor = document.getElementById('edit-comment-' + index);
     const comment ={
-      content: document.getElementById('commentContent-'+index).innerHTML,
+      content: document.getElementById('commentContent-' + index).innerHTML,
       contentMentions: this.content_mentions
     };
 
@@ -1375,45 +1368,90 @@ export class GroupActivityComponent implements OnInit {
       console.log('Error while updating the comment', err);
       swal("Error!", "Error while updating the comment " + err, "danger");
     })
-
   }
 
-  OnEditPost(index) {
+  OnEditPost(index, post) {
+    // note: this might be easier if I used the moment library
 
+    // we first need to convert these backend date strings into JS date objects
+    const task_due = post.task.due_to ? new Date(post.task.due_to) : null;
+    const event_due = post.event.due_to ? new Date(post.event.due_to) : null;
+
+    // Reset the selectedGroupUsers before we add users to it
+    this.selectedGroupUsers = [];
+
+    // we display the user's previously selected values in the buttons and select menu
+    switch (post.type) {
+      case 'task':
+        this.model_date = { year: task_due.getFullYear(), month: task_due.getMonth() + 1, day: task_due.getDate()};
+        this.selectedGroupUsers.push(post.task._assigned_to);
+        break;
+      case 'event':
+        this.model_date = { year: event_due.getFullYear(), month: event_due.getMonth() + 1, day: event_due.getDate()};
+        this.model_time = { hour: event_due.getHours(), minute: event_due.getMinutes()};
+        this.selectedGroupUsers = [...post.event._assigned_to];
+        break;
+    }
+
+    // Because we edit the post, the previous step will always end with selected users, thus we assigned someone
+    this.assignment = 'Assigned';
+
+    // manipulate the DOM
     const x = document.getElementById(index);
     const editor = document.getElementById('edit-content-' + index);
     const y = document.getElementById("button_edit_post" + index);
     y.style.display = "block";
     editor.style.display = 'block';
-
   }
 
-  OnSaveEditPost(index, post_id, content) {
+  OnSaveEditPost(index, post_id, content, type) {
     const editor = document.getElementById('edit-content-' + index);
+
+    // we create a new date object based on whether we added time
+    const date_due_to =
+      type === 'event' ?
+      new Date(this.model_date.year, this.model_date.month - 1, this.model_date.day, this.model_time.hour, this.model_time.minute)
+      : new Date(this.model_date.year, this.model_date.month - 1, this.model_date.day);
+
     const post = {
       'content': document.getElementById(index).innerHTML,
-      '_content_mentions': this.content_mentions
+      '_content_mentions': this.content_mentions,
+      'type': type,
+      'date_due_to': moment(`${date_due_to.toISOString()}`).format('YYYY-MM-DD hh:mm:ss.SSS'),
+      'assigned_to': this.selectedGroupUsers
     };
+
     const scanned_content = post.content;
-    var el = document.createElement('html');
+    let el = document.createElement('html');
     el.innerHTML = scanned_content;
 
     if (el.getElementsByClassName('mention').length > 0) {
       //  console.log('Element',  el.getElementsByClassName( 'mention' ));
-      for (var i = 0; i < el.getElementsByClassName('mention').length; i++) {
+      for (let i = 0; i < el.getElementsByClassName('mention').length; i++) {
         this.content_mentions.push(el.getElementsByClassName('mention')[i]['dataset']['id'].toString());
       }
-
     }
-    // console.log('Content Mention', this.content_mentions);
-    //  console.log('post: ', post);
+
     this.postService.editPost(post_id, post)
       .subscribe((res) => {
-
         this.alert.class = 'success';
         this._message.next(res['message']);
         this.resetNewPostForm();
         // console.log('Normal post response: ', res);
+
+        // socket notifications
+        const data = {
+          // it should get automatically, something like workspace: this.workspace_name
+          workspace: this.user_data.workspace.workspace_name,
+          // it should get automatically, something like group: this.group_name
+          group: this.group_name,
+          userId: this.user_data.user_id,
+          postId: res['post']._id,
+          groupId: this.group_id,
+          type: 'post'
+        };
+
+        this.socket.emit('newPost', data);
         this.loadGroupPosts();
         this.content_mentions = [];
         this.scrollToTop('#card-normal-post-' + index);
@@ -1445,10 +1483,13 @@ export class GroupActivityComponent implements OnInit {
 
   onSelectPostType(type) {
     this.post.type = type;
-    this.due_date = 'Due Date';
-    this.due_time = 'Due Time';
+    this.model_date = {year: (new Date()).getFullYear(), month: (new Date()).getMonth() + 1, day: (new Date()).getDate()}
+    this.model_time = {hour: 13, minute: 30};
     switch (this.post.type) {
       case 'event':
+        // reset selected users
+        this.selectedGroupUsers = [];
+
         this.icon_event_change_color();
         this.settings = {
           text: 'Select Group Members',
@@ -1464,6 +1505,9 @@ export class GroupActivityComponent implements OnInit {
 
         break;
       case 'task':
+        // reset selected users
+        this.selectedGroupUsers = [];
+
         this.icon_check_box_change_color();
         this.settings = {
           text: 'Select Group Members',
@@ -1481,7 +1525,7 @@ export class GroupActivityComponent implements OnInit {
         this.icon_comment_change_color();
         break;
     }
-    // console.log('post type: ', this.post.type);
+
 
   }
 
@@ -1496,15 +1540,26 @@ export class GroupActivityComponent implements OnInit {
     this.datePickedCount = 1;
   }
 
-  openAssignPicker(content) {
+  openAssignPicker(content, post) {
     this.modalService.open(content, { centered: true });
+
+if (post && post.type === 'task') {
+  this.selectedGroupUsers = [post.task._assigned_to];
+} else if (post && post.type === 'event') {
+  this.selectedGroupUsers = post.event._assigned_to.map((item, i) => {
+    return item;
+  });
+}
+
+
   }
 
   onDateSelected() {
-    const temp = this.model_date;
-    this.due_date = temp.year.toString() + '-' + this.date.month.toString() + '-' + temp.day.toString();
-    this.selected_date = new Date(this.date.year, (this.date.month - 1), temp.day, this.model_time.hour, this.model_time.minute);
-    this.due_to = temp.year.toString() + '-' + this.date.month.toString() + '-' + temp.day.toString() + 'T' + this.model_time.hour + ':' + this.model_time.minute + ':' + '00' + this.selected_date.getTimezoneOffset();
+    // console.log('date', this.model_date);
+    // const temp = this.model_date
+    // this.due_date = temp.year.toString() + '-' + this.date.month.toString() + '-' + temp.day.toString();
+    // this.selected_date = new Date(temp.year, (temp.month - 1), temp.day);
+    // this.due_to = temp.year.toString() + '-' + this.date.month.toString() + '-' + temp.day.toString() + 'T' + this.model_time.hour + ':' + this.model_time.minute + ':' + '00' + this.selected_date.getTimezoneOffset();
   }
 
 
@@ -1517,17 +1572,13 @@ export class GroupActivityComponent implements OnInit {
   }
 
   onTimeSelected() {
-    this.due_time = this.model_time.hour.toString() + ':' + this.model_time.minute.toString();
+    // this.due_time = this.model_time.hour.toString() + ':' + this.model_time.minute.toString();
   }
 
   onSearch(evt: any) {
-    // console.log(evt.target.value);
     this.groupUsersList = [];
     this.groupService.searchGroupUsers(this.group_id, evt.target.value)
       .subscribe((res) => {
-        // console.log('workspace users: ', res);
-        // console.log('Group Users: ', res);
-
         this.groupUsersList = res['users'];
 
       }, (err) => {
@@ -1537,30 +1588,23 @@ export class GroupActivityComponent implements OnInit {
   }
 
   onItemSelect(item: any) {
-    // console.log(item);
-    // console.log('selected items: ', this.selectedGroupUsers);
     if (this.selectedGroupUsers.length >= 1) {
       this.assignment = 'Assigned';
     }
   }
   OnItemDeSelect(item: any) {
-    // console.log(item);
-    // console.log(this.selectedGroupUsers);
     if (this.selectedGroupUsers.length < 1) {
       this.assignment = 'UnAssigned';
     }
 
   }
   onSelectAll(items: any) {
-    // console.log(items);
     this.assignment = 'Assigned';
   }
   onDeSelectAll(items: any) {
-    // console.log(items);
     this.assignment = 'UnAssigned';
 
   }
-
 
   OnMarkEventCompleted(index, post_id) {
 
@@ -1575,7 +1619,6 @@ export class GroupActivityComponent implements OnInit {
         this.playAudio();
         this.alert.class = 'success';
         this._message.next(res['message']);
-        //    console.log('Post Marked as Completed');
 
         button.style.background = "#005fd5";
         button.style.color = "#ffffff";
@@ -1608,7 +1651,6 @@ export class GroupActivityComponent implements OnInit {
     };
     this.postService.complete(post_id, post)
       .subscribe((res) => {
-        console.log('Post Marked as to do', res);
         this.playAudio();
         this.loadGroupPosts();
         this.onScroll();
@@ -1632,7 +1674,6 @@ export class GroupActivityComponent implements OnInit {
     };
     this.postService.complete(post_id, post)
       .subscribe((res) => {
-        console.log('Post Marked as in Progress', res);
         this.playAudio();
         this.loadGroupPosts();
         this.onScroll();
@@ -1662,9 +1703,6 @@ export class GroupActivityComponent implements OnInit {
 
         this.alert.class = 'success';
         this._message.next(res['message']);
-        console.log('Normal post response: ', res);
-
-        console.log('Post Marked as Completed');
         this.loadGroupPosts();
         this.onScroll();
         this.scrollToTop('#card-normal-post-' + index);
@@ -1691,7 +1729,6 @@ export class GroupActivityComponent implements OnInit {
       .subscribe((res) => {
         this.alert.class = 'success';
         this._message.next(res['message']);
-        //   console.log('Post Liked!');
         this.loadGroupPosts();
         this.onScroll();
 
@@ -1715,7 +1752,6 @@ export class GroupActivityComponent implements OnInit {
       .subscribe((res) => {
         this.alert.class = 'success';
         this._message.next(res['message']);
-        //   console.log('Post Unliked!');
         this.loadGroupPosts();
         this.onScroll();
 
@@ -1803,7 +1839,6 @@ export class GroupActivityComponent implements OnInit {
 
     this.groupService.getGroup(this.group_id)
       .subscribe((res) => {
-        //  console.log('Group', res);
         Value.push({ id: '', value: 'all' });
 
         for (var i = 0; i < res['group']._members.length; i++) {
@@ -1816,7 +1851,7 @@ export class GroupActivityComponent implements OnInit {
           this.allMembersId.push(res['group']._admins[i]._id);
           Value.push({ id: res['group']._admins[i]._id, value: res['group']._admins[i].first_name + ' ' + res['group']._admins[i].last_name });
         }
-        // console.log('All members ID', this.allMembersId);
+
 
       }, (err) => {
 
@@ -1824,7 +1859,6 @@ export class GroupActivityComponent implements OnInit {
 
     this.groupService.getGroupFiles(this.group_id)
       .subscribe((res) => {
-        //  console.log('Group Files:', res['posts']);
         this.files = res['posts'];
         for (var i = 0; i < res['posts'].length; i++) {
           if (res['posts'][i].files.length > 0) {
@@ -1903,9 +1937,7 @@ export class GroupActivityComponent implements OnInit {
     this.emojiSet = set;
   }
   handleClick($event) {
-    console.log($event.emoji.native);
     this.editor.insertText(this.editorTextLength - 1, $event.emoji.native);
-    //this.onEditorCreated($event);
   }
 
 // !--GOOGLE PICKER IMPLEMENTATION--! //
@@ -1922,12 +1954,10 @@ export class GroupActivityComponent implements OnInit {
         'immediate': false
       },
       this.handleAuthResult);
-      console.log('Auth')
   }
 
   onPickerApiLoad() {
     this.pickerApiLoaded = true;
-    console.log('Picker', this.pickerApiLoaded);
   }
 
   handleAuthResult(authResult) {
@@ -1946,7 +1976,7 @@ export class GroupActivityComponent implements OnInit {
             if (e[google.picker.Response.ACTION] == google.picker.Action.PICKED) {
               let doc = e[google.picker.Response.DOCUMENTS][0];
               src = doc[google.picker.Document.URL];
-              console.log("Document selected is", doc,"and URL is ",src);
+
               this.googleDriveFiles = e[google.picker.Response.DOCUMENTS];
 
               const driveDivision = document.getElementById('google-drive-file');
