@@ -688,15 +688,18 @@ export class GroupActivityComponent implements OnInit {
       formData.append('event._assigned_to', JSON.parse(localStorage.getItem('user')).user_id);
     }
 
+    // create date object for this event
+    const date = new Date(this.model_date.year, this.model_date.month, this.model_date.day, this.model_time.hour, this.model_time.minute);
+
     const post = {
       content: this.post.content,
       type: this.post.type,
       _posted_by: this.user_data.user_id,
       _group: this.group_id,
       event: {
-        due_date: moment(`${this.selected_date.toISOString()}`).format('YYYY-MM-DD'),
-        due_time: moment(`${this.selected_date.toISOString()}`).format('hh:mm:ss.SSS'),
-        due_to: moment(`${this.selected_date.toISOString()}`).format('YYYY-MM-DD hh:mm:ss.SSS'),
+        due_date: moment(`${date.toISOString()}`).format('YYYY-MM-DD'),
+        due_time: moment(`${date.toISOString()}`).format('hh:mm:ss.SSS'),
+        due_to: moment(`${date.toISOString()}`).format('YYYY-MM-DD hh:mm:ss.SSS'),
         // problem: assignedUsers will always be empty
         _assigned_to: assignedUsers,
         _content_mentions: this.content_mentions
@@ -810,14 +813,17 @@ export class GroupActivityComponent implements OnInit {
       }
     }
 
+    // create due date
+    const date = new Date(this.model_date.year, this.model_date.month, this.model_date.day);
+
     const post = {
       content: this.post.content,
       type: this.post.type,
       _posted_by: this.user_data.user_id,
       _group: this.group_id,
       task: {
-        due_date: moment(`${this.selected_date.toISOString()}`).format('YYYY-MM-DD hh:mm:ss.SSS'),
-        due_to: moment(`${this.selected_date.toISOString()}`).format('YYYY-MM-DD'),
+        due_date: moment(`${date.toISOString()}`).format('YYYY-MM-DD hh:mm:ss.SSS'),
+        due_to: moment(`${date.toISOString()}`).format('YYYY-MM-DD'),
         // there are two scenarios:
         // 1. personal workspace task post: doesn't need assigned members so selectGroupUsers will be undefined
         // 2. group task post: needs one assigned member so selectgorupusers will be defined
@@ -1371,8 +1377,6 @@ export class GroupActivityComponent implements OnInit {
     const task_due = post.task.due_to ? new Date(post.task.due_to) : null;
     const event_due = post.event.due_to ? new Date(post.event.due_to) : null;
 
-    console.log('task Due', task_due);
-
     // Reset the selectedGroupUsers before we add users to it
     this.selectedGroupUsers = [];
 
@@ -1413,7 +1417,7 @@ export class GroupActivityComponent implements OnInit {
       'content': document.getElementById(index).innerHTML,
       '_content_mentions': this.content_mentions,
       'type': type,
-      'date_due_to': date_due_to,
+      'date_due_to': moment(`${date_due_to.toISOString()}`).format('YYYY-MM-DD hh:mm:ss.SSS'),
       'assigned_to': this.selectedGroupUsers
     };
 
@@ -1551,11 +1555,11 @@ if (post && post.type === 'task') {
   }
 
   onDateSelected() {
-    console.log('date', this.model_date);
-    const temp = this.model_date
-    this.due_date = temp.year.toString() + '-' + this.date.month.toString() + '-' + temp.day.toString();
-    this.selected_date = new Date(this.date.year, (this.date.month - 1), temp.day, this.model_time.hour, this.model_time.minute);
-    this.due_to = temp.year.toString() + '-' + this.date.month.toString() + '-' + temp.day.toString() + 'T' + this.model_time.hour + ':' + this.model_time.minute + ':' + '00' + this.selected_date.getTimezoneOffset();
+    // console.log('date', this.model_date);
+    // const temp = this.model_date
+    // this.due_date = temp.year.toString() + '-' + this.date.month.toString() + '-' + temp.day.toString();
+    // this.selected_date = new Date(temp.year, (temp.month - 1), temp.day);
+    // this.due_to = temp.year.toString() + '-' + this.date.month.toString() + '-' + temp.day.toString() + 'T' + this.model_time.hour + ':' + this.model_time.minute + ':' + '00' + this.selected_date.getTimezoneOffset();
   }
 
 
