@@ -1212,7 +1212,7 @@ export class GroupActivityComponent implements OnInit {
 
   // !--ON SCROLL FETCHES THE NEXT RECENT GROUP POSTS--! //
   onScroll() {
-    if(this.posts.length != 0){
+    if ( this.posts.length != 0 ) {
       this.isLoading$.next(true);
       this.ngxService.startBackground();
 

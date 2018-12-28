@@ -23,11 +23,8 @@
     "moment": "^2.22.2",
     "mongoose": "^5.0.2",
     "morgan": "^1.9.0",
-
     "redis": "^2.8.0",
-
     "quill-delta": "^4.1.0",
-
     "socket.io": "^2.1.1"
   },
   "devDependencies": {
