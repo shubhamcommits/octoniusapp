@@ -1725,7 +1725,7 @@ if (post && post.type === 'task') {
   }
 
   likepost(post) {
-    console.log('posts test 0', this.posts);
+
     this.postService.like(post)
       .subscribe((res) => {
         this.alert.class = 'success';
@@ -1736,15 +1736,9 @@ if (post && post.type === 'task') {
           return _post._id === post.post_id;
         });
 
-        console.log('indexcurrentPost', indexCurrentPost);
-        console.log('posts test 1', this.posts);
-
         // and push the user who liked the post into the likedBy property
         // this way the frontend is up to date with the backend without having to reload
         this.posts[indexCurrentPost]._liked_by.push(res['user']);
-
-        console.log('posts test 2', this.posts);
-
 
       }, (err) => {
 
@@ -1762,29 +1756,22 @@ if (post && post.type === 'task') {
 
   unlikepost(post) {
     const currentUserId = JSON.parse(localStorage.getItem('user')).user_id;
-    console.log('unlike post', post);
+
 
     this.postService.unlike(post)
       .subscribe((res) => {
         this.alert.class = 'success';
         this._message.next(res['message']);
 
-        console.log('check 1 posts', this.posts);
-
         // find the index of the like
         const indexLike = post._liked_by.findIndex(user => user._id == currentUserId);
-        console.log('indexLike', indexLike);
 
         // find the index of the post we are currently handling
         const indexCurrentPost = this.posts.findIndex( _post => _post._id == post.post_id);
-        console.log('indeccurrentpost', indexCurrentPost)
 
         // and slice the user who unliked the post out of the likedBy property
         // this way the frontend is up to date with the backend without having to reload
         this.posts[indexCurrentPost]._liked_by.splice(indexLike, 1);
-
-        console.log('check 2 posts', this.posts);
-
 
         // this.loadGroupPosts();
         // this.onScroll();
@@ -1803,12 +1790,9 @@ if (post && post.type === 'task') {
 
   }
 
-showit() {
-    console.log('POST GIVE ME POSTS', this.posts);
-}
 
   OnClickLikePost(index, post_id, like_length, liked_by, user_id) {
-    console.log('log -1 posts', this.posts);
+
     const like_icon = document.getElementById('icon_like_post_' + index);
     const post = {
       'post_id': post_id,
