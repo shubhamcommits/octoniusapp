@@ -78,7 +78,7 @@ export class GroupPostComponent implements OnInit {
     this.postId = this._activatedRoute.snapshot.paramMap.get('postId');
     this.user_data = JSON.parse(localStorage.getItem('user'));
     this.group_id = this._activatedRoute.snapshot['_urlSegment']['segments'][2].path;
-   
+
 
     //this.ngOnInit();
    }
@@ -87,7 +87,7 @@ export class GroupPostComponent implements OnInit {
     this._router.routeReuseStrategy.shouldReuseRoute = function(){
       return false;
   };
-  
+
   this._router.events.subscribe((evt) => {
       if (evt instanceof NavigationEnd) {
           this._router.navigated = false;
@@ -95,7 +95,7 @@ export class GroupPostComponent implements OnInit {
       }
   });
     this.ngxService.start(); // start foreground loading with 'default' id
- 
+
     // Stop the foreground loading after 5s
     setTimeout(() => {
       this.ngxService.stop(); // stop foreground loading with 'default' id
@@ -129,7 +129,7 @@ export class GroupPostComponent implements OnInit {
 
       }, (err) => {
 
-        
+
 
       });
 
@@ -300,7 +300,7 @@ export class GroupPostComponent implements OnInit {
     }
 
 
-  
+
   // !-PLAY THE AUDIO--! //
   playAudio(){
     let audio = new Audio();
@@ -314,12 +314,13 @@ export class GroupPostComponent implements OnInit {
 
   // !-LIKE A POST--! //
   likepost(){
+    console.log('this still gets called!!!')
     if(this.post._liked_by.length == 0){
       const post = {
         'post_id': this.postId,
         'user_id': this.user_data.user_id
       };
-  
+
       this.postService.like(post)
       .subscribe((res) => {
      //   console.log('Post Liked!');
@@ -335,12 +336,12 @@ export class GroupPostComponent implements OnInit {
       }
       else
       {
-        const post = 
+        const post =
         {
           'post_id': this.postId,
           'user_id': this.user_data.user_id
         };
-    
+
         this.postService.like(post)
         .subscribe((res) => {
        //   console.log('Post Liked!');
@@ -377,7 +378,7 @@ export class GroupPostComponent implements OnInit {
     // !-LOADS ALL COMMENTS IN A POST--! //
     loadComments(postId) {
       var commentData = new Array();
-  
+
       this.postService.getComments(postId)
         .subscribe((res) => {
          // console.log(res['comments']);
@@ -387,9 +388,9 @@ export class GroupPostComponent implements OnInit {
         });
     }
     // !-LOADS ALL COMMENTS IN A POST--! //
-  
-  
-  
+
+
+
     // !--FETCH DATA OF SINGLE COMMENT--! //
     getSingleComment(commentId){
       this.postService.getComment(commentId)
@@ -400,9 +401,9 @@ export class GroupPostComponent implements OnInit {
       });
     }
     // !--FETCH DATA OF SINGLE COMMENT--! //
-  
-  
-  
+
+
+
     // !--HIDE/SHOW THE NORMAL TYPE POST COMMENTS BOX--! //
     normalCommentBoxToggle() {
       const normalCommentBox = document.getElementById('normalComments');
@@ -415,13 +416,13 @@ export class GroupPostComponent implements OnInit {
       }
     }
     // !--HIDE/SHOW THE NORMAL TYPE POST COMMENTS BOX--! //
-  
-  
-  
+
+
+
     // !--HIDE/SHOW THE TASK TYPE POSTS COMMENTS BOX--! //
     taskCommentBoxToggle() {
       const taskCommentBox = document.getElementById('taskComments');
-  
+
       if(taskCommentBox.style.display == 'block'){
         taskCommentBox.style.display = 'none';
       }
@@ -430,9 +431,9 @@ export class GroupPostComponent implements OnInit {
       }
     }
     // !--HIDE/SHOW THE TASK TYPE POSTS COMMENTS BOX--! //
-  
-  
-  
+
+
+
     // !--HIDE/SHOW THE EVENT TYPE POSTS COMMENTS BOX--! //
     eventCommentBoxToggle() {
       const eventCommentBox = document.getElementById('eventComments');
@@ -466,20 +467,20 @@ export class GroupPostComponent implements OnInit {
       editor.style.display = 'block';
       button.style.display = 'block';
     }
-  
+
     OnSaveEditComment(index, commentId, postId){
       const editor = document.getElementById('edit-comment-'+index);
       const comment ={
         content: document.getElementById('commentContent-'+index).innerHTML,
         contentMentions: this.content_mentions
       };
-      
+
       var scanned_content = comment.content;
       var el = document.createElement('html');
       el.innerHTML = scanned_content;
-  
+
       if (el.getElementsByClassName('mention').length > 0) {
-  
+
         // console.log('Element',  el.getElementsByClassName( 'mention' ));
         for (var i = 0; i < el.getElementsByClassName('mention').length; i++) {
           if (el.getElementsByClassName('mention')[i]['dataset']['value'] == "all") {
@@ -507,7 +508,7 @@ export class GroupPostComponent implements OnInit {
       //  console.log('Error while updating the comment', err);
         swal("Error!", "Error while updating the comment " + err, "danger");
       })
-  
+
     }
     // !--EDIT A COMMENT--! //
 
@@ -518,7 +519,7 @@ export class GroupPostComponent implements OnInit {
         icon: "warning",
         dangerMode: true,
         buttons: ["Cancel", "Yes, delete it!"],
-  
+
       })
         .then(willDelete => {
           if (willDelete) {
@@ -528,33 +529,33 @@ export class GroupPostComponent implements OnInit {
                 this.getPost(res['commentRemoved']['_post']);
                 this.loadComments(res['commentRemoved']['_post']);
               }, (err) => {
-  
+
                 if (err.status) {
                   swal("Error!", "Seems like, there's an error found " + err, "danger");
-  
+
                 } else {
                   swal("Error!", "Either server is down, or no Internet connection!", "danger");
                 }
-  
+
               });
             swal("Deleted!", "The following post has been deleted!", "success");
           }
         });
-  
+
     }
-  
+
 
 
     mentionmembers() {
       var hashValues = [];
-  
+
       var Value = [];
-  
+
       this.groupService.getGroup(this.group_id)
         .subscribe((res) => {
           //  console.log('Group', res);
           Value.push({ id: '', value: 'all' });
-  
+
           for (var i = 0; i < res['group']._members.length; i++) {
             this.members.push(res['group']._members[i].first_name + ' ' + res['group']._members[i].last_name);
             this.allMembersId.push(res['group']._members[i]._id);
@@ -566,12 +567,12 @@ export class GroupPostComponent implements OnInit {
             Value.push({ id: res['group']._admins[i]._id, value: res['group']._admins[i].first_name + ' ' + res['group']._admins[i].last_name });
           }
          //  console.log('All members ID', this.allMembersId);
-  
+
         }, (err) => {
-          
+
           swal("Error!", "Error received while fetching the members " + err, "danger");
         });
-  
+
       this.groupService.getGroupFiles(this.group_id)
         .subscribe((res) => {
           //  console.log('Group Files:', res['posts']);
@@ -580,37 +581,37 @@ export class GroupPostComponent implements OnInit {
             if (res['posts'][i].files.length > 0) {
               hashValues.push({ id: res['posts'][i].files[0]._id, value: '<a style="color:inherit;" target="_blank" href="' + this.BASE_URL + '/uploads/' + res['posts'][i].files[0].modified_name + '"' + '>' + res['posts'][i].files[0].orignal_name + '</a>' })
             }
-  
+
           }
         }, (err) => {
-          
+
          // swal("Error!", "Error received while fetching the group files " + err, "danger");
         });
-  
+
       const toolbaroptions = {
         container: [
           ['bold', 'italic', 'underline', 'strike'],     // toggled buttons
           ['blockquote', 'code-block'],
-  
+
           [{ 'header': 1 }, { 'header': 2 }],               // custom button values
           [{ 'list': 'ordered' }, { 'list': 'bullet' }],
           [{ 'script': 'sub' }, { 'script': 'super' }],      // superscript/subscript
           [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
           [{ 'direction': 'rtl' }],                         // text direction
-  
+
           [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
           [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-  
+
           [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
           [{ 'font': [] }],
           [{ 'align': [] }],
-  
+
           ['clean'],                                         // remove formatting button
-  
+
           ['link', 'image', 'video']]
       }
-  
-  
+
+
       this.modules = {
         toolbar: toolbaroptions,
         mention: {
@@ -618,13 +619,13 @@ export class GroupPostComponent implements OnInit {
           mentionDenotationChars: ["@", "#"],
           source: function (searchTerm, renderList, mentionChar) {
             let values;
-  
+
             if (mentionChar === "@") {
               values = Value;
             } else {
               values = hashValues;
             }
-  
+
             if (searchTerm.length === 0) {
               renderList(values, searchTerm);
             } else {
@@ -636,10 +637,10 @@ export class GroupPostComponent implements OnInit {
           },
         },
       }
-  
+
     }
 
-  
+
   loadGoogleDrive() {
     gapi.load('auth', { 'callback': this.onAuthApiLoad.bind(this) });
     gapi.load('picker', { 'callback': this.onPickerApiLoad.bind(this) });

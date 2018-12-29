@@ -30,6 +30,7 @@ declare var google: any;
 import {Group} from "../../../../shared/models/group.model";
 import { QuillAutoLinkService } from '../../../../shared/services/quill-auto-link.service';
 import {months} from "../../../../common/data";
+import {post} from "selenium-webdriver/http";
 
 
 @Component({
@@ -685,7 +686,7 @@ export class GroupActivityComponent implements OnInit {
         formData.append('event._assigned_to', this.selectedGroupUsers[i]._id);
       }
     } else {
-      formData.append('event._assigned_to', JSON.parse(localStorage.getItem('user')).user_id);
+      formData.append('event._assigned_to', this.user_data.user_id);
     }
 
     // create date object for this event
@@ -1160,7 +1161,7 @@ export class GroupActivityComponent implements OnInit {
   // !--LOAD ALL THE GROUP POSTS ON INIT--! //
   loadGroupPosts() {
     // we count the attempts to avoid infinitive attempts
-
+    console.log('WE CALLLED THE GROUP POSTS');
     let count = 0;
     this.isLoading$.next(true);
 
@@ -1171,6 +1172,7 @@ export class GroupActivityComponent implements OnInit {
       this.postService.getGroupPosts(this.group_id)
         .subscribe((res) => {
           this.posts = res['posts'];
+          console.log('initial state posts', this.posts);
           this.isLoading$.next(false);
           this.show_new_posts_badge = 0;
         }, (err) => {
@@ -1200,7 +1202,6 @@ export class GroupActivityComponent implements OnInit {
       .subscribe((res) => {
         //    console.log('Group posts:', res);
         this.posts = this.posts.concat(res['posts']);
-        //  console.log('Group posts:', this.posts);
         this.isLoading$.next(false);
       }, (err) => {
         swal("Error!", "Error while retrieving the next recent posts " + err, "danger");
@@ -1724,13 +1725,26 @@ if (post && post.type === 'task') {
   }
 
   likepost(post) {
-
+    console.log('posts test 0', this.posts);
     this.postService.like(post)
       .subscribe((res) => {
         this.alert.class = 'success';
         this._message.next(res['message']);
-        this.loadGroupPosts();
-        this.onScroll();
+
+        // find the post we are currently handling
+        const indexCurrentPost = this.posts.findIndex((_post) => {
+          return _post._id === post.post_id;
+        });
+
+        console.log('indexcurrentPost', indexCurrentPost);
+        console.log('posts test 1', this.posts);
+
+        // and push the user who liked the post into the likedBy property
+        // this way the frontend is up to date with the backend without having to reload
+        this.posts[indexCurrentPost]._liked_by.push(res['user']);
+
+        console.log('posts test 2', this.posts);
+
 
       }, (err) => {
 
@@ -1747,13 +1761,33 @@ if (post && post.type === 'task') {
   }
 
   unlikepost(post) {
+    const currentUserId = JSON.parse(localStorage.getItem('user')).user_id;
+    console.log('unlike post', post);
 
     this.postService.unlike(post)
       .subscribe((res) => {
         this.alert.class = 'success';
         this._message.next(res['message']);
-        this.loadGroupPosts();
-        this.onScroll();
+
+        console.log('check 1 posts', this.posts);
+
+        // find the index of the like
+        const indexLike = post._liked_by.findIndex(user => user._id == currentUserId);
+        console.log('indexLike', indexLike);
+
+        // find the index of the post we are currently handling
+        const indexCurrentPost = this.posts.findIndex( _post => _post._id == post.post_id);
+        console.log('indeccurrentpost', indexCurrentPost)
+
+        // and slice the user who unliked the post out of the likedBy property
+        // this way the frontend is up to date with the backend without having to reload
+        this.posts[indexCurrentPost]._liked_by.splice(indexLike, 1);
+
+        console.log('check 2 posts', this.posts);
+
+
+        // this.loadGroupPosts();
+        // this.onScroll();
 
       }, (err) => {
 
@@ -1769,47 +1803,71 @@ if (post && post.type === 'task') {
 
   }
 
-
+showit() {
+    console.log('POST GIVE ME POSTS', this.posts);
+}
 
   OnClickLikePost(index, post_id, like_length, liked_by, user_id) {
-
+    console.log('log -1 posts', this.posts);
     const like_icon = document.getElementById('icon_like_post_' + index);
     const post = {
       'post_id': post_id,
-      'user_id': this.user_data.user_id
+      'user_id': this.user_data.user_id,
+      '_liked_by': liked_by
     };
 
     if (like_length == 0) {
       this.likepost(post);
-      this.playAudio();
-      this.scrollToTop('#card-normal-post-' + index);
-      this.scrollToTop('#card-event-post-' + index);
-      this.scrollToTop('#card-task-post-' + index);
-      like_icon.style.color = "#005FD5";
+      // this.scrollToTop('#card-normal-post-' + index);
+      // this.scrollToTop('#card-event-post-' + index);
+      // this.scrollToTop('#card-task-post-' + index);
+      // like_icon.style.color = "#005FD5";
+    } else {
+      let userHasLikedPost = false;
 
-    }
-
-    else {
-      var i;
-      for (i = 0; i < like_length; i++) {
-
-        if (liked_by[i]._id == this.user_data.user_id) {
-          this.unlikepost(post);
-          this.scrollToTop('#card-normal-post-' + index);
-          this.scrollToTop('#card-event-post-' + index);
-          this.scrollToTop('#card-task-post-' + index);
-          like_icon.style.color = "#9b9b9b";
+      // we check whether the user is one of the likes we already have
+      liked_by.forEach((like) => {
+        if ( like._id === this.user_data.user_id ) {
+          userHasLikedPost = true;
         }
-        else {
-          this.likepost(post);
-          this.scrollToTop('#card-normal-post-' + index);
-          this.scrollToTop('#card-event-post-' + index);
-          this.scrollToTop('#card-task-post-' + index);
-        }
+      });
+
+      // we like the post when the user is not between the users that liked the post
+      // and we unlike the post when it is
+      if (!userHasLikedPost) {
+        this.likepost(post);
+      } else {
+        this.unlikepost(post);
       }
 
+      // for (let i = 0; i < like_length; i++) {
+      //   // if this like is from the current user
+      //   if (liked_by[i]._id == this.user_data.user_id) {
+      //     this.unlikepost(post);
+      //     this.scrollToTop('#card-normal-post-' + index);
+      //     this.scrollToTop('#card-event-post-' + index);
+      //     this.scrollToTop('#card-task-post-' + index);
+      //     like_icon.style.color = "#9b9b9b";
+      //   }
+      //   // if this like is not from the current user
+      //   else {
+      //     this.likepost(post);
+      //     this.scrollToTop('#card-normal-post-' + index);
+      //     this.scrollToTop('#card-event-post-' + index);
+      //     this.scrollToTop('#card-task-post-' + index);
+      //   }
+      // }
     }
+  }
 
+  userLikedPost( i ) {
+    const currentUserId = this.user_data.user_id;
+
+    const match = this.posts[i]._liked_by.filter((user) => {
+      return user._id === currentUserId;
+    });
+
+    return match.length > 0;
   }
 
 
