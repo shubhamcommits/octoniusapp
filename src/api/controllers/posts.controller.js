@@ -24,11 +24,15 @@ const add = async (req, res, next) => {
 
     const post = await Post.create(postData);
 
-    // Create Notification for mentions on post content
+
     if (post._content_mentions.length !== 0) {
+
+      // Create Notification for mentions on post content
       notifications.newPostMentions(post);
-      post._content_mentions.forEach((user) => {
-        sendMail.userMentionedPost(post, user);
+
+      // start the process to send an email to every user mentioned
+      post._content_mentions.forEach((user, i) => {
+        sendMail.userMentionedPost(post, user, i);
       });
     }
 
@@ -240,9 +244,12 @@ const addComment = async (req, res, next) => {
       new: true
     });
 
-    // Create Notification for mentions on comments
+
     if (comment._content_mentions.length !== 0) {
+        // Create Notification for mentions on comments
       notifications.newCommentMentions(comment);
+
+      // for every user mentioned in the comment, we send an email
       comment._content_mentions.forEach((user) => {
           sendMail.userMentionedComment(comment, post, user);
       });
