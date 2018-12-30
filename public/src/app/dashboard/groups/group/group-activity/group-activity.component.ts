@@ -527,7 +527,7 @@ export class GroupActivityComponent implements OnInit {
               this.resetNewPostForm();
 
               // make frontend up to date with backend
-              const indexPost = this.posts.findIndex((_post) => { return _post._id === res.commentRemoved._post );
+              const indexPost = this.posts.findIndex((_post) =>  { return _post._id === res.commentRemoved._post})
               const indexComment = this.posts[indexPost].comments.findIndex(_comment => _comment._id === res.commentRemoved._id)
               this.posts[indexPost].comments.splice(indexComment, 1);
 
