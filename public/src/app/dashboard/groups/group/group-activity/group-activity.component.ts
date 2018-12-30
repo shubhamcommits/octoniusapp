@@ -455,8 +455,6 @@ export class GroupActivityComponent implements OnInit {
 
         // make frontend up to date with backend
         const indexPost = this.posts.findIndex(_post => _post._id === post_id);
-        console.log('index', indexPost);
-        console.log('actual post', this.posts[indexPost]);
         this.posts[indexPost].comments.push(res.comment);
 
         this.comments.push(res.comment);
@@ -1048,7 +1046,6 @@ export class GroupActivityComponent implements OnInit {
       .subscribe((res) => {
        // console.log(res['comments']);
         this.comments = res['comments'];
-        console.log('what do the comments look like?', this.comments);
       }, (err) => {
         swal("Error!", "Error while retrieving the comments " + err, "danger");
       });
@@ -1270,7 +1267,7 @@ export class GroupActivityComponent implements OnInit {
 
   toggled(event) {
     if (event) {
-        console.log('is open');
+    // is open
     } else {
       console.log('is closed');
 
