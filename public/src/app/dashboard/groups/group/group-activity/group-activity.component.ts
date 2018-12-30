@@ -414,13 +414,13 @@ export class GroupActivityComponent implements OnInit {
   onAddNewComment(post_id, index) {
     // console.log('post._id: ', post_id);
 
+    // comment data
     const commentContent = {
       "content":this.comment.content,
      "_commented_by": this.user_data.user_id,
      "post_id": post_id,
      "contentMentions": this.content_mentions
     };
-    //  console.log('Comment Content', commentContent);
 
     this.comment._post_id = post_id;
     this.comment._commented_by = this.user_data.user_id;
@@ -429,7 +429,7 @@ export class GroupActivityComponent implements OnInit {
     const cardEventPost = document.getElementById('card-event-post-comment-' + index);
 
     const scanned_content = commentContent.content;
-    var el = document.createElement('html');
+    let el = document.createElement('html');
     el.innerHTML = scanned_content;
 
     if (el.getElementsByClassName('mention').length > 0) {
@@ -451,8 +451,18 @@ export class GroupActivityComponent implements OnInit {
     }
 
     this.postService.addNewComment(post_id, commentContent)
-      .subscribe((res) => {
+      .subscribe((res: any) => {
 
+        // make frontend up to date with backend
+        const indexPost = this.posts.findIndex(_post => _post._id === post_id);
+        console.log('index', indexPost);
+        console.log('actual post', this.posts[indexPost]);
+        this.posts[indexPost].comments.push(res.comment);
+
+        this.comments.push(res.comment);
+        this.playAudio();
+
+        //data for socket
         const data = {
           // it should get automatically, something like workspace: this.workspace_name
           workspace: this.user_data.workspace.workspace_name,
@@ -466,14 +476,15 @@ export class GroupActivityComponent implements OnInit {
 
         this.socket.emit('newPost', data);
         this.commentForm.reset();
-        this.loadGroupPosts();
-        this.scrollToTop('#card-normal-post-' + index);
-        this.scrollToTop('#card-event-post-' + index);
-        this.scrollToTop('#card-task-post-' + index);
+
+        // this.loadGroupPosts();
+        // this.scrollToTop('#card-normal-post-' + index);
+        // this.scrollToTop('#card-event-post-' + index);
+        // this.scrollToTop('#card-task-post-' + index);
         this.showComments.id = post_id;
-        this.showComments.task = !this.showComments.task;
-        this.showComments.normal = !this.showComments.normal;
-        this.showComments.event = !this.showComments.event;
+        // this.showComments.task = !this.showComments.task;
+        // this.showComments.normal = !this.showComments.normal;
+        // this.showComments.event = !this.showComments.event;
         // cardTaskPost.style.display = 'none';
         // cardNormalPost.style.display = 'none';
 
@@ -510,11 +521,18 @@ export class GroupActivityComponent implements OnInit {
       .then(willDelete => {
         if (willDelete) {
           this.postService.deleteComment(commentId)
-            .subscribe((res) => {
-
+            .subscribe((res: any) => {
               this.alert.class = 'success';
               this._message.next(res['message']);
               this.resetNewPostForm();
+
+              // make frontend up to date with backend
+              const indexPost = this.posts.findIndex((_post) => { return _post._id === res.commentRemoved._post );
+              const indexComment = this.posts[indexPost].comments.findIndex(_comment => _comment._id === res.commentRemoved._id)
+              this.posts[indexPost].comments.splice(indexComment, 1);
+
+              const indexCommentsProp = this.comments.findIndex(_comment => _comment._id === res.commentRemoved);
+              this.comments.splice(indexCommentsProp, 1);
               this.loadGroupPosts();
 
             }, (err) => {
@@ -1030,6 +1048,7 @@ export class GroupActivityComponent implements OnInit {
       .subscribe((res) => {
        // console.log(res['comments']);
         this.comments = res['comments'];
+        console.log('what do the comments look like?', this.comments);
       }, (err) => {
         swal("Error!", "Error while retrieving the comments " + err, "danger");
       });
@@ -1161,7 +1180,6 @@ export class GroupActivityComponent implements OnInit {
   // !--LOAD ALL THE GROUP POSTS ON INIT--! //
   loadGroupPosts() {
     // we count the attempts to avoid infinitive attempts
-    console.log('WE CALLLED THE GROUP POSTS');
     let count = 0;
     this.isLoading$.next(true);
 
@@ -1172,7 +1190,6 @@ export class GroupActivityComponent implements OnInit {
       this.postService.getGroupPosts(this.group_id)
         .subscribe((res) => {
           this.posts = res['posts'];
-          console.log('initial state posts', this.posts);
           this.isLoading$.next(false);
           this.show_new_posts_badge = 0;
         }, (err) => {
@@ -1739,6 +1756,7 @@ if (post && post.type === 'task') {
         // and push the user who liked the post into the likedBy property
         // this way the frontend is up to date with the backend without having to reload
         this.posts[indexCurrentPost]._liked_by.push(res['user']);
+        this.playAudio();
 
       }, (err) => {
 
@@ -1754,7 +1772,7 @@ if (post && post.type === 'task') {
 
   }
 
-  unlikepost(post) {
+  unlikepost (post) {
     const currentUserId = JSON.parse(localStorage.getItem('user')).user_id;
 
 
@@ -1787,7 +1805,6 @@ if (post && post.type === 'task') {
         }
 
       });
-
   }
 
 
