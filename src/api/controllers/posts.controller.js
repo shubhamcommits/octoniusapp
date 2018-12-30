@@ -27,9 +27,9 @@ const add = async (req, res, next) => {
     // Create Notification for mentions on post content
     if (post._content_mentions.length !== 0) {
       notifications.newPostMentions(post);
-      // post._content_mentions.forEach((user) => {
-      //   sendMail.userMentionedPost(post, user);
-      // });
+      post._content_mentions.forEach((user) => {
+        sendMail.userMentionedPost(post, user);
+      });
     }
 
     // Send Email notification after post creation

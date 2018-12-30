@@ -276,6 +276,7 @@ const eventAssigned = async (eventPost) => {
 
 // Send an email when a user is mentioned in a post
 const userMentionedPost = async (post, user) => {
+  console.log('entered usermentionedPost');
   const emailType = 'userMentionedPost';
 
   // Generate email data
@@ -283,6 +284,10 @@ const userMentionedPost = async (post, user) => {
   const to = await User.findById({ _id: user });
   const from = await User.findById({ _id: post._posted_by });
   const group = await Group.findById({ _id: post._group });
+
+  console.log('to', to);
+  console.log('from', from);
+  console.log('group', group);
 
   const emailData = {
     subject: subjects[emailType],
@@ -298,6 +303,7 @@ const userMentionedPost = async (post, user) => {
   // Generate email body from template
   const emailBody = await generateEmailBody(emailType, emailData);
 
+  console.log('emailbody', emailBody);
   // Send email
   const send = await sendMail(emailBody, emailData);
 };
@@ -341,5 +347,7 @@ module.exports = {
   newWorkspace,
   signup,
   taskAssigned,
-  eventAssigned
+  eventAssigned,
+    userMentionedComment,
+    userMentionedPost
 };
