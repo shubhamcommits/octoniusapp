@@ -276,35 +276,39 @@ const eventAssigned = async (eventPost) => {
 
 // Send an email when a user is mentioned in a post
 const userMentionedPost = async (post, user) => {
+  try {
+    const emailType = 'userMentionedPost';
 
-  const emailType = 'userMentionedPost';
+    // Generate email data
+    //  proposal to perhaps load these three lines parallel instead of waterfall, since their outcomes are not depending on each other
+    const to = await User.findById({ _id: user });
+    const from = await User.findById({ _id: post._posted_by });
+    const group = await Group.findById({ _id: post._group });
 
-  // Generate email data
-  //  proposal to perhaps load these three lines parallel instead of waterfall, since their outcomes are not depending on each other
-  const to = await User.findById({ _id: user });
-  const from = await User.findById({ _id: post._posted_by });
-  const group = await Group.findById({ _id: post._group });
+    const emailData = {
+      subject: subjects[emailType],
+      toName: to.first_name,
+      toEmail: to.email,
+      fromName: from.first_name,
+      fromEmail: from.email,
+      workspace: group.workspace_name,
+      group: group.group_name,
+      link: defaults.signinLink
+    };
 
-  const emailData = {
-    subject: subjects[emailType],
-    toName: to.first_name,
-    toEmail: to.email,
-    fromName: from.first_name,
-    fromEmail: from.email,
-    workspace: group.workspace_name,
-    group: group.group_name,
-    link: defaults.signinLink
-  };
+    // Generate email body from template
+    const emailBody = await generateEmailBody(emailType, emailData);
 
-  // Generate email body from template
-  const emailBody = await generateEmailBody(emailType, emailData);
-
-  // Send email
-  const send = await sendMail(emailBody, emailData);
+    // Send email
+    const send = await sendMail(emailBody, emailData);
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 // send an email when a user is mentioned in a comment
 const userMentionedComment = async (comment, post, user) => {
+  try {
     const emailType = 'userMentionedComment';
 
     // Generate email data
@@ -314,14 +318,14 @@ const userMentionedComment = async (comment, post, user) => {
     const group = await Group.findById({ _id: post._group });
 
     const emailData = {
-        subject: subjects[emailType],
-        toName: to.first_name,
-        toEmail: to.email,
-        fromName: from.first_name,
-        fromEmail: from.email,
-        workspace: group.workspace_name,
-        group: group.group_name,
-        link: defaults.signinLink
+      subject: subjects[emailType],
+      toName: to.first_name,
+      toEmail: to.email,
+      fromName: from.first_name,
+      fromEmail: from.email,
+      workspace: group.workspace_name,
+      group: group.group_name,
+      link: defaults.signinLink
     };
 
     // Generate email body from template
@@ -329,6 +333,10 @@ const userMentionedComment = async (comment, post, user) => {
 
     // Send email
     const send = await sendMail(emailBody, emailData);
+
+  } catch (err) {
+console.log(err)
+  }
 };
 
 /*	====================
@@ -343,6 +351,6 @@ module.exports = {
   signup,
   taskAssigned,
   eventAssigned,
-    userMentionedComment,
-    userMentionedPost
+  userMentionedComment,
+  userMentionedPost
 };
