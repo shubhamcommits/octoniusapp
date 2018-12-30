@@ -1,7 +1,9 @@
 const moment = require('moment');
 
 const notifications = require('./notifications.controller');
-const { Comment, Group, Post } = require('../models');
+const {
+  Comment, Group, Post, User
+} = require('../models');
 const { sendMail, sendErr } = require('../../utils');
 
 /*  ======================
@@ -26,8 +28,6 @@ const add = async (req, res, next) => {
     if (post._content_mentions.length !== 0) {
       notifications.newPostMentions(post);
     }
-
-    console.log('POST', post);
 
     // Send Email notification after post creation
     switch (post.type) {
@@ -427,11 +427,18 @@ const like = async (req, res, next) => {
       }
     }, {
       new: true
-    });
+    })
+      .populate('_liked_by', 'first_name last_name')
+      .lean();
+
+    const user = await User.findOne({
+      _id: userId
+    }).select('first_name last_name');
 
     return res.status(200).json({
       message: 'Post liked!',
-      post
+      post,
+      user
     });
   } catch (err) {
     return sendErr(res, err);
@@ -453,11 +460,19 @@ const unlike = async (req, res, next) => {
       }
     }, {
       new: true
-    });
+    })
+      .populate('_liked_by', 'first_name last_name')
+      .lean();
+
+    const user = await User.findOne({
+      _id: userId
+    }).select('first_name last_name');
+
 
     return res.status(200).json({
       message: 'Post unliked!',
-      post
+      post,
+      user
     });
   } catch (err) {
     return sendErr(res, err);

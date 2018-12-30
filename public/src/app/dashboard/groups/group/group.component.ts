@@ -30,8 +30,6 @@ export class GroupComponent implements OnInit {
       .subscribe((res) => {
         // console.log('response in group component:', res);
         this.groupDataService.group = res['group'];
-        console.log('GROUP TEST 1', this.groupDataService.group)
-
       }, (err) => {
 
       });

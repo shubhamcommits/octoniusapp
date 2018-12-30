@@ -30,6 +30,7 @@ declare var google: any;
 import {Group} from "../../../../shared/models/group.model";
 import { QuillAutoLinkService } from '../../../../shared/services/quill-auto-link.service';
 import {months} from "../../../../common/data";
+import {post} from "selenium-webdriver/http";
 
 
 @Component({
@@ -413,13 +414,13 @@ export class GroupActivityComponent implements OnInit {
   onAddNewComment(post_id, index) {
     // console.log('post._id: ', post_id);
 
+    // comment data
     const commentContent = {
       "content":this.comment.content,
      "_commented_by": this.user_data.user_id,
      "post_id": post_id,
      "contentMentions": this.content_mentions
     };
-    //  console.log('Comment Content', commentContent);
 
     this.comment._post_id = post_id;
     this.comment._commented_by = this.user_data.user_id;
@@ -428,7 +429,7 @@ export class GroupActivityComponent implements OnInit {
     const cardEventPost = document.getElementById('card-event-post-comment-' + index);
 
     const scanned_content = commentContent.content;
-    var el = document.createElement('html');
+    let el = document.createElement('html');
     el.innerHTML = scanned_content;
 
     if (el.getElementsByClassName('mention').length > 0) {
@@ -450,8 +451,18 @@ export class GroupActivityComponent implements OnInit {
     }
 
     this.postService.addNewComment(post_id, commentContent)
-      .subscribe((res) => {
+      .subscribe((res: any) => {
 
+        // make frontend up to date with backend
+        const indexPost = this.posts.findIndex(_post => _post._id === post_id);
+        console.log('index', indexPost);
+        console.log('actual post', this.posts[indexPost]);
+        this.posts[indexPost].comments.push(res.comment);
+
+        this.comments.push(res.comment);
+        this.playAudio();
+
+        //data for socket
         const data = {
           // it should get automatically, something like workspace: this.workspace_name
           workspace: this.user_data.workspace.workspace_name,
@@ -465,14 +476,15 @@ export class GroupActivityComponent implements OnInit {
 
         this.socket.emit('newPost', data);
         this.commentForm.reset();
-        this.loadGroupPosts();
-        this.scrollToTop('#card-normal-post-' + index);
-        this.scrollToTop('#card-event-post-' + index);
-        this.scrollToTop('#card-task-post-' + index);
+
+        // this.loadGroupPosts();
+        // this.scrollToTop('#card-normal-post-' + index);
+        // this.scrollToTop('#card-event-post-' + index);
+        // this.scrollToTop('#card-task-post-' + index);
         this.showComments.id = post_id;
-        this.showComments.task = !this.showComments.task;
-        this.showComments.normal = !this.showComments.normal;
-        this.showComments.event = !this.showComments.event;
+        // this.showComments.task = !this.showComments.task;
+        // this.showComments.normal = !this.showComments.normal;
+        // this.showComments.event = !this.showComments.event;
         // cardTaskPost.style.display = 'none';
         // cardNormalPost.style.display = 'none';
 
@@ -509,11 +521,18 @@ export class GroupActivityComponent implements OnInit {
       .then(willDelete => {
         if (willDelete) {
           this.postService.deleteComment(commentId)
-            .subscribe((res) => {
-
+            .subscribe((res: any) => {
               this.alert.class = 'success';
               this._message.next(res['message']);
               this.resetNewPostForm();
+
+              // make frontend up to date with backend
+              const indexPost = this.posts.findIndex((_post) => { return _post._id === res.commentRemoved._post );
+              const indexComment = this.posts[indexPost].comments.findIndex(_comment => _comment._id === res.commentRemoved._id)
+              this.posts[indexPost].comments.splice(indexComment, 1);
+
+              const indexCommentsProp = this.comments.findIndex(_comment => _comment._id === res.commentRemoved);
+              this.comments.splice(indexCommentsProp, 1);
               this.loadGroupPosts();
 
             }, (err) => {
@@ -685,7 +704,7 @@ export class GroupActivityComponent implements OnInit {
         formData.append('event._assigned_to', this.selectedGroupUsers[i]._id);
       }
     } else {
-      formData.append('event._assigned_to', JSON.parse(localStorage.getItem('user')).user_id);
+      formData.append('event._assigned_to', this.user_data.user_id);
     }
 
     // create date object for this event
@@ -1029,6 +1048,7 @@ export class GroupActivityComponent implements OnInit {
       .subscribe((res) => {
        // console.log(res['comments']);
         this.comments = res['comments'];
+        console.log('what do the comments look like?', this.comments);
       }, (err) => {
         swal("Error!", "Error while retrieving the comments " + err, "danger");
       });
@@ -1160,7 +1180,6 @@ export class GroupActivityComponent implements OnInit {
   // !--LOAD ALL THE GROUP POSTS ON INIT--! //
   loadGroupPosts() {
     // we count the attempts to avoid infinitive attempts
-
     let count = 0;
     this.isLoading$.next(true);
 
@@ -1200,7 +1219,6 @@ export class GroupActivityComponent implements OnInit {
       .subscribe((res) => {
         //    console.log('Group posts:', res);
         this.posts = this.posts.concat(res['posts']);
-        //  console.log('Group posts:', this.posts);
         this.isLoading$.next(false);
       }, (err) => {
         swal("Error!", "Error while retrieving the next recent posts " + err, "danger");
@@ -1729,8 +1747,16 @@ if (post && post.type === 'task') {
       .subscribe((res) => {
         this.alert.class = 'success';
         this._message.next(res['message']);
-        this.loadGroupPosts();
-        this.onScroll();
+
+        // find the post we are currently handling
+        const indexCurrentPost = this.posts.findIndex((_post) => {
+          return _post._id === post.post_id;
+        });
+
+        // and push the user who liked the post into the likedBy property
+        // this way the frontend is up to date with the backend without having to reload
+        this.posts[indexCurrentPost]._liked_by.push(res['user']);
+        this.playAudio();
 
       }, (err) => {
 
@@ -1746,14 +1772,27 @@ if (post && post.type === 'task') {
 
   }
 
-  unlikepost(post) {
+  unlikepost (post) {
+    const currentUserId = JSON.parse(localStorage.getItem('user')).user_id;
+
 
     this.postService.unlike(post)
       .subscribe((res) => {
         this.alert.class = 'success';
         this._message.next(res['message']);
-        this.loadGroupPosts();
-        this.onScroll();
+
+        // find the index of the like
+        const indexLike = post._liked_by.findIndex(user => user._id == currentUserId);
+
+        // find the index of the post we are currently handling
+        const indexCurrentPost = this.posts.findIndex( _post => _post._id == post.post_id);
+
+        // and slice the user who unliked the post out of the likedBy property
+        // this way the frontend is up to date with the backend without having to reload
+        this.posts[indexCurrentPost]._liked_by.splice(indexLike, 1);
+
+        // this.loadGroupPosts();
+        // this.onScroll();
 
       }, (err) => {
 
@@ -1766,9 +1805,7 @@ if (post && post.type === 'task') {
         }
 
       });
-
   }
-
 
 
   OnClickLikePost(index, post_id, like_length, liked_by, user_id) {
@@ -1776,40 +1813,62 @@ if (post && post.type === 'task') {
     const like_icon = document.getElementById('icon_like_post_' + index);
     const post = {
       'post_id': post_id,
-      'user_id': this.user_data.user_id
+      'user_id': this.user_data.user_id,
+      '_liked_by': liked_by
     };
 
     if (like_length == 0) {
       this.likepost(post);
-      this.playAudio();
-      this.scrollToTop('#card-normal-post-' + index);
-      this.scrollToTop('#card-event-post-' + index);
-      this.scrollToTop('#card-task-post-' + index);
-      like_icon.style.color = "#005FD5";
+      // this.scrollToTop('#card-normal-post-' + index);
+      // this.scrollToTop('#card-event-post-' + index);
+      // this.scrollToTop('#card-task-post-' + index);
+      // like_icon.style.color = "#005FD5";
+    } else {
+      let userHasLikedPost = false;
 
-    }
-
-    else {
-      var i;
-      for (i = 0; i < like_length; i++) {
-
-        if (liked_by[i]._id == this.user_data.user_id) {
-          this.unlikepost(post);
-          this.scrollToTop('#card-normal-post-' + index);
-          this.scrollToTop('#card-event-post-' + index);
-          this.scrollToTop('#card-task-post-' + index);
-          like_icon.style.color = "#9b9b9b";
+      // we check whether the user is one of the likes we already have
+      liked_by.forEach((like) => {
+        if ( like._id === this.user_data.user_id ) {
+          userHasLikedPost = true;
         }
-        else {
-          this.likepost(post);
-          this.scrollToTop('#card-normal-post-' + index);
-          this.scrollToTop('#card-event-post-' + index);
-          this.scrollToTop('#card-task-post-' + index);
-        }
+      });
+
+      // we like the post when the user is not between the users that liked the post
+      // and we unlike the post when it is
+      if (!userHasLikedPost) {
+        this.likepost(post);
+      } else {
+        this.unlikepost(post);
       }
 
+      // for (let i = 0; i < like_length; i++) {
+      //   // if this like is from the current user
+      //   if (liked_by[i]._id == this.user_data.user_id) {
+      //     this.unlikepost(post);
+      //     this.scrollToTop('#card-normal-post-' + index);
+      //     this.scrollToTop('#card-event-post-' + index);
+      //     this.scrollToTop('#card-task-post-' + index);
+      //     like_icon.style.color = "#9b9b9b";
+      //   }
+      //   // if this like is not from the current user
+      //   else {
+      //     this.likepost(post);
+      //     this.scrollToTop('#card-normal-post-' + index);
+      //     this.scrollToTop('#card-event-post-' + index);
+      //     this.scrollToTop('#card-task-post-' + index);
+      //   }
+      // }
     }
+  }
 
+  userLikedPost( i ) {
+    const currentUserId = this.user_data.user_id;
+
+    const match = this.posts[i]._liked_by.filter((user) => {
+      return user._id === currentUserId;
+    });
+
+    return match.length > 0;
   }
 
 
