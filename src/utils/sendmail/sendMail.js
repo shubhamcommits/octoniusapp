@@ -19,7 +19,6 @@ const defaults = require('./defaults');
 
 const generateEmailBody = async (type, data) => {
   try {
-
     // Pass email data to the template
     const templateStr = await fs.readFileSync(`${__dirname}/templates/${type}.ejs`);
     const body = await ejs.render(templateStr.toString(), data);
@@ -43,28 +42,28 @@ const sendMail = async (emailBody, emailData) => {
       url: '/v3/mail/send',
       method: 'post',
       baseURL: 'https://api.sendgrid.com',
-      'port': null,
+      port: null,
       transformRequest: [function (data) {
         strData = JSON.stringify(data);
         return strData;
       }],
       headers: {
-        'authorization': 'Bearer ' + process.env.SENDGRID_KEY,
+        authorization: `Bearer ${process.env.SENDGRID_KEY}`,
         'content-type': 'application/json'
       },
-      data: { 
+      data: {
         personalizations: [
           {
-            to: [ 
-              { 
+            to: [
+              {
                 email: emailData.toEmail,
                 name: emailData.toName
-              } 
+              }
             ],
-            subject: emailData.subject 
-          } 
+            subject: emailData.subject
+          }
         ],
-        from: 
+        from:
         {
           email: emailData.fromEmail || defaults.fromEmail,
           name: emailData.fromName || defaults.fromName
@@ -74,7 +73,7 @@ const sendMail = async (emailBody, emailData) => {
           name: emailData.replyToName || defaults.replyToName
         },
         content: [
-          { 
+          {
             type: 'text/html',
             value: emailBody
           }
@@ -85,7 +84,6 @@ const sendMail = async (emailBody, emailData) => {
     // Fire the request to sendgrid server, check the reponse
     const res = await http.request(config);
     return res;
-
   } catch (err) {
     // eslint-disable-next-line no-console
     console.log(err);
@@ -121,7 +119,6 @@ const joinWorkspace = async (reqData) => {
 
     // Send email
     const send = await sendMail(emailBody, emailData);
-
   } catch (err) {
     // eslint-disable-next-line no-console
     console.log(err);
@@ -154,14 +151,13 @@ const joinedGroup = async (memberId, groupData, adminId) => {
 
     // Send email
     const send = await sendMail(emailBody, emailData);
-
   } catch (err) {
     // eslint-disable-next-line no-console
     console.log(err);
   }
 };
 
-// 	New workspace confirmation email 
+// 	New workspace confirmation email
 const newWorkspace = async (workspace) => {
   try {
     const emailType = 'newWorkspace';
@@ -171,7 +167,7 @@ const newWorkspace = async (workspace) => {
       subject: subjects[emailType],
       toName: workspace.owner_first_name,
       toEmail: workspace.owner_email,
-      workspace: workspace.workspace_name,
+      workspace: workspace.workspace_name
     };
 
     // Generate email body from template
@@ -179,7 +175,6 @@ const newWorkspace = async (workspace) => {
 
     // Send email
     const send = await sendMail(emailBody, emailData);
-
   } catch (err) {
     // eslint-disable-next-line no-console
     console.log(err);
@@ -196,7 +191,7 @@ const signup = async (user) => {
       subject: subjects[emailType],
       toName: user.first_name,
       toEmail: user.email,
-      workspace: user.workspace_name,
+      workspace: user.workspace_name
     };
 
     // Generate email body from template
@@ -204,7 +199,6 @@ const signup = async (user) => {
 
     // Send email
     const send = await sendMail(emailBody, emailData);
-
   } catch (err) {
     // eslint-disable-next-line no-console
     console.log(err);
@@ -237,7 +231,6 @@ const taskAssigned = async (taskPost) => {
 
     // Send email
     const send = await sendMail(emailBody, emailData);
-
   } catch (err) {
     // eslint-disable-next-line no-console
     console.log(err);
@@ -254,8 +247,7 @@ const eventAssigned = async (eventPost) => {
     const group = await Group.findById({ _id: eventPost._group });
 
 
-    for (let userId of eventPost.event._assigned_to) {
-
+    for (const userId of eventPost.event._assigned_to) {
       const to = await User.findById({ _id: userId });
 
       // Generate email data
@@ -275,13 +267,67 @@ const eventAssigned = async (eventPost) => {
 
       // Send email
       const send = await sendMail(emailBody, emailData);
-
-    };
-
+    }
   } catch (err) {
     // eslint-disable-next-line no-console
     console.log(err);
   }
+};
+
+// Send an email when a user is mentioned in a post
+const userMentionedPost = async (post, user) => {
+  const emailType = 'userMentionedPost';
+
+  // Generate email data
+  //  proposal to perhaps load these three lines parallel instead of waterfall, since their outcomes are not depending on each other
+  const to = await User.findById({ _id: user });
+  const from = await User.findById({ _id: post._posted_by });
+  const group = await Group.findById({ _id: post._group });
+
+  const emailData = {
+    subject: subjects[emailType],
+    toName: to.first_name,
+    toEmail: to.email,
+    fromName: from.first_name,
+    fromEmail: from.email,
+    workspace: group.workspace_name,
+    group: group.group_name,
+    link: defaults.signinLink
+  };
+
+  // Generate email body from template
+  const emailBody = await generateEmailBody(emailType, emailData);
+
+  // Send email
+  const send = await sendMail(emailBody, emailData);
+};
+
+// send an email when a user is mentioned in a comment
+const userMentionedComment = async (comment, post, user) => {
+    const emailType = 'userMentionedComment';
+
+    // Generate email data
+    //  proposal to perhaps load these three lines parallel instead of waterfall, since their outcomes are not depending on each other
+    const to = await User.findById({ _id: user });
+    const from = await User.findById({ _id: comment._commented_by });
+    const group = await Group.findById({ _id: post._group });
+
+    const emailData = {
+        subject: subjects[emailType],
+        toName: to.first_name,
+        toEmail: to.email,
+        fromName: from.first_name,
+        fromEmail: from.email,
+        workspace: group.workspace_name,
+        group: group.group_name,
+        link: defaults.signinLink
+    };
+
+    // Generate email body from template
+    const emailBody = await generateEmailBody(emailType, emailData);
+
+    // Send email
+    const send = await sendMail(emailBody, emailData);
 };
 
 /*	====================
@@ -297,4 +343,3 @@ module.exports = {
   taskAssigned,
   eventAssigned
 };
-
