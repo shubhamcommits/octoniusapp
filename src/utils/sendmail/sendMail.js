@@ -296,6 +296,7 @@ const userCompletedTask = async (userWhoChangedStatusId, post) => {
         userWhoChangedStatusName: userWhoChangedStatus.first_name,
         toName: user.first_name,
         toEmail: user.email,
+        contentPost: post.content,
         workspace: group.workspace_name,
         group: group.group_name,
         link: defaults.signinLink,
