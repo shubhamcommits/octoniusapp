@@ -831,7 +831,7 @@ export class GroupActivityComponent implements OnInit {
     }
 
     // create due date
-    const date = new Date(this.model_date.year, this.model_date.month, this.model_date.day);
+    const date = new Date(this.model_date.year, this.model_date.month - 1, this.model_date.day);
 
     const post = {
       content: this.post.content,

@@ -274,6 +274,47 @@ const eventAssigned = async (eventPost) => {
   }
 };
 
+// send an email when a task is completed
+const userCompletedTask = async (userWhoChangedStatusId, post) => {
+  try {
+    const emailType = 'userCompletedTask';
+
+    // Generate email data
+    const appointer = await User.findById({ _id: post._posted_by });
+    const appointee = await User.findById({ _id: post.task._assigned_to });
+    const userWhoChangedStatus = await User.findById({ _id: userWhoChangedStatusId });
+    const group = await Group.findById({ _id: post._group });
+
+    // we want to send emails to the appointer and the appointee
+    // if they are the same person then we only want to send one email
+    const destinationUsers = appointer === appointee ? [appointer] : [appointer, appointee];
+
+    destinationUsers.forEach(async (user) => {
+      const emailData = {
+        subject: subjects[emailType],
+        appointeeName: appointee.first_name,
+        appointerName: appointer.first_name,
+        userWhoChangedStatusName: userWhoChangedStatus.first_name,
+        toName: user.first_name,
+        toEmail: user.email,
+        contentPost: post.content,
+        workspace: group.workspace_name,
+        group: group.group_name,
+        link: defaults.signinLink,
+        taskLink: defaults.taskLink(group._id, post._id)
+      };
+
+      // Generate email body from template
+      const emailBody = await generateEmailBody(emailType, emailData);
+
+      // Send email
+      const send = await sendMail(emailBody, emailData);
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 // Send an email when a user is mentioned in a post
 const userMentionedPost = async (post, user) => {
   try {
@@ -333,9 +374,8 @@ const userMentionedComment = async (comment, post, user) => {
 
     // Send email
     const send = await sendMail(emailBody, emailData);
-
   } catch (err) {
-console.log(err)
+    console.log(err);
   }
 };
 
@@ -352,5 +392,6 @@ module.exports = {
   taskAssigned,
   eventAssigned,
   userMentionedComment,
-  userMentionedPost
+  userMentionedPost,
+  userCompletedTask
 };
