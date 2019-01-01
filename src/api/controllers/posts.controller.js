@@ -532,6 +532,11 @@ const changeTaskStatus = async (req, res, next) => {
       new: true
     });
 
+    // send email to user and poster when task status is done
+      if (status === 'done') {
+        sendMail.userCompletedTask(req.userId, postUpdated);
+      }
+
     return res.status(200).json({
       message: 'Task status updated!',
       post: postUpdated

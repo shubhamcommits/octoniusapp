@@ -99,6 +99,8 @@ const getOverview = async (req, res, next) => {
   try {
     const { userId } = req;
 
+    console.log('entered overview')
+
     // Generate the actual time
     const todayForEvent = moment.utc()
       .hours(0).minutes(0).seconds(0)
@@ -114,7 +116,7 @@ const getOverview = async (req, res, next) => {
       $or: [{
         // From this user...
         $and: [
-          // Find normal posts that has comments
+          // Find normal posts that has comments (recent interactions)
           { _posted_by: userId },
           { comments: { $exists: true, $ne: [] } },
           { 'comments.created_date': { $gte: todayForEvent } }
@@ -139,6 +141,8 @@ const getOverview = async (req, res, next) => {
       .populate('event._assigned_to', 'first_name last_name')
       .populate('_group', 'group_name group_avatar')
       .populate('_liked_by', 'first_name last_name');
+
+    console.log('POSTS', posts);
 
     return res.status(200).json({
       message: `Found ${posts.length} posts!`,
