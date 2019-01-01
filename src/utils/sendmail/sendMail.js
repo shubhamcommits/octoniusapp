@@ -286,7 +286,8 @@ const userCompletedTask = async (userWhoChangedStatusId, post) => {
     const group = await Group.findById({ _id: post._group });
 
     // we want to send emails to the appointer and the appointee
-    const destinationUsers = [appointer, appointee];
+    // if they are the same person then we only want to send one email
+    const destinationUsers = appointer === appointee ? [appointer] : [appointer, appointee];
 
     destinationUsers.forEach(async (user) => {
       const emailData = {

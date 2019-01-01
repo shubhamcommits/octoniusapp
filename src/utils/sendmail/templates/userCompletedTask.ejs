@@ -65,23 +65,12 @@
             width: 50%;
             margin: 0 auto;
             cursor: pointer;
-            transition: all 1s;
             text-align: center;
-        }
-
-        .task-button:hover {
-            background-color: #b3e0f4;
-            transform: translateY(-4px);
-            box-shadow: 0 10px 20rem rgba(0, 0, 0, 0.3);
         }
 
         .task-link {
             text-decoration: none;
-            color: #fff;
-        }
-
-        .task-link:hover {
-            color: #000;
+            color: #fff !important;
         }
 
         /* Mobile Tweaks */
@@ -142,8 +131,8 @@
         <hr class="dividing-line">
         <div class="description">
             <h4 class="details-title">Details task:</h4>
-            <p class="details-item">Task assigned by: <%= appointerName %></p>
-            <p class="details-item">Task assigned to: <%= appointeeName %></p>
+            <p class="details-item">Task assigned by: <% if (appointerName === toName) { %> You <% } else { %><%= appointerName %> <% } %> </p>
+            <p class="details-item">Task assigned to: <% if (appointeeName === toName) { %> You <% } else { %><%= appointeeName %> <% } %> </p>
             <p class="details-item">Group: <%= group %></p>
             <p class="details-item">Content: <div class="task-content"><%- contentPost %></div></p>
             <hr>
