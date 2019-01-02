@@ -755,8 +755,6 @@ export class GroupActivityComponent implements OnInit {
           if (!this.content_mentions.includes(el.getElementsByClassName('mention')[i]['dataset']['id']))
             this.content_mentions.push(el.getElementsByClassName('mention')[i]['dataset']['id']);
         }
-
-
       }
 
       for (var i = 0; i < this.content_mentions.length; i++) {
