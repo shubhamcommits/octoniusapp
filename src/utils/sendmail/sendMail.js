@@ -65,8 +65,8 @@ const sendMail = async (emailBody, emailData) => {
         ],
         from:
         {
-          email: emailData.fromEmail || defaults.fromEmail,
-          name: emailData.fromName || defaults.fromName
+          email: defaults.fromEmail,
+          name: defaults.fromName
         },
         reply_to: {
           email: emailData.replyToEmail || defaults.replyToEmail,
