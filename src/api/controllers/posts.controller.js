@@ -17,13 +17,12 @@ const add = async (req, res, next) => {
   try {
     const postData = req.body;
 
-    // Id it's event post, convert due_to date to UTC before storing
-    if (postData.type === 'event') {
-      postData['event.due_to'] = moment.utc(postData['event.due_to']).format();
-    }
+    // // Id it's event post, convert due_to date to UTC before storing
+    // if (postData.type === 'event') {
+    //   postData['event.due_to'] = moment.utc(postData['event.due_to']).format();
+    // }
 
     const post = await Post.create(postData);
-
 
     if (post._content_mentions.length !== 0) {
 
@@ -229,6 +228,7 @@ const addComment = async (req, res, next) => {
 
     // Create comment
     const comment = await Comment.create(commentData);
+
 
     // Update post: add new comment id, increase post count
     const post = await Post.findOneAndUpdate({
