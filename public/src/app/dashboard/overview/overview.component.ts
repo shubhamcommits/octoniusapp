@@ -79,8 +79,6 @@ export class OverviewComponent implements OnInit {
       // console.log('Group posts:', res);
       this.posts = res['posts'];
       this.comments = res['comments'];
-      console.log('comments', this.comments);
-      console.log('posts', this.posts);
 
       if (this.comments.length > 0) {
         this.normal_count = 1;

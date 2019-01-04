@@ -1056,7 +1056,7 @@ export class GroupActivityComponent implements OnInit {
   getSingleComment(commentId){
     this.postService.getComment(commentId)
     .subscribe((res) => {
-      console.log(res);
+
     }, (err) => {
       swal("Error!", "Error while fetching the comment " + err, "danger");
     });
@@ -1185,7 +1185,6 @@ export class GroupActivityComponent implements OnInit {
       this.postService.getGroupPosts(this.group_id)
         .subscribe((res) => {
           this.posts = res['posts'];
-          console.log('last post', this.posts.slice(0, 1));
           this.isLoading$.next(false);
           this.show_new_posts_badge = 0;
         }, (err) => {
