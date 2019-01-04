@@ -706,7 +706,7 @@ export class GroupActivityComponent implements OnInit {
     }
 
     // create date object for this event
-    const date = new Date(this.model_date.year, this.model_date.month, this.model_date.day, this.model_time.hour, this.model_time.minute);
+    const date = new Date(this.model_date.year, this.model_date.month -1, this.model_date.day, this.model_time.hour, this.model_time.minute);
 
     const post = {
       content: this.post.content,
@@ -1056,7 +1056,7 @@ export class GroupActivityComponent implements OnInit {
   getSingleComment(commentId){
     this.postService.getComment(commentId)
     .subscribe((res) => {
-      console.log(res);
+
     }, (err) => {
       swal("Error!", "Error while fetching the comment " + err, "danger");
     });

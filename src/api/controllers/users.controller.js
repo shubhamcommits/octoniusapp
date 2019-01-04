@@ -1,6 +1,6 @@
 const moment = require('moment');
 
-const { Post, User } = require('../models');
+const { Post, User, Comment } = require('../models');
 
 const { sendErr } = require('../../utils');
 
@@ -99,29 +99,32 @@ const getOverview = async (req, res, next) => {
   try {
     const { userId } = req;
 
-    console.log('entered overview')
-
     // Generate the actual time
-    const todayForEvent = moment.utc()
-      .hours(0).minutes(0).seconds(0)
-      .milliseconds(0)
-      .format();
+    const todayForEvent = moment().startOf('day').format();
+
     const today = moment().format('YYYY-MM-DD');
 
-    // Generate the +48h time
-    const todayPlus48ForEvent = moment.utc().add(48, 'hours').format();
+    // Generate the +24h time
+    const todayPlus24ForEvent = moment().endOf('day').format();
     const tomorrow = moment().add(1, 'days').format('YYYY-MM-DD');
+
+    // find the comments that received a response today (to be replaced later)
+    const comments = await Comment.find({
+      created_date: { $gte: todayForEvent }
+    })
+        .sort('-created_date')
+        .populate({path: '_post', populate: { path: '_group' }})
+        .populate('_commented_by', 'first_name profile_pic')
+
+    // filter the comments that responded to one the current user's posts
+      const filteredComments = comments.filter((comment) => {
+        return comment._post._posted_by == req.userId;
+      });
+
+
 
     const posts = await Post.find({
       $or: [{
-        // From this user...
-        $and: [
-          // Find normal posts that has comments (recent interactions)
-          { _posted_by: userId },
-          { comments: { $exists: true, $ne: [] } },
-          { 'comments.created_date': { $gte: todayForEvent } }
-        ]
-      }, {
         $and: [
           // Find tasks due to today
           { 'task._assigned_to': userId },
@@ -131,7 +134,7 @@ const getOverview = async (req, res, next) => {
         $and: [
           // Find events due to today
           { 'event._assigned_to': userId },
-          { 'event.due_to': { $gte: todayForEvent, $lt: todayPlus48ForEvent } }
+            { 'event.due_to': { $gte: todayForEvent, $lt: todayPlus24ForEvent } }
         ]
       }]
     })
@@ -142,11 +145,11 @@ const getOverview = async (req, res, next) => {
       .populate('_group', 'group_name group_avatar')
       .populate('_liked_by', 'first_name last_name');
 
-    console.log('POSTS', posts);
 
     return res.status(200).json({
       message: `Found ${posts.length} posts!`,
-      posts
+      posts,
+        comments: filteredComments
     });
   } catch (err) {
     return sendErr(res, err);

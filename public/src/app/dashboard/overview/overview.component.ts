@@ -18,8 +18,9 @@ import { environment } from '../../../environments/environment'
 
 export class OverviewComponent implements OnInit {
 
-  posts = new Array();
-  groups = new Array();
+  posts = [];
+  comments = [];
+  groups = [];
 
   event_count = 0;
   task_count = 0;
@@ -41,6 +42,7 @@ export class OverviewComponent implements OnInit {
   group = {
     group_name: '',
   };
+
 
   constructor(private _userService: UserService, private _authService: AuthService, private _router: Router,  private ngxService: NgxUiLoaderService,
   private _postservice: PostService, private _groupservice: GroupsService) {
@@ -76,22 +78,23 @@ export class OverviewComponent implements OnInit {
     .subscribe((res) => {
       // console.log('Group posts:', res);
       this.posts = res['posts'];
-      console.log("POSTS RESULTS", this.posts);
+      this.comments = res['comments'];
 
-      for(var i = 0 ; i < this.posts.length; i ++){
-        if( this.posts[i].type == 'task' && this.posts[i].task.status != 'done' ) {
+      if (this.comments.length > 0) {
+        this.normal_count = 1;
+      }
+
+      for (let i = 0 ; i < this.posts.length; i ++) {
+        if ( this.posts[i].type === 'task' && this.posts[i].task.status !== 'done' ) {
           this.task_count = 1;
         }
-        if (this.posts[i].type == 'event') {
+        if (this.posts[i].type === 'event') {
           this.event_count = 1;
         }
-        if (this.posts[i].type == 'event' && this.posts[i].comments_count > 0) {
+        if (this.posts[i].type === 'event' && this.posts[i].comments_count > 0) {
           this.normal_count = 1;
         }
-        if (this.posts[i].type == 'task' && this.posts[i].comments_count > 0 && this.posts[i].task.status != 'done') {
-          this.normal_count = 1;
-        }
-        if (this.posts[i].type == 'normal') {
+        if (this.posts[i].type === 'task' && this.posts[i].comments_count > 0 && this.posts[i].task.status !== 'done') {
           this.normal_count = 1;
         }
       }
@@ -99,16 +102,11 @@ export class OverviewComponent implements OnInit {
     // console.log('Event Response:', this.event_count);
     // console.log('Task Response:', this.task_count);
     // console.log('Normal Response:', this.normal_count);
-     if(this.posts.length == 0)
-     {
+     if ( this.posts.length === 0 ) {
       this.isLoading$.next(true);
-     }
-
-     else{
+     } else {
       this.isLoading$.next(false);
      }
-
-
 
     }, (err) => {
 
