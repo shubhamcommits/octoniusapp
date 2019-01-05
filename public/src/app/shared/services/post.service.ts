@@ -30,34 +30,24 @@ export class PostService {
   addNewTaskPost(post) {
     return this._http.post(this.BASE_API_URL + '/posts', post);
   }
-
   editPost(postId, post) {
     return this._http.put<any>(this.BASE_API_URL + `/posts/${postId}`, post);
   }
-
   deletePost(postId) {
 
     // console.log('post inside the delete service: ', post);
 
     return this._http.delete(this.BASE_API_URL + `/posts/${postId}`);
   }
-
   complete(postId, status) {
     return this._http.put(this.BASE_API_URL + `/posts/${postId}/taskStatus`, status);
   }
-
-  getCalendarPosts(data) {
-    return this._http.get(this.BASE_API_URL + `/groups/${data.groupId}/calendar/${data.year}/${data.month}`);
-  }
-
   like(post) {
     return this._http.put(this.BASE_API_URL + `/posts/${post.post_id}/like`, post);
   }
-
   unlike(post) {
     return this._http.put(this.BASE_API_URL + `/posts/${post.post_id}/unlike`, post);
   }
-
   useroverviewposts(user_id){
     return this._http.get(this.BASE_API_URL + '/users/overview/');
   }
