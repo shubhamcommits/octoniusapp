@@ -1,14 +1,14 @@
 const express = require('express');
 
 const {
-  groups,
-  groupsController // ! TO BE REMOVED
+    groups,
+    groupsController // ! TO BE REMOVED
 } = require('../controllers');
 
 const {
-  auth,
-  authorization,
-  groupFileHandler
+    auth,
+    authorization,
+    groupFileHandler
 } = require('../../utils');
 
 const router = express.Router();
@@ -44,25 +44,30 @@ router.get('/user/private', groups.getPrivate);
 
 // Get user's files that belongs to this group
 router.get('/:groupId/files',
-  authorization.groupAccess,
-  groups.getFiles);
+    authorization.groupAccess,
+    groups.getFiles);
 
 // Download file from group
 router.get('/:groupId/files/:fileName/download',
-  authorization.groupAccess,
-  groups.downloadFile);
+    authorization.groupAccess,
+    groups.downloadFile);
 
 // - Posts -
 
 // Get ten most recent group posts
 router.get('/:groupId/posts',
-  authorization.groupAccess,
-  groups.getPosts);
+    authorization.groupAccess,
+    groups.getPosts);
 
 // Get next ten most recent posts (after :postId)
 router.get('/:groupId/nextPosts/:postId',
-  authorization.groupAccess,
-  groups.getNextPosts);
+    authorization.groupAccess,
+    groups.getNextPosts);
+
+// get group's calendar posts
+router.get('/:groupId/calendar/:year/:month',
+    authorization.groupAccess,
+    groups.getCalendarPosts);
 
 // - Tasks -
 

@@ -161,26 +161,26 @@ export class GroupActivityComponent implements OnInit {
   isItMyWorkplace = false;
 
 
-    // !--GOOGLE DEVELOPER CONSOLE CREDENTIALS--! //
-    developerKey = 'AIzaSyDGM66BZhGSmBApm3PKL-xCrri-3Adb06I';
+  // !--GOOGLE DEVELOPER CONSOLE CREDENTIALS--! //
+  developerKey = 'AIzaSyDGM66BZhGSmBApm3PKL-xCrri-3Adb06I';
 
-    clientId = "971238950983-aef7kjl23994hjj9e8m5tch4a22b5dut.apps.googleusercontent.com";
+  clientId = "971238950983-aef7kjl23994hjj9e8m5tch4a22b5dut.apps.googleusercontent.com";
 
-    scope = [
-      'https://www.googleapis.com/auth/drive'//insert scope here
-    ].join(' ');
+  scope = [
+    'https://www.googleapis.com/auth/drive'//insert scope here
+  ].join(' ');
 
-    pickerApiLoaded = false;
+  pickerApiLoaded = false;
 
-    oauthToken?: any;
-    // !--GOOGLE DEVELOPER CONSOLE CREDENTIALS--! //
+  oauthToken?: any;
+  // !--GOOGLE DEVELOPER CONSOLE CREDENTIALS--! //
 
 
   constructor(private _activatedRoute: ActivatedRoute, private _router: Router, private _userService: UserService,
-    public groupDataService: GroupDataService, private router: Router, private groupService: GroupService,
-    private modalService: NgbModal, private postService: PostService, private _sanitizer: DomSanitizer,
-    private ngxService: NgxUiLoaderService, private snotifyService: SnotifyService, config: NgbDropdownConfig,
-    private scrollService: ScrollToService, private quillInitializeService: QuillAutoLinkService) {
+              public groupDataService: GroupDataService, private router: Router, private groupService: GroupService,
+              private modalService: NgbModal, private postService: PostService, private _sanitizer: DomSanitizer,
+              private ngxService: NgxUiLoaderService, private snotifyService: SnotifyService, config: NgbDropdownConfig,
+              private scrollService: ScrollToService, private quillInitializeService: QuillAutoLinkService) {
 
     config.placement = 'left';
     config.autoClose = false;
@@ -206,8 +206,8 @@ export class GroupActivityComponent implements OnInit {
   }
 
   onContentChanged(quill) {
-   //  console.log('quill content is changed!', quill);
-      this.editorTextLength = quill.text.length
+    //  console.log('quill content is changed!', quill);
+    this.editorTextLength = quill.text.length
     // console.log('length', this.editorTextLength);
   }
   transform(html: string): SafeHtml {
@@ -291,37 +291,37 @@ export class GroupActivityComponent implements OnInit {
 
 
   socketio() {
-  let count = 0;
+    let count = 0;
 
-      // We add this so that the groupname is definitely available when we make the connection to the socket.
-      if (this.group || count > 6) {
-        count = 0;
-        const room = {
-          workspace: this.user_data.workspace.workspace_name,
-          group: this.group_name,
-        };
+    // We add this so that the groupname is definitely available when we make the connection to the socket.
+    if (this.group || count > 6) {
+      count = 0;
+      const room = {
+        workspace: this.user_data.workspace.workspace_name,
+        group: this.group_name,
+      };
 
 
-        // join room to get notifications for this group
-        this.socket.emit('joinGroup', room, (err) => {
-          console.log(`Socket Joined`);
-        });
+      // join room to get notifications for this group
+      this.socket.emit('joinGroup', room, (err) => {
+        console.log(`Socket Joined`);
+      });
 
-        // Alert on screen when newPost is created
-        this.socket.on('newPostOnGroup', (data) => {
-          if (this.group_id == data.groupId) {
-            this.show_new_posts_badge = 1;
-            this.playAudio();
-          }
-        });
+      // Alert on screen when newPost is created
+      this.socket.on('newPostOnGroup', (data) => {
+        if (this.group_id == data.groupId) {
+          this.show_new_posts_badge = 1;
+          this.playAudio();
+        }
+      });
 
-        this.socket.on('disconnect', () => {
-          //	console.log(`Socket disconnected from group`);
-        });
+      this.socket.on('disconnect', () => {
+        //	console.log(`Socket disconnected from group`);
+      });
 
-      } else {
-        setTimeout(() => {this.socketio(); count++}, 500);
-      }
+    } else {
+      setTimeout(() => {this.socketio(); count++}, 500);
+    }
 
   }
 
@@ -351,7 +351,7 @@ export class GroupActivityComponent implements OnInit {
     //  console.log('routed');
   }
 
-   getUserProfile() {
+  getUserProfile() {
     this._userService.getUser()
       .subscribe((res) => {
         this.user = res.user;
@@ -417,9 +417,9 @@ export class GroupActivityComponent implements OnInit {
     // comment data
     const commentContent = {
       "content":this.comment.content,
-     "_commented_by": this.user_data.user_id,
-     "post_id": post_id,
-     "contentMentions": this.content_mentions
+      "_commented_by": this.user_data.user_id,
+      "post_id": post_id,
+      "contentMentions": this.content_mentions
     };
 
     this.comment._post_id = post_id;
@@ -1042,7 +1042,7 @@ export class GroupActivityComponent implements OnInit {
 
     this.postService.getComments(postId)
       .subscribe((res) => {
-       // console.log(res['comments']);
+        // console.log(res['comments']);
         this.comments = res['comments'];
       }, (err) => {
         swal("Error!", "Error while retrieving the comments " + err, "danger");
@@ -1055,11 +1055,11 @@ export class GroupActivityComponent implements OnInit {
   // !--FETCH DATA OF SINGLE COMMENT--! //
   getSingleComment(commentId){
     this.postService.getComment(commentId)
-    .subscribe((res) => {
+      .subscribe((res) => {
 
-    }, (err) => {
-      swal("Error!", "Error while fetching the comment " + err, "danger");
-    });
+      }, (err) => {
+        swal("Error!", "Error while fetching the comment " + err, "danger");
+      });
   }
   // !--FETCH DATA OF SINGLE COMMENT--! //
 
@@ -1200,7 +1200,7 @@ export class GroupActivityComponent implements OnInit {
         count++
       }, 500)
     }
-    }
+  }
 
   // !--LOAD ALL THE GROUP POSTS ON INIT--! //
 
@@ -1251,21 +1251,21 @@ export class GroupActivityComponent implements OnInit {
   // !--SCROLL TO AN ELEMENT--! //
   scrollToTop(element) {
     this.scrollService.scrollTo(element)
-    .subscribe((res) => {
-      //   console.log('next');
-      //   console.log(data);
-    }, (err) => {
-      //swal("Error!", "Error while scrolling to Element " + err, "danger");
-    }, () => {
-      //  console.log('complete');
-    });
+      .subscribe((res) => {
+        //   console.log('next');
+        //   console.log(data);
+      }, (err) => {
+        //swal("Error!", "Error while scrolling to Element " + err, "danger");
+      }, () => {
+        //  console.log('complete');
+      });
   }
   // !--SCROLL TO AN ELEMENT--! //
 
 
   toggled(event) {
     if (event) {
-    // is open
+      // is open
     } else {
       console.log('is closed');
 
@@ -1371,16 +1371,16 @@ export class GroupActivityComponent implements OnInit {
       //  console.log('This post', postId);
     }
 
-      //console.log('Content Mention', this.content_mentions);
+    //console.log('Content Mention', this.content_mentions);
     this.postService.updateComment(commentId, comment)
-    .subscribe((res) => {
-      this.loadComments(postId);
-      this.content_mentions = [];
-    }, (err) =>{
-      this.content_mentions = [];
-      console.log('Error while updating the comment', err);
-      swal("Error!", "Error while updating the comment " + err, "danger");
-    })
+      .subscribe((res) => {
+        this.loadComments(postId);
+        this.content_mentions = [];
+      }, (err) =>{
+        this.content_mentions = [];
+        console.log('Error while updating the comment', err);
+        swal("Error!", "Error while updating the comment " + err, "danger");
+      })
   }
 
   OnEditPost(index, post) {
@@ -1423,8 +1423,8 @@ export class GroupActivityComponent implements OnInit {
     // we create a new date object based on whether we added time
     const date_due_to =
       type === 'event' ?
-      new Date(this.model_date.year, this.model_date.month - 1, this.model_date.day, this.model_time.hour, this.model_time.minute)
-      : new Date(this.model_date.year, this.model_date.month - 1, this.model_date.day);
+        new Date(this.model_date.year, this.model_date.month - 1, this.model_date.day, this.model_time.hour, this.model_time.minute)
+        : new Date(this.model_date.year, this.model_date.month - 1, this.model_date.day);
 
     const post = {
       'content': document.getElementById(index).innerHTML,
@@ -1556,13 +1556,13 @@ export class GroupActivityComponent implements OnInit {
   openAssignPicker(content, post) {
     this.modalService.open(content, { centered: true });
 
-if (post && post.type === 'task') {
-  this.selectedGroupUsers = [post.task._assigned_to];
-} else if (post && post.type === 'event') {
-  this.selectedGroupUsers = post.event._assigned_to.map((item, i) => {
-    return item;
-  });
-}
+    if (post && post.type === 'task') {
+      this.selectedGroupUsers = [post.task._assigned_to];
+    } else if (post && post.type === 'event') {
+      this.selectedGroupUsers = post.event._assigned_to.map((item, i) => {
+        return item;
+      });
+    }
 
 
   }
@@ -1652,7 +1652,6 @@ if (post && post.type === 'task') {
         } else {
           this._message.next('Error! either server is down or no internet connection');
         }
-
       });
 
   }
@@ -1663,13 +1662,17 @@ if (post && post.type === 'task') {
       'status': 'to do'
     };
     this.postService.complete(post_id, post)
-      .subscribe((res) => {
+      .subscribe((res: any) => {
         this.playAudio();
-        this.loadGroupPosts();
-        this.onScroll();
-        this.scrollToTop('#card-normal-post-' + index);
-        this.scrollToTop('#card-event-post-' + index);
-        this.scrollToTop('#card-task-post-' + index);
+        // Find the post where the status has changed
+        const indexPost = this.posts.findIndex((post) => post._id == res.post._id);
+        // Change the status on the frontend to match up with the backend
+        this.posts[indexPost].task.status = res.post.task.status;
+        // this.loadGroupPosts();
+        // this.onScroll();
+        // this.scrollToTop('#card-normal-post-' + index);
+        // this.scrollToTop('#card-event-post-' + index);
+        // this.scrollToTop('#card-task-post-' + index);
         swal("Good Job!", "The status of task has been updated sucessfully!", "success");
 
 
@@ -1686,13 +1689,20 @@ if (post && post.type === 'task') {
       'status': 'in progress'
     };
     this.postService.complete(post_id, post)
-      .subscribe((res) => {
+      .subscribe((res: any) => {
         this.playAudio();
-        this.loadGroupPosts();
-        this.onScroll();
-        this.scrollToTop('#card-normal-post-' + index);
-        this.scrollToTop('#card-event-post-' + index);
-        this.scrollToTop('#card-task-post-' + index);
+        console.log('RES', res);
+        // find the post where the status has changed
+        const indexPost = this.posts.findIndex((post) => post._id == res.post._id);
+        // Change the status on the frontend to match up with the backend
+        this.posts[indexPost].task.status = res.post.task.status;
+
+        // this.posts[indexPost]
+        // this.loadGroupPosts();
+        // this.onScroll();
+        // this.scrollToTop('#card-normal-post-' + index);
+        // this.scrollToTop('#card-event-post-' + index);
+        // this.scrollToTop('#card-task-post-' + index);
         swal("Good Job!", "The status of task has been updated sucessfully!", "success");
       }, (err) => {
 
@@ -1710,17 +1720,22 @@ if (post && post.type === 'task') {
       // 'user_id': this.user_data.user_id
     };
     this.postService.complete(post_id, post)
-      .subscribe((res) => {
+      .subscribe((res: any) => {
 
         this.playAudio();
 
         this.alert.class = 'success';
         this._message.next(res['message']);
-        this.loadGroupPosts();
-        this.onScroll();
-        this.scrollToTop('#card-normal-post-' + index);
-        this.scrollToTop('#card-event-post-' + index);
-        this.scrollToTop('#card-task-post-' + index);
+        // find the post with the status that has changed
+        const indexPost = this.posts.findIndex((post) => post._id == res.post._id);
+        // change it's status on the frontend to match up with the backend
+        this.posts[indexPost].task.status = res.post.task.status;
+
+        // this.loadGroupPosts();
+        // this.onScroll();
+        // this.scrollToTop('#card-normal-post-' + index);
+        // this.scrollToTop('#card-event-post-' + index);
+        // this.scrollToTop('#card-task-post-' + index);
         swal("Good Job!", "The status of task has been updated sucessfully!", "success");
 
       }, (err) => {
@@ -2022,23 +2037,23 @@ if (post && post.type === 'task') {
         //view.setMimeTypes("image/png,image/jpeg,image/jpg,video/mp4, application/vnd.ms-excel ,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/pdf, text/plain, application/msword, text/js, application/zip, application/rar, application/tar, text/html");
         let pickerBuilder = new google.picker.PickerBuilder();
         let picker = pickerBuilder.
-          enableFeature(google.picker.Feature.NAV_HIDDEN).
-          setOAuthToken(authResult.access_token).
-          addView(view).
-          addView(new google.picker.DocsUploadView()).
-          setCallback(function (e) {
-            if (e[google.picker.Response.ACTION] == google.picker.Action.PICKED) {
-              let doc = e[google.picker.Response.DOCUMENTS][0];
-              src = doc[google.picker.Document.URL];
+        enableFeature(google.picker.Feature.NAV_HIDDEN).
+        setOAuthToken(authResult.access_token).
+        addView(view).
+        addView(new google.picker.DocsUploadView()).
+        setCallback(function (e) {
+          if (e[google.picker.Response.ACTION] == google.picker.Action.PICKED) {
+            let doc = e[google.picker.Response.DOCUMENTS][0];
+            src = doc[google.picker.Document.URL];
 
-              this.googleDriveFiles = e[google.picker.Response.DOCUMENTS];
+            this.googleDriveFiles = e[google.picker.Response.DOCUMENTS];
 
-              const driveDivision = document.getElementById('google-drive-file');
-              driveDivision.style.display= 'block';
-              driveDivision.innerHTML = '<b>Drive File Upload: </b>'+'<a href=\''+src+'\' target=\'_blank\'>'+this.googleDriveFiles[0]['name']+'</a>';
-            }
-          }).
-          build();
+            const driveDivision = document.getElementById('google-drive-file');
+            driveDivision.style.display= 'block';
+            driveDivision.innerHTML = '<b>Drive File Upload: </b>'+'<a href=\''+src+'\' target=\'_blank\'>'+this.googleDriveFiles[0]['name']+'</a>';
+          }
+        }).
+        build();
         picker.setVisible(true);
       }
     }
