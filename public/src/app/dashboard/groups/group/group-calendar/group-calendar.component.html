@@ -8,7 +8,7 @@
         mwlCalendarPreviousView
         [view]="view"
         [(viewDate)]="viewDate"
-        (viewDateChange)="activeDayIsOpen = false">
+        (viewDateChange)="changeDate($event, 'previous')">
         Previous
       </div>
       <div
@@ -23,7 +23,7 @@
         mwlCalendarNextView
         [view]="view"
         [(viewDate)]="viewDate"
-        (viewDateChange)="activeDayIsOpen = false">
+        (viewDateChange)="changeDate($event, 'next')">
         Next
       </div>
     </div>

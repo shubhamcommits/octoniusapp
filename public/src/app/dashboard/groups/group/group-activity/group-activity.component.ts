@@ -1719,7 +1719,7 @@ if (post && post.type === 'task') {
       // 'user_id': this.user_data.user_id
     };
     this.postService.complete(post_id, post)
-      .subscribe((res) => {
+      .subscribe((res: any) => {
 
         this.playAudio();
 
