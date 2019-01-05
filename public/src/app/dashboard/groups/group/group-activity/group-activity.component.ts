@@ -1652,7 +1652,6 @@ if (post && post.type === 'task') {
         } else {
           this._message.next('Error! either server is down or no internet connection');
         }
-
       });
 
   }
@@ -1663,13 +1662,17 @@ if (post && post.type === 'task') {
       'status': 'to do'
     };
     this.postService.complete(post_id, post)
-      .subscribe((res) => {
+      .subscribe((res: any) => {
         this.playAudio();
-        this.loadGroupPosts();
-        this.onScroll();
-        this.scrollToTop('#card-normal-post-' + index);
-        this.scrollToTop('#card-event-post-' + index);
-        this.scrollToTop('#card-task-post-' + index);
+        // Find the post where the status has changed
+        const indexPost = this.posts.findIndex((post) => post._id == res.post._id);
+        // Change the status on the frontend to match up with the backend
+        this.posts[indexPost].task.status = res.post.task.status;
+        // this.loadGroupPosts();
+        // this.onScroll();
+        // this.scrollToTop('#card-normal-post-' + index);
+        // this.scrollToTop('#card-event-post-' + index);
+        // this.scrollToTop('#card-task-post-' + index);
         swal("Good Job!", "The status of task has been updated sucessfully!", "success");
 
 
@@ -1686,13 +1689,19 @@ if (post && post.type === 'task') {
       'status': 'in progress'
     };
     this.postService.complete(post_id, post)
-      .subscribe((res) => {
+      .subscribe((res: any) => {
         this.playAudio();
-        this.loadGroupPosts();
-        this.onScroll();
-        this.scrollToTop('#card-normal-post-' + index);
-        this.scrollToTop('#card-event-post-' + index);
-        this.scrollToTop('#card-task-post-' + index);
+        // find the post where the status has changed
+        const indexPost = this.posts.findIndex((post) => post._id == res.post._id);
+        // Change the status on the frontend to match up with the backend
+        this.posts[indexPost].task.status = res.post.task.status;
+
+        // this.posts[indexPost]
+        // this.loadGroupPosts();
+        // this.onScroll();
+        // this.scrollToTop('#card-normal-post-' + index);
+        // this.scrollToTop('#card-event-post-' + index);
+        // this.scrollToTop('#card-task-post-' + index);
         swal("Good Job!", "The status of task has been updated sucessfully!", "success");
       }, (err) => {
 
@@ -1710,17 +1719,22 @@ if (post && post.type === 'task') {
       // 'user_id': this.user_data.user_id
     };
     this.postService.complete(post_id, post)
-      .subscribe((res) => {
+      .subscribe((res: any) => {
 
         this.playAudio();
 
         this.alert.class = 'success';
         this._message.next(res['message']);
-        this.loadGroupPosts();
-        this.onScroll();
-        this.scrollToTop('#card-normal-post-' + index);
-        this.scrollToTop('#card-event-post-' + index);
-        this.scrollToTop('#card-task-post-' + index);
+        // find the post with the status that has changed
+        const indexPost = this.posts.findIndex((post) => post._id == res.post._id);
+        // change it's status on the frontend to match up with the backend
+        this.posts[indexPost].task.status = res.post.task.status;
+
+        // this.loadGroupPosts();
+        // this.onScroll();
+        // this.scrollToTop('#card-normal-post-' + index);
+        // this.scrollToTop('#card-event-post-' + index);
+        // this.scrollToTop('#card-task-post-' + index);
         swal("Good Job!", "The status of task has been updated sucessfully!", "success");
 
       }, (err) => {
