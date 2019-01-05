@@ -8,7 +8,7 @@
         mwlCalendarPreviousView
         [view]="view"
         [(viewDate)]="viewDate"
-        (viewDateChange)="changeDate($event, 'previous')">
+        (viewDateChange)="activeDayIsOpen = false">
         Previous
       </div>
       <div
@@ -23,7 +23,7 @@
         mwlCalendarNextView
         [view]="view"
         [(viewDate)]="viewDate"
-        (viewDateChange)="changeDate($event, 'next')">
+        (viewDateChange)="activeDayIsOpen = false">
         Next
       </div>
     </div>
@@ -62,22 +62,19 @@
     [events]="events"
     [refresh]="refresh"
     [activeDayIsOpen]="activeDayIsOpen"
-    (dayClicked)="dayClicked($event.day)"
-    (eventClicked)="eventClicked($event)">
+    (dayClicked)="dayClicked($event.day)">
   </mwl-calendar-month-view>
   <mwl-calendar-week-view
     *ngSwitchCase="'week'"
     [viewDate]="viewDate"
     [events]="events"
-    [refresh]="refresh"
-    (eventClicked)="eventClicked($event)">
+    [refresh]="refresh">
   </mwl-calendar-week-view>
   <mwl-calendar-day-view
     *ngSwitchCase="'day'"
     [viewDate]="viewDate"
     [events]="events"
-    [refresh]="refresh"
-    (eventClicked)="eventClicked($event)">
+    [refresh]="refresh">
   </mwl-calendar-day-view>
 </div>
 </div>

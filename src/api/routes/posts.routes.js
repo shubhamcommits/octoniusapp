@@ -33,7 +33,6 @@ router.put('/:postId', posts.edit);
 // Delete post
 router.delete('/:postId', posts.remove);
 
-
 // - Comments -
 
 // Get a single comment

@@ -1,6 +1,5 @@
 const { Group, Post, User } = require('../models');
 const { sendErr, sendMail } = require('../../utils');
-const moment = require('moment');
 
 /*  =======================
  *  -- GROUP CONTROLLERS --
@@ -17,10 +16,10 @@ const get = async (req, res, next) => {
       _id: groupId
     })
       .populate('_members', 'first_name last_name profile_pic role email')
-      .populate('_admins', 'first_name last_name profile_pic role email');
+      .populate('_admins', 'first_name last_name profile_pic role email')
 
     if (!group) {
-      return sendErr(res, err, 'Group not found, invalid group id!', 404);
+      return sendErr(res, err, 'Group not found, invalid group id!', 404)
     }
 
     return res.status(200).json({
@@ -89,40 +88,6 @@ const getFiles = async (req, res, next) => {
 };
 
 // -| POSTS |-
-
-const getCalendarPosts = async (req, res, next) => {
-  try {
-
-    const { year, month, groupId } = req.params;
-
-    //current date in view
-    const date = moment().month(month).year(year);
-
-    // we want to find posts between the start and end of given month
-    const startOfMonthEvent = date.startOf('month').toDate();
-    const endOfMonthEvent = date.endOf('month').toDate();
-    // tasks are saved under different format in DB
-    const startOfMonthTask = date.startOf('month').format('YYYY-MM-DD');
-      const endOfMonthTask = date.endOf('month').format('YYYY-MM-DD');
-
-
-    // get the posts from a specific group AND either type task/event AND between the start and the end of the month given
-    const posts = await Post.find({
-      $and: [
-        { _group: groupId },
-        { $or: [{ type: 'event' }, { type: 'task' }] },
-        { $or: [{ 'event.due_to': { $gte: startOfMonthEvent, $lt: endOfMonthEvent } }, { 'task.due_to': { $gte: startOfMonthTask, $lte: endOfMonthTask } }] }
-      ]
-    });
-
-    return res.status(200).json({
-      message: 'This month\'s event and task posts',
-      posts
-    });
-  } catch (err) {
-    return sendErr(res, err);
-  }
-};
 
 const getNextPosts = async (req, res, next) => {
   try {
@@ -295,7 +260,6 @@ module.exports = {
   downloadFile,
   getFiles,
   // Posts
-  getCalendarPosts,
   getNextPosts,
   getPosts,
   // Tasks

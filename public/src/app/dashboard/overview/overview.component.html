@@ -1,7 +1,7 @@
     <div class="container" style="margin-bottom: 30px">
         <app-overview-page-header></app-overview-page-header>
 
-        <div *ngIf="posts.length === 0 && comments.length === 0">
+        <div *ngIf="posts.length == 0 ">
             <img src='../../../assets/images/overview-emptystate.svg' style=" margin: 0 auto; display:block; width: 600px">
         </div>
         <div *ngIf="posts.length > 0 && (this.event_count == 0 && this.normal_count == 0 && this.task_count == 0)">
