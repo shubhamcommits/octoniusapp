@@ -104,7 +104,6 @@ const getCalendarPosts = async (req, res, next) => {
     // tasks are saved under different format in DB
     const startOfMonthTask = date.startOf('month').format('YYYY-MM-DD');
       const endOfMonthTask = date.endOf('month').format('YYYY-MM-DD');
-      console.log('endOfmonh', endOfMonthTask);
 
 
     // get the posts from a specific group AND either type task/event AND between the start and the end of the month given

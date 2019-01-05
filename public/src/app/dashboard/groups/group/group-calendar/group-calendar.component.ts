@@ -108,7 +108,7 @@ export class GroupCalendarComponent implements OnInit {
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
     if (isSameMonth(date, this.viewDate)) {
       this.viewDate = date;
-      console.log('this.viewdate', this.viewDate);
+
       if (
         (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
         events.length === 0
@@ -136,7 +136,6 @@ export class GroupCalendarComponent implements OnInit {
         // this way we won't fetch them again in the future
         this.fetchedDates.push({year, month});
 
-        console.log('res', res['posts']);
         // set the newly fetched posts
         this.posts = [...this.posts, ...res['posts']];
 
