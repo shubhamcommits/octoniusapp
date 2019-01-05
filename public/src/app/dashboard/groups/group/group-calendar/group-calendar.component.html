@@ -62,19 +62,22 @@
     [events]="events"
     [refresh]="refresh"
     [activeDayIsOpen]="activeDayIsOpen"
-    (dayClicked)="dayClicked($event.day)">
+    (dayClicked)="dayClicked($event.day)"
+    (eventClicked)="eventClicked($event)">
   </mwl-calendar-month-view>
   <mwl-calendar-week-view
     *ngSwitchCase="'week'"
     [viewDate]="viewDate"
     [events]="events"
-    [refresh]="refresh">
+    [refresh]="refresh"
+    (eventClicked)="eventClicked($event)">
   </mwl-calendar-week-view>
   <mwl-calendar-day-view
     *ngSwitchCase="'day'"
     [viewDate]="viewDate"
     [events]="events"
-    [refresh]="refresh">
+    [refresh]="refresh"
+    (eventClicked)="eventClicked($event)">
   </mwl-calendar-day-view>
 </div>
 </div>

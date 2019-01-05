@@ -15,6 +15,7 @@ import {
   isSameMonth,
   addHours
 } from 'date-fns';
+import {Router} from "@angular/router";
 
 interface MyEvent extends CalendarEvent {
   link: string;
@@ -59,7 +60,11 @@ export class GroupCalendarComponent implements OnInit {
 
   refresh: Subject<any> = new Subject();
 
-  constructor(private ngxService: NgxUiLoaderService, private _postservice: PostService, public groupDataService: GroupDataService) { }
+  constructor(
+    private ngxService: NgxUiLoaderService,
+    private _postservice: PostService,
+    public groupDataService: GroupDataService,
+    public router: Router) { }
 
   ngOnInit() {
     this.ngxService.start(); // start foreground loading with 'default' id
@@ -80,7 +85,7 @@ export class GroupCalendarComponent implements OnInit {
   changeDate() {
     this.activeDayIsOpen = false;
 
-    // these are the month and the year that we are currently looking at
+    // this is the month and the year that we are currently looking at
     const currentView = {year: moment(this.viewDate).year(), month: moment(this.viewDate).month()};
 
     // in the dates that we already fetched we look for the month/year combination of currentView
@@ -96,8 +101,8 @@ export class GroupCalendarComponent implements OnInit {
   //  if we don't we do nothing because those posts were already loaded
   }
 
-  eventClicked({ event }: { event: CalendarEvent }): void {
-    //console.log('Event clicked', event);
+  eventClicked({ event }: { event: MyEvent }): void {
+    this.router.navigateByUrl(event.link);
   }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
@@ -127,16 +132,13 @@ export class GroupCalendarComponent implements OnInit {
 
     this._postservice.getCalendarPosts(data)
       .subscribe((res) => {
-       console.log('RES', res);
         // when we succefully fetched the posts we add the year/month combination to the fetched Dates
         // this way we won't fetch them again in the future
         this.fetchedDates.push({year, month});
 
+        console.log('res', res['posts']);
         // set the newly fetched posts
         this.posts = [...this.posts, ...res['posts']];
-
-        console.log('this posts length', this.posts.length);
-        console.log('res psots lenght', res['posts'].length);
 
         // we only want to edit the posts that were added on the last fetch
         for ( let i = (this.posts.length - res['posts'].length); i < this.posts.length; i++ ) {
@@ -163,7 +165,7 @@ export class GroupCalendarComponent implements OnInit {
               }*/
               this.events.push({
                 title: '<b>Task</b>' + this.posts[i].content,
-                start: new Date(this.posts[i].task.due_to),
+                start: new Date(moment(this.posts[i].task.due_to).toDate()),
                 link: `/dashboard/group/${this.posts[i]._group}/post/${this.posts[i]._id}`,
                 color: colors.yellow
               });
