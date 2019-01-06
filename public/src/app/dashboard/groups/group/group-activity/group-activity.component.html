@@ -40,7 +40,7 @@
             <div class="col-md-11">
 
               <button type="text" class="form-control btn-md noborder-btn" style="outline: none; box-shadow: none !important; margin-top: 12px;border: 0px solid #ccc !important; text-align: left; cursor: pointer;"
-                placeholder="What are you working on?" (click)="show_hide_working_bar()">What are you working on?</button>
+                      placeholder="What are you working on?" (click)="show_hide_working_bar()">What are you working on?</button>
             </div>
           </div>
           <div id="show_hide" class="col-md-12 innercard" style="display: none;">
@@ -73,7 +73,7 @@
               </div>
               <div class="col-md-8 text-right">
                 <button type="button" class="btn btn-outline-warning task" *ngIf="(post.type == 'event' || post.type== 'task') && !isItMyWorkplace"
-                  (click)="openAssignPicker(assignContent)">
+                        (click)="openAssignPicker(assignContent)">
                   <i class="material-icons">perm_identity</i> {{assignment}}
                 </button>
 
@@ -82,7 +82,7 @@
 
 
                 <button *ngIf="post.type == 'event'|| post.type=='task'" class="btn btn-outline-warning task" type="button"
-                  (click)="openDatePicker(dateContent)">
+                        (click)="openDatePicker(dateContent)">
                   <i class="material-icons">event</i>{{model_date?.day}}-{{model_date?.month}}-{{model_date?.year}}
                 </button>
 
@@ -109,9 +109,9 @@
                   <!--<textarea class="form-control " id="post-content" rows="3" [(ngModel)]="post.content" name="postContent" formControlName="postContent"></textarea>-->
                   <!--<app-ngx-editor [placeholder]="'Enter text here...'" [spellcheck]="true" id="post-content" rows="3" [(ngModel)]="post.content" name="postContent" formControlName="postContent"></app-ngx-editor>-->
                   <quill-editor id="post-content" [modules]="modules" [(ngModel)]="post.content" (blur)="onEditorBlured($event)"
-                    [spellcheck]="true" name="postContent" (focus)="onEditorFocused($event)" formControlName="postContent"
-                    (ready)="onEditorCreated($event)" (onEditorCreated)="onEditorCreated($event)" (change)="onContentChanged($event)"
-                    (onContentChanged)="onContentChanged($event)"></quill-editor>
+                                [spellcheck]="true" name="postContent" (focus)="onEditorFocused($event)" formControlName="postContent"
+                                (ready)="onEditorCreated($event)" (onEditorCreated)="onEditorCreated($event)" (change)="onContentChanged($event)"
+                                (onContentChanged)="onContentChanged($event)"></quill-editor>
 
 
                   <div ngbDropdown class="btn-group" style="width:100%">
@@ -122,17 +122,17 @@
                     </a>
 
                     <emoji-mart ngbDropdownMenu aria-labelledby="emojiDrop" [set]="emojiSet" isNative="false"
-                      [hideRecent]="false" (emojiSelect)="handleClick($event)" title="Pick your emoji…" emoji='point_up'>
+                                [hideRecent]="false" (emojiSelect)="handleClick($event)" title="Pick your emoji…" emoji='point_up'>
                     </emoji-mart>
                     <button type="button" class="btn btn-link">
                       <input id="cin" #fileInput type="file" class="btn btn-outline-warning task" style="display: none"
-                        (change)="fileChangeEvent($event)" placeholder="File" multiple />
+                             (change)="fileChangeEvent($event)" placeholder="File" multiple />
                       <i class="material-icons" (click)="fileInput.click()">attach_file</i>
                     </button>
                     <button type="button" class="btn btn-link">
-                        <i class="material-icons" (click)="loadGoogleDrive();">
-                          cloud_upload
-                          </i>
+                      <i class="material-icons" (click)="loadGoogleDrive();">
+                        cloud_upload
+                      </i>
                     </button>
 
 
@@ -163,7 +163,7 @@
                   || processing
                   || (datePickedCount == 0 && timePickedCount == 0 && post.type=='event')
                   ||(!isItMyWorkplace && selectedGroupUsers.length == 0 && post.type=='task')"
-                  type="button " name="button" (click)="OnAddNewPost()" class="btn btn-primary">Post</button>
+                        type="button " name="button" (click)="OnAddNewPost()" class="btn btn-primary">Post</button>
               </div>
             </div>
             <br>
@@ -227,8 +227,8 @@
         </div>
         <div class="modal-body">
           <angular2-multiselect [data]="groupUsersList" [(ngModel)]="selectedGroupUsers" [settings]="settings"
-            (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
-            (onDeSelectAll)="onDeSelectAll($event)">
+                                (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
+                                (onDeSelectAll)="onDeSelectAll($event)">
             <c-search>
               <ng-template>
                 <input type="text" (keyup)="onSearch($event)" placeholder="Name, Email, Username or Phone" style="border: none;width: 100%; height: 100%;outline: none;" />
@@ -264,18 +264,18 @@
         <ul class="list-group ">
           <!-- Normal post -->
           <li class="list-group-item " id="card-normal-post-{{i}}" *ngIf="post.type== 'normal'" ng-repeat="post in posts"
-            data-show="????">
+              data-show="????">
             <div class="card ">
               <div class="card-block ">
                 <div class="row card-title ">
                   <div class="col-md-1 ">
                     <!--<img [src]="profileImage" class="feed-avatar">-->
                     <img src="/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"
-                      class="feed-avatar">
+                         class="feed-avatar">
                   </div>
                   <div class="col-md-7">
                     <h6>{{post._posted_by?.first_name}} {{post._posted_by?.last_name}} <br>
-                    <span class="small lightgray date"> {{post?.created_date | date : 'medium' }}</span>
+                      <span class="small lightgray date"> {{post?.created_date | date : 'medium' }}</span>
                     </h6>
 
                     <!-- <button class="btn btn-primary btn-sm" id="testhaibc" contenteditable="false" (click)="test(i); abc();">Save</button>-->
@@ -288,8 +288,8 @@
                 </div>
                 <div class="col-md-12 innercard">
                   <quill-editor id="edit-content-{{i}}" [modules]="modules" type="text" [(ngModel)]="post.content"
-                    [spellcheck]="true" value="post?.content" style="display: none;" (blur)="onEditorBlured($event)"
-                    (focus)="onEditorFocused($event)" (ready)="onEditorCreated($event)" (change)="onContentChanged($event)"></quill-editor>
+                                [spellcheck]="true" value="post?.content" style="display: none;" (blur)="onEditorBlured($event)"
+                                (focus)="onEditorFocused($event)" (ready)="onEditorCreated($event)" (change)="onContentChanged($event)"></quill-editor>
                 </div>
 
                 <!--<quill-editor id="edit-content" type="text" [(ngModel)]="post.content" [spellcheck]="true" name="postContent" formControlName="postContent" style="display: none;">{{post.content}}</quill-editor>-->
@@ -328,7 +328,7 @@
                       <span>
                         <button class="btn btn-link" (click)="OnClickLikePost(i, post._id, post._liked_by.length, post._liked_by, user._id)">
                           <i class="material-icons muted" *ngIf="!userLikedPost(i); else likeif"
-                            id="icon_like_post_{{i}}">thumb_up</i>
+                             id="icon_like_post_{{i}}">thumb_up</i>
                           <ng-template #likeif><i class="material-icons active" id="icon_like_post_{{i}}">thumb_up</i></ng-template>
                         </button>
                       </span>
@@ -381,7 +381,7 @@
                           </a>
 
                           <emoji-mart ngbDropdownMenu aria-labelledby="emojiDrop" [set]="emojiSet" isNative="false"
-                            [hideRecent]="false" (emojiSelect)="handleClick($event)" title="Pick your emoji…" emoji='point_up'>
+                                      [hideRecent]="false" (emojiSelect)="handleClick($event)" title="Pick your emoji…" emoji='point_up'>
                           </emoji-mart>
 
                         </div>
@@ -395,7 +395,7 @@
                     <div class="col-md-4 text-right" style="padding-right:30px">
                       <button type="button " name="button " class="btn btn-default " (click)="showComments.id=post._id;showComments.normal=!showComments.normal;">Cancel</button>
                       <button [disabled]="commentForm.invalid" type="button " name="button" (click)="onAddNewComment(post._id, i)"
-                        class="btn btn-primary">Comment</button>
+                              class="btn btn-primary">Comment</button>
                     </div>
                   </div>
                   <br>
@@ -408,26 +408,26 @@
             <!-- all comments block-->
 
             <div id="normalComments{{i}}" style="display: none;">
-            <div class="card muted comment" id="normalComment-{{j}}" *ngFor="let comment of this.comments; let j = index;">
-              <div class="card-block">
-                <div class="row card-title ">
-                  <div class="col-md-1">
+              <div class="card muted comment" id="normalComment-{{j}}" *ngFor="let comment of this.comments; let j = index;">
+                <div class="card-block">
+                  <div class="row card-title ">
+                    <div class="col-md-1">
 
-                    <img src="/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"
-                      class="feed-avatar">
-                    <!--<img [src]="profileImage" class="feed-avatar">-->
-                    <!--<img src="assets/images/user.png" class="feed-avatar">-->
-                  </div>
-                  <div class="col-md-7 ">
-                    <h6>{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}} replied
-                    <br> <span class="small lightgray date">
+                      <img src="/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"
+                           class="feed-avatar">
+                      <!--<img [src]="profileImage" class="feed-avatar">-->
+                      <!--<img src="assets/images/user.png" class="feed-avatar">-->
+                    </div>
+                    <div class="col-md-7 ">
+                      <h6>{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}} replied
+                        <br> <span class="small lightgray date">
                       {{comment.created_date | date : 'medium'}}</span>
-                    </h6>
-                  </div>
-                  <div class="col-md-4 text-right card-footer action-post innercard">
+                      </h6>
+                    </div>
+                    <div class="col-md-4 text-right card-footer action-post innercard">
                       <span>
                           <div ngbDropdown class="d-inline-block" #commentsDrop="ngbDropdown"
-                          (openChange)="toggled($event)" *ngIf="post?._posted_by?._id == this.user_data.user_id; else editpostif">
+                               (openChange)="toggled($event)" *ngIf="post?._posted_by?._id == this.user_data.user_id; else editpostif">
                             <i class="material-icons action" id="dropdownComment" ngbDropdownToggle>more_horiz</i>
                             <div ngbDropdownMenu aria-labelledby="dropdownComment">
                                 <button class="dropdown-item" (click)="OnEditComment(j)">Edit Comment</button>
@@ -436,22 +436,22 @@
                           </div>
                         </span>
 
+                    </div>
                   </div>
-                </div>
-                <div class="col-md-12 text-right " id="button_edit_comment{{j}}" style="display: none; padding-bottom: 1em;">
+                  <div class="col-md-12 text-right " id="button_edit_comment{{j}}" style="display: none; padding-bottom: 1em;">
                     <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditComment(j, comment._id, comment._post)">Save</button>
                   </div>
                   <div class="col-md-12 innercard">
                     <quill-editor [modules]="modules" id="edit-comment-{{j}}" type="text" [(ngModel)]="comment.content"
-                      [spellcheck]="true" value="comment?.content" style="display: none;" (blur)="onEditorBlured($event)"
-                      (focus)="onEditorFocused($event)" (ready)="onEditorCreated($event)" (change)="onContentChanged($event)">
+                                  [spellcheck]="true" value="comment?.content" style="display: none;" (blur)="onEditorBlured($event)"
+                                  (focus)="onEditorFocused($event)" (ready)="onEditorCreated($event)" (change)="onContentChanged($event)">
                     </quill-editor>
                   </div>
-                <div class="col-md-12 innercard " id="commentContent-{{j}}" [innerHTML]="comment?.content" style="color:black;">
+                  <div class="col-md-12 innercard " id="commentContent-{{j}}" [innerHTML]="comment?.content" style="color:black;">
 
+                  </div>
                 </div>
               </div>
-            </div>
             </div>
 
             <!-- all comments block-->
@@ -466,12 +466,12 @@
                 <div class="row card-title ">
                   <div class="col-md-1 ">
                     <img src="/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"
-                      class="feed-avatar">
+                         class="feed-avatar">
                     <!--<img src="assets/images/user.png" class="feed-avatar">-->
                   </div>
                   <div class="col-md-7 ">
                     <h6>{{post._posted_by?.first_name}} {{post._posted_by?.last_name}} <br>
-                        <span class="small lightgray date">
+                      <span class="small lightgray date">
                             {{post?.created_date | date : 'medium'}}</span>
                     </h6>
 
@@ -482,11 +482,11 @@
                   <div class="col-md-4 text-right padding-topright" style=" object-fit: cover;">
                     <div ngbDropdown class="d-inline-block">
                       <button class="btn btn-sm kbn-todo" *ngIf="post.task.status == 'to do'" id="dropdownDone" style=" color: white;"
-                      ngbDropdownToggle>{{post.task.status}}</button>
+                              ngbDropdownToggle>{{post.task.status}}</button>
                       <button class="btn btn-sm kbn-working" *ngIf="post.task.status == 'in progress'" id="dropdownDone" style=" color: white;"
-                      ngbDropdownToggle>{{post.task.status}}</button>
+                              ngbDropdownToggle>{{post.task.status}}</button>
                       <button class="btn btn-sm kbn-done" *ngIf="post.task.status == 'done'" id="dropdownDone" style=" color: white;"
-                      ngbDropdownToggle>{{post.task.status}}</button>
+                              ngbDropdownToggle>{{post.task.status}}</button>
                       <div ngbDropdownMenu aria-labelledby="dropdownToDo">
                         <button class="dropdown-item pumpkin-orange-bg" (click)="OnMarkTaskToDo(i, this.post._id)">To Do</button>
                         <button class="dropdown-item" (click)="OnMarkTaskInProgress(i, this.post._id)">In Progress</button>
@@ -521,8 +521,8 @@
 
                 <div class="col-md-12 innercard">
                   <quill-editor [modules]="modules" id="edit-content-{{i}}" type="text" [(ngModel)]="post.content"
-                    [spellcheck]="true" value="post?.content" style="display: none;" (blur)="onEditorBlured($event)"
-                    (focus)="onEditorFocused($event)" (ready)="onEditorCreated($event)" (change)="onContentChanged($event)"></quill-editor>
+                                [spellcheck]="true" value="post?.content" style="display: none;" (blur)="onEditorBlured($event)"
+                                (focus)="onEditorFocused($event)" (ready)="onEditorCreated($event)" (change)="onContentChanged($event)"></quill-editor>
                 </div>
 
                 <div class="col-md-12 innercard " [id]="(i)" [innerHTML]="post?.content | safe: 'html'">
@@ -556,7 +556,7 @@
                       <span>
                         <button class="btn btn-link" (click)="OnClickLikePost(i, post._id, post._liked_by.length, post._liked_by, user._id)">
                           <i class="material-icons muted" *ngIf="!userLikedPost(i); else likeif"
-                            id="icon_like_post_{{i}}">thumb_up</i>
+                             id="icon_like_post_{{i}}">thumb_up</i>
                           <ng-template #likeif><i class="material-icons active" id="icon_like_post_{{i}}">thumb_up</i></ng-template>
                         </button>
                       </span>
@@ -591,10 +591,10 @@
                         <h6>Add a comment</h6>
                         <!--<textarea class="form-control" id="post-content" rows="3" [(ngModel)]="comment.content" name="commentContent" formControlName="commentContent"></textarea>-->
                         <quill-editor id="comment-content{{i}}" [modules]="modules" [(ngModel)]="comment.content"
-                          (blur)="onEditorBlured($event)" [spellcheck]="true" class="form-control" name="commentContent"
-                          (focus)="onEditorFocused($event)" formControlName="commentContent" (ready)="onEditorCreated($event)"
-                          (change)="onContentChanged($event)" (onEditorCreated)="onEditorCreated($event)"
-                          (onContentChanged)="onContentChanged($event)"></quill-editor>
+                                      (blur)="onEditorBlured($event)" [spellcheck]="true" class="form-control" name="commentContent"
+                                      (focus)="onEditorFocused($event)" formControlName="commentContent" (ready)="onEditorCreated($event)"
+                                      (change)="onContentChanged($event)" (onEditorCreated)="onEditorCreated($event)"
+                                      (onContentChanged)="onContentChanged($event)"></quill-editor>
                         <div ngbDropdown class="btn-group">
                           <a id="emojiDrop" class="btn" ngbDropdownToggle>
                             <i class="material-icons">
@@ -603,7 +603,7 @@
                           </a>
 
                           <emoji-mart ngbDropdownMenu aria-labelledby="emojiDrop" [set]="emojiSet" isNative="false"
-                            [hideRecent]="false" (emojiSelect)="handleClick($event)" title="Pick your emoji…" emoji='point_up'>
+                                      [hideRecent]="false" (emojiSelect)="handleClick($event)" title="Pick your emoji…" emoji='point_up'>
                           </emoji-mart>
 
                         </div>
@@ -612,11 +612,11 @@
                   </div>
 
                   <div class="row ">
-                      <div class="col-md-8"></div>
+                    <div class="col-md-8"></div>
                     <div class="col-md-4 text-right" style="padding-right:30px">
                       <button type="button " name="button " class="btn btn-default " (click)="showComments.id=post._id;showComments.task=!showComments.task;">Cancel</button>
                       <button [disabled]="commentForm.invalid" type="button " name="button" (click)="onAddNewComment(post._id, i)"
-                        class="btn btn-primary">Comment</button>
+                              class="btn btn-primary">Comment</button>
                     </div>
                   </div>
                   <br>
@@ -628,21 +628,21 @@
 
             <!-- all comments block-->
             <div id="taskComments{{i}}" style="display: none;">
-            <div class="card muted comment" id="taskComment-{{j}}" *ngFor="let comment of this.comments; let j = index;">
-              <div class="card-block">
-                <div class="row card-title ">
-                  <div class="col-md-1">
-                    <img src="/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"
-                      class="feed-avatar">
-                    <!--<img [src]="profileImage" class="feed-avatar">-->
-                    <!--<img src="assets/images/user.png" class="feed-avatar">-->
-                  </div>
-                  <div class="col-md-7 ">
-                    <h6>{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}} replied</h6>
-                    <p class="small lightgray date">
-                      {{comment.created_date | date : 'medium'}}</p>
-                  </div>
-                  <div class="col-md-4 text-right card-footer action-post innercard">
+              <div class="card muted comment" id="taskComment-{{j}}" *ngFor="let comment of this.comments; let j = index;">
+                <div class="card-block">
+                  <div class="row card-title ">
+                    <div class="col-md-1">
+                      <img src="/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"
+                           class="feed-avatar">
+                      <!--<img [src]="profileImage" class="feed-avatar">-->
+                      <!--<img src="assets/images/user.png" class="feed-avatar">-->
+                    </div>
+                    <div class="col-md-7 ">
+                      <h6>{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}} replied</h6>
+                      <p class="small lightgray date">
+                        {{comment.created_date | date : 'medium'}}</p>
+                    </div>
+                    <div class="col-md-4 text-right card-footer action-post innercard">
                       <span>
                           <div ngbDropdown class="d-inline-block" *ngIf="post?._posted_by?._id == this.user_data.user_id; else editpostif">
                             <i class="material-icons action" id="dropdownComment" ngbDropdownToggle>more_horiz</i>
@@ -653,22 +653,22 @@
                           </div>
                         </span>
 
+                    </div>
                   </div>
-                </div>
-                <div class="col-md-12 text-right " id="button_edit_comment{{j}}" style="display: none; padding-bottom: 1em;">
+                  <div class="col-md-12 text-right " id="button_edit_comment{{j}}" style="display: none; padding-bottom: 1em;">
                     <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditComment(j, comment._id, comment._post)">Save</button>
                   </div>
                   <div class="col-md-12 innercard">
                     <quill-editor [modules]="modules" id="edit-comment-{{j}}" type="text" [(ngModel)]="comment.content"
-                      [spellcheck]="true" value="comment?.content" style="display: none;" (blur)="onEditorBlured($event)"
-                      (focus)="onEditorFocused($event)" (ready)="onEditorCreated($event)" (change)="onContentChanged($event)">
+                                  [spellcheck]="true" value="comment?.content" style="display: none;" (blur)="onEditorBlured($event)"
+                                  (focus)="onEditorFocused($event)" (ready)="onEditorCreated($event)" (change)="onContentChanged($event)">
                     </quill-editor>
                   </div>
-                <div class="col-md-12 innercard " id="commentContent-{{j}}" [innerHTML]="comment?.content" style="color:black;">
+                  <div class="col-md-12 innercard " id="commentContent-{{j}}" [innerHTML]="comment?.content" style="color:black;">
 
+                  </div>
                 </div>
               </div>
-            </div>
             </div>
 
             <!-- all comments block-->
@@ -683,11 +683,11 @@
                 <div class="row card-title ">
                   <div class="col-md-1 ">
                     <img src="/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"
-                      class="feed-avatar">
+                         class="feed-avatar">
                   </div>
                   <div class="col-md-7 ">
                     <h6>{{post._posted_by?.first_name}} {{post._posted_by?.last_name}} <br>
-                    <span class="small lightgray date ">
+                      <span class="small lightgray date ">
                       {{post?.created_date| date : 'medium'}}</span>
                     </h6>
 
@@ -719,8 +719,8 @@
                 </div>
                 <div class="col-md-12 innercard">
                   <quill-editor [modules]="modules" id="edit-content-{{i}}" type="text" [(ngModel)]="post.content"
-                    [spellcheck]="true" value="post?.content" style="display: none;" (blur)="onEditorBlured($event)"
-                    (focus)="onEditorFocused($event)" (ready)="onEditorCreated($event)" (change)="onContentChanged($event)"></quill-editor>
+                                [spellcheck]="true" value="post?.content" style="display: none;" (blur)="onEditorBlured($event)"
+                                (focus)="onEditorFocused($event)" (ready)="onEditorCreated($event)" (change)="onContentChanged($event)"></quill-editor>
                 </div>
                 <div class="col-md-12 innercard ">
                   <div class="row" style="margin-top:10px">
@@ -766,7 +766,7 @@
                       <span>
                         <button class="btn btn-link" (click)="OnClickLikePost(i, post._id, post._liked_by.length, post._liked_by, user._id)">
                           <i class="material-icons muted" *ngIf="!userLikedPost(i); else likeif"
-                            id="icon_like_post_{{i}}">thumb_up</i>
+                             id="icon_like_post_{{i}}">thumb_up</i>
                           <ng-template #likeif><i class="material-icons active" id="icon_like_post_{{i}}">thumb_up</i></ng-template>
                         </button>
                       </span>
@@ -800,10 +800,10 @@
                         <h6>Add a comment</h6>
                         <!--<textarea class="form-control" id="post-content" rows="3" [(ngModel)]="comment.content" name="commentContent" formControlName="commentContent"></textarea>-->
                         <quill-editor id="comment-content{{i}}" [modules]="modules" [(ngModel)]="comment.content"
-                          (blur)="onEditorBlured($event)" [spellcheck]="true" class="form-control" name="commentContent"
-                          (focus)="onEditorFocused($event)" formControlName="commentContent" (ready)="onEditorCreated($event)"
-                          (onEditorCreated)="onEditorCreated($event)" (onContentChanged)="onContentChanged($event)"
-                          (change)="onContentChanged($event)"></quill-editor>
+                                      (blur)="onEditorBlured($event)" [spellcheck]="true" class="form-control" name="commentContent"
+                                      (focus)="onEditorFocused($event)" formControlName="commentContent" (ready)="onEditorCreated($event)"
+                                      (onEditorCreated)="onEditorCreated($event)" (onContentChanged)="onContentChanged($event)"
+                                      (change)="onContentChanged($event)"></quill-editor>
                         <div ngbDropdown class="btn-group">
                           <a id="emojiDrop" class="btn" ngbDropdownToggle>
                             <i class="material-icons">
@@ -812,7 +812,7 @@
                           </a>
 
                           <emoji-mart ngbDropdownMenu aria-labelledby="emojiDrop" [set]="emojiSet" isNative="false"
-                            [hideRecent]="false" (emojiSelect)="handleClick($event)" title="Pick your emoji…" emoji='point_up'>
+                                      [hideRecent]="false" (emojiSelect)="handleClick($event)" title="Pick your emoji…" emoji='point_up'>
                           </emoji-mart>
 
                         </div>
@@ -821,11 +821,11 @@
                   </div>
 
                   <div class="row ">
-                      <div class="col-md-8"></div>
+                    <div class="col-md-8"></div>
                     <div class="col-md-4 text-right" style="padding-right:30px">
                       <button type="button " name="button " class="btn btn-default " (click)="showComments.id=post._id;showComments.event=!showComments.event;">Cancel</button>
                       <button [disabled]="commentForm.invalid" type="button " name="button" (click)="onAddNewComment(post._id, i)"
-                        class="btn btn-primary">Comment</button>
+                              class="btn btn-primary">Comment</button>
                     </div>
                   </div>
                   <br>
@@ -837,21 +837,21 @@
 
             <!-- all comments block-->
             <div id="eventComments{{i}}" style="display: none;">
-            <div class="card muted comment"  id="eventComment-{{j}}" *ngFor="let comment of this.comments; let j = index;">
-              <div class="card-block">
-                <div class="row card-title ">
-                  <div class="col-md-1">
-                    <img src="/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"
-                      class="feed-avatar">
-                    <!--<img [src]="profileImage" class="feed-avatar">-->
-                  </div>
-                  <div class="col-md-7 ">
-                    <h6>{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}} replied <br>
-                    <span class="small lightgray date">
+              <div class="card muted comment"  id="eventComment-{{j}}" *ngFor="let comment of this.comments; let j = index;">
+                <div class="card-block">
+                  <div class="row card-title ">
+                    <div class="col-md-1">
+                      <img src="/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"
+                           class="feed-avatar">
+                      <!--<img [src]="profileImage" class="feed-avatar">-->
+                    </div>
+                    <div class="col-md-7 ">
+                      <h6>{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}} replied <br>
+                        <span class="small lightgray date">
                       {{comment.created_date | date : 'medium'}}</span>
-                    </h6>
-                  </div>
-                  <div class="col-md-4 text-right card-footer action-post innercard">
+                      </h6>
+                    </div>
+                    <div class="col-md-4 text-right card-footer action-post innercard">
                       <span>
                           <div ngbDropdown class="d-inline-block" *ngIf="post?._posted_by?._id == this.user_data.user_id; else editpostif">
 
@@ -863,22 +863,22 @@
                           </div>
                         </span>
 
+                    </div>
                   </div>
-                </div>
-                <div class="col-md-12 text-right " id="button_edit_comment{{j}}" style="display: none; padding-bottom: 1em;">
+                  <div class="col-md-12 text-right " id="button_edit_comment{{j}}" style="display: none; padding-bottom: 1em;">
                     <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditComment(j, comment._id, comment._post)">Save</button>
                   </div>
                   <div class="col-md-12 innercard">
                     <quill-editor [modules]="modules" id="edit-comment-{{j}}" type="text" [(ngModel)]="comment.content"
-                      [spellcheck]="true" value="comment?.content" style="display: none;" (blur)="onEditorBlured($event)"
-                      (focus)="onEditorFocused($event)" (ready)="onEditorCreated($event)" (change)="onContentChanged($event)">
+                                  [spellcheck]="true" value="comment?.content" style="display: none;" (blur)="onEditorBlured($event)"
+                                  (focus)="onEditorFocused($event)" (ready)="onEditorCreated($event)" (change)="onContentChanged($event)">
                     </quill-editor>
                   </div>
-                <div class="col-md-12 innercard " id="commentContent-{{j}}" [innerHTML]="comment?.content" style="color:black;">
+                  <div class="col-md-12 innercard " id="commentContent-{{j}}" [innerHTML]="comment?.content" style="color:black;">
 
+                  </div>
                 </div>
               </div>
-            </div>
             </div>
           </li>
         </ul>
