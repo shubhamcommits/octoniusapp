@@ -39,7 +39,7 @@
               <div *ngIf="_workspaceName.errors.fieldCannotBeEmpty">workplace name cannot be empty</div>
             </div>
           </div>
-          <button [disabled]="newWorkspaceForm.invalid || processing" type="submit" class="btn btn-primary btn-block">Continue</button>
+          <button [disabled]="newWorkspaceForm.invalid || processing" type="submit" class="btn btn-primary">Continue</button>
         </form>
         <br>
         <div *ngIf="alert.message" [ngClass]="alert.class">{{alert.message}}</div>
