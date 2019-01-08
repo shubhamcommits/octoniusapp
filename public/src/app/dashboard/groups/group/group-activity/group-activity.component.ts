@@ -714,9 +714,9 @@ export class GroupActivityComponent implements OnInit {
       _posted_by: this.user_data.user_id,
       _group: this.group_id,
       event: {
-        due_date: moment(`${date.toISOString()}`).format('YYYY-MM-DD'),
-        due_time: moment(`${date.toISOString()}`).format('hh:mm:ss.SSS'),
-        due_to: moment(`${date.toISOString()}`).format('YYYY-MM-DD hh:mm:ss.SSS'),
+        due_date: moment(date).format('YYYY-MM-DD'),
+        due_time: moment(date).format('hh:mm:ss.SSS'),
+        due_to: moment(date).format('YYYY-MM-DD hh:mm:ss.SSS'),
         // problem: assignedUsers will always be empty
         _assigned_to: assignedUsers,
         _content_mentions: this.content_mentions
@@ -837,8 +837,8 @@ export class GroupActivityComponent implements OnInit {
       _posted_by: this.user_data.user_id,
       _group: this.group_id,
       task: {
-        due_date: moment(`${date.toISOString()}`).format('YYYY-MM-DD hh:mm:ss.SSS'),
-        due_to: moment(`${date.toISOString()}`).format('YYYY-MM-DD'),
+        due_date: moment(date).format('YYYY-MM-DD hh:mm:ss.SSS'),
+        due_to: moment(date).format('YYYY-MM-DD'),
         // there are two scenarios:
         // 1. personal workspace task post: doesn't need assigned members so selectGroupUsers will be undefined
         // 2. group task post: needs one assigned member so selectgorupusers will be defined
@@ -1430,7 +1430,7 @@ export class GroupActivityComponent implements OnInit {
       'content': document.getElementById(index).innerHTML,
       '_content_mentions': this.content_mentions,
       'type': type,
-      'date_due_to': moment(`${date_due_to.toISOString()}`).format('YYYY-MM-DD hh:mm:ss.SSS'),
+      'date_due_to': moment(date_due_to).format('YYYY-MM-DD hh:mm:ss.SSS'),
       'assigned_to': this.selectedGroupUsers
     };
 
