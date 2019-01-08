@@ -1,8 +1,8 @@
 <div class="row main-actvity" id="top-card">
-  <div [ngStyle]="{'display': isItMyWorkplace ? 'none' : 'block'}" class="col-md-4">
+  <div class="col-md-4">
     <div class="row sidecontent">
       <div class="card sideinnercard">
-        <div class="card-block">
+        <div *ngIf="!isItMyWorkplace; else descrPersWorkplace" class="card-block">
 
           <h6 class="card-title">Group Info </h6>
           <hr />
@@ -11,11 +11,19 @@
           <p class="card-text">{{groupDataService.group?.description}}</p>
 
         </div>
+        <ng-template #descrPersWorkplace>
+          <div class="card-block">
+
+            <h6 class="card-title">Personal workplace</h6>
+            <hr />
+            <p class="card-text">This is your personal space. Everything you create here is private.</p>
+          </div>
+        </ng-template>
       </div>
     </div>
   </div>
 
-  <div [ngClass]="{'col-md-8': !isItMyWorkplace, 'col-md-12': isItMyWorkplace}">
+  <div class="col-md-8">
     <!-- news badge-->
     <div class="feed-new-update-pill" style="display:block" *ngIf="this.show_new_posts_badge == 1; else newsbadge">
       <div class="inner-news">
