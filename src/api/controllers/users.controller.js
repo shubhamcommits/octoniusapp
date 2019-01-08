@@ -110,17 +110,15 @@ const getOverview = async (req, res, next) => {
 
     // find the comments that received a response today (to be replaced later)
     const comments = await Comment.find({
+      _commented_by: { $ne: req.userId },
       created_date: { $gte: todayForEvent }
     })
-        .sort('-created_date')
-        .populate({path: '_post', populate: { path: '_group' }})
-        .populate('_commented_by', 'first_name profile_pic')
+      .sort('-created_date')
+      .populate({ path: '_post', populate: { path: '_group' } })
+      .populate('_commented_by', 'first_name profile_pic');
 
     // filter the comments that responded to one the current user's posts
-      const filteredComments = comments.filter((comment) => {
-        return comment._post._posted_by == req.userId;
-      });
-
+    const filteredComments = comments.filter(comment => comment._post._posted_by == req.userId);
 
 
     const posts = await Post.find({
@@ -134,7 +132,7 @@ const getOverview = async (req, res, next) => {
         $and: [
           // Find events due to today
           { 'event._assigned_to': userId },
-            { 'event.due_to': { $gte: todayForEvent, $lt: todayPlus24ForEvent } }
+          { 'event.due_to': { $gte: todayForEvent, $lt: todayPlus24ForEvent } }
         ]
       }]
     })
@@ -149,7 +147,7 @@ const getOverview = async (req, res, next) => {
     return res.status(200).json({
       message: `Found ${posts.length} posts!`,
       posts,
-        comments: filteredComments
+      comments: filteredComments
     });
   } catch (err) {
     return sendErr(res, err);
