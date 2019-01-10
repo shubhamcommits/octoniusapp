@@ -328,7 +328,7 @@ const getComments = async (req, res, next) => {
       _post: postId
     })
       //  sorting them on ID will make the more recent ones be fetched first
-      .sort('_id')
+      .sort('-_id')
       .limit(5)
       .populate('_commented_by', 'first_name last_name profile_pic')
       .lean();

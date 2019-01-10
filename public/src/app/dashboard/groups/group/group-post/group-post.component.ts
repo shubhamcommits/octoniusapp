@@ -180,8 +180,8 @@ export class GroupPostComponent implements OnInit {
     }
    console.log('Comment', comment);
    this.postService.addNewComment(post_id, formData)
-   .subscribe((res) =>{
-     console.log(res);
+   .subscribe((res) => {
+     console.log('res',res);
      //this.getPost(post_id);
      const data = {
       // it should get automatically, something like workspace: this.workspace_name
@@ -197,7 +197,8 @@ export class GroupPostComponent implements OnInit {
      const eventCommentBox = document.getElementById('eventComments');
      this.commentCount++;
      eventCommentBox.style.display = 'block';
-     this.loadComments(post_id);
+
+     // this.loadComments(post_id);
    }, (err)=>{
     swal("Error!", "Error received adding comment to the post " + err, "danger");
    });
@@ -390,9 +391,9 @@ export class GroupPostComponent implements OnInit {
 
       this.postService.getComments(postId)
         .subscribe((res) => {
-          console.log('this.post', this.post);
-         console.log('comments', res['comments']);
           this.comments = res['comments'];
+          // show latest posts at the end
+          this.comments.reverse();
         }, (err) => {
           swal("Error!", "Error while retrieving the comments " + err, "danger");
         });
@@ -403,7 +404,7 @@ export class GroupPostComponent implements OnInit {
 
   loadPreviousComments() {
     console.log('this.comments', this.comments);
-    const earliestComment = this.comments.slice(-1)[0] ._id;
+    const earliestComment = this.comments[0]._id;
     this.postService.getNextComments(this.post._id, earliestComment)
       .subscribe((res) => {
         console.log('RES previous comments', res);
@@ -570,16 +571,16 @@ export class GroupPostComponent implements OnInit {
 
 
     mentionmembers() {
-      var hashValues = [];
+      let hashValues = [];
 
-      var Value = [];
+      let Value = [];
 
       this.groupService.getGroup(this.group_id)
         .subscribe((res) => {
           //  console.log('Group', res);
           Value.push({ id: '', value: 'all' });
 
-          for (var i = 0; i < res['group']._members.length; i++) {
+          for (let i = 0; i < res['group']._members.length; i++) {
             this.members.push(res['group']._members[i].first_name + ' ' + res['group']._members[i].last_name);
             this.allMembersId.push(res['group']._members[i]._id);
             Value.push({ id: res['group']._members[i]._id, value: res['group']._members[i].first_name + ' ' + res['group']._members[i].last_name });
