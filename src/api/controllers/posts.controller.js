@@ -352,7 +352,7 @@ const getNextComments = async (req, res, next) => {
         { _id: { $lt: commentId } }
       ]
     })
-      .sort('_id')
+      .sort('-_id')
       .limit(5)
       .populate('_commented_by', 'first_name last_name profile_pic')
       .lean();

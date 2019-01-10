@@ -116,7 +116,7 @@ export class GroupPostComponent implements OnInit {
           // we set the original comment count
           this.commentCount = res['post'].comments.length;
           this.comments = res['post'].comments;
-        //  console.log('Post', this.post);
+         console.log('Post', this.post);
 
         }, (err)=>{
           swal("Error!", "Error received while fetching the post " + err, "danger");
@@ -181,8 +181,7 @@ export class GroupPostComponent implements OnInit {
    console.log('Comment', comment);
    this.postService.addNewComment(post_id, formData)
    .subscribe((res) => {
-     console.log('res',res);
-     //this.getPost(post_id);
+
      const data = {
       // it should get automatically, something like workspace: this.workspace_name
       workspace: this.user_data.workspace.workspace_name,
@@ -197,7 +196,7 @@ export class GroupPostComponent implements OnInit {
      const eventCommentBox = document.getElementById('eventComments');
      this.commentCount++;
      eventCommentBox.style.display = 'block';
-
+      this.comments.push(res['comment']);
      // this.loadComments(post_id);
    }, (err)=>{
     swal("Error!", "Error received adding comment to the post " + err, "danger");
@@ -394,6 +393,7 @@ export class GroupPostComponent implements OnInit {
           this.comments = res['comments'];
           // show latest posts at the end
           this.comments.reverse();
+          console.log('this.comments after loadcomment', this.comments);
         }, (err) => {
           swal("Error!", "Error while retrieving the comments " + err, "danger");
         });
@@ -407,9 +407,8 @@ export class GroupPostComponent implements OnInit {
     const earliestComment = this.comments[0]._id;
     this.postService.getNextComments(this.post._id, earliestComment)
       .subscribe((res) => {
-        console.log('RES previous comments', res);
-        this.comments = [...res['comments'], ...this.comments];
-        console.log('this.comments', this.comments);
+        this.comments = [...res['comments'].reverse(), ...this.comments];
+        console.log('this.comments after loading previous', this.comments);
       });
   }
 
