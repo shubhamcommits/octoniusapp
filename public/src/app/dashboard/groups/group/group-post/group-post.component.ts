@@ -39,12 +39,13 @@ export class GroupPostComponent implements OnInit {
     _content_mentions: []
   };
   commentForm;
+  commentCount: number;
 
   group_id;
 
   BASE_URL = environment.BASE_URL;
 
-  comments = new Array();
+  comments = [];
 
   allMembersId = [];
 
@@ -54,7 +55,7 @@ export class GroupPostComponent implements OnInit {
 
   content_mentions = [];
 
-  modules={};
+  modules = {};
 
 
   // !--GOOGLE DEVELOPER CONSOLE CREDENTIALS--! //
@@ -108,10 +109,13 @@ export class GroupPostComponent implements OnInit {
    // console.log('Group ID', this.group_id);
   }
 
-  getPost(postId){
+  getPost(postId) {
     this.postService.getPost(postId)
         .subscribe((res) => {
           this.post = res['post'];
+          // we set the original comment count
+          this.commentCount = res['post'].comments.length;
+          this.comments = res['post'].comments;
         //  console.log('Post', this.post);
 
         }, (err)=>{
@@ -142,8 +146,8 @@ export class GroupPostComponent implements OnInit {
   }
 
   onAddNewComment(post_id) {
-   const comment={
-     "content":this.comment.content,
+   const comment = {
+     "content": this.comment.content,
      "_commented_by": this.user_data.user_id,
      "post_id": post_id,
      "contentMentions": this.content_mentions
@@ -154,23 +158,22 @@ export class GroupPostComponent implements OnInit {
    formData.append('_commented_by', comment._commented_by);
    formData.append('post_id', comment.post_id);
    const scanned_content = comment.content;
-    var el = document.createElement('html');
+    let el = document.createElement('html');
     el.innerHTML = scanned_content;
 
     if (el.getElementsByClassName('mention').length > 0) {
-      for (var i = 0; i < el.getElementsByClassName('mention').length; i++) {
-        if (el.getElementsByClassName('mention')[i]['dataset']['value'] == "all") {
-          for (var i = 0; i < this.allMembersId.length; i++) {
+      for (let i = 0; i < el.getElementsByClassName('mention').length; i++) {
+        if (el.getElementsByClassName('mention')[i]['dataset']['value'] === "all") {
+          for (let i = 0; i < this.allMembersId.length; i++) {
             this.content_mentions.push(this.allMembersId[i]);
           }
-        }
-        else {
+        } else {
           if (!this.content_mentions.includes(el.getElementsByClassName('mention')[i]['dataset']['id']))
             this.content_mentions.push(el.getElementsByClassName('mention')[i]['dataset']['id']);
         }
       }
 
-      for (var i = 0; i < this.content_mentions.length; i++) {
+      for (let i = 0; i < this.content_mentions.length; i++) {
         comment.contentMentions[i] = this.content_mentions[i];
         formData.append('contentMentions', this.content_mentions[i]);
       }
@@ -191,23 +194,27 @@ export class GroupPostComponent implements OnInit {
     };
        // console.log(data);
     this.socket.emit('newPost', data);
+     const eventCommentBox = document.getElementById('eventComments');
+     this.commentCount++;
+     eventCommentBox.style.display = 'block';
      this.loadComments(post_id);
    }, (err)=>{
     swal("Error!", "Error received adding comment to the post " + err, "danger");
-   })
-   this.comment.content='';
-   this.comment.post_id= '';
-   this.comment._content_mentions=[];
-   this.comment._commented_by='';
+   });
 
-   this.showComments.id=this.post._id;
-   this.showComments.event=!this.showComments.event;
-   this.showComments.task=!this.showComments.task;
-   this.showComments.normal=!this.showComments.normal;
+   this.comment.content = '';
+   this.comment.post_id = '';
+   this.comment._content_mentions = [];
+   this.comment._commented_by = '';
+
+   this.showComments.id = this.post._id;
+   this.showComments.event = !this.showComments.event;
+   this.showComments.task = !this.showComments.task;
+   this.showComments.normal = !this.showComments.normal;
    console.log('Comment after post', this.comment);
   }
 
-  OnMarkEventCompleted(){
+  OnMarkEventCompleted() {
 
     const button = document.getElementById("button_event_mark_completed");
 
@@ -377,11 +384,14 @@ export class GroupPostComponent implements OnInit {
 
     // !-LOADS ALL COMMENTS IN A POST--! //
     loadComments(postId) {
-      var commentData = new Array();
+    console.log('starting loading comment');
+
+      let commentData = [];
 
       this.postService.getComments(postId)
         .subscribe((res) => {
-         // console.log(res['comments']);
+          console.log('this.post', this.post);
+         console.log('comments', res['comments']);
           this.comments = res['comments'];
         }, (err) => {
           swal("Error!", "Error while retrieving the comments " + err, "danger");
@@ -389,6 +399,18 @@ export class GroupPostComponent implements OnInit {
     }
     // !-LOADS ALL COMMENTS IN A POST--! //
 
+    // LOAD PREVIOUS COMMENTS
+
+  loadPreviousComments() {
+    console.log('this.comments', this.comments);
+    const earliestComment = this.comments.slice(-1)[0] ._id;
+    this.postService.getNextComments(this.post._id, earliestComment)
+      .subscribe((res) => {
+        console.log('RES previous comments', res);
+        this.comments = [...res['comments'], ...this.comments];
+        console.log('this.comments', this.comments);
+      });
+  }
 
 
     // !--FETCH DATA OF SINGLE COMMENT--! //
@@ -423,10 +445,9 @@ export class GroupPostComponent implements OnInit {
     taskCommentBoxToggle() {
       const taskCommentBox = document.getElementById('taskComments');
 
-      if(taskCommentBox.style.display == 'block'){
+      if (taskCommentBox.style.display == 'block') {
         taskCommentBox.style.display = 'none';
-      }
-      else {
+      } else {
         taskCommentBox.style.display = 'block';
       }
     }
@@ -526,8 +547,11 @@ export class GroupPostComponent implements OnInit {
             this.postService.deleteComment(commentId)
               .subscribe((res) => {
                 console.log('Normal post response: ', res);
-                this.getPost(res['commentRemoved']['_post']);
-                this.loadComments(res['commentRemoved']['_post']);
+                const indexDeletedComment = this.comments.findIndex((comment) => commentId == comment._id);
+                this.comments.splice(indexDeletedComment, 1);
+                this.commentCount--;
+                // this.getPost(res['commentRemoved']['_post']);
+                // this.loadComments(res['commentRemoved']['_post']);
               }, (err) => {
 
                 if (err.status) {
@@ -541,7 +565,6 @@ export class GroupPostComponent implements OnInit {
             swal("Deleted!", "The following post has been deleted!", "success");
           }
         });
-
     }
 
 

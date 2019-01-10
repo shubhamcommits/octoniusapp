@@ -3,7 +3,7 @@
   <li class="list-group-item " *ngIf="this.post?.type== 'normal'">
     <div class="card ">
       <div class="card-block ">
-        <div class="card-title ">  
+        <div class="card-title ">
           <img src="/uploads/{{this.post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'" class="feed-avatar float-left">
           <h6>{{this.post._posted_by?.first_name}} {{this.post._posted_by?.last_name}} <br> <span class="small lightgray date">
               {{this.post?.created_date | date : 'medium' }}</span></h6>
@@ -36,7 +36,7 @@
           <div class="row ">
             <div class="col-md-6 ">
               <span [ngbPopover]="likepopcontent"><b>{{this.post?._liked_by.length}}</b> Likes </span>
-              <span style="cursor: pointer;" (click)="loadComments(post._id); normalCommentBoxToggle();"><b>{{post?.comments.length}}</b> Comments</span>
+              <span style="cursor: pointer;" (click)="loadComments(post._id); normalCommentBoxToggle();"><b>{{commentCount}}</b> Comments</span>
             </div>
             <div class="col-md-6 text-right">
 
@@ -125,7 +125,7 @@
                                 <button class="dropdown-item" (click)="OnDeleteComment(comment._id)">Delete Comment</button>
                               </div>
                             </div>
-                          </span> 
+                          </span>
                     </div>
                   </div>
                   <div class="col-md-12 text-right " id="button_edit_comment{{j}}" style="display: none; padding-bottom: 1em;">
@@ -138,12 +138,12 @@
                       </quill-editor>
                     </div>
                   <div class="col-md-12 innercard " id="commentContent-{{j}}" [innerHTML]="comment?.content" style="color:black;">
-  
+
                   </div>
                 </div>
               </div>
               </div>
-  
+
               <!-- all comments block-->
   </li>
 
@@ -216,7 +216,7 @@
           <div class="row ">
             <div class="col-md-6 ">
               <span [ngbPopover]="likepopcontent"><b>{{post?._liked_by.length}}</b> Likes</span>
-              <span style="cursor: pointer;" (click)="loadComments(post._id); taskCommentBoxToggle(i);"><b>{{post?.comments.length}}</b> Comments</span>
+              <span style="cursor: pointer;" (click)="loadComments(post._id); taskCommentBoxToggle(i);"><b>{{commentCount}}</b> Comments</span>
               <ng-template #likepopcontent>
                 <ul class="list-group">
                   <li class="list-group-item" *ngFor="let liked_member of this.post._liked_by;">{{liked_member.first_name}}</li>
@@ -375,13 +375,13 @@
       </div>
 
 
-    
+
       <div class="card-footer action-post innercard clearfix ">
         <hr>
         <div class="row">
           <div class="col-md-6 ">
             <span [ngbPopover]="likepopcontent"><b>{{post?._liked_by.length}}</b> Likes</span>
-            <span style="cursor: pointer;" (click)="loadComments(post._id); eventCommentBoxToggle(i);"><b>{{post?.comments.length}}</b> Comments</span>
+            <span style="cursor: pointer;" (click)="loadComments(post._id); eventCommentBoxToggle(i);"><b>{{commentCount}}</b> Comments</span>
             <ng-template #likepopcontent>
               <ul class="list-group">
                 <li class="list-group-item" *ngFor="let liked_member of post._liked_by;">{{liked_member.first_name}}</li>
@@ -411,8 +411,6 @@
         </div>
       </div>
     </div>
-    
-
 
     <!-- post comment block make this invisible -->
 
@@ -443,6 +441,14 @@
       </div>
     </div>
 
+
+    <!-- load more comments button -->
+
+    <div class="load-more-comments" *ngIf="comments.length < commentCount">
+      <p (click)="loadPreviousComments()" class="load-more-comments-btn">Load more comments...</p>
+      <p class="comments-count">{{comments.length}} of {{commentCount}} comments</p>
+    </div>
+
     <!-- post comment block-->
 
     <!-- all comments block-->
@@ -465,7 +471,7 @@
             <div class="col-md-4 text-right card-footer action-post innercard">
                 <span>
                     <div ngbDropdown class="d-inline-block" *ngIf="post?._posted_by?._id == this.user_data.user_id; else editpostif">
-                      
+
                       <i ngbDropdownToggle class="material-icons action" id="dropdownComment{{i}}">more_horiz</i>
                       <div ngbDropdownMenu>
                           <button class="dropdown-item" (click)="OnEditComment(j)">Edit Comment</button>
