@@ -43,8 +43,8 @@ import {post} from "selenium-webdriver/http";
 export class GroupActivityComponent implements OnInit {
 
   /* It Stores all the Posts of a group into this array*/
-  posts = new Array();
-  comments = new Array();
+  posts = [];
+  comments = [];
   /* It Stores the Group data of a group*/
   group_id;
   group: Group;
@@ -108,6 +108,7 @@ export class GroupActivityComponent implements OnInit {
     _commented_by: '',
     _post_id: ''
   };
+  commentCount: number;
 
   form: FormGroup;
   processing = false;
@@ -146,7 +147,7 @@ export class GroupActivityComponent implements OnInit {
     displayKey: 'description', // if objects array passed which key to be displayed defaults to description,
     search: false // enables the search plugin to search in the list
   };
-  groupUsersList: any = new Array();
+  groupUsersList: any = [];
   selectedGroupUsers = [];
   settings = {};
 
@@ -433,9 +434,9 @@ export class GroupActivityComponent implements OnInit {
     el.innerHTML = scanned_content;
 
     if (el.getElementsByClassName('mention').length > 0) {
-      for (var i = 0; i < el.getElementsByClassName('mention').length; i++) {
+      for (let i = 0; i < el.getElementsByClassName('mention').length; i++) {
         if (el.getElementsByClassName('mention')[i]['dataset']['value'] == "all") {
-          for (var i = 0; i < this.allMembersId.length; i++) {
+          for (let i = 0; i < this.allMembersId.length; i++) {
             this.content_mentions.push(this.allMembersId[i]);
           }
         }
@@ -1036,9 +1037,24 @@ export class GroupActivityComponent implements OnInit {
     this.filesToUpload = null;
   }
 
+  loadPreviousComments(postId) {
+    const earliestComment = this.comments[0]._id;
+    this.postService.getNextComments(postId, earliestComment)
+      .subscribe((res) => {
+        // add the new comments to the front of the already displayed comments
+        this.comments = [...res['comments'].reverse(), ...this.comments];
+      });
+  }
+
+  countComments(postId) {
+    const indexPost = this.posts.findIndex((post) => postId == post._id);
+    return this.posts[indexPost].comments.length;
+  }
+
   // !-LOADS ALL COMMENTS IN A POST--! //
   loadComments(postId) {
-    var commentData = [];
+    let commentData = [];
+    this.commentCount = this.countComments(postId);
 
     this.postService.getComments(postId)
       .subscribe((res) => {

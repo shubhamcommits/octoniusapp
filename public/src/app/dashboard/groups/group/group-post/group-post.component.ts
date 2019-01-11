@@ -388,7 +388,6 @@ export class GroupPostComponent implements OnInit {
           this.comments = res['comments'];
           // show latest posts at the end
           this.comments.reverse();
-
           window.scrollTo(0, document.body.scrollHeight);
 
         }, (err) => {
