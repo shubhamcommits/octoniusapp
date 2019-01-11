@@ -61,7 +61,7 @@ i.icon-blue {
 
 	color: transparent;
 	background: transparent;
-  
+
   }
   a.btn.dropdown-toggle::after
 {
@@ -112,4 +112,25 @@ i.icon-blue {
 	.col-md-7{
 		padding-left: 25px;
 	}
+}
+
+.load-more-comments {
+  display: flex;
+  justify-content: space-between;
+  &-btn {
+    color: var(--blue);
+    padding: 1rem;
+    cursor: pointer;
+    margin-bottom: 0;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .comments-count {
+    color: var(--blue);
+    padding: 1rem;
+    margin-bottom: 0;
+  }
 }

@@ -39,12 +39,13 @@ export class GroupPostComponent implements OnInit {
     _content_mentions: []
   };
   commentForm;
+  commentCount: number;
 
   group_id;
 
   BASE_URL = environment.BASE_URL;
 
-  comments = new Array();
+  comments = [];
 
   allMembersId = [];
 
@@ -54,7 +55,7 @@ export class GroupPostComponent implements OnInit {
 
   content_mentions = [];
 
-  modules={};
+  modules = {};
 
 
   // !--GOOGLE DEVELOPER CONSOLE CREDENTIALS--! //
@@ -108,11 +109,15 @@ export class GroupPostComponent implements OnInit {
    // console.log('Group ID', this.group_id);
   }
 
-  getPost(postId){
+  getPost(postId) {
     this.postService.getPost(postId)
         .subscribe((res) => {
+
           this.post = res['post'];
-        //  console.log('Post', this.post);
+          // we set the original comment count
+          this.commentCount = res['post'].comments.length;
+          this.comments = res['post'].comments;
+
 
         }, (err)=>{
           swal("Error!", "Error received while fetching the post " + err, "danger");
@@ -142,8 +147,8 @@ export class GroupPostComponent implements OnInit {
   }
 
   onAddNewComment(post_id) {
-   const comment={
-     "content":this.comment.content,
+   const comment = {
+     "content": this.comment.content,
      "_commented_by": this.user_data.user_id,
      "post_id": post_id,
      "contentMentions": this.content_mentions
@@ -154,32 +159,32 @@ export class GroupPostComponent implements OnInit {
    formData.append('_commented_by', comment._commented_by);
    formData.append('post_id', comment.post_id);
    const scanned_content = comment.content;
-    var el = document.createElement('html');
+    let el = document.createElement('html');
     el.innerHTML = scanned_content;
 
     if (el.getElementsByClassName('mention').length > 0) {
-      for (var i = 0; i < el.getElementsByClassName('mention').length; i++) {
-        if (el.getElementsByClassName('mention')[i]['dataset']['value'] == "all") {
-          for (var i = 0; i < this.allMembersId.length; i++) {
+      for (let i = 0; i < el.getElementsByClassName('mention').length; i++) {
+        if (el.getElementsByClassName('mention')[i]['dataset']['value'] === "all") {
+          for (let i = 0; i < this.allMembersId.length; i++) {
             this.content_mentions.push(this.allMembersId[i]);
           }
-        }
-        else {
+        } else {
           if (!this.content_mentions.includes(el.getElementsByClassName('mention')[i]['dataset']['id']))
             this.content_mentions.push(el.getElementsByClassName('mention')[i]['dataset']['id']);
         }
       }
 
-      for (var i = 0; i < this.content_mentions.length; i++) {
+      for (let i = 0; i < this.content_mentions.length; i++) {
         comment.contentMentions[i] = this.content_mentions[i];
         formData.append('contentMentions', this.content_mentions[i]);
       }
     }
-   console.log('Comment', comment);
+
+
+
    this.postService.addNewComment(post_id, formData)
-   .subscribe((res) =>{
-     console.log(res);
-     //this.getPost(post_id);
+   .subscribe((res) => {
+
      const data = {
       // it should get automatically, something like workspace: this.workspace_name
       workspace: this.user_data.workspace.workspace_name,
@@ -187,27 +192,31 @@ export class GroupPostComponent implements OnInit {
       group: this.group_name,
       userId: this.user_data.user_id,
       commentId: res['comment']._id,
-      groupId: this.groupDataService.group._id // Pass group id here!!!
+      groupId: this.groupDataService.group._id,
+       type: 'comment' // this is used to differentiate between posts and comment for emitting notification
     };
-       // console.log(data);
+
     this.socket.emit('newPost', data);
-     this.loadComments(post_id);
+     this.commentCount++;
+
+      this.comments.push(res['comment']);
+     // this.loadComments(post_id);
    }, (err)=>{
     swal("Error!", "Error received adding comment to the post " + err, "danger");
-   })
-   this.comment.content='';
-   this.comment.post_id= '';
-   this.comment._content_mentions=[];
-   this.comment._commented_by='';
+   });
 
-   this.showComments.id=this.post._id;
-   this.showComments.event=!this.showComments.event;
-   this.showComments.task=!this.showComments.task;
-   this.showComments.normal=!this.showComments.normal;
-   console.log('Comment after post', this.comment);
+   this.comment.content = '';
+   this.comment.post_id = '';
+   this.comment._content_mentions = [];
+   this.comment._commented_by = '';
+
+   this.showComments.id = this.post._id;
+   this.showComments.event = !this.showComments.event;
+   this.showComments.task = !this.showComments.task;
+   this.showComments.normal = !this.showComments.normal;
   }
 
-  OnMarkEventCompleted(){
+  OnMarkEventCompleted() {
 
     const button = document.getElementById("button_event_mark_completed");
 
@@ -218,7 +227,6 @@ export class GroupPostComponent implements OnInit {
     this.postService.complete(this.postId, post)
     .subscribe((res) => {
       this.playAudio();
-  //    console.log('Post Marked as Completed');
 
       button.style.background="#005fd5";
       button.style.color="#ffffff";
@@ -240,15 +248,12 @@ export class GroupPostComponent implements OnInit {
     };
     this.postService.complete(post_id,post)
     .subscribe((res) => {
-      console.log('Post Marked as to do', res);
       this.playAudio();
       this.getPost(this.postId);
       swal("Good Job!", "The status of task has been updated sucessfully!", "success");
 
 
     }, (err) => {
-
-      console.log('Error:', err);
       swal("Error!", "Error received while updating the task as to-do " + err, "danger");
 
     });
@@ -261,15 +266,11 @@ export class GroupPostComponent implements OnInit {
     };
     this.postService.complete(post_id,post)
     .subscribe((res) => {
-      console.log('Post Marked as in Progress', res);
       this.playAudio();
       this.getPost(this.postId);
       swal("Good Job!", "The status of task has been updated sucessfully!", "success");
     }, (err) => {
-
-      console.log('Error:', err);
       swal("Error!", "Error received while updating the task as marked in progress " + err, "danger");
-
     });
 
   }
@@ -284,9 +285,7 @@ export class GroupPostComponent implements OnInit {
       .subscribe((res) => {
 
         this.playAudio();
-         console.log('Normal post response: ', res);
 
-        console.log('Post Marked as Completed');
         this.getPost(this.postId);
 
         swal("Good Job!", "The status of task has been updated sucessfully!", "success");
@@ -313,9 +312,10 @@ export class GroupPostComponent implements OnInit {
 
 
   // !-LIKE A POST--! //
-  likepost(){
-    console.log('this still gets called!!!')
-    if(this.post._liked_by.length == 0){
+  likepost() {
+
+    if
+    (this.post._liked_by.length == 0){
       const post = {
         'post_id': this.postId,
         'user_id': this.user_data.user_id
@@ -324,14 +324,15 @@ export class GroupPostComponent implements OnInit {
       this.postService.like(post)
       .subscribe((res) => {
      //   console.log('Post Liked!');
-        this.getPost(this.postId);
+        this.post._liked_by.push(this.user_data.user_id);
+        this.playAudio();
       }, (err) => {
         swal("Error!", "Error received while liking the Post " + err, "danger");
       });
     }
 
     else{
-      if(this.post._liked_by.includes(this.user_data.user_id) ==  true){
+      if(this.post._liked_by.includes(this.user_data.user_id) ===  true){
         this.unlikepost();
       }
       else
@@ -344,8 +345,8 @@ export class GroupPostComponent implements OnInit {
 
         this.postService.like(post)
         .subscribe((res) => {
-       //   console.log('Post Liked!');
-          this.getPost(this.postId);
+            this.post._liked_by.push(this.user_data.user_id);
+       //    this.getPost(this.postId);
         }, (err) => {
           swal("Error!", "Error received while liking the Post " + err, "danger");
         });
@@ -365,8 +366,10 @@ export class GroupPostComponent implements OnInit {
 
     this.postService.unlike(post)
     .subscribe((res) => {
-   //   console.log('Post Unliked!');
-      this.getPost(this.postId);
+  //    remove the like from the list
+  const indexLike = this.post._liked_by.findIndex((like) => like == this.user_data.user_id);
+  this.post._liked_by.splice(indexLike, 1);
+   //    this.getPost(this.postId);
     }, (err) => {
       swal("Error!", "Error received while Unliking the Post " + err, "danger");
     });
@@ -377,18 +380,31 @@ export class GroupPostComponent implements OnInit {
 
     // !-LOADS ALL COMMENTS IN A POST--! //
     loadComments(postId) {
-      var commentData = new Array();
+
+      let commentData = [];
 
       this.postService.getComments(postId)
         .subscribe((res) => {
-         // console.log(res['comments']);
           this.comments = res['comments'];
+          // show latest posts at the end
+          this.comments.reverse();
+          window.scrollTo(0, document.body.scrollHeight);
+
         }, (err) => {
           swal("Error!", "Error while retrieving the comments " + err, "danger");
         });
     }
     // !-LOADS ALL COMMENTS IN A POST--! //
 
+    // LOAD PREVIOUS COMMENTS
+
+  loadPreviousComments() {
+    const earliestComment = this.comments[0]._id;
+    this.postService.getNextComments(this.post._id, earliestComment)
+      .subscribe((res) => {
+        this.comments = [...res['comments'].reverse(), ...this.comments];
+      });
+  }
 
 
     // !--FETCH DATA OF SINGLE COMMENT--! //
@@ -423,10 +439,9 @@ export class GroupPostComponent implements OnInit {
     taskCommentBoxToggle() {
       const taskCommentBox = document.getElementById('taskComments');
 
-      if(taskCommentBox.style.display == 'block'){
+      if (taskCommentBox.style.display === 'block') {
         taskCommentBox.style.display = 'none';
-      }
-      else {
+      } else {
         taskCommentBox.style.display = 'block';
       }
     }
@@ -475,16 +490,16 @@ export class GroupPostComponent implements OnInit {
         contentMentions: this.content_mentions
       };
 
-      var scanned_content = comment.content;
-      var el = document.createElement('html');
+      let scanned_content = comment.content;
+      let el = document.createElement('html');
       el.innerHTML = scanned_content;
 
       if (el.getElementsByClassName('mention').length > 0) {
 
         // console.log('Element',  el.getElementsByClassName( 'mention' ));
-        for (var i = 0; i < el.getElementsByClassName('mention').length; i++) {
+        for (let i = 0; i < el.getElementsByClassName('mention').length; i++) {
           if (el.getElementsByClassName('mention')[i]['dataset']['value'] == "all") {
-            for (var i = 0; i < this.allMembersId.length; i++) {
+            for (let i = 0; i < this.allMembersId.length; i++) {
               this.content_mentions.push(this.allMembersId[i]);
             }
             //this.content_mentions = this.allMembersId;
@@ -500,10 +515,11 @@ export class GroupPostComponent implements OnInit {
       //  console.log('Post Id', postId);
       this.postService.updateComment(commentId, comment)
       .subscribe((res) => {
-        console.log('Comment Updated', res);
-        this.loadComments(postId);
+        // this.loadComments(postId);
+        const indexEditedComment = this.comments.findIndex((comment) => comment._id == res['comment']._id);
+        this.comments[indexEditedComment] = res['comment'];
         this.content_mentions = [];
-      }, (err) =>{
+      }, (err) => {
         this.content_mentions = [];
       //  console.log('Error while updating the comment', err);
         swal("Error!", "Error while updating the comment " + err, "danger");
@@ -525,9 +541,11 @@ export class GroupPostComponent implements OnInit {
           if (willDelete) {
             this.postService.deleteComment(commentId)
               .subscribe((res) => {
-                console.log('Normal post response: ', res);
-                this.getPost(res['commentRemoved']['_post']);
-                this.loadComments(res['commentRemoved']['_post']);
+                const indexDeletedComment = this.comments.findIndex((comment) => commentId == comment._id);
+                this.comments.splice(indexDeletedComment, 1);
+                this.commentCount--;
+                // this.getPost(res['commentRemoved']['_post']);
+                // this.loadComments(res['commentRemoved']['_post']);
               }, (err) => {
 
                 if (err.status) {
@@ -541,22 +559,21 @@ export class GroupPostComponent implements OnInit {
             swal("Deleted!", "The following post has been deleted!", "success");
           }
         });
-
     }
 
 
 
     mentionmembers() {
-      var hashValues = [];
+      let hashValues = [];
 
-      var Value = [];
+      let Value = [];
 
       this.groupService.getGroup(this.group_id)
         .subscribe((res) => {
           //  console.log('Group', res);
           Value.push({ id: '', value: 'all' });
 
-          for (var i = 0; i < res['group']._members.length; i++) {
+          for (let i = 0; i < res['group']._members.length; i++) {
             this.members.push(res['group']._members[i].first_name + ' ' + res['group']._members[i].last_name);
             this.allMembersId.push(res['group']._members[i]._id);
             Value.push({ id: res['group']._members[i]._id, value: res['group']._members[i].first_name + ' ' + res['group']._members[i].last_name });
@@ -654,12 +671,12 @@ export class GroupPostComponent implements OnInit {
         'immediate': false
       },
       this.handleAuthResult);
-      console.log('Auth')
+      // console.log('Auth')
   }
 
   onPickerApiLoad() {
     this.pickerApiLoaded = true;
-    console.log('Picker', this.pickerApiLoaded);
+    // console.log('Picker', this.pickerApiLoaded);
   }
 
   handleAuthResult(authResult) {
@@ -678,7 +695,7 @@ export class GroupPostComponent implements OnInit {
             if (e[google.picker.Response.ACTION] == google.picker.Action.PICKED) {
               let doc = e[google.picker.Response.DOCUMENTS][0];
               src = doc[google.picker.Document.URL];
-              console.log("Document selected is", doc,"and URL is ",src)
+              // console.log("Document selected is", doc,"and URL is ",src)
             }
           }).
           build();
