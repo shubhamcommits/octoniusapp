@@ -445,7 +445,7 @@ export class GroupActivityComponent implements OnInit {
         }
       }
 
-      for (var i = 0; i < this.content_mentions.length; i++) {
+      for (let i = 0; i < this.content_mentions.length; i++) {
         commentContent.contentMentions[i] = this.content_mentions[i];
       }
     }
@@ -855,7 +855,7 @@ export class GroupActivityComponent implements OnInit {
     if(driveDivision.innerHTML == '' || driveDivision.innerHTML == null){
       formData.append('content', post.content);
     } else {
-      formData.append('content', post.content+driveDivision.innerHTML);
+      formData.append('content', post.content + driveDivision.innerHTML);
     }
 
     formData.append('type', post.type);
@@ -1038,12 +1038,12 @@ export class GroupActivityComponent implements OnInit {
 
   // !-LOADS ALL COMMENTS IN A POST--! //
   loadComments(postId) {
-    var commentData = new Array();
+    var commentData = [];
 
     this.postService.getComments(postId)
       .subscribe((res) => {
         // console.log(res['comments']);
-        this.comments = res['comments'];
+        this.comments = res['comments'].reverse();
       }, (err) => {
         swal("Error!", "Error while retrieving the comments " + err, "danger");
       });

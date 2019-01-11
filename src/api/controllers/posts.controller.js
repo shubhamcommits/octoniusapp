@@ -226,7 +226,10 @@ const addComment = async (req, res, next) => {
     };
 
     // Create comment
-    const comment = await Comment.create(commentData);
+    let comment = await Comment.create(commentData);
+
+    // populate comment
+    comment = await Comment.populate(comment, '_commented_by');
 
 
     // Update post: add new comment id, increase post count

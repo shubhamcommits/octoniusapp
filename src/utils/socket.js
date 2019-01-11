@@ -1,7 +1,7 @@
 const socketIO = require('socket.io');
 
 const notifications = require('../api/controllers/notifications.controller');
-const { Post } = require('../api/models');
+const { Post, Comment } = require('../api/models');
 
 const init = (server) => {
   const io = socketIO(server);
@@ -99,13 +99,12 @@ const notifyRelatedUsers = async (io, socket, data) => {
 
       // If there are mentions on post content...
       if (post._content_mentions.length !== 0) {
-
         // ...emit notificationsFeed for every user mentioned
         //  generateFeed seems to always be followed by emitting it to the specified user, so I placed the socket.emit function inside the generateFeed function
         //  this way I wouldn't put an await inside a for function
         //  proposal: we might want to change name generateFeed to generateFeedAndEmitToUser
         for (const userId of post._content_mentions) {
-            generateFeed(userId, io);
+          generateFeed(userId, io);
         }
       }
 
@@ -129,10 +128,12 @@ const notifyRelatedUsers = async (io, socket, data) => {
     //  if we mentioned someone in a comment we trigger this part
     //    same process, we generate the feed and emit it to the mentioned user, tiggering a notification in real-time
     } else if (data.type === 'comment') {
+
       comment = await Comment.findById(data.commentId).lean();
 
-      // If there's mentions on comments content...
+      // If there are mentions on comments content...
       if (comment._content_mentions.length !== 0) {
+
         // ...emit notificationsFeed for every user mentioned
         for (const userId of comment._content_mentions) {
           generateFeed(userId, io);

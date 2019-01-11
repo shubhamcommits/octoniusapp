@@ -97,11 +97,19 @@
       </div>
     </div>
 
+    <!-- load more comments button -->
+
+    <div class="load-more-comments" *ngIf="comments.length < commentCount && normalComments?.style.display === 'block'">
+      <p (click)="loadPreviousComments()" class="load-more-comments-btn">Load more comments...</p>
+      <p class="comments-count">{{comments.length}} of {{commentCount}} comments</p>
+    </div>
+
+
     <!-- post comment block-->
 
             <!-- all comments block-->
 
-            <div id="normalComments" style="display: none;">
+            <div #normalComments id="normalComments" style="display: none;">
               <div class="card muted comment" id="normalComment-{{j}}" *ngFor="let comment of this.comments; let j = index;">
                 <div class="card-block">
                   <div class="row card-title ">
@@ -276,11 +284,19 @@
       </div>
     </div>
 
+    <!-- load more comments button -->
+
+    <div class="load-more-comments" *ngIf="comments.length < commentCount && taskComments?.style.display === 'block'">
+      <p (click)="loadPreviousComments()" class="load-more-comments-btn">Load more comments...</p>
+      <p class="comments-count">{{comments.length}} of {{commentCount}} comments</p>
+    </div>
+
+
     <!-- post comment block-->
 
     <!-- all comments block-->
 
-    <div id="taskComments" style="display: none;">
+    <div #taskComments id="taskComments" style="display: none;">
       <div class="card muted comment" id="taskComment-{{j}}" *ngFor="let comment of this.comments; let j = index;">
         <div class="card-block">
           <div class="row card-title ">
@@ -444,7 +460,7 @@
 
     <!-- load more comments button -->
 
-    <div class="load-more-comments" *ngIf="comments.length < commentCount">
+    <div class="load-more-comments" *ngIf="comments.length < commentCount && eventComments.style.display === 'block'">
       <p (click)="loadPreviousComments()" class="load-more-comments-btn">Load more comments...</p>
       <p class="comments-count">{{comments.length}} of {{commentCount}} comments</p>
     </div>
@@ -453,7 +469,7 @@
 
     <!-- all comments block-->
 
-    <div id="eventComments" style="display: none;">
+    <div #eventComments id="eventComments" style="display: none;">
       <div class="card muted comment"  id="eventComment-{{j}}" *ngFor="let comment of this.comments; let j = index;">
         <div class="card-block">
           <div class="row card-title ">

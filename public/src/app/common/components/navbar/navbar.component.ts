@@ -53,9 +53,10 @@ export class NavbarComponent implements OnInit {
     this.getUserProfile();
       const user = {
         'userId': this.user_data.user_id
-        }
-        this.socket.on('notificationsFeed', (user) => {
-          this.notifications_data = user;
+        };
+        this.socket.on('notificationsFeed', (feed) => {
+          console.log('feed', feed);
+          this.notifications_data = feed;
         });
         this.socket.emit('getNotifications', this.user_data.user_id);
     }

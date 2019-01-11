@@ -112,6 +112,7 @@ export class GroupPostComponent implements OnInit {
   getPost(postId) {
     this.postService.getPost(postId)
         .subscribe((res) => {
+          console.log('POST', res);
           this.post = res['post'];
           // we set the original comment count
           this.commentCount = res['post'].comments.length;
@@ -178,7 +179,9 @@ export class GroupPostComponent implements OnInit {
         formData.append('contentMentions', this.content_mentions[i]);
       }
     }
-   console.log('Comment', comment);
+
+
+
    this.postService.addNewComment(post_id, formData)
    .subscribe((res) => {
 
@@ -189,13 +192,13 @@ export class GroupPostComponent implements OnInit {
       group: this.group_name,
       userId: this.user_data.user_id,
       commentId: res['comment']._id,
-      groupId: this.groupDataService.group._id // Pass group id here!!!
+      groupId: this.groupDataService.group._id,
+       type: 'comment' // this is used to differentiate between posts and comment for emitting notification
     };
-       // console.log(data);
+
     this.socket.emit('newPost', data);
-     const eventCommentBox = document.getElementById('eventComments');
      this.commentCount++;
-     eventCommentBox.style.display = 'block';
+
       this.comments.push(res['comment']);
      // this.loadComments(post_id);
    }, (err)=>{
@@ -211,7 +214,6 @@ export class GroupPostComponent implements OnInit {
    this.showComments.event = !this.showComments.event;
    this.showComments.task = !this.showComments.task;
    this.showComments.normal = !this.showComments.normal;
-   console.log('Comment after post', this.comment);
   }
 
   OnMarkEventCompleted() {
@@ -225,7 +227,6 @@ export class GroupPostComponent implements OnInit {
     this.postService.complete(this.postId, post)
     .subscribe((res) => {
       this.playAudio();
-  //    console.log('Post Marked as Completed');
 
       button.style.background="#005fd5";
       button.style.color="#ffffff";
@@ -247,15 +248,12 @@ export class GroupPostComponent implements OnInit {
     };
     this.postService.complete(post_id,post)
     .subscribe((res) => {
-      console.log('Post Marked as to do', res);
       this.playAudio();
       this.getPost(this.postId);
       swal("Good Job!", "The status of task has been updated sucessfully!", "success");
 
 
     }, (err) => {
-
-      console.log('Error:', err);
       swal("Error!", "Error received while updating the task as to-do " + err, "danger");
 
     });
@@ -268,15 +266,11 @@ export class GroupPostComponent implements OnInit {
     };
     this.postService.complete(post_id,post)
     .subscribe((res) => {
-      console.log('Post Marked as in Progress', res);
       this.playAudio();
       this.getPost(this.postId);
       swal("Good Job!", "The status of task has been updated sucessfully!", "success");
     }, (err) => {
-
-      console.log('Error:', err);
       swal("Error!", "Error received while updating the task as marked in progress " + err, "danger");
-
     });
 
   }
@@ -291,9 +285,7 @@ export class GroupPostComponent implements OnInit {
       .subscribe((res) => {
 
         this.playAudio();
-         console.log('Normal post response: ', res);
 
-        console.log('Post Marked as Completed');
         this.getPost(this.postId);
 
         swal("Good Job!", "The status of task has been updated sucessfully!", "success");
@@ -320,9 +312,10 @@ export class GroupPostComponent implements OnInit {
 
 
   // !-LIKE A POST--! //
-  likepost(){
-    console.log('this still gets called!!!')
-    if(this.post._liked_by.length == 0){
+  likepost() {
+
+    if
+    (this.post._liked_by.length == 0){
       const post = {
         'post_id': this.postId,
         'user_id': this.user_data.user_id
@@ -331,14 +324,15 @@ export class GroupPostComponent implements OnInit {
       this.postService.like(post)
       .subscribe((res) => {
      //   console.log('Post Liked!');
-        this.getPost(this.postId);
+        this.post._liked_by.push(this.user_data.user_id);
+        this.playAudio();
       }, (err) => {
         swal("Error!", "Error received while liking the Post " + err, "danger");
       });
     }
 
     else{
-      if(this.post._liked_by.includes(this.user_data.user_id) ==  true){
+      if(this.post._liked_by.includes(this.user_data.user_id) ===  true){
         this.unlikepost();
       }
       else
@@ -351,8 +345,8 @@ export class GroupPostComponent implements OnInit {
 
         this.postService.like(post)
         .subscribe((res) => {
-       //   console.log('Post Liked!');
-          this.getPost(this.postId);
+            this.post._liked_by.push(this.user_data.user_id);
+       //    this.getPost(this.postId);
         }, (err) => {
           swal("Error!", "Error received while liking the Post " + err, "danger");
         });
@@ -372,8 +366,10 @@ export class GroupPostComponent implements OnInit {
 
     this.postService.unlike(post)
     .subscribe((res) => {
-   //   console.log('Post Unliked!');
-      this.getPost(this.postId);
+  //    remove the like from the list
+  const indexLike = this.post._liked_by.findIndex((like) => like == this.user_data.user_id);
+  this.post._liked_by.splice(indexLike, 1);
+   //    this.getPost(this.postId);
     }, (err) => {
       swal("Error!", "Error received while Unliking the Post " + err, "danger");
     });
@@ -384,7 +380,6 @@ export class GroupPostComponent implements OnInit {
 
     // !-LOADS ALL COMMENTS IN A POST--! //
     loadComments(postId) {
-    console.log('starting loading comment');
 
       let commentData = [];
 
@@ -393,7 +388,9 @@ export class GroupPostComponent implements OnInit {
           this.comments = res['comments'];
           // show latest posts at the end
           this.comments.reverse();
-          console.log('this.comments after loadcomment', this.comments);
+
+          window.scrollTo(0, document.body.scrollHeight);
+
         }, (err) => {
           swal("Error!", "Error while retrieving the comments " + err, "danger");
         });
@@ -403,12 +400,10 @@ export class GroupPostComponent implements OnInit {
     // LOAD PREVIOUS COMMENTS
 
   loadPreviousComments() {
-    console.log('this.comments', this.comments);
     const earliestComment = this.comments[0]._id;
     this.postService.getNextComments(this.post._id, earliestComment)
       .subscribe((res) => {
         this.comments = [...res['comments'].reverse(), ...this.comments];
-        console.log('this.comments after loading previous', this.comments);
       });
   }
 
@@ -445,7 +440,7 @@ export class GroupPostComponent implements OnInit {
     taskCommentBoxToggle() {
       const taskCommentBox = document.getElementById('taskComments');
 
-      if (taskCommentBox.style.display == 'block') {
+      if (taskCommentBox.style.display === 'block') {
         taskCommentBox.style.display = 'none';
       } else {
         taskCommentBox.style.display = 'block';
@@ -496,16 +491,16 @@ export class GroupPostComponent implements OnInit {
         contentMentions: this.content_mentions
       };
 
-      var scanned_content = comment.content;
-      var el = document.createElement('html');
+      let scanned_content = comment.content;
+      let el = document.createElement('html');
       el.innerHTML = scanned_content;
 
       if (el.getElementsByClassName('mention').length > 0) {
 
         // console.log('Element',  el.getElementsByClassName( 'mention' ));
-        for (var i = 0; i < el.getElementsByClassName('mention').length; i++) {
+        for (let i = 0; i < el.getElementsByClassName('mention').length; i++) {
           if (el.getElementsByClassName('mention')[i]['dataset']['value'] == "all") {
-            for (var i = 0; i < this.allMembersId.length; i++) {
+            for (let i = 0; i < this.allMembersId.length; i++) {
               this.content_mentions.push(this.allMembersId[i]);
             }
             //this.content_mentions = this.allMembersId;
@@ -521,10 +516,11 @@ export class GroupPostComponent implements OnInit {
       //  console.log('Post Id', postId);
       this.postService.updateComment(commentId, comment)
       .subscribe((res) => {
-        console.log('Comment Updated', res);
-        this.loadComments(postId);
+        // this.loadComments(postId);
+        const indexEditedComment = this.comments.findIndex((comment) => comment._id == res['comment']._id);
+        this.comments[indexEditedComment] = res['comment'];
         this.content_mentions = [];
-      }, (err) =>{
+      }, (err) => {
         this.content_mentions = [];
       //  console.log('Error while updating the comment', err);
         swal("Error!", "Error while updating the comment " + err, "danger");
@@ -546,7 +542,6 @@ export class GroupPostComponent implements OnInit {
           if (willDelete) {
             this.postService.deleteComment(commentId)
               .subscribe((res) => {
-                console.log('Normal post response: ', res);
                 const indexDeletedComment = this.comments.findIndex((comment) => commentId == comment._id);
                 this.comments.splice(indexDeletedComment, 1);
                 this.commentCount--;
