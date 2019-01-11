@@ -112,12 +112,12 @@ export class GroupPostComponent implements OnInit {
   getPost(postId) {
     this.postService.getPost(postId)
         .subscribe((res) => {
-          console.log('POST', res);
+
           this.post = res['post'];
           // we set the original comment count
           this.commentCount = res['post'].comments.length;
           this.comments = res['post'].comments;
-         console.log('Post', this.post);
+
 
         }, (err)=>{
           swal("Error!", "Error received while fetching the post " + err, "danger");
@@ -672,12 +672,12 @@ export class GroupPostComponent implements OnInit {
         'immediate': false
       },
       this.handleAuthResult);
-      console.log('Auth')
+      // console.log('Auth')
   }
 
   onPickerApiLoad() {
     this.pickerApiLoaded = true;
-    console.log('Picker', this.pickerApiLoaded);
+    // console.log('Picker', this.pickerApiLoaded);
   }
 
   handleAuthResult(authResult) {
@@ -696,7 +696,7 @@ export class GroupPostComponent implements OnInit {
             if (e[google.picker.Response.ACTION] == google.picker.Action.PICKED) {
               let doc = e[google.picker.Response.DOCUMENTS][0];
               src = doc[google.picker.Document.URL];
-              console.log("Document selected is", doc,"and URL is ",src)
+              // console.log("Document selected is", doc,"and URL is ",src)
             }
           }).
           build();
