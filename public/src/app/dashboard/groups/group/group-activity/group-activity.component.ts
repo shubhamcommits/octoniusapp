@@ -1104,23 +1104,25 @@ export class GroupActivityComponent implements OnInit {
     const allTaskCommentBox = document.getElementById('taskComments' + index);
     const allNormalCommentBox = document.getElementById('normalComments' + index);
 
-    for(var i = 0; i < index+50; i++){
+    for(let i = 0; i < index + 50; i++){
       if(i == index){
-        if(allNormalCommentBox.style.display == 'block'){
+        if (allNormalCommentBox.style.display == 'block') {
+          this.showComments.id = '';
+          this.showComments.normal = false;
           allNormalCommentBox.style.display = 'none';
         }
-        else{
+        else {
           allNormalCommentBox.style.display = 'block';
         }
       }
-      else if(document.body.contains(document.getElementById('normalComments'+i)) && i!=index){
-        document.getElementById('normalComments'+i).style.display = 'none';
+      else if (document.body.contains(document.getElementById('normalComments' + i)) && i != index) {
+        document.getElementById('normalComments' + i).style.display = 'none';
       }
-      else if(document.body.contains(document.getElementById('taskComments'+i))){
-        document.getElementById('taskComments'+i).style.display = 'none';
+      else if (document.body.contains(document.getElementById('taskComments' + i))){
+        document.getElementById('taskComments' + i).style.display = 'none';
       }
-      else if(document.body.contains(document.getElementById('eventComments'+i))){
-        document.getElementById('eventComments'+i).style.display = 'none';
+      else if (document.body.contains(document.getElementById('eventComments' + i))){
+        document.getElementById('eventComments' + i).style.display = 'none';
       }
     }
   }
@@ -1137,6 +1139,8 @@ export class GroupActivityComponent implements OnInit {
     for(var i = 0; i < index+50; i++){
       if(i == index){
         if(allTaskCommentBox.style.display == 'block'){
+          this.showComments.id = '';
+          this.showComments.normal = false;
           allTaskCommentBox.style.display = 'none';
         }
         else{
@@ -1167,6 +1171,8 @@ export class GroupActivityComponent implements OnInit {
     for(var i = 0; i < index+50; i++){
       if(i == index){
         if(allEventCommentBox.style.display == 'block'){
+          this.showComments.id = '';
+          this.showComments.normal = false;
           allEventCommentBox.style.display = 'none';
         }
         else{

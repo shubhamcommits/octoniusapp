@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { PostService } from '../../../../shared/services/post.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
@@ -56,6 +56,8 @@ export class GroupPostComponent implements OnInit {
   content_mentions = [];
 
   modules = {};
+
+  @ViewChild('commentEditor') commentEditor;
 
 
   // !--GOOGLE DEVELOPER CONSOLE CREDENTIALS--! //
@@ -424,7 +426,10 @@ export class GroupPostComponent implements OnInit {
     normalCommentBoxToggle() {
       const normalCommentBox = document.getElementById('normalComments');
 
-      if(normalCommentBox.style.display == 'block'){
+      if (normalCommentBox.style.display === 'block') {
+        console.log('should enter here');
+        this.showComments.id = '';
+        this.showComments.normal = false;
         normalCommentBox.style.display = 'none';
       }
       else {
@@ -441,6 +446,8 @@ export class GroupPostComponent implements OnInit {
 
       if (taskCommentBox.style.display === 'block') {
         taskCommentBox.style.display = 'none';
+        this.showComments.id = '';
+        this.showComments.task = false;
       } else {
         taskCommentBox.style.display = 'block';
       }
@@ -455,6 +462,8 @@ export class GroupPostComponent implements OnInit {
 
       if(eventCommentBox.style.display == 'block'){
         eventCommentBox.style.display = 'none';
+        this.showComments.id = '';
+        this.showComments.event = false;
       }
       else {
         eventCommentBox.style.display = 'block';
