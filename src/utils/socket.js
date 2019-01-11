@@ -75,7 +75,7 @@ const generateFeed = async (userId, io) => {
 };
 
 const sendNotificationsFeed = async (socket, userId, io) => {
-  //  here the same as before: I deleted the emit code
+  //  here the same as before, I deleted the emit code
   generateFeed(userId, io);
 };
 
