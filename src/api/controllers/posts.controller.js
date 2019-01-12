@@ -39,10 +39,12 @@ const add = async (req, res, next) => {
       case 'task':
         await notifications.newTaskAssignment(post);
         await sendMail.taskAssigned(post);
+        await sendMail.scheduleTaskReminder(post);
         break;
       case 'event':
         await notifications.newEventAssignments(post);
         await sendMail.eventAssigned(post);
+          await sendMail.scheduleEventReminder(post);
         break;
       default:
         break;

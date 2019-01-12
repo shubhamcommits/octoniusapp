@@ -706,8 +706,11 @@ export class GroupActivityComponent implements OnInit {
       formData.append('event._assigned_to', this.user_data.user_id);
     }
 
+
     // create date object for this event
     const date = new Date(this.model_date.year, this.model_date.month -1, this.model_date.day, this.model_time.hour, this.model_time.minute);
+
+
 
     const post = {
       content: this.post.content,
@@ -716,14 +719,16 @@ export class GroupActivityComponent implements OnInit {
       _group: this.group_id,
       event: {
         due_date: moment(date).format('YYYY-MM-DD'),
-        due_time: moment(date).format('hh:mm:ss.SSS'),
-        due_to: moment(date).format('YYYY-MM-DD hh:mm:ss.SSS'),
+        due_time: moment(date).format('HH:mm:ss.SSS'),
+        due_to: moment(date).format('YYYY-MM-DD HH:mm:ss.SSS'),
         // problem: assignedUsers will always be empty
         _assigned_to: assignedUsers,
         _content_mentions: this.content_mentions
       },
       files: this.filesToUpload
     };
+
+    console.log('POST', post);
 
     const driveDivision = document.getElementById('google-drive-file');
 
@@ -739,8 +744,9 @@ export class GroupActivityComponent implements OnInit {
     formData.append('_group', post._group);
     formData.append('event.due_to', post.event.due_to);
 
+
     const scanned_content = post.content;
-    var el = document.createElement('html');
+    let el = document.createElement('html');
     el.innerHTML = scanned_content;
 
     if (el.getElementsByClassName('mention').length > 0) {
@@ -946,7 +952,6 @@ export class GroupActivityComponent implements OnInit {
         } else {
           this._message.next('Error! either server is down or no internet connection');
         }
-
       });
   }
 

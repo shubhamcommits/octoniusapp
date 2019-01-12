@@ -1,6 +1,7 @@
 const ejs = require('ejs');
 const fs = require('fs');
 const http = require('axios');
+const moment = require('moment');
 
 const {
   Group,
@@ -35,7 +36,7 @@ const generateEmailBody = async (type, data) => {
  *	===================
  */
 
-const sendMail = async (emailBody, emailData) => {
+const sendMail = async (emailBody, emailData, scheduled = {}) => {
   try {
     // Sendgrid API settings
     const config = {
@@ -80,6 +81,11 @@ const sendMail = async (emailBody, emailData) => {
         ]
       }
     };
+
+    // if we're creating an email that is scheduled in the future, then we add the property send_at to config
+    if (scheduled.date) {
+      config.send_at = moment(scheduled.date).unix();
+    }
 
     // Fire the request to sendgrid server, check the reponse
     const res = await http.request(config);
@@ -221,9 +227,11 @@ const taskAssigned = async (taskPost) => {
       toEmail: to.email,
       fromName: from.first_name,
       fromEmail: from.email,
+      contentPost: taskPost.content,
       workspace: group.workspace_name,
       group: group.group_name,
-      link: defaults.signinLink
+      link: defaults.signinLink,
+      taskLink: defaults.postLink(group._id, taskPost._id)
     };
 
     // Generate email body from template
@@ -256,10 +264,12 @@ const eventAssigned = async (eventPost) => {
         toName: to.first_name,
         toEmail: to.email,
         fromName: from.first_name,
+        contentPost: eventPost.content,
         fromEmail: from.email,
         workspace: group.workspace_name,
         group: group.group_name,
-        link: defaults.signinLink
+        link: defaults.signinLink,
+        postLink: defaults.postLink(group._id, eventPost._id)
       };
 
       // Generate email body from template
@@ -301,7 +311,7 @@ const userCompletedTask = async (userWhoChangedStatusId, post) => {
         workspace: group.workspace_name,
         group: group.group_name,
         link: defaults.signinLink,
-        taskLink: defaults.taskLink(group._id, post._id)
+        postLink: defaults.postLink(group._id, post._id)
       };
 
       // Generate email body from template
@@ -332,9 +342,11 @@ const userMentionedPost = async (post, user) => {
       toEmail: to.email,
       fromName: from.first_name,
       fromEmail: from.email,
+      postContent: post.content,
       workspace: group.workspace_name,
       group: group.group_name,
-      link: defaults.signinLink
+      link: defaults.signinLink,
+      postLink: defaults.postLink(group._id, post._id)
     };
 
     // Generate email body from template
@@ -350,12 +362,16 @@ const userMentionedPost = async (post, user) => {
 // send an email when a user is mentioned in a comment
 const userMentionedComment = async (comment, post, user) => {
   try {
+    // const date = new Date();
+    // const date2 = moment('2019-01-11', 'YYYY-MM-DD').startOf('day').format();
+    // console.log(date2);
+
     const emailType = 'userMentionedComment';
 
     // Generate email data
     //  proposal to perhaps load these three lines parallel instead of waterfall, since their outcomes are not depending on each other
     const to = await User.findById({ _id: user });
-    const from = await User.findById({ _id: comment._commented_by });
+    const from = await User.findById({ _id: comment._commented_by._id });
     const group = await Group.findById({ _id: post._group });
 
     const emailData = {
@@ -364,9 +380,11 @@ const userMentionedComment = async (comment, post, user) => {
       toEmail: to.email,
       fromName: from.first_name,
       fromEmail: from.email,
+      commentContent: comment.content,
       workspace: group.workspace_name,
       group: group.group_name,
-      link: defaults.signinLink
+      link: defaults.signinLink,
+      postLink: defaults.postLink(group._id, post._id)
     };
 
     // Generate email body from template
@@ -378,6 +396,72 @@ const userMentionedComment = async (comment, post, user) => {
     console.log(err);
   }
 };
+
+const scheduleTaskReminder = async (post) => {
+  try {
+    const emailType = 'scheduleTaskReminder';
+
+    const to = await User.findById({ _id: post.task._assigned_to });
+    const from = await User.findById({ _id: post._posted_by });
+    const group = await Group.findById({ _id: post._group });
+
+    const emailData = {
+      subject: subjects[emailType],
+      toName: to.first_name,
+      toEmail: to.email,
+      fromName: from.first_name,
+      fromEmail: from.email,
+      postContent: post.content,
+      workspace: group.workspace_name,
+      group: group.group_name,
+      link: defaults.signinLink,
+      postLink: defaults.postLink(group._id, post._id)
+    };
+
+    // Generate email body from template
+    const emailBody = await generateEmailBody(emailType, emailData);
+
+    // Send email
+    const send = await sendMail(emailBody, emailData, { date: moment.utc(post.task.due_to, 'YYYY-MM-DD').startOf('day').format() });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const scheduleEventReminder = async (post) => {
+  try {
+    const emailType = 'scheduleEventReminder';
+
+    const from = await User.findById({ _id: post._posted_by });
+    const group = await Group.findById({ _id: post._group });
+
+    post.event._assigned_to.forEach(async (user) => {
+        const to = await User.findById({ _id: user });
+
+        const emailData = {
+        subject: subjects[emailType],
+        toName: to.first_name,
+        toEmail: to.email,
+        fromName: from.first_name,
+        fromEmail: from.email,
+        postContent: post.content,
+        workspace: group.workspace_name,
+        group: group.group_name,
+        link: defaults.signinLink,
+        postLink: defaults.postLink(group._id, post._id)
+      };
+
+      // Generate email body from template
+      const emailBody = await generateEmailBody(emailType, emailData);
+
+      // Send email
+      const send = await sendMail(emailBody, emailData, { date: moment.utc(post.event.due_to, 'YYYY-MM-DD').startOf('day').format() });
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 
 /*	====================
  *	-- EXPORT METHODS --
@@ -393,5 +477,7 @@ module.exports = {
   eventAssigned,
   userMentionedComment,
   userMentionedPost,
-  userCompletedTask
+  userCompletedTask,
+  scheduleTaskReminder,
+  scheduleEventReminder
 };
