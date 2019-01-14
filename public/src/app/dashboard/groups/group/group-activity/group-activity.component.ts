@@ -728,8 +728,6 @@ export class GroupActivityComponent implements OnInit {
       files: this.filesToUpload
     };
 
-    console.log('POST', post);
-
     const driveDivision = document.getElementById('google-drive-file');
 
     if(driveDivision.innerHTML == '' || driveDivision.innerHTML == null){
@@ -1059,6 +1057,7 @@ export class GroupActivityComponent implements OnInit {
   // !-LOADS ALL COMMENTS IN A POST--! //
   loadComments(postId) {
     let commentData = [];
+    this.comments = [];
     this.commentCount = this.countComments(postId);
 
     this.postService.getComments(postId)

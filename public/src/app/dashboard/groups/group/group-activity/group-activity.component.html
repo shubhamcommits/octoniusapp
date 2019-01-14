@@ -413,7 +413,7 @@
 
             <!-- load more comments button -->
 
-            <div class="load-more-comments" *ngIf="comments.length < commentCount && normalComments?.style.display === 'block'">
+            <div class="load-more-comments" *ngIf="comments.length < commentCount && comments.length !== 0 && normalComments?.style.display === 'block'">
               <p (click)="loadPreviousComments(post._id)" class="load-more-comments-btn">Load more comments...</p>
               <p class="comments-count">{{comments.length}} of {{commentCount}} comments</p>
             </div>
@@ -641,7 +641,7 @@
 
             <!-- load more comments button -->
 
-            <div class="load-more-comments" *ngIf="comments.length < commentCount && taskComments?.style.display === 'block'">
+            <div class="load-more-comments" *ngIf="comments.length < commentCount && comments.length !== 0 && taskComments?.style.display === 'block'">
               <p (click)="loadPreviousComments(post._id)" class="load-more-comments-btn">Load more comments...</p>
               <p class="comments-count">{{comments.length}} of {{commentCount}} comments</p>
             </div>
@@ -857,7 +857,7 @@
 
             <!-- load more comments button -->
 
-            <div class="load-more-comments" *ngIf="comments.length < commentCount && eventComments?.style.display === 'block'">
+            <div class="load-more-comments" *ngIf="comments.length < commentCount && comments.length !== 0 && eventComments?.style.display === 'block'">
               <p (click)="loadPreviousComments(post._id)" class="load-more-comments-btn">Load more comments...</p>
               <p class="comments-count">{{comments.length}} of {{commentCount}} comments</p>
             </div>
