@@ -57,6 +57,7 @@ import { GroupTasksComponent } from './dashboard/groups/group/group-tasks/group-
 import { OverviewMyTasksComponent } from './dashboard/overview/overview-my-tasks/overview-my-tasks.component';
 import { OverviewMyWorkplaceComponent } from './dashboard/overview/overview-my-workplace/overview-my-workplace.component';
 import { QuillAutoLinkService } from './shared/services/quill-auto-link.service';
+import { AdminBillingComponent } from './dashboard/admin/admin-billing/admin-billing.component';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 
@@ -104,7 +105,8 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     GroupPostComponent,
     GroupTasksComponent,
     OverviewMyTasksComponent,
-    OverviewMyWorkplaceComponent
+    OverviewMyWorkplaceComponent,
+    AdminBillingComponent
   ],
   imports: [
     BrowserModule,

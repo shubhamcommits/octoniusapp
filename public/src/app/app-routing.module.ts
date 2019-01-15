@@ -27,6 +27,7 @@ import { AdminGeneralComponent } from './dashboard/admin/admin-general/admin-gen
 import { AdminMembersComponent } from './dashboard/admin/admin-members/admin-members.component';
 import { OverviewMyTasksComponent } from './dashboard/overview/overview-my-tasks/overview-my-tasks.component';
 import {OverviewMyWorkplaceComponent} from "./dashboard/overview/overview-my-workplace/overview-my-workplace.component";
+import { AdminBillingComponent } from './dashboard/admin/admin-billing/admin-billing.component';
 
 
 const appRoutes: Routes = [
@@ -65,6 +66,7 @@ const appRoutes: Routes = [
         children: [
           { path: 'general', component: AdminGeneralComponent },
           { path: 'members', component: AdminMembersComponent },
+          { path: 'billing', component: AdminBillingComponent }
         ]
       },
       {
