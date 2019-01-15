@@ -323,13 +323,13 @@
                     <div class="col-md-6 ">
                       <span [ngbPopover]="likepopcontent" triggers="mouseenter:mouseleave"><b>{{post?._liked_by.length}}</b>
                         Likes </span>
-                      <span style="cursor: pointer;" (click)="loadComments(post._id); normalCommentBoxToggle(i);"><b>{{post?.comments.length}}</b> Comments</span>
+                      <span style="cursor: pointer;" (click)="loadComments(post._id);"><b>{{post?.commentCount || post?.comments.length}}</b> Comments</span>
                     </div>
                     <div class="col-md-6 text-right">
 
                       <span>
                         <button class="btn btn-link">
-                          <i class="material-icons muted" id="icon_comment_post_{{i}}" (click)="showComments.id=post._id;showComments.normal=!showComments.normal;">mode_comment</i>
+                          <i class="material-icons muted" id="icon_comment_post_{{i}}" (click)="showComments.id = post._id; showComments.normal=!showComments.normal;">mode_comment</i>
                         </button>
                       </span>
 
@@ -413,33 +413,39 @@
 
             <!-- load more comments button -->
 
-            <div class="load-more-comments" *ngIf="comments.length < commentCount && comments.length !== 0 && normalComments?.style.display === 'block'">
+            <div class="load-more-comments"
+                 *ngIf="
+                 post.comments[0]?._commented_by
+                 && post.comments.length < post.commentCount
+                 && post.comments.length !== 0
+                 && post.commentsDisplayed">
               <p (click)="loadPreviousComments(post._id)" class="load-more-comments-btn">Load more comments...</p>
-              <p class="comments-count">{{comments.length}} of {{commentCount}} comments</p>
+              <p class="comments-count">{{post.comments.length}} of {{post.commentCount}} comments</p>
             </div>
 
             <!-- post comment block-->
 
             <!-- all comments block-->
 
-            <div #normalComments id="normalComments{{i}}" style="display: none;">
-              <div class="card muted comment" id="normalComment-{{j}}" *ngFor="let comment of this.comments; let j = index;">
-                <div class="card-block">
-                  <div class="row card-title ">
-                    <div class="col-md-1">
+            <div #normalComments id="normalComments{{i}}" *ngIf="post.commentsDisplayed">
+              <ng-container *ngIf="post.comments[0]?._commented_by">
+                <div class="card muted comment" id="normalComment-{{j}}" *ngFor="let comment of post.comments; let j = index;">
+                  <div class="card-block">
+                    <div class="row card-title ">
+                      <div class="col-md-1">
 
-                      <img src="/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"
-                           class="feed-avatar">
-                      <!--<img [src]="profileImage" class="feed-avatar">-->
-                      <!--<img src="assets/images/user.png" class="feed-avatar">-->
-                    </div>
-                    <div class="col-md-7 ">
-                      <h6>{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}} replied
-                        <br> <span class="small lightgray date">
+                        <img src="/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"
+                             class="feed-avatar">
+                        <!--<img [src]="profileImage" class="feed-avatar">-->
+                        <!--<img src="assets/images/user.png" class="feed-avatar">-->
+                      </div>
+                      <div class="col-md-7 ">
+                        <h6>{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}} replied
+                          <br> <span class="small lightgray date">
                       {{comment.created_date | date : 'medium'}}</span>
-                      </h6>
-                    </div>
-                    <div class="col-md-4 text-right card-footer action-post innercard">
+                        </h6>
+                      </div>
+                      <div class="col-md-4 text-right card-footer action-post innercard">
                       <span>
                           <div ngbDropdown class="d-inline-block" #commentsDrop="ngbDropdown"
                                (openChange)="toggled($event)" *ngIf="post?._posted_by?._id == this.user_data.user_id; else editpostif">
@@ -451,22 +457,23 @@
                           </div>
                         </span>
 
+                      </div>
+                    </div>
+                    <div class="col-md-12 text-right " id="button_edit_comment{{j}}" style="display: none; padding-bottom: 1em;">
+                      <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditComment(j, comment._id, comment._post)">Save</button>
+                    </div>
+                    <div class="col-md-12 innercard">
+                      <quill-editor [modules]="modules" id="edit-comment-{{j}}" type="text" [(ngModel)]="comment.content"
+                                    [spellcheck]="true" value="comment?.content" style="display: none;" (blur)="onEditorBlured($event)"
+                                    (focus)="onEditorFocused($event)" (ready)="onEditorCreated($event)" (change)="onContentChanged($event)">
+                      </quill-editor>
+                    </div>
+                    <div class="col-md-12 innercard " id="commentContent-{{j}}" [innerHTML]="comment?.content" style="color:black;">
+
                     </div>
                   </div>
-                  <div class="col-md-12 text-right " id="button_edit_comment{{j}}" style="display: none; padding-bottom: 1em;">
-                    <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditComment(j, comment._id, comment._post)">Save</button>
-                  </div>
-                  <div class="col-md-12 innercard">
-                    <quill-editor [modules]="modules" id="edit-comment-{{j}}" type="text" [(ngModel)]="comment.content"
-                                  [spellcheck]="true" value="comment?.content" style="display: none;" (blur)="onEditorBlured($event)"
-                                  (focus)="onEditorFocused($event)" (ready)="onEditorCreated($event)" (change)="onContentChanged($event)">
-                    </quill-editor>
-                  </div>
-                  <div class="col-md-12 innercard " id="commentContent-{{j}}" [innerHTML]="comment?.content" style="color:black;">
-
-                  </div>
                 </div>
-              </div>
+              </ng-container>
             </div>
 
             <!-- all comments block-->
@@ -555,7 +562,7 @@
                     <div class="col-md-6 ">
                       <span [ngbPopover]="likepopcontent" triggers="mouseenter:mouseleave"><b>{{post?._liked_by.length}}</b>
                         Likes</span>
-                      <span style="cursor: pointer;" (click)="loadComments(post._id); taskCommentBoxToggle(i);"><b>{{post?.comments.length}}</b> Comments</span>
+                      <span style="cursor: pointer;" (click)="loadComments(post._id);"><b>{{post.commentCount || post?.comments.length}}</b> Comments</span>
                       <ng-template #likepopcontent>
                         <ul class="list-group">
                           <li class="list-group-item" *ngFor="let liked_member of post._liked_by;">{{liked_member.first_name}}</li>
@@ -641,30 +648,36 @@
 
             <!-- load more comments button -->
 
-            <div class="load-more-comments" *ngIf="comments.length < commentCount && comments.length !== 0 && taskComments?.style.display === 'block'">
+            <div class="load-more-comments"
+                 *ngIf="
+                 post.comments[0]?._commented_by
+                 && post.comments.length < post.commentCount
+                 && post.comments.length !== 0
+                 && post.commentsDisplayed">
               <p (click)="loadPreviousComments(post._id)" class="load-more-comments-btn">Load more comments...</p>
-              <p class="comments-count">{{comments.length}} of {{commentCount}} comments</p>
+              <p class="comments-count">{{post.comments.length}} of {{post.commentCount}} comments</p>
             </div>
 
             <!-- post comment block-->
 
             <!-- all comments block-->
-            <div #taskComments id="taskComments{{i}}" style="display: none;">
-              <div class="card muted comment" id="taskComment-{{j}}" *ngFor="let comment of this.comments; let j = index;">
-                <div class="card-block">
-                  <div class="row card-title ">
-                    <div class="col-md-1">
-                      <img src="/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"
-                           class="feed-avatar">
-                      <!--<img [src]="profileImage" class="feed-avatar">-->
-                      <!--<img src="assets/images/user.png" class="feed-avatar">-->
-                    </div>
-                    <div class="col-md-7 ">
-                      <h6>{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}} replied</h6>
-                      <p class="small lightgray date">
-                        {{comment.created_date | date : 'medium'}}</p>
-                    </div>
-                    <div class="col-md-4 text-right card-footer action-post innercard">
+            <div #taskComments id="taskComments{{i}}" *ngIf="post.commentsDisplayed">
+              <ng-container *ngIf="post.comments[0]?._commented_by">
+                <div class="card muted comment" id="taskComment-{{j}}" *ngFor="let comment of post.comments; let j = index;">
+                  <div class="card-block">
+                    <div class="row card-title ">
+                      <div class="col-md-1">
+                        <img src="/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"
+                             class="feed-avatar">
+                        <!--<img [src]="profileImage" class="feed-avatar">-->
+                        <!--<img src="assets/images/user.png" class="feed-avatar">-->
+                      </div>
+                      <div class="col-md-7 ">
+                        <h6>{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}} replied</h6>
+                        <p class="small lightgray date">
+                          {{comment.created_date | date : 'medium'}}</p>
+                      </div>
+                      <div class="col-md-4 text-right card-footer action-post innercard">
                       <span>
                           <div ngbDropdown class="d-inline-block" *ngIf="post?._posted_by?._id == this.user_data.user_id; else editpostif">
                             <i class="material-icons action" id="dropdownComment" ngbDropdownToggle>more_horiz</i>
@@ -675,22 +688,23 @@
                           </div>
                         </span>
 
+                      </div>
+                    </div>
+                    <div class="col-md-12 text-right " id="button_edit_comment{{j}}" style="display: none; padding-bottom: 1em;">
+                      <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditComment(j, comment._id, comment._post)">Save</button>
+                    </div>
+                    <div class="col-md-12 innercard">
+                      <quill-editor [modules]="modules" id="edit-comment-{{j}}" type="text" [(ngModel)]="comment.content"
+                                    [spellcheck]="true" value="comment?.content" style="display: none;" (blur)="onEditorBlured($event)"
+                                    (focus)="onEditorFocused($event)" (ready)="onEditorCreated($event)" (change)="onContentChanged($event)">
+                      </quill-editor>
+                    </div>
+                    <div class="col-md-12 innercard " id="commentContent-{{j}}" [innerHTML]="comment?.content" style="color:black;">
+
                     </div>
                   </div>
-                  <div class="col-md-12 text-right " id="button_edit_comment{{j}}" style="display: none; padding-bottom: 1em;">
-                    <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditComment(j, comment._id, comment._post)">Save</button>
-                  </div>
-                  <div class="col-md-12 innercard">
-                    <quill-editor [modules]="modules" id="edit-comment-{{j}}" type="text" [(ngModel)]="comment.content"
-                                  [spellcheck]="true" value="comment?.content" style="display: none;" (blur)="onEditorBlured($event)"
-                                  (focus)="onEditorFocused($event)" (ready)="onEditorCreated($event)" (change)="onContentChanged($event)">
-                    </quill-editor>
-                  </div>
-                  <div class="col-md-12 innercard " id="commentContent-{{j}}" [innerHTML]="comment?.content" style="color:black;">
-
-                  </div>
                 </div>
-              </div>
+              </ng-container>
             </div>
 
             <!-- all comments block-->
@@ -771,7 +785,7 @@
                     <div class="col-md-6 ">
                       <span [ngbPopover]="likepopcontent" triggers="mouseenter:mouseleave"><b>{{post?._liked_by.length}}</b>
                         Likes</span>
-                      <span style="cursor: pointer;" (click)="loadComments(post._id); eventCommentBoxToggle(i);"><b>{{post?.comments.length}}</b> Comments</span>
+                      <span style="cursor: pointer;" (click)="loadComments(post._id);"><b>{{post.commentCount || post?.comments.length}}</b> Comments</span>
                       <ng-template #likepopcontent>
                         <ul class="list-group">
                           <li class="list-group-item" *ngFor="let liked_member of post._liked_by;">{{liked_member.first_name}}</li>
@@ -781,7 +795,7 @@
                     <div class="col-md-6 text-right">
 
                       <span>
-                        <button class="btn btn-link" (click)="showComments.id=post._id;showComments.event=!showComments.event;">
+                        <button class="btn btn-link" (click)="showComments.id = post._id;showComments.event = !showComments.event;">
                           <i class="material-icons muted ">mode_comment</i>
                         </button>
                       </span>
@@ -857,30 +871,37 @@
 
             <!-- load more comments button -->
 
-            <div class="load-more-comments" *ngIf="comments.length < commentCount && comments.length !== 0 && eventComments?.style.display === 'block'">
+            <div class="load-more-comments"
+                 *ngIf="
+                 post.comments[0]?._commented_by
+                 && post.comments.length < post.commentCount
+                 && post.comments.length !== 0
+                ">
               <p (click)="loadPreviousComments(post._id)" class="load-more-comments-btn">Load more comments...</p>
-              <p class="comments-count">{{comments.length}} of {{commentCount}} comments</p>
+              <p class="comments-count">{{post.comments.length}} of {{post.commentCount}} comments</p>
             </div>
 
             <!-- post comment block-->
 
             <!-- all comments block-->
-            <div #eventComments id="eventComments{{i}}" style="display: none;">
-              <div class="card muted comment"  id="eventComment-{{j}}" *ngFor="let comment of this.comments; let j = index;">
-                <div class="card-block">
-                  <div class="row card-title ">
-                    <div class="col-md-1">
-                      <img src="/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"
-                           class="feed-avatar">
-                      <!--<img [src]="profileImage" class="feed-avatar">-->
-                    </div>
-                    <div class="col-md-7 ">
-                      <h6>{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}} replied <br>
-                        <span class="small lightgray date">
+            <div #eventComments id="eventComments{{i}}" *ngIf="post.commentsDisplayed">
+              <!-- only show the comments when we fetched the comments of this post -->
+              <ng-container *ngIf="post.comments[0]?._commented_by">
+                <div class="card muted comment"  id="eventComment-{{j}}" *ngFor="let comment of post.comments; let j = index;">
+                  <div class="card-block">
+                    <div class="row card-title ">
+                      <div class="col-md-1">
+                        <img src="/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"
+                             class="feed-avatar">
+                        <!--<img [src]="profileImage" class="feed-avatar">-->
+                      </div>
+                      <div class="col-md-7 ">
+                        <h6>{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}} replied <br>
+                          <span class="small lightgray date">
                       {{comment.created_date | date : 'medium'}}</span>
-                      </h6>
-                    </div>
-                    <div class="col-md-4 text-right card-footer action-post innercard">
+                        </h6>
+                      </div>
+                      <div class="col-md-4 text-right card-footer action-post innercard">
                       <span>
                           <div ngbDropdown class="d-inline-block" *ngIf="post?._posted_by?._id == this.user_data.user_id; else editpostif">
 
@@ -892,22 +913,23 @@
                           </div>
                         </span>
 
+                      </div>
+                    </div>
+                    <div class="col-md-12 text-right " id="button_edit_comment{{j}}" style="display: none; padding-bottom: 1em;">
+                      <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditComment(j, comment._id, comment._post)">Save</button>
+                    </div>
+                    <div class="col-md-12 innercard">
+                      <quill-editor [modules]="modules" id="edit-comment-{{j}}" type="text" [(ngModel)]="comment.content"
+                                    [spellcheck]="true" value="comment?.content" style="display: none;" (blur)="onEditorBlured($event)"
+                                    (focus)="onEditorFocused($event)" (ready)="onEditorCreated($event)" (change)="onContentChanged($event)">
+                      </quill-editor>
+                    </div>
+                    <div class="col-md-12 innercard " id="commentContent-{{j}}" [innerHTML]="comment?.content" style="color:black;">
+
                     </div>
                   </div>
-                  <div class="col-md-12 text-right " id="button_edit_comment{{j}}" style="display: none; padding-bottom: 1em;">
-                    <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditComment(j, comment._id, comment._post)">Save</button>
-                  </div>
-                  <div class="col-md-12 innercard">
-                    <quill-editor [modules]="modules" id="edit-comment-{{j}}" type="text" [(ngModel)]="comment.content"
-                                  [spellcheck]="true" value="comment?.content" style="display: none;" (blur)="onEditorBlured($event)"
-                                  (focus)="onEditorFocused($event)" (ready)="onEditorCreated($event)" (change)="onContentChanged($event)">
-                    </quill-editor>
-                  </div>
-                  <div class="col-md-12 innercard " id="commentContent-{{j}}" [innerHTML]="comment?.content" style="color:black;">
-
-                  </div>
                 </div>
-              </div>
+              </ng-container>
             </div>
           </li>
         </ul>
