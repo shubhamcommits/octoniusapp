@@ -451,7 +451,7 @@ const scheduleEventReminder = async (post) => {
         postLink: defaults.postLink(group._id, post._id)
       };
 
-      // Generate email body from template
+      // Generate email body from template.
       const emailBody = await generateEmailBody(emailType, emailData);
 
       // Send email
