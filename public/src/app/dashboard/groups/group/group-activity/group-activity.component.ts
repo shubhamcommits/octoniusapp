@@ -1082,7 +1082,7 @@ export class GroupActivityComponent implements OnInit {
     return this.posts[indexPost].commentsDisplayed;
   }
 
-  // !-LOADS ALL COMMENTS IN A POST--! //
+  // !-LOADS ALL COMMENTS IN A POST--!! //
   loadComments(postId) {
 
     const commentsDisplayed = this.toggleComments(postId);
