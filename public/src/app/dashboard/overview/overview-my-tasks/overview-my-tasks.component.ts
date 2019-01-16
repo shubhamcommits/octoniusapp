@@ -26,9 +26,9 @@ export class OverviewMyTasksComponent implements OnInit {
   pendingToDoTaskCount = 0;
   pendingInProgressTaskCount = 0;
 
-  constructor(private groupDataService: GroupDataService, private groupService: GroupService, private ngxService: NgxUiLoaderService, private userService: UserService, private postService: PostService) { 
+  constructor(private groupDataService: GroupDataService, private groupService: GroupService, private ngxService: NgxUiLoaderService, private userService: UserService, private postService: PostService) {
 
-    this.user_data = JSON.parse(localStorage.getItem('user')); 
+    this.user_data = JSON.parse(localStorage.getItem('user'));
     this.groupId = this.groupDataService.groupId;
     this.loadGroup();
     this.getTasks();
@@ -37,13 +37,13 @@ export class OverviewMyTasksComponent implements OnInit {
 
   ngOnInit() {
     this.ngxService.start(); // start foreground loading with 'default' id
- 
+
     // Stop the foreground loading after 5s
     setTimeout(() => {
       this.ngxService.stop(); // stop foreground loading with 'default' id
     }, 500);
 
-    
+
   }
 
   changeTaskAssignee(postId, AssigneeId){
@@ -52,11 +52,8 @@ export class OverviewMyTasksComponent implements OnInit {
     }
     this.groupService.changeTaskAssignee(postId, assigneeId)
     .subscribe((res) => {
-      console.log('Post ID', postId);
-      console.log('Assignee ID', assigneeId);
-      console.log('Task Assignee', res);  
       this.getTasks();
-      this.getCompletedTasks();  
+      this.getCompletedTasks();
     }, (err) => {
       console.log('Error changing the Task Assignee', err);
     });
@@ -67,9 +64,7 @@ export class OverviewMyTasksComponent implements OnInit {
     this.groupService.getGroup(this.groupId)
       .subscribe((res) => {
         this.group_members = res['group']._members;
-       console.log(this.group_members);
         this.group_admins = res['group']._admins;
-        console.log(this.group_admins);
 
       }, (err) => {
         console.log('Error fetching the members and admins', err);
@@ -85,18 +80,16 @@ export class OverviewMyTasksComponent implements OnInit {
     .subscribe((res) => {
       this.pendingTasks = res['posts'];
       this.isLoading$.next(false);
-      console.log('Tasks', res);
+
       for(var i = 0; i < this.pendingTasks.length; i++){
         if(this.pendingTasks[i]['task']['status'] == 'to do'){
-          this.pendingToDoTaskCount = 1;  
+          this.pendingToDoTaskCount = 1;
         }
        if(this.pendingTasks[i]['task']['status'] == 'in progress'){
-          this.pendingInProgressTaskCount = 1; 
+          this.pendingInProgressTaskCount = 1;
         }
       }
-      console.log('In progress',this.pendingInProgressTaskCount)
-      console.log('To Do',this.pendingToDoTaskCount)
-    },    
+    },
     (err) => {
       console.log('Error Fetching the Pending Tasks Posts', err);
       this.isLoading$.next(false);
@@ -110,7 +103,7 @@ export class OverviewMyTasksComponent implements OnInit {
 
     this.userService.getRecentUserTasks(lastPostId)
       .subscribe((res) => {
-       console.log('CompletedTasks', res);
+
         this.completedTasks = this.completedTasks.concat(res['posts']);
        this.isLoading$.next(false);
        if(res['posts'].length == 0){
@@ -126,23 +119,22 @@ export class OverviewMyTasksComponent implements OnInit {
 
       });
 
-      
+
   }
 
   OnFetchNextPosts(){
     var lastPostId = this.completedTasks[this.completedTasks.length - 1]._id;
     this.loadNextPosts(lastPostId);
-    console.log(this.loadNextPosts(lastPostId));
+
   }
 
-  
+
   OnMarkTaskCompleted(post_id){
     const post = {
       'status': 'done'
     };
     this.postService.complete(post_id,post)
     .subscribe((res) => {
-      console.log('Post Marked as Completed', res);
       this.getCompletedTasks();
       this.getTasks();
 
@@ -160,7 +152,6 @@ export class OverviewMyTasksComponent implements OnInit {
     };
     this.postService.complete(post_id,post)
     .subscribe((res) => {
-      console.log('Post Marked as to do', res);
       this.getCompletedTasks();
       this.getTasks();
 
@@ -178,7 +169,6 @@ export class OverviewMyTasksComponent implements OnInit {
     };
     this.postService.complete(post_id,post)
     .subscribe((res) => {
-      console.log('Post Marked as in Progress', res);
       this.getCompletedTasks();
       this.getTasks();
 
@@ -196,7 +186,7 @@ export class OverviewMyTasksComponent implements OnInit {
     this.userService.getCompletedUserTasks()
     .subscribe((res) => {
       this.completedTasks = res['posts'];
-      console.log('Completed Tasks', res);
+
       this.isLoading$.next(false);
       if(res['posts'].length == 0){
         this.loadCount = 0;
@@ -206,7 +196,7 @@ export class OverviewMyTasksComponent implements OnInit {
         this.loadCount = 1;
       }
 
-    }, 
+    },
     (err) => {
       console.log('Error Fetching the Completed Tasks Posts', err);
       this.isLoading$.next(false);

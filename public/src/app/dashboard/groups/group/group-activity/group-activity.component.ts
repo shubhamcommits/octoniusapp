@@ -1495,6 +1495,12 @@ export class GroupActivityComponent implements OnInit {
       'assigned_to': this.selectedGroupUsers
     };
 
+    // if we edit a task we want to inform about its status
+    if ( type === 'task') {
+      const edittedPost = this.posts.find((post) => post_id == post._id);
+      post['status'] =  edittedPost.task.status;
+    }
+
     const scanned_content = post.content;
     let el = document.createElement('html');
     el.innerHTML = scanned_content;
@@ -1508,10 +1514,14 @@ export class GroupActivityComponent implements OnInit {
 
     this.postService.editPost(post_id, post)
       .subscribe((res) => {
+
         this.alert.class = 'success';
         this._message.next(res['message']);
         this.resetNewPostForm();
-        // console.log('Normal post response: ', res);
+
+        // mirror the backend data to keep the user up-to-date
+        const postIndex = this.posts.findIndex((post) => post._id == res.post._id);
+        this.posts[postIndex] = res.post;
 
         // socket notifications
         const data = {
@@ -1526,11 +1536,12 @@ export class GroupActivityComponent implements OnInit {
         };
 
         this.socket.emit('newPost', data);
-        this.loadGroupPosts();
         this.content_mentions = [];
-        this.scrollToTop('#card-normal-post-' + index);
-        this.scrollToTop('#card-event-post-' + index);
-        this.scrollToTop('#card-task-post-' + index);
+        // this.loadGroupPosts();
+        //
+        // this.scrollToTop('#card-normal-post-' + index);
+        // this.scrollToTop('#card-event-post-' + index);
+        // this.scrollToTop('#card-task-post-' + index);
         //  console.log("Post Updated, Successfully!")
 
       }, (err) => {
@@ -1752,7 +1763,7 @@ export class GroupActivityComponent implements OnInit {
     this.postService.complete(post_id, post)
       .subscribe((res: any) => {
         this.playAudio();
-        console.log('RES', res);
+
         // find the post where the status has changed
         const indexPost = this.posts.findIndex((post) => post._id == res.post._id);
         // Change the status on the frontend to match up with the backend
