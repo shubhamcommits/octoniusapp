@@ -417,7 +417,7 @@ export class GroupActivityComponent implements OnInit {
 
     // comment data
     const commentContent = {
-      "content":this.comment.content,
+      "content": this.comment.content,
       "_commented_by": this.user_data.user_id,
       "post_id": post_id,
       "contentMentions": this.content_mentions
@@ -457,8 +457,9 @@ export class GroupActivityComponent implements OnInit {
         // make frontend up to date with backend
         const indexPost = this.posts.findIndex(_post => _post._id === post_id);
         this.posts[indexPost].comments.push(res.comment);
-        console.log('POST', this.posts[indexPost]);
         this.posts[indexPost].commentCount++;
+
+        this.resetShowComments();
 
         this.playAudio();
 
@@ -509,6 +510,13 @@ export class GroupActivityComponent implements OnInit {
     if (cardNormalPost == null && cardTaskPost == null) {
       cardEventPost.style.display = 'none';
     }
+  }
+
+  resetShowComments() {
+    this.showComments.id = null;
+    this.showComments.normal = false;
+    this.showComments.task = false;
+    this.showComments.event = false;
   }
 
   OnDeleteComment(commentId) {
@@ -1082,7 +1090,7 @@ export class GroupActivityComponent implements OnInit {
     return this.posts[indexPost].commentsDisplayed;
   }
 
-  // !-LOADS ALL COMMENTS IN A POST--!! //
+  // !-LOADS ALL COMMENTS IN A POST--! //
   loadComments(postId) {
 
     const commentsDisplayed = this.toggleComments(postId);
@@ -1092,7 +1100,7 @@ export class GroupActivityComponent implements OnInit {
 
       this.postService.getComments(postId)
         .subscribe((res) => {
-          //  find the post you fetched the comments from
+          //  find the post you fetched the comments from.
           const indexPost = this.posts.findIndex((post) => post._id == postId );
 
           // change the current content with the comments you just fetched.
