@@ -1,6 +1,6 @@
 import * as moment from 'moment';
 import * as io from 'socket.io-client';
-import { Component, OnInit, ViewChild, Testability, ViewContainerRef, ElementRef } from '@angular/core';
+import {Component, OnInit, ViewChild, Testability, ViewContainerRef, ElementRef, ViewChildren} from '@angular/core';
 import { ActivatedRoute, Router, Route } from '@angular/router';
 import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PostService } from '../../../../shared/services/post.service';
@@ -160,6 +160,7 @@ export class GroupActivityComponent implements OnInit {
   modulesLoaded = false;
 
   isItMyWorkplace = false;
+  @ViewChildren('taskStatusList') taskStatusList;
 
 
   // !--GOOGLE DEVELOPER CONSOLE CREDENTIALS--! //
@@ -1728,8 +1729,16 @@ export class GroupActivityComponent implements OnInit {
 
   }
 
+  toggleTaskStatusList(display, i) {
+    this.taskStatusList._results[i].nativeElement.style.display = display;
+  }
+
 
   OnMarkTaskToDo(index, post_id) {
+    // hide the dropdown after picking an item
+    this.toggleTaskStatusList('none', index);
+
+
     const post = {
       'status': 'to do'
     };
@@ -1757,6 +1766,9 @@ export class GroupActivityComponent implements OnInit {
   }
 
   OnMarkTaskInProgress(index, post_id) {
+    // hide the dropdown after picking an item
+    this.toggleTaskStatusList('none', index);
+
     const post = {
       'status': 'in progress'
     };
@@ -1786,6 +1798,9 @@ export class GroupActivityComponent implements OnInit {
 
 
   OnMarkTaskCompleted(index, post_id) {
+    // hide the dropdown after picking an item
+    this.toggleTaskStatusList('none', index);
+
     const button = document.getElementById("button_task_mark_completed_" + index);
     const post = {
       'status': 'done'
