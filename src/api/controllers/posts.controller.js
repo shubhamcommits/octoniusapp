@@ -39,10 +39,12 @@ const add = async (req, res, next) => {
       case 'task':
         await notifications.newTaskAssignment(post);
         await sendMail.taskAssigned(post);
+        await sendMail.scheduleTaskReminder(post);
         break;
       case 'event':
         await notifications.newEventAssignments(post);
         await sendMail.eventAssigned(post);
+        await sendMail.scheduleEventReminder(post);
         break;
       default:
         break;
@@ -59,53 +61,55 @@ const add = async (req, res, next) => {
 
 const edit = async (req, res, next) => {
   try {
-    let post;
-    const postData = req.body;
+    let postData;
 
-    switch (postData.type) {
+    switch (req.body.type) {
       case 'task':
-        post = await Post.findOneAndUpdate({
-          _id: req.params.postId,
-          _posted_by: req.userId
-        }, {
-          $set: {
-            content: postData.content,
-            _content_mentions: postData._content_mentions,
-            task: {
-              due_to: postData.date_due_to,
-              _assigned_to: postData.assigned_to[0]._id,
-              status: 'to do'
-            }
+
+        postData = {
+          content: req.body.content,
+          _content_mentions: req.body._content_mentions,
+          task: {
+            due_to: req.body.date_due_to,
+            _assigned_to: req.body.assigned_to[0]._id
           }
-        }, {
-          new: true
-        });
+        };
         break;
 
       case 'event':
         // transform due_to time to UTC
-        req.body.date_due_to = moment.utc(postData.date_due_to).format();
+        req.body.date_due_to = moment.utc(req.body.date_due_to).format();
 
         // make arr with ids user who got assigned to event
-        const assignedUsers = postData.assigned_to.map((item, index) => item._id);
+        const assignedUsers = req.body.assigned_to.map((item, index) => item._id);
 
-        post = await Post.findOneAndUpdate({
-          _id: req.params.postId,
-          _posted_by: req.userId
-        }, {
-          $set: {
-            content: postData.content,
-            _content_mentions: postData._content_mentions,
-            event: {
-              due_to: postData.date_due_to,
-              _assigned_to: assignedUsers
-            }
+        postData = {
+          content: req.body.content,
+          _content_mentions: req.body._content_mentions,
+          event: {
+            due_to: req.body.date_due_to,
+            _assigned_to: assignedUsers
           }
-        }, {
-          new: true
-        });
+        };
+        break;
+
+      case 'normal':
+
+        postData = {
+          content: req.body.content,
+          _content_mentions: req.body._content_mentions
+        };
         break;
     }
+
+    const post = await Post.findOneAndUpdate({
+      _id: req.params.postId,
+      _posted_by: req.userId
+    }, {
+      $set: postData
+    }, {
+      new: true
+    });
 
     if (!post) {
       return sendErr(res, null, 'User not allowed to edit this post!', 403);

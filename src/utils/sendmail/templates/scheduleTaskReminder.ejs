@@ -42,7 +42,7 @@
             margin: 5px 0;
         }
 
-        .post-content {
+        .task-content {
             padding: 10px;
             border: 2px solid #cccccc;
             border-radius: 10px;
@@ -110,17 +110,17 @@
     <div class="container">
         <div class="header">
             <h1 class="title"> <img src="https://octonius.com/assets/images/octonius-icon.png" alt="user avatar" style="width: 42px; height: 42px; border-radius: 24px" /> <br><%= toName %>, </h1>
-            <span class="byline"> <%= fromName %> mentioned you in a post on <%= workspace %>'s <%= group %> group!</span>
+            <span class="byline">Reminder: a task assigned by <%= fromName %> to you is due to today!</span>
         </div>
         <hr class="dividing-line">
         <div class="task-button">
             <a class="task-link" href="<%= postLink %>">
-                Take a look at the post
+                Take a look at the task
             </a>
         </div>
         <hr class="dividing-line">
         <div class="description">
-            <p class="details-item">Content post: <div class="post-content"><%- postContent %></div></p>
+            <p class="details-item">Content task: <div class="task-content"><%- postContent %></div></p>
             <hr class="dividing-line">
             <p>
                 <a href="<%= link %>">
@@ -143,4 +143,3 @@
 </div>
 </body>
 </html>
-

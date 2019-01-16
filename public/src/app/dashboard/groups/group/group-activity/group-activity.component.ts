@@ -417,7 +417,7 @@ export class GroupActivityComponent implements OnInit {
 
     // comment data
     const commentContent = {
-      "content":this.comment.content,
+      "content": this.comment.content,
       "_commented_by": this.user_data.user_id,
       "post_id": post_id,
       "contentMentions": this.content_mentions
@@ -457,8 +457,10 @@ export class GroupActivityComponent implements OnInit {
         // make frontend up to date with backend
         const indexPost = this.posts.findIndex(_post => _post._id === post_id);
         this.posts[indexPost].comments.push(res.comment);
+        this.posts[indexPost].commentCount++;
 
-        this.comments.push(res.comment);
+        this.resetShowComments();
+
         this.playAudio();
 
         //data for socket
@@ -476,11 +478,13 @@ export class GroupActivityComponent implements OnInit {
         this.socket.emit('newPost', data);
         this.commentForm.reset();
 
+        //
+
         // this.loadGroupPosts();
         // this.scrollToTop('#card-normal-post-' + index);
         // this.scrollToTop('#card-event-post-' + index);
         // this.scrollToTop('#card-task-post-' + index);
-        this.showComments.id = post_id;
+        // this.showComments.id = post_id;
         // this.showComments.task = !this.showComments.task;
         // this.showComments.normal = !this.showComments.normal;
         // this.showComments.event = !this.showComments.event;
@@ -508,6 +512,13 @@ export class GroupActivityComponent implements OnInit {
     }
   }
 
+  resetShowComments() {
+    this.showComments.id = null;
+    this.showComments.normal = false;
+    this.showComments.task = false;
+    this.showComments.event = false;
+  }
+
   OnDeleteComment(commentId) {
     swal({
       title: "Are you sure?",
@@ -529,9 +540,10 @@ export class GroupActivityComponent implements OnInit {
               const indexPost = this.posts.findIndex((_post) =>  { return _post._id === res.commentRemoved._post})
               const indexComment = this.posts[indexPost].comments.findIndex(_comment => _comment._id === res.commentRemoved._id)
               this.posts[indexPost].comments.splice(indexComment, 1);
+              this.posts[indexPost].commentCount--;
 
-              const indexCommentsProp = this.comments.findIndex(_comment => _comment._id === res.commentRemoved);
-              this.comments.splice(indexCommentsProp, 1);
+              // const indexCommentsProp = this.comments.findIndex(_comment => _comment._id === res.commentRemoved);
+              // this.comments.splice(indexCommentsProp, 1);
               this.loadGroupPosts();
 
             }, (err) => {
@@ -706,8 +718,11 @@ export class GroupActivityComponent implements OnInit {
       formData.append('event._assigned_to', this.user_data.user_id);
     }
 
+
     // create date object for this event
     const date = new Date(this.model_date.year, this.model_date.month -1, this.model_date.day, this.model_time.hour, this.model_time.minute);
+
+
 
     const post = {
       content: this.post.content,
@@ -716,8 +731,8 @@ export class GroupActivityComponent implements OnInit {
       _group: this.group_id,
       event: {
         due_date: moment(date).format('YYYY-MM-DD'),
-        due_time: moment(date).format('hh:mm:ss.SSS'),
-        due_to: moment(date).format('YYYY-MM-DD hh:mm:ss.SSS'),
+        due_time: moment(date).format('HH:mm:ss.SSS'),
+        due_to: moment(date).format('YYYY-MM-DD HH:mm:ss.SSS'),
         // problem: assignedUsers will always be empty
         _assigned_to: assignedUsers,
         _content_mentions: this.content_mentions
@@ -739,8 +754,9 @@ export class GroupActivityComponent implements OnInit {
     formData.append('_group', post._group);
     formData.append('event.due_to', post.event.due_to);
 
+
     const scanned_content = post.content;
-    var el = document.createElement('html');
+    let el = document.createElement('html');
     el.innerHTML = scanned_content;
 
     if (el.getElementsByClassName('mention').length > 0) {
@@ -946,7 +962,6 @@ export class GroupActivityComponent implements OnInit {
         } else {
           this._message.next('Error! either server is down or no internet connection');
         }
-
       });
   }
 
@@ -1038,31 +1053,64 @@ export class GroupActivityComponent implements OnInit {
   }
 
   loadPreviousComments(postId) {
-    const earliestComment = this.comments[0]._id;
+    //find most recent comment of post and find its most recent comment
+    const post = this.posts.find((post) => post._id == postId);
+    const earliestComment = post.comments[0]._id;
+
     this.postService.getNextComments(postId, earliestComment)
       .subscribe((res) => {
         // add the new comments to the front of the already displayed comments
-        this.comments = [...res['comments'].reverse(), ...this.comments];
+        const postIndex = this.posts.findIndex((post) => post._id == postId);
+        this.posts[postIndex].comments = [...res['comments'].reverse(), ...this.posts[postIndex].comments];
       });
   }
 
   countComments(postId) {
     const indexPost = this.posts.findIndex((post) => postId == post._id);
-    return this.posts[indexPost].comments.length;
+
+    if (!this.posts[indexPost].comments[0]._commented_by) {
+      this.posts[indexPost].commentCount = this.posts[indexPost].comments.length;
+    }
+
+
+  //  reset the comments property of post
+  //   this.posts[indexPost].comments = [];
+  }
+
+  toggleComments(postId) {
+    const indexPost = this.posts.findIndex((post) => post._id == postId);
+    this.posts[indexPost].commentsDisplayed = !this.posts[indexPost].commentsDisplayed;
+
+    // close the text-editor when you close comments
+    if (!this.posts[indexPost].commentsDisplayed) {
+      this.showComments.id = '';
+      this.showComments.normal = false;
+    }
+    // return whether the comments are displayed
+    return this.posts[indexPost].commentsDisplayed;
   }
 
   // !-LOADS ALL COMMENTS IN A POST--! //
   loadComments(postId) {
-    let commentData = [];
-    this.commentCount = this.countComments(postId);
 
-    this.postService.getComments(postId)
-      .subscribe((res) => {
-        // console.log(res['comments']);
-        this.comments = res['comments'].reverse();
-      }, (err) => {
-        swal("Error!", "Error while retrieving the comments " + err, "danger");
-      });
+    const commentsDisplayed = this.toggleComments(postId);
+
+    if (commentsDisplayed) {
+      this.countComments(postId);
+
+      this.postService.getComments(postId)
+        .subscribe((res) => {
+          //  find the post you fetched the comments from.
+          const indexPost = this.posts.findIndex((post) => post._id == postId );
+
+          // change the current content with the comments you just fetched.
+          this.posts[indexPost].comments = res['comments'].reverse();
+        }, (err) => {
+          swal("Error!", "Error while retrieving the comments " + err, "danger");
+        });
+    } else {
+    // close the text editor
+    }
   }
   // !-LOADS ALL COMMENTS IN A POST--! //
 
@@ -1104,23 +1152,25 @@ export class GroupActivityComponent implements OnInit {
     const allTaskCommentBox = document.getElementById('taskComments' + index);
     const allNormalCommentBox = document.getElementById('normalComments' + index);
 
-    for(var i = 0; i < index+50; i++){
+    for(let i = 0; i < index + 50; i++){
       if(i == index){
-        if(allNormalCommentBox.style.display == 'block'){
+        if (allNormalCommentBox.style.display == 'block') {
+          this.showComments.id = '';
+          this.showComments.normal = false;
           allNormalCommentBox.style.display = 'none';
         }
-        else{
+        else {
           allNormalCommentBox.style.display = 'block';
         }
       }
-      else if(document.body.contains(document.getElementById('normalComments'+i)) && i!=index){
-        document.getElementById('normalComments'+i).style.display = 'none';
+      else if (document.body.contains(document.getElementById('normalComments' + i)) && i != index) {
+        document.getElementById('normalComments' + i).style.display = 'none';
       }
-      else if(document.body.contains(document.getElementById('taskComments'+i))){
-        document.getElementById('taskComments'+i).style.display = 'none';
+      else if (document.body.contains(document.getElementById('taskComments' + i))){
+        document.getElementById('taskComments' + i).style.display = 'none';
       }
-      else if(document.body.contains(document.getElementById('eventComments'+i))){
-        document.getElementById('eventComments'+i).style.display = 'none';
+      else if (document.body.contains(document.getElementById('eventComments' + i))){
+        document.getElementById('eventComments' + i).style.display = 'none';
       }
     }
   }
@@ -1137,6 +1187,8 @@ export class GroupActivityComponent implements OnInit {
     for(var i = 0; i < index+50; i++){
       if(i == index){
         if(allTaskCommentBox.style.display == 'block'){
+          this.showComments.id = '';
+          this.showComments.normal = false;
           allTaskCommentBox.style.display = 'none';
         }
         else{
@@ -1164,23 +1216,16 @@ export class GroupActivityComponent implements OnInit {
     const allTaskCommentBox = document.getElementById('taskComments' + index);
     const allNormalCommentBox = document.getElementById('normalComments' + index);
 
-    for(var i = 0; i < index+50; i++){
-      if(i == index){
-        if(allEventCommentBox.style.display == 'block'){
+    for(let i = 0; i < index + 50; i++) {
+      if (i == index) {
+        if (allEventCommentBox.style.display == 'block') {
+          this.showComments.id = '';
+          this.showComments.event = false;
           allEventCommentBox.style.display = 'none';
         }
-        else{
+        else {
           allEventCommentBox.style.display = 'block';
         }
-      }
-      else if(document.body.contains(document.getElementById('eventComments'+i)) && i!=index){
-        document.getElementById('eventComments'+i).style.display = 'none';
-      }
-      else if(document.body.contains(document.getElementById('normalComments'+i))){
-        document.getElementById('normalComments'+i).style.display = 'none';
-      }
-      else if(document.body.contains(document.getElementById('taskComments'+i))){
-        document.getElementById('taskComments'+i).style.display = 'none';
       }
     }
   }
@@ -1392,11 +1437,11 @@ export class GroupActivityComponent implements OnInit {
       .subscribe((res) => {
         this.loadComments(postId);
         this.content_mentions = [];
-      }, (err) =>{
+      }, (err) => {
         this.content_mentions = [];
         console.log('Error while updating the comment', err);
         swal("Error!", "Error while updating the comment " + err, "danger");
-      })
+      });
   }
 
   OnEditPost(index, post) {

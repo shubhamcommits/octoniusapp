@@ -124,7 +124,7 @@
         </div>
         <hr class="dividing-line">
         <div class="task-button">
-            <a class="task-link" href="<%= taskLink %>">
+            <a class="task-link" href="<%= postLink %>">
                 Take a look at the task
             </a>
         </div>
@@ -134,7 +134,7 @@
             <p class="details-item">Task assigned by: <% if (appointerName === toName) { %> You <% } else { %><%= appointerName %> <% } %> </p>
             <p class="details-item">Task assigned to: <% if (appointeeName === toName) { %> You <% } else { %><%= appointeeName %> <% } %> </p>
             <p class="details-item">Group: <%= group %></p>
-            <p class="details-item">Content: <div class="task-content"><%- contentPost %></div></p>
+            <p class="details-item">Content task: <div class="task-content"><%- contentPost %></div></p>
             <hr>
             <p>
                 <a href="<%= link %>">
