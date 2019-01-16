@@ -422,7 +422,7 @@ const scheduleTaskReminder = async (post) => {
     const emailBody = await generateEmailBody(emailType, emailData);
 
     // Send email
-    const send = await sendMail(emailBody, emailData, { date: moment(post.task.due_to, 'YYYY-MM-DD').startOf('day').format() });
+    const send = await sendMail(emailBody, emailData, { date: moment.utc(post.task.due_to, 'YYYY-MM-DD').startOf('day').format() });
   } catch (err) {
     console.log(err);
   }
@@ -455,7 +455,7 @@ const scheduleEventReminder = async (post) => {
       const emailBody = await generateEmailBody(emailType, emailData);
 
       // Send email
-      const send = await sendMail(emailBody, emailData, { date: moment(post.event.due_to, 'YYYY-MM-DD').startOf('day').format() });
+      const send = await sendMail(emailBody, emailData, { date: moment.utc(post.event.due_to, 'YYYY-MM-DD').startOf('day').format() });
     });
   } catch (err) {
     console.log(err);

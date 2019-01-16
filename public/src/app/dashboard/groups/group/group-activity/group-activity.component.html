@@ -448,7 +448,7 @@
                       <div class="col-md-4 text-right card-footer action-post innercard">
                       <span>
                           <div ngbDropdown class="d-inline-block" #commentsDrop="ngbDropdown"
-                               (openChange)="toggled($event)" *ngIf="post?._posted_by?._id == this.user_data.user_id; else editpostif">
+                               (openChange)="toggled($event)" *ngIf="comment?._commented_by?._id == user_data.user_id; else editpostif">
                             <i class="material-icons action" id="dropdownComment" ngbDropdownToggle>more_horiz</i>
                             <div ngbDropdownMenu aria-labelledby="dropdownComment">
                                 <button class="dropdown-item" (click)="OnEditComment(j)">Edit Comment</button>
@@ -503,13 +503,13 @@
                   </div>
                   <div class="col-md-4 text-right padding-topright" style=" object-fit: cover;">
                     <div ngbDropdown class="d-inline-block">
-                      <button class="btn btn-sm kbn-todo" *ngIf="post.task.status == 'to do'" id="dropdownDone" style=" color: white;"
+                      <button class="btn btn-sm kbn-todo" (click)="toggleTaskStatusList('block', i)" *ngIf="post.task.status == 'to do'" id="dropdownDone" style=" color: white;"
                               ngbDropdownToggle>{{post.task.status}}</button>
-                      <button class="btn btn-sm kbn-working" *ngIf="post.task.status == 'in progress'" id="dropdownDone" style=" color: white;"
+                      <button class="btn btn-sm kbn-working" (click)="toggleTaskStatusList('block', i)" *ngIf="post.task.status == 'in progress'" id="dropdownDone" style=" color: white;"
                               ngbDropdownToggle>{{post.task.status}}</button>
-                      <button class="btn btn-sm kbn-done" *ngIf="post.task.status == 'done'" id="dropdownDone" style=" color: white;"
+                      <button class="btn btn-sm kbn-done" (click)="toggleTaskStatusList('block', i)" *ngIf="post.task.status == 'done'" id="dropdownDone" style=" color: white;"
                               ngbDropdownToggle>{{post.task.status}}</button>
-                      <div ngbDropdownMenu aria-labelledby="dropdownToDo">
+                      <div #taskStatusList ngbDropdownMenu aria-labelledby="dropdownToDo">
                         <button class="dropdown-item pumpkin-orange-bg" (click)="OnMarkTaskToDo(i, this.post._id)">To Do</button>
                         <button class="dropdown-item" (click)="OnMarkTaskInProgress(i, this.post._id)">In Progress</button>
                         <button class="dropdown-item" (click)="OnMarkTaskCompleted(i, this.post._id)">Done</button>
@@ -679,15 +679,14 @@
                       </div>
                       <div class="col-md-4 text-right card-footer action-post innercard">
                       <span>
-                          <div ngbDropdown class="d-inline-block" *ngIf="post?._posted_by?._id == this.user_data.user_id; else editpostif">
+                          <div ngbDropdown class="d-inline-block" *ngIf="comment?._commented_by?._id == user_data.user_id; else editpostif">
                             <i class="material-icons action" id="dropdownComment" ngbDropdownToggle>more_horiz</i>
                             <div ngbDropdownMenu aria-labelledby="dropdownComment">
                                 <button class="dropdown-item" (click)="OnEditComment(j)">Edit Comment</button>
-                              <button class="dropdown-item" (click)="OnDeleteComment(comment)">Delete Comment</button>
+                              <button class="dropdown-item" (click)="OnDeleteComment(comment._id)">Delete Comment</button>
                             </div>
                           </div>
                         </span>
-
                       </div>
                     </div>
                     <div class="col-md-12 text-right " id="button_edit_comment{{j}}" style="display: none; padding-bottom: 1em;">
@@ -903,7 +902,7 @@
                       </div>
                       <div class="col-md-4 text-right card-footer action-post innercard">
                       <span>
-                          <div ngbDropdown class="d-inline-block" *ngIf="post?._posted_by?._id == this.user_data.user_id; else editpostif">
+                          <div ngbDropdown class="d-inline-block" *ngIf="comment?._commented_by?._id == this.user_data.user_id; else editpostif">
 
                             <i ngbDropdownToggle class="material-icons action" id="dropdownComment{{i}}">more_horiz</i>
                             <div ngbDropdownMenu>

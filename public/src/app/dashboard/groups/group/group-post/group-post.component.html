@@ -276,7 +276,7 @@
           <div class="row ">
             <div class="col-md-12 text-right ">
               <button type="button " name="button " class="btn btn-default " (click)="showComments.id=post._id;showComments.task=!showComments.task;">Cancel</button>
-              <button [disabled]="commentForm.invalid" type="button " name="button" (click)="onAddNewComment(post._id); showComments.id=post._id;showComments.task=!showComments.task;"
+              <button [disabled]="commentForm.invalid" type="button " name="button" (click)="onAddNewComment(post._id);"
                 class="btn btn-primary">Comment</button>
             </div>
           </div>
@@ -314,7 +314,7 @@
             <div class="col-md-4 text-right card-footer action-post innercard">
                 <span>
                   <div ngbDropdown class="d-inline-block" #commentsDrop="ngbDropdown"
-                  (openChange)="toggled($event)" *ngIf="comment?._commented_by?._id == this.user_data.user_id; else editpostif">
+                  (openChange)="toggled($event)" *ngIf="comment?._commented_by?._id == user_data.user_id; else editpostif">
                     <i class="material-icons action" id="dropdownComment" ngbDropdownToggle>more_horiz</i>
                     <div ngbDropdownMenu aria-labelledby="dropdownComment">
                         <button class="dropdown-item" (click)="OnEditComment(j)">Edit Comment</button>

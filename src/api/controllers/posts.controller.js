@@ -62,6 +62,7 @@ const add = async (req, res, next) => {
 const edit = async (req, res, next) => {
   try {
     let postData;
+    console.log('req.body', req.body);
 
     switch (req.body.type) {
       case 'task':
@@ -71,7 +72,8 @@ const edit = async (req, res, next) => {
           _content_mentions: req.body._content_mentions,
           task: {
             due_to: req.body.date_due_to,
-            _assigned_to: req.body.assigned_to[0]._id
+            _assigned_to: req.body.assigned_to[0]._id,
+            status: req.body.status
           }
         };
         break;
@@ -109,11 +111,15 @@ const edit = async (req, res, next) => {
       $set: postData
     }, {
       new: true
-    });
+    })
+      .populate('_posted_by')
+      .populate('task._assigned_to')
+      .populate('event._assigned_to');
 
     if (!post) {
       return sendErr(res, null, 'User not allowed to edit this post!', 403);
     }
+
 
     // Create Notification for mentions on post content
     if (post._content_mentions.length !== 0) {
