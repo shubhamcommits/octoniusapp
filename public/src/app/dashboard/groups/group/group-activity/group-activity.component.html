@@ -448,7 +448,7 @@
                       <div class="col-md-4 text-right card-footer action-post innercard">
                       <span>
                           <div ngbDropdown class="d-inline-block" #commentsDrop="ngbDropdown"
-                               (openChange)="toggled($event)" *ngIf="post?._posted_by?._id == this.user_data.user_id; else editpostif">
+                               (openChange)="toggled($event)" *ngIf="comment?._commented_by?._id == user_data.user_id; else editpostif">
                             <i class="material-icons action" id="dropdownComment" ngbDropdownToggle>more_horiz</i>
                             <div ngbDropdownMenu aria-labelledby="dropdownComment">
                                 <button class="dropdown-item" (click)="OnEditComment(j)">Edit Comment</button>
@@ -679,7 +679,7 @@
                       </div>
                       <div class="col-md-4 text-right card-footer action-post innercard">
                       <span>
-                          <div ngbDropdown class="d-inline-block" *ngIf="post?._posted_by?._id == this.user_data.user_id; else editpostif">
+                          <div ngbDropdown class="d-inline-block" *ngIf="comment?._commented_by?._id == user_data.user_id; else editpostif">
                             <i class="material-icons action" id="dropdownComment" ngbDropdownToggle>more_horiz</i>
                             <div ngbDropdownMenu aria-labelledby="dropdownComment">
                                 <button class="dropdown-item" (click)="OnEditComment(j)">Edit Comment</button>
@@ -903,7 +903,7 @@
                       </div>
                       <div class="col-md-4 text-right card-footer action-post innercard">
                       <span>
-                          <div ngbDropdown class="d-inline-block" *ngIf="post?._posted_by?._id == this.user_data.user_id; else editpostif">
+                          <div ngbDropdown class="d-inline-block" *ngIf="comment?._commented_by?._id == this.user_data.user_id; else editpostif">
 
                             <i ngbDropdownToggle class="material-icons action" id="dropdownComment{{i}}">more_horiz</i>
                             <div ngbDropdownMenu>
