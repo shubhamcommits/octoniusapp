@@ -135,20 +135,4 @@ i.icon-blue {
   }
 }
 
-.btn-like-comment {
-  position: relative;
-  .comment-like-count {
-    display: inline-block;
-    text-align: center;
-    width: 20px;
-    height: 20px;
-    background-color: #4a90e2;
-    color: #fff;
-    border-radius: 50%;
-    position: absolute;
-    left: 50%;
-    bottom: -20%;
-    transform: translate(-50%, -50%);
-  }
-}
 
