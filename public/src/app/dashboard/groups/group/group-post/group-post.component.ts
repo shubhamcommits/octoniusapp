@@ -713,4 +713,64 @@ export class GroupPostComponent implements OnInit {
     }
   }
 
+  onClickLikeComment(comment) {
+
+    if (comment._liked_by.length === 0) {
+      this.likeComment(comment);
+    } else {
+      let userHasLikedComment = false;
+
+      comment._liked_by.forEach((like) => {
+        if (like._id == this.user_data.user_id) {
+          userHasLikedComment = true;
+        }
+      });
+
+      // we like the comment when the user is not between the users that liked the comment
+      // and we unlike the post when it is
+      if (!userHasLikedComment) {
+        this.likeComment(comment);
+      } else {
+        this.unlikeComment(comment);
+      }
+    }
+  }
+
+  likeComment(comment) {
+    this.postService.likeComment(comment)
+      .subscribe((res) => {
+        const indexComment = this.post.comments.findIndex((comment) => comment._id == res['comment']._id);
+        // these if blocks can be deleted after a while
+
+        if (this.post.comments[indexComment]._liked_by) {
+          this.post.comments[indexComment]._liked_by.push(res['user']);
+        } else {
+          this.post.comments[indexComment]._liked_by = [res['user']]
+        }
+      });
+  }
+
+  unlikeComment(comment) {
+    this.postService.unlikeComment(comment)
+      .subscribe((res) => {
+        // we need to look for commentIndex again, because it could have changed when user loaded older comments
+        const indexComment = this.post.comments.findIndex((comment) => comment._id == res['comment']._id);
+        const indexUser = this.post.comments[indexComment]._liked_by.findIndex((user) => user._id == this.user_data.user_id);
+        // remove the user from the list of users who liked this comment
+        this.post.comments[indexComment]._liked_by.splice(indexUser, 1);
+      });
+  }
+
+  userLikedComment(postIndex, commentIndex) {
+    if ( this.post.comments[commentIndex]._liked_by ) {
+      const match = this.post.comments[commentIndex]._liked_by.filter((user) => {
+        return user._id === this.user_data.user_id;
+      });
+
+      return match.length > 0;
+    } else {
+      return false;
+    }
+  }
+
 }

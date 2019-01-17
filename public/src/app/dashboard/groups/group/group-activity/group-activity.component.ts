@@ -1907,7 +1907,7 @@ export class GroupActivityComponent implements OnInit {
 
   OnClickLikePost(index, post_id, like_length, liked_by, user_id) {
 
-    const like_icon = document.getElementById('icon_like_post_' + index);
+    // const like_icon = document.getElementById('icon_like_post_' + index);
     const post = {
       'post_id': post_id,
       'user_id': this.user_data.user_id,
@@ -1937,25 +1937,51 @@ export class GroupActivityComponent implements OnInit {
       } else {
         this.unlikepost(post);
       }
-
-      // for (let i = 0; i < like_length; i++) {
-      //   // if this like is from the current user
-      //   if (liked_by[i]._id == this.user_data.user_id) {
-      //     this.unlikepost(post);
-      //     this.scrollToTop('#card-normal-post-' + index);
-      //     this.scrollToTop('#card-event-post-' + index);
-      //     this.scrollToTop('#card-task-post-' + index);
-      //     like_icon.style.color = "#9b9b9b";
-      //   }
-      //   // if this like is not from the current user
-      //   else {
-      //     this.likepost(post);
-      //     this.scrollToTop('#card-normal-post-' + index);
-      //     this.scrollToTop('#card-event-post-' + index);
-      //     this.scrollToTop('#card-task-post-' + index);
-      //   }
-      // }
     }
+  }
+
+  onClickLikeComment(comment) {
+
+    if (comment._liked_by.length === 0) {
+      this.likeComment(comment);
+    } else {
+      let userHasLikedComment = false;
+
+      comment._liked_by.forEach((like) => {
+        if (like._id == this.user_data.user_id) {
+          userHasLikedComment = true;
+        }
+      });
+
+      // we like the comment when the user is not between the users that liked the comment
+      // and we unlike the post when it is
+      if (!userHasLikedComment) {
+        this.likeComment(comment);
+      } else {
+        this.unlikeComment(comment);
+      }
+    }
+  }
+
+  likeComment(comment) {
+this.postService.likeComment(comment)
+  .subscribe((res) => {
+    const indexPost = this.posts.findIndex((post) => post._id == res['comment']._post);
+    const indexComment = this.posts[indexPost].comments.findIndex((comment) => comment._id == res['comment']._id);
+    this.posts[indexPost].comments[indexComment]._liked_by.push(res['user']);
+  });
+  }
+
+  unlikeComment(comment) {
+    this.postService.unlikeComment(comment)
+      .subscribe((res) => {
+        const indexPost = this.posts.findIndex((post) => post._id == res['comment']._post);
+        // we need to look for commentIndex again, because it could have changed when user loaded older comments
+        const indexComment = this.posts[indexPost].comments.findIndex((comment) => comment._id == res['comment']._id);
+        const indexUser = this.posts[indexPost].comments[indexComment]._liked_by.findIndex((user) => user._id == this.user_data.user_id);
+        // remove the user from the list of users who liked this comment
+        this.posts[indexPost].comments[indexComment]._liked_by.splice(indexUser, 1);
+      });
   }
 
   userLikedPost( i ) {
@@ -1966,6 +1992,19 @@ export class GroupActivityComponent implements OnInit {
     });
 
     return match.length > 0;
+  }
+
+  userLikedComment(postIndex, commentIndex) {
+    if ( this.posts[postIndex].comments[commentIndex]._liked_by ) {
+      const match = this.posts[postIndex].comments[commentIndex]._liked_by.filter((user) => {
+        return user._id === this.user_data.user_id;
+      });
+
+      return match.length > 0;
+    } else {
+      return false;
+    }
+
   }
 
 
