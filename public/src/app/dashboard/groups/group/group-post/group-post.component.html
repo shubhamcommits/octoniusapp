@@ -166,6 +166,11 @@
                   </div>
                   </div>
                 </div>
+                <ng-template #likepopcommentcontent>
+                  <ul class="list-group">
+                    <li class="list-group-item" *ngFor="let liked_member of comment._liked_by;">{{liked_member.first_name}}</li>
+                  </ul>
+                </ng-template>
               </div>
               </div>
 
@@ -370,6 +375,11 @@
           </div>
           </div>
         </div>
+        <ng-template #likepopcommentcontent>
+          <ul class="list-group">
+            <li class="list-group-item" *ngFor="let liked_member of comment._liked_by;">{{liked_member.first_name}}</li>
+          </ul>
+        </ng-template>
       </div>
       </div>
 
@@ -557,6 +567,11 @@
           </div>
           </div>
         </div>
+        <ng-template #likepopcommentcontent>
+          <ul class="list-group">
+            <li class="list-group-item" *ngFor="let liked_member of comment._liked_by;">{{liked_member.first_name}}</li>
+          </ul>
+        </ng-template>
       </div>
       </div>
   </li>
