@@ -777,7 +777,7 @@ export class GroupPostComponent implements OnInit {
   }
 
   userLikedComment(postIndex, commentIndex) {
-    // we need this backup for when the comments haven't been loaded yet
+    // we need this backup for when the comments hasn't been liked yet
     if ( this.comments[commentIndex]._liked_by ) {
       const index = this.comments[commentIndex]._liked_by.findIndex((user) => user._id === this.user_data.user_id);
       return index > -1;
