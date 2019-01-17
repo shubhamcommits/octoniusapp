@@ -61,6 +61,12 @@ router.put('/:postId/like', posts.like);
 // Unlike post
 router.put('/:postId/unlike', posts.unlike);
 
+// Like comment
+router.put('/comments/:commentId/like', posts.likeComment);
+
+// Unlike comment
+router.put('/comments/:commentId/unlike', posts.unlikeComment);
+
 // - Tasks -
 
 // Change task assignee

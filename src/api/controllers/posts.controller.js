@@ -344,7 +344,7 @@ const getComments = async (req, res, next) => {
       .sort('-_id')
       .limit(5)
       .populate('_commented_by', 'first_name last_name profile_pic')
-        .populate('_liked_by', 'first_name last_name profile_pic')
+      .populate('_liked_by', 'first_name last_name profile_pic')
       .lean();
 
     return res.status(200).json({
@@ -506,6 +506,73 @@ const unlike = async (req, res, next) => {
   }
 };
 
+const likeComment = async (req, res) => {
+  try {
+    const {
+      userId,
+      params: { commentId }
+    } = req;
+
+    const comment = await Comment.findOneAndUpdate({
+      _id: commentId
+    }, {
+      $addToSet: {
+        _liked_by: userId
+      }
+    }, {
+      new: true
+    })
+      .populate('_liked_by', 'first_name last_name')
+      .lean();
+
+    const user = await User.findOne({
+      _id: userId
+    }).select('first_name last_name');
+
+    return res.status(200).json({
+      message: 'Post liked!',
+      comment,
+      user
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+const unlikeComment = async (req, res) => {
+  try {
+    const {
+      userId,
+      params: { commentId }
+    } = req;
+
+    const comment = await Comment.findOneAndUpdate({
+      _id: commentId
+    }, {
+      $pull: {
+        _liked_by: userId
+      }
+    }, {
+      new: true
+    })
+      .populate('_liked_by', 'first_name last_name')
+      .lean();
+
+    const user = await User.findOne({
+      _id: userId
+    }).select('first_name last_name');
+
+
+    return res.status(200).json({
+      message: 'Post unliked!',
+      comment,
+      user
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
 // -| TASKS |-
 
 const changeTaskStatus = async (req, res, next) => {
@@ -628,6 +695,8 @@ module.exports = {
   // Likes
   like,
   unlike,
+    likeComment,
+    unlikeComment,
   // Tasks
   changeTaskAssignee,
   changeTaskStatus

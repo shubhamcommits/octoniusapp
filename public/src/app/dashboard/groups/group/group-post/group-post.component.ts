@@ -785,5 +785,5 @@ export class GroupPostComponent implements OnInit {
       return false;
     }
   }
->>>>>>> added like comments to post page
+
 }
