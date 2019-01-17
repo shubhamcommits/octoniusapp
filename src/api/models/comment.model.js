@@ -25,11 +25,7 @@ const CommentSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Post',
     required: true
-  },
-  _liked_by: [{
-    type: Schema.Types.ObjectId,
-    ref: 'User'
-  }]
+  }
 });
 
 const Comment = mongoose.model('Comment', CommentSchema);

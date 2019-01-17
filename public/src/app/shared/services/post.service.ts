@@ -54,16 +54,8 @@ export class PostService {
     return this._http.put(this.BASE_API_URL + `/posts/${post.post_id}/like`, post);
   }
 
-  likeComment(comment) {
-    return this._http.put(this.BASE_API_URL + `/posts/comments/${comment._id}/like`, comment);
-  }
-
   unlike(post) {
     return this._http.put(this.BASE_API_URL + `/posts/${post.post_id}/unlike`, post);
-  }
-
-  unlikeComment(comment) {
-    return this._http.put(this.BASE_API_URL + `/posts/comments/${comment._id}/unlike`, comment);
   }
 
   useroverviewposts(user_id){
