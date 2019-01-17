@@ -1958,7 +1958,7 @@ export class GroupActivityComponent implements OnInit {
         }
       });
 
-      // we like the comment when the user is not between the users that liked the comment
+      // we like the comment when the user is not between the users that liked the comment.
       // and we unlike the post when it is
       if (!userHasLikedComment) {
         this.likeComment(comment);
