@@ -32,6 +32,10 @@ import { QuillAutoLinkService } from '../../../../shared/services/quill-auto-lin
 import {months} from "../../../../common/data";
 import {post} from "selenium-webdriver/http";
 
+import * as Quill from 'quill';
+(window as any).Quill = Quill;
+import 'quill-emoji/dist/quill-emoji';
+
 
 @Component({
   selector: 'app-group-activity',
@@ -2045,12 +2049,20 @@ export class GroupActivityComponent implements OnInit {
 
         ['clean'],                                        // remove formatting button
 
-        ['link', 'image', 'video']]
+        ['link', 'image', 'video'],
+        ['emoji']],
+        handlers: {
+            'emoji': function () {
+              console.log('clicked');
+            }
+        }
     };
 
 
     this.modules = {
       toolbar: toolbaroptions,
+      "emoji-toolbar": true,
+      "emoji-shortname": true,
       autoLink: true,
       mention: {
         allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
