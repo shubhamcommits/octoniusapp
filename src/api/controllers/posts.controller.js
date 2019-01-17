@@ -344,6 +344,7 @@ const getComments = async (req, res, next) => {
       .sort('-_id')
       .limit(5)
       .populate('_commented_by', 'first_name last_name profile_pic')
+        .populate('_liked_by', 'first_name last_name profile_pic')
       .lean();
 
     return res.status(200).json({
