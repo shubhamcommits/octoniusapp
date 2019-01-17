@@ -110,31 +110,20 @@
             <!-- all comments block-->
 
             <div #normalComments id="normalComments" style="display: none;">
-              <div class="card muted comment" id="normalComment-{{j}}" *ngFor="let comment of this.comments; let j = index;">
+              <div class="card comment" id="normalComment-{{j}}" *ngFor="let comment of this.comments; let j = index;">
                 <div class="card-block">
                   <div class="row card-title ">
                     <div class="col-md-1">
                       <img src="/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"
                         class="feed-avatar">
                     </div>
-                    <div class="col-md-7 ">
+                    <div class="col-md-11">
                       <h6>{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}} replied
                       <br> <span class="small lightgray date">
                         {{comment.created_date | date : 'medium'}}</span>
                       </h6>
                     </div>
-                    <div class="col-md-4 text-right card-footer action-post innercard">
-                        <span>
-                            <div ngbDropdown class="d-inline-block" #commentsDrop="ngbDropdown"
-                            (openChange)="toggled($event)" *ngIf="comment?._commented_by?._id == this.user_data.user_id; else editpostif">
-                              <i class="material-icons action" id="dropdownComment" ngbDropdownToggle>more_horiz</i>
-                              <div ngbDropdownMenu aria-labelledby="dropdownComment">
-                                  <button class="dropdown-item" (click)="OnEditComment(j)">Edit Comment</button>
-                                <button class="dropdown-item" (click)="OnDeleteComment(comment._id)">Delete Comment</button>
-                              </div>
-                            </div>
-                          </span>
-                    </div>
+                    
                   </div>
                   <div class="col-md-12 text-right " id="button_edit_comment{{j}}" style="display: none; padding-bottom: 1em;">
                       <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditComment(j, comment._id, comment._post)">Save</button>
@@ -147,6 +136,33 @@
                     </div>
                   <div class="col-md-12 innercard " id="commentContent-{{j}}" [innerHTML]="comment?.content" style="color:black;">
 
+                  </div>
+                  <div class="row card-footer innercard action-post clearfix">
+                      
+                    <div class="col-md-6">
+                        <span [ngbPopover]="likepopcommentcontent" triggers="mouseenter:mouseleave" *ngIf="comment._liked_by.length !== 0"><b>{{comment._liked_by.length}}</b> Likes</span>
+                    </div>
+                    <div class="col-md-6 text-right">
+                       
+                      <span>
+                      <button class="btn btn-link btn-like-comment" (click)="onClickLikeComment(comment)">
+                        
+                        <i class="material-icons muted" *ngIf="!userLikedComment(i,j); else likeif"
+                           id="icon_like_post_{{i}}">thumb_up</i>
+                        <ng-template #likeif><i class="material-icons active" id="icon_like_post_{{i}}">thumb_up</i></ng-template>
+                      </button>
+                    </span>
+                    <span style="margin-right: -12px">
+                        <div ngbDropdown class="d-inline-block" #commentsDrop="ngbDropdown"
+                             (openChange)="toggled($event)" *ngIf="comment?._commented_by?._id == user_data.user_id; else editpostif">
+                          <i class="material-icons action" id="dropdownComment" ngbDropdownToggle>more_horiz</i>
+                          <div ngbDropdownMenu aria-labelledby="dropdownComment">
+                              <button class="dropdown-item" (click)="OnEditComment(j)">Edit Comment</button>
+                            <button class="dropdown-item" (click)="OnDeleteComment(comment._id)">Delete Comment</button>
+                          </div>
+                        </div>
+                      </span>
+                  </div>
                   </div>
                 </div>
               </div>
@@ -297,7 +313,7 @@
     <!-- all comments block-->
 
     <div #taskComments id="taskComments" style="display: none;">
-      <div class="card muted comment" id="taskComment-{{j}}" *ngFor="let comment of this.comments; let j = index;">
+      <div class="card comment" id="taskComment-{{j}}" *ngFor="let comment of this.comments; let j = index;">
         <div class="card-block">
           <div class="row card-title ">
             <div class="col-md-1">
@@ -306,24 +322,12 @@
               <!--<img [src]="profileImage" class="feed-avatar">-->
               <!--<img src="assets/images/user.png" class="feed-avatar">-->
             </div>
-            <div class="col-md-7 ">
+            <div class="col-md-11">
               <h6>{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}} replied</h6>
               <p class="small lightgray date">
                 {{comment.created_date | date : 'medium'}}</p>
             </div>
-            <div class="col-md-4 text-right card-footer action-post innercard">
-                <span>
-                  <div ngbDropdown class="d-inline-block" #commentsDrop="ngbDropdown"
-                  (openChange)="toggled($event)" *ngIf="comment?._commented_by?._id == user_data.user_id; else editpostif">
-                    <i class="material-icons action" id="dropdownComment" ngbDropdownToggle>more_horiz</i>
-                    <div ngbDropdownMenu aria-labelledby="dropdownComment">
-                        <button class="dropdown-item" (click)="OnEditComment(j)">Edit Comment</button>
-                      <button class="dropdown-item" (click)="OnDeleteComment(comment._id)">Delete Comment</button>
-                    </div>
-                  </div>
-                  </span>
-
-            </div>
+            
           </div>
           <div class="col-md-12 text-right " id="button_edit_comment{{j}}" style="display: none; padding-bottom: 1em;">
               <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditComment(j, comment._id, comment._post)">Save</button>
@@ -336,6 +340,33 @@
             </div>
           <div class="col-md-12 innercard " id="commentContent-{{j}}" [innerHTML]="comment?.content" style="color:black;">
 
+          </div>
+          <div class="row card-footer innercard action-post clearfix">
+                      
+            <div class="col-md-6">
+                <span [ngbPopover]="likepopcommentcontent" triggers="mouseenter:mouseleave" *ngIf="comment._liked_by.length !== 0"><b>{{comment._liked_by.length}}</b> Likes</span>
+            </div>
+            <div class="col-md-6 text-right">
+               
+              <span>
+              <button class="btn btn-link btn-like-comment" (click)="onClickLikeComment(comment)">
+                
+                <i class="material-icons muted" *ngIf="!userLikedComment(i,j); else likeif"
+                   id="icon_like_post_{{i}}">thumb_up</i>
+                <ng-template #likeif><i class="material-icons active" id="icon_like_post_{{i}}">thumb_up</i></ng-template>
+              </button>
+            </span>
+            <span style="margin-right: -12px">
+                <div ngbDropdown class="d-inline-block" #commentsDrop="ngbDropdown"
+                     (openChange)="toggled($event)" *ngIf="comment?._commented_by?._id == user_data.user_id; else editpostif">
+                  <i class="material-icons action" id="dropdownComment" ngbDropdownToggle>more_horiz</i>
+                  <div ngbDropdownMenu aria-labelledby="dropdownComment">
+                      <button class="dropdown-item" (click)="OnEditComment(j)">Edit Comment</button>
+                    <button class="dropdown-item" (click)="OnDeleteComment(comment._id)">Delete Comment</button>
+                  </div>
+                </div>
+              </span>
+          </div>
           </div>
         </div>
       </div>
@@ -470,33 +501,21 @@
     <!-- all comments block-->
 
     <div #eventComments id="eventComments" style="display: none;">
-      <div class="card muted comment"  id="eventComment-{{j}}" *ngFor="let comment of this.comments; let j = index;">
+      <div class="card comment"  id="eventComment-{{j}}" *ngFor="let comment of this.comments; let j = index;">
         <div class="card-block">
-          <div class="row card-title ">
+          <div class="row card-title">
             <div class="col-md-1">
               <img src="/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"
                 class="feed-avatar">
               <!--<img [src]="profileImage" class="feed-avatar">-->
             </div>
-            <div class="col-md-7 ">
+            <div class="col-md-11">
               <h6>{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}} replied <br>
               <span class="small lightgray date">
                 {{comment.created_date | date : 'medium'}}</span>
               </h6>
             </div>
-            <div class="col-md-4 text-right card-footer action-post innercard">
-                <span>
-                    <div ngbDropdown class="d-inline-block" *ngIf="post?._posted_by?._id == this.user_data.user_id; else editpostif">
-
-                      <i ngbDropdownToggle class="material-icons action" id="dropdownComment{{i}}">more_horiz</i>
-                      <div ngbDropdownMenu>
-                          <button class="dropdown-item" (click)="OnEditComment(j)">Edit Comment</button>
-                        <button class="dropdown-item" (click)="OnDeleteComment(comment._id)">Delete Comment</button>
-                      </div>
-                    </div>
-                  </span>
-
-            </div>
+           
           </div>
           <div class="col-md-12 text-right " id="button_edit_comment{{j}}" style="display: none; padding-bottom: 1em;">
               <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditComment(j, comment._id, comment._post)">Save</button>
@@ -509,6 +528,33 @@
             </div>
           <div class="col-md-12 innercard " id="commentContent-{{j}}" [innerHTML]="comment?.content" style="color:black;">
 
+          </div>
+          <div class="row card-footer innercard action-post clearfix">
+                      
+            <div class="col-md-6">
+                <span [ngbPopover]="likepopcommentcontent" triggers="mouseenter:mouseleave" *ngIf="comment._liked_by.length !== 0"><b>{{comment._liked_by.length}}</b> Likes</span>
+            </div>
+            <div class="col-md-6 text-right">
+               
+              <span>
+              <button class="btn btn-link btn-like-comment" (click)="onClickLikeComment(comment)">
+                
+                <i class="material-icons muted" *ngIf="!userLikedComment(i,j); else likeif"
+                   id="icon_like_post_{{i}}">thumb_up</i>
+                <ng-template #likeif><i class="material-icons active" id="icon_like_post_{{i}}">thumb_up</i></ng-template>
+              </button>
+            </span>
+            <span style="margin-right: -12px">
+                <div ngbDropdown class="d-inline-block" #commentsDrop="ngbDropdown"
+                     (openChange)="toggled($event)" *ngIf="comment?._commented_by?._id == user_data.user_id; else editpostif">
+                  <i class="material-icons action" id="dropdownComment" ngbDropdownToggle>more_horiz</i>
+                  <div ngbDropdownMenu aria-labelledby="dropdownComment">
+                      <button class="dropdown-item" (click)="OnEditComment(j)">Edit Comment</button>
+                    <button class="dropdown-item" (click)="OnDeleteComment(comment._id)">Delete Comment</button>
+                  </div>
+                </div>
+              </span>
+          </div>
           </div>
         </div>
       </div>
