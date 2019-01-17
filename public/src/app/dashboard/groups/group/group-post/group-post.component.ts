@@ -11,6 +11,11 @@ declare var gapi: any;
 declare var google: any;
 import * as io from 'socket.io-client';
 
+import * as Quill from 'quill';
+import { QuillAutoLinkService } from '../../../../shared/services/quill-auto-link.service';
+(window as any).Quill = Quill;
+import 'quill-emoji/dist/quill-emoji';
+
 @Component({
   selector: 'app-group-post',
   templateUrl: './group-post.component.html',
@@ -634,12 +639,21 @@ export class GroupPostComponent implements OnInit {
 
           ['clean'],                                         // remove formatting button
 
-          ['link', 'image', 'video']]
+          ['link', 'image', 'video'],
+          ['emoji']],
+          handlers: {
+              'emoji': function () {
+                console.log('clicked');
+              }
+          }
       }
 
 
       this.modules = {
         toolbar: toolbaroptions,
+        "emoji-toolbar": true,
+        "emoji-shortname": true,
+        autoLink: true,
         mention: {
           allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
           mentionDenotationChars: ["@", "#"],
