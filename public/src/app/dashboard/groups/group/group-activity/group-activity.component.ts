@@ -1105,7 +1105,6 @@ export class GroupActivityComponent implements OnInit {
 
       this.postService.getComments(postId)
         .subscribe((res) => {
-          console.log('RES', res);
           //  find the post you fetched the comments from.
           const indexPost = this.posts.findIndex((post) => post._id == postId );
 
@@ -1972,7 +1971,6 @@ export class GroupActivityComponent implements OnInit {
   likeComment(comment) {
 this.postService.likeComment(comment)
   .subscribe((res) => {
-    console.log('RES2', res)
     const indexPost = this.posts.findIndex((post) => post._id == res['comment']._post);
     const indexComment = this.posts[indexPost].comments.findIndex((comment) => comment._id == res['comment']._id);
     this.posts[indexPost].comments[indexComment]._liked_by.push(res['user']);
