@@ -1945,7 +1945,7 @@ export class GroupActivityComponent implements OnInit {
   }
 
   onClickLikeComment(comment) {
-
+console.log('COMMENT', comment);
     if (comment._liked_by.length === 0) {
       this.likeComment(comment);
     } else {
@@ -1958,7 +1958,7 @@ export class GroupActivityComponent implements OnInit {
         }
       });
 
-      // we like the comment when the user is not between the users that liked the comment.
+      // we like the comment when the user is not between the users that liked the comment
       // and we unlike the post when it is
       if (!userHasLikedComment) {
         this.likeComment(comment);
@@ -2003,8 +2003,10 @@ this.postService.likeComment(comment)
 
   userLikedComment(postIndex, commentIndex) {
     if ( this.posts[postIndex].comments[commentIndex]._liked_by ) {
-      const index = this.posts[postIndex].comments[commentIndex]._liked_by.findIndex((user) => user._id == this.user_data.user_id);
-      return index > -1;
+      const match = this.posts[postIndex].comments[commentIndex]._liked_by.filter((user) => {
+        return user._id == this.user_data.user_id;
+      });
+      return match.length > 0;
     } else {
       return false;
     }
