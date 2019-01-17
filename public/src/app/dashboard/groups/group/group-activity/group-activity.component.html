@@ -462,7 +462,7 @@
                     <div class="row card-footer innercard action-post clearfix">
                       
                       <div class="col-md-6">
-                          <span *ngIf="comment._liked_by.length !== 0"><b>{{comment._liked_by.length}}</b> Likes</span>
+                          <span [ngbPopover]="likepopcommentcontent" triggers="mouseenter:mouseleave" *ngIf="comment._liked_by.length !== 0"><b>{{comment._liked_by.length}}</b> Likes</span>
                       </div>
                       <div class="col-md-6 text-right">
                          
@@ -488,8 +488,14 @@
                     </div>
 
                   </div>
+                  <ng-template #likepopcommentcontent>
+                    <ul class="list-group">
+                      <li class="list-group-item" *ngFor="let liked_member of comment._liked_by;">{{liked_member.first_name}}</li>
+                    </ul>
+                  </ng-template>
                 </div>
               </ng-container>
+
             </div>
 
             <!-- all comments block-->
@@ -725,6 +731,11 @@
 
                     </div>
                   </div>
+                  <ng-template #likepopcommentcontent>
+                    <ul class="list-group">
+                      <li class="list-group-item" *ngFor="let liked_member of comment._liked_by;">{{liked_member.first_name}}</li>
+                    </ul>
+                  </ng-template>
                 </div>
               </ng-container>
             </div>
@@ -956,6 +967,11 @@
 
                     </div>
                   </div>
+                  <ng-template #likepopcommentcontent>
+                    <ul class="list-group">
+                      <li class="list-group-item" *ngFor="let liked_member of comment._liked_by;">{{liked_member.first_name}}</li>
+                    </ul>
+                  </ng-template>
                 </div>
               </ng-container>
             </div>
