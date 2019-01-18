@@ -727,4 +727,63 @@ export class GroupPostComponent implements OnInit {
     }
   }
 
+
+  onClickLikeComment(comment) {
+
+    if (comment._liked_by.length === 0) {
+      this.likeComment(comment);
+    } else {
+      let userHasLikedComment = false;
+
+      comment._liked_by.forEach((like) => {
+        if (like._id == this.user_data.user_id) {
+          userHasLikedComment = true;
+        }
+      });
+
+      // we like the comment when the user is not one of the users that liked the comment
+      // and we unlike the post when it is
+      if (!userHasLikedComment) {
+        this.likeComment(comment);
+      } else {
+        this.unlikeComment(comment);
+      }
+    }
+  }
+
+  likeComment(comment) {
+    this.postService.likeComment(comment)
+      .subscribe((res) => {
+        const indexComment = this.comments.findIndex((comment) => comment._id == res['comment']._id);
+
+        // backup for older comments without _liked_by property
+        if (this.comments[indexComment]._liked_by) {
+          this.comments[indexComment]._liked_by.push(res['user']);
+        } else {
+          this.comments[indexComment]._liked_by = [res['user']];
+        }
+      });
+  }
+
+  unlikeComment(comment) {
+    this.postService.unlikeComment(comment)
+      .subscribe((res) => {
+        // we need to look for commentIndex again, because it could have changed when user loaded older comments
+        const indexComment = this.comments.findIndex((comment) => comment._id == res['comment']._id);
+        const indexUser = this.comments[indexComment]._liked_by.findIndex((user) => user._id == this.user_data.user_id);
+        // remove the user from the list of users who liked this comment
+        this.comments[indexComment]._liked_by.splice(indexUser, 1);
+      });
+  }
+
+  userLikedComment(postIndex, commentIndex) {
+    // we need this backup for when the comments hasn't been liked yet
+    if ( this.comments[commentIndex]._liked_by ) {
+      const index = this.comments[commentIndex]._liked_by.findIndex((user) => user._id === this.user_data.user_id);
+      return index > -1;
+    } else {
+      return false;
+    }
+  }
+
 }
