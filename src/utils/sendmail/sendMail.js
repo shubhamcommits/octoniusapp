@@ -82,9 +82,12 @@ const sendMail = async (emailBody, emailData, scheduled = {}) => {
       }
     };
 
+
+
     // if we're creating an email that is scheduled in the future, then we add the property send_at to config
+    //  we add 360 seconds to avoid the bussiest moment
     if (scheduled.date) {
-      config.send_at = moment(scheduled.date).unix();
+      config.data.send_at = moment(scheduled.date).unix() + 360;
     }
 
     // Fire the request to sendgrid server, check the reponse
