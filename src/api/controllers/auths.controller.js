@@ -7,7 +7,7 @@ const {
   Workspace
 } = require('../models');
 
-const { sendErr, sendMail, passwordHelper } = require('../../utils');
+const { sendErr, sendMail, passwordHelper, billing } = require('../../utils');
 
 /*  ==================
  *  -- AUTH METHODS --
@@ -227,6 +227,9 @@ const signUp = async (req, res, next) => {
 
     // Send signup confirmation email
     sendMail.signup(userUpdate);
+
+    // add user to Stripe subscription
+      billing.addUserToSubscription(workspaceUpdate)
 
     // Signup user and return the token
     return res.status(201).json({

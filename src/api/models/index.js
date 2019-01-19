@@ -5,6 +5,7 @@ const Notification = require('./notification.model');
 const Post = require('./post.model');
 const User = require('./user.model');
 const Workspace = require('./workspace.model');
+const StripeCustomer = require('./stripecustomer.model');
 
 module.exports = {
   Auth,
@@ -13,5 +14,6 @@ module.exports = {
   Notification,
   Post,
   User,
+  StripeCustomer,
   Workspace
 };

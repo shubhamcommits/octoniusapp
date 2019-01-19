@@ -10,6 +10,7 @@ const devEnv = require('../../development.config');
 // Correct REST naming
 const {
   authsRoutes,
+    billingRoutes,
   groupsRoutes,
   postsRoutes,
   usersRoutes,
@@ -59,6 +60,8 @@ app.use('/api/groups', groupsRoutes);
 app.use('/api/posts', postsRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/api/workspaces', workspacesRoutes);
+app.use('/api/billing', billingRoutes);
+
 
 // -->!!!! TO BE REMOVED !!!!
 app.use('/api/auth', authsRoutes);

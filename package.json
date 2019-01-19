@@ -26,7 +26,8 @@
     "morgan": "^1.9.0",
     "quill-delta": "^4.1.0",
     "redis": "^2.8.0",
-    "socket.io": "^2.1.1"
+    "socket.io": "^2.1.1",
+    "stripe": "^6.20.1"
   },
   "devDependencies": {
     "eslint": "^5.7.0",

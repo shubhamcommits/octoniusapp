@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import {WorkspaceService} from "../../../shared/services/workspace.service";
+
 @Component({
   selector: 'app-overview-my-workplace',
   templateUrl: './overview-my-workplace.component.html',
@@ -7,10 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OverviewMyWorkplaceComponent implements OnInit {
 
-  constructor() { }
+  constructor(private workspaceService: WorkspaceService) { }
 
   ngOnInit() {
-
+    this.workspaceService.createSubscription()
+      .subscribe((res) => {
+        console.log('res', res);
+      });
   }
 
 }

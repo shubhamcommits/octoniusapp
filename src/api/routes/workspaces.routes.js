@@ -1,5 +1,6 @@
 const express = require('express');
 
+
 const {
   workspaces,
   workspacesController // ! TO BE REMOVED
@@ -43,5 +44,6 @@ router.get('/:workspaceId/domains', workspaces.getDomains);
 
 // Remove user from workspace
 router.delete('/:workspaceId/users/:userId', workspaces.deleteUser);
+
 
 module.exports = router;

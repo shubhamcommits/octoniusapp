@@ -56,6 +56,14 @@ const workspaceSchema = new Schema({
   created_date: {
     type: Date,
     default: moment().format()
+  },
+  billing: {
+    subscription_id: {
+      type: String
+    },
+    current_period_end: {
+      type: Number
+    }
   }
 
   // groups field, add later
