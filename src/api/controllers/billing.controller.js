@@ -47,7 +47,7 @@ const createSubscription = async (req, res) => {
       }
     );
 
-    // we also need to install web hooks to listen for stripe payment events
+    // we also need to install web hooks to listen for stripe payment events.
 
     res.status(200).json({
       message: 'payment complete',
