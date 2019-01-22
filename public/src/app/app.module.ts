@@ -59,6 +59,8 @@ import { OverviewMyWorkplaceComponent } from './dashboard/overview/overview-my-w
 import { QuillAutoLinkService } from './shared/services/quill-auto-link.service';
 import { AdminBillingComponent } from './dashboard/admin/admin-billing/admin-billing.component';
 import {DenyNavigationGuard} from "./shared/guards/deny-navigation.guard";
+import {MomentModule} from "ngx-moment";
+import {InsertDecimalPointPipe} from "./shared/pipes/insert-decimal-point.pipe";
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 
@@ -107,7 +109,8 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     GroupTasksComponent,
     OverviewMyTasksComponent,
     OverviewMyWorkplaceComponent,
-    AdminBillingComponent
+    AdminBillingComponent,
+    InsertDecimalPointPipe
   ],
   imports: [
     BrowserModule,
@@ -119,6 +122,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     QuillModule,
     SnotifyModule,
     MentionModule,
+    MomentModule,
     InfiniteScrollModule,
     PickerModule,
     ClickOutsideModule,

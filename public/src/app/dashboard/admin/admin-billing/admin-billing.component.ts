@@ -1,6 +1,8 @@
 import {Component, HostListener, OnInit} from '@angular/core';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { WorkspaceService } from '../../../shared/services/workspace.service';
+import * as moment from 'moment';
+
 
 
 @Component({
@@ -19,6 +21,8 @@ export class AdminBillingComponent implements OnInit {
 
   handler: any;
   amount = 1000; // equals 10 dollars
+
+  subscription = null;
 
   constructor(private ngxService: NgxUiLoaderService, private _workspaceService: WorkspaceService) {
     this.user_data = JSON.parse(localStorage.getItem('user'));
@@ -68,19 +72,27 @@ export class AdminBillingComponent implements OnInit {
         this.workspace_information = res['workspace'];
         this.members_count = res['workspace']['members'].length;
         this.guests_count = res['workspace']['invited_users'].length;
-        for(var i = 0; i < this.members_count; i ++){
+        for(let i = 0; i < this.members_count; i ++){
           if(res['workspace']['members'][i].role == 'admin'){
             this.admins_count ++;
           }
         }
-        resolve();
+
+        // if our subscription is still valid
+        if (!!res['workspace'].billing.current_period_end && res['workspace'].billing.current_period_end > moment().unix()) {
+          this._workspaceService.getSubscription()
+            .subscribe((res2) => {
+              this.subscription = res2['subscription'];
+            });
+        } else {
+          this.subscription = null;
+          resolve();
+        }
       },(err)=>{
         console.log('Error found while getting the workspace information', err);
         reject(err);
       })
     })
-
-
   }
 
 }

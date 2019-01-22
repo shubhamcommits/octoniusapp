@@ -17,18 +17,33 @@
   </div>
 
   <div class="col-md-8">
-    <div class="card-tile">
-
-      <h4><b>Currently Plan </b></h4>
+    <div *ngIf="!subscription; else subscribed" class="card-tile">
+      <h2>Welcome to your workspace</h2>
+      <h4>To start using your workspace, please complete your subscription below</h4>
+      <hr>
+      <h4><b>Current Plan </b></h4>
       <h4>1 user - 10 EUR(€)/month</h4>
       <hr/>
-      <p><b>Price</b><br /> 10 Eur(€)/seat - Per Month. Billed Monthly.</p>
+      <p><b>Price</b><br/> 10 Eur(€)/seat - Per Month. Billed Monthly.</p>
       <button (click)="handlePayment()" class="btn btn-lg btn-primary">Start a monthly subscription</button>
       <div class="row" style="margin-top: 10%; margin-bottom: 20%; margin-left:1%; ">
-      <img src="src/assets/images/powered_by_stripe@2x.png">
+        <img src="src/assets/images/powered_by_stripe@2x.png">
       </div>
 
     </div>
+
+    <ng-template #subscribed>
+      <div class="card-tile">
+        <h3>Your subscription details:</h3>
+        <h4>Created: {{subscription.created | amFromUnix | amDateFormat:'LL'}}</h4>
+        <h4>Current payment valid until: {{subscription.current_period_end | amFromUnix | amDateFormat:'LL'}}</h4>
+        <h4>Cost: {{subscription.amount | insertDecimalPoint: 2}} / {{subscription.interval}}</h4>
+        <h4># members on this subscription: {{subscription.quantity}}</h4>
+        <button class="btn btn-danger">Cancel subscription</button>
+      </div>
+    </ng-template>
+
+
   </div>
 
 </div>

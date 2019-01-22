@@ -12,10 +12,6 @@ export class OverviewMyWorkplaceComponent implements OnInit {
   constructor(private workspaceService: WorkspaceService) { }
 
   ngOnInit() {
-    this.workspaceService.createSubscription()
-      .subscribe((res) => {
-        console.log('res', res);
-      });
   }
 
 }

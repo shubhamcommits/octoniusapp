@@ -18,6 +18,8 @@ export class WorkspaceService {
     return this._http.put(this.BASE_API_URL + `/workspace/${workspce_id}`, data);
   }
 
+  // Workspace billing
+
   createSubscription(token, amount) {
     const data = {token, amount};
     return this._http.post(this.BASE_API_URL + `/billing/createSubscription`, data);
@@ -25,5 +27,9 @@ export class WorkspaceService {
 
   getBillingStatus(workspaceId) {
     return this._http.get(this.BASE_API_URL + `/billing/getBillingStatus/${workspaceId}`);
+  }
+
+  getSubscription() {
+    return this._http.get(this.BASE_API_URL + `/billing/getSubscription`);
   }
 }
