@@ -58,6 +58,7 @@ import { OverviewMyTasksComponent } from './dashboard/overview/overview-my-tasks
 import { OverviewMyWorkplaceComponent } from './dashboard/overview/overview-my-workplace/overview-my-workplace.component';
 import { QuillAutoLinkService } from './shared/services/quill-auto-link.service';
 import { AdminBillingComponent } from './dashboard/admin/admin-billing/admin-billing.component';
+import {DenyNavigationGuard} from "./shared/guards/deny-navigation.guard";
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 
@@ -126,10 +127,10 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
     LoadingModule.forRoot({
       animationType: ANIMATION_TYPES.wanderingCubes,
-      backdropBackgroundColour: 'rgba(0,0,0,0.1)', 
+      backdropBackgroundColour: 'rgba(0,0,0,0.1)',
       backdropBorderRadius: '4px',
-      primaryColour: '#ffffff', 
-      secondaryColour: '#ffffff', 
+      primaryColour: '#ffffff',
+      secondaryColour: '#ffffff',
       tertiaryColour: '#ffffff'
   }),
     FontAwesomeModule,
@@ -137,11 +138,11 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     NgbModule.forRoot(),
-    ScrollToModule.forRoot(), 
+    ScrollToModule.forRoot(),
     CalendarModule.forRoot()
   ],
 
-  providers: [AuthService, UserService, PostService, GroupService,
+  providers: [AuthService, UserService, DenyNavigationGuard, PostService, GroupService,
     GroupDataService, WorkspaceService, GroupsService, AdminService,
     AuthGuard, NotAuthGuard,QuillAutoLinkService,
     { provide: 'SnotifyToastConfig', useValue: ToastDefaults},

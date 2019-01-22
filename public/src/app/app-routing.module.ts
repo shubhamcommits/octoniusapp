@@ -28,6 +28,7 @@ import { AdminMembersComponent } from './dashboard/admin/admin-members/admin-mem
 import { OverviewMyTasksComponent } from './dashboard/overview/overview-my-tasks/overview-my-tasks.component';
 import {OverviewMyWorkplaceComponent} from "./dashboard/overview/overview-my-workplace/overview-my-workplace.component";
 import { AdminBillingComponent } from './dashboard/admin/admin-billing/admin-billing.component';
+import {DenyNavigationGuard} from "./shared/guards/deny-navigation.guard";
 
 
 const appRoutes: Routes = [
@@ -66,7 +67,11 @@ const appRoutes: Routes = [
         children: [
           { path: 'general', component: AdminGeneralComponent },
           { path: 'members', component: AdminMembersComponent },
-          { path: 'billing', component: AdminBillingComponent }
+          {
+            path: 'billing',
+            component: AdminBillingComponent,
+            canDeactivate: [DenyNavigationGuard]
+          }
         ]
       },
       {

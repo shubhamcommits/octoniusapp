@@ -18,11 +18,12 @@ export class WorkspaceService {
     return this._http.put(this.BASE_API_URL + `/workspace/${workspce_id}`, data);
   }
 
-  createSubscription() {
-    const data = {
-      msg:"hello"
-    };
-
+  createSubscription(token, amount) {
+    const data = {token, amount};
     return this._http.post(this.BASE_API_URL + `/billing/createSubscription`, data);
+  }
+
+  getBillingStatus(workspaceId) {
+    return this._http.get(this.BASE_API_URL + `/billing/getBillingStatus/${workspaceId}`);
   }
 }
