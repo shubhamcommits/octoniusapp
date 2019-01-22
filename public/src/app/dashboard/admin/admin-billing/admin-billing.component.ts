@@ -79,7 +79,7 @@ export class AdminBillingComponent implements OnInit {
         }
 
         // if our subscription is still valid
-        if (!!res['workspace'].billing.current_period_end && res['workspace'].billing.current_period_end > moment().unix()) {
+        if (!!res['workspace'].billing && res['workspace'].billing.current_period_end > moment().unix()) {
           this._workspaceService.getSubscription()
             .subscribe((res2) => {
               this.subscription = res2['subscription'];
