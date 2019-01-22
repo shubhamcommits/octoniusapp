@@ -24,4 +24,8 @@ router.post('/createSubscription', billing.createSubscription);
 // get billing status
 router.get('/getBillingStatus/:workspaceId', billing.getBillingStatus);
 
+// get subscription details
+router.get('/getSubscription', billing.getSubscription);
+
+
 module.exports = router;

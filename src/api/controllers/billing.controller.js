@@ -59,31 +59,63 @@ const createSubscription = async (req, res) => {
 };
 
 const getBillingStatus = async (req, res) => {
-  const workspaceId = req.params.workspaceId;
+  try {
+    const workspaceId = req.params.workspaceId;
 
-  const workspace = await Workspace.findOne({ _id: workspaceId });
+    const workspace = await Workspace.findOne({ _id: workspaceId });
 
-  if (workspace.billing.current_period_end) {
-    if (workspace.billing.current_period_end < moment().unix()) {
-      res.status(200).json({
-        message: 'Your subscription is no longer valid',
-        status: false
-      });
+    if (workspace.billing.current_period_end) {
+      if (workspace.billing.current_period_end < moment().unix()) {
+        res.status(200).json({
+          message: 'Your subscription is no longer valid',
+          status: false
+        });
+      } else {
+        res.status(200).json({
+          message: 'You have a valid subscription',
+          status: true
+        });
+      }
     } else {
       res.status(200).json({
-        message: 'You have a valid subscription',
-        status: true
+        message: 'No payment yet',
+        status: false
       });
     }
-  } else {
-    res.status(200).json({
-      message: 'No payment yet',
-      status: false
-    });
+  } catch (err) {
+    return sendErr(res, err);
   }
 };
 
+const getSubscription = async (req, res) => {
+  try {
+    const user = await User.findOne({ _id: req.userId });
+    const workspace = await Workspace.findOne({ _id: user._workspace });
+
+    const subscription = await stripe.subscriptions.retrieve(workspace.billing.subscription_id);
+
+    console.log('SUB', subscription);
+
+    const adjustedSubscription = {
+      created: subscription.created,
+      current_period_end: subscription.current_period_end,
+      current_period_start: subscription.current_period_start,
+      object: subscription.object,
+      amount: subscription.plan.amount,
+      interval: subscription.plan.interval,
+      quantity: subscription.quantity
+    };
+
+    res.status(200).json({
+      message: 'succesfully retrieved the subscription',
+      subscription: adjustedSubscription
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
 module.exports = {
   createSubscription,
-  getBillingStatus
+  getBillingStatus,
+  getSubscription
 };

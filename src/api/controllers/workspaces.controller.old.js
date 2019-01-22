@@ -1,7 +1,9 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-const { Auth, Group, User, Workspace } = require('../models');
+const {
+  Auth, Group, User, Workspace
+} = require('../models');
 const { password, sendMail, sendErr } = require('../../utils');
 
 /*  =============================
@@ -19,7 +21,7 @@ const inviteUserViaEmail = async (req, res, next) => {
     }, {
       // !!REFACTOR THIS, WHILE IT'S NOT IN SYNC WITH SIGNUP METHOD
       $push: {
-        invited_users: invitedUserEmail,
+        invited_users: invitedUserEmail
       }
     }, {
       new: true
@@ -27,7 +29,7 @@ const inviteUserViaEmail = async (req, res, next) => {
 
     if (!workspace) {
       return sendErr(res, '', 'Please enter a valid workspace id', 404);
-    };
+    }
 
     // Send invitation via email
     await sendMail.joinWorkspace(req.body);
@@ -35,7 +37,6 @@ const inviteUserViaEmail = async (req, res, next) => {
     return res.status(200).json({
       message: `Email invitation sent to ${invitedUserEmail}`
     });
-
   } catch (err) {
     return sendErr(res, err);
   }
@@ -49,7 +50,7 @@ const updateUserRole = async (req, res, next) => {
     const user = await User.findByIdAndUpdate({
       _id: userId
     }, {
-      role: role
+      role
     }, {
       new: true
     });
@@ -58,7 +59,6 @@ const updateUserRole = async (req, res, next) => {
       message: `Role updated for user ${user.fisrt_name}`,
       user
     });
-
   } catch (err) {
     return sendErr(res, err);
   }
@@ -81,7 +81,6 @@ const updateWorkspace = async (req, res, next) => {
       message: `${workspace.workspaceName} workspace was updated!`,
       workspace
     });
-
   } catch (err) {
     return sendErr(res, err);
   }
@@ -99,7 +98,8 @@ const getWorkspace = async (req, res, next) => {
     const workspace = await Workspace.findOne({
       _id: workspaceId
     })
-      .populate('members', 'first_name last_name role profile_pic email');
+      .populate('members', 'first_name last_name role profile_pic email')
+      .select('-billing.subscription_id');
 
     if (!workspace) {
       return sendErr(res, err, 'Workspace not found, provide a valid workspace id!', 404);
@@ -109,7 +109,6 @@ const getWorkspace = async (req, res, next) => {
       message: `${workspace.workspace_name} workspace found!`,
       workspace
     });
-
   } catch (err) {
     return sendErr(res, err);
   }
@@ -128,11 +127,10 @@ const searchWorkspaceUsers = async (req, res, next) => {
     })
       .limit(10);
 
-    return  res.status(200).json({
+    return res.status(200).json({
       message: 'Users found!',
-      users,
+      users
     });
-
   } catch (err) {
     return sendErr(res, err);
   }
@@ -152,28 +150,26 @@ const createNewGroup = async (req, res, next) => {
       _workspace: newGroupData._workspace
     });
 
-    if (!!groupExist) {
+    if (groupExist) {
       return sendErr(res, err, 'Group name already taken, please choose another name!', 409);
-    } else {
-      const group = await Group.create(newGroupData);
-      const user = await User.findByIdAndUpdate({
-        _id: newGroupData._admins,
-        _workspace: newGroupData._workspace
-      }, {
-        $push: {
-          _groups: group
-        }
-      }, {
-        new: true
-      });
-
-      return res.status(200).json({
-        message: 'Group Created Successfully!',
-        group,
-        user
-      });
     }
+    const group = await Group.create(newGroupData);
+    const user = await User.findByIdAndUpdate({
+      _id: newGroupData._admins,
+      _workspace: newGroupData._workspace
+    }, {
+      $push: {
+        _groups: group
+      }
+    }, {
+      new: true
+    });
 
+    return res.status(200).json({
+      message: 'Group Created Successfully!',
+      group,
+      user
+    });
   } catch (err) {
     return sendErr(res, err);
   }
@@ -187,9 +183,9 @@ const getUserGroups = async (req, res, next) => {
     const groups = await Group.find({
       _workspace: workspaceId,
       $or: [{
-        '_members': userId
+        _members: userId
       }, {
-        '_admins': userId
+        _admins: userId
       }]
     })
       .populate('_members');
@@ -202,7 +198,6 @@ const getUserGroups = async (req, res, next) => {
       message: `${groups.length} groups found.`,
       groups
     });
-
   } catch (err) {
     return sendErr(res, err);
   }
