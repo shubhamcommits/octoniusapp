@@ -27,7 +27,6 @@ export class DenyNavigationGuard implements CanDeactivate<AdminBillingComponent>
   //   if he hasn't, the user won't be able to navigate away
     return this.workspaceService.getBillingStatus(this.workspaceId)
       .map((res) => {
-        console.log('RES', res);
         return res['status'];
       });
   }
