@@ -17,7 +17,8 @@
   </div>
 
   <div class="col-md-8">
-    <div *ngIf="!subscription; else subscribed" class="card-tile">
+    <!--here we add created property to use change detection-->
+    <div *ngIf="!subscription?.created; else subscribed" class="card-tile">
       <h2>Welcome to your workspace</h2>
       <h4>To start using your workspace, please complete your subscription below</h4>
       <hr>

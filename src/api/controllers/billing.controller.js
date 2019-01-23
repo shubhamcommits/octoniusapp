@@ -47,11 +47,21 @@ const createSubscription = async (req, res) => {
       }
     );
 
+      const adjustedSubscription = {
+          created: subscription.created,
+          current_period_end: subscription.current_period_end,
+          current_period_start: subscription.current_period_start,
+          object: subscription.object,
+          amount: subscription.plan.amount,
+          interval: subscription.plan.interval,
+          quantity: subscription.quantity
+      };
+
     // we also need to install web hooks to listen for stripe payment events.
 
     res.status(200).json({
       message: 'payment complete',
-      obj: subscription
+      subscription: adjustedSubscription
     });
   } catch (err) {
     return sendErr(res, err);

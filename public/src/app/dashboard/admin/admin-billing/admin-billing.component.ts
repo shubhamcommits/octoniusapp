@@ -45,7 +45,9 @@ export class AdminBillingComponent implements OnInit {
       token: token => {
         this._workspaceService.createSubscription(token, this.amount)
           .subscribe( res => {
-            console.log('RES', res);
+            console.log('subscription successful', res);
+            this.subscription = res['subscription'];
+            console.log('this subscription', this.subscription);
           })
       }
     });
