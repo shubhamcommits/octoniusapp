@@ -94,8 +94,6 @@ const getSubscription = async (req, res) => {
 
     const subscription = await stripe.subscriptions.retrieve(workspace.billing.subscription_id);
 
-    console.log('SUB', subscription);
-
     const adjustedSubscription = {
       created: subscription.created,
       current_period_end: subscription.current_period_end,
@@ -114,8 +112,80 @@ const getSubscription = async (req, res) => {
     return sendErr(res, err);
   }
 };
+
+const cancelSubscription = async (req, res) => {
+  try {
+    const user = await User.findOne({ _id: req.userId });
+    const workspace = await Workspace.findOne({ _id: user._workspace });
+
+    const updatedSubscription = stripe.subscriptions.update(
+      workspace.billing.subscription_id,
+      { cancel_at_period_end: true }
+    );
+
+    if (!updatedSubscription) {
+      return sendErr(res, null, 'Unable to cancel subscription', 403);
+    }
+
+    // update workspace scheduled cancellation property
+    const updatedWorkspace = await Workspace.findOneAndUpdate(
+      { _id: user._workspace },
+      {
+        $set: {
+          'billing.scheduled_cancellation': true
+        }
+      }, {
+        new: true
+      }
+    );
+
+    res.status(200).json({
+      message: 'Successfully canceled subscription',
+      workspace: updatedWorkspace
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+const resumeSubscription = async (req, res) => {
+  try {
+    const user = await User.findOne({ _id: req.userId });
+    const workspace = await Workspace.findOne({ _id: user._workspace });
+
+    const updatedSubscription = stripe.subscriptions.update(
+      workspace.billing.subscription_id,
+      { cancel_at_period_end: false }
+    );
+
+    if (!updatedSubscription) {
+      return sendErr(res, null, 'Unable to resume subscription', 403);
+    }
+
+    // update workspace scheduled cancellation property
+    const updatedWorkspace = await Workspace.findOneAndUpdate(
+      { _id: user._workspace },
+      {
+        $set: {
+          'billing.scheduled_cancellation': false
+        }
+      }, {
+        new: true
+      }
+    );
+
+    res.status(200).json({
+      message: 'Successfully resumed subscription',
+      workspace: updatedWorkspace
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
 module.exports = {
+  cancelSubscription,
   createSubscription,
   getBillingStatus,
-  getSubscription
+  getSubscription,
+  resumeSubscription
 };

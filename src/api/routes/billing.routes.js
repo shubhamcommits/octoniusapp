@@ -27,5 +27,11 @@ router.get('/getBillingStatus/:workspaceId', billing.getBillingStatus);
 // get subscription details
 router.get('/getSubscription', billing.getSubscription);
 
+// Cancel subscription
+router.get('/cancelSubscription', billing.cancelSubscription);
+
+// Resume subscription
+router.get('/resumeSubscription', billing.resumeSubscription);
+
 
 module.exports = router;

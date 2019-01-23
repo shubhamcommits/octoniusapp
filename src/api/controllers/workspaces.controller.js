@@ -2,7 +2,8 @@
 const {
   Group, User, Workspace
 } = require('../models');
-const { sendErr } = require('../../utils');
+
+const { sendErr, billing } = require('../../utils');
 
 
 /*  =============================
@@ -178,7 +179,7 @@ const deleteUser = async (req, res, next) => {
     });
 
     // Remove user from workspace's members & invited users
-    await Workspace.findOneAndUpdate({
+    const updatedWorkSpace = await Workspace.findOneAndUpdate({
       _id: workspaceId,
       _owner: userId
     }, {
@@ -204,6 +205,9 @@ const deleteUser = async (req, res, next) => {
     }, {
       multi: true
     });
+
+    // remove member from the billing list
+      billing.subtractUserFromSubscription(updatedWorkSpace);
 
     return res.status(200).json({
       message: 'User removed from workspace!',

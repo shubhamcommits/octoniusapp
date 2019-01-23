@@ -2,6 +2,7 @@ import {Component, HostListener, OnInit} from '@angular/core';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { WorkspaceService } from '../../../shared/services/workspace.service';
 import * as moment from 'moment';
+import swal from "sweetalert";
 
 
 
@@ -50,6 +51,24 @@ export class AdminBillingComponent implements OnInit {
     });
   }
 
+  cancelSubscription() {
+    swal({
+      title: "Are you sure?",
+      text: `You want to cancel your subscription? You will be able to continue to use the workspace until the end of the current billing cycle. After that, you and the other members will be denied access to the workspace`,
+      icon: "warning",
+      dangerMode: true,
+      buttons: ["Cancel", "Yes, I am sure"],
+    }).then(() => {
+      this._workspaceService.cancelSubscription()
+        .subscribe(res => {
+          this.workspace_information = res['workspace'];
+          swal("Cancellation complete!", "If you would like to resume your subscription," +
+            " you can do so up until the end of the current billing cycle", "success")
+        });
+    });
+
+  }
+
   handlePayment() {
     this.handler.open({
       name: 'Octonius workspace',
@@ -63,6 +82,10 @@ export class AdminBillingComponent implements OnInit {
     onPopstate() {
     this.handler.close();
     }
+
+  isWorkspaceOwner() {
+    return this.workspace_information._owner == this.user_data.user_id;
+  }
 
   async getWorkSpaceDetails() {
     return new Promise((resolve, reject)=>{
@@ -94,5 +117,15 @@ export class AdminBillingComponent implements OnInit {
       })
     })
   }
+
+  resumeSubscription() {
+    this._workspaceService.resumeSubscription()
+      .subscribe((res) => {
+        this.workspace_information.billing.scheduled_cancellation = false;
+        swal("Good Job!", "You successfully resumed your subscription!", "success")
+      });
+  }
+
+
 
 }

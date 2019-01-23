@@ -63,6 +63,10 @@ const workspaceSchema = new Schema({
     },
     current_period_end: {
       type: Number
+    },
+    scheduled_cancellation: {
+      type: Boolean,
+      default: false
     }
   }
 

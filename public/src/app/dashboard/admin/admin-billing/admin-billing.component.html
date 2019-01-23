@@ -39,7 +39,19 @@
         <h4>Current payment valid until: {{subscription.current_period_end | amFromUnix | amDateFormat:'LL'}}</h4>
         <h4>Cost: {{subscription.amount | insertDecimalPoint: 2}} / {{subscription.interval}}</h4>
         <h4># members on this subscription: {{subscription.quantity}}</h4>
-        <button class="btn btn-danger">Cancel subscription</button>
+        <ng-container *ngIf="isWorkspaceOwner()">
+          <button
+            *ngIf="!workspace_information.billing?.scheduled_cancellation; else resumeSubscriptionTemp"
+            (click)="cancelSubscription()"
+            class="btn btn-danger">
+            Cancel subscription
+          </button>
+          <ng-template #resumeSubscriptionTemp>
+            <button
+              (click)="resumeSubscription()"
+              class="btn btn-warning">Resume subscription</button>
+          </ng-template>
+        </ng-container>
       </div>
     </ng-template>
 

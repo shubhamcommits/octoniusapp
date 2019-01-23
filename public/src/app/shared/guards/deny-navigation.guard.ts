@@ -4,9 +4,7 @@ import { Observable } from 'rxjs';
 import {AdminBillingComponent} from "../../dashboard/admin/admin-billing/admin-billing.component";
 import {WorkspaceService} from "../services/workspace.service";
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 
 export class DenyNavigationGuard implements CanDeactivate<AdminBillingComponent> {
 
