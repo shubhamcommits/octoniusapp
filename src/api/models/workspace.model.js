@@ -67,6 +67,10 @@ const workspaceSchema = new Schema({
     scheduled_cancellation: {
       type: Boolean,
       default: false
+    },
+    failed_payments: {
+      type: Array,
+      default: []
     }
   }
 

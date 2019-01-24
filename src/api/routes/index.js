@@ -4,6 +4,7 @@ const postsRoutes = require('./posts.routes');
 const usersRoutes = require('./users.routes');
 const workspacesRoutes = require('./workspaces.routes');
 const billingRoutes = require('./billing.routes');
+const webhooksRoutes = require('./webhooks.routes');
 
 module.exports = {
   authsRoutes,
@@ -11,5 +12,6 @@ module.exports = {
   groupsRoutes,
   postsRoutes,
   usersRoutes,
+  webhooksRoutes,
   workspacesRoutes
 };

@@ -9,14 +9,22 @@ const createSubscription = async (req, res) => {
     const source = req.body.token.id;
     const email = req.body.email;
 
+    // find the current User and use his workspace ID
+    const user = await User.findOne({ _id: req.userId });
+    const workspaceId = user._workspace;
+
     // get the payment plan
     const plan = await stripe.plans.retrieve('plan_EK1uRUJLJcDS6e');
 
     //   // then we create a new customer
     const customer = await stripe.customers.create({
       email,
-      source
+      source,
+      metadata: {
+        workspace_id: workspaceId.toString()
+      }
     });
+
 
     // create a new subscription
     const subscription = await stripe.subscriptions.create({
@@ -30,12 +38,8 @@ const createSubscription = async (req, res) => {
       return sendErr(res, null, 'Unable to create subscription', 403);
     }
 
-    // find the current User and use his workspace ID
-    const user = await User.findOne({ _id: req.userId });
-    const workspaceId = user._workspace;
-
     // we add the Stripe subscription Id and the last moment this subscription is valid to the workspace document
-    const workspace = await Workspace.findOneAndUpdate(
+    const workspaceUpdated = await Workspace.findOneAndUpdate(
       { _id: workspaceId },
       {
         $set: {
@@ -47,17 +51,17 @@ const createSubscription = async (req, res) => {
       }
     );
 
-      const adjustedSubscription = {
-          created: subscription.created,
-          current_period_end: subscription.current_period_end,
-          current_period_start: subscription.current_period_start,
-          object: subscription.object,
-          amount: subscription.plan.amount,
-          interval: subscription.plan.interval,
-          quantity: subscription.quantity
-      };
+    const adjustedSubscription = {
+      created: subscription.created,
+      current_period_end: subscription.current_period_end,
+      current_period_start: subscription.current_period_start,
+      object: subscription.object,
+      amount: subscription.plan.amount,
+      interval: subscription.plan.interval,
+      quantity: subscription.quantity
+    };
 
-    // we also need to install web hooks to listen for stripe payment events.
+    // we also need to install web hooks to listen for stripe payment events
 
     res.status(200).json({
       message: 'payment complete',
@@ -192,10 +196,73 @@ const resumeSubscription = async (req, res) => {
     return sendErr(res, err);
   }
 };
+
+const paymentFailed = async (req, res) => {
+  try {
+    // add it to the billing.failed_payments property of the workspace
+    const customer = await stripe.customers.retrieve('cus_EOfhqjsUvzUkiJ');
+
+    const workspace = await Workspace.findOneAndUpdate(
+      { _id: customer.metadata.workspace_id },
+      {
+        $addToSet: {
+          'billing.failed_payments': req.body
+        }
+      }, {
+        new: true
+      }
+    ).lean();
+
+    // send mail to user (still to be added)
+
+    res.status(200).json({
+      message: 'Success'
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+const paymentSuccessful = async (req, res) => {
+  try {
+    // get the Stripe customer
+    const customer = await stripe.customers.retrieve('cus_EOfhqjsUvzUkiJ');
+
+    // get the subscription of the customer
+    const subscription = await stripe.customers.retrieve(customer.subscriptions.data[0].id);
+
+      // add it to the billing.failed_payments property of the workspace
+    //   I am not sure if billing.current_period_end is already updated at this point
+    //  or if we have to update this ourselves?
+    const workspace = await Workspace.findOneAndUpdate(
+      { _id: customer.metadata.workspace_id },
+      {
+        $addToSet: {
+          'billing.success_payments': req.body
+        },
+        $set: {
+          'billing.current_period_end': subscription.current_period_end
+        }
+      }, {
+        new: true
+      }
+    ).lean();
+
+    // send mail to user (still to be added)
+
+    res.status(200).json({
+      message: 'Success'
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
 module.exports = {
   cancelSubscription,
   createSubscription,
   getBillingStatus,
   getSubscription,
-  resumeSubscription
+  resumeSubscription,
+  paymentFailed,
+  paymentSuccessful
 };
