@@ -32,7 +32,7 @@
         </div>
       </div>
 
-    <!--here we add created property to use change detection-->
+    <!--here we add created property to use change detection.-->
 
 
     <ng-template #subscribed>
@@ -55,11 +55,6 @@
               class="btn btn-warning">Resume subscription</button>
           </ng-template>
         </ng-container>
-      </div>
-
-      <div *ngIf="!subscription?.created; else subscribed" class="card-tile">
-        <h3>Failed payments:</h3>
-
       </div>
     </ng-template>
 
