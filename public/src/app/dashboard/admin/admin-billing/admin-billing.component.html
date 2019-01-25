@@ -1,0 +1,75 @@
+<div class="row main-actvity">
+
+  <div class="col-md-4">
+    <div class="row sidecontent">
+
+      <div class="card sideinnercard">
+        <div class="card-block">
+          <h6 class="card-title"><b>Company Stats</b></h6>
+          <hr/>
+          <p class="card-text">{{ admins_count}} Admin Users</p>
+          <p class="card-text">{{ members_count }} Members</p>
+          <p class="card-text">{{ guests_count }} Guests</p>
+          <p class="card-text">{{ groups_count }} Groups</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-8">
+
+      <div *ngIf="!subscription?.created; else subscribed" class="card-tile">
+        <h2>Welcome to your workspace</h2>
+        <h4>To start using your workspace, please complete your subscription below</h4>
+        <hr>
+        <h4><b>Current Plan </b></h4>
+        <h4>1 user - 10 EUR(€)/month</h4>
+        <hr/>
+        <p><b>Price</b><br/> 10 Eur(€)/seat - Per Month. Billed Monthly.</p>
+        <button (click)="handlePayment()" class="btn btn-lg btn-primary">Start a monthly subscription</button>
+        <div class="row" style="margin-top: 10%; margin-bottom: 20%; margin-left:1%; ">
+          <img src="src/assets/images/powered_by_stripe@2x.png">
+        </div>
+      </div>
+
+    <!--here we add created property to use change detection.-->
+
+
+    <ng-template #subscribed>
+      <div class="card-tile">
+        <h3>Your subscription details:</h3>
+        <h4>Created: {{subscription.created | amFromUnix | amDateFormat:'LL'}}</h4>
+        <h4>Current payment valid until: {{subscription.current_period_end | amFromUnix | amDateFormat:'LL'}}</h4>
+        <h4>Cost: {{subscription.quantity * subscription.amount | insertDecimalPoint: 2 | currency:'EUR'}}  / {{subscription.interval}}</h4>
+        <h4># members on this subscription: {{subscription.quantity}}</h4>
+        <ng-container *ngIf="isWorkspaceOwner()">
+          <button
+            *ngIf="!workspace_information.billing?.scheduled_cancellation; else resumeSubscriptionTemp"
+            (click)="cancelSubscription()"
+            class="btn btn-danger">
+            Cancel subscription
+          </button>
+          <ng-template #resumeSubscriptionTemp>
+            <button
+              (click)="resumeSubscription()"
+              class="btn btn-warning">Resume subscription</button>
+          </ng-template>
+        </ng-container>
+      </div>
+      <!--<div class="card-tile">-->
+        <!--<h3 class="f-payments-title">Failed payments:</h3>-->
+        <!--<ul class="list-group">-->
+          <!--<li *ngFor="let f_payment of failed_payments" class="list-group-item disabled">-->
+            <!--<span>{{f_payment.data.object.period_start | amFromUnix | amDateFormat:'MMMM Do YYYY'}} - {{f_payment.data.object.period_end | amFromUnix | amDateFormat:'MMMM Do YYYY'}}</span>-->
+            <!--<span>{{f_payment.data.object.amount_due | insertDecimalPoint: 2 | currency:'EUR'}}</span>-->
+            <!--<button class="btn btn-outline-danger">Pay now</button>-->
+          <!--</li>-->
+        <!--</ul>-->
+      <!--</div>-->
+    </ng-template>
+
+
+  </div>
+
+</div>
+

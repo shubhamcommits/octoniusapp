@@ -1,5 +1,10 @@
-const { Group, User, Workspace } = require('../models');
-const { sendErr } = require('../../utils');
+
+const {
+  Group, User, Workspace
+} = require('../models');
+
+const { sendErr, billing } = require('../../utils');
+
 
 /*  =============================
  *  -- WORKSPACE ADMIN METHODS --
@@ -84,7 +89,7 @@ const deleteDomain = async (req, res, next) => {
     // Generate an array of their ids
     const idsToRemove = [];
 
-    for (let member of membersToRemove) {
+    for (const member of membersToRemove) {
       // Don't push workspace owner
       if (!workspace._owner.equals(member._id)) {
         idsToRemove.push(member._id);
@@ -174,7 +179,7 @@ const deleteUser = async (req, res, next) => {
     });
 
     // Remove user from workspace's members & invited users
-    await Workspace.findOneAndUpdate({
+    const updatedWorkSpace = await Workspace.findOneAndUpdate({
       _id: workspaceId,
       _owner: userId
     }, {
@@ -201,6 +206,9 @@ const deleteUser = async (req, res, next) => {
       multi: true
     });
 
+    // remove member from the billing list
+      billing.subtractUserFromSubscription(updatedWorkSpace);
+
     return res.status(200).json({
       message: 'User removed from workspace!',
       disabledUser
@@ -209,6 +217,7 @@ const deleteUser = async (req, res, next) => {
     return sendErr(res, err);
   }
 };
+
 
 /*  =============
  *  -- EXPORTS --
@@ -223,3 +232,42 @@ module.exports = {
   // users
   deleteUser
 };
+
+
+// //  for a single payment
+// const charge = await stripe.charges.create({
+//   amount: 999,
+//   currency: 'usd',
+//   source: 'tok_visa',
+//   receipt_email: 'jenny.rosen@example.com'
+// });
+//
+//   // create a new product
+//   const product = stripe.products.create({
+//       name: 'Octonius subscription',
+//       type: 'service'
+//   });
+//
+//   // create a plan
+//   const plan = stripe.plans.create({
+//       product: 'prod_CbvTFuXWh7BPJH',
+//       nickname: 'SaaS Platform USD',
+//       currency: 'usd',
+//       interval: 'month',
+//       amount: 10000
+//   });
+// // create a new customer
+//   const customer = stripe.customers.create({
+//       email: 'jenny.rosen@example.com',
+//       source: 'src_18eYalAHEMiOZZp1l9ZTjSU0',
+//   });
+
+// // subscribe the customer to the plan
+// // You now have a customer subscribed to a plan.
+// // Behind the scenes, Stripe creates an invoice for every billing cycle.
+// // The invoice outlines what the customer owes, reflects when they will be or were charged, and tracks the payment status.
+// // You can even add additional items to an invoice to factor in one-off charges like setup fees.
+// const subscription = stripe.subscriptions.create({
+//   customer: 'cus_4fdAW5ftNQow1a',
+//   items: [{ plan: 'plan_CBXbz9i7AIOTzr' }]
+// });

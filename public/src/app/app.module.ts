@@ -57,6 +57,10 @@ import { GroupTasksComponent } from './dashboard/groups/group/group-tasks/group-
 import { OverviewMyTasksComponent } from './dashboard/overview/overview-my-tasks/overview-my-tasks.component';
 import { OverviewMyWorkplaceComponent } from './dashboard/overview/overview-my-workplace/overview-my-workplace.component';
 import { QuillAutoLinkService } from './shared/services/quill-auto-link.service';
+import { AdminBillingComponent } from './dashboard/admin/admin-billing/admin-billing.component';
+import {DenyNavigationGuard} from "./shared/guards/deny-navigation.guard";
+import {MomentModule} from "ngx-moment";
+import {InsertDecimalPointPipe} from "./shared/pipes/insert-decimal-point.pipe";
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 
@@ -104,7 +108,9 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     GroupPostComponent,
     GroupTasksComponent,
     OverviewMyTasksComponent,
-    OverviewMyWorkplaceComponent
+    OverviewMyWorkplaceComponent,
+    AdminBillingComponent,
+    InsertDecimalPointPipe
   ],
   imports: [
     BrowserModule,
@@ -116,6 +122,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     QuillModule,
     SnotifyModule,
     MentionModule,
+    MomentModule,
     InfiniteScrollModule,
     PickerModule,
     ClickOutsideModule,
@@ -124,10 +131,10 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
     LoadingModule.forRoot({
       animationType: ANIMATION_TYPES.wanderingCubes,
-      backdropBackgroundColour: 'rgba(0,0,0,0.1)', 
+      backdropBackgroundColour: 'rgba(0,0,0,0.1)',
       backdropBorderRadius: '4px',
-      primaryColour: '#ffffff', 
-      secondaryColour: '#ffffff', 
+      primaryColour: '#ffffff',
+      secondaryColour: '#ffffff',
       tertiaryColour: '#ffffff'
   }),
     FontAwesomeModule,
@@ -135,11 +142,11 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     NgbModule.forRoot(),
-    ScrollToModule.forRoot(), 
+    ScrollToModule.forRoot(),
     CalendarModule.forRoot()
   ],
 
-  providers: [AuthService, UserService, PostService, GroupService,
+  providers: [AuthService, UserService, DenyNavigationGuard, PostService, GroupService,
     GroupDataService, WorkspaceService, GroupsService, AdminService,
     AuthGuard, NotAuthGuard,QuillAutoLinkService,
     { provide: 'SnotifyToastConfig', useValue: ToastDefaults},

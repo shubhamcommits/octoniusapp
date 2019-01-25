@@ -56,9 +56,29 @@ const workspaceSchema = new Schema({
   created_date: {
     type: Date,
     default: moment().format()
+  },
+  billing: {
+    subscription_id: {
+      type: String
+    },
+    current_period_end: {
+      type: Number
+    },
+    scheduled_cancellation: {
+      type: Boolean,
+      default: false
+    },
+    failed_payments: {
+      type: Array,
+      default: []
+    },
+    success_payments: {
+      type: Array,
+      default: []
+    }
   }
 
-  // groups field, add later
+  // groups field, add later.
 });
 
 const Workspace = mongoose.model('Workspace', workspaceSchema);

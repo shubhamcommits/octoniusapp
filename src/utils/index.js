@@ -8,6 +8,9 @@ const socket = require('./socket');
 const auth = require('./auth/auth');
 const authorization = require('./auth/authorization');
 
+// billing/
+const billing = require('./billing/billing');
+
 // filehandler/
 const fileHandler = require('./filehandlers/filehandler');
 const groupFileHandler = require('./filehandlers/group.filehandler');
@@ -27,6 +30,9 @@ module.exports = {
   // auth/
   auth,
   authorization,
+
+  //  billing/
+    billing,
 
   // filehandler/
   fileHandler,
