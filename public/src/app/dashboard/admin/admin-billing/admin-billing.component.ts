@@ -3,6 +3,7 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { WorkspaceService } from '../../../shared/services/workspace.service';
 import * as moment from 'moment';
 import swal from "sweetalert";
+import {environment} from "../../../../environments/environment";
 
 
 
@@ -25,6 +26,9 @@ export class AdminBillingComponent implements OnInit {
 
   subscription = null;
 
+  failed_payments;
+  success_payments;
+
   constructor(private ngxService: NgxUiLoaderService, private _workspaceService: WorkspaceService) {
     this.user_data = JSON.parse(localStorage.getItem('user'));
   }
@@ -38,8 +42,9 @@ export class AdminBillingComponent implements OnInit {
     }, 500);
     await this.getWorkSpaceDetails();
 
+    console.log('environment key', environment.pk_stripe);
     this.handler = StripeCheckout.configure({
-      key: 'pk_test_rgLsr0HrrbMcqQr5G7Wz1zFK',
+      key: environment.pk_stripe,
       image: 'https://ixxidesign.azureedge.net/media/1676572/Mickey-Mouse-3.jpg?mode=max&width=562&height=613',
       locale: 'auto',
       token: token => {
@@ -92,9 +97,11 @@ export class AdminBillingComponent implements OnInit {
   async getWorkSpaceDetails() {
     return new Promise((resolve, reject)=>{
       this._workspaceService.getWorkspace(this.user_data.workspace)
-      .subscribe((res)=>{
+      .subscribe((res: any)=>{
         console.log('Workspace Information', res);
         this.workspace_information = res['workspace'];
+        this.failed_payments = res.workspace.billing.failed_payments;
+        this.success_payments = res.workspace.billing.success_payments;
         this.members_count = res['workspace']['members'].length;
         this.guests_count = res['workspace']['invited_users'].length;
         for(let i = 0; i < this.members_count; i ++){
@@ -108,6 +115,7 @@ export class AdminBillingComponent implements OnInit {
           this._workspaceService.getSubscription()
             .subscribe((res2) => {
               this.subscription = res2['subscription'];
+              console.log('SUBSCRIPTION', this.subscription);
             });
         } else {
           this.subscription = null;

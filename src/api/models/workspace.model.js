@@ -71,10 +71,14 @@ const workspaceSchema = new Schema({
     failed_payments: {
       type: Array,
       default: []
+    },
+    success_payments: {
+      type: Array,
+      default: []
     }
   }
 
-  // groups field, add later
+  // groups field, add later.
 });
 
 const Workspace = mongoose.model('Workspace', workspaceSchema);

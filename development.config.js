@@ -6,6 +6,7 @@ const init = () => {
   process.env.JWT_KEY = 'asfsaf12safas23fsafa12sf';
   process.env.SENDGRID_KEY = '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';
   process.env.FILE_UPLOAD_FOLDER = `${__dirname}/uploads/`;
+  process.env.SK_STRIPE = 'sk_test_dvebbZQPA4Vk8kKZaEuN32sD';
 };
 
 module.exports = { init };

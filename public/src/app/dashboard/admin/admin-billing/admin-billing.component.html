@@ -40,7 +40,7 @@
         <h3>Your subscription details:</h3>
         <h4>Created: {{subscription.created | amFromUnix | amDateFormat:'LL'}}</h4>
         <h4>Current payment valid until: {{subscription.current_period_end | amFromUnix | amDateFormat:'LL'}}</h4>
-        <h4>Cost: {{subscription.amount | insertDecimalPoint: 2}} / {{subscription.interval}}</h4>
+        <h4>Cost: {{subscription.quantity * subscription.amount | insertDecimalPoint: 2 | currency:'EUR'}}  / {{subscription.interval}}</h4>
         <h4># members on this subscription: {{subscription.quantity}}</h4>
         <ng-container *ngIf="isWorkspaceOwner()">
           <button
@@ -56,6 +56,16 @@
           </ng-template>
         </ng-container>
       </div>
+      <!--<div class="card-tile">-->
+        <!--<h3 class="f-payments-title">Failed payments:</h3>-->
+        <!--<ul class="list-group">-->
+          <!--<li *ngFor="let f_payment of failed_payments" class="list-group-item disabled">-->
+            <!--<span>{{f_payment.data.object.period_start | amFromUnix | amDateFormat:'MMMM Do YYYY'}} - {{f_payment.data.object.period_end | amFromUnix | amDateFormat:'MMMM Do YYYY'}}</span>-->
+            <!--<span>{{f_payment.data.object.amount_due | insertDecimalPoint: 2 | currency:'EUR'}}</span>-->
+            <!--<button class="btn btn-outline-danger">Pay now</button>-->
+          <!--</li>-->
+        <!--</ul>-->
+      <!--</div>-->
     </ng-template>
 
 
