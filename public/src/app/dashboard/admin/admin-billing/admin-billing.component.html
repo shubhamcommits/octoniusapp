@@ -27,9 +27,9 @@
         <hr/>
         <p><b>Price</b><br/> 10 Eur(€)/seat - Per Month. Billed Monthly.</p>
         <button (click)="handlePayment()" class="btn btn-lg btn-primary">Start a monthly subscription</button>
-        <div class="row" style="margin-top: 10%; margin-bottom: 20%; margin-left:1%; ">
+        <!-- <div class="row" style="margin-top: 10%; margin-bottom: 20%; margin-left:1%; ">
           <img src="src/assets/images/powered_by_stripe@2x.png">
-        </div>
+        </div> -->
       </div>
 
     <!--here we add created property to use change detection.-->
@@ -41,7 +41,7 @@
         <h4>Created: {{subscription.created | amFromUnix | amDateFormat:'LL'}}</h4>
         <h4>Current payment valid until: {{subscription.current_period_end | amFromUnix | amDateFormat:'LL'}}</h4>
         <h4>Cost: {{subscription.quantity * subscription.amount | insertDecimalPoint: 2 | currency:'EUR'}}  / {{subscription.interval}}</h4>
-        <h4># members on this subscription: {{subscription.quantity}}</h4>
+        <h4>Number of users on this subscription: {{subscription.quantity}}</h4>
         <ng-container *ngIf="isWorkspaceOwner()">
           <button
             *ngIf="!workspace_information.billing?.scheduled_cancellation; else resumeSubscriptionTemp"
