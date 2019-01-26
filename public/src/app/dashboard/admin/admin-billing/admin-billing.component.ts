@@ -51,9 +51,8 @@ export class AdminBillingComponent implements OnInit {
       token: token => {
         this._workspaceService.createSubscription(token, this.amount)
           .subscribe( res => {
-            console.log('subscription successful', res);
             this.subscription = res['subscription'];
-            console.log('this subscription', this.subscription);
+            this.workspace_information = res['workspace'];
           })
       }
     });
@@ -132,8 +131,12 @@ export class AdminBillingComponent implements OnInit {
   renewSubscription() {
     this._workspaceService.renewSubscription()
       .subscribe( res => {
-        console.log('RES', res);
+        // display the new subscription information
         this.subscription = res['subscription'];
+        // update the workspace data
+        this.workspace_information = res['workspace'];
+        // The failed payments should be empty after this
+        this.failed_payments = this.workspace_information.billing.failed_payments;
       });
   }
 

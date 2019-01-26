@@ -9,14 +9,14 @@ const createSubscription = async (req, res) => {
     const stripe = require('stripe')(process.env.SK_STRIPE);
 
     const source = req.body.token.id;
-    const email = req.body.email;
+    const email = req.body.token.email;
 
     // find the current User and use his workspace ID
     const user = await User.findOne({ _id: req.userId });
     const workspaceId = user._workspace;
 
     // get the payment plan
-    const plan = await stripe.plans.retrieve('plan_EK1uRUJLJcDS6e');
+    const plan = await stripe.plans.retrieve('plan_EK1rDLfKr9NRkU');
 
     //   // then we create a new customer
     const customer = await stripe.customers.create({
@@ -67,7 +67,8 @@ const createSubscription = async (req, res) => {
 
     res.status(200).json({
       message: 'payment complete',
-      subscription: adjustedSubscription
+      subscription: adjustedSubscription,
+      workspace: workspaceUpdated
     });
   } catch (err) {
     return sendErr(res, err);
@@ -174,7 +175,7 @@ const renewSubscription = async (req, res) => {
     const user = await User.findOne({ _id: req.userId }).populate('_workspace');
 
     //    retrieve the old subscription
-    const oldSubscription = await stripe.subscriptions.retrieve(user._workspace.subscription_id);
+    const oldSubscription = await stripe.subscriptions.retrieve(user._workspace.billing.subscription_id);
 
     // Use the same plan
     const plan = oldSubscription.plan.id;
@@ -196,7 +197,7 @@ const renewSubscription = async (req, res) => {
       return sendErr(res, null, 'Unable to create subscription', 403);
     }
 
-    // update the workspace data
+    // update the workspace data in the database
     const updatedWorkspace = await Workspace.findOneAndUpdate({
       _id: user._workspace
     }, {
@@ -205,7 +206,7 @@ const renewSubscription = async (req, res) => {
         'billing.failed_payments': [],
         'billing.quantity': subscription.quantity,
         'billing.subscription_id': subscription.id,
-          'billing.cancelled': false
+        'billing.cancelled': false
       }
     }, {
       new: true
@@ -223,7 +224,8 @@ const renewSubscription = async (req, res) => {
 
     res.status(200).json({
       message: 'Subscription renewed',
-      subscription: adjustedSubscription
+      subscription: adjustedSubscription,
+      workspace: updatedWorkspace
     });
     //   create new subscription
   } catch (err) {
@@ -269,16 +271,15 @@ const resumeSubscription = async (req, res) => {
 
 const paymentFailed = async (req, res) => {
   try {
-    console.log('entered failed payment', req.body);
     const stripe = require('stripe')(process.env.SK_STRIPE);
-    // add it to the billing.failed_payments property of the workspace
-    const customer = await stripe.customers.retrieve('cus_EPWrSXZyaS2erJ');
 
-    // we need to cancel the subscription
-    //  await stripe.subscriptions.del(req.body.data.object.subscription);
-    await stripe.subscriptions.del('sub_EPWraiiAHagROk');
+    // retrieve the customer linked to this payment
+    const customer = await stripe.customers.retrieve(req.body.data.object.customer);
 
+    // we need to cancel the current subscription
+    await stripe.subscriptions.del(req.body.data.object.subscription);
 
+    // update the workspace to notify the user of the failed payment
     const workspace = await Workspace.findOneAndUpdate(
       { _id: customer.metadata.workspace_id },
       {
@@ -306,15 +307,16 @@ const paymentFailed = async (req, res) => {
 const paymentSuccessful = async (req, res) => {
   try {
     const stripe = require('stripe')(process.env.SK_STRIPE);
-    // get the Stripe customer
+
+    // get the Stripe customer linked to this payment
     const customer = await stripe.customers.retrieve(req.body.data.object.customer);
 
     // get the subscription of the customer
-    const subscription = await stripe.subscriptions.retrieve(customer.subscriptions.data[0].id);
+    //  review this, there is probably a subscription mentioned in req.body
+    const subscription = await stripe.subscriptions.retrieve(req.body.data.object.subscription);
 
-    // add it to the billing.failed_payments property of the workspace
+    // add it to the billing.success_payments property of the workspace
     //   I am not sure if billing.current_period_end is already updated at this point
-    //  or if we have to update this ourselves?
     const workspace = await Workspace.findOneAndUpdate(
       { _id: customer.metadata.workspace_id },
       {
@@ -322,7 +324,8 @@ const paymentSuccessful = async (req, res) => {
           'billing.success_payments': req.body
         },
         $set: {
-          'billing.current_period_end': subscription.current_period_end
+          'billing.current_period_end': subscription.current_period_end,
+          'billing.failed_payments': []
         }
       }, {
         new: true

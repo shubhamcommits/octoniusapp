@@ -67,6 +67,15 @@
           </li>
         </ul>
       </div>
+      <div *ngIf="workspace_information.billing.success_payments.length > 0" class="card-tile">
+        <h3 class="s-payments-title">Completed payments:</h3>
+        <ul class="list-group">
+          <li *ngFor="let s_payment of workspace_information.billing.success_payments" class="list-group-item disabled">
+            <span>{{s_payment.data.object.period_start | amFromUnix | amDateFormat:'MMMM Do YYYY'}} - {{s_payment.data.object.period_end | amFromUnix | amDateFormat:'MMMM Do YYYY'}}</span>
+            <span>{{s_payment.data.object.amount_due | insertDecimalPoint: 2 | currency:'EUR'}}</span>
+          </li>
+        </ul>
+      </div>
     </ng-template>
 
 
