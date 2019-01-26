@@ -42,7 +42,6 @@ export class AdminBillingComponent implements OnInit {
     }, 500);
     await this.getWorkSpaceDetails();
 
-    console.log('environment key', environment.pk_stripe);
     this.handler = StripeCheckout.configure({
       key: environment.pk_stripe,
       image: 'https://ixxidesign.azureedge.net/media/1676572/Mickey-Mouse-3.jpg?mode=max&width=562&height=613',
