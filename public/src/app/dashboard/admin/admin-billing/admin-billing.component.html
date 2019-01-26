@@ -18,7 +18,7 @@
 
   <div class="col-md-8">
 
-      <div *ngIf="!subscription?.created; else subscribed" class="card-tile">
+      <div *ngIf="!subscription?.created || workspace_information.billing.cancelled; else subscribed" class="card-tile">
         <h2>Welcome to your workspace</h2>
         <h4>To start using your workspace, please complete your subscription below</h4>
         <hr>

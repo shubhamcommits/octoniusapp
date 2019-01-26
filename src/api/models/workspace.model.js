@@ -75,6 +75,10 @@ const workspaceSchema = new Schema({
     success_payments: {
       type: Array,
       default: []
+    },
+    quantity: {
+      type: Number,
+      default: 0
     }
   }
 

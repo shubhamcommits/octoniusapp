@@ -6,7 +6,6 @@ import swal from "sweetalert";
 import {environment} from "../../../../environments/environment";
 
 
-
 @Component({
   selector: 'app-admin-billing',
   templateUrl: './admin-billing.component.html',
@@ -41,6 +40,8 @@ export class AdminBillingComponent implements OnInit {
       this.ngxService.stop(); // stop foreground loading with 'default' id
     }, 500);
     await this.getWorkSpaceDetails();
+
+    console.log('KEY', environment.pk_stripe);
 
     this.handler = StripeCheckout.configure({
       key: environment.pk_stripe,
