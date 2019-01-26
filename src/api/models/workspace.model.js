@@ -78,7 +78,11 @@ const workspaceSchema = new Schema({
     },
     quantity: {
       type: Number,
-      default: 0
+      default: 1
+    },
+    cancelled: {
+      type: Boolean,
+      default: false
     }
   }
 

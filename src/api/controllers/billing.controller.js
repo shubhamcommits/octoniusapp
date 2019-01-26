@@ -166,6 +166,71 @@ const cancelSubscription = async (req, res) => {
   }
 };
 
+const renewSubscription = async (req, res) => {
+  try {
+    const stripe = require('stripe')(process.env.SK_STRIPE);
+
+    // find the current User and populate his workspace property
+    const user = await User.findOne({ _id: req.userId }).populate('_workspace');
+
+    //    retrieve the old subscription
+    const oldSubscription = await stripe.subscriptions.retrieve(user._workspace.subscription_id);
+
+    // Use the same plan
+    const plan = oldSubscription.plan.id;
+
+    // Use the same customer
+    const customer = oldSubscription.customer;
+
+    // Create new subscription
+    const subscription = await stripe.subscriptions.create({
+      customer,
+      items: [{
+        plan,
+        quantity: oldSubscription.quantity
+      }]
+    });
+
+
+    if (!subscription) {
+      return sendErr(res, null, 'Unable to create subscription', 403);
+    }
+
+    // update the workspace data
+    const updatedWorkspace = await Workspace.findOneAndUpdate({
+      _id: user._workspace
+    }, {
+      $set: {
+        'billing.current_period_end': subscription.current_period_end,
+        'billing.failed_payments': [],
+        'billing.quantity': subscription.quantity,
+        'billing.subscription_id': subscription.id,
+          'billing.cancelled': false
+      }
+    }, {
+      new: true
+    });
+
+    const adjustedSubscription = {
+      created: subscription.created,
+      current_period_end: subscription.current_period_end,
+      current_period_start: subscription.current_period_start,
+      object: subscription.object,
+      amount: subscription.plan.amount,
+      interval: subscription.plan.interval,
+      quantity: subscription.quantity
+    };
+
+    res.status(200).json({
+      message: 'Subscription renewed',
+      subscription: adjustedSubscription
+    });
+    //   create new subscription
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
 const resumeSubscription = async (req, res) => {
   try {
     const stripe = require('stripe')(process.env.SK_STRIPE);
@@ -207,10 +272,11 @@ const paymentFailed = async (req, res) => {
     console.log('entered failed payment', req.body);
     const stripe = require('stripe')(process.env.SK_STRIPE);
     // add it to the billing.failed_payments property of the workspace
-    const customer = await stripe.customers.retrieve('cus_EPW7JuzrUVVWLM');
+    const customer = await stripe.customers.retrieve('cus_EPWrSXZyaS2erJ');
 
     // we need to cancel the subscription
-    await stripe.subscriptions.del('sub_EPW7481m7AOwLh');
+    //  await stripe.subscriptions.del(req.body.data.object.subscription);
+    await stripe.subscriptions.del('sub_EPWraiiAHagROk');
 
 
     const workspace = await Workspace.findOneAndUpdate(
@@ -292,5 +358,6 @@ module.exports = {
   getSubscription,
   resumeSubscription,
   paymentFailed,
-  paymentSuccessful
+  paymentSuccessful,
+  renewSubscription
 };

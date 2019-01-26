@@ -129,6 +129,14 @@ export class AdminBillingComponent implements OnInit {
     })
   }
 
+  renewSubscription() {
+    this._workspaceService.renewSubscription()
+      .subscribe( res => {
+        console.log('RES', res);
+        this.subscription = res['subscription'];
+      });
+  }
+
   resumeSubscription() {
     this._workspaceService.resumeSubscription()
       .subscribe((res) => {

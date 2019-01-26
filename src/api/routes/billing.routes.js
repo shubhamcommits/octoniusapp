@@ -30,6 +30,9 @@ router.get('/getSubscription', billing.getSubscription);
 // Cancel subscription
 router.get('/cancelSubscription', billing.cancelSubscription);
 
+// Renew subscription
+router.get('/renewSubscription', billing.renewSubscription);
+
 // Resume subscription
 router.get('/resumeSubscription', billing.resumeSubscription);
 
