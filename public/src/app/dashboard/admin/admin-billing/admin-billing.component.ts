@@ -6,7 +6,6 @@ import swal from "sweetalert";
 import {environment} from "../../../../environments/environment";
 
 
-
 @Component({
   selector: 'app-admin-billing',
   templateUrl: './admin-billing.component.html',
@@ -42,7 +41,8 @@ export class AdminBillingComponent implements OnInit {
     }, 500);
     await this.getWorkSpaceDetails();
 
-    console.log('environment key', environment.pk_stripe);
+    console.log('KEY', environment.pk_stripe);
+
     this.handler = StripeCheckout.configure({
       key: environment.pk_stripe,
       image: 'https://octonius.com/img/octonius-icon.png',
@@ -51,9 +51,8 @@ export class AdminBillingComponent implements OnInit {
       token: token => {
         this._workspaceService.createSubscription(token, this.amount)
           .subscribe( res => {
-            console.log('subscription successful', res);
             this.subscription = res['subscription'];
-            console.log('this subscription', this.subscription);
+            this.workspace_information = res['workspace'];
           })
       }
     });
@@ -127,6 +126,18 @@ export class AdminBillingComponent implements OnInit {
         reject(err);
       })
     })
+  }
+
+  renewSubscription() {
+    this._workspaceService.renewSubscription()
+      .subscribe( res => {
+        // display the new subscription information
+        this.subscription = res['subscription'];
+        // update the workspace data
+        this.workspace_information = res['workspace'];
+        // The failed payments should be empty after this
+        this.failed_payments = this.workspace_information.billing.failed_payments;
+      });
   }
 
   resumeSubscription() {

@@ -37,6 +37,10 @@ export class WorkspaceService {
     return this._http.get(this.BASE_API_URL + `/billing/cancelSubscription`);
   }
 
+  renewSubscription() {
+    return this._http.get(this.BASE_API_URL + `/billing/renewSubscription`);
+  }
+
   resumeSubscription() {
     return this._http.get(this.BASE_API_URL + `/billing/resumeSubscription`);
   }

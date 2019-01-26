@@ -75,6 +75,14 @@ const workspaceSchema = new Schema({
     success_payments: {
       type: Array,
       default: []
+    },
+    quantity: {
+      type: Number,
+      default: 1
+    },
+    cancelled: {
+      type: Boolean,
+      default: false
     }
   }
 
