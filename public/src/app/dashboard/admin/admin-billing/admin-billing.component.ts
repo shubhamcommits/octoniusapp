@@ -44,7 +44,8 @@ export class AdminBillingComponent implements OnInit {
 
     this.handler = StripeCheckout.configure({
       key: environment.pk_stripe,
-      image: 'https://ixxidesign.azureedge.net/media/1676572/Mickey-Mouse-3.jpg?mode=max&width=562&height=613',
+      image: 'https://octonius.com/img/octonius-icon.png',
+      currency: 'EUR',
       locale: 'auto',
       token: token => {
         this._workspaceService.createSubscription(token, this.amount)
