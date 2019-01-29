@@ -645,18 +645,6 @@ const changeTaskAssignee = async (req, res, next) => {
       _id: post._group
     }).lean();
 
-    if (
-    // If user is not one of group's admins... and...
-      !group._admins.includes(String(userId))
-        // ...user is not the post author... and...
-        && (!post._posted_by.equals(userId)
-            // ...user is not the task assignee
-            && !post.task._assigned_to.equals(userId))
-    ) {
-      // Deny access!
-      return sendErr(res, null, 'User not allowed to update this post!', 403);
-    }
-
     const postUpdated = await Post.findOneAndUpdate({
       _id: postId
     }, {
