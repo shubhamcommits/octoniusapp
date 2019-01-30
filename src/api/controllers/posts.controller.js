@@ -17,10 +17,7 @@ const add = async (req, res, next) => {
   try {
     const postData = req.body;
 
-    // Id it's event post, convert due_to date to UTC before storing
-    if (postData.type === 'event') {
-      postData['event.due_to'] = moment.utc(postData['event.due_to']).format();
-    }
+    console.log('postData', postData);
 
     const post = await Post.create(postData);
 
