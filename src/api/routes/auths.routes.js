@@ -22,4 +22,7 @@ router.post('/createNewWorkspace', auths.createNewWorkspace);
 // User signup
 router.post('/signup', auths.signUp);
 
+// Check validity of user subscription
+router.get('/checkSubscriptionValidity/:userId', auths.checkSubscriptionValidity);
+
 module.exports = router;
