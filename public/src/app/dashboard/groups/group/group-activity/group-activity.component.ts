@@ -727,8 +727,6 @@ export class GroupActivityComponent implements OnInit {
     // create date object for this event
     const date = new Date(this.model_date.year, this.model_date.month -1, this.model_date.day, this.model_time.hour, this.model_time.minute);
 
-
-
     const post = {
       content: this.post.content,
       type: this.post.type,
@@ -737,7 +735,7 @@ export class GroupActivityComponent implements OnInit {
       event: {
         due_date: moment(date).format('YYYY-MM-DD'),
         due_time: moment(date).format('HH:mm:ss.SSS'),
-        due_to: moment(date).format('YYYY-MM-DD HH:mm:ss.SSS'),
+        due_to: moment.utc(date).format(),
         // problem: assignedUsers will always be empty
         _assigned_to: assignedUsers,
         _content_mentions: this.content_mentions

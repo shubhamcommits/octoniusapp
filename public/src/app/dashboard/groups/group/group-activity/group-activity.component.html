@@ -807,11 +807,11 @@
                 <div class="col-md-12 innercard ">
                   <div class="row" style="margin-top:10px">
                     <div class="col-md-2 dateblock">
-                      <span class="bigdate">{{post?.event.due_to | date :'dd' }}</span>
+                      <span class="bigdate">{{post?.event.due_to | amLocal | date :'dd' }}</span>
                       <br>
-                      <span class="time">{{post?.event.due_to | date: 'MMMM' }}</span>
+                      <span class="time">{{post?.event.due_to | amLocal | date: 'MMMM' }}</span>
                       <br>
-                      <span class="time">{{post.event.due_to | date:'hh:mm'}}</span>
+                      <span class="time">{{post.event.due_to | amLocal | date:'hh:mm'}}</span>
                     </div>
                     <div class="col-md-9 event-title"  [id]="(i)" [innerHTML]="post?.content | safe: 'html' ">
 

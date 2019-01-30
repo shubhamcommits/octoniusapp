@@ -41,8 +41,6 @@ export class AdminBillingComponent implements OnInit {
     }, 500);
     await this.getWorkSpaceDetails();
 
-    console.log('KEY', environment.pk_stripe);
-
     this.handler = StripeCheckout.configure({
       key: environment.pk_stripe,
       image: 'https://octonius.com/img/octonius-icon.png',
@@ -98,7 +96,6 @@ export class AdminBillingComponent implements OnInit {
     return new Promise((resolve, reject)=>{
       this._workspaceService.getWorkspace(this.user_data.workspace)
       .subscribe((res: any)=>{
-        console.log('Workspace Information', res);
         this.workspace_information = res['workspace'];
         this.failed_payments = res.workspace.billing.failed_payments;
         this.success_payments = res.workspace.billing.success_payments;
@@ -115,7 +112,6 @@ export class AdminBillingComponent implements OnInit {
           this._workspaceService.getSubscription()
             .subscribe((res2) => {
               this.subscription = res2['subscription'];
-              console.log('SUBSCRIPTION', this.subscription);
             });
         } else {
           this.subscription = null;
