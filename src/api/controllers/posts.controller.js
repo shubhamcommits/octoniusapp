@@ -283,10 +283,18 @@ const editComment = async (req, res, next) => {
       body: { content, contentMentions }
     } = req;
 
+    const user = await User.findOne({ _id: userId });
+
+    const comment = await Comment.findOne({ _id: commentId });
+
+    // Only let admins, owners or the people who posted this comment edit it
+    if (!(user.role === 'admin' || user.role === 'owner') && !comment._commented_by == userId) {
+      return sendErr(res, null, 'User not allowed to edit this comment!', 403);
+    }
+
     // Update comment
-    const comment = await Comment.findOneAndUpdate({
-      _id: commentId,
-      _commented_by: userId
+    const updatedComment = await Comment.findOneAndUpdate({
+      _id: commentId
     }, {
       $set: {
         content,
@@ -306,7 +314,7 @@ const editComment = async (req, res, next) => {
 
     return res.status(200).json({
       message: 'Comment updated!',
-      comment
+      comment: updatedComment
     });
   } catch (err) {
     return sendErr(res, err);
@@ -393,14 +401,12 @@ const removeComment = async (req, res, next) => {
       _id: comment._post
     }).lean();
 
-    // Get group data
-    const group = await Group.findOne({
-      _id: post._group
-    }).lean();
+    // Get user data
+   const user = await User.findOne({ _id: userId });
 
     if (
     // If user is not one of group's admins... and...
-      !group._admins.includes(String(userId))
+      !(user.role === 'owner' || user.role === 'admin')
         // ...user is not the post author... and...
         && (!post._posted_by.equals(userId)
             // ...user is not the cooment author
@@ -592,9 +598,12 @@ const changeTaskStatus = async (req, res, next) => {
       _id: post._group
     }).lean();
 
+    // const get user data
+      const user = await User.findOne({ _id: userId });
+
     if (
-    // If user is not one of group's admins... and...
-      !group._admins.includes(String(userId))
+    // If user is not an admin or owner... and...
+      !(user.role === 'admin' || user.role === 'owner')
         // ...user is not the post author... and...
         && (!post._posted_by.equals(userId)
             // ...user is not the task assignee

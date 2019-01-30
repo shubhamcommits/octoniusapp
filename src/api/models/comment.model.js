@@ -13,8 +13,8 @@ const CommentSchema = new Schema({
     ref: 'User'
   }],
   created_date: {
-    type: Date,
-    default: Date.now
+    type: String,
+    default: moment.utc().format()
   },
   _commented_by: {
     type: Schema.Types.ObjectId,
