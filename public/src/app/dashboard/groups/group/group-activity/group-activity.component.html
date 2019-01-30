@@ -346,7 +346,7 @@
                       </span>
 
                       <span>
-                        <div ngbDropdown class="d-inline-block" *ngIf="post?._posted_by?._id == this.user_data.user_id; else editpostif">
+                        <div ngbDropdown class="d-inline-block" *ngIf="post?._posted_by?._id == this.user_data.user_id || user?.role === 'owner' || user?.role === 'admin'; else editpostif">
                           <i class="material-icons action" id="dropdownBasic1" ngbDropdownToggle>more_horiz</i>
                           <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
                             <button class="dropdown-item" (click)="OnEditPost(i, post)">Edit Post</button>
@@ -608,7 +608,7 @@
                         </button>
                       </span>
                       <span>
-                        <div ngbDropdown class="d-inline-block" *ngIf="post?._posted_by?._id == this.user_data.user_id; else edittaskif">
+                        <div ngbDropdown class="d-inline-block" *ngIf="post?._posted_by?._id == user_data.user_id || user?.role === 'owner' || user?.role === 'admin'; else edittaskif">
                           <i class="material-icons action" id="dropdownBasic1" ngbDropdownToggle>more_horiz</i>
                           <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
                             <button class="dropdown-item" (click)="OnEditPost(i, post)">Edit Post</button>
@@ -853,7 +853,7 @@
                         </button>
                       </span>
                       <span>
-                        <div ngbDropdown class="d-inline-block" *ngIf="post?._posted_by?._id == this.user_data.user_id; else editeventif">
+                        <div ngbDropdown class="d-inline-block" *ngIf="post?._posted_by?._id == this.user_data.user_id || user?.role === 'owner' || user?.role === 'admin'; else editeventif">
                           <i class="material-icons action" id="dropdownBasic1" ngbDropdownToggle>more_horiz</i>
                           <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
                             <button class="dropdown-item" (click)="OnEditPost(i, post)">Edit Post</button>
