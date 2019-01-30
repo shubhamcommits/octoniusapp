@@ -61,6 +61,7 @@ import { AdminBillingComponent } from './dashboard/admin/admin-billing/admin-bil
 import {DenyNavigationGuard} from "./shared/guards/deny-navigation.guard";
 import {MomentModule} from "ngx-moment";
 import {InsertDecimalPointPipe} from "./shared/pipes/insert-decimal-point.pipe";
+import {ValidSubscriptionGuard} from "./shared/guards/valid-subscription.guard";
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 
@@ -148,7 +149,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 
   providers: [AuthService, UserService, DenyNavigationGuard, PostService, GroupService,
     GroupDataService, WorkspaceService, GroupsService, AdminService,
-    AuthGuard, NotAuthGuard,QuillAutoLinkService,
+    AuthGuard, NotAuthGuard,QuillAutoLinkService, ValidSubscriptionGuard,
     { provide: 'SnotifyToastConfig', useValue: ToastDefaults},
     SnotifyService,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true },

@@ -28,6 +28,10 @@ export class AuthService {
     return this._http.post<any>(this.BASE_API_URL + '/auth/createNewWorkspace', newWorksapce);
   }
 
+  checkSubscriptionValidity(userId) {
+    return this._http.get<any>(this.BASE_API_URL + `/auth/checkSubscriptionValidity/${userId}`);
+  }
+
   checkWorkspaceName(workspace) {
     localStorage.setItem('newWorkspace', JSON.stringify(workspace));
     return this._http.post<any>(this.BASE_API_URL + '/auth/checkWorkspaceName', workspace);
