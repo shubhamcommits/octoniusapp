@@ -16,7 +16,7 @@ const createSubscription = async (req, res) => {
     const workspaceId = user._workspace;
 
     // get the payment plan
-    const plan = await stripe.plans.retrieve('plan_EK1uRUJLJcDS6e');
+    const plan = await stripe.plans.retrieve(process.env.stripe_plan);
 
     //   // then we create a new customer
     const customer = await stripe.customers.create({

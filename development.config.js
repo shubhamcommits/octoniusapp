@@ -7,6 +7,7 @@ const init = () => {
   process.env.SENDGRID_KEY = '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';
   process.env.FILE_UPLOAD_FOLDER = `${__dirname}/uploads/`;
   process.env.SK_STRIPE = 'sk_test_dvebbZQPA4Vk8kKZaEuN32sD';
+  process.env.stripe_plan = 'plan_EK1uRUJLJcDS6e';
 };
 
 module.exports = { init };

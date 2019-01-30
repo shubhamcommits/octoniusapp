@@ -1494,9 +1494,11 @@ export class GroupActivityComponent implements OnInit {
       'content': document.getElementById(index).innerHTML,
       '_content_mentions': this.content_mentions,
       'type': type,
-      'date_due_to': moment(date_due_to).format('YYYY-MM-DD hh:mm:ss.SSS'),
       'assigned_to': this.selectedGroupUsers
     };
+
+    // for tasks we don't want to transform the time to UTC, for events we do want it
+    post['date_due_to'] = type === 'event' ? moment.utc(date_due_to).format() : moment(date_due_to).format();
 
     // if we edit a task we want to inform about its status
     if ( type === 'task') {

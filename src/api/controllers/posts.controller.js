@@ -59,7 +59,7 @@ const add = async (req, res, next) => {
 const edit = async (req, res, next) => {
   try {
     let postData;
-    console.log('req.body', req.body);
+
 
     switch (req.body.type) {
       case 'task':
@@ -101,9 +101,17 @@ const edit = async (req, res, next) => {
         break;
     }
 
-    const post = await Post.findOneAndUpdate({
-      _id: req.params.postId,
-      _posted_by: req.userId
+    const post = await Post.findOne({ _id: req.params.postId });
+
+    const user = await User.findOne({ _id: req.userId });
+
+    // if the user is not an owner or an admin and is not the one who posted, we throw auth error
+    if (!(user.role === 'owner' || user.role === 'admin') && !post._posted_by == req.userId) {
+      return sendErr(res, null, 'User not allowed to edit this post!', 403);
+    }
+
+    const updatedPost = await Post.findOneAndUpdate({
+      _id: req.params.postId
     }, {
       $set: postData
     }, {
@@ -112,10 +120,6 @@ const edit = async (req, res, next) => {
       .populate('_posted_by')
       .populate('task._assigned_to')
       .populate('event._assigned_to');
-
-    if (!post) {
-      return sendErr(res, null, 'User not allowed to edit this post!', 403);
-    }
 
 
     // Create Notification for mentions on post content
@@ -139,7 +143,7 @@ const edit = async (req, res, next) => {
 
     return res.status(200).json({
       message: 'Post updated!',
-      post
+      post: updatedPost
     });
   } catch (err) {
     return sendErr(res, err);
@@ -178,14 +182,12 @@ const remove = async (req, res, next) => {
       _id: postId
     }).lean();
 
-    // Get group data
-    const group = await Group.findOne({
-      _id: post._group
-    }).lean();
+    // Get user data
+    const user = await User.findOne({ _id: req.userId });
 
     if (
-    // If user is not one of group's admins... and...
-      !group._admins.includes(String(userId))
+    // If user is not an admin or owner
+      !(user.role === 'admin' || user.role === 'owner')
         // ...user is not the post author...
         && !post._posted_by.equals(userId)
     ) {
@@ -281,10 +283,18 @@ const editComment = async (req, res, next) => {
       body: { content, contentMentions }
     } = req;
 
+    const user = await User.findOne({ _id: userId });
+
+    const comment = await Comment.findOne({ _id: commentId });
+
+    // Only let admins, owners or the people who posted this comment edit it
+    if (!(user.role === 'admin' || user.role === 'owner') && !comment._commented_by == userId) {
+      return sendErr(res, null, 'User not allowed to edit this comment!', 403);
+    }
+
     // Update comment
-    const comment = await Comment.findOneAndUpdate({
-      _id: commentId,
-      _commented_by: userId
+    const updatedComment = await Comment.findOneAndUpdate({
+      _id: commentId
     }, {
       $set: {
         content,
@@ -304,7 +314,7 @@ const editComment = async (req, res, next) => {
 
     return res.status(200).json({
       message: 'Comment updated!',
-      comment
+      comment: updatedComment
     });
   } catch (err) {
     return sendErr(res, err);
@@ -391,14 +401,12 @@ const removeComment = async (req, res, next) => {
       _id: comment._post
     }).lean();
 
-    // Get group data
-    const group = await Group.findOne({
-      _id: post._group
-    }).lean();
+    // Get user data
+   const user = await User.findOne({ _id: userId });
 
     if (
     // If user is not one of group's admins... and...
-      !group._admins.includes(String(userId))
+      !(user.role === 'owner' || user.role === 'admin')
         // ...user is not the post author... and...
         && (!post._posted_by.equals(userId)
             // ...user is not the cooment author
@@ -590,9 +598,12 @@ const changeTaskStatus = async (req, res, next) => {
       _id: post._group
     }).lean();
 
+    // const get user data
+      const user = await User.findOne({ _id: userId });
+
     if (
-    // If user is not one of group's admins... and...
-      !group._admins.includes(String(userId))
+    // If user is not an admin or owner... and...
+      !(user.role === 'admin' || user.role === 'owner')
         // ...user is not the post author... and...
         && (!post._posted_by.equals(userId)
             // ...user is not the task assignee
@@ -680,8 +691,8 @@ module.exports = {
   // Likes
   like,
   unlike,
-    likeComment,
-    unlikeComment,
+  likeComment,
+  unlikeComment,
   // Tasks
   changeTaskAssignee,
   changeTaskStatus
