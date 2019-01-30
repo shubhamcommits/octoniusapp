@@ -54,7 +54,7 @@ const PostSchema = new Schema({
   },
   event: {
     due_to: {
-      type: Date,
+      type: String,
       default: null
     },
     _assigned_to: [{

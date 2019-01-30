@@ -811,7 +811,7 @@
                       <br>
                       <span class="time">{{post?.event.due_to | amLocal | date: 'MMMM' }}</span>
                       <br>
-                      <span class="time">{{post.event.due_to | amLocal | date:'hh:mm'}}</span>
+                      <span class="time">{{post.event.due_to | amLocal | date:'HH:mm'}}</span>
                     </div>
                     <div class="col-md-9 event-title"  [id]="(i)" [innerHTML]="post?.content | safe: 'html' ">
 

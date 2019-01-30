@@ -17,6 +17,8 @@ const add = async (req, res, next) => {
   try {
     const postData = req.body;
 
+    console.log('postData', postData);
+
     const post = await Post.create(postData);
 
     if (post._content_mentions.length !== 0) {
