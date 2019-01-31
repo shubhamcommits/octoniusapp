@@ -8,6 +8,7 @@ const init = () => {
   process.env.FILE_UPLOAD_FOLDER = `${__dirname}/uploads/`;
   process.env.SK_STRIPE = 'sk_test_dvebbZQPA4Vk8kKZaEuN32sD';
   process.env.stripe_plan = 'plan_EK1uRUJLJcDS6e';
+  process.env.WEBHOOK_PS_SECRET = 'whsec_7k7nAo5WaDGhpW2rE4dAvYMNeLluVnv1';
 };
 
 module.exports = { init };
