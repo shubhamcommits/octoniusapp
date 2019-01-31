@@ -1,4 +1,5 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 
 const {
     billing
@@ -12,6 +13,6 @@ const router = express.Router();
 router.post('/paymentFailed', billing.paymentFailed);
 
 // When a customer's payment succeeded
-router.post('/paymentSuccessful', billing.paymentSuccessful);
+router.post('/paymentSuccessful', bodyParser.raw({ type: '*/*' }), billing.paymentSuccessful);
 
 module.exports = router;
