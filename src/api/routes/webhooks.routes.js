@@ -12,7 +12,10 @@ const router = express.Router();
 // when a customer's payment failed
 router.post('/paymentFailed', billing.paymentFailed);
 
+// Trying to transform before the request
+router.use(bodyParser.raw({ type: '*/*' }));
+
 // When a customer's payment succeeded
-router.post('/paymentSuccessful', bodyParser.raw({ type: '*/*' }), billing.paymentSuccessful);
+router.post('/paymentSuccessful', billing.paymentSuccessful);
 
 module.exports = router;
