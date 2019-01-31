@@ -304,27 +304,36 @@ const paymentFailed = async (req, res) => {
   }
 };
 
+
 const paymentSuccessful = async (req, res) => {
   try {
     const stripe = require('stripe')(process.env.SK_STRIPE);
 
-    // get the Stripe customer linked to this payment
-    const customer = await stripe.customers.retrieve(req.body.data.object.customer);
+    const endpointSecret = process.env.WEBHOOK_PS_SECRET;
 
-    // get the subscription of the customer
-    //  review this, there is probably a subscription mentioned in req.body
-    const subscription = await stripe.subscriptions.retrieve(req.body.data.object.subscription);
+    const sig = req.headers['stripe-signature'];
 
-    // add it to the billing.success_payments property of the workspace
-    //   I am not sure if billing.current_period_end is already updated at this point
-    const workspace = await Workspace.findOneAndUpdate(
-      { _id: customer.metadata.workspace_id },
-      {
-        $addToSet: {
-          'billing.success_payments': req.body
-        },
-        $set: {
-          'billing.current_period_end': subscription.current_period_end,
+    const event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
+
+    console.log('event', event);
+
+    // // get the Stripe customer linked to this payment
+    // const customer = await stripe.customers.retrieve(req.body.data.object.customer);
+    //
+    // // get the subscription of the customer
+    // //  review this, there is probably a subscription mentioned in req.body
+    // const subscription = await stripe.subscriptions.retrieve(req.body.data.object.subscription);
+    //
+    // // add it to the billing.success_payments property of the workspace
+    // //   I am not sure if billing.current_period_end is already updated at this point
+    // const workspace = await Workspace.findOneAndUpdate(
+    //   { _id: customer.metadata.workspace_id },
+    //   {
+    //     $addToSet: {
+    //       'billing.success_payments': req.body
+    //     },
+    //     $set: {
+    //       'billing.current_period_end': subscription.current_period_end,
           'billing.failed_payments': []
         }
       }, {

@@ -36,13 +36,13 @@ export class GroupTasksComponent implements OnInit {
   }
 
   constructor(private groupDataService: GroupDataService,
-     private ngxService: NgxUiLoaderService, 
-     private _activatedRoute: ActivatedRoute, 
+     private ngxService: NgxUiLoaderService,
+     private _activatedRoute: ActivatedRoute,
      private userService: UserService,
-     private groupService: GroupService, 
+     private groupService: GroupService,
      private postService: PostService,
      private modalService: NgbModal) {
-    this.user_data = JSON.parse(localStorage.getItem('user')); 
+    this.user_data = JSON.parse(localStorage.getItem('user'));
   }
 
   public editor;
@@ -76,7 +76,7 @@ export class GroupTasksComponent implements OnInit {
 
  async ngOnInit() {
     this.ngxService.start(); // start foreground loading with 'default' id
- 
+
     // Stop the foreground loading after 5s
     setTimeout(() => {
       this.ngxService.stop(); // stop foreground loading with 'default' id
@@ -220,7 +220,7 @@ export class GroupTasksComponent implements OnInit {
         this.assignment = 'Unassigned';
         this.getTasks();
         this.getCompletedTasks();
-        
+
 
       }, (err) => {
         console.log('Error received while adding the taks', err)
@@ -251,15 +251,15 @@ export class GroupTasksComponent implements OnInit {
       this.pendingTasks = res['posts'];
       for(var i = 0; i < this.pendingTasks.length; i++){
         if(this.pendingTasks[i]['task']['status'] == 'to do'){
-          this.pendingToDoTaskCount = 1;  
+          this.pendingToDoTaskCount = 1;
         }
        if(this.pendingTasks[i]['task']['status'] == 'in progress'){
-          this.pendingInProgressTaskCount = 1; 
+          this.pendingInProgressTaskCount = 1;
         }
       }
       this.isLoading$.next(false);
       console.log('Tasks', res);
-    },    
+    },
     (err) => {
       console.log('Error Fetching the Pending Tasks Posts', err);
       this.isLoading$.next(false);
@@ -274,9 +274,9 @@ export class GroupTasksComponent implements OnInit {
     .subscribe((res) => {
       console.log('Post ID', postId);
       console.log('Assignee ID', assigneeId);
-      console.log('Task Assignee', res);  
+      console.log('Task Assignee', res);
       this.getTasks();
-      this.getCompletedTasks();  
+      this.getCompletedTasks();
     }, (err) => {
       console.log('Error changing the Task Assignee', err);
     });
@@ -311,7 +311,7 @@ export class GroupTasksComponent implements OnInit {
     this.loadNextPosts(lastPostId);
   }
 
-  
+
   OnMarkTaskCompleted(post_id){
     const post = {
       'status': 'done'
@@ -381,30 +381,12 @@ export class GroupTasksComponent implements OnInit {
       }
       this.isLoading$.next(false);
       console.log('Completed Tasks', res);
-    }, 
+    },
     (err) => {
       console.log('Error Fetching the Completed Tasks Posts', err);
       this.isLoading$.next(false);
     });
 
-  }
-
-  openTimePicker(content) {
-    this.modalService.open(content, { centered: true });
-    this.timePickedCount;
-  }
-
-  openDatePicker(content) {
-    this.modalService.open(content, { centered: true });
-    this.datePickedCount = 1;
-  }
-
-  openAssignPicker(content, post) {
-    this.modalService.open(content, { centered: true });
-
-    if (post && post.type === 'task') {
-      this.selectedGroupUsers = [post.task._assigned_to];
-    }
   }
 
   onSearch(evt: any) {
@@ -456,17 +438,17 @@ export class GroupTasksComponent implements OnInit {
     onEditorBlured(quill) {
       console.log('editor blur!', quill);
     }
-  
+
     onEditorFocused(quill) {
       console.log('editor focus!', quill);
     }
-  
+
     onEditorCreated(quill) {
       this.editor = quill;
       console.log('quill is ready! this is current quill instance object', quill);
       // quill.insertText(0,'hello', 'bold', true);
     }
-  
+
     onContentChanged(quill) {
       console.log('quill content is changed!', quill);
       this.editorTextLength = quill.text.length
@@ -475,13 +457,13 @@ export class GroupTasksComponent implements OnInit {
 
     mentionmembers() {
       var hashValues = [];
-  
+
       var Value = [];
-  
+
       this.groupService.getGroup(this.groupId)
         .subscribe((res) => {
           Value.push({ id: '', value: 'all' });
-  
+
           for (var i = 0; i < res['group']._members.length; i++) {
             this.members.push(res['group']._members[i].first_name + ' ' + res['group']._members[i].last_name);
             this.allMembersId.push(res['group']._members[i]._id);
@@ -492,12 +474,12 @@ export class GroupTasksComponent implements OnInit {
             this.allMembersId.push(res['group']._admins[i]._id);
             Value.push({ id: res['group']._admins[i]._id, value: res['group']._admins[i].first_name + ' ' + res['group']._admins[i].last_name });
           }
-  
-  
+
+
         }, (err) => {
-  
+
         });
-  
+
       this.groupService.getGroupFiles(this.groupId)
         .subscribe((res) => {
           this.files = res['posts'];
@@ -507,29 +489,29 @@ export class GroupTasksComponent implements OnInit {
             }
           }
         }, (err) => {
-  
+
         });
-  
+
       const toolbaroptions = {
         container: [
           ['bold', 'italic', 'underline', 'strike'],     // toggled buttons
           ['blockquote', 'code-block'],
-  
+
           [{ 'header': 1 }, { 'header': 2 }],               // custom button values
           [{ 'list': 'ordered' }, { 'list': 'bullet' }],
           [{ 'script': 'sub' }, { 'script': 'super' }],      // superscript/subscript
           [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
           [{ 'direction': 'rtl' }],                         // text direction
-  
+
           // [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
           [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-  
+
           [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
           [{ 'font': [] }],
           [{ 'align': [] }],
-  
+
           ['clean'],                                        // remove formatting button
-  
+
           ['link', 'image', 'video'],
           ['emoji']],
           handlers: {
@@ -538,8 +520,8 @@ export class GroupTasksComponent implements OnInit {
               }
           }
       };
-  
-  
+
+
       this.modules = {
         toolbar: toolbaroptions,
         "emoji-toolbar": true,
@@ -550,14 +532,14 @@ export class GroupTasksComponent implements OnInit {
           mentionDenotationChars: ["@", "#"],
           source: function (searchTerm, renderList, mentionChar) {
             let values;
-  
-  
+
+
             if (mentionChar === "@") {
               values = Value;
             } else {
               values = hashValues;
             }
-  
+
             if (searchTerm.length === 0) {
               renderList(values, searchTerm);
             } else {
@@ -569,20 +551,35 @@ export class GroupTasksComponent implements OnInit {
           }
         },
       };
-  
+
     }
-  
- toggle_div(){
-  
-   var division = document.getElementById('show_hide');
-   if(division.style.display === 'none'){
-     division.style.display = 'block';
-   }
-   else{
-     division.style.display = 'none';
-     this.selectedGroupUsers = [];
-     this.post.content = '';
-   }
- }
+
+  /////// MODALS
+
+  openNewTaskModal(newTaskModal) {
+    this.modalService.open(newTaskModal, { centered: true, size: "lg" });
+  }
+
+  openTimePicker(content) {
+    this.modalService.open(content, { centered: true });
+    this.timePickedCount;
+  }
+
+  openDatePicker(content) {
+    this.modalService.open(content, { centered: true });
+    this.datePickedCount = 1;
+  }
+
+  openAssignPicker(content, post) {
+    this.modalService.open(content, { centered: true });
+
+    if (post && post.type === 'task') {
+      this.selectedGroupUsers = [post.task._assigned_to];
+    }
+  }
+
+  logDate(){
+   console.log(this.model_date);
+  }
 
 }

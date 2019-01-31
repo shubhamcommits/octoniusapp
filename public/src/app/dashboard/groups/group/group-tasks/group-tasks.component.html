@@ -2,46 +2,60 @@
 
 <div class="row" style="margin-bottom: 1%;">
     <div class="col-md-4">
-            <button class="btn btn-md kbn-todo" id="task" (click)="toggle_div()">Create a new Task</button>    
+            <button class="btn btn-md kbn-todo" id="task" (click)="openNewTaskModal(newTaskModal)">Create a new Task</button>
     </div>
 </div>
 
-<div id="show_hide" style="display: none;">
-        <div class="row">
-                <div class="col-md-2">
-                        <button type="button" class="btn kbn-done task"
-                        (click)="openAssignPicker(assignContent)">
-                  <i class="material-icons">perm_identity</i> {{assignment}}
-                </button>
-                </div>
-                
-                <div class="col-md-2">
-                        <button class="btn kbn-done task" type="button"
-                        (click)="openDatePicker(dateContent)">
-                  <i class="material-icons">event</i>{{model_date?.day}}-{{model_date?.month}}-{{model_date?.year}}
-                </button>
-                </div>
-                
-            </div>
-            
-            <div class="card">
-                    <quill-editor id="post-content" [modules]="modules" [(ngModel)]="post.content" (blur)="onEditorBlured($event)"
+<!-- CREATE A NEW TASK MODAL -->
+
+<ng-template #newTaskModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Create a new task</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-2">
+        <button type="button" class="btn kbn-done task"
+                (click)="openAssignPicker(assignContent)">
+          <i class="material-icons">perm_identity</i> {{assignment}}
+        </button>
+      </div>
+
+      <div class="col-md-2">
+        <button class="btn kbn-done task" type="button"
+                (click)="openDatePicker(dateContent)">
+          <i class="material-icons">event</i>{{model_date?.day}}-{{model_date?.month}}-{{model_date?.year}}
+        </button>
+      </div>
+
+    </div>
+
+    <div class="card">
+      <quill-editor id="post-content" [modules]="modules" [(ngModel)]="post.content" (blur)="onEditorBlured($event)"
                     [spellcheck]="true" name="postContent" (focus)="onEditorFocused($event)"
                     (ready)="onEditorCreated($event)" (onEditorCreated)="onEditorCreated($event)" (change)="onContentChanged($event)"
                     (onContentChanged)="onContentChanged($event)"></quill-editor>
-            </div>
-            
-            <div class="row" style="margin-bottom: 5%;">
-                <div class="col-md-1">
-                        <button class="btn btn-md kbn-working" id="create-task" (click)="addNewTaskPost();">Post Task</button>    
-                </div>
-                <div class="col-md-1">
-                        <button class="btn btn-md" id="cancel-task">Cancel</button>    
-                </div>
-                    
-            </div>
+    </div>
 
-</div>
+    <div class="row" style="margin-bottom: 5%;">
+      <div class="col-md-1">
+        <button class="btn btn-md kbn-working" id="create-task" (click)="addNewTaskPost();">Post Task</button>
+      </div>
+      <div class="col-md-1">
+        <button class="btn btn-md" id="cancel-task">Cancel</button>
+      </div>
+
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+  </div>
+</ng-template>
+
+
       <!-- Modal to pick a due date-->
 
       <ng-template style="margin-top: 10px" #dateContent let-c="close" let-d="dismiss">
@@ -52,21 +66,21 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-    
+
             <div class="modal-body">
-              <ngb-datepicker #dp [(ngModel)]="model_date" (navigate)="date = $event.next"></ngb-datepicker>
+              <ngb-datepicker #dp (select)="logDate()" [(ngModel)]="model_date" (navigate)="date = $event.next"></ngb-datepicker>
             </div>
-    
+
             <div class="modal-footer">
               <!-- in the personal workspace we don't use the assigned members function-->
-              <button [disabled]="selectedGroupUsers.length == 0" class="btn btn-primary mb-2 mr-2" (click)="c('Close click')">Done</button>
-    
+              <button class="btn btn-primary mb-2 mr-2" (click)="c('Close click')">Done</button>
+
               <button type="button" class="btn btn-default mb-2 mr-2" (click)="c('Close click')">Cancel</button>
             </div>
-    
+
           </ng-template>
 
-                <!--  Modal to Assign calendar event or task to group memeber -->
+                <!--  Modal to Assign calendar event or task to group member -->
       <ng-template #assignContent let-c="close" let-d="dismiss">
 
             <div class="modal-header">
@@ -88,19 +102,19 @@
                   <ng-template let-item="item">
                     <label style="color: #333;width: 150px;">{{item.full_name }}</label>
                     <!--  <img [src]="item.flag" style="width: 30px; border: 1px solid #efefef;margin-right: 0px;"/> -->
-    
+
                     <label>{{item.capital}}</label>
                   </ng-template>
                 </c-item>
               </angular2-multiselect>
-    
+
             </div>
             <div class="modal-footer">
               <button [disabled]="selectedGroupUsers.length == 0 " class="btn btn-primary mb-2 mr-2" (click)="c('Close click')">Done</button>
               <button type="button" class="btn btn-default mb-2 mr-2" (click)="c('Close click')">Cancel</button>
             </div>
-    
-    
+
+
           </ng-template>
 
 <!--CREATE TASKS-->
