@@ -21,8 +21,6 @@ export class ValidSubscriptionGuard implements CanActivate {
           this.router.navigateByUrl('/dashboard/admin/billing');
         }
         return res.valid;
-
-
       })
   }
 }
