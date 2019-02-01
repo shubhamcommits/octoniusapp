@@ -319,7 +319,6 @@ const paymentSuccessful = async (req, res) => {
     //
     // console.log('event', event);
 
-
     // get the Stripe customer linked to this payment
     const customer = await stripe.customers.retrieve(req.body.data.object.customer);
 
