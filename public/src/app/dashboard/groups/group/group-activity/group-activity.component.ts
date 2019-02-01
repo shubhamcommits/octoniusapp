@@ -1,6 +1,6 @@
 import * as moment from 'moment';
 import * as io from 'socket.io-client';
-import {Component, OnInit, ViewChild, Testability, ViewContainerRef, ElementRef, ViewChildren} from '@angular/core';
+import {Component, OnInit, ViewChildren} from '@angular/core';
 import { ActivatedRoute, Router, Route } from '@angular/router';
 import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PostService } from '../../../../shared/services/post.service';
@@ -2101,8 +2101,7 @@ this.postService.likeComment(comment)
         mentionDenotationChars: ["@", "#"],
         source: function (searchTerm, renderList, mentionChar) {
           let values;
-
-
+console.log('entered the mentions');
           if (mentionChar === "@") {
             values = Value;
           } else {

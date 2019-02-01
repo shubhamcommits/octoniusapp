@@ -12,6 +12,14 @@ import * as moment from 'moment';
 import * as io from 'socket.io-client';
 import {Subject} from "rxjs/Rx";
 
+import 'quill-mention';
+
+import * as Quill from 'quill';
+(window as any).Quill = Quill;
+import 'quill-emoji/dist/quill-emoji';
+import { QuillAutoLinkService } from '../../../../shared/services/quill-auto-link.service';
+
+
 @Component({
   selector: 'app-group-tasks',
   templateUrl: './group-tasks.component.html',
@@ -43,6 +51,7 @@ export class GroupTasksComponent implements OnInit {
      private groupService: GroupService,
      private postService: PostService,
      private modalService: NgbModal,
+              private quillInitializeService: QuillAutoLinkService,
               private _userService: UserService,
               private _router: Router) {
     this.user_data = JSON.parse(localStorage.getItem('user'));
@@ -85,6 +94,12 @@ export class GroupTasksComponent implements OnInit {
     class: '',
     message: ''
   };
+
+  edit_post_content = null;
+
+  editTaskModalRef;
+
+  postBeingEditted;
 
   private _message = new Subject<string>();
 
@@ -205,12 +220,10 @@ export class GroupTasksComponent implements OnInit {
     this.postService.addNewTaskPost(formData)
       .subscribe((res) => {
         // what we need to do is add this fresh task to the tasks we already fetched
-        console.log('RES', res);
-        console.log('pendingtasks1', this.pendingTasks);
         this.pendingTasks.push(res['post']);
-        console.log('pendingtasks2', this.pendingTasks);
+
         // make sure that we display the new task
-        this.pendingToDoTaskCount === 1
+        this.pendingToDoTaskCount = 1
         // close the modal
         this.newTaskModalRef.close();
 
@@ -523,7 +536,6 @@ export class GroupTasksComponent implements OnInit {
           }
       };
 
-
       this.modules = {
         toolbar: toolbaroptions,
         "emoji-toolbar": true,
@@ -535,6 +547,7 @@ export class GroupTasksComponent implements OnInit {
           source: function (searchTerm, renderList, mentionChar) {
             let values;
 
+            console.log('searchterm', searchTerm);
 
             if (mentionChar === "@") {
               values = Value;
@@ -548,11 +561,16 @@ export class GroupTasksComponent implements OnInit {
               const matches = [];
               for (var i = 0; i < values.length; i++)
                 if (~values[i].value.toLowerCase().indexOf(searchTerm.toLowerCase())) matches.push(values[i]);
+              console.log('matches', matches);
               renderList(matches, searchTerm);
             }
           }
         },
       };
+
+      console.log('this.modules', this.modules);
+
+      this.modulesLoaded = true;
 
     }
 
@@ -595,7 +613,7 @@ export class GroupTasksComponent implements OnInit {
       'post_id': post._id,
       'user_id': this.user_data.user_id,
       '_liked_by': post._liked_by,
-      'type_post': post.task.status === 'completed' ? 'completed' : 'pending'
+      'type_post': post.task.status === 'done' ? 'completed' : 'pending'
     };
 
     if (postData._liked_by.length == 0) {
@@ -764,7 +782,7 @@ readyToAddTask() {
         this.resetNewPostForm();
 
 
-        if (postData.status === 'complete') {
+        if (postData.status === 'done') {
           const postIndex = this.completedTasks.findIndex((task) => post._id == task._id);
           this.completedTasks[postIndex] = res.post;
         } else {
@@ -780,7 +798,7 @@ readyToAddTask() {
           group: this.group_name,
           userId: this.user_data.user_id,
           postId: res['post']._id,
-          groupId: this.group_id,
+          groupId: this.groupId,
           type: 'post'
         };
 
@@ -810,8 +828,131 @@ readyToAddTask() {
   }
 
   resetNewPostForm() {
-    this.model_date = {year: (new Date()).getFullYear(), month: (new Date()).getMonth() + 1, day: (new Date()).getDate()};
-   this.assignment = 'UnAssigned'
+   this.model_date = {year: (new Date()).getFullYear(), month: (new Date()).getMonth() + 1, day: (new Date()).getDate()};
+   this.assignment = 'UnAssigned';
+   this.post.content = '';
+   this.edit_post_content = '';
+ }
+
+ openEditTaskModal(taskmodal, post) {
+   this.postBeingEditted = post;
+   this.assignment = 'Assigned';
+
+   console.log('post.assign', post.task._assigned_to);
+   this.selectedGroupUsers = [post.task._assigned_to];
+   // this isn't present at first so we need to add the full name so we can display it in the assign modal
+   post.task._assigned_to.full_name = post.task._assigned_to.first_name + " " + post.task._assigned_to.last_name;
+   this.groupUsersList = [post.task._assigned_to];
+
+   this.edit_post_content = post.content;
+
+   this.model_date = {
+     day: moment(post.task.due_to, "YYYY-MM-DD").date(),
+     month: moment(post.task.due_to, "YYYY-MM-DD").month() + 1,
+     year: moment(post.task.due_to, "YYYY-MM-DD").year()
+   };
+   this.editTaskModalRef = this.modalService.open(taskmodal, {centered: true, size: "lg"});
+ }
+
+ readyToEditTask() {
+   return !this.selectedGroupUsers[0] || !this.model_date || this.edit_post_content.content === '';
+ }
+
+ editPost() {
+   // const editor = document.getElementById('edit-content-' + index);
+const post = this.postBeingEditted;
+   // we create a new date object
+   const date_due_to = new Date(this.model_date.year, this.model_date.month - 1, this.model_date.day);
+
+   console.log('this.contentMentions', this.content_mentions);
+
+   const postData = {
+     'content': this.edit_post_content,
+     '_content_mentions': this.content_mentions,
+     'type': 'task',
+     'assigned_to': [this.selectedGroupUsers[0]],
+     'date_due_to': moment(date_due_to).format(),
+     'status': post.task.status
+   };
+
+   const scanned_content = postData.content;
+   let el = document.createElement('html');
+   el.innerHTML = scanned_content;
+
+   if (el.getElementsByClassName('mention').length > 0) {
+     //  console.log('Element',  el.getElementsByClassName( 'mention' ));
+     for (let i = 0; i < el.getElementsByClassName('mention').length; i++) {
+       this.content_mentions.push(el.getElementsByClassName('mention')[i]['dataset']['id'].toString());
+     }
+   }
+
+   this.postService.editPost(post._id, postData)
+     .subscribe((res) => {
+
+       this.alert.class = 'success';
+       this._message.next(res['message']);
+       this.resetNewPostForm();
+
+       // mirror forntend to backend
+       if (post.task.status === 'done') {
+         const indexTask = this.completedTasks.findIndex((task) => task._id === post._id);
+         this.completedTasks[indexTask] = res['post'];
+       } else {
+         const indexTask = this.pendingTasks.findIndex((task) => task._id === post._id);
+         this.pendingTasks[indexTask] = res['post'];
+       }
+
+       this.editTaskModalRef.close();
+
+       // socket notifications
+       const data = {
+         // it should get automatically, something like workspace: this.workspace_name
+         workspace: this.user_data.workspace.workspace_name,
+         // it should get automatically, something like group: this.group_name
+         group: this.group_name,
+         userId: this.user_data.user_id,
+         postId: res['post']._id,
+         groupId: this.groupId,
+         type: 'post'
+       };
+
+       this.socket.emit('newPost', data);
+       this.content_mentions = [];
+     }, (err) => {
+
+       this.alert.class = 'danger';
+       this.content_mentions = [];
+
+       if (err.status) {
+         this._message.next(err.error.message);
+       } else {
+         this._message.next('Error! either server is down or no internet connection');
+       }
+
+     });
+ }
+
+ deletePost(post) {
+   swal({
+     title: "Are you sure?",
+     text: "You won't be able to revert this!",
+     icon: "warning",
+     dangerMode: true,
+     buttons: ["Cancel", "Yes, delete it!"]
+   }).then((confirmed) => {
+     if (confirmed) {
+       this.postService.deletePost(post._id)
+         .subscribe((res) => {
+           if (post.task.status === 'done') {
+             const indexTask = this.completedTasks.findIndex(task => task._id == post._id)
+             this.completedTasks.splice(indexTask, 1);
+           } else {
+             const indexTask = this.pendingTasks.findIndex(task => task._id == post._id)
+             this.pendingTasks.splice(indexTask, 1);
+           }
+         });
+     }
+   });
  }
 
 }
