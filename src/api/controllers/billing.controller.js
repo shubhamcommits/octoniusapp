@@ -308,6 +308,17 @@ const paymentSuccessful = async (req, res) => {
   try {
     const stripe = require('stripe')(process.env.SK_STRIPE);
 
+    // const endpointSecret = process.env.WEBHOOK_PS_SECRET;
+    //
+    // const sig = req.headers['stripe-signature'];
+    //
+    // console.log('req', req);
+    //
+    //
+    // const event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
+    //
+    // console.log('event', event);
+
     // get the Stripe customer linked to this payment
     const customer = await stripe.customers.retrieve(req.body.data.object.customer);
 

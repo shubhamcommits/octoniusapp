@@ -29,6 +29,7 @@ import { OverviewMyTasksComponent } from './dashboard/overview/overview-my-tasks
 import {OverviewMyWorkplaceComponent} from "./dashboard/overview/overview-my-workplace/overview-my-workplace.component";
 import { AdminBillingComponent } from './dashboard/admin/admin-billing/admin-billing.component';
 import {DenyNavigationGuard} from "./shared/guards/deny-navigation.guard";
+import {ValidSubscriptionGuard} from "./shared/guards/valid-subscription.guard";
 
 
 const appRoutes: Routes = [
@@ -43,14 +44,14 @@ const appRoutes: Routes = [
   {
     path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard],
     children: [
-      { path: 'overview', component: OverviewComponent},
-      {path: 'overview/mytasks', component: OverviewMyTasksComponent},
-      {path: 'overview/myworkplace', component: OverviewMyWorkplaceComponent},
+      { path: 'overview', component: OverviewComponent, canActivate: [ValidSubscriptionGuard]},
+      {path: 'overview/mytasks', component: OverviewMyTasksComponent, canActivate: [ValidSubscriptionGuard]},
+      {path: 'overview/myworkplace', component: OverviewMyWorkplaceComponent, canActivate: [ValidSubscriptionGuard]},
       {
-        path: 'groups', component: GroupsComponent,
+        path: 'groups', component: GroupsComponent, canActivate: [ValidSubscriptionGuard],
       },
       {
-        path: 'group/:id', component: GroupComponent,
+        path: 'group/:id', component: GroupComponent, canActivate: [ValidSubscriptionGuard],
 
         children: [
           { path: 'activity', component: GroupActivityComponent },
@@ -65,8 +66,8 @@ const appRoutes: Routes = [
       {
         path: 'admin', component: AdminComponent,
         children: [
-          { path: 'general', component: AdminGeneralComponent },
-          { path: 'members', component: AdminMembersComponent },
+          { path: 'general', component: AdminGeneralComponent, canActivate: [ValidSubscriptionGuard] },
+          { path: 'members', component: AdminMembersComponent, canActivate: [ValidSubscriptionGuard] },
           {
             path: 'billing',
             component: AdminBillingComponent,
@@ -75,7 +76,7 @@ const appRoutes: Routes = [
         ]
       },
       {
-        path: 'profile', component: UserProfileComponent,
+        path: 'profile', component: UserProfileComponent, canActivate: [ValidSubscriptionGuard],
         children: [{ path: 'profile', component: ProfileComponent }]
       }
     ]
