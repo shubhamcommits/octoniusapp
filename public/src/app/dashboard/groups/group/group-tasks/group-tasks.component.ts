@@ -4,12 +4,13 @@ import { PostService } from '../../../../shared/services/post.service';
 import { GroupService } from '../../../../shared/services/group.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { BehaviorSubject } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { GroupDataService } from '../../../../shared/services/group-data.service';
 import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../../../../../environments/environment';
 import * as moment from 'moment';
 import * as io from 'socket.io-client';
+import {Subject} from "rxjs/Rx";
 
 @Component({
   selector: 'app-group-tasks',
@@ -33,7 +34,7 @@ export class GroupTasksComponent implements OnInit {
   post = {
     type: 'task',
     content: ''
-  }
+  };
 
   constructor(private groupDataService: GroupDataService,
      private ngxService: NgxUiLoaderService,
@@ -41,7 +42,9 @@ export class GroupTasksComponent implements OnInit {
      private userService: UserService,
      private groupService: GroupService,
      private postService: PostService,
-     private modalService: NgbModal) {
+     private modalService: NgbModal,
+              private _userService: UserService,
+              private _router: Router) {
     this.user_data = JSON.parse(localStorage.getItem('user'));
   }
 
@@ -51,8 +54,8 @@ export class GroupTasksComponent implements OnInit {
   modules;
   modulesLoaded = false;
 
-  pendingTasks = new Array();
-  completedTasks = new Array();
+  pendingTasks = [];
+  completedTasks = [];
 
   loadCount = 1;
 
@@ -62,8 +65,8 @@ export class GroupTasksComponent implements OnInit {
   datePickedCount = 0;
   timePickedCount = 0;
 
-  selectedGroupUsers: any = new Array();
-  groupUsersList: any = new Array();
+  selectedGroupUsers: any = [];
+  groupUsersList: any = [];
   settings = {};
   model_date;
 
@@ -73,6 +76,17 @@ export class GroupTasksComponent implements OnInit {
   content_mentions = [];
 
   assignment = 'Unassigned';
+
+  newTaskModalRef;
+
+  user;
+
+  alert = {
+    class: '',
+    message: ''
+  };
+
+  private _message = new Subject<string>();
 
  async ngOnInit() {
     this.ngxService.start(); // start foreground loading with 'default' id
@@ -87,6 +101,7 @@ export class GroupTasksComponent implements OnInit {
     this.model_date = {year: (new Date()).getFullYear(), month: (new Date()).getMonth() + 1, day: (new Date()).getDate()};
     //console.log('Data', this.groupDataService)
    // console.log('Id', this.groupId);
+   this.getUserProfile();
     this.getTasks();
     this.getCompletedTasks();
     this.loadGroup();
@@ -144,12 +159,7 @@ export class GroupTasksComponent implements OnInit {
       task: {
         due_date: moment(date).format('YYYY-MM-DD hh:mm:ss.SSS'),
         due_to: moment(date).format('YYYY-MM-DD'),
-        // there are two scenarios:
-        // 1. personal workspace task post: doesn't need assigned members so selectGroupUsers will be undefined
-        // 2. group task post: needs one assigned member so selectgorupusers will be defined
-        // assign_to become the id of the selected group user in groups
-        // assign_to becomes the current user ID in the personal workspace
-        _assigned_to: this.selectedGroupUsers[0] ? this.selectedGroupUsers[0]._id : JSON.parse(localStorage.getItem('user')).user_id,
+        _assigned_to: this.selectedGroupUsers[0]._id,
         _content_mentions: this.content_mentions
       }
     };
@@ -162,8 +172,6 @@ export class GroupTasksComponent implements OnInit {
     // if the user is using his personal workspace I want to automatically assign the task to him/her
     // If the user is posting a task in a group I want to assign it to the member he/she chose.
     formData.append('task._assigned_to', post.task._assigned_to);
-
-
     formData.append('task.status', 'to do');
 
     const scanned_content = post.content;
@@ -190,16 +198,24 @@ export class GroupTasksComponent implements OnInit {
       for (var i = 0; i < this.content_mentions.length; i++) {
         formData.append('_content_mentions', this.content_mentions[i]);
       }
-
-      // console.log('Content Mention', post._content_mentions);
-      //  console.log('This post', postId);
     }
 
 
     // console.log('post: ', post);
     this.postService.addNewTaskPost(formData)
       .subscribe((res) => {
+        // what we need to do is add this fresh task to the tasks we already fetched
+        console.log('RES', res);
+        console.log('pendingtasks1', this.pendingTasks);
+        this.pendingTasks.push(res['post']);
+        console.log('pendingtasks2', this.pendingTasks);
+        // make sure that we display the new task
+        this.pendingToDoTaskCount === 1
+        // close the modal
+        this.newTaskModalRef.close();
 
+        // this is the data we enter in the socket so that people who are in groups
+        // activity page will get an update
         const data = {
           // it should get automatically, something like workspace: this.workspace_name
           workspace: this.user_data.workspace.workspace_name,
@@ -212,15 +228,6 @@ export class GroupTasksComponent implements OnInit {
         };
 
         this.socket.emit('newPost', data);
-        var division = document.getElementById('show_hide');
-        division.style.display = 'none';
-        this.content_mentions = [];
-        this.post.content = '';
-        this.selectedGroupUsers = [];
-        this.assignment = 'Unassigned';
-        this.getTasks();
-        this.getCompletedTasks();
-
 
       }, (err) => {
         console.log('Error received while adding the taks', err)
@@ -236,9 +243,7 @@ export class GroupTasksComponent implements OnInit {
       // console.log(this.group_members);
         this.group_admins = res['group']._admins;
       //  console.log(this.group_admins);
-
       }, (err) => {
-
       });
   }
 
@@ -398,7 +403,6 @@ export class GroupTasksComponent implements OnInit {
       }, (err) => {
 
       });
-
   }
 
   onItemSelect(item: any) {
@@ -450,15 +454,13 @@ export class GroupTasksComponent implements OnInit {
     }
 
     onContentChanged(quill) {
-      console.log('quill content is changed!', quill);
-      this.editorTextLength = quill.text.length
-      console.log('length', this.editorTextLength);
+      this.editorTextLength = quill.text.length;
     }
 
     mentionmembers() {
-      var hashValues = [];
+      let hashValues = [];
 
-      var Value = [];
+      let Value = [];
 
       this.groupService.getGroup(this.groupId)
         .subscribe((res) => {
@@ -557,7 +559,7 @@ export class GroupTasksComponent implements OnInit {
   /////// MODALS
 
   openNewTaskModal(newTaskModal) {
-    this.modalService.open(newTaskModal, { centered: true, size: "lg" });
+    this.newTaskModalRef = this.modalService.open(newTaskModal, { centered: true, size: "lg" });
   }
 
   openTimePicker(content) {
@@ -578,8 +580,238 @@ export class GroupTasksComponent implements OnInit {
     }
   }
 
-  logDate(){
-   console.log(this.model_date);
+  userLikedPost(post) {
+
+   const currentUserId = this.user_data.user_id;
+   // see is the current user is one of the users who liked this post
+   const index = post._liked_by.findIndex( user => user == currentUserId);
+   return index > -1;
   }
+
+  onClickLikePost(index, post) {
+
+    // const like_icon = document.getElementById('icon_like_post_' + index);
+    const postData = {
+      'post_id': post._id,
+      'user_id': this.user_data.user_id,
+      '_liked_by': post._liked_by,
+      'type_post': post.task.status === 'completed' ? 'completed' : 'pending'
+    };
+
+    if (postData._liked_by.length == 0) {
+      this.likepost(postData);
+    } else {
+      let userHasLikedPost = false;
+
+      // we check whether the user is one of the likes we already have
+      postData._liked_by.forEach((user) => {
+        if ( user == this.user_data.user_id ) {
+          userHasLikedPost = true;
+        }
+      });
+
+      // we like the post when the user is not between the users that liked the post
+      // and we unlike the post when it is
+      if (!userHasLikedPost) {
+        this.likepost(postData);
+      } else {
+        this.unlikepost(postData);
+      }
+    }
+  }
+
+readyToAddTask() {
+   return !this.selectedGroupUsers[0] || !this.model_date || this.post.content === '';
+}
+
+  likepost(post) {
+    this.postService.like(post)
+      .subscribe((res) => {
+        // this.alert.class = 'success';
+        // this._message.next(res['message']);
+;
+        // find the post we are currently handling
+        // we differentiate between pending posts and completed posts so we can update the right ones
+        if (post.type_post === 'pending') {
+          const indexLikedPost = this.pendingTasks.findIndex((_post) => {
+            return _post._id === post.post_id;
+          });
+
+          this.pendingTasks[indexLikedPost]._liked_by.push(this.user_data.user_id);
+
+        } else if (post.type_post === 'complete') {
+          // completed tasks differentiate from the pending one
+          // so we have to update a different array
+          const indexLikedPost = this.completedTasks.findIndex((_post) => {
+            return _post._id === post.post_id;
+          });
+          this.completedTasks[indexLikedPost]._liked_by.push(this.user_data.user_id);
+        }
+
+        this.playAudio();
+
+      }, (err) => {
+
+        this.alert.class = 'danger';
+
+        if (err.status) {
+          this._message.next(err.error.message);
+        } else {
+          this._message.next('Error! either server is down or no internet connection');
+        }
+      });
+  }
+
+  unlikepost (post) {
+    const currentUserId = JSON.parse(localStorage.getItem('user')).user_id;
+
+    this.postService.unlike(post)
+      .subscribe((res) => {
+        // this.alert.class = 'success';
+        // this._message.next(res['message']);
+
+        // find the index of the like
+        const indexLike = post._liked_by.findIndex(user => user == currentUserId);
+
+        // find the index of the post we are currently handling
+        if (post.type_post === 'pending') {
+          const indexUnlikedPost = this.pendingTasks.findIndex((_post) => {
+            return _post._id === post.post_id;
+          });
+          this.pendingTasks[indexUnlikedPost]._liked_by.splice(indexLike, 1);
+        } else {
+          // completed tasks differentiate from the pending ones
+          // so we have to update a different array
+          const indexUnlikedPost = this.completedTasks.findIndex((_post) => {
+            return _post._id === post.post_id;
+          });
+          this.completedTasks[indexUnlikedPost]._liked_by.splice(indexLike, 1);
+        }
+      }, (err) => {
+
+        this.alert.class = 'danger';
+
+        if (err.status) {
+          this._message.next(err.error.message);
+        } else {
+          this._message.next('Error! either server is down or no internet connection');
+        }
+
+      });
+  }
+
+  playAudio() {
+    const audio = new Audio();
+    audio.src = "/assets/audio/intuition.ogg";
+    audio.load();
+    audio.play();
+  }
+
+  getUserProfile() {
+    this._userService.getUser()
+      .subscribe((res) => {
+        this.user = res.user;
+        // this.profileImage = res.user['profile_pic'];
+        // this.profileImage = this.BASE_URL + `/uploads/${this.profileImage}`;
+      }, (err) => {
+        this.alert.class = 'alert alert-danger';
+        if (err.status === 401) {
+          this.alert.message = err.error.message;
+          setTimeout(() => {
+            localStorage.clear();
+            this._router.navigate(['']);
+          }, 3000);
+        } else if (err.status) {
+          this.alert.class = err.error.message;
+        } else {
+          this.alert.message = 'Error! either server is down or no internet connection';
+        }
+      });
+  }
+
+  OnSaveEditPost(index, post) {
+    const editor = document.getElementById('edit-content-' + index);
+
+    // we create a new date object based on whether we added time
+    const date_due_to = new Date(this.model_date.year, this.model_date.month - 1, this.model_date.day);
+
+    const postData = {
+      'content': document.getElementById(index).innerHTML,
+      '_content_mentions': this.content_mentions,
+      'type': post.type,
+      'assigned_to': this.selectedGroupUsers,
+      'date_due_to': moment(date_due_to).format(),
+      'status': post.task.status
+    };
+
+
+    const scanned_content = postData.content;
+    let el = document.createElement('html');
+    el.innerHTML = scanned_content;
+
+    if (el.getElementsByClassName('mention').length > 0) {
+      //  console.log('Element',  el.getElementsByClassName( 'mention' ));
+      for (let i = 0; i < el.getElementsByClassName('mention').length; i++) {
+        this.content_mentions.push(el.getElementsByClassName('mention')[i]['dataset']['id'].toString());
+      }
+    }
+
+    this.postService.editPost(post._id, postData)
+      .subscribe((res) => {
+
+        this.alert.class = 'success';
+        this._message.next(res['message']);
+        this.resetNewPostForm();
+
+
+        if (postData.status === 'complete') {
+          const postIndex = this.completedTasks.findIndex((task) => post._id == task._id);
+          this.completedTasks[postIndex] = res.post;
+        } else {
+          const postIndex = this.pendingTasks.findIndex((task) => post._id == task._id);
+          this.pendingTasks[postIndex] = res.post;
+        }
+
+        // socket notifications
+        const data = {
+          // it should get automatically, something like workspace: this.workspace_name
+          workspace: this.user_data.workspace.workspace_name,
+          // it should get automatically, something like group: this.group_name
+          group: this.group_name,
+          userId: this.user_data.user_id,
+          postId: res['post']._id,
+          groupId: this.group_id,
+          type: 'post'
+        };
+
+        this.socket.emit('newPost', data);
+        this.content_mentions = [];
+
+      }, (err) => {
+
+        this.alert.class = 'danger';
+        this.content_mentions = [];
+
+        if (err.status) {
+          this._message.next(err.error.message);
+        } else {
+          this._message.next('Error! either server is down or no internet connection');
+        }
+
+      });
+    const x = document.getElementById(index);
+    const y = document.getElementById("button_edit_post" + index);
+    x.style.borderStyle = "none";
+    x.style.display = "block";
+    editor.style.display = 'none';
+    x.setAttribute('contenteditable', 'false');
+    y.style.display = "none";
+    x.blur();
+  }
+
+  resetNewPostForm() {
+    this.model_date = {year: (new Date()).getFullYear(), month: (new Date()).getMonth() + 1, day: (new Date()).getDate()};
+   this.assignment = 'UnAssigned'
+ }
 
 }

@@ -158,7 +158,7 @@ export class GroupActivityComponent implements OnInit {
   // post's attahced files
   filesToUpload: Array<File> = [];
 
-  googleDriveFiles=[];
+  googleDriveFiles = [];
 
   modules;
   modulesLoaded = false;
@@ -1920,10 +1920,6 @@ export class GroupActivityComponent implements OnInit {
 
     if (like_length == 0) {
       this.likepost(post);
-      // this.scrollToTop('#card-normal-post-' + index);
-      // this.scrollToTop('#card-event-post-' + index);
-      // this.scrollToTop('#card-task-post-' + index);
-      // like_icon.style.color = "#005FD5";
     } else {
       let userHasLikedPost = false;
 

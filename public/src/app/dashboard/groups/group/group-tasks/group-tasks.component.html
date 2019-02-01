@@ -11,9 +11,6 @@
 <ng-template #newTaskModal let-modal>
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">Create a new task</h4>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
   </div>
   <div class="modal-body">
     <div class="row">
@@ -34,7 +31,7 @@
     </div>
 
     <div class="card">
-      <quill-editor id="post-content" [modules]="modules" [(ngModel)]="post.content" (blur)="onEditorBlured($event)"
+      <quill-editor id="post-content" [(ngModel)]="post.content" (blur)="onEditorBlured($event)"
                     [spellcheck]="true" name="postContent" (focus)="onEditorFocused($event)"
                     (ready)="onEditorCreated($event)" (onEditorCreated)="onEditorCreated($event)" (change)="onContentChanged($event)"
                     (onContentChanged)="onContentChanged($event)"></quill-editor>
@@ -42,16 +39,13 @@
 
     <div class="row" style="margin-bottom: 5%;">
       <div class="col-md-1">
-        <button class="btn btn-md kbn-working" id="create-task" (click)="addNewTaskPost();">Post Task</button>
+        <button [disabled]="readyToAddTask()" class="btn btn-md kbn-working" id="create-task" (click)="addNewTaskPost();">Post Task</button>
       </div>
       <div class="col-md-1">
         <button class="btn btn-md" id="cancel-task">Cancel</button>
       </div>
 
     </div>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
   </div>
 </ng-template>
 
@@ -68,7 +62,7 @@
             </div>
 
             <div class="modal-body">
-              <ngb-datepicker #dp (select)="logDate()" [(ngModel)]="model_date" (navigate)="date = $event.next"></ngb-datepicker>
+              <ngb-datepicker #dp [(ngModel)]="model_date" (navigate)="date = $event.next"></ngb-datepicker>
             </div>
 
             <div class="modal-footer">
@@ -194,19 +188,53 @@
                                     </div>
                                 </ng-template>
                                 <hr>
+                              <div class="col-md-12 text-right" id="button_edit_post{{i}}" style="display: none; padding-bottom: 1em;">
+                                <button type="button" class="btn btn-sm btn-outline-warning task"
+                                        (click)="openAssignPicker(assignContent)">
+                                  <i class="material-icons">perm_identity</i> {{assignment}}
+                                </button>
+                                <button class="btn btn-sm btn-outline-warning task" type="button"
+                                        (click)="openDatePicker(dateContent)">
+                                  <i class="material-icons">event</i> {{model_date?.day}}-{{model_date?.month}}-{{model_date?.year}}
+                                </button>
+                                <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditPost(i, post)">Save</button>
+                              </div>
+
+                              <div class="col-md-12 innercard">
+                                <quill-editor id="edit-content-{{i}}" type="text" [(ngModel)]="post.content"
+                                              [spellcheck]="true" value="post?.content" style="display: none;" (blur)="onEditorBlured($event)"
+                                              (focus)="onEditorFocused($event)" (ready)="onEditorCreated($event)" (change)="onContentChanged($event)"></quill-editor>
+                              </div>
                                 <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/post/{{post._id}}">
                                     <div class="col-md-12 innercard " [innerHTML]="post?.content | safe: 'html'">
                                         <!--<pre class="card-text ">{{post?.content}}
                                       </pre>-->
                                     </div>
                                 </a>
+                              <div class="col-md-12 text-right">
+                                <span>
+                        <button class="btn btn-link" (click)="onClickLikePost(i, post)">
+                          <i *ngIf="!userLikedPost(post); else likeif" class="material-icons muted" id="icon_like_post_{{i}}">thumb_up</i>
+                          <ng-template #likeif><i class="material-icons active" id="icon_like_post_{{i}}">thumb_up</i></ng-template>
+                        </button>
+                      </span>
+                                <span>
+                        <div ngbDropdown class="d-inline-block"
+                             *ngIf="post?._posted_by._id == user_data.user_id || user?.role === 'owner' || user?.role === 'admin'; else editevenif">
+                          <i class="material-icons action dropdown-edit" id="dropdownBasic1" ngbDropdownToggle>more_horiz</i>
+                          <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                            <button class="dropdown-item">Edit Post</button>
+                            <button class="dropdown-item">Delete Post</button>
+                          </div>
+                        </div>
+                        <ng-template #editeventif>
+                        </ng-template>
+                      </span>
+                              </div>
                             </div>
-
                         </div>
                     </div>
-
                 </div>
-
             </div>
 
             <ng-template #noToDoTasks>
