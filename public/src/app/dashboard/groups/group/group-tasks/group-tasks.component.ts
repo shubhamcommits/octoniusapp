@@ -608,6 +608,7 @@ export class GroupTasksComponent implements OnInit {
 
   onClickLikePost(index, post) {
 
+
     // const like_icon = document.getElementById('icon_like_post_' + index);
     const postData = {
       'post_id': post._id,
@@ -643,11 +644,10 @@ readyToAddTask() {
 }
 
   likepost(post) {
+
     this.postService.like(post)
       .subscribe((res) => {
-        // this.alert.class = 'success';
-        // this._message.next(res['message']);
-;
+console.log('AFTER RES', post);
         // find the post we are currently handling
         // we differentiate between pending posts and completed posts so we can update the right ones
         if (post.type_post === 'pending') {
@@ -657,13 +657,16 @@ readyToAddTask() {
 
           this.pendingTasks[indexLikedPost]._liked_by.push(this.user_data.user_id);
 
-        } else if (post.type_post === 'complete') {
+        } else if (post.type_post === 'completed') {
+          console.log('entered complete zone')
           // completed tasks differentiate from the pending one
           // so we have to update a different array
           const indexLikedPost = this.completedTasks.findIndex((_post) => {
             return _post._id === post.post_id;
           });
+          console.log('indexLikePost', indexLikedPost);
           this.completedTasks[indexLikedPost]._liked_by.push(this.user_data.user_id);
+          console.log('end zone', this.completedTasks[indexLikedPost]);
         }
 
         this.playAudio();
@@ -932,7 +935,7 @@ const post = this.postBeingEditted;
      });
  }
 
- deletePost(post) {
+ deleteTask(post) {
    swal({
      title: "Are you sure?",
      text: "You won't be able to revert this!",
