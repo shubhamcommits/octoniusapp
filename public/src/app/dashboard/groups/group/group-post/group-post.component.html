@@ -1,3 +1,83 @@
+<ng-template style="margin-top: 10px" #dateContent let-c="close" let-d="dismiss">
+
+  <div style="width:100%" class="modal-header">
+    <h4 class="modal-title">Select Due Date</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <ngb-datepicker #dp [(ngModel)]="model_date" (navigate)="date = $event.next"></ngb-datepicker>
+  </div>
+
+  <div class="modal-footer">
+    <!-- in the personal workspace we don't use the assigned members function-->
+    <button [disabled]="selectedGroupUsers.length == 0 && !isItMyWorkplace" class="btn btn-primary mb-2 mr-2" (click)="c('Close click')">Done</button>
+
+    <button type="button" class="btn btn-default mb-2 mr-2" (click)="c('Close click')">Cancel</button>
+  </div>
+
+</ng-template>
+
+<!--  Modal to pick a time -->
+
+<ng-template style="margin-top: 10px" #timeContent let-c="close" let-d="dismiss">
+
+  <div class="modal-header">
+    <h4 class="modal-title">Select Time</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <ngb-timepicker [(ngModel)]="model_time" [meridian]="true"></ngb-timepicker>
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn btn-primary mb-2 mr-2" (click)="c('Close click')">Done</button>
+    <button type="button" class="btn btn-default mb-2 mr-2" (click)="c('Close click')">Cancel</button>
+  </div>
+
+</ng-template>
+
+<!--  Modal to Assign calendar event or task to group memeber -->
+<ng-template #assignContent let-c="close" let-d="dismiss">
+
+  <div class="modal-header">
+    <h4 class="modal-title">Search User</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <angular2-multiselect [data]="groupUsersList" [(ngModel)]="selectedGroupUsers" [settings]="settings"
+                          (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
+                          (onDeSelectAll)="onDeSelectAll($event)">
+      <c-search>
+        <ng-template>
+          <input type="text" (keyup)="onSearch($event)" placeholder="Name, Email, Username or Phone" style="border: none;width: 100%; height: 100%;outline: none;" />
+        </ng-template>
+      </c-search>
+      <c-item>
+        <ng-template let-item="item">
+          <label style="color: #333;width: 150px;">{{item.full_name }}</label>
+          <!--  <img [src]="item.flag" style="width: 30px; border: 1px solid #efefef;margin-right: 0px;"/> -->
+
+          <label>{{item.capital}}</label>
+        </ng-template>
+      </c-item>
+    </angular2-multiselect>
+
+  </div>
+  <div class="modal-footer">
+    <button [disabled]="selectedGroupUsers.length == 0 " class="btn btn-primary mb-2 mr-2" (click)="c('Close click')">Done</button>
+    <button type="button" class="btn btn-default mb-2 mr-2" (click)="c('Close click')">Cancel</button>
+  </div>
+
+
+</ng-template>
 <ul class="list-group ">
   <!-- Normal post -->
   <li class="list-group-item " *ngIf="this.post?.type== 'normal'">
@@ -233,6 +313,24 @@
           </ng-template>
         </div>
 
+        <div class="col-md-12 text-right" id="button_edit_post" style="display: none; padding-bottom: 1em;">
+          <button type="button" class="btn btn-sm btn-outline-warning task" *ngIf="!isItMyWorkplace && post.type === 'task'"
+                  (click)="openAssignPicker(assignContent)">
+            <i class="material-icons">perm_identity</i> {{assignment}}
+          </button>
+          <button class="btn btn-sm btn-outline-warning task" type="button" *ngIf="(post.type === 'task' || post.type === 'event')"
+                  (click)="openDatePicker(dateContent)">
+            <i class="material-icons">event</i> {{model_date?.day}}-{{model_date?.month}}-{{model_date?.year}}
+          </button>
+          <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditPost(post._id,post?.content, post.type)">Save</button>
+        </div>
+
+        <div class="col-md-12 innercard">
+          <quill-editor [modules]="modules" id="edit-content" type="text" [(ngModel)]="post.content"
+                        [spellcheck]="true" value="post?.content" style="display: none;" (blur)="onEditorBlured($event)"
+                        (focus)="onEditorFocused($event)" (ready)="onEditorCreated($event)" (change)="onContentChanged($event)"></quill-editor>
+        </div>
+
         <div class="card-body">
           <div class="col-md-12 innercard " [innerHTML]="post?.content | safe: 'html'">
             <!--<pre class="card-text ">{{post?.content}}
@@ -277,7 +375,7 @@
                 <div ngbDropdown class="d-inline-block" *ngIf="post?._posted_by?._id == this.user_data.user_id || user?.role === 'owner' || user?.role === 'admin'; else editpostif">
                   <i class="material-icons action" id="dropdownBasic1" ngbDropdownToggle>more_horiz</i>
                   <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                    <button class="dropdown-item" (click)="OnEditPost(i, post)">Edit Post</button>
+                    <button class="dropdown-item" (click)="OnEditPost(post)">Edit Post</button>
 
                     <button class="dropdown-item" (click)="onDeletePost(post._id)">Delete Post</button>
                   </div>
@@ -433,6 +531,26 @@
                 <br>
                 <span class="time">{{post.event.due_to | date:'hh:mm'}}</span>
               </div>
+              <div class="col-md-12 text-right" id="button_edit_post" style="display: none; padding-bottom: 1em;">
+                <button type="button" class="btn btn-sm btn-outline-warning task" *ngIf="!isItMyWorkplace && (post.type === 'task' || post.type === 'event')"
+                        (click)="openAssignPicker(assignContent)">
+                  <i class="material-icons">perm_identity</i> {{assignment}}
+                </button>
+                <button class="btn btn-sm btn-outline-warning task" type="button" *ngIf="(post.type === 'task' || post.type === 'event')"
+                        (click)="openDatePicker(dateContent)">
+                  <i class="material-icons">event</i> {{model_date?.day}}-{{model_date?.month}}-{{model_date?.year}}
+                </button>
+                <button *ngIf="post.type=='event'" class="btn btn-outline-warning task" type="button" (click)="openTimePicker(timeContent)">
+                  <i class="material-icons">alarm</i>{{model_time.hour}}:{{model_time.minute}}
+                </button>
+                <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditPost(post._id,post?.content, post.type)">Save</button>
+              </div>
+
+              <div class="col-md-12 innercard">
+                <quill-editor [modules]="modules" id="edit-content" type="text" [(ngModel)]="post.content"
+                              [spellcheck]="true" value="post?.content" style="display: none;" (blur)="onEditorBlured($event)"
+                              (focus)="onEditorFocused($event)" (ready)="onEditorCreated($event)" (change)="onContentChanged($event)"></quill-editor>
+              </div>
               <div class="col-md-9 event-title" [id]="(i)" [innerHTML]="post?.content | safe: 'html' ">
               </div>
             </div>
@@ -476,7 +594,14 @@
               </button>
             </span>
             <span>
+              <div ngbDropdown class="d-inline-block" *ngIf="post?._posted_by?._id == this.user_data.user_id || user?.role === 'owner' || user?.role === 'admin'; else editeventif">
+                <i class="material-icons action" id="dropdownBasic1" ngbDropdownToggle>more_horiz</i>
+                <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                  <button class="dropdown-item" (click)="OnEditPost(post)">Edit Post</button>
 
+                  <button class="dropdown-item" (click)="onDeletePost(post._id)">Delete Post</button>
+                </div>
+              </div>
               <ng-template #editeventif>
               </ng-template>
             </span>

@@ -1,4 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
+import * as moment from 'moment';
 import { PostService } from '../../../../shared/services/post.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
@@ -7,6 +8,8 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { GroupService } from '../../../../shared/services/group.service';
 import { GroupDataService } from '../../../../shared/services/group-data.service';
 import { environment } from '../../../../../environments/environment';
+import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
 declare var gapi: any;
 declare var google: any;
 import * as io from 'socket.io-client';
@@ -64,6 +67,19 @@ export class GroupPostComponent implements OnInit {
 
   content_mentions = [];
 
+  selectedGroupUsers = [];
+
+  groupUsersList: any =[];
+
+  settings = {};
+
+  model_date;
+  model_time = { hour: 13, minute: 30 };
+  assignment = 'Unassigned';
+
+  datePickedCount = 0;
+  timePickedCount = 0;
+
   modules = {};
 
   @ViewChild('commentEditor') commentEditor;
@@ -86,7 +102,7 @@ export class GroupPostComponent implements OnInit {
 
   constructor(private ngxService: NgxUiLoaderService, private postService: PostService,
     private groupService: GroupService, private _activatedRoute: ActivatedRoute, private _userService: UserService,
-    public groupDataService: GroupDataService
+    public groupDataService: GroupDataService ,private quillInitializeService: QuillAutoLinkService, private modalService: NgbModal
     , private _router: Router) {
     this.postId = this._activatedRoute.snapshot.paramMap.get('postId');
     this.user_data = JSON.parse(localStorage.getItem('user'));
@@ -107,6 +123,7 @@ export class GroupPostComponent implements OnInit {
           window.scrollTo(0, 0);
       }
   });
+  this.model_date = {year: (new Date()).getFullYear(), month: (new Date()).getMonth() + 1, day: (new Date()).getDate()};
     this.ngxService.start(); // start foreground loading with 'default' id
 
     // Stop the foreground loading after 5s
@@ -117,6 +134,7 @@ export class GroupPostComponent implements OnInit {
     this.getPost(this.postId);
     this.mentionmembers();
     this.inilizeCommentForm();
+    this.initializeGroupMembersSearchForm();
 
    // console.log('Post ID', this.postId);
    // console.log('Group ID', this.group_id);
@@ -153,10 +171,165 @@ export class GroupPostComponent implements OnInit {
 
   }
 
+  initializeGroupMembersSearchForm() {
+    this.settings = {
+      text: 'Select Group Members',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      classes: 'myclass custom-class',
+      primaryKey: '_id',
+      labelKey: 'full_name',
+      noDataLabel: 'Search Members...',
+      enableSearchFilter: true,
+      searchBy: ['full_name', 'capital']
+    };
+  }
+
   inilizeCommentForm() {
     this.commentForm = new FormGroup({
       'commentContent': new FormControl(null, [Validators.required, InputValidators.fieldCannotBeEmpty]),
     });
+  }
+
+  OnEditPost(post){
+    if(this.post.type === 'task' || this.post.type === 'event'){
+      const editor_div = document.getElementById('button_edit_post');
+      const editor = document.getElementById('edit-content');
+      editor_div.style.display = 'block';
+      editor.style.display = 'block';
+      this.assignment = "Unassigned";
+    }
+  }
+
+  OnSaveEditPost(postId, postContent, postType){
+
+    const post = {
+      'content': this.post.content,
+      '_content_mentions': this.content_mentions,
+      'type': postType,
+      'assigned_to': this.selectedGroupUsers
+    };
+    
+    const date_due_to = postType === 'event' 
+      ? new Date(this.model_date.year, this.model_date.month - 1, this.model_date.day, this.model_time.hour, this.model_time.minute)
+      : new Date(this.model_date.year, this.model_date.month - 1, this.model_date.day);
+
+    if(this.post.type === 'task' || this.post.type === 'event'){
+      const editor_div = document.getElementById('button_edit_post');
+      const editor = document.getElementById('edit-content');
+      editor_div.style.display = 'none';
+      editor.style.display = 'none';
+    }
+
+        // for tasks we don't want to transform the time to UTC, for events we do want it
+        post['date_due_to'] = postType === 'event' ? moment.utc(date_due_to).format() : moment(date_due_to).format();
+
+        // if we edit a task we want to inform about its status
+        if ( postType === 'task') {
+          const edittedPost = this.post;
+          post['status'] =  edittedPost.task.status;
+        }
+
+        const scanned_content = post.content;
+        let el = document.createElement('html');
+        el.innerHTML = scanned_content;
+    
+        if (el.getElementsByClassName('mention').length > 0) {
+          for (var i = 0; i < el.getElementsByClassName('mention').length; i++) {
+            if (el.getElementsByClassName('mention')[i]['dataset']['value'] == "all") {
+              for (var i = 0; i < this.allMembersId.length; i++) {
+                this.content_mentions.push(this.allMembersId[i]);
+              }
+            }
+            else {
+              if (!this.content_mentions.includes(el.getElementsByClassName('mention')[i]['dataset']['id']))
+                this.content_mentions.push(el.getElementsByClassName('mention')[i]['dataset']['id']);
+            }
+          }
+        }
+
+        console.log('Post', post);
+
+        this.postService.editPost(postId, post)
+        .subscribe((res) => {
+
+          this.post = res['post'];
+  
+          // socket notifications
+          const data = {
+            // it should get automatically, something like workspace: this.workspace_name
+            workspace: this.user_data.workspace.workspace_name,
+            // it should get automatically, something like group: this.group_name
+            group: this.group_name,
+            userId: this.user_data.user_id,
+            postId: res['post']._id,
+            groupId: this.group_id,
+            type: 'post'
+          };
+          
+          this.socket.emit('newPost', data);
+          this.content_mentions = [];
+          this.assignment = 'UnAssigned';
+          //this.ngOnInit();
+  
+        }, (err) => {
+
+  
+        });
+  }
+
+  onSearch(evt: any) {
+    this.groupUsersList = [];
+    this.groupService.searchGroupUsers(this.group_id, evt.target.value)
+      .subscribe((res) => {
+        //console.log(evt.target.value);
+        this.groupUsersList = res['users'];
+
+      }, (err) => {
+
+      });
+
+  }
+
+  onItemSelect(item: any) {
+    if (this.selectedGroupUsers.length >= 1) {
+      this.assignment = 'Assigned';
+    }
+  }
+  OnItemDeSelect(item: any) {
+    if (this.selectedGroupUsers.length < 1) {
+      this.assignment = 'UnAssigned';
+    }
+
+  }
+  onSelectAll(items: any) {
+    this.assignment = 'Assigned';
+  }
+  onDeSelectAll(items: any) {
+    this.assignment = 'UnAssigned';
+
+  }
+
+  openTimePicker(content) {
+    this.modalService.open(content, { centered: true });
+    this.timePickedCount;
+  }
+
+  openDatePicker(content) {
+    this.modalService.open(content, { centered: true });
+    this.datePickedCount = 1;
+  }
+
+  openAssignPicker(content, post) {
+    this.modalService.open(content, { centered: true });
+
+    if (post && post.type === 'task') {
+      this.selectedGroupUsers = [post.task._assigned_to];
+    } else if (post && post.type === 'event') {
+      this.selectedGroupUsers = post.event._assigned_to.map((item, i) => {
+        return item;
+      });
+    }
   }
 
   onAddNewComment(post_id) {
