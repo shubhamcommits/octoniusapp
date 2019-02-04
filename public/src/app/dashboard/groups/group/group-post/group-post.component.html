@@ -52,6 +52,14 @@
                   <ng-template #likeif><i class="material-icons active">thumb_up</i></ng-template>
                 </button>
               </span>
+              <div ngbDropdown class="d-inline-block" autoClose="outside" *ngIf="post?._posted_by?._id == this.user_data.user_id || user?.role === 'owner' || user?.role === 'admin'; else editpostif">
+                <i class="material-icons action" id="dropdownBasic1" ngbDropdownToggle>more_horiz</i>
+                <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                  <button class="dropdown-item" (click)="OnEditPost(i, post)">Edit Post</button>
+
+                  <button class="dropdown-item" (click)="onDeletePost(post._id)">Delete Post</button>
+                </div>
+              </div>
 
               <span>
                 <ng-template #editpostif>
@@ -266,7 +274,14 @@
                 </button>
               </span>
               <span>
+                <div ngbDropdown class="d-inline-block" *ngIf="post?._posted_by?._id == this.user_data.user_id || user?.role === 'owner' || user?.role === 'admin'; else editpostif">
+                  <i class="material-icons action" id="dropdownBasic1" ngbDropdownToggle>more_horiz</i>
+                  <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                    <button class="dropdown-item" (click)="OnEditPost(i, post)">Edit Post</button>
 
+                    <button class="dropdown-item" (click)="onDeletePost(post._id)">Delete Post</button>
+                  </div>
+                </div>
                 <ng-template #edittaskif>
                 </ng-template>
               </span>
@@ -555,7 +570,7 @@
               </button>
             </span>
             <span style="margin-right: -12px">
-                <div ngbDropdown class="d-inline-block" #commentsDrop="ngbDropdown"
+                <div ngbDropdown autoClose="outside" class="d-inline-block" #commentsDrop="ngbDropdown"
                      (openChange)="toggled($event)" *ngIf="comment?._commented_by?._id == user_data.user_id; else editpostif">
                   <i class="material-icons action" id="dropdownComment" ngbDropdownToggle>more_horiz</i>
                   <div ngbDropdownMenu aria-labelledby="dropdownComment">

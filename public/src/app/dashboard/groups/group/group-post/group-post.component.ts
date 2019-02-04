@@ -15,6 +15,7 @@ import * as Quill from 'quill';
 import { QuillAutoLinkService } from '../../../../shared/services/quill-auto-link.service';
 (window as any).Quill = Quill;
 import 'quill-emoji/dist/quill-emoji';
+import { UserService } from '../../../../shared/services/user.service';
 
 @Component({
   selector: 'app-group-post',
@@ -24,6 +25,9 @@ import 'quill-emoji/dist/quill-emoji';
 export class GroupPostComponent implements OnInit {
 
   user_data;
+
+  user: any;
+  profileImage: any;
 
   post;
   postId;
@@ -81,7 +85,8 @@ export class GroupPostComponent implements OnInit {
 
 
   constructor(private ngxService: NgxUiLoaderService, private postService: PostService,
-    private groupService: GroupService, private _activatedRoute: ActivatedRoute, public groupDataService: GroupDataService
+    private groupService: GroupService, private _activatedRoute: ActivatedRoute, private _userService: UserService,
+    public groupDataService: GroupDataService
     , private _router: Router) {
     this.postId = this._activatedRoute.snapshot.paramMap.get('postId');
     this.user_data = JSON.parse(localStorage.getItem('user'));
@@ -108,6 +113,7 @@ export class GroupPostComponent implements OnInit {
     setTimeout(() => {
       this.ngxService.stop(); // stop foreground loading with 'default' id
     }, 500);
+    this.getUserProfile();
     this.getPost(this.postId);
     this.mentionmembers();
     this.inilizeCommentForm();
@@ -784,6 +790,17 @@ export class GroupPostComponent implements OnInit {
     } else {
       return false;
     }
+  }
+
+  getUserProfile() {
+    this._userService.getUser()
+      .subscribe((res) => {
+        this.user = res.user;
+        this.profileImage = res.user['profile_pic'];
+        this.profileImage = this.BASE_URL + `/uploads/${this.profileImage}`;
+      }, (err) => {
+        console.log('Error fetched while getting user', err);
+      });
   }
 
 }
