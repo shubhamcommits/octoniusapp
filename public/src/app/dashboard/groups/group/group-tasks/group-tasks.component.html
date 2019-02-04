@@ -456,7 +456,7 @@
 
     </div>
 
-    <div *ngIf="modulesLoaded" class="card">
+    <div class="card">
       <quill-editor [modules]="modules" id="post-content" [(ngModel)]="post.content" (blur)="onEditorBlured($event)"
                     [spellcheck]="true" name="postContent" (focus)="onEditorFocused($event)"
                     (ready)="onEditorCreated($event)" (onEditorCreated)="onEditorCreated($event)"
