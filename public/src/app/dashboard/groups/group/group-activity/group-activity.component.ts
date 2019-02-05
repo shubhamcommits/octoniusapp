@@ -2179,7 +2179,7 @@ console.log('entered the mentions');
             this.googleDriveFiles = e[google.picker.Response.DOCUMENTS];
 
             const driveDivision = document.getElementById('google-drive-file');
-            driveDivision.style.display= 'block';
+            driveDivision.style.display = 'block';
             driveDivision.innerHTML = '<b>Drive File Upload: </b>'+'<a href=\''+src+'\' target=\'_blank\'>'+this.googleDriveFiles[0]['name']+'</a>';
           }
         }).

@@ -18,6 +18,9 @@ import * as Quill from 'quill';
 (window as any).Quill = Quill;
 import 'quill-emoji/dist/quill-emoji';
 import { QuillAutoLinkService } from '../../../../shared/services/quill-auto-link.service';
+import {gapi, google} from "../group-activity/group-activity.component";
+declare var gapi: any;
+declare var google: any;
 
 
 @Component({
@@ -43,6 +46,22 @@ export class GroupTasksComponent implements OnInit {
     type: 'task',
     content: ''
   };
+
+  googleDriveFiles = [];
+
+  // !--GOOGLE DEVELOPER CONSOLE CREDENTIALS--! //
+  developerKey = 'AIzaSyDGM66BZhGSmBApm3PKL-xCrri-3Adb06I';
+
+  clientId = "971238950983-aef7kjl23994hjj9e8m5tch4a22b5dut.apps.googleusercontent.com";
+
+  scope = [
+    'https://www.googleapis.com/auth/drive' //insert scope here
+  ].join(' ');
+
+  pickerApiLoaded = false;
+
+  oauthToken?: any;
+  // !--GOOGLE DEVELOPER CONSOLE CREDENTIALS--! //
 
   constructor(private groupDataService: GroupDataService,
      private ngxService: NgxUiLoaderService,
@@ -89,6 +108,8 @@ export class GroupTasksComponent implements OnInit {
   newTaskModalRef;
 
   user;
+
+  filesToUpload = [];
 
   alert = {
     class: '',
@@ -162,6 +183,13 @@ export class GroupTasksComponent implements OnInit {
 
   addNewTaskPost() {
     const formData: any = new FormData();
+    const files: Array<File> = this.filesToUpload;
+
+    if (files !== null) {
+      for (let i = 0; i < files.length; i++) {
+        formData.append('attachments', files[i], files[i]['name']);
+      }
+    }
 
     // create due date
     const date = new Date(this.model_date.year, this.model_date.month - 1, this.model_date.day);
@@ -178,7 +206,17 @@ export class GroupTasksComponent implements OnInit {
         _content_mentions: this.content_mentions
       }
     };
-    formData.append('content', post.content);
+
+    // Handle google drive files
+    const driveDivision = document.getElementById('google-drive-file');
+
+    if (driveDivision.innerHTML === '' || driveDivision.innerHTML == null) {
+      formData.append('content', post.content);
+    } else {
+      formData.append('content', post.content + driveDivision.innerHTML);
+    }
+
+
     formData.append('type', post.type);
     formData.append('_posted_by', post._posted_by);
     formData.append('_group', post._group);
@@ -206,8 +244,6 @@ export class GroupTasksComponent implements OnInit {
           if (!this.content_mentions.includes(el.getElementsByClassName('mention')[i]['dataset']['id']))
             this.content_mentions.push(el.getElementsByClassName('mention')[i]['dataset']['id']);
         }
-
-
       }
 
       for (var i = 0; i < this.content_mentions.length; i++) {
@@ -215,10 +251,12 @@ export class GroupTasksComponent implements OnInit {
       }
     }
 
+console.log('FORMDATA', formData.content);
 
     // console.log('post: ', post);
     this.postService.addNewTaskPost(formData)
       .subscribe((res) => {
+        console.log('RES', res);
         // what we need to do is add this fresh task to the tasks we already fetched
         this.pendingTasks.push(res['post']);
 
@@ -260,6 +298,13 @@ export class GroupTasksComponent implements OnInit {
       });
   }
 
+  fileChangeEvent(fileInput: any) {
+    this.filesToUpload = <Array<File>>fileInput.target.files;
+
+
+    // this.product.photo = fileInput.target.files[0]['name'];
+  }
+
   getTasks() {
     this.pendingToDoTaskCount = 0;
     this.pendingInProgressTaskCount = 0;
@@ -267,6 +312,7 @@ export class GroupTasksComponent implements OnInit {
     this.groupService.getGroupTasks(this.groupId)
     .subscribe((res) => {
       this.pendingTasks = res['posts'];
+      console.log('PENDING TASKS', this.pendingTasks);
       for(var i = 0; i < this.pendingTasks.length; i++){
         if(this.pendingTasks[i]['task']['status'] == 'to do'){
           this.pendingToDoTaskCount = 1;
@@ -957,5 +1003,57 @@ const post = this.postBeingEditted;
      }
    });
  }
+
+  // !--GOOGLE PICKER IMPLEMENTATION--! //
+  loadGoogleDrive() {
+    gapi.load('auth', { 'callback': this.onAuthApiLoad.bind(this) });
+    gapi.load('picker', { 'callback': this.onPickerApiLoad.bind(this) });
+  }
+
+  onAuthApiLoad() {
+    gapi.auth.authorize(
+      {
+        'client_id': this.clientId,
+        'scope': this.scope,
+        'immediate': false
+      },
+      this.handleAuthResult);
+  }
+
+  onPickerApiLoad() {
+    this.pickerApiLoaded = true;
+  }
+
+  handleAuthResult(authResult) {
+    let src;
+    if (authResult && !authResult.error) {
+      if (authResult.access_token) {
+        let view = new google.picker.View(google.picker.ViewId.DOCS);
+        //view.setMimeTypes("image/png,image/jpeg,image/jpg,video/mp4, application/vnd.ms-excel ,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/pdf, text/plain, application/msword, text/js, application/zip, application/rar, application/tar, text/html");
+        let pickerBuilder = new google.picker.PickerBuilder();
+        let picker = pickerBuilder.
+        enableFeature(google.picker.Feature.NAV_HIDDEN).
+        setOAuthToken(authResult.access_token).
+        addView(view).
+        addView(new google.picker.DocsUploadView()).
+        setCallback(function (e) {
+          if (e[google.picker.Response.ACTION] == google.picker.Action.PICKED) {
+            let doc = e[google.picker.Response.DOCUMENTS][0];
+            src = doc[google.picker.Document.URL];
+
+            this.googleDriveFiles = e[google.picker.Response.DOCUMENTS];
+
+            const driveDivision = document.getElementById('google-drive-file');
+            driveDivision.style.display = 'block';
+            driveDivision.innerHTML = '<b>Drive File Upload: </b>'+'<a href=\''+src+'\' target=\'_blank\'>'+this.googleDriveFiles[0]['name']+'</a>';
+          }
+        }).
+        build();
+        picker.setVisible(true);
+      }
+    }
+
+  }
+// !--GOOGLE PICKER IMPLEMENTATION--! //
 
 }
