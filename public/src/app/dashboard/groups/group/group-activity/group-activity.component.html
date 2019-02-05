@@ -270,7 +270,7 @@
 
     <div class="search-results" infiniteScroll [infiniteScrollDistance]="0" [immediateCheck]="true" (scrolled)="onScroll()">
       <div *ngIf="posts.length == 0">
-        <img src='../../../assets/images/empty-activity.svg' style=" margin: 0 auto">
+        <img src='../../../assets/images/overview-emptystate.svg' style=" margin: 0 auto; display:block; width: 600px">
       </div>
       <div *ngFor="let post of posts; let i = index;">
         <ul class="list-group ">
