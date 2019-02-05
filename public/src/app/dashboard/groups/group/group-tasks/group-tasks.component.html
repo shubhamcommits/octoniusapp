@@ -59,6 +59,7 @@
                 </div>
                 <!--<img src="assets/images/user.png" class="feed-avatar">-->
 
+<<<<<<< HEAD
 
               </div>
               <div class="card-body">
@@ -91,6 +92,12 @@
                       due {{post.task?.due_to
                       | date}}</p>
                   </div>
+=======
+            </div>
+
+            <ng-template #noToDoTasks>
+                <img src='../../../assets/images/empty-todo.svg' style="max-width:80%;">
+>>>>>>> f3c43521b0f1c4dc9b2ebebf09e91a5a0430b4b3
                 </ng-template>
                 <hr>
                 <a style="text-decoration:none; color:inherit;"
@@ -278,9 +285,15 @@
                         </ng-template>
                       </span>
                   </div>
+<<<<<<< HEAD
                 </div>
               </div>
 
+=======
+            <ng-template #noInProgressTasks>
+                <img src='../../../assets/images/empty-progress.svg' style="max-width:80%;">
+            </ng-template>
+>>>>>>> f3c43521b0f1c4dc9b2ebebf09e91a5a0430b4b3
             </div>
           </div>
         </div>
@@ -415,8 +428,15 @@
                 </div>
               </div>
             </div>
+            </div>
+            <ng-template #noCompletedTasks>
+                <img src='../../../assets/images/empty-done.svg'style="max-width:80%;">
+                </ng-template>
+        </div>
 
-          </div>
+            <button *ngIf="this.loadCount == 1;" type="button" (click)="OnFetchNextPosts()" class="btn btn-link">
+                Load More...
+            </button>
         </div>
       </div>
       <ng-template #noCompletedTasks>
