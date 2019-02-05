@@ -9,6 +9,8 @@ import { GroupService } from '../../../../shared/services/group.service';
 import { GroupDataService } from '../../../../shared/services/group-data.service';
 import { environment } from '../../../../../environments/environment';
 import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 
 declare var gapi: any;
 declare var google: any;
@@ -23,7 +25,8 @@ import { UserService } from '../../../../shared/services/user.service';
 @Component({
   selector: 'app-group-post',
   templateUrl: './group-post.component.html',
-  styleUrls: ['./group-post.component.scss']
+  styleUrls: ['./group-post.component.scss'],
+  providers: [NgbPopoverConfig, NgbDropdownConfig]
 })
 export class GroupPostComponent implements OnInit {
 
@@ -72,6 +75,8 @@ export class GroupPostComponent implements OnInit {
   groupUsersList: any =[];
 
   settings = {};
+
+  getPostLikedBy: any = new Array();
 
   model_date;
   model_time = { hour: 13, minute: 30 };
@@ -143,7 +148,7 @@ export class GroupPostComponent implements OnInit {
   getPost(postId) {
     this.postService.getPost(postId)
         .subscribe((res) => {
-
+          console.log('Post', res['post']);
           this.post = res['post'];
           // we set the original comment count
           this.commentCount = res['post'].comments.length;
@@ -510,7 +515,7 @@ export class GroupPostComponent implements OnInit {
       this.postService.like(post)
       .subscribe((res) => {
      //   console.log('Post Liked!');
-        this.post._liked_by.push(this.user_data.user_id);
+        this.post._liked_by.push(res['user']);
         this.playAudio();
       }, (err) => {
         swal("Error!", "Error received while liking the Post " + err, "danger");
@@ -518,7 +523,7 @@ export class GroupPostComponent implements OnInit {
     }
 
     else{
-      if(this.post._liked_by.includes(this.user_data.user_id) ===  true){
+      if(this.userLikedPost()){
         this.unlikepost();
       }
       else
@@ -531,7 +536,7 @@ export class GroupPostComponent implements OnInit {
 
         this.postService.like(post)
         .subscribe((res) => {
-            this.post._liked_by.push(this.user_data.user_id);
+            this.post._liked_by.push(res['user']);
        //    this.getPost(this.postId);
         }, (err) => {
           swal("Error!", "Error received while liking the Post " + err, "danger");
@@ -965,6 +970,16 @@ export class GroupPostComponent implements OnInit {
     }
   }
 
+  userLikedPost() {
+    const currentUserId = this.user_data.user_id;
+
+    const match = this.post._liked_by.filter((user) => {
+      return user._id === currentUserId;
+    });
+
+    return match.length > 0;
+  }
+
   getUserProfile() {
     this._userService.getUser()
       .subscribe((res) => {
@@ -974,6 +989,10 @@ export class GroupPostComponent implements OnInit {
       }, (err) => {
         console.log('Error fetched while getting user', err);
       });
+  }
+
+  getUser(){
+
   }
 
 }
