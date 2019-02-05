@@ -18,9 +18,9 @@ import * as Quill from 'quill';
 (window as any).Quill = Quill;
 import 'quill-emoji/dist/quill-emoji';
 import { QuillAutoLinkService } from '../../../../shared/services/quill-auto-link.service';
-import {gapi, google} from "../group-activity/group-activity.component";
 declare var gapi: any;
 declare var google: any;
+import { saveAs } from 'file-saver';
 
 
 @Component({
@@ -132,8 +132,8 @@ export class GroupTasksComponent implements OnInit {
       this.ngxService.stop(); // stop foreground loading with 'default' id
     }, 500);
     this.groupId = this.groupDataService.groupId;
-    this.group = this.groupDataService.group;
-    this.group_name = this.group ? this.group.group_name : null;
+    // this.group = this.groupDataService.group;
+    // this.group_name = this.group ? this.group.group_name : null;
     this.model_date = {year: (new Date()).getFullYear(), month: (new Date()).getMonth() + 1, day: (new Date()).getDate()};
     //console.log('Data', this.groupDataService)
    // console.log('Id', this.groupId);
@@ -256,9 +256,10 @@ console.log('FORMDATA', formData.content);
     // console.log('post: ', post);
     this.postService.addNewTaskPost(formData)
       .subscribe((res) => {
-        console.log('RES', res);
         // what we need to do is add this fresh task to the tasks we already fetched
         this.pendingTasks.push(res['post']);
+
+        this.resetNewPostForm()
 
         // make sure that we display the new task
         this.pendingToDoTaskCount = 1
@@ -285,11 +286,17 @@ console.log('FORMDATA', formData.content);
       });
   }
 
+  closeCreatePostModal() {
+   this.newTaskModalRef.close();
+  }
+
 
   loadGroup() {
 
     this.groupService.getGroup(this.groupId)
       .subscribe((res) => {
+        this.group = res['group'];
+        this.group_name = this.group.group_name;
         this.group_members = res['group']._members;
       // console.log(this.group_members);
         this.group_admins = res['group']._admins;
@@ -312,7 +319,6 @@ console.log('FORMDATA', formData.content);
     this.groupService.getGroupTasks(this.groupId)
     .subscribe((res) => {
       this.pendingTasks = res['posts'];
-      console.log('PENDING TASKS', this.pendingTasks);
       for(var i = 0; i < this.pendingTasks.length; i++){
         if(this.pendingTasks[i]['task']['status'] == 'to do'){
           this.pendingToDoTaskCount = 1;
@@ -436,7 +442,7 @@ console.log('FORMDATA', formData.content);
     this.groupService.getCompletedGroupTasks(this.groupId)
     .subscribe((res) => {
       this.completedTasks = res['posts'];
-      if(res['posts'].length == 0){
+      if (res['posts'].length == 0){
         this.loadCount = 0;
       }
 
@@ -481,6 +487,24 @@ console.log('FORMDATA', formData.content);
   onDeSelectAll(items: any) {
     this.assignment = 'UnAssigned';
 
+  }
+
+  onDownlaodFile(fileName) {
+
+    // const fileData = {
+    //   'fileName': fileName
+    // };
+
+    this.groupService.downloadGroupFile(this.group._id, fileName)
+      .subscribe((file_toDownload) => {
+
+        //   console.log('Downloaded File', file);
+        saveAs(file_toDownload, fileName);
+
+      }, (err) => {
+        //  console.log('Downloaded File err', err);
+
+      });
   }
 
     // group memebrs search setting when user add new event or taks type post
@@ -879,6 +903,7 @@ console.log('AFTER RES', post);
   resetNewPostForm() {
    this.model_date = {year: (new Date()).getFullYear(), month: (new Date()).getMonth() + 1, day: (new Date()).getDate()};
    this.assignment = 'UnAssigned';
+   this.selectedGroupUsers = [];
    this.post.content = '';
    this.edit_post_content = '';
  }
