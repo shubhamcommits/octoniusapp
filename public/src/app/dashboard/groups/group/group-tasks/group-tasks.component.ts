@@ -251,8 +251,6 @@ export class GroupTasksComponent implements OnInit {
       }
     }
 
-console.log('FORMDATA', formData.content);
-
     // console.log('post: ', post);
     this.postService.addNewTaskPost(formData)
       .subscribe((res) => {
@@ -307,8 +305,6 @@ console.log('FORMDATA', formData.content);
 
   fileChangeEvent(fileInput: any) {
     this.filesToUpload = <Array<File>>fileInput.target.files;
-
-
     // this.product.photo = fileInput.target.files[0]['name'];
   }
 
@@ -328,7 +324,6 @@ console.log('FORMDATA', formData.content);
         }
       }
       this.isLoading$.next(false);
-      console.log('Tasks', res);
     },
     (err) => {
       console.log('Error Fetching the Pending Tasks Posts', err);
@@ -450,7 +445,6 @@ console.log('FORMDATA', formData.content);
         this.loadCount = 1;
       }
       this.isLoading$.next(false);
-      console.log('Completed Tasks', res);
     },
     (err) => {
       console.log('Error Fetching the Completed Tasks Posts', err);
@@ -637,8 +631,6 @@ console.log('FORMDATA', formData.content);
           }
         },
       };
-
-      console.log('this.modules', this.modules);
 
       this.modulesLoaded = true;
 
@@ -906,6 +898,7 @@ console.log('AFTER RES', post);
    this.selectedGroupUsers = [];
    this.post.content = '';
    this.edit_post_content = '';
+   this.filesToUpload = [];
  }
 
  openEditTaskModal(taskmodal, post) {
