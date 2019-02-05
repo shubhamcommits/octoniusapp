@@ -13,21 +13,21 @@
                         </div>
                       </div>
                       <div *ngIf="!(isLoading$ | async)">
-                      <div *ngIf="pendingToDoTaskCount == 1; else noToDoTasks;">     
+                      <div *ngIf="pendingToDoTaskCount == 1; else noToDoTasks;">
                 <div *ngFor="let post of pendingTasks">
                     <div class="card" *ngIf="post.task.status == 'to do'">
                         <div class="card-block ">
                             <div class="card-title">
-        
+
                                     <div ngbDropdown #myDrop="ngbDropdown">
-                                        
+
                                 <img (click)="$event.stopPropagation(); myDrop.toggle();" src="/uploads/{{this.post.task?._assigned_to?.profile_pic}}" id="dropdownToDo" ngbDropdownAnchor (focus)="myDrop.open()" onerror="this.src='/assets/images/user.png'"
                                 class="topnav-avatar float-left kbn">
                                 <h6 class="kbn">{{post.task?._assigned_to?.first_name}} {{post.task?._assigned_to?.last_name}} <br><span class="small lightgray date">
                                         {{post?.created_date | date : 'medium'}}</span>
                                 </h6>
                                 <p class="small font-weight-bold" style="margin-top: 5px" *ngIf="post.task?.due_to != 'Invalid date'"> due {{post.task?.due_to | date}}</p>
-                                         
+
                                             <div ngbDropdownMenu aria-labelledby="dropdownTodo">
                                                 <div *ngFor="let admin of group_admins">
                                                         <button class="dropdown-item" (click)="changeTaskAssignee(post._id, admin._id)">{{admin?.first_name}} {{admin?.last_name}}</button>
@@ -35,20 +35,20 @@
                                                 <div *ngFor="let member of group_members">
                                                         <button class="dropdown-item" (click)="changeTaskAssignee(post._id, member._id)">{{member?.first_name}} {{member?.last_name}}</button>
                                                 </div>
-                                          
+
                                             </div>
-                                          
+
                                           </div>
                                 <!--<img src="assets/images/user.png" class="feed-avatar">-->
-        
-        
+
+
                             </div>
                             <div class="card-body">
-        
+
                                 <span class="assigned"> Assigned by {{this.post._posted_by?.first_name}}
                                     {{this.post._posted_by?.last_name}}<br /> in {{this.post._group?.group_name}} group
                                 </span>
-        
+
                                 <div ngbDropdown class="d-inline-block float-right status">
                                     <button class="btn btn-sm kbn-todo" id="dropdownDone" ngbDropdownToggle>{{post.task.status}}</button>
                                     <div ngbDropdownMenu aria-labelledby="dropdownToDo">
@@ -58,8 +58,8 @@
                                         <button class="dropdown-item" (click)="OnMarkTaskCompleted(this.post._id)">Done</button>
                                     </div>
                                 </div>
-        
-        
+
+
                                 <ng-template #taskif>
                                     <div class="col-md-4 text-right padding-topright">
                                         <button class="btn btn-pink btn-sm" id="button_task_mark_completed" (click)="OnMarkTaskCompleted()">Mark
@@ -76,22 +76,22 @@
                                     </div>
                                 </a>
                             </div>
-        
+
                         </div>
                     </div>
-        
+
                 </div>
 
                 </div>
-                              
-                <ng-template #noToDoTasks>
-                    <img src='../../../../assets/images/empty-todo.svg' style="max-width:80%;">
-                    </ng-template>
+
+                        <ng-template #noToDoTasks>
+                          <img src='../../../assets/images/empty-todo.svg' style="max-width:80%;">
+                        </ng-template>
             </div>
-        
-        
+
+
             </div>
-        
+
             <!--INPROGRESS TASKS-->
             <div class="col-md-4">
                 <div class="kanbanheader kbn-working">
@@ -104,23 +104,23 @@
                         </div>
                       </div>
                       <div *ngIf="!(isLoading$ | async)">
-                            <div *ngIf="pendingInProgressTaskCount == 1; else noInProgressTasks;">  
+                            <div *ngIf="pendingInProgressTaskCount == 1; else noInProgressTasks;">
                         <div *ngFor="let post of pendingTasks">
-                   
+
                     <div class="card" *ngIf="post.task.status == 'in progress'">
                         <div class="card-block ">
                             <div class="card-title">
-        
-        
+
+
                                     <div ngbDropdown #myDrop="ngbDropdown">
-                                        
+
                                             <img (click)="$event.stopPropagation(); myDrop.toggle();" src="/uploads/{{this.post.task?._assigned_to?.profile_pic}}" id="dropdownToDo" ngbDropdownAnchor (focus)="myDrop.open()" onerror="this.src='/assets/images/user.png'"
                                             class="topnav-avatar float-left kbn">
                                             <h6 class="kbn">{{post.task?._assigned_to?.first_name}} {{post.task?._assigned_to?.last_name}} <br><span class="small lightgray date">
                                                     {{post?.created_date | date : 'medium'}}</span>
                                             </h6>
                                             <p class="small font-weight-bold" style="margin-top: 5px" *ngIf="post.task?.due_to != 'Invalid date'"> due {{post.task?.due_to | date}}</p>
-                                                     
+
                                             <div ngbDropdownMenu aria-labelledby="dropdownTodo">
                                                     <div *ngFor="let admin of group_admins">
                                                             <button class="dropdown-item" (click)="changeTaskAssignee(post._id, admin._id)">{{admin?.first_name}} {{admin?.last_name}}</button>
@@ -128,18 +128,18 @@
                                                     <div *ngFor="let member of group_members">
                                                             <button class="dropdown-item" (click)="changeTaskAssignee(post._id, member._id)">{{member?.first_name}} {{member?.last_name}}</button>
                                                     </div>
-                                              
+
                                                 </div>
-                                                      
+
                                                       </div>
-        
+
                             </div>
                             <div class="card-body">
-        
+
                                     <span class="assigned"> Assigned by {{this.post._posted_by?.first_name}}
                                             {{this.post._posted_by?.last_name}}<br /> in {{this.post._group?.group_name}} group
                                         </span>
-                
+
                                 <div ngbDropdown class="d-inline-block float-right status">
                                     <button class="btn btn-sm kbn-working" id="dropdownDone" ngbDropdownToggle>{{post.task.status}}</button>
                                     <div ngbDropdownMenu aria-labelledby="dropdownToDo">
@@ -149,8 +149,8 @@
                                         <button class="dropdown-item" (click)="OnMarkTaskCompleted(this.post._id)">Done</button>
                                     </div>
                                 </div>
-        
-        
+
+
                                 <ng-template #taskif>
                                     <div class="col-md-4 text-right padding-topright">
                                         <button class="btn btn-pink btn-sm" id="button_task_mark_completed" (click)="OnMarkTaskCompleted()">Mark
@@ -167,16 +167,16 @@
                                     </div>
                                 </a>
                             </div>
-        
+
                         </div>
                     </div>
                  </div>
                       </div>
-                <ng-template #noInProgressTasks>
-                    <img src='../../../../assets/images/empty-progress.svg' style="max-width:80%;">
-                </ng-template>
+                        <ng-template #noInProgressTasks>
+                          <img src='../../../assets/images/empty-progress.svg' style="max-width:80%;">
+                        </ng-template>
                 </div>
-        
+
             </div>
             <!--COMPLETED TASKS-->
             <div class="col-md-4">
@@ -187,23 +187,23 @@
                           <div class="line"></div>
                         </div>
                       </div>
-                      
+
                       <div *ngIf="!(isLoading$ | async)">
                           <div *ngIf="this.completedTasks.length != 0; else noCompletedTasks">
                 <div class="card" *ngFor="let post of completedTasks">
                     <div class="card-block ">
                         <div class="card-title">
-        
-        
+
+
                                 <div ngbDropdown #myDrop="ngbDropdown">
-                                        
+
                                         <img (click)="$event.stopPropagation(); myDrop.toggle();" src="/uploads/{{this.post.task?._assigned_to?.profile_pic}}" id="dropdownToDo" ngbDropdownAnchor (focus)="myDrop.open()" onerror="this.src='/assets/images/user.png'"
                                         class="topnav-avatar float-left kbn">
                                         <h6 class="kbn">{{post.task?._assigned_to?.first_name}} {{post.task?._assigned_to?.last_name}} <br><span class="small lightgray date">
                                                 {{post?.created_date | date : 'medium'}}</span>
                                         </h6>
                                         <p class="small font-weight-bold" style="margin-top: 5px" *ngIf="post.task?.due_to != 'Invalid date'"> due {{post.task?.due_to | date}}</p>
-                                                 
+
                                         <div ngbDropdownMenu aria-labelledby="dropdownTodo">
                                                 <div *ngFor="let admin of group_admins">
                                                         <button class="dropdown-item" (click)="changeTaskAssignee(post._id, admin._id)">{{admin?.first_name}} {{admin?.last_name}}</button>
@@ -211,18 +211,18 @@
                                                 <div *ngFor="let member of group_members">
                                                         <button class="dropdown-item" (click)="changeTaskAssignee(post._id, member._id)">{{member?.first_name}} {{member?.last_name}}</button>
                                                 </div>
-                                          
+
                                             </div>
-                                                  
+
                                                   </div>
-        
+
                         </div>
                         <div class="card-body">
-        
+
                                 <span class="assigned"> Assigned by {{this.post._posted_by?.first_name}}
                                         {{this.post._posted_by?.last_name}}<br /> in {{this.post._group?.group_name}} group
-                                    </span>    
-        
+                                    </span>
+
                             <div ngbDropdown class="d-inline-block float-right status">
                                 <button class="btn btn-sm kbn-done" id="dropdownDone" ngbDropdownToggle>{{post.task.status}}</button>
                                 <div ngbDropdownMenu aria-labelledby="dropdownToDo">
@@ -232,8 +232,8 @@
                                     <button class="dropdown-item" (click)="OnMarkTaskCompleted(this.post._id)">Done</button>
                                 </div>
                             </div>
-        
-        
+
+
                             <ng-template #taskif>
                                 <div class="col-md-4 text-right padding-topright">
                                     <button class="btn btn-pink btn-sm" id="button_task_mark_completed" (click)="OnMarkTaskCompleted()">Mark
@@ -250,7 +250,7 @@
                                 </div>
                             </a>
                         </div>
-        
+
                     </div>
                 </div>
                 </div>
@@ -258,13 +258,13 @@
                     <img src='../../../../assets/images/empty-done.svg' style="max-width:80%;">
                     </ng-template>
             </div>
-        
+
                 <button *ngIf="this.loadCount == 1;" type="button" (click)="OnFetchNextPosts()" class="btn btn-link">
                     Load More...
                 </button>
-        
-        
+
+
             </div>
         </div>
-    
+
 </div>
