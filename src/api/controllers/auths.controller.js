@@ -1,3 +1,4 @@
+const moment = require('moment');
 const jwt = require('jsonwebtoken');
 
 const {
@@ -7,7 +8,10 @@ const {
   Workspace
 } = require('../models');
 
-const { sendErr, sendMail, passwordHelper, billing } = require('../../utils');
+const {
+  sendErr, sendMail, passwordHelper, billing
+} = require('../../utils');
+
 
 /*  ==================
  *  -- AUTH METHODS --
@@ -48,8 +52,8 @@ const signIn = async (req, res, next) => {
     const newAuth = {
       workspace_name: user.workspace_name,
       _user: user,
-      token: token
-    }
+      token
+    };
 
     // Create new auth record
     const auth = await Auth.create(newAuth);
@@ -57,7 +61,7 @@ const signIn = async (req, res, next) => {
     const currentUser = {
       user_id: user._id,
       workspace: user._workspace
-    }
+    };
 
     return res.status(200).json({
       message: `User signed in ${user.workspace_name} Workspace!`,
@@ -72,7 +76,6 @@ const signIn = async (req, res, next) => {
 // New user sign up on an existing workspace
 const signUp = async (req, res, next) => {
   try {
-
     const userData = req.body;
     const userEmailDomain = req.body.email.split('@')[1];
     const userEmail = req.body.email;
@@ -210,7 +213,7 @@ const signUp = async (req, res, next) => {
     };
 
     // Create new auth record
-    const auth = await Auth.create(newAuth)
+    const auth = await Auth.create(newAuth);
 
     // Error on auth creation
     if (!auth) {
@@ -229,7 +232,7 @@ const signUp = async (req, res, next) => {
     sendMail.signup(userUpdate);
 
     // add user to Stripe subscription
-      billing.addUserToSubscription(workspaceUpdate)
+    billing.addUserToSubscription(workspaceUpdate);
 
     // Signup user and return the token
     return res.status(201).json({
@@ -321,7 +324,7 @@ const createNewWorkspace = async (req, res, next) => {
       company_name: req.body.company_name,
       _workspace: workspace,
       role: 'owner'
-    }
+    };
 
     // Create new user with owner rights
     const user = await User.create(newUser);
@@ -482,6 +485,34 @@ const checkUserAvailability = async (req, res, next) => {
   }
 };
 
+/*  ===================
+ *  -- SUBSCRIPTIONS --
+ *  ===================
+ */
+
+const checkSubscriptionValidity = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+
+    // Find user to extract his workspace
+    const user = await User.findOne({ _id: userId }).populate('_workspace');
+
+    if (!user._workspace.billing.current_period_end) {
+      return res.status(200).json({
+        message: 'no subscription yet',
+        valid: false
+      });
+    }
+
+    return res.status(200).json({
+      message: 'successfully checked validity of subscription',
+      valid: user._workspace.billing.current_period_end > moment().unix()
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
 /*  =============
  *  -- EXPORTS --
  *  =============
@@ -493,5 +524,6 @@ module.exports = {
   signOut,
   checkWorkspaceName,
   createNewWorkspace,
-  checkUserAvailability
+  checkUserAvailability,
+  checkSubscriptionValidity
 };
