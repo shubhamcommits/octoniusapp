@@ -271,12 +271,7 @@
                     </ng-template>
                   </div>
                   <div class="col-md-6 text-right">
-                     <span>
-                        <button [routerLink]="['/dashboard/group/', post._group?._id, 'post', post._id]" class="btn btn-link">
-                          <i class="material-icons muted" id="icon_comment_post_{{i}}">mode_comment</i>
-                        </button>
-                      </span>
-                    <span>
+                                <span>
                         <button class="btn btn-link" (click)="onClickLikePost(i, post)">
                           <i *ngIf="!userLikedPost(post); else likeif" class="material-icons muted"
                              id="icon_like_post_{{i}}">thumb_up</i>
@@ -411,12 +406,7 @@
                   </ng-template>
                 </div>
                 <div class="col-md-6 text-right">
-                   <span>
-                        <button [routerLink]="['/dashboard/group/', post._group?._id, 'post', post._id]" class="btn btn-link">
-                          <i class="material-icons muted" id="icon_comment_post_{{i}}">mode_comment</i>
-                        </button>
-                      </span>
-                  <span>
+                                <span>
                         <button class="btn btn-link" (click)="onClickLikePost(i, post)">
                           <i *ngIf="!userLikedPost(post); else likeif" class="material-icons muted"
                              id="icon_like_post_{{i}}">thumb_up</i>
