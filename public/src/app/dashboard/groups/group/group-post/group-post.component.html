@@ -322,7 +322,7 @@
                   (click)="openDatePicker(dateContent)">
             <i class="material-icons">event</i> {{model_date?.day}}-{{model_date?.month}}-{{model_date?.year}}
           </button>
-          <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditPost(post._id,post?.content, post.type)">Save</button>
+          <button [disabled]="assignment === 'UnAssigned'" class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditPost(post._id,post?.content, post.type)">Save</button>
         </div>
 
         <div class="col-md-12 innercard">
@@ -543,7 +543,7 @@
                 <button *ngIf="post.type=='event'" class="btn btn-outline-warning task" type="button" (click)="openTimePicker(timeContent)">
                   <i class="material-icons">alarm</i>{{model_time.hour}}:{{model_time.minute}}
                 </button>
-                <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditPost(post._id,post?.content, post.type)">Save</button>
+                <button [disabled]="assignment === 'UnAssigned'" class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditPost(post._id,post?.content, post.type)">Save</button>
               </div>
 
               <div class="col-md-12 innercard">
