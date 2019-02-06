@@ -202,7 +202,8 @@ export class GroupPostComponent implements OnInit {
       const editor = document.getElementById('edit-content');
       editor_div.style.display = 'block';
       editor.style.display = 'block';
-      this.assignment = "Unassigned";
+      this.assignment = "UnAssigned";
+      this.selectedGroupUsers = [];
     }
   }
 
