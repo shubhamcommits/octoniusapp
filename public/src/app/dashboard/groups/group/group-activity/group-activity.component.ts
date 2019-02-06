@@ -1,6 +1,6 @@
 import * as moment from 'moment';
 import * as io from 'socket.io-client';
-import {Component, OnInit, ViewChild, Testability, ViewContainerRef, ElementRef, ViewChildren} from '@angular/core';
+import {Component, OnInit, ViewChildren} from '@angular/core';
 import { ActivatedRoute, Router, Route } from '@angular/router';
 import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PostService } from '../../../../shared/services/post.service';
@@ -158,7 +158,7 @@ export class GroupActivityComponent implements OnInit {
   // post's attahced files
   filesToUpload: Array<File> = [];
 
-  googleDriveFiles=[];
+  googleDriveFiles = [];
 
   modules;
   modulesLoaded = false;
@@ -1920,10 +1920,6 @@ export class GroupActivityComponent implements OnInit {
 
     if (like_length == 0) {
       this.likepost(post);
-      // this.scrollToTop('#card-normal-post-' + index);
-      // this.scrollToTop('#card-event-post-' + index);
-      // this.scrollToTop('#card-task-post-' + index);
-      // like_icon.style.color = "#005FD5";
     } else {
       let userHasLikedPost = false;
 
@@ -2105,8 +2101,7 @@ this.postService.likeComment(comment)
         mentionDenotationChars: ["@", "#"],
         source: function (searchTerm, renderList, mentionChar) {
           let values;
-
-
+console.log('entered the mentions');
           if (mentionChar === "@") {
             values = Value;
           } else {
@@ -2184,7 +2179,7 @@ this.postService.likeComment(comment)
             this.googleDriveFiles = e[google.picker.Response.DOCUMENTS];
 
             const driveDivision = document.getElementById('google-drive-file');
-            driveDivision.style.display= 'block';
+            driveDivision.style.display = 'block';
             driveDivision.innerHTML = '<b>Drive File Upload: </b>'+'<a href=\''+src+'\' target=\'_blank\'>'+this.googleDriveFiles[0]['name']+'</a>';
           }
         }).

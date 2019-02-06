@@ -12,3 +12,15 @@
 .card{
     margin-bottom: 10px;
 }
+
+.emoji-drop-transparent {
+
+  color: transparent;
+  background: transparent;
+
+}
+
+.dropdown-edit::after
+{
+  display:none;
+}

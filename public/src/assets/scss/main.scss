@@ -312,7 +312,7 @@ h4{
 }
 
 .ql-mention-list-container{
-  z-index: 999;
+  z-index: 9999;
   border-radius: 6px;
   border: 1px solid $border-color;
   box-shadow: $box-shadow;
@@ -477,3 +477,13 @@ color:#787878 !important;
   z-index: 1;
   border: 1px solid black;
 }
+.stickybtn{
+  .material-icons{
+    font-size: 14px !important;
+  }
+  box-shadow: $box-shadow;
+}
+.picker-dialog{
+  z-index: 1060 !important; //picker positioning for modal selection of gdrive files
+}
+
