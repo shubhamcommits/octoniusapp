@@ -1758,7 +1758,7 @@ export class GroupActivityComponent implements OnInit {
         // this.scrollToTop('#card-normal-post-' + index);
         // this.scrollToTop('#card-event-post-' + index);
         // this.scrollToTop('#card-task-post-' + index);
-        swal("Good Job!", "The status of task has been updated sucessfully!", "success");
+        swal("Good Job!", "Task updated sucessfully!", "success");
 
 
       }, (err) => {
@@ -1791,7 +1791,7 @@ export class GroupActivityComponent implements OnInit {
         // this.scrollToTop('#card-normal-post-' + index);
         // this.scrollToTop('#card-event-post-' + index);
         // this.scrollToTop('#card-task-post-' + index);
-        swal("Good Job!", "The status of task has been updated sucessfully!", "success");
+        swal("Good Job!", "Task updated sucessfully!", "success");
       }, (err) => {
 
         console.log('Error:', err);
@@ -1827,7 +1827,7 @@ export class GroupActivityComponent implements OnInit {
         // this.scrollToTop('#card-normal-post-' + index);
         // this.scrollToTop('#card-event-post-' + index);
         // this.scrollToTop('#card-task-post-' + index);
-        swal("Good Job!", "The status of task has been updated sucessfully!", "success");
+        swal("Good Job!", "Task updated sucessfully!", "success");
 
       }, (err) => {
 
