@@ -197,7 +197,7 @@ export class GroupPostComponent implements OnInit {
   }
 
   OnEditPost(post){
-    if(this.post.type === 'task' || this.post.type === 'event'){
+    if (this.post.type === 'task' || this.post.type === 'event') {
       const editor_div = document.getElementById('button_edit_post');
       const editor = document.getElementById('edit-content');
       editor_div.style.display = 'block';
@@ -214,8 +214,8 @@ export class GroupPostComponent implements OnInit {
       'type': postType,
       'assigned_to': this.selectedGroupUsers
     };
-    
-    const date_due_to = postType === 'event' 
+
+    const date_due_to = postType === 'event'
       ? new Date(this.model_date.year, this.model_date.month - 1, this.model_date.day, this.model_time.hour, this.model_time.minute)
       : new Date(this.model_date.year, this.model_date.month - 1, this.model_date.day);
 
@@ -235,31 +235,33 @@ export class GroupPostComponent implements OnInit {
           post['status'] =  edittedPost.task.status;
         }
 
-        const scanned_content = post.content;
-        let el = document.createElement('html');
-        el.innerHTML = scanned_content;
-    
-        if (el.getElementsByClassName('mention').length > 0) {
-          for (var i = 0; i < el.getElementsByClassName('mention').length; i++) {
-            if (el.getElementsByClassName('mention')[i]['dataset']['value'] == "all") {
-              for (var i = 0; i < this.allMembersId.length; i++) {
-                this.content_mentions.push(this.allMembersId[i]);
-              }
-            }
-            else {
-              if (!this.content_mentions.includes(el.getElementsByClassName('mention')[i]['dataset']['id']))
-                this.content_mentions.push(el.getElementsByClassName('mention')[i]['dataset']['id']);
-            }
-          }
-        }
+    const scanned_content = post.content;
+    var el = document.createElement('html');
+    el.innerHTML = scanned_content;
 
-        console.log('Post', post);
+    if (el.getElementsByClassName('mention').length > 0) {
+
+      // console.log('Element',  el.getElementsByClassName( 'mention' ));
+      for (let i = 0; i < el.getElementsByClassName('mention').length; i++) {
+        if (el.getElementsByClassName('mention')[i]['dataset']['value'] === "all") {
+          this.content_mentions = [...this.content_mentions, ...this.allMembersId];
+        } else {
+          if (!this.content_mentions.includes(el.getElementsByClassName('mention')[i]['dataset']['id']))
+            this.content_mentions.push(el.getElementsByClassName('mention')[i]['dataset']['id']);
+        }
+      }
+
+      for (var i = 0; i < this.content_mentions.length; i++) {
+        post._content_mentions = this.content_mentions;
+      }
+    }
+
 
         this.postService.editPost(postId, post)
         .subscribe((res) => {
 
           this.post = res['post'];
-  
+
           // socket notifications
           const data = {
             // it should get automatically, something like workspace: this.workspace_name
@@ -271,15 +273,15 @@ export class GroupPostComponent implements OnInit {
             groupId: this.group_id,
             type: 'post'
           };
-          
+
           this.socket.emit('newPost', data);
           this.content_mentions = [];
           this.assignment = 'UnAssigned';
           //this.ngOnInit();
-  
+
         }, (err) => {
 
-  
+
         });
   }
 
