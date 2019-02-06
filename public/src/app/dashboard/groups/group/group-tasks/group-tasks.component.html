@@ -2,7 +2,7 @@
 
 <div class="row" style="margin-bottom: 1%;">
   <div class="col-md-4">
-    <button class="btn btn-md kbn-todo" id="task" (click)="openNewTaskModal(newTaskModal)">Create a new Task</button>
+    <button class="btn btn-primary stickybtn" id="task" (click)="openNewTaskModal(newTaskModal)">  <i class="material-icons">check</i> New Task</button>
   </div>
 </div>
 
@@ -447,7 +447,7 @@
         </div>
       </div>
       <ng-template #noCompletedTasks>
-        <p><b>No completed tasks are there</b></p>
+        <img src='../../../assets/images/empty-done.svg' style="max-width:80%;">
       </ng-template>
     </div>
 
@@ -467,15 +467,12 @@
   </div>
   <div class="modal-body">
     <div class="row">
-      <div class="col-md-2">
-        <button type="button" class="btn kbn-done task"
+      <div class="col-md-12 text-right">
+        <button type="button" class="btn btn-outline-warning task"
                 (click)="openAssignPicker(assignContent)">
           <i class="material-icons">perm_identity</i> {{assignment}}
         </button>
-      </div>
-
-      <div class="col-md-2">
-        <button class="btn kbn-done task" type="button"
+        <button class="btn btn-outline-warning task" type="button"
                 (click)="openDatePicker(dateContent)">
           <i class="material-icons">event</i>{{model_date?.day}}-{{model_date?.month}}-{{model_date?.year}}
         </button>
@@ -483,7 +480,7 @@
 
     </div>
 
-    <div class="card">
+    <div class="card" style="margin-top:15px">
       <quill-editor [modules]="modules" id="post-content" [(ngModel)]="post.content" (blur)="onEditorBlured($event)"
                     [spellcheck]="true" name="postContent" (focus)="onEditorFocused($event)"
                     (ready)="onEditorCreated($event)" (onEditorCreated)="onEditorCreated($event)"
@@ -491,29 +488,28 @@
                     (onContentChanged)="onContentChanged($event)"></quill-editor>
     </div>
 
-    <div class="row" style="margin-bottom: 5%;">
-      <div class="col-md-2">
+    <div class="row" style="margin-bottom: 15px;">
+      <div class="col-md-8">
         <button type="button" class="btn btn-link">
           <input id="cin" #fileInput type="file" class="btn btn-outline-warning task" style="display: none"
                  (change)="fileChangeEvent($event)" placeholder="File" multiple />
           <i class="material-icons" (click)="fileInput.click()">attach_file</i>
         </button>
-      </div>
-     <div class="col-md-2">
+
        <button type="button" class="btn btn-link">
          <i class="material-icons" (click)="loadGoogleDrive();">
            cloud_upload
          </i>
        </button>
      </div>
-      <div class="col-md-4"></div>
-      <div class="col-md-2">
-        <button [disabled]="readyToAddTask()" class="btn btn-md kbn-working" id="create-task"
+      
+      <div class="col-md-4 text-right">
+          <button (click)="closeCreatePostModal()" class="btn btn-default" id="cancel-task">Cancel</button>
+        <button [disabled]="readyToAddTask()" class="btn btn-primary" id="create-task"
                 (click)="addNewTaskPost();">Post Task
         </button>
-      </div>
-      <div class="col-md-2">
-        <button (click)="closeCreatePostModal()" class="btn btn-md" id="cancel-task">Cancel</button>
+  
+        
       </div>
   </div>
     <div class="row">
@@ -540,15 +536,13 @@
   </div>
   <div class="modal-body">
     <div class="row">
-      <div class="col-md-2">
-        <button type="button" class="btn kbn-done task"
+      <div class="col-md-12 text-right">
+        <button type="button" class="btn btn-outline-warning task"
                 (click)="openAssignPicker(assignContent)">
           <i class="material-icons">perm_identity</i> {{assignment}}
         </button>
-      </div>
 
-      <div class="col-md-2">
-        <button class="btn kbn-done task" type="button"
+        <button class="btn btn-outline-warning task" type="button"
                 (click)="openDatePicker(dateContent)">
           <i class="material-icons">event</i>{{model_date?.day}}-{{model_date?.month}}-{{model_date?.year}}
         </button>
@@ -556,7 +550,7 @@
 
     </div>
 
-    <div *ngIf="modulesLoaded" class="card">
+    <div *ngIf="modulesLoaded" class="card" style="margin-top:15px">
       <quill-editor [modules]="modules" id="post-content" [(ngModel)]="edit_post_content"
                     (blur)="onEditorBlured($event)"
                     [spellcheck]="true" name="postContent" (focus)="onEditorFocused($event)"
@@ -565,14 +559,14 @@
                     (onContentChanged)="onContentChanged($event)"></quill-editor>
     </div>
 
-    <div class="row" style="margin-bottom: 5%;">
-      <div class="col-md-2">
-        <button [disabled]="readyToEditTask()" class="btn btn-md kbn-working" id="create-task" (click)="editPost();">
+    <div class="row" style="margin-bottom: 15px;">
+      <div class="col-md-12 text-right">
+          <button class="btn btn-default" id="cancel-task">Cancel</button>
+        <button [disabled]="readyToEditTask()" class="btn btn-primary" id="create-task" (click)="editPost();">
           Edit Task
         </button>
-      </div>
-      <div class="col-md-2">
-        <button class="btn btn-md" id="cancel-task">Cancel</button>
+     
+        
       </div>
     </div>
   </div>

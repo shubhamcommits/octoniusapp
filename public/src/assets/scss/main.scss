@@ -477,3 +477,12 @@ color:#787878 !important;
   z-index: 1;
   border: 1px solid black;
 }
+.stickybtn{
+  .material-icons{
+    font-size: 14px !important;
+  }
+  box-shadow: $box-shadow;
+}
+.picker-dialog{
+  z-index: 1060 !important; //picker positioning for modal selection of gdrive files
+}
