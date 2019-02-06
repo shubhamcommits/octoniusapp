@@ -62,8 +62,6 @@ const add = async (req, res, next) => {
 const edit = async (req, res, next) => {
   try {
     let postData;
-    console.log('req.body', req.body);
-
 
     switch (req.body.type) {
       case 'task':

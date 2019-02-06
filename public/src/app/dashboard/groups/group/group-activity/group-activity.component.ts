@@ -1507,14 +1507,28 @@ export class GroupActivityComponent implements OnInit {
     }
 
     const scanned_content = post.content;
-    let el = document.createElement('html');
+    var el = document.createElement('html');
     el.innerHTML = scanned_content;
 
     if (el.getElementsByClassName('mention').length > 0) {
-      //  console.log('Element',  el.getElementsByClassName( 'mention' ));
-      for (let i = 0; i < el.getElementsByClassName('mention').length; i++) {
-        this.content_mentions.push(el.getElementsByClassName('mention')[i]['dataset']['id'].toString());
+
+      // console.log('Element',  el.getElementsByClassName( 'mention' ));
+      for (var i = 0; i < el.getElementsByClassName('mention').length; i++) {
+        if (el.getElementsByClassName('mention')[i]['dataset']['value'] === "all") {
+          this.content_mentions = [...this.content_mentions, ...this.allMembersId];
+          //this.content_mentions = this.allMembersId;
+        } else {
+          if (!this.content_mentions.includes(el.getElementsByClassName('mention')[i]['dataset']['id']))
+            this.content_mentions.push(el.getElementsByClassName('mention')[i]['dataset']['id']);
+        }
       }
+
+      for (var i = 0; i < this.content_mentions.length; i++) {
+        post._content_mentions = this.content_mentions;
+      }
+
+      // console.log('Content Mention', post._content_mentions);
+      //  console.log('This post', postId);
     }
 
     this.postService.editPost(post_id, post)
