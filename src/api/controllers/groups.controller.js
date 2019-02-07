@@ -238,6 +238,7 @@ const getTasks = async (req, res, next) => {
       .populate('_group', 'group_name')
       .populate('_posted_by', 'first_name last_name profile_pic')
       .populate('task._assigned_to', 'first_name last_name profile_pic')
+      .populate('_liked_by', 'first_name')
       .lean();
 
     return res.status(200).json({
@@ -270,6 +271,7 @@ const getTasksDone = async (req, res, next) => {
       .populate('_group', 'group_name')
       .populate('_posted_by', 'first_name last_name profile_pic')
       .populate('task._assigned_to', 'first_name last_name profile_pic')
+      .populate('_liked_by', 'first_name')
       .lean();
 
     return res.status(200).json({

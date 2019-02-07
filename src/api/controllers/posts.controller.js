@@ -17,9 +17,7 @@ const add = async (req, res, next) => {
   try {
     const postData = req.body;
 
-    console.log('postData', postData);
-
-    const post = await Post.create(postData);
+    let post = await Post.create(postData);
 
     if (post._content_mentions.length !== 0) {
       // Create Notification for mentions on post content
@@ -47,6 +45,11 @@ const add = async (req, res, next) => {
         break;
     }
 
+    //  populate the assigned_to property of this document
+    if (post.type === 'task') {
+        post = await Post.populate(post, [{ path: 'task._assigned_to' }, { path: '_group'}, { path: '_posted_by' }]);
+    }
+
     return res.status(200).json({
       message: 'New post created!',
       post
@@ -59,7 +62,6 @@ const add = async (req, res, next) => {
 const edit = async (req, res, next) => {
   try {
     let postData;
-
 
     switch (req.body.type) {
       case 'task':
@@ -671,6 +673,20 @@ const changeTaskAssignee = async (req, res, next) => {
   }
 };
 
+//This controller is made for quill to upload it's files to server
+const upload = async (req, res, next) =>{
+  try{
+    const { files } = req.body;
+    return res.status(200).json({
+      message: 'Files uploaded!',
+      file: files
+    });
+  } catch(err) {
+    return sendErr(res, err);
+  }
+
+}
+
 /*  =============
  *  -- EXPORTS --
  *  =============
@@ -682,6 +698,7 @@ module.exports = {
   edit,
   get,
   remove,
+  upload,
   // Comments
   addComment,
   editComment,
