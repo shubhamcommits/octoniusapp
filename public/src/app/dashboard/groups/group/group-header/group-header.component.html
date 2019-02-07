@@ -62,7 +62,7 @@
       <div *ngIf="alert.message" [ngClass]="alert.class">{{alert.message}}</div>
 
     </div>
-
+ 
   </ng-template>
 
   <ng-template #contentEditGroup let-c="close" let-dd="dismiss">
@@ -72,15 +72,39 @@
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
-    <div class="modal-body" style=" max-height: calc(100vh - 200px);overflow-y: auto">
+    <div class="modal-body">
       <!--         <ngb-alert *ngIf="alert.message" [type]="alert.class" (close)="successMessage = null">{{alert.message}}</ngb-alert>
        -->
       <div class="form-group">
 
-        <img [src]="groupImageUrl" style="width:15% ; height:15%;">
-        <input type="file" #Image accept="image/*" (change)="handleFileInput($event.target.files)" name="profile_image">
+        <!-- <img [src]="groupImageUrl" style="width:15% ; height:15%;">
+        <input type="file" #Image accept="image/*" (change)="handleFileInput($event.target.files)" name="profile_image"> -->
+        <img *ngIf="!croppedImage" [src]="groupImageUrl" style="border-radius: 50%; width:15% ; height:15%;">
+        <img *ngIf="croppedImage" [src]="croppedImage" #Image accept="image/*" style="border-radius: 50%; width:15% ; height:15%;">
+        <input type="file" (change)="fileChangeEvent($event)" />
+     
+        <div>  
+          <br><br>
+          <image-cropper
+              [imageChangedEvent]="imageChangedEvent"
+              [maintainAspectRatio]="true"
+              [aspectRatio]="1 / 1"
+              [resizeToWidth]="128"
+              [cropperMinWidth]="128"
+              [onlyScaleDown]="true"
+              [roundCropper]="false"
+              format="png,jpeg,webp,bmp,ico"
+              outputType="file"
+              (imageCropped)="imageCropped($event)"
+              (imageLoaded)="imageLoaded()"
+              (cropperReady)="cropperReady()"
+              (loadImageFailed)="loadImageFailed()"
+             
+          ></image-cropper>
+        </div>
+        <!-- <img [src]="croppedImage" /> -->
+      
       </div>
-
 
       <div class="form-group">
         <label for="email">Group Description:</label>

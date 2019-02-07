@@ -4,8 +4,8 @@ import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../../../../environments/environment';
 import swal from 'sweetalert';
-
-
+import { ImageCroppedEvent } from 'ngx-image-cropper';
+ 
 @Component({
   selector: 'app-user-profile-header',
   templateUrl: './user-profile-header.component.html',
@@ -14,6 +14,38 @@ import swal from 'sweetalert';
 export class UserProfileHeaderComponent implements OnInit {
 
   modalReference: any;
+  //starts image cropping
+  imageChangedEvent: any = '';
+  croppedImage: any = '';
+  
+  fileChangeEvent(event: any): void {
+      this.imageChangedEvent = event;
+  }
+
+  imageCropped(event: ImageCroppedEvent) {
+      // this.croppedImage = event.file;
+    this.fileToUpload =event.file;
+    const reader = new FileReader();
+    reader.onload = (event: any) => {
+      this.userImageUrl = event.target.result;
+      
+    };
+    reader.readAsDataURL(this.fileToUpload);
+      
+  }
+  imageLoaded() {
+      // show cropper
+     console.log('Image loaded')
+  }
+  cropperReady() {
+    console.log('Cropper ready')
+  }
+
+  loadImageFailed() {
+      // show message
+      console.log('Load failed');
+  }
+
   @ViewChild('content') private content;
 
 
@@ -21,7 +53,7 @@ export class UserProfileHeaderComponent implements OnInit {
 
   userImageUrl = '';
   profilePic = '';
-  fileToUpload: File = null;
+  fileToUpload: Blob = null;
 
   user = {
     first_name: '',
@@ -119,9 +151,11 @@ export class UserProfileHeaderComponent implements OnInit {
 
     if (this.fileToUpload !== null) {
 
-      //  console.log('calling Method onUpdateUserProfileImage');
-
-      this._userService.updateUserProfileImage(this.fileToUpload)
+      var file: any = this.fileToUpload;
+      //A Blob() is almost a File() - it's just missing the two properties below which we will add
+      file.lastModifiedDate = new Date();
+      file.name = "test3";
+      this._userService.updateUserProfileImage(<File>file)
         .subscribe((res) => {
           this.profilePic = `${this.BASE_URL}/uploads/${res.user['profile_pic']}`;
           console.log(res);
@@ -142,15 +176,15 @@ export class UserProfileHeaderComponent implements OnInit {
   }
 
 
-  handleFileInput(file: FileList) {
+  // handleFileInput(file: FileList) {
 
-    this.fileToUpload = file.item(0);
+  //   this.fileToUpload = file.item(0);
 
-    // Show image preview
-    const reader = new FileReader();
-    reader.onload = (event: any) => {
-      this.userImageUrl = event.target.result;
-    };
-    reader.readAsDataURL(this.fileToUpload);
-  }
+  //   // Show image preview
+  //   const reader = new FileReader();
+  //   reader.onload = (event: any) => {
+  //     this.userImageUrl = event.target.result;
+  //   };
+  //   reader.readAsDataURL(this.fileToUpload);
+  // }
 }

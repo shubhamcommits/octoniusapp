@@ -12,7 +12,7 @@ export class ProfileComponent implements OnInit {
   alert = {
     message: '',
     class: ''
-  };
+  }; 
   user: any;
   join_date;
 

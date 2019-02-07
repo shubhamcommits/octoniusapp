@@ -63,6 +63,8 @@ import {MomentModule} from "ngx-moment";
 import {InsertDecimalPointPipe} from "./shared/pipes/insert-decimal-point.pipe";
 import {ValidSubscriptionGuard} from "./shared/guards/valid-subscription.guard";
 
+import { ImageCropperModule } from 'ngx-image-cropper';
+
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 
   "bgsColor": "#005fd5",
@@ -128,6 +130,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     PickerModule,
     ClickOutsideModule,
     EmojiModule,
+    ImageCropperModule,
     DragAndDropModule.forRoot(),
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
     LoadingModule.forRoot({

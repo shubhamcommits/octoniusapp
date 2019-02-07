@@ -4,6 +4,7 @@ import { GroupService } from '../../../../shared/services/group.service';
 import { GroupDataService } from '../../../../shared/services/group-data.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../../../../../environments/environment';
+import { ImageCroppedEvent } from 'ngx-image-cropper';
 
 @Component({
   selector: 'app-group-header',
@@ -12,13 +13,42 @@ import { environment } from '../../../../../environments/environment';
 })
 export class GroupHeaderComponent implements OnInit {
   modalReference: any;
-  @ViewChild('content') private content;
+  imageChangedEvent: any = '';
+  croppedImage: any = '';
 
+  fileChangeEvent(event: any): void {
+      this.imageChangedEvent = event;
+  }
+  imageCropped(event: ImageCroppedEvent) {
+      // this.croppedImage = event.file;
+    this.fileToUpload =event.file;
+    const reader = new FileReader();
+    reader.onload = (event: any) => {
+      this.groupImageUrl = event.target.result;
+    };
+    reader.readAsDataURL(this.fileToUpload);
+      
+  }
+  imageLoaded() {
+      // show cropper
+     console.log('Image loaded')
+  }
+  cropperReady() {
+    console.log('Cropper ready')
+  }
+
+  loadImageFailed() {
+      // show message
+      console.log('Load failed');
+  }
+  @ViewChild('content') private content;
+ 
   group_id;
 
   groupImageUrl = '';
   profilePic = '';
-  fileToUpload: File = null;
+  // fileToUpload: File = null;
+  fileToUpload: Blob = null;
 
   group = {
     description: ''
@@ -61,11 +91,12 @@ export class GroupHeaderComponent implements OnInit {
   }
 
   onUpdateGroup() {
-
+    
     const formData = new FormData();
 
     if (this.fileToUpload !== null) {
-      formData.append('group_avatar', this.fileToUpload);
+
+      formData.append('group_avatar', this.fileToUpload); 
       formData.append('description', this.group.description);
     } else {
       formData.append('description', this.group.description);
@@ -112,17 +143,17 @@ export class GroupHeaderComponent implements OnInit {
   }
 
 
-  handleFileInput(file: FileList) {
+  // handleFileInput(file: FileList) {
 
-    this.fileToUpload = file.item(0);
+  //   this.fileToUpload = file.item(0);
 
-    // Show image preview
-    const reader = new FileReader();
-    reader.onload = (event: any) => {
-      this.groupImageUrl = event.target.result;
-    };
-    reader.readAsDataURL(this.fileToUpload);
-  }
+  //   // Show image preview
+  //   const reader = new FileReader();
+  //   reader.onload = (event: any) => {
+  //     this.groupImageUrl = event.target.result;
+  //   };
+  //   reader.readAsDataURL(this.fileToUpload);
+  // }
 
   openLg(content) {
     this.modalReference = this.modalService.open(content, { size: 'lg', centered: true });

@@ -44,7 +44,7 @@
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
-    <div class="modal-body" style=" max-height: calc(100vh - 200px);overflow-y: auto">
+    <div class="modal-body" >
       <!--         <ngb-alert *ngIf="alert.message" [type]="alert.class" (close)="successMessage = null">{{alert.message}}</ngb-alert>
      -->
 
@@ -52,8 +52,32 @@
         <!--  <input type="file" alt="http://via.placeholder.com/100x100" style="width: 100px; height: 100px">
      <button class="btn btn-outline-secondary">Change image</button> -->
 
-        <img [src]="userImageUrl" style="width:15% ; height:15%;">
-        <input type="file" #Image accept="image/*" (change)="handleFileInput($event.target.files)" name="profile_image">
+        <!-- <img [src]="userImageUrl" style="width:15% ; height:15%;"> -->
+        <!-- <input type="file" #Image accept="image/*" (change)="handleFileInput($event.target.files)" name="profile_image">
+         -->
+         <!-- <img [src]="userImageUrl" style="border-radius: 50%; width:15% ; height:15%;"> -->
+        <img *ngIf="userImageUrl" [src]="userImageUrl" #Image accept="image/*" style="border-radius: 50%; width:15% ; height:15%;">
+        <input type="file" (change)="fileChangeEvent($event)" />
+        <div>  
+          <br><br>
+          <image-cropper
+              [imageChangedEvent]="imageChangedEvent"
+              [maintainAspectRatio]="true"
+              [aspectRatio]="1 / 1"
+              [resizeToWidth]="128"
+              [cropperMinWidth]="128"
+              [onlyScaleDown]="true"
+              [roundCropper]="false"
+              format="png,jpeg,webp,bmp,ico"
+              outputType="file"
+              (imageCropped)="imageCropped($event)"
+              (imageLoaded)="imageLoaded()"
+              (cropperReady)="cropperReady()"
+              (loadImageFailed)="loadImageFailed()"
+             
+          ></image-cropper>
+        </div>
+
       </div>
 
       <div class="form-group">
