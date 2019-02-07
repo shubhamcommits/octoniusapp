@@ -109,7 +109,7 @@
 
             <div class="row" style="margin-top: 10px">
               <div class="col-md-12">
-                <div class="form-group editor">
+                <div *ngIf="modulesLoaded" class="form-group editor">
                   <div class="triangle" *ngIf="post.type=='normal'"></div>
                   <div class="triangle-event" *ngIf="post.type=='event'"></div>
                   <div class="triangle-task" *ngIf="post.type=='task'"></div>
