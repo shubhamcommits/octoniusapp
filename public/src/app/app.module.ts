@@ -62,6 +62,10 @@ import {DenyNavigationGuard} from "./shared/guards/deny-navigation.guard";
 import {MomentModule} from "ngx-moment";
 import {InsertDecimalPointPipe} from "./shared/pipes/insert-decimal-point.pipe";
 import {ValidSubscriptionGuard} from "./shared/guards/valid-subscription.guard";
+import { PostboxComponent } from './common/components/posts/postbox/postbox.component';
+import { AssignUsersModalComponent } from './common/components/modals/assign-users-modal/assign-users-modal.component';
+import { DatePickerComponent } from './common/components/modals/date-picker/date-picker.component';
+import { TimePickerComponent } from './common/components/modals/time-picker/time-picker.component';
 
 import { ImageCropperModule } from 'ngx-image-cropper';
 
@@ -113,7 +117,11 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     OverviewMyTasksComponent,
     OverviewMyWorkplaceComponent,
     AdminBillingComponent,
-    InsertDecimalPointPipe
+    InsertDecimalPointPipe,
+    PostboxComponent,
+    AssignUsersModalComponent,
+    DatePickerComponent,
+    TimePickerComponent
   ],
   imports: [
     BrowserModule,

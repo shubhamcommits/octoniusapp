@@ -45,9 +45,17 @@ const add = async (req, res, next) => {
         break;
     }
 
-    //  populate the assigned_to property of this document
-    if (post.type === 'task') {
-        post = await Post.populate(post, [{ path: 'task._assigned_to' }, { path: '_group'}, { path: '_posted_by' }]);
+    //  populate this new created post before we send it back
+    switch (post.type) {
+      case 'task':
+        post = await Post.populate(post, [{ path: 'task._assigned_to' }, { path: '_group' }, { path: '_posted_by' }]);
+        break;
+      case 'event':
+        post = await Post.populate(post, [{ path: 'event._assigned_to' }, { path: '_group' }, { path: '_posted_by' }]);
+        break;
+      case 'normal':
+        post = await Post.populate(post, [{ path: '_group' }, { path: '_posted_by' }]);
+        break;
     }
 
     return res.status(200).json({
@@ -405,7 +413,7 @@ const removeComment = async (req, res, next) => {
     }).lean();
 
     // Get user data
-   const user = await User.findOne({ _id: userId });
+    const user = await User.findOne({ _id: userId });
 
     if (
     // If user is not one of group's admins... and...
@@ -602,7 +610,7 @@ const changeTaskStatus = async (req, res, next) => {
     }).lean();
 
     // const get user data
-      const user = await User.findOne({ _id: userId });
+    const user = await User.findOne({ _id: userId });
 
     if (
     // If user is not an admin or owner... and...
@@ -673,19 +681,18 @@ const changeTaskAssignee = async (req, res, next) => {
   }
 };
 
-//This controller is made for quill to upload it's files to server
-const upload = async (req, res, next) =>{
-  try{
+// This controller is made for quill to upload it's files to server
+const upload = async (req, res, next) => {
+  try {
     const { files } = req.body;
     return res.status(200).json({
       message: 'Files uploaded!',
       file: files
     });
-  } catch(err) {
+  } catch (err) {
     return sendErr(res, err);
   }
-
-}
+};
 
 /*  =============
  *  -- EXPORTS --
