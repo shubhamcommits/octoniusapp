@@ -92,4 +92,10 @@ export class PostService {
   deleteComment(commentId){
     return this._http.delete(this.BASE_API_URL + `/posts/comments/${commentId}`);
   }
+
+  uploadQuillFiles(file: File){
+    const fd = new FormData();
+    fd.append('attachments', file);
+    return this._http.post(this.BASE_API_URL + '/posts/upload', fd);
+  }
 }

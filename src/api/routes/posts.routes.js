@@ -27,6 +27,9 @@ router.get('/:postId', authorization.groupAccess, posts.get);
 // Add new post
 router.post('/', postFileHandler, posts.add);
 
+// Add files to server of quill js
+router.post('/upload', postFileHandler, posts.upload);
+
 // Edit post
 router.put('/:postId', posts.edit);
 

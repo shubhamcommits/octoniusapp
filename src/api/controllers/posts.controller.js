@@ -673,6 +673,20 @@ const changeTaskAssignee = async (req, res, next) => {
   }
 };
 
+//This controller is made for quill to upload it's files to server
+const upload = async (req, res, next) =>{
+  try{
+    const { files } = req.body;
+    return res.status(200).json({
+      message: 'Files uploaded!',
+      file: files
+    });
+  } catch(err) {
+    return sendErr(res, err);
+  }
+
+}
+
 /*  =============
  *  -- EXPORTS --
  *  =============
@@ -684,6 +698,7 @@ module.exports = {
   edit,
   get,
   remove,
+  upload,
   // Comments
   addComment,
   editComment,
