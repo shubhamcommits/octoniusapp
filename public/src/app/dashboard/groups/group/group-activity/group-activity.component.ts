@@ -35,6 +35,7 @@ import {post} from "selenium-webdriver/http";
 import * as Quill from 'quill';
 (window as any).Quill = Quill;
 import 'quill-emoji/dist/quill-emoji';
+import { QuillEditorComponent } from 'ngx-quill';
 
 
 @Component({
@@ -212,8 +213,8 @@ export class GroupActivityComponent implements OnInit {
   }
 
   onContentChanged(quill) {
-    //  console.log('quill content is changed!', quill);
-    this.editorTextLength = quill.text.length
+    console.log('quill content is changed!', quill);
+    //this.editorTextLength = quill.text.length
     // console.log('length', this.editorTextLength);
   }
   transform(html: string): SafeHtml {
@@ -660,6 +661,7 @@ export class GroupActivityComponent implements OnInit {
     this.disblePostForm();
     this.postService.addNewNormalPost(formData)
       .subscribe((res) => {
+        console.log(res);
         this.processing = false;
         this.enablePostForm();
         this.postForm.reset();
@@ -2100,6 +2102,56 @@ this.postService.likeComment(comment)
         handlers: {
             'emoji': function () {
               console.log('clicked');
+            },
+            'image': function () {
+                //Creates an element which accepts image file as the input
+                const input = document.createElement('input');
+                input.setAttribute('type', 'file');
+                input.click();
+          
+                // Listen upload local image and save to server
+                input.onchange = () => {
+                  const file = input.files[0];
+                  const range = this.quill.getSelection();
+                  var text = '\nImage is being uploaded, please wait...';
+                  var length = this.quill.getLength();
+                  var currentIndex = this.quill.getSelection().index;
+                  this.quill.insertText(range.index, text, 'bold', true);
+                  
+                  // file type is only image.
+                  if (/^image\//.test(file.type)) {
+                     //here we are calling the upload Image API, which saves the image to server
+                     const fd = new FormData();
+                     fd.append('attachments', file);
+                     
+                     //Calling Custom XML HTTP REQUEST
+                     const xhr = new XMLHttpRequest();
+                     
+                     xhr.open('POST', environment.BASE_API_URL+'/posts/upload', true);
+                     xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('token'));
+                     
+                     xhr.onload = () => {
+                       if (xhr.status === 200) {
+                         // this is callback data: url
+                         const url = JSON.parse(xhr.responseText).file[0].modified_name;
+                         console.log(JSON.parse(xhr.responseText).file[0].modified_name);
+                         //Here we insert the image and replace the BASE64 with our custom URL, which is been saved to the server
+                         //ex - img src = "http://localhost:3000/uploads/image-name.jpg"
+                         const range = this.quill.getSelection();
+                         this.quill.insertEmbed(range.index, 'image', environment.BASE_URL+'/uploads/'+url);
+                         //console.log(this.quill.getLength(), text.length, range.index);
+                         
+                         //here we delete the uploading text from the editor
+                         this.quill.deleteText(currentIndex, text.length);
+               
+                       }
+                     };
+                     xhr.send(fd);
+                  } else {
+                    console.warn('You could only upload images.');
+                  }
+                };
+              
             }
         }
     };
@@ -2115,7 +2167,7 @@ this.postService.likeComment(comment)
         mentionDenotationChars: ["@", "#"],
         source: function (searchTerm, renderList, mentionChar) {
           let values;
-console.log('entered the mentions');
+          console.log('entered the mentions');
           if (mentionChar === "@") {
             values = Value;
           } else {
