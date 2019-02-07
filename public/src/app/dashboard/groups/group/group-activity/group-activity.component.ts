@@ -2074,8 +2074,9 @@ this.postService.likeComment(comment)
           }
         }
       }, (err) => {
-
       });
+
+
 
     const toolbaroptions = {
       container: [
@@ -2108,7 +2109,7 @@ this.postService.likeComment(comment)
                 const input = document.createElement('input');
                 input.setAttribute('type', 'file');
                 input.click();
-          
+
                 // Listen upload local image and save to server
                 input.onchange = () => {
                   const file = input.files[0];
@@ -2117,19 +2118,19 @@ this.postService.likeComment(comment)
                   var length = this.quill.getLength();
                   var currentIndex = this.quill.getSelection().index;
                   this.quill.insertText(range.index, text, 'bold', true);
-                  
+
                   // file type is only image.
                   if (/^image\//.test(file.type)) {
                      //here we are calling the upload Image API, which saves the image to server
                      const fd = new FormData();
                      fd.append('attachments', file);
-                     
+
                      //Calling Custom XML HTTP REQUEST
                      const xhr = new XMLHttpRequest();
-                     
+
                      xhr.open('POST', environment.BASE_API_URL+'/posts/upload', true);
                      xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('token'));
-                     
+
                      xhr.onload = () => {
                        if (xhr.status === 200) {
                          // this is callback data: url
@@ -2140,10 +2141,10 @@ this.postService.likeComment(comment)
                          const range = this.quill.getSelection();
                          this.quill.insertEmbed(range.index, 'image', environment.BASE_URL+'/uploads/'+url);
                          //console.log(this.quill.getLength(), text.length, range.index);
-                         
+
                          //here we delete the uploading text from the editor
                          this.quill.deleteText(currentIndex, text.length);
-               
+
                        }
                      };
                      xhr.send(fd);
@@ -2151,10 +2152,11 @@ this.postService.likeComment(comment)
                     console.warn('You could only upload images.');
                   }
                 };
-              
+
             }
         }
     };
+
 
 
     this.modules = {
@@ -2167,7 +2169,6 @@ this.postService.likeComment(comment)
         mentionDenotationChars: ["@", "#"],
         source: function (searchTerm, renderList, mentionChar) {
           let values;
-          console.log('entered the mentions');
           if (mentionChar === "@") {
             values = Value;
           } else {
@@ -2185,6 +2186,8 @@ this.postService.likeComment(comment)
         }
       },
     };
+
+    this.modulesLoaded = true;
 
   }
 
