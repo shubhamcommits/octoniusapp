@@ -1,0 +1,58 @@
+<div *ngIf="displayCommentEditor">
+
+  <!-- POST COMMENT PART -->
+  <div class="card margin5" id="card-normal-post-comment-{{i}}">
+    <form [formGroup]="commentForm">
+      <div class="row no-margin">
+        <div class="col-md-12">
+          <div class="form-group">
+            <h6>Add a comment</h6>
+            <div class="quill-container">
+              <quill-editor id="comment-content{{i}}" [modules]="modules" [(ngModel)]="comment_content"
+                            (blur)="onEditorBlured($event)" [spellcheck]="true" class="form-control" name="commentContent"
+                            (focus)="onEditorFocused($event)" formControlName="commentContent" (ready)="onEditorCreated($event)"
+                            (change)="onContentChanged($event)" (onEditorCreated)="onEditorCreated($event)"
+                            (onContentChanged)="onContentChanged($event)" >
+              </quill-editor>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-8"></div>
+        <div class="col-md-4 text-right" style="padding-right:30px">
+          <button type="button " name="button " class="btn btn-default " (click)="displayCommentEditor = false;">Cancel</button>
+          <button [disabled]="commentForm.invalid" type="button " name="button" (click)="onAddNewComment()"
+                  class="btn btn-primary">Comment</button>
+        </div>
+      </div>
+      <br>
+    </form>
+  </div>
+</div>
+
+
+
+<!-- load more comments button -->
+
+<div class="load-more-comments"
+     *ngIf=" comments && comments.length < commentCount && comments.length !== 0&& commentsDisplayed">
+  <p (click)="loadPreviousComments()" class="load-more-comments-btn">Load more comments...</p>
+  <p class="comments-count">{{comments.length}} of {{commentCount}} comments</p>
+</div>
+
+<!-- all comments block-->
+
+<div #normalComments id="normalComments{{i}}" *ngIf="commentsDisplayed && comments">
+  <ng-container *ngIf="comments[0]._commented_by">
+    <ng-container *ngFor="let comment of comments;">
+      <post-comment
+        [user]="user"
+        [comment]="comment"
+        [allMembersId]="allMembersId"
+        (sendDeletedComment)="deleteComment($event)">
+      </post-comment>
+    </ng-container>
+  </ng-container>
+</div>
