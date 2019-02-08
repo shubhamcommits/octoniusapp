@@ -1,24 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import {Subject} from "rxjs/Subject";
 
 @Injectable()
 export class PostService {
 
   BASE_API_URL = environment.BASE_API_URL;
-
-  // handling date modal actions
-  openDatePicker = new Subject();
-  datePicked = new Subject();
-
-  // handling time modal actions
-  openTimePicker = new Subject();
-  timePicked = new Subject();
-
-  // handling assign-users modal actions
-  openAssignUsers = new Subject();
-  usersAssigned = new Subject();
 
   constructor(private _http: HttpClient) { }
 
@@ -106,14 +93,7 @@ export class PostService {
     return this._http.delete(this.BASE_API_URL + `/posts/comments/${commentId}`);
   }
 
-  playAudio() {
-    const audio = new Audio();
-    audio.src = "/assets/audio/intuition.ogg";
-    audio.load();
-    audio.play();
-  }
-
-  uploadQuillFiles(file: File) {
+  uploadQuillFiles(file: File){
     const fd = new FormData();
     fd.append('attachments', file);
     return this._http.post(this.BASE_API_URL + '/posts/upload', fd);
