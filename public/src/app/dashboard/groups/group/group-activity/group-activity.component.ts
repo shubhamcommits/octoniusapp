@@ -615,17 +615,6 @@ export class GroupActivityComponent implements OnInit {
 
   onDeletePost(postId) {
 
-
-    // console.log('postId: ', postId);
-
-    const post = {
-      'postId': postId
-    };
-
-    //  console.log('post: ', post);
-
-
-
     swal({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -642,9 +631,10 @@ export class GroupActivityComponent implements OnInit {
               this.alert.class = 'success';
               this._message.next(res['message']);
               this.resetNewPostForm();
-              // console.log('Normal post response: ', res);
-              this.loadGroupPosts();
 
+            //  mirror front-end to back-end
+            //  find index of post
+              this.posts.findIndex((post) => post._id == postId);
             }, (err) => {
 
               this.alert.class = 'danger';

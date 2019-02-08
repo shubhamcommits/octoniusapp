@@ -106,7 +106,14 @@ export class PostService {
     return this._http.delete(this.BASE_API_URL + `/posts/comments/${commentId}`);
   }
 
-  uploadQuillFiles(file: File){
+  playAudio() {
+    const audio = new Audio();
+    audio.src = "/assets/audio/intuition.ogg";
+    audio.load();
+    audio.play();
+  }
+
+  uploadQuillFiles(file: File) {
     const fd = new FormData();
     fd.append('attachments', file);
     return this._http.post(this.BASE_API_URL + '/posts/upload', fd);
