@@ -23,16 +23,16 @@ export class UserProfileHeaderComponent implements OnInit {
   }
 
   imageCropped(event: ImageCroppedEvent) {
-      // this.croppedImage = event.file;
-    this.fileToUpload =event.file;
-    const reader = new FileReader();
-    reader.onload = (event: any) => {
-      this.userImageUrl = event.target.result;
-      
-    };
-    reader.readAsDataURL(this.fileToUpload);
-      
-  }
+    // this.croppedImage = event.file;
+  this.fileToUpload =event.file;
+  const reader = new FileReader();
+  reader.readAsDataURL(this.fileToUpload);
+
+ // console.log(this.groupImageUrl);
+  this.fileToUpload = new File([this.fileToUpload], "-profile-avatar.jpg", { type: this.fileToUpload.type });
+  //console.log(this.fileToUpload);
+    
+ }
   imageLoaded() {
       // show cropper
      console.log('Image loaded')
@@ -122,9 +122,9 @@ export class UserProfileHeaderComponent implements OnInit {
     this._userService.updateUser(this.user)
       .subscribe((res) => {
         swal("Good Job!", "You have updated your profile, successfully!", "success")
-        .then( (onclick) => {
+        .then( () => {
           this.getUserProfile();
-          this.refreshPage();
+          //this.refreshPage();
         });
         
 
@@ -153,12 +153,11 @@ export class UserProfileHeaderComponent implements OnInit {
 
       var file: any = this.fileToUpload;
       //A Blob() is almost a File() - it's just missing the two properties below which we will add
-      file.lastModifiedDate = new Date();
-      file.name = "test3";
       this._userService.updateUserProfileImage(<File>file)
         .subscribe((res) => {
           this.profilePic = `${this.BASE_URL}/uploads/${res.user['profile_pic']}`;
           console.log(res);
+          this.getUserProfile();
 
         }, (err) => {
           swal("Error!", "Seems like there's an error- "+ err, "danger");

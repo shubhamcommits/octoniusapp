@@ -3,6 +3,9 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { WorkspaceService } from '../../../shared/services/workspace.service';
 import { environment } from '../../../../environments/environment';
+import { ImageCroppedEvent } from 'ngx-image-cropper';
+import swal from 'sweetalert';
+import { Button } from 'protractor';
 
 @Component({
   selector: 'app-admin-page-header',
@@ -12,13 +15,42 @@ import { environment } from '../../../../environments/environment';
 export class AdminPageHeaderComponent implements OnInit {
 
   modalReference: any;
-  @ViewChild('content') private content;
+  imageChangedEvent: any = '';
+  croppedImage: any = '';
+
+  fileChangeEvent(event: any): void {
+      this.imageChangedEvent = event;
+  }
+  imageCropped(event: ImageCroppedEvent) {
+      // this.croppedImage = event.file;
+    this.fileToUpload =event.file;
+    const reader = new FileReader();
+    reader.readAsDataURL(this.fileToUpload);
+
+   // console.log(this.groupImageUrl);
+    this.fileToUpload = new File([this.fileToUpload], "-workspace-avatar.jpg", { type: this.fileToUpload.type });
+    //console.log(this.fileToUpload);
+      
+  }
+  imageLoaded() {
+      // show cropper
+     console.log('Image loaded')
+  }
+  cropperReady() {
+    console.log('Cropper ready')
+  }
+
+  loadImageFailed() {
+      // show message
+      console.log('Load failed');
+  }
+  @ViewChild('content') private content = 'Workspace avatar updated!';
 
   group_id;
 
   workspaceImageUrl = '';
   profilePic = '';
-  fileToUpload: File = null;
+  fileToUpload: Blob = null;
 
   user_data;
 
@@ -74,8 +106,8 @@ export class AdminPageHeaderComponent implements OnInit {
         .subscribe((res) => {
 
           this.alert.class = 'alert alert-success';
-          this.alert.message = res['message'];
-
+          this.alert.message = 'Workspace avatar updated!';
+          this.loadWorkspace();
           this.modalReference.close();
           this.openLg(this.content);
           setTimeout(() => {

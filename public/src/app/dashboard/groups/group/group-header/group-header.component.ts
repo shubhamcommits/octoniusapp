@@ -23,10 +23,11 @@ export class GroupHeaderComponent implements OnInit {
       // this.croppedImage = event.file;
     this.fileToUpload =event.file;
     const reader = new FileReader();
-    reader.onload = (event: any) => {
-      this.groupImageUrl = event.target.result;
-    };
     reader.readAsDataURL(this.fileToUpload);
+
+   // console.log(this.groupImageUrl);
+    this.fileToUpload = new File([this.fileToUpload], "-group-avatar.jpg", { type: this.fileToUpload.type });
+    //console.log(this.fileToUpload);
       
   }
   imageLoaded() {
@@ -50,9 +51,7 @@ export class GroupHeaderComponent implements OnInit {
   // fileToUpload: File = null;
   fileToUpload: Blob = null;
 
-  group = {
-    description: ''
-  };
+  group: any = new Object();
 
   alert = {
     class: '',
@@ -114,6 +113,7 @@ export class GroupHeaderComponent implements OnInit {
         setTimeout(() => {
           this.modalReference.close();
         }, 2000);
+        this.loadGroup();
       //  console.log('group updated response:', res);
 
       }, (err) => {
