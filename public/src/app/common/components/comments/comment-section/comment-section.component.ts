@@ -2,13 +2,12 @@ import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angula
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {InputValidators} from "../../../validators/input.validator";
 import {PostService} from "../../../../shared/services/post.service";
-import {takeUntil, takeUntil} from "rxjs/operators";
+import {takeUntil} from "rxjs/operators";
 import {Subject} from "rxjs/Subject";
 
 @Component({
   selector: 'comments-section',
   templateUrl: './comment-section.component.html',
-  styleUrls: ['./comment-section.component.scss']
   styleUrls: ['./comment-section.component.scss']
 })
 export class CommentSectionComponent implements OnInit, OnDestroy {
