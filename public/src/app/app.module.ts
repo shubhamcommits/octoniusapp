@@ -65,6 +65,8 @@ import {ValidSubscriptionGuard} from "./shared/guards/valid-subscription.guard";
 
 import { ImageCropperModule } from 'ngx-image-cropper';
 
+import {TimeAgoPipe} from 'time-ago-pipe';
+
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 
   "bgsColor": "#005fd5",
@@ -106,6 +108,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     GroupHeaderComponent,
     routingComponents,
     SafePipe,
+    TimeAgoPipe,
     NiceDateFormatPipePipe,
     OrderByPipePipe,
     GroupPostComponent,
