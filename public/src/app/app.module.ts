@@ -62,21 +62,11 @@ import {DenyNavigationGuard} from "./shared/guards/deny-navigation.guard";
 import {MomentModule} from "ngx-moment";
 import {InsertDecimalPointPipe} from "./shared/pipes/insert-decimal-point.pipe";
 import {ValidSubscriptionGuard} from "./shared/guards/valid-subscription.guard";
-import { PostboxComponent } from './common/components/posts/postbox/postbox.component';
-import { AssignUsersModalComponent } from './common/components/modals/assign-users-modal/assign-users-modal.component';
-import { DatePickerComponent } from './common/components/modals/date-picker/date-picker.component';
-import { TimePickerComponent } from './common/components/modals/time-picker/time-picker.component';
-import { NormalGroupPostComponent } from './common/components/posts/normal-group-post/normal-group-post.component';
-import { PostActionsComponent } from './common/components/posts/post-actions/post-actions.component';
-import { CommentSectionComponent } from './common/components/comments/comment-section/comment-section.component';
-import { PostCommentComponent } from './common/components/comments/post-comment/post-comment.component';
 
 import { ImageCropperModule } from 'ngx-image-cropper';
 
-import { TaskGroupPostComponent } from './common/components/posts/task-group-post/task-group-post.component';
-import { EventGroupPostComponent } from './common/components/posts/event-group-post/event-group-post.component';
-
 import {TimeAgoPipe} from 'time-ago-pipe';
+
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 
   "bgsColor": "#005fd5",
@@ -126,17 +116,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     OverviewMyTasksComponent,
     OverviewMyWorkplaceComponent,
     AdminBillingComponent,
-    InsertDecimalPointPipe,
-    PostboxComponent,
-    AssignUsersModalComponent,
-    DatePickerComponent,
-    TimePickerComponent,
-    NormalGroupPostComponent,
-    PostActionsComponent,
-    CommentSectionComponent,
-    PostCommentComponent,
-    TaskGroupPostComponent,
-    EventGroupPostComponent
+    InsertDecimalPointPipe
   ],
   imports: [
     BrowserModule,
@@ -175,7 +155,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 
   providers: [AuthService, UserService, DenyNavigationGuard, PostService, GroupService,
     GroupDataService, WorkspaceService, GroupsService, AdminService,
-    AuthGuard, NotAuthGuard, QuillAutoLinkService, ValidSubscriptionGuard,
+    AuthGuard, NotAuthGuard,QuillAutoLinkService, ValidSubscriptionGuard,
     { provide: 'SnotifyToastConfig', useValue: ToastDefaults},
     SnotifyService,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true },
