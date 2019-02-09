@@ -1,0 +1,159 @@
+<!-- postbox-->
+
+<!-- Only display when the group has been loaded -->
+<div *ngIf="group" class="card" style="margin-bottom: 10px">
+  <div class="card-block">
+    <form [formGroup]="postForm">
+      <div class="row card-title" style="padding:5px">
+        <div class="col-md-1">
+          <!--/uploads/user.png-->
+          <img [src]="user?.profileImage" onerror="this.src='/assets/images/user.png'" class="feed-avatar">
+        </div>
+        <div class="col-md-11">
+
+          <button type="text" class="form-control btn-md noborder-btn" style="outline: none; box-shadow: none !important; margin-top: 12px;border: 0px solid #ccc !important; text-align: left; cursor: pointer;"
+                  placeholder="What are you working on?" (click)="togglePostbox()">What are you working on?</button>
+        </div>
+      </div>
+      <div *ngIf="postboxDisplayed" id="show_hide" class="col-md-12 innercard">
+        <div class="row">
+          <div class="col-md-4">
+            <ul class="nav nav-pills">
+
+              <li class="nav-item">
+                <button
+                  (click)="onSelectPostType('normal')"
+                  class="btn btn-link cool" placement="top" ngbTooltip="Normal Post">
+                  <i
+                    [style.color]="post.type === 'normal' ? '#005fd5' : '#9b9b9b'"
+                    class="material-icons muted" id="icon_comment" style="color: #005fd5; ">
+                    comment
+                  </i>
+
+                </button>
+
+              </li>
+
+              <li class="nav-item">
+                <button
+                  (click)="onSelectPostType('event')"
+                  class="btn btn-link cool" placement="top"
+                  ngbTooltip="Event Post">
+                  <i
+                    [style.color]="post.type === 'event' ? '#005fd5' : '#9b9b9b'"
+                    class="material-icons muted" id="icon_event">event
+                  </i>
+                </button>
+              </li>
+              <li class="nav-item">
+                <button
+                  (click)="onSelectPostType('task')"
+                  class="btn btn-link cool" placement="top" ngbTooltip="Task Post">
+                  <i
+                    [style.color]="post.type === 'task' ? '#005fd5' : '#9b9b9b'"
+                    class="material-icons muted"
+                    id="icon_check_box">check_box
+                  </i>
+                </button>
+              </li>
+            </ul>
+
+          </div>
+          <div class="col-md-8 text-right">
+            <button type="button" class="btn btn-outline-warning task" *ngIf="(post.type == 'event' || post.type== 'task') && !isItMyWorkplace"
+                    (click)="openAssignPicker()">
+              <i class="material-icons">perm_identity</i> {{assignment}}
+            </button>
+
+            <!-- <input [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" placeholder="Date Time"> -->
+            <!--   <owl-date-time #dt1></owl-date-time> -->
+
+            <date-picker-modal [model_date]="model_date" (picked_date)="setDate($event)" *ngIf="post.type == 'event'|| post.type=='task'">
+
+            </date-picker-modal>
+
+
+
+            <button *ngIf="post.type=='event'" class="btn btn-outline-warning task" type="button" (click)="openTimePicker()">
+              <i class="material-icons">alarm</i>{{model_time.hour}}:{{model_time.minute}}
+            </button>
+
+          </div>
+          <div class="col-md-12">
+
+            <ngb-alert *ngIf="alert.message" [type]="alert.class" (close)="successMessage = null">{{alert.message}}</ngb-alert>
+
+          </div>
+        </div>
+
+        <div class="row" style="margin-top: 10px">
+          <div class="col-md-12">
+            <div *ngIf="modulesLoaded" class="form-group editor">
+              <div class="triangle" *ngIf="post.type=='normal'"></div>
+              <div class="triangle-event" *ngIf="post.type=='event'"></div>
+              <div class="triangle-task" *ngIf="post.type=='task'"></div>
+
+
+              <!--consider removing either ready or oneditorcreated since they call the same function-->
+              <quill-editor id="post-content" [modules]="modules" [(ngModel)]="post.content"
+                            [spellcheck]="true" name="postContent" formControlName="postContent"
+                            (ready)="onEditorCreated($event)" (onEditorCreated)="onEditorCreated($event)" (change)="onContentChanged($event)"
+                            (onContentChanged)="onContentChanged($event)">
+              </quill-editor>
+
+
+              <div ngbDropdown class="btn-group" style="width:100%">
+
+                <button type="button" class="btn btn-link">
+                  <input id="cin" #fileInput type="file" class="btn btn-outline-warning task" style="display: none"
+                         (change)="fileChangeEvent($event)" placeholder="File" multiple />
+                  <i class="material-icons" (click)="fileInput.click()">attach_file</i>
+                </button>
+                <button type="button" class="btn btn-link">
+                  <i class="material-icons" (click)="loadGoogleDrive();">
+                    cloud_upload
+                  </i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-8 ">
+
+            <div id="google-drive-file" style="display:none;"></div>
+
+
+
+            <div *ngFor="let file of filesToUpload">
+              <p><b>Uploaded file(s): </b>{{file.name}}</p>
+            </div>
+
+          </div>
+
+          <div class="col-md-4 text-right ">
+            <button type="button " name="button" class="btn btn-default " (click)="togglePostbox()">Cancel</button>
+            <button [disabled]="(this.postForm.invalid && this.post.type === 'normal' )
+    || this.processing
+    || (this.selectedGroupUsers.length === 0 && this.post.type === 'event' && !this.isItMyWorkplace)
+    || (!this.isItMyWorkplace && this.selectedGroupUsers.length === 0 && this.post.type=='task')"
+                    type="button " name="button" (click)="OnAddNewPost()" class="btn btn-primary">Post</button>
+          </div>
+        </div>
+        <br>
+      </div>
+    </form>
+  </div>
+
+  <!-- ########## MODALS ############-->
+
+  <ng-container *ngIf="postboxDisplayed">
+
+
+    <time-picker></time-picker>
+
+    <assign-users-modal></assign-users-modal>
+  </ng-container>
+</div>
+<!-- postbox-->
