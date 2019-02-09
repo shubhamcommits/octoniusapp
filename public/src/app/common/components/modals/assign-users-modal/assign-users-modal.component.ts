@@ -14,6 +14,7 @@ export class AssignUsersModalComponent implements OnInit {
   @Input('selectedGroupUsers') selectedGroupUsers = [];
   @Input('group') group;
   @Input('settings') settings;
+  @Input('type') type;
 
   @Output('usersSelected') usersSelected = new EventEmitter();
 
@@ -29,6 +30,33 @@ export class AssignUsersModalComponent implements OnInit {
   ngOnInit() {
     if (this.selectedGroupUsers.length > 0) {
       this.assignment = 'Assigned';
+    }
+
+    if (!this.settings) {
+      if (this.type === 'task') {
+        this.settings = {
+          text: 'Select Group Members',
+          classes: 'myclass custom-class',
+          singleSelection: true,
+          primaryKey: '_id',
+          labelKey: 'full_name',
+          noDataLabel: 'Search Members...',
+          enableSearchFilter: true,
+          searchBy: ['full_name', 'capital']
+        };
+      } else {
+        this.settings = {
+          text: 'Select Group Members',
+          selectAllText: 'Select All',
+          unSelectAllText: 'UnSelect All',
+          classes: 'myclass custom-class',
+          primaryKey: '_id',
+          labelKey: 'full_name',
+          noDataLabel: 'Search Members...',
+          enableSearchFilter: true,
+          searchBy: ['full_name', 'capital']
+        };
+      }
     }
   }
 

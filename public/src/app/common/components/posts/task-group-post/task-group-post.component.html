@@ -51,14 +51,15 @@
 
       <ng-container *ngIf="displayEditPostSection">
         <div class="col-md-12 text-right" id="button_edit_post{{i}}" style="padding-bottom: 1em;">
-          <button type="button" class="btn btn-sm btn-outline-warning task" *ngIf="!isItMyWorkplace && post.type === 'task'"
-                  (click)="openAssignPicker()">
-            <i class="material-icons">perm_identity</i> {{assignment}}
-          </button>
-          <button class="btn btn-sm btn-outline-warning task" type="button" *ngIf="(post.type === 'task' || post.type === 'event')"
-                  (click)="openDatePicker()">
-            <i class="material-icons">event</i> {{model_date?.day}}-{{model_date?.month}}-{{model_date?.year}}
-          </button>
+          <assign-users-modal
+            *ngIf="(post.type === 'event' || post.type === 'task') && !isItMyWorkplace"
+            [selectedGroupUsers]="selectedGroupUsers"
+            (usersSelected)="usersSelected($event)"
+            [settings]="settings"
+            [type]="post.type"
+            [group]="group">
+          </assign-users-modal>
+          <date-picker-modal [model_date]="model_date" (picked_date)="setDate($event)"></date-picker-modal>
           <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditPost(i, post._id,post?.content, post.type)">Save</button>
         </div>
 

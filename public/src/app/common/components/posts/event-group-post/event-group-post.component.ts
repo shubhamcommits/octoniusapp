@@ -249,6 +249,11 @@ export class EventGroupPostComponent implements OnInit, OnDestroy {
     this.commentSectionComponent.displayCommentEditor = !this.commentSectionComponent.displayCommentEditor;
   }
 
+  usersSelected(users) {
+    this.selectedGroupUsers = users;
+    this.assignment = users.length < 1 ? "UnAssigned" : "Assigned";
+  }
+
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();

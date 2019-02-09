@@ -603,8 +603,6 @@ export class PostboxComponent implements OnInit, OnDestroy {
 
   usersSelected(users) {
     this.selectedGroupUsers = users;
-
-
     this.assignment = users.length < 1 ? "UnAssigned" : "Assigned";
   }
 

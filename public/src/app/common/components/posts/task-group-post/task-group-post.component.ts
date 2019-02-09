@@ -306,6 +306,10 @@ export class TaskGroupPostComponent implements OnInit {
     this.comments = comments;
   }
 
+  setDate(pickedDate) {
+    this.model_date = pickedDate;
+  }
+
   toggleComments() {
     this.commentsDisplayed = !this.commentsDisplayed;
 
@@ -322,6 +326,11 @@ export class TaskGroupPostComponent implements OnInit {
     // we hide or display the possible task statuses
     this.taskStatusList.nativeElement.style.display =
       this.taskStatusList.nativeElement.style.display === 'block' ? 'none' : 'block';
+  }
+
+  usersSelected(users) {
+    this.selectedGroupUsers = users;
+    this.assignment = users.length < 1 ? "UnAssigned" : "Assigned";
   }
 
 }
