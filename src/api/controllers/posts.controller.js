@@ -48,6 +48,10 @@ const add = async (req, res, next) => {
     //  populate the assigned_to property of this document
     if (post.type === 'task') {
         post = await Post.populate(post, [{ path: 'task._assigned_to' }, { path: '_group'}, { path: '_posted_by' }]);
+    } else if (post.type === 'event') {
+        post = await Post.populate(post, [{ path: 'event._assigned_to' }, { path: '_group'}, { path: '_posted_by' }]);
+    } else if (post.type === 'normal') {
+        post = await Post.populate(post, [{ path: '_group'}, { path: '_posted_by' }]);
     }
 
     return res.status(200).json({

@@ -1,4 +1,3 @@
-
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 
 import {GroupService} from "../../../../shared/services/group.service";
