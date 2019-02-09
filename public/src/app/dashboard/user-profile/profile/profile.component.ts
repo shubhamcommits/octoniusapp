@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../../shared/services/user.service';
 import { Router } from '@angular/router';
 import swal from 'sweetalert';
+import { NgxUiLoaderService } from 'ngx-ui-loader'; 
 
 @Component({
   selector: 'app-profile',
@@ -18,9 +19,15 @@ export class ProfileComponent implements OnInit {
 
   skills =[];
 
-  constructor(private _userService: UserService, private _router: Router) { }
+  constructor(private _userService: UserService, private ngxService: NgxUiLoaderService, private _router: Router) { }
 
   ngOnInit() {
+    this.ngxService.start(); // start foreground loading with 'default' id
+ 
+    // Stop the foreground loading after 5s
+    setTimeout(() => {
+      this.ngxService.stop(); // stop foreground loading with 'default' id
+    }, 500);
     this.getUserProfile();
   }
 
@@ -102,7 +109,7 @@ export class ProfileComponent implements OnInit {
       .subscribe((res) => {
         this.user = res.user;
        this.skills = res.user.skills;
-       console.log('User', this.user);
+      // console.log('User', this.user);
       if(res.user['company_join_date'] == null){
         swal("Oops!", "Seems like you have been missing out, please update your profile to stay updated!", "warning");
       }

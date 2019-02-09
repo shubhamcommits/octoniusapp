@@ -65,7 +65,10 @@ import {ValidSubscriptionGuard} from "./shared/guards/valid-subscription.guard";
 
 import { ImageCropperModule } from 'ngx-image-cropper';
 
+import { NgxSkillBarModule } from "ngx-skill-bar";
+
 import {TimeAgoPipe} from 'time-ago-pipe';
+import { CloudsComponent } from './dashboard/user-profile/clouds/clouds.component';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 
@@ -116,7 +119,8 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     OverviewMyTasksComponent,
     OverviewMyWorkplaceComponent,
     AdminBillingComponent,
-    InsertDecimalPointPipe
+    InsertDecimalPointPipe,
+    CloudsComponent
   ],
   imports: [
     BrowserModule,
@@ -133,6 +137,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     PickerModule,
     ClickOutsideModule,
     EmojiModule,
+    NgxSkillBarModule,
     ImageCropperModule,
     DragAndDropModule.forRoot(),
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
