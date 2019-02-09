@@ -125,7 +125,8 @@ const edit = async (req, res, next) => {
     })
       .populate('_posted_by')
       .populate('task._assigned_to')
-      .populate('event._assigned_to');
+      .populate('event._assigned_to')
+        .populate('_liked_by');
 
 
     // Create Notification for mentions on post content
@@ -383,6 +384,7 @@ const getNextComments = async (req, res, next) => {
       .sort('-_id')
       .limit(5)
       .populate('_commented_by', 'first_name last_name profile_pic')
+        .populate('_liked_by', 'first_name last_name')
       .lean();
 
     return res.status(200).json({

@@ -233,6 +233,10 @@ export class EventGroupPostComponent implements OnInit, OnDestroy {
     this.comments = comments;
   }
 
+  setTime(pickedTime) {
+    this.model_time = pickedTime;
+  }
+
   toggleComments() {
     this.commentsDisplayed = !this.commentsDisplayed;
 

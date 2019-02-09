@@ -1,4 +1,7 @@
-
+<button type="button" class="btn btn-outline-warning task"
+        (click)="openAssignPicker(assignContent)">
+  <i class="material-icons">perm_identity</i> {{assignment}}
+</button>
 
 <!--  Modal to Assign calendar event or task to group memeber -->
 <ng-template #assignContent let-c="close" let-d="dismiss">

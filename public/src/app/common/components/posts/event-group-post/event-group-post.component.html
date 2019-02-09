@@ -33,10 +33,7 @@
             <i class="material-icons">perm_identity</i> {{assignment}}
           </button>
           <date-picker-modal [model_date]="model_date" (picked_date)="setDate($event)"></date-picker-modal>
-          <button class="btn btn-sm btn-outline-warning task" type="button" (click)="openTimePicker(timeContent)">
-            <i class="material-icons">alarm</i>{{model_time.hour}}:{{model_time.minute}}
-          </button>
-
+          <time-picker [model_time]="model_time" (picked_time)="setTime($event)"></time-picker>
           <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditPost()">Save</button>
         </div>
         <div class="col-md-12 innercard">

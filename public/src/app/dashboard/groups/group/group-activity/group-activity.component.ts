@@ -679,7 +679,7 @@ export class GroupActivityComponent implements OnInit {
                 if (xhr.status === 200) {
                   // this is callback data: url
                   const url = JSON.parse(xhr.responseText).file[0].modified_name;
-                  console.log(JSON.parse(xhr.responseText).file[0].modified_name);
+
                   //Here we insert the image and replace the BASE64 with our custom URL, which is been saved to the server
                   //ex - img src = "http://localhost:3000/uploads/image-name.jpg"
                   const range = this.quill.getSelection();

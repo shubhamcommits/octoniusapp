@@ -1,8 +1,9 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {PostService} from "../../../../shared/services/post.service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {takeUntil} from "rxjs/operators";
 import {Subject} from "rxjs/Subject";
+import * as moment from 'moment';
 
 @Component({
   selector: 'time-picker',
@@ -11,38 +12,31 @@ import {Subject} from "rxjs/Subject";
 })
 export class TimePickerComponent implements OnInit, OnDestroy {
 
-  @ViewChild('timeContent') timeContent;
+  @Input('model_time') model_time;
+  @Output('picked_time') picked_time = new EventEmitter();
 
   // modal reference
   timeModalRef;
 
   ngUnsubscribe = new Subject();
 
-  model_time;
+
 
   constructor(private postService: PostService, private modalService: NgbModal) { }
 
   ngOnInit() {
-    this.postService.openTimePicker
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((values: any) => {
-        //  when someone clicked we display the modal
-        this.model_time = values.model_time;
-        this.openTimePickerModal(values.options);
-
-        //  set the time as the time the user picked before (when we are are editing the post)
-        //  if we are not editing, we use the standard 13:30
-        this.model_time = values.model_time || {hour: 13, minute: 30};
-      });
+    if (!this.model_time) {
+      const dateObj = moment();
+      this.model_time = {hour: dateObj.hour(), minute: dateObj.minute()};
+    }
   }
 
-  openTimePickerModal(options) {
-    this.timeModalRef = this.modalService.open(this.timeContent, options);
+  openTimePicker(timeContent) {
+    this.timeModalRef = this.modalService.open(timeContent, {centered: true});
   }
 
   onTimeSelected() {
-    this.postService.timePicked.next(this.model_time);
-    this.timeModalRef.close();
+    this.picked_time.emit(this.model_time);
   }
 
   ngOnDestroy() {

@@ -565,22 +565,6 @@ export class PostboxComponent implements OnInit, OnDestroy {
     });
   }
 
-  setDate(pickedDate) {
-    this.model_date = pickedDate;
-  }
-
-  openTimePicker() {
-    // trigger the timepicker modal to open
-    this.postService.openTimePicker.next({ options: {centered: true} });
-
-    //   when the time is picked we receive the result here.
-    this.postService.timePicked
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe( model_time => {
-        this.model_time = model_time;
-      });
-  }
-
   resetNewPostForm() {
     this.model_date = {year: (new Date()).getFullYear(), month: (new Date()).getMonth() + 1, day: (new Date()).getDate()};
     this.model_time = {hour: 13, minute: 30};
@@ -592,18 +576,36 @@ export class PostboxComponent implements OnInit, OnDestroy {
   resetAndEnablePostForm(res, driveDivision) {
     this.processing = false;
     this.enablePostForm();
-    this.postForm.reset();
+    this.post.content = '';
+    this.selectedGroupUsers = [];
     this.alert.class = 'success';
+    this.assignment = 'UnAssigned';
     this._message.next(res['message']);
     this.filesToUpload = [];
     driveDivision.innerHTML = '';
     driveDivision.style.display = 'none';
     this.googleDriveFiles = [];
+    this.postForm.reset();
+  }
+
+  setDate(pickedDate) {
+    this.model_date = pickedDate;
+  }
+
+  setTime(pickedTime) {
+    this.model_time = pickedTime;
   }
 
   // Show / hide the postbox
   togglePostbox() {
     this.postboxDisplayed = !this.postboxDisplayed;
+  }
+
+  usersSelected(users) {
+    this.selectedGroupUsers = users;
+
+
+    this.assignment = users.length < 1 ? "UnAssigned" : "Assigned";
   }
 
   // !--GOOGLE PICKER IMPLEMENTATION--! //

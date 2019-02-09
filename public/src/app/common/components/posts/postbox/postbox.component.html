@@ -60,23 +60,19 @@
 
           </div>
           <div class="col-md-8 text-right">
-            <button type="button" class="btn btn-outline-warning task" *ngIf="(post.type == 'event' || post.type== 'task') && !isItMyWorkplace"
-                    (click)="openAssignPicker()">
-              <i class="material-icons">perm_identity</i> {{assignment}}
-            </button>
-
-            <!-- <input [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" placeholder="Date Time"> -->
-            <!--   <owl-date-time #dt1></owl-date-time> -->
-
-            <date-picker-modal [model_date]="model_date" (picked_date)="setDate($event)" *ngIf="post.type == 'event'|| post.type=='task'">
-
-            </date-picker-modal>
 
 
+            <assign-users-modal
+              *ngIf="(post.type === 'event' || post.type === 'task') && !isItMyWorkplace"
+              [selectedGroupUsers]="selectedGroupUsers"
+              (usersSelected)="usersSelected($event)"
+              [settings]="settings"
+              [group]="group">
+            </assign-users-modal>
+            <date-picker-modal [model_date]="model_date" (picked_date)="setDate($event)" *ngIf="post.type === 'event'|| post.type ==='task'"></date-picker-modal>
+            <time-picker *ngIf="post.type === 'event'" [model_time]="model_time" (picked_time)="setTime($event)"></time-picker>
 
-            <button *ngIf="post.type=='event'" class="btn btn-outline-warning task" type="button" (click)="openTimePicker()">
-              <i class="material-icons">alarm</i>{{model_time.hour}}:{{model_time.minute}}
-            </button>
+
 
           </div>
           <div class="col-md-12">
@@ -146,14 +142,3 @@
     </form>
   </div>
 
-  <!-- ########## MODALS ############-->
-
-  <ng-container *ngIf="postboxDisplayed">
-
-
-    <time-picker></time-picker>
-
-    <assign-users-modal></assign-users-modal>
-  </ng-container>
-</div>
-<!-- postbox-->

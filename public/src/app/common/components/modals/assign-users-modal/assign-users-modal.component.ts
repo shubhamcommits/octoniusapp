@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {GroupService} from "../../../../shared/services/group.service";
 import {PostService} from "../../../../shared/services/post.service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
@@ -10,35 +10,27 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 })
 export class AssignUsersModalComponent implements OnInit {
 
-  @ViewChild('assignContent') assignContent;
+  // list of users who get assigned this task/event
+  @Input('selectedGroupUsers') selectedGroupUsers = [];
+  @Input('group') group;
+  @Input('settings') settings;
+
+  @Output('usersSelected') usersSelected = new EventEmitter();
+
+  // assignment status
+  assignment = 'UnAssigned';
 
   // complete list of all the users of the group
   groupUsersList = [];
 
-  // Have there been any users assigned?
-  assignment = 'UnAssigned';
-
-  // list of users who get assigned this task/event
-  selectedGroupUsers = [];
-  group;
-
-  settings;
-
-  modalRef;
 
   constructor(private groupService: GroupService, private postService: PostService, private modalService: NgbModal) { }
 
   ngOnInit() {
-    this.postService.openAssignUsers
-      .subscribe((values: any) => {
-        this.selectedGroupUsers = values.selectedGroupUsers || [];
-        this.assignment = this.selectedGroupUsers.length > 0 ? 'Assigned' : 'UnAssigned';
-        this.group = values.group;
-        this.openAssignUsersModal(values.options);
-        this.settings = values.settings || null;
-      });
+    if (this.selectedGroupUsers.length > 0) {
+      this.assignment = 'Assigned';
+    }
   }
-
 
   onDeSelectAll(items: any) {
     this.assignment = 'UnAssigned';
@@ -71,11 +63,10 @@ export class AssignUsersModalComponent implements OnInit {
   }
 
   onUsersSelected() {
-    this.postService.usersAssigned.next({ selectedGroupUsers: this.selectedGroupUsers, assignment: this.assignment} );
-    this.modalRef.close();
+    this.usersSelected.emit(this.selectedGroupUsers);
   }
 
-  openAssignUsersModal(options) {
-      this.modalRef = this.modalService.open(this.assignContent, options);
+  openAssignPicker(assignContent) {
+      this.modalService.open(assignContent, {centered: true});
   }
 }

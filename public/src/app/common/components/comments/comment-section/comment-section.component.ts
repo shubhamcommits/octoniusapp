@@ -11,7 +11,7 @@ import {PostService} from "../../../../shared/services/post.service";
 export class CommentSectionComponent implements OnInit {
 
   @Input() post;
-  @Input() commentsDisplayed
+  @Input() commentsDisplayed;
   // two way bind the editor
   @Input() modules;
   @Input() user;

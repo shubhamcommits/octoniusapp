@@ -1,3 +1,7 @@
+<button class="btn btn-sm btn-outline-warning task" type="button" (click)="openTimePicker(timeContent)">
+  <i class="material-icons">alarm</i>{{model_time.hour}}:{{model_time.minute}}
+</button>
+
 <!--  Modal to pick a time -->
 
 <ng-template style="margin-top: 10px" #timeContent let-c="close" let-d="dismiss">

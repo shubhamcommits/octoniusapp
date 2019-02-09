@@ -20,7 +20,6 @@ export class DatePickerComponent implements OnInit {
   constructor(private modalService: NgbModal) { }
 
   ngOnInit() {
-    console.log('thismodal_date', this.model_date);
     if (!this.model_date) {
       console.log('make new date');
       const dateObj = moment();
