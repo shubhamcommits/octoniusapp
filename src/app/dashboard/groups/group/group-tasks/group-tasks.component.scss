@@ -1,0 +1,26 @@
+.l-8 {animation-delay: 1.32s;}
+
+.load-8 .line {animation: loadingH 1.5s cubic-bezier(.17,.37,.43,.67) infinite;}
+
+.line {
+	display: inline-block;
+	width: 50px;
+	height: 18px;
+	border-radius: 18px;
+	background-color: #005fd5;
+}
+.card{
+    margin-bottom: 10px;
+}
+
+.emoji-drop-transparent {
+
+  color: transparent;
+  background: transparent;
+
+}
+
+.dropdown-edit::after
+{
+  display:none;
+}
