@@ -1,0 +1,50 @@
+<!-- CARD FOOTER: we should turn this into reusable component -->
+
+<div class="card-footer action-post innercard clearfix">
+  <hr>
+  <div class="row ">
+    <div class="col-md-6 ">
+                      <span [ngbPopover]="likepopcontent"
+                            triggers="mouseenter:mouseleave"><b>{{post?._liked_by.length}}</b>
+                        Likes </span>
+      <span style="cursor: pointer;" (click)="loadComments();"><b>{{commentCount || post?.comments.length}}</b> Comments</span>
+    </div>
+    <div class="col-md-6 text-right">
+                      <span>
+                        <button class="btn btn-link">
+                          <i class="material-icons muted" id="icon_comment_post_{{i}}"
+                             (click)="togglePostCommentEditor.emit()">mode_comment</i>
+                        </button>
+                      </span>
+
+      <span>
+                        <button class="btn btn-link" (click)="OnClickLikePost()">
+                          <i class="material-icons muted" *ngIf="!userLikedPost(); else likeif"
+                             id="icon_like_post_{{i}}">thumb_up</i>
+                          <ng-template #likeif><i class="material-icons active"
+                                                  id="icon_like_post_{{i}}">thumb_up</i></ng-template>
+                        </button>
+                      </span>
+      <span>
+                        <div ngbDropdown class="d-inline-block"
+                             *ngIf="post?._posted_by?._id == user._id || user?.role === 'owner' || user?.role === 'admin'; else editpostif">
+                          <i class="material-icons action" id="dropdownBasic1" (click)="togglePostEditList()" ngbDropdownToggle>more_horiz</i>
+                          <div #postEditList ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                            <button class="dropdown-item" (click)="editPost.emit(); togglePostEditList()">Edit Post</button>
+                            <button class="dropdown-item" (click)="deletePost.emit()">Delete Post</button>
+                          </div>
+                        </div>
+                        <ng-template #editpostif>
+                        </ng-template>
+                      </span>
+    </div>
+  </div>
+
+  <ng-template #likepopcontent>
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let liked_member of post._liked_by;">{{liked_member.first_name}}</li>
+    </ul>
+  </ng-template>
+</div>
+
+<!-- END CARD FOOTER and footer component-->

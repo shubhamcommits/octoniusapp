@@ -1,0 +1,140 @@
+.fade-in {
+	opacity: 1;
+	animation-name: fadeInOpacity;
+	animation-iteration-count: 1;
+	animation-timing-function: ease-in;
+	animation-duration: 1s;
+}
+i.icon-blue {
+	color: blue;
+}
+
+.triangle {
+	width: 0;
+	height: 0;
+	position: absolute;
+	border-left: 12px solid transparent;
+	border-right: 12px solid transparent;
+	border-bottom: 8px solid #005fd5;
+	top: -8px;
+	margin-left: 12px;
+}
+
+.triangle-event {
+	width: 0;
+	height: 0;
+	position: absolute;
+	border-left: 12px solid transparent;
+	border-right: 12px solid transparent;
+	border-bottom: 8px solid #005fd5;
+	top: -8px;
+	margin-left: 70px;
+}
+
+
+.triangle-task {
+	width: 0;
+	height: 0;
+	position: absolute;
+	border-left: 12px solid transparent;
+	border-right: 12px solid transparent;
+	border-bottom: 8px solid #005fd5;
+	top: -8px;
+	margin-left: 122px;
+}
+
+
+
+.search-results {
+	height: 100%;
+  }
+
+.line {
+	display: inline-block;
+	width: 50px;
+	height: 18px;
+	border-radius: 18px;
+	background-color: #005fd5;
+}
+
+.emoji-drop-transparent {
+
+	color: transparent;
+	background: transparent;
+
+  }
+  a.btn.dropdown-toggle::after
+{
+  color: transparent;
+}
+
+
+.l-8 {animation-delay: 1.32s;}
+
+.load-8 .line {animation: loadingH 1.5s cubic-bezier(.17,.37,.43,.67) infinite;}
+
+
+@keyframes loadingH {
+	0% {width: 50px;}
+	50% {width: 110px; padding: 4px;}
+	100% {width: 50px;}
+}
+
+@keyframes loadingI {
+	100% {transform: rotate(360deg);}
+}
+
+
+@keyframes fadeInOpacity {
+	0% {
+		opacity: 0;
+    height: 0%;
+	}
+	100% {
+		opacity: 1;
+    height: 100%;
+	}
+}
+.slider {
+	overflow-y: hidden;
+	max-height: 500px; /* approximate max height */
+  box-sizing: border-box;
+
+	transition-property: all;
+	transition-duration: .5s;
+	transition-timing-function: ease;
+}
+.slider.closed {
+	max-height: 0;
+}
+
+.row.card-title{
+	.col-md-7{
+		padding-left: 25px;
+	}
+}
+
+.load-more-comments {
+  display: flex;
+  justify-content: space-between;
+  &-btn {
+    color: var(--blue);
+    padding: 1rem;
+    cursor: pointer;
+    margin-bottom: 0;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .comments-count {
+    color: var(--blue);
+    padding: 1rem;
+    margin-bottom: 0;
+  }
+}
+
+.form-group .form-control{
+  border: none !important;
+}

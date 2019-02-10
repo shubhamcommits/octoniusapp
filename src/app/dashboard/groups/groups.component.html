@@ -1,0 +1,74 @@
+
+  <div class="container">
+  <app-groups-page-header></app-groups-page-header>
+
+
+
+  <div *ngIf="alert.message" [ngClass]="alert.class">{{alert.message}}</div>
+  <div class="row no-margin">
+
+    <div *ngIf="user?.role== 'admin' || user?.role== 'owner'" (click)="openLg(content)" class="card col-md-3" style="cursor: pointer;">
+
+        <a>
+
+           <button class="btn btn-primary btn-block btn-lg"> <i class="material-icons" style="font-size: 3.5rem">add_circle_outline</i><br> New Group</button>
+
+        </a>
+
+
+    </div>
+
+    <!--     <div class="card col-md-3 m-1" [routerLink]="['/dashboard/group/',group._id,'activity']">
+      <img class="card-img-top " src="https://source.unsplash.com/random">
+      <div class="card-body ">
+        <a>
+          <h4 class="card-title ">Global</h4>
+        </a>
+        <p class="card-text ">{{'This is Gloabl group'}}
+          <br>
+          <span class="badge badge-success ">{{workspace?.members.length}} Members</span>
+          <span class="small ">including you</span>
+        </p>
+      </div>
+    </div> -->
+    <ng-container *ngFor="let group of groups ">
+      <div *ngIf="group.group_name !== 'private'" class="card col-md-3 groups" [routerLink]="['/dashboard/group/',group._id,'activity']">
+        <span class="badge badge-members" >{{group._members?.length + group._admins?.length}} Members</span>
+        <img class="card-img-top" [src] = "group.group_avatar" onerror="this.src='/assets/images/group.png'" >
+        <div class="card-body ">
+          <a>
+            <h2 class="card-title">{{group?.group_name}}</h2>
+          </a>
+          <!-- <p class="card-text">Group description</p>  -->
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-template #content let-c="close" let-d="dismiss">
+      <div class="modal-header">
+        <h4 class="modal-title">Create New Group</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <ngb-alert *ngIf="alert.message" [type]="alert.class" (close)="successMessage = null">{{ alert.message}}</ngb-alert>
+
+      <div class="modal-body">
+        <form [formGroup]="createNewGroupForm">
+
+          <div class="form-group">
+            <label for="group_name">Group Name</label>
+            <input type="text" class="form-control" id="group_name" formControlName="groupName" [(ngModel)]="group.group_name" name="groupName">
+          </div>
+        </form>
+
+      </div>
+      <div class="modal-footer">
+        <button [disabled]="createNewGroupForm.invalid" class="btn btn-outline-primary mb-2 mr-2" (click)="onCreateNewGroup()">Create Group</button>
+        <button type="button" class="btn btn-outline-primary mb-2 mr-2" (click)="c('Close click')">Cancel</button>
+      </div>
+    </ng-template>
+  </div>
+
+
+</div>

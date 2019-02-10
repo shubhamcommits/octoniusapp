@@ -1,0 +1,64 @@
+<div class="card-tile">
+  <h4>All members from your workplace</h4>
+
+  <hr>
+  <div class="media card-tile user-list" *ngFor="let member of workspace?.members">
+<!--<img class="feed-avatar " src="assets/images/user.png" alt="User">-->
+    <img src="/uploads/{{member?.profile_pic}}" onerror="this.src='/assets/images/user.png'" class="feed-avatar">
+    <div class="media-body">
+      <div class="float-left">
+        <h4 class="mt-0">{{member?.first_name}} {{member?.last_name}}</h4>
+        <p>Role: {{member?.role}} (<a href="mailto:{{member?.email}}">{{member?.email}}</a>)</p>
+      </div>
+      <div class="btn-group mr-3 float-right" style="margin-left:10px">
+
+        <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+          <button class="btn btn-primary dropdown-toggle-split btn-sm" ngbDropdownToggle>Manage user </button>
+          <div class="dropdown-menu" ngbDropdownMenu>
+            <button class="dropdown-item" (click)="updateUserRole('admin',member._id, member.first_name, member.last_name)">Change to Admin</button>
+            <button class="dropdown-item" (click)="updateUserRole('member ',member._id, member.first_name, member.last_name)">Change to Member</button>
+            <div class="dropdown-divider"></div>
+            <button class="dropdown-item" (click)="removeUserfromWorkspace(member._id, member.first_name, member.last_name)">Delete Member</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <ng-template #content let-c="close" let-d="dismiss">
+    <!-- <div class="modal-header">
+      <h4 class="modal-title">Update User Role</h4>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div> -->
+    <div class="modal-body">
+      <ngb-alert *ngIf="alert.message" [type]="alert.class" (close)="successMessage = null">{{alert.message}}</ngb-alert>
+    </div>
+
+  </ng-template>
+  <!-- <div *ngIf="alert.message" [ngClass]="alert.class"> {{alert.message}}</div>
+ -->
+
+  <ng-template #contentDeleteUser let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title">Delete Worksapce Member</h4>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <ngb-alert *ngIf="alert.message" [type]="alert.class" (close)="successMessage = null">{{alert.message}}</ngb-alert>
+
+    <p>Are you sure you want to delete this member?</p>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" (click)="deleteWorkspaceUser('as')">Delete</button>
+      <button type="button" class="btn btn-primary" (click)="c('Close click')">Cancle</button>
+    </div>
+
+  </ng-template>
+</div>
