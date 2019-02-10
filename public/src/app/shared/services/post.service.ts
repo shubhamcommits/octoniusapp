@@ -1,13 +1,28 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+import {Subject} from "rxjs/Subject";
 
 @Injectable()
 export class PostService {
 
   BASE_API_URL = environment.BASE_API_URL;
 
+  // handling date modal actions
+  openDatePicker = new Subject();
+  datePicked = new Subject();
+
+  // handling time modal actions
+  openTimePicker = new Subject();
+  timePicked = new Subject();
+
+  // handling assign-users modal actions
+  openAssignUsers = new Subject();
+  usersAssigned = new Subject();
+
   constructor(private _http: HttpClient) { }
+
+  // METHODS TO HANDLE HTTP REQUESTS
 
   getGroupPosts(group_id) {
     return this._http.get(this.BASE_API_URL + '/groups/' + group_id + '/posts');
@@ -51,7 +66,7 @@ export class PostService {
   }
 
   like(post) {
-    return this._http.put(this.BASE_API_URL + `/posts/${post.post_id}/like`, post);
+    return this._http.put(this.BASE_API_URL + `/posts/${post._id}/like`, post);
   }
 
   likeComment(comment) {
@@ -59,7 +74,7 @@ export class PostService {
   }
 
   unlike(post) {
-    return this._http.put(this.BASE_API_URL + `/posts/${post.post_id}/unlike`, post);
+    return this._http.put(this.BASE_API_URL + `/posts/${post._id}/unlike`, post);
   }
 
   unlikeComment(comment) {
@@ -93,9 +108,22 @@ export class PostService {
     return this._http.delete(this.BASE_API_URL + `/posts/comments/${commentId}`);
   }
 
-  uploadQuillFiles(file: File){
+  // SHARED FUNCTIONS ACROSS COMPONENTS
+
+  playAudio() {
+    const audio = new Audio();
+    audio.src = "/assets/audio/intuition.ogg";
+    audio.load();
+    audio.play();
+  }
+
+  uploadQuillFiles(file: File) {
     const fd = new FormData();
     fd.append('attachments', file);
     return this._http.post(this.BASE_API_URL + '/posts/upload', fd);
+  }
+
+  onSaveEditPost() {
+  //  add this function later
   }
 }
