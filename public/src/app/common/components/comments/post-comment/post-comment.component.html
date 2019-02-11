@@ -16,11 +16,11 @@
       </div>
     </div>
     <ng-container *ngIf="displayCommentEditor">
-      <div class="col-md-12 text-right " id="button_edit_comment{{j}}" style="padding-bottom: 1em;">
+      <div class="col-md-12 text-right" style="padding-bottom: 1em;">
         <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditComment()">Save</button>
       </div>
       <div class="col-md-12 innercard">
-        <quill-editor [modules]="modules" id="edit-comment-{{j}}" type="text" [(ngModel)]="comment_content"
+        <quill-editor [modules]="modules" type="text" [(ngModel)]="comment_content"
                       [spellcheck]="true" value="comment?.content" (blur)="onEditorBlured($event)"
                       (focus)="onEditorFocused($event)" (ready)="onEditorCreated($event)" (change)="onContentChanged($event)">
         </quill-editor>
@@ -40,9 +40,8 @@
                         <span>
                         <button class="btn btn-link btn-like-comment" (click)="onClickLikeComment()">
 
-                          <i class="material-icons muted" *ngIf="!userLikedComment(); else likeif"
-                             id="icon_like_post_{{i}}">thumb_up</i>
-                          <ng-template #likeif><i class="material-icons active" id="icon_like_post_{{i}}">thumb_up</i></ng-template>
+                          <i class="material-icons muted" *ngIf="!userLikedComment(); else likeif">thumb_up</i>
+                          <ng-template #likeif><i class="material-icons active">thumb_up</i></ng-template>
                         </button>
                       </span>
         <span style="margin-right: -12px">

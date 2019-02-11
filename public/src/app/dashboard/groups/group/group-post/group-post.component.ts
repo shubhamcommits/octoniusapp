@@ -509,9 +509,9 @@ export class GroupPostComponent implements OnInit {
   likepost() {
 
     if
-    (this.post._liked_by.length == 0){
+    (this.post._liked_by.length === 0){
       const post = {
-        'post_id': this.postId,
+        '_id': this.postId,
         'user_id': this.user_data.user_id
       };
 
@@ -526,14 +526,14 @@ export class GroupPostComponent implements OnInit {
     }
 
     else{
-      if(this.userLikedPost()){
+      if(this.userLikedPost()) {
         this.unlikepost();
       }
       else
       {
         const post =
         {
-          'post_id': this.postId,
+          '_id': this.postId,
           'user_id': this.user_data.user_id
         };
 
@@ -554,7 +554,7 @@ export class GroupPostComponent implements OnInit {
   // !-UNLIKE A POST--! //
   unlikepost(){
     const post = {
-      'post_id': this.postId,
+      '_id': this.postId,
       'user_id': this.user_data.user_id
     };
 

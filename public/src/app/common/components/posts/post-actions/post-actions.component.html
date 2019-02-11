@@ -19,10 +19,8 @@
 
       <span>
                         <button class="btn btn-link" (click)="OnClickLikePost()">
-                          <i class="material-icons muted" *ngIf="!userLikedPost(); else likeif"
-                             id="icon_like_post_{{i}}">thumb_up</i>
-                          <ng-template #likeif><i class="material-icons active"
-                                                  id="icon_like_post_{{i}}">thumb_up</i></ng-template>
+                          <i class="material-icons muted" *ngIf="!userLikedPost(); else likeif">thumb_up</i>
+                          <ng-template #likeif><i class="material-icons active">thumb_up</i></ng-template>
                         </button>
                       </span>
       <span>

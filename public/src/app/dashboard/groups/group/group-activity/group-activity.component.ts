@@ -189,8 +189,6 @@ export class GroupActivityComponent implements OnInit {
     //config.triggers = 'hover';
     this.group_id = this.groupDataService.groupId;
     this.user_data = JSON.parse(localStorage.getItem('user'));
-
-    this.group = this.groupDataService.group;
   }
 
   async ngOnInit() {
@@ -208,14 +206,19 @@ export class GroupActivityComponent implements OnInit {
     this.getUserProfile();
 
     // initial group initialization for normal groups
-    this.group_id = this.groupDataService.groupId;
+
     this.group = this.groupDataService.group;
+    console.log('activity group', this.group);
+    this.group_id = this.groupDataService.groupId;
     this.group_name = this.group ? this.group.group_name : null;
 
     // my-workplace depends on a private group and we need to fetch that group and edit
     // the group data before we proceed and get the group post
     if (this.isItMyWorkplace) {
       await this.getPrivateGroup();
+    } else {
+      // group needs to be defined
+      await this.getGroup();
     }
 
     this.loadGroupPosts();
@@ -303,7 +306,20 @@ export class GroupActivityComponent implements OnInit {
   }
 
 
+getGroup () {
+    return new Promise((resolve, reject) => {
+      this.groupService.getGroup(this.group_id)
+        .subscribe((res) => {
+          // console.log('response in group component:', res);
+          this.group = res['group'];
+          resolve();
+          console.log('got group', this.groupDataService.group);
+        }, (err) => {
+reject();
+        });
+    });
 
+}
 
   loadGroup() {
     this.groupService.getGroup(this.group_id)
@@ -459,7 +475,7 @@ export class GroupActivityComponent implements OnInit {
     if (this.group || count > 6) {
       // reset the count
       count = 0;
-      this.postService.getGroupPosts(this.group_id)
+      this.postService.getGroupPosts(this.group._id)
         .subscribe((res) => {
           this.posts = res['posts'];
           this.isLoading$.next(false);
