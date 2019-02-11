@@ -27,7 +27,7 @@
       <!-- EDIT EVENT POST -->
 
       <ng-container *ngIf="displayEditPostSection">
-        <div class="col-md-12 text-right " id="button_edit_post{{i}}" style="padding-bottom: 1em;">
+        <div class="col-md-12 text-right " style="padding-bottom: 1em;">
           <assign-users-modal
             *ngIf="(post.type === 'event' || post.type === 'task') && !isItMyWorkplace"
             [selectedGroupUsers]="selectedGroupUsers"
@@ -41,7 +41,7 @@
           <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditPost()">Save</button>
         </div>
         <div class="col-md-12 innercard">
-          <quill-editor [modules]="modules" id="edit-content-{{i}}" type="text" [(ngModel)]="edit_content"
+          <quill-editor [modules]="modules" type="text" [(ngModel)]="edit_content"
                         [spellcheck]="true" value="post?.content" (blur)="onEditorBlured($event)"
                         (focus)="onEditorFocused($event)" (ready)="onEditorCreated($event)" (change)="onContentChanged($event)"></quill-editor>
         </div>
