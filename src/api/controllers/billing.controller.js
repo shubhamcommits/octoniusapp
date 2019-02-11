@@ -307,7 +307,7 @@ const paymentFailed = async (req, res) => {
 
 const paymentSuccessful = async (req, res) => {
   try {
-    // const stripe = require('stripe')(process.env.SK_STRIPE);
+    const stripe = require('stripe')(process.env.SK_STRIPE);
     //
     // const endpointSecret = process.env.WEBHOOK_PS_SECRET;
     //
