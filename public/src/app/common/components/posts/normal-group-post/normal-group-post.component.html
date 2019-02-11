@@ -1,6 +1,6 @@
 <!-- Normal post -->
 
-<li class="list-group-item" id="card-normal-post-{{i}}" data-show="????">
+<li class="list-group-item" data-show="????">
   <div class="card ">
     <div class="card-block ">
       <div class="row card-title ">
@@ -16,17 +16,18 @@
         </div>
       </div>
       <!-- Editing Post part-->
-      <div class="col-md-12 text-right " id="button_edit_post{{i}}" style="display: none; padding-bottom: 1em;">
-        <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditPost(i, post._id,post?.content, post.type)">Save</button>
+      <div class="col-md-12 text-right " style="display: none; padding-bottom: 1em;">
+        <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditPost()">Save</button>
       </div>
       <div class="col-md-12 innercard">
-        <quill-editor id="edit-content-{{i}}" [modules]="modules" type="text" [(ngModel)]="post.content"
-                      [spellcheck]="true" value="post?.content" style="display: none;" (blur)="onEditorBlured($event)"
-                      (focus)="onEditorFocused($event)" (ready)="onEditorCreated($event)" (change)="onContentChanged($event)"></quill-editor>
+        <quill-editor [modules]="modules" type="text" [(ngModel)]="post.content"
+                      [spellcheck]="true" value="post?.content" style="display: none;">
+
+        </quill-editor>
       </div>
 
       <!-- ACTUAL POST CONTENT -->
-      <div class="col-md-12 innercard" [id]="(i)" style="border: none;" [innerHTML]="post?.content | safe: 'html'">
+      <div class="col-md-12 innercard" style="border: none;" [innerHTML]="post?.content | safe: 'html'">
       </div>
 
       <!-- POST FILES -->

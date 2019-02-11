@@ -1,5 +1,5 @@
 <!--TASK post-->
-<li class="list-group-item" id="card-task-post-{{i}}">
+<li class="list-group-item">
   <div class="card">
     <div class="card-block ">
       <div class="row card-title ">
@@ -27,9 +27,9 @@
             <button class="btn btn-sm kbn-done" (click)="toggleTaskStatusList()" *ngIf="post.task.status == 'done'" id="dropdownDone" style=" color: white;"
                     ngbDropdownToggle>done</button>
             <div #taskStatusList ngbDropdownMenu aria-labelledby="dropdownToDo">
-              <button class="dropdown-item pumpkin-orange-bg" (click)="OnMarkTaskToDo(i, this.post._id)">To Do</button>
-              <button class="dropdown-item" (click)="OnMarkTaskInProgress(i, this.post._id)">In Progress</button>
-              <button class="dropdown-item" (click)="OnMarkTaskCompleted(i, this.post._id)">Done</button>
+              <button class="dropdown-item pumpkin-orange-bg" (click)="OnMarkTaskToDo()">To Do</button>
+              <button class="dropdown-item" (click)="OnMarkTaskInProgress()">In Progress</button>
+              <button class="dropdown-item" (click)="OnMarkTaskCompleted()">Done</button>
             </div>
           </div>
           <p class="small font-weight-bold" style="margin-top: 5px" *ngIf="post.task?.due_to != 'Invalid date'"> due {{post.task?.due_to | date}}</p>
@@ -38,7 +38,7 @@
         </div>
         <ng-template #taskif>
           <div class="col-md-4 text-right padding-topright">
-            <button class="btn btn-pink btn-sm" id="button_task_mark_completed_{{i}}" (click)="OnMarkTaskCompleted()">Mark
+            <button class="btn btn-pink btn-sm" (click)="OnMarkTaskCompleted()">Mark
               complete</button>
             <p class="small font-weight-bold" style="margin-top: 5px"> Due- {{post.task?.due_to | date}}</p>
             <p class="small font-weight-bold" style="margin-top: 5px"> Status - {{post.task?.status}}</p>
@@ -50,7 +50,7 @@
       <!-- EDIT TASK POST -->
 
       <ng-container *ngIf="displayEditPostSection">
-        <div class="col-md-12 text-right" id="button_edit_post{{i}}" style="padding-bottom: 1em;">
+        <div class="col-md-12 text-right" style="padding-bottom: 1em;">
           <assign-users-modal
             *ngIf="(post.type === 'event' || post.type === 'task') && !isItMyWorkplace"
             [selectedGroupUsers]="selectedGroupUsers"
@@ -64,13 +64,13 @@
         </div>
 
         <div class="col-md-12 innercard">
-          <quill-editor [modules]="modules" id="edit-content-{{i}}" type="text" [(ngModel)]="edit_content"
+          <quill-editor [modules]="modules" type="text" [(ngModel)]="edit_content"
                         [spellcheck]="true" value="post?.content" (blur)="onEditorBlured($event)"
                         (focus)="onEditorFocused($event)" (ready)="onEditorCreated($event)"></quill-editor>
         </div>
       </ng-container>
 
-      <div class="col-md-12 innercard " [id]="(i)" [innerHTML]="post?.content | safe: 'html'">
+      <div class="col-md-12 innercard " [innerHTML]="post?.content | safe: 'html'">
         <!--<pre class="card-text ">{{post?.content}}
         </pre>-->
       </div>
@@ -111,6 +111,8 @@
   </comment-section>
 
 </li>
+
+
 
 
 
