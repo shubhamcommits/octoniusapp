@@ -208,7 +208,6 @@ export class GroupActivityComponent implements OnInit {
     // initial group initialization for normal groups
 
     this.group = this.groupDataService.group;
-    console.log('activity group', this.group);
     this.group_id = this.groupDataService.groupId;
     this.group_name = this.group ? this.group.group_name : null;
 
@@ -313,7 +312,6 @@ getGroup () {
           // console.log('response in group component:', res);
           this.group = res['group'];
           resolve();
-          console.log('got group', this.groupDataService.group);
         }, (err) => {
 reject();
         });

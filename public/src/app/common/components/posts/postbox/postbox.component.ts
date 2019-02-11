@@ -98,7 +98,6 @@ export class PostboxComponent implements OnInit, OnDestroy {
     private postService: PostService) { }
 
   ngOnInit() {
-    console.log('user', this.user);
     this.inilizePostForm();
     //  redo this later
     this.alertMessageSettings();
