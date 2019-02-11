@@ -673,7 +673,7 @@ export class GroupTasksComponent implements OnInit {
 
     // const like_icon = document.getElementById('icon_like_post_' + index);
     const postData = {
-      'post_id': post._id,
+      '_id': post._id,
       'user_id': this.user_data.user_id,
       '_liked_by': post._liked_by,
       'type_post': post.task.status === 'done' ? 'completed' : 'pending'
@@ -709,12 +709,11 @@ readyToAddTask() {
 
     this.postService.like(post)
       .subscribe((res) => {
-console.log('AFTER RES', post);
         // find the post we are currently handling
         // we differentiate between pending posts and completed posts so we can update the right ones
         if (post.type_post === 'pending') {
           const indexLikedPost = this.pendingTasks.findIndex((_post) => {
-            return _post._id === post.post_id;
+            return _post._id === post._id;
           });
 
           this.pendingTasks[indexLikedPost]._liked_by.push(this.user_data.user_id);
@@ -724,7 +723,7 @@ console.log('AFTER RES', post);
           // completed tasks differentiate from the pending one
           // so we have to update a different array
           const indexLikedPost = this.completedTasks.findIndex((_post) => {
-            return _post._id === post.post_id;
+            return _post._id === post._id;
           });
           console.log('indexLikePost', indexLikedPost);
           this.completedTasks[indexLikedPost]._liked_by.push(this.user_data.user_id);
@@ -759,7 +758,7 @@ console.log('AFTER RES', post);
         // find the index of the post we are currently handling
         if (post.type_post === 'pending') {
           const indexUnlikedPost = this.pendingTasks.findIndex((_post) => {
-            return _post._id === post.post_id;
+            return _post._id === post._id;
           });
           this.pendingTasks[indexUnlikedPost]._liked_by.splice(indexLike, 1);
         } else {
