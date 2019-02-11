@@ -1,4 +1,4 @@
-<li class="list-group-item" id="card-event-post-{{i}}">
+<li class="list-group-item">
   <div class="card">
     <div class="card-block ">
       <div class="row card-title ">
@@ -58,7 +58,7 @@
             <br>
             <span class="time">{{post.event.due_to | amLocal | date:'HH:mm'}}</span>
           </div>
-          <div class="col-md-9 event-title"  [id]="(i)" [innerHTML]="post?.content | safe: 'html' ">
+          <div class="col-md-9 event-title" [innerHTML]="post?.content | safe: 'html' ">
 
           </div>
 
