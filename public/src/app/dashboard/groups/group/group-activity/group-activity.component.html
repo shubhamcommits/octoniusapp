@@ -36,6 +36,7 @@
     <ng-template #newsbadge></ng-template>
     <!-- news badge-->
 
+
     <postbox
       *ngIf="modules"
       [modules]="modules"
@@ -48,6 +49,7 @@
       [user_data]="user_data"
       (newPost)="addNewPostToPosts($event)">
     </postbox>
+
 
     <div class="search-results" infiniteScroll [infiniteScrollDistance]="0" [immediateCheck]="true" (scrolled)="onScroll()">
       <div *ngIf="posts.length == 0">
