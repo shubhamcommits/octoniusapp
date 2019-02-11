@@ -148,7 +148,6 @@ export class GroupPostComponent implements OnInit {
   getPost(postId) {
     this.postService.getPost(postId)
         .subscribe((res) => {
-          console.log('Post', res['post']);
           this.post = res['post'];
           // we set the original comment count
           this.commentCount = res['post'].comments.length;

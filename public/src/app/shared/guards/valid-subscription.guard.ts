@@ -16,7 +16,6 @@ export class ValidSubscriptionGuard implements CanActivate {
 
     return this.authService.checkSubscriptionValidity(userId)
       .map((res) => {
-        console.log('res.valid', res.valid);
         if (!res.valid) {
           this.router.navigateByUrl('/dashboard/admin/billing');
         }
