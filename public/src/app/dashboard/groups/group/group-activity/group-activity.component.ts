@@ -485,6 +485,7 @@ reject();
         });
     } else {
       // When this.group is undefined we try to define it every .5seconds until the values are ready
+      // this needs to go because it causes bugs when we switch between groups
       setTimeout(() => {
         this.group = this.groupDataService.group;
         this.group_id = this.groupDataService.groupId;

@@ -762,6 +762,29 @@ export class GroupPostComponent implements OnInit {
         });
     }
 
+    onDeletePost(postId) {
+      swal({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        dangerMode: true,
+        buttons: ["Cancel", "Yes, delete it!"],
+
+      })
+        .then(willDelete => {
+          if (willDelete) {
+            swal("Deleted!", "The following post has been deleted!", "success");
+            this._router.navigate(['/dashboard/group', this.group_id, 'activity']);
+          }
+        });
+
+      this.postService.deletePost(postId)
+        .subscribe((res) => {
+
+        })
+
+    }
+
 
 
     mentionmembers() {
