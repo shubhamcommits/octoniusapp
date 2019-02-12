@@ -1,0 +1,33 @@
+.triangle {
+  width: 0;
+  height: 0;
+  position: absolute;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-bottom: 8px solid #005fd5;
+  top: -8px;
+  margin-left: 12px;
+}
+
+.triangle-event {
+  width: 0;
+  height: 0;
+  position: absolute;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-bottom: 8px solid #005fd5;
+  top: -8px;
+  margin-left: 70px;
+}
+
+
+.triangle-task {
+  width: 0;
+  height: 0;
+  position: absolute;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-bottom: 8px solid #005fd5;
+  top: -8px;
+  margin-left: 122px;
+}
