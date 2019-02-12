@@ -157,8 +157,17 @@ export class NormalGroupPostComponent implements OnInit, OnDestroy {
       }, (err) => {});
   }
 
-
   editPost() {
+
+    // set the initial value of the editor
+    this.edit_content = this.post.content;
+
+    // show the edit section
+    this.displayEditPostSection = true;
+  }
+
+
+  onSaveEditPost() {
     // this is a normal post, so we don't need to assign user & date buttons on the editor
 
     // set the initial value of the editor
