@@ -16,15 +16,17 @@
         </div>
       </div>
       <!-- Editing Post part-->
-      <div class="col-md-12 text-right " style="display: none; padding-bottom: 1em;">
-        <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditPost()">Save</button>
-      </div>
-      <div class="col-md-12 innercard">
-        <quill-editor [modules]="modules" type="text" [(ngModel)]="post.content"
-                      [spellcheck]="true" value="post?.content" style="display: none;">
+      <ng-container *ngIf="displayEditPostSection">
+        <div class="col-md-12 text-right " style="padding-bottom: 1em;">
+          <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditPost()">Save</button>
+        </div>
+        <div class="col-md-12 innercard">
+          <quill-editor [modules]="modules" type="text" [(ngModel)]="edit_content"
+                        [spellcheck]="true" value="post?.content">
 
-        </quill-editor>
-      </div>
+          </quill-editor>
+        </div>
+      </ng-container>
 
       <!-- ACTUAL POST CONTENT -->
       <div class="col-md-12 innercard" style="border: none;" [innerHTML]="post?.content | safe: 'html'">
