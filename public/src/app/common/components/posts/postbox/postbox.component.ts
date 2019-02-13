@@ -166,7 +166,7 @@ export class PostboxComponent implements OnInit, OnDestroy {
     let el = document.createElement('html');
     el.innerHTML = scanned_content;
 
-
+    console.log(el.innerHTML);
     if (el.getElementsByClassName('mention').length > 0) {
 
       for ( let i = 0; i < el.getElementsByClassName('mention').length; i++ ) {
