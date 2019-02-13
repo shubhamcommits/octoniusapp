@@ -127,7 +127,9 @@ export class CloudsComponent implements OnInit {
       {
         'client_id': environment.clientId,
         'scope': this.scope,
-        'immediate': false
+        'immediate': false,
+        'access_type': 'offline',
+        'approval_prompt':'force'
       },
       this.handleAuthResult).then( ()=>{
         this.isLoading$.next(true);
