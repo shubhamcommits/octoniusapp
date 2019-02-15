@@ -602,7 +602,12 @@ reject();
   mentionmembers() {
     var hashValues = [];
 
+    var client_id = this.clientId;
+    var scope = this.scope;
+
     var Value = [];
+
+    var driveValue = [];
 
     this.groupService.getGroup(this.group_id)
       .subscribe((res) => {
@@ -634,6 +639,27 @@ reject();
         }
       }, (err) => {
       });
+
+      //console.log(JSON.parse(localStorage.getItem('google-cloud')).drive_auth_results.access_token);
+      /*const getDriveFiles: any = new XMLHttpRequest();
+  
+      getDriveFiles.open('GET', 'https://www.googleapis.com/drive/v2/files?maxResults=10&access_token='+JSON.parse(localStorage.getItem('google-cloud')).drive_auth_results.access_token, true);
+      //getDriveFiles.setRequestHeader('Authorization', 'Bearer ' + authResult.access_token);
+
+      getDriveFiles.onload = () => {
+        if (getDriveFiles.status === 200) {
+          console.log(JSON.parse(getDriveFiles.responseText));
+          for(var i = 0; i < JSON.parse(getDriveFiles.responseText).items.length; i++ ){
+            if( JSON.parse(getDriveFiles.responseText).items.length>0){
+              driveValue.push({
+                id: JSON.parse(getDriveFiles.responseText).items[i].id,
+                value: '<a style="color:inherit;" target="_blank" href="'+JSON.parse(getDriveFiles.responseText).items[i].embedLink + '"' + '>'+ JSON.parse(getDriveFiles.responseText).items[i].title + '</a>'
+              })
+            }
+          }
+        }
+      };
+      getDriveFiles.send();*/
 
 
 
@@ -730,7 +756,31 @@ reject();
           let values;
           if (mentionChar === "@") {
             values = Value;
-          } else {
+          } else if(mentionChar === "#") {
+            //sending the request to g-drive to give the redered results on event emit
+            
+            const getDriveFiles: any = new XMLHttpRequest();
+  
+            getDriveFiles.open('GET', 'https://www.googleapis.com/drive/v2/files?q=fullText contains '+'"'+searchTerm+'"'+'&maxResults=10&access_token='+JSON.parse(localStorage.getItem('google-cloud')).drive_auth_results.access_token, true);
+            getDriveFiles.setRequestHeader('Authorization', 'Bearer ' + JSON.parse(localStorage.getItem('google-cloud')).drive_auth_results.access_token);
+      
+            getDriveFiles.onload = () => {
+              if (getDriveFiles.status === 200) {
+                console.log(JSON.parse(getDriveFiles.responseText));
+                for(var i = 0; i < JSON.parse(getDriveFiles.responseText).items.length; i++ ){
+                  if( JSON.parse(getDriveFiles.responseText).items.length>0){
+                    hashValues.push({
+                      //the id has been put manually, it is in no relation to the g-drive files, if you have any better solution to propose, then do make the changes
+                      // it is accepting only ObjectId type data
+                      // g-drive is giving a different ID type, please suggest the solution
+                      id: '5b9649d1f5acc923a497d1da',
+                      value: '<a style="color:inherit;" target="_blank" href="'+JSON.parse(getDriveFiles.responseText).items[i].embedLink + '"' + '>'+ JSON.parse(getDriveFiles.responseText).items[i].title + '</a>'
+                    });
+                  }
+                }
+              }
+            };
+            getDriveFiles.send();
             values = hashValues;
           }
 

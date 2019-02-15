@@ -313,6 +313,7 @@ h4{
 
 .ql-mention-list-container{
   z-index: 9999;
+  width: 700px;
   border-radius: 6px;
   border: 1px solid $border-color;
   box-shadow: $box-shadow;
@@ -491,12 +492,15 @@ color:#787878 !important;
   color:$dark-text;
   box-shadow: $box-shadow;
 }
-.form-group .form-control{
-  border: none !important;
-}
+// .form-group .form-control{
+//   border: none !important;
+// }
 .margin5{
   border: none !important;
 }
 #normalComments{
   padding-bottom: 1px;
+}
+quill-editor{
+    border: none !important;
 }

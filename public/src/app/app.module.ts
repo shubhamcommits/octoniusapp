@@ -75,8 +75,11 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 
 import { TaskGroupPostComponent } from './common/components/posts/task-group-post/task-group-post.component';
 import { EventGroupPostComponent } from './common/components/posts/event-group-post/event-group-post.component';
+import { NgxSkillBarModule } from "ngx-skill-bar";
 
 import {TimeAgoPipe} from 'time-ago-pipe';
+import { CloudsComponent } from './dashboard/user-profile/clouds/clouds.component';
+
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 
   "bgsColor": "#005fd5",
@@ -136,7 +139,8 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     CommentSectionComponent,
     PostCommentComponent,
     TaskGroupPostComponent,
-    EventGroupPostComponent
+    EventGroupPostComponent,
+    CloudsComponent
   ],
   imports: [
     BrowserModule,
@@ -153,6 +157,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     PickerModule,
     ClickOutsideModule,
     EmojiModule,
+    NgxSkillBarModule,
     ImageCropperModule,
     DragAndDropModule.forRoot(),
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),

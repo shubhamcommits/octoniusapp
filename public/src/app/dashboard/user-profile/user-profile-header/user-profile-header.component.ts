@@ -5,6 +5,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../../../../environments/environment';
 import swal from 'sweetalert';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
+import { NgxUiLoaderService } from 'ngx-ui-loader'; 
  
 @Component({
   selector: 'app-user-profile-header',
@@ -65,7 +66,7 @@ export class UserProfileHeaderComponent implements OnInit {
     company_join_date: ''
   };
 
-  constructor(private _userService: UserService, private _router: Router, private modalService: NgbModal) { }
+  constructor(private _userService: UserService, private _router: Router, private ngxService: NgxUiLoaderService, private modalService: NgbModal) { }
 
 
   ngOnInit() {

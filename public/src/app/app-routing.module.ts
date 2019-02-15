@@ -30,6 +30,7 @@ import {OverviewMyWorkplaceComponent} from "./dashboard/overview/overview-my-wor
 import { AdminBillingComponent } from './dashboard/admin/admin-billing/admin-billing.component';
 import {DenyNavigationGuard} from "./shared/guards/deny-navigation.guard";
 import {ValidSubscriptionGuard} from "./shared/guards/valid-subscription.guard";
+import { CloudsComponent } from './dashboard/user-profile/clouds/clouds.component';
 
 
 const appRoutes: Routes = [
@@ -77,7 +78,8 @@ const appRoutes: Routes = [
       },
       {
         path: 'profile', component: UserProfileComponent, canActivate: [ValidSubscriptionGuard],
-        children: [{ path: 'profile', component: ProfileComponent }]
+        children: [{ path: 'profile', component: ProfileComponent },
+        { path: 'clouds', component: CloudsComponent }]
       }
     ]
   },
