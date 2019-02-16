@@ -15,7 +15,7 @@
                   </p>
             </div>
             <div class="col-md-6">
-                <button *ngIf="!googleAuthSucessful" id="google-connect" style="float: right;" class="btn btn-primary btn-sm" (click)="this.loadGoogleDrive();">Connect</button>
+                <button *ngIf="!googleAuthSucessful" id="google-connect" style="float: right;" class="btn btn-primary btn-sm" (click)="this.onAuthApiLoad();">Connect</button>
                 <button *ngIf="googleAuthSucessful" style="float: right;" class="btn btn-success btn-sm">Connected</button>
                 
                 
@@ -29,7 +29,7 @@
                     </p>
               </div>
               <div class="col-md-6">
-                  <button style="float: right;" class="btn btn-primary btn-sm">Connect</button>
+                  <button style="float: right;" class="btn btn-primary btn-sm" (click)="this.authService.login()">Connect</button>
               </div>
             </div>
             <br />

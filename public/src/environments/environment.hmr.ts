@@ -7,6 +7,8 @@ export const environment = {
     
     // !--GOOGLE DEVELOPER CONSOLE CREDENTIALS--! //
     developerKey: 'AIzaSyDGM66BZhGSmBApm3PKL-xCrri-3Adb06I',
-    clientId: "971238950983-aef7kjl23994hjj9e8m5tch4a22b5dut.apps.googleusercontent.com",
+    clientId: '971238950983-aef7kjl23994hjj9e8m5tch4a22b5dut.apps.googleusercontent.com',
+    apiKey: 'AIzaSyDGM66BZhGSmBApm3PKL-xCrri-3Adb06I',
+    clientSecret: 'erp6ZMRG6XFiMqHkjTDby2UI'
     // !--GOOGLE DEVELOPER CONSOLE CREDENTIALS--! //
    };
