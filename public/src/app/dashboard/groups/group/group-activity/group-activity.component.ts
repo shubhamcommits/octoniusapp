@@ -220,10 +220,14 @@ export class GroupActivityComponent implements OnInit {
       await this.getGroup();
     }
 
-    if(localStorage.getItem('google-cloud') != null){
+    //it refreshes the access token as soon as we visit any group
+    if(localStorage.getItem('google-cloud') != null && localStorage.getItem('google-cloud-token') != null){
       this.refreshGoogleToken();
+      //this.getGoogleCalendarEvents();
+      //this.getCalendar();
 
-      setTimeout(()=>{
+      //we have set a time interval of 30mins so as to refresh the access_token in the group
+      setInterval(()=>{
         this.refreshGoogleToken()
       }, 1800000);
     }
@@ -912,6 +916,22 @@ refreshGoogleToken(){
             }
           };
           getRefreshToken.send(fd);
+}
+
+getGoogleCalendarEvents(){
+  if(localStorage.getItem('google-cloud-token')!=null){
+    const getCalendarEvents = new XMLHttpRequest();
+
+    getCalendarEvents.open('GET', 'https://www.googleapis.com/calendar/v3/calendars/primary/events', true);
+    getCalendarEvents.setRequestHeader('Authorization', 'Bearer ' + JSON.parse(localStorage.getItem('google-cloud-token')).google_token_data.access_token);
+
+    getCalendarEvents.onload = () => {
+      if (getCalendarEvents.status === 200) {
+        console.log('Calendar Events', JSON.parse(getCalendarEvents.responseText));
+      }
+    };
+    getCalendarEvents.send();
+  }
 }
 
 }

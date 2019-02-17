@@ -12,7 +12,25 @@ export class AuthService {
   BASE_API_URL = environment.BASE_API_URL;
 
   constructor(private _http: HttpClient) {
+    this.initClient();
    }
+
+   initClient() {
+    gapi.load('client', () => {
+      console.log('loaded client')
+
+      // It's OK to expose these credentials, they are client safe.
+      gapi.client.init({
+        apiKey: environment.apiKey,
+        clientId: environment.clientId,
+        discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'],
+        scope: 'https://www.googleapis.com/auth/calendar'
+      })
+
+      gapi.client.load('calendar', 'v3', () => console.log('loaded calendar'));
+
+    });
+  }
 
 
   signIn(user) {

@@ -92,12 +92,20 @@ export class CloudsComponent implements OnInit {
       this.ngxService.stop(); // stop foreground loading with 'default' id
     }, 500);
 
-
+    // refresh the token and initalise the google user-data if google-cloud is already stored
     if(localStorage.getItem('google-cloud') != null){
       this.refreshGoogleToken();
       this.googleAuthSucessful = true;
       this.googleUser = JSON.parse(localStorage.getItem('google-cloud'));
       this.googleDriveUsed = Math.round((this.googleUser.user_data.storageQuota.usage/this.googleUser.user_data.storageQuota.limit)*100);
+
+      //we have set a time-interval of 30mins so as to refresh the access_token in the group
+      setInterval(()=>{
+        this.refreshGoogleToken();
+        this.googleAuthSucessful = true;
+        this.googleUser = JSON.parse(localStorage.getItem('google-cloud'));
+        this.googleDriveUsed = Math.round((this.googleUser.user_data.storageQuota.usage/this.googleUser.user_data.storageQuota.limit)*100);
+      }, 1800000);
     }
     else{
       this.googleAuthSucessful = false;
