@@ -178,7 +178,7 @@ export class CloudsComponent implements OnInit {
           fd.append('client_id', environment.clientId);
           fd.append('client_secret', environment.clientSecret);
           fd.append('grant_type', 'authorization_code');
-          fd.append('redirect_uri', 'http://localhost:4200');
+          fd.append('redirect_uri', environment.google_redirect_url);
           getRefreshToken.open('POST', 'https://www.googleapis.com/oauth2/v4/token', true);
           getRefreshToken.setRequestHeader('Authorization', 'Bearer ' + authResult.access_token);
       

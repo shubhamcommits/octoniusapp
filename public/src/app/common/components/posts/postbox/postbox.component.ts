@@ -671,6 +671,7 @@ export class PostboxComponent implements OnInit, OnDestroy {
   // !--GOOGLE PICKER IMPLEMENTATION--! //
   loadGoogleDrive() {
     if(localStorage.getItem('google-cloud-token')!= null){
+      gapi.load('picker', { 'callback': this.onPickerApiLoad.bind(this) });
       this.handleAuthResult(JSON.parse(localStorage.getItem('google-cloud-token')).google_token_data)
     }
     else{

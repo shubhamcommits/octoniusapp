@@ -28,6 +28,7 @@ export class AuthService {
       })
 
       gapi.client.load('calendar', 'v3', () => console.log('loaded calendar'));
+      //gapi.client.load('picker', () => console.log('loaded picker'));
 
     });
   }
