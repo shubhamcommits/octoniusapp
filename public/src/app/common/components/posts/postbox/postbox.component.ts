@@ -13,6 +13,7 @@ import * as moment from "moment";
 import {InputValidators} from "../../../validators/input.validator";
 import {GroupService} from "../../../../shared/services/group.service";
 import {PostService} from "../../../../shared/services/post.service";
+import { AuthService } from '../../../../shared/services/auth.service';
 (window as any).Quill = Quill;
 
 @Component({
@@ -92,21 +93,29 @@ export class PostboxComponent implements OnInit, OnDestroy {
   googleDriveFiles = [];
   // !--GOOGLE DEVELOPER CONSOLE CREDENTIALS--! //
 
+  //GOOGLE CALENDAR
+  timeZone: any;
+
   constructor(
     private modalService: NgbModal,
     private groupService: GroupService,
-    private postService: PostService) { }
+    private postService: PostService, private authService: AuthService) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.inilizePostForm();
     //  redo this later
     this.alertMessageSettings();
+    if(localStorage.getItem('google-cloud') != null && localStorage.getItem('google-cloud-token') != null){
+      await this.getCalendar();
+    }
   }
 
   addNewEventPost() {
     const formData: any = new FormData();
     const files: Array<File> = this.filesToUpload;
     const assignedUsers = [];
+
+    const googleCalendarAttendees = new Array();
 
     if (files !== null) {
       // add the files to the formData
@@ -122,6 +131,7 @@ export class PostboxComponent implements OnInit, OnDestroy {
     if (!this.isItMyWorkplace) {
       this.selectedGroupUsers.forEach((selectedUser) => {
         formData.append('event._assigned_to', selectedUser._id);
+        googleCalendarAttendees.push({email: selectedUser.email});
       });
     } else {
       formData.append('event._assigned_to', this.user_data.user_id);
@@ -190,7 +200,7 @@ export class PostboxComponent implements OnInit, OnDestroy {
 
     // SERVER REQUEST
     this.postService.addNewEventPost(formData)
-      .subscribe((res) => {
+      .subscribe(async (res) => {
         this.resetAndEnablePostForm(res, driveDivision);
         const data = {
           // it should get automatically, something like workspace: this.workspace_name
@@ -203,11 +213,35 @@ export class PostboxComponent implements OnInit, OnDestroy {
           type: 'post'
         };
 
+        //this.insertEvent(date, post.type, post.content, googleCalendarAttendees);
+
         this.socket.emit('newPost', data);
 
         // previously we reloaded the posts, but now we send it back to the parent component
         // where we can add it to the other posts that were already loaded
         this.newPost.emit(res['post']);
+
+        //adding events to google calendar
+        if(localStorage.getItem('google-cloud') != null && localStorage.getItem('google-cloud-token') != null){
+          const insert = await gapi.client.calendar.events.insert({
+            calendarId: 'primary',
+            sendNotifications: true,
+            sendUpdates: 'all',
+            start: {
+              dateTime: moment(date).format('YYYY-MM-DDTHH:mm:ssZ'),
+              timeZone: this.timeZone
+            },
+            end:{
+              dateTime:moment(date).format('YYYY-MM-DDTHH:mm:ssZ'),
+              timeZone: this.timeZone
+            },
+            summary: 'Event | Octonius',
+            description: post.content,
+            attendees: googleCalendarAttendees
+          })
+        
+          await this.getCalendar();
+        }
 
         this.content_mentions = [];
       }, (err) => {
@@ -331,6 +365,7 @@ export class PostboxComponent implements OnInit, OnDestroy {
   addNewTaskPost() {
     const formData: any = new FormData();
     const files: Array<File> = this.filesToUpload;
+    const googleCalendarAttendees = new Array();
 
     if (files !== null) {
       // add the files to the formData
@@ -409,9 +444,14 @@ export class PostboxComponent implements OnInit, OnDestroy {
     this.processing = true;
     this.disablePostForm();
 
+    //Adding attendees for the google calendar
+    this.selectedGroupUsers.forEach((selectedUser) => {
+      googleCalendarAttendees.push({email: selectedUser.email});
+    });
+
     // SERVER REQUEST
     this.postService.addNewTaskPost(formData)
-      .subscribe((res) => {
+      .subscribe(async (res) => {
         this.resetAndEnablePostForm(res, driveDivision);
 
         const data = {
@@ -428,6 +468,28 @@ export class PostboxComponent implements OnInit, OnDestroy {
 
         // send this post to parent component to display it with the other loaded posts
         this.newPost.emit(res['post']);
+
+        //Adding Tasks notifications to google calendar as a form of google-event
+        if(localStorage.getItem('google-cloud') != null && localStorage.getItem('google-cloud-token') != null){
+          const insert = await gapi.client.calendar.events.insert({
+            calendarId: 'primary',
+            sendNotifications: true,
+            sendUpdates: 'all',
+            start: {
+              date: moment(Date.now()).format('YYYY-MM-DD'),
+              timeZone: this.timeZone
+            },
+            end:{
+              date:moment(date).format('YYYY-MM-DD'),
+              timeZone: this.timeZone
+            },
+            summary: 'Task | Octonius',
+            description: post.content,
+            attendees: googleCalendarAttendees
+          })
+        
+          await this.getCalendar();
+        }
 
         this.content_mentions = [];
 
@@ -608,8 +670,15 @@ export class PostboxComponent implements OnInit, OnDestroy {
 
   // !--GOOGLE PICKER IMPLEMENTATION--! //
   loadGoogleDrive() {
-    gapi.load('auth', { 'callback': this.onAuthApiLoad.bind(this) });
-    gapi.load('picker', { 'callback': this.onPickerApiLoad.bind(this) });
+    if(localStorage.getItem('google-cloud-token')!= null){
+      gapi.load('picker', { 'callback': this.onPickerApiLoad.bind(this) });
+      this.handleAuthResult(JSON.parse(localStorage.getItem('google-cloud-token')).google_token_data)
+    }
+    else{
+      gapi.load('auth', { 'callback': this.onAuthApiLoad.bind(this) });
+      gapi.load('picker', { 'callback': this.onPickerApiLoad.bind(this) });
+    }
+
   }
 
   onAuthApiLoad() {
@@ -617,7 +686,8 @@ export class PostboxComponent implements OnInit, OnDestroy {
       {
         'client_id': this.clientId,
         'scope': this.scope,
-        'immediate': false
+        'immediate': false,
+        'approval_prompt':'force',
       },
       this.handleAuthResult);
   }
@@ -656,6 +726,34 @@ export class PostboxComponent implements OnInit, OnDestroy {
     }
   }
 // !--GOOGLE PICKER IMPLEMENTATION--! //
+
+async getCalendar() {
+  const events = await gapi.client.calendar.events.list({
+    calendarId: 'primary'
+  });
+
+  this.timeZone = events.result.timeZone;
+
+  console.log(events)
+
+}
+
+async insertEvent(end_date, summary, description, attendees) {
+  const hoursFromNow = (n) => new Date(Date.now() + n * 1000 * 60 * 60 ).toISOString();
+  const insert = await gapi.client.calendar.events.insert({
+    calendarId: 'primary',
+    start: {
+      dateTime: end_date.toISOString(),
+      timeZone: this.timeZone
+    },
+    summary: summary,
+    description: description,
+    attendees: attendees
+  })
+
+  await this.getCalendar();
+}
+
 
   ngOnDestroy() {
     this.ngUnsubscribe.next();
