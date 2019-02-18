@@ -31,6 +31,7 @@ import {months} from "../../../../common/data";
 import * as Quill from 'quill';
 (window as any).Quill = Quill;
 import 'quill-emoji/dist/quill-emoji';
+import { GoogleCloudService } from '../../../../shared/services/google-cloud.service';
 
 
 @Component({
@@ -164,7 +165,7 @@ export class GroupActivityComponent implements OnInit {
 
 
   // !--GOOGLE DEVELOPER CONSOLE CREDENTIALS--! //
-  developerKey = 'AIzaSyDGM66BZhGSmBApm3PKL-xCrri-3Adb06I';
+  /*developerKey = 'AIzaSyDGM66BZhGSmBApm3PKL-xCrri-3Adb06I';
 
   clientId = "971238950983-aef7kjl23994hjj9e8m5tch4a22b5dut.apps.googleusercontent.com";
 
@@ -174,7 +175,7 @@ export class GroupActivityComponent implements OnInit {
 
   pickerApiLoaded = false;
 
-  oauthToken?: any;
+  oauthToken?: any;*/
   // !--GOOGLE DEVELOPER CONSOLE CREDENTIALS--! //
 
 
@@ -182,7 +183,8 @@ export class GroupActivityComponent implements OnInit {
               public groupDataService: GroupDataService, private router: Router, private groupService: GroupService,
               private modalService: NgbModal, private postService: PostService, private _sanitizer: DomSanitizer,
               private ngxService: NgxUiLoaderService, private snotifyService: SnotifyService, config: NgbDropdownConfig,
-              private scrollService: ScrollToService, private quillInitializeService: QuillAutoLinkService) {
+              private scrollService: ScrollToService, private quillInitializeService: QuillAutoLinkService, 
+              private googleService: GoogleCloudService) {
 
     config.placement = 'left';
     config.autoClose = false;
@@ -222,13 +224,15 @@ export class GroupActivityComponent implements OnInit {
 
     //it refreshes the access token as soon as we visit any group
     if(localStorage.getItem('google-cloud') != null && localStorage.getItem('google-cloud-token') != null){
-      this.refreshGoogleToken();
+      this.googleService.refreshGoogleToken();
+      //this.refreshGoogleToken();
       //this.getGoogleCalendarEvents();
       //this.getCalendar();
 
       //we have set a time interval of 30mins so as to refresh the access_token in the group
       setInterval(()=>{
-        this.refreshGoogleToken()
+        this.googleService.refreshGoogleToken();
+        //this.refreshGoogleToken()
       }, 1800000);
     }
     this.loadGroupPosts();
@@ -613,8 +617,8 @@ reject();
   mentionmembers() {
     var hashValues = [];
 
-    var client_id = this.clientId;
-    var scope = this.scope;
+   // var client_id = this.clientId;
+    //var scope = this.scope;
 
     var Value = [];
 
@@ -828,7 +832,7 @@ reject();
   }
 
 // !--GOOGLE PICKER IMPLEMENTATION--! //
-  loadGoogleDrive() {
+/*  loadGoogleDrive() {
     gapi.load('auth', { 'callback': this.onAuthApiLoad.bind(this) });
     gapi.load('picker', { 'callback': this.onPickerApiLoad.bind(this) });
   }
@@ -876,62 +880,7 @@ reject();
       }
     }
 
-  }
+  }*/
 // !--GOOGLE PICKER IMPLEMENTATION--! //
-
-refreshGoogleToken(){
-  const getRefreshToken = new XMLHttpRequest();
-          const fd = new FormData();
-          fd.append('client_id', environment.clientId);
-          fd.append('client_secret', environment.clientSecret);
-          fd.append('grant_type', 'refresh_token');
-          fd.append('refresh_token', JSON.parse(localStorage.getItem('google-cloud')).refresh_token);
-          getRefreshToken.open('POST', 'https://www.googleapis.com/oauth2/v4/token', true);
-          getRefreshToken.setRequestHeader('Authorization', 'Bearer ' + JSON.parse(localStorage.getItem('google-cloud-token')).google_token_data.access_token);
-      
-          getRefreshToken.onload = () => {
-            if (getRefreshToken.status === 200) {
-              console.log(JSON.parse(getRefreshToken.responseText));
-              const google_cloud_token = {
-                'google_token_data': JSON.parse(getRefreshToken.responseText)
-              };
-              localStorage.setItem('google-cloud-token', JSON.stringify(google_cloud_token));
-              
-          const getUserAPI = new XMLHttpRequest();
-  
-          getUserAPI.open('GET', 'https://www.googleapis.com/drive/v3/about?fields=user,storageQuota', true);
-          getUserAPI.setRequestHeader('Authorization', 'Bearer ' + JSON.parse(getRefreshToken.responseText).access_token);
-      
-          getUserAPI.onload = () => {
-            if (getUserAPI.status === 200) {
-              console.log(JSON.parse(getUserAPI.responseText));
-              const google_cloud = {
-                'user_data': JSON.parse(getUserAPI.responseText),
-                'refresh_token': JSON.parse(localStorage.getItem('google-cloud')).refresh_token
-              };
-              localStorage.setItem('google-cloud', JSON.stringify(google_cloud));
-            }
-          };
-          getUserAPI.send();
-            }
-          };
-          getRefreshToken.send(fd);
-}
-
-getGoogleCalendarEvents(){
-  if(localStorage.getItem('google-cloud-token')!=null){
-    const getCalendarEvents = new XMLHttpRequest();
-
-    getCalendarEvents.open('GET', 'https://www.googleapis.com/calendar/v3/calendars/primary/events', true);
-    getCalendarEvents.setRequestHeader('Authorization', 'Bearer ' + JSON.parse(localStorage.getItem('google-cloud-token')).google_token_data.access_token);
-
-    getCalendarEvents.onload = () => {
-      if (getCalendarEvents.status === 200) {
-        console.log('Calendar Events', JSON.parse(getCalendarEvents.responseText));
-      }
-    };
-    getCalendarEvents.send();
-  }
-}
 
 }

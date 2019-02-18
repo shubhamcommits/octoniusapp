@@ -14,6 +14,7 @@ import {InputValidators} from "../../../validators/input.validator";
 import {GroupService} from "../../../../shared/services/group.service";
 import {PostService} from "../../../../shared/services/post.service";
 import { AuthService } from '../../../../shared/services/auth.service';
+import { GoogleCloudService } from '../../../../shared/services/google-cloud.service';
 (window as any).Quill = Quill;
 
 @Component({
@@ -99,14 +100,18 @@ export class PostboxComponent implements OnInit, OnDestroy {
   constructor(
     private modalService: NgbModal,
     private groupService: GroupService,
-    private postService: PostService, private authService: AuthService) { }
+    private postService: PostService, 
+    private authService: AuthService,
+    private googleService: GoogleCloudService) { }
 
   async ngOnInit() {
     this.inilizePostForm();
     //  redo this later
     this.alertMessageSettings();
     if(localStorage.getItem('google-cloud') != null && localStorage.getItem('google-cloud-token') != null){
-      await this.getCalendar();
+      //this.getGoogleCalendarEvents();
+      await this.googleService.getGoogleCalendarEvents();
+      
     }
   }
 
@@ -176,7 +181,6 @@ export class PostboxComponent implements OnInit, OnDestroy {
     let el = document.createElement('html');
     el.innerHTML = scanned_content;
 
-    console.log(el.innerHTML);
     if (el.getElementsByClassName('mention').length > 0) {
 
       for ( let i = 0; i < el.getElementsByClassName('mention').length; i++ ) {
@@ -222,11 +226,10 @@ export class PostboxComponent implements OnInit, OnDestroy {
         this.newPost.emit(res['post']);
 
         //adding events to google calendar
+        // refer the google apis to check the implementation
         if(localStorage.getItem('google-cloud') != null && localStorage.getItem('google-cloud-token') != null){
-          const insert = await gapi.client.calendar.events.insert({
-            calendarId: 'primary',
-            sendNotifications: true,
-            sendUpdates: 'all',
+
+          const googleEvent ={
             start: {
               dateTime: moment(date).format('YYYY-MM-DDTHH:mm:ssZ'),
               timeZone: this.timeZone
@@ -238,9 +241,15 @@ export class PostboxComponent implements OnInit, OnDestroy {
             summary: 'Event | Octonius',
             description: post.content,
             attendees: googleCalendarAttendees
-          })
-        
-          await this.getCalendar();
+          }
+
+          this.googleService.addToGoogleCalendar(googleEvent)
+          .then(async (res)=>{
+            console.log('Google Calendar Event Added');
+            await this.googleService.getGoogleCalendarEvents();
+          }, (err)=>{
+            console.log('Error while adding event to google calendar', err);
+          });
         }
 
         this.content_mentions = [];
@@ -469,12 +478,7 @@ export class PostboxComponent implements OnInit, OnDestroy {
         // send this post to parent component to display it with the other loaded posts
         this.newPost.emit(res['post']);
 
-        //Adding Tasks notifications to google calendar as a form of google-event
-        if(localStorage.getItem('google-cloud') != null && localStorage.getItem('google-cloud-token') != null){
-          const insert = await gapi.client.calendar.events.insert({
-            calendarId: 'primary',
-            sendNotifications: true,
-            sendUpdates: 'all',
+        const googletask= {
             start: {
               date: moment(Date.now()).format('YYYY-MM-DD'),
               timeZone: this.timeZone
@@ -486,9 +490,17 @@ export class PostboxComponent implements OnInit, OnDestroy {
             summary: 'Task | Octonius',
             description: post.content,
             attendees: googleCalendarAttendees
-          })
-        
-          await this.getCalendar();
+        }
+
+        //Adding Tasks notifications to google calendar as a form of google-event
+        if(localStorage.getItem('google-cloud') != null && localStorage.getItem('google-cloud-token') != null){
+          this.googleService.addToGoogleCalendar(googletask)
+          .then(async (res)=>{
+            console.log('Google Calendar Task Added');
+            await this.googleService.getGoogleCalendarEvents();
+          },(err)=>{
+            console.log('Error while adding task to google calendar', err);
+          });
         }
 
         this.content_mentions = [];
@@ -670,6 +682,8 @@ export class PostboxComponent implements OnInit, OnDestroy {
 
   // !--GOOGLE PICKER IMPLEMENTATION--! //
   loadGoogleDrive() {
+    // if token already exist it just opens the picker else, it authenticates then follow the usual flow
+    // auth -> get access_token -> opens the picker to choose the files
     if(localStorage.getItem('google-cloud-token')!= null){
       gapi.load('picker', { 'callback': this.onPickerApiLoad.bind(this) });
       this.handleAuthResult(JSON.parse(localStorage.getItem('google-cloud-token')).google_token_data)
@@ -704,8 +718,9 @@ export class PostboxComponent implements OnInit, OnDestroy {
         //view.setMimeTypes("image/png,image/jpeg,image/jpg,video/mp4, application/vnd.ms-excel ,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/pdf, text/plain, application/msword, text/js, application/zip, application/rar, application/tar, text/html");
         let pickerBuilder = new google.picker.PickerBuilder();
         let picker = pickerBuilder.
-        enableFeature(google.picker.Feature.NAV_HIDDEN).
+        //enableFeature(google.picker.Feature.NAV_HIDDEN).
         setOAuthToken(authResult.access_token).
+        //setOrigin(window.location.protocol + '//' + window.location.host).
         addView(view).
         addView(new google.picker.DocsUploadView()).
         setCallback(function (e) {
@@ -726,34 +741,6 @@ export class PostboxComponent implements OnInit, OnDestroy {
     }
   }
 // !--GOOGLE PICKER IMPLEMENTATION--! //
-
-async getCalendar() {
-  const events = await gapi.client.calendar.events.list({
-    calendarId: 'primary'
-  });
-
-  this.timeZone = events.result.timeZone;
-
-  console.log(events)
-
-}
-
-async insertEvent(end_date, summary, description, attendees) {
-  const hoursFromNow = (n) => new Date(Date.now() + n * 1000 * 60 * 60 ).toISOString();
-  const insert = await gapi.client.calendar.events.insert({
-    calendarId: 'primary',
-    start: {
-      dateTime: end_date.toISOString(),
-      timeZone: this.timeZone
-    },
-    summary: summary,
-    description: description,
-    attendees: attendees
-  })
-
-  await this.getCalendar();
-}
-
 
   ngOnDestroy() {
     this.ngUnsubscribe.next();

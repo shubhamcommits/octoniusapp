@@ -79,6 +79,7 @@ import { NgxSkillBarModule } from "ngx-skill-bar";
 
 import {TimeAgoPipe} from 'time-ago-pipe';
 import { CloudsComponent } from './dashboard/user-profile/clouds/clouds.component';
+import { GoogleCloudService } from './shared/services/google-cloud.service';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 
@@ -179,7 +180,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   ],
 
   providers: [AuthService, UserService, DenyNavigationGuard, PostService, GroupService,
-    GroupDataService, WorkspaceService, GroupsService, AdminService,
+    GroupDataService, WorkspaceService, GroupsService, AdminService, GoogleCloudService,
     AuthGuard, NotAuthGuard, QuillAutoLinkService, ValidSubscriptionGuard,
     { provide: 'SnotifyToastConfig', useValue: ToastDefaults},
     SnotifyService,

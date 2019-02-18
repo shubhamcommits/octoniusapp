@@ -12,10 +12,11 @@ export class AuthService {
   BASE_API_URL = environment.BASE_API_URL;
 
   constructor(private _http: HttpClient) {
-    this.initClient();
+    //this.initCalendarClient();
    }
 
-   initClient() {
+   //separate entitity for loading google calendar
+   initCalendarClient() {
     gapi.load('client', () => {
       console.log('loaded client')
 
