@@ -94,6 +94,12 @@ const UserSchema = new Schema({
   _private_group: {
     type: Schema.Types.ObjectId,
     ref: 'Group'
+  },
+  tokens: {
+    gdrive: {
+      type: String,
+      default: null
+    }
   }
 });
 

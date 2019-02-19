@@ -235,6 +235,61 @@ const getTasksDone = async (req, res, next) => {
   }
 };
 
+// -| TOKENS |-
+
+const addToken = async (req, res, next) => {
+  try {
+    const {
+      userId,
+      params: { service },
+      body: { token }
+    } = req;
+
+    const tokenDefinition = {};
+
+    tokenDefinition[service] = token;
+
+    const user = await User.findByIdAnUpdate({
+      _id: userId
+    }, {
+      $set: tokenDefinition
+    }, {
+      new: true
+    });
+
+    return res.status(200).json({
+      message: `Saved ${service} token.`,
+      user
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+const getToken = async (req, res, next) => {
+  try {
+    const { userId, params: { service } } = req;
+    let token;
+
+    const user = await User.findById(userId);
+
+    if (user.tokens[service]) {
+      token = user.tokens[service];
+    } else {
+      return res.status(204).json({
+        message: `User does not have a ${service} token!`
+      });
+    }
+
+    return res.status(200).json({
+      message: `Found ${service} token.`,
+      token
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
 module.exports = {
   // Main
   edit,
@@ -245,5 +300,8 @@ module.exports = {
   // Tasks
   getNextTasksDone,
   getTasks,
-  getTasksDone
+  getTasksDone,
+  // Tokens
+  addToken,
+  getToken
 };
