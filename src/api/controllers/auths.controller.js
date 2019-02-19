@@ -267,6 +267,23 @@ const signOut = async (req, res, next) => {
   }
 };
 
+const sendResetPasswordMail = async (req, res) => {
+  console.log('checkpoint 0', req.body);
+  const workspace = await Workspace.findOne({ workspace_name: req.body.workspace });
+
+  console.log('checkpoint .5', workspace);
+  const user = await User.findOne({
+    $and: [
+      { _workspace: workspace._id },
+      { email: req.body.email }
+    ]
+  });
+
+  console.log('checkpoint 1', user);
+  // send an email to user
+  sendMail.resetPassword(workspace, user, res);
+};
+
 /*  =========================================
  *  -- WORKSPACE AVAILABILITY AND CREATION --
  *  =========================================
@@ -525,5 +542,6 @@ module.exports = {
   checkWorkspaceName,
   createNewWorkspace,
   checkUserAvailability,
-  checkSubscriptionValidity
+  checkSubscriptionValidity,
+  sendResetPasswordMail
 };

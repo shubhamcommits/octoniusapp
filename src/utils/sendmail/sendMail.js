@@ -6,6 +6,7 @@ const moment = require('moment');
 const {
   Group,
   Post,
+  Resetpwd,
   User,
   Workspace
 } = require('../../api/models');
@@ -81,7 +82,6 @@ const sendMail = async (emailBody, emailData, scheduled = {}) => {
         ]
       }
     };
-
 
 
     // if we're creating an email that is scheduled in the future, then we add the property send_at to config
@@ -237,6 +237,8 @@ const taskAssigned = async (taskPost) => {
       taskLink: defaults.postLink(group._id, taskPost._id)
     };
 
+    console.log('emailData', emailData);
+
     // Generate email body from template
     const emailBody = await generateEmailBody(emailType, emailData);
 
@@ -287,6 +289,47 @@ const eventAssigned = async (eventPost) => {
   }
 };
 
+// send mail to user to reset his password
+const resetPassword = async (workspace, user, res) => {
+  try {
+    const resetPwdData = {
+      user: user._id
+    };
+
+    const newResetPwdDoc = await Resetpwd.create(resetPwdData);
+    console.log('checkpoint 2', process.env.NODE_ENV);
+
+    const resetPwdlink = `${defaults.resetPwdLink}/${newResetPwdDoc._id}`;
+
+    console.log('checkpoint 3', resetPwdlink);
+
+    const emailType = 'resetPassword';
+
+    const emailData = {
+      subject: subjects[emailType],
+      toName: user.first_name,
+      toEmail: user.email,
+      workspace: workspace.workspace_name,
+      link: resetPwdlink
+    };
+
+    console.log('checkpoint 4', emailData);
+    // Generate email body from template
+    const emailBody = await generateEmailBody(emailType, emailData);
+
+    // Send email
+    const send = await sendMail(emailBody, emailData);
+console.log('reached the end');
+
+    return res.status(200).status({
+      message: 'Successfully sent email'
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+
 // send an email when a task is completed
 const userCompletedTask = async (userWhoChangedStatusId, post) => {
   try {
@@ -327,6 +370,10 @@ const userCompletedTask = async (userWhoChangedStatusId, post) => {
     console.log(err);
   }
 };
+
+// =========================
+//          MENTIONS
+// ==========================
 
 // Send an email when a user is mentioned in a post
 const userMentionedPost = async (post, user) => {
@@ -400,6 +447,10 @@ const userMentionedComment = async (comment, post, user) => {
   }
 };
 
+// =========================
+//          REMINDERS
+// ==========================
+
 const scheduleTaskReminder = async (post) => {
   try {
     const emailType = 'scheduleTaskReminder';
@@ -439,9 +490,9 @@ const scheduleEventReminder = async (post) => {
     const group = await Group.findById({ _id: post._group });
 
     post.event._assigned_to.forEach(async (user) => {
-        const to = await User.findById({ _id: user });
+      const to = await User.findById({ _id: user });
 
-        const emailData = {
+      const emailData = {
         subject: subjects[emailType],
         toName: to.first_name,
         toEmail: to.email,
@@ -481,6 +532,7 @@ module.exports = {
   userMentionedComment,
   userMentionedPost,
   userCompletedTask,
+  resetPassword,
   scheduleTaskReminder,
   scheduleEventReminder
 };

@@ -5,6 +5,7 @@ import { THROW_IF_NOT_FOUND } from '@angular/core/src/di/injector';
 import { AuthService } from '../../shared/services/auth.service';
 import { Router } from '@angular/router';
 import { User } from '../../shared/models/user.model';
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-signin',
@@ -12,7 +13,10 @@ import { User } from '../../shared/models/user.model';
   styleUrls: ['./signin.component.scss']
 })
 export class SigninComponent implements OnInit {
+
+  // forms
   signinForm: FormGroup;
+  resetPwdForm: FormGroup;
   user = {
     email: '',
     password: '',
@@ -24,10 +28,16 @@ export class SigninComponent implements OnInit {
     class: ''
   };
 
+  modalRef;
+
+
 
   processing = false;
 
-  constructor(private _auth: AuthService, private _router: Router) { }
+  constructor(
+    private _auth: AuthService,
+    private _router: Router,
+    private modalService: NgbModal) { }
 
   ngOnInit() {
     this.createSignInForm();
@@ -48,6 +58,13 @@ export class SigninComponent implements OnInit {
 
   disableSignInForm() {
     this.signinForm.disable();
+  }
+
+  initializeResetPwdForm() {
+    this.resetPwdForm = new FormGroup({
+      emailReset: new FormControl(null, [Validators.required, InputValidators.fieldCannotBeEmpty, Validators.email]),
+      workspaceReset: new FormControl(null, [Validators.required, InputValidators.fieldCannotBeEmpty])
+    });
   }
 
   OnSigninFormSubmit() {
@@ -77,8 +94,30 @@ export class SigninComponent implements OnInit {
           this.alert.message = 'Error! either server is down or you internet is not working';
         }
       });
-
   }
+
+  open(modal) {
+    this.initializeResetPwdForm();
+    this.modalRef = this.modalService.open(modal, {centered: true});
+  }
+
+  sendMail() {
+    console.log('entered mail');
+    // if all the fields in the form are valid
+    if (this.resetPwdForm.valid) {
+      const data = {
+        email: this.resetPwdForm.value.emailReset.trim(),
+        workspace: this.resetPwdForm.value.workspaceReset.trim()
+      };
+
+      this._auth.sendResetPasswordMail(data)
+        .subscribe((res) => {
+          console.log('RES', res);
+        });
+    }
+  }
+
+
 
   get _workspaceName() {
     return this.signinForm.get('userWorkspaceName');
@@ -92,4 +131,11 @@ export class SigninComponent implements OnInit {
     return this.signinForm.get('userPassword');
   }
 
+  get _emailReset() {
+    return this.resetPwdForm.get('emailReset');
+  }
+
+  get _workspaceReset() {
+    return this.resetPwdForm.get('workspaceReset');
+  }
 }

@@ -1,10 +1,15 @@
-
-
-
-
-
-
 @import "../../../assets/scss/variables.scss";
+
+
 .col-md-8{
   padding:100px 30px;
 }
+
+.forgot-password {
+  color: #005FD5;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+

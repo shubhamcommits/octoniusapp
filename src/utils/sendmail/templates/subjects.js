@@ -9,5 +9,6 @@ module.exports = {
   userMentionedComment: '- You have been mentioned in a comment on Octonius -',
   userCompletedTask: '- One of your tasks has been completed -',
   scheduleTaskReminder: '- One of your tasks is due today -',
-  scheduleEventReminder: '- You have an event planned today -'
+  scheduleEventReminder: '- You have an event planned today -',
+  resetPassword: '- Request for password reset -'
 };
