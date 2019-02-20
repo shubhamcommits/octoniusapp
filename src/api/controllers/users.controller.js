@@ -252,7 +252,7 @@ const addToken = async (req, res, next) => {
     const user = await User.findByIdAnUpdate({
       _id: userId
     }, {
-      $set: tokenDefinition
+      $set: { tokens: { tokenDefinition } }
     }, {
       new: true
     });
