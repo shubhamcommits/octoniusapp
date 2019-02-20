@@ -244,7 +244,7 @@ const addGdriveToken = async (req, res, next) => {
       body: { token }
     } = req;
 
-    const user = await User.findByIdAnUpdate({
+    const user = await User.findByIdAndUpdate({
       _id: userId
     }, {
       'integrations.gdrive.token': token
