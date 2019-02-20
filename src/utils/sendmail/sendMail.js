@@ -305,6 +305,8 @@ const resetPassword = async (workspace, user, res) => {
     // reset their password
     const resetPwdlink = `${defaults.resetPwdLink}/${newResetPwdDoc._id}`;
 
+    console.log('resetPWDLINK', resetPwdlink);
+
     const emailType = 'resetPassword';
 
     const emailData = {

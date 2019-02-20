@@ -9,15 +9,6 @@
     *ngIf="loaded"
     class="card">
     <ng-container *ngIf="user; else errorTemplate">
-      <div class="card-header">
-        <div class="container">
-          <div class="row">
-            <div class="img-container col align-self-center">
-              <img src="/uploads/{{user.profile_pic}}" onerror="this.src='/assets/images/user.png'" class="card-image feed-avatar">
-            </div>
-          </div>
-        </div>
-      </div>
       <div class="card-body">
         <p class="name">{{user.first_name}} {{user.last_name}}</p>
         <hr>

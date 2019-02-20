@@ -278,7 +278,15 @@ const resetPassword = async (req, res) => {
   //   grab the resetPWD + document user + delete the resetPwd document
     const delResetPwdDoc = await Resetpwd.findOneAndDelete({ _id: req.body.resetPwdId }).populate('user');
 
-    let user = delResetPwdDoc.user;
+    if (!delResetPwdDoc) {
+        return sendErr(res, '', 'Your link is not valid', 401);
+    }
+
+      // the user that requested the password reset
+      let user = delResetPwdDoc.user;
+
+    // delete all the other reset pasword documents of this user
+      await Resetpwd.remove({ user: user._id });
 
     // Encrypting user password
     const passEncrypted = await passwordHelper.encryptPassword(req.body.password);

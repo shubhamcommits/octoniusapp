@@ -20,6 +20,7 @@ const {
 
 const app = express();
 
+
 // Load 'development' configs for dev environment
 if (process.env.NODE_ENV !== 'production') {
   devEnv.init();
