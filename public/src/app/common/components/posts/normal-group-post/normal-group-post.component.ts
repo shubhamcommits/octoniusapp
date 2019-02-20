@@ -27,7 +27,6 @@ export class NormalGroupPostComponent implements OnInit, OnDestroy {
   @Input('allMembersId') allMembersId;
   @Input('socket') socket;
   @Input('modules') modules;
-
   @Output('deletePost') removePost = new EventEmitter();
 
   // alerts & messages

@@ -34,6 +34,9 @@ export class AuthService {
     });
   }
 
+  getResetPwdDetails(id) {
+    return this._http.get(this.BASE_API_URL + `/auth/resetPasswordDetails/${id}`);
+  }
 
   signIn(user) {
     return this._http.post<any>(this.BASE_API_URL + '/auth/signin', user);
@@ -74,26 +77,33 @@ export class AuthService {
     return localStorage.getItem('token');
   }
 
+  resetPassword(data) {
+    return this._http.put(this.BASE_API_URL + `/auth/resetPassword`, data);
+  }
+
+  sendResetPasswordMail(data) {
+    return this._http.post(this.BASE_API_URL + '/auth/sendResetPasswordMail', data);
+  }
 
   storeUserData(token, user) {
-    //console.log('current user data', user);
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(user));
   }
+
   async login() {
-    const googleAuth = gapi.auth2.getAuthInstance()
+    const googleAuth = gapi.auth2.getAuthInstance();
     const googleUser = await googleAuth.signIn();
-  
+
     const token = googleUser.getAuthResponse().id_token;
-  
+
     console.log(googleUser);
-  
-  
+
+
     // Alternative approach, use the Firebase login with scopes and make RESTful API calls
     // const provider = new auth.GoogleAuthProvider()
     // provider.addScope('https://www.googleapis.com/auth/calendar');
     // this.afAuth.auth.signInWithPopup(provider)
-    
+
   }
 
 }

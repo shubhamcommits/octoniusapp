@@ -79,7 +79,11 @@ import { NgxSkillBarModule } from "ngx-skill-bar";
 
 import {TimeAgoPipe} from 'time-ago-pipe';
 import { CloudsComponent } from './dashboard/user-profile/clouds/clouds.component';
+
 import { GoogleCloudService } from './shared/services/google-cloud.service';
+
+import {ResetPwdComponent} from "./Authentication/reset-password/reset-password.component";
+
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 
@@ -141,7 +145,8 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     PostCommentComponent,
     TaskGroupPostComponent,
     EventGroupPostComponent,
-    CloudsComponent
+    CloudsComponent,
+    ResetPwdComponent
   ],
   imports: [
     BrowserModule,

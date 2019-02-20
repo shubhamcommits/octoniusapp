@@ -1,0 +1,48 @@
+<div class="card-container">
+  <h1 [@fadeIn]="logo_state" class="white logo-container">
+    <i class="icon-octo-logo white"></i>
+    Octonius
+  </h1>
+  <div
+    [@rotateIn]="state"
+    (@rotateIn.done)="changeState()"
+    *ngIf="loaded"
+    class="card">
+    <ng-container *ngIf="user; else errorTemplate">
+      <div class="card-body">
+        <p class="name">{{user.first_name}} {{user.last_name}}</p>
+        <hr>
+
+        <form class="form" [formGroup]="resetPasswordForm">
+          <div class="form-group">
+            <label for="newPassword1">New password:</label>
+            <input type="password" class="form-control" id="newPassword1" formControlName="newPassword1" name="newPassWord1">
+            <div *ngIf="_newPassword1.invalid && _newPassword1.touched" style="color:red">
+              <div *ngIf="_newPassword1.errors.required">Field is required</div>
+              <div *ngIf="_newPassword1.errors.fieldCannotBeEmpty">Field cannot be empty</div>
+              <div *ngIf="_newPassword1.hasError('pattern')">Your password should at least have 1 letter, 1 number and a total of 8 characters</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="newPassword2">Repeat new password:</label>
+            <input type="password" class="form-control" id="newPassword2" formControlName="newPassword2" name="newPassWord2">
+            <div *ngIf="_newPassword2.invalid && _newPassword2.touched" style="color:red">
+              <div *ngIf="_newPassword2.errors.required">Field is required</div>
+              <div *ngIf="_newPassword2.errors.fieldCannotBeEmpty">Field cannot be empty</div>
+              <div *ngIf="_newPassword2.errors.isNotEqual">Passwords need to match</div>
+            </div>
+          </div>
+          <button [disabled]="resetPasswordForm.invalid || processing" (click)="submitNewPassword()" class="btn btn-lg btn-primary">Submit New Password</button>
+        </form>
+      </div>
+    </ng-container>
+    <ng-template #errorTemplate>
+      <div class="card-header--err">
+        <h2>Error!</h2>
+      </div>
+      <div class="card-body--err">
+        <h4 style="text-align: center">This link is no longer valid. Try requesting a new one</h4>
+      </div>
+    </ng-template>
+  </div>
+</div>

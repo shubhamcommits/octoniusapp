@@ -31,6 +31,7 @@ import { AdminBillingComponent } from './dashboard/admin/admin-billing/admin-bil
 import {DenyNavigationGuard} from "./shared/guards/deny-navigation.guard";
 import {ValidSubscriptionGuard} from "./shared/guards/valid-subscription.guard";
 import { CloudsComponent } from './dashboard/user-profile/clouds/clouds.component';
+import {ResetPwdComponent} from "./Authentication/reset-password/reset-password.component";
 
 
 const appRoutes: Routes = [
@@ -42,6 +43,7 @@ const appRoutes: Routes = [
   { path: 'home', component: WelcomePageComponent, canActivate: [NotAuthGuard] },
   { path: 'create-new-Workspace-page2', component: NewWorkspacePage2Component, canActivate: [NotAuthGuard] },
   { path: 'create-new-Workspace-page1', component: NewWorkspacePage1Component, canActivate: [NotAuthGuard] },
+  { path: 'resetPassword/:id', component: ResetPwdComponent, canActivate: [NotAuthGuard]},
   {
     path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard],
     children: [
