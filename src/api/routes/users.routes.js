@@ -43,12 +43,12 @@ router.get('/tasksDone', users.getTasksDone);
 // Get next 20 most recently created user's completed tasks
 router.get('/nextTasksDone/:postId', users.getNextTasksDone);
 
-// - Tokens -
+// - Integrations -
 
 // Get user token for a specific integration
-router.get('/tokens/:service', users.getToken);
+router.get('/integrations/gdrive/token', users.getGdriveToken);
 
 // Add a new token for a specific integration
-router.post('/tokens/:service', users.addToken);
+router.post('/integrations/gdrive/token', users.addGdriveToken);
 
 module.exports = router;

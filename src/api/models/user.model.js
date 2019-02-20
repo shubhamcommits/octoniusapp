@@ -95,10 +95,12 @@ const UserSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Group'
   },
-  tokens: {
+  integrations: {
     gdrive: {
-      type: String,
-      default: null
+      token: {
+        type: String,
+        default: null
+      }
     }
   }
 });
