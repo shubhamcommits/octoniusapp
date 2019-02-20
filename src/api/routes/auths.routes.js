@@ -26,14 +26,19 @@ router.get('/checkSubscriptionValidity/:userId', auths.checkSubscriptionValidity
 // User signup
 router.post('/signup', auths.signUp);
 
-// // reset user password
-// router.put('/resetPassword', auths.resetPassword);
+
+// =================
+//    RESET PWD
+// =================
+
+// reset user password
+router.put('/resetPassword', auths.resetPassword);
 
 // send reset password email
 router.post('/sendResetPasswordMail', auths.sendResetPasswordMail);
 
-
-
+// get reset password details
+router.get('/resetPasswordDetails/:id', auths.resetPasswordDetails);
 
 
 module.exports = router;

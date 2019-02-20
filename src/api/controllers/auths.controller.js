@@ -5,6 +5,7 @@ const {
   Auth,
   Group,
   User,
+  Resetpwd,
   Workspace
 } = require('../models');
 
@@ -267,21 +268,93 @@ const signOut = async (req, res, next) => {
   }
 };
 
+/*  =========================================
+ *            -- PASSWORD RESET --
+ *  =========================================
+ */
+
+const resetPassword = async (req, res) => {
+  try {
+  //   grab the resetPWD + document user + delete the resetPwd document
+    const delResetPwdDoc = await Resetpwd.findOneAndDelete({ _id: req.body.resetPwdId }).populate('user');
+
+    let user = delResetPwdDoc.user;
+
+    // Encrypting user password
+    const passEncrypted = await passwordHelper.encryptPassword(req.body.password);
+
+    // Error creating the password
+    if (!passEncrypted) {
+      return sendErr(res, '', 'An error occurred trying to create the password, please choose another password!', 401);
+    }
+
+    //  save the encrypted password in the user document
+    user.password = passEncrypted.password;
+    await user.save();
+
+    res.status(200).json({
+      message: 'succesfully changed password'
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+const resetPasswordDetails = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // find the document that is linked to this password reset
+    const resetPwdDoc = await Resetpwd.findOne({ _id: id })
+      .populate('user', 'first_name last_name profile_pic');
+
+    // if we don't find a document we throw an error
+    if (!resetPwdDoc) {
+      return res.status(401).json({
+        message: 'This link is no longer valid'
+      });
+    }
+
+    res.status(200).json({
+      message: 'succesfully retrieved reset password information',
+      resetPwdDoc
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
 const sendResetPasswordMail = async (req, res) => {
-  console.log('checkpoint 0', req.body);
-  const workspace = await Workspace.findOne({ workspace_name: req.body.workspace });
+  try {
+    // retrieve the workspace
+    const workspace = await Workspace.findOne({ workspace_name: req.body.workspace });
 
-  console.log('checkpoint .5', workspace);
-  const user = await User.findOne({
-    $and: [
-      { _workspace: workspace._id },
-      { email: req.body.email }
-    ]
-  });
+    // error finding the workspace
+    if (!workspace) {
+      return sendErr(res, '', 'We were unable to find a user with this email / workspace combination! Please try again.', 401);
+    }
 
-  console.log('checkpoint 1', user);
-  // send an email to user
-  sendMail.resetPassword(workspace, user, res);
+    const user = await User.findOne({
+      $and: [
+        { _workspace: workspace._id },
+        { email: req.body.email }
+      ]
+    });
+
+    // Error finding the user
+    if (!user) {
+      return sendErr(res, '', 'We were unable to find a user with this email / workspace combination! Please try again.', 401);
+    }
+
+    // send an email to user
+    await sendMail.resetPassword(workspace, user, res);
+
+    res.status(200).json({
+      message: 'successfully sent email'
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
 };
 
 /*  =========================================
@@ -543,5 +616,7 @@ module.exports = {
   createNewWorkspace,
   checkUserAvailability,
   checkSubscriptionValidity,
+  resetPassword,
+  resetPasswordDetails,
   sendResetPasswordMail
 };

@@ -34,6 +34,9 @@ export class AuthService {
     });
   }
 
+  getResetPwdDetails(id) {
+    return this._http.get(this.BASE_API_URL + `/auth/resetPasswordDetails/${id}`);
+  }
 
   signIn(user) {
     return this._http.post<any>(this.BASE_API_URL + '/auth/signin', user);
@@ -72,6 +75,10 @@ export class AuthService {
   }
   getToken() {
     return localStorage.getItem('token');
+  }
+
+  resetPassword(data) {
+    return this._http.put(this.BASE_API_URL + `/auth/resetPassword`, data);
   }
 
   sendResetPasswordMail(data) {

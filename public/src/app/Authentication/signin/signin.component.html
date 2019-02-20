@@ -92,6 +92,6 @@
       </form>
     </div>
     <div class="modal-footer">
-      <button [disabled]="resetPwdForm.invalid" (click)="sendMail()" class="btn btn-primary">Send Email</button>
+      <button [disabled]="resetPwdForm.invalid || processing" (click)="sendMail()" class="btn btn-primary">Send Email</button>
     </div>
   </ng-template>

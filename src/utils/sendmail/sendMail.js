@@ -296,12 +296,14 @@ const resetPassword = async (workspace, user, res) => {
       user: user._id
     };
 
+    // so this is a new document we create whenever a user requests a password reset
+    // it has user and _id properties. We use user to show the info and we use the _id
+    // to add it to link in the mail.
     const newResetPwdDoc = await Resetpwd.create(resetPwdData);
-    console.log('checkpoint 2', process.env.NODE_ENV);
 
+    // this is the link in the email that users can click that will lead them to the page where they can
+    // reset their password
     const resetPwdlink = `${defaults.resetPwdLink}/${newResetPwdDoc._id}`;
-
-    console.log('checkpoint 3', resetPwdlink);
 
     const emailType = 'resetPassword';
 
@@ -313,17 +315,13 @@ const resetPassword = async (workspace, user, res) => {
       link: resetPwdlink
     };
 
-    console.log('checkpoint 4', emailData);
     // Generate email body from template
     const emailBody = await generateEmailBody(emailType, emailData);
 
     // Send email
-    const send = await sendMail(emailBody, emailData);
-console.log('reached the end');
+    await sendMail(emailBody, emailData);
 
-    return res.status(200).status({
-      message: 'Successfully sent email'
-    });
+    return 'done';
   } catch (err) {
     console.log(err);
   }
