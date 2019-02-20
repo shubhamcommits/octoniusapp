@@ -223,8 +223,7 @@ export class GroupActivityComponent implements OnInit {
     }
 
     //it refreshes the access token as soon as we visit any group
-    if(localStorage.getItem('google-cloud') != null && localStorage.getItem('google-cloud-token') != null){
-      this.googleService.refreshGoogleToken();
+      //this.googleService.refreshGoogleToken();
       //this.refreshGoogleToken();
       //this.getGoogleCalendarEvents();
       //this.getCalendar();
@@ -234,7 +233,7 @@ export class GroupActivityComponent implements OnInit {
         this.googleService.refreshGoogleToken();
         //this.refreshGoogleToken()
       }, 1800000);
-    }
+
     this.loadGroupPosts();
     this.alertMessageSettings();
     this.initializeGroupMembersSearchForm();

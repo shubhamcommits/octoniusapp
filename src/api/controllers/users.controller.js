@@ -235,6 +235,56 @@ const getTasksDone = async (req, res, next) => {
   }
 };
 
+// -| TOKENS |-
+
+const addGdriveToken = async (req, res, next) => {
+  try {
+    const {
+      userId,
+      body: { token }
+    } = req;
+
+    const user = await User.findByIdAnUpdate({
+      _id: userId
+    }, {
+      'integrations.gdrive.token': token
+    }, {
+      new: true
+    });
+
+    return res.status(200).json({
+      message: 'Saved gdrive token.',
+      user
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+const getGdriveToken = async (req, res, next) => {
+  try {
+    const { userId } = req;
+    let token;
+
+    const user = await User.findById(userId);
+
+    if (user.integrations.gdrive.token) {
+      token = user.integrations.gdrive.token;
+    } else {
+      return res.status(204).json({
+        message: 'User does not have a gdrive token!'
+      });
+    }
+
+    return res.status(200).json({
+      message: 'Found gdrive token.',
+      token
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
 module.exports = {
   // Main
   edit,
@@ -245,5 +295,8 @@ module.exports = {
   // Tasks
   getNextTasksDone,
   getTasks,
-  getTasksDone
+  getTasksDone,
+  // Integrations
+  addGdriveToken,
+  getGdriveToken
 };
