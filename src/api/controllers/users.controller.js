@@ -29,7 +29,7 @@ const edit = async (req, res, next) => {
   }
 };
 
-const editSkills = async (req, res, next) => {
+const editSkills = async (req, res) => {
   try {
     const { userId, body: { skills } } = req;
 
