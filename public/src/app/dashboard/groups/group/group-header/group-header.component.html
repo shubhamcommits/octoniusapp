@@ -1,12 +1,10 @@
-<div class="media user-sticky-card">
+<div *ngIf="group" class="media user-sticky-card">
 
   <img class="mr-3 feed-avatar-big" [src]="groupImageUrl" onerror="this.src='/assets/images/group.png'">
 
   <div class="media-body">
-
-
     <div>
-      <h2>{{groupDataService.group?.group_name}}</h2>
+      <h2>{{ group.group_name }}</h2>
       <ul class="nav">
         <li class="nav-item">
           <a class="nav-link" [routerLink]="['/dashboard/group/',group_id,'activity' ]" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Activity
@@ -49,21 +47,16 @@
     </div>
 
   </div>
-  <div class="col-md-3 text-right">
-    <button type="button" name="button" class="btn pink btn-link" (click)="openLg(contentEditGroup)">
-      <i class="material-icons">create</i>
-    </button>
-  </div>
-
-  <ng-template #content let-c="close" let-d="dismiss">
-
-    <div class="modal-body">
-      <!--  <ngb-alert *ngIf="alert.message" [type]="alert.class" (close)="successMessage = null">{{alert.message}}</ngb-alert> -->
-      <div *ngIf="alert.message" [ngClass]="alert.class">{{alert.message}}</div>
-
+  <ng-container *ngIf="user">
+    <div *ngIf="user.role === 'admin' || user.role === 'owner'" class="col-md-3 text-right">
+      <button type="button" name="button" class="btn pink btn-link" (click)="openLg(contentEditGroup)">
+        <i class="material-icons">create</i>
+      </button>
     </div>
- 
-  </ng-template>
+  </ng-container>
+
+
+  <!-- ##### MODALS ##### -->
 
   <ng-template #contentEditGroup let-c="close" let-dd="dismiss">
     <div class="modal-header">
@@ -82,8 +75,8 @@
         <img *ngIf="!croppedImage" [src]="groupImageUrl" style="border-radius: 50%; width:15% ; height:15%;">
         <img *ngIf="croppedImage" [src]="croppedImage" #Image accept="image/*" style="border-radius: 50%; width:15% ; height:15%;">
         <input type="file" (change)="fileChangeEvent($event)" />
-     
-        <div>  
+
+        <div>
           <br><br>
           <image-cropper
               [imageChangedEvent]="imageChangedEvent"
@@ -99,16 +92,18 @@
               (imageLoaded)="imageLoaded()"
               (cropperReady)="cropperReady()"
               (loadImageFailed)="loadImageFailed()"
-             
           ></image-cropper>
         </div>
         <!-- <img [src]="croppedImage" /> -->
-      
+      </div>
+      <div class="form-group">
+        <label for="groupName">Group Name:</label>
+        <input class="form-control" [(ngModel)]="group.group_name" type="text" id="groupName" name="groupName">
       </div>
 
       <div class="form-group">
-        <label for="email">Group Description:</label>
-        <textarea class="form-control" [(ngModel)]="group.description" rows="5" id="" name=""></textarea>
+        <label for="description">Group Description:</label>
+        <textarea class="form-control" [(ngModel)]="group.description" rows="5" id="description" name="description"></textarea>
       </div>
     </div>
 
