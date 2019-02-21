@@ -96,10 +96,9 @@ export class CloudsComponent implements OnInit {
       this.ngxService.stop(); // stop foreground loading with 'default' id
     }, 500);
 
-    this.googleService.refreshGoogleToken()
-    .then(() => {
     // refresh the token and initalise the google user-data if google-cloud is already stored
     if(localStorage.getItem('google-cloud') != null){
+      this.googleService.refreshGoogleToken();
       this.googleAuthSucessful = true;
       this.googleUser = JSON.parse(localStorage.getItem('google-cloud'));
       this.googleDriveUsed = Math.round((this.googleUser.user_data.storageQuota.usage/this.googleUser.user_data.storageQuota.limit)*100);
@@ -116,9 +115,6 @@ export class CloudsComponent implements OnInit {
       this.googleAuthSucessful = false;
       this.isLoading$.next(false);
     }
-    })
-
-
   }
 
   ngAfterViewInit() {
@@ -180,10 +176,6 @@ export class CloudsComponent implements OnInit {
       console.log('Auth Results', authResult);
       if (authResult && !authResult.error) {
         if (authResult.access_token) {
-          // 1. as soon as auth completes, it gives us an access_token
-          // 2. use access_token to get a refresh_token
-          // 3. store the refresh_token to server
-          // 4. use refresh_token to get the access_token all the times
           const getRefreshToken = new XMLHttpRequest();
 
           const fd = new FormData();
@@ -203,21 +195,6 @@ export class CloudsComponent implements OnInit {
                 'google_token_data': JSON.parse(getRefreshToken.responseText)
               };
               localStorage.setItem('google-cloud-token', JSON.stringify(google_cloud_token));
-
-          const saveToken = new XMLHttpRequest(); 
-          saveToken.open('POST', environment.BASE_API_URL + '/users/integrations/gdrive/token', true);
-          saveToken.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('token'));
-
-          const tokenData = new FormData();
-          tokenData.append('token', JSON.parse(getRefreshToken.responseText).refresh_token);
-
-          saveToken.onload = () => {
-            if (saveToken.status === 200) {
-              console.log(JSON.parse(saveToken.responseText));
-            }
-          }
-
-          saveToken.send(tokenData);
               
           const getUserAPI = new XMLHttpRequest();
   
