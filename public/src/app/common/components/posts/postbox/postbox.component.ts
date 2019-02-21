@@ -108,11 +108,14 @@ export class PostboxComponent implements OnInit, OnDestroy {
     this.inilizePostForm();
     //  redo this later
     this.alertMessageSettings();
-    if(localStorage.getItem('google-cloud') != null && localStorage.getItem('google-cloud-token') != null){
       //this.getGoogleCalendarEvents();
-      await this.googleService.getGoogleCalendarEvents();
+      this.googleService.refreshGoogleToken()
+      .then( async () => {
+        await this.googleService.getGoogleCalendarEvents();
+      });
+
       
-    }
+
   }
 
   addNewEventPost() {

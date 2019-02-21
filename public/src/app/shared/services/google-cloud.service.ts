@@ -9,6 +9,7 @@ declare var google: any;
 export class GoogleCloudService {
 
   pickerApiLoaded = false;
+  google_token: any;
 
   constructor(private _http: HttpClient) {
     this.loadGoogleDrivePicker();
@@ -85,61 +86,75 @@ export class GoogleCloudService {
 
   refreshGoogleToken() {
     return new Promise((resolve, reject) => {
-      if (localStorage.getItem('google-cloud-token') != null) {
+
+      const fetchToken = new XMLHttpRequest();
+      fetchToken.open('GET', environment.BASE_API_URL + '/users/integrations/gdrive/token', true);
+      fetchToken.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('token'));
+  
+      fetchToken.onload = () => {
+        if (fetchToken.status === 200) {
+          this.google_token = JSON.parse(fetchToken.responseText).token;
+          console.log('Google Refresh Token', this.google_token);
+          if (this.google_token != null) {
         
-        const getRefreshToken = new XMLHttpRequest();
-       
-        const fd = new FormData();
-        fd.append('client_id', environment.clientId);
-        fd.append('client_secret', environment.clientSecret);
-        fd.append('grant_type', 'refresh_token');
-        fd.append('refresh_token', JSON.parse(localStorage.getItem('google-cloud')).refresh_token);
-
-        getRefreshToken.open('POST', 'https://www.googleapis.com/oauth2/v4/token', true);
-        getRefreshToken.setRequestHeader('Authorization', 'Bearer ' + JSON.parse(localStorage.getItem('google-cloud-token')).google_token_data.access_token);
-
-        getRefreshToken.onload = () => {
-          if (getRefreshToken.status === 200) {
-            console.log(JSON.parse(getRefreshToken.responseText));
-            const google_cloud_token = {
-              'google_token_data': JSON.parse(getRefreshToken.responseText)
-            };
-            localStorage.setItem('google-cloud-token', JSON.stringify(google_cloud_token));
-
-            const getUserAPI = new XMLHttpRequest();
-
-            getUserAPI.open('GET', 'https://www.googleapis.com/drive/v3/about?fields=user,storageQuota', true);
-            getUserAPI.setRequestHeader('Authorization', 'Bearer ' + JSON.parse(getRefreshToken.responseText).access_token);
-
-            getUserAPI.onload = () => {
-              if (getUserAPI.status === 200) {
-                console.log(JSON.parse(getUserAPI.responseText));
-                const google_cloud = {
-                  'user_data': JSON.parse(getUserAPI.responseText),
-                  'refresh_token': JSON.parse(localStorage.getItem('google-cloud')).refresh_token
+            const getRefreshToken = new XMLHttpRequest();
+           
+            const fd = new FormData();
+            fd.append('client_id', environment.clientId);
+            fd.append('client_secret', environment.clientSecret);
+            fd.append('grant_type', 'refresh_token');
+            fd.append('refresh_token', this.google_token);
+    
+            getRefreshToken.open('POST', 'https://www.googleapis.com/oauth2/v4/token', true);
+            getRefreshToken.setRequestHeader('Authorization', 'Bearer ' + this.google_token);
+    
+            getRefreshToken.onload = () => {
+              if (getRefreshToken.status === 200) {
+                console.log(JSON.parse(getRefreshToken.responseText));
+                const google_cloud_token = {
+                  'google_token_data': JSON.parse(getRefreshToken.responseText)
                 };
-                localStorage.setItem('google-cloud', JSON.stringify(google_cloud));
-                resolve();
+                localStorage.setItem('google-cloud-token', JSON.stringify(google_cloud_token));
+    
+                const getUserAPI = new XMLHttpRequest();
+    
+                getUserAPI.open('GET', 'https://www.googleapis.com/drive/v3/about?fields=user,storageQuota', true);
+                getUserAPI.setRequestHeader('Authorization', 'Bearer ' + JSON.parse(getRefreshToken.responseText).access_token);
+    
+                getUserAPI.onload = () => {
+                  if (getUserAPI.status === 200) {
+                    console.log(JSON.parse(getUserAPI.responseText));
+                    const google_cloud = {
+                      'user_data': JSON.parse(getUserAPI.responseText),
+                      'refresh_token': this.google_token
+                    };
+                    localStorage.setItem('google-cloud', JSON.stringify(google_cloud));
+                    resolve();
+                  }
+                  else{
+                    console.log('Error - User and Drive data is not received');
+                    reject(); 
+                  }
+                };
+                getUserAPI.send();
               }
               else{
-                console.log('Error - User and Drive data is not received');
-                reject(); 
+                console.log('Error - New Google Access token is not received');
+                reject();
               }
             };
-            getUserAPI.send();
+            getRefreshToken.send(fd);
           }
-          else{
-            console.log('Error - New Google Access token is not received');
+    
+          else {
+            console.log('You are not authenticated in order to add task to google calendar');
             reject();
           }
-        };
-        getRefreshToken.send(fd);
+        }
       }
+  
+      fetchToken.send();
 
-      else {
-        console.log('You are not authenticated in order to add task to google calendar');
-        reject();
-      }
 
 
     })
