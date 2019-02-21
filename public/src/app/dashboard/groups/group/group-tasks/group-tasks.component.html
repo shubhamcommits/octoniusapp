@@ -413,7 +413,7 @@
                 </div>
                 <div class="col-md-6 text-right">
                             <span>
-                        <button [routerLink]="['/dashboard/group/', post._group?._id, 'post',post._id]" class="btn btn-link">
+                        <button [routerLink]="['dashboard','group', post._group?._id, 'post',post._id]" class="btn btn-link">
 
                           <i class="material-icons muted" id="icon_comment_post_{{i}}">mode_comment</i>
                         </button>
@@ -428,7 +428,7 @@
                       </span>
                   <span>
                         <div ngbDropdown class="d-inline-block"
-                             *ngIf="post?._posted_by._id == user_data.user_id || user?.role === 'owner' || user?.role === 'admin'; else editevenif">
+                             *ngIf="post?._posted_by?._id === this.user_data?.user_id || user?.role === 'owner' || user?.role === 'admin'; else editevenif">
                           <i class="material-icons action dropdown-edit" id="dropdownBasic1" ngbDropdownToggle>more_horiz</i>
                           <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
                             <button (click)="openEditTaskModal(editTaskModal, post)"
