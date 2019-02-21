@@ -32,7 +32,7 @@ export class NavbarComponent implements OnInit {
     message: ''
   };
 
-  notifications_data;
+  notifications_data: any;
 
   Date = new Date;
 
@@ -88,9 +88,13 @@ export class NavbarComponent implements OnInit {
     const x = document.getElementById("li_overview");
     const y = document.getElementById("li_group");
     const z = document.getElementById("li_admin");
-    x.className = "active";
-    y.className = "none";
-    z.className = "none";
+
+    if( z != null){
+      x.className = "active";
+      y.className = "none";
+      z.className = "none";
+    }
+
   }
 
 
@@ -98,9 +102,12 @@ export class NavbarComponent implements OnInit {
     const x = document.getElementById("li_overview");
     const y = document.getElementById("li_group");
     const z = document.getElementById("li_admin");
-    y.className = "active";
-    x.className = "none";
-    z.className = "none";
+    if( z != null){
+      y.className = "active";
+      x.className = "none";
+      z.className = "none";
+    }
+
   }
 
 
@@ -108,9 +115,12 @@ export class NavbarComponent implements OnInit {
     const x = document.getElementById("li_overview");
     const y = document.getElementById("li_group");
     const z = document.getElementById("li_admin");
-    z.className = "active";
-    y.className = "none";
-    x.className = "none";
+    if( z!= null){
+      z.className = "active";
+      y.className = "none";
+      x.className = "none";
+    }
+
   }
 
   getUserProfile() {

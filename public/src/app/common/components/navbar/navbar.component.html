@@ -48,33 +48,33 @@
                 <div class="triangle"></div>
                 <button class="dropdown-item" style="pointer-events: none;"><b>Notifications</b></button>
                 <div class="dropdown-divider"></div>
-                <div *ngIf="this.notifications_data?.unreadNotifications.length != 0">
-                <button class="dropdown-item" *ngFor="let notifications of notifications_data?.unreadNotifications"> 
-                    <a style="text-decoration:none; color:inherit;"  (click)="gotToPostPage(notifications._origin_post?._group, notifications._origin_post?._id)">
-                      <img src="/uploads/{{notifications._actor.profile_pic}}" onerror="this.src='/assets/images/user.png'" alt="" class="topnav-avatar" style="margin-right:15px">
-                  {{notifications._actor.first_name}} {{notifications.message}}
+                <div *ngIf="this.notifications_data?.unreadNotifications?.length != 0">
+                <button class="dropdown-item" *ngFor="let notifications of this.notifications_data?.unreadNotifications"> 
+                    <a style="text-decoration:none; color:inherit;"  (click)="gotToPostPage(notifications?._origin_post?._group, notifications?._origin_post?._id)">
+                      <img src="/uploads/{{notifications?._actor?.profile_pic}}" onerror="this.src='/assets/images/user.png'" alt="" class="topnav-avatar" style="margin-right:15px">
+                  {{notifications?._actor?.first_name}} {{notifications?.message}}
                     </a>
                     <br />
-                    <span class="muted text-small float-right">{{notifications.created_date | timeAgo}}</span>
+                    <span class="muted text-small float-right">{{notifications?.created_date | timeAgo}}</span>
                 </button>
                 </div>
-                <div *ngIf="this.notifications_data?.unreadNotifications.length == 0">
+                <div *ngIf="this.notifications_data?.unreadNotifications?.length == 0">
                   <button class="dropdown-item">All up to date</button>
                 </div>
                 <div class="dropdown-divider"></div>
                 <button class="dropdown-item" style="pointer-events: none;"><b>Older notifications</b></button>
                 <div class="dropdown-divider"></div>
-                <div *ngIf="this.notifications_data?.readNotifications.length != 0">
-                  <button class="dropdown-item" *ngFor="let notifications of notifications_data?.readNotifications"> 
-                    <a style="text-decoration:none; color:inherit;" (click)="gotToPostPage(notifications._origin_post?._group, notifications._origin_post?._id)">
-                      <img src="/uploads/{{notifications._actor.profile_pic}}" onerror="this.src='/assets/images/user.png'" alt="" class="topnav-avatar" routerLink="/dashboard/profile/profile" style="margin-right:15px">
-                  {{notifications._actor.first_name}} {{notifications.message}}
+                <div *ngIf="this.notifications_data?.readNotifications?.length != 0">
+                  <button class="dropdown-item" *ngFor="let notifications of this.notifications_data?.readNotifications"> 
+                    <a style="text-decoration:none; color:inherit;" (click)="gotToPostPage(notifications?._origin_post?._group, notifications?._origin_post?._id)">
+                      <img src="/uploads/{{notifications?._actor?.profile_pic}}" onerror="this.src='/assets/images/user.png'" alt="" class="topnav-avatar" routerLink="/dashboard/profile/profile" style="margin-right:15px">
+                  {{notifications?._actor?.first_name}} {{notifications?.message}}
                     </a>
                     <br />
-                    <span class="muted text-small float-right">{{notifications.created_date | timeAgo}}</span>
+                    <span class="muted text-small float-right">{{notifications?.created_date | timeAgo}}</span>
                   </button>
                   </div>
-                  <div *ngIf="this.notifications_data?.readNotifications.length == 0">
+                  <div *ngIf="this.notifications_data?.readNotifications?.length == 0">
                     <button class="dropdown-item">Nothing new as of now.</button>
                   </div>
                 <!---->
