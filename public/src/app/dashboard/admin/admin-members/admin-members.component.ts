@@ -7,7 +7,7 @@ import { ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { NgbModal, NgbAlertConfig } from '@ng-bootstrap/ng-bootstrap';
-import { NgxUiLoaderService } from 'ngx-ui-loader'; 
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 import swal from 'sweetalert';
 @Component({
   selector: 'app-admin-members',
@@ -35,7 +35,7 @@ export class AdminMembersComponent implements OnInit {
 
   ngOnInit() {
     this.ngxService.start(); // start foreground loading with 'default' id
- 
+
     // Stop the foreground loading after 5s
     setTimeout(() => {
       this.ngxService.stop(); // stop foreground loading with 'default' id
@@ -100,29 +100,29 @@ export class AdminMembersComponent implements OnInit {
       icon: "info",
       dangerMode: true,
       buttons: ["No, cancel it!", "Yes, sure!"],
-      
+
       })
       .then(willupdate => {
       if (willupdate) {
         this.adminService.updateUserRole(data)
         .subscribe((res) => {
         //  console.log('update respose: ', res);
-  
+
           setTimeout(() => {
             this.modalReference.close();
           }, 3000);
-  
-  
+
+
           this.loadWorkspace();
-  
+
         }, (err) => {
         //  console.log('update respose err: ', err);
           this.alert.class = 'danger';
-  
+
           if (err.status) {
             this._message.next(err.error.message);
             this.openVerticallyCentered(this.content);
-  
+
             setTimeout(() => {
               this.modalReference.close();
             }, 3000);
@@ -134,11 +134,12 @@ export class AdminMembersComponent implements OnInit {
             }, 3000);
           }
         });
-       
+
         swal("Done!", first_name+"'s role has been updated to - "+role+"!", "success");
       }
       });
   }
+
   deleteWorkspaceUser(user_id) {
     this.modalReference.close();
     this.openVerticallyCentered(this.content);
@@ -155,7 +156,7 @@ removeUserfromWorkspace(user_id, first_name, last_name){
     'workspace_id':this.user_data.workspace._id
 
   };
-  console.log('Data', data);
+
   swal({
     title: "Are you sure?",
     text: "You want to remove "+first_name+" "+last_name+" from the workspace?",
@@ -166,7 +167,7 @@ removeUserfromWorkspace(user_id, first_name, last_name){
   .then(willDelete => {
     if (willDelete) {
       this.adminService.removeUser(data.workspace_id, data.user_id)
-      .subscribe((res) =>{
+      .subscribe((res) => {
        console.log('Group Member is Removed!', res);
         this.loadWorkspace();
       });
