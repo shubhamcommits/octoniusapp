@@ -167,16 +167,26 @@ const deleteUser = async (req, res, next) => {
     });
 
     if (!workspace) {
-      return sendErr(res, '', 'Invalid workspace id or user in not the workspace owner', 404);
+      return sendErr(res, '', 'Invalid workspace id or user is not the workspace owner', 404);
     }
 
+
     // Disable user
-    const disabledUser = await User.findOneAndUpdate({
-      _workspace: workspace._id,
-      _id: req.params.userId
-    }, {
-      $set: { active: false }
-    });
+    const disabledUser = await User.findOneAndUpdate(
+      {
+        $and: [
+          { _workspace: workspaceId },
+          { _id: req.params.userId }
+        ]
+      },
+      {
+        $set: {
+          _groups: [],
+          active: false
+        }
+      }
+    );
+
 
     // Remove user from workspace's members & invited users
     const updatedWorkSpace = await Workspace.findOneAndUpdate({
@@ -207,7 +217,7 @@ const deleteUser = async (req, res, next) => {
     });
 
     // remove member from the billing list
-      billing.subtractUserFromSubscription(updatedWorkSpace);
+    billing.subtractUserFromSubscription(updatedWorkSpace);
 
     return res.status(200).json({
       message: 'User removed from workspace!',

@@ -35,7 +35,7 @@ export class AdminService {
     return this._http.put<any>(this.BASE_API_URL + '/workspace/updateUserRole', data);
   }
 
-  removeUser(workspaceId, userId){
+  removeUser(workspaceId, userId) {
     return this._http.delete(this.BASE_API_URL + `/workspaces/${workspaceId}/users/${userId}`);
   }
 }
