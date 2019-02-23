@@ -1,6 +1,6 @@
 
 const {
-  Group, User, Workspace
+  Group, User, Workspace, Post
 } = require('../models');
 
 const { sendErr, billing } = require('../../utils');
@@ -230,6 +230,79 @@ const deleteUser = async (req, res, next) => {
 
 
 /*  =============
+ *  -- SEARCHES --
+ *  =============
+ */
+
+const search = async (req, res) => {
+  try {
+    // Focus on only searching within own workspace
+    const user = await User.findOne({ _id: req.userId });
+
+    const skillsQuery = User.find({
+      $and: [
+        { skills: { $regex: req.query.query, $options: 'i' } },
+        { _workspace: req.params.workspaceId },
+        { active: true }
+      ]
+    });
+
+    const contentQuery = Post.find({
+      $and: [
+        { _group: { $in: user._groups } },
+        { content: { $regex: req.query.query, $options: 'i' } }
+      ]
+    });
+
+    const personsQuery = User.find({
+      $and: [
+        { full_name: { $regex: req.query.query, $options: 'i' } },
+        { _workspace: req.params.workspaceId },
+        { active: true }
+      ]
+    });
+
+    if (JSON.parse(req.query.contentChecked)) {
+      //   find posts and comments to which this user has access
+      const posts = await contentQuery.exec();
+
+      res.status(200).json({
+        message: 'Successfully retrieved search result',
+        results: posts
+      });
+    } else if (JSON.parse(req.query.personsChecked)) {
+      const users = await personsQuery.exec();
+
+      res.status(200).json({
+        message: 'Successfully retrieved search result',
+        results: users
+      });
+    } else if (JSON.parse(req.query.skillsChecked)) {
+      const users = await skillsQuery.exec();
+
+      res.status(200).json({
+        message: 'Successfully retrieved search result',
+        results: users
+      });
+    } else {
+      Promise.all([
+        personsQuery.exec(),
+          contentQuery.exec(),
+        skillsQuery.exec()
+      ]).then((result) => {
+        res.status(200).json({
+          message: 'Successfully retrieved search result',
+          results: result
+        });
+      });
+    }
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+
+/*  =============
  *  -- EXPORTS --
  *  =============
  */
@@ -240,7 +313,9 @@ module.exports = {
   deleteDomain,
   getDomains,
   // users
-  deleteUser
+  deleteUser,
+  // search
+  search
 };
 
 

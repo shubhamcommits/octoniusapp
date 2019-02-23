@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { AuthService } from '../../../shared/services/auth.service';
 import { Router } from '@angular/router';
 import { UserService } from '../../../shared/services/user.service';
@@ -8,6 +8,7 @@ import * as io from 'socket.io-client';
 import { environment } from '../../../../environments/environment'
 import { BehaviorSubject } from 'rxjs';
 import { async } from '@angular/core/testing'
+import {WorkspaceService} from "../../../shared/services/workspace.service";
 
 
 
@@ -23,6 +24,8 @@ import { async } from '@angular/core/testing'
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
+  @ViewChild('searchDrop') searchDrop;
+
   user: User;
   userProfileImage;
   user_data;
@@ -38,8 +41,19 @@ export class NavbarComponent implements OnInit {
 
   socket = io(environment.BASE_URL);
 
-  constructor(private _auth: AuthService, private _userService: UserService, private _router: Router,
-    private router: Router) {
+  // search data
+  search_results = [];
+  search_value = '';
+  personsChecked = false;
+  skillsChecked = false;
+  contentChecked = false;
+
+  constructor(
+    private _auth: AuthService,
+    private _userService: UserService,
+    private _router: Router,
+    private router: Router,
+    private workspaceService: WorkspaceService) {
       this.user_data = JSON.parse(localStorage.getItem('user'));
      }
 
@@ -172,6 +186,32 @@ export class NavbarComponent implements OnInit {
   }
   public closeAlert() {
     this.alert.message = '';
+  }
+
+  search() {
+    console.log('search started');
+    const data = {
+      query: this.search_value,
+      workspaceId: JSON.parse(localStorage.getItem('user')).workspace._id,
+      personsChecked: this.personsChecked,
+      skillsChecked: this.skillsChecked,
+      contentChecked: this.contentChecked
+    };
+
+    // yes
+    this.workspaceService.search(data)
+      .debounceTime(300)
+      .subscribe((res) => {
+        if (this.personsChecked || this.skillsChecked || this.contentChecked) {
+          this.search_results = res['results'];
+          console.log('this.searchresults');
+          // this.searchDrop.open();
+        } else {
+          this.search_results = [...res['results'][0], ...res['results'][1], ...res['results'][2]];
+          console.log('this.searchResults', this.search_results;
+        }
+
+      });
   }
 
 }

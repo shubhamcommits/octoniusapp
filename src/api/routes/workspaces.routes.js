@@ -45,5 +45,10 @@ router.get('/:workspaceId/domains', workspaces.getDomains);
 // Remove user from workspace
 router.delete('/:workspaceId/users/:userId', workspaces.deleteUser);
 
+// - SEARCHES -
+
+// search throughout the entire workspace
+router.get('/:workspaceId/search', workspaces.search);
+
 
 module.exports = router;

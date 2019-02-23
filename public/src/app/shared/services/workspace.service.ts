@@ -1,6 +1,6 @@
 
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 
 @Injectable()
@@ -43,5 +43,15 @@ export class WorkspaceService {
 
   resumeSubscription() {
     return this._http.get(this.BASE_API_URL + `/billing/resumeSubscription`);
+  }
+
+  search(data) {
+    const params = new HttpParams()
+      .set("personsChecked", data.personsChecked)
+      .set("skillsChecked", data.skillsChecked)
+      .set("contentChecked", data.contentChecked)
+      .set("query", data.query);
+
+    return this._http.get(this.BASE_API_URL + `/workspaces/${data.workspaceId}/search`, {params});
   }
 }
