@@ -103,10 +103,12 @@
                 <button type="button" class="btn btn-link">
                   <input id="cin" #fileInput type="file" class="btn btn-outline-warning task" style="display: none"
                          (change)="fileChangeEvent($event)" placeholder="File" multiple />
-                  <i class="material-icons" (click)="fileInput.click()">attach_file</i>
+                  <i class="material-icons" placement="top"
+                  ngbTooltip="Upload local files" (click)="fileInput.click()">attach_file</i>
                 </button>
                 <button type="button" class="btn btn-link">
-                  <i class="material-icons" (click)="loadGoogleDrive();">
+                  <i class="material-icons" placement="top"
+                  ngbTooltip="Upload Google Drive files" (click)="loadGoogleDrive();">
                     cloud_upload
                   </i>
                 </button>

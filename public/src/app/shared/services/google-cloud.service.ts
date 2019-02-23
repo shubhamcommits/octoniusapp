@@ -10,6 +10,7 @@ export class GoogleCloudService {
 
   pickerApiLoaded = false;
   google_token: any;
+  BASE_API_URL = environment.BASE_API_URL;
 
   constructor(private _http: HttpClient) {
     this.loadGoogleDrivePicker();
@@ -158,6 +159,19 @@ export class GoogleCloudService {
 
 
     })
+  }
+
+  disconnectGoogleCloud(){
+    sessionStorage.clear();
+
+    localStorage.removeItem('google-cloud');
+    localStorage.removeItem('google-cloud-token');
+    
+    const formdata = new FormData();
+    formdata.append('token', null);
+    
+    return this._http.post(this.BASE_API_URL + '/users/integrations/gdrive/token', formdata);
+    
   }
 
 
