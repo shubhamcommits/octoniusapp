@@ -117,6 +117,9 @@ export class CloudsComponent implements OnInit {
       this.isLoading$.next(false);
     }
     })
+    .catch(()=>{
+      console.log('You haven\'t connected your google cloud yet');
+    })
 
 
   }
@@ -132,14 +135,15 @@ export class CloudsComponent implements OnInit {
 
   disconnectGoogle(){
     //gapi.auth2.getAuthInstance().signOut();
-    this.googleAuthSucessful = false;
-
-    sessionStorage.clear();
-
-    localStorage.removeItem('google-cloud');
-    localStorage.removeItem('google-cloud-token');
-    this.googleUser = new Object();
-    this.googleDriveUsed = 0;
+    this.googleService.disconnectGoogleCloud()
+    .subscribe((res)=>{
+      console.log('Google Disconnected', res);
+      this.googleAuthSucessful = false;
+      this.googleUser = new Object();
+      this.googleDriveUsed = 0;
+    }, (err)=>{
+      console.log('Error while disconnectiong google', err);
+    })
   }
 
    loadGoogleDrive() {
