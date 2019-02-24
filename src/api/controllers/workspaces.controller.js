@@ -252,7 +252,8 @@ const search = async (req, res) => {
         { _group: { $in: user._groups } },
         { content: { $regex: req.query.query, $options: 'i' } }
       ]
-    });
+    }).populate('_posted_by', 'full_name profile_pic')
+      .populate('_group', 'group_name');
 
     const personsQuery = User.find({
       $and: [
@@ -264,21 +265,21 @@ const search = async (req, res) => {
 
     if (JSON.parse(req.query.contentChecked)) {
       //   find posts and comments to which this user has access
-      const posts = await contentQuery.exec();
+      const posts = await contentQuery.limit(15).exec();
 
       res.status(200).json({
         message: 'Successfully retrieved search result',
         results: posts
       });
     } else if (JSON.parse(req.query.personsChecked)) {
-      const users = await personsQuery.exec();
+      const users = await personsQuery.limit(15).exec();
 
       res.status(200).json({
         message: 'Successfully retrieved search result',
         results: users
       });
     } else if (JSON.parse(req.query.skillsChecked)) {
-      const users = await skillsQuery.exec();
+      const users = await skillsQuery.limit(15).exec();
 
       res.status(200).json({
         message: 'Successfully retrieved search result',
@@ -286,9 +287,9 @@ const search = async (req, res) => {
       });
     } else {
       Promise.all([
-        personsQuery.exec(),
-          contentQuery.exec(),
-        skillsQuery.exec()
+        personsQuery.limit(5).exec(),
+        contentQuery.limit(5).exec(),
+        skillsQuery.limit(5).exec()
       ]).then((result) => {
         res.status(200).json({
           message: 'Successfully retrieved search result',

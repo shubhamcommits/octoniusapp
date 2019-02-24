@@ -41,12 +41,18 @@ export class NavbarComponent implements OnInit {
 
   socket = io(environment.BASE_URL);
 
+  isCollapsed = true;
+
   // search data
-  search_results = [];
   search_value = '';
   personsChecked = false;
   skillsChecked = false;
   contentChecked = false;
+
+  // search results
+  search_results_content = [];
+  search_results_persons = [];
+  search_results_skills = [];
 
   constructor(
     private _auth: AuthService,
@@ -189,7 +195,6 @@ export class NavbarComponent implements OnInit {
   }
 
   search() {
-    console.log('search started');
     const data = {
       query: this.search_value,
       workspaceId: JSON.parse(localStorage.getItem('user')).workspace._id,
@@ -203,15 +208,49 @@ export class NavbarComponent implements OnInit {
       .debounceTime(300)
       .subscribe((res) => {
         if (this.personsChecked || this.skillsChecked || this.contentChecked) {
-          this.search_results = res['results'];
-          console.log('this.searchresults');
+          if (this.personsChecked) {
+            console.log('res', res['results']);
+            this.search_results_persons = res['results'];
+          } else if (this.skillsChecked) {
+            this.search_results_skills = res['results'];
+          } else {
+            this.search_results_content = res['results'];
+          }
           // this.searchDrop.open();
         } else {
-          this.search_results = [...res['results'][0], ...res['results'][1], ...res['results'][2]];
-          console.log('this.searchResults', this.search_results;
-        }
+          console.log('this.searchResults', res['results']);
+          this.search_results_persons = res['results'][0];
+          this.search_results_content = res['results'][1];
+          this.search_results_skills = res['results'][2];
 
+        }
       });
   }
+
+ toggleCheckbox(type) {
+    switch (type) {
+      case 'persons':
+        this.personsChecked = !this.personsChecked;
+        if (this.personsChecked) {
+          this.skillsChecked = false;
+          this.contentChecked = false;
+        }
+        break;
+      case 'skills':
+        this.skillsChecked = !this.skillsChecked;
+        if (this.skillsChecked) {
+          this.personsChecked = false;
+          this.contentChecked = false;
+        }
+        break;
+      case 'content':
+        this.contentChecked = !this.contentChecked;
+        if (this.contentChecked) {
+          this.personsChecked = false;
+          this.skillsChecked = false;
+        }
+        break;
+    }
+ }
 
 }

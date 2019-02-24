@@ -25,24 +25,84 @@
             <span class="sr-only">(current)</span>
           </a>
         </li>
-        <div class="search-box">
-            <input type="text" [(ngModel)]="search_value" (keyup)="search()" class="search-txt" placeholder="Search..."/>
-            <a class="search-btn">
-              <i class="material-icons">search</i>
-            </a>
-        </div>
-
-
-        <!-- <li class="nav-item ">
-          <a class="nav-link" routerLink="/login">Files <span class="sr-only">(current)</span></a>
-        </li> -->
       </ul>
 
 
         <!-- <i class="fa form-control-feedback fa-microphone" aria-hidden="true"></i> -->
 
 
+      <div class="wrap">
+        <div ngbDropdown #myDrop="ngbDropdown" class="search">
+          <input id="dropdownManual" ngbDropdownAnchor type="text" class="searchTerm" [(ngModel)]="search_value" (click)="myDrop.open()" (keyup)="search()" placeholder="Search...">
+          <button type="submit" class="searchButton">
+            <i class="material-icons">search</i>
+          </button>
+          <div class="search-dropdown-menu" ngbDropdownMenu aria-labelledby="dropdownManual">
+            <div class="search-dropdown-menu-container">
+              <h4 class="search-title">Search for: </h4>
+              <div class="person-search search-option">
+                <i class="material-icons">people</i>
+                <h4 class="search-option__title">People</h4>
+                <div class="squaredFour">
+                  <input (click)="$event.stopPropagation(); myDrop.open(); toggleCheckbox('persons')" [checked]="personsChecked" type="checkbox" value="None" id="squaredFour" name="check" />
+                  <label (click)="$event.stopPropagation(); myDrop.open()" for="squaredFour"></label>
+                </div>
+              </div>
+              <div class="content-search search-option">
+                <i class="material-icons">assignment</i>
+                <h4 class="search-option__title">Content</h4>
+                <div class="squaredFour">
+                  <input (click)="$event.stopPropagation(); myDrop.open(); toggleCheckbox('content')" [checked]="contentChecked" type="checkbox" value="None" id="squaredFour2" name="check" />
+                  <label (click)="$event.stopPropagation(); myDrop.open();" for="squaredFour2"></label>
+                </div>
+              </div>
+              <div class="skills-search search-option">
+                <i class="material-icons">build</i>
+                <h4 class="search-option__title">Skills</h4>
+                <div class="squaredFour">
+                  <input (click)="$event.stopPropagation(); myDrop.open(); toggleCheckbox('skills')" [checked]="skillsChecked" type="checkbox" value="None" id="squaredFour3" name="check" />
+                  <label (click)="$event.stopPropagation(); myDrop.open()" for="squaredFour3"></label>
+                </div>
+              </div>
 
+              <hr>
+
+              <div *ngIf="search_value !== ''; else recentSearches" class="search-results">
+                <div *ngIf="search_results_persons.length > 0" class="search-results__users">
+                  <h4 class="search-results__title">Matched users:</h4>
+                  <ul class="search-results__list">
+                    <li class="search-result" *ngFor="let user of search_results_persons">
+                      <img class="search-result__img" src="/uploads/{{user.profile_pic}}" onerror="this.src='/assets/images/user.png'">
+                      <h4 class="search-result__text">{{ user.full_name }} - {{ user.email }}</h4>
+                    </li>
+                  </ul>
+                </div>
+                <div *ngIf="search_results_content.length > 0" class="search-results__users">
+                  <h4 class="search-results__title">Matched content:</h4>
+                  <ul class="search-results__list">
+                    <li class="search-result" *ngFor="let post of search_results_content">
+                      <img class="search-result__img" src="/uploads/{{post._posted_by.profile_pic}}" onerror="this.src='/assets/images/user.png'">
+                      <h4 class="search-result__text">{{ post._posted_by.full_name }} - Post in {{post._group.group_name}} group</h4>
+                    </li>
+                  </ul>
+                </div>
+                <div *ngIf="search_results_skills.length > 0" class="search-results__skills">
+                  <h4 class="search-results__title">Matched users with skills:</h4>
+                  <ul class="search-results__list">
+                    <li class="search-result" *ngFor="let user of search_results_skills">
+                      <img class="search-result__img" src="/uploads/{{user.profile_pic}}" onerror="this.src='/assets/images/user.png'">
+                      <h4 class="search-result__text">{{ user.full_name }} - {{ user.email }}</h4>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <ng-template #recentSearches>
+
+              </ng-template>
+            </div>
+          </div>
+        </div>
+      </div>
   <div class="btn-group nav-item" placement="bottom-left"  ngbDropdown  #notificationDrop="ngbDropdown" (openChange)="toggled($event)">
     <a class="notifications btn dropdown-toggle-split" ngbDropdownToggle>
       <div class="notif-bullet" *ngIf="this.notifications_data?.unreadNotifications.length > 0"></div>
@@ -96,7 +156,7 @@
 
             </div>
             <a class="nav-link"  routerLink="/dashboard/profile/profile">
-                <img [src]="userProfileImage" onerror="this.src='/assets/images/user.png'" alt="" class="topnav-avatar">
+                <img [src]="userProfileImage" onerror="this.src='/assets/images/user.png'"  class="topnav-avatar">
             </a>
 
 
