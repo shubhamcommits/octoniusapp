@@ -33,7 +33,7 @@
 
       <div class="wrap">
         <div ngbDropdown #myDrop="ngbDropdown" class="search">
-          <input id="dropdownManual" ngbDropdownAnchor type="text" class="searchTerm" [(ngModel)]="search_value" (click)="myDrop.open()" (keyup)="search()" placeholder="Search...">
+          <input id="dropdownManual" ngbDropdownAnchor type="text" class="searchTerm" [(ngModel)]="search_value" (click)="myDrop.open(); loadRecentSearches()" (keyup)="search()" placeholder="Search...">
           <button type="submit" class="searchButton">
             <i class="material-icons">search</i>
           </button>
@@ -71,33 +71,58 @@
                 <div *ngIf="search_results_persons.length > 0" class="search-results__users">
                   <h4 class="search-results__title">Matched users:</h4>
                   <ul class="search-results__list">
-                    <li class="search-result" *ngFor="let user of search_results_persons">
-                      <img class="search-result__img" src="/uploads/{{user.profile_pic}}" onerror="this.src='/assets/images/user.png'">
-                      <h4 class="search-result__text">{{ user.full_name }} - {{ user.email }}</h4>
-                    </li>
+                      <user-search-result
+                        *ngFor="let user of search_results_persons"
+                        [user]="user"
+                        (saveSearch)="saveSearch($event)"
+                      ></user-search-result>
                   </ul>
                 </div>
                 <div *ngIf="search_results_content.length > 0" class="search-results__users">
                   <h4 class="search-results__title">Matched content:</h4>
                   <ul class="search-results__list">
-                    <li class="search-result" *ngFor="let post of search_results_content">
-                      <img class="search-result__img" src="/uploads/{{post._posted_by.profile_pic}}" onerror="this.src='/assets/images/user.png'">
-                      <h4 class="search-result__text">{{ post._posted_by.full_name }} - Post in {{post._group.group_name}} group</h4>
-                    </li>
+                    <!-- /dashboard/group/5c6f56ec53a7802ab09895b4/post/5c6f582053a7802ab09895c5 -->
+                   <content-search-result
+                     *ngFor="let post of search_results_content"
+                     [post]="post"
+                     (saveSearch)="saveSearch($event)"
+                   ></content-search-result>
                   </ul>
                 </div>
                 <div *ngIf="search_results_skills.length > 0" class="search-results__skills">
                   <h4 class="search-results__title">Matched users with skills:</h4>
                   <ul class="search-results__list">
-                    <li class="search-result" *ngFor="let user of search_results_skills">
-                      <img class="search-result__img" src="/uploads/{{user.profile_pic}}" onerror="this.src='/assets/images/user.png'">
-                      <h4 class="search-result__text">{{ user.full_name }} - {{ user.email }}</h4>
-                    </li>
+                    <user-search-result
+                      *ngFor="let user of search_results_skills"
+                      [user]="user"
+                      (saveSearch)="saveSearch($event)"
+                      (deleteSearchResult)="deleteSearchResult($event)"
+                    ></user-search-result>
                   </ul>
                 </div>
+                <div class="all-results">
+                  <h4 class="all-results-text"> Display all results for "{{ search_value }}"</h4>
+                </div>
+
               </div>
               <ng-template #recentSearches>
-
+              <div class="recent-searches">
+                <h4 class="recent-searches__title">Recent:</h4>
+                <ng-container *ngFor="let search of recent_searches">
+                  <user-search-result
+                    *ngIf="search.type === 'user'"
+                    [user]="search.user"
+                    [deleteable]="true"
+                    (saveSearch)="saveSearch($event)"
+                    (deleteSearchResult)="deleteSearchResult($event)"
+                  ></user-search-result>
+                  <content-search-result
+                    *ngIf="search.type === 'content'"
+                    [post]="search.content"
+                    [deleteable]="true"
+                  ></content-search-result>
+                </ng-container>
+              </div>
               </ng-template>
             </div>
           </div>

@@ -47,8 +47,20 @@ router.delete('/:workspaceId/users/:userId', workspaces.deleteUser);
 
 // - SEARCHES -
 
+
+
+// delete a search result
+router.delete('/deleteSearchResult', workspaces.deleteSearchResult);
+
+// load the user's recent searches
+// change route later
+router.get('/user/loadRecentSearches', workspaces.loadRecentSearches);
+
 // search throughout the entire workspace
 router.get('/:workspaceId/search', workspaces.search);
+
+// add item to user's search history
+router.post('/saveSearch', workspaces.saveSearch);
 
 
 module.exports = router;

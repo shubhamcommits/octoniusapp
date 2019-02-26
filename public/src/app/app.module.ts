@@ -85,6 +85,8 @@ import { GoogleCloudService } from './shared/services/google-cloud.service';
 import {ResetPwdComponent} from "./Authentication/reset-password/reset-password.component";
 import { LimitCharacterPipe } from './shared/pipes/limit-character.pipe';
 import { ClickStopPropagationDirective } from './shared/directives/click-stop-propagation.directive';
+import { UserSearchResultComponent } from './common/components/search/user-search-result/user-search-result.component';
+import { ContentSearchResultComponent } from './common/components/search/content-search-result/content-search-result.component';
 
 import { NgCircleProgressModule } from 'ng-circle-progress';
 
@@ -168,7 +170,9 @@ const ngCircle = {
     CloudsComponent,
     ResetPwdComponent,
     LimitCharacterPipe,
-    ClickStopPropagationDirective
+    ClickStopPropagationDirective,
+    UserSearchResultComponent,
+    ContentSearchResultComponent
   ],
   imports: [
     BrowserModule,

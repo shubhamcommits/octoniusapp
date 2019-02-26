@@ -234,6 +234,66 @@ const deleteUser = async (req, res, next) => {
  *  =============
  */
 
+const deleteSearchResult = async (req, res) => {
+  try {
+    const user = await User.findOne({ _id: req.userId });
+
+    // use this until you find the right mongodb way to do it
+    user.search_history = user.search_history.filter((search) => {
+      if (req.body.type === 'user') {
+        return req.body.user._id != search.user._id;
+      } if (req.body.type === 'content') {
+        return req.body.content._id != search.content._id;
+      }
+    });
+
+    await user.save();
+
+    return res.status(200).json({
+      message: 'successfully deleted the search result'
+    });
+  } catch (err) {
+    sendErr(res, err);
+  }
+};
+
+const loadRecentSearches = async (req, res) => {
+  try {
+    const user = await User.findOne({ _id: req.userId });
+
+    // get the 5 most recent searches
+    const recentSearches = user.search_history.slice(-5).reverse();
+
+    res.status(200).json({
+      message: 'successfully retrieved the searches',
+      searches: recentSearches
+    });
+  } catch (err) {
+    sendErr(res, err);
+  }
+};
+
+const saveSearch = async (req, res) => {
+  try {
+    // add the search of the user to the search results
+    await User.findOneAndUpdate({ _id: req.userId },
+      {
+        $push: {
+          search_history: req.body
+        }
+      },
+      {
+        new: true
+      });
+
+    res.status(200).json({
+      message: 'successfully saved your search'
+    });
+  } catch (err) {
+    sendErr(res, err);
+  }
+};
+
 const search = async (req, res) => {
   try {
     // Focus on only searching within own workspace
@@ -245,7 +305,7 @@ const search = async (req, res) => {
         { _workspace: req.params.workspaceId },
         { active: true }
       ]
-    });
+    }).select('profile_pic full_name email');
 
     const contentQuery = Post.find({
       $and: [
@@ -261,7 +321,7 @@ const search = async (req, res) => {
         { _workspace: req.params.workspaceId },
         { active: true }
       ]
-    });
+    }).select('profile_pic full_name email');
 
     if (JSON.parse(req.query.contentChecked)) {
       //   find posts and comments to which this user has access
@@ -316,6 +376,9 @@ module.exports = {
   // users
   deleteUser,
   // search
+  deleteSearchResult,
+  loadRecentSearches,
+  saveSearch,
   search
 };
 

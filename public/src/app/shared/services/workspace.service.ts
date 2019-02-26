@@ -45,6 +45,18 @@ export class WorkspaceService {
     return this._http.get(this.BASE_API_URL + `/billing/resumeSubscription`);
   }
 
+  deleteSearchResult(data) {
+    return this._http.delete(this.BASE_API_URL + `/workspace/deleteSearchResult`, data);
+  }
+
+  loadRecentSearches() {
+    return this._http.get(this.BASE_API_URL + `/workspace/user/loadRecentSearches`);
+  }
+
+  saveSearch(data) {
+    return this._http.post( this.BASE_API_URL + `/workspace/saveSearch`, data);
+  }
+
   search(data) {
     const params = new HttpParams()
       .set("personsChecked", data.personsChecked)

@@ -53,6 +53,7 @@ export class NavbarComponent implements OnInit {
   search_results_content = [];
   search_results_persons = [];
   search_results_skills = [];
+  recent_searches = [];
 
   constructor(
     private _auth: AuthService,
@@ -140,7 +141,35 @@ export class NavbarComponent implements OnInit {
       y.className = "none";
       x.className = "none";
     }
+  }
 
+  deleteSearchResult(data) {
+    this.workspaceService.deleteSearchResult(data)
+      .subscribe( (res) => {
+        console.log('result server', res);
+        this.recent_searches = this.recent_searches.filter((search) => {
+          if (data.type === 'user') {
+            console.log('data', data);
+            console.log('search', search);
+            console.log('test 1', search.type !== data.type);
+            console.log('test 2', search.user._id != data.user._id);
+            return search.user._id != data.user._id;
+          } else if (data.type === 'content') {
+            return search.content._id != data.content._id;
+          }
+        });
+        console.log('this.recent_searches', this.recent_searches);
+      });
+  }
+
+  loadRecentSearches() {
+    if (this.search_value === '') {
+      this.workspaceService.loadRecentSearches()
+        .subscribe((res) => {
+          console.log('RES', res);
+          this.recent_searches = res['searches'];
+        });
+    }
   }
 
   getUserProfile() {
@@ -194,37 +223,46 @@ export class NavbarComponent implements OnInit {
     this.alert.message = '';
   }
 
-  search() {
-    const data = {
-      query: this.search_value,
-      workspaceId: JSON.parse(localStorage.getItem('user')).workspace._id,
-      personsChecked: this.personsChecked,
-      skillsChecked: this.skillsChecked,
-      contentChecked: this.contentChecked
-    };
-
-    // yes
-    this.workspaceService.search(data)
-      .debounceTime(300)
+  saveSearch(data) {
+    this.workspaceService.saveSearch(data)
       .subscribe((res) => {
-        if (this.personsChecked || this.skillsChecked || this.contentChecked) {
-          if (this.personsChecked) {
-            console.log('res', res['results']);
-            this.search_results_persons = res['results'];
-          } else if (this.skillsChecked) {
-            this.search_results_skills = res['results'];
-          } else {
-            this.search_results_content = res['results'];
-          }
-          // this.searchDrop.open();
-        } else {
-          console.log('this.searchResults', res['results']);
-          this.search_results_persons = res['results'][0];
-          this.search_results_content = res['results'][1];
-          this.search_results_skills = res['results'][2];
-
-        }
+        console.log('RES', res);
       });
+  }
+
+  search() {
+    if ( this.search_value !== '') {
+      const data = {
+        query: this.search_value,
+        workspaceId: this.user_data.workspace._id,
+        personsChecked: this.personsChecked,
+        skillsChecked: this.skillsChecked,
+        contentChecked: this.contentChecked
+      };
+
+      // yes
+      this.workspaceService.search(data)
+        .debounceTime(300)
+        .subscribe((res) => {
+          if (this.personsChecked || this.skillsChecked || this.contentChecked) {
+            if (this.personsChecked) {
+              console.log('res', res['results']);
+              this.search_results_persons = res['results'];
+            } else if (this.skillsChecked) {
+              this.search_results_skills = res['results'];
+            } else {
+              this.search_results_content = res['results'];
+            }
+            // this.searchDrop.open();
+          } else {
+            console.log('this.searchResults', res['results']);
+            this.search_results_persons = res['results'][0];
+            this.search_results_content = res['results'][1];
+            this.search_results_skills = res['results'][2];
+
+          }
+        });
+    }
   }
 
  toggleCheckbox(type) {
@@ -234,6 +272,9 @@ export class NavbarComponent implements OnInit {
         if (this.personsChecked) {
           this.skillsChecked = false;
           this.contentChecked = false;
+          this.search_results_skills = [];
+          this.search_results_content = [];
+          this.search();
         }
         break;
       case 'skills':
@@ -241,6 +282,9 @@ export class NavbarComponent implements OnInit {
         if (this.skillsChecked) {
           this.personsChecked = false;
           this.contentChecked = false;
+          this.search_results_persons = [];
+          this.search_results_content = [];
+          this.search();
         }
         break;
       case 'content':
@@ -248,6 +292,9 @@ export class NavbarComponent implements OnInit {
         if (this.contentChecked) {
           this.personsChecked = false;
           this.skillsChecked = false;
+          this.search_results_persons = [];
+          this.search_results_skills = [];
+          this.search();
         }
         break;
     }
