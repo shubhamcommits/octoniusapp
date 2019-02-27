@@ -2,7 +2,7 @@
 
   <div class="row h-100">
     <div class="col-md-8 welcome overlay" style="background-image:url(https://picsum.photos/1920/1200/?random&gravity=south )">
-
+      <div class="content">
       <h1 class="white">
         <i class="icon-octo-logo white"></i>Octonius</h1>
         <h1 class="slim white">
@@ -16,7 +16,7 @@
       </div>
 
       <div *ngIf="alert.message" [ngClass]="alert.class" style="margin-top: 40px">{{alert.message}}</div>
-
+    </div>
     </div>
 
     <div class="col-md-4">
