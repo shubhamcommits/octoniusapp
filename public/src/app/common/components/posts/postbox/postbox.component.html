@@ -23,7 +23,7 @@
               <li class="nav-item">
                 <button
                   (click)="onSelectPostType('normal')"
-                  class="btn btn-link cool" placement="top" ngbTooltip="Normal Post">
+                  class="btn btn-link cool" placement="top" ngbTooltip="Create a post">
                   <i
                     [style.color]="post.type === 'normal' ? '#005fd5' : '#9b9b9b'"
                     class="material-icons muted" id="icon_comment" style="color: #005fd5; ">
@@ -38,7 +38,7 @@
                 <button
                   (click)="onSelectPostType('event')"
                   class="btn btn-link cool" placement="top"
-                  ngbTooltip="Event Post">
+                  ngbTooltip="Create event">
                   <i
                     [style.color]="post.type === 'event' ? '#005fd5' : '#9b9b9b'"
                     class="material-icons muted" id="icon_event">event
@@ -48,7 +48,7 @@
               <li class="nav-item">
                 <button
                   (click)="onSelectPostType('task')"
-                  class="btn btn-link cool" placement="top" ngbTooltip="Task Post">
+                  class="btn btn-link cool" placement="top" ngbTooltip="Create task">
                   <i
                     [style.color]="post.type === 'task' ? '#005fd5' : '#9b9b9b'"
                     class="material-icons muted"
