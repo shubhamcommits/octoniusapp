@@ -821,7 +821,7 @@ getGroup () {
 
   async getPendingTasks() {
     const getcurrentweek = moment(Date.now()).format('w');
-    const taskDueToWeek;
+    var taskDueToWeek: any = '';
     console.log(getcurrentweek);
     this.pendingToDoTaskCount = 0;
     this.pendingInProgressTaskCount = 0;
@@ -860,7 +860,7 @@ getGroup () {
 
   async getCompletedTasks() {
     const getcurrentweek = moment(Date.now()).format('w');
-    const taskDueToWeek;
+    var taskDueToWeek: any ='';
     this.completedTaskCount = 0;
     this.isLoading$.next(true);
     this.groupService.getCompletedGroupTasks(this.group_id)
