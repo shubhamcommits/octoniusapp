@@ -32,6 +32,7 @@ import {DenyNavigationGuard} from "./shared/guards/deny-navigation.guard";
 import {ValidSubscriptionGuard} from "./shared/guards/valid-subscription.guard";
 import { CloudsComponent } from './dashboard/user-profile/clouds/clouds.component';
 import {ResetPwdComponent} from "./Authentication/reset-password/reset-password.component";
+import {AllSearchResultsComponent} from "./dashboard/search/all-search-results/all-search-results.component";
 
 
 const appRoutes: Routes = [
@@ -47,9 +48,10 @@ const appRoutes: Routes = [
   {
     path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard],
     children: [
+      { path: 'all-search-results/:query', component: AllSearchResultsComponent, canActivate: [ValidSubscriptionGuard]},
       { path: 'overview', component: OverviewComponent, canActivate: [ValidSubscriptionGuard]},
-      {path: 'overview/mytasks', component: OverviewMyTasksComponent, canActivate: [ValidSubscriptionGuard]},
-      {path: 'overview/myworkplace', component: OverviewMyWorkplaceComponent, canActivate: [ValidSubscriptionGuard]},
+      { path: 'overview/mytasks', component: OverviewMyTasksComponent, canActivate: [ValidSubscriptionGuard]},
+      { path: 'overview/myworkplace', component: OverviewMyWorkplaceComponent, canActivate: [ValidSubscriptionGuard]},
       {
         path: 'groups', component: GroupsComponent, canActivate: [ValidSubscriptionGuard],
       },
@@ -79,7 +81,7 @@ const appRoutes: Routes = [
         ]
       },
       {
-        path: 'profile', component: UserProfileComponent, canActivate: [ValidSubscriptionGuard],
+        path: 'profile/:userId', component: UserProfileComponent, canActivate: [ValidSubscriptionGuard],
         children: [{ path: 'profile', component: ProfileComponent },
         { path: 'clouds', component: CloudsComponent }]
       }

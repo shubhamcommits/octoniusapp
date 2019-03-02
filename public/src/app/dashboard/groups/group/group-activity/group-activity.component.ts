@@ -193,7 +193,7 @@ export class GroupActivityComponent implements OnInit {
               public groupDataService: GroupDataService, private router: Router, private groupService: GroupService,
               private modalService: NgbModal, private postService: PostService, private _sanitizer: DomSanitizer,
               private ngxService: NgxUiLoaderService, private snotifyService: SnotifyService, config: NgbDropdownConfig,
-              private scrollService: ScrollToService, private quillInitializeService: QuillAutoLinkService, 
+              private scrollService: ScrollToService, private quillInitializeService: QuillAutoLinkService,
               private googleService: GoogleCloudService) {
 
     config.placement = 'left';
@@ -246,7 +246,7 @@ export class GroupActivityComponent implements OnInit {
 
     this.loadGroupPosts();
     await this.statusChanged();
-    
+
     this.alertMessageSettings();
     this.initializeGroupMembersSearchForm();
     this.mentionmembers();
@@ -666,6 +666,7 @@ getGroup () {
       }, (err) => {
       });
 
+
     const toolbaroptions = {
       container: [
         ['bold', 'italic', 'underline', 'strike'],     // toggled buttons
@@ -764,10 +765,10 @@ getGroup () {
 
             if(localStorage.getItem('google-cloud-token') != null){
               const getDriveFiles: any = new XMLHttpRequest();
-  
+
               getDriveFiles.open('GET', 'https://www.googleapis.com/drive/v2/files?q=fullText contains '+'"'+searchTerm+'"'+'&maxResults=10&access_token='+JSON.parse(localStorage.getItem('google-cloud-token')).google_token_data.access_token, true);
               getDriveFiles.setRequestHeader('Authorization', 'Bearer ' + JSON.parse(localStorage.getItem('google-cloud-token')).google_token_data.access_token);
-        
+
               getDriveFiles.onload = () => {
                 if (getDriveFiles.status === 200) {
                   console.log(JSON.parse(getDriveFiles.responseText));
@@ -786,7 +787,7 @@ getGroup () {
               };
               getDriveFiles.send();
             }
-            
+
 
             values = hashValues;
           }
@@ -838,7 +839,7 @@ getGroup () {
             if(taskDueToWeek === getcurrentweek){
               this.pendingToDoTaskCount++;
             }
-            
+
           }
          if(this.pendingTasks[i]['task']['status'] == 'in progress'){
             taskDueToWeek = moment(this.pendingTasks[i]['task']['due_to']).format('w');
@@ -846,7 +847,7 @@ getGroup () {
             if(taskDueToWeek === getcurrentweek){
               this.pendingInProgressTaskCount++;
             }
-            
+
           }
         }
         console.log('To-do Tasks', this.pendingToDoTaskCount);
@@ -880,12 +881,12 @@ getGroup () {
               this.completedTaskCount++;
             }
           }
-  
+
         }
         this.isLoading$.next(false);
         console.log('Completed Tasks Count', this.completedTaskCount);
         resolve();
-  
+
       },
       (err) => {
         console.log('Error Fetching the Completed Tasks Posts', err);
@@ -916,7 +917,7 @@ getGroup () {
       .catch((err)=>{
         console.log('Error while getting pending tasks', err);
       })
-      
+
     })
   }
 

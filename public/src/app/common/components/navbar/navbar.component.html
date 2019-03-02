@@ -33,8 +33,8 @@
 
       <div class="wrap">
         <div ngbDropdown #myDrop="ngbDropdown" class="search">
-          <input id="dropdownManual" ngbDropdownAnchor type="text" class="searchTerm" [(ngModel)]="search_value" (click)="myDrop.open(); loadRecentSearches()" (keyup)="search()" placeholder="Search...">
-          <button type="submit" class="searchButton">
+          <input id="dropdownManual" ngbDropdownAnchor type="text" class="searchTerm" [(ngModel)]="search_value" (click)="myDrop.open(); loadRecentSearches()" (keyup)="search()" (keydown.enter)="displayAllSearchResults(); myDrop.close()" placeholder="Search...">
+          <button [disabled]="search_value === ''" (click)="displayAllSearchResults();" type="submit" class="searchButton">
             <i class="material-icons">search</i>
           </button>
           <div class="search-dropdown-menu" ngbDropdownMenu aria-labelledby="dropdownManual">
@@ -42,17 +42,17 @@
               <h4 class="search-title">Search for: </h4>
               <div class="person-search search-option">
                 <i class="material-icons">people</i>
-                <h4 class="search-option__title">People</h4>
+                <h4 class="search-option__title">Users</h4>
                 <div class="squaredFour">
-                  <input (click)="$event.stopPropagation(); myDrop.open(); toggleCheckbox('persons')" [checked]="personsChecked" type="checkbox" value="None" id="squaredFour" name="check" />
+                  <input (click)="$event.stopPropagation(); myDrop.open(); toggleCheckbox('users')" [checked]="checked_filter === 'users'" type="checkbox" value="None" id="squaredFour" name="check" />
                   <label (click)="$event.stopPropagation(); myDrop.open()" for="squaredFour"></label>
                 </div>
               </div>
               <div class="content-search search-option">
                 <i class="material-icons">assignment</i>
-                <h4 class="search-option__title">Content</h4>
+                <h4 class="search-option__title">Posts</h4>
                 <div class="squaredFour">
-                  <input (click)="$event.stopPropagation(); myDrop.open(); toggleCheckbox('content')" [checked]="contentChecked" type="checkbox" value="None" id="squaredFour2" name="check" />
+                  <input (click)="$event.stopPropagation(); myDrop.open(); toggleCheckbox('posts')" [checked]="checked_filter === 'posts'" type="checkbox" value="None" id="squaredFour2" name="check" />
                   <label (click)="$event.stopPropagation(); myDrop.open();" for="squaredFour2"></label>
                 </div>
               </div>
@@ -60,7 +60,7 @@
                 <i class="material-icons">build</i>
                 <h4 class="search-option__title">Skills</h4>
                 <div class="squaredFour">
-                  <input (click)="$event.stopPropagation(); myDrop.open(); toggleCheckbox('skills')" [checked]="skillsChecked" type="checkbox" value="None" id="squaredFour3" name="check" />
+                  <input (click)="$event.stopPropagation(); myDrop.open(); toggleCheckbox('skills')" [checked]="checked_filter === 'skills'" type="checkbox" value="None" id="squaredFour3" name="check" />
                   <label (click)="$event.stopPropagation(); myDrop.open()" for="squaredFour3"></label>
                 </div>
               </div>
@@ -68,22 +68,22 @@
               <hr>
 
               <div *ngIf="search_value !== ''; else recentSearches" class="search-results">
-                <div *ngIf="search_results_persons.length > 0" class="search-results__users">
+                <div *ngIf="search_results_users.length > 0" class="search-results__users">
                   <h4 class="search-results__title">Matched users:</h4>
                   <ul class="search-results__list">
                       <user-search-result
-                        *ngFor="let user of search_results_persons"
+                        *ngFor="let user of search_results_users"
                         [user]="user"
                         (saveSearch)="saveSearch($event)"
                       ></user-search-result>
                   </ul>
                 </div>
-                <div *ngIf="search_results_content.length > 0" class="search-results__users">
+                <div *ngIf="search_results_posts.length > 0" class="search-results__users">
                   <h4 class="search-results__title">Matched content:</h4>
                   <ul class="search-results__list">
                     <!-- /dashboard/group/5c6f56ec53a7802ab09895b4/post/5c6f582053a7802ab09895c5 -->
                    <content-search-result
-                     *ngFor="let post of search_results_content"
+                     *ngFor="let post of search_results_posts"
                      [post]="post"
                      (saveSearch)="saveSearch($event)"
                    ></content-search-result>
@@ -100,14 +100,14 @@
                     ></user-search-result>
                   </ul>
                 </div>
-                <div class="all-results">
+                <div (click)="displayAllSearchResults()" class="all-results">
                   <h4 class="all-results-text"> Display all results for "{{ search_value }}"</h4>
                 </div>
 
               </div>
               <ng-template #recentSearches>
               <div class="recent-searches">
-                <h4 class="recent-searches__title">Recent:</h4>
+                <h4 *ngIf="recent_searches.length > 0;" class="recent-searches__title">Recent:</h4>
                 <ng-container *ngFor="let search of recent_searches">
                   <user-search-result
                     *ngIf="search.type === 'user'"
@@ -120,6 +120,8 @@
                     *ngIf="search.type === 'content'"
                     [post]="search.content"
                     [deleteable]="true"
+                    (saveSearch)="saveSearch($event)"
+                    (deleteSearchResult)="deleteSearchResult($event)"
                   ></content-search-result>
                 </ng-container>
               </div>
@@ -180,7 +182,7 @@
 
 
             </div>
-            <a class="nav-link"  routerLink="/dashboard/profile/profile">
+            <a class="nav-link"  [routerLink]="['/dashboard/profile', user_data.user_id, 'profile']">
                 <img [src]="userProfileImage" onerror="this.src='/assets/images/user.png'"  class="topnav-avatar">
             </a>
 

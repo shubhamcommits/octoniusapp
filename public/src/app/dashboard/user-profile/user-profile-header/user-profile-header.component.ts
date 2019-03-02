@@ -1,12 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../../../shared/services/user.service';
-import { Router } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../../../../environments/environment';
 import swal from 'sweetalert';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
-import { NgxUiLoaderService } from 'ngx-ui-loader'; 
- 
+import { NgxUiLoaderService } from 'ngx-ui-loader';
+import {ProfileDataService} from "../../../shared/services/profile-data.service";
+
 @Component({
   selector: 'app-user-profile-header',
   templateUrl: './user-profile-header.component.html',
@@ -18,7 +19,7 @@ export class UserProfileHeaderComponent implements OnInit {
   //starts image cropping
   imageChangedEvent: any = '';
   croppedImage: any = '';
-  
+
   fileChangeEvent(event: any): void {
       this.imageChangedEvent = event;
   }
@@ -32,7 +33,7 @@ export class UserProfileHeaderComponent implements OnInit {
  // console.log(this.groupImageUrl);
   this.fileToUpload = new File([this.fileToUpload], "-profile-avatar.jpg", { type: this.fileToUpload.type });
   //console.log(this.fileToUpload);
-    
+
  }
   imageLoaded() {
       // show cropper
@@ -52,11 +53,16 @@ export class UserProfileHeaderComponent implements OnInit {
 
   BASE_URL = environment.BASE_URL;
 
+  userId;
+
+  isCurrentUser = false;
+
   userImageUrl = '';
   profilePic = '';
   fileToUpload: Blob = null;
 
   user = {
+    _id: '',
     first_name: '',
     last_name: '',
     phone_number: '',
@@ -66,55 +72,86 @@ export class UserProfileHeaderComponent implements OnInit {
     company_join_date: ''
   };
 
-  constructor(private _userService: UserService, private _router: Router, private ngxService: NgxUiLoaderService, private modalService: NgbModal) { }
+  constructor(
+    private _userService: UserService,
+    private _router: Router,
+    private ngxService: NgxUiLoaderService,
+    private modalService: NgbModal,
+    private route: ActivatedRoute,
+    private profileDataService: ProfileDataService) { }
 
 
   ngOnInit() {
-    this.getUserProfile();
+    this.profileDataService.user.subscribe((user: any) => {
+      console.log('user header', user);
+      this.user = {
+        _id: user['_id'],
+        phone_number: user['phone_number'],
+        mobile_number: user['mobile_number'],
+        bio: user['bio'],
+        first_name: user['first_name'],
+        last_name: user['last_name'],
+        current_position: user['current_position'],
+        company_join_date: user['company_join_date']
+      };
+
+            if (this.user['profile_pic'] == null) {
+              this.profilePic = 'assets/images/user.png';
+              // console.log('Inside if');
+            } else {
+              // console.log('Inside else');
+              this.profilePic = `${this.BASE_URL}/uploads/${this.user['profile_pic']}`;
+              this.userImageUrl = this.profilePic;
+            }
+
+      this.isCurrentUser = JSON.parse(localStorage.getItem('user')).user_id == this.user._id;
+    });
+    // this.getUserProfile(this.userId);
   }
 
   refreshPage() {
     this.ngOnInit();
 }
-  getUserProfile() {
-    this._userService.getUser()
-      .subscribe((res) => {
-        this.user = {
-          phone_number: res.user['phone_number'],
-          mobile_number: res.user['mobile_number'],
-          bio: res.user['bio'],
-          first_name: res.user['first_name'],
-          last_name: res.user['last_name'],
-          current_position: res.user['current_position'],
-          company_join_date: res.user['company_join_date']
-        };
-
-        // console.log('user Inside profile header:', res);
-
-        if (res.user['profile_pic'] == null) {
-          this.profilePic = 'assets/images/user.png';
-          // console.log('Inside if');
-        } else {
-          // console.log('Inside else');
-          this.profilePic = `${this.BASE_URL}/uploads/${res.user['profile_pic']}`;
-          this.userImageUrl = this.profilePic;
-        }
-
-
-      }, (err) => {
-        console.log(err);
-        if (err.status === 401) {
-          setTimeout(() => {
-            localStorage.clear();
-            this._router.navigate(['']);
-          }, 3000);
-        } else if (err.status) {
-          //  this.alert.class = err.error.message;
-        } else {
-          // this.alert.message = 'Error! either server is down or no internet connection';
-        }
-      });
-  }
+  // getUserProfile(userId) {
+  //   this._userService.getOtherUser(userId)
+  //     .subscribe((res: any) => {
+  //       console.log('received user');
+  //       this.user = {
+  //         phone_number: res.user['phone_number'],
+  //         mobile_number: res.user['mobile_number'],
+  //         bio: res.user['bio'],
+  //         first_name: res.user['first_name'],
+  //         last_name: res.user['last_name'],
+  //         current_position: res.user['current_position'],
+  //         company_join_date: res.user['company_join_date']
+  //       };
+  //
+  //       // console.log('user Inside profile header:', res);
+  //
+  //       if (res.user['profile_pic'] == null) {
+  //         this.profilePic = 'assets/images/user.png';
+  //         // console.log('Inside if');
+  //       } else {
+  //         // console.log('Inside else');
+  //         this.profilePic = `${this.BASE_URL}/uploads/${res.user['profile_pic']}`;
+  //         this.userImageUrl = this.profilePic;
+  //       }
+  //
+  //
+  //     }, (err) => {
+  //       console.log(err);
+  //       if (err.status === 401) {
+  //         setTimeout(() => {
+  //           localStorage.clear();
+  //           this._router.navigate(['']);
+  //         }, 3000);
+  //       } else if (err.status) {
+  //         //  this.alert.class = err.error.message;
+  //       } else {
+  //         // this.alert.message = 'Error! either server is down or no internet connection';
+  //       }
+  //     });
+  // }
 
   onUpdateUser() {
 
@@ -124,13 +161,13 @@ export class UserProfileHeaderComponent implements OnInit {
       .subscribe((res) => {
         swal("Good Job!", "You have updated your profile, successfully!", "success")
         .then( () => {
-          this.getUserProfile();
+          // this.getUserProfile(this.userId);
           //this.refreshPage();
         });
-        
+
 
       }, (err) => {
-       
+
 
        // this.alert.class = 'alert alert-danger';
 
@@ -158,7 +195,7 @@ export class UserProfileHeaderComponent implements OnInit {
         .subscribe((res) => {
           this.profilePic = `${this.BASE_URL}/uploads/${res.user['profile_pic']}`;
           console.log(res);
-          this.getUserProfile();
+          // this.getUserProfile(this.userId);
 
         }, (err) => {
           swal("Error!", "Seems like there's an error- "+ err, "danger");
@@ -173,6 +210,19 @@ export class UserProfileHeaderComponent implements OnInit {
   }
   openLg(content) {
     this.modalReference = this.modalService.open(content, { size: 'lg', centered: true });
+  }
+
+  resetUser() {
+    this.user = {
+      _id: '',
+      first_name: '',
+      last_name: '',
+      phone_number: '',
+      mobile_number: '',
+      bio: '',
+      current_position: '',
+      company_join_date: ''
+    };
   }
 
 

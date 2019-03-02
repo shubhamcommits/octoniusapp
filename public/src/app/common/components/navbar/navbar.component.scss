@@ -102,10 +102,16 @@ a.notifications.btn.dropdown-toggle-split.dropdown-toggle::after
   border-radius: 5px 0 0 5px;
   outline: none;
   color: #787878;
-}
+  transition: .3s all;
 
-.searchTerm:focus{
-  color: #787878;
+  &:focus {
+    border: 2px solid #005FD5;
+  }
+
+  &:focus ~ .searchButton {
+    background: #005FD5;
+    border: 1px solid #005FD5;
+  }
 }
 
 .searchButton {
@@ -132,6 +138,7 @@ a.notifications.btn.dropdown-toggle-split.dropdown-toggle::after
 
 .search-dropdown-menu {
 min-width: 200%;
+  max-width: 400%;
   padding: 0 !important;
   .search-dropdown-menu-container {
     display: grid;
@@ -237,7 +244,7 @@ min-width: 200%;
           }
           &__text {
             grid-column: 2/4;
-            white-space: nowrap;
+            white-space: wrap;
           }
         }
 

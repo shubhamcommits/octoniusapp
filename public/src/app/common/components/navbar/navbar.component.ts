@@ -9,6 +9,7 @@ import { environment } from '../../../../environments/environment'
 import { BehaviorSubject } from 'rxjs';
 import { async } from '@angular/core/testing'
 import {WorkspaceService} from "../../../shared/services/workspace.service";
+import {SearchService} from "../../../shared/services/search.service";
 
 
 
@@ -45,13 +46,12 @@ export class NavbarComponent implements OnInit {
 
   // search data
   search_value = '';
-  personsChecked = false;
-  skillsChecked = false;
-  contentChecked = false;
+  checked_filter = 'all';
 
   // search results
-  search_results_content = [];
-  search_results_persons = [];
+  search_results = [];
+  search_results_posts = [];
+  search_results_users = [];
   search_results_skills = [];
   recent_searches = [];
 
@@ -60,7 +60,8 @@ export class NavbarComponent implements OnInit {
     private _userService: UserService,
     private _router: Router,
     private router: Router,
-    private workspaceService: WorkspaceService) {
+    private workspaceService: WorkspaceService,
+    private searchService: SearchService) {
       this.user_data = JSON.parse(localStorage.getItem('user'));
      }
 
@@ -144,30 +145,31 @@ export class NavbarComponent implements OnInit {
   }
 
   deleteSearchResult(data) {
-    this.workspaceService.deleteSearchResult(data)
+    this.searchService.deleteSearchResult(data)
       .subscribe( (res) => {
-        console.log('result server', res);
+        console.log('data', data);
         this.recent_searches = this.recent_searches.filter((search) => {
           if (data.type === 'user') {
-            console.log('data', data);
-            console.log('search', search);
-            console.log('test 1', search.type !== data.type);
-            console.log('test 2', search.user._id != data.user._id);
             return search.user._id != data.user._id;
           } else if (data.type === 'content') {
             return search.content._id != data.content._id;
           }
         });
-        console.log('this.recent_searches', this.recent_searches);
       });
+  }
+
+  displayAllSearchResults() {
+    if (this.search_value !== '') {
+      this.router.navigateByUrl(`/dashboard/all-search-results/${this.search_value}`);
+    }
   }
 
   loadRecentSearches() {
     if (this.search_value === '') {
-      this.workspaceService.loadRecentSearches()
+      this.searchService.loadRecentSearches()
         .subscribe((res) => {
-          console.log('RES', res);
           this.recent_searches = res['searches'];
+          console.log('recent_searches', this.recent_searches);
         });
     }
   }
@@ -224,80 +226,54 @@ export class NavbarComponent implements OnInit {
   }
 
   saveSearch(data) {
-    this.workspaceService.saveSearch(data)
+    this.searchService.saveSearch(data)
       .subscribe((res) => {
         console.log('RES', res);
       });
   }
 
   search() {
-    if ( this.search_value !== '') {
+    if (this.search_value !== '') {
+      const filter = this.checked_filter;
+      this.search_results = [];
       const data = {
         query: this.search_value,
-        workspaceId: this.user_data.workspace._id,
-        personsChecked: this.personsChecked,
-        skillsChecked: this.skillsChecked,
-        contentChecked: this.contentChecked
+        filter
       };
 
       // yes
-      this.workspaceService.search(data)
+      this.searchService.search(data)
         .debounceTime(300)
         .subscribe((res) => {
-          if (this.personsChecked || this.skillsChecked || this.contentChecked) {
-            if (this.personsChecked) {
-              console.log('res', res['results']);
-              this.search_results_persons = res['results'];
-            } else if (this.skillsChecked) {
+            if (filter === 'users') {
+              this.search_results_users = res['results'];
+            } else if (filter === 'skills') {
               this.search_results_skills = res['results'];
+            } else if (filter === 'posts') {
+              this.search_results_posts = res['results'];
             } else {
-              this.search_results_content = res['results'];
-            }
-            // this.searchDrop.open();
-          } else {
-            console.log('this.searchResults', res['results']);
-            this.search_results_persons = res['results'][0];
-            this.search_results_content = res['results'][1];
+            this.search_results_users = res['results'][0];
+            this.search_results_posts = res['results'][1];
+            console.log('POSTS', this.search_results_posts);
             this.search_results_skills = res['results'][2];
-
           }
         });
+    } else {
+      this.loadRecentSearches();
     }
   }
 
+  resetSearchResults() {
+    this.search_results_skills = [];
+    this.search_results_posts = [];
+    this.search_results_users = [];
+  }
+
  toggleCheckbox(type) {
-    switch (type) {
-      case 'persons':
-        this.personsChecked = !this.personsChecked;
-        if (this.personsChecked) {
-          this.skillsChecked = false;
-          this.contentChecked = false;
-          this.search_results_skills = [];
-          this.search_results_content = [];
-          this.search();
-        }
-        break;
-      case 'skills':
-        this.skillsChecked = !this.skillsChecked;
-        if (this.skillsChecked) {
-          this.personsChecked = false;
-          this.contentChecked = false;
-          this.search_results_persons = [];
-          this.search_results_content = [];
-          this.search();
-        }
-        break;
-      case 'content':
-        this.contentChecked = !this.contentChecked;
-        if (this.contentChecked) {
-          this.personsChecked = false;
-          this.skillsChecked = false;
-          this.search_results_persons = [];
-          this.search_results_skills = [];
-          this.search();
-        }
-        break;
-    }
+    this.checked_filter = this.checked_filter === type ? 'all' : type;
+    this.resetSearchResults();
+    this.checked_filter = type;
+    this.search();
  }
 
 }

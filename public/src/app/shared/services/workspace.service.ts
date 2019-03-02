@@ -44,26 +44,4 @@ export class WorkspaceService {
   resumeSubscription() {
     return this._http.get(this.BASE_API_URL + `/billing/resumeSubscription`);
   }
-
-  deleteSearchResult(data) {
-    return this._http.delete(this.BASE_API_URL + `/workspace/deleteSearchResult`, data);
-  }
-
-  loadRecentSearches() {
-    return this._http.get(this.BASE_API_URL + `/workspace/user/loadRecentSearches`);
-  }
-
-  saveSearch(data) {
-    return this._http.post( this.BASE_API_URL + `/workspace/saveSearch`, data);
-  }
-
-  search(data) {
-    const params = new HttpParams()
-      .set("personsChecked", data.personsChecked)
-      .set("skillsChecked", data.skillsChecked)
-      .set("contentChecked", data.contentChecked)
-      .set("query", data.query);
-
-    return this._http.get(this.BASE_API_URL + `/workspaces/${data.workspaceId}/search`, {params});
-  }
 }

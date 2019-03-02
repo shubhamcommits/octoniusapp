@@ -11,10 +11,18 @@ export class ContentSearchResultComponent implements OnInit {
   @Input('deleteable') deleteable;
 
   @Output('saveSearch') sendSaveSearch = new EventEmitter();
+  @Output('deleteSearchResult') deleteSearchResult = new EventEmitter();
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  sendDeleteSearchResult() {
+    this.deleteSearchResult.emit({
+      type: 'content',
+      content: this.post
+    });
   }
 
   saveSearch() {

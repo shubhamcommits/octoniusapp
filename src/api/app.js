@@ -13,6 +13,7 @@ const {
   billingRoutes,
   groupsRoutes,
   postsRoutes,
+  searchRoutes,
   usersRoutes,
   webhooksRoutes,
   workspacesRoutes
@@ -64,6 +65,7 @@ app.use('/api/users', usersRoutes);
 app.use('/api/workspaces', workspacesRoutes);
 app.use('/api/billing', billingRoutes);
 app.use('/api/webhooks', webhooksRoutes);
+app.use('/api/search', searchRoutes);
 
 
 // -->!!!! TO BE REMOVED !!!!

@@ -20,6 +20,9 @@ const workspaceFileHandler = require('./filehandlers/workspace.filehandler');
 // sendmail/
 const sendMail = require('./sendmail/sendMail');
 
+// search
+const search = require('./search/search');
+
 module.exports = {
   // ./
   cleanCache,
@@ -32,7 +35,7 @@ module.exports = {
   authorization,
 
   //  billing/
-    billing,
+  billing,
 
   // filehandler/
   fileHandler,
@@ -41,5 +44,8 @@ module.exports = {
   workspaceFileHandler,
 
   // sendmail/
-  sendMail
+  sendMail,
+
+  //    search
+  search
 };
