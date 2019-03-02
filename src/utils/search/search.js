@@ -52,7 +52,7 @@ const getSearchResults = async (req, res, amountLoaded) => {
       case 'users':
         userQuery = createUserQuery(user, req.params.query);
         let moreUsersToLoad = false;
-        const users = await userQuery.skip(parseInt(amountLoaded, 10) || 0).limit(15).exec();
+        const users = await userQuery.skip(parseInt(amountLoaded, 10) || 0).limit(16).exec();
         if (users.length === 16) {
           users.pop();
           moreUsersToLoad = true;
@@ -62,7 +62,7 @@ const getSearchResults = async (req, res, amountLoaded) => {
       case 'skills':
         skillsQuery = createSkillsQuery(user, req.params.query);
         let moreSkillsToLoad = false;
-        const skills = await skillsQuery.skip(parseInt(amountLoaded, 10) || 0).limit(15).exec();
+        const skills = await skillsQuery.skip(parseInt(amountLoaded, 10) || 0).limit(16).exec();
         if (skills.length === 16) {
           skills.pop();
           moreSkillsToLoad = true;

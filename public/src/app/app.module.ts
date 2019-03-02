@@ -91,6 +91,7 @@ import { AllSearchResultsComponent } from './dashboard/search/all-search-results
 import {SearchService} from "./shared/services/search.service";
 import { UserSearchResultMainComponent } from './common/components/search/user-search-result-main/user-search-result-main.component';
 import {ProfileDataService} from "./shared/services/profile-data.service";
+import { SearchBarComponent } from './common/components/navbar/search-bar/search-bar.component';
 
 import { NgCircleProgressModule } from 'ng-circle-progress';
 
@@ -178,7 +179,8 @@ const ngCircle = {
     UserSearchResultComponent,
     ContentSearchResultComponent,
     AllSearchResultsComponent,
-    UserSearchResultMainComponent
+    UserSearchResultMainComponent,
+    SearchBarComponent
   ],
   imports: [
     BrowserModule,

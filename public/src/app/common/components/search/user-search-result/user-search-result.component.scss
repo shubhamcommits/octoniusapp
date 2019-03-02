@@ -21,7 +21,7 @@ h4 {
   }
   &__text {
     grid-column: 2/3;
-    white-space: nowrap;
+    white-space: wrap;
   }
 
   .close {

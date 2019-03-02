@@ -24,7 +24,7 @@
     <div *ngIf="search_results_users.length > 0" class="search-results__users">
       <ul class="search-results__list">
         <li class="search-result fade-in" *ngFor="let user of search_results_users">
-          <img class="search-result__img" src="/uploads/{{user.profile_pic}}" onerror="this.src='/assets/images/user.png'">
+          <img class="search-result__img" src="http://localhost:3000/uploads/{{user.profile_pic}}" onerror="this.src='/assets/images/user.png'">
           <div class="search-result__data">
             <h4 [routerLink]="['/dashboard/profile', user._id, 'profile']" class="search-result__name">{{ user.full_name }}</h4>
             <p class="search-result__email">{{ user.email }}</p>

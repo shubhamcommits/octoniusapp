@@ -1,5 +1,5 @@
 <li [routerLink]="['/dashboard/profile', user._id, 'profile']" (click)="saveSearch()" class="search-result">
-  <img class="search-result__img" src="/uploads/{{user.profile_pic}}" onerror="this.src='/assets/images/user.png'">
+  <img class="search-result__img" src="http://localhost:3000/uploads/{{user.profile_pic}}" onerror="this.src='/assets/images/user.png'">
   <h4 class="search-result__text">{{ user.full_name }} - {{ user.email }}</h4>
   <i *ngIf="deleteable" (click)="$event.stopPropagation(); sendDeleteSearchResult()" class="material-icons close">close</i>
 </li>
