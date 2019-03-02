@@ -163,6 +163,16 @@ export class GroupActivityComponent implements OnInit {
   isItMyWorkplace = false;
   @ViewChildren('taskStatusList') taskStatusList;
 
+  pendingToDoTaskCount = 0;
+  pendingInProgressTaskCount = 0;
+  completedTaskCount = 0;
+
+  todoPercent = 0;
+  inprogressPercent = 0;
+  completedPercent = 0;
+  completedTasks: any = new Array();
+  pendingTasks: any = new Array();
+
 
   // !--GOOGLE DEVELOPER CONSOLE CREDENTIALS--! //
   /*developerKey = 'AIzaSyDGM66BZhGSmBApm3PKL-xCrri-3Adb06I';
@@ -235,6 +245,8 @@ export class GroupActivityComponent implements OnInit {
       }, 1800000);
 
     this.loadGroupPosts();
+    await this.getPendingTasks();
+    await this.getCompletedTasks();
     this.alertMessageSettings();
     this.initializeGroupMembersSearchForm();
     this.mentionmembers();
@@ -327,7 +339,7 @@ getGroup () {
           this.group = res['group'];
           resolve();
         }, (err) => {
-reject();
+              reject();
         });
     });
 
@@ -654,29 +666,6 @@ reject();
       }, (err) => {
       });
 
-      //console.log(JSON.parse(localStorage.getItem('google-cloud')).drive_auth_results.access_token);
-      /*const getDriveFiles: any = new XMLHttpRequest();
-  
-      getDriveFiles.open('GET', 'https://www.googleapis.com/drive/v2/files?maxResults=10&access_token='+JSON.parse(localStorage.getItem('google-cloud')).drive_auth_results.access_token, true);
-      //getDriveFiles.setRequestHeader('Authorization', 'Bearer ' + authResult.access_token);
-
-      getDriveFiles.onload = () => {
-        if (getDriveFiles.status === 200) {
-          console.log(JSON.parse(getDriveFiles.responseText));
-          for(var i = 0; i < JSON.parse(getDriveFiles.responseText).items.length; i++ ){
-            if( JSON.parse(getDriveFiles.responseText).items.length>0){
-              driveValue.push({
-                id: JSON.parse(getDriveFiles.responseText).items[i].id,
-                value: '<a style="color:inherit;" target="_blank" href="'+JSON.parse(getDriveFiles.responseText).items[i].embedLink + '"' + '>'+ JSON.parse(getDriveFiles.responseText).items[i].title + '</a>'
-              })
-            }
-          }
-        }
-      };
-      getDriveFiles.send();*/
-
-
-
     const toolbaroptions = {
       container: [
         ['bold', 'italic', 'underline', 'strike'],     // toggled buttons
@@ -830,56 +819,76 @@ reject();
     this.editor.insertText(this.editorTextLength - 1, $event.emoji.native);
   }
 
-// !--GOOGLE PICKER IMPLEMENTATION--! //
-/*  loadGoogleDrive() {
-    gapi.load('auth', { 'callback': this.onAuthApiLoad.bind(this) });
-    gapi.load('picker', { 'callback': this.onPickerApiLoad.bind(this) });
-  }
-
-  onAuthApiLoad() {
-    gapi.auth.authorize(
-      {
-        'client_id': this.clientId,
-        'scope': this.scope,
-        'immediate': false
-      },
-      this.handleAuthResult);
-  }
-
-  onPickerApiLoad() {
-    this.pickerApiLoaded = true;
-  }
-
-  handleAuthResult(authResult) {
-    let src;
-    if (authResult && !authResult.error) {
-      if (authResult.access_token) {
-        let view = new google.picker.View(google.picker.ViewId.DOCS);
-        //view.setMimeTypes("image/png,image/jpeg,image/jpg,video/mp4, application/vnd.ms-excel ,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/pdf, text/plain, application/msword, text/js, application/zip, application/rar, application/tar, text/html");
-        let pickerBuilder = new google.picker.PickerBuilder();
-        let picker = pickerBuilder.
-        enableFeature(google.picker.Feature.NAV_HIDDEN).
-        setOAuthToken(authResult.access_token).
-        addView(view).
-        addView(new google.picker.DocsUploadView()).
-        setCallback(function (e) {
-          if (e[google.picker.Response.ACTION] == google.picker.Action.PICKED) {
-            let doc = e[google.picker.Response.DOCUMENTS][0];
-            src = doc[google.picker.Document.URL];
-
-            this.googleDriveFiles = e[google.picker.Response.DOCUMENTS];
-
-            const driveDivision = document.getElementById('google-drive-file');
-            driveDivision.style.display = 'block';
-            driveDivision.innerHTML = '<b>Drive File Upload: </b>'+'<a href=\''+src+'\' target=\'_blank\'>'+this.googleDriveFiles[0]['name']+'</a>';
+  async getPendingTasks() {
+    const getcurrentweek = moment(Date.now()).format('w');
+    const taskDueToWeek;
+    console.log(getcurrentweek);
+    this.pendingToDoTaskCount = 0;
+    this.pendingInProgressTaskCount = 0;
+    this.isLoading$.next(true);
+    this.groupService.getGroupTasks(this.group_id)
+    .subscribe((res) => {
+      this.pendingTasks = res['posts'];
+      console.log(this.pendingTasks);
+      for(var i = 0; i < this.pendingTasks.length; i++){
+        if(this.pendingTasks[i]['task']['status'] == 'to do'){
+          taskDueToWeek = moment(this.pendingTasks[i]['task']['due_to']).format('w');
+          console.log('Task week number', taskDueToWeek);
+          if(taskDueToWeek === getcurrentweek){
+            this.pendingToDoTaskCount++;
           }
-        }).
-        build();
-        picker.setVisible(true);
+          
+        }
+       if(this.pendingTasks[i]['task']['status'] == 'in progress'){
+          taskDueToWeek = moment(this.pendingTasks[i]['task']['due_to']).format('w');
+          console.log('Task week number', taskDueToWeek);
+          if(taskDueToWeek === getcurrentweek){
+            this.pendingInProgressTaskCount++;
+          }
+          
+        }
       }
-    }
+      console.log('To-do Tasks', this.pendingToDoTaskCount);
+      console.log('In-Progress Tasks', this.pendingInProgressTaskCount);
+      this.isLoading$.next(false);
+    },
+    (err) => {
+      console.log('Error Fetching the Pending Tasks Posts', err);
+      this.isLoading$.next(false);
+    });
+  }
 
-  }*/
-// !--GOOGLE PICKER IMPLEMENTATION--! //
+  async getCompletedTasks() {
+    const getcurrentweek = moment(Date.now()).format('w');
+    const taskDueToWeek;
+    this.completedTaskCount = 0;
+    this.isLoading$.next(true);
+    this.groupService.getCompletedGroupTasks(this.group_id)
+    .subscribe((res) => {
+      this.completedTasks = res['posts'];
+      console.log(this.completedTasks);
+      for(var i = 0 ; i < this.completedTasks.length; i++){
+        if(this.completedTasks[i]['task']['status'] == 'done'){
+          taskDueToWeek = moment(this.completedTasks[i]['task']['due_to']).format('w');
+          if(taskDueToWeek === getcurrentweek){
+            this.completedTaskCount++;
+          }
+        }
+
+      }
+      this.isLoading$.next(false);
+      this.todoPercent = Math.round(this.pendingToDoTaskCount/(this.pendingInProgressTaskCount+this.pendingToDoTaskCount+this.completedTaskCount)*100);
+      this.inprogressPercent = Math.round(this.pendingInProgressTaskCount/(this.pendingInProgressTaskCount+this.pendingToDoTaskCount+this.completedTaskCount)*100);
+      this.completedPercent = Math.round(this.completedTaskCount/(this.pendingInProgressTaskCount+this.pendingToDoTaskCount+this.completedTaskCount)*100);
+
+    },
+    (err) => {
+      console.log('Error Fetching the Completed Tasks Posts', err);
+      this.isLoading$.next(false);
+    });
+
+  }
+
+
 
 }
