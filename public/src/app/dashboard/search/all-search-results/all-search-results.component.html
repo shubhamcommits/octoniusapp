@@ -34,7 +34,7 @@
           <i [routerLink]="['/dashboard/profile', user._id, 'profile']" placement="top" ngbTooltip="Visit user profile" class="material-icons">exit_to_app</i>
         </li>
       </ul>
-      <span *ngIf="more_to_load_users" (click)="loadMoreResults('users', search_results_users.length)" class="load-more">Load more</span>
+      <span *ngIf="more_to_load_users" (click)="loadMoreResults('users', search_results_users.length)" class="load-more">Load more users...</span>
     </div>
     <div *ngIf="search_results_posts.length > 0" class="search-results__posts">
       <ul class="search-results__list">
@@ -48,7 +48,7 @@
           <i [routerLink]="['/dashboard/group', post._group._id, 'post', post._id]" placement="top" ngbTooltip="View post" class="material-icons">exit_to_app</i>
         </li>
       </ul>
-      <span *ngIf="more_to_load_posts" (click)="loadMoreResults('posts', search_results_posts.length)" class="load-more">Load more</span>
+      <span *ngIf="more_to_load_posts" (click)="loadMoreResults('posts', search_results_posts.length)" class="load-more">Load more posts...</span>
     </div>
     <div *ngIf="search_results_skills.length > 0" class="search-results__users">
       <ul class="search-results__list">
@@ -63,7 +63,7 @@
           <i [routerLink]="['/dashboard/profile', user._id, 'profile']" placement="top" ngbTooltip="View profile with matching skills" class="material-icons">exit_to_app</i>
         </li>
       </ul>
-      <span *ngIf="more_to_load_skills" (click)="loadMoreResults('skills', search_results_skills.length)" class="load-more">Load more</span>
+      <span *ngIf="more_to_load_skills" (click)="loadMoreResults('skills', search_results_skills.length)" class="load-more">Load more skills...</span>
     </div>
   </div>
 </div>

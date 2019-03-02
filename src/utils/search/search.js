@@ -33,7 +33,6 @@ const createSkillsQuery = (user, query) => User.find({
 const getSearchResults = async (req, res, amountLoaded) => {
 // Focus on only searching within own workspace
   try {
-      console.log('test 0', req.params);
     let postQuery;
     let userQuery;
     let skillsQuery;
@@ -65,11 +64,11 @@ const getSearchResults = async (req, res, amountLoaded) => {
         let moreSkillsToLoad = false;
         const skills = await skillsQuery.skip(parseInt(amountLoaded, 10) || 0).limit(15).exec();
         if (skills.length === 16) {
-          users.pop();
+          skills.pop();
           moreSkillsToLoad = true;
         }
 
-        return { results: users, moreToLoad: moreSkillsToLoad };
+        return { results: skills, moreToLoad: moreSkillsToLoad };
       case 'all':
         postQuery = createPostQuery(user._groups, req.params.query);
         userQuery = createUserQuery(user, req.params.query);
@@ -81,7 +80,6 @@ const getSearchResults = async (req, res, amountLoaded) => {
           skillsQuery.limit(6).exec()
         ]);
 
-        console.log('test 1', results);
         const moreToLoad = [false, false, false];
 
         results.forEach((result, index) => {
@@ -90,8 +88,6 @@ const getSearchResults = async (req, res, amountLoaded) => {
             moreToLoad[index] = true;
           }
         });
-
-          console.log('test 2', results);
 
         return { results, moreToLoad };
     }

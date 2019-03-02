@@ -33,7 +33,7 @@
 
       <div class="wrap">
         <div ngbDropdown #myDrop="ngbDropdown" class="search">
-          <input id="dropdownManual" ngbDropdownAnchor type="text" class="searchTerm" [(ngModel)]="search_value" (click)="myDrop.open(); loadRecentSearches()" (keyup)="search()" (keydown.enter)="displayAllSearchResults(); myDrop.close()" placeholder="Search...">
+          <input autocomplete="off" id="dropdownManual" ngbDropdownAnchor type="text" class="searchTerm" [(ngModel)]="search_value" (click)="myDrop.open(); loadRecentSearches()" (keyup)="search()" (keydown.enter)="displayAllSearchResults(); myDrop.close()" placeholder="Search...">
           <button [disabled]="search_value === ''" (click)="displayAllSearchResults();" type="submit" class="searchButton">
             <i class="material-icons">search</i>
           </button>

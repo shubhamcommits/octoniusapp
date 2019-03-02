@@ -245,6 +245,7 @@ export class NavbarComponent implements OnInit {
       this.searchService.search(data)
         .debounceTime(300)
         .subscribe((res) => {
+          console.log('RES SKILLS', res);
             if (filter === 'users') {
               this.search_results_users = res['results'];
             } else if (filter === 'skills') {
@@ -272,7 +273,6 @@ export class NavbarComponent implements OnInit {
  toggleCheckbox(type) {
     this.checked_filter = this.checked_filter === type ? 'all' : type;
     this.resetSearchResults();
-    this.checked_filter = type;
     this.search();
  }
 

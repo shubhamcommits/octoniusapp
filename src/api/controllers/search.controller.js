@@ -69,15 +69,17 @@ const loadRecentSearches = async (req, res) => {
 const saveSearch = async (req, res) => {
   try {
     // add the search of the user to the search results
-    await User.findOneAndUpdate({ _id: req.userId },
-      {
-        $push: {
-          search_history: req.body
-        }
-      },
-      {
-        new: true
-      });
+    const user = await User.findOne({ _id: req.userId });
+
+    user.search_history.forEach((search, index) => {
+      if (search[search['type']]._id == req.body[req.body['type']]._id) {
+        user.search_history.splice(index, 1);
+      }
+    });
+
+    user.search_history.push(req.body);
+
+    await user.save();
 
     res.status(200).json({
       message: 'successfully saved your search'

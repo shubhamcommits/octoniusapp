@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {WorkspaceService} from "../../../shared/services/workspace.service";
 import {SearchService} from "../../../shared/services/search.service";
 import {ActivatedRoute, Router} from "@angular/router";
 
@@ -46,6 +45,20 @@ export class AllSearchResultsComponent implements OnInit {
     this.searchService.loadMoreResults(type, amountLoaded, this.search_value)
       .subscribe((res) => {
         console.log('RES', res);
+        switch (type) {
+          case 'users':
+            this.search_results_users = [...this.search_results_users, ...res['results']['results']];
+            this.more_to_load_users = res['results']['moreToLoad'];
+            break;
+          case 'posts':
+            this.search_results_posts = [...this.search_results_posts, ...res['results']['results']];
+            this.more_to_load_posts = res['results']['moreToLoad'];
+            break;
+          case 'users':
+            this.search_results_skills = [...this.search_results_skills, ...res['results']['results']];
+            this.more_to_load_skills = res['results']['moreToLoad'];
+            break;
+        }
       });
   }
 
