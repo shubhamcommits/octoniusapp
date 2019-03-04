@@ -6,6 +6,7 @@ import { saveAs } from 'file-saver';
 import {GroupService} from "../../../../shared/services/group.service";
 import {CommentSectionComponent} from "../../comments/comment-section/comment-section.component";
 import * as moment from 'moment';
+import { GroupActivityComponent } from '../../../../dashboard/groups/group/group-activity/group-activity.component';
 
 @Component({
   selector: 'task-group-post',
@@ -15,6 +16,7 @@ import * as moment from 'moment';
 export class TaskGroupPostComponent implements OnInit {
   @ViewChild(CommentSectionComponent) commentSectionComponent;
   @ViewChild('taskStatusList') taskStatusList;
+  @Input() groupactivity: GroupActivityComponent;
 
   @Input() post;
   @Input('group') group;
@@ -149,7 +151,16 @@ export class TaskGroupPostComponent implements OnInit {
         this.post.task.status = res.post.task.status;
         this.statusChanged.emit('Status changed to in-progress');
 
-        swal("Good Job!", "Task updated sucessfully!", "success");
+        swal("Good Job!", "Task updated sucessfully!", "success").then(()=>{
+          this.groupactivity.getPendingTasks()
+          .catch((err)=>{
+            console.log(err);
+          });
+          this.groupactivity.getCompletedTasks()
+          .catch((err)=>{
+            console.log(err);
+          });
+        });
       }, (err) => {
         console.log('Error:', err);
       });
