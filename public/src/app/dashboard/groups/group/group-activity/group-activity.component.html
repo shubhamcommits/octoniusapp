@@ -141,7 +141,7 @@
       [socket]="socket"
       [allMembersId]="allMembersId"
       [user_data]="user_data"
-      (newPost)="addNewPostToPosts($event)">
+      (newPost)="addNewPostToPosts($event); statusChanged()">
     </postbox>
 
 
