@@ -65,7 +65,11 @@
             </div>
 
         </div>
-        <ng-template #personalmetrics>
+        <ng-template #personalmetrics >
+          <!--<task-group-post
+          ">
+
+          </task-group-post>-->
 
             <h6 class="card-title"><b>Hi {{user?.first_name}},</b></h6>
             <hr />
@@ -173,6 +177,7 @@
             [allMembersId]="allMembersId"
             [group]="group"
             [socket]="socket"
+            (statusChanged)="statusChanged()"
             (deletePost)="onDeletePost($event)"
             ng-repeat="post in posts">
           </task-group-post>

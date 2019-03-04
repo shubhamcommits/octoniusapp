@@ -245,8 +245,8 @@ export class GroupActivityComponent implements OnInit {
       }, 1800000);
 
     this.loadGroupPosts();
-    await this.getPendingTasks();
-    await this.getCompletedTasks();
+    await this.statusChanged();
+    
     this.alertMessageSettings();
     this.initializeGroupMembersSearchForm();
     this.mentionmembers();
@@ -820,73 +820,104 @@ getGroup () {
   }
 
   async getPendingTasks() {
-    const getcurrentweek = moment(Date.now()).format('w');
-    var taskDueToWeek: any = '';
-    console.log(getcurrentweek);
-    this.pendingToDoTaskCount = 0;
-    this.pendingInProgressTaskCount = 0;
-    this.isLoading$.next(true);
-    this.groupService.getGroupTasks(this.group_id)
-    .subscribe((res) => {
-      this.pendingTasks = res['posts'];
-      console.log(this.pendingTasks);
-      for(var i = 0; i < this.pendingTasks.length; i++){
-        if(this.pendingTasks[i]['task']['status'] == 'to do'){
-          taskDueToWeek = moment(this.pendingTasks[i]['task']['due_to']).format('w');
-          console.log('Task week number', taskDueToWeek);
-          if(taskDueToWeek === getcurrentweek){
-            this.pendingToDoTaskCount++;
+    return new Promise((resolve, reject)=>{
+      const getcurrentweek = moment(Date.now()).format('w');
+      var taskDueToWeek: any = '';
+      console.log(getcurrentweek);
+      this.pendingToDoTaskCount = 0;
+      this.pendingInProgressTaskCount = 0;
+      this.isLoading$.next(true);
+      this.groupService.getGroupTasks(this.group_id)
+      .subscribe((res) => {
+        this.pendingTasks = res['posts'];
+        console.log(this.pendingTasks);
+        for(var i = 0; i < this.pendingTasks.length; i++){
+          if(this.pendingTasks[i]['task']['status'] == 'to do'){
+            taskDueToWeek = moment(this.pendingTasks[i]['task']['due_to']).format('w');
+            //console.log('Task week number', taskDueToWeek);
+            if(taskDueToWeek === getcurrentweek){
+              this.pendingToDoTaskCount++;
+            }
+            
           }
-          
-        }
-       if(this.pendingTasks[i]['task']['status'] == 'in progress'){
-          taskDueToWeek = moment(this.pendingTasks[i]['task']['due_to']).format('w');
-          console.log('Task week number', taskDueToWeek);
-          if(taskDueToWeek === getcurrentweek){
-            this.pendingInProgressTaskCount++;
+         if(this.pendingTasks[i]['task']['status'] == 'in progress'){
+            taskDueToWeek = moment(this.pendingTasks[i]['task']['due_to']).format('w');
+            console.log('Task week number', taskDueToWeek);
+            if(taskDueToWeek === getcurrentweek){
+              this.pendingInProgressTaskCount++;
+            }
+            
           }
-          
         }
-      }
-      console.log('To-do Tasks', this.pendingToDoTaskCount);
-      console.log('In-Progress Tasks', this.pendingInProgressTaskCount);
-      this.isLoading$.next(false);
-    },
-    (err) => {
-      console.log('Error Fetching the Pending Tasks Posts', err);
-      this.isLoading$.next(false);
-    });
+        console.log('To-do Tasks', this.pendingToDoTaskCount);
+        console.log('In-Progress Tasks', this.pendingInProgressTaskCount);
+        this.isLoading$.next(false);
+        resolve();
+      },
+      (err) => {
+        console.log('Error Fetching the Pending Tasks Posts', err);
+        this.isLoading$.next(false);
+        reject();
+      });
+    })
+
   }
 
   async getCompletedTasks() {
-    const getcurrentweek = moment(Date.now()).format('w');
-    var taskDueToWeek: any ='';
-    this.completedTaskCount = 0;
-    this.isLoading$.next(true);
-    this.groupService.getCompletedGroupTasks(this.group_id)
-    .subscribe((res) => {
-      this.completedTasks = res['posts'];
-      console.log(this.completedTasks);
-      for(var i = 0 ; i < this.completedTasks.length; i++){
-        if(this.completedTasks[i]['task']['status'] == 'done'){
-          taskDueToWeek = moment(this.completedTasks[i]['task']['due_to']).format('w');
-          if(taskDueToWeek === getcurrentweek){
-            this.completedTaskCount++;
+    return new Promise((resolve, reject)=>{
+      const getcurrentweek = moment(Date.now()).format('w');
+      var taskDueToWeek: any ='';
+      this.completedTaskCount = 0;
+      this.isLoading$.next(true);
+      this.groupService.getCompletedGroupTasks(this.group_id)
+      .subscribe((res) => {
+        this.completedTasks = res['posts'];
+        console.log(this.completedTasks);
+        for(var i = 0 ; i < this.completedTasks.length; i++){
+          if(this.completedTasks[i]['task']['status'] == 'done'){
+            taskDueToWeek = moment(this.completedTasks[i]['task']['due_to']).format('w');
+            if(taskDueToWeek === getcurrentweek){
+              this.completedTaskCount++;
+            }
           }
+  
         }
+        this.isLoading$.next(false);
+        console.log('Completed Tasks Count', this.completedTaskCount);
+        resolve();
+  
+      },
+      (err) => {
+        console.log('Error Fetching the Completed Tasks Posts', err);
+        this.isLoading$.next(false);
+        reject();
+      });
+    })
 
-      }
-      this.isLoading$.next(false);
-      this.todoPercent = Math.round(this.pendingToDoTaskCount/(this.pendingInProgressTaskCount+this.pendingToDoTaskCount+this.completedTaskCount)*100);
-      this.inprogressPercent = Math.round(this.pendingInProgressTaskCount/(this.pendingInProgressTaskCount+this.pendingToDoTaskCount+this.completedTaskCount)*100);
-      this.completedPercent = Math.round(this.completedTaskCount/(this.pendingInProgressTaskCount+this.pendingToDoTaskCount+this.completedTaskCount)*100);
 
-    },
-    (err) => {
-      console.log('Error Fetching the Completed Tasks Posts', err);
-      this.isLoading$.next(false);
-    });
+  }
 
+  async statusChanged(){
+    await this.getPendingTasks()
+    .then( async ()=>{
+      await this.getCompletedTasks()
+      .then(async ()=>{
+        this.todoPercent = Math.round(this.pendingToDoTaskCount/(this.pendingInProgressTaskCount+this.pendingToDoTaskCount+this.completedTaskCount)*100);
+        this.inprogressPercent = Math.round(this.pendingInProgressTaskCount/(this.pendingInProgressTaskCount+this.pendingToDoTaskCount+this.completedTaskCount)*100);
+        this.completedPercent = Math.round(this.completedTaskCount/(this.pendingInProgressTaskCount+this.pendingToDoTaskCount+this.completedTaskCount)*100);
+
+        console.log('To-do Tasks percent', this.todoPercent);
+        console.log('In progress Tasks percent', this.inprogressPercent);
+        console.log('Completed Tasks percent', this.completedPercent);
+      })
+      .catch((err)=>{
+        console.log('Error whole getting done tasks', err);
+      })
+      .catch((err)=>{
+        console.log('Error while getting pending tasks', err);
+      })
+      
+    })
   }
 
 

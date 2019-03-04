@@ -6,7 +6,6 @@ import { saveAs } from 'file-saver';
 import {GroupService} from "../../../../shared/services/group.service";
 import {CommentSectionComponent} from "../../comments/comment-section/comment-section.component";
 import * as moment from 'moment';
-import { GroupActivityComponent } from '../../../../dashboard/groups/group/group-activity/group-activity.component';
 
 @Component({
   selector: 'task-group-post',
@@ -16,7 +15,6 @@ import { GroupActivityComponent } from '../../../../dashboard/groups/group/group
 export class TaskGroupPostComponent implements OnInit {
   @ViewChild(CommentSectionComponent) commentSectionComponent;
   @ViewChild('taskStatusList') taskStatusList;
-  @Input() groupactivity: GroupActivityComponent;
 
   @Input() post;
   @Input('group') group;
@@ -28,6 +26,8 @@ export class TaskGroupPostComponent implements OnInit {
   @Input('isItMyWorkplace') isItMyWorkplace;
 
   @Output('deletePost') removePost = new EventEmitter();
+
+  @Output() statusChanged: EventEmitter<any> = new EventEmitter();
 
   // alerts & messages
   staticAlertClosed = false;
@@ -118,22 +118,17 @@ export class TaskGroupPostComponent implements OnInit {
       'status': 'to do'
     };
 
+
+
     this.postService.complete(this.post._id, post)
       .subscribe((res: any) => {
         this.playAudio();
         // Change the status on the frontend to match up with the backend
         this.post.task.status = res.post.task.status;
+        this.statusChanged.emit('Status changed to to-do');
 
-        swal("Good Job!", "Task updated sucessfully!", "success").then(()=>{
-          this.groupactivity.getPendingTasks()
-          .catch((err)=>{
-            console.log(err);
-          });
-          this.groupactivity.getCompletedTasks()
-          .catch((err)=>{
-            console.log(err);
-          });
-        });;
+        swal("Good Job!", "Task updated sucessfully!", "success");
+
       }, (err) => {
         console.log('Error:', err);
       });
@@ -152,17 +147,9 @@ export class TaskGroupPostComponent implements OnInit {
 
         // Change the status on the frontend to match up with the backend
         this.post.task.status = res.post.task.status;
+        this.statusChanged.emit('Status changed to in-progress');
 
-        swal("Good Job!", "Task updated sucessfully!", "success").then(()=>{
-          this.groupactivity.getPendingTasks()
-          .catch((err)=>{
-            console.log(err);
-          });
-          this.groupactivity.getCompletedTasks()
-          .catch((err)=>{
-            console.log(err);
-          });
-        });
+        swal("Good Job!", "Task updated sucessfully!", "success");
       }, (err) => {
         console.log('Error:', err);
       });
@@ -188,16 +175,8 @@ export class TaskGroupPostComponent implements OnInit {
         // change its status on the frontend to match up with the backend
         this.post.task.status = res.post.task.status;
 
-        swal("Good Job!", "Task updated sucessfully!", "success").then(()=>{
-          this.groupactivity.getPendingTasks()
-          .catch((err)=>{
-            console.log(err);
-          });
-          this.groupactivity.getCompletedTasks()
-          .catch((err)=>{
-            console.log(err);
-          });
-        });
+        swal("Good Job!", "Task updated sucessfully!", "success");
+        this.statusChanged.emit('Status changed to done');
 
       }, (err) => {
         if (err.status) {
