@@ -60,10 +60,20 @@ export class TaskGroupPostComponent implements OnInit {
 
   ngUnsubscribe = new Subject();
 
+  tags: any = new Array();
+
   constructor(private postService: PostService, private groupService: GroupService) { }
 
   ngOnInit() {
     this.commentCount = this.post.comments.length;
+
+            //saving the app from getting crashed because it might be undefined
+            if(this.post['tags'] != undefined){
+              this.tags = this.post.tags;
+            }
+            else{
+              this.tags = [];
+            }
   }
 
   deletePost() {
@@ -181,7 +191,8 @@ export class TaskGroupPostComponent implements OnInit {
       'type': this.post.type,
       'assigned_to': this.selectedGroupUsers,
       'date_due_to': moment(date_due_to).format(),
-      'status': this.post.task.status
+      'status': this.post.task.status,
+      'tags': this.tags
     };
 
     // handle mentions
@@ -203,6 +214,12 @@ export class TaskGroupPostComponent implements OnInit {
 
       for (var i = 0; i < this.content_mentions.length; i++) {
         post._content_mentions = this.content_mentions;
+      }
+    }
+
+    if(this.tags.length>0){
+      for(let i = 0 ; i < this.tags.length; i ++){
+        post.tags = this.tags;
       }
     }
 
@@ -234,10 +251,12 @@ export class TaskGroupPostComponent implements OnInit {
 
         this.socket.emit('newPost', data);
         this.content_mentions = [];
+        this.tags = this.post.tags;
       }, (err) => {
 
         this.alert.class = 'danger';
         this.content_mentions = [];
+        this.tags = this.post.tags;
 
         if (err.status) {
           this._message.next(err.error.message);
@@ -331,6 +350,19 @@ export class TaskGroupPostComponent implements OnInit {
   usersSelected(users) {
     this.selectedGroupUsers = users;
     this.assignment = users.length < 1 ? "UnAssigned" : "Assigned";
+  }
+
+  addTags() {
+    const tag = document.getElementById('tags');
+    this.tags.push(tag['value']);
+    this.post.tags = this.tags;
+    tag['value'] = '';
+    console.log(this.tags);
+  }
+
+  removeTag(index) {
+    this.tags.pop(index);
+    this.post.tags = this.tags;
   }
 
 }

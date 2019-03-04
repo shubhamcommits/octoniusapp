@@ -97,6 +97,9 @@ export class PostboxComponent implements OnInit, OnDestroy {
   //GOOGLE CALENDAR
   timeZone: any;
 
+  //Tags to the post
+  tags: any = new Array();
+
   constructor(
     private modalService: NgbModal,
     private groupService: GroupService,
@@ -202,6 +205,15 @@ export class PostboxComponent implements OnInit, OnDestroy {
       }
     }
 
+        //here we add the tags
+        if(this.tags.length>0){
+          for (let i = 0; i < this.tags.length; i++) {
+            formData.append('tags', this.tags[i]);
+          }
+        }
+        
+    
+
     this.processing = true;
     this.disablePostForm();
 
@@ -256,8 +268,10 @@ export class PostboxComponent implements OnInit, OnDestroy {
         }
 
         this.content_mentions = [];
+        this.tags = [];
       }, (err) => {
         this.content_mentions = [];
+        this.tags = [];
         this.processing = false;
         this.alert.class = 'danger';
         this.enablePostForm();
@@ -332,6 +346,14 @@ export class PostboxComponent implements OnInit, OnDestroy {
     formData.append('_posted_by', post._posted_by);
     formData.append('_group', post._group);
 
+    //here we add the tags
+    if(this.tags.length>0){
+      for (let i = 0; i < this.tags.length; i++) {
+        formData.append('tags', this.tags[i]);
+      }
+    }
+    
+
     // When we submit the post we want to disable the confirm button and disable to avoid multiple HTTP requests & changes to forum
     this.processing = true;
     this.disablePostForm();
@@ -363,9 +385,13 @@ export class PostboxComponent implements OnInit, OnDestroy {
         // reset the content mentions (perhaps earlier?)
         this.content_mentions = [];
 
+        //reset the tags
+        this.tags = [];
+
       }, (err) => {
         this.processing = false;
         this.content_mentions = [];
+        this.tags = [];
         driveDivision.innerHTML = '';
         driveDivision.style.display = 'none';
         this.googleDriveFiles = [];
@@ -453,6 +479,14 @@ export class PostboxComponent implements OnInit, OnDestroy {
       });
     }
 
+    //here we add the tags
+    if(this.tags.length>0){
+      for (let i = 0; i < this.tags.length; i++) {
+        formData.append('tags', this.tags[i]);
+      }
+    }
+
+
     this.processing = true;
     this.disablePostForm();
 
@@ -507,9 +541,11 @@ export class PostboxComponent implements OnInit, OnDestroy {
         }
 
         this.content_mentions = [];
+        this.tags = [];
 
       }, (err) => {
         this.content_mentions = [];
+        this.tags = [];
         this.processing = false;
         this.alert.class = 'danger';
         this.enablePostForm();
@@ -552,6 +588,7 @@ export class PostboxComponent implements OnInit, OnDestroy {
   inilizePostForm() {
     this.postForm = new FormGroup({
       'postContent': new FormControl(null, [Validators.required, InputValidators.fieldCannotBeEmpty]),
+      'tag': new FormControl(null)
     });
   }
 
@@ -744,6 +781,17 @@ export class PostboxComponent implements OnInit, OnDestroy {
     }
   }
 // !--GOOGLE PICKER IMPLEMENTATION--! //
+
+  addTags() {
+    const tag = document.getElementById('tags');
+    this.tags.push(tag['value']);
+    tag['value'] = '';
+    console.log(this.tags);
+  }
+
+  removeTag(index) {
+    this.tags.pop(index);
+  }
 
   ngOnDestroy() {
     this.ngUnsubscribe.next();
