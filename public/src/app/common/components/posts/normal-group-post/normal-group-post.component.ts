@@ -20,7 +20,7 @@ export class NormalGroupPostComponent implements OnInit, OnDestroy {
 
   @ViewChild(CommentSectionComponent) commentSectionComponent;
 
-  @Input() post;
+  @Input() post: any;
   @Input('group') group;
   @Input('user') user;
   @Input('user_data') user_data;
@@ -65,10 +65,21 @@ export class NormalGroupPostComponent implements OnInit, OnDestroy {
   };
   content_mentions = [];
 
+  tags: any = new Array();
+
   constructor(private groupService: GroupService, private postService: PostService) { }
 
   ngOnInit() {
     this.commentCount = this.post.comments.length;
+
+    //saving the app from getting crashed because it might be undefined
+    if(this.post['tags'] != undefined){
+      this.tags = this.post.tags;
+    }
+    else{
+      this.tags = [];
+    }
+    
   }
 
   deletePost() {
@@ -188,7 +199,8 @@ export class NormalGroupPostComponent implements OnInit, OnDestroy {
     const post = {
       'content': this.edit_content,
       '_content_mentions': this.content_mentions,
-      'type': this.post.type
+      'type': this.post.type,
+      'tags': this.tags
       // 'assigned_to': this.selectedGroupUsers
     };
 
@@ -225,7 +237,11 @@ export class NormalGroupPostComponent implements OnInit, OnDestroy {
       //  console.log('This post', postId);
     }
 
-
+    if(this.tags.length>0){
+      for(let i = 0 ; i < this.tags.length; i ++){
+        post.tags = this.tags;
+      }
+    }
 
     // SERVER REQUEST
     this.postService.editPost(this.post._id, post)
@@ -255,10 +271,12 @@ export class NormalGroupPostComponent implements OnInit, OnDestroy {
 
         this.socket.emit('newPost', data);
         this.content_mentions = [];
+        this.tags = this.post.tags;
       }, (err) => {
 
         this.alert.class = 'danger';
         this.content_mentions = [];
+        this.tags = this.post.tags;
 
         if (err.status) {
           this._message.next(err.error.message);
@@ -305,5 +323,18 @@ export class NormalGroupPostComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+  }
+
+  addTags() {
+    const tag = document.getElementById('tags');
+    this.tags.push(tag['value']);
+    this.post.tags = this.tags;
+    tag['value'] = '';
+    console.log(this.tags);
+  }
+
+  removeTag(index) {
+    this.tags.pop(index);
+    this.post.tags = this.tags;
   }
 }

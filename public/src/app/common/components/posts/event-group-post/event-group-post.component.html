@@ -45,6 +45,32 @@
                         [spellcheck]="true" value="post?.content" (blur)="onEditorBlured($event)"
                         (focus)="onEditorFocused($event)" (ready)="onEditorCreated($event)" (change)="onContentChanged($event)"></quill-editor>
         </div>
+        <div class="row">
+            <div class="col-md-1">
+              <button type="button" class="btn btn-link" (click)="addTags()">
+                  <i class="material-icons" placement="top" ngbTooltip="Add tag">
+                      add
+                      </i>
+              </button>
+  
+            </div>
+            <div class="col-md-6">
+              <input type="text" id="tags" class="tags" placeholder="Add Tag here" [(ngModel)]="tag" name="tag" placement="top" ngbTooltip="Type & hit + to add a tag">
+            </div>
+          </div>
+
+          <div class="row">
+              <div class="col-md-1">
+                  <button type="button" class="btn btn-link">
+                      <i class="material-icons" placement="top" ngbTooltip="Tags">
+                          local_offer
+                          </i>
+                  </button>
+              </div>
+              <div class="col-md-10">
+              <button class="btn btn-sm btn-outline-primary" style="margin-right: 1rem;" (click)="removeTag(i)" *ngFor="let tag of post?.tags; let i = index" placement="top" ngbTooltip="Click here to remove this tag"><b>X</b> {{tag}}</button>  
+              </div>
+            </div>
       </ng-container>
 
 
@@ -64,11 +90,26 @@
 
         </div>
 
-      </div>
       <div class="col-md-12 innercard" *ngFor="let file of post.files">
         <div class="col-md-12 event-title">Attachment:</div>
         <div class="col-md-12"> <a role="button" href="javascript:void(null);" (click)="onDownloadFile(file.modified_name,file.orignal_name)">{{file?.orignal_name}}</a></div>
       </div>
+
+            <!--POST TAGS-->
+            <div class="row innercard" style="margin-top: 2rem;" *ngIf="post?.tags?.length > 0">
+                <div class="col-md-1">
+                    <button type="button" class="btn btn-link">
+                        <i class="material-icons" placement="top" ngbTooltip="Tags">
+                            local_offer
+                            </i>
+                    </button>
+                </div>
+                <div class="col-md-10">
+                    <button class="btn btn-sm btn-outline-primary" style="margin-right: 0.5rem;" *ngFor="let tag of post?.tags; let i = index">{{tag}}</button>  
+                    </div>
+              </div> 
+      
+            </div>
 
       <!-- POST ACTIONS -->
 

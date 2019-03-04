@@ -73,6 +73,7 @@ const edit = async (req, res, next) => {
         postData = {
           content: req.body.content,
           _content_mentions: req.body._content_mentions,
+          tags: req.body.tags,
           task: {
             due_to: req.body.date_due_to,
             _assigned_to: req.body.assigned_to[0]._id,
@@ -91,6 +92,7 @@ const edit = async (req, res, next) => {
         postData = {
           content: req.body.content,
           _content_mentions: req.body._content_mentions,
+          tags: req.body.tags,
           event: {
             due_to: req.body.date_due_to,
             _assigned_to: assignedUsers
@@ -102,7 +104,8 @@ const edit = async (req, res, next) => {
 
         postData = {
           content: req.body.content,
-          _content_mentions: req.body._content_mentions
+          _content_mentions: req.body._content_mentions,
+          tags: req.body.tags,
         };
         break;
     }
