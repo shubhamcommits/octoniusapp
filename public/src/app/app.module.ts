@@ -84,6 +84,8 @@ import { GoogleCloudService } from './shared/services/google-cloud.service';
 
 import {ResetPwdComponent} from "./Authentication/reset-password/reset-password.component";
 
+import { NgCircleProgressModule } from 'ng-circle-progress';
+
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 
@@ -109,6 +111,22 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   "textColor": "#FFFFFF",
   "textPosition": "center-center",
   "threshold": 500 // progress bar thickness
+};
+
+const ngCircle = {
+  "radius": 50,
+  "space": -10,
+  "outerStrokeGradient": true,
+  "outerStrokeWidth": 10,
+  "outerStrokeColor": "#4882c2",
+  "outerStrokeGradientStopColor": "#53a9ff",
+  "innerStrokeColor": "#e7e8ea",
+  "innerStrokeWidth": 10,
+  "animateTitle": false,
+  "responsive": true,
+  "animationDuration": 500,
+  "showBackground": false,
+  "startFromZero": false
 };
 
 @NgModule({
@@ -167,6 +185,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     ImageCropperModule,
     DragAndDropModule.forRoot(),
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
+    NgCircleProgressModule.forRoot(ngCircle),
     LoadingModule.forRoot({
       animationType: ANIMATION_TYPES.wanderingCubes,
       backdropBackgroundColour: 'rgba(0,0,0,0.1)',

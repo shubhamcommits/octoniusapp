@@ -118,6 +118,7 @@ margin-bottom: 20px;
     margin: 0;
     border: 1px solid $border-color;
     border-radius: $card-radius;
+    margin-bottom: 20px;
 
 }
 .card-footer{
@@ -505,10 +506,16 @@ quill-editor{
     border: none !important;
 }
 
+.bar{
+  border-radius: 1em !important;
+<<<<<<< HEAD
+}
 .tags{
   padding: 8px;
   display: block;
   border: none;
   border-bottom: 1px solid #ccc;
   width: 100%;
+=======
+>>>>>>> d50566157c64369ab00769eb5e2d68d01caa9359
 }

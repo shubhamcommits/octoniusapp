@@ -48,6 +48,7 @@
     "linkifyjs": "^2.1.6",
     "moment": "^2.24.0",
     "ng-animate": "^0.3.3",
+    "ng-circle-progress": "^1.0.0",
     "ng-click-outside": "^4.0.0",
     "ng-pick-datetime": "^6.0.7",
     "ng-snotify": "^4.3.1",
