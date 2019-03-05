@@ -5,13 +5,15 @@ const { User, Post, Group } = require('../../api/models');
 const { sendErr } = require('../../utils');
 
 
-const createPostQuery = (userGroups, query) => Post.find({
-  $and: [
-    { _group: { $in: userGroups } },
-    { content: { $regex: query, $options: 'i' } }
-  ]
-}).populate('_posted_by', 'full_name profile_pic')
-  .populate('_group', 'group_name');
+const createPostQuery = (userGroups, query) => {
+  return Post.find({
+    $and: [
+      { _group: { $in: userGroups } },
+      { content: { $regex: query, $options: 'i' } }
+    ]
+  }).populate('_posted_by', 'full_name profile_pic')
+    .populate('_group', 'group_name');
+};
 
 const createUserQuery = (user, query) => User.find({
   $and: [
