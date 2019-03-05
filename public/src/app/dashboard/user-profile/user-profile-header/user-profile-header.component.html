@@ -1,5 +1,5 @@
 <div class="media user-sticky-card">
-  <img class="mr-3 feed-avatar" [src]="profilePic" onerror="this.src='/assets/images/user.png'">
+  <img *ngIf="user" class="mr-3 feed-avatar" src="/uploads/{{user?.profile_pic}}" onerror="this.src='/assets/images/user.png'">
   <!--   <h1>{{user.profile_pic}}</h1>
  -->
   <div class="media-body">
