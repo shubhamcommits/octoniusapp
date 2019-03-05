@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { Observable } from 'rxjs/Observable';
@@ -16,6 +16,17 @@ export class GroupService {
   BASE_API_URL = environment.BASE_API_URL;
 
   constructor(private _http: HttpClient) { }
+
+  getFilteredPosts(group_id, filters) {
+    const params = new HttpParams()
+      .set("normal_filter", filters.normal)
+      .set("event_filter", filters.event)
+      .set("task_filter", filters.task)
+      .set("user_filter", filters.user)
+      .set("user_value", filters.user_value);
+
+    return this._http.get(this.BASE_API_URL + `/groups/${group_id}/getFilteredPosts`, {params});
+  }
 
   getGroupPosts(group_id) {
     return this._http.get(this.BASE_API_URL + '/post/' + group_id);
@@ -79,3 +90,4 @@ export class GroupService {
   }
 
 }
+

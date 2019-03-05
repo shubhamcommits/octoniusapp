@@ -43,8 +43,6 @@ i.icon-blue {
 	margin-left: 122px;
 }
 
-
-
 .search-results {
 	height: 100%;
   }
@@ -137,4 +135,13 @@ i.icon-blue {
 
 .form-group .form-control{
   border: none !important;
+}
+
+.user-filter {
+    border: 0;
+    outline: 0;
+    background: transparent;
+  border-bottom: 1px solid #007bff;
+  width: 90%;
+  margin: 0 auto;
 }

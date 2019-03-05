@@ -69,6 +69,11 @@ router.get('/:groupId/calendar/:year/:month',
   authorization.groupAccess,
   groups.getCalendarPosts);
 
+// get group's filtered posts
+router.get('/:groupId/getFilteredPosts',
+  authorization.groupAccess,
+  groups.getFilteredPosts);
+
 // - Tasks -
 
 // Get group's to do/in progress tasks

@@ -182,6 +182,17 @@ const getPosts = async (req, res, next) => {
   }
 };
 
+const getFilteredPosts = (req, res) => {
+  try {
+    console.log('REQ BODY', req.query);
+    res.status(200).json({
+      message: 'successfully filtered posts'
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
 // -| TASKS |-
 
 const getNextTasksDone = async (req, res, next) => {
@@ -299,6 +310,7 @@ module.exports = {
   getCalendarPosts,
   getNextPosts,
   getPosts,
+  getFilteredPosts,
   // Tasks
   getNextTasksDone,
   getTasks,
