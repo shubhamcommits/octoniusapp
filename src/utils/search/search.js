@@ -10,12 +10,12 @@ const createPostQuery = (userGroups, query) => Post.find({
     { _group: { $in: userGroups } },
     { content: { $regex: query, $options: 'i' } }
   ]
-}).populate('_posted_by', 'full_name profile_pic')
+}).sort({ created_date: -1 })
+    .populate('_posted_by', 'full_name profile_pic')
   .populate('_group', 'group_name');
 
 const createUserQuery = (user, query) => {
   const search = new RegExp(query.trim());
-  console.log('user', user);
   return User.find({
     $and: [
       { full_name: { $regex: search, $options: 'i' } },
