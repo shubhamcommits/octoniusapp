@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../../shared/services/user.service';
-import { Router } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import swal from 'sweetalert';
-import { NgxUiLoaderService } from 'ngx-ui-loader'; 
+import { NgxUiLoaderService } from 'ngx-ui-loader';
+import {ProfileDataService} from "../../../shared/services/profile-data.service";
 
 @Component({
   selector: 'app-profile',
@@ -13,25 +14,49 @@ export class ProfileComponent implements OnInit {
   alert = {
     message: '',
     class: ''
-  }; 
+  };
+
   user: any;
   join_date;
 
-  skills =[];
+  skills = [];
 
-  constructor(private _userService: UserService, private ngxService: NgxUiLoaderService, private _router: Router) { }
+  isCurrentUser = false;
+
+  constructor(
+    private _userService: UserService,
+    private ngxService: NgxUiLoaderService,
+    private _router: Router,
+    private route: ActivatedRoute,
+    private profileDataService: ProfileDataService) { }
 
   ngOnInit() {
     this.ngxService.start(); // start foreground loading with 'default' id
- 
+
     // Stop the foreground loading after 5s
     setTimeout(() => {
       this.ngxService.stop(); // stop foreground loading with 'default' id
     }, 500);
-    this.getUserProfile();
+
+    this.profileDataService.user.subscribe((user: any) => {
+      console.log('test 1', user);
+      console.log('test 2', JSON.parse(localStorage.getItem('user')).user_id == user._id);
+      this.user = user;
+      this.skills = user.skills;
+      this.isCurrentUser = JSON.parse(localStorage.getItem('user')).user_id == this.user._id;
+
+      if (this.user['company_join_date'] == null && this.isCurrentUser) {
+        swal("Oops!", "Seems like you have been missing out, please update your profile to stay updated!", "warning");
+      }
+      else {
+        // this.join_date = new Date(this.user['company_join_date'].year,
+        //   (this.user['company_join_date'].month) - 1, this.user['company_join_date'].day);
+
+      }
+    });
   }
 
-  closeSkills(){
+  closeSkills() {
     const skill = document.getElementById('skills-input');
     const skillContent = document.getElementById('skills-content');
 
@@ -41,7 +66,19 @@ export class ProfileComponent implements OnInit {
 
   }
 
-  saveSkills(){
+  resetUser() {
+    this.user = {
+      first_name: '',
+      last_name: '',
+      phone_number: '',
+      mobile_number: '',
+      bio: '',
+      current_position: '',
+      company_join_date: ''
+    };
+  }
+
+  saveSkills() {
       const skills = {
         skills: this.skills
       };
@@ -50,15 +87,15 @@ export class ProfileComponent implements OnInit {
         console.log('Skills Added', res);
         swal("Good Job!", "You have updated your skills, successfully!", "success")
         .then((res)=>{
-          this.getUserProfile();
-        })    
+          // this.getUserProfile();
+        })
       },(err) =>{
         console.log('Error while updating the skills', err);
       })
 
   }
 
-  addSkills(){
+  addSkills() {
 
     const skill = document.getElementById('skills-input');
     const skillContent = document.getElementById('skills-content');
@@ -104,40 +141,40 @@ export class ProfileComponent implements OnInit {
     })*/
   }
 
-  getUserProfile() {
-    this._userService.getUser()
-      .subscribe((res) => {
-        this.user = res.user;
-       this.skills = res.user.skills;
-      // console.log('User', this.user);
-      if(res.user['company_join_date'] == null){
-        swal("Oops!", "Seems like you have been missing out, please update your profile to stay updated!", "warning");
-      }
-      else{
-        this.join_date = new Date(res.user['company_join_date'].year,
-          (res.user['company_join_date'].month) - 1, res.user['company_join_date'].day);
-          
-      }
-
-     
-
-
-        // console.log('user Inside profile:', res);
-
-      }, (err) => {
-        this.alert.class = 'alert alert-danger';
-        swal("Error!", "Please try again!", "error");
-        if (err.status === 401) {
-          this.alert.message = err.error.message;
-          setTimeout(() => {
-            localStorage.clear();
-            this._router.navigate(['']);
-          }, 3000);
-        } else if (err.status) {
-          //  this.alert.class = err.error.message;
-        } else {
-          // this.alert.message = 'Error! either server is down or no internet connection';
-        }
-      });
-  }
+  // getUserProfile(userId) {
+  //   this._userService.getOtherUser(userId)
+  //     .subscribe((res: any) => {
+  //       this.user = res.user;
+  //      this.skills = res.user.skills;
+  //     // console.log('User', this.user);
+  //     if(res.user['company_join_date'] == null){
+  //       swal("Oops!", "Seems like you have been missing out, please update your profile to stay updated!", "warning");
+  //     }
+  //     else{
+  //       this.join_date = new Date(res.user['company_join_date'].year,
+  //         (res.user['company_join_date'].month) - 1, res.user['company_join_date'].day);
+  //
+  //     }
+  //
+  //
+  //
+  //
+  //       // console.log('user Inside profile:', res);
+  //
+  //     }, (err) => {
+  //       this.alert.class = 'alert alert-danger';
+  //       swal("Error!", "Please try again!", "error");
+  //       if (err.status === 401) {
+  //         this.alert.message = err.error.message;
+  //         setTimeout(() => {
+  //           localStorage.clear();
+  //           this._router.navigate(['']);
+  //         }, 3000);
+  //       } else if (err.status) {
+  //         //  this.alert.class = err.error.message;
+  //       } else {
+  //         // this.alert.message = 'Error! either server is down or no internet connection';
+  //       }
+  //     });
+  // }
 }

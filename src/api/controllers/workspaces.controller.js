@@ -1,6 +1,6 @@
 
 const {
-  Group, User, Workspace
+  Group, User, Workspace, Post
 } = require('../models');
 
 const { sendErr, billing } = require('../../utils');

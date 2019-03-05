@@ -1,4 +1,14 @@
 @import "../../../../assets/scss/variables.scss";
+
+// resets
+h4 {
+  margin-bottom: 0;
+}
+
+p {
+  margin-bottom: 0;
+}
+
 .navbar {
   min-height: 80px;
   flex-direction: row !important;
@@ -75,3 +85,5 @@ a.notifications.btn.dropdown-toggle-split.dropdown-toggle::after
 .text-small{
   font-size: 10px;
 }
+
+

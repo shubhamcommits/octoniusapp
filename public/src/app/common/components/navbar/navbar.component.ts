@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { AuthService } from '../../../shared/services/auth.service';
 import { Router } from '@angular/router';
 import { UserService } from '../../../shared/services/user.service';
@@ -8,6 +8,8 @@ import * as io from 'socket.io-client';
 import { environment } from '../../../../environments/environment'
 import { BehaviorSubject } from 'rxjs';
 import { async } from '@angular/core/testing'
+import {WorkspaceService} from "../../../shared/services/workspace.service";
+import {SearchService} from "../../../shared/services/search.service";
 
 
 
@@ -23,6 +25,8 @@ import { async } from '@angular/core/testing'
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
+  @ViewChild('searchDrop') searchDrop;
+
   user: User;
   userProfileImage;
   user_data;
@@ -38,8 +42,16 @@ export class NavbarComponent implements OnInit {
 
   socket = io(environment.BASE_URL);
 
-  constructor(private _auth: AuthService, private _userService: UserService, private _router: Router,
-    private router: Router) {
+  isCollapsed = true;
+
+
+  constructor(
+    private _auth: AuthService,
+    private _userService: UserService,
+    private _router: Router,
+    private router: Router,
+    private workspaceService: WorkspaceService,
+    private searchService: SearchService) {
       this.user_data = JSON.parse(localStorage.getItem('user'));
      }
 
@@ -120,8 +132,8 @@ export class NavbarComponent implements OnInit {
       y.className = "none";
       x.className = "none";
     }
-
   }
+
 
   getUserProfile() {
     this.isLoading$.next(false);

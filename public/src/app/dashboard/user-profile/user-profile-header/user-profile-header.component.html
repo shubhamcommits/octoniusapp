@@ -11,12 +11,12 @@
       <h2>{{user?.first_name + ' ' }}{{user?.last_name}}</h2>
       <ul class="nav">
         <li class="nav-item">
-          <a class="nav-link active" routerLink="/dashboard/profile/profile" routerLinkActive="active">Profile
+          <a class="nav-link active" [routerLink]="['/dashboard/profile', user?._id,'profile']" routerLinkActive="active">Profile
             <span class="sr-only">(current)</span>
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link active" routerLink="/dashboard/profile/clouds" routerLinkActive="active">Clouds
+        <li *ngIf="isCurrentUser" class="nav-item">
+          <a class="nav-link active" [routerLink]="['/dashboard/profile', user?._id,'clouds']" routerLinkActive="active">Clouds
             <span class="sr-only">(current)</span>
           </a>
         </li>
@@ -26,7 +26,7 @@
 
 
   </div>
-  <div class="col-md-3 text-right">
+  <div *ngIf="isCurrentUser" class="col-md-3 text-right">
     <button type="button" name="button" class="btn btn-link" (click)="openLg(contentEditUserProfile)">
       <i class="material-icons">create</i>
     </button>
@@ -63,7 +63,7 @@
          <!-- <img [src]="userImageUrl" style="border-radius: 50%; width:15% ; height:15%;"> -->
         <img *ngIf="userImageUrl" [src]="userImageUrl" #Image accept="image/*" style="border-radius: 50%; width:15% ; height:15%;">
         <input type="file" (change)="fileChangeEvent($event)" />
-        <div>  
+        <div>
           <br><br>
           <image-cropper
               [imageChangedEvent]="imageChangedEvent"
@@ -79,7 +79,7 @@
               (imageLoaded)="imageLoaded()"
               (cropperReady)="cropperReady()"
               (loadImageFailed)="loadImageFailed()"
-             
+
           ></image-cropper>
         </div>
 

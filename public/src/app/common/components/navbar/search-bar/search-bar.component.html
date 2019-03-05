@@ -1,0 +1,101 @@
+<div class="wrap">
+  <div ngbDropdown #myDrop="ngbDropdown" class="search">
+    <input autocomplete="off" id="dropdownManual" ngbDropdownAnchor type="text" class="searchTerm" [(ngModel)]="search_value" (click)="myDrop.open(); loadRecentSearches()" (keyup)="search()" (keydown.enter)="displayAllSearchResults(); myDrop.close()" placeholder="Search...">
+    <button [disabled]="search_value === ''" (click)="displayAllSearchResults();" type="submit" class="searchButton">
+      <i class="material-icons">search</i>
+    </button>
+    <div class="search-dropdown-menu" ngbDropdownMenu aria-labelledby="dropdownManual">
+      <div class="search-dropdown-menu-container">
+        <h4 class="search-title">Search for: </h4>
+        <div class="person-search search-option">
+            <div class="squaredFour">
+                <input (click)="$event.stopPropagation(); myDrop.open(); toggleCheckbox('users')" [checked]="checked_filter === 'users'" type="checkbox" value="None" id="squaredFour" name="check" />
+                <label (click)="$event.stopPropagation(); myDrop.open()" for="squaredFour"></label>
+              </div>
+          <i class="material-icons">person</i>
+          <h4 class="search-option__title">Users</h4>
+      
+        </div>
+        <div class="content-search search-option">
+            <div class="squaredFour">
+                <input (click)="$event.stopPropagation(); myDrop.open(); toggleCheckbox('posts')" [checked]="checked_filter === 'posts'" type="checkbox" value="None" id="squaredFour2" name="check" />
+                <label (click)="$event.stopPropagation(); myDrop.open();" for="squaredFour2"></label>
+              </div>
+          <i class="material-icons">chat</i>
+          <h4 class="search-option__title">Posts</h4>
+       
+        </div>
+        <div class="skills-search search-option">
+            <div class="squaredFour">
+                <input (click)="$event.stopPropagation(); myDrop.open(); toggleCheckbox('skills')" [checked]="checked_filter === 'skills'" type="checkbox" value="None" id="squaredFour3" name="check" />
+                <label (click)="$event.stopPropagation(); myDrop.open()" for="squaredFour3"></label>
+              </div>
+          <i class="material-icons">local_offer</i>
+          <h4 class="search-option__title">Skills</h4>
+        
+        </div>
+
+        <hr>
+
+        <div *ngIf="search_value !== ''; else recentSearches" class="search-results">
+          <div *ngIf="search_results_posts.length > 0" class="search-results__users">
+            <ul class="search-results__list">
+              <!-- /dashboard/group/5c6f56ec53a7802ab09895b4/post/5c6f582053a7802ab09895c5 -->
+              <content-search-result
+                *ngFor="let post of search_results_posts"
+                [post]="post"
+                (saveSearch)="saveSearch($event)"
+              ></content-search-result>
+            </ul>
+          </div>
+          <div *ngIf="checked_filter === 'users' && search_results_users.length > 0" class="search-results__users">
+            <h4 class="search-results__title">Matched users:</h4>
+            <ul class="search-results__list">
+              <user-search-result
+                *ngFor="let user of search_results_users"
+                [user]="user"
+                (saveSearch)="saveSearch($event)"
+              ></user-search-result>
+            </ul>
+          </div>
+          <div *ngIf="checked_filter === 'skills' && search_results_skills.length > 0" class="search-results__skills">
+            <h4 class="search-results__title">Matched users with skills:</h4>
+            <ul class="search-results__list">
+              <user-search-result
+                *ngFor="let user of search_results_skills"
+                [user]="user"
+                (saveSearch)="saveSearch($event)"
+                (deleteSearchResult)="deleteSearchResult($event)"
+              ></user-search-result>
+            </ul>
+          </div>
+          <div (click)="displayAllSearchResults()" class="all-results">
+            <h4 class="all-results-text"> Display all results for "{{ search_value }}"</h4>
+          </div>
+
+        </div>
+        <ng-template #recentSearches>
+          <div class="recent-searches">
+            <h4 *ngIf="recent_searches.length > 0;" class="recent-searches__title">Recent:</h4>
+            <ng-container *ngFor="let search of recent_searches">
+              <user-search-result
+                *ngIf="search.type === 'user'"
+                [user]="search.user"
+                [deleteable]="true"
+                (saveSearch)="saveSearch($event)"
+                (deleteSearchResult)="deleteSearchResult($event)"
+              ></user-search-result>
+              <content-search-result
+                *ngIf="search.type === 'content'"
+                [post]="search.content"
+                [deleteable]="true"
+                (saveSearch)="saveSearch($event)"
+                (deleteSearchResult)="deleteSearchResult($event)"
+              ></content-search-result>
+            </ng-container>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

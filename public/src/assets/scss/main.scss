@@ -118,7 +118,7 @@ margin-bottom: 20px;
     margin: 0;
     border: 1px solid $border-color;
     border-radius: $card-radius;
-    margin-bottom: 20px;
+    // margin-bottom: 20px;
 
 }
 .card-footer{
@@ -166,6 +166,7 @@ margin-bottom: 20px;
 .sideinnercard{
   padding: 20px;
   width: 100%;
+  margin-bottom: 15px;
 }
 
 .post-card{
@@ -515,4 +516,16 @@ quill-editor{
   border: none;
   border-bottom: 1px solid #ccc;
   width: 100%;
+}
+.tagsbtn{
+  font-size: 12px;
+  padding: 3px 4px;
+  background: $dark-sky-blue;
+  color: #fff;
+  border-radius: $card-radius;
+}
+.tagslabel{
+  font-size: 14px !important;
+  color: $dark-sky-blue;
+  margin: 0 10px;
 }

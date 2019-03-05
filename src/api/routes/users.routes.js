@@ -20,6 +20,8 @@ router.use(auth.isLoggedIn);
 // Get current user
 router.get('/', users.get);
 
+router.get('/getOtherUser/:userId', users.getOtherUser);
+
 // Edit/Update user
 router.put('/', cleanCache, users.edit);
 

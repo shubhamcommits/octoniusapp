@@ -37,8 +37,21 @@ $border-radius: 1rem;
 .pink{
   color:$pink;
 }
+.todo{
+  color: $pumpkin-orange;
+}
+.working{
+  color: $turquoise;
+}
+.done{
+  color: $dark-sky-blue;
+}
 .pink-border{
   border: 3px solid $pink !important;
+}
+
+.bold{
+  font-weight: 700;
 }
 
 .gray-border{

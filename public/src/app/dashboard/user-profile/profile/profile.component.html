@@ -17,7 +17,7 @@
             <p class="card-text">
               <strong>Mobile: </strong> {{user?.mobile_number}}</p>
           </div>
-        </div> 
+        </div>
       </div>
     </div>
     <div class="col-md-8">
@@ -32,22 +32,22 @@
           <strong>Bio: </strong> {{user?.bio}}
         </p>
       </div>
-      <div class="card-tile">
+      <div *ngIf="skills.length > 0 || isCurrentUser" class="card-tile">
         <div class="card-title" style="clear:both">
             <h2 class="float-left">
                 Skills:</h2>
-                <button type="button" name="button" style="float:right;" data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-primary">
+                <button *ngIf="isCurrentUser"  type="button" name="button" style="float:right;" data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-primary">
                      Add new
                   </button>
         </div>
-       
+
 
           <ul class="skills" style="clear:both">
             <li class="tags" *ngFor="let skill of user?.skills;">{{skill}} </li>
 
           </ul>
-          
-          
+
+
           <!-- Modal -->
           <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -61,9 +61,9 @@
                 <div class="modal-body">
                   <label for="skills-input">Enter your skills </label>
                   <input name="skills-input" type="text" class="form-control" id="skills-input">
-                  
-                 
-                  
+
+
+
                   <div class="modal-body">
                       <p id="skills-content"></p>
                       </div>
@@ -76,8 +76,8 @@
               </div>
             </div>
           </div>
-        
-        
+
+
       </div>
     </div>
   </div>

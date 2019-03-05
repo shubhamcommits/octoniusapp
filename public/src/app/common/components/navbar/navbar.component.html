@@ -25,31 +25,26 @@
             <span class="sr-only">(current)</span>
           </a>
         </li>
-
-        <!-- <li class="nav-item ">
-          <a class="nav-link" routerLink="/login">Files <span class="sr-only">(current)</span></a>
-        </li> -->
       </ul>
-      
-      
-        <!-- <i class="fa form-control-feedback fa-microphone" aria-hidden="true"></i> -->
-       
-    
+
+      <!-- SEARCH BAR -->
+      <search-bar [user]="user"></search-bar>
+      <!-- SEARCH BAR -->
 
   <div class="btn-group nav-item" placement="bottom-left"  ngbDropdown  #notificationDrop="ngbDropdown" (openChange)="toggled($event)">
-    <a class="notifications btn dropdown-toggle-split" ngbDropdownToggle>             
+    <a class="notifications btn dropdown-toggle-split" ngbDropdownToggle>
       <div class="notif-bullet" *ngIf="this.notifications_data?.unreadNotifications.length > 0"></div>
       <div class="notif-bullet notif-bullet-transparent" *ngIf="this.notifications_data?.unreadNotifications.length == 0"></div>
-      <i class="material-icons">notifications</i> 
-    </a> 
+      <i class="material-icons">notifications</i>
+    </a>
            <!-- <button class="btn btn-primary dropdown-toggle-split btn-sm" ngbDropdownToggle>Manage user </button>-->
-       
+
             <div class="dropdown-menu dropdown-menu-right pull-right"  ngbDropdownMenu aria-labelledby="notificationDrop">
                 <div class="triangle"></div>
                 <button class="dropdown-item" style="pointer-events: none;"><b>Notifications</b></button>
                 <div class="dropdown-divider"></div>
                 <div *ngIf="this.notifications_data?.unreadNotifications?.length != 0">
-                <button class="dropdown-item" *ngFor="let notifications of this.notifications_data?.unreadNotifications"> 
+                <button class="dropdown-item" *ngFor="let notifications of this.notifications_data?.unreadNotifications">
                     <a style="text-decoration:none; color:inherit;"  (click)="gotToPostPage(notifications?._origin_post?._group, notifications?._origin_post?._id)">
                       <img src="/uploads/{{notifications?._actor?.profile_pic}}" onerror="this.src='/assets/images/user.png'" alt="" class="topnav-avatar" style="margin-right:15px">
                   {{notifications?._actor?.first_name}} {{notifications?.message}}
@@ -65,7 +60,7 @@
                 <button class="dropdown-item" style="pointer-events: none;"><b>Older notifications</b></button>
                 <div class="dropdown-divider"></div>
                 <div *ngIf="this.notifications_data?.readNotifications?.length != 0">
-                  <button class="dropdown-item" *ngFor="let notifications of this.notifications_data?.readNotifications"> 
+                  <button class="dropdown-item" *ngFor="let notifications of this.notifications_data?.readNotifications">
                     <a style="text-decoration:none; color:inherit;" (click)="gotToPostPage(notifications?._origin_post?._group, notifications?._origin_post?._id)">
                       <img src="/uploads/{{notifications?._actor?.profile_pic}}" onerror="this.src='/assets/images/user.png'" alt="" class="topnav-avatar" routerLink="/dashboard/profile/profile" style="margin-right:15px">
                   {{notifications?._actor?.first_name}} {{notifications?.message}}
@@ -80,7 +75,7 @@
                 <!---->
                 <!---->
 
-        
+
                       <div class="dropdown-divider"></div>
                       <a routerLink="/dashboard/overview" class="dropdown-item">View all notifications</a>
                     <!--</div>-->
@@ -88,12 +83,12 @@
 
 
             </div>
-            <a class="nav-link"  routerLink="/dashboard/profile/profile">
-                <img [src]="userProfileImage" onerror="this.src='/assets/images/user.png'" alt="" class="topnav-avatar">
+            <a class="nav-link"  [routerLink]="['/dashboard/profile', user_data.user_id, 'profile']">
+                <img [src]="userProfileImage" onerror="this.src='/assets/images/user.png'"  class="topnav-avatar">
             </a>
-       
-        
-     
+
+
+
 
       <a class="nav-link" routerLink="/dashboard/admin" (click)="onSignOut()">Logout
         <span class="sr-only">(current)</span>

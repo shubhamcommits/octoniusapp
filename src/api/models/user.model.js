@@ -36,6 +36,10 @@ const UserSchema = new Schema({
     type: String,
     default: 'default_user.png'
   },
+  search_history: {
+    type: Array,
+    default: []
+  },
   workspace_name: {
     type: String,
     required: true

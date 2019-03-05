@@ -83,6 +83,15 @@ import { CloudsComponent } from './dashboard/user-profile/clouds/clouds.componen
 import { GoogleCloudService } from './shared/services/google-cloud.service';
 
 import {ResetPwdComponent} from "./Authentication/reset-password/reset-password.component";
+import { LimitCharacterPipe } from './shared/pipes/limit-character.pipe';
+import { ClickStopPropagationDirective } from './shared/directives/click-stop-propagation.directive';
+import { UserSearchResultComponent } from './common/components/search/user-search-result/user-search-result.component';
+import { ContentSearchResultComponent } from './common/components/search/content-search-result/content-search-result.component';
+import { AllSearchResultsComponent } from './dashboard/search/all-search-results/all-search-results.component';
+import {SearchService} from "./shared/services/search.service";
+import { UserSearchResultMainComponent } from './common/components/search/user-search-result-main/user-search-result-main.component';
+import {ProfileDataService} from "./shared/services/profile-data.service";
+import { SearchBarComponent } from './common/components/navbar/search-bar/search-bar.component';
 
 import { NgCircleProgressModule } from 'ng-circle-progress';
 
@@ -164,7 +173,14 @@ const ngCircle = {
     TaskGroupPostComponent,
     EventGroupPostComponent,
     CloudsComponent,
-    ResetPwdComponent
+    ResetPwdComponent,
+    LimitCharacterPipe,
+    ClickStopPropagationDirective,
+    UserSearchResultComponent,
+    ContentSearchResultComponent,
+    AllSearchResultsComponent,
+    UserSearchResultMainComponent,
+    SearchBarComponent
   ],
   imports: [
     BrowserModule,
@@ -204,10 +220,10 @@ const ngCircle = {
   ],
 
   providers: [AuthService, UserService, DenyNavigationGuard, PostService, GroupService,
-    GroupDataService, WorkspaceService, GroupsService, AdminService, GoogleCloudService,
+    GroupDataService, WorkspaceService, ProfileDataService, GroupsService, AdminService, GoogleCloudService,
     AuthGuard, NotAuthGuard, QuillAutoLinkService, ValidSubscriptionGuard,
     { provide: 'SnotifyToastConfig', useValue: ToastDefaults},
-    SnotifyService,
+    SnotifyService, SearchService,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true },
     { provide: LocationStrategy, useClass: HashLocationStrategy }],
   bootstrap: [AppComponent]

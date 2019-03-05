@@ -5,6 +5,7 @@ const posts = require('./posts.controller');
 const users = require('./users.controller');
 const workspaces = require('./workspaces.controller');
 const billing = require('./billing.controller');
+const search = require('./search.controller');
 
 // !! old Controllers, to be removed after implementation
 const authsController = require('./auths.controller.old');
@@ -22,6 +23,7 @@ module.exports = {
   groups,
   notifications,
   posts,
+    search,
   users,
   workspaces
 };
