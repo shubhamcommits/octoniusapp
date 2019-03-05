@@ -97,14 +97,14 @@ export class UserProfileHeaderComponent implements OnInit {
         company_join_date: user['company_join_date']
       };
 
-            if (this.user['profile_pic'] == null) {
-              this.profilePic = 'assets/images/user.png';
-              // console.log('Inside if');
-            } else {
-              // console.log('Inside else');
-              this.profilePic = `/uploads/${this.user['profile_pic']}`;
-              this.userImageUrl = this.profilePic;
-            }
+            // if (this.user['profile_pic'] == null) {
+            //   this.profilePic = 'assets/images/user.png';
+            //   // console.log('Inside if');
+            // } else {
+            //   // console.log('Inside else');
+            //   this.profilePic = `/uploads/${this.user['profile_pic']}`;
+            //   this.userImageUrl = this.profilePic;
+            // }
 
       this.isCurrentUser = JSON.parse(localStorage.getItem('user')).user_id == this.user._id;
     });

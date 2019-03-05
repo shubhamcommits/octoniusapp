@@ -15,11 +15,10 @@ const createPostQuery = (userGroups, query) => Post.find({
   .populate('_group', 'group_name');
 
 const createUserQuery = (user, query) => {
-  const search = new RegExp(query.trim());
   return User.find({
     $and: [
-      { full_name: { $regex: search, $options: 'i' } },
-      { _workspace: user._workspace },
+      { full_name: { $regex: query, $options: 'i' } },
+      { _workspace: user._workspace || user._workspace._id },
       { active: true }
     ]
   }).select('profile_pic full_name email created_date');

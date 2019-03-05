@@ -1,5 +1,5 @@
 <li [routerLink]="['/dashboard/group', post._group._id, 'post', post._id]" (click)="saveSearch()" class="search-result">
-  <img class="search-result__img" src="/uploads/{{post._posted_by.profile_pic}}" onerror="this.src='/assets/images/user.png'">
-  <h4 class="search-result__text">{{ post._posted_by.full_name }} - Post in {{post._group.group_name}} group</h4>
+  <img class="search-result__img" src="/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'">
+  <h4 class="search-result__text">{{ post._posted_by?.full_name }} - Post in {{post._group.group_name}} group</h4>
   <i *ngIf="deleteable" class="material-icons close" (click)="$event.stopPropagation(); sendDeleteSearchResult()">close</i>
 </li>
