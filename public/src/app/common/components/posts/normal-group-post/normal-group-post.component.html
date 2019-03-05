@@ -60,15 +60,11 @@
 
       <!--POST TAGS-->
       <div class="row innercard" *ngIf="post?.tags?.length > 0">
-      <div class="col-md-1">
-          <button type="button" class="btn btn-link">
-              <i class="material-icons" placement="top" ngbTooltip="Tags">
-                  local_offer
-                  </i>
-          </button>
-      </div>
-      <div class="col-md-10">
-          <button class="btn btn-sm btn-outline-primary" style="margin-right: 0.5rem;" *ngFor="let tag of tags; let i = index">{{tag}}</button>  
+      <div class="col-md-12">
+         <span> <i class="material-icons tagslabel" placement="bottom" ngbTooltip="Tags">
+            local_offer
+            </i></span>
+          <span class="tagsbtn" style="margin-right: 0.5rem;" *ngFor="let tag of tags; let i = index">{{tag}}</span>  
           </div>
     </div>   
 

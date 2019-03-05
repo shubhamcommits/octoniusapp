@@ -8,28 +8,31 @@
       <div class="search-dropdown-menu-container">
         <h4 class="search-title">Search for: </h4>
         <div class="person-search search-option">
-          <i class="material-icons">people</i>
+            <div class="squaredFour">
+                <input (click)="$event.stopPropagation(); myDrop.open(); toggleCheckbox('users')" [checked]="checked_filter === 'users'" type="checkbox" value="None" id="squaredFour" name="check" />
+                <label (click)="$event.stopPropagation(); myDrop.open()" for="squaredFour"></label>
+              </div>
+          <i class="material-icons">person</i>
           <h4 class="search-option__title">Users</h4>
-          <div class="squaredFour">
-            <input (click)="$event.stopPropagation(); myDrop.open(); toggleCheckbox('users')" [checked]="checked_filter === 'users'" type="checkbox" value="None" id="squaredFour" name="check" />
-            <label (click)="$event.stopPropagation(); myDrop.open()" for="squaredFour"></label>
-          </div>
+      
         </div>
         <div class="content-search search-option">
-          <i class="material-icons">assignment</i>
+            <div class="squaredFour">
+                <input (click)="$event.stopPropagation(); myDrop.open(); toggleCheckbox('posts')" [checked]="checked_filter === 'posts'" type="checkbox" value="None" id="squaredFour2" name="check" />
+                <label (click)="$event.stopPropagation(); myDrop.open();" for="squaredFour2"></label>
+              </div>
+          <i class="material-icons">chat</i>
           <h4 class="search-option__title">Posts</h4>
-          <div class="squaredFour">
-            <input (click)="$event.stopPropagation(); myDrop.open(); toggleCheckbox('posts')" [checked]="checked_filter === 'posts'" type="checkbox" value="None" id="squaredFour2" name="check" />
-            <label (click)="$event.stopPropagation(); myDrop.open();" for="squaredFour2"></label>
-          </div>
+       
         </div>
         <div class="skills-search search-option">
-          <i class="material-icons">build</i>
+            <div class="squaredFour">
+                <input (click)="$event.stopPropagation(); myDrop.open(); toggleCheckbox('skills')" [checked]="checked_filter === 'skills'" type="checkbox" value="None" id="squaredFour3" name="check" />
+                <label (click)="$event.stopPropagation(); myDrop.open()" for="squaredFour3"></label>
+              </div>
+          <i class="material-icons">local_offer</i>
           <h4 class="search-option__title">Skills</h4>
-          <div class="squaredFour">
-            <input (click)="$event.stopPropagation(); myDrop.open(); toggleCheckbox('skills')" [checked]="checked_filter === 'skills'" type="checkbox" value="None" id="squaredFour3" name="check" />
-            <label (click)="$event.stopPropagation(); myDrop.open()" for="squaredFour3"></label>
-          </div>
+        
         </div>
 
         <hr>
