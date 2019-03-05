@@ -21,21 +21,6 @@
     </ul>
   </div>
   <div class="search-results">
-    <div *ngIf="search_results_users.length > 0" class="search-results__users">
-      <ul class="search-results__list">
-        <li class="search-result fade-in" *ngFor="let user of search_results_users">
-          <img class="search-result__img" src="http://localhost:3000/uploads/{{user.profile_pic}}" onerror="this.src='/assets/images/user.png'">
-          <div class="search-result__data">
-            <h4 [routerLink]="['/dashboard/profile', user._id, 'profile']" class="search-result__name">{{ user.full_name }}</h4>
-            <p class="search-result__email">{{ user.email }}</p>
-            <p class="search-result__member-since">Member since: {{ user.created_date | amDateFormat:'MM.DD.YYYY' }}</p>
-            <p *ngIf="user.skills?.length > 0" class="search-result__skills">Skills: <span *ngFor="let skill of user.skills">{{skill}},</span></p>
-          </div>
-          <i [routerLink]="['/dashboard/profile', user._id, 'profile']" placement="top" ngbTooltip="Visit user profile" class="material-icons">exit_to_app</i>
-        </li>
-      </ul>
-      <span *ngIf="more_to_load_users" (click)="loadMoreResults('users', search_results_users.length)" class="load-more">Load more users...</span>
-    </div>
     <div *ngIf="search_results_posts.length > 0" class="search-results__posts">
       <ul class="search-results__list">
         <li class="search-result fade-in" *ngFor="let post of search_results_posts">
@@ -49,6 +34,21 @@
         </li>
       </ul>
       <span *ngIf="more_to_load_posts" (click)="loadMoreResults('posts', search_results_posts.length)" class="load-more">Load more posts...</span>
+    </div>
+    <div *ngIf="search_results_users.length > 0" class="search-results__users">
+      <ul class="search-results__list">
+        <li class="search-result fade-in" *ngFor="let user of search_results_users">
+          <img class="search-result__img" src="/uploads/{{user.profile_pic}}" onerror="this.src='/assets/images/user.png'">
+          <div class="search-result__data">
+            <h4 [routerLink]="['/dashboard/profile', user._id, 'profile']" class="search-result__name">{{ user.full_name }}</h4>
+            <p class="search-result__email">{{ user.email }}</p>
+            <p class="search-result__member-since">Member since: {{ user.created_date | amDateFormat:'MM.DD.YYYY' }}</p>
+            <p *ngIf="user.skills?.length > 0" class="search-result__skills">Skills: <span *ngFor="let skill of user.skills">{{skill}},</span></p>
+          </div>
+          <i [routerLink]="['/dashboard/profile', user._id, 'profile']" placement="top" ngbTooltip="Visit user profile" class="material-icons">exit_to_app</i>
+        </li>
+      </ul>
+      <span *ngIf="more_to_load_users" (click)="loadMoreResults('users', search_results_users.length)" class="load-more">Load more users...</span>
     </div>
     <div *ngIf="search_results_skills.length > 0" class="search-results__users">
       <ul class="search-results__list">

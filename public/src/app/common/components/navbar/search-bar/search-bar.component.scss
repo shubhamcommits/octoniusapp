@@ -132,6 +132,7 @@ p {
 
     hr {
       border-top: 1px solid #aaa;
+      margin-bottom: 0;
       width: 100%;
       height: 1px;
       grid-column: 1 /4;
@@ -140,12 +141,14 @@ p {
     .search-results {
       grid-column: 1 / 4;
       &__title {
+        margin-top: .6rem;
         padding: .4rem 1rem;
         font-weight: 500 !important;
       }
 
       &__list {
         padding-left: 0;
+        margin-bottom: 0;
         .search-result {
           cursor: pointer;
           padding: .4rem 1rem;

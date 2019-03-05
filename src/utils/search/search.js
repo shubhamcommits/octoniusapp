@@ -76,7 +76,7 @@ const getSearchResults = async (req, res, amountLoaded) => {
 
         const results = await Promise.all([
           userQuery.limit(6).exec(),
-          postQuery.limit(6).exec(),
+          postQuery.limit(11).exec(),
           skillsQuery.limit(6).exec()
         ]);
 
