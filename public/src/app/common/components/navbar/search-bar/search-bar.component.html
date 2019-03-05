@@ -14,7 +14,7 @@
               </div>
           <i class="material-icons">person</i>
           <h4 class="search-option__title">Users</h4>
-      
+
         </div>
         <div class="content-search search-option">
             <div class="squaredFour">
@@ -23,7 +23,7 @@
               </div>
           <i class="material-icons">chat</i>
           <h4 class="search-option__title">Posts</h4>
-       
+
         </div>
         <div class="skills-search search-option">
             <div class="squaredFour">
@@ -32,7 +32,7 @@
               </div>
           <i class="material-icons">local_offer</i>
           <h4 class="search-option__title">Skills</h4>
-        
+
         </div>
 
         <hr>
@@ -41,11 +41,13 @@
           <div *ngIf="search_results_posts.length > 0" class="search-results__users">
             <ul class="search-results__list">
               <!-- /dashboard/group/5c6f56ec53a7802ab09895b4/post/5c6f582053a7802ab09895c5 -->
-              <content-search-result
-                *ngFor="let post of search_results_posts"
-                [post]="post"
-                (saveSearch)="saveSearch($event)"
-              ></content-search-result>
+              <ng-container *ngFor="let post of search_results_posts">
+                <content-search-result
+                  *ngIf="post._posted_by._id"
+                  [post]="post"
+                  (saveSearch)="saveSearch($event)"
+                ></content-search-result>
+              </ng-container>
             </ul>
           </div>
           <div *ngIf="checked_filter === 'users' && search_results_users.length > 0" class="search-results__users">

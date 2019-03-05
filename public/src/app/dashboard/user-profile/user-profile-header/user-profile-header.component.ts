@@ -16,7 +16,7 @@ import {ProfileDataService} from "../../../shared/services/profile-data.service"
 export class UserProfileHeaderComponent implements OnInit {
 
   modalReference: any;
-  //starts image cropping
+  // starts image cropping
   imageChangedEvent: any = '';
   croppedImage: any = '';
 
@@ -69,7 +69,8 @@ export class UserProfileHeaderComponent implements OnInit {
     mobile_number: '',
     bio: '',
     current_position: '',
-    company_join_date: ''
+    company_join_date: '',
+    profile_pic: ''
   };
 
   constructor(
@@ -91,6 +92,7 @@ export class UserProfileHeaderComponent implements OnInit {
         bio: user['bio'],
         first_name: user['first_name'],
         last_name: user['last_name'],
+        profile_pic: user['profile_pic'] || null,
         current_position: user['current_position'],
         company_join_date: user['company_join_date']
       };
@@ -100,7 +102,7 @@ export class UserProfileHeaderComponent implements OnInit {
               // console.log('Inside if');
             } else {
               // console.log('Inside else');
-              this.profilePic = `${this.BASE_URL}/uploads/${this.user['profile_pic']}`;
+              this.profilePic = `/uploads/${this.user['profile_pic']}`;
               this.userImageUrl = this.profilePic;
             }
 
@@ -218,6 +220,7 @@ export class UserProfileHeaderComponent implements OnInit {
       first_name: '',
       last_name: '',
       phone_number: '',
+      profile_pic: null,
       mobile_number: '',
       bio: '',
       current_position: '',
