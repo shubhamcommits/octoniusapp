@@ -1,17 +1,10 @@
-.results-container {
-  margin-top: 120px;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
+
+
+
 
   .input-container {
     width: 100%;
     margin-bottom: 1.5rem;
-
-    &__main-title {
-      font-size: 1.5rem !important;
-      font-weight: 500 !important;
-      color: #666;
     }
 
     .form-control {
@@ -19,24 +12,9 @@
       line-height: 23px;
       border-radius: 5px !important;
     }
-  }
+  
 
-  .filter {
-    width: 20%;
-    align-self: start;
-    border-radius: 10px;
-    background-color: #fff;
-    padding: 1rem 0;
-
-    &__title {
-      text-decoration: underline;
-      text-align: center;
-      font-size: 1.2rem !important;
-      font-weight: 500 !important;
-      color: #666;
-    }
-
-    &__list {
+  .filterlist {
       list-style: none;
       display: flex;
       flex-direction: column;
@@ -44,96 +22,34 @@
       align-items: center;
       padding: 1rem 0;
       text-align: center;
-    }
 
-    &__list-item {
-      padding: 1rem;
-      font-size: 1.2rem;
-      cursor: pointer;
-      color: #888;
-      width: 100%;
-      display: flex;
-      justify-content: start;
-      transition: .3s all;
-
-      &:hover {
-        color: #005FD5 !important;
-        background-color: #eee;
-      }
-
-      i {
-        font-size: 30px;
-        margin-left: 20%;
-        margin-right: 5%;
-      }
-    }
-  }
-
-  .search-results {
-    width: 75%;
-    border-radius: 10px;
-
-    &__users {
-      margin-bottom: 5%;
-    }
-
-    &__posts {
-      margin-bottom: 5%;
-    }
-
-    &__list {
-      list-style: none;
-      padding: 0;
-
-      // individual search result
-      .search-result {
-        width: 100%;
-        background-color: #fff;
-        border-radius: 5px;
-        padding: 3%;
-        display: grid;
-        grid-template-columns: min-content 1fr min-content;
-        align-items: center;
-        grid-column-gap: 5%;
-        min-height: 120px;
-        margin-bottom: 1rem;
+      li{
+        padding: 1rem;
+        font-size: 1rem;
         cursor: pointer;
+        color: #888;
+        width: 100%;
+        display: flex;
+        justify-content: start;
         transition: .3s all;
-
-        &__img {
-          height: 100px;
-          width: 100px;
-          border-radius: 50%;
-          align-self: start;
+  
+        &:hover {
+          color: #005FD5 !important;
+          background-color: #eee;
         }
-
-        &__name {
-          font-weight: 500 !important;
-          font-size: 1.2rem !important;
-          color: #005FD5;
-          margin-bottom: 0;
-          text-transform: capitalize;
-
-          &:hover {
-            text-decoration: underline;
-          }
+  
+        i {
+          font-size: 30px;
+          margin-left: 20%;
+          margin-right: 5%;
         }
-
-        &__email {
-
-        }
-
-        &__content {
-
-        }
-
-        .material-icons {
-          font-size: 2rem;
-          cursor: pointer;
-        }
-
       }
     }
+
+   
+  
+
+  
 
     .load-more {
       color: blue;
@@ -143,8 +59,8 @@
         text-decoration: underline;
       }
     }
-  }
-}
+  
+
 
 .fade-in {
   animation: fadeIn ease 1s;
