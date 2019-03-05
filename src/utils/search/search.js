@@ -18,8 +18,7 @@ const createUserQuery = (user, query) => {
   return User.find({
     $and: [
       { full_name: { $regex: query, $options: 'i' } },
-      { _workspace: user._workspace || user._workspace._id },
-      { active: true }
+      { _workspace: user._workspace || user._workspace._id }
     ]
   }).select('profile_pic full_name email created_date');
 };
