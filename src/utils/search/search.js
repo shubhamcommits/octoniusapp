@@ -5,23 +5,25 @@ const { User, Post, Group } = require('../../api/models');
 const { sendErr } = require('../../utils');
 
 
-const createPostQuery = (userGroups, query) => {
-  return Post.find({
-    $and: [
-      { _group: { $in: userGroups } },
-      { content: { $regex: query, $options: 'i' } }
-    ]
-  }).populate('_posted_by', 'full_name profile_pic')
-    .populate('_group', 'group_name');
-};
-
-const createUserQuery = (user, query) => User.find({
+const createPostQuery = (userGroups, query) => Post.find({
   $and: [
-    { full_name: { $regex: query, $options: 'i' } },
-    { _workspace: user._workspace },
-    { active: true }
+    { _group: { $in: userGroups } },
+    { content: { $regex: query, $options: 'i' } }
   ]
-}).select('profile_pic full_name email created_date');
+}).populate('_posted_by', 'full_name profile_pic')
+  .populate('_group', 'group_name');
+
+const createUserQuery = (user, query) => {
+  const search = new RegExp(query.trim());
+  console.log('user', user);
+  return User.find({
+    $and: [
+      { full_name: { $regex: search, $options: 'i' } },
+      { _workspace: user._workspace },
+      { active: true }
+    ]
+  }).select('profile_pic full_name email created_date');
+};
 
 const createSkillsQuery = (user, query) => User.find({
   $and: [
@@ -78,7 +80,7 @@ const getSearchResults = async (req, res, amountLoaded) => {
 
         const results = await Promise.all([
           userQuery.limit(6).exec(),
-          postQuery.limit(11).exec(),
+          postQuery.limit(6).exec(),
           skillsQuery.limit(6).exec()
         ]);
 
