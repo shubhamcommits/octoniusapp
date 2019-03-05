@@ -529,3 +529,15 @@ quill-editor{
   color: $dark-sky-blue;
   margin: 0 10px;
 }
+
+.link{
+  &:hover{
+    cursor: pointer;
+    text-decoration: none;
+    color: $brand-primary;
+  }
+}
+
+.clearfix{
+  clear: both;
+}
