@@ -25,19 +25,19 @@
         <div class="form-check">
           <input [checked]="filters.normal" (click)="toggleFilter('normal')" class="form-check-input" type="checkbox" value="" id="defaultCheck1">
           <label class="form-check-label" for="defaultCheck1">
-            Normal post
+            Normal posts
           </label>
         </div>
         <div class="form-check">
           <input [checked]="filters.event" (click)="toggleFilter('event')" class="form-check-input" type="checkbox" value="" id="defaultCheck2">
           <label class="form-check-label" for="defaultCheck2">
-            Event post
+            Event posts
           </label>
         </div>
         <div class="form-check">
           <input [checked]="filters.task" (click)="toggleFilter('task')" class="form-check-input" type="checkbox" value="" id="defaultCheck3">
           <label class="form-check-label" for="defaultCheck3">
-            Task post
+            Task posts
           </label>
         </div>
         <div class="form-check">
@@ -46,7 +46,7 @@
             User
           </label>
         </div>
-        <input *ngIf="filters.user" type="text" [(ngModel)]="filters.user_value" class="user-filter" placeholder="Enter user name">
+        <input *ngIf="filters.user" type="text" [(ngModel)]="filters.user_value" (keyup)="filterPosts()" class="user-filter" placeholder="Enter user name">
       </div>
 
       <div class="card sideinnercard">
@@ -174,7 +174,7 @@
     </postbox>
 
 
-    <div class="search-results" infiniteScroll [infiniteScrollDistance]="0" [immediateCheck]="true" (scrolled)="onScroll()">
+    <div #searchResults class="search-results" infiniteScroll [infiniteScrollDistance]="0" [immediateCheck]="true" (scrolled)="onScroll($event, searchResults)">
       <div *ngIf="posts.length == 0">
         <img src='../../../assets/images/overview-emptystate.svg' style=" margin: 0 auto; display:block; width: 600px">
       </div>

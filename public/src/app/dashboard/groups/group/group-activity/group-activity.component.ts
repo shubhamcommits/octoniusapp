@@ -551,23 +551,29 @@ filters = {
 
 
   // !--ON SCROLL FETCHES THE NEXT RECENT GROUP POSTS--! //
-  onScroll() {
+  onScroll(event, el) {
+
     if ( this.posts.length != 0 ) {
-      this.isLoading$.next(true);
-      this.ngxService.startBackground();
+      if (this.filters.normal || this.filters.event || this.filters.task || (this.filters.user && !!this.filters.user_value)) {
+        this.isLoading$.next(true);
+        this.ngxService.startBackground();
+        this.getNextFilteredPosts();
+      } else {
+        this.isLoading$.next(true);
+        this.ngxService.startBackground();
+        this.postService.getGroupPosts(this.group_id)
+          .subscribe((res) => {
+            if (this.posts.length !== 0) {
 
-      this.postService.getGroupPosts(this.group_id)
-        .subscribe((res) => {
-          if (this.posts.length != 0) {
-
-            const last_post_id = this.posts[this.posts.length - 1]._id
-            this.loadNextPosts(last_post_id);
-            this.isLoading$.next(false);
-            this.ngxService.stopBackground();
-          }
-        }, (err) => {
-          swal("Error!", "Error while retrieving the next recent posts & Scrolling " + err, "danger");
-        });
+              const last_post_id = this.posts[this.posts.length - 1]._id;
+              this.loadNextPosts(last_post_id);
+              this.isLoading$.next(false);
+              this.ngxService.stopBackground();
+            }
+          }, (err) => {
+            swal("Error!", "Error while retrieving the next recent posts & Scrolling " + err, "danger");
+          });
+      }
     }
 
   }
@@ -934,7 +940,16 @@ filters = {
   this.filters[type] = !this.filters[type];
 
   if (this.filters[type]) {
-    this.filterPosts();
+    if (!(type === 'user' && !this.filters.user_value)) {
+      this.filterPosts();
+    }
+  } else {
+  //  check if other filters are still checked
+    if (this.filters.normal || this.filters.event || this.filters.task || (this.filters.user && !!this.filters.user_value)) {
+      this.filterPosts();
+    } else {
+      this.loadGroupPosts();
+    }
   }
 }
 
@@ -942,10 +957,21 @@ filterPosts() {
   const filters = this.filters;
   this.groupService.getFilteredPosts(this.group._id, filters)
     .subscribe((res) => {
-      console.log('RES', res);
-    })
+      this.posts = res['posts'];
+    });
 }
 
+getNextFilteredPosts() {
+    const filters = this.filters;
+    const alreadyLoaded = this.posts.length;
+    console.log('ENTERED');
 
+    this.groupService.getNextFilteredPosts(this.group._id, filters, alreadyLoaded)
+      .subscribe((res) => {
+        this.isLoading$.next(false);
+        this.ngxService.stopBackground();
 
+        this.posts = [...this.posts, ...res['posts']];
+      });
+}
 }

@@ -74,6 +74,11 @@ router.get('/:groupId/getFilteredPosts',
   authorization.groupAccess,
   groups.getFilteredPosts);
 
+// get group's next filtered posts
+router.get('/:groupId/:alreadyLoaded/getNextFilteredPosts',
+    authorization.groupAccess,
+    groups.getNextFilteredPosts);
+
 // - Tasks -
 
 // Get group's to do/in progress tasks
