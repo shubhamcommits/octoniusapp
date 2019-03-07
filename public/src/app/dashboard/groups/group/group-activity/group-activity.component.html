@@ -22,29 +22,31 @@
       </div>
 
       <div class="card sideinnercard">
-        <div class="form-check">
-          <input [checked]="filters.normal" (click)="toggleFilter('normal')" class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+          <h6 class="card-title"><i class="material-icons" style="font-size: 18px;">filter_list</i> Filter conversations </h6>
+          <hr>
+        <div class="squaredFour">
+          <input [checked]="filters.normal" (click)="toggleFilter('normal')"  type="checkbox" value="" id="defaultCheck1">
           <label class="form-check-label" for="defaultCheck1">
-            Normal posts
-          </label>
+            
+          </label> <span> Posts</span>
         </div>
-        <div class="form-check">
-          <input [checked]="filters.event" (click)="toggleFilter('event')" class="form-check-input" type="checkbox" value="" id="defaultCheck2">
+        <div class="squaredFour">
+          <input [checked]="filters.event" (click)="toggleFilter('event')"  type="checkbox" value="" id="defaultCheck2">
           <label class="form-check-label" for="defaultCheck2">
-            Event posts
-          </label>
+           
+          </label> <span>Events</span>
         </div>
-        <div class="form-check">
-          <input [checked]="filters.task" (click)="toggleFilter('task')" class="form-check-input" type="checkbox" value="" id="defaultCheck3">
+        <div class="squaredFour">
+          <input [checked]="filters.task" (click)="toggleFilter('task')"  type="checkbox" value="" id="defaultCheck3">
           <label class="form-check-label" for="defaultCheck3">
-            Task posts
-          </label>
+            
+          </label> <span>Tasks</span>
         </div>
-        <div class="form-check">
-          <input [checked]="filters.user" (click)="toggleFilter('user')" class="form-check-input" type="checkbox" value="" id="defaultCheck4">
+        <div class="squaredFour">
+          <input [checked]="filters.user" (click)="toggleFilter('user')" type="checkbox" value="" id="defaultCheck4">
           <label class="form-check-label" for="defaultCheck4">
-            User
-          </label>
+            
+          </label><span>User </span>
         </div>
         <input *ngIf="filters.user" type="text" [(ngModel)]="filters.user_value" (keyup)="filterPosts()" class="user-filter" placeholder="Enter user name">
       </div>
