@@ -182,6 +182,117 @@ const getPosts = async (req, res, next) => {
   }
 };
 
+const filterPosts = async (query, params) => {
+  const filters = [];
+  let users = [];
+  let userIds = [];
+  let posts = [];
+  console.log('test 1', query);
+  console.log('test 2', params);
+
+  // because the posted_by property of post is not populated I have to retrieve the userIds
+  //  of the users that match the search values, so that I can enter these IDs in the find function
+  //  dow below
+  if (query.user === 'true' && !!query.user_value) {
+    users = await User.find(
+      {
+        $and: [
+          { full_name: { $regex: query.user_value } },
+          { _groups: params.groupId }
+        ]
+      }
+    );
+    userIds = users.map(user => user._id);
+  }
+
+  for (const filter in query) {
+    if (query[filter] === 'true' && filter !== 'user') {
+      filters.push(filter);
+    }
+  }
+
+  if (query.user === 'true' && !!query.user_value && filters.length === 0) {
+    posts = await Post.find({
+      $and: [
+        { _posted_by: { $in: userIds } },
+        { _group: params.groupId }
+      ]
+    })
+      .sort('-_id')
+      .skip(parseInt(params.alreadyLoaded, 10) || 0)
+      .limit(5)
+      .populate('_posted_by', 'first_name last_name profile_pic')
+      .populate('task._assigned_to')
+      .populate('event._assigned_to')
+      .populate('_liked_by', '_id first_name last_name')
+      .lean();
+  } else if (query.user === 'true' && !!query.user_value && filters.length > 0) {
+    posts = await Post.find({
+      $and: [
+        { _posted_by: { $in: userIds } },
+        { _group: params.groupId },
+        { type: { $in: filters } }
+      ]
+    })
+      .sort('-_id')
+      .skip(parseInt(params.alreadyLoaded, 10) || 0)
+      .limit(5)
+      .populate('_posted_by', 'first_name last_name profile_pic')
+      .populate('task._assigned_to')
+      .populate('event._assigned_to')
+      .populate('_liked_by', '_id first_name last_name')
+      .lean();
+  } else {
+    console.log('test 4');
+    posts = await Post.find({
+      $and: [
+        { _group: params.groupId },
+        { type: { $in: filters } }
+      ]
+    })
+      .sort('-_id')
+      .skip(parseInt(params.alreadyLoaded, 10) || 0)
+      .limit(5)
+      .populate('_posted_by', 'first_name last_name profile_pic')
+      .populate('task._assigned_to')
+      .populate('event._assigned_to')
+      .populate('_liked_by', '_id first_name last_name')
+      .lean();
+
+    console.log('test 5', posts);
+  }
+
+  return posts;
+};
+
+const getFilteredPosts = async (req, res) => {
+  try {
+    const posts = await filterPosts(req.query, req.params);
+
+    res.status(200).json({
+      message: 'successfully filtered posts',
+      posts
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+const getNextFilteredPosts = async (req, res) => {
+  try {
+    const posts = await filterPosts(req.query, req.params);
+
+    console.log('test 6', posts);
+
+    res.status(200).json({
+      message: 'successfully filtered posts',
+      posts
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
 // -| TASKS |-
 
 const getNextTasksDone = async (req, res, next) => {
@@ -299,6 +410,8 @@ module.exports = {
   getCalendarPosts,
   getNextPosts,
   getPosts,
+  getFilteredPosts,
+  getNextFilteredPosts,
   // Tasks
   getNextTasksDone,
   getTasks,

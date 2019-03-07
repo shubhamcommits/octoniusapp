@@ -22,6 +22,36 @@
       </div>
 
       <div class="card sideinnercard">
+          <h6 class="card-title"><i class="material-icons" style="font-size: 18px;">filter_list</i> Filter conversations </h6>
+          <hr>
+        <div class="squaredFour">
+          <input [checked]="filters.normal" (click)="toggleFilter('normal')"  type="checkbox" value="" id="defaultCheck1">
+          <label class="form-check-label" for="defaultCheck1">
+            
+          </label> <span> Posts</span>
+        </div>
+        <div class="squaredFour">
+          <input [checked]="filters.event" (click)="toggleFilter('event')"  type="checkbox" value="" id="defaultCheck2">
+          <label class="form-check-label" for="defaultCheck2">
+           
+          </label> <span>Events</span>
+        </div>
+        <div class="squaredFour">
+          <input [checked]="filters.task" (click)="toggleFilter('task')"  type="checkbox" value="" id="defaultCheck3">
+          <label class="form-check-label" for="defaultCheck3">
+            
+          </label> <span>Tasks</span>
+        </div>
+        <div class="squaredFour">
+          <input [checked]="filters.user" (click)="toggleFilter('user')" type="checkbox" value="" id="defaultCheck4">
+          <label class="form-check-label" for="defaultCheck4">
+            
+          </label><span>User </span>
+        </div>
+        <input *ngIf="filters.user" type="text" [(ngModel)]="filters.user_value" (keyup)="filterPosts()" class="user-filter" placeholder="Enter user name">
+      </div>
+
+      <div class="card sideinnercard">
         <div *ngIf="!isItMyWorkplace; else personalmetrics" class="card-block">
 
           <h6 class="card-title"><b>Hi {{user?.first_name}},</b></h6>
@@ -35,12 +65,13 @@
             </div>
 
             </div>
-         
-         <div class="row">
-           <div class="col-md-6"><h4 class="todo" style="margin-top:30px"><b>{{pendingToDoTaskCount}} To do</b></h4></div>
-           <div class="col-md-4">                 
 
-            <b><circle-progress 
+         <div class="row">
+
+           <div class="col-md-6"><h4 class="todo" style="margin-top:30px"><b>{{pendingToDoTaskCount}} To do</b></h4></div>
+           <div class="col-md-4">
+
+            <b><circle-progress
               [percent]="todoPercent">
             </circle-progress></b>
            </div>
@@ -48,8 +79,9 @@
 
          <div class="row">
             <div class="col-md-6"><h4 class="working" style="margin-top:30px"><b>{{pendingInProgressTaskCount}} In progress</b></h4></div>
-            <div class="col-md-4">                 
-              <b><circle-progress 
+            <div class="col-md-4">
+              <b><circle-progress
+
                 [percent]="inprogressPercent">
               </circle-progress></b>
             </div>
@@ -57,8 +89,8 @@
 
           <div class="row">
               <div class="col-md-6"><h4 class="done" style="margin-top:30px"><b>{{completedTaskCount}} Done</b></h4></div>
-              <div class="col-md-4">                 
-                <b><circle-progress 
+              <div class="col-md-4">
+                <b><circle-progress
                   [percent]="completedPercent">
                 </circle-progress></b>
               </div>
@@ -69,45 +101,48 @@
 
             <h6 class="card-title"><b>Hi {{user?.first_name}},</b></h6>
             <hr />
-  
+
             <div class="row">
               <div class="col-md-12">
                   <p>
                       You have <span class="todo bold">{{pendingToDoTaskCount + pendingInProgressTaskCount + completedTaskCount}}</span> assignments this week.
                   </p>
               </div>
-  
+
               </div>
-           
+
            <div class="row">
+
              <div class="col-md-6"><h4 class="todo" style="margin-top:30px"><b>{{pendingToDoTaskCount}} To do</b></h4></div>
-             <div class="col-md-4">                 
-  
-              <b><circle-progress 
+             <div class="col-md-4">
+
+              <b><circle-progress
                 [percent]="todoPercent">
               </circle-progress></b>
              </div>
            </div>
-  
+
            <div class="row">
               <div class="col-md-6"><h4 class="working" style="margin-top:30px"><b>{{pendingInProgressTaskCount}} In progress</b></h4></div>
-              <div class="col-md-4">                 
-                <b><circle-progress 
+              <div class="col-md-4">
+                <b><circle-progress
+
                   [percent]="inprogressPercent">
                 </circle-progress></b>
               </div>
             </div>
-  
+
             <div class="row">
                 <div class="col-md-6"><h4 class="done" style="margin-top:30px"><b>{{completedTaskCount}} Done</b></h4></div>
-                <div class="col-md-4">                 
-                  <b><circle-progress 
+                <div class="col-md-4">
+                  <b><circle-progress
+
                     [percent]="completedPercent">
                   </circle-progress></b>
                 </div>
               </div>
-  
-       
+
+
         </ng-template>
       </div>
     </div>
@@ -141,7 +176,7 @@
     </postbox>
 
 
-    <div class="search-results" infiniteScroll [infiniteScrollDistance]="0" [immediateCheck]="true" (scrolled)="onScroll()">
+    <div #searchResults class="search-results" infiniteScroll [infiniteScrollDistance]="0" [immediateCheck]="true" (scrolled)="onScroll($event, searchResults)">
       <div *ngIf="posts.length == 0">
         <img src='../../../assets/images/overview-emptystate.svg' style=" margin: 0 auto; display:block; width: 600px">
       </div>

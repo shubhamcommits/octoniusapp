@@ -173,6 +173,15 @@ export class GroupActivityComponent implements OnInit {
   completedTasks: any = new Array();
   pendingTasks: any = new Array();
 
+  //filters
+filters = {
+  normal: false,
+  event: false,
+  task: false,
+  user: false,
+  user_value: ''
+};
+
 
   // !--GOOGLE DEVELOPER CONSOLE CREDENTIALS--! //
   /*developerKey = 'AIzaSyDGM66BZhGSmBApm3PKL-xCrri-3Adb06I';
@@ -233,16 +242,16 @@ export class GroupActivityComponent implements OnInit {
     }
 
     //it refreshes the access token as soon as we visit any group
-      //this.googleService.refreshGoogleToken();
-      //this.refreshGoogleToken();
-      //this.getGoogleCalendarEvents();
-      //this.getCalendar();
+    //this.googleService.refreshGoogleToken();
+    //this.refreshGoogleToken();
+    //this.getGoogleCalendarEvents();
+    //this.getCalendar();
 
-      //we have set a time interval of 30mins so as to refresh the access_token in the group
-      setInterval(()=>{
-        this.googleService.refreshGoogleToken();
-        //this.refreshGoogleToken()
-      }, 1800000);
+    //we have set a time interval of 30mins so as to refresh the access_token in the group
+    setInterval(()=>{
+      this.googleService.refreshGoogleToken();
+      //this.refreshGoogleToken()
+    }, 1800000);
 
     this.loadGroupPosts();
     await this.statusChanged();
@@ -331,7 +340,7 @@ export class GroupActivityComponent implements OnInit {
   }
 
 
-getGroup () {
+  getGroup () {
     return new Promise((resolve, reject) => {
       this.groupService.getGroup(this.group_id)
         .subscribe((res) => {
@@ -339,11 +348,11 @@ getGroup () {
           this.group = res['group'];
           resolve();
         }, (err) => {
-              reject();
+          reject();
         });
     });
 
-}
+  }
 
   loadGroup() {
     this.groupService.getGroup(this.group_id)
@@ -542,23 +551,29 @@ getGroup () {
 
 
   // !--ON SCROLL FETCHES THE NEXT RECENT GROUP POSTS--! //
-  onScroll() {
+  onScroll(event, el) {
+
     if ( this.posts.length != 0 ) {
-      this.isLoading$.next(true);
-      this.ngxService.startBackground();
+      if (this.filters.normal || this.filters.event || this.filters.task || (this.filters.user && !!this.filters.user_value)) {
+        this.isLoading$.next(true);
+        this.ngxService.startBackground();
+        this.getNextFilteredPosts();
+      } else {
+        this.isLoading$.next(true);
+        this.ngxService.startBackground();
+        this.postService.getGroupPosts(this.group_id)
+          .subscribe((res) => {
+            if (this.posts.length !== 0) {
 
-      this.postService.getGroupPosts(this.group_id)
-        .subscribe((res) => {
-          if (this.posts.length != 0) {
-
-            const last_post_id = this.posts[this.posts.length - 1]._id
-            this.loadNextPosts(last_post_id);
-            this.isLoading$.next(false);
-            this.ngxService.stopBackground();
-          }
-        }, (err) => {
-          swal("Error!", "Error while retrieving the next recent posts & Scrolling " + err, "danger");
-        });
+              const last_post_id = this.posts[this.posts.length - 1]._id;
+              this.loadNextPosts(last_post_id);
+              this.isLoading$.next(false);
+              this.ngxService.stopBackground();
+            }
+          }, (err) => {
+            swal("Error!", "Error while retrieving the next recent posts & Scrolling " + err, "danger");
+          });
+      }
     }
 
   }
@@ -628,7 +643,7 @@ getGroup () {
   mentionmembers() {
     var hashValues = [];
 
-   // var client_id = this.clientId;
+    // var client_id = this.clientId;
     //var scope = this.scope;
 
     var Value = [];
@@ -829,37 +844,37 @@ getGroup () {
       this.pendingInProgressTaskCount = 0;
       this.isLoading$.next(true);
       this.groupService.getGroupTasks(this.group_id)
-      .subscribe((res) => {
-        this.pendingTasks = res['posts'];
-        console.log(this.pendingTasks);
-        for(var i = 0; i < this.pendingTasks.length; i++){
-          if(this.pendingTasks[i]['task']['status'] == 'to do'){
-            taskDueToWeek = moment(this.pendingTasks[i]['task']['due_to']).format('w');
-            //console.log('Task week number', taskDueToWeek);
-            if(taskDueToWeek === getcurrentweek){
-              this.pendingToDoTaskCount++;
-            }
+        .subscribe((res) => {
+            this.pendingTasks = res['posts'];
+            console.log(this.pendingTasks);
+            for(var i = 0; i < this.pendingTasks.length; i++){
+              if(this.pendingTasks[i]['task']['status'] == 'to do'){
+                taskDueToWeek = moment(this.pendingTasks[i]['task']['due_to']).format('w');
+                //console.log('Task week number', taskDueToWeek);
+                if(taskDueToWeek === getcurrentweek){
+                  this.pendingToDoTaskCount++;
+                }
 
-          }
-         if(this.pendingTasks[i]['task']['status'] == 'in progress'){
-            taskDueToWeek = moment(this.pendingTasks[i]['task']['due_to']).format('w');
-            console.log('Task week number', taskDueToWeek);
-            if(taskDueToWeek === getcurrentweek){
-              this.pendingInProgressTaskCount++;
-            }
+              }
+              if(this.pendingTasks[i]['task']['status'] == 'in progress'){
+                taskDueToWeek = moment(this.pendingTasks[i]['task']['due_to']).format('w');
+                console.log('Task week number', taskDueToWeek);
+                if(taskDueToWeek === getcurrentweek){
+                  this.pendingInProgressTaskCount++;
+                }
 
-          }
-        }
-        console.log('To-do Tasks', this.pendingToDoTaskCount);
-        console.log('In-Progress Tasks', this.pendingInProgressTaskCount);
-        this.isLoading$.next(false);
-        resolve();
-      },
-      (err) => {
-        console.log('Error Fetching the Pending Tasks Posts', err);
-        this.isLoading$.next(false);
-        reject();
-      });
+              }
+            }
+            console.log('To-do Tasks', this.pendingToDoTaskCount);
+            console.log('In-Progress Tasks', this.pendingInProgressTaskCount);
+            this.isLoading$.next(false);
+            resolve();
+          },
+          (err) => {
+            console.log('Error Fetching the Pending Tasks Posts', err);
+            this.isLoading$.next(false);
+            reject();
+          });
     })
 
   }
@@ -871,28 +886,28 @@ getGroup () {
       this.completedTaskCount = 0;
       this.isLoading$.next(true);
       this.groupService.getCompletedGroupTasks(this.group_id)
-      .subscribe((res) => {
-        this.completedTasks = res['posts'];
-        console.log(this.completedTasks);
-        for(var i = 0 ; i < this.completedTasks.length; i++){
-          if(this.completedTasks[i]['task']['status'] == 'done'){
-            taskDueToWeek = moment(this.completedTasks[i]['task']['due_to']).format('w');
-            if(taskDueToWeek === getcurrentweek){
-              this.completedTaskCount++;
+        .subscribe((res) => {
+            this.completedTasks = res['posts'];
+            console.log(this.completedTasks);
+            for(var i = 0 ; i < this.completedTasks.length; i++){
+              if(this.completedTasks[i]['task']['status'] == 'done'){
+                taskDueToWeek = moment(this.completedTasks[i]['task']['due_to']).format('w');
+                if(taskDueToWeek === getcurrentweek){
+                  this.completedTaskCount++;
+                }
+              }
+
             }
-          }
+            this.isLoading$.next(false);
+            console.log('Completed Tasks Count', this.completedTaskCount);
+            resolve();
 
-        }
-        this.isLoading$.next(false);
-        console.log('Completed Tasks Count', this.completedTaskCount);
-        resolve();
-
-      },
-      (err) => {
-        console.log('Error Fetching the Completed Tasks Posts', err);
-        this.isLoading$.next(false);
-        reject();
-      });
+          },
+          (err) => {
+            console.log('Error Fetching the Completed Tasks Posts', err);
+            this.isLoading$.next(false);
+            reject();
+          });
     })
 
 
@@ -900,27 +915,63 @@ getGroup () {
 
   async statusChanged(){
     await this.getPendingTasks()
-    .then( async ()=>{
-      await this.getCompletedTasks()
-      .then(async ()=>{
-        this.todoPercent = Math.round(this.pendingToDoTaskCount/(this.pendingInProgressTaskCount+this.pendingToDoTaskCount+this.completedTaskCount)*100);
-        this.inprogressPercent = Math.round(this.pendingInProgressTaskCount/(this.pendingInProgressTaskCount+this.pendingToDoTaskCount+this.completedTaskCount)*100);
-        this.completedPercent = Math.round(this.completedTaskCount/(this.pendingInProgressTaskCount+this.pendingToDoTaskCount+this.completedTaskCount)*100);
+      .then( async ()=>{
+        await this.getCompletedTasks()
+          .then(async ()=>{
+            this.todoPercent = Math.round(this.pendingToDoTaskCount/(this.pendingInProgressTaskCount+this.pendingToDoTaskCount+this.completedTaskCount)*100);
+            this.inprogressPercent = Math.round(this.pendingInProgressTaskCount/(this.pendingInProgressTaskCount+this.pendingToDoTaskCount+this.completedTaskCount)*100);
+            this.completedPercent = Math.round(this.completedTaskCount/(this.pendingInProgressTaskCount+this.pendingToDoTaskCount+this.completedTaskCount)*100);
 
-        console.log('To-do Tasks percent', this.todoPercent);
-        console.log('In progress Tasks percent', this.inprogressPercent);
-        console.log('Completed Tasks percent', this.completedPercent);
-      })
-      .catch((err)=>{
-        console.log('Error whole getting done tasks', err);
-      })
-      .catch((err)=>{
-        console.log('Error while getting pending tasks', err);
-      })
+            console.log('To-do Tasks percent', this.todoPercent);
+            console.log('In progress Tasks percent', this.inprogressPercent);
+            console.log('Completed Tasks percent', this.completedPercent);
+          })
+          .catch((err)=>{
+            console.log('Error whole getting done tasks', err);
+          })
+          .catch((err)=>{
+            console.log('Error while getting pending tasks', err);
+          })
 
-    })
+      })
   }
 
+  toggleFilter(type) {
+  this.filters[type] = !this.filters[type];
 
+  if (this.filters[type]) {
+    if (!(type === 'user' && !this.filters.user_value)) {
+      this.filterPosts();
+    }
+  } else {
+  //  check if other filters are still checked
+    if (this.filters.normal || this.filters.event || this.filters.task || (this.filters.user && !!this.filters.user_value)) {
+      this.filterPosts();
+    } else {
+      this.loadGroupPosts();
+    }
+  }
+}
 
+filterPosts() {
+  const filters = this.filters;
+  this.groupService.getFilteredPosts(this.group._id, filters)
+    .subscribe((res) => {
+      this.posts = res['posts'];
+    });
+}
+
+getNextFilteredPosts() {
+    const filters = this.filters;
+    const alreadyLoaded = this.posts.length;
+    console.log('ENTERED');
+
+    this.groupService.getNextFilteredPosts(this.group._id, filters, alreadyLoaded)
+      .subscribe((res) => {
+        this.isLoading$.next(false);
+        this.ngxService.stopBackground();
+
+        this.posts = [...this.posts, ...res['posts']];
+      });
+}
 }
