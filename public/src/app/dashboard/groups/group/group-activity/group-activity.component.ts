@@ -62,43 +62,12 @@ export class GroupActivityComponent implements OnInit {
   files = [];
   content_mentions = [];
 
-  public editor;
-  public editorTextLength;
-
-  emojiThemes = [
-    'apple',
-    'google',
-    'twitter',
-    'emojione',
-    'messenger',
-    'facebook',
-  ];
-  emojiSet = 'google';
-  emojiNative = false;
-
   isLoading$ = new BehaviorSubject(false);
-
-  style = 'material';
-  title = 'Snotify title!';
-  body = 'Lorem ipsum dolor sit amet!';
-  timeout = 3000;
-  position: SnotifyPosition = SnotifyPosition.rightBottom;
-  progressBar = true;
-  closeClick = true;
-  newTop = true;
-  filterDuplicates = false;
-  backdrop = -1;
-  dockMax = 8;
-  blockMax = 6;
-  pauseHover = true;
-  titleMaxLength = 15;
-  bodyMaxLength = 80;
 
   user_data;
   user: User;
   profileImage;
-  postForm: FormGroup;
-  commentForm: FormGroup;
+
   post = {
     type: 'normal',
     content: ''
@@ -115,7 +84,6 @@ export class GroupActivityComponent implements OnInit {
   processing = false;
   post_type;
   time = { hour: 13, minute: 30 };
-  model_date;
   date: { year: number, month: number };
   model_time = { hour: 13, minute: 30 };
   due_date = 'Due Date';
@@ -183,21 +151,6 @@ filters = {
 };
 
 
-  // !--GOOGLE DEVELOPER CONSOLE CREDENTIALS--! //
-  /*developerKey = 'AIzaSyDGM66BZhGSmBApm3PKL-xCrri-3Adb06I';
-
-  clientId = "971238950983-aef7kjl23994hjj9e8m5tch4a22b5dut.apps.googleusercontent.com";
-
-  scope = [
-    'https://www.googleapis.com/auth/drive'//insert scope here
-  ].join(' ');
-
-  pickerApiLoaded = false;
-
-  oauthToken?: any;*/
-  // !--GOOGLE DEVELOPER CONSOLE CREDENTIALS--! //
-
-
   constructor(private _activatedRoute: ActivatedRoute, private _router: Router, private _userService: UserService,
               public groupDataService: GroupDataService, private router: Router, private groupService: GroupService,
               private modalService: NgbModal, private postService: PostService, private _sanitizer: DomSanitizer,
@@ -207,7 +160,6 @@ filters = {
 
     config.placement = 'left';
     config.autoClose = false;
-    //config.triggers = 'hover';
     this.group_id = this.groupDataService.groupId;
     this.user_data = JSON.parse(localStorage.getItem('user'));
   }
@@ -222,18 +174,14 @@ filters = {
     // here we test if the section we entered is a group of my personal workplace
     this.isItMyWorkplace = this._activatedRoute.snapshot.queryParamMap.get('myworkplace') == 'true' || false;
 
-    this.model_date = {year: (new Date()).getFullYear(), month: (new Date()).getMonth() + 1, day: (new Date()).getDate()};
-
     this.getUserProfile();
 
-    // initial group initialization for normal groups
-
-    this.group = this.groupDataService.group;
+    // initial group data;
     this.group_id = this.groupDataService.groupId;
     this.group_name = this.group ? this.group.group_name : null;
 
     // my-workplace depends on a private group and we need to fetch that group and edit
-    // the group data before we proceed and get the group post
+    // the group data before we proceed and get the group posts
     if (this.isItMyWorkplace) {
       await this.getPrivateGroup();
     } else {
@@ -241,16 +189,9 @@ filters = {
       await this.getGroup();
     }
 
-    //it refreshes the access token as soon as we visit any group
-    //this.googleService.refreshGoogleToken();
-    //this.refreshGoogleToken();
-    //this.getGoogleCalendarEvents();
-    //this.getCalendar();
-
-    //we have set a time interval of 30mins so as to refresh the access_token in the group
-    setInterval(()=>{
+    // we have set a time interval of 30mins so as to refresh the access_token in the group
+    setInterval(() => {
       this.googleService.refreshGoogleToken();
-      //this.refreshGoogleToken()
     }, 1800000);
 
     this.loadGroupPosts();
@@ -264,11 +205,10 @@ filters = {
 
   addNewPostToPosts(post) {
     this.posts.unshift(post);
+    this.snotifyService.success('Successfully added post');
   }
 
   onDeletePost(postId) {
-
-    console.log('entered onDeletPost', postId);
 
     swal({
       title: "Are you sure?",
@@ -276,112 +216,58 @@ filters = {
       icon: "warning",
       dangerMode: true,
       buttons: ["Cancel", "Yes, delete it!"],
-
     })
       .then(willDelete => {
         if (willDelete) {
           this.postService.deletePost(postId)
             .subscribe((res) => {
+              // snackbar displaying when successfully deleted post
+              this.snotifyService.success('Successfully deleted post');
 
-              this.alert.class = 'success';
-              this._message.next(res['message']);
-
-              //  mirror front-end to back-end
-              //  find index of post
+              //  mirror front-end to back-end to delete post
               const indexDeletedPost = this.posts.findIndex((post) => post._id == postId);
               this.posts.splice(indexDeletedPost, 1);
             }, (err) => {
 
-              this.alert.class = 'danger';
-
               if (err.status) {
-                this._message.next(err.error.message);
+                this.snotifyService.error(err.error.message);
               } else {
-                this._message.next('Error! either server is down or no internet connection');
+                this.snotifyService.error('Error! either server is down or no internet connection');
               }
-
             });
-          swal("Deleted!", "The following post has been deleted!", "success");
         }
       });
-  }
-
-
-  onEditorCreated(quill) {
-    this.editor = quill;
   }
 
   transform(html: string): SafeHtml {
     return this._sanitizer.bypassSecurityTrustHtml(html);
   }
 
-  getConfig(): SnotifyToastConfig {
-    this.snotifyService.setDefaults({
-      global: {
-        newOnTop: this.newTop,
-        maxAtPosition: this.blockMax,
-        maxOnScreen: this.dockMax
-      }
-    });
-    return {
-      bodyMaxLength: this.bodyMaxLength,
-      titleMaxLength: this.titleMaxLength,
-      backdrop: this.backdrop,
-      position: this.position,
-      timeout: this.timeout,
-      showProgressBar: this.progressBar,
-      closeOnClick: this.closeClick,
-      pauseOnHover: this.pauseHover
-    };
-  }
-
-  onSuccess() {
-    this.snotifyService.success(this.body, this.title, this.getConfig());
-  }
-
-
   getGroup () {
+    // we need the group before we can proceed
     return new Promise((resolve, reject) => {
       this.groupService.getGroup(this.group_id)
         .subscribe((res) => {
           // console.log('response in group component:', res);
           this.group = res['group'];
+          this.group_name = res['group']['group_name'];
           resolve();
         }, (err) => {
           reject();
         });
     });
-
   }
 
-  loadGroup() {
-    this.groupService.getGroup(this.group_id)
-      .subscribe((res) => {
-        //  console.log('Group: ', res);
-        this.group_name = res['group'].group_name;
-        this.group_socket_id = res['group']._id;
-
-
-      }, (err) => {
-
-
-
-      });
-
+  playAudio() {
+    this.postService.playAudio();
   }
 
 
   socketio() {
-    let count = 0;
-
-    // We add this so that the groupname is definitely available when we make the connection to the socket.
-    if (this.group || count > 6) {
-      count = 0;
       const room = {
         workspace: this.user_data.workspace.workspace_name,
         group: this.group_name,
       };
-
 
       // join room to get notifications for this group
       this.socket.emit('joinGroup', room, (err) => {
@@ -399,18 +285,12 @@ filters = {
       this.socket.on('disconnect', () => {
         //	console.log(`Socket disconnected from group`);
       });
-
-    } else {
-      setTimeout(() => {this.socketio(); count++}, 500);
-    }
   }
 
 
 
   navigate_to_group(group_id) {
-    //this.router.navigate(['../dashboard','group',group_id,'activity']);
     window.location.href = this.BASE_URL + '#/dashboard/group/' + group_id + '/activity';
-    //  console.log('routed');
   }
 
   getUserProfile() {
@@ -420,17 +300,16 @@ filters = {
         this.profileImage = res.user['profile_pic'];
         this.profileImage = this.BASE_URL + `/uploads/${this.profileImage}`;
       }, (err) => {
-        this.alert.class = 'alert alert-danger';
         if (err.status === 401) {
-          this.alert.message = err.error.message;
+          this.snotifyService.error(err.error.message);
           setTimeout(() => {
             localStorage.clear();
             this._router.navigate(['']);
           }, 3000);
         } else if (err.status) {
-          this.alert.class = err.error.message;
+          this.snotifyService.error(err.error.message);
         } else {
-          this.alert.message = 'Error! either server is down or no internet connection';
+          this.snotifyService.error('Error! either server is down or no internet connection');
         }
       });
   }
@@ -489,7 +368,6 @@ filters = {
           this.group = res['privateGroup'];
           this.group_id = res['privateGroup']['_id'];
           this.group_name = res['privateGroup']['group_name'];
-          // this.loadGroupPosts();
           resolve();
         }, (err) => {
           reject(err);
@@ -500,35 +378,17 @@ filters = {
 
   // !--LOAD ALL THE GROUP POSTS ON INIT--! //
   loadGroupPosts() {
-    // we count the attempts to avoid infinitive attempts
-    let count = 0;
     this.isLoading$.next(true);
 
-    // we only want to make a server request when the group properties are defined
-    if (this.group || count > 6) {
-      // reset the count
-      count = 0;
       this.postService.getGroupPosts(this.group._id)
         .subscribe((res) => {
           this.posts = res['posts'];
           this.isLoading$.next(false);
           this.show_new_posts_badge = 0;
         }, (err) => {
-          swal("Error!", "Error while retrieving the posts " + err, "danger");
+          this.snotifyService.error("Error while retrieving the posts", "Error!");
         });
-    } else {
-      // When this.group is undefined we try to define it every .5seconds until the values are ready
-      // this needs to go because it causes bugs when we switch between groups
-      setTimeout(() => {
-        this.group = this.groupDataService.group;
-        this.group_id = this.groupDataService.groupId;
-        this.group_name = this.group ? this.group.group_name : null;
-        this.loadGroupPosts();
-        count++
-      }, 500)
-    }
   }
-
   // !--LOAD ALL THE GROUP POSTS ON INIT--! //
 
 
@@ -539,11 +399,10 @@ filters = {
 
     this.postService.getNextPosts(this.group_id, last_post_id)
       .subscribe((res) => {
-        //    console.log('Group posts:', res);
         this.posts = this.posts.concat(res['posts']);
         this.isLoading$.next(false);
       }, (err) => {
-        swal("Error!", "Error while retrieving the next recent posts " + err, "danger");
+        this.snotifyService.error('Error while retrieving the next recent posts', 'Error!');
       });
   }
   // !--LOAD ALL THE NEXT MOST RECENT GROUP POSTS--! //
@@ -552,12 +411,13 @@ filters = {
 
   // !--ON SCROLL FETCHES THE NEXT RECENT GROUP POSTS--! //
   onScroll(event, el) {
-
     if ( this.posts.length != 0 ) {
+      // if one of the filters is active we get the next FILTERED posts
       if (this.filters.normal || this.filters.event || this.filters.task || (this.filters.user && !!this.filters.user_value)) {
         this.isLoading$.next(true);
         this.ngxService.startBackground();
         this.getNextFilteredPosts();
+      //  Else we get the normal next posts
       } else {
         this.isLoading$.next(true);
         this.ngxService.startBackground();
@@ -571,7 +431,7 @@ filters = {
               this.ngxService.stopBackground();
             }
           }, (err) => {
-            swal("Error!", "Error while retrieving the next recent posts & Scrolling " + err, "danger");
+            this.snotifyService.error('Error while retrieving the next recent posts', 'Error!');
           });
       }
     }
@@ -583,78 +443,23 @@ filters = {
 
   // !--SCROLL TO AN ELEMENT--! //
   scrollToTop(element) {
-    this.scrollService.scrollTo(element)
-      .subscribe((res) => {
-        //   console.log('next');
-        //   console.log(data);
-      }, (err) => {
-        //swal("Error!", "Error while scrolling to Element " + err, "danger");
-      }, () => {
-        //  console.log('complete');
-      });
+    this.scrollService.scrollTo(element).subscribe();
   }
   // !--SCROLL TO AN ELEMENT--! //
 
 
-  toggled(event) {
-    if (event) {
-      // is open
-    } else {
-      console.log('is closed');
-
-    }
-  }
-
-  refreshPage() {
-    location.reload();
-  }
-
-  onSearch(evt: any) {
-    this.groupUsersList = [];
-    this.groupService.searchGroupUsers(this.group_id, evt.target.value)
-      .subscribe((res) => {
-        this.groupUsersList = res['users'];
-
-      }, (err) => {
-
-      });
-
-  }
-
-
-  loadGroupMembers() {
-    this.groupService.getGroup(this.group_id)
-      .subscribe((res) => {
-
-        for (var i = 0; i < res['group']._members.length; i++) {
-          this.members.push(res['group']._members[i].first_name + ' ' + res['group']._members[i].last_name);
-        }
-        for (var i = 0; i < res['group']._admins.length; i++) {
-          this.members.push(res['group']._admins[i].first_name + ' ' + res['group']._admins[i].last_name);
-        }
-
-        //   console.log('Members', this.members);
-
-      }, (err) => {
-
-      });
-  }
-
   mentionmembers() {
-    var hashValues = [];
+    let hashValues = [];
 
-    // var client_id = this.clientId;
-    //var scope = this.scope;
+    let Value = [];
 
-    var Value = [];
-
-    var driveValue = [];
+    let driveValue = [];
 
     this.groupService.getGroup(this.group_id)
       .subscribe((res) => {
         Value.push({ id: '', value: 'all' });
 
-        for (var i = 0; i < res['group']._members.length; i++) {
+        for (let i = 0; i < res['group']._members.length; i++) {
           this.members.push(res['group']._members[i].first_name + ' ' + res['group']._members[i].last_name);
           this.allMembersId.push(res['group']._members[i]._id);
           Value.push({ id: res['group']._members[i]._id, value: res['group']._members[i].first_name + ' ' + res['group']._members[i].last_name });
@@ -664,16 +469,12 @@ filters = {
           this.allMembersId.push(res['group']._admins[i]._id);
           Value.push({ id: res['group']._admins[i]._id, value: res['group']._admins[i].first_name + ' ' + res['group']._admins[i].last_name });
         }
-
-
-      }, (err) => {
-
       });
 
     this.groupService.getGroupFiles(this.group_id)
       .subscribe((res) => {
         this.files = res['posts'];
-        for (var i = 0; i < res['posts'].length; i++) {
+        for (let i = 0; i < res['posts'].length; i++) {
           if (res['posts'][i].files.length > 0) {
             hashValues.push({ id: res['posts'][i].files[0]._id, value: '<a style="color:inherit;" target="_blank" href="' + this.BASE_URL + '/uploads/' + res['posts'][i].files[0].modified_name + '"' + '>' + res['posts'][i].files[0].orignal_name + '</a>' })
           }
@@ -761,8 +562,6 @@ filters = {
       }
     };
 
-
-
     this.modules = {
       toolbar: toolbaroptions,
       "emoji-toolbar": true,
@@ -776,9 +575,9 @@ filters = {
           if (mentionChar === "@") {
             values = Value;
           } else if(mentionChar === "#") {
-            //sending the request to g-drive to give the redered results on event emit
 
-            if(localStorage.getItem('google-cloud-token') != null){
+
+            if(localStorage.getItem('google-cloud-token') != null) {
               const getDriveFiles: any = new XMLHttpRequest();
 
               getDriveFiles.open('GET', 'https://www.googleapis.com/drive/v2/files?q=fullText contains '+'"'+searchTerm+'"'+'&maxResults=10&access_token='+JSON.parse(localStorage.getItem('google-cloud-token')).google_token_data.access_token, true);
@@ -786,7 +585,6 @@ filters = {
 
               getDriveFiles.onload = () => {
                 if (getDriveFiles.status === 200) {
-                  console.log(JSON.parse(getDriveFiles.responseText));
                   for(var i = 0; i < JSON.parse(getDriveFiles.responseText).items.length; i++ ){
                     if( JSON.parse(getDriveFiles.responseText).items.length>0){
                       hashValues.push({
@@ -802,8 +600,6 @@ filters = {
               };
               getDriveFiles.send();
             }
-
-
             values = hashValues;
           }
 
@@ -818,25 +614,11 @@ filters = {
         }
       },
     };
-
     this.modulesLoaded = true;
-
-  }
-
-  playAudio() {
-    this.postService.playAudio();
-  }
-
-  setTheme(set: string) {
-    this.emojiNative = set === 'google';
-    this.emojiSet = set;
-  }
-  handleClick($event) {
-    this.editor.insertText(this.editorTextLength - 1, $event.emoji.native);
   }
 
   async getPendingTasks() {
-    return new Promise((resolve, reject)=>{
+    return new Promise((resolve, reject) => {
       const getcurrentweek = moment(Date.now()).format('w');
       var taskDueToWeek: any = '';
       console.log(getcurrentweek);
@@ -846,27 +628,22 @@ filters = {
       this.groupService.getGroupTasks(this.group_id)
         .subscribe((res) => {
             this.pendingTasks = res['posts'];
-            console.log(this.pendingTasks);
-            for(var i = 0; i < this.pendingTasks.length; i++){
+
+            for(let i = 0; i < this.pendingTasks.length; i++){
               if(this.pendingTasks[i]['task']['status'] == 'to do'){
                 taskDueToWeek = moment(this.pendingTasks[i]['task']['due_to']).format('w');
-                //console.log('Task week number', taskDueToWeek);
-                if(taskDueToWeek === getcurrentweek){
+                if(taskDueToWeek === getcurrentweek) {
                   this.pendingToDoTaskCount++;
                 }
-
               }
               if(this.pendingTasks[i]['task']['status'] == 'in progress'){
                 taskDueToWeek = moment(this.pendingTasks[i]['task']['due_to']).format('w');
-                console.log('Task week number', taskDueToWeek);
+
                 if(taskDueToWeek === getcurrentweek){
                   this.pendingInProgressTaskCount++;
                 }
-
               }
             }
-            console.log('To-do Tasks', this.pendingToDoTaskCount);
-            console.log('In-Progress Tasks', this.pendingInProgressTaskCount);
             this.isLoading$.next(false);
             resolve();
           },
@@ -876,13 +653,12 @@ filters = {
             reject();
           });
     })
-
   }
 
   async getCompletedTasks() {
-    return new Promise((resolve, reject)=>{
+    return new Promise((resolve, reject) => {
       const getcurrentweek = moment(Date.now()).format('w');
-      var taskDueToWeek: any ='';
+      let taskDueToWeek: any = '';
       this.completedTaskCount = 0;
       this.isLoading$.next(true);
       this.groupService.getCompletedGroupTasks(this.group_id)
@@ -909,11 +685,9 @@ filters = {
             reject();
           });
     })
-
-
   }
 
-  async statusChanged(){
+  async statusChanged() {
     await this.getPendingTasks()
       .then( async ()=>{
         await this.getCompletedTasks()
@@ -922,10 +696,10 @@ filters = {
             this.inprogressPercent = Math.round(this.pendingInProgressTaskCount/(this.pendingInProgressTaskCount+this.pendingToDoTaskCount+this.completedTaskCount)*100);
             this.completedPercent = Math.round(this.completedTaskCount/(this.pendingInProgressTaskCount+this.pendingToDoTaskCount+this.completedTaskCount)*100);
           })
-          .catch((err)=>{
+          .catch((err) => {
             console.log('Error whole getting done tasks', err);
           })
-          .catch((err)=>{
+          .catch((err) => {
             console.log('Error while getting pending tasks', err);
           })
 
@@ -960,7 +734,6 @@ filterPosts() {
 getNextFilteredPosts() {
     const filters = this.filters;
     const alreadyLoaded = this.posts.length;
-    console.log('ENTERED');
 
     this.groupService.getNextFilteredPosts(this.group._id, filters, alreadyLoaded)
       .subscribe((res) => {
