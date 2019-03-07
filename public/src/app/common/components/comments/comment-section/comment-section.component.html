@@ -46,7 +46,7 @@
 <!-- all comments block-->
 
 <div #normalComments id="normalComments{{i}}" *ngIf="commentsDisplayed && comments">
-  <ng-container *ngIf="comments[0]._commented_by">
+  <ng-container *ngIf="comments[0] && comments[0]._commented_by">
     <ng-container *ngFor="let comment of comments;">
       <post-comment
         [user]="user"

@@ -47,6 +47,7 @@ export class CommentSectionComponent implements OnInit {
   deleteComment(commentId) {
     const index = this.comments.findIndex((comment) => commentId == comment._id);
     this.comments.splice(index, 1);
+    this.commentCountChange.emit(this.commentCount - 1);
   }
 
   initializeCommentForm() {
@@ -81,9 +82,7 @@ export class CommentSectionComponent implements OnInit {
     // not sure where we need this, but I'll leave it for now
     this.comment_post_id = this.post._id;
     this.comment_commented_by = this.user._id;
-    // const cardTaskPost = document.getElementById('card-task-post-comment-' + index);
-    // const cardNormalPost = document.getElementById('card-normal-post-comment-' + index);
-    // const cardEventPost = document.getElementById('card-event-post-comment-' + index);
+
 
     // handle mentions
     const scanned_content = commentContent.content;

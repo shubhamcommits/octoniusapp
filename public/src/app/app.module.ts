@@ -95,6 +95,7 @@ import { SearchBarComponent } from './common/components/navbar/search-bar/search
 
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import { GroupActivityFiltersComponent } from './dashboard/groups/group/group-activity/group-activity-filters/group-activity-filters.component';
+import { GroupActivityProgressComponent } from './dashboard/groups/group/group-activity/group-activity-progress/group-activity-progress.component';
 
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
@@ -182,7 +183,8 @@ const ngCircle = {
     AllSearchResultsComponent,
     UserSearchResultMainComponent,
     SearchBarComponent,
-    GroupActivityFiltersComponent
+    GroupActivityFiltersComponent,
+    GroupActivityProgressComponent
   ],
   imports: [
     BrowserModule,

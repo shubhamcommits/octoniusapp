@@ -8,10 +8,12 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
 import { environment } from '../../../environments/environment';
+import {Subject} from "rxjs/Subject";
 
 @Injectable()
 export class GroupService {
 
+  taskStatusChanged = new Subject();
 
   BASE_API_URL = environment.BASE_API_URL;
 
