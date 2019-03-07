@@ -1,6 +1,6 @@
 import * as moment from 'moment';
 import * as io from 'socket.io-client';
-import {Component, OnInit, ViewChildren} from '@angular/core';
+import {Component, OnInit, ViewChild, ViewChildren} from '@angular/core';
 import { ActivatedRoute, Router, Route } from '@angular/router';
 import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PostService } from '../../../../shared/services/post.service';
@@ -32,6 +32,7 @@ import * as Quill from 'quill';
 (window as any).Quill = Quill;
 import 'quill-emoji/dist/quill-emoji';
 import { GoogleCloudService } from '../../../../shared/services/google-cloud.service';
+import {GroupActivityFiltersComponent} from "./group-activity-filters/group-activity-filters.component";
 
 
 @Component({
@@ -42,6 +43,8 @@ import { GoogleCloudService } from '../../../../shared/services/google-cloud.ser
 })
 
 export class GroupActivityComponent implements OnInit {
+
+  @ViewChild(GroupActivityFiltersComponent) groupActivityFiltersComponent;
 
   /* It Stores all the Posts of a group into this array*/
   posts = [];
@@ -68,48 +71,10 @@ export class GroupActivityComponent implements OnInit {
   user: User;
   profileImage;
 
-  post = {
-    type: 'normal',
-    content: ''
-  };
-
-  comment = {
-    content: '',
-    _commented_by: '',
-    _post_id: ''
-  };
   commentCount: number;
-
-  form: FormGroup;
-  processing = false;
-  post_type;
-  time = { hour: 13, minute: 30 };
-  date: { year: number, month: number };
-  model_time = { hour: 13, minute: 30 };
-  due_date = 'Due Date';
-  due_to = '';
-  due_time = {hour: 13, minutes: 30};
-  assignment = 'Unassigned';
-  selected_date: Date;
-  months = months;
-
-  showComments = {
-    id: '',
-    normal: false,
-    event: false,
-    task: false
-  };
 
   datePickedCount = 0;
   timePickedCount = 0;
-
-  // alert variable
-  staticAlertClosed = false;
-  private _message = new Subject<string>();
-  alert = {
-    class: '',
-    message: ''
-  };
 
   // group user search variabels
   config = {
@@ -120,16 +85,13 @@ export class GroupActivityComponent implements OnInit {
   selectedGroupUsers = [];
   settings = {};
 
-  // post's attahced files
-  filesToUpload: Array<File> = [];
-
   googleDriveFiles = [];
 
   modules;
   modulesLoaded = false;
 
   isItMyWorkplace = false;
-  @ViewChildren('taskStatusList') taskStatusList;
+
 
   pendingToDoTaskCount = 0;
   pendingInProgressTaskCount = 0;
@@ -141,14 +103,7 @@ export class GroupActivityComponent implements OnInit {
   completedTasks: any = new Array();
   pendingTasks: any = new Array();
 
-  //filters
-filters = {
-  normal: false,
-  event: false,
-  task: false,
-  user: false,
-  user_value: ''
-};
+
 
 
   constructor(private _activatedRoute: ActivatedRoute, private _router: Router, private _userService: UserService,
@@ -197,7 +152,6 @@ filters = {
     this.loadGroupPosts();
     await this.statusChanged();
 
-    this.alertMessageSettings();
     this.initializeGroupMembersSearchForm();
     this.mentionmembers();
     this.socketio();
@@ -209,7 +163,6 @@ filters = {
   }
 
   onDeletePost(postId) {
-
     swal({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -237,6 +190,13 @@ filters = {
             });
         }
       });
+  }
+
+  filterPosts(filteredPosts) {
+    this.isLoading$.next(false);
+    this.ngxService.stopBackground();
+
+    this.posts = filteredPosts;
   }
 
   transform(html: string): SafeHtml {
@@ -329,15 +289,6 @@ filters = {
     };
   }
 
-  alertMessageSettings() {
-    setTimeout(() => this.staticAlertClosed = true, 20000);
-
-    this._message.subscribe((message) => this.alert.message = message);
-    this._message.pipe(
-      debounceTime(3000)
-    ).subscribe(() => this.alert.message = null);
-  }
-
 
   linkify(text) {
     const urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
@@ -413,10 +364,14 @@ filters = {
   onScroll(event, el) {
     if ( this.posts.length != 0 ) {
       // if one of the filters is active we get the next FILTERED posts
-      if (this.filters.normal || this.filters.event || this.filters.task || (this.filters.user && !!this.filters.user_value)) {
+      if (
+        this.groupActivityFiltersComponent.filters.normal
+        || this.groupActivityFiltersComponent.filters.event
+        || this.groupActivityFiltersComponent.filters.task
+        || (this.groupActivityFiltersComponent.filters.user && !!this.groupActivityFiltersComponent.filters.user_value)) {
         this.isLoading$.next(true);
         this.ngxService.startBackground();
-        this.getNextFilteredPosts();
+        this.groupActivityFiltersComponent.getNextFilteredPosts();
       //  Else we get the normal next posts
       } else {
         this.isLoading$.next(true);
@@ -519,7 +474,7 @@ filters = {
           input.onchange = () => {
             const file = input.files[0];
             const range = this.quill.getSelection();
-            var text = '\nImage is being uploaded, please wait...';
+            const text = '\nImage is being uploaded, please wait...';
             var length = this.quill.getLength();
             var currentIndex = this.quill.getSelection().index;
             this.quill.insertText(range.index, text, 'bold', true);
@@ -702,45 +657,6 @@ filters = {
           .catch((err) => {
             console.log('Error while getting pending tasks', err);
           })
-
       })
   }
-
-  toggleFilter(type) {
-  this.filters[type] = !this.filters[type];
-
-  if (this.filters[type]) {
-    if (!(type === 'user' && !this.filters.user_value)) {
-      this.filterPosts();
-    }
-  } else {
-  //  check if other filters are still checked
-    if (this.filters.normal || this.filters.event || this.filters.task || (this.filters.user && !!this.filters.user_value)) {
-      this.filterPosts();
-    } else {
-      this.loadGroupPosts();
-    }
-  }
-}
-
-filterPosts() {
-  const filters = this.filters;
-  this.groupService.getFilteredPosts(this.group._id, filters)
-    .subscribe((res) => {
-      this.posts = res['posts'];
-    });
-}
-
-getNextFilteredPosts() {
-    const filters = this.filters;
-    const alreadyLoaded = this.posts.length;
-
-    this.groupService.getNextFilteredPosts(this.group._id, filters, alreadyLoaded)
-      .subscribe((res) => {
-        this.isLoading$.next(false);
-        this.ngxService.stopBackground();
-
-        this.posts = [...this.posts, ...res['posts']];
-      });
-}
 }

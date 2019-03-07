@@ -21,35 +21,13 @@
         </ng-template>
       </div>
 
-      <div class="card sideinnercard">
-          <h6 class="card-title"><i class="material-icons" style="font-size: 18px;">filter_list</i> Filter conversations </h6>
-          <hr>
-        <div class="squaredFour">
-          <input [checked]="filters.normal" (click)="toggleFilter('normal')"  type="checkbox" value="" id="defaultCheck1">
-          <label class="form-check-label" for="defaultCheck1">
-            
-          </label> <span> Posts</span>
-        </div>
-        <div class="squaredFour">
-          <input [checked]="filters.event" (click)="toggleFilter('event')"  type="checkbox" value="" id="defaultCheck2">
-          <label class="form-check-label" for="defaultCheck2">
-           
-          </label> <span>Events</span>
-        </div>
-        <div class="squaredFour">
-          <input [checked]="filters.task" (click)="toggleFilter('task')"  type="checkbox" value="" id="defaultCheck3">
-          <label class="form-check-label" for="defaultCheck3">
-            
-          </label> <span>Tasks</span>
-        </div>
-        <div class="squaredFour">
-          <input [checked]="filters.user" (click)="toggleFilter('user')" type="checkbox" value="" id="defaultCheck4">
-          <label class="form-check-label" for="defaultCheck4">
-            
-          </label><span>User </span>
-        </div>
-        <input *ngIf="filters.user" type="text" [(ngModel)]="filters.user_value" (keyup)="filterPosts()" class="user-filter" placeholder="Enter user name">
-      </div>
+      <group-activity-filters
+        [posts]="posts"
+        [group]="group"
+        (sendFilteredPosts)="filterPosts($event)"
+        (loadGroupPosts)="loadGroupPosts()"
+        style="width: 100%;"
+      ></group-activity-filters>
 
       <div class="card sideinnercard">
         <div *ngIf="!isItMyWorkplace; else personalmetrics" class="card-block">
@@ -72,7 +50,7 @@
            <div class="col-md-4">
 
             <b><circle-progress
-              [percent]="todoPercent">
+              [percent]="todoPercent || 0">
             </circle-progress></b>
            </div>
          </div>
@@ -82,7 +60,7 @@
             <div class="col-md-4">
               <b><circle-progress
 
-                [percent]="inprogressPercent">
+                [percent]="inprogressPercent || 0">
               </circle-progress></b>
             </div>
           </div>
@@ -91,7 +69,7 @@
               <div class="col-md-6"><h4 class="done" style="margin-top:30px"><b>{{completedTaskCount}} Done</b></h4></div>
               <div class="col-md-4">
                 <b><circle-progress
-                  [percent]="completedPercent">
+                  [percent]="completedPercent || 0">
                 </circle-progress></b>
               </div>
             </div>
