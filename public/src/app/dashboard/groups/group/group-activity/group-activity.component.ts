@@ -921,10 +921,6 @@ filters = {
             this.todoPercent = Math.round(this.pendingToDoTaskCount/(this.pendingInProgressTaskCount+this.pendingToDoTaskCount+this.completedTaskCount)*100);
             this.inprogressPercent = Math.round(this.pendingInProgressTaskCount/(this.pendingInProgressTaskCount+this.pendingToDoTaskCount+this.completedTaskCount)*100);
             this.completedPercent = Math.round(this.completedTaskCount/(this.pendingInProgressTaskCount+this.pendingToDoTaskCount+this.completedTaskCount)*100);
-
-            console.log('To-do Tasks percent', this.todoPercent);
-            console.log('In progress Tasks percent', this.inprogressPercent);
-            console.log('Completed Tasks percent', this.completedPercent);
           })
           .catch((err)=>{
             console.log('Error whole getting done tasks', err);
