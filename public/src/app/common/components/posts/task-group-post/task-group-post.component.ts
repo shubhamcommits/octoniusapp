@@ -133,7 +133,7 @@ export class TaskGroupPostComponent implements OnInit {
         this.post.task.status = res.post.task.status;
         this.groupService.taskStatusChanged.next();
 
-        this.snotifyService.success("Task updated sucessfully!", "Good Job!");
+        this.snotifyService.success("Task updated!", "Good Job!");
 
       }, (err) => {
         console.log('Error:', err);
@@ -155,7 +155,7 @@ export class TaskGroupPostComponent implements OnInit {
         this.post.task.status = res.post.task.status;
         this.groupService.taskStatusChanged.next();
 
-        this.snotifyService.success('Task updated sucessfully!', 'Good Job!');
+        this.snotifyService.success('Task updated!', 'Good Job!');
       }, (err) => {
         console.log('Error:', err);
       });
@@ -181,7 +181,7 @@ export class TaskGroupPostComponent implements OnInit {
         // change its status on the frontend to match up with the backend
         this.post.task.status = res.post.task.status;
 
-        this.snotifyService.success('Task updated sucessfully!', 'Good Job!');
+        this.snotifyService.success('Task updated!', 'Good Job!');
         this.groupService.taskStatusChanged.next();
 
       }, (err) => {

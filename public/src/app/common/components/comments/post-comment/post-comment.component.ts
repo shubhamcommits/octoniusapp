@@ -157,7 +157,7 @@ export class PostCommentComponent implements OnInit {
                 this.snotifyService.error('Either server is down or no internet connection!', 'Error');
               }
             });
-          this.snotifyService.success('The comment has been deleted!', 'Deleted!')
+          this.snotifyService.warning('Comment deleted!')
         }
       });
   }

@@ -139,7 +139,7 @@ export class GroupActivityComponent implements OnInit {
 
   addNewPostToPosts(post) {
     this.posts.unshift(post);
-    this.snotifyService.success('Successfully added post');
+    this.snotifyService.success('Post created');
   }
 
   onDeletePost(postId) {
@@ -155,7 +155,7 @@ export class GroupActivityComponent implements OnInit {
           this.postService.deletePost(postId)
             .subscribe((res) => {
               // snackbar displaying when successfully deleted post
-              this.snotifyService.success('Successfully deleted post');
+              this.snotifyService.warning('Post deleted');
 
               //  mirror front-end to back-end to delete post
               const indexDeletedPost = this.posts.findIndex((post) => post._id == postId);
