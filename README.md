@@ -47,11 +47,11 @@
 
 2.2.	Go to `octonius/` folder and run `npm run dev`  command.
 
-2.3.1 Go to `smart-india-hackathon/public/` folder and run `ng serve`  command to serve on `localhost:4200`.
+2.3.1 Go to `octonius/public/` folder and run `ng serve --configuration hmr`  command to serve on `localhost:4200` and make your app live reload while developing.
 
 #### OR
 
-2.3.1	Go to `smart-india-hackathon/public/` folder and run `ng build`  command to serve on `localhost:3000`.
+2.3.1	Go to `octonius/public/` folder and run `ng build`  command to serve on `localhost:3000`.
 
 ---
 
