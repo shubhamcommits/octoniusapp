@@ -33,21 +33,6 @@
 
 1.4.	Still in `octonius/public/` folder, run `ng build`.
 
-1.5.	Open `octonius/app.js` file and uncomment **line 19** were it requires the `nodemon_config` file to be used by nodemon to run development environment: 
-
-```javascript
-/*	ATTENTION:
- *	This change is only to make the app run locally,
- *  this change should never be added and comitted
- *	to production.
- */
-
-// The line below must be uncommented to run the app locally
-
-require('./nodemon_config');
-
-```
-
 ---
 
 '
@@ -62,7 +47,11 @@ require('./nodemon_config');
 
 2.2.	Go to `octonius/` folder and run `npm run dev`  command.
 
-2.3.	Open your browser and go to `localhost:3000`.
+2.3.1 Go to `smart-india-hackathon/public/` folder and run `ng serve`  command to serve on `localhost:4200`.
+
+#### OR
+
+2.3.1	Go to `smart-india-hackathon/public/` folder and run `ng build`  command to serve on `localhost:3000`.
 
 ---
 
