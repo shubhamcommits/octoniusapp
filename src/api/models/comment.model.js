@@ -12,9 +12,10 @@ const CommentSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User'
   }],
+  //  time comment
   created_date: {
-    type: String,
-    default: Date.now()
+    type: Date,
+    default: Date.now
   },
   _commented_by: {
     type: Schema.Types.ObjectId,
