@@ -103,7 +103,7 @@ export class PostboxComponent implements OnInit, OnDestroy {
   constructor(
     private modalService: NgbModal,
     private groupService: GroupService,
-    private postService: PostService, 
+    private postService: PostService,
     private authService: AuthService,
     private googleService: GoogleCloudService) { }
 
@@ -117,7 +117,7 @@ export class PostboxComponent implements OnInit, OnDestroy {
         await this.googleService.getGoogleCalendarEvents();
       });
 
-      
+
 
   }
 
@@ -211,8 +211,8 @@ export class PostboxComponent implements OnInit, OnDestroy {
             formData.append('tags', this.tags[i]);
           }
         }
-        
-    
+
+
 
     this.processing = true;
     this.disablePostForm();
@@ -352,7 +352,7 @@ export class PostboxComponent implements OnInit, OnDestroy {
         formData.append('tags', this.tags[i]);
       }
     }
-    
+
 
     // When we submit the post we want to disable the confirm button and disable to avoid multiple HTTP requests & changes to forum
     this.processing = true;
@@ -403,7 +403,7 @@ export class PostboxComponent implements OnInit, OnDestroy {
   addNewTaskPost() {
     const formData: any = new FormData();
     const files: Array<File> = this.filesToUpload;
-    const googleCalendarAttendees = new Array();
+    const googleCalendarAttendees = [];
 
     if (files !== null) {
       // add the files to the formData

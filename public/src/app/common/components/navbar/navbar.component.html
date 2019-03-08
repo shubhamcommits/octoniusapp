@@ -60,8 +60,9 @@
                 <button class="dropdown-item" style="pointer-events: none;"><b>Older notifications</b></button>
                 <div class="dropdown-divider"></div>
                 <div *ngIf="this.notifications_data?.readNotifications?.length != 0">
-                  <button class="dropdown-item" *ngFor="let notifications of this.notifications_data?.readNotifications">
-                    <a style="text-decoration:none; color:inherit;" (click)="gotToPostPage(notifications?._origin_post?._group, notifications?._origin_post?._id)">
+                  <button
+                    (click)="gotToPostPage(notifications?._origin_post?._group, notifications?._origin_post?._id)" class="dropdown-item" *ngFor="let notifications of this.notifications_data?.readNotifications">
+                    <a style="text-decoration:none; color:inherit;">
                       <img src="/uploads/{{notifications?._actor?.profile_pic}}" onerror="this.src='/assets/images/user.png'" alt="" class="topnav-avatar" routerLink="/dashboard/profile/profile" style="margin-right:15px">
                   {{notifications?._actor?.first_name}} {{notifications?.message}}
                     </a>

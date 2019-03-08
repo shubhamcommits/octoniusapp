@@ -94,6 +94,8 @@ import {ProfileDataService} from "./shared/services/profile-data.service";
 import { SearchBarComponent } from './common/components/navbar/search-bar/search-bar.component';
 
 import { NgCircleProgressModule } from 'ng-circle-progress';
+import { GroupActivityFiltersComponent } from './dashboard/groups/group/group-activity/group-activity-filters/group-activity-filters.component';
+import { GroupActivityProgressComponent } from './dashboard/groups/group/group-activity/group-activity-progress/group-activity-progress.component';
 
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
@@ -180,7 +182,9 @@ const ngCircle = {
     ContentSearchResultComponent,
     AllSearchResultsComponent,
     UserSearchResultMainComponent,
-    SearchBarComponent
+    SearchBarComponent,
+    GroupActivityFiltersComponent,
+    GroupActivityProgressComponent
   ],
   imports: [
     BrowserModule,

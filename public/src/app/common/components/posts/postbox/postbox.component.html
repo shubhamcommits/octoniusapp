@@ -60,7 +60,7 @@
 
           </div>
           <div class="col-md-8 text-right">
-           
+
 
             <assign-users-modal
               *ngIf="(post.type === 'event' || post.type === 'task') && !isItMyWorkplace"
@@ -71,14 +71,6 @@
             </assign-users-modal>
             <date-picker-modal [model_date]="model_date" (picked_date)="setDate($event)" *ngIf="post.type === 'event'|| post.type ==='task'"></date-picker-modal>
             <time-picker *ngIf="post.type === 'event'" [model_time]="model_time" (picked_time)="setTime($event)"></time-picker>
-
-
-
-          </div>
-          <div class="col-md-12">
-
-            <ngb-alert *ngIf="alert.message" [type]="alert.class" (close)="successMessage = null">{{alert.message}}</ngb-alert>
-
           </div>
         </div>
 
@@ -140,21 +132,16 @@
               </button>
           </div>
           <div class="col-md-10">
-          <button class="btn btn-sm btn-outline-primary" style="margin-right: 1rem;" (click)="removeTag(i)" *ngFor="let tag of tags; let i = index" placement="top" ngbTooltip="Click here to remove this tag"><b>X</b> {{tag}}</button>  
+          <button class="btn btn-sm btn-outline-primary" style="margin-right: 1rem;" (click)="removeTag(i)" *ngFor="let tag of tags; let i = index" placement="top" ngbTooltip="Click here to remove this tag"><b>X</b> {{tag}}</button>
           </div>
         </div>
 
         <div class="row">
           <div class="col-md-8 ">
-
             <div id="google-drive-file" style="display:none;"></div>
-
-
-
             <div *ngFor="let file of filesToUpload">
               <p><b>Uploaded file(s): </b>{{file.name}}</p>
             </div>
-
           </div>
 
           <div class="col-md-4 text-right ">

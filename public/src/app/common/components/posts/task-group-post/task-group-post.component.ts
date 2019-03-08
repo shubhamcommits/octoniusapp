@@ -7,6 +7,7 @@ import {GroupService} from "../../../../shared/services/group.service";
 import {CommentSectionComponent} from "../../comments/comment-section/comment-section.component";
 import * as moment from 'moment';
 import { GroupActivityComponent } from '../../../../dashboard/groups/group/group-activity/group-activity.component';
+import {SnotifyService} from "ng-snotify";
 
 @Component({
   selector: 'task-group-post',
@@ -64,18 +65,21 @@ export class TaskGroupPostComponent implements OnInit {
 
   ngUnsubscribe = new Subject();
 
-  tags: any = new Array();
+  tags: any = [];
 
-  constructor(private postService: PostService, private groupService: GroupService) { }
+  constructor(
+    private postService: PostService,
+    private groupService: GroupService,
+    private snotifyService: SnotifyService) { }
 
   ngOnInit() {
     this.commentCount = this.post.comments.length;
 
-            //saving the app from getting crashed because it might be undefined
-            if(this.post['tags'] != undefined){
+            // saving the app from getting crashed because it might be undefined
+            if (this.post['tags'] != undefined) {
               this.tags = this.post.tags;
             }
-            else{
+            else {
               this.tags = [];
             }
   }
@@ -127,9 +131,9 @@ export class TaskGroupPostComponent implements OnInit {
         this.playAudio();
         // Change the status on the frontend to match up with the backend
         this.post.task.status = res.post.task.status;
-        this.statusChanged.emit('Status changed to to-do');
+        this.groupService.taskStatusChanged.next();
 
-        swal("Good Job!", "Task updated sucessfully!", "success");
+        this.snotifyService.success("Task updated sucessfully!", "Good Job!");
 
       }, (err) => {
         console.log('Error:', err);
@@ -149,18 +153,9 @@ export class TaskGroupPostComponent implements OnInit {
 
         // Change the status on the frontend to match up with the backend
         this.post.task.status = res.post.task.status;
-        this.statusChanged.emit('Status changed to in-progress');
+        this.groupService.taskStatusChanged.next();
 
-        swal("Good Job!", "Task updated sucessfully!", "success").then(()=>{
-          this.groupactivity.getPendingTasks()
-          .catch((err)=>{
-            console.log(err);
-          });
-          this.groupactivity.getCompletedTasks()
-          .catch((err)=>{
-            console.log(err);
-          });
-        });
+        this.snotifyService.success('Task updated sucessfully!', 'Good Job!');
       }, (err) => {
         console.log('Error:', err);
       });
@@ -186,8 +181,8 @@ export class TaskGroupPostComponent implements OnInit {
         // change its status on the frontend to match up with the backend
         this.post.task.status = res.post.task.status;
 
-        swal("Good Job!", "Task updated sucessfully!", "success");
-        this.statusChanged.emit('Status changed to done');
+        this.snotifyService.success('Task updated sucessfully!', 'Good Job!');
+        this.groupService.taskStatusChanged.next();
 
       }, (err) => {
         if (err.status) {

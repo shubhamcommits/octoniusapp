@@ -8,6 +8,7 @@ import {PostService} from "../../../../shared/services/post.service";
 import {FormGroup} from "@angular/forms";
 import * as moment from "moment";
 import {CommentSectionComponent} from "../../comments/comment-section/comment-section.component";
+import {SnotifyService} from "ng-snotify";
 
 
 
@@ -67,7 +68,10 @@ export class NormalGroupPostComponent implements OnInit, OnDestroy {
 
   tags: any = new Array();
 
-  constructor(private groupService: GroupService, private postService: PostService) { }
+  constructor(
+    private groupService: GroupService,
+    private postService: PostService,
+    private snotifyService: SnotifyService) { }
 
   ngOnInit() {
     this.commentCount = this.post.comments.length;
@@ -79,7 +83,7 @@ export class NormalGroupPostComponent implements OnInit, OnDestroy {
     else{
       this.tags = [];
     }
-    
+
   }
 
   deletePost() {
@@ -150,10 +154,9 @@ export class NormalGroupPostComponent implements OnInit, OnDestroy {
       }, (err) => {
 
         if (err.status) {
-          swal("Error!", "Seems like, there's an error found " + err, "danger");
-
+          this.snotifyService.error("Seems like, there's an error found" + err, "Error!");
         } else {
-          swal("Error!", "Either server is down, or no Internet connection!", "danger");
+          this.snotifyService.error("Either server is down, or no Internet connection!", "Error!");
         }
       });
   }

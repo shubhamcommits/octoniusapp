@@ -44,8 +44,8 @@ const getSearchResults = async (req, res, amountLoaded) => {
       case 'posts':
         postQuery = createPostQuery(user._groups, req.params.query);
         let morePostsToLoad = false;
-        const posts = await postQuery.skip(parseInt(amountLoaded, 10) || 0).limit(16).exec();
-        if (posts.length === 16) {
+        const posts = await postQuery.skip(parseInt(amountLoaded, 10) || 0).limit(11).exec();
+        if (posts.length === 11) {
           posts.pop();
           morePostsToLoad = true;
         }
@@ -54,8 +54,8 @@ const getSearchResults = async (req, res, amountLoaded) => {
       case 'users':
         userQuery = createUserQuery(user, req.params.query);
         let moreUsersToLoad = false;
-        const users = await userQuery.skip(parseInt(amountLoaded, 10) || 0).limit(16).exec();
-        if (users.length === 16) {
+        const users = await userQuery.skip(parseInt(amountLoaded, 10) || 0).limit(11).exec();
+        if (users.length === 11) {
           users.pop();
           moreUsersToLoad = true;
         }
@@ -64,8 +64,8 @@ const getSearchResults = async (req, res, amountLoaded) => {
       case 'skills':
         skillsQuery = createSkillsQuery(user, req.params.query);
         let moreSkillsToLoad = false;
-        const skills = await skillsQuery.skip(parseInt(amountLoaded, 10) || 0).limit(16).exec();
-        if (skills.length === 16) {
+        const skills = await skillsQuery.skip(parseInt(amountLoaded, 10) || 0).limit(11).exec();
+        if (skills.length === 11) {
           skills.pop();
           moreSkillsToLoad = true;
         }
@@ -73,25 +73,17 @@ const getSearchResults = async (req, res, amountLoaded) => {
         return { results: skills, moreToLoad: moreSkillsToLoad };
       case 'all':
         postQuery = createPostQuery(user._groups, req.params.query);
-        userQuery = createUserQuery(user, req.params.query);
-        skillsQuery = createSkillsQuery(user, req.params.query);
 
-        const results = await Promise.all([
-          userQuery.limit(6).exec(),
-          postQuery.limit(6).exec(),
-          skillsQuery.limit(6).exec()
-        ]);
+        const allPosts = await postQuery.limit(6).exec();
 
-        const moreToLoad = [false, false, false];
+        let moreToLoad = false;
 
-        results.forEach((result, index) => {
-          if (result.length === 6) {
-            results[index].pop();
-            moreToLoad[index] = true;
-          }
-        });
+        if (allPosts.length === 6) {
+          allPosts.pop();
+          moreToLoad = true;
+        }
 
-        return { results, moreToLoad };
+        return { results: allPosts, moreToLoad };
     }
   } catch (err) {
     console.log('err', err);

@@ -44,8 +44,7 @@ export class SearchBarComponent implements OnInit {
   deleteSearchResult(data) {
     this.searchService.deleteSearchResult(data)
       .subscribe( (res) => {
-        console.log('data', data);
-        this.recent_searches = this.recent_searches.filter((search) => {
+        this.recent_searches = this.recent_searches.filter((search, index) => {
           if (data.type === 'user') {
             return search.user._id != data.user._id;
           } else if (data.type === 'content') {
@@ -89,10 +88,7 @@ export class SearchBarComponent implements OnInit {
           } else if (filter === 'posts') {
             this.search_results_posts = res['results'];
           } else {
-            this.search_results_users = res['results'][0];
-            this.search_results_posts = res['results'][1];
-            console.log('POSTS', this.search_results_posts);
-            this.search_results_skills = res['results'][2];
+            this.search_results_posts = res['results'];
           }
         });
     } else {

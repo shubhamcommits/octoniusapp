@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {PostService} from "../../../../shared/services/post.service";
 import {Subject} from "rxjs/Subject";
+import {SnotifyService} from "ng-snotify";
 
 @Component({
   selector: 'post-comment',
@@ -35,7 +36,9 @@ export class PostCommentComponent implements OnInit {
 
 
 
-  constructor(private postService: PostService) { }
+  constructor(
+    private postService: PostService,
+    private snotifyService: SnotifyService) { }
 
   ngOnInit() {
 
@@ -117,8 +120,7 @@ export class PostCommentComponent implements OnInit {
       }, (err) => {
         this.content_mentions = [];
         this.displayCommentEditor = false;
-        console.log('Error while updating the comment', err);
-        swal("Error!", "Error while updating the comment " + err, "danger");
+        this.snotifyService.error('Error while updating the comment' + err, 'Error');
       });
   }
 
@@ -136,6 +138,7 @@ export class PostCommentComponent implements OnInit {
 
     })
       .then(willDelete => {
+        console.log('enterd delete comment', willDelete);
         if (willDelete) {
           this.postService.deleteComment(this.comment._id)
             .subscribe((res: any) => {
@@ -149,14 +152,12 @@ export class PostCommentComponent implements OnInit {
             }, (err) => {
 
               if (err.status) {
-                swal("Error!", "Seems like, there's an error found " + err, "danger");
-
+                this.snotifyService.error('Seems like there\'s an error found' + err, 'Error');
               } else {
-                swal("Error!", "Either server is down, or no Internet connection!", "danger");
+                this.snotifyService.error('Either server is down or no internet connection!', 'Error');
               }
-
             });
-          swal("Deleted!", "The following post has been deleted!", "success");
+          this.snotifyService.success('The comment has been deleted!', 'Deleted!')
         }
       });
   }
