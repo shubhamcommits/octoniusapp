@@ -14,7 +14,7 @@ const CommentSchema = new Schema({
   }],
   created_date: {
     type: String,
-    default: moment.utc().format()
+    default: Date.now()
   },
   _commented_by: {
     type: Schema.Types.ObjectId,
