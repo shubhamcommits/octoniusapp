@@ -1,4 +1,6 @@
-
+<app-user-profile-header
+(updateProfile)="getProfile()">
+</app-user-profile-header>
   <div class="row main-actvity">
 
     <div class="col-md-4">
@@ -36,46 +38,26 @@
         <div class="card-title" style="clear:both">
             <h2 class="float-left">
                 Skills:</h2>
-                <button *ngIf="isCurrentUser"  type="button" name="button" style="float:right;" data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-primary">
-                     Add new
-                  </button>
+
+        </div>
+        <div class="row">
+          <div class="col-md-6" style="display:inline-block">
+
+            <input type="text" id="skill" class="tags" placeholder="Add skill here" (keydown)="addNewSkill($event)" [(ngModel)]="skill" name="skill" placement="top" ngbTooltip="Type & hit enter to add a skill">
+          </div>
         </div>
 
 
           <ul class="skills" style="clear:both">
-            <li class="tags" *ngFor="let skill of user?.skills;">{{skill}} </li>
+            <li class="tags" *ngFor="let skill of user?.skills; let i = index">{{skill}} 
+              <button *ngIf="isCurrentUser"  type="button" name="button" (click)="removeSkill(i)" class="btn btn-link">
+                <i class="material-icons" placement="top" ngbTooltip="Delete this skill">
+                  delete_sweep
+                  </i>
+             </button>
+            </li>
 
           </ul>
-
-
-          <!-- Modal -->
-          <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeSkills();">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <label for="skills-input">Enter your skills </label>
-                  <input name="skills-input" type="text" class="form-control" id="skills-input">
-
-
-
-                  <div class="modal-body">
-                      <p id="skills-content"></p>
-                      </div>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeSkills();">Close</button>
-                  <button type="button" class="btn btn-primary" (click)="addSkills();">Add Skill</button>
-                  <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="saveSkills();">Save changes</button>
-                </div>
-              </div>
-            </div>
-          </div>
 
 
       </div>

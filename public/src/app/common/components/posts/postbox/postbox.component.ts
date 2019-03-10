@@ -782,11 +782,20 @@ export class PostboxComponent implements OnInit, OnDestroy {
   }
 // !--GOOGLE PICKER IMPLEMENTATION--! //
 
-  addTags() {
-    const tag = document.getElementById('tags');
-    this.tags.push(tag['value']);
-    tag['value'] = '';
-    console.log(this.tags);
+  addTags(event: any) {
+    //keyCode= 13 represents enter key
+    // in else case we are making use of mouse click
+    if(event.keyCode == 13){
+      const tag = document.getElementById('tags');
+      this.tags.push(tag['value']);
+      tag['value'] = '';
+      console.log(this.tags);
+    }
+
+    if (event.which == '13') {
+      event.preventDefault();
+    }
+
   }
 
   removeTag(index) {

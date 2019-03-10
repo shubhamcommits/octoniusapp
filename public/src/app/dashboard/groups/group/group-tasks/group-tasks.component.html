@@ -265,7 +265,7 @@
                     <ng-template #likepopcontent>
                       <ul class="list-group">
                         <li class="list-group-item" *ngFor="let liked_member of post._liked_by;">
-                          {{liked_member.first_name}}
+                          {{liked_member?.first_name}}
                         </li>
                       </ul>
                     </ng-template>

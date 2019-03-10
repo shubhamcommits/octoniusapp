@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 import * as moment from "moment";
 import {BehaviorSubject} from "rxjs/Rx";
 import {GroupService} from "../../../../../shared/services/group.service";
@@ -35,7 +35,7 @@ export class GroupActivityProgressComponent implements OnInit {
     this.groupService.taskStatusChanged
       .subscribe(() => {
         this.statusChanged();
-      })
+      });
   }
 
   async getPendingTasks() {

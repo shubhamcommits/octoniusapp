@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { UserService } from '../../../shared/services/user.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -7,6 +7,8 @@ import swal from 'sweetalert';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import {ProfileDataService} from "../../../shared/services/profile-data.service";
+import { SnotifyService, SnotifyPosition, SnotifyToastConfig } from 'ng-snotify';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-user-profile-header',
@@ -73,13 +75,16 @@ export class UserProfileHeaderComponent implements OnInit {
     profile_pic: ''
   };
 
+  @Output() updateProfile: EventEmitter<any> = new EventEmitter();
+
   constructor(
     private _userService: UserService,
     private _router: Router,
     private ngxService: NgxUiLoaderService,
     private modalService: NgbModal,
     private route: ActivatedRoute,
-    private profileDataService: ProfileDataService) { }
+    private profileDataService: ProfileDataService,
+    private snotifyService: SnotifyService) { }
 
 
   ngOnInit() {
@@ -155,18 +160,43 @@ export class UserProfileHeaderComponent implements OnInit {
   //     });
   // }
 
-  onUpdateUser() {
+   onUpdateUser() {
 
     // console.log('calling Method onUpdateUser,, User: ', this.user);
 
-    this._userService.updateUser(this.user)
+     this._userService.updateUser(this.user)
       .subscribe((res) => {
-        swal("Good Job!", "You have updated your profile, successfully!", "success")
-        .then( () => {
-          // this.getUserProfile(this.userId);
-          //this.refreshPage();
-        });
+        
+        this.modalReference.close();
+        console.log("Profile updated!", res);
 
+        const successAction = Observable.create(observer => {
+          this.updateProfile.emit();
+          setTimeout(() => {
+            observer.next({
+              body: 'You are almost there...',
+            });
+          }, 2000);
+    
+          setTimeout(() => {
+            observer.next({
+              body: 'Profile Updated successfully!',
+              config: {
+                closeOnClick: true,
+                timeout: 2000,
+                showProgressBar: true
+              }
+            });
+            observer.complete();
+          }, 1000);
+        });
+    
+     this.snotifyService.async('Please wait...', successAction,{
+      timeout: 3000,
+      showProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true
+    });
 
       }, (err) => {
 
@@ -184,7 +214,6 @@ export class UserProfileHeaderComponent implements OnInit {
           swal("Error!", "Either server is down, or no Internet connection!", "danger");
         }
       });
-
   }
 
   onUpdateUserProfileImage() {
