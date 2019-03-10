@@ -63,7 +63,7 @@
       <div class="col-md-4">
 
         <b><circle-progress
-          [percent]="todoPercent">
+          [percent]="todoPercent || 0">
         </circle-progress></b>
       </div>
     </div>
@@ -73,7 +73,7 @@
       <div class="col-md-4">
         <b><circle-progress
 
-          [percent]="inprogressPercent">
+          [percent]="inprogressPercent || 0">
         </circle-progress></b>
       </div>
     </div>
@@ -83,7 +83,7 @@
       <div class="col-md-4">
         <b><circle-progress
 
-          [percent]="completedPercent">
+          [percent]="completedPercent || 0">
         </circle-progress></b>
       </div>
     </div>

@@ -15,7 +15,7 @@
                   placeholder="What are you working on?" (click)="togglePostbox()">What are you working on?</button>
         </div>
       </div>
-      <div *ngIf="postboxDisplayed" id="show_hide" class="col-md-12 innercard">
+      <div *ngIf="postboxDisplayed" class="col-md-12 innercard">
         <div class="row">
           <div class="col-md-4">
             <ul class="nav nav-pills">
@@ -110,18 +110,11 @@
         </div>
 
         <div class="row">
-          <div class="col-md-1">
-            <button type="button" class="btn btn-link" (click)="addTags()">
-                <i class="material-icons" placement="top" ngbTooltip="Add tag">
-                    add
-                    </i>
-            </button>
-
-          </div>
           <div class="col-md-6">
-            <input type="text" id="tags" class="tags" placeholder="Add Tag here" formControlName="tag" name="tag" placement="top" ngbTooltip="Type & hit + to add a tag">
+            <input type="text" id="tags" (keydown)="addTags($event); this.postboxDisplayed = true" class="tags" placeholder="Add Tag here" formControlName="tag" name="tag" placement="top" ngbTooltip="Type & hit enter to add a tag">
           </div>
         </div>
+        <br />
 
         <div class="row">
           <div class="col-md-1">

@@ -62,7 +62,7 @@
       [socket]="socket"
       [allMembersId]="allMembersId"
       [user_data]="user_data"
-      (newPost)="addNewPostToPosts($event); statusChanged()">
+      (newPost)="addNewPostToPosts($event)">
     </postbox>
 
 
@@ -75,7 +75,7 @@
 
           <!-- Normal post -->
           <normal-group-post
-            *ngIf="post.type === 'normal'"
+            *ngIf="post?.type === 'normal'"
             [post]="post"
             [user]="user"
             [modules]="modules"
@@ -89,7 +89,7 @@
 
           <!-- task post -->
           <task-group-post
-            *ngIf="post.type === 'task'"
+            *ngIf="post?.type === 'task'"
             [post]="post"
             [user]="user"
             [isItMyWorkplace]="isItMyWorkplace"
@@ -98,7 +98,6 @@
             [allMembersId]="allMembersId"
             [group]="group"
             [socket]="socket"
-            (statusChanged)="statusChanged()"
             (deletePost)="onDeletePost($event)"
             ng-repeat="post in posts">
           </task-group-post>
@@ -106,7 +105,7 @@
 
           <!--EVENT post-->
           <event-group-post
-            *ngIf="post.type === 'event'"
+            *ngIf="post?.type === 'event'"
             [post]="post"
             [user]="user"
             [isItMyWorkplace]="isItMyWorkplace"
