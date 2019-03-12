@@ -49,7 +49,7 @@ export class EventGroupPostComponent implements OnInit, OnDestroy {
   // edit post
   edit_content = '';
   selectedGroupUsers = [];
-  assignment = 'UnAssigned';
+  assignment = 'Unassigned';
   model_date;
   model_time;
 
@@ -216,7 +216,7 @@ export class EventGroupPostComponent implements OnInit, OnDestroy {
     // when the user completed adding users then we receive the result here
     this.postService.usersAssigned.subscribe((data: any) => {
       this.selectedGroupUsers = data.selectedGroupUsers || [];
-      this.assignment = data.assignment || 'UnAssigned';
+      this.assignment = data.assignment || 'Unassigned';
     });
   }
 
@@ -270,7 +270,7 @@ export class EventGroupPostComponent implements OnInit, OnDestroy {
 
   usersSelected(users) {
     this.selectedGroupUsers = users;
-    this.assignment = users.length < 1 ? "UnAssigned" : "Assigned";
+    this.assignment = users.length < 1 ? "Unassigned" : "Assigned";
   }
 
   addTags() {

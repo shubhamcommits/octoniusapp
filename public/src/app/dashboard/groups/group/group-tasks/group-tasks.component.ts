@@ -482,7 +482,7 @@ export class GroupTasksComponent implements OnInit {
   }
   OnItemDeSelect(item: any) {
     if (this.selectedGroupUsers.length < 1) {
-      this.assignment = 'UnAssigned';
+      this.assignment = 'Unassigned';
     }
 
   }
@@ -490,7 +490,7 @@ export class GroupTasksComponent implements OnInit {
     this.assignment = 'Assigned';
   }
   onDeSelectAll(items: any) {
-    this.assignment = 'UnAssigned';
+    this.assignment = 'Unassigned';
 
   }
 
@@ -904,7 +904,7 @@ readyToAddTask() {
 
   resetNewPostForm() {
    this.model_date = {year: (new Date()).getFullYear(), month: (new Date()).getMonth() + 1, day: (new Date()).getDate()};
-   this.assignment = 'UnAssigned';
+   this.assignment = 'Unassigned';
    this.selectedGroupUsers = [];
    this.post.content = '';
    this.edit_post_content = '';
