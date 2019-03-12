@@ -502,15 +502,37 @@
          </i>
        </button>
      </div>
-      
-      <div class="col-md-4 text-right">
-          <button (click)="closeCreatePostModal()" class="btn btn-default" id="cancel-task">Cancel</button>
-        <button [disabled]="readyToAddTask()" class="btn btn-primary" id="create-task"
-                (click)="addNewTaskPost();">Post Task
-        </button>
-  
-        
+
+     <div class="row">
+      <div class="col-md-12" style="margin-left: 15px;">
+        <input type="text" id="tags" (keydown)="addTags($event); this.postboxDisplayed = true" class="tags" placeholder="Add Tag here" name="tag" placement="top" ngbTooltip="Type & hit enter to add a tag">
       </div>
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="col-md-1">
+        <button type="button" class="btn btn-link">
+            <i class="material-icons" placement="top" ngbTooltip="Tags">
+                local_offer
+                </i>
+        </button>
+    </div>
+    <div class="col-md-10">
+    <button class="btn btn-sm btn-outline-primary" style="margin-right: 1rem;" (click)="removeTag(i)" *ngFor="let tag of tags; let i = index" placement="top" ngbTooltip="Click here to remove this tag"><b>X</b> {{tag}}</button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12 text-right">
+      <button (click)="closeCreatePostModal()" class="btn btn-default" id="cancel-task">Cancel</button>
+    <button [disabled]="readyToAddTask()" class="btn btn-primary" id="create-task"
+            (click)="addNewTaskPost();">Post Task
+    </button>
+
+    
+  </div>
   </div>
     <div class="row">
       <div class="col-md-8 ">
@@ -559,9 +581,28 @@
                     (onContentChanged)="onContentChanged($event)"></quill-editor>
     </div>
 
+    <div class="row">
+      <div class="col-md-12" style="margin-left: 15px;">
+        <input type="text" id="edit_tags" (keydown)="addTags($event)" class="tags" placeholder="Add Tag here" [(ngModel)]="tag" name="tag" placement="top" ngbTooltip="Type & hit enter to add a tag">
+      </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-1">
+            <button type="button" class="btn btn-link">
+                <i class="material-icons" placement="top" ngbTooltip="Tags">
+                    local_offer
+                    </i>
+            </button>
+        </div>
+        <div class="col-md-10">
+        <button class="btn btn-sm btn-outline-primary" style="margin-right: 1rem;" (click)="removeTag(i)" *ngFor="let tag of tags; let i = index" placement="top" ngbTooltip="Click here to remove this tag"><b>X</b> {{tag}}</button>  
+        </div>
+      </div>
+
     <div class="row" style="margin-bottom: 15px;">
       <div class="col-md-12 text-right">
-          <button class="btn btn-default" id="cancel-task">Cancel</button>
+          <button class="btn btn-default" id="cancel-task" (click)="this.editTaskModalRef.close();">Cancel</button>
         <button [disabled]="readyToEditTask()" class="btn btn-primary" id="create-task" (click)="editPost();">
           Edit Task
         </button>
