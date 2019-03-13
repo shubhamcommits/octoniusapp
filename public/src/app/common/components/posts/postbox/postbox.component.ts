@@ -55,7 +55,7 @@ export class PostboxComponent implements OnInit, OnDestroy {
   // form data
   model_date;
   model_time;
-  assignment = 'UnAssigned';
+  assignment = 'Unassigned';
   post = {
     type: 'normal',
     content: ''
@@ -623,7 +623,7 @@ export class PostboxComponent implements OnInit, OnDestroy {
     this.model_date = {year: (new Date()).getFullYear(), month: (new Date()).getMonth() + 1, day: (new Date()).getDate()};
     this.model_time = {hour: 13, minute: 30};
     this.selectedGroupUsers = [];
-    this.assignment = 'UnAssigned';
+    this.assignment = 'Unassigned';
 
     // I should probably handle the settings in the modal component itself
     switch (this.post.type) {
@@ -675,14 +675,14 @@ export class PostboxComponent implements OnInit, OnDestroy {
     // when the user completed adding users then we receive the result here
     this.postService.usersAssigned.subscribe((data: any) => {
       this.selectedGroupUsers = data.selectedGroupUsers || [];
-      this.assignment = data.assignment || 'UnAssigned';
+      this.assignment = data.assignment || 'Unassigned';
     });
   }
 
   resetNewPostForm() {
     this.model_date = {year: (new Date()).getFullYear(), month: (new Date()).getMonth() + 1, day: (new Date()).getDate()};
     this.model_time = {hour: 13, minute: 30};
-    this.assignment = 'UnAssigned';
+    this.assignment = 'Unassigned';
     this.selectedGroupUsers = [];
     this.filesToUpload = [];
   }
@@ -693,7 +693,7 @@ export class PostboxComponent implements OnInit, OnDestroy {
     this.post.content = '';
     this.selectedGroupUsers = [];
     this.alert.class = 'success';
-    this.assignment = 'UnAssigned';
+    this.assignment = 'Unassigned';
     this._message.next(res['message']);
     this.filesToUpload = [];
     driveDivision.innerHTML = '';
@@ -717,7 +717,7 @@ export class PostboxComponent implements OnInit, OnDestroy {
 
   usersSelected(users) {
     this.selectedGroupUsers = users;
-    this.assignment = users.length < 1 ? "UnAssigned" : "Assigned";
+    this.assignment = users.length < 1 ? "Unassigned" : "Assigned";
   }
 
   // !--GOOGLE PICKER IMPLEMENTATION--! //
