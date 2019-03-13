@@ -54,7 +54,7 @@ export class TaskGroupPostComponent implements OnInit {
   // edit post
   edit_content = '';
   selectedGroupUsers = [];
-  assignment = 'UnAssigned';
+  assignment = 'Unassigned';
   model_date;
 
   // editor
@@ -305,7 +305,7 @@ export class TaskGroupPostComponent implements OnInit {
     // when the user completed adding users then we receive the result here
     this.postService.usersAssigned.subscribe((data: any) => {
       this.selectedGroupUsers = data.selectedGroupUsers || [];
-      this.assignment = data.assignment || 'UnAssigned';
+      this.assignment = data.assignment || 'Unassigned';
     });
   }
 
@@ -363,7 +363,7 @@ export class TaskGroupPostComponent implements OnInit {
 
   usersSelected(users) {
     this.selectedGroupUsers = users;
-    this.assignment = users.length < 1 ? "UnAssigned" : "Assigned";
+    this.assignment = users.length < 1 ? "Unassigned" : "Assigned";
   }
 
   addTags() {

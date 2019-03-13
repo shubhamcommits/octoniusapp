@@ -124,6 +124,8 @@ export class GroupTasksComponent implements OnInit {
 
   private _message = new Subject<string>();
 
+  tags: any = new Array();
+
  async ngOnInit() {
     this.ngxService.start(); // start foreground loading with 'default' id
 
@@ -251,6 +253,14 @@ export class GroupTasksComponent implements OnInit {
       }
     }
 
+
+        //here we add the tags
+        if(this.tags.length>0){
+          for (let i = 0; i < this.tags.length; i++) {
+            formData.append('tags', this.tags[i]);
+          }
+        }
+
     // console.log('post: ', post);
     this.postService.addNewTaskPost(formData)
       .subscribe((res) => {
@@ -278,6 +288,7 @@ export class GroupTasksComponent implements OnInit {
         };
 
         this.socket.emit('newPost', data);
+        this.tags = [];
 
       }, (err) => {
         console.log('Error received while adding the taks', err)
@@ -471,7 +482,7 @@ export class GroupTasksComponent implements OnInit {
   }
   OnItemDeSelect(item: any) {
     if (this.selectedGroupUsers.length < 1) {
-      this.assignment = 'UnAssigned';
+      this.assignment = 'Unassigned';
     }
 
   }
@@ -479,7 +490,7 @@ export class GroupTasksComponent implements OnInit {
     this.assignment = 'Assigned';
   }
   onDeSelectAll(items: any) {
-    this.assignment = 'UnAssigned';
+    this.assignment = 'Unassigned';
 
   }
 
@@ -893,7 +904,7 @@ readyToAddTask() {
 
   resetNewPostForm() {
    this.model_date = {year: (new Date()).getFullYear(), month: (new Date()).getMonth() + 1, day: (new Date()).getDate()};
-   this.assignment = 'UnAssigned';
+   this.assignment = 'Unassigned';
    this.selectedGroupUsers = [];
    this.post.content = '';
    this.edit_post_content = '';
@@ -903,6 +914,7 @@ readyToAddTask() {
  openEditTaskModal(taskmodal, post) {
    this.postBeingEditted = post;
    this.assignment = 'Assigned';
+   this.tags = this.postBeingEditted.tags;
 
    console.log('post.assign', post.task._assigned_to);
    this.selectedGroupUsers = [post.task._assigned_to];
@@ -938,7 +950,8 @@ const post = this.postBeingEditted;
      'type': 'task',
      'assigned_to': [this.selectedGroupUsers[0]],
      'date_due_to': moment(date_due_to).format(),
-     'status': post.task.status
+     'status': post.task.status,
+     'tags': this.tags
    };
 
    const scanned_content = postData.content;
@@ -951,6 +964,12 @@ const post = this.postBeingEditted;
        this.content_mentions.push(el.getElementsByClassName('mention')[i]['dataset']['id'].toString());
      }
    }
+
+   if(this.tags.length>0){
+    for(let i = 0 ; i < this.tags.length; i ++){
+      post.tags = this.tags;
+    }
+  }
 
    this.postService.editPost(post._id, postData)
      .subscribe((res) => {
@@ -984,10 +1003,12 @@ const post = this.postBeingEditted;
 
        this.socket.emit('newPost', data);
        this.content_mentions = [];
+       this.tags = [];
      }, (err) => {
 
        this.alert.class = 'danger';
        this.content_mentions = [];
+       this.tags = [];
 
        if (err.status) {
          this._message.next(err.error.message);
@@ -1072,5 +1093,33 @@ const post = this.postBeingEditted;
 
   }
 // !--GOOGLE PICKER IMPLEMENTATION--! //
+
+addTags(event: any) {
+  //keyCode= 13 represents enter key
+  // in else case we are making use of mouse click
+  if(event.keyCode == 13){
+    if(this.assignment == 'Assigned'){
+      const edit_tag = document.getElementById('edit_tags');
+      this.tags.push(edit_tag['value']);
+      edit_tag['value'] = '';
+    }
+    else{
+      const tag = document.getElementById('tags');
+      this.tags.push(tag['value']);
+      tag['value'] = '';
+    }
+
+    console.log(this.tags);
+  }
+
+  if (event.which == '13') {
+    event.preventDefault();
+  }
+
+}
+
+removeTag(index) {
+  this.tags.pop(index);
+}
 
 }
