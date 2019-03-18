@@ -24,12 +24,13 @@
                         </button>
                       </span>
       <span>
-                        <div ngbDropdown class="d-inline-block"
+                        <div ngbDropdown (openChange)="toggled($event)" #postActionsDrop="ngbDropdown" class="d-inline-block"
                              *ngIf="post?._posted_by?._id == user._id || user?.role === 'owner' || user?.role === 'admin'; else editpostif">
-                          <i class="material-icons action" id="dropdownBasic1" (click)="togglePostEditList()" ngbDropdownToggle>more_horiz</i>
-                          <div #postEditList ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                            <button class="dropdown-item" (click)="editPost.emit(); togglePostEditList()">Edit Post</button>
-                            <button class="dropdown-item" (click)="deletePost.emit()">Delete Post</button>
+                          <i class="material-icons action" ngbDropdownToggle>more_horiz</i>
+                          <div ngbDropdownMenu aria-labelledby="postActionsDrop">
+                            <button class="dropdown-item" (click)="copyToClipboard(post?._id)"> Copy Link</button>
+                            <button class="dropdown-item" (click)="editPost.emit();"> Edit Post</button>
+                            <button class="dropdown-item" (click)="deletePost.emit()"> Delete Post</button>
                           </div>
                         </div>
                         <ng-template #editpostif>

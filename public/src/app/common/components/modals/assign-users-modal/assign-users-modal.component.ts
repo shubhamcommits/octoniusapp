@@ -19,7 +19,7 @@ export class AssignUsersModalComponent implements OnInit {
   @Output('usersSelected') usersSelected = new EventEmitter();
 
   // assignment status
-  assignment = 'UnAssigned';
+  assignment = 'Unassigned';
 
   // complete list of all the users of the group
   groupUsersList = [];
@@ -61,12 +61,12 @@ export class AssignUsersModalComponent implements OnInit {
   }
 
   onDeSelectAll(items: any) {
-    this.assignment = 'UnAssigned';
+    this.assignment = 'Unassigned';
   }
 
   OnItemDeSelect(item: any) {
     if (this.selectedGroupUsers.length < 1) {
-      this.assignment = 'UnAssigned';
+      this.assignment = 'Unassigned';
     }
   }
 

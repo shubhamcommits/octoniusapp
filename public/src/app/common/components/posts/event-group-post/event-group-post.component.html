@@ -27,7 +27,7 @@
       <!-- EDIT EVENT POST -->
 
       <ng-container *ngIf="displayEditPostSection">
-        <div class="col-md-12 text-right " style="padding-bottom: 1em;">
+        <div class="col-md-12" style="padding-bottom: 1em;">
           <assign-users-modal
             *ngIf="(post.type === 'event' || post.type === 'task') && !isItMyWorkplace"
             [selectedGroupUsers]="selectedGroupUsers"
@@ -38,28 +38,22 @@
           </assign-users-modal>
           <date-picker-modal [model_date]="model_date" (picked_date)="setDate($event)"></date-picker-modal>
           <time-picker [model_time]="model_time" (picked_time)="setTime($event)"></time-picker>
-          <button class="btn btn-primary btn-sm" contenteditable="false" (click)="OnSaveEditPost()">Save</button>
+          <button class="btn btn-primary" style="float: right;" contenteditable="false" (click)="OnSaveEditPost()">Save</button>
+          <button class="btn btn-default" style="float: right;" contenteditable="false"(click)="displayEditPostSection = false;"> Cancel</button>
         </div>
         <div class="col-md-12 innercard">
           <quill-editor [modules]="modules" type="text" [(ngModel)]="edit_content"
                         [spellcheck]="true" value="post?.content" (blur)="onEditorBlured($event)"
                         (focus)="onEditorFocused($event)" (ready)="onEditorCreated($event)" (change)="onContentChanged($event)"></quill-editor>
         </div>
-        <div class="row">
-            <div class="col-md-1">
-              <button type="button" class="btn btn-link" (click)="addTags()">
-                  <i class="material-icons" placement="top" ngbTooltip="Add tag">
-                      add
-                      </i>
-              </button>
-  
-            </div>
+        <div class="innercard">
             <div class="col-md-6">
-              <input type="text" id="tags" class="tags" placeholder="Add Tag here" [(ngModel)]="tag" name="tag" placement="top" ngbTooltip="Type & hit + to add a tag">
+              <input type="text" id="tags" (keydown)="addTags($event)" class="tags" placeholder="Add Tag here" [(ngModel)]="tag" name="tag" placement="top" ngbTooltip="Type & hit enter to add a tag">
             </div>
+            <br />
           </div>
 
-          <div class="row">
+          <div class="row innercard">
               <div class="col-md-1">
                   <button type="button" class="btn btn-link">
                       <i class="material-icons" placement="top" ngbTooltip="Tags">

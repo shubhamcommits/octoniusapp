@@ -328,16 +328,25 @@ export class NormalGroupPostComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
-  addTags() {
-    const tag = document.getElementById('tags');
-    this.tags.push(tag['value']);
-    this.post.tags = this.tags;
-    tag['value'] = '';
-    console.log(this.tags);
+  addTags(event: any) {
+    //keyCode= 13 represents enter key
+    // in else case we are making use of mouse click
+    if(event.keyCode == 13){
+      const tag = document.getElementById('tags');
+      this.tags.push(tag['value']);
+      this.post.tags = this.tags;
+      tag['value'] = '';
+      console.log(this.tags);
+    }
+
+    if (event.which == '13') {
+      event.preventDefault();
+    }
   }
 
   removeTag(index) {
-    this.tags.pop(index);
+    this.tags.splice(index, 1);
     this.post.tags = this.tags;
   }
+
 }

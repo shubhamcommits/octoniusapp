@@ -799,7 +799,7 @@ export class PostboxComponent implements OnInit, OnDestroy {
   }
 
   removeTag(index) {
-    this.tags.pop(index);
+    this.tags.splice(index, 1);
   }
 
   ngOnDestroy() {

@@ -201,7 +201,7 @@ export class GroupPostComponent implements OnInit {
       const editor = document.getElementById('edit-content');
       editor_div.style.display = 'block';
       editor.style.display = 'block';
-      this.assignment = "UnAssigned";
+      this.assignment = "Unassigned";
       this.selectedGroupUsers = [];
     }
   }
@@ -276,7 +276,7 @@ export class GroupPostComponent implements OnInit {
 
           this.socket.emit('newPost', data);
           this.content_mentions = [];
-          this.assignment = 'UnAssigned';
+          this.assignment = 'Unassigned';
           //this.ngOnInit();
 
         }, (err) => {
@@ -305,7 +305,7 @@ export class GroupPostComponent implements OnInit {
   }
   OnItemDeSelect(item: any) {
     if (this.selectedGroupUsers.length < 1) {
-      this.assignment = 'UnAssigned';
+      this.assignment = 'Unassigned';
     }
 
   }
@@ -313,7 +313,7 @@ export class GroupPostComponent implements OnInit {
     this.assignment = 'Assigned';
   }
   onDeSelectAll(items: any) {
-    this.assignment = 'UnAssigned';
+    this.assignment = 'Unassigned';
 
   }
 

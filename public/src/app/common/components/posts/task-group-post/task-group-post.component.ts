@@ -118,7 +118,7 @@ export class TaskGroupPostComponent implements OnInit {
 
   OnMarkTaskToDo() {
     // hide the dropdown after picking an item
-    this.toggleTaskStatusList();
+    //this.toggleTaskStatusList();
 
     const post = {
       'status': 'to do'
@@ -142,7 +142,7 @@ export class TaskGroupPostComponent implements OnInit {
 
   OnMarkTaskInProgress() {
     // hide the dropdown after picking an item
-    this.toggleTaskStatusList();
+    //this.toggleTaskStatusList();
 
     const post = {
       'status': 'in progress'
@@ -164,7 +164,7 @@ export class TaskGroupPostComponent implements OnInit {
 
   OnMarkTaskCompleted() {
     // hide the dropdown after picking an item
-    this.toggleTaskStatusList();
+    //this.toggleTaskStatusList();
 
     const post = {
       'status': 'done'
@@ -366,17 +366,33 @@ export class TaskGroupPostComponent implements OnInit {
     this.assignment = users.length < 1 ? "Unassigned" : "Assigned";
   }
 
-  addTags() {
-    const tag = document.getElementById('tags');
-    this.tags.push(tag['value']);
-    this.post.tags = this.tags;
-    tag['value'] = '';
-    console.log(this.tags);
+  addTags(event: any) {
+    //keyCode= 13 represents enter key
+    // in else case we are making use of mouse click
+    if(event.keyCode == 13){
+      const tag = document.getElementById('tags');
+      this.tags.push(tag['value']);
+      this.post.tags = this.tags;
+      tag['value'] = '';
+      console.log(this.tags);
+    }
+
+    if (event.which == '13') {
+      event.preventDefault();
+    }
   }
 
   removeTag(index) {
-    this.tags.pop(index);
+    this.tags.splice(index, 1);
     this.post.tags = this.tags;
+  }
+
+  toggled(event) {
+    if (event) {
+        console.log('is open');
+    } else {
+      console.log('is closed');
+    }
   }
 
 }
