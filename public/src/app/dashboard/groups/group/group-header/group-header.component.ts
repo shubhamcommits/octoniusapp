@@ -39,14 +39,16 @@ export class GroupHeaderComponent implements OnInit {
 
   user;
 
+  isItMyWorkplace = false;
+
   constructor(private groupService: GroupService, private modalService: NgbModal,
               private _router: Router, public groupDataService: GroupDataService,
               private snotifyService: SnotifyService, private userService: UserService) { }
 
   ngOnInit() {
     this.group_id = this.groupDataService.groupId;
-    this.loadGroup();
     this.loadUser();
+    this.loadGroup();
   }
 
   fileChangeEvent(event: any): void {
@@ -82,12 +84,20 @@ export class GroupHeaderComponent implements OnInit {
   loadGroup() {
     this.groupService.getGroup(this.group_id)
       .subscribe((res) => {
+        console.log(res);
        this.groupImageUrl = res['group']['group_avatar'] == null
          ? '/assets/images/group.png' : environment.BASE_URL + `/uploads/${res['group']['group_avatar']}`;
 
         this.group.description = res['group']['description'] || '';
         this.group.group_name = res['group']['group_name'];
         this.groupDataService.group = res['group'];
+
+        if(this.group.group_name === 'private'){
+          this.isItMyWorkplace = true;
+          this.group.group_name = 'My Space';
+          this.groupImageUrl = this.profilePic == null
+          ? '/assets/images/user.png' : environment.BASE_URL + `/uploads/${this.profilePic}`;
+        }
       }, (err) => {});
   }
 
@@ -95,6 +105,8 @@ export class GroupHeaderComponent implements OnInit {
     this.userService.getUser()
       .subscribe((res) => {
         this.user = res['user'];
+        this.profilePic = this.user.profile_pic;
+        console.log(this.user);
       });
   }
 

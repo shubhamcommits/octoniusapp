@@ -30,13 +30,13 @@
           </a>
         </li>
 
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="!isItMyWorkplace">
           <a class="nav-link" [routerLink]="['/dashboard/group/',group_id,'members']" routerLinkActive="active">Members
             <span class="sr-only">(current)</span>
           </a>
         </li>
 
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="!isItMyWorkplace">
           <a class="nav-link" [routerLink]="['/dashboard/group/',group_id,'admin' ]" routerLinkActive="active">Admin
             <span class="sr-only">(current)</span>
           </a>
