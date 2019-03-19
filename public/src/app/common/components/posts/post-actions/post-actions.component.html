@@ -28,9 +28,10 @@
                              *ngIf="post?._posted_by?._id == user._id || user?.role === 'owner' || user?.role === 'admin'; else editpostif">
                           <i class="material-icons action" ngbDropdownToggle>more_horiz</i>
                           <div ngbDropdownMenu aria-labelledby="postActionsDrop">
+                            <button class="dropdown-item" [routerLink]="['/dashboard', 'group', post?._group, 'post', post?._id]" > View</button>
+                            <button class="dropdown-item" (click)="editPost.emit();"> Edit</button>
+                            <button class="dropdown-item" (click)="deletePost.emit()"> Delete</button>
                             <button class="dropdown-item" (click)="copyToClipboard(post?._id)"> Copy Link</button>
-                            <button class="dropdown-item" (click)="editPost.emit();"> Edit Post</button>
-                            <button class="dropdown-item" (click)="deletePost.emit()"> Delete Post</button>
                           </div>
                         </div>
                         <ng-template #editpostif>
