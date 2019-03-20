@@ -33,10 +33,10 @@
             </div>
           </div>
           <p class="small font-weight-bold" style="margin-top: 5px" *ngIf="post.task?.due_to != 'Invalid date'"> due
-            {{post.task?.due_to | date}}</p>
-          <p class="small font-weight-bold" style="margin-top: 5px"
-            *ngIf="post.task?.started_at && post.task?.completed_at"> time spent
-            {{ getTaskTimeSpent() }} days </p>
+            {{post.task?.due_to | date}} <br> <span class="small kbn-working-color font-weight-bold"
+              *ngIf="post.task?.started_at && post.task?.completed_at"> time spent:
+              {{ getTaskTimeSpent() }} days</span></p>
+        
 
           <!-- <p class="small font-weight-bold" style="margin-top: 5px"> status- {{post.task?.status}}</p> -->
 
