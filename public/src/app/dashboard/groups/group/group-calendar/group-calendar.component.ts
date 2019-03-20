@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { CalendarEvent, CalendarEventTimesChangedEvent } from 'angular-calendar';
+import { CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent } from 'angular-calendar';
 import { PostService } from '../../../../shared/services/post.service';
 import { GroupDataService } from '../../../../shared/services/group-data.service';
 import * as moment from 'moment';
@@ -16,6 +16,10 @@ import {
   addHours
 } from 'date-fns';
 import {Router} from "@angular/router";
+import { GroupService } from '../../../../shared/services/group.service';
+import { UserService } from '../../../../shared/services/user.service';
+
+
 
 interface MyEvent extends CalendarEvent {
   link: string;
@@ -33,6 +37,18 @@ const colors: any = {
   yellow: {
     primary: '#e3bc08',
     secondary: '#FDF1BA'
+  }, 
+  todo: {
+    primary: '#fd7714',
+    secondary: '#fd7714'
+  },
+  working:{
+    primary: '#0bc6a0',
+    secondary: '#0bc6a0'
+  },
+  done:{
+    primary: '#4a90e2',
+    secondary: '#4a90e2'
   }
 };
 
@@ -49,12 +65,20 @@ export class GroupCalendarComponent implements OnInit {
 
   events: MyEvent[] = [];
 
+  groupMembers: any = new Array();
+
   // these are the details of the month of which events and tasks were fetched
   // (or about to be fetched in case that the component is initializing
   fetchedDates: {year: number, month: number}[] = [];
 
   posts = [];
   group_id;
+
+  selectedUser = {
+    _id:'All Team',
+    first_name:'All Team'
+  };
+  profile_pic: any = '';
 
   activeDayIsOpen = true;
 
@@ -64,9 +88,12 @@ export class GroupCalendarComponent implements OnInit {
     private ngxService: NgxUiLoaderService,
     private _postservice: PostService,
     public groupDataService: GroupDataService,
-    public router: Router) { }
+    public router: Router,
+    public groupService: GroupService,
+    public userService: UserService) {
+     }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.ngxService.start(); // start foreground loading with 'default' id
 
     // Stop the foreground loading after .5s
@@ -75,11 +102,24 @@ export class GroupCalendarComponent implements OnInit {
     }, 500);
 
     this.group_id = this.groupDataService.groupId;
-
+    await this.getGroupMembers();
     // We will fetch all the tasks and events of this month
-    this.loadCalendarPosts();
+    this.loadCalendarPosts(this.selectedUser);
+
     // not sure what this is
     this.events = this.events;
+  }
+
+  async getGroupMembers(){
+    await this.groupService.getGroup(this.group_id)
+    .subscribe((res)=>{
+      this.groupMembers = res['group']['_members'];
+      this.groupMembers.push({'first_name':'All Team','_id':'All Team', 'profile_pic':res['group']['group_avatar']});
+      this.profile_pic = res['group']['group_avatar'];
+      console.log(res);
+    }, (err)=>{
+      console.log('Error fetched while getting group', err);
+    })
   }
 
   changeDate() {
@@ -93,11 +133,13 @@ export class GroupCalendarComponent implements OnInit {
       return fetchedDate.year === currentView.year && fetchedDate.month === currentView.month;
     });
 
+    this.loadCalendarPosts(this.selectedUser);
+
     //   if we got a match in the previous function
-    if (alreadyFetched.length < 1) {
+    //if (alreadyFetched.length < 1) {
       // then we fetch the posts from that month
-      this.loadCalendarPosts();
-    }
+      //this.loadCalendarPosts(this.selectedUser);
+    //}
     //  if we don't we do nothing because those posts were already loaded
   }
 
@@ -120,63 +162,190 @@ export class GroupCalendarComponent implements OnInit {
     }
   }
 
-  loadCalendarPosts() {
+  loadUserCalendarPosts(userId){
     const year = moment(this.viewDate).year();
     const month = moment(this.viewDate).month();
+    this.events = [];
+
 
     const data = {
-      groupId: this.group_id,
+      userId: userId,
       year,
       month
     };
 
-    this._postservice.getCalendarPosts(data)
-      .subscribe((res) => {
+  
+  }
+
+  loadCalendarPosts(calendarData) {
+    this.events = [];
+    const year = moment(this.viewDate).year();
+    const month = moment(this.viewDate).month();
+
+    console.log(calendarData);
+    this.selectedUser = calendarData;
+    console.log('Selected user', this.selectedUser);
+
+    var data = {
+
+    };
+
+    if(calendarData._id != 'All Team'){
+      
+      data = {
+        userId: calendarData._id,
+        year,
+        month
+      };
+      this.profile_pic = calendarData.profile_pic;
+
+      this.userService.getUserCalendarPosts(data)
+      .subscribe((res)=>{
+        console.log(res);
         // when we succefully fetched the posts we add the year/month combination to the fetched Dates
-        // this way we won't fetch them again in the future
-        this.fetchedDates.push({year, month});
-
-        // set the newly fetched posts
-        this.posts = [...this.posts, ...res['posts']];
-
-        // we only want to edit the posts that were added on the last fetch
-        for ( let i = (this.posts.length - res['posts'].length); i < this.posts.length; i++ ) {
-
-          if ( this.posts[i].type === 'event' || this.posts[i].type === 'task') {
-
-            if ( this.posts[i].type === 'event' ) {
-              /*this.events[i]={
-                title: this.posts[i].content,
-                start: new Date()
-              }*/
-              this.events.push({
-                title: '<b>Event</b>' + this.posts[i].content,
-                start: new Date(this.posts[i].event.due_to),
-                link: `/dashboard/group/${this.posts[i]._group}/post/${this.posts[i]._id}`
-              });
-              this.refresh.next();
-
+          // this way we won't fetch them again in the future
+          this.fetchedDates.push({year, month});
+  
+          // set the newly fetched posts
+          this.posts = [...this.posts, ...res['posts']];
+  
+          // we only want to edit the posts that were added on the last fetch
+          for ( let i = (this.posts.length - res['posts'].length); i < this.posts.length; i++ ) {
+  
+            if ( this.posts[i].type === 'event' || this.posts[i].type === 'task') {
+  
+              if ( this.posts[i].type === 'event' ) {
+                /*this.events[i]={
+                  title: this.posts[i].content,
+                  start: new Date()
+                }*/
+                this.events.push({
+                  title: '<b>Event</b>' + this.posts[i].content,
+                  start: new Date(this.posts[i].event.due_to),
+                  link: `/dashboard/group/${this.posts[i]._group}/post/${this.posts[i]._id}`,
+                });
+                this.refresh.next();
+  
+              }
+              if ( this.posts[i].type === 'task' ) {
+                /*this.events[i]={
+                  title: this.posts[i].content,
+                  start: new Date()
+                }*/
+                if(this.posts[i].task.status === 'to do'){
+                  this.events.push({
+                    title: this.posts[i].content,
+                    start: new Date(moment(this.posts[i].task.due_to).toDate()),
+                    link: `/dashboard/group/${this.posts[i]._group}/post/${this.posts[i]._id}`,
+                    color: colors.todo
+                  });
+                }
+                else if(this.posts[i].task.status === 'in progress'){
+                  this.events.push({
+                    title: this.posts[i].content,
+                    start: new Date(moment(this.posts[i].task.due_to).toDate()),
+                    link: `/dashboard/group/${this.posts[i]._group}/post/${this.posts[i]._id}`,
+                    color: colors.working
+                  });
+                }
+                else if(this.posts[i].task.status === 'done'){
+                  this.events.push({
+                    title: this.posts[i].content,
+                    start: new Date(moment(this.posts[i].task.due_to).toDate()),
+                    link: `/dashboard/group/${this.posts[i]._group}/post/${this.posts[i]._id}`,
+                    color: colors.done
+                  });
+                }
+                this.refresh.next();
+              }
+  
             }
-            if ( this.posts[i].type === 'task' ) {
-              /*this.events[i]={
-                title: this.posts[i].content,
-                start: new Date()
-              }*/
-              this.events.push({
-                title: '<b>Task</b>' + this.posts[i].content,
-                start: new Date(moment(this.posts[i].task.due_to).toDate()),
-                link: `/dashboard/group/${this.posts[i]._group}/post/${this.posts[i]._id}`,
-                color: colors.yellow
-              });
+          }
+  
+  
+      }, (err)=>{
+        console.log('Error while getting user\'s calendar post', err);
+      })
+    }
 
-              this.refresh.next();
-            }
+    else{
+      //this.selectedUser = calendarData;
+      data = {
+        groupId: this.group_id,
+        year,
+        month
+      };
+
+      this.profile_pic = calendarData.profile_pic;
+    this._postservice.getCalendarPosts(data)
+    .subscribe((res) => {
+      console.log(res);
+      // when we succefully fetched the posts we add the year/month combination to the fetched Dates
+      // this way we won't fetch them again in the future
+      this.fetchedDates.push({year, month});
+
+      // set the newly fetched posts
+      this.posts = [...this.posts, ...res['posts']];
+
+      // we only want to edit the posts that were added on the last fetch
+      for ( let i = (this.posts.length - res['posts'].length); i < this.posts.length; i++ ) {
+
+        if ( this.posts[i].type === 'event' || this.posts[i].type === 'task') {
+
+          if ( this.posts[i].type === 'event' ) {
+            /*this.events[i]={
+              title: this.posts[i].content,
+              start: new Date()
+            }*/
+            this.events.push({
+              title: '<b>Event</b>' + this.posts[i].content,
+              start: new Date(this.posts[i].event.due_to),
+              link: `/dashboard/group/${this.posts[i]._group}/post/${this.posts[i]._id}`,
+            });
+            this.refresh.next();
 
           }
+          if ( this.posts[i].type === 'task' ) {
+            /*this.events[i]={
+              title: this.posts[i].content,
+              start: new Date()
+            }*/
+            if(this.posts[i].task.status === 'to do'){
+              this.events.push({
+                title: this.posts[i].content,
+                start: new Date(moment(this.posts[i].task.due_to).toDate()),
+                link: `/dashboard/group/${this.posts[i]._group}/post/${this.posts[i]._id}`,
+                color: colors.todo
+              });
+            }
+            else if(this.posts[i].task.status === 'in progress'){
+              this.events.push({
+                title: this.posts[i].content,
+                start: new Date(moment(this.posts[i].task.due_to).toDate()),
+                link: `/dashboard/group/${this.posts[i]._group}/post/${this.posts[i]._id}`,
+                color: colors.working
+              });
+            }
+            else if(this.posts[i].task.status === 'done'){
+              this.events.push({
+                title: this.posts[i].content,
+                start: new Date(moment(this.posts[i].task.due_to).toDate()),
+                link: `/dashboard/group/${this.posts[i]._group}/post/${this.posts[i]._id}`,
+                color: colors.done
+              });
+            }
+
+
+            this.refresh.next();
+          }
+
         }
+      }
 
 
-      });
+    });
+    }
+
 
   }
 
