@@ -168,21 +168,6 @@ export class GroupCalendarComponent implements OnInit {
     }
   }
 
-  loadUserCalendarPosts(userId){
-    const year = moment(this.viewDate).year();
-    const month = moment(this.viewDate).month();
-    this.events = [];
-
-
-    const data = {
-      userId: userId,
-      year,
-      month
-    };
-
-  
-  }
-
   loadCalendarPosts(calendarData) {
     this.events = [];
     const year = moment(this.viewDate).year();
@@ -227,7 +212,7 @@ export class GroupCalendarComponent implements OnInit {
                   start: new Date()
                 }*/
                 this.events.push({
-                  title: '<b>Event</b>' + this.posts[i].content.slice(0, 9).toLowerCase() + '<b>...</b>',
+                  title: (this.posts[i].content.length>20) ? this.posts[i].content.slice(0, 19).toLowerCase() + '<b>...</b>' : this.posts[i].content.slice(0, 19).toLowerCase(),
                   start: new Date(this.posts[i].event.due_to),
                   link: `/dashboard/group/${this.posts[i]._group}/post/${this.posts[i]._id}`,
                 });
@@ -241,7 +226,7 @@ export class GroupCalendarComponent implements OnInit {
                 }*/
                 if(this.posts[i].task.status === 'to do'){
                   this.events.push({
-                    title: this.posts[i].content.slice(0, 9).toLowerCase() + '<b>...</b>',
+                    title: (this.posts[i].content.length>20) ? this.posts[i].content.slice(0, 19).toLowerCase() + '<b>...</b>' : this.posts[i].content.slice(0, 19).toLowerCase(),
                     start: new Date(moment(this.posts[i].task.due_to).toDate()),
                     link: `/dashboard/group/${this.posts[i]._group}/post/${this.posts[i]._id}`,
                     color: colors.todo
@@ -249,7 +234,7 @@ export class GroupCalendarComponent implements OnInit {
                 }
                 else if(this.posts[i].task.status === 'in progress'){
                   this.events.push({
-                    title: this.posts[i].content.slice(0, 9).toLowerCase() + '<b>...</b>',
+                    title: (this.posts[i].content.length>20) ? this.posts[i].content.slice(0, 19).toLowerCase() + '<b>...</b>' : this.posts[i].content.slice(0, 19).toLowerCase(),
                     start: new Date(moment(this.posts[i].task.due_to).toDate()),
                     link: `/dashboard/group/${this.posts[i]._group}/post/${this.posts[i]._id}`,
                     color: colors.working
@@ -257,7 +242,7 @@ export class GroupCalendarComponent implements OnInit {
                 }
                 else if(this.posts[i].task.status === 'done'){
                   this.events.push({
-                    title: this.posts[i].content.slice(0, 9).toLowerCase() + '<b>...</b>',
+                    title: (this.posts[i].content.length>20) ? this.posts[i].content.slice(0, 19).toLowerCase() + '<b>...</b>' : this.posts[i].content.slice(0, 19).toLowerCase(),
                     start: new Date(moment(this.posts[i].task.due_to).toDate()),
                     link: `/dashboard/group/${this.posts[i]._group}/post/${this.posts[i]._id}`,
                     color: colors.done
@@ -305,7 +290,7 @@ export class GroupCalendarComponent implements OnInit {
               start: new Date()
             }*/
             this.events.push({
-              title: '<b>Event</b>' + this.posts[i].content.slice(0, 9).toLowerCase() + '<b>...</b>',
+              title: (this.posts[i].content.length>20) ? this.posts[i].content.slice(0, 19).toLowerCase() + '<b>...</b>' : this.posts[i].content.slice(0, 19).toLowerCase(),
               start: new Date(this.posts[i].event.due_to),
               link: `/dashboard/group/${this.posts[i]._group}/post/${this.posts[i]._id}`,
             });
@@ -319,7 +304,7 @@ export class GroupCalendarComponent implements OnInit {
             }*/
             if(this.posts[i].task.status === 'to do'){
               this.events.push({
-                title: this.posts[i].content.slice(0, 9).toLowerCase() + '<b>...</b>',
+                title: (this.posts[i].content.length>20) ? this.posts[i].content.slice(0, 19).toLowerCase() + '<b>...</b>' : this.posts[i].content.slice(0, 19).toLowerCase(),
                 start: new Date(moment(this.posts[i].task.due_to).toDate()),
                 link: `/dashboard/group/${this.posts[i]._group}/post/${this.posts[i]._id}`,
                 color: colors.todo
@@ -327,7 +312,7 @@ export class GroupCalendarComponent implements OnInit {
             }
             else if(this.posts[i].task.status === 'in progress'){
               this.events.push({
-                title: this.posts[i].content.slice(0, 9).toLowerCase() + '<b>...</b>',
+                title: (this.posts[i].content.length>20) ? this.posts[i].content.slice(0, 19).toLowerCase() + '<b>...</b>' : this.posts[i].content.slice(0, 19).toLowerCase(),
                 start: new Date(moment(this.posts[i].task.due_to).toDate()),
                 link: `/dashboard/group/${this.posts[i]._group}/post/${this.posts[i]._id}`,
                 color: colors.working
@@ -335,7 +320,7 @@ export class GroupCalendarComponent implements OnInit {
             }
             else if(this.posts[i].task.status === 'done'){
               this.events.push({
-                title: this.posts[i].content.slice(0, 9).toLowerCase() + '<b>...</b>',
+                title: (this.posts[i].content.length>20) ? this.posts[i].content.slice(0, 19).toLowerCase() + '<b>...</b>' : this.posts[i].content.slice(0, 19).toLowerCase(),
                 start: new Date(moment(this.posts[i].task.due_to).toDate()),
                 link: `/dashboard/group/${this.posts[i]._group}/post/${this.posts[i]._id}`,
                 color: colors.done
