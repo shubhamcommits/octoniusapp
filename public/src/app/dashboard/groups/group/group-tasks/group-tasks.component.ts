@@ -149,6 +149,16 @@ export class GroupTasksComponent implements OnInit {
 
   }
 
+  getTaskTimeSpent(taskPost) {
+    if(taskPost.task.hasOwnProperty('started_at') && taskPost.task.hasOwnProperty('completed_at')){
+      const start = moment(taskPost.task.started_at);
+      const end = moment(taskPost.task.completed_at);
+      const duration = moment.duration(end.diff(start)).asDays();
+      return duration <= 1 ? 1 : Math.round(duration)
+    }
+
+  }
+
   socketio() {
     let count = 0;
 
