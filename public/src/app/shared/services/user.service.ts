@@ -57,5 +57,9 @@ export class UserService {
     return this._http.get<any>(this.BASE_API_URL + `/users/nextTasksDone/${postId}`);
   }
 
+  getUserCalendarPosts(data){
+    return this._http.get(this.BASE_API_URL + `/groups/user/${data.userId}/calendar/${data.year}/${data.month}`);
+  }
+
 
 }
