@@ -5,18 +5,18 @@
       <div class="row card-title ">
         <div class="col-md-1 ">
           <img src="/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"
-               class="feed-avatar">
+            class="feed-avatar">
           <!--<img src="assets/images/user.png" class="feed-avatar">-->
         </div>
         <div class="col-md-7">
           <h6>{{post._posted_by?.first_name}} {{post._posted_by?.last_name}} <br>
             <span class="small lightgray date">
-                            {{post?.created_date | date : 'medium'}}</span>
+              {{post?.created_date | date : 'medium'}}</span>
           </h6>
 
           <span class="assigned"> Assigned to {{post.task._assigned_to?.first_name}}
-                      {{post.task._assigned_to?.last_name}}
-                    </span>
+            {{post.task._assigned_to?.last_name}}
+          </span>
         </div>
         <div class="col-md-4 text-right padding-topright" style=" object-fit: cover;">
           <div ngbDropdown (openChange)="toggled($event)" autoClose="outside" #taskStatusList="ngbDropdown" class="d-inline-block">
@@ -32,7 +32,12 @@
               <button class="dropdown-item" (click)="OnMarkTaskCompleted(); taskStatusList.close();">Done</button>
             </div>
           </div>
-          <p class="small font-weight-bold" style="margin-top: 5px" *ngIf="post.task?.due_to != 'Invalid date'"> due {{post.task?.due_to | date}}</p>
+          <p class="small font-weight-bold" style="margin-top: 5px" *ngIf="post.task?.due_to != 'Invalid date'"> due
+            {{post.task?.due_to | date}}</p>
+          <p class="small font-weight-bold" style="margin-top: 5px"
+            *ngIf="post.task?.started_at && post.task?.completed_at"> time spent
+            {{ getTaskTimeSpent() }} days </p>
+
           <!-- <p class="small font-weight-bold" style="margin-top: 5px"> status- {{post.task?.status}}</p> -->
 
         </div>
@@ -65,31 +70,30 @@
         </div>
 
         <div class="col-md-12 innercard">
-          <quill-editor [modules]="modules" type="text" [(ngModel)]="edit_content"
-                        [spellcheck]="true" value="post?.content" (blur)="onEditorBlured($event)"
-                        (focus)="onEditorFocused($event)" (ready)="onEditorCreated($event)"></quill-editor>
+          <quill-editor [modules]="modules" type="text" [(ngModel)]="edit_content" [spellcheck]="true"
+            value="post?.content" (blur)="onEditorBlured($event)" (focus)="onEditorFocused($event)"
+            (ready)="onEditorCreated($event)"></quill-editor>
         </div>
 
         <div class="innercard">
-
-            <div class="col-md-6">
-                <input type="text" id="tags" (keydown)="addTags($event)" class="tags" placeholder="Add Tag here" [(ngModel)]="tag" name="tag" placement="top" ngbTooltip="Type & hit enter to add a tag">
-              </div>
-              <br />
+          <div class="col-md-6">
+              <input type="text" id="tags" (keydown)="addTags($event)" class="tags" placeholder="Add Tag here" [(ngModel)]="tag" name="tag" placement="top" ngbTooltip="Type & hit enter to add a tag">
             </div>
-
+            <br />
+          </div>
           <div class="row innercard">
-              <div class="col-md-1">
-                  <button type="button" class="btn btn-link">
-                      <i class="material-icons" placement="top" ngbTooltip="Tags">
-                          local_offer
-                          </i>
-                  </button>
-              </div>
-              <div class="col-md-10">
-              <button class="btn btn-sm btn-outline-primary" style="margin-right: 1rem;" (click)="removeTag(i)" *ngFor="let tag of post?.tags; let i = index" placement="top" ngbTooltip="Click here to remove this tag"><b>X</b> {{tag}}</button>  
-              </div>
+            <div class="col-md-1">
+              <button type="button" class="btn btn-link">
+                <i class="material-icons" placement="top" ngbTooltip="Tags">
+                  local_offer
+                </i>
+              </button>
             </div>
+            <div class="col-md-10">
+              <button class="btn btn-sm btn-outline-primary" style="margin-right: 1rem;" (click)="removeTag(i)" *ngFor="let tag of post?.tags; let i = index" placement="top" ngbTooltip="Click here to remove this tag"><b>X</b> {{tag}}</button>  
+            </div>
+          </div>
+        </div>
       </ng-container>
 
       <div class="col-md-12 innercard " [innerHTML]="post?.content | safe: 'html'">
@@ -99,29 +103,22 @@
 
       <!--POST TAGS-->
       <div class="row innercard" *ngIf="post?.tags?.length > 0">
-          <div class="col-md-12">
-              <span> <i class="material-icons tagslabel" placement="bottom" ngbTooltip="Tags">
-                 local_offer
-                 </i></span>
-               <span class="tagsbtn" style="margin-right: 0.5rem;" *ngFor="let tag of tags; let i = index">{{tag}}</span>  
-               </div>
+        <div class="col-md-12">
+          <span> <i class="material-icons tagslabel" placement="bottom" ngbTooltip="Tags">
+              local_offer
+            </i></span>
+          <span class="tagsbtn" style="margin-right: 0.5rem;" *ngFor="let tag of tags; let i = index">{{tag}}</span>
+        </div>
       </div>
       <div class="col-md-12 innercard" *ngFor="let file of post.files">
         <div class="col-md-12 event-title">Attachment:</div>
-        <div class="col-md-12"> <a role="button" href="javascript:void(null);" (click)="onDownloadFile(file)">{{file?.orignal_name}}</a></div>
+        <div class="col-md-12"> <a role="button" href="javascript:void(null);"
+            (click)="onDownloadFile(file)">{{file?.orignal_name}}</a></div>
       </div>
 
-      <post-actions
-        *ngIf="user"
-        [post]="post"
-        [commentCount]="commentCount"
-        [commentsDisplayed]="commentsDisplayed"
-        [user]="user"
-        (toggleComments)="toggleComments()"
-        (sendComments)="setComments($event)"
-        (togglePostCommentEditor)="togglePostCommentEditor()"
-        (editPost)="editPost()"
-        (deletePost)="deletePost()">
+      <post-actions *ngIf="user" [post]="post" [commentCount]="commentCount" [commentsDisplayed]="commentsDisplayed"
+        [user]="user" (toggleComments)="toggleComments()" (sendComments)="setComments($event)"
+        (togglePostCommentEditor)="togglePostCommentEditor()" (editPost)="editPost()" (deletePost)="deletePost()">
       </post-actions>
     </div>
   </div>
@@ -129,22 +126,9 @@
 
   <!-- post comment block make this invisible -->
 
-  <comment-section
-    [post]="post"
-    [(commentsDisplayed)]="commentsDisplayed"
-    [modules]="modules"
-    [user]="user"
-    [allMembersId]="allMembersId"
-    [user_data]="user_data"
-    [socket]="socket"
-    [group]="group"
-    [comments]="comments"
+  <comment-section [post]="post" [(commentsDisplayed)]="commentsDisplayed" [modules]="modules" [user]="user"
+    [allMembersId]="allMembersId" [user_data]="user_data" [socket]="socket" [group]="group" [comments]="comments"
     [(commentCount)]="commentCount">
   </comment-section>
 
 </li>
-
-
-
-
-
