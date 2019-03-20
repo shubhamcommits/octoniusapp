@@ -1,13 +1,13 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {PostService} from "../../../../shared/services/post.service";
-import {Subject} from "rxjs/Subject";
-import {takeUntil} from "rxjs/operators";
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { PostService } from "../../../../shared/services/post.service";
+import { Subject } from "rxjs/Subject";
+import { takeUntil } from "rxjs/operators";
 import { saveAs } from 'file-saver';
-import {GroupService} from "../../../../shared/services/group.service";
-import {CommentSectionComponent} from "../../comments/comment-section/comment-section.component";
+import { GroupService } from "../../../../shared/services/group.service";
+import { CommentSectionComponent } from "../../comments/comment-section/comment-section.component";
 import * as moment from 'moment';
 import { GroupActivityComponent } from '../../../../dashboard/groups/group/group-activity/group-activity.component';
-import {SnotifyService} from "ng-snotify";
+import { SnotifyService } from "ng-snotify";
 
 @Component({
   selector: 'task-group-post',
@@ -75,13 +75,21 @@ export class TaskGroupPostComponent implements OnInit {
   ngOnInit() {
     this.commentCount = this.post.comments.length;
 
-            // saving the app from getting crashed because it might be undefined
-            if (this.post['tags'] != undefined) {
-              this.tags = this.post.tags;
-            }
-            else {
-              this.tags = [];
-            }
+    // saving the app from getting crashed because it might be undefined
+    if (this.post['tags'] != undefined) {
+      this.tags = this.post.tags;
+    }
+    else {
+      this.tags = [];
+    }
+  }
+
+  // Get the duration in days between task start date and complete date using moment. 
+  getTaskTimeSpent() {
+    const start = moment(this.post.task.started_at);
+    const end = moment(this.post.task.completed_at);
+    const duration = moment.duration(end.diff(start)).asDays();
+    return duration <= 1 ? 1 : Math.round(duration)
   }
 
   deletePost() {
@@ -91,7 +99,7 @@ export class TaskGroupPostComponent implements OnInit {
   editPost() {
     // set the values for the modal so that they display the current values of the post
     const dateObj = moment(this.post.task.due_to, 'YYYY-MM-DD');
-    this.model_date = {year: dateObj.year(), month: dateObj.month(), day: dateObj.date()};
+    this.model_date = { year: dateObj.year(), month: dateObj.month(), day: dateObj.date() };
     this.selectedGroupUsers = [this.post.task._assigned_to];
     this.assignment = 'Assigned';
 
@@ -107,12 +115,13 @@ export class TaskGroupPostComponent implements OnInit {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((file_toDownload) => {
         saveAs(file_toDownload, fileName);
-      }, (err) => {});
+      }, (err) => { });
   }
 
   onEditorCreated(quill) {
     this.editor = quill;
   }
+
 
   // The following three functions can be merged into one
 
@@ -231,8 +240,8 @@ export class TaskGroupPostComponent implements OnInit {
       }
     }
 
-    if(this.tags.length>0){
-      for(let i = 0 ; i < this.tags.length; i ++){
+    if (this.tags.length > 0) {
+      for (let i = 0; i < this.tags.length; i++) {
         post.tags = this.tags;
       }
     }
@@ -285,7 +294,7 @@ export class TaskGroupPostComponent implements OnInit {
     // open the assign users modal
     this.postService.openAssignUsers.next(
       {
-        options: {centered: true},
+        options: { centered: true },
         selectedGroupUsers: this.selectedGroupUsers,
         group: this.group,
         // these are the setting for picking a user, later we might want to add this in
@@ -313,7 +322,7 @@ export class TaskGroupPostComponent implements OnInit {
     // trigger the datepicker modal to open
     this.postService.openDatePicker.next(
       {
-        options: {centered: true},
+        options: { centered: true },
         isItMyWorkplace: this.isItMyWorkplace,
         model_date: this.model_date
       });

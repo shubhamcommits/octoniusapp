@@ -50,6 +50,14 @@ const PostSchema = new Schema({
     status: {
       type: String,
       enum: ['to do', 'in progress', 'done']
+    },
+    started_at: {
+      type: Date,
+      default: null
+    },
+    completed_at: {
+      type: Date,
+      default: null
     }
   },
   event: {

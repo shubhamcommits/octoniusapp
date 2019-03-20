@@ -47,11 +47,11 @@ const add = async (req, res, next) => {
 
     //  populate the assigned_to property of this document
     if (post.type === 'task') {
-        post = await Post.populate(post, [{ path: 'task._assigned_to' }, { path: '_group'}, { path: '_posted_by' }]);
+      post = await Post.populate(post, [{ path: 'task._assigned_to' }, { path: '_group' }, { path: '_posted_by' }]);
     } else if (post.type === 'event') {
-        post = await Post.populate(post, [{ path: 'event._assigned_to' }, { path: '_group'}, { path: '_posted_by' }]);
+      post = await Post.populate(post, [{ path: 'event._assigned_to' }, { path: '_group' }, { path: '_posted_by' }]);
     } else if (post.type === 'normal') {
-        post = await Post.populate(post, [{ path: '_group'}, { path: '_posted_by' }]);
+      post = await Post.populate(post, [{ path: '_group' }, { path: '_posted_by' }]);
     }
 
     return res.status(200).json({
@@ -122,14 +122,14 @@ const edit = async (req, res, next) => {
     const updatedPost = await Post.findOneAndUpdate({
       _id: req.params.postId
     }, {
-      $set: postData
-    }, {
-      new: true
-    })
+        $set: postData
+      }, {
+        new: true
+      })
       .populate('_posted_by')
       .populate('task._assigned_to')
       .populate('event._assigned_to')
-        .populate('_liked_by');
+      .populate('_liked_by');
 
 
     // Create Notification for mentions on post content
@@ -197,10 +197,10 @@ const remove = async (req, res, next) => {
     const user = await User.findOne({ _id: req.userId });
 
     if (
-    // If user is not an admin or owner
+      // If user is not an admin or owner
       !(user.role === 'admin' || user.role === 'owner')
-        // ...user is not the post author...
-        && !post._posted_by.equals(userId)
+      // ...user is not the post author...
+      && !post._posted_by.equals(userId)
     ) {
       // Deny access!
       return sendErr(res, null, 'User not allowed to remove this post!', 403);
@@ -256,15 +256,15 @@ const addComment = async (req, res, next) => {
     const post = await Post.findOneAndUpdate({
       _id: postId
     }, {
-      $push: {
-        comments: comment._id
-      },
-      $inc: {
-        comments_count: 1
-      }
-    }, {
-      new: true
-    });
+        $push: {
+          comments: comment._id
+        },
+        $inc: {
+          comments_count: 1
+        }
+      }, {
+        new: true
+      });
 
 
     if (comment._content_mentions.length !== 0) {
@@ -307,14 +307,14 @@ const editComment = async (req, res, next) => {
     const updatedComment = await Comment.findOneAndUpdate({
       _id: commentId
     }, {
-      $set: {
-        content,
-        _content_mentions: contentMentions,
-        created_date: moment.utc().format()
-      }
-    }, {
-      new: true
-    })
+        $set: {
+          content,
+          _content_mentions: contentMentions,
+          created_date: moment.utc().format()
+        }
+      }, {
+        new: true
+      })
       .populate('_commented_by', 'first_name last_name profile_pic')
       .lean();
 
@@ -387,7 +387,7 @@ const getNextComments = async (req, res, next) => {
       .sort('-_id')
       .limit(5)
       .populate('_commented_by', 'first_name last_name profile_pic')
-        .populate('_liked_by', 'first_name last_name')
+      .populate('_liked_by', 'first_name last_name')
       .lean();
 
     return res.status(200).json({
@@ -414,15 +414,15 @@ const removeComment = async (req, res, next) => {
     }).lean();
 
     // Get user data
-   const user = await User.findOne({ _id: userId });
+    const user = await User.findOne({ _id: userId });
 
     if (
-    // If user is not one of group's admins... and...
+      // If user is not one of group's admins... and...
       !(user.role === 'owner' || user.role === 'admin')
-        // ...user is not the post author... and...
-        && (!post._posted_by.equals(userId)
-            // ...user is not the cooment author
-            && !comment._commented_by.equals(userId))
+      // ...user is not the post author... and...
+      && (!post._posted_by.equals(userId)
+        // ...user is not the cooment author
+        && !comment._commented_by.equals(userId))
     ) {
       // Deny access!
       return sendErr(res, null, 'User not allowed to delete this comment!', 403);
@@ -434,15 +434,15 @@ const removeComment = async (req, res, next) => {
     const updatedPost = await Post.findOneAndUpdate({
       _id: post._id
     }, {
-      $pull: {
-        comments: comment._id
-      },
-      $inc: {
-        comments_count: 1
-      }
-    }, {
-      new: true
-    });
+        $pull: {
+          comments: comment._id
+        },
+        $inc: {
+          comments_count: 1
+        }
+      }, {
+        new: true
+      });
 
 
     return res.status(200).json({
@@ -466,12 +466,12 @@ const like = async (req, res, next) => {
     const post = await Post.findOneAndUpdate({
       _id: postId
     }, {
-      $addToSet: {
-        _liked_by: userId
-      }
-    }, {
-      new: true
-    })
+        $addToSet: {
+          _liked_by: userId
+        }
+      }, {
+        new: true
+      })
       .populate('_liked_by', 'first_name last_name')
       .lean();
 
@@ -499,12 +499,12 @@ const unlike = async (req, res, next) => {
     const post = await Post.findOneAndUpdate({
       _id: postId
     }, {
-      $pull: {
-        _liked_by: userId
-      }
-    }, {
-      new: true
-    })
+        $pull: {
+          _liked_by: userId
+        }
+      }, {
+        new: true
+      })
       .populate('_liked_by', 'first_name last_name')
       .lean();
 
@@ -533,12 +533,12 @@ const likeComment = async (req, res) => {
     const comment = await Comment.findOneAndUpdate({
       _id: commentId
     }, {
-      $addToSet: {
-        _liked_by: userId
-      }
-    }, {
-      new: true
-    })
+        $addToSet: {
+          _liked_by: userId
+        }
+      }, {
+        new: true
+      })
       .populate('_liked_by', 'first_name last_name')
       .lean();
 
@@ -566,12 +566,12 @@ const unlikeComment = async (req, res) => {
     const comment = await Comment.findOneAndUpdate({
       _id: commentId
     }, {
-      $pull: {
-        _liked_by: userId
-      }
-    }, {
-      new: true
-    })
+        $pull: {
+          _liked_by: userId
+        }
+      }, {
+        new: true
+      })
       .populate('_liked_by', 'first_name last_name')
       .lean();
 
@@ -611,15 +611,15 @@ const changeTaskStatus = async (req, res, next) => {
     }).lean();
 
     // const get user data
-      const user = await User.findOne({ _id: userId });
+    const user = await User.findOne({ _id: userId });
 
     if (
-    // If user is not an admin or owner... and...
+      // If user is not an admin or owner... and...
       !(user.role === 'admin' || user.role === 'owner')
-        // ...user is not the post author... and...
-        && (!post._posted_by.equals(userId)
-            // ...user is not the task assignee
-            && !post.task._assigned_to.equals(userId))
+      // ...user is not the post author... and...
+      && (!post._posted_by.equals(userId)
+        // ...user is not the task assignee
+        && !post.task._assigned_to.equals(userId))
     ) {
       // Deny access!
       return sendErr(res, null, 'User not allowed to update this post!', 403);
@@ -628,14 +628,17 @@ const changeTaskStatus = async (req, res, next) => {
     const postUpdated = await Post.findOneAndUpdate({
       _id: postId
     }, {
-      'task.status': status
-    }, {
-      new: true
-    });
+        'task.status': status
+      }, {
+        new: true
+      });
 
     // send email to user and poster when task status is done
     if (status === 'done') {
+      await Post.findOneAndUpdate({ _id: postId }, { 'task.completed_at': moment() });
       sendMail.userCompletedTask(req.userId, postUpdated);
+    } else if (status === 'in progress') {
+      await Post.findOneAndUpdate({ _id: postId }, { 'task.started_at': moment(), 'task.completed_at': null });
     }
 
     return res.status(200).json({
@@ -668,10 +671,10 @@ const changeTaskAssignee = async (req, res, next) => {
     const postUpdated = await Post.findOneAndUpdate({
       _id: postId
     }, {
-      'task._assigned_to': assigneeId
-    }, {
-      new: true
-    });
+        'task._assigned_to': assigneeId
+      }, {
+        new: true
+      });
 
     return res.status(200).json({
       message: 'Task assignee updated!',
@@ -683,14 +686,14 @@ const changeTaskAssignee = async (req, res, next) => {
 };
 
 //This controller is made for quill to upload it's files to server
-const upload = async (req, res, next) =>{
-  try{
+const upload = async (req, res, next) => {
+  try {
     const { files } = req.body;
     return res.status(200).json({
       message: 'Files uploaded!',
       file: files
     });
-  } catch(err) {
+  } catch (err) {
     return sendErr(res, err);
   }
 
