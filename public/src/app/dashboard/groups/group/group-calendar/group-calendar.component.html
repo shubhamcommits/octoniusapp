@@ -1,5 +1,5 @@
 <div class="container">
-  <br />
+  <p class="lightgray date" style="padding-top: 10px">Select a person to view timeline</p>
   <div ngbDropdown #myDrop="ngbDropdown">
 
       <img (click)="$event.stopPropagation(); myDrop.toggle();"
@@ -18,9 +18,9 @@
         </div>
 
       </div>
-      <div>
-          <h6>{{ this.selectedUser?.first_name }}</h6>
-      </div>
+     
+          <h6 style="line-height: 40px">{{ this.selectedUser?.first_name }}</h6>
+      
     </div>
   <div class="row text-center">
     <div class="col-md-4">
