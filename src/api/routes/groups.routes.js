@@ -70,7 +70,7 @@ router.get('/:groupId/calendar/:year/:month',
   groups.getCalendarPosts);
 
 // get user's calendar posts
-router.get('/user/:userId/calendar/:year/:month',
+router.get('/:groupId/user/:userId/calendar/:year/:month',
 authorization.groupAccess,
 groups.getUserCalendarPosts);
 

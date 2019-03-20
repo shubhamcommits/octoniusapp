@@ -125,7 +125,7 @@ const getCalendarPosts = async (req, res, next) => {
 
 const getUserCalendarPosts = async (req, res, next) => {
   try {
-    const { year, month, userId } = req.params;
+    const { year, month, userId, groupId } = req.params;
 
     // current date in view
     const date = moment().month(month).year(year);
@@ -141,6 +141,7 @@ const getUserCalendarPosts = async (req, res, next) => {
     // get the posts from a specific group AND either type task/event AND between the start and the end of the month given
     const posts = await Post.find({
       $and: [
+        { _group: groupId },
         { 'task._assigned_to': userId },
         { $or: [{ type: 'event' }, { type: 'task' }] },
         { $or: [{ 'event.due_to': { $gte: startOfMonthEvent, $lt: endOfMonthEvent } }, { 'task.due_to': { $gte: startOfMonthTask, $lte: endOfMonthTask } }] }
