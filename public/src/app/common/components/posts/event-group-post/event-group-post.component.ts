@@ -47,6 +47,7 @@ export class EventGroupPostComponent implements OnInit, OnDestroy {
   comments = [];
 
   // edit post
+  edit_title = '';
   edit_content = '';
   selectedGroupUsers = [];
   assignment = 'Unassigned';
@@ -90,6 +91,7 @@ export class EventGroupPostComponent implements OnInit, OnDestroy {
     this.assignment = 'Assigned';
 
     // set the initial value of the editor
+    this.edit_title = this.post.title;
     this.edit_content = this.post.content;
 
     // show the edit section
@@ -103,6 +105,7 @@ export class EventGroupPostComponent implements OnInit, OnDestroy {
     const date_due_to = new Date(this.model_date.year, this.model_date.month - 1, this.model_date.day, this.model_time.hour, this.model_time.minute);
 
     const post = {
+      'title': this.edit_title,
       'content': this.edit_content,
       '_content_mentions': this.content_mentions,
       'type': this.post.type,
@@ -239,6 +242,7 @@ export class EventGroupPostComponent implements OnInit, OnDestroy {
   resetEditPostForm() {
     this.model_date = null;
     this.model_time = null;
+    this.edit_title = '';
     this.edit_content = '';
     this.content_mentions = [];
     this.selectedGroupUsers = [];

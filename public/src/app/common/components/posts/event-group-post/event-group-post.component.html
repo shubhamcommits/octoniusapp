@@ -44,6 +44,7 @@
           <button class="btn btn-default" style="float: right;" contenteditable="false"(click)="displayEditPostSection = false;"> Cancel</button>
         </div>
         <div class="col-md-12 innercard">
+          <input type="text" [(ngModel)]="edit_title" value="post?.title" style="padding: 12px 15px; font-style: italic; width: 100%; outline: none;" />
           <quill-editor [modules]="modules" type="text" [(ngModel)]="edit_content"
                         [spellcheck]="true" value="post?.content" (blur)="onEditorBlured($event)"
                         (focus)="onEditorFocused($event)" (ready)="onEditorCreated($event)" (change)="onContentChanged($event)"></quill-editor>
@@ -64,11 +65,10 @@
                   </button>
               </div>
               <div class="col-md-10">
-              <button class="btn btn-sm btn-outline-primary" style="margin-right: 1rem;" (click)="removeTag(i)" *ngFor="let tag of post?.tags; let i = index" placement="top" ngbTooltip="Click here to remove this tag"><b>X</b> {{tag}}</button>  
+              <button class="btn btn-sm btn-outline-primary" style="margin-right: 1rem;" (click)="removeTag(i)" *ngFor="let tag of post?.tags; let i = index" placement="top" ngbTooltip="Click here to remove this tag"><b>X</b> {{tag}}</button>
               </div>
             </div>
       </ng-container>
-
 
       <!-- event post content -->
       <div class="col-md-12 innercard ">
@@ -80,8 +80,16 @@
             <br>
             <span class="time">{{post.event.due_to | amLocal | date:'HH:mm'}}</span>
           </div>
-          <div class="col-md-9 event-title" [innerHTML]="post?.content | safe: 'html' ">
+          <div class="col-md-9">
+            <div class="row">
+              <!-- Event Post Title -->
+              <div class="col-md-12 innercard font-weight-bold" style="font-size: 18px;" [innerHTML]="post?.title | safe: 'html'">
+                </div>
+              <!-- Event Post Content -->
+              <div class="col-md-12 event-title" [innerHTML]="post?.content | safe: 'html' ">
 
+              </div>
+            </div>
           </div>
 
         </div>
@@ -97,10 +105,10 @@
                     <span> <i class="material-icons tagslabel" placement="bottom" ngbTooltip="Tags">
                        local_offer
                        </i></span>
-                     <span class="tagsbtn" style="margin-right: 0.5rem;" *ngFor="let tag of tags; let i = index">{{tag}}</span>  
+                     <span class="tagsbtn" style="margin-right: 0.5rem;" *ngFor="let tag of tags; let i = index">{{tag}}</span>
                      </div>
-              </div> 
-      
+              </div>
+
             </div>
 
       <!-- POST ACTIONS -->

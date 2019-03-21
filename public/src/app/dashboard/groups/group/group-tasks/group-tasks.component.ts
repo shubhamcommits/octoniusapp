@@ -44,6 +44,7 @@ export class GroupTasksComponent implements OnInit {
 
   post = {
     type: 'task',
+    title: '',
     content: ''
   };
 
@@ -116,6 +117,7 @@ export class GroupTasksComponent implements OnInit {
     message: ''
   };
 
+  edit_post_title = '';
   edit_post_content = null;
 
   editTaskModalRef;
@@ -207,6 +209,7 @@ export class GroupTasksComponent implements OnInit {
     const date = new Date(this.model_date.year, this.model_date.month - 1, this.model_date.day);
 
     const post = {
+      title: this.post.title,
       content: this.post.content,
       type: 'task',
       _posted_by: this.user_data.user_id,
@@ -228,7 +231,7 @@ export class GroupTasksComponent implements OnInit {
       formData.append('content', post.content + driveDivision.innerHTML);
     }
 
-
+    formData.append('title', post.title);
     formData.append('type', post.type);
     formData.append('_posted_by', post._posted_by);
     formData.append('_group', post._group);
@@ -916,7 +919,9 @@ readyToAddTask() {
    this.model_date = {year: (new Date()).getFullYear(), month: (new Date()).getMonth() + 1, day: (new Date()).getDate()};
    this.assignment = 'Unassigned';
    this.selectedGroupUsers = [];
+   this.post.title = '';
    this.post.content = '';
+   this.edit_post_title = '';
    this.edit_post_content = '';
    this.filesToUpload = [];
  }
@@ -932,6 +937,7 @@ readyToAddTask() {
    post.task._assigned_to.full_name = post.task._assigned_to.first_name + " " + post.task._assigned_to.last_name;
    this.groupUsersList = [post.task._assigned_to];
 
+   this.edit_post_title = post.title;
    this.edit_post_content = post.content;
 
    this.model_date = {
@@ -955,6 +961,7 @@ const post = this.postBeingEditted;
    console.log('this.contentMentions', this.content_mentions);
 
    const postData = {
+     'title': this.edit_post_title,
      'content': this.edit_post_content,
      '_content_mentions': this.content_mentions,
      'type': 'task',

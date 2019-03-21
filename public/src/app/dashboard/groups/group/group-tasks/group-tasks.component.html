@@ -485,6 +485,7 @@
     </div>
 
     <div class="card" style="margin-top:15px">
+      <input id="post-title" type="text" name="postTitle" [(ngModel)]="post.title" placeholder="Insert title here ..." style="padding: 12px 15px; font-style: italic; width: 100%; outline: none;" />
       <quill-editor [modules]="modules" id="post-content" [(ngModel)]="post.content" (blur)="onEditorBlured($event)"
                     [spellcheck]="true" name="postContent" (focus)="onEditorFocused($event)"
                     (ready)="onEditorCreated($event)" (onEditorCreated)="onEditorCreated($event)"
@@ -535,7 +536,7 @@
             (click)="addNewTaskPost();">Post Task
     </button>
 
-    
+
   </div>
   </div>
     <div class="row">
@@ -577,6 +578,7 @@
     </div>
 
     <div *ngIf="modulesLoaded" class="card" style="margin-top:15px">
+      <input id="post-title" type="text" [(ngModel)]="edit_post_title" style="padding: 12px 15px; font-style: italic; width: 100%; outline: none;" />
       <quill-editor [modules]="modules" id="post-content" [(ngModel)]="edit_post_content"
                     (blur)="onEditorBlured($event)"
                     [spellcheck]="true" name="postContent" (focus)="onEditorFocused($event)"
@@ -600,7 +602,7 @@
             </button>
         </div>
         <div class="col-md-10">
-        <button class="btn btn-sm btn-outline-primary" style="margin-right: 1rem;" (click)="removeTag(i)" *ngFor="let tag of tags; let i = index" placement="top" ngbTooltip="Click here to remove this tag"><b>X</b> {{tag}}</button>  
+        <button class="btn btn-sm btn-outline-primary" style="margin-right: 1rem;" (click)="removeTag(i)" *ngFor="let tag of tags; let i = index" placement="top" ngbTooltip="Click here to remove this tag"><b>X</b> {{tag}}</button>
         </div>
       </div>
 
@@ -610,8 +612,8 @@
         <button [disabled]="readyToEditTask()" class="btn btn-primary" id="create-task" (click)="editPost();">
           Edit Task
         </button>
-     
-        
+
+
       </div>
     </div>
   </div>

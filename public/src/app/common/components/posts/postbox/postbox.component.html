@@ -81,6 +81,7 @@
               <div class="triangle-event" *ngIf="post.type=='event'"></div>
               <div class="triangle-task" *ngIf="post.type=='task'"></div>
 
+              <input id="post-title" name="postTitle" type="text" formControlName="postTitle" [(ngModel)]="post.title" placeholder="Insert title here ..." style="padding: 12px 15px; font-style: italic; width: 100%; outline: none; box-shadow: none"/>
 
               <!--consider removing either ready or oneditorcreated since they call the same function-->
               <quill-editor id="post-content" [modules]="modules" [(ngModel)]="post.content"

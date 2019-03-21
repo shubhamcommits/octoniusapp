@@ -37,7 +37,7 @@
             {{post.task?.due_to | date}} <br> <span class="small kbn-working-color font-weight-bold"
               *ngIf="post.task?.started_at && post.task?.completed_at"> time spent:
               {{ getTaskTimeSpent() }} days</span></p>
-        
+
 
           <!-- <p class="small font-weight-bold" style="margin-top: 5px"> status- {{post.task?.status}}</p> -->
 
@@ -71,6 +71,7 @@
         </div>
 
         <div class="col-md-12 innercard">
+          <input type="text" [(ngModel)]="edit_title" value="post?.title" style="padding: 12px 15px; font-style: italic; width: 100%; outline: none;" />
           <quill-editor [modules]="modules" type="text" [(ngModel)]="edit_content" [spellcheck]="true"
             value="post?.content" (blur)="onEditorBlured($event)" (focus)="onEditorFocused($event)"
             (ready)="onEditorCreated($event)"></quill-editor>
@@ -91,11 +92,16 @@
               </button>
             </div>
             <div class="col-md-10">
-              <button class="btn btn-sm btn-outline-primary" style="margin-right: 1rem;" (click)="removeTag(i)" *ngFor="let tag of post?.tags; let i = index" placement="top" ngbTooltip="Click here to remove this tag"><b>X</b> {{tag}}</button>  
+              <button class="btn btn-sm btn-outline-primary" style="margin-right: 1rem;" (click)="removeTag(i)" *ngFor="let tag of post?.tags; let i = index" placement="top" ngbTooltip="Click here to remove this tag"><b>X</b> {{tag}}</button>
             </div>
           </div>
       </ng-container>
 
+      <!-- TASK POST TITLE -->
+      <div class="col-md-12 innercard font-weight-bold" style="font-size: 18px;" [innerHTML]="post?.title | safe: 'html'">
+      </div>
+
+      <!-- TASK POST CONTENT -->
       <div class="col-md-12 innercard " [innerHTML]="post?.content | safe: 'html'">
         <!--<pre class="card-text ">{{post?.content}}
         </pre>-->

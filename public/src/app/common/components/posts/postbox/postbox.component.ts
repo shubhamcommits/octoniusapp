@@ -58,6 +58,7 @@ export class PostboxComponent implements OnInit, OnDestroy {
   assignment = 'Unassigned';
   post = {
     type: 'normal',
+    title: '',
     content: ''
   };
   selectedGroupUsers = [];
@@ -153,6 +154,7 @@ export class PostboxComponent implements OnInit, OnDestroy {
 
     // post data
     const post = {
+      title: this.post.title,
       content: this.post.content,
       type: this.post.type,
       _posted_by: this.user_data.user_id,
@@ -177,6 +179,7 @@ export class PostboxComponent implements OnInit, OnDestroy {
       formData.append('content', post.content + driveDivision.innerHTML);
     }
 
+    formData.append('title', post.title);
     formData.append('type', post.type);
     formData.append('_posted_by', post._posted_by);
     formData.append('_group', post._group);
@@ -253,6 +256,7 @@ export class PostboxComponent implements OnInit, OnDestroy {
               dateTime:moment(date).format('YYYY-MM-DDTHH:mm:ssZ'),
               timeZone: this.timeZone
             },
+            title: post.title,
             summary: 'Event | Octonius',
             description: post.content,
             attendees: googleCalendarAttendees
@@ -302,6 +306,7 @@ export class PostboxComponent implements OnInit, OnDestroy {
 
     // post data
     const post = {
+      title: this.post.title,
       content: this.post.content,
       type: this.post.type,
       _posted_by: this.user._id,
@@ -342,6 +347,7 @@ export class PostboxComponent implements OnInit, OnDestroy {
       formData.append('content', post.content + driveDivision.innerHTML);
     }
 
+    formData.append('title', post.title);
     formData.append('type', post.type);
     formData.append('_posted_by', post._posted_by);
     formData.append('_group', post._group);
@@ -418,6 +424,7 @@ export class PostboxComponent implements OnInit, OnDestroy {
     const date = new Date(this.model_date.year, this.model_date.month - 1, this.model_date.day);
 
     const post = {
+      title: this.post.title,
       content: this.post.content,
       type: this.post.type,
       _posted_by: this.user_data.user_id,
@@ -444,6 +451,7 @@ export class PostboxComponent implements OnInit, OnDestroy {
       formData.append('content', post.content + driveDivision.innerHTML);
     }
 
+    formData.append('title', post.title);
     formData.append('type', post.type);
     formData.append('_posted_by', post._posted_by);
     formData.append('_group', post._group);
@@ -587,6 +595,7 @@ export class PostboxComponent implements OnInit, OnDestroy {
   // create the form that handles the post content
   inilizePostForm() {
     this.postForm = new FormGroup({
+      'postTitle': new FormControl(null, [Validators.required, InputValidators.fieldCannotBeEmpty]),
       'postContent': new FormControl(null, [Validators.required, InputValidators.fieldCannotBeEmpty]),
       'tag': new FormControl(null)
     });
@@ -690,6 +699,7 @@ export class PostboxComponent implements OnInit, OnDestroy {
   resetAndEnablePostForm(res, driveDivision) {
     this.processing = false;
     this.enablePostForm();
+    this.post.title = '';
     this.post.content = '';
     this.selectedGroupUsers = [];
     this.alert.class = 'success';
