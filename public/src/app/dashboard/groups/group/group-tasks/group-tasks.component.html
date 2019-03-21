@@ -94,7 +94,11 @@
                 </ng-template>
                 <hr>
                 <a style="text-decoration:none; color:inherit;"
-                   href="/#/dashboard/group/{{post._group?._id}}/post/{{post._id}}">
+                href="/#/dashboard/group/{{post._group?._id}}/post/{{post._id}}">
+                  <!-- To Do Post Title -->
+                  <div class="col-md-12 innercard font-weight-bold" style="font-size: 18px;" [innerHTML]="post?.title | safe: 'html'">
+                  </div>
+                  <!-- To Do Post Content -->
                   <div class="col-md-12 innercard " [innerHTML]="post?.content | safe: 'html'">
                     <!--<pre class="card-text ">{{post?.content}}
                   </pre>-->
@@ -249,6 +253,11 @@
                 <hr>
                 <a style="text-decoration:none; color:inherit;"
                    href="/#/dashboard/group/{{post._group?._id}}/post/{{post._id}}">
+
+                  <!-- IN PROGRESS POST TITLE -->
+                  <div class="col-md-12 innercard font-weight-bold" style="font-size: 18px;" [innerHTML]="post?.title | safe: 'html'">
+                  </div>
+                  <!-- IN PROGRESS POST CONTENT -->
                   <div class="col-md-12 innercard " [innerHTML]="post?.content | safe: 'html'">
                     <!--<pre class="card-text ">{{post?.content}}
               </pre>-->
@@ -398,6 +407,10 @@
               <hr>
               <a style="text-decoration:none; color:inherit;"
                  href="/#/dashboard/group/{{post._group?._id}}/post/{{post._id}}">
+                <!-- COMPLETED POST TITLE -->
+                <div class="col-md-12 innercard font-weight-bold" style="font-size: 18px;" [innerHTML]="post?.title | safe: 'html'">
+                </div>
+                <!-- COMPLETE POST CONTENT -->
                 <div class="col-md-12 innercard " [innerHTML]="post?.content | safe: 'html'">
                   <!--<pre class="card-text ">{{post?.content}}
                 </pre>-->
