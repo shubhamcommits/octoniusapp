@@ -52,6 +52,7 @@ export class TaskGroupPostComponent implements OnInit {
   comments = [];
 
   // edit post
+  edit_title = '';
   edit_content = '';
   selectedGroupUsers = [];
   assignment = 'Unassigned';
@@ -84,7 +85,7 @@ export class TaskGroupPostComponent implements OnInit {
     }
   }
 
-  // Get the duration in days between task start date and complete date using moment. 
+  // Get the duration in days between task start date and complete date using moment.
   getTaskTimeSpent() {
     const start = moment(this.post.task.started_at);
     const end = moment(this.post.task.completed_at);
@@ -105,6 +106,7 @@ export class TaskGroupPostComponent implements OnInit {
 
     // set the initial value of the editor
     this.edit_content = this.post.content;
+    this.edit_title = this.post.title;
 
     // show the edit section
     this.displayEditPostSection = true;
@@ -209,6 +211,7 @@ export class TaskGroupPostComponent implements OnInit {
     const date_due_to = new Date(this.model_date.year, this.model_date.month - 1, this.model_date.day);
 
     const post = {
+      'title': this.edit_title,
       'content': this.edit_content,
       '_content_mentions': this.content_mentions,
       'type': this.post.type,

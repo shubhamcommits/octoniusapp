@@ -23,13 +23,14 @@
           <br />
         </div>
         <div class="col-md-12 innercard">
+          <input type="text" [(ngModel)]="edit_title" value="post?.title" style="padding: 12px 15px; font-style: italic; width: 100%; outline: none;" />
           <quill-editor [modules]="modules" type="text" [(ngModel)]="edit_content"
                         [spellcheck]="true" value="post?.content">
 
           </quill-editor>
         </div>
         <div class="innercard">
- 
+
             <div class="col-md-6">
                 <input type="text" id="tags" (keydown)="addTags($event)" class="tags" placeholder="Add Tag here" [(ngModel)]="tag" name="tag" placement="top" ngbTooltip="Type & hit enter to add a tag">
               </div>
@@ -45,10 +46,14 @@
                   </button>
               </div>
               <div class="col-md-10">
-              <button class="btn btn-sm btn-outline-primary" style="margin-right: 1rem;" (click)="removeTag(i)" *ngFor="let tag of post?.tags; let i = index" placement="top" ngbTooltip="Click here to remove this tag"><b>X</b> {{tag}}</button>  
+              <button class="btn btn-sm btn-outline-primary" style="margin-right: 1rem;" (click)="removeTag(i)" *ngFor="let tag of post?.tags; let i = index" placement="top" ngbTooltip="Click here to remove this tag"><b>X</b> {{tag}}</button>
               </div>
             </div>
       </ng-container>
+
+      <!-- POST TITLE -->
+      <div class="col-md-12 innercard font-weight-bold" style="font-size: 18px;" [innerHTML]="post?.title | safe: 'html'">
+      </div>
 
       <!-- ACTUAL POST CONTENT -->
       <div class="col-md-12 innercard" style="border: none;" [innerHTML]="post?.content | safe: 'html'">
@@ -60,9 +65,9 @@
          <span> <i class="material-icons tagslabel" placement="bottom" ngbTooltip="Tags">
             local_offer
             </i></span>
-          <span class="tagsbtn" style="margin-right: 0.5rem;" *ngFor="let tag of tags; let i = index">{{tag}}</span>  
+          <span class="tagsbtn" style="margin-right: 0.5rem;" *ngFor="let tag of tags; let i = index">{{tag}}</span>
           </div>
-    </div>   
+    </div>
 
       <!-- POST FILES -->
       <div class="col-md-12 innercard" *ngFor="let file of post.files">

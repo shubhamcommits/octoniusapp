@@ -50,6 +50,9 @@ export class NormalGroupPostComponent implements OnInit, OnDestroy {
   displayEditPostSection = false;
   commentsDisplayed = false;
 
+  // the title of post edit
+  edit_title = '';
+
   // the content of edit editor
   edit_content = '';
 
@@ -174,6 +177,7 @@ export class NormalGroupPostComponent implements OnInit, OnDestroy {
 
     // set the initial value of the editor
     this.edit_content = this.post.content;
+    this.edit_title = this.post.title;
 
     // show the edit section
     this.displayEditPostSection = true;
@@ -200,12 +204,15 @@ export class NormalGroupPostComponent implements OnInit, OnDestroy {
     //     : new Date(this.model_date.year, this.model_date.month - 1, this.model_date.day);
 
     const post = {
+      'title': this.edit_title,
       'content': this.edit_content,
       '_content_mentions': this.content_mentions,
       'type': this.post.type,
       'tags': this.tags
       // 'assigned_to': this.selectedGroupUsers
     };
+
+    console.log(post);
 
     // // for tasks we don't want to transform the time to UTC, for events we do want it
     // post['date_due_to'] = this.post.type === 'event' ? moment.utc(date_due_to).format() : moment(date_due_to).format();
@@ -306,6 +313,7 @@ export class NormalGroupPostComponent implements OnInit, OnDestroy {
 
 
   resetEditPostForm() {
+    this.edit_title = '';
     this.edit_content = '';
     this.content_mentions = [];
   }
