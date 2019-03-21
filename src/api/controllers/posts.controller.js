@@ -71,6 +71,7 @@ const edit = async (req, res, next) => {
       case 'task':
 
         postData = {
+          title: req.body.title,
           content: req.body.content,
           _content_mentions: req.body._content_mentions,
           tags: req.body.tags,
@@ -90,6 +91,7 @@ const edit = async (req, res, next) => {
         const assignedUsers = req.body.assigned_to.map((item, index) => item._id);
 
         postData = {
+          title: req.body.title,
           content: req.body.content,
           _content_mentions: req.body._content_mentions,
           tags: req.body.tags,
@@ -103,6 +105,7 @@ const edit = async (req, res, next) => {
       case 'normal':
 
         postData = {
+          title: req.body.title,
           content: req.body.content,
           _content_mentions: req.body._content_mentions,
           tags: req.body.tags,
