@@ -1115,16 +1115,9 @@ addTags(event: any) {
   //keyCode= 13 represents enter key
   // in else case we are making use of mouse click
   if(event.keyCode == 13){
-    if(this.assignment == 'Assigned'){
-      const edit_tag = document.getElementById('edit_tags');
-      this.tags.push(edit_tag['value']);
-      edit_tag['value'] = '';
-    }
-    else{
       const tag = document.getElementById('tags');
       this.tags.push(tag['value']);
       tag['value'] = '';
-    }
 
     console.log(this.tags);
   }
