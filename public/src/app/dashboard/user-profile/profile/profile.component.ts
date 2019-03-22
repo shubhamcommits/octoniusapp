@@ -17,6 +17,7 @@ export class ProfileComponent implements OnInit {
   };
 
   user: any;
+  userId: String;
   join_date;
 
   skills = [];
@@ -33,25 +34,25 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     this.ngxService.start(); // start foreground loading with 'default' id
-
     // Stop the foreground loading after 5s
     setTimeout(() => {
       this.ngxService.stop(); // stop foreground loading with 'default' id
     }, 500);
 
-    this.getProfile();
-
+    this.route.parent.params.subscribe((params) => {
+      this.userId = params.userId;
+      this.getProfile();
+    });
   }
 
   getProfile(){
-    this._userService.getUser()
+    this._userService.getOtherUser(this.userId)
     .subscribe((user)=>{
-      console.log('test 1', user['user']);
-      console.log('test 2', JSON.parse(localStorage.getItem('user')).user_id == user['user']._id);
       this.user = user['user'];
       this.join_date = new Date(this.user.company_join_date.year, this.user.company_join_date.month -1, this.user.company_join_date.day);
       this.skills = user['user'].skills;
       this.isCurrentUser = JSON.parse(localStorage.getItem('user')).user_id == this.user._id;
+      this.profileDataService.user.next(user['user']);
 
       if (this.user['company_join_date'] == null && this.isCurrentUser) {
         swal("Oops!", "Seems like you have been missing out, please update your profile to stay updated!", "warning");
