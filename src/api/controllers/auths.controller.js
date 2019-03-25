@@ -233,7 +233,7 @@ const signUp = async (req, res, next) => {
     sendMail.signup(userUpdate);
 
     // add user to Stripe subscription
-    billing.addUserToSubscription(workspaceUpdate);
+    // billing.addUserToSubscription(workspaceUpdate);
 
     // Signup user and return the token
     return res.status(201).json({

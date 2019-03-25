@@ -217,7 +217,7 @@ const deleteUser = async (req, res, next) => {
     });
 
     // remove member from the billing list
-    billing.subtractUserFromSubscription(updatedWorkSpace);
+    // billing.subtractUserFromSubscription(updatedWorkSpace);
 
     return res.status(200).json({
       message: 'User removed from workspace!',

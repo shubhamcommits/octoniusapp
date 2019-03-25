@@ -29,7 +29,7 @@ import { OverviewMyTasksComponent } from './dashboard/overview/overview-my-tasks
 import {OverviewMyWorkplaceComponent} from "./dashboard/overview/overview-my-workplace/overview-my-workplace.component";
 import { AdminBillingComponent } from './dashboard/admin/admin-billing/admin-billing.component';
 import {DenyNavigationGuard} from "./shared/guards/deny-navigation.guard";
-import {ValidSubscriptionGuard} from "./shared/guards/valid-subscription.guard";
+// import {ValidSubscriptionGuard} from "./shared/guards/valid-subscription.guard";
 import { CloudsComponent } from './dashboard/user-profile/clouds/clouds.component';
 import {ResetPwdComponent} from "./Authentication/reset-password/reset-password.component";
 import {AllSearchResultsComponent} from "./dashboard/search/all-search-results/all-search-results.component";
@@ -48,15 +48,15 @@ const appRoutes: Routes = [
   {
     path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard],
     children: [
-      { path: 'all-search-results/:query', component: AllSearchResultsComponent, canActivate: [ValidSubscriptionGuard]},
-      { path: 'overview', component: OverviewComponent, canActivate: [ValidSubscriptionGuard]},
-      { path: 'overview/mytasks', component: OverviewMyTasksComponent, canActivate: [ValidSubscriptionGuard]},
-      { path: 'overview/myworkplace', component: OverviewMyWorkplaceComponent, canActivate: [ValidSubscriptionGuard]},
+      { path: 'all-search-results/:query', component: AllSearchResultsComponent},
+      { path: 'overview', component: OverviewComponent},
+      { path: 'overview/mytasks', component: OverviewMyTasksComponent},
+      { path: 'overview/myworkplace', component: OverviewMyWorkplaceComponent},
       {
-        path: 'groups', component: GroupsComponent, canActivate: [ValidSubscriptionGuard],
+        path: 'groups', component: GroupsComponent, 
       },
       {
-        path: 'group/:id', component: GroupComponent, canActivate: [ValidSubscriptionGuard],
+        path: 'group/:id', component: GroupComponent,
 
         children: [
           { path: 'activity', component: GroupActivityComponent },
@@ -71,17 +71,17 @@ const appRoutes: Routes = [
       {
         path: 'admin', component: AdminComponent,
         children: [
-          { path: 'general', component: AdminGeneralComponent, canActivate: [ValidSubscriptionGuard] },
-          { path: 'members', component: AdminMembersComponent, canActivate: [ValidSubscriptionGuard] },
-          {
-            path: 'billing',
-            component: AdminBillingComponent,
-            canDeactivate: [DenyNavigationGuard]
-          }
+          { path: 'general', component: AdminGeneralComponent },
+          { path: 'members', component: AdminMembersComponent}
+          // {
+          //   path: 'billing',
+          //   component: AdminBillingComponent,
+          //   canDeactivate: [DenyNavigationGuard]
+          // }
         ]
       },
       {
-        path: 'profile/:userId', component: UserProfileComponent, canActivate: [ValidSubscriptionGuard],
+        path: 'profile/:userId', component: UserProfileComponent, 
         children: [{ path: 'profile', component: ProfileComponent },
         { path: 'clouds', component: CloudsComponent }]
       }

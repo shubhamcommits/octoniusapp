@@ -68,7 +68,8 @@ export class NewWorkspacePage2Component implements OnInit {
 
         setTimeout(() => {
           this.processing = false;
-          this._router.navigate(['/dashboard/admin/billing']);
+          // this._router.navigate(['/dashboard/admin/billing']);
+          this._router.navigate( ['/']);
         }, 2000);
       }, (err) => {
         this.alert.class = 'alert alert-danger';
