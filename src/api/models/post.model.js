@@ -18,7 +18,7 @@ const PostSchema = new Schema({
   type: {
     type: String,
     required: true,
-    enum: ['normal', 'event', 'task']
+    enum: ['normal', 'event', 'task', 'performance_task']
   },
   _liked_by: [{
     type: Schema.Types.ObjectId,
@@ -51,6 +51,28 @@ const PostSchema = new Schema({
       type: Schema.Types.ObjectId,
       ref: 'User'
     },
+    status: {
+      type: String,
+      enum: ['to do', 'in progress', 'done']
+    },
+    started_at: {
+      type: Date,
+      default: null
+    },
+    completed_at: {
+      type: Date,
+      default: null
+    }
+  },
+  performance_task: {
+    _assigned_to: {
+      type: Schema.Types.ObjectId,
+      ref: 'User'
+    },
+    skills: [{
+      type: String,
+      default: null
+    }],
     status: {
       type: String,
       enum: ['to do', 'in progress', 'done']

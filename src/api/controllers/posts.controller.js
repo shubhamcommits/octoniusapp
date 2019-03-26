@@ -48,6 +48,8 @@ const add = async (req, res, next) => {
     //  populate the assigned_to property of this document
     if (post.type === 'task') {
       post = await Post.populate(post, [{ path: 'task._assigned_to' }, { path: '_group' }, { path: '_posted_by' }]);
+    } else if (post.type === 'performance_task') {
+      post = await Post.populate(post, [{ path: 'performance_task._assigned_to' }, { path: '_group' }, { path: '_posted_by' }]);
     } else if (post.type === 'event') {
       post = await Post.populate(post, [{ path: 'event._assigned_to' }, { path: '_group' }, { path: '_posted_by' }]);
     } else if (post.type === 'normal') {
@@ -77,6 +79,19 @@ const edit = async (req, res, next) => {
           tags: req.body.tags,
           task: {
             due_to: req.body.date_due_to,
+            _assigned_to: req.body.assigned_to[0]._id,
+            status: req.body.status
+          }
+        };
+        break;
+      
+        case 'performance_task':
+        postData = {
+          title: req.body.title,
+          content: req.body.content,
+          _content_mentions: req.body._content_mentions,
+          skill: req.body.skill,
+          performance_task: {
             _assigned_to: req.body.assigned_to[0]._id,
             status: req.body.status
           }
@@ -131,6 +146,8 @@ const edit = async (req, res, next) => {
       })
       .populate('_posted_by')
       .populate('task._assigned_to')
+      .populate('performance_task._assigned_to')
+      .populate('performance_task._skills')
       .populate('event._assigned_to')
       .populate('_liked_by');
 
@@ -175,6 +192,7 @@ const get = async (req, res, next) => {
       .populate('_liked_by', 'first_name last_name')
       .populate('comments._commented_by', 'first_name last_name profile_pic')
       .populate('task._assigned_to', 'first_name last_name')
+      .populate('performance_task._assigned_to', 'first_name last_name')
       .populate('event._assigned_to', 'first_name last_name')
       .lean();
 
@@ -622,7 +640,10 @@ const changeTaskStatus = async (req, res, next) => {
       // ...user is not the post author... and...
       && (!post._posted_by.equals(userId)
         // ...user is not the task assignee
-        && !post.task._assigned_to.equals(userId))
+        && !post.task._assigned_to.equals(userId)
+        // ...user is not the performance_task assignee
+        && !post.performance_task._assigned_to.equals(userId))
+
     ) {
       // Deny access!
       return sendErr(res, null, 'User not allowed to update this post!', 403);
@@ -631,17 +652,18 @@ const changeTaskStatus = async (req, res, next) => {
     const postUpdated = await Post.findOneAndUpdate({
       _id: postId
     }, {
-        'task.status': status
+        'task.status': status,
+        'performance_task': status
       }, {
         new: true
       });
 
     // send email to user and poster when task status is done
     if (status === 'done') {
-      await Post.findOneAndUpdate({ _id: postId }, { 'task.completed_at': moment() });
+      await Post.findOneAndUpdate({ _id: postId }, { 'task.completed_at || performance_task.completed_at' : moment() });
       sendMail.userCompletedTask(req.userId, postUpdated);
     } else if (status === 'in progress') {
-      await Post.findOneAndUpdate({ _id: postId }, { 'task.started_at': moment(), 'task.completed_at': null });
+      await Post.findOneAndUpdate({ _id: postId }, { 'task.started_at || performance_task.started_at': moment(), 'task.completed_at || performance_task.completed_at': null });
     }
 
     return res.status(200).json({
@@ -674,7 +696,8 @@ const changeTaskAssignee = async (req, res, next) => {
     const postUpdated = await Post.findOneAndUpdate({
       _id: postId
     }, {
-        'task._assigned_to': assigneeId
+        'task._assigned_to': assigneeId,
+        'performance_task._assigned_to': assigneeId,
       }, {
         new: true
       });
