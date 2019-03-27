@@ -8,20 +8,23 @@ const { sendErr } = require('../../utils');
 const createPostQuery = (userGroups, query) => Post.find({
   $and: [
     { _group: { $in: userGroups } },
-    { content: { $regex: query, $options: 'i' } }
+    {
+      $or: [
+        { content: { $regex: query, $options: 'i' } },
+        { title: { $regex: query, $options: 'i' } }
+      ]
+    }
   ]
 }).sort({ created_date: -1 })
-    .populate('_posted_by', 'full_name profile_pic')
+  .populate('_posted_by', 'full_name profile_pic')
   .populate('_group', 'group_name');
 
-const createUserQuery = (user, query) => {
-  return User.find({
-    $and: [
-      { full_name: { $regex: query, $options: 'i' } },
-      { _workspace: user._workspace || user._workspace._id }
-    ]
-  }).select('profile_pic full_name email created_date');
-};
+const createUserQuery = (user, query) => User.find({
+  $and: [
+    { full_name: { $regex: query, $options: 'i' } },
+    { _workspace: user._workspace || user._workspace._id }
+  ]
+}).select('profile_pic full_name email created_date');
 
 const createSkillsQuery = (user, query) => User.find({
   $and: [
