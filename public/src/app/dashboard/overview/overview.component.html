@@ -40,7 +40,7 @@
                   </div>
                   <div class="col-md-8 event-title">
                     <p class="blue">New event in <b>{{post._group?.group_name}} group</b></p>
-                    <div [innerHTML]="post?.content | safe: 'html' " class="overview-item"> </div>
+                    <div [innerHTML]="post?.title | safe: 'html' " class="overview-item font-weight-bold"> </div>
 
                   </div>
                 </div>
@@ -79,7 +79,7 @@
               </div>
               <div class="col-md-8">
                 <p class="pink">Assigned a task to you in <b>{{post._group?.group_name}} group</b> for <b>{{post.task.due_to | date:'d MMMM' }}</b></p>
-                <div [innerHTML]="post.content" class="overview-item"></div>
+                <div [innerHTML]="post?.title" class="overview-item font-weight-bold"></div>
               </div>
 
               <div class="col-md-1">
@@ -174,7 +174,7 @@
 
     <div *ngFor="let comment of comments; let i = index;">
 
-      <div *ngIf="comment._post.type == 'normal'">
+      <div *ngIf="comment?._post?.type == 'normal'">
         <div [routerLink]="['/dashboard/group/', comment._post._group._id, 'post', comment._post._id]" class="media card-tile overview-post">
           <!-- <img src="/uploads/{{post._group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" class="mr-3 feed-avatar-big"> -->
           <div class=" row media-body">
@@ -189,7 +189,7 @@
             </div>
             <div class="col-md-8">
               <p class="blue">Replied in <b>{{comment._post._group?.group_name}} group</b></p>
-              <div class="" [innerHTML]="comment.content" class="overview-item"></div>
+              <div [innerHTML]="comment?.content" class="overview-item"></div>
             </div>
 
             <div class="col-md-1">
@@ -204,7 +204,7 @@
       </div>
 
 
-      <div *ngIf="comment._post.type== 'task' && comment._post.task.status != 'done' && comment._post.comments_count > 0">
+      <div *ngIf="comment?._post?.type== 'task' && comment?._post?.task?.status != 'done' && comment?._post?.comments_count > 0">
         <div [routerLink]="['/dashboard/group/', comment._post._group._id, 'post', comment._post._id]" class="media card-tile">
           <!-- <img src="/uploads/{{post._group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" class="mr-3 feed-avatar-big"> -->
           <div class=" row media-body">
@@ -220,7 +220,7 @@
 
             <div class="col-md-8">
               <p class="blue">Replied in <b>{{comment._post._group?.group_name}} group</b> to the task assigned to you.</p>
-              <div class="" [innerHTML]="comment.content" class="overview-item"></div>
+              <div [innerHTML]="comment?.content" class="overview-item"></div>
             </div>
 
             <div class="col-md-1">
@@ -233,7 +233,7 @@
         </div>
       </div>
 
-      <div *ngIf="comment._post.type== 'event' && comment._post.comments_count > 0">
+      <div *ngIf="comment?._post?.type== 'event' && comment?._post?.comments_count > 0">
 
         <div [routerLink]="['/dashboard/group/', comment._post._group._id, 'post', comment._post._id]" class="media card-tile">
           <!-- <img src="/uploads/{{post._group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" class="mr-3 feed-avatar"> -->
@@ -248,7 +248,7 @@
 
             <div class="col-md-8">
               <p class="blue">Replied in <b>{{comment._post._group?.group_name}} group</b> to the Event assigned to you</p>
-              <div class="" [innerHTML]="comment.content" class="overview-item"></div>
+              <div [innerHTML]="comment?.content" class="overview-item"></div>
             </div>
 
             <div class="col-md-1">
