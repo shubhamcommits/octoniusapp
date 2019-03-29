@@ -276,6 +276,7 @@ const taskReassigned = async (postUpdated) => {
     console.log('emailData', emailData);
 
     // Generate email body from template
+    const emailBody = await generateEmailBody(emailType, emailData);
 
     // Send email
     const send = await sendMail(emailBody, emailData);
