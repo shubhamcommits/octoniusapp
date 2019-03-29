@@ -6,8 +6,17 @@
 
   <div *ngIf="alert.message" [ngClass]="alert.class">{{alert.message}}</div>
   <div class="row no-margin">
+      <div *ngIf="user?.role== 'admin' || user?.role== 'owner'" (click)="openLg(content)" class="card col-md-3" style="cursor: pointer;">
+          <img class="card-img-top " src="https://picsum.photos/1920/1200/?random&gravity=south">
+        <div class="card-body" style="text-align:center">
+         
+              <h2 class="card-title" style="color: #005FD5"> Create New Group</h2>
+          
+          <!-- <p class="card-text">Group description</p>  -->
+        </div>
+      </div>
 
-    <div *ngIf="user?.role== 'admin' || user?.role== 'owner'" (click)="openLg(content)" class="card col-md-3" style="cursor: pointer;">
+    <!-- <div *ngIf="user?.role== 'admin' || user?.role== 'owner'" (click)="openLg(content)" class="card col-md-3" style="cursor: pointer;">
 
         <a>
 
@@ -16,7 +25,7 @@
         </a>
 
 
-    </div>
+    </div> -->
 
     <!--     <div class="card col-md-3 m-1" [routerLink]="['/dashboard/group/',group._id,'activity']">
       <img class="card-img-top " src="https://source.unsplash.com/random">
@@ -31,7 +40,7 @@
         </p>
       </div>
     </div> -->
-    <ng-container *ngFor="let group of groups ">
+    <ng-container *ngFor="let group of groups " style="margin-bottom: 30px">
       <div *ngIf="group.group_name !== 'private'" class="card col-md-3 groups" [routerLink]="['/dashboard/group/',group._id,'activity']">
         <span class="badge badge-members" >{{group._members?.length + group._admins?.length}} Members</span>
         <img class="card-img-top" [src] = "group.group_avatar" onerror="this.src='/assets/images/group.png'" >
@@ -43,6 +52,7 @@
         </div>
       </div>
     </ng-container>
+
 
     <ng-template #content let-c="close" let-d="dismiss">
       <div class="modal-header">
@@ -64,8 +74,9 @@
 
       </div>
       <div class="modal-footer">
-        <button [disabled]="createNewGroupForm.invalid" class="btn btn-outline-primary mb-2 mr-2" (click)="onCreateNewGroup()">Create Group</button>
-        <button type="button" class="btn btn-outline-primary mb-2 mr-2" (click)="c('Close click')">Cancel</button>
+          <button type="button" class="btn btn-default" (click)="c('Close click')">Cancel</button>
+        <button [disabled]="createNewGroupForm.invalid" class="btn btn-primary" (click)="onCreateNewGroup()">Create Group</button>
+        
       </div>
     </ng-template>
   </div>
