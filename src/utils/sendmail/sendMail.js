@@ -250,6 +250,42 @@ const taskAssigned = async (taskPost) => {
   }
 };
 
+// Send email when a task is reassigned to a user
+const taskReassigned = async (postUpdated) => {
+  try {
+    const emailType = 'taskReassigned';
+
+    // Generate email data
+    const to = await User.findById({ _id: postUpdated.task._assigned_to  });
+    const from = await User.findById({ _id: postUpdated._posted_by });
+    const group = await Group.findById({ _id: postUpdated._group });
+
+    const emailData = {
+      subject: subjects[emailType],
+      toName: to.first_name,
+      toEmail: to.email,
+      fromName: from.first_name,
+      fromEmail: from.email,
+      contentPost: postUpdated.content,
+      workspace: group.workspace_name,
+      group: group.group_name,
+      link: defaults.signinLink,
+      taskLink: defaults.postLink(group._id, postUpdated._id)
+    };
+
+    console.log('emailData', emailData);
+
+    // Generate email body from template
+    const emailBody = await generateEmailBody(emailType, emailData);
+
+    // Send email
+    const send = await sendMail(emailBody, emailData);
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.log(err);
+  }
+};
+
 // Send email when a task assigned to a user
 const eventAssigned = async (eventPost) => {
   try {
@@ -528,6 +564,7 @@ module.exports = {
   newWorkspace,
   signup,
   taskAssigned,
+  taskReassigned,
   eventAssigned,
   userMentionedComment,
   userMentionedPost,
