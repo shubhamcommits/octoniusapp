@@ -4,6 +4,7 @@ module.exports = {
   newWorkspace: '- You\'ve created a new workspace in Octonius! -',
   signup: '- Welcome to Octonius! -',
   taskAssigned: '- You have a new task on Octonius -',
+  taskReassigned: '- You have a new reassigned task on Octonius -',
   eventAssigned: '- You have a new event on Octonius -',
   userMentionedPost: '- You have been mentioned in a post on Octonius -',
   userMentionedComment: '- You have been mentioned in a comment on Octonius -',

@@ -68,6 +68,20 @@ const newTaskAssignment = async (post) => {
   }
 };
 
+const newTaskReassignment = async (postUpdated) => {
+  try {
+    const notification = await Notification.create({
+      _actor: postUpdated._posted_by,
+      _owner: postUpdated.task._assigned_to,
+      _origin_post: postUpdated._id,
+      message: 'reassigned a task to you.',
+      type: 'assignment'
+    });
+  } catch (err) {
+    return err;
+  }
+};
+
 const getRead = async (userId) => {
   try {
     const notifications = await Notification.find({
@@ -136,6 +150,7 @@ module.exports = {
   newEventAssignments,
   newPostMentions,
   newTaskAssignment,
+  newTaskReassignment,
   getRead,
   getUnread,
   markRead

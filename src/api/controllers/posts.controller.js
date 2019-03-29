@@ -697,10 +697,11 @@ const changeTaskAssignee = async (req, res, next) => {
       _id: postId
     }, {
         'task._assigned_to': assigneeId,
-        'performance_task._assigned_to': assigneeId,
       }, {
         new: true
       });
+      await notifications.newTaskReassignment(postUpdated);
+      await sendMail.taskReassigned(postUpdated);
 
     return res.status(200).json({
       message: 'Task assignee updated!',

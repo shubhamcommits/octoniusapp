@@ -147,8 +147,6 @@ export class GroupTasksComponent implements OnInit {
     this.loadGroup();
     this.mentionmembers();
     this.initializeGroupMembersSearchForm();
-
-
   }
 
   getTaskTimeSpent(taskPost) {
@@ -366,6 +364,7 @@ export class GroupTasksComponent implements OnInit {
       console.log('Task Assignee', res);
       this.getTasks();
       this.getCompletedTasks();
+      this.socket.emit('getNotifications', this.user_data.user_id);
     }, (err) => {
       console.log('Error changing the Task Assignee', err);
     });
