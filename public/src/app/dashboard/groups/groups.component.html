@@ -6,11 +6,11 @@
 
   <div *ngIf="alert.message" [ngClass]="alert.class">{{alert.message}}</div>
   <div class="row no-margin">
-      <div *ngIf="user?.role== 'admin' || user?.role== 'owner'" (click)="openLg(content)" class="card col-md-3" style="cursor: pointer;">
-          <img class="card-img-top " src="https://picsum.photos/1920/1200/?random&gravity=south">
-        <div class="card-body" style="text-align:center">
+      <div *ngIf="user?.role== 'admin' || user?.role== 'owner'" (click)="openLg(content)" class="card col-md-3 overlay" style="text-align:center; background-image:url(https://picsum.photos/600/300/?random&gravity=south ) !important; cursor: pointer;">
+        <!-- <img class="card-img-top" src="https://picsum.photos/1920/1200/?random&gravity=south">  -->
+        <div class="card-body content" style="background:transparent">
          
-              <h2 class="card-title" style="color: #005FD5"> Create New Group</h2>
+              <h2 class="card-title white" style="color: #fff; margin-top: 60px;">  <i class="material-icons">add</i> <br> Create New Group</h2>
           
           <!-- <p class="card-text">Group description</p>  -->
         </div>
