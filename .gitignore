@@ -1,7 +1,12 @@
+# Node.js packages
 node_modules/
+# MongoDB development database
 data/
+
+# Octonius uploaded files on development
 uploads/
-vim_sessions/
+
+# Code editor related files and dirs
 .idea/
+.vscode/
 *.vim
-package-lock.json
