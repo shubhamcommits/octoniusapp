@@ -8,11 +8,13 @@ var cursors = {};
 
 //added by Amit starts
 // var userID= JSON.parse(localStorage.getItem('user')).user_id;
+var userID= JSON.parse(localStorage.getItem('user')).user_id;
 // ends
 
 function CursorConnection(name, color,range) {
   // id being generated on server. Amit
   this.name = JSON.parse(localStorage.getItem('user'))?JSON.parse(localStorage.getItem('user')).user_id:null;
+  this.name = userID;
   this.color = color;
   this.range=range;
 }
