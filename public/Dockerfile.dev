@@ -1,0 +1,12 @@
+FROM node:alpine
+
+WORKDIR '/app'
+COPY ./package.json ./package-lock.json ./
+RUN apk add --no-cache --virtual .gyp python make g++
+RUN npm install --global node-gyp \
+    && npm config set python python2.7 \
+    && npm install
+RUN apk del .gyp
+COPY ./ ./
+EXPOSE 4200
+CMD ["npm", "run", "hmr"]

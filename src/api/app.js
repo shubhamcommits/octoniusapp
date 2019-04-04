@@ -5,7 +5,7 @@ const fileUpload = require('express-fileupload');
 const morgan = require('morgan');
 const path = require('path');
 
-const devEnv = require('../../development.config');
+const devEnv = require('../development.config');
 
 // Correct REST naming
 const {
@@ -69,9 +69,9 @@ app.use('/api/search', searchRoutes);
 
 
 // -->!!!! TO BE REMOVED !!!!
-app.use('/api/auth', authsRoutes);
-app.use('/api/group', groupsRoutes);
-app.use('/api/workspace', workspacesRoutes);
+app.use('/auth', authsRoutes);
+app.use('/group', groupsRoutes);
+app.use('/workspace', workspacesRoutes);
 
 // Invalid routes handling middleware
 app.use((req, res, next) => {

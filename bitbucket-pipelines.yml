@@ -5,6 +5,8 @@ pipelines:
     "{sqshdocker}":
     - step:
         name: Deploy to test
+        services:
+          - docker
         deployment: test   # can be test, staging or production.
         script:
           - echo "Deploying to test environment"
@@ -33,4 +35,7 @@ pipelines:
           - docker push $API_IMAGE_NAME
           - docker push $NGINX_IMAGE_NAME
 
-
+definitions:
+  services:
+    docker:
+      memory: 3072
