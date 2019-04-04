@@ -1,15 +1,7 @@
 {
-  "name": "octonius6",
-  "version": "1.0.0",
-  "description": "",
-  "main": "src/api/app.js",
-  "scripts": {
-    "test": "jest",
-    "dev": "nodemon server.js",
-    "start": "node server.js"
-  },
-  "author": "waqas",
-  "license": "ISC",
+  "name": "octonius-api",
+  "private": "true",
+  "license": "private",
   "dependencies": {
     "autolinker": "^1.8.3",
     "axios": "^0.18.0",
@@ -36,6 +28,17 @@
     "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-jsx-a11y": "^6.2.0",
     "eslint-plugin-react": "^7.12.4",
-    "jest": "^23.6.0"
+    "jest": "^23.6.0",
+    "nodemon": "^1.18.9",
+    "puppeteer": "^1.11.0"
+  },
+  "scripts": {
+    "test": "jest",
+    "dev": "nodemon server",
+    "start": "node server"
+  },
+  "jest": {
+    "verbose": true,
+    "testURL": "http://localhost/"
   }
 }

@@ -3,9 +3,16 @@ const mongoose = require('mongoose');
 // Get Mongoose to use global promise library to avoid error messages
 mongoose.Promise = global.Promise;
 
+// Set up mongoose connection
+const { dbURL } = process.env;
+
+const options = {
+  reconnectTries: Number.MAX_VALUE, // Never stop trying to reconnect
+  reconnectInterval: 500 // Reconnect every 500ms
+};
+
 // Connect mongoose to db
-const dbURL = process.env.dbURL || 'mongodb://127.0.0.1:27017/octonius';
-mongoose.connect(dbURL);
+mongoose.connect(dbURL, options);
 
 // Log Mongoose connection status changes:
 mongoose.connection.on('connected', () => {
