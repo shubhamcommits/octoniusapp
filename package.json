@@ -26,8 +26,14 @@
     "morgan": "^1.9.1",
     "quill-delta": "^4.1.0",
     "redis": "^2.8.0",
+    "rich-text": "^3.1.0",
+    "sharedb": "^1.0.0-beta.20",
+    "sharedb-mongo": "^1.0.0-beta.8",
     "socket.io": "^2.2.0",
-    "stripe": "^6.22.0"
+    "stripe": "^6.22.0",
+    "uuid": "^3.3.2",
+    "websocket-json-stream": "0.0.3",
+    "ws": "^6.2.0"
   },
   "devDependencies": {
     "eslint": "^5.12.1",
