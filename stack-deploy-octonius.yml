@@ -33,7 +33,7 @@ services:
         condition: on-failure
   
   api:
-    image: 'octoniusapp/octonius-api:GIT_HASH'
+    image: 'octoniusapp/octonius-api:7197e96851727f79c589b72cf2e24a06b26e9c61'
     networks:
       - backend
     volumes:
@@ -62,7 +62,7 @@ services:
         condition: on-failure
   
   client:
-    image: 'octoniusapp/octonius-client:GIT_HASH'
+    image: 'octoniusapp/octonius-client:7197e96851727f79c589b72cf2e24a06b26e9c61'
     networks:
       - frontend
     depends_on:
@@ -76,7 +76,7 @@ services:
         condition: on-failure
   
   nginx:
-    image: 'octoniusapp/octonius-nginx:GIT_HASH'
+    image: 'octoniusapp/octonius-nginx:7197e96851727f79c589b72cf2e24a06b26e9c61'
     networks:
       - frontend
       - backend
