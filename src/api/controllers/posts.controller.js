@@ -660,10 +660,10 @@ const changeTaskStatus = async (req, res, next) => {
 
     // send email to user and poster when task status is done
     if (status === 'done') {
-      await Post.findOneAndUpdate({ _id: postId }, { 'task.completed_at' : moment() });
+      await Post.findOneAndUpdate({ _id: postId }, { 'task.completed_at || performance_task.completed_at' : moment() });
       sendMail.userCompletedTask(req.userId, postUpdated);
     } else if (status === 'in progress') {
-      await Post.findOneAndUpdate({ _id: postId }, { 'task.started_at': moment(), 'task.completed_at': null });
+      await Post.findOneAndUpdate({ _id: postId }, { 'task.started_at || performance_task.started_at': moment(), 'task.completed_at || performance_task.completed_at': null });
     }
 
     return res.status(200).json({
