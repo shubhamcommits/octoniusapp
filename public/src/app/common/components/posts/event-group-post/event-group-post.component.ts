@@ -79,7 +79,10 @@ export class EventGroupPostComponent implements OnInit, OnDestroy {
         }
   }
   ngAfterViewInit(): void {
-    $('.image-gallery').lightGallery();
+    $('.image-gallery').lightGallery({
+      share:false,
+      counter:false
+    });
  }
 
   applyZoom(htmlDOM): string{

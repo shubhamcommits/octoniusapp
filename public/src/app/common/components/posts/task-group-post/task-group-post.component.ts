@@ -86,7 +86,10 @@ export class TaskGroupPostComponent implements OnInit {
     }
   }
   ngAfterViewInit(): void {
-    $('.image-gallery').lightGallery();
+    $('.image-gallery').lightGallery({
+      share:false,
+      counter:false
+    });
  }
 
   applyZoom(htmlDOM): string{
