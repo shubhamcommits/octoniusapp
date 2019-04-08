@@ -58,7 +58,7 @@
       </div>
 
       <!-- ACTUAL POST CONTENT -->
-      <div class="col-md-12 innercard" style="border: none;" [innerHTML]="post?.content | safe: 'html'">
+      <div class="col-md-12 innercard" style="border: none;" [innerHTML]="applyZoom(post?.content) | safe: 'html'">
       </div>
 
       <!--POST TAGS-->
