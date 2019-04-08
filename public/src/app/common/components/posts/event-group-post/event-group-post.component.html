@@ -86,12 +86,12 @@
               <div class="col-md-12 innercard font-weight-bold" style="font-size: 18px;" [innerHTML]="post?.title | safe: 'html'">
                 </div>
               <!-- Event Post Content -->
-              <div class="col-md-12 event-title" [innerHTML]="post?.content | safe: 'html' ">
+              <div class="col-md-12 event-title" [innerHTML]="applyZoom(post?.content) | safe: 'html' ">
 
               </div>
             </div>
           </div>
-
+ 
         </div>
 
       <div class="col-md-12 innercard" *ngFor="let file of post.files">

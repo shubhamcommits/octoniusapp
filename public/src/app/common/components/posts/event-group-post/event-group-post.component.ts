@@ -6,6 +6,7 @@ import {PostService} from "../../../../shared/services/post.service";
 import { saveAs } from 'file-saver';
 import {GroupService} from "../../../../shared/services/group.service";
 import {CommentSectionComponent} from "../../comments/comment-section/comment-section.component";
+declare var $;
 
 @Component({
   selector: 'event-group-post',
@@ -77,6 +78,30 @@ export class EventGroupPostComponent implements OnInit, OnDestroy {
           this.tags = [];
         }
   }
+  ngAfterViewInit(): void {
+    $('.image-gallery').lightGallery();
+ }
+
+  applyZoom(htmlDOM): string{
+    var parser = new DOMParser();
+    var doc = parser.parseFromString(htmlDOM, "text/html");
+    // image could be multiple so for each here to be used
+    // var imgCount = doc.getElementsByTagName('img').length;
+    var img:any = doc.getElementsByTagName('img')[0];
+
+  if(img){ //if any image exists
+      let clonedImg:any=img.cloneNode(true);
+      let acnhorThumbnail=document.createElement('a');
+      acnhorThumbnail.href=clonedImg.src;
+      let imgGallery = document.createElement("div");
+      imgGallery.classList.add('image-gallery');
+      acnhorThumbnail.appendChild(clonedImg);
+      imgGallery.appendChild(acnhorThumbnail);
+      img.replaceWith(imgGallery);
+      return doc.body.innerHTML;
+  } 
+}
+
 
   deletePost() {
     this.removePost.emit(this.post._id);
