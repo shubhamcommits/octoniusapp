@@ -8,6 +8,7 @@ import { CommentSectionComponent } from "../../comments/comment-section/comment-
 import * as moment from 'moment';
 import { GroupActivityComponent } from '../../../../dashboard/groups/group/group-activity/group-activity.component';
 import { SnotifyService } from "ng-snotify";
+declare var $;
 
 @Component({
   selector: 'task-group-post',
@@ -83,6 +84,32 @@ export class TaskGroupPostComponent implements OnInit {
     else {
       this.tags = [];
     }
+  }
+  ngAfterViewInit(): void {
+    $('.image-gallery').lightGallery({
+      share:false,
+      counter:false
+    });
+ }
+
+  applyZoom(htmlDOM): string{
+    var parser = new DOMParser();
+    var doc = parser.parseFromString(htmlDOM, "text/html");
+    // image could be multiple so for each here to be used
+    // var imgCount = doc.getElementsByTagName('img').length;
+    var img:any = doc.getElementsByTagName('img')[0];
+
+    if(img){ //if any image exists
+      let clonedImg:any=img.cloneNode(true);
+      let acnhorThumbnail=document.createElement('a');
+      acnhorThumbnail.href=clonedImg.src;
+      let imgGallery = document.createElement("div");
+      imgGallery.classList.add('image-gallery');
+      acnhorThumbnail.appendChild(clonedImg); 
+      imgGallery.appendChild(acnhorThumbnail);
+      img.replaceWith(imgGallery);
+      return doc.body.innerHTML;
+    } 
   }
 
   // Get the duration in days between task start date and complete date using moment.

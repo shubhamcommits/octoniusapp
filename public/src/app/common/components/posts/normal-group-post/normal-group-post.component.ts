@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, AfterViewInit} from '@angular/core';
 
 import {GroupService} from "../../../../shared/services/group.service";
 import { saveAs } from 'file-saver';
@@ -10,14 +10,14 @@ import * as moment from "moment";
 import {CommentSectionComponent} from "../../comments/comment-section/comment-section.component";
 import {SnotifyService} from "ng-snotify";
 
-
-
+declare var $;
 @Component({
   selector: 'normal-group-post',
   templateUrl: './normal-group-post.component.html',
   styleUrls: ['./normal-group-post.component.scss']
 })
-export class NormalGroupPostComponent implements OnInit, OnDestroy {
+export class NormalGroupPostComponent implements OnInit,AfterViewInit, OnDestroy {
+
 
   @ViewChild(CommentSectionComponent) commentSectionComponent;
 
@@ -88,6 +88,34 @@ export class NormalGroupPostComponent implements OnInit, OnDestroy {
     }
 
   }
+
+  ngAfterViewInit(): void {
+    $('.image-gallery').lightGallery({
+      share:false,
+      counter:false
+    });
+ }
+
+  applyZoom(htmlDOM): string{
+    var parser = new DOMParser();
+    var doc = parser.parseFromString(htmlDOM, "text/html");
+    // image could be multiple so for each here to be used
+    // var imgCount = doc.getElementsByTagName('img').length;
+    var img:any = doc.getElementsByTagName('img')[0];
+
+  if(img){ //if any image exists
+      let clonedImg:any=img.cloneNode(true);
+      let acnhorThumbnail=document.createElement('a');
+      acnhorThumbnail.href=clonedImg.src;
+      let imgGallery = document.createElement("div");
+      imgGallery.classList.add('image-gallery');
+      acnhorThumbnail.appendChild(clonedImg);
+      imgGallery.appendChild(acnhorThumbnail);
+      img.replaceWith(imgGallery);
+      return doc.body.innerHTML;
+  } 
+}
+
 
   deletePost() {
     this.removePost.emit(this.post._id);
