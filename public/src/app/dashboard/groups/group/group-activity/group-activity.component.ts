@@ -314,6 +314,7 @@ export class GroupActivityComponent implements OnInit {
       this.postService.getGroupPosts(this.group._id)
         .subscribe((res) => {
           this.posts = res['posts'];
+          console.log(this.posts);
           this.isLoading$.next(false);
           this.show_new_posts_badge = 0;
         }, (err) => {
