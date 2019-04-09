@@ -102,7 +102,7 @@
       </div>
 
       <!-- TASK POST CONTENT -->
-      <div class="col-md-12 innercard " [innerHTML]="applyZoom(post?.content) | safe: 'html'">
+      <div class="col-md-12 innercard " [innerHTML]="post?.content | safe: 'html'">
       </div>
         <!--<pre class="card-text ">{{post?.content}}
         </pre>-->
