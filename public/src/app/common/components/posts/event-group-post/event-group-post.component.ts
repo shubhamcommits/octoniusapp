@@ -101,8 +101,9 @@ export class EventGroupPostComponent implements OnInit, OnDestroy {
       acnhorThumbnail.appendChild(clonedImg);
       imgGallery.appendChild(acnhorThumbnail);
       img.replaceWith(imgGallery);
-      return doc.body.innerHTML;
+      
   } 
+  return doc.body.innerHTML;
 }
 
 

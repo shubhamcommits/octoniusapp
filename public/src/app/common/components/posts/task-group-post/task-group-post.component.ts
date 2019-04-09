@@ -108,8 +108,9 @@ export class TaskGroupPostComponent implements OnInit {
       acnhorThumbnail.appendChild(clonedImg); 
       imgGallery.appendChild(acnhorThumbnail);
       img.replaceWith(imgGallery);
-      return doc.body.innerHTML;
-    } 
+      
+    }
+    return doc.body.innerHTML;
   }
 
   // Get the duration in days between task start date and complete date using moment.
