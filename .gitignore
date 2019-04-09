@@ -10,3 +10,5 @@ uploads/
 .idea/
 .vscode/
 *.vim
+
+stack-deploy-octonius.yml

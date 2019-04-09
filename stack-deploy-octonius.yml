@@ -33,7 +33,7 @@ services:
         condition: on-failure
   
   api:
-    image: 'octoniusapp/octonius-api:7197e96851727f79c589b72cf2e24a06b26e9c61'
+    image: 'octoniusapp/octonius-api:1e83e8b7f9fff51a869588acbc88431954981cad'
     networks:
       - backend
     volumes:
@@ -62,7 +62,7 @@ services:
         condition: on-failure
   
   client:
-    image: 'octoniusapp/octonius-client:7197e96851727f79c589b72cf2e24a06b26e9c61'
+    image: 'octoniusapp/octonius-client:1e83e8b7f9fff51a869588acbc88431954981cad'
     networks:
       - frontend
     depends_on:
@@ -76,7 +76,7 @@ services:
         condition: on-failure
   
   nginx:
-    image: 'octoniusapp/octonius-nginx:7197e96851727f79c589b72cf2e24a06b26e9c61'
+    image: 'octoniusapp/octonius-nginx:1e83e8b7f9fff51a869588acbc88431954981cad'
     networks:
       - frontend
       - backend

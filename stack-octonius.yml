@@ -80,6 +80,7 @@ services:
     networks:
       - frontend
       - backend
+      - proxy
     ports:
       - 3045:80
     depends_on:
@@ -112,3 +113,5 @@ volumes:
 networks:
   frontend: {}
   backend: {} 
+  proxy:
+    external: true
