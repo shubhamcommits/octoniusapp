@@ -1,0 +1,34 @@
+<nav class="navbar navbar-expand-md fixed-top">
+  <div class="container">
+
+    <a class="navbar-brand" (click)="clickOnBack()" style="cursor: pointer;">
+      <i class="material-icons">
+        arrow_back
+        </i>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"><i class="material-icons">menu</i></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="nav mr-auto" id="example-one">
+        <li class="nav-item" id="li_overview">
+          <a class="nav-link" routerLinkActive="active">
+            <i class="material-icons">
+            insert_drive_file
+            </i>  {{ document_name }}
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
+      </ul>
+
+
+    </div>
+
+    <a class="navbar-brand" routerLink="/dashboard/overview">
+      <i class="icon-octo-logo"></i>
+    </a>
+  </div>
+
+</nav>
+
