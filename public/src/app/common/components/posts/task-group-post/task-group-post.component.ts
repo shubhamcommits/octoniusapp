@@ -92,26 +92,25 @@ export class TaskGroupPostComponent implements OnInit {
     });
  }
 
-  applyZoom(htmlDOM): string{
-    var parser = new DOMParser();
-    var doc = parser.parseFromString(htmlDOM, "text/html");
-    // image could be multiple so for each here to be used
-    // var imgCount = doc.getElementsByTagName('img').length;
-    var img:any = doc.getElementsByTagName('img')[0];
+ applyZoom(htmlDOM): string{
+  var parser = new DOMParser();
+  var doc = parser.parseFromString(htmlDOM, "text/html");
+  // image could be multiple so for each here to be used
+  var imgTag:any = doc.getElementsByTagName('img');
 
-    if(img){ //if any image exists
-      let clonedImg:any=img.cloneNode(true);
-      let acnhorThumbnail=document.createElement('a');
-      acnhorThumbnail.href=clonedImg.src;
-      let imgGallery = document.createElement("div");
-      imgGallery.classList.add('image-gallery');
-      acnhorThumbnail.appendChild(clonedImg); 
-      imgGallery.appendChild(acnhorThumbnail);
-      img.replaceWith(imgGallery);
-      
-    }
-    return doc.body.innerHTML;
-  }
+  for(var _i=0; _i<imgTag.length; _i++){
+    let img:any = doc.getElementsByTagName('img')[_i];
+    let clonedImg:any=img.cloneNode(true);
+    let acnhorThumbnail=document.createElement('a');
+    acnhorThumbnail.href=clonedImg.src;
+    let imgGallery = document.createElement("div");
+    imgGallery.classList.add('image-gallery');
+    acnhorThumbnail.appendChild(clonedImg);
+    imgGallery.appendChild(acnhorThumbnail);
+    img.replaceWith(imgGallery);
+  } 
+return doc.body.innerHTML;
+}
 
   // Get the duration in days between task start date and complete date using moment.
   getTaskTimeSpent() {
