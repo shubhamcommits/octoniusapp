@@ -17,6 +17,8 @@ import { AuthService } from '../../../../shared/services/auth.service';
 import { GoogleCloudService } from '../../../../shared/services/google-cloud.service';
 (window as any).Quill = Quill;
 
+import { ActivatedRoute, Router, Route } from '@angular/router';
+
 // added by Amit for collaborative editing starts
 import QuillCursors from 'quill-cursors';
 import ReconnectingWebSocket from 'reconnecting-websocket';
@@ -115,7 +117,8 @@ export class PostboxComponent implements OnInit, OnDestroy {
     private groupService: GroupService,
     private postService: PostService,
     private authService: AuthService,
-    private googleService: GoogleCloudService) { }
+    private googleService: GoogleCloudService,
+    private router: Router) { }
 
   async ngOnInit() {
     this.inilizePostForm();
@@ -677,7 +680,8 @@ export class PostboxComponent implements OnInit, OnDestroy {
         break;
       case 'collabEdit': 
       //Added by Amit for Collaborative Editing
-      this.initializeQuillEditor();
+        this.navigateToCollabDoc(this.group._id, 1);
+      //this.initializeQuillEditor();
       break;
       default:
         break;
@@ -1084,6 +1088,10 @@ shareDBConnection.on('state', function(state, reason) {
 });
 
 } // initializeQuillEditor ends
+
+  navigateToCollabDoc(groupId, docId){
+    this.router.navigate(['dashboard', 'group', groupId, 'collaborative-doc', docId]);
+  }
 
   // Collaborative editing ends
 }

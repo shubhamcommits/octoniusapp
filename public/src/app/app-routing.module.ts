@@ -33,6 +33,7 @@ import {DenyNavigationGuard} from "./shared/guards/deny-navigation.guard";
 import { CloudsComponent } from './dashboard/user-profile/clouds/clouds.component';
 import {ResetPwdComponent} from "./Authentication/reset-password/reset-password.component";
 import {AllSearchResultsComponent} from "./dashboard/search/all-search-results/all-search-results.component";
+import { CollaborativeDocGroupPostComponent } from './common/components/posts/collaborative-doc-group-post/collaborative-doc-group-post.component';
 
 
 const appRoutes: Routes = [
@@ -45,6 +46,7 @@ const appRoutes: Routes = [
   { path: 'create-new-Workspace-page2', component: NewWorkspacePage2Component, canActivate: [NotAuthGuard] },
   { path: 'create-new-Workspace-page1', component: NewWorkspacePage1Component, canActivate: [NotAuthGuard] },
   { path: 'resetPassword/:id', component: ResetPwdComponent, canActivate: [NotAuthGuard]},
+  { path: 'dashboard/group/:id/collaborative-doc/:postId', component: CollaborativeDocGroupPostComponent},
   {
     path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard],
     children: [
@@ -65,7 +67,7 @@ const appRoutes: Routes = [
           { path: 'members', component: GroupMembersComponent },
           { path: 'admin', component: GroupAdminComponent },
           { path: 'post/:postId', component: GroupPostComponent },
-          { path: 'tasks', component: GroupTasksComponent }
+          { path: 'tasks', component: GroupTasksComponent },
         ]
       },
       {
