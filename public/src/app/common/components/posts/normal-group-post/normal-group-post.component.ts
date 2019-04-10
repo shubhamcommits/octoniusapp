@@ -100,10 +100,10 @@ export class NormalGroupPostComponent implements OnInit,AfterViewInit, OnDestroy
     var parser = new DOMParser();
     var doc = parser.parseFromString(htmlDOM, "text/html");
     // image could be multiple so for each here to be used
-    // var imgCount = doc.getElementsByTagName('img').length;
-    var img:any = doc.getElementsByTagName('img')[0];
+    var imgTag:any = doc.getElementsByTagName('img');
 
-  if(img){ //if any image exists
+    for(var _i=0; _i<imgTag.length; _i++){
+      let img:any = doc.getElementsByTagName('img')[_i];
       let clonedImg:any=img.cloneNode(true);
       let acnhorThumbnail=document.createElement('a');
       acnhorThumbnail.href=clonedImg.src;
@@ -112,8 +112,7 @@ export class NormalGroupPostComponent implements OnInit,AfterViewInit, OnDestroy
       acnhorThumbnail.appendChild(clonedImg);
       imgGallery.appendChild(acnhorThumbnail);
       img.replaceWith(imgGallery);
-      
-  } 
+    } 
   return doc.body.innerHTML;
 }
 
