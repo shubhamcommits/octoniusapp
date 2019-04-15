@@ -4,7 +4,7 @@ const init = () => {
   process.env.host = `http://localhost:${process.env.PORT}/`;
   process.env.dbURL = 'mongodb://127.0.0.1:27017/octonius';
   process.env.JWT_KEY = 'asfsaf12safas23fsafa12sf';
-  process.env.SENDGRID_KEY = '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';
+  process.env.SENDGRID_KEY = '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';
   process.env.FILE_UPLOAD_FOLDER = `${__dirname}/uploads/`;
   process.env.SK_STRIPE = 'sk_test_dvebbZQPA4Vk8kKZaEuN32sD';
   process.env.stripe_plan = 'plan_EK1uRUJLJcDS6e';
