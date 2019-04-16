@@ -132,6 +132,11 @@ const edit = async (req, res, next) => {
 
     const user = await User.findOne({ _id: req.userId });
 
+    // Allow all group's users to edit a multi editor post 
+    if (post.type === 'multi_editor' && user._groups.includes(post._group)) {
+      user.role = 'admin';
+    }
+
     // if the user is not an owner or an admin and is not the one who posted, we throw auth error
     if (!(user.role === 'owner' || user.role === 'admin') && !post._posted_by == req.userId) {
       return sendErr(res, null, 'User not allowed to edit this post!', 403);
