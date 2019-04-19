@@ -16,7 +16,8 @@
           <a class="nav-link" routerLinkActive="active">
             <i class="material-icons">
             insert_drive_file
-            </i>  {{ document_name }}
+            </i>  <p *ngIf="!editing_title" (click)="editing_title= true">{{ document_name }}</p>
+            <input *ngIf="editing_title" [(ngModel)]="document_name" type="text" id="title" class="tags" (keydown)="saveTitle($event)" placeholder="Your Doc title here" name="title" placement="right" ngbTooltip="Type & hit enter to add your title">
             <span class="sr-only">(current)</span>
           </a>
         </li>

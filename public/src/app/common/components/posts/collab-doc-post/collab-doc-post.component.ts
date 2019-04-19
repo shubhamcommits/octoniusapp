@@ -1,0 +1,77 @@
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, AfterViewInit} from '@angular/core';
+
+import {GroupService} from "../../../../shared/services/group.service";
+import { saveAs } from 'file-saver';
+import {Subject} from "rxjs/Subject";
+import {takeUntil} from "rxjs/operators";
+import {PostService} from "../../../../shared/services/post.service";
+import {FormGroup} from "@angular/forms";
+import * as moment from "moment";
+import {CommentSectionComponent} from "../../comments/comment-section/comment-section.component";
+import {SnotifyService} from "ng-snotify";
+declare var $;
+
+@Component({
+  selector: 'app-collab-doc-post',
+  templateUrl: './collab-doc-post.component.html',
+  styleUrls: ['./collab-doc-post.component.scss']
+})
+export class CollabDocPostComponent implements OnInit {
+
+  @Input() post: any;
+  @Input('group') group;
+  @Input('user') user;
+  @Input('user_data') user_data;
+  @Input('allMembersId') allMembersId;
+  @Input('socket') socket;
+  @Input('modules') modules;
+  @Output('deletePost') removePost = new EventEmitter();
+
+  ngUnsubscribe = new Subject();
+
+  constructor(    
+    private groupService: GroupService,
+    private postService: PostService,
+    private snotifyService: SnotifyService) { }
+
+  ngOnInit() {
+  }
+
+  ngAfterViewInit(): void {
+    $('.image-gallery').lightGallery({
+      share:false,
+      counter:false
+    });
+ }
+
+  applyZoom(htmlDOM): string{
+    var parser = new DOMParser();
+    var doc = parser.parseFromString(htmlDOM, "text/html");
+    // image could be multiple so for each here to be used
+    // var imgCount = doc.getElementsByTagName('img').length;
+    var img:any = doc.getElementsByTagName('img')[0];
+
+  if(img){ //if any image exists
+      let clonedImg:any=img.cloneNode(true);
+      let acnhorThumbnail=document.createElement('a');
+      acnhorThumbnail.href=clonedImg.src;
+      let imgGallery = document.createElement("div");
+      imgGallery.classList.add('image-gallery');
+      acnhorThumbnail.appendChild(clonedImg);
+      imgGallery.appendChild(acnhorThumbnail);
+      img.replaceWith(imgGallery);
+      
+  } 
+  return doc.body.innerHTML;
+  }
+
+  deletePost() {
+    this.removePost.emit(this.post._id);
+  }
+
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+
+}

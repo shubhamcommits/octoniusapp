@@ -77,6 +77,12 @@
             [allMembersId]="allMembersId" [group]="group" [socket]="socket" (deletePost)="onDeletePost($event)"
             ng-repeat="post in posts">
           </event-group-post>
+
+          <app-collab-doc-post *ngIf="post?.type === 'multi_editor'" [post]="post" [user]="user" [modules]="modules" 
+          [user_data]="user_data"
+          [allMembersId]="allMembersId" [group]="group" [socket]="socket" (deletePost)="onDeletePost($event)"
+          ng-repeat="post in posts">
+          </app-collab-doc-post>
         </ul>
 
       </div>

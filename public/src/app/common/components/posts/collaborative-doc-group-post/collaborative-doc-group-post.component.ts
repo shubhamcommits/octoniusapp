@@ -35,9 +35,18 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     ['clean']                                         // remove formatting button
   ];
 
+  postId: any;
+  groupId: any;
+
+  documentContent= "Test";
+
   constructor(
     private router: Router,
-    private _location: Location) { }
+    private _activatedRoute: ActivatedRoute,
+    private _location: Location) {
+      this.postId = this._activatedRoute.snapshot.paramMap.get('postId');
+      this.groupId = this._activatedRoute.snapshot.paramMap.get('id');
+     }
 
   ngOnInit() {
     this.initializeQuillEditor();
@@ -71,7 +80,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     // here foobar should be the groupd id or in case of multiple docs.
     // different logic to be developed.
     // groupd id. activated route.
-    var doc = shareDBConnection.get('documents', 'foobar');
+    var doc = shareDBConnection.get('documents', this.postId);
   
     var cursorsModule = quill.getModule('cursors');
     // I think this function is deprecated/removed from the latest code on repo.
@@ -91,6 +100,8 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
   
     // updateCursors(cursors.localConnection);
   }); //subscribe ends
+
+
   
     // local -> server
     quill.on('text-change', function(delta, oldDelta, source) {
@@ -278,6 +289,8 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     // var indicatorColor;
   
     console.log('[sharedb] New connection state: ' + state + ' Reason: ' + reason);
+
+    console.log('Quill content', quill.getText());
   
     // sharedbSocketStateEl.innerHTML = state.toString();
   
