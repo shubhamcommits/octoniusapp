@@ -46,6 +46,10 @@ export class PostService {
     return this._http.post(this.BASE_API_URL + '/posts', post);
   }
 
+  addNewCollabPost(post){
+    return this._http.post(this.BASE_API_URL + '/posts', post);
+  }
+
   editPost(postId, post) {
     return this._http.put<any>(this.BASE_API_URL + `/posts/${postId}`, post);
   }

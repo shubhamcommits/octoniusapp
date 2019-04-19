@@ -1,5 +1,6 @@
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import * as chance from 'chance';
+import { environment } from '../../../environments/environment';
 
 var cursors = {};
 
@@ -11,10 +12,28 @@ var cursors = {};
 // ends
 
 function CursorConnection(name, color,range) {
-  // id being generated on server. Amit
-  this.name = JSON.parse(localStorage.getItem('user'))?JSON.parse(localStorage.getItem('user')).user_id:null;
-  this.color = color;
-  this.range=range;
+
+  const getUserName = new XMLHttpRequest();
+
+  getUserName.open('GET', environment.BASE_API_URL+`/users/getOtherUser/`+ JSON.parse(localStorage.getItem('user')).user_id, true);
+  getUserName.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('token'));
+
+  getUserName.onload = () => {
+    if (getUserName.status === 200) {
+      console.log('User Details', JSON.parse(getUserName.responseText));
+        // id being generated on server. Amit
+      this.name = JSON.parse(getUserName.responseText).user.first_name +" " +JSON.parse(getUserName.responseText).user.last_name;
+      this.color = color;
+      this.range=range;
+    }
+    else {
+      console.log('Error while fetching user details', JSON.parse(getUserName.responseText));
+
+    }
+  };
+  getUserName.send();
+
+
 }
 
 // Create browserchannel socket

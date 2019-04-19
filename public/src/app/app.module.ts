@@ -98,6 +98,7 @@ import { GroupActivityFiltersComponent } from './dashboard/groups/group/group-ac
 import { GroupActivityProgressComponent } from './dashboard/groups/group/group-activity/group-activity-progress/group-activity-progress.component';
 import { CollaborativeDocGroupPostComponent } from './common/components/posts/collaborative-doc-group-post/collaborative-doc-group-post.component';
 import { CollaborativeDocGroupNavbarComponent } from './common/components/posts/collaborative-doc-group-post/collaborative-doc-group-navbar/collaborative-doc-group-navbar.component';
+import { CollabDocPostComponent } from './common/components/posts/collab-doc-post/collab-doc-post.component';
 
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
@@ -188,7 +189,8 @@ const ngCircle = {
     GroupActivityFiltersComponent,
     GroupActivityProgressComponent,
     CollaborativeDocGroupPostComponent,
-    CollaborativeDocGroupNavbarComponent
+    CollaborativeDocGroupNavbarComponent,
+    CollabDocPostComponent
   ],
   imports: [
     BrowserModule,

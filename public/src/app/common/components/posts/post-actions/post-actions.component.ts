@@ -165,6 +165,9 @@ export class PostActionsComponent implements OnInit {
     selBox.style.top = '0';
     selBox.style.opacity = '0';
     selBox.value = environment.google_redirect_url +'/#/dashboard/group/' + this.group_id + '/post/' + postId;
+    if(this.post.type == 'multi_editor'){
+      selBox.value = environment.google_redirect_url +'/#/dashboard/group/' + this.group_id + '/collaborative-doc/' + postId;
+    }
     document.body.appendChild(selBox);
     selBox.focus();
     selBox.select();

@@ -126,6 +126,14 @@ const edit = async (req, res, next) => {
           tags: req.body.tags,
         };
         break;
+
+      case 'multi_editor':
+        
+        postData = {
+          title: req.body.title,
+          content: req.body.content
+        };
+        break;
     }
 
     const post = await Post.findOne({ _id: req.params.postId });

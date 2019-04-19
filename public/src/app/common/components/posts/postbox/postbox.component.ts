@@ -418,6 +418,54 @@ export class PostboxComponent implements OnInit, OnDestroy {
       });
   }
 
+  addNewCollabPost() {
+    const formData: any = new FormData();
+
+    const post = {
+      title: this.post.title,
+      content: this.post.content,
+      type: this.post.type,
+      _posted_by: this.user._id,
+      _group: this.group._id
+    };
+
+    formData.append('content', post.content);
+    formData.append('title', 'Untitled');
+    formData.append('type', post.type);
+    formData.append('_posted_by', post._posted_by);
+    formData.append('_group', post._group);
+
+    this.processing = true;
+    this.disablePostForm();
+
+    this.postService.addNewCollabPost(formData)
+    .pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe((res)=>{
+      console.log('Collaborative Doc', res);
+      const data = {
+        workspace: this.user_data.workspace.workspace_name,
+        group: this.group.group_name,
+        userId: this.user_data.user_id,
+        postId: res['post']._id,
+        groupId: this.group._id,  // Pass group id here!!!
+        type: 'post' // used to differentiate between post and comment notifications
+      };
+
+      this.navigateToCollabDoc(this.group._id, data.postId);
+
+      //this.socket.emit('newPost', data);
+
+      // previously we reloaded the posts, but now we send it back to the parent component
+      // where we can add it to the other posts that were already loaded
+      this.newPost.emit(res['post']);
+    }, (err) => {
+      console.log('Error', err);
+      this.processing = false;
+      this.alert.class = 'danger';
+      this.enablePostForm();
+    });
+  }
+
   addNewTaskPost() {
     const formData: any = new FormData();
     const files: Array<File> = this.filesToUpload;
@@ -625,6 +673,9 @@ export class PostboxComponent implements OnInit, OnDestroy {
       case 'task':
         this.addNewTaskPost();
         break;
+      case 'multi_editor':
+        this.addNewCollabPost();
+        break;
     }
     // this.show_hide_working_bar();
     this.postboxDisplayed = false;
@@ -678,9 +729,10 @@ export class PostboxComponent implements OnInit, OnDestroy {
           searchBy: ['full_name', 'capital']
         };
         break;
-      case 'collabEdit': 
+      case 'multi_editor': 
       //Added by Amit for Collaborative Editing
-        this.navigateToCollabDoc(this.group._id, 1);
+        //this.navigateToCollabDoc(this.group._id, 1);
+        this.addNewCollabPost();
       //this.initializeQuillEditor();
       break;
       default:
