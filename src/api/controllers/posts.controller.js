@@ -488,6 +488,25 @@ const removeComment = async (req, res, next) => {
   }
 };
 
+// -| DOCUMENTS |-
+
+const getDocument = async (req, res, next) => {
+  try {
+    const { postId } = req.params;
+
+    const document = await Document.findOne({
+      _post_id: postId
+    });
+
+    return res.status(200).json({
+      message: 'document found!',
+      document
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
 // -| LIKES |-
 
 const like = async (req, res, next) => {
@@ -758,6 +777,8 @@ module.exports = {
   getComments,
   getNextComments,
   removeComment,
+  // Documents
+  getDocument,
   // Likes
   like,
   unlike,
