@@ -56,6 +56,11 @@ router.put('/comments/:commentId', posts.editComment);
 // Delete comment on post
 router.delete('/comments/:commentId', posts.removeComment);
 
+// - Documents -
+
+// Get a document
+router.get('/documents/:postId', posts.getDocument);
+
 // - Likes -
 
 // Like post
