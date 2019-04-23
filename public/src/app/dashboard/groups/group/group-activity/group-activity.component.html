@@ -78,12 +78,8 @@
             ng-repeat="post in posts">
           </event-group-post>
 
-<<<<<<< HEAD
           <!--REAL TIME DOCUMENT Post-->
           <app-collab-doc-post *ngIf="post?.type === 'document'" [post]="post" [user]="user" [modules]="modules" 
-=======
-          <app-collab-doc-post *ngIf="post?.type === 'multi_editor'" [post]="post" [user]="user" [modules]="modules" 
->>>>>>> 12b5b94693fe8bb035c1de1c07ab85d2ebaba153
           [user_data]="user_data"
           [allMembersId]="allMembersId" [group]="group" [socket]="socket" (deletePost)="onDeletePost($event)"
           ng-repeat="post in posts">
