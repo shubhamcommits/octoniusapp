@@ -127,11 +127,7 @@ const edit = async (req, res, next) => {
         };
         break;
 
-<<<<<<< HEAD
       case 'document':
-=======
-      case 'multi_editor':
->>>>>>> 12b5b94693fe8bb035c1de1c07ab85d2ebaba153
         
         postData = {
           title: req.body.title,
@@ -145,11 +141,7 @@ const edit = async (req, res, next) => {
     const user = await User.findOne({ _id: req.userId });
 
     // Allow all group's users to edit a multi editor post 
-<<<<<<< HEAD
     if (post.type === 'document' && user._groups.includes(post._group)) {
-=======
-    if (post.type === 'multi_editor' && user._groups.includes(post._group)) {
->>>>>>> 12b5b94693fe8bb035c1de1c07ab85d2ebaba153
       user.role = 'admin';
     }
 
@@ -503,19 +495,12 @@ const getDocument = async (req, res, next) => {
     const { postId } = req.params;
 
     const document = await Document.findOne({
-<<<<<<< HEAD
       _id: postId
-=======
-      _post_id: postId
->>>>>>> 12b5b94693fe8bb035c1de1c07ab85d2ebaba153
     });
 
     return res.status(200).json({
       message: 'document found!',
-<<<<<<< HEAD
       //postId
-=======
->>>>>>> 12b5b94693fe8bb035c1de1c07ab85d2ebaba153
       document
     });
   } catch (err) {
