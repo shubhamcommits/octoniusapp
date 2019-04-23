@@ -9,7 +9,10 @@ var cursors = {};
 
 //added by Amit starts
 // var userID= JSON.parse(localStorage.getItem('user')).user_id;
+<<<<<<< HEAD
 var userID= JSON.parse(localStorage.getItem('user')).user_id;
+=======
+>>>>>>> 12b5b94693fe8bb035c1de1c07ab85d2ebaba153
 // ends
 
 function CursorConnection(name, color,range) {
@@ -46,8 +49,12 @@ function CursorConnection(name, color,range) {
 }
 
 // Create browserchannel socket
+<<<<<<< HEAD
 //cursors.socket = new ReconnectingWebSocket(((location.protocol === 'https:') ? 'wss' : 'ws') + '://' + 'localhost:3001' + '/cursors');
 cursors.socket = new ReconnectingWebSocket(environment.REAL_TIME_URL + '/cursors');
+=======
+cursors.socket = new ReconnectingWebSocket(((location.protocol === 'https:') ? 'wss' : 'ws') + '://' + 'localhost:3001' + '/cursors');
+>>>>>>> 12b5b94693fe8bb035c1de1c07ab85d2ebaba153
 // socketStateEl.innerHTML = 'connecting';
 // socketIndicatorEl.style.backgroundColor = 'silver';
 

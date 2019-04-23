@@ -7,10 +7,17 @@
                       <span [ngbPopover]="likepopcontent"
                             triggers="mouseenter:mouseleave"><b>{{post?._liked_by.length}}</b>
                         Likes </span>
+<<<<<<< HEAD
       <span style="cursor: pointer;" *ngIf="post?.type != 'document'" (click)="loadComments();"><b>{{commentCount || post?.comments.length}}</b> Comments</span>
     </div>
     <div class="col-md-6 text-right">
                       <span *ngIf="post?.type != 'document'">
+=======
+      <span style="cursor: pointer;" *ngIf="post?.type != 'multi_editor'" (click)="loadComments();"><b>{{commentCount || post?.comments.length}}</b> Comments</span>
+    </div>
+    <div class="col-md-6 text-right">
+                      <span *ngIf="post?.type != 'multi_editor'">
+>>>>>>> 12b5b94693fe8bb035c1de1c07ab85d2ebaba153
                         <button class="btn btn-link">
                           <i class="material-icons muted"
                              (click)="togglePostCommentEditor.emit()">mode_comment</i>
@@ -28,9 +35,15 @@
                              *ngIf="post?._posted_by?._id == user._id || user?.role === 'owner' || user?.role === 'admin'; else editpostif">
                           <i class="material-icons action" ngbDropdownToggle>more_horiz</i>
                           <div ngbDropdownMenu aria-labelledby="postActionsDrop">
+<<<<<<< HEAD
                             <button *ngIf="post?.type != 'document'" class="dropdown-item" [routerLink]="['/dashboard', 'group', post?._group, 'post', post?._id]" > View</button>
                             <button *ngIf="post?.type != 'document'" class="dropdown-item" (click)="editPost.emit();"> Edit</button>
                             <button *ngIf="post?.type == 'document'" class="dropdown-item" [routerLink]="['/dashboard', 'group', post?._group, 'collaborative-doc', post?._id]"> Edit</button>
+=======
+                            <button *ngIf="post?.type != 'multi_editor'" class="dropdown-item" [routerLink]="['/dashboard', 'group', post?._group, 'post', post?._id]" > View</button>
+                            <button *ngIf="post?.type != 'multi_editor'" class="dropdown-item" (click)="editPost.emit();"> Edit</button>
+                            <button *ngIf="post?.type == 'multi_editor'" class="dropdown-item" [routerLink]="['/dashboard', 'group', post?._group, 'collaborative-doc', post?._id]"> Edit</button>
+>>>>>>> 12b5b94693fe8bb035c1de1c07ab85d2ebaba153
                             <button  class="dropdown-item" (click)="deletePost.emit()"> Delete</button>
                             <button  class="dropdown-item" (click)="copyToClipboard(post?._id)"> Copy Link</button> 
 

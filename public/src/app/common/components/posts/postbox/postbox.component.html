@@ -58,10 +58,17 @@
               </li>
               <li class="nav-item">
                 <button
+<<<<<<< HEAD
                   (click)="onSelectPostType('document')"
                   class="btn btn-link cool" placement="top" ngbTooltip="Collaborative editing">
                   <i
                     [style.color]="post.type === 'document' ? '#005fd5' : '#9b9b9b'"
+=======
+                  (click)="onSelectPostType('multi_editor')"
+                  class="btn btn-link cool" placement="top" ngbTooltip="Collaborative editing">
+                  <i
+                    [style.color]="post.type === 'collabEdit' ? '#005fd5' : '#9b9b9b'"
+>>>>>>> 12b5b94693fe8bb035c1de1c07ab85d2ebaba153
                     class="material-icons muted"
                     id="icon_check_box">insert_drive_file
                   </i>

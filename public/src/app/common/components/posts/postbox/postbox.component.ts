@@ -673,7 +673,11 @@ export class PostboxComponent implements OnInit, OnDestroy {
       case 'task':
         this.addNewTaskPost();
         break;
+<<<<<<< HEAD
       case 'document':
+=======
+      case 'multi_editor':
+>>>>>>> 12b5b94693fe8bb035c1de1c07ab85d2ebaba153
         this.addNewCollabPost();
         break;
     }
@@ -729,7 +733,11 @@ export class PostboxComponent implements OnInit, OnDestroy {
           searchBy: ['full_name', 'capital']
         };
         break;
+<<<<<<< HEAD
       case 'document': 
+=======
+      case 'multi_editor': 
+>>>>>>> 12b5b94693fe8bb035c1de1c07ab85d2ebaba153
       //Added by Amit for Collaborative Editing
         //this.navigateToCollabDoc(this.group._id, 1);
         this.addNewCollabPost();
