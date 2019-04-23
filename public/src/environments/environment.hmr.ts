@@ -10,6 +10,10 @@ export const environment = {
     clientId: '971238950983-aef7kjl23994hjj9e8m5tch4a22b5dut.apps.googleusercontent.com',
     apiKey: 'AIzaSyDGM66BZhGSmBApm3PKL-xCrri-3Adb06I',
     clientSecret: 'erp6ZMRG6XFiMqHkjTDby2UI',
-    google_redirect_url: 'http://localhost:4200'
+    google_redirect_url: 'http://localhost:4200',
     // !--GOOGLE DEVELOPER CONSOLE CREDENTIALS--! //
+
+    // !--REAL TIME DOC LOCATION PROTOCOLS--! //
+    REAL_TIME_URL: 'ws://localhost:3001'
+  // !--REAL TIME DOC LOCATION PROTOCOLS--! //
    };

@@ -10,14 +10,17 @@ import { ActivatedRoute } from '@angular/router';
 export class CollaborativeDocGroupNavbarComponent implements OnInit {
 
   document_name = 'Untitled';
+  document_content = '';
 
   editing_title = false;
 
   postId: any;
 
-  @Input() documentContent: any;
+  @Input() post: any;
 
   @Output() clickBack: EventEmitter<any> = new EventEmitter();
+
+  @Output() docTitle: EventEmitter<any> = new EventEmitter();
 
   constructor(private postService: PostService,
     private activatedRoute: ActivatedRoute) {
@@ -26,6 +29,11 @@ export class CollaborativeDocGroupNavbarComponent implements OnInit {
 
   ngOnInit() {
     this.getPost();
+    setTimeout(() => {
+      console.log('Post', this.post);
+
+    }, 5000);
+    
   }
 
   clickOnBack(){
@@ -37,30 +45,27 @@ export class CollaborativeDocGroupNavbarComponent implements OnInit {
     .subscribe((res)=>{
       console.log('Fetched post', res);
       this.document_name = res['post']['title'];
+      this.document_content = res['post']['content'];
     }, (err)=>{
       console.log('Error while fetching the post', err);
     })
   }
 
   saveTitle(event: any){
-    if(event.keyCode == 13){
       const post = {
-        'title': this.document_name
+        'title': this.document_name,
+        'content': this.post.content,
+        'type': 'document'
       };
       console.log(post);
       this.postService.editPost(this.postId, post)
       .subscribe((res)=>{
         console.log('Title saved', res);
+        this.docTitle.emit(post['title']);
         this.document_name = res['post']['title'];
       }, (err)=>{
         console.log('Error while saving the title', err);
       })
-    }
-
-    if (event.which == '13') {
-      event.preventDefault();
-    }
-
 
     this.editing_title = false;
 

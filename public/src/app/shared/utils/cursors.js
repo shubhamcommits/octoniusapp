@@ -46,7 +46,8 @@ function CursorConnection(name, color,range) {
 }
 
 // Create browserchannel socket
-cursors.socket = new ReconnectingWebSocket(((location.protocol === 'https:') ? 'wss' : 'ws') + '://' + 'localhost:3001' + '/cursors');
+//cursors.socket = new ReconnectingWebSocket(((location.protocol === 'https:') ? 'wss' : 'ws') + '://' + 'localhost:3001' + '/cursors');
+cursors.socket = new ReconnectingWebSocket(environment.REAL_TIME_URL + '/cursors');
 // socketStateEl.innerHTML = 'connecting';
 // socketIndicatorEl.style.backgroundColor = 'silver';
 

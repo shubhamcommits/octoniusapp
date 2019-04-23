@@ -1,5 +1,5 @@
 <app-collaborative-doc-group-navbar 
-(clickBack)="backClicked()" [documentContent]="documentContent">
+(clickBack)="backClicked()" [post]="post" (docTitle)="getPostTitle($event)">
 </app-collaborative-doc-group-navbar>
 
 <div class="container" style="margin-top: 8%;"> 

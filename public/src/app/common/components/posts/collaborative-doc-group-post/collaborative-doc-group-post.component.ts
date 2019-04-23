@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { ActivatedRoute, Router, Route } from '@angular/router';
 import {Location} from '@angular/common';
 
@@ -7,6 +7,14 @@ import ReconnectingWebSocket from 'reconnecting-websocket';
 import * as ShareDB from '../../../../../../../node_modules/sharedb/lib/client';
 import {cursors} from '../../../../shared/utils/cursors';
 import * as utils from '../../../../shared/utils/utils';
+import { PostService } from '../../../../shared/services/post.service';
+import { environment } from '../../../../../environments/environment';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { SnotifyService, SnotifyPosition, SnotifyToastConfig } from 'ng-snotify';
+
+var postId: any;
+var groupId: any;
+var postData = new Object();
 
 @Component({
   selector: 'app-collaborative-doc-group-post',
@@ -35,35 +43,115 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     ['clean']                                         // remove formatting button
   ];
 
-  postId: any;
-  groupId: any;
-
-  documentContent= "Test";
+  post:any;
+  postTitle: any = 'Untitled';
 
   constructor(
     private router: Router,
     private _activatedRoute: ActivatedRoute,
-    private _location: Location) {
-      this.postId = this._activatedRoute.snapshot.paramMap.get('postId');
-      this.groupId = this._activatedRoute.snapshot.paramMap.get('id');
+    private postService: PostService,
+    private _location: Location,
+    public ngxService: NgxUiLoaderService,
+    private snotifyService: SnotifyService) {
+      postId = this._activatedRoute.snapshot.paramMap.get('postId');
+      groupId = this._activatedRoute.snapshot.paramMap.get('id');
      }
 
-  ngOnInit() {
-    this.initializeQuillEditor();
+    private subscription;
+
+  async ngOnInit() {
+    this.snotifyService.simple(`Please Hold on...`, {
+      timeout: 5000,
+      showProgressBar: false,
+      backdrop:0.5,
+      position: "centerTop"
+    });
+   await this.initializeQuillEditor().then(()=>{
+     this.getPost().then(()=>{
+      this.subscription = setInterval(()=>{
+        this.getDocument(postId);
+        this.editPost(postId);
+       }, 5000);
+     })
+   })
+
+  }
+
+  getPost(){
+   return new Promise((resolve, reject)=>{
+    this.postService.getPost(postId)
+    .subscribe((res)=>{
+      console.log('Fetched post', res);
+      this.postTitle = res['post']['title'];
+      resolve();
+    }, (err)=>{
+      console.log('Error while fetching the post', err);
+      reject(err);
+    })
+   })
+  }
+
+  getPostTitle(event){
+    console.log('Post title', event);
+    this.postTitle = event;
+  }
+
+
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+   clearInterval(this.subscription);
   }
 
   backClicked() {
     this._location.back();
   }
 
-  initializeQuillEditor():void {
+  getDocument(postId){
+    return new Promise((resolve, reject)=>{
+      this.postService.getDocument(postId)
+      .subscribe((res)=>{
+        console.log('Document Found', res);
+        resolve();
+      }, (err)=>{
+        console.log('Error while fetching the document', err);
+        reject(err);
+      })
+    })
+
+  }
+
+  editPost(documentId){
+    const post = {
+      'title': this.postTitle,
+      'content': postData['content'],
+      'type': 'document'
+    };
+    return new Promise((resolve, reject)=>{
+      this.postService.editPost(documentId, post)
+      .subscribe((res)=>{
+        console.log('Data saved into post Sucessfully', res);
+        this.post = res['post'];
+        resolve();
+      }, (err)=>{
+        console.log('Error while saving the post', err);
+        reject(err);
+      })
+    })
+
+  }
+
+  async initializeQuillEditor() {
+    //this.ngxService.startBackground();
 
     ShareDB.types.register(require('rich-text').type);
   
     Quill.register('modules/cursors', QuillCursors);
   
-    var shareDBSocket = new ReconnectingWebSocket(((location.protocol === 'https:') ? 'wss' : 'ws') + '://' + 'localhost:3001' + '/sharedb');
+   // var shareDBSocket = new ReconnectingWebSocket(((location.protocol === 'https:') ? 'wss' : 'ws') + '://' + 'localhost:3001' + '/sharedb');
   
+   var shareDBSocket = new ReconnectingWebSocket(environment.REAL_TIME_URL + '/sharedb');
+
     var shareDBConnection = new ShareDB.Connection(shareDBSocket);
     
     var quill = new Quill('#editor', {
@@ -76,15 +164,55 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
         // },
       },
     });
-  
-    // here foobar should be the groupd id or in case of multiple docs.
-    // different logic to be developed.
-    // groupd id. activated route.
-    var doc = shareDBConnection.get('documents', this.postId);
+
+    var doc = shareDBConnection.get('documents', postId);
   
     var cursorsModule = quill.getModule('cursors');
     // I think this function is deprecated/removed from the latest code on repo.
     // cursorsModule.registerTextChangeListener(); // now private
+
+    // !--Function to Fetch the document from database--! //
+    async function getDocument(documentId){
+      const getDocDetails = new XMLHttpRequest();
+      getDocDetails.open('GET', environment.BASE_API_URL+`/posts/documents/`+ documentId, true);
+      getDocDetails.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('token'));
+    
+      getDocDetails.onload = () => {
+        if (getDocDetails.status === 200) {
+          console.log('Document Details', JSON.parse(getDocDetails.responseText));
+          postData['content'] = JSON.parse(getDocDetails.responseText).document.ops[0].insert;
+          console.log('Post Data', postData);
+        }
+        else {
+          console.log('Error while fetching document details', JSON.parse(getDocDetails.responseText));
+    
+        }
+      };
+      getDocDetails.send();
+    }
+
+    async function editPost(postId){
+      const editCurrentPost = new XMLHttpRequest();
+
+      const fd = new FormData();
+      fd.append('content', postData['content']);
+      fd.append('title', 'Untitled');
+
+      editCurrentPost.open('PUT', environment.BASE_API_URL + `/posts/${postId}`, true);
+      editCurrentPost.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('token'));
+
+      editCurrentPost.onload = () => {
+        if (editCurrentPost.status === 200) {
+          console.log('Document Details', JSON.parse(editCurrentPost.responseText));
+          
+        }
+        else {
+          console.log('Error while fetching document details', JSON.parse(editCurrentPost.responseText));
+    
+        }
+      };
+      editCurrentPost.send(fd);
+    }
   
   doc.subscribe(function(err) {
   
@@ -94,10 +222,9 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
       doc.create([{
         insert: '\n'
       }], 'rich-text');
-  
     // update editor contents
     quill.setContents(doc.data);
-  
+      getDocument(postId);
     // updateCursors(cursors.localConnection);
   }); //subscribe ends
 
@@ -141,14 +268,17 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     doc.on('op', function(op, source) {
       if (source !== quill) {
         quill.updateContents(op);
+        //getDocument(postId);
         // updateUserList();
       }
-    }); //doc op ends // data coming from server as doc as some data.
+    })
+     //doc op ends // data coming from server as doc as some data.
   
   
     function sendCursorData(range) {
       cursors.localConnection.range = range;
       cursors.update();
+      //getDocument(postId);
     }
   
     //
@@ -160,7 +290,11 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
       }
     }, 1500);
   
-    doc.on('nothing pending', debouncedSendCursorData);
+    doc.on('nothing pending', debouncedSendCursorData, ()=>{
+      getDocument(postId);
+    });
+
+    
   
     //being used but I think code changed
     function updateCursors(source) {
@@ -285,13 +419,10 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
   // var sharedbSocketStateEl = document.getElementById('sharedb-socket-state');
   // var sharedbSocketIndicatorEl = document.getElementById('sharedb-socket-indicator');
   
-  shareDBConnection.on('state', function(state, reason) {
+  shareDBConnection.on('state',  function(state, reason) {
     // var indicatorColor;
   
     console.log('[sharedb] New connection state: ' + state + ' Reason: ' + reason);
-
-    console.log('Quill content', quill.getText());
-  
     // sharedbSocketStateEl.innerHTML = state.toString();
   
     // switch (state.toString()) {
@@ -310,7 +441,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
   
     // sharedbSocketIndicatorEl.style.backgroundColor = indicatorColor;
   });
-  
+  //this.ngxService.stopBackground();
   } 
 
 }

@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const DocumentSchema = new Schema({
-  _post_id: {
+  _id: {
     type: String
   },
   ops: [{

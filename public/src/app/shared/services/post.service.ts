@@ -109,6 +109,10 @@ export class PostService {
     return this._http.delete(this.BASE_API_URL + `/posts/comments/${commentId}`);
   }
 
+  getDocument(postId){
+    return this._http.get(this.BASE_API_URL + `/posts/documents/${postId}`);
+  }
+
   // SHARED FUNCTIONS ACROSS COMPONENTS
 
   playAudio() {

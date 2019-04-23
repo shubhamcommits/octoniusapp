@@ -2,7 +2,7 @@ const moment = require('moment');
 
 const notifications = require('./notifications.controller');
 const {
-  Comment, Group, Post, User
+  Comment, Group, Post, User, Document
 } = require('../models');
 const { sendMail, sendErr } = require('../../utils');
 
@@ -127,7 +127,7 @@ const edit = async (req, res, next) => {
         };
         break;
 
-      case 'multi_editor':
+      case 'document':
         
         postData = {
           title: req.body.title,
@@ -141,7 +141,7 @@ const edit = async (req, res, next) => {
     const user = await User.findOne({ _id: req.userId });
 
     // Allow all group's users to edit a multi editor post 
-    if (post.type === 'multi_editor' && user._groups.includes(post._group)) {
+    if (post.type === 'document' && user._groups.includes(post._group)) {
       user.role = 'admin';
     }
 
@@ -495,11 +495,12 @@ const getDocument = async (req, res, next) => {
     const { postId } = req.params;
 
     const document = await Document.findOne({
-      _post_id: postId
+      _id: postId
     });
 
     return res.status(200).json({
       message: 'document found!',
+      //postId
       document
     });
   } catch (err) {
