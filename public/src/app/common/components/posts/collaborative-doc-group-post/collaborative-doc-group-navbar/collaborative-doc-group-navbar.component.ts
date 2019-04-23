@@ -11,6 +11,7 @@ export class CollaborativeDocGroupNavbarComponent implements OnInit {
 
   document_name = 'Untitled';
   document_content = '';
+  document: any;
 
   editing_title = false;
 
@@ -37,7 +38,25 @@ export class CollaborativeDocGroupNavbarComponent implements OnInit {
   }
 
   clickOnBack(){
+    this.getDocument(this.postId);
     this.clickBack.emit('Click on back');
+  }
+
+  getDocument(postId){
+    return new Promise((resolve, reject)=>{
+      this.postService.getDocument(postId)
+      .subscribe((res)=>{
+        console.log('Document From Navbar', res);
+        this.document = res['document'];
+        this.post.content = this.document.ops[0].insert;
+        this.saveTitle();
+        resolve();
+      }, (err)=>{
+        console.log('Error while fetching the document', err);
+        reject(err);
+      })
+    })
+
   }
 
   getPost(){
@@ -51,7 +70,7 @@ export class CollaborativeDocGroupNavbarComponent implements OnInit {
     })
   }
 
-  saveTitle(event: any){
+  saveTitle(){
       const post = {
         'title': this.document_name,
         'content': this.post.content,

@@ -1,7 +1,7 @@
 import * as moment from 'moment';
 import * as io from 'socket.io-client';
 import {Component, OnInit, ViewChild, ViewChildren} from '@angular/core';
-import { ActivatedRoute, Router, Route } from '@angular/router';
+import { ActivatedRoute, Router, Route, NavigationEnd } from '@angular/router';
 import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PostService } from '../../../../shared/services/post.service';
 import { GroupService } from '../../../../shared/services/group.service';
@@ -101,6 +101,17 @@ export class GroupActivityComponent implements OnInit {
   }
 
   async ngOnInit() {
+    this._router.routeReuseStrategy.shouldReuseRoute = function(){
+      return false;
+    };
+
+    this._router.events.subscribe((evt) => {
+        if (evt instanceof NavigationEnd) {
+            this._router.navigated = false;
+            window.scrollTo(0, 0);
+        }
+    });
+    
     this.ngxService.start();
 
     setTimeout(() => {

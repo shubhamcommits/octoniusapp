@@ -19,7 +19,7 @@
               insert_drive_file
               </i>  {{ document_name }}</p>
               <p style="font-size: 20px; font-weight: bold;">
-                <input *ngIf="editing_title" [(ngModel)]="document_name" type="text" id="title" class="tags" (keyup.enter)="saveTitle($event)" placeholder="Your Doc title here" name="title" placement="right" ngbTooltip="Type & hit enter to add your title"></p>
+                <input *ngIf="editing_title" [(ngModel)]="document_name" type="text" id="title" class="tags" (keyup.enter)="saveTitle()" placeholder="Your Doc title here" name="title" placement="right" ngbTooltip="Type & hit enter to add your title"></p>
             <span class="sr-only">(current)</span>
           </a>
         </li>
