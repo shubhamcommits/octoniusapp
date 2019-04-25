@@ -2,7 +2,7 @@ const moment = require('moment');
 
 const notifications = require('./notifications.controller');
 const {
-  Comment, Group, Post, User
+  Comment, Group, Post, User, Document
 } = require('../models');
 const { sendMail, sendErr } = require('../../utils');
 
@@ -126,11 +126,24 @@ const edit = async (req, res, next) => {
           tags: req.body.tags,
         };
         break;
+
+      case 'document':
+        
+        postData = {
+          title: req.body.title,
+          content: req.body.content
+        };
+        break;
     }
 
     const post = await Post.findOne({ _id: req.params.postId });
 
     const user = await User.findOne({ _id: req.userId });
+
+    // Allow all group's users to edit a multi editor post 
+    if (post.type === 'document' && user._groups.includes(post._group)) {
+      user.role = 'admin';
+    }
 
     // if the user is not an owner or an admin and is not the one who posted, we throw auth error
     if (!(user.role === 'owner' || user.role === 'admin') && !post._posted_by == req.userId) {
@@ -475,6 +488,26 @@ const removeComment = async (req, res, next) => {
   }
 };
 
+// -| DOCUMENTS |-
+
+const getDocument = async (req, res, next) => {
+  try {
+    const { postId } = req.params;
+
+    const document = await Document.findOne({
+      _id: postId
+    });
+
+    return res.status(200).json({
+      message: 'document found!',
+      //postId
+      document
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
 // -| LIKES |-
 
 const like = async (req, res, next) => {
@@ -745,6 +778,8 @@ module.exports = {
   getComments,
   getNextComments,
   removeComment,
+  // Documents
+  getDocument,
   // Likes
   like,
   unlike,

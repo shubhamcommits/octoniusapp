@@ -18,7 +18,7 @@ const PostSchema = new Schema({
   type: {
     type: String,
     required: true,
-    enum: ['normal', 'event', 'task', 'performance_task']
+    enum: ['normal', 'event', 'task', 'performance_task', 'document']
   },
   _liked_by: [{
     type: Schema.Types.ObjectId,

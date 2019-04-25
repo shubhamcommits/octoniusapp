@@ -96,6 +96,9 @@ import { SearchBarComponent } from './common/components/navbar/search-bar/search
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import { GroupActivityFiltersComponent } from './dashboard/groups/group/group-activity/group-activity-filters/group-activity-filters.component';
 import { GroupActivityProgressComponent } from './dashboard/groups/group/group-activity/group-activity-progress/group-activity-progress.component';
+import { CollaborativeDocGroupPostComponent } from './common/components/posts/collaborative-doc-group-post/collaborative-doc-group-post.component';
+import { CollaborativeDocGroupNavbarComponent } from './common/components/posts/collaborative-doc-group-post/collaborative-doc-group-navbar/collaborative-doc-group-navbar.component';
+import { CollabDocPostComponent } from './common/components/posts/collab-doc-post/collab-doc-post.component';
 
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
@@ -184,7 +187,10 @@ const ngCircle = {
     UserSearchResultMainComponent,
     SearchBarComponent,
     GroupActivityFiltersComponent,
-    GroupActivityProgressComponent
+    GroupActivityProgressComponent,
+    CollaborativeDocGroupPostComponent,
+    CollaborativeDocGroupNavbarComponent,
+    CollabDocPostComponent
   ],
   imports: [
     BrowserModule,

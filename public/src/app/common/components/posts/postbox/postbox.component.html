@@ -17,7 +17,7 @@
       </div>
       <div *ngIf="postboxDisplayed" class="col-md-12 innercard">
         <div class="row">
-          <div class="col-md-4">
+          <div class="col-md-6">
             <ul class="nav nav-pills">
 
               <li class="nav-item">
@@ -56,10 +56,21 @@
                   </i>
                 </button>
               </li>
+              <li class="nav-item">
+                <button
+                  (click)="onSelectPostType('document')"
+                  class="btn btn-link cool" placement="top" ngbTooltip="Collaborative editing">
+                  <i
+                    [style.color]="post.type === 'document' ? '#005fd5' : '#9b9b9b'"
+                    class="material-icons muted"
+                    id="icon_check_box">insert_drive_file
+                  </i>
+                </button>
+              </li>
             </ul>
 
           </div>
-          <div class="col-md-8 text-right">
+          <div class="col-md-6 text-right">
 
 
             <assign-users-modal
@@ -76,7 +87,7 @@
 
         <div class="row" style="margin-top: 10px">
           <div class="col-md-12">
-            <div *ngIf="modulesLoaded" class="form-group editor">
+           <div  class="form-group editor">  <!-- *ngIf="modulesLoaded" -->
               <div class="triangle" *ngIf="post.type=='normal'"></div>
               <div class="triangle-event" *ngIf="post.type=='event'"></div>
               <div class="triangle-task" *ngIf="post.type=='task'"></div>
@@ -84,12 +95,22 @@
               <input id="post-title" name="postTitle" type="text" formControlName="postTitle" [(ngModel)]="post.title" placeholder="Insert title here ..." style="padding: 12px 15px; font-style: italic; width: 100%; outline: none; box-shadow: none"/>
 
               <!--consider removing either ready or oneditorcreated since they call the same function-->
+              <!--this code to be uncommented AMIT-->
               <quill-editor id="post-content" [modules]="modules" [(ngModel)]="post.content"
                             [spellcheck]="true" name="postContent" formControlName="postContent"
                             (ready)="onEditorCreated($event)" (onEditorCreated)="onEditorCreated($event)" (change)="onContentChanged($event)"
                             (onContentChanged)="onContentChanged($event)">
-              </quill-editor>
+              </quill-editor> 
 
+              <!-- Added by Amit starts>
+              <div id="toolbar">
+                <button class="ql-bold">Bold</button>
+                <button class="ql-italic">Italic</button>
+              </div>
+              
+              <div id="editor">
+              </div>
+             Added by Amit ends -->
 
               <div ngbDropdown class="btn-group" style="width:100%">
 
