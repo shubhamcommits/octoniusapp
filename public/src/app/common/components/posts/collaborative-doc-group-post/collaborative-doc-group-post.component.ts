@@ -150,7 +150,9 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
   
    // var shareDBSocket = new ReconnectingWebSocket(((location.protocol === 'https:') ? 'wss' : 'ws') + '://' + 'localhost:3001' + '/sharedb');
   
-   var shareDBSocket = new ReconnectingWebSocket(environment.REAL_TIME_URL + '/sharedb');
+  // var shareDBSocket = new ReconnectingWebSocket(environment.REAL_TIME_URL + '/sharedb');
+
+    var shareDBSocket = new ReconnectingWebSocket(((location.protocol === 'https:') ? 'wss' : 'ws') + '://' + environment.REAL_TIME_URL + '/sharedb');
 
     var shareDBConnection = new ShareDB.Connection(shareDBSocket);
     

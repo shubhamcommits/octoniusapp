@@ -14,6 +14,6 @@ export const environment = {
     // !--GOOGLE DEVELOPER CONSOLE CREDENTIALS--! //
 
     // !--REAL TIME DOC LOCATION PROTOCOLS--! //
-    REAL_TIME_URL: 'ws://localhost:3001'
+    REAL_TIME_URL: 'localhost:3001'
   // !--REAL TIME DOC LOCATION PROTOCOLS--! //
    };
