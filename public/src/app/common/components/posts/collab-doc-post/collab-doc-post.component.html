@@ -17,41 +17,6 @@
           </h6>
         </div>
       </div>
-      <!-- Editing Post part-->
-      <ng-container *ngIf="displayEditPostSection">
-        <div class="col-md-12" style="padding-bottom: 2rem;">
-          <button class="btn btn-primary" style="float: right;" contenteditable="false" (click)="OnSaveEditPost()">Save</button>
-          <button class="btn btn-default" style="float: right;" contenteditable="false"(click)="displayEditPostSection = false;"> Cancel</button>
-          <br />
-        </div>
-        <div class="col-md-12 innercard">
-          <input type="text" [(ngModel)]="edit_title" value="post?.title" style="padding: 12px 15px; font-style: italic; width: 100%; outline: none;" />
-          <quill-editor [modules]="modules" type="text" [(ngModel)]="edit_content"
-                        [spellcheck]="true" value="post?.content">
-
-          </quill-editor>
-        </div>
-        <div class="innercard">
-
-            <div class="col-md-6">
-                <input type="text" id="tags" (keydown)="addTags($event)" class="tags" placeholder="Add Tag here" [(ngModel)]="tag" name="tag" placement="top" ngbTooltip="Type & hit enter to add a tag">
-              </div>
-              <br />
-            </div>
-
-          <div class="row innercard">
-              <div class="col-md-1">
-                  <button type="button" class="btn btn-link">
-                      <i class="material-icons" placement="top" ngbTooltip="Tags">
-                          local_offer
-                          </i>
-                  </button>
-              </div>
-              <div class="col-md-10">
-              <button class="btn btn-sm btn-outline-primary" style="margin-right: 1rem;" (click)="removeTag(i)" *ngFor="let tag of post?.tags; let i = index" placement="top" ngbTooltip="Click here to remove this tag"><b>X</b> {{tag}}</button>
-              </div>
-            </div>
-      </ng-container>
 
       <!-- POST TITLE -->
       <div class="col-md-12 innercard font-weight-bold" style="font-size: 18px;" [innerHTML]="post?.title | safe: 'html'">
