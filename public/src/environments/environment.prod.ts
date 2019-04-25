@@ -16,6 +16,6 @@ export const environment = {
   // !--GOOGLE DEVELOPER CONSOLE CREDENTIALS--! //  
 
   // !--REAL TIME DOC LOCATION PROTOCOLS--! //
-  REAL_TIME_URL: 'wss://workplace.octonius.com/editor'
+  REAL_TIME_URL: 'workplace.octonius.com/editor'
   // !--REAL TIME DOC LOCATION PROTOCOLS--! //
 };
