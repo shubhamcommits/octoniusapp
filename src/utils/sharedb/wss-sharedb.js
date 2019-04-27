@@ -20,6 +20,12 @@ module.exports = function(server) {
     var stream = new WebSocketJSONStream(ws);
     shareDBServer.listen(stream);
 
+    shareDBServer.use("op", (context, cb) => {
+      context.op.op.editorId = context.op.src
+      console.log(context.op.op);
+      cb();
+    })
+
     ws.on('pong', function(data, flags) {
       debug('Pong received. (%s)', ws.id);
       ws.isAlive = true;

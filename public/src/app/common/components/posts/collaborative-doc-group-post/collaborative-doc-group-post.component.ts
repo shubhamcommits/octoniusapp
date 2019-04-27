@@ -6,6 +6,7 @@ import QuillCursors from 'quill-cursors';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import * as ShareDB from '../../../../../../../node_modules/sharedb/lib/client';
 import {cursors} from '../../../../shared/utils/cursors';
+import {Mark} from '../../../../shared/utils/quill.module.mark';
 import * as utils from '../../../../shared/utils/utils';
 import { PostService } from '../../../../shared/services/post.service';
 import { environment } from '../../../../../environments/environment';
@@ -147,6 +148,8 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     ShareDB.types.register(require('rich-text').type);
   
     Quill.register('modules/cursors', QuillCursors);
+
+    Quill.register(Mark);
   
    // var shareDBSocket = new ReconnectingWebSocket(((location.protocol === 'https:') ? 'wss' : 'ws') + '://' + 'localhost:3001' + '/sharedb');
   
@@ -269,6 +272,14 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     // server -> local
     doc.on('op', function(op, source) {
       if (source !== quill) {
+        let cursor = cursors.connections.find(el => el.editorId === op.editorId);
+        op.ops = op.ops.map((item) => {
+          if (item.insert) {
+            item.attributes = item.attributes || {};
+            item.attributes.mark = {id: cursor.id, style: {color: cursor.color}};
+          }
+          return item;
+        });
         quill.updateContents(op);
         //getDocument(postId);
         // updateUserList();
@@ -423,6 +434,11 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
   
   shareDBConnection.on('state',  function(state, reason) {
     // var indicatorColor;
+
+    if (state === "connected") {
+      cursors.localConnection.editorId = shareDBConnection.id;
+      cursors.update();
+    }
   
     console.log('[sharedb] New connection state: ' + state + ' Reason: ' + reason);
     // sharedbSocketStateEl.innerHTML = state.toString();
