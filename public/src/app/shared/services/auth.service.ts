@@ -63,7 +63,7 @@ export class AuthService {
     return this._http.post<any>(this.BASE_API_URL + '/auth/checkWorkspaceName', workspace);
   }
   chechUserAvailability(user) {
-    return this._http.post<any>(this.BASE_API_URL + '/auth/checkUserAvailability', user);
+    return this._http.post<any>(this.BASE_API_URL + '/auths/checkUserAvailability', user);
   }
 
   isLoggedIn() {
