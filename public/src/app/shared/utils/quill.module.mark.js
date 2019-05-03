@@ -1,3 +1,6 @@
+import * as Quill from 'quill';
+(window).Quill = Quill;
+
 var Inline = Quill.import('blots/inline');
 
 class Mark extends Inline {
