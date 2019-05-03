@@ -1,4 +1,4 @@
-import ReconnectingWebSocket from 'reconnecting-websocket';
+/*import ReconnectingWebSocket from 'reconnecting-websocket';
 import * as chance from 'chance';
 import { environment } from '../../../environments/environment';
 
@@ -159,4 +159,4 @@ cursors.socket.onerror = function (event) {
   // socketIndicatorEl.style.backgroundColor = 'red';
 };
 
-export var cursors=cursors;
+export var cursors=cursors;*/
