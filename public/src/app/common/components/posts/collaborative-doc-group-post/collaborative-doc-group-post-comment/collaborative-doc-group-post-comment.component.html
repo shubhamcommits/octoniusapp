@@ -1,0 +1,22 @@
+<section class="comments">
+  <div class="thumbnail cf">        
+      <img src="/uploads/{{user_data?.profile_pic}}" 
+      onerror="this.src='/assets/images/user.png'"
+      class="feed-avatar"
+      [routerLink]="['/dashboard/profile', user_data?._id, 'profile']"/>
+  </div>
+  <div class="comment-contents">
+ <h2 class="comment-author">{{ user_data?.first_name }} {{ user_data?.last_name }}</h2>
+    <div class="comment-infos">
+      <div class="comment-date">
+        {{date | date: 'mediumDate'}}
+      </div>
+    </div>
+    <div>
+    <textarea [(ngModel)]="comment_content" rows="4" placeholder="Write your comment..."></textarea>
+    </div>
+    <div class="comment-reply">
+      <button class="btn btn-sm btn-primary" (click)="addComment()">Post</button>
+    </div>
+  </div>
+</section>

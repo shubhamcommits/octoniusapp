@@ -2,7 +2,22 @@
 (clickBack)="backClicked()" [post]="post" (docTitle)="getPostTitle($event)">
 </app-collaborative-doc-group-navbar>
 
-<div class="container" style="margin-top: 8%;"> 
+<div class="row" style="margin-top: 8%; margin-right: 15%; margin-left: 1%; margin-bottom: 10%;">
+  <div class="col-md-10"> 
       <div id="editor" style="background: white;">
       </div>
+    </div>
+
+    <div class="col-md-2">
+      <app-collaborative-doc-group-comments
+      [post]="post"
+      [user_data]="user_data"
+      [user]="user_data"
+      [comments]="comments"
+      [comments_count]="comment_count">
+      
+    </app-collaborative-doc-group-comments>
+    </div>
   </div>
+
+

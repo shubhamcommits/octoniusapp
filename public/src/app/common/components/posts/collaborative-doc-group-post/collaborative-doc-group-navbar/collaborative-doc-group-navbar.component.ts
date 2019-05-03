@@ -30,15 +30,17 @@ export class CollaborativeDocGroupNavbarComponent implements OnInit {
 
   ngOnInit() {
     this.getPost();
+    /*this.getPost();
     setTimeout(() => {
       console.log('Post', this.post);
-
-    }, 5000);
+    }, 5000);*/
     
   }
 
   clickOnBack(){
-    this.getDocument(this.postId);
+    this.getDocument(this.postId).then(()=>{
+      //this.saveTitle();
+    });
     this.clickBack.emit('Click on back');
   }
 
@@ -48,8 +50,6 @@ export class CollaborativeDocGroupNavbarComponent implements OnInit {
       .subscribe((res)=>{
         console.log('Document From Navbar', res);
         this.document = res['document'];
-        this.post.content = this.document.ops[0].insert;
-        this.saveTitle();
         resolve();
       }, (err)=>{
         console.log('Error while fetching the document', err);
@@ -64,7 +64,7 @@ export class CollaborativeDocGroupNavbarComponent implements OnInit {
     .subscribe((res)=>{
       console.log('Fetched post', res);
       this.document_name = res['post']['title'];
-      this.document_content = res['post']['content'];
+      //this.document_content = res['post']['content'];
     }, (err)=>{
       console.log('Error while fetching the post', err);
     })
@@ -73,7 +73,7 @@ export class CollaborativeDocGroupNavbarComponent implements OnInit {
   saveTitle(){
       const post = {
         'title': this.document_name,
-        'content': this.post.content,
+        'content': '',
         'type': 'document'
       };
       console.log(post);
