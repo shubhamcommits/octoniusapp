@@ -472,7 +472,7 @@ const removeComment = async (req, res, next) => {
           comments: comment._id
         },
         $inc: {
-          comments_count: 1
+          comments_count: -1
         }
       }, {
         new: true

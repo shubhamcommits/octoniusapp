@@ -99,6 +99,8 @@ import { GroupActivityProgressComponent } from './dashboard/groups/group/group-a
 import { CollaborativeDocGroupPostComponent } from './common/components/posts/collaborative-doc-group-post/collaborative-doc-group-post.component';
 import { CollaborativeDocGroupNavbarComponent } from './common/components/posts/collaborative-doc-group-post/collaborative-doc-group-navbar/collaborative-doc-group-navbar.component';
 import { CollabDocPostComponent } from './common/components/posts/collab-doc-post/collab-doc-post.component';
+import { CollaborativeDocGroupCommentsComponent } from './common/components/posts/collaborative-doc-group-post/collaborative-doc-group-comments/collaborative-doc-group-comments.component';
+import { CollaborativeDocGroupPostCommentComponent } from './common/components/posts/collaborative-doc-group-post/collaborative-doc-group-post-comment/collaborative-doc-group-post-comment.component';
 
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
@@ -190,7 +192,9 @@ const ngCircle = {
     GroupActivityProgressComponent,
     CollaborativeDocGroupPostComponent,
     CollaborativeDocGroupNavbarComponent,
-    CollabDocPostComponent
+    CollabDocPostComponent,
+    CollaborativeDocGroupCommentsComponent,
+    CollaborativeDocGroupPostCommentComponent
   ],
   imports: [
     BrowserModule,

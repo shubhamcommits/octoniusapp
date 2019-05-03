@@ -12,6 +12,7 @@ import { PostService } from '../../../../shared/services/post.service';
 import { environment } from '../../../../../environments/environment';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { SnotifyService, SnotifyPosition, SnotifyToastConfig } from 'ng-snotify';
+import { UserService } from '../../../../shared/services/user.service';
 
 var postId: any;
 var groupId: any;
@@ -44,8 +45,13 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     ['clean']                                         // remove formatting button
   ];
 
-  post:any;
+  post: any;
   postTitle: any = 'Untitled';
+
+  user_data: any;
+
+  comments = [];
+  comment_count = 0;
 
   constructor(
     private router: Router,
@@ -53,7 +59,8 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     private postService: PostService,
     private _location: Location,
     public ngxService: NgxUiLoaderService,
-    private snotifyService: SnotifyService) {
+    private snotifyService: SnotifyService,
+    private _userService: UserService) {
       postId = this._activatedRoute.snapshot.paramMap.get('postId');
       groupId = this._activatedRoute.snapshot.paramMap.get('id');
      }
@@ -68,14 +75,24 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
       position: "centerTop"
     });
    await this.initializeQuillEditor().then(()=>{
-     this.getPost().then(()=>{
-      this.subscription = setInterval(()=>{
-        this.getDocument(postId);
-        this.editPost(postId);
-       }, 5000);
-     })
+     this.getPost();
+     this.getUser();
    })
 
+  }
+
+  getUser(){
+    return new Promise((resolve, reject)=>{
+      this._userService.getUser()
+      .subscribe((res)=>{
+        console.log('Current User', res['user']);
+        this.user_data = res['user'];
+        resolve();
+      }, (err)=>{
+        console.log('Error while fetching the user', err);
+        reject(err);
+      })
+    })
   }
 
   getPost(){
@@ -84,6 +101,9 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     .subscribe((res)=>{
       console.log('Fetched post', res);
       this.postTitle = res['post']['title'];
+      this.post = res['post'];
+      this.comments = this.post.comments;
+      this.comment_count = this.post.comments_count;
       resolve();
     }, (err)=>{
       console.log('Error while fetching the post', err);

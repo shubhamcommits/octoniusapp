@@ -19,12 +19,18 @@
       </div>
 
       <!-- POST TITLE -->
-      <div class="col-md-12 innercard font-weight-bold" style="font-size: 18px;" [innerHTML]="post?.title | safe: 'html'">
+
+      <div class="col-md-12 innercard font-weight-bold" style="font-size: 18px;">
+        <p [style.color]="post.type === 'document' ? '#005fd5' : '#9b9b9b'"><i
+        [style.color]="post.type === 'document' ? '#005fd5' : '#9b9b9b'"
+        class="material-icons muted"
+        id="icon_check_box">insert_drive_file
+      </i> <u>Document File:</u></p> 
       </div>
 
-      <!-- ACTUAL POST CONTENT -->
-      <div class="col-md-12 innercard" style="border: none;" [innerHTML]="applyZoom(post?.content)  | safe: 'html'">
-      </div>
+    <div class="col-md-12 innercard font-weight-bold" style="font-size: 24px;" [innerHTML]="post?.title | safe: 'html'">
+ 
+    </div>
 
       <post-actions
         *ngIf="user"
