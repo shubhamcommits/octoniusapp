@@ -10,7 +10,7 @@ class Mark extends Inline {
     }
 }
 Mark.blotName = 'mark';
-Mark.tagName = 'SPAN';
+Mark.tagName = 'marker';
 Mark.className = 'ql-mark-collaborative';
 
 
@@ -27,7 +27,7 @@ class MarkDelete extends Mark {
   }
 }
 MarkDelete.blotName = 'mark-delete';
-MarkDelete.tagName = 'spam';
+MarkDelete.tagName = 'markerdelete';
 MarkDelete.className = 'ql-mark-delete-collaborative';
 
 
