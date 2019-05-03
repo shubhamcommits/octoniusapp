@@ -6,7 +6,7 @@ import QuillCursors from 'quill-cursors';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import * as ShareDB from '../../../../../../../node_modules/sharedb/lib/client';
 import {cursors} from '../../../../shared/utils/cursors';
-import {Mark} from '../../../../shared/utils/quill.module.mark';
+import {Mark, MarkDelete} from '../../../../shared/utils/quill.module.mark';
 import * as utils from '../../../../shared/utils/utils';
 import { PostService } from '../../../../shared/services/post.service';
 import { environment } from '../../../../../environments/environment';
@@ -150,6 +150,8 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     Quill.register('modules/cursors', QuillCursors);
 
     Quill.register(Mark);
+
+    Quill.register(MarkDelete);
   
    // var shareDBSocket = new ReconnectingWebSocket(((location.protocol === 'https:') ? 'wss' : 'ws') + '://' + 'localhost:3001' + '/sharedb');
   
@@ -277,6 +279,14 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
           if (item.insert) {
             item.attributes = item.attributes || {};
             item.attributes.mark = {id: cursor.id, style: {color: cursor.color}};
+          }
+          if (item.delete) {
+            item = {
+              retain: item.delete,
+              attributes: {
+                "mark-delete": {id: cursor.id, style: {color: cursor.color}}
+              }
+            }
           }
           return item;
         });
