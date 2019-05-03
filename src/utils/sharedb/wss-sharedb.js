@@ -21,8 +21,8 @@ module.exports = function(server) {
     shareDBServer.listen(stream);
 
     shareDBServer.use("op", (context, cb) => {
-      context.op.op.editorId = context.op.src
-      console.log(context.op.op);
+      if (context && context.op && context.op.op)
+        context.op.op.editorId = context.op.src;
       cb();
     })
 
