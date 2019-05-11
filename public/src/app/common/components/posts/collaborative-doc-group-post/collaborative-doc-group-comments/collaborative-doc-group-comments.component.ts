@@ -1,5 +1,7 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, AfterViewInit, ViewChild} from '@angular/core';
 import { PostService } from '../../../../../shared/services/post.service';
+import { quill } from '../collaborative-doc-group-post.component';
+import { SnotifyService, SnotifyPosition, SnotifyToastConfig } from 'ng-snotify';
 
 @Component({
   selector: 'app-collaborative-doc-group-comments',
@@ -8,7 +10,8 @@ import { PostService } from '../../../../../shared/services/post.service';
 })
 export class CollaborativeDocGroupCommentsComponent implements OnInit {
 
-  constructor(private postService: PostService) { }
+  constructor(private postService: PostService,
+    private snotifyService: SnotifyService) { }
 
   @Input('post') post: any;
   @Input('group') group;
@@ -28,7 +31,11 @@ export class CollaborativeDocGroupCommentsComponent implements OnInit {
   comment = {
     content: '',
     _commented_by: '',
-    _post_id: ''
+    _post_id: '',
+    _highlighted_content_range: {
+      index: 0,
+      length: 0
+    }
   };
 
   toggle_comments = false;
@@ -37,6 +44,26 @@ export class CollaborativeDocGroupCommentsComponent implements OnInit {
 
   async ngOnInit() {
     //this.commentCount = this.post.comments_count;
+  }
+
+  selectHighlightedText(range){
+    if(range != null && range.length > 1){
+      quill.setSelection(range.index, range.length);
+      let s = window.getSelection();
+      let oRange = s.getRangeAt(0); //get the text range
+      let oRect = oRange.getBoundingClientRect(); 
+      window.scrollTo(0, oRect['y']);
+    }
+    else{
+      this.snotifyService.simple(`This is a general comment!`, {
+        timeout: 500,
+        showProgressBar: false,
+        backdrop:0.5,
+        position: "bottomRight"
+      });
+    }
+
+    //console.log(oRect, oRange, s);
   }
 
   commentReceived($event){

@@ -15,11 +15,14 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { SnotifyService, SnotifyPosition, SnotifyToastConfig } from 'ng-snotify';
 import { UserService } from '../../../../shared/services/user.service';
 import * as chance from 'chance';
+import { QuillAutoLinkService } from '../../../../shared/services/quill-auto-link.service';
 
 var postId: any;
 var groupId: any;
 var postData = new Object();
-var cursors: any = {};
+var cursors: any = {}; 
+var comment_range = {};
+var quill: any;
 
 @Component({
   selector: 'app-collaborative-doc-group-post',
@@ -28,7 +31,8 @@ var cursors: any = {};
 })
 export class CollaborativeDocGroupPostComponent implements OnInit {
 
- toolbarOptions = [
+ toolbarOptions = {
+   container:[
     ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
     ['blockquote', 'code-block'],
   
@@ -44,9 +48,16 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
     [{ 'font': [] }],
     [{ 'align': [] }],
+    ['link', 'image', 'video'],
   
     ['clean']                                         // remove formatting button
-  ];
+  ],
+  handlers: {
+    'emoji': function () {
+      //console.log('clicked');
+    }
+  }
+};
 
   post: any;
   postTitle: any = 'Untitled';
@@ -56,6 +67,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
   comments = [];
   comment_count = 0;
 
+
   constructor(
     private router: Router,
     private _activatedRoute: ActivatedRoute,
@@ -63,7 +75,8 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     private _location: Location,
     public ngxService: NgxUiLoaderService,
     private snotifyService: SnotifyService,
-    private _userService: UserService) {
+    private _userService: UserService,
+    private quillInitializeService: QuillAutoLinkService) {
       postId = this._activatedRoute.snapshot.paramMap.get('postId');
       groupId = this._activatedRoute.snapshot.paramMap.get('id');
      }
@@ -88,7 +101,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     return new Promise((resolve, reject)=>{
       this._userService.getUser()
       .subscribe((res)=>{
-        console.log('Current User', res['user']);
+        //console.log('Current User', res['user']);
         this.user_data = res['user'];
         resolve();
       }, (err)=>{
@@ -102,7 +115,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
    return new Promise((resolve, reject)=>{
     this.postService.getPost(postId)
     .subscribe((res)=>{
-      console.log('Fetched post', res);
+      //console.log('Fetched post', res);
       this.postTitle = res['post']['title'];
       this.post = res['post'];
       this.comments = this.post.comments;
@@ -116,7 +129,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
   }
 
   getPostTitle(event){
-    console.log('Post title', event);
+    //console.log('Post title', event);
     this.postTitle = event;
   }
 
@@ -135,7 +148,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     return new Promise((resolve, reject)=>{
       this.postService.getDocument(postId)
       .subscribe((res)=>{
-        console.log('Document Found', res);
+        //console.log('Document Found', res);
         resolve();
       }, (err)=>{
         console.log('Error while fetching the document', err);
@@ -154,7 +167,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     return new Promise((resolve, reject)=>{
       this.postService.editPost(documentId, post)
       .subscribe((res)=>{
-        console.log('Data saved into post Sucessfully', res);
+        //console.log('Data saved into post Sucessfully', res);
         this.post = res['post'];
         resolve();
       }, (err)=>{
@@ -164,6 +177,11 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     })
 
   }
+
+  test(){
+    Quill.setSelection(100, 7);
+  }
+
 
   async initializeQuillEditor() {
     //this.ngxService.startBackground();
@@ -186,7 +204,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
       
         getUserName.onload = () => {
           if (getUserName.status === 200) {
-            console.log('User Details', JSON.parse(getUserName.responseText));
+            //console.log('User Details', JSON.parse(getUserName.responseText));
               // id being generated on server. Amit
             this.name = JSON.parse(getUserName.responseText).user.first_name +" " +JSON.parse(getUserName.responseText).user.last_name;
             this.color = color;
@@ -242,7 +260,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     cursors.socket.onmessage = function(message) {
     
       var data = JSON.parse(message.data);
-      console.log(data);
+      //console.log(data);
     
       var source = {},
         removedConnections = [],
@@ -332,11 +350,12 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
 
     var shareDBConnection = new ShareDB.Connection(shareDBSocket);
     
-    var quill = new Quill('#editor', {
+     quill = new Quill('#editor', {
       theme: 'snow',
       modules: {
         toolbar: this.toolbarOptions,
-        cursors:true
+        cursors:true,
+        autoLink: true
         // cursors: {
         //    autoRegisterListener: false
         // },
@@ -357,9 +376,9 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     
       getDocDetails.onload = () => {
         if (getDocDetails.status === 200) {
-          console.log('Document Details', JSON.parse(getDocDetails.responseText));
+          //console.log('Document Details', JSON.parse(getDocDetails.responseText));
           postData['content'] = JSON.parse(getDocDetails.responseText).document.ops[0].insert;
-          console.log('Post Data', postData);
+          //console.log('Post Data', postData);
         }
         else {
           console.log('Error while fetching document details', JSON.parse(getDocDetails.responseText));
@@ -509,6 +528,13 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
   
     quill.on('selection-change', function(range, oldRange, source) {
       sendCursorData(range);
+      if(range != null && range.length > 0 ){
+        var text = quill.getText(range.index, range.length);
+        comment_range = range;
+        console.log('Comment Range', comment_range);
+        console.log("User has highlighted: ", text);
+      }
+
     });
   
     //fired from cursor.js when a user is disconnected.
@@ -621,3 +647,5 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
   } 
 
 }
+
+export {comment_range, quill};

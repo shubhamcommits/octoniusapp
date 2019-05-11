@@ -48,7 +48,7 @@ export class CollaborativeDocGroupNavbarComponent implements OnInit {
     return new Promise((resolve, reject)=>{
       this.postService.getDocument(postId)
       .subscribe((res)=>{
-        console.log('Document From Navbar', res);
+        //console.log('Document From Navbar', res);
         this.document = res['document'];
         resolve();
       }, (err)=>{
@@ -62,7 +62,7 @@ export class CollaborativeDocGroupNavbarComponent implements OnInit {
   getPost(){
     this.postService.getPost(this.postId)
     .subscribe((res)=>{
-      console.log('Fetched post', res);
+      //console.log('Fetched post', res);
       this.document_name = res['post']['title'];
       //this.document_content = res['post']['content'];
     }, (err)=>{

@@ -22,8 +22,8 @@
                     [routerLink]="['/dashboard/profile', post?._posted_by?._id, 'profile']"/>
                 </div>
 
-             <h2 style="margin:1rem 1rem 1rem 1rem;">   {{ comment?._commented_by?.first_name }} {{ comment?._commented_by?.last_name }}</h2>
-             <p>{{ comment?.content }}</p>
+             <h2 style="margin:1rem 1rem 1rem 1rem; color: black;">   {{ comment?._commented_by?.first_name }} {{ comment?._commented_by?.last_name }}</h2>
+             <p (click)="selectHighlightedText(comment?._highlighted_content_range)" style="color: black;">{{ comment?.content }}</p>
               <div class="comment-infos">
                 <div class="comment-date">
                   {{ comment?.created_date | date:'mediumDate' }}

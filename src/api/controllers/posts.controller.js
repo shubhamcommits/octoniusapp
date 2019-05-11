@@ -268,13 +268,14 @@ const addComment = async (req, res, next) => {
     const {
       userId,
       params: { postId },
-      body: { content, contentMentions }
+      body: { content, contentMentions,  _highlighted_content_range}
     } = req;
 
     // Generate comment data
     const commentData = {
       content,
       _content_mentions: contentMentions,
+      _highlighted_content_range: _highlighted_content_range,
       _commented_by: userId,
       _post: postId
     };

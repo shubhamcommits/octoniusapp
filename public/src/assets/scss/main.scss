@@ -382,6 +382,12 @@ color:#787878 !important;
   width: 28px;
 }
 
+.ql-toolbar{
+  background: white;
+  z-index: 10;
+}
+
+
 .editor{
   border: 1px solid $brand-primary;
   border-radius: $card-radius; 
