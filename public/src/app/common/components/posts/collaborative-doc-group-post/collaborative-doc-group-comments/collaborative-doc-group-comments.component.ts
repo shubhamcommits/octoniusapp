@@ -71,6 +71,28 @@ export class CollaborativeDocGroupCommentsComponent implements OnInit {
     this.comments_count++ ;
     const comment = $event;
     this.comments = [comment, ... this.comments];
+    this.highlightAllTheComments(this.comments);
+  }
+
+  highlightAllTheComments(comments){
+    if(this.comments_count > 0){
+      for(let i = 0; i < comments.length; i++){
+        quill.formatText(comments[i]._highlighted_content_range.index, comments[i]._highlighted_content_range.length, {
+          background: "#fff72b"
+        });
+      }
+    }
+
+  }
+
+  deselectAllTheComments(comments){
+    if(this.comments_count > 0){
+      for(let i = 0; i < comments.length; i++){
+        quill.formatText(comments[i]._highlighted_content_range.index, comments[i]._highlighted_content_range.length, {
+          background: "#fff"
+        });
+      }
+    }
   }
 
   getComments(){
@@ -79,6 +101,7 @@ export class CollaborativeDocGroupCommentsComponent implements OnInit {
       .subscribe((res)=>{
         console.log('Comments for this post', res);
         this.comments = res['comments'];
+        this.highlightAllTheComments(this.comments);
         this.nextCommentCount = this.comments_count- this.comments.length;
         resolve();
       }, (err)=>{
@@ -96,6 +119,7 @@ export class CollaborativeDocGroupCommentsComponent implements OnInit {
       .subscribe((res)=>{
         console.log('Next Comments for this post', res);
         this.comments = this.comments.concat(res['comments']);
+        this.highlightAllTheComments(this.comments);
         this.nextCommentCount = this.comments_count- this.comments.length;
         //this.post.comments = this.comments;
         console.log('Next comments', this.comments);
@@ -114,6 +138,7 @@ export class CollaborativeDocGroupCommentsComponent implements OnInit {
         console.log('Comment Deleted', res);
         const index = this.comments.findIndex((comment) => commentId == comment._id);
         this.comments.splice(index, 1);
+        this.highlightAllTheComments(this.comments);
         this.comments_count--;
         this.nextCommentCount = this.comments_count- this.comments.length;
         resolve();
