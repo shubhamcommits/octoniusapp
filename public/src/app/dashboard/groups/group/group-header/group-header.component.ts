@@ -84,7 +84,7 @@ export class GroupHeaderComponent implements OnInit {
   loadGroup() {
     this.groupService.getGroup(this.group_id)
       .subscribe((res) => {
-        console.log(res);
+        //console.log(res);
        this.groupImageUrl = res['group']['group_avatar'] == null
          ? '/assets/images/group.png' : environment.BASE_URL + `/uploads/${res['group']['group_avatar']}`;
 
@@ -106,7 +106,7 @@ export class GroupHeaderComponent implements OnInit {
       .subscribe((res) => {
         this.user = res['user'];
         this.profilePic = this.user.profile_pic;
-        console.log(this.user);
+        //console.log(this.user);
       });
   }
 

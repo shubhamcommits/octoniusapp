@@ -222,7 +222,7 @@ export class GroupActivityComponent implements OnInit {
 
       // join room to get notifications for this group
       this.socket.emit('joinGroup', room, (err) => {
-        console.log(`Socket Joined`);
+        //console.log(`Socket Joined`);
       });
 
       // Alert on screen when newPost is created
@@ -325,7 +325,7 @@ export class GroupActivityComponent implements OnInit {
       this.postService.getGroupPosts(this.group._id)
         .subscribe((res) => {
           this.posts = res['posts'];
-          console.log(this.posts);
+          //console.log(this.posts);
           this.isLoading$.next(false);
           this.show_new_posts_badge = 0;
         }, (err) => {
@@ -454,7 +454,7 @@ export class GroupActivityComponent implements OnInit {
         ['emoji']],
       handlers: {
         'emoji': function () {
-          console.log('clicked');
+          //console.log('clicked');
         },
         'image': function () {
           //Creates an element which accepts image file as the input

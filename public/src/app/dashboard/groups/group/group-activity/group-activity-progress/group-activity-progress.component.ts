@@ -42,7 +42,7 @@ export class GroupActivityProgressComponent implements OnInit {
     return new Promise((resolve, reject) => {
       const getcurrentweek = moment(Date.now()).format('w');
       var taskDueToWeek: any = '';
-      console.log(getcurrentweek);
+      //console.log(getcurrentweek);
       this.pendingToDoTaskCount = 0;
       this.pendingInProgressTaskCount = 0;
       this.isLoading$.next(true);
@@ -85,7 +85,7 @@ export class GroupActivityProgressComponent implements OnInit {
       this.groupService.getCompletedGroupTasks(this.group._id)
         .subscribe((res) => {
             this.completedTasks = res['posts'];
-            console.log(this.completedTasks);
+            //console.log(this.completedTasks);
             for(var i = 0 ; i < this.completedTasks.length; i++){
               if(this.completedTasks[i]['task']['status'] == 'done'){
                 taskDueToWeek = moment(this.completedTasks[i]['task']['due_to']).format('w');
@@ -96,7 +96,7 @@ export class GroupActivityProgressComponent implements OnInit {
 
             }
             this.isLoading$.next(false);
-            console.log('Completed Tasks Count', this.completedTaskCount);
+            //console.log('Completed Tasks Count', this.completedTaskCount);
             resolve();
 
           },

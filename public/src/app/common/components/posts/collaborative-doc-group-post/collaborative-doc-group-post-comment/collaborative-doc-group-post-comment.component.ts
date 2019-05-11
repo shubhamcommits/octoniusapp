@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, AfterViewInit
 import { CommentSectionComponent } from '../../../comments/comment-section/comment-section.component';
 import { environment } from '../../../../../../environments/environment';
 import { PostService } from '../../../../../shared/services/post.service';
+import { comment_range, quill } from '../collaborative-doc-group-post.component';
 
 @Component({
   selector: 'app-collaborative-doc-group-post-comment',
@@ -38,14 +39,21 @@ export class CollaborativeDocGroupPostCommentComponent implements OnInit, AfterV
 
   }
 
+  getSelectedPortion(){
+    return quill.getSelection();
+  }
+
   addComment(){
 
     const commentContent = {
-      content: JSON.stringify(this.comment_content),
+      content: ""+this.comment_content,
       _commented_by: this.user._id,
       post_id: this.post._id,
+      _highlighted_content_range: comment_range,
       contentMentions: []
     };
+
+    console.log('Comment Range', comment_range);
 
     this.postService.addNewComment(this.post._id, commentContent)
     .subscribe((res)=>{

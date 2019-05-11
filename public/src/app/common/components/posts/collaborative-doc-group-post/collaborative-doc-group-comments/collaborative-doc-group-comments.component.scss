@@ -67,20 +67,17 @@ section.comments .comment-contents .comment-author h2 {
   font: normal 25px/1em "droid serif", serif;
 }
 
-section.comments .comment-contents p {
-  text-shadow: 0 2px 2px rgba(0,0,0,.2);
-}
-
 section.comments .comment-contents a.comment-author,
 section.comments .comment-contents a {
-  color: #846d6d;
+  //color: #846d6d;
+  color: #000;
   text-decoration: none;
   transition: color .3s ease-in-out;
 }
 
 section.comments .comment-contents a.comment-author:hover,
 section.comments .comment-contents p a:hover {
-  color: #222;
+  color: #000;
   text-decoration: underline;
 }
 

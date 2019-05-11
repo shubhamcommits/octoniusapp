@@ -12,6 +12,14 @@ const CommentSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User'
   }],
+  _highlighted_content_range: {
+    index:{
+      type: Number
+    },
+    length:{
+      type: Number
+    }
+  },
   created_date: {
     type: Date,
     default: Date.now
