@@ -443,10 +443,6 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
         getDocumentHistory(postId).then((document) => {
           quill.setContents(document);
         });
-      })
-      
-      
-      
       // updateCursors(cursors.localConnection);
     }); //subscribe ends
 
