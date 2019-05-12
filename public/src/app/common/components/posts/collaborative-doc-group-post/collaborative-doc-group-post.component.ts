@@ -529,7 +529,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     }, 1500);
   
     doc.on('nothing pending', debouncedSendCursorData, ()=>{
-      getDocument(postId);
+     // getDocument(postId);
     });
 
     
