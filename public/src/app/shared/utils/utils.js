@@ -3,6 +3,7 @@
 // N milliseconds. If `immediate` is passed, trigger the function on the
 // leading edge, instead of the trailing.
 
+
 var utils={}
 utils.debounce=function(func, wait, immediate) {
   var timeout;
@@ -19,5 +20,25 @@ utils.debounce=function(func, wait, immediate) {
     if (callNow) func.apply(context, args);
   };
 };
+
+utils.callApi = async function(method, path) {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open(method, path, true);
+    xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('token'));
+    xhr.onload = () => {
+      if (xhr.status === 200) {
+        try {
+          resolve(JSON.parse(xhr.responseText));
+        } catch (err) {
+          reject(err)
+        }
+        
+      } else {
+        reject(new Error("Network error"));
+      }
+    }
+  })
+}
 
 module.exports = utils;

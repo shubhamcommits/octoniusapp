@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { ActivatedRoute, Router, Route } from '@angular/router';
+import { ActivatedRoute, Router, Route, ResolveEnd } from '@angular/router';
 import {Location} from '@angular/common';
 
 import QuillCursors from 'quill-cursors';
@@ -10,6 +10,7 @@ import {cursors} from '../../../../shared/utils/cursors';
 import {Mark} from '../../../../shared/utils/quill.module.mark';
 import * as utils from '../../../../shared/utils/utils';
 import { PostService } from '../../../../shared/services/post.service';
+import { ConnectionHistoryService } from '../../../../shared/services/connectionhistory.service';
 import { environment } from '../../../../../environments/environment';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { SnotifyService, SnotifyPosition, SnotifyToastConfig } from 'ng-snotify';
@@ -72,6 +73,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     private router: Router,
     private _activatedRoute: ActivatedRoute,
     private postService: PostService,
+    private connectionHistoryService: ConnectionHistoryService,
     private _location: Location,
     public ngxService: NgxUiLoaderService,
     private snotifyService: SnotifyService,
@@ -126,6 +128,18 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
       reject(err);
     })
    })
+  }
+
+  updateConnectionHistory(history) {
+    return new Promise((resolve, reject)=>{
+      this.connectionHistoryService.updateConnectionHistory(history)
+      .subscribe(()=>{
+        resolve();
+      }, (err)=>{
+        console.log('Error while updating connection history', err);
+        reject(err);
+      })
+     })
   }
 
   getPostTitle(event){
@@ -184,6 +198,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
 
 
   async initializeQuillEditor() {
+    let self = this;
     //this.ngxService.startBackground();
 
     ShareDB.types.register(require('rich-text').type);
@@ -363,44 +378,73 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     });
 
     var doc = shareDBConnection.get('documents', postId);
+
+
   
     var cursorsModule = quill.getModule('cursors');
+    var Delta = Quill.import('delta');
     // I think this function is deprecated/removed from the latest code on repo.
     // cursorsModule.registerTextChangeListener(); // now private
 
     // !--Function to Fetch the document from database--! //
-    async function getDocument(documentId){
-      const getDocDetails = new XMLHttpRequest();
-      getDocDetails.open('GET', environment.BASE_API_URL+`/posts/documents/`+ documentId, true);
-      getDocDetails.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('token'));
-    
-      getDocDetails.onload = () => {
-        if (getDocDetails.status === 200) {
-          //console.log('Document Details', JSON.parse(getDocDetails.responseText));
-          postData['content'] = JSON.parse(getDocDetails.responseText).document.ops[0].insert;
-          //console.log('Post Data', postData);
-        }
-        else {
-          console.log('Error while fetching document details', JSON.parse(getDocDetails.responseText));
-    
-        }
-      };
-      getDocDetails.send();
+    async function getDocumentHistory(documentId){
+      
+      return new Promise((resolve, reject) => {
+        const getDocDetails = new XMLHttpRequest();
+        getDocDetails.open('GET', environment.BASE_API_URL+`/posts/documents/history/`+ documentId, true);
+        getDocDetails.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('token'));
+      
+        getDocDetails.onload = () => {
+          if (getDocDetails.status === 200) {
+            let documentHistory = JSON.parse(getDocDetails.responseText).documentHistory;
+            let document = new Delta(); 
+            let markColors = {};
+            let user = JSON.parse(localStorage.getItem('user'));
+            documentHistory.forEach((item) => {
+              if (item.src && item.src !== user.user_id) {
+                let color = markColors[item.src] || new chance().color({format: 'hex'});
+                markColors[item.src] = color
+                item.ops.map((op) => {
+                  if (op.insert) {
+                    op.attributes = op.attributes || {};
+                    op.attributes.mark = {id: item.src, style: {color: color}};
+                  }
+                  return op;
+                })
+              }
+              document = document.compose(new Delta(item.ops));
+            })
+            // quill.setContents(document);
+            resolve(document);
+          }
+          else {
+            console.log('Error while fetching document details', JSON.parse(getDocDetails.responseText));
+            reject();
+          }
+        };
+        getDocDetails.send();
+      })
+      
     }
-  
-  doc.subscribe(function(err) {
-  
-    if (err) throw err;
-  
-    if (!doc.type)
-      doc.create([{
-        insert: '\n'
-      }], 'rich-text');
-    // update editor contents
-    quill.setContents(doc.data);
-      getDocument(postId);
-    // updateCursors(cursors.localConnection);
-  }); //subscribe ends
+
+    
+    doc.subscribe(function(err) {
+    
+      if (err) throw err;
+    
+      if (!doc.type)
+        doc.create([{
+          insert: '\n'
+        }], 'rich-text');
+      // update editor contents
+      // updateConnectionHistory(postId).then()
+      let user = JSON.parse(localStorage.getItem('user'));
+      self.updateConnectionHistory({doc: postId, src: shareDBConnection.id, user: user.user_id}).then(() => {
+        getDocumentHistory(postId).then((document) => {
+          quill.setContents(document);
+        });
+      // updateCursors(cursors.localConnection);
+    }); //subscribe ends
 
 
   

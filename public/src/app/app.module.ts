@@ -47,6 +47,7 @@ import { AdminService } from './shared/services/admin.service';
 import { WorkspaceService } from './shared/services/workspace.service';
 import { GroupsService } from './shared/services/groups.service';
 import { PostService } from './shared/services/post.service';
+import { ConnectionHistoryService } from './shared/services/connectionhistory.service';
 import { GroupService } from './shared/services/group.service';
 import { GroupDataService } from './shared/services/group-data.service';
 import { SafePipe } from './safe.pipe';
@@ -233,7 +234,7 @@ const ngCircle = {
     CalendarModule.forRoot()
   ],
 
-  providers: [AuthService, UserService, DenyNavigationGuard, PostService, GroupService,
+  providers: [AuthService, UserService, DenyNavigationGuard, PostService, ConnectionHistoryService, GroupService,
     GroupDataService, WorkspaceService, ProfileDataService, GroupsService, AdminService, GoogleCloudService,
     AuthGuard, NotAuthGuard, QuillAutoLinkService, ValidSubscriptionGuard,
     { provide: 'SnotifyToastConfig', useValue: ToastDefaults},

@@ -61,6 +61,11 @@ router.delete('/comments/:commentId', posts.removeComment);
 // Get a document
 router.get('/documents/:postId', posts.getDocument);
 
+// Get documennt edit history
+router.get('/documents/history/:postId', posts.getDocumentHistory);
+
+router.post('/documents/history/', posts.updateConnectionHistory);
+
 // - Likes -
 
 // Like post
