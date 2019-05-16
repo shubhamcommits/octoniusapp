@@ -22,7 +22,9 @@ module.exports = function(server) {
     shareDBServer.listen(stream);
 
     shareDBServer.use("commit", (context, cb) => {
-      context.op.op.user_id = new mongodb.ObjectID(context.op.op.user_id);
+      if (context.op && context.op.op && context.op.op.user_id) {
+        context.op.op.user_id = new mongodb.ObjectID(context.op.op.user_id);
+      }
       return cb()
     })
 
