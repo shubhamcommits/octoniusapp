@@ -10,13 +10,13 @@ import {cursors} from '../../../../shared/utils/cursors';
 import {Mark} from '../../../../shared/utils/quill.module.mark';
 import * as utils from '../../../../shared/utils/utils';
 import { PostService } from '../../../../shared/services/post.service';
-import { ConnectionHistoryService } from '../../../../shared/services/connectionhistory.service';
 import { environment } from '../../../../../environments/environment';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { SnotifyService, SnotifyPosition, SnotifyToastConfig } from 'ng-snotify';
 import { UserService } from '../../../../shared/services/user.service';
 import * as chance from 'chance';
 import { QuillAutoLinkService } from '../../../../shared/services/quill-auto-link.service';
+import { $ } from 'protractor';
 
 var postId: any;
 var groupId: any;
@@ -73,7 +73,6 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     private router: Router,
     private _activatedRoute: ActivatedRoute,
     private postService: PostService,
-    private connectionHistoryService: ConnectionHistoryService,
     private _location: Location,
     public ngxService: NgxUiLoaderService,
     private snotifyService: SnotifyService,
@@ -128,18 +127,6 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
       reject(err);
     })
    })
-  }
-
-  updateConnectionHistory(history) {
-    return new Promise((resolve, reject)=>{
-      this.connectionHistoryService.updateConnectionHistory(history)
-      .subscribe(()=>{
-        resolve();
-      }, (err)=>{
-        console.log('Error while updating connection history', err);
-        reject(err);
-      })
-     })
   }
 
   getPostTitle(event){
@@ -199,8 +186,10 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
 
   async initializeQuillEditor() {
     let self = this;
+    let user = JSON.parse(localStorage.getItem('user'));
     //this.ngxService.startBackground();
 
+    
     ShareDB.types.register(require('rich-text').type);
   
     Quill.register('modules/cursors', QuillCursors);
@@ -213,15 +202,16 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
 
       const getUserName = new XMLHttpRequest();
     
-      if(JSON.parse(localStorage.getItem('user'))!= null){
-        getUserName.open('GET', environment.BASE_API_URL+`/users/getOtherUser/`+ JSON.parse(localStorage.getItem('user')).user_id, true);
+      if(user != null){
+        getUserName.open('GET', environment.BASE_API_URL+`/users/getOtherUser/`+ user.user_id, true);
         getUserName.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('token'));
       
         getUserName.onload = () => {
           if (getUserName.status === 200) {
             //console.log('User Details', JSON.parse(getUserName.responseText));
               // id being generated on server. Amit
-            this.name = JSON.parse(getUserName.responseText).user.first_name +" " +JSON.parse(getUserName.responseText).user.last_name;
+            let cursor_user = JSON.parse(getUserName.responseText).user;
+            this.name = cursor_user.first_name + " " + cursor_user.last_name;
             this.color = color;
             this.range = range;
           }
@@ -398,22 +388,23 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
           if (getDocDetails.status === 200) {
             let documentHistory = JSON.parse(getDocDetails.responseText).documentHistory;
             let document = new Delta(); 
-            let markColors = {};
-            let user = JSON.parse(localStorage.getItem('user'));
+            let markColors = JSON.parse(sessionStorage.getItem("markColors") || "{}");
             documentHistory.forEach((item) => {
-              if (item.src && item.src !== user.user_id) {
-                let color = markColors[item.src] || new chance().color({format: 'hex'});
-                markColors[item.src] = color
+              if (item && item.user_id && item.user_id._id !== user.user_id) {
+                let cursor = cursors.connections.find(el => el.user_id === item.user_id._id);
+                let color = cursor ? cursor.color : (markColors[item.user_id._id] || new chance().color({format: 'hex'}))
+                markColors[item.user_id._id] = color;
                 item.ops.map((op) => {
                   if (op.insert) {
                     op.attributes = op.attributes || {};
-                    op.attributes.mark = {id: item.src, style: {color: color}};
+                    op.attributes.mark = {id: item.src, style: {color: color}, user: item.user_id.first_name + " " + item.user_id.last_name};
                   }
                   return op;
                 })
               }
               document = document.compose(new Delta(item.ops));
             })
+            sessionStorage.setItem("markColors", JSON.stringify(markColors));
             // quill.setContents(document);
             resolve(document);
           }
@@ -428,7 +419,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     }
 
     
-    doc.subscribe(function(err) {
+    doc.subscribe(async function(err) {
     
       if (err) throw err;
     
@@ -437,15 +428,8 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
           insert: '\n'
         }], 'rich-text');
       // update editor contents
-      // updateConnectionHistory(postId).then()
-      let user = JSON.parse(localStorage.getItem('user'));
-      self.updateConnectionHistory({doc: postId, src: shareDBConnection.id, user: user.user_id}).then(() => {
-        getDocumentHistory(postId).then((document) => {
-          quill.setContents(document);
-        });
-      })
-      
-      
+      let document = await getDocumentHistory(postId);
+      quill.setContents(document);
       
       // updateCursors(cursors.localConnection);
     }); //subscribe ends
@@ -472,7 +456,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
           cursors.update();
           
         }
-  
+        delta.user_id = user.user_id;
         doc.submitOp(delta, {
           source: quill
         }, function(err) {
@@ -489,11 +473,12 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     // server -> local
     doc.on('op', function(op, source) {
       if (source !== quill) {
-        let cursor = cursors.connections.find(el => el.editorId === op.editorId);
+        console.log("cursors.connections: ", cursors.connections);
+        let cursor = cursors.connections.find(el => el.user_id === op.user_id);
         op.ops = op.ops.map((item) => {
           if (item.insert) {
             item.attributes = item.attributes || {};
-            item.attributes.mark = {id: cursor.id, style: {color: cursor.color}};
+            item.attributes.mark = {id: cursor.id, style: {color: cursor.color}, user: cursor.name};
           }
           // if (item.delete) {
           //   item = {
@@ -541,23 +526,26 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
   
       cursors.connections.forEach(function(connection) {
         if (connection.id != cursors.localConnection.id) {
-  
+          if (connection.user_id && connection.color) {
+            let markColors = JSON.parse(sessionStorage.getItem("markColors"));
+            markColors[connection.user_id] = connection.color;
+            sessionStorage.setItem("markColors", JSON.stringify(markColors));
+          }
           // Update cursor that sent the update, source (or update all if we're initting)
           if ((connection.id == source.id || updateAll) && connection.range) {
   
             // changed by AMit instead of setCursor starts
-            if(cursorsModule.cursors().find(cursor=>cursor.id==connection.id))
-            {
-            cursorsModule.moveCursor(
-              connection.id,
-              connection.range
-            );
-            }else{
-                  cursorsModule.createCursor(
-            connection.id,
-            connection.name,
-            connection.color
-          );
+            if(cursorsModule.cursors().find(cursor=>cursor.id==connection.id)) {
+              cursorsModule.moveCursor(
+                connection.id,
+                connection.range
+              );
+            } else {
+              cursorsModule.createCursor(
+                connection.id,
+                connection.name,
+                connection.color
+              );
             } //ends
           }
   
@@ -668,7 +656,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     // var indicatorColor;
 
     if (state === "connected") {
-      cursors.localConnection.editorId = shareDBConnection.id;
+      cursors.localConnection.user_id = user.user_id;
       cursors.update();
     }
   

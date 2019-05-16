@@ -22,7 +22,11 @@ const DocumentEditHistorySchema = new Schema({
     type: String
   },
   op: {
-    ops: [OpSchema]
+    ops: [OpSchema],
+    user_id: {
+      type: Schema.Types.ObjectId,
+      ref: 'User'
+    }
   },
   _type: {
     type: String
