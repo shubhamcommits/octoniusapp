@@ -2,7 +2,7 @@ const moment = require('moment');
 
 const notifications = require('./notifications.controller');
 const {
-  Comment, Group, Post, User, Document, DocumentEditHistory, ConnectionHistory
+  Comment, Group, Post, User, Document, DocumentEditHistory
 } = require('../models');
 const { sendMail, sendErr } = require('../../utils');
 
@@ -515,52 +515,18 @@ const getDocumentHistory = async(req, res, next) => {
     
     const docHistory = await DocumentEditHistory.find({
       "d": postId,
-    }, {"src": true, "op": true, "m": true});
-
-    let editorHistory = docHistory.reduce((acc, item) => {
-      if (!acc) acc = [];
-      if (acc.indexOf(item.src) === -1) {
-        acc.push(item.src);
-      }
-      return acc;
-    }, [])
-
-    const history = await ConnectionHistory.find({src: {$in: editorHistory}});
-    let userHistory = history.reduce((acc, item) => {
-      if (!acc[item.src]) {
-        acc[item.src] = item.user;
-      }
-      return acc;
-    }, {})
-    
+    }, {"op": true, "m": true}).populate("op.user_id", {first_name: 1, last_name: 1});
     let documentHistory = docHistory.map((item) => {
       return {
         ops: item.op.ops,
-        src: userHistory[item.src] || null
+        user_id: item.op.user_id 
       }
-    })
+    });
 
     return res.status(200).json({
       message: 'document history found!',
       //postId
       documentHistory
-    });
-  } catch (err) {
-    return sendErr(res, err);
-  }
-}
-
-const updateConnectionHistory = async(req, res, next) => {
-  try {
-    const body  = req.body;
-    const history = await ConnectionHistory.findOne(body);
-
-    if (!history) {
-      await ConnectionHistory.create(body);
-    }
-    
-    return res.status(200).json({
-      message: 'connection history updated'
     });
   } catch (err) {
     return sendErr(res, err);
@@ -840,7 +806,6 @@ module.exports = {
   // Documents
   getDocument,
   getDocumentHistory,
-  updateConnectionHistory,
   // Likes
   like,
   unlike,

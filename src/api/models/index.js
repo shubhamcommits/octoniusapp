@@ -2,7 +2,6 @@ const Auth = require('./auth.model');
 const Comment = require('./comment.model');
 const Document = require('./document.model');
 const DocumentEditHistory = require('./documentedithistory.model');
-const ConnectionHistory = require('./connectionhistory.model');
 const Group = require('./group.model');
 const Notification = require('./notification.model');
 const Post = require('./post.model');
@@ -16,7 +15,6 @@ module.exports = {
   Comment,
   Document,
   DocumentEditHistory,
-  ConnectionHistory,
   Group,
   Notification,
   Post,
