@@ -6,8 +6,17 @@ var Inline = Quill.import('blots/inline');
 class Mark extends Inline {
     static create(value) {
       let node = super.create(value);
-      if (value.style.color) {
-        node.style.color = value.style.color;
+      if (value) {
+        if (value.style && value.style.color) {
+          node.style.color = value.style.color;
+        }
+        if (value.user) {
+          node.setAttribute("data-toggle", "tooltip");
+          node.setAttribute("data-placement", "top");
+          node.setAttribute("title", value.user);
+          // node.setAttribute("placement", "top");
+          // node.setAttribute("ngbTooltip", value.user.first_name + " " + value.user.last_name);
+        }
       }
       return node;
     }

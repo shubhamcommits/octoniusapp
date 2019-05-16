@@ -3,6 +3,7 @@ var WebSocketJSONStream = require('websocket-json-stream');
 var shareDBServer = require('./sharedb-server');
 var debug = require('debug')('quill-sharedb-cursors:sharedb');
 var uuid = require('uuid');
+var mongodb = require('mongodb');
 
 module.exports = function(server) {
   var wss = new WebSocket.Server({
@@ -19,6 +20,11 @@ module.exports = function(server) {
 
     var stream = new WebSocketJSONStream(ws);
     shareDBServer.listen(stream);
+
+    shareDBServer.use("commit", (context, cb) => {
+      context.op.op.user_id = new mongodb.ObjectID(context.op.op.user_id);
+      return cb()
+    })
 
 
     ws.on('pong', function(data, flags) {

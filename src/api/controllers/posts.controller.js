@@ -515,8 +515,7 @@ const getDocumentHistory = async(req, res, next) => {
     
     const docHistory = await DocumentEditHistory.find({
       "d": postId,
-    }, {"op": true, "m": true});
-    
+    }, {"op": true, "m": true}).populate("op.user_id", {first_name: 1, last_name: 1});
     let documentHistory = docHistory.map((item) => {
       return {
         ops: item.op.ops,

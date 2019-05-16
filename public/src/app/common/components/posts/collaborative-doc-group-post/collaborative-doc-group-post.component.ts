@@ -16,6 +16,7 @@ import { SnotifyService, SnotifyPosition, SnotifyToastConfig } from 'ng-snotify'
 import { UserService } from '../../../../shared/services/user.service';
 import * as chance from 'chance';
 import { QuillAutoLinkService } from '../../../../shared/services/quill-auto-link.service';
+import { $ } from 'protractor';
 
 var postId: any;
 var groupId: any;
@@ -188,6 +189,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     let user = JSON.parse(localStorage.getItem('user'));
     //this.ngxService.startBackground();
 
+    
     ShareDB.types.register(require('rich-text').type);
   
     Quill.register('modules/cursors', QuillCursors);
@@ -388,14 +390,14 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
             let document = new Delta(); 
             let markColors = JSON.parse(sessionStorage.getItem("markColors") || "{}");
             documentHistory.forEach((item) => {
-              if (item && item.user_id && item.user_id !== user.user_id) {
-                let cursor = cursors.connections.find(el => el.user_id === item.user_id);
-                let color = cursor ? cursor.color : (markColors[item.user_id] || new chance().color({format: 'hex'}))
-                markColors[item.user_id] = color;
+              if (item && item.user_id && item.user_id._id !== user.user_id) {
+                let cursor = cursors.connections.find(el => el.user_id === item.user_id._id);
+                let color = cursor ? cursor.color : (markColors[item.user_id._id] || new chance().color({format: 'hex'}))
+                markColors[item.user_id._id] = color;
                 item.ops.map((op) => {
                   if (op.insert) {
                     op.attributes = op.attributes || {};
-                    op.attributes.mark = {id: item.src, style: {color: color}};
+                    op.attributes.mark = {id: item.src, style: {color: color}, user: item.user_id.first_name + " " + item.user_id.last_name};
                   }
                   return op;
                 })
@@ -476,7 +478,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
         op.ops = op.ops.map((item) => {
           if (item.insert) {
             item.attributes = item.attributes || {};
-            item.attributes.mark = {id: cursor.id, style: {color: cursor.color}};
+            item.attributes.mark = {id: cursor.id, style: {color: cursor.color}, user: cursor.name};
           }
           // if (item.delete) {
           //   item = {
