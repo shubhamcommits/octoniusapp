@@ -113,11 +113,7 @@ export class GroupActivityComponent implements OnInit {
     });
     
     this.ngxService.start();
-
-    setTimeout(() => {
-      this.ngxService.stop();
-    }, 500);
-
+    
     // here we test if the section we entered is a group of my personal workplace
     this.isItMyWorkplace = this._activatedRoute.snapshot.queryParamMap.get('myworkplace') == 'true' || false;
 
@@ -141,7 +137,9 @@ export class GroupActivityComponent implements OnInit {
       this.googleService.refreshGoogleToken();
     }, 1800000);
 
-    this.loadGroupPosts();
+    this.loadGroupPosts().then(()=>{
+      this.ngxService.stop();
+    });
 
     this.initializeGroupMembersSearchForm();
     this.mentionmembers();
@@ -320,7 +318,8 @@ export class GroupActivityComponent implements OnInit {
 
   // !--LOAD ALL THE GROUP POSTS ON INIT--! //
   loadGroupPosts() {
-    this.isLoading$.next(true);
+    return new Promise((resolve, reject)=>{
+      this.isLoading$.next(true);
 
       this.postService.getGroupPosts(this.group._id)
         .subscribe((res) => {
@@ -328,9 +327,13 @@ export class GroupActivityComponent implements OnInit {
           //console.log(this.posts);
           this.isLoading$.next(false);
           this.show_new_posts_badge = 0;
+          resolve();
         }, (err) => {
           this.snotifyService.error("Error while retrieving the posts", "Error!");
+          reject(err);
         });
+    })
+
   }
   // !--LOAD ALL THE GROUP POSTS ON INIT--! //
 
