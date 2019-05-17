@@ -15,11 +15,11 @@ export class AllSearchResultsComponent implements OnInit {
 
   // search results
   search_value = '';
-  search_results_skills = [];
+  search_results_skills: any = new Array();
   more_to_load_skills = false;
-  search_results_users = [];
+  search_results_users: any = new Array();
   more_to_load_users = false;
-  search_results_posts = [];
+  search_results_posts: any = new Array();
   more_to_load_posts = false;
 
   constructor(private searchService: SearchService, private route: ActivatedRoute) { }
@@ -47,16 +47,16 @@ export class AllSearchResultsComponent implements OnInit {
         console.log('RES', res);
         switch (type) {
           case 'users':
-            this.search_results_users = [...this.search_results_users, ...res['results']['results']];
-            this.more_to_load_users = res['results']['moreToLoad'];
+            this.search_results_users = [...this.search_results_users, ...res['results']['users']];
+            this.more_to_load_users = res['results']['loadMoreUsers'];
             break;
           case 'posts':
-            this.search_results_posts = [...this.search_results_posts, ...res['results']['results']];
-            this.more_to_load_posts = res['results']['moreToLoad'];
+            this.search_results_posts = [...this.search_results_posts, ...res['results']['posts']];
+            this.more_to_load_posts = res['results']['loadMorePosts'];
             break;
-          case 'users':
-            this.search_results_skills = [...this.search_results_skills, ...res['results']['results']];
-            this.more_to_load_skills = res['results']['moreToLoad'];
+          case 'skills':
+            this.search_results_skills = [...this.search_results_skills, ...res['results']['skills']];
+            this.more_to_load_skills = res['results']['loadMoreSkills'];
             break;
         }
       });
@@ -66,23 +66,26 @@ export class AllSearchResultsComponent implements OnInit {
     if (this.search_value !== '') {
       this.searchService.getSearchResults(this.search_value, this.filter)
         .subscribe((res) => {
+         // console.log('Search Results',this.filter,res);
           if (this.filter === 'all') {
-            this.search_results_users = res['results'][0];
-            this.more_to_load_users = res['moreToLoad'][0];
-            this.search_results_posts = res['results'][1];
-            this.more_to_load_posts = res['moreToLoad'][1];
-            this.search_results_skills = res['results'][2];
-            this.more_to_load_skills = res['moreToLoad'][2];
+            this.search_results_users = res['results']['users'];
+            this.more_to_load_users = res['loadMoreUsers'];
+            this.search_results_posts = res['results']['posts'];
+            this.more_to_load_posts = res['loadMorePosts'];
+            this.search_results_skills = res['results']['skills'];
+            this.more_to_load_skills = res['loadMoreSkills'];
           } else if (this.filter === 'posts') {
             this.search_results_posts = res['results'];
-            this.more_to_load_users = res['moreToLoad'];
+            this.more_to_load_posts = res['moreToLoad'];
           } else if (this.filter === 'skills') {
             this.search_results_skills = res['results'];
-            this.more_to_load_posts = res['moreToLoad'];
+            this.more_to_load_skills = res['moreToLoad'];
           } else if (this.filter === 'users') {
             this.search_results_users = res['results'];
-            this.more_to_load_skills = res['moreToLoad'];
+            this.more_to_load_users = res['moreToLoad'];
           }
+        }, (err)=>{
+          console.log('Error while searching', err);
         });
     }
   }
@@ -94,6 +97,16 @@ export class AllSearchResultsComponent implements OnInit {
     this.more_to_load_skills = false;
     this.more_to_load_posts = false;
     this.more_to_load_users = false;
+  }
+
+  highlight(text, i) {
+    var inputText = document.getElementById("postId-"+i);
+    var innerHTML = inputText.innerHTML;
+    var index = innerHTML.indexOf(text);
+    if (index >= 0) { 
+     innerHTML = innerHTML.substring(0,index) + "<span class='highlight'>" + innerHTML.substring(index,index+text.length) + "</span>" + innerHTML.substring(index + text.length);
+     return inputText.innerHTML = innerHTML;
+    }
   }
 
 
