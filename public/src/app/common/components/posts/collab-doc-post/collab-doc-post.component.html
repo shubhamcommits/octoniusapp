@@ -6,13 +6,13 @@
       <div class="row card-title ">
         <div class="col-md-1 ">
           <!--<img [src]="profileImage" class="feed-avatar">-->
-          <img src="/uploads/{{post._posted_by?.profile_pic}}" 
+          <img src="/uploads/{{post?._posted_by?.profile_pic}}" 
                onerror="this.src='/assets/images/user.png'"
                class="feed-avatar"
-               [routerLink]="['/dashboard/profile', post._posted_by?._id, 'profile']"/>
+               [routerLink]="['/dashboard/profile', post?._posted_by?._id, 'profile']"/>
         </div>
         <div class="col-md-7">
-          <h6>{{post._posted_by?.first_name}} {{post._posted_by?.last_name}} <br>
+          <h6>{{post?._posted_by?.first_name}} {{post?._posted_by?.last_name}} <br>
             <span class="small lightgray date"> {{post?.created_date | date : 'medium' }}</span>
           </h6>
         </div>
@@ -20,7 +20,7 @@
 
       <!-- POST TITLE -->
 
-      <div class="col-md-12 innercard">
+      <div class="col-md-12 innercard" style="cursor: pointer;" [routerLink]="['/dashboard', 'group', post?._group, 'document', post?._id]">
         <i class="material-icons" style="font-size: 14px"
         id="icon_check_box">insert_drive_file
       </i> Collaborative Document

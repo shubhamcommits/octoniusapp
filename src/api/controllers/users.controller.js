@@ -58,7 +58,7 @@ const get = async (req, res, next) => {
       _id: userId
     })
       .cache({ key: userId })
-      .select('_id first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups');
+      .select('_id first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group');
 
     // User not found
     if (!user) {
@@ -77,7 +77,6 @@ const get = async (req, res, next) => {
 
 const getOtherUser = async (req, res) => {
   try {
-    console.log('entered')
     const { userId } = req.params;
 
 
@@ -85,7 +84,7 @@ const getOtherUser = async (req, res) => {
       _id: userId
     })
       .cache({ key: userId })
-      .select('_id first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups');
+      .select('_id first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group');
 
     // User not found
     if (!user) {

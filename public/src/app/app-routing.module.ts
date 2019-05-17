@@ -46,7 +46,7 @@ const appRoutes: Routes = [
   { path: 'create-new-Workspace-page2', component: NewWorkspacePage2Component, canActivate: [NotAuthGuard] },
   { path: 'create-new-Workspace-page1', component: NewWorkspacePage1Component, canActivate: [NotAuthGuard] },
   { path: 'resetPassword/:id', component: ResetPwdComponent, canActivate: [NotAuthGuard]},
-  { path: 'dashboard/group/:id/collaborative-doc/:postId', component: CollaborativeDocGroupPostComponent},
+  { path: 'dashboard/group/:id/document/:postId', component: CollaborativeDocGroupPostComponent, canActivate: [AuthGuard]},
   {
     path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard],
     children: [
