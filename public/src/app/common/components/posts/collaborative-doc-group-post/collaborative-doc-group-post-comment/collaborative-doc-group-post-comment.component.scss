@@ -38,8 +38,8 @@ section.comments .comment-contents {
   border-radius: 4px;
   box-shadow: 0 1px 1px rgba(0,0,0,.3);
   // float: right;
-  width: 300px;
-  margin-left: 58px;
+  // width: 300px;
+  margin-left: 60px;
 }
 
 section.comments .comment-contents:before,
@@ -47,7 +47,7 @@ section.comments .comment-contents:after
 {
   position: absolute;
   width: 0; height: 0; top: 30px;
-  left: 68px;
+  left: 70px;
   content: '';
   border: 10px solid transparent;
   border-right-color: white;

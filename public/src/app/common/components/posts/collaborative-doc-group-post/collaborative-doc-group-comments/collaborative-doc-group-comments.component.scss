@@ -23,6 +23,7 @@ section.comments {
 section.comments .thumbnail {
   // width: 50px;
   float: left;
+  margin-right: 5px;
 }
 
 section.comments .thumbnail img {
@@ -38,8 +39,8 @@ section.comments .comment-contents {
   border-radius: 4px;
  
   // float: right;
-  width: 300px;
-  margin-left: 58px;
+  // width: 300px;
+  margin-left: 64px;
 }
 
 section.comments .comment-contents:before,
@@ -47,7 +48,7 @@ section.comments .comment-contents:after
 {
   position: absolute;
   width: 0; height: 0; top: 30px;
-  left: 68px;
+  left: 70px;
   content: '';
   border: 10px solid transparent;
   border-right-color: white;
