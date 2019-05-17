@@ -1142,7 +1142,7 @@ shareDBConnection.on('state', function(state, reason) {
 } // initializeQuillEditor ends
 
   navigateToCollabDoc(groupId, docId){
-    this.router.navigate(['dashboard', 'group', groupId, 'collaborative-doc', docId]);
+    this.router.navigate(['dashboard', 'group', groupId, 'document', docId]);
   }
 
   // Collaborative editing ends
