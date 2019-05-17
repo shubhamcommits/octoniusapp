@@ -7,7 +7,7 @@
     "test": "jest",
     "dev": "nodemon server"
   },
-  "author": "waqas",
+  "author": "octonius",
   "license": "ISC",
   "dependencies": {
     "autolinker": "^1.8.3",

@@ -11,12 +11,13 @@ const createPostQuery = (userGroups, query) => Post.find({
     {
       $or: [
         { content: { $regex: query, $options: 'i' } },
-        { title: { $regex: query, $options: 'i' } }
+        { title: { $regex: query, $options: 'i' } },
+        { tags: { $regex: query, $options: 'i' } }
       ]
     }
   ]
 }).sort({ created_date: -1 })
-  .populate('_posted_by', 'full_name profile_pic')
+  .populate('_posted_by', 'full_name first_name last_name profile_pic')
   .populate('_group', 'group_name');
 
 const createUserQuery = (user, query) => User.find({
@@ -24,7 +25,7 @@ const createUserQuery = (user, query) => User.find({
     { full_name: { $regex: query, $options: 'i' } },
     { _workspace: user._workspace || user._workspace._id }
   ]
-}).select('profile_pic full_name email created_date');
+}).select('profile_pic full_name first_name last_name email created_date skills');
 
 const createSkillsQuery = (user, query) => User.find({
   $and: [
@@ -32,7 +33,7 @@ const createSkillsQuery = (user, query) => User.find({
     { _workspace: user._workspace },
     { active: true }
   ]
-}).select('profile_pic full_name email created_date');
+}).select('profile_pic full_name first_name last_name email created_date skills');
 
 
 const getSearchResults = async (req, res, amountLoaded) => {
@@ -76,17 +77,44 @@ const getSearchResults = async (req, res, amountLoaded) => {
         return { results: skills, moreToLoad: moreSkillsToLoad };
       case 'all':
         postQuery = createPostQuery(user._groups, req.params.query);
+        skillsQuery = createSkillsQuery(user, req.params.query);
+        userQuery = createUserQuery(user, req.params.query);
 
-        const allPosts = await postQuery.limit(6).exec();
+        const allPosts = await postQuery.limit(3).exec();
+        const allUsers = await userQuery.limit(3).exec();
+        const allSkills = await skillsQuery.limit(3).exec();
+        
+        
+        let morePostsLoad = false;
+        let moreSkillsLoad = false;
+        let moreUsersLoad = false;
 
-        let moreToLoad = false;
-
-        if (allPosts.length === 6) {
+        if (allPosts.length === 3) {
           allPosts.pop();
-          moreToLoad = true;
+          morePostsLoad = true;
         }
 
-        return { results: allPosts, moreToLoad };
+        if (allUsers.length === 3) {
+          allUsers.pop();
+          moreUsersLoad = true;
+        }
+
+        if (allSkills.length === 3) {
+          allSkills.pop();
+          moreSkillsLoad = true;
+        }
+
+        const result = {
+          posts: allPosts,
+          loadMorePosts: morePostsLoad,
+          users: allUsers,
+          loadMoreUsers: moreUsersLoad,
+          skills: allSkills,
+          loadMoreSkills: moreSkillsLoad,
+
+        }
+
+        return { results: result};
     }
   } catch (err) {
     console.log('err', err);

@@ -18,11 +18,11 @@ export class SearchBarComponent implements OnInit {
   checked_filter = 'all';
 
   // search results
-  search_results = [];
-  search_results_posts = [];
-  search_results_users = [];
-  search_results_skills = [];
-  recent_searches = [];
+  search_results: any = new Array();
+  search_results_posts: any = new Array();
+  search_results_users: any = new Array();
+  search_results_skills: any = new Array();
+  recent_searches: any = new Array();
 
   constructor(private searchService: SearchService, private router: Router) {
     this.user_data = JSON.parse(localStorage.getItem('user'));
@@ -36,7 +36,7 @@ export class SearchBarComponent implements OnInit {
       this.searchService.loadRecentSearches()
         .subscribe((res) => {
           this.recent_searches = res['searches'];
-          console.log('recent_searches', this.recent_searches);
+          //console.log('recent_searches', this.recent_searches);
         });
     }
   }
@@ -63,7 +63,7 @@ export class SearchBarComponent implements OnInit {
   saveSearch(data) {
     this.searchService.saveSearch(data)
       .subscribe((res) => {
-        console.log('RES', res);
+       // console.log('RES', res);
       });
   }
 
@@ -80,16 +80,23 @@ export class SearchBarComponent implements OnInit {
       this.searchService.search(data)
         .debounceTime(300)
         .subscribe((res) => {
-          console.log('RES SKILLS', res);
+          //console.log('RES SKILLS', res);
           if (filter === 'users') {
-            this.search_results_users = res['results'];
+            this.search_results_users = res['results']['users'];
           } else if (filter === 'skills') {
-            this.search_results_skills = res['results'];
+            this.search_results_skills = res['results']['skills'];
           } else if (filter === 'posts') {
-            this.search_results_posts = res['results'];
+            this.search_results_posts = res['results']['posts'];
           } else {
-            this.search_results_posts = res['results'];
+            this.search_results_posts = res['results']['posts'];
+            this.search_results_skills = res['results']['skills'];
+            this.search_results_users = res['results']['users'];
           }
+
+         // console.log('Posts Results', this.search_results_posts);
+          //console.log('Users Results', this.search_results_users);
+          //console.log('Skills Results', this.search_results_skills);
+
         });
     } else {
       this.loadRecentSearches();

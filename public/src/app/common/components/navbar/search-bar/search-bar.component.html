@@ -38,19 +38,47 @@
         <hr>
 
         <div *ngIf="search_value !== ''; else recentSearches" class="search-results">
-          <div *ngIf="search_results_posts.length > 0" class="search-results__users">
+            <div *ngIf="checked_filter === 'all' " class="search-results__users">
+                <ul class="search-results__list">
+                  <!-- /dashboard/group/5c6f56ec53a7802ab09895b4/post/5c6f582053a7802ab09895c5 -->
+                  <ng-container *ngFor="let post of search_results_posts">
+                    <content-search-result
+                      *ngIf="post?._posted_by?._id"
+                      [post]="post"
+                      (saveSearch)="saveSearch($event)"
+                    ></content-search-result>
+                  </ng-container>
+                </ul>
+                <ul class="search-results__list">
+                    <user-search-result
+                      *ngFor="let user of search_results_users"
+                      [user]="user"
+                      (saveSearch)="saveSearch($event)"
+                    ></user-search-result>
+                  </ul>
+                  <ul class="search-results__list">
+                      <user-search-result
+                        *ngFor="let user of search_results_skills"
+                        [user]="user"
+                        (saveSearch)="saveSearch($event)"
+                        (deleteSearchResult)="deleteSearchResult($event)"
+                      ></user-search-result>
+                    </ul>
+              </div>
+
+          <div *ngIf="checked_filter === 'posts' && search_results_posts?.length > 0" class="search-results__users">
             <ul class="search-results__list">
               <!-- /dashboard/group/5c6f56ec53a7802ab09895b4/post/5c6f582053a7802ab09895c5 -->
               <ng-container *ngFor="let post of search_results_posts">
                 <content-search-result
-                  *ngIf="post._posted_by._id"
+                  *ngIf="post?._posted_by?._id"
                   [post]="post"
                   (saveSearch)="saveSearch($event)"
                 ></content-search-result>
               </ng-container>
             </ul>
           </div>
-          <div *ngIf="checked_filter === 'users' && search_results_users.length > 0" class="search-results__users">
+          <div *ngIf="checked_filter === 'users' && search_results_users?.length > 0" class="search-results__users">
             <h4 class="search-results__title">Matched users:</h4>
             <ul class="search-results__list">
               <user-search-result
@@ -60,7 +88,7 @@
               ></user-search-result>
             </ul>
           </div>
-          <div *ngIf="checked_filter === 'skills' && search_results_skills.length > 0" class="search-results__skills">
+          <div *ngIf="checked_filter === 'skills' && search_results_skills?.length > 0" class="search-results__skills">
             <h4 class="search-results__title">Matched users with skills:</h4>
             <ul class="search-results__list">
               <user-search-result
@@ -78,18 +106,18 @@
         </div>
         <ng-template #recentSearches>
           <div class="recent-searches">
-            <h4 *ngIf="recent_searches.length > 0;" class="recent-searches__title">Recent:</h4>
+            <h4 *ngIf="recent_searches?.length > 0;" class="recent-searches__title">Recent:</h4>
             <ng-container *ngFor="let search of recent_searches">
               <user-search-result
-                *ngIf="search.type === 'user'"
-                [user]="search.user"
+                *ngIf="search?.type === 'user'"
+                [user]="search?.user"
                 [deleteable]="true"
                 (saveSearch)="saveSearch($event)"
                 (deleteSearchResult)="deleteSearchResult($event)"
               ></user-search-result>
               <content-search-result
-                *ngIf="search.type === 'content'"
-                [post]="search.content"
+                *ngIf="search?.type === 'content'"
+                [post]="search?.content"
                 [deleteable]="true"
                 (saveSearch)="saveSearch($event)"
                 (deleteSearchResult)="deleteSearchResult($event)"
