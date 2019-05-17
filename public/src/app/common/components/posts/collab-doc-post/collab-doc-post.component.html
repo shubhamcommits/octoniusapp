@@ -20,15 +20,13 @@
 
       <!-- POST TITLE -->
 
-      <div class="col-md-12 innercard font-weight-bold" style="font-size: 18px;">
-        <p [style.color]="post.type === 'document' ? '#005fd5' : '#9b9b9b'"><i
-        [style.color]="post.type === 'document' ? '#005fd5' : '#9b9b9b'"
-        class="material-icons muted"
+      <div class="col-md-12 innercard">
+        <i class="material-icons" style="font-size: 14px"
         id="icon_check_box">insert_drive_file
-      </i> <u>Document File:</u></p> 
+      </i> Collaborative Document
       </div>
 
-    <div class="col-md-12 innercard font-weight-bold" style="font-size: 24px;" [innerHTML]="post?.title | safe: 'html'">
+    <div class="col-md-12 innercard font-weight-bold" [innerHTML]="post?.title | safe: 'html'">
  
     </div>
 

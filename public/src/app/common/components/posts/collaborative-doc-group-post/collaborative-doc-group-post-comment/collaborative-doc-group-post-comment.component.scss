@@ -16,7 +16,7 @@ body {
 }
 
 section.comments {
-  width: 380px;
+  // width: 380px;
   margin: 0px auto 0 auto;
 }
 
@@ -27,20 +27,19 @@ section.comments .thumbnail {
 
 section.comments .thumbnail img {
   top: 50%;
-  width: 50px;
-  box-shadow: 0 0 5px rgba(0,0,0,.6);
+  // width: 50px;
+  // box-shadow: 0 0 5px rgba(0,0,0,.6);
 }
 
 section.comments .comment-contents {
-  position: relative;
+  
   background: white;
-  color: #b69696;
   padding: 10px;
-  padding-bottom: 10px;
   border-radius: 4px;
-  box-shadow: 0 2px 2px rgba(0,0,0,.3);
-  float: right;
+  box-shadow: 0 1px 1px rgba(0,0,0,.3);
+  // float: right;
   width: 300px;
+  margin-left: 58px;
 }
 
 section.comments .comment-contents:before,
@@ -48,7 +47,7 @@ section.comments .comment-contents:after
 {
   position: absolute;
   width: 0; height: 0; top: 30px;
-  left: -20px;
+  left: 68px;
   content: '';
   border: 10px solid transparent;
   border-right-color: white;

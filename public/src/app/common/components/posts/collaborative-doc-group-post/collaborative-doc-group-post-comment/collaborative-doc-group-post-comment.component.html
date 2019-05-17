@@ -6,14 +6,14 @@
       [routerLink]="['/dashboard/profile', user_data?._id, 'profile']"/>
   </div>
   <div class="comment-contents">
- <h2 class="comment-author">{{ user_data?.first_name }} {{ user_data?.last_name }}</h2>
+ <h6>{{ user_data?.first_name }} {{ user_data?.last_name }}</h6>
     <div class="comment-infos">
-      <div class="comment-date">
+      <div class="small lightgray date">
         {{date | date: 'mediumDate'}}
       </div>
     </div>
     <div>
-    <textarea [(ngModel)]="comment_content" rows="4" placeholder="Write your comment..."></textarea>
+    <textarea [(ngModel)]="comment_content" rows="4" placeholder="Write your comment..." style="width: 100%"></textarea>
     </div>
     <div class="comment-reply">
       <button class="btn btn-sm btn-primary" (click)="addComment()">Post</button>
