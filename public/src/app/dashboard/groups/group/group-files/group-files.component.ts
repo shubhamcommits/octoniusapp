@@ -31,45 +31,49 @@ export class GroupFilesComponent implements OnInit {
   constructor(private ngxService: NgxUiLoaderService, private postService: PostService,
     public groupDataService: GroupDataService, private groupService: GroupService,private _userService: UserService) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.ngxService.start(); // start foreground loading with 'default' id
-
-    // Stop the foreground loading after 5s
-    setTimeout(() => {
-      this.ngxService.stop(); // stop foreground loading with 'default' id
-    }, 500);
-
     this.group_id = this.groupDataService.groupId;
-    this.loadFiles();
+    this.loadFiles()
+    .then(()=>{
+      this.ngxService.stop();
+    })
+    .catch((err)=>{
+      console.log('Unexpected error', err);
+    })
     // this.loadGroupPosts();
   }
 
   loadFiles() {
+    return new Promise((resolve, reject)=>{
+      this.isLoading$.next(true);
 
-    this.isLoading$.next(true);
-
-    this.groupService.getGroupFiles(this.group_id)
-      .subscribe((res) => {
-       // console.log('Group posts:', res);
-        this.posts = res['posts'];
-        for(let i = 0; i < this.posts.length; i++){
-          if(this.posts[i].files.length > 0){
-            this.has_file = true;
-            break;
-
+      this.groupService.getGroupFiles(this.group_id)
+        .subscribe((res) => {
+         // console.log('Group posts:', res);
+          this.posts = res['posts'];
+          for(let i = 0; i < this.posts.length; i++){
+            if(this.posts[i].files.length > 0){
+              this.has_file = true;
+              break;
+  
+            }
+            else{
+              this.has_file = false;
+            }
           }
-          else{
-            this.has_file = false;
-          }
-        }
-      // console.log('Group posts:', this.posts);
-     //  console.log('Has File:', this.has_file);
-       this.isLoading$.next(false);
-
-
-      }, (err) => {
-
-      });
+        // console.log('Group posts:', this.posts);
+       //  console.log('Has File:', this.has_file);
+         this.isLoading$.next(false);
+         resolve();
+  
+        }, (err) => {
+          console.log('Error while loading files', err);
+          reject(err);
+  
+        });
+  
+    })
 
   }
 

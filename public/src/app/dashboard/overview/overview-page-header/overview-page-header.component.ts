@@ -4,6 +4,7 @@ import { UserService } from '../../../shared/services/user.service';
 import { User } from '../../../shared/models/user.model';
 import { WorkspaceService } from '../../../shared/services/workspace.service';
 import { environment } from '../../../../environments/environment';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Component({
   selector: 'app-overview-page-header',
@@ -22,58 +23,60 @@ export class OverviewPageHeaderComponent implements OnInit {
   };
 
   constructor(private _userService: UserService, private _router: Router,
-    private _workspaceService: WorkspaceService) { }
+    private _workspaceService: WorkspaceService,
+    private ngxService: NgxUiLoaderService,) { }
 
   ngOnInit() {
+    this.ngxService.start(); 
     this.user_data = JSON.parse(localStorage.getItem('user'));
 
-    this.loadUser();
-    this.loadWorkspace();
+    this.loadUser()
+    .then(()=>{
+      this.loadWorkspace()
+      .then(()=>{
+        this.loadWorkspace();
+      })
+      .catch((err)=>{
+        console.log('Error while loading the workspace', err);
+      })
+    })
+    .catch((err)=>{
+      console.log('Error while loading the user', err);
+    })
+    
 
   }
 
 
   loadUser() {
-    this._userService.getUser()
+    return new Promise((resolve, reject)=>{
+      this._userService.getUser()
       .subscribe((res) => {
         this.user = res.user;
+        resolve();
       }, (err) => {
-        this.alert.class = 'alert alert-danger';
-        if (err.status === 401) {
-          localStorage.clear();
-          this._router.navigate(['']);
-        } else if (err.status) {
-
-        } else {
-        }
-
+        reject(err);
       });
+    })
+
   }
 
 
   loadWorkspace() {
-    this._workspaceService.getWorkspace(this.user_data.workspace)
+    return new Promise((resolve, reject)=>{
+      this._workspaceService.getWorkspace(this.user_data.workspace)
       .subscribe((res) => {
         if (res['workspace']['workspace_avatar'] == '') {
           this.workspaceImageUrl = '/assets/images/organization.png';
         } else {
           this.workspaceImageUrl = environment.BASE_URL + `/uploads/${res['workspace']['workspace_avatar']}`;
         }
-
+        resolve();
       }, (err) => {
-
-        this.alert.class = 'alert alert-danger';
-       // console.log('err: ', err);
-
-        if (err.status === 401) {
-          this.alert.message = err.error.message;
-          setTimeout(() => {
-            localStorage.clear();
-            this._router.navigate(['']);
-          }, 2000);
-
-        }
+        reject(err);
       });
+    })
+
   }
 
 }

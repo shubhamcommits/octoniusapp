@@ -67,13 +67,7 @@ export class OverviewComponent implements OnInit {
 
   ngOnInit() {
     this.ngxService.start(); // start foreground loading with 'default' id
-
-    // Stop the foreground loading after 5s
-    setTimeout(() => {
-      this.ngxService.stop(); // stop foreground loading with 'default' id
-    }, 500);
-
-    this.getRecentPosts();
+    
     const user = {
       'userId': this.user_data.user_id
       }
@@ -82,48 +76,60 @@ export class OverviewComponent implements OnInit {
         this.notifications_data = user;
       });
       this.socket.emit('getNotifications', this.user_data.user_id);
+
+    this.getRecentPosts()
+    .then(()=>{
+      this.ngxService.stop();
+    })
+    .catch((err)=>{
+      console.log('Error while getting recent posts', err);
+    })
   }
 
   getRecentPosts() {
-    this.isLoading$.next(true);
-
-    this._postservice.useroverviewposts(this.user_data.user_id)
-    .subscribe((res) => {
-      // console.log('Group posts:', res);
-      this.posts = res['posts'];
-      this.comments = res['comments'];
-
-      if (this.comments.length > 0) {
-        this.normal_count = 1;
-      }
-
-      for (let i = 0 ; i < this.posts.length; i ++) {
-        if ( this.posts[i].type === 'task' && this.posts[i].task.status !== 'done' ) {
-          this.task_count = 1;
-        }
-        if (this.posts[i].type === 'event') {
-          this.event_count = 1;
-        }
-        if (this.posts[i].type === 'event' && this.posts[i].comments_count > 0) {
-          this.normal_count = 1;
-        }
-        if (this.posts[i].type === 'task' && this.posts[i].comments_count > 0 && this.posts[i].task.status !== 'done') {
-          this.normal_count = 1;
-        }
-      }
-    // console.log('User Post:', this.posts);
-    // console.log('Event Response:', this.event_count);
-    // console.log('Task Response:', this.task_count);
-    // console.log('Normal Response:', this.normal_count);
-     if ( this.posts.length === 0 ) {
+    return new Promise((resolve, reject)=>{
       this.isLoading$.next(true);
-     } else {
-      this.isLoading$.next(false);
-     }
 
-    }, (err) => {
+      this._postservice.useroverviewposts(this.user_data.user_id)
+      .subscribe((res) => {
+        // console.log('Group posts:', res);
+        this.posts = res['posts'];
+        this.comments = res['comments'];
+  
+        if (this.comments.length > 0) {
+          this.normal_count = 1;
+        }
+  
+        for (let i = 0 ; i < this.posts.length; i ++) {
+          if ( this.posts[i].type === 'task' && this.posts[i].task.status !== 'done' ) {
+            this.task_count = 1;
+          }
+          if (this.posts[i].type === 'event') {
+            this.event_count = 1;
+          }
+          if (this.posts[i].type === 'event' && this.posts[i].comments_count > 0) {
+            this.normal_count = 1;
+          }
+          if (this.posts[i].type === 'task' && this.posts[i].comments_count > 0 && this.posts[i].task.status !== 'done') {
+            this.normal_count = 1;
+          }
+        }
+      // console.log('User Post:', this.posts);
+      // console.log('Event Response:', this.event_count);
+      // console.log('Task Response:', this.task_count);
+      // console.log('Normal Response:', this.normal_count);
+       if ( this.posts.length === 0 ) {
+        this.isLoading$.next(true);
+       } else {
+        this.isLoading$.next(false);
+       }
+       resolve();
+  
+      }, (err) => {
+          reject(err);
+      });
+    })
 
-    });
 
   }
 

@@ -139,11 +139,6 @@ export class GroupPostComponent implements OnInit {
     this.model_date = {year: (new Date()).getFullYear(), month: (new Date()).getMonth() + 1, day: (new Date()).getDate()};
     this.ngxService.start(); // start foreground loading with 'default' id
 
-    // Stop the foreground loading after 5s
-      setTimeout(() => {
-        this.ngxService.stop(); // stop foreground loading with 'default' id
-      }, 500);
-
       // here we test if the section we entered is a group of my personal workplace
     this.isItMyWorkplace = this._activatedRoute.snapshot.queryParamMap.get('myworkplace') == 'true' || false;
   
@@ -164,23 +159,33 @@ export class GroupPostComponent implements OnInit {
       this.googleService.refreshGoogleToken();
     }, 1800000);
 
-    this.getPost(this.postId);
+    this.getPost(this.postId)
+    .then(()=>{
+      this.ngxService.stop();
+    })
+    .catch((err)=>{
+      console.log('Unexpected Error', err);
+    })
     this.mentionmembers();
     this.socketio();
   }
 
   getPost(postId) {
-    this.postService.getPost(postId)
-        .subscribe((res) => {
-          this.post = res['post'];
-          // we set the original comment count
-          this.commentCount = res['post'].comments.length;
-          this.comments = res['post'].comments;
+    return new Promise((resolve, reject)=>{
+      this.postService.getPost(postId)
+      .subscribe((res) => {
+        this.post = res['post'];
+        // we set the original comment count
+        this.commentCount = res['post'].comments.length;
+        this.comments = res['post'].comments;
+        resolve();
 
+      }, (err)=>{
+        swal("Error!", "Error received while fetching the post " + err, "danger");
+        reject(err);
+      });
+    })
 
-        }, (err)=>{
-          swal("Error!", "Error received while fetching the post " + err, "danger");
-        });
 
   }
 

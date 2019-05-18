@@ -4,7 +4,7 @@ import { WorkspaceService } from '../../../shared/services/workspace.service';
 import { Router } from '@angular/router';
 import { AdminService } from '../../../shared/services/admin.service';
 import { ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import { Subject } from 'rxjs';
+import { Subject, BehaviorSubject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { NgbModal, NgbAlertConfig } from '@ng-bootstrap/ng-bootstrap';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
@@ -30,18 +30,22 @@ export class AdminMembersComponent implements OnInit {
     message: ''
   };
 
+  isLoading$ = new BehaviorSubject(false);
+
   constructor(private _workspaceService: WorkspaceService, private _router: Router, private alertConfig: NgbAlertConfig,
     private adminService: AdminService, private modalService: NgbModal, private ngxService: NgxUiLoaderService) { }
 
   ngOnInit() {
     this.ngxService.start(); // start foreground loading with 'default' id
 
-    // Stop the foreground loading after 5s
-    setTimeout(() => {
-      this.ngxService.stop(); // stop foreground loading with 'default' id
-    }, 500);
     this.user_data = JSON.parse(localStorage.getItem('user'));
-    this.loadWorkspace();
+    this.loadWorkspace()
+    .then(()=>{
+      this.ngxService.stop();
+    })
+    .catch((err)=>{
+      console.log('Error while fetching the loading the workpace', err);
+    })
     this.alertMessageSettings();
   }
 
@@ -57,33 +61,22 @@ export class AdminMembersComponent implements OnInit {
   }
 
   loadWorkspace() {
-    this._workspaceService.getWorkspace(this.user_data.workspace)
+    this.isLoading$.next(true);
+    return new Promise((resolve, reject)=>{
+      this._workspaceService.getWorkspace(this.user_data.workspace)
       .subscribe((res) => {
         this.workspace = res.workspace;
       //  console.log(this.workspace);
         this.profileImage = res.workspace['profile_pic'];
         this.profileImage = `http://localhost:3000/uploads/${this.profileImage}`;
+        this.isLoading$.next(false);
       //  console.log('loadworkspace res: ', res);
-
-
+        resolve();
       }, (err) => {
-
-        this.alert.class = 'alert alert-danger';
-       // console.log('err: ', err);
-
-        if (err.status === 401) {
-          this.alert.message = err.error.message;
-          setTimeout(() => {
-            localStorage.clear();
-            this._router.navigate(['']);
-          }, 2000);
-
-        } else if (err.status) {
-          this.alert.message = err.error.message;
-        } else {
-          this.alert.message = 'Error! either server is down or no internet connection';
-        }
+        reject(err);
       });
+    })
+
   }
 
 
@@ -117,22 +110,7 @@ export class AdminMembersComponent implements OnInit {
 
         }, (err) => {
         //  console.log('update respose err: ', err);
-          this.alert.class = 'danger';
 
-          if (err.status) {
-            this._message.next(err.error.message);
-            this.openVerticallyCentered(this.content);
-
-            setTimeout(() => {
-              this.modalReference.close();
-            }, 3000);
-          } else {
-            this._message.next('Error! either server is down or no internet connection');
-            this.openVerticallyCentered(this.content);
-            setTimeout(() => {
-              this.modalReference.close();
-            }, 3000);
-          }
         });
 
         swal("Done!", first_name+"'s role has been updated to - "+role+"!", "success");

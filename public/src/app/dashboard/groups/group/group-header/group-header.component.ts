@@ -7,6 +7,7 @@ import { environment } from '../../../../../environments/environment';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import {SnotifyService} from "ng-snotify";
 import {UserService} from "../../../../shared/services/user.service";
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Component({
   selector: 'app-group-header',
@@ -43,12 +44,20 @@ export class GroupHeaderComponent implements OnInit {
 
   constructor(private groupService: GroupService, private modalService: NgbModal,
               private _router: Router, public groupDataService: GroupDataService,
-              private snotifyService: SnotifyService, private userService: UserService) { }
+              private snotifyService: SnotifyService, private userService: UserService,
+              private ngxService: NgxUiLoaderService) { }
 
   ngOnInit() {
+    this.ngxService.start();
     this.group_id = this.groupDataService.groupId;
     this.loadUser();
-    this.loadGroup();
+    this.loadGroup()
+    .then(()=>{
+      this.ngxService.stop();
+    })
+    .catch((err)=>{
+      console.log('Error while loading the group', err);
+    })
   }
 
   fileChangeEvent(event: any): void {
@@ -82,7 +91,8 @@ export class GroupHeaderComponent implements OnInit {
 
 
   loadGroup() {
-    this.groupService.getGroup(this.group_id)
+    return new Promise((resolve, reject)=>{
+      this.groupService.getGroup(this.group_id)
       .subscribe((res) => {
         //console.log(res);
        this.groupImageUrl = res['group']['group_avatar'] == null
@@ -98,7 +108,12 @@ export class GroupHeaderComponent implements OnInit {
           this.groupImageUrl = this.profilePic == null
           ? '/assets/images/user.png' : environment.BASE_URL + `/uploads/${this.profilePic}`;
         }
-      }, (err) => {});
+        resolve();
+      }, (err) => {
+        reject(err);
+      });
+    })
+
   }
 
   loadUser() {

@@ -183,7 +183,7 @@ export class GroupActivityComponent implements OnInit {
 
   filterPosts(filteredPosts) {
     this.isLoading$.next(false);
-    this.ngxService.stopBackground();
+    //this.ngxService.stopBackground();
 
     this.posts = filteredPosts;
   }
@@ -365,12 +365,12 @@ export class GroupActivityComponent implements OnInit {
         || this.groupActivityFiltersComponent.filters.task
         || (this.groupActivityFiltersComponent.filters.user && !!this.groupActivityFiltersComponent.filters.user_value)) {
         this.isLoading$.next(true);
-        this.ngxService.startBackground();
+        //this.ngxService.startBackground();
         this.groupActivityFiltersComponent.getNextFilteredPosts();
       //  Else we get the normal next posts
       } else {
         this.isLoading$.next(true);
-        this.ngxService.startBackground();
+        //this.ngxService.startBackground();
         this.postService.getGroupPosts(this.group_id)
           .subscribe((res) => {
             if (this.posts.length !== 0) {
@@ -378,7 +378,7 @@ export class GroupActivityComponent implements OnInit {
               const last_post_id = this.posts[this.posts.length - 1]._id;
               this.loadNextPosts(last_post_id);
               this.isLoading$.next(false);
-              this.ngxService.stopBackground();
+              //this.ngxService.stopBackground();
             }
           }, (err) => {
             this.snotifyService.error('Error while retrieving the next recent posts', 'Error!');

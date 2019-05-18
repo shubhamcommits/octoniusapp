@@ -4,6 +4,7 @@ import { GroupDataService } from '../../../../shared/services/group-data.service
 import { GroupService } from '../../../../shared/services/group.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import swal from 'sweetalert';
+import { BehaviorSubject } from 'rxjs';
 @Component({
   selector: 'app-group-members',
   templateUrl: './group-members.component.html',
@@ -13,6 +14,7 @@ export class GroupMembersComponent implements OnInit {
   group_id;
   group_members;
   group_admins;
+  isLoading$ = new BehaviorSubject(false);
 
 
   constructor(private groupDataService: GroupDataService, private groupService: GroupService, private ngxService: NgxUiLoaderService) { }
@@ -23,27 +25,40 @@ export class GroupMembersComponent implements OnInit {
  
     // Stop the foreground loading after 5s
     setTimeout(() => {
-      this.ngxService.stop(); // stop foreground loading with 'default' id
+     // stop foreground loading with 'default' id
     }, 500);
 
     this.group_id = this.groupDataService.groupId;
 
-    this.loadGroup();
+    this.loadGroup()
+    .then(()=>{
+      this.ngxService.stop(); 
+    })
+    .catch((err)=>{
+      console.log('Unexpected Error', err);
+    })
   }
 
 
   loadGroup() {
-
-    this.groupService.getGroup(this.group_id)
+    this.isLoading$.next(true);
+    return new Promise((resolve, reject)=>{
+      this.groupService.getGroup(this.group_id)
       .subscribe((res) => {
         this.group_members = res['group']._members;
       //  console.log(this.group_members);
         this.group_admins = res['group']._admins;
+        this.isLoading$.next(true);
       //  console.log(this.group_admins);
-
+        resolve();
       }, (err) => {
+        console.log('Error while loading the group', err);
+        this.isLoading$.next(false);
+        reject(err);
 
       });
+    })
+
   }
 
   removeUserfromGroup(user_id, first_name, last_name){
