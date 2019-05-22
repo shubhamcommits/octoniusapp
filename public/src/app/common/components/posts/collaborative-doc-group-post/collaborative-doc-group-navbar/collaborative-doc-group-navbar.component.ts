@@ -1,6 +1,9 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { PostService } from '../../../../../shared/services/post.service';
 import { ActivatedRoute } from '@angular/router';
+import { editor } from '../collaborative-doc-group-post.component';
+import * as jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-collaborative-doc-group-navbar',
@@ -35,6 +38,82 @@ export class CollaborativeDocGroupNavbarComponent implements OnInit {
       console.log('Post', this.post);
     }, 5000);*/
     
+  }
+
+  exportDOC(){
+    let doc = new DOMParser().parseFromString('<div>'+editor+'</div>', 'text/html');
+
+    function Export2Doc(filename = ''){
+      var preHtml = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>Export HTML To Doc</title></head><body>";
+      var postHtml = "</body></html>";
+      var html = preHtml + doc.body.innerHTML + postHtml;
+  
+      var blob = new Blob(['\ufeff', html], {
+          type: 'application/msword'
+      });
+      
+      // Specify link url
+      var url = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(html);
+      
+      // Specify file name
+      filename = filename?filename+'.doc':'document.doc';
+      
+      // Create download link element
+      var downloadLink = document.createElement("a");
+  
+      document.body.appendChild(downloadLink);
+      
+      if(navigator.msSaveOrOpenBlob ){
+          navigator.msSaveOrOpenBlob(blob, filename);
+      }else{
+          // Create a link to the file
+          downloadLink.href = url;
+          
+          // Setting the file name
+          downloadLink.download = filename;
+          
+          //triggering the function
+          downloadLink.click();
+      }
+      
+      document.body.removeChild(downloadLink);
+  }
+
+  Export2Doc(this.document_name);
+  
+  }
+
+  exportPDF(){
+    let doc = new DOMParser().parseFromString('<div>'+editor+'</div>', 'text/html');
+
+    let pdf = new jsPDF();
+
+    let specialElementHandlers = {
+      '#editor': function(element, renderer){
+        return true;
+      }
+    }
+
+    let docName= this.document_name;
+
+    let margins = {
+      top: 15,
+      bottom: 15,
+      left: 15,
+      width: 175
+    };
+
+    pdf.fromHTML(doc.body.innerHTML, 15, 15, {
+      'width': 180,
+      'align': 'justify',
+      'elementHandlers': specialElementHandlers
+    }, function(res){
+      //pdf.autoPrint({variant: 'non-conform'});
+      pdf.save(docName+'.pdf');
+      console.log('Response from PDF', res);
+    }, margins)
+
+  
   }
 
   clickOnBack(){
