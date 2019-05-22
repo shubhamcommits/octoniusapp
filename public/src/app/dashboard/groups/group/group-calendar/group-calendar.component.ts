@@ -96,15 +96,17 @@ export class GroupCalendarComponent implements OnInit {
   async ngOnInit() {
     this.ngxService.start(); // start foreground loading with 'default' id
 
-    // Stop the foreground loading after .5s
-    setTimeout(() => {
-      this.ngxService.stop(); // stop foreground loading with 'default' id
-    }, 500);
 
     this.group_id = this.groupDataService.groupId;
     await this.getGroupMembers();
     // We will fetch all the tasks and events of this month
-    this.loadCalendarPosts(this.selectedUser);
+    this.loadCalendarPosts(this.selectedUser)
+    .then(()=>{
+      this.ngxService.stop(); 
+    })
+    .catch((err)=>{
+      console.log('Error while loading calendar posts', err);
+    })
 
     // not sure what this is
     this.events = this.events;
@@ -168,7 +170,7 @@ export class GroupCalendarComponent implements OnInit {
     }
   }
 
-  loadCalendarPosts(calendarData) {
+  async loadCalendarPosts(calendarData) {
     this.events = [];
     const year = moment(this.viewDate).year();
     const month = moment(this.viewDate).month();

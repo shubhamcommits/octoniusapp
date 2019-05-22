@@ -39,32 +39,33 @@ export class GroupAdminComponent implements OnInit {
 
   ngOnInit() {
     this.ngxService.start(); // start foreground loading with 'default' id
- 
-    // Stop the foreground loading after 5s
-    setTimeout(() => {
-      this.ngxService.stop(); // stop foreground loading with 'default' id
-    }, 500);
     this.user_data = JSON.parse(localStorage.getItem('user'));
     this.group_id = this.groupDataService.groupId;
     this.alertMessageSettings();
     this.inilizeWrokspaceMembersSearchForm();
-    this.loadGroup();
+    this.loadGroup().then(()=>{
+      this.ngxService.stop();
+    });
   }
 
 
   loadGroup() {
-    this.groupService.getGroup(this.group_id)
+    return new Promise((resolve, reject)=>{
+      this.groupService.getGroup(this.group_id)
       .subscribe((res) => {
        // console.log('Group: ', res);
         this.group = res['group'];
 
         this.group.description = res['group']['description'];
+        resolve();
 
       }, (err) => {
-
+        reject(err);
       //  console.log('err: ', err);
 
       });
+    })
+
 
   }
   

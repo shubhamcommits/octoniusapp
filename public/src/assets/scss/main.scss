@@ -553,3 +553,27 @@ quill-editor{
 .cal-week-view .cal-event-title:link, .cal-day-view .cal-event-title:link {
   color:#fff !important;
 }
+
+.loading-spinner{
+  width:100px;
+  height:100px;
+  border-radius:150px;
+  border:15px solid #005df5;
+  border-top-color:rgba(0,0,0,0.3);
+  box-sizing:border-box;
+  position:absolute;
+  top:50%;left:50%;
+  z-index: 10;
+  margin-top:-80px;
+  margin-left:-80px;
+  animation:loading-spinner 1.2s linear infinite;
+  -webkit-animation:loading-spinner 1.2s linear infinite;
+}
+@keyframes loading-spinner{
+  0%{transform:rotate(0deg)}
+  100%{transform:rotate(360deg)}
+}
+@-webkit-keyframes loading-spinner{
+  0%{-webkit-transform:rotate(0deg)}
+  100%{-webkit-transform:rotate(360deg)}
+}

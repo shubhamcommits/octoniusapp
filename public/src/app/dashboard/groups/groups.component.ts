@@ -49,16 +49,15 @@ export class GroupsComponent implements OnInit {
     this.ngxService.start(); // start foreground loading with 'default' id
 
     // Stop the foreground loading after 5s
-    setTimeout(() => {
-      this.ngxService.stop(); // stop foreground loading with 'default' id
-    }, 500);
 
     this.user_data = JSON.parse(localStorage.getItem('user'));
     this.createNewGroupFrom();
 
     this.loadWorkspace();
     this.getUserProfile();
-    this.getUserGroups();
+    this.getUserGroups().then(()=>{
+      this.ngxService.stop();
+    });
 
     this.alertMessageSettings();
   }
@@ -123,41 +122,47 @@ export class GroupsComponent implements OnInit {
   // getting all user's group
   getUserGroups() {
 
-    const user = {
-      user_id: this.user_data.user_id,
-      workspace_id: this.user_data.workspace._id,
-    };
+    return new Promise((resolve, reject)=>{
 
-    this._groupsService.getUserGroups(user)
-      .subscribe((res) => {
-        // console.log('All groups:', res);
-        this.groups = res['groups'];
-
-        for (let i = 0; i < this.groups.length; i++) {
-          if (this.groups[i]['group_avatar'] == null) {
-            this.groups[i]['group_avatar'] = '/assets/images/group.png';
-
-          } else {
-
-            this.groups[i]['group_avatar'] = environment.BASE_URL + `/uploads/${this.groups[i]['group_avatar']}`;
+      const user = {
+        user_id: this.user_data.user_id,
+        workspace_id: this.user_data.workspace._id,
+      };
+  
+      this._groupsService.getUserGroups(user)
+        .subscribe((res) => {
+          // console.log('All groups:', res);
+          this.groups = res['groups'];
+  
+          for (let i = 0; i < this.groups.length; i++) {
+            if (this.groups[i]['group_avatar'] == null) {
+              this.groups[i]['group_avatar'] = '/assets/images/group.png';
+  
+            } else {
+  
+              this.groups[i]['group_avatar'] = environment.BASE_URL + `/uploads/${this.groups[i]['group_avatar']}`;
+            }
           }
-        }
-      }, (err) => {
-       // console.log(err);
-        this.alert.class = 'alert alert-danger';
-        if (err.status === 401) {
-          this.alert.message = err.error.message;
-          setTimeout(() => {
-            localStorage.clear();
-            this._router.navigate(['']);
-          }, 3000);
-        } else if (err.status) {
-          this.alert.message = err.error.message;
-        } else {
-          this.alert.message = 'Error! either server is down or no internet connection';
-        }
 
-      });
+          resolve();
+        }, (err) => {
+         // console.log(err);
+          this.alert.class = 'alert alert-danger';
+          if (err.status === 401) {
+            this.alert.message = err.error.message;
+            setTimeout(() => {
+              localStorage.clear();
+              this._router.navigate(['']);
+            }, 3000);
+          } else if (err.status) {
+            this.alert.message = err.error.message;
+          } else {
+            this.alert.message = 'Error! either server is down or no internet connection';
+          }
+            reject(err);
+        });
+    })
+
 
   }
   // getting currently logged in user's profile

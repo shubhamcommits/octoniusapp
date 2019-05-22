@@ -113,11 +113,7 @@ export class GroupActivityComponent implements OnInit {
     });
     
     this.ngxService.start();
-
-    setTimeout(() => {
-      this.ngxService.stop();
-    }, 500);
-
+    
     // here we test if the section we entered is a group of my personal workplace
     this.isItMyWorkplace = this._activatedRoute.snapshot.queryParamMap.get('myworkplace') == 'true' || false;
 
@@ -141,7 +137,9 @@ export class GroupActivityComponent implements OnInit {
       this.googleService.refreshGoogleToken();
     }, 1800000);
 
-    this.loadGroupPosts();
+    this.loadGroupPosts().then(()=>{
+      this.ngxService.stop();
+    });
 
     this.initializeGroupMembersSearchForm();
     this.mentionmembers();
@@ -185,7 +183,7 @@ export class GroupActivityComponent implements OnInit {
 
   filterPosts(filteredPosts) {
     this.isLoading$.next(false);
-    this.ngxService.stopBackground();
+    //this.ngxService.stopBackground();
 
     this.posts = filteredPosts;
   }
@@ -320,7 +318,8 @@ export class GroupActivityComponent implements OnInit {
 
   // !--LOAD ALL THE GROUP POSTS ON INIT--! //
   loadGroupPosts() {
-    this.isLoading$.next(true);
+    return new Promise((resolve, reject)=>{
+      this.isLoading$.next(true);
 
       this.postService.getGroupPosts(this.group._id)
         .subscribe((res) => {
@@ -328,9 +327,13 @@ export class GroupActivityComponent implements OnInit {
           //console.log(this.posts);
           this.isLoading$.next(false);
           this.show_new_posts_badge = 0;
+          resolve();
         }, (err) => {
           this.snotifyService.error("Error while retrieving the posts", "Error!");
+          reject(err);
         });
+    })
+
   }
   // !--LOAD ALL THE GROUP POSTS ON INIT--! //
 
@@ -362,12 +365,12 @@ export class GroupActivityComponent implements OnInit {
         || this.groupActivityFiltersComponent.filters.task
         || (this.groupActivityFiltersComponent.filters.user && !!this.groupActivityFiltersComponent.filters.user_value)) {
         this.isLoading$.next(true);
-        this.ngxService.startBackground();
+        //this.ngxService.startBackground();
         this.groupActivityFiltersComponent.getNextFilteredPosts();
       //  Else we get the normal next posts
       } else {
         this.isLoading$.next(true);
-        this.ngxService.startBackground();
+        //this.ngxService.startBackground();
         this.postService.getGroupPosts(this.group_id)
           .subscribe((res) => {
             if (this.posts.length !== 0) {
@@ -375,7 +378,7 @@ export class GroupActivityComponent implements OnInit {
               const last_post_id = this.posts[this.posts.length - 1]._id;
               this.loadNextPosts(last_post_id);
               this.isLoading$.next(false);
-              this.ngxService.stopBackground();
+              //this.ngxService.stopBackground();
             }
           }, (err) => {
             this.snotifyService.error('Error while retrieving the next recent posts', 'Error!');

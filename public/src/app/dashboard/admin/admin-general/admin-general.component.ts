@@ -47,13 +47,6 @@ export class AdminGeneralComponent implements OnInit {
 
     this.ngxService.start(); // start foreground loading with 'default' id
  
-    // Stop the foreground loading after 5s
-    setTimeout(() => {
-      this.ngxService.stop(); // stop foreground loading with 'default' id
-    }, 500);
-
-    
-
     this.user_data = JSON.parse(localStorage.getItem('user'));
     this.loadWorkspace();
 
@@ -63,17 +56,25 @@ export class AdminGeneralComponent implements OnInit {
     this._message.pipe(
       debounceTime(3000)
     ).subscribe(() => this.alert.message = null);
-    this.loadAllowedDomains();
+    this.loadAllowedDomains()
+    .then(()=>{
+      this.ngxService.stop();
+    })
 
   }
 
   loadAllowedDomains() {
-    this._adminService.allowedDomains(this.user_data.workspace._id)
-    .subscribe((res) => {
-   //   console.log('Allowed Domains', res);
-    }, (err) => {
-   //   console.log('Error in Allowed Domains', err);
+    return new Promise((resolve, reject)=>{
+      this._adminService.allowedDomains(this.user_data.workspace._id)
+      .subscribe((res) => {
+        resolve();
+      //   console.log('Allowed Domains', res);
+       }, (err) => {
+         reject(err);
+      //   console.log('Error in Allowed Domains', err);
+       }) 
     })
+
   }
 
   loadWorkspace() {
