@@ -24,6 +24,7 @@ var postData = new Object();
 var cursors: any = {}; 
 var comment_range = {};
 var quill: any;
+var editor: any;
 
 @Component({
   selector: 'app-collaborative-doc-group-post',
@@ -49,7 +50,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
     [{ 'font': [] }],
     [{ 'align': [] }],
-    ['link', 'image', 'video'],
+    ['link'],
   
     ['clean']                                         // remove formatting button
   ],
@@ -187,16 +188,16 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
   async initializeQuillEditor() {
     let self = this;
     let user = JSON.parse(localStorage.getItem('user'));
-    //this.ngxService.startBackground();
-
     
+    var shareDBSocket = new ReconnectingWebSocket(((location.protocol === 'https:') ? 'wss' : 'ws') + '://' + environment.REAL_TIME_URL + '/sharedb');
+    var shareDBConnection = new ShareDB.Connection(shareDBSocket);
+
     ShareDB.types.register(require('rich-text').type);
   
     Quill.register('modules/cursors', QuillCursors);
 
     Quill.register(Mark);
 
-    // Quill.register(MarkDelete);
 
      function CursorConnection(name, color,range) {
 
@@ -223,19 +224,12 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
         getUserName.send();
       }
     
-      else {
-
-      }
-    
     
     }
     
     // Create browserchannel socket
-    //cursors.socket = new ReconnectingWebSocket(((location.protocol === 'https:') ? 'wss' : 'ws') + '://' + 'localhost:3001' + '/cursors');
-    //cursors.socket = new ReconnectingWebSocket(environment.REAL_TIME_URL + '/cursors');
     cursors.socket = new ReconnectingWebSocket(((location.protocol === 'https:') ? 'wss' : 'ws') + '://' + environment.REAL_TIME_URL + '/cursors');
-    // socketStateEl.innerHTML = 'connecting';
-    // socketIndicatorEl.style.backgroundColor = 'silver';
+
     
     // Init a blank user connection to store local conn data
      cursors.localConnection = new CursorConnection(
@@ -256,8 +250,6 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     // Send initial message to register the client, and
     // retrieve a list of current clients so we can set a colour.
     cursors.socket.onopen = function() {
-      // socketStateEl.innerHTML = 'connected';
-      // socketIndicatorEl.style.backgroundColor = 'lime';
       cursors.update();
     };
     
@@ -265,6 +257,25 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     cursors.socket.onmessage = function(message) {
     
       var data = JSON.parse(message.data);
+      function removeDuplicates(originalArray, objKey) {
+        var trimmedArray = [];
+        var values = [];
+        var value;
+      
+        for(var i = 0; i < originalArray.length; i++) {
+          value = originalArray[i][objKey];
+      
+          if(values.indexOf(value) === -1) {
+            trimmedArray.push(originalArray[i]);
+            values.push(value);
+          }
+        }
+        return trimmedArray;
+      
+      }
+
+      //cursors.localConnection = removeDuplicates(cursors.localConnection, 'user_id');
+      //cursors.connections = removeDuplicates(cursors.connections, 'user_id');
       //console.log(data);
     
       var source = {},
@@ -302,8 +313,9 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
           console.log('[cursors] Connections after username update:', data.connections);
         }
       }
-    
+
       if (cursors.connections.length == 0 && data.connections.length != 0) {
+        //data.connections = removeDuplicates(data.connections, 'user_id');
         console.log('[cursors] Initial list of connections received from server:', data.connections);
         reportNewConnections = false;
       }
@@ -316,7 +328,8 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
         if (reportNewConnections && !cursors.connections.find(function(connection) {
             return connection.id == data.connections[i].id
           })) {
-    
+
+          //data.connections = removeDuplicates(data.connections, 'user_id');
           console.log('[cursors] User connected:', data.connections[i]);
           console.log('[cursors] Connections after new user:', data.connections);
         }
@@ -324,6 +337,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     
       // Update connections array
       cursors.connections = data.connections;
+      //cursors.connections = removeDuplicates(cursors.connections, 'user_id');
     
       // Fire event
       document.dispatchEvent(new CustomEvent('cursors-update', {
@@ -336,24 +350,12 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     
     cursors.socket.onclose = function (event) {
       console.log('[cursors] Socket closed. Event:', event);
-      // socketStateEl.innerHTML = 'closed';
-      // socketIndicatorEl.style.backgroundColor = 'red';
     };
     
     cursors.socket.onerror = function (event) {
       console.log('[cursors] Error on socket. Event:', event);
-      // socketStateEl.innerHTML = 'error';
-      // socketIndicatorEl.style.backgroundColor = 'red';
     };
-    
-  
-   // var shareDBSocket = new ReconnectingWebSocket(((location.protocol === 'https:') ? 'wss' : 'ws') + '://' + 'localhost:3001' + '/sharedb');
-  
-  // var shareDBSocket = new ReconnectingWebSocket(environment.REAL_TIME_URL + '/sharedb');
 
-    var shareDBSocket = new ReconnectingWebSocket(((location.protocol === 'https:') ? 'wss' : 'ws') + '://' + environment.REAL_TIME_URL + '/sharedb');
-
-    var shareDBConnection = new ShareDB.Connection(shareDBSocket);
     
      quill = new Quill('#editor', {
       theme: 'snow',
@@ -368,8 +370,6 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     });
 
     var doc = shareDBConnection.get('documents', postId);
-
-
   
     var cursorsModule = quill.getModule('cursors');
     var Delta = Quill.import('delta');
@@ -378,59 +378,66 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
 
     // !--Function to Fetch the document from database--! //
     async function getDocumentHistory(documentId){
-      
-      return new Promise((resolve, reject) => {
-        const getDocDetails = new XMLHttpRequest();
-        getDocDetails.open('GET', environment.BASE_API_URL+`/posts/documents/history/`+ documentId, true);
-        getDocDetails.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('token'));
-      
-        getDocDetails.onload = () => {
-          if (getDocDetails.status === 200) {
-            let documentHistory = JSON.parse(getDocDetails.responseText).documentHistory;
-            let document = new Delta(); 
-            let markColors = JSON.parse(sessionStorage.getItem("markColors") || "{}");
-            documentHistory.forEach((item) => {
-              if (item && item.user_id && item.user_id._id !== user.user_id) {
-                let cursor = cursors.connections.find(el => el.user_id === item.user_id._id);
-                let color = cursor ? cursor.color : (markColors[item.user_id._id] || new chance().color({format: 'hex'}))
-                markColors[item.user_id._id] = color;
-                item.ops.map((op) => {
-                  if (op.insert) {
-                    op.attributes = op.attributes || {};
-                    op.attributes.mark = {id: item.src, style: {color: color}, user: item.user_id.first_name + " " + item.user_id.last_name};
-                  }
-                  return op;
-                })
-              }
-              document = document.compose(new Delta(item.ops));
-            })
-            sessionStorage.setItem("markColors", JSON.stringify(markColors));
-            // quill.setContents(document);
-            resolve(document);
-          }
-          else {
-            console.log('Error while fetching document details', JSON.parse(getDocDetails.responseText));
-            reject();
-          }
-        };
-        getDocDetails.send();
-      })
-      
+      try{
+        return new Promise((resolve, reject) => {
+          const getDocDetails = new XMLHttpRequest();
+          getDocDetails.open('GET', environment.BASE_API_URL+`/posts/documents/history/`+ documentId, true);
+          getDocDetails.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('token'));
+        
+          getDocDetails.onload = () => {
+            if (getDocDetails.status === 200) {
+              let documentHistory = JSON.parse(getDocDetails.responseText).documentHistory;
+              let document = new Delta(); 
+              let markColors = JSON.parse(sessionStorage.getItem("markColors") || "{}");
+              documentHistory.forEach((item) => {
+                if (item && item.user_id && item.user_id._id !== user.user_id) {
+                  let cursor = cursors.connections.find(el => el.user_id === item.user_id._id);
+                  let color = cursor ? cursor.color : (markColors[item.user_id._id] || new chance().color({format: 'hex'}))
+                  markColors[item.user_id._id] = color;
+                  item.ops.map((op) => {
+                    if (op.insert) {
+                      op.attributes = op.attributes || {};
+                      op.attributes.mark = {id: item.src, style: {color: color}, user: item.user_id.first_name + " " + item.user_id.last_name};
+                    }
+                    return op;
+                  })
+                }
+                document = document.compose(new Delta(item.ops));
+              })
+              sessionStorage.setItem("markColors", JSON.stringify(markColors));
+              // quill.setContents(document);
+              resolve(document);
+            }
+            else {
+              console.log('Error while fetching document details', JSON.parse(getDocDetails.responseText));
+              reject();
+            }
+          };
+          getDocDetails.send();
+        })
+      }
+
+      catch(err){
+        console.log('Some Error occured', err);
+      }
     }
 
     
     doc.subscribe(async function(err) {
-    
-      if (err) throw err;
-    
-      if (!doc.type)
-        doc.create([{
-          insert: '\n'
-        }], 'rich-text');
-      // update editor contents
-      let document = await getDocumentHistory(postId);
-      quill.setContents(document);
-      
+      try{
+        if (err) throw err;
+        if (!doc.type)
+          doc.create([{
+            insert: '\n'
+          }], 'rich-text');
+        // update editor contents
+        let Document = await getDocumentHistory(postId);
+        quill.setContents(Document);
+        editor = document.getElementsByClassName("ql-editor")[0].innerHTML;
+      }
+      catch(err){
+        console.log('Error', err)
+      }      
       // updateCursors(cursors.localConnection);
     }); //subscribe ends
 
@@ -463,36 +470,22 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
           if (err)
             console.error('Submit OP returned an error:', err);
         });
-  
-        // updateUserList();
       }
     }); //text change ends
-  
-    // cursorsModule.registerTextChangeListener();
   
     // server -> local
     doc.on('op', function(op, source) {
       if (source !== quill) {
-        console.log("cursors.connections: ", cursors.connections);
+        //console.log("cursors.connections: ", cursors.connections);
         let cursor = cursors.connections.find(el => el.user_id === op.user_id);
-        op.ops = op.ops.map((item) => {
+        op.ops = op.ops.map((item: any) => {
           if (item.insert) {
-            item.attributes = item.attributes || {};
-            item.attributes.mark = {id: cursor.id, style: {color: cursor.color}, user: cursor.name};
+                item.attributes = item.attributes || {};
+                item.attributes.mark = {id: cursor.id, style: {color: cursor.color}, user: cursor.name};
           }
-          // if (item.delete) {
-          //   item = {
-          //     retain: item.delete,
-          //     attributes: {
-          //       "mark-delete": {id: cursor.id, style: {color: cursor.color}}
-          //     }
-          //   }
-          // }
           return item;
         });
         quill.updateContents(op);
-        //getDocument(postId);
-        // updateUserList();
       }
     })
      //doc op ends // data coming from server as doc as some data.
@@ -501,20 +494,19 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     function sendCursorData(range) {
       cursors.localConnection.range = range;
       cursors.update();
-      //getDocument(postId);
     }
   
     //
-    var debouncedSendCursorData = utils.debounce(function() {
+    var debouncedSendCursorData = utils.debounce(async function() {
       var range = quill.getSelection();
       if (range) {
         console.log('[cursors] Stopped typing, sending a cursor update/refresh.');
         sendCursorData(range);
+        editor = document.getElementsByClassName("ql-editor")[0].innerHTML;
       }
     }, 1500);
   
     doc.on('nothing pending', debouncedSendCursorData, ()=>{
-     // getDocument(postId);
     });
 
     
@@ -586,71 +578,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
       // updateUserList();
     });
   
-  //   updateCursors(cursors.localConnection);
-  // });
-  
-  
-  // window.cursors = cursors;
-  
-  // var usernameInputEl = document.getElementById('username-input');
-  // var usersListEl = document.getElementById('users-list');
-  
-  // function updateUserList() {
-  //   // Wipe the slate clean
-  //   usersListEl.innerHTML = null;
-  
-  //   cursors.connections.forEach(function(connection) {
-  //     var userItemEl = document.createElement('li');
-  //     var userNameEl = document.createElement('div');
-  //     var userDataEl = document.createElement('div');
-  
-  //     userNameEl.innerHTML = '<strong>' + (connection.name || '(Waiting for username...)') + '</strong>';
-  //     userNameEl.classList.add('user-name');
-  
-  //     if (connection.id == cursors.localConnection.id)
-  //       userNameEl.innerHTML += ' (You)';
-  
-  //     if (connection.range) {
-  
-  //       if (connection.id == cursors.localConnection.id)
-  //         connection.range = quill.getSelection();
-  
-  //       userDataEl.innerHTML = [
-  //         '<div class="user-data">',
-  //         '  <div>Index: ' + connection.range.index + '</div>',
-  //         '  <div>Length: ' + connection.range.length + '</div>',
-  //         '</div>'
-  //       ].join('');
-  //     } else
-  //       userDataEl.innerHTML = '(Not focusing on editor.)';
-  
-  
-  //     userItemEl.appendChild(userNameEl);
-  //     userItemEl.appendChild(userDataEl);
-  
-  //     userItemEl.style.backgroundColor = connection.color;
-  //     usersListEl.appendChild(userItemEl);
-  //   });
-  // }
-  
-  // usernameInputEl.value = chance.name();
-  // usernameInputEl.focus();
-  // usernameInputEl.select();
-  
-  // document.getElementById('username-form').addEventListener('submit', function(event) {
-  //   cursors.localConnection.name = usernameInputEl.value;
-  //   cursors.update();
-  //   quill.enable();  //to be pointed.
-  //   document.getElementById('connect-panel').style.display = 'none';
-  //   document.getElementById('users-panel').style.display = 'block';
-  //   event.preventDefault();
-  //   return false;
-  // });
-  
   // DEBUG
-  
-  // var sharedbSocketStateEl = document.getElementById('sharedb-socket-state');
-  // var sharedbSocketIndicatorEl = document.getElementById('sharedb-socket-indicator');
   
   shareDBConnection.on('state',  function(state, reason) {
     // var indicatorColor;
@@ -661,27 +589,10 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     }
   
     console.log('[sharedb] New connection state: ' + state + ' Reason: ' + reason);
-    // sharedbSocketStateEl.innerHTML = state.toString();
-  
-    // switch (state.toString()) {
-    //   case 'connecting':
-    //     indicatorColor = 'silver';
-    //     break;
-    //   case 'connected':
-    //     indicatorColor = 'lime';
-    //     break;
-    //   case 'disconnected':
-    //   case 'closed':
-    //   case 'stopped':
-    //     indicatorColor = 'red';
-    //     break;
-    // }
-  
-    // sharedbSocketIndicatorEl.style.backgroundColor = indicatorColor;
   });
-  //this.ngxService.stopBackground();
+
   } 
 
 }
 
-export {comment_range, quill};
+export {comment_range, quill, editor};
