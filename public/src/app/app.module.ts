@@ -101,6 +101,7 @@ import { CollaborativeDocGroupNavbarComponent } from './common/components/posts/
 import { CollabDocPostComponent } from './common/components/posts/collab-doc-post/collab-doc-post.component';
 import { CollaborativeDocGroupCommentsComponent } from './common/components/posts/collaborative-doc-group-post/collaborative-doc-group-comments/collaborative-doc-group-comments.component';
 import { CollaborativeDocGroupPostCommentComponent } from './common/components/posts/collaborative-doc-group-post/collaborative-doc-group-post-comment/collaborative-doc-group-post-comment.component';
+import { DocumentService } from './shared/services/document.service';
 
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
@@ -235,6 +236,7 @@ const ngCircle = {
 
   providers: [AuthService, UserService, DenyNavigationGuard, PostService, GroupService,
     GroupDataService, WorkspaceService, ProfileDataService, GroupsService, AdminService, GoogleCloudService,
+    DocumentService,
     AuthGuard, NotAuthGuard, QuillAutoLinkService, ValidSubscriptionGuard,
     { provide: 'SnotifyToastConfig', useValue: ToastDefaults},
     SnotifyService, SearchService,
