@@ -520,13 +520,29 @@
          </i>
        </button>
      </div>
-
-     <div class="row">
+<!--  -->
+     <!-- <div class="row">
       <div class="col-md-12" style="margin-left: 15px;">
-        <input type="text" id="tags" (keydown)="addTags($event)" class="tags" placeholder="Add Tag here" name="tag" placement="top" ngbTooltip="Type & hit enter to add a tag">
+        <input type="text" id="tags" [(ngModel)]="tag_search_words" (keyup)="tagListSearch()" (keydown)="addTags($event)" class="tags" placeholder="Add Tag here" name="tag" placement="top" ngbTooltip="Type & hit enter to add a tag">
       </div>
-    </div>
-
+    </div> -->
+    <div class="row">
+        <div class="col-md-12" style="margin-left: 15px">
+          <div ngbDropdown #myTagsDrop="ngbDropdown" class="search">
+            <input ngbDropdownAnchor type="text" id="tags" class="tags" placeholder="Add Tag here" ng-show="tags_search_words" (keyup)="tagListSearch(); $event.stopPropagation(); myTagsDrop.open();" (keydown)="addTags($event)" [(ngModel)]="tags_search_words" name="tag" placement="top" ngbTooltip="Type & hit enter to add a tag">
+              <div class="search-dropdown-menu" ngbDropdownMenu aria-labelledby="dropdownManual">
+                <div class="w-100" style="display:inline-block" *ngIf="tags_search_result?.length > 0">
+                    <ul class=" list-tags" >
+                      <li class="tags" *ngFor="let tag of tags_search_result; let i = index;">
+                          <button class="bg-transparent border-0 col-lg-9 text-left" (click)="clickedOnTag(i)">{{ tag?.tags }}</button>
+                      </li>
+                    </ul>
+                  </div>
+            </div>
+          </div>
+        </div>
+      </div>
+<!--  -->
   </div>
 
   <div class="row">

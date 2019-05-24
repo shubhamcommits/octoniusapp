@@ -197,3 +197,18 @@ body{
   margin-left: 5px;
   cursor: pointer;
 }
+
+.list-skills{
+  max-height: 150px;
+  margin-bottom: 5px;
+  overflow:auto;
+  overflow-x: hidden;
+  // -webkit-overflow-scrolling: touch;
+}
+.list-skills{
+  .tags{
+    margin-bottom: 5px;
+    margin-top: 5px;
+  }
+  
+} 
