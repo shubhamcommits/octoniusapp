@@ -11,6 +11,7 @@ import { environment } from '../../../../../environments/environment';
 import * as moment from 'moment';
 import * as io from 'socket.io-client';
 import {Subject} from "rxjs/Rx";
+import {SearchService} from "../../../../shared/services/search.service";
 
 import 'quill-mention';
 
@@ -70,10 +71,11 @@ export class GroupTasksComponent implements OnInit {
      private userService: UserService,
      private groupService: GroupService,
      private postService: PostService,
+     private searchService: SearchService,
      private modalService: NgbModal,
-              private quillInitializeService: QuillAutoLinkService,
-              private _userService: UserService,
-              private _router: Router) {
+     private quillInitializeService: QuillAutoLinkService,
+     private _userService: UserService,
+     private _router: Router) {
     this.user_data = JSON.parse(localStorage.getItem('user'));
   }
 
@@ -127,6 +129,8 @@ export class GroupTasksComponent implements OnInit {
   private _message = new Subject<string>();
 
   tags: any = new Array();
+  tags_search_words: String = ''
+  tags_search_result: any = new Array();
 
  async ngOnInit() {
     this.ngxService.start(); // start foreground loading with 'default' id
@@ -1130,5 +1134,27 @@ addTags(event: any) {
 removeTag(index) {
   this.tags.pop(index);
 }
+tagListSearch(){
+  console.log("here1")
+  if (this.tags_search_words !== '') {
+    console.log("here12")
+    this.searchService.getTagsSearchResults(this.tags_search_words)
+    .subscribe((res) => {
 
+       if (res) {
+        this.tags_search_result = res['results'];
+      } 
+    }, (err)=>{
+      console.log('Error while searching', err);
+    });
+  }else{
+    console.log("here13")
+  }
+}
+clickedOnTag(index){
+  var tagsFromList = this.tags_search_result[index]["tags"]
+  this.tags.push(tagsFromList);;
+  this.tags_search_words = '';
+  console.log(this.tags);
+} 
 }

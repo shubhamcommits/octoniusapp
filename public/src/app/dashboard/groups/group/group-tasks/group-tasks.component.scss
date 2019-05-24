@@ -24,3 +24,17 @@
 {
   display:none;
 }
+.list-tags{
+  max-height: 150px;
+  margin-bottom: 5px;
+  overflow:auto;
+	overflow-x: hidden;
+	padding: 0 !important;
+  // -webkit-overflow-scrolling: touch;
+}
+.list-tags{
+  .tags{
+    margin-bottom: 5px;
+    margin-top: 5px;
+	}
+}

@@ -103,6 +103,39 @@ const searchNav = async (req, res) => {
   }
 };
 
+const getSkillsSearchResults = async (req, res) => {
+  try {
+    const result = await search.getSkillsSearchResults(req, res);
+    const results = result.results;
+    const moreToLoad = result.moreToLoad;
+
+    res.status(200).json({
+      message: 'Successfully loaded search results',
+      results,
+      moreToLoad
+    });
+  } catch (err) {
+    console.log("here1")
+    return sendErr(res, err);
+  }
+};
+const getTagsSearchResults = async (req, res) => {
+  try {
+    const result = await search.getTagsSearchResults(req, res);
+    const results = result.results;
+    const moreToLoad = result.moreToLoad;
+
+    res.status(200).json({
+      message: 'Successfully loaded search results',
+      results,
+      moreToLoad
+    });
+  } catch (err) {
+    console.log("here1")
+    return sendErr(res, err);
+  }
+};
+
 
 module.exports = {
   getSearchResults,
@@ -110,5 +143,7 @@ module.exports = {
   loadRecentSearches,
   saveSearch,
   deleteSearchResult,
-  loadMoreResults
+  loadMoreResults,
+  getSkillsSearchResults,
+  getTagsSearchResults,
 };
