@@ -42,12 +42,21 @@
         </div>
         <div class="row">
           <div class="col-md-6" style="display:inline-block">
-
-            <input type="text" id="skill" class="tags" placeholder="Add skill here" (keydown)="addNewSkill($event)" [(ngModel)]="skill" name="skill" placement="top" ngbTooltip="Type & hit enter to add a skill">
+            <div ngbDropdown #mySkillsDrop="ngbDropdown" class="search">
+              <input ngbDropdownAnchor type="text" id="skill" class="tags" placeholder="Add skill here" ng-show="skill" (keyup)="getSkillsSearchResults(); $event.stopPropagation(); mySkillsDrop.open();" (keydown)="addNewSkill($event)" [(ngModel)]="skill" name="skill" placement="top" ngbTooltip="Type & hit enter to add a skill">
+              <div class="search-dropdown-menu" ngbDropdownMenu aria-labelledby="dropdownManual">
+                  <div class="w-100" style="display:inline-block" *ngIf="skills_search_result?.length > 0">
+                      <ul class="list-skills" >
+                        <li class="tags" *ngFor="let skill of skills_search_result; let i = index;">
+                            <button class="bg-transparent border-0 col-lg-9 text-left" (click)="clickedOnSkill(i)">{{ skill?.skills }}</button>
+                        </li>
+                      </ul>
+                    </div>
+              </div>
+            </div>
           </div>
         </div>
-
-
+        
           <ul class="skills" style="clear:both">
             <li class="tags" *ngFor="let skill of user?.skills; let i = index">{{skill}} 
               <button *ngIf="isCurrentUser"  type="button" name="button" (click)="removeSkill(i)" class="btn btn-link">

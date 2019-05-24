@@ -39,5 +39,9 @@ router.post('/saveSearch', search.saveSearch);
 // load more search results
 router.get('/loadMoreResults/:filter/:amountLoaded/:query', search.loadMoreResults);
 
+//search skills results
+router.get("/getSkillsSearchResults/:query", search.getSkillsSearchResults);
+
+router.get("/getTagsSearchResults/:query", search.getTagsSearchResults);
 
 module.exports = router;
