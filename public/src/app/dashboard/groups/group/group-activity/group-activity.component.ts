@@ -188,6 +188,7 @@ export class GroupActivityComponent implements OnInit {
     this.ngxService.stopBackground();
 
     this.posts = filteredPosts;
+    this.posts = this.postService.removeDuplicates(this.posts, '_id');
   }
 
   transform(html: string): SafeHtml {
@@ -328,6 +329,7 @@ export class GroupActivityComponent implements OnInit {
       this.postService.getGroupPosts(this.group._id)
         .subscribe((res) => {
           this.posts = res['posts'];
+          this.posts = this.postService.removeDuplicates(this.posts, '_id');
           //console.log(this.posts);
           this.isLoading$.next(false);
           this.ngxService.stopBackground();
@@ -354,6 +356,7 @@ export class GroupActivityComponent implements OnInit {
     this.postService.getNextPosts(this.group_id, last_post_id)
       .subscribe((res) => {
         this.posts = this.posts.concat(res['posts']);
+        this.posts = this.postService.removeDuplicates(this.posts, '_id');
         this.isLoading$.next(false);
         this.ngxService.stopBackground();
         //this.spinner.hide();

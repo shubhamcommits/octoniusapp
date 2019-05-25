@@ -10,6 +10,7 @@ import * as moment from "moment";
 import {CommentSectionComponent} from "../../comments/comment-section/comment-section.component";
 import {SnotifyService} from "ng-snotify";
 import { SearchService } from '../../../../shared/services/search.service';
+import { environment } from '../../../../../environments/environment';
 
 declare var $;
 @Component({
@@ -70,6 +71,8 @@ export class NormalGroupPostComponent implements OnInit,AfterViewInit, OnDestroy
   };
   content_mentions = [];
 
+  profilePic: any;
+
   tags: any = new Array();
   tags_search_words: String = ''
   tags_search_result: any = new Array();
@@ -90,6 +93,13 @@ export class NormalGroupPostComponent implements OnInit,AfterViewInit, OnDestroy
     else{
       this.tags = [];
     }
+
+    if (this.user['profile_pic'] == null) {
+      this.profilePic = 'assets/images/user.png';
+    } else {
+      // console.log('Inside else');
+      this.profilePic = `${environment.BASE_URL}/uploads/${this.user['profile_pic']}`;
+     }
 
   }
 

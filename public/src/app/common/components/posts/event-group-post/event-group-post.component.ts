@@ -7,6 +7,7 @@ import { saveAs } from 'file-saver';
 import {GroupService} from "../../../../shared/services/group.service";
 import {CommentSectionComponent} from "../../comments/comment-section/comment-section.component";
 import { SearchService } from '../../../../shared/services/search.service';
+import { environment } from '../../../../../environments/environment';
 declare var $;
 
 @Component({
@@ -59,6 +60,8 @@ export class EventGroupPostComponent implements OnInit, OnDestroy {
   // editor
   editor;
 
+  profilePic: any;
+
   // mentions
   content_mentions = [];
 
@@ -81,6 +84,13 @@ export class EventGroupPostComponent implements OnInit, OnDestroy {
         else{
           this.tags = [];
         }
+
+        if (this.user['profile_pic'] == null) {
+          this.profilePic = 'assets/images/user.png';
+        } else {
+          // console.log('Inside else');
+          this.profilePic = `${environment.BASE_URL}/uploads/${this.user['profile_pic']}`;
+         }
   }
   ngAfterViewInit(): void {
     $('.image-gallery').lightGallery({

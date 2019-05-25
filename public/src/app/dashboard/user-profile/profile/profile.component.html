@@ -43,7 +43,7 @@
         <div class="row">
           <div class="col-md-6" style="display:inline-block">
             <div ngbDropdown #mySkillsDrop="ngbDropdown" class="search">
-              <input ngbDropdownAnchor type="text" id="skill" class="tags" placeholder="Add skill here" ng-show="skill" (keyup)="getSkillsSearchResults(); $event.stopPropagation(); mySkillsDrop.open();" (keydown)="addNewSkill($event)" [(ngModel)]="skill" name="skill" placement="top" ngbTooltip="Type & hit enter to add a skill">
+              <input ngbDropdownAnchor *ngIf="isCurrentUser" type="text" id="skill" class="tags" placeholder="Add skill here" ng-show="skill" (keyup)="getSkillsSearchResults(); $event.stopPropagation(); mySkillsDrop.open();" (keydown)="addNewSkill($event)" [(ngModel)]="skill" name="skill" placement="top" ngbTooltip="Type & hit enter to add a skill">
               <div class="search-dropdown-menu" ngbDropdownMenu aria-labelledby="dropdownManual">
                   <div class="w-100" style="display:inline-block" *ngIf="skills_search_result?.length > 0">
                       <ul class="list-skills" >

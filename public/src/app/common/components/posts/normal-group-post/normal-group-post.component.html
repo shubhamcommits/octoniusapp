@@ -6,7 +6,7 @@
       <div class="row card-title ">
         <div class="col-md-1 ">
           <!--<img [src]="profileImage" class="feed-avatar">-->
-          <img src="/uploads/{{post._posted_by?.profile_pic}}" 
+          <img [src]="this.profilePic" 
                onerror="this.src='/assets/images/user.png'"
                class="feed-avatar"
                [routerLink]="['/dashboard/profile', post._posted_by?._id, 'profile']"/>

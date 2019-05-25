@@ -142,7 +142,13 @@ export class NavbarComponent implements OnInit {
         this.user = res.user;
         this.userProfileImage = res.user['profile_pic'];
       //  console.log(this.user._id);
-        this.userProfileImage = `/uploads/${this.userProfileImage}`;
+
+      if (this.user['profile_pic'] == null) {
+        this.userProfileImage = 'assets/images/user.png';
+      } else {
+        // console.log('Inside else');
+        this.userProfileImage = `${environment.BASE_URL}/uploads/${this.user['profile_pic']}`;
+       }
         this.isLoading$.next(true);
       }, (err) => {
         this.alert.class = 'alert alert-danger';

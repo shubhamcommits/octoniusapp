@@ -9,6 +9,7 @@ import * as moment from 'moment';
 import { GroupActivityComponent } from '../../../../dashboard/groups/group/group-activity/group-activity.component';
 import { SnotifyService } from "ng-snotify";
 import { SearchService } from '../../../../shared/services/search.service';
+import { environment } from '../../../../../environments/environment';
 declare var $;
 
 @Component({
@@ -63,6 +64,8 @@ export class TaskGroupPostComponent implements OnInit {
   // editor
   editor;
 
+  profilePic: any;
+
   // mentions
   content_mentions = [];
 
@@ -88,6 +91,13 @@ export class TaskGroupPostComponent implements OnInit {
     else {
       this.tags = [];
     }
+
+    if (this.user['profile_pic'] == null) {
+      this.profilePic = 'assets/images/user.png';
+    } else {
+      // console.log('Inside else');
+      this.profilePic = `${environment.BASE_URL}/uploads/${this.user['profile_pic']}`;
+     }
   }
   ngAfterViewInit(): void {
     $('.image-gallery').lightGallery({

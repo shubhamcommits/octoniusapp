@@ -9,6 +9,7 @@ import {FormGroup} from "@angular/forms";
 import * as moment from "moment";
 import {CommentSectionComponent} from "../../comments/comment-section/comment-section.component";
 import {SnotifyService} from "ng-snotify";
+import { environment } from '../../../../../environments/environment';
 declare var $;
 
 @Component({
@@ -29,12 +30,20 @@ export class CollabDocPostComponent implements OnInit {
 
   ngUnsubscribe = new Subject();
 
+  profilePic: any;
+
   constructor(    
     private groupService: GroupService,
     private postService: PostService,
     private snotifyService: SnotifyService) { }
 
   ngOnInit() {
+    if (this.user['profile_pic'] == null) {
+      this.profilePic = 'assets/images/user.png';
+    } else {
+      // console.log('Inside else');
+      this.profilePic = `${environment.BASE_URL}/uploads/${this.user['profile_pic']}`;
+     }
   }
 
   ngAfterViewInit(): void {
