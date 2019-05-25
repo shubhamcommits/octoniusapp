@@ -35,6 +35,40 @@ const createSkillsQuery = (user, query) => User.find({
   ]
 }).select('profile_pic full_name first_name last_name email created_date skills');
 
+//query showing skills only
+const createSkillsListQuery = (user, query) => User.aggregate([{
+  
+  $match : {
+    skills: { $regex: query, $options: 'i' }
+ }},
+ { $unwind : "$skills" },
+ { $match : {
+    skills: { $regex: query, $options: 'i' }
+ }
+},
+{
+  $project: {
+    skills: '$skills'
+  }
+}
+]);
+//query showing tags only
+const createTagListQuery = (user, query) => Post.aggregate([{
+  
+  $match : {
+    tags: { $regex: query, $options: 'i' }
+ }},
+ { $unwind : "$tags" },
+ { $match : {
+    tags: { $regex: query, $options: 'i' }
+ }
+},
+{
+  $project: {
+    tags: '$tags'
+  }
+}
+]);
 
 const getSearchResults = async (req, res, amountLoaded) => {
 // Focus on only searching within own workspace
@@ -122,7 +156,73 @@ const getSearchResults = async (req, res, amountLoaded) => {
   }
 };
 
+const getSkillsSearchResults = async (req, res, amountLoaded) => {
+    try {
+  
+      const user = await User.findOne({ _id: req.userId });
+      var regexConvert = req.params.query.replace(/[#.*+?^${}()|[\]\\]/g, '\\$&')
+      skillsQuery = createSkillsListQuery(user, regexConvert);
 
+      let moreSkillsToLoad = false;
+      var skills = await skillsQuery.skip(parseInt(amountLoaded, 10) || 0).limit(11).exec();
+      if(skills){
+
+        key = ["skills"],
+        filtered = skills.filter(
+            (s => o => 
+                (k => !s.has(k) && s.add(k))
+                (key.map(k => o[k]).join('|'))
+            )
+            (new Set)
+        );
+
+        skills = filtered
+        if (skills.length === 11) {
+          skills.pop();
+          moreSkillsToLoad = true;
+        }
+        return { results: skills, moreToLoad: moreSkillsToLoad };
+      }
+    } catch (err) {
+      console.log('err', err);
+      sendErr(res, err);
+    }
+  };
+
+const getTagsSearchResults = async (req, res, amountLoaded) => {
+  try {
+
+    const user = await User.findOne({ _id: req.userId });
+    var regexConvert = req.params.query.replace(/[#.*+?^${}()|[\]\\]/g, '\\$&')
+    tagQuery = createTagListQuery(user, regexConvert);
+
+    let moreSkillsToLoad = false;
+    var tags = await tagQuery.skip(parseInt(amountLoaded, 10) || 0).limit(11).exec();
+    if(tags){
+
+      key = ["tags"],
+      filtered = tags.filter(
+          (s => o => 
+              (k => !s.has(k) && s.add(k))
+              (key.map(k => o[k]).join('|'))
+          )
+          (new Set)
+      );
+
+      tags = filtered
+      if (tags.length === 11) {
+        tags.pop();
+        moreSkillsToLoad = true;
+      }
+      return { results: tags, moreToLoad: moreSkillsToLoad };
+    }
+  } catch (err) {
+    console.log('err', err);
+    sendErr(res, err);
+  }
+};
 module.exports = {
-  getSearchResults
+  getSearchResults,
+  getSkillsSearchResults,
+  getTagsSearchResults,
 };

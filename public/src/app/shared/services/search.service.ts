@@ -32,4 +32,11 @@ export class SearchService {
   search(data) {
     return this._http.get(this.BASE_API_URL + `/search/searchNav/${data.query}/${data.filter}`, );
   }
+
+  getSkillsSearchResults(query) {
+    return this._http.get(this.BASE_API_URL + `/search/getSkillsSearchResults/${query}`);
+  }
+  getTagsSearchResults(query) {
+    return this._http.get(this.BASE_API_URL + `/search/getTagsSearchResults/${query}`);
+  }
 }
