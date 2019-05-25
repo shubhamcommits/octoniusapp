@@ -89,7 +89,7 @@ export class UserProfileHeaderComponent implements OnInit {
 
   ngOnInit() {
     this.profileDataService.user.subscribe((user: any) => {
-      console.log('user header', user);
+      //console.log('user header', user);
       this.user = {
         _id: user['_id'],
         phone_number: user['phone_number'],
@@ -102,63 +102,21 @@ export class UserProfileHeaderComponent implements OnInit {
         company_join_date: user['company_join_date']
       };
 
-            // if (this.user['profile_pic'] == null) {
-            //   this.profilePic = 'assets/images/user.png';
-            //   // console.log('Inside if');
-            // } else {
-            //   // console.log('Inside else');
-            //   this.profilePic = `/uploads/${this.user['profile_pic']}`;
-            //   this.userImageUrl = this.profilePic;
-            // }
+           if (this.user['profile_pic'] == null) {
+              this.profilePic = 'assets/images/user.png';
+            } else {
+              // console.log('Inside else');
+              this.profilePic = `${environment.BASE_URL}/uploads/${this.user['profile_pic']}`;
+              this.userImageUrl = this.profilePic;
+             }
 
       this.isCurrentUser = JSON.parse(localStorage.getItem('user')).user_id == this.user._id;
     });
-    // this.getUserProfile(this.userId);
   }
 
   refreshPage() {
     this.ngOnInit();
 }
-  // getUserProfile(userId) {
-  //   this._userService.getOtherUser(userId)
-  //     .subscribe((res: any) => {
-  //       console.log('received user');
-  //       this.user = {
-  //         phone_number: res.user['phone_number'],
-  //         mobile_number: res.user['mobile_number'],
-  //         bio: res.user['bio'],
-  //         first_name: res.user['first_name'],
-  //         last_name: res.user['last_name'],
-  //         current_position: res.user['current_position'],
-  //         company_join_date: res.user['company_join_date']
-  //       };
-  //
-  //       // console.log('user Inside profile header:', res);
-  //
-  //       if (res.user['profile_pic'] == null) {
-  //         this.profilePic = 'assets/images/user.png';
-  //         // console.log('Inside if');
-  //       } else {
-  //         // console.log('Inside else');
-  //         this.profilePic = `${this.BASE_URL}/uploads/${res.user['profile_pic']}`;
-  //         this.userImageUrl = this.profilePic;
-  //       }
-  //
-  //
-  //     }, (err) => {
-  //       console.log(err);
-  //       if (err.status === 401) {
-  //         setTimeout(() => {
-  //           localStorage.clear();
-  //           this._router.navigate(['']);
-  //         }, 3000);
-  //       } else if (err.status) {
-  //         //  this.alert.class = err.error.message;
-  //       } else {
-  //         // this.alert.message = 'Error! either server is down or no internet connection';
-  //       }
-  //     });
-  // }
 
    onUpdateUser() {
 
@@ -205,10 +163,6 @@ export class UserProfileHeaderComponent implements OnInit {
 
         if (err.status === 401) {
           swal("Error!", "Seems like there's an error, please try again!", "danger");
-          setTimeout(() => {
-            localStorage.clear();
-            this._router.navigate(['']);
-          }, 3000);
         } else if (err.status) {
         } else {
           swal("Error!", "Either server is down, or no Internet connection!", "danger");
@@ -257,16 +211,4 @@ export class UserProfileHeaderComponent implements OnInit {
     };
   }
 
-
-  // handleFileInput(file: FileList) {
-
-  //   this.fileToUpload = file.item(0);
-
-  //   // Show image preview
-  //   const reader = new FileReader();
-  //   reader.onload = (event: any) => {
-  //     this.userImageUrl = event.target.result;
-  //   };
-  //   reader.readAsDataURL(this.fileToUpload);
-  // }
 }

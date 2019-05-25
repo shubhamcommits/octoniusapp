@@ -33,6 +33,7 @@ import * as Quill from 'quill';
 import 'quill-emoji/dist/quill-emoji';
 import { GoogleCloudService } from '../../../../shared/services/google-cloud.service';
 import {GroupActivityFiltersComponent} from "./group-activity-filters/group-activity-filters.component";
+import { NgxSpinnerService } from 'ngx-spinner';
 
 
 @Component({
@@ -92,7 +93,7 @@ export class GroupActivityComponent implements OnInit {
               private modalService: NgbModal, private postService: PostService, private _sanitizer: DomSanitizer,
               private ngxService: NgxUiLoaderService, private snotifyService: SnotifyService, config: NgbDropdownConfig,
               private scrollService: ScrollToService, private quillInitializeService: QuillAutoLinkService,
-              private googleService: GoogleCloudService) {
+              private googleService: GoogleCloudService, private spinner: NgxSpinnerService) {
 
     config.placement = 'left';
     config.autoClose = false;
@@ -183,9 +184,11 @@ export class GroupActivityComponent implements OnInit {
 
   filterPosts(filteredPosts) {
     this.isLoading$.next(false);
-    //this.ngxService.stopBackground();
+    //this.spinner.hide();
+    this.ngxService.stopBackground();
 
     this.posts = filteredPosts;
+    this.posts = this.postService.removeDuplicates(this.posts, '_id');
   }
 
   transform(html: string): SafeHtml {
@@ -320,12 +323,17 @@ export class GroupActivityComponent implements OnInit {
   loadGroupPosts() {
     return new Promise((resolve, reject)=>{
       this.isLoading$.next(true);
+      this.ngxService.startBackground();
+      //this.spinner.show();
 
       this.postService.getGroupPosts(this.group._id)
         .subscribe((res) => {
           this.posts = res['posts'];
+          this.posts = this.postService.removeDuplicates(this.posts, '_id');
           //console.log(this.posts);
           this.isLoading$.next(false);
+          this.ngxService.stopBackground();
+          //this.spinner.hide();
           this.show_new_posts_badge = 0;
           resolve();
         }, (err) => {
@@ -342,11 +350,16 @@ export class GroupActivityComponent implements OnInit {
   // !--LOAD ALL THE NEXT MOST RECENT GROUP POSTS--! //
   loadNextPosts(last_post_id) {
     this.isLoading$.next(true);
+    //this.spinner.show();
+    this.ngxService.startBackground();
 
     this.postService.getNextPosts(this.group_id, last_post_id)
       .subscribe((res) => {
         this.posts = this.posts.concat(res['posts']);
+        this.posts = this.postService.removeDuplicates(this.posts, '_id');
         this.isLoading$.next(false);
+        this.ngxService.stopBackground();
+        //this.spinner.hide();
       }, (err) => {
         this.snotifyService.error('Error while retrieving the next recent posts', 'Error!');
       });
@@ -365,12 +378,15 @@ export class GroupActivityComponent implements OnInit {
         || this.groupActivityFiltersComponent.filters.task
         || (this.groupActivityFiltersComponent.filters.user && !!this.groupActivityFiltersComponent.filters.user_value)) {
         this.isLoading$.next(true);
+        this.ngxService.startBackground();
+        //this.spinner.show();
         //this.ngxService.startBackground();
         this.groupActivityFiltersComponent.getNextFilteredPosts();
       //  Else we get the normal next posts
       } else {
         this.isLoading$.next(true);
-        //this.ngxService.startBackground();
+        //this.spinner.show();
+        this.ngxService.startBackground();
         this.postService.getGroupPosts(this.group_id)
           .subscribe((res) => {
             if (this.posts.length !== 0) {
@@ -378,7 +394,8 @@ export class GroupActivityComponent implements OnInit {
               const last_post_id = this.posts[this.posts.length - 1]._id;
               this.loadNextPosts(last_post_id);
               this.isLoading$.next(false);
-              //this.ngxService.stopBackground();
+              //this.spinner.hide();
+              this.ngxService.stopBackground();
             }
           }, (err) => {
             this.snotifyService.error('Error while retrieving the next recent posts', 'Error!');

@@ -8,6 +8,8 @@ import { CommentSectionComponent } from "../../comments/comment-section/comment-
 import * as moment from 'moment';
 import { GroupActivityComponent } from '../../../../dashboard/groups/group/group-activity/group-activity.component';
 import { SnotifyService } from "ng-snotify";
+import { SearchService } from '../../../../shared/services/search.service';
+import { environment } from '../../../../../environments/environment';
 declare var $;
 
 @Component({
@@ -62,17 +64,22 @@ export class TaskGroupPostComponent implements OnInit {
   // editor
   editor;
 
+  profilePic: any;
+
   // mentions
   content_mentions = [];
 
   ngUnsubscribe = new Subject();
 
   tags: any = [];
+  tags_search_words: String = ''
+  tags_search_result: any = new Array();
 
   constructor(
     private postService: PostService,
     private groupService: GroupService,
-    private snotifyService: SnotifyService) { }
+    private snotifyService: SnotifyService,
+    private searchService: SearchService) { }
 
   ngOnInit() {
     this.commentCount = this.post.comments.length;
@@ -84,6 +91,13 @@ export class TaskGroupPostComponent implements OnInit {
     else {
       this.tags = [];
     }
+
+    if (this.user['profile_pic'] == null) {
+      this.profilePic = 'assets/images/user.png';
+    } else {
+      // console.log('Inside else');
+      this.profilePic = `${environment.BASE_URL}/uploads/${this.user['profile_pic']}`;
+     }
   }
   ngAfterViewInit(): void {
     $('.image-gallery').lightGallery({
@@ -425,6 +439,30 @@ return doc.body.innerHTML;
     this.tags.splice(index, 1);
     this.post.tags = this.tags;
   }
+
+  tagListSearch(){
+    //console.log("here1")
+    if (this.tags_search_words !== '') {
+      //console.log("here12")
+      this.searchService.getTagsSearchResults(this.tags_search_words)
+      .subscribe((res) => {
+  
+         if (res) {
+          this.tags_search_result = res['results'];
+        } 
+      }, (err)=>{
+        console.log('Error while searching', err);
+      });
+    }else{
+      //console.log("here13")
+    }
+  }
+  clickedOnTag(index){
+    var tagsFromList = this.tags_search_result[index]["tags"]
+    this.tags.push(tagsFromList);;
+    this.tags_search_words = '';
+    console.log(this.tags);
+  } 
 
   toggled(event) {
     if (event) {

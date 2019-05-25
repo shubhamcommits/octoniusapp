@@ -102,6 +102,7 @@ import { CollabDocPostComponent } from './common/components/posts/collab-doc-pos
 import { CollaborativeDocGroupCommentsComponent } from './common/components/posts/collaborative-doc-group-post/collaborative-doc-group-comments/collaborative-doc-group-comments.component';
 import { CollaborativeDocGroupPostCommentComponent } from './common/components/posts/collaborative-doc-group-post/collaborative-doc-group-post-comment/collaborative-doc-group-post-comment.component';
 import { DocumentService } from './shared/services/document.service';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
@@ -211,6 +212,7 @@ const ngCircle = {
     InfiniteScrollModule,
     PickerModule,
     ClickOutsideModule,
+    NgxSpinnerModule,
     EmojiModule,
     NgxSkillBarModule,
     ImageCropperModule,

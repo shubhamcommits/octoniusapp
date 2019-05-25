@@ -54,7 +54,6 @@
       (scrolled)="onScroll($event, searchResults)">
       <div *ngIf="posts.length == 0">
         <ng-template *ngIf="isLoading$ | async; else blankScreen">
-            <div class="loading-spinner" style="position: fixed;"></div>
         </ng-template>
         <ng-template #blankScreen>
             <img src='../../../assets/images/overview-emptystate.svg' style=" margin: 0 auto; display:block; width: 600px">
@@ -96,11 +95,6 @@
 
     </div>
     <div *ngIf="isLoading$ | async">
-      <div class="loading-spinner" style="position: fixed;"></div>
-      <!--<div class="load-8">
-        <h6><b>Loading Data...</b></h6>
-        <div class="line"></div>
-      </div>-->
     </div>
   </div>
 </div>

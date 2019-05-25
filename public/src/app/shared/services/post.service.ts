@@ -113,6 +113,23 @@ export class PostService {
     return this._http.get(this.BASE_API_URL + `/posts/documents/${postId}`);
   }
 
+  removeDuplicates(originalArray: Array<Object>, objKey: any) {
+    var trimmedArray = [];
+    var values = [];
+    var value;
+  
+    for(var i = 0; i < originalArray.length; i++) {
+      value = originalArray[i][objKey];
+  
+      if(values.indexOf(value) === -1) {
+        trimmedArray.push(originalArray[i]);
+        values.push(value);
+      }
+    }
+    return trimmedArray;
+  
+  }
+
   // SHARED FUNCTIONS ACROSS COMPONENTS
 
   playAudio() {
