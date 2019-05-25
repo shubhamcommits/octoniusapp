@@ -113,7 +113,7 @@ export class PostService {
     return this._http.get(this.BASE_API_URL + `/posts/documents/${postId}`);
   }
 
-  removeDuplicates(originalArray: Array<Object>, objKey: any) {
+  /*removeDuplicates(originalArray: Array<Object>, objKey: any) {
     var trimmedArray = [];
     var values = [];
     var value;
@@ -128,7 +128,13 @@ export class PostService {
     }
     return trimmedArray;
   
-  }
+  }*/
+
+  removeDuplicates(myArr, prop) {
+    return myArr.filter((obj, pos, arr) => {
+        return arr.map(mapObj => mapObj[prop]).indexOf(obj[prop]) === pos;
+    });
+}
 
   // SHARED FUNCTIONS ACROSS COMPONENTS
 
