@@ -6,6 +6,8 @@ var debug = require('debug')('quill-sharedb-cursors:cursors');
 module.exports = function(server) {
 
   function notifyConnections(sourceId) {
+  //  console.log(connections,"connections",sessions)
+  //console.log(sessions,"from notify changed")
     connections.forEach(function(connection) {
       sessions[connection.id].send(JSON.stringify({
         id: connection.id,
@@ -23,17 +25,40 @@ module.exports = function(server) {
   });
 
   wss.on('connection', function(ws, req) {
-
     // generate an id for the socket
     ws.id = uuid();
     ws.isAlive = true;
-
+  
      debug('A new client (%s) connected.', ws.id);
     // closure
     ws.on('message', function(data) {
       var connectionIndex;
 
       data = JSON.parse(data);
+    //check for same id from being passed from frontend cursor connection
+    //if the user was already in connection pull it and then check for other connections
+     for (let i=0;i<connections.length;i++){
+      if(connections[i].user_id == data.user_id){
+    // swap over connection's data 
+        data = connections[i]
+        ws.id = connections[i].id
+    //remove first connection
+        connections.splice(i,1)
+    // Find connection index and remove it from hashtable
+        if (~(connectionIndex = _.findIndex(connections, {
+          'id': ws.id
+        }))) {
+        connections.splice(connectionIndex, 1);
+      }
+
+    // Remove session from sessions hashtable
+        delete sessions[ws.id];
+
+    // Notify connections
+        notifyConnections(ws.id);
+      }
+    }
+
 
       // If a connection id isn't still set
       // we keep sending id along with an empty connections array
@@ -44,17 +69,14 @@ module.exports = function(server) {
           sourceId: ws.id,
           connections: []
         }));
-
         return;
       } else {
         // If session/connection isn't registered yet, register it
         if (!sessions[ws.id]) {
           // Override/refresh connection id
           data.id = ws.id;
-
           // Push/add connection to connections hashtable
           connections.push(data);
-
           // Push/add session to sessions hashtable
           sessions[data.id] = ws;
         }
@@ -64,7 +86,6 @@ module.exports = function(server) {
           if (!~(connectionIndex = _.findIndex(connections, {
               'id': data.id
             }))) {
-
             return;
           }
 
@@ -73,7 +94,6 @@ module.exports = function(server) {
         }
 
         debug('Connection update received:\n%O', data);
-
         // Notify all sessions
         notifyConnections(data.id);
       }

@@ -27,7 +27,6 @@ export class AllSearchResultsComponent implements OnInit {
   ngOnInit() {
     this.user_data = JSON.parse(localStorage.getItem('user'));
     this.search_value = 'ke';
-
     this.route.params.subscribe((params) => {
       this.search_value = params.query;
       this.filter = 'all';

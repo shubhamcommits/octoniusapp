@@ -92,8 +92,8 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
       position: "centerTop"
     });
    await this.initializeQuillEditor().then(()=>{
-     this.getPost();
      this.getUser();
+     this.getPost();
    })
 
   }
@@ -102,7 +102,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     return new Promise((resolve, reject)=>{
       this._userService.getUser()
       .subscribe((res)=>{
-        //console.log('Current User', res['user']);
+        //console.log('Current User',res['user']);
         this.user_data = res['user'];
         resolve();
       }, (err)=>{
@@ -277,6 +277,8 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     
       // Refresh local connection ID (because session ID might have changed because server restarts, crashes, etc.)
       cursors.localConnection.id = data.id;
+      //add user_id to be fed back into data to be used in the session request
+      cursors.localConnection.user_id = user.user_id;
     
       if (forceUpdate) {
         cursors.update();
