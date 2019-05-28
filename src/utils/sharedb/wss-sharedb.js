@@ -17,7 +17,6 @@ module.exports = function(server) {
     ws.isAlive = true;
 
     debug('A new client (%s) connected.', ws.id);
-
     var stream = new WebSocketJSONStream(ws);
     shareDBServer.listen(stream);
 

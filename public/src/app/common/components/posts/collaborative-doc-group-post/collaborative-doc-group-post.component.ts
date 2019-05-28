@@ -155,8 +155,8 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
       position: "centerTop"
     });    
    await this.initializeQuillEditor().then(()=>{
-     this.getPost();
      this.getUser();
+     this.getPost();
    })
 
   }
@@ -169,7 +169,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     return new Promise((resolve, reject)=>{
       this._userService.getUser()
       .subscribe((res)=>{
-        //console.log('Current User', res['user']);
+        //console.log('Current User',res['user']);
         this.user_data = res['user'];
         resolve();
       }, (err)=>{
