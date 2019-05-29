@@ -2,6 +2,7 @@ const Auth = require('./auth.model');
 const Comment = require('./comment.model');
 const Document = require('./document.model');
 const DocumentEditHistory = require('./documentedithistory.model');
+const DocumentAuthor = require('./documentAuthor.model');
 const Group = require('./group.model');
 const Notification = require('./notification.model');
 const Post = require('./post.model');
@@ -15,6 +16,7 @@ module.exports = {
   Comment,
   Document,
   DocumentEditHistory,
+  DocumentAuthor,
   Group,
   Notification,
   Post,

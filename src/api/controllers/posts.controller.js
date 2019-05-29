@@ -2,7 +2,7 @@ const moment = require('moment');
 
 const notifications = require('./notifications.controller');
 const {
-  Comment, Group, Post, User, Document, DocumentEditHistory
+  Comment, Group, Post, User, Document, DocumentEditHistory, DocumentAuthor
 } = require('../models');
 const { sendMail, sendErr } = require('../../utils');
 
@@ -531,6 +531,52 @@ const getDocumentHistory = async(req, res, next) => {
   } catch (err) {
     return sendErr(res, err);
   }
+};
+
+const addDocumentAuthor = async(req, res, next) =>{
+  try{
+    const {
+      params: { postId },
+      body: { id, name, color}
+    } = req;
+
+    const authorData = {
+      id: id,
+      name: name,
+      color: color,
+      _post_id: postId
+    };
+
+    console.log(authorData);
+
+    let author = await DocumentAuthor.create(authorData);
+
+    return res.status(200).json({
+      message: 'Document Author Added',
+      author
+    });
+
+  } catch(err){
+    return sendErr(res, err);
+  }
+};
+
+const getDocumentAuthors = async(req, res, next) => {
+  try{
+    const { postId } = req.params;
+
+    const authors = await DocumentAuthor.find({
+      _post_id: postId
+    });
+
+    return res.status(200).json({
+      message: 'Authors Found',
+      authors
+    });
+  }
+  catch(err){
+    return sendErr(res, err);
+  }
 }
 
 // -| LIKES |-
@@ -806,6 +852,8 @@ module.exports = {
   // Documents
   getDocument,
   getDocumentHistory,
+  addDocumentAuthor,
+  getDocumentAuthors,
   // Likes
   like,
   unlike,

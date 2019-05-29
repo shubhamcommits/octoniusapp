@@ -64,6 +64,12 @@ router.get('/documents/:postId', posts.getDocument);
 // Get documennt edit history
 router.get('/documents/history/:postId', posts.getDocumentHistory);
 
+// Add authors to a document
+router.post('/documents/:postId/addAuthor', posts.addDocumentAuthor);
+
+// Fetch all the authors of a document
+router.get('/documents/:postId/authors', posts.getDocumentAuthors);
+
 // - Likes -
 
 // Like post
