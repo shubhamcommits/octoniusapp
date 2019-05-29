@@ -20,9 +20,9 @@ export class GroupActivityFiltersComponent implements OnInit {
     event: false,
     task: false,
     user: false,
-    tag: false,
+    tags: false,
     user_value: '',
-    tag_value: ''
+    tags_value: ''
   };
 
   constructor(private groupService: GroupService) { }
@@ -52,14 +52,14 @@ export class GroupActivityFiltersComponent implements OnInit {
     this.filters[type] = !this.filters[type];
 
     if (this.filters[type]) {
-      if (!(type === 'user' && !this.filters.user_value) && !(type === 'tag' && !this.filters.tag_value)) {
-        console.log("here2")
+      if (!(type === 'user' && !this.filters.user_value) && !(type === 'tags' && !this.filters.tags_value)) {
+        console.log("this.fi",this.filters.tags_value, this.filters.tags)
         this.filterPosts();
       } 
     } else {
       //  check if other filters are still checked
-      if (this.filters.normal || this.filters.event || this.filters.task || (this.filters.user && !!this.filters.user_value) || (this.filters.tag && !!this.filters.tag_value)) {
-        console.log("here1")
+      if (this.filters.normal || this.filters.event || this.filters.task || (this.filters.user && !!this.filters.user_value) || (this.filters.tags && !!this.filters.tags_value)) {
+        console.log("this.fzzzzi",this.filters.tags_value, this.filters.tags)
         this.filterPosts();
       } else {
         this.loadGroupPosts.emit();

@@ -20,12 +20,16 @@ export class GroupService {
   constructor(private _http: HttpClient) { }
 
   getFilteredPosts(group_id, filters) {
+
+    console.log(filters,"filters")
     const params = new HttpParams()
       .set("normal", filters.normal)
       .set("event", filters.event)
       .set("task", filters.task)
       .set("user", filters.user)
-      .set("user_value", filters.user_value);
+      .set("user_value", filters.user_value)
+      .set("tags", filters.tags)
+      .set("tags_value", filters.tags_value)
 
     return this._http.get(this.BASE_API_URL + `/groups/${group_id}/getFilteredPosts`, {params});
   }
