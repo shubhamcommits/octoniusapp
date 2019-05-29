@@ -21,6 +21,7 @@ export class AllSearchResultsComponent implements OnInit {
   more_to_load_users = false;
   search_results_posts: any = new Array();
   more_to_load_posts = false;
+  more_to_tag_load_posts = false
 
   constructor(private searchService: SearchService, private route: ActivatedRoute) { }
 
@@ -57,6 +58,10 @@ export class AllSearchResultsComponent implements OnInit {
             this.search_results_skills = [...this.search_results_skills, ...res['results']['skills']];
             this.more_to_load_skills = res['results']['loadMoreSkills'];
             break;
+          case 'tags':
+            this.search_results_posts = [...this.search_results_posts, ...res['results']];
+            this.more_to_load_posts = res['results']['loadMoreSkills'];
+          break;
         }
       });
   }
@@ -82,6 +87,9 @@ export class AllSearchResultsComponent implements OnInit {
           } else if (this.filter === 'users') {
             this.search_results_users = res['results'];
             this.more_to_load_users = res['moreToLoad'];
+          } else if (this.filter === 'tags') {
+            this.search_results_posts = res['results'];
+            this.more_to_tag_load_posts = res['moreToLoad'];
           }
         }, (err)=>{
           console.log('Error while searching', err);
