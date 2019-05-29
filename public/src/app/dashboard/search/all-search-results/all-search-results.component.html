@@ -18,6 +18,9 @@
           <li [class.active-filter]="filter === 'skills'" (click)="changeFilter('skills')">
             <i class="material-icons">local_offer</i> Skills
           </li>
+          <li [class.active-filter]="filter === 'tags'" (click)="changeFilter('tags')">
+              <i class="material-icons">local_offer</i> Tags
+          </li>
         </ul>
       </div>
     </div>
@@ -80,6 +83,8 @@
           </li>
         </ul>
         <span *ngIf="more_to_load_posts" (click)="loadMoreResults('posts', search_results_posts?.length)"
+          class="load-more">Load more posts...</span>
+          <span *ngIf="more_to_tag_load_posts" (click)="loadMoreResults('tags', search_results_posts?.length)"
           class="load-more">Load more posts...</span>
       </div>
       <div *ngIf="search_results_users?.length > 0">

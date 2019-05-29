@@ -82,11 +82,14 @@ export class SearchBarComponent implements OnInit {
         .subscribe((res) => {
           //console.log('RES SKILLS', res);
           if (filter === 'users') {
+            console.log(res["results"])
             this.search_results_users = res['results']['users'];
           } else if (filter === 'skills') {
             this.search_results_skills = res['results']['skills'];
           } else if (filter === 'posts') {
             this.search_results_posts = res['results']['posts'];
+          } else if (filter === "tags"){
+            this.search_results_posts = res['results']
           } else {
             this.search_results_posts = res['results']['posts'];
             this.search_results_skills = res['results']['skills'];
