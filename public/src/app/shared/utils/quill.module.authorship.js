@@ -53,7 +53,7 @@ class Authorship {
 	
 	// // for authorship color on/off toolbar item
 	let toolbar = this.quill.getModule('toolbar');
-	toolbar.addHandler('authorship-toggle', function() {
+	toolbar.addHandler('', function() {
 		
 	});
 	let customButton = document.querySelector('button.ql-authorship-toggle');
@@ -77,6 +77,7 @@ class Authorship {
   }
 
   addAuthor(id, color) {
+    console.log('added');
     let css = ".ql-authorship .ql-author-" + id + " { " + "background-color:" + color + "; }\n";
     this.addStyle(css);
   }

@@ -537,24 +537,34 @@ const addDocumentAuthor = async(req, res, next) =>{
   try{
     const {
       params: { postId },
-      body: { id, name, color}
+      body: { _user_id, name, color}
     } = req;
 
     const authorData = {
-      id: id,
+      _user_id: _user_id,
       name: name,
       color: color,
       _post_id: postId
     };
 
-    console.log(authorData);
-
-    let author = await DocumentAuthor.create(authorData);
-
-    return res.status(200).json({
-      message: 'Document Author Added',
-      author
+    const authors = await DocumentAuthor.find({
+      _post_id: postId,
+      _user_id: _user_id
     });
+
+    if(authors.length == 0 || !authors){
+      let author = await DocumentAuthor.create(authorData);
+
+      return res.status(200).json({
+        message: 'Document Author Added',
+        author
+      });
+    }
+    else{
+      return res.status(201).json({
+        message: "Author already exist!"
+      })
+    }
 
   } catch(err){
     return sendErr(res, err);

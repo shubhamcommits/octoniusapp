@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import * as chance from 'chance';
 import { SnotifyService, SnotifyPosition, SnotifyToastConfig, Snotify } from 'ng-snotify';
-import { Observable, Observer } from 'rxjs';
+import { Observable, Observer, Subject } from 'rxjs';
 
 var Delta = Quill.import('delta');
 
@@ -11,12 +11,26 @@ var Delta = Quill.import('delta');
 
 export class DocumentService {
 
-  constructor(private _http: HttpClient, private snotifyService: SnotifyService,) { }
+  authorsList$: Observable<any>;
+  private authorsListSubject = new Subject<any>();
+
+  constructor(private _http: HttpClient, private snotifyService: SnotifyService,) { 
+    this.authorsList$ = this.authorsListSubject.asObservable();
+  }
 
   user = JSON.parse(localStorage.getItem('user'));
 
+  authorsList(data: any) {
+    console.log(data);
+    this.authorsListSubject.next(data);
+}
+
   addAuthor(authorData: any){
-    return this._http.post(environment.BASE_API_URL + `/documents/${authorData._post_id}/addAuthor`, authorData);
+    return this._http.post(environment.BASE_API_URL + `/posts/documents/${authorData._post_id}/addAuthor`, authorData);
+  }
+
+  getAuthors(documentId: any){
+    return this._http.get(environment.BASE_API_URL + `/posts/documents/${documentId}/authors`);
   }
 
   async cursorConnection(name: any, color: any) {

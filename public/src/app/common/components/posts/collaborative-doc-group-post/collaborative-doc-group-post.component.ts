@@ -33,7 +33,10 @@ var cursors: any = {};
 var comment_range = {};
 var quill: any;
 var editor: any;
+var docAuthors: any = new Array();
 // !-- Variables Required to use and export Globally--! //
+
+var shareDBSocket: any;
 
 
 @Component({
@@ -127,6 +130,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
   post: any;
   postTitle: any = 'Untitled';
 
+  docStatus: any = "Updated!";
   user_data: any;
 
   comments = [];
@@ -160,6 +164,8 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.snotifyService.clear();
+    shareDBSocket.close();
+    cursors.socket.close();
   }
 
   getUser(){
@@ -199,6 +205,8 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
 
   backClicked() {
     this._location.back();
+    shareDBSocket.close();
+    cursors.socket.close();
   }
 
   removeDuplicates(originalArray: Array<Object>, objKey: any) {
@@ -236,7 +244,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
 
     try{
       // !-- Connect ShareDB and Cursors to ReconnectingWebSocket--! //  
-      var shareDBSocket = new ReconnectingWebSocket(((location.protocol === 'https:') ? 'wss' : 'ws') + '://' + environment.REAL_TIME_URL + '/sharedb');
+      shareDBSocket = new ReconnectingWebSocket(((location.protocol === 'https:') ? 'wss' : 'ws') + '://' + environment.REAL_TIME_URL + '/sharedb');
       var shareDBConnection = new ShareDB.Connection(shareDBSocket);
       // Create browserchannel socket
       cursors.socket = new ReconnectingWebSocket(((location.protocol === 'https:') ? 'wss' : 'ws') + '://' + environment.REAL_TIME_URL + '/cursors');
@@ -259,13 +267,13 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
           toolbar: this.toolbarOptions,
           authorship: {
             enabled: true,
-            authorId: connection.user_id, // Current author id
-            color: connection.color // Current author color
+            //authorId: connection.user_id, // Current author id
+            //color: connection.color // Current author color
           },
           cursors:{
             hideDelayMs: 5000,
             hideSpeedMs: 0,
-            selectionChangeSource: 'silent'
+            selectionChangeSource: null
           },
           autoLink: true
         },
@@ -295,9 +303,10 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
       };
       
       // Handle updates
-      cursors.socket.onmessage = (message) => {
+      cursors.socket.onmessage = async (message) => {
       
-        var data = JSON.parse(message.data);     
+        var data = JSON.parse(message.data);    
+        this.documentService.authorsList(data); 
         var source = {},
           removedConnections = [],
           forceUpdate = false,
@@ -336,20 +345,45 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
   
         if (cursors.connections.length == 0 && data.connections.length != 0) {
           //data.connections = removeDuplicates(data.connections, 'user_id');
-          data.connections.forEach((element)=>{
+          data.connections.forEach(async (element)=>{
             let authorData = {
-              id: element.user_id,
+              _user_id: element.user_id,
               color: element.color,
               name: element.name,
               _post_id: postId
             };
-             this.documentService.addAuthor(authorData)
-            .subscribe((res)=>{
-              console.log('Author added', res);
-            }, (err)=>{
-              console.log('Error while adding the author', err);
-            })
-          })
+            var authModule = new Authorship(quill, {
+              enabled: true,
+              authorId: authorData._user_id,
+              color: authorData.color
+            });
+          //    this.documentService.addAuthor(authorData)
+          //   .subscribe((res)=>{
+          //     //console.log(res['message'], res);
+          //   }, (err)=>{
+          //     //console.log('Error while adding the author', err);
+          //   })
+            });
+
+          // this.documentService.getAuthors(postId)
+          // .subscribe((res)=>{
+          //   //console.log('Authors for the document', res);
+          //   docAuthors = res['authors'];
+          //   if(res['authors'].length!=0 || res['authors'].length){
+          //     for(let i = 0; i < res['authors'].length; i++){
+          //       //if(res['authors'][i]['_user_id'] != connection.user_id){
+          //         var authModule = new Authorship(quill, {
+          //           enabled: true,
+          //           authorId: res['authors'][i]['_user_id'],
+          //           color: res['authors'][i]['color']
+          //          });
+          //          //console.log(authModule);
+          //       //}
+          //     }
+          //   }
+          // }, (err)=>{
+          //   console.log('Error while fetching the authors', err);
+          // })
           console.log('[cursors] Initial list of connections received from server:', data.connections);
           reportNewConnections = false;
         }
@@ -365,23 +399,35 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
   
             //data.connections = removeDuplicates(data.connections, 'user_id');
             console.log('[cursors] User connected:', data.connections[i]);
-             var authModule = new Authorship(quill, {
-               enabled: true,
-               authorId: data.connections[i]['user_id'],
-               color: data.connections[i]['color']
-              });
-              let authorData = {
-                id: authModule.authorId,
-                color: authModule.color,
-                name: cursors.localConnection.name,
-                _post_id: postId
-              };
-               this.documentService.addAuthor(authorData)
+            let authorData = {
+              _user_id: data.connections[i]['user_id'],
+              color: data.connections[i]['color'],
+              name: data.connections[i]['name'],
+              _post_id: postId
+            };
+            var authModule = new Authorship(quill, {
+              enabled: true,
+              authorId: authorData._user_id,
+              color: authorData.color
+             });
+              //  this.documentService.addAuthor(authorData)
+              // .subscribe((res)=>{
+              //   var authModule = new Authorship(quill, {
+              //     enabled: true,
+              //     authorId: authorData._user_id,
+              //     color: authorData.color
+              //    });
+              //   //console.log(res['message'], res);
+              // }, (err)=>{
+              //   //console.log('Error while adding the author', err);
+              // });
+              /*this.documentService.getAuthors(postId)
               .subscribe((res)=>{
-                console.log('Author added', res);
+                console.log('Authors for the document', res);
+                docAuthors = res['authors'];
               }, (err)=>{
-                console.log('Error while adding the author', err);
-              })
+                console.log('Error while fetching the authors', err);
+              })*/
             console.log('[cursors] Connections after new user:', data.connections);
           }
         }
@@ -408,6 +454,18 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
       };
   
       this.handleDocument(doc, user, cursorsModule);
+
+      //fired from cursor.js when a user is disconnected.
+      // so we remove that cursor.
+      document.addEventListener('cursors-update', (e: any) => {
+        // Handle Removed Connections
+        e.detail.removedConnections.forEach((connection: any) => {
+          if (cursorsModule.cursors[connection.id])
+            cursorsModule.removeCursor(connection.id);
+        });
+        this.documentService.updateCursors(e.detail.source, cursors, cursorsModule);
+      });
+
       //subscribe ends
       this.documentService.updateCursors(cursors.localConnection, cursors, cursorsModule);
     
@@ -431,113 +489,104 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
 
   handleDocument(doc, user, cursorsModule) {
     doc.subscribe(async () => {
-
       if (!doc.type)
         doc.create([{
           insert: '\n'
         }], 'rich-text');
+        this.docStatus = "Updating...";
       // update editor contents
       let Document = await this.documentService.getDocumentHistory(postId, cursors);
       quill.setContents(Document);
       editor = document.getElementsByClassName("ql-editor")[0].innerHTML;
       this.snotifyService.clear();
+      this.docStatus = "Updated!";
+    });
 
+    // local -> server
+    quill.on('text-change', (delta, oldDelta, source) => {
+      this.docStatus = "Updating...";
+      if (source == 'user') {
 
-      // local -> server
-      quill.on('text-change', function (delta, oldDelta, source) {
-        if (source == 'user') {
+        // Check if it's a formatting-only delta
+        var formattingDelta = delta.reduce(function (check, op) {
+          return (op.insert || op.delete) ? false : check;
+        }, true);
 
-          // Check if it's a formatting-only delta
-          var formattingDelta = delta.reduce(function (check, op) {
-            return (op.insert || op.delete) ? false : check;
-          }, true);
+        // If it's not a formatting-only delta, collapse local selection
+        if (
+          !formattingDelta &&
+          cursors.localConnection.range &&
+          cursors.localConnection.range.length
+        ) {
+          cursors.localConnection.range.index += cursors.localConnection.range.length;
+          cursors.localConnection.range.length = 0;
+          cursors.update();
 
-          // If it's not a formatting-only delta, collapse local selection
-          if (
-            !formattingDelta &&
-            cursors.localConnection.range &&
-            cursors.localConnection.range.length
-          ) {
-            cursors.localConnection.range.index += cursors.localConnection.range.length;
-            cursors.localConnection.range.length = 0;
-            cursors.update();
-
-          }
-          delta.user_id = user.user_id;
-          doc.submitOp(delta, {
-            source: quill
-          }, (err: any) => {
-            if (err)
-              console.error('Submit OP returned an error:', err);
-          });
         }
-        else if (source == 'api') {
-          console.log("An API action triggered this change.");
-        }
-      }); //text change ends
-
-      // server -> local
-      doc.on('op', function (op, source) {
-        if (source !== quill) {
-          //console.log("cursors.connections: ", cursors.connections);
-          /*let cursor = cursors.connections.find(el => el.user_id === op.user_id);
-          op.ops = op.ops.map((item: any) => {
-            if (item.insert) {
-                  item.attributes = item.attributes || {};
-                  item.attributes.mark = {id: cursor.id, style: {color: cursor.color}, user: cursor.name};
-            }
-            return item;
-          });*/
-          quill.updateContents(op);
-        }
-      })
-      //doc op ends // data coming from server as doc as some data.
-
-      //
-      var debouncedSendCursorData = utils.debounce(async () => {
-        var range = quill.getSelection();
-        if (range) {
-          console.log('[cursors] Stopped typing, sending a cursor update/refresh.');
-          this.documentService.sendCursorData(cursors, range);
-          editor = document.getElementsByClassName("ql-editor")[0].innerHTML;
-        }
-      }, 1500);
-
-      doc.on('nothing pending', debouncedSendCursorData, () => {
-      });
-
-      quill.on('selection-change', (range: any, oldRange: any, source: any) => {
-        this.documentService.sendCursorData(cursors, range);
-        if (range) {
-          if (range.length == 0) {
-            //console.log('User cursor is on', range.index);
-          } else {
-            var text = quill.getText(range.index, range.length);
-            comment_range = range;
-            //console.log('Comment Range', comment_range);
-            //console.log("User has highlighted: ", text);
-          }
-        } else {
-          console.log('Cursor not in the editor');
-        }
-
-      });
-
-      //fired from cursor.js when a user is disconnected.
-      // so we remove that cursor.
-      document.addEventListener('cursors-update', (e: any) => {
-        // Handle Removed Connections
-        e.detail.removedConnections.forEach((connection: any) => {
-          if (cursorsModule.cursors[connection.id])
-            cursorsModule.removeCursor(connection.id);
+        delta.user_id = user.user_id;
+        doc.submitOp(delta, {
+          source: quill
+        }, (err: any) => {
+          if (err)
+            console.error('Submit OP returned an error:', err);
         });
-        this.documentService.updateCursors(e.detail.source, cursors, cursorsModule);
-      });
+      }
+      else if (source == 'api') {
+        console.log("An API action triggered this change.");
+      }
+    }); //text change ends
 
+    // server -> local
+    doc.on('op', function (op, source) {
+      this.docStatus = "Updating...";
+      if (source !== quill) {
+        //console.log("cursors.connections: ", cursors.connections);
+        /*let cursor = cursors.connections.find(el => el.user_id === op.user_id);
+        op.ops = op.ops.map((item: any) => {
+          if (item.insert) {
+                item.attributes = item.attributes || {};
+                item.attributes.mark = {id: cursor.id, style: {color: cursor.color}, user: cursor.name};
+          }
+          return item;
+        });*/
+        quill.updateContents(op);
+      }
+    })
+    //doc op ends // data coming from server as doc as some data.
+
+    //
+    var debouncedSendCursorData = utils.debounce(async () => {
+      var range = quill.getSelection();
+      if (range) {
+        console.log('[cursors] Stopped typing, sending a cursor update/refresh.');
+        this.docStatus = "Updated!";
+        this.documentService.sendCursorData(cursors, range);
+        editor = document.getElementsByClassName("ql-editor")[0].innerHTML;
+      }
+    }, 1500);
+
+    doc.on('nothing pending', debouncedSendCursorData, () => {
+      this.docStatus = "Updated!";
+    });
+
+    quill.on('selection-change', (range: any, oldRange: any, source: any) => {
+      this.documentService.sendCursorData(cursors, range);
+      if (range) {
+        if (range.length == 0) {
+          //console.log('User cursor is on', range.index);
+        } else {
+          var text = quill.getText(range.index, range.length);
+          comment_range = range;
+          //console.log('Comment Range', comment_range);
+          //console.log("User has highlighted: ", text);
+        }
+      } else {
+        console.log('Cursor not in the editor', source);
+      }
 
     });
   }
 
 }
 
-export {comment_range, quill, editor};
+export {comment_range, quill, editor, docAuthors};

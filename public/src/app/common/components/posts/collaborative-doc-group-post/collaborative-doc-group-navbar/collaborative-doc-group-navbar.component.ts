@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { editor } from '../collaborative-doc-group-post.component';
 import * as jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { DocumentService } from '../../../../../shared/services/document.service';
 
 @Component({
   selector: 'app-collaborative-doc-group-navbar',
@@ -22,13 +23,21 @@ export class CollaborativeDocGroupNavbarComponent implements OnInit {
 
   @Input() post: any;
 
+  @Input() docStatus: any;
+
+  authorsList: any;
+
   @Output() clickBack: EventEmitter<any> = new EventEmitter();
 
   @Output() docTitle: EventEmitter<any> = new EventEmitter();
 
   constructor(private postService: PostService,
-    private activatedRoute: ActivatedRoute) {
+    private activatedRoute: ActivatedRoute,
+    private documentService: DocumentService) {
       this.postId = this.activatedRoute.snapshot.paramMap.get('postId');
+      this.documentService.authorsList$.subscribe((data)=>{
+        this.authorsList = data.connections;
+      })
      }
 
   ngOnInit() {
@@ -117,9 +126,9 @@ export class CollaborativeDocGroupNavbarComponent implements OnInit {
   }
 
   clickOnBack(){
-    this.getDocument(this.postId).then(()=>{
-      //this.saveTitle();
-    });
+    // this.getDocument(this.postId).then(()=>{
+    //   //this.saveTitle();
+    // });
     this.clickBack.emit('Click on back');
   }
 
