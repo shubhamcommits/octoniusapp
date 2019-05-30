@@ -35,7 +35,20 @@ const createSkillsQuery = (user, query) => User.find({
   ]
 }).select('profile_pic full_name first_name last_name email created_date skills');
 
-//query showing skills only
+const createTagsQuery = (userGroups, query) => Post.find({
+  $and: [
+    { _group: { $in: userGroups } },
+    {
+      $or: [
+        { tags: { $regex: query, $options: 'i' } }
+      ]
+    }
+  ]
+}).sort({ created_date: -1 })
+.populate('_posted_by', 'full_name first_name last_name profile_pic')
+.populate('_group', 'group_name');
+
+//query showing skills only for auto complete in text input
 const createSkillsListQuery = (user, query) => User.aggregate([{
   
   $match : {
@@ -52,7 +65,7 @@ const createSkillsListQuery = (user, query) => User.aggregate([{
   }
 }
 ]);
-//query showing tags only
+//query showing tags only for auto complete in text input
 const createTagListQuery = (user, query) => Post.aggregate([{
   
   $match : {
@@ -107,8 +120,17 @@ const getSearchResults = async (req, res, amountLoaded) => {
           skills.pop();
           moreSkillsToLoad = true;
         }
-
         return { results: skills, moreToLoad: moreSkillsToLoad };
+      case 'tags':
+        tagsQuery = createTagsQuery(user._groups, req.params.query);
+        let moreTagsToLoad = false;
+        const tags = await tagsQuery.skip(parseInt(amountLoaded, 10) || 0).limit(11).exec();
+        if (tags.length === 11) {
+          tags.pop();
+          moreTagsToLoad = true;
+        }
+
+        return { results: tags, moreToLoad: moreTagsToLoad };
       case 'all':
         postQuery = createPostQuery(user._groups, req.params.query);
         skillsQuery = createSkillsQuery(user, req.params.query);

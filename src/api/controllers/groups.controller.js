@@ -260,12 +260,65 @@ const filterPosts = async (query, params) => {
       .populate('event._assigned_to')
       .populate('_liked_by', '_id first_name last_name')
       .lean();
-  } else if (query.user === 'true' && !!query.user_value && filters.length > 0) {
+//needed tags to be false for clicked user and other tags query
+  } else if (query.user === 'true' && !!query.user_value && filters.length > 0 && query.tags === 'false') {
     posts = await Post.find({
       $and: [
         { _posted_by: { $in: userIds } },
         { _group: params.groupId },
         { type: { $in: filters } }
+      ]
+    })
+      .sort('-_id')
+      .skip(parseInt(params.alreadyLoaded, 10) || 0)
+      .limit(5)
+      .populate('_posted_by', 'first_name last_name profile_pic')
+      .populate('task._assigned_to')
+      .populate('event._assigned_to')
+      .populate('_liked_by', '_id first_name last_name')
+      .lean();
+//start of tags query 
+  //single fetched query for tags
+  }else if (query.user === 'false' && query.tags === 'true' && !!query.tags_value && filters.length === 1) {
+    posts = await Post.find({
+      $and: [
+        { _group: params.groupId },
+        { tags: { $regex: query.tags_value } }
+      ]
+    })
+      .sort('-_id')
+      .skip(parseInt(params.alreadyLoaded, 10) || 0)
+      .limit(5)
+      .populate('_posted_by', 'first_name last_name profile_pic')
+      .populate('task._assigned_to')
+      .populate('event._assigned_to')
+      .populate('_liked_by', '_id first_name last_name')
+      .lean();
+    //checking user to tags search
+  } else if (query.user === 'true' && query.tags === 'true' && !!query.user_value && !!query.tags_value && filters.length === 1) {
+    posts = await Post.find({
+      $and: [
+        { _posted_by: { $in: userIds } },
+        { _group: params.groupId },
+        { tags: { $regex: query.tags_value } }
+      ]
+    })
+      .sort('-_id')
+      .skip(parseInt(params.alreadyLoaded, 10) || 0)
+      .limit(5)
+      .populate('_posted_by', 'first_name last_name profile_pic')
+      .populate('task._assigned_to')
+      .populate('event._assigned_to')
+      .populate('_liked_by', '_id first_name last_name')
+      .lean();
+    //checking user to tags within all filters
+  }else if (query.user === 'true' && query.tags === 'true' && !!query.user_value && !!query.tags_value && filters.length > 1) {
+    posts = await Post.find({
+      $and: [
+        { _posted_by: { $in: userIds } },
+        { _group: params.groupId },
+        { tags: { $regex: query.tags_value } },
+        { type: { $in: filters }},
       ]
     })
       .sort('-_id')

@@ -25,5 +25,12 @@
 
     </label><span>User </span>
   </div>
+  <div class="squaredFour">
+      <input [checked]="filters.tags" (click)="toggleFilter('tags')" type="checkbox" value="" id="defaultCheck5">
+      <label class="form-check-label" for="defaultCheck5">
+  
+      </label><span>Tags </span>
+    </div>
   <input *ngIf="filters.user" type="text" [(ngModel)]="filters.user_value" (keyup)="filterPosts()" class="user-filter" placeholder="Enter user name">
+  <input *ngIf="filters.tags" type="text" [(ngModel)]="filters.tags_value" (keyup)="filterPosts()" class="tags-filter" placeholder="Enter tag name">
 </div>

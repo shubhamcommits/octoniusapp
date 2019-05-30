@@ -34,7 +34,15 @@
           <h4 class="search-option__title">Skills</h4>
 
         </div>
+        <div class="tags-search search-option">
+            <div class="squaredFour">
+                <input (click)="$event.stopPropagation(); myDrop.open(); toggleCheckbox('tags')" [checked]="checked_filter === 'tags'" type="checkbox" value="None" id="squaredFour4" name="check" />
+                <label (click)="$event.stopPropagation(); myDrop.open()" for="squaredFour4"></label>
+              </div>
+          <i class="material-icons">local_offer</i>
+          <h4 class="search-option__title">Tags</h4>
 
+        </div>
         <hr>
 
         <div *ngIf="search_value !== ''; else recentSearches" class="search-results">
