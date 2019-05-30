@@ -27,9 +27,20 @@
 
     </div>
   </div>
-  <div class="row" style="float: right; margin-left: 60rem;">
+  <div class="row" style="position: fixed; float: right; margin-left: 70%;">
     <div class="dropdown">
-      <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Export Document
+      <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Authors
+      <span class="caret"></span></button>
+      <ul class="dropdown-menu">
+        <li class="dropdown-item" *ngFor = "let author of authorsList"><div class="dot" [ngStyle]="{'background-color': author.color}"></div> {{ author?.name }}</li>
+      </ul>
+    </div>
+  </div>
+  <div class="row" style="position: fixed; float:right; margin-left:87%;">
+  <b style="color: #00c853; font-size: 16px;">Status: <b style="color: black;">{{ docStatus }}</b></b>    </div>
+  <div class="row" style="position: fixed; float: right; margin-left: 79%;">
+    <div class="dropdown">
+      <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Export
       <span class="caret"></span></button>
       <ul class="dropdown-menu">
         <li class="dropdown-item" (click)="exportPDF()">Export as (.pdf) File</li>

@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import * as chance from 'chance';
 import { SnotifyService, SnotifyPosition, SnotifyToastConfig, Snotify } from 'ng-snotify';
-import { Observable, Observer } from 'rxjs';
+import { Observable, Observer, Subject } from 'rxjs';
 
 var Delta = Quill.import('delta');
 
@@ -11,11 +11,29 @@ var Delta = Quill.import('delta');
 
 export class DocumentService {
 
-  constructor(private _http: HttpClient, private snotifyService: SnotifyService,) { }
+  authorsList$: Observable<any>;
+  private authorsListSubject = new Subject<any>();
+
+  constructor(private _http: HttpClient, private snotifyService: SnotifyService,) { 
+    this.authorsList$ = this.authorsListSubject.asObservable();
+  }
 
   user = JSON.parse(localStorage.getItem('user'));
 
-  async cursorConnection(name: any, color: any, range: any) {
+  authorsList(data: any) {
+    console.log(data);
+    this.authorsListSubject.next(data);
+}
+
+  addAuthor(authorData: any){
+    return this._http.post(environment.BASE_API_URL + `/posts/documents/${authorData._post_id}/addAuthor`, authorData);
+  }
+
+  getAuthors(documentId: any){
+    return this._http.get(environment.BASE_API_URL + `/posts/documents/${documentId}/authors`);
+  }
+
+  async cursorConnection(name: any, color: any) {
 
     return new Promise((resolve, reject) => {
 
@@ -32,9 +50,13 @@ export class DocumentService {
             let cursor_user = await JSON.parse(getUserName.responseText).user;
             name = cursor_user.first_name + " " + cursor_user.last_name;
             color = color;
-            range = range;
+            let user_id = this.user.user_id; 
+            // range = {
+            //   index: 0,
+            //   length: 0
+            // };
 
-            resolve({ name, color, range });
+            resolve({ name, color, user_id});
           }
           else {
             console.log('Error while fetching user details', JSON.parse(getUserName.responseText));
@@ -73,28 +95,43 @@ export class DocumentService {
         updateAll = Object.keys(cursorsModule.cursors).length == 0;
   
       cursors.connections.forEach((connection: any) => {
+        // if (connection.id != cursors.localConnection.id) {
+        //   if (connection.user_id && connection.color) {
+        //     let markColors = JSON.parse(sessionStorage.getItem("markColors"));
+        //     markColors[connection.user_id] = connection.color;
+        //     sessionStorage.setItem("markColors", JSON.stringify(markColors));
+        //   }
+        //   // Update cursor that sent the update, source (or update all if we're initting)
+        //   if ((connection.id == source.id || updateAll) && connection.range) {
+  
+        //     // changed by AMit instead of setCursor starts
+        //     if(cursorsModule.cursors().find((cursor: any) => cursor.id==connection.id)) {
+        //       cursorsModule.moveCursor(
+        //         connection.id,
+        //         connection.range
+        //       );
+        //     } else {
+        //       cursorsModule.createCursor(
+        //         connection.id,
+        //         connection.name,
+        //         connection.color
+        //       );
+        //     } //ends
+        //   }
+  
+        //   // Add to active connections hashtable
+        //   activeConnections[connection.id] = connection;
+        // }
         if (connection.id != cursors.localConnection.id) {
-          if (connection.user_id && connection.color) {
-            let markColors = JSON.parse(sessionStorage.getItem("markColors"));
-            markColors[connection.user_id] = connection.color;
-            sessionStorage.setItem("markColors", JSON.stringify(markColors));
-          }
+
           // Update cursor that sent the update, source (or update all if we're initting)
           if ((connection.id == source.id || updateAll) && connection.range) {
-  
-            // changed by AMit instead of setCursor starts
-            if(cursorsModule.cursors().find((cursor: any) => cursor.id==connection.id)) {
-              cursorsModule.moveCursor(
-                connection.id,
-                connection.range
-              );
-            } else {
-              cursorsModule.createCursor(
-                connection.id,
-                connection.name,
-                connection.color
-              );
-            } //ends
+            cursorsModule.setCursor(
+              connection.id,
+              connection.range,
+              connection.name,
+              connection.color
+            );
           }
   
           // Add to active connections hashtable
@@ -108,8 +145,15 @@ export class DocumentService {
           cursorsModule.removeCursor(cursorId);
         }
       });
+  
+      // Clear 'disconnected' cursors
+      Object.keys(cursorsModule.cursors).forEach(function(cursorId) {
+        if (!activeConnections[cursorId]) {
+          cursorsModule.removeCursor(cursorId);
+        }
+      });
 
-        resolve();
+        resolve(cursorsModule);
       }
       catch(err){
         reject(err);
@@ -133,28 +177,44 @@ export class DocumentService {
         getDocDetails.onload = () => {
           if (getDocDetails.status === 200) {
             let documentHistory = JSON.parse(getDocDetails.responseText).documentHistory;
-            let markColors = JSON.parse(sessionStorage.getItem("markColors") || "{}");
+            // let markColors = JSON.parse(sessionStorage.getItem("markColors") || "{}");
+
+            // documentHistory.forEach((item: any) => {
+            //   if (item && item.user_id && item.user_id._id !== this.user.user_id) {
+
+            //     let cursor = cursors.connections.find((el: any) => el.user_id === item.user_id._id);
+            //     let color = cursor ? cursor.color : (markColors[item.user_id._id] || new chance().color({ format: 'hex' }))
+
+            //     markColors[item.user_id._id] = color;
+
+            //     item.ops.map((op: any) => {
+            //       if (op.insert) {
+            //         op.attributes = op.attributes || {};
+            //         op.attributes.mark = { id: item.src, style: { color: color }, user: item.user_id.first_name + " " + item.user_id.last_name };
+            //       }
+            //       return op;
+            //     })
+            //   }
+            //   document = document.compose(new Delta(item.ops));
+            // })
+            // sessionStorage.setItem("markColors", JSON.stringify(markColors));
+            // quill.setContents(document);
 
             documentHistory.forEach((item: any) => {
               if (item && item.user_id && item.user_id._id !== this.user.user_id) {
 
                 let cursor = cursors.connections.find((el: any) => el.user_id === item.user_id._id);
-                let color = cursor ? cursor.color : (markColors[item.user_id._id] || new chance().color({ format: 'hex' }))
-
-                markColors[item.user_id._id] = color;
 
                 item.ops.map((op: any) => {
                   if (op.insert) {
                     op.attributes = op.attributes || {};
-                    op.attributes.mark = { id: item.src, style: { color: color }, user: item.user_id.first_name + " " + item.user_id.last_name };
+                    //op.attributes.mark = { id: item.src, style: { background: cursors.localConnection.color }, user: item.user_id.first_name + " " + item.user_id.last_name };
                   }
                   return op;
                 })
               }
               document = document.compose(new Delta(item.ops));
             })
-            sessionStorage.setItem("markColors", JSON.stringify(markColors));
-            // quill.setContents(document);
             resolve(document);
           }
           else {
