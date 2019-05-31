@@ -84,7 +84,7 @@ const edit = async (req, res, next) => {
           }
         };
         break;
-      
+
         case 'performance_task':
         postData = {
           title: req.body.title,
@@ -128,7 +128,7 @@ const edit = async (req, res, next) => {
         break;
 
       case 'document':
-        
+
         postData = {
           title: req.body.title,
           content: req.body.content
@@ -140,7 +140,7 @@ const edit = async (req, res, next) => {
 
     const user = await User.findOne({ _id: req.userId });
 
-    // Allow all group's users to edit a multi editor post 
+    // Allow all group's users to edit a multi editor post
     if (post.type === 'document' && user._groups.includes(post._group)) {
       user.role = 'admin';
     }
@@ -259,6 +259,33 @@ const remove = async (req, res, next) => {
   } catch (err) {
     return sendErr(res, err);
   }
+};
+
+/**
+ * Marks the post as read for a particular user
+ * by adding that user to the _read_by list which
+ * contains all of the users that have read that post.
+ *
+ * @param req the request object
+ * @param res the response object
+ * @returns http response
+ */
+const markPostAsRead = async (req, res) => {
+  const { userId } = req;
+  const { postId } = req.params;
+
+  // add the user to _read_by
+  await Post.findByIdAndUpdate(postId, {
+    $addToSet: {
+      _read_by: userId
+    }
+  }, {
+    new: true
+  }).lean();
+
+  return res.status(200).json({
+    message: 'Post marked as read!'
+  });
 };
 
 // -| COMMENTS |-
@@ -512,14 +539,14 @@ const getDocument = async (req, res, next) => {
 const getDocumentHistory = async(req, res, next) => {
   try {
     const { postId } = req.params;
-    
+
     const docHistory = await DocumentEditHistory.find({
       "d": postId,
     }, {"op": true, "m": true}).populate("op.user_id", {first_name: 1, last_name: 1});
     let documentHistory = docHistory.map((item) => {
       return {
         ops: item.op.ops,
-        user_id: item.op.user_id 
+        user_id: item.op.user_id
       }
     });
 
@@ -852,6 +879,7 @@ module.exports = {
   get,
   remove,
   upload,
+  markPostAsRead,
   // Comments
   addComment,
   editComment,

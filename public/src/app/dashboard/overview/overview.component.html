@@ -1,10 +1,10 @@
 <div class="container" style="margin-bottom: 30px">
   <app-overview-page-header></app-overview-page-header>
 
-  <div *ngIf="posts.length === 0 && comments.length === 0">
+  <div *ngIf="posts.length === 0 && comments.length === 0 && this.recentPosts.length === 0">
     <img src='../../../assets/images/empty-activity.svg' style=" margin: 0 auto; display:block; width: 60%">
   </div>
-  <div *ngIf="posts.length > 0 && (this.event_count == 0 && this.normal_count == 0 && this.task_count == 0)">
+  <div *ngIf="posts.length > 0 && (this.event_count == 0 && this.normal_count == 0 && this.task_count == 0 && this.recentPosts.length === 0)">
     <img src='../../../assets/images/empty-activity.svg' style=" margin: 0 auto; display:block; width: 60%">
   </div>
   <div *ngIf="posts.length > 0">
@@ -96,38 +96,6 @@
       </a>
     </div>
 
-    <!-- RECENT POSTS -->
-    <div  *ngIf="this.recentPosts.length > 0; else postif">
-      <h5 class="title-overview">Recent posts</h5>
-    </div>
-
-    <div *ngFor="let post of this.recentPosts; let i = index;" class="mb-2">
-      <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/post/{{post._id}}">
-
-        <div class="media card-tile" [ngClass]="{'overview-task': post.type === 'task', 'overview-event': post.type === 'event'}">
-
-          <div class=" row media-body">
-            <div class="col-md-1">
-              <img src="/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar">
-            </div>
-            <div class="col-md-8">
-              <h5 [ngClass]="{'pink': post.type === 'task', 'blue': post.type === 'event'}">{{post.title}}</h5>
-              <p class="small text-muted">
-                By
-                <span class="font-weight-bold">{{post._posted_by?.full_name | titlecase}}</span>
-                in
-                <span class="font-weight-bold">{{post._group?.group_name | titlecase}}</span>
-              </p>
-            </div>
-          </div>
-
-        </div>
-
-      </a>
-    </div>
-
-    <!-- endof RECENT POSTS -->
-
 
     <!--<div *ngFor="let notifications of notifications_data?.unreadNotifications">
             <a style="text-decoration:none; color:inherit;" routerLink="/dashboard/overview">
@@ -199,6 +167,37 @@
     </div>-->
 
   </div>
+
+  <!-- RECENT POSTS -->
+  <div *ngIf="this.recentPosts.length > 0">
+    <h5 class="title-overview">Recent posts</h5>
+    <div *ngFor="let post of this.recentPosts; let i = index;" class="mb-2">
+      <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/post/{{post._id}}" (click)="this.markPostAsRead(post._id)">
+
+        <div class="media card-tile" [ngClass]="{'overview-task': post.type === 'task', 'overview-event': post.type === 'event'}">
+
+          <div class=" row media-body">
+            <div class="col-md-1">
+              <img src="/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar">
+            </div>
+            <div class="col-md-8">
+              <h5 [ngClass]="{'pink': post.type === 'task', 'blue': post.type === 'event'}">{{post.title}}</h5>
+              <p class="small text-muted">
+                By
+                <span class="font-weight-bold">{{post._posted_by?.full_name | titlecase}}</span>
+                in
+                <span class="font-weight-bold">{{post._group?.group_name | titlecase}}</span>
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+      </a>
+    </div>
+  </div>
+  <!-- endof RECENT POSTS -->
+
   <div *ngIf="comments.length > 0">
     <div>
       <h5 class="title-overview">Recent interactions</h5>

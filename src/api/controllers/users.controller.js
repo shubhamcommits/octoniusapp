@@ -1,4 +1,5 @@
 const moment = require('moment');
+const mongoose = require('mongoose');
 
 const { Post, User, Comment } = require('../models');
 
@@ -172,14 +173,15 @@ const getOverview = async (req, res, next) => {
     const { _groups } = await User.findById(userId)
       .select('_groups');
 
-    // Get today's posts from every group associated with the user
+    // Get today's unread posts from every group associated with the user
     const recentPosts = await Post.find({
       '_group': { $in: _groups },
-      'created_date': { $gte: todayForEvent, $lt: todayPlus24ForEvent }
+      'created_date': { $gte: todayForEvent, $lt: todayPlus24ForEvent },
+      '_read_by': { $not: { $elemMatch: { $eq: new mongoose.Types.ObjectId(userId) } } }
     })
       .populate('_group', 'group_name')
       .populate('_posted_by', 'full_name profile_pic')
-      .select('title type _group _posted_by');
+      .select('_id title type _group _posted_by');
 
 
     return res.status(200).json({
