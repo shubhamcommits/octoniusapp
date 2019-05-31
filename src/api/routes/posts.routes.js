@@ -36,6 +36,9 @@ router.put('/:postId', posts.edit);
 // Delete post
 router.delete('/:postId', posts.remove);
 
+// Mark post as read
+router.put('/read/:postId', posts.markPostAsRead);
+
 // - Comments -
 
 // Get a single comment

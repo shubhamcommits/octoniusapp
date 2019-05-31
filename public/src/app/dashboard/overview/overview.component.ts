@@ -135,6 +135,15 @@ export class OverviewComponent implements OnInit {
 
   }
 
+  
+  markPostAsRead(postId) {
+    this._postservice.markPostAsRead(postId)
+      .subscribe(
+        () => console.log('Post marked as read!'),
+        (err) => console.error(`Cannot mark post as read! ${err}`)
+      );
+  }
+
 
 
 }

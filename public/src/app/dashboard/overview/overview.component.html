@@ -172,7 +172,7 @@
   <div *ngIf="this.recentPosts.length > 0">
     <h5 class="title-overview">Recent posts</h5>
     <div *ngFor="let post of this.recentPosts; let i = index;" class="mb-2">
-      <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/post/{{post._id}}">
+      <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/post/{{post._id}}" (click)="this.markPostAsRead(post._id)">
 
         <div class="media card-tile" [ngClass]="{'overview-task': post.type === 'task', 'overview-event': post.type === 'event'}">
 

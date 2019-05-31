@@ -113,6 +113,10 @@ const PostSchema = new Schema({
   tags: [{
     type: String,
     default: []
+  }],
+  _read_by: [{
+    type: Schema.Types.ObjectId,
+    ref: 'User'
   }]
 });
 
