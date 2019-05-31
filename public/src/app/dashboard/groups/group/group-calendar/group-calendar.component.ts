@@ -95,8 +95,6 @@ export class GroupCalendarComponent implements OnInit {
 
   async ngOnInit() {
     this.ngxService.start(); // start foreground loading with 'default' id
-
-
     this.group_id = this.groupDataService.groupId;
     await this.getGroupMembers();
     // We will fetch all the tasks and events of this month
