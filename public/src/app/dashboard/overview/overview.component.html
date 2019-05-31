@@ -13,7 +13,7 @@
     </div>
 
     <ng-template #postif></ng-template>
-    <div *ngFor="let post of posts; let i = index;">
+    <div *ngFor="let post of posts; let i = index;" class="mb-2">
       <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/post/{{post._id}}">
         <div *ngIf="post.type== 'event'">
 
@@ -62,7 +62,7 @@
     </div>
 
 
-    <div *ngFor="let post of posts; let i = index;">
+    <div *ngFor="let post of posts; let i = index;" class="mb-2">
       <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/post/{{post._id}}">
         <div *ngIf="post.type== 'task' && post.task.status != 'done'">
           <div class="media card-tile overview-task">
@@ -95,6 +95,38 @@
         </div>
       </a>
     </div>
+
+    <!-- RECENT POSTS -->
+    <div  *ngIf="this.recentPosts.length > 0; else postif">
+      <h5 class="title-overview">Recent posts</h5>
+    </div>
+
+    <div *ngFor="let post of this.recentPosts; let i = index;" class="mb-2">
+      <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/post/{{post._id}}">
+
+        <div class="media card-tile" [ngClass]="{'overview-task': post.type === 'task', 'overview-event': post.type === 'event'}">
+
+          <div class=" row media-body">
+            <div class="col-md-1">
+              <img src="/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar">
+            </div>
+            <div class="col-md-8">
+              <h5 [ngClass]="{'pink': post.type === 'task', 'blue': post.type === 'event'}">{{post.title}}</h5>
+              <p class="small text-muted">
+                By
+                <span class="font-weight-bold">{{post._posted_by?.full_name | titlecase}}</span>
+                in
+                <span class="font-weight-bold">{{post._group?.group_name | titlecase}}</span>
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+      </a>
+    </div>
+
+    <!-- endof RECENT POSTS -->
 
 
     <!--<div *ngFor="let notifications of notifications_data?.unreadNotifications">
@@ -172,7 +204,7 @@
       <h5 class="title-overview">Recent interactions</h5>
     </div>
 
-    <div *ngFor="let comment of comments; let i = index;">
+    <div *ngFor="let comment of comments; let i = index;" class="mb-2">
 
       <div *ngIf="comment?._post?.type == 'normal'">
         <div [routerLink]="['/dashboard/group/', comment._post._group._id, 'post', comment._post._id]" class="media card-tile overview-post">

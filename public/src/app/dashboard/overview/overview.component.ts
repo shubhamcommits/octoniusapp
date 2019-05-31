@@ -25,6 +25,7 @@ declare var google: any;
 export class OverviewComponent implements OnInit {
 
   posts = [];
+  recentPosts = [];
   comments = [];
   groups = [];
 
@@ -67,7 +68,7 @@ export class OverviewComponent implements OnInit {
 
   ngOnInit() {
     this.ngxService.start(); // start foreground loading with 'default' id
-    
+
     const user = {
       'userId': this.user_data.user_id
       }
@@ -95,11 +96,12 @@ export class OverviewComponent implements OnInit {
         // console.log('Group posts:', res);
         this.posts = res['posts'];
         this.comments = res['comments'];
-  
+        this.recentPosts = res['recentPosts'];
+
         if (this.comments.length > 0) {
           this.normal_count = 1;
         }
-  
+
         for (let i = 0 ; i < this.posts.length; i ++) {
           if ( this.posts[i].type === 'task' && this.posts[i].task.status !== 'done' ) {
             this.task_count = 1;
@@ -124,7 +126,7 @@ export class OverviewComponent implements OnInit {
         this.isLoading$.next(false);
        }
        resolve();
-  
+
       }, (err) => {
           reject(err);
       });

@@ -168,10 +168,24 @@ const getOverview = async (req, res, next) => {
       .populate('_group', 'group_name group_avatar')
       .populate('_liked_by', 'first_name last_name');
 
+    // Get the group(s) that the user belongs to
+    const { _groups } = await User.findById(userId)
+      .select('_groups');
+
+    // Get today's posts from every group associated with the user
+    const recentPosts = await Post.find({
+      '_group': { $in: _groups },
+      'created_date': { $gte: todayForEvent, $lt: todayPlus24ForEvent }
+    })
+      .populate('_group', 'group_name')
+      .populate('_posted_by', 'full_name profile_pic')
+      .select('title type _group _posted_by');
+
 
     return res.status(200).json({
       message: `Found ${posts.length} posts!`,
       posts,
+      recentPosts,
       comments: filteredComments
     });
   } catch (err) {
