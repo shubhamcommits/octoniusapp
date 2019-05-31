@@ -135,7 +135,7 @@ export class OverviewComponent implements OnInit {
 
   }
 
-  
+
   markPostAsRead(postId) {
     this._postservice.markPostAsRead(postId)
       .subscribe(

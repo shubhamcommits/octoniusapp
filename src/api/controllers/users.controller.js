@@ -180,8 +180,8 @@ const getOverview = async (req, res, next) => {
       '_read_by': { $not: { $elemMatch: { $eq: new mongoose.Types.ObjectId(userId) } } }
     })
       .populate('_group', 'group_name')
-      .populate('_posted_by', 'full_name profile_pic')
-      .select('_id title type _group _posted_by');
+      .populate('_posted_by', 'first_name profile_pic')
+      .select('_id title type _group _posted_by created_date');
 
 
     return res.status(200).json({
