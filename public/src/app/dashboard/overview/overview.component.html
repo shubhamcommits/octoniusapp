@@ -175,19 +175,18 @@
       <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/post/{{post._id}}" (click)="this.markPostAsRead(post._id)">
 
         <div class="media card-tile" [ngClass]="{'overview-task': post.type === 'task', 'overview-event': post.type === 'event'}">
-
           <div class=" row media-body">
             <div class="col-md-1">
               <img src="/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar">
             </div>
+            <div class="col-md-2">
+              <h5>{{post._posted_by?.first_name}} </h5>
+
+              <p class="small text-muted">{{post?.created_date | date:'shortTime' }}</p>
+
+            </div>
             <div class="col-md-8">
               <h5 [ngClass]="{'pink': post.type === 'task', 'blue': post.type === 'event'}">{{post.title}}</h5>
-              <p class="small text-muted">
-                By
-                <span class="font-weight-bold">{{post._posted_by?.full_name | titlecase}}</span>
-                in
-                <span class="font-weight-bold">{{post._group?.group_name | titlecase}}</span>
-              </p>
             </div>
           </div>
 
