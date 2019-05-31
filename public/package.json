@@ -73,6 +73,7 @@
     "quill-delta": "^4.1.0",
     "quill-emoji": "^0.1.5",
     "quill-mention": "^2.0.1",
+    "readmore-js": "^2.2.1",
     "reconnecting-websocket": "^4.1.10",
     "rxjs": "^5.2.10",
     "socket.io-client": "^2.1.1",
