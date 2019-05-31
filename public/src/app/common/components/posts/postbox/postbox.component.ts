@@ -209,6 +209,7 @@ export class PostboxComponent implements OnInit, OnDestroy {
     formData.append('_group', post._group);
     formData.append('event.due_to', post.event.due_to);
 
+   
     // Handling mentions ( perhaps turn this into separate method since we're repeating ourselves )
     const scanned_content = post.content;
     let el = document.createElement('html');

@@ -34,6 +34,7 @@ export class GroupActivityFiltersComponent implements OnInit {
     const filters = this.filters;
     this.groupService.getFilteredPosts(this.group._id, filters)
       .subscribe((res) => {
+        console.log(res)
         this.sendFilteredPosts.emit(res['posts']);
       });
   }

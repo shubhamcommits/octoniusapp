@@ -100,6 +100,10 @@ const getCalendarPosts = async (req, res, next) => {
     // we want to find posts between the start and end of given month
     const startOfMonthEvent = date.startOf('month').toDate();
     const endOfMonthEvent = date.endOf('month').toDate();
+    // need to convert format to match date from frontend 
+    const convertedStartMonthEvent = moment(startOfMonthEvent).utc().format('YYYY-MM-DDTHH:mm:ss');
+    const convertedEndOfMonthEvent = moment(endOfMonthEvent).utc().format('YYYY-MM-DDTHH:mm:ss');
+
     // tasks are saved under different format in DB
     const startOfMonthTask = date.startOf('month').format('YYYY-MM-DD');
     const endOfMonthTask = date.endOf('month').format('YYYY-MM-DD');
@@ -110,7 +114,7 @@ const getCalendarPosts = async (req, res, next) => {
       $and: [
         { _group: groupId },
         { $or: [{ type: 'event' }, { type: 'task' }] },
-        { $or: [{ 'event.due_to': { $gte: startOfMonthEvent, $lt: endOfMonthEvent } }, { 'task.due_to': { $gte: startOfMonthTask, $lte: endOfMonthTask } }] }
+        { $or: [{ 'event.due_to': { $gte: convertedStartMonthEvent, $lte: convertedEndOfMonthEvent } }, { 'task.due_to': { $gte: startOfMonthTask, $lte: endOfMonthTask } }] }
       ]
     });
 
