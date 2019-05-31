@@ -23,6 +23,7 @@ export class TaskGroupPostComponent implements OnInit {
   @Input() groupactivity: GroupActivityComponent;
 
   @Input() post;
+  @Input() preview;
   @Input('group') group;
   @Input('user') user;
   @Input('user_data') user_data;
@@ -75,6 +76,9 @@ export class TaskGroupPostComponent implements OnInit {
   tags_search_words: String = ''
   tags_search_result: any = new Array();
 
+  // collapsibility
+  readMore: boolean;
+
   constructor(
     private postService: PostService,
     private groupService: GroupService,
@@ -98,6 +102,8 @@ export class TaskGroupPostComponent implements OnInit {
       // console.log('Inside else');
       this.profilePic = `${environment.BASE_URL}/uploads/${this.user['profile_pic']}`;
      }
+
+    this.readMore = this.preview;
   }
   ngAfterViewInit(): void {
     $('.image-gallery').lightGallery({
@@ -122,7 +128,7 @@ export class TaskGroupPostComponent implements OnInit {
     acnhorThumbnail.appendChild(clonedImg);
     imgGallery.appendChild(acnhorThumbnail);
     img.replaceWith(imgGallery);
-  } 
+  }
 return doc.body.innerHTML;
 }
 
@@ -446,10 +452,10 @@ return doc.body.innerHTML;
       //console.log("here12")
       this.searchService.getTagsSearchResults(this.tags_search_words)
       .subscribe((res) => {
-  
+
          if (res) {
           this.tags_search_result = res['results'];
-        } 
+        }
       }, (err)=>{
         console.log('Error while searching', err);
       });
@@ -462,7 +468,7 @@ return doc.body.innerHTML;
     this.tags.push(tagsFromList);;
     this.tags_search_words = '';
     console.log(this.tags);
-  } 
+  }
 
   toggled(event) {
     if (event) {
