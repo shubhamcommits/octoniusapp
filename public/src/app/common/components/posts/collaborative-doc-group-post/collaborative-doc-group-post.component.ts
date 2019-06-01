@@ -35,7 +35,6 @@ var quill: any;
 var editor: any;
 var docAuthors: any = new Array();
 // !-- Variables Required to use and export Globally--! //
-
 var shareDBSocket: any;
 
 
@@ -132,6 +131,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
 
   docStatus: any = "Updated!";
   user_data: any;
+  user_document_information: any;
 
   comments = [];
   comment_count = 0;
@@ -154,12 +154,38 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
       showProgressBar: false,
       backdrop:0.5,
       position: "centerTop"
+    });
+    await this.getUser().then(()=>{
+      //grab user id then call for authors check
+      this.documentService.getAuthors(postId)
+      .subscribe((res)=>{
+          if(res['authors'].length !=0){
+            var got_author:Boolean = false
+            for(let i = 0; i < res['authors'].length; i++){
+              if(res['authors'][i]['_user_id'] == this.user_data._id){
+    // user is already an author pass author information here and start quill
+                got_author = true
+                this.user_document_information = res['authors'][i]
+                this.initializeQuillEditor()
+                this.getPost();
+                break
+              }
+            }
+      //else if the user is not in authors loop
+            if (got_author == false){
+              this.initializeQuillEditor()
+              this.getPost();
+            }
+          }else{
+        //start quill if there are 0 authors for this doc
+              this.initializeQuillEditor()
+              this.getPost();
+            }
+      }, (err)=>{
+        console.log('Error while fetching the authors', err);
+      })
     });    
-   await this.initializeQuillEditor().then(()=>{
-     this.getUser();
-     this.getPost();
-   })
-
+  
   }
 
   ngOnDestroy(): void {
@@ -249,10 +275,18 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
       // Create browserchannel socket
       cursors.socket = new ReconnectingWebSocket(((location.protocol === 'https:') ? 'wss' : 'ws') + '://' + environment.REAL_TIME_URL + '/cursors');
       // !-- Connect ShareDB and Cursors to ReconnectingWebSocket--! //
+      //have color here
+      var colorFromUser:any
+   
+      if (this.user_document_information){
+        colorFromUser = this.user_document_information['color']
+      }else{
+        colorFromUser = new chance().color({
+          format: 'hex'
+        })
+      }
 
-      let connection: any = await this.documentService.cursorConnection(null, new chance().color({
-        format: 'hex'
-      }));
+      let connection: any = await this.documentService.cursorConnection(null, colorFromUser);
 
       let user = JSON.parse(localStorage.getItem('user'));
 
@@ -357,12 +391,13 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
               authorId: authorData._user_id,
               color: authorData.color
             });
-          //    this.documentService.addAuthor(authorData)
-          //   .subscribe((res)=>{
-          //     //console.log(res['message'], res);
-          //   }, (err)=>{
-          //     //console.log('Error while adding the author', err);
-          //   })
+          //add author
+             this.documentService.addAuthor(authorData)
+            .subscribe((res)=>{
+              //console.log(res['message'], res);
+            }, (err)=>{
+              //console.log('Error while adding the author', err);
+            })
             });
 
           // this.documentService.getAuthors(postId)
@@ -410,17 +445,17 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
               authorId: authorData._user_id,
               color: authorData.color
              });
-              //  this.documentService.addAuthor(authorData)
-              // .subscribe((res)=>{
-              //   var authModule = new Authorship(quill, {
-              //     enabled: true,
-              //     authorId: authorData._user_id,
-              //     color: authorData.color
-              //    });
-              //   //console.log(res['message'], res);
-              // }, (err)=>{
-              //   //console.log('Error while adding the author', err);
-              // });
+               this.documentService.addAuthor(authorData)
+              .subscribe((res)=>{
+                var authModule = new Authorship(quill, {
+                  enabled: true,
+                  authorId: authorData._user_id,
+                  color: authorData.color
+                 });
+                //console.log(res['message'], res);
+              }, (err)=>{
+                //console.log('Error while adding the author', err);
+              });
               /*this.documentService.getAuthors(postId)
               .subscribe((res)=>{
                 console.log('Authors for the document', res);
@@ -485,7 +520,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
       console.log('Error', err);
     }
 
-}
+  }
 
   handleDocument(doc, user, cursorsModule) {
     doc.subscribe(async () => {
