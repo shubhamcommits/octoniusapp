@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../shared/services/auth.service';
 import { Router } from '@angular/router';
-import { UserService } from '../../shared/services/user.service';
-import { User } from '../../shared/models/user.model';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { PostService } from '../../shared/services/post.service';
-import { GroupsService } from '../../shared/services/groups.service';
 import { BehaviorSubject } from 'rxjs';
 import * as io from 'socket.io-client';
 import { environment } from '../../../environments/environment';
+import { User } from '../../shared/models/user.model';
+import { AuthService } from '../../shared/services/auth.service';
 import { GoogleCloudService } from '../../shared/services/google-cloud.service';
+import { GroupsService } from '../../shared/services/groups.service';
+import { PostService } from '../../shared/services/post.service';
+import { UserService } from '../../shared/services/user.service';
 
 //Google API Variables
 declare var gapi: any;
@@ -96,6 +96,12 @@ export class OverviewComponent implements OnInit {
         // console.log('Group posts:', res);
         this.posts = res['posts'];
         this.comments = res['comments'];
+        this.comments = this.comments.map(comment => {
+          let newComment = comment;
+          newComment.readMore = true;
+          return newComment;
+        });
+
         this.recentPosts = res['recentPosts'];
 
         if (this.comments.length > 0) {

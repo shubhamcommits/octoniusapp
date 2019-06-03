@@ -23,7 +23,7 @@ export class TaskGroupPostComponent implements OnInit {
   @Input() groupactivity: GroupActivityComponent;
 
   @Input() post;
-  @Input() preview;
+  @Input() preview; // true if the post is in preview mode, else false
   @Input('group') group;
   @Input('user') user;
   @Input('user_data') user_data;
@@ -77,6 +77,8 @@ export class TaskGroupPostComponent implements OnInit {
   tags_search_result: any = new Array();
 
   // collapsibility
+  // If true, "read more" text should be displayed and the post should be in preview mode
+  // If false, "read less" text should be displayed and the post should be displayed entirely
   readMore: boolean;
 
   constructor(

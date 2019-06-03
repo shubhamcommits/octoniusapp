@@ -20,6 +20,7 @@ export class EventGroupPostComponent implements OnInit, OnDestroy {
   @ViewChild(CommentSectionComponent) commentSectionComponent;
 
   @Input() post;
+  @Input() preview; // true if the post is in preview mode, else false
   @Input('group') group;
   @Input('user') user;
   @Input('user_data') user_data;
@@ -27,7 +28,6 @@ export class EventGroupPostComponent implements OnInit, OnDestroy {
   @Input('socket') socket;
   @Input('modules') modules;
   @Input('isItMyWorkplace') isItMyWorkplace;
-  @Input() preview;
 
   @Output('deletePost') removePost = new EventEmitter();
 
@@ -73,6 +73,8 @@ export class EventGroupPostComponent implements OnInit, OnDestroy {
   tags_search_result: any = new Array();
 
   // collapsibility
+  // If true, "read more" text should be displayed and the post should be in preview mode
+  // If false, "read less" text should be displayed and the post should be displayed entirely
   readMore: boolean;
 
   constructor(private postService: PostService, private groupService: GroupService,
