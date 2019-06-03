@@ -65,13 +65,13 @@
 
           <!-- Normal post -->
           <normal-group-post *ngIf="post?.type === 'normal'" [post]="post" [user]="user" [modules]="modules"
-            [user_data]="user_data" [allMembersId]="allMembersId" [group]="group" [socket]="socket" [preview]=true
+            [user_data]="user_data" [allMembersId]="allMembersId" [group]="group" [socket]="socket" [preview]="true"
             (deletePost)="onDeletePost($event)" ng-repeat="post in posts">
           </normal-group-post>
 
           <!-- task post -->
           <task-group-post *ngIf="post?.type === 'task'" [post]="post" [user]="user" [isItMyWorkplace]="isItMyWorkplace"
-            [modules]="modules" [user_data]="user_data" [allMembersId]="allMembersId" [group]="group" [socket]="socket" [preview]=true
+            [modules]="modules" [user_data]="user_data" [allMembersId]="allMembersId" [group]="group" [socket]="socket" [preview]="true"
             (deletePost)="onDeletePost($event)" ng-repeat="post in posts">
           </task-group-post>
 
@@ -79,7 +79,7 @@
           <!--EVENT post-->
           <event-group-post *ngIf="post?.type === 'event'" [post]="post" [user]="user"
             [isItMyWorkplace]="isItMyWorkplace" [modules]="modules" [user_data]="user_data"
-            [allMembersId]="allMembersId" [group]="group" [socket]="socket" [preview]=true (deletePost)="onDeletePost($event)"
+            [allMembersId]="allMembersId" [group]="group" [socket]="socket" [preview]="true" (deletePost)="onDeletePost($event)"
             ng-repeat="post in posts">
           </event-group-post>
 
