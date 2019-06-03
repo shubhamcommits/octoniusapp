@@ -99,16 +99,16 @@
                   <div class="col-md-12 innercard font-weight-bold" style="font-size: 18px;" [innerHTML]="post?.title | safe: 'html'">
                   </div>
                   <!-- To Do Post Content -->
-                  <div class="col-md-12 innercard " [innerHTML]="post?.content | safe: 'html'">
+                  <!--<div class="col-md-12 innercard " [innerHTML]="post?.content | safe: 'html'">-->
                     <!--<pre class="card-text ">{{post?.content}}
                   </pre>-->
-                  </div>
+                  <!--</div> -->
                 </a>
-                <div class="col-md-12 innercard" *ngFor="let file of post.files">
+                <!--<div class="col-md-12 innercard" *ngFor="let file of post.files">
                   <div class="col-md-12 event-title">Attachment:</div>
                   <div class="col-md-12"> <a role="button" href="javascript:void(null);" (click)="onDownlaodFile(file.modified_name,file.orignal_name)">{{file?.orignal_name}}</a></div>
-                </div>
-                <div class="row">
+                </div>-->
+                <div class="row mt-4">
                   <div class="col-md-6 text-left">
 <span [ngbPopover]="likepopcontent" triggers="mouseenter:mouseleave"><b>{{post?._liked_by.length}}</b>
                         Likes</span>
@@ -258,16 +258,16 @@
                   <div class="col-md-12 innercard font-weight-bold" style="font-size: 18px;" [innerHTML]="post?.title | safe: 'html'">
                   </div>
                   <!-- IN PROGRESS POST CONTENT -->
-                  <div class="col-md-12 innercard " [innerHTML]="post?.content | safe: 'html'">
+                  <!--<div class="col-md-12 innercard " [innerHTML]="post?.content | safe: 'html'">-->
                     <!--<pre class="card-text ">{{post?.content}}
               </pre>-->
-                  </div>
-                  <div class="col-md-12 innercard" *ngFor="let file of post.files">
+                  <!--</div>-->
+                  <!--<div class="col-md-12 innercard" *ngFor="let file of post.files">
                     <div class="col-md-12 event-title">Attachment:</div>
                     <div class="col-md-12"> <a role="button" href="javascript:void(null);" (click)="onDownlaodFile(file.modified_name,file.orignal_name)">{{file?.orignal_name}}</a></div>
-                  </div>
+                  </div>-->
                 </a>
-                <div class="row">
+                <div class="row mt-4">
                   <div class="col-md-6 text-left">
 <span [ngbPopover]="likepopcontent" triggers="mouseenter:mouseleave"><b>{{post?._liked_by.length}}</b>
                         Likes</span>
@@ -411,12 +411,12 @@
                 <div class="col-md-12 innercard font-weight-bold" style="font-size: 18px;" [innerHTML]="post?.title | safe: 'html'">
                 </div>
                 <!-- COMPLETE POST CONTENT -->
-                <div class="col-md-12 innercard " [innerHTML]="post?.content | safe: 'html'">
+                <!--<div class="col-md-12 innercard " [innerHTML]="post?.content | safe: 'html'">-->
                   <!--<pre class="card-text ">{{post?.content}}
                 </pre>-->
-                </div>
+                <!--</div>-->
               </a>
-              <div class="row">
+              <div class="row mt-4">
                 <div class="col-md-6 text-left">
 <span [ngbPopover]="likepopcontent" triggers="mouseenter:mouseleave"><b>{{post?._liked_by.length}}</b>
                         Likes</span>

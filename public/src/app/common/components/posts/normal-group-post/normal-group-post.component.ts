@@ -24,6 +24,7 @@ export class NormalGroupPostComponent implements OnInit,AfterViewInit, OnDestroy
   @ViewChild(CommentSectionComponent) commentSectionComponent;
 
   @Input() post: any;
+  @Input() preview; // true if the post is in preview mode, else false
   @Input('group') group;
   @Input('user') user;
   @Input('user_data') user_data;
@@ -77,6 +78,11 @@ export class NormalGroupPostComponent implements OnInit,AfterViewInit, OnDestroy
   tags_search_words: String = ''
   tags_search_result: any = new Array();
 
+  // collapsibility
+  // If true, "read more" text should be displayed and the post should be in preview mode
+  // If false, "read less" text should be displayed and the post should be displayed entirely
+  readMore: boolean;
+
   constructor(
     private groupService: GroupService,
     private postService: PostService,
@@ -100,6 +106,8 @@ export class NormalGroupPostComponent implements OnInit,AfterViewInit, OnDestroy
       // console.log('Inside else');
       this.profilePic = `${environment.BASE_URL}/uploads/${this.user['profile_pic']}`;
      }
+
+    this.readMore = this.preview;
 
   }
 
@@ -126,7 +134,7 @@ export class NormalGroupPostComponent implements OnInit,AfterViewInit, OnDestroy
       acnhorThumbnail.appendChild(clonedImg);
       imgGallery.appendChild(acnhorThumbnail);
       img.replaceWith(imgGallery);
-    } 
+    }
   return doc.body.innerHTML;
 }
 
@@ -405,10 +413,10 @@ export class NormalGroupPostComponent implements OnInit,AfterViewInit, OnDestroy
       //console.log("here12")
       this.searchService.getTagsSearchResults(this.tags_search_words)
       .subscribe((res) => {
-  
+
          if (res) {
           this.tags_search_result = res['results'];
-        } 
+        }
       }, (err)=>{
         console.log('Error while searching', err);
       });
@@ -421,6 +429,6 @@ export class NormalGroupPostComponent implements OnInit,AfterViewInit, OnDestroy
     this.tags.push(tagsFromList);;
     this.tags_search_words = '';
     console.log(this.tags);
-  } 
+  }
 
 }
