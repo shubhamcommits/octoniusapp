@@ -35,11 +35,10 @@ export class CollaborativeDocGroupNavbarComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private documentService: DocumentService) {
       this.postId = this.activatedRoute.snapshot.paramMap.get('postId');
-      this.documentService.authorsList$.subscribe((data)=>{
-        this.authorsList = data.connections;
+      this.documentService.getAuthors(this.postId).subscribe((data)=>{
+        this.authorsList = data['authors'];
       })
      }
-
   ngOnInit() {
     this.getPost();
     /*this.getPost();
