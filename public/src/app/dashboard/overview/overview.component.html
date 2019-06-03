@@ -204,8 +204,8 @@
 
     <div *ngFor="let comment of comments; let i = index;" class="mb-2">
 
-      <div *ngIf="comment?._post?.type == 'normal'" class="media card-tile overview-post" [ngStyle]="{ 'height': comment.readMore  ? '110px' : '100%', 'overflow': 'hidden'}">
-        <div [routerLink]="['/dashboard/group/', comment._post._group._id, 'post', comment._post._id]">
+      <div *ngIf="comment?._post?.type == 'normal'" class="card-tile">
+        <div [routerLink]="['/dashboard/group/', comment._post._group._id, 'post', comment._post._id]" class="media overview-post" [ngStyle]="{ 'height': comment.readMore  ? '110px' : '100%', 'overflow': 'hidden'}">
           <!-- <img src="/uploads/{{post._group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" class="mr-3 feed-avatar-big"> -->
           <div class=" row media-body">
             <div class="col-md-1">
@@ -231,16 +231,20 @@
           </div>
 
         </div>
-        <!-- read more / read less button -->
-        <button class="btn btn-link" (click)="comment.readMore = !comment.readMore">
-          <span *ngIf="comment.readMore">Read more</span>
-          <span *ngIf="!comment.readMore">Read less</span>
-        </button>
+        <div class="row">
+          <div class="col-md-8 offset-md-3">
+            <!-- read more / read less button -->
+            <button *ngIf="comment.content.split('').length > 350" class="btn btn-link p-0 ml-1 my-3" (click)="comment.readMore = !comment.readMore">
+              <span *ngIf="comment.readMore">Read more</span>
+              <span *ngIf="!comment.readMore">Read less</span>
+            </button>
+          </div>
+        </div>
       </div>
 
 
-      <div *ngIf="comment?._post?.type== 'task' && comment?._post?.task?.status != 'done' && comment?._post?.comments_count > 0" class="media card-tile" [ngStyle]="{ 'height': comment.readMore  ? '110px' : '100%', 'overflow': 'hidden'}">
-        <div [routerLink]="['/dashboard/group/', comment._post._group._id, 'post', comment._post._id]">
+      <div *ngIf="comment?._post?.type== 'task' && comment?._post?.task?.status != 'done' && comment?._post?.comments_count > 0" class="card-tile">
+        <div [routerLink]="['/dashboard/group/', comment._post._group._id, 'post', comment._post._id]" class="media" [ngStyle]="{ 'height': comment.readMore  ? '110px' : '100%', 'overflow': 'hidden'}">
           <!-- <img src="/uploads/{{post._group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" class="mr-3 feed-avatar-big"> -->
           <div class=" row media-body">
             <div class="col-md-1">
@@ -266,16 +270,20 @@
 
           </div>
         </div>
-        <!-- read more / read less button -->
-        <button class="btn btn-link" (click)="comment.readMore = !comment.readMore">
-          <span *ngIf="comment.readMore">Read more</span>
-          <span *ngIf="!comment.readMore">Read less</span>
-        </button>
+        <div class="row">
+          <div class="col-md-8 offset-md-3">
+            <!-- read more / read less button -->
+            <button *ngIf="comment.content.split('').length > 350" class="btn btn-link p-0 ml-1 my-3" (click)="comment.readMore = !comment.readMore">
+              <span *ngIf="comment.readMore">Read more</span>
+              <span *ngIf="!comment.readMore">Read less</span>
+            </button>
+          </div>
+        </div>
       </div>
 
-      <div *ngIf="comment?._post?.type== 'event' && comment?._post?.comments_count > 0" class="media card-tile" [ngStyle]="{ 'height': comment.readMore  ? '110px' : '100%', 'overflow': 'hidden'}">
+      <div *ngIf="comment?._post?.type== 'event' && comment?._post?.comments_count > 0" class="card-tile">
 
-        <div [routerLink]="['/dashboard/group/', comment._post._group._id, 'post', comment._post._id]">
+        <div [routerLink]="['/dashboard/group/', comment._post._group._id, 'post', comment._post._id]" class="media" [ngStyle]="{ 'height': comment.readMore  ? '110px' : '100%', 'overflow': 'hidden'}">
           <!-- <img src="/uploads/{{post._group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" class="mr-3 feed-avatar"> -->
           <div class=" row media-body">
             <div class="col-md-1">
@@ -297,11 +305,15 @@
 
           </div>
         </div>
-        <!-- read more / read less button -->
-        <button class="btn btn-link" (click)="comment.readMore = !comment.readMore">
-          <span *ngIf="comment.readMore">Read more</span>
-          <span *ngIf="!comment.readMore">Read less</span>
-        </button>
+        <div class="row">
+          <div class="col-md-8 offset-md-3">
+            <!-- read more / read less button -->
+            <button *ngIf="comment.content.split('').length > 350" class="btn btn-link p-0 ml-1 my-3" (click)="comment.readMore = !comment.readMore">
+              <span *ngIf="comment.readMore">Read more</span>
+              <span *ngIf="!comment.readMore">Read less</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>

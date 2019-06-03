@@ -129,7 +129,7 @@
       <div class="col-md-12 innercard font-weight-bold" [innerHTML]="post?.title | safe: 'html'">
       </div>
 
-      <div [ngStyle]="{ 'height': this.readMore  ? '100px' : '100%', 'overflow': 'hidden'}">
+      <div [ngStyle]="{ 'height': this.readMore  ? '107px' : '100%', 'overflow': 'hidden'}">
         <!-- TASK POST CONTENT -->
         <div class="col-md-12 innercard " [innerHTML]="applyZoom(post?.content) | safe: 'html'">
         </div>
@@ -154,7 +154,7 @@
       </div>
 
       <!-- read more / read less button -->
-      <button *ngIf="post?.content.split('').length > 50 && this.preview" class="btn btn-link" (click)="this.readMore = !this.readMore">
+      <button *ngIf="post?.content.split('').length > 50 && this.preview" class="btn btn-link mt-3" (click)="this.readMore = !this.readMore">
         <span *ngIf="this.readMore">Read more</span>
         <span *ngIf="!this.readMore">Read less</span>
       </button>

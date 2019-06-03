@@ -96,10 +96,12 @@ export class OverviewComponent implements OnInit {
         // console.log('Group posts:', res);
         this.posts = res['posts'];
         this.comments = res['comments'];
+
+        // Adding the readMore property to every comment.
+        // This property is used when making the post collapsible.
         this.comments = this.comments.map(comment => {
-          let newComment = comment;
-          newComment.readMore = true;
-          return newComment;
+          comment.readMore = true;
+          return comment;
         });
 
         this.recentPosts = res['recentPosts'];
