@@ -186,7 +186,7 @@
 
             </div>
             <div class="col-md-8">
-              <h5 [ngClass]="{'pink': post.type === 'task', 'blue': post.type === 'event'}">{{post.title}}</h5>
+              <p class="overview-item font-weight-bold" [ngClass]="{'pink': post.type === 'task', 'blue': post.type === 'event'}" style="margin-top:25px;">{{post.title}}</p>
             </div>
           </div>
 
