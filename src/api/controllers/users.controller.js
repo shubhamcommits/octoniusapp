@@ -174,15 +174,17 @@ const getOverview = async (req, res, next) => {
       .select('_groups');
 
     // Get today's unread posts from every group associated with the user
-    const recentPosts = await Post.find({
+    let recentPosts = await Post.find({
       '_group': { $in: _groups },
       'created_date': { $gte: todayForEvent, $lt: todayPlus24ForEvent },
       '_read_by': { $not: { $elemMatch: { $eq: new mongoose.Types.ObjectId(userId) } } }
     })
       .populate('_group', 'group_name')
-      .populate('_posted_by', 'first_name profile_pic')
+      .populate('_posted_by', '_id first_name profile_pic')
       .select('_id title type _group _posted_by created_date');
 
+    // Filter out the posts belonging to the current user
+    recentPosts = recentPosts.filter(post => post._posted_by._id.toString() !== userId);
 
     return res.status(200).json({
       message: `Found ${posts.length} posts!`,
