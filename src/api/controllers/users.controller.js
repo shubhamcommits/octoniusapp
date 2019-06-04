@@ -183,6 +183,7 @@ const getOverview = async (req, res, next) => {
       .populate('_posted_by', '_id first_name profile_pic')
       .select('_id title type _group _posted_by created_date');
 
+    // Filter out the posts belonging to the current user
     recentPosts = recentPosts.filter(post => post._posted_by._id.toString() !== userId);
 
     return res.status(200).json({
