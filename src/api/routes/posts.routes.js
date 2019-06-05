@@ -59,6 +59,9 @@ router.put('/comments/:commentId', posts.editComment);
 // Delete comment on post
 router.delete('/comments/:commentId', posts.removeComment);
 
+// Mark comment as read
+router.put('/comments/read/:commentId', posts.markCommentAsRead);
+
 // - Documents -
 
 // Get a document

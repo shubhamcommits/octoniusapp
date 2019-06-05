@@ -37,6 +37,10 @@ const CommentSchema = new Schema({
   _liked_by: [{
     type: Schema.Types.ObjectId,
     ref: 'User'
+  }],
+  _read_by: [{
+    type: Schema.Types.ObjectId,
+    ref: 'User'
   }]
 });
 

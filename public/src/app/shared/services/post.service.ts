@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import {Subject} from "rxjs/Subject";
+import { Subject } from "rxjs/Subject";
+import { Observable } from "rxjs";
 
 @Injectable()
 export class PostService {
@@ -60,6 +61,10 @@ export class PostService {
 
   markPostAsRead(postId) {
     return this._http.put(`${this.BASE_API_URL}/posts/read/${postId}`, null);
+  }
+
+  markCommentAsRead(commentId: any): Observable<any> {
+    return this._http.put(`${this.BASE_API_URL}/posts/comments/read/${commentId}`, null);
   }
 
   complete(postId, status) {
