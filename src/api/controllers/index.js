@@ -6,6 +6,7 @@ const users = require('./users.controller');
 const workspaces = require('./workspaces.controller');
 const billing = require('./billing.controller');
 const search = require('./search.controller');
+const columns = require('./columns.controller');
 
 // !! old Controllers, to be removed after implementation
 const authsController = require('./auths.controller.old');
@@ -25,5 +26,6 @@ module.exports = {
   posts,
     search,
   users,
-  workspaces
+  workspaces,
+  columns
 };
