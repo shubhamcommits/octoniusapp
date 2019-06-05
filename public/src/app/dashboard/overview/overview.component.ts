@@ -10,7 +10,6 @@ import { GoogleCloudService } from '../../shared/services/google-cloud.service';
 import { GroupsService } from '../../shared/services/groups.service';
 import { PostService } from '../../shared/services/post.service';
 import { UserService } from '../../shared/services/user.service';
-
 //Google API Variables
 declare var gapi: any;
 declare var google: any;
@@ -149,6 +148,14 @@ export class OverviewComponent implements OnInit {
       .subscribe(
         () => console.log('Post marked as read!'),
         (err) => console.error(`Cannot mark post as read! ${err}`)
+      );
+  }
+
+  markCommentAsRead(commentId) {
+    this._postservice.markCommentAsRead(commentId)
+      .subscribe(
+        () => console.log('Comment marked as read!'),
+        (err) => console.error(`Cannot mark comment as read! ${err}`)
       );
   }
 

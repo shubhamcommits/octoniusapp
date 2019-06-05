@@ -516,6 +516,33 @@ const removeComment = async (req, res, next) => {
   }
 };
 
+/**
+ * Marks the comment as read for a particular user
+ * by adding that user to the _read_by list which
+ * contains all of the users that have read that comment.
+ *
+ * @param req the request object
+ * @param res the response object
+ * @returns http response
+ */
+const markCommentAsRead = async (req, res) => {
+  const { userId } = req;
+  const { commentId } = req.params;
+
+  // add the user to _read_by
+  await Comment.findByIdAndUpdate(commentId, {
+    $addToSet: {
+      _read_by: userId
+    }
+  }, {
+    new: true
+  }).lean();
+
+  return res.status(200).json({
+    message: 'Comment marked as read!'
+  });
+};
+
 // -| DOCUMENTS |-
 
 const getDocument = async (req, res, next) => {
@@ -887,6 +914,7 @@ module.exports = {
   getComments,
   getNextComments,
   removeComment,
+  markCommentAsRead,
   // Documents
   getDocument,
   getDocumentHistory,

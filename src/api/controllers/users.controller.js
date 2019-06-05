@@ -137,7 +137,8 @@ const getOverview = async (req, res, next) => {
     // find the comments that received a response today (to be replaced later)
     const comments = await Comment.find({
       _commented_by: { $ne: req.userId },
-      created_date: { $gte: todayForEvent }
+      created_date: { $gte: todayForEvent },
+      _read_by: { $not: { $elemMatch: { $eq: new mongoose.Types.ObjectId(userId) } } } // comments not read by the user
     })
       .sort('-created_date')
       .populate({ path: '_post', populate: { path: '_group' } })
