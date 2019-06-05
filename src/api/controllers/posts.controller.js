@@ -201,6 +201,7 @@ const get = async (req, res, next) => {
     const post = await Post.findOne({
       _id: postId
     })
+      .populate('_group', '_id')
       .populate('_posted_by', 'first_name last_name profile_pic')
       .populate('_liked_by', 'first_name last_name')
       .populate('comments._commented_by', 'first_name last_name profile_pic')

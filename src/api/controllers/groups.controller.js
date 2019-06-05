@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const { Group, Post, User } = require('../models');
 const { sendErr, sendMail } = require('../../utils');
 const moment = require('moment');
@@ -47,6 +48,28 @@ const getPrivate = async (req, res) => {
     return res.status(200).json({
       message: 'Private group found!',
       privateGroup
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+/**
+ * Fetches all groups associated with the current user in a given
+ * workspace.
+ */
+const getAllForUser = async (req, res) => {
+  const { userId } = req;
+  const { workspace } = req.params;
+
+  try {
+    const groups = await Group.find({
+      _members: { $elemMatch: { $eq: new mongoose.Types.ObjectId(userId) } },
+      workspace_name: workspace
+    }).select('group_name');
+
+    return res.status(200).json({
+      groups
     });
   } catch (err) {
     return sendErr(res, err);
@@ -494,6 +517,7 @@ module.exports = {
   // Main
   get,
   getPrivate,
+  getAllForUser,
   // Files
   downloadFile,
   getFiles,
