@@ -150,7 +150,7 @@ export class CollaborativeDocGroupNavbarComponent implements OnInit {
     }, function(res){
       //pdf.autoPrint({variant: 'non-conform'});
       pdf.save(docName+'.pdf');
-      console.log('Response from PDF', res);
+      //console.log('Response from PDF', res);
     }, margins)
 
   
@@ -195,10 +195,10 @@ export class CollaborativeDocGroupNavbarComponent implements OnInit {
         'content': '',
         'type': 'document'
       };
-      console.log(post);
+     // console.log(post);
       this.postService.editPost(this.postId, post)
       .subscribe((res)=>{
-        console.log('Title saved', res);
+        //console.log('Title saved', res);
         this.docTitle.emit(post['title']);
         this.document_name = res['post']['title'];
       }, (err)=>{
