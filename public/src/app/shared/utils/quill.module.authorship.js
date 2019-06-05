@@ -69,7 +69,7 @@ class Authorship {
   }
 
   enable(enabled = true) {
-    console.log(enabled,"enabled at func")
+    //console.log(enabled,"enabled at func")
     this.quill.root.classList.toggle('ql-authorship', enabled);
     this.isEnabled = enabled;
   }
@@ -81,7 +81,7 @@ class Authorship {
   }
 
   addAuthor(id, color) {
-    console.log('added');
+    //console.log('added');
     let css = ".ql-authorship .ql-author-" + id + " { " + "background-color:" + color + "; }\n";
     this.addStyle(css);
   }

@@ -615,7 +615,7 @@ const addDocumentAuthor = async(req, res, next) =>{
       });
     }
     else{
-      return res.status(201).json({
+      return res.status(304).json({
         message: "Author already exist!"
       })
     }
