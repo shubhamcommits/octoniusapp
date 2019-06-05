@@ -301,7 +301,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
           toolbar: this.toolbarOptions,
           authorship: {
             enabled: true,
-            //authorId: connection.user_id, // Current author id
+            authorId: connection.user_id, // Current author id
             //color: connection.color // Current author color
           },
           cursors:{

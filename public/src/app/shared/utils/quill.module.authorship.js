@@ -15,8 +15,8 @@ class Authorship {
 	this.isEnabled;
 	
     if(this.options.enabled) {
-      this.enable();
-	  this.isEnabled = true;
+    this.isEnabled = true;
+    this.enable();
     }
     if(!this.options.authorId) {
       return;
@@ -28,7 +28,8 @@ class Authorship {
 
       if (eventName == Quill.events.TEXT_CHANGE && source == 'user') {
         let authorDelta = new Delta();
-        let authorFormat = { author: this.options.authorId}; // bug is here how to apply Attributor class to delta?
+        //set author from quill setup so that each quill update corresponds to the same author delta retain
+        let authorFormat = { author: this.quill.options.modules.authorship.authorId};
 		//let authorFormat = {underline: true};
         delta.ops.forEach((op) => {
           if(op.delete) {
@@ -37,7 +38,8 @@ class Authorship {
           if(op.insert || (op.retain && op.attributes)) {
             // Add authorship to insert/format
             op.attributes = op.attributes || {};
-            op.attributes.author = this.options.authorId;
+            //need to add quill here as well to change attribution of authors
+            op.attributes.author = this.quill.options.modules.authorship.authorId;
             //op.attributes.background = this.options.color;
             // Apply authorship to our own editor
             authorDelta.retain(op.retain || op.insert.length || 1, authorFormat);
@@ -60,20 +62,22 @@ class Authorship {
 		
 	let authorshipObj = this;
 	customButton.addEventListener('click', function() {
-		// toggle on/off authorship colors
+    // toggle on/off authorship colors
 		authorshipObj.enable(!authorshipObj.isEnabled);		
 	});	
 	
   }
 
   enable(enabled = true) {
+    console.log(enabled,"enabled at func")
     this.quill.root.classList.toggle('ql-authorship', enabled);
-	this.isEnabled = enabled;
+    this.isEnabled = enabled;
   }
 
   disable() {
+    console.log("disable", this.isEnabled)
     this.enable(false);
-	this.isEnabled = false;
+	  this.isEnabled = false;
   }
 
   addAuthor(id, color) {

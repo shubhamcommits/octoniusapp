@@ -21,7 +21,7 @@ export class DocumentService {
   user = JSON.parse(localStorage.getItem('user'));
 
   authorsList(data: any) {
-    console.log(data);
+    //console.log(data);
     this.authorsListSubject.next(data);
 }
 
@@ -88,7 +88,7 @@ export class DocumentService {
   }
 
   async updateCursors(source: any, cursors: any, cursorsModule: any) {
-
+  
     return new Promise((resolve, reject)=>{
       try{
         var activeConnections = {},
@@ -123,7 +123,6 @@ export class DocumentService {
         //   activeConnections[connection.id] = connection;
         // }
         if (connection.id != cursors.localConnection.id) {
-
           // Update cursor that sent the update, source (or update all if we're initting)
           if ((connection.id == source.id || updateAll) && connection.range) {
             cursorsModule.setCursor(
