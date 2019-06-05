@@ -33,6 +33,12 @@ export class DocumentService {
     return this._http.get(environment.BASE_API_URL + `/posts/documents/${documentId}/authors`);
   }
 
+  removeDuplicates(myArr, prop) {
+    return myArr.filter((obj, pos, arr) => {
+        return arr.map(mapObj => mapObj[prop]).indexOf(obj[prop]) === pos;
+    });
+}
+
   async cursorConnection(name: any, color: any) {
 
     return new Promise((resolve, reject) => {

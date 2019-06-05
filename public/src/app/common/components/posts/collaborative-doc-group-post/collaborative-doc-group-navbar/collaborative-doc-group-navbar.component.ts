@@ -67,6 +67,7 @@ export class CollaborativeDocGroupNavbarComponent implements OnInit {
             this.authorsList = dataList.connections
           }
         }
+        this.authorsList = this.postService.removeDuplicates(this.authorsList, '_user_id');
       })
        
      }
