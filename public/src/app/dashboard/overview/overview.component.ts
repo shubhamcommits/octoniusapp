@@ -78,6 +78,33 @@ export class OverviewComponent implements OnInit {
       });
       this.socket.emit('getNotifications', this.user_data.user_id);
 
+    const workspace: string = this.user_data.workspace.workspace_name;
+    this._groupservice.getGroupsForUser(workspace).subscribe(
+      // @ts-ignore
+      ({ groups }) => {
+        groups.map(group => {
+          const room = {
+            workspace,
+            group: group.group_name
+          };
+          
+          // Join all groups
+          this.socket.emit('joinGroup', room);
+        })
+      },
+      (err) => console.error(`Could not get groups! ${err}`)
+    );
+
+    this.socket.on('newPostOnGroup', data => {
+      this._postservice.getPost(data.postId).subscribe(
+        // @ts-ignore
+        ({ post }) => {
+          this.recentPosts.unshift(post);
+        },
+        err => console.error(`New post could not be fetched! ${err}`)
+      );
+    });
+
     this.getRecentPosts()
     .then(()=>{
       this.ngxService.stop();
