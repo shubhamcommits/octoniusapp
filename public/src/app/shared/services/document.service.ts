@@ -21,7 +21,7 @@ export class DocumentService {
   user = JSON.parse(localStorage.getItem('user'));
 
   authorsList(data: any) {
-    console.log(data);
+    //console.log(data);
     this.authorsListSubject.next(data);
 }
 
@@ -32,6 +32,12 @@ export class DocumentService {
   getAuthors(documentId: any){
     return this._http.get(environment.BASE_API_URL + `/posts/documents/${documentId}/authors`);
   }
+
+  removeDuplicates(myArr, prop) {
+    return myArr.filter((obj, pos, arr) => {
+        return arr.map(mapObj => mapObj[prop]).indexOf(obj[prop]) === pos;
+    });
+}
 
   async cursorConnection(name: any, color: any) {
 
@@ -88,7 +94,7 @@ export class DocumentService {
   }
 
   async updateCursors(source: any, cursors: any, cursorsModule: any) {
-
+  
     return new Promise((resolve, reject)=>{
       try{
         var activeConnections = {},
@@ -123,7 +129,6 @@ export class DocumentService {
         //   activeConnections[connection.id] = connection;
         // }
         if (connection.id != cursors.localConnection.id) {
-
           // Update cursor that sent the update, source (or update all if we're initting)
           if ((connection.id == source.id || updateAll) && connection.range) {
             cursorsModule.setCursor(

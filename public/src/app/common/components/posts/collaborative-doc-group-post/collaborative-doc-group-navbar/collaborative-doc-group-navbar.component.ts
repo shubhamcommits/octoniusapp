@@ -35,11 +35,42 @@ export class CollaborativeDocGroupNavbarComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private documentService: DocumentService) {
       this.postId = this.activatedRoute.snapshot.paramMap.get('postId');
-      this.documentService.authorsList$.subscribe((data)=>{
-        this.authorsList = data.connections;
+      //call authors first to set list
+      this.documentService.getAuthors(this.postId).subscribe((authorsDataCheck)=>{
+        this.authorsList = authorsDataCheck['authors']
+        //console.log(this.authorsList)
       })
+      //subscribe check for stream
+      this.documentService.authorsList$.subscribe((dataList)=>{
+        //if the stream has users connected
+        if(dataList.connections.length > 0){    
+          //console.log(dataList.connections)      
+          if (this.authorsList && this.authorsList.length > 0){
+            //loop through data list to check if new users are in it 
+            for(let i=0;i<dataList.connections.length;i++){
+              var userIsNew = true
+              //loop checking authors from data list 
+              for(let x=0;x<this.authorsList.length;x++){
+                if(dataList.connections[i].user_id == this.authorsList[x]._user_id || dataList.connections[i].user_id == this.authorsList[x].user_id){
+                  userIsNew = false
+                  break
+                }
+              }
+              //after loop if user is new add it to authors list
+              if(userIsNew === true){
+                this.authorsList.push(dataList.connections[i])
+                //console.log(this.authorsList)
+              }
+            }
+          }else{
+          //authorslist is null and list is 0 means a user is first to join the first stream
+            this.authorsList = dataList.connections
+          }
+        }
+        this.authorsList = this.postService.removeDuplicates(this.authorsList, '_user_id');
+      })
+       
      }
-
   ngOnInit() {
     this.getPost();
     /*this.getPost();

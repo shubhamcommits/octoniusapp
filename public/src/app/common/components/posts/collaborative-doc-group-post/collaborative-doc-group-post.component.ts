@@ -301,7 +301,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
           toolbar: this.toolbarOptions,
           authorship: {
             enabled: true,
-            //authorId: connection.user_id, // Current author id
+            authorId: connection.user_id, // Current author id
             //color: connection.color // Current author color
           },
           cursors:{
@@ -400,25 +400,27 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
             })
             });
 
-          // this.documentService.getAuthors(postId)
-          // .subscribe((res)=>{
-          //   //console.log('Authors for the document', res);
-          //   docAuthors = res['authors'];
-          //   if(res['authors'].length!=0 || res['authors'].length){
-          //     for(let i = 0; i < res['authors'].length; i++){
-          //       //if(res['authors'][i]['_user_id'] != connection.user_id){
-          //         var authModule = new Authorship(quill, {
-          //           enabled: true,
-          //           authorId: res['authors'][i]['_user_id'],
-          //           color: res['authors'][i]['color']
-          //          });
-          //          //console.log(authModule);
-          //       //}
-          //     }
-          //   }
-          // }, (err)=>{
-          //   console.log('Error while fetching the authors', err);
-          // })
+          this.documentService.getAuthors(postId)
+          .subscribe((res)=>{
+            //console.log('Authors for the document', res);
+            if(res['authors'].length!=0 || res['authors'].length){
+              for(let i = 0; i < res['authors'].length; i++){
+                //if(res['authors'][i]['_user_id'] != connection.user_id){
+                  let connectionIndex = data.connections.findIndex(connection => (connection.user_id === res['authors'][i]['_user_id']));
+                  if(connectionIndex === -1){
+                    var authModule = new Authorship(quill, {
+                      enabled: true,
+                      authorId: res['authors'][i]['_user_id'],
+                      color: res['authors'][i]['color']
+                     });
+                  }
+                   //console.log(authModule);
+                //}
+              }
+            }
+          }, (err)=>{
+            console.log('Error while fetching the authors', err);
+          })
           console.log('[cursors] Initial list of connections received from server:', data.connections);
           reportNewConnections = false;
         }
