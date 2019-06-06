@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild, group} from '@angular/core';
 import {PostService} from "../../../../shared/services/post.service";
 import {Subject} from "rxjs/Subject";
 import {SnotifyService} from "ng-snotify";
@@ -14,6 +14,9 @@ export class PostCommentComponent implements OnInit {
   @Input('comment') comment;
   @Input('allMembersId') allMembersId;
   @Input('user') user;
+  @Input() user_data;
+  @Input() group;
+  @Input() socket;
 
   @Output('sendDeletedComment') sendDeletedComment = new EventEmitter();
 
@@ -117,6 +120,16 @@ export class PostCommentComponent implements OnInit {
         this.comment = res['comment'];
         this.content_mentions = [];
         this.displayCommentEditor = false;
+
+        const data = {
+          commentId: this.comment._id,
+          workspace: this.user_data.workspace.workspace_name,
+          group: this.group.group_name,
+          type: 'comment'
+        };
+
+        this.socket.emit('postEdited', data);
+
       }, (err) => {
         this.content_mentions = [];
         this.displayCommentEditor = false;
@@ -149,6 +162,16 @@ export class PostCommentComponent implements OnInit {
               // make frontend up to date with backend
               // try this.comment = null;
               this.sendDeletedComment.emit(this.comment._id);
+
+              const data = {
+                commentId: this.comment._id,
+                workspace: this.user_data.workspace.workspace_name,
+                group: this.group.group_name,
+                type: 'comment'
+              };
+    
+              this.socket.emit('postDeleted', data);
+
             }, (err) => {
 
               if (err.status) {
