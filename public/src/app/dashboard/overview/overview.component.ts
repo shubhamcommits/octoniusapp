@@ -98,7 +98,8 @@ export class OverviewComponent implements OnInit {
       (err) => console.error(`Could not get groups! ${err}`)
     );
 
-    this.liveUpdatesForPosts();
+    this.liveUpdatesAdd();
+    this.liveUpdatesDelete();
 
     this.getRecentPosts()
     .then(()=>{
@@ -184,9 +185,9 @@ export class OverviewComponent implements OnInit {
 
   /**
    * This method is responsible for updating the entire overview
-   * without having to refresh the page.
+   * without having to refresh the page once a new post has been added.
    */
-  liveUpdatesForPosts() {
+  liveUpdatesAdd() {
     const currentUserId: string = this.user_data.user_id.toString();
     this.socket.on('newPostOnGroup', data => {
       if (data.type === 'post') {
@@ -245,6 +246,38 @@ export class OverviewComponent implements OnInit {
           },
           err => console.error(`New comment could not be fetched! ${err}`)
         );
+      }
+    });
+  }
+
+  liveUpdatesDelete() {
+    this.socket.on('postDeletedInGroup', data => {
+      if (data.type === 'post') {
+        // Update the recent posts array by removing the deleted post
+        this.recentPosts = this.recentPosts.filter(post => {
+          return post._id.toString() !== data.postId.toString();
+        });
+
+        // Update the posts array by removing the deleted post
+        this.posts = this.posts.filter(post => {
+          return post._id.toString() !== data.postId.toString();
+        });
+
+        // Check if there are any event or task type posts remaining
+        // This avoids the glitch of showing the title in the UI despite
+        // there being no such post in the array
+        const taskType = this.posts.filter(post => {
+          return post.type === 'task';
+        });
+
+        if (taskType.length === 0) this.task_count = 0;
+
+        // Doing the same as above for event type posts
+        const eventType = this.posts.filter(post => {
+          return post.type === 'event';
+        });
+
+        if (eventType.length === 0) this.event_count = 0;
       }
     });
   }
