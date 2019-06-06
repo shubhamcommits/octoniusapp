@@ -219,7 +219,8 @@ export class EventGroupPostComponent implements OnInit, OnDestroy {
           type: 'post'
         };
 
-        this.socket.emit('newPost', data);
+        //this.socket.emit('newPost', data);
+        this.socket.emit('postEdited', data);
         this.content_mentions = [];
         this.tags = this.post.tags;
       }, (err) => {
