@@ -131,6 +131,7 @@
         <hr class="dividing-line">
         <div class="description">
             <h4 class="details-title">Details task:</h4>
+            <p class="details-item">Title: <%- contentTitle %></p>
             <p class="details-item">Task assigned by: <% if (appointerName === toName) { %> You <% } else { %><%= appointerName %> <% } %> </p>
             <p class="details-item">Task assigned to: <% if (appointeeName === toName) { %> You <% } else { %><%= appointeeName %> <% } %> </p>
             <p class="details-item">Group: <%= group %></p>
