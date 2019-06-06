@@ -287,7 +287,29 @@ export class OverviewComponent implements OnInit {
   liveUpdatesEdit() {
     this.socket.on('postEditedInGroup', data => {
       if (data.type === 'post') {
+        this._postservice.getPost(data.postId).subscribe(
+          // @ts-ignore
+          ({ post }) => {
+            // Indices of the post to update
+            const postsIndex = this.posts.findIndex(_post => {
+              return _post._id.toString() === post._id.toString();
+            });
 
+            const recentPostsIndex = this.recentPosts.findIndex(_post => {
+              return _post._id.toString() === post._id.toString();
+            });
+
+            // Check if posts exist and update
+            if (postsIndex >= 0) {
+              this.posts[postsIndex] = post;
+            }
+
+            if (recentPostsIndex >= 0) {
+              this.recentPosts[recentPostsIndex] = post;
+            }
+          },
+          err => console.error(`Updated post could not be fetched! ${err}`)
+        );
       } else if (data.type === 'comment') {
         this._postservice.getComment(data.commentId).subscribe(
           // @ts-ignore
