@@ -170,6 +170,16 @@ export class GroupActivityComponent implements OnInit {
               //  mirror front-end to back-end to delete post
               const indexDeletedPost = this.posts.findIndex((post) => post._id == postId);
               this.posts.splice(indexDeletedPost, 1);
+
+              const data = {
+                postId,
+                workspace: this.user_data.workspace.workspace_name,
+                group: this.group.group_name,
+                type: 'post'
+              };
+    
+              this.socket.emit('postDeleted', data);
+
             }, (err) => {
 
               if (err.status) {

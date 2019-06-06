@@ -49,6 +49,12 @@ const init = (server) => {
       notifyGroupPage(socket, data);
     });
 
+    socket.on('postDeleted', (data) => {
+      const roomName = `${data.workspace}_${data.group}`;
+      // Broadcast delete event to group
+      socket.broadcast.to(roomName).emit('postDeletedInGroup', data);
+    });
+
     socket.on('disconnect', () => {
       // do nothing...
     });
