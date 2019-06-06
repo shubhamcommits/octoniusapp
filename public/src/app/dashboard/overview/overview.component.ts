@@ -100,6 +100,7 @@ export class OverviewComponent implements OnInit {
 
     this.liveUpdatesAdd();
     this.liveUpdatesDelete();
+    this.liveUpdatesEdit();
 
     this.getRecentPosts()
     .then(()=>{
@@ -250,6 +251,10 @@ export class OverviewComponent implements OnInit {
     });
   }
 
+  /**
+   * This method is responsible for updating the entire overview
+   * without having to refresh the page once a post has been deleted.
+   */
   liveUpdatesDelete() {
     this.socket.on('postDeletedInGroup', data => {
       if (data.type === 'post') {
@@ -278,6 +283,37 @@ export class OverviewComponent implements OnInit {
         });
 
         if (eventType.length === 0) this.event_count = 0;
+      } else if (data.type === 'comment') {
+        // Remove the deleted comment from the comments array
+        this.comments = this.comments.filter(comment => {
+          return comment._id.toString() !== data.commentId.toString();
+        });
+      }
+    });
+  }
+
+  liveUpdatesEdit() {
+    this.socket.on('postEditedInGroup', data => {
+      if (data.type === 'post') {
+
+      } else if (data.type === 'comment') {
+        this._postservice.getComment(data.commentId).subscribe(
+          // @ts-ignore
+          ({ comment }) => {
+
+            // Index of the comment to update
+            const index = this.comments.findIndex(_comment => {
+              return _comment._id.toString() === comment._id.toString();
+            });
+
+            // Comment exists in array
+            if (index >= 0) {
+              // Update the comment
+              this.comments[index] = comment;
+            }
+          },
+          err => console.error(`Updated comment could not be fetched! ${err}`)
+        );
       }
     });
   }
