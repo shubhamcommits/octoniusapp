@@ -10,6 +10,8 @@ import { GoogleCloudService } from '../../shared/services/google-cloud.service';
 import { GroupsService } from '../../shared/services/groups.service';
 import { PostService } from '../../shared/services/post.service';
 import { UserService } from '../../shared/services/user.service';
+import { post } from 'selenium-webdriver/http';
+
 //Google API Variables
 declare var gapi: any;
 declare var google: any;
@@ -181,52 +183,69 @@ export class OverviewComponent implements OnInit {
   }
 
   /**
-   * This method is responsible for updating the Upcoming Events,
-   * Upcoming Tasks, and Recent Posts sections of the overview
+   * This method is responsible for updating the entire overview
    * without having to refresh the page.
    */
   liveUpdatesForPosts() {
+    const currentUserId: string = this.user_data.user_id.toString();
     this.socket.on('newPostOnGroup', data => {
-      this._postservice.getPost(data.postId).subscribe(
-        // @ts-ignore
-        ({ post }) => {
-          this.recentPosts.unshift(post);
-
-          if (post.type === 'event') {
-            const { event } = post;
-            // Check if the event is assigned to the current user
-            const user = event._assigned_to.filter(user => {
-              return this.user_data.user_id.toString() === user._id.toString();
-            });
-
-            // The current user was assigned the event
-            if (user.length === 1) {
-              const today = new Date();
-              const eventDueDate = new Date(event.due_to.toString());
-
-              // Check if the event is due today
-              if (today.toDateString() === eventDueDate.toDateString()) {
-                if (this.event_count !== 1) this.event_count = 1;
-                this.posts.unshift(post);
+      if (data.type === 'post') {
+        this._postservice.getPost(data.postId).subscribe(
+          // @ts-ignore
+          ({ post }) => {
+            this.recentPosts.unshift(post);
+  
+            if (post.type === 'event') {
+              const { event } = post;
+              // Check if the event is assigned to the current user
+              const user = event._assigned_to.filter(user => {
+                return currentUserId === user._id.toString();
+              });
+  
+              // The current user was assigned the event
+              if (user.length === 1) {
+                const today = new Date();
+                const eventDueDate = new Date(event.due_to.toString());
+  
+                // Check if the event is due today
+                if (today.toDateString() === eventDueDate.toDateString()) {
+                  if (this.event_count !== 1) this.event_count = 1;
+                  this.posts.unshift(post);
+                }
+              }
+            } else if (post.type === 'task') {
+              const { task } = post;
+              // Check if the task is assigned to the current user
+              if (currentUserId === task._assigned_to._id.toString()) {
+                const today = new Date();
+                const taskDueDate = new Date(task.due_to.toString());
+  
+                // Check if the task has a due date >= today
+                if (taskDueDate.toDateString() >= today.toDateString()) {
+                  if (this.task_count !== 1) this.task_count = 1;
+                  this.posts.unshift(post);
+                }
               }
             }
-          } else if (post.type === 'task') {
-            const { task } = post;
-            // Check if the task is assigned to the current user
-            if (this.user_data.user_id.toString() === task._assigned_to._id.toString()) {
-              const today = new Date();
-              const taskDueDate = new Date(task.due_to.toString());
-
-              // Check if the task has a due date >= today
-              if (taskDueDate.toDateString() >= today.toDateString()) {
-                if (this.task_count !== 1) this.task_count = 1;
-                this.posts.unshift(post);
+          },
+          err => console.error(`New post could not be fetched! ${err}`)
+        );
+      } else if (data.type === 'comment') {
+        this._postservice.getComment(data.commentId).subscribe(
+          // @ts-ignore
+          ({ comment }) => {
+            // Ensure the comment was made on the current user's post
+            if (currentUserId === comment._post._posted_by) {
+              // Ensure the comment was not made by the current user
+              if (currentUserId !== comment._commented_by._id) {
+                comment.readMore = true;
+                this.comments.unshift(comment);
               }
             }
-          }
-        },
-        err => console.error(`New post could not be fetched! ${err}`)
-      );
+          },
+          err => console.error(`New comment could not be fetched! ${err}`)
+        );
+      }
     });
   }
 

@@ -402,7 +402,8 @@ const getComment = async (req, res, next) => {
     const comment = await Comment.findOne({
       _id: commentId
     })
-      .populate('_commented_by', 'first_name last_name profile_pic')
+      .populate('_commented_by', '_id first_name last_name profile_pic')
+      .populate({ path: '_post', populate: { path: '_group' } })
       .lean();
 
     return res.status(200).json({
