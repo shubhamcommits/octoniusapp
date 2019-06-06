@@ -77,6 +77,8 @@ export class OverviewComponent implements OnInit {
       });
       this.socket.emit('getNotifications', this.user_data.user_id);
 
+    // The next few lines are responsible for joining all groups
+    // in the workspace associated with the current user
     const workspace: string = this.user_data.workspace.workspace_name;
     this._groupservice.getGroupsForUser(workspace).subscribe(
       // @ts-ignore
@@ -94,15 +96,7 @@ export class OverviewComponent implements OnInit {
       (err) => console.error(`Could not get groups! ${err}`)
     );
 
-    this.socket.on('newPostOnGroup', data => {
-      this._postservice.getPost(data.postId).subscribe(
-        // @ts-ignore
-        ({ post }) => {
-          this.recentPosts.unshift(post);
-        },
-        err => console.error(`New post could not be fetched! ${err}`)
-      );
-    });
+    this.liveUpdatesForPosts();
 
     this.getRecentPosts()
     .then(()=>{
@@ -186,6 +180,54 @@ export class OverviewComponent implements OnInit {
       );
   }
 
+  /**
+   * This method is responsible for updating the Upcoming Events,
+   * Upcoming Tasks, and Recent Posts sections of the overview
+   * without having to refresh the page.
+   */
+  liveUpdatesForPosts() {
+    this.socket.on('newPostOnGroup', data => {
+      this._postservice.getPost(data.postId).subscribe(
+        // @ts-ignore
+        ({ post }) => {
+          this.recentPosts.unshift(post);
 
+          if (post.type === 'event') {
+            const { event } = post;
+            // Check if the event is assigned to the current user
+            const user = event._assigned_to.filter(user => {
+              return this.user_data.user_id.toString() === user._id.toString();
+            });
+
+            // The current user was assigned the event
+            if (user.length === 1) {
+              const today = new Date();
+              const eventDueDate = new Date(event.due_to.toString());
+
+              // Check if the event is due today
+              if (today.toDateString() === eventDueDate.toDateString()) {
+                if (this.event_count !== 1) this.event_count = 1;
+                this.posts.unshift(post);
+              }
+            }
+          } else if (post.type === 'task') {
+            const { task } = post;
+            // Check if the task is assigned to the current user
+            if (this.user_data.user_id.toString() === task._assigned_to._id.toString()) {
+              const today = new Date();
+              const taskDueDate = new Date(task.due_to.toString());
+
+              // Check if the task has a due date >= today
+              if (taskDueDate.toDateString() >= today.toDateString()) {
+                if (this.task_count !== 1) this.task_count = 1;
+                this.posts.unshift(post);
+              }
+            }
+          }
+        },
+        err => console.error(`New post could not be fetched! ${err}`)
+      );
+    });
+  }
 
 }
