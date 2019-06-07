@@ -26,8 +26,8 @@ var path = require('path');
 appCE.use(express.static(path.join(__dirname, 'node_modules/quill/dist'))); //
 appCE.use(express.static(path.join(__dirname, 'node_modules/quill-cursors/dist')));
 
-var wssShareDB = require('./src/utils/sharedb/wss-sharedb')(serverCE);
-var wssCursors = require('./src/utils/sharedb/wss-cursors')(serverCE);
+var wssShareDB = require('./utils/sharedb/wss-sharedb')(serverCE);
+var wssCursors = require('./utils/sharedb/wss-cursors')(serverCE);
 
 serverCE.on('upgrade', (request, socket, head) => {
 
