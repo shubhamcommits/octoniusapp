@@ -78,7 +78,7 @@ const edit = async (req, res, next) => {
           _content_mentions: req.body._content_mentions,
           tags: req.body.tags,
           task: {
-            due_to: req.body.date_due_to,
+            due_to: moment(req.body.date_due_to).format('YYYY-MM-DD'),
             _assigned_to: req.body.assigned_to[0]._id,
             status: req.body.status
           }
@@ -201,6 +201,7 @@ const get = async (req, res, next) => {
     const post = await Post.findOne({
       _id: postId
     })
+      .populate('_group', '_id')
       .populate('_posted_by', 'first_name last_name profile_pic')
       .populate('_liked_by', 'first_name last_name')
       .populate('comments._commented_by', 'first_name last_name profile_pic')
@@ -401,7 +402,8 @@ const getComment = async (req, res, next) => {
     const comment = await Comment.findOne({
       _id: commentId
     })
-      .populate('_commented_by', 'first_name last_name profile_pic')
+      .populate('_commented_by', '_id first_name last_name profile_pic')
+      .populate({ path: '_post', populate: { path: '_group' } })
       .lean();
 
     return res.status(200).json({

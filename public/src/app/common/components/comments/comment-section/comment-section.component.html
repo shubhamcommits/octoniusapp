@@ -52,7 +52,10 @@
         [user]="user"
         [comment]="comment"
         [allMembersId]="allMembersId"
-        (sendDeletedComment)="deleteComment($event)">
+        (sendDeletedComment)="deleteComment($event)"
+        [user_data]="user_data"
+        [group]="group"
+        [socket]="socket">
       </post-comment>
     </ng-container>
   </ng-container>

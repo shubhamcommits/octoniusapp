@@ -254,7 +254,14 @@ export class GroupPostComponent implements OnInit {
 
       this.postService.deletePost(postId)
         .subscribe((res) => {
+          const data = {
+            postId,
+            workspace: this.user_data.workspace.workspace_name,
+            group: this.group.group_name,
+            type: 'post'
+          };
 
+          this.socket.emit('postDeleted', data);
         })
 
     }

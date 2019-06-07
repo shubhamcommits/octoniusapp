@@ -18,4 +18,9 @@ export class GroupsService {
   getUserGroups(user) {
     return this._http.get(this.BASE_API_URL + '/workspace/groups/' + user.user_id + '/' + user.workspace_id);
   }
+
+  getGroupsForUser(workspace: string) {
+    return this._http.get(`${this.BASE_API_URL}/groups/user/${workspace}`);
+  }
+
 }

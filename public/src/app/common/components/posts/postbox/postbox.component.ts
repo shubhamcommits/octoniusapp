@@ -261,6 +261,7 @@ export class PostboxComponent implements OnInit, OnDestroy {
         //this.insertEvent(date, post.type, post.content, googleCalendarAttendees);
 
         this.socket.emit('newPost', data);
+        this.socket.emit('postAdded', data);
 
         // previously we reloaded the posts, but now we send it back to the parent component
         // where we can add it to the other posts that were already loaded
@@ -406,6 +407,7 @@ export class PostboxComponent implements OnInit, OnDestroy {
         };
 
         this.socket.emit('newPost', data);
+        this.socket.emit('postAdded', data);
 
         // previously we reloaded the posts, but now we send it back to the parent component
         // where we can add it to the other posts that were already loaded
@@ -590,6 +592,7 @@ export class PostboxComponent implements OnInit, OnDestroy {
 
         // give live update to other users that a new post has been posted
         this.socket.emit('newPost', data);
+        this.socket.emit('postAdded', data);
 
         // send this post to parent component to display it with the other loaded posts
         this.newPost.emit(res['post']);

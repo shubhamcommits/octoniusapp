@@ -1057,6 +1057,16 @@ const post = this.postBeingEditted;
              const indexTask = this.pendingTasks.findIndex(task => task._id == post._id)
              this.pendingTasks.splice(indexTask, 1);
            }
+
+          const data = {
+            postId: post._id,
+            workspace: this.user_data.workspace.workspace_name,
+            group: this.group.group_name,
+            type: 'post'
+          };
+
+          this.socket.emit('postDeleted', data);
+
          });
      }
    });

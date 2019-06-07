@@ -180,6 +180,7 @@ const getOverview = async (req, res, next) => {
       'created_date': { $gte: todayForEvent, $lt: todayPlus24ForEvent },
       '_read_by': { $not: { $elemMatch: { $eq: new mongoose.Types.ObjectId(userId) } } }
     })
+      .sort('-created_date')
       .populate('_group', 'group_name')
       .populate('_posted_by', '_id first_name profile_pic')
       .select('_id title type _group _posted_by created_date');

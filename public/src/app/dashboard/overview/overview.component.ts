@@ -10,6 +10,8 @@ import { GoogleCloudService } from '../../shared/services/google-cloud.service';
 import { GroupsService } from '../../shared/services/groups.service';
 import { PostService } from '../../shared/services/post.service';
 import { UserService } from '../../shared/services/user.service';
+import { post } from 'selenium-webdriver/http';
+
 //Google API Variables
 declare var gapi: any;
 declare var google: any;
@@ -76,6 +78,29 @@ export class OverviewComponent implements OnInit {
         this.notifications_data = user;
       });
       this.socket.emit('getNotifications', this.user_data.user_id);
+
+    // The next few lines are responsible for joining all groups
+    // in the workspace associated with the current user
+    const workspace: string = this.user_data.workspace.workspace_name;
+    this._groupservice.getGroupsForUser(workspace).subscribe(
+      // @ts-ignore
+      ({ groups }) => {
+        groups.map(group => {
+          const room = {
+            workspace,
+            group: group.group_name
+          };
+          
+          // Join all groups
+          this.socket.emit('joinGroup', room);
+        })
+      },
+      (err) => console.error(`Could not get groups! ${err}`)
+    );
+
+    this.liveUpdatesAdd();
+    this.liveUpdatesDelete();
+    this.liveUpdatesEdit();
 
     this.getRecentPosts()
     .then(()=>{
@@ -159,6 +184,160 @@ export class OverviewComponent implements OnInit {
       );
   }
 
+  /**
+   * This method is responsible for updating the entire overview
+   * without having to refresh the page once a new post has been added.
+   */
+  liveUpdatesAdd() {
+    const currentUserId: string = this.user_data.user_id.toString();
+    this.socket.on('postAddedInGroup', data => {
+      if (data.type === 'post') {
+        this._postservice.getPost(data.postId).subscribe(
+          // @ts-ignore
+          ({ post }) => {
+            this.recentPosts.unshift(post);
+  
+            if (post.type === 'event') {
+              const { event } = post;
+              // Check if the event is assigned to the current user
+              const user = event._assigned_to.filter(user => {
+                return currentUserId === user._id.toString();
+              });
+  
+              // The current user was assigned the event
+              if (user.length === 1) {
+                const today = new Date();
+                const eventDueDate = new Date(event.due_to.toString());
+  
+                // Check if the event is due today
+                if (today.toDateString() === eventDueDate.toDateString()) {
+                  if (this.event_count !== 1) this.event_count = 1;
+                  this.posts.unshift(post);
+                }
+              }
+            } else if (post.type === 'task') {
+              const { task } = post;
+              // Check if the task is assigned to the current user
+              if (currentUserId === task._assigned_to._id.toString()) {
+                const today = new Date();
+                const taskDueDate = new Date(task.due_to.toString());
+  
+                // Check if the task has a due date >= today
+                if (taskDueDate.toDateString() >= today.toDateString()) {
+                  if (this.task_count !== 1) this.task_count = 1;
+                  this.posts.unshift(post);
+                }
+              }
+            }
+          },
+          err => console.error(`New post could not be fetched! ${err}`)
+        );
+      } else if (data.type === 'comment') {
+        this._postservice.getComment(data.commentId).subscribe(
+          // @ts-ignore
+          ({ comment }) => {
+            // Ensure the comment was made on the current user's post
+            if (currentUserId === comment._post._posted_by) {
+              // Ensure the comment was not made by the current user
+              if (currentUserId !== comment._commented_by._id) {
+                comment.readMore = true;
+                this.comments.unshift(comment);
+              }
+            }
+          },
+          err => console.error(`New comment could not be fetched! ${err}`)
+        );
+      }
+    });
+  }
 
+  /**
+   * This method is responsible for updating the entire overview
+   * without having to refresh the page once a post has been deleted.
+   */
+  liveUpdatesDelete() {
+    this.socket.on('postDeletedInGroup', data => {
+      if (data.type === 'post') {
+        // Update the recent posts array by removing the deleted post
+        this.recentPosts = this.recentPosts.filter(post => {
+          return post._id.toString() !== data.postId.toString();
+        });
+
+        // Update the posts array by removing the deleted post
+        this.posts = this.posts.filter(post => {
+          return post._id.toString() !== data.postId.toString();
+        });
+
+        // Check if there are any event or task type posts remaining
+        // This avoids the glitch of showing the title in the UI despite
+        // there being no such post in the array
+        const taskType = this.posts.filter(post => {
+          return post.type === 'task';
+        });
+
+        if (taskType.length === 0) this.task_count = 0;
+
+        // Doing the same as above for event type posts
+        const eventType = this.posts.filter(post => {
+          return post.type === 'event';
+        });
+
+        if (eventType.length === 0) this.event_count = 0;
+      } else if (data.type === 'comment') {
+        // Remove the deleted comment from the comments array
+        this.comments = this.comments.filter(comment => {
+          return comment._id.toString() !== data.commentId.toString();
+        });
+      }
+    });
+  }
+
+  liveUpdatesEdit() {
+    this.socket.on('postEditedInGroup', data => {
+      if (data.type === 'post') {
+        this._postservice.getPost(data.postId).subscribe(
+          // @ts-ignore
+          ({ post }) => {
+            // Indices of the post to update
+            const postsIndex = this.posts.findIndex(_post => {
+              return _post._id.toString() === post._id.toString();
+            });
+
+            const recentPostsIndex = this.recentPosts.findIndex(_post => {
+              return _post._id.toString() === post._id.toString();
+            });
+
+            // Check if posts exist and update
+            if (postsIndex >= 0) {
+              this.posts[postsIndex] = post;
+            }
+
+            if (recentPostsIndex >= 0) {
+              this.recentPosts[recentPostsIndex] = post;
+            }
+          },
+          err => console.error(`Updated post could not be fetched! ${err}`)
+        );
+      } else if (data.type === 'comment') {
+        this._postservice.getComment(data.commentId).subscribe(
+          // @ts-ignore
+          ({ comment }) => {
+
+            // Index of the comment to update
+            const index = this.comments.findIndex(_comment => {
+              return _comment._id.toString() === comment._id.toString();
+            });
+
+            // Comment exists in array
+            if (index >= 0) {
+              // Update the comment
+              this.comments[index] = comment;
+            }
+          },
+          err => console.error(`Updated comment could not be fetched! ${err}`)
+        );
+      }
+    });
+  }
 
 }
