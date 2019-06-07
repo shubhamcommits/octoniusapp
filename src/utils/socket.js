@@ -49,6 +49,12 @@ const init = (server) => {
       notifyGroupPage(socket, data);
     });
 
+    socket.on('postAdded', (data) => {
+      const roomName = `${data.workspace}_${data.group}`;
+      // Broadcast add event to group
+      socket.broadcast.to(roomName).emit('postAddedInGroup', data);
+    });
+
     socket.on('postDeleted', (data) => {
       const roomName = `${data.workspace}_${data.group}`;
       // Broadcast delete event to group

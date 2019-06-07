@@ -182,7 +182,7 @@ export class OverviewComponent implements OnInit {
    */
   liveUpdatesAdd() {
     const currentUserId: string = this.user_data.user_id.toString();
-    this.socket.on('newPostOnGroup', data => {
+    this.socket.on('postAddedInGroup', data => {
       if (data.type === 'post') {
         this._postservice.getPost(data.postId).subscribe(
           // @ts-ignore
