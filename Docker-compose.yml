@@ -18,10 +18,10 @@ services:
     restart: always
     build:
       dockerfile: Dockerfile.dev
-      context: ./src
+      context: ./api
     volumes:
       - /app/node_modules # Avoid overwriting container's node_modules folder
-      - ${PWD}/src:/app # mount server folder inside container's app folder
+      - ${PWD}/api:/app # mount server folder inside container's app folder
       - data_uploads:/app/uploads # mount uploads folder inside container's app folder
     environment:
       - PORT=3000
@@ -40,10 +40,10 @@ services:
   client:
     build:
       dockerfile: Dockerfile.dev
-      context: ./public
+      context: ./client
     volumes:
       - /app/node_modules # Avoid overwriting container's node_modules folder
-      - ${PWD}/public:/app # mount client folder inside container's app folder
+      - ${PWD}/client:/app # mount client folder inside container's app folder
     depends_on:
       - api
   
