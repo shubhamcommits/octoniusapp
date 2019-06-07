@@ -15,7 +15,7 @@
     <div *ngIf="toggle_comments">
         <section class="comments" *ngFor="let comment of comments">
             <div class="thumbnail cf">        
-                <img src="/uploads/{{comment?._commented_by?.profile_pic}}" 
+                <img src="{{this.BASE_URL}}/uploads/{{comment?._commented_by?.profile_pic}}" 
                 onerror="this.src='/assets/images/user.png'"
                 class="feed-avatar"
                 [routerLink]="['/dashboard/profile', post?._posted_by?._id, 'profile']"/>
@@ -26,7 +26,7 @@
               {{ comment?.created_date | date:'mediumDate' }}
               
             </div>
-             <div (click)="selectHighlightedText(comment?._highlighted_content_range)">{{ comment?.content }}</div>
+             <div style="cursor: pointer" (click)="selectHighlightedText(comment?._highlighted_content_range)">{{ comment?.content }}</div>
               <div class="comment-infos">
                 
                 <div class="comment-reply">

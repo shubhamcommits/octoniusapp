@@ -27,6 +27,7 @@ export class CollabDocPostComponent implements OnInit {
   @Input('socket') socket;
   @Input('modules') modules;
   @Output('deletePost') removePost = new EventEmitter();
+  BASE_URL = environment.BASE_URL;
 
   ngUnsubscribe = new Subject();
 

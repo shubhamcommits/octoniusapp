@@ -58,7 +58,7 @@ class Authorship {
 	toolbar.addHandler('', function() {
 		
 	});
-	let customButton = document.querySelector('button.ql-authorship-toggle');
+	let customButton = document.querySelector('button.track-changes');
 		
 	let authorshipObj = this;
 	customButton.addEventListener('click', function() {

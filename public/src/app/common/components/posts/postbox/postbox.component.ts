@@ -27,6 +27,7 @@ import {cursors} from '../../../../shared/utils/cursors';
 import * as utils from '../../../../shared/utils/utils';
 import { SearchService } from '../../../../shared/services/search.service';
 import { environment } from '../../../../../environments/environment';
+import { profile_pic } from '../../navbar/navbar.component';
 
 // added by Amit for collaborative editing ends
 
@@ -113,6 +114,8 @@ export class PostboxComponent implements OnInit, OnDestroy {
 
   profilePic: any;
 
+  BASE_URL = environment.BASE_URL;
+
   //Tags to the post
   tags: any = new Array();
   tags_search_words: String = ''
@@ -137,12 +140,7 @@ export class PostboxComponent implements OnInit, OnDestroy {
         await this.googleService.getGoogleCalendarEvents();
       });
 
-      if (this.user['profile_pic'] == null) {
-        this.profilePic = 'assets/images/user.png';
-      } else {
-        // console.log('Inside else');
-        this.profilePic = `${environment.BASE_URL}/uploads/${this.user['profile_pic']}`;
-       }
+      this.profilePic = await profile_pic;
 
   }
 

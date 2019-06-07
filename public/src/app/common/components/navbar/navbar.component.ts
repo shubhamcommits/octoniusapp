@@ -11,7 +11,7 @@ import { async } from '@angular/core/testing'
 import {WorkspaceService} from "../../../shared/services/workspace.service";
 import {SearchService} from "../../../shared/services/search.service";
 
-
+var profile_pic: any;
 
 
 // Further ideas for notifications under consideration
@@ -43,6 +43,7 @@ export class NavbarComponent implements OnInit {
   socket = io(environment.BASE_URL);
 
   isCollapsed = true;
+  BASE_URL = environment.BASE_URL;
 
 
   constructor(
@@ -62,7 +63,7 @@ export class NavbarComponent implements OnInit {
       await this.socket.emit('joinUser', this.user_data.user_id);
     });
 
-    this.getUserProfile();
+    await this.getUserProfile();
       const user = {
         'userId': this.user_data.user_id
         };
@@ -138,18 +139,19 @@ export class NavbarComponent implements OnInit {
   getUserProfile() {
     this.isLoading$.next(false);
     this._userService.getUser()
-      .subscribe((res) => {
-        this.user = res.user;
-        this.userProfileImage = res.user['profile_pic'];
+      .subscribe(async (res) => {
+        this.user = await res.user;
+        this.userProfileImage = await res.user['profile_pic'];
       //  console.log(this.user._id);
 
       if (this.user['profile_pic'] == null) {
         this.userProfileImage = 'assets/images/user.png';
       } else {
         // console.log('Inside else');
-        this.userProfileImage = `${environment.BASE_URL}/uploads/${this.user['profile_pic']}`;
+        this.userProfileImage = await `${environment.BASE_URL}/uploads/${this.user['profile_pic']}`;
        }
         this.isLoading$.next(true);
+        profile_pic = await this.userProfileImage;
       }, (err) => {
         this.alert.class = 'alert alert-danger';
         if (err.status === 401) {
@@ -193,3 +195,5 @@ export class NavbarComponent implements OnInit {
   }
 
 }
+
+export { profile_pic }

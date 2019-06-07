@@ -4,7 +4,7 @@
     <div class="card-block ">
       <div class="row card-title ">
         <div class="col-md-1 ">
-          <img src="/uploads/{{post?._posted_by?.profile_pic}}"
+          <img src="{{this.BASE_URL}}/uploads/{{post?._posted_by?.profile_pic}}"
               onerror="this.src='/assets/images/user.png'"
               class="feed-avatar"
               [routerLink]="['/dashboard/profile', post._posted_by?._id, 'profile']"/>
