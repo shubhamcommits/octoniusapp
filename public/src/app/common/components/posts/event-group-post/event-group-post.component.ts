@@ -1,13 +1,13 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
-import {Subject} from "rxjs/Subject";
-import * as moment from "moment";
-import {takeUntil} from "rxjs/operators";
-import {PostService} from "../../../../shared/services/post.service";
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { saveAs } from 'file-saver';
-import {GroupService} from "../../../../shared/services/group.service";
-import {CommentSectionComponent} from "../../comments/comment-section/comment-section.component";
-import { SearchService } from '../../../../shared/services/search.service';
+import * as moment from "moment";
+import { takeUntil } from "rxjs/operators";
+import { Subject } from "rxjs/Subject";
 import { environment } from '../../../../../environments/environment';
+import { GroupService } from "../../../../shared/services/group.service";
+import { PostService } from "../../../../shared/services/post.service";
+import { SearchService } from '../../../../shared/services/search.service';
+import { CommentSectionComponent } from "../../comments/comment-section/comment-section.component";
 declare var $;
 
 @Component({
@@ -219,7 +219,7 @@ export class EventGroupPostComponent implements OnInit, OnDestroy {
           type: 'post'
         };
 
-        //this.socket.emit('newPost', data);
+        this.socket.emit('newPost', data);
         this.socket.emit('postEdited', data);
         this.content_mentions = [];
         this.tags = this.post.tags;

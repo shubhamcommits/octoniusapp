@@ -325,7 +325,7 @@ return doc.body.innerHTML;
           type: 'post'
         };
 
-        //this.socket.emit('newPost', data);
+        this.socket.emit('newPost', data);
         this.socket.emit('postEdited', data);
         this.content_mentions = [];
         this.tags = this.post.tags;
