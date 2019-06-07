@@ -298,7 +298,8 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
        quill = new Quill('#editor', {
         theme: 'snow',
         modules: {
-          toolbar: this.toolbarOptions,
+          //toolbar: this.toolbarOptions,
+          toolbar: '#toolbar',
           authorship: {
             enabled: true,
             authorId: connection.user_id, // Current author id

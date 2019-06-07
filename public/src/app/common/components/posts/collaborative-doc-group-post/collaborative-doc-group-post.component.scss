@@ -1,8 +1,18 @@
-
-button.ql-authorship-toggle:after {
-    content: "Test";
-  }
   
   button.ql-authorship-toggle {
       width: 70px!important;
+  }
+
+  @media (min-height: 300px) {
+    div.toolbar{
+      position: sticky;
+      top: 80px;
+    }
+  }
+
+  @media (min-height: 300px) {
+    div.comments{
+      position: sticky;
+      top: 80px;
+    }
   }
