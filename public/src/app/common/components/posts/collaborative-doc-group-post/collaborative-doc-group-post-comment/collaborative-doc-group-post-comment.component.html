@@ -1,6 +1,6 @@
 <section class="comments">
   <div class="thumbnail cf">        
-      <img src="/uploads/{{user_data?.profile_pic}}" 
+      <img [src]="this.profilePic" 
       onerror="this.src='/assets/images/user.png'"
       class="feed-avatar"
       [routerLink]="['/dashboard/profile', user_data?._id, 'profile']"/>

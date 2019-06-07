@@ -3,6 +3,7 @@ import { CommentSectionComponent } from '../../../comments/comment-section/comme
 import { environment } from '../../../../../../environments/environment';
 import { PostService } from '../../../../../shared/services/post.service';
 import { comment_range, quill } from '../collaborative-doc-group-post.component';
+import { profile_pic } from '../../../navbar/navbar.component';
 
 @Component({
   selector: 'app-collaborative-doc-group-post-comment',
@@ -27,8 +28,12 @@ export class CollaborativeDocGroupPostCommentComponent implements OnInit, AfterV
 
   comment_content;
 
+  profilePic;
+
   async ngOnInit() {
+
     this.date = new Date(Date.now());
+    this.profilePic = await profile_pic;
   }
 
   ngAfterViewInit(){

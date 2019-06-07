@@ -35,6 +35,7 @@ export class TaskGroupPostComponent implements OnInit {
   @Output('deletePost') removePost = new EventEmitter();
 
   @Output() statusChanged: EventEmitter<any> = new EventEmitter();
+  BASE_URL = environment.BASE_URL;
 
   // alerts & messages
   staticAlertClosed = false;

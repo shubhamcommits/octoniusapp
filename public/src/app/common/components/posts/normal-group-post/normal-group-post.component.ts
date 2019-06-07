@@ -32,6 +32,7 @@ export class NormalGroupPostComponent implements OnInit,AfterViewInit, OnDestroy
   @Input('socket') socket;
   @Input('modules') modules;
   @Output('deletePost') removePost = new EventEmitter();
+  BASE_URL = environment.BASE_URL;
 
   // alerts & messages
   staticAlertClosed = false;

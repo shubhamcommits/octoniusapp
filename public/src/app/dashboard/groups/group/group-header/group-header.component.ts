@@ -50,7 +50,7 @@ export class GroupHeaderComponent implements OnInit {
   ngOnInit() {
     this.ngxService.start();
     this.group_id = this.groupDataService.groupId;
-    this.loadUser();
+    //this.loadUser();
     this.loadGroup()
     .then(()=>{
       this.ngxService.stop();
@@ -93,9 +93,9 @@ export class GroupHeaderComponent implements OnInit {
   loadGroup() {
     return new Promise((resolve, reject)=>{
       this.groupService.getGroup(this.group_id)
-      .subscribe((res) => {
+      .subscribe(async (res) => {
         //console.log(res);
-       this.groupImageUrl = res['group']['group_avatar'] == null
+       this.groupImageUrl = await res['group']['group_avatar'] == null
          ? '/assets/images/group.png' : environment.BASE_URL + `/uploads/${res['group']['group_avatar']}`;
 
         this.group.description = res['group']['description'] || '';
@@ -105,7 +105,7 @@ export class GroupHeaderComponent implements OnInit {
         if(this.group.group_name === 'private'){
           this.isItMyWorkplace = true;
           this.group.group_name = 'My Space';
-          this.groupImageUrl = this.profilePic == null
+          this.groupImageUrl = await this.profilePic == null
           ? '/assets/images/user.png' : environment.BASE_URL + `/uploads/${this.profilePic}`;
         }
         resolve();

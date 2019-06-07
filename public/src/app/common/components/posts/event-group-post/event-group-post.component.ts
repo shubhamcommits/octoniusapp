@@ -30,6 +30,7 @@ export class EventGroupPostComponent implements OnInit, OnDestroy {
   @Input('isItMyWorkplace') isItMyWorkplace;
 
   @Output('deletePost') removePost = new EventEmitter();
+  BASE_URL = environment.BASE_URL;
 
   // alerts & messages
   staticAlertClosed = false;

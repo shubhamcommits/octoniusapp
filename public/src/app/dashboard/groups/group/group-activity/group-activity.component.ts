@@ -247,10 +247,10 @@ export class GroupActivityComponent implements OnInit {
 
   getUserProfile() {
     this._userService.getUser()
-      .subscribe((res) => {
-        this.user = res.user;
-        this.profileImage = res.user['profile_pic'];
-        this.profileImage = this.BASE_URL + `/uploads/${this.profileImage}`;
+      .subscribe(async (res) => {
+        this.user = await res.user;
+        this.profileImage = await res.user['profile_pic'];
+        this.profileImage = await this.BASE_URL + `/uploads/${this.profileImage}`;
       }, (err) => {
         if (err.status === 401) {
           this.snotifyService.error(err.error.message);
