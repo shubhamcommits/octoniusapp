@@ -137,6 +137,7 @@ export class CommentSectionComponent implements OnInit {
         };
 
         this.socket.emit('newPost', data);
+        this.socket.emit('postAdded', data);
         this.commentForm.reset();
         this.commentCountChange.emit(this.commentCount + 1);
         this.displayCommentEditor = false;
