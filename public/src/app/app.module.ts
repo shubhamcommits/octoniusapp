@@ -103,7 +103,8 @@ import { CollaborativeDocGroupCommentsComponent } from './common/components/post
 import { CollaborativeDocGroupPostCommentComponent } from './common/components/posts/collaborative-doc-group-post/collaborative-doc-group-post-comment/collaborative-doc-group-post-comment.component';
 import { DocumentService } from './shared/services/document.service';
 import { NgxSpinnerModule } from 'ngx-spinner';
-
+import { GroupTasksNewComponent } from './dashboard/groups/group/group-tasks-new/group-tasks-new.component';
+import { ColumnService } from './shared/services/column.service';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 
@@ -196,7 +197,8 @@ const ngCircle = {
     CollaborativeDocGroupNavbarComponent,
     CollabDocPostComponent,
     CollaborativeDocGroupCommentsComponent,
-    CollaborativeDocGroupPostCommentComponent
+    CollaborativeDocGroupPostCommentComponent,
+    GroupTasksNewComponent
   ],
   imports: [
     BrowserModule,
@@ -238,7 +240,7 @@ const ngCircle = {
 
   providers: [AuthService, UserService, DenyNavigationGuard, PostService, GroupService,
     GroupDataService, WorkspaceService, ProfileDataService, GroupsService, AdminService, GoogleCloudService,
-    DocumentService,
+    DocumentService, ColumnService,
     AuthGuard, NotAuthGuard, QuillAutoLinkService, ValidSubscriptionGuard,
     { provide: 'SnotifyToastConfig', useValue: ToastDefaults},
     SnotifyService, SearchService,

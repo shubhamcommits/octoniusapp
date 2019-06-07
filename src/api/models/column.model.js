@@ -2,13 +2,18 @@ const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
+const Columns = new Schema({
+    title: String,
+    taskCount: Number
+});
+
 const ColumnSchema = new Schema({
     groupId: {
         type: String,
         required: true
     },
     columns: {
-        type: Array,
+        type: [Columns],
         default: [{
             title: 'to do',
             taskCount: 0

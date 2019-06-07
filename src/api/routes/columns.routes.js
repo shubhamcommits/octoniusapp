@@ -22,6 +22,12 @@ router.put('/edit/name',columns.editColumnName);
 // edit number of tasks
 router.put('/edit/number',columns.editColumnTaskNumber);
 
+// add task to column
+router.put('/edit/inc',columns.columnTaskInc);
+
+// remove task from column
+router.put('/edit/dec',columns.columnTaskDec);
+
 // delete column 
 router.put('/delete',columns.deleteColumn);
 

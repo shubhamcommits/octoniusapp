@@ -453,11 +453,7 @@ const getTasks = async (req, res, next) => {
 
     const posts = await Post.find({
       type: 'task',
-      _group: groupId,
-      $or: [
-        { 'task.status': 'to do' },
-        { 'task.status': 'in progress' }
-      ]
+      _group: groupId
     })
       .sort('-task.due_to')
       .populate('_group', 'group_name')

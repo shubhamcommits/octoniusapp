@@ -1,0 +1,89 @@
+.l-8 {animation-delay: 1.32s;}
+
+.load-8 .line {animation: loadingH 1.5s cubic-bezier(.17,.37,.43,.67) infinite;}
+
+.line {
+	display: inline-block;
+	width: 50px;
+	height: 18px;
+	border-radius: 18px;
+	background-color: #005fd5;
+}
+.card{
+    margin-bottom: 10px;
+}
+
+.emoji-drop-transparent {
+
+  color: transparent;
+  background: transparent;
+
+}
+
+.dropdown-edit::after
+{
+  display:none;
+}
+.list-tags{
+  max-height: 150px;
+  margin-bottom: 5px;
+  overflow:auto;
+	overflow-x: hidden;
+	padding: 0 !important;
+  // -webkit-overflow-scrolling: touch;
+}
+.list-tags{
+  .tags{
+    margin-bottom: 5px;
+    margin-top: 5px;
+	}
+}
+
+.card-main{
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.card-main-body{
+  width:100%;
+  padding-bottom:20px;
+}
+
+.cross{
+  background: none; 
+  border:none;  
+  float:right; 
+  margin-top:-14px;
+  margin-left:11px;
+  color:#fff;
+  width:13px;
+  height:13px;
+  border-radius:50%;
+  background-color: rgba(0,0,0,0.5);
+}
+.cross .material-icons{
+  font-size: 10px;
+  margin-top:-2px;
+  margin-left:-4px;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  border-radius: 15px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+  border-radius: 15px;
+  width:5px;
+}
+ 
+::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.5); 
+  border-radius: 15px;
+  width:5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0,0,0,0.7); 
+}
