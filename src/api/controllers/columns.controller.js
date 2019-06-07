@@ -182,6 +182,66 @@ const editColumnTaskNumber = async  (req, res) => {
     }
 }
 
+// add task to column
+
+const columnTaskInc = async (req, res) => {
+    try{ 
+        const id = req.body.groupId;
+        const columnName = req.body.columnName;
+        const update = {
+            "$inc": {
+                "columns.$.taskCount": 0.5
+            }
+        };
+        await Column.update({ 
+            groupId: id,
+            columns: { 
+                "$elemMatch": { 
+                   title: columnName
+                }
+            }
+        }, update, (err, col) => {
+            if(err){
+                res.json({"err" : err});
+            }else{
+                res.json(col);
+            }
+        });
+    } catch (err) {
+        return sendErr(res,err);
+    }
+}
+
+// remove task from column
+
+const columnTaskDec = async (req, res) => {
+    try{ 
+        const id = req.body.groupId;
+        const columnName = req.body.columnName;
+        const update = {
+            "$inc": {
+                "columns.$.taskCount": -0.5
+            }
+        };
+        await Column.update({ 
+            groupId: id,
+            columns: { 
+                "$elemMatch": { 
+                   title: columnName
+                }
+            }
+        }, update, (err, col) => {
+            if(err){
+                res.json({"err" : err});
+            }else{
+                res.json(col);
+            }
+        });
+    } catch (err) {
+        return sendErr(res,err);
+    }
+}
+
 // delete column 
 
 const deleteColumn = async (req, res) => {
@@ -218,5 +278,7 @@ module.exports = {
     addColumn,
     editColumnName,
     editColumnTaskNumber,
+    columnTaskInc,
+    columnTaskDec,
     deleteColumn
 };
