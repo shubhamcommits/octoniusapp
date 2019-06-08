@@ -95,6 +95,9 @@ router.put('/comments/:commentId/unlike', posts.unlikeComment);
 // Follow post
 router.put('/:postId/follow', posts.follow);
 
+// Unfollow post
+router.put('/:postId/unfollow', posts.unfollow);
+
 // - Tasks -
 
 // Change task assignee
