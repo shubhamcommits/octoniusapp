@@ -26,7 +26,8 @@
 
                       <span>
                         <button class="btn btn-link" (click)="OnClickFollowPost()">
-                          <i class="material-icons muted">label_important</i>
+                          <i class="material-icons muted" *ngIf="!userFollowedPost(); else followif">label_important</i>
+                          <ng-template #followif><i class="material-icons active">label_important</i></ng-template>
                         </button>
                       </span>
 
