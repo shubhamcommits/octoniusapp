@@ -10,6 +10,8 @@ import { GroupActivityComponent } from '../../../../dashboard/groups/group/group
 import { SnotifyService } from "ng-snotify";
 import { SearchService } from '../../../../shared/services/search.service';
 import { environment } from '../../../../../environments/environment';
+import { ColumnService } from '../../../../shared/services/column.service';
+
 declare var $;
 
 @Component({
@@ -86,7 +88,8 @@ export class TaskGroupPostComponent implements OnInit {
     private postService: PostService,
     private groupService: GroupService,
     private snotifyService: SnotifyService,
-    private searchService: SearchService) { }
+    private searchService: SearchService,
+    private columnService: ColumnService) { }
 
   ngOnInit() {
     this.commentCount = this.post.comments.length;
