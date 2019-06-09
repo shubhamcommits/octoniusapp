@@ -1219,7 +1219,9 @@ clickedOnTag(index){
 } 
 
   initColumns(){
-    this.columnService.initColumns(this.groupId);   
+    this.columnService.initColumns(this.groupId).subscribe(() => {
+      this.getAllColumns();
+    });   
   }
 
   addNewColumn(){
