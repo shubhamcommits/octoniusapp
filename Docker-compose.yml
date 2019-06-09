@@ -74,4 +74,3 @@ volumes:
       device: ${PWD}/data/uploads
       o: bind
 
-
