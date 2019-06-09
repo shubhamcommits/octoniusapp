@@ -22,7 +22,7 @@ import { ActivatedRoute, Router, Route } from '@angular/router';
 // added by Amit for collaborative editing starts
 import QuillCursors from 'quill-cursors';
 import ReconnectingWebSocket from 'reconnecting-websocket';
-import * as ShareDB from '../../../../../../../node_modules/sharedb/lib/client';
+// import ShareDB from 'sharedb';
 import {cursors} from '../../../../shared/utils/cursors';
 import * as utils from '../../../../shared/utils/utils';
 import { SearchService } from '../../../../shared/services/search.service';

@@ -4,7 +4,8 @@ import {Location} from '@angular/common';
 
 import QuillCursors from 'quill-cursors';
 import ReconnectingWebSocket from 'reconnecting-websocket';
-import * as ShareDB from '../../../../../../../node_modules/sharedb/lib/client';
+import * as ShareDB from 'sharedb/lib/client';
+import Quill from 'quill';
 //import {cursors} from '../../../../shared/utils/cursors';
 // import {Mark, MarkDelete} from '../../../../shared/utils/quill.module.mark';
 import {Mark} from '../../../../shared/utils/quill.module.mark';
@@ -21,7 +22,7 @@ import { Authorship } from '../../../../shared/utils/quill.module.authorship';
 
 
 // !--Register Required Modules--! //
-ShareDB.types.register(require('rich-text').type);
+//ShareDB.types.register(require('rich-text').type);
 Quill.register('modules/cursors', QuillCursors);
 Quill.register(Mark);
 Quill.register(Authorship);
