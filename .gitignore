@@ -3,6 +3,8 @@ node_modules/
 # MongoDB development database
 data/
 
+public/
+
 # Octonius uploaded files on development
 uploads/
 
