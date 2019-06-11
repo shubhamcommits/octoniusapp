@@ -3,7 +3,7 @@ import { PostService } from '../../../../../shared/services/post.service';
 import { ActivatedRoute } from '@angular/router';
 import { editor } from '../collaborative-doc-group-post.component';
 import * as jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
+//import html2canvas from 'html2canvas';
 import { DocumentService } from '../../../../../shared/services/document.service';
 
 @Component({

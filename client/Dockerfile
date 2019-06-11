@@ -1,14 +1,16 @@
 FROM node:alpine as builder
 
 WORKDIR '/app'
-COPY ./package.json ./package-lock.json ./
-RUN apk add --no-cache --virtual .gyp python make g++
-RUN npm config set unsafe-perm true
-RUN npm install --global node-gyp \
-    && npm config set python python2.7 \
-    && npm install -g @angular/cli \
-    && npm install
-RUN apk del .gyp
+COPY ./package.json ./
+# RUN apk add --no-cache --virtual .gyp python make g++
+# RUN npm config set unsafe-perm true
+# RUN npm install --global node-gyp \
+#     && npm config set python python2.7 \
+#     && npm install -g @angular/cli \
+#     && npm install
+# RUN apk del .gyp
+RUN yarn global add @angular/cli
+RUN yarn install
 COPY ./ ./
 RUN ng build --prod
 

@@ -1,15 +1,20 @@
-
+// @import "~bootstrap/scss/_functions.scss";
+// @import "~bootstrap/scss/_variables.scss";
+// @import "~bootstrap/scss/mixins/_breakpoints.scss";
+// @import "~bootstrap/scss/mixins/_gradients.scss";
+// @import "~bootstrap/scss/_custom-forms.scss";
 // @import "~style/variables";
-@import "../../assets/scss/variables";
-@import "global";
-@import '../../../node_modules/bootstrap/scss/bootstrap';
-@import "fontello2.css";
-@import "~ng-snotify/styles/material";
-@import "../../../node_modules/angular-calendar/css/angular-calendar.css";
-@import "../../../node_modules/quill-mention/src/quill.mention.css";
-@import "~@ctrl/ngx-emoji-mart/picker";
-@import "../../../node_modules/quill-emoji/dist/quill-emoji.css";
-@import "../../../node_modules/quill-authorship/quill.authorship.css";
+@import 'node_modules/bootstrap/scss/bootstrap.scss';
+@import '../../assets/scss/variables';
+@import '../../assets/scss/global';
+
+@import '../../assets/scss/fontello2.css';
+@import '~ng-snotify/styles/material';
+@import '../../../node_modules/angular-calendar/css/angular-calendar.css';
+@import '../../../node_modules/quill-mention/src/quill.mention.css';
+@import '~@ctrl/ngx-emoji-mart/picker';
+@import '../../../node_modules/quill-emoji/dist/quill-emoji.css';
+@import '../../../node_modules/quill-authorship/quill.authorship.css';
 
 
 
@@ -51,6 +56,11 @@ body {
   padding: 0px;
 }
 
+.overview-post{
+  $dark-text: #242D3A;
+  // font-family: $poppins;
+  font-size: 14px;
+}
 
 h6, h5, h4{
   font-size: 16px;
@@ -72,12 +82,6 @@ h2{
   width: 120px;
   height: 100px;
   object-fit: cover;
-}
-
-.overview-post{
-  $dark-text: #242D3A;
-  // font-family: $poppins;
-  font-size: 14px;
 }
 
 // main sticker from any page

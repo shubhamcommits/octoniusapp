@@ -5,7 +5,7 @@ import {Location} from '@angular/common';
 import QuillCursors from 'quill-cursors';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import * as ShareDB from 'sharedb/lib/client';
-import Quill from 'quill';
+import * as Quill from 'quill';
 //import {cursors} from '../../../../shared/utils/cursors';
 // import {Mark, MarkDelete} from '../../../../shared/utils/quill.module.mark';
 import {Mark} from '../../../../shared/utils/quill.module.mark';

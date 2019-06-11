@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import Quill from 'quill';
+import * as Quill from 'quill';
 import QuillAutoLink from '../models/quill-auto-link.model';
 
 @Injectable()
