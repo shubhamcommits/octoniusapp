@@ -56,16 +56,47 @@
                   </i>
                 </button>
               </li>
-              <li class="nav-item">
-                <button
-                  (click)="onSelectPostType('document')"
-                  class="btn btn-link cool" placement="top" ngbTooltip="Collaborative editing">
-                  <i
+              <li class="nav-item" ngbDropdown autoClose="outside" #myCollabDrop="ngbDropdown" >
+                  <button  ngbDropdownToggle  (click) ="myCollabDrop.open()" class="btn btn-link cool" placement="top" ngbTooltip="Collaborative editing">
+                    <i
                     [style.color]="post.type === 'document' ? '#005fd5' : '#9b9b9b'"
                     class="material-icons muted"
                     id="icon_check_box">insert_drive_file
-                  </i>
-                </button>
+                    </i>
+                      <div class="collab-dropdown-menu" ngbDropdownMenu aria-labelledby="myCollabDrop">
+                        <div class="w-100" style="display:inline-block">
+                          <ul class="list-tags" >
+                            <li class="collabDrop">
+                                <button
+                                (click)="onSelectPostType('document'); myCollabDrop.close()"
+                                class="btn btn-link cool" placement="top" ngbTooltip="New Collaborative Doc">
+                                <i
+                                  [style.color]="post.type === 'document' ? '#005fd5' : '#9b9b9b'"
+                                  class="material-icons muted"
+                                  id="icon_check_box">insert_drive_file
+                                </i>
+                              </button>
+                              <label (click)="onSelectPostType('document'); myCollabDrop.close()" style = "cursor:pointer">
+                                  New Doc
+                              </label>
+                            </li>
+                            <li>
+                                <button type="button" class="btn btn-link">
+                                    <input id="cin2" #fileInput2  type="file" class="btn btn-outline-warning task" style="display: none"
+                                            (change)="docFileImportEvent($event); myCollabDrop.close()" placeholder="File"/>
+                                    <i class="material-icons" placement="top"
+                                    ngbTooltip="Import local .Docx file " (click)="fileInput2.click()">attach_file</i>
+                                  </button>
+                                  <label style = "cursor:pointer">
+                                      <input id="cin2" #fileInput2  type="file" class="btn btn-outline-warning task" style="display: none"
+                                      (change)="docFileImportEvent($event);myCollabDrop.close()" placeholder="File"/>
+                                      Import Doc
+                                  </label>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </button>
               </li>
             </ul>
 

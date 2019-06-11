@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const { Group, Post, User } = require('../models');
 const { sendErr, sendMail } = require('../../utils');
 const moment = require('moment');
+const mammoth = require("mammoth");
 
 /*  =======================
  *  -- GROUP CONTROLLERS --
@@ -170,6 +171,45 @@ const getFiles = async (req, res, next) => {
       message: `Found ${posts.length} posts containing files!`,
       posts
     });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+const getDocFileForEditorImport = async (req, res, next) => {
+  try {
+    // Find all posts that has files and belongs to this group
+    var htmlConversion
+    const posts = await Post.find({
+      $and: [
+        // Find normal posts that has comments
+        { _id: req.params.groupId },
+        { files: { $exists: true, $ne: [] } }
+      ]
+    })
+
+    if(posts.length > 0 && posts[0].files.length > 0){
+     const docConversion = await mammoth.convertToHtml({path: `${process.env.FILE_UPLOAD_FOLDER}/${posts[0].files[0].modified_name}`})
+      .then(function(result){
+          htmlConversion = result.value; // The generated HTML
+          var messages = result.messages; // Any messages, such as warnings during conversion
+          console.log("warning messages after conversion",messages)
+      })
+      .fail(function(error){
+        return sendErr(res, error)
+      })
+      .done(function(results){
+        //console.log(results,"result")
+        return res.status(200).json({
+          message: `Found ${posts.length} posts containing files!`,
+          htmlConversion
+        });
+      });
+    }else{
+      return res.status(200).json({
+        message: `Found ${posts.length} posts containing files!`,
+        htmlConversion
+      });
+    }
   } catch (err) {
     return sendErr(res, err);
   }
@@ -592,6 +632,7 @@ module.exports = {
   // Files
   downloadFile,
   getFiles,
+  getDocFileForEditorImport,
   // Posts
   getCalendarPosts,
   getUserCalendarPosts,

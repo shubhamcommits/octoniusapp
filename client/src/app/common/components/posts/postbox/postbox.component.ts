@@ -448,6 +448,10 @@ export class PostboxComponent implements OnInit, OnDestroy {
     formData.append('_posted_by', post._posted_by);
     formData.append('_group', post._group);
 
+    if(this.filesToUpload.length > 0){
+      const files: Array<File> = this.filesToUpload;
+      formData.append('attachments', files[0], files[0]['name']);
+    }
     this.processing = true;
     this.disablePostForm();
 
@@ -663,7 +667,30 @@ export class PostboxComponent implements OnInit, OnDestroy {
   }
 
   fileChangeEvent(fileInput: any) {
+   
     this.filesToUpload = <Array<File>>fileInput.target.files;
+
+  }
+
+  docFileImportEvent(fileInput: any) {
+    console.log(fileInput.target.files)
+    if(fileInput.target.files[0].type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document" || fileInput.target.files[0].type == "application/msword"){
+      console.log("here1")
+         this.filesToUpload = <Array<File>>fileInput.target.files;
+    this.post.type = 'document'
+    this.model_date = {year: (new Date()).getFullYear(), month: (new Date()).getMonth() + 1, day: (new Date()).getDate()};
+    this.model_time = {hour: 13, minute: 30};
+    this.selectedGroupUsers = [];
+    this.assignment = 'Unassigned';
+    this.addNewCollabPost()
+    }else{
+      console.log("not a file")
+      //not a doc/docx file
+      //handle notification here 
+    }
+
+ 
+
   }
 
   // create the form that handles the post content

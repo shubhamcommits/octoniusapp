@@ -16,7 +16,7 @@ const { sendMail, sendErr } = require('../../utils');
 const add = async (req, res, next) => {
   try {
     const postData = req.body;
-
+    console.log("here",postData)
     let post = await Post.create(postData);
 
     if (post._content_mentions.length !== 0) {
