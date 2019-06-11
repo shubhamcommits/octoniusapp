@@ -5,7 +5,7 @@
   <div class="media-body">
     <div>
       <h2>{{ group.group_name }}</h2>
-      <button *ngIf="group.type === 'agora' && !memberOfGroup" class="btn btn-sm btn-primary" (click)="joinPublicGroup()">Join</button>
+      <button *ngIf="group.type === 'agora' && !memberOfGroup" class="btn btn-sm" [ngClass]="{ 'btn-primary': !memberOfGroup, 'btn-success': joined }" (click)="joinPublicGroup()">{{(!memberOfGroup && !joined) ? 'Join' : 'Joined!'}}</button>
       <ul class="nav">
         <li class="nav-item">
           <a class="nav-link" [routerLink]="['/dashboard/group/',group_id,'activity' ]" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Activity

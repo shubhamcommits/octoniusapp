@@ -93,6 +93,30 @@ const getPublicGroups = async (req, res) => {
   }
 };
 
+/**
+ * Add a new member to a public group
+ */
+const addNewMember = async (req, res) => {
+  const { userId } = req;
+  const { groupId } = req.params;
+
+  await Group.findByIdAndUpdate(groupId, {
+    $addToSet: {
+      _members: userId
+    }
+  });
+
+  await User.findByIdAndUpdate(userId, {
+    $addToSet: {
+      _groups: groupId
+    }
+  });
+
+  return res.status(200).json({
+    message: 'Member added!'
+  });
+};
+
 // -| FILES |-
 
 const downloadFile = (req, res, next) => {
@@ -536,6 +560,7 @@ module.exports = {
   getPrivate,
   getAllForUser,
   getPublicGroups,
+  addNewMember,
   // Files
   downloadFile,
   getFiles,

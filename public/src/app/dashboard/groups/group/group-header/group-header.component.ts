@@ -45,6 +45,8 @@ export class GroupHeaderComponent implements OnInit {
 
   memberOfGroup: boolean = false;
 
+  joined: boolean = false;
+
   constructor(private groupService: GroupService, private modalService: NgbModal,
               private _router: Router, public groupDataService: GroupDataService,
               private snotifyService: SnotifyService, private userService: UserService,
@@ -212,14 +214,13 @@ export class GroupHeaderComponent implements OnInit {
   }
 
   joinPublicGroup() {
-    const data = {
-      group: this.groupDataService._groupId,
-      members: [this.user._id],
-      adminId: this.groupDataService._group._admins[0]._id
-    };
-
-    this.groupService.addMembersInGroup(data).subscribe(
-      res => this.memberOfGroup = true,
+    this.groupService.joinPublicGroup(this.groupDataService._groupId).subscribe(
+      res => {
+        this.joined = true;
+        setTimeout(() => {
+          this.memberOfGroup = true
+        }, 1500);
+      },
       err => console.error(`Failed to join public group! ${err}`)
     );
   }

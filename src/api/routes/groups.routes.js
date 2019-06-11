@@ -46,6 +46,9 @@ router.get('/user/:workspace', groups.getAllForUser);
 // Get all public groups
 router.get('/public/all', groups.getPublicGroups);
 
+// Add a new member into a public group
+router.post('/public/:groupId', groups.addNewMember);
+
 // - Files -
 
 // Get user's files that belongs to this group

@@ -106,5 +106,9 @@ export class GroupService {
     return this._http.get<any>(this.BASE_API_URL + `/groups/user/private`);
   }
 
+  joinPublicGroup(groupId) {
+    return this._http.post(`${this.BASE_API_URL}/groups/public/${groupId}`, null);
+  }
+
 }
 
