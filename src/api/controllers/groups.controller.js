@@ -76,6 +76,23 @@ const getAllForUser = async (req, res) => {
   }
 };
 
+/**
+ * Fetches all the public groups in the system
+ */
+const getPublicGroups = async (req, res) => {
+  try {
+    const groups = await Group.find({
+      type: 'agora'
+    });
+
+    return res.status(200).json({
+      groups
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
 // -| FILES |-
 
 const downloadFile = (req, res, next) => {
@@ -518,6 +535,7 @@ module.exports = {
   get,
   getPrivate,
   getAllForUser,
+  getPublicGroups,
   // Files
   downloadFile,
   getFiles,

@@ -37,6 +37,8 @@ export class GroupsComponent implements OnInit {
   };
   createNewGroupForm: FormGroup;
 
+  agoras = [];
+
   constructor(private _workspaceService: WorkspaceService,
     private _router: Router,
     private _userService: UserService,
@@ -60,6 +62,16 @@ export class GroupsComponent implements OnInit {
     });
 
     this.alertMessageSettings();
+    this.getAgoras();
+  }
+
+  getAgoras() {
+    this._groupsService.getAgoras().subscribe(
+      ({ groups }) => {
+        this.agoras = groups;
+      },
+      err => console.error(`Could not fetch public groups! ${err}`)
+    );
   }
 
   // Create New group form initialization inside the modal
@@ -214,6 +226,47 @@ export class GroupsComponent implements OnInit {
 
   openLg(content) {
     this.modalService.open(content, { size: 'lg' });
+  }
+
+  openAgoraModal(agora) {
+    this.modalService.open(agora, { size: 'lg' });
+  }
+
+  onCreateAgora() {
+    const new_group = {
+      group_name: this.group.group_name,
+      _workspace: this.user_data.workspace._id,
+      _admins: this.user_data.user_id,
+      workspace_name: this.user_data.workspace.workspace_name,
+      type: 'agora'
+    };
+
+
+    this._groupsService.createNewGroup(new_group)
+      .subscribe((response) => {
+        this.agoras.push(response['group']);
+
+        this.alert.class = 'success';
+        this._message.next(response['message']);
+        this.createNewGroupForm.reset();
+        setTimeout(() => {
+
+        }, 3000);
+      }, (err) => {
+        this.alert.class = 'danger';
+        if (err.status === 401) {
+          this._message.next(err.error.message);
+          setTimeout(() => {
+            localStorage.clear();
+            this._router.navigate(['']);
+          }, 3000);
+        } else if (err.status) {
+          this._message.next(err.error.message);
+        } else {
+          this._message.next('Error! either server is down or no internet connection');
+        }
+
+      });
   }
 
 }

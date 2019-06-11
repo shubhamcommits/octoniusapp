@@ -43,6 +43,9 @@ router.get('/user/private', groups.getPrivate);
 // Get all groups associated with the current user in a given workspace
 router.get('/user/:workspace', groups.getAllForUser);
 
+// Get all public groups
+router.get('/public/all', groups.getPublicGroups);
+
 // - Files -
 
 // Get user's files that belongs to this group

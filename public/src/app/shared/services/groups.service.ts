@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import {Subject} from "rxjs/Subject";
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class GroupsService {
@@ -23,4 +24,7 @@ export class GroupsService {
     return this._http.get(`${this.BASE_API_URL}/groups/user/${workspace}`);
   }
 
+  getAgoras(): Observable<any> {
+    return this._http.get<any>(`${this.BASE_API_URL}/groups/public/all`);
+  }
 }
