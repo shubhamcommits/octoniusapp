@@ -14,6 +14,7 @@ import { environment } from '../../../../../environments/environment';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { SnotifyService } from 'ng-snotify';
 import { UserService } from '../../../../shared/services/user.service';
+import { GroupService } from '../../../../shared/services/group.service';
 import * as chance from 'chance';
 import { QuillAutoLinkService } from '../../../../shared/services/quill-auto-link.service';
 import { DocumentService } from '../../../../shared/services/document.service';
@@ -132,6 +133,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
   docStatus: any = "Updated!";
   user_data: any;
   user_document_information: any;
+  document_imported_information: any;
 
   comments = [];
   comment_count = 0;
@@ -144,6 +146,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     private snotifyService: SnotifyService,
     private _userService: UserService,
     private documentService: DocumentService,
+    private groupService: GroupService,
     private quillInitializeService: QuillAutoLinkService) {
       postId = this._activatedRoute.snapshot.paramMap.get('postId');
      }
@@ -159,10 +162,12 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
       //grab user id then call for authors check
       this.documentService.getAuthors(postId)
       .subscribe((res)=>{
+        console.log(res)
           if(res.hasOwnProperty('authors')){
             var got_author:Boolean = false
             for(let i = 0; i < res['authors'].length; i++){
               if(res['authors'][i]['_user_id'] == this.user_data._id){
+                console.log("herhehrehrheh4")
     // user is already an author pass author information here and start quill
                 got_author = true
                 this.user_document_information = res['authors'][i]
@@ -171,13 +176,28 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
                 break
               }
             }
-      //else if the user is not in authors loop
-            if (got_author == false){
+            //else if this is the first init of this document to import document
+            if(got_author == false && res['authors'].length == 0){
+              console.log("hererererer1")
+              this.groupService.getDocFileForEditorImport(postId)
+              .subscribe((res) => {
+                if(res['htmlConversion'] != null && res['htmlConversion'] != ""){
+                  this.document_imported_information = res['htmlConversion']
+                }
+                this.initializeQuillEditor()
+                this.getPost()
+              }, (err) => {
+              });
+            }
+            //else if the user is not in authors loop after import doc init check
+            if (got_author == false && res['authors'].length > 0){
+              console.log("memememem4")
               this.initializeQuillEditor()
               this.getPost();
             }
           }else{
         //start quill if there are 0 authors for this doc
+            console.log("mememem111")
               this.initializeQuillEditor()
               this.getPost();
             }
@@ -535,13 +555,18 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
       // update editor contents
       let Document = await this.documentService.getDocumentHistory(postId, cursors);
       quill.setContents(Document);
+  
       editor = document.getElementsByClassName("ql-editor")[0].innerHTML;
       this.snotifyService.clear();
       this.docStatus = "Updated!";
+      if(this.document_imported_information && this.document_imported_information != "" && this.document_imported_information != null){
+        quill.clipboard.dangerouslyPasteHTML(0,this.document_imported_information,'user')
+      }
     });
 
     // local -> server
     quill.on('text-change', (delta, oldDelta, source) => {
+
       this.docStatus = "Updating...";
       if (source == 'user') {
 

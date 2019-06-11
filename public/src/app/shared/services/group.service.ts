@@ -57,6 +57,11 @@ export class GroupService {
 
     return this._http.get(this.BASE_API_URL + '/groups/' + group_id + '/files');
   }
+  getDocFileForEditorImport(post_id) {
+
+    return this._http.get(this.BASE_API_URL + '/groups/' + post_id + '/docImport');
+  }
+
 
   downloadGroupFile(group_id, file){
     return this._http.get(this.BASE_API_URL + '/groups/' + group_id + '/files/'+file+'/download', {responseType: 'blob' });

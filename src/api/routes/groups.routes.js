@@ -55,6 +55,11 @@ router.get('/:groupId/files/:fileName/download',
   authorization.groupAccess,
   groups.downloadFile);
 
+// Check Doc file to import into group doc
+router.get('/:groupId/docImport',
+  authorization.groupAccess,
+  groups.getDocFileForEditorImport);
+
 // - Posts -
 
 // Get ten most recent group posts
