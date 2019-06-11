@@ -116,6 +116,14 @@ const notifyRelatedUsers = async (io, socket, data) => {
         }
       }
 
+      // If there are followers on post content...
+      if (post._followers && post._followers.length !== 0) {
+        // ...emit notificationsFeed for every follower
+        for (const userId of post._followers) {
+          generateFeed(userId, io);
+        }
+      }
+
       switch (post.type) {
         //  task posts have only one assigned member so generatefeed needs to only be called once
         case 'task':
