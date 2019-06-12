@@ -37,6 +37,7 @@ export class GroupsComponent implements OnInit {
   };
   createNewGroupForm: FormGroup;
 
+  // public groups
   agoras = [];
 
   constructor(private _workspaceService: WorkspaceService,
@@ -65,6 +66,7 @@ export class GroupsComponent implements OnInit {
     this.getAgoras();
   }
 
+  // Get all of the public groups in the system
   getAgoras() {
     this._groupsService.getAgoras().subscribe(
       ({ groups }) => {
@@ -232,6 +234,9 @@ export class GroupsComponent implements OnInit {
     this.modalService.open(agora, { size: 'lg' });
   }
 
+  /**
+   * This method is responsible for creating a new public group
+   */
   onCreateAgora() {
     const new_group = {
       group_name: this.group.group_name,
@@ -244,6 +249,7 @@ export class GroupsComponent implements OnInit {
 
     this._groupsService.createNewGroup(new_group)
       .subscribe((response) => {
+        this.groups.push(response['group']);
         this.agoras.push(response['group']);
 
         this.alert.class = 'success';
