@@ -271,10 +271,10 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
 
     try{
       // !-- Connect ShareDB and Cursors to ReconnectingWebSocket--! //  
-      shareDBSocket = new ReconnectingWebSocket(((location.protocol === 'https:') ? 'wss' : 'ws') + '://' + environment.REAL_TIME_URL + '/sharedb');
+      shareDBSocket = new ReconnectingWebSocket(((location.protocol === 'https:') ? 'wss' : 'wss') + '://' + environment.REAL_TIME_URL + '/sharedb');
       var shareDBConnection = new ShareDB.Connection(shareDBSocket);
       // Create browserchannel socket
-      cursors.socket = new ReconnectingWebSocket(((location.protocol === 'https:') ? 'wss' : 'ws') + '://' + environment.REAL_TIME_URL + '/cursors');
+      cursors.socket = new ReconnectingWebSocket(((location.protocol === 'https:') ? 'wss' : 'wss') + '://' + environment.REAL_TIME_URL + '/cursors');
       // !-- Connect ShareDB and Cursors to ReconnectingWebSocket--! //
       //have color here
       var colorFromUser:any

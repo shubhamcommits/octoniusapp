@@ -4,7 +4,7 @@ const app = require('./api/app');
 
 const { socket } = require('./utils');
 
-const port = process.env.PORT;
+const port = process.env.PORT || '3000';
 const env = process.env.NODE_ENV;
 
 const server = http.createServer(app);

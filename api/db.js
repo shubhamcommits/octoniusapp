@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 // Set up mongoose connection
-const { dbURL } = process.env;
+const  dbURL  = process.env.dbURL || 'mongodb://127.0.0.1:27017/octonius';
 
 const options = {
   reconnectTries: Number.MAX_VALUE, // Never stop trying to reconnect

@@ -3,8 +3,8 @@ export const environment = {
   hmr: false,
 
   //  BASE_API_URL: 'http://localhost:3000/api'
-  BASE_API_URL: 'https://alpha.octonius.com/api',
-  BASE_URL: 'https://alpha.octonius.com',
+  BASE_API_URL: 'https://workplace.octonius.com/api',
+  BASE_URL: 'https://workplace.octonius.com',
   pk_stripe: 'pk_live_C6kLYxOOeUXt0hzaK6PockGM',
   
   // !--GOOGLE DEVELOPER CONSOLE CREDENTIALS--! //
