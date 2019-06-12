@@ -93,9 +93,6 @@ export class GroupTasksNewComponent implements OnInit {
 
   loadCount = 1;
 
-  pendingToDoTaskCount = 0;
-  pendingInProgressTaskCount = 0;
-
   datePickedCount = 0;
   timePickedCount = 0;
 
@@ -175,7 +172,6 @@ export class GroupTasksNewComponent implements OnInit {
    this.getUserProfile();
    this.getAllColumns();
     this.getTasks();
-    this.getCompletedTasks();
     this.loadGroup();
     this.mentionmembers();
     this.initializeGroupMembersSearchForm();
@@ -313,8 +309,6 @@ export class GroupTasksNewComponent implements OnInit {
 
         this.resetNewPostForm()
 
-        // make sure that we display the new task
-        this.pendingToDoTaskCount = 1
         // close the modal
         this.newTaskModalRef.close();
 
@@ -373,8 +367,6 @@ export class GroupTasksNewComponent implements OnInit {
   }
 
   getTasks() {
-    this.pendingToDoTaskCount = 0;
-    this.pendingInProgressTaskCount = 0;
     this.isLoading$.next(true);
     this.groupService.getGroupTasks(this.groupId)
     .subscribe((res) => {
@@ -445,81 +437,6 @@ export class GroupTasksNewComponent implements OnInit {
   }
 
 
-  OnMarkTaskCompleted(post_id){
-    const post = {
-      'status': 'done'
-    };
-    this.postService.complete(post_id,post)
-    .subscribe((res) => {
-      console.log('Post Marked as Completed', res);
-      this.getCompletedTasks();
-      this.getTasks();
-
-    }, (err) => {
-
-      console.log('Error:', err);
-
-    });
-
-  }
-
-  OnMarkTaskToDo(post_id){
-    const post = {
-      'status': 'to do'
-    };
-    this.postService.complete(post_id,post)
-    .subscribe((res) => {
-      console.log('Post Marked as to do', res);
-      this.getCompletedTasks();
-      this.getTasks();
-
-    }, (err) => {
-
-      console.log('Error:', err);
-
-    });
-
-  }
-
-  OnMarkTaskInProgress(post_id){
-    const post = {
-      'status': 'in progress'
-    };
-    this.postService.complete(post_id,post)
-    .subscribe((res) => {
-      console.log('Post Marked as in Progress', res);
-      this.getCompletedTasks();
-      this.getTasks();
-
-    }, (err) => {
-
-      console.log('Error:', err);
-
-    });
-
-  }
-
-
-  getCompletedTasks() {
-    this.isLoading$.next(true);
-    this.groupService.getCompletedGroupTasks(this.groupId)
-    .subscribe((res) => {
-      this.completedTasks = res['posts'];
-      if (res['posts'].length == 0){
-        this.loadCount = 0;
-      }
-
-      else{
-        this.loadCount = 1;
-      }
-      this.isLoading$.next(false);
-    },
-    (err) => {
-      console.log('Error Fetching the Completed Tasks Posts', err);
-      this.isLoading$.next(false);
-    });
-
-  }
 
   onSearch(evt: any) {
     this.groupUsersList = [];
@@ -1264,7 +1181,6 @@ clickedOnTag(index){
         console.log(this.pendingTasks[i]['_id']);
         this.postService.complete(this.pendingTasks[i]['_id'],statusUpdate)
         .subscribe((res) => {
-          this.getCompletedTasks();
           this.getTasks();
           this.getAllColumns();
         }, (err) => {
@@ -1282,7 +1198,6 @@ clickedOnTag(index){
     console.log(newColumnName);
     this.postService.complete(post_id,statusUpdate)
     .subscribe((res) => {
-      this.getCompletedTasks();
       this.getTasks();
       this.columnService.addColumnTask(this.groupId, newColumnName).subscribe((res) => {
         console.log(res);
