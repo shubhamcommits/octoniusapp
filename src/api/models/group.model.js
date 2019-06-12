@@ -43,7 +43,11 @@ const GroupSchema = new Schema({
   files: [{
     type: String,
     default: null
-  }]
+  }],
+  type: {
+    type: String,
+    default: null
+  }
 });
 
 const Group = mongoose.model('Group', GroupSchema);
