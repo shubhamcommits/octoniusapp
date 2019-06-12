@@ -11,6 +11,7 @@ import { SnotifyService } from "ng-snotify";
 import { SearchService } from '../../../../shared/services/search.service';
 import { environment } from '../../../../../environments/environment';
 import { ColumnService } from '../../../../shared/services/column.service';
+import { Column } from '../../../../shared/models/column.model';
 
 declare var $;
 
@@ -84,6 +85,8 @@ export class TaskGroupPostComponent implements OnInit {
   // If false, "read less" text should be displayed and the post should be displayed entirely
   readMore: boolean;
 
+  allColumns;
+
   constructor(
     private postService: PostService,
     private groupService: GroupService,
@@ -110,6 +113,9 @@ export class TaskGroupPostComponent implements OnInit {
      }
 
     this.readMore = this.preview;
+    this.initColumns();
+    this.getAllColumns();
+
   }
   ngAfterViewInit(): void {
     $('.image-gallery').lightGallery({
@@ -483,6 +489,39 @@ return doc.body.innerHTML;
     } else {
       console.log('is closed');
     }
+  }
+
+  initColumns(){
+    this.columnService.initColumns(this.group._id).subscribe(() => {
+      this.getAllColumns();
+    });   
+  }
+
+  getAllColumns(){
+    this.columnService.getAllColumns(this.group._id).subscribe((res: Column) => {
+      this.allColumns = res.columns;
+    }); 
+  }
+
+  updateTaskColumn(post_id, oldColumnName, newColumnName){
+    const statusUpdate = {
+      'status' : newColumnName
+    }
+    console.log(newColumnName);
+    this.postService.complete(post_id,statusUpdate)
+    .subscribe((res) => {
+      this.columnService.addColumnTask(this.group._id, newColumnName).subscribe((res) => {
+        console.log(res);
+      });
+      this.columnService.deleteColumnTask(this.group._id, oldColumnName).subscribe((res) => {
+        console.log(res);
+      });
+      this.getAllColumns();
+
+    }, (err) => {
+      console.log('Error:', err);
+    });
+
   }
 
 }
