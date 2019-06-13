@@ -34,6 +34,7 @@ import { CloudsComponent } from './dashboard/user-profile/clouds/clouds.componen
 import {ResetPwdComponent} from "./Authentication/reset-password/reset-password.component";
 import {AllSearchResultsComponent} from "./dashboard/search/all-search-results/all-search-results.component";
 import { CollaborativeDocGroupPostComponent } from './common/components/posts/collaborative-doc-group-post/collaborative-doc-group-post.component';
+import { GroupTasksNewComponent } from './dashboard/groups/group/group-tasks-new/group-tasks-new.component';
 
 
 const appRoutes: Routes = [
@@ -68,6 +69,7 @@ const appRoutes: Routes = [
           { path: 'admin', component: GroupAdminComponent },
           { path: 'post/:postId', component: GroupPostComponent },
           { path: 'tasks', component: GroupTasksComponent },
+          { path: 'tasks-new', component: GroupTasksNewComponent },
         ]
       },
       {

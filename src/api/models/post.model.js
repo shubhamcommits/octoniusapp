@@ -53,7 +53,7 @@ const PostSchema = new Schema({
     },
     status: {
       type: String,
-      enum: ['to do', 'in progress', 'done']
+      default: 'to do'
     },
     started_at: {
       type: Date,
