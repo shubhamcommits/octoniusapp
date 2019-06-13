@@ -169,13 +169,13 @@ export class GroupTasksNewComponent implements OnInit {
     this.model_date = {year: (new Date()).getFullYear(), month: (new Date()).getMonth() + 1, day: (new Date()).getDate()};
     //console.log('Data', this.groupDataService)
    // console.log('Id', this.groupId);
-   this.getUserProfile();
-   this.getAllColumns();
+    this.getUserProfile();
+    this.initColumns();
+    this.getAllColumns();
     this.getTasks();
     this.loadGroup();
     this.mentionmembers();
     this.initializeGroupMembersSearchForm();
-    this.initColumns();
   }
 
   getTaskTimeSpent(taskPost) {
@@ -379,7 +379,7 @@ export class GroupTasksNewComponent implements OnInit {
       }
       for(var i=0; i<this.allColumns.length; i++){
         console.log(this.taskCount[this.allColumns[i]['title']]);
-        this.updateColumnNumber(this.allColumns[i]['title'],this.taskCount[this.allColumns[i]['title']]);
+         this.updateColumnNumber(this.allColumns[i]['title'],this.taskCount[this.allColumns[i]['title']]);
       }
       this.getAllColumns();
       this.isLoading$.next(false);
@@ -400,7 +400,6 @@ export class GroupTasksNewComponent implements OnInit {
       console.log('Assignee ID', assigneeId);
       console.log('Task Assignee', res);
       this.getTasks();
-      this.getCompletedTasks();
       this.socket.emit('getNotifications', this.user_data.user_id);
     }, (err) => {
       console.log('Error changing the Task Assignee', err);
@@ -1206,7 +1205,6 @@ clickedOnTag(index){
         console.log(res);
       });
       this.getAllColumns();
-
     }, (err) => {
       console.log('Error:', err);
     });

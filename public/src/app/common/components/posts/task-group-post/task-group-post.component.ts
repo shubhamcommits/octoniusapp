@@ -87,6 +87,23 @@ export class TaskGroupPostComponent implements OnInit {
 
   allColumns;
 
+  bgColor = [
+    '#fd7714',
+    '#0bc6a0',
+    '#4a90e2',
+    '#d46a6a',
+    '#b45a81',
+    '#674f91',
+    '#4e638e',
+    '#489074',
+    '#4b956f',
+    '#a7c763',
+    '#d4cb6a',
+    '#d49b6a',
+    '#d4746a'
+  ];
+
+
   constructor(
     private postService: PostService,
     private groupService: GroupService,
@@ -181,86 +198,6 @@ return doc.body.innerHTML;
 
   onEditorCreated(quill) {
     this.editor = quill;
-  }
-
-
-  // The following three functions can be merged into one
-
-  OnMarkTaskToDo() {
-    // hide the dropdown after picking an item
-    //this.toggleTaskStatusList();
-
-    const post = {
-      'status': 'to do'
-    };
-
-
-
-    this.postService.complete(this.post._id, post)
-      .subscribe((res: any) => {
-        this.playAudio();
-        // Change the status on the frontend to match up with the backend
-        this.post.task.status = res.post.task.status;
-        this.groupService.taskStatusChanged.next();
-
-        this.snotifyService.success("Task updated!", "Good Job!");
-
-      }, (err) => {
-        console.log('Error:', err);
-      });
-  }
-
-  OnMarkTaskInProgress() {
-    // hide the dropdown after picking an item
-    //this.toggleTaskStatusList();
-
-    const post = {
-      'status': 'in progress'
-    };
-    this.postService.complete(this.post._id, post)
-      .subscribe((res: any) => {
-        this.playAudio();
-
-        // Change the status on the frontend to match up with the backend
-        this.post.task.status = res.post.task.status;
-        this.groupService.taskStatusChanged.next();
-
-        this.snotifyService.success('Task updated!', 'Good Job!');
-      }, (err) => {
-        console.log('Error:', err);
-      });
-  }
-
-
-  OnMarkTaskCompleted() {
-    // hide the dropdown after picking an item
-    //this.toggleTaskStatusList();
-
-    const post = {
-      'status': 'done'
-    };
-
-    this.postService.complete(this.post._id, post)
-      .subscribe((res: any) => {
-
-        this.playAudio();
-
-        this.alert.class = 'success';
-        this._message.next(res['message']);
-
-        // change its status on the frontend to match up with the backend
-        this.post.task.status = res.post.task.status;
-
-        this.snotifyService.success('Task updated!', 'Good Job!');
-        this.groupService.taskStatusChanged.next();
-
-      }, (err) => {
-        if (err.status) {
-          this._message.next(err.error.message);
-        } else {
-          this._message.next('Error! either server is down or no internet connection');
-        }
-      });
   }
 
   // this function can become a shared one on a service;
@@ -500,16 +437,29 @@ return doc.body.innerHTML;
   getAllColumns(){
     this.columnService.getAllColumns(this.group._id).subscribe((res: Column) => {
       this.allColumns = res.columns;
+      //console.log(this.allColumns); 
     }); 
   }
 
   updateTaskColumn(post_id, oldColumnName, newColumnName){
+    console.log(post_id);
+    console.log(oldColumnName);
     const statusUpdate = {
       'status' : newColumnName
     }
     console.log(newColumnName);
     this.postService.complete(post_id,statusUpdate)
     .subscribe((res) => {
+      this.playAudio();
+
+      this.alert.class = 'success';
+      this._message.next(res['message']);
+
+      // change its status on the frontend to match up with the backend
+      this.post.task.status = newColumnName;
+
+      this.snotifyService.success('Task updated!', 'Good Job!');
+      this.groupService.taskStatusChanged.next();
       this.columnService.addColumnTask(this.group._id, newColumnName).subscribe((res) => {
         console.log(res);
       });
