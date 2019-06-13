@@ -13,6 +13,8 @@ import { GroupsService } from '../../shared/services/groups.service';
 import { Group } from '../../shared/models/group.model';
 import { environment } from '../../../environments/environment';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { GroupService } from '../../shared/services/group.service';
+
 @Component({
   selector: 'app-groups',
   templateUrl: './groups.component.html',
@@ -37,10 +39,14 @@ export class GroupsComponent implements OnInit {
   };
   createNewGroupForm: FormGroup;
 
+  // public groups
+  agoras = [];
+
   constructor(private _workspaceService: WorkspaceService,
     private _router: Router,
     private _userService: UserService,
     private _groupsService: GroupsService,
+    private groupService: GroupService,
     private modalService: NgbModal,  private ngxService: NgxUiLoaderService) { }
 
 
@@ -60,6 +66,29 @@ export class GroupsComponent implements OnInit {
     });
 
     this.alertMessageSettings();
+    this.getAgoras();
+  }
+
+  /**
+   * Get all of the public groups in the system that the current
+   * user is not a part of.
+   */
+  getAgoras() {
+    this._groupsService.getAgoras().subscribe(
+      ({ groups }) => {
+        this.agoras = groups;
+
+        // Set the correct path to the group avatar
+        for (let i = 0; i < this.agoras.length; i++) {
+          if (this.agoras[i]['group_avatar'] == null) {
+            this.agoras[i]['group_avatar'] = '/assets/images/group.png';
+          } else {
+            this.agoras[i]['group_avatar'] = environment.BASE_URL + `/uploads/${this.agoras[i]['group_avatar']}`;
+          }
+        }
+      },
+      err => console.error(`Could not fetch public groups! ${err}`)
+    );
   }
 
   // Create New group form initialization inside the modal
@@ -216,4 +245,59 @@ export class GroupsComponent implements OnInit {
     this.modalService.open(content, { size: 'lg' });
   }
 
+  openAgoraModal(agora) {
+    this.modalService.open(agora, { size: 'lg' });
+  }
+
+  /**
+   * This method is responsible for creating a new public group
+   */
+  onCreateAgora() {
+    const new_group = {
+      group_name: this.group.group_name,
+      _workspace: this.user_data.workspace._id,
+      _admins: this.user_data.user_id,
+      workspace_name: this.user_data.workspace.workspace_name,
+      type: 'agora'
+    };
+
+
+    this._groupsService.createNewGroup(new_group)
+      .subscribe((response) => {
+        this.groups.push(response['group']);
+
+        this.alert.class = 'success';
+        this._message.next(response['message']);
+        this.createNewGroupForm.reset();
+        setTimeout(() => {
+
+        }, 3000);
+      }, (err) => {
+        this.alert.class = 'danger';
+        if (err.status === 401) {
+          this._message.next(err.error.message);
+          setTimeout(() => {
+            localStorage.clear();
+            this._router.navigate(['']);
+          }, 3000);
+        } else if (err.status) {
+          this._message.next(err.error.message);
+        } else {
+          this._message.next('Error! either server is down or no internet connection');
+        }
+
+      });
+  }
+
+  /**
+   * Makes a request to the backend to add a user to the given public group
+   */
+  joinPublicGroup(groupId: string) {
+    this.groupService.joinPublicGroup(groupId).subscribe(
+      res => {
+        this._router.navigate(['/dashboard/group/',groupId,'activity']);
+      },
+      err => console.error(`Failed to join public group! ${err}`)
+    );
+  }
 }
