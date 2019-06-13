@@ -121,9 +121,10 @@
 
   <div class="row no-margin">
     <ng-container *ngFor="let agora of agoras">
-      <div class="card col-md-3 groups" [routerLink]="['/dashboard/group/',agora._id,'activity']">
+      <div class="card col-md-3 groups">
         <span class="badge badge-members" >{{agora._members?.length + agora._admins?.length}} Members</span>
         <img class="card-img-top" [src] = "agora.group_avatar" onerror="this.src='/assets/images/group.png'" >
+        <a class="btn btn-warning btn-join" (click)="joinPublicGroup(agora._id)">Join</a>
         <div class="card-body ">
           <a>
             <h2 class="card-title">{{agora?.group_name}}</h2>

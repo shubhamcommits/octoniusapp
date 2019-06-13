@@ -13,6 +13,8 @@ import { GroupsService } from '../../shared/services/groups.service';
 import { Group } from '../../shared/models/group.model';
 import { environment } from '../../../environments/environment';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { GroupService } from '../../shared/services/group.service';
+
 @Component({
   selector: 'app-groups',
   templateUrl: './groups.component.html',
@@ -44,6 +46,7 @@ export class GroupsComponent implements OnInit {
     private _router: Router,
     private _userService: UserService,
     private _groupsService: GroupsService,
+    private groupService: GroupService,
     private modalService: NgbModal,  private ngxService: NgxUiLoaderService) { }
 
 
@@ -66,11 +69,23 @@ export class GroupsComponent implements OnInit {
     this.getAgoras();
   }
 
-  // Get all of the public groups in the system
+  /**
+   * Get all of the public groups in the system that the current
+   * user is not a part of.
+   */
   getAgoras() {
     this._groupsService.getAgoras().subscribe(
       ({ groups }) => {
         this.agoras = groups;
+
+        // Set the correct path to the group avatar
+        for (let i = 0; i < this.agoras.length; i++) {
+          if (this.agoras[i]['group_avatar'] == null) {
+            this.agoras[i]['group_avatar'] = '/assets/images/group.png';
+          } else {
+            this.agoras[i]['group_avatar'] = environment.BASE_URL + `/uploads/${this.agoras[i]['group_avatar']}`;
+          }
+        }
       },
       err => console.error(`Could not fetch public groups! ${err}`)
     );
@@ -274,4 +289,15 @@ export class GroupsComponent implements OnInit {
       });
   }
 
+  /**
+   * Makes a request to the backend to add a user to the given public group
+   */
+  joinPublicGroup(groupId: string) {
+    this.groupService.joinPublicGroup(groupId).subscribe(
+      res => {
+        this._router.navigate(['/dashboard/group/',groupId,'activity']);
+      },
+      err => console.error(`Failed to join public group! ${err}`)
+    );
+  }
 }

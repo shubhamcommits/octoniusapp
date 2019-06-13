@@ -65,11 +65,6 @@
     </div>
   </ng-container>
 
-  <!-- Only show the 'Join' button if the current user is not a member of the public group -->
-  <ng-container *ngIf="group.type === 'agora' && !memberOfGroup">
-    <button class="btn btn-sm" [ngClass]="{ 'btn-primary': !memberOfGroup, 'btn-success': joined }" (click)="joinPublicGroup()">{{(!memberOfGroup && !joined) ? 'Join' : 'Joined!'}}</button>
-  </ng-container>
-
   <!-- ##### MODALS ##### -->
 
   <ng-template #contentEditGroup let-c="close" let-dd="dismiss">
