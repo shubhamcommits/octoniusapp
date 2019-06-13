@@ -1,9 +1,9 @@
 FROM node:11.10
 
 WORKDIR '/app'
-COPY ./package.json ./yarn.lock ./
-RUN apt-get update \
-            && apt-get install -y node-gyp
+COPY ./package.json ./
+# RUN apt-get update \
+#           && apt-get install -y node-gyp
 RUN yarn global add @angular/cli
 RUN yarn
 COPY ./ ./

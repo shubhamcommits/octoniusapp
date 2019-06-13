@@ -56,11 +56,6 @@ body {
   padding: 0px;
 }
 
-.overview-post{
-  $dark-text: #242D3A;
-  // font-family: $poppins;
-  font-size: 14px;
-}
 
 h6, h5, h4{
   font-size: 16px;
@@ -82,6 +77,12 @@ h2{
   width: 120px;
   height: 100px;
   object-fit: cover;
+}
+
+.overview-post{
+  $dark-text: #242D3A;
+  // font-family: $poppins;
+  font-size: 14px;
 }
 
 // main sticker from any page

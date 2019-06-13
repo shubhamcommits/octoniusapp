@@ -8,7 +8,8 @@ const  dbURL  = process.env.dbURL || 'mongodb://127.0.0.1:27017/octonius';
 
 const options = {
   reconnectTries: Number.MAX_VALUE, // Never stop trying to reconnect
-  reconnectInterval: 500 // Reconnect every 500ms
+  reconnectInterval: 500, // Reconnect every 500ms
+  useNewUrlParser: true
 };
 
 // Connect mongoose to db

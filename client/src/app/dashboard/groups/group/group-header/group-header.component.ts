@@ -30,7 +30,8 @@ export class GroupHeaderComponent implements OnInit {
 
   group = {
     group_name: '',
-    description: ''
+    description: '',
+    type: ''
   };
 
   alert = {
@@ -42,15 +43,20 @@ export class GroupHeaderComponent implements OnInit {
 
   isItMyWorkplace = false;
 
+  memberOfGroup: boolean = false; // True if the current user is a member of the group
+  ownerOfGroup: boolean = false;  // True if the current user is the owner of the group
+
+  joined: boolean = false;
+
   constructor(private groupService: GroupService, private modalService: NgbModal,
               private _router: Router, public groupDataService: GroupDataService,
               private snotifyService: SnotifyService, private userService: UserService,
               private ngxService: NgxUiLoaderService) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.ngxService.start();
     this.group_id = this.groupDataService.groupId;
-    //this.loadUser();
+    await this.loadUser();
     this.loadGroup()
     .then(()=>{
       this.ngxService.stop();
@@ -102,6 +108,28 @@ export class GroupHeaderComponent implements OnInit {
         this.group.group_name = res['group']['group_name'];
         this.groupDataService.group = res['group'];
 
+        // Determine if the current user is already a member of the group.
+        // Note: One is considered a member if he/she is strictly a member or the admin of the group
+        // @ts-ignore
+        this.group.type = res.group.type;
+        let admin = this.groupDataService._group._admins.filter(_user => {
+          return _user._id.toString() === this.user._id.toString();
+        });
+
+        if (admin.length > 0) {
+          this.memberOfGroup = true;
+          this.ownerOfGroup = true;
+        }
+
+        let member = this.groupDataService.group._members.filter(_user => {
+          return _user._id.toString() === this.user._id.toString();
+        });
+
+        if (member.length > 0) {
+          this.memberOfGroup = true;
+        }
+
+
         if(this.group.group_name === 'private'){
           this.isItMyWorkplace = true;
           this.group.group_name = 'My Space';
@@ -117,12 +145,17 @@ export class GroupHeaderComponent implements OnInit {
   }
 
   loadUser() {
-    this.userService.getUser()
+    return new Promise((resolve, reject) => {
+      this.userService.getUser()
       .subscribe((res) => {
         this.user = res['user'];
         this.profilePic = this.user.profile_pic;
         //console.log(this.user);
-      });
+        resolve();
+      },
+      err => reject(err)
+      );
+    });
   }
 
   onUpdateGroup() {
@@ -182,6 +215,21 @@ export class GroupHeaderComponent implements OnInit {
 
   openLg(content) {
     this.modalReference = this.modalService.open(content, { size: 'lg', centered: true });
+  }
+
+  /**
+   * Makes a request to the backend to add a user to the given public group
+   */
+  joinPublicGroup() {
+    this.groupService.joinPublicGroup(this.groupDataService._groupId).subscribe(
+      res => {
+        this.joined = true;
+        setTimeout(() => {
+          this.memberOfGroup = true
+        }, 1500);
+      },
+      err => console.error(`Failed to join public group! ${err}`)
+    );
   }
 
 }

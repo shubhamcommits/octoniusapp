@@ -58,20 +58,20 @@ app.all('/', (req, res, next) => {
 });
 
 // Correct REST naming
-app.use('/auths', authsRoutes);
-app.use('/groups', groupsRoutes);
-app.use('/posts', postsRoutes);
-app.use('/users', usersRoutes);
-app.use('/workspaces', workspacesRoutes);
-app.use('/billing', billingRoutes);
-app.use('/webhooks', webhooksRoutes);
-app.use('/search', searchRoutes);
+app.use('/api/auths', authsRoutes);
+app.use('/api/groups', groupsRoutes);
+app.use('/api/posts', postsRoutes);
+app.use('/api/users', usersRoutes);
+app.use('/api/workspaces', workspacesRoutes);
+app.use('/api/billing', billingRoutes);
+app.use('/api/webhooks', webhooksRoutes);
+app.use('/api/search', searchRoutes);
 
 
 // -->!!!! TO BE REMOVED !!!!
-app.use('/auth', authsRoutes);
-app.use('/group', groupsRoutes);
-app.use('/workspace', workspacesRoutes);
+app.use('/api/auth', authsRoutes);
+app.use('/api/group', groupsRoutes);
+app.use('/api/workspace', workspacesRoutes);
 
 // Invalid routes handling middleware
 app.use((req, res, next) => {

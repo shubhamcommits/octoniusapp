@@ -1,6 +1,6 @@
 {
  "verbose": true,
- "watch": ["api/*", "index.js", "app.js"],
+ "watch": ["api/*", "index.js", "app.js", "utils/*"],
  "runOnChangeOnly": true,
  "ext": "js, json"
 }
