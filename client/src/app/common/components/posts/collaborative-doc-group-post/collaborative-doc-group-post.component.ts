@@ -3,9 +3,9 @@ import { ActivatedRoute, Router, Route, ResolveEnd } from '@angular/router';
 import {Location} from '@angular/common';
 
 import QuillCursors from 'quill-cursors';
-import ReconnectingWebSocket from 'reconnecting-websocket';
-import * as ShareDB from 'sharedb/lib/client';
-import * as Quill from 'quill';
+import ReconnectingWebSocket, {Options} from 'reconnecting-websocket';
+import * as ShareDB from '../../../../../../node_modules/sharedb/lib/client';
+// import * as Quill from 'quill';
 //import {cursors} from '../../../../shared/utils/cursors';
 // import {Mark, MarkDelete} from '../../../../shared/utils/quill.module.mark';
 import {Mark} from '../../../../shared/utils/quill.module.mark';
@@ -20,9 +20,8 @@ import { QuillAutoLinkService } from '../../../../shared/services/quill-auto-lin
 import { DocumentService } from '../../../../shared/services/document.service';
 import { Authorship } from '../../../../shared/utils/quill.module.authorship';
 
-
 // !--Register Required Modules--! //
-//ShareDB.types.register(require('rich-text').type);
+ShareDB.types.register(require('rich-text').type);
 Quill.register('modules/cursors', QuillCursors);
 Quill.register(Mark);
 Quill.register(Authorship);
@@ -270,11 +269,16 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
   async initializeQuillEditor() {
 
     try{
+      const options: Options = {
+        WebSocket: typeof window !== 'undefined' ? WebSocket : WebSocket, // custom WebSocket constructor
+        connectionTimeout: 1000,
+        maxRetries: 10,
+    };
       // !-- Connect ShareDB and Cursors to ReconnectingWebSocket--! //  
-      shareDBSocket = new ReconnectingWebSocket(((location.protocol === 'https:') ? 'wss' : 'wss') + '://' + environment.REAL_TIME_URL + '/sharedb');
+      shareDBSocket = new ReconnectingWebSocket(((location.protocol === 'https:') ? 'wss' : 'ws') + '://' + environment.REAL_TIME_URL + '/sharedb', [], options);
       var shareDBConnection = new ShareDB.Connection(shareDBSocket);
       // Create browserchannel socket
-      cursors.socket = new ReconnectingWebSocket(((location.protocol === 'https:') ? 'wss' : 'wss') + '://' + environment.REAL_TIME_URL + '/cursors');
+      cursors.socket = new ReconnectingWebSocket(((location.protocol === 'https:') ? 'wss' : 'ws') + '://' + environment.REAL_TIME_URL + '/cursors', [], options);
       // !-- Connect ShareDB and Cursors to ReconnectingWebSocket--! //
       //have color here
       var colorFromUser:any
