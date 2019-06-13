@@ -1,6 +1,6 @@
 {
   "name": "octonius-api",
-  "private": "true",
+  "private": true,
   "license": "private",
   "dependencies": {
     "autolinker": "^1.8.3",

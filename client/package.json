@@ -1,7 +1,7 @@
 {
   "name": "octonius-client",
   "version": "0.0.0",
-  "license": "MIT",
+  "license": "private",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0",
