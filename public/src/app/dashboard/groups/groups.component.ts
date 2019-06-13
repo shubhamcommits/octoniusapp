@@ -250,7 +250,6 @@ export class GroupsComponent implements OnInit {
     this._groupsService.createNewGroup(new_group)
       .subscribe((response) => {
         this.groups.push(response['group']);
-        this.agoras.push(response['group']);
 
         this.alert.class = 'success';
         this._message.next(response['message']);
