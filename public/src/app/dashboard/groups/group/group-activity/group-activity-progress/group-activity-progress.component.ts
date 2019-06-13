@@ -22,15 +22,13 @@ export class GroupActivityProgressComponent implements OnInit {
   pendingInProgressTaskCount = 0;
   completedTaskCount = 0;
 
-  todoPercent = 0;
-  inprogressPercent = 0;
-  completedPercent = 0;
   completedTasks: any = [];
   pendingTasks: any = [];
 
   allColumns;
   taskCount = [];
   columnPercent = [];
+  totalTasks;
 
   bgColor = [
     '#fd7714',
@@ -67,6 +65,7 @@ export class GroupActivityProgressComponent implements OnInit {
     this.groupService.getGroupTasks(this.group._id)
     .subscribe((res) => {
       this.pendingTasks = res['posts'];
+      this.totalTasks = 0;
       for(var i=0; i<this.allColumns.length; i++){
         this.taskCount[this.allColumns[i]['title']] = 0;
       }
@@ -75,12 +74,13 @@ export class GroupActivityProgressComponent implements OnInit {
       }
       for(var i=0; i<this.allColumns.length; i++){
         console.log(this.taskCount[this.allColumns[i]['title']]);
+        this.totalTasks+=this.taskCount[this.allColumns[i]['title']];
          this.updateColumnNumber(this.allColumns[i]['title'],this.taskCount[this.allColumns[i]['title']]);
       }
       this.getAllColumns();
 
       for(var i=0; i<this.allColumns.length; i++){
-        this.columnPercent[this.allColumns[i]['title']] = Math.round(this.taskCount[this.allColumns[i]['title']]/this.pendingTasks.length*100);
+        this.columnPercent[this.allColumns[i]['title']] = Math.round(this.taskCount[this.allColumns[i]['title']]/this.totalTasks*100);
       }
 
       this.isLoading$.next(false);
