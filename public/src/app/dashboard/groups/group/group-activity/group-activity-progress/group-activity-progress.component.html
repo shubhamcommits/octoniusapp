@@ -7,38 +7,15 @@
     <div class="row">
       <div class="col-md-12">
         <p>
-          Your team has <span class="todo bold">{{pendingToDoTaskCount + pendingInProgressTaskCount + completedTaskCount}}</span> assignment(s) this week.
+          Your team has <span class="todo bold">{{ pendingTasks.length }}</span> assignment(s) this week.
         </p>
       </div>
     </div>
 
-    <div class="row">
-
-      <div class="col-md-6"><h4 class="todo" style="margin-top:30px"><b>{{pendingToDoTaskCount}} To do</b></h4></div>
-      <div class="col-md-4">
-
-        <b><circle-progress
-          [percent]="todoPercent || 0">
-        </circle-progress></b>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-6"><h4 class="working" style="margin-top:30px"><b>{{pendingInProgressTaskCount}} In progress</b></h4></div>
-      <div class="col-md-4">
-        <b><circle-progress
-
-          [percent]="inprogressPercent || 0">
-        </circle-progress></b>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-6"><h4 class="done" style="margin-top:30px"><b>{{completedTaskCount}} Done</b></h4></div>
-      <div class="col-md-4">
-        <b><circle-progress
-          [percent]="completedPercent || 0">
-        </circle-progress></b>
+    <div class = "row" *ngFor = "let column of allColumns; let i = index;">
+        <div class="col-md-6"><h4 class="todo"  [style.color] = "bgColor[i%bgColor.length]" style="margin-top:30px"><b>{{taskCount[column.title]}} {{column.title}}</b></h4></div>
+        <div class="col-md-4">
+          <b><circle-progress [percent]="columnPercent[column.title] || 0"> </circle-progress></b>
       </div>
     </div>
 
