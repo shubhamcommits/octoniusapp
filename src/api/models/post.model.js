@@ -117,10 +117,6 @@ const PostSchema = new Schema({
   _read_by: [{
     type: Schema.Types.ObjectId,
     ref: 'User'
-  }],
-  _followers: [{
-    type: Schema.Types.ObjectId,
-    ref: 'User'
   }]
 });
 

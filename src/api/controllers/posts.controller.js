@@ -781,75 +781,6 @@ const unlikeComment = async (req, res) => {
   }
 };
 
-// -| Follow |-
-
-const follow = async (req, res, next) => {
-  try {
-    const {
-      userId,
-      params: { postId }
-    } = req;
-
-    const post = await Post.findOneAndUpdate({
-      _id: postId
-    }, {
-        $addToSet: {
-          _followers: userId
-        }
-      }, {
-        new: true
-      })
-      .populate('_followers', 'first_name last_name')
-      .lean();
-
-    const user = await User.findOne({
-      _id: userId
-    }).select('first_name last_name');
-
-    return res.status(200).json({
-      message: 'Post Followed!',
-      post,
-      user
-    });
-  } catch (err) {
-    return sendErr(res, err);
-  }
-};
-
-const unfollow = async (req, res, next) => {
-  try {
-    const {
-      userId,
-      params: { postId }
-    } = req;
-
-    const post = await Post.findOneAndUpdate({
-      _id: postId
-    }, {
-        $pull: {
-          _followers: userId
-        }
-      }, {
-        new: true
-      })
-      .populate('_followers', 'first_name last_name')
-      .lean();
-
-    const user = await User.findOne({
-      _id: userId
-    }).select('first_name last_name');
-
-
-    return res.status(200).json({
-      message: 'Post Unfollowed!',
-      post,
-      user
-    });
-  } catch (err) {
-    return sendErr(res, err);
-  }
-};
-
 // -| TASKS |-
 
 const changeTaskStatus = async (req, res, next) => {
@@ -998,8 +929,5 @@ module.exports = {
   unlikeComment,
   // Tasks
   changeTaskAssignee,
-  changeTaskStatus,
-  // Follow
-  follow,
-  unfollow
+  changeTaskStatus
 };
