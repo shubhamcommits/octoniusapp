@@ -79,6 +79,14 @@ export class PostService {
     return this._http.put(this.BASE_API_URL + `/posts/${post._id}/like`, post);
   }
 
+  follow(post) {
+    return this._http.put(this.BASE_API_URL + `/posts/${post._id}/follow`, post);
+  }
+
+  unfollow(post) {
+    return this._http.put(this.BASE_API_URL + `/posts/${post._id}/unfollow`, post);
+  }
+
   likeComment(comment) {
     return this._http.put(this.BASE_API_URL + `/posts/comments/${comment._id}/like`, comment);
   }
