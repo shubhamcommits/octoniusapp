@@ -80,7 +80,6 @@ export class SearchBarComponent implements OnInit {
       this.searchService.search(data)
         .debounceTime(300)
         .subscribe((res) => {
-          //console.log('RES SKILLS', res);
           if (filter === 'users') {
             this.search_results_users = res['results'];
           } else if (filter === 'skills') {
