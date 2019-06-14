@@ -25,7 +25,7 @@ var profile_pic: any;
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
-  @ViewChild('searchDrop') searchDrop;
+  @ViewChild('searchDrop', { static: false }) searchDrop;
 
   user: User;
   userProfileImage;

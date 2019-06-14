@@ -20,7 +20,7 @@ export class AdminMembersComponent implements OnInit {
   profileImage;
 
   modalReference: any;
-  @ViewChild('content') private content;
+  @ViewChild('content', { static: false }) private content;
 
   // alert variable
   staticAlertClosed = false;

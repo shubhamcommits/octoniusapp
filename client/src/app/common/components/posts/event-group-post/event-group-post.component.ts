@@ -17,7 +17,7 @@ declare var $;
 })
 
 export class EventGroupPostComponent implements OnInit, OnDestroy {
-  @ViewChild(CommentSectionComponent) commentSectionComponent;
+  @ViewChild(CommentSectionComponent, { static: true }) commentSectionComponent;
 
   @Input() post;
   @Input() preview; // true if the post is in preview mode, else false

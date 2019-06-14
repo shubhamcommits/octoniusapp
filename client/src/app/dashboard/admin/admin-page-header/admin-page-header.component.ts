@@ -44,7 +44,7 @@ export class AdminPageHeaderComponent implements OnInit {
       // show message
       console.log('Load failed');
   }
-  @ViewChild('content') private content = 'Workspace avatar updated!';
+  @ViewChild('content', { static: true }) private content = 'Workspace avatar updated!';
 
   group_id;
 

@@ -95,7 +95,7 @@ export class GroupPostComponent implements OnInit {
 
   modules = {};
 
-  @ViewChild('commentEditor') commentEditor;
+  @ViewChild('commentEditor', { static: false }) commentEditor;
 
 
   // !--GOOGLE DEVELOPER CONSOLE CREDENTIALS--! //

@@ -9,7 +9,7 @@ import {SnotifyService} from "ng-snotify";
   styleUrls: ['./post-comment.component.scss']
 })
 export class PostCommentComponent implements OnInit {
-  @ViewChild('commentEditList') commentEditList;
+  @ViewChild('commentEditList', { static: false }) commentEditList;
 
   @Input('comment') comment;
   @Input('allMembersId') allMembersId;

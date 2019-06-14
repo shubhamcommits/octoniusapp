@@ -21,7 +21,7 @@ declare var $;
 export class NormalGroupPostComponent implements OnInit,AfterViewInit, OnDestroy {
 
 
-  @ViewChild(CommentSectionComponent) commentSectionComponent;
+  @ViewChild(CommentSectionComponent, { static: true }) commentSectionComponent;
 
   @Input() post: any;
   @Input() preview; // true if the post is in preview mode, else false

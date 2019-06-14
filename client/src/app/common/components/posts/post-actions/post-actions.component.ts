@@ -13,7 +13,7 @@ import { SnotifyService, SnotifyPosition, SnotifyToastConfig } from 'ng-snotify'
   providers: [NgbDropdownConfig]
 })
 export class PostActionsComponent implements OnInit {
-  @ViewChild('postEditList') postEditList;
+  @ViewChild('postEditList', { static: false }) postEditList;
 
   group_id;
 

@@ -18,8 +18,8 @@ declare var $;
   styleUrls: ['./task-group-post.component.scss']
 })
 export class TaskGroupPostComponent implements OnInit {
-  @ViewChild(CommentSectionComponent) commentSectionComponent;
-  @ViewChild('taskStatusList') taskStatusList;
+  @ViewChild(CommentSectionComponent, { static: true }) commentSectionComponent;
+  @ViewChild('taskStatusList', { static: true }) taskStatusList;
   @Input() groupactivity: GroupActivityComponent;
 
   @Input() post;

@@ -50,7 +50,7 @@ export class UserProfileHeaderComponent implements OnInit {
       console.log('Load failed');
   }
 
-  @ViewChild('content') private content;
+  @ViewChild('content', { static: true }) private content;
 
 
   BASE_URL = environment.BASE_URL;

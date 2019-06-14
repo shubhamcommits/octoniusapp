@@ -45,7 +45,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 
 export class GroupActivityComponent implements OnInit {
 
-  @ViewChild(GroupActivityFiltersComponent) groupActivityFiltersComponent;
+  @ViewChild(GroupActivityFiltersComponent, { static: true }) groupActivityFiltersComponent;
 
   /* It Stores all the Posts of a group into this array*/
   posts = [];

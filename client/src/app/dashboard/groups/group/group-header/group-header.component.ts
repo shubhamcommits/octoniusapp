@@ -19,7 +19,7 @@ export class GroupHeaderComponent implements OnInit {
   imageChangedEvent: any = '';
   croppedImage: any = '';
 
-  @ViewChild('content') private content;
+  @ViewChild('content', { static: false }) private content;
 
   group_id;
 
