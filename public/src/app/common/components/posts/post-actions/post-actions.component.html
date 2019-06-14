@@ -17,21 +17,13 @@
                         </button>
                       </span>
 
-                      <span>
+      <span>
                         <button class="btn btn-link" (click)="OnClickLikePost()">
                           <i class="material-icons muted" *ngIf="!userLikedPost(); else likeif">thumb_up</i>
                           <ng-template #likeif><i class="material-icons active">thumb_up</i></ng-template>
                         </button>
                       </span>
-
-                      <span>
-                        <button class="btn btn-link" (click)="OnClickFollowPost()">
-                          <i class="material-icons muted" *ngIf="!userFollowedPost(); else followif">label_important</i>
-                          <ng-template #followif><i class="material-icons active">label_important</i></ng-template>
-                        </button>
-                      </span>
-
-                      <span>
+      <span>
                         <div ngbDropdown (openChange)="toggled($event)" #postActionsDrop="ngbDropdown" class="d-inline-block">
                           <i class="material-icons action" ngbDropdownToggle>more_horiz</i>
                           <div ngbDropdownMenu aria-labelledby="postActionsDrop">
