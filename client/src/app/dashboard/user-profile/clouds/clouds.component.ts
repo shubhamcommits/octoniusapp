@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgxUiLoaderService } from 'ngx-ui-loader'; 
 import { environment } from '../../../../environments/environment';
 import { Subject, Observable, BehaviorSubject } from 'rxjs';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 import { AuthService } from '../../../shared/services/auth.service';
 import { GoogleCloudService } from '../../../shared/services/google-cloud.service';
 GoogleCloudService
@@ -168,7 +168,7 @@ export class CloudsComponent implements OnInit {
           this.googleUser = JSON.parse(localStorage.getItem('google-cloud'));
           this.googleDriveUsed = Math.round((this.googleUser.user_data.storageQuota.usage/this.googleUser.user_data.storageQuota.limit)*100);
           this.isLoading$.next(false);
-          swal("Great!", "You have connected Google cloud", "success");
+          Swal.fire("Great!", "You have connected Google cloud", "success");
           console.log('Google Data', this.googleUser);
           console.log('Google Drive Usage', this.googleDriveUsed);
           

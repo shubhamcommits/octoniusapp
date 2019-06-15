@@ -1,9 +1,9 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {PostService} from "../../../../shared/services/post.service";
-import {Subject} from "rxjs/Subject";
+import {Subject} from "rxjs";
 import {takeUntil} from "rxjs/operators";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import * as moment from 'moment';
+import moment from 'moment';
 
 @Component({
   selector: 'date-picker-modal',

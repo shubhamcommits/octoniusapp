@@ -6,7 +6,7 @@ import { AdminService } from '../../../shared/services/admin.service';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { NgxUiLoaderService } from 'ngx-ui-loader'; 
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-admin-general',
@@ -118,10 +118,10 @@ export class AdminGeneralComponent implements OnInit {
         console.log("Domain Added", res)
         //this.alert.class = 'success';
         //this._message.next(res.message);
-        swal({
+        Swal.fire({
           title: "Good Job!",
           text: "Domain data updated, successfully!",
-          icon: "success"
+          type: "success"
         })
         .then(willreload => {
           if (willreload) {
@@ -149,7 +149,7 @@ export class AdminGeneralComponent implements OnInit {
     }
     else
     {
-     swal("Error!", "Please enter a valid email-address!", "error");
+     Swal.fire("Error!", "Please enter a valid email-address!", "error");
     }
    
 
@@ -161,12 +161,13 @@ export class AdminGeneralComponent implements OnInit {
       domain: allowDomain,
       userId: this.user_data.workspace._id
     };
-    swal({
+    Swal.fire({
       title: "Are you sure?",
       text: "You want to remove "+domainName.domain+" from the workspace? Doing this, will automatically block all the users signed In from this domain!",
-      icon: "warning",
-      dangerMode: true,
-      buttons: ["Cancel", "Yes, please!"],
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, remove it!'
     })
     .then(willDelete => {
       if (willDelete) {
@@ -179,7 +180,7 @@ export class AdminGeneralComponent implements OnInit {
           console.log('Error while removing the domain', err);
           console.log('Domain Element', domainName);
         })
-        swal("Removed!", domainName.domain +" has been removed!", "success")
+        Swal.fire("Removed!", domainName.domain +" has been removed!", "success")
         .then(willDelete => {
           if(willDelete){
             this.ngOnInit();
@@ -217,17 +218,17 @@ export class AdminGeneralComponent implements OnInit {
 
         } else if (err.status) {
           this._message.next(err.error.message);
-          swal("Error!", "There was some problem, please try again!", "error");
+          Swal.fire("Error!", "There was some problem, please try again!", "error");
         } else {
           this._message.next('Error! either server is down or no internet connection');
 
         }
       });
 
-      swal({
+    Swal.fire({
         title: "Good Job!",
         text: "You have invited the member successfully!",
-        icon: "success",
+        type: "success",
       })
       .then(willreload => {
         if (willreload) {
@@ -240,7 +241,7 @@ export class AdminGeneralComponent implements OnInit {
      
      else
      {
-      swal("Error!", "Please enter a valid email-address!", "error");
+      Swal.fire("Error!", "Please enter a valid email-address!", "error");
      }
     
   }

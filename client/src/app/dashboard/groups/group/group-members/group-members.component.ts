@@ -3,7 +3,7 @@ import { Group } from '../../../../shared/models/group.model';
 import { GroupDataService } from '../../../../shared/services/group-data.service';
 import { GroupService } from '../../../../shared/services/group.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 import { BehaviorSubject } from 'rxjs';
 @Component({
   selector: 'app-group-members',
@@ -67,12 +67,14 @@ export class GroupMembersComponent implements OnInit {
       'group_id':this.groupDataService.groupId
   
     };
-    swal({
+    Swal.fire({
       title: "Are you sure?",
       text: "You want to remove "+first_name+" "+last_name+" from the group?",
-      icon: "warning",
-      dangerMode: true,
-      buttons: ["Cancel", "Yes, please!"],
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, please!'
     })
     .then(willDelete => {
       if (willDelete) {
@@ -81,7 +83,7 @@ export class GroupMembersComponent implements OnInit {
         //  console.log('Group Member is Removed!');
           this.loadGroup();
         });
-        swal("Removed!", first_name+" "+last_name+", has been removed!", "success");
+        Swal.fire("Removed!", first_name+" "+last_name+", has been removed!", "success");
       }
     });
   }

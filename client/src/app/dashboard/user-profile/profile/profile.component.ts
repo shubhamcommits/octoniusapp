@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { UserService } from '../../../shared/services/user.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import {ProfileDataService} from "../../../shared/services/profile-data.service";
 import {SearchService} from "../../../shared/services/search.service";
@@ -58,7 +58,7 @@ export class ProfileComponent implements OnInit {
       this.profileDataService.user.next(user['user']);
 
       if (this.user['company_join_date'] == null && this.isCurrentUser) {
-        swal("Oops!", "Seems like you have been missing out, please update your profile to stay updated!", "warning");
+        Swal.fire("Oops!", "Seems like you have been missing out, please update your profile to stay updated!", "warning");
       }
       else {
         // this.join_date = new Date(this.user['company_join_date'].year,

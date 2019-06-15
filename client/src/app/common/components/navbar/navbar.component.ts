@@ -3,8 +3,8 @@ import { AuthService } from '../../../shared/services/auth.service';
 import { Router } from '@angular/router';
 import { UserService } from '../../../shared/services/user.service';
 import { User } from '../../../shared/models/user.model';
-import * as moment from 'moment';
-import * as io from 'socket.io-client';
+import moment from 'moment';
+import io from 'socket.io-client';
 import { environment } from '../../../../environments/environment'
 import { BehaviorSubject } from 'rxjs';
 import { async } from '@angular/core/testing'

@@ -1,5 +1,5 @@
 import * as moment from 'moment';
-import * as io from 'socket.io-client';
+import io from 'socket.io-client';
 import {Component, OnInit, ViewChild, ViewChildren} from '@angular/core';
 import { ActivatedRoute, Router, Route, NavigationEnd } from '@angular/router';
 import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -19,7 +19,7 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { SnotifyService, SnotifyPosition, SnotifyToastConfig } from 'ng-snotify';
 import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ScrollToService } from 'ng2-scroll-to-el';
-import 'quill-mention';
+import Mention from 'quill-mention';
 import { environment } from '../../../../../environments/environment';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 declare var gapi: any;
@@ -27,7 +27,8 @@ declare var google: any;
 import {Group} from "../../../../shared/models/group.model";
 import { QuillAutoLinkService } from '../../../../shared/services/quill-auto-link.service';
 import {months} from "../../../../common/data";
-
+import Swal from 'sweetalert2';
+import { MentionBlot } from '../../../../shared/utils/mention-module/quill.mention.blot'
 import * as Quill from 'quill';
 (window as any).Quill = Quill;
 import 'quill-emoji/dist/quill-emoji';
@@ -35,6 +36,8 @@ import { GoogleCloudService } from '../../../../shared/services/google-cloud.ser
 import {GroupActivityFiltersComponent} from "./group-activity-filters/group-activity-filters.component";
 import { NgxSpinnerService } from 'ngx-spinner';
 
+Quill.register(MentionBlot);
+Quill.register('modules/mention', Mention);
 
 @Component({
   selector: 'app-group-activity',
@@ -153,12 +156,14 @@ export class GroupActivityComponent implements OnInit {
   }
 
   onDeletePost(postId) {
-    swal({
+    Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
-      icon: "warning",
-      dangerMode: true,
-      buttons: ["Cancel", "Yes, delete it!"],
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
     })
       .then(willDelete => {
         if (willDelete) {
@@ -306,7 +311,7 @@ export class GroupActivityComponent implements OnInit {
       .subscribe((res) => {
 
       }, (err) => {
-        swal("Error!", "Error while fetching the comment " + err, "danger");
+        Swal.fire("Error!", "Error while fetching the comment " + err, "error");
       });
   }
   // !--FETCH DATA OF SINGLE COMMENT--! //

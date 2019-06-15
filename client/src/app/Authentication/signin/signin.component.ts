@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { InputValidators } from '../../common/validators/input.validator';
-import { THROW_IF_NOT_FOUND } from '@angular/core/src/di/injector';
 import { AuthService } from '../../shared/services/auth.service';
 import { Router } from '@angular/router';
 import { User } from '../../shared/models/user.model';

@@ -1,7 +1,7 @@
 export const environment = {
     production: false,
     hmr: true,
-    BASE_API_URL: 'http://localhost:3000/api/api',
+    BASE_API_URL: 'http://localhost:3000/api',
     BASE_URL: 'http://localhost:3000',
     pk_stripe: 'pk_test_rgLsr0HrrbMcqQr5G7Wz1zFK',
     
@@ -14,6 +14,6 @@ export const environment = {
     // !--GOOGLE DEVELOPER CONSOLE CREDENTIALS--! //
 
     // !--REAL TIME DOC LOCATION PROTOCOLS--! //
-    REAL_TIME_URL: 'localhost:3000/editor'
+    REAL_TIME_URL: 'localhost:3001'
   // !--REAL TIME DOC LOCATION PROTOCOLS--! //
    };

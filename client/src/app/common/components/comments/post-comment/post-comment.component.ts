@@ -1,7 +1,8 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewChild, group} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {PostService} from "../../../../shared/services/post.service";
-import {Subject} from "rxjs/Subject";
+import {Subject} from "rxjs";
 import {SnotifyService} from "ng-snotify";
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'post-comment',
@@ -142,12 +143,14 @@ export class PostCommentComponent implements OnInit {
   }
 
   OnDeleteComment() {
-    swal({
+    Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
-      icon: "warning",
-      dangerMode: true,
-      buttons: ["Cancel", "Yes, delete it!"],
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
 
     })
       .then(willDelete => {

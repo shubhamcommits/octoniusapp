@@ -3,7 +3,7 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent } from 'angular-calendar';
 import { PostService } from '../../../../shared/services/post.service';
 import { GroupDataService } from '../../../../shared/services/group-data.service';
-import * as moment from 'moment';
+import moment from 'moment';
 import { Subject } from 'rxjs';
 import {
   startOfDay,

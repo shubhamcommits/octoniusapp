@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { BehaviorSubject } from 'rxjs';
-import * as io from 'socket.io-client';
+import io from 'socket.io-client';
 import { environment } from '../../../environments/environment';
 import { User } from '../../shared/models/user.model';
 import { AuthService } from '../../shared/services/auth.service';

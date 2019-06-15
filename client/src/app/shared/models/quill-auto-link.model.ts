@@ -1,4 +1,4 @@
-import Delta from 'quill-delta';
+import Delta from '../../../../node_modules/quill-delta/dist/Delta';
 import Autolinker from 'autolinker';
 
 const defaults = {
@@ -82,7 +82,7 @@ export default class QuillAutoLink {
   checkIfHasLink = (currentIndex: number, input: string) =>{
     var hasLink = false;
     var linkedText = Autolinker.link( input, {
-        replaceFn : ( match ) => {
+        replaceFn : ( match: any ) => {
             switch(match.getType()){
               case 'url' :
                 //console.log( "url: ", match.getUrl() );

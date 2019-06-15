@@ -3,22 +3,21 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule, FormsModule, FormGroup } from '@angular/forms';
 import { AppRoutingModule, routingComponents } from './app-routing.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { QuillModule } from 'ngx-quill';
-import { LoadingModule, ANIMATION_TYPES } from 'ngx-loading';
+//import { LoadingModule, ANIMATION_TYPES } from 'ngx-loading';
 import { NgxUiLoaderModule, NgxUiLoaderConfig, SPINNER, POSITION, PB_DIRECTION } from  'ngx-ui-loader';
 import { SnotifyModule, SnotifyService, ToastDefaults } from 'ng-snotify';
 import { DatePipe } from '@angular/common';
 import { ScrollToModule } from 'ng2-scroll-to-el';
-import { CalendarModule } from 'angular-calendar';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import 'core-js/es6/reflect';
 import 'core-js/es7/reflect';
 import 'zone.js/dist/zone';
-import { MentionModule } from 'angular-mentions/mention';
-import { DragAndDropModule } from 'angular-draggable-droppable';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
@@ -127,8 +126,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   "hasProgressBar": true,
   "text": "Bringing you up to date...",
   "textColor": "#FFFFFF",
-  "textPosition": "center-center",
-  "threshold": 500 // progress bar thickness
+  "textPosition": "center-center"
 };
 
 const ngCircle = {
@@ -207,7 +205,6 @@ const ngCircle = {
     AngularMultiSelectModule,
     QuillModule,
     SnotifyModule,
-    MentionModule,
     MomentModule,
     InfiniteScrollModule,
     PickerModule,
@@ -216,24 +213,26 @@ const ngCircle = {
     EmojiModule,
     NgxSkillBarModule,
     ImageCropperModule,
-    DragAndDropModule.forRoot(),
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
     NgCircleProgressModule.forRoot(ngCircle),
-    LoadingModule.forRoot({
-      animationType: ANIMATION_TYPES.wanderingCubes,
-      backdropBackgroundColour: 'rgba(0,0,0,0.1)',
-      backdropBorderRadius: '4px',
-      primaryColour: '#ffffff',
-      secondaryColour: '#ffffff',
-      tertiaryColour: '#ffffff'
-  }),
+  //   LoadingModule.forRoot({
+  //     animationType: ANIMATION_TYPES.wanderingCubes,
+  //     backdropBackgroundColour: 'rgba(0,0,0,0.1)',
+  //     backdropBorderRadius: '4px',
+  //     primaryColour: '#ffffff',
+  //     secondaryColour: '#ffffff',
+  //     tertiaryColour: '#ffffff'
+  // }),
     FontAwesomeModule,
     BrowserAnimationsModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     NgbModule.forRoot(),
     ScrollToModule.forRoot(),
-    CalendarModule.forRoot()
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory
+    })
   ],
 
   providers: [AuthService, UserService, DenyNavigationGuard, PostService, GroupService,

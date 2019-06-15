@@ -3,7 +3,7 @@ import { UserService } from '../../../shared/services/user.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../../../../environments/environment';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import {ProfileDataService} from "../../../shared/services/profile-data.service";
@@ -162,10 +162,10 @@ export class UserProfileHeaderComponent implements OnInit {
        // this.alert.class = 'alert alert-danger';
 
         if (err.status === 401) {
-          swal("Error!", "Seems like there's an error, please try again!", "danger");
+          Swal.fire("Error!", "Seems like there's an error, please try again!", "error");
         } else if (err.status) {
         } else {
-          swal("Error!", "Either server is down, or no Internet connection!", "danger");
+          Swal.fire("Error!", "Either server is down, or no Internet connection!", "error");
         }
       });
   }
@@ -183,11 +183,11 @@ export class UserProfileHeaderComponent implements OnInit {
           // this.getUserProfile(this.userId);
 
         }, (err) => {
-          swal("Error!", "Seems like there's an error- "+ err, "danger");
+          Swal.fire("Error!", "Seems like there's an error- "+ err, "error");
           if (err.status === 401) {
-            swal("Error!", "Seems like there's an error, please try again!", "danger");
+            Swal.fire("Error!", "Seems like there's an error, please try again!", "error");
           } else {
-            swal("Error!", "Either server is down, or no Internet connection!", "danger");
+            Swal.fire("Error!", "Either server is down, or no Internet connection!", "error");
           }
         });
     }

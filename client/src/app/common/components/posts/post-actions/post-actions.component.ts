@@ -1,10 +1,11 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {PostService} from "../../../../shared/services/post.service";
-import {Subject} from "rxjs/Subject";
+import {Subject} from "rxjs";
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../../../../../environments/environment';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { SnotifyService, SnotifyPosition, SnotifyToastConfig } from 'ng-snotify';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'post-actions',
@@ -80,7 +81,7 @@ export class PostActionsComponent implements OnInit {
           this.sendComments.emit((res['comments'].reverse()));
           this.toggleComments.emit();
         }, (err) => {
-          swal("Error!", "Error while retrieving the comments " + err, "danger");
+          Swal.fire("Error!", "Error while retrieving the comments " + err, "error");
         });
     } else {
       //  if comments are displayed we close the comments

@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angula
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {InputValidators} from "../../../validators/input.validator";
 import {PostService} from "../../../../shared/services/post.service";
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'comment-section',
@@ -144,10 +145,10 @@ export class CommentSectionComponent implements OnInit {
       }, (err) => {
 
         if (err.status) {
-          swal("Error!", "Seems like, there's an error found " + err, "danger");
+          Swal.fire("Error!", "Seems like, there's an error found " + err, "error");
 
         } else {
-          swal("Error!", "Either server is down, or no Internet connection!", "danger");
+          Swal.fire("Error!", "Either server is down, or no Internet connection!", "error");
         }
 
       });

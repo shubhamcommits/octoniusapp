@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { saveAs } from 'file-saver';
-import * as moment from "moment";
+import  moment from "moment";
 import { takeUntil } from "rxjs/operators";
-import { Subject } from "rxjs/Subject";
+import { Subject } from "rxjs";
 import { environment } from '../../../../../environments/environment';
 import { GroupService } from "../../../../shared/services/group.service";
 import { PostService } from "../../../../shared/services/post.service";

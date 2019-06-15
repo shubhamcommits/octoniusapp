@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { WorkspaceService } from '../../../shared/services/workspace.service';
 import { environment } from '../../../../environments/environment';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
-import swal from 'sweetalert';
 import { Button } from 'protractor';
 
 @Component({

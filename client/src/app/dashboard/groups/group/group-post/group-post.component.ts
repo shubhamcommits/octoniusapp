@@ -11,10 +11,10 @@ import { environment } from '../../../../../environments/environment';
 import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
-
+import Swal from 'sweetalert2';
 declare var gapi: any;
 declare var google: any;
-import * as io from 'socket.io-client';
+import io from 'socket.io-client';
 
 import * as Quill from 'quill';
 import { QuillAutoLinkService } from '../../../../shared/services/quill-auto-link.service';
@@ -181,7 +181,7 @@ export class GroupPostComponent implements OnInit {
         resolve();
 
       }, (err)=>{
-        swal("Error!", "Error received while fetching the post " + err, "danger");
+        Swal.fire("Error!", "Error received while fetching the post " + err, "error");
         reject(err);
       });
     })
@@ -237,17 +237,19 @@ export class GroupPostComponent implements OnInit {
 }
 
   onDeletePost(postId) {
-      swal({
+      Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
-        icon: "warning",
-        dangerMode: true,
-        buttons: ["Cancel", "Yes, delete it!"],
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
 
       })
         .then(willDelete => {
           if (willDelete) {
-            swal("Deleted!", "The following post has been deleted!", "success");
+            Swal.fire("Deleted!", "The following post has been deleted!", "success");
             this._router.navigate(['/dashboard/group', this.group_id, 'activity']);
           }
         });

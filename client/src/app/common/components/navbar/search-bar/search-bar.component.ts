@@ -1,3 +1,5 @@
+
+import {debounceTime} from 'rxjs/operators';
 import {Component, Input, OnInit} from '@angular/core';
 import {SearchService} from "../../../../shared/services/search.service";
 import {Router} from "@angular/router";
@@ -77,8 +79,8 @@ export class SearchBarComponent implements OnInit {
       };
 
       // yes
-      this.searchService.search(data)
-        .debounceTime(300)
+      this.searchService.search(data).pipe(
+        debounceTime(300))
         .subscribe((res) => {
           //console.log('RES SKILLS', res);
           if (filter === 'users') {

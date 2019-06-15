@@ -4,7 +4,7 @@ import { GroupDataService } from '../../../../shared/services/group-data.service
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { NgxUiLoaderService } from 'ngx-ui-loader'; 
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -107,7 +107,7 @@ export class GroupAdminComponent implements OnInit {
         // console.log('add new user response:', res);
         this.selectedItems = [];
         //this._message.next(res['message']);
-        swal("Good Job!", "You have added "+data.members.length+" new member(s)!", "success");
+        Swal.fire("Good Job!", "You have added "+data.members.length+" new member(s)!", "success");
 
       }, (err) => {
         this.alert.class = 'danger';

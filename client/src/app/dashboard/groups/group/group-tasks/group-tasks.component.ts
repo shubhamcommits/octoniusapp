@@ -3,16 +3,15 @@ import { UserService } from '../../../../shared/services/user.service';
 import { PostService } from '../../../../shared/services/post.service';
 import { GroupService } from '../../../../shared/services/group.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject , Subject} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
 import { GroupDataService } from '../../../../shared/services/group-data.service';
 import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../../../../../environments/environment';
-import * as moment from 'moment';
-import * as io from 'socket.io-client';
-import {Subject} from "rxjs/Rx";
+import moment from 'moment';
+import io from 'socket.io-client';
 import {SearchService} from "../../../../shared/services/search.service";
-
+import Swal from 'sweetalert2';
 import 'quill-mention';
 
 import * as Quill from 'quill';
@@ -1040,12 +1039,14 @@ const post = this.postBeingEditted;
  }
 
  deleteTask(post) {
-   swal({
+   Swal.fire({
      title: "Are you sure?",
      text: "You won't be able to revert this!",
-     icon: "warning",
-     dangerMode: true,
-     buttons: ["Cancel", "Yes, delete it!"]
+     type: "warning",
+     showCancelButton: true,
+     confirmButtonColor: '#3085d6',
+     cancelButtonColor: '#d33',
+     confirmButtonText: 'Yes, delete it!'
    }).then((confirmed) => {
      if (confirmed) {
        this.postService.deletePost(post._id)

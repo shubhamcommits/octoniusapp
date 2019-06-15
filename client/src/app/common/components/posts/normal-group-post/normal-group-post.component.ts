@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, Af
 
 import {GroupService} from "../../../../shared/services/group.service";
 import { saveAs } from 'file-saver';
-import {Subject} from "rxjs/Subject";
+import {Subject} from "rxjs";
 import {takeUntil} from "rxjs/operators";
 import {PostService} from "../../../../shared/services/post.service";
 import {FormGroup} from "@angular/forms";

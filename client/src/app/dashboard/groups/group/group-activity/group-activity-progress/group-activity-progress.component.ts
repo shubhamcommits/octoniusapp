@@ -1,6 +1,6 @@
 import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
-import * as moment from "moment";
-import {BehaviorSubject} from "rxjs/Rx";
+import moment from "moment";
+import {BehaviorSubject} from "rxjs";
 import {GroupService} from "../../../../../shared/services/group.service";
 
 @Component({
@@ -31,6 +31,7 @@ export class GroupActivityProgressComponent implements OnInit {
 
   async ngOnInit() {
     await this.statusChanged();
+    console.log(this.todoPercent);
 
     this.groupService.taskStatusChanged
       .subscribe(() => {

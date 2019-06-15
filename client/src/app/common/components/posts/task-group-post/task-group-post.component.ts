@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { PostService } from "../../../../shared/services/post.service";
-import { Subject } from "rxjs/Subject";
+import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { saveAs } from 'file-saver';
 import { GroupService } from "../../../../shared/services/group.service";
 import { CommentSectionComponent } from "../../comments/comment-section/comment-section.component";
-import * as moment from 'moment';
+import moment from 'moment';
 import { GroupActivityComponent } from '../../../../dashboard/groups/group/group-activity/group-activity.component';
 import { SnotifyService } from "ng-snotify";
 import { SearchService } from '../../../../shared/services/search.service';

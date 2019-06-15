@@ -8,7 +8,7 @@ import { Subject, BehaviorSubject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { NgbModal, NgbAlertConfig } from '@ng-bootstrap/ng-bootstrap';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-admin-members',
   templateUrl: './admin-members.component.html',
@@ -87,12 +87,14 @@ export class AdminMembersComponent implements OnInit {
       role: role
     };
 
-    swal({
+    Swal.fire({
       title: "Are you sure?",
       text: "You want to make "+first_name+" "+last_name+" as - "+role,
-      icon: "info",
-      dangerMode: true,
-      buttons: ["No, cancel it!", "Yes, sure!"],
+      type: "info",
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Sure!'
 
       })
       .then(willupdate => {
@@ -113,7 +115,7 @@ export class AdminMembersComponent implements OnInit {
 
         });
 
-        swal("Done!", first_name+"'s role has been updated to - "+role+"!", "success");
+        Swal.fire("Done!", first_name+"'s role has been updated to - "+role+"!", "success");
       }
       });
   }
@@ -135,12 +137,14 @@ removeUserfromWorkspace(user_id, first_name, last_name){
 
   };
 
-  swal({
+  Swal.fire({
     title: "Are you sure?",
     text: "You want to remove "+first_name+" "+last_name+" from the workspace?",
-    icon: "warning",
-    dangerMode: true,
-    buttons: ["Cancel", "Yes, please!"],
+    type: "warning",
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, please!'
   })
   .then(willDelete => {
     if (willDelete) {
@@ -149,7 +153,7 @@ removeUserfromWorkspace(user_id, first_name, last_name){
        console.log('Group Member is Removed!', res);
         this.loadWorkspace();
       });
-      swal("Removed!", first_name+" "+last_name+", has been removed!", "success");
+      Swal.fire("Removed!", first_name+" "+last_name+", has been removed!", "success");
     }
   });
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { PostService } from '../../../../shared/services/post.service';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject } from 'rxjs';
 import { GroupService } from '../../../../shared/services/group.service';
 import { GroupDataService } from '../../../../shared/services/group-data.service';
 import { environment } from '../../../../../environments/environment';

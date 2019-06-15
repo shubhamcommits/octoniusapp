@@ -63,6 +63,7 @@
             },
             "hmr": {
               "hmr": true,
+              "hmrWarning": false,
               "browserTarget": "octonius-client:build:hmr"
             }      
           }

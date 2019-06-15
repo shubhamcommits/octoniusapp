@@ -2,8 +2,8 @@ import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} fr
 import {PostService} from "../../../../shared/services/post.service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {takeUntil} from "rxjs/operators";
-import {Subject} from "rxjs/Subject";
-import * as moment from 'moment';
+import {Subject} from "rxjs";
+import  moment from 'moment';
 
 @Component({
   selector: 'time-picker',
