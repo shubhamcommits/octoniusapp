@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
-import { BehaviorSubject ,  Observable , Subject} from 'rxjs';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
-
-
-
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/switchMap';
 import { environment } from '../../../environments/environment';
+import {Subject} from "rxjs/Subject";
 
 @Injectable()
 export class GroupService {

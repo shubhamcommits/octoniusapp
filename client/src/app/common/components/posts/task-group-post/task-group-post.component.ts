@@ -10,6 +10,9 @@ import { GroupActivityComponent } from '../../../../dashboard/groups/group/group
 import { SnotifyService } from "ng-snotify";
 import { SearchService } from '../../../../shared/services/search.service';
 import { environment } from '../../../../../environments/environment';
+import { ColumnService } from '../../../../shared/services/column.service';
+import { Column } from '../../../../shared/models/column.model';
+
 declare var $;
 
 @Component({
@@ -82,11 +85,31 @@ export class TaskGroupPostComponent implements OnInit {
   // If false, "read less" text should be displayed and the post should be displayed entirely
   readMore: boolean;
 
+  allColumns;
+
+  bgColor = [
+    '#fd7714',
+    '#0bc6a0',
+    '#4a90e2',
+    '#d46a6a',
+    '#b45a81',
+    '#674f91',
+    '#4e638e',
+    '#489074',
+    '#4b956f',
+    '#a7c763',
+    '#d4cb6a',
+    '#d49b6a',
+    '#d4746a'
+  ];
+
+
   constructor(
     private postService: PostService,
     private groupService: GroupService,
     private snotifyService: SnotifyService,
-    private searchService: SearchService) { }
+    private searchService: SearchService,
+    private columnService: ColumnService) { }
 
   ngOnInit() {
     this.commentCount = this.post.comments.length;
@@ -107,6 +130,9 @@ export class TaskGroupPostComponent implements OnInit {
      }
 
     this.readMore = this.preview;
+    this.initColumns();
+    this.getAllColumns();
+
   }
   ngAfterViewInit(): void {
     $('.image-gallery').lightGallery({
@@ -480,6 +506,52 @@ return doc.body.innerHTML;
     } else {
       console.log('is closed');
     }
+  }
+
+  initColumns(){
+    this.columnService.initColumns(this.group._id).subscribe(() => {
+      this.getAllColumns();
+    });   
+  }
+
+  getAllColumns(){
+    this.columnService.getAllColumns(this.group._id).subscribe((res: Column) => {
+      this.allColumns = res.columns;
+      //console.log(this.allColumns); 
+    }); 
+  }
+
+  updateTaskColumn(post_id, oldColumnName, newColumnName){
+    console.log(post_id);
+    console.log(oldColumnName);
+    const statusUpdate = {
+      'status' : newColumnName
+    }
+    console.log(newColumnName);
+    this.postService.complete(post_id,statusUpdate)
+    .subscribe((res) => {
+      this.playAudio();
+
+      this.alert.class = 'success';
+      this._message.next(res['message']);
+
+      // change its status on the frontend to match up with the backend
+      this.post.task.status = newColumnName;
+
+      this.snotifyService.success('Task updated!', 'Good Job!');
+      this.groupService.taskStatusChanged.next();
+      this.columnService.addColumnTask(this.group._id, newColumnName).subscribe((res) => {
+        console.log(res);
+      });
+      this.columnService.deleteColumnTask(this.group._id, oldColumnName).subscribe((res) => {
+        console.log(res);
+      });
+      this.getAllColumns();
+
+    }, (err) => {
+      console.log('Error:', err);
+    });
+
   }
 
 }

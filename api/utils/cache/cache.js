@@ -3,22 +3,8 @@ const redis = require('redis');
 const util = require('util');
 
 // Start redis client
-// const redisUrl = 'redis://127.0.0.1:6379';
-const client = redis.createClient({
-  host: process.env.REDIS_HOST,
-  port: process.env.REDIS_PORT,
-  retry_strategy: () => 1000
-});
-
-client.on('connect', () => {
-  // eslint-disable-next-line no-console
-  console.log(`🗃  Redis connection is open on\n\t${process.env.REDIS_PORT}`);
-});
-
-client.on('error', (err) => {
-  // eslint-disable-next-line no-console
-  console.log(`Redis connection had an error:\n${err}`);
-});
+const redisUrl = 'redis://127.0.0.1:6379';
+const client = redis.createClient(redisUrl);
 
 // Ovewrite get method to return a promise
 client.hget = util.promisify(client.hget);

@@ -10,6 +10,7 @@ const User = require('./user.model');
 const Workspace = require('./workspace.model');
 const StripeCustomer = require('./stripecustomer.model');
 const Resetpwd = require('./resetpwd.model');
+const Column = require('./column.model');
 
 module.exports = {
   Auth,
@@ -23,5 +24,6 @@ module.exports = {
   User,
   Resetpwd,
   StripeCustomer,
-  Workspace
+  Workspace,
+  Column
 };

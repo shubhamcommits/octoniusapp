@@ -4,7 +4,6 @@ import { environment } from '../../../environments/environment';
 import * as chance from 'chance';
 import { SnotifyService, SnotifyPosition, SnotifyToastConfig, Snotify } from 'ng-snotify';
 import { Observable, Observer, Subject } from 'rxjs';
-import * as Quill from 'quill';
 
 var Delta = Quill.import('delta');
 

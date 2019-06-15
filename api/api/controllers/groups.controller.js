@@ -77,12 +77,16 @@ const getAllForUser = async (req, res) => {
 };
 
 /**
- * Fetches all the public groups in the system
+ * Fetches all the public groups that a user is not
+ * a part of.
  */
 const getPublicGroups = async (req, res) => {
+  const { userId } = req;
   try {
     const groups = await Group.find({
-      type: 'agora'
+      type: 'agora',
+      _members: { $not: { $elemMatch: { $eq: new mongoose.Types.ObjectId(userId) } } },
+      _admins: { $not: { $elemMatch: { $eq: new mongoose.Types.ObjectId(userId) } } }
     });
 
     return res.status(200).json({
@@ -494,11 +498,7 @@ const getTasks = async (req, res, next) => {
 
     const posts = await Post.find({
       type: 'task',
-      _group: groupId,
-      $or: [
-        { 'task.status': 'to do' },
-        { 'task.status': 'in progress' }
-      ]
+      _group: groupId
     })
       .sort('-task.due_to')
       .populate('_group', 'group_name')

@@ -43,8 +43,7 @@ export class GroupHeaderComponent implements OnInit {
 
   isItMyWorkplace = false;
 
-  memberOfGroup: boolean = false; // True if the current user is a member of the group
-  ownerOfGroup: boolean = false;  // True if the current user is the owner of the group
+  ownerOfGroup: boolean = false;  // True if the current user is the owner of the public group
 
   joined: boolean = false;
 
@@ -108,8 +107,7 @@ export class GroupHeaderComponent implements OnInit {
         this.group.group_name = res['group']['group_name'];
         this.groupDataService.group = res['group'];
 
-        // Determine if the current user is already a member of the group.
-        // Note: One is considered a member if he/she is strictly a member or the admin of the group
+        // Determine if the current user is the admin of the group
         // @ts-ignore
         this.group.type = res.group.type;
         let admin = this.groupDataService._group._admins.filter(_user => {
@@ -117,18 +115,8 @@ export class GroupHeaderComponent implements OnInit {
         });
 
         if (admin.length > 0) {
-          this.memberOfGroup = true;
           this.ownerOfGroup = true;
         }
-
-        let member = this.groupDataService.group._members.filter(_user => {
-          return _user._id.toString() === this.user._id.toString();
-        });
-
-        if (member.length > 0) {
-          this.memberOfGroup = true;
-        }
-
 
         if(this.group.group_name === 'private'){
           this.isItMyWorkplace = true;
@@ -216,21 +204,6 @@ export class GroupHeaderComponent implements OnInit {
   openLg(content) {
     this.modalReference = this.modalService.open(content, { size: 'lg', centered: true });
   }
-
-  /**
-   * Makes a request to the backend to add a user to the given public group
-   */
-  joinPublicGroup() {
-    this.groupService.joinPublicGroup(this.groupDataService._groupId).subscribe(
-      res => {
-        this.joined = true;
-        setTimeout(() => {
-          this.memberOfGroup = true
-        }, 1500);
-      },
-      err => console.error(`Failed to join public group! ${err}`)
-    );
-  }
-
+  
 }
 

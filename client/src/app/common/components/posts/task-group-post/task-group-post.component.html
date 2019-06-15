@@ -21,16 +21,15 @@
         </div>
         <div class="col-md-4 text-right padding-topright" style=" object-fit: cover;">
           <div ngbDropdown (openChange)="toggled($event)" autoClose="outside" #taskStatusList="ngbDropdown" class="d-inline-block">
-            <button class="btn btn-sm kbn-todo" *ngIf="post.task.status == 'to do'" style=" color: white;"
-                    ngbDropdownToggle>to do</button>
-            <button class="btn btn-sm kbn-working" *ngIf="post.task.status == 'in progress'" style=" color: white;"
-                    ngbDropdownToggle>in progress</button>
-            <button class="btn btn-sm kbn-done" *ngIf="post.task.status == 'done'" style=" color: white;"
-                    ngbDropdownToggle>done</button>
+            <div *ngFor="let column of allColumns; let i = index;">
+              <div *ngIf="column.title == post.task.status">
+                <button class="btn btn-sm" style=" color: white;" [style.backgroundColor] = "bgColor[i%bgColor.length]" ngbDropdownToggle> {{ post.task.status }} </button> 
+              </div>
+            </div>
             <div ngbDropdownMenu aria-labelledby="taskStatusList">
-              <button class="dropdown-item pumpkin-orange-bg" (click)="OnMarkTaskToDo(); taskStatusList.close();">To Do</button>
-              <button class="dropdown-item" (click)="OnMarkTaskInProgress(); taskStatusList.close();">In Progress</button>
-              <button class="dropdown-item" (click)="OnMarkTaskCompleted(); taskStatusList.close();">Done</button>
+              <div *ngFor="let col of allColumns">
+                <button class="dropdown-item" (click)="updateTaskColumn(this.post._id, this.post.task.status, col.title)"> {{ col.title }}</button>  
+              </div>
             </div>
           </div>
           <p class="small font-weight-bold" style="margin-top: 5px" *ngIf="post.task?.due_to != 'Invalid date'"> due
