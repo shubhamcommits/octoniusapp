@@ -25,7 +25,7 @@ export class GroupActivityProgressComponent implements OnInit {
   completedTasks: any = [];
   pendingTasks: any = [];
 
-  allColumns: any;
+  allColumns: any = [];
   taskCount = [];
   columnPercent = [];
   totalTasks;
@@ -49,6 +49,7 @@ export class GroupActivityProgressComponent implements OnInit {
   constructor(private groupService: GroupService, private columnService: ColumnService) { }
 
   async ngOnInit() {
+    //this.allColumns.length = 0;
     this.getTasks();
     this.initColumns();
     this.getAllColumns();
@@ -97,7 +98,9 @@ export class GroupActivityProgressComponent implements OnInit {
 
   getAllColumns(){
     this.columnService.getAllColumns(this.group._id).subscribe((res: Column) => {
+     if(res != null){
       this.allColumns = res.columns;
+     }
     }); 
   }
 

@@ -3,6 +3,11 @@ node_modules/
 # MongoDB development database
 data/
 
+api/package-lock.json
+api/yarn.lock
+client/package-lock.json
+client/yarn.lock
+
 public/
 
 # Octonius uploaded files on development
