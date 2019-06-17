@@ -16,7 +16,7 @@ services:
   
   api:
     restart: always
-    image: 'octoniusapp/octonius-api:latest'
+    image: 'octoniusapp/octonius:api'
     #volumes:
       #- /app/node_modules # Avoid overwriting container's node_modules folder
       #- ${PWD}/api:/app # mount server folder inside container's app folder
@@ -36,7 +36,7 @@ services:
       - redis
   
   client:
-    image: 'octoniusapp/octonius-client:latest'
+    image: 'octoniusapp/octonius:client'
     #volumes:
     #  - /app/node_modules # Avoid overwriting container's node_modules folder
     #  - ${PWD}/client:/app # mount client folder inside container's app folder
@@ -45,7 +45,7 @@ services:
   
   nginx:
     restart: always
-    image: 'octoniusapp/octonius-nginx:latest'
+    image: 'octoniusapp/octonius:nginx'
     ports:
       - 3000:80
     depends_on:
