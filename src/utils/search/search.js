@@ -105,21 +105,28 @@ const getSearchResults = async (req, res, amountLoaded) => {
       case 'users':
         userQuery = createUserQuery(user, req.params.query);
         let moreUsersToLoad = false;
-        const users = await userQuery.skip(parseInt(amountLoaded, 10) || 0).limit(11).exec();
+        let users = await userQuery.skip(parseInt(amountLoaded, 10) || 0).limit(11).exec();
         if (users.length === 11) {
           users.pop();
           moreUsersToLoad = true;
         }
 
+        // Filter out the current user from the results
+        users = users.filter(user => user._id.toString() !== req.userId.toString());
+
         return { results: users, moreToLoad: moreUsersToLoad };
       case 'skills':
         skillsQuery = createSkillsQuery(user, req.params.query);
         let moreSkillsToLoad = false;
-        const skills = await skillsQuery.skip(parseInt(amountLoaded, 10) || 0).limit(11).exec();
+        let skills = await skillsQuery.skip(parseInt(amountLoaded, 10) || 0).limit(11).exec();
         if (skills.length === 11) {
           skills.pop();
           moreSkillsToLoad = true;
         }
+
+        // Filter out the current user from the results
+        skills = skills.filter(user => user._id.toString() !== req.userId.toString());
+
         return { results: skills, moreToLoad: moreSkillsToLoad };
       case 'tags':
         tagsQuery = createTagsQuery(user._groups, req.params.query);
@@ -137,8 +144,8 @@ const getSearchResults = async (req, res, amountLoaded) => {
         userQuery = createUserQuery(user, req.params.query);
 
         const allPosts = await postQuery.limit(3).exec();
-        const allUsers = await userQuery.limit(3).exec();
-        const allSkills = await skillsQuery.limit(3).exec();
+        let allUsers = await userQuery.limit(3).exec();
+        let allSkills = await skillsQuery.limit(3).exec();
         
         
         let morePostsLoad = false;
@@ -159,6 +166,10 @@ const getSearchResults = async (req, res, amountLoaded) => {
           allSkills.pop();
           moreSkillsLoad = true;
         }
+
+        // Filter out the current user from the results
+        allUsers = allUsers.filter(user => user._id.toString() !== req.userId.toString());
+        allSkills = allSkills.filter(user => user._id.toString() !== req.userId.toString());
 
         const result = {
           posts: allPosts,

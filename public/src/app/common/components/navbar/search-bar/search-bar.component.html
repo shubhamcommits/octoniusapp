@@ -74,7 +74,8 @@
                     </ul>
               </div>
 
-          <div *ngIf="checked_filter === 'posts' && search_results_posts?.length > 0" class="search-results__users">
+          <div *ngIf="(checked_filter === 'posts' || checked_filter === 'tags') && search_results_posts?.length > 0" class="search-results__users">
+            <h4 class="search-results__title">{{(checked_filter === 'posts') ? 'Matched posts:' : 'Matched posts with tags:'}}</h4>
             <ul class="search-results__list">
               <!-- /dashboard/group/5c6f56ec53a7802ab09895b4/post/5c6f582053a7802ab09895c5 -->
               <ng-container *ngFor="let post of search_results_posts">
