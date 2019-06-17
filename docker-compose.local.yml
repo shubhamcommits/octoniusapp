@@ -17,10 +17,10 @@ services:
   api:
     restart: always
     image: 'octoniusapp/octonius:api'
-    #volumes:
+    volumes:
       #- /app/node_modules # Avoid overwriting container's node_modules folder
       #- ${PWD}/api:/app # mount server folder inside container's app folder
-      #- data_uploads:/app/uploads # mount uploads folder inside container's app folder
+       - data_uploads:/app/uploads # mount uploads folder inside container's app folder
     environment:
       - PORT=3000
       - dbURL=mongodb://mongodb:27017/octonius
