@@ -8,54 +8,112 @@
 
 
 ## | Index: 
+1. Installing and Running the Application using Traditional way
+1.1. Installing the app on your machine
+1.2. Running the app on your machine
 
-1. Installing the app on your machine
-2. Running the app on your machine
+2. Installing and Running the Application using Docker
+2.1. Installing and Setting up docker on your machine
+2.2. Installing the app on your machine
+2.3. Running the app on your machine
+
 3. Contribution rules
+
 4. Server deployment and run
 ---
 
 '
+## 1. Tradational Way (Recommended for Windows and non Docker users, however Linux and MacOS users may also opt this too for the sake of running and testing if required)
 
-
-## 1. Installing The App On Your Machine
+### 1.1. Installing The App On Your Machine
 
 '
 
-1.1.	Open the terminal, go to the folder where you want **octonius** repository to be installed and run:
+1.1.1	Open the terminal, go to the folder where you want **octonius** repository to be installed and run:
 `git clone https://YOUR_USERNAME@bitbucket.org/octonius/octonius.git`
 
 *(replace `YOUR_USERNAME` by your bitbucket username)*
 
-1.2.	Go to `octonius/` folder and run `npm install`.
+1.1.2.	Go to `octonius/api/` folder and run `npm/yarn install`.
 
-1.3.	Go to `octonius/public/` folder and run `npm install`.
+1.1.3.  Install Nodemon(https://github.com/remy/nodemon) globally in your machine `npm install -g nodemon`
 
-1.4.	Still in `octonius/public/` folder, run `ng build`.
+1.1.4.	Go to `octonius/client/` folder and run `npm/yarn install`.
+
+1.1.5.	Still in `octonius/client/` folder, run `ng build`.
 
 ---
 
 '
 
-## 2. Running The App On Your Machine
+## 1.2. Running The App On Your Machine
 
-###### (You must have MongoDB installed on your machine, [check here to see how to install](https://docs.mongodb.com/manual/installation/).) 
+###### (You must have MongoDB installed on your machine, [check here to see how to install](https://docs.mongodb.com/manual/installation/).)
+
+###### (Along with Redis-server to enable caching - [chech here to see how to install](https://redis.io/topics/quickstart).) 
 
 '
 
-2.1.	Start MongoDB with `mongod` command or, `mongod --dbpath PATH_TO_YOUR_DATA_DB_FOLDER` passing the path to default MongoDB data folder.
-
-2.2.	Go to `octonius/` folder and run `npm run dev`  command.
-
-2.3.1 Go to `octonius/public/` folder and run `ng serve --configuration hmr`  command to serve on `localhost:4200` and make your app live reload while developing.
+1.2.1.	Start MongoDB with `mongod` command or, `mongod --dbpath PATH_TO_YOUR_DATA_DB_FOLDER` passing the path to default MongoDB data folder.
 
 #### OR
 
-2.3.1	Go to `octonius/public/` folder and run `ng build`  command to serve on `localhost:3000`.
+1.2.1. Start MongoDB as a service `sudo service mongod start`(For Linux) or `brew services start mongodb`(For MacOS)
+
+1.2.2. Start Redis-Server with `redis-server` or `redis-server /usr/local/etc/redis.conf`
+
+#### OR
+
+1.2.2. Start Redis-Server as a service `sudo service redis start`(For Linux) or `brew services start redis`(For MacOS)
+
+
+1.2.3.	Go to `octonius/api/` folder and run `npm/yarn run dev` or `nodemon server`  command.
+
+1.2.4. Go to `octonius/client/` folder and run `ng serve --configuration hmr`  command to serve on `localhost:4200` and make your app live reload while developing, octonius development team uses HOT MODULE REPLACEMENT to our repositories [check here to see how it works (https://codinglatte.com/amp/posts/angular/enabling-hot-module-replacement-angular-6/)].
+
+#### OR
+
+1.2.4.	Go to `octonius/client/` folder and run `ng build`  command to serve on `localhost:3000`.
 
 ---
 
 '
+## 2. Using Docker (Recommended for linux and MacOS users)
+
+### 2.1. Installing The Docker and Preparing Initial Setup on your machine
+
+'
+
+2.1.1.  As a first step install docker[check here to see how to install(https://docs.docker.com/install/)] and docker compose[check here to see how to install(https://docs.docker.com/compose/install/)] from the official repositories.
+
+2.1.2.  In your terminal/command line kindly run `docker --version` and `docker-compose --version` to check and verify if the docker is ready to be used in development.
+
+2.1.3.  Close MongoDB as service with the following command `sudo service mongod stop`(For Linux) or `brew services stop mongodb`(For MacOS).
+
+2.1.4.  Close Redis as service with the following command `sudo service redis stop`(For Linux) or `brew services stop redis`(For MacOS).
+
+---
+
+'
+
+### 2.2. Installing The App On Your Machine
+
+'
+
+2.2.1	Open the terminal, go to the folder where you want **octonius** repository to be installed and run:
+`git clone https://YOUR_USERNAME@bitbucket.org/octonius/octonius.git`
+
+2.2.2   Create a folder named `data`(if doesn't exist) under `octonius/` folder along with two sub folders `db` and `uploads`. 
+
+---
+
+## 2.3. Running The App On Your Machine
+
+'
+
+2.3.1.  Go to `octonius/` folder and run `docker-compose up --build` command to serve on `localhost:3000`, if it breaks then due to any connectivity/internet issues then modify the command and run `COMPOSE_HTTP_TIMEOUT=300 docker-compose up --build` and browse to `localhost:3000`.
+
+---
 
 ## 3. Contribution Rules
 
