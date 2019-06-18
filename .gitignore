@@ -1,18 +1,21 @@
 # Node.js packages
 node_modules/
 # MongoDB development database
-data/
+# data/
 
 /api/yarn.lock
 /client/yarn.lock
 
-package-lock.json
-yarn.lock
+**/api/package-lock.json
+**/client/package-lock.json
+
+**/client/yarn.lock
+**/api/yarn.lock
 
 public/
 
 # Octonius uploaded files on development
-uploads/
+# uploads/
 
 # Code editor related files and dirs
 .idea/
