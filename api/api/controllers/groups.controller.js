@@ -121,6 +121,25 @@ const addNewMember = async (req, res) => {
   });
 };
 
+/**
+ * Deletes the group with the corresponding
+ * groupId from the database.
+ */
+const deleteGroup = async (req, res) => {
+  const { groupId } = req.params;
+
+  try {
+    const deletedGroup = await Group.findByIdAndDelete(groupId);
+
+    return res.status(200).json({
+      message: 'Group deleted successfully!',
+      deletedGroup
+    });
+  } catch (error) {
+    return sendErr(res, error);
+  }
+};
+
 // -| FILES |-
 
 const downloadFile = (req, res, next) => {
@@ -561,6 +580,7 @@ module.exports = {
   getAllForUser,
   getPublicGroups,
   addNewMember,
+  deleteGroup,
   // Files
   downloadFile,
   getFiles,
