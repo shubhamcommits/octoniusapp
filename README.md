@@ -9,21 +9,27 @@
 
 ## | Index: 
 1. Installing and Running the Application using Traditional way
+
 1.1. Installing the app on your machine
+
 1.2. Running the app on your machine
 
 2. Installing and Running the Application using Docker
+
 2.1. Installing and Setting up docker on your machine
+
 2.2. Installing the app on your machine
+
 2.3. Running the app on your machine
 
 3. Contribution rules
 
 4. Server deployment and run
+
 ---
 
 '
-## 1. Tradational Way (Recommended for Windows and non Docker users, however Linux and MacOS users may also opt this too for the sake of running and testing if required)
+## 1. Tradational Way (Recommended for Windows and Non Docker users)
 
 ### 1.1. Installing The App On Your Machine
 
