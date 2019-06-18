@@ -3,6 +3,9 @@ node_modules/
 # MongoDB development database
 data/
 
+/api/yarn.lock
+/client/yarn.lock
+
 package-lock.json
 yarn.lock
 
