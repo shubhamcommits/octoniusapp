@@ -43,6 +43,11 @@ const init = (server) => {
 
     // -| POSTS NOTIFICATIONS |-
 
+    // Listen to user likes who follows a post
+    socket.on('userLiked', (data) => {
+      console.log('userLiked: ', data);
+    });
+
     // Listen to new post creation
     socket.on('newPost', (data) => {
       notifyRelatedUsers(io, socket, data);
