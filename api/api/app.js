@@ -51,11 +51,11 @@ app.use(fileUpload());
 app.use('/uploads', express.static(process.env.FILE_UPLOAD_FOLDER));
 
 // static folder
-app.use(express.static(path.join(__dirname, '../../public/dist')));
+app.use(express.static(path.join(__dirname, '../../client/dist')));
 
 // Routes which should handle request
 app.all('/', (req, res, next) => {
-  res.sendFile(path.join(__dirname, '../../public/dist/index.html'));
+  res.sendFile(path.join(__dirname, '../../client/dist/index.html'));
 });
 
 // Correct REST naming

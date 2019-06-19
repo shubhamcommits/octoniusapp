@@ -50,7 +50,7 @@
     </postbox>
 
 
-    <div #searchResults class="search-results" infiniteScroll [infiniteScrollDistance]="0" [immediateCheck]="true"
+    <div #searchResults class="search-results" infiniteScroll [infiniteScrollDistance]="1" [immediateCheck]="true"
       (scrolled)="onScroll($event, searchResults)">
       <div *ngIf="posts.length == 0">
         <ng-template *ngIf="isLoading$ | async; else blankScreen">

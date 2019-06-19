@@ -10,8 +10,9 @@ import { ColumnService } from '../../../../shared/services/column.service';
 import { Column } from '../../../../shared/models/column.model';
 import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../../../../../environments/environment';
-import * as moment from 'moment';
-import * as io from 'socket.io-client';
+import moment from 'moment';
+import  io from 'socket.io-client';
+import Swal from 'sweetalert2';
 import {Subject} from "rxjs/Rx";
 import {SearchService} from "../../../../shared/services/search.service";
 
@@ -1016,12 +1017,14 @@ const post = this.postBeingEditted;
  }
 
  deleteTask(post) {
-   swal({
+   Swal.fire({
      title: "Are you sure?",
      text: "You won't be able to revert this!",
-     icon: "warning",
-     dangerMode: true,
-     buttons: ["Cancel", "Yes, delete it!"]
+     type: "warning",
+     showCancelButton: true,
+     confirmButtonColor: '#3085d6',
+     cancelButtonColor: '#d33',
+     confirmButtonText: 'Yes, delete it!'
    }).then((confirmed) => {
      if (confirmed) {
        this.postService.deletePost(post._id)

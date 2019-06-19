@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { SnotifyService } from 'ng-snotify';
 import { GroupService } from '../../../../shared/services/group.service';
 import { GroupDataService } from '../../../../shared/services/group-data.service';
 import { Subject } from 'rxjs';
@@ -35,7 +37,7 @@ export class GroupAdminComponent implements OnInit {
     search: true // enables the search plugin to search in the list
   };
   dataModel;
-  constructor(private groupService: GroupService, public groupDataService: GroupDataService, private ngxService: NgxUiLoaderService) { }
+  constructor(private groupService: GroupService, public groupDataService: GroupDataService, private ngxService: NgxUiLoaderService, private router: Router, private snotifyServive: SnotifyService) { }
 
   ngOnInit() {
     this.ngxService.start(); // start foreground loading with 'default' id
@@ -134,6 +136,22 @@ export class GroupAdminComponent implements OnInit {
       }, (err) => {
 
       });
+  }
+
+  // Makes a request to the backend to delete the current group
+  onDelete() {
+    this.groupService.deleteGroup(this.group_id).subscribe(
+      res => {
+        this.router.navigate(['/dashboard/groups']);
+        setTimeout(() => {
+          this.snotifyServive.success('Group successfully deleted!');
+        }, 1500);
+      },
+      err => {
+        console.error(`Failed to delete the group! ${err}`);
+        this.snotifyServive.error('Failed to delete the group! Please try again later.');
+      }
+    );
   }
 
   onItemSelect(item: any) {

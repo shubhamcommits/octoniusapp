@@ -49,6 +49,9 @@ router.get('/public/all', groups.getPublicGroups);
 // Add a new member into a public group
 router.post('/public/:groupId', groups.addNewMember);
 
+// Delete the group with the given groupId
+router.delete('/:groupId', groups.deleteGroup);
+
 // - Files -
 
 // Get user's files that belongs to this group

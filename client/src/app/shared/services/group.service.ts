@@ -110,5 +110,14 @@ export class GroupService {
     return this._http.post(`${this.BASE_API_URL}/groups/public/${groupId}`, null);
   }
 
+  /**
+   * Makes an HTTP DELETE request to /api/groups/:groupId
+   * in order to delete the group with the given ID.
+   * 
+   * @param groupId The ID of the group to delete.
+   */
+  deleteGroup(groupId: string): Observable<any> {
+    return this._http.delete<any>(`${this.BASE_API_URL}/groups/${groupId}`);
+  }
 }
 
