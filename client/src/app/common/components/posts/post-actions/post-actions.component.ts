@@ -70,6 +70,29 @@ export class PostActionsComponent implements OnInit {
       });
   }
 
+  followpost() {
+
+    this.postService.follow(this.post)
+      .subscribe((res) => {
+        this.alert.class = 'success';
+        this._message.next(res['message']);
+
+        // add our user to the people who followed this post
+        this.post._followers.push(res['user']);
+        this.playAudio();
+
+      }, (err) => {
+
+        this.alert.class = 'danger';
+
+        if (err.status) {
+          this._message.next(err.error.message);
+        } else {
+          this._message.next('Error! either server is down or no internet connection');
+        }
+      });
+  }
+
 
   // !-LOADS ALL COMMENTS IN A POST--! //
   loadComments() {
@@ -119,6 +142,37 @@ export class PostActionsComponent implements OnInit {
     }
   }
 
+  OnClickFollowPost() {
+    const post = {
+      'post_id': this.post._id,
+      'user_id': this.user._id,
+      '_followers': this.post._followers
+    };
+
+    if (post._followers && post._followers.length === 0) {
+      this.followpost();
+    } else {
+      let userHasFollowedPost = false;
+
+      // we check whether the user is one of the follower we already have
+      if (post._followers && post._followers.length > 0) {
+        post._followers.forEach((follower) => {
+          if ( follower._id === this.user._id ) {
+            userHasFollowedPost = true;
+          }
+        });
+      }
+
+      // we like the post when the user is not between the users that liked the post
+      // and we unlike the post when it is
+      if (!userHasFollowedPost) {
+        this.followpost();
+      } else {
+        this.unfollowpost();
+      }
+    }
+  }
+
   playAudio() {
     this.postService.playAudio();
   }
@@ -151,6 +205,29 @@ export class PostActionsComponent implements OnInit {
       });
   }
 
+  unfollowpost () {
+    this.postService.unfollow(this.post)
+      .subscribe((res) => {
+        this.alert.class = 'success';
+        this._message.next(res['message']);
+
+        // find the index of the like
+        const indexLike = this.post._followers.findIndex(user => user._id == this.user.userId);
+
+        // remove the user
+        this.post._followers.splice(indexLike, 1);
+      }, (err) => {
+
+        this.alert.class = 'danger';
+
+        if (err.status) {
+          this._message.next(err.error.message);
+        } else {
+          this._message.next('Error! either server is down or no internet connection');
+        }
+      });
+  }
+
   userLikedPost() {
     const currentUserId = this.user._id;
 
@@ -158,6 +235,16 @@ export class PostActionsComponent implements OnInit {
     const index = this.post._liked_by.findIndex((user) => user._id === currentUserId);
 
     // return true if our user was between the likes
+    return index > -1;
+  }
+
+  userFollowedPost() {
+    const currentUserId = this.user._id;
+
+    // we look for our user between the followers of the post
+    const index = this.post._followers.findIndex((user) => user._id === currentUserId);
+
+    // return true if our user was between the followers
     return index > -1;
   }
 
