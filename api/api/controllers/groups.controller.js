@@ -264,6 +264,7 @@ const getNextPosts = async (req, res, next) => {
       .populate('task._assigned_to', 'first_name last_name')
       .populate('event._assigned_to', 'first_name last_name')
       .populate('_liked_by', '_id first_name last_name')
+      .populate('_followers', '_id first_name last_name')
       .lean();
 
     const postsUpdate = await posts.map((post) => {
@@ -291,6 +292,7 @@ const getPosts = async (req, res, next) => {
       .populate('task._assigned_to')
       .populate('event._assigned_to')
       .populate('_liked_by', '_id first_name last_name')
+      .populate('_followers', '_id first_name last_name')
       .lean();
 
     const postsUpdate = await posts.map((post) => {
@@ -350,6 +352,7 @@ const filterPosts = async (query, params) => {
       .populate('task._assigned_to')
       .populate('event._assigned_to')
       .populate('_liked_by', '_id first_name last_name')
+      .populate('_followers', '_id first_name last_name')
       .lean();
 //needed tags to be false for clicked user and other tags query
   } else if (query.user === 'true' && !!query.user_value && filters.length > 0 && query.tags === 'false') {
@@ -367,6 +370,7 @@ const filterPosts = async (query, params) => {
       .populate('task._assigned_to')
       .populate('event._assigned_to')
       .populate('_liked_by', '_id first_name last_name')
+      .populate('_followers', '_id first_name last_name')
       .lean();
 //start of tags query 
   //single fetched query for tags
@@ -384,6 +388,7 @@ const filterPosts = async (query, params) => {
       .populate('task._assigned_to')
       .populate('event._assigned_to')
       .populate('_liked_by', '_id first_name last_name')
+      .populate('_followers', '_id first_name last_name')
       .lean();
     //checking user to tags search
   } else if (query.user === 'true' && query.tags === 'true' && !!query.user_value && !!query.tags_value && filters.length === 1) {
@@ -401,6 +406,7 @@ const filterPosts = async (query, params) => {
       .populate('task._assigned_to')
       .populate('event._assigned_to')
       .populate('_liked_by', '_id first_name last_name')
+      .populate('_followers', '_id first_name last_name')
       .lean();
     //checking user to tags within all filters
   }else if (query.user === 'true' && query.tags === 'true' && !!query.user_value && !!query.tags_value && filters.length > 1) {
@@ -419,6 +425,7 @@ const filterPosts = async (query, params) => {
       .populate('task._assigned_to')
       .populate('event._assigned_to')
       .populate('_liked_by', '_id first_name last_name')
+      .populate('_followers', '_id first_name last_name')
       .lean();
   } else {
     console.log('test 4');
@@ -435,6 +442,7 @@ const filterPosts = async (query, params) => {
       .populate('task._assigned_to')
       .populate('event._assigned_to')
       .populate('_liked_by', '_id first_name last_name')
+      .populate('_followers', '_id first_name last_name')
       .lean();
 
     console.log('test 5', posts);

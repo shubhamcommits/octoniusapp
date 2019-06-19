@@ -76,9 +76,16 @@ export class PostActionsComponent implements OnInit {
       .subscribe((res) => {
         this.alert.class = 'success';
         this._message.next(res['message']);
-
         // add our user to the people who followed this post
-        this.post._followers.push(res['user']);
+        if(this.post.hasOwnProperty('_followers')){
+          this.post._followers.push(res['user']);
+        }
+        else{
+          this.post._followers = [];
+          this.post._followers = [...this.post._followers, res['user']];
+        }
+        console.log(this.post._followers);
+
         this.playAudio();
 
       }, (err) => {
@@ -242,10 +249,13 @@ export class PostActionsComponent implements OnInit {
     const currentUserId = this.user._id;
 
     // we look for our user between the followers of the post
-    const index = this.post._followers.findIndex((user) => user._id === currentUserId);
-
-    // return true if our user was between the followers
-    return index > -1;
+    if (this.post.hasOwnProperty('_followers')) {
+      const index = this.post._followers.findIndex((user) => user._id === currentUserId);
+      // return true if our user was between the followers
+      //console.log('test',index);
+      return index > -1;
+    }
+    
   }
 
   copyToClipboard(postId){
