@@ -34,6 +34,11 @@ export class OverviewComponent implements OnInit {
   weekPosts = [];
   todayComments = [];
   weekComments = [];
+  today_event_count = 0;
+  today_task_count = 0 ;
+  week_event_count = 0;
+  week_task_count = 0;
+
   /***
    * Jessie Jia Edit Ends
    */
@@ -114,12 +119,28 @@ export class OverviewComponent implements OnInit {
     this.liveUpdatesEdit();
 
     this.getRecentPosts()
-    .then(()=>{
+    .then(() => {
       this.ngxService.stop();
     })
-    .catch((err)=>{
+    .catch((err) => {
       console.log('Error while getting recent posts', err);
     });
+
+    this.getTodayPosts()
+      .then(() => {
+        this.ngxService.stop();
+      })
+      .catch((err) => {
+        console.log('Error while getting today posts', err);
+      });
+
+    this.getWeekPosts()
+      .then(() => {
+        this.ngxService.stop();
+      })
+      .catch((err) => {
+        console.log('Error while getting week posts', err);
+      });
   }
 
   getRecentPosts() {
@@ -204,10 +225,10 @@ export class OverviewComponent implements OnInit {
 
           for (let i = 0 ; i < this.todayPosts.length; i ++) {
             if ( this.todayPosts[i].type === 'task') {
-              this.task_count = 1;
+              this.today_task_count = 1;
             }
             if (this.todayPosts[i].type === 'event') {
-              this.event_count = 1;
+              this.today_event_count = 1;
             }
             if (this.todayPosts[i].type === 'event' && this.todayPosts[i].comments_count > 0) {
               this.normal_count = 1;
@@ -220,7 +241,7 @@ export class OverviewComponent implements OnInit {
           // console.log('Event Response:', this.event_count);
           // console.log('Task Response:', this.task_count);
           // console.log('Normal Response:', this.normal_count);
-          if ( this.posts.length === 0 ) {
+          if ( this.todayPosts.length === 0 ) {
             this.isLoading$.next(true);
           } else {
             this.isLoading$.next(false);
@@ -240,31 +261,31 @@ export class OverviewComponent implements OnInit {
       this._postservice.userOverviewPostsWeek(this.user_data.user_id)
         .subscribe((res) => {
           // console.log('Group posts:', res);
-          this.posts = res['posts'];
-          this.comments = res['comments'];
+          this.weekPosts = res['posts'];
+          this.weekComments = res['comments'];
 
           // Adding the readMore property to every comment.
           // This property is used when making the post collapsible.
-          this.comments = this.comments.map(comment => {
+          this.weekComments = this.weekComments.map(comment => {
             comment.readMore = true;
             return comment;
           });
 
-          if (this.comments.length > 0) {
+          if (this.weekComments.length > 0) {
             this.normal_count = 1;
           }
 
-          for (let i = 0 ; i < this.posts.length; i ++) {
-            if ( this.posts[i].type === 'task') {
-              this.task_count = 1;
+          for (let i = 0 ; i < this.weekPosts.length; i ++) {
+            if ( this.weekPosts[i].type === 'task') {
+              this.week_task_count = 1;
             }
-            if (this.posts[i].type === 'event') {
-              this.event_count = 1;
+            if (this.weekPosts[i].type === 'event') {
+              this.week_event_count = 1;
             }
-            if (this.posts[i].type === 'event' && this.posts[i].comments_count > 0) {
+            if (this.weekPosts[i].type === 'event' && this.weekPosts[i].comments_count > 0) {
               this.normal_count = 1;
             }
-            if (this.posts[i].type === 'task' && this.posts[i].comments_count > 0) {
+            if (this.weekPosts[i].type === 'task' && this.weekPosts[i].comments_count > 0) {
               this.normal_count = 1;
             }
           }
@@ -272,7 +293,7 @@ export class OverviewComponent implements OnInit {
           // console.log('Event Response:', this.event_count);
           // console.log('Task Response:', this.task_count);
           // console.log('Normal Response:', this.normal_count);
-          if ( this.posts.length === 0 ) {
+          if ( this.weekPosts.length === 0 ) {
             this.isLoading$.next(true);
           } else {
             this.isLoading$.next(false);

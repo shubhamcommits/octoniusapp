@@ -5,21 +5,64 @@
 
 
 <!--  Start of posts -->
-  <div *ngIf="posts.length === 0 && comments.length === 0 && this.recentPosts.length === 0">
+  <div *ngIf="posts.length === 0 && weekPosts.length === 0 && comments.length === 0 && this.recentPosts.length === 0">
     <img src='../../../assets/images/empty-activity.svg' style=" margin: 0 auto; display:block; width: 60%">
   </div>
   <div *ngIf="posts.length > 0 && (this.event_count == 0 && this.normal_count == 0 && this.task_count == 0 && this.recentPosts.length === 0)">
     <img src='../../../assets/images/empty-activity.svg' style=" margin: 0 auto; display:block; width: 60%">
   </div>
 
-  <div *ngIf="posts.length > 0">
-    <div  *ngIf="this.event_count == 1; else postif">
-      <h5 class="title-overview">Upcoming events</h5>
+
+
+
+
+
+
+
+  <div *ngIf="todayPosts.length > 0">
+    <div  *ngIf="this.today_event_count == 1 || this.today_task_count == 1; else postif">
+      <h5 class="title-overview">Today</h5>
     </div>
 
     <ng-template #postif></ng-template>
-    <div *ngFor="let post of posts; let i = index;" class="mb-2">
+    <div *ngFor="let post of todayPosts; let i = index;" class="mb-2">
       <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/post/{{post._id}}">
+
+        <!-- Tasks -->
+        <div *ngIf="post.type== 'task'">
+          <div class="media card-tile overview-task">
+
+            <div class=" row media-body">
+              <div class="col-md-1">
+                <img src="/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar">
+              </div>
+              <div class="col-md-2">
+                <h5>{{post._posted_by?.first_name}} </h5>
+
+                <p class="small text-muted">{{post?.created_date | date:'shortTime' }}</p>
+
+              </div>
+              <div class="col-md-8">
+                <p class="pink">Assigned a task to you in <b>{{post._group?.group_name}} group</b> for <b>{{post.task.due_to | date:'d MMMM' }}</b></p>
+                <div [innerHTML]="post?.title" class="overview-item font-weight-bold"></div>
+              </div>
+
+              <div class="col-md-1">
+
+                <!-- <p class="small text-muted"><i class="material-icons pink">check_box</i><br />{{post.created_date | date:'MMM d' }}</p> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <ng-template #postif></ng-template>
+    <div *ngFor="let post of todayPosts; let i = index;" class="mb-2">
+      <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/post/{{post._id}}">
+
+        <!-- Events -->
+
         <div *ngIf="post.type== 'event'">
 
           <div class="media card-tile overview-event">
@@ -57,19 +100,27 @@
               </div>
             </div>
           </div>
+        <!--          </a>-->
+        <!--        </div>-->
+
 
         </div>
       </a>
     </div>
+  </div>
 
-    <div  *ngIf="this.task_count == 1; else postif">
-      <h5 class="title-overview">Upcoming tasks</h5>
+<!--  week posts -->
+  <div *ngIf="weekPosts.length > 0">
+    <div  *ngIf="this.week_event_count == 1 || this.week_task_count == 1; else postif">
+      <h5 class="title-overview">This week</h5>
     </div>
 
-
-    <div *ngFor="let post of posts; let i = index;" class="mb-2">
+    <ng-template #postif></ng-template>
+    <div *ngFor="let post of weekPosts; let i = index;" class="mb-2">
       <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/post/{{post._id}}">
-        <div *ngIf="post.type== 'task' && post.task.status != 'done'">
+
+        <!-- Tasks -->
+        <div *ngIf="post.type== 'task'">
           <div class="media card-tile overview-task">
 
             <div class=" row media-body">
@@ -90,88 +141,67 @@
               <div class="col-md-1">
 
                 <!-- <p class="small text-muted"><i class="material-icons pink">check_box</i><br />{{post.created_date | date:'MMM d' }}</p> -->
-
               </div>
-
             </div>
-
           </div>
-
         </div>
       </a>
     </div>
 
 
-    <!--<div *ngFor="let notifications of notifications_data?.unreadNotifications">
-            <a style="text-decoration:none; color:inherit;" routerLink="/dashboard/overview">
+    <ng-template #postif></ng-template>
+    <div *ngFor="let post of weekPosts; let i = index;" class="mb-2">
+      <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/post/{{post._id}}">
 
+        <!-- Events -->
 
-                    <div class="media card-tile overview-post">
-                         <img src="/uploads/{{post._group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" class="mr-3 feed-avatar-big"> -->
-    <!--<div class=" row media-body">
-        <div class="col-md-1">
-            <img src="/uploads/{{notifications._actor.profile_pic}}" onerror="this.src='/assets/images/user.png'" alt="" class="feed-avatar">
+        <div *ngIf="post.type== 'event'">
+
+          <div class="media card-tile overview-event">
+            <!-- <img src="/uploads/{{post._group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" class="mr-3 feed-avatar-big"> -->
+            <div class=" row media-body">
+              <div class="col-md-1">
+                <img src="/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar">
+              </div>
+              <div class="col-md-2">
+                <h5>{{post._posted_by?.first_name}} </h5>
+
+                <p class="small text-muted">{{post.created_date | date:'shortTime' }}</p>
+              </div>
+              <div class="col-md-8">
+                <!-- <p class="blue">New event in <b>{{post._group?.group_name}} group</b></p> -->
+                <div class="row event-title" style="margin-left:0px">
+                  <div class="col-md-2 dateblock">
+                    <span class="bigdate">{{post?.event.due_to | date :'dd' }}</span>
+                    <br>
+                    <span class="time">{{post?.event.due_to | date: 'MMMM' }}</span>
+                    <br>
+                    <span class="time"> {{post?.event.due_to | date: 'hh:mm'}}</span>
+                  </div>
+                  <div class="col-md-8 event-title">
+                    <p class="blue">New event in <b>{{post._group?.group_name}} group</b></p>
+                    <div [innerHTML]="post?.title | safe: 'html' " class="overview-item font-weight-bold"> </div>
+
+                  </div>
+                </div>
+
+              </div>
+              <div class="col-md-1">
+
+                <!-- <p class="small text-muted"> <i class="material-icons blue">today</i><br />{{post.created_date | date:'MMM d' }}</p> -->
+              </div>
+            </div>
+          </div>
         </div>
-    <div class="col-md-2">
-        <h5>{{notifications._actor.first_name}} {{notifications.last_name}}</h5>
-
-        <p class="small text-muted">{{notifications.created_date | date:'shortTime' }}</p>
-
+      </a>
     </div>
-    <div class="col-md-8">
-        <p class="blue"><b>{{notifications.message}}</b></p>
-        <div class="" [innerHTML]="comment.content" class="overview-item"></div>-->
-    <!--</div>
-
-    <div class="col-md-1">
-
-        <p class="small text-muted">  <i class="material-icons">chat</i><br> {{notifications.created_date | date:'MMM d' }}</p>
-
-    </div>
-
-    </div>
-
-    </div>
-
-
-</a>
-</div>-->
-
-    <!--<div *ngFor="let notifications of notifications_data?.readNotifications">
-            <a style="text-decoration:none; color:inherit;" routerLink="/dashboard/overview"  >
-                    <div class="media card-tile overview-post">
-                         <img src="/uploads/{{post._group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" class="mr-3 feed-avatar-big">
-                    <div class=" row media-body">
-                        <div class="col-md-1">
-                            <img src="/uploads/{{notifications._actor.profile_pic}}" onerror="this.src='/assets/images/user.png'" alt="" class="feed-avatar">
-                        </div>
-                    <div class="col-md-2">
-                        <h5>{{notifications._actor.first_name}} {{notifications.last_name}}</h5>
-
-                        <p class="small text-muted">{{notifications.created_date | date:'shortTime' }}</p>
-
-                    </div>
-                    <div class="col-md-8">
-                        <p class="blue"><b>Notification</b></p>
-                        <div>Recently, <b>{{notifications.message}}</b></div>
-                        <div class="" [innerHTML]="comment.content" class="overview-item"></div>
-                    </div>
-
-                    <div class="col-md-1">
-
-                        <p class="small text-muted">  <i class="material-icons">chat</i><br> {{notifications.created_date | date:'MMM d' }}</p>
-
-                    </div>
-
-                    </div>
-
-                    </div>
-
-
-                </a>
-    </div>-->
-
   </div>
+
+
+
+
+
+
 
   <!-- RECENT POSTS -->
   <div *ngIf="this.recentPosts.length > 0">
