@@ -27,6 +27,17 @@ export class OverviewComponent implements OnInit {
 
   posts = [];
   recentPosts = [];
+  /***
+   * Jessie Jia Edit Starts
+   */
+  todayPosts = [];
+  weekPosts = [];
+  todayComments = [];
+  weekComments = [];
+  /***
+   * Jessie Jia Edit Ends
+   */
+
   comments = [];
   groups = [];
 
@@ -90,10 +101,10 @@ export class OverviewComponent implements OnInit {
             workspace,
             group: group.group_name
           };
-          
+
           // Join all groups
           this.socket.emit('joinGroup', room);
-        })
+        });
       },
       (err) => console.error(`Could not get groups! ${err}`)
     );
@@ -108,7 +119,7 @@ export class OverviewComponent implements OnInit {
     })
     .catch((err)=>{
       console.log('Error while getting recent posts', err);
-    })
+    });
   }
 
   getRecentPosts() {
@@ -162,10 +173,121 @@ export class OverviewComponent implements OnInit {
       }, (err) => {
           reject(err);
       });
-    })
-
-
+    });
   }
+
+/***
+ * Jessie Jia Edit Starts
+ * @param postId
+ */
+
+  getTodayPosts() {
+    return new Promise((resolve, reject) => {
+      this.isLoading$.next(true);
+
+      this._postservice.userOverviewPostsToday(this.user_data.user_id)
+        .subscribe((res) => {
+          // console.log('Group posts:', res);
+          this.todayPosts = res['posts'];
+          this.todayComments = res['comments'];
+
+          // Adding the readMore property to every comment.
+          // This property is used when making the post collapsible.
+          this.todayComments = this.todayComments.map(comment => {
+            comment.readMore = true;
+            return comment;
+          });
+
+          if (this.todayComments.length > 0) {
+            this.normal_count = 1;
+          }
+
+          for (let i = 0 ; i < this.todayPosts.length; i ++) {
+            if ( this.todayPosts[i].type === 'task') {
+              this.task_count = 1;
+            }
+            if (this.todayPosts[i].type === 'event') {
+              this.event_count = 1;
+            }
+            if (this.todayPosts[i].type === 'event' && this.todayPosts[i].comments_count > 0) {
+              this.normal_count = 1;
+            }
+            if (this.todayPosts[i].type === 'task' && this.todayPosts[i].comments_count > 0) {
+              this.normal_count = 1;
+            }
+          }
+          // console.log('User Post:', this.posts);
+          // console.log('Event Response:', this.event_count);
+          // console.log('Task Response:', this.task_count);
+          // console.log('Normal Response:', this.normal_count);
+          if ( this.posts.length === 0 ) {
+            this.isLoading$.next(true);
+          } else {
+            this.isLoading$.next(false);
+          }
+          resolve();
+
+        }, (err) => {
+          reject(err);
+        });
+    });
+  }
+
+  getWeekPosts() {
+    return new Promise((resolve, reject) => {
+      this.isLoading$.next(true);
+
+      this._postservice.userOverviewPostsWeek(this.user_data.user_id)
+        .subscribe((res) => {
+          // console.log('Group posts:', res);
+          this.posts = res['posts'];
+          this.comments = res['comments'];
+
+          // Adding the readMore property to every comment.
+          // This property is used when making the post collapsible.
+          this.comments = this.comments.map(comment => {
+            comment.readMore = true;
+            return comment;
+          });
+
+          if (this.comments.length > 0) {
+            this.normal_count = 1;
+          }
+
+          for (let i = 0 ; i < this.posts.length; i ++) {
+            if ( this.posts[i].type === 'task') {
+              this.task_count = 1;
+            }
+            if (this.posts[i].type === 'event') {
+              this.event_count = 1;
+            }
+            if (this.posts[i].type === 'event' && this.posts[i].comments_count > 0) {
+              this.normal_count = 1;
+            }
+            if (this.posts[i].type === 'task' && this.posts[i].comments_count > 0) {
+              this.normal_count = 1;
+            }
+          }
+          // console.log('User Post:', this.posts);
+          // console.log('Event Response:', this.event_count);
+          // console.log('Task Response:', this.task_count);
+          // console.log('Normal Response:', this.normal_count);
+          if ( this.posts.length === 0 ) {
+            this.isLoading$.next(true);
+          } else {
+            this.isLoading$.next(false);
+          }
+          resolve();
+
+        }, (err) => {
+          reject(err);
+        });
+    });
+  }
+  /***
+   * Jessie Jia Edit Ends
+   * @param postId
+   */
 
 
   markPostAsRead(postId) {
@@ -196,19 +318,19 @@ export class OverviewComponent implements OnInit {
           // @ts-ignore
           ({ post }) => {
             this.recentPosts.unshift(post);
-  
+
             if (post.type === 'event') {
               const { event } = post;
               // Check if the event is assigned to the current user
               const user = event._assigned_to.filter(user => {
                 return currentUserId === user._id.toString();
               });
-  
+
               // The current user was assigned the event
               if (user.length === 1) {
                 const today = new Date();
                 const eventDueDate = new Date(event.due_to.toString());
-  
+
                 // Check if the event is due today
                 if (today.toDateString() === eventDueDate.toDateString()) {
                   if (this.event_count !== 1) this.event_count = 1;
@@ -221,7 +343,7 @@ export class OverviewComponent implements OnInit {
               if (currentUserId === task._assigned_to._id.toString()) {
                 const today = new Date();
                 const taskDueDate = new Date(task.due_to.toString());
-  
+
                 // Check if the task has a due date >= today
                 if (taskDueDate.toDateString() >= today.toDateString()) {
                   if (this.task_count !== 1) this.task_count = 1;

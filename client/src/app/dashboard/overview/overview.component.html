@@ -1,12 +1,17 @@
 <div class="container" style="margin-bottom: 30px">
   <app-overview-page-header></app-overview-page-header>
 
+
+
+
+<!--  Start of posts -->
   <div *ngIf="posts.length === 0 && comments.length === 0 && this.recentPosts.length === 0">
     <img src='../../../assets/images/empty-activity.svg' style=" margin: 0 auto; display:block; width: 60%">
   </div>
   <div *ngIf="posts.length > 0 && (this.event_count == 0 && this.normal_count == 0 && this.task_count == 0 && this.recentPosts.length === 0)">
     <img src='../../../assets/images/empty-activity.svg' style=" margin: 0 auto; display:block; width: 60%">
   </div>
+
   <div *ngIf="posts.length > 0">
     <div  *ngIf="this.event_count == 1; else postif">
       <h5 class="title-overview">Upcoming events</h5>
