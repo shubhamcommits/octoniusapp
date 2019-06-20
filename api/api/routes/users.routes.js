@@ -31,6 +31,19 @@ router.put('/updateImage', fileHandler, cleanCache, users.updateImage);
 // Get user's overview
 router.get('/overview', users.getOverview);
 
+/***
+ * Jessie Jia Edit Starts
+ */
+// Get user's today overview
+router.get('/overviewToday', users.getOverviewToday);
+
+// Get user's overview of this coming week, sorted by due date
+router.get('/overviewWeek', users.getOverviewWeek);
+
+/***
+ * Jessie Jia Edit Ends
+ */
+
 // Edit user skills
 router.put('/skills', cleanCache, users.editSkills);
 
