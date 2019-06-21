@@ -11,6 +11,7 @@ import { GroupsService } from '../../shared/services/groups.service';
 import { PostService } from '../../shared/services/post.service';
 import { UserService } from '../../shared/services/user.service';
 import { post } from 'selenium-webdriver/http';
+import { faCalendar } from '@fortawesome/free-solid-svg-icons';
 
 //Google API Variables
 declare var gapi: any;
@@ -326,7 +327,6 @@ export class OverviewComponent implements OnInit {
         (err) => console.error(`Cannot mark comment as read! ${err}`)
       );
   }
-
   /**
    * This method is responsible for updating the entire overview
    * without having to refresh the page once a new post has been added.
