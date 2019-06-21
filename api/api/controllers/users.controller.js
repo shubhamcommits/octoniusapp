@@ -291,9 +291,9 @@ const getOverviewWeek = async (req, res, next) => {
     const { userId } = req;
 
     // Generate the actual time
-    const todayForEvent = moment().startOf('day').format();
+    const todayForEvent = moment().add(1, 'days').startOf('day').format();
 
-    const today = moment().format('YYYY-MM-DD');
+    const today = moment().add(1,'days').format('YYYY-MM-DD');
 
     // Generate the +24h time
     const todayPlus7DaysForEvent = moment().add(7, 'days').endOf('day').format();
