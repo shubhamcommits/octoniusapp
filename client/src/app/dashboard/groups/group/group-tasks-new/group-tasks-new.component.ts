@@ -179,15 +179,7 @@ export class GroupTasksNewComponent implements OnInit {
     this.initializeGroupMembersSearchForm();
   }
 
-  getTaskTimeSpent(taskPost) {
-    if(taskPost.task.hasOwnProperty('started_at') && taskPost.task.hasOwnProperty('completed_at')){
-      const start = moment(taskPost.task.started_at);
-      const end = moment(taskPost.task.completed_at);
-      const duration = moment.duration(end.diff(start)).asDays();
-      return duration <= 1 ? 1 : Math.round(duration)
-    }
-
-  }
+  // Socket io 
 
   socketio() {
     let count = 0;
@@ -222,6 +214,105 @@ export class GroupTasksNewComponent implements OnInit {
 
   }
 
+  // Load group details
+
+  loadGroup() {
+    this.groupService.getGroup(this.groupId)
+      .subscribe((res) => {
+        this.group = res['group'];
+        this.group_name = this.group.group_name;
+        this.group_members = res['group']._members;
+      // console.log(this.group_members);
+        this.group_admins = res['group']._admins;
+      //  console.log(this.group_admins);
+      }, (err) => {
+      });
+  }
+
+  /////// TASKS ///////
+
+  // Get Tasks
+
+  getTasks() {
+    this.isLoading$.next(true);
+    this.groupService.getGroupTasks(this.groupId)
+    .subscribe((res) => {
+      this.pendingTasks = res['posts'];
+      for(var i=0; i<this.allColumns.length; i++){
+        this.taskCount[this.allColumns[i]['title']] = 0;
+      }
+      for(var i=0; i<this.pendingTasks.length; i++){
+        this.taskCount[this.pendingTasks[i]['task']['status']]++;
+      }
+      for(var i=0; i<this.allColumns.length; i++){
+        console.log(this.taskCount[this.allColumns[i]['title']]);
+         this.updateColumnNumber(this.allColumns[i]['title'],this.taskCount[this.allColumns[i]['title']]);
+      }
+      this.getAllColumns();
+      this.isLoading$.next(false);
+    },
+    (err) => {
+      console.log('Error Fetching the Pending Tasks Posts', err);
+      this.isLoading$.next(false);
+    });
+  }
+
+  getTaskTimeSpent(taskPost) {
+    if(taskPost.task.hasOwnProperty('started_at') && taskPost.task.hasOwnProperty('completed_at')){
+      const start = moment(taskPost.task.started_at);
+      const end = moment(taskPost.task.completed_at);
+      const duration = moment.duration(end.diff(start)).asDays();
+      return duration <= 1 ? 1 : Math.round(duration)
+    }
+
+  }
+
+  // Change task Assignee
+
+  changeTaskAssignee(postId, AssigneeId){
+    const assigneeId ={
+      'assigneeId':AssigneeId
+    }
+    this.groupService.changeTaskAssignee(postId, assigneeId)
+    .subscribe((res) => {
+      console.log('Post ID', postId);
+      console.log('Assignee ID', assigneeId);
+      console.log('Task Assignee', res);
+      this.getTasks();
+      this.socket.emit('getNotifications', this.user_data.user_id);
+    }, (err) => {
+      console.log('Error changing the Task Assignee', err);
+    });
+  }
+
+  // Delete Tasks
+
+  deleteTask(post) {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((confirmed) => {
+      if (confirmed) {
+        this.postService.deletePost(post._id)
+          .subscribe((res) => {
+           const indexTask = this.completedTasks.findIndex(task => task._id == post._id)
+            if (post.task.status === 'done') {
+              this.completedTasks.splice(indexTask, 1);
+            } else {
+              this.pendingTasks.splice(indexTask, 1);
+            }
+            this.getTasks();
+          });
+      }
+    });
+  }
+
+  // Add new tasks 
 
   addNewTaskPost() {
     const formData: any = new FormData();
@@ -336,79 +427,293 @@ export class GroupTasksNewComponent implements OnInit {
       });
   }
 
-  closeCreatePostModal() {
-   this.newTaskModalRef.close();
+  initializeGroupMembersSearchForm() {
+    this.settings = {
+      text: 'Select Group Members',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      classes: 'myclass custom-class',
+      primaryKey: '_id',
+      labelKey: 'full_name',
+      noDataLabel: 'Search Members...',
+      enableSearchFilter: true,
+      searchBy: ['full_name', 'capital']
+    };
   }
 
-  closeNewColumnModal() {
-    this.newColumnModalRef.close();
-  }
-  closeEditColumnModal() {
-    this.editColumnModalRef.close();
-  }
-
-
-  loadGroup() {
-
-    this.groupService.getGroup(this.groupId)
-      .subscribe((res) => {
-        this.group = res['group'];
-        this.group_name = this.group.group_name;
-        this.group_members = res['group']._members;
-      // console.log(this.group_members);
-        this.group_admins = res['group']._admins;
-      //  console.log(this.group_admins);
-      }, (err) => {
-      });
+  resetNewPostForm() {
+    this.model_date = {year: (new Date()).getFullYear(), month: (new Date()).getMonth() + 1, day: (new Date()).getDate()};
+    this.assignment = 'Unassigned';
+    this.selectedGroupUsers = [];
+    this.post.title = '';
+    this.post.content = '';
+    this.edit_post_title = '';
+    this.edit_post_content = '';
+    this.filesToUpload = [];
   }
 
-  fileChangeEvent(fileInput: any) {
-    this.filesToUpload = <Array<File>>fileInput.target.files;
-    // this.product.photo = fileInput.target.files[0]['name'];
-  }
+  mentionmembers() {
+    let hashValues = [];
 
-  getTasks() {
-    this.isLoading$.next(true);
-    this.groupService.getGroupTasks(this.groupId)
+  let Value = [];
+
+  this.groupService.getGroup(this.groupId)
     .subscribe((res) => {
-      this.pendingTasks = res['posts'];
-      for(var i=0; i<this.allColumns.length; i++){
-        this.taskCount[this.allColumns[i]['title']] = 0;
-      }
-      for(var i=0; i<this.pendingTasks.length; i++){
-        this.taskCount[this.pendingTasks[i]['task']['status']]++;
-      }
-      for(var i=0; i<this.allColumns.length; i++){
-        console.log(this.taskCount[this.allColumns[i]['title']]);
-         this.updateColumnNumber(this.allColumns[i]['title'],this.taskCount[this.allColumns[i]['title']]);
-      }
-      this.getAllColumns();
-      this.isLoading$.next(false);
-    },
-    (err) => {
-      console.log('Error Fetching the Pending Tasks Posts', err);
-      this.isLoading$.next(false);
-    });
-  }
+      Value.push({ id: '', value: 'all' });
 
-  changeTaskAssignee(postId, AssigneeId){
-    const assigneeId ={
-      'assigneeId':AssigneeId
-    }
-    this.groupService.changeTaskAssignee(postId, assigneeId)
-    .subscribe((res) => {
-      console.log('Post ID', postId);
-      console.log('Assignee ID', assigneeId);
-      console.log('Task Assignee', res);
-      this.getTasks();
-      this.socket.emit('getNotifications', this.user_data.user_id);
+      for (var i = 0; i < res['group']._members.length; i++) {
+        this.members.push(res['group']._members[i].first_name + ' ' + res['group']._members[i].last_name);
+        this.allMembersId.push(res['group']._members[i]._id);
+        Value.push({ id: res['group']._members[i]._id, value: res['group']._members[i].first_name + ' ' + res['group']._members[i].last_name });
+      }
+      for (var i = 0; i < res['group']._admins.length; i++) {
+        this.members.push(res['group']._admins[i].first_name + ' ' + res['group']._admins[i].last_name);
+        this.allMembersId.push(res['group']._admins[i]._id);
+        Value.push({ id: res['group']._admins[i]._id, value: res['group']._admins[i].first_name + ' ' + res['group']._admins[i].last_name });
+      }
+
+
     }, (err) => {
-      console.log('Error changing the Task Assignee', err);
+
+    });
+
+  this.groupService.getGroupFiles(this.groupId)
+    .subscribe((res) => {
+      this.files = res['posts'];
+      for (var i = 0; i < res['posts'].length; i++) {
+        if (res['posts'][i].files.length > 0) {
+          hashValues.push({ id: res['posts'][i].files[0]._id, value: '<a style="color:inherit;" target="_blank" href="' + this.BASE_URL + '/uploads/' + res['posts'][i].files[0].modified_name + '"' + '>' + res['posts'][i].files[0].orignal_name + '</a>' })
+        }
+      }
+    }, (err) => {
+
+    });
+
+  const toolbaroptions = {
+    container: [
+      ['bold', 'italic', 'underline', 'strike'],     // toggled buttons
+      ['blockquote', 'code-block'],
+
+      [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+      [{ 'script': 'sub' }, { 'script': 'super' }],      // superscript/subscript
+      [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
+      [{ 'direction': 'rtl' }],                         // text direction
+
+      // [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+      [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+      [{ 'font': [] }],
+      [{ 'align': [] }],
+
+      ['clean'],                                        // remove formatting button
+
+      ['link', 'image', 'video'],
+      ['emoji']],
+      handlers: {
+          'emoji': function () {
+            console.log('clicked');
+          }
+      }
+  };
+
+  this.modules = {
+    toolbar: toolbaroptions,
+    "emoji-toolbar": true,
+    "emoji-shortname": true,
+    autoLink: true,
+    mention: {
+      allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
+      mentionDenotationChars: ["@", "#"],
+      source: function (searchTerm, renderList, mentionChar) {
+        let values;
+
+        console.log('searchterm', searchTerm);
+
+        if (mentionChar === "@") {
+          values = Value;
+        } else {
+          values = hashValues;
+        }
+
+        if (searchTerm.length === 0) {
+          renderList(values, searchTerm);
+        } else {
+          const matches = [];
+          for (var i = 0; i < values.length; i++)
+            if (~values[i].value.toLowerCase().indexOf(searchTerm.toLowerCase())) matches.push(values[i]);
+          console.log('matches', matches);
+          renderList(matches, searchTerm);
+        }
+      }
+    },
+  };
+
+  this.modulesLoaded = true;
+
+  }
+
+  onSearch(evt: any) {
+  this.groupUsersList = [];
+  this.groupService.searchGroupUsers(this.groupId, evt.target.value)
+    .subscribe((res) => {
+      this.groupUsersList = res['users'];
+
+    }, (err) => {
+
     });
   }
 
-  loadNextPosts(lastPostId)
-  {
+  // Google drive Auth API
+
+  loadGoogleDrive() {
+    gapi.load('auth', { 'callback': this.onAuthApiLoad.bind(this) });
+    gapi.load('picker', { 'callback': this.onPickerApiLoad.bind(this) });
+  }
+
+  onAuthApiLoad() {
+    gapi.auth.authorize(
+      {
+        'client_id': this.clientId,
+        'scope': this.scope,
+        'immediate': false
+      },
+      this.handleAuthResult);
+  }
+
+  onPickerApiLoad() {
+    this.pickerApiLoaded = true;
+  }
+
+  handleAuthResult(authResult) {
+    let src;
+    if (authResult && !authResult.error) {
+      if (authResult.access_token) {
+        let view = new google.picker.View(google.picker.ViewId.DOCS);
+        //view.setMimeTypes("image/png,image/jpeg,image/jpg,video/mp4, application/vnd.ms-excel ,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/pdf, text/plain, application/msword, text/js, application/zip, application/rar, application/tar, text/html");
+        let pickerBuilder = new google.picker.PickerBuilder();
+        let picker = pickerBuilder.
+        enableFeature(google.picker.Feature.NAV_HIDDEN).
+        setOAuthToken(authResult.access_token).
+        addView(view).
+        addView(new google.picker.DocsUploadView()).
+        setCallback(function (e) {
+          if (e[google.picker.Response.ACTION] == google.picker.Action.PICKED) {
+            let doc = e[google.picker.Response.DOCUMENTS][0];
+            src = doc[google.picker.Document.URL];
+
+            this.googleDriveFiles = e[google.picker.Response.DOCUMENTS];
+
+            const driveDivision = document.getElementById('google-drive-file');
+            driveDivision.style.display = 'block';
+            driveDivision.innerHTML = '<b>Drive File Upload: </b>'+'<a href=\''+src+'\' target=\'_blank\'>'+this.googleDriveFiles[0]['name']+'</a>';
+          }
+        }).
+        build();
+        picker.setVisible(true);
+      }
+    }
+
+  }
+
+  // Quill editor 
+
+  onEditorBlured(quill) {
+    console.log('editor blur!', quill);
+  }
+
+  onEditorFocused(quill) {
+    console.log('editor focus!', quill);
+  }
+
+  onEditorCreated(quill) {
+    this.editor = quill;
+    console.log('quill is ready! this is current quill instance object', quill);
+    // quill.insertText(0,'hello', 'bold', true);
+  }
+
+  onContentChanged(quill) {
+  this.editorTextLength = quill.text.length;
+  }
+
+  // Items 
+
+  onItemSelect(item: any) {
+    if (this.selectedGroupUsers.length >= 1) {
+      this.assignment = 'Assigned';
+    }
+  }
+
+  OnItemDeSelect(item: any) {
+    if (this.selectedGroupUsers.length < 1) {
+      this.assignment = 'Unassigned';
+    }
+
+  }
+
+  onSelectAll(items: any) {
+    this.assignment = 'Assigned';
+  }
+
+  onDeSelectAll(items: any) {
+    this.assignment = 'Unassigned';
+
+  }
+
+  // Tags 
+
+  addTags(event: any) {
+    //keyCode= 13 represents enter key
+    // in else case we are making use of mouse click
+    if(event.keyCode == 13){
+        const tag = document.getElementById('tags');
+        this.tags.push(tag['value']);
+        tag['value'] = '';
+  
+      console.log(this.tags);
+    }
+  
+    if (event.which == '13') {
+      event.preventDefault();
+    }
+  
+  }
+  
+  removeTag(index) {
+    this.tags.pop(index);
+  }
+  
+  tagListSearch(){
+    console.log("here1")
+    if (this.tags_search_words !== '') {
+      console.log("here12")
+      this.searchService.getTagsSearchResults(this.tags_search_words)
+      .subscribe((res) => {
+  
+         if (res) {
+          this.tags_search_result = res['results'];
+        } 
+      }, (err)=>{
+        console.log('Error while searching', err);
+      });
+    }else{
+      console.log("here13")
+    }
+  }
+  
+  clickedOnTag(index){
+    var tagsFromList = this.tags_search_result[index]["tags"]
+    this.tags.push(tagsFromList);;
+    this.tags_search_words = '';
+    console.log(this.tags);
+  } 
+
+  /////// POSTS ///////
+
+  // Get posts
+
+  loadNextPosts(lastPostId){
 
     this.isLoading$.next(true);
 
@@ -436,382 +741,89 @@ export class GroupTasksNewComponent implements OnInit {
     this.loadNextPosts(lastPostId);
   }
 
+  // Edit Posts
 
-
-  onSearch(evt: any) {
-    this.groupUsersList = [];
-    this.groupService.searchGroupUsers(this.groupId, evt.target.value)
-      .subscribe((res) => {
-        this.groupUsersList = res['users'];
-
-      }, (err) => {
-
-      });
-  }
-
-  onItemSelect(item: any) {
-    if (this.selectedGroupUsers.length >= 1) {
-      this.assignment = 'Assigned';
-    }
-  }
-  OnItemDeSelect(item: any) {
-    if (this.selectedGroupUsers.length < 1) {
-      this.assignment = 'Unassigned';
-    }
-
-  }
-  onSelectAll(items: any) {
-    this.assignment = 'Assigned';
-  }
-  onDeSelectAll(items: any) {
-    this.assignment = 'Unassigned';
-
-  }
-
-  onDownlaodFile(fileName) {
-
-    // const fileData = {
-    //   'fileName': fileName
-    // };
-
-    this.groupService.downloadGroupFile(this.group._id, fileName)
-      .subscribe((file_toDownload) => {
-
-        //   console.log('Downloaded File', file);
-        saveAs(file_toDownload, fileName);
-
-      }, (err) => {
-        //  console.log('Downloaded File err', err);
-
-      });
-  }
-
-    // group memebrs search setting when user add new event or taks type post
-    initializeGroupMembersSearchForm() {
-      this.settings = {
-        text: 'Select Group Members',
-        selectAllText: 'Select All',
-        unSelectAllText: 'UnSelect All',
-        classes: 'myclass custom-class',
-        primaryKey: '_id',
-        labelKey: 'full_name',
-        noDataLabel: 'Search Members...',
-        enableSearchFilter: true,
-        searchBy: ['full_name', 'capital']
-      };
-    }
-
-    onEditorBlured(quill) {
-      console.log('editor blur!', quill);
-    }
-
-    onEditorFocused(quill) {
-      console.log('editor focus!', quill);
-    }
-
-    onEditorCreated(quill) {
-      this.editor = quill;
-      console.log('quill is ready! this is current quill instance object', quill);
-      // quill.insertText(0,'hello', 'bold', true);
-    }
-
-    onContentChanged(quill) {
-      this.editorTextLength = quill.text.length;
-    }
-
-    mentionmembers() {
-      let hashValues = [];
-
-      let Value = [];
-
-      this.groupService.getGroup(this.groupId)
-        .subscribe((res) => {
-          Value.push({ id: '', value: 'all' });
-
-          for (var i = 0; i < res['group']._members.length; i++) {
-            this.members.push(res['group']._members[i].first_name + ' ' + res['group']._members[i].last_name);
-            this.allMembersId.push(res['group']._members[i]._id);
-            Value.push({ id: res['group']._members[i]._id, value: res['group']._members[i].first_name + ' ' + res['group']._members[i].last_name });
-          }
-          for (var i = 0; i < res['group']._admins.length; i++) {
-            this.members.push(res['group']._admins[i].first_name + ' ' + res['group']._admins[i].last_name);
-            this.allMembersId.push(res['group']._admins[i]._id);
-            Value.push({ id: res['group']._admins[i]._id, value: res['group']._admins[i].first_name + ' ' + res['group']._admins[i].last_name });
-          }
-
-
-        }, (err) => {
-
-        });
-
-      this.groupService.getGroupFiles(this.groupId)
-        .subscribe((res) => {
-          this.files = res['posts'];
-          for (var i = 0; i < res['posts'].length; i++) {
-            if (res['posts'][i].files.length > 0) {
-              hashValues.push({ id: res['posts'][i].files[0]._id, value: '<a style="color:inherit;" target="_blank" href="' + this.BASE_URL + '/uploads/' + res['posts'][i].files[0].modified_name + '"' + '>' + res['posts'][i].files[0].orignal_name + '</a>' })
-            }
-          }
-        }, (err) => {
-
-        });
-
-      const toolbaroptions = {
-        container: [
-          ['bold', 'italic', 'underline', 'strike'],     // toggled buttons
-          ['blockquote', 'code-block'],
-
-          [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-          [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-          [{ 'script': 'sub' }, { 'script': 'super' }],      // superscript/subscript
-          [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
-          [{ 'direction': 'rtl' }],                         // text direction
-
-          // [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-          [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-
-          [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-          [{ 'font': [] }],
-          [{ 'align': [] }],
-
-          ['clean'],                                        // remove formatting button
-
-          ['link', 'image', 'video'],
-          ['emoji']],
-          handlers: {
-              'emoji': function () {
-                console.log('clicked');
-              }
-          }
-      };
-
-      this.modules = {
-        toolbar: toolbaroptions,
-        "emoji-toolbar": true,
-        "emoji-shortname": true,
-        autoLink: true,
-        mention: {
-          allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
-          mentionDenotationChars: ["@", "#"],
-          source: function (searchTerm, renderList, mentionChar) {
-            let values;
-
-            console.log('searchterm', searchTerm);
-
-            if (mentionChar === "@") {
-              values = Value;
-            } else {
-              values = hashValues;
-            }
-
-            if (searchTerm.length === 0) {
-              renderList(values, searchTerm);
-            } else {
-              const matches = [];
-              for (var i = 0; i < values.length; i++)
-                if (~values[i].value.toLowerCase().indexOf(searchTerm.toLowerCase())) matches.push(values[i]);
-              console.log('matches', matches);
-              renderList(matches, searchTerm);
-            }
-          }
-        },
-      };
-
-      this.modulesLoaded = true;
-
-    }
-
-  /////// MODALS
-
-  openNewTaskModal(newTaskModal) {
-    this.newTaskModalRef = this.modalService.open(newTaskModal, { centered: true, size: "lg" });
-  }
-
-  openNewColumnModal(newColumnModal) {
-    this.newColumnModalRef = this.modalService.open(newColumnModal, { centered: true, size: "lg" });
-  }
-  openEditColumnModal(editColumnModal, columnName) {
-    this.editColumnNameOld = columnName;
-    this.editColumnNameNew = columnName;
-    this.editColumnModalRef = this.modalService.open(editColumnModal, { centered: true, size: "lg" });
-  }
-
-  openTimePicker(content) {
-    this.modalService.open(content, { centered: true });
-    this.timePickedCount;
-  }
-
-  openDatePicker(content) {
-    this.modalService.open(content, { centered: true });
-    this.datePickedCount = 1;
-  }
-
-  openAssignPicker(content, post) {
-    this.modalService.open(content, { centered: true });
-
-    if (post && post.type === 'task') {
-      this.selectedGroupUsers = [post.task._assigned_to];
-    }
-  }
-
-  userLikedPost(post) {
-
-   const currentUserId = this.user_data.user_id;
-   // see is the current user is one of the users who liked this post
-   const index = post._liked_by.findIndex( user => user == currentUserId);
-   return index > -1;
-  }
-
-  onClickLikePost(index, post) {
-
-
-    // const like_icon = document.getElementById('icon_like_post_' + index);
+  editPost() {
+    // const editor = document.getElementById('edit-content-' + index);
+ const post = this.postBeingEditted;
+    // we create a new date object
+    const date_due_to = new Date(this.model_date.year, this.model_date.month - 1, this.model_date.day);
+ 
+    console.log('this.contentMentions', this.content_mentions);
+ 
     const postData = {
-      '_id': post._id,
-      'user_id': this.user_data.user_id,
-      '_liked_by': post._liked_by,
-      'type_post': post.task.status === 'done' ? 'completed' : 'pending'
+      'title': this.edit_post_title,
+      'content': this.edit_post_content,
+      '_content_mentions': this.content_mentions,
+      'type': 'task',
+      'assigned_to': [this.selectedGroupUsers[0]],
+      'date_due_to': moment(date_due_to).format(),
+      'status': post.task.status,
+      'tags': this.tags
     };
-
-    if (postData._liked_by.length == 0) {
-      this.likepost(postData);
-    } else {
-      let userHasLikedPost = false;
-
-      // we check whether the user is one of the likes we already have
-      postData._liked_by.forEach((user) => {
-        if ( user == this.user_data.user_id ) {
-          userHasLikedPost = true;
-        }
-      });
-
-      // we like the post when the user is not between the users that liked the post
-      // and we unlike the post when it is
-      if (!userHasLikedPost) {
-        this.likepost(postData);
-      } else {
-        this.unlikepost(postData);
+ 
+    const scanned_content = postData.content;
+    let el = document.createElement('html');
+    el.innerHTML = scanned_content;
+ 
+    if (el.getElementsByClassName('mention').length > 0) {
+      //  console.log('Element',  el.getElementsByClassName( 'mention' ));
+      for (let i = 0; i < el.getElementsByClassName('mention').length; i++) {
+        this.content_mentions.push(el.getElementsByClassName('mention')[i]['dataset']['id'].toString());
       }
     }
-  }
-
-readyToAddTask() {
-   return !this.selectedGroupUsers[0] || !this.model_date || this.post.content === '';
-}
-readyToAddColumn() {
-  return !this.columnName;
-}
-readyToEditColumnName() {
-  return this.editColumnNameNew == this.editColumnNameOld;
-}
-readyToDeleteColumn() {
-  return this.taskCount[this.editColumnNameOld] || this.editColumnNameNew != this.editColumnNameOld;
-}
-
-
-  likepost(post) {
-
-    this.postService.like(post)
+ 
+    if(this.tags.length>0){
+     for(let i = 0 ; i < this.tags.length; i ++){
+       post.tags = this.tags;
+     }
+   }
+ 
+    this.postService.editPost(post._id, postData)
       .subscribe((res) => {
-        // find the post we are currently handling
-        // we differentiate between pending posts and completed posts so we can update the right ones
-        if (post.type_post === 'pending') {
-          const indexLikedPost = this.pendingTasks.findIndex((_post) => {
-            return _post._id === post._id;
-          });
-
-          this.pendingTasks[indexLikedPost]._liked_by.push(this.user_data.user_id);
-
-        } else if (post.type_post === 'completed') {
-          console.log('entered complete zone')
-          // completed tasks differentiate from the pending one
-          // so we have to update a different array
-          const indexLikedPost = this.completedTasks.findIndex((_post) => {
-            return _post._id === post._id;
-          });
-          console.log('indexLikePost', indexLikedPost);
-          this.completedTasks[indexLikedPost]._liked_by.push(this.user_data.user_id);
-          console.log('end zone', this.completedTasks[indexLikedPost]);
+ 
+        this.alert.class = 'success';
+        this._message.next(res['message']);
+        this.resetNewPostForm();
+ 
+        // mirror forntend to backend
+        if (post.task.status === 'done') {
+          const indexTask = this.completedTasks.findIndex((task) => task._id === post._id);
+          this.completedTasks[indexTask] = res['post'];
+        } else {
+          const indexTask = this.pendingTasks.findIndex((task) => task._id === post._id);
+          this.pendingTasks[indexTask] = res['post'];
         }
-
-        this.playAudio();
-
+ 
+        this.editTaskModalRef.close();
+ 
+        // socket notifications
+        const data = {
+          // it should get automatically, something like workspace: this.workspace_name
+          workspace: this.user_data.workspace.workspace_name,
+          // it should get automatically, something like group: this.group_name
+          group: this.group_name,
+          userId: this.user_data.user_id,
+          postId: res['post']._id,
+          groupId: this.groupId,
+          type: 'post'
+        };
+ 
+        this.socket.emit('newPost', data);
+        this.content_mentions = [];
+        this.tags = [];
       }, (err) => {
-
+ 
         this.alert.class = 'danger';
-
+        this.content_mentions = [];
+        this.tags = [];
+ 
         if (err.status) {
           this._message.next(err.error.message);
         } else {
           this._message.next('Error! either server is down or no internet connection');
         }
-      });
-  }
-
-  unlikepost (post) {
-    const currentUserId = JSON.parse(localStorage.getItem('user')).user_id;
-
-    this.postService.unlike(post)
-      .subscribe((res) => {
-        // this.alert.class = 'success';
-        // this._message.next(res['message']);
-
-        // find the index of the like
-        const indexLike = post._liked_by.findIndex(user => user == currentUserId);
-
-        // find the index of the post we are currently handling
-        if (post.type_post === 'pending') {
-          const indexUnlikedPost = this.pendingTasks.findIndex((_post) => {
-            return _post._id === post._id;
-          });
-          this.pendingTasks[indexUnlikedPost]._liked_by.splice(indexLike, 1);
-        } else {
-          // completed tasks differentiate from the pending ones
-          // so we have to update a different array
-          const indexUnlikedPost = this.completedTasks.findIndex((_post) => {
-            return _post._id === post.post_id;
-          });
-          this.completedTasks[indexUnlikedPost]._liked_by.splice(indexLike, 1);
-        }
-      }, (err) => {
-
-        this.alert.class = 'danger';
-
-        if (err.status) {
-          this._message.next(err.error.message);
-        } else {
-          this._message.next('Error! either server is down or no internet connection');
-        }
-
-      });
-  }
-
-  playAudio() {
-    const audio = new Audio();
-    audio.src = "/assets/audio/intuition.ogg";
-    audio.load();
-    audio.play();
-  }
-
-  getUserProfile() {
-    this._userService.getUser()
-      .subscribe((res) => {
-        this.user = res.user;
-        // this.profileImage = res.user['profile_pic'];
-        // this.profileImage = this.BASE_URL + `/uploads/${this.profileImage}`;
-      }, (err) => {
-        this.alert.class = 'alert alert-danger';
-        if (err.status === 401) {
-          this.alert.message = err.error.message;
-          setTimeout(() => {
-            localStorage.clear();
-            this._router.navigate(['']);
-          }, 3000);
-        } else if (err.status) {
-          this.alert.class = err.error.message;
-        } else {
-          this.alert.message = 'Error! either server is down or no internet connection';
-        }
+ 
       });
   }
 
@@ -895,259 +907,286 @@ readyToDeleteColumn() {
     x.blur();
   }
 
-  resetNewPostForm() {
-   this.model_date = {year: (new Date()).getFullYear(), month: (new Date()).getMonth() + 1, day: (new Date()).getDate()};
-   this.assignment = 'Unassigned';
-   this.selectedGroupUsers = [];
-   this.post.title = '';
-   this.post.content = '';
-   this.edit_post_title = '';
-   this.edit_post_content = '';
-   this.filesToUpload = [];
- }
+  // User Profile
 
- openEditTaskModal(taskmodal, post) {
-   this.postBeingEditted = post;
-   this.assignment = 'Assigned';
-   this.tags = this.postBeingEditted.tags;
+  getUserProfile() {
+    this._userService.getUser()
+      .subscribe((res) => {
+        this.user = res.user;
+        // this.profileImage = res.user['profile_pic'];
+        // this.profileImage = this.BASE_URL + `/uploads/${this.profileImage}`;
+      }, (err) => {
+        this.alert.class = 'alert alert-danger';
+        if (err.status === 401) {
+          this.alert.message = err.error.message;
+          setTimeout(() => {
+            localStorage.clear();
+            this._router.navigate(['']);
+          }, 3000);
+        } else if (err.status) {
+          this.alert.class = err.error.message;
+        } else {
+          this.alert.message = 'Error! either server is down or no internet connection';
+        }
+      });
+  }
 
-   console.log('post.assign', post.task._assigned_to);
-   this.selectedGroupUsers = [post.task._assigned_to];
-   // this isn't present at first so we need to add the full name so we can display it in the assign modal
-   post.task._assigned_to.full_name = post.task._assigned_to.first_name + " " + post.task._assigned_to.last_name;
-   this.groupUsersList = [post.task._assigned_to];
+  // Like/Dislike Posts
 
-   this.edit_post_title = post.title;
-   this.edit_post_content = post.content;
+  userLikedPost(post) {
 
-   this.model_date = {
-     day: moment(post.task.due_to, "YYYY-MM-DD").date(),
-     month: moment(post.task.due_to, "YYYY-MM-DD").month() + 1,
-     year: moment(post.task.due_to, "YYYY-MM-DD").year()
-   };
-   this.editTaskModalRef = this.modalService.open(taskmodal, {centered: true, size: "lg"});
- }
-
- readyToEditTask() {
-   return !this.selectedGroupUsers[0] || !this.model_date || this.edit_post_content.content === '';
- }
-
- editPost() {
-   // const editor = document.getElementById('edit-content-' + index);
-const post = this.postBeingEditted;
-   // we create a new date object
-   const date_due_to = new Date(this.model_date.year, this.model_date.month - 1, this.model_date.day);
-
-   console.log('this.contentMentions', this.content_mentions);
-
-   const postData = {
-     'title': this.edit_post_title,
-     'content': this.edit_post_content,
-     '_content_mentions': this.content_mentions,
-     'type': 'task',
-     'assigned_to': [this.selectedGroupUsers[0]],
-     'date_due_to': moment(date_due_to).format(),
-     'status': post.task.status,
-     'tags': this.tags
-   };
-
-   const scanned_content = postData.content;
-   let el = document.createElement('html');
-   el.innerHTML = scanned_content;
-
-   if (el.getElementsByClassName('mention').length > 0) {
-     //  console.log('Element',  el.getElementsByClassName( 'mention' ));
-     for (let i = 0; i < el.getElementsByClassName('mention').length; i++) {
-       this.content_mentions.push(el.getElementsByClassName('mention')[i]['dataset']['id'].toString());
+    const currentUserId = this.user_data.user_id;
+    // see is the current user is one of the users who liked this post
+    const index = post._liked_by.findIndex( user => user == currentUserId);
+    return index > -1;
+  }
+ 
+  onClickLikePost(index, post) {
+ 
+ 
+     // const like_icon = document.getElementById('icon_like_post_' + index);
+     const postData = {
+       '_id': post._id,
+       'user_id': this.user_data.user_id,
+       '_liked_by': post._liked_by,
+       'type_post': post.task.status === 'done' ? 'completed' : 'pending'
+     };
+ 
+     if (postData._liked_by.length == 0) {
+       this.likepost(postData);
+     } else {
+       let userHasLikedPost = false;
+ 
+       // we check whether the user is one of the likes we already have
+       postData._liked_by.forEach((user) => {
+         if ( user == this.user_data.user_id ) {
+           userHasLikedPost = true;
+         }
+       });
+ 
+       // we like the post when the user is not between the users that liked the post
+       // and we unlike the post when it is
+       if (!userHasLikedPost) {
+         this.likepost(postData);
+       } else {
+         this.unlikepost(postData);
+       }
      }
-   }
+  }
 
-   if(this.tags.length>0){
-    for(let i = 0 ; i < this.tags.length; i ++){
-      post.tags = this.tags;
+  likepost(post) {
+
+    this.postService.like(post)
+      .subscribe((res) => {
+        // find the post we are currently handling
+        // we differentiate between pending posts and completed posts so we can update the right ones
+        if (post.type_post === 'pending') {
+          const indexLikedPost = this.pendingTasks.findIndex((_post) => {
+            return _post._id === post._id;
+          });
+
+          this.pendingTasks[indexLikedPost]._liked_by.push(this.user_data.user_id);
+
+        } else if (post.type_post === 'completed') {
+          console.log('entered complete zone')
+          // completed tasks differentiate from the pending one
+          // so we have to update a different array
+          const indexLikedPost = this.completedTasks.findIndex((_post) => {
+            return _post._id === post._id;
+          });
+          console.log('indexLikePost', indexLikedPost);
+          this.completedTasks[indexLikedPost]._liked_by.push(this.user_data.user_id);
+          console.log('end zone', this.completedTasks[indexLikedPost]);
+        }
+
+        this.playAudio();
+
+      }, (err) => {
+
+        this.alert.class = 'danger';
+
+        if (err.status) {
+          this._message.next(err.error.message);
+        } else {
+          this._message.next('Error! either server is down or no internet connection');
+        }
+      });
+  }
+
+  unlikepost (post) {
+    const currentUserId = JSON.parse(localStorage.getItem('user')).user_id;
+
+    this.postService.unlike(post)
+      .subscribe((res) => {
+        // this.alert.class = 'success';
+        // this._message.next(res['message']);
+
+        // find the index of the like
+        const indexLike = post._liked_by.findIndex(user => user == currentUserId);
+
+        // find the index of the post we are currently handling
+        if (post.type_post === 'pending') {
+          const indexUnlikedPost = this.pendingTasks.findIndex((_post) => {
+            return _post._id === post._id;
+          });
+          this.pendingTasks[indexUnlikedPost]._liked_by.splice(indexLike, 1);
+        } else {
+          // completed tasks differentiate from the pending ones
+          // so we have to update a different array
+          const indexUnlikedPost = this.completedTasks.findIndex((_post) => {
+            return _post._id === post.post_id;
+          });
+          this.completedTasks[indexUnlikedPost]._liked_by.splice(indexLike, 1);
+        }
+      }, (err) => {
+
+        this.alert.class = 'danger';
+
+        if (err.status) {
+          this._message.next(err.error.message);
+        } else {
+          this._message.next('Error! either server is down or no internet connection');
+        }
+
+      });
+  }
+
+  // File/Audio I/O
+
+  fileChangeEvent(fileInput: any) {
+    this.filesToUpload = <Array<File>>fileInput.target.files;
+    // this.product.photo = fileInput.target.files[0]['name'];
+  }
+
+  onDownlaodFile(fileName) {
+
+    // const fileData = {
+    //   'fileName': fileName
+    // };
+
+    this.groupService.downloadGroupFile(this.group._id, fileName)
+      .subscribe((file_toDownload) => {
+
+        //   console.log('Downloaded File', file);
+        saveAs(file_toDownload, fileName);
+
+      }, (err) => {
+        //  console.log('Downloaded File err', err);
+
+      });
+  }
+
+  playAudio() {
+    const audio = new Audio();
+    audio.src = "/assets/audio/intuition.ogg";
+    audio.load();
+    audio.play();
+  }
+
+  /////// MODALS ///////
+
+  // Open modals
+
+  openNewTaskModal(newTaskModal) {
+    this.newTaskModalRef = this.modalService.open(newTaskModal, { centered: true, size: "lg" });
+  }
+
+  openNewColumnModal(newColumnModal) {
+    this.newColumnModalRef = this.modalService.open(newColumnModal, { centered: true, size: "lg" });
+  }
+
+  openEditColumnModal(editColumnModal, columnName) {
+    this.editColumnNameOld = columnName;
+    this.editColumnNameNew = columnName;
+    this.editColumnModalRef = this.modalService.open(editColumnModal, { centered: true, size: "lg" });
+  }
+
+  openEditTaskModal(taskmodal, post) {
+    this.postBeingEditted = post;
+    this.assignment = 'Assigned';
+    this.tags = this.postBeingEditted.tags;
+ 
+    console.log('post.assign', post.task._assigned_to);
+    this.selectedGroupUsers = [post.task._assigned_to];
+    // this isn't present at first so we need to add the full name so we can display it in the assign modal
+    post.task._assigned_to.full_name = post.task._assigned_to.first_name + " " + post.task._assigned_to.last_name;
+    this.groupUsersList = [post.task._assigned_to];
+ 
+    this.edit_post_title = post.title;
+    this.edit_post_content = post.content;
+ 
+    this.model_date = {
+      day: moment(post.task.due_to, "YYYY-MM-DD").date(),
+      month: moment(post.task.due_to, "YYYY-MM-DD").month() + 1,
+      year: moment(post.task.due_to, "YYYY-MM-DD").year()
+    };
+    this.editTaskModalRef = this.modalService.open(taskmodal, {centered: true, size: "lg"});
+  }
+ 
+  // Open pickers
+
+  openTimePicker(content) {
+    this.modalService.open(content, { centered: true });
+    this.timePickedCount;
+  }
+
+  openDatePicker(content) {
+    this.modalService.open(content, { centered: true });
+    this.datePickedCount = 1;
+  }
+
+  openAssignPicker(content, post) {
+    this.modalService.open(content, { centered: true });
+
+    if (post && post.type === 'task') {
+      this.selectedGroupUsers = [post.task._assigned_to];
     }
   }
 
-   this.postService.editPost(post._id, postData)
-     .subscribe((res) => {
+  // Ready to add 
 
-       this.alert.class = 'success';
-       this._message.next(res['message']);
-       this.resetNewPostForm();
-
-       // mirror forntend to backend
-       if (post.task.status === 'done') {
-         const indexTask = this.completedTasks.findIndex((task) => task._id === post._id);
-         this.completedTasks[indexTask] = res['post'];
-       } else {
-         const indexTask = this.pendingTasks.findIndex((task) => task._id === post._id);
-         this.pendingTasks[indexTask] = res['post'];
-       }
-
-       this.editTaskModalRef.close();
-
-       // socket notifications
-       const data = {
-         // it should get automatically, something like workspace: this.workspace_name
-         workspace: this.user_data.workspace.workspace_name,
-         // it should get automatically, something like group: this.group_name
-         group: this.group_name,
-         userId: this.user_data.user_id,
-         postId: res['post']._id,
-         groupId: this.groupId,
-         type: 'post'
-       };
-
-       this.socket.emit('newPost', data);
-       this.content_mentions = [];
-       this.tags = [];
-     }, (err) => {
-
-       this.alert.class = 'danger';
-       this.content_mentions = [];
-       this.tags = [];
-
-       if (err.status) {
-         this._message.next(err.error.message);
-       } else {
-         this._message.next('Error! either server is down or no internet connection');
-       }
-
-     });
- }
-
- deleteTask(post) {
-   Swal.fire({
-     title: "Are you sure?",
-     text: "You won't be able to revert this!",
-     type: "warning",
-     showCancelButton: true,
-     confirmButtonColor: '#3085d6',
-     cancelButtonColor: '#d33',
-     confirmButtonText: 'Yes, delete it!'
-   }).then((confirmed) => {
-     if (confirmed) {
-       this.postService.deletePost(post._id)
-         .subscribe((res) => {
-          const indexTask = this.completedTasks.findIndex(task => task._id == post._id)
-           if (post.task.status === 'done') {
-             this.completedTasks.splice(indexTask, 1);
-           } else {
-             this.pendingTasks.splice(indexTask, 1);
-           }
-           this.getTasks();
-         });
-     }
-   });
- }
-
-  // !--GOOGLE PICKER IMPLEMENTATION--! //
-  loadGoogleDrive() {
-    gapi.load('auth', { 'callback': this.onAuthApiLoad.bind(this) });
-    gapi.load('picker', { 'callback': this.onPickerApiLoad.bind(this) });
+  readyToAddTask() {
+   return !this.selectedGroupUsers[0] || !this.model_date || this.post.content === '';
   }
 
-  onAuthApiLoad() {
-    gapi.auth.authorize(
-      {
-        'client_id': this.clientId,
-        'scope': this.scope,
-        'immediate': false
-      },
-      this.handleAuthResult);
+  readyToAddColumn() {
+  return !this.columnName;
   }
 
-  onPickerApiLoad() {
-    this.pickerApiLoaded = true;
+  readyToEditColumnName() {
+    return this.editColumnNameNew == this.editColumnNameOld;
   }
 
-  handleAuthResult(authResult) {
-    let src;
-    if (authResult && !authResult.error) {
-      if (authResult.access_token) {
-        let view = new google.picker.View(google.picker.ViewId.DOCS);
-        //view.setMimeTypes("image/png,image/jpeg,image/jpg,video/mp4, application/vnd.ms-excel ,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/pdf, text/plain, application/msword, text/js, application/zip, application/rar, application/tar, text/html");
-        let pickerBuilder = new google.picker.PickerBuilder();
-        let picker = pickerBuilder.
-        enableFeature(google.picker.Feature.NAV_HIDDEN).
-        setOAuthToken(authResult.access_token).
-        addView(view).
-        addView(new google.picker.DocsUploadView()).
-        setCallback(function (e) {
-          if (e[google.picker.Response.ACTION] == google.picker.Action.PICKED) {
-            let doc = e[google.picker.Response.DOCUMENTS][0];
-            src = doc[google.picker.Document.URL];
-
-            this.googleDriveFiles = e[google.picker.Response.DOCUMENTS];
-
-            const driveDivision = document.getElementById('google-drive-file');
-            driveDivision.style.display = 'block';
-            driveDivision.innerHTML = '<b>Drive File Upload: </b>'+'<a href=\''+src+'\' target=\'_blank\'>'+this.googleDriveFiles[0]['name']+'</a>';
-          }
-        }).
-        build();
-        picker.setVisible(true);
-      }
-    }
-
-  }
-// !--GOOGLE PICKER IMPLEMENTATION--! //
-
-addTags(event: any) {
-  //keyCode= 13 represents enter key
-  // in else case we are making use of mouse click
-  if(event.keyCode == 13){
-      const tag = document.getElementById('tags');
-      this.tags.push(tag['value']);
-      tag['value'] = '';
-
-    console.log(this.tags);
+  readyToDeleteColumn() {
+    return this.taskCount[this.editColumnNameOld] || this.editColumnNameNew != this.editColumnNameOld;
   }
 
-  if (event.which == '13') {
-    event.preventDefault();
+  readyToEditTask() {
+    return !this.selectedGroupUsers[0] || !this.model_date || this.edit_post_content.content === '';
+  } 
+
+  // Close modals
+
+  closeCreatePostModal() {
+    this.newTaskModalRef.close();
   }
 
-}
-
-removeTag(index) {
-  this.tags.pop(index);
-}
-tagListSearch(){
-  console.log("here1")
-  if (this.tags_search_words !== '') {
-    console.log("here12")
-    this.searchService.getTagsSearchResults(this.tags_search_words)
-    .subscribe((res) => {
-
-       if (res) {
-        this.tags_search_result = res['results'];
-      } 
-    }, (err)=>{
-      console.log('Error while searching', err);
-    });
-  }else{
-    console.log("here13")
+  closeNewColumnModal() {
+     this.newColumnModalRef.close();
   }
-}
-clickedOnTag(index){
-  var tagsFromList = this.tags_search_result[index]["tags"]
-  this.tags.push(tagsFromList);;
-  this.tags_search_words = '';
-  console.log(this.tags);
-} 
+
+  closeEditColumnModal() {
+     this.editColumnModalRef.close();
+  }
+
+  /////// COLUMNS ///////
+
+  // Get Columns 
 
   initColumns(){
     this.columnService.initColumns(this.groupId).subscribe(() => {
       this.getAllColumns();
     });   
-  }
-
-  addNewColumn(){
-    this.columnService.addColumn(this.groupId, this.columnName).subscribe(() => {
-      this.getAllColumns();
-    });
-    this.newColumnModalRef.close();
   }
 
   getAllColumns(){
@@ -1156,6 +1195,17 @@ clickedOnTag(index){
     }); 
   }
 
+  // Add Columns 
+
+  addNewColumn(){
+    this.columnService.addColumn(this.groupId, this.columnName).subscribe(() => {
+      this.getAllColumns();
+    });
+    this.newColumnModalRef.close();
+  }
+
+  // Delete Columns
+
   deleteColumn(columnName){
     this.columnService.deleteColumn(this.groupId, columnName).subscribe(() => {
       this.getAllColumns();
@@ -1163,11 +1213,7 @@ clickedOnTag(index){
     });
   }
 
-  updateColumnNumber(columnName, numberOfTasks){
-    this.columnService.editColumnNumber(this.groupId, columnName, numberOfTasks).subscribe((res) => {
-      console.log('column number updated');
-    });
-  }
+  // Edit Columns
 
   editColumnName(){
     this.columnService.editColumnName(this.groupId,this.editColumnNameOld, this.editColumnNameNew).subscribe((res) => {
@@ -1191,6 +1237,14 @@ clickedOnTag(index){
       }
     }
     
+  }
+
+  // Update Columns
+
+  updateColumnNumber(columnName, numberOfTasks){
+    this.columnService.editColumnNumber(this.groupId, columnName, numberOfTasks).subscribe((res) => {
+      console.log('column number updated');
+    });
   }
 
   updateTaskColumn(post_id, oldColumnName, newColumnName){
