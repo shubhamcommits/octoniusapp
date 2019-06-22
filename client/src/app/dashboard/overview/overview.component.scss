@@ -47,7 +47,7 @@
 }
 
 .overview-post{
-  //border-left:none !important;
+  height: 35px;
 }
 
 .overview-event{
@@ -69,12 +69,12 @@
 
 .card-tile{
   padding: 0;
-  margin: 2px;
+  margin: 0px 2px 0px 2px;
   .media-body{
     padding: 10px;
   }
   &:hover{
-      box-shadow: $card-shadow !important;
+      //box-shadow: $card-shadow !important;
       background: #F1F1F3;
     }
 
@@ -102,12 +102,13 @@
 
 .box{
   display: flex;
+  height: 35px;
   flex-direction: row;
 }
 
 .box-child{
   position: relative;
-  border-right: 10px solid transparent;
+  border-right: 15px solid transparent;
 }
 
 .feed-avatar{ //avatar image for in-feed display
@@ -142,10 +143,12 @@
 .small-blue-text{
   color: $dark-sky-blue;
   font-size: 10px;
+  font-weight: bold;
 }
-
-//.bg-blue{
-//  width: 100%;
-//  background-color: $brand-primary;
-//  margin: 0px 10px 0px 10px;
-//}
+.small{
+  font-size: 12px;
+}
+.mb-2{
+  margin-bottom: 0rem !important;
+  margin-top: 0rem !important;
+}
