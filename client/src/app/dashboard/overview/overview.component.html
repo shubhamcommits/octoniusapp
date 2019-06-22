@@ -82,7 +82,7 @@
                       <div class = "box">
 
                         <div class="box-child calendar-glyph">
-          <!--                <fa-icon [icon]="['far', 'calendar']" size ='xs' ></fa-icon>-->
+                          <i class="material-icons">calendar_today</i>
                         </div>
                         <div class="box-child">
                           <div class="row event-title" style="margin-left:0px">
@@ -167,7 +167,7 @@
               <div class = "col-md-10">
                 <div class="box">
                   <div class="box-child calendar-glyph">
-                    <!--    Glyph  -->
+                    <i class="material-icons">calendar_today</i>
                   </div>
 
                   <div class="box-child">
@@ -245,7 +245,7 @@
     <div *ngFor="let comment of comments; let i = index;">
 
       <div *ngIf="comment?._post?.type == 'normal'" class="card-tile">
-        <div [routerLink]="['/dashboard/group/', comment._post._group._id, 'post', comment._post._id]" class="media overview-post" [ngStyle]="{ 'height': comment.readMore  ? '110px' : '100%', 'overflow': 'hidden'}" (click)="this.markCommentAsRead(comment._id)">
+        <div [routerLink]="['/dashboard/group/', comment._post._group._id, 'post', comment._post._id]" class="media overview-post" (click)="this.markCommentAsRead(comment._id)">
 
 
           <div class=" row media-body">
@@ -291,7 +291,7 @@
 
 
       <div *ngIf="comment?._post?.type== 'task' && comment?._post?.task?.status != 'done' && comment?._post?.comments_count > 0" class="card-tile">
-        <div [routerLink]="['/dashboard/group/', comment._post._group._id, 'post', comment._post._id]" class="media" [ngStyle]="{ 'height': comment.readMore  ? '110px' : '100%', 'overflow': 'hidden'}" (click)="this.markCommentAsRead(comment._id)">
+        <div [routerLink]="['/dashboard/group/', comment._post._group._id, 'post', comment._post._id]" class="media" (click)="this.markCommentAsRead(comment._id)">
           <div class=" row media-body">
 
             <div class="col-md-10">
@@ -334,7 +334,7 @@
 
       <div *ngIf="comment?._post?.type== 'event' && comment?._post?.comments_count > 0" class="card-tile">
 
-        <div [routerLink]="['/dashboard/group/', comment._post._group._id, 'post', comment._post._id]" class="media" [ngStyle]="{ 'height': comment.readMore  ? '110px' : '100%', 'overflow': 'hidden'}" (click)="this.markCommentAsRead(comment._id)">
+        <div [routerLink]="['/dashboard/group/', comment._post._group._id, 'post', comment._post._id]" class="media" (click)="this.markCommentAsRead(comment._id)">
           <!-- <img src="/uploads/{{post._group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" class="mr-3 feed-avatar"> -->
           <div class=" row media-body">
 
