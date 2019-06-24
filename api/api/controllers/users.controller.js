@@ -142,7 +142,7 @@ const getOverview = async (req, res, next) => {
     })
       .sort('-created_date')
       .populate({ path: '_post', populate: { path: '_group' } })
-      .populate('_commented_by', 'first_name profile_pic');
+      .populate('_commented_by', 'first_name last_name profile_pic');
 
     // filter the comments that responded to one the current user's posts
     const filteredComments = comments.filter(comment => comment._post._posted_by == req.userId);
@@ -182,7 +182,7 @@ const getOverview = async (req, res, next) => {
     })
       .sort('-created_date')
       .populate('_group', 'group_name')
-      .populate('_posted_by', '_id first_name profile_pic')
+      .populate('_posted_by', '_id first_name last_name profile_pic')
       .select('_id title type _group _posted_by created_date');
 
     // Filter out the posts belonging to the current user
@@ -198,6 +198,163 @@ const getOverview = async (req, res, next) => {
     return sendErr(res, err);
   }
 };
+
+
+/***
+ * Jessie Jia Edit Start
+ * @param req
+ * @param res
+ * @param next
+ * @returns {Promise<*>}
+ */
+const getOverviewToday = async (req, res, next) => {
+  try {
+    const { userId } = req;
+
+    // Generate the actual time
+    const todayForEvent = moment().startOf('day').format();
+
+    const today = moment().format('YYYY-MM-DD');
+
+    // Generate the +24h time
+    const todayPlus24ForEvent = moment().endOf('day').format();
+    const tomorrow = moment().add(1, 'days').format('YYYY-MM-DD');
+
+    // find the comments that received a response today (to be replaced later)
+    const comments = await Comment.find({
+      _commented_by: { $ne: req.userId },
+      created_date: { $gte: todayForEvent },
+      _read_by: { $not: { $elemMatch: { $eq: new mongoose.Types.ObjectId(userId) } } } // comments not read by the user
+    })
+      .sort('-created_date')
+      .populate({ path: '_post', populate: { path: '_group' } })
+      .populate('_commented_by', 'first_name last_name profile_pic');
+
+    // filter the comments that responded to one the current user's posts
+    const filteredComments = comments.filter(comment => comment._post._posted_by == req.userId);
+
+
+    const posts = await Post.find({
+      $or: [{
+        $and: [
+          // Find tasks due to today
+          { 'task._assigned_to': userId },
+          { 'task.due_to': { $in: [today, tomorrow] } }
+        ]
+      }, {
+        $and: [
+          // Find events due to today
+          { 'event._assigned_to': userId },
+          { 'event.due_to': { $gte: todayForEvent, $lt: todayPlus24ForEvent } }
+        ]
+      }]
+    })
+      .sort('event.due_to task.due_to -comments.created_date')
+      .populate('_posted_by', 'first_name last_name profile_pic')
+      .populate('task._assigned_to', 'first_name last_name')
+      .populate('event._assigned_to', 'first_name last_name')
+      .populate('_group', 'group_name group_avatar')
+      .populate('_liked_by', 'first_name last_name');
+
+    // Get the group(s) that the user belongs to
+    const { _groups } = await User.findById(userId)
+      .select('_groups');
+
+    // Get today's unread posts from every group associated with the user
+    let recentPosts = await Post.find({
+      '_group': { $in: _groups },
+      'created_date': { $gte: todayForEvent, $lt: todayPlus24ForEvent },
+      '_read_by': { $not: { $elemMatch: { $eq: new mongoose.Types.ObjectId(userId) } } }
+    })
+      .sort('-created_date')
+      .populate('_group', 'group_name')
+      .populate('_posted_by', '_id first_name last_name profile_pic')
+      .select('_id title type _group _posted_by created_date');
+
+    // Filter out the posts belonging to the current user
+    recentPosts = recentPosts.filter(post => post._posted_by._id.toString() !== userId);
+
+    return res.status(200).json({
+      message: `Found ${posts.length} posts!`,
+      posts,
+      recentPosts,
+      comments: filteredComments
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+
+const getOverviewWeek = async (req, res, next) => {
+  try {
+    const { userId } = req;
+
+    // Generate the actual time
+    const todayForEvent = moment().add(1, 'days').startOf('day').format();
+
+    const today = moment().add(1,'days').format('YYYY-MM-DD');
+
+    // Generate the +24h time
+    const todayPlus7DaysForEvent = moment().add(7, 'days').endOf('day').format();
+    const todayPlus7Days = moment().add(7, 'days').format('YYYY-MM-DD');
+
+    // find the comments that received a response today (to be replaced later)
+    const comments = await Comment.find({
+      _commented_by: { $ne: req.userId },
+      created_date: { $gte: todayForEvent },
+      _read_by: { $not: { $elemMatch: { $eq: new mongoose.Types.ObjectId(userId) } } } // comments not read by the user
+    })
+      .sort('-created_date')
+      .populate({ path: '_post', populate: { path: '_group' } })
+      .populate('_commented_by', 'first_name last_name profile_pic');
+
+    // filter the comments that responded to one the current user's posts
+    const filteredComments = comments.filter(comment => comment._post._posted_by == req.userId);
+
+
+    const posts = await Post.find({
+      $or: [{
+        $and: [
+          // Find tasks due to today
+          { 'task._assigned_to': userId },
+          { 'task.due_to': { $gte: today, $lt: todayPlus7Days } }
+        ]
+      }, {
+        $and: [
+          // Find events due to today
+          { 'event._assigned_to': userId },
+          { 'event.due_to': { $gte: todayForEvent, $lte: todayPlus7DaysForEvent } }
+        ]
+      }]
+    })
+      .sort('event.due_to task.due_to -comments.created_date')
+      .populate('_posted_by', 'first_name last_name profile_pic')
+      .populate('task._assigned_to', 'first_name last_name')
+      .populate('event._assigned_to', 'first_name last_name')
+      .populate('_group', 'group_name group_avatar')
+      .populate('_liked_by', 'first_name last_name');
+
+    return res.status(200).json({
+      message: `Found ${posts.length} posts!`,
+      posts,
+      comments: filteredComments
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+
+
+/***
+ * Jessie Jia Edit Ends
+ * @param req
+ * @param res
+ * @param next
+ * @returns {Promise<*>}
+ */
+
 
 // -| TASKS |-
 
@@ -335,8 +492,16 @@ module.exports = {
   edit,
   editSkills,
   get,
-    getOtherUser,
+  getOtherUser,
   getOverview,
+  /***
+   * Jessie Jia Edit
+   */
+  getOverviewToday,
+  getOverviewWeek,
+  /***
+   * Jessie Jia Edit Ends
+   */
   updateImage,
   // Tasks
   getNextTasksDone,

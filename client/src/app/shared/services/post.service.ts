@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { Subject } from "rxjs/Subject";
-import { Observable } from "rxjs";
+import { Subject } from 'rxjs/Subject';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class PostService {
@@ -34,7 +34,7 @@ export class PostService {
   }
 
   getNextPosts(group_id, last_post_id) {
-    return this._http.get(this.BASE_API_URL + '/groups/' + group_id +'/nextPosts/'+ last_post_id);
+    return this._http.get(this.BASE_API_URL + '/groups/' + group_id + '/nextPosts/' + last_post_id);
   }
 
   addNewNormalPost(post) {
@@ -47,7 +47,7 @@ export class PostService {
     return this._http.post(this.BASE_API_URL + '/posts', post);
   }
 
-  addNewCollabPost(post){
+  addNewCollabPost(post) {
     return this._http.post(this.BASE_API_URL + '/posts', post);
   }
 
@@ -91,34 +91,51 @@ export class PostService {
     return this._http.put(this.BASE_API_URL + `/posts/comments/${comment._id}/unlike`, comment);
   }
 
-  useroverviewposts(user_id){
+  useroverviewposts(user_id) {
     return this._http.get(this.BASE_API_URL + '/users/overview/');
   }
 
-  getPost(postId){
-    return this._http.get(this.BASE_API_URL + '/posts/'+ postId);
+  /***
+   * Jessie Jia Edit Starts
+   * @param postId
+   */
+  userOverviewPostsToday(user_id) {
+    return this._http.get(this.BASE_API_URL + '/users/overviewToday');
+  }
+
+  userOverviewPostsWeek(user_id) {
+    return this._http.get(this.BASE_API_URL + '/users/overviewWeek/');
+  }
+
+  /***
+   * Jessie Jia Edit Ends
+   * @param postId
+   */
+
+  getPost(postId) {
+    return this._http.get(this.BASE_API_URL + '/posts/' + postId);
   }
 
   addNewComment(postId, comment) {
     return this._http.post(this.BASE_API_URL + `/posts/${postId}/comments`, comment);
   }
-  getComment(commentId){
+  getComment(commentId) {
     return this._http.get(this.BASE_API_URL + `/posts/comments/${commentId}`);
   }
   getComments(postId) {
     return this._http.get(this.BASE_API_URL + `/posts/${postId}/comments`);
   }
-  getNextComments(postId, commentId){
+  getNextComments(postId, commentId) {
     return this._http.get(this.BASE_API_URL + `/posts/${postId}/nextComments/${commentId}`);
   }
-  updateComment(commentId, comment){
+  updateComment(commentId, comment) {
     return this._http.put(this.BASE_API_URL + `/posts/comments/${commentId}`, comment);
   }
-  deleteComment(commentId){
+  deleteComment(commentId) {
     return this._http.delete(this.BASE_API_URL + `/posts/comments/${commentId}`);
   }
 
-  getDocument(postId){
+  getDocument(postId) {
     return this._http.get(this.BASE_API_URL + `/posts/documents/${postId}`);
   }
 
@@ -149,7 +166,7 @@ export class PostService {
 
   playAudio() {
     const audio = new Audio();
-    audio.src = "/assets/audio/intuition.ogg";
+    audio.src = '/assets/audio/intuition.ogg';
     audio.load();
     audio.play();
   }

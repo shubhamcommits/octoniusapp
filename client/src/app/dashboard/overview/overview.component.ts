@@ -11,6 +11,7 @@ import { GroupsService } from '../../shared/services/groups.service';
 import { PostService } from '../../shared/services/post.service';
 import { UserService } from '../../shared/services/user.service';
 import { post } from 'selenium-webdriver/http';
+import { faCalendar } from '@fortawesome/free-solid-svg-icons';
 
 //Google API Variables
 declare var gapi: any;
@@ -27,6 +28,22 @@ export class OverviewComponent implements OnInit {
 
   posts = [];
   recentPosts = [];
+  /***
+   * Jessie Jia Edit Starts
+   */
+  todayPosts = [];
+  weekPosts = [];
+  todayComments = [];
+  weekComments = [];
+  today_event_count = 0;
+  today_task_count = 0 ;
+  week_event_count = 0;
+  week_task_count = 0;
+
+  /***
+   * Jessie Jia Edit Ends
+   */
+
   comments = [];
   groups = [];
 
@@ -90,10 +107,10 @@ export class OverviewComponent implements OnInit {
             workspace,
             group: group.group_name
           };
-          
+
           // Join all groups
           this.socket.emit('joinGroup', room);
-        })
+        });
       },
       (err) => console.error(`Could not get groups! ${err}`)
     );
@@ -103,12 +120,28 @@ export class OverviewComponent implements OnInit {
     this.liveUpdatesEdit();
 
     this.getRecentPosts()
-    .then(()=>{
+    .then(() => {
       this.ngxService.stop();
     })
-    .catch((err)=>{
+    .catch((err) => {
       console.log('Error while getting recent posts', err);
-    })
+    });
+
+    this.getTodayPosts()
+      .then(() => {
+        this.ngxService.stop();
+      })
+      .catch((err) => {
+        console.log('Error while getting today posts', err);
+      });
+
+    this.getWeekPosts()
+      .then(() => {
+        this.ngxService.stop();
+      })
+      .catch((err) => {
+        console.log('Error while getting week posts', err);
+      });
   }
 
   getRecentPosts() {
@@ -129,6 +162,7 @@ export class OverviewComponent implements OnInit {
         });
 
         this.recentPosts = res['recentPosts'];
+        //console.log('recent posts', this.recentPosts);
 
         if (this.comments.length > 0) {
           this.normal_count = 1;
@@ -162,10 +196,121 @@ export class OverviewComponent implements OnInit {
       }, (err) => {
           reject(err);
       });
-    })
-
-
+    });
   }
+
+/***
+ * Jessie Jia Edit Starts
+ * @param postId
+ */
+
+  getTodayPosts() {
+    return new Promise((resolve, reject) => {
+      this.isLoading$.next(true);
+
+      this._postservice.userOverviewPostsToday(this.user_data.user_id)
+        .subscribe((res) => {
+          // console.log('Group posts:', res);
+          this.todayPosts = res['posts'];
+          this.todayComments = res['comments'];
+
+          // Adding the readMore property to every comment.
+          // This property is used when making the post collapsible.
+          this.todayComments = this.todayComments.map(comment => {
+            comment.readMore = true;
+            return comment;
+          });
+
+          if (this.todayComments.length > 0) {
+            this.normal_count = 1;
+          }
+
+          for (let i = 0 ; i < this.todayPosts.length; i ++) {
+            if ( this.todayPosts[i].type === 'task') {
+              this.today_task_count = 1;
+            }
+            if (this.todayPosts[i].type === 'event') {
+              this.today_event_count = 1;
+            }
+            if (this.todayPosts[i].type === 'event' && this.todayPosts[i].comments_count > 0) {
+              this.normal_count = 1;
+            }
+            if (this.todayPosts[i].type === 'task' && this.todayPosts[i].comments_count > 0) {
+              this.normal_count = 1;
+            }
+          }
+          // console.log('User Post:', this.posts);
+          // console.log('Event Response:', this.event_count);
+          // console.log('Task Response:', this.task_count);
+          // console.log('Normal Response:', this.normal_count);
+          if ( this.todayPosts.length === 0 ) {
+            this.isLoading$.next(true);
+          } else {
+            this.isLoading$.next(false);
+          }
+          resolve();
+
+        }, (err) => {
+          reject(err);
+        });
+    });
+  }
+
+  getWeekPosts() {
+    return new Promise((resolve, reject) => {
+      this.isLoading$.next(true);
+
+      this._postservice.userOverviewPostsWeek(this.user_data.user_id)
+        .subscribe((res) => {
+          // console.log('Group posts:', res);
+          this.weekPosts = res['posts'];
+          this.weekComments = res['comments'];
+
+          // Adding the readMore property to every comment.
+          // This property is used when making the post collapsible.
+          this.weekComments = this.weekComments.map(comment => {
+            comment.readMore = true;
+            return comment;
+          });
+
+          if (this.weekComments.length > 0) {
+            this.normal_count = 1;
+          }
+
+          for (let i = 0 ; i < this.weekPosts.length; i ++) {
+            if ( this.weekPosts[i].type === 'task') {
+              this.week_task_count = 1;
+            }
+            if (this.weekPosts[i].type === 'event') {
+              this.week_event_count = 1;
+            }
+            if (this.weekPosts[i].type === 'event' && this.weekPosts[i].comments_count > 0) {
+              this.normal_count = 1;
+            }
+            if (this.weekPosts[i].type === 'task' && this.weekPosts[i].comments_count > 0) {
+              this.normal_count = 1;
+            }
+          }
+          // console.log('User Post:', this.posts);
+          // console.log('Event Response:', this.event_count);
+          // console.log('Task Response:', this.task_count);
+          // console.log('Normal Response:', this.normal_count);
+          if ( this.weekPosts.length === 0 ) {
+            this.isLoading$.next(true);
+          } else {
+            this.isLoading$.next(false);
+          }
+          resolve();
+
+        }, (err) => {
+          reject(err);
+        });
+    });
+  }
+  /***
+   * Jessie Jia Edit Ends
+   * @param postId
+   */
 
 
   markPostAsRead(postId) {
@@ -183,7 +328,6 @@ export class OverviewComponent implements OnInit {
         (err) => console.error(`Cannot mark comment as read! ${err}`)
       );
   }
-
   /**
    * This method is responsible for updating the entire overview
    * without having to refresh the page once a new post has been added.
@@ -196,19 +340,19 @@ export class OverviewComponent implements OnInit {
           // @ts-ignore
           ({ post }) => {
             this.recentPosts.unshift(post);
-  
+
             if (post.type === 'event') {
               const { event } = post;
               // Check if the event is assigned to the current user
               const user = event._assigned_to.filter(user => {
                 return currentUserId === user._id.toString();
               });
-  
+
               // The current user was assigned the event
               if (user.length === 1) {
                 const today = new Date();
                 const eventDueDate = new Date(event.due_to.toString());
-  
+
                 // Check if the event is due today
                 if (today.toDateString() === eventDueDate.toDateString()) {
                   if (this.event_count !== 1) this.event_count = 1;
@@ -221,7 +365,7 @@ export class OverviewComponent implements OnInit {
               if (currentUserId === task._assigned_to._id.toString()) {
                 const today = new Date();
                 const taskDueDate = new Date(task.due_to.toString());
-  
+
                 // Check if the task has a due date >= today
                 if (taskDueDate.toDateString() >= today.toDateString()) {
                   if (this.task_count !== 1) this.task_count = 1;
