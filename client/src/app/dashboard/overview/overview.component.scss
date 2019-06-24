@@ -46,6 +46,7 @@
 }
 .event-title{
   color: white;
+  font-weight: 400;
 }
 
 .overview-post{
@@ -108,8 +109,7 @@
 }
 
 .box-child{
-  position: relative;
-  border-right: 15px solid transparent;
+ margin-right: 15px;
 }
 
 .feed-avatar{ //avatar image for in-feed display
@@ -125,8 +125,8 @@
 }
 
 .overview-item{
-  width: auto;
-  font-size: 14px;
+  // width: auto;
+  font-size: 16px;
   line-height: 35px;
 }
 
@@ -143,8 +143,8 @@
 
 .small-blue-text{
   color: $dark-sky-blue;
-  font-size: 10px;
-  font-weight: bold;
+  font-size: 12px !important;
+  font-weight: 700;
 }
 .small{
   font-size: 12px;

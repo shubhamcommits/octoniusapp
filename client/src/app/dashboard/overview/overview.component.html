@@ -33,31 +33,28 @@
           <div class="media card-tile overview-task">
 
             <div class=" row media-body">
-
-              <div class="col-md-10">
-                <div class = "box">
-                  <div class = "box-child" *ngIf="post.task.status === 'to do'">
+                  <div class = "col-md-2" *ngIf="post.task.status === 'to do'">
                     <div class="kanbanoverview kbn-todo">
                       To Do
                     </div>
                   </div>
 
-                  <div class = "box-child" *ngIf="post.task.status === 'in progress'">
+                  <div class = "col-md-2" *ngIf="post.task.status === 'in progress'">
                     <div class="kanbanoverview kbn-working">
                       In Progress
                     </div>
                   </div>
 
-                  <div class = "box-child" *ngIf="post.task.status.trim() === 'completed' || post.task.status.trim() === 'done' ">
+                  <div class = "col-md-2" *ngIf="post.task.status.trim() === 'completed' || post.task.status.trim() === 'done' ">
                     <div class="kanbanoverview kbn-done">
                       Done
                     </div>
                   </div>
 
-                  <div class="box-child overview-item" [innerHTML]="post?.title"></div>
-                  <div class="box-child overview-item small-blue-text" [innerHTML]="post?._group?.group_name"></div>
-                </div>
-              </div>
+                  <div class="col-md-6 overview-item" [innerHTML]="post?.title"></div>
+                  <div class="col-md-2 overview-item small-blue-text" [innerHTML]="post?._group?.group_name"></div>
+               
+              
 
               <div class="col-md-2">
                  <div class="overview-item small text-muted text-right ">Due {{post.task.due_to | date:'MMMM d, y' }}</div>
@@ -78,21 +75,20 @@
 
           <div class="media card-tile-event overview-event">
               <div class="row media-body">
-                  <div class="col-md-10">
-                      <div class = "box">
 
-                        <div class="box-child calendar-glyph">
+                        <div class="col-md-2 calendar-glyph">
                           <i class="material-icons">calendar_today</i>
                         </div>
-                        <div class="box-child">
-                          <div class="row event-title" style="margin-left:0px">
+                        <div class="col-md-6">
+                          
                             <div class="event-title">
                               <div [innerHTML]="post?.title | safe: 'html' " class="overview-item"> </div>
                             </div>
-                          </div>
+                         
                         </div>
-                      </div>
-                  </div>
+                        <div class="col-md-2 overview-item text-white small bold" [innerHTML]="post?._group?.group_name"></div>
+                      
+                  
                   <div class="col-md-2">
                     <div class="overview-item small text-white text-right">{{post.event.due_to | date:'MMMM d, y - h:mm a' }}</div>
 
@@ -118,36 +114,33 @@
           <div class="media card-tile overview-task">
 
             <div class=" row media-body">
-
-              <div class="col-md-10">
-                <div class = "box">
-                  <div class = "box-child" *ngIf="post.task.status === 'to do'">
-                    <div class="kanbanoverview kbn-todo">
-                      To Do
-                    </div>
-                  </div>
-
-                  <div class = "box-child" *ngIf="post.task.status === 'in progress'">
-                    <div class="kanbanoverview kbn-working">
-                      In Progress
-                    </div>
-                  </div>
-
-                  <div class = "box-child" *ngIf="post.task.status.trim() === 'completed' || post.task.status.trim() === 'done' ">
-                    <div class="kanbanoverview kbn-done">
-                      Done
-                    </div>
-                  </div>
-
-                  <div class="box-child overview-item" [innerHTML]="post?.title"></div>
-                  <div class="box-child overview-item small-blue-text" [innerHTML]="post?._group?.group_name"></div>
+              <div class = "col-md-2" *ngIf="post.task.status === 'to do'">
+                <div class="kanbanoverview kbn-todo">
+                  To Do
                 </div>
               </div>
 
-              <div class="col-md-2">
-                <div class="overview-item small text-muted text-right ">Due {{post.task.due_to | date:'MMMM d, y' }}</div>
+              <div class = "col-md-2" *ngIf="post.task.status === 'in progress'">
+                <div class="kanbanoverview kbn-working">
+                  In Progress
+                </div>
               </div>
-            </div>
+
+              <div class = "col-md-2" *ngIf="post.task.status.trim() === 'completed' || post.task.status.trim() === 'done' ">
+                <div class="kanbanoverview kbn-done">
+                  Done
+                </div>
+              </div>
+
+              <div class="col-md-6 overview-item" [innerHTML]="post?.title"></div>
+              <div class="col-md-2 overview-item small-blue-text" [innerHTML]="post?._group?.group_name"></div>
+           
+          
+
+          <div class="col-md-2">
+             <div class="overview-item small text-muted text-right ">Due {{post.task.due_to | date:'MMMM d, y' }}</div>
+          </div>
+        </div>
           </div>
         </div>
       </a>
@@ -163,27 +156,26 @@
         <div *ngIf="post.type== 'event'">
 
           <div class="media card-tile-event overview-event">
-            <div class=" row media-body">
-              <div class = "col-md-10">
-                <div class="box">
-                  <div class="box-child calendar-glyph">
-                    <i class="material-icons">calendar_today</i>
-                  </div>
+            <div class="row media-body">
 
-                  <div class="box-child">
-                    <div class="row event-title" style="margin-left:0px">
-                      <div class="event-title">
-                        <div [innerHTML]="post?.title | safe: 'html' " class="overview-item"> </div>
-                      </div>
-                    </div>
+              <div class="col-md-2 calendar-glyph">
+                <i class="material-icons">calendar_today</i>
+              </div>
+              <div class="col-md-6">
+                
+                  <div class="event-title">
+                    <div [innerHTML]="post?.title | safe: 'html' " class="overview-item"> </div>
                   </div>
-                </div>
+               
               </div>
-              <div class="col-md-2">
-                <div class="overview-item small text-white text-right">{{post.event.due_to | date:'MMMM d, y - h:mm a' }}</div>
-              </div>
+              <div class="col-md-2 overview-item text-white small bold" [innerHTML]="post?._group?.group_name"></div>
+            
+        
+        <div class="col-md-2">
+          <div class="overview-item small text-white text-right">{{post.event.due_to | date:'MMMM d, y - h:mm a' }}</div>
 
-            </div>
+        </div>
+    </div>
           </div>
         </div>
       </a>
