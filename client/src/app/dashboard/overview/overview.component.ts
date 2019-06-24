@@ -162,6 +162,7 @@ export class OverviewComponent implements OnInit {
         });
 
         this.recentPosts = res['recentPosts'];
+        //console.log('recent posts', this.recentPosts);
 
         if (this.comments.length > 0) {
           this.normal_count = 1;

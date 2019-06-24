@@ -214,7 +214,7 @@
                               <img src="/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar">
                             </div>
                             <div class="avatar-name-child">
-                              <p class="overview-item">{{post._posted_by?.first_name}}</p>
+                              <p class="overview-item">{{post._posted_by?.first_name}} {{post._posted_by?.last_name}}</p>
                             </div>
                           </div>
 
@@ -260,7 +260,7 @@
                       <img src="/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar">
                     </div>
                     <div class="avatar-name-child">
-                      <div class="overview-item">{{comment._commented_by?.first_name}}</div>
+                      <div class="overview-item">{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}}</div>
                     </div>
                   </div>
 
@@ -304,7 +304,7 @@
                       <img src="/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar">
                     </div>
                     <div class="avatar-name-child">
-                      <div class="overview-item">{{comment._commented_by?.first_name}}</div>
+                      <div class="overview-item">{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}}</div>
                     </div>
                   </div>
 

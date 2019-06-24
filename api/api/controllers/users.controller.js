@@ -142,7 +142,7 @@ const getOverview = async (req, res, next) => {
     })
       .sort('-created_date')
       .populate({ path: '_post', populate: { path: '_group' } })
-      .populate('_commented_by', 'first_name profile_pic');
+      .populate('_commented_by', 'first_name last_name profile_pic');
 
     // filter the comments that responded to one the current user's posts
     const filteredComments = comments.filter(comment => comment._post._posted_by == req.userId);
@@ -182,7 +182,7 @@ const getOverview = async (req, res, next) => {
     })
       .sort('-created_date')
       .populate('_group', 'group_name')
-      .populate('_posted_by', '_id first_name profile_pic')
+      .populate('_posted_by', '_id first_name last_name profile_pic')
       .select('_id title type _group _posted_by created_date');
 
     // Filter out the posts belonging to the current user
@@ -228,7 +228,7 @@ const getOverviewToday = async (req, res, next) => {
     })
       .sort('-created_date')
       .populate({ path: '_post', populate: { path: '_group' } })
-      .populate('_commented_by', 'first_name profile_pic');
+      .populate('_commented_by', 'first_name last_name profile_pic');
 
     // filter the comments that responded to one the current user's posts
     const filteredComments = comments.filter(comment => comment._post._posted_by == req.userId);
@@ -268,7 +268,7 @@ const getOverviewToday = async (req, res, next) => {
     })
       .sort('-created_date')
       .populate('_group', 'group_name')
-      .populate('_posted_by', '_id first_name profile_pic')
+      .populate('_posted_by', '_id first_name last_name profile_pic')
       .select('_id title type _group _posted_by created_date');
 
     // Filter out the posts belonging to the current user
@@ -307,7 +307,7 @@ const getOverviewWeek = async (req, res, next) => {
     })
       .sort('-created_date')
       .populate({ path: '_post', populate: { path: '_group' } })
-      .populate('_commented_by', 'first_name profile_pic');
+      .populate('_commented_by', 'first_name last_name profile_pic');
 
     // filter the comments that responded to one the current user's posts
     const filteredComments = comments.filter(comment => comment._post._posted_by == req.userId);
