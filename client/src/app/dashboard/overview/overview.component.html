@@ -196,27 +196,16 @@
 
         <div class="media card-tile">
           <div class=" row media-body">
-              <div class="col-md-10">
-                <div class = "box">
-
-                        <div class="box-child">
-                          <div class="avatar-name-container">
-                            <div class="avatar-name-child">
-
-                              <img src="/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar">
-                            </div>
-                            <div class="avatar-name-child">
-                              <p class="overview-item">{{post._posted_by?.first_name}} {{post._posted_by?.last_name}}</p>
-                            </div>
-                          </div>
-
-                        </div>
-                        <div class="box-child overview-item" [innerHTML]="post?.title"></div>
-                        <div class="box-child overview-item small-blue-text" [innerHTML]="post?._group?.group_name"></div>
+                        <div class="col-md-3">
+                              <img src="/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar float-left">
+                       <p class="overview-item">{{post._posted_by?.first_name}} {{post._posted_by?.last_name}}</p>
+                      
+                      </div>
+                        <div class="col-md-5 overview-item" [innerHTML]="post?.title"></div>
+                        <div class="col-md-2 overview-item small-blue-text" [innerHTML]="post?._group?.group_name"></div>
 
 
-                </div>
-              </div>
+              
               <div class="col-md-2">
                 <div class="overview-item small text-muted text-right">{{post.created_date | date:'MMMM d y, h:mm a' }}</div>
               </div>
@@ -239,35 +228,27 @@
       <div *ngIf="comment?._post?.type == 'normal'" class="card-tile">
         <div [routerLink]="['/dashboard/group/', comment._post._group._id, 'post', comment._post._id]" class="media overview-post" (click)="this.markCommentAsRead(comment._id)">
 
-
+         
           <div class=" row media-body">
-
-            <div class="col-md-10">
-              <div class = "box">
-
-                <div class="box-child">
-                  <div class="avatar-name-container">
-                    <div class="avatar-name-child">
-
-                      <img src="/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar">
-                    </div>
-                    <div class="avatar-name-child">
-                      <div class="overview-item">{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}}</div>
-                    </div>
+                <div class="col-md-3">
+                      <img src="/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar float-left">
+                      <p class="overview-item">{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}}</p>
+                    
                   </div>
-
-                </div>
-                <div class="box-child">
+                
+                <div class="col-md-7">
                   <div [innerHTML]="comment?.content" class="overview-item"></div>
                 </div>
-              </div>
-            </div>
+               
+            
 
             <div class="col-md-2">
               <div class="overview-item small text-muted text-right">{{comment.created_date | date:'MMMM d y, h:mm a' }}</div>
             </div>
 
           </div>
+          
+        
 
         </div>
         <div class="row">
@@ -286,26 +267,21 @@
         <div [routerLink]="['/dashboard/group/', comment._post._group._id, 'post', comment._post._id]" class="media" (click)="this.markCommentAsRead(comment._id)">
           <div class=" row media-body">
 
-            <div class="col-md-10">
-              <div class = "box">
+                <div class="col-md-3">
+                 
 
-                <div class="box-child">
-                  <div class="avatar-name-container">
-                    <div class="avatar-name-child">
-
-                      <img src="/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar">
+                      <img src="/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar float-left">
+                 
+                      <p class="overview-item">{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}}</p>
                     </div>
-                    <div class="avatar-name-child">
-                      <div class="overview-item">{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}}</div>
-                    </div>
-                  </div>
+                
 
-                </div>
-                <div class="box-child">
+               
+                <div class="col-md-7">
                   <div [innerHTML]="comment?.content" class="overview-item"></div>
                 </div>
-              </div>
-            </div>
+             
+           
 
             <div class="col-md-2">
               <div class="overview-item small text-muted text-right">{{comment.created_date | date:'MMMM d y, h:mm a' }}</div>
@@ -330,26 +306,25 @@
           <!-- <img src="/uploads/{{post._group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" class="mr-3 feed-avatar"> -->
           <div class=" row media-body">
 
-            <div class="col-md-10">
-              <div class = "box">
+            
+             
 
-                <div class="box-child">
-                  <div class="avatar-name-container">
-                    <div class="avatar-name-child">
+                <div class="col-md-3">
+                
 
-                      <img src="/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar">
-                    </div>
-                    <div class="avatar-name-child">
-                      <div class="overview-item">{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}}</div>
-                    </div>
+                      <img src="/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar float-left">
+                   
+                   
+                      <p class="overview-item">{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}}</p>
+                    
                   </div>
 
-                </div>
-                <div class="box-child">
+                
+                <div class="col-md-7">
                   <div [innerHTML]="comment?.content" class="overview-item"></div>
                 </div>
-              </div>
-            </div>
+              
+           
 
             <div class="col-md-2">
               <div class="overview-item small text-muted text-right">{{comment.created_date | date:'MMMM d y, h:mm a' }}</div>
