@@ -1324,7 +1324,6 @@ export class GroupTasksNewComponent implements OnInit {
     }, (err) => {
       console.log('Error:', err);
     });
-
   }
 
   onTaskDrop(event: CdkDragDrop<any[]>){
