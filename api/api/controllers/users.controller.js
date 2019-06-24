@@ -168,7 +168,7 @@ const getOverview = async (req, res, next) => {
       .populate('task._assigned_to', 'first_name last_name')
       .populate('event._assigned_to', 'first_name last_name')
       .populate('_group', 'group_name group_avatar')
-      .populate('_liked_by', 'first_name last_name');
+      .populate('_liked_by', 'first_name last_name full_name');
 
     // Get the group(s) that the user belongs to
     const { _groups } = await User.findById(userId)
@@ -230,6 +230,7 @@ const getOverviewToday = async (req, res, next) => {
       .populate({ path: '_post', populate: { path: '_group' } })
       .populate('_commented_by', 'first_name last_name profile_pic');
 
+
     // filter the comments that responded to one the current user's posts
     const filteredComments = comments.filter(comment => comment._post._posted_by == req.userId);
 
@@ -250,7 +251,7 @@ const getOverviewToday = async (req, res, next) => {
       }]
     })
       .sort('event.due_to task.due_to -comments.created_date')
-      .populate('_posted_by', 'first_name last_name profile_pic')
+      .populate('_posted_by', 'first_name last_name profile_pic full_name')
       .populate('task._assigned_to', 'first_name last_name')
       .populate('event._assigned_to', 'first_name last_name')
       .populate('_group', 'group_name group_avatar')
@@ -329,7 +330,7 @@ const getOverviewWeek = async (req, res, next) => {
       }]
     })
       .sort('event.due_to task.due_to -comments.created_date')
-      .populate('_posted_by', 'first_name last_name profile_pic')
+      .populate('_posted_by', 'first_name last_name profile_pic full_name')
       .populate('task._assigned_to', 'first_name last_name')
       .populate('event._assigned_to', 'first_name last_name')
       .populate('_group', 'group_name group_avatar')
