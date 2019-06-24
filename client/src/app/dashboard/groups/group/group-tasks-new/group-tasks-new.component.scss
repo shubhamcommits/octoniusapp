@@ -49,6 +49,14 @@
   padding-bottom:20px;
 }
 
+.main-box{
+  flex-wrap: nowrap; 
+  overflow-x: scroll; 
+  overflow-y: scroll; 
+  height:800px; 
+  margin-bottom: 50px;
+}
+
 .cross{
   background: none; 
   border:none;  
@@ -69,6 +77,7 @@
 
 ::-webkit-scrollbar {
   width: 5px;
+  height:5px;
   border-radius: 15px;
 }
 
@@ -76,14 +85,24 @@
   background: #f1f1f1; 
   border-radius: 15px;
   width:5px;
+  height:5px;
 }
  
 ::-webkit-scrollbar-thumb {
   background: rgba(0,0,0,0.5); 
   border-radius: 15px;
   width:5px;
+  height:5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(0,0,0,0.7); 
+}
+
+.cdk-drag-animating, .cdk-drop-list-dragging .cdk-drag {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
 }
