@@ -4,8 +4,6 @@ const { sendErr, sendMail } = require('../../utils');
 const moment = require('moment');
 const fs = require('fs');
 const pandoc = require('node-pandoc');
-const mammoth = require("mammoth");
-
 /*  =======================
  *  -- GROUP CONTROLLERS --
  *  =======================
@@ -180,7 +178,6 @@ const getFiles = async (req, res, next) => {
 const getDocFileForEditorImport = async (req, res, next) => {
   try {
     // Find all posts that has files and belongs to this group
-    var htmlConversion
     const posts = await Post.find({
       $and: [
         // Find normal posts that has comments

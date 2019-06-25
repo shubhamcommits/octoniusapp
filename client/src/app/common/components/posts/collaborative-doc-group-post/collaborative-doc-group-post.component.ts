@@ -169,7 +169,6 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
             var got_author:Boolean = false
             for(let i = 0; i < res['authors'].length; i++){
               if(res['authors'][i]['_user_id'] == this.user_data._id){
-                console.log("herhehrehrheh4")
     // user is already an author pass author information here and start quill
                 got_author = true
                 this.user_document_information = res['authors'][i]
@@ -198,7 +197,6 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
             }
           }else{
         //start quill if there are 0 authors for this doc
-            console.log("mememem111")
               this.initializeQuillEditor()
               this.getPost();
             }
