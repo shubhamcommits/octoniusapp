@@ -1358,6 +1358,7 @@ module.exports = {
   // Main
   get,
   getPrivate,
+  getUserGroups,
   getAllForUser,
   getPublicGroups,
   getUsersPublicGroups,
