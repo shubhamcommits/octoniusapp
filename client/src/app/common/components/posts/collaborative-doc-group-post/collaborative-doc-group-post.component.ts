@@ -134,6 +134,8 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
   user_data: any;
   user_document_information: any;
   document_imported_information: any;
+  switchCheck = 0;
+  dataCounter = 0;
 
   comments = [];
   comment_count = 0;
@@ -162,12 +164,11 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
       //grab user id then call for authors check
       this.documentService.getAuthors(postId)
       .subscribe((res)=>{
-        console.log(res)
+        // console.log(res)
           if(res.hasOwnProperty('authors')){
             var got_author:Boolean = false
             for(let i = 0; i < res['authors'].length; i++){
               if(res['authors'][i]['_user_id'] == this.user_data._id){
-                console.log("herhehrehrheh4")
     // user is already an author pass author information here and start quill
                 got_author = true
                 this.user_document_information = res['authors'][i]
@@ -178,7 +179,6 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
             }
             //else if this is the first init of this document to import document
             if(got_author == false && res['authors'].length == 0){
-              console.log("hererererer1")
               this.groupService.getDocFileForEditorImport(postId)
               .subscribe((res) => {
                 if(res['htmlConversion'] != null && res['htmlConversion'] != ""){
@@ -187,17 +187,16 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
                 this.initializeQuillEditor()
                 this.getPost()
               }, (err) => {
+                console.log("error",err)
               });
             }
             //else if the user is not in authors loop after import doc init check
             if (got_author == false && res['authors'].length > 0){
-              console.log("memememem4")
               this.initializeQuillEditor()
               this.getPost();
             }
           }else{
         //start quill if there are 0 authors for this doc
-            console.log("mememem111")
               this.initializeQuillEditor()
               this.getPost();
             }
@@ -450,7 +449,14 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
          // console.log('[cursors] Initial list of connections received from server:', data.connections);
           reportNewConnections = false;
         }
-      
+        if (this.switchCheck == 3){
+          this.switchCheck = 0
+        }
+        //try to test out if connections
+        if (this.dataCounter != data.connections.length && this.switchCheck == 1){
+          this.switchCheck = 3
+          //console.log(this.dataCounter, data.connections.length, cursors.connections.length)
+          this.dataCounter = data.connections.length
         for (var i = 0; i < data.connections.length; i++) {
           // Set the source if it's still on active connections
           if (data.sourceId == data.connections[i].id)
@@ -494,7 +500,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
             //console.log('[cursors] Connections after new user:', data.connections);
           }
         }
-      
+      }
         // Update connections array
         cursors.connections = data.connections;
         //cursors.connections = removeDuplicates(cursors.connections, 'user_id');

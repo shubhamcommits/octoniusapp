@@ -69,6 +69,11 @@ router.get('/:groupId/docImport',
   authorization.groupAccess,
   groups.getDocFileForEditorImport);
 
+  // Export editor to docx
+router.post('/:groupId/docExport',
+  authorization.groupAccess,
+  groups.serveDocFileForEditorExport);
+
 // - Posts -
 
 // Get ten most recent group posts

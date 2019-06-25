@@ -25,7 +25,7 @@
   background: transparent;
   padding: 0;
   margin:0;
-
+ 
 }
 
 .group-img {
@@ -33,10 +33,8 @@
 }
 
 .material-icons{
-  font-size: 25px;
-  padding-left: 12px;
-  color: white;
-  line-height: 35px;
+  margin-top: 20px;
+  // font-size: 40px;
 }
 .date{
   font-size: 24px;
@@ -45,112 +43,38 @@
   padding: 5px;
 }
 .event-title{
-  color: white;
-  font-weight: 400;
+  padding-top: 0;
+  margin-left: 20px;
 }
 
 .overview-post{
+  border-left:none !important;
 }
-
 .overview-event{
-  background-color: $brand-primary;
-//  border-left:4px solid !important;
+  border-left:4px solid #005FD5 !important;
 }
 .overview-task{
-//  border-left:4px solid !important;
-}
-
-.text-white{
-  color: white;
-  //line-height: 35px;
-}
-
-.text-muted{
-  //line-height: 35px;
+  border-left:4px solid $pink !important;
 }
 
 .card-tile{
   padding: 0;
-  margin: 0px 2px 0px 2px;
+  margin: 2px;
   .media-body{
     padding: 10px;
   }
-  &:hover{
-      //box-shadow: $card-shadow !important;
+  &:hover{  
+      box-shadow: $card-shadow !important;
       background: #F1F1F3;
     }
 
     p{
       font-size: 14px !important;
-      color: #9B9B9B;
     }
+  
 }
-
-.card-tile-event{
-  border-radius: 4px 4px 4px 4px;
-  margin: 2px;
-  .media-body{
-    padding: 10px;
-  }
-  p{
-    font-size: 14px !important;
-  }
-}
-
 .title-overview{
   font-size: 16px;
   font-weight: 700 !important;
   margin:15px 0;
-}
-
-.box{
-  display: flex;
-  height: 35px;
-  flex-direction: row;
-}
-
-.box-child{
- margin-right: 15px;
-}
-
-.feed-avatar{ //avatar image for in-feed display
-  width: 30px;
-  height: 30px;
-  object-fit: cover;
-  border-radius: 50%;
-  margin:5px 10px;
-}
-
-.calendar-glyph{
-  width: 130px;
-}
-
-.overview-item{
-  // width: auto;
-  font-size: 16px;
-  line-height: 35px;
-}
-
-// .avatar-name-container{
-//   width: 150px;
-//   display: flex;
-//   flex-direction: row;
-// }
-
-.avtar-name-child{
-  width: 80px;
-  border-right: 10px solid transparent;
-}
-
-.small-blue-text{
-  color: $dark-sky-blue;
-  font-size: 12px !important;
-  font-weight: 700;
-}
-.small{
-  font-size: 12px;
-}
-.mb-2{
-  margin-bottom: 0rem !important;
-  margin-top: 0rem !important;
 }
