@@ -53,8 +53,8 @@
 
                   <div class="col-md-6 overview-item" [innerHTML]="post?.title"></div>
                   <div class="col-md-2 overview-item small-blue-text" [innerHTML]="post?._group?.group_name"></div>
-               
-              
+
+
 
               <div class="col-md-2">
                  <div class="overview-item small text-muted text-right ">Due {{post.task.due_to | date:'MMMM d, y' }}</div>
@@ -80,15 +80,15 @@
                           <i class="material-icons">calendar_today</i>
                         </div>
                         <div class="col-md-6">
-                          
+
                             <div class="event-title">
                               <div [innerHTML]="post?.title | safe: 'html' " class="overview-item"> </div>
                             </div>
-                         
+
                         </div>
                         <div class="col-md-2 overview-item text-white small bold" [innerHTML]="post?._group?.group_name"></div>
-                      
-                  
+
+
                   <div class="col-md-2">
                     <div class="overview-item small text-white text-right">{{post.event.due_to | date:'MMMM d, y - h:mm a' }}</div>
 
@@ -134,8 +134,8 @@
 
               <div class="col-md-6 overview-item" [innerHTML]="post?.title"></div>
               <div class="col-md-2 overview-item small-blue-text" [innerHTML]="post?._group?.group_name"></div>
-           
-          
+
+
 
           <div class="col-md-2">
              <div class="overview-item small text-muted text-right ">Due {{post.task.due_to | date:'MMMM d, y' }}</div>
@@ -162,15 +162,15 @@
                 <i class="material-icons">calendar_today</i>
               </div>
               <div class="col-md-6">
-                
+
                   <div class="event-title">
                     <div [innerHTML]="post?.title | safe: 'html' " class="overview-item"> </div>
                   </div>
-               
+
               </div>
               <div class="col-md-2 overview-item text-white small bold" [innerHTML]="post?._group?.group_name"></div>
-            
-        
+
+
         <div class="col-md-2">
           <div class="overview-item small text-white text-right">{{post.event.due_to | date:'MMMM d, y - h:mm a' }}</div>
 
@@ -199,13 +199,13 @@
                         <div class="col-md-3">
                               <img src="/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar float-left">
                        <p class="overview-item">{{post._posted_by?.first_name}} {{post._posted_by?.last_name}}</p>
-                      
+
                       </div>
                         <div class="col-md-5 overview-item" [innerHTML]="post?.title"></div>
                         <div class="col-md-2 overview-item small-blue-text" [innerHTML]="post?._group?.group_name"></div>
 
 
-              
+
               <div class="col-md-2">
                 <div class="overview-item small text-muted text-right">{{post.created_date | date:'MMMM d y, h:mm a' }}</div>
               </div>
@@ -228,27 +228,26 @@
       <div *ngIf="comment?._post?.type == 'normal'" class="card-tile">
         <div [routerLink]="['/dashboard/group/', comment._post._group._id, 'post', comment._post._id]" class="media overview-post" (click)="this.markCommentAsRead(comment._id)">
 
-         
+
           <div class=" row media-body">
                 <div class="col-md-3">
                       <img src="/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar float-left">
                       <p class="overview-item">{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}}</p>
-                    
                   </div>
-                
+
                 <div class="col-md-7">
                   <div [innerHTML]="comment?.content" class="overview-item"></div>
                 </div>
-               
-            
+
+
 
             <div class="col-md-2">
               <div class="overview-item small text-muted text-right">{{comment.created_date | date:'MMMM d y, h:mm a' }}</div>
             </div>
 
           </div>
-          
-        
+
+
 
         </div>
         <div class="row">
@@ -268,20 +267,18 @@
           <div class=" row media-body">
 
                 <div class="col-md-3">
-                 
+
 
                       <img src="/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar float-left">
-                 
+
                       <p class="overview-item">{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}}</p>
                     </div>
-                
 
-               
                 <div class="col-md-7">
                   <div [innerHTML]="comment?.content" class="overview-item"></div>
                 </div>
-             
-           
+
+
 
             <div class="col-md-2">
               <div class="overview-item small text-muted text-right">{{comment.created_date | date:'MMMM d y, h:mm a' }}</div>
@@ -306,25 +303,25 @@
           <!-- <img src="/uploads/{{post._group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" class="mr-3 feed-avatar"> -->
           <div class=" row media-body">
 
-            
-             
+
+
 
                 <div class="col-md-3">
-                
+
 
                       <img src="/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar float-left">
-                   
-                   
+
+
                       <p class="overview-item">{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}}</p>
-                    
+
                   </div>
 
-                
+
                 <div class="col-md-7">
                   <div [innerHTML]="comment?.content" class="overview-item"></div>
                 </div>
-              
-           
+
+
 
             <div class="col-md-2">
               <div class="overview-item small text-muted text-right">{{comment.created_date | date:'MMMM d y, h:mm a' }}</div>
