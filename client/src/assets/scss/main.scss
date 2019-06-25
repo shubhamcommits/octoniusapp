@@ -321,11 +321,12 @@ h4{
 }
 
 .ql-mention-list-container{
-  z-index: 9999;
-  width: 700px;
+  z-index: 1070;
+  width: 400px;
   border-radius: 6px;
   border: 1px solid $border-color;
   box-shadow: $box-shadow;
+  position: absolute;
   .ql-mention-list-item.selected{
     background: $brand-primary;
     color:#fff !important;
@@ -373,6 +374,7 @@ color:#787878 !important;
 
 .ql-container {
   min-height: 100px !important;
+  overflow: visible !important;
 }
 .ql-video{
   width: 100% ;

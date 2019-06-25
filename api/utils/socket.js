@@ -43,6 +43,11 @@ const init = (server) => {
 
     // -| POSTS NOTIFICATIONS |-
 
+    // Listen to user likes who follows a post
+    socket.on('userLiked', (data) => {
+      console.log('userLiked: ', data);
+    });
+
     // Listen to new post creation
     socket.on('newPost', (data) => {
       notifyRelatedUsers(io, socket, data);
@@ -122,6 +127,22 @@ const notifyRelatedUsers = async (io, socket, data) => {
         //  this way I wouldn't put an await inside a for function
         //  proposal: we might want to change name generateFeed to generateFeedAndEmitToUser
         for (const userId of post._content_mentions) {
+          generateFeed(userId, io);
+        }
+      }
+
+      // If there are followers on post content...
+      if (post._followers && post._followers.length !== 0) {
+        // ...emit notificationsFeed for every follower
+        for (const userId of post._followers) {
+          generateFeed(userId, io);
+        }
+      }
+
+      // If there are followers on post content...
+      if (post._followers && post._followers.length !== 0) {
+        // ...emit notificationsFeed for every follower
+        for (const userId of post._followers) {
           generateFeed(userId, io);
         }
       }
