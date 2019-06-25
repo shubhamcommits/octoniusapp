@@ -84,7 +84,7 @@ export class PostActionsComponent implements OnInit {
           this.post._followers = [];
           this.post._followers = [...this.post._followers, res['user']];
         }
-        console.log(this.post._followers);
+        //console.log(this.post._followers);
 
         this.playAudio();
 

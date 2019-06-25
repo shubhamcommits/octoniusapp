@@ -10,21 +10,21 @@
       <span style="cursor: pointer;" *ngIf="post?.type != 'document'" (click)="loadComments();"><b>{{commentCount || post?.comments.length}}</b> Comments</span>
     </div>
     <div class="col-md-6 text-right">
-                      <span *ngIf="post?.type != 'document'">
+                      <span placement="top" ngbTooltip="Add a comment" *ngIf="post?.type != 'document'">
                         <button class="btn btn-link">
                           <i class="material-icons muted"
                              (click)="togglePostCommentEditor.emit()">mode_comment</i>
                         </button>
                       </span>
 
-      <span>
+      <span placement="top" ngbTooltip="Like Post">
                         <button class="btn btn-link" (click)="OnClickLikePost()">
                           <i class="material-icons muted" *ngIf="!userLikedPost(); else likeif">thumb_up</i>
                           <ng-template #likeif><i class="material-icons active">thumb_up</i></ng-template>
                         </button>
                       </span>
 
-                      <span>
+                      <span placement="top" ngbTooltip="Follow Post">
                         <button class="btn btn-link" (click)="OnClickFollowPost()">
                           <i class="material-icons muted" *ngIf="!userFollowedPost(); else followif">label_important</i>
                           <ng-template #followif><i class="material-icons active">label_important</i></ng-template>
