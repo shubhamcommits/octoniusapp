@@ -5,11 +5,13 @@ pipelines:
     "{sqshdocker}":
     - step:
         name: Deploy to test
+        services:
+          - docker
         deployment: test   # can be test, staging or production.
         script:
           - echo "Deploying to test environment"
           # build the Docker dev image to test
-          - docker build -t octoniusapp/octonius-api -f ./src/Dockerfile.dev ./src
+          - docker build -t octoniusapp/octonius-api -f ./api/Dockerfile.dev ./api
           # run tests
           - docker run octoniusapp/octonius-api yarn test -- --coverage
 
@@ -24,7 +26,7 @@ pipelines:
           - export NGINX_IMAGE_NAME=octoniusapp/octonius-nginx:$BITBUCKET_COMMIT
           # build the Docker image (this will use the Dockerfile in the root of the repo)
           - docker build -t $CLIENT_IMAGE_NAME ./client
-          - docker build -t $API_IMAGE_NAME ./src
+          - docker build -t $API_IMAGE_NAME ./api
           - docker build -t $NGINX_IMAGE_NAME ./nginx
           # authenticate with the Docker Hub registry
           - docker login --username $DOCKER_ID --password $DOCKER_PASSWORD
@@ -33,4 +35,7 @@ pipelines:
           - docker push $API_IMAGE_NAME
           - docker push $NGINX_IMAGE_NAME
 
-
+definitions:
+  services:
+    docker:
+      memory: 3072

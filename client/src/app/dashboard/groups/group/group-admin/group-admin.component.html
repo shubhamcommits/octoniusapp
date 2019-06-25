@@ -1,0 +1,50 @@
+<div class="container">
+  <div class="col-md-12">
+    <div class="card-tile workspace-signupmode">
+      <div class="row">
+        <div class="col-md-9">
+          <h4>Group description</h4>
+        </div>
+      </div>
+
+      <p>{{group?.description}}</p>
+    </div>
+
+
+    <div [hidden]="groupDataService.group?.group_name =='Global'" class="card-tile invite-users">
+
+      <h4>Add new member</h4>
+      <p>You can search for persons inside the organization Workplace and add them to your group.</p>
+      <!--<ngb-alert *ngIf="alert.message" [type]="alert.class" (close)="successMessage = null">{{ alert.message}}</ngb-alert>-->
+
+      <angular2-multiselect [data]="itemList" [(ngModel)]="selectedItems" [settings]="settings" (onSelect)="onItemSelect($event)"
+        (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)">
+        <c-search>
+          <ng-template>
+            <input type="text" (keyup)="onSearch($event)" placeholder="Search Members..." style="border: none;width: 100%; height: 100%;outline: none;"
+            />
+          </ng-template>
+        </c-search>
+        <c-item>
+          <ng-template let-item="item">
+            <label style="color: #333;width: 150px;">{{item.full_name}}</label>
+            <!--  <img [src]="item.flag" style="width: 30px; border: 1px solid #efefef;margin-right: 0px;" /> -->
+            <label>{{item.capital}}</label>
+          </ng-template>
+        </c-item>
+      </angular2-multiselect>
+      <button [disabled]="selectedItems.length == 0" style="margin-top: 10px" (click)="onAddNewMembers()" class="btn btn-primary">Add</button>
+      <hr>
+      <p>If you want to invite someone from outside the organization, send them an invite from the Workplace Settings. </p>
+
+    </div>
+
+    <div [hidden]="groupDataService.group?.group_name =='Global'" class="card-tile">
+      <h4>Delete the group</h4>
+      <p>Please keep in mind that this action is irreversible.</p>
+      <button class="btn btn-danger" (click)="onDelete()">Delete</button>
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,151 @@
+import {Component, HostListener, OnInit} from '@angular/core';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { WorkspaceService } from '../../../shared/services/workspace.service';
+import moment from 'moment';
+import Swal from 'sweetalert2';
+import {environment} from "../../../../environments/environment";
+
+
+@Component({
+  selector: 'app-admin-billing',
+  templateUrl: './admin-billing.component.html',
+  styleUrls: ['./admin-billing.component.scss']
+})
+export class AdminBillingComponent implements OnInit {
+
+  user_data;
+  workspace_information: any = new Object();
+  members_count = 0;
+  admins_count = 0;
+  guests_count = 0;
+  groups_count = 0;
+
+  handler: any;
+  amount = 1000; // equals 10 dollars
+
+  subscription = null;
+
+  failed_payments;
+  success_payments;
+
+  constructor(private ngxService: NgxUiLoaderService, private _workspaceService: WorkspaceService) {
+    this.user_data = JSON.parse(localStorage.getItem('user'));
+  }
+
+  async ngOnInit() {
+    this.ngxService.start(); // start foreground loading with 'default' id
+
+    // Stop the foreground loading after 5s
+    setTimeout(() => {
+      this.ngxService.stop(); // stop foreground loading with 'default' id
+    }, 500);
+    await this.getWorkSpaceDetails();
+
+    this.handler = StripeCheckout.configure({
+      key: environment.pk_stripe,
+      image: 'https://octonius.com/img/octonius-icon.png',
+      currency: 'EUR',
+      locale: 'auto',
+      token: token => {
+        this._workspaceService.createSubscription(token, this.amount)
+          .subscribe( res => {
+            this.subscription = res['subscription'];
+            this.workspace_information = res['workspace'];
+          })
+      }
+    });
+  }
+
+  cancelSubscription() {
+    Swal.fire({
+      title: "Are you sure?",
+      text: `You want to cancel your subscription? You will be able to continue to use the workspace until the end of the current billing cycle. After that, you and the other members will be denied access to the workspace`,
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, I am sure!'
+    }).then(() => {
+      this._workspaceService.cancelSubscription()
+        .subscribe(res => {
+          this.workspace_information = res['workspace'];
+          Swal.fire("Cancellation complete!", "If you would like to resume your subscription," +
+            " you can do so up until the end of the current billing cycle", "success")
+        });
+    });
+
+  }
+
+  handlePayment() {
+    this.handler.open({
+      name: 'Octonius workspace',
+      description: 'Start a monthly subscription',
+      amount: this.amount
+    });
+  }
+
+  // when user redirects or presses the back button
+  @HostListener('window: popstate')
+    onPopstate() {
+    this.handler.close();
+    }
+
+  isWorkspaceOwner() {
+    return this.workspace_information._owner == this.user_data.user_id;
+  }
+
+  async getWorkSpaceDetails() {
+    return new Promise((resolve, reject)=>{
+      this._workspaceService.getWorkspace(this.user_data.workspace)
+      .subscribe((res: any)=>{
+        this.workspace_information = res['workspace'];
+        this.failed_payments = res.workspace.billing.failed_payments;
+        this.success_payments = res.workspace.billing.success_payments;
+        this.members_count = res['workspace']['members'].length;
+        this.guests_count = res['workspace']['invited_users'].length;
+        for(let i = 0; i < this.members_count; i ++){
+          if(res['workspace']['members'][i].role == 'admin'){
+            this.admins_count ++;
+          }
+        }
+
+        // if our subscription is still valid
+        if (!!res['workspace'].billing && res['workspace'].billing.current_period_end > moment().unix()) {
+          this._workspaceService.getSubscription()
+            .subscribe((res2) => {
+              this.subscription = res2['subscription'];
+            });
+        } else {
+          this.subscription = null;
+          resolve();
+        }
+      },(err)=>{
+        console.log('Error found while getting the workspace information', err);
+        reject(err);
+      })
+    })
+  }
+
+  renewSubscription() {
+    this._workspaceService.renewSubscription()
+      .subscribe( res => {
+        // display the new subscription information
+        this.subscription = res['subscription'];
+        // update the workspace data
+        this.workspace_information = res['workspace'];
+        // The failed payments should be empty after this
+        this.failed_payments = this.workspace_information.billing.failed_payments;
+      });
+  }
+
+  resumeSubscription() {
+    this._workspaceService.resumeSubscription()
+      .subscribe((res) => {
+        this.workspace_information.billing.scheduled_cancellation = false;
+        Swal.fire("Good Job!", "You successfully resumed your subscription!", "success")
+      });
+  }
+
+
+
+}

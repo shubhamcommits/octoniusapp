@@ -1,7 +1,27 @@
+# Node.js packages
 node_modules/
+# MongoDB development database
 data/
-uploads/
-vim_sessions/
-.idea/
-*.vim
+
+/api/yarn.lock
+/client/yarn.lock
+/api/development.config.jsnode
+**/api/package-lock.json
+**/client/package-lock.json
+
 package-lock.json
+
+**/client/yarn.lock
+**/api/yarn.lock
+
+public/
+
+# Octonius uploaded files on development
+uploads/
+
+# Code editor related files and dirs
+.idea/
+.vscode/
+*.vim
+
+stack-deploy-octonius.yml

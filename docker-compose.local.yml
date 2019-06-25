@@ -1,0 +1,70 @@
+version: '3.3'
+
+services:
+
+  mongodb:
+    image: 'mongo:latest'
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - data_db:/data/db
+  
+  redis:
+    image: 'redis:latest'
+    restart: always
+  
+  api:
+    restart: always
+    image: 'octoniusapp/octonius:api'
+    volumes:
+      #- /app/node_modules # Avoid overwriting container's node_modules folder
+      #- ${PWD}/api:/app # mount server folder inside container's app folder
+       - data_uploads:/app/uploads # mount uploads folder inside container's app folder
+    environment:
+      - PORT=3000
+      - dbURL=mongodb://mongodb:27017/octonius
+      - JWT_KEY=asfsaf12safas23fsafa12sf
+      - SENDGRID_KEY=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
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - SK_STRIPE=sk_test_dvebbZQPA4Vk8kKZaEuN32sD
+      - stripe_plan=plan_EK1uRUJLJcDS6e
+      - WEBHOOK_PS_SECRET=whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn
+    depends_on:
+      - mongodb
+      - redis
+  
+  client:
+    image: 'octoniusapp/octonius:client'
+    #volumes:
+    #  - /app/node_modules # Avoid overwriting container's node_modules folder
+    #  - ${PWD}/client:/app # mount client folder inside container's app folder
+    depends_on:
+      - api
+  
+  nginx:
+    restart: always
+    image: 'octoniusapp/octonius:nginx'
+    ports:
+      - 3000:80
+    depends_on:
+      - api
+      - client
+
+volumes:
+
+  data_db:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/db
+      o: bind
+
+  data_uploads:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/uploads
+      o: bind
+

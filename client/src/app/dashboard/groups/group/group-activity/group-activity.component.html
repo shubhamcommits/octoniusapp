@@ -1,0 +1,100 @@
+<div class="row main-actvity">
+  <div class="col-md-4">
+    <div class="row sidecontent">
+      <div class="card sideinnercard">
+        <div *ngIf="!isItMyWorkplace; else descrPersWorkplace" class="card-block">
+
+          <h6 class="card-title">Group Info </h6>
+          <hr />
+          <p class="card-text">{{groupDataService.group?._admins?.length + groupDataService.group?._members?.length}}
+            Members</p>
+          <p class="card-text">{{groupDataService.group?.description}}</p>
+
+        </div>
+        <ng-template #descrPersWorkplace>
+          <div class="card-block">
+
+            <h6 class="card-title">Personal workplace</h6>
+            <hr />
+            <p class="card-text">This is your personal space. Everything you create here is private.</p>
+          </div>
+        </ng-template>
+      </div>
+
+      <group-activity-filters [posts]="posts" [group]="group" (sendFilteredPosts)="filterPosts($event)"
+        (loadGroupPosts)="loadGroupPosts()" style="width: 100%;"></group-activity-filters>
+
+      <group-activity-progress *ngIf="group" [group]="group" [isItMyWorkplace]="isItMyWorkplace" [user]="user">
+      </group-activity-progress>
+    </div>
+  </div>
+
+  <div class="col-md-8">
+    <!-- news badge-->
+    <div class="feed-new-update-pill" style="display:block" *ngIf="this.show_new_posts_badge == 1; else newsbadge">
+      <div class="inner-news">
+        <button type="button" class="btn btn-primary news-badge"
+          (click)="this.loadGroupPosts();  this.scrollToTop('#top-card');">
+          <i class="material-icons">arrow_upward</i> New posts <span class="badge badge-light"></span>
+        </button>
+      </div>
+
+    </div>
+    <ng-template #newsbadge></ng-template>
+    <!-- news badge-->
+
+
+    <postbox *ngIf="modules" [modules]="modules" [modulesLoaded]="modulesLoaded" [isItMyWorkplace]="isItMyWorkplace"
+      [user]="user" [group]="group" [socket]="socket" [allMembersId]="allMembersId" [user_data]="user_data"
+      (newPost)="addNewPostToPosts($event)">
+    </postbox>
+
+
+    <div #searchResults class="search-results" infiniteScroll [infiniteScrollDistance]="1" [immediateCheck]="true"
+      (scrolled)="onScroll($event, searchResults)">
+      <div *ngIf="posts.length == 0">
+        <ng-template *ngIf="isLoading$ | async; else blankScreen">
+        </ng-template>
+        <ng-template #blankScreen>
+            <img src='../../../assets/images/overview-emptystate.svg' style=" margin: 0 auto; display:block; width: 600px">
+        </ng-template>
+
+      </div>
+      <div *ngFor="let post of posts; let i = index;">
+        <ul class="list-group ">
+
+          <!-- Normal post -->
+          <normal-group-post *ngIf="post?.type === 'normal'" [post]="post" [user]="user" [modules]="modules"
+            [user_data]="user_data" [allMembersId]="allMembersId" [group]="group" [socket]="socket" [preview]="true"
+            (deletePost)="onDeletePost($event)" ng-repeat="post in posts">
+          </normal-group-post>
+
+          <!-- task post -->
+          <task-group-post *ngIf="post?.type === 'task'" [post]="post" [user]="user" [isItMyWorkplace]="isItMyWorkplace"
+            [modules]="modules" [user_data]="user_data" [allMembersId]="allMembersId" [group]="group" [socket]="socket" [preview]="true"
+            (deletePost)="onDeletePost($event)" ng-repeat="post in posts">
+          </task-group-post>
+
+
+          <!--EVENT post-->
+          <event-group-post *ngIf="post?.type === 'event'" [post]="post" [user]="user"
+            [isItMyWorkplace]="isItMyWorkplace" [modules]="modules" [user_data]="user_data"
+            [allMembersId]="allMembersId" [group]="group" [socket]="socket" [preview]="true" (deletePost)="onDeletePost($event)"
+            ng-repeat="post in posts">
+          </event-group-post>
+
+          <!--REAL TIME DOCUMENT Post-->
+          <app-collab-doc-post *ngIf="post?.type === 'document'" [post]="post" [user]="user" [modules]="modules"
+          [user_data]="user_data"
+          [allMembersId]="allMembersId" [group]="group" [socket]="socket" (deletePost)="onDeletePost($event)"
+          ng-repeat="post in posts">
+          </app-collab-doc-post>
+        </ul>
+
+      </div>
+
+    </div>
+    <div *ngIf="isLoading$ | async">
+    </div>
+  </div>
+</div>

@@ -1,0 +1,60 @@
+<!-- CARD FOOTER: we should turn this into reusable component -->
+
+<div class="card-footer action-post innercard clearfix">
+  <hr>
+  <div class="row ">
+    <div class="col-md-6 ">
+                      <span [ngbPopover]="likepopcontent"
+                            triggers="mouseenter:mouseleave"><b>{{post?._liked_by.length}}</b>
+                        Likes </span>
+      <span style="cursor: pointer;" *ngIf="post?.type != 'document'" (click)="loadComments();"><b>{{commentCount || post?.comments.length}}</b> Comments</span>
+    </div>
+    <div class="col-md-6 text-right">
+                      <span placement="top" ngbTooltip="Add a comment" *ngIf="post?.type != 'document'">
+                        <button class="btn btn-link">
+                          <i class="material-icons muted"
+                             (click)="togglePostCommentEditor.emit()">mode_comment</i>
+                        </button>
+                      </span>
+
+      <span placement="top" ngbTooltip="Like Post">
+                        <button class="btn btn-link" (click)="OnClickLikePost()">
+                          <i class="material-icons muted" *ngIf="!userLikedPost(); else likeif">thumb_up</i>
+                          <ng-template #likeif><i class="material-icons active">thumb_up</i></ng-template>
+                        </button>
+                      </span>
+
+                      <span placement="top" ngbTooltip="Follow Post">
+                        <button class="btn btn-link" (click)="OnClickFollowPost()">
+                          <i class="material-icons muted" *ngIf="!userFollowedPost(); else followif">label_important</i>
+                          <ng-template #followif><i class="material-icons active">label_important</i></ng-template>
+                        </button>
+                      </span>
+
+      <span>
+                        <div ngbDropdown (openChange)="toggled($event)" #postActionsDrop="ngbDropdown" class="d-inline-block">
+                          <i class="material-icons action" ngbDropdownToggle>more_horiz</i>
+                          <div ngbDropdownMenu aria-labelledby="postActionsDrop">
+                            <button *ngIf="post?.type != 'document'" class="dropdown-item" [routerLink]="['/dashboard', 'group', post?._group, 'post', post?._id]" > View</button>
+                            <button *ngIf="post?.type != 'document' &&(post?._posted_by?._id == user._id || user?.role === 'owner' || user?.role === 'admin')" class="dropdown-item" (click)="editPost.emit();"> Edit</button>
+                            <button *ngIf="post?.type == 'document'" class="dropdown-item" [routerLink]="['/dashboard', 'group', post?._group, 'document', post?._id]"> Edit</button>
+                            <button  *ngIf="post?._posted_by?._id == user._id || user?.role === 'owner' || user?.role === 'admin'"class="dropdown-item" (click)="deletePost.emit()"> Delete</button>
+                            <button  class="dropdown-item" (click)="copyToClipboard(post?._id)"> Copy Link</button> 
+
+                            
+                          </div>
+                        </div>
+                        <ng-template #editpostif>
+                        </ng-template>
+                      </span>
+    </div>
+  </div>
+
+  <ng-template #likepopcontent>
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let liked_member of post._liked_by;">{{liked_member.first_name}}</li>
+    </ul>
+  </ng-template>
+</div>
+
+<!-- END CARD FOOTER and footer component-->
