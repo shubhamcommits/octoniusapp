@@ -686,6 +686,7 @@ const getTasksDone = async (req, res, next) => {
 /***
  * Jessie Jia Edit starts
  */
+
 const getTotalNumTasks = async (req, res, next) => {
   try {
     const {
@@ -695,19 +696,20 @@ const getTotalNumTasks = async (req, res, next) => {
       }
     } = req;
 
+    const today = moment().local().format('YYYY-MM-DD');
+    const todayPlus7Days = moment().local().add(7, 'days').format('YYYY-MM-DD');
+
+
     const posts = await Post.find({
-      type: 'task',
-      _group: groupId
-    })
-      .sort('-task.due_to')
-      .populate('_group', 'group_name')
-      .populate('_posted_by', 'first_name last_name profile_pic')
-      .populate('task._assigned_to', 'first_name last_name profile_pic')
-      .populate('_liked_by', 'first_name')
-      .lean();
+      $and: [
+        { type: 'task' },
+        { _group: groupId },
+        { 'task.due_to': { $gte: today, $lt: todayPlus7Days } }
+      ]
+    });
 
     return res.status(200).json({
-      message: `Found ${posts.length} pending tasks.`,
+      message: `Found ${posts.length} total tasks.`,
       numTasks: posts.length
     });
   } catch (err) {
@@ -715,6 +717,99 @@ const getTotalNumTasks = async (req, res, next) => {
   }
 };
 
+
+const getNumTodoTasks = async (req, res, next) => {
+  try {
+    const {
+      userId,
+      params: {
+        groupId
+      }
+    } = req;
+
+    const today = moment().local().format('YYYY-MM-DD');
+    const todayPlus7Days = moment().local().add(7, 'days').format('YYYY-MM-DD');
+
+    const posts = await Post.find({
+      $and: [
+        { type: 'task' },
+        { _group: groupId },
+        { 'task.status': 'to do'},
+        { 'task.due_to': { $gte: today, $lt: todayPlus7Days } }
+      ]
+    });
+
+    return res.status(200).json({
+      message: `Found ${posts.length} todo tasks.`,
+      numTasks: posts.length
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+const getNumInProgressTasks = async (req, res, next) => {
+  try {
+    const {
+      userId,
+      params: {
+        groupId
+      }
+    } = req;
+
+    const today = moment().local().format('YYYY-MM-DD');
+    const todayPlus7Days = moment().local().add(7, 'days').format('YYYY-MM-DD');
+
+    const posts = await Post.find({
+      $and: [
+        { type: 'task' },
+        { _group: groupId },
+        { 'task.status': 'in progress'},
+        { 'task.due_to': { $gte: today, $lt: todayPlus7Days } }
+      ]
+    });
+
+    return res.status(200).json({
+      message: `Found ${posts.length} in progress tasks.`,
+      numTasks: posts.length
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+const getNumDoneTasks = async (req, res, next) => {
+  try {
+    const {
+      userId,
+      params: {
+        groupId
+      }
+    } = req;
+
+    const today = moment().local().format('YYYY-MM-DD');
+    const todayPlus7Days = moment().local().add(7, 'days').format('YYYY-MM-DD');
+
+    const posts = await Post.find({
+      $and: [
+        { type: 'task' },
+        { _group: groupId },
+        {$or: [
+            { 'task.status': 'done'},
+            { 'task.status': 'completed'},
+          ]},
+        { 'task.due_to': { $gte: today, $lt: todayPlus7Days } }
+      ]
+    });
+
+    return res.status(200).json({
+      message: `Found ${posts.length} done tasks.`,
+      numTasks: posts.length
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
 /***
  * Jessie Jia Edit ends
  */
@@ -747,5 +842,9 @@ module.exports = {
   // Tasks
   getNextTasksDone,
   getTasks,
-  getTasksDone
+  getTasksDone,
+  getTotalNumTasks,
+  getNumTodoTasks,
+  getNumInProgressTasks,
+  getNumDoneTasks,
 };
