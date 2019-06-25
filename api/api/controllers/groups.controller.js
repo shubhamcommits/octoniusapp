@@ -55,6 +55,27 @@ const getPrivate = async (req, res) => {
   }
 };
 
+const getUserGroups = async (req, res) => {
+  const { userId } = req;
+
+  try {
+    const groups = await Group.find({
+      $or: [
+        { _members: { $elemMatch: { $eq: userId } } },
+        { _admin: { $elemMatch: { $eq: userId } } }
+      ]
+    }).select('group_name');
+
+    return res.status(200).json({
+      groups: groups
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+
+
 /**
  * Fetches all groups associated with the current user in a given
  * workspace.
@@ -823,6 +844,7 @@ module.exports = {
   // Main
   get,
   getPrivate,
+  getUserGroups,
   getAllForUser,
   getPublicGroups,
   addNewMember,

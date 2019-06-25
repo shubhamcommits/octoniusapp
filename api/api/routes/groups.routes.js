@@ -46,6 +46,10 @@ router.get('/user/:workspace', groups.getAllForUser);
 // Get all public groups
 router.get('/public/all', groups.getPublicGroups);
 
+// Get name id of groups of user
+router.get('/all/pulse', groups.getUserGroups);
+
+
 // Add a new member into a public group
 router.post('/public/:groupId', groups.addNewMember);
 
