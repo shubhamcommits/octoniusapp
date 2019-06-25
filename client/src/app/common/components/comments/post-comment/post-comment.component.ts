@@ -53,6 +53,7 @@ export class PostCommentComponent implements OnInit {
       .subscribe((res) => {
         // add the current user to the people who liked the comment
         this.comment._liked_by.push(res['user']);
+        this.socket.emit('userLiked', this.comment);
       });
   }
 

@@ -18,7 +18,7 @@ export class GoogleCloudService {
 
   onPickerApiLoad() {
     this.pickerApiLoaded = true;
-    console.log('Picker Loaded');
+    //console.log('Picker Loaded');
   }
 
   loadGoogleDrivePicker() {
@@ -37,7 +37,7 @@ export class GoogleCloudService {
 
         addToCalendar.onload = () => {
           if (addToCalendar.status === 200) {
-            console.log('Added to Google Calendar', JSON.parse(addToCalendar.responseText));
+            //console.log('Added to Google Calendar', JSON.parse(addToCalendar.responseText));
             resolve();
           }
           else {
@@ -66,7 +66,7 @@ export class GoogleCloudService {
 
         getCalendarEvents.onload = () => {
           if (getCalendarEvents.status === 200) {
-            console.log('Calendar Events', JSON.parse(getCalendarEvents.responseText));
+           // console.log('Calendar Events', JSON.parse(getCalendarEvents.responseText));
             resolve();
           }
           else {
@@ -95,7 +95,7 @@ export class GoogleCloudService {
       fetchToken.onload = () => {
         if (fetchToken.status === 200) {
           this.google_token = JSON.parse(fetchToken.responseText).token;
-          console.log('Google Refresh Token', this.google_token);
+          //console.log('Google Refresh Token', this.google_token);
           if (this.google_token != null) {
         
             const getRefreshToken = new XMLHttpRequest();
@@ -111,7 +111,7 @@ export class GoogleCloudService {
     
             getRefreshToken.onload = () => {
               if (getRefreshToken.status === 200) {
-                console.log(JSON.parse(getRefreshToken.responseText));
+                //console.log(JSON.parse(getRefreshToken.responseText));
                 const google_cloud_token = {
                   'google_token_data': JSON.parse(getRefreshToken.responseText)
                 };
@@ -124,7 +124,7 @@ export class GoogleCloudService {
     
                 getUserAPI.onload = () => {
                   if (getUserAPI.status === 200) {
-                    console.log(JSON.parse(getUserAPI.responseText));
+                   // console.log(JSON.parse(getUserAPI.responseText));
                     const google_cloud = {
                       'user_data': JSON.parse(getUserAPI.responseText),
                       'refresh_token': this.google_token
