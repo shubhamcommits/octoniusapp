@@ -212,13 +212,12 @@ const getOverviewToday = async (req, res, next) => {
     const { userId } = req;
 
     // Generate the actual time
-    const todayForEvent = moment().startOf('day').format();
+    const todayForEvent = moment().local().startOf('day').format();
 
-    const today = moment().format('YYYY-MM-DD');
-
+    const today = moment().local().format('YYYY-MM-DD');
     // Generate the +24h time
-    const todayPlus24ForEvent = moment().endOf('day').format();
-    const tomorrow = moment().add(1, 'days').format('YYYY-MM-DD');
+    const todayPlus24ForEvent = moment().local().endOf('day').format();
+    const tomorrow = moment().local().add(1,'days').format('YYYY-MM-DD');
 
     // find the comments that received a response today (to be replaced later)
     const comments = await Comment.find({
@@ -239,13 +238,13 @@ const getOverviewToday = async (req, res, next) => {
         $and: [
           // Find tasks due to today
           { 'task._assigned_to': userId },
-          { 'task.due_to': { $in: [today, tomorrow] } }
+          { 'task.due_to': { $gte: today, $lt: tomorrow } }
         ]
       }, {
         $and: [
           // Find events due to today
           { 'event._assigned_to': userId },
-          { 'event.due_to': { $gte: todayForEvent, $lt: todayPlus24ForEvent } }
+          { 'event.due_to': { $gte: todayForEvent, $lte: todayPlus24ForEvent } }
         ]
       }]
     })
@@ -275,6 +274,9 @@ const getOverviewToday = async (req, res, next) => {
     recentPosts = recentPosts.filter(post => post._posted_by._id.toString() !== userId);
 
     return res.status(200).json({
+      today: today,
+      tomorrow: tomorrow,
+      todayForEvent: todayForEvent,
       message: `Found ${posts.length} posts!`,
       posts,
       recentPosts,
@@ -291,13 +293,13 @@ const getOverviewWeek = async (req, res, next) => {
     const { userId } = req;
 
     // Generate the actual time
-    const todayForEvent = moment().add(1, 'days').startOf('day').format();
+    const todayForEvent = moment().local().add(1, 'days').startOf('day').format();
 
-    const today = moment().add(1,'days').format('YYYY-MM-DD');
+    const today = moment().local().add(1,'days').format('YYYY-MM-DD');
 
     // Generate the +24h time
-    const todayPlus7DaysForEvent = moment().add(7, 'days').endOf('day').format();
-    const todayPlus7Days = moment().add(7, 'days').format('YYYY-MM-DD');
+    const todayPlus7DaysForEvent = moment().local().add(7, 'days').endOf('day').format();
+    const todayPlus7Days = moment().local().add(7, 'days').format('YYYY-MM-DD');
 
     // find the comments that received a response today (to be replaced later)
     const comments = await Comment.find({
