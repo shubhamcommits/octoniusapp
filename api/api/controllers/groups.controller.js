@@ -294,7 +294,7 @@ const getCalendarPosts = async (req, res, next) => {
     // we want to find posts between the start and end of given month
     const startOfMonthEvent = date.startOf('month').toDate();
     const endOfMonthEvent = date.endOf('month').toDate();
-    // need to convert format to match date from frontend 
+    // need to convert format to match date from frontend
     const convertedStartMonthEvent = moment(startOfMonthEvent).utc().format('YYYY-MM-DDTHH:mm:ss');
     const convertedEndOfMonthEvent = moment(endOfMonthEvent).utc().format('YYYY-MM-DDTHH:mm:ss');
 
@@ -479,7 +479,7 @@ const filterPosts = async (query, params) => {
       .populate('_liked_by', '_id first_name last_name')
       .populate('_followers', '_id first_name last_name')
       .lean();
-//start of tags query 
+//start of tags query
   //single fetched query for tags
   }else if (query.user === 'false' && query.tags === 'true' && !!query.tags_value && filters.length === 1) {
     posts = await Post.find({
@@ -682,6 +682,42 @@ const getTasksDone = async (req, res, next) => {
     return sendErr(res, err);
   }
 };
+
+/***
+ * Jessie Jia Edit starts
+ */
+const getTotalNumTasks = async (req, res, next) => {
+  try {
+    const {
+      userId,
+      params: {
+        groupId
+      }
+    } = req;
+
+    const posts = await Post.find({
+      type: 'task',
+      _group: groupId
+    })
+      .sort('-task.due_to')
+      .populate('_group', 'group_name')
+      .populate('_posted_by', 'first_name last_name profile_pic')
+      .populate('task._assigned_to', 'first_name last_name profile_pic')
+      .populate('_liked_by', 'first_name')
+      .lean();
+
+    return res.status(200).json({
+      message: `Found ${posts.length} pending tasks.`,
+      numTasks: posts.length
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+/***
+ * Jessie Jia Edit ends
+ */
 
 /*  =============
  *  -- EXPORTS --
