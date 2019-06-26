@@ -8,7 +8,7 @@
 </div>
 
 <div class = "row main-box" cdkDropList [cdkDropListData]="taskList" (cdkDropListDropped)="onTrackDrop($event)" cdkDropListOrientation="horizontal">
-<div *ngFor="let column of taskList; let i = index;" class = "col-md-4" >
+<div *ngFor="let column of taskList; let i = index;" class = "col-md-4" [style.backgroundColor] = "changeBg">
   <div class = "card-main">
       <div class="kanbanheader" [style.backgroundColor] = "bgColor[i%bgColor.length]" cdkDragHandle >
           {{ column.title }}
@@ -27,7 +27,7 @@
         <div *ngIf="!(isLoading$ | async)">
           <div *ngIf="column.tasks.length > 0; else noToDoTasks;" cdkDropList [cdkDropListData]="column.tasks"
             (cdkDropListDropped)="onTaskDrop($event)" [id]="column.id" [cdkDropListConnectedTo]="taskIds">
-            <div *ngFor="let post of column.tasks" cdkDrag>
+            <div *ngFor="let post of column.tasks" cdkDrag (cdkDragStarted)="entered($event)" (CdkDragEnd)="exited($event)">
               <div class="card">  
                 <div class="drag-block">
                     <div style="height:10px;width:100%;"></div>

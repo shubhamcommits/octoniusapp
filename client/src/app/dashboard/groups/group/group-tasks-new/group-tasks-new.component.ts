@@ -16,6 +16,7 @@ import Swal from 'sweetalert2';
 import {Subject} from "rxjs/Rx";
 import {SearchService} from "../../../../shared/services/search.service";
 
+
 import 'quill-mention';
 
 import * as Quill from 'quill';
@@ -26,7 +27,7 @@ declare var gapi: any;
 declare var google: any;
 import { saveAs } from 'file-saver';
 import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants';
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray, transferArrayItem, CdkDragExit, CdkDragEnter, CdkDragStart } from '@angular/cdk/drag-drop';
 import { isThisMonth, isThisQuarter } from 'date-fns';
 
 @Component({
@@ -1331,18 +1332,29 @@ export class GroupTasksNewComponent implements OnInit {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     }else{
       var oldCol = event.previousContainer.data[event.previousIndex]['task']['status'];
-      var newCol = event.container.data[event.currentIndex]['task']['status'];
       var postId = event.previousContainer.data[event.previousIndex]['_id'];
+      var newCol = event.container.data[event.currentIndex]['task']['status'];
       transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
       console.log(postId);
       console.log(oldCol);
       console.log(newCol);
       this.updateTaskColumn(postId, oldCol, newCol);
-    }
+    } 
+    this.changeBg = '#000'; 
+    console.log(this.changeBg);
   }
 
   onTrackDrop(event: CdkDragDrop<any[]>) {
     moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    this.changeBg = '#000'; 
+    console.log(this.changeBg);
   }
 
-}
+  changeBg = 'none';
+
+  entered(event: CdkDragStart<any[]>){  
+    this.changeBg = '#fff'; 
+    console.log(this.changeBg);
+  } 
+
+} 
