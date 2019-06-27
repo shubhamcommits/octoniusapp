@@ -62,7 +62,7 @@ const getUserGroups = async (req, res) => {
     const groups = await Group.find({
       $or: [
         { _members: { $elemMatch: { $eq: userId } } },
-        { _admin: { $elemMatch: { $eq: userId } } }
+        { _admins: { $elemMatch: { $eq: userId } } }
       ]
     }).select('group_name');
 
