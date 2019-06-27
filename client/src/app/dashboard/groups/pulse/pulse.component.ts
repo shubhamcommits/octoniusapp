@@ -27,10 +27,10 @@ export class PulseComponent implements OnInit {
   workspace: Workspace;
   user_data;
   allGroups;
-  pulseTotalTasks = [];
-  pulseTodoTasks = [];
-  pulseInProgressTasks = [];
-  pulseDoneTasks = [];
+  pulseTotalTasks = {};
+  pulseTodoTasks = {};
+  pulseInProgressTasks = {};
+  pulseDoneTasks = {};
 
   constructor(private _workspaceService: WorkspaceService,
     private _router: Router,
@@ -86,7 +86,7 @@ export class PulseComponent implements OnInit {
         for (let i = 0; i < this.allGroups.length; i++) {
           this.groupService.getPulseTotalNumTasks(this.allGroups[i]._id)
           .subscribe((res) => {
-            this.pulseTotalTasks.push(res['numTasks']);
+            this.pulseTotalTasks[this.allGroups[i]._id] = (res['numTasks']);
             console.log('response in this.pulseTotalTasks:', this.pulseTotalTasks);
             resolve();
           }, (err) => {
@@ -101,7 +101,7 @@ export class PulseComponent implements OnInit {
         for (let i = 0; i < this.allGroups.length; i++) {
           this.groupService.getPulseNumTodoTasks(this.allGroups[i]._id)
           .subscribe((res) => {
-            this.pulseTodoTasks.push(res['numTasks']);
+            this.pulseTodoTasks[this.allGroups[i]._id]=(res['numTasks']);
             console.log('response in this.pulseTodoTasks:', this.pulseTodoTasks);
             resolve();
           }, (err) => {
@@ -116,7 +116,7 @@ export class PulseComponent implements OnInit {
         for (let i = 0; i < this.allGroups.length; i++) {
           this.groupService.getPulseNumInProgressTasks(this.allGroups[i]._id)
           .subscribe((res) => {
-            this.pulseInProgressTasks.push(res['numTasks']);
+            this.pulseInProgressTasks[this.allGroups[i]._id]=(res['numTasks']);
             console.log('response in this.pulseInProgressTasks:', this.pulseInProgressTasks);
             resolve();
           }, (err) => {
@@ -131,7 +131,7 @@ export class PulseComponent implements OnInit {
         for (let i = 0; i < this.allGroups.length; i++) {
           this.groupService.getPulseNumDoneTasks(this.allGroups[i]._id)
           .subscribe((res) => {
-            this.pulseDoneTasks.push(res['numTasks']);
+            this.pulseDoneTasks[this.allGroups[i]._id]=(res['numTasks']);
             console.log('response in this.pulseDoneTasks:', this.pulseDoneTasks);
             resolve();
           }, (err) => {
