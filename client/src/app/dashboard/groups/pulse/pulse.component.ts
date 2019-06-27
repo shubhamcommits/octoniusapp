@@ -54,7 +54,6 @@ export class PulseComponent implements OnInit {
     await this.getPulseNumInProgressTasks();
     await this.getPulseNumDoneTasks();
     this.ngxService.stop();
-    
   }
 
     // loading workspace form server
@@ -63,9 +62,9 @@ export class PulseComponent implements OnInit {
         .subscribe((res) => {
           this.workspace = res.workspace;
           // console.log('workspace: ', res);
-  
+
         }, (err) => {
-            throw err; 
+            throw err;
         });
     }
 
