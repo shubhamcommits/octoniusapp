@@ -5,7 +5,6 @@ data/
 
 /api/yarn.lock
 /client/yarn.lock
-/api/development.config.jsnode
 **/api/package-lock.json
 **/client/package-lock.json
 

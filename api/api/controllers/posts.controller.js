@@ -5,6 +5,8 @@ const {
   Comment, Group, Post, User, Document, DocumentEditHistory, DocumentAuthor
 } = require('../models');
 const { sendMail, sendErr } = require('../../utils');
+const fs = require('fs');
+
 
 /*  ======================
  *  -- POST CONTROLLERS --
@@ -16,7 +18,6 @@ const { sendMail, sendErr } = require('../../utils');
 const add = async (req, res, next) => {
   try {
     const postData = req.body;
-
     let post = await Post.create(postData);
 
     if (post._content_mentions.length !== 0) {
@@ -250,7 +251,44 @@ const remove = async (req, res, next) => {
         return sendErr(res, err);
       }
     });
-
+//delete files, this catches both document insertion as well as multiple file attachment deletes
+   if(post.files.length > 0){
+    //gather source file
+    function deleteFiles(files, callback){
+      var i = files.length;
+      files.forEach(function(filepath){
+        const finalpath =`${process.env.FILE_UPLOAD_FOLDER}${filepath.modified_name}`
+        fs.unlink(finalpath, function(err) {
+          i--;
+          if (err) {
+            callback(err);
+            return;
+          } else if (i <= 0) {
+            callback(null);
+          }
+        });
+      });
+    }
+    deleteFiles(post.files, function(err) {
+      if (err) {return sendErr(res, err)}
+       //all files removed);
+    });
+  }
+//chec/delete document files that were exported
+    const filepath = `${process.env.FILE_UPLOAD_FOLDER}${postId + post._group + 'export' + '.docx'}`;
+    //check if file exists
+    fs.access(filepath, fs.F_OK, error => {
+      //if error there was no file
+      if(!error){
+        //the file was there now unlink it
+        fs.unlink(filepath, (err) => {
+        //handle error when file was not deleted properly
+        if (err) {return sendErr(res, err)}
+        //deleted document
+        })
+      }
+    })
+//
     const postRemoved = await Post.findByIdAndRemove(postId);
 
     return res.status(200).json({

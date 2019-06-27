@@ -55,3 +55,11 @@ div.search-dropdown-menu.dropdown-menu.show{
   top: 0px;
   left: 0px;
 }
+div.collab-dropdown-menu.dropdown-menu.show{
+  top: 35px !important;
+  left: 17px !important;
+}
+.dropdown-toggle::after{
+  display:none;
+}
+

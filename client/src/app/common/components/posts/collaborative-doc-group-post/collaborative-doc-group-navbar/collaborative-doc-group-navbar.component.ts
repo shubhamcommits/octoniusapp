@@ -1,10 +1,14 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { PostService } from '../../../../../shared/services/post.service';
+import { GroupService } from '../../../../../shared/services/group.service';
 import { ActivatedRoute } from '@angular/router';
 import { editor } from '../collaborative-doc-group-post.component';
 import * as jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { DocumentService } from '../../../../../shared/services/document.service';
+import saveAs from 'file-saver'
+import { takeUntil } from "rxjs/operators";
+import { Subject } from "rxjs";
 
 @Component({
   selector: 'app-collaborative-doc-group-navbar',
@@ -16,10 +20,11 @@ export class CollaborativeDocGroupNavbarComponent implements OnInit {
   document_name = 'Untitled';
   document_content = '';
   document: any;
-
+  ngUnsubscribe = new Subject();
   editing_title = false;
 
   postId: any;
+  groupId: any;
 
   @Input() post: any;
 
@@ -33,8 +38,10 @@ export class CollaborativeDocGroupNavbarComponent implements OnInit {
 
   constructor(private postService: PostService,
     private activatedRoute: ActivatedRoute,
-    private documentService: DocumentService) {
+    private documentService: DocumentService,
+    private groupService: GroupService) {
       this.postId = this.activatedRoute.snapshot.paramMap.get('postId');
+      this.groupId = this.activatedRoute.snapshot['_urlSegment']['segments'][2].path;
       //call authors first to set list
       this.documentService.getAuthors(this.postId).subscribe((authorsDataCheck)=>{
         this.authorsList = authorsDataCheck['authors']
@@ -122,7 +129,26 @@ export class CollaborativeDocGroupNavbarComponent implements OnInit {
   Export2Doc(this.document_name);
   
   }
-
+ exportDOCX(){
+    let doc = new DOMParser().parseFromString('<div>'+editor+'</div>', 'text/html');
+    var Export2DocX = (filename = '') => {
+      //get editor html
+      this.groupService.serveDocFileForEditorExport(this.postId,this.groupId, doc.body.innerHTML)
+      .subscribe((res) => {
+        // console.log(res)
+        this.groupService.downloadGroupFile(`${this.groupId}`,res["fileName"])
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((file_toDownload) => {
+          saveAs(file_toDownload, filename);
+        }, (err) => { });
+        
+      }, (err) => {
+        console.log("error",err)
+      });
+    }
+  Export2DocX(this.document_name+'.docx');
+  }
+  
   exportPDF(){
     let doc = new DOMParser().parseFromString('<div>'+editor+'</div>', 'text/html');
 
