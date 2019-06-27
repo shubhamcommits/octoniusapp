@@ -80,15 +80,24 @@ export class OverviewMyTasksComponent implements OnInit {
     .subscribe((res) => {
       this.pendingTasks = res['posts'];
       this.isLoading$.next(false);
-
-      for(var i = 0; i < this.pendingTasks.length; i++){
-        if(this.pendingTasks[i]['task']['status'] == 'to do'){
-          this.pendingToDoTaskCount = 1;
-        }
-       if(this.pendingTasks[i]['task']['status'] == 'in progress'){
-          this.pendingInProgressTaskCount = 1;
-        }
+      const pendingToDoTasks = this.pendingTasks.filter(pendingTask => pendingTask.task.status == 'to do');
+      const pendingInProgressTasks = this.pendingTasks.filter(pendingTask => pendingTask.task.status == 'in progress');
+      for(var task of pendingToDoTasks)
+      {
+       this.pendingToDoTaskCount = 1;
       }
+      for(var task of pendingInProgressTasks)
+      {
+         this.pendingInProgressTaskCount = 1;
+      } 	
+   //   for(var i = 0; i < this.pendingTasks.length; i++){
+   //     if(this.pendingTasks[i]['task']['status'] == 'to do'){
+   //       this.pendingToDoTaskCount = 1;
+   //     }
+   //    if(this.pendingTasks[i]['task']['status'] == 'in progress'){
+   //       this.pendingInProgressTaskCount = 1;
+   //     }
+   //   }
     },
     (err) => {
       console.log('Error Fetching the Pending Tasks Posts', err);
@@ -153,8 +162,21 @@ export class OverviewMyTasksComponent implements OnInit {
     this.postService.complete(post_id,post)
     .subscribe((res) => {
       this.getCompletedTasks();
-      this.getTasks();
+      //this.getTasks();
+      
+      this.pendingToDoTaskCount = 1;
+      this.isLoading$.next(true);
+      for(var i = 0;i < this.pendingTasks.length ; i++)
+      {
+         if(this.pendingTasks[i]['_id'] == post_id)
+           {
+             this.pendingTasks[i]['task']['status'] = 'to do';  
+             console.log("found");
+             break;
+            } 
 
+      }
+      this.isLoading$.next(false);  
     }, (err) => {
 
       console.log('Error:', err);
@@ -170,8 +192,20 @@ export class OverviewMyTasksComponent implements OnInit {
     this.postService.complete(post_id,post)
     .subscribe((res) => {
       this.getCompletedTasks();
-      this.getTasks();
+      //this.getTasks();
+      this.pendingInProgressTaskCount = 1;
+      this.isLoading$.next(true);
+      for(var i = 0;i < this.pendingTasks.length ; i++)
+      {
+         if(this.pendingTasks[i]['_id'] == post_id)
+           {
+             this.pendingTasks[i]['task']['status'] = 'in progress';
+             console.log("found1");
+             break;
+            }
 
+      }
+      this.isLoading$.next(false);  
     }, (err) => {
 
       console.log('Error:', err);
