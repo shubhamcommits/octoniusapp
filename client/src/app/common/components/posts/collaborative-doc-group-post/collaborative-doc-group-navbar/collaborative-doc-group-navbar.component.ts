@@ -146,7 +146,7 @@ export class CollaborativeDocGroupNavbarComponent implements OnInit {
         console.log("error",err)
       });
     }
-  Export2DocX(this.document_name);
+  Export2DocX(this.document_name+'.docx');
   }
   
   exportPDF(){
