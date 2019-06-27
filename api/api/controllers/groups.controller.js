@@ -56,15 +56,88 @@ const getPrivate = async (req, res) => {
 
 const getUserGroups = async (req, res) => {
   const { userId } = req;
-  const { workspace_name } = req.params;
 
   try {
+    const user = await User.findOne({
+      _id: userId
+    }).select('_workspace');
+
+    const workspace = user._workspace;
+
     const groups = await Group.find({
-      group_name:{ $not: {$eq: 'private'}}
-    }).select('group_name');
+      group_name:{ $not: {$eq: 'private'}},
+      _workspace: {$eq: workspace},
+      $or: [
+        { _members: { $elemMatch: { $eq: userId } } },
+        { _admins: { $elemMatch: { $eq: userId } } }
+      ]
+    }).select('_id group_name group_avatar description');
+
+    const today = moment().local().format('YYYY-MM-DD');
+    const todayPlus7Days = moment().local().add(7, 'days').format('YYYY-MM-DD');
+
+    let i;
+    for (i=0; i < groups.length; i++){
+      console.log(groups[i]._id);
+      const totalPosts = await Post.find({
+        $and: [
+          { type: 'task' },
+          { _group: groups[i]._id },
+          { 'task.due_to': { $gte: today, $lt: todayPlus7Days } }
+        ]
+      });
+      console.log(totalPosts.length);
+      const todoPosts = await Post.find({
+        $and: [
+          { type: 'task' },
+          { _group: groups[i]._id },
+          { 'task.status': 'to do'},
+          { 'task.due_to': { $gte: today, $lt: todayPlus7Days } }
+        ]
+      });
+
+      const inProgressPosts = await Post.find({
+        $and: [
+          { type: 'task' },
+          { _group: groups[i]._id },
+          { 'task.status': 'in progress'},
+          { 'task.due_to': { $gte: today, $lt: todayPlus7Days } }
+        ]
+      });
+
+      const donePosts = await Post.find({
+        $and: [
+          { type: 'task' },
+          { _group: groups[i]._id },
+          {$or: [
+              { 'task.status': 'done'},
+              { 'task.status': 'completed'},
+            ]},
+          { 'task.due_to': { $gte: today, $lt: todayPlus7Days } }
+        ]
+      });
+
+      // this.comments = this.comments.map(comment => {
+      //   comment.readMore = true;
+      //   return comment;
+      // });
+      // this.groups = await groups.map(group => {
+        groups[i].totalPosts = totalPosts.length;
+        groups[i].todoPosts = todoPosts.length;
+        groups[i].inProgressPosts = inProgressPosts.length;
+        groups[i].donePosts = donePosts.length;
+        // return group;
+      // });
+
+      // const postsUpdate = await posts.map((post) => {
+      //   post.liked_by = post._liked_by.map(user => user._id);
+      //   return post;
+      // });
+    }
 
     return res.status(200).json({
-      groups: groups
+      groups: groups,
+      b: groups[1].totalPosts
     });
   } catch (err) {
     return sendErr(res, err);
@@ -616,7 +689,7 @@ const getTotalNumTasks = async (req, res, next) => {
       $and: [
         { type: 'task' },
         { _group: groupId },
-        // { 'task.due_to': { $gte: today, $lt: todayPlus7Days } }
+        { 'task.due_to': { $gte: today, $lt: todayPlus7Days } }
       ]
     });
 
@@ -647,7 +720,7 @@ const getNumTodoTasks = async (req, res, next) => {
         { type: 'task' },
         { _group: groupId },
         { 'task.status': 'to do'},
-        // { 'task.due_to': { $gte: today, $lt: todayPlus7Days } }
+        { 'task.due_to': { $gte: today, $lt: todayPlus7Days } }
       ]
     });
 
@@ -677,7 +750,7 @@ const getNumInProgressTasks = async (req, res, next) => {
         { type: 'task' },
         { _group: groupId },
         { 'task.status': 'in progress'},
-        // { 'task.due_to': { $gte: today, $lt: todayPlus7Days } }
+        { 'task.due_to': { $gte: today, $lt: todayPlus7Days } }
       ]
     });
 
@@ -710,7 +783,7 @@ const getNumDoneTasks = async (req, res, next) => {
             { 'task.status': 'done'},
             { 'task.status': 'completed'},
           ]},
-        // { 'task.due_to': { $gte: today, $lt: todayPlus7Days } }
+        { 'task.due_to': { $gte: today, $lt: todayPlus7Days } }
       ]
     });
 
