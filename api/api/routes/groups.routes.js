@@ -46,6 +46,10 @@ router.get('/user/:workspace', groups.getAllForUser);
 // Get all public groups
 router.get('/public/all', groups.getPublicGroups);
 
+// Get name id of groups of user
+router.get('/all/pulse', groups.getUserGroups);
+
+
 // Add a new member into a public group
 router.post('/public/:groupId', groups.addNewMember);
 
@@ -116,5 +120,18 @@ router.get('/:groupId/tasksDone', groups.getTasksDone);
 
 // Get next 20 most recently created group's completed tasks
 router.get('/:groupId/nextTasksDone/:postId', groups.getNextTasksDone);
+
+// Get total # of tasks of the group
+router.get('/:groupId/totalNumTasks', groups.getTotalNumTasks);
+
+// Get # to do tasks
+router.get('/:groupId/numTodoTasks', groups.getNumTodoTasks);
+
+// Get # in progress tasks
+router.get('/:groupId/numInProgressTasks', groups.getNumInProgressTasks);
+
+// Get # done tasks
+router.get('/:groupId/numDoneTasks', groups.getNumDoneTasks);
+
 
 module.exports = router;

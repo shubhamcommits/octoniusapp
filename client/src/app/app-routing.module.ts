@@ -57,11 +57,9 @@ const appRoutes: Routes = [
       { path: 'overview/mytasks', component: OverviewMyTasksComponent},
       { path: 'overview/myworkplace', component: OverviewMyWorkplaceComponent},
       {
-        path: 'groups', component: GroupsComponent,
-        children: [
-          { path: 'pulse', component: PulseComponent}
-        ]
+        path: 'groups', component: GroupsComponent
       },
+      { path: 'pulse', component: PulseComponent},
       {
         path: 'group/:id', component: GroupComponent,
 
