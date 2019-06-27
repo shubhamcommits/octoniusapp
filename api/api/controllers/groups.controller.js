@@ -60,6 +60,7 @@ const getUserGroups = async (req, res) => {
 
   try {
     const groups = await Group.find({
+      group_name:{ $not: {$eq: 'private'}},
       $or: [
         { _members: { $elemMatch: { $eq: userId } } },
         { _admins: { $elemMatch: { $eq: userId } } }
