@@ -65,7 +65,7 @@ const getUserGroups = async (req, res) => {
         { _members: { $elemMatch: { $eq: userId } } },
         { _admins: { $elemMatch: { $eq: userId } } }
       ]
-    }).select('group_name');
+    }).select('group_name group_avatar description');
 
     return res.status(200).json({
       groups: groups
