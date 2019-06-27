@@ -54,6 +54,25 @@ const getPrivate = async (req, res) => {
   }
 };
 
+const getUserGroups = async (req, res) => {
+  const { userId } = req;
+  const { workspace_name } = req.params;
+
+  try {
+    const groups = await Group.find({
+      group_name:{ $not: {$eq: 'private'}}
+    }).select('group_name');
+
+    return res.status(200).json({
+      groups: groups
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+
+
 /**
  * Fetches all groups associated with the current user in a given
  * workspace.
@@ -187,7 +206,7 @@ const getCalendarPosts = async (req, res, next) => {
     // we want to find posts between the start and end of given month
     const startOfMonthEvent = date.startOf('month').toDate();
     const endOfMonthEvent = date.endOf('month').toDate();
-    // need to convert format to match date from frontend 
+    // need to convert format to match date from frontend
     const convertedStartMonthEvent = moment(startOfMonthEvent).utc().format('YYYY-MM-DDTHH:mm:ss');
     const convertedEndOfMonthEvent = moment(endOfMonthEvent).utc().format('YYYY-MM-DDTHH:mm:ss');
 
@@ -264,6 +283,7 @@ const getNextPosts = async (req, res, next) => {
       .populate('task._assigned_to', 'first_name last_name')
       .populate('event._assigned_to', 'first_name last_name')
       .populate('_liked_by', '_id first_name last_name')
+      .populate('_followers', '_id first_name last_name')
       .lean();
 
     const postsUpdate = await posts.map((post) => {
@@ -291,6 +311,7 @@ const getPosts = async (req, res, next) => {
       .populate('task._assigned_to')
       .populate('event._assigned_to')
       .populate('_liked_by', '_id first_name last_name')
+      .populate('_followers', '_id first_name last_name')
       .lean();
 
     const postsUpdate = await posts.map((post) => {
@@ -350,6 +371,7 @@ const filterPosts = async (query, params) => {
       .populate('task._assigned_to')
       .populate('event._assigned_to')
       .populate('_liked_by', '_id first_name last_name')
+      .populate('_followers', '_id first_name last_name')
       .lean();
 //needed tags to be false for clicked user and other tags query
   } else if (query.user === 'true' && !!query.user_value && filters.length > 0 && query.tags === 'false') {
@@ -367,8 +389,9 @@ const filterPosts = async (query, params) => {
       .populate('task._assigned_to')
       .populate('event._assigned_to')
       .populate('_liked_by', '_id first_name last_name')
+      .populate('_followers', '_id first_name last_name')
       .lean();
-//start of tags query 
+//start of tags query
   //single fetched query for tags
   }else if (query.user === 'false' && query.tags === 'true' && !!query.tags_value && filters.length === 1) {
     posts = await Post.find({
@@ -384,6 +407,7 @@ const filterPosts = async (query, params) => {
       .populate('task._assigned_to')
       .populate('event._assigned_to')
       .populate('_liked_by', '_id first_name last_name')
+      .populate('_followers', '_id first_name last_name')
       .lean();
     //checking user to tags search
   } else if (query.user === 'true' && query.tags === 'true' && !!query.user_value && !!query.tags_value && filters.length === 1) {
@@ -401,6 +425,7 @@ const filterPosts = async (query, params) => {
       .populate('task._assigned_to')
       .populate('event._assigned_to')
       .populate('_liked_by', '_id first_name last_name')
+      .populate('_followers', '_id first_name last_name')
       .lean();
     //checking user to tags within all filters
   }else if (query.user === 'true' && query.tags === 'true' && !!query.user_value && !!query.tags_value && filters.length > 1) {
@@ -419,6 +444,7 @@ const filterPosts = async (query, params) => {
       .populate('task._assigned_to')
       .populate('event._assigned_to')
       .populate('_liked_by', '_id first_name last_name')
+      .populate('_followers', '_id first_name last_name')
       .lean();
   } else {
     console.log('test 4');
@@ -435,6 +461,7 @@ const filterPosts = async (query, params) => {
       .populate('task._assigned_to')
       .populate('event._assigned_to')
       .populate('_liked_by', '_id first_name last_name')
+      .populate('_followers', '_id first_name last_name')
       .lean();
 
     console.log('test 5', posts);
@@ -568,6 +595,137 @@ const getTasksDone = async (req, res, next) => {
   }
 };
 
+/***
+ * Jessie Jia Edit starts
+ */
+
+const getTotalNumTasks = async (req, res, next) => {
+  try {
+    const {
+      userId,
+      params: {
+        groupId
+      }
+    } = req;
+
+    const today = moment().local().format('YYYY-MM-DD');
+    const todayPlus7Days = moment().local().add(7, 'days').format('YYYY-MM-DD');
+
+
+    const posts = await Post.find({
+      $and: [
+        { type: 'task' },
+        { _group: groupId },
+        // { 'task.due_to': { $gte: today, $lt: todayPlus7Days } }
+      ]
+    });
+
+    return res.status(200).json({
+      message: `Found ${posts.length} total tasks.`,
+      numTasks: posts.length
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+
+const getNumTodoTasks = async (req, res, next) => {
+  try {
+    const {
+      userId,
+      params: {
+        groupId
+      }
+    } = req;
+
+    const today = moment().local().format('YYYY-MM-DD');
+    const todayPlus7Days = moment().local().add(7, 'days').format('YYYY-MM-DD');
+
+    const posts = await Post.find({
+      $and: [
+        { type: 'task' },
+        { _group: groupId },
+        { 'task.status': 'to do'},
+        // { 'task.due_to': { $gte: today, $lt: todayPlus7Days } }
+      ]
+    });
+
+    return res.status(200).json({
+      message: `Found ${posts.length} todo tasks.`,
+      numTasks: posts.length
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+const getNumInProgressTasks = async (req, res, next) => {
+  try {
+    const {
+      userId,
+      params: {
+        groupId
+      }
+    } = req;
+
+    const today = moment().local().format('YYYY-MM-DD');
+    const todayPlus7Days = moment().local().add(7, 'days').format('YYYY-MM-DD');
+
+    const posts = await Post.find({
+      $and: [
+        { type: 'task' },
+        { _group: groupId },
+        { 'task.status': 'in progress'},
+        // { 'task.due_to': { $gte: today, $lt: todayPlus7Days } }
+      ]
+    });
+
+    return res.status(200).json({
+      message: `Found ${posts.length} in progress tasks.`,
+      numTasks: posts.length
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+const getNumDoneTasks = async (req, res, next) => {
+  try {
+    const {
+      userId,
+      params: {
+        groupId
+      }
+    } = req;
+
+    const today = moment().local().format('YYYY-MM-DD');
+    const todayPlus7Days = moment().local().add(7, 'days').format('YYYY-MM-DD');
+
+    const posts = await Post.find({
+      $and: [
+        { type: 'task' },
+        { _group: groupId },
+        {$or: [
+            { 'task.status': 'done'},
+            { 'task.status': 'completed'},
+          ]},
+        // { 'task.due_to': { $gte: today, $lt: todayPlus7Days } }
+      ]
+    });
+
+    return res.status(200).json({
+      message: `Found ${posts.length} done tasks.`,
+      numTasks: posts.length
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+/***
+ * Jessie Jia Edit ends
+ */
+
 /*  =============
  *  -- EXPORTS --
  *  =============
@@ -577,6 +735,7 @@ module.exports = {
   // Main
   get,
   getPrivate,
+  getUserGroups,
   getAllForUser,
   getPublicGroups,
   addNewMember,
@@ -594,5 +753,9 @@ module.exports = {
   // Tasks
   getNextTasksDone,
   getTasks,
-  getTasksDone
+  getTasksDone,
+  getTotalNumTasks,
+  getNumTodoTasks,
+  getNumInProgressTasks,
+  getNumDoneTasks,
 };

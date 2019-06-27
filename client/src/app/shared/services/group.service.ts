@@ -53,6 +53,30 @@ export class GroupService {
     return this._http.get(this.BASE_API_URL + '/group/' + group_id);
   }
 
+  // PULSE start 
+
+  getAllPulse() {
+    return this._http.get(this.BASE_API_URL + '/groups/all/pulse/');
+  }
+
+  getPulseTotalNumTasks(group_id) {
+    return this._http.get(this.BASE_API_URL + '/group/' + group_id + '/totalNumTasks');
+  }
+
+  getPulseNumTodoTasks(group_id) {
+    return this._http.get(this.BASE_API_URL + '/group/' + group_id + '/numTodoTasks');
+  }
+
+  getPulseNumInProgressTasks(group_id) {
+    return this._http.get(this.BASE_API_URL + '/group/' + group_id + '/numInProgressTasks');
+  }
+
+  getPulseNumDoneTasks(group_id) {
+    return this._http.get(this.BASE_API_URL + '/group/' + group_id + '/numDoneTasks');
+  }
+
+  // PULSE end
+
   getGroupFiles(group_id) {
 
     return this._http.get(this.BASE_API_URL + '/groups/' + group_id + '/files');

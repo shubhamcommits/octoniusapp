@@ -1,5 +1,18 @@
-<div class="container"> 
-  <p>
-    pulse works!
-  </p>
+<div class="container">
+  <app-groups-page-header></app-groups-page-header>
+
+  <ul>
+    <li *ngFor="let group of allGroups index as i" class="group-elem">
+      <div class="row">
+      <span class="col-md-1"></span>
+      <span class="group-name col-md-2"> {{ group.group_name }} </span> 
+      <span class="group-total-tasks col-md-2"> {{ pulseTotalTasks[i] }} Tasks this week  </span>
+      <span class="group-todo-tasks col-md-2"> {{ pulseTodoTasks[i] }} to do  </span>
+      <span class="group-in-progress-tasks col-md-2"> {{ pulseInProgressTasks[i] }} in progress  </span>
+      <span class="group-done-tasks col-md-2"> {{ pulseDoneTasks[i] }} done  </span>
+      <span class="col-md-1"></span>
+      </div>
+    </li>
+  </ul>
+
 </div>
