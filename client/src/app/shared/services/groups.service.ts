@@ -27,4 +27,14 @@ export class GroupsService {
   getAgoras(): Observable<any> {
     return this._http.get<any>(`${this.BASE_API_URL}/groups/public/all`);
   }
+
+  /**
+   * Carries out an HTTP GET request that returns a
+   * user's smart groups within a workspace.
+   * 
+   * @param workspace The workspace to search within.
+   */
+  getSmartGroups(workspace: string): Observable<any> {
+    return this._http.get<any>(`${this.BASE_API_URL}/groups/smart/${workspace}`);
+  }
 }

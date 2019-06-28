@@ -186,7 +186,8 @@ const getUserGroups = async (req, res, next) => {
         _members: userId
       }, {
         _admins: userId
-      }]
+      }],
+      type: { $ne: 'smart' }
     })
       .populate('_members');
 

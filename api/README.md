@@ -39,6 +39,8 @@
 
 #### 3.x. GET `api/groups/:groupId/nextTasksDone/:postId` get next 20 most recently created group's completed tasks
 
+#### 3.x. GET `api/groups/smart/:workspace` Get a user's smart groups within the given workspace
+
 '
 
 ## | 4. `api/posts` routes

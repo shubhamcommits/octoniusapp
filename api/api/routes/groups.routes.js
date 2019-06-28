@@ -46,6 +46,9 @@ router.get('/user/:workspace', groups.getAllForUser);
 // Get all public groups
 router.get('/public/all', groups.getPublicGroups);
 
+// Get a user's smart groups within the given workspace
+router.get('/smart/:workspace', groups.getSmartGroups);
+
 // Add a new member into a public group
 router.post('/public/:groupId', groups.addNewMember);
 
