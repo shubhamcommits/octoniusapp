@@ -24,7 +24,7 @@
         </div>
       </div>
 
-      <div class="card-main-body">
+      <div [ngClass]="{'card-main-body': true, 'dragging-cover': changeBg[i]}"> 
         <div *ngIf="!(isLoading$ | async)">
           <div *ngIf="column.tasks.length > 0; else noToDoTasks;" cdkDropList [cdkDropListData]="column.tasks"
               (cdkDropListDropped)="onTaskDrop($event)" [id]="column.id" [cdkDropListConnectedTo]="taskIds">
@@ -157,10 +157,6 @@
         <ng-template #noToDoTasks>
           <img src='../../../assets/images/empty-todo.svg' style="max-width:80%;">
         </ng-template>
-    </div>
-
-    <div class = "ondragstuff">
-      
     </div>
 
   </div> 

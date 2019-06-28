@@ -260,7 +260,7 @@ export class GroupTasksNewComponent implements OnInit {
       }
     });
     for(var i=0; i<this.allColumns.length; i++){
-      this.changeBg.push("none");
+      this.changeBg.push(false);
     }
     console.log(this.taskIds);
   }
@@ -1345,7 +1345,7 @@ export class GroupTasksNewComponent implements OnInit {
       this.updateTaskColumn(postId, oldCol, newCol);
     } 
     for(var i=0; i<this.allColumns.length; i++){
-      this.changeBg[i] = '#fff';
+      this.changeBg[i] = false;
     }
     console.log(this.changeBg);
   }
@@ -1353,7 +1353,7 @@ export class GroupTasksNewComponent implements OnInit {
   onTrackDrop(event: CdkDragDrop<any[]>) {
     moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     for(var i=0; i<this.allColumns.length; i++){
-      this.changeBg[i] = '#fff';
+      this.changeBg[i] = false;
     }
     console.log(this.changeBg);
   }
@@ -1362,9 +1362,9 @@ export class GroupTasksNewComponent implements OnInit {
     var title = event.source.dropContainer.data[0]['task']['status'];
     for(var i=0; i<this.allColumns.length; i++){
       if(this.allColumns[i]['title'] != title){
-        this.changeBg[i] = '#000';
+        this.changeBg[i] = true;
       }else{
-        this.changeBg[i] = 'none';
+        this.changeBg[i] = false;
       }
     }
   } 
