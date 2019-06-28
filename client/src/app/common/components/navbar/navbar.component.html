@@ -31,7 +31,7 @@
       <search-bar style="width:20% !important" [user]="user"></search-bar>
       <!-- SEARCH BAR -->
 
-  <div class="btn-group nav-item " placement="auto"  ngbDropdown  #notificationDrop="ngbDropdown" (openChange)="toggled($event)" display = "dynamic" container = "body">
+      <div class="btn-group nav-item " placement="bottom-right"  ngbDropdown  #notificationDrop="ngbDropdown" (openChange)="toggled($event)" display = "dynamic">
     <a class="notifications btn dropdown-toggle-split" ngbDropdownToggle>
       <div class="notif-bullet" *ngIf="this.notifications_data?.unreadNotifications.length > 0"></div>
       <div class="notif-bullet notif-bullet-transparent" *ngIf="this.notifications_data?.unreadNotifications.length == 0"></div>
