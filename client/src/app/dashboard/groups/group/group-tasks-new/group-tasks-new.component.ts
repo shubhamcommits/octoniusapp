@@ -145,6 +145,7 @@ export class GroupTasksNewComponent implements OnInit {
   taskCount = [];
   taskList = [];
   taskIds = [];
+  changeBg = [];
 
   bgColor = [
     '#fd7714',
@@ -258,6 +259,9 @@ export class GroupTasksNewComponent implements OnInit {
         this.taskIds.push(this.allColumns[i]['_id']);
       }
     });
+    for(var i=0; i<this.allColumns.length; i++){
+      this.changeBg.push("none");
+    }
     console.log(this.taskIds);
   }
 
@@ -1340,21 +1344,29 @@ export class GroupTasksNewComponent implements OnInit {
       console.log(newCol);
       this.updateTaskColumn(postId, oldCol, newCol);
     } 
-    this.changeBg = '#000'; 
+    for(var i=0; i<this.allColumns.length; i++){
+      this.changeBg[i] = '#fff';
+    }
     console.log(this.changeBg);
   }
 
   onTrackDrop(event: CdkDragDrop<any[]>) {
     moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    this.changeBg = '#000'; 
+    for(var i=0; i<this.allColumns.length; i++){
+      this.changeBg[i] = '#fff';
+    }
     console.log(this.changeBg);
   }
 
-  changeBg = 'none';
-
   entered(event: CdkDragStart<any[]>){  
-    this.changeBg = '#fff'; 
-    console.log(this.changeBg);
+    var title = event.source.dropContainer.data[0]['task']['status'];
+    for(var i=0; i<this.allColumns.length; i++){
+      if(this.allColumns[i]['title'] != title){
+        this.changeBg[i] = '#000';
+      }else{
+        this.changeBg[i] = 'none';
+      }
+    }
   } 
 
 } 

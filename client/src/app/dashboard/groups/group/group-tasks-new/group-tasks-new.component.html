@@ -8,45 +8,44 @@
 </div>
 
 <div class = "row main-box" cdkDropList [cdkDropListData]="taskList" (cdkDropListDropped)="onTrackDrop($event)" cdkDropListOrientation="horizontal">
-<div *ngFor="let column of taskList; let i = index;" class = "col-md-4" [style.backgroundColor] = "changeBg">
-  <div class = "card-main">
+  <div *ngFor="let column of taskList; let i = index;" class = "col-md-4" [style.backgroundColor] = "changeBg[i]">
+    <div class = "card-main">
       <div class="kanbanheader" [style.backgroundColor] = "bgColor[i%bgColor.length]" cdkDragHandle >
-          {{ column.title }}
-          <div *ngIf="column.title != 'to do' && column.title != 'in progress' && column.title != 'completed'">
-              <button class = "cross" (click)="openEditColumnModal(editColumnModal, column.title)"><i class="material-icons">create</i></button>
-          </div>
+        {{ column.title }}
+        <div *ngIf="column.title != 'to do' && column.title != 'in progress' && column.title != 'completed'">
+          <button class = "cross" (click)="openEditColumnModal(editColumnModal, column.title)"><i class="material-icons">create</i></button>
+        </div>
       </div>
 
       <div *ngIf="isLoading$ | async">
         <div class="load-8">
           <h6><b>Loading Data...</b></h6>
-            <div class="line"></div>
+          <div class="line"></div>
         </div>
       </div>
+
       <div class="card-main-body">
         <div *ngIf="!(isLoading$ | async)">
           <div *ngIf="column.tasks.length > 0; else noToDoTasks;" cdkDropList [cdkDropListData]="column.tasks"
-            (cdkDropListDropped)="onTaskDrop($event)" [id]="column.id" [cdkDropListConnectedTo]="taskIds">
+              (cdkDropListDropped)="onTaskDrop($event)" [id]="column.id" [cdkDropListConnectedTo]="taskIds">
             <div *ngFor="let post of column.tasks" cdkDrag (cdkDragStarted)="entered($event)" (CdkDragEnd)="exited($event)">
               <div class="card">  
                 <div class="drag-block">
-                    <div style="height:10px;width:100%;"></div>
+                  <div style="height:10px;width:100%;"></div>
                   <div class="card-title">
-    
                     <div ngbDropdown #myDrop="ngbDropdown">
-    
                       <img (click)="$event.stopPropagation(); myDrop.toggle();"
-                          src="/uploads/{{this.post.task?._assigned_to?.profile_pic}}"
-                          id="dropdownToDo" ngbDropdownAnchor (focus)="myDrop.open()"
-                          onerror="this.src='/assets/images/user.png'"
-                          class="topnav-avatar float-left kbn">
+                            src="/uploads/{{this.post.task?._assigned_to?.profile_pic}}"
+                            id="dropdownToDo" ngbDropdownAnchor (focus)="myDrop.open()"
+                            onerror="this.src='/assets/images/user.png'"
+                            class="topnav-avatar float-left kbn">
                       <h6 class="kbn">{{post.task?._assigned_to?.first_name}}
-                        {{post.task?._assigned_to?.last_name}} <br><span class="small lightgray date">
-                                                {{post?.created_date | date : 'medium'}}</span>
+                          {{post.task?._assigned_to?.last_name}} <br><span class="small lightgray date">
+                                                  {{post?.created_date | date : 'medium'}}</span>
                       </h6>
                       <p class="small font-weight-bold" style="margin-top: 5px" *ngIf="post.task?.due_to != 'Invalid date'">
-                        due {{post.task?.due_to | date}}</p>
-    
+                          due {{post.task?.due_to | date}}</p>
+      
                       <div ngbDropdownMenu aria-labelledby="dropdownTodo">
                         <div *ngFor="let admin of group_admins">
                           <button class="dropdown-item" (click)="changeTaskAssignee(post._id, admin._id)">
@@ -60,21 +59,16 @@
                             {{member?.last_name}}
                           </button>
                         </div>
-    
                       </div>
-    
+      
                     </div>
                     <!--<img src="assets/images/user.png" class="feed-avatar">-->
-    
-    
                   </div>
                   <div class="card-body">
-    
-                                    <span class="assigned"> Assigned by {{this.post._posted_by?.first_name}}
-                                        {{this.post._posted_by?.last_name}}<br/> in {{this.post._group?.group_name}}
-                                        group
-                                    </span>
-    
+                    <span class="assigned"> Assigned by {{this.post._posted_by?.first_name}}
+                                          {{this.post._posted_by?.last_name}}<br/> in {{this.post._group?.group_name}}
+                                          group
+                    </span>      
                     <div ngbDropdown class="d-inline-block float-right status">
                       <button class="btn btn-sm" id="dropdownDone" [style.backgroundColor] = "bgColor[i%bgColor.length]" style = "color:#fff;" ngbDropdownToggle>{{post.task.status}}</button>
                       <div ngbDropdownMenu aria-labelledby="dropdownToDo">
@@ -83,8 +77,7 @@
                         </div>
                       </div>
                     </div>
-    
-    
+  
                     <ng-template #taskif>
                       <div class="col-md-4 text-right padding-topright">
                         <button class="btn btn-pink btn-sm" id="button_task_mark_completed" (click)="OnMarkTaskCompleted()">
@@ -92,68 +85,67 @@
                           complete
                         </button>
                         <p class="small font-weight-bold" style="margin-top: 5px"
-                          *ngIf="post.task?.due_to != 'Invalid date'">
+                            *ngIf="post.task?.due_to != 'Invalid date'">
                           due {{post.task?.due_to
                           | date}}</p>
                       </div>
                     </ng-template>
                     <hr>
-                    <a style="text-decoration:none; color:inherit;"
-                    href="/#/dashboard/group/{{post._group?._id}}/post/{{post._id}}">
-                      <!-- To Do Post Title -->
-                      <div class="col-md-12 innercard font-weight-bold" style="font-size: 18px;" [innerHTML]="post?.title | safe: 'html'">
+                      <a style="text-decoration:none; color:inherit;"
+                      href="/#/dashboard/group/{{post._group?._id}}/post/{{post._id}}">
+                        <!-- To Do Post Title -->
+                        <div class="col-md-12 innercard font-weight-bold" style="font-size: 18px;" [innerHTML]="post?.title | safe: 'html'">
+                        </div>
+                        <!-- To Do Post Content -->
+                        <div class="col-md-12 innercard " [innerHTML]="post?.content | safe: 'html'">
+                          <!--<pre class="card-text ">{{post?.content}}
+                        </pre>-->
+                        </div>
+                      </a>
+                      <div class="col-md-12 innercard" *ngFor="let file of post.files">
+                        <div class="col-md-12 event-title">Attachment:</div>
+                        <div class="col-md-12"> <a role="button" href="javascript:void(null);" (click)="onDownlaodFile(file.modified_name,file.orignal_name)">{{file?.orignal_name}}</a></div>
                       </div>
-                      <!-- To Do Post Content -->
-                      <div class="col-md-12 innercard " [innerHTML]="post?.content | safe: 'html'">
-                        <!--<pre class="card-text ">{{post?.content}}
-                      </pre>-->
-                      </div>
-                    </a>
-                    <div class="col-md-12 innercard" *ngFor="let file of post.files">
-                      <div class="col-md-12 event-title">Attachment:</div>
-                      <div class="col-md-12"> <a role="button" href="javascript:void(null);" (click)="onDownlaodFile(file.modified_name,file.orignal_name)">{{file?.orignal_name}}</a></div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-6 text-left">
-    <span [ngbPopover]="likepopcontent" triggers="mouseenter:mouseleave"><b>{{post?._liked_by.length}}</b>
-                            Likes</span>
-                        <ng-template #likepopcontent>
-                          <ul class="list-group">
-                            <li class="list-group-item" *ngFor="let liked_member of post._liked_by;">
-                              {{liked_member.first_name}}
-                            </li>
-                          </ul>
-                        </ng-template>
-                      </div>
-                      <div class="col-md-6 text-right">
-    
-                        <span>
+                      <div class="row">
+                        <div class="col-md-6 text-left">
+                          <span [ngbPopover]="likepopcontent" triggers="mouseenter:mouseleave"><b>{{post?._liked_by.length}}</b>
+                              Likes</span>
+                          <ng-template #likepopcontent>
+                            <ul class="list-group">
+                              <li class="list-group-item" *ngFor="let liked_member of post._liked_by;">
+                                {{liked_member.first_name}}
+                              </li>
+                            </ul>
+                          </ng-template>
+                        </div>
+                        <div class="col-md-6 text-right">
+                          <span>
                             <button [routerLink]="['/dashboard/group/', post._group?._id, 'post',post._id]" class="btn btn-link">
-    
                               <i class="material-icons muted" id="icon_comment_post_{{i}}">mode_comment</i>
                             </button>
                           </span>
-                        <span>
+                          <span>
                             <button class="btn btn-link" (click)="onClickLikePost(i, post)">
                               <i *ngIf="!userLikedPost(post); else likeif" class="material-icons muted"
-                                id="icon_like_post_{{i}}">thumb_up</i>
+                                  id="icon_like_post_{{i}}">thumb_up</i>
                               <ng-template #likeif><i class="material-icons active"
-                                                      id="icon_like_post_{{i}}">thumb_up</i></ng-template>
+                                                        id="icon_like_post_{{i}}">thumb_up</i></ng-template>
                             </button>
                           </span>
-                        <span>
+                          <span>
                             <div ngbDropdown class="d-inline-block"
-                                *ngIf="post?._posted_by._id == user_data.user_id || user?.role === 'owner' || user?.role === 'admin'; else editevenif">
+                                  *ngIf="post?._posted_by._id == user_data.user_id || user?.role === 'owner' || user?.role === 'admin'; else editevenif">
                               <i class="material-icons action dropdown-edit" id="dropdownBasic1" ngbDropdownToggle>more_horiz</i>
                               <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
                                 <button (click)="openEditTaskModal(editTaskModal, post)"
-                                        class="dropdown-item">Edit Task</button>
+                                          class="dropdown-item">Edit Task</button>
                                 <button (click)="deleteTask(post)" class="dropdown-item">Delete Task</button>
                               </div>
                             </div>
                             <ng-template #editeventif>
                             </ng-template>
                           </span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -162,15 +154,16 @@
             </div>
           </div>
         </div>
-      </div>
-            <ng-template #noToDoTasks>
-              <img src='../../../assets/images/empty-todo.svg' style="max-width:80%;">
-            </ng-template>
-      </div>
+        <ng-template #noToDoTasks>
+          <img src='../../../assets/images/empty-todo.svg' style="max-width:80%;">
+        </ng-template>
+    </div>
+
+    <div class = "ondragstuff">
       
-      
-        </div>
-    
+    </div>
+
+  </div> 
 </div>
 
 <!-- ########## MODALS ########## -->
