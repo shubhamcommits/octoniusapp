@@ -85,7 +85,9 @@ export class GroupTasksComponent implements OnInit {
   modulesLoaded = false;
 
   pendingTasks = [];
-  completedTasks = [];
+  toDoTasks: any = new Array();
+  inProgressTasks: any = new Array();
+  completedTasks: any = new Array();
 
   loadCount = 1;
 
@@ -125,6 +127,8 @@ export class GroupTasksComponent implements OnInit {
 
   postBeingEditted;
 
+  isItMyTasks;
+
   private _message = new Subject<string>();
 
   tags: any = new Array();
@@ -138,18 +142,26 @@ export class GroupTasksComponent implements OnInit {
     setTimeout(() => {
       this.ngxService.stop(); // stop foreground loading with 'default' id
     }, 500);
+    this.isItMyTasks = this._activatedRoute.snapshot.queryParamMap.get('mytasks') == 'true' || false;
     this.groupId = this.groupDataService.groupId;
     // this.group = this.groupDataService.group;
     // this.group_name = this.group ? this.group.group_name : null;
     this.model_date = {year: (new Date()).getFullYear(), month: (new Date()).getMonth() + 1, day: (new Date()).getDate()};
     //console.log('Data', this.groupDataService)
    // console.log('Id', this.groupId);
-   this.getUserProfile();
-    this.getTasks();
-    this.getCompletedTasks();
+   if(this.isItMyTasks){
+    this.getMyTasks();
+   }
+   else{
+    await this.getTasks();
+    this.getUserProfile();
+    // this.getTasks();
+    // this.getCompletedTasks();
     this.loadGroup();
     this.mentionmembers();
     this.initializeGroupMembersSearchForm();
+   }
+
   }
 
   getTaskTimeSpent(taskPost) {
@@ -279,7 +291,7 @@ export class GroupTasksComponent implements OnInit {
     this.postService.addNewTaskPost(formData)
       .subscribe((res) => {
         // what we need to do is add this fresh task to the tasks we already fetched
-        this.pendingTasks.push(res['post']);
+        this.toDoTasks = [res['post'], ...this.toDoTasks];
 
         this.resetNewPostForm()
 
@@ -333,31 +345,48 @@ export class GroupTasksComponent implements OnInit {
     // this.product.photo = fileInput.target.files[0]['name'];
   }
 
-  getTasks() {
-    this.pendingToDoTaskCount = 0;
-    this.pendingInProgressTaskCount = 0;
+  async getMyTasks(){
+    return new Promise((resolve, reject)=>{
     this.isLoading$.next(true);
-    this.groupService.getGroupTasks(this.groupId)
+    this.userService.getUserTasks()
     .subscribe((res) => {
       this.pendingTasks = res['posts'];
-      const pendingToDoTasks = this.pendingTasks.filter(pendingTask => pendingTask.task.status == 'to do');
-      const pendingInProgressTasks = this.pendingTasks.filter(pendingTask => pendingTask.task.status == 'in progress');
-      for(var task of pendingToDoTasks)
-      {
-       this.pendingToDoTaskCount = 1;
-      }
-      for(var task of pendingInProgressTasks)
-      {
-         this.pendingInProgressTaskCount = 1;
-      }
-     // for(var i = 0; i < this.pendingTasks.length; i++){
-     //   if(this.pendingTasks[i]['task']['status'] == 'to do'){
-     //     this.pendingToDoTaskCount = 1;
-     //   }
-     //  if(this.pendingTasks[i]['task']['status'] == 'in progress'){
-     //     this.pendingInProgressTaskCount = 1;
-     //   }
-     // }
+      this.toDoTasks = res['posts'].filter(toDoTask => toDoTask.task.status == 'to do');
+      this.inProgressTasks = res['posts'].filter(inProgressTask => inProgressTask.task.status == 'in progress');
+      this.userService.getCompletedUserTasks()
+      .subscribe((res) => {
+        this.completedTasks = res['posts'].filter(completedTask => completedTask.task.status == 'done');
+        this.isLoading$.next(false);
+        if(res['posts'].length == 0){
+          this.loadCount = 0;
+        }
+        else{
+          this.loadCount = 1;
+        }
+      },
+      (err) => {
+        console.log('Error Fetching the Completed Tasks Posts', err);
+        this.isLoading$.next(false);
+        reject(err);
+      }); 	
+      this.isLoading$.next(false);
+      resolve();
+    },
+    (err) => {
+      console.log('Error Fetching the Pending Tasks Posts', err);
+      this.isLoading$.next(false);
+      reject(err);
+    });
+    })
+  }
+
+  async getTasks() {
+    this.isLoading$.next(true);
+    this.groupService.getGroupTasks(this.groupId)
+    .subscribe(async (res) => {
+      this.toDoTasks = res['posts'].filter(toDoTask => toDoTask.task.status == 'to do');
+      this.inProgressTasks = res['posts'].filter(inProgressTask => inProgressTask.task.status == 'in progress');
+      await this.getCompletedTasks();
       this.isLoading$.next(false);
     },
     (err) => {
@@ -366,17 +395,34 @@ export class GroupTasksComponent implements OnInit {
     });
   }
 
-  changeTaskAssignee(postId, AssigneeId){
+  changeTaskAssignee(postId, AssigneeId, post){
     const assigneeId ={
       'assigneeId':AssigneeId
     }
     this.groupService.changeTaskAssignee(postId, assigneeId)
     .subscribe((res) => {
-      console.log('Post ID', postId);
-      console.log('Assignee ID', assigneeId);
-      console.log('Task Assignee', res);
-      this.getTasks();
-      this.getCompletedTasks();
+      // console.log('Assignee changed',res);
+      var currentTaskIndex;
+      switch(post.task.status){
+        case 'to do':
+            currentTaskIndex = this.toDoTasks.findIndex(task => task._id == post._id);
+            if(currentTaskIndex != -1){
+              this.toDoTasks[currentTaskIndex]= res['post'];
+            } 
+            break;
+        case 'in progress':
+            currentTaskIndex = this.inProgressTasks.findIndex(task => task._id == post._id);
+            if(currentTaskIndex != -1){
+              this.inProgressTasks[currentTaskIndex]= res['post'];
+            }
+            break;
+        case 'done':
+            currentTaskIndex = this.completedTasks.findIndex(task => task._id == post._id);
+            if(currentTaskIndex != -1){
+              this.completedTasks[currentTaskIndex]= res['post'];
+            }
+            break;
+      }
       this.socket.emit('getNotifications', this.user_data.user_id);
     }, (err) => {
       console.log('Error changing the Task Assignee', err);
@@ -413,16 +459,27 @@ export class GroupTasksComponent implements OnInit {
   }
 
 
-  OnMarkTaskCompleted(post_id){
+  OnMarkTaskCompleted(post_id, task){
     const post = {
       'status': 'done'
     };
+    switch(task.task.status){
+      case 'to do':
+          this.toDoTasks.splice(this.toDoTasks.findIndex(post => post._id === task._id), 1)
+          .filter(toDoTask => toDoTask.task.status == 'to do');
+          break;
+
+      case 'in progress':
+          this.inProgressTasks
+          .splice(this.inProgressTasks.findIndex(post => post._id === task._id), 1)
+          .filter(inProgressTask => inProgressTask.task.status == 'in progress');
+          break;
+    }
+    task.task.status = 'done';
+    this.completedTasks = this.postService.removeDuplicates([task, ...this.completedTasks], '_id');
     this.postService.complete(post_id,post)
     .subscribe((res) => {
-      console.log('Post Marked as Completed', res);
-      this.getCompletedTasks();
-      this.getTasks();
-
+      this.isLoading$.next(false);
     }, (err) => {
 
       console.log('Error:', err);
@@ -431,27 +488,28 @@ export class GroupTasksComponent implements OnInit {
 
   }
 
-  OnMarkTaskToDo(post_id){
+  OnMarkTaskToDo(post_id, task){
     const post = {
       'status': 'to do'
     };
+    switch(task.task.status){      
+      case 'in progress':
+          this.inProgressTasks
+          .splice(this.inProgressTasks.findIndex(post => post._id === task._id), 1)
+          .filter(inProgressTask => inProgressTask.task.status == 'in progress');
+          break;
+
+      case 'done':
+          this.completedTasks
+          .splice(this.completedTasks.findIndex(post => post._id === task._id), 1)
+          .filter(doneTask => doneTask.task.status == 'done');
+          break;
+
+    }
+    task.task.status = 'to do';
+    this.toDoTasks = this.postService.removeDuplicates([task, ...this.toDoTasks], '_id');
     this.postService.complete(post_id,post)
     .subscribe((res) => {
-      console.log('Post Marked as to do', res);
-      this.getCompletedTasks();
-      //this.getTasks();
-      this.pendingToDoTaskCount = 1;
-      this.isLoading$.next(true);
-      for(var i = 0;i < this.pendingTasks.length ; i++)
-      {
-         if(this.pendingTasks[i]['_id'] == post_id)
-           {
-             this.pendingTasks[i]['task']['status'] = 'to do';
-             console.log("found");
-             break;
-            }
-
-      }
       this.isLoading$.next(false);
 
     }, (err) => {
@@ -462,27 +520,28 @@ export class GroupTasksComponent implements OnInit {
 
   }
 
-  OnMarkTaskInProgress(post_id){
+  OnMarkTaskInProgress(post_id, task){
     const post = {
       'status': 'in progress'
     };
+    switch(task.task.status){      
+      case 'to do':
+          this.toDoTasks
+          .splice(this.toDoTasks.findIndex(post => post._id === task._id), 1)
+          .filter(toDoTask => toDoTask.task.status == 'to do');
+          break;
+
+      case 'done':
+          this.completedTasks
+          .splice(this.completedTasks.findIndex(post => post._id === task._id), 1)
+          .filter(doneTask => doneTask.task.status == 'done');
+          break;
+
+    }
+    task.task.status = 'in progress';
+    this.inProgressTasks = this.postService.removeDuplicates([task, ...this.inProgressTasks], '_id');
     this.postService.complete(post_id,post)
     .subscribe((res) => {
-      console.log('Post Marked as in Progress', res);
-      this.getCompletedTasks();
-    //this.getTasks();
-      this.pendingInProgressTaskCount = 1;
-      this.isLoading$.next(true);
-      for(var i = 0;i < this.pendingTasks.length ; i++)
-      {
-         if(this.pendingTasks[i]['_id'] == post_id)
-           {
-             this.pendingTasks[i]['task']['status'] = 'in progress';
-             console.log("found1");
-             break;
-            }
-
-      }
       this.isLoading$.next(false); 
     }, (err) => {
 
@@ -493,11 +552,11 @@ export class GroupTasksComponent implements OnInit {
   }
 
 
-  getCompletedTasks() {
+  async getCompletedTasks() {
     this.isLoading$.next(true);
     this.groupService.getCompletedGroupTasks(this.groupId)
     .subscribe((res) => {
-      this.completedTasks = res['posts'];
+      this.completedTasks = res['posts'].filter(completedTask => completedTask.task.status == 'done');
       if (res['posts'].length == 0){
         this.loadCount = 0;
       }
@@ -700,7 +759,12 @@ export class GroupTasksComponent implements OnInit {
   /////// MODALS
 
   openNewTaskModal(newTaskModal) {
-    this.newTaskModalRef = this.modalService.open(newTaskModal, { centered: true, size: "lg" });
+    var modalOptions: any = {
+      centered: true, 
+      size: "xl",
+      backdrop: true
+    }
+    this.newTaskModalRef = this.modalService.open(newTaskModal, modalOptions);
   }
 
   openTimePicker(content) {

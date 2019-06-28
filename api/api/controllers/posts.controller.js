@@ -976,7 +976,10 @@ const changeTaskAssignee = async (req, res, next) => {
         'task._assigned_to': assigneeId,
       }, {
         new: true
-      });
+      })
+      .populate('task._assigned_to', 'first_name last_name profile_pic')
+      .populate('_group', '_id group_name')
+      .populate('_posted_by', 'first_name last_name profile_pic')
       await notifications.newTaskReassignment(postUpdated);
       await sendMail.taskReassigned(postUpdated);
 
