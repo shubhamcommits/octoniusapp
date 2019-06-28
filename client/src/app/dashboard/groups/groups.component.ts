@@ -14,6 +14,7 @@ import { Group } from '../../shared/models/group.model';
 import { environment } from '../../../environments/environment';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { GroupService } from '../../shared/services/group.service';
+import { SnotifyService } from 'ng-snotify';
 
 @Component({
   selector: 'app-groups',
@@ -42,12 +43,15 @@ export class GroupsComponent implements OnInit {
   // public groups
   agoras = [];
 
+  smartGroups = [];
+
   constructor(private _workspaceService: WorkspaceService,
     private _router: Router,
     private _userService: UserService,
     private _groupsService: GroupsService,
     private groupService: GroupService,
-    private modalService: NgbModal,  private ngxService: NgxUiLoaderService) { }
+    private modalService: NgbModal,  private ngxService: NgxUiLoaderService,
+    private snotifyService: SnotifyService) { }
 
 
   ngOnInit() {
@@ -67,6 +71,7 @@ export class GroupsComponent implements OnInit {
 
     this.alertMessageSettings();
     this.getAgoras();
+    this.getSmartGroups();
   }
 
   /**
@@ -249,6 +254,10 @@ export class GroupsComponent implements OnInit {
     this.modalService.open(agora, { size: 'lg' });
   }
 
+  openSmartGroupModal(smartGroup) {
+    this.modalService.open(smartGroup, { size: 'lg' });
+  }
+
   /**
    * This method is responsible for creating a new public group
    */
@@ -298,6 +307,68 @@ export class GroupsComponent implements OnInit {
         this._router.navigate(['/dashboard/group/',groupId,'activity']);
       },
       err => console.error(`Failed to join public group! ${err}`)
+    );
+  }
+
+  /**
+   * This method is responsible for creating a new smart group
+   */
+  onCreateSmartGroup() {
+    const group = {
+      group_name: this.group.group_name,
+      _workspace: this.user_data.workspace._id,
+      _admins: this.user_data.user_id,
+      workspace_name: this.user_data.workspace.workspace_name,
+      type: 'smart'
+    };
+
+
+    this._groupsService.createNewGroup(group)
+      .subscribe((response) => {
+        this.smartGroups.push(response['group']);
+
+        this.alert.class = 'success';
+        this._message.next(response['message']);
+        this.createNewGroupForm.reset();
+      }, (err) => {
+        this.alert.class = 'danger';
+        if (err.status === 401) {
+          this._message.next(err.error.message);
+          setTimeout(() => {
+            localStorage.clear();
+            this._router.navigate(['']);
+          }, 3000);
+        } else if (err.status) {
+          this._message.next(err.error.message);
+        } else {
+          this._message.next('Error! either server is down or no internet connection');
+        }
+
+      });
+  }
+
+  /**
+   * Get all of the smart groups that a user is a part of.
+   */
+  getSmartGroups() {
+    this._groupsService.getSmartGroups(this.user_data.workspace._id).subscribe(
+      ({ groups }) => {
+        this.smartGroups = groups;
+
+        // Set the correct path to the group avatar
+        for (let i = 0; i < this.smartGroups.length; i++) {
+          if (this.smartGroups[i]['group_avatar'] == null) {
+            this.smartGroups[i]['group_avatar'] = '/assets/images/group.png';
+          } else {
+            this.smartGroups[i]['group_avatar'] = environment.BASE_URL + `/uploads/${this.smartGroups[i]['group_avatar']}`;
+          }
+        }
+      },
+      err => {
+        this.snotifyService.error('A problem has occurred whilst fetching your smart groups.');
+        console.error('Could not fetch smart groups!');
+        console.error(err);
+      }
     );
   }
 }

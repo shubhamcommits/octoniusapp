@@ -122,6 +122,31 @@ const getPublicGroups = async (req, res) => {
 };
 
 /**
+ * Fetches a user's smart groups within the
+ * given workspace.
+ */
+const getSmartGroups = async (req, res) => {
+  const { userId } = req;
+  const { workspace } = req.params;
+  try {
+    const groups = await Group.find({
+      type: 'smart',
+      _workspace: workspace,
+      $or: [
+        { _members: { $elemMatch: { $eq: new mongoose.Types.ObjectId(userId) } } },
+        { _admins: { $elemMatch: { $eq: new mongoose.Types.ObjectId(userId) } } }
+      ]
+    });
+
+    return res.status(200).json({
+      groups
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+/**
  * Add a new member to a public group
  */
 const addNewMember = async (req, res) => {
@@ -925,6 +950,7 @@ module.exports = {
   getUserGroups,
   getAllForUser,
   getPublicGroups,
+  getSmartGroups,
   addNewMember,
   deleteGroup,
   // Files
