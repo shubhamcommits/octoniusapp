@@ -4,5 +4,8 @@ WORKDIR '/app'
 COPY ./package.json ./
 # RUN apk --no-cache add --virtual builds-deps build-base python
 RUN yarn install
+RUN wget https://github.com/jgm/pandoc/releases/download/2.7.3/pandoc-2.7.3-1-amd64.deb
+RUN dpkg -i /app/pandoc-2.7.3-1-amd64.deb
 COPY ./ ./
+RUN rm /app/pandoc-2.7.3-1-amd64.deb
 CMD ["yarn", "start"]
