@@ -104,6 +104,7 @@ import { DocumentService } from './shared/services/document.service';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { GroupTasksNewComponent } from './dashboard/groups/group/group-tasks-new/group-tasks-new.component';
 import { ColumnService } from './shared/services/column.service';
+import { GroupSmartAdminComponent } from './dashboard/groups/group/group-smart-admin/group-smart-admin.component';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 
@@ -196,7 +197,8 @@ const ngCircle = {
     CollabDocPostComponent,
     CollaborativeDocGroupCommentsComponent,
     CollaborativeDocGroupPostCommentComponent,
-    GroupTasksNewComponent
+    GroupTasksNewComponent,
+    GroupSmartAdminComponent
   ],
   imports: [
     BrowserModule,

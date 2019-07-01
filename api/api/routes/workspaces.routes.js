@@ -40,13 +40,12 @@ router.delete('/:workspaceId/domains/:domain', workspaces.deleteDomain);
 // Get all workspace domains
 router.get('/:workspaceId/domains', workspaces.getDomains);
 
+// Get all unique email domains that belong within the given workspace.
+router.get('/emailDomains/:workspaceId', workspaces.getUniqueEmailDomains);
+
 // - Users -
 
 // Remove user from workspace
 router.delete('/:workspaceId/users/:userId', workspaces.deleteUser);
-
-
-
-
 
 module.exports = router;
