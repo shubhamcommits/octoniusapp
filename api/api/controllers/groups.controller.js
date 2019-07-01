@@ -1172,7 +1172,6 @@ const editPulseDescription = async (req, res) => {
 };
 
 
-
 const deletePulseDescription = async (req, res) => {
   try {
     const {
