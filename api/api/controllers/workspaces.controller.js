@@ -151,6 +151,35 @@ const getDomains = async (req, res, next) => {
   }
 };
 
+/**
+ * Fetches the unique email domains that exist within
+ * the given workspace.
+ */
+const getUniqueEmailDomains = async (req, res) => {
+  const { workspaceId } = req.params;
+
+  try {
+    // Get the emails
+    let emails = await User.find({ _workspace: workspaceId }).select('email');
+    emails = emails.map(userDoc => userDoc.email);
+
+    // Generate the domails
+    const emailDomains = emails.map((email) => {
+      const index = email.indexOf('@');
+      return email.substring(index + 1);
+    });
+
+    // Remove duplicates
+    const domains = new Set(emailDomains);
+
+    return res.status(200).json({
+      domains: Array.from(domains)
+    });
+  } catch (error) {
+    return sendErr(res, error);
+  }
+};
+
 // -| Workspace users controllers |-
 
 const deleteUser = async (req, res, next) => {
@@ -239,6 +268,7 @@ module.exports = {
   addDomain,
   deleteDomain,
   getDomains,
+  getUniqueEmailDomains,
   // users
   deleteUser
 };

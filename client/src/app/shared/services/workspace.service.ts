@@ -2,6 +2,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class WorkspaceService {
@@ -43,5 +44,14 @@ export class WorkspaceService {
 
   resumeSubscription() {
     return this._http.get(this.BASE_API_URL + `/billing/resumeSubscription`);
+  }
+
+  /**
+   * Fetches unique email domains that exist within the given workspace.
+   * 
+   * @param workspaceId The workspace to search within.
+   */
+  getUniqueEmailDomains(workspaceId: string): Observable<any> {
+    return this._http.get<any>(`${this.BASE_API_URL}/workspace/emailDomains/${workspaceId}`);
   }
 }

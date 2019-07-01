@@ -1,0 +1,41 @@
+<div *ngIf="groupDataService.group.type === 'smart'" class="card-tile">
+  <h4>Smart Group settings</h4>
+  <p>This group will automatically add people with the following rules:</p>
+  <div class="row">
+    <div class="col-md-2">
+      <button class="btn btn-link">
+        <span id="btn-content">
+          <i class="material-icons mr-2">add</i> <span style="vertical-align: 6px;">New rule</span>
+        </span>
+      </button>
+    </div>
+    <div class="col-md-3">
+      <angular2-multiselect [data]="rules" [(ngModel)]="rule" [settings]="{text: 'Select a rule', singleSelection: true}" (onSelect)="onRuleChange()" (onDeSelect)="clearConditions()">
+        <c-item>
+          <ng-template let-item="item">
+            <label>{{item}}</label>
+          </ng-template>
+        </c-item>
+        <c-badge>
+          <ng-template let-item="item">
+            <label>{{item}}</label>
+          </ng-template>
+        </c-badge>  
+      </angular2-multiselect>
+    </div>
+    <div class="col-md-3">
+      <angular2-multiselect [data]="conditions" [(ngModel)]="selectedItems" [settings]="{text: 'Select a condition'}">
+        <c-item>
+          <ng-template let-item="item">
+            <label>{{item}}</label>
+          </ng-template>
+        </c-item>
+        <c-badge>
+          <ng-template let-item="item">
+            <label>{{item}}</label>
+          </ng-template>
+        </c-badge>  
+      </angular2-multiselect>
+    </div>
+  </div>
+</div>
