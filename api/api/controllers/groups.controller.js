@@ -58,15 +58,8 @@ const getUserGroups = async (req, res) => {
   const { userId } = req;
 
   try {
-    const user = await User.findOne({
-      _id: userId
-    }).select('_workspace');
-
-    const workspace = user._workspace;
-
     const groups = await Group.find({
       group_name:{ $not: {$eq: 'private'}},
-      _workspace: {$eq: workspace},
       $or: [
         { _members: { $elemMatch: { $eq: userId } } },
         { _admins: { $elemMatch: { $eq: userId } } }
@@ -75,7 +68,7 @@ const getUserGroups = async (req, res) => {
 
 
     return res.status(200).json({
-      groups: groups,
+      groups: groups
     });
   } catch (err) {
     return sendErr(res, err);
@@ -607,7 +600,7 @@ const getTasksDone = async (req, res, next) => {
 };
 
 /***
- * Jessie Jia Edit starts
+ * Jessie Jia Edit starts PULSE
  */
 
 const getTotalNumTasks = async (req, res, next) => {
@@ -733,6 +726,82 @@ const getNumDoneTasks = async (req, res, next) => {
     return sendErr(res, err);
   }
 };
+
+const getPulseDescription = async (req, res) => {
+  try {
+    const {
+      userId,
+      params: {
+        groupId
+      }
+    } = req;
+
+    const group = await Group.findById(
+      groupId,
+      // {$set: {"pulse_description" : req.body.pulse_description}}
+    ).select('group_name pulse_description');
+
+    return res.status(200).json({
+      group_name: group.group_name,
+      pulse_description: group.pulse_description
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+const editPulseDescription = async (req, res) => {
+  try {
+    const {
+      userId,
+      body: {
+        pulse_description
+      },
+      params: {
+        groupId,
+      },
+    } = req;
+
+    // const pulse_description = req.body.pulse_description;
+    const group = await Group.findByIdAndUpdate(
+      groupId,
+      {$set: {"pulse_description" : req.body.pulse_description}}
+    ).select('group_name pulse_description');
+
+    return res.status(200).json({
+      groupId: groupId,
+      group_name: group.group_name,
+      request: req.body == null? "body is null" : req.body
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+
+const deletePulseDescription = async (req, res) => {
+  try {
+    const {
+      userId,
+      params: {
+        groupId,
+      }
+    } = req;
+
+    const group = await Group.findByIdAndUpdate(
+      groupId,
+      {$set: {"pulse_description" : null}}
+    ).select('group_name pulse_description');
+
+    return res.status(200).json({
+      groupId: groupId,
+      group_name: group.group_name,
+      message: "delete successful"
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
 /***
  * Jessie Jia Edit ends
  */
@@ -765,8 +834,13 @@ module.exports = {
   getNextTasksDone,
   getTasks,
   getTasksDone,
+
+  // PULSE
   getTotalNumTasks,
   getNumTodoTasks,
   getNumInProgressTasks,
   getNumDoneTasks,
+  getPulseDescription,
+  editPulseDescription,
+  deletePulseDescription,
 };

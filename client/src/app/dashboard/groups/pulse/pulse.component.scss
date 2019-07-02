@@ -22,11 +22,10 @@
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
-  line-height: 24px;
+  line-height: 18px;
   display: flex;
   align-items: center;
   color: #242d3a;
-  margin: 0px 5px;
 }
 
 .group-todo-tasks {
@@ -45,31 +44,42 @@
 }
 
 .group-in-progress-tasks {
-    color: #ffffff;
-    background: #0BC6A0;
-    border-radius: 4px;
-    font-family: Poppins;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 12px;
-    line-height: 18px;
-    display: flex;
-    align-items: center;
-    text-align: center;
-    margin: 0px 5px;
-  }
+  color: #ffffff;
+  background: #0bc6a0;
+  border-radius: 4px;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 18px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 0px 5px;
+}
 
-  .group-done-tasks {
-    color: #ffffff;
-    background: #4A90E2;
-    border-radius: 4px;
-    font-family: Poppins;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 12px;
-    line-height: 18px;
-    display: flex;
-    align-items: center;
-    text-align: center;
-    margin: 0px 5px;
-  }
+.group-done-tasks {
+  color: #ffffff;
+  background: #4a90e2;
+  border-radius: 4px;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 18px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 0px 5px;
+}
+
+.pulse-desc {
+  color: #787878;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 18px;
+  display: flex;
+  align-items: center;
+}

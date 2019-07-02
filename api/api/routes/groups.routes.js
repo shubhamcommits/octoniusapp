@@ -111,6 +111,9 @@ router.get('/:groupId/tasksDone', groups.getTasksDone);
 // Get next 20 most recently created group's completed tasks
 router.get('/:groupId/nextTasksDone/:postId', groups.getNextTasksDone);
 
+
+// - PULSE -
+
 // Get total # of tasks of the group
 router.get('/:groupId/totalNumTasks', groups.getTotalNumTasks);
 
@@ -123,5 +126,13 @@ router.get('/:groupId/numInProgressTasks', groups.getNumInProgressTasks);
 // Get # done tasks
 router.get('/:groupId/numDoneTasks', groups.getNumDoneTasks);
 
+// Get PULSE description
+router.get('/:groupId/pulse/description', groups.getPulseDescription);
+
+// Edit PULSE description
+router.post('/:groupId/pulse/editDescription', groups.editPulseDescription);
+
+// Delete PULSE description
+router.post('/:groupId/pulse/deleteDescription', groups.deletePulseDescription);
 
 module.exports = router;
