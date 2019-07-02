@@ -43,6 +43,7 @@ export class GroupSmartAdminComponent implements OnInit {
    * @param rule The new rule.
    */
   onRuleChange(): void {
+    this.selectedItems = [];
     if (this.rule[0] === 'Email domain') {
       // populate the current workspace's email domains
       this.workspaceService
@@ -87,6 +88,7 @@ export class GroupSmartAdminComponent implements OnInit {
    */
   clearConditions(): void {
     this.conditions = [];
+    this.selectedItems = [];
   }
 
   /**
@@ -163,6 +165,10 @@ export class GroupSmartAdminComponent implements OnInit {
         }
       );
     }
+
+    this.rule = '';
+    this.conditions = [];
+    this.selectedItems = [];
   }
 
   /**
