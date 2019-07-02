@@ -116,9 +116,9 @@ export class GroupActivityComponent implements OnInit {
             window.scrollTo(0, 0);
         }
     });
-    
+
     this.ngxService.start();
-    
+
     // here we test if the section we entered is a group of my personal workplace
     this.isItMyWorkplace = this._activatedRoute.snapshot.queryParamMap.get('myworkplace') == 'true' || false;
 
@@ -183,7 +183,7 @@ export class GroupActivityComponent implements OnInit {
                 group: this.group.group_name,
                 type: 'post'
               };
-    
+
               this.socket.emit('postDeleted', data);
 
             }, (err) => {
@@ -226,13 +226,18 @@ export class GroupActivityComponent implements OnInit {
     });
   }
 
-  editPulseDesc () {
+  editPulseDesc(value: string) {
+    const pulse_description_data = {
+      pulse_description: value,
+    };
     return new Promise((resolve, reject) => {
-      this.groupService.editPulseDesc(this.pulse_description)
+      this.groupService.editPulseDesc(this.group_id, pulse_description_data)
         .subscribe((res) => {
           console.log('response in group editPulseDesc:', res);
           resolve();
         }, (err) => {
+          console.log(reject);
+          console.log(pulse_description_data);
           reject();
         });
     });
