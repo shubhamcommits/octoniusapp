@@ -154,5 +154,16 @@ export class GroupService {
   deleteGroup(groupId: string): Observable<any> {
     return this._http.delete<any>(`${this.BASE_API_URL}/groups/${groupId}`);
   }
+
+  /**
+   * Makes an HTTP POST request to update a smart group's
+   * rules.
+   * 
+   * @param data The new rules to add
+   * @param groupId The smart group to update
+   */
+  updateSmartGroupRules(data: object, groupId: string): Observable<any> {
+    return this._http.post<any>(`${this.BASE_API_URL}/groups/smart/${groupId}`, data);
+  }
 }
 
