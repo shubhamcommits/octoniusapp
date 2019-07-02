@@ -25,10 +25,11 @@
         <div class="card-block">
           <h6 class="card-title"> <strong>What's your PULSE?</strong> </h6>
           <hr />
-          <textarea rows="4" cols="35" [(ngModel)]="pulse_description" placeholder="Type here to send a PULSE"></textarea>
-          <button 
-            class="btn btn-primary pulse-btn" 
-            (click)="this.editPulseDesc();">
+          <textarea #pulse_description rows="4" cols="35" placeholder="Type here to send a PULSE"></textarea>
+          <button
+            class="btn btn-primary pulse-btn"
+            (click)="this.editPulseDesc(pulse_description.value);"
+            >
             PULSE
           </button>
         </div>
