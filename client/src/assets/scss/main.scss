@@ -108,6 +108,8 @@ h2{
 .muted{
   color: #9b9b9b;
 }
+  
+
 
 .user-list{
 border-bottom: 1px solid $border-color;
@@ -321,18 +323,25 @@ h4{
 }
 
 .ql-mention-list-container{
-  z-index: 1070;
-  width: 400px;
+  z-index: 9999 !important;
+  position: fixed;
+  width: 700px;
   border-radius: 6px;
   border: 1px solid $border-color;
   box-shadow: $box-shadow;
-  position: absolute;
+  overflow: visible;
   .ql-mention-list-item.selected{
+    z-index : 9999;
     background: $brand-primary;
     color:#fff !important;
-  }
+    overflow: visible;	  
+}
 }
 
+  .ql-mention-list
+   {
+    overflow:visible;	
+}
 .feed-new-update-pill {
   position: absolute;
   width: 100%;
@@ -374,7 +383,14 @@ color:#787878 !important;
 
 .ql-container {
   min-height: 100px !important;
-  overflow: visible !important;
+  overflow: visible !important; 
+  display:  flex;
+  
+}
+.ql-editor
+{
+  z-index:10; 
+  overflow: visible;
 }
 .ql-video{
   width: 100% ;
@@ -399,7 +415,10 @@ color:#787878 !important;
 
 .editor{
   border: 1px solid $brand-primary;
-  border-radius: $card-radius;
+  border-radius: $card-radius; 
+  overflow: visible;
+  z-index:10
+  
 }
 .notif-bullet{
   width: 10px;
@@ -534,6 +553,7 @@ color:#787878 !important;
 }
 quill-editor{
     border: none !important;
+    overflow: visible;
 }
 
 .bar{
@@ -574,7 +594,10 @@ quill-editor{
 .cal-week-view .cal-event-title:link, .cal-day-view .cal-event-title:link {
   color:#fff !important;
 }
-
+.innercard
+{
+overflow:auto;
+}
 .loading-spinner{
   width:100px;
   height:100px;

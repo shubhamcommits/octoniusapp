@@ -56,16 +56,47 @@
                   </i>
                 </button>
               </li>
-              <li class="nav-item">
-                <button
-                  (click)="onSelectPostType('document')"
-                  class="btn btn-link cool" placement="top" ngbTooltip="Collaborative editing">
-                  <i
+              <li class="nav-item" ngbDropdown autoClose="outside" #myCollabDrop="ngbDropdown" >
+                  <button  ngbDropdownToggle  (click) ="myCollabDrop.open()" class="btn btn-link cool" placement="top" ngbTooltip="Collaborative editing">
+                    <i
                     [style.color]="post.type === 'document' ? '#005fd5' : '#9b9b9b'"
                     class="material-icons muted"
                     id="icon_check_box">insert_drive_file
-                  </i>
-                </button>
+                    </i>
+                      <div class="collab-dropdown-menu" ngbDropdownMenu aria-labelledby="myCollabDrop">
+                        <div class="w-100" style="display:inline-block">
+                          <ul class="list-tags" >
+                            <li class="collabDrop">
+                                <button
+                                (click)="onSelectPostType('document'); myCollabDrop.close()"
+                                class="btn btn-link cool" placement="top" ngbTooltip="New Collaborative Doc">
+                                <i
+                                  [style.color]="post.type === 'document' ? '#005fd5' : '#9b9b9b'"
+                                  class="material-icons muted"
+                                  id="icon_check_box">insert_drive_file
+                                </i>
+                              </button>
+                              <label (click)="onSelectPostType('document'); myCollabDrop.close()" style = "cursor:pointer">
+                                  New Doc
+                              </label>
+                            </li>
+                            <li>
+                                <button type="button" class="btn btn-link">
+                                    <input id="cin2" #fileInput2  type="file" class="btn btn-outline-warning task" style="display: none"
+                                            (change)="docFileImportEvent($event); myCollabDrop.close()" placeholder="File"/>
+                                    <i class="material-icons" placement="top"
+                                    ngbTooltip="Import local .Docx file " (click)="fileInput2.click()">attach_file</i>
+                                  </button>
+                                  <label style = "cursor:pointer">
+                                      <input id="cin2" #fileInput2  type="file" class="btn btn-outline-warning task" style="display: none"
+                                      (change)="docFileImportEvent($event);myCollabDrop.close()" placeholder="File"/>
+                                      Import Doc
+                                  </label>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </button>
               </li>
             </ul>
 
@@ -94,23 +125,11 @@
 
               <input id="post-title" name="postTitle" type="text" formControlName="postTitle" [(ngModel)]="post.title" placeholder="Insert title here ..." style="padding: 12px 15px; font-style: italic; width: 100%; outline: none; box-shadow: none"/>
 
-              <!--consider removing either ready or oneditorcreated since they call the same function-->
-              <!--this code to be uncommented AMIT-->
               <quill-editor id="post-content" [modules]="modules" [(ngModel)]="post.content"
                             [spellcheck]="true" name="postContent" formControlName="postContent"
                             (ready)="onEditorCreated($event)" (onEditorCreated)="onEditorCreated($event)" (change)="onContentChanged($event)"
                             (onContentChanged)="onContentChanged($event)">
               </quill-editor> 
-
-              <!-- Added by Amit starts>
-              <div id="toolbar">
-                <button class="ql-bold">Bold</button>
-                <button class="ql-italic">Italic</button>
-              </div>
-              
-              <div id="editor">
-              </div>
-             Added by Amit ends -->
 
               <div ngbDropdown class="btn-group" style="width:100%">
 
@@ -173,27 +192,6 @@
       <button class="btn btn-sm btn-outline-primary" style="margin-right: 1rem;" (click)="removeTag(i)" *ngFor="let tag of tags; let i = index" placement="top" ngbTooltip="Click here to remove this tag"><b>X</b> {{tag}}</button>
       </div>
     </div>
-
-        <!--<div class="row">
-          <div class="col-md-6">
-            <input type="text" id="tags" (keydown)="addTags($event); this.postboxDisplayed = true" class="tags" placeholder="Add Tag here" formControlName="tag" name="tag" placement="top" ngbTooltip="Type & hit enter to add a tag">
-          </div>
-        </div>
-        <br />
-
-        <div class="row">
-          <div class="col-md-1">
-              <button type="button" class="btn btn-link">
-                  <i class="material-icons" placement="top" ngbTooltip="Tags">
-                      local_offer
-                      </i>
-              </button>
-          </div>
-          <div class="col-md-10">
-          <button class="btn btn-sm btn-outline-primary" style="margin-right: 1rem;" (click)="removeTag(i)" *ngFor="let tag of tags; let i = index" placement="top" ngbTooltip="Click here to remove this tag"><b>X</b> {{tag}}</button>
-          </div>
-        </div>-->
-
         <div class="row">
           <div class="col-md-8 ">
             <div id="google-drive-file" style="display:none;"></div>

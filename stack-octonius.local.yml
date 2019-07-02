@@ -1,4 +1,4 @@
-version: '3.6'
+version: '3.3'
 
 services:
 
@@ -33,7 +33,7 @@ services:
         condition: on-failure
   
   api:
-    image: 'octoniusapp/octonius-api:latest'
+    image: 'octoniusapp/octonius:api'
     networks:
       - backend
     volumes:
@@ -62,7 +62,7 @@ services:
         condition: on-failure
   
   client:
-    image: 'octoniusapp/octonius-client:latest'
+    image: 'octoniusapp/octonius:client'
     networks:
       - frontend
     depends_on:
@@ -76,7 +76,7 @@ services:
         condition: on-failure
   
   nginx:
-    image: 'octoniusapp/octonius-nginx:latest'
+    image: 'octoniusapp/octonius:nginx'
     networks:
       - frontend
       - backend

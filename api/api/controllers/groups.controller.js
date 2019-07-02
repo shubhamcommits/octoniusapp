@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 const { Group, Post, User } = require('../models');
 const { sendErr, sendMail } = require('../../utils');
 const moment = require('moment');
-
+const fs = require('fs');
+const pandoc = require('node-pandoc');
 /*  =======================
  *  -- GROUP CONTROLLERS --
  *  =======================
@@ -170,6 +171,112 @@ const getFiles = async (req, res, next) => {
       message: `Found ${posts.length} posts containing files!`,
       posts
     });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+const getDocFileForEditorImport = async (req, res, next) => {
+  try {
+    // Find all posts that has files and belongs to this group
+    const posts = await Post.find({
+      $and: [
+        // Find normal posts that has comments
+        { _id: req.params.groupId },
+        { files: { $exists: true, $ne: [] } }
+      ]
+    })
+    
+    //check post length
+    if(posts.length > 0 && posts[0].files.length > 0){
+    //gather source file
+    src = `${process.env.FILE_UPLOAD_FOLDER}/${posts[0].files[0].modified_name}`,
+    // Arguments
+    args = '-f docx -t html5';
+ 
+    // callback function after calling pandoc
+    callback = function (err, result) {
+      if (err){
+        return sendErr(res, err);
+      }else{
+        return res.status(200).json({
+          message: `Found posts containing files!`,
+          htmlConversion: result
+        });
+      }
+    };
+    //call pandoc
+    pandoc(src, args, callback);
+    }else{
+      return res.status(200).json({
+        message: `Could not find imported file`,
+        htmlConversion: ""
+      });
+    }
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+const serveDocFileForEditorExport = async (req, res, next) => {
+  try {
+    // need to append groupID into file name
+    const groupID = req.body.groupID
+    //need to append postID into file name
+    const postID = req.body.postID
+    const filepath = `${process.env.FILE_UPLOAD_FOLDER}${postID + groupID + 'export' + '.docx'}`;
+    // console.log(filepath)
+    //editor inner html gets passed as source
+    src = req.body.editorInfo
+
+    fs.access(filepath, fs.F_OK, error => {
+      //if it errored then it means that the file was not found so no old itteration, so we create the docx here
+      if(error){
+      //console.log(error)
+        //Arguments -o is output into directory:
+        args = `-f html -t docx -o ./uploads/${postID}${groupID}export.docx`;
+        //callback function
+        callback = function (err, result) {
+          if (err){
+            //console.log("called",err)
+            return sendErr(res, err);
+          }else{
+          // send back file name after it was saved result is a boolean to check if the file was made
+            return res.status(200).json({message:result, fileName: postID + groupID + 'export.docx'})
+          };
+          // Without the -o arg, the converted value will be returned.
+        };
+        
+        // Call pandoc
+        pandoc(src, args, callback);
+      }else{
+        // there is an existing file when someone exported out, delete the previous itteration and make a new docx
+        fs.unlink(filepath, (err) => {
+          if (err) {
+            //handle error when file was not deleted properly 
+            //console.log(err)
+            return sendErr(res, err)
+          }else{
+            //previous file is removed, need to create a new docx
+            //Arguments -o is output into directory:
+            args = `-f html -t docx -o ./uploads/${postID}${groupID}export.docx`;
+            //callback function
+            callback = function (err, result) {
+              if (err){
+                //console.log("called",err)
+                return sendErr(res, err);
+              }else{
+              // send back file name after it was saved result is a boolean to check if the file was made
+                return res.status(200).json({message:result, fileName: postID + groupID + 'export.docx'})
+              };
+            };
+            //Call pandoc
+            pandoc(src, args, callback)
+          }
+        })
+      }
+    });
+
+    
+
   } catch (err) {
     return sendErr(res, err);
   }
@@ -592,6 +699,8 @@ module.exports = {
   // Files
   downloadFile,
   getFiles,
+  getDocFileForEditorImport,
+  serveDocFileForEditorExport,
   // Posts
   getCalendarPosts,
   getUserCalendarPosts,

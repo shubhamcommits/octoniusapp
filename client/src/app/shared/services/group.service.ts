@@ -57,6 +57,14 @@ export class GroupService {
 
     return this._http.get(this.BASE_API_URL + '/groups/' + group_id + '/files');
   }
+  getDocFileForEditorImport(post_id) {
+
+    return this._http.get(this.BASE_API_URL + '/groups/' + post_id + '/docImport');
+  }
+  serveDocFileForEditorExport(post_id,group_id, editorInfo) {
+
+    return this._http.post(this.BASE_API_URL + '/groups/' + post_id + '/docExport', {'editorInfo': editorInfo, 'postID':post_id, 'groupID':group_id });
+  }
 
   downloadGroupFile(group_id, file){
     return this._http.get(this.BASE_API_URL + '/groups/' + group_id + '/files/'+file+'/download', {responseType: 'blob' });

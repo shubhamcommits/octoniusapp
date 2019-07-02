@@ -106,7 +106,7 @@
       </div>
 
       <!-- read more / read less button -->
-      <button *ngIf="post?.content.split('').length > 50 && this.preview" class="btn btn-link mt-3" (click)="this.readMore = !this.readMore">
+      <button *ngIf="post?.content?.split('').length > 50 && this.preview" class="btn btn-link mt-3" (click)="this.readMore = !this.readMore">
         <span *ngIf="this.readMore">Read more</span>
         <span *ngIf="!this.readMore">Read less</span>
       </button>
