@@ -24,7 +24,7 @@ export class GroupSmartAdminComponent implements OnInit {
     this.rule = '';
     this.conditions = [];
     this.selectedItems = [];
-    this.rules = ['Email domain'];
+    this.rules = ['Email domain', 'Job position', 'Skills'];
   }
   
   /**
@@ -35,7 +35,7 @@ export class GroupSmartAdminComponent implements OnInit {
    */
   onRuleChange(): void {
     if (this.rule[0] === 'Email domain') {
-      // populate the current workplace's email domains
+      // populate the current workspace's email domains
       this.workspaceService
         .getUniqueEmailDomains(this.groupDataService.group._workspace)
         .subscribe(
@@ -43,6 +43,30 @@ export class GroupSmartAdminComponent implements OnInit {
           error => {
             this.snotifyService.error('An error occurred whilst fetching email domains.');
             console.error('Could not fetch email domains!');
+            console.error(error);
+          }
+        );
+    } else if (this.rule[0] === 'Job position') {
+      // populate the current workspace's job positions
+      this.workspaceService
+        .getUniqueJobPositions(this.groupDataService.group._workspace)
+        .subscribe(
+          ({ positions }) => this.conditions = positions,
+          error => {
+            this.snotifyService.error('An error occurred whilst fetching job positions.');
+            console.error('Could not fetch job positions!');
+            console.error(error);
+          }
+        );
+    } else if (this.rule[0] === 'Skills') {
+      // populate the current workspace's skills
+      this.workspaceService
+        .getUniqueSkills(this.groupDataService.group._workspace)
+        .subscribe(
+          ({ skills }) => this.conditions = skills,
+          error => {
+            this.snotifyService.error('An error occurred whilst fetching skills.');
+            console.error('Could not fetch skills!');
             console.error(error);
           }
         );
