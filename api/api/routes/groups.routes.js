@@ -55,6 +55,9 @@ router.post('/public/:groupId', groups.addNewMember);
 // Delete the group with the given groupId
 router.delete('/:groupId', groups.deleteGroup);
 
+// Update a smart group with the given rules.
+router.post('/smart/:groupId', groups.updateSmartGroup);
+
 // - Files -
 
 // Get user's files that belongs to this group

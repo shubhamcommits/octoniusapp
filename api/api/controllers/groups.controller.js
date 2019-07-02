@@ -166,6 +166,36 @@ const deleteGroup = async (req, res) => {
   }
 };
 
+/**
+ * Updates a smart group's rules.
+ */
+const updateSmartGroup = async (req, res) => {
+  const { groupId } = req.params;
+  const { type } = req.body;
+
+  try {
+    if (type === 'email_domain') {
+      await Group.findByIdAndUpdate(groupId, {
+        $set: { 'conditions.email_domains': req.body.domains }
+      });
+    } else if (type === 'job_position') {
+      await Group.findByIdAndUpdate(groupId, {
+        $set: { 'conditions.job_positions': req.body.positions }
+      });
+    } else if (type === 'skills') {
+      await Group.findByIdAndUpdate(groupId, {
+        $set: { 'conditions.skills': req.body.skills }
+      });
+    }
+
+    return res.status(200).json({
+      message: 'Rule added successfully!'
+    });
+  } catch (error) {
+    return sendErr(res, error);
+  }
+};
+
 // -| FILES |-
 
 const downloadFile = (req, res, next) => {
@@ -722,6 +752,7 @@ module.exports = {
   getSmartGroups,
   addNewMember,
   deleteGroup,
+  updateSmartGroup,
   // Files
   downloadFile,
   getFiles,
