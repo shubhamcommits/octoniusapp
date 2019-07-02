@@ -148,5 +148,16 @@ export class GroupService {
   getSmartGroupSettings(groupdId: string): Observable<any> {
     return this._http.get<any>(`${this.BASE_API_URL}/groups/smart/${groupdId}/settings`);
   }
+
+  /**
+   * Makes an HTTP PUT request that removes a smart group's
+   * rule.
+   * 
+   * @param groupId The ID of the smart group.
+   * @param rule The rule to delete.
+   */
+  deleteSmartGroupRule(groupId: string, rule: string): Observable<any> {
+    return this._http.put<any>(`${this.BASE_API_URL}/groups/smart/${groupId}/${rule}`, null);
+  }
 }
 
