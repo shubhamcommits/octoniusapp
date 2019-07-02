@@ -33,6 +33,7 @@ export class GroupSmartAdminComponent implements OnInit {
       jobPositions: [],
       skills: []
     };
+    this.getCurrentSettings();
   }
   
   /**
@@ -144,6 +145,28 @@ export class GroupSmartAdminComponent implements OnInit {
         }
       );
     }
+  }
+
+  /**
+   * Gets a smart group's current settings
+   * on page load.
+   */
+  getCurrentSettings(): void {
+    this.groupService.getSmartGroupSettings(this.groupDataService.groupId).subscribe(
+      res => {
+        // @ts-ignore
+        this.currentSettings.emailDomains = res.domains;
+        // @ts-ignore
+        this.currentSettings.jobPositions = res.positions;
+        // @ts-ignore
+        this.currentSettings.skills = res.skills;
+      },
+      error => {
+        this.snotifyService.error('An error occurred whilst fetching existing smart group settings.');
+        console.error('Could not fetch existing rules!');
+        console.error(error);
+      }
+    );
   }
 
 }

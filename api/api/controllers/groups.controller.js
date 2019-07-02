@@ -219,6 +219,28 @@ const updateSmartGroup = async (req, res) => {
   }
 };
 
+/**
+ * Gets a smart group's settings.
+ */
+const getSmartGroupSettings = async (req, res) => {
+  const { groupId } = req.params;
+
+  try {
+    const groupDoc = await Group
+      .findById(groupId)
+      .select('conditions');
+
+    return res.status(200).json({
+      message: 'Rules successfully found!',
+      domains: groupDoc.conditions.email_domains ? groupDoc.conditions.email_domains : [],
+      positions: groupDoc.conditions.job_positions ? groupDoc.conditions.job_positions : [],
+      skills: groupDoc.conditions.skills ? groupDoc.conditions.skills : []
+    });
+  } catch (error) {
+    return sendErr(res, error);
+  }
+};
+
 // -| FILES |-
 
 const downloadFile = (req, res, next) => {
@@ -984,6 +1006,7 @@ module.exports = {
   addNewMember,
   deleteGroup,
   updateSmartGroup,
+  getSmartGroupSettings,
   // Files
   downloadFile,
   getFiles,

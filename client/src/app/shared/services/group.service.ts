@@ -165,5 +165,15 @@ export class GroupService {
   updateSmartGroupRules(data: object, groupId: string): Observable<any> {
     return this._http.post<any>(`${this.BASE_API_URL}/groups/smart/${groupId}`, data);
   }
+
+  /**
+   * Makes an HTTP GET request to retrieve a smart group's
+   * current settings.
+   * 
+   * @param groupdId The group to query
+   */
+  getSmartGroupSettings(groupdId: string): Observable<any> {
+    return this._http.get<any>(`${this.BASE_API_URL}/groups/smart/${groupdId}/settings`);
+  }
 }
 
