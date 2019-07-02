@@ -175,16 +175,22 @@ const updateSmartGroup = async (req, res) => {
 
   try {
     if (type === 'email_domain') {
-      await Group.findByIdAndUpdate(groupId, {
-        $set: { 'conditions.email_domains': req.body.domains }
+      req.body.domains.map(async (domain) => {
+        await Group.findByIdAndUpdate(groupId, {
+          $addToSet: { 'conditions.email_domains': domain }
+        });
       });
     } else if (type === 'job_position') {
-      await Group.findByIdAndUpdate(groupId, {
-        $set: { 'conditions.job_positions': req.body.positions }
+      req.body.positions.map(async (position) => {
+        await Group.findByIdAndUpdate(groupId, {
+          $addToSet: { 'conditions.job_positions': position }
+        });
       });
     } else if (type === 'skills') {
-      await Group.findByIdAndUpdate(groupId, {
-        $set: { 'conditions.skills': req.body.skills }
+      req.body.skills.map(async (skill) => {
+        await Group.findByIdAndUpdate(groupId, {
+          $addToSet: { 'conditions.skills': skill }
+        });
       });
     }
 
