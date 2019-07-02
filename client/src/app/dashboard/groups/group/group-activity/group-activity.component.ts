@@ -228,7 +228,7 @@ export class GroupActivityComponent implements OnInit {
 
   editPulseDesc () {
     return new Promise((resolve, reject) => {
-      this.groupService.editPulseDesc(this.pulse_description)
+      this.groupService.editPulseDesc(this.group_id, {'pulse_description':this.pulse_description})
         .subscribe((res) => {
           console.log('response in group editPulseDesc:', res);
           resolve();

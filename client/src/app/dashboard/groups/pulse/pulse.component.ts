@@ -31,6 +31,7 @@ export class PulseComponent implements OnInit {
   pulseTodoTasks = {};
   pulseInProgressTasks = {};
   pulseDoneTasks = {};
+  BASE_URL = environment.BASE_URL;
 
   constructor(private _workspaceService: WorkspaceService,
     private _router: Router,
@@ -73,7 +74,7 @@ export class PulseComponent implements OnInit {
         this.groupService.getAllPulse()
           .subscribe((res) => {
             this.allGroups = res['groups'];
-            console.log('response in getAllPulse:', res);
+            //console.log('response in getAllPulse:', res);
             resolve();
           }, (err) => {
             reject();
@@ -87,7 +88,7 @@ export class PulseComponent implements OnInit {
           this.groupService.getPulseTotalNumTasks(this.allGroups[i]._id)
           .subscribe((res) => {
             this.pulseTotalTasks[this.allGroups[i]._id] = (res['numTasks']);
-            console.log('response in this.pulseTotalTasks:', this.pulseTotalTasks);
+            //console.log('response in this.pulseTotalTasks:', this.pulseTotalTasks);
             resolve();
           }, (err) => {
             reject();
@@ -102,7 +103,7 @@ export class PulseComponent implements OnInit {
           this.groupService.getPulseNumTodoTasks(this.allGroups[i]._id)
           .subscribe((res) => {
             this.pulseTodoTasks[this.allGroups[i]._id]=(res['numTasks']);
-            console.log('response in this.pulseTodoTasks:', this.pulseTodoTasks);
+            //console.log('response in this.pulseTodoTasks:', this.pulseTodoTasks);
             resolve();
           }, (err) => {
             reject();
@@ -117,7 +118,7 @@ export class PulseComponent implements OnInit {
           this.groupService.getPulseNumInProgressTasks(this.allGroups[i]._id)
           .subscribe((res) => {
             this.pulseInProgressTasks[this.allGroups[i]._id]=(res['numTasks']);
-            console.log('response in this.pulseInProgressTasks:', this.pulseInProgressTasks);
+            //console.log('response in this.pulseInProgressTasks:', this.pulseInProgressTasks);
             resolve();
           }, (err) => {
             reject();
@@ -132,7 +133,7 @@ export class PulseComponent implements OnInit {
           this.groupService.getPulseNumDoneTasks(this.allGroups[i]._id)
           .subscribe((res) => {
             this.pulseDoneTasks[this.allGroups[i]._id]=(res['numTasks']);
-            console.log('response in this.pulseDoneTasks:', this.pulseDoneTasks);
+            //console.log('response in this.pulseDoneTasks:', this.pulseDoneTasks);
             resolve();
           }, (err) => {
             reject();
