@@ -187,4 +187,33 @@ export class GroupSmartAdminComponent implements OnInit {
     );
   }
 
+  /**
+   * Event handler that is executed when a rule is deleted.
+   * 
+   * @param rule The rule to delete.
+   */
+  onDeleteRule(rule: string): void {
+    this.groupService.deleteSmartGroupRule(this.groupDataService.groupId, rule).subscribe(
+      res => {
+        this.snotifyService.success('The rule has been successfully deleted!');
+
+        // Update UI
+        if (rule === 'email_domains') {
+          // @ts-ignore
+          this.currentSettings.emailDomains = [];
+        } else if (rule === 'job_positions') {
+          // @ts-ignore
+          this.currentSettings.jobPositions = [];
+        } else if (rule === 'skills') {
+          // @ts-ignore
+          this.currentSettings.skills = [];
+        }
+      },
+      error => {
+        this.snotifyService.error('An error occurred whilst deleting the rule.');
+        console.error('Could not delete rule!');
+        console.error(error);
+      }
+    );
+  }
 }

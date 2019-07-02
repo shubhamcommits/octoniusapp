@@ -64,6 +64,9 @@ router.post('/smart/:groupId', groups.updateSmartGroup);
 // Get a smart group's settings
 router.get('/smart/:groupId/settings', groups.getSmartGroupSettings);
 
+// Delete a smart group's rule
+router.put('/smart/:groupId/:rule', groups.deleteSmartGroupRule);
+
 // - Files -
 
 // Get user's files that belongs to this group
