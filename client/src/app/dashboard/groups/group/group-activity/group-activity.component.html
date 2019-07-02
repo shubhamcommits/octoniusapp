@@ -21,11 +21,26 @@
         </ng-template>
       </div>
 
+      <div class="card sideinnercard">
+        <div class="card-block">
+          <h6 class="card-title"> <strong>What's your PULSE?</strong> </h6>
+          <hr />
+          <textarea rows="4" cols="35" placeholder="Type here to send a PULSE"></textarea>
+          <button 
+            class="btn btn-primary pulse-btn" 
+            (click)="this.editPulseDesc();"
+            [(ngModel)]="pulse_description">
+            PULSE
+          </button>
+        </div>
+      </div>
+
       <group-activity-filters [posts]="posts" [group]="group" (sendFilteredPosts)="filterPosts($event)"
         (loadGroupPosts)="loadGroupPosts()" style="width: 100%;"></group-activity-filters>
 
       <group-activity-progress *ngIf="group" [group]="group" [isItMyWorkplace]="isItMyWorkplace" [user]="user">
       </group-activity-progress>
+
     </div>
   </div>
 

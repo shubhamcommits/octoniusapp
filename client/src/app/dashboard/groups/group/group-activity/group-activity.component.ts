@@ -55,6 +55,7 @@ export class GroupActivityComponent implements OnInit {
   comments = [];
   /* It Stores the Group data of a group*/
   group_id;
+  pulse_description;
   group: Group;
   group_name;
   group_socket_id;
@@ -218,6 +219,18 @@ export class GroupActivityComponent implements OnInit {
           // console.log('response in group component:', res);
           this.group = res['group'];
           this.group_name = res['group']['group_name'];
+          resolve();
+        }, (err) => {
+          reject();
+        });
+    });
+  }
+
+  editPulseDesc () {
+    return new Promise((resolve, reject) => {
+      this.groupService.editPulseDesc(this.pulse_description)
+        .subscribe((res) => {
+          console.log('response in group editPulseDesc:', res);
           resolve();
         }, (err) => {
           reject();
