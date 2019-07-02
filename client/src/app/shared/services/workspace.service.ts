@@ -54,4 +54,22 @@ export class WorkspaceService {
   getUniqueEmailDomains(workspaceId: string): Observable<any> {
     return this._http.get<any>(`${this.BASE_API_URL}/workspace/emailDomains/${workspaceId}`);
   }
+
+  /**
+   * Fetches unique job positions that exist within the given workspace.
+   * 
+   * @param workspaceId The workspace to search within.
+   */
+  getUniqueJobPositions(workspaceId: string): Observable<any> {
+    return this._http.get<any>(`${this.BASE_API_URL}/workspace/jobPositions/${workspaceId}`);
+  }
+
+  /**
+   * Fetches unique skills that exist within the given workspace.
+   * 
+   * @param workspaceId The workspace to search within.
+   */
+  getUniqueSkills(workspaceId: string): Observable<any> {
+    return this._http.get<any>(`${this.BASE_API_URL}/workspace/skills/${workspaceId}`);
+  }
 }

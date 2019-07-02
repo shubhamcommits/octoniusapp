@@ -161,7 +161,7 @@ const getUniqueEmailDomains = async (req, res) => {
   try {
     // Get the emails
     let emails = await User.find({ _workspace: workspaceId }).select('email');
-    emails = emails.map(userDoc => userDoc.email);
+    emails = emails.map(userDoc => userDoc.email); // get rid of _id
 
     // Generate the domails
     const emailDomains = emails.map((email) => {
@@ -174,6 +174,55 @@ const getUniqueEmailDomains = async (req, res) => {
 
     return res.status(200).json({
       domains: Array.from(domains)
+    });
+  } catch (error) {
+    return sendErr(res, error);
+  }
+};
+
+/**
+ * Fetches the unique job positions that exist within
+ * the given workspace.
+ */
+const getUniqueJobPositions = async (req, res) => {
+  const { workspaceId } = req.params;
+
+  try {
+    const positions = await User
+      .find({ _workspace: workspaceId })
+      .distinct('current_position')
+      .where('current_position').ne(null);
+
+    return res.status(200).json({
+      positions
+    });
+  } catch (error) {
+    return sendErr(res, error);
+  }
+};
+
+/**
+ * Fetches the unique skills that exist within
+ * the given workspace.
+ */
+const getUniqueSkills = async (req, res) => {
+  const { workspaceId } = req.params;
+
+  try {
+    const users = await User
+      .find({ _workspace: workspaceId })
+      .select('skills')
+      .where('skills').ne(null);
+
+    // Get skills from user documents
+    const skills = [];
+    users.map(userDoc => userDoc.skills.map(skill => skills.push(skill)));
+
+    // Remove duplicates
+    const filteredSkills = new Set(skills);
+
+    return res.status(200).json({
+      skills: Array.from(filteredSkills)
     });
   } catch (error) {
     return sendErr(res, error);
@@ -269,6 +318,8 @@ module.exports = {
   deleteDomain,
   getDomains,
   getUniqueEmailDomains,
+  getUniqueJobPositions,
+  getUniqueSkills,
   // users
   deleteUser
 };

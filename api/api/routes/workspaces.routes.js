@@ -43,6 +43,12 @@ router.get('/:workspaceId/domains', workspaces.getDomains);
 // Get all unique email domains that belong within the given workspace.
 router.get('/emailDomains/:workspaceId', workspaces.getUniqueEmailDomains);
 
+// Get all unique job positions that belong within the given workspace.
+router.get('/jobPositions/:workspaceId', workspaces.getUniqueJobPositions);
+
+// Get all unique skills that belong within the given workspace.
+router.get('/skills/:workspaceId', workspaces.getUniqueSkills);
+
 // - Users -
 
 // Remove user from workspace
