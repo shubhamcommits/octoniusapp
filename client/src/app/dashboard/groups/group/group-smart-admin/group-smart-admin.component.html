@@ -48,7 +48,7 @@
       </angular2-multiselect>
     </div>
     <div class="col-md-3">
-      <angular2-multiselect [data]="conditions" [(ngModel)]="selectedItems" [settings]="{text: 'Select a condition'}">
+      <angular2-multiselect [data]="conditions" [(ngModel)]="selectedItems" [settings]="{text: 'Select a condition', singleSelection: true, enableSearchFilter: true, enableFilterSelectAll: false}">
         <c-item>
           <ng-template let-item="item">
             <label>{{item}}</label>
