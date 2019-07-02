@@ -100,6 +100,12 @@ export class GroupSmartAdminComponent implements OnInit {
     }
 
     if (this.rule[0] === 'Email domain') {
+      // @ts-ignore
+      if (this.currentSettings.emailDomains.includes(this.selectedItems[0])) {
+        this.snotifyService.info('That domain has already been added.');
+        return;
+      };
+
       // First update UI
       // @ts-ignore
       this.selectedItems.map(domain => this.currentSettings.emailDomains.push(domain));
@@ -115,6 +121,12 @@ export class GroupSmartAdminComponent implements OnInit {
         }
       );
     } else if (this.rule[0] === 'Job position') {
+      // @ts-ignore
+      if (this.currentSettings.jobPositions.includes(this.selectedItems[0])) {
+        this.snotifyService.info('That position has already been added.');
+        return;
+      };
+
       // First update UI
       // @ts-ignore
       this.selectedItems.map(position => this.currentSettings.jobPositions.push(position));
@@ -130,6 +142,12 @@ export class GroupSmartAdminComponent implements OnInit {
         }
       );
     } else if (this.rule[0] === 'Skills') {
+      // @ts-ignore
+      if (this.currentSettings.skills.includes(this.selectedItems[0])) {
+        this.snotifyService.info('That skill has already been added.');
+        return;
+      };
+
       // First update UI
       // @ts-ignore
       this.selectedItems.map(skill => this.currentSettings.skills.push(skill));
