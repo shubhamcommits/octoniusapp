@@ -75,8 +75,8 @@ export class GroupService {
     return this._http.get(this.BASE_API_URL + '/group/' + group_id + '/numDoneTasks');
   }
 
-  editPulseDesc(group_id) {
-    return this._http.get(this.BASE_API_URL + '/group/' + group_id + '/pulse/description');
+  editPulseDesc(group_id, data) {
+    return this._http.post(this.BASE_API_URL + '/group/' + group_id + '/pulse/editDescription', data);
   }
 
   // PULSE end

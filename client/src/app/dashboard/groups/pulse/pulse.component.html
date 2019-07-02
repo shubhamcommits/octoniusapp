@@ -4,9 +4,9 @@
   <ul>
     <li *ngFor="let group of allGroups index as i" class="group-elem">
       <div class="row">
-      <span class="col-md-1"> <img src="/assets/images/group.png" width="50px" height="50px" alt="group_avatar"> </span>
+      <span class="col-md-1"> <img src ="{{this.BASE_URL}}/uploads/{{group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" width="50px" height="50px" alt="group_avatar"> </span>
       <span class="group-name col-md-2"> {{ group.group_name }} </span>
-      <span class="pulse-desc col-md-3"> {{ group.pulse_description ? group.pulse_description : "testing pulse..." }} </span>
+      <span class="pulse-desc col-md-3"> {{ group.pulse_description ? group.pulse_description : "Waiting for a new Pulse..." }} </span>
       <span class="group-total-tasks col-md-2"> {{ pulseTotalTasks[group._id] }} Tasks this week  </span>
       <span class="group-todo-tasks col-md-1"> {{ pulseTodoTasks[group._id] }} to do  </span>
       <span class="group-in-progress-tasks col-md-1"> {{ pulseInProgressTasks[group._id] }} in progress  </span>
