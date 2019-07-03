@@ -2,7 +2,7 @@ const init = () => {
   process.env.NODE_ENV = 'development';
   process.env.PORT = '3000';
   process.env.host = `http://localhost:${process.env.PORT}/`;
-  // ** For development Mode using non dockered way, please comment the line 6 & 9 and comment out the line 7 & 10 ** //
+  // ** For development Mode using non dockered way, please comment the line 7 & 10 and comment out the line 8 & 11 ** //
   // ** While Pushing back, change the environment variables back to the previous state ** //
   process.env.dbURL = 'mongodb://mongodb:27017/octonius';
   //process.env.dbURL = 'mongodb://127.0.0.1:27017/octonius';
