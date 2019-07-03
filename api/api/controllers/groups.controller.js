@@ -276,6 +276,89 @@ const deleteSmartGroupRule = async (req, res) => {
   }
 };
 
+/**
+ * This method is responsible for the automatic
+ * addition and deletion of smart group members
+ * based on the provided rules.
+ */
+const updateSmartGroupMembers = async (req, res) => {
+  const { groupId } = req.params;
+  const { workspaceId } = req.body;
+  const { emailDomains, jobPositions, skills } = req.body.currentSettings;
+
+  try {
+    // Get users in the group's workspace
+    let users = await User.find({
+      _workspace: workspaceId
+    });
+
+    if (emailDomains.length > 0) {
+      // Filter users by email domain
+      users = users.filter((user) => {
+        const { email } = user;
+        const index = email.indexOf('@');
+        const emailDomain = email.substring(index + 1);
+
+        return emailDomains.includes(emailDomain);
+      });
+    }
+
+    if (jobPositions.length > 0) {
+      // Filter users by job positions
+      users = users.filter(user => jobPositions.includes(user.current_position));
+    }
+
+    if (skills.length > 0) {
+      // Filter users by skills
+      users = users.filter(user => user.skills.some(skill => skills.includes(skill)));
+    }
+
+    // Remove owner/admin from prospective members
+    const { _admins } = await Group
+      .findById(groupId)
+      .select('_admins');
+    users = users.filter(user => !_admins.includes(user._id));
+
+    // Get current group members
+    const { _members } = await Group
+      .findById(groupId)
+      .select('_members');
+
+    // Remove the group from the current members' _groups set
+    _members.map(async (userId) => {
+      await User.findByIdAndUpdate(userId, {
+        $pull: { _groups: groupId }
+      });
+    });
+
+    // Remove the current members from the group
+    await Group.findByIdAndUpdate(groupId, {
+      $set: { _members: [] }
+    });
+
+    if (emailDomains.length > 0 || jobPositions.length > 0 || skills.length > 0) {
+      // Add new members
+      users.map(async (user) => {
+        // Add the user to the group
+        await Group.findByIdAndUpdate(groupId, {
+          $addToSet: { _members: user._id }
+        });
+
+        // Add the group to the user document
+        await User.findByIdAndUpdate(user._id, {
+          $addToSet: { _groups: groupId }
+        });
+      });
+    }
+
+    return res.status(200).json({
+      message: 'Group members successfully updated!'
+    });
+  } catch (error) {
+    return sendErr(res, error);
+  }
+};
+
 // -| FILES |-
 
 const downloadFile = (req, res, next) => {
@@ -1043,6 +1126,7 @@ module.exports = {
   updateSmartGroup,
   getSmartGroupSettings,
   deleteSmartGroupRule,
+  updateSmartGroupMembers,
   // Files
   downloadFile,
   getFiles,

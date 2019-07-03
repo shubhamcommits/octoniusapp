@@ -115,7 +115,10 @@ export class GroupSmartAdminComponent implements OnInit {
       // Now update DB
       const data = { type: 'email_domain', domains: this.selectedItems };
       this.groupService.updateSmartGroupRules(data, this.groupDataService.groupId).subscribe(
-        res => this.snotifyService.success('The rule has been successfully added!'),
+        res => {
+          this.snotifyService.success('The rule has been successfully added!');
+          this.autoAdd();
+        },
         error => {
           this.snotifyService.error('An error occurred whilst adding the rule.');
           console.error('Could not add new rule!');
@@ -136,7 +139,10 @@ export class GroupSmartAdminComponent implements OnInit {
       // Now update DB
       const data = { type: 'job_position', positions: this.selectedItems };
       this.groupService.updateSmartGroupRules(data, this.groupDataService.groupId).subscribe(
-        res => this.snotifyService.success('The rule has been successfully added!'),
+        res => {
+          this.snotifyService.success('The rule has been successfully added!');
+          this.autoAdd();
+        },
         error => {
           this.snotifyService.error('An error occurred whilst adding the rule.');
           console.error('Could not add new rule!');
@@ -157,7 +163,10 @@ export class GroupSmartAdminComponent implements OnInit {
       // Now update DB
       const data = { type: 'skills', skills: this.selectedItems };
       this.groupService.updateSmartGroupRules(data, this.groupDataService.groupId).subscribe(
-        res => this.snotifyService.success('The rule has been successfully added!'),
+        res => {
+          this.snotifyService.success('The rule has been successfully added!');
+          this.autoAdd();
+        },
         error => {
           this.snotifyService.error('An error occurred whilst adding the rule.');
           console.error('Could not add new rule!');
@@ -214,10 +223,35 @@ export class GroupSmartAdminComponent implements OnInit {
           // @ts-ignore
           this.currentSettings.skills = [];
         }
+
+        this.autoAdd();
       },
       error => {
         this.snotifyService.error('An error occurred whilst deleting the rule.');
         console.error('Could not delete rule!');
+        console.error(error);
+      }
+    );
+  }
+
+  /**
+   * Executes whenever a rule is added or deleted.
+   * Responsible for automatically adding or removing
+   * group members.
+   */
+  autoAdd(): void {
+    const data = {
+      workspaceId: this.groupDataService.group._workspace,
+      currentSettings: this.currentSettings
+    };
+    this.groupService.updateSmartGroupMembers(
+      this.groupDataService.groupId,
+      data
+    ).subscribe(
+      res => //this.snotifyService.info('The members of the group have been successfully modified!'),
+      error => {
+        this.snotifyService.error('An error occurred whilst modifying the members of the group.');
+        console.error('Could not auto add members!');
         console.error(error);
       }
     );
