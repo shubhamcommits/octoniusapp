@@ -1,19 +1,19 @@
-<div class="container">
+
   <app-groups-page-header></app-groups-page-header>
 
-  <ul>
-    <li *ngFor="let group of allGroups index as i" class="group-elem">
+  
+    <div *ngFor="let group of allGroups index as i" class="group-elem">
       <div class="row">
-      <span class="col-md-1"> <img src ="{{this.BASE_URL}}/uploads/{{group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" width="50px" height="50px" alt="group_avatar"> </span>
-      <span class="group-name col-md-2"> {{ group.group_name }} </span>
-      <span class="pulse-desc col-md-3"> {{ group.pulse_description ? group.pulse_description : "Waiting for a new Pulse..." }} </span>
-      <span class="group-total-tasks col-md-2"> {{ pulseTotalTasks[group._id] }} Tasks this week  </span>
-      <span class="group-todo-tasks col-md-1"> {{ pulseTodoTasks[group._id] }} to do  </span>
-      <span class="group-in-progress-tasks col-md-1"> {{ pulseInProgressTasks[group._id] }} in progress  </span>
-      <span class="group-done-tasks col-md-1"> {{ pulseDoneTasks[group._id] }} done  </span>
-      <span class="col-md-1"></span>
-      </div>
-    </li>
-  </ul>
+    
+      <div class="col-md"> <img src ="{{this.BASE_URL}}/uploads/{{group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" width="50px" height="50px" alt="group_avatar"> </div>
+      <div class="group-name col-md-2"> {{ group.group_name }} </div>
+      <div class="pulse-desc col-md-4"> {{ group.pulse_description ? group.pulse_description : "Waiting for a new Pulse..." }} </div>
+      <div class="group-total-tasks col-md-2"> {{ pulseTotalTasks[group._id] }} Tasks this week  </div>
+      <div class="group-todo-tasks col-md"> {{ pulseTodoTasks[group._id] }} <br> to do  </div>
+      <div class="group-in-progress-tasks col-md"> {{ pulseInProgressTasks[group._id] }} progressing  </div>
+      <div class="group-done-tasks col-md"> {{ pulseDoneTasks[group._id] }} <br> done  </div>
+    </div>
+    </div>
+  
 
-</div>
+
