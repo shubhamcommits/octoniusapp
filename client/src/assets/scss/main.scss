@@ -383,14 +383,7 @@ color:#787878 !important;
 
 .ql-container {
   min-height: 100px !important;
-  overflow: visible !important; 
-  display:  flex;
-  
-}
-.ql-editor
-{
-  z-index:10; 
-  overflow: visible;
+  overflow: visible !important;
 }
 .ql-video{
   width: 100% ;
@@ -620,4 +613,11 @@ overflow:auto;
 @-webkit-keyframes loading-spinner{
   0%{-webkit-transform:rotate(0deg)}
   100%{-webkit-transform:rotate(360deg)}
+}
+
+.attachfile{
+  font-size: 14px;
+  .material-icons{
+    font-size: 18px !important;
+  }
 }
