@@ -159,5 +159,16 @@ export class GroupService {
   deleteSmartGroupRule(groupId: string, rule: string): Observable<any> {
     return this._http.put<any>(`${this.BASE_API_URL}/groups/smart/${groupId}/${rule}`, null);
   }
+
+  /**
+   * Makes an HTTP PUT request to update the members of a
+   * Smart Group.
+   * 
+   * @param groupId The group to update.
+   * @param data The requirements that the users must meet.
+   */
+  updateSmartGroupMembers(groupId: string, data: object): Observable<any> {
+    return this._http.put<any>(`${this.BASE_API_URL}/groups/smart/${groupId}`, data);
+  }
 }
 
