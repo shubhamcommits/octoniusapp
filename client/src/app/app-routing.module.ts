@@ -4,6 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { UserProfileComponent } from './dashboard/user-profile/user-profile.component';
 import { AdminComponent } from './dashboard/admin/admin.component';
 import { GroupsComponent } from './dashboard/groups/groups.component';
+import { PulseComponent } from './dashboard/groups/pulse/pulse.component';
 import { NewWorkspacePage1Component } from './Authentication/new-workspace-page-1/new-workspace-page-1.component';
 import { NewWorkspacePage2Component } from './Authentication/new-workspace-page-2/new-workspace-page-2.component';
 import { SigninComponent } from './Authentication/signin/signin.component';
@@ -56,8 +57,9 @@ const appRoutes: Routes = [
       { path: 'overview/mytasks', component: OverviewMyTasksComponent},
       { path: 'overview/myworkplace', component: OverviewMyWorkplaceComponent},
       {
-        path: 'groups', component: GroupsComponent, 
+        path: 'groups', component: GroupsComponent
       },
+      { path: 'pulse', component: PulseComponent},
       {
         path: 'group/:id', component: GroupComponent,
 
@@ -104,4 +106,4 @@ export class AppRoutingModule { }
 export const routingComponents = [UserProfileComponent, AdminComponent, GroupsComponent, NewWorkspacePage1Component,
   NewWorkspacePage2Component, SigninComponent, WelcomePageComponent, DashboardComponent, OverviewComponent,
   ProfileComponent, SignupComponent, PageNotFoundComponent, GroupActivityComponent, GroupAdminComponent, GroupFilesComponent,
-  GroupCalendarComponent, GroupMembersComponent, AdminGeneralComponent, AdminMembersComponent, GroupPostComponent];
+  GroupCalendarComponent, GroupMembersComponent, AdminGeneralComponent, AdminMembersComponent, GroupPostComponent, PulseComponent];

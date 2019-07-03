@@ -53,6 +53,33 @@ export class GroupService {
     return this._http.get(this.BASE_API_URL + '/group/' + group_id);
   }
 
+  // PULSE start
+
+  getAllPulse() {
+    return this._http.get(this.BASE_API_URL + '/groups/all/pulse/');
+  }
+
+  getPulseTotalNumTasks(group_id) {
+    return this._http.get(this.BASE_API_URL + '/group/' + group_id + '/totalNumTasks');
+  }
+
+  getPulseNumTodoTasks(group_id) {
+    return this._http.get(this.BASE_API_URL + '/group/' + group_id + '/numTodoTasks');
+  }
+
+  getPulseNumInProgressTasks(group_id) {
+    return this._http.get(this.BASE_API_URL + '/group/' + group_id + '/numInProgressTasks');
+  }
+
+  getPulseNumDoneTasks(group_id) {
+    return this._http.get(this.BASE_API_URL + '/group/' + group_id + '/numDoneTasks');
+  }
+
+  editPulseDesc(group_id, description) {
+    return this._http.post(this.BASE_API_URL + '/groups/' + group_id + '/pulse/editDescription', description);
+  }
+  // PULSE end
+
   getGroupFiles(group_id) {
 
     return this._http.get(this.BASE_API_URL + '/groups/' + group_id + '/files');
@@ -121,7 +148,7 @@ export class GroupService {
   /**
    * Makes an HTTP DELETE request to /api/groups/:groupId
    * in order to delete the group with the given ID.
-   * 
+   *
    * @param groupId The ID of the group to delete.
    */
   deleteGroup(groupId: string): Observable<any> {

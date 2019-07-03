@@ -146,10 +146,9 @@
           </div>
         </div>
         <div class="col-md-12 innercard" *ngFor="let file of post.files">
-          <div class="col-md-12 event-title">Attachment:</div>
-          <div class="col-md-12"> <a role="button" href="javascript:void(null);"
-                                     (click)="onDownloadFile(file)">{{file?.orignal_name}}</a></div>
-        </div>
+            <br>
+            <div class="col-md-12 attachfile">  <i class="material-icons event-title">attach_file</i><a role="button" href="javascript:void(null);" (click)="onDownloadFile(file.modified_name,file.orignal_name)">{{file?.orignal_name}}</a></div>
+          </div>
       </div>
 
       <!-- read more / read less button -->
