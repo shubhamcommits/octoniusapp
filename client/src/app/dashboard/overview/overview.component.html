@@ -8,7 +8,7 @@
   <div *ngIf="todayPosts.length == 0 && posts.length === 0 && weekPosts.length === 0 && comments.length === 0 && this.recentPosts.length === 0">
     <img src='../../../assets/images/empty-activity.svg' style=" margin: 0 auto; display:block; width: 60%">
   </div>
-  <div *ngIf="posts.length > 0 && (this.event_count == 0 && this.normal_count == 0 && this.task_count == 0 && this.recentPosts.length === 0)">
+  <div *ngIf="posts.length > 0 && (this.todayPosts.length == 0 && this.weekPosts.length === 0 && this.event_count == 0 && this.normal_count == 0 && this.task_count == 0 && this.recentPosts.length === 0)">
     <img src='../../../assets/images/empty-activity.svg' style=" margin: 0 auto; display:block; width: 60%">
   </div>
 
