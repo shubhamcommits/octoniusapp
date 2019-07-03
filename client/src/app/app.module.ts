@@ -22,6 +22,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { ClickOutsideModule } from 'ng-click-outside';
+import { DragDropModule, CdkDragExit  } from '@angular/cdk/drag-drop';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './common/components/navbar/navbar.component';
@@ -104,6 +105,7 @@ import { DocumentService } from './shared/services/document.service';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { GroupTasksNewComponent } from './dashboard/groups/group/group-tasks-new/group-tasks-new.component';
 import { ColumnService } from './shared/services/column.service';
+import { PulseComponent } from './dashboard/groups/pulse/pulse.component';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 
@@ -196,7 +198,8 @@ const ngCircle = {
     CollabDocPostComponent,
     CollaborativeDocGroupCommentsComponent,
     CollaborativeDocGroupPostCommentComponent,
-    GroupTasksNewComponent
+    GroupTasksNewComponent,
+    PulseComponent
   ],
   imports: [
     BrowserModule,
@@ -229,6 +232,7 @@ const ngCircle = {
     BrowserAnimationsModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
+    DragDropModule,
     NgbModule.forRoot(),
     ScrollToModule.forRoot(),
     CalendarModule.forRoot({

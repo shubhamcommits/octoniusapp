@@ -55,6 +55,29 @@ const getPrivate = async (req, res) => {
   }
 };
 
+const getUserGroups = async (req, res) => {
+  const { userId } = req;
+
+  try {
+    const groups = await Group.find({
+      group_name:{ $not: {$eq: 'private'}},
+      $or: [
+        { _members: { $elemMatch: { $eq: userId } } },
+        { _admins: { $elemMatch: { $eq: userId } } }
+      ]
+    }).select('_id group_name group_avatar description pulse_description');
+
+
+    return res.status(200).json({
+      groups: groups
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+
+
 /**
  * Fetches all groups associated with the current user in a given
  * workspace.
@@ -294,7 +317,7 @@ const getCalendarPosts = async (req, res, next) => {
     // we want to find posts between the start and end of given month
     const startOfMonthEvent = date.startOf('month').toDate();
     const endOfMonthEvent = date.endOf('month').toDate();
-    // need to convert format to match date from frontend 
+    // need to convert format to match date from frontend
     const convertedStartMonthEvent = moment(startOfMonthEvent).utc().format('YYYY-MM-DDTHH:mm:ss');
     const convertedEndOfMonthEvent = moment(endOfMonthEvent).utc().format('YYYY-MM-DDTHH:mm:ss');
 
@@ -479,7 +502,7 @@ const filterPosts = async (query, params) => {
       .populate('_liked_by', '_id first_name last_name')
       .populate('_followers', '_id first_name last_name')
       .lean();
-//start of tags query 
+//start of tags query
   //single fetched query for tags
   }else if (query.user === 'false' && query.tags === 'true' && !!query.tags_value && filters.length === 1) {
     posts = await Post.find({
@@ -683,6 +706,213 @@ const getTasksDone = async (req, res, next) => {
   }
 };
 
+/***
+ * Jessie Jia Edit starts PULSE
+ */
+
+const getTotalNumTasks = async (req, res, next) => {
+  try {
+    const {
+      userId,
+      params: {
+        groupId
+      }
+    } = req;
+
+    const today = moment().local().format('YYYY-MM-DD');
+    const todayPlus7Days = moment().local().add(7, 'days').format('YYYY-MM-DD');
+
+
+    const posts = await Post.find({
+      $and: [
+        { type: 'task' },
+        { _group: groupId },
+        { 'task.due_to': { $gte: today, $lt: todayPlus7Days } }
+      ]
+    });
+
+    return res.status(200).json({
+      message: `Found ${posts.length} total tasks.`,
+      numTasks: posts.length
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+
+const getNumTodoTasks = async (req, res, next) => {
+  try {
+    const {
+      userId,
+      params: {
+        groupId
+      }
+    } = req;
+
+    const today = moment().local().format('YYYY-MM-DD');
+    const todayPlus7Days = moment().local().add(7, 'days').format('YYYY-MM-DD');
+
+    const posts = await Post.find({
+      $and: [
+        { type: 'task' },
+        { _group: groupId },
+        { 'task.status': 'to do'},
+        { 'task.due_to': { $gte: today, $lt: todayPlus7Days } }
+      ]
+    });
+
+    return res.status(200).json({
+      message: `Found ${posts.length} todo tasks.`,
+      numTasks: posts.length
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+const getNumInProgressTasks = async (req, res, next) => {
+  try {
+    const {
+      userId,
+      params: {
+        groupId
+      }
+    } = req;
+
+    const today = moment().local().format('YYYY-MM-DD');
+    const todayPlus7Days = moment().local().add(7, 'days').format('YYYY-MM-DD');
+
+    const posts = await Post.find({
+      $and: [
+        { type: 'task' },
+        { _group: groupId },
+        { 'task.status': 'in progress'},
+        { 'task.due_to': { $gte: today, $lt: todayPlus7Days } }
+      ]
+    });
+
+    return res.status(200).json({
+      message: `Found ${posts.length} in progress tasks.`,
+      numTasks: posts.length
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+const getNumDoneTasks = async (req, res, next) => {
+  try {
+    const {
+      userId,
+      params: {
+        groupId
+      }
+    } = req;
+
+    const today = moment().local().format('YYYY-MM-DD');
+    const todayPlus7Days = moment().local().add(7, 'days').format('YYYY-MM-DD');
+
+    const posts = await Post.find({
+      $and: [
+        { type: 'task' },
+        { _group: groupId },
+        {$or: [
+            { 'task.status': 'done'},
+            { 'task.status': 'completed'},
+          ]},
+        { 'task.due_to': { $gte: today, $lt: todayPlus7Days } }
+      ]
+    });
+
+    return res.status(200).json({
+      message: `Found ${posts.length} done tasks.`,
+      numTasks: posts.length
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+const getPulseDescription = async (req, res) => {
+  try {
+    const {
+      userId,
+      params: {
+        groupId
+      }
+    } = req;
+
+    const group = await Group.findById(
+      groupId,
+      // {$set: {"pulse_description" : req.body.pulse_description}}
+    ).select('group_name pulse_description');
+
+    return res.status(200).json({
+      group_name: group.group_name,
+      pulse_description: group.pulse_description
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+const editPulseDescription = async (req, res) => {
+  try {
+    const {
+      userId,
+      body: {
+        pulse_description
+      },
+      params: {
+        groupId,
+      },
+    } = req;
+
+    // const pulse_description = req.body.pulse_description;
+    const group = await Group.findByIdAndUpdate(
+      groupId,
+      {$set: {"pulse_description" : req.body.pulse_description}}
+    ).select('group_name pulse_description');
+
+    return res.status(200).json({
+      groupId: groupId,
+      group_name: group.group_name,
+      request: req.body == null? "body is null" : req.body
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+
+const deletePulseDescription = async (req, res) => {
+  try {
+    const {
+      userId,
+      params: {
+        groupId,
+      }
+    } = req;
+
+    const group = await Group.findByIdAndUpdate(
+      groupId,
+      {$set: {"pulse_description" : null}}
+    ).select('group_name pulse_description');
+
+    return res.status(200).json({
+      groupId: groupId,
+      group_name: group.group_name,
+      message: "delete successful"
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+/***
+ * Jessie Jia Edit ends
+ */
+
 /*  =============
  *  -- EXPORTS --
  *  =============
@@ -692,6 +922,7 @@ module.exports = {
   // Main
   get,
   getPrivate,
+  getUserGroups,
   getAllForUser,
   getPublicGroups,
   addNewMember,
@@ -711,5 +942,14 @@ module.exports = {
   // Tasks
   getNextTasksDone,
   getTasks,
-  getTasksDone
+  getTasksDone,
+
+  // PULSE
+  getTotalNumTasks,
+  getNumTodoTasks,
+  getNumInProgressTasks,
+  getNumDoneTasks,
+  getPulseDescription,
+  editPulseDescription,
+  deletePulseDescription,
 };

@@ -36,6 +36,10 @@ const GroupSchema = new Schema({
     type: String,
     default: null
   },
+  pulse_description: {
+    type: String,
+    default: null
+  },
   created_date: {
     type: Date,
     default: moment().format()
