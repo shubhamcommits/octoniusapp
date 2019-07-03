@@ -78,7 +78,6 @@ export class GroupService {
   editPulseDesc(group_id, description) {
     return this._http.post(this.BASE_API_URL + '/groups/' + group_id + '/pulse/editDescription', description);
   }
-
   // PULSE end
 
   getGroupFiles(group_id) {
