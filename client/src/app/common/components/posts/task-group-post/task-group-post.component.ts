@@ -212,7 +212,7 @@ return doc.body.innerHTML;
       '_content_mentions': this.content_mentions,
       'type': this.post.type,
       'assigned_to': this.selectedGroupUsers,
-      'date_due_to': moment(date_due_to).format(),
+      'date_due_to': moment(date_due_to).format('YYYY-MM-DD'),
       'status': this.post.task.status,
       'tags': this.tags
     };
@@ -437,7 +437,6 @@ return doc.body.innerHTML;
   getAllColumns(){
     this.columnService.getAllColumns(this.group._id).subscribe((res: Column) => {
       this.allColumns = res.columns;
-      //console.log(this.allColumns); 
     }); 
   }
 
