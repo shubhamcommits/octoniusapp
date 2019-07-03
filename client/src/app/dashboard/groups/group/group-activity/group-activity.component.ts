@@ -226,14 +226,16 @@ export class GroupActivityComponent implements OnInit {
     });
   }
 
-  editPulseDesc(value: string) {
+  editPulseDesc() {
     const pulse_description_data = {
-      pulse_description: value,
+      pulse_description: this.pulse_description,
     };
     return new Promise((resolve, reject) => {
       this.groupService.editPulseDesc(this.group_id, pulse_description_data)
         .subscribe((res) => {
           console.log('response in group editPulseDesc:', res);
+          this.pulse_description = null;
+          this.snotifyService.success('New Pulse Sent!');
           resolve();
         }, (err) => {
           console.log(reject);
