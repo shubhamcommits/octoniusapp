@@ -108,23 +108,12 @@ export class GroupSmartAdminComponent implements OnInit {
         return;
       };
 
-      // First update UI
+      // Update UI
       // @ts-ignore
-      this.selectedItems.map(domain => this.currentSettings.emailDomains.push(domain));
+      this.currentSettings.emailDomains.push(this.selectedItems[0]);
 
-      // Now update DB
-      const data = { type: 'email_domain', domains: this.selectedItems };
-      this.groupService.updateSmartGroupRules(data, this.groupDataService.groupId).subscribe(
-        res => {
-          this.snotifyService.success('The rule has been successfully added!');
-          this.autoAdd();
-        },
-        error => {
-          this.snotifyService.error('An error occurred whilst adding the rule.');
-          console.error('Could not add new rule!');
-          console.error(error);
-        }
-      );
+      // Setup payload for DB
+      var data = { type: 'email_domain', payload: this.selectedItems };
     } else if (this.rule[0] === 'Job position') {
       // @ts-ignore
       if (this.currentSettings.jobPositions.includes(this.selectedItems[0])) {
@@ -132,23 +121,12 @@ export class GroupSmartAdminComponent implements OnInit {
         return;
       };
 
-      // First update UI
+      // Update UI
       // @ts-ignore
-      this.selectedItems.map(position => this.currentSettings.jobPositions.push(position));
+      this.currentSettings.jobPositions.push(this.selectedItems[0]);
 
-      // Now update DB
-      const data = { type: 'job_position', positions: this.selectedItems };
-      this.groupService.updateSmartGroupRules(data, this.groupDataService.groupId).subscribe(
-        res => {
-          this.snotifyService.success('The rule has been successfully added!');
-          this.autoAdd();
-        },
-        error => {
-          this.snotifyService.error('An error occurred whilst adding the rule.');
-          console.error('Could not add new rule!');
-          console.error(error);
-        }
-      );
+      // Setup payload for DB
+      var data = { type: 'job_position', payload: this.selectedItems };
     } else if (this.rule[0] === 'Skills') {
       // @ts-ignore
       if (this.currentSettings.skills.includes(this.selectedItems[0])) {
@@ -156,28 +134,29 @@ export class GroupSmartAdminComponent implements OnInit {
         return;
       };
 
-      // First update UI
+      // Update UI
       // @ts-ignore
-      this.selectedItems.map(skill => this.currentSettings.skills.push(skill));
+      this.currentSettings.skills.push(this.selectedItems[0]);
 
-      // Now update DB
-      const data = { type: 'skills', skills: this.selectedItems };
-      this.groupService.updateSmartGroupRules(data, this.groupDataService.groupId).subscribe(
-        res => {
-          this.snotifyService.success('The rule has been successfully added!');
-          this.autoAdd();
-        },
-        error => {
-          this.snotifyService.error('An error occurred whilst adding the rule.');
-          console.error('Could not add new rule!');
-          console.error(error);
-        }
-      );
+      // Setup payload for DB
+      var data = { type: 'skills', payload: this.selectedItems };
     }
 
-    this.rule = '';
-    this.conditions = [];
-    this.selectedItems = [];
+    // Update DB
+    this.groupService.updateSmartGroupRules(data, this.groupDataService.groupId).subscribe(
+      res => {
+        this.snotifyService.success('The rule has been successfully added!');
+        this.rule = '';
+        this.conditions = [];
+        this.selectedItems = [];
+        this.autoAdd();
+      },
+      error => {
+        this.snotifyService.error('An error occurred whilst adding the rule.');
+        console.error('Could not add new rule!');
+        console.error(error);
+      }
+    );
   }
 
   /**

@@ -171,23 +171,23 @@ const deleteGroup = async (req, res) => {
  */
 const updateSmartGroup = async (req, res) => {
   const { groupId } = req.params;
-  const { type } = req.body;
+  const { type, payload } = req.body;
 
   try {
     if (type === 'email_domain') {
-      req.body.domains.map(async (domain) => {
+      payload.map(async (domain) => {
         await Group.findByIdAndUpdate(groupId, {
           $addToSet: { 'conditions.email_domains': domain }
         });
       });
     } else if (type === 'job_position') {
-      req.body.positions.map(async (position) => {
+      payload.map(async (position) => {
         await Group.findByIdAndUpdate(groupId, {
           $addToSet: { 'conditions.job_positions': position }
         });
       });
     } else if (type === 'skills') {
-      req.body.skills.map(async (skill) => {
+      payload.map(async (skill) => {
         await Group.findByIdAndUpdate(groupId, {
           $addToSet: { 'conditions.skills': skill }
         });
