@@ -57,6 +57,7 @@ const init = (server) => {
     socket.on('postAdded', (data) => {
       const roomName = `${data.workspace}_${data.group}`;
       // Broadcast add event to group
+      console.log("hererehhrehreherhh1", data)
       socket.broadcast.to(roomName).emit('postAddedInGroup', data);
     });
 
@@ -133,7 +134,9 @@ const notifyRelatedUsers = async (io, socket, data) => {
       // If there are followers on post content...
       if (post._followers && post._followers.length !== 0) {
         // ...emit notificationsFeed for every follower
+        console.log("here1")
         for (const userId of post._followers) {
+          console.log("mep", userId)
           generateFeed(userId, io);
         }
       }
