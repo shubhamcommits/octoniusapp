@@ -427,6 +427,24 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
             hideSpeedMs: 0,
             selectionChangeSource: null
           },
+          imageResize: {
+            displaySize: true,
+            handleStyles: {
+              backgroundColor: 'black',
+              border: 'none',
+              color: 'white',
+              zIndex: '1000'
+            },
+            toolbarStyles: {
+              backgroundColor: 'black',
+              border: 'none',
+              color: 'white',
+              zIndex: '1000'
+            },
+            displayStyles:{
+              zIndex: '1000'
+            }
+          },
           autoLink: true,
           mention: {
             allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
