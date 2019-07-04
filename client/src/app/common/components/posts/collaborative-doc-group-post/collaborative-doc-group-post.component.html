@@ -1,11 +1,11 @@
-<app-collaborative-doc-group-navbar 
+<app-collaborative-doc-group-navbar
 (clickBack)="backClicked()" [post]="post" [docStatus]="docStatus" (docTitle)="getPostTitle($event)">
 </app-collaborative-doc-group-navbar>
 
 
 <div class="row" style="margin-top: 110px; margin-left: 1%">
   <div class="col-md-8">
-    
+
 <div class="toolbar" id="toolbar">
     <div id="toolbar-container">
       <span class="ql-formats">
@@ -57,7 +57,7 @@
           </i></button>
       </span>
     </div>
-  </div> 
+  </div>
       <div id="editor" style="background: white;">
       </div>
     </div>
@@ -70,7 +70,7 @@
       [user]="user_data"
       [comments]="comments"
       [comments_count]="comment_count">
-      
+
     </app-collaborative-doc-group-comments>
     </div>
     </div>

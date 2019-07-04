@@ -3,6 +3,8 @@ import { ActivatedRoute, Router, Route, ResolveEnd } from '@angular/router';
 import {Location} from '@angular/common';
 
 import QuillCursors from 'quill-cursors';
+import ImageResize from 'quill-image-resize-module';
+
 import ReconnectingWebSocket, {Options} from 'reconnecting-websocket';
 import * as ShareDB from '../../../../../../node_modules/sharedb/lib/client';
 // import * as Quill from 'quill';
@@ -20,24 +22,27 @@ import * as chance from 'chance';
 import { QuillAutoLinkService } from '../../../../shared/services/quill-auto-link.service';
 import { DocumentService } from '../../../../shared/services/document.service';
 import { Authorship } from '../../../../shared/utils/quill.module.authorship';
+import { white } from "ansi-colors";
+delete require.cache['/Users/jiaruoxi/Desktop/repo/octonius/octonius/client/node_modules/quill-image-resize-module/src/DefaultOptions.js'];
 
 // !--Register Required Modules--! //
 ShareDB.types.register(require('rich-text').type);
 Quill.register('modules/cursors', QuillCursors);
+Quill.register('modules/imageResize', ImageResize);
 Quill.register(Mark);
 Quill.register(Authorship);
+
 // !--Register Required Modules--! //
 
 // !-- Variables Required to use and export Globally--! //
 var postId: any;
-var cursors: any = {}; 
+var cursors: any = {};
 var comment_range = {};
 var quill: any;
 var editor: any;
 var docAuthors: any = new Array();
 // !-- Variables Required to use and export Globally--! //
 var shareDBSocket: any;
-
 
 @Component({
   selector: 'app-collaborative-doc-group-post',
@@ -50,16 +55,16 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
    container:[
     ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
     ['blockquote', 'code-block'],
-  
+
     [{ 'header': 1 }, { 'header': 2 }],               // custom button values
     [{ 'list': 'ordered'}, { 'list': 'bullet' }],
     [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
     [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
     [{ 'direction': 'rtl' }],                         // text direction
-  
+
     [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
     [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-  
+
     [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
     [{ 'font': [] }],
     [{ 'align': [] }],
@@ -203,8 +208,8 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
       }, (err)=>{
         console.log('Error while fetching the authors', err);
       })
-    });    
-  
+    });
+
   }
 
   ngOnDestroy(): void {
@@ -258,17 +263,17 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     var trimmedArray = [];
     var values = [];
     var value;
-  
+
     for(var i = 0; i < originalArray.length; i++) {
       value = originalArray[i][objKey];
-  
+
       if(values.indexOf(value) === -1) {
         trimmedArray.push(originalArray[i]);
         values.push(value);
       }
     }
     return trimmedArray;
-  
+
   }
 
   getDocument(postId){
@@ -293,7 +298,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
         connectionTimeout: 1000,
         maxRetries: 10,
     };
-      // !-- Connect ShareDB and Cursors to ReconnectingWebSocket--! //  
+      // !-- Connect ShareDB and Cursors to ReconnectingWebSocket--! //
       shareDBSocket = new ReconnectingWebSocket(((location.protocol === 'https:') ? 'wss' : 'ws') + '://' + environment.REAL_TIME_URL + '/sharedb', [], options);
       var shareDBConnection = new ShareDB.Connection(shareDBSocket);
       // Create browserchannel socket
@@ -301,7 +306,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
       // !-- Connect ShareDB and Cursors to ReconnectingWebSocket--! //
       //have color here
       var colorFromUser:any
-   
+
       if (this.user_document_information){
         colorFromUser = this.user_document_information['color']
       }else{
@@ -334,65 +339,83 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
             hideSpeedMs: 0,
             selectionChangeSource: null
           },
-          autoLink: true
+          autoLink: true,
+          imageResize: {
+            displaySize: true,
+            handleStyles: {
+              backgroundColor: 'black',
+              border: 'none',
+              color: 'white',
+              zIndex: '1000'
+            },
+            toolbarStyles: {
+              backgroundColor: 'black',
+              border: 'none',
+              color: 'white',
+              zIndex: '1000'
+            },
+            displayStyles:{
+              zIndex: '1000'
+            }
+          }
         },
       });
-  
+
       let doc = shareDBConnection.get('documents', postId);
-    
+
       let cursorsModule = quill.getModule('cursors');
      // cursorsModule.createCursor(1, 'User 1', 'red');
 
       // Init a blank user connection to store local conn data
       cursors.localConnection = connection;
 
-      
+
       // Update
       cursors.update = function() {
         cursors.socket.send(JSON.stringify(cursors.localConnection));
       };
-      
+
       // Init connections array
       cursors.connections = [];
-      
+
       // Send initial message to register the client, and
       // retrieve a list of current clients so we can set a colour.
       cursors.socket.onopen = function() {
         cursors.update();
       };
-      
+
       // Handle updates
       cursors.socket.onmessage = async (message) => {
-      
-        var data = JSON.parse(message.data);    
-        this.documentService.authorsList(data); 
+
+        var data = JSON.parse(message.data);
+        this.documentService.authorsList(data);
         var source = {},
           removedConnections = [],
           forceUpdate = false,
           reportNewConnections = true;
-      
+
         if (!cursors.localConnection.id)
           forceUpdate = true;
-      
+
         // Refresh local connection ID (because session ID might have changed because server restarts, crashes, etc.)
         cursors.localConnection.id = data.id;
-      
+
         if (forceUpdate) {
           cursors.update();
           return;
         }
-      
+
         //Find removed connections
         for (var i = 0; i < cursors.connections.length; i++) {
           var testConnection = data.connections.find( (connection) => {
             return connection.id == cursors.connections[i].id;
           });
-      
+
           if (!testConnection) {
-      
+
             removedConnections.push(cursors.connections[i]);
             //console.log('[cursors] User disconnected:', cursors.connections[i]);
-      
+
             // If the source connection was removed set it
             if (data.sourceId == cursors.connections[i])
               source = cursors.connections[i];
@@ -401,7 +424,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
             //console.log('[cursors] Connections after username update:', data.connections);
           }
         }
-  
+
         if (cursors.connections.length == 0 && data.connections.length != 0) {
           //data.connections = removeDuplicates(data.connections, 'user_id');
           data.connections.forEach(async (element)=>{
@@ -461,11 +484,11 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
           // Set the source if it's still on active connections
           if (data.sourceId == data.connections[i].id)
             source = data.connections[i];
-      
+
           if (reportNewConnections && !cursors.connections.find((connection) => {
               return connection.id == data.connections[i].id
             })) {
-  
+
             //data.connections = removeDuplicates(data.connections, 'user_id');
             //console.log('[cursors] User connected:', data.connections[i]);
             let authorData = {
@@ -504,7 +527,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
         // Update connections array
         cursors.connections = data.connections;
         //cursors.connections = removeDuplicates(cursors.connections, 'user_id');
-      
+
         // Fire event
         document.dispatchEvent(new CustomEvent('cursors-update', {
           detail: {
@@ -513,15 +536,15 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
           }
         }));
       };
-      
+
       cursors.socket.onclose = function (event) {
         console.log('[cursors] Socket closed. Event:', event);
       };
-      
+
       cursors.socket.onerror = function (event) {
         console.log('[cursors] Error on socket. Event:', event);
       };
-  
+
       this.handleDocument(doc, user, cursorsModule);
 
       //fired from cursor.js when a user is disconnected.
@@ -537,19 +560,19 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
 
       //subscribe ends
       //this.documentService.updateCursors(cursors.localConnection, cursors, cursorsModule);
-    
+
     // DEBUG
-    
+
     shareDBConnection.on('state', (state: any, reason: any)=> {
-  
+
       if (state === "connected") {
         cursors.localConnection.user_id = user.user_id;
         cursors.update();
       }
-    
+
       //console.log('[sharedb] New connection state: ' + state + ' Reason: ' + reason);
     });
-    } 
+    }
     catch(err){
       console.log('Error', err);
     }
@@ -566,7 +589,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
       // update editor contents
       let Document = await this.documentService.getDocumentHistory(postId, cursors);
       quill.setContents(Document);
-  
+
       editor = document.getElementsByClassName("ql-editor")[0].innerHTML;
       this.snotifyService.clear();
       this.docStatus = "Updated!";
@@ -576,6 +599,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     });
 
     // local -> server
+    quill.on('editor-change', () => console.log('I changed bruh!'));
     quill.on('text-change', (delta, oldDelta, source) => {
 
       this.docStatus = "Updating...";
@@ -662,5 +686,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
   }
 
 }
+
+
 
 export {comment_range, quill, editor, docAuthors};
