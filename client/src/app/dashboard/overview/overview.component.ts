@@ -380,12 +380,22 @@ export class OverviewComponent implements OnInit {
         this._postservice.getComment(data.commentId).subscribe(
           // @ts-ignore
           ({ comment }) => {
+            console.log("mep1", comment)
             // Ensure the comment was made on the current user's post
             if (currentUserId === comment._post._posted_by) {
               // Ensure the comment was not made by the current user
               if (currentUserId !== comment._commented_by._id) {
                 comment.readMore = true;
                 this.comments.unshift(comment);
+              }
+            }else if(comment._post._followers.length > 0){
+              console.log(comment._post._followers)
+              for(let i=0;i<comment._post._followers.length;i++){
+                if(currentUserId === comment._post._followers[i]){
+                  console.log("matched")
+                  comment.readMore = true;
+                  this.comments.unshift(comment);
+                }
               }
             }
           },
