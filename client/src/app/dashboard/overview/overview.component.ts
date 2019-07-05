@@ -150,7 +150,7 @@ export class OverviewComponent implements OnInit {
 
       this._postservice.useroverviewposts(this.user_data.user_id)
       .subscribe((res) => {
-        // console.log('Group posts:', res);
+        console.log('Group posts:', res);
         this.posts = res['posts'];
         this.comments = res['comments'];
 
