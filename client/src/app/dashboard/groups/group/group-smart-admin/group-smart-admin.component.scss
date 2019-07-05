@@ -6,3 +6,14 @@
     font-size: 14px;
     color: #009688;
 }
+
+#rule-select, #condition-select {
+    border: none;
+    border-bottom: 1px solid #005FD5;
+    font-family: Poppins;
+    font-size: 14px;
+}
+
+#rule-select:focus, #condition-select:focus {
+    outline: none;
+}

@@ -43,32 +43,33 @@
       </button>
     </div>
     <div class="col-md-3">
-      <angular2-multiselect [data]="rules" [(ngModel)]="rule" [settings]="{text: 'Select a rule', singleSelection: true}" (onSelect)="onRuleChange()" (onDeSelect)="clearConditions()">
-        <c-item>
-          <ng-template let-item="item">
-            <label>{{item}}</label>
-          </ng-template>
-        </c-item>
-        <c-badge>
-          <ng-template let-item="item">
-            <label>{{item}}</label>
-          </ng-template>
-        </c-badge>  
-      </angular2-multiselect>
+      <div class="dropdown">
+          <input
+            type="text"
+            id="rule-select"
+            placeholder="Select a rule"
+            class="dropdown-toggle"
+            data-toggle="dropdown"
+            [(ngModel)]="rule">
+          <div class="dropdown-menu">
+            <li *ngFor="let rule of rules" (click)="onRuleSelect(rule)">{{rule}}</li>
+          </div>
+      </div>
     </div>
     <div class="col-md-3">
-      <angular2-multiselect [data]="conditions" [(ngModel)]="selectedItems" [settings]="{text: 'Select a condition', singleSelection: true, enableSearchFilter: true, enableFilterSelectAll: false}">
-        <c-item>
-          <ng-template let-item="item">
-            <label>{{item}}</label>
-          </ng-template>
-        </c-item>
-        <c-badge>
-          <ng-template let-item="item">
-            <label>{{item}}</label>
-          </ng-template>
-        </c-badge>  
-      </angular2-multiselect>
+      <div class="dropdown">
+          <input
+            type="text"
+            id="condition-select"
+            placeholder="Select a condition"
+            class="dropdown-toggle"
+            data-toggle="dropdown"
+            (keyup)="search($event.target.value)"
+            [(ngModel)]="condition">
+          <div class="dropdown-menu">
+            <li *ngFor="let condition of conditions" (click)="onConditionSelect(condition)">{{condition}}</li>
+          </div>
+      </div>
     </div>
   </div>
 </div>

@@ -198,22 +198,16 @@ const updateSmartGroup = async (req, res) => {
 
   try {
     if (type === 'email_domain') {
-      payload.map(async (domain) => {
-        await Group.findByIdAndUpdate(groupId, {
-          $addToSet: { 'conditions.email_domains': domain }
-        });
+      await Group.findByIdAndUpdate(groupId, {
+        $addToSet: { 'conditions.email_domains': payload }
       });
     } else if (type === 'job_position') {
-      payload.map(async (position) => {
-        await Group.findByIdAndUpdate(groupId, {
-          $addToSet: { 'conditions.job_positions': position }
-        });
+      await Group.findByIdAndUpdate(groupId, {
+        $addToSet: { 'conditions.job_positions': payload }
       });
     } else if (type === 'skills') {
-      payload.map(async (skill) => {
-        await Group.findByIdAndUpdate(groupId, {
-          $addToSet: { 'conditions.skills': skill }
-        });
+      await Group.findByIdAndUpdate(groupId, {
+        $addToSet: { 'conditions.skills': payload }
       });
     }
 

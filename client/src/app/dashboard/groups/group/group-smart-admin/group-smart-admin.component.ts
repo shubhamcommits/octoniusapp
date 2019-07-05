@@ -11,12 +11,16 @@ import { GroupService } from '../../../../shared/services/group.service';
 })
 export class GroupSmartAdminComponent implements OnInit {
   @Input() group;
-  rule: string;
 
+  // The currently selected rule and condition
+  rule: string;
+  condition: string;
+
+  // Conditions populated from the DB for the dropdown
   conditions: string[];
+
   rules: string[];
 
-  selectedItems: string[];
 
   currentSettings: object;
 
@@ -25,8 +29,8 @@ export class GroupSmartAdminComponent implements OnInit {
 
   ngOnInit() {
     this.rule = '';
+    this.condition = '';
     this.conditions = [];
-    this.selectedItems = [];
     this.rules = ['Email domain', 'Job position', 'Skills'];
     this.currentSettings = {
       emailDomains: [],
@@ -35,47 +39,66 @@ export class GroupSmartAdminComponent implements OnInit {
     };
     this.getCurrentSettings();
   }
-  
+
   /**
-   * Event handler for smart group rule
-   * changes.
+   * Event handler that executes every time a
+   * new rule is selected.
    * 
    * @param rule The new rule.
    */
-  onRuleChange(): void {
-    this.selectedItems = [];
-    if (this.rule[0] === 'Email domain') {
+  onRuleSelect(rule: string): void {
+    this.rule = rule;
+  }
+
+  /**
+   * Event handler that executes every time a
+   * new condition is selected.
+   * 
+   * @param condition The new condition.
+   */
+  onConditionSelect(condition: string): void {
+    this.condition = condition;
+  }
+
+  /**
+   * Retrieves conditions from the DB
+   * based on whatever is entered by the user.
+   * 
+   * @param input The user's query.
+   */
+  search(input: string): void {
+    if (this.rule === 'Email domain') {
       // populate the current workspace's email domains
       this.workspaceService
-        .getUniqueEmailDomains(this.groupDataService.group._workspace)
+        .getUniqueEmailDomains(this.groupDataService.group._workspace, input)
         .subscribe(
           ({ domains }) => this.conditions = domains,
           error => {
-            this.snotifyService.error('An error occurred whilst fetching email domains.');
+            //this.snotifyService.error('An error occurred whilst fetching email domains.');
             console.error('Could not fetch email domains!');
             console.error(error);
           }
         );
-    } else if (this.rule[0] === 'Job position') {
+    } else if (this.rule === 'Job position') {
       // populate the current workspace's job positions
       this.workspaceService
-        .getUniqueJobPositions(this.groupDataService.group._workspace)
+        .getUniqueJobPositions(this.groupDataService.group._workspace, input)
         .subscribe(
           ({ positions }) => this.conditions = positions,
           error => {
-            this.snotifyService.error('An error occurred whilst fetching job positions.');
+            //this.snotifyService.error('An error occurred whilst fetching job positions.');
             console.error('Could not fetch job positions!');
             console.error(error);
           }
         );
-    } else if (this.rule[0] === 'Skills') {
+    } else if (this.rule === 'Skills') {
       // populate the current workspace's skills
       this.workspaceService
-        .getUniqueSkills(this.groupDataService.group._workspace)
+        .getUniqueSkills(this.groupDataService.group._workspace, input)
         .subscribe(
           ({ skills }) => this.conditions = skills,
           error => {
-            this.snotifyService.error('An error occurred whilst fetching skills.');
+            //this.snotifyService.error('An error occurred whilst fetching skills.');
             console.error('Could not fetch skills!');
             console.error(error);
           }
@@ -84,62 +107,54 @@ export class GroupSmartAdminComponent implements OnInit {
   }
 
   /**
-   * Executed whenever a rule is deselected.
-   */
-  clearConditions(): void {
-    this.conditions = [];
-    this.selectedItems = [];
-  }
-
-  /**
    * Event handler that executes whenever a new
    * rule is added.
    */
   onAddNewRule(): void {
-    if (this.selectedItems.length === 0) {
+    if (this.rule === '' || this.condition === '') {
       this.snotifyService.info('Conditions must be selected.');
       return;
     }
 
-    if (this.rule[0] === 'Email domain') {
+    if (this.rule === 'Email domain') {
       // @ts-ignore
-      if (this.currentSettings.emailDomains.includes(this.selectedItems[0])) {
+      if (this.currentSettings.emailDomains.includes(this.condition)) {
         this.snotifyService.info('That domain has already been added.');
         return;
       };
 
       // Update UI
       // @ts-ignore
-      this.currentSettings.emailDomains.push(this.selectedItems[0]);
+      this.currentSettings.emailDomains.push(this.condition);
 
       // Setup payload for DB
-      var data = { type: 'email_domain', payload: this.selectedItems };
-    } else if (this.rule[0] === 'Job position') {
+      var data = { type: 'email_domain', payload: this.condition };
+    } else if (this.rule === 'Job position') {
       // @ts-ignore
-      if (this.currentSettings.jobPositions.includes(this.selectedItems[0])) {
+      if (this.currentSettings.jobPositions.includes(this.condition)) {
         this.snotifyService.info('That position has already been added.');
         return;
       };
 
       // Update UI
       // @ts-ignore
-      this.currentSettings.jobPositions.push(this.selectedItems[0]);
+      this.currentSettings.jobPositions.push(this.condition);
 
       // Setup payload for DB
-      var data = { type: 'job_position', payload: this.selectedItems };
-    } else if (this.rule[0] === 'Skills') {
+      var data = { type: 'job_position', payload: this.condition };
+    } else if (this.rule === 'Skills') {
       // @ts-ignore
-      if (this.currentSettings.skills.includes(this.selectedItems[0])) {
+      if (this.currentSettings.skills.includes(this.condition)) {
         this.snotifyService.info('That skill has already been added.');
         return;
       };
 
       // Update UI
       // @ts-ignore
-      this.currentSettings.skills.push(this.selectedItems[0]);
+      this.currentSettings.skills.push(this.condition);
 
       // Setup payload for DB
-      var data = { type: 'skills', payload: this.selectedItems };
+      var data = { type: 'skills', payload: this.condition };
     }
 
     // Update DB
@@ -147,8 +162,8 @@ export class GroupSmartAdminComponent implements OnInit {
       res => {
         this.snotifyService.success('The rule has been successfully added!');
         this.rule = '';
+        this.condition = '';
         this.conditions = [];
-        this.selectedItems = [];
         this.autoAdd();
       },
       error => {
