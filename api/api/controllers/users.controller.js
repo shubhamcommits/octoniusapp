@@ -147,6 +147,7 @@ const getOverview = async (req, res, next) => {
     // filter the comments that responded to one the current user's posts
     const filteredComments = comments.filter(comment => comment._post._posted_by == req.userId);
 
+    console.log(filteredComments,"recentposts")
     const posts = await Post.find({
       $or: [{
         $and: [
@@ -272,6 +273,66 @@ const getOverview = async (req, res, next) => {
   });
 //follow Post check ends with finished promise for comment read
 
+    let recentFollowPosts = await Post.find({
+      '_group': { $in: _groups },
+      '_followers': {$elemMatch: { $eq: new mongoose.Types.ObjectId(userId) }},
+    })
+      .sort('-created_date')
+      .populate('_group')
+      .populate('comments')
+      .populate('_posted_by', '_id first_name last_name profile_pic')
+      .select('_id title type _group _posted_by created_date');
+
+    var allUnReadFollowedComments = []
+       
+//need to be populated better 
+    if(recentFollowPosts){
+        //console.log(recentFollowPosts,"here1123")
+        //get follow posts check
+        await recentFollowPosts.forEach(async (commentId) => {
+          try {
+            //console.log(commentId.comments.length)
+            //console.log(commentId.comments)
+            //filter follow posts where the comment's id is the user
+            const filteredComments = commentId.comments.filter(comment => comment._commented_by == userId);
+            //console.log(filteredComments.length)
+            //console.log(filteredComments,"hfil")
+            // loop inside filtered comment array to get into read by
+            await filteredComments.forEach(async (commentItem) => {
+              try {
+                //filtered so we can get into ready by
+                const checkReadItemed = commentItem._read_by.includes(userId)
+                
+                if(checkReadItemed === false){
+                  
+                  const comments = await Comment.findOne({
+                    "_id": commentItem._id
+                  })
+                    .sort('-created_date')
+                    .populate({ path: '_post', populate: { path: '_group' } })
+                    .populate('_commented_by', 'first_name last_name profile_pic');
+                  // console.log(comments,"here111")
+                  //   allUnReadFollowedComments.push(comments)
+                  //   console.log(allUnReadFollowedComments,"meppep")
+                } 
+                
+              } catch (err) {
+                return sendErr(res, err);
+              }
+            })
+          } catch (err) {
+            return sendErr(res, err);
+          }
+        })
+
+      }
+    return res.status(200).json({
+      message: `Found ${posts.length} posts!`,
+      posts,
+      recentPosts,
+      comments: filteredComments,
+      followedComments: allUnReadFollowedComments,
+    });
   } catch (err) {
     return sendErr(res, err);
   }
