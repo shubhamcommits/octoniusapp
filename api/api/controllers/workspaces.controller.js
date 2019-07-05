@@ -153,10 +153,10 @@ const getDomains = async (req, res, next) => {
 
 /**
  * Fetches the unique email domains that exist within
- * the given workspace.
+ * the given workspace that match the given query.
  */
 const getUniqueEmailDomains = async (req, res) => {
-  const { workspaceId } = req.params;
+  const { workspaceId, query } = req.params;
 
   try {
     // Get the emails
@@ -170,10 +170,12 @@ const getUniqueEmailDomains = async (req, res) => {
     });
 
     // Remove duplicates
-    const domains = new Set(emailDomains);
+    let domains = Array.from(new Set(emailDomains));
 
+    // Match the query
+    domains = domains.filter(domain => domain.includes(query));
     return res.status(200).json({
-      domains: Array.from(domains)
+      domains: domains.slice(0, 5) // Limit result to 5
     });
   } catch (error) {
     return sendErr(res, error);
@@ -182,19 +184,22 @@ const getUniqueEmailDomains = async (req, res) => {
 
 /**
  * Fetches the unique job positions that exist within
- * the given workspace.
+ * the given workspace that match the given query.
  */
 const getUniqueJobPositions = async (req, res) => {
-  const { workspaceId } = req.params;
+  const { workspaceId, query } = req.params;
 
   try {
     const positions = await User
-      .find({ _workspace: workspaceId })
+      .find({
+        _workspace: workspaceId,
+        current_position: { $regex: new RegExp(query, 'i') }
+      })
       .distinct('current_position')
       .where('current_position').ne(null);
 
     return res.status(200).json({
-      positions
+      positions: positions.slice(0, 5) // Limit results to 5
     });
   } catch (error) {
     return sendErr(res, error);
@@ -203,10 +208,10 @@ const getUniqueJobPositions = async (req, res) => {
 
 /**
  * Fetches the unique skills that exist within
- * the given workspace.
+ * the given workspace that match the given query.
  */
 const getUniqueSkills = async (req, res) => {
-  const { workspaceId } = req.params;
+  const { workspaceId, query } = req.params;
 
   try {
     const users = await User
@@ -219,10 +224,13 @@ const getUniqueSkills = async (req, res) => {
     users.map(userDoc => userDoc.skills.map(skill => skills.push(skill)));
 
     // Remove duplicates
-    const filteredSkills = new Set(skills);
+    let filteredSkills = Array.from(new Set(skills));
+
+    // Match the query
+    filteredSkills = filteredSkills.filter(skill => skill.includes(query));
 
     return res.status(200).json({
-      skills: Array.from(filteredSkills)
+      skills: filteredSkills.slice(0, 5) // Limit result to 5
     });
   } catch (error) {
     return sendErr(res, error);
