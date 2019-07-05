@@ -52,7 +52,10 @@
             data-toggle="dropdown"
             [(ngModel)]="rule">
           <div class="dropdown-menu">
-            <li *ngFor="let rule of rules" (click)="onRuleSelect(rule)">{{rule}}</li>
+            <li
+              *ngFor="let _rule of rules"
+              (click)="onRuleSelect(_rule)"
+              [ngClass]="{'active': _rule === rule}">{{_rule}}</li>
           </div>
       </div>
     </div>
@@ -67,7 +70,10 @@
             (keyup)="search($event.target.value)"
             [(ngModel)]="condition">
           <div class="dropdown-menu">
-            <li *ngFor="let condition of conditions" (click)="onConditionSelect(condition)">{{condition}}</li>
+            <li
+              *ngFor="let _condition of conditions"
+              (click)="onConditionSelect(_condition)"
+              [ngClass]="{'active': _condition === condition}">{{_condition}}</li>
           </div>
       </div>
     </div>
