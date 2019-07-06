@@ -278,13 +278,11 @@
               </span>
 
               <div ngbDropdown class="d-inline-block float-right status">
-                <button class="btn btn-sm kbn-done" id="dropdownDone" ngbDropdownToggle>{{post.task.status}}</button>
+                <button class="btn btn-sm" id="dropdownDone" [style.backgroundColor] = "bgColor[i%bgColor.length]" style = "color:#fff;" ngbDropdownToggle>{{post.task.status}}</button>
                 <div ngbDropdownMenu aria-labelledby="dropdownToDo">
-                  <button class="dropdown-item" (click)="OnMarkTaskToDo(this.post._id, post)">To Do</button>
-                  <button class="dropdown-item" (click)="OnMarkTaskInProgress(this.post._id, post)">In
-                    Progress
-                  </button>
-                  <button class="dropdown-item" (click)="OnMarkTaskCompleted(this.post._id, post)">Done</button>
+                  <div *ngFor="let col of allColumns">
+                    <button class="dropdown-item" (click)="updateTaskColumn(this.post._id, this.post.task.status, col.title)"> {{ col.title }}</button>  
+                  </div>
                 </div>
               </div>
 
