@@ -1256,6 +1256,7 @@ export class GroupTasksNewComponent implements OnInit {
       id:this.allColumns[this.allColumns.length-1]['_id'],
       tasks: []
     });
+    this.makeProxy(this.taskList.length-1);
     this.taskIds.push(this.allColumns[this.allColumns.length-1]['_id']);
   }
 
@@ -1380,6 +1381,7 @@ export class GroupTasksNewComponent implements OnInit {
   }
 
   onTaskDrop(event: CdkDragDrop<any[]>){
+    console.log(event);
     if(event.container.data[event.currentIndex]['title'] == 'proxy'){
       var postId = event.previousContainer.data[event.previousIndex]['_id'];
       var newCol = event.container.data[event.currentIndex]['status'];
@@ -1409,7 +1411,6 @@ export class GroupTasksNewComponent implements OnInit {
 
   entered(event: CdkDragStart<any[]>){  
     var title = event.source.dropContainer.data[0]['task']['status'];
-    console.log(title);
     for(var i=0; i<this.allColumns.length; i++){
       if(this.allColumns[i]['title'] != title){
         this.changeBg[i] = true;
