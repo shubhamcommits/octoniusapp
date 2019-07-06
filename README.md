@@ -36,28 +36,32 @@
 ---
 
 
-### 1.2. Running The App On Your Machine
+### 1.2. Running The App On Your Machine 
+
+##  
+
+
+**(You must have MongoDB installed on your machine - [check here to see how to install](https://docs.mongodb.com/manual/installation/))**
+  
+**(Along with Redis-server to enable caching - [check here to see how to install](https://redis.io/topics/quickstart))**
+
+---
 
 ### _For Linux and MacOS Users_  
 
+* After the installation please check the services list to see the what is the alias name of service installed(for both MongoDB and Redis), in some cases MongoDB is referred as `mongod` and sometimes it is registered as `mongodb`, wherease in the case of Redis it is `redis` or `redis-server`, depending upon the installed version.
 
-**(You must have MongoDB installed on your machine, [check here to see how to install](https://docs.mongodb.com/manual/installation/))**
-  
-**(Along with Redis-server to enable caching - [chech here to see how to install](https://redis.io/topics/quickstart))**
+* To list services use `brew services list`(for MacOS) or `sudo service --status-all`(for Linux).
 
-**After the installation please check the services list to see the what is the alias name of service installed(for both MongoDB and Redis), in some cases MongoDB is referred as `mongod` and sometimes it is registered as `mongodb`, wherease in the case of Redis it is `redis` or `redis-server`, depending upon the installed version.**
+* Record the alias of service name for both MongoDB and Redis Server.
 
-**To list services use `brew services list`(for MacOS) or `sudo service --status-all`(for Linux).**
+* For reference we are assuming:
 
-**Record the alias of service name for both MongoDB and Redis Server.**
+      * `alias service name of mongdb = mongoDbService` 
 
-**For reference we are assuming:**
-
-* `alias service name of mongdb = mongoDbService` 
-
-* `alias service name of redis = redisService`
+      * `alias service name of redis = redisService`
  
-**(`mongoDbService = mongod or mongodb` and `redisService = redis or redis-server`)**
+* (`mongoDbService = mongod or mongodb` and `redisService = redis or redis-server`)
 
 ##  
 
