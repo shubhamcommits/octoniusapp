@@ -262,6 +262,15 @@ export class GroupTasksNewComponent implements OnInit {
           }
           this.taskIds.push(this.allColumns[i]['_id']);
         }
+        this.taskList.push({
+          title: this.allColumns[i]['title'],
+          id: this.allColumns[i]['_id'],
+          tasks: currentTasks
+        });
+        if(currentTasks.length == 0){
+          this.makeProxy(i);
+        }
+        this.taskIds.push(this.allColumns[i]['_id']);
       }
 
     });
@@ -1383,7 +1392,6 @@ export class GroupTasksNewComponent implements OnInit {
       this.columnService.addColumnTask(this.groupId, newColumnName).subscribe((res) => {
         //console.log(res);
       });
-<<<<<<< 5bf4c51f8433095911ded0a5fb3a44d90fd02b0c
       
       this.getAllColumns();
      // var taskStatus = res['posts'].filter(task => task._id == post_id);
@@ -1391,8 +1399,6 @@ export class GroupTasksNewComponent implements OnInit {
       //this.isLoading$.next(false);
       this.isLoading$.next(true);
       console.log(this.pendingTasks);
-=======
->>>>>>> preparing branch for deployment
       
       const indexPendingTask = this.pendingTasks.findIndex(task => task._id == post_id);
       this.pendingTasks[indexPendingTask]['task']['status'] = newColumnName;
@@ -1414,6 +1420,9 @@ export class GroupTasksNewComponent implements OnInit {
       
       this.isLoading$.next(false);   
       //this.getTasks();
+      
+      this.getAllColumns();
+      this.getTasks();
     }, (err) => {
       console.log('Error:', err);
     });
