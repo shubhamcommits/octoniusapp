@@ -11,7 +11,7 @@
     </div>
 
 
-    <div [hidden]="groupDataService.group?.group_name =='Global'" class="card-tile invite-users">
+    <div [hidden]="groupDataService.group?.group_name =='Global' || groupDataService.group.type === 'smart'" class="card-tile invite-users">
 
       <h4>Add new member</h4>
       <p>You can search for persons inside the organization Workplace and add them to your group.</p>
@@ -38,6 +38,8 @@
       <p>If you want to invite someone from outside the organization, send them an invite from the Workplace Settings. </p>
 
     </div>
+
+    <group-smart-admin></group-smart-admin>
 
     <div [hidden]="groupDataService.group?.group_name =='Global'" class="card-tile">
       <h4>Delete the group</h4>

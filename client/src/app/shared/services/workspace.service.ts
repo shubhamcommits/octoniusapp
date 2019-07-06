@@ -2,6 +2,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class WorkspaceService {
@@ -43,5 +44,38 @@ export class WorkspaceService {
 
   resumeSubscription() {
     return this._http.get(this.BASE_API_URL + `/billing/resumeSubscription`);
+  }
+
+  /**
+   * Fetches unique email domains that exist within the given workspace
+   * that match the given query.
+   * 
+   * @param workspaceId The workspace to search within.
+   * @param query The email domains to search for.
+   */
+  getUniqueEmailDomains(workspaceId: string, query: string): Observable<any> {
+    return this._http.get<any>(`${this.BASE_API_URL}/workspace/emailDomains/${workspaceId}/${query}`);
+  }
+
+  /**
+   * Fetches unique job positions that exist within the given workspace
+   * that match the given query.
+   * 
+   * @param workspaceId The workspace to search within.
+   * @param query The job positions to search for.
+   */
+  getUniqueJobPositions(workspaceId: string, query: string): Observable<any> {
+    return this._http.get<any>(`${this.BASE_API_URL}/workspace/jobPositions/${workspaceId}/${query}`);
+  }
+
+  /**
+   * Fetches unique skills that exist within the given workspace
+   * that match the given query.
+   * 
+   * @param workspaceId The workspace to search within.
+   * @param query The skills to search for.
+   */
+  getUniqueSkills(workspaceId: string, query: string): Observable<any> {
+    return this._http.get<any>(`${this.BASE_API_URL}/workspace/skills/${workspaceId}/${query}`);
   }
 }

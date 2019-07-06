@@ -122,6 +122,31 @@ const getPublicGroups = async (req, res) => {
 };
 
 /**
+ * Fetches a user's smart groups within the
+ * given workspace.
+ */
+const getSmartGroups = async (req, res) => {
+  const { userId } = req;
+  const { workspace } = req.params;
+  try {
+    const groups = await Group.find({
+      type: 'smart',
+      _workspace: workspace,
+      $or: [
+        { _members: { $elemMatch: { $eq: new mongoose.Types.ObjectId(userId) } } },
+        { _admins: { $elemMatch: { $eq: new mongoose.Types.ObjectId(userId) } } }
+      ]
+    });
+
+    return res.status(200).json({
+      groups
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+/**
  * Add a new member to a public group
  */
 const addNewMember = async (req, res) => {
@@ -158,6 +183,170 @@ const deleteGroup = async (req, res) => {
     return res.status(200).json({
       message: 'Group deleted successfully!',
       deletedGroup
+    });
+  } catch (error) {
+    return sendErr(res, error);
+  }
+};
+
+/**
+ * Updates a smart group's rules.
+ */
+const updateSmartGroup = async (req, res) => {
+  const { groupId } = req.params;
+  const { type, payload } = req.body;
+
+  try {
+    if (type === 'email_domain') {
+      await Group.findByIdAndUpdate(groupId, {
+        $addToSet: { 'conditions.email_domains': payload }
+      });
+    } else if (type === 'job_position') {
+      await Group.findByIdAndUpdate(groupId, {
+        $addToSet: { 'conditions.job_positions': payload }
+      });
+    } else if (type === 'skills') {
+      await Group.findByIdAndUpdate(groupId, {
+        $addToSet: { 'conditions.skills': payload }
+      });
+    }
+
+    return res.status(200).json({
+      message: 'Rule added successfully!'
+    });
+  } catch (error) {
+    return sendErr(res, error);
+  }
+};
+
+/**
+ * Gets a smart group's settings.
+ */
+const getSmartGroupSettings = async (req, res) => {
+  const { groupId } = req.params;
+
+  try {
+    const groupDoc = await Group
+      .findById(groupId)
+      .select('conditions');
+
+    return res.status(200).json({
+      message: 'Rules successfully found!',
+      domains: groupDoc.conditions.email_domains ? groupDoc.conditions.email_domains : [],
+      positions: groupDoc.conditions.job_positions ? groupDoc.conditions.job_positions : [],
+      skills: groupDoc.conditions.skills ? groupDoc.conditions.skills : []
+    });
+  } catch (error) {
+    return sendErr(res, error);
+  }
+};
+
+/**
+ * Deletes a smart group's rule.
+ */
+const deleteSmartGroupRule = async (req, res) => {
+  const { groupId, rule } = req.params;
+
+  try {
+    if (rule === 'email_domains') {
+      await Group.findByIdAndUpdate(groupId, {
+        $unset: { 'conditions.email_domains': '' }
+      });
+    } else if (rule === 'job_positions') {
+      await Group.findByIdAndUpdate(groupId, {
+        $unset: { 'conditions.job_positions': '' }
+      });
+    } else if (rule === 'skills') {
+      await Group.findByIdAndUpdate(groupId, {
+        $unset: { 'conditions.skills': '' }
+      });
+    }
+
+    return res.status(200).json({
+      message: 'Rule successfully deleted!'
+    });
+  } catch (error) {
+    return sendErr(res, error);
+  }
+};
+
+/**
+ * This method is responsible for the automatic
+ * addition and deletion of smart group members
+ * based on the provided rules.
+ */
+const updateSmartGroupMembers = async (req, res) => {
+  const { groupId } = req.params;
+  const { workspaceId } = req.body;
+  const { emailDomains, jobPositions, skills } = req.body.currentSettings;
+
+  try {
+    // Get users in the group's workspace
+    let users = await User.find({
+      _workspace: workspaceId
+    });
+
+    if (emailDomains.length > 0) {
+      // Filter users by email domain
+      users = users.filter((user) => {
+        const { email } = user;
+        const index = email.indexOf('@');
+        const emailDomain = email.substring(index + 1);
+
+        return emailDomains.includes(emailDomain);
+      });
+    }
+
+    if (jobPositions.length > 0) {
+      // Filter users by job positions
+      users = users.filter(user => jobPositions.includes(user.current_position));
+    }
+
+    if (skills.length > 0) {
+      // Filter users by skills
+      users = users.filter(user => user.skills.some(skill => skills.includes(skill)));
+    }
+
+    // Remove owner/admin from prospective members
+    const { _admins } = await Group
+      .findById(groupId)
+      .select('_admins');
+    users = users.filter(user => !_admins.includes(user._id));
+
+    // Get current group members
+    const { _members } = await Group
+      .findById(groupId)
+      .select('_members');
+
+    // Remove the group from the current members' _groups set
+    _members.map(async (userId) => {
+      await User.findByIdAndUpdate(userId, {
+        $pull: { _groups: groupId }
+      });
+    });
+
+    // Remove the current members from the group
+    await Group.findByIdAndUpdate(groupId, {
+      $set: { _members: [] }
+    });
+
+    if (emailDomains.length > 0 || jobPositions.length > 0 || skills.length > 0) {
+      // Add new members
+      users.map(async (user) => {
+        // Add the user to the group
+        await Group.findByIdAndUpdate(groupId, {
+          $addToSet: { _members: user._id }
+        });
+
+        // Add the group to the user document
+        await User.findByIdAndUpdate(user._id, {
+          $addToSet: { _groups: groupId }
+        });
+      });
+    }
+
+    return res.status(200).json({
+      message: 'Group members successfully updated!'
     });
   } catch (error) {
     return sendErr(res, error);
@@ -925,8 +1114,13 @@ module.exports = {
   getUserGroups,
   getAllForUser,
   getPublicGroups,
+  getSmartGroups,
   addNewMember,
   deleteGroup,
+  updateSmartGroup,
+  getSmartGroupSettings,
+  deleteSmartGroupRule,
+  updateSmartGroupMembers,
   // Files
   downloadFile,
   getFiles,

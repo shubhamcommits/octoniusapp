@@ -40,13 +40,18 @@ router.delete('/:workspaceId/domains/:domain', workspaces.deleteDomain);
 // Get all workspace domains
 router.get('/:workspaceId/domains', workspaces.getDomains);
 
+// Get all unique email domains that belong within the given workspace that match the query.
+router.get('/emailDomains/:workspaceId/:query', workspaces.getUniqueEmailDomains);
+
+// Get all unique job positions that belong within the given workspace that match the query.
+router.get('/jobPositions/:workspaceId/:query', workspaces.getUniqueJobPositions);
+
+// Get all unique skills that belong within the given workspace that match the query.
+router.get('/skills/:workspaceId/:query', workspaces.getUniqueSkills);
+
 // - Users -
 
 // Remove user from workspace
 router.delete('/:workspaceId/users/:userId', workspaces.deleteUser);
-
-
-
-
 
 module.exports = router;
