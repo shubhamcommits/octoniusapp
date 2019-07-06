@@ -1260,6 +1260,8 @@ export class GroupTasksNewComponent implements OnInit {
         this.taskIds.push(this.allColumns[this.allColumns.length-1]['_id']);
       });
     });
+    this.makeProxy(this.taskList.length-1);
+    this.taskIds.push(this.allColumns[this.allColumns.length-1]['_id']);
   }
 
   // Delete Columns
