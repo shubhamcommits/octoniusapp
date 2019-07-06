@@ -1414,8 +1414,8 @@ export class GroupTasksNewComponent implements OnInit {
   }
 
   entered(event: CdkDragStart<any[]>){  
-    console.log(event);
-    var title = event.source.dropContainer.data[0]['task']['status']; 
+    var title = event.source.dropContainer.data[0]['task']['status'];
+    console.log(title);
     for(var i=0; i<this.allColumns.length; i++){
       if(this.allColumns[i]['title'] != title){
         this.changeBg[i] = true;
