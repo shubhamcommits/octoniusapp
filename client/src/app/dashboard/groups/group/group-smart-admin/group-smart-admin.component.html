@@ -1,4 +1,4 @@
-<div *ngIf="groupDataService.group.type === 'smart'" class="card-tile">
+<div *ngIf="this.groupDataService.group.type === 'smart'" class="card-tile">
   <h4>Smart Group settings</h4>
   <p>This group will automatically add people with the following rules:</p>
   <div *ngIf="currentSettings.emailDomains.length > 0" class="row">
