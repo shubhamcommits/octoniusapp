@@ -71,8 +71,6 @@
 1.2.2. Start Redis-Server as a service `sudo service redisService start`(For Linux) or `brew services start redisService`(For MacOS).
 
 
-#### Please Ensure that while pushing make sure that you change the environment variables back to the previous state.
-
 ---
 
 ### _For Windows Users_  
@@ -91,6 +89,11 @@
 *  `process.env.REDIS_HOST = 'redis'` to ` process.env.REDIS_HOST = '127.0.0.1'`.
 
 1.2.4. Go to `client/src/environments/environment.hmr.ts` and change the `REAL_TIME_URL: 'localhost:3000/editor'` to `REAL_TIME_URL: 'localhost:3001'`.
+
+##  
+
+
+#### Please Ensure that while pushing make sure that you change the environment variables back to the previous state.
 
 ##  
 
