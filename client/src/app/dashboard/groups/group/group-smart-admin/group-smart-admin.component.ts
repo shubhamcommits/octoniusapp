@@ -24,7 +24,7 @@ export class GroupSmartAdminComponent implements OnInit {
 
   currentSettings: object;
 
-  constructor(private groupDataService: GroupDataService, private workspaceService: WorkspaceService,
+  constructor(public groupDataService: GroupDataService, private workspaceService: WorkspaceService,
     private snotifyService: SnotifyService, private groupService: GroupService) { }
 
   ngOnInit() {
