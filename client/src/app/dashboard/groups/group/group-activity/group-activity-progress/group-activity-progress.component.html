@@ -18,8 +18,9 @@
           <b><circle-progress [percent]="columnPercent[column.title] || 0"> </circle-progress></b>
       </div>
     </div>
-
   </div>
+
+
   <ng-template #personalmetrics>
 
     <h6 class="card-title"><b>Hi {{user?.first_name}},</b></h6>
@@ -28,7 +29,7 @@
     <div class="row">
       <div class="col-md-12">
         <p>
-          You have <span class="todo bold">{{pendingToDoTaskCount + pendingInProgressTaskCount + completedTaskCount}}</span> assignments this week.
+          You have <span class="todo bold">{{ totalTasks }}</span> assignments this week.
         </p>
       </div>
 

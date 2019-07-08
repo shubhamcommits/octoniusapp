@@ -922,7 +922,8 @@ const getTotalNumTasks = async (req, res, next) => {
 
     return res.status(200).json({
       message: `Found ${posts.length} total tasks.`,
-      numTasks: posts.length
+      numTasks: posts.length,
+      posts
     });
   } catch (err) {
     return sendErr(res, err);
