@@ -1248,16 +1248,18 @@ export class GroupTasksNewComponent implements OnInit {
 
   addNewColumn(){
     this.columnService.addColumn(this.groupId, this.columnName).subscribe(() => {
-      this.getAllColumns();
+      this.newColumnModalRef.close();
+      this.columnService.getAllColumns(this.groupId).subscribe((res: Column) => {
+        this.allColumns = res.columns;
+        this.taskList.push({
+          title:this.columnName,
+          id:this.allColumns[this.allColumns.length-1]['_id'],
+          tasks: []
+        });
+        this.makeProxy(this.taskList.length-1);
+        this.taskIds.push(this.allColumns[this.allColumns.length-1]['_id']);
+      });
     });
-    this.newColumnModalRef.close();
-    this.taskList.push({
-      title:this.columnName,
-      id:this.allColumns[this.allColumns.length-1]['_id'],
-      tasks: []
-    });
-    this.makeProxy(this.taskList.length-1);
-    this.taskIds.push(this.allColumns[this.allColumns.length-1]['_id']);
   }
 
   // Delete Columns
@@ -1380,6 +1382,8 @@ export class GroupTasksNewComponent implements OnInit {
     });
   }
 
+  // Drag and drop 
+
   onTaskDrop(event: CdkDragDrop<any[]>){
     console.log(event);
     if(event.container.data[event.currentIndex]['title'] == 'proxy'){
@@ -1410,7 +1414,8 @@ export class GroupTasksNewComponent implements OnInit {
   }
 
   entered(event: CdkDragStart<any[]>){  
-    var title = event.source.dropContainer.data[0]['task']['status'];
+    console.log(event);
+    var title = event.source.dropContainer.data[0]['task']['status']; 
     for(var i=0; i<this.allColumns.length; i++){
       if(this.allColumns[i]['title'] != title){
         this.changeBg[i] = true;
