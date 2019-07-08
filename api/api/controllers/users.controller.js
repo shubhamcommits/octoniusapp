@@ -147,7 +147,6 @@ const getOverview = async (req, res, next) => {
     // filter the comments that responded to one the current user's posts
     const filteredComments = comments.filter(comment => comment._post._posted_by == req.userId);
 
-    console.log(filteredComments,"recentposts")
     const posts = await Post.find({
       $or: [{
         $and: [
@@ -188,47 +187,50 @@ const getOverview = async (req, res, next) => {
     // Filter out the posts belonging to the current user
     recentPosts = recentPosts.filter(post => post._posted_by._id.toString() !== userId);
 
+    //follow for posts 
+    let followedPost = await Post.find({
+      '_group': { $in: _groups },
+      'created_date': { $gte: todayForEvent, $lt: todayPlus24ForEvent },
+      '_followers': {$elemMatch: { $eq: new mongoose.Types.ObjectId(userId) }},
+      '_read_by': { $not: { $elemMatch: { $eq: new mongoose.Types.ObjectId(userId) } } }
+    })
+      .sort('-created_date')
+      .populate('_group', 'group_name')
+      .populate('_posted_by', '_id first_name last_name profile_pic')
+      .select('_id title type _group _posted_by created_date');
+
+  
+    console.log(followedPost,"followed")
+  //follow post in comments 
     let recentFollowPosts = await Post.find({
       '_group': { $in: _groups },
       '_followers': {$elemMatch: { $eq: new mongoose.Types.ObjectId(userId) }},
     })
       .sort('-created_date')
-      .populate('_group')
+      .populate('_group', 'group_name')
       .populate('comments')
       .populate('_posted_by', '_id first_name last_name profile_pic')
       .select('_id title type _group _posted_by created_date');
 
     var allUnReadFollowedComments = []
-       
 //need to be populated better 
     if(recentFollowPosts){
-        //console.log(recentFollowPosts,"here1123")
-        //get follow posts check
+
         await recentFollowPosts.forEach(async (commentId) => {
           try {
             //console.log(commentId.comments.length)
             //console.log(commentId.comments)
             //filter follow posts where the comment's id is the user
-            const filteredComments = commentId.comments.filter(comment => comment._commented_by == userId);
+            const filteredCommentsz = commentId.comments.filter(comment => comment._commented_by == userId);
             //console.log(filteredComments.length)
             //console.log(filteredComments,"hfil")
             // loop inside filtered comment array to get into read by
-            await filteredComments.forEach(async (commentItem) => {
+            await filteredCommentsz.forEach(async (commentItem) => {
               try {
                 //filtered so we can get into ready by
                 const checkReadItemed = commentItem._read_by.includes(userId)
-                
                 if(checkReadItemed === false){
-                  
-                  const comments = await Comment.findOne({
-                    "_id": commentItem._id
-                  })
-                    .sort('-created_date')
-                    .populate({ path: '_post', populate: { path: '_group' } })
-                    .populate('_commented_by', 'first_name last_name profile_pic');
-                  // console.log(comments,"here111")
-                  //   allUnReadFollowedComments.push(comments)
-                  //   console.log(allUnReadFollowedComments,"meppep")
+                  allUnReadFollowedComments.push(commentItem)
                 } 
                 
               } catch (err) {
@@ -239,15 +241,40 @@ const getOverview = async (req, res, next) => {
             return sendErr(res, err);
           }
         })
-
       }
+
+Promise.all(allUnReadFollowedComments.map(rider => {
+    return Comment.findOne({
+          "_id": rider._id
+        })
+          .sort('-created_date')
+          .populate({ path: '_post', populate: { path: '_group' } })
+          .populate('_commented_by', 'first_name last_name profile_pic')
+          .exec().catch(err => {
+        // convert error to null result in resolved array
+        return null;
+    });
+})).then(populatedComments => {
+    // foundRiders = foundRiders.filter(rider => rider !== null);
+
     return res.status(200).json({
       message: `Found ${posts.length} posts!`,
       posts,
       recentPosts,
-      comments: filteredComments,
-      followedComments: allUnReadFollowedComments,
-    });
+      followedPost,
+      comments: filteredComments.concat(populatedComments),
+    })
+}).catch(err => {
+  return sendErr(res, err);
+});
+
+    // return res.status(200).json({
+    //   message: `Found ${posts.length} posts!`,
+    //   posts,
+    //   recentPosts,
+    //   comments: filteredComments,
+    //   followedComments: checkedme,
+    // });
   } catch (err) {
     return sendErr(res, err);
   }
