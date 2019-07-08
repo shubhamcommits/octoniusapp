@@ -25,6 +25,15 @@
           <!-- <p class="card-text">Group description</p>  -->
         </div>
       </div>
+      <div *ngIf="user?.role== 'admin' || user?.role== 'owner'" (click)="openSmartGroupModal(smartGroup)" class="card col-md-3 overlay" style="text-align:center; background-image:url(https://picsum.photos/600/300/?random ) !important; cursor: pointer;">
+        <!-- <img class="card-img-top" src="https://picsum.photos/1920/1200/?random&gravity=south">  -->
+        <div class="card-body content" style="background:transparent">
+         
+          <h2 class="card-title white" style="color: #fff; margin-top: 60px;">  <i class="material-icons">fingerprint</i> <br> Create Smart Group</h2>
+          
+          <!-- <p class="card-text">Group description</p>  -->
+        </div>
+      </div>
 
     <!-- <div *ngIf="user?.role== 'admin' || user?.role== 'owner'" (click)="openLg(content)" class="card col-md-3" style="cursor: pointer;">
 
@@ -114,6 +123,51 @@
         
       </div>
     </ng-template>
+
+    <ng-template #smartGroup let-c="close" let-d="dismiss">
+      <div class="modal-header">
+        <h4 class="modal-title">Create Smart Group</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <ngb-alert *ngIf="alert.message" [type]="alert.class" (close)="successMessage = null">{{ alert.message}}</ngb-alert>
+
+      <div class="modal-body">
+        <form [formGroup]="createNewGroupForm">
+
+          <div class="form-group">
+            <label for="group_name">Group Name</label>
+            <input type="text" class="form-control" id="group_name" formControlName="groupName" [(ngModel)]="group.group_name" name="groupName">
+          </div>
+        </form>
+
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-default" (click)="c('Close click')">Cancel</button>
+        <button [disabled]="createNewGroupForm.invalid" class="btn btn-primary" (click)="onCreateSmartGroup()">Create Smart Group</button>
+        
+      </div>
+    </ng-template>
+  </div>
+
+  <div *ngIf="smartGroups.length > 0" class="row no-margin mt-3">
+    <h5 class="w-100">Smart Groups</h5>
+  </div>
+
+  <div class="row no-margin">
+    <ng-container *ngFor="let group of smartGroups">
+      <div *ngIf="group.group_name !== 'private'" class="card col-md-3 groups" [routerLink]="['/dashboard/group/',group._id,'activity']" class="card col-md-3 groups" style="cursor: default !important">
+        <span class="badge badge-members" >{{group._members?.length + group._admins?.length}} Members</span>
+        <img class="card-img-top" [src]="group.group_avatar" onerror="this.src='/assets/images/group.png'" >
+        <div class="card-body ">
+          <a>
+            <h2 class="card-title">{{group?.group_name}}</h2>
+          </a>
+          <!-- <p class="card-text">Group description</p>  -->
+        </div>
+      </div>
+    </ng-container>
   </div>
 
   <div *ngIf="agoras.length > 0" class="row no-margin mt-3">

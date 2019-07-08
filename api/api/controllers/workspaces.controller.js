@@ -151,6 +151,92 @@ const getDomains = async (req, res, next) => {
   }
 };
 
+/**
+ * Fetches the unique email domains that exist within
+ * the given workspace that match the given query.
+ */
+const getUniqueEmailDomains = async (req, res) => {
+  const { workspaceId, query } = req.params;
+
+  try {
+    // Get the emails
+    let emails = await User.find({ _workspace: workspaceId }).select('email');
+    emails = emails.map(userDoc => userDoc.email); // get rid of _id
+
+    // Generate the domails
+    const emailDomains = emails.map((email) => {
+      const index = email.indexOf('@');
+      return email.substring(index + 1);
+    });
+
+    // Remove duplicates
+    let domains = Array.from(new Set(emailDomains));
+
+    // Match the query
+    domains = domains.filter(domain => domain.includes(query));
+    return res.status(200).json({
+      domains: domains.slice(0, 5) // Limit result to 5
+    });
+  } catch (error) {
+    return sendErr(res, error);
+  }
+};
+
+/**
+ * Fetches the unique job positions that exist within
+ * the given workspace that match the given query.
+ */
+const getUniqueJobPositions = async (req, res) => {
+  const { workspaceId, query } = req.params;
+
+  try {
+    const positions = await User
+      .find({
+        _workspace: workspaceId,
+        current_position: { $regex: new RegExp(query, 'i') }
+      })
+      .distinct('current_position')
+      .where('current_position').ne(null);
+
+    return res.status(200).json({
+      positions: positions.slice(0, 5) // Limit results to 5
+    });
+  } catch (error) {
+    return sendErr(res, error);
+  }
+};
+
+/**
+ * Fetches the unique skills that exist within
+ * the given workspace that match the given query.
+ */
+const getUniqueSkills = async (req, res) => {
+  const { workspaceId, query } = req.params;
+
+  try {
+    const users = await User
+      .find({ _workspace: workspaceId })
+      .select('skills')
+      .where('skills').ne(null);
+
+    // Get skills from user documents
+    const skills = [];
+    users.map(userDoc => userDoc.skills.map(skill => skills.push(skill)));
+
+    // Remove duplicates
+    let filteredSkills = Array.from(new Set(skills));
+
+    // Match the query
+    filteredSkills = filteredSkills.filter(skill => skill.includes(query));
+
+    return res.status(200).json({
+      skills: filteredSkills.slice(0, 5) // Limit result to 5
+    });
+  } catch (error) {
+    return sendErr(res, error);
+  }
+};
+
 // -| Workspace users controllers |-
 
 const deleteUser = async (req, res, next) => {
@@ -239,6 +325,9 @@ module.exports = {
   addDomain,
   deleteDomain,
   getDomains,
+  getUniqueEmailDomains,
+  getUniqueJobPositions,
+  getUniqueSkills,
   // users
   deleteUser
 };

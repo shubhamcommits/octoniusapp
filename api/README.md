@@ -39,6 +39,16 @@
 
 #### 3.x. GET `api/groups/:groupId/nextTasksDone/:postId` get next 20 most recently created group's completed tasks
 
+#### 3.x. GET `api/groups/smart/:workspace` Get a user's smart groups within the given workspace
+
+#### 3.x. POST `api/groups/smart/:groupId` Update a smart group with the given rules.
+
+#### 3.x. GET `api/groups/smart/:groupId/settings` Get a smart group's settings
+
+#### 3.x. PUT `api/groups/smart/:groupId/:rule` Delete a smart group's rule
+
+#### 3.x. PUT `api/groups/smart/:groupId` Update a smart group's members
+
 '
 
 ## | 4. `api/posts` routes
@@ -238,6 +248,14 @@
 #### 6.x. GET `api/workspaces/:workspaceId/domains` get all workspace domains
 
 #### 6.x. ❗️❗️ DELETE `api/workspaces/:workspaceId/users/:userId` remove user from workspace
+
+#### 6.x. GET `api/workspaces/smart/:workspaceId` Get a user's smart groups within the given workspace
+
+#### 6.x. GET `api/workspaces/emailDomains/:workspaceId/:query` Get all unique email domains that belong within the given workspace that match the given query.
+
+#### 6.x. GET `api/workspaces/jobPositions/:workspaceId/:query` Get all job positions that belong within the given workspace that match the given query.
+
+#### 6.x. GET `api/workspaces/skills/:workspaceId/:query` Get all unique skills that belong within the given workspace that match the given query.
 
 <<<<<<< HEAD
 <<<<<<< HEAD

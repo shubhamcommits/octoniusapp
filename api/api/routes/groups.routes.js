@@ -49,12 +49,26 @@ router.get('/public/all', groups.getPublicGroups);
 // Get name id of groups of user
 router.get('/all/pulse', groups.getUserGroups);
 
+// Get a user's smart groups within the given workspace
+router.get('/smart/:workspace', groups.getSmartGroups);
 
 // Add a new member into a public group
 router.post('/public/:groupId', groups.addNewMember);
 
 // Delete the group with the given groupId
 router.delete('/:groupId', groups.deleteGroup);
+
+// Update a smart group with the given rules.
+router.post('/smart/:groupId', groups.updateSmartGroup);
+
+// Get a smart group's settings
+router.get('/smart/:groupId/settings', groups.getSmartGroupSettings);
+
+// Delete a smart group's rule
+router.put('/smart/:groupId/:rule', groups.deleteSmartGroupRule);
+
+// Update a smart group's members
+router.put('/smart/:groupId', groups.updateSmartGroupMembers);
 
 // - Files -
 

@@ -51,6 +51,20 @@ const GroupSchema = new Schema({
   type: {
     type: String,
     default: null
+  },
+  conditions: { // for smart groups
+    email_domains: {
+      type: [String],
+      default: []
+    },
+    job_positions: {
+      type: [String],
+      default: []
+    },
+    skills: {
+      type: [String],
+      default: []
+    }
   }
 });
 
