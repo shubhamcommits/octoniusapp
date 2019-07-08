@@ -161,7 +161,7 @@ export class OverviewComponent implements OnInit {
           return comment;
         });
 
-        this.recentPosts = res['recentPosts'];
+        this.recentPosts = [...res['recentPosts'],...res["followedPost"]];
         //console.log('recent posts', this.recentPosts);
 
         if (this.comments.length > 0) {

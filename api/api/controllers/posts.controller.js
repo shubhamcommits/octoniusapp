@@ -69,7 +69,6 @@ const add = async (req, res, next) => {
 const edit = async (req, res, next) => {
   try {
     let postData;
-
     switch (req.body.type) {
       case 'task':
 
@@ -150,6 +149,8 @@ const edit = async (req, res, next) => {
     if (!(user.role === 'owner' || user.role === 'admin') && !post._posted_by == req.userId) {
       return sendErr(res, null, 'User not allowed to edit this post!', 403);
     }
+
+    postData["_read_by"] = []
 
     const updatedPost = await Post.findOneAndUpdate({
       _id: req.params.postId
