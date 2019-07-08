@@ -25,6 +25,9 @@ export class ColumnService {
    }
 
    // get one column
+   getOneColumn(groupId, columnName){
+    return this._http.get(this.BASE_API_URL + `/column/${groupId}/${columnName}`);
+   }
 
    // add column
    addColumn(groupId, columnName){
