@@ -50,7 +50,7 @@ export class GroupActivityProgressComponent implements OnInit {
 
   async ngOnInit() {
     //this.allColumns.length = 0;
-    this.getTasks();
+    await this.getTasks();
     this.initColumns();
     this.getAllColumns();
     this.groupService.taskStatusChanged
@@ -61,10 +61,11 @@ export class GroupActivityProgressComponent implements OnInit {
 
   getTasks() {
     this.isLoading$.next(true);
-    this.groupService.getGroupTasks(this.group._id)
+    this.groupService.getPulseTotalNumTasks(this.group._id)
+    // this.groupService.getGroupTasks(this.group._id)
     .subscribe((res) => {
       this.pendingTasks = res['posts'];
-      this.totalTasks = 0;
+      this.totalTasks = res['numTasks'];
       for(var i=0; i<this.allColumns.length; i++){
         this.taskCount[this.allColumns[i]['title']] = 0;
       }
@@ -73,7 +74,7 @@ export class GroupActivityProgressComponent implements OnInit {
       }
       for(var i=0; i<this.allColumns.length; i++){
         //console.log(this.taskCount[this.allColumns[i]['title']]);
-        this.totalTasks+=this.taskCount[this.allColumns[i]['title']];
+        // this.totalTasks+=this.taskCount[this.allColumns[i]['title']];
          this.updateColumnNumber(this.allColumns[i]['title'],this.taskCount[this.allColumns[i]['title']]);
       }
       this.getAllColumns();
@@ -93,7 +94,7 @@ export class GroupActivityProgressComponent implements OnInit {
   initColumns(){
     this.columnService.initColumns(this.group._id).subscribe(() => {
       this.getAllColumns();
-    });   
+    });
   }
 
   getAllColumns(){
@@ -101,7 +102,7 @@ export class GroupActivityProgressComponent implements OnInit {
      if(res != null){
       this.allColumns = res.columns;
      }
-    }); 
+    });
   }
 
   updateColumnNumber(columnName, numberOfTasks){
