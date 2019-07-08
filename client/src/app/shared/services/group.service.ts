@@ -53,6 +53,33 @@ export class GroupService {
     return this._http.get(this.BASE_API_URL + '/group/' + group_id);
   }
 
+  // PULSE start
+
+  getAllPulse() {
+    return this._http.get(this.BASE_API_URL + '/groups/all/pulse/');
+  }
+
+  getPulseTotalNumTasks(group_id) {
+    return this._http.get(this.BASE_API_URL + '/group/' + group_id + '/totalNumTasks');
+  }
+
+  getPulseNumTodoTasks(group_id) {
+    return this._http.get(this.BASE_API_URL + '/group/' + group_id + '/numTodoTasks');
+  }
+
+  getPulseNumInProgressTasks(group_id) {
+    return this._http.get(this.BASE_API_URL + '/group/' + group_id + '/numInProgressTasks');
+  }
+
+  getPulseNumDoneTasks(group_id) {
+    return this._http.get(this.BASE_API_URL + '/group/' + group_id + '/numDoneTasks');
+  }
+
+  editPulseDesc(group_id, description) {
+    return this._http.post(this.BASE_API_URL + '/groups/' + group_id + '/pulse/editDescription', description);
+  }
+  // PULSE end
+
   getGroupFiles(group_id) {
 
     return this._http.get(this.BASE_API_URL + '/groups/' + group_id + '/files');
@@ -121,11 +148,54 @@ export class GroupService {
   /**
    * Makes an HTTP DELETE request to /api/groups/:groupId
    * in order to delete the group with the given ID.
-   * 
+   *
    * @param groupId The ID of the group to delete.
    */
   deleteGroup(groupId: string): Observable<any> {
     return this._http.delete<any>(`${this.BASE_API_URL}/groups/${groupId}`);
+  }
+
+  /**
+   * Makes an HTTP POST request to update a smart group's
+   * rules.
+   * 
+   * @param data The new rules to add
+   * @param groupId The smart group to update
+   */
+  updateSmartGroupRules(data: object, groupId: string): Observable<any> {
+    return this._http.post<any>(`${this.BASE_API_URL}/groups/smart/${groupId}`, data);
+  }
+
+  /**
+   * Makes an HTTP GET request to retrieve a smart group's
+   * current settings.
+   * 
+   * @param groupdId The group to query
+   */
+  getSmartGroupSettings(groupdId: string): Observable<any> {
+    return this._http.get<any>(`${this.BASE_API_URL}/groups/smart/${groupdId}/settings`);
+  }
+
+  /**
+   * Makes an HTTP PUT request that removes a smart group's
+   * rule.
+   * 
+   * @param groupId The ID of the smart group.
+   * @param rule The rule to delete.
+   */
+  deleteSmartGroupRule(groupId: string, rule: string): Observable<any> {
+    return this._http.put<any>(`${this.BASE_API_URL}/groups/smart/${groupId}/${rule}`, null);
+  }
+
+  /**
+   * Makes an HTTP PUT request to update the members of a
+   * Smart Group.
+   * 
+   * @param groupId The group to update.
+   * @param data The requirements that the users must meet.
+   */
+  updateSmartGroupMembers(groupId: string, data: object): Observable<any> {
+    return this._http.put<any>(`${this.BASE_API_URL}/groups/smart/${groupId}`, data);
   }
 }
 

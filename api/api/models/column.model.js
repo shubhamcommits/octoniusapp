@@ -21,7 +21,7 @@ const ColumnSchema = new Schema({
             title: 'in progress',
             taskCount: 0
         },{
-            title: 'completed',
+            title: 'done',
             taskCount: 0
         }]
     }

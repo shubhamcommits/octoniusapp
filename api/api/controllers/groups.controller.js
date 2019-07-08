@@ -55,6 +55,29 @@ const getPrivate = async (req, res) => {
   }
 };
 
+const getUserGroups = async (req, res) => {
+  const { userId } = req;
+
+  try {
+    const groups = await Group.find({
+      group_name:{ $not: {$eq: 'private'}},
+      $or: [
+        { _members: { $elemMatch: { $eq: userId } } },
+        { _admins: { $elemMatch: { $eq: userId } } }
+      ]
+    }).select('_id group_name group_avatar description pulse_description');
+
+
+    return res.status(200).json({
+      groups: groups
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+
+
 /**
  * Fetches all groups associated with the current user in a given
  * workspace.
@@ -88,6 +111,31 @@ const getPublicGroups = async (req, res) => {
       type: 'agora',
       _members: { $not: { $elemMatch: { $eq: new mongoose.Types.ObjectId(userId) } } },
       _admins: { $not: { $elemMatch: { $eq: new mongoose.Types.ObjectId(userId) } } }
+    });
+
+    return res.status(200).json({
+      groups
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+/**
+ * Fetches a user's smart groups within the
+ * given workspace.
+ */
+const getSmartGroups = async (req, res) => {
+  const { userId } = req;
+  const { workspace } = req.params;
+  try {
+    const groups = await Group.find({
+      type: 'smart',
+      _workspace: workspace,
+      $or: [
+        { _members: { $elemMatch: { $eq: new mongoose.Types.ObjectId(userId) } } },
+        { _admins: { $elemMatch: { $eq: new mongoose.Types.ObjectId(userId) } } }
+      ]
     });
 
     return res.status(200).json({
@@ -135,6 +183,170 @@ const deleteGroup = async (req, res) => {
     return res.status(200).json({
       message: 'Group deleted successfully!',
       deletedGroup
+    });
+  } catch (error) {
+    return sendErr(res, error);
+  }
+};
+
+/**
+ * Updates a smart group's rules.
+ */
+const updateSmartGroup = async (req, res) => {
+  const { groupId } = req.params;
+  const { type, payload } = req.body;
+
+  try {
+    if (type === 'email_domain') {
+      await Group.findByIdAndUpdate(groupId, {
+        $addToSet: { 'conditions.email_domains': payload }
+      });
+    } else if (type === 'job_position') {
+      await Group.findByIdAndUpdate(groupId, {
+        $addToSet: { 'conditions.job_positions': payload }
+      });
+    } else if (type === 'skills') {
+      await Group.findByIdAndUpdate(groupId, {
+        $addToSet: { 'conditions.skills': payload }
+      });
+    }
+
+    return res.status(200).json({
+      message: 'Rule added successfully!'
+    });
+  } catch (error) {
+    return sendErr(res, error);
+  }
+};
+
+/**
+ * Gets a smart group's settings.
+ */
+const getSmartGroupSettings = async (req, res) => {
+  const { groupId } = req.params;
+
+  try {
+    const groupDoc = await Group
+      .findById(groupId)
+      .select('conditions');
+
+    return res.status(200).json({
+      message: 'Rules successfully found!',
+      domains: groupDoc.conditions.email_domains ? groupDoc.conditions.email_domains : [],
+      positions: groupDoc.conditions.job_positions ? groupDoc.conditions.job_positions : [],
+      skills: groupDoc.conditions.skills ? groupDoc.conditions.skills : []
+    });
+  } catch (error) {
+    return sendErr(res, error);
+  }
+};
+
+/**
+ * Deletes a smart group's rule.
+ */
+const deleteSmartGroupRule = async (req, res) => {
+  const { groupId, rule } = req.params;
+
+  try {
+    if (rule === 'email_domains') {
+      await Group.findByIdAndUpdate(groupId, {
+        $unset: { 'conditions.email_domains': '' }
+      });
+    } else if (rule === 'job_positions') {
+      await Group.findByIdAndUpdate(groupId, {
+        $unset: { 'conditions.job_positions': '' }
+      });
+    } else if (rule === 'skills') {
+      await Group.findByIdAndUpdate(groupId, {
+        $unset: { 'conditions.skills': '' }
+      });
+    }
+
+    return res.status(200).json({
+      message: 'Rule successfully deleted!'
+    });
+  } catch (error) {
+    return sendErr(res, error);
+  }
+};
+
+/**
+ * This method is responsible for the automatic
+ * addition and deletion of smart group members
+ * based on the provided rules.
+ */
+const updateSmartGroupMembers = async (req, res) => {
+  const { groupId } = req.params;
+  const { workspaceId } = req.body;
+  const { emailDomains, jobPositions, skills } = req.body.currentSettings;
+
+  try {
+    // Get users in the group's workspace
+    let users = await User.find({
+      _workspace: workspaceId
+    });
+
+    if (emailDomains.length > 0) {
+      // Filter users by email domain
+      users = users.filter((user) => {
+        const { email } = user;
+        const index = email.indexOf('@');
+        const emailDomain = email.substring(index + 1);
+
+        return emailDomains.includes(emailDomain);
+      });
+    }
+
+    if (jobPositions.length > 0) {
+      // Filter users by job positions
+      users = users.filter(user => jobPositions.includes(user.current_position));
+    }
+
+    if (skills.length > 0) {
+      // Filter users by skills
+      users = users.filter(user => user.skills.some(skill => skills.includes(skill)));
+    }
+
+    // Remove owner/admin from prospective members
+    const { _admins } = await Group
+      .findById(groupId)
+      .select('_admins');
+    users = users.filter(user => !_admins.includes(user._id));
+
+    // Get current group members
+    const { _members } = await Group
+      .findById(groupId)
+      .select('_members');
+
+    // Remove the group from the current members' _groups set
+    _members.map(async (userId) => {
+      await User.findByIdAndUpdate(userId, {
+        $pull: { _groups: groupId }
+      });
+    });
+
+    // Remove the current members from the group
+    await Group.findByIdAndUpdate(groupId, {
+      $set: { _members: [] }
+    });
+
+    if (emailDomains.length > 0 || jobPositions.length > 0 || skills.length > 0) {
+      // Add new members
+      users.map(async (user) => {
+        // Add the user to the group
+        await Group.findByIdAndUpdate(groupId, {
+          $addToSet: { _members: user._id }
+        });
+
+        // Add the group to the user document
+        await User.findByIdAndUpdate(user._id, {
+          $addToSet: { _groups: groupId }
+        });
+      });
+    }
+
+    return res.status(200).json({
+      message: 'Group members successfully updated!'
     });
   } catch (error) {
     return sendErr(res, error);
@@ -294,7 +506,7 @@ const getCalendarPosts = async (req, res, next) => {
     // we want to find posts between the start and end of given month
     const startOfMonthEvent = date.startOf('month').toDate();
     const endOfMonthEvent = date.endOf('month').toDate();
-    // need to convert format to match date from frontend 
+    // need to convert format to match date from frontend
     const convertedStartMonthEvent = moment(startOfMonthEvent).utc().format('YYYY-MM-DDTHH:mm:ss');
     const convertedEndOfMonthEvent = moment(endOfMonthEvent).utc().format('YYYY-MM-DDTHH:mm:ss');
 
@@ -479,7 +691,7 @@ const filterPosts = async (query, params) => {
       .populate('_liked_by', '_id first_name last_name')
       .populate('_followers', '_id first_name last_name')
       .lean();
-//start of tags query 
+//start of tags query
   //single fetched query for tags
   }else if (query.user === 'false' && query.tags === 'true' && !!query.tags_value && filters.length === 1) {
     posts = await Post.find({
@@ -683,6 +895,213 @@ const getTasksDone = async (req, res, next) => {
   }
 };
 
+/***
+ * Jessie Jia Edit starts PULSE
+ */
+
+const getTotalNumTasks = async (req, res, next) => {
+  try {
+    const {
+      userId,
+      params: {
+        groupId
+      }
+    } = req;
+
+    const today = moment().local().format('YYYY-MM-DD');
+    const todayPlus7Days = moment().local().add(7, 'days').format('YYYY-MM-DD');
+
+
+    const posts = await Post.find({
+      $and: [
+        { type: 'task' },
+        { _group: groupId },
+        { 'task.due_to': { $gte: today, $lt: todayPlus7Days } }
+      ]
+    });
+
+    return res.status(200).json({
+      message: `Found ${posts.length} total tasks.`,
+      numTasks: posts.length
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+
+const getNumTodoTasks = async (req, res, next) => {
+  try {
+    const {
+      userId,
+      params: {
+        groupId
+      }
+    } = req;
+
+    const today = moment().local().format('YYYY-MM-DD');
+    const todayPlus7Days = moment().local().add(7, 'days').format('YYYY-MM-DD');
+
+    const posts = await Post.find({
+      $and: [
+        { type: 'task' },
+        { _group: groupId },
+        { 'task.status': 'to do'},
+        { 'task.due_to': { $gte: today, $lt: todayPlus7Days } }
+      ]
+    });
+
+    return res.status(200).json({
+      message: `Found ${posts.length} todo tasks.`,
+      numTasks: posts.length
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+const getNumInProgressTasks = async (req, res, next) => {
+  try {
+    const {
+      userId,
+      params: {
+        groupId
+      }
+    } = req;
+
+    const today = moment().local().format('YYYY-MM-DD');
+    const todayPlus7Days = moment().local().add(7, 'days').format('YYYY-MM-DD');
+
+    const posts = await Post.find({
+      $and: [
+        { type: 'task' },
+        { _group: groupId },
+        { 'task.status': 'in progress'},
+        { 'task.due_to': { $gte: today, $lt: todayPlus7Days } }
+      ]
+    });
+
+    return res.status(200).json({
+      message: `Found ${posts.length} in progress tasks.`,
+      numTasks: posts.length
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+const getNumDoneTasks = async (req, res, next) => {
+  try {
+    const {
+      userId,
+      params: {
+        groupId
+      }
+    } = req;
+
+    const today = moment().local().format('YYYY-MM-DD');
+    const todayPlus7Days = moment().local().add(7, 'days').format('YYYY-MM-DD');
+
+    const posts = await Post.find({
+      $and: [
+        { type: 'task' },
+        { _group: groupId },
+        {$or: [
+            { 'task.status': 'done'},
+            { 'task.status': 'completed'},
+          ]},
+        { 'task.due_to': { $gte: today, $lt: todayPlus7Days } }
+      ]
+    });
+
+    return res.status(200).json({
+      message: `Found ${posts.length} done tasks.`,
+      numTasks: posts.length
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+const getPulseDescription = async (req, res) => {
+  try {
+    const {
+      userId,
+      params: {
+        groupId
+      }
+    } = req;
+
+    const group = await Group.findById(
+      groupId,
+      // {$set: {"pulse_description" : req.body.pulse_description}}
+    ).select('group_name pulse_description');
+
+    return res.status(200).json({
+      group_name: group.group_name,
+      pulse_description: group.pulse_description
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+const editPulseDescription = async (req, res) => {
+  try {
+    const {
+      userId,
+      body: {
+        pulse_description
+      },
+      params: {
+        groupId,
+      },
+    } = req;
+
+    // const pulse_description = req.body.pulse_description;
+    const group = await Group.findByIdAndUpdate(
+      groupId,
+      {$set: {"pulse_description" : req.body.pulse_description}}
+    ).select('group_name pulse_description');
+
+    return res.status(200).json({
+      groupId: groupId,
+      group_name: group.group_name,
+      request: req.body == null? "body is null" : req.body
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+
+const deletePulseDescription = async (req, res) => {
+  try {
+    const {
+      userId,
+      params: {
+        groupId,
+      }
+    } = req;
+
+    const group = await Group.findByIdAndUpdate(
+      groupId,
+      {$set: {"pulse_description" : null}}
+    ).select('group_name pulse_description');
+
+    return res.status(200).json({
+      groupId: groupId,
+      group_name: group.group_name,
+      message: "delete successful"
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+/***
+ * Jessie Jia Edit ends
+ */
+
 /*  =============
  *  -- EXPORTS --
  *  =============
@@ -692,10 +1111,16 @@ module.exports = {
   // Main
   get,
   getPrivate,
+  getUserGroups,
   getAllForUser,
   getPublicGroups,
+  getSmartGroups,
   addNewMember,
   deleteGroup,
+  updateSmartGroup,
+  getSmartGroupSettings,
+  deleteSmartGroupRule,
+  updateSmartGroupMembers,
   // Files
   downloadFile,
   getFiles,
@@ -711,5 +1136,14 @@ module.exports = {
   // Tasks
   getNextTasksDone,
   getTasks,
-  getTasksDone
+  getTasksDone,
+
+  // PULSE
+  getTotalNumTasks,
+  getNumTodoTasks,
+  getNumInProgressTasks,
+  getNumDoneTasks,
+  getPulseDescription,
+  editPulseDescription,
+  deletePulseDescription,
 };

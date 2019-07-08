@@ -98,7 +98,7 @@
       </ng-container>
 
       <!-- event post content -->
-      <div class="col-md-12 innercard " [ngStyle]="{ 'height': this.readMore  ? '140px' : '100%', 'overflow': 'hidden'}">
+      <div class="col-md-12 innercard ">
         <div class="row" style="margin-top:10px">
           <div class="col-md-2 dateblock">
             <span class="bigdate">{{post?.event.due_to | amLocal | date :'dd' }}</span>
@@ -122,8 +122,8 @@
         </div>
 
       <div class="col-md-12 innercard" *ngFor="let file of post.files">
-        <div class="col-md-12 event-title">Attachment:</div>
-        <div class="col-md-12"> <a role="button" href="javascript:void(null);" (click)="onDownloadFile(file.modified_name,file.orignal_name)">{{file?.orignal_name}}</a></div>
+        <br>
+        <div class="col-md-12 attachfile">  <i class="material-icons event-title">attach_file</i><a role="button" href="javascript:void(null);" (click)="onDownloadFile(file.modified_name,file.orignal_name)">{{file?.orignal_name}}</a></div>
       </div>
 
             <!--POST TAGS-->

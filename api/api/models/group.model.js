@@ -36,6 +36,10 @@ const GroupSchema = new Schema({
     type: String,
     default: null
   },
+  pulse_description: {
+    type: String,
+    default: null
+  },
   created_date: {
     type: Date,
     default: moment().format()
@@ -47,6 +51,20 @@ const GroupSchema = new Schema({
   type: {
     type: String,
     default: null
+  },
+  conditions: { // for smart groups
+    email_domains: {
+      type: [String],
+      default: []
+    },
+    job_positions: {
+      type: [String],
+      default: []
+    },
+    skills: {
+      type: [String],
+      default: []
+    }
   }
 });
 
