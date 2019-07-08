@@ -397,14 +397,14 @@ const getDocFileForEditorImport = async (req, res, next) => {
         { files: { $exists: true, $ne: [] } }
       ]
     })
-    
+
     //check post length
     if(posts.length > 0 && posts[0].files.length > 0){
     //gather source file
     src = `${process.env.FILE_UPLOAD_FOLDER}/${posts[0].files[0].modified_name}`,
     // Arguments
     args = '-f docx -t html5';
- 
+
     // callback function after calling pandoc
     callback = function (err, result) {
       if (err){
@@ -456,14 +456,14 @@ const serveDocFileForEditorExport = async (req, res, next) => {
           };
           // Without the -o arg, the converted value will be returned.
         };
-        
+
         // Call pandoc
         pandoc(src, args, callback);
       }else{
         // there is an existing file when someone exported out, delete the previous itteration and make a new docx
         fs.unlink(filepath, (err) => {
           if (err) {
-            //handle error when file was not deleted properly 
+            //handle error when file was not deleted properly
             //console.log(err)
             return sendErr(res, err)
           }else{
@@ -487,7 +487,7 @@ const serveDocFileForEditorExport = async (req, res, next) => {
       }
     });
 
-    
+
 
   } catch (err) {
     return sendErr(res, err);
@@ -910,13 +910,13 @@ const getTotalNumTasks = async (req, res, next) => {
 
     const today = moment().local().format('YYYY-MM-DD');
     const todayPlus7Days = moment().local().add(7, 'days').format('YYYY-MM-DD');
-
-
+    const start = moment().local().startOf('week').format('YYYY-MM-DD');
+    const end = moment().local().endOf('week').format('YYYY-MM-DD');
     const posts = await Post.find({
       $and: [
         { type: 'task' },
         { _group: groupId },
-        { 'task.due_to': { $gte: today, $lt: todayPlus7Days } }
+        { 'task.due_to': { $gte: start, $lte: end } }
       ]
     });
 
@@ -941,13 +941,14 @@ const getNumTodoTasks = async (req, res, next) => {
 
     const today = moment().local().format('YYYY-MM-DD');
     const todayPlus7Days = moment().local().add(7, 'days').format('YYYY-MM-DD');
-
+    const start = moment().local().startOf('week').format('YYYY-MM-DD');
+    const end = moment().local().endOf('week').format('YYYY-MM-DD');
     const posts = await Post.find({
       $and: [
         { type: 'task' },
         { _group: groupId },
         { 'task.status': 'to do'},
-        { 'task.due_to': { $gte: today, $lt: todayPlus7Days } }
+        { 'task.due_to': { $gte: start, $lte: end } }
       ]
     });
 
@@ -971,13 +972,14 @@ const getNumInProgressTasks = async (req, res, next) => {
 
     const today = moment().local().format('YYYY-MM-DD');
     const todayPlus7Days = moment().local().add(7, 'days').format('YYYY-MM-DD');
-
+    const start = moment().local().startOf('week').format('YYYY-MM-DD');
+    const end = moment().local().endOf('week').format('YYYY-MM-DD');
     const posts = await Post.find({
       $and: [
         { type: 'task' },
         { _group: groupId },
         { 'task.status': 'in progress'},
-        { 'task.due_to': { $gte: today, $lt: todayPlus7Days } }
+        { 'task.due_to': { $gte: start, $lte: end } }
       ]
     });
 
@@ -1001,7 +1003,8 @@ const getNumDoneTasks = async (req, res, next) => {
 
     const today = moment().local().format('YYYY-MM-DD');
     const todayPlus7Days = moment().local().add(7, 'days').format('YYYY-MM-DD');
-
+    const start = moment().local().startOf('week').format('YYYY-MM-DD');
+    const end = moment().local().endOf('week').format('YYYY-MM-DD');
     const posts = await Post.find({
       $and: [
         { type: 'task' },
@@ -1010,7 +1013,7 @@ const getNumDoneTasks = async (req, res, next) => {
             { 'task.status': 'done'},
             { 'task.status': 'completed'},
           ]},
-        { 'task.due_to': { $gte: today, $lt: todayPlus7Days } }
+        { 'task.due_to': { $gte: start, $lte: end } }
       ]
     });
 
