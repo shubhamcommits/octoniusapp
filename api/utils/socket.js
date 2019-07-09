@@ -169,7 +169,6 @@ const notifyRelatedUsers = async (io, socket, data) => {
 
       comment = await Comment.findById(data.commentId).lean();
       post = await Post.findById(comment._post).lean();
-      console.log("meepepep1", comment,post)
 
       if (post._followers && post._followers.length !== 0) {
         // ...emit notificationsFeed for every follower
