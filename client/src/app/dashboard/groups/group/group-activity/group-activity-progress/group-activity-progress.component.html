@@ -1,43 +1,29 @@
 <div class="card sideinnercard">
-  <div *ngIf="!isItMyWorkplace; else personalmetrics" class="card-block">
 
     <h6 class="card-title"><b>Hi {{user?.first_name}},</b></h6>
     <hr />
 
     <div class="row">
       <div class="col-md-12">
-        <p>
-          Your team has <span class="todo bold">{{ totalTasks }}</span> assignment(s) this week.
-        </p>
-      </div>
-    </div>
-
-    <div class = "row" *ngFor = "let column of allColumns; let i = index;">
-        <div class="col-md-6"><h4 class="todo"  [style.color] = "bgColor[i%bgColor.length]" style="margin-top:30px"><b>{{totalTasks ? taskCount[column.title] : 0}} {{column.title}}</b></h4></div>
-        <div class="col-md-4">
-          <b><circle-progress [percent]="columnPercent[column.title] || 0"> </circle-progress></b>
-      </div>
-    </div>
-  </div>
-
-
-  <ng-template #personalmetrics>
-
-    <h6 class="card-title"><b>Hi {{user?.first_name}},</b></h6>
-    <hr />
-
-    <div class="row">
-      <div class="col-md-12">
-        <p>
-          You have <span class="todo bold">{{ totalTasks }}</span> assignments this week.
-        </p>
+        <div *ngIf="!isItMyWorkplace; else personalmetrics" class="card-block">
+          <p>
+            Your team has <span class="todo bold">{{ totalTasks }}</span> assignment(s) this week.
+          </p>
+        </div>
+        <ng-template #personalmetrics>
+          <div>
+            <p>
+              You have <span class="todo bold">{{ totalTasks }}</span> assignments this week.
+            </p>
+          </div>
+        </ng-template>
       </div>
 
     </div>
 
     <div class="row">
 
-      <div class="col-md-6"><h4 class="todo" style="margin-top:30px"><b>{{pendingToDoTaskCount}} To do</b></h4></div>
+      <div class="col-md-6"><h4 class="todo" style="margin-top:30px"><b>{{todoTasks}} To do</b></h4></div>
       <div class="col-md-4">
 
         <b><circle-progress
@@ -47,23 +33,22 @@
     </div>
 
     <div class="row">
-      <div class="col-md-6"><h4 class="working" style="margin-top:30px"><b>{{pendingInProgressTaskCount}} In progress</b></h4></div>
+      <div class="col-md-6"><h4 class="working" style="margin-top:30px"><b>{{inProgressTasks}} In progress</b></h4></div>
       <div class="col-md-4">
         <b><circle-progress
 
-          [percent]="inprogressPercent || 0">
+          [percent]="inProgressPercent || 0">
         </circle-progress></b>
       </div>
     </div>
 
     <div class="row">
-      <div class="col-md-6"><h4 class="done" style="margin-top:30px"><b>{{completedTaskCount}} Done</b></h4></div>
+      <div class="col-md-6"><h4 class="done" style="margin-top:30px"><b>{{doneTasks}} Done</b></h4></div>
       <div class="col-md-4">
         <b><circle-progress
 
-          [percent]="completedPercent || 0">
+          [percent]="donePercent || 0">
         </circle-progress></b>
       </div>
     </div>
-  </ng-template>
 </div>

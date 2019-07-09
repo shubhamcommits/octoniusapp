@@ -18,17 +18,16 @@ export class GroupActivityProgressComponent implements OnInit {
 
   isLoading$ = new BehaviorSubject(false);
 
-  pendingToDoTaskCount = 0;
-  pendingInProgressTaskCount = 0;
-  completedTaskCount = 0;
+  // number of tasks
+  totalTasks = 0;
+  todoTasks = 0;
+  inProgressTasks = 0;
+  doneTasks = 0;
 
-  completedTasks: any = [];
-  pendingTasks: any = [];
-
-  allColumns: any = [];
-  taskCount = [];
-  columnPercent = [];
-  totalTasks;
+  // task percentage
+  todoPercent = 0;
+  inProgressPercent = 0;
+  donePercent = 0;
 
   bgColor = [
     '#fd7714',
@@ -50,64 +49,73 @@ export class GroupActivityProgressComponent implements OnInit {
 
   async ngOnInit() {
     //this.allColumns.length = 0;
-    await this.getTasks();
-    this.initColumns();
-    this.getAllColumns();
+    // await this.getTasks();
+    await this.getPulseTotalNumTasks();
+    await this.getPulseNumTodoTasks();
+    await this.getPulseNumInProgressTasks();
+    await this.getPulseNumDoneTasks();
     this.groupService.taskStatusChanged
     .subscribe(() => {
-      this.getTasks();
+      // this.getTasks();
+      this.getPulseTotalNumTasks();
+      this.getPulseNumTodoTasks();
+      this.getPulseNumInProgressTasks();
+      this.getPulseNumDoneTasks();
     });
     }
 
-  getTasks() {
-    this.isLoading$.next(true);
-    this.groupService.getPulseTotalNumTasks(this.group._id)
-    // this.groupService.getGroupTasks(this.group._id)
-    .subscribe((res) => {
-      this.pendingTasks = res['posts'];
-      this.totalTasks = res['numTasks'];
-      for(var i=0; i<this.allColumns.length; i++){
-        this.taskCount[this.allColumns[i]['title']] = 0;
-      }
-      for(var i=0; i<this.pendingTasks.length; i++){
-        this.taskCount[this.pendingTasks[i]['task']['status']]++;
-      }
-      for(var i=0; i<this.allColumns.length; i++){
-        //console.log(this.taskCount[this.allColumns[i]['title']]);
-        // this.totalTasks+=this.taskCount[this.allColumns[i]['title']];
-         this.updateColumnNumber(this.allColumns[i]['title'],this.taskCount[this.allColumns[i]['title']]);
-      }
-      this.getAllColumns();
 
-      for(var i=0; i<this.allColumns.length; i++){
-        this.columnPercent[this.allColumns[i]['title']] = Math.round(this.taskCount[this.allColumns[i]['title']]/this.totalTasks*100);
-      }
-
-      this.isLoading$.next(false);
-    },
-    (err) => {
-      console.log('Error Fetching the Pending Tasks Posts', err);
-      this.isLoading$.next(false);
+  /***
+   * get total tasks number of the group
+   */
+  getPulseTotalNumTasks () {
+    return new Promise((resolve, reject) => {
+      this.groupService.getPulseTotalNumTasks(this.group._id)
+        .subscribe((res) => {
+          this.totalTasks = (res['numTasks']);
+          resolve();
+        }, (err) => {
+          reject();
+        });
     });
   }
 
-  initColumns(){
-    this.columnService.initColumns(this.group._id).subscribe(() => {
-      this.getAllColumns();
+  getPulseNumTodoTasks () {
+    return new Promise((resolve, reject) => {
+      this.groupService.getPulseNumTodoTasks(this.group._id)
+        .subscribe((res) => {
+          this.todoTasks = (res['numTasks']);
+          this.todoPercent = Math.round(this.todoTasks / this.totalTasks * 100);
+          resolve();
+        }, (err) => {
+          reject();
+        });
     });
   }
 
-  getAllColumns(){
-    this.columnService.getAllColumns(this.group._id).subscribe((res: Column) => {
-     if(res != null){
-      this.allColumns = res.columns;
-     }
+  getPulseNumInProgressTasks () {
+    return new Promise((resolve, reject) => {
+      this.groupService.getPulseNumInProgressTasks(this.group._id)
+        .subscribe((res) => {
+          this.inProgressTasks = (res['numTasks']);
+          this.inProgressPercent = Math.round(this.inProgressTasks / this.totalTasks * 100);
+          resolve();
+        }, (err) => {
+          reject();
+        });
     });
   }
 
-  updateColumnNumber(columnName, numberOfTasks){
-    this.columnService.editColumnNumber(this.group._id, columnName, numberOfTasks).subscribe((res) => {
-      //console.log('column number updated');
+  getPulseNumDoneTasks () {
+    return new Promise((resolve, reject) => {
+      this.groupService.getPulseNumDoneTasks(this.group._id)
+        .subscribe((res) => {
+          this.doneTasks = (res['numTasks']);
+          this.donePercent = Math.round(this.doneTasks / this.totalTasks * 100);
+          resolve();
+        }, (err) => {
+          reject();
+        });
     });
   }
 
