@@ -379,6 +379,7 @@ export class OverviewComponent implements OnInit {
         this._postservice.getComment(data.commentId).subscribe(
           // @ts-ignore
           ({ comment }) => {
+            console.log("mep1", comment)
             // Ensure the comment was made on the current user's post
             if (currentUserId === comment._post._posted_by) {
               // Ensure the comment was not made by the current user
