@@ -150,17 +150,16 @@ export class OverviewComponent implements OnInit {
 
       this._postservice.useroverviewposts(this.user_data.user_id)
       .subscribe((res) => {
-        console.log('Group posts:', res);
+        //console.log('Group posts:', res);
         this.posts = res['posts'];
         this.comments = res['comments'];
-
         // Adding the readMore property to every comment.
         // This property is used when making the post collapsible.
         this.comments = this.comments.map(comment => {
           comment.readMore = true;
           return comment;
         });
-
+        //concat recent posts with followed posts
         this.recentPosts = [...res['recentPosts'],...res["followedPost"]];
         //console.log('recent posts', this.recentPosts);
 
@@ -380,7 +379,6 @@ export class OverviewComponent implements OnInit {
         this._postservice.getComment(data.commentId).subscribe(
           // @ts-ignore
           ({ comment }) => {
-            console.log("mep1", comment)
             // Ensure the comment was made on the current user's post
             if (currentUserId === comment._post._posted_by) {
               // Ensure the comment was not made by the current user
@@ -389,10 +387,8 @@ export class OverviewComponent implements OnInit {
                 this.comments.unshift(comment);
               }
             }else if(comment._post._followers.length > 0){
-              console.log(comment._post._followers)
               for(let i=0;i<comment._post._followers.length;i++){
                 if(currentUserId === comment._post._followers[i]){
-                  console.log("matched")
                   comment.readMore = true;
                   this.comments.unshift(comment);
                 }
