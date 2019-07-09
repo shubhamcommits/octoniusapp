@@ -1334,7 +1334,32 @@ export class GroupTasksNewComponent implements OnInit {
         //console.log(res);
       });
       this.getAllColumns();
-      this.getTasks();
+     // var taskStatus = res['posts'].filter(task => task._id == post_id);
+    //  taskStatus.task.status = newColumnName;
+      //this.isLoading$.next(false);
+      this.isLoading$.next(true);
+      console.log(this.pendingTasks);
+      
+      const indexPendingTask = this.pendingTasks.findIndex(task => task._id == post_id);
+      this.pendingTasks[indexPendingTask]['task']['status'] = newColumnName;
+      this.taskCount[newColumnName]++;
+      
+      
+      for(var i=0;i < this.taskList.length; i++)
+      {
+      if(this.taskList[i]['title'] == newColumnName)
+      {
+             this.taskList[i]['tasks'].push(this.pendingTasks[indexPendingTask]);
+         }
+     if(this.taskList[i]['title'] == oldColumnName)
+      {
+          const indexTaskListRemoval = this.taskList[i]['tasks'].findIndex(task => task._id == post_id);
+          this.taskList[i]['tasks'].splice(indexTaskListRemoval , 1);  
+      }
+      }
+      
+      this.isLoading$.next(false);   
+      //this.getTasks();
     }, (err) => {
       console.log('Error:', err);
     });
