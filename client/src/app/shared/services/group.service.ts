@@ -14,6 +14,7 @@ import {Subject} from "rxjs/Subject";
 export class GroupService {
 
   taskStatusChanged = new Subject();
+  newTaskAdded = new Subject();
 
   BASE_API_URL = environment.BASE_API_URL;
 
