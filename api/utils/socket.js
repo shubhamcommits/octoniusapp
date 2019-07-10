@@ -114,7 +114,6 @@ const notifyRelatedUsers = async (io, socket, data) => {
   try {
     let post;
     let comment;
-
     // we had a problem that the flow got interrupted because of the db search
     //  by adding type property (at the moment post or comment) to data  we can specify which database to search through
     if (data.type === 'post') {
@@ -169,7 +168,13 @@ const notifyRelatedUsers = async (io, socket, data) => {
     } else if (data.type === 'comment') {
 
       comment = await Comment.findById(data.commentId).lean();
-
+      post = await Post.findById(comment._post).lean();
+      if (post._followers && post._followers.length !== 0) {
+        // ...emit notificationsFeed for every follower
+        for (const userId of post._followers) {
+          generateFeed(userId, io);
+        }
+      }
       // If there are mentions on comments content...
       if (comment._content_mentions.length !== 0) {
 

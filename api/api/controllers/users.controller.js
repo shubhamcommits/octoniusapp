@@ -147,7 +147,6 @@ const getOverview = async (req, res, next) => {
     // filter the comments that responded to one the current user's posts
     const filteredComments = comments.filter(comment => comment._post._posted_by == req.userId);
 
-
     const posts = await Post.find({
       $or: [{
         $and: [
@@ -187,13 +186,92 @@ const getOverview = async (req, res, next) => {
 
     // Filter out the posts belonging to the current user
     recentPosts = recentPosts.filter(post => post._posted_by._id.toString() !== userId);
+//follow Post check begins
+    //all followed post (task/events/post) controlled here when there is an edit
+    //made edit from emtying read by since an edit post is new and is not read yet 
+    let followedPost = await Post.find({
+      '_group': { $in: _groups },
+      '_posted_by': { $ne: req.userId },
+      'created_date': { $lt: todayForEvent},
+      '_followers': {$elemMatch: { $eq: new mongoose.Types.ObjectId(userId) }},
+      '_read_by': { $not: { $elemMatch: { $eq: new mongoose.Types.ObjectId(userId) } } }
+    })
+      .sort('-created_date')
+      .populate('_group', 'group_name')
+      .populate('_posted_by', '_id first_name last_name profile_pic')
+      .select('_id title type _group _posted_by created_date');
 
-    return res.status(200).json({
-      message: `Found ${posts.length} posts!`,
-      posts,
-      recentPosts,
-      comments: filteredComments
-    });
+  //follow post in comments 
+    let allFollowedPosts = await Post.find({
+      '_group': { $in: _groups },
+      '_followers': {$elemMatch: { $eq: new mongoose.Types.ObjectId(userId) }},
+    })
+      .sort('-created_date')
+      .populate('_group', 'group_name')
+      .populate('comments')
+      .populate('_posted_by', '_id first_name last_name profile_pic')
+      .select('_id title type _group _posted_by created_date');
+    //set var here to gather all unread followed comments 
+    var allUnReadFollowedComments = []
+
+    if(allFollowedPosts){
+        await allFollowedPosts.forEach(async (commentId) => {
+          try {
+            //filter follow posts where the comment's id is not the user
+            const filteredCommentsz = commentId.comments.filter(comment => comment._commented_by != userId);
+            // loop inside filtered comment array to get into read by
+            await filteredCommentsz.forEach(async (commentItem) => {
+              try {
+                //filtered so we can get into ready by
+                const checkReadItemed = commentItem._read_by.includes(userId)
+                if(checkReadItemed === false){
+                  //push unread followed comments onto variable for promise check below
+                  allUnReadFollowedComments.push(commentItem)
+                } 
+              } catch (err) {
+                return sendErr(res, err);
+              }
+            })
+          } catch (err) {
+            return sendErr(res, err);
+          }
+        })
+      }
+    //promise checking unread followed comments so we can populate 
+    Promise.all(allUnReadFollowedComments.map(unreadComment => {
+      return Comment.findOne({
+            "_id": unreadComment._id
+          })
+            .sort('-created_date')
+            .populate({ path: '_post', populate: { path: '_group' } })
+            .populate('_commented_by', 'first_name last_name profile_pic')
+            .exec().catch(err => {
+          // convert error to null result in resolved array
+          return null;
+      });
+    })).then(populatedComments => {
+      //concat filtered comments and populated follow comments
+      concatArr = filteredComments.concat(populatedComments)
+      //sort comments from earliest date
+      var sortedCom = concatArr.sort(function(a,b){
+        var c = new Date(a.created_date);
+        var d = new Date(b.created_date);
+        //if reversed it will go from oldest to newest post c-d
+        return d-c;
+        });
+      return res.status(200).json({
+        message: `Found ${posts.length} posts!`,
+        posts,
+        recentPosts,
+        followedPost,
+        comments: sortedCom,
+      })
+
+  }).catch(err => {
+    return sendErr(res, err);
+  });
+//follow Post check ends with finished promise for comment read
+
   } catch (err) {
     return sendErr(res, err);
   }
