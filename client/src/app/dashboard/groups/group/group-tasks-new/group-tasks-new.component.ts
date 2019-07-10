@@ -1332,6 +1332,7 @@ export class GroupTasksNewComponent implements OnInit {
       });
       this.columnService.deleteColumnTask(this.groupId, oldColumnName).subscribe((res) => {
         //console.log(res);
+<<<<<<< HEAD
       });
       this.getAllColumns();
      // var taskStatus = res['posts'].filter(task => task._id == post_id);
@@ -1373,6 +1374,8 @@ export class GroupTasksNewComponent implements OnInit {
     .subscribe((res) => {
       this.columnService.addColumnTask(this.groupId, newColumnName).subscribe((res) => {
         //console.log(res);
+=======
+>>>>>>> ab90222152ef3ffd7775ceab5fc9d3caf395bc2d
       });
       
       this.getAllColumns();
@@ -1382,6 +1385,26 @@ export class GroupTasksNewComponent implements OnInit {
     });
   }
 
+<<<<<<< HEAD
+=======
+  updateTaskColumnSingle(post_id, newColumnName){
+    const statusUpdate = {
+      'status' : newColumnName
+    }
+    this.postService.complete(post_id,statusUpdate)
+    .subscribe((res) => {
+      this.columnService.addColumnTask(this.groupId, newColumnName).subscribe((res) => {
+        //console.log(res);
+      });
+      
+      this.getAllColumns();
+      this.getTasks();
+    }, (err) => {
+      console.log('Error:', err);
+    });
+  }
+
+>>>>>>> ab90222152ef3ffd7775ceab5fc9d3caf395bc2d
   // Drag and drop 
 
   onTaskDrop(event: CdkDragDrop<any[]>){
