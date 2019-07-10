@@ -12,7 +12,7 @@
     <div class = "card-main">
       <div class="kanbanheader" [style.backgroundColor] = "bgColor[i%bgColor.length]" cdkDragHandle >
         {{ column.title }}
-        <div *ngIf="column.title != 'to do' && column.title != 'in progress' && column.title != 'completed'">
+        <div *ngIf="column.title != 'to do' && column.title != 'in progress' && column.title != 'done'">
           <button class = "cross" (click)="openEditColumnModal(editColumnModal, column.title)"><i class="material-icons">create</i></button>
         </div>
       </div>
