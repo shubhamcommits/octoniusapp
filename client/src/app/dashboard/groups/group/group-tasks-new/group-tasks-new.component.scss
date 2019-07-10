@@ -100,12 +100,13 @@
   background: rgba(0,0,0,0.7); 
 }
 
-.cdk-drag-animating, .cdk-drop-list-dragging .cdk-drag {
+.cdk-drop-list-dragging .cdk-drag {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-}
+  }
 
 .cdk-drag-placeholder {
   opacity: 0;
+  
 }
 
 .cdk-drag-preview {

@@ -152,7 +152,7 @@ export class GroupTasksNewComponent implements OnInit {
     '#0bc6a0',
     '#4a90e2',
     '#d46a6a',
-    '#b45a81',
+    '#b45a81',  
     '#674f91',
     '#4e638e',
     '#489074',
@@ -244,25 +244,33 @@ export class GroupTasksNewComponent implements OnInit {
     this.groupService.getGroupTasks(this.groupId)
     .subscribe((res) => {
       this.pendingTasks = res['posts'];
-      for(var i=0; i<this.allColumns.length; i++){
-        var currentTasks = new Array();
-        for(var j=0; j<this.pendingTasks.length; j++){
-          if(this.pendingTasks[j]['task']['status'] == this.allColumns[i]['title']){
-            currentTasks.push(this.pendingTasks[j]);
+      if(this.allColumns){
+        for(var i=0; i<this.allColumns.length; i++){
+          var currentTasks = new Array();
+          for(var j=0; j<this.pendingTasks.length; j++){
+            if(this.pendingTasks[j]['task']['status'] == this.allColumns[i]['title']){
+              currentTasks.push(this.pendingTasks[j]);
+            }
           }
+          this.taskList.push({
+            title: this.allColumns[i]['title'],
+            id: this.allColumns[i]['_id'],
+            tasks: currentTasks
+          });
+          if(currentTasks.length == 0){
+            this.makeProxy(i);
+          }
+          this.taskIds.push(this.allColumns[i]['_id']);
         }
-        this.taskList.push({
-          title: this.allColumns[i]['title'],
-          id: this.allColumns[i]['_id'],
-          tasks: currentTasks
-        });
-        this.taskIds.push(this.allColumns[i]['_id']);
       }
+
     });
+    if(this.allColumns){
     for(var i=0; i<this.allColumns.length; i++){
       this.changeBg.push(false);
     }
-    console.log(this.taskIds);
+  }
+    //console.log(this.taskIds);
   }
 
   getTasks() {
@@ -270,14 +278,18 @@ export class GroupTasksNewComponent implements OnInit {
     this.groupService.getGroupTasks(this.groupId)
     .subscribe((res) => {
       this.pendingTasks = res['posts'];
-      for(var i=0; i<this.allColumns.length; i++){
-        this.taskCount[this.allColumns[i]['title']] = 0;
+      if(this.allColumns){
+        for(var i=0; i<this.allColumns.length; i++){
+          this.taskCount[this.allColumns[i]['title']] = 0;
+        }
       }
       for(var i=0; i<this.pendingTasks.length; i++){
         this.taskCount[this.pendingTasks[i]['task']['status']]++;
       }
-      for(var i=0; i<this.allColumns.length; i++){
-        this.updateColumnNumber(this.allColumns[i]['title'],this.taskCount[this.allColumns[i]['title']]);
+      if(this.allColumns){
+        for(var i=0; i<this.allColumns.length; i++){
+          this.updateColumnNumber(this.allColumns[i]['title'],this.taskCount[this.allColumns[i]['title']]);
+        }
       }
       for(var i=0; i<this.taskList.length; i++){
         this.taskList[i]['tasks'] = [];
@@ -289,7 +301,11 @@ export class GroupTasksNewComponent implements OnInit {
           }
         }
       }
-      console.log(this.taskList);
+      for(var i=0; i<this.taskList.length; i++){
+        if(this.taskList[i]['tasks'].length == 0){
+          this.makeProxy(i);
+        }
+      }
       this.getAllColumns();
       this.isLoading$.next(false);
     },
@@ -317,9 +333,9 @@ export class GroupTasksNewComponent implements OnInit {
     }
     this.groupService.changeTaskAssignee(postId, assigneeId)
     .subscribe((res) => {
-      console.log('Post ID', postId);
-      console.log('Assignee ID', assigneeId);
-      console.log('Task Assignee', res);
+      //console.log('Post ID', postId);
+      //console.log('Assignee ID', assigneeId);
+      //console.log('Task Assignee', res);
       this.getTasks();
       this.socket.emit('getNotifications', this.user_data.user_id);
     }, (err) => {
@@ -555,7 +571,7 @@ export class GroupTasksNewComponent implements OnInit {
       ['emoji']],
       handlers: {
           'emoji': function () {
-            console.log('clicked');
+            //console.log('clicked');
           }
       }
   };
@@ -571,7 +587,7 @@ export class GroupTasksNewComponent implements OnInit {
       source: function (searchTerm, renderList, mentionChar) {
         let values;
 
-        console.log('searchterm', searchTerm);
+        //console.log('searchterm', searchTerm);
 
         if (mentionChar === "@") {
           values = Value;
@@ -713,7 +729,7 @@ export class GroupTasksNewComponent implements OnInit {
         this.tags.push(tag['value']);
         tag['value'] = '';
   
-      console.log(this.tags);
+      //console.log(this.tags);
     }
   
     if (event.which == '13') {
@@ -727,9 +743,9 @@ export class GroupTasksNewComponent implements OnInit {
   }
   
   tagListSearch(){
-    console.log("here1")
+    //console.log("here1")
     if (this.tags_search_words !== '') {
-      console.log("here12")
+      //console.log("here12")
       this.searchService.getTagsSearchResults(this.tags_search_words)
       .subscribe((res) => {
   
@@ -748,7 +764,7 @@ export class GroupTasksNewComponent implements OnInit {
     var tagsFromList = this.tags_search_result[index]["tags"]
     this.tags.push(tagsFromList);;
     this.tags_search_words = '';
-    console.log(this.tags);
+    //console.log(this.tags);
   } 
 
   /////// POSTS ///////
@@ -761,7 +777,7 @@ export class GroupTasksNewComponent implements OnInit {
 
     this.groupService.getRecentGroupTasks(lastPostId, this.groupId)
       .subscribe((res) => {
-       console.log('CompletedTasks', res);
+       //console.log('CompletedTasks', res);
         this.completedTasks = this.completedTasks.concat(res['posts']);
        this.isLoading$.next(false);
        if(res['posts'].length == 0){
@@ -791,7 +807,7 @@ export class GroupTasksNewComponent implements OnInit {
     // we create a new date object
     const date_due_to = new Date(this.model_date.year, this.model_date.month - 1, this.model_date.day);
  
-    console.log('this.contentMentions', this.content_mentions);
+    //console.log('this.contentMentions', this.content_mentions);
  
     const postData = {
       'title': this.edit_post_title,
@@ -1030,15 +1046,15 @@ export class GroupTasksNewComponent implements OnInit {
           this.pendingTasks[indexLikedPost]._liked_by.push(this.user_data.user_id);
 
         } else if (post.type_post === 'completed') {
-          console.log('entered complete zone')
+          //console.log('entered complete zone')
           // completed tasks differentiate from the pending one
           // so we have to update a different array
           const indexLikedPost = this.completedTasks.findIndex((_post) => {
             return _post._id === post._id;
           });
-          console.log('indexLikePost', indexLikedPost);
+          //console.log('indexLikePost', indexLikedPost);
           this.completedTasks[indexLikedPost]._liked_by.push(this.user_data.user_id);
-          console.log('end zone', this.completedTasks[indexLikedPost]);
+          //console.log('end zone', this.completedTasks[indexLikedPost]);
         }
 
         this.playAudio();
@@ -1148,7 +1164,7 @@ export class GroupTasksNewComponent implements OnInit {
     this.assignment = 'Assigned';
     this.tags = this.postBeingEditted.tags;
  
-    console.log('post.assign', post.task._assigned_to);
+    //console.log('post.assign', post.task._assigned_to);
     this.selectedGroupUsers = [post.task._assigned_to];
     // this isn't present at first so we need to add the full name so we can display it in the assign modal
     post.task._assigned_to.full_name = post.task._assigned_to.first_name + " " + post.task._assigned_to.last_name;
@@ -1241,15 +1257,18 @@ export class GroupTasksNewComponent implements OnInit {
 
   addNewColumn(){
     this.columnService.addColumn(this.groupId, this.columnName).subscribe(() => {
-      this.getAllColumns();
+      this.newColumnModalRef.close();
+      this.columnService.getAllColumns(this.groupId).subscribe((res: Column) => {
+        this.allColumns = res.columns;
+        this.taskList.push({
+          title:this.columnName,
+          id:this.allColumns[this.allColumns.length-1]['_id'],
+          tasks: []
+        });
+        this.makeProxy(this.taskList.length-1);
+        this.taskIds.push(this.allColumns[this.allColumns.length-1]['_id']);
+      });
     });
-    this.newColumnModalRef.close();
-    this.taskList.push({
-      title:this.columnName,
-      id:this.allColumns[this.allColumns.length-1]['_id'],
-      tasks: []
-    });
-    this.taskIds.push(this.allColumns[this.allColumns.length-1]['_id']);
   }
 
   // Delete Columns
@@ -1269,7 +1288,7 @@ export class GroupTasksNewComponent implements OnInit {
         this.taskIds.splice(i,1);
       }
     }
-    console.log(this.taskList);
+    //console.log(this.taskList);
   }
 
   // Edit Columns
@@ -1282,7 +1301,7 @@ export class GroupTasksNewComponent implements OnInit {
     const statusUpdate = {
       'status' : this.editColumnNameNew
     }
-    console.log(this.editColumnNameNew);
+    //console.log(this.editColumnNameNew);
     for(var i=0; i<this.taskList.length; i++){
       if(this.taskList[i]['title'] == this.editColumnNameOld){
         this.taskList[i]['title'] = this.editColumnNameNew;
@@ -1290,7 +1309,7 @@ export class GroupTasksNewComponent implements OnInit {
     }
     for(var i=0; i<this.pendingTasks.length; i++){
       if(this.pendingTasks[i]['task']['status'] == this.editColumnNameOld){
-        console.log(this.pendingTasks[i]['_id']);
+        //console.log(this.pendingTasks[i]['_id']);
         this.postService.complete(this.pendingTasks[i]['_id'],statusUpdate)
         .subscribe((res) => {
           this.getTasks();
@@ -1307,7 +1326,7 @@ export class GroupTasksNewComponent implements OnInit {
 
   updateColumnNumber(columnName, numberOfTasks){
     this.columnService.editColumnNumber(this.groupId, columnName, numberOfTasks).subscribe((res) => {
-      console.log('column number updated');
+      //console.log('column number updated');
     });
   }
 
@@ -1315,15 +1334,85 @@ export class GroupTasksNewComponent implements OnInit {
     const statusUpdate = {
       'status' : newColumnName
     }
-    console.log(post_id);
     this.postService.complete(post_id,statusUpdate)
     .subscribe((res) => {
       this.columnService.addColumnTask(this.groupId, newColumnName).subscribe((res) => {
-        console.log(res);
+        //console.log(res);
       });
       this.columnService.deleteColumnTask(this.groupId, oldColumnName).subscribe((res) => {
-        console.log(res);
+        //console.log(res);
       });
+      
+      this.getAllColumns();
+     // var taskStatus = res['posts'].filter(task => task._id == post_id);
+    //  taskStatus.task.status = newColumnName;
+      //this.isLoading$.next(false);
+      this.isLoading$.next(true);
+      console.log(this.pendingTasks);
+      
+      const indexPendingTask = this.pendingTasks.findIndex(task => task._id == post_id);
+      this.pendingTasks[indexPendingTask]['task']['status'] = newColumnName;
+      this.taskCount[newColumnName]++;
+      
+      
+      for(var i=0;i < this.taskList.length; i++)
+      {
+      if(this.taskList[i]['title'] == newColumnName)
+      {
+             this.taskList[i]['tasks'].push(this.pendingTasks[indexPendingTask]);
+         }
+     if(this.taskList[i]['title'] == oldColumnName)
+      {
+          const indexTaskListRemoval = this.taskList[i]['tasks'].findIndex(task => task._id == post_id);
+          this.taskList[i]['tasks'].splice(indexTaskListRemoval , 1);  
+      }
+      }
+      
+      this.isLoading$.next(false);   
+      //this.getTasks();
+    }, (err) => {
+      console.log('Error:', err);
+    });
+  }
+
+  updateTaskColumnSingle(post_id, newColumnName){
+    const statusUpdate = {
+      'status' : newColumnName
+    }
+    this.postService.complete(post_id,statusUpdate)
+    .subscribe((res) => {
+      this.columnService.addColumnTask(this.groupId, newColumnName).subscribe((res) => {
+        //console.log(res);
+      });
+      
+      this.getAllColumns();
+     // var taskStatus = res['posts'].filter(task => task._id == post_id);
+    //  taskStatus.task.status = newColumnName;
+      //this.isLoading$.next(false);
+      this.isLoading$.next(true);
+      console.log(this.pendingTasks);
+      
+      const indexPendingTask = this.pendingTasks.findIndex(task => task._id == post_id);
+      this.pendingTasks[indexPendingTask]['task']['status'] = newColumnName;
+      this.taskCount[newColumnName]++;
+      
+      
+      for(var i=0;i < this.taskList.length; i++)
+      {
+      if(this.taskList[i]['title'] == newColumnName)
+      {
+             this.taskList[i]['tasks'].push(this.pendingTasks[indexPendingTask]);
+         }
+    //  if(this.taskList[i]['title'] == oldColumnName)
+    //   {
+    //       const indexTaskListRemoval = this.taskList[i]['tasks'].findIndex(task => task._id == post_id);
+    //       this.taskList[i]['tasks'].splice(indexTaskListRemoval , 1);  
+    //   }
+      }
+      
+      this.isLoading$.next(false);   
+      //this.getTasks();
+      
       this.getAllColumns();
       this.getTasks();
     }, (err) => {
@@ -1331,23 +1420,28 @@ export class GroupTasksNewComponent implements OnInit {
     });
   }
 
+  // Drag and drop 
+
   onTaskDrop(event: CdkDragDrop<any[]>){
-    if(event.previousContainer == event.container){
+    console.log(event);
+    if(event.container.data[event.currentIndex]['title'] == 'proxy'){
+      var postId = event.previousContainer.data[event.previousIndex]['_id'];
+      var newCol = event.container.data[event.currentIndex]['status'];
+      transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
+      this.updateTaskColumnSingle(postId, newCol);
+
+    }else if(event.previousContainer == event.container){
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     }else{
       var oldCol = event.previousContainer.data[event.previousIndex]['task']['status'];
       var postId = event.previousContainer.data[event.previousIndex]['_id'];
       var newCol = event.container.data[event.currentIndex]['task']['status'];
       transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
-      console.log(postId);
-      console.log(oldCol);
-      console.log(newCol);
       this.updateTaskColumn(postId, oldCol, newCol);
     } 
     for(var i=0; i<this.allColumns.length; i++){
       this.changeBg[i] = false;
     }
-    console.log(this.changeBg);
   }
 
   onTrackDrop(event: CdkDragDrop<any[]>) {
@@ -1355,11 +1449,11 @@ export class GroupTasksNewComponent implements OnInit {
     for(var i=0; i<this.allColumns.length; i++){
       this.changeBg[i] = false;
     }
-    console.log(this.changeBg);
   }
 
   entered(event: CdkDragStart<any[]>){  
-    var title = event.source.dropContainer.data[0]['task']['status'];
+    console.log(event);
+    var title = event.source.dropContainer.data[0]['task']['status']; 
     for(var i=0; i<this.allColumns.length; i++){
       if(this.allColumns[i]['title'] != title){
         this.changeBg[i] = true;
@@ -1367,6 +1461,13 @@ export class GroupTasksNewComponent implements OnInit {
         this.changeBg[i] = false;
       }
     }
-  } 
-
+  }
+  
+  makeProxy(column){
+    this.taskList[column]['tasks'].push({
+      title: 'proxy',
+      id: '0',
+      status: this.taskList[column]['title']
+    });
+  }
 } 
