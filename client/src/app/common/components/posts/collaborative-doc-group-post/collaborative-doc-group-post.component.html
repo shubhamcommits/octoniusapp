@@ -9,9 +9,13 @@
 <div class="toolbar" id="toolbar">
     <div id="toolbar-container">
         <span class="ql-formats">
-            <button class="ql-table" [value]="this.tableOptions"></button>
-            <button class="ql-table" value="append-row"></button>
-            <button class="ql-table" value="append-col"></button>
+            <button ngbTooltip="Insert Table" placement="bottom" class="ql-table" [value]="this.tableOptions">
+              <i class="material-icons">
+                table_chart
+                </i>
+            </button>
+            <button ngbTooltip="Insert Row" placement="bottom" class="ql-table" value="append-row"></button>
+            <button ngbTooltip="Insert Column" placement="bottom" class="ql-table" value="append-col"></button>
           </span>
       <span class="ql-formats">
         <select class="ql-font"></select>
@@ -57,11 +61,11 @@
         <button class="ql-clean"></button>
       </span>
       <span class="ql-formats">
-        <button ngbTooltip="Toggle Track Changes" placement="bottom" class="track-changes"><i class="material-icons">
+        <button c class="track-changes"><i class="material-icons">
           subtitles
           </i></button>
       </span>
-      <span class="ql-formats">
+      <!-- <span class="ql-formats">
         <button ngbTooltip="Insert Table" placement="bottom" (click)="insertTestTable();" class="track-changes"><i class="material-icons">
           subtitles
           </i></button>
@@ -70,7 +74,7 @@
         <button ngbTooltip="Insert Column" placement="bottom" (click)="insertColumnTest();" class="track-changes"><i class="material-icons">
           subtitles
           </i></button>
-      </span>
+      </span> -->
     </div>
   </div> 
       <div id="editor" style="background: white;">
