@@ -54,7 +54,19 @@ export class GroupActivityProgressComponent implements OnInit {
     await this.getPulseNumTodoTasks();
     await this.getPulseNumInProgressTasks();
     await this.getPulseNumDoneTasks();
+
+    //If status of a task is changed then the progress gets updated
     this.groupService.taskStatusChanged
+    .subscribe(() => {
+      // this.getTasks();
+      this.getPulseTotalNumTasks();
+      this.getPulseNumTodoTasks();
+      this.getPulseNumInProgressTasks();
+      this.getPulseNumDoneTasks();
+    });
+
+    //If a new task is added, then it updates all the bars again
+    this.groupService.newTaskAdded
     .subscribe(() => {
       // this.getTasks();
       this.getPulseTotalNumTasks();
