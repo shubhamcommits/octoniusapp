@@ -1393,11 +1393,11 @@ export class GroupTasksNewComponent implements OnInit {
       {
              this.taskList[i]['tasks'].push(this.pendingTasks[indexPendingTask]);
          }
-     if(this.taskList[i]['title'] == oldColumnName)
-      {
-          const indexTaskListRemoval = this.taskList[i]['tasks'].findIndex(task => task._id == post_id);
-          this.taskList[i]['tasks'].splice(indexTaskListRemoval , 1);  
-      }
+    //  if(this.taskList[i]['title'] == oldColumnName)
+    //   {
+    //       const indexTaskListRemoval = this.taskList[i]['tasks'].findIndex(task => task._id == post_id);
+    //       this.taskList[i]['tasks'].splice(indexTaskListRemoval , 1);  
+    //   }
       }
       
       this.isLoading$.next(false);   
