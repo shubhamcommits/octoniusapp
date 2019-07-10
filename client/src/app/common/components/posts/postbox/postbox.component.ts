@@ -600,6 +600,7 @@ export class PostboxComponent implements OnInit, OnDestroy {
 
         // send this post to parent component to display it with the other loaded posts
         this.newPost.emit(res['post']);
+        this.groupService.newTaskAdded.next();
 
         const googletask= {
             start: {
