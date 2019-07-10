@@ -262,15 +262,6 @@ export class GroupTasksNewComponent implements OnInit {
           }
           this.taskIds.push(this.allColumns[i]['_id']);
         }
-        this.taskList.push({
-          title: this.allColumns[i]['title'],
-          id: this.allColumns[i]['_id'],
-          tasks: currentTasks
-        });
-        if(currentTasks.length == 0){
-          this.makeProxy(i);
-        }
-        this.taskIds.push(this.allColumns[i]['_id']);
       }
 
     });
