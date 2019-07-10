@@ -1342,6 +1342,7 @@ export class GroupTasksNewComponent implements OnInit {
       this.columnService.deleteColumnTask(this.groupId, oldColumnName).subscribe((res) => {
         //console.log(res);
       });
+      
       this.getAllColumns();
      // var taskStatus = res['posts'].filter(task => task._id == post_id);
     //  taskStatus.task.status = newColumnName;
