@@ -77,7 +77,7 @@ export class GroupMembersComponent implements OnInit {
       confirmButtonText: 'Yes, please!'
     })
     .then(willDelete => {
-      if (willDelete) {
+      if (willDelete.value) {
         this.groupService.removeUserFromGroup(data)
         .subscribe((res) =>{
         //  console.log('Group Member is Removed!');

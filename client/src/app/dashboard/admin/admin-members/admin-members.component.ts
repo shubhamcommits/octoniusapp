@@ -147,7 +147,7 @@ removeUserfromWorkspace(user_id, first_name, last_name){
     confirmButtonText: 'Yes, please!'
   })
   .then(willDelete => {
-    if (willDelete) {
+    if (willDelete.value) {
       this.adminService.removeUser(data.workspace_id, data.user_id)
       .subscribe((res) => {
        console.log('Group Member is Removed!', res);
