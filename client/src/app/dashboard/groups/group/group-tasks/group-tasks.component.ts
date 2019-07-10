@@ -64,6 +64,23 @@ export class GroupTasksComponent implements OnInit {
   oauthToken?: any;
   // !--GOOGLE DEVELOPER CONSOLE CREDENTIALS--! //
 
+  bgColor = [
+    '#fd7714',
+    '#0bc6a0',
+    '#4a90e2',
+    '#d46a6a',
+    '#b45a81',  
+    '#674f91',
+    '#4e638e',
+    '#489074',
+    '#4b956f',
+    '#a7c763',
+    '#d4cb6a',
+    '#d49b6a',
+    '#d4746a'
+  ];
+
+
   constructor(private groupDataService: GroupDataService,
      private ngxService: NgxUiLoaderService,
      private _activatedRoute: ActivatedRoute,
