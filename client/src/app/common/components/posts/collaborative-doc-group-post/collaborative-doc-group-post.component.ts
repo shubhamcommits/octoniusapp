@@ -20,12 +20,46 @@ import * as chance from 'chance';
 import { QuillAutoLinkService } from '../../../../shared/services/quill-auto-link.service';
 import { DocumentService } from '../../../../shared/services/document.service';
 import { Authorship } from '../../../../shared/utils/quill.module.authorship';
+import { LayoutCol, LayoutRow } from '../../../../shared/utils/template-layout/quill.layout';
+import { TableCell, TableRow, TableBody, TableContainer, tableId, TableModule } from '../../../../shared/utils/template-layout/quill.table';
+
+
+
+
+const quillTable = require('quill-table');
+
+Quill.register(quillTable.TableCell);
+Quill.register(quillTable.TableRow);
+Quill.register(quillTable.Table);
+Quill.register(quillTable.Contain);
+Quill.register('modules/table', quillTable.TableModule);
+const maxRows = 10;
+const maxCols = 5;
+
+
 
 // !--Register Required Modules--! //
 ShareDB.types.register(require('rich-text').type);
 Quill.register('modules/cursors', QuillCursors);
 Quill.register(Mark);
 Quill.register(Authorship);
+
+
+
+Quill.register({
+  'blots/LayoutCol': LayoutCol,
+  'blots/LayoutRow': LayoutRow
+});
+Quill.register({
+  TableCell,
+  TableRow,
+  TableBody,
+  TableContainer
+})
+
+
+
+
 // !--Register Required Modules--! //
 
 // !-- Variables Required to use and export Globally--! //
@@ -140,6 +174,8 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
   comments = [];
   comment_count = 0;
 
+  tableOptions = [];
+
   constructor(private router: Router,
     private _activatedRoute: ActivatedRoute,
     private postService: PostService,
@@ -154,6 +190,11 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
      }
 
   async ngOnInit() {
+    for (let r = 1; r <= maxRows; r++) {
+      for (let c = 1; c <= maxCols; c++) {
+        this.tableOptions.push('newtable_' + r + '_' + c);
+      }
+    }
     this.snotifyService.simple(`Please Hold on...`, {
       timeout: 100000,
       showProgressBar: false,
@@ -323,6 +364,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
         theme: 'snow',
         modules: {
           //toolbar: this.toolbarOptions,
+          table: true,
           toolbar: '#toolbar',
           authorship: {
             enabled: true,
@@ -566,7 +608,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
       // update editor contents
       let Document = await this.documentService.getDocumentHistory(postId, cursors);
       quill.setContents(Document);
-  
+        console.log(Document);
       editor = document.getElementsByClassName("ql-editor")[0].innerHTML;
       this.snotifyService.clear();
       this.docStatus = "Updated!";
@@ -659,6 +701,25 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
       }
 
     });
+  }
+
+  insertTestTable(){
+    var tableModule = new TableModule(quill);
+    tableModule.insertTable(2,3);
+    // let range = quill.getSelection();
+    
+    // var table_id = tableId();
+    // console.log(table_id);
+    // quill.insertEmbed(range.index, 'table', table_id);
+    // quill.insertEmbed(range.index, 'layout-col', { rowId: '1', colId: '1'});
+    // quill.insertEmbed(range.index, 'layout-col', { rowId: '1', colId: '2'});
+  }
+
+  insertColumnTest(){
+    let range = quill.getSelection();
+    var container = new TableContainer();
+    container.insertColumn(range.index);
+    quill.insertEmbed(range.index, 'table-container');  
   }
 
 }
