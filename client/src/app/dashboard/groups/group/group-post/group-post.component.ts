@@ -248,7 +248,7 @@ export class GroupPostComponent implements OnInit {
 
       })
         .then(willDelete => {
-          if (willDelete) {
+          if (willDelete.value) {
             Swal.fire("Deleted!", "The following post has been deleted!", "success");
             this._router.navigate(['/dashboard/group', this.group_id, 'activity']);
           }

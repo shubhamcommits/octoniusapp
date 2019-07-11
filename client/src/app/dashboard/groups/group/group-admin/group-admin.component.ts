@@ -140,18 +140,32 @@ export class GroupAdminComponent implements OnInit {
 
   // Makes a request to the backend to delete the current group
   onDelete() {
-    this.groupService.deleteGroup(this.group_id).subscribe(
-      res => {
-        this.router.navigate(['/dashboard/groups']);
-        setTimeout(() => {
-          this.snotifyServive.success('Group successfully deleted!');
-        }, 1500);
-      },
-      err => {
-        console.error(`Failed to delete the group! ${err}`);
-        this.snotifyServive.error('Failed to delete the group! Please try again later.');
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+
+    }).then(willDelete => {
+      if (willDelete.value) {
+        console.log("willDelete", willDelete);
+        this.groupService.deleteGroup(this.group_id).subscribe(
+          res => {
+            this.router.navigate(['/dashboard/groups']);
+            setTimeout(() => {
+              this.snotifyServive.success('Group successfully deleted!');
+            }, 1500);
+          },
+          err => {
+            console.error(`Failed to delete the group! ${err}`);
+            this.snotifyServive.error('Failed to delete the group! Please try again later.');
+          }
+        );
       }
-    );
+    });
   }
 
   onItemSelect(item: any) {

@@ -167,7 +167,7 @@ export class GroupActivityComponent implements OnInit {
       confirmButtonText: 'Yes, delete it!'
     })
       .then(willDelete => {
-        if (willDelete) {
+        if (willDelete.value) {
           this.postService.deletePost(postId)
             .subscribe((res) => {
               // snackbar displaying when successfully deleted post

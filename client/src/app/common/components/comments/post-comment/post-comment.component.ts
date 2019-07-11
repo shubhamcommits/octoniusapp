@@ -156,7 +156,7 @@ export class PostCommentComponent implements OnInit {
     })
       .then(willDelete => {
         console.log('enterd delete comment', willDelete);
-        if (willDelete) {
+        if (willDelete.value) {
           this.postService.deleteComment(this.comment._id)
             .subscribe((res: any) => {
               this.alert.class = 'success';
