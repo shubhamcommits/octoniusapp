@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
+import { Cacheable } from 'ngx-cacheable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
@@ -22,6 +23,7 @@ export class AdminService {
     return this._http.delete(this.BASE_API_URL + `/workspaces/${workspace_id}/domains/${domainName}`);
   }
 
+  @Cacheable()
   allowedDomains(workspace_id) {
     return this._http.get(this.BASE_API_URL + '/workspaces/'+ workspace_id + '/domains');
   }
