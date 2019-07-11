@@ -4,6 +4,7 @@ import { Workspace } from '../models/workspace.model';
 import { User } from '../models/user.model';
 import { AuthService } from './auth.service';
 import { environment } from '../../../environments/environment';
+import { Cacheable } from 'ngx-cacheable';
 
 @Injectable()
 export class UserService {
@@ -14,11 +15,12 @@ export class UserService {
 
   constructor(private _http: HttpClient, private _authService: AuthService) { }
 
-
+  @Cacheable()
   getUser() {
     return this._http.get<any>(this.BASE_API_URL + `/users`);
   }
 
+  @Cacheable()
   getOtherUser(userId) {
     return this._http.get(this.BASE_API_URL + `/users/getOtherUser/${userId}`);
   }
@@ -45,18 +47,22 @@ export class UserService {
 
   }
 
+  @Cacheable()
   getUserTasks() {
     return this._http.get<any>(this.BASE_API_URL + `/users/tasks`);
   }
 
+  @Cacheable()
   getCompletedUserTasks() {
     return this._http.get<any>(this.BASE_API_URL + `/users/tasksDone`);
   }
 
+  @Cacheable()
   getRecentUserTasks(postId) {
     return this._http.get<any>(this.BASE_API_URL + `/users/nextTasksDone/${postId}`);
   }
 
+  @Cacheable()
   getUserCalendarPosts(data){
     return this._http.get(this.BASE_API_URL + `/groups/${data.groupId}/user/${data.userId}/calendar/${data.year}/${data.month}`);
   }
