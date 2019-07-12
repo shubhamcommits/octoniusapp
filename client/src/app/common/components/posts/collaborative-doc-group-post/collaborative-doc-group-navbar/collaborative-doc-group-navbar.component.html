@@ -46,7 +46,19 @@
         <li class="dropdown-item" (click)="exportPDF()">Export as (.pdf) File</li>
         <li class="dropdown-item" (click)="exportDOC()">Export as (.doc) File</li>
         <li class="dropdown-item" (click)="exportDOCX()">Export as (.docx) File</li>
+        <li class="dropdown-item dropdown-hover">
+            Export to Agora
+            <div class="dropdown-content">
+              <a href="#" *ngFor="let agora of agoras">
+                  <img src="{{this.BASE_URL}}/uploads/{{agora?.group_avatar}}" 
+                  onerror="this.src='/assets/images/user.png'"
+                  class="feed-avatar"/>
+                {{agora?.group_name}}</a>
+            </div>
+
+        </li>
       </ul>
+
     </div>
   </div>
 </nav>

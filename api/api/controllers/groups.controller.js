@@ -121,6 +121,21 @@ const getPublicGroups = async (req, res) => {
   }
 };
 
+const getAllPublicGroups = async (req, res) => {
+
+  try {
+    const groups = await Group.find({
+      type: 'agora'
+    });
+
+    return res.status(200).json({
+      groups
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
 /**
  * Fetches a user's smart groups within the
  * given workspace.
@@ -1118,6 +1133,7 @@ module.exports = {
   getUserGroups,
   getAllForUser,
   getPublicGroups,
+  getAllPublicGroups,
   getSmartGroups,
   addNewMember,
   deleteGroup,

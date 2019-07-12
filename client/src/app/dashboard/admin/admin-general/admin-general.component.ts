@@ -170,7 +170,7 @@ export class AdminGeneralComponent implements OnInit {
       confirmButtonText: 'Yes, remove it!'
     })
     .then(willDelete => {
-      if (willDelete) {
+      if (willDelete.value) {
         this._adminService.removeDomain(domainName.userId, domainName.domain)
         .subscribe((res) => {
           console.log('Domain has been removed', res);
@@ -182,7 +182,7 @@ export class AdminGeneralComponent implements OnInit {
         })
         Swal.fire("Removed!", domainName.domain +" has been removed!", "success")
         .then(willDelete => {
-          if(willDelete){
+          if(willDelete.value){
             this.ngOnInit();
           }
         });

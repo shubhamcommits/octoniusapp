@@ -2,7 +2,7 @@ const moment = require('moment');
 
 const notifications = require('./notifications.controller');
 const {
-  Comment, Group, Post, User, Document, DocumentEditHistory, DocumentAuthor
+  Comment, Group, Post, User, Document, DocumentEditHistory, DocumentAuthor, TableCell
 } = require('../models');
 const { sendMail, sendErr } = require('../../utils');
 const fs = require('fs');
@@ -993,6 +993,53 @@ const changeTaskAssignee = async (req, res, next) => {
   }
 };
 
+/*  =============
+ *  -- TABLE --
+ *  =============
+ */
+
+const getFormattedTableCells = async (req, res, next) => {
+  try{
+    const { postId } = req.params;
+
+    const tableCells = await TableCell.find({
+      _post_id: postId
+    });
+
+    return res.status(200).json({
+      message: 'All Table Cells for this post has been found!',
+      tableCells
+    });
+  } catch (err){
+    return sendErr(res, err);
+  }
+}
+
+const insertFormattedTableCells = async (req, res, next) => {
+  try{
+    const {
+      params: { postId },
+      body: { _cell_id, _color}
+    } = req;
+
+    const tableCellData = {
+      _cell_id: _cell_id,
+      _color: _color,
+      _post_id: postId
+    };
+
+    let tableCell = await TableCell.create(tableCellData);
+
+    return res.status(200).json({
+      message: 'Table Cell Added',
+      tableCell
+    });
+
+  } catch (err){
+    return sendErr(res, err);
+  }
+}
+
 //This controller is made for quill to upload it's files to server
 const upload = async (req, res, next) => {
   try {
@@ -1043,5 +1090,8 @@ module.exports = {
   changeTaskStatus,
   // Follow
   follow,
-  unfollow
+  unfollow,
+  // Table Cells
+  getFormattedTableCells,
+  insertFormattedTableCells
 };
