@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { Cacheable } from 'ngx-cacheable';
 
 @Injectable()
 export class ColumnService {
@@ -21,13 +20,11 @@ export class ColumnService {
    }
 
    // get all columns 
-   @Cacheable()
    getAllColumns(groupId){
         return this._http.get(this.BASE_API_URL + `/columns/all/${groupId}`);
    }
 
    // get one column
-   @Cacheable()
    getOneColumn(groupId, columnName){
     return this._http.get(this.BASE_API_URL + `/column/${groupId}/${columnName}`);
    }
