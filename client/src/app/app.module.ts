@@ -96,7 +96,7 @@ import { SearchBarComponent } from './common/components/navbar/search-bar/search
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import { GroupActivityFiltersComponent } from './dashboard/groups/group/group-activity/group-activity-filters/group-activity-filters.component';
 import { GroupActivityProgressComponent } from './dashboard/groups/group/group-activity/group-activity-progress/group-activity-progress.component';
-import { CollaborativeDocGroupPostComponent } from './common/components/posts/collaborative-doc-group-post/collaborative-doc-group-post.component';
+import { CollaborativeDocGroupPostComponent, DialogOverviewExampleDialog } from './common/components/posts/collaborative-doc-group-post/collaborative-doc-group-post.component';
 import { CollaborativeDocGroupNavbarComponent } from './common/components/posts/collaborative-doc-group-post/collaborative-doc-group-navbar/collaborative-doc-group-navbar.component';
 import { CollabDocPostComponent } from './common/components/posts/collab-doc-post/collab-doc-post.component';
 import { CollaborativeDocGroupCommentsComponent } from './common/components/posts/collaborative-doc-group-post/collaborative-doc-group-comments/collaborative-doc-group-comments.component';
@@ -107,7 +107,13 @@ import { GroupTasksNewComponent } from './dashboard/groups/group/group-tasks-new
 import { ColumnService } from './shared/services/column.service';
 import { PulseComponent } from './dashboard/groups/pulse/pulse.component';
 import { GroupSmartAdminComponent } from './dashboard/groups/group/group-smart-admin/group-smart-admin.component';
+import { OverlayModule } from '@angular/cdk/overlay';
+import {
+  MatDialogModule,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
 
+} from '@angular/material';
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 
   "bgsColor": "#005fd5",
@@ -150,6 +156,7 @@ const ngCircle = {
 };
 
 @NgModule({
+  exports:[MatDialogModule],
   declarations: [
     AppComponent,
     NavbarComponent,
@@ -201,7 +208,8 @@ const ngCircle = {
     CollaborativeDocGroupPostCommentComponent,
     GroupTasksNewComponent,
     PulseComponent,
-    GroupSmartAdminComponent
+    GroupSmartAdminComponent,
+    DialogOverviewExampleDialog,
   ],
   imports: [
     BrowserModule,
@@ -234,6 +242,7 @@ const ngCircle = {
     BrowserAnimationsModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
+    OverlayModule,
     DragDropModule,
     NgbModule.forRoot(),
     ScrollToModule.forRoot(),
@@ -250,7 +259,10 @@ const ngCircle = {
     { provide: 'SnotifyToastConfig', useValue: ToastDefaults},
     SnotifyService, SearchService,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true },
-    { provide: LocationStrategy, useClass: HashLocationStrategy }],
-  bootstrap: [AppComponent]
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
+    { provide: MatDialogRef, useValue: {} },
+    { provide: MAT_DIALOG_DATA, useValue: [] },],
+  bootstrap: [AppComponent],
+  entryComponents: [DialogOverviewExampleDialog],
 })
 export class AppModule { }
