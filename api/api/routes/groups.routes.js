@@ -135,6 +135,8 @@ router.get('/:groupId/tasksDone', groups.getTasksDone);
 // Get next 20 most recently created group's completed tasks
 router.get('/:groupId/nextTasksDone/:postId', groups.getNextTasksDone);
 
+// Get last week's to do/in progress tasks
+router.get('/:groupId/undone/lastWeek', groups.getTasksUndoneLastWeek);
 
 // - PULSE -
 
