@@ -42,6 +42,18 @@ export class DocumentService {
     return this._http.get(environment.BASE_API_URL + `/posts/documents/${documentId}/authors`);
   }
 
+  getTableCells(documentId: any){
+    return this._http.get(environment.BASE_API_URL + `/posts/table/cells/${documentId}`);
+  }
+
+  addTableCells(documentData: any){
+    return this._http.post(environment.BASE_API_URL + `/posts/table/cells/${documentData._post_id}/addCell`, documentData);
+  }
+
+  getPublicGroups(){
+    return this._http.get(environment.BASE_API_URL + `/groups/public/allGroups`);
+  }
+
   removeDuplicates(myArr, prop) {
     return myArr.filter((obj, pos, arr) => {
         return arr.map(mapObj => mapObj[prop]).indexOf(obj[prop]) === pos;

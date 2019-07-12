@@ -9,6 +9,7 @@ import { DocumentService } from '../../../../../shared/services/document.service
 import saveAs from 'file-saver'
 import { takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
+import { GroupsService } from '../../../../../shared/services/groups.service';
 
 @Component({
   selector: 'app-collaborative-doc-group-navbar',
@@ -32,6 +33,8 @@ export class CollaborativeDocGroupNavbarComponent implements OnInit {
 
   authorsList: any;
 
+  agoras: any = [];
+
   @Output() clickBack: EventEmitter<any> = new EventEmitter();
 
   @Output() docTitle: EventEmitter<any> = new EventEmitter();
@@ -39,7 +42,8 @@ export class CollaborativeDocGroupNavbarComponent implements OnInit {
   constructor(private postService: PostService,
     private activatedRoute: ActivatedRoute,
     private documentService: DocumentService,
-    private groupService: GroupService) {
+    private groupService: GroupService,
+    private groupsService: GroupsService) {
       this.postId = this.activatedRoute.snapshot.paramMap.get('postId');
       this.groupId = this.activatedRoute.snapshot['_urlSegment']['segments'][2].path;
       //call authors first to set list
@@ -80,6 +84,13 @@ export class CollaborativeDocGroupNavbarComponent implements OnInit {
      }
   ngOnInit() {
     this.getPost();
+    this.documentService.getPublicGroups()
+    .subscribe((res)=>{
+      console.log('Agoras List', res);
+      this.agoras = res['groups']
+    }, (err)=>{
+      console.log('Error occured while fetching agoras', err);
+    })
     /*this.getPost();
     setTimeout(() => {
       console.log('Post', this.post);
