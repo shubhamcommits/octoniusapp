@@ -9,11 +9,17 @@
         <p>
           Your team has <span class="todo bold">{{ totalTasks }}</span> assignment(s) this week.
         </p>
+        <p>
+          Your team has <span class="todo bold">{{ undoneLastWeekTasks }}</span> incomplete assignment(s) this week.
+        </p>
       </div>
       <ng-template #personalmetrics>
         <div>
           <p>
             You have <span class="todo bold">{{ totalTasks }}</span> assignments this week.
+          </p>
+          <p>
+            You have <span class="todo bold">{{ undoneLastWeekTasks }}</span> incomplete assignments last week.
           </p>
         </div>
       </ng-template>
