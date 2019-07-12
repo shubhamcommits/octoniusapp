@@ -22,10 +22,13 @@ import { DocumentService } from '../../../../shared/services/document.service';
 import { Authorship } from '../../../../shared/utils/quill.module.authorship';
 import { LayoutCol, LayoutRow } from '../../../../shared/utils/template-layout/quill.layout';
 import { TableCell, TableRow, TableBody, TableContainer, tableId, TableModule } from '../../../../shared/utils/template-layout/quill.table';
-
-
-
-
+import Mention from 'quill-mention';
+import { MentionBlot } from '../../../../shared/utils/mention-module/quill.mention.blot'
+import { Item } from 'angular2-multiselect-dropdown';
+import deltaToHtml from 'delta-to-html';
+Quill.register(MentionBlot);
+Quill.register('modules/mention', Mention);
+var Delta = require('quill-delta');
 const quillTable = require('quill-table');
 
 Quill.register(quillTable.TableCell);
@@ -35,8 +38,9 @@ Quill.register(quillTable.Contain);
 Quill.register('modules/table', quillTable.TableModule);
 const maxRows = 10;
 const maxCols = 5;
-
-
+let Parchment = Quill.import('parchment');
+let Container = Quill.import('blots/container');
+let Scroll = Quill.import('blots/scroll');
 
 // !--Register Required Modules--! //
 ShareDB.types.register(require('rich-text').type);
@@ -58,8 +62,6 @@ Quill.register({
 })
 
 
-
-
 // !--Register Required Modules--! //
 
 // !-- Variables Required to use and export Globally--! //
@@ -79,9 +81,11 @@ var shareDBSocket: any;
   styleUrls: ['./collaborative-doc-group-post.component.scss']
 })
 export class CollaborativeDocGroupPostComponent implements OnInit {
-
+  
+ tableOptions = [];
  toolbarOptions = {
    container:[
+    [{table: this.tableOptions}, {table: 'append-row'}, {table:'append-col'}],
     ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
     ['blockquote', 'code-block'],
   
@@ -97,11 +101,17 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
     [{ 'font': [] }],
     [{ 'align': [] }],
-    ['link'],
+    ['image', 'link'],
     ['authorship-toggle'],
-    ['clean']                                         // remove formatting button
+    ['clean'],
+    ['clear']                                         // remove formatting button
   ],
   handlers: {
+    'clear': () => {
+      
+      quill.setContents(new Delta().insert("\n"));
+
+    },
     'emoji': function () {
       //console.log('clicked');
     },
@@ -140,7 +150,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
               //Here we insert the image and replace the BASE64 with our custom URL, which is been saved to the server
               //ex - img src = "http://localhost:3000/uploads/image-name.jpg"
               const range = quill.getSelection();
-              //quill.insertEmbed(range.index, 'image', environment.BASE_URL+'/uploads/'+url);
+              quill.insertEmbed(range.index, 'image', environment.BASE_URL+'/uploads/'+url);
               quill.on('text-change', function(delta, oldDelta, source) {
 
               });
@@ -174,7 +184,6 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
   comments = [];
   comment_count = 0;
 
-  tableOptions = [];
 
   constructor(private router: Router,
     private _activatedRoute: ActivatedRoute,
@@ -360,12 +369,23 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
         length: 0
       };
 
+      let templateMention = [{
+        'id':'brd-procedure-1',
+        'value': 'Procedure Template 1'
+      }, {
+        'id':'brd-procedure-2',
+        'value': 'Procedure Template 2'
+      }, {
+        'id':'brd-procedure-3',
+        'value': 'Procedure Template 3'
+      }]
+
        quill = new Quill('#editor', {
         theme: 'snow',
         modules: {
-          //toolbar: this.toolbarOptions,
+          toolbar: this.toolbarOptions,
           table: true,
-          toolbar: '#toolbar',
+          //toolbar: '#toolbar',
           authorship: {
             enabled: true,
             authorId: connection.user_id, // Current author id
@@ -376,7 +396,31 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
             hideSpeedMs: 0,
             selectionChangeSource: null
           },
-          autoLink: true
+          autoLink: true,
+          mention: {
+            allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
+            mentionDenotationChars: ["/"],
+            source: function (searchTerm, renderList, mentionChar) {
+              let values;
+              if (mentionChar === "/") {
+                values = templateMention;
+              }
+    
+              if (searchTerm.length === 0) {
+                renderList(values, searchTerm);
+              } else {
+                const matches = [];
+                for (var i = 0; i < values.length; i++)
+                  if (~values[i].value.toLowerCase().indexOf(searchTerm.toLowerCase())) matches.push(values[i]);
+                renderList(matches, searchTerm);
+              }
+            },
+            onSelect:(item, insertItem) =>{
+              insertItem(item);
+              this.rednerTemplate(item.id);
+
+            }
+          }
         },
       });
   
@@ -607,8 +651,23 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
         this.docStatus = "Updating...";
       // update editor contents
       let Document = await this.documentService.getDocumentHistory(postId, cursors);
-      quill.setContents(Document);
+      //quill.setContents(Document);
         console.log(Document);
+      //let html = quill.clipboard.convert(Document);
+      var content = {
+        ops: [{
+        insert: 'Hello'
+      }, {
+        insert: 'World',
+        attributes: { bold: true }
+      }, {
+        insert: {
+          image: 'https://exclamation.com/mark.png'
+        },
+        attributes: { width: '100' }
+      }]};
+      let html = deltaToHtml(content)
+      console.log(html);
       editor = document.getElementsByClassName("ql-editor")[0].innerHTML;
       this.snotifyService.clear();
       this.docStatus = "Updated!";
@@ -703,23 +762,123 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     });
   }
 
-  insertTestTable(){
-    var tableModule = new TableModule(quill);
-    tableModule.insertTable(2,3);
+  rednerTemplate(id?){
+    this.table_handler('newtable_1_1', quill);
+    if(id === 'brd-procedure-1'){
+      this.table_handler('newtable_2_2', quill);
+    } else if(id === 'brd-procedure-2'){
+      this.table_handler('newtable_6_2', quill);
+    } else if(id === 'brd-procedure-3'){
+      this.table_handler('newtable_3_4', quill);
+    }
+    // console.log('Render Template');
     // let range = quill.getSelection();
-    
-    // var table_id = tableId();
-    // console.log(table_id);
-    // quill.insertEmbed(range.index, 'table', table_id);
-    // quill.insertEmbed(range.index, 'layout-col', { rowId: '1', colId: '1'});
-    // quill.insertEmbed(range.index, 'layout-col', { rowId: '1', colId: '2'});
+    // quill.setSelection(range.index-1, 1);
+    // let updatedRange = quill.getSelection();
+    // quill.deleteText(updatedRange.index, updatedRange.length, 'user');
+    // console.log(updatedRange);
+    // this.table_handler('newtable_2_2', quill);
+    // var delta = quill.getContents();
+    //   console.log('Delta', delta);
+    //   let leaf = quill.getLeaf(quill.getSelection()['index']);
+    //   console.log(leaf);
+    //quill.clipboard.dangerouslyPasteHTML(`<table table_id="objjj0w0etn"><tr row_id="5rl7xelsa1t"><td table_id="objjj0w0etn" row_id="5rl7xelsa1t" cell_id="x6yq72qwrv9"><p><br></p></td><td table_id="objjj0w0etn" row_id="5rl7xelsa1t" cell_id="qyek5vylo6"><p><br></p></td></tr><tr row_id="09l5h8cx1kt7"><td table_id="objjj0w0etn" row_id="09l5h8cx1kt7" cell_id="5j9bzdbktz8"><p><br></p></td><td table_id="objjj0w0etn" row_id="09l5h8cx1kt7" cell_id="aesa4b2a8st"><p><br></p></td></tr></table>`);
   }
 
-  insertColumnTest(){
-    let range = quill.getSelection();
-    var container = new TableContainer();
-    container.insertColumn(range.index);
-    quill.insertEmbed(range.index, 'table-container');  
+  random_id() {
+    return Math.random().toString(36).slice(2)
+  }
+
+  find_td(quill) {
+    let leaf = quill.getLeaf(quill.getSelection()['index']);
+    let blot = leaf[0];
+    for (; blot != null && blot.statics.blotName != 'td';) {
+      blot = blot.parent;
+    }
+    return blot; // return TD or NULL
+  }
+
+  table_handler(value, quill, options?) {
+    if (value.includes('newtable_')) {
+      let node = null;
+      let sizes = value.split('_');
+      let row_count = Number.parseInt(sizes[1]);
+      let col_count = Number.parseInt(sizes[2]);
+      let table_id = this.random_id();
+      let table = Parchment.create('table', table_id);
+      for (var ri = 0; ri < row_count; ri++) {
+        let row_id = this.random_id();
+        let tr = Parchment.create('tr', row_id);
+        table.appendChild(tr);
+        for (var ci = 0; ci < col_count; ci++) {
+          let cell_id = this.random_id();
+          value = table_id + '|' + row_id + '|' + cell_id;
+          let td = Parchment.create('td', value);
+          tr.appendChild(td);
+          let p = Parchment.create('block');
+          td.appendChild(p);
+          let br = Parchment.create('break');
+          p.appendChild(br);
+          node = p;
+        }
+      }
+      let leaf = quill.getLeaf(quill.getSelection()['index']);
+      let blot = leaf[0];
+      let top_branch = null;
+      console.log(table.domNode);
+      for (; blot != null && !(blot instanceof Container || blot instanceof Scroll);) {
+        top_branch = blot;
+        blot = blot.parent;
+      }
+      blot.insertBefore(table, top_branch);
+      return node;
+    } else if (value === 'append-col') {
+      let td = this.find_td(quill);
+      if (td) {
+        let table = td.parent.parent;
+        let table_id = table.domNode.getAttribute('table_id');
+        table.children.forEach(function (tr) {
+          let row_id = tr.domNode.getAttribute('row_id');
+          let cell_id = this.random_id();
+          let td = Parchment.create('td', table_id + '|' + row_id + '|' + cell_id);
+          tr.appendChild(td);
+        });
+      }
+    } else if (value === 'append-row') {
+      let td = this.find_td(quill);
+      if (td) {
+        let col_count = td.parent.children.length;
+        let table = td.parent.parent;
+        let new_row = td.parent.clone();
+        let table_id = table.domNode.getAttribute('table_id');
+        let row_id = this.random_id();
+        new_row.domNode.setAttribute('row_id', row_id);
+        for (let i = col_count - 1; i >= 0; i--) {
+          let cell_id = this.random_id();
+          let td = Parchment.create('td', table_id + '|' + row_id + '|' + cell_id);
+          new_row.appendChild(td);
+          let p = Parchment.create('block');
+          td.appendChild(p);
+          let br = Parchment.create('break');
+          p.appendChild(br);
+        }
+        table.appendChild(new_row);
+        console.log(new_row);
+      }
+    } else {
+      let table_id = this.random_id();
+      let table = Parchment.create('table', table_id);
+
+      let leaf = quill.getLeaf(quill.getSelection()['index']);
+      let blot = leaf[0];
+      let top_branch = null;
+      for (; blot != null && !(blot instanceof Container || blot instanceof Scroll);) {
+        top_branch = blot;
+        blot = blot.parent;
+      }
+      blot.insertBefore(table, top_branch);
+      return table;
+    }
   }
 
 }

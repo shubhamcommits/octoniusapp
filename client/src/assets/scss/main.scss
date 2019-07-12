@@ -608,3 +608,11 @@ quill-editor{
 textarea {
   width:100%;
 }
+
+button.ql-authorship-toggle:after {
+  content: "Track Changes";
+}
+
+button.ql-authorship-toggle {
+	width: 120px!important;
+}
