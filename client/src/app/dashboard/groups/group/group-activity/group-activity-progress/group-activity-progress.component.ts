@@ -48,7 +48,7 @@ export class GroupActivityProgressComponent implements OnInit {
   constructor(private groupService: GroupService, private columnService: ColumnService) { }
 
   async ngOnInit() {
-    //this.allColumns.length = 0;
+    // this.allColumns.length = 0;
     // await this.getTasks();
     await this.getPulseTotalNumTasks();
     await this.getPulseNumTodoTasks();
@@ -64,7 +64,7 @@ export class GroupActivityProgressComponent implements OnInit {
       this.getPulseNumDoneTasks();
     });
 
-    //If a new task is added, then it updates all the bars again
+    // If a new task is added, then it updates all the bars again
     this.groupService.newTaskAdded
     .subscribe(() => {
       // this.getTasks();
