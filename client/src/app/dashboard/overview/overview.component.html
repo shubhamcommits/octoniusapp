@@ -189,7 +189,7 @@
 
 
   <!-- RECENT POSTS -->
-  <div *ngIf="this.recentPosts.length > 0">
+  <div *ngIf="this.recentPosts.length != 0">
     <h5 class="title-overview">Recent posts</h5>
     <div *ngFor="let post of this.recentPosts; let i = index;">
       <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/post/{{post._id}}" (click)="this.markPostAsRead(post._id)">
@@ -218,7 +218,7 @@
   </div>
   <!-- endof RECENT POSTS -->
 
-  <div *ngIf="comments.length > 0">
+  <div *ngIf="comments.length != 0">
     <div>
       <h5 class="title-overview">Recent interactions</h5>
     </div>
@@ -262,7 +262,7 @@
       </div>
 
 
-      <div *ngIf="comment?._post?.type== 'task' && comment?._post?.task?.status != 'done' && comment?._post?.comments_count > 0" class="card-tile">
+      <div *ngIf="comment?._post?.type== 'task' && comment?._post?.comments_count > 0" class="card-tile">
         <div [routerLink]="['/dashboard/group/', comment._post._group._id, 'post', comment._post._id]" class="media" (click)="this.markCommentAsRead(comment._id)">
           <div class=" row media-body">
 
