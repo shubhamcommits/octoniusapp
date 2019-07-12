@@ -9,7 +9,6 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
 import { environment } from '../../../environments/environment';
 import {Subject} from "rxjs/Subject";
-import { Cacheable } from 'ngx-cacheable';
 
 @Injectable()
 export class GroupService {
@@ -21,7 +20,6 @@ export class GroupService {
 
   constructor(private _http: HttpClient) { }
 
-  @Cacheable()
   getFilteredPosts(group_id, filters) {
 
     console.log(filters,"filters")
@@ -37,7 +35,6 @@ export class GroupService {
     return this._http.get(this.BASE_API_URL + `/groups/${group_id}/getFilteredPosts`, {params});
   }
 
-  @Cacheable()
   getNextFilteredPosts(group_id, filters, alreadyLoaded) {
     const params = new HttpParams()
       .set("normal", filters.normal)
@@ -49,39 +46,32 @@ export class GroupService {
     return this._http.get(this.BASE_API_URL + `/groups/${group_id}/${alreadyLoaded}/getNextFilteredPosts`, {params});
   }
 
-  @Cacheable()
   getGroupPosts(group_id) {
     return this._http.get(this.BASE_API_URL + '/post/' + group_id);
   }
 
-  @Cacheable()
   getGroup(group_id) {
     return this._http.get(this.BASE_API_URL + '/group/' + group_id);
   }
 
   // PULSE start
 
-  @Cacheable()
   getAllPulse() {
     return this._http.get(this.BASE_API_URL + '/groups/all/pulse/');
   }
 
-  @Cacheable()
   getPulseTotalNumTasks(group_id) {
     return this._http.get(this.BASE_API_URL + '/group/' + group_id + '/totalNumTasks');
   }
 
-  @Cacheable()
   getPulseNumTodoTasks(group_id) {
     return this._http.get(this.BASE_API_URL + '/group/' + group_id + '/numTodoTasks');
   }
 
-  @Cacheable()
   getPulseNumInProgressTasks(group_id) {
     return this._http.get(this.BASE_API_URL + '/group/' + group_id + '/numInProgressTasks');
   }
 
-  @Cacheable()
   getPulseNumDoneTasks(group_id) {
     return this._http.get(this.BASE_API_URL + '/group/' + group_id + '/numDoneTasks');
   }
@@ -91,13 +81,10 @@ export class GroupService {
   }
   // PULSE end
 
-  @Cacheable()
   getGroupFiles(group_id) {
 
     return this._http.get(this.BASE_API_URL + '/groups/' + group_id + '/files');
   }
-
-  @Cacheable()
   getDocFileForEditorImport(post_id) {
 
     return this._http.get(this.BASE_API_URL + '/groups/' + post_id + '/docImport');
@@ -112,12 +99,11 @@ export class GroupService {
 
   }
 
-  @Cacheable()
+
   searchWorkspaceUsers(query, workspace) {
     return this._http.get(this.BASE_API_URL + `/workspace/searchWorkspaceUsers/${workspace}/${query}`);
   }
 
-  @Cacheable()
   searchGroupUsers(group_id, query) {
    // console.log('Inside searchGroupUsers');
 
@@ -136,17 +122,14 @@ export class GroupService {
     return this._http.post(this.BASE_API_URL + '/group/removeUser', data);
   }
 
-  @Cacheable()
   getGroupTasks(groupId) {
     return this._http.get<any>(this.BASE_API_URL + `/groups/${groupId}/tasks`);
   }
 
-  @Cacheable()
   getCompletedGroupTasks(groupId) {
     return this._http.get<any>(this.BASE_API_URL + `/groups/${groupId}/tasksDone`);
   }
 
-  @Cacheable()
   getRecentGroupTasks(postId, groupId) {
     return this._http.get<any>(this.BASE_API_URL + `/groups/${groupId}/nextTasksDone/${postId}`);
   }
@@ -155,7 +138,6 @@ export class GroupService {
     return this._http.put(this.BASE_API_URL + `/posts/${postId}/taskAssignee`, assigneeId);
   }
 
-  @Cacheable()
   getPrivateGroup() {
     return this._http.get<any>(this.BASE_API_URL + `/groups/user/private`);
   }
@@ -191,7 +173,6 @@ export class GroupService {
    * 
    * @param groupdId The group to query
    */
-  @Cacheable()
   getSmartGroupSettings(groupdId: string): Observable<any> {
     return this._http.get<any>(`${this.BASE_API_URL}/groups/smart/${groupdId}/settings`);
   }

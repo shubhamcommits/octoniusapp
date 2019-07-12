@@ -4,7 +4,6 @@ import { environment } from '../../../environments/environment';
 import * as chance from 'chance';
 import { SnotifyService, SnotifyPosition, SnotifyToastConfig, Snotify } from 'ng-snotify';
 import { Observable, Observer, Subject } from 'rxjs';
-import { Cacheable } from 'ngx-cacheable';
 
 var Delta = Quill.import('delta');
 
@@ -30,7 +29,6 @@ export class DocumentService {
     return this._http.post(environment.BASE_API_URL + `/posts/documents/${authorData._post_id}/addAuthor`, authorData);
   }
 
-  @Cacheable()
   getAuthors(documentId: any){
     return this._http.get(environment.BASE_API_URL + `/posts/documents/${documentId}/authors`);
   }

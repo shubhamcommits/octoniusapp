@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs';
-import { Cacheable } from 'ngx-cacheable';
 
 @Injectable()
 export class PostService {
@@ -26,17 +25,14 @@ export class PostService {
 
   // METHODS TO HANDLE HTTP REQUESTS
 
-  @Cacheable()
   getGroupPosts(group_id) {
     return this._http.get(this.BASE_API_URL + '/groups/' + group_id + '/posts');
   }
 
-  @Cacheable()
   getGroup(group_id) {
     return this._http.get(this.BASE_API_URL + '/group/' + group_id);
   }
 
-  @Cacheable()
   getNextPosts(group_id, last_post_id) {
     return this._http.get(this.BASE_API_URL + '/groups/' + group_id + '/nextPosts/' + last_post_id);
   }
@@ -103,7 +99,6 @@ export class PostService {
     return this._http.put(this.BASE_API_URL + `/posts/comments/${comment._id}/unlike`, comment);
   }
 
-  @Cacheable()
   useroverviewposts(user_id) {
     return this._http.get(this.BASE_API_URL + '/users/overview/');
   }
@@ -112,12 +107,10 @@ export class PostService {
    * Jessie Jia Edit Starts
    * @param postId
    */
-  @Cacheable()
   userOverviewPostsToday(user_id) {
     return this._http.get(this.BASE_API_URL + '/users/overviewToday');
   }
 
-  @Cacheable()
   userOverviewPostsWeek(user_id) {
     return this._http.get(this.BASE_API_URL + '/users/overviewWeek/');
   }
@@ -126,7 +119,7 @@ export class PostService {
    * Jessie Jia Edit Ends
    * @param postId
    */
-  @Cacheable()
+
   getPost(postId) {
     return this._http.get(this.BASE_API_URL + '/posts/' + postId);
   }
@@ -134,18 +127,12 @@ export class PostService {
   addNewComment(postId, comment) {
     return this._http.post(this.BASE_API_URL + `/posts/${postId}/comments`, comment);
   }
-
-  @Cacheable()
   getComment(commentId) {
     return this._http.get(this.BASE_API_URL + `/posts/comments/${commentId}`);
   }
-
-  @Cacheable()
   getComments(postId) {
     return this._http.get(this.BASE_API_URL + `/posts/${postId}/comments`);
   }
-
-  @Cacheable()
   getNextComments(postId, commentId) {
     return this._http.get(this.BASE_API_URL + `/posts/${postId}/nextComments/${commentId}`);
   }
@@ -156,7 +143,6 @@ export class PostService {
     return this._http.delete(this.BASE_API_URL + `/posts/comments/${commentId}`);
   }
 
-  @Cacheable()
   getDocument(postId) {
     return this._http.get(this.BASE_API_URL + `/posts/documents/${postId}`);
   }

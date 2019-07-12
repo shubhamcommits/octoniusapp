@@ -108,11 +108,6 @@ import { ColumnService } from './shared/services/column.service';
 import { PulseComponent } from './dashboard/groups/pulse/pulse.component';
 import { GroupSmartAdminComponent } from './dashboard/groups/group/group-smart-admin/group-smart-admin.component';
 
-// Setting LocalStorage as the destination for API Caching
-import { GlobalCacheConfig } from 'ngx-cacheable';
-import { DOMStorageStrategy } from 'ngx-cacheable/common/DOMStorageStrategy';
-GlobalCacheConfig.storageStrategy = DOMStorageStrategy;
-
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 
   "bgsColor": "#005fd5",
