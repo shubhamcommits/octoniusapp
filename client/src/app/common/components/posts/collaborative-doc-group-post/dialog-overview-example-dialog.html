@@ -1,4 +1,5 @@
 
+<div *ngIf = "isShowing">
 <div mat-dialog-actions style=" position: absolute;
 top: 0;
 left:0;
@@ -6,9 +7,7 @@ height: 20px;
 width: 50px;
 background:purple;
 z-index:9999;">
-    <button mat-button (click)="onNoClick()"></button>
-   </div>
-<div *ngIf = receivedParentMessage>
+    <button (click)="onNoClick()" style = "position:absolute;width:100px; height:100px;background:yellow; top:0 ;left:0; z-index: 9999"></button>
     <div style=" position: absolute;
     top: 0;
     left:0;
@@ -25,23 +24,28 @@ z-index:9999;">
       <div style=" position: relative;
       top: 0;
       z-index:9999;
-      height: auto;
       display:flex;
       flex-direction: column;
       align-items: center;
-    justify-content: center;
-      width:75%;
-      background: white">
+      justify-content: center;
+      size: 21cm 29.7cm;
+      margin: 30mm 45mm 30mm 45mm;
+      background: white;
+      ">
   
           <div style=" position: relative;
           top: 0;
         z-index:9999;
-        width:50%;
-        min-height: 100vh;
-        height: auto;
-        background: lightblue" [innerHTML] = receivedParentMessage>
+          min-height: 21cm 29.7cm;
+        width:100%;
+        size: 21cm 29.7cm;
+        margin: 30mm 45mm 30mm 45mm;
+        " 
+        [innerHTML] = "receivedParentMessage | safe: 'html'">
           </div>
         </div> 
     </div>
     
+</div>
+  
 </div>
