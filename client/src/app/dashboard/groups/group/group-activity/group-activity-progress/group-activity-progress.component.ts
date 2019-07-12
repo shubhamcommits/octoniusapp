@@ -23,7 +23,7 @@ export class GroupActivityProgressComponent implements OnInit {
   todoTasks = 0;
   inProgressTasks = 0;
   doneTasks = 0;
-
+  undoneLastWeekTasks = 0;
   // task percentage
   todoPercent = 0;
   inProgressPercent = 0;
@@ -54,6 +54,7 @@ export class GroupActivityProgressComponent implements OnInit {
     await this.getPulseNumTodoTasks();
     await this.getPulseNumInProgressTasks();
     await this.getPulseNumDoneTasks();
+    await this.getUndoneLastWeekTasks();
     this.groupService.taskStatusChanged
     .subscribe(() => {
       // this.getTasks();
@@ -112,6 +113,18 @@ export class GroupActivityProgressComponent implements OnInit {
         .subscribe((res) => {
           this.doneTasks = (res['numTasks']);
           this.donePercent = Math.round(this.doneTasks / this.totalTasks * 100);
+          resolve();
+        }, (err) => {
+          reject();
+        });
+    });
+  }
+
+  getUndoneLastWeekTasks () {
+    return new Promise((resolve, reject) => {
+      this.groupService.getTasksUndoneLastWeek(this.group._id)
+        .subscribe((res) => {
+          this.undoneLastWeekTasks = (res['numTasks']);
           resolve();
         }, (err) => {
           reject();
