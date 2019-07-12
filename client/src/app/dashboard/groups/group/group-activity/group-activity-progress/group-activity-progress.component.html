@@ -38,18 +38,17 @@
     </div>
   </div>
 
-    <div class="row">
-      <div class="col-md-6"><h4 class="working" style="margin-top:30px"><b>{{inProgressTasks}} In progress</b></h4></div>
-      <div class="col-md-12">
-        <b><ngx-skill-bar 
-          [percentage]="inProgressPercent || 0" 
-          bgColor="#cccccc" 
-          color="#53a9ff"
-          showFigures="true"></ngx-skill-bar></b>
-      </div>
+    <div class="col-md-6"><h4 class="todo" style="margin-top:30px"><b>{{todoTasks}} To do</b></h4></div>
+    <div class="col-md-12">
+      <b><ngx-skill-bar
+        [percentage]="todoPercent || 0"
+        bgColor="#cccccc"
+        color="#53a9ff"
+        showFigures="true"></ngx-skill-bar></b>
     </div>
   </div>
 
+<<<<<<< HEAD
     <div class="row">
       <div class="col-md-12"><h4 class="done" style="margin-top:30px"><b>{{doneTasks}} Done</b></h4></div>
       <div class="col-md-12">
@@ -61,5 +60,28 @@
       </div>
 
     </div>
+=======
+  <div class="row">
+    <div class="col-md-6"><h4 class="working" style="margin-top:30px"><b>{{inProgressTasks}} In progress</b></h4></div>
+    <div class="col-md-12">
+      <b><ngx-skill-bar
+        [percentage]="inProgressPercent || 0"
+        bgColor="#cccccc"
+        color="#53a9ff"
+        showFigures="true"></ngx-skill-bar></b>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12"><h4 class="done" style="margin-top:30px"><b>{{doneTasks}} Done</b></h4></div>
+    <div class="col-md-12">
+      <b><ngx-skill-bar
+        [percentage]="donePercent || 0"
+        bgColor="#cccccc"
+        color="#53a9ff"
+        showFigures="true"></ngx-skill-bar></b>
+    </div>
+
+>>>>>>> add last week overdue
   </div>
 </div>
