@@ -1,54 +1,54 @@
 <div class="card sideinnercard">
 
-    <h6 class="card-title"><b>Hi {{user?.first_name}},</b></h6>
-    <hr />
+  <h6 class="card-title"><b>Hi {{user?.first_name}},</b></h6>
+  <hr />
 
-    <div class="row">
-      <div class="col-md-12">
-        <div *ngIf="!isItMyWorkplace; else personalmetrics" class="card-block">
+  <div class="row">
+    <div class="col-md-12">
+      <div *ngIf="!isItMyWorkplace; else personalmetrics" class="card-block">
+        <p>
+          Your team has <span class="todo bold">{{ totalTasks }}</span> assignment(s) this week.
+        </p>
+      </div>
+      <ng-template #personalmetrics>
+        <div>
           <p>
-            Your team has <span class="todo bold">{{ totalTasks }}</span> assignment(s) this week.
+            You have <span class="todo bold">{{ totalTasks }}</span> assignments this week.
           </p>
         </div>
-        <ng-template #personalmetrics>
-          <div>
-            <p>
-              You have <span class="todo bold">{{ totalTasks }}</span> assignments this week.
-            </p>
-          </div>
-        </ng-template>
-      </div>
-
+      </ng-template>
     </div>
 
-    <div class="row">
+  </div>
 
-      <div class="col-md-6"><h4 class="todo" style="margin-top:30px"><b>{{todoTasks}} To do</b></h4></div>
-      <div class="col-md-4">
+  <div class="row">
 
-        <b><circle-progress
-          [percent]="todoPercent || 0">
-        </circle-progress></b>
-      </div>
+    <div class="col-md-6"><h4 class="todo" style="margin-top:30px"><b>{{todoTasks}} To do</b></h4></div>
+    <div class="col-md-4">
+
+      <b><circle-progress
+        [percent]="todoPercent || 0">
+      </circle-progress></b>
     </div>
+  </div>
 
-    <div class="row">
-      <div class="col-md-6"><h4 class="working" style="margin-top:30px"><b>{{inProgressTasks}} In progress</b></h4></div>
-      <div class="col-md-4">
-        <b><circle-progress
+  <div class="row">
+    <div class="col-md-6"><h4 class="working" style="margin-top:30px"><b>{{inProgressTasks}} In progress</b></h4></div>
+    <div class="col-md-4">
+      <b><circle-progress
 
-          [percent]="inProgressPercent || 0">
-        </circle-progress></b>
-      </div>
+        [percent]="inProgressPercent || 0">
+      </circle-progress></b>
     </div>
+  </div>
 
-    <div class="row">
-      <div class="col-md-6"><h4 class="done" style="margin-top:30px"><b>{{doneTasks}} Done</b></h4></div>
-      <div class="col-md-4">
-        <b><circle-progress
+  <div class="row">
+    <div class="col-md-6"><h4 class="done" style="margin-top:30px"><b>{{doneTasks}} Done</b></h4></div>
+    <div class="col-md-4">
+      <b><circle-progress
 
-          [percent]="donePercent || 0">
-        </circle-progress></b>
-      </div>
+        [percent]="donePercent || 0">
+      </circle-progress></b>
     </div>
+  </div>
 </div>

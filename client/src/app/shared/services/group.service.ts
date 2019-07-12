@@ -53,6 +53,9 @@ export class GroupService {
     return this._http.get(this.BASE_API_URL + '/group/' + group_id);
   }
 
+  getTasksUndoneLastWeek(group_id) {
+    return this._http.get(this.BASE_API_URL + '/group/' + group_id + '/undone/lastWeek');
+  }
   // PULSE start
 
   getAllPulse() {
@@ -158,7 +161,7 @@ export class GroupService {
   /**
    * Makes an HTTP POST request to update a smart group's
    * rules.
-   * 
+   *
    * @param data The new rules to add
    * @param groupId The smart group to update
    */
@@ -169,7 +172,7 @@ export class GroupService {
   /**
    * Makes an HTTP GET request to retrieve a smart group's
    * current settings.
-   * 
+   *
    * @param groupdId The group to query
    */
   getSmartGroupSettings(groupdId: string): Observable<any> {
@@ -179,7 +182,7 @@ export class GroupService {
   /**
    * Makes an HTTP PUT request that removes a smart group's
    * rule.
-   * 
+   *
    * @param groupId The ID of the smart group.
    * @param rule The rule to delete.
    */
@@ -190,7 +193,7 @@ export class GroupService {
   /**
    * Makes an HTTP PUT request to update the members of a
    * Smart Group.
-   * 
+   *
    * @param groupId The group to update.
    * @param data The requirements that the users must meet.
    */
