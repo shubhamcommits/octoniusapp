@@ -1,0 +1,7 @@
+:host ::ng-deep td, tr {
+    border: 1px solid black;
+  }
+:host ::ng-deep table{
+    width:90%;
+    margin: 0 auto;
+}
