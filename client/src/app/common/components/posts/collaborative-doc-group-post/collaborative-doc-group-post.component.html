@@ -1,3 +1,4 @@
+
 <app-collaborative-doc-group-navbar 
 (clickBack)="backClicked()" [post]="post" [docStatus]="docStatus" (docTitle)="getPostTitle($event)">
 </app-collaborative-doc-group-navbar>
@@ -65,6 +66,17 @@
           subtitles
           </i></button>
       </span>
+      <span class="ql-formats">
+        <button (click)="showPreview()"><i class="material-icons">
+          subtitles
+            </i>
+            <!-- <div *ngIf = "previewbool" style="position: absolute"> -->
+                <dialog-overview-example-dialog [receivedParentMessage] = "testpreview" (closeView11) = "closePreview($event)" >
+                </dialog-overview-example-dialog>
+            <!--  </div> -->
+          </button>
+        </span>
+
       <!-- <span class="ql-formats">
         <button ngbTooltip="Insert Table" placement="bottom" (click)="insertTestTable();" class="track-changes"><i class="material-icons">
           subtitles

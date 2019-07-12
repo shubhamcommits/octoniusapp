@@ -1,0 +1,47 @@
+
+<div mat-dialog-actions style=" position: absolute;
+top: 0;
+left:0;
+height: 20px;
+width: 50px;
+background:purple;
+z-index:9999;">
+    <button mat-button (click)="onNoClick()"></button>
+   </div>
+<div *ngIf = receivedParentMessage>
+    <div style=" position: absolute;
+    top: 0;
+    left:0;
+    z-index:9998;
+    right:0;
+    flex-direction: column;
+      align-items: center;
+    justify-content: center;
+    width: 100vw;
+    
+    min-height: 100vh;
+    height: auto;
+    background: black">
+      <div style=" position: relative;
+      top: 0;
+      z-index:9999;
+      height: auto;
+      display:flex;
+      flex-direction: column;
+      align-items: center;
+    justify-content: center;
+      width:75%;
+      background: white">
+  
+          <div style=" position: relative;
+          top: 0;
+        z-index:9999;
+        width:50%;
+        min-height: 100vh;
+        height: auto;
+        background: lightblue" [innerHTML] = receivedParentMessage>
+          </div>
+        </div> 
+    </div>
+    
+</div>
