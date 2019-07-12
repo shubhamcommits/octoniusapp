@@ -1,8 +1,8 @@
-
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
+import { Cacheable } from 'ngx-cacheable';
 
 @Injectable()
 export class WorkspaceService {
@@ -11,6 +11,7 @@ export class WorkspaceService {
 
   constructor(private _http: HttpClient) { }
 
+  @Cacheable()
   getWorkspace(workspace) {
     return this._http.get<any>(this.BASE_API_URL + '/workspace/' + workspace._id);
   }
@@ -26,10 +27,12 @@ export class WorkspaceService {
     return this._http.post(this.BASE_API_URL + `/billing/createSubscription`, data);
   }
 
+  @Cacheable()
   getBillingStatus(workspaceId) {
     return this._http.get(this.BASE_API_URL + `/billing/getBillingStatus/${workspaceId}`);
   }
 
+  @Cacheable()
   getSubscription() {
     return this._http.get(this.BASE_API_URL + `/billing/getSubscription`);
   }
