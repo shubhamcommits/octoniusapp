@@ -895,6 +895,38 @@ const getTasksDone = async (req, res, next) => {
   }
 };
 
+const getTasksUndoneLastWeek = async (req, res, next) => {
+  try{
+
+    const {
+      userId,
+      params: {
+        groupId
+      }
+    } = req;
+
+    const start = moment().local().startOf('week').subtract(1, 'weeks').format('YYYY-MM-DD');
+    const end = moment().local().endOf('week').subtract(1, 'weeks').format('YYYY-MM-DD');
+    const posts = await Post.find({
+      $and: [
+        { type: 'task' },
+        { _group: groupId },
+        {$or: [{ 'task.status': 'to do'}, { 'task.status': 'in progress'}]},
+        // { 'task.status': 'to do'},
+        { 'task.due_to': { $gte: start, $lte: end } }
+      ]
+    });
+
+    return res.status(200).json({
+      message: `Found ${posts.length} total tasks.`,
+      numTasks: posts.length,
+      posts
+    });
+
+  }catch(err){
+    return sendErr(res, err);
+  }
+}
 /***
  * Jessie Jia Edit starts PULSE
  */
@@ -908,8 +940,6 @@ const getTotalNumTasks = async (req, res, next) => {
       }
     } = req;
 
-    const today = moment().local().format('YYYY-MM-DD');
-    const todayPlus7Days = moment().local().add(7, 'days').format('YYYY-MM-DD');
     const start = moment().local().startOf('week').format('YYYY-MM-DD');
     const end = moment().local().endOf('week').format('YYYY-MM-DD');
     const posts = await Post.find({
@@ -940,8 +970,6 @@ const getNumTodoTasks = async (req, res, next) => {
       }
     } = req;
 
-    const today = moment().local().format('YYYY-MM-DD');
-    const todayPlus7Days = moment().local().add(7, 'days').format('YYYY-MM-DD');
     const start = moment().local().startOf('week').format('YYYY-MM-DD');
     const end = moment().local().endOf('week').format('YYYY-MM-DD');
     const posts = await Post.find({
@@ -971,8 +999,6 @@ const getNumInProgressTasks = async (req, res, next) => {
       }
     } = req;
 
-    const today = moment().local().format('YYYY-MM-DD');
-    const todayPlus7Days = moment().local().add(7, 'days').format('YYYY-MM-DD');
     const start = moment().local().startOf('week').format('YYYY-MM-DD');
     const end = moment().local().endOf('week').format('YYYY-MM-DD');
     const posts = await Post.find({
@@ -1002,8 +1028,6 @@ const getNumDoneTasks = async (req, res, next) => {
       }
     } = req;
 
-    const today = moment().local().format('YYYY-MM-DD');
-    const todayPlus7Days = moment().local().add(7, 'days').format('YYYY-MM-DD');
     const start = moment().local().startOf('week').format('YYYY-MM-DD');
     const end = moment().local().endOf('week').format('YYYY-MM-DD');
     const posts = await Post.find({
@@ -1038,7 +1062,6 @@ const getPulseDescription = async (req, res) => {
 
     const group = await Group.findById(
       groupId,
-      // {$set: {"pulse_description" : req.body.pulse_description}}
     ).select('group_name pulse_description');
 
     return res.status(200).json({
@@ -1077,6 +1100,7 @@ const editPulseDescription = async (req, res) => {
     return sendErr(res, err);
   }
 };
+
 
 
 const deletePulseDescription = async (req, res) => {
@@ -1141,7 +1165,7 @@ module.exports = {
   getNextTasksDone,
   getTasks,
   getTasksDone,
-
+  getTasksUndoneLastWeek,
   // PULSE
   getTotalNumTasks,
   getNumTodoTasks,
