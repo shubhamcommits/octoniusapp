@@ -106,4 +106,10 @@ router.put('/:postId/taskAssignee', posts.changeTaskAssignee);
 // Change task status
 router.put('/:postId/taskStatus', posts.changeTaskStatus);
 
+// - Table Cells -
+router.get('/table/cells/:postId', posts.getFormattedTableCells);
+
+router.post('/table/cells/:postId/addCell', posts.insertFormattedTableCells);
+
+
 module.exports = router;

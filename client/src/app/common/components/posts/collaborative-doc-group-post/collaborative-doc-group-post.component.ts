@@ -73,6 +73,7 @@ var editor: any;
 var docAuthors: any = new Array();
 // !-- Variables Required to use and export Globally--! //
 var shareDBSocket: any;
+var doc;
 
 
 @Component({
@@ -150,15 +151,19 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
               //Here we insert the image and replace the BASE64 with our custom URL, which is been saved to the server
               //ex - img src = "http://localhost:3000/uploads/image-name.jpg"
               const range = quill.getSelection();
-              quill.insertEmbed(range.index, 'image', environment.BASE_URL+'/uploads/'+url);
-              quill.on('text-change', function(delta, oldDelta, source) {
-
-              });
+              let quillDelta = quill.insertEmbed(range.index, 'image', environment.BASE_URL+'/uploads/'+url, 'user');
               //console.log(this.quill.getLength(), text.length, range.index);
-
               //here we delete the uploading text from the editor
               quill.deleteText(currentIndex, text.length);
+ 
+              // console.log(quillDelta);
 
+              // doc.submitOp(quillDelta, {
+              //   source: quill
+              // }, (err: any) => {
+              //   if (err)
+              //     console.error('Submit OP returned an error:', err);
+              // });
             }
           };
           xhr.send(fd);
@@ -369,6 +374,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
         length: 0
       };
 
+      doc = shareDBConnection.get('documents', postId);
       let templateMention = [{
         'id':'brd-procedure-1',
         'value': 'Procedure Template 1'
@@ -417,15 +423,13 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
             },
             onSelect:(item, insertItem) =>{
               insertItem(item);
-              this.rednerTemplate(item.id);
+              this.renderTemplate(item.id);
 
             }
           }
         },
       });
-  
-      let doc = shareDBConnection.get('documents', postId);
-    
+      
       let cursorsModule = quill.getModule('cursors');
      // cursorsModule.createCursor(1, 'User 1', 'red');
 
@@ -651,24 +655,28 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
         this.docStatus = "Updating...";
       // update editor contents
       let Document = await this.documentService.getDocumentHistory(postId, cursors);
-      //quill.setContents(Document);
-        console.log(Document);
+      quill.setContents(Document);
       //let html = quill.clipboard.convert(Document);
-      var content = {
-        ops: [{
-        insert: 'Hello'
-      }, {
-        insert: 'World',
-        attributes: { bold: true }
-      }, {
-        insert: {
-          image: 'https://exclamation.com/mark.png'
-        },
-        attributes: { width: '100' }
-      }]};
-      let html = deltaToHtml(content)
-      console.log(html);
       editor = document.getElementsByClassName("ql-editor")[0].innerHTML;
+      let tds = document.getElementsByTagName("td");
+      if(tds){
+        this.documentService.getTableCells(postId)
+        .subscribe((res)=>{
+          console.log('Formatted table cells', res);
+          if(tds.length !=0){
+            for(let i = 0 ; i < tds.length; i++){
+              let tableCellIndex = res['tableCells'].findIndex((element)=> element._cell_id === tds[i]['attributes']['cell_id']['value']);
+              if(tableCellIndex != -1){
+                tds[i]['bgColor'] = res['tableCells'][tableCellIndex]['_color']
+                console.log('Table Cell', tableCellIndex);
+              }
+              
+            }
+          }
+        }, (err)=>{
+          console.log('Error occured while fetching the table cells', err);
+        })
+      }
       this.snotifyService.clear();
       this.docStatus = "Updated!";
       if(this.document_imported_information && this.document_imported_information != "" && this.document_imported_information != null){
@@ -678,10 +686,14 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
 
     // local -> server
     quill.on('text-change', (delta, oldDelta, source) => {
-
       this.docStatus = "Updating...";
       if (source == 'user') {
-
+        // console.log(delta, quill.getContents());
+        // //console.log(editor);
+        // let elem = document.createElement('html');
+        // elem.innerHTML = editor;
+        // console.log(elem);
+        // quill.clipboard.dangerouslyPasteHTML(0, elem, 'user');
         // Check if it's a formatting-only delta
         var formattingDelta = delta.reduce(function (check, op) {
           return (op.insert || op.delete) ? false : check;
@@ -762,27 +774,23 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     });
   }
 
-  rednerTemplate(id?){
-    this.table_handler('newtable_1_1', quill);
+  renderTemplate(id?){
+
+    let options = new Object();
     if(id === 'brd-procedure-1'){
+      options['color'] = "red";
+      this.table_handler('newtable_1_1', quill, options);
       this.table_handler('newtable_2_2', quill);
     } else if(id === 'brd-procedure-2'){
+      options['color'] = "#808080";
+      this.table_handler('newtable_1_1', quill, options);
       this.table_handler('newtable_6_2', quill);
     } else if(id === 'brd-procedure-3'){
+      options['color'] = "#D3D3D3";
+      this.table_handler('newtable_1_1', quill, options);
       this.table_handler('newtable_3_4', quill);
     }
-    // console.log('Render Template');
-    // let range = quill.getSelection();
-    // quill.setSelection(range.index-1, 1);
-    // let updatedRange = quill.getSelection();
-    // quill.deleteText(updatedRange.index, updatedRange.length, 'user');
-    // console.log(updatedRange);
-    // this.table_handler('newtable_2_2', quill);
-    // var delta = quill.getContents();
-    //   console.log('Delta', delta);
-    //   let leaf = quill.getLeaf(quill.getSelection()['index']);
-    //   console.log(leaf);
-    //quill.clipboard.dangerouslyPasteHTML(`<table table_id="objjj0w0etn"><tr row_id="5rl7xelsa1t"><td table_id="objjj0w0etn" row_id="5rl7xelsa1t" cell_id="x6yq72qwrv9"><p><br></p></td><td table_id="objjj0w0etn" row_id="5rl7xelsa1t" cell_id="qyek5vylo6"><p><br></p></td></tr><tr row_id="09l5h8cx1kt7"><td table_id="objjj0w0etn" row_id="09l5h8cx1kt7" cell_id="5j9bzdbktz8"><p><br></p></td><td table_id="objjj0w0etn" row_id="09l5h8cx1kt7" cell_id="aesa4b2a8st"><p><br></p></td></tr></table>`);
+    
   }
 
   random_id() {
@@ -805,13 +813,14 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
       let row_count = Number.parseInt(sizes[1]);
       let col_count = Number.parseInt(sizes[2]);
       let table_id = this.random_id();
+      let cell_id;
       let table = Parchment.create('table', table_id);
       for (var ri = 0; ri < row_count; ri++) {
         let row_id = this.random_id();
         let tr = Parchment.create('tr', row_id);
         table.appendChild(tr);
         for (var ci = 0; ci < col_count; ci++) {
-          let cell_id = this.random_id();
+          cell_id = this.random_id();
           value = table_id + '|' + row_id + '|' + cell_id;
           let td = Parchment.create('td', value);
           tr.appendChild(td);
@@ -826,6 +835,22 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
       let blot = leaf[0];
       let top_branch = null;
       console.log(table.domNode);
+      if(options){
+        let tableCellData = {
+          _post_id: postId,
+          _cell_id: cell_id,
+          _color: options.color
+        }
+
+        this.documentService.addTableCells(tableCellData)
+        .subscribe((res)=>{
+          console.log("Table Cell Formatted", res);
+        }, (err)=>{
+          console.log("Error while adding table cells!", err);
+        })
+        let td = table.domNode.getElementsByTagName('td')[0];
+        td.bgColor = tableCellData._color;
+      }
       for (; blot != null && !(blot instanceof Container || blot instanceof Scroll);) {
         top_branch = blot;
         blot = blot.parent;
