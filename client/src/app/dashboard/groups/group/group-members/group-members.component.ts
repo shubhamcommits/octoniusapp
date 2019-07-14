@@ -12,13 +12,18 @@ import { environment } from '../../../../../environments/environment';
   styleUrls: ['./group-members.component.scss']
 })
 export class GroupMembersComponent implements OnInit {
+  isUserAdmin;
+  user_data;
+  currentUserId;
   group_id;
   group_members;
   group_admins;
   isLoading$ = new BehaviorSubject(false);
   BASE_URL = environment.BASE_URL;
 
-  constructor(private groupDataService: GroupDataService, private groupService: GroupService, private ngxService: NgxUiLoaderService) { }
+  constructor(private groupDataService: GroupDataService, private groupService: GroupService, private ngxService: NgxUiLoaderService) {
+    this.user_data = JSON.parse(localStorage.getItem('user'));
+   }
 
   ngOnInit() {
 
@@ -42,6 +47,8 @@ export class GroupMembersComponent implements OnInit {
 
 
   loadGroup() {
+    // console.log("this.user_data", this.user_data);
+    this.currentUserId = this.user_data.user_id;
     this.isLoading$.next(true);
     return new Promise((resolve, reject)=>{
       this.groupService.getGroup(this.group_id)
@@ -49,8 +56,9 @@ export class GroupMembersComponent implements OnInit {
         this.group_members = res['group']._members;
       //  console.log(this.group_members);
         this.group_admins = res['group']._admins;
+        this.isUserAdmin = this.isAdmin();
         this.isLoading$.next(true);
-      //  console.log(this.group_admins);
+      //  console.log("this.group_admins", this.group_admins);
         resolve();
       }, (err) => {
         console.log('Error while loading the group', err);
@@ -60,6 +68,15 @@ export class GroupMembersComponent implements OnInit {
       });
     })
 
+  }
+
+  isAdmin() {
+    for(let i=0; i<this.group_admins.length; i++) {
+      if (this.currentUserId === this.group_admins[i]._id) {
+        return true;
+      }
+    }
+    return false;
   }
 
   removeUserfromGroup(user_id, first_name, last_name){
