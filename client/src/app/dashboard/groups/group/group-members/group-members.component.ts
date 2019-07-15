@@ -58,7 +58,6 @@ export class GroupMembersComponent implements OnInit {
         this.group_admins = res['group']._admins;
         this.isUserAdmin = this.isAdmin();
         this.isLoading$.next(true);
-      //  console.log("this.group_admins", this.group_admins);
         resolve();
       }, (err) => {
         console.log('Error while loading the group', err);
@@ -71,12 +70,21 @@ export class GroupMembersComponent implements OnInit {
   }
 
   isAdmin() {
-    for(let i=0; i<this.group_admins.length; i++) {
-      if (this.currentUserId === this.group_admins[i]._id) {
-        return true;
-      }
+   if(this.group_admins.length > 0){
+     let userExistIndex = this.group_admins.findIndex((admin)=> admin._id === this.currentUserId);
+     if (userExistIndex != -1){
+       return true
+     } else{
+       return false;
+     }
+   } else if(this.group_members){
+    let userExistIndex = this.group_members.findIndex((user)=> (user.role == 'owner' && user._id === this.currentUserId) ||(user.role == 'admin' && user._id === this.currentUserId));
+    if (userExistIndex > -1){
+      return true
+    } else{
+      return false;
     }
-    return false;
+   }
   }
 
   removeUserfromGroup(user_id, first_name, last_name){
