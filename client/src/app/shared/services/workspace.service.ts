@@ -2,7 +2,10 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { Cacheable, CacheBuster } from 'ngx-cacheable';
+
+const cacheBuster$ = new Subject<void>();
 
 @Injectable()
 export class WorkspaceService {
@@ -11,37 +14,58 @@ export class WorkspaceService {
 
   constructor(private _http: HttpClient) { }
 
+  @Cacheable({ cacheBusterObserver: cacheBuster$
+  })
   getWorkspace(workspace) {
     return this._http.get<any>(this.BASE_API_URL + '/workspace/' + workspace._id);
   }
 
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
   updateWorkspace(workspce_id, data) {
     return this._http.put(this.BASE_API_URL + `/workspace/${workspce_id}`, data);
   }
 
   ///// Workspace billing
 
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
   createSubscription(token, amount) {
     const data = {token, amount};
     return this._http.post(this.BASE_API_URL + `/billing/createSubscription`, data);
   }
 
+  @Cacheable({ cacheBusterObserver: cacheBuster$
+  })
   getBillingStatus(workspaceId) {
     return this._http.get(this.BASE_API_URL + `/billing/getBillingStatus/${workspaceId}`);
   }
 
+  @Cacheable({ cacheBusterObserver: cacheBuster$
+  })
   getSubscription() {
     return this._http.get(this.BASE_API_URL + `/billing/getSubscription`);
   }
 
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
   cancelSubscription() {
     return this._http.get(this.BASE_API_URL + `/billing/cancelSubscription`);
   }
 
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
   renewSubscription() {
     return this._http.get(this.BASE_API_URL + `/billing/renewSubscription`);
   }
 
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
   resumeSubscription() {
     return this._http.get(this.BASE_API_URL + `/billing/resumeSubscription`);
   }
