@@ -1,7 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { Cacheable } from 'ngx-cacheable';
+import { Cacheable, CacheBuster } from 'ngx-cacheable';
+import { Subject } from 'rxjs/Subject';
+
+const cacheBuster$ = new Subject<void>();
 
 @Injectable()
 export class ColumnService {
@@ -21,18 +24,23 @@ export class ColumnService {
    }
 
    // get all columns 
-   @Cacheable()
+   @Cacheable({ cacheBusterObserver: cacheBuster$
+   })
    getAllColumns(groupId){
         return this._http.get(this.BASE_API_URL + `/columns/all/${groupId}`);
    }
 
    // get one column
-   @Cacheable()
+   @Cacheable({ cacheBusterObserver: cacheBuster$
+   })
    getOneColumn(groupId, columnName){
     return this._http.get(this.BASE_API_URL + `/column/${groupId}/${columnName}`);
    }
 
    // add column
+   @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
    addColumn(groupId, columnName){
         const group = {
             groupId: groupId,
@@ -42,6 +50,9 @@ export class ColumnService {
    }
 
    // edit column name
+   @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
    editColumnName(groupId, oldColumnName, newColumnName){
        const group = {
             groupId: groupId,
@@ -52,6 +63,9 @@ export class ColumnService {
    }
 
    // edit column number 
+   @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
    editColumnNumber(groupId, columnName, numberOfTasks){
         const group = {
             groupId: groupId,
@@ -62,6 +76,9 @@ export class ColumnService {
    }
 
    // add task to column
+   @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
    addColumnTask(groupId, columnName){
         const group = {
             groupId: groupId,
@@ -71,6 +88,9 @@ export class ColumnService {
    }
 
    // remove task from column
+   @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
    deleteColumnTask(groupId, columnName){
         const group = {
             groupId: groupId,
@@ -80,6 +100,9 @@ export class ColumnService {
    }
 
    // delete column
+   @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
    deleteColumn(groupId, columnName){
         const group = {
             groupId: groupId,

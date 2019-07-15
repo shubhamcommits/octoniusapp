@@ -3,7 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs';
-import { Cacheable } from 'ngx-cacheable';
+import { Cacheable, CacheBuster } from 'ngx-cacheable';
+
+const cacheBuster$ = new Subject<void>();
 
 @Injectable()
 export class PostService {
@@ -26,39 +28,60 @@ export class PostService {
 
   // METHODS TO HANDLE HTTP REQUESTS
 
-  @Cacheable()
+  @Cacheable({ cacheBusterObserver: cacheBuster$
+  })
   getGroupPosts(group_id) {
     return this._http.get(this.BASE_API_URL + '/groups/' + group_id + '/posts');
   }
 
-  @Cacheable()
   getGroup(group_id) {
     return this._http.get(this.BASE_API_URL + '/group/' + group_id);
   }
 
-  @Cacheable()
+  @Cacheable({ cacheBusterObserver: cacheBuster$
+  })
   getNextPosts(group_id, last_post_id) {
     return this._http.get(this.BASE_API_URL + '/groups/' + group_id + '/nextPosts/' + last_post_id);
   }
 
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
   addNewNormalPost(post) {
     return this._http.post(this.BASE_API_URL + '/posts', post);
   }
+
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
   addNewEventPost(post) {
     return this._http.post(this.BASE_API_URL + '/posts', post);
   }
+
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
   addNewTaskPost(post) {
     return this._http.post(this.BASE_API_URL + '/posts', post);
   }
 
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
   addNewCollabPost(post) {
     return this._http.post(this.BASE_API_URL + '/posts', post);
   }
 
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
   editPost(postId, post) {
     return this._http.put<any>(this.BASE_API_URL + `/posts/${postId}`, post);
   }
 
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
   deletePost(postId) {
     return this._http.delete(this.BASE_API_URL + `/posts/${postId}`);
   }
@@ -79,31 +102,48 @@ export class PostService {
     return this._http.get(this.BASE_API_URL + `/groups/${data.groupId}/calendar/${data.year}/${data.month}`);
   }
 
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
   like(post) {
     return this._http.put(this.BASE_API_URL + `/posts/${post._id}/like`, post);
   }
 
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
   follow(post) {
     return this._http.put(this.BASE_API_URL + `/posts/${post._id}/follow`, post);
   }
 
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
   unfollow(post) {
     return this._http.put(this.BASE_API_URL + `/posts/${post._id}/unfollow`, post);
   }
 
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
   likeComment(comment) {
     return this._http.put(this.BASE_API_URL + `/posts/comments/${comment._id}/like`, comment);
   }
 
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
   unlike(post) {
     return this._http.put(this.BASE_API_URL + `/posts/${post._id}/unlike`, post);
   }
 
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
   unlikeComment(comment) {
     return this._http.put(this.BASE_API_URL + `/posts/comments/${comment._id}/unlike`, comment);
   }
 
-  @Cacheable()
   useroverviewposts(user_id) {
     return this._http.get(this.BASE_API_URL + '/users/overview/');
   }
@@ -112,12 +152,10 @@ export class PostService {
    * Jessie Jia Edit Starts
    * @param postId
    */
-  @Cacheable()
   userOverviewPostsToday(user_id) {
     return this._http.get(this.BASE_API_URL + '/users/overviewToday');
   }
 
-  @Cacheable()
   userOverviewPostsWeek(user_id) {
     return this._http.get(this.BASE_API_URL + '/users/overviewWeek/');
   }
@@ -126,37 +164,49 @@ export class PostService {
    * Jessie Jia Edit Ends
    * @param postId
    */
-  @Cacheable()
   getPost(postId) {
     return this._http.get(this.BASE_API_URL + '/posts/' + postId);
   }
 
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
   addNewComment(postId, comment) {
     return this._http.post(this.BASE_API_URL + `/posts/${postId}/comments`, comment);
   }
 
-  @Cacheable()
+  @Cacheable({ cacheBusterObserver: cacheBuster$
+  })
   getComment(commentId) {
     return this._http.get(this.BASE_API_URL + `/posts/comments/${commentId}`);
   }
 
-  @Cacheable()
+  @Cacheable({ cacheBusterObserver: cacheBuster$
+  })
   getComments(postId) {
     return this._http.get(this.BASE_API_URL + `/posts/${postId}/comments`);
   }
 
-  @Cacheable()
+  @Cacheable({ cacheBusterObserver: cacheBuster$
+  })
   getNextComments(postId, commentId) {
     return this._http.get(this.BASE_API_URL + `/posts/${postId}/nextComments/${commentId}`);
   }
+
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
   updateComment(commentId, comment) {
     return this._http.put(this.BASE_API_URL + `/posts/comments/${commentId}`, comment);
   }
+
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
   deleteComment(commentId) {
     return this._http.delete(this.BASE_API_URL + `/posts/comments/${commentId}`);
   }
 
-  @Cacheable()
   getDocument(postId) {
     return this._http.get(this.BASE_API_URL + `/posts/documents/${postId}`);
   }

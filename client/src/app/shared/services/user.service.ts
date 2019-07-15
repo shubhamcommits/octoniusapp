@@ -4,7 +4,10 @@ import { Workspace } from '../models/workspace.model';
 import { User } from '../models/user.model';
 import { AuthService } from './auth.service';
 import { environment } from '../../../environments/environment';
-import { Cacheable } from 'ngx-cacheable';
+import { Cacheable, CacheBuster } from 'ngx-cacheable';
+import { Subject } from 'rxjs/Subject';
+
+const cacheBuster$ = new Subject<void>();
 
 @Injectable()
 export class UserService {
@@ -15,16 +18,21 @@ export class UserService {
 
   constructor(private _http: HttpClient, private _authService: AuthService) { }
 
-  @Cacheable()
+  @Cacheable({ cacheBusterObserver: cacheBuster$
+  })
   getUser() {
     return this._http.get<any>(this.BASE_API_URL + `/users`);
   }
 
-  @Cacheable()
+  @Cacheable({ cacheBusterObserver: cacheBuster$
+  })
   getOtherUser(userId) {
     return this._http.get(this.BASE_API_URL + `/users/getOtherUser/${userId}`);
   }
 
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
   updateUser(user) {
     return this._http.put<any>(this.BASE_API_URL + `/users`, user);
 
@@ -33,10 +41,16 @@ export class UserService {
     return this._http.post(this.BASE_API_URL + `/file/download`, file, { responseType: 'blob' });
   }
 
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
   addSkills(skills){
     return this._http.put(this.BASE_API_URL+'/users/skills', skills);
   }
 
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
   updateUserProfileImage(fileToUpload: File) {
     const formData: FormData = new FormData();
     formData.append('profileImage', fileToUpload, fileToUpload.name);
@@ -47,22 +61,26 @@ export class UserService {
 
   }
 
-  @Cacheable()
+  @Cacheable({ cacheBusterObserver: cacheBuster$
+  })
   getUserTasks() {
     return this._http.get<any>(this.BASE_API_URL + `/users/tasks`);
   }
 
-  @Cacheable()
+  @Cacheable({ cacheBusterObserver: cacheBuster$
+  })
   getCompletedUserTasks() {
     return this._http.get<any>(this.BASE_API_URL + `/users/tasksDone`);
   }
 
-  @Cacheable()
+  @Cacheable({ cacheBusterObserver: cacheBuster$
+  })
   getRecentUserTasks(postId) {
     return this._http.get<any>(this.BASE_API_URL + `/users/nextTasksDone/${postId}`);
   }
 
-  @Cacheable()
+  @Cacheable({ cacheBusterObserver: cacheBuster$
+  })
   getUserCalendarPosts(data){
     return this._http.get(this.BASE_API_URL + `/groups/${data.groupId}/user/${data.userId}/calendar/${data.year}/${data.month}`);
   }

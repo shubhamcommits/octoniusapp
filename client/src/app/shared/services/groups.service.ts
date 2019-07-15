@@ -3,7 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import {Subject} from "rxjs/Subject";
 import { Observable } from 'rxjs';
-import { Cacheable } from 'ngx-cacheable';
+import { Cacheable, CacheBuster } from 'ngx-cacheable';
+
+const cacheBuster$ = new Subject<void>();
 
 @Injectable()
 export class GroupsService {
@@ -12,21 +14,27 @@ export class GroupsService {
 
   constructor(private _http: HttpClient) { }
 
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
   createNewGroup(group) {
     return this._http.post(this.BASE_API_URL + '/workspace/groups/', group);
   }
 
-  @Cacheable()
+  @Cacheable({ cacheBusterObserver: cacheBuster$
+  })
   getUserGroups(user) {
     return this._http.get(this.BASE_API_URL + '/workspace/groups/' + user.user_id + '/' + user.workspace_id);
   }
 
-  @Cacheable()
+  @Cacheable({ cacheBusterObserver: cacheBuster$
+  })
   getGroupsForUser(workspace: string) {
     return this._http.get(`${this.BASE_API_URL}/groups/user/${workspace}`);
   }
 
-  @Cacheable()
+  @Cacheable({ cacheBusterObserver: cacheBuster$
+  })
   getAgoras(): Observable<any> {
     return this._http.get<any>(`${this.BASE_API_URL}/groups/public/all`);
   }
@@ -37,7 +45,8 @@ export class GroupsService {
    * 
    * @param workspace The workspace to search within.
    */
-  @Cacheable()
+  @Cacheable({ cacheBusterObserver: cacheBuster$
+  })
   getSmartGroups(workspace: string): Observable<any> {
     return this._http.get<any>(`${this.BASE_API_URL}/groups/smart/${workspace}`);
   }
