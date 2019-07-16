@@ -197,7 +197,7 @@
         <div class="media card-tile">
           <div class=" row media-body">
                         <div class="col-md-3">
-                              <img src="/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar float-left">
+                              <img src="{{this.BASE_URL}}/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar float-left">
                        <p class="overview-item">{{post._posted_by?.first_name}} {{post._posted_by?.last_name}}</p>
 
                       </div>
@@ -231,7 +231,7 @@
 
           <div class=" row media-body">
                 <div class="col-md-3">
-                      <img src="/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar float-left">
+                      <img src="{{this.BASE_URL}}/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar float-left">
                       <p class="overview-item">{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}}</p>
                   </div>
 
@@ -269,7 +269,7 @@
                 <div class="col-md-3">
 
 
-                      <img src="/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar float-left">
+                      <img src="{{this.BASE_URL}}/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar float-left">
 
                       <p class="overview-item">{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}}</p>
                     </div>
@@ -309,7 +309,7 @@
                 <div class="col-md-3">
 
 
-                      <img src="/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar float-left">
+                      <img src="{{this.BASE_URL}}/uploads/{{comment._commented_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"  class="feed-avatar float-left">
 
 
                       <p class="overview-item">{{comment._commented_by?.first_name}} {{comment._commented_by?.last_name}}</p>

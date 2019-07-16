@@ -9,6 +9,7 @@ import { debounceTime } from 'rxjs/operators';
 import { NgbModal, NgbAlertConfig } from '@ng-bootstrap/ng-bootstrap';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import Swal from 'sweetalert2';
+import { environment } from '../../../../environments/environment';
 @Component({
   selector: 'app-admin-members',
   templateUrl: './admin-members.component.html',
@@ -18,6 +19,7 @@ export class AdminMembersComponent implements OnInit {
   workspace: Workspace;
   user_data;
   profileImage;
+  BASE_URL = environment.BASE_URL;
 
   modalReference: any;
   @ViewChild('content', { static: false }) private content;

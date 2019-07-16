@@ -26,6 +26,8 @@ export class GroupFilesComponent implements OnInit {
     description: ''
   };
 
+  BASE_URL = environment.BASE_URL;
+
   isLoading$ = new BehaviorSubject(false);
 
   constructor(private ngxService: NgxUiLoaderService, private postService: PostService,

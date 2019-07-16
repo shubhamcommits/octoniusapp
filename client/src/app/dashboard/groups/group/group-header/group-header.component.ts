@@ -47,6 +47,8 @@ export class GroupHeaderComponent implements OnInit {
 
   joined: boolean = false;
 
+  BASE_URL = environment.BASE_URL;
+
   constructor(private groupService: GroupService, private modalService: NgbModal,
               private _router: Router, public groupDataService: GroupDataService,
               private snotifyService: SnotifyService, private userService: UserService,

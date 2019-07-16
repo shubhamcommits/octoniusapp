@@ -13,7 +13,7 @@
 <div class="media card-tile user-list" *ngIf="post.files.length != 0" >
       
       <div class="media-body" >
-          <img src="/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"class="feed-avatar float-left">
+          <img src="{{this.BASE_URL}}/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"class="feed-avatar float-left">
         <div class="float-left">
           <h4 class="mt-0">{{post._posted_by?.first_name}} {{post._posted_by?.last_name}}</h4>
               

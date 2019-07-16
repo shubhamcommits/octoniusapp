@@ -9,6 +9,9 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
 import { environment } from '../../../environments/environment';
 import {Subject} from "rxjs/Subject";
+import { Cacheable, CacheBuster } from 'ngx-cacheable';
+
+const cacheBuster$ = new Subject<void>();
 
 @Injectable()
 export class GroupService {
@@ -20,6 +23,8 @@ export class GroupService {
 
   constructor(private _http: HttpClient) { }
 
+  @Cacheable({ cacheBusterObserver: cacheBuster$
+  })
   getFilteredPosts(group_id, filters) {
 
     console.log(filters,"filters")
@@ -35,6 +40,8 @@ export class GroupService {
     return this._http.get(this.BASE_API_URL + `/groups/${group_id}/getFilteredPosts`, {params});
   }
 
+  @Cacheable({ cacheBusterObserver: cacheBuster$
+  })
   getNextFilteredPosts(group_id, filters, alreadyLoaded) {
     const params = new HttpParams()
       .set("normal", filters.normal)
@@ -46,36 +53,53 @@ export class GroupService {
     return this._http.get(this.BASE_API_URL + `/groups/${group_id}/${alreadyLoaded}/getNextFilteredPosts`, {params});
   }
 
+  @Cacheable({ cacheBusterObserver: cacheBuster$
+  })
   getGroupPosts(group_id) {
     return this._http.get(this.BASE_API_URL + '/post/' + group_id);
   }
 
+  @Cacheable({ cacheBusterObserver: cacheBuster$
+  })
   getGroup(group_id) {
     return this._http.get(this.BASE_API_URL + '/group/' + group_id);
   }
 
   // PULSE start
 
+  @Cacheable({ cacheBusterObserver: cacheBuster$
+  })
   getAllPulse() {
     return this._http.get(this.BASE_API_URL + '/groups/all/pulse/');
   }
 
+  @Cacheable({ cacheBusterObserver: cacheBuster$
+  })
   getPulseTotalNumTasks(group_id) {
     return this._http.get(this.BASE_API_URL + '/group/' + group_id + '/totalNumTasks');
   }
 
+  @Cacheable({ cacheBusterObserver: cacheBuster$
+  })
   getPulseNumTodoTasks(group_id) {
     return this._http.get(this.BASE_API_URL + '/group/' + group_id + '/numTodoTasks');
   }
 
+  @Cacheable({ cacheBusterObserver: cacheBuster$
+  })
   getPulseNumInProgressTasks(group_id) {
     return this._http.get(this.BASE_API_URL + '/group/' + group_id + '/numInProgressTasks');
   }
 
+  @Cacheable({ cacheBusterObserver: cacheBuster$
+  })
   getPulseNumDoneTasks(group_id) {
     return this._http.get(this.BASE_API_URL + '/group/' + group_id + '/numDoneTasks');
   }
 
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
   editPulseDesc(group_id, description) {
     return this._http.post(this.BASE_API_URL + '/groups/' + group_id + '/pulse/editDescription', description);
   }
@@ -99,7 +123,6 @@ export class GroupService {
 
   }
 
-
   searchWorkspaceUsers(query, workspace) {
     return this._http.get(this.BASE_API_URL + `/workspace/searchWorkspaceUsers/${workspace}/${query}`);
   }
@@ -111,37 +134,61 @@ export class GroupService {
     return this._http.get(`${this.BASE_API_URL}/group/searchGroupUsers/${group_id}/${query}`);
   }
 
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
   addMembersInGroup(data) {
     return this._http.post(this.BASE_API_URL + '/group/addNewUsers', data);
   }
+
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
   updateGroup(group_id, group) {
     return this._http.put(this.BASE_API_URL + `/group/${group_id}`, group);
   }
 
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
   removeUserFromGroup(data){
     return this._http.post(this.BASE_API_URL + '/group/removeUser', data);
   }
 
+  @Cacheable({ cacheBusterObserver: cacheBuster$
+  })
   getGroupTasks(groupId) {
     return this._http.get<any>(this.BASE_API_URL + `/groups/${groupId}/tasks`);
   }
 
+  @Cacheable({ cacheBusterObserver: cacheBuster$
+  })
   getCompletedGroupTasks(groupId) {
     return this._http.get<any>(this.BASE_API_URL + `/groups/${groupId}/tasksDone`);
   }
 
+  @Cacheable({ cacheBusterObserver: cacheBuster$
+  })
   getRecentGroupTasks(postId, groupId) {
     return this._http.get<any>(this.BASE_API_URL + `/groups/${groupId}/nextTasksDone/${postId}`);
   }
 
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
   changeTaskAssignee(postId, assigneeId){
     return this._http.put(this.BASE_API_URL + `/posts/${postId}/taskAssignee`, assigneeId);
   }
 
+  @Cacheable({ cacheBusterObserver: cacheBuster$
+  })
   getPrivateGroup() {
     return this._http.get<any>(this.BASE_API_URL + `/groups/user/private`);
   }
 
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
   joinPublicGroup(groupId) {
     return this._http.post(`${this.BASE_API_URL}/groups/public/${groupId}`, null);
   }
@@ -152,6 +199,9 @@ export class GroupService {
    *
    * @param groupId The ID of the group to delete.
    */
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
   deleteGroup(groupId: string): Observable<any> {
     return this._http.delete<any>(`${this.BASE_API_URL}/groups/${groupId}`);
   }
@@ -163,6 +213,9 @@ export class GroupService {
    * @param data The new rules to add
    * @param groupId The smart group to update
    */
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
   updateSmartGroupRules(data: object, groupId: string): Observable<any> {
     return this._http.post<any>(`${this.BASE_API_URL}/groups/smart/${groupId}`, data);
   }
@@ -173,6 +226,8 @@ export class GroupService {
    * 
    * @param groupdId The group to query
    */
+  @Cacheable({ cacheBusterObserver: cacheBuster$
+  })
   getSmartGroupSettings(groupdId: string): Observable<any> {
     return this._http.get<any>(`${this.BASE_API_URL}/groups/smart/${groupdId}/settings`);
   }
@@ -184,6 +239,9 @@ export class GroupService {
    * @param groupId The ID of the smart group.
    * @param rule The rule to delete.
    */
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
   deleteSmartGroupRule(groupId: string, rule: string): Observable<any> {
     return this._http.put<any>(`${this.BASE_API_URL}/groups/smart/${groupId}/${rule}`, null);
   }
@@ -195,6 +253,9 @@ export class GroupService {
    * @param groupId The group to update.
    * @param data The requirements that the users must meet.
    */
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
   updateSmartGroupMembers(groupId: string, data: object): Observable<any> {
     return this._http.put<any>(`${this.BASE_API_URL}/groups/smart/${groupId}`, data);
   }

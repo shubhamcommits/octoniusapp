@@ -68,6 +68,7 @@ export class OverviewComponent implements OnInit {
     group_name: '',
   };
 
+  BASE_URL = environment.BASE_URL;
 
   constructor(private _userService: UserService, private _authService: AuthService, private _router: Router,  private ngxService: NgxUiLoaderService,
   private _postservice: PostService, private _groupservice: GroupsService,
