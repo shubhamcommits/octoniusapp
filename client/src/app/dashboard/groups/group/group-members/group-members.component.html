@@ -3,7 +3,7 @@
   <hr>
 <div class="media card-tile user-list" *ngFor="let admin of group_admins" >
  
-      <img src="/uploads/{{admin?.profile_pic}}" onerror="this.src='/assets/images/user.png'"class="feed-avatar">
+      <img src="{{this.BASE_URL}}/uploads/{{admin?.profile_pic}}" onerror="this.src='/assets/images/user.png'"class="feed-avatar">
       <div class="media-body">
         <div class="float-left">
           <h4 class="mt-0">{{admin?.first_name}} {{admin?.last_name}}</h4>
@@ -21,7 +21,7 @@
   </div>
   <div class="media card-tile user-list" *ngFor=" let member of group_members">
    
-    <img src="/uploads/{{member?.profile_pic}}" onerror="this.src='/assets/images/user.png'"class="feed-avatar">
+    <img src="{{this.BASE_URL}}/uploads/{{member?.profile_pic}}" onerror="this.src='/assets/images/user.png'"class="feed-avatar">
     <div class="media-body">
       <div class="float-left">
         <h4 class="mt-0">{{member?.first_name}} {{member?.last_name}}</h4>

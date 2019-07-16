@@ -5,6 +5,7 @@ import { GroupService } from '../../../../shared/services/group.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import Swal from 'sweetalert2';
 import { BehaviorSubject } from 'rxjs';
+import { environment } from '../../../../../environments/environment';
 @Component({
   selector: 'app-group-members',
   templateUrl: './group-members.component.html',
@@ -15,7 +16,7 @@ export class GroupMembersComponent implements OnInit {
   group_members;
   group_admins;
   isLoading$ = new BehaviorSubject(false);
-
+  BASE_URL = environment.BASE_URL;
 
   constructor(private groupDataService: GroupDataService, private groupService: GroupService, private ngxService: NgxUiLoaderService) { }
 

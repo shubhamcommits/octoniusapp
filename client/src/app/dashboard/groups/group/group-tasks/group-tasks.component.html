@@ -30,7 +30,7 @@
                 <div ngbDropdown #myDrop="ngbDropdown">
 
                   <img (click)="$event.stopPropagation(); myDrop.toggle();"
-                    src="{{this.BASE_URL}}/uploads/{{this.post.task?._assigned_to?.profile_pic}}" id="dropdownToDo"
+                    src="{{this.BASE_URL}}/uploads/{{post.task?._assigned_to?.profile_pic}}" id="dropdownToDo"
                     ngbDropdownAnchor (focus)="myDrop.open()" onerror="this.src='/assets/images/user.png'"
                     class="topnav-avatar float-left kbn">
                   <h6 class="kbn">{{post.task?._assigned_to?.first_name}}
@@ -137,7 +137,7 @@
                 <div ngbDropdown #myDrop="ngbDropdown">
 
                   <img (click)="$event.stopPropagation(); myDrop.toggle();"
-                    src="{{this.BASE_URL}}/uploads/{{this.post.task?._assigned_to?.profile_pic}}" id="dropdownToDo"
+                    src="{{this.BASE_URL}}/uploads/{{post.task?._assigned_to?.profile_pic}}" id="dropdownToDo"
                     ngbDropdownAnchor (focus)="myDrop.open()" onerror="this.src='/assets/images/user.png'"
                     class="topnav-avatar float-left kbn">
                   <h6 class="kbn">{{post.task?._assigned_to?.first_name}}
@@ -239,7 +239,7 @@
               <div ngbDropdown #myDrop="ngbDropdown">
 
                 <img (click)="$event.stopPropagation(); myDrop.toggle();"
-                  src="{{this.BASE_URL}}/uploads/{{this.post.task?._assigned_to?.profile_pic}}" id="dropdownToDo"
+                  src="{{this.BASE_URL}}/uploads/{{post.task?._assigned_to?.profile_pic}}" id="dropdownToDo"
                   ngbDropdownAnchor (focus)="myDrop.open()" onerror="this.src='/assets/images/user.png'"
                   class="topnav-avatar float-left kbn">
                 <h6 class="kbn">{{post.task?._assigned_to?.first_name}}

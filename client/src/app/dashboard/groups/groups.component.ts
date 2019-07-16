@@ -24,7 +24,7 @@ import { SnotifyService } from 'ng-snotify';
 })
 export class GroupsComponent implements OnInit {
   groups = new Array();
-
+  BASE_URL = environment.BASE_URL;
 
   workspace: Workspace;
   user_data;
@@ -82,15 +82,14 @@ export class GroupsComponent implements OnInit {
     this._groupsService.getAgoras().subscribe(
       ({ groups }) => {
         this.agoras = groups;
-
         // Set the correct path to the group avatar
-        for (let i = 0; i < this.agoras.length; i++) {
-          if (this.agoras[i]['group_avatar'] == null) {
-            this.agoras[i]['group_avatar'] = '/assets/images/group.png';
-          } else {
-            this.agoras[i]['group_avatar'] = environment.BASE_URL + `/uploads/${this.agoras[i]['group_avatar']}`;
-          }
-        }
+        // for (let i = 0; i < this.agoras.length; i++) {
+        //   if (this.agoras[i]['group_avatar'] == null) {
+        //     this.agoras[i]['group_avatar'] = '/assets/images/group.png';
+        //   } else {
+        //     this.agoras[i]['group_avatar'] = environment.BASE_URL + `/uploads/${this.agoras[i]['group_avatar']}`;
+        //   }
+        // }
       },
       err => console.error(`Could not fetch public groups! ${err}`)
     );
@@ -168,15 +167,15 @@ export class GroupsComponent implements OnInit {
           // console.log('All groups:', res);
           this.groups = res['groups'];
   
-          for (let i = 0; i < this.groups.length; i++) {
-            if (this.groups[i]['group_avatar'] == null) {
-              this.groups[i]['group_avatar'] = '/assets/images/group.png';
+          // for (let i = 0; i < this.groups.length; i++) {
+          //   if (this.groups[i]['group_avatar'] == null) {
+          //     this.groups[i]['group_avatar'] = '/assets/images/group.png';
   
-            } else {
+          //   } else {
   
-              this.groups[i]['group_avatar'] = environment.BASE_URL + `/uploads/${this.groups[i]['group_avatar']}`;
-            }
-          }
+          //     this.groups[i]['group_avatar'] = environment.BASE_URL + `/uploads/${this.groups[i]['group_avatar']}`;
+          //   }
+          // }
 
           resolve();
         }, (err) => {
@@ -356,13 +355,13 @@ export class GroupsComponent implements OnInit {
         this.smartGroups = groups;
 
         // Set the correct path to the group avatar
-        for (let i = 0; i < this.smartGroups.length; i++) {
-          if (this.smartGroups[i]['group_avatar'] == null) {
-            this.smartGroups[i]['group_avatar'] = '/assets/images/group.png';
-          } else {
-            this.smartGroups[i]['group_avatar'] = environment.BASE_URL + `/uploads/${this.smartGroups[i]['group_avatar']}`;
-          }
-        }
+        // for (let i = 0; i < this.smartGroups.length; i++) {
+        //   if (this.smartGroups[i]['group_avatar'] == null) {
+        //     this.smartGroups[i]['group_avatar'] = '/assets/images/group.png';
+        //   } else {
+        //     this.smartGroups[i]['group_avatar'] = environment.BASE_URL + `/uploads/${this.smartGroups[i]['group_avatar']}`;
+        //   }
+        // }
       },
       err => {
         this.snotifyService.error('A problem has occurred whilst fetching your smart groups.');

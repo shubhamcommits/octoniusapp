@@ -10,7 +10,8 @@ const init = (server) => {
    * - NOTIFICATIONS -
    * =================
    */
-
+  io.set('transports', ["websocket", "polling"]);
+  
   io.on('connection', (socket) => {
     // -| USER NOTIFICATION CENTER |-
 
