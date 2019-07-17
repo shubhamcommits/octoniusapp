@@ -23,7 +23,7 @@ export class GroupActivityProgressComponent implements OnInit {
   todoTasks = 0;
   inProgressTasks = 0;
   doneTasks = 0;
-
+  undoneLastWeekTasks = 0;
   // task percentage
   todoPercent = 0;
   inProgressPercent = 0;
@@ -48,14 +48,13 @@ export class GroupActivityProgressComponent implements OnInit {
   constructor(private groupService: GroupService, private columnService: ColumnService) { }
 
   async ngOnInit() {
-    //this.allColumns.length = 0;
+    // this.allColumns.length = 0;
     // await this.getTasks();
     await this.getPulseTotalNumTasks();
     await this.getPulseNumTodoTasks();
     await this.getPulseNumInProgressTasks();
     await this.getPulseNumDoneTasks();
-
-    //If status of a task is changed then the progress gets updated
+    await this.getUndoneLastWeekTasks();
     this.groupService.taskStatusChanged
     .subscribe(() => {
       // this.getTasks();
@@ -65,7 +64,7 @@ export class GroupActivityProgressComponent implements OnInit {
       this.getPulseNumDoneTasks();
     });
 
-    //If a new task is added, then it updates all the bars again
+    // If a new task is added, then it updates all the bars again
     this.groupService.newTaskAdded
     .subscribe(() => {
       // this.getTasks();
@@ -124,6 +123,18 @@ export class GroupActivityProgressComponent implements OnInit {
         .subscribe((res) => {
           this.doneTasks = (res['numTasks']);
           this.donePercent = Math.round(this.doneTasks / this.totalTasks * 100);
+          resolve();
+        }, (err) => {
+          reject();
+        });
+    });
+  }
+
+  getUndoneLastWeekTasks () {
+    return new Promise((resolve, reject) => {
+      this.groupService.getTasksUndoneLastWeek(this.group._id)
+        .subscribe((res) => {
+          this.undoneLastWeekTasks = (res['numTasks']);
           resolve();
         }, (err) => {
           reject();
