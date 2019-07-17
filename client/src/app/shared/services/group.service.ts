@@ -70,39 +70,32 @@ export class GroupService {
   }
   // PULSE start
 
-  @Cacheable({ cacheBusterObserver: cacheBuster$
-  })
+  //@Cacheable({ cacheBusterObserver: cacheBuster$ })
   getAllPulse() {
     return this._http.get(this.BASE_API_URL + '/groups/all/pulse/');
   }
 
-  @Cacheable({ cacheBusterObserver: cacheBuster$
-  })
+  //@Cacheable({ cacheBusterObserver: cacheBuster$ })
   getPulseTotalNumTasks(group_id) {
     return this._http.get(this.BASE_API_URL + '/group/' + group_id + '/totalNumTasks');
   }
 
-  @Cacheable({ cacheBusterObserver: cacheBuster$
-  })
+  //@Cacheable({ cacheBusterObserver: cacheBuster$ })
   getPulseNumTodoTasks(group_id) {
     return this._http.get(this.BASE_API_URL + '/group/' + group_id + '/numTodoTasks');
   }
 
-  @Cacheable({ cacheBusterObserver: cacheBuster$
-  })
+  //@Cacheable({ cacheBusterObserver: cacheBuster$ })
   getPulseNumInProgressTasks(group_id) {
     return this._http.get(this.BASE_API_URL + '/group/' + group_id + '/numInProgressTasks');
   }
 
-  @Cacheable({ cacheBusterObserver: cacheBuster$
-  })
+  //@Cacheable({ cacheBusterObserver: cacheBuster$ })
   getPulseNumDoneTasks(group_id) {
     return this._http.get(this.BASE_API_URL + '/group/' + group_id + '/numDoneTasks');
   }
 
-  @CacheBuster({
-    cacheBusterNotifier: cacheBuster$
-  })
+  //@CacheBuster({ cacheBusterNotifier: cacheBuster$ })
   editPulseDesc(group_id, description) {
     return this._http.post(this.BASE_API_URL + '/groups/' + group_id + '/pulse/editDescription', description);
   }
