@@ -75,7 +75,16 @@
                   </div>
                 </a>
 
-
+                <div ngbDropdown class="d-inline-block float-right status">
+                  <button class="btn btn-sm kbn-todo" id="dropdownDone" ngbDropdownToggle>{{post.task.status}}</button>
+                  <div ngbDropdownMenu aria-labelledby="dropdownToDo">
+                    <button class="dropdown-item" (click)="OnMarkTaskToDo(this.post._id, post)">To Do</button>
+                    <button class="dropdown-item" (click)="OnMarkTaskInProgress(this.post._id, post)">In
+                      Progress
+                    </button>
+                    <button class="dropdown-item" (click)="OnMarkTaskCompleted(this.post._id, post)">Done</button>
+                  </div>
+                </div>
 
                 <ng-template #taskif>
                   <div class="col-md-4 text-right padding-topright">
@@ -175,7 +184,16 @@
                   </div>
                 </a>
 
-
+                <div ngbDropdown class="d-inline-block float-right status">
+                  <button class="btn btn-sm kbn-working" id="dropdownDone" ngbDropdownToggle>{{post.task.status}}</button>
+                  <div ngbDropdownMenu aria-labelledby="dropdownToDo">
+                    <button class="dropdown-item" (click)="OnMarkTaskToDo(this.post._id, post)">To Do</button>
+                    <button class="dropdown-item" (click)="OnMarkTaskInProgress(this.post._id, post)">In
+                      Progress
+                    </button>
+                    <button class="dropdown-item" (click)="OnMarkTaskCompleted(this.post._id, post)">Done</button>
+                  </div>
+                </div>  
 
                 <ng-template #taskif>
                   <div class="col-md-4 text-right padding-topright">
@@ -272,7 +290,16 @@
                 </div>
               </a>
 
-
+              <div ngbDropdown class="d-inline-block float-right status">
+                <button class="btn btn-sm kbn-done" id="dropdownDone" ngbDropdownToggle>{{post.task.status}}</button>
+                <div ngbDropdownMenu aria-labelledby="dropdownToDo">
+                  <button class="dropdown-item" (click)="OnMarkTaskToDo(this.post._id, post)">To Do</button>
+                  <button class="dropdown-item" (click)="OnMarkTaskInProgress(this.post._id, post)">In
+                    Progress
+                  </button>
+                  <button class="dropdown-item" (click)="OnMarkTaskCompleted(this.post._id, post)">Done</button>
+                </div>
+              </div>
 
               <ng-template #taskif>
                 <div class="col-md-4 text-right padding-topright">
