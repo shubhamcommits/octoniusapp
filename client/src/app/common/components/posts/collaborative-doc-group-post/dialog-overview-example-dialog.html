@@ -1,70 +1,71 @@
 
-<div *ngIf = "isShowing">
-<div mat-dialog-actions style=" position: absolute;
-top: 0;
-left:0;
-background:purple;
-z-index:9999;">
-  <div style = "position:sticky;
-    top:0;
-    left:0;
-    height:50px;
-    width:100vw;
-    z-index:9999;
-    background: pink;
-  ">
-    <button (click)="onNoClick()" style = "position:absolute;
-    width:100px; 
-    height:50px;
-    background:yellow;
-    top:0;
-    left:0;
-    z-index: 9999">
-    Back
-  </button>
-  </div>
-  <div style=" position: absolute;
-    top: 0;
-    left:0;
-    z-index:9998;
-    right:0;
-    flex-direction: column;
-      align-items: center;
-    justify-content: center;
-    width: 100vw;
-    min-height: 100vh;
-    height: auto;
-    background-color: rgba(0,0,0,0.8)"
-    (click) = "onNoClick()">
-      <div style=" position: relative;
-      top: 0;
+<div [class.hidden] = "isShowing">
+  <div mat-dialog-actions style=" position: absolute;
+  top: 0;
+  left:0;
+  background: rgba(0,0,0,0.8);
+  z-index:9999;">
+    <div style = "position:sticky;
+      top:0;
+      height:50px;
+      width:100vw;
       z-index:9999;
-      display:flex;
+      background: pink;">
+      <button (click)="onNoClick()" style = "position:absolute;
+      width:100px; 
+      height:50px;
+      background:yellow;
+      top:0;
+      left:0;
+      z-index: 9999">
+      Back
+      </button>
+    </div>
+    <div *ngFor = "let pages of _editorDataArray" 
+    style="flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index:9999;
+    flex-direction: column;"
+    >
+  <div style="
+      left:0;
+      z-index:9999;
+      right:0;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 29.7cm;
-      min-width: 21cm;
-      size: 21cm 29.7cm;
-      margin: 30mm 45mm 30mm 45mm;
-      background: white;
-      "
-      (click) = "stopNoClickChild($event)">
-          <div id="pagePreview" style=" position: relative;
-          top: 0;
+      width: 100vw;
+      min-height: 100vh;
+      height: auto;
+      background-color: rgba(0,0,0,0.8)"
+      (click) = "onNoClick()">
+        <div style="
+        z-index:9999;
+        display:flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 29.7cm;
+        min-width: 21cm;
+        size: 21cm 29.7cm;
+        margin: 30mm 45mm 30mm 45mm;
+        background: white;
+        "
+        (click) = "stopNoClickChild($event)">
+          <div class="pagePreview" style="
           z-index:9999;
-          min-height: 29.7cm;
+          /* min-height: 29.7cm; */
           min-width: 21cm;
           width:100%;
-          size: 21cm 29.7cm;
+          /* size: 21cm 29.7cm; */
           margin: 30mm 45mm 30mm 45mm;
         " 
         (click) = "stopNoClickChild($event)"
-        [innerHTML] = "_editorData | safe: 'html'">
+        [innerHTML] = "pages | safe: 'html'">
           </div>
         </div> 
+      </div>      
     </div>
-    
-</div>
-  
+  </div>
 </div>

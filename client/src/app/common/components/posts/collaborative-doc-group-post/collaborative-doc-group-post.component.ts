@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input, Inject } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, Inject,ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router, Route, ResolveEnd } from '@angular/router';
 import {Location} from '@angular/common';
 
@@ -940,28 +940,80 @@ export {comment_range, quill, editor, docAuthors};
   styleUrls: ['dialog-overview-example-dialog.css'],
 })
 export class DialogOverviewExampleDialog {
-  private _editorData: string;
+  private _editorData: string = "";
+  private _editorDataArray = new Array(1).fill([])
+  currentpage = 0
 
   @Input() set receivedParentMessage(value: string) {
-    var pars = (new DOMParser()).parseFromString(value, "text/html");
+    var docTypeValue = `<!DOCTYPE html><html><head></head><body>${value}</body></html>`
+    var pars = (new DOMParser()).parseFromString(docTypeValue, "text/html");
    // console.log(pars,"pars",value)
     var x = pars.documentElement.childNodes;
-    // for (let i = 0; i < x.length ; i++) {
-    //  // console.log("node", x[i].childNodes)
-    //   const innerFirstElementNode = x[i].childNodes
-    //   if(innerFirstElementNode.length > 0){
-    //     for (let k = 0; k < innerFirstElementNode.length; k++){
-    //       console.log(innerFirstElementNode[k])
-    //       // var mylist = document.getElementById('pagePreview');
-    //       // // mylist.insertAdjacentHTML('beforeend', '<li>third</li>');
-    //       // // this._editorData += innerFirstElementNode[k];
-    //       // mylist.appendChild(innerFirstElementNode[2])
-    //       // break
-    //     }
-    //   }
-    //   // txt += x[i].nodeName + ": " + x[i].childNodes[0].nodeValue + "<br>";
-    // }
-    this._editorData = value;
+    console.log(x)
+
+    for (let i = 0; i < x.length ; i++) {
+     //console.log("node", x[i].childNodes)
+      const innerFirstElementNode = x[i].childNodes
+      if(innerFirstElementNode.length > 0){
+        for (let k = 0; k < innerFirstElementNode.length; k++){
+         // console.log(innerFirstElementNode[k])
+          var el = document.createElement("div");
+          el.appendChild(innerFirstElementNode[k]);
+          //console.log("innerFirstElementNode[k]",innerFirstElementNode[k],"breakrekakreakarkaekaerakraekr", el.innerHTML)
+          //console.log(el.innerHTML,"teststststststsststststststst",innerFirstElementNode[k])
+          //console.log(this.currentpage,"pageeoeoeoe")
+          this._editorDataArray[this.currentpage] += el.innerHTML
+          //console.log(this._editorDataArray)
+         // this._editorData += el.innerHTML
+          
+          this.changeDetector.detectChanges()
+          var pagePreviewHeight = document.getElementsByClassName('pagePreview')[this.currentpage].clientHeight;
+          //console.log(pagePreviewHeight,"height")
+          if (pagePreviewHeight <= 1100){
+            //console.log("is lessthan")
+            
+          }
+          if (pagePreviewHeight > 1100){
+            //last element added
+            //console.log("thisis before removal", el.innerHTML)
+            //this._editorDataArray[this.currentpage].replace(el.innerHTML,"")
+
+            // var pageHtml = document.getElementsByClassName('pagePreview')[this.currentpage].innerHTML
+            // var parsePreview = (new DOMParser()).parseFromString(pageHtml, "text/html");
+            // var previewNodes = parsePreview.documentElement.childNodes;
+
+            // for (let e = 0; e < previewNodes.length ; e++) {
+            //    const innerFirstPreviewElementNode = previewNodes[e].childNodes
+            //    console.log(innerFirstPreviewElementNode)
+            //    if(innerFirstElementNode.length > 0){
+            //      for (let k = 0; k < innerFirstElementNode.length; k++){
+            //        //console.log(innerFirstElementNode[k])
+            //        var el = document.createElement("div");
+            //        el.appendChild(innerFirstElementNode[k]);
+            //        //console.log("innerFirstElementNode[k]",innerFirstElementNode[k],"breakrekakreakarkaekaerakraekr", el.innerHTML)
+            //        //console.log(el.innerHTML,"teststststststsststststststst",innerFirstElementNode[k])
+            //        if (el.innerHTML != undefined || el.innerHTML != "")
+            //        //console.log(this.currentpage,"pageeoeoeoe")
+            //        this._editorDataArray[this.currentpage] += el.innerHTML
+            //        //console.log(this._editorDataArray)
+            //       // this._editorData += el.innerHTML
+
+            //      }
+            //    }
+            //  }
+
+
+ ///////// new one here
+             this.currentpage += 1
+            // console.log("replaced",this._editorDataArray)
+            this._editorDataArray = [...this._editorDataArray, ""]
+            //console.log(this.currentpage,"pageeoeoeoe23232323232323")
+            //console.log("added to new array",this._editorDataArray)
+          }
+        }
+      }
+    }
+    //this._editorData = value;
 
  }
   
@@ -979,6 +1031,7 @@ export class DialogOverviewExampleDialog {
 
   constructor(
     public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
+    private changeDetector: ChangeDetectorRef,
     @Inject(MAT_DIALOG_DATA) public data: any) { 
     }
     get editorInformation():String{
