@@ -255,5 +255,13 @@ export class GroupService {
   updateSmartGroupMembers(groupId: string, data: object): Observable<any> {
     return this._http.put<any>(`${this.BASE_API_URL}/groups/smart/${groupId}`, data);
   }
+
+  /**
+   * Makes an HTTP GET request to retrieve every smart group
+   * within the given workspace and its rules.
+   */
+  getAllSmartGroupRules(workspaceId: string): Observable<any> {
+    return this._http.get<any>(`${this.BASE_API_URL}/groups/${workspaceId}/smart/rules`);
+  }
 }
 
