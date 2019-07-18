@@ -22,10 +22,11 @@
       </div>
     </div>
     <div *ngIf="!(isLoading$ | async)">
-      <div *ngIf="this.toDoTasks.length != 0; else noToDoTasks;">
-        <div *ngFor="let post of toDoTasks" cdkDrag>
-          <div class="card" *ngIf="post.task.status == 'to do'">
-            <div class="card-block">
+      <div *ngIf="this.toDoTasks.length != 0; else noToDoTasks;"  cdkDropList [cdkDropListData]="toDoTasks" [id]="0" 
+      [cdkDropListConnectedTo]="getTaskIds('0')" (cdkDropListDropped)="onTaskDrop($event)" #0="cdkDropList">
+        <div *ngFor="let post of toDoTasks">
+          <div class="card" *ngIf="post.task.status == 'to do'" cdkDrag>
+            <div class="card-block ">
               <div class="card-title">
 
                 <div ngbDropdown #myDrop="ngbDropdown">
@@ -141,7 +142,8 @@
       </div>
     </div>
     <div *ngIf="!(isLoading$ | async)">
-      <div *ngIf="this.inProgressTasks.length != 0; else noInProgressTasks;">  
+      <div *ngIf="this.inProgressTasks.length != 0; else noInProgressTasks;" cdkDropList [cdkDropListData]="inProgressTasks" [id]="1" 
+      [cdkDropListConnectedTo]="getTaskIds('1')" (cdkDropListDropped)="onTaskDrop($event)" #1="cdkDropList">  
         <div *ngFor="let post of inProgressTasks" cdkDrag>
 
           <div class="card">
@@ -256,7 +258,8 @@
     </div>
 
     <div *ngIf="!(isLoading$ | async)">
-      <div *ngIf="this.completedTasks.length != 0; else noCompletedTasks">
+      <div *ngIf="this.completedTasks.length != 0; else noCompletedTasks" cdkDropList [cdkDropListData]="completedTasks" [id]="2" 
+      [cdkDropListConnectedTo]="getTaskIds('2')" (cdkDropListDropped)="onTaskDrop($event)" #2="cdkDropList">
         <div class="card" *ngFor="let post of completedTasks" cdkDrag>
           <div class="card-block ">
             <div class="card-title">

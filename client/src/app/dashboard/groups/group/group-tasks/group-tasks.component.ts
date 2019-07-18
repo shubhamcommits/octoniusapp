@@ -180,6 +180,9 @@ export class GroupTasksComponent implements OnInit {
     this.loadGroup();
     this.mentionmembers();
     this.initializeGroupMembersSearchForm();
+    this.taskIds.push("0");
+    this.taskIds.push("1");
+    this.taskIds.push("2");
    }
 
   }
@@ -191,8 +194,13 @@ export class GroupTasksComponent implements OnInit {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     }else{
       transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
-      
     }
+  }
+
+  getTaskIds(id){
+    return this.taskIds.filter((a) => {
+      return a != id;
+    });
   }
 
   getTaskTimeSpent(taskPost) {
