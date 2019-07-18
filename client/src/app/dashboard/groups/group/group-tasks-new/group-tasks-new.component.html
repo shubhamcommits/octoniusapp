@@ -27,7 +27,7 @@
       <div [ngClass]="{'card-main-body': true, 'dragging-cover': changeBg[i]}"> 
         <div *ngIf="!(isLoading$ | async)">
           <div *ngIf="column.tasks.length > 0;" cdkDropList [cdkDropListData]="column.tasks"
-              (cdkDropListDropped)="onTaskDrop($event)" [id]="column.id" [cdkDropListConnectedTo]="taskIds">
+              (cdkDropListDropped)="onTaskDrop($event)" [id]="column.id" [cdkDropListConnectedTo]="taskIds" >
             <div *ngFor="let post of column.tasks" cdkDrag [cdkDragDisabled]="post.title == 'proxy'" (cdkDragStarted)="entered($event)" (CdkDragEnd)="exited($event)">
               <div *ngIf="post.title == 'proxy' ">
                   <img src='../../../assets/images/empty-todo.svg' style="max-width:80%;"> 

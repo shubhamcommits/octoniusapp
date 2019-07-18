@@ -13,6 +13,7 @@ import io from 'socket.io-client';
 import {SearchService} from "../../../../shared/services/search.service";
 import Swal from 'sweetalert2';
 import 'quill-mention';
+import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 
 import * as Quill from 'quill';
 (window as any).Quill = Quill;
@@ -152,6 +153,8 @@ export class GroupTasksComponent implements OnInit {
   tags_search_words: String = ''
   tags_search_result: any = new Array();
 
+  taskIds = Array();
+
  async ngOnInit() {
     this.ngxService.start(); // start foreground loading with 'default' id
 
@@ -177,8 +180,27 @@ export class GroupTasksComponent implements OnInit {
     this.loadGroup();
     this.mentionmembers();
     this.initializeGroupMembersSearchForm();
+    this.taskIds.push("0");
+    this.taskIds.push("1");
+    this.taskIds.push("2");
    }
 
+  }
+
+
+  onTaskDrop(event: CdkDragDrop<any[]>){
+    console.log(event);
+    if(event.previousContainer == event.container){
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    }else{
+      transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
+    }
+  }
+
+  getTaskIds(id){
+    return this.taskIds.filter((a) => {
+      return a != id;
+    });
   }
 
   getTaskTimeSpent(taskPost) {
