@@ -188,6 +188,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
   document_imported_information: any;
   switchCheck = 0;
   dataCounter = 0;
+  fixedForPreview = ""
 
   comments = [];
   comment_count = 0;
@@ -912,6 +913,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
   testpreview:String = ''
   previewbool:Boolean = false
   showPreview(){
+    this.fixedForPreview = "fixed"
     this.previewbool = true
     //console.log(document.getElementsByClassName("ql-editor")[0].innerHTML)
    // this.testpreview = '<table table_id="ipjzc9jnp3"><tr row_id="oqwih21bu5"><td table_id="ipjzc9jnp3" row_id="oqwih21bu5" cell_id="x6lgixhvps"><p><br></p></td></tr></table><table table_id="npc7c1oyx3q"><tr row_id="p0ctv6fso99"><td table_id="npc7c1oyx3q" row_id="p0ctv6fso99" cell_id="0d3oruz68pcm"><p><span class="ql-author-5d0a6e0d342bf74ff5732a21">sasdasdasd</span></p></td></tr></table><table table_id="f0ni22jicya"><tr row_id="umw39l8hlpf"><td table_id="f0ni22jicya" row_id="umw39l8hlpf" cell_id="5lhc0zon4ji"><p><span class="ql-author-5d0a6e0d342bf74ff5732a21">asdasdasdasd</span></p><p><span class="ql-author-5d0a6e0d342bf74ff5732a21">asdasd</span></p><p><span class="ql-author-5d0a6e0d342bf74ff5732a21">asdasd</span></p><p><span class="ql-author-5d0a6e0d342bf74ff5732a21">asdasd</span></p></td><td table_id="f0ni22jicya" row_id="umw39l8hlpf" cell_id="luuma5eznum"><p><br></p></td><td table_id="f0ni22jicya" row_id="umw39l8hlpf" cell_id="7fgz4csfl3"><p><span class="ql-author-5d0a6e0d342bf74ff5732a21">asdasdasd</span></p></td><td table_id="f0ni22jicya" row_id="umw39l8hlpf" cell_id="s9wa4a8bf8"><p><br></p></td><td table_id="f0ni22jicya" row_id="umw39l8hlpf" cell_id="42rriea4h8u"><p><br></p></td><td table_id="f0ni22jicya" row_id="umw39l8hlpf" cell_id="ft1ebpz3y3"><p><span class="ql-author-5d0a6e0d342bf74ff5732a21">asdasdsa</span></p></td><td table_id="f0ni22jicya" row_id="umw39l8hlpf" cell_id="hrctq36j53"><p><br></p></td><td table_id="f0ni22jicya" row_id="umw39l8hlpf" cell_id="3kpz0i18p8v"><p><br></p></td><td table_id="f0ni22jicya" row_id="umw39l8hlpf" cell_id="mflnwbkvuhk"><p><br></p></td><td table_id="f0ni22jicya" row_id="umw39l8hlpf" cell_id="u5kacq9sb6"><p><br></p></td><td table_id="f0ni22jicya" row_id="umw39l8hlpf" cell_id="qqfioaw8b9b"><p><br></p></td><td table_id="f0ni22jicya" row_id="umw39l8hlpf" cell_id="l14hxfrc61j"><p><br></p></td><td table_id="f0ni22jicya" row_id="umw39l8hlpf" cell_id="x6m9xc6ur9"><p><br></p></td><td table_id="f0ni22jicya" row_id="umw39l8hlpf" cell_id="k17wj2hct8l"><p><br></p></td><td table_id="f0ni22jicya" row_id="umw39l8hlpf" cell_id="1kg4bnrjjgb"><p><br></p></td><td table_id="f0ni22jicya" row_id="umw39l8hlpf" cell_id="36ktnerla4e"><p><br></p></td><td table_id="f0ni22jicya" row_id="umw39l8hlpf" cell_id="641c6xu9njr"><p><br></p></td><td table_id="f0ni22jicya" row_id="umw39l8hlpf" cell_id="g3tvzr5ptce"><p><br></p></td><td table_id="f0ni22jicya" row_id="umw39l8hlpf" cell_id="7rauojsxkxw"><p><br></p></td></tr><tr row_id="pfav2mpwe"><td table_id="f0ni22jicya" row_id="pfav2mpwe" cell_id="pnsv94p1zug"><p><br></p></td><td table_id="f0ni22jicya" row_id="pfav2mpwe" cell_id="fqr237l08h"><p><span class="ql-author-5d0a6e0d342bf74ff5732a21">asdasd</span></p></td><td table_id="f0ni22jicya" row_id="pfav2mpwe" cell_id="urq83l5jes"><p><br></p></td><td table_id="f0ni22jicya" row_id="pfav2mpwe" cell_id="22mu4927gxx"><p><br></p></td><td table_id="f0ni22jicya" row_id="pfav2mpwe" cell_id="u65nmc3vq8"><p><br></p></td><td table_id="f0ni22jicya" row_id="pfav2mpwe" cell_id="rb32a5pxn0k"><p><span class="ql-author-5d0a6e0d342bf74ff5732a21">sadasdasd</span></p></td><td table_id="f0ni22jicya" row_id="pfav2mpwe" cell_id="6e7wfjdz25w"><p><br></p></td><td table_id="f0ni22jicya" row_id="pfav2mpwe" cell_id="idrknxkay2s"><p><br></p></td><td table_id="f0ni22jicya" row_id="pfav2mpwe" cell_id="jpwce420oq"><p><br></p></td><td table_id="f0ni22jicya" row_id="pfav2mpwe" cell_id="5lqulg0s36m"><p><br></p></td><td table_id="f0ni22jicya" row_id="pfav2mpwe" cell_id="8mhxsje91pv"><p><br></p></td><td table_id="f0ni22jicya" row_id="pfav2mpwe" cell_id="wpd0u009b5"><p><br></p></td><td table_id="f0ni22jicya" row_id="pfav2mpwe" cell_id="wgopa4gmdrs"><p><br></p></td><td table_id="f0ni22jicya" row_id="pfav2mpwe" cell_id="kzpffot53m"><p><br></p></td><td table_id="f0ni22jicya" row_id="pfav2mpwe" cell_id="2zhetmxhmdb"><p><br></p></td><td table_id="f0ni22jicya" row_id="pfav2mpwe" cell_id="ytluilsfgx"><p><br></p></td><td table_id="f0ni22jicya" row_id="pfav2mpwe" cell_id="enufb29u0t8"><p><br></p></td><td table_id="f0ni22jicya" row_id="pfav2mpwe" cell_id="d6vx7lbz3d6"><p><br></p></td><td table_id="f0ni22jicya" row_id="pfav2mpwe" cell_id="gw03ckx60zs"><p><br></p></td></tr></table><table table_id="w40vewk2r"><tr row_id="gnqtlu0gili"><td table_id="w40vewk2r" row_id="gnqtlu0gili" cell_id="wqlnhomc8oi"><p><br></p><p><br></p><p><br></p><p><br></p><p><span class="ql-author-5d0a6e0d342bf74ff5732a21">asdasd</span></p><p><br></p><p><br></p><p><br></p><p><span class="ql-author-5d0a6e0d342bf74ff5732a21">asd</span></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><span class="ql-author-5d0a6e0d342bf74ff5732a21">qweqweqweqweqweqweqwe</span></p></td></tr></table><table table_id="37tdlj65cwd"><tr row_id="xx4cyj4e8hb"><td table_id="37tdlj65cwd" row_id="xx4cyj4e8hb" cell_id="iqxugf7m4tl"><p><br></p></td><td table_id="37tdlj65cwd" row_id="xx4cyj4e8hb" cell_id="m1rvyrlk5ta"><p><br></p></td></tr><tr row_id="61y051satvf"><td table_id="37tdlj65cwd" row_id="61y051satvf" cell_id="ah66x5hvt7l"><p><br></p></td><td table_id="37tdlj65cwd" row_id="61y051satvf" cell_id="jhjp1zb4iwk"><p><br></p></td></tr></table>';
@@ -927,6 +929,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
   }
   closePreview(event:string){
     //console.log("calledlldle1",event)
+    this.fixedForPreview = ""
     this.previewbool = false
     //console.log(this.previewbool)
   }
@@ -941,7 +944,9 @@ export {comment_range, quill, editor, docAuthors};
 })
 export class DialogOverviewExampleDialog {
   private _editorData: string = "";
-  private _editorDataArray = new Array(1).fill([])
+  private _editorDataArray = new Array(1).fill("")
+  private _listArrayForPageCheck = new Array(1).fill("0")
+
   currentpage = 0
 
   @Input() set receivedParentMessage(value: string) {
@@ -949,14 +954,15 @@ export class DialogOverviewExampleDialog {
     var pars = (new DOMParser()).parseFromString(docTypeValue, "text/html");
    // console.log(pars,"pars",value)
     var x = pars.documentElement.childNodes;
-    console.log(x)
+    // console.log(x)
 
     for (let i = 0; i < x.length ; i++) {
-     //console.log("node", x[i].childNodes)
-      const innerFirstElementNode = x[i].childNodes
-      if(innerFirstElementNode.length > 0){
+    //  console.log("node", x[i].childNodes)
+      const innerFirstElementNode = Array.from(x[i].childNodes)
+      //if(innerFirstElementNode.length > 0){
         for (let k = 0; k < innerFirstElementNode.length; k++){
-         // console.log(innerFirstElementNode[k])
+
+         //console.log(k,innerFirstElementNode[k],"innerfirst")
           var el = document.createElement("div");
           el.appendChild(innerFirstElementNode[k]);
           //console.log("innerFirstElementNode[k]",innerFirstElementNode[k],"breakrekakreakarkaekaerakraekr", el.innerHTML)
@@ -970,48 +976,24 @@ export class DialogOverviewExampleDialog {
           var pagePreviewHeight = document.getElementsByClassName('pagePreview')[this.currentpage].clientHeight;
           //console.log(pagePreviewHeight,"height")
           if (pagePreviewHeight <= 1100){
-            //console.log("is lessthan")
+            if (k >= innerFirstElementNode.length - 1){
+              this._listArrayForPageCheck[this.currentpage] = "29.7"
+            }
             
           }
           if (pagePreviewHeight > 1100){
             //last element added
-            //console.log("thisis before removal", el.innerHTML)
-            //this._editorDataArray[this.currentpage].replace(el.innerHTML,"")
-
-            // var pageHtml = document.getElementsByClassName('pagePreview')[this.currentpage].innerHTML
-            // var parsePreview = (new DOMParser()).parseFromString(pageHtml, "text/html");
-            // var previewNodes = parsePreview.documentElement.childNodes;
-
-            // for (let e = 0; e < previewNodes.length ; e++) {
-            //    const innerFirstPreviewElementNode = previewNodes[e].childNodes
-            //    console.log(innerFirstPreviewElementNode)
-            //    if(innerFirstElementNode.length > 0){
-            //      for (let k = 0; k < innerFirstElementNode.length; k++){
-            //        //console.log(innerFirstElementNode[k])
-            //        var el = document.createElement("div");
-            //        el.appendChild(innerFirstElementNode[k]);
-            //        //console.log("innerFirstElementNode[k]",innerFirstElementNode[k],"breakrekakreakarkaekaerakraekr", el.innerHTML)
-            //        //console.log(el.innerHTML,"teststststststsststststststst",innerFirstElementNode[k])
-            //        if (el.innerHTML != undefined || el.innerHTML != "")
-            //        //console.log(this.currentpage,"pageeoeoeoe")
-            //        this._editorDataArray[this.currentpage] += el.innerHTML
-            //        //console.log(this._editorDataArray)
-            //       // this._editorData += el.innerHTML
-
-            //      }
-            //    }
-            //  }
-
-
+            this._editorDataArray[this.currentpage].replace(el.innerHTML,"")
  ///////// new one here
              this.currentpage += 1
             // console.log("replaced",this._editorDataArray)
             this._editorDataArray = [...this._editorDataArray, ""]
+            this._listArrayForPageCheck = [...this._listArrayForPageCheck, "0"]
             //console.log(this.currentpage,"pageeoeoeoe23232323232323")
             //console.log("added to new array",this._editorDataArray)
           }
         }
-      }
+      // }
     }
     //this._editorData = value;
 
