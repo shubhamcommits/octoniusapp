@@ -180,9 +180,6 @@ export class GroupTasksComponent implements OnInit {
     this.loadGroup();
     this.mentionmembers();
     this.initializeGroupMembersSearchForm();
-    this.taskIds.push("0");
-    this.taskIds.push("1");
-    this.taskIds.push("2");
    }
 
   }
@@ -194,12 +191,7 @@ export class GroupTasksComponent implements OnInit {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     }else{
       transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
-<<<<<<< 7409001204ba55625d0fe2a093fada01c3b1b7a6
       
-    }
-  }
-
-=======
     }
   }
 
@@ -209,7 +201,6 @@ export class GroupTasksComponent implements OnInit {
     });
   }
 
->>>>>>> initialize drag and drop
   getTaskTimeSpent(taskPost) {
     if(taskPost.task.hasOwnProperty('started_at') && taskPost.task.hasOwnProperty('completed_at')){
       const start = moment(taskPost.task.started_at);
