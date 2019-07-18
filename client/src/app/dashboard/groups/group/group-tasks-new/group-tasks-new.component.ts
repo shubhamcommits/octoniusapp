@@ -1423,7 +1423,6 @@ export class GroupTasksNewComponent implements OnInit {
   // Drag and drop 
 
   onTaskDrop(event: CdkDragDrop<any[]>){
-    console.log(event);
     if(event.container.data[event.currentIndex]['title'] == 'proxy'){
       var postId = event.previousContainer.data[event.previousIndex]['_id'];
       var newCol = event.container.data[event.currentIndex]['status'];
