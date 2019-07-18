@@ -368,6 +368,27 @@ const updateSmartGroupMembers = async (req, res) => {
   }
 };
 
+/**
+ * Gets every smart group and its rules within the
+ * given workspace.
+ */
+const getAllSmartGroupRules = async (req, res) => {
+  const { workspaceId } = req.params;
+
+  try {
+    const groups = await Group.find({
+      type: 'smart',
+      _workspace: workspaceId
+    }).select('_id _workspace conditions');
+
+    return res.status(200).json({
+      groups
+    });
+  } catch (error) {
+    return sendErr(res, error);
+  }
+};
+
 // -| FILES |-
 
 const downloadFile = (req, res, next) => {
@@ -1241,6 +1262,7 @@ module.exports = {
   getSmartGroupSettings,
   deleteSmartGroupRule,
   updateSmartGroupMembers,
+  getAllSmartGroupRules,
   // Files
   downloadFile,
   getFiles,
