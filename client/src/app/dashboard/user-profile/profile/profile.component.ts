@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import {ProfileDataService} from "../../../shared/services/profile-data.service";
 import {SearchService} from "../../../shared/services/search.service";
+import { GroupService } from '../../../shared/services/group.service';
 
 @Component({
   selector: 'app-profile',
@@ -33,7 +34,8 @@ export class ProfileComponent implements OnInit {
     private _router: Router,
     private route: ActivatedRoute,
     private profileDataService: ProfileDataService,
-    private searchService: SearchService) { }
+    private searchService: SearchService,
+    private groupService: GroupService) { }
 
   ngOnInit() {
     this.ngxService.start(); // start foreground loading with 'default' id
@@ -118,6 +120,37 @@ export class ProfileComponent implements OnInit {
       this._userService.addSkills(skills)
       .subscribe((res)=>{
         //console.log('Skills Added', res);
+
+        // Get smart groups and their rules
+        this.groupService.getAllSmartGroupRules(this.user._workspace)
+        .subscribe(
+          ({ groups }) => {
+            groups.map(group => {
+              // Potentially add the new user to the current smart group
+              const data: object = {
+                workspaceId: group._workspace,
+                currentSettings: {
+                  emailDomains: group.conditions.email_domains,
+                  jobPositions: group.conditions.job_positions,
+                  skills: group.conditions.skills
+                }
+              };
+              this.groupService.updateSmartGroupMembers(group._id, data)
+                .subscribe(
+                  res => // console.log('Added to smart group successfully!'),
+                  error => {
+                    console.error('Could not auto add member to smart group!');
+                    console.error(error);
+                  }
+                );
+            });
+          },
+          error => {
+            console.error('Could not get all smart groups!');
+            console.error(error);
+          }
+        );
+
       },(err) =>{
         console.log('Error while updating the skills', err);
       })
