@@ -8,6 +8,8 @@ import { environment } from '../../../../../environments/environment';
 import { User } from '../../../../shared/models/user.model';
 import { UserService } from '../../../../shared/services/user.service';
 import { saveAs } from 'file-saver';
+import {DialogOverviewExampleDialog} from '../../../../common/components/posts/collaborative-doc-group-post/collaborative-doc-group-post.component'
+
 
 @Component({
   selector: 'app-group-files',
@@ -146,6 +148,25 @@ export class GroupFilesComponent implements OnInit {
 
       });
 
+  }
+  testpreview:String = ''
+  previewbool:Boolean = false
+  showPreview(mep){
+    this.groupService.getDocFileForEditorImport(mep)
+    .subscribe((res) => {
+      if(res['htmlConversion'] != null && res['htmlConversion'] != ""){
+        this.previewbool = true
+        this.testpreview = res['htmlConversion']
+      }
+
+    }, (err) => {
+      console.log("error",err)
+    });
+    this.previewbool = true
+    //this.testpreview = document.getElementsByClassName("ql-editor")[0].innerHTML 
+  }
+  closePreview(event:string){
+    this.previewbool = false
   }
 
 }
