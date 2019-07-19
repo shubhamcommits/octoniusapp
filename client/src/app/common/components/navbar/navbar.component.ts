@@ -7,9 +7,14 @@ import moment from 'moment';
 import io from 'socket.io-client';
 import { environment } from '../../../../environments/environment'
 import { BehaviorSubject } from 'rxjs';
+import { Subject } from 'rxjs/Subject';
 import { async } from '@angular/core/testing'
 import {WorkspaceService} from "../../../shared/services/workspace.service";
 import {SearchService} from "../../../shared/services/search.service";
+
+import { Cacheable, CacheBuster } from 'ngx-cacheable';
+
+const cacheBuster$ = new Subject<void>();
 
 var profile_pic: any;
 
@@ -18,7 +23,6 @@ var profile_pic: any;
 // 1. when the user gets mentioned and assigned a task at the same time we should maybe just display 1 notification instead of two?
 // 2. we might want to change name generateFeed to generateFeedAndEmitToUser
 // 3. when you click the notification in the feed and you relocate, the red sign doesn't disappear until you click outside the feed window
-
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -180,6 +184,7 @@ export class NavbarComponent implements OnInit {
           this.alert.message = err.error.message;
           setTimeout(() => {
             localStorage.clear();
+            sessionStorage.clear();         
             this.router.navigate(['']);
           }, 2000);
         } else if (err.status) {
