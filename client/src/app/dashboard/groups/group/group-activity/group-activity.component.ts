@@ -286,6 +286,7 @@ export class GroupActivityComponent implements OnInit {
         this.user = await res.user;
         this.profileImage = await res.user['profile_pic'];
         this.profileImage = await this.BASE_URL + `/uploads/${this.profileImage}`;
+        localStorage.setItem('user_data', JSON.stringify(res.user));
       }, (err) => {
         if (err.status === 401) {
           this.snotifyService.error(err.error.message);

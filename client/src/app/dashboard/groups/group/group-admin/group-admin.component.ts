@@ -7,7 +7,7 @@ import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { NgxUiLoaderService } from 'ngx-ui-loader'; 
 import Swal from 'sweetalert2';
-
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-group-admin',
@@ -30,6 +30,8 @@ export class GroupAdminComponent implements OnInit {
     message: ''
   };
 
+  user: any;
+
   group_id;
 
   config = {
@@ -37,17 +39,43 @@ export class GroupAdminComponent implements OnInit {
     search: true // enables the search plugin to search in the list
   };
   dataModel;
-  constructor(private groupService: GroupService, public groupDataService: GroupDataService, private ngxService: NgxUiLoaderService, private router: Router, private snotifyServive: SnotifyService) { }
+  constructor(private groupService: GroupService, 
+    public groupDataService: GroupDataService, 
+    private ngxService: NgxUiLoaderService, 
+    private router: Router, 
+    private snotifyServive: SnotifyService,
+    private _location: Location) { }
 
   ngOnInit() {
     this.ngxService.start(); // start foreground loading with 'default' id
     this.user_data = JSON.parse(localStorage.getItem('user'));
     this.group_id = this.groupDataService.groupId;
+    this.user = JSON.parse(localStorage.getItem('user_data'));
     this.alertMessageSettings();
     this.inilizeWrokspaceMembersSearchForm();
-    this.loadGroup().then(()=>{
+    this.loadGroup()
+    .then(()=>{
       this.ngxService.stop();
-    });
+    })
+    .then(()=>{
+      if(this.user.role === 'member'){
+        setTimeout(() => {
+          Swal.fire({
+            type: 'info',
+            title: 'You can\'t access this section!',
+            text: 'Kindly contact your superior to update your role from member to admin.',
+            showConfirmButton: true,
+            allowEscapeKey: false,
+            allowOutsideClick: false,
+          }).then((result) => {
+            if (result.value) {
+              this._location.back();
+            }
+          });
+        }, 1500);
+
+      }
+    })
   }
 
 
