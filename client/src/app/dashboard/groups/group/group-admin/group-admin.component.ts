@@ -58,7 +58,7 @@ export class GroupAdminComponent implements OnInit {
       this.ngxService.stop();
     })
     .then(()=>{
-      if(this.user.role === 'member'){
+      if(this.user && this.user.role === 'member'){
         setTimeout(() => {
           Swal.fire({
             type: 'info',
