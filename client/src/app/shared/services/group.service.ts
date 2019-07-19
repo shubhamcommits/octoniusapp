@@ -10,6 +10,7 @@ import 'rxjs/add/operator/switchMap';
 import { environment } from '../../../environments/environment';
 import {Subject} from "rxjs/Subject";
 import { Cacheable, CacheBuster } from 'ngx-cacheable';
+import { DOMStorageStrategy } from 'ngx-cacheable/common/DOMStorageStrategy';
 
 const cacheBuster$ = new Subject<void>();
 
@@ -23,7 +24,7 @@ export class GroupService {
 
   constructor(private _http: HttpClient) { }
 
-  @Cacheable({ cacheBusterObserver: cacheBuster$
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
   })
   getFilteredPosts(group_id, filters) {
 
@@ -40,7 +41,7 @@ export class GroupService {
     return this._http.get(this.BASE_API_URL + `/groups/${group_id}/getFilteredPosts`, {params});
   }
 
-  @Cacheable({ cacheBusterObserver: cacheBuster$
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
   })
   getNextFilteredPosts(group_id, filters, alreadyLoaded) {
     const params = new HttpParams()
@@ -53,13 +54,13 @@ export class GroupService {
     return this._http.get(this.BASE_API_URL + `/groups/${group_id}/${alreadyLoaded}/getNextFilteredPosts`, {params});
   }
 
-  @Cacheable({ cacheBusterObserver: cacheBuster$
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
   })
   getGroupPosts(group_id) {
     return this._http.get(this.BASE_API_URL + '/post/' + group_id);
   }
 
-  @Cacheable({ cacheBusterObserver: cacheBuster$
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
   })
   getGroup(group_id) {
     return this._http.get(this.BASE_API_URL + '/group/' + group_id);
@@ -70,32 +71,39 @@ export class GroupService {
   }
   // PULSE start
 
-  //@Cacheable({ cacheBusterObserver: cacheBuster$ })
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
+  })
   getAllPulse() {
     return this._http.get(this.BASE_API_URL + '/groups/all/pulse/');
   }
 
-  //@Cacheable({ cacheBusterObserver: cacheBuster$ })
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
+  })
   getPulseTotalNumTasks(group_id) {
     return this._http.get(this.BASE_API_URL + '/group/' + group_id + '/totalNumTasks');
   }
 
-  //@Cacheable({ cacheBusterObserver: cacheBuster$ })
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
+  })
   getPulseNumTodoTasks(group_id) {
     return this._http.get(this.BASE_API_URL + '/group/' + group_id + '/numTodoTasks');
   }
 
-  //@Cacheable({ cacheBusterObserver: cacheBuster$ })
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
+  })
   getPulseNumInProgressTasks(group_id) {
     return this._http.get(this.BASE_API_URL + '/group/' + group_id + '/numInProgressTasks');
   }
 
-  //@Cacheable({ cacheBusterObserver: cacheBuster$ })
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
+  })
   getPulseNumDoneTasks(group_id) {
     return this._http.get(this.BASE_API_URL + '/group/' + group_id + '/numDoneTasks');
   }
 
-  //@CacheBuster({ cacheBusterNotifier: cacheBuster$ })
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
   editPulseDesc(group_id, description) {
     return this._http.post(this.BASE_API_URL + '/groups/' + group_id + '/pulse/editDescription', description);
   }
@@ -151,19 +159,19 @@ export class GroupService {
     return this._http.post(this.BASE_API_URL + '/group/removeUser', data);
   }
 
-  @Cacheable({ cacheBusterObserver: cacheBuster$
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
   })
   getGroupTasks(groupId) {
     return this._http.get<any>(this.BASE_API_URL + `/groups/${groupId}/tasks`);
   }
 
-  @Cacheable({ cacheBusterObserver: cacheBuster$
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
   })
   getCompletedGroupTasks(groupId) {
     return this._http.get<any>(this.BASE_API_URL + `/groups/${groupId}/tasksDone`);
   }
 
-  @Cacheable({ cacheBusterObserver: cacheBuster$
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
   })
   getRecentGroupTasks(postId, groupId) {
     return this._http.get<any>(this.BASE_API_URL + `/groups/${groupId}/nextTasksDone/${postId}`);
@@ -176,7 +184,7 @@ export class GroupService {
     return this._http.put(this.BASE_API_URL + `/posts/${postId}/taskAssignee`, assigneeId);
   }
 
-  @Cacheable({ cacheBusterObserver: cacheBuster$
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
   })
   getPrivateGroup() {
     return this._http.get<any>(this.BASE_API_URL + `/groups/user/private`);
@@ -222,7 +230,7 @@ export class GroupService {
    *
    * @param groupdId The group to query
    */
-  @Cacheable({ cacheBusterObserver: cacheBuster$
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
   })
   getSmartGroupSettings(groupdId: string): Observable<any> {
     return this._http.get<any>(`${this.BASE_API_URL}/groups/smart/${groupdId}/settings`);

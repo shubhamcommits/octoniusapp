@@ -6,6 +6,7 @@ import { AuthService } from './auth.service';
 import { environment } from '../../../environments/environment';
 import { Cacheable, CacheBuster } from 'ngx-cacheable';
 import { Subject } from 'rxjs/Subject';
+import { DOMStorageStrategy } from 'ngx-cacheable/common/DOMStorageStrategy';
 
 const cacheBuster$ = new Subject<void>();
 
@@ -18,13 +19,13 @@ export class UserService {
 
   constructor(private _http: HttpClient, private _authService: AuthService) { }
 
-  @Cacheable({ cacheBusterObserver: cacheBuster$
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
   })
   getUser() {
     return this._http.get<any>(this.BASE_API_URL + `/users`);
   }
 
-  @Cacheable({ cacheBusterObserver: cacheBuster$
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
   })
   getOtherUser(userId) {
     return this._http.get(this.BASE_API_URL + `/users/getOtherUser/${userId}`);
@@ -61,25 +62,25 @@ export class UserService {
 
   }
 
-  @Cacheable({ cacheBusterObserver: cacheBuster$
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
   })
   getUserTasks() {
     return this._http.get<any>(this.BASE_API_URL + `/users/tasks`);
   }
 
-  @Cacheable({ cacheBusterObserver: cacheBuster$
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
   })
   getCompletedUserTasks() {
     return this._http.get<any>(this.BASE_API_URL + `/users/tasksDone`);
   }
 
-  @Cacheable({ cacheBusterObserver: cacheBuster$
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
   })
   getRecentUserTasks(postId) {
     return this._http.get<any>(this.BASE_API_URL + `/users/nextTasksDone/${postId}`);
   }
 
-  @Cacheable({ cacheBusterObserver: cacheBuster$
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
   })
   getUserCalendarPosts(data){
     return this._http.get(this.BASE_API_URL + `/groups/${data.groupId}/user/${data.userId}/calendar/${data.year}/${data.month}`);

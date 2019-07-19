@@ -4,6 +4,7 @@ import { environment } from '../../../environments/environment';
 import {Subject} from "rxjs/Subject";
 import { Observable } from 'rxjs';
 import { Cacheable, CacheBuster } from 'ngx-cacheable';
+import { DOMStorageStrategy } from 'ngx-cacheable/common/DOMStorageStrategy';
 
 const cacheBuster$ = new Subject<void>();
 
@@ -21,19 +22,19 @@ export class GroupsService {
     return this._http.post(this.BASE_API_URL + '/workspace/groups/', group);
   }
 
-  @Cacheable({ cacheBusterObserver: cacheBuster$
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
   })
   getUserGroups(user) {
     return this._http.get(this.BASE_API_URL + '/workspace/groups/' + user.user_id + '/' + user.workspace_id);
   }
 
-  @Cacheable({ cacheBusterObserver: cacheBuster$
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
   })
   getGroupsForUser(workspace: string) {
     return this._http.get(`${this.BASE_API_URL}/groups/user/${workspace}`);
   }
 
-  @Cacheable({ cacheBusterObserver: cacheBuster$
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
   })
   getAgoras(): Observable<any> {
     return this._http.get<any>(`${this.BASE_API_URL}/groups/public/all`);
@@ -45,7 +46,7 @@ export class GroupsService {
    * 
    * @param workspace The workspace to search within.
    */
-  @Cacheable({ cacheBusterObserver: cacheBuster$
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
   })
   getSmartGroups(workspace: string): Observable<any> {
     return this._http.get<any>(`${this.BASE_API_URL}/groups/smart/${workspace}`);
