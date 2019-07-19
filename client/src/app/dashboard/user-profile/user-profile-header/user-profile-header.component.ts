@@ -241,7 +241,8 @@ export class UserProfileHeaderComponent implements OnInit {
       mobile_number: '',
       bio: '',
       current_position: '',
-      company_join_date: ''
+      company_join_date: '',
+      _workspace: ''
     };
   }
 
