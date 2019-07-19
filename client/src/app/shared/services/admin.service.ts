@@ -46,10 +46,24 @@ export class AdminService {
   }
 
   updateUserRole(data) {
+    this.manuallyBustCache();
     return this._http.put<any>(this.BASE_API_URL + '/workspace/updateUserRole', data);
   }
 
   removeUser(workspaceId, userId) {
+    this.manuallyBustCache();
     return this._http.delete(this.BASE_API_URL + `/workspaces/${workspaceId}/users/${userId}`);
+  }
+
+  /**
+   * Manually busting a part of the cache whose service methods
+   * are in another service.ts file.
+   * 
+   * This method particularly handles the updating of workplace data.
+   */
+  manuallyBustCache(): void {
+    const cache = JSON.parse(localStorage.getItem('CACHE_STORAGE'));
+    cache['WorkspaceService#getWorkspace'] = undefined;
+    localStorage.setItem('CACHE_STORAGE', JSON.stringify(cache));
   }
 }
