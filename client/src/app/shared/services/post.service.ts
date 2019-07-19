@@ -4,6 +4,7 @@ import { environment } from '../../../environments/environment';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs';
 import { Cacheable, CacheBuster } from 'ngx-cacheable';
+import { DOMStorageStrategy } from 'ngx-cacheable/common/DOMStorageStrategy';
 
 const cacheBuster$ = new Subject<void>();
 
@@ -28,7 +29,7 @@ export class PostService {
 
   // METHODS TO HANDLE HTTP REQUESTS
 
-  @Cacheable({ cacheBusterObserver: cacheBuster$
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
   })
   getGroupPosts(group_id) {
     return this._http.get(this.BASE_API_URL + '/groups/' + group_id + '/posts');
@@ -38,7 +39,7 @@ export class PostService {
     return this._http.get(this.BASE_API_URL + '/group/' + group_id);
   }
 
-  @Cacheable({ cacheBusterObserver: cacheBuster$
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
   })
   getNextPosts(group_id, last_post_id) {
     return this._http.get(this.BASE_API_URL + '/groups/' + group_id + '/nextPosts/' + last_post_id);
@@ -62,6 +63,7 @@ export class PostService {
     cacheBusterNotifier: cacheBuster$
   })
   addNewTaskPost(post) {
+    this.manuallyBustCache();
     return this._http.post(this.BASE_API_URL + '/posts', post);
   }
 
@@ -94,7 +96,11 @@ export class PostService {
     return this._http.put(`${this.BASE_API_URL}/posts/comments/read/${commentId}`, null);
   }
 
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
   complete(postId, status) {
+    this.manuallyBustCache();
     return this._http.put(this.BASE_API_URL + `/posts/${postId}/taskStatus`, status);
   }
 
@@ -164,6 +170,8 @@ export class PostService {
    * Jessie Jia Edit Ends
    * @param postId
    */
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
+  })
   getPost(postId) {
     return this._http.get(this.BASE_API_URL + '/posts/' + postId);
   }
@@ -175,19 +183,19 @@ export class PostService {
     return this._http.post(this.BASE_API_URL + `/posts/${postId}/comments`, comment);
   }
 
-  @Cacheable({ cacheBusterObserver: cacheBuster$
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
   })
   getComment(commentId) {
     return this._http.get(this.BASE_API_URL + `/posts/comments/${commentId}`);
   }
 
-  @Cacheable({ cacheBusterObserver: cacheBuster$
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
   })
   getComments(postId) {
     return this._http.get(this.BASE_API_URL + `/posts/${postId}/comments`);
   }
 
-  @Cacheable({ cacheBusterObserver: cacheBuster$
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
   })
   getNextComments(postId, commentId) {
     return this._http.get(this.BASE_API_URL + `/posts/${postId}/nextComments/${commentId}`);
@@ -251,5 +259,21 @@ export class PostService {
 
   onSaveEditPost() {
   //  add this function later
+  }
+
+  /**
+   * Manually busting a part of the cache whose service methods
+   * are in another service.ts file.
+   * 
+   * This method particularly handles the updating of pulse data 
+   * in the cache for group activity.
+   */
+  manuallyBustCache(): void {
+    const cache = JSON.parse(localStorage.getItem('CACHE_STORAGE'));
+    cache['GroupService#getPulseNumDoneTasks'] = undefined;
+    cache['GroupService#getPulseNumInProgressTasks'] = undefined;
+    cache['GroupService#getPulseNumTodoTasks'] = undefined;
+    cache['GroupService#getPulseTotalNumTasks'] = undefined;
+    localStorage.setItem('CACHE_STORAGE', JSON.stringify(cache));
   }
 }

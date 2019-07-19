@@ -7,6 +7,7 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
 import { Subject } from 'rxjs/Subject';
+import { DOMStorageStrategy } from 'ngx-cacheable/common/DOMStorageStrategy';
 
 const cacheBuster$ = new Subject<void>();
 
@@ -33,7 +34,7 @@ export class AdminService {
     return this._http.delete(this.BASE_API_URL + `/workspaces/${workspace_id}/domains/${domainName}`);
   }
 
-  @Cacheable({ cacheBusterObserver: cacheBuster$
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
   })
   allowedDomains(workspace_id) {
     return this._http.get(this.BASE_API_URL + '/workspaces/'+ workspace_id + '/domains');

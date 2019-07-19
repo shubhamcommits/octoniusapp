@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { Cacheable, CacheBuster } from 'ngx-cacheable';
 import { Subject } from 'rxjs/Subject';
+import { DOMStorageStrategy } from 'ngx-cacheable/common/DOMStorageStrategy';
 
 const cacheBuster$ = new Subject<void>();
 
@@ -24,14 +25,14 @@ export class ColumnService {
    }
 
    // get all columns 
-   @Cacheable({ cacheBusterObserver: cacheBuster$
+   @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
    })
    getAllColumns(groupId){
         return this._http.get(this.BASE_API_URL + `/columns/all/${groupId}`);
    }
 
    // get one column
-   @Cacheable({ cacheBusterObserver: cacheBuster$
+   @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
    })
    getOneColumn(groupId, columnName){
     return this._http.get(this.BASE_API_URL + `/column/${groupId}/${columnName}`);

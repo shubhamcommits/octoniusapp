@@ -5,6 +5,7 @@ import * as chance from 'chance';
 import { SnotifyService, SnotifyPosition, SnotifyToastConfig, Snotify } from 'ng-snotify';
 import { Observable, Observer, Subject } from 'rxjs';
 import { Cacheable, CacheBuster } from 'ngx-cacheable';
+import { DOMStorageStrategy } from 'ngx-cacheable/common/DOMStorageStrategy';
 
 const cacheBuster$ = new Subject<void>();
 
@@ -35,7 +36,7 @@ export class DocumentService {
     return this._http.post(environment.BASE_API_URL + `/posts/documents/${authorData._post_id}/addAuthor`, authorData);
   }
 
-  @Cacheable({ cacheBusterObserver: cacheBuster$
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
   })
   getAuthors(documentId: any){
     return this._http.get(environment.BASE_API_URL + `/posts/documents/${documentId}/authors`);
