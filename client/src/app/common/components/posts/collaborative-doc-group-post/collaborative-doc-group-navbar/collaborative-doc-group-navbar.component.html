@@ -27,6 +27,11 @@
 
     </div>
   </div>
+  <div class="row" style="position: fixed; float: right; margin-left: 62%;">
+    <div class="dropdown">
+      <button class="btn btn-primary" type="button" data-toggle="dropdown" (click)="clickOnPreview()">Preview</button>
+    </div>
+  </div>
   <div class="row" style="position: fixed; float: right; margin-left: 70%;">
     <div class="dropdown">
       <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Authors
@@ -37,7 +42,8 @@
     </div>
   </div>
   <div class="row" style="position: fixed; float:right; margin-left:87%;">
-  <b style="color: #00c853; font-size: 16px;">Status: <b style="color: black;">{{ docStatus }}</b></b>    </div>
+  <b style="color: #00c853; font-size: 16px;">Status: <b style="color: black;">{{ docStatus }}</b></b>    
+  </div>
   <div class="row" style="position: fixed; float: right; margin-left: 79%;">
     <div class="dropdown">
       <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Export
@@ -46,7 +52,20 @@
         <li class="dropdown-item" (click)="exportPDF()">Export as (.pdf) File</li>
         <li class="dropdown-item" (click)="exportDOC()">Export as (.doc) File</li>
         <li class="dropdown-item" (click)="exportDOCX()">Export as (.docx) File</li>
+        <li class="dropdown-item dropdown-hover">
+            Export to Agora
+            <div class="dropdown-content">
+              <!-- <a *ngFor="let agora of agoras" href="#/dashboard/group/{{agora?._id}}/files"> -->
+                <a *ngFor="let agora of agoras" (click) = "exportAGORA(agora?._id)">
+                <img src="{{this.BASE_URL}}/uploads/{{agora?.group_avatar}}" 
+                  onerror="this.src='/assets/images/user.png'"
+                  class="feed-avatar"/>
+                {{agora?.group_name}}</a>
+            </div>
+
+        </li>
       </ul>
+
     </div>
   </div>
 </nav>

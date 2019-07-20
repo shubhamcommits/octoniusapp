@@ -117,6 +117,11 @@ export class GroupService {
 
     return this._http.get(this.BASE_API_URL + '/groups/' + post_id + '/docImport');
   }
+  
+  getDOCXFileForAGORAExport(user_id,group_id,editorInfo){
+    return this._http.post(this.BASE_API_URL + '/groups/'+ group_id + '/agoraExport', {'editorInfo': editorInfo,'groupID':group_id ,'userID':user_id});
+  }
+
   serveDocFileForEditorExport(post_id,group_id, editorInfo) {
 
     return this._http.post(this.BASE_API_URL + '/groups/' + post_id + '/docExport', {'editorInfo': editorInfo, 'postID':post_id, 'groupID':group_id });

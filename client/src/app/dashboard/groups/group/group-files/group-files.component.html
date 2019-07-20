@@ -21,8 +21,6 @@
             
         </div>
         <div class="mr-3 float-right">
-  
-         
               <a role="button" class="btn btn-link" href="/uploads/{{post.files[0].modified_name}}" target="_blank"> <i class="material-icons">
                 visibility
                 </i></a>
@@ -38,6 +36,34 @@
   </div>
 
 </div>
+
+<div *ngFor="let post of documentFiles">
+  <div class="media card-tile user-list" >
+        
+        <div class="media-body" >
+    
+          <div class="float-left">
+                
+                <p><b>Document File: </b><a role="button" href="javascript:void(null);" >{{post?._name}}</a></p>     
+              
+          </div>
+          <div class="mr-3 float-right">
+    
+              <!-- <button class="btn btn-link" (click)= "showPreview(post._id)"><i class="material-icons">
+                  visibility
+                  </i></button> -->
+                <a role="button" class="btn btn-link" [routerLink]="['/dashboard', 'group', post?._group_id, 'files', post?._post_id]" routerLinkActive="router-link-active" > <i class="material-icons">
+                  visibility
+                  </i></a>
+              
+           
+          </div>
+    
+        </div>
+   
+    </div>
+  
+  </div>
 <!--</div>-->
 
 </div>
@@ -46,3 +72,4 @@
 </ng-template>
 
 </div>
+

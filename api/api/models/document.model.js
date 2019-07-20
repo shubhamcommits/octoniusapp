@@ -6,11 +6,7 @@ const DocumentSchema = new Schema({
   _id: {
     type: String
   },
-  ops: [{
-    insert: {
-      type: String
-    }
-  }],
+  ops: Schema.Types.Mixed,
   _type: {
     type: String
   },

@@ -8,6 +8,8 @@ import { environment } from '../../../../../environments/environment';
 import { User } from '../../../../shared/models/user.model';
 import { UserService } from '../../../../shared/services/user.service';
 import { saveAs } from 'file-saver';
+import { DocumentFileService } from '../../../../shared/services/document-file.service';
+
 
 @Component({
   selector: 'app-group-files',
@@ -19,8 +21,9 @@ export class GroupFilesComponent implements OnInit {
   group_id;
   groupImageUrl = '';
   posts = new Array();
+  documentFiles = new Array();
 
-  has_file;
+  has_file = false;
 
   group = {
     description: ''
@@ -31,11 +34,14 @@ export class GroupFilesComponent implements OnInit {
   isLoading$ = new BehaviorSubject(false);
 
   constructor(private ngxService: NgxUiLoaderService, private postService: PostService,
-    public groupDataService: GroupDataService, private groupService: GroupService,private _userService: UserService) { }
+    public groupDataService: GroupDataService, private groupService: GroupService,
+    private _userService: UserService,
+    private documentFileService: DocumentFileService) { }
 
   async ngOnInit() {
     this.ngxService.start(); // start foreground loading with 'default' id
     this.group_id = this.groupDataService.groupId;
+    this.loadDocumentFiles();
     this.loadFiles()
     .then(()=>{
       this.ngxService.stop();
@@ -52,16 +58,13 @@ export class GroupFilesComponent implements OnInit {
 
       this.groupService.getGroupFiles(this.group_id)
         .subscribe((res) => {
-         // console.log('Group posts:', res);
+          console.log('Group posts:', res);
           this.posts = res['posts'];
           for(let i = 0; i < this.posts.length; i++){
             if(this.posts[i].files.length > 0){
               this.has_file = true;
               break;
   
-            }
-            else{
-              this.has_file = false;
             }
           }
         // console.log('Group posts:', this.posts);
@@ -147,5 +150,23 @@ export class GroupFilesComponent implements OnInit {
       });
 
   }
+
+  loadDocumentFiles(){
+    return new Promise((resolve, reject)=>{
+      this.documentFileService.getFiles(this.group_id)
+      .subscribe((res)=>{
+        console.log('All document files', res);
+        if(res['file'].length > 0){
+          this.documentFiles = res['file'];
+          this.has_file = true;
+        }
+        resolve();
+      }, (err)=>{
+        console.log('Error occured while fetching the group document files', err);
+        reject(err);
+      })
+    })
+  }
+
 
 }

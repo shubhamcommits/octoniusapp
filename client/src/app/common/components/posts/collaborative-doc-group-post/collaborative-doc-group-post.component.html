@@ -1,13 +1,23 @@
+
 <app-collaborative-doc-group-navbar 
-(clickBack)="backClicked()" [post]="post" [docStatus]="docStatus" (docTitle)="getPostTitle($event)">
+(clickBack)="backClicked()" (clickPreview)="showPreview()" [post]="post" [docStatus]="docStatus" (docTitle)="getPostTitle($event)">
 </app-collaborative-doc-group-navbar>
 
 
-<div class="row" style="margin-top: 110px; margin-left: 1%">
+<div class="row" [style.position] = "fixedForPreview" style="margin-top: 110px; margin-left: 1%">
   <div class="col-md-8">
     
-<div class="toolbar" id="toolbar">
+<!-- <div class="toolbar" id="toolbar">
     <div id="toolbar-container">
+        <span class="ql-formats">
+            <button ngbTooltip="Insert Table" placement="bottom" class="ql-table" [value]="this.tableOptions">
+              <i class="material-icons">
+                table_chart
+                </i>
+            </button>
+            <button ngbTooltip="Insert Row" placement="bottom" class="ql-table" value="append-row"></button>
+            <button ngbTooltip="Insert Column" placement="bottom" class="ql-table" value="append-col"></button>
+          </span>
       <span class="ql-formats">
         <select class="ql-font"></select>
         <select class="ql-size"></select>
@@ -52,12 +62,12 @@
         <button class="ql-clean"></button>
       </span>
       <span class="ql-formats">
-        <button ngbTooltip="Toggle Track Changes" placement="bottom" class="track-changes"><i class="material-icons">
+        <button c class="ql-authorship-toggle"><i class="material-icons">
           subtitles
           </i></button>
       </span>
     </div>
-  </div> 
+  </div>  -->
       <div id="editor" style="background: white;">
       </div>
     </div>
@@ -75,3 +85,12 @@
     </div>
     </div>
   </div>
+  <!-- <button (click)="showPreview()" style = "position: absolute;top:0;left:0;background:black; z-index: 99999"><i class="material-icons">
+      subtitles
+        </i>
+
+      </button> -->
+      <div *ngIf = "previewbool" style="position: absolute;top:0;left:0;background:black; z-index: 9999">
+          <dialog-overview-example-dialog *ngIf = "previewbool" [receivedParentMessage] = "editorPreview" (closeView11) = "closePreview($event)" >
+          </dialog-overview-example-dialog>
+        </div>

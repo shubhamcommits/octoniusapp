@@ -17,7 +17,8 @@ const {
   usersRoutes,
   webhooksRoutes,
   workspacesRoutes,
-  columnsRoutes
+  columnsRoutes,
+  documentFileRoutes
 } = require('./routes');
 
 const app = express();
@@ -68,6 +69,7 @@ app.use('/api/billing', billingRoutes);
 app.use('/api/webhooks', webhooksRoutes);
 app.use('/api/search', searchRoutes);
 app.use('/api/columns', columnsRoutes);
+app.use('/api/documentFiles', documentFileRoutes);
 
 
 // -->!!!! TO BE REMOVED !!!!
