@@ -27,6 +27,11 @@
 
     </div>
   </div>
+  <div class="row" style="position: fixed; float: right; margin-left: 62%;">
+    <div class="dropdown">
+      <button class="btn btn-primary" type="button" data-toggle="dropdown" (click)="clickOnPreview()">Preview</button>
+    </div>
+  </div>
   <div class="row" style="position: fixed; float: right; margin-left: 70%;">
     <div class="dropdown">
       <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Authors
@@ -37,7 +42,8 @@
     </div>
   </div>
   <div class="row" style="position: fixed; float:right; margin-left:87%;">
-  <b style="color: #00c853; font-size: 16px;">Status: <b style="color: black;">{{ docStatus }}</b></b>    </div>
+  <b style="color: #00c853; font-size: 16px;">Status: <b style="color: black;">{{ docStatus }}</b></b>    
+  </div>
   <div class="row" style="position: fixed; float: right; margin-left: 79%;">
     <div class="dropdown">
       <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Export

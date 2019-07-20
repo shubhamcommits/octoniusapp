@@ -7,6 +7,7 @@ const billingRoutes = require('./billing.routes');
 const webhooksRoutes = require('./webhooks.routes');
 const searchRoutes = require('./search.routes');
 const columnsRoutes = require('./columns.routes');
+const documentFileRoutes = require('./document-file.routes');
 
 module.exports = {
   authsRoutes,
@@ -17,5 +18,6 @@ module.exports = {
   usersRoutes,
   webhooksRoutes,
   workspacesRoutes,
-  columnsRoutes
+  columnsRoutes,
+  documentFileRoutes
 };

@@ -114,6 +114,9 @@ import {
   MAT_DIALOG_DATA,
 
 } from '@angular/material';
+import { DocumentFileComponent } from './shared/utils/document-file/document-file.component';
+import { DocumentFileService } from './shared/services/document-file.service';
+
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 
   "bgsColor": "#005fd5",
@@ -210,6 +213,7 @@ const ngCircle = {
     PulseComponent,
     GroupSmartAdminComponent,
     DialogOverviewExampleDialog,
+    DocumentFileComponent,
   ],
   imports: [
     BrowserModule,
@@ -254,7 +258,7 @@ const ngCircle = {
 
   providers: [AuthService, UserService, DenyNavigationGuard, PostService, GroupService,
     GroupDataService, WorkspaceService, ProfileDataService, GroupsService, AdminService, GoogleCloudService,
-    DocumentService, ColumnService,
+    DocumentService, ColumnService, DocumentFileService,
     AuthGuard, NotAuthGuard, QuillAutoLinkService, ValidSubscriptionGuard,
     { provide: 'SnotifyToastConfig', useValue: ToastDefaults},
     SnotifyService, SearchService,

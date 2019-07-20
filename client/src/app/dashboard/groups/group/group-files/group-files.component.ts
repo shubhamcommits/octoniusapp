@@ -8,7 +8,7 @@ import { environment } from '../../../../../environments/environment';
 import { User } from '../../../../shared/models/user.model';
 import { UserService } from '../../../../shared/services/user.service';
 import { saveAs } from 'file-saver';
-import {DialogOverviewExampleDialog} from '../../../../common/components/posts/collaborative-doc-group-post/collaborative-doc-group-post.component'
+import { DocumentFileService } from '../../../../shared/services/document-file.service';
 
 
 @Component({
@@ -21,8 +21,9 @@ export class GroupFilesComponent implements OnInit {
   group_id;
   groupImageUrl = '';
   posts = new Array();
+  documentFiles = new Array();
 
-  has_file;
+  has_file = false;
 
   group = {
     description: ''
@@ -33,11 +34,14 @@ export class GroupFilesComponent implements OnInit {
   isLoading$ = new BehaviorSubject(false);
 
   constructor(private ngxService: NgxUiLoaderService, private postService: PostService,
-    public groupDataService: GroupDataService, private groupService: GroupService,private _userService: UserService) { }
+    public groupDataService: GroupDataService, private groupService: GroupService,
+    private _userService: UserService,
+    private documentFileService: DocumentFileService) { }
 
   async ngOnInit() {
     this.ngxService.start(); // start foreground loading with 'default' id
     this.group_id = this.groupDataService.groupId;
+    this.loadDocumentFiles();
     this.loadFiles()
     .then(()=>{
       this.ngxService.stop();
@@ -61,9 +65,6 @@ export class GroupFilesComponent implements OnInit {
               this.has_file = true;
               break;
   
-            }
-            else{
-              this.has_file = false;
             }
           }
         // console.log('Group posts:', this.posts);
@@ -149,24 +150,23 @@ export class GroupFilesComponent implements OnInit {
       });
 
   }
-  testpreview:String = ''
-  previewbool:Boolean = false
-  showPreview(mep){
-    this.groupService.getDocFileForEditorImport(mep)
-    .subscribe((res) => {
-      if(res['htmlConversion'] != null && res['htmlConversion'] != ""){
-        this.previewbool = true
-        this.testpreview = res['htmlConversion']
-      }
 
-    }, (err) => {
-      console.log("error",err)
-    });
-    this.previewbool = true
-    //this.testpreview = document.getElementsByClassName("ql-editor")[0].innerHTML 
+  loadDocumentFiles(){
+    return new Promise((resolve, reject)=>{
+      this.documentFileService.getFiles(this.group_id)
+      .subscribe((res)=>{
+        console.log('All document files', res);
+        if(res['file'].length > 0){
+          this.documentFiles = res['file'];
+          this.has_file = true;
+        }
+        resolve();
+      }, (err)=>{
+        console.log('Error occured while fetching the group document files', err);
+        reject(err);
+      })
+    })
   }
-  closePreview(event:string){
-    this.previewbool = false
-  }
+
 
 }

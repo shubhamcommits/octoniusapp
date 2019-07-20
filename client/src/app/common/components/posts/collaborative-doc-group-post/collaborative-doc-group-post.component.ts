@@ -75,6 +75,7 @@ var comment_range = {};
 var quill: any;
 var editor: any;
 var docAuthors: any = new Array();
+var editorAsFile: any;
 // !-- Variables Required to use and export Globally--! //
 var shareDBSocket: any;
 var doc;
@@ -663,7 +664,6 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
       let Document = await this.documentService.getDocumentHistory(postId, cursors);
       quill.setContents(Document);
       //let html = quill.clipboard.convert(Document);
-      editor = document.getElementsByClassName("ql-editor")[0].innerHTML;
       let tds = document.getElementsByTagName("td");
       if(tds){
         this.documentService.getTableCells(postId)
@@ -683,6 +683,8 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
           console.log('Error occured while fetching the table cells', err);
         })
       }
+      editor = document.getElementsByClassName("ql-editor")[0].innerHTML;
+      editorAsFile = document.getElementsByClassName("ql-editor")[0];
       this.snotifyService.clear();
       this.docStatus = "Updated!";
       if(this.document_imported_information && this.document_imported_information != "" && this.document_imported_information != null){
@@ -755,6 +757,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
         this.docStatus = "Updated!";
         this.documentService.sendCursorData(cursors, range);
         editor = document.getElementsByClassName("ql-editor")[0].innerHTML;
+        editorAsFile = document.getElementsByClassName("ql-editor")[0];
       }
     }, 1500);
 
@@ -923,7 +926,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
   }
 }
 
-export {comment_range, quill, editor, docAuthors};
+export {comment_range, quill, editor, docAuthors, editorAsFile};
 
 @Component({
   selector: 'dialog-overview-example-dialog',
