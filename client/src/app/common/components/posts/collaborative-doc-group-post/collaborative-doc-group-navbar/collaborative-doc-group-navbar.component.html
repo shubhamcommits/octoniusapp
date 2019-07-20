@@ -49,8 +49,9 @@
         <li class="dropdown-item dropdown-hover">
             Export to Agora
             <div class="dropdown-content">
-              <a href="#" *ngFor="let agora of agoras">
-                  <img src="{{this.BASE_URL}}/uploads/{{agora?.group_avatar}}" 
+              <!-- <a *ngFor="let agora of agoras" href="#/dashboard/group/{{agora?._id}}/files"> -->
+                <a *ngFor="let agora of agoras" (click) = "exportAGORA(agora?._id)">
+                <img src="{{this.BASE_URL}}/uploads/{{agora?.group_avatar}}" 
                   onerror="this.src='/assets/images/user.png'"
                   class="feed-avatar"/>
                 {{agora?.group_name}}</a>

@@ -509,6 +509,82 @@ const serveDocFileForEditorExport = async (req, res, next) => {
   }
 };
 
+const serveDOCXFileForAGORAExport = async (req, res, next) => {
+  try {
+    // need to append groupID into file name
+    const userID = req.body.userID
+    const groupID = req.body.groupID
+    const date = moment().format();
+    const filepath = `${process.env.FILE_UPLOAD_FOLDER}${'agora'+ date + groupID + 'export' + '.docx'}`;
+    // console.log(filepath)
+    //editor inner html gets passed as source
+    src = req.body.editorInfo
+
+    fs.access(filepath, fs.F_OK, error => {
+      //if it errored then it means that the file was not found so no old itteration, so we create the PDF here
+      if(error){
+      //console.log(error)
+        //Arguments -o is output into directory:
+        args = `-f html -t docx -o ./uploads/agora${date}${groupID}export.docx`;
+        //callback function
+        callback = function (err, result) {
+          if (err){
+            //console.log("called",err)
+            return sendErr(res, err);
+          }else{
+          // send back file name after it was saved result is a boolean to check if the file was made
+          var addAgoraPost = { content: '<p>new AGORA docx</p>',
+              title: 'Agora Document',
+              type: 'normal',
+              _posted_by: userID,
+              _group: groupID,
+              files:
+              [ { orignal_name: 'agora' + date + groupID + 'export.docx',
+                modified_name: 'agora' + date + groupID + 'export.docx' } ] }
+            let post = Post.create(addAgoraPost); 
+            console.log(post)
+            return res.status(200).json({message:post, fileName: 'agora' + date + groupID + 'export.docx'})
+          };
+          // Without the -o arg, the converted value will be returned.
+        };
+
+        // Call pandoc
+        pandoc(src, args, callback);
+      }else{
+        // there is an existing file when someone exported out, delete the previous itteration and make a new docx
+        fs.unlink(filepath, (err) => {
+          if (err) {
+            //handle error when file was not deleted properly
+            //console.log(err)
+            return sendErr(res, err)
+          }else{
+            //previous file is removed, need to create a new docx
+            //Arguments -o is output into directory:
+            args = `-f html -t docx -o ./uploads/agora${date}${groupID}export.docx`;
+            //callback function
+            callback = function (err, result) {
+              if (err){
+                //console.log("called",err)
+                return sendErr(res, err);
+              }else{
+              // send back file name after it was saved result is a boolean to check if the file was made
+                return res.status(200).json({message:result, fileName: 'agora' + date + groupID + 'export.docx'})
+              };
+            };
+            //Call pandoc
+            pandoc(src, args, callback)
+          }
+        })
+      }
+    });
+
+
+
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
 // -| POSTS |-
 
 const getCalendarPosts = async (req, res, next) => {
@@ -1170,6 +1246,7 @@ module.exports = {
   getFiles,
   getDocFileForEditorImport,
   serveDocFileForEditorExport,
+  serveDOCXFileForAGORAExport,
   // Posts
   getCalendarPosts,
   getUserCalendarPosts,

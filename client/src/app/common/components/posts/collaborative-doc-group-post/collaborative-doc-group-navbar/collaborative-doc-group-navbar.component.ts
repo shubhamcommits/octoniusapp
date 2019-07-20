@@ -26,6 +26,7 @@ export class CollaborativeDocGroupNavbarComponent implements OnInit {
 
   postId: any;
   groupId: any;
+  userId: any;
 
   @Input() post: any;
 
@@ -44,6 +45,7 @@ export class CollaborativeDocGroupNavbarComponent implements OnInit {
     private documentService: DocumentService,
     private groupService: GroupService,
     private groupsService: GroupsService) {
+      this.userId = this.activatedRoute.snapshot.paramMap.get('id')
       this.postId = this.activatedRoute.snapshot.paramMap.get('postId');
       this.groupId = this.activatedRoute.snapshot['_urlSegment']['segments'][2].path;
       //call authors first to set list
@@ -191,6 +193,21 @@ export class CollaborativeDocGroupNavbarComponent implements OnInit {
     }, margins)
 
   
+  }
+
+  exportAGORA(agoraID){
+    let doc = new DOMParser().parseFromString('<div>'+editor+'</div>', 'text/html');
+    var ExportAGORA2DOCX = (filename = '') => {
+      //get editor html
+      this.groupService.getDOCXFileForAGORAExport(this.userId, agoraID, doc.body.innerHTML)
+      .subscribe((res) => {
+         console.log(res)
+        
+      }, (err) => {
+        console.log("error",err)
+      });
+    }
+  ExportAGORA2DOCX(this.document_name+'.docx');
   }
 
   clickOnBack(){

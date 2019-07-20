@@ -664,7 +664,6 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
       quill.setContents(Document);
       //let html = quill.clipboard.convert(Document);
       editor = document.getElementsByClassName("ql-editor")[0].innerHTML;
-      console.log(editor,"editorororor")
       let tds = document.getElementsByTagName("td");
       if(tds){
         this.documentService.getTableCells(postId)
