@@ -112,6 +112,6 @@
 
       </button>
       <div *ngIf = "previewbool" style="position: absolute;top:0;left:0;background:black; z-index: 99999">
-          <dialog-overview-example-dialog *ngIf = "previewbool" [receivedParentMessage] = "testpreview" (closeView11) = "closePreview($event)" >
+          <dialog-overview-example-dialog *ngIf = "previewbool" [receivedParentMessage] = "editorPreview" (closeView11) = "closePreview($event)" >
           </dialog-overview-example-dialog>
         </div>
