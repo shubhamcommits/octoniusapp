@@ -12,6 +12,7 @@ const StripeCustomer = require('./stripecustomer.model');
 const Resetpwd = require('./resetpwd.model');
 const Column = require('./column.model');
 const TableCell = require('./table-cell.model');
+const DocumentFile = require('./document-file.model');
 
 module.exports = {
   Auth,
@@ -27,5 +28,6 @@ module.exports = {
   StripeCustomer,
   Workspace,
   Column,
-  TableCell
+  TableCell,
+  DocumentFile
 };

@@ -1,8 +1,8 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { PostService } from '../../../../../shared/services/post.service';
 import { GroupService } from '../../../../../shared/services/group.service';
-import { ActivatedRoute } from '@angular/router';
-import { editor } from '../collaborative-doc-group-post.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { editor, editorAsFile } from '../collaborative-doc-group-post.component';
 import * as jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { DocumentService } from '../../../../../shared/services/document.service';
@@ -10,6 +10,7 @@ import saveAs from 'file-saver'
 import { takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
 import { GroupsService } from '../../../../../shared/services/groups.service';
+import { DocumentFileService } from '../../../../../shared/services/document-file.service';
 
 @Component({
   selector: 'app-collaborative-doc-group-navbar',
@@ -40,11 +41,15 @@ export class CollaborativeDocGroupNavbarComponent implements OnInit {
 
   @Output() docTitle: EventEmitter<any> = new EventEmitter();
 
+  @Output() clickPreview: EventEmitter<any> = new EventEmitter();
+
   constructor(private postService: PostService,
     private activatedRoute: ActivatedRoute,
     private documentService: DocumentService,
     private groupService: GroupService,
-    private groupsService: GroupsService) {
+    private groupsService: GroupsService, 
+    private router: Router,
+    private documentFileService: DocumentFileService) {
       this.userId = this.activatedRoute.snapshot.paramMap.get('id')
       this.postId = this.activatedRoute.snapshot.paramMap.get('postId');
       this.groupId = this.activatedRoute.snapshot['_urlSegment']['segments'][2].path;
@@ -196,18 +201,55 @@ export class CollaborativeDocGroupNavbarComponent implements OnInit {
   }
 
   exportAGORA(agoraID){
-    let doc = new DOMParser().parseFromString('<div>'+editor+'</div>', 'text/html');
-    var ExportAGORA2DOCX = (filename = '') => {
-      //get editor html
-      this.groupService.getDOCXFileForAGORAExport(this.userId, agoraID, doc.body.innerHTML)
-      .subscribe((res) => {
-         console.log(res)
+    let doc = document.createElement('html');
+    doc = editorAsFile;
+    console.log('Document', doc);
+      var elements = doc.getElementsByClassName("mention");
+      while(elements.length > 0){
+          elements[0].parentNode.removeChild(elements[0]);
+      };
+      let documentFileData = {
+        _post_id: this.postId,
+        _name: this.document_name,
+        _content: doc.outerHTML,
+        _group_id : agoraID
+      };
+      this.documentFileService.getDocumentFile(this.postId)
+      .subscribe((res)=>{
+        if(res['file'] && res['file'].length > 0){
+          console.log('File Found', res);
+          this.documentFileService.editDocumentFile(this.postId, documentFileData)
+          .subscribe((res)=>{
+            console.log('Document File Edited', res);
+            this.router.navigate(['dashboard', 'group', agoraID, 'files', this.postId]);
+          }, (err)=>{
+            console.log('Error while editing the document file', err);
+          })
+        }
+        else{
+         this.documentFileService.createDocumentFile(documentFileData)
+         .subscribe((res)=>{
+           console.log('Document File created', res);
+           this.router.navigate(['dashboard', 'group', agoraID, 'files', this.postId]);
+         }, (err)=>{
+           console.log('Error while creating the document file', err);
+         })
+        }
+      }, (err)=>{
+        console.log('Error while finding the document file', err);
+      })
+    
+  //   var ExportAGORA2DOCX = (filename = '') => {
+  //     //get editor html
+  //     this.groupService.getDOCXFileForAGORAExport(this.userId, agoraID, doc.body.innerHTML)
+  //     .subscribe((res) => {
+  //        console.log(res)
         
-      }, (err) => {
-        console.log("error",err)
-      });
-    }
-  ExportAGORA2DOCX(this.document_name+'.docx');
+  //     }, (err) => {
+  //       console.log("error",err)
+  //     });
+  //   }
+  // ExportAGORA2DOCX(this.document_name+'.docx');
   }
 
   clickOnBack(){
@@ -215,6 +257,10 @@ export class CollaborativeDocGroupNavbarComponent implements OnInit {
     //   //this.saveTitle();
     // });
     this.clickBack.emit('Click on back');
+  }
+
+  clickOnPreview(){
+    this.clickPreview.emit('Click on preview');
   }
 
   getDocument(postId){

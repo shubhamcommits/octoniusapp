@@ -12,16 +12,15 @@
       width:100vw;
       z-index:10000;
       background: rgba(0,0,0,0.5)">
-      <button (click)="onNoClick()" style = "position:absolute;
-      width:100px; 
-      height:50px;
-      background-color:rgba(0,0,0,0.5); 
-      color:white;
-      top:0;
-      left:0;
-      z-index: 10000">
+      <!-- <button class="btn btn-warning" (click)="onNoClick()">
       Back
-      </button>
+      </button> -->
+      
+      <a class="navbar-brand" (click)="onNoClick()" style="cursor: pointer; color: white; top: 0; left: 0; width: 100px; height: 150px;">
+        <i class="material-icons">
+          arrow_back
+          </i>
+      </a>
     </div>
     <div *ngFor = "let pages of _editorDataArray; let i = index" 
       style="

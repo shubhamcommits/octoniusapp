@@ -36,6 +36,7 @@ import {ResetPwdComponent} from "./Authentication/reset-password/reset-password.
 import {AllSearchResultsComponent} from "./dashboard/search/all-search-results/all-search-results.component";
 import { CollaborativeDocGroupPostComponent } from './common/components/posts/collaborative-doc-group-post/collaborative-doc-group-post.component';
 import { GroupTasksNewComponent } from './dashboard/groups/group/group-tasks-new/group-tasks-new.component';
+import { DocumentFileComponent } from './shared/utils/document-file/document-file.component';
 
 
 const appRoutes: Routes = [
@@ -49,6 +50,7 @@ const appRoutes: Routes = [
   { path: 'create-new-Workspace-page1', component: NewWorkspacePage1Component, canActivate: [NotAuthGuard] },
   { path: 'resetPassword/:id', component: ResetPwdComponent, canActivate: [NotAuthGuard]},
   { path: 'dashboard/group/:id/document/:postId', component: CollaborativeDocGroupPostComponent, canActivate: [AuthGuard]},
+  { path:'dashboard/group/:id/files/:postId', component: DocumentFileComponent },
   {
     path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard],
     children: [
@@ -65,7 +67,7 @@ const appRoutes: Routes = [
 
         children: [
           { path: 'activity', component: GroupActivityComponent },
-          { path: 'files', component: GroupFilesComponent },
+          { path: 'files', component: GroupFilesComponent},
           { path: 'calendar', component: GroupCalendarComponent },
           { path: 'members', component: GroupMembersComponent },
           { path: 'admin', component: GroupAdminComponent },
