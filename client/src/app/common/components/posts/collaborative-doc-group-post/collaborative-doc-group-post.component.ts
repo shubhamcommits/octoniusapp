@@ -934,9 +934,9 @@ export {comment_range, quill, editor, docAuthors, editorAsFile};
   styleUrls: ['dialog-overview-example-dialog.css'],
 })
 export class DialogOverviewExampleDialog {
-  private _editorData: string = "";
-  private _editorDataArray = new Array(1).fill("")
-  private _listArrayForPageCheck = new Array(1).fill("0")
+  public _editorData: string = "";
+  public _editorDataArray = new Array(1).fill("")
+  public _listArrayForPageCheck = new Array(1).fill("0")
 
   currentpage = 0
 
