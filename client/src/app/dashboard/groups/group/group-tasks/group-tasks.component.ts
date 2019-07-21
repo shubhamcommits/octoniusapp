@@ -186,12 +186,18 @@ export class GroupTasksComponent implements OnInit {
 
 
   onTaskDrop(event: CdkDragDrop<any[]>){
-    console.log(event);
     if(event.previousContainer == event.container){
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     }else{
-      transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
-      
+      var post = event.previousContainer.data[event.previousIndex];
+      //transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex); 
+      if(event.container.id == "todo"){
+        this.OnMarkTaskToDo(post._id,post);
+      }else if(event.container.id == "inprogress"){
+        this.OnMarkTaskInProgress(post._id,post);
+      }else{
+        this.OnMarkTaskCompleted(post._id,post);
+      }
     }
   }
 
