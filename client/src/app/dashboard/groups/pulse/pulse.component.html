@@ -9,11 +9,18 @@
       <div class="group-name col-md-1"> {{ group.group_name }} </div>
       <div class="pulse-desc col-md-4"> {{ group.pulse_description ? group.pulse_description : "Waiting for a new Pulse..." }} </div>
       
-      <div class="group-total-tasks col-md-2"> {{ pulseTotalTasks[group._id] }} Tasks this week  </div>
       
-      <div class="group-todo-tasks col-md-1"> {{ pulseTodoTasks[group._id] }} to do  </div>
-      <div class="group-in-progress-tasks col-md-1"> {{ pulseInProgressTasks[group._id] }} progressing  </div>
-      <div class="group-done-tasks col-md-1"> {{ pulseDoneTasks[group._id] }} done  </div>
+      <div class="col-md-2"></div>
+      <div class="col-md-2"> <div class="group-total-tasks">{{ pulseTotalTasks[group._id] }} Tasks this week  </div></div>
+      <div class="col-md-2"> 
+        <div class="group-todo-tasks float-left"> {{ pulseTodoTasks[group._id] }}</div>
+      
+        <div class="group-in-progress-tasks float-left">{{ pulseInProgressTasks[group._id] }}</div> 
+     
+     
+        <div class="group-done-tasks float-left ">{{ pulseDoneTasks[group._id] }}</div>
+        
+      </div>
     </div>
     </div>
   
