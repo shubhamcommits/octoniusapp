@@ -9,6 +9,7 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 import {ProfileDataService} from "../../../shared/services/profile-data.service";
 import { SnotifyService, SnotifyPosition, SnotifyToastConfig } from 'ng-snotify';
 import { Observable } from 'rxjs';
+import { GroupService } from '../../../shared/services/group.service';
 
 @Component({
   selector: 'app-user-profile-header',
@@ -72,7 +73,8 @@ export class UserProfileHeaderComponent implements OnInit {
     bio: '',
     current_position: '',
     company_join_date: '',
-    profile_pic: ''
+    profile_pic: '',
+    _workspace: ''
   };
 
   @Output() updateProfile: EventEmitter<any> = new EventEmitter();
@@ -84,7 +86,8 @@ export class UserProfileHeaderComponent implements OnInit {
     private modalService: NgbModal,
     private route: ActivatedRoute,
     private profileDataService: ProfileDataService,
-    private snotifyService: SnotifyService) { }
+    private snotifyService: SnotifyService,
+    private groupService: GroupService) { }
 
 
   ngOnInit() {
@@ -99,7 +102,8 @@ export class UserProfileHeaderComponent implements OnInit {
         last_name: user['last_name'],
         profile_pic: user['profile_pic'] || null,
         current_position: user['current_position'],
-        company_join_date: user['company_join_date']
+        company_join_date: user['company_join_date'],
+        _workspace: user['_workspace']
       };
 
            if (this.user['profile_pic'] == null) {
@@ -156,6 +160,36 @@ export class UserProfileHeaderComponent implements OnInit {
       pauseOnHover: true
     });
 
+    // Get smart groups and their rules
+    this.groupService.getAllSmartGroupRules(this.user._workspace)
+    .subscribe(
+      ({ groups }) => {
+        groups.map(group => {
+          // Potentially add the new user to the current smart group
+          const data: object = {
+            workspaceId: group._workspace,
+            currentSettings: {
+              emailDomains: group.conditions.email_domains,
+              jobPositions: group.conditions.job_positions,
+              skills: group.conditions.skills
+            }
+          };
+          this.groupService.updateSmartGroupMembers(group._id, data)
+            .subscribe(
+              res => // console.log('Added to smart group successfully!'),
+              error => {
+                console.error('Could not auto add member to smart group!');
+                console.error(error);
+              }
+            );
+        });
+      },
+      error => {
+        console.error('Could not get all smart groups!');
+        console.error(error);
+      }
+    );
+
       }, (err) => {
 
 
@@ -207,7 +241,8 @@ export class UserProfileHeaderComponent implements OnInit {
       mobile_number: '',
       bio: '',
       current_position: '',
-      company_join_date: ''
+      company_join_date: '',
+      _workspace: ''
     };
   }
 

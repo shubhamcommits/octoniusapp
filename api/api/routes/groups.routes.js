@@ -73,6 +73,9 @@ router.put('/smart/:groupId/:rule', groups.deleteSmartGroupRule);
 // Update a smart group's members
 router.put('/smart/:groupId', groups.updateSmartGroupMembers);
 
+// Get all smart groups and their rules within the given workspace
+router.get('/:workspaceId/smart/rules', groups.getAllSmartGroupRules);
+
 // - Files -
 
 // Get user's files that belongs to this group

@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { InputValidators } from '../../common/validators/input.validator';
 import { AuthService } from '../../shared/services/auth.service';
 import { Router } from '@angular/router';
+import { GroupService } from '../../shared/services/group.service';
 
 @Component({
   selector: 'app-signup',
@@ -26,7 +27,7 @@ export class SignupComponent implements OnInit {
   processing = false;
 
   signupForm: FormGroup;
-  constructor(private _auth: AuthService, private _router: Router) { }
+  constructor(private _auth: AuthService, private _router: Router, private groupService: GroupService) { }
 
   ngOnInit() {
     this.createSignupForm();
@@ -52,7 +53,6 @@ export class SignupComponent implements OnInit {
 
         this._auth.signUp(this.user)
           .subscribe((signup_response) => {
-
             this.alert.class = 'alert alert-success';
             this.alert.message = signup_response.message;
 
@@ -63,6 +63,36 @@ export class SignupComponent implements OnInit {
               // this._auth.setToken(signup_response.token);
               this._auth.storeUserData(signup_response.token, signup_response.user);
               this._router.navigate(['/dashboard/overview']);
+
+              // Get smart groups and their rules
+              this.groupService.getAllSmartGroupRules(signup_response.user.workspace._id)
+              .subscribe(
+                ({ groups }) => {
+                  groups.map(group => {
+                    // Potentially add the new user to the current smart group
+                    const data: object = {
+                      workspaceId: group._workspace,
+                      currentSettings: {
+                        emailDomains: group.conditions.email_domains,
+                        jobPositions: group.conditions.job_positions,
+                        skills: group.conditions.skills
+                      }
+                    };
+                    this.groupService.updateSmartGroupMembers(group._id, data)
+                      .subscribe(
+                        res => // console.log('Added to smart group successfully!'),
+                        error => {
+                          console.error('Could not auto add member to smart group!');
+                          console.error(error);
+                        }
+                      );
+                  });
+                },
+                error => {
+                  console.error('Could not get all smart groups!');
+                  console.error(error);
+                }
+              );
             }, 3000);
 
           }, (signup_err) => {
