@@ -5,8 +5,8 @@
     <div *ngFor="let group of allGroups index as i" class="group-elem">
       <div class="row">
     
-      <div class="col-md-1"> <img src ="{{this.BASE_URL}}/uploads/{{group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" width="50px" height="50px" alt="group_avatar"> </div>
-      <div class="group-name col-md-1"> {{ group.group_name }} </div>
+      <div class="col-md"> <img  class="feed-avatar" src ="{{this.BASE_URL}}/uploads/{{group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" width="50px" height="50px" alt="group_avatar"> </div>
+      <div class="group-name col-md"> {{ group.group_name }} </div>
       <div class="pulse-desc col-md-4"> {{ group.pulse_description ? group.pulse_description : "Waiting for a new Pulse..." }} </div>
       
       
