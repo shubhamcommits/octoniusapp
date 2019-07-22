@@ -99,6 +99,8 @@ export class PostService {
   @CacheBuster({
     cacheBusterNotifier: cacheBuster$
   })
+  // @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
+  // })
   complete(postId, status) {
     this.manuallyBustCache();
     return this._http.put(this.BASE_API_URL + `/posts/${postId}/taskStatus`, status);
