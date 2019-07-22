@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DocumentService } from '../../services/document.service';
 import { DocumentFileService } from '../../services/document-file.service';
@@ -14,13 +14,18 @@ export class DocumentFileComponent implements OnInit {
   documentHTML: any;
   quill: any;
   postId: any;
+  groupId: any;
+  document_name:String;
+
+  // @Output() clickBack: EventEmitter<any> = new EventEmitter();
 
   constructor(private _activatedRoute: ActivatedRoute, 
     private _router: Router,
     private documentService: DocumentService,
     private documentFileService: DocumentFileService) { 
     //this.documentHTML = this._activatedRoute.snapshot.queryParamMap.get('html') || '<div>Please Export your Document!</div>';
-    this.postId = this._activatedRoute.snapshot.paramMap.get('postId');
+    this.postId = this._activatedRoute.snapshot.paramMap.get('postId')
+    this.groupId = this._activatedRoute.snapshot.paramMap.get('id');
     this.getDocument();
   }
 
@@ -32,12 +37,14 @@ export class DocumentFileComponent implements OnInit {
       this.documentFileService.getDocumentFile(this.postId)
       .subscribe((res)=>{
         this.documentHTML = res['file'][0]['_content'];
-        //console.log(this.documentHTML);
+        this.document_name = res['file'][0]['_name']
       }, (err)=>{
         console.log('Error occured while fetching the document', err);
       })
 
   }
-
+  clickOnBack(){
+   this._router.navigate(['dashboard', 'group', this.groupId, 'files']);
+  }
 
 }

@@ -1,5 +1,34 @@
-<div [innerHTML]="documentHTML | safe: 'html'" contenteditable="false">
+<nav class="navbar navbar-expand-md fixed-top">
+        <div class="row" style="margin-left: 2rem;" >
+      
+          <a class="navbar-brand" (click)="clickOnBack()" style="cursor: pointer;">
+            <i class="material-icons">
+              arrow_back
+              </i>
+          </a>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="nav mr-auto" id="example-one">
+              <li class="nav-item" id="li_overview">
+                <a style="color: black;" routerLinkActive="active">
+                  <p style="font-size: 20px; font-weight: bold;">            
+                    <i class="material-icons">
+                    insert_drive_file
+                    </i>  {{ document_name }}</p>
+                </a>
+              </li>
+            </ul>
+      
+          </div>
+        </div>  
+</nav>
+<div class="documentContainer">
+    <div class="innerDocumentContainer">
+        <div class="documentPage" [innerHTML]="documentHTML | safe: 'html'" style='margin-top: 110px' contenteditable="false">
 
+            </div>
+    </div>
+ 
 </div>
+
 <!-- <div id="editor" style="background: white;">
 </div> -->
