@@ -164,13 +164,19 @@ export class GroupService {
     return this._http.post(this.BASE_API_URL + '/group/removeUser', data);
   }
 
-  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
+  // @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
+  // })
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
   })
   getGroupTasks(groupId) {
     return this._http.get<any>(this.BASE_API_URL + `/groups/${groupId}/tasks`);
   }
 
-  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
+  // @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
+  // })
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
   })
   getCompletedGroupTasks(groupId) {
     return this._http.get<any>(this.BASE_API_URL + `/groups/${groupId}/tasksDone`);
