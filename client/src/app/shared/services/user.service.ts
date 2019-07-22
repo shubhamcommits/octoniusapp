@@ -62,19 +62,28 @@ export class UserService {
 
   }
 
-  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
+  // @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
+  // })
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
   })
   getUserTasks() {
     return this._http.get<any>(this.BASE_API_URL + `/users/tasks`);
   }
 
-  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
+  // @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
+  // })
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
   })
   getCompletedUserTasks() {
     return this._http.get<any>(this.BASE_API_URL + `/users/tasksDone`);
   }
 
-  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
+  // @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
+  // })
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
   })
   getRecentUserTasks(postId) {
     return this._http.get<any>(this.BASE_API_URL + `/users/nextTasksDone/${postId}`);

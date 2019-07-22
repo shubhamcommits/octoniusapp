@@ -105,9 +105,9 @@ export class AdminMembersComponent implements OnInit {
         .subscribe((res) => {
         //  console.log('update respose: ', res);
 
-          setTimeout(() => {
-            this.modalReference.close();
-          }, 3000);
+          // setTimeout(() => {
+          //   this.modalReference.close();
+          // }, 3000);
 
 
           this.loadWorkspace();
