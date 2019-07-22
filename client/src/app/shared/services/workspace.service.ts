@@ -15,15 +15,15 @@ export class WorkspaceService {
 
   constructor(private _http: HttpClient) { }
 
-  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
-  })
+  // @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
+  // })
   getWorkspace(workspace) {
     return this._http.get<any>(this.BASE_API_URL + '/workspace/' + workspace._id);
   }
 
-  @CacheBuster({
-    cacheBusterNotifier: cacheBuster$
-  })
+  // @CacheBuster({
+  //   cacheBusterNotifier: cacheBuster$
+  // })
   updateWorkspace(workspce_id, data) {
     return this._http.put(this.BASE_API_URL + `/workspace/${workspce_id}`, data);
   }
