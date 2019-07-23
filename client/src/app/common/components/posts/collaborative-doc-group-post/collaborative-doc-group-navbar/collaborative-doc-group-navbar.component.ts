@@ -11,6 +11,7 @@ import { takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
 import { GroupsService } from '../../../../../shared/services/groups.service';
 import { DocumentFileService } from '../../../../../shared/services/document-file.service';
+import { SnotifyService, SnotifyPosition, SnotifyToastConfig } from 'ng-snotify';
 
 @Component({
   selector: 'app-collaborative-doc-group-navbar',
@@ -49,7 +50,8 @@ export class CollaborativeDocGroupNavbarComponent implements OnInit {
     private groupService: GroupService,
     private groupsService: GroupsService, 
     private router: Router,
-    private documentFileService: DocumentFileService) {
+    private documentFileService: DocumentFileService,
+    private snotifyService: SnotifyService,) {
       this.userId = this.activatedRoute.snapshot.paramMap.get('id')
       this.postId = this.activatedRoute.snapshot.paramMap.get('postId');
       this.groupId = this.activatedRoute.snapshot['_urlSegment']['segments'][2].path;
@@ -200,7 +202,7 @@ export class CollaborativeDocGroupNavbarComponent implements OnInit {
   
   }
 
-  exportAGORA(agoraID){
+  exportAGORA(agoraID,agoraGroupName){
     let doc = document.createElement('html');
     doc = editorAsFile;
     console.log('Document', doc);
@@ -220,36 +222,41 @@ export class CollaborativeDocGroupNavbarComponent implements OnInit {
           console.log('File Found', res);
           this.documentFileService.editDocumentFile(this.postId, documentFileData)
           .subscribe((res)=>{
-            console.log('Document File Edited', res);
-            this.router.navigate(['dashboard', 'group', agoraID, 'files', this.postId]);
+            this.snotifyService.success(`${this.document_name} was published to ${agoraGroupName}`, {
+              timeout: 1500,
+              showProgressBar: false,
+            });
+            // console.log('Document File Edited', res);
+            // this.router.navigate(['dashboard', 'group', agoraID, 'files', this.postId]);
+
           }, (err)=>{
-            console.log('Error while editing the document file', err);
+            //console.log('Error while editing the document file', err);
+            this.snotifyService.error(`Error publishing ${this.document_name} to ${agoraGroupName}`, {
+              timeout: 1500,
+              showProgressBar: false,
+            });
           })
         }
         else{
          this.documentFileService.createDocumentFile(documentFileData)
          .subscribe((res)=>{
-           console.log('Document File created', res);
-           this.router.navigate(['dashboard', 'group', agoraID, 'files', this.postId]);
+          //  console.log('Document File created', res);
+          //  this.router.navigate(['dashboard', 'group', agoraID, 'files', this.postId]);
+          this.snotifyService.success(`${this.document_name} was published to ${agoraGroupName}`, {
+            timeout: 1500,
+            showProgressBar: false,
+          });
          }, (err)=>{
-           console.log('Error while creating the document file', err);
+           //console.log('Error while creating the document file', err);
+           this.snotifyService.error(`Error publishing ${this.document_name} to ${agoraGroupName}`, {
+            timeout: 1500,
+            showProgressBar: false,
+          });
          })
         }
       }, (err)=>{
         console.log('Error while finding the document file', err);
       })
-    
-  //   var ExportAGORA2DOCX = (filename = '') => {
-  //     //get editor html
-  //     this.groupService.getDOCXFileForAGORAExport(this.userId, agoraID, doc.body.innerHTML)
-  //     .subscribe((res) => {
-  //        console.log(res)
-        
-  //     }, (err) => {
-  //       console.log("error",err)
-  //     });
-  //   }
-  // ExportAGORA2DOCX(this.document_name+'.docx');
   }
 
   clickOnBack(){

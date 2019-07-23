@@ -937,8 +937,11 @@ export class DialogOverviewExampleDialog {
   public _editorData: string = "";
   public _editorDataArray = new Array(1).fill("")
   public _listArrayForPageCheck = new Array(1).fill("0")
-
+  isShowing:Boolean = true
   currentpage = 0
+
+  constructor(private changeDetector: ChangeDetectorRef){ 
+  }
 
   @Input() set receivedParentMessage(value: string) {
     var docTypeValue = `<!DOCTYPE html><html><head></head><body>${value}</body></html>`
@@ -966,47 +969,27 @@ export class DialogOverviewExampleDialog {
             
           }
           if (pagePreviewHeight > 1100){
-            //last element added
+          //last element added
             this._editorDataArray[this.currentpage].replace(el.innerHTML,"")
  ///////// new one here
              this.currentpage += 1
-            // console.log("replaced",this._editorDataArray)
             this._editorDataArray = [...this._editorDataArray, ""]
             this._listArrayForPageCheck = [...this._listArrayForPageCheck, "0"]
-            //console.log(this.currentpage,"pageeoeoeoe23232323232323")
-            //console.log("added to new array",this._editorDataArray)
           }
         }
     }
  }
   
   @Output() closeView11: EventEmitter<any> = new EventEmitter();
-
-
   get receivedParentMessage(): string {
-
       return this._editorData;
-
   }
- 
-  isShowing:Boolean = true
-
-  constructor(
-    public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
-    private changeDetector: ChangeDetectorRef,
-    @Inject(MAT_DIALOG_DATA) public data: any) { 
-    }
-    get editorInformation():String{
-      console.log(this.receivedParentMessage)
-      return this.receivedParentMessage
-    }
-
+  get editorInformation():String{
+    return this.receivedParentMessage
+  }
   onNoClick(): void {
-    console.log("clickedon")
-    //this.receivedParentMessage = ""
     this.isShowing = false
     this.closeView11.emit('Click on close preview');
-
   }
   stopNoClickChild(){
     event.stopPropagation();
