@@ -56,15 +56,17 @@ const getPrivate = async (req, res) => {
 };
 
 const getUserGroups = async (req, res) => {
-  const { userId } = req;
-
+ // const { userId } = req;
+  /**
+   * We need to fetch all the groups exist in the workspace, irrespective of which user is a part or not.
+   */
   try {
     const groups = await Group.find({
       group_name:{ $not: {$eq: 'private'}},
-      $or: [
-        { _members: { $elemMatch: { $eq: userId } } },
-        { _admins: { $elemMatch: { $eq: userId } } }
-      ]
+      // $or: [
+      //   { _members: { $elemMatch: { $eq: userId } } },
+      //   { _admins: { $elemMatch: { $eq: userId } } }
+      // ]
     }).select('_id group_name group_avatar description pulse_description');
 
 
