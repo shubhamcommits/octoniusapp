@@ -10,8 +10,9 @@
 <!--CREATE TASKS-->
 <div class="row">
   <!--TODO TASKS-->
-  <div class="col-md-4">
-    <div class="kanbanheader kbn-todo">
+  <div class="col-md-4" cdkDropList #todoList="cdkDropList" id="todo" [cdkDropListData]="toDoTasks" 
+  [cdkDropListConnectedTo]="[progressList,doneList]" (cdkDropListDropped)="onTaskDrop($event)">
+    <div class="kanbanheader kbn-todo" cdkDragHandle>
       To Do
     </div>
     <div *ngIf="isLoading$ | async">
@@ -22,9 +23,9 @@
     </div>
     <div *ngIf="!(isLoading$ | async)">
       <div *ngIf="this.toDoTasks.length != 0; else noToDoTasks;">
-        <div *ngFor="let post of toDoTasks">
+        <div *ngFor="let post of toDoTasks" cdkDrag>
           <div class="card" *ngIf="post.task.status == 'to do'">
-            <div class="card-block ">
+            <div class="card-block">
               <div class="card-title">
 
                 <div ngbDropdown #myDrop="ngbDropdown">
@@ -128,8 +129,9 @@
   </div>
 
   <!--INPROGRESS TASKS-->
-  <div class="col-md-4">
-    <div class="kanbanheader kbn-working">
+  <div class="col-md-4" cdkDropList #progressList="cdkDropList" id="inprogress" [cdkDropListData]="inProgressTasks" 
+  [cdkDropListConnectedTo]="[todoList,doneList]" (cdkDropListDropped)="onTaskDrop($event)">
+    <div class="kanbanheader kbn-working" cdkDragHandle>
       In Progress
     </div>
     <div *ngIf="isLoading$ | async">
@@ -139,8 +141,8 @@
       </div>
     </div>
     <div *ngIf="!(isLoading$ | async)">
-      <div *ngIf="this.inProgressTasks.length != 0; else noInProgressTasks;">
-        <div *ngFor="let post of inProgressTasks">
+      <div *ngIf="this.inProgressTasks.length != 0; else noInProgressTasks;">  
+        <div *ngFor="let post of inProgressTasks" cdkDrag>
 
           <div class="card">
             <div class="card-block ">
@@ -243,8 +245,9 @@
 
   </div>
   <!--COMPLETED TASKS-->
-  <div class="col-md-4">
-    <div class="kanbanheader kbn-done">Done</div>
+  <div class="col-md-4" cdkDropList id="completed" #doneList="cdkDropList" [cdkDropListData]="completedTasks"
+  [cdkDropListConnectedTo]="[todoList,progressList]" (cdkDropListDropped)="onTaskDrop($event)">
+    <div class="kanbanheader kbn-done" cdkDragHandle>Done</div>
     <div *ngIf="isLoading$ | async">
       <div class="load-8">
         <h6><b>Loading Data...</b></h6>
@@ -254,7 +257,7 @@
 
     <div *ngIf="!(isLoading$ | async)">
       <div *ngIf="this.completedTasks.length != 0; else noCompletedTasks">
-        <div class="card" *ngFor="let post of completedTasks">
+        <div class="card" *ngFor="let post of completedTasks" cdkDrag>
           <div class="card-block ">
             <div class="card-title">
 
