@@ -297,36 +297,51 @@ const updateSmartGroupMembers = async (req, res) => {
 
   try {
     // Get users in the group's workspace
-    let users = await User.find({
+    const users = await User.find({
       _workspace: workspaceId
     });
 
+    const validUsers = new Set();
     if (emailDomains.length > 0) {
       // Filter users by email domain
-      users = users.filter((user) => {
+      users.map((user) => {
         const { email } = user;
         const index = email.indexOf('@');
         const emailDomain = email.substring(index + 1);
 
-        return emailDomains.includes(emailDomain);
+        if (emailDomains.includes(emailDomain) && !validUsers.has(user._id.toString())) {
+          validUsers.add(user._id.toString());
+        }
       });
     }
 
     if (jobPositions.length > 0) {
       // Filter users by job positions
-      users = users.filter(user => jobPositions.includes(user.current_position));
+      users.map((user) => {
+        if (jobPositions.includes(user.current_position) && !validUsers.has(user._id.toString())) {
+          validUsers.add(user._id.toString());
+        }
+      });
     }
 
     if (skills.length > 0) {
       // Filter users by skills
-      users = users.filter(user => user.skills.some(skill => skills.includes(skill)));
+      users.map((user) => {
+        if (user.skills.some(skill => skills.includes(skill)) && !validUsers.has(user._id.toString())) {
+          validUsers.add(user._id.toString());
+        }
+      });
     }
 
     // Remove owner/admin from prospective members
     const { _admins } = await Group
       .findById(groupId)
       .select('_admins');
-    users = users.filter(user => !_admins.includes(user._id));
+    _admins.map((adminId) => {
+      if (validUsers.has(adminId.toString())) {
+        validUsers.delete(adminId.toString());
+      }
+    });
 
     // Get current group members
     const { _members } = await Group
@@ -347,14 +362,14 @@ const updateSmartGroupMembers = async (req, res) => {
 
     if (emailDomains.length > 0 || jobPositions.length > 0 || skills.length > 0) {
       // Add new members
-      users.map(async (user) => {
+      Array.from(validUsers).map(async (userId) => {
         // Add the user to the group
         await Group.findByIdAndUpdate(groupId, {
-          $addToSet: { _members: user._id }
+          $addToSet: { _members: userId }
         });
 
         // Add the group to the user document
-        await User.findByIdAndUpdate(user._id, {
+        await User.findByIdAndUpdate(userId, {
           $addToSet: { _groups: groupId }
         });
       });
