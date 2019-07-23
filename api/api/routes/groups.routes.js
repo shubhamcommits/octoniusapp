@@ -97,12 +97,7 @@ router.get('/:groupId/docImport',
 router.post('/:groupId/docExport',
   authorization.groupAccess,
   groups.serveDocFileForEditorExport);
-  // Export PDF to AGORA
-
-router.post('/:groupId/agoraExport',
-  authorization.groupAccess,
-  groups.serveDOCXFileForAGORAExport);
-
+  
 // - Posts -
 
 // Get ten most recent group posts
