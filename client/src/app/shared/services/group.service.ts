@@ -66,6 +66,8 @@ export class GroupService {
     return this._http.get(this.BASE_API_URL + '/group/' + group_id);
   }
 
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
+  })
   getTasksUndoneLastWeek(group_id) {
     return this._http.get(this.BASE_API_URL + '/group/' + group_id + '/undone/lastWeek');
   }

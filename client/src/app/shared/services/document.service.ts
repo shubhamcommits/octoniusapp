@@ -42,14 +42,21 @@ export class DocumentService {
     return this._http.get(environment.BASE_API_URL + `/posts/documents/${documentId}/authors`);
   }
 
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
+  })
   getTableCells(documentId: any){
     return this._http.get(environment.BASE_API_URL + `/posts/table/cells/${documentId}`);
   }
 
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
   addTableCells(documentData: any){
     return this._http.post(environment.BASE_API_URL + `/posts/table/cells/${documentData._post_id}/addCell`, documentData);
   }
 
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
+  })
   getPublicGroups(){
     return this._http.get(environment.BASE_API_URL + `/groups/public/allGroups`);
   }
