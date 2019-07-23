@@ -96,11 +96,6 @@ export class PostService {
     return this._http.put(`${this.BASE_API_URL}/posts/comments/read/${commentId}`, null);
   }
 
-  @CacheBuster({
-    cacheBusterNotifier: cacheBuster$
-  })
-  // @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
-  // })
   complete(postId, status) {
     this.manuallyBustCache();
     return this._http.put(this.BASE_API_URL + `/posts/${postId}/taskStatus`, status);
@@ -276,6 +271,10 @@ export class PostService {
     cache['GroupService#getPulseNumInProgressTasks'] = undefined;
     cache['GroupService#getPulseNumTodoTasks'] = undefined;
     cache['GroupService#getPulseTotalNumTasks'] = undefined;
+    cache['GroupService#getGroupTasks'] = undefined;
+    cache['GroupService#getCompletedGroupTasks'] = undefined;
+    cache['UserService#getCompletedUserTasks'] = undefined;
+    cache['UserService#getUserTasks'] = undefined;
     localStorage.setItem('CACHE_STORAGE', JSON.stringify(cache));
   }
 }
