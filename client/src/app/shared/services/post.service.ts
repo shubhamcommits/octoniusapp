@@ -35,6 +35,8 @@ export class PostService {
     return this._http.get(this.BASE_API_URL + '/groups/' + group_id + '/posts');
   }
 
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
+  })
   getGroup(group_id) {
     return this._http.get(this.BASE_API_URL + '/group/' + group_id);
   }
@@ -74,38 +76,37 @@ export class PostService {
     return this._http.post(this.BASE_API_URL + '/posts', post);
   }
 
-  @CacheBuster({
-    cacheBusterNotifier: cacheBuster$
-  })
   editPost(postId, post) {
+    this.manuallyBustCache();
     return this._http.put<any>(this.BASE_API_URL + `/posts/${postId}`, post);
   }
 
-  @CacheBuster({
-    cacheBusterNotifier: cacheBuster$
-  })
   deletePost(postId) {
+    this.manuallyBustCache();
     return this._http.delete(this.BASE_API_URL + `/posts/${postId}`);
   }
 
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
   markPostAsRead(postId) {
     return this._http.put(`${this.BASE_API_URL}/posts/read/${postId}`, null);
   }
 
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
   markCommentAsRead(commentId: any): Observable<any> {
     return this._http.put(`${this.BASE_API_URL}/posts/comments/read/${commentId}`, null);
   }
 
-  @CacheBuster({
-    cacheBusterNotifier: cacheBuster$
-  })
-  // @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
-  // })
   complete(postId, status) {
     this.manuallyBustCache();
     return this._http.put(this.BASE_API_URL + `/posts/${postId}/taskStatus`, status);
   }
 
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
+  })
   getCalendarPosts(data) {
     return this._http.get(this.BASE_API_URL + `/groups/${data.groupId}/calendar/${data.year}/${data.month}`);
   }
@@ -152,6 +153,8 @@ export class PostService {
     return this._http.put(this.BASE_API_URL + `/posts/comments/${comment._id}/unlike`, comment);
   }
 
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
+  })
   useroverviewposts(user_id) {
     return this._http.get(this.BASE_API_URL + '/users/overview/');
   }
@@ -160,10 +163,14 @@ export class PostService {
    * Jessie Jia Edit Starts
    * @param postId
    */
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
+  })
   userOverviewPostsToday(user_id) {
     return this._http.get(this.BASE_API_URL + '/users/overviewToday');
   }
 
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
+  })
   userOverviewPostsWeek(user_id) {
     return this._http.get(this.BASE_API_URL + '/users/overviewWeek/');
   }
@@ -217,6 +224,8 @@ export class PostService {
     return this._http.delete(this.BASE_API_URL + `/posts/comments/${commentId}`);
   }
 
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
+  })
   getDocument(postId) {
     return this._http.get(this.BASE_API_URL + `/posts/documents/${postId}`);
   }
@@ -276,6 +285,14 @@ export class PostService {
     cache['GroupService#getPulseNumInProgressTasks'] = undefined;
     cache['GroupService#getPulseNumTodoTasks'] = undefined;
     cache['GroupService#getPulseTotalNumTasks'] = undefined;
+    cache['GroupService#getGroupTasks'] = undefined;
+    cache['GroupService#getCompletedGroupTasks'] = undefined;
+    cache['UserService#getCompletedUserTasks'] = undefined;
+    cache['UserService#getUserTasks'] = undefined;
+    cache['PostService#userOverviewPostsToday'] = undefined;
+    cache['PostService#userOverviewPostsWeek'] = undefined;
+    cache['PostService#useroverviewposts'] = undefined;
+    cache['PostService#getGroupPosts'] = undefined;
     localStorage.setItem('CACHE_STORAGE', JSON.stringify(cache));
   }
 }

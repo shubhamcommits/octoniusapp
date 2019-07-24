@@ -66,6 +66,8 @@ export class GroupService {
     return this._http.get(this.BASE_API_URL + '/group/' + group_id);
   }
 
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
+  })
   getTasksUndoneLastWeek(group_id) {
     return this._http.get(this.BASE_API_URL + '/group/' + group_id + '/undone/lastWeek');
   }
@@ -160,19 +162,13 @@ export class GroupService {
     return this._http.post(this.BASE_API_URL + '/group/removeUser', data);
   }
 
-  // @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
-  // })
-  @CacheBuster({
-    cacheBusterNotifier: cacheBuster$
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
   })
   getGroupTasks(groupId) {
     return this._http.get<any>(this.BASE_API_URL + `/groups/${groupId}/tasks`);
   }
 
-  // @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
-  // })
-  @CacheBuster({
-    cacheBusterNotifier: cacheBuster$
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
   })
   getCompletedGroupTasks(groupId) {
     return this._http.get<any>(this.BASE_API_URL + `/groups/${groupId}/tasksDone`);
