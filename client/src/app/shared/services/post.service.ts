@@ -76,17 +76,13 @@ export class PostService {
     return this._http.post(this.BASE_API_URL + '/posts', post);
   }
 
-  @CacheBuster({
-    cacheBusterNotifier: cacheBuster$
-  })
   editPost(postId, post) {
+    this.manuallyBustCache();
     return this._http.put<any>(this.BASE_API_URL + `/posts/${postId}`, post);
   }
 
-  @CacheBuster({
-    cacheBusterNotifier: cacheBuster$
-  })
   deletePost(postId) {
+    this.manuallyBustCache();
     return this._http.delete(this.BASE_API_URL + `/posts/${postId}`);
   }
 
@@ -293,6 +289,10 @@ export class PostService {
     cache['GroupService#getCompletedGroupTasks'] = undefined;
     cache['UserService#getCompletedUserTasks'] = undefined;
     cache['UserService#getUserTasks'] = undefined;
+    cache['PostService#userOverviewPostsToday'] = undefined;
+    cache['PostService#userOverviewPostsWeek'] = undefined;
+    cache['PostService#useroverviewposts'] = undefined;
+    cache['PostService#getGroupPosts'] = undefined;
     localStorage.setItem('CACHE_STORAGE', JSON.stringify(cache));
   }
 }
