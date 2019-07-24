@@ -281,18 +281,34 @@ export class PostService {
    */
   manuallyBustCache(): void {
     const cache = JSON.parse(localStorage.getItem('CACHE_STORAGE'));
-    cache['GroupService#getPulseNumDoneTasks'] = undefined;
-    cache['GroupService#getPulseNumInProgressTasks'] = undefined;
-    cache['GroupService#getPulseNumTodoTasks'] = undefined;
-    cache['GroupService#getPulseTotalNumTasks'] = undefined;
-    cache['GroupService#getGroupTasks'] = undefined;
-    cache['GroupService#getCompletedGroupTasks'] = undefined;
-    cache['UserService#getCompletedUserTasks'] = undefined;
-    cache['UserService#getUserTasks'] = undefined;
-    cache['PostService#userOverviewPostsToday'] = undefined;
-    cache['PostService#userOverviewPostsWeek'] = undefined;
-    cache['PostService#useroverviewposts'] = undefined;
-    cache['PostService#getGroupPosts'] = undefined;
+    if (environment.production) {
+      cache['n#getPulseNumDoneTasks'] = undefined;
+      cache['n#getPulseNumInProgressTasks'] = undefined;
+      cache['n#getPulseNumTodoTasks'] = undefined;
+      cache['n#getPulseTotalNumTasks'] = undefined;
+      cache['n#getGroupTasks'] = undefined;
+      cache['n#getCompletedGroupTasks'] = undefined;
+      cache['n#getCompletedUserTasks'] = undefined;
+      cache['n#getUserTasks'] = undefined;
+      cache['n#userOverviewPostsToday'] = undefined;
+      cache['n#userOverviewPostsWeek'] = undefined;
+      cache['n#useroverviewposts'] = undefined;
+      cache['n#getGroupPosts'] = undefined;
+    } else {
+      cache['GroupService#getPulseNumDoneTasks'] = undefined;
+      cache['GroupService#getPulseNumInProgressTasks'] = undefined;
+      cache['GroupService#getPulseNumTodoTasks'] = undefined;
+      cache['GroupService#getPulseTotalNumTasks'] = undefined;
+      cache['GroupService#getGroupTasks'] = undefined;
+      cache['GroupService#getCompletedGroupTasks'] = undefined;
+      cache['UserService#getCompletedUserTasks'] = undefined;
+      cache['UserService#getUserTasks'] = undefined;
+      cache['PostService#userOverviewPostsToday'] = undefined;
+      cache['PostService#userOverviewPostsWeek'] = undefined;
+      cache['PostService#useroverviewposts'] = undefined;
+      cache['PostService#getGroupPosts'] = undefined;
+    }
+
     localStorage.setItem('CACHE_STORAGE', JSON.stringify(cache));
   }
 }
