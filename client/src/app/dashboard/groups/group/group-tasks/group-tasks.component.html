@@ -10,7 +10,7 @@
 <!--CREATE TASKS-->
 <div class="row">
   <!--TODO TASKS-->
-  <div class="col-md-4" cdkDropList #todoList="cdkDropList" id="todo" [cdkDropListData]="toDoTasks" 
+  <div class="col-md-4" cdkDropList #todoList="cdkDropList" id="todo" [cdkDropListData]="toDoTasks"
   [cdkDropListConnectedTo]="[progressList,doneList]" (cdkDropListDropped)="onTaskDrop($event)">
     <div class="kanbanheader kbn-todo" cdkDragHandle>
       To Do
@@ -39,7 +39,9 @@
                       {{post.task?._assigned_to?.last_name}}
                     </div>
                     <div class = "col-sm-7 text-right">
-                      <i class="material-icons due small font-weight-bold text-right" >alarm</i><span class="small due font-weight-bold" style="margin-top: 5px" *ngIf="post.task?.due_to != 'Invalid date'">
+                      <i class="material-icons small font-weight-bold text-right" [ngClass] = "checkOverdue(post) === true ? 'overdue' : 'due'" >alarm</i>
+                      <span class="small font-weight-bold" style="margin-top: 5px" *ngIf="post.task?.due_to != 'Invalid date'"
+                            [ngClass] = "checkOverdue(post) === true ? 'overdue' : 'due'">
                       {{post.task?.due_to | date}}</span>
                     </div>
                   </div>
@@ -76,7 +78,7 @@
                   </div>
                 </a>
 
-               
+
 
                 <ng-template #taskif>
                   <div class="col-md-4 text-right padding-topright">
@@ -113,7 +115,7 @@
                   </div>
 
                 </div>
-               
+
               </div>
             </div>
           </div>
@@ -129,7 +131,7 @@
   </div>
 
   <!--INPROGRESS TASKS-->
-  <div class="col-md-4" cdkDropList #progressList="cdkDropList" id="inprogress" [cdkDropListData]="inProgressTasks" 
+  <div class="col-md-4" cdkDropList #progressList="cdkDropList" id="inprogress" [cdkDropListData]="inProgressTasks"
   [cdkDropListConnectedTo]="[todoList,doneList]" (cdkDropListDropped)="onTaskDrop($event)">
     <div class="kanbanheader kbn-working" cdkDragHandle>
       In Progress
@@ -141,7 +143,7 @@
       </div>
     </div>
     <div *ngIf="!(isLoading$ | async)">
-      <div *ngIf="this.inProgressTasks.length != 0; else noInProgressTasks;">  
+      <div *ngIf="this.inProgressTasks.length != 0; else noInProgressTasks;">
         <div *ngFor="let post of inProgressTasks" cdkDrag>
 
           <div class="card">
@@ -159,7 +161,9 @@
                       {{post.task?._assigned_to?.last_name}}
                     </div>
                     <div class = "col-sm-7 text-right">
-                      <i class="material-icons due small font-weight-bold text-right" >alarm</i><span class="small due font-weight-bold" style="margin-top: 5px" *ngIf="post.task?.due_to != 'Invalid date'">
+                      <i class="material-icons small font-weight-bold text-right" [ngClass] = "checkOverdue(post) === true ? 'overdue' : 'due'">alarm</i>
+                      <span class="small font-weight-bold" style="margin-top: 5px" *ngIf="post.task?.due_to != 'Invalid date'"
+                            [ngClass] = "checkOverdue(post) === true ? 'overdue' : 'due'">
                       {{post.task?.due_to | date}}</span>
                     </div>
                   </div>
@@ -196,7 +200,7 @@
                   </div>
                 </a>
 
-                
+
 
                 <ng-template #taskif>
                   <div class="col-md-4 text-right padding-topright">
@@ -228,10 +232,10 @@
                               </button>
                               <button class="dropdown-item" (click)="OnMarkTaskCompleted(this.post._id, post)">Done</button>
                             </div>
-                          </div>  
-  
+                          </div>
+
                     </div>
-  
+
                   </div>
               </div>
             </div>
@@ -272,7 +276,9 @@
                     {{post.task?._assigned_to?.last_name}}
                   </div>
                   <div class = "col-sm-7 text-right" style="padding-top: 15px">
-                    <i class="material-icons complete small font-weight-bold" style="margin: 0px !important;">alarm</i><span style = "height: 10px" class="small complete font-weight-bold" style="margin-top: 5px" *ngIf="post.task?.due_to != 'Invalid date'">
+                    <i class="material-icons small font-weight-bold" [ngClass] = "checkOverdue(post) === true ? 'overdue' : 'due'" style="margin: 0px !important;">alarm</i>
+                    <span style = "height: 10px" class="small font-weight-bold" style="margin-top: 5px" *ngIf="post.task?.due_to != 'Invalid date'"
+                          [ngClass] = "checkOverdue(post) === true ? 'overdue' : 'due'">
                     {{post.task?.due_to | date}}</span>
                    <br> <span class="small complete"
                           style="margin: 0px !important;" *ngIf="post.task?.started_at && post.task?.completed_at"> done in
@@ -312,7 +318,7 @@
                 </div>
               </a>
 
-              
+
 
               <ng-template #taskif>
                 <div class="col-md-4 text-right padding-topright">
