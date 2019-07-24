@@ -63,7 +63,11 @@ export class AdminService {
    */
   manuallyBustCache(): void {
     const cache = JSON.parse(localStorage.getItem('CACHE_STORAGE'));
-    cache['WorkspaceService#getWorkspace'] = undefined;
+    if (environment.production) {
+      cache['n#getWorkspace'] = undefined;
+    } else {
+      cache['WorkspaceService#getWorkspace'] = undefined;
+    }
     localStorage.setItem('CACHE_STORAGE', JSON.stringify(cache));
   }
 }
