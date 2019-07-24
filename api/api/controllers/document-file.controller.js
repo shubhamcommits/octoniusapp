@@ -54,7 +54,7 @@ const createFile = async (req, res, next) => {
         }
 
         const file = await DocumentFile.create(fileData);
-        
+
         return res.status(200).json({
             message: 'Document File Created!',
             file
@@ -84,7 +84,7 @@ const updateFile = async (req, res, next) => {
             $set: fileData,
             new: true
         })
-        
+
         return res.status(200).json({
             message: 'Document File updated!',
             file
@@ -95,9 +95,30 @@ const updateFile = async (req, res, next) => {
     }
 }
 
+/***
+ * Jessie Jia Edit
+ */
+const deleteFile = async (req, res, next) => {
+    try{
+        const { postId } = req.params;
+
+        const file = await DocumentFile.findOneAndDelete({
+            _post_id: postId
+        });
+
+        return res.status(200).json({
+            message: 'Document File Deleted!'
+        });
+
+    }   catch(err){
+        return sendErr(res, err);
+    }
+}
+
 module.exports = {
     getFile,
     createFile,
+    deleteFile,
     updateFile,
     getGroupFiles
 }
