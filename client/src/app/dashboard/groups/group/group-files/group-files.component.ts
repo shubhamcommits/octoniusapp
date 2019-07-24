@@ -64,20 +64,20 @@ export class GroupFilesComponent implements OnInit {
             if(this.posts[i].files.length > 0){
               this.has_file = true;
               break;
-  
+
             }
           }
         // console.log('Group posts:', this.posts);
        //  console.log('Has File:', this.has_file);
          this.isLoading$.next(false);
          resolve();
-  
+
         }, (err) => {
           console.log('Error while loading files', err);
           reject(err);
-  
+
         });
-  
+
     })
 
   }
@@ -116,7 +116,7 @@ export class GroupFilesComponent implements OnInit {
     const fileData = {
       'fileName': fileName
     };
-    this.groupService.downloadGroupFile(this.group_id,fileName)
+    this.groupService.downloadGroupFile(this.group_id, fileName)
       .subscribe((file) => {
 
     //    console.log('Downloaded File', file);
@@ -125,6 +125,16 @@ export class GroupFilesComponent implements OnInit {
       }, (err) => {
      //   console.log('Downloaded File err', err);
 
+      });
+  }
+
+  onDeleteFile(fileName, fileName_orignal){
+    const fileData = {
+      'fileName': fileName
+    };
+    this.groupService.deleteFile(this.group_id, fileName)
+      .subscribe(() => {
+        console.log('success');
       });
   }
 

@@ -25,6 +25,7 @@ import { group } from '@angular/animations';
 export class PulseComponent implements OnInit {
 
   workspace: Workspace;
+  workspace_id;
   user_data;
   allGroups;
   pulseTotalTasks = {};
@@ -47,9 +48,10 @@ export class PulseComponent implements OnInit {
 
     // Stop the foreground loading after 5s
     this.user_data = JSON.parse(localStorage.getItem('user'));
-
+    this.workspace_id = this.user_data.workspace._id;
+    console.log(this.workspace_id);
     await this.loadWorkspace();
-    await this.getAllPulse();
+    await this.getAllPulse(this.workspace_id);
     await this.getPulseTotalNumTasks();
     await this.getPulseNumTodoTasks();
     await this.getPulseNumInProgressTasks();
@@ -69,12 +71,13 @@ export class PulseComponent implements OnInit {
         });
     }
 
-    getAllPulse () {
+    getAllPulse (workspace_id) {
+      console.log('workspace_id ' + workspace_id);
       return new Promise((resolve, reject) => {
-        this.groupService.getAllPulse()
+        this.groupService.getAllPulse(workspace_id)
           .subscribe((res) => {
             this.allGroups = res['groups'];
-            //console.log('response in getAllPulse:', res);
+            console.log('response in getAllPulse:', res);
             resolve();
           }, (err) => {
             reject();

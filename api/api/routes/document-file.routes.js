@@ -22,4 +22,6 @@ router.post('/', documentFile.createFile);
 
 router.put('/:postId', documentFile.updateFile);
 
+router.delete('/:postId', documentFile.deleteFile);
+
 module.exports = router
