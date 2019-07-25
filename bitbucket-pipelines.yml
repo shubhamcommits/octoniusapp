@@ -38,6 +38,3 @@ pipelines:
           - docker push $API_IMAGE_NAME
           - docker push $NGINX_IMAGE_NAME
 
-definitions:
-  services:
-    docker:
