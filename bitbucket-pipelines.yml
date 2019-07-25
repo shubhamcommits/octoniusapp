@@ -1,5 +1,8 @@
 image: atlassian/default-image:2
 
+options:
+  size: 2x
+
 pipelines:
   branches:
     "{master}":
@@ -26,4 +29,4 @@ pipelines:
 definitions:
   services:
     docker: 
-      memory: 2048
+
