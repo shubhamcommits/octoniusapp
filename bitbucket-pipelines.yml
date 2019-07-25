@@ -9,7 +9,7 @@ pipelines:
     - step:
         name: Deploy to dockerhub
         services:
-          - docker
+          - docker: true 
         script: # Modify the commands below to build your repository.
           # Set $DOCKER_HUB_USERNAME and $DOCKER_HUB_PASSWORD as environment variables in repository settings
           - export CLIENT_IMAGE_NAME=octoniusapp/octonius:client
@@ -28,5 +28,6 @@ pipelines:
 
 definitions:
   services:
-    docker: 
+    docker: true
+    memory: 6000
 
