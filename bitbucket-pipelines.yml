@@ -37,4 +37,9 @@ pipelines:
           - docker push $CLIENT_IMAGE_NAME
           - docker push $API_IMAGE_NAME
           - docker push $NGINX_IMAGE_NAME
+          
+definitions:
+   services:
+      docker:
+         memory: 3072
 
