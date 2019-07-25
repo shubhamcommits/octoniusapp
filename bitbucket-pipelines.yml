@@ -2,18 +2,18 @@ image: atlassian/default-image:2
 
 pipelines:
   branches:
-    "{sqshdocker}":
+    "{master}":
     - step:
         name: Deploy to test
         services:
           - docker
-        deployment: test   # can be test, staging or production.
+        deployment: production   # can be test, staging or production.
         script:
-          - echo "Deploying to test environment"
+          - echo "Deploying to production environment"
           # build the Docker dev image to test
-          - docker build -t octoniusapp/octonius-api -f ./api/Dockerfile.dev ./api
+          - docker build -t octoniusapp/octonius:api -f ./api/Dockerfile.dev ./api
           # run tests
-          - docker run octoniusapp/octonius-api yarn test -- --coverage
+          - docker run octoniusapp/octonius:api yarn test -- --coverage
 
     - step:
         name: Deploy to dockerhub
