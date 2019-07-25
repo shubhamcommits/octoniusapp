@@ -4,18 +4,6 @@ pipelines:
   branches:
     "{master}":
     - step:
-        name: Deploy to test
-        services:
-          - docker
-        deployment: production   # can be test, staging or production.
-        script:
-          - echo "Deploying to production environment"
-          # build the Docker dev image to test
-          - docker build -t octoniusapp/octonius:api -f ./api/Dockerfile.dev ./api
-          # run tests
-          - docker run octoniusapp/octonius:api yarn test -- --coverage
-
-    - step:
         name: Deploy to dockerhub
         services:
           - docker
@@ -38,4 +26,4 @@ pipelines:
 definitions:
   services:
     docker: 
-      memory: 3072
+      memory: 1024
