@@ -21,9 +21,9 @@ pipelines:
           - docker
         script: # Modify the commands below to build your repository.
           # Set $DOCKER_HUB_USERNAME and $DOCKER_HUB_PASSWORD as environment variables in repository settings
-          - export CLIENT_IMAGE_NAME=octoniusapp/octonius-client:$BITBUCKET_COMMIT
-          - export API_IMAGE_NAME=octoniusapp/octonius-api:$BITBUCKET_COMMIT
-          - export NGINX_IMAGE_NAME=octoniusapp/octonius-nginx:$BITBUCKET_COMMIT
+          - export CLIENT_IMAGE_NAME=octoniusapp/octonius:client
+          - export API_IMAGE_NAME=octoniusapp/octonius:api
+          - export NGINX_IMAGE_NAME=octoniusapp/octonius:nginx
           # build the Docker image (this will use the Dockerfile in the root of the repo)
           - docker build -t $CLIENT_IMAGE_NAME ./client
           - docker build -t $API_IMAGE_NAME ./api
