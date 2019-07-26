@@ -15,6 +15,7 @@ export class OverviewPageHeaderComponent implements OnInit {
 
   user: User;
   workspaceImageUrl;
+  userProfileImage;
 
   user_data;
   alert = {
