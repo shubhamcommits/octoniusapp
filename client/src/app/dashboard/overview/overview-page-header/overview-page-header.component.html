@@ -1,8 +1,8 @@
 <div class="media user-sticky-card">
 
 
-
-  <img class="mr-3 feed-avatar" [src]="workspaceImageUrl" onerror="this.src='/assets/images/organization.png'">
+  <img [src]="userProfileImage" onerror="this.src='/assets/images/user.png'"  class="mr-3 feed-avatar">
+  <!-- <img class="mr-3 feed-avatar" [src]="workspaceImageUrl" onerror="this.src='/assets/images/organization.png'"> -->
   <div class="media-body">
     <div>
       <h2>{{user?.workspace_name}}</h2>
