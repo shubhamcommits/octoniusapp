@@ -18,6 +18,8 @@ router.get('/:postId', documentFile.getFile);
 
 router.get('/group/:groupId', documentFile.getGroupFiles);
 
+router.get('/groupEditorFiles/:groupId', documentFile.getGroupFilesForEditor);
+
 router.post('/', documentFile.createFile);
 
 router.put('/:postId', documentFile.updateFile);

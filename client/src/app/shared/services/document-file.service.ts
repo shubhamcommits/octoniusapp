@@ -24,4 +24,8 @@ export class DocumentFileService {
   getFiles(groupId){
     return this._http.get(this.BASE_API_URL + `/documentFiles/group/${groupId}`);
   }
+  
+  getDocumentFilesForEditor(groupId){
+    return this._http.get(this.BASE_API_URL + `/documentFiles/groupEditorFiles/${groupId}`);
+  }
 }

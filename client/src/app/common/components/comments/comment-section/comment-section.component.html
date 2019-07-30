@@ -7,7 +7,7 @@
           <div class="form-group">
             <h6>Add a comment</h6>
             <div class="quill-container">
-              <quill-editor style="height: auto" id="comment-content{{i}}" [modules]="modules" [(ngModel)]="comment_content"
+              <quill-editor style="height: auto" id="comment-content{{i}}" [modules]="modules" 
                             (blur)="onEditorBlured($event)" [spellcheck]="true" class="form-control" name="commentContent"
                             (focus)="onEditorFocused($event)" formControlName="commentContent" (ready)="onEditorCreated($event)"
                             (change)="onContentChanged($event)" (onEditorCreated)="onEditorCreated($event)"

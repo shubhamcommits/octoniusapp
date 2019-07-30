@@ -38,6 +38,25 @@ const getGroupFiles = async (req, res, next) => {
         return sendErr(res, err);
     }
 }
+const getGroupFilesForEditor = async (req, res, next) => {
+    try{
+        const { groupId } = req.params;
+
+        const files = await DocumentFile.find({
+            _group_id: groupId
+        }).select('_id _name').map(fileNames => ({
+            'id' : fileNames['_id'], 'name': fileNames['_name']
+        }));
+
+        return res.status(200).json({
+            message: 'Group document files Found!',
+            files
+          });
+
+    }   catch(err) {
+        return sendErr(res, err);
+    }
+}
 
 const createFile = async (req, res, next) => {
     try{
@@ -120,5 +139,6 @@ module.exports = {
     createFile,
     deleteFile,
     updateFile,
-    getGroupFiles
+    getGroupFiles,
+    getGroupFilesForEditor
 }
