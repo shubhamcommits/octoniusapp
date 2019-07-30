@@ -246,15 +246,15 @@ export class GroupsComponent implements OnInit {
 
 
   openLg(content) {
-    this.modalService.open(content, { size: 'md' });
+    this.modalService.open(content, { size: 'lg' });
   }
 
   openAgoraModal(agora) {
-    this.modalService.open(agora, { size: 'md' });
+    this.modalService.open(agora, { size: 'lg' });
   }
 
   openSmartGroupModal(smartGroup) {
-    this.modalService.open(smartGroup, { size: 'md' });
+    this.modalService.open(smartGroup, { size: 'lg' });
   }
 
   /**
