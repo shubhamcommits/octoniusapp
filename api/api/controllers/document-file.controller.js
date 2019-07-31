@@ -103,11 +103,11 @@ const updateFile = async (req, res, next) => {
             _group_id: _group_id
         }
 
-        const file = await DocumentFile.findOneAndUpdate({
-            _post_id: postId,
-            $set: fileData,
-            new: true
-        })
+        // const file = await DocumentFile.findOneAndUpdate({
+        //     _post_id: postId,
+        //     $set: fileData,
+        // })
+        const file = await DocumentFile.findOneAndUpdate({_post_id: postId},{$set: fileData})
 
         return res.status(200).json({
             message: 'Document File updated!',

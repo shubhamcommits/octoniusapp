@@ -429,6 +429,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
                 this.documentFiles = templateMention;
               }
               if (mentionChar === "#" && searchTerm.length === 0) {
+              
               this.documentFileService.getDocumentFilesForEditor(this._activatedRoute.snapshot.paramMap.get('id'))
               .subscribe((res)=>{
                 this.documentFiles = res['renamedFiles']
