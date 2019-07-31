@@ -889,6 +889,25 @@ const unfollow = async (req, res, next) => {
   }
 };
 
+const getNumFollowers = async (req, res, next) => {
+  try {
+    const {
+      params: { postId }
+    } = req;
+
+    const post = await Post.findOne({
+      _id: postId
+    })
+      .populate('_followers')
+
+    return res.status(200).json({
+      numFollowers: post._followers.length
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
 // -| TASKS |-
 
 const changeTaskStatus = async (req, res, next) => {
@@ -1091,6 +1110,7 @@ module.exports = {
   // Follow
   follow,
   unfollow,
+  getNumFollowers,
   // Table Cells
   getFormattedTableCells,
   insertFormattedTableCells

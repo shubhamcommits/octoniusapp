@@ -135,6 +135,13 @@ export class PostService {
   @CacheBuster({
     cacheBusterNotifier: cacheBuster$
   })
+  numFollowers(post) {
+    return this._http.get(this.BASE_API_URL + `/posts/${post._id}/followers`);
+  }
+
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
   likeComment(comment) {
     return this._http.put(this.BASE_API_URL + `/posts/comments/${comment._id}/like`, comment);
   }
@@ -275,8 +282,8 @@ export class PostService {
   /**
    * Manually busting a part of the cache whose service methods
    * are in another service.ts file.
-   * 
-   * This method particularly handles the updating of pulse data 
+   *
+   * This method particularly handles the updating of pulse data
    * in the cache for group activity.
    */
   manuallyBustCache(): void {
