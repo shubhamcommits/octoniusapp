@@ -205,7 +205,7 @@ export class CollaborativeDocGroupNavbarComponent implements OnInit {
   exportAGORA(agoraID,agoraGroupName){
     let doc = document.createElement('html');
     doc = editorAsFile;
-    console.log('Document', doc);
+    //console.log('Document', doc);
       var elements = doc.getElementsByClassName("mention");
       while(elements.length > 0){
           elements[0].parentNode.removeChild(elements[0]);
@@ -219,14 +219,14 @@ export class CollaborativeDocGroupNavbarComponent implements OnInit {
       this.documentFileService.getDocumentFile(this.postId)
       .subscribe((res)=>{
         if(res['file'] && res['file'].length > 0){
-          console.log('File Found', res);
+          // console.log('File Found', res);
           this.documentFileService.editDocumentFile(this.postId, documentFileData)
           .subscribe((res)=>{
             this.snotifyService.success(`${this.document_name} was published to ${agoraGroupName}`, {
               timeout: 1500,
               showProgressBar: false,
             });
-            // console.log('Document File Edited', res);
+            //  console.log('Document File Edited', res);
             // this.router.navigate(['dashboard', 'group', agoraID, 'files', this.postId]);
 
           }, (err)=>{
