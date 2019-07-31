@@ -429,7 +429,10 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
                 this.documentFiles = templateMention;
               }
               if (mentionChar === "#" && searchTerm.length === 0) {
+<<<<<<< HEAD
               
+=======
+>>>>>>> finished references in octo-doc, now gives a link to preview a published octodoc
               this.documentFileService.getDocumentFilesForEditor(this._activatedRoute.snapshot.paramMap.get('id'))
               .subscribe((res)=>{
                 this.documentFiles = res['renamedFiles']

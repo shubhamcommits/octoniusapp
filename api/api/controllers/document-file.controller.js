@@ -45,6 +45,9 @@ const getGroupFilesForEditor = async (req, res, next) => {
         const files = await DocumentFile.find({
             _group_id: groupId
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> finished references in octo-doc, now gives a link to preview a published octodoc
         }).select('_id _name _post_id')
 
         const renamedFiles = await files.map((docs) => {
@@ -53,6 +56,7 @@ const getGroupFilesForEditor = async (req, res, next) => {
                 value: docs['_name'],
                 link:`/#/dashboard/group/${groupId}/files/${docs['_post_id']}`};
          });
+<<<<<<< HEAD
 
         return res.status(200).json({
             message: 'Group document files Found!',
@@ -66,6 +70,12 @@ const getGroupFilesForEditor = async (req, res, next) => {
             message: 'Group document files Found!',
             files
 >>>>>>> added references but API needs refinement
+=======
+
+        return res.status(200).json({
+            message: 'Group document files Found!',
+            renamedFiles
+>>>>>>> finished references in octo-doc, now gives a link to preview a published octodoc
           });
 
     }   catch(err) {
