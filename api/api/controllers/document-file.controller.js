@@ -44,13 +44,18 @@ const getGroupFilesForEditor = async (req, res, next) => {
 
         const files = await DocumentFile.find({
             _group_id: groupId
-        }).select('_id _name').map(fileNames => ({
-            'id' : fileNames['_id'], 'name': fileNames['_name']
-        }));
+        }).select('_id _name _post_id')
+
+        const renamedFiles = await files.map((docs) => {
+            return { 
+                id: docs['_id'],
+                value: docs['_name'],
+                link:`/#/dashboard/group/${groupId}/files/${docs['_post_id']}`};
+         });
 
         return res.status(200).json({
             message: 'Group document files Found!',
-            files
+            renamedFiles
           });
 
     }   catch(err) {
