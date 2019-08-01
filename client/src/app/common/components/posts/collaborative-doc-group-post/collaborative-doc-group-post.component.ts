@@ -429,14 +429,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
                 this.documentFiles = templateMention;
               }
               if (mentionChar === "#" && searchTerm.length === 0) {
-<<<<<<< HEAD
-<<<<<<< HEAD
               
-=======
->>>>>>> finished references in octo-doc, now gives a link to preview a published octodoc
-=======
-              
->>>>>>> added octo-doc references outside of realtime editor, fixed agoraExportEdit API
               this.documentFileService.getDocumentFilesForEditor(this._activatedRoute.snapshot.paramMap.get('id'))
               .subscribe((res)=>{
                 this.documentFiles = res['renamedFiles']
@@ -459,8 +452,8 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
                   insertItem(item); 
                   break;
                 case '/':
-                  insertItem(item);
-                  this.renderTemplate(item.id);
+                    insertItem(item);
+                    this.renderTemplate(item.id);
                   break;
                 default:
                   break;
