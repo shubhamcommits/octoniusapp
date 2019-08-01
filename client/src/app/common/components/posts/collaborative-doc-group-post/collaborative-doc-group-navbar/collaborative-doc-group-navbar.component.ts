@@ -206,10 +206,20 @@ export class CollaborativeDocGroupNavbarComponent implements OnInit {
     let doc = document.createElement('html');
     doc = editorAsFile;
     //console.log('Document', doc);
-      // var elements = doc.getElementsByClassName("mention");
-      // while(elements.length > 0){
-      //     elements[0].parentNode.removeChild(elements[0]);
-      // };
+      var elements = doc.getElementsByClassName("mention");
+      var arrOfMentioned = []
+      //gather elements and append to new array
+      // which have / and append because removing nodes messes up the loop
+      for (let i = 0; i < elements.length; i++){
+         const eleObj = elements[i].attributes[2]
+          if (eleObj.value === "/"){
+            arrOfMentioned.push(elements[i])
+          }
+      }
+      //remove nodes from this new array
+      for (let i = 0; i < arrOfMentioned.length; i++){
+        arrOfMentioned[i].parentNode.removeChild(arrOfMentioned[i]);
+      }
       let documentFileData = {
         _post_id: this.postId,
         _name: this.document_name,
