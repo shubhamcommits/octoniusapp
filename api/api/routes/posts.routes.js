@@ -98,6 +98,9 @@ router.put('/:postId/follow', posts.follow);
 // Unfollow post
 router.put('/:postId/unfollow', posts.unfollow);
 
+// Get number of followers
+router.get('/:postId/followers', posts.getNumFollowers);
+
 // - Tasks -
 
 // Change task assignee

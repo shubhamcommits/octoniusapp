@@ -8,6 +8,8 @@
                             triggers="mouseenter:mouseleave"><b>{{post?._liked_by.length}}</b>
                         Likes </span>
       <span style="cursor: pointer;" *ngIf="post?.type != 'document'" (click)="loadComments();"><b>{{commentCount || post?.comments.length}}</b> Comments</span>
+      <span [ngbPopover]="followersPopContent"
+            triggers="mouseenter:mouseleave" style="cursor: pointer;" ><b>{{ 0 || post?._followers?.length}}</b> Followers</span>
     </div>
     <div class="col-md-6 text-right">
                       <span placement="top" ngbTooltip="Add a comment" *ngIf="post?.type != 'document'">
@@ -39,9 +41,9 @@
                             <button *ngIf="post?.type != 'document' &&(post?._posted_by?._id == user._id || user?.role === 'owner' || user?.role === 'admin')" class="dropdown-item" (click)="editPost.emit();"> Edit</button>
                             <button *ngIf="post?.type == 'document'" class="dropdown-item" [routerLink]="['/dashboard', 'group', post?._group, 'document', post?._id]"> Edit</button>
                             <button  *ngIf="post?._posted_by?._id == user._id || user?.role === 'owner' || user?.role === 'admin'"class="dropdown-item" (click)="deletePost.emit()"> Delete</button>
-                            <button  class="dropdown-item" (click)="copyToClipboard(post?._id)"> Copy Link</button> 
+                            <button  class="dropdown-item" (click)="copyToClipboard(post?._id)"> Copy Link</button>
 
-                            
+
                           </div>
                         </div>
                         <ng-template #editpostif>
@@ -55,6 +57,13 @@
       <li class="list-group-item" *ngFor="let liked_member of post._liked_by;">{{liked_member.first_name}}</li>
     </ul>
   </ng-template>
+
+  <ng-template #followersPopContent>
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let follower of post._followers;">{{follower.first_name}}</li>
+    </ul>
+  </ng-template>
+
 </div>
 
 <!-- END CARD FOOTER and footer component-->
