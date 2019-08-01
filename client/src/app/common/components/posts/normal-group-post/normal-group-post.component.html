@@ -52,7 +52,7 @@
                     <div class="w-100" style="display:inline-block" *ngIf="tags_search_result?.length > 0">
                         <ul class=" list-tags" >
                           <li class="tags" *ngFor="let tag of tags_search_result; let i = index;">
-                              <button class="bg-transparent border-0 col-lg-9" (click)="clickedOnTag(i); myTagsDrop.close();">{{ tag?.tags }}</button>
+                            <button class="btn btn-light btn-block" (click)="clickedOnTag(i); myTagsDrop.close();">{{ tag?.tags }}</button>
                           </li>
                         </ul>
                       </div>
@@ -88,15 +88,6 @@
         <div class="col-md-12 innercard" style="border: none;" [innerHTML]="applyZoom(post?.content)  | safe: 'html'">
         </div>
 
-        <!--POST TAGS-->
-        <div class="row innercard" *ngIf="post?.tags?.length > 0">
-          <div class="col-md-12">
-         <span> <i class="material-icons tagslabel" placement="bottom" ngbTooltip="Tags">
-            local_offer
-            </i></span>
-            <span class="tagsbtn" style="margin-right: 0.5rem;" *ngFor="let tag of tags; let i = index">{{tag}}</span>
-          </div>
-        </div>
 
         <!-- POST FILES -->
         <div class="col-md-12 innercard" *ngFor="let file of post.files">
@@ -110,6 +101,17 @@
         <span *ngIf="this.readMore">Read more</span>
         <span *ngIf="!this.readMore">Read less</span>
       </button>
+      
+        <!--POST TAGS-->
+        <div class="row innercard" *ngIf="post?.tags?.length > 0">
+          <div class="col-xs" style="margin-left: 20px">  <i class="material-icons tagslabel" ngbTooltip="Tags">
+              local_offer
+              </i></div>
+              <div class="col-md-10" style="margin-left: -20px">
+       
+            <span class="badge badge-primary" style="margin-right: 0.5rem;" *ngFor="let tag of tags; let i = index">{{tag}}</span>
+          </div>
+        </div>
 
       <post-actions
         *ngIf="user"

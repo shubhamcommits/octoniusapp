@@ -170,7 +170,7 @@
                   <div class="w-100" style="display:inline-block" *ngIf="tags_search_result?.length > 0">
                       <ul class=" list-tags" >
                         <li class="tags" *ngFor="let tag of tags_search_result; let i = index;">
-                            <button class="bg-transparent border-0 col-lg-9" (click)="clickedOnTag(i); myTagsDrop.close();">{{ tag?.tags }}</button>
+                          <button class="btn btn-light btn-block" (click)="clickedOnTag(i); myTagsDrop.close();">{{ tag?.tags }}</button>
                         </li>
                       </ul>
                     </div>

@@ -70,7 +70,7 @@
                     <div class="w-100" style="display:inline-block" *ngIf="tags_search_result?.length > 0">
                         <ul class=" list-tags" >
                           <li class="tags" *ngFor="let tag of tags_search_result; let i = index;">
-                              <button class="bg-transparent border-0 col-lg-9" (click)="clickedOnTag(i); myTagsDrop.close();">{{ tag?.tags }}</button>
+                            <button class="btn btn-light btn-block" (click)="clickedOnTag(i); myTagsDrop.close();">{{ tag?.tags }}</button>
                           </li>
                         </ul>
                       </div>
@@ -126,23 +126,26 @@
         <div class="col-md-12 attachfile">  <i class="material-icons event-title">attach_file</i><a role="button" href="javascript:void(null);" (click)="onDownloadFile(file.modified_name,file.orignal_name)">{{file?.orignal_name}}</a></div>
       </div>
 
-            <!--POST TAGS-->
-            <div class="row innercard" style="margin-top: 2rem;" *ngIf="post?.tags?.length > 0">
-                <div class="col-md-12">
-                    <span> <i class="material-icons tagslabel" placement="bottom" ngbTooltip="Tags">
-                       local_offer
-                       </i></span>
-                     <span class="tagsbtn" style="margin-right: 0.5rem;" *ngFor="let tag of tags; let i = index">{{tag}}</span>
-                </div>
-              </div>
+           
 
             </div>
 
       <!-- read more / read less button -->
-      <button *ngIf="post?.content?.split('').length > 50 && this.preview" class="btn btn-link mt-3" (click)="this.readMore = !this.readMore">
+      <!-- <button *ngIf="post?.content?.split('').length > 50 && this.preview" class="btn btn-link mt-3" (click)="this.readMore = !this.readMore">
         <span *ngIf="this.readMore">Read more</span>
         <span *ngIf="!this.readMore">Read less</span>
-      </button>
+      </button> -->
+
+      <!--POST TAGS-->
+      <div class="row innercard" *ngIf="post?.tags?.length > 0">
+          <div class="col-xs" style="margin-left: 20px">  <i class="material-icons tagslabel" ngbTooltip="Tags">
+              local_offer
+              </i></div>
+          <div class="col-md-10" style="margin-left: -20px">
+       
+            <span class="badge badge-primary" style="margin-right: 0.5rem;" *ngFor="let tag of tags; let i = index">{{tag}}</span>
+          </div>
+        </div>
 
       <!-- POST ACTIONS -->
 
