@@ -206,10 +206,10 @@ export class CollaborativeDocGroupNavbarComponent implements OnInit {
     let doc = document.createElement('html');
     doc = editorAsFile;
     //console.log('Document', doc);
-      var elements = doc.getElementsByClassName("mention");
-      while(elements.length > 0){
-          elements[0].parentNode.removeChild(elements[0]);
-      };
+      // var elements = doc.getElementsByClassName("mention");
+      // while(elements.length > 0){
+      //     elements[0].parentNode.removeChild(elements[0]);
+      // };
       let documentFileData = {
         _post_id: this.postId,
         _name: this.document_name,
