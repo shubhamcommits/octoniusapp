@@ -459,8 +459,8 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
                   insertItem(item); 
                   break;
                 case '/':
-                    insertItem(item);
-                    this.renderTemplate(item.id);
+                  insertItem(item);
+                  this.renderTemplate(item.id);
                   break;
                 default:
                   break;
