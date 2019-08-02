@@ -35,6 +35,7 @@ import 'quill-emoji/dist/quill-emoji';
 import { GoogleCloudService } from '../../../../shared/services/google-cloud.service';
 import {GroupActivityFiltersComponent} from "./group-activity-filters/group-activity-filters.component";
 import { NgxSpinnerService } from 'ngx-spinner';
+import { DocumentFileService } from '../../../../shared/services/document-file.service';
 
 Quill.register(MentionBlot);
 Quill.register('modules/mention', Mention);
@@ -86,6 +87,7 @@ export class GroupActivityComponent implements OnInit {
   settings = {};
 
   googleDriveFiles = [];
+  mentionValues:any = [];
 
   modules;
   modulesLoaded = false;
@@ -97,7 +99,8 @@ export class GroupActivityComponent implements OnInit {
               private modalService: NgbModal, private postService: PostService, private _sanitizer: DomSanitizer,
               private ngxService: NgxUiLoaderService, private snotifyService: SnotifyService, config: NgbDropdownConfig,
               private scrollService: ScrollToService, private quillInitializeService: QuillAutoLinkService,
-              private googleService: GoogleCloudService, private spinner: NgxSpinnerService) {
+              private googleService: GoogleCloudService, private spinner: NgxSpinnerService,
+              private documentFileService: DocumentFileService,) {
 
     config.placement = 'left';
     config.autoClose = false;
@@ -486,6 +489,13 @@ export class GroupActivityComponent implements OnInit {
       }, (err) => {
       });
 
+      this.documentFileService.getDocumentFilesForEditor(this.group_id)
+      .subscribe((res)=>{
+        hashValues = [ ...hashValues, ...res['renamedFiles'] ]
+      }, (err)=>{
+        console.log('Error occured while fetching the group document files', err);
+      })
+
 
     const toolbaroptions = {
       container: [
@@ -574,13 +584,12 @@ export class GroupActivityComponent implements OnInit {
       mention: {
         allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
         mentionDenotationChars: ["@", "#"],
-        source: function (searchTerm, renderList, mentionChar) {
-          let values;
+        source: (searchTerm, renderList, mentionChar) => {
           if (mentionChar === "@") {
-            values = Value;
-          } else if(mentionChar === "#") {
+            this.mentionValues = Value;
+          } else if(mentionChar === "#" && searchTerm.length === 0) {
 
-
+            console.log("herermep")
             if(localStorage.getItem('google-cloud-token') != null) {
               const getDriveFiles: any = new XMLHttpRequest();
 
@@ -604,15 +613,22 @@ export class GroupActivityComponent implements OnInit {
               };
               getDriveFiles.send();
             }
-            values = hashValues;
-          }
+            this.documentFileService.getDocumentFilesForEditor(this.group_id)
+            .subscribe((res)=>{
+              
+              hashValues = this.postService.removeDuplicates([ ...hashValues, ...res['renamedFiles'] ], 'id')
 
+            }, (err)=>{
+              console.log('Error occured while fetching the group document files', err);
+            })
+            this.mentionValues = hashValues;
+          }
           if (searchTerm.length === 0) {
-            renderList(values, searchTerm);
+            renderList(this.mentionValues, searchTerm);
           } else {
             const matches = [];
-            for (var i = 0; i < values.length; i++)
-              if (~values[i].value.toLowerCase().indexOf(searchTerm.toLowerCase())) matches.push(values[i]);
+            for (var i = 0; i < this.mentionValues.length; i++)
+              if (~this.mentionValues[i].value.toLowerCase().indexOf(searchTerm.toLowerCase())) matches.push(this.mentionValues[i]);
             renderList(matches, searchTerm);
           }
         }

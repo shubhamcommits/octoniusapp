@@ -26,11 +26,11 @@ import Mention from 'quill-mention';
 import { MentionBlot } from '../../../../shared/utils/mention-module/quill.mention.blot'
 import { Item } from 'angular2-multiselect-dropdown';
 import deltaToHtml from 'delta-to-html';
+import { DocumentFileService } from '../../../../shared/services/document-file.service';
 
 Quill.register(MentionBlot);
 Quill.register('modules/mention', Mention);
 var Delta = require('quill-delta');
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 
 
 const quillTable = require('quill-table');
@@ -182,6 +182,9 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
 };
   post: any;
   postTitle: any = 'Untitled';
+  groupId: any;
+  documentFiles: any;
+
 
   docStatus: any = "Updated!";
   user_data: any;
@@ -206,8 +209,9 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     private documentService: DocumentService,
     private groupService: GroupService,
     private quillInitializeService: QuillAutoLinkService,
-    public dialog: MatDialog) {
+    private documentFileService: DocumentFileService,) {
       postId = this._activatedRoute.snapshot.paramMap.get('postId');
+      this.groupId = this._activatedRoute.snapshot.paramMap.get('id')
      }
 
   async ngOnInit() {
@@ -222,6 +226,12 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
       backdrop:0.5,
       position: "centerTop"
     });
+    this.documentFileService.getDocumentFilesForEditor(this._activatedRoute.snapshot.paramMap.get('id'))
+    .subscribe((res)=>{ 
+      this.documentFiles = res['renamedFiles']
+    }, (err)=>{
+      console.log('Error occured while fetching the group document files', err);
+    })
     await this.getUser().then(()=>{
       //grab user id then call for authors check
       this.documentService.getAuthors(postId)
@@ -412,26 +422,42 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
           autoLink: true,
           mention: {
             allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
-            mentionDenotationChars: ["/"],
-            source: function (searchTerm, renderList, mentionChar) {
-              let values;
+            mentionDenotationChars: ["/","#"],
+            source: (searchTerm, renderList, mentionChar) => {
+              //let values;
               if (mentionChar === "/") {
-                values = templateMention;
+                this.documentFiles = templateMention;
               }
-    
+              if (mentionChar === "#" && searchTerm.length === 0) {
+              
+              this.documentFileService.getDocumentFilesForEditor(this._activatedRoute.snapshot.paramMap.get('id'))
+              .subscribe((res)=>{
+                this.documentFiles = res['renamedFiles']
+              }, (err)=>{
+                console.log('Error occured while fetching the group document files', err);
+              })
+              }
               if (searchTerm.length === 0) {
-                renderList(values, searchTerm);
+                renderList(this.documentFiles, searchTerm);
               } else {
                 const matches = [];
-                for (var i = 0; i < values.length; i++)
-                  if (~values[i].value.toLowerCase().indexOf(searchTerm.toLowerCase())) matches.push(values[i]);
+                for (var i = 0; i < this.documentFiles.length; i++)
+                  if (~this.documentFiles[i].value.toLowerCase().indexOf(searchTerm.toLowerCase())) matches.push(this.documentFiles[i]);
                 renderList(matches, searchTerm);
               }
             },
             onSelect:(item, insertItem) =>{
-              insertItem(item);
-              this.renderTemplate(item.id);
-
+              switch (item.denotationChar) {
+                case '#':
+                  insertItem(item); 
+                  break;
+                case '/':
+                    insertItem(item);
+                    this.renderTemplate(item.id);
+                  break;
+                default:
+                  break;
+              }
             }
           }
         },
