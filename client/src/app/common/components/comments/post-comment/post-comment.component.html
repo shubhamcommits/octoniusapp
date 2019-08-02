@@ -51,7 +51,9 @@
                                || user.role === 'owner'">
                             <i class="material-icons action" id="dropdownComment" (click)="toggleCommentEditList()" ngbDropdownToggle>more_horiz</i>
                             <div #commentEditList ngbDropdownMenu aria-labelledby="dropdownComment">
-                                <button class="dropdown-item" (click)="OnEditComment()">Edit Comment</button>
+                                <button *ngIf="
+                               comment?._commented_by?._id == user._id"
+                               class="dropdown-item" (click)="OnEditComment()">Edit Comment</button>
                               <button class="dropdown-item" (click)="OnDeleteComment()">Delete Comment</button>
                             </div>
                           </div>
