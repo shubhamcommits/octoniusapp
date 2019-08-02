@@ -39,6 +39,8 @@ export class GroupTasksComponent implements OnInit {
   group_admins;
   groupId;
   isLoading$ = new BehaviorSubject(false);
+  today = moment().local().startOf('day').format('YYYY-MM-DD');
+
 
   BASE_URL = environment.BASE_URL;
   socket = io(environment.BASE_URL);
@@ -70,7 +72,7 @@ export class GroupTasksComponent implements OnInit {
     '#0bc6a0',
     '#4a90e2',
     '#d46a6a',
-    '#b45a81',  
+    '#b45a81',
     '#674f91',
     '#4e638e',
     '#489074',
@@ -184,13 +186,18 @@ export class GroupTasksComponent implements OnInit {
 
   }
 
+  checkOverdue(taskPost) {
+   // console.log(taskPost.task.due_to);
+   // console.log(taskPost.task.due_to < this.today);
+    return taskPost.task.due_to < this.today;
+  }
 
   onTaskDrop(event: CdkDragDrop<any[]>){
     if(event.previousContainer == event.container){
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     }else{
       var post = event.previousContainer.data[event.previousIndex];
-      //transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex); 
+      //transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
       if(event.container.id == "todo"){
         this.OnMarkTaskToDo(post._id,post);
       }else if(event.container.id == "inprogress"){
@@ -411,7 +418,7 @@ export class GroupTasksComponent implements OnInit {
         console.log('Error Fetching the Completed Tasks Posts', err);
         this.isLoading$.next(false);
         reject(err);
-      }); 	
+      });
       this.isLoading$.next(false);
       resolve();
     },
@@ -451,7 +458,7 @@ export class GroupTasksComponent implements OnInit {
             currentTaskIndex = this.toDoTasks.findIndex(task => task._id == post._id);
             if(currentTaskIndex != -1){
               this.toDoTasks[currentTaskIndex]= res['post'];
-            } 
+            }
             break;
         case 'in progress':
             currentTaskIndex = this.inProgressTasks.findIndex(task => task._id == post._id);
@@ -535,7 +542,7 @@ export class GroupTasksComponent implements OnInit {
     const post = {
       'status': 'to do'
     };
-    switch(task.task.status){      
+    switch(task.task.status){
       case 'in progress':
           this.inProgressTasks
           .splice(this.inProgressTasks.findIndex(post => post._id === task._id), 1)
@@ -567,7 +574,7 @@ export class GroupTasksComponent implements OnInit {
     const post = {
       'status': 'in progress'
     };
-    switch(task.task.status){      
+    switch(task.task.status){
       case 'to do':
           this.toDoTasks
           .splice(this.toDoTasks.findIndex(post => post._id === task._id), 1)
@@ -585,7 +592,7 @@ export class GroupTasksComponent implements OnInit {
     this.inProgressTasks = this.postService.removeDuplicates([task, ...this.inProgressTasks], '_id');
     this.postService.complete(post_id,post)
     .subscribe((res) => {
-      this.isLoading$.next(false); 
+      this.isLoading$.next(false);
     }, (err) => {
 
       console.log('Error:', err);
@@ -803,7 +810,7 @@ export class GroupTasksComponent implements OnInit {
 
   openNewTaskModal(newTaskModal) {
     var modalOptions: any = {
-      centered: true, 
+      centered: true,
       size: "xl",
       backdrop: true
     }
@@ -1296,7 +1303,7 @@ tagListSearch(){
 
        if (res) {
         this.tags_search_result = res['results'];
-      } 
+      }
     }, (err)=>{
       console.log('Error while searching', err);
     });
@@ -1309,5 +1316,5 @@ clickedOnTag(index){
   this.tags.push(tagsFromList);;
   this.tags_search_words = '';
   console.log(this.tags);
-} 
+}
 }

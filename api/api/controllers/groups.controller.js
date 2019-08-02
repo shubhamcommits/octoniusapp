@@ -57,12 +57,15 @@ const getPrivate = async (req, res) => {
 
 const getUserGroups = async (req, res) => {
  // const { userId } = req;
+  const { workspaceId } = req.params;
+  // console.log(workspace);
   /**
    * We need to fetch all the groups exist in the workspace, irrespective of which user is a part or not.
    */
   try {
     const groups = await Group.find({
       group_name:{ $not: {$eq: 'private'}},
+      _workspace: workspaceId
       // $or: [
       //   { _members: { $elemMatch: { $eq: userId } } },
       //   { _admins: { $elemMatch: { $eq: userId } } }
@@ -71,6 +74,7 @@ const getUserGroups = async (req, res) => {
 
 
     return res.status(200).json({
+      // workspaceId,
       groups: groups
     });
   } catch (err) {
@@ -414,6 +418,7 @@ const downloadFile = (req, res, next) => {
 
   res.sendFile(filepath);
 };
+
 
 const getFiles = async (req, res, next) => {
   try {
@@ -1190,7 +1195,6 @@ module.exports = {
   // Main
   get,
   getPrivate,
-  getUserGroups,
   getAllForUser,
   getPublicGroups,
   getAllPublicGroups,
@@ -1220,6 +1224,7 @@ module.exports = {
   getTasksDone,
   getTasksUndoneLastWeek,
   // PULSE
+  getUserGroups,
   getTotalNumTasks,
   getNumTodoTasks,
   getNumInProgressTasks,

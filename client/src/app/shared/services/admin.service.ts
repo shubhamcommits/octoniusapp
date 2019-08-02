@@ -46,12 +46,12 @@ export class AdminService {
   }
 
   updateUserRole(data) {
-    //this.manuallyBustCache();
+    this.manuallyBustCache();
     return this._http.put<any>(this.BASE_API_URL + '/workspace/updateUserRole', data);
   }
 
   removeUser(workspaceId, userId) {
-    //this.manuallyBustCache();
+    this.manuallyBustCache();
     return this._http.delete(this.BASE_API_URL + `/workspaces/${workspaceId}/users/${userId}`);
   }
 
@@ -63,7 +63,11 @@ export class AdminService {
    */
   manuallyBustCache(): void {
     const cache = JSON.parse(localStorage.getItem('CACHE_STORAGE'));
-    cache['WorkspaceService#getWorkspace'] = undefined;
+    if (environment.production) {
+      cache['n#getWorkspace'] = undefined;
+    } else {
+      cache['WorkspaceService#getWorkspace'] = undefined;
+    }
     localStorage.setItem('CACHE_STORAGE', JSON.stringify(cache));
   }
 }

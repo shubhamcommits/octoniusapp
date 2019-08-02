@@ -553,8 +553,8 @@ quill-editor{
   border-radius: $card-radius;
 }
 .tagslabel{
-  font-size: 14px !important;
-  color: $dark-sky-blue;
+  font-size: 24px !important;
+  color: $brand-primary;
   margin: 0 10px;
 }
 
@@ -615,4 +615,20 @@ button.ql-authorship-toggle:after {
 
 button.ql-authorship-toggle {
 	width: 120px!important;
+}
+
+
+.due{
+  color: #4A90E2;
+}
+
+.overdue {
+  color: #FF6584;
+}
+.complete{
+  color: #4A90E2;
+  text-align: right;
+}
+.list-tags{
+  padding-left:0;
 }

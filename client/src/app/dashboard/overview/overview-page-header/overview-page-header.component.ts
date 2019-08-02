@@ -15,6 +15,7 @@ export class OverviewPageHeaderComponent implements OnInit {
 
   user: User;
   workspaceImageUrl;
+  userProfileImage;
 
   user_data;
   alert = {
@@ -30,29 +31,31 @@ export class OverviewPageHeaderComponent implements OnInit {
     this.ngxService.start(); 
     this.user_data = JSON.parse(localStorage.getItem('user'));
 
-    this.loadUser()
-    .then(()=>{
-      this.loadWorkspace()
-      .then(()=>{
-        this.loadWorkspace();
-      })
-      .catch((err)=>{
-        console.log('Error while loading the workspace', err);
-      })
-    })
-    .catch((err)=>{
-      console.log('Error while loading the user', err);
-    })
-    
+    // this.loadUser()
+    // .then(()=>{
+    //    this.loadWorkspace()
+    //   .then(()=>{
+    //      this.loadWorkspace();
+    //   })
+    //   .catch((err)=>{
+    //     console.log('Error while loading the workspace', err);
+    //   })
+    // })
+    // .catch((err)=>{
+    //   console.log('Error while loading the user', err);
+    // })
+    this.loadUser();
 
   }
 
 
   loadUser() {
     return new Promise((resolve, reject)=>{
-      this._userService.getUser()
+      this._userService.getUser() 
       .subscribe((res) => {
         this.user = res.user;
+        this.workspaceImageUrl=environment.BASE_URL + '/uploads/'+ res['user']['profile_pic'];
+        console.log(this.workspaceImageUrl);
         resolve();
       }, (err) => {
         reject(err);

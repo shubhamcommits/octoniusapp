@@ -38,6 +38,30 @@ const getGroupFiles = async (req, res, next) => {
         return sendErr(res, err);
     }
 }
+const getGroupFilesForEditor = async (req, res, next) => {
+    try{
+        const { groupId } = req.params;
+
+        const files = await DocumentFile.find({
+            _group_id: groupId
+        }).select('_id _name _post_id')
+
+        const renamedFiles = await files.map((docs) => {
+            return { 
+                id: docs['_id'],
+                value: docs['_name'],
+                link:`/#/dashboard/group/${groupId}/files/${docs['_post_id']}`};
+         });
+
+        return res.status(200).json({
+            message: 'Group document files Found!',
+            renamedFiles
+          });
+
+    }   catch(err) {
+        return sendErr(res, err);
+    }
+}
 
 const createFile = async (req, res, next) => {
     try{
@@ -54,7 +78,7 @@ const createFile = async (req, res, next) => {
         }
 
         const file = await DocumentFile.create(fileData);
-        
+
         return res.status(200).json({
             message: 'Document File Created!',
             file
@@ -79,12 +103,12 @@ const updateFile = async (req, res, next) => {
             _group_id: _group_id
         }
 
-        const file = await DocumentFile.findOneAndUpdate({
-            _post_id: postId,
-            $set: fileData,
-            new: true
-        })
-        
+        // const file = await DocumentFile.findOneAndUpdate({
+        //     _post_id: postId,
+        //     $set: fileData,
+        // })
+        const file = await DocumentFile.findOneAndUpdate({_post_id: postId},{$set: fileData})
+
         return res.status(200).json({
             message: 'Document File updated!',
             file
@@ -95,9 +119,31 @@ const updateFile = async (req, res, next) => {
     }
 }
 
+/***
+ * Jessie Jia Edit
+ */
+const deleteFile = async (req, res, next) => {
+    try{
+        const { postId } = req.params;
+
+        const file = await DocumentFile.findOneAndDelete({
+            _post_id: postId
+        });
+
+        return res.status(200).json({
+            message: 'Document File Deleted!'
+        });
+
+    }   catch(err){
+        return sendErr(res, err);
+    }
+}
+
 module.exports = {
     getFile,
     createFile,
+    deleteFile,
     updateFile,
-    getGroupFiles
+    getGroupFiles,
+    getGroupFilesForEditor
 }

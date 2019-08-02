@@ -50,7 +50,7 @@ router.get('/public/all', groups.getPublicGroups);
 router.get('/public/allGroups', groups.getAllPublicGroups);
 
 // Get name id of groups of user
-router.get('/all/pulse', groups.getUserGroups);
+router.get('/all/pulse/:workspaceId', groups.getUserGroups);
 
 // Get a user's smart groups within the given workspace
 router.get('/smart/:workspace', groups.getSmartGroups);
@@ -97,7 +97,7 @@ router.get('/:groupId/docImport',
 router.post('/:groupId/docExport',
   authorization.groupAccess,
   groups.serveDocFileForEditorExport);
-  
+
 // - Posts -
 
 // Get ten most recent group posts

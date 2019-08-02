@@ -10,7 +10,7 @@
         <!-- <img class="card-img-top" src="https://picsum.photos/1920/1200/?random&gravity=south">  -->
         <div class="card-body content" style="background:transparent">
          
-              <h2 class="card-title white" style="color: #fff; margin-top: 60px;">  <i class="material-icons">group</i> <br> Create New Group</h2>
+              <h2 class="card-title white" style="color: #fff; margin-top: 60px;">  <i class="material-icons">group</i> <br> Create Group</h2>
           
           <!-- <p class="card-text">Group description</p>  -->
         </div>
@@ -20,12 +20,12 @@
         <div class="card-body content" style="background:transparent">
          
           <h2 class="card-title white" style="color: #fff; margin-top: 60px;">  <i class="material-icons">account_balance</i> <br> Create Agora</h2>
-          <p class="white" style="font-weight: 300">A public space where everyone can express their creativity and share ideas on common interests, hobbies etc.</p>
+          
           
           <!-- <p class="card-text">Group description</p>  -->
         </div>
       </div>
-      <div *ngIf="user?.role== 'admin' || user?.role== 'owner'" (click)="openSmartGroupModal(smartGroup)" class="card col-md-3 overlay" style="text-align:center; background-image:url(https://picsum.photos/600/300/?random ) !important; cursor: pointer;">
+      <div *ngIf="user?.role== 'admin' || user?.role== 'owner'" (click)="openSmartGroupModal(smartGroup)" class="card col-md-3 overlay" style="text-align:center; background-image:url(https://picsum.photos/600/300/?random&gravity=north ) !important; cursor: pointer;">
         <!-- <img class="card-img-top" src="https://picsum.photos/1920/1200/?random&gravity=south">  -->
         <div class="card-body content" style="background:transparent">
          
@@ -74,6 +74,7 @@
 
     <ng-template #content let-c="close" let-d="dismiss">
       <div class="modal-header">
+
         <h4 class="modal-title">Create New Group</h4>
         <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
           <span aria-hidden="true">&times;</span>
@@ -83,17 +84,20 @@
 
       <div class="modal-body">
         <form [formGroup]="createNewGroupForm">
-
-          <div class="form-group">
-            <label for="group_name">Group Name</label>
-            <input type="text" class="form-control" id="group_name" formControlName="groupName" [(ngModel)]="group.group_name" name="groupName">
+          <div class="form-row">
+            <div class="col"><img src="/assets/images/create-group.svg" alt="" style="width: 250px; height: auto;"></div>
+            <div class="col">   
+            <input type="text" class="form-control" id="group_name" formControlName="groupName" [(ngModel)]="group.group_name" name="groupName" placeholder="Group name" style="margin-top: 40px">
+            <label for="group_name" class="small">Try to add a short name</label>  
           </div>
+        </div>
+         
         </form>
 
       </div>
       <div class="modal-footer">
-          <button type="button" class="btn btn-default" (click)="c('Close click')">Cancel</button>
-        <button [disabled]="createNewGroupForm.invalid" class="btn btn-primary" (click)="onCreateNewGroup()">Create Group</button>
+          <button class="btn btn-default btn-block" (click)="c('Close click')">Cancel</button>
+        <button [disabled]="createNewGroupForm.invalid" class="btn btn-primary btn-block" (click)="onCreateNewGroup()">Create Group</button>
         
       </div>
     </ng-template>
@@ -109,17 +113,20 @@
 
       <div class="modal-body">
         <form [formGroup]="createNewGroupForm">
-
-          <div class="form-group">
-            <label for="group_name">Group Name</label>
-            <input type="text" class="form-control" id="group_name" formControlName="groupName" [(ngModel)]="group.group_name" name="groupName">
+            <div class="form-row">
+                <div class="col"><img src="/assets/images/create-agora.svg" alt="" style="width: 250px; height: auto;"></div>
+          <div class="col">
+           
+            <input type="text" style="margin-top: 40px" class="form-control" id="group_name" formControlName="groupName" [(ngModel)]="group.group_name" name="groupName" placeholder="Agora name">
+            <label for="group_name" class="small">Try to add a short name</label> 
           </div>
+        </div>
         </form>
 
       </div>
       <div class="modal-footer">
-          <button type="button" class="btn btn-default" (click)="c('Close click')">Cancel</button>
-        <button [disabled]="createNewGroupForm.invalid" class="btn btn-primary" (click)="onCreateAgora()">Create Agora</button>
+          <button type="button" class="btn btn-default btn-block" (click)="c('Close click')">Cancel</button>
+        <button [disabled]="createNewGroupForm.invalid" class="btn btn-primary btn-block" (click)="onCreateAgora()">Create Agora</button>
         
       </div>
     </ng-template>
@@ -135,17 +142,20 @@
 
       <div class="modal-body">
         <form [formGroup]="createNewGroupForm">
-
-          <div class="form-group">
-            <label for="group_name">Group Name</label>
-            <input type="text" class="form-control" id="group_name" formControlName="groupName" [(ngModel)]="group.group_name" name="groupName">
+            <div class="form-row">
+                <div class="col"><img src="/assets/images/create-smartgroup.svg" alt="" style="width: 250px; height: auto;"></div>
+          <div class="col">
+            
+            <input type="text" style="margin-top: 40px" class="form-control" id="group_name" formControlName="groupName" [(ngModel)]="group.group_name" name="groupName" placeholder="Smart group name">
+            <label for="group_name" class="small">Try to add a short name</label> 
           </div>
+        </div>
         </form>
 
       </div>
       <div class="modal-footer">
-          <button type="button" class="btn btn-default" (click)="c('Close click')">Cancel</button>
-        <button [disabled]="createNewGroupForm.invalid" class="btn btn-primary" (click)="onCreateSmartGroup()">Create Smart Group</button>
+          <button type="button" class="btn btn-default btn-block" (click)="c('Close click')">Cancel</button>
+        <button [disabled]="createNewGroupForm.invalid" class="btn btn-primary btn-block" (click)="onCreateSmartGroup()">Create Smart Group</button>
         
       </div>
     </ng-template>

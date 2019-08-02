@@ -66,6 +66,8 @@ export class GroupService {
     return this._http.get(this.BASE_API_URL + '/group/' + group_id);
   }
 
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
+  })
   getTasksUndoneLastWeek(group_id) {
     return this._http.get(this.BASE_API_URL + '/group/' + group_id + '/undone/lastWeek');
   }
@@ -73,8 +75,8 @@ export class GroupService {
 
   @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
   })
-  getAllPulse() {
-    return this._http.get(this.BASE_API_URL + '/groups/all/pulse/');
+  getAllPulse(workspaceId) {
+    return this._http.get(this.BASE_API_URL + '/groups/all/pulse/' + workspaceId);
   }
 
   @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
@@ -117,15 +119,17 @@ export class GroupService {
 
     return this._http.get(this.BASE_API_URL + '/groups/' + post_id + '/docImport');
   }
-  
-  serveDocFileForEditorExport(post_id,group_id, editorInfo) {
 
+  serveDocFileForEditorExport(post_id,group_id, editorInfo) {
     return this._http.post(this.BASE_API_URL + '/groups/' + post_id + '/docExport', {'editorInfo': editorInfo, 'postID':post_id, 'groupID':group_id });
   }
 
   downloadGroupFile(group_id, file){
-    return this._http.get(this.BASE_API_URL + '/groups/' + group_id + '/files/'+file+'/download', {responseType: 'blob' });
+    return this._http.get(this.BASE_API_URL + '/groups/' + group_id + '/files/' + file + '/download', {responseType: 'blob' });
+  }
 
+  deleteFile(group_id, file) {
+    return this._http.delete(this.BASE_API_URL + '/groups/' + group_id + '/files/' + file );
   }
 
   searchWorkspaceUsers(query, workspace) {
@@ -160,19 +164,13 @@ export class GroupService {
     return this._http.post(this.BASE_API_URL + '/group/removeUser', data);
   }
 
-  // @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
-  // })
-  @CacheBuster({
-    cacheBusterNotifier: cacheBuster$
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
   })
   getGroupTasks(groupId) {
     return this._http.get<any>(this.BASE_API_URL + `/groups/${groupId}/tasks`);
   }
 
-  // @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
-  // })
-  @CacheBuster({
-    cacheBusterNotifier: cacheBuster$
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
   })
   getCompletedGroupTasks(groupId) {
     return this._http.get<any>(this.BASE_API_URL + `/groups/${groupId}/tasksDone`);

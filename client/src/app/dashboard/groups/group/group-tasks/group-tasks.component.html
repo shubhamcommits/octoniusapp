@@ -10,7 +10,7 @@
 <!--CREATE TASKS-->
 <div class="row">
   <!--TODO TASKS-->
-  <div class="col-md-4" cdkDropList #todoList="cdkDropList" id="todo" [cdkDropListData]="toDoTasks" 
+  <div class="col-md-4" cdkDropList #todoList="cdkDropList" id="todo" [cdkDropListData]="toDoTasks"
   [cdkDropListConnectedTo]="[progressList,doneList]" (cdkDropListDropped)="onTaskDrop($event)">
     <div class="kanbanheader kbn-todo" cdkDragHandle>
       To Do
@@ -39,7 +39,9 @@
                       {{post.task?._assigned_to?.last_name}}
                     </div>
                     <div class = "col-sm-7 text-right">
-                      <i class="material-icons due small font-weight-bold text-right" >alarm</i><span class="small due font-weight-bold" style="margin-top: 5px" *ngIf="post.task?.due_to != 'Invalid date'">
+                      <i class="material-icons small font-weight-bold text-right" [ngClass] = "checkOverdue(post) === true ? 'overdue' : 'due'" >alarm</i>
+                      <span class="small font-weight-bold" style="margin-top: 5px" *ngIf="post.task?.due_to != 'Invalid date'"
+                            [ngClass] = "checkOverdue(post) === true ? 'overdue' : 'due'">
                       {{post.task?.due_to | date}}</span>
                     </div>
                   </div>
@@ -75,8 +77,7 @@
                        [innerHTML]="post?.title | safe: 'html'">
                   </div>
                 </a>
-
-               
+ 
 
                 <ng-template #taskif>
                   <div class="col-md-4 text-right padding-topright">
@@ -113,7 +114,7 @@
                   </div>
 
                 </div>
-               
+
               </div>
             </div>
           </div>
@@ -129,7 +130,7 @@
   </div>
 
   <!--INPROGRESS TASKS-->
-  <div class="col-md-4" cdkDropList #progressList="cdkDropList" id="inprogress" [cdkDropListData]="inProgressTasks" 
+  <div class="col-md-4" cdkDropList #progressList="cdkDropList" id="inprogress" [cdkDropListData]="inProgressTasks"
   [cdkDropListConnectedTo]="[todoList,doneList]" (cdkDropListDropped)="onTaskDrop($event)">
     <div class="kanbanheader kbn-working" cdkDragHandle>
       In Progress
@@ -141,7 +142,7 @@
       </div>
     </div>
     <div *ngIf="!(isLoading$ | async)">
-      <div *ngIf="this.inProgressTasks.length != 0; else noInProgressTasks;">  
+      <div *ngIf="this.inProgressTasks.length != 0; else noInProgressTasks;">
         <div *ngFor="let post of inProgressTasks" cdkDrag>
 
           <div class="card">
@@ -159,7 +160,9 @@
                       {{post.task?._assigned_to?.last_name}}
                     </div>
                     <div class = "col-sm-7 text-right">
-                      <i class="material-icons due small font-weight-bold text-right" >alarm</i><span class="small due font-weight-bold" style="margin-top: 5px" *ngIf="post.task?.due_to != 'Invalid date'">
+                      <i class="material-icons small font-weight-bold text-right" [ngClass] = "checkOverdue(post) === true ? 'overdue' : 'due'">alarm</i>
+                      <span class="small font-weight-bold" style="margin-top: 5px" *ngIf="post.task?.due_to != 'Invalid date'"
+                            [ngClass] = "checkOverdue(post) === true ? 'overdue' : 'due'">
                       {{post.task?.due_to | date}}</span>
                     </div>
                   </div>
@@ -196,7 +199,6 @@
                   </div>
                 </a>
 
-                
 
                 <ng-template #taskif>
                   <div class="col-md-4 text-right padding-topright">
@@ -228,10 +230,10 @@
                               </button>
                               <button class="dropdown-item" (click)="OnMarkTaskCompleted(this.post._id, post)">Done</button>
                             </div>
-                          </div>  
-  
+                          </div>
+
                     </div>
-  
+
                   </div>
               </div>
             </div>
@@ -272,7 +274,9 @@
                     {{post.task?._assigned_to?.last_name}}
                   </div>
                   <div class = "col-sm-7 text-right" style="padding-top: 15px">
-                    <i class="material-icons complete small font-weight-bold" style="margin: 0px !important;">alarm</i><span style = "height: 10px" class="small complete font-weight-bold" style="margin-top: 5px" *ngIf="post.task?.due_to != 'Invalid date'">
+                    <i class="material-icons small font-weight-bold" [ngClass] = "checkOverdue(post) === true ? 'overdue' : 'due'" style="margin: 0px !important;">alarm</i>
+                    <span style = "height: 10px" class="small font-weight-bold" style="margin-top: 5px" *ngIf="post.task?.due_to != 'Invalid date'"
+                          [ngClass] = "checkOverdue(post) === true ? 'overdue' : 'due'">
                     {{post.task?.due_to | date}}</span>
                    <br> <span class="small complete"
                           style="margin: 0px !important;" *ngIf="post.task?.started_at && post.task?.completed_at"> done in
@@ -312,7 +316,7 @@
                 </div>
               </a>
 
-              
+
 
               <ng-template #taskif>
                 <div class="col-md-4 text-right padding-topright">
@@ -427,7 +431,7 @@
             <div class="w-100" style="display:inline-block" *ngIf="tags_search_result?.length > 0">
               <ul class=" list-tags">
                 <li class="tags" *ngFor="let tag of tags_search_result; let i = index;">
-                  <button class="bg-transparent border-0 col-lg-9 text-left"
+                  <button class="btn btn-light btn-block"
                     (click)="clickedOnTag(i)">{{ tag?.tags }}</button>
                 </li>
               </ul>
@@ -436,18 +440,15 @@
         </div>
       </div>
     </div>
-    <div class="row" style="margin-top: 2%;">
-      <div class="col-md-1">
-        <button type="button" class="btn btn-link">
-          <i class="material-icons" placement="top" ngbTooltip="Tags">
-            local_offer
-          </i>
-        </button>
-      </div>
-      <div class="col-md-10">
-        <button class="btn btn-sm btn-outline-primary" style="margin-right: 1rem;" (click)="removeTag(i)"
-          *ngFor="let tag of tags; let i = index" placement="top" ngbTooltip="Click here to remove this tag"><b>X</b>
-          {{tag}}</button>
+     <!--POST TAGS-->
+     <div class="row innercard" >
+      <div class="col-xs" style="margin-left: 20px">  <i class="material-icons tagslabel" ngbTooltip="Tags">
+          local_offer
+          </i></div>
+          <div class="col-md-10" style="margin-left: -20px">
+   
+      
+        <button class="btn badge badge-primary" style="margin-right: 1rem;" (click)="removeTag(i)" *ngFor="let tag of tags; let i = index" placement="top" ngbTooltip="Click here to remove this tag"><b>X</b> {{tag}}</button>
       </div>
     </div>
 
