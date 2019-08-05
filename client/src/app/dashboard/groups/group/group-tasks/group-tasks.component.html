@@ -35,8 +35,10 @@
                     ngbDropdownAnchor (focus)="myDrop.open()" onerror="this.src='/assets/images/user.png'"
                     class="topnav-avatar float-left kbn">
                   <div class = 'row'>
-                    <div class="kbn small lightgray col-sm-5">{{post.task?._assigned_to?.first_name}}
-                      {{post.task?._assigned_to?.last_name}}
+                    <div class="kbn small lightgray col-sm-5" *ngIf = "post.task.unassigned == 'No'">{{post.task?._assigned_to?.first_name}}
+                      {{post.task?._assigned_to?.last_name}} 
+                    </div>
+                     <div class="kbn small lightgray col-sm-5" *ngIf = "post.task.unassigned == 'Yes'"><p style = "color:#fd7714"> "Unassigned"</p>
                     </div>
                     <div class = "col-sm-7 text-right">
                       <i class="material-icons small font-weight-bold text-right" [ngClass] = "checkOverdue(post) === true ? 'overdue' : 'due'" >alarm</i>
