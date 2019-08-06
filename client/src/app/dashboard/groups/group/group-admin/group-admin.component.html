@@ -47,6 +47,15 @@
       <button class="btn btn-danger" (click)="onDelete()">Delete</button>
     </div>
 
+    <div [hidden]="groupDataService.group?.group_name =='Global'" class="card-tile">
+      <h4>Share files with the organization?</h4>
+      <label class="switch">
+        <input type="checkbox" (click)="onChange()" [checked] = "fileSharedCheck">
+        <span class="slider round"></span>
+      </label>
+   
+    </div>
+
   </div>
 
 </div>

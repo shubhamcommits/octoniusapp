@@ -77,6 +77,7 @@ export class GroupActivityComponent implements OnInit {
   user: User;
   profileImage;
 
+
   // group user search variabels
   config = {
     displayKey: 'description', // if objects array passed which key to be displayed defaults to description,
@@ -477,25 +478,15 @@ export class GroupActivityComponent implements OnInit {
           Value.push({ id: res['group']._admins[i]._id, value: res['group']._admins[i].first_name + ' ' + res['group']._admins[i].last_name });
         }
       });
-
-    this.groupService.getGroupFiles(this.group_id)
-      .subscribe((res) => {
-        this.files = res['posts'];
-        for (let i = 0; i < res['posts'].length; i++) {
-          if (res['posts'][i].files.length > 0) {
-            hashValues.push({ id: res['posts'][i].files[0]._id, value: '<a style="color:inherit;" target="_blank" href="' + this.BASE_URL + '/uploads/' + res['posts'][i].files[0].modified_name + '"' + '>' + res['posts'][i].files[0].orignal_name + '</a>' })
+      this.groupService.getAllSharedGroupFiles(this.group_id,this.user_data.workspace._id,this.user_data.user_id)
+        .subscribe((res) => {
+          if(hashValues.length != 0){
+            hashValues.concat(res['concatAllFiles']['allFiles'])
+          }else{
+            hashValues = res['concatAllFiles']['allFiles']
           }
-        }
-      }, (err) => {
-      });
-
-      this.documentFileService.getDocumentFilesForEditor(this.group_id)
-      .subscribe((res)=>{
-        hashValues = [ ...hashValues, ...res['renamedFiles'] ]
-      }, (err)=>{
-        console.log('Error occured while fetching the group document files', err);
-      })
-
+        }, (err) => {
+        })
 
     const toolbaroptions = {
       container: [
@@ -584,12 +575,12 @@ export class GroupActivityComponent implements OnInit {
       mention: {
         allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
         mentionDenotationChars: ["@", "#"],
+        defaultMenuOrientation: 'top',
         source: (searchTerm, renderList, mentionChar) => {
           if (mentionChar === "@") {
             this.mentionValues = Value;
           } else if(mentionChar === "#" && searchTerm.length === 0) {
 
-            console.log("herermep")
             if(localStorage.getItem('google-cloud-token') != null) {
               const getDriveFiles: any = new XMLHttpRequest();
 
@@ -613,12 +604,10 @@ export class GroupActivityComponent implements OnInit {
               };
               getDriveFiles.send();
             }
-            this.documentFileService.getDocumentFilesForEditor(this.group_id)
-            .subscribe((res)=>{
-              
-              hashValues = this.postService.removeDuplicates([ ...hashValues, ...res['renamedFiles'] ], 'id')
-
-            }, (err)=>{
+            this.groupService.getAllSharedGroupFiles(this.group_id,this.user_data.workspace._id,this.user_data.user_id)
+            .subscribe((res) => {
+              hashValues = this.postService.removeDuplicates([ ...hashValues, ...res['concatAllFiles']['allFiles'] ], 'id')
+            }, (err) => {
               console.log('Error occured while fetching the group document files', err);
             })
             this.mentionValues = hashValues;

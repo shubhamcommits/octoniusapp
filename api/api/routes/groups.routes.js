@@ -98,6 +98,21 @@ router.post('/:groupId/docExport',
   authorization.groupAccess,
   groups.serveDocFileForEditorExport);
 
+  // Shared file check bool
+router.get('/:groupId/sharedFileCheck',
+  authorization.groupAccess,
+  groups.getGroupsFileSharingCheck);
+
+  // Switch file check bool
+router.put('/:groupId/updateSharedFile',
+  authorization.groupAccess,
+  groups.updateGroupsFileSharing);
+
+  // Get All Shared Files
+router.get('/:groupId/allGroupSharedFile/:workspaceId/:userId',
+  authorization.groupAccess,
+  groups.getAllSharedGroupFiles);
+
 // - Posts -
 
 // Get ten most recent group posts
