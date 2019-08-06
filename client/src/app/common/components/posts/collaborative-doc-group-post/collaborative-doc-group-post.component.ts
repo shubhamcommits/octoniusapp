@@ -183,8 +183,8 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
   post: any;
   postTitle: any = 'Untitled';
   groupId: any;
-  documentFiles: any;
-
+  documentFiles = []
+  BASE_URL = environment.BASE_URL;
 
   docStatus: any = "Updated!";
   user_data: any;
@@ -226,12 +226,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
       backdrop:0.5,
       position: "centerTop"
     });
-    this.documentFileService.getDocumentFilesForEditor(this._activatedRoute.snapshot.paramMap.get('id'))
-    .subscribe((res)=>{ 
-      this.documentFiles = res['renamedFiles']
-    }, (err)=>{
-      console.log('Error occured while fetching the group document files', err);
-    })
+
     await this.getUser().then(()=>{
       //grab user id then call for authors check
       this.documentService.getAuthors(postId)
@@ -276,6 +271,17 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
         console.log('Error while fetching the authors', err);
       })
     });    
+
+    this.groupService.getAllSharedGroupFiles(this.groupId,this.user_data._workspace,this.user_data._id)
+    .subscribe((res) => {
+      if(this.documentFiles.length != 0){
+        this.documentFiles.concat(res['concatAllFiles']['allFiles'])
+      }else{
+        this.documentFiles = res['concatAllFiles']['allFiles']
+      }
+    }, (err) => {
+      console.log('Error while fetching shared files', err);
+    })
   
   }
 
@@ -423,21 +429,24 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
           mention: {
             allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
             mentionDenotationChars: ["/","#"],
+            defaultMenuOrientation: 'top',
             source: (searchTerm, renderList, mentionChar) => {
               //let values;
               if (mentionChar === "/") {
                 this.documentFiles = templateMention;
               }
               if (mentionChar === "#" && searchTerm.length === 0) {
-              
-              this.documentFileService.getDocumentFilesForEditor(this._activatedRoute.snapshot.paramMap.get('id'))
-              .subscribe((res)=>{
-                this.documentFiles = res['renamedFiles']
-              }, (err)=>{
-                console.log('Error occured while fetching the group document files', err);
-              })
+  
+                this.groupService.getAllSharedGroupFiles(this.groupId,this.user_data._workspace,this.user_data._id)
+                .subscribe((res) => {
+                  this.documentFiles = this.postService.removeDuplicates([ ...this.documentFiles, ...res['concatAllFiles']['allFiles']], 'id')
+    
+                }, (err) => {
+                  console.log('Error while fetching shared files', err);
+                })
+
               }
-              if (searchTerm.length === 0) {
+              if (searchTerm.length === 0) { 
                 renderList(this.documentFiles, searchTerm);
               } else {
                 const matches = [];

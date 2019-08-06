@@ -108,12 +108,6 @@ import { ColumnService } from './shared/services/column.service';
 import { PulseComponent } from './dashboard/groups/pulse/pulse.component';
 import { GroupSmartAdminComponent } from './dashboard/groups/group/group-smart-admin/group-smart-admin.component';
 import { OverlayModule } from '@angular/cdk/overlay';
-import {
-  MatDialogModule,
-  MatDialogRef,
-  MAT_DIALOG_DATA,
-
-} from '@angular/material';
 import { DocumentFileComponent } from './shared/utils/document-file/document-file.component';
 import { DocumentFileService } from './shared/services/document-file.service';
 
@@ -159,7 +153,6 @@ const ngCircle = {
 };
 
 @NgModule({
-  exports:[MatDialogModule],
   declarations: [
     AppComponent,
     NavbarComponent,
@@ -263,9 +256,7 @@ const ngCircle = {
     { provide: 'SnotifyToastConfig', useValue: ToastDefaults},
     SnotifyService, SearchService,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true },
-    { provide: LocationStrategy, useClass: HashLocationStrategy },
-    { provide: MatDialogRef, useValue: {} },
-    { provide: MAT_DIALOG_DATA, useValue: [] },],
+    { provide: LocationStrategy, useClass: HashLocationStrategy }],
   bootstrap: [AppComponent],
   entryComponents: [DialogOverviewExampleDialog],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

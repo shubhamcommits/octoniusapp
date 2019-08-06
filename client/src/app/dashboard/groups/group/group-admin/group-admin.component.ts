@@ -22,7 +22,7 @@ export class GroupAdminComponent implements OnInit {
   itemList: any = [];
   selectedItems = [];
   settings = {};
-
+  fileSharedCheck:boolean = false;
   staticAlertClosed = false;
   private _message = new Subject<string>();
   alert = {
@@ -75,6 +75,18 @@ export class GroupAdminComponent implements OnInit {
         }, 1500);
 
       }
+    })
+    .then(() =>{
+      this.groupService.getGroupSharedFileCheck(this.group_id).subscribe(
+        res => {
+          if(res['sharedFilesBool']['share_files'] != null){
+            this.fileSharedCheck = res['sharedFilesBool']['share_files']
+          }
+        },
+        err => {
+          console.error(`Failed to get group file information! ${err}`);
+        }
+      );
     })
   }
 
@@ -211,4 +223,24 @@ export class GroupAdminComponent implements OnInit {
     // console.log(items);
   }
 
+  onChange() {
+    switch (this.fileSharedCheck) {
+      case true:
+        this.fileSharedCheck = false
+        break;
+      case false:
+        this.fileSharedCheck = true
+        break;
+    
+      default:
+        break;
+    }
+    this.groupService.updateSharedFile(this.group_id,this.fileSharedCheck).subscribe(
+      res => {
+      },
+      err => {
+        console.error(`Failed to get group file information! ${err}`);
+      }
+    );
+  } 
 }
