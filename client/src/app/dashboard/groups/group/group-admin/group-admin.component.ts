@@ -127,7 +127,7 @@ export class GroupAdminComponent implements OnInit {
   inilizeWrokspaceMembersSearchForm() {
 
     this.settings = {
-      text: 'Select Workspace Members',
+      text: 'Click to select Workspace Members',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
       classes: 'myclass custom-class',
