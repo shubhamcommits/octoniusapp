@@ -1248,6 +1248,18 @@ const getAllSharedGroupFiles = async (req, res) => {
         ]}
       ]})
       .select('_id')
+//checks if current group is private
+//this ensures that if we are in the group we can access the files
+    const checkIfCurrentGroupIsPrivate = await Group.find({
+      $and: [
+        {_id: groupId},
+        { share_files : {$eq: false}},
+      ]
+    }).select('_id')
+    
+    if(checkIfCurrentGroupIsPrivate.length === 1){
+      workspaceGroups.push(checkIfCurrentGroupIsPrivate[0])
+    }
 
 //mapping query for Post files
       const filesFromPost = await Post.find({

@@ -165,6 +165,8 @@ const createNewGroup = async (req, res, next) => {
       new: true
     });
 
+    console.log(newGroupData,"brea1",groupExist,"brea3",user,"brea4",group)
+
     return res.status(200).json({
       message: 'Group Created Successfully!',
       group,
