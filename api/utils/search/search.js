@@ -26,7 +26,7 @@ const createUserQuery = (user, query) => User.find({
     { _workspace: user._workspace || user._workspace._id },
     { active: {$eq : true}}
   ]
-})
+}).select('profile_pic full_name first_name last_name email created_date skills');
 
 const createSkillsQuery = (user, query) => User.find({
   $and: [
