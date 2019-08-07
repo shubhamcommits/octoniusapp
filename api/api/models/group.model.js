@@ -65,6 +65,10 @@ const GroupSchema = new Schema({
       type: [String],
       default: []
     }
+  },
+  share_files:{
+    type:Boolean,
+    default:false,
   }
 });
 

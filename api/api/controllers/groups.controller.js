@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { Group, Post, User } = require('../models');
+const { Group, Post, User , DocumentFile} = require('../models');
 const { sendErr, sendMail } = require('../../utils');
 const moment = require('moment');
 const fs = require('fs');
@@ -1187,6 +1187,131 @@ const deletePulseDescription = async (req, res) => {
  * Jessie Jia Edit ends
  */
 
+const getGroupsFileSharingCheck = async (req, res) => {
+  try {
+    const {
+      params: {
+        groupId
+      }
+    } = req;
+
+    const sharedFilesBool = await Group.findById(
+      groupId,
+    ).select('share_files');
+
+    return res.status(200).json({
+      sharedFilesBool
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+const updateGroupsFileSharing = async (req, res) => {
+  try {
+    const {
+      params: {
+        groupId
+      }
+    } = req;
+
+    const sharedFilesBool = await Group.findByIdAndUpdate(
+      groupId,
+      {$set: {"share_files" : req.body.checkbool}}
+      ).select('group_name');
+
+    return res.status(200).json({
+      sharedFilesBool
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+const getAllSharedGroupFiles = async (req, res) => {
+  try {
+    const {
+      params: {
+        groupId,
+        workspaceId,
+        userId
+      }
+    } = req;
+//workspace check so that we have information for Post/DocumentFile queries
+    const workspaceGroups = await Group.find({
+      $and: [
+        { _workspace: workspaceId},
+        { share_files : {$eq: true}},
+        {$or :[
+          { _members: { $elemMatch: { $eq: new mongoose.Types.ObjectId(userId) } } },
+          { _admins: { $elemMatch: { $eq: new mongoose.Types.ObjectId(userId) } } },
+        ]}
+      ]})
+      .select('_id')
+//checks if current group is private
+//this ensures that if we are in the group we can access the files
+    const checkIfCurrentGroupIsPrivate = await Group.find({
+      $and: [
+        {_id: groupId},
+        { share_files : {$eq: false}},
+      ]
+    }).select('_id')
+    
+    if(checkIfCurrentGroupIsPrivate.length === 1){
+      workspaceGroups.push(checkIfCurrentGroupIsPrivate[0])
+    }
+
+//mapping query for Post files
+      const filesFromPost = await Post.find({
+        $and: [
+          { _group: {$in: workspaceGroups.map(e => new mongoose.Types.ObjectId(e._id))} },
+          { files: { $exists: true, $ne: [] } }
+        ]
+      }).select('files')
+//renamed for Post 
+      const renamedPosts = await filesFromPost.map( filesArray =>
+         filesArray['files'].map( innerFiles => ({
+            id: innerFiles._id,
+            value: innerFiles.orignal_name,
+            link: `${req.protocol}://${req.headers.host}/uploads/${innerFiles.modified_name}`
+        }))
+      );
+
+//mapping query for octo-doc in DocumentFile
+      const files = await DocumentFile.find({
+        _group_id: {$in: workspaceGroups.map(e => new mongoose.Types.ObjectId(e._id))}
+        }).select('_id _name _post_id')
+      const renamedFiles = await files.map((docs) => {
+        return { 
+            id: docs['_id'],
+            value: docs['_name'],
+            link:`${req.headers['origin']}/#/dashboard/group/${groupId}/files/${docs['_post_id']}`};
+      });
+
+    // console.log(renamedFiles)
+    const concatAllFiles = await Promise.all([renamedFiles, renamedPosts])
+    .then(res=>{
+         const gatherFirstArrayPost = renamedPosts.map((filesArray) => {
+          return { 
+              id: filesArray[0]['id'],
+              value: filesArray[0]['value'],
+              link: filesArray[0]['link'],
+          };
+        })
+        return{
+          allFiles: renamedFiles.concat(gatherFirstArrayPost)
+        }
+      })
+    .catch(err=>{
+      console.log(err);
+    })
+    return res.status(200).json({
+      concatAllFiles
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
 /*  =============
  *  -- EXPORTS --
  *  =============
@@ -1212,6 +1337,9 @@ module.exports = {
   getFiles,
   getDocFileForEditorImport,
   serveDocFileForEditorExport,
+  getGroupsFileSharingCheck,
+  updateGroupsFileSharing,
+  getAllSharedGroupFiles,
   // Posts
   getCalendarPosts,
   getUserCalendarPosts,

@@ -276,5 +276,25 @@ export class GroupService {
   getAllSmartGroupRules(workspaceId: string): Observable<any> {
     return this._http.get<any>(`${this.BASE_API_URL}/groups/${workspaceId}/smart/rules`);
   }
+  //Group files start
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
+    getGroupSharedFileCheck(group_id){
+      return this._http.get<any>(this.BASE_API_URL + `/groups/${group_id}/sharedFileCheck`);
+    }
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
+    updateSharedFile(group_id, checkbool){
+      return this._http.put<any>(this.BASE_API_URL + `/groups/${group_id}/updateSharedFile`, {checkbool:checkbool});
+    }
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
+    getAllSharedGroupFiles(group_id,workspace_id,user_id){
+      return this._http.get<any>(this.BASE_API_URL + `/groups/${group_id}/allGroupSharedFile/${workspace_id}/${user_id}`);
+    }   
+  //Group files end
 }
 
