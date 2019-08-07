@@ -16,6 +16,9 @@ export class DatePickerComponent implements OnInit {
   @Output('picked_date') picked_date = new EventEmitter();
 
   modalRef;
+  model1: Date;
+  model2: Date;
+
 
   constructor(private modalService: NgbModal) { }
 
@@ -33,6 +36,7 @@ export class DatePickerComponent implements OnInit {
 
   onDateSelected() {
     //  send back the date to the component that opened the datepicker
+    console.log(this.model_date);
     this.picked_date.emit(this.model_date);
   }
 }

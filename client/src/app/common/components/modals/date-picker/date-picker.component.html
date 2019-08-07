@@ -1,28 +1,36 @@
-
-<button class="btn btn-outline-warning task" type="button"
-        (click)="openDatePicker(dateContent)">
+<input class="form-control sr-only"
+       name="d2" #c2="ngModel" [(ngModel)]="model_date" ngbDatepicker #d2="ngbDatepicker">
+<button type="button" class="btn btn-outline-warning task" (click)="d2.toggle()">
   <i class="material-icons">event</i>
 </button>
+
 
 <!-- Modal -->
 
 <ng-template style="margin-top: 10px" #dateContent let-c="close" let-d="dismiss">
-
-  <div style="width:100%" class="modal-header">
-    <h4 class="modal-title">Select Due Date</h4>
-    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
+  <div ngbDropdown class="d-inline-block">
+    <button class="btn btn-outline-primary" ngbDropdownToggle>Toggle dropdown</button>
+    <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+      <button ngbDropdownItem>Action - 1</button>
+      <button ngbDropdownItem>Another Action</button>
+      <button ngbDropdownItem>Something else is here</button>
+    </div>
   </div>
+<!--  <div style="width:100%" class="modal-header">-->
+<!--    <h4 class="modal-title">Select Due Date</h4>-->
+<!--    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">-->
+<!--      <span aria-hidden="true">&times;</span>-->
+<!--    </button>-->
+<!--  </div>-->
 
-  <div class="modal-body">
-    <ngb-datepicker #dp [(ngModel)]="model_date" (navigate)="date = $event.next"></ngb-datepicker>
-  </div>
+<!--  <div class="modal-body">-->
+<!--    <ngb-datepicker #dp [(ngModel)]="model_date" (navigate)="date = $event.next"></ngb-datepicker>-->
+<!--  </div>-->
 
-  <div class="modal-footer">
-    <!-- in the personal workspace we don't use the assigned members function-->
-    <button class="btn btn-primary mb-2 mr-2" (click)="onDateSelected();c('Close click')">Done</button>
+<!--  <div class="modal-footer">-->
+<!--    &lt;!&ndash; in the personal workspace we don't use the assigned members function&ndash;&gt;-->
+<!--    <button class="btn btn-primary mb-2 mr-2" (click)="onDateSelected();c('Close click')">Done</button>-->
 
-    <button type="button" class="btn btn-default mb-2 mr-2" (click)="c('Close click')">Cancel</button>
-  </div>
+<!--    <button type="button" class="btn btn-default mb-2 mr-2" (click)="c('Close click')">Cancel</button>-->
+<!--  </div>-->
 </ng-template>
