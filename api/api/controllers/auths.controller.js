@@ -456,6 +456,7 @@ const createNewWorkspace = async (req, res, next) => {
       group_name: 'Global',
       _workspace: workspaceUpdate,
       _members: user,
+      share_files: true,
       workspace_name: workspaceUpdate.workspace_name
     };
 
