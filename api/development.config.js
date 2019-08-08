@@ -17,4 +17,4 @@ const init = () => {
   process.env.WEBHOOK_PS_SECRET = 'whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn';
 };
 
-module.exports = { init };
+module.exports = { init }; 
