@@ -33,12 +33,9 @@ const add = async (req, res, next) => {
     // Send Email notification after post creation
     switch (post.type) {
       case 'task':
-      
-         
         await notifications.newTaskAssignment(post);
         await sendMail.taskAssigned(post);
         await sendMail.scheduleTaskReminder(post);
-        
         break;
       case 'event':
         await notifications.newEventAssignments(post);

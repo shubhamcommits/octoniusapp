@@ -50,12 +50,7 @@ const PostSchema = new Schema({
     _assigned_to: {
       type: Schema.Types.ObjectId,
       ref: 'User'
-     //type: String
     },
-    unassigned : {
-     type : String , 
-     default: "No"
-     } , 
     status: {
       type: String,
       default: 'to do'
