@@ -1,6 +1,6 @@
 <input class="form-control sr-only"
        name="d2" #c2="ngModel" [(ngModel)]="model_date" ngbDatepicker #d2="ngbDatepicker" (ngModelChange)="onDateSelected()">
-<button type="button" class="btn btn-outline-warning task" (click)="d2.toggle()">
-  <i class="material-icons">event</i>
+<button type="button" class="btn " [ngClass]="selected? 'selected': 'btn-outline-warning'" (click)="d2.toggle()">
+  <i class="material-icons icon">event</i>
 </button>
 

@@ -28,31 +28,38 @@ export class AssignUsersModalComponent implements OnInit {
   constructor(private groupService: GroupService, private postService: PostService, private modalService: NgbModal) { }
 
   ngOnInit() {
+
     if (this.selectedGroupUsers.length > 0) {
       this.assignment = 'Assigned';
     }
 
+    this.groupService.getAllGroupUsers(this.group._id)
+      .subscribe((res) => {
+        this.groupUsersList = res['users'];
+        console.log(this.groupUsersList.length);
+      }, (err) => {
+    });
+
+
     if (!this.settings) {
       if (this.type === 'task') {
         this.settings = {
-          text: 'Select Group Members',
           classes: 'myclass custom-class',
           singleSelection: true,
           primaryKey: '_id',
           labelKey: 'full_name',
-          noDataLabel: 'Search Members...',
+          // noDataLabel: 'Search Members...',
           enableSearchFilter: true,
           searchBy: ['full_name', 'capital']
         };
       } else {
         this.settings = {
-          text: 'Select Group Members',
           selectAllText: 'Select All',
           unSelectAllText: 'UnSelect All',
           classes: 'myclass custom-class',
           primaryKey: '_id',
           labelKey: 'full_name',
-          noDataLabel: 'Search Members...',
+          // noDataLabel: 'Search Members...',
           enableSearchFilter: true,
           searchBy: ['full_name', 'capital']
         };
@@ -74,6 +81,7 @@ export class AssignUsersModalComponent implements OnInit {
     if (this.selectedGroupUsers.length >= 1) {
       this.assignment = 'Assigned';
     }
+    this.usersSelected.emit(this.selectedGroupUsers);
   }
 
   onSelectAll(items: any) {

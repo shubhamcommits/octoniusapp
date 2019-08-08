@@ -136,10 +136,11 @@ export class GroupService {
     return this._http.get(this.BASE_API_URL + `/workspace/searchWorkspaceUsers/${workspace}/${query}`);
   }
 
-  searchGroupUsers(group_id, query) {
-   // console.log('Inside searchGroupUsers');
+  getAllGroupUsers(group_id) {
+    return this._http.get(`${this.BASE_API_URL}/group/getAllGroupUsers/${group_id}`);
+  }
 
-    //  return this._http.get(this.BASE_API_URL + `/group/searchGroupUsers/${group_id}/${query}`);
+  searchGroupUsers(group_id, query) {
     return this._http.get(`${this.BASE_API_URL}/group/searchGroupUsers/${group_id}/${query}`);
   }
 

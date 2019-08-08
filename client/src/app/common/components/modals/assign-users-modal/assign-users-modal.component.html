@@ -1,7 +1,25 @@
-<button type="button" class="btn btn-outline-warning task"
-        (click)="openAssignPicker(assignContent)">
-  <i class="material-icons">perm_identity</i>
-</button>
+ <angular2-multiselect [data]="groupUsersList" [(ngModel)]="selectedGroupUsers" [settings]="settings"
+                          (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
+                          (onDeSelectAll)="onDeSelectAll($event)">
+      <c-search>
+        <ng-template>
+          <input type="text" (keyup)="onSearch($event)" placeholder="Name, Email, Username or Phone" style="border: none;width: 100%; height: 100%;outline: none;" />
+        </ng-template>
+      </c-search>
+      <c-item>
+        <ng-template let-item="item">
+          <label style="color: #333;width: 150px;">{{item.full_name }}</label>
+          <label>{{item.capital}}</label>
+        </ng-template>
+      </c-item>
+ </angular2-multiselect>
+
+
+
+<!--<button type="button" class="btn btn-outline-warning task"-->
+<!--        (click)="openAssignPicker(assignContent)">-->
+<!--  <i class="material-icons">perm_identity</i>-->
+<!--</button>-->
 
 <!--  Modal to Assign calendar event or task to group memeber -->
 <ng-template #assignContent let-c="close" let-d="dismiss">

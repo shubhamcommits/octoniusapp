@@ -21,7 +21,7 @@ router.use(auth.verifyToken);
 router.use(auth.isLoggedIn);
 
 // vvvv| BAD REST PATTERN, to be replaced! |
-
+router.get('/getAllGroupUsers/:group_id', groupsController.getAllGroupUsers);
 router.get('/searchGroupUsers/:group_id/:query', groupsController.searchGroupUsers);
 
 router.post('/addNewUsers', groupsController.addNewUsersInGroup);

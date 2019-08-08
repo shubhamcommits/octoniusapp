@@ -15,28 +15,21 @@ export class DatePickerComponent implements OnInit {
   @Input('model_date') model_date;
   @Output('picked_date') picked_date = new EventEmitter();
 
-  modalRef;
-  model1: Date;
-  model2: Date;
-
-
   constructor(private modalService: NgbModal) { }
+  selected = false;
 
   ngOnInit() {
     if (!this.model_date) {
-      console.log('make new date');
       const dateObj = moment();
       this.model_date = {year: dateObj.year(), month: dateObj.month(), day: dateObj.date()};
     }
-  }
-
-  openDatePicker(dateContent) {
-    this.modalRef = this.modalService.open(dateContent, {centered: true});
   }
 
   onDateSelected() {
     //  send back the date to the component that opened the datepicker
     console.log(this.model_date);
     this.picked_date.emit(this.model_date);
+    this.selected = true;
   }
 }
+
