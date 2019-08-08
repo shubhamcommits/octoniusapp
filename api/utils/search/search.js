@@ -23,7 +23,8 @@ const createPostQuery = (userGroups, query) => Post.find({
 const createUserQuery = (user, query) => User.find({
   $and: [
     { full_name: { $regex: query, $options: 'i' } },
-    { _workspace: user._workspace || user._workspace._id }
+    { _workspace: user._workspace || user._workspace._id },
+    { active: {$eq : true}}
   ]
 }).select('profile_pic full_name first_name last_name email created_date skills');
 
@@ -31,7 +32,7 @@ const createSkillsQuery = (user, query) => User.find({
   $and: [
     { skills: { $regex: query, $options: 'i' } },
     { _workspace: user._workspace },
-    { active: true }
+    { active: {$eq : true}}
   ]
 }).select('profile_pic full_name first_name last_name email created_date skills');
 
