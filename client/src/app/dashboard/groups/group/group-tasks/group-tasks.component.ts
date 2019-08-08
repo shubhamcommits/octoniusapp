@@ -14,7 +14,7 @@ import {SearchService} from "../../../../shared/services/search.service";
 import Swal from 'sweetalert2';
 import 'quill-mention';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
-
+import { AuthService } from '../../../../shared/services/auth.service';
 import * as Quill from 'quill';
 (window as any).Quill = Quill;
 import 'quill-emoji/dist/quill-emoji';
@@ -22,7 +22,7 @@ import { QuillAutoLinkService } from '../../../../shared/services/quill-auto-lin
 declare var gapi: any;
 declare var google: any;
 import { saveAs } from 'file-saver';
-
+//const User = require('../../../../../../../api/api/models'); 
 
 @Component({
   selector: 'app-group-tasks',
@@ -94,7 +94,8 @@ export class GroupTasksComponent implements OnInit {
      private modalService: NgbModal,
      private quillInitializeService: QuillAutoLinkService,
      private _userService: UserService,
-     private _router: Router) {
+     private _router: Router ,
+     private _auth:   AuthService) {
     this.user_data = JSON.parse(localStorage.getItem('user'));
   }
 
@@ -270,8 +271,10 @@ export class GroupTasksComponent implements OnInit {
 
     // create due date
     const date = new Date(this.model_date.year, this.model_date.month - 1, this.model_date.day);
-
-    const post = {
+    var post;
+    if(this.selectedGroupUsers.length != 0)
+     { 
+     post = {
       title: this.post.title,
       content: this.post.content,
       type: 'task',
@@ -281,10 +284,66 @@ export class GroupTasksComponent implements OnInit {
         due_date: moment(date).format('YYYY-MM-DD hh:mm:ss.SSS'),
         due_to: moment(date).format('YYYY-MM-DD'),
         _assigned_to: this.selectedGroupUsers[0]._id,
-        _content_mentions: this.content_mentions
+        _content_mentions: this.content_mentions,
+        unassigned : "No"
       }
+      
     };
+    }
+    if(this.selectedGroupUsers.length == 0)
+    {
+   // var id;
+   // User.find({"first_name" : "Unassigned"} , function(err , unassignedUser){
+   // if(err)
+   // {
+    var userData = {"first_name" : "Unassigned" , 
+    "last_name" : "Unassigned" , 
+      
+    "email" :     "ngbs007@gmail.com" ,
+    "password" :  "password" , 
+    "workspace_name" : this.user_data.workspace.workspace_name    
+     }
+   //  this._auth.chechUserAvailability(userData)
+   //      .subscribe((signUp_response)=> {
 
+   //       this.alert.class = 'alert alert-success';
+  //        this.alert.message = signup_response.message;
+ 
+  //        });
+         
+        
+         
+  //  User.create(userData);
+  //  if(unassignedUser)
+  //  {
+  //    id = unassignedUser._id;
+  //  }
+ //   }  
+ //   User.find({"first_name" : "Unassigned"} , function(err , unassignedUser){
+ //   if(unassignedUser)
+ //   {
+ //   id = unassignedUser._id;
+ //   }
+ //   });
+
+ //   });
+    console.log("entered unassigned"); 
+    post = {
+      title: this.post.title,
+      content: this.post.content,
+      type: 'task',
+      _posted_by: this.user_data.user_id,
+      _group: this.groupId,
+      task: {
+        due_date: moment(date).format('YYYY-MM-DD hh:mm:ss.SSS'),
+        due_to: moment(date).format('YYYY-MM-DD'),
+        _assigned_to: this.user_data.user_id ,
+        _content_mentions: this.content_mentions , 
+        unassigned : "Yes"
+      }
+
+    };
+    }
     // Handle google drive files
     const driveDivision = document.getElementById('google-drive-file');
 
@@ -303,8 +362,13 @@ export class GroupTasksComponent implements OnInit {
     // if the user is using his personal workspace I want to automatically assign the task to him/her
     // If the user is posting a task in a group I want to assign it to the member he/she chose.
     formData.append('task._assigned_to', post.task._assigned_to);
+    formData.append('task.unassigned' , post.task.unassigned);    
+    
     formData.append('task.status', 'to do');
-
+    
+        
+   
+    
     const scanned_content = post.content;
     var el = document.createElement('html');
     el.innerHTML = scanned_content;
@@ -877,7 +941,7 @@ export class GroupTasksComponent implements OnInit {
   }
 
 readyToAddTask() {
-   return !this.selectedGroupUsers[0] || !this.model_date || this.post.content === '';
+   return   !this.model_date || this.post.content === '';
 }
 
   likepost(post) {
