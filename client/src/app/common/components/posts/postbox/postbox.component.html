@@ -106,12 +106,14 @@
 
             <assign-users-modal
               *ngIf="(post.type === 'event' || post.type === 'task') && !isItMyWorkplace"
-              [ngClass] = "'sr-only'"
               [selectedGroupUsers]="selectedGroupUsers"
               (usersSelected)="usersSelected($event)"
               [settings]="settings"
               [group]="group">
             </assign-users-modal>
+            <button type="button" class="btn btn-outline-warning">
+              <i class="material-icons icon">event</i>
+            </button>
             <date-picker-modal [model_date]="model_date" (picked_date)="setDate($event)" *ngIf="post.type === 'event'|| post.type ==='task'"></date-picker-modal>
             <time-picker *ngIf="post.type === 'event'" [model_time]="model_time" (picked_time)="setTime($event)"></time-picker>
 

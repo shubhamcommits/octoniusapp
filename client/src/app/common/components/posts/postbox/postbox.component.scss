@@ -63,19 +63,12 @@ div.collab-dropdown-menu.dropdown-menu.show{
   display:none;
 }
 
-.custom-class {
-  color: #ccc;
-}
-.custom-class .c-token{
-  background: #38d574 !important;
-}
-.custom-class .pure-checkbox label::before {
-  border-color: #38d574 !important;
-}
-.custom-class .pure-checkbox input[type="checkbox"]:checked + label[_ngcontent-c1]:before {
-  background: #38d574 !important;
-}
-
-c-icon {
-  display: none;
+.btn-outline-warning{
+  width: 50px;
+  height:50px;
+  object-fit: cover;
+  border-radius: 50%;
+  color: #FD7714;
+  border: 1px solid #FD7714;
+  box-sizing:border-box;
 }
