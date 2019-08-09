@@ -116,6 +116,7 @@ import {
 } from '@angular/material';
 import { DocumentFileComponent } from './shared/utils/document-file/document-file.component';
 import { DocumentFileService } from './shared/services/document-file.service';
+import { AngularMultiSelect } from "./common/components/modals/angular2-multiselect-dropdown";
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 
@@ -214,6 +215,7 @@ const ngCircle = {
     GroupSmartAdminComponent,
     DialogOverviewExampleDialog,
     DocumentFileComponent,
+    AngularMultiSelect
   ],
   imports: [
     BrowserModule,
