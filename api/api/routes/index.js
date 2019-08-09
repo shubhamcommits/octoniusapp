@@ -8,16 +8,18 @@ const webhooksRoutes = require('./webhooks.routes');
 const searchRoutes = require('./search.routes');
 const columnsRoutes = require('./columns.routes');
 const documentFileRoutes = require('./document-file.routes');
+const groupFileSectionRoutes = require('./group-file-uploads.routes');
 
 module.exports = {
   authsRoutes,
   billingRoutes,
   groupsRoutes,
   postsRoutes,
-    searchRoutes,
+  searchRoutes,
   usersRoutes,
   webhooksRoutes,
   workspacesRoutes,
   columnsRoutes,
-  documentFileRoutes
+  documentFileRoutes,
+  groupFileSectionRoutes,
 };

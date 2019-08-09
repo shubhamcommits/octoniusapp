@@ -52,7 +52,7 @@ export class CollaborativeDocGroupNavbarComponent implements OnInit {
     private router: Router,
     private documentFileService: DocumentFileService,
     private snotifyService: SnotifyService,) {
-      this.userId = this.activatedRoute.snapshot.paramMap.get('id')
+      this.userId = JSON.parse(localStorage.getItem('user'))['user_id']
       this.postId = this.activatedRoute.snapshot.paramMap.get('postId');
       this.groupId = this.activatedRoute.snapshot['_urlSegment']['segments'][2].path;
       //call authors first to set list
@@ -224,12 +224,12 @@ export class CollaborativeDocGroupNavbarComponent implements OnInit {
         _post_id: this.postId,
         _name: this.document_name,
         _content: doc.outerHTML,
-        _group_id : agoraID
+        _group_id : agoraID,
+        _posted_by : this.userId,
       };
       this.documentFileService.getDocumentFile(this.postId)
       .subscribe((res)=>{
         if(res['file'] && res['file'].length > 0){
-          // console.log('File Found', res);
           this.documentFileService.editDocumentFile(this.postId, documentFileData)
           .subscribe((res)=>{
             this.snotifyService.success(`${this.document_name} was published to ${agoraGroupName}`, {
