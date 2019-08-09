@@ -8,6 +8,7 @@ const billing = require('./billing.controller');
 const search = require('./search.controller');
 const columns = require('./columns.controller');
 const documentFile = require('./document-file.controller');
+const groupSectionFiles = require('./group-file-uploads.controller');
 
 // !! old Controllers, to be removed after implementation
 const authsController = require('./auths.controller.old');
@@ -25,9 +26,10 @@ module.exports = {
   groups,
   notifications,
   posts,
-    search,
+  search,
   users,
   workspaces,
   columns,
-  documentFile
+  documentFile,
+  groupSectionFiles,
 };

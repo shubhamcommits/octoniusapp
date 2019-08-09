@@ -43,14 +43,15 @@ const createFile = async (req, res, next) => {
     try{
         const {
             //params: fileId,
-            body:{ _content, _name, _post_id, _group_id }
+            body:{ _content, _name, _post_id, _group_id, _posted_by }
         } = req;
 
         const fileData = {
             _post_id: _post_id,
             _name: _name,
             _content: _content,
-            _group_id: _group_id
+            _group_id: _group_id,
+            _posted_by: _posted_by,
         }
 
         const file = await DocumentFile.create(fileData);
@@ -69,14 +70,15 @@ const updateFile = async (req, res, next) => {
     try{
         const {
             params: { postId },
-            body: { _content, _name, _group_id }
+            body: { _content, _name, _group_id, _posted_by}
         } = req;
 
         const fileData = {
             //_post_id: _post_id,
             _name: _name,
             _content: _content,
-            _group_id: _group_id
+            _group_id: _group_id,
+            _posted_by: _posted_by,
         }
 
         // const file = await DocumentFile.findOneAndUpdate({

@@ -18,6 +18,7 @@ import { DocumentFileService } from '../../../../shared/services/document-file.s
 })
 export class GroupFilesComponent implements OnInit {
 
+  user_id;
   group_id;
   groupImageUrl = '';
   posts = new Array();
@@ -40,8 +41,10 @@ export class GroupFilesComponent implements OnInit {
 
   async ngOnInit() {
     this.ngxService.start(); // start foreground loading with 'default' id
+    this.user_id = JSON.parse(localStorage.getItem('user'))['user_id']
     this.group_id = this.groupDataService.groupId;
     this.loadDocumentFiles();
+    this.loadGroupUploadedFiles();
     this.loadFiles()
     .then(()=>{
       this.ngxService.stop();
@@ -178,5 +181,35 @@ export class GroupFilesComponent implements OnInit {
     })
   }
 
+  addFileEvent(fileInput:any){
+    var formData = new FormData()
+    const files:Array<File> = <Array<File>>fileInput.target.files;
+      // add the files to the formData
+      if (files !== null) {
+        for (let i = 0 ; i < files.length ; i++) {
+          formData.append('attachments', files[i], files[i]['name']);
+        }
+      }
+    this.groupService.addGroupFileInFileSection(this.group_id,this.user_id,formData)
+    .subscribe((res) => {
+      console.log('Group posts:', res);
+      
+
+    }, (err) => {
+      console.log('Error while loading files', err);
+    });
+  }
+  loadGroupUploadedFiles(){
+    return new Promise((resolve, reject)=>{
+      this.groupService.getGroupFileInFileSection(this.group_id)
+      .subscribe((res)=>{
+        console.log('All document files', res);
+        resolve();
+      }, (err)=>{
+        console.log('Error occured while fetching the group document files', err);
+        reject(err);
+      })
+    })
+  }
 
 }

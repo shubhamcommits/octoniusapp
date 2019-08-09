@@ -296,6 +296,18 @@ export class GroupService {
     getAllSharedGroupFiles(group_id,workspace_id,user_id){
       return this._http.get<any>(this.BASE_API_URL + `/groups/${group_id}/allGroupSharedFile/${workspace_id}/${user_id}`);
     }   
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
+    addGroupFileInFileSection(group_id,user_id,add_files){
+      return this._http.post<any>(this.BASE_API_URL + `/groupFileUploads/${group_id}/FilesUpload/${user_id}`, add_files);
+    }   
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
+    getGroupFileInFileSection(group_id){
+      return this._http.get<any>(this.BASE_API_URL + `/groupFileUploads/${group_id}/allGroupFiles`);
+    }   
   //Group files end
 }
 
