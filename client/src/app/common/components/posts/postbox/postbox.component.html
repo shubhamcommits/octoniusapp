@@ -106,6 +106,7 @@
 
             <assign-users-modal
               *ngIf="(post.type === 'event' || post.type === 'task') && !isItMyWorkplace"
+              [ngClass] = "'sr-only'"
               [selectedGroupUsers]="selectedGroupUsers"
               (usersSelected)="usersSelected($event)"
               [settings]="settings"

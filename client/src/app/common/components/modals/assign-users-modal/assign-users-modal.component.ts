@@ -36,35 +36,10 @@ export class AssignUsersModalComponent implements OnInit {
     this.groupService.getAllGroupUsers(this.group._id)
       .subscribe((res) => {
         this.groupUsersList = res['users'];
-        console.log(this.groupUsersList.length);
       }, (err) => {
     });
 
-
-    if (!this.settings) {
-      if (this.type === 'task') {
-        this.settings = {
-          classes: 'myclass custom-class',
-          singleSelection: true,
-          primaryKey: '_id',
-          labelKey: 'full_name',
-          // noDataLabel: 'Search Members...',
-          enableSearchFilter: true,
-          searchBy: ['full_name', 'capital']
-        };
-      } else {
-        this.settings = {
-          selectAllText: 'Select All',
-          unSelectAllText: 'UnSelect All',
-          classes: 'myclass custom-class',
-          primaryKey: '_id',
-          labelKey: 'full_name',
-          // noDataLabel: 'Search Members...',
-          enableSearchFilter: true,
-          searchBy: ['full_name', 'capital']
-        };
-      }
-    }
+    // Settings for angular2-multiselect-dropdown is set in postbox.component.ts
   }
 
   onDeSelectAll(items: any) {
@@ -89,7 +64,6 @@ export class AssignUsersModalComponent implements OnInit {
   }
 
   onSearch(evt: any) {
-    this.groupUsersList = [];
     this.groupService.searchGroupUsers(this.group._id, evt.target.value)
       .subscribe((res) => {
         this.groupUsersList = res['users'];

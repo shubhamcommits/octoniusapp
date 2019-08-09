@@ -1,9 +1,9 @@
- <angular2-multiselect [data]="groupUsersList" [(ngModel)]="selectedGroupUsers" [settings]="settings"
+ <angular2-multiselect class="custom-class" [data]="groupUsersList" [(ngModel)]="selectedGroupUsers" [settings]="settings"
                           (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
                           (onDeSelectAll)="onDeSelectAll($event)">
       <c-search>
         <ng-template>
-          <input type="text" (keyup)="onSearch($event)" placeholder="Name, Email, Username or Phone" style="border: none;width: 100%; height: 100%;outline: none;" />
+          <input type="text" (keyup)="onSearch($event)" style="border: none; width: 100%; height: 100%;outline: none;" />
         </ng-template>
       </c-search>
       <c-item>

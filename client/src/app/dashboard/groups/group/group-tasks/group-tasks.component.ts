@@ -674,13 +674,11 @@ export class GroupTasksComponent implements OnInit {
     // group memebrs search setting when user add new event or taks type post
     initializeGroupMembersSearchForm() {
       this.settings = {
-        text: 'Select Group Members',
         selectAllText: 'Select All',
         unSelectAllText: 'UnSelect All',
         classes: 'myclass custom-class',
         primaryKey: '_id',
         labelKey: 'full_name',
-        noDataLabel: 'Search Members...',
         enableSearchFilter: true,
         searchBy: ['full_name', 'capital']
       };

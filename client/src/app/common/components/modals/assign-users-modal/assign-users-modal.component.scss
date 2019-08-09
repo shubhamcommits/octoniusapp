@@ -7,6 +7,7 @@
   border: 1px solid #FD7714;
   box-sizing:border-box;
 }
+
 .icon{
   font-size: 24px;
   line-height: 24px;
@@ -24,5 +25,10 @@
   box-sizing: border-box;
 }
 
+.custom-class .cuppa-dropdown {
+  width: 100px;
+}
 
-$enable-caret: false;
+.custom-class span {
+  display: none;
+}
