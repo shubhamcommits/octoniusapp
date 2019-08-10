@@ -25,10 +25,6 @@
   box-sizing: border-box;
 }
 
-.custom-class .cuppa-dropdown {
-  width: 100px;
-}
-
-.custom-class span {
-  display: none;
+.dropdown-toggle::after{
+  display:none;
 }

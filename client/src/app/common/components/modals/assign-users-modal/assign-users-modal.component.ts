@@ -1,9 +1,10 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {GroupService} from "../../../../shared/services/group.service";
 import {PostService} from "../../../../shared/services/post.service";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'assign-users-modal',
   templateUrl: './assign-users-modal.component.html',
   styleUrls: ['./assign-users-modal.component.scss']
@@ -23,6 +24,7 @@ export class AssignUsersModalComponent implements OnInit {
 
   // complete list of all the users of the group
   groupUsersList = [];
+  selected = false;
 
 
   constructor(private groupService: GroupService, private postService: PostService, private modalService: NgbModal) { }
@@ -42,26 +44,23 @@ export class AssignUsersModalComponent implements OnInit {
     // Settings for angular2-multiselect-dropdown is set in postbox.component.ts
   }
 
-  onDeSelectAll(items: any) {
-    this.assignment = 'Unassigned';
-  }
-
-  OnItemDeSelect(item: any) {
-    if (this.selectedGroupUsers.length < 1) {
+  onItemSelect(item: any) {
+    if (this.selected === false){
+      this.selected = true;
+      if (this.selectedGroupUsers.length >= 1) {
+        this.assignment = 'Assigned';
+      }
+      this.selectedGroupUsers = [];
+      this.selectedGroupUsers.unshift(item);
+      this.usersSelected.emit(this.selectedGroupUsers);
+    } else{
+      this.selectedGroupUsers = [];
+      this.usersSelected.emit(this.selectedGroupUsers);
+      this.selected = false;
       this.assignment = 'Unassigned';
     }
   }
 
-  onItemSelect(item: any) {
-    if (this.selectedGroupUsers.length >= 1) {
-      this.assignment = 'Assigned';
-    }
-    this.usersSelected.emit(this.selectedGroupUsers);
-  }
-
-  onSelectAll(items: any) {
-    this.assignment = 'Assigned';
-  }
 
   onSearch(evt: any) {
     this.groupService.searchGroupUsers(this.group._id, evt.target.value)
@@ -70,13 +69,5 @@ export class AssignUsersModalComponent implements OnInit {
       }, (err) => {
 
       });
-  }
-
-  onUsersSelected() {
-    this.usersSelected.emit(this.selectedGroupUsers);
-  }
-
-  openAssignPicker(assignContent) {
-      this.modalService.open(assignContent, {centered: true});
   }
 }
