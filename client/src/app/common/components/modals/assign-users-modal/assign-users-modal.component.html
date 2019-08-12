@@ -1,15 +1,20 @@
-<div ngbDropdown autoClose=true class="d-inline-block">
-  <button type="button" class="btn" [ngClass]="selected? 'selected': 'btn-outline-warning'" id="dropdownBasic1" ngbDropdownToggle>
-    <i class="material-icons icon">perm_identity</i>
+<div ngbDropdown placement="bottom-right" autoClose=true class="d-inline-block">
+  <button class="btn" onclick="this.blur();" [ngClass]="selected? 'selected': 'btn-outline-warning'" id="dropdownBasic1" ngbDropdownToggle>
+      <i *ngIf="userProfileImage == null; else userAvatar" class="material-icons icon">perm_identity</i>
   </button>
   <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-    <div class="input-group input-group-sm search-control">
-        <span class="input-group-addon">
-        </span>
-      <input type="text" class="form-control" ng-model="query" (keyup) = "onSearch($event)">
+    <div ngbDropdownItem style="font-color: #9B9B9B; padding-left:6px" ><span>Asignee</span></div>
+    <div class="input-group input-group-sm">
+      <input type="text" class="form-control" (keyup) = "onSearch($event)">
     </div>
-    <button ngbDropdownItem *ngFor="let user of groupUsersList" (click) = "onItemSelect(user)">{{user.full_name}}
-    </button>
+    <div class="dropdown-divider"></div>
+    <div ngbDropdownItem style="margin-bottom: 0px; margin-top: 0px;" *ngFor="let user of groupUsersList" >
+      <button style="text-align:left; padding-left:6px" class="btn" (click) = "onItemSelect(user)">{{user.full_name}}<br> <span class="email">{{user.email}}</span></button>
+      <div class="dropdown-divider"></div>
+    </div>
   </div>
 </div>
 
+<ng-template #userAvatar>
+    <img [src]="userProfileImage" onerror="userProfileImage = null">
+</ng-template>

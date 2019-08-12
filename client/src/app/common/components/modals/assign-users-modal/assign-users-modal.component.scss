@@ -8,13 +8,6 @@
   box-sizing:border-box;
 }
 
-.icon{
-  font-size: 24px;
-  line-height: 24px;
-  font-weight: normal;
-  font-style: normal;
-}
-
 .selected{
   width: 50px;
   height: 50px;
@@ -28,3 +21,28 @@
 .dropdown-toggle::after{
   display:none;
 }
+
+.form-control {
+  margin-left: 5px;
+  margin-right: 5px;
+  background: #FFFFFF;
+  border: 1px solid #E4EDF8;
+  box-sizing: border-box;
+  border-radius: 10%;
+}
+
+.email {
+  font-size: 12px;
+}
+
+.dropdown-item {
+  margin-bottom: 0px;
+  margin-top: 0px;
+  padding: 0px;
+}
+
+.dropdown-divider{
+  padding: 1px;
+  margin: 1px;
+}
+

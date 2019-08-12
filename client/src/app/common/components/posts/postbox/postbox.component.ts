@@ -121,6 +121,8 @@ export class PostboxComponent implements OnInit, OnDestroy {
   tags_search_words: String = ''
   tags_search_result: any = new Array();
 
+  // user avatar
+  userProfileImage = null;
   constructor(
     private modalService: NgbModal,
     private groupService: GroupService,
@@ -830,6 +832,7 @@ export class PostboxComponent implements OnInit, OnDestroy {
   usersSelected(users) {
     this.selectedGroupUsers = users;
     this.assignment = users.length < 1 ? "Unassigned" : "Assigned";
+
   }
 
   // !--GOOGLE PICKER IMPLEMENTATION--! //
@@ -838,7 +841,7 @@ export class PostboxComponent implements OnInit, OnDestroy {
     // auth -> get access_token -> opens the picker to choose the files
     if(localStorage.getItem('google-cloud-token')!= null){
       gapi.load('picker', { 'callback': this.onPickerApiLoad.bind(this) });
-      this.handleAuthResult(JSON.parse(localStorage.getItem('google-cloud-token')).google_token_data)
+      this.handleAuthResult(JSON.parse(localStorage.getItem('google-cloud-token')).google_token_data);
     }
     else{
       gapi.load('auth', { 'callback': this.onAuthApiLoad.bind(this) });

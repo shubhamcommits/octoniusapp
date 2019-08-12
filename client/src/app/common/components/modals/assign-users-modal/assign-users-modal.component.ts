@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angula
 import {GroupService} from "../../../../shared/services/group.service";
 import {PostService} from "../../../../shared/services/post.service";
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { environment } from "../../../../../environments/environment";
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -25,7 +26,7 @@ export class AssignUsersModalComponent implements OnInit {
   // complete list of all the users of the group
   groupUsersList = [];
   selected = false;
-
+  userProfileImage = null;
 
   constructor(private groupService: GroupService, private postService: PostService, private modalService: NgbModal) { }
 
@@ -47,27 +48,35 @@ export class AssignUsersModalComponent implements OnInit {
   onItemSelect(item: any) {
     if (this.selected === false){
       this.selected = true;
-      if (this.selectedGroupUsers.length >= 1) {
-        this.assignment = 'Assigned';
-      }
+      this.assignment = 'Assigned';
       this.selectedGroupUsers = [];
       this.selectedGroupUsers.unshift(item);
+      this.userProfileImage = `${environment.BASE_URL}/uploads/${item['profile_pic']}`;
       this.usersSelected.emit(this.selectedGroupUsers);
-    } else{
+    } else {
       this.selectedGroupUsers = [];
       this.usersSelected.emit(this.selectedGroupUsers);
       this.selected = false;
       this.assignment = 'Unassigned';
+      this.userProfileImage = null;
     }
   }
 
 
   onSearch(evt: any) {
-    this.groupService.searchGroupUsers(this.group._id, evt.target.value)
-      .subscribe((res) => {
-        this.groupUsersList = res['users'];
-      }, (err) => {
+    if (evt.target.value.length === 0){
+      this.groupService.getAllGroupUsers(this.group._id)
+        .subscribe((res) => {
+          this.groupUsersList = res['users'];
+        }, (err) => {
+        });
+    } else {
+      this.groupService.searchGroupUsers(this.group._id, evt.target.value)
+        .subscribe((res) => {
+          this.groupUsersList = res['users'];
+        }, (err) => {
 
-      });
+        });
+    }
   }
 }
