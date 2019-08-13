@@ -23,22 +23,22 @@
           <div class="line"></div>
         </div>
       </div>
-      
-      <div [ngClass]="{'card-main-body': true, 'dragging-cover': changeBg[i]}"> 
+
+      <div [ngClass]="{'card-main-body': true, 'dragging-cover': changeBg[i]}">
         <div *ngIf="!(isLoading$ | async)">
           <div *ngIf="column.tasks.length > 0;" cdkDropList [cdkDropListData]="column.tasks"
               (cdkDropListDropped)="onTaskDrop($event)" [id]="column.id" [cdkDropListConnectedTo]="taskIds" >
             <div *ngFor="let post of column.tasks" cdkDrag [cdkDragDisabled]="post.title == 'proxy'" (cdkDragStarted)="entered($event)" (CdkDragEnd)="exited($event)">
               <div *ngIf="post.title == 'proxy' ">
-                  <img src='../../../assets/images/empty-todo.svg' style="max-width:80%;"> 
+                  <img src='../../../assets/images/empty-todo.svg' style="max-width:80%;">
               </div>
-              <div *ngIf="post.title != 'proxy' " class="card">  
+              <div *ngIf="post.title != 'proxy' " class="card">
                 <div class="card-block ">
                   <div class="card-title">
-      
-      
+
+
                     <div ngbDropdown #myDrop="ngbDropdown">
-      
+
                       <img (click)="$event.stopPropagation(); myDrop.toggle();"
                         src="{{this.BASE_URL}}/uploads/{{this.post.task?._assigned_to?.profile_pic}}" id="dropdownToDo"
                         ngbDropdownAnchor (focus)="myDrop.open()" onerror="this.src='/assets/images/user.png'"
@@ -51,8 +51,8 @@
                         due {{post.task?.due_to | date}}<br /><span class="small kbn-working-color font-weight-bold"
                           style="margin-left: 4rem;" *ngIf="post.task?.started_at && post.task?.completed_at"> time spent:
                           {{ getTaskTimeSpent(post) }} days</span></p>
-      
-      
+
+
                       <div ngbDropdownMenu aria-labelledby="dropdownTodo">
                         <div *ngFor="let admin of group_admins">
                           <button class="dropdown-item" (click)="changeTaskAssignee(post._id, admin._id, post)">
@@ -66,27 +66,27 @@
                             {{member?.last_name}}
                           </button>
                         </div>
-      
+
                       </div>
-      
+
                     </div>
-      
+
                   </div>
                   <div class="card-body">
-      
+
                     <span class="assigned"> Assigned by {{this.post._posted_by?.first_name}}
                       {{this.post._posted_by?.last_name}}<br /> in {{this.post._group?.group_name}} group
                     </span>
-      
+
                     <div ngbDropdown class="d-inline-block float-right status">
                       <button class="btn btn-sm" id="dropdownDone" [style.backgroundColor] = "bgColor[i%bgColor.length]" style = "color:#fff;" ngbDropdownToggle>{{post.task.status}}</button>
                       <div ngbDropdownMenu aria-labelledby="dropdownToDo">
                         <div *ngFor="let col of allColumns">
-                          <button class="dropdown-item" (click)="updateTaskColumn(this.post._id, this.post.task.status, col.title)"> {{ col.title }}</button>  
+                          <button class="dropdown-item" (click)="updateTaskColumn(this.post._id, this.post.task.status, col.title)"> {{ col.title }}</button>
                         </div>
                       </div>
                     </div>
-      
+
                     <ng-template #taskif>
                       <div class="col-md-4 text-right padding-topright">
                         <button class="btn btn-pink btn-sm" id="button_task_mark_completed" (click)="OnMarkTaskCompleted()">
@@ -109,8 +109,8 @@
                       </div>
                     </a>
                   </div>
-      
-                </div>  
+
+                </div>
               </div>
             </div>
           </div>
@@ -121,7 +121,7 @@
         </ng-template>
     </div>
 
-  </div> 
+  </div>
 </div>
 
 <!-- ########## MODALS ########## -->
@@ -164,7 +164,7 @@
         </div>
       </div>
     </div>
-  
+
 </ng-template>
 
 <ng-template #newTaskModal let-modal>
@@ -183,9 +183,9 @@
             <i class="material-icons">event</i>{{model_date?.day}}-{{model_date?.month}}-{{model_date?.year}}
           </button>
         </div>
-  
+
       </div>
-  
+
       <div class="card" style="margin-top:15px">
         <input id="post-title" type="text" name="postTitle" [(ngModel)]="post.title" placeholder="Insert title here ..." style="padding: 12px 15px; font-style: italic; width: 100%; outline: none;" />
         <quill-editor [modules]="modules" id="post-content" [(ngModel)]="post.content" (blur)="onEditorBlured($event)"
@@ -194,7 +194,7 @@
                       (change)="onContentChanged($event)"
                       (onContentChanged)="onContentChanged($event)"></quill-editor>
       </div>
-  
+
       <div class="row" style="margin-bottom: 15px;">
         <div class="col-md-8">
           <button type="button" class="btn btn-link">
@@ -202,7 +202,7 @@
                    (change)="fileChangeEvent($event)" placeholder="File" multiple />
             <i class="material-icons" (click)="fileInput.click()">attach_file</i>
           </button>
-  
+
          <button type="button" class="btn btn-link">
            <i class="material-icons" (click)="loadGoogleDrive();">
              cloud_upload
@@ -233,7 +233,7 @@
         </div>
   <!--  -->
     </div>
-  
+
     <div class="row">
       <div class="col-md-1">
           <button type="button" class="btn btn-link">
@@ -246,7 +246,7 @@
       <button class="btn btn-sm btn-outline-primary" style="margin-right: 1rem;" (click)="removeTag(i)" *ngFor="let tag of tags; let i = index" placement="top" ngbTooltip="Click here to remove this tag"><b>X</b> {{tag}}</button>
       </div>
     </div>
-  
+
     <div class="row">
       <div class="col-md-12 text-right">
         <button (click)="closeCreatePostModal()" class="btn btn-default" id="cancel-task">Cancel</button>
@@ -257,19 +257,19 @@
     </div>
       <div class="row">
         <div class="col-md-8 ">
-  
+
           <div id="google-drive-file" style="display:none;"></div>
-  
-  
+
+
           <div *ngFor="let file of filesToUpload">
             <p><b>Uploaded file(s): </b>{{file.name}}</p>
           </div>
-  
+
         </div>
-  
+
       </div>
     </div>
-  
+
   </ng-template>
 
 

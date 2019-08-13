@@ -207,14 +207,15 @@ const ngCircle = {
     GroupSmartAdminComponent,
     DialogOverviewExampleDialog,
     DocumentFileComponent,
+    // AngularMultiSelect
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    AngularMultiSelectModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    AngularMultiSelectModule,
     QuillModule,
     SnotifyModule,
     MomentModule,

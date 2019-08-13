@@ -113,6 +113,7 @@
             </assign-users-modal>
             <date-picker-modal [model_date]="model_date" (picked_date)="setDate($event)" *ngIf="post.type === 'event'|| post.type ==='task'"></date-picker-modal>
             <time-picker *ngIf="post.type === 'event'" [model_time]="model_time" (picked_time)="setTime($event)"></time-picker>
+
           </div>
         </div>
 
@@ -129,7 +130,7 @@
                             [spellcheck]="true" name="postContent" formControlName="postContent"
                             (ready)="onEditorCreated($event)" (onEditorCreated)="onEditorCreated($event)" (change)="onContentChanged($event)"
                             (onContentChanged)="onContentChanged($event)">
-              </quill-editor> 
+              </quill-editor>
 
               <div ngbDropdown class="btn-group" style="width:100%">
 
@@ -153,18 +154,18 @@
         <div class="row">
           <div class="col-md-4">
             <div ngbDropdown autoClose="outside" #myTagsDrop="ngbDropdown">
-              <input ngbDropdownToggle 
-              type="text" 
-              id="tags" 
-              class="tags" 
-              placeholder="Add Tag here" 
-              ng-show="tags_search_words" 
-              (keyup)="tagListSearch(); $event.stopPropagation(); myTagsDrop.open();" 
-              (keydown)="addTags($event); myTagsDrop.close();" 
-              [(ngModel)]="tags_search_words" 
-              name="tag" 
-              formControlName="tag" 
-              placement="top" 
+              <input ngbDropdownToggle
+              type="text"
+              id="tags"
+              class="tags"
+              placeholder="Add Tag here"
+              ng-show="tags_search_words"
+              (keyup)="tagListSearch(); $event.stopPropagation(); myTagsDrop.open();"
+              (keydown)="addTags($event); myTagsDrop.close();"
+              [(ngModel)]="tags_search_words"
+              name="tag"
+              formControlName="tag"
+              placement="top"
               ngbTooltip="Type & hit enter to add a tag">
                 <div class="search-dropdown-menu" ngbDropdownMenu aria-labelledby="myTagsDrop" >
                   <div class="w-100" style="display:inline-block" *ngIf="tags_search_result?.length > 0">
@@ -178,8 +179,8 @@
             </div>
           </div>
         </div>
- 
-  
+
+
  <!--POST TAGS-->
  <div class="row innercard" >
   <div class="col-xs" style="margin-left: 20px">  <i class="material-icons tagslabel" ngbTooltip="Tags">
@@ -187,7 +188,7 @@
       </i></div>
       <div class="col-md-10" style="margin-left: -20px">
 
-  
+
     <button class="btn badge badge-primary" style="margin-right: 1rem;" (click)="removeTag(i)" *ngFor="let tag of tags; let i = index" placement="top" ngbTooltip="Click here to remove this tag"><b>X</b> {{tag}}</button>
   </div>
 </div>
@@ -203,8 +204,7 @@
             <button type="button " name="button" class="btn btn-default " (click)="togglePostbox()">Cancel</button>
             <button [disabled]="(this.postForm.invalid && this.post.type === 'normal' )
     || this.processing
-    || (this.selectedGroupUsers.length === 0 && this.post.type === 'event' && !this.isItMyWorkplace)
-    || (!this.isItMyWorkplace && this.selectedGroupUsers.length === 0 && this.post.type=='task')"
+    || (this.selectedGroupUsers.length === 0 && this.post.type === 'event' && !this.isItMyWorkplace)"
                     type="button " name="button" (click)="OnAddNewPost()" class="btn btn-primary">Post</button>
           </div>
         </div>

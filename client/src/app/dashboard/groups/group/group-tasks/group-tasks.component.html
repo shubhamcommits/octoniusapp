@@ -77,7 +77,7 @@
                        [innerHTML]="post?.title | safe: 'html'">
                   </div>
                 </a>
- 
+
 
                 <ng-template #taskif>
                   <div class="col-md-4 text-right padding-topright">
@@ -446,8 +446,8 @@
           local_offer
           </i></div>
           <div class="col-md-10" style="margin-left: -20px">
-   
-      
+
+
         <button class="btn badge badge-primary" style="margin-right: 1rem;" (click)="removeTag(i)" *ngFor="let tag of tags; let i = index" placement="top" ngbTooltip="Click here to remove this tag"><b>X</b> {{tag}}</button>
       </div>
     </div>

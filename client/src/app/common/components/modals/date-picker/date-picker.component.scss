@@ -1,0 +1,33 @@
+.btn-outline-warning{
+  width: 34px;
+  height:34px;
+  object-fit: cover;
+  border-radius: 50%;
+  color: #FD7714;
+  border: 1px solid #FD7714;
+  box-sizing:border-box;
+  margin: 0 10px;
+}
+.icon{
+  font-size: 24px;
+  line-height: 24px;
+  font-weight: normal;
+  font-style: normal;
+}
+
+.selected{
+  width: 34px;
+  height: 34px;
+  object-fit: cover;
+  border-radius: 50%;
+  color: #005FD5;
+  border: 1px solid #005FD5;
+  box-sizing: border-box;
+  margin: 0 10px;
+}
+
+.material-icons{
+  padding: 0;
+  margin-left: -6px;
+  font-size: 24px;
+}

@@ -6,6 +6,24 @@ const { sendErr, sendMail } = require('../../utils');
  *  ===================
  */
 
+const getAllGroupUsers = async (req, res, next) => {
+  try {
+    const group = req.params.group_id;
+
+    const users = await User.find({
+      _groups: group
+    });
+
+
+    return res.status(200).json({
+      message: `Found ${users.length} users!`,
+      users
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
 const searchGroupUsers = async (req, res, next) => {
   try {
     const query = req.params.query;
@@ -17,6 +35,7 @@ const searchGroupUsers = async (req, res, next) => {
         $regex: new RegExp(query, 'i')
       }
     });
+
 
     return res.status(200).json({
       message: `Found ${users.length} users!`,
@@ -138,6 +157,7 @@ const removeUserFromGroup = async (req, res, next) => {
  */
 
 module.exports = {
+  getAllGroupUsers,
   searchGroupUsers,
   addNewUsersInGroup,
   updateGroup,

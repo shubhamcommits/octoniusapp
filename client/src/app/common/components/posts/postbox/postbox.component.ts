@@ -207,7 +207,7 @@ export class PostboxComponent implements OnInit, OnDestroy {
     formData.append('_group', post._group);
     formData.append('event.due_to', post.event.due_to);
 
-   
+
     // Handling mentions ( perhaps turn this into separate method since we're repeating ourselves )
     const scanned_content = post.content;
     let el = document.createElement('html');
@@ -668,7 +668,7 @@ export class PostboxComponent implements OnInit, OnDestroy {
   }
 
   fileChangeEvent(fileInput: any) {
-   
+
     this.filesToUpload = <Array<File>>fileInput.target.files;
 
   }
@@ -685,7 +685,7 @@ export class PostboxComponent implements OnInit, OnDestroy {
     }
     //else{
       //not a doc/docx file
-      //handle notification here 
+      //handle notification here
     //}
   }
 
@@ -742,13 +742,11 @@ export class PostboxComponent implements OnInit, OnDestroy {
         // this.icon_event_change_color();
 
         this.settings = {
-          text: 'Select Group Members',
           selectAllText: 'Select All',
           unSelectAllText: 'UnSelect All',
           classes: 'myclass custom-class',
           primaryKey: '_id',
           labelKey: 'full_name',
-          noDataLabel: 'Search Members...',
           enableSearchFilter: true,
           searchBy: ['full_name', 'capital']
         };
@@ -756,17 +754,15 @@ export class PostboxComponent implements OnInit, OnDestroy {
         break;
       case 'task':
         this.settings = {
-          text: 'Select Group Members',
           classes: 'myclass custom-class',
           singleSelection: true,
           primaryKey: '_id',
           labelKey: 'full_name',
-          noDataLabel: 'Search Members...',
           enableSearchFilter: true,
           searchBy: ['full_name', 'capital']
         };
         break;
-      case 'document': 
+      case 'document':
       //Added by Amit for Collaborative Editing
         //this.navigateToCollabDoc(this.group._id, 1);
         this.addNewCollabPost();
@@ -924,10 +920,10 @@ export class PostboxComponent implements OnInit, OnDestroy {
       //console.log("here12")
       this.searchService.getTagsSearchResults(this.tags_search_words)
       .subscribe((res) => {
-  
+
          if (res) {
           this.tags_search_result = res['results'];
-        } 
+        }
       }, (err)=>{
         console.log('Error while searching', err);
       });
@@ -940,7 +936,7 @@ export class PostboxComponent implements OnInit, OnDestroy {
     this.tags.push(tagsFromList);;
     this.tags_search_words = '';
     console.log(this.tags);
-  } 
+  }
 
   ngOnDestroy() {
     this.ngUnsubscribe.next();
