@@ -40,7 +40,7 @@ export class AssignUsersModalComponent implements OnInit {
       .subscribe((res) => {
         this.groupUsersList = res['users'];
       }, (err) => {
-    });
+      });
 
     // Settings for angular2-multiselect-dropdown is set in postbox.component.ts
   }

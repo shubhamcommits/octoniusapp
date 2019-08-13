@@ -211,6 +211,16 @@ margin-bottom: 20px;
   margin: 0 1rem !important;
 }
 
+.action{
+  color:$lightgray !important;
+  &:hover{
+    color: $brand-primary;
+    cursor: pointer;
+  }
+  .material-icons{
+    font-size: 24px !important;
+  }
+}
 
 .dateblock{
   background: $brand-primary;
@@ -226,18 +236,6 @@ margin-bottom: 20px;
   font-size: 14px;
   font-weight: bold;
 }
-
-.action{
-  color:$lightgray !important;
-  &:hover{
-    color: $brand-primary;
-    cursor: pointer;
-  }
-  .material-icons{
-    font-size: 24px !important;
-  }
-}
-
 .event-title{
   font-size: 14px;
   font-weight: bold;
