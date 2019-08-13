@@ -1,6 +1,6 @@
 .btn-outline-warning{
-  width: 50px;
-  height:50px;
+  width: 34px;
+  height:34px;
   object-fit: cover;
   border-radius: 50%;
   color: #FD7714;
@@ -9,8 +9,8 @@
 }
 
 .selected{
-  width: 50px;
-  height: 50px;
+  width: 34px;
+  height: 34px;
   object-fit: cover;
   border-radius: 50%;
   color: #005FD5;
@@ -36,9 +36,9 @@
 }
 
 .dropdown-item {
-  margin-bottom: 0px;
-  margin-top: 0px;
+ margin: 5px;
   padding: 0px;
+  width: 300px;
 }
 
 .dropdown-divider{
@@ -46,3 +46,19 @@
   margin: 1px;
 }
 
+.drop1{
+  padding: 10px !important;
+}
+.material-icons{
+  padding: 0;
+  margin-left: -6px;
+  font-size: 24px;
+}
+.pickuser{
+  width: 33px !important;
+  height: 33px;
+  margin-top: -7px;
+  padding: 0;
+  margin-left: -12px;
+  border-radius: 50%;
+}
