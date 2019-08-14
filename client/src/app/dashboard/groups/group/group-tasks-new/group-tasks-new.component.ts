@@ -15,7 +15,7 @@ import  io from 'socket.io-client';
 import Swal from 'sweetalert2';
 import {Subject} from "rxjs/Rx";
 import {SearchService} from "../../../../shared/services/search.service";
-import { DatePickerComponent } from "../../../../common/components/modals/date-picker/date-picker.component";
+
 
 import 'quill-mention';
 
@@ -152,7 +152,7 @@ export class GroupTasksNewComponent implements OnInit {
     '#0bc6a0',
     '#4a90e2',
     '#d46a6a',
-    '#b45a81',
+    '#b45a81',  
     '#674f91',
     '#4e638e',
     '#489074',
@@ -186,7 +186,7 @@ export class GroupTasksNewComponent implements OnInit {
     this.initializeGroupMembersSearchForm();
   }
 
-  // Socket io
+  // Socket io 
 
   socketio() {
     let count = 0;
@@ -370,7 +370,7 @@ export class GroupTasksNewComponent implements OnInit {
     });
   }
 
-  // Add new tasks
+  // Add new tasks 
 
   addNewTaskPost() {
     const formData: any = new FormData();
@@ -675,7 +675,7 @@ export class GroupTasksNewComponent implements OnInit {
 
   }
 
-  // Quill editor
+  // Quill editor 
 
   onEditorBlured(quill) {
     console.log('editor blur!', quill);
@@ -695,7 +695,7 @@ export class GroupTasksNewComponent implements OnInit {
   this.editorTextLength = quill.text.length;
   }
 
-  // Items
+  // Items 
 
   onItemSelect(item: any) {
     if (this.selectedGroupUsers.length >= 1) {
@@ -719,7 +719,7 @@ export class GroupTasksNewComponent implements OnInit {
 
   }
 
-  // Tags
+  // Tags 
 
   addTags(event: any) {
     //keyCode= 13 represents enter key
@@ -728,30 +728,30 @@ export class GroupTasksNewComponent implements OnInit {
         const tag = document.getElementById('tags');
         this.tags.push(tag['value']);
         tag['value'] = '';
-
+  
       //console.log(this.tags);
     }
-
+  
     if (event.which == '13') {
       event.preventDefault();
     }
-
+  
   }
-
+  
   removeTag(index) {
     this.tags.pop(index);
   }
-
+  
   tagListSearch(){
     //console.log("here1")
     if (this.tags_search_words !== '') {
       //console.log("here12")
       this.searchService.getTagsSearchResults(this.tags_search_words)
       .subscribe((res) => {
-
+  
          if (res) {
           this.tags_search_result = res['results'];
-        }
+        } 
       }, (err)=>{
         console.log('Error while searching', err);
       });
@@ -759,13 +759,13 @@ export class GroupTasksNewComponent implements OnInit {
       console.log("here13")
     }
   }
-
+  
   clickedOnTag(index){
     var tagsFromList = this.tags_search_result[index]["tags"]
     this.tags.push(tagsFromList);;
     this.tags_search_words = '';
     //console.log(this.tags);
-  }
+  } 
 
   /////// POSTS ///////
 
@@ -806,9 +806,9 @@ export class GroupTasksNewComponent implements OnInit {
  const post = this.postBeingEditted;
     // we create a new date object
     const date_due_to = new Date(this.model_date.year, this.model_date.month - 1, this.model_date.day);
-
+ 
     //console.log('this.contentMentions', this.content_mentions);
-
+ 
     const postData = {
       'title': this.edit_post_title,
       'content': this.edit_post_content,
@@ -819,31 +819,31 @@ export class GroupTasksNewComponent implements OnInit {
       'status': post.task.status,
       'tags': this.tags
     };
-
+ 
     const scanned_content = postData.content;
     let el = document.createElement('html');
     el.innerHTML = scanned_content;
-
+ 
     if (el.getElementsByClassName('mention').length > 0) {
       //  console.log('Element',  el.getElementsByClassName( 'mention' ));
       for (let i = 0; i < el.getElementsByClassName('mention').length; i++) {
         this.content_mentions.push(el.getElementsByClassName('mention')[i]['dataset']['id'].toString());
       }
     }
-
+ 
     if(this.tags.length>0){
      for(let i = 0 ; i < this.tags.length; i ++){
        post.tags = this.tags;
      }
    }
-
+ 
     this.postService.editPost(post._id, postData)
       .subscribe((res) => {
-
+ 
         this.alert.class = 'success';
         this._message.next(res['message']);
         this.resetNewPostForm();
-
+ 
         // mirror forntend to backend
         if (post.task.status === 'done') {
           const indexTask = this.completedTasks.findIndex((task) => task._id === post._id);
@@ -852,9 +852,9 @@ export class GroupTasksNewComponent implements OnInit {
           const indexTask = this.pendingTasks.findIndex((task) => task._id === post._id);
           this.pendingTasks[indexTask] = res['post'];
         }
-
+ 
         this.editTaskModalRef.close();
-
+ 
         // socket notifications
         const data = {
           // it should get automatically, something like workspace: this.workspace_name
@@ -866,22 +866,22 @@ export class GroupTasksNewComponent implements OnInit {
           groupId: this.groupId,
           type: 'post'
         };
-
+ 
         this.socket.emit('newPost', data);
         this.content_mentions = [];
         this.tags = [];
       }, (err) => {
-
+ 
         this.alert.class = 'danger';
         this.content_mentions = [];
         this.tags = [];
-
+ 
         if (err.status) {
           this._message.next(err.error.message);
         } else {
           this._message.next('Error! either server is down or no internet connection');
         }
-
+ 
       });
   }
 
@@ -998,10 +998,10 @@ export class GroupTasksNewComponent implements OnInit {
     const index = post._liked_by.findIndex( user => user == currentUserId);
     return index > -1;
   }
-
+ 
   onClickLikePost(index, post) {
-
-
+ 
+ 
      // const like_icon = document.getElementById('icon_like_post_' + index);
      const postData = {
        '_id': post._id,
@@ -1009,19 +1009,19 @@ export class GroupTasksNewComponent implements OnInit {
        '_liked_by': post._liked_by,
        'type_post': post.task.status === 'done' ? 'completed' : 'pending'
      };
-
+ 
      if (postData._liked_by.length == 0) {
        this.likepost(postData);
      } else {
        let userHasLikedPost = false;
-
+ 
        // we check whether the user is one of the likes we already have
        postData._liked_by.forEach((user) => {
          if ( user == this.user_data.user_id ) {
            userHasLikedPost = true;
          }
        });
-
+ 
        // we like the post when the user is not between the users that liked the post
        // and we unlike the post when it is
        if (!userHasLikedPost) {
@@ -1163,16 +1163,16 @@ export class GroupTasksNewComponent implements OnInit {
     this.postBeingEditted = post;
     this.assignment = 'Assigned';
     this.tags = this.postBeingEditted.tags;
-
+ 
     //console.log('post.assign', post.task._assigned_to);
     this.selectedGroupUsers = [post.task._assigned_to];
     // this isn't present at first so we need to add the full name so we can display it in the assign modal
     post.task._assigned_to.full_name = post.task._assigned_to.first_name + " " + post.task._assigned_to.last_name;
     this.groupUsersList = [post.task._assigned_to];
-
+ 
     this.edit_post_title = post.title;
     this.edit_post_content = post.content;
-
+ 
     this.model_date = {
       day: moment(post.task.due_to, "YYYY-MM-DD").date(),
       month: moment(post.task.due_to, "YYYY-MM-DD").month() + 1,
@@ -1180,7 +1180,7 @@ export class GroupTasksNewComponent implements OnInit {
     };
     this.editTaskModalRef = this.modalService.open(taskmodal, {centered: true, size: "lg"});
   }
-
+ 
   // Open pickers
 
   openTimePicker(content) {
@@ -1201,7 +1201,7 @@ export class GroupTasksNewComponent implements OnInit {
     }
   }
 
-  // Ready to add
+  // Ready to add 
 
   readyToAddTask() {
    return !this.selectedGroupUsers[0] || !this.model_date || this.post.content === '';
@@ -1221,7 +1221,7 @@ export class GroupTasksNewComponent implements OnInit {
 
   readyToEditTask() {
     return !this.selectedGroupUsers[0] || !this.model_date || this.edit_post_content.content === '';
-  }
+  } 
 
   // Close modals
 
@@ -1239,21 +1239,21 @@ export class GroupTasksNewComponent implements OnInit {
 
   /////// COLUMNS ///////
 
-  // Get Columns
+  // Get Columns 
 
   initColumns(){
     this.columnService.initColumns(this.groupId).subscribe(() => {
       this.getAllColumns();
-    });
+    });   
   }
 
   getAllColumns(){
     this.columnService.getAllColumns(this.groupId).subscribe((res: Column) => {
       this.allColumns = res.columns;
-    });
+    }); 
   }
 
-  // Add Columns
+  // Add Columns 
 
   addNewColumn(){
     this.columnService.addColumn(this.groupId, this.columnName).subscribe(() => {
@@ -1319,7 +1319,7 @@ export class GroupTasksNewComponent implements OnInit {
         });
       }
     }
-
+    
   }
 
   // Update Columns
@@ -1342,19 +1342,19 @@ export class GroupTasksNewComponent implements OnInit {
       this.columnService.deleteColumnTask(this.groupId, oldColumnName).subscribe((res) => {
         //console.log(res);
       });
-
+      
       this.getAllColumns();
      // var taskStatus = res['posts'].filter(task => task._id == post_id);
     //  taskStatus.task.status = newColumnName;
       //this.isLoading$.next(false);
       this.isLoading$.next(true);
       console.log(this.pendingTasks);
-
+      
       const indexPendingTask = this.pendingTasks.findIndex(task => task._id == post_id);
       this.pendingTasks[indexPendingTask]['task']['status'] = newColumnName;
       this.taskCount[newColumnName]++;
-
-
+      
+      
       for(var i=0;i < this.taskList.length; i++)
       {
       if(this.taskList[i]['title'] == newColumnName)
@@ -1364,11 +1364,11 @@ export class GroupTasksNewComponent implements OnInit {
      if(this.taskList[i]['title'] == oldColumnName)
       {
           const indexTaskListRemoval = this.taskList[i]['tasks'].findIndex(task => task._id == post_id);
-          this.taskList[i]['tasks'].splice(indexTaskListRemoval , 1);
+          this.taskList[i]['tasks'].splice(indexTaskListRemoval , 1);  
       }
       }
-
-      this.isLoading$.next(false);
+      
+      this.isLoading$.next(false);   
       //this.getTasks();
     }, (err) => {
       console.log('Error:', err);
@@ -1384,19 +1384,19 @@ export class GroupTasksNewComponent implements OnInit {
       this.columnService.addColumnTask(this.groupId, newColumnName).subscribe((res) => {
         //console.log(res);
       });
-
+      
       this.getAllColumns();
      // var taskStatus = res['posts'].filter(task => task._id == post_id);
     //  taskStatus.task.status = newColumnName;
       //this.isLoading$.next(false);
       this.isLoading$.next(true);
       console.log(this.pendingTasks);
-
+      
       const indexPendingTask = this.pendingTasks.findIndex(task => task._id == post_id);
       this.pendingTasks[indexPendingTask]['task']['status'] = newColumnName;
       this.taskCount[newColumnName]++;
-
-
+      
+      
       for(var i=0;i < this.taskList.length; i++)
       {
       if(this.taskList[i]['title'] == newColumnName)
@@ -1406,13 +1406,13 @@ export class GroupTasksNewComponent implements OnInit {
     //  if(this.taskList[i]['title'] == oldColumnName)
     //   {
     //       const indexTaskListRemoval = this.taskList[i]['tasks'].findIndex(task => task._id == post_id);
-    //       this.taskList[i]['tasks'].splice(indexTaskListRemoval , 1);
+    //       this.taskList[i]['tasks'].splice(indexTaskListRemoval , 1);  
     //   }
       }
-
-      this.isLoading$.next(false);
+      
+      this.isLoading$.next(false);   
       //this.getTasks();
-
+      
       this.getAllColumns();
       this.getTasks();
     }, (err) => {
@@ -1420,7 +1420,7 @@ export class GroupTasksNewComponent implements OnInit {
     });
   }
 
-  // Drag and drop
+  // Drag and drop 
 
   onTaskDrop(event: CdkDragDrop<any[]>){
     if(event.container.data[event.currentIndex]['title'] == 'proxy'){
@@ -1437,7 +1437,7 @@ export class GroupTasksNewComponent implements OnInit {
       var newCol = event.container.data[event.currentIndex]['task']['status'];
       transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
       this.updateTaskColumn(postId, oldCol, newCol);
-    }
+    } 
     for(var i=0; i<this.allColumns.length; i++){
       this.changeBg[i] = false;
     }
@@ -1450,9 +1450,9 @@ export class GroupTasksNewComponent implements OnInit {
     }
   }
 
-  entered(event: CdkDragStart<any[]>){
+  entered(event: CdkDragStart<any[]>){  
     console.log(event);
-    var title = event.source.dropContainer.data[0]['task']['status'];
+    var title = event.source.dropContainer.data[0]['task']['status']; 
     for(var i=0; i<this.allColumns.length; i++){
       if(this.allColumns[i]['title'] != title){
         this.changeBg[i] = true;
@@ -1461,7 +1461,7 @@ export class GroupTasksNewComponent implements OnInit {
       }
     }
   }
-
+  
   makeProxy(column){
     this.taskList[column]['tasks'].push({
       title: 'proxy',
@@ -1469,4 +1469,4 @@ export class GroupTasksNewComponent implements OnInit {
       status: this.taskList[column]['title']
     });
   }
-}
+} 

@@ -48,9 +48,8 @@ export class PostboxComponent implements OnInit, OnDestroy {
   @Input('user_data') user_data;
   @Input('modulesLoaded') modulesLoaded;
 
-  @Input('parent') parent;
   @Output('newPost') newPost = new EventEmitter();
-  @Output('cancel') cancel = new EventEmitter();
+
   // unsubscribe at end component lifecycle
   ngUnsubscribe = new Subject();
 
@@ -825,7 +824,6 @@ export class PostboxComponent implements OnInit, OnDestroy {
 
   // Show / hide the postbox
   togglePostbox() {
-    this.cancel.emit();
     this.postboxDisplayed = !this.postboxDisplayed;
   }
 
