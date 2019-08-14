@@ -18,6 +18,13 @@
 <div class="card-tile">
   <h4>Everything uploaded by your team </h4>
   <hr>
+    <div *ngIf="isLoading$ | async">
+      <div class="load-8">
+        <h6><b>Loading Data...</b></h6>
+          <div class="line"></div>
+      </div>
+  </div>
+  <div *ngIf="!(isLoading$ | async)">
   <div *ngIf="this.has_file == true; else svg">
     <div *ngFor="let post of allFiles; let i = index">
       <div class="media card-tile user-list" *ngIf="post?.files" >
@@ -29,29 +36,18 @@
                     <p *ngFor="let file of post.files"><b>Attachment: </b><a role="button" href="javascript:void(null);" >{{file?.orignal_name}}</a></p>
 
               </div>
-              <div class="mr-3 float-right">
-                  <div class="mr-3 float-right">
-                    <a role="button" class="btn btn-link" href="/uploads/{{post.files[0].modified_name}}" target="_blank"> <i class="material-icons">
+              <div class="mr-3 float-right"  style = "margin-top: 7px">
+                  <div class="col-sm" *ngFor="let file of post.files; let x = index">
+                   <a role="button" class="btn btn-link" href="/uploads/{{file.modified_name}}" target="_blank"> <i class="material-icons">
                       visibility
                       </i></a>
-                  <button class="btn btn-link" (click)="onDownlaodFile(post.files[0].modified_name,post.files[0].orignal_name)"><i class="material-icons">
+                  <button class="btn btn-link" (click)="onDownlaodFile(file.modified_name,file.orignal_name)"><i class="material-icons">
                     cloud_download
                     </i></button>
-                  <button class="btn btn-link" (click)="onDeleteFile(post.files[0].modified_name,post.files[0].orignal_name)"><i class="material-icons">
-                    delete
-                  </i></button>
-  
+                    <button class="btn btn-link" (click)="onDeleteGroupFiles(post,file,'group_file')">
+                        <i class="material-icons">delete </i>
+                    </button>
                 </div>
-                    <!-- <a role="button" class="btn btn-link" href="/uploads/{{post.files?[0].modified_name?}}" target="_blank"> <i class="material-icons">
-                      visibility
-                      </i></a>
-                  <button class="btn btn-link" (click)="onDownlaodFile(post.files?[0].modified_name?,post.files[0]?.orignal_name?)"><i class="material-icons">
-                    cloud_download
-                    </i></button>
-                  <button class="btn btn-link" (click)="onDeleteFile(post.files?[0].modified_name?,post.files[0]?.orignal_name?)"><i class="material-icons">
-                    delete
-                  </i></button> -->
-
               </div>
             </div>
         </div>
@@ -72,32 +68,13 @@
                       <button class="btn btn-link" ><i class="material-icons">
                         cloud_download
                         </i></button>
-                      <button class="btn btn-link" ><i class="material-icons">
+                      <button class="btn btn-link" (click)="onDeleteGroupFiles(post,'filename','agora_file')" ><i class="material-icons">
                         delete
                       </i></button>
-  
                 </div>
-              <!-- <div class="mr-3 float-right">
-                    <a role="button" class="btn btn-link" href="/uploads/{{post.files?[0].modified_name}}" target="_blank"> <i class="material-icons">
-                      visibility
-                      </i></a>
-                  <button class="btn btn-link" (click)="onDownlaodFile(post.files?[0].modified_name,post.files?[0].orignal_name)"><i class="material-icons">
-                    cloud_download
-                    </i></button>
-                  <button class="btn btn-link" (click)="onDeleteFile(post.files?[0].modified_name,post.files?[0].orignal_name)"><i class="material-icons">
-                    delete
-                  </i></button>
-
-              </div> -->
             </div>
         </div>
-    </div>
-
-
-
-
-
-
+      </div>
 
   <!--<div *ngIf="isLoading$ | async">
       <div class="load-8">
