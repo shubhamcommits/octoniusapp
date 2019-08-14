@@ -128,10 +128,6 @@ export class GroupService {
     return this._http.get(this.BASE_API_URL + '/groups/' + group_id + '/files/' + file + '/download', {responseType: 'blob' });
   }
 
-  deleteFile(group_id, file) {
-    return this._http.delete(this.BASE_API_URL + '/groups/' + group_id + '/files/' + file );
-  }
-
   searchWorkspaceUsers(query, workspace) {
     return this._http.get(this.BASE_API_URL + `/workspace/searchWorkspaceUsers/${workspace}/${query}`);
   }
@@ -307,6 +303,13 @@ export class GroupService {
     getGroupFileInFileSection(group_id){
       return this._http.get<any>(this.BASE_API_URL + `/groupFileUploads/${group_id}/allGroupFiles`);
     }   
+  @CacheBuster({
+      cacheBusterNotifier: cacheBuster$
+    })
+    deleteGroupFile(group_id, file_post_type, fileToDeleteGroupFile ,fileValues) {
+      return this._http.post(this.BASE_API_URL + `/groupFileUploads/${group_id}/DeleteFiles/${file_post_type}`, {allFileInfo:fileValues, fileToDeleteGroup: fileToDeleteGroupFile});
+    }
+  
   //Group files end
 }
 

@@ -1,6 +1,7 @@
 const { GroupFilesUpload, Post, DocumentFile} = require('../models');
 const { sendErr, sendMail } = require('../../utils');
 const mongoose = require('mongoose');
+const fs = require('fs');
 
 const getAllFilesFromGroup = async (req, res, next) => {
     try{
@@ -95,8 +96,84 @@ const addGroupUploadedFiles = async (req, res, next) => {
         return sendErr(res, err);
     }
 }
+const deleteGroupFiles = async (req, res, next) => {
+    try{
+         const { groupId,
+            userId,
+            filePostType,
+        } = req.params;
+
+        switch (filePostType) {
+            case 'group_file':
+                const checkFileInGroup = await GroupFilesUpload.findOne({ _id: req.body.allFileInfo._id })
+                const checkFileInPost = await Post.findOne({ _id: req.body.allFileInfo._id })
+
+                function deleteFiles(files, callback){
+                    var i = files.length;
+                    files.forEach(function(filepath){
+                      const finalpath =`${process.env.FILE_UPLOAD_FOLDER}${filepath.modified_name}`
+                      fs.unlink(finalpath, function(err) {
+                        i--;
+                        if (err) {
+                          callback(err);
+                          return;
+                        } else if (i <= 0) {
+                          callback(null);
+                        }
+                      });
+                    });
+                  }
+                  deleteFiles([req.body.fileToDeleteGroup], function(err) {
+                    if (err) {
+                        //file is not there for some reason? deleted previously or is just not there from the link
+                        if (err.code == 'ENOENT' && err.syscall == 'unlink'){
+                        }else{
+                        //error when deleting
+                            return sendErr(res, err)
+                        }
+                    }
+                  });
+
+                if(checkFileInGroup){
+                    //files came from group file selection delete values there later
+                    const deletedGroupFile =  await GroupFilesUpload.findByIdAndUpdate({ 
+                        _id: new mongoose.Types.ObjectId(req.body.allFileInfo._id) },
+                        { $pull: { files : { _id : {$in : [req.body.fileToDeleteGroup].map(e => new mongoose.Types.ObjectId(e._id))} } } }
+                        )
+                    //here we delete group upload files
+                    const emptyGroupFile =  await GroupFilesUpload.findById({ 
+                        _id: new mongoose.Types.ObjectId(req.body.allFileInfo._id)})
+                    if(emptyGroupFile.files.length === 0){
+                        const deleteEmptyGroupFile =  await GroupFilesUpload.findByIdAndDelete({ 
+                            _id: new mongoose.Types.ObjectId(req.body.allFileInfo._id)})
+                    }
+
+                }else if (checkFileInPost){
+                    //files from post but dont delete the whole post 
+                    const deletedFileInPost =  await Post.findByIdAndUpdate({ 
+                        _id: new mongoose.Types.ObjectId(req.body.allFileInfo._id) },
+                        { $pull: { files : { _id : {$in : req.body.allFileInfo.files.map(e => new mongoose.Types.ObjectId(e._id))} } } }
+                        )
+                }
+                break;
+            case 'agora_file':
+                    const deletedAgoraGroupFile =  await DocumentFile.findOneAndRemove({ _id: req.body.allFileInfo._id })
+                break
+            default:
+                break;
+        }
+
+        return res.status(200).json({
+            message: 'Deleted Files!',
+          });
+
+    }   catch(err){
+        return sendErr(res, err);
+    }
+}
 
 module.exports = {
     addGroupUploadedFiles,
     getAllFilesFromGroup,
+    deleteGroupFiles,
 }

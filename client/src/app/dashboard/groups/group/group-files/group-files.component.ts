@@ -10,6 +10,7 @@ import { UserService } from '../../../../shared/services/user.service';
 import { saveAs } from 'file-saver';
 import { DocumentFileService } from '../../../../shared/services/document-file.service';
 import { SnotifyService, SnotifyPosition, SnotifyToastConfig } from 'ng-snotify';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-group-files',
@@ -24,6 +25,7 @@ export class GroupFilesComponent implements OnInit {
   posts = new Array();
   documentFiles = new Array();
   allFiles = new Array();
+  selectedDocuments = new Array()
 
   has_file = false;
 
@@ -139,14 +141,80 @@ export class GroupFilesComponent implements OnInit {
       });
   }
 
-  onDeleteFile(fileName, fileName_orignal){
-    const fileData = {
-      'fileName': fileName
-    };
-    this.groupService.deleteFile(this.group_id, fileName)
-      .subscribe(() => {
-        console.log('success');
-      });
+  onDeleteGroupFiles(allGroupFileInfo, postedFiles,fileSource){
+    //allGroupFileInfo will store all of the info and will be manipulated to determin what to delete 
+    //file source for post/group/agora files to delete
+    //agora will be file source will be from ID
+    //other sources will be from file arry sent back
+    switch (fileSource) {
+      case 'group_file':
+          Swal.fire({
+            title: "Are you sure?",
+            text: `You want to remove ${postedFiles.orignal_name} file from the group?`,
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, please!'
+          })
+          .then(willDelete => {
+            if (willDelete.value) {
+              //console.log("beforeSplice", allGroupFileInfo)
+              //have file ready for delete
+                this.groupService.deleteGroupFile(this.group_id,fileSource,postedFiles,allGroupFileInfo)
+                .subscribe((res) => {
+                  //remove file from the list 
+                  const indexedFile = allGroupFileInfo.files.map(function(item) {
+                      return item._id
+                    }).indexOf(postedFiles._id);
+                    allGroupFileInfo.files.splice(indexedFile, 1);
+
+                  if (allGroupFileInfo.files.length == 0){
+                    //remove item from list if it is empty
+                    const indexedGroupFile = this.allFiles.map(function(item) {
+                      return item._id
+                    }).indexOf(allGroupFileInfo._id);
+                    this.allFiles.splice(indexedGroupFile, 1);
+                    Swal.fire("Removed!", postedFiles.orignal_name + " has been removed!", "success");
+                  }else{
+                    Swal.fire("Removed!", postedFiles.orignal_name + " has been removed!", "success");
+                  }
+                  
+                },(err)=>{
+                  Swal.fire("Error!", postedFiles.orignal_name + " has been not removed!", "error");
+                });
+            }
+          });
+        break;
+      case 'agora_file':
+          Swal.fire({
+            title: "Are you sure?",
+            text: `You want to remove ${allGroupFileInfo._name} file from the group?`,
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, please!'
+          })
+          .then(willDelete => {
+            if (willDelete.value) {
+                this.groupService.deleteGroupFile(this.group_id,fileSource,"empty",allGroupFileInfo)
+                .subscribe((res) => {
+                    //remove item from list if it is empty
+                    const indexedGroupFile = this.allFiles.map(function(item) {
+                      return item._id
+                    }).indexOf(allGroupFileInfo._id);
+                    this.allFiles.splice(indexedGroupFile, 1);
+                    Swal.fire("Removed!", postedFiles._name + " has been removed!", "success");
+                },(err)=>{
+                  Swal.fire("Error!", postedFiles._name + " has been not removed!", "error");
+                });
+            }
+          });
+        break;
+      default:
+        break;
+    }
   }
 
   loadGroup() {
@@ -220,7 +288,6 @@ export class GroupFilesComponent implements OnInit {
       this.isLoading$.next(true);
       this.groupService.getGroupFileInFileSection(this.group_id)
       .subscribe((res)=>{
-        // console.log(res["concatAllFiles"])
         if(res['concatAllFiles'].length > 0){
           this.has_file = true
           this.allFiles = res['concatAllFiles']
