@@ -1,17 +1,7 @@
-<div ngbDropdown #drop="ngbDropdown" placement="bottom-right" autoClose=true class="d-inline-block" >
-  <button ngbDropdownToggle class="btn btn-sm task" [ngClass] = 'selected? "selected": "btn-outline-warning"' type="button" >
-    <i class="material-icons">alarm</i>
-  </button>
-  <div ngbDropdownMenu class="drop1">
-    <div>
-      <ngb-timepicker [(ngModel)]="model_time" [meridian]="true"></ngb-timepicker>
-    </div>
-    <div>
-      <button class="btn btn-primary mb-2 mr-2" (click)="onTimeSelected(); drop.close()">Done</button>
-      <button type="button" class="btn btn-default mb-2 mr-2" (click)=" drop.close()">Cancel</button>
-    </div>
-  </div>
-</div>
+<button class="btn btn-sm btn-outline-warning task" type="button" (click)="openTimePicker(timeContent)">
+  <i class="material-icons">alarm</i>{{model_time.hour}}:{{model_time.minute}}
+</button>
+
 <!--  Modal to pick a time -->
 
 <ng-template style="margin-top: 10px" #timeContent let-c="close" let-d="dismiss">

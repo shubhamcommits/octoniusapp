@@ -1,20 +1,21 @@
 <!-- postbox-->
+
 <!-- Only display when the group has been loaded -->
-<div *ngIf="group; else elseBlock" class="card" style="margin-bottom: 10px">
+<div *ngIf="group" class="card" style="margin-bottom: 10px">
   <div class="card-block">
     <form [formGroup]="postForm">
       <div class="row card-title" style="padding:5px">
-        <div *ngIf="parent != 'group-tasks'" class="col-md-1">
+        <div class="col-md-1">
           <!--/uploads/user.png-->
           <img [src]="this.profilePic" onerror="this.src='/assets/images/user.png'" class="feed-avatar">
         </div>
         <div class="col-md-11">
 
-          <button *ngIf="parent != 'group-tasks'" type="text" class="form-control btn-md noborder-btn" style="outline: none; box-shadow: none !important; margin-top: 12px;border: 0px solid #ccc !important; text-align: left; cursor: pointer;"
+          <button type="text" class="form-control btn-md noborder-btn" style="outline: none; box-shadow: none !important; margin-top: 12px;border: 0px solid #ccc !important; text-align: left; cursor: pointer;"
                   placeholder="What are you working on?" (click)="togglePostbox()">What are you working on?</button>
         </div>
       </div>
-      <div *ngIf="parent == 'group-tasks' || postboxDisplayed" class="col-md-12 innercard">
+      <div *ngIf="postboxDisplayed" class="col-md-12 innercard">
         <div class="row">
           <div class="col-md-6">
             <ul class="nav nav-pills">
@@ -200,7 +201,7 @@
           </div>
 
           <div class="col-md-4 text-right ">
-            <button type="button " name="button" class="btn btn-default " (click)="togglePostbox(); ">Cancel</button>
+            <button type="button " name="button" class="btn btn-default " (click)="togglePostbox()">Cancel</button>
             <button [disabled]="(this.postForm.invalid && this.post.type === 'normal' )
     || this.processing
     || (this.selectedGroupUsers.length === 0 && this.post.type === 'event' && !this.isItMyWorkplace)"

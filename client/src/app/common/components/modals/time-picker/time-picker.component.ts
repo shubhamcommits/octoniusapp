@@ -19,7 +19,7 @@ export class TimePickerComponent implements OnInit, OnDestroy {
   timeModalRef;
 
   ngUnsubscribe = new Subject();
-  selected = false;
+
 
 
   constructor(private postService: PostService, private modalService: NgbModal) { }
@@ -31,8 +31,11 @@ export class TimePickerComponent implements OnInit, OnDestroy {
     }
   }
 
+  openTimePicker(timeContent) {
+    this.timeModalRef = this.modalService.open(timeContent, {centered: true});
+  }
+
   onTimeSelected() {
-    this.selected = true;
     this.picked_time.emit(this.model_time);
   }
 
@@ -40,6 +43,5 @@ export class TimePickerComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
-
 
 }

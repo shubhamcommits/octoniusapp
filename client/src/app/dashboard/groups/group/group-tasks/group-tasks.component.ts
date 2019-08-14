@@ -22,7 +22,7 @@ import { QuillAutoLinkService } from '../../../../shared/services/quill-auto-lin
 declare var gapi: any;
 declare var google: any;
 import { saveAs } from 'file-saver';
-import { PostboxComponent } from "../../../../common/components/posts/postbox/postbox.component";
+
 
 @Component({
   selector: 'app-group-tasks',
@@ -219,7 +219,7 @@ export class GroupTasksComponent implements OnInit {
       const start = moment(taskPost.task.started_at);
       const end = moment(taskPost.task.completed_at);
       const duration = moment.duration(end.diff(start)).asDays();
-      return duration <= 1 ? 1 : Math.round(duration);
+      return duration <= 1 ? 1 : Math.round(duration)
     }
 
   }
@@ -256,6 +256,7 @@ export class GroupTasksComponent implements OnInit {
     }
 
   }
+
 
   addNewTaskPost() {
     const formData: any = new FormData();
@@ -1314,33 +1315,4 @@ clickedOnTag(index){
   this.tags_search_words = '';
   console.log(this.tags);
 }
-
-  addNewPostToPosts(post) {
-   console.log('called');
-    this.toDoTasks = [post, ...this.toDoTasks];
-
-    this.resetNewPostForm()
-
-    // make sure that we display the new task
-    this.pendingToDoTaskCount = 1
-    // close the modal
-    this.newTaskModalRef.close();
-
-    // this is the data we enter in the socket so that people who are in groups
-    // activity page will get an update
-    const data = {
-      // it should get automatically, something like workspace: this.workspace_name
-      workspace: this.user_data.workspace.workspace_name,
-      // it should get automatically, something like group: this.group_name
-      group: this.group_name,
-      userId: this.user_data.user_id,
-      postId: post._id,
-      groupId: this.groupId,
-      type: 'post'// Pass group id here!!!
-    };
-
-    this.socket.emit('newPost', data);
-    this.tags = [];
 }
-}
-

@@ -288,9 +288,6 @@ export class PostService {
    */
   manuallyBustCache(): void {
     const cache = JSON.parse(localStorage.getItem('CACHE_STORAGE'));
-    if (cache === null){
-      return;
-    }
     if (environment.production) {
       cache['n#getPulseNumDoneTasks'] = undefined;
       cache['n#getPulseNumInProgressTasks'] = undefined;
