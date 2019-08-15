@@ -256,6 +256,30 @@ export class GroupFilesComponent implements OnInit {
   //     })
   //   })
   // }
+  addFolderEvent(files){
+    var formData = new FormData()
+      // add the files to the formData
+      if (files !== null) {
+        for (let i = 0 ; i < files.length ; i++) {
+          formData.append('attachments', files[i], files[i]['name']);
+        }
+      }
+    this.groupService.addGroupFileInFileSection(this.group_id,this.user_id,formData)
+    .subscribe((res) => {
+
+      this.allFiles.unshift(res['filesFromFileSectionNewUpload'])
+      this.snotifyService.success(`Files Uploaded!`, {
+        timeout: 1500,
+        showProgressBar: false,
+      });
+    }, (err) => {
+      console.log('Error while uploading files', err);
+      this.snotifyService.error(`Error while uploading files!`, {
+        timeout: 1500,
+        showProgressBar: false,
+      });
+    });
+  }
 
   addFileEvent(fileInput:any){
     var formData = new FormData()
