@@ -499,8 +499,10 @@ export class PostboxComponent implements OnInit, OnDestroy {
 
     // create due date
     const date = new Date(this.model_date.year, this.model_date.month - 1, this.model_date.day);
-
-    const post = {
+    var post;
+    if(this.selectedGroupUsers.length != 0)
+    {
+    post = {
       title: this.post.title,
       content: this.post.content,
       type: this.post.type,
@@ -515,10 +517,57 @@ export class PostboxComponent implements OnInit, OnDestroy {
         // 1. assign_to becomes the current user ID in the personal workspace
         // 2. assign_to becomes the id of the selected group user in groups
         _assigned_to: this.selectedGroupUsers[0] ? this.selectedGroupUsers[0]._id : JSON.parse(localStorage.getItem('user')).user_id,
-        _content_mentions: this.content_mentions
+        _content_mentions: this.content_mentions,
+        unassigned : "No"
       }
     };
+    }
+    if(this.selectedGroupUsers.length == 0 && !this.isItMyWorkplace)
+    {
+         
+post = {
+      title: this.post.title,
+      content: this.post.content,
+      type: this.post.type,
+      _posted_by: this.user_data.user_id,
+      _group: this.group._id,
+      task: {
+        due_date: moment(date).format('YYYY-MM-DD hh:mm:ss.SSS'),
+        due_to: moment(date).format('YYYY-MM-DD'),
+        // there are two scenarios:
+        // 1. personal workspace task post: doesn't need assigned members so selectGroupUsers will be undefined
+        // 2. group task post: needs one assigned member so selectgorupusers will be defined
+        // 1. assign_to becomes the current user ID in the personal workspace
+        // 2. assign_to becomes the id of the selected group user in groups
+        _assigned_to: this.selectedGroupUsers[0] ? this.selectedGroupUsers[0]._id : JSON.parse(localStorage.getItem('user')).user_id,
+        _content_mentions: this.content_mentions,
+        unassigned : "Yes"
+      }
+    };
+    } 
 
+    if(this.selectedGroupUsers.length == 0 && this.isItMyWorkplace)
+    {
+      post = {
+      title: this.post.title,
+      content: this.post.content,
+      type: this.post.type,
+      _posted_by: this.user_data.user_id,
+      _group: this.group._id,
+      task: {
+        due_date: moment(date).format('YYYY-MM-DD hh:mm:ss.SSS'),
+        due_to: moment(date).format('YYYY-MM-DD'),
+        // there are two scenarios:
+        // 1. personal workspace task post: doesn't need assigned members so selectGroupUsers will be undefined
+        // 2. group task post: needs one assigned member so selectgorupusers will be defined
+        // 1. assign_to becomes the current user ID in the personal workspace
+        // 2. assign_to becomes the id of the selected group user in groups
+        _assigned_to: this.selectedGroupUsers[0] ? this.selectedGroupUsers[0]._id : JSON.parse(localStorage.getItem('user')).user_id,
+        _content_mentions: this.content_mentions ,
+        unassigned : "No"
+      }
+    };
+    } 
     // Handle Google Drive files
     const driveDivision = document.getElementById('google-drive-file');
 
@@ -537,6 +586,7 @@ export class PostboxComponent implements OnInit, OnDestroy {
     // if the user is using his personal workspace I want to automatically assign the task to him/her
     // If the user is posting a task in a group I want to assign it to the member he/she chose.
     formData.append('task._assigned_to', post.task._assigned_to);
+    formData.append('task.unassigned' , post.task.unassigned);
     formData.append('task.status', 'to do');
 
 
