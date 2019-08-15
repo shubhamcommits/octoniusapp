@@ -270,8 +270,10 @@ export class GroupTasksComponent implements OnInit {
 
     // create due date
     const date = new Date(this.model_date.year, this.model_date.month - 1, this.model_date.day);
-
-    const post = {
+    var post;
+    if(this.selectedGroupUsers.length != 0)
+     { 
+     post = {
       title: this.post.title,
       content: this.post.content,
       type: 'task',
@@ -281,9 +283,30 @@ export class GroupTasksComponent implements OnInit {
         due_date: moment(date).format('YYYY-MM-DD hh:mm:ss.SSS'),
         due_to: moment(date).format('YYYY-MM-DD'),
         _assigned_to: this.selectedGroupUsers[0]._id,
-        _content_mentions: this.content_mentions
+        _content_mentions: this.content_mentions,
+        unassigned : "No"
       }
-    };
+      };
+      }
+         
+      if(this.selectedGroupUsers.length == 0)
+      {
+       console.log("entered unassigned");
+       post = {
+      title: this.post.title,
+      content: this.post.content,
+      type: 'task',
+      _posted_by: this.user_data.user_id,
+      _group: this.groupId,
+      task: {
+        due_date: moment(date).format('YYYY-MM-DD hh:mm:ss.SSS'),
+        due_to: moment(date).format('YYYY-MM-DD'),
+        _assigned_to: this.user_data.user_id,
+        _content_mentions: this.content_mentions,
+        unassigned : "Yes"
+      }
+      };
+      }   
 
     // Handle google drive files
     const driveDivision = document.getElementById('google-drive-file');
@@ -304,7 +327,7 @@ export class GroupTasksComponent implements OnInit {
     // If the user is posting a task in a group I want to assign it to the member he/she chose.
     formData.append('task._assigned_to', post.task._assigned_to);
     formData.append('task.status', 'to do');
-
+    formData.append('task.unassigned' , post.task.unassigned);
     const scanned_content = post.content;
     var el = document.createElement('html');
     el.innerHTML = scanned_content;
@@ -875,7 +898,7 @@ export class GroupTasksComponent implements OnInit {
   }
 
 readyToAddTask() {
-   return !this.selectedGroupUsers[0] || !this.model_date || this.post.content === '';
+   return  !this.model_date || this.post.content === '';
 }
 
   likepost(post) {

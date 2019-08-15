@@ -62,6 +62,10 @@ const PostSchema = new Schema({
     completed_at: {
       type: Date,
       default: null
+    },
+    unassigned : {
+      type : String , 
+      default: "No"
     }
   },
   performance_task: {
