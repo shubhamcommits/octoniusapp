@@ -632,3 +632,9 @@ button.ql-authorship-toggle {
 .list-tags{
   padding-left:0;
 }
+
+//fixing octo-doc reader to look like a page
+.documentContainer{
+  max-width: 80% !important;
+  margin: 0 auto !important;
+}
