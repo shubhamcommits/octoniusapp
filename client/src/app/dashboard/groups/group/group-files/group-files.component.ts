@@ -293,6 +293,16 @@ export class GroupFilesComponent implements OnInit {
     this.groupService.addGroupFileInFileSection(this.group_id,this.user_id,formData)
     .subscribe((res) => {
 
+      const allCurrentIndexFiles = res['filesFromFileSectionNewUpload'].files.forEach(innerPostFiles => {
+        if (innerPostFiles.orignal_name){
+          const mimeTypeFile = innerPostFiles.orignal_name.substring(innerPostFiles.orignal_name.lastIndexOf('.') + 1)
+          innerPostFiles["mimeType"] = mimeTypeFile
+
+        }else{
+          innerPostFiles["mimeType"] = "noMime"
+        }
+      });
+
       this.allFiles.unshift(res['filesFromFileSectionNewUpload'])
       this.snotifyService.success(`Files Uploaded!`, {
         timeout: 1500,
@@ -314,6 +324,24 @@ export class GroupFilesComponent implements OnInit {
       .subscribe((res)=>{
         if(res['concatAllFiles'].length > 0){
           this.has_file = true
+          
+          const indexedFile = res['concatAllFiles'].forEach(allFiles => {
+            
+              if(allFiles.files){
+                const allCurrentIndexFiles = allFiles.files.forEach(innerPostFiles => {
+                  if (innerPostFiles.orignal_name){
+                    const mimeTypeFile = innerPostFiles.orignal_name.substring(innerPostFiles.orignal_name.lastIndexOf('.') + 1)
+                    innerPostFiles["mimeType"] = mimeTypeFile
+
+                  }else{
+                    innerPostFiles["mimeType"] = "noMime"
+                  }
+                });
+              }
+              if(allFiles._name){
+             //checks for octo-doc published files but I will just make this default file
+              }
+          })
           this.allFiles = res['concatAllFiles']
         }else{
           this.has_file = false

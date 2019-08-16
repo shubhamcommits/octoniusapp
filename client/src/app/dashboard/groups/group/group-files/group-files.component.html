@@ -2,24 +2,26 @@
 <div class="card-tile">
 
   <div class="row">
-    <h4 class = "col-md-9">Add Files</h4>
+    <h4 class = "col-md-9 mt-3">Add Files</h4>
     <div class="col-md-3 text-right">
-        <button type="button" class="btn btn-link" style="margin-right: 12px">
+        <button type="button" class="btn btn-link" style="margin-right: 15px" (click)="fileInput.click()">
             <input id="cin" #fileInput type="file" class="btn btn-outline-warning task" style="display: none"
                    (change)="addFileEvent($event)" placeholder="File" multiple />
-            <i class="material-icons" placement="top"
-            ngbTooltip="Upload local files" (click)="fileInput.click()">attach_file</i>
+                   <img src= "/assets/images/add-file-icon.png" style="height:45px; width:45px">
+            <!-- <i class="material-icons" placement="top"
+            ngbTooltip="Upload local files" (click)="fileInput.click()">attach_file</i> -->
           </button>
      </div>
   </div>
   <div class="row">
-      <h4 class = "col-md-9">Add Folders</h4>
+      <h4 class = "col-md-9 mt-3">Add Folders</h4>
       <div class="col-md-3 text-right">
           <button type="button" class="btn btn-link" style="margin-right: 12px">
               <input id="cin" #folderInput type="file" class="btn btn-outline-warning task" style="display: none"
                      (change)="addFolderEvent(folderInput.files)" placeholder="File" webkitDirectory />
-              <i class="material-icons" placement="top"
-              ngbTooltip="Upload local files" (click)="folderInput.click()">attach_file</i>
+                     <img src= "/assets/images/add-folder-icon.png">
+              <!-- <i class="material-icons" placement="top"
+              ngbTooltip="Upload local files" (click)="folderInput.click()">attach_file</i> -->
             </button>
        </div>
     </div>
@@ -42,9 +44,12 @@
       <div class="media card-tile user-list" *ngFor="let file of post.files; let x = index" >
 
             <div class="media-body" >
-                <img src="{{this.BASE_URL}}/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"class="feed-avatar float-left">
+              <div *ngIf = "file?.mimeType">
+                  <img src= "/assets/images/{{file.mimeType}}-file-icon.png" onerror="this.src='/assets/images/file-icon.png'"class="feed-avatar float-left">
+              </div>
+                
               <div class="mt-3 float-left">
-                    <p ><b>Attachment: </b><a role="button" href="javascript:void(null);" >{{file?.orignal_name}}</a></p>
+                    <p ><a role="button" href="/uploads/{{file.modified_name}}" >{{file?.orignal_name}}</a></p>
               </div>
               <div class="mt-5 mr-5 float-right" style="margin-top:13px !important">
                         
@@ -88,9 +93,9 @@
         <div class="media card-tile user-list" *ngIf="post?._name" >
 
           <div class="media-body" >
-              <img src="{{this.BASE_URL}}/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"class="feed-avatar float-left">
+              <img src= "/assets/images/file-icon.png" onerror="this.src='/assets/images/file-icon.png'"class="feed-avatar float-left">
               <div class="mt-3 float-left">
-                      <p><b>Document File: </b><a role="button" href="javascript:void(null);" >{{post._name}}</a></p>
+                      <p><a role="button" [routerLink]="['/dashboard', 'group', post?._group_id, 'files', post?._post_id]" routerLinkActive="router-link-active" >{{post._name}}</a></p>
                 </div>
                 <div class="mt-5 mr-5 float-right" style="margin-top:13px !important">
                         
@@ -126,75 +131,6 @@
               </div>
         </div>
       </div>
-
-  <!--<div *ngIf="isLoading$ | async">
-      <div class="load-8">
-        <h6><b>Loading Data...</b></h6>
-          <div class="line"></div>
-      </div>
-  </div>-->
-  <!--<div *ngIf="!(isLoading$ | async)">-->
-    <!-- <div *ngIf="this.has_file == true; else svg">
-  <div *ngFor="let post of posts">
-<div class="media card-tile user-list" *ngIf="post.files.length != 0" >
-
-      <div class="media-body" >
-          <img src="{{this.BASE_URL}}/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"class="feed-avatar float-left">
-        <div class="float-left">
-          <h4 class="mt-0">{{post._posted_by?.first_name}} {{post._posted_by?.last_name}}</h4>
-
-              <p *ngFor="let file of post.files"><b>Attachment: </b><a role="button" href="javascript:void(null);" >{{file?.orignal_name}}</a></p>
-
-        </div>
-        <div class="mr-3 float-right">
-              <a role="button" class="btn btn-link" href="/uploads/{{post.files[0].modified_name}}" target="_blank"> <i class="material-icons">
-                visibility
-                </i></a>
-            <button class="btn btn-link" (click)="onDownlaodFile(post.files[0].modified_name,post.files[0].orignal_name)"><i class="material-icons">
-              cloud_download
-              </i></button>
-            <button class="btn btn-link" (click)="onDeleteFile(post.files[0].modified_name,post.files[0].orignal_name)"><i class="material-icons">
-              delete
-            </i></button>
-
-        </div>
-
-      </div>
-
-  </div>
-
-</div> -->
-
-<!-- <div *ngFor="let post of documentFiles">
-  <div class="media card-tile user-list" >
-
-        <div class="media-body" >
-
-          <div class="float-left">
-
-                <p><b>Document File: </b><a role="button" href="javascript:void(null);" >{{post?._name}}</a></p>
-
-          </div>
-          <div class="mr-3 float-right">
-
-               <button class="btn btn-link" (click)= "showPreview(post._id)"><i class="material-icons">
-                  visibility
-                  </i></button> -->
-                <!-- <a role="button" class="btn btn-link" [routerLink]="['/dashboard', 'group', post?._group_id, 'files', post?._post_id]" routerLinkActive="router-link-active" > <i class="material-icons">
-                  visibility -->
-                  <!-- </i></a> -->
-
-
-          <!-- </div> -->
-
-        <!-- </div> -->
-
-    <!-- </div> -->
-
-  <!-- </div> -->
-<!--</div>-->
-
-<!-- </div> -->
 <ng-template #svg>
     <img src='../../../../../assets/images/emptyfiles.svg' style=" margin: 0 auto; display:block; width: 600px">
 </ng-template>
