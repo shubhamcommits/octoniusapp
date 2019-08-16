@@ -19,10 +19,12 @@
             {{post.task._assigned_to?.last_name}}
           </span>
         </div>
+        
          <div *ngIf = "post.task.unassigned == 'Yes'">
           <span class="assigned"> Unassigned
           </span>
           </div>
+          </div>  
         <div class="col-md-4 text-right padding-topright" style=" object-fit: cover;">
           <div ngbDropdown (openChange)="toggled($event)" autoClose="outside" #taskStatusList="ngbDropdown" class="d-inline-block">
             <div *ngFor="let column of allColumns; let i = index;">
