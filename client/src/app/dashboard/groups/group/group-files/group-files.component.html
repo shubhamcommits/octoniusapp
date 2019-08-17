@@ -16,12 +16,10 @@
   <div class="row">
       <h4 class = "col-md-9 mt-3">Add Folders</h4>
       <div class="col-md-3 text-right">
-          <button type="button" class="btn btn-link" style="margin-right: 12px">
+          <button type="button" class="btn btn-link" style="margin-right: 12px" (click)="folderInput.click()">
               <input id="cin" #folderInput type="file" class="btn btn-outline-warning task" style="display: none"
                      (change)="addFolderEvent(folderInput.files)" placeholder="File" webkitDirectory />
-                     <img src= "/assets/images/add-folder-icon.png">
-              <!-- <i class="material-icons" placement="top"
-              ngbTooltip="Upload local files" (click)="folderInput.click()">attach_file</i> -->
+                     <img src= "/assets/images/add-folder-icon.png" >
             </button>
        </div>
     </div>

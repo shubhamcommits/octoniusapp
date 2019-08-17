@@ -266,8 +266,23 @@ export class GroupFilesComponent implements OnInit {
       }
     this.groupService.addGroupFileInFileSection(this.group_id,this.user_id,formData)
     .subscribe((res) => {
+      const allCurrentIndexFiles = res['filesFromFileSectionNewUpload'].files.forEach(innerPostFiles => {
+        if (innerPostFiles.orignal_name){
+          const mimeTypeFile = innerPostFiles.orignal_name.substring(innerPostFiles.orignal_name.lastIndexOf('.') + 1)
+          innerPostFiles["mimeType"] = mimeTypeFile
 
-      this.allFiles.unshift(res['filesFromFileSectionNewUpload'])
+        }else{
+          innerPostFiles["mimeType"] = "noMime"
+        }
+      });
+
+      if(this.allFiles.length > 0){
+        this.allFiles.unshift(res['filesFromFileSectionNewUpload'])
+      }else{
+
+        this.allFiles = [res['filesFromFileSectionNewUpload']]
+      }
+
       this.snotifyService.success(`Files Uploaded!`, {
         timeout: 1500,
         showProgressBar: false,
@@ -303,7 +318,12 @@ export class GroupFilesComponent implements OnInit {
         }
       });
 
-      this.allFiles.unshift(res['filesFromFileSectionNewUpload'])
+      if(this.allFiles.length > 0){
+        this.allFiles.unshift(res['filesFromFileSectionNewUpload'])
+      }else{
+        this.allFiles = [res['filesFromFileSectionNewUpload']]
+      }
+
       this.snotifyService.success(`Files Uploaded!`, {
         timeout: 1500,
         showProgressBar: false,
