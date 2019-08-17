@@ -14,7 +14,17 @@ const DocumentFileSchema = new Schema({
     },
     _group_id: {
         type: Schema.Types.ObjectId
-    }
+    },
+    _posted_by: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
+    created_date: {
+        type: Date,
+        default: Date.now,
+        required: true,
+    },
 });
 
 const DocumentFile = mongoose.model('DocumentFile', DocumentFileSchema);

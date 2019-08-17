@@ -13,6 +13,7 @@ const Resetpwd = require('./resetpwd.model');
 const Column = require('./column.model');
 const TableCell = require('./table-cell.model');
 const DocumentFile = require('./document-file.model');
+const GroupFilesUpload = require('./group-file-uploads.model')
 
 module.exports = {
   Auth,
@@ -29,5 +30,6 @@ module.exports = {
   Workspace,
   Column,
   TableCell,
-  DocumentFile
+  DocumentFile,
+  GroupFilesUpload,
 };

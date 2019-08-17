@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { Group, Post, User , DocumentFile} = require('../models');
+const { Group, Post, User , DocumentFile, GroupFilesUpload} = require('../models');
 const { sendErr, sendMail } = require('../../utils');
 const moment = require('moment');
 const fs = require('fs');
@@ -1256,9 +1256,10 @@ const getAllSharedGroupFiles = async (req, res) => {
         { share_files : {$eq: false}},
       ]
     }).select('_id')
-    
+
     if(checkIfCurrentGroupIsPrivate.length === 1){
       workspaceGroups.push(checkIfCurrentGroupIsPrivate[0])
+
     }
 
 //mapping query for Post files
@@ -1278,18 +1279,34 @@ const getAllSharedGroupFiles = async (req, res) => {
       );
 
 //mapping query for octo-doc in DocumentFile
-      const files = await DocumentFile.find({
+      const octodocFiles = await DocumentFile.find({
         _group_id: {$in: workspaceGroups.map(e => new mongoose.Types.ObjectId(e._id))}
         }).select('_id _name _post_id')
-      const renamedFiles = await files.map((docs) => {
+
+      const renamedFiles = await octodocFiles.map((docs) => {
         return { 
             id: docs['_id'],
             value: docs['_name'],
             link:`${req.headers['origin']}/#/dashboard/group/${groupId}/files/${docs['_post_id']}`};
       });
+// //mapping query for group file selection upload
+      const groupFileSelection = await GroupFilesUpload.find({
+        $and: [
+          { _group: {$in: workspaceGroups.map(e => new mongoose.Types.ObjectId(e._id))} },
+          { files: { $exists: true, $ne: [] } }
+        ]
+      }).select('files')
+//renamed for Post 
+      const renamedFileSelection = await groupFileSelection.map( filesArray =>
+         filesArray['files'].map( innerFiles => ({
+            id: innerFiles._id,
+            value: innerFiles.orignal_name,
+            link: `${req.protocol}://${req.headers.host}/uploads/${innerFiles.modified_name}`
+        }))
+      );
 
     // console.log(renamedFiles)
-    const concatAllFiles = await Promise.all([renamedFiles, renamedPosts])
+    const concatAllFiles = await Promise.all([renamedFiles, renamedPosts, renamedFileSelection])
     .then(res=>{
          const gatherFirstArrayPost = renamedPosts.map((filesArray) => {
           return { 
@@ -1298,8 +1315,15 @@ const getAllSharedGroupFiles = async (req, res) => {
               link: filesArray[0]['link'],
           };
         })
+        const gatherSecondArrayFileSection = renamedFileSelection.map((filesArray) => {
+          return { 
+              id: filesArray[0]['id'],
+              value: filesArray[0]['value'],
+              link: filesArray[0]['link'],
+          };
+        })
         return{
-          allFiles: renamedFiles.concat(gatherFirstArrayPost)
+          allFiles: renamedFiles.concat(gatherFirstArrayPost,gatherSecondArrayFileSection)
         }
       })
     .catch(err=>{
