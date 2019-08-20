@@ -4,7 +4,7 @@
   }
 
   @media (min-height: 300px) {
-    div.toolbar{
+    ::ng-deep .ql-toolbar{
       position: sticky;
       top: 80px;
     }
