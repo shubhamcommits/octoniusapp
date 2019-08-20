@@ -681,9 +681,6 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     
       //console.log('[sharedb] New connection state: ' + state + ' Reason: ' + reason);
     });
-    const editorWidthForToolbar = document.getElementById('editor').clientWidth
-    console.log(editorWidthForToolbar)
-    
      } 
     catch(err){
       console.log('Error', err);
