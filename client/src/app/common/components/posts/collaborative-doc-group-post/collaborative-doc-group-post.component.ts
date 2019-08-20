@@ -681,7 +681,10 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     
       //console.log('[sharedb] New connection state: ' + state + ' Reason: ' + reason);
     });
-    } 
+    const editorWidthForToolbar = document.getElementById('editor').clientWidth
+    console.log(editorWidthForToolbar)
+    
+     } 
     catch(err){
       console.log('Error', err);
     }
@@ -954,10 +957,21 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     this.fixedForPreview = "fixed"
     this.previewbool = true
     this.editorPreview = document.getElementsByClassName("ql-editor")[0].innerHTML 
+    const toolbarElement = (<HTMLElement>document.querySelector('.ql-toolbar'))
+    const commentElement = (<HTMLElement>document.querySelector('.comments'))
+    toolbarElement.style.position = "fixed"
+    toolbarElement.style.width = "65%"
+    commentElement.style.position = "fixed"
+    
   }
   closePreview(event:string){
     this.fixedForPreview = ""
     this.previewbool = false
+    const toolbarElement = (<HTMLElement>document.querySelector('.ql-toolbar'))
+    const commentElement = (<HTMLElement>document.querySelector('.comments'))
+    toolbarElement.style.position = "sticky"
+    toolbarElement.style.width = ""
+    commentElement.style.position = "sticky"
   }
 }
 

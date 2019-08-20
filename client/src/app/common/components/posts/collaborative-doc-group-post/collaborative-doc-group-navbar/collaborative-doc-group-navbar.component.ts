@@ -223,7 +223,7 @@ export class CollaborativeDocGroupNavbarComponent implements OnInit {
       let documentFileData = {
         _post_id: this.postId,
         _name: this.document_name,
-        _content: doc.outerHTML,
+        _content: doc.innerHTML,
         _group_id : agoraID,
         _posted_by : this.userId,
       };
