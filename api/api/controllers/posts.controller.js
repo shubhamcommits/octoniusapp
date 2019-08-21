@@ -19,7 +19,7 @@ const add = async (req, res, next) => {
   try {
     const postData = req.body;
     let post = await Post.create(postData);
-
+      
     if (post._content_mentions.length !== 0) {
       // Create Notification for mentions on post content
       notifications.newPostMentions(post);
@@ -33,9 +33,12 @@ const add = async (req, res, next) => {
     // Send Email notification after post creation
     switch (post.type) {
       case 'task':
+        if(post.task.unassigned != 'Yes')
+        {
         await notifications.newTaskAssignment(post);
         await sendMail.taskAssigned(post);
         await sendMail.scheduleTaskReminder(post);
+        }
         break;
       case 'event':
         await notifications.newEventAssignments(post);
@@ -80,7 +83,8 @@ const edit = async (req, res, next) => {
           task: {
             due_to: moment(req.body.date_due_to).format('YYYY-MM-DD'),
             _assigned_to: req.body.assigned_to[0]._id,
-            status: req.body.status
+            status: req.body.status , 
+            unassigned : req.body.unassigned
           }
         };
         break;
@@ -994,6 +998,7 @@ const changeTaskAssignee = async (req, res, next) => {
       _id: postId
     }, {
         'task._assigned_to': assigneeId,
+        'task.unassigned': 'No'
       }, {
         new: true
       })
