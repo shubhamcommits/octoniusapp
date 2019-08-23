@@ -11,6 +11,9 @@ import { saveAs } from 'file-saver';
 import { DocumentFileService } from '../../../../shared/services/document-file.service';
 import { SnotifyService, SnotifyPosition, SnotifyToastConfig } from 'ng-snotify';
 import Swal from 'sweetalert2';
+import { DomSanitizer } from '@angular/platform-browser';
+
+declare var $;
 
 @Component({
   selector: 'app-group-files',
@@ -26,6 +29,8 @@ export class GroupFilesComponent implements OnInit {
   documentFiles = new Array();
   allFiles = new Array();
   selectedDocuments = new Array()
+  pdfSourcLink = ""
+  iFrameLinks
 
   has_file = false;
 
@@ -41,7 +46,8 @@ export class GroupFilesComponent implements OnInit {
     public groupDataService: GroupDataService, private groupService: GroupService,
     private _userService: UserService,
     private documentFileService: DocumentFileService,
-    private snotifyService: SnotifyService) { }
+    private snotifyService: SnotifyService,
+    public sanitizer: DomSanitizer) { }
 
   async ngOnInit() {
     this.ngxService.start(); // start foreground loading with 'default' id
@@ -55,74 +61,15 @@ export class GroupFilesComponent implements OnInit {
     .catch((err)=>{
       console.log('Unexpected error', err);
     });
-    // this.loadFiles()
-    // .then(()=>{
-    //   this.ngxService.stop();
-    // })
-    // .catch((err)=>{
-    //   console.log('Unexpected error', err);
-    // })
-    // this.loadGroupPosts();
   }
 
-  // loadFiles() {
-  //   return new Promise((resolve, reject)=>{
-  //     this.isLoading$.next(true);
-
-  //     this.groupService.getGroupFiles(this.group_id)
-  //       .subscribe((res) => {
-  //         console.log('Group posts:', res);
-  //         this.posts = res['posts'];
-  //         for(let i = 0; i < this.posts.length; i++){
-  //           if(this.posts[i].files.length > 0){
-  //             this.has_file = true;
-  //             break;
-
-  //           }
-  //         }
-  //       // console.log('Group posts:', this.posts);
-  //      //  console.log('Has File:', this.has_file);
-  //        this.isLoading$.next(false);
-  //        resolve();
-
-  //       }, (err) => {
-  //         console.log('Error while loading files', err);
-  //         reject(err);
-
-  //       });
-
-  //   })
-
-  // }
-
-  // loadGroupPosts() {
-
-  //   this.isLoading$.next(true);
-
-  //   this.postService.getGroupPosts(this.group_id)
-  //     .subscribe((res) => {
-  //       // console.log('Group posts:', res);
-  //       this.posts = res['posts'];
-  //       for(var i = 0; i < this.posts.length; i++){
-  //         if(this.posts[i].files.length > 0){
-  //           this.has_file=true;
-  //           break;
-
-  //         }
-  //         else{
-  //           this.has_file=false;
-  //         }
-  //       }
-  //   //   console.log('Group posts:', this.posts);
-  //     // console.log('Has File:', this.has_file);
-  //      this.isLoading$.next(false);
-
-
-  //     }, (err) => {
-
-  //     });
-
-  // }
+  ngAfterViewInit(): void {
+    $('#holder').lightGallery({
+      share:false,
+      counter:false,
+      selector:".imagePreview",
+    });
+ }
 
   onDownlaodFile(fileName, fileName_orignal) {
 
@@ -375,4 +322,34 @@ export class GroupFilesComponent implements OnInit {
     })
   }
 
+  pdfPreviewClicked(src:string){
+    this.pdfSourcLink = `${this.BASE_URL}/uploads/${src}`
+    document.body.style.overflow = "hidden"
+  }
+
+  otherMimeTypeclick(src:string){
+    // this.iFrameLinks = `${this.BASE_URL}/uploads/${src}`
+    document.body.style.overflow = "hidden"
+    this.iFrameLinks = this.sanitizer.bypassSecurityTrustResourceUrl("https://view.officeapps.live.com/op/embed.aspx?src=https://workplace.octonius.com/uploads/1566507468492agora%20test.docx");
+  }
+
+  onLoad(){
+    console.log("loaded")
+  }
+
+  overlayRemoval(mimetype:String){
+    document.body.style.overflow = ""
+    document.getElementById("overlay-iframe").remove()
+    this.iFrameLinks = ""
+
+    switch (mimetype) {
+     case 'pdf':
+        this.pdfSourcLink = ""
+       break;
+
+     default:
+        event.stopPropagation();
+       break;
+   }
+  }
 }
