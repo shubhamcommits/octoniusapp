@@ -66,8 +66,10 @@
             *ngIf="(post.type === 'event' || post.type === 'task') && !isItMyWorkplace"
             [selectedGroupUsers]="selectedGroupUsers"
             (usersSelected)="usersSelected($event)"
+            (userAssignment)="userAssignment($event)"
             [settings]="settings"
             [type]="post.type"
+            [user]="user"
             [group]="group">
           </assign-users-modal>
           <date-picker-modal [model_date]="model_date" (picked_date)="setDate($event)"></date-picker-modal>

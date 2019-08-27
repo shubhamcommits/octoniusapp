@@ -59,7 +59,6 @@ const add = async (req, res, next) => {
     } else if (post.type === 'normal') {
       post = await Post.populate(post, [{ path: '_group' }, { path: '_posted_by' }]);
     }
-
     return res.status(200).json({
       message: 'New post created!',
       post
@@ -71,7 +70,6 @@ const add = async (req, res, next) => {
 
 const edit = async (req, res, next) => {
   try {
-    console.log(req.body)
     let postData;
     switch (req.body.type) {
       case 'task':
@@ -83,7 +81,7 @@ const edit = async (req, res, next) => {
             tags: req.body.tags,
             task: {
               due_to: moment(req.body.date_due_to).format('YYYY-MM-DD'),
-              _assigned_to: req.body.assigned_to[0]._id,
+              _assigned_to: req.body.assigned_to,
               status: req.body.status , 
               unassigned : req.body.unassigned
             }

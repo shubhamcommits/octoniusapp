@@ -77,7 +77,7 @@ export class PostService {
   }
 
   editPost(postId, post) {
-    // this.manuallyBustCache();
+    this.manuallyBustCache();
     return this._http.put<any>(this.BASE_API_URL + `/posts/${postId}`, post);
   }
 

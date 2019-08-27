@@ -17,9 +17,10 @@ export class AssignUsersModalComponent implements OnInit {
   @Input('group') group;
   @Input('settings') settings;
   @Input('type') type;
+  @Input('user') user;
 
   @Output('usersSelected') usersSelected = new EventEmitter();
-
+  @Output('userAssignment') userAssignment = new EventEmitter();
   // assignment status
   assignment = 'Unassigned';
 
@@ -46,39 +47,20 @@ export class AssignUsersModalComponent implements OnInit {
   }
 
   onItemSelect(item: any) {
-    // if (this.selected === false){
-    //   this.selected = true;
-    //   this.assignment = 'Assigned';
-    //   this.selectedGroupUsers = [];
-    //   this.selectedGroupUsers.unshift(item);
-    //   this.userProfileImage = `${environment.BASE_URL}/uploads/${item['profile_pic']}`;
-    //   this.usersSelected.emit(this.selectedGroupUsers);
-    //   console.log(item,"item",this.selectedGroupUsers)
-    // } else {
-      // this.selectedGroupUsers = [];
-      // this.usersSelected.emit(this.selectedGroupUsers);
-      // this.selected = false;
-      // this.assignment = 'Unassigned';
-      // this.userProfileImage = null;
-      // console.log(item,"item2",this.selectedGroupUsers)
-    //}
-    
+      this.userAssignment.emit("Assigned")
       this.assignment = 'Assigned';
       this.selectedGroupUsers = [];
       this.selectedGroupUsers.unshift(item);
       this.userProfileImage = `${environment.BASE_URL}/uploads/${item['profile_pic']}`;
       this.usersSelected.emit(this.selectedGroupUsers);
-      // console.log(item,"item",this.selectedGroupUsers)
   }
   onUnassignSelect(item: any) {
-
+      this.userAssignment.emit("Unassigned")
       this.selectedGroupUsers = [];
-      this.usersSelected.emit(this.selectedGroupUsers);
+      this.usersSelected.emit([]);
       this.selected = false;
       this.assignment = 'Unassigned';
       this.userProfileImage = null;
-      console.log(item,"item2",this.selectedGroupUsers)
-      
   }
 
   onSearch(evt: any) {
