@@ -46,22 +46,40 @@ export class AssignUsersModalComponent implements OnInit {
   }
 
   onItemSelect(item: any) {
-    if (this.selected === false){
-      this.selected = true;
+    // if (this.selected === false){
+    //   this.selected = true;
+    //   this.assignment = 'Assigned';
+    //   this.selectedGroupUsers = [];
+    //   this.selectedGroupUsers.unshift(item);
+    //   this.userProfileImage = `${environment.BASE_URL}/uploads/${item['profile_pic']}`;
+    //   this.usersSelected.emit(this.selectedGroupUsers);
+    //   console.log(item,"item",this.selectedGroupUsers)
+    // } else {
+      // this.selectedGroupUsers = [];
+      // this.usersSelected.emit(this.selectedGroupUsers);
+      // this.selected = false;
+      // this.assignment = 'Unassigned';
+      // this.userProfileImage = null;
+      // console.log(item,"item2",this.selectedGroupUsers)
+    //}
+    
       this.assignment = 'Assigned';
       this.selectedGroupUsers = [];
       this.selectedGroupUsers.unshift(item);
       this.userProfileImage = `${environment.BASE_URL}/uploads/${item['profile_pic']}`;
       this.usersSelected.emit(this.selectedGroupUsers);
-    } else {
+      // console.log(item,"item",this.selectedGroupUsers)
+  }
+  onUnassignSelect(item: any) {
+
       this.selectedGroupUsers = [];
       this.usersSelected.emit(this.selectedGroupUsers);
       this.selected = false;
       this.assignment = 'Unassigned';
       this.userProfileImage = null;
-    }
+      console.log(item,"item2",this.selectedGroupUsers)
+      
   }
-
 
   onSearch(evt: any) {
     if (evt.target.value.length === 0){

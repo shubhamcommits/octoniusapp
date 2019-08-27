@@ -206,7 +206,8 @@ return doc.body.innerHTML;
     // we create a new date object based on whether we added time
     const date_due_to = new Date(this.model_date.year, this.model_date.month - 1, this.model_date.day);
     var post;
-    console.log(this.post.task.unassigned); 
+    console.log(this.post.task.unassigned);
+    console.log(this.selectedGroupUsers) 
     if(this.post.task.unassigned == 'Yes' && this.selectedGroupUsers[0]._id == this.user_data.user_id)
     {
     console.log("entered1");
@@ -277,6 +278,8 @@ return doc.body.innerHTML;
         post.tags = this.tags;
       }
     }
+
+    console.log(this.post._id,"herewith it",post)
 
     // SERVER REQUEST
     this.postService.editPost(this.post._id, post)
