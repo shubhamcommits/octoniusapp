@@ -17,9 +17,10 @@ export class AssignUsersModalComponent implements OnInit {
   @Input('group') group;
   @Input('settings') settings;
   @Input('type') type;
+  @Input('user') user;
 
   @Output('usersSelected') usersSelected = new EventEmitter();
-
+  @Output('userAssignment') userAssignment = new EventEmitter();
   // assignment status
   assignment = 'Unassigned';
 
@@ -46,22 +47,21 @@ export class AssignUsersModalComponent implements OnInit {
   }
 
   onItemSelect(item: any) {
-    if (this.selected === false){
-      this.selected = true;
+      this.userAssignment.emit("Assigned")
       this.assignment = 'Assigned';
       this.selectedGroupUsers = [];
       this.selectedGroupUsers.unshift(item);
       this.userProfileImage = `${environment.BASE_URL}/uploads/${item['profile_pic']}`;
       this.usersSelected.emit(this.selectedGroupUsers);
-    } else {
+  }
+  onUnassignSelect(item: any) {
+      this.userAssignment.emit("Unassigned")
       this.selectedGroupUsers = [];
-      this.usersSelected.emit(this.selectedGroupUsers);
+      this.usersSelected.emit([]);
       this.selected = false;
       this.assignment = 'Unassigned';
       this.userProfileImage = null;
-    }
   }
-
 
   onSearch(evt: any) {
     if (evt.target.value.length === 0){

@@ -206,24 +206,22 @@ return doc.body.innerHTML;
     // we create a new date object based on whether we added time
     const date_due_to = new Date(this.model_date.year, this.model_date.month - 1, this.model_date.day);
     var post;
-    console.log(this.post.task.unassigned); 
-    if(this.post.task.unassigned == 'Yes' && this.selectedGroupUsers[0]._id == this.user_data.user_id)
-    {
-    console.log("entered1");
-    post = {
-      'title': this.edit_title,
-      'content': this.edit_content,
-      '_content_mentions': this.content_mentions,
-      'type': this.post.type,
-      'assigned_to': this.selectedGroupUsers,
-      'date_due_to': moment(date_due_to).format('YYYY-MM-DD'),
-      'status': this.post.task.status,
-      'tags': this.tags , 
-      'unassigned' : 'Yes' 
-    };
+    //over here its Unassigned and the way the array is sent back we need an object id
+    if(this.assignment == "Unassigned" && this.selectedGroupUsers.length == 0){
+      post = {
+        'title': this.edit_title,
+        'content': this.edit_content,
+        '_content_mentions': this.content_mentions,
+        'type': this.post.type,
+        'assigned_to': this.user_data.user_id,
+        'date_due_to': moment(date_due_to).format('YYYY-MM-DD'),
+        'status': this.post.task.status,
+        'tags': this.tags , 
+        'unassigned' : 'Yes' 
+      };
     }
-    if(this.post.task.unassigned == 'Yes' && this.selectedGroupUsers[0]._id != this.user_data.user_id)
-    {
+
+    if(this.assignment == 'Assigned'){
       post = {
       'title': this.edit_title,
       'content': this.edit_content,
@@ -234,21 +232,7 @@ return doc.body.innerHTML;
       'status': this.post.task.status,
       'tags': this.tags ,
       'unassigned' : 'No'
-    };    
-    }
-    if(this.post.task.unassigned == 'No')
-    {
-      post = {
-      'title': this.edit_title,
-      'content': this.edit_content,
-      '_content_mentions': this.content_mentions,
-      'type': this.post.type,
-      'assigned_to': this.selectedGroupUsers,
-      'date_due_to': moment(date_due_to).format('YYYY-MM-DD'),
-      'status': this.post.task.status,
-      'tags': this.tags ,
-      'unassigned' : 'No'
-    };
+      };
     }
     // handle mentions
     const scanned_content = post.content;
@@ -277,7 +261,6 @@ return doc.body.innerHTML;
         post.tags = this.tags;
       }
     }
-
     // SERVER REQUEST
     this.postService.editPost(this.post._id, post)
       .pipe(takeUntil(this.ngUnsubscribe))
@@ -405,7 +388,10 @@ return doc.body.innerHTML;
 
   usersSelected(users) {
     this.selectedGroupUsers = users;
-    this.assignment = users.length < 1 ? "Unassigned" : "Assigned";
+    //this.assignment = users.length < 1 ? "Unassigned" : "Assigned";
+  }
+  userAssignment(assignment){
+    this.assignment = assignment
   }
 
   addTags(event: any) {
