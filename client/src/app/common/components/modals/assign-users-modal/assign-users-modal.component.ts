@@ -54,7 +54,7 @@ export class AssignUsersModalComponent implements OnInit {
       this.userProfileImage = `${environment.BASE_URL}/uploads/${item['profile_pic']}`;
       this.usersSelected.emit(this.selectedGroupUsers);
   }
-  onUnassignSelect(item: any) {
+  onUnassignSelect() {
       this.userAssignment.emit("Unassigned")
       this.selectedGroupUsers = [];
       this.usersSelected.emit([]);
