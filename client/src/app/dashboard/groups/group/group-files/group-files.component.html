@@ -48,19 +48,63 @@
             <div class="media-body row">
               <div *ngIf = "file?.mimeType" class="col-md-7">
                   <img src= "/assets/images/{{file.mimeType}}-file-icon.png" onerror="this.src='/assets/images/file-icon.png'"class="feed-avatar float-left">
-            
-                    <p style="padding-top:10px; margin:0"><a role="button" href="/uploads/{{file.modified_name}}" class="btn btn-link">{{file?.orignal_name}}</a></p>
+                    
                     <div class = "imagePreview" *ngIf = "file?.mimeType == 'jpg' || file?.mimeType == 'jpeg' || file?.mimeType == 'png' ">
-                        <p style="padding-top:10px; margin:0"><a class = "imagePreviewLink" role="button" href="{{this.BASE_URL}}/uploads/{{file.modified_name}}" >{{file?.orignal_name}}</a></p>
+                        <p style="padding-top:10px; margin:0"><a role="button" (click) = "imagePreviewClicked(file.modified_name)" href="/uploads/{{file.modified_name}}" class="btn btn-link">{{file?.orignal_name}}</a></p>
                     </div>
                     <div *ngIf = "file?.mimeType == 'pdf' ">
                         <p style="padding-top:10px; margin:0"> <a role="button" (click) = "pdfPreviewClicked(file.modified_name)" >{{file?.orignal_name}}</a></p>
                     </div>
-                    <div *ngIf = "file?.mimeType == 'docx' ">
-                        <p style="padding-top:10px; margin:0"> <a role="button" (click) = "otherMimeTypeclick(file.modified_name)" >{{file?.orignal_name}}</a></p>
+                      <div *ngIf = "file?.mimeType == 'docx' || file?.mimeType == 'doc' || file?.mimeType == 'ppt' || file?.mimeType == 'pptx' || file?.mimeType == 'xls' || file?.mimeType == 'xlsx' ">
+                        <p style="padding-top:10px; margin:0"> <a role="button" (click) = "officeMimeTypeclick(file.modified_name)" >{{file?.orignal_name}}</a></p>
                     </div>
-                    <div *ngIf = "file?.mimeType != 'jpg' && file?.mimeType !== 'jpeg' && file?.mimeType != 'png' && file?.mimeType != 'pdf' && file?.mimeType != 'docx' ">
-                        <p style="padding-top:10px; margin:0"> <a role="button" href="{{this.BASE_URL}}/uploads/{{file.modified_name}}" >{{file?.orignal_name}}</a></p>
+                    <div *ngIf = "
+                    file?.mimeType == 'gif' 
+                    || file?.mimeType == 'tiff' 
+                    || file?.mimeType == 'mpeg4'
+                    || file?.mimeType == 'mov'
+                    || file?.mimeType == 'avi'
+                    || file?.mimeType == 'mpegps'
+                    || file?.mimeType == 'wmv'
+                    || file?.mimeType == 'flv'
+                    || file?.mimeType == 'txt'
+                    || file?.mimeType == 'css'
+                    || file?.mimeType == 'html'
+                    || file?.mimeType == 'pages'
+                    || file?.mimeType == 'ai'
+                    || file?.mimeType == 'psd'
+                    || file?.mimeType == 'svg'
+                    ">
+                    <p style="padding-top:10px; margin:0">  <a role="button" (click) = "googleMimeTypeclick(file.modified_name)" >{{file?.orignal_name}}</a></p>
+                  </div>
+                    <div *ngIf = "
+                    file?.mimeType != 'jpg' 
+                    && file?.mimeType !== 'jpeg' 
+                    && file?.mimeType != 'png' 
+                    && file?.mimeType != 'pdf' 
+                    && file?.mimeType != 'docx' 
+                    && file?.mimeType != 'doc' 
+                    && file?.mimeType != 'ppt' 
+                    && file?.mimeType != 'pptx' 
+                    && file?.mimeType != 'xls' 
+                    && file?.mimeType != 'xlsx'
+                    && file?.mimeType == 'gif' 
+                    &&  file?.mimeType == 'tiff' 
+                    &&  file?.mimeType == 'mpeg4'
+                    &&  file?.mimeType == 'mov'
+                    &&  file?.mimeType == 'avi'
+                    &&  file?.mimeType == 'mpegps'
+                    &&  file?.mimeType == 'wmv'
+                    &&  file?.mimeType == 'flv'
+                    &&  file?.mimeType == 'txt'
+                    &&  file?.mimeType == 'css'
+                    &&  file?.mimeType == 'html'
+                    &&  file?.mimeType == 'pages'
+                    &&  file?.mimeType == 'ai'
+                    &&  file?.mimeType == 'psd'
+                    &&  file?.mimeType == 'svg'
+                    ">
+                    <p style="padding-top:10px; margin:0"> <a role="button" href="{{this.BASE_URL}}/uploads/{{file.modified_name}}" >{{file?.orignal_name}}</a></p>
                     </div>
               </div>
              
@@ -158,21 +202,55 @@
   </div>
 </div>
 
-<div class= "outer-overlay" *ngIf = "pdfSourcLink || iFrameLinks">
-    <div class = "overlay-navbar" (click) = "overlayRemoval('pdf')">
-        navbar
+<div class= "outer-overlay" *ngIf = "pdfSourceLinks || iFrameSourceLinks || imageSourceLinks.length > 0">
+    <div class = "overlay-navbar" *ngIf = "pdfSourceLinks" >
+        <div class="row" style="margin-left: 0.5rem;" >
+            <a class="navbar-brand" (click) = "overlayRemoval('pdf')" style="cursor: pointer;">
+              <i class="material-icons" style = "color:white !important ; margin-top: 5px">
+                arrow_back
+                </i>
+              </a>
+        </div>  
       </div>
-    <div class = "pdf-source-container" *ngIf = "pdfSourcLink">
-        <div class ="overlay" >
+    <div class = "overlay-navbar" *ngIf = "iFrameSourceLinks" >
+        <div class="row" style="margin-left: 0.5rem;" >
+            <a class="navbar-brand" (click) = "overlayRemoval('otherFilesForiFrame')" style="cursor: pointer;">
+              <i class="material-icons" style = "color:white !important ; margin-top: 5px">
+                arrow_back
+                </i>
+              </a>
+        </div>  
+      </div>
+    <div class = "overlay-navbar" *ngIf = "imageSourceLinks.length > 0" >
+        <div class="row" style="margin-left: 0.5rem;" >
+            <a class="navbar-brand" (click) = "overlayRemoval('images')" style="cursor: pointer;">
+              <i class="material-icons" style = "color:white !important ; margin-top: 5px">
+                arrow_back
+                </i>
+              </a>
+        </div>  
+    </div>
+      
+
+    <div class = "pdf-source-container" *ngIf = "pdfSourceLinks">
+        <div class ="overlayPDF" >
             <pdf-viewer
             class = "overlay-content"
-            [src]="pdfSourcLink" 
+            [src]="pdfSourceLinks" 
             [render-text]="true"
             ></pdf-viewer>
         </div>
     </div>
-    <div id = "overlay-iframe" *ngIf = "iFrameLinks">
-            <iframe id = "iframe-file" (load)="onLoad()" [src]='iFrameLinks' style="width:100%;height:100%;"></iframe>
+    <div id = "overlay-iframe" *ngIf = "iFrameSourceLinks">
+            <iframe id = "iframe-file" (load)="onLoad()" [src]='iFrameSourceLinks' style="width:100%;height:100%;"></iframe>
+    </div>
+    <div class ="overlayImages" >
+        <app-image-viewer *ngIf = "imageSourceLinks.length > 0" 
+            [images]="imageSourceLinks"
+            [idContainer]="'imageOverLay'"
+            [loadOnInit]="true"
+            [showPDFOnlyOption]="false">
+        </app-image-viewer>
     </div>
 
 </div>

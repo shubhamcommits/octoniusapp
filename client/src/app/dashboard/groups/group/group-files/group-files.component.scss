@@ -27,17 +27,30 @@
     height: 100%;
   }
 
-  .overlay { 
+  .overlayImages{
+    // position: fixed; 
+    overflow-y: scroll;
+    overscroll-behavior: contain;
+    width:100%;
+    z-index: 9998;
+    margin-top: 35px;
+    top: 0; bottom: 0; 
+  }
+  .overlayImages:after{
+    background-color: transparent !important;
+    background-image: none !important;
+}
+  .overlayPDF { 
     position: fixed; 
     overflow-y: scroll;
     overscroll-behavior: contain;
     width:100%;
     z-index: 9998;
-    margin-top: 15px;
+    margin-top: 50px;
     top: 0; bottom: 0; 
  }
  
- .overlay:after{
+ .overlayPDF:after{
      background-color: transparent !important;
      background-image: none !important;
  }
