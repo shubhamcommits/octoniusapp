@@ -13,8 +13,6 @@ import { SnotifyService, SnotifyPosition, SnotifyToastConfig } from 'ng-snotify'
 import Swal from 'sweetalert2';
 import { DomSanitizer } from '@angular/platform-browser';
 
-declare var $;
-
 @Component({
   selector: 'app-group-files',
   templateUrl: './group-files.component.html',
@@ -29,8 +27,9 @@ export class GroupFilesComponent implements OnInit {
   documentFiles = new Array();
   allFiles = new Array();
   selectedDocuments = new Array()
-  pdfSourcLink = ""
-  iFrameLinks
+  pdfSourceLinks = ""
+  iFrameSourceLinks
+  imageSourceLinks = []
 
   has_file = false;
 
@@ -61,15 +60,9 @@ export class GroupFilesComponent implements OnInit {
     .catch((err)=>{
       console.log('Unexpected error', err);
     });
+  
   }
 
-  ngAfterViewInit(): void {
-    $('#holder').lightGallery({
-      share:false,
-      counter:false,
-      selector:".imagePreview",
-    });
- }
 
   onDownlaodFile(fileName, fileName_orignal) {
 
@@ -321,16 +314,29 @@ export class GroupFilesComponent implements OnInit {
       })
     })
   }
-
-  pdfPreviewClicked(src:string){
-    this.pdfSourcLink = `${this.BASE_URL}/uploads/${src}`
+  imagePreviewClicked(src:string){
+    this.imageSourceLinks = [...this.imageSourceLinks, `${this.BASE_URL}/uploads/${src}`] 
+    console.log(this.imageSourceLinks)
     document.body.style.overflow = "hidden"
   }
 
-  otherMimeTypeclick(src:string){
-    // this.iFrameLinks = `${this.BASE_URL}/uploads/${src}`
+  pdfPreviewClicked(src:string){
+    this.pdfSourceLinks = `${this.BASE_URL}/uploads/${src}`
     document.body.style.overflow = "hidden"
-    this.iFrameLinks = this.sanitizer.bypassSecurityTrustResourceUrl("https://view.officeapps.live.com/op/embed.aspx?src=https://workplace.octonius.com/uploads/1566507468492agora%20test.docx");
+  }
+  
+//this checks for .ppt, .pptx, .doc, .docx, .xls and .xlsx
+  officeMimeTypeclick(src:string){
+    this.iFrameSourceLinks = `${this.BASE_URL}/uploads/${src}`
+    document.body.style.overflow = "hidden"
+    this.iFrameSourceLinks = this.sanitizer.bypassSecurityTrustResourceUrl(`https://view.officeapps.live.com/op/embed.aspx?src=${this.iFrameSourceLinks}`);
+
+  }
+
+  googleMimeTypeclick(src:string){
+    this.iFrameSourceLinks = `${this.BASE_URL}/uploads/${src}`
+    document.body.style.overflow = "hidden"
+    this.iFrameSourceLinks = this.sanitizer.bypassSecurityTrustResourceUrl(`https://docs.google.com/viewer?url=${this.iFrameSourceLinks}&embedded=true`);
   }
 
   onLoad(){
@@ -339,13 +345,18 @@ export class GroupFilesComponent implements OnInit {
 
   overlayRemoval(mimetype:String){
     document.body.style.overflow = ""
-    document.getElementById("overlay-iframe").remove()
-    this.iFrameLinks = ""
 
     switch (mimetype) {
-     case 'pdf':
-        this.pdfSourcLink = ""
-       break;
+      case 'pdf':
+        this.pdfSourceLinks = ""
+        break;
+      case 'images': 
+      this.imageSourceLinks = []
+        break;
+      case 'otherFilesForiFrame':
+        document.getElementById("overlay-iframe").remove()
+        this.iFrameSourceLinks = ""  
+        break;
 
      default:
         event.stopPropagation();
