@@ -44,21 +44,20 @@
       <div *ngFor="let post of allFiles; let i = index">
         <div  *ngIf="post?.files">
         <div class="media card-tile user-list" *ngFor="let file of post.files; let x = index" >
-
+<!-- start of file check for file preview link -->
             <div class="media-body row">
               <div *ngIf = "file?.mimeType" class="col-md-7">
                   <img src= "/assets/images/{{file.mimeType}}-file-icon.png" onerror="this.src='/assets/images/file-icon.png'"class="feed-avatar float-left">
                     
                     <div class = "imagePreview" *ngIf = "file?.mimeType == 'jpg' || file?.mimeType == 'jpeg' || file?.mimeType == 'png' ">
-                        <p style="padding-top:10px; margin:0"><a role="button" (click) = "imagePreviewClicked(file.modified_name)" href="/uploads/{{file.modified_name}}" class="btn btn-link">{{file?.orignal_name}}</a></p>
+                        <p style="padding-top:10px; margin:0"><a role="button" (click) = "imagePreviewClicked(file.modified_name)" href="javascript:void(0)" class="btn btn-link">{{file?.orignal_name}}</a></p>
                     </div>
                     <div *ngIf = "file?.mimeType == 'pdf' ">
-                        <p style="padding-top:10px; margin:0"> <a role="button" (click) = "pdfPreviewClicked(file.modified_name)" >{{file?.orignal_name}}</a></p>
+                        <p style="padding-top:10px; margin:0"> <a role="button" class="btn btn-link" (click) = "pdfPreviewClicked(file.modified_name)" href="javascript:void(0)">{{file?.orignal_name}}</a></p>
                     </div>
                       <div *ngIf = "file?.mimeType == 'docx' || file?.mimeType == 'doc' || file?.mimeType == 'ppt' || file?.mimeType == 'pptx' || file?.mimeType == 'xls' || file?.mimeType == 'xlsx' ">
-                        <p style="padding-top:10px; margin:0"> <a role="button" (click) = "officeMimeTypeclick(file.modified_name)" >{{file?.orignal_name}}</a></p>
-                   
-          </div>
+                        <p style="padding-top:10px; margin:0"> <a role="button" class="btn btn-link" (click) = "officeMimeTypeclick(file.modified_name)" href="javascript:void(0)" >{{file?.orignal_name}}</a></p>   
+                    </div>
                     <div *ngIf = "
                     file?.mimeType == 'gif' 
                     || file?.mimeType == 'tiff' 
@@ -76,7 +75,7 @@
                     || file?.mimeType == 'psd'
                     || file?.mimeType == 'svg'
                     ">
-                    <p style="padding-top:10px; margin:0">  <a role="button" (click) = "googleMimeTypeclick(file.modified_name)" >{{file?.orignal_name}}</a></p>
+                    <p style="padding-top:10px; margin:0">  <a class="btn btn-link" role="button" (click) = "googleMimeTypeclick(file.modified_name)" href="javascript:void(0)" >{{file?.orignal_name}}</a></p>
                   </div>
                     <div *ngIf = "
                     file?.mimeType != 'jpg' 
@@ -105,7 +104,7 @@
                     &&  file?.mimeType == 'psd'
                     &&  file?.mimeType == 'svg'
                     ">
-                    <p style="padding-top:10px; margin:0"> <a role="button" href="{{this.BASE_URL}}/uploads/{{file.modified_name}}" >{{file?.orignal_name}}</a></p>
+                    <p style="padding-top:10px; margin:0"> <a class="btn btn-link" role="button" href="{{this.BASE_URL}}/uploads/{{file.modified_name}}" >{{file?.orignal_name}}</a></p>
                     </div>
               </div>
              
@@ -114,23 +113,23 @@
                   <h4 style="padding-top:20px">{{post._posted_by?.first_name}} {{post._posted_by?.last_name}}</h4>
               </div>
               <div class="col-md text-right" style="padding-top: 10px">
-                        
+                        <!-- start of dropdown and preview check-->
                   <div ngbDropdown #postActionsDrop="ngbDropdown" class="d-inline-block">
                       <i class="material-icons action" ngbDropdownToggle>more_vert</i>
                       <div ngbDropdownMenu aria-labelledby="postActionsDrop">
                           <li> 
                             <div class = "imagePreview" *ngIf = "file?.mimeType == 'jpg' || file?.mimeType == 'jpeg' || file?.mimeType == 'png' ">
-                              <a class="btn btn-link" role="button" href="javascript:void(0)" (click) = "imagePreviewClicked(file.modified_name)" ><i class="material-icons">
+                              <a class="btn btn-link" role="button" href="javascript:void(0)" (click) = "imagePreviewClicked(file.modified_name)" ><i class="material-icons label">
                                   visibility
                                   </i>Preview</a>
                           </div>
                           <div *ngIf = "file?.mimeType == 'pdf' ">
-                              <a class="btn btn-link" role="button" href="javascript:void(0)" (click) = "pdfPreviewClicked(file.modified_name)" ><i class="material-icons">
+                              <a class="btn btn-link" role="button" href="javascript:void(0)" (click) = "pdfPreviewClicked(file.modified_name)" ><i class="material-icons label">
                                   visibility
                                   </i>Preview</a>
                           </div>
                           <div *ngIf = "file?.mimeType == 'docx' || file?.mimeType == 'doc' || file?.mimeType == 'ppt' || file?.mimeType == 'pptx' || file?.mimeType == 'xls' || file?.mimeType == 'xlsx' ">
-                              <a  class="btn btn-link" role="button" href="javascript:void(0)" (click) = "officeMimeTypeclick(file.modified_name)" ><i class="material-icons">
+                              <a  class="btn btn-link" role="button" href="javascript:void(0)" (click) = "officeMimeTypeclick(file.modified_name)" ><i class="material-icons label">
                                   visibility
                                   </i>Preview</a>
                           </div>
@@ -151,7 +150,7 @@
                           || file?.mimeType == 'psd'
                           || file?.mimeType == 'svg'
                           ">
-                            <a  class="btn btn-link" role="button" href="javascript:void(0)" (click) = "googleMimeTypeclick(file.modified_name)" ><i class="material-icons">
+                            <a  class="btn btn-link" role="button"  href="javascript:void(0)" (click) = "googleMimeTypeclick(file.modified_name)" ><i class="material-icons label">
                                 visibility
                                 </i>Preview</a>
                         </div>
@@ -182,7 +181,7 @@
                           &&  file?.mimeType == 'psd'
                           &&  file?.mimeType == 'svg'
                           ">
-                              <a class="btn btn-link" role="button" href="javascript:void(0)" href="{{this.BASE_URL}}/uploads/{{file.modified_name}}" ><i class="material-icons">
+                              <a class="btn btn-link" role="button" href="javascript:void(0)" href="{{this.BASE_URL}}/uploads/{{file.modified_name}}" ><i class="material-icons label">
                                   visibility
                                   </i>Preview</a>
                           </div>            
@@ -196,17 +195,9 @@
                                 </button> 
 
                             </li>
-                            <li>
-                                <button class="btn btn-link" (click)="onDeleteGroupFiles(post,file,'group_file')">
-                                    <i class="material-icons label">
-                                      delete
-                                    </i>
-                                    Download
-                                  </button> 
-                              </li>
                               <li>
                                   <button class="btn btn-link" (click)="onDeleteGroupFiles(post,file,'group_file')">
-                                      <i class="material-icons">
+                                      <i class="material-icons label">
                                         delete
                                       </i>
                                       Delete

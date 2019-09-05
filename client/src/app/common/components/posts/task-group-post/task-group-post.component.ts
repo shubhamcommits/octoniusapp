@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild, Renderer, ElementRef} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild, Renderer, ElementRef, OnDestroy} from '@angular/core';
 import { PostService } from "../../../../shared/services/post.service";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";

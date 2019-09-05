@@ -315,8 +315,11 @@ export class GroupFilesComponent implements OnInit {
     })
   }
   imagePreviewClicked(src:string){
-    this.imageSourceLinks = [...this.imageSourceLinks, `${this.BASE_URL}/uploads/${src}`] 
-    console.log(this.imageSourceLinks)
+    if(this.imageSourceLinks.length > 0){
+      this.imageSourceLinks = [...this.imageSourceLinks, `${this.BASE_URL}/uploads/${src}`] 
+    }else{
+      this.imageSourceLinks = [`${this.BASE_URL}/uploads/${src}`]
+    }
     document.body.style.overflow = "hidden"
   }
 
