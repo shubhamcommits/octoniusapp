@@ -46,13 +46,13 @@
                   
                 <div class="mt-3 float-left">
                     <div class = "imagePreview" *ngIf = "file?.mimeType == 'jpg' || file?.mimeType == 'jpeg' || file?.mimeType == 'png' ">
-                        <a id = "imagePreviewLink" role="button" (click) = "imagePreviewClicked(file.modified_name)" >{{file?.orignal_name}}</a>
+                        <a id = "imagePreviewLink" role="button" href="javascript:void(0)" (click) = "imagePreviewClicked(file.modified_name)" >{{file?.orignal_name}}</a>
                     </div>
                     <div *ngIf = "file?.mimeType == 'pdf' ">
-                        <a role="button" (click) = "pdfPreviewClicked(file.modified_name)" >{{file?.orignal_name}}</a>
+                        <a role="button" href="javascript:void(0)" (click) = "pdfPreviewClicked(file.modified_name)" >{{file?.orignal_name}}</a>
                     </div>
                     <div *ngIf = "file?.mimeType == 'docx' || file?.mimeType == 'doc' || file?.mimeType == 'ppt' || file?.mimeType == 'pptx' || file?.mimeType == 'xls' || file?.mimeType == 'xlsx' ">
-                        <a role="button" (click) = "officeMimeTypeclick(file.modified_name)" >{{file?.orignal_name}}</a>
+                        <a role="button" href="javascript:void(0)" (click) = "officeMimeTypeclick(file.modified_name)" >{{file?.orignal_name}}</a>
                     </div>
                     <div *ngIf = "
                     file?.mimeType == 'gif' 
@@ -71,7 +71,7 @@
                     || file?.mimeType == 'psd'
                     || file?.mimeType == 'svg'
                     ">
-                      <a role="button" (click) = "googleMimeTypeclick(file.modified_name)" >{{file?.orignal_name}}</a>
+                      <a role="button" href="javascript:void(0)" (click) = "googleMimeTypeclick(file.modified_name)" >{{file?.orignal_name}}</a>
                   </div>
                     <div *ngIf = "
                     file?.mimeType != 'jpg' 
@@ -100,7 +100,7 @@
                     &&  file?.mimeType == 'psd'
                     &&  file?.mimeType == 'svg'
                     ">
-                        <p ><a role="button" href="{{this.BASE_URL}}/uploads/{{file.modified_name}}" >{{file?.orignal_name}}</a></p>
+                        <p ><a role="button" href="javascript:void(0)" href="{{this.BASE_URL}}/uploads/{{file.modified_name}}" >{{file?.orignal_name}}</a></p>
                     </div>
                  
                 </div>
@@ -110,10 +110,74 @@
                         <i class="material-icons action" ngbDropdownToggle>more_vert</i>
                         <div ngbDropdownMenu aria-labelledby="postActionsDrop">
                             <li> 
-                                <a role="button" class="btn btn-link" href="{{this.BASE_URL}}/uploads/{{file.modified_name}}" target="_blank">
-                                  <i class="material-icons">
-                                    visibility
-                                    </i>Preview</a>          
+                           
+                                    <div class = "imagePreview" *ngIf = "file?.mimeType == 'jpg' || file?.mimeType == 'jpeg' || file?.mimeType == 'png' ">
+                                        <a class="btn btn-link" role="button" href="javascript:void(0)" (click) = "imagePreviewClicked(file.modified_name)" ><i class="material-icons">
+                                            visibility
+                                            </i>Preview</a>
+                                    </div>
+                                    <div *ngIf = "file?.mimeType == 'pdf' ">
+                                        <a class="btn btn-link" role="button" href="javascript:void(0)" (click) = "pdfPreviewClicked(file.modified_name)" ><i class="material-icons">
+                                            visibility
+                                            </i>Preview</a>
+                                    </div>
+                                    <div *ngIf = "file?.mimeType == 'docx' || file?.mimeType == 'doc' || file?.mimeType == 'ppt' || file?.mimeType == 'pptx' || file?.mimeType == 'xls' || file?.mimeType == 'xlsx' ">
+                                        <a  class="btn btn-link" role="button" href="javascript:void(0)" (click) = "officeMimeTypeclick(file.modified_name)" ><i class="material-icons">
+                                            visibility
+                                            </i>Preview</a>
+                                    </div>
+                                    <div *ngIf = "
+                                    file?.mimeType == 'gif' 
+                                    || file?.mimeType == 'tiff' 
+                                    || file?.mimeType == 'mpeg4'
+                                    || file?.mimeType == 'mov'
+                                    || file?.mimeType == 'avi'
+                                    || file?.mimeType == 'mpegps'
+                                    || file?.mimeType == 'wmv'
+                                    || file?.mimeType == 'flv'
+                                    || file?.mimeType == 'txt'
+                                    || file?.mimeType == 'css'
+                                    || file?.mimeType == 'html'
+                                    || file?.mimeType == 'pages'
+                                    || file?.mimeType == 'ai'
+                                    || file?.mimeType == 'psd'
+                                    || file?.mimeType == 'svg'
+                                    ">
+                                      <a  class="btn btn-link" role="button" href="javascript:void(0)" (click) = "googleMimeTypeclick(file.modified_name)" ><i class="material-icons">
+                                          visibility
+                                          </i>Preview</a>
+                                  </div>
+                                    <div *ngIf = "
+                                    file?.mimeType != 'jpg' 
+                                    && file?.mimeType !== 'jpeg' 
+                                    && file?.mimeType != 'png' 
+                                    && file?.mimeType != 'pdf' 
+                                    && file?.mimeType != 'docx' 
+                                    && file?.mimeType != 'doc' 
+                                    && file?.mimeType != 'ppt' 
+                                    && file?.mimeType != 'pptx' 
+                                    && file?.mimeType != 'xls' 
+                                    && file?.mimeType != 'xlsx'
+                                    && file?.mimeType == 'gif' 
+                                    &&  file?.mimeType == 'tiff' 
+                                    &&  file?.mimeType == 'mpeg4'
+                                    &&  file?.mimeType == 'mov'
+                                    &&  file?.mimeType == 'avi'
+                                    &&  file?.mimeType == 'mpegps'
+                                    &&  file?.mimeType == 'wmv'
+                                    &&  file?.mimeType == 'flv'
+                                    &&  file?.mimeType == 'txt'
+                                    &&  file?.mimeType == 'css'
+                                    &&  file?.mimeType == 'html'
+                                    &&  file?.mimeType == 'pages'
+                                    &&  file?.mimeType == 'ai'
+                                    &&  file?.mimeType == 'psd'
+                                    &&  file?.mimeType == 'svg'
+                                    ">
+                                        <a class="btn btn-link" role="button" href="javascript:void(0)" href="{{this.BASE_URL}}/uploads/{{file.modified_name}}" ><i class="material-icons">
+                                            visibility
+                                            </i>Preview</a>
+                                    </div>          
                             </li>
                             <li> 
                                 <button class="btn btn-link" (click)="onDownlaodFile(file.modified_name,file.orignal_name)">

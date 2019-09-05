@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, AfterViewInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, Renderer, ElementRef} from '@angular/core';
 
 import {GroupService} from "../../../../shared/services/group.service";
 import { saveAs } from 'file-saver';
@@ -11,6 +11,7 @@ import {CommentSectionComponent} from "../../comments/comment-section/comment-se
 import {SnotifyService} from "ng-snotify";
 import { SearchService } from '../../../../shared/services/search.service';
 import { environment } from '../../../../../environments/environment';
+import { DomSanitizer } from '@angular/platform-browser';
 
 declare var $;
 @Component({
@@ -18,7 +19,7 @@ declare var $;
   templateUrl: './normal-group-post.component.html',
   styleUrls: ['./normal-group-post.component.scss']
 })
-export class NormalGroupPostComponent implements OnInit,AfterViewInit, OnDestroy {
+export class NormalGroupPostComponent implements OnInit, OnDestroy {
 
 
   @ViewChild(CommentSectionComponent, { static: true }) commentSectionComponent;
@@ -72,6 +73,11 @@ export class NormalGroupPostComponent implements OnInit,AfterViewInit, OnDestroy
     _post_id: ''
   };
   content_mentions = [];
+  //file previews
+  listenFuncForImageClicks: Function;
+  pdfSourceLinks = ""
+  iFrameSourceLinks
+  imageSourceLinks = []
 
   profilePic: any;
 
@@ -88,8 +94,21 @@ export class NormalGroupPostComponent implements OnInit,AfterViewInit, OnDestroy
     private groupService: GroupService,
     private postService: PostService,
     private snotifyService: SnotifyService,
-    private searchService: SearchService) { }
+    private searchService: SearchService,
+    private renderer: Renderer,
+    private elementRef: ElementRef,
+    public sanitizer: DomSanitizer,) {
+      this.listenFuncForImageClicks = this.renderer.listen(this.elementRef.nativeElement, 'click', (event) => {
 
+        if(event.target.className === "imagePreview" && event.target.tagName == "IMG"){
+            this.imageSourceLinks = [...this.imageSourceLinks, event.target.src] 
+       
+            document.body.style.overflow = "hidden"
+            console.log(event)
+        }
+    });
+
+    }
   ngOnInit() {
     this.commentCount = this.post.comments.length;
 
@@ -110,14 +129,19 @@ export class NormalGroupPostComponent implements OnInit,AfterViewInit, OnDestroy
 
     this.readMore = this.preview;
 
-  }
+    if(this.post['files'].length > 0){
 
-  ngAfterViewInit(): void {
-    $('.image-gallery').lightGallery({
-      share:false,
-      counter:false
-    });
- }
+          const allCurrentIndexFiles = this.post['files'].forEach(innerPostFiles => {
+            if (innerPostFiles.orignal_name){
+              const mimeTypeFile = innerPostFiles.orignal_name.substring(innerPostFiles.orignal_name.lastIndexOf('.') + 1)
+              innerPostFiles["mimeType"] = mimeTypeFile
+
+            }else{
+              innerPostFiles["mimeType"] = "noMime"
+            }
+          });
+    }
+  }
 
   applyZoom(htmlDOM): string{
     var parser = new DOMParser();
@@ -127,18 +151,17 @@ export class NormalGroupPostComponent implements OnInit,AfterViewInit, OnDestroy
 
     for(var _i=0; _i<imgTag.length; _i++){
       let img:any = doc.getElementsByTagName('img')[_i];
+      img.classList.add("imagePreview")
       let clonedImg:any=img.cloneNode(true);
       let acnhorThumbnail=document.createElement('a');
-      acnhorThumbnail.href=clonedImg.src;
-      let imgGallery = document.createElement("div");
-      imgGallery.classList.add('image-gallery');
+      acnhorThumbnail.href="javascript:void(0)";
+      let imgGallery = document.createElement("div");   
       acnhorThumbnail.appendChild(clonedImg);
       imgGallery.appendChild(acnhorThumbnail);
       img.replaceWith(imgGallery);
     }
   return doc.body.innerHTML;
 }
-
 
   deletePost() {
     this.removePost.emit(this.post._id);
@@ -386,6 +409,7 @@ export class NormalGroupPostComponent implements OnInit,AfterViewInit, OnDestroy
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+    this.listenFuncForImageClicks();
   }
 
   addTags(event: any) {
@@ -431,6 +455,50 @@ export class NormalGroupPostComponent implements OnInit,AfterViewInit, OnDestroy
     this.tags.push(tagsFromList);;
     this.tags_search_words = '';
     console.log(this.tags);
+  }
+  imagePreviewClicked(src:string){
+    this.imageSourceLinks = [...this.imageSourceLinks, `${this.BASE_URL}/uploads/${src}`] 
+    document.body.style.overflow = "hidden"
+  }
+
+  pdfPreviewClicked(src:string){
+    this.pdfSourceLinks = `${this.BASE_URL}/uploads/${src}`
+    document.body.style.overflow = "hidden"
+  }
+  
+//this checks for .ppt, .pptx, .doc, .docx, .xls and .xlsx
+  officeMimeTypeclick(src:string){
+    this.iFrameSourceLinks = `${this.BASE_URL}/uploads/${src}`
+    document.body.style.overflow = "hidden"
+    this.iFrameSourceLinks = this.sanitizer.bypassSecurityTrustResourceUrl(`https://view.officeapps.live.com/op/embed.aspx?src=${this.iFrameSourceLinks}`);
+
+  }
+
+  googleMimeTypeclick(src:string){
+    this.iFrameSourceLinks = `${this.BASE_URL}/uploads/${src}`
+    document.body.style.overflow = "hidden"
+    this.iFrameSourceLinks = this.sanitizer.bypassSecurityTrustResourceUrl(`https://docs.google.com/viewer?url=${this.iFrameSourceLinks}&embedded=true`);
+  }
+
+  overlayRemoval(mimetype:String){
+    document.body.style.overflow = ""
+
+    switch (mimetype) {
+      case 'pdf':
+        this.pdfSourceLinks = ""
+        break;
+      case 'images': 
+      this.imageSourceLinks = []
+        break;
+      case 'otherFilesForiFrame':
+         document.getElementById("overlay-iframe").remove()
+         this.iFrameSourceLinks = ""  
+        break;
+
+     default:
+        event.stopPropagation();
+       break;
+   }
   }
 
 }
