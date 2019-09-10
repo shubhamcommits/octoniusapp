@@ -28,7 +28,7 @@ export class CollaborativeDocGroupNavbarComponent implements OnInit {
 
   postId: any;
   groupId: any;
-  userId: any;
+  userInfo: any;
 
   @Input() post: any;
 
@@ -52,7 +52,7 @@ export class CollaborativeDocGroupNavbarComponent implements OnInit {
     private router: Router,
     private documentFileService: DocumentFileService,
     private snotifyService: SnotifyService,) {
-      this.userId = JSON.parse(localStorage.getItem('user'))['user_id']
+      this.userInfo = JSON.parse(localStorage.getItem('user'))
       this.postId = this.activatedRoute.snapshot.paramMap.get('postId');
       this.groupId = this.activatedRoute.snapshot['_urlSegment']['segments'][2].path;
       //call authors first to set list
@@ -93,18 +93,17 @@ export class CollaborativeDocGroupNavbarComponent implements OnInit {
      }
   ngOnInit() {
     this.getPost();
-    this.documentService.getPublicGroups()
-    .subscribe((res)=>{
-      console.log('Agoras List', res);
-      this.agoras = res['groups']
-    }, (err)=>{
-      console.log('Error occured while fetching agoras', err);
-    })
-    /*this.getPost();
-    setTimeout(() => {
-      console.log('Post', this.post);
-    }, 5000);*/
-    
+    const user = {
+      user_id: this.userInfo.user_id,
+      workspace_id: this.userInfo.workspace._id,
+    };
+    this.groupsService.getUsersAgoras(user)
+      .subscribe((res) => {
+        this.agoras = res['groups'];
+
+      }, (err) => {
+       console.log(err);
+      });
   }
 
   exportDOC(){
@@ -225,7 +224,7 @@ export class CollaborativeDocGroupNavbarComponent implements OnInit {
         _name: this.document_name,
         _content: doc.innerHTML,
         _group_id : agoraID,
-        _posted_by : this.userId,
+        _posted_by : this.userInfo.user_id,
       };
       this.documentFileService.getDocumentFile(this.postId)
       .subscribe((res)=>{
