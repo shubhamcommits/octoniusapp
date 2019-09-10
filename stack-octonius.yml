@@ -82,7 +82,7 @@ services:
       - backend
       - proxy
     ports:
-      - 3045:80
+      - 3000:80
     depends_on:
       - api
       - client
