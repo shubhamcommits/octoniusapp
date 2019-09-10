@@ -62,7 +62,11 @@ export class GroupActivityComponent implements OnInit {
   group_socket_id;
 
   /*Initiating socket and related data*/
-  socket = io(environment.BASE_URL);
+  socket = io(environment.BASE_URL, {
+    path: '/socket.io',
+    transports: ['websocket'],
+    secure: true,
+  });
   BASE_URL = environment.BASE_URL;
   show_new_posts_badge = 0;
 

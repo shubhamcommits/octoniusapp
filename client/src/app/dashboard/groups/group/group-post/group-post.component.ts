@@ -46,7 +46,11 @@ export class GroupPostComponent implements OnInit {
   post;
   postId;
 
-  socket = io(environment.BASE_URL);
+  socket = io(environment.BASE_URL, {
+    path: '/socket.io',
+    transports: ['websocket'],
+    secure: true,
+  });
   group_name;
 
   showComments = {

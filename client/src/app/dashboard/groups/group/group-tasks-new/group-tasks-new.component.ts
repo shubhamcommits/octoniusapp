@@ -47,7 +47,11 @@ export class GroupTasksNewComponent implements OnInit {
   isLoading$ = new BehaviorSubject(false);
 
   BASE_URL = environment.BASE_URL;
-  socket = io(environment.BASE_URL);
+  socket = io(environment.BASE_URL, {
+    path: '/socket.io',
+    transports: ['websocket'],
+    secure: true,
+  });
 
   post = {
     type: 'task',

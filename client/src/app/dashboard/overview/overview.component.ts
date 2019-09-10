@@ -58,7 +58,11 @@ export class OverviewComponent implements OnInit {
 
   today = new Date();
 
-  socket = io(environment.BASE_URL);
+  socket = io(environment.BASE_URL, {
+    path: '/socket.io',
+    transports: ['websocket'],
+    secure: true,
+  });
 
   notifications_data;
 
