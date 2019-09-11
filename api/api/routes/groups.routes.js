@@ -44,10 +44,10 @@ router.get('/user/private', groups.getPrivate);
 router.get('/user/:workspace', groups.getAllForUser);
 
 // Get all public groups of which user is not a part of
-router.get('/public/all/:workspaceId', groups.getPublicGroups);
+router.get('/public/all', groups.getPublicGroups);
 
-// Get all public groups user is a part of
-router.get('/public/usersGroups/:workspaceId/:userId', groups.getUsersPublicGroups);
+// Get all public groups
+router.get('/public/allGroups', groups.getAllPublicGroups);
 
 // Get name id of groups of user
 router.get('/all/pulse/:workspaceId', groups.getUserGroups);
