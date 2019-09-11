@@ -109,19 +109,14 @@ const getAllForUser = async (req, res) => {
 /**
  * Fetches all the public groups that a user is not
  * a part of.
- * this is mainly for joining
  */
 const getPublicGroups = async (req, res) => {
   const { userId } = req;
-  const { workspaceId } = req.params;
   try {
     const groups = await Group.find({
-      $and: [
-        {type: 'agora'},
-        { _workspace: {$eq: new mongoose.Types.ObjectId(workspaceId)}},
-        {_members: { $not: { $elemMatch: { $eq: new mongoose.Types.ObjectId(userId)}}}},
-        {_admins: { $not: { $elemMatch: { $eq: new mongoose.Types.ObjectId(userId)}}}},
-      ]
+      type: 'agora',
+      _members: { $not: { $elemMatch: { $eq: new mongoose.Types.ObjectId(userId) } } },
+      _admins: { $not: { $elemMatch: { $eq: new mongoose.Types.ObjectId(userId) } } }
     });
 
     return res.status(200).json({
@@ -132,19 +127,11 @@ const getPublicGroups = async (req, res) => {
   }
 };
 
-const getUsersPublicGroups = async (req, res) => {
-  const { workspaceId, userId } = req.params;
+const getAllPublicGroups = async (req, res) => {
+
   try {
     const groups = await Group.find({
-      $and: [
-        // Find normal posts that has comments
-        {type: 'agora'},
-        { _workspace: {$eq: new mongoose.Types.ObjectId(workspaceId)}},
-        {$or: [
-          {_admins: { $elemMatch: { $eq: new mongoose.Types.ObjectId(userId)}}},
-          {_members: { $elemMatch: { $eq: new mongoose.Types.ObjectId(userId)}}},
-        ]},
-      ]
+      type: 'agora'
     });
 
     return res.status(200).json({
@@ -1360,7 +1347,7 @@ module.exports = {
   getPrivate,
   getAllForUser,
   getPublicGroups,
-  getUsersPublicGroups,
+  getAllPublicGroups,
   getSmartGroups,
   addNewMember,
   deleteGroup,

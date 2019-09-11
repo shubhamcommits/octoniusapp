@@ -36,15 +36,8 @@ export class GroupsService {
 
   @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
   })
-  getAgoras(userworkspace): Observable<any> {
-    return this._http.get<any>(`${this.BASE_API_URL}/groups/public/all/${userworkspace}`);
-  }
-
-  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
-  })
-
-  getUsersAgoras(userworkspace): Observable<any> {
-    return this._http.get<any>(`${this.BASE_API_URL}/groups/public/usersGroups/${userworkspace.workspace_id}/${userworkspace.user_id}`);
+  getAgoras(): Observable<any> {
+    return this._http.get<any>(`${this.BASE_API_URL}/groups/public/all`);
   }
 
   /**
