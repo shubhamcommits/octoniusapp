@@ -22,8 +22,7 @@
             ],
             "styles": [
               "node_modules/bootstrap/scss/bootstrap.scss",
-              "src/assets/scss/main.scss",
-              "node_modules/ng2-image-viewer/imageviewer.scss"
+              "src/assets/scss/main.scss"
             ],
             "scripts": []
           },
@@ -85,8 +84,7 @@
             "scripts": [],
             "styles": [
               "node_modules/bootstrap/scss/bootstrap.scss",
-              "src/assets/scss/main.scss",
-              "../node_modules/ng2-image-viewer/imageviewer.scss"
+              "src/assets/scss/main.scss"
             ],
             "assets": [
               "src/assets",

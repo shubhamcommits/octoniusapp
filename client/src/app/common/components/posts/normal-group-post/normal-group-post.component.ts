@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, Renderer, ElementRef} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, AfterViewInit} from '@angular/core';
 
 import {GroupService} from "../../../../shared/services/group.service";
 import { saveAs } from 'file-saver';
@@ -19,7 +19,7 @@ declare var $;
   templateUrl: './normal-group-post.component.html',
   styleUrls: ['./normal-group-post.component.scss']
 })
-export class NormalGroupPostComponent implements OnInit, OnDestroy {
+export class NormalGroupPostComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   @ViewChild(CommentSectionComponent, { static: true }) commentSectionComponent;
@@ -74,10 +74,8 @@ export class NormalGroupPostComponent implements OnInit, OnDestroy {
   };
   content_mentions = [];
   //file previews
-  listenFuncForImageClicks: Function;
   pdfSourceLinks = ""
   iFrameSourceLinks
-  imageSourceLinks = []
 
   profilePic: any;
 
@@ -95,19 +93,7 @@ export class NormalGroupPostComponent implements OnInit, OnDestroy {
     private postService: PostService,
     private snotifyService: SnotifyService,
     private searchService: SearchService,
-    private renderer: Renderer,
-    private elementRef: ElementRef,
     public sanitizer: DomSanitizer,) {
-      this.listenFuncForImageClicks = this.renderer.listen(this.elementRef.nativeElement, 'click', (event) => {
-
-        if(event.target.className === "imagePreview" && event.target.tagName == "IMG"){
-            this.imageSourceLinks = [...this.imageSourceLinks, event.target.src] 
-       
-            document.body.style.overflow = "hidden"
-            console.log(event)
-        }
-    });
-
     }
   ngOnInit() {
     this.commentCount = this.post.comments.length;
@@ -143,6 +129,13 @@ export class NormalGroupPostComponent implements OnInit, OnDestroy {
     }
   }
 
+  ngAfterViewInit(): void {
+    $('.image-gallery').lightGallery({
+      share:false,
+      counter:false
+    });
+ }
+
   applyZoom(htmlDOM): string{
     var parser = new DOMParser();
     var doc = parser.parseFromString(htmlDOM, "text/html");
@@ -151,11 +144,11 @@ export class NormalGroupPostComponent implements OnInit, OnDestroy {
 
     for(var _i=0; _i<imgTag.length; _i++){
       let img:any = doc.getElementsByTagName('img')[_i];
-      img.classList.add("imagePreview")
       let clonedImg:any=img.cloneNode(true);
       let acnhorThumbnail=document.createElement('a');
-      acnhorThumbnail.href="javascript:void(0)";
-      let imgGallery = document.createElement("div");   
+      acnhorThumbnail.href=clonedImg.src;
+      let imgGallery = document.createElement("div");
+      imgGallery.classList.add('image-gallery');
       acnhorThumbnail.appendChild(clonedImg);
       imgGallery.appendChild(acnhorThumbnail);
       img.replaceWith(imgGallery);
@@ -409,7 +402,6 @@ export class NormalGroupPostComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
-    this.listenFuncForImageClicks();
   }
 
   addTags(event: any) {
@@ -456,10 +448,6 @@ export class NormalGroupPostComponent implements OnInit, OnDestroy {
     this.tags_search_words = '';
     console.log(this.tags);
   }
-  imagePreviewClicked(src:string){
-    this.imageSourceLinks = [...this.imageSourceLinks, `${this.BASE_URL}/uploads/${src}`] 
-    document.body.style.overflow = "hidden"
-  }
 
   pdfPreviewClicked(src:string){
     this.pdfSourceLinks = `${this.BASE_URL}/uploads/${src}`
@@ -486,9 +474,6 @@ export class NormalGroupPostComponent implements OnInit, OnDestroy {
     switch (mimetype) {
       case 'pdf':
         this.pdfSourceLinks = ""
-        break;
-      case 'images': 
-      this.imageSourceLinks = []
         break;
       case 'otherFilesForiFrame':
          document.getElementById("overlay-iframe").remove()

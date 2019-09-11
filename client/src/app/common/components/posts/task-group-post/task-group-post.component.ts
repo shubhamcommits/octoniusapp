@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild, Renderer, ElementRef, OnDestroy} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild, AfterViewInit, OnDestroy} from '@angular/core';
 import { PostService } from "../../../../shared/services/post.service";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
@@ -14,12 +14,14 @@ import { ColumnService } from '../../../../shared/services/column.service';
 import { Column } from '../../../../shared/models/column.model';
 import { DomSanitizer } from '@angular/platform-browser';
 
+declare var $;
+
 @Component({
   selector: 'task-group-post',
   templateUrl: './task-group-post.component.html',
   styleUrls: ['./task-group-post.component.scss']
 })
-export class TaskGroupPostComponent implements OnInit , OnDestroy{
+export class TaskGroupPostComponent implements OnInit, AfterViewInit{
   @ViewChild(CommentSectionComponent, { static: true }) commentSectionComponent;
   @ViewChild('taskStatusList', { static: true }) taskStatusList;
   @Input() groupactivity: GroupActivityComponent;
@@ -71,10 +73,8 @@ export class TaskGroupPostComponent implements OnInit , OnDestroy{
   profilePic: any;
 
   //file previews
-  listenFuncForImageClicks: Function;
   pdfSourceLinks = ""
   iFrameSourceLinks
-  imageSourceLinks = []
 
   // mentions
   content_mentions = [];
@@ -115,18 +115,7 @@ export class TaskGroupPostComponent implements OnInit , OnDestroy{
     private snotifyService: SnotifyService,
     private searchService: SearchService,
     private columnService: ColumnService,
-    private renderer: Renderer,
-    private elementRef: ElementRef,
     public sanitizer: DomSanitizer,) {
-      this.listenFuncForImageClicks = this.renderer.listen(this.elementRef.nativeElement, 'click', (event) => {
-
-        if(event.target.className === "imagePreview" && event.target.tagName == "IMG"){
-            this.imageSourceLinks = [...this.imageSourceLinks, event.target.src] 
-       
-            document.body.style.overflow = "hidden"
-        }
-    });
-
     }
 
   ngOnInit() {
@@ -164,9 +153,14 @@ export class TaskGroupPostComponent implements OnInit , OnDestroy{
     this.getAllColumns();
 
   }
-  ngOnDestroy() {
-    this.listenFuncForImageClicks();
-  }
+
+  ngAfterViewInit(): void {
+    $('.image-gallery').lightGallery({
+      share:false,
+      counter:false
+    });
+ }
+
  applyZoom(htmlDOM): string{
   var parser = new DOMParser();
   var doc = parser.parseFromString(htmlDOM, "text/html");
@@ -175,11 +169,11 @@ export class TaskGroupPostComponent implements OnInit , OnDestroy{
 
   for(var _i=0; _i<imgTag.length; _i++){
     let img:any = doc.getElementsByTagName('img')[_i];
-    img.classList.add("imagePreview")
     let clonedImg:any=img.cloneNode(true);
     let acnhorThumbnail=document.createElement('a');
-    acnhorThumbnail.href="javascript:void(0)";
+    acnhorThumbnail.href=clonedImg.src;
     let imgGallery = document.createElement("div");
+    imgGallery.classList.add('image-gallery');
     acnhorThumbnail.appendChild(clonedImg);
     imgGallery.appendChild(acnhorThumbnail);
     img.replaceWith(imgGallery);
@@ -518,12 +512,6 @@ return doc.body.innerHTML;
 
   }
 
-
-  imagePreviewClicked(src:string){
-    this.imageSourceLinks = [...this.imageSourceLinks, `${this.BASE_URL}/uploads/${src}`] 
-    document.body.style.overflow = "hidden"
-  }
-
   pdfPreviewClicked(src:string){
     this.pdfSourceLinks = `${this.BASE_URL}/uploads/${src}`
     document.body.style.overflow = "hidden"
@@ -550,9 +538,7 @@ return doc.body.innerHTML;
       case 'pdf':
         this.pdfSourceLinks = ""
         break;
-      case 'images': 
-      this.imageSourceLinks = []
-        break;
+        
       case 'otherFilesForiFrame':
          document.getElementById("overlay-iframe").remove()
          this.iFrameSourceLinks = ""  

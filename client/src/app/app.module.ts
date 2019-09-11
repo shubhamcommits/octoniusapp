@@ -24,7 +24,6 @@ import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { ClickOutsideModule } from 'ng-click-outside';
 import { DragDropModule, CdkDragExit  } from '@angular/cdk/drag-drop';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
-import { ImageViewerModule } from 'ng2-image-viewer';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './common/components/navbar/navbar.component';
@@ -245,7 +244,6 @@ const ngCircle = {
     OverlayModule,
     DragDropModule,
     PdfViewerModule,
-    ImageViewerModule,
     NgbModule.forRoot(),
     ScrollToModule.forRoot(),
     CalendarModule.forRoot({
