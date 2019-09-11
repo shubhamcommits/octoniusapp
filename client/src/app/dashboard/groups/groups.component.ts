@@ -79,17 +79,17 @@ export class GroupsComponent implements OnInit {
    * user is not a part of.
    */
   getAgoras() {
-    this._groupsService.getAgoras().subscribe(
+    this._groupsService.getAgoras(this.user_data.workspace._id).subscribe(
       ({ groups }) => {
         this.agoras = groups;
-        // Set the correct path to the group avatar
-        // for (let i = 0; i < this.agoras.length; i++) {
-        //   if (this.agoras[i]['group_avatar'] == null) {
-        //     this.agoras[i]['group_avatar'] = '/assets/images/group.png';
-        //   } else {
-        //     this.agoras[i]['group_avatar'] = environment.BASE_URL + `/uploads/${this.agoras[i]['group_avatar']}`;
-        //   }
-        // }
+       // Set the correct path to the group avatar
+        for (let i = 0; i < this.agoras.length; i++) {
+          if (this.agoras[i]['group_avatar'] == null) {
+            this.agoras[i]['group_avatar'] = '/assets/images/group.png';
+          } else {
+            this.agoras[i]['group_avatar'] = environment.BASE_URL + `/uploads/${this.agoras[i]['group_avatar']}`;
+          }
+        }
       },
       err => console.error(`Could not fetch public groups! ${err}`)
     );
