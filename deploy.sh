@@ -4,9 +4,11 @@
 # current working branch
 # gitbranch='master'
 
-git checkout master
+# git checkout master
 
-git pull
+# git pull
+
+# docker deploy commands which are used to deploy to server/local host.
 
 docker login
 
