@@ -6,8 +6,8 @@ services:
     image: 'mongo:latest'
     ports:
       - 27017:27017
-    networks:
-      - backend
+    # networks:
+    #   - backend
     volumes:
       - data_db:/data/db
     deploy:
@@ -22,8 +22,8 @@ services:
   
   redis:
     image: 'redis:latest'
-    networks:
-      - backend
+    # networks:
+    #   - backend
     deploy:
       replicas: 1
       update_config:
@@ -34,8 +34,8 @@ services:
   
   api:
     image: 'octoniusapp/octonius:api'
-    networks:
-      - backend
+    # networks:
+    #   - backend
     volumes:
       - data_uploads:/app/uploads # mount uploads folder inside container's app folder
     environment:
@@ -63,8 +63,8 @@ services:
   
   client:
     image: 'octoniusapp/octonius:client'
-    networks:
-      - frontend
+    # networks:
+    #   - frontend
     depends_on:
       - api
     deploy:
@@ -77,9 +77,9 @@ services:
   
   nginx:
     image: 'octoniusapp/octonius:nginx'
-    networks:
-      - frontend
-      - backend
+    # networks:
+    #   - frontend
+    #   - backend
     ports:
       - 3000:80
     depends_on:
@@ -108,6 +108,6 @@ volumes:
       device: ${PWD}/data/uploads
       o: bind
 
-networks:
-  frontend: {}
-  backend: {} 
+# networks:
+#   frontend: {}
+#   backend: {} 
