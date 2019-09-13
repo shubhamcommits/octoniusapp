@@ -308,15 +308,75 @@ On terminal, run the command `ssh ubuntu@86.122.94.224` and fill in the password
 
 *(Use the command `exit` to quit the ssh session )*
 
-#### 4.2.   Deploying the containers
+#### 4.2.   Building the Images(Skip this step, as bitbucket piplelines module already does this for us)
 
 4.2.1. Go to `/home/ubuntu/octonius` and run the following commands:
 
-*  `docker-compose -f docker-compose.local.yml pull`
+* Go to `/api/` and run `docker build -t octoniusapp/octonius:api`.
 
-*   `docker-compose -f docker-compose.local.yml up -d`
+* Go to `/client/` and run `docker build -t octoniusapp/octonius:client`.
 
-4.2.2. Check the status of docker containers `docker container ps -a`, you should see all the 5 containers running named as `octonius_nginx_1`, `octonius_client_1`, `octonius_api_1`, `octonius_mongodb_1`, and `octonius_redis_1`.
+* Go to `/nginx/` and run `docker build -t octoniusapp/octonius:nginx`.
+
+* Run `docker login` and fill in the username = `octoniusapp` and the password.
+
+* Run `docker push octoniusapp/octonius:api`.
+
+* Run `docker push octoniusapp/octonius:client`.
+
+* Run `docker push octoniusapp/octonius:nginx`.
+
+#### 4.3.   Deploying the containers(Docker-Compose Method)
+
+4.3.1. Go to `/home/ubuntu/octonius` and run the following commands:
+
+*  `docker-compose -f docker-compose-deploy.yml pull`
+
+*   `docker-compose -f docker-compose-deploy.yml up -d`
+
+4.3.2. Check the status of docker containers `docker container ps -a`, you should see all the 5 containers running named as `octonius_nginx_1`, `octonius_client_1`, `octonius_api_1`, `octonius_mongodb_1`, and `octonius_redis_1`.
+
+#### 4.4.   Deploying the Stack(Docker Swarm Method)
+
+4.4.1.  Go to `/home/ubuntu/octonius` and run the following commands:
+
+*   `docker stack deploy -c stack-octonius-deploy.yml octonius`
+
+4.4.2.  Check the status of stack and services via the following:
+
+* `docker stack ls`
+
+* `docker service ls` and make sure that all the replicas are up and running.
+
+#### 4.5.   Some of the Important Commands
+
+* To check the running containers - `docker container ls`
+
+* To check the running tasks - `docker container ps`
+
+* To list the running services - `docker service ls`
+
+* To list the running stacks - `docker stack ls`
+
+* To list all the images - `docker image ls`
+
+* To list all the volumes - `docker volume ls`
+
+* To list all the network - `docker network ls`
+
+* To leave the swarm - `docker swarm leave -f`
+
+* To stop all the containers - `docker container stop $(docker container ls -aq)`
+
+* To remove all the stopped containers - `docker container rm $(docker container ls -aq)`
+
+* To remove all the images - `docker image rm $(docker image ls -aq)`
+
+* To remove all the volumes - `docker volume rm $(docker volume ls -q)`
+
+* To remove all the network - `docker network rm $(docker network ls -q)`
+
+* To remove everything or clean up the system - `docker system prune`
 
 
 ### *The following sections below, have been deprecated and they are not in active state for production purposes, however if something needs to be debugged and checked then you may use the following steps(Not recommended).*
