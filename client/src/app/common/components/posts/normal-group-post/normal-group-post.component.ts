@@ -14,6 +14,7 @@ import { environment } from '../../../../../environments/environment';
 import { DomSanitizer } from '@angular/platform-browser';
 
 declare var $;
+
 @Component({
   selector: 'normal-group-post',
   templateUrl: './normal-group-post.component.html',
@@ -134,6 +135,11 @@ export class NormalGroupPostComponent implements OnInit, AfterViewInit, OnDestro
       share:false,
       counter:false
     });
+    $('#imagePreviewLink').lightGallery({
+      selector: 'this',
+      share:false,
+      counter:false
+  });
  }
 
   applyZoom(htmlDOM): string{

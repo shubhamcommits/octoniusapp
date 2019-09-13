@@ -122,7 +122,7 @@
               <div class="col-md-12 innercard" *ngFor="let file of post.files">
                 <br>
                 <div class = "imagePreview" *ngIf = "file?.mimeType == 'jpg' || file?.mimeType == 'jpeg' || file?.mimeType == 'png' ">
-                 <div class="col-md-12 attachfile">  <i class="material-icons event-title">attach_file</i> <a id = "imagePreviewLink" role="button" href="javascript:void(0)" (click) = "imagePreviewClicked(file.modified_name)" >{{file?.orignal_name}}</a></div>
+                 <div class="col-md-12 attachfile">  <i class="material-icons event-title">attach_file</i> <a id = "imagePreviewLink" role="button" href="{{this.BASE_URL}}/uploads/{{file.modified_name}}" >{{file?.orignal_name}}</a></div>
               </div>
               <div *ngIf = "file?.mimeType == 'pdf' ">
                 <div class="col-md-12 attachfile">  <i class="material-icons event-title">attach_file</i> <a role="button" href="javascript:void(0)" (click) = "pdfPreviewClicked(file.modified_name)" >{{file?.orignal_name}}</a></div>
@@ -233,7 +233,7 @@
   </comment-section>
 </li>
 
-<div class= "outer-overlay" *ngIf = "pdfSourceLinks || iFrameSourceLinks || imageSourceLinks.length > 0">
+<div class= "outer-overlay" *ngIf = "pdfSourceLinks || iFrameSourceLinks">
   <div class = "overlay-navbar" *ngIf = "pdfSourceLinks" >
       <div class="row" style="margin-left: 0.5rem;" >
           <a class="navbar-brand" (click) = "overlayRemoval('pdf')" style="cursor: pointer;">
@@ -252,16 +252,6 @@
             </a>
       </div>  
     </div>
-  <div class = "overlay-navbar" *ngIf = "imageSourceLinks.length > 0" >
-      <div class="row" style="margin-left: 0.5rem;" >
-          <a class="navbar-brand" (click) = "overlayRemoval('images')" style="cursor: pointer;">
-            <i class="material-icons" style = "color:white !important ; margin-top: 5px">
-              arrow_back
-              </i>
-            </a>
-      </div>  
-  </div>
-    
 
   <div class = "pdf-source-container" *ngIf = "pdfSourceLinks">
       <div class ="overlayPDF" >

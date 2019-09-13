@@ -13,6 +13,9 @@ import { SnotifyService, SnotifyPosition, SnotifyToastConfig } from 'ng-snotify'
 import Swal from 'sweetalert2';
 import { DomSanitizer } from '@angular/platform-browser';
 
+
+declare var $;
+
 @Component({
   selector: 'app-group-files',
   templateUrl: './group-files.component.html',
@@ -29,7 +32,8 @@ export class GroupFilesComponent implements OnInit {
   selectedDocuments = new Array()
   pdfSourceLinks = ""
   iFrameSourceLinks
-  imageSourceLinks = []
+
+  imglink = ""
 
   has_file = false;
 
@@ -48,7 +52,7 @@ export class GroupFilesComponent implements OnInit {
     private snotifyService: SnotifyService,
     public sanitizer: DomSanitizer) { }
 
-  async ngOnInit() {
+  ngOnInit() {
     this.ngxService.start(); // start foreground loading with 'default' id
     this.user_id = JSON.parse(localStorage.getItem('user'))['user_id']
     this.group_id = this.groupDataService.groupId;
@@ -60,7 +64,25 @@ export class GroupFilesComponent implements OnInit {
     .catch((err)=>{
       console.log('Unexpected error', err);
     });
-  
+    //this is where we destory light gallery because we are dynamically loading due to html structure expression 
+    //once we destroy the data in light gallery we can dynamically load different images
+    const $document = $(this);
+    $document.on('onCloseAfter.lg', function(event) {
+      $document.data('lightGallery').destroy(true);
+    });
+
+  }
+ gotimg(img){
+    $(this).lightGallery({
+      dynamic: true,
+      dynamicEl: [{
+          "src": `${this.BASE_URL}/uploads/${img}`,
+          'thumb': `${this.BASE_URL}/uploads/${img}`,
+          'subHtml': `<p>${img}</p>`
+      }],
+      share:false,
+      counter:false,
+    })
   }
 
 
@@ -179,23 +201,6 @@ export class GroupFilesComponent implements OnInit {
       });
 
   }
-
-  // loadDocumentFiles(){
-  //   return new Promise((resolve, reject)=>{
-  //     this.documentFileService.getFiles(this.group_id)
-  //     .subscribe((res)=>{
-  //       console.log('All document files', res);
-  //       if(res['file'].length > 0){
-  //         this.documentFiles = res['file'];
-  //         this.has_file = true;
-  //       }
-  //       resolve();
-  //     }, (err)=>{
-  //       console.log('Error occured while fetching the group document files', err);
-  //       reject(err);
-  //     })
-  //   })
-  // }
   addFolderEvent(files){
     var formData = new FormData()
       // add the files to the formData
@@ -314,15 +319,6 @@ export class GroupFilesComponent implements OnInit {
       })
     })
   }
-  imagePreviewClicked(src:string){
-    if(this.imageSourceLinks.length > 0){
-      this.imageSourceLinks = [...this.imageSourceLinks, `${this.BASE_URL}/uploads/${src}`] 
-    }else{
-      this.imageSourceLinks = [`${this.BASE_URL}/uploads/${src}`]
-    }
-    document.body.style.overflow = "hidden"
-  }
-
   pdfPreviewClicked(src:string){
     this.pdfSourceLinks = `${this.BASE_URL}/uploads/${src}`
     document.body.style.overflow = "hidden"
@@ -342,19 +338,12 @@ export class GroupFilesComponent implements OnInit {
     this.iFrameSourceLinks = this.sanitizer.bypassSecurityTrustResourceUrl(`https://docs.google.com/viewer?url=${this.iFrameSourceLinks}&embedded=true`);
   }
 
-  onLoad(){
-    console.log("loaded")
-  }
-
   overlayRemoval(mimetype:String){
     document.body.style.overflow = ""
 
     switch (mimetype) {
       case 'pdf':
         this.pdfSourceLinks = ""
-        break;
-      case 'images': 
-      this.imageSourceLinks = []
         break;
       case 'otherFilesForiFrame':
         document.getElementById("overlay-iframe").remove()

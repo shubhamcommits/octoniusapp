@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, Renderer, ElementRef } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild,AfterViewInit } from '@angular/core';
 import { saveAs } from 'file-saver';
 import  moment from "moment";
 import { takeUntil } from "rxjs/operators";
@@ -10,13 +10,15 @@ import { SearchService } from '../../../../shared/services/search.service';
 import { CommentSectionComponent } from "../../comments/comment-section/comment-section.component";
 import { DomSanitizer } from '@angular/platform-browser';
 
+declare var $;
+
 @Component({
   selector: 'event-group-post',
   templateUrl: './event-group-post.component.html',
   styleUrls: ['./event-group-post.component.scss']
 })
 
-export class EventGroupPostComponent implements OnInit, OnDestroy {
+export class EventGroupPostComponent implements OnInit,AfterViewInit, OnDestroy {
   @ViewChild(CommentSectionComponent, { static: true }) commentSectionComponent;
 
   @Input() post;
@@ -74,10 +76,8 @@ export class EventGroupPostComponent implements OnInit, OnDestroy {
   tags_search_result: any = new Array();
 
   //file preview
-  listenFuncForImageClicks: Function;
   pdfSourceLinks = ""
   iFrameSourceLinks
-  imageSourceLinks = []
 
   // collapsibility
   // If true, "read more" text should be displayed and the post should be in preview mode
@@ -86,18 +86,7 @@ export class EventGroupPostComponent implements OnInit, OnDestroy {
 
   constructor(private postService: PostService, private groupService: GroupService,
     private searchService: SearchService,
-        private renderer: Renderer,
-    private elementRef: ElementRef,
     public sanitizer: DomSanitizer,) {
-      this.listenFuncForImageClicks = this.renderer.listen(this.elementRef.nativeElement, 'click', (event) => {
-
-        if(event.target.className === "imagePreview" && event.target.tagName == "IMG"){
-            this.imageSourceLinks = [...this.imageSourceLinks, event.target.src] 
-       
-            document.body.style.overflow = "hidden"
-        }
-    });
-
     }
 
   ngOnInit() {
@@ -134,6 +123,18 @@ export class EventGroupPostComponent implements OnInit, OnDestroy {
 }
   }
 
+  ngAfterViewInit(): void {
+    $('.image-gallery').lightGallery({
+      share:false,
+      counter:false
+    });
+    $('#imagePreviewLink').lightGallery({
+      selector: 'this',
+      share:false,
+      counter:false
+  });
+ }
+
   applyZoom(htmlDOM): string{
     var parser = new DOMParser();
     var doc = parser.parseFromString(htmlDOM, "text/html");
@@ -142,17 +143,17 @@ export class EventGroupPostComponent implements OnInit, OnDestroy {
 
     for(var _i=0; _i<imgTag.length; _i++){
       let img:any = doc.getElementsByTagName('img')[_i];
-      img.classList.add("imagePreview");
       let clonedImg:any=img.cloneNode(true);
       let acnhorThumbnail=document.createElement('a');
-      acnhorThumbnail.href="javascript:void(0)";
+      acnhorThumbnail.href=clonedImg.src;
       let imgGallery = document.createElement("div");
+      imgGallery.classList.add('image-gallery');
       acnhorThumbnail.appendChild(clonedImg);
       imgGallery.appendChild(acnhorThumbnail);
       img.replaceWith(imgGallery);
     }
   return doc.body.innerHTML;
-  }
+}
 
 
   deletePost() {
@@ -380,7 +381,6 @@ export class EventGroupPostComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
-    this.listenFuncForImageClicks();
   }
 
   tagListSearch(){
@@ -405,11 +405,6 @@ export class EventGroupPostComponent implements OnInit, OnDestroy {
     this.tags.push(tagsFromList);;
     this.tags_search_words = '';
     console.log(this.tags);
-  }
-
-  imagePreviewClicked(src:string){
-    this.imageSourceLinks = [...this.imageSourceLinks, `${this.BASE_URL}/uploads/${src}`] 
-    document.body.style.overflow = "hidden"
   }
 
   pdfPreviewClicked(src:string){
@@ -438,9 +433,7 @@ export class EventGroupPostComponent implements OnInit, OnDestroy {
       case 'pdf':
         this.pdfSourceLinks = ""
         break;
-      case 'images': 
-      this.imageSourceLinks = []
-        break;
+        
       case 'otherFilesForiFrame':
          document.getElementById("overlay-iframe").remove()
          this.iFrameSourceLinks = ""  

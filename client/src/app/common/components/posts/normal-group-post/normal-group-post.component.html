@@ -90,7 +90,7 @@
         <div class="col-md-12 innercard" *ngFor="let file of post.files">
             <br>
             <div class = "imagePreview" *ngIf = "file?.mimeType == 'jpg' || file?.mimeType == 'jpeg' || file?.mimeType == 'png' ">
-             <div class="col-md-12 attachfile">  <i class="material-icons event-title">attach_file</i> <a id = "imagePreviewLink" role="button" href="javascript:void(0)" (click) = "imagePreviewClicked(file.modified_name)" >{{file?.orignal_name}}</a></div>
+             <div class="col-md-12 attachfile">  <i class="material-icons event-title">attach_file</i> <a id = "imagePreviewLink" role="button" href="{{this.BASE_URL}}/uploads/{{file.modified_name}}" >{{file?.orignal_name}}</a></div>
           </div>
           <div *ngIf = "file?.mimeType == 'pdf' ">
             <div class="col-md-12 attachfile">  <i class="material-icons event-title">attach_file</i> <a role="button" href="javascript:void(0)" (click) = "pdfPreviewClicked(file.modified_name)" >{{file?.orignal_name}}</a></div>

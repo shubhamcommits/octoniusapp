@@ -159,6 +159,11 @@ export class TaskGroupPostComponent implements OnInit, AfterViewInit{
       share:false,
       counter:false
     });
+    $('#imagePreviewLink').lightGallery({
+      selector: 'this',
+      share:false,
+      counter:false
+  });
  }
 
  applyZoom(htmlDOM): string{
