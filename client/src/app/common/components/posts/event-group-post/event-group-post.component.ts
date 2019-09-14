@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild,AfterViewInit } from '@angular/core';
 import { saveAs } from 'file-saver';
 import  moment from "moment";
 import { takeUntil } from "rxjs/operators";
@@ -8,6 +8,8 @@ import { GroupService } from "../../../../shared/services/group.service";
 import { PostService } from "../../../../shared/services/post.service";
 import { SearchService } from '../../../../shared/services/search.service';
 import { CommentSectionComponent } from "../../comments/comment-section/comment-section.component";
+import { DomSanitizer } from '@angular/platform-browser';
+
 declare var $;
 
 @Component({
@@ -16,7 +18,7 @@ declare var $;
   styleUrls: ['./event-group-post.component.scss']
 })
 
-export class EventGroupPostComponent implements OnInit, OnDestroy {
+export class EventGroupPostComponent implements OnInit,AfterViewInit, OnDestroy {
   @ViewChild(CommentSectionComponent, { static: true }) commentSectionComponent;
 
   @Input() post;
@@ -73,13 +75,19 @@ export class EventGroupPostComponent implements OnInit, OnDestroy {
   tags_search_words: String = ''
   tags_search_result: any = new Array();
 
+  //file preview
+  pdfSourceLinks = ""
+  iFrameSourceLinks
+
   // collapsibility
   // If true, "read more" text should be displayed and the post should be in preview mode
   // If false, "read less" text should be displayed and the post should be displayed entirely
   readMore: boolean;
 
   constructor(private postService: PostService, private groupService: GroupService,
-    private searchService: SearchService) { }
+    private searchService: SearchService,
+    public sanitizer: DomSanitizer,) {
+    }
 
   ngOnInit() {
     this.commentCount = this.post.comments.length;
@@ -100,12 +108,31 @@ export class EventGroupPostComponent implements OnInit, OnDestroy {
          }
 
         this.readMore = this.preview;
+
+    if(this.post['files'].length > 0){
+
+      const allCurrentIndexFiles = this.post['files'].forEach(innerPostFiles => {
+        if (innerPostFiles.orignal_name){
+          const mimeTypeFile = innerPostFiles.orignal_name.substring(innerPostFiles.orignal_name.lastIndexOf('.') + 1)
+          innerPostFiles["mimeType"] = mimeTypeFile
+
+        }else{
+          innerPostFiles["mimeType"] = "noMime"
+        }
+      });
+}
   }
+
   ngAfterViewInit(): void {
     $('.image-gallery').lightGallery({
       share:false,
       counter:false
     });
+    $('#imagePreviewLink').lightGallery({
+      selector: 'this',
+      share:false,
+      counter:false
+  });
  }
 
   applyZoom(htmlDOM): string{
@@ -126,7 +153,7 @@ export class EventGroupPostComponent implements OnInit, OnDestroy {
       img.replaceWith(imgGallery);
     }
   return doc.body.innerHTML;
-  }
+}
 
 
   deletePost() {
@@ -380,4 +407,41 @@ export class EventGroupPostComponent implements OnInit, OnDestroy {
     console.log(this.tags);
   }
 
+  pdfPreviewClicked(src:string){
+    this.pdfSourceLinks = `${this.BASE_URL}/uploads/${src}`
+    document.body.style.overflow = "hidden"
+  }
+  
+//this checks for .ppt, .pptx, .doc, .docx, .xls and .xlsx
+  officeMimeTypeclick(src:string){
+    this.iFrameSourceLinks = `${this.BASE_URL}/uploads/${src}`
+    document.body.style.overflow = "hidden"
+    this.iFrameSourceLinks = this.sanitizer.bypassSecurityTrustResourceUrl(`https://view.officeapps.live.com/op/embed.aspx?src=${this.iFrameSourceLinks}`);
+
+  }
+
+  googleMimeTypeclick(src:string){
+    this.iFrameSourceLinks = `${this.BASE_URL}/uploads/${src}`
+    document.body.style.overflow = "hidden"
+    this.iFrameSourceLinks = this.sanitizer.bypassSecurityTrustResourceUrl(`https://docs.google.com/viewer?url=${this.iFrameSourceLinks}&embedded=true`);
+  }
+
+  overlayRemoval(mimetype:String){
+    document.body.style.overflow = ""
+
+    switch (mimetype) {
+      case 'pdf':
+        this.pdfSourceLinks = ""
+        break;
+        
+      case 'otherFilesForiFrame':
+         document.getElementById("overlay-iframe").remove()
+         this.iFrameSourceLinks = ""  
+        break;
+
+     default:
+        event.stopPropagation();
+       break;
+   }
+  }
 }

@@ -118,10 +118,66 @@
 
         </div>
 
-      <div class="col-md-12 innercard" *ngFor="let file of post.files">
-        <br>
-        <div class="col-md-12 attachfile">  <i class="material-icons event-title">attach_file</i><a role="button" href="javascript:void(null);" (click)="onDownloadFile(file.modified_name,file.orignal_name)">{{file?.orignal_name}}</a></div>
-      </div>
+              <!-- POST FILES -->
+              <div class="col-md-12 innercard" *ngFor="let file of post.files">
+                <br>
+                <div class = "imagePreview" *ngIf = "file?.mimeType == 'jpg' || file?.mimeType == 'jpeg' || file?.mimeType == 'png' ">
+                 <div class="col-md-12 attachfile">  <i class="material-icons event-title">attach_file</i> <a id = "imagePreviewLink" role="button" href="{{this.BASE_URL}}/uploads/{{file.modified_name}}" >{{file?.orignal_name}}</a></div>
+              </div>
+              <div *ngIf = "file?.mimeType == 'pdf' ">
+                <div class="col-md-12 attachfile">  <i class="material-icons event-title">attach_file</i> <a role="button" href="javascript:void(0)" (click) = "pdfPreviewClicked(file.modified_name)" >{{file?.orignal_name}}</a></div>
+              </div>
+              <div *ngIf = "file?.mimeType == 'docx' || file?.mimeType == 'doc' || file?.mimeType == 'ppt' || file?.mimeType == 'pptx' || file?.mimeType == 'xls' || file?.mimeType == 'xlsx' ">
+                <div class="col-md-12 attachfile"> <i class="material-icons event-title">attach_file</i><a role="button" href="javascript:void(0)" (click) = "officeMimeTypeclick(file.modified_name)" >{{file?.orignal_name}}</a></div>
+              </div>
+              <div *ngIf = "file?.mimeType == 'gif' 
+              || file?.mimeType == 'tiff' 
+              || file?.mimeType == 'mpeg4'
+              || file?.mimeType == 'mov'
+              || file?.mimeType == 'avi'
+              || file?.mimeType == 'mpegps'
+              || file?.mimeType == 'wmv'
+              || file?.mimeType == 'flv'
+              || file?.mimeType == 'txt'
+              || file?.mimeType == 'css'
+              || file?.mimeType == 'html'
+              || file?.mimeType == 'pages'
+              || file?.mimeType == 'ai'
+              || file?.mimeType == 'psd'
+              || file?.mimeType == 'svg'
+              ">
+              <div class="col-md-12 attachfile">  <i class="material-icons event-title">attach_file</i><a role="button" href="javascript:void(0)" (click) = "googleMimeTypeclick(file.modified_name)" >{{file?.orignal_name}}</a></div>
+            </div>
+              <div *ngIf = "
+              file?.mimeType != 'jpg' 
+              && file?.mimeType !== 'jpeg' 
+              && file?.mimeType != 'png' 
+              && file?.mimeType != 'pdf' 
+              && file?.mimeType != 'docx' 
+              && file?.mimeType != 'doc' 
+              && file?.mimeType != 'ppt' 
+              && file?.mimeType != 'pptx' 
+              && file?.mimeType != 'xls' 
+              && file?.mimeType != 'xlsx'
+              && file?.mimeType == 'gif' 
+              && file?.mimeType == 'tiff' 
+              && file?.mimeType == 'mpeg4'
+              && file?.mimeType == 'mov'
+              && file?.mimeType == 'avi'
+              && file?.mimeType == 'mpegps'
+              && file?.mimeType == 'wmv'
+              && file?.mimeType == 'flv'
+              && file?.mimeType == 'txt'
+              && file?.mimeType == 'css'
+              && file?.mimeType == 'html'
+              && file?.mimeType == 'pages'
+              && file?.mimeType == 'ai'
+              && file?.mimeType == 'psd'
+              && file?.mimeType == 'svg'
+              ">
+              <div class="col-md-12 attachfile">  <i class="material-icons event-title">attach_file</i><a role="button" href="javascript:void(0)" href="{{this.BASE_URL}}/uploads/{{file.modified_name}}" >{{file?.orignal_name}}</a></div>
+              </div>
+            </div>
 
            
 
@@ -177,3 +233,36 @@
   </comment-section>
 </li>
 
+<div class= "outer-overlay" *ngIf = "pdfSourceLinks || iFrameSourceLinks">
+  <div class = "overlay-navbar" *ngIf = "pdfSourceLinks" >
+      <div class="row" style="margin-left: 0.5rem;" >
+          <a class="navbar-brand" (click) = "overlayRemoval('pdf')" style="cursor: pointer;">
+            <i class="material-icons" style = "color:white !important ; margin-top: 5px">
+              arrow_back
+              </i>
+            </a>
+      </div>  
+    </div>
+  <div class = "overlay-navbar" *ngIf = "iFrameSourceLinks" >
+      <div class="row" style="margin-left: 0.5rem;" >
+          <a class="navbar-brand" (click) = "overlayRemoval('otherFilesForiFrame')" style="cursor: pointer;">
+            <i class="material-icons" style = "color:white !important ; margin-top: 5px">
+              arrow_back
+              </i>
+            </a>
+      </div>  
+    </div>
+
+  <div class = "pdf-source-container" *ngIf = "pdfSourceLinks">
+      <div class ="overlayPDF" >
+          <pdf-viewer
+          class = "overlay-content"
+          [src]="pdfSourceLinks" 
+          [render-text]="true"
+          ></pdf-viewer>
+      </div>
+  </div>
+  <div id = "overlay-iframe" *ngIf = "iFrameSourceLinks">
+          <iframe id = "iframe-file" (load)="onLoad()" [src]='iFrameSourceLinks' style="width:100%;height:100%;"></iframe>
+  </div>
+</div>

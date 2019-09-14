@@ -23,6 +23,7 @@ import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { ClickOutsideModule } from 'ng-click-outside';
 import { DragDropModule, CdkDragExit  } from '@angular/cdk/drag-drop';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './common/components/navbar/navbar.component';
@@ -242,6 +243,7 @@ const ngCircle = {
     OwlNativeDateTimeModule,
     OverlayModule,
     DragDropModule,
+    PdfViewerModule,
     NgbModule.forRoot(),
     ScrollToModule.forRoot(),
     CalendarModule.forRoot({

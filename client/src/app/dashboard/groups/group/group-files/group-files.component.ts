@@ -11,6 +11,10 @@ import { saveAs } from 'file-saver';
 import { DocumentFileService } from '../../../../shared/services/document-file.service';
 import { SnotifyService, SnotifyPosition, SnotifyToastConfig } from 'ng-snotify';
 import Swal from 'sweetalert2';
+import { DomSanitizer } from '@angular/platform-browser';
+
+
+declare var $;
 
 @Component({
   selector: 'app-group-files',
@@ -26,6 +30,10 @@ export class GroupFilesComponent implements OnInit {
   documentFiles = new Array();
   allFiles = new Array();
   selectedDocuments = new Array()
+  pdfSourceLinks = ""
+  iFrameSourceLinks
+
+  imglink = ""
 
   has_file = false;
 
@@ -41,9 +49,10 @@ export class GroupFilesComponent implements OnInit {
     public groupDataService: GroupDataService, private groupService: GroupService,
     private _userService: UserService,
     private documentFileService: DocumentFileService,
-    private snotifyService: SnotifyService) { }
+    private snotifyService: SnotifyService,
+    public sanitizer: DomSanitizer) { }
 
-  async ngOnInit() {
+  ngOnInit() {
     this.ngxService.start(); // start foreground loading with 'default' id
     this.user_id = JSON.parse(localStorage.getItem('user'))['user_id']
     this.group_id = this.groupDataService.groupId;
@@ -55,74 +64,27 @@ export class GroupFilesComponent implements OnInit {
     .catch((err)=>{
       console.log('Unexpected error', err);
     });
-    // this.loadFiles()
-    // .then(()=>{
-    //   this.ngxService.stop();
-    // })
-    // .catch((err)=>{
-    //   console.log('Unexpected error', err);
-    // })
-    // this.loadGroupPosts();
+    //this is where we destory light gallery because we are dynamically loading due to html structure expression 
+    //once we destroy the data in light gallery we can dynamically load different images
+    const $document = $(this);
+    $document.on('onCloseAfter.lg', function(event) {
+      $document.data('lightGallery').destroy(true);
+    });
+
+  }
+ gotimg(img){
+    $(this).lightGallery({
+      dynamic: true,
+      dynamicEl: [{
+          "src": `${this.BASE_URL}/uploads/${img}`,
+          'thumb': `${this.BASE_URL}/uploads/${img}`,
+          'subHtml': `<p>${img}</p>`
+      }],
+      share:false,
+      counter:false,
+    })
   }
 
-  // loadFiles() {
-  //   return new Promise((resolve, reject)=>{
-  //     this.isLoading$.next(true);
-
-  //     this.groupService.getGroupFiles(this.group_id)
-  //       .subscribe((res) => {
-  //         console.log('Group posts:', res);
-  //         this.posts = res['posts'];
-  //         for(let i = 0; i < this.posts.length; i++){
-  //           if(this.posts[i].files.length > 0){
-  //             this.has_file = true;
-  //             break;
-
-  //           }
-  //         }
-  //       // console.log('Group posts:', this.posts);
-  //      //  console.log('Has File:', this.has_file);
-  //        this.isLoading$.next(false);
-  //        resolve();
-
-  //       }, (err) => {
-  //         console.log('Error while loading files', err);
-  //         reject(err);
-
-  //       });
-
-  //   })
-
-  // }
-
-  // loadGroupPosts() {
-
-  //   this.isLoading$.next(true);
-
-  //   this.postService.getGroupPosts(this.group_id)
-  //     .subscribe((res) => {
-  //       // console.log('Group posts:', res);
-  //       this.posts = res['posts'];
-  //       for(var i = 0; i < this.posts.length; i++){
-  //         if(this.posts[i].files.length > 0){
-  //           this.has_file=true;
-  //           break;
-
-  //         }
-  //         else{
-  //           this.has_file=false;
-  //         }
-  //       }
-  //   //   console.log('Group posts:', this.posts);
-  //     // console.log('Has File:', this.has_file);
-  //      this.isLoading$.next(false);
-
-
-  //     }, (err) => {
-
-  //     });
-
-  // }
 
   onDownlaodFile(fileName, fileName_orignal) {
 
@@ -239,23 +201,6 @@ export class GroupFilesComponent implements OnInit {
       });
 
   }
-
-  // loadDocumentFiles(){
-  //   return new Promise((resolve, reject)=>{
-  //     this.documentFileService.getFiles(this.group_id)
-  //     .subscribe((res)=>{
-  //       console.log('All document files', res);
-  //       if(res['file'].length > 0){
-  //         this.documentFiles = res['file'];
-  //         this.has_file = true;
-  //       }
-  //       resolve();
-  //     }, (err)=>{
-  //       console.log('Error occured while fetching the group document files', err);
-  //       reject(err);
-  //     })
-  //   })
-  // }
   addFolderEvent(files){
     var formData = new FormData()
       // add the files to the formData
@@ -374,5 +319,40 @@ export class GroupFilesComponent implements OnInit {
       })
     })
   }
+  pdfPreviewClicked(src:string){
+    this.pdfSourceLinks = `${this.BASE_URL}/uploads/${src}`
+    document.body.style.overflow = "hidden"
+  }
+  
+//this checks for .ppt, .pptx, .doc, .docx, .xls and .xlsx
+  officeMimeTypeclick(src:string){
+    this.iFrameSourceLinks = `${this.BASE_URL}/uploads/${src}`
+    document.body.style.overflow = "hidden"
+    this.iFrameSourceLinks = this.sanitizer.bypassSecurityTrustResourceUrl(`https://view.officeapps.live.com/op/embed.aspx?src=${this.iFrameSourceLinks}`);
 
+  }
+
+  googleMimeTypeclick(src:string){
+    this.iFrameSourceLinks = `${this.BASE_URL}/uploads/${src}`
+    document.body.style.overflow = "hidden"
+    this.iFrameSourceLinks = this.sanitizer.bypassSecurityTrustResourceUrl(`https://docs.google.com/viewer?url=${this.iFrameSourceLinks}&embedded=true`);
+  }
+
+  overlayRemoval(mimetype:String){
+    document.body.style.overflow = ""
+
+    switch (mimetype) {
+      case 'pdf':
+        this.pdfSourceLinks = ""
+        break;
+      case 'otherFilesForiFrame':
+        document.getElementById("overlay-iframe").remove()
+        this.iFrameSourceLinks = ""  
+        break;
+
+     default:
+        event.stopPropagation();
+       break;
+   }
+  }
 }

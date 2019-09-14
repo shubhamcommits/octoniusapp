@@ -39,17 +39,73 @@
           <div class="line"></div>
       </div>
   </div>
-  <div *ngIf="!(isLoading$ | async)">
-  <div *ngIf="this.has_file == true; else svg">
-    <div *ngFor="let post of allFiles; let i = index">
-      <div  *ngIf="post?.files">
-      <div class="media card-tile user-list" *ngFor="let file of post.files; let x = index" >
-
+  <div *ngIf="!(isLoading$ | async)" >
+    <div *ngIf="this.has_file == true; else svg">
+      <div *ngFor="let post of allFiles; let i = index">
+        <div  *ngIf="post?.files">
+        <div class="media card-tile user-list" *ngFor="let file of post.files; let x = index" >
+<!-- start of file check for file preview link -->
             <div class="media-body row">
               <div *ngIf = "file?.mimeType" class="col-md-7">
                   <img src= "/assets/images/{{file.mimeType}}-file-icon.png" onerror="this.src='/assets/images/file-icon.png'"class="feed-avatar float-left">
-            
-                    <p style="padding-top:10px; margin:0"><a role="button" href="/uploads/{{file.modified_name}}" class="btn btn-link">{{file?.orignal_name}}</a></p>
+                    
+                    <div *ngIf = "file?.mimeType == 'jpg' || file?.mimeType == 'jpeg' || file?.mimeType == 'png' " >
+                        <p style="padding-top:10px; margin:0"> <a class="btn btn-link" role="button" href="javascript:void(0)" (click) = "gotimg(file.modified_name)">{{file?.orignal_name}}</a></p>
+                    </div>
+                    <div *ngIf = "file?.mimeType == 'pdf' ">
+                        <p style="padding-top:10px; margin:0"> <a role="button" class="btn btn-link" (click) = "pdfPreviewClicked(file.modified_name)" href="javascript:void(0)">{{file?.orignal_name}}</a></p>
+                    </div>
+                      <div *ngIf = "file?.mimeType == 'docx' || file?.mimeType == 'doc' || file?.mimeType == 'ppt' || file?.mimeType == 'pptx' || file?.mimeType == 'xls' || file?.mimeType == 'xlsx' ">
+                        <p style="padding-top:10px; margin:0"> <a role="button" class="btn btn-link" (click) = "officeMimeTypeclick(file.modified_name)" href="javascript:void(0)" >{{file?.orignal_name}}</a></p>   
+                    </div>
+                    <div *ngIf = "
+                    file?.mimeType == 'gif' 
+                    || file?.mimeType == 'tiff' 
+                    || file?.mimeType == 'mpeg4'
+                    || file?.mimeType == 'mov'
+                    || file?.mimeType == 'avi'
+                    || file?.mimeType == 'mpegps'
+                    || file?.mimeType == 'wmv'
+                    || file?.mimeType == 'flv'
+                    || file?.mimeType == 'txt'
+                    || file?.mimeType == 'css'
+                    || file?.mimeType == 'html'
+                    || file?.mimeType == 'pages'
+                    || file?.mimeType == 'ai'
+                    || file?.mimeType == 'psd'
+                    || file?.mimeType == 'svg'
+                    ">
+                    <p style="padding-top:10px; margin:0">  <a class="btn btn-link" role="button" (click) = "googleMimeTypeclick(file.modified_name)" href="javascript:void(0)" >{{file?.orignal_name}}</a></p>
+                  </div>
+                    <div *ngIf = "
+                    file?.mimeType != 'jpg' 
+                    && file?.mimeType !== 'jpeg' 
+                    && file?.mimeType != 'png' 
+                    && file?.mimeType != 'pdf' 
+                    && file?.mimeType != 'docx' 
+                    && file?.mimeType != 'doc' 
+                    && file?.mimeType != 'ppt' 
+                    && file?.mimeType != 'pptx' 
+                    && file?.mimeType != 'xls' 
+                    && file?.mimeType != 'xlsx'
+                    && file?.mimeType == 'gif' 
+                    &&  file?.mimeType == 'tiff' 
+                    &&  file?.mimeType == 'mpeg4'
+                    &&  file?.mimeType == 'mov'
+                    &&  file?.mimeType == 'avi'
+                    &&  file?.mimeType == 'mpegps'
+                    &&  file?.mimeType == 'wmv'
+                    &&  file?.mimeType == 'flv'
+                    &&  file?.mimeType == 'txt'
+                    &&  file?.mimeType == 'css'
+                    &&  file?.mimeType == 'html'
+                    &&  file?.mimeType == 'pages'
+                    &&  file?.mimeType == 'ai'
+                    &&  file?.mimeType == 'psd'
+                    &&  file?.mimeType == 'svg'
+                    ">
+                    <p style="padding-top:10px; margin:0"> <a class="btn btn-link" role="button" href="{{this.BASE_URL}}/uploads/{{file.modified_name}}" >{{file?.orignal_name}}</a></p>
+                    </div>
               </div>
              
               <div class="col-md-4 text-left">
@@ -57,15 +113,78 @@
                   <h4 style="padding-top:20px">{{post._posted_by?.first_name}} {{post._posted_by?.last_name}}</h4>
               </div>
               <div class="col-md text-right" style="padding-top: 10px">
-                        
+                        <!-- start of dropdown and preview check-->
                   <div ngbDropdown #postActionsDrop="ngbDropdown" class="d-inline-block">
                       <i class="material-icons action" ngbDropdownToggle>more_vert</i>
                       <div ngbDropdownMenu aria-labelledby="postActionsDrop">
                           <li> 
-                              <a role="button" class="btn btn-link" href="/uploads/{{file.modified_name}}" target="_blank">
-                                 <i class="material-icons label">
+                            <div class = "imagePreview" *ngIf = "file?.mimeType == 'jpg' || file?.mimeType == 'jpeg' || file?.mimeType == 'png' ">
+                              <a class="btn btn-link" role="button" href="javascript:void(0)" (click) = "gotimg(file.modified_name)" ><i class="material-icons label">
                                   visibility
-                                  </i>Preview</a>          
+                                  </i>Preview</a>
+                          </div>
+                          <div *ngIf = "file?.mimeType == 'pdf' ">
+                              <a class="btn btn-link" role="button" href="javascript:void(0)" (click) = "pdfPreviewClicked(file.modified_name)" ><i class="material-icons label">
+                                  visibility
+                                  </i>Preview</a>
+                          </div>
+                          <div *ngIf = "file?.mimeType == 'docx' || file?.mimeType == 'doc' || file?.mimeType == 'ppt' || file?.mimeType == 'pptx' || file?.mimeType == 'xls' || file?.mimeType == 'xlsx' ">
+                              <a  class="btn btn-link" role="button" href="javascript:void(0)" (click) = "officeMimeTypeclick(file.modified_name)" ><i class="material-icons label">
+                                  visibility
+                                  </i>Preview</a>
+                          </div>
+                          <div *ngIf = "
+                          file?.mimeType == 'gif' 
+                          || file?.mimeType == 'tiff' 
+                          || file?.mimeType == 'mpeg4'
+                          || file?.mimeType == 'mov'
+                          || file?.mimeType == 'avi'
+                          || file?.mimeType == 'mpegps'
+                          || file?.mimeType == 'wmv'
+                          || file?.mimeType == 'flv'
+                          || file?.mimeType == 'txt'
+                          || file?.mimeType == 'css'
+                          || file?.mimeType == 'html'
+                          || file?.mimeType == 'pages'
+                          || file?.mimeType == 'ai'
+                          || file?.mimeType == 'psd'
+                          || file?.mimeType == 'svg'
+                          ">
+                            <a  class="btn btn-link" role="button"  href="javascript:void(0)" (click) = "googleMimeTypeclick(file.modified_name)" ><i class="material-icons label">
+                                visibility
+                                </i>Preview</a>
+                        </div>
+                          <div *ngIf = "
+                          file?.mimeType != 'jpg' 
+                          && file?.mimeType !== 'jpeg' 
+                          && file?.mimeType != 'png' 
+                          && file?.mimeType != 'pdf' 
+                          && file?.mimeType != 'docx' 
+                          && file?.mimeType != 'doc' 
+                          && file?.mimeType != 'ppt' 
+                          && file?.mimeType != 'pptx' 
+                          && file?.mimeType != 'xls' 
+                          && file?.mimeType != 'xlsx'
+                          && file?.mimeType == 'gif' 
+                          &&  file?.mimeType == 'tiff' 
+                          &&  file?.mimeType == 'mpeg4'
+                          &&  file?.mimeType == 'mov'
+                          &&  file?.mimeType == 'avi'
+                          &&  file?.mimeType == 'mpegps'
+                          &&  file?.mimeType == 'wmv'
+                          &&  file?.mimeType == 'flv'
+                          &&  file?.mimeType == 'txt'
+                          &&  file?.mimeType == 'css'
+                          &&  file?.mimeType == 'html'
+                          &&  file?.mimeType == 'pages'
+                          &&  file?.mimeType == 'ai'
+                          &&  file?.mimeType == 'psd'
+                          &&  file?.mimeType == 'svg'
+                          ">
+                              <a class="btn btn-link" role="button" href="javascript:void(0)" href="{{this.BASE_URL}}/uploads/{{file.modified_name}}" ><i class="material-icons label">
+                                  visibility
+                                  </i>Preview</a>
+                          </div>            
                           </li>
                           <li> 
                               <button class="btn btn-link" (click)="onDownlaodFile(file.modified_name,file.orignal_name)">
@@ -74,65 +193,100 @@
                                   </i>
                                   Download
                                 </button> 
+
                             </li>
-                            <li>
-                                <button class="btn btn-link" (click)="onDeleteGroupFiles(post,file,'group_file')">
-                                    <i class="material-icons label">
-                                      delete
-                                    </i>
-                                    Delete
-                                </button>
-                              </li>
-                      </div>
-                    </div>
-              </div>
-             
-            </div>
-        </div>
-      </div>
-        <div class="media card-tile user-list" *ngIf="post?._name" >
-          <div class="media-body row">
-              <div class="col-md-7">
-              <img src= "/assets/images/agora-file-icon.png" onerror="this.src='/assets/images/file-icon.png'"class="feed-avatar float-left">
-              <p style="padding-top:10px; margin:0"><a role="button" [routerLink]="['/dashboard', 'group', post?._group_id, 'files', post?._post_id]" routerLinkActive="router-link-active" >{{post._name}}</a></p>
-               </div>
-               <div class="col-md-4 text-left">
-                  <img src="{{this.BASE_URL}}/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"class="feed-avatar float-left">
-                  <h4 style="padding-top:20px">{{post._posted_by?.first_name}} {{post._posted_by?.last_name}}</h4>
-              </div>
-             
-            
-            <div class="col-md text-right" style="padding-top: 10px">
-                    
-                    <div ngbDropdown (openChange)="toggled($event)" #postActionsDrop="ngbDropdown" class="d-inline-block">
-                        <i class="material-icons action" ngbDropdownToggle>more_vert</i>
-                        <div ngbDropdownMenu aria-labelledby="postActionsDrop">
-                            <li> 
-                                <a role="button" class="btn btn-link text-center" [routerLink]="['/dashboard', 'group', post?._group_id, 'files', post?._post_id]" routerLinkActive="router-link-active" > 
-                                  <i class="material-icons">
-                                    visibility
-                                  </i>Preview</a>            
-                            </li>
-                            <li> 
-                                <button class="btn btn-link" >
-                                  <i class="material-icons">
-                                    cloud_download
-                                    </i> Download</button>    
-                              </li>
                               <li>
-                                  <button class="btn btn-link" (click)="onDeleteGroupFiles(post,'filename','agora_file')" >
-                                    <i class="material-icons">
-                                      delete
-                                    </i >Delete</button>
+                                  <button class="btn btn-link" (click)="onDeleteGroupFiles(post,file,'group_file')">
+                                      <i class="material-icons label">
+                                        delete
+                                      </i>
+                                      Delete
+                                  </button>
                                 </li>
                         </div>
                       </div>
+                    </div>
+              </div>
+            </div>
+        </div>
+        <div class="media card-tile user-list" *ngIf="post?._name" >
+            <div class="media-body row">
+                <div class="col-md-7">
+                <img src= "/assets/images/agora-file-icon.png" onerror="this.src='/assets/images/file-icon.png'"class="feed-avatar float-left">
+                <p style="padding-top:10px; margin:0"><a role="button" class="btn btn-link" [routerLink]="['/dashboard', 'group', post?._group_id, 'files', post?._post_id]" routerLinkActive="router-link-active" >{{post._name}}</a></p>
+                 </div>
+                 <div class="col-md-4 text-left">
+                    <img src="{{this.BASE_URL}}/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"class="feed-avatar float-left">
+                    <h4 style="padding-top:20px">{{post._posted_by?.first_name}} {{post._posted_by?.last_name}}</h4>
+                </div>
+               
+              
+              <div class="col-md text-right" style="padding-top: 10px">
+                      
+                      <div ngbDropdown (openChange)="toggled($event)" #postActionsDrop="ngbDropdown" class="d-inline-block">
+                          <i class="material-icons action" ngbDropdownToggle>more_vert</i>
+                          <div ngbDropdownMenu aria-labelledby="postActionsDrop">
+                              <li> 
+                                  <a role="button" class="btn btn-link text-center" [routerLink]="['/dashboard', 'group', post?._group_id, 'files', post?._post_id]" routerLinkActive="router-link-active" > 
+                                    <i class="material-icons label">
+                                      visibility
+                                    </i>Preview</a>            
+                              </li>
+                              <li> 
+                                  <button class="btn btn-link" >
+                                    <i class="material-icons label">
+                                      cloud_download
+                                      </i> Download</button>    
+                                </li>
+                                <li>
+                                    <button class="btn btn-link" (click)="onDeleteGroupFiles(post,'filename','agora_file')" >
+                                      <i class="material-icons label">
+                                        delete
+                                      </i >Delete</button>
+                                  </li>
+                          </div>
+                        </div>
+            </div>
           </div>
+            <ng-template #svg>
+                <img src='../../../../../assets/images/emptyfiles.svg' style=" margin: 0 auto; display:block; width: 600px">
+            </ng-template>
         </div>
       </div>
-<ng-template #svg>
-    <img src='../../../../../assets/images/emptyfiles.svg' style=" margin: 0 auto; display:block; width: 600px">
-</ng-template>
-
+    </div>
+  </div>
 </div>
 
+<div class= "outer-overlay" *ngIf = "pdfSourceLinks || iFrameSourceLinks">
+    <div class = "overlay-navbar" *ngIf = "pdfSourceLinks" >
+        <div class="row" style="margin-left: 0.5rem;" >
+            <a class="navbar-brand" (click) = "overlayRemoval('pdf')" style="cursor: pointer;">
+              <i class="material-icons" style = "color:white !important ; margin-top: 5px">
+                arrow_back
+                </i>
+              </a>
+        </div>  
+      </div>
+    <div class = "overlay-navbar" *ngIf = "iFrameSourceLinks" >
+        <div class="row" style="margin-left: 0.5rem;" >
+            <a class="navbar-brand" (click) = "overlayRemoval('otherFilesForiFrame')" style="cursor: pointer;">
+              <i class="material-icons" style = "color:white !important ; margin-top: 5px">
+                arrow_back
+                </i>
+              </a>
+        </div>  
+      </div>
+    <div class = "pdf-source-container" *ngIf = "pdfSourceLinks">
+        <div class ="overlayPDF" >
+            <pdf-viewer
+            class = "overlay-content"
+            [src]="pdfSourceLinks" 
+            [render-text]="true"
+            ></pdf-viewer>
+        </div>
+    </div>
+    <div id = "overlay-iframe" *ngIf = "iFrameSourceLinks">
+            <iframe id = "iframe-file" (load)="onLoad()" [src]='iFrameSourceLinks' style="width:100%;height:100%;"></iframe>
+    </div>
+
+</div>

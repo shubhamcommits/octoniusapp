@@ -11,14 +11,16 @@ import {CommentSectionComponent} from "../../comments/comment-section/comment-se
 import {SnotifyService} from "ng-snotify";
 import { SearchService } from '../../../../shared/services/search.service';
 import { environment } from '../../../../../environments/environment';
+import { DomSanitizer } from '@angular/platform-browser';
 
 declare var $;
+
 @Component({
   selector: 'normal-group-post',
   templateUrl: './normal-group-post.component.html',
   styleUrls: ['./normal-group-post.component.scss']
 })
-export class NormalGroupPostComponent implements OnInit,AfterViewInit, OnDestroy {
+export class NormalGroupPostComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   @ViewChild(CommentSectionComponent, { static: true }) commentSectionComponent;
@@ -72,6 +74,9 @@ export class NormalGroupPostComponent implements OnInit,AfterViewInit, OnDestroy
     _post_id: ''
   };
   content_mentions = [];
+  //file previews
+  pdfSourceLinks = ""
+  iFrameSourceLinks
 
   profilePic: any;
 
@@ -88,8 +93,9 @@ export class NormalGroupPostComponent implements OnInit,AfterViewInit, OnDestroy
     private groupService: GroupService,
     private postService: PostService,
     private snotifyService: SnotifyService,
-    private searchService: SearchService) { }
-
+    private searchService: SearchService,
+    public sanitizer: DomSanitizer,) {
+    }
   ngOnInit() {
     this.commentCount = this.post.comments.length;
 
@@ -110,6 +116,18 @@ export class NormalGroupPostComponent implements OnInit,AfterViewInit, OnDestroy
 
     this.readMore = this.preview;
 
+    if(this.post['files'].length > 0){
+
+          const allCurrentIndexFiles = this.post['files'].forEach(innerPostFiles => {
+            if (innerPostFiles.orignal_name){
+              const mimeTypeFile = innerPostFiles.orignal_name.substring(innerPostFiles.orignal_name.lastIndexOf('.') + 1)
+              innerPostFiles["mimeType"] = mimeTypeFile
+
+            }else{
+              innerPostFiles["mimeType"] = "noMime"
+            }
+          });
+    }
   }
 
   ngAfterViewInit(): void {
@@ -117,6 +135,11 @@ export class NormalGroupPostComponent implements OnInit,AfterViewInit, OnDestroy
       share:false,
       counter:false
     });
+    $('#imagePreviewLink').lightGallery({
+      selector: 'this',
+      share:false,
+      counter:false
+  });
  }
 
   applyZoom(htmlDOM): string{
@@ -138,7 +161,6 @@ export class NormalGroupPostComponent implements OnInit,AfterViewInit, OnDestroy
     }
   return doc.body.innerHTML;
 }
-
 
   deletePost() {
     this.removePost.emit(this.post._id);
@@ -431,6 +453,43 @@ export class NormalGroupPostComponent implements OnInit,AfterViewInit, OnDestroy
     this.tags.push(tagsFromList);;
     this.tags_search_words = '';
     console.log(this.tags);
+  }
+
+  pdfPreviewClicked(src:string){
+    this.pdfSourceLinks = `${this.BASE_URL}/uploads/${src}`
+    document.body.style.overflow = "hidden"
+  }
+  
+//this checks for .ppt, .pptx, .doc, .docx, .xls and .xlsx
+  officeMimeTypeclick(src:string){
+    this.iFrameSourceLinks = `${this.BASE_URL}/uploads/${src}`
+    document.body.style.overflow = "hidden"
+    this.iFrameSourceLinks = this.sanitizer.bypassSecurityTrustResourceUrl(`https://view.officeapps.live.com/op/embed.aspx?src=${this.iFrameSourceLinks}`);
+
+  }
+
+  googleMimeTypeclick(src:string){
+    this.iFrameSourceLinks = `${this.BASE_URL}/uploads/${src}`
+    document.body.style.overflow = "hidden"
+    this.iFrameSourceLinks = this.sanitizer.bypassSecurityTrustResourceUrl(`https://docs.google.com/viewer?url=${this.iFrameSourceLinks}&embedded=true`);
+  }
+
+  overlayRemoval(mimetype:String){
+    document.body.style.overflow = ""
+
+    switch (mimetype) {
+      case 'pdf':
+        this.pdfSourceLinks = ""
+        break;
+      case 'otherFilesForiFrame':
+         document.getElementById("overlay-iframe").remove()
+         this.iFrameSourceLinks = ""  
+        break;
+
+     default:
+        event.stopPropagation();
+       break;
+   }
   }
 
 }
