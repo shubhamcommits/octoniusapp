@@ -281,7 +281,7 @@ const deleteUser = async (req, res, next) => {
     }, {
       $pull: {
         members: req.params.userId,
-        invited_users: req.params.userId
+        invited_users: disabledUser.email,
       }
     }, {
       new: true
