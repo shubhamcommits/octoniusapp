@@ -16,21 +16,79 @@ const inviteUserViaEmail = async (req, res, next) => {
     const workspaceId = req.body.workspace_id;
     const invitedUserEmail = req.body.email;
 
-    const workspace = await Workspace.findByIdAndUpdate({
-      _id: workspaceId
+    //if user was kicked out 
+    const user = await User.findOneAndUpdate({
+      $and:[{
+        email: invitedUserEmail,
+        _workspace: workspaceId,
+        active:false,
+      }]
+
     }, {
-      // !!REFACTOR THIS, WHILE IT'S NOT IN SYNC WITH SIGNUP METHOD
-      $push: {
-        invited_users: invitedUserEmail
+      $set: {
+        active: true
       }
-    }, {
-      new: true
     });
 
-    if (!workspace) {
-      return sendErr(res, '', 'Please enter a valid workspace id', 404);
-    }
+    if(user){
+      const globalGroupUpdate = await Group.findOneAndUpdate({
+        group_name: 'Global',
+        _workspace: workspaceId
+      }, {
+        $push: {
+          _members: user._id
+        }
+      });
+  
+      // Error updating the Global group
+      if (!globalGroupUpdate) {
+        return sendErr(res, '', 'Some error ocurred trying to update the Global group!');
+      }
+      const workspaceUpdate = await Workspace.findByIdAndUpdate({
+        _id: workspaceId
+      }, {
+        $push: {
+          members: user
+        },
+      }, {
+        new: true
+      });
+  
+      // Error updating the Workspace
+      if (!workspaceUpdate) {
+        return sendErr(res, '', 'Some error ocurred trying to update the Workspace!');
+      }
+      const userUpdate = await User.findByIdAndUpdate({
+        _id: user._id
+      }, {
+        $push: {
+          _groups: globalGroupUpdate
+        }
+      }, {
+        new: true
+      });
+  
+      // Error updating the user
+      if (!userUpdate) {
+        return sendErr(res, '', 'Some error ocurred trying to update the user!');
+      }
+    }else{
+//else this is a new member invite 
+      const workspace = await Workspace.findByIdAndUpdate({
+        _id: workspaceId
+      }, {
+        // !!REFACTOR THIS, WHILE IT'S NOT IN SYNC WITH SIGNUP METHOD
+        $push: {
+          invited_users: invitedUserEmail,
+        }
+      }, {
+        new: true
+      });
 
+      if (!workspace) {
+        return sendErr(res, '', 'Please enter a valid workspace id', 404);
+      }
+    }
     // Send invitation via email
     await sendMail.joinWorkspace(req.body);
 
