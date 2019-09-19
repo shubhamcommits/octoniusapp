@@ -3,6 +3,10 @@ import { ActivatedRoute, Router, Route, ResolveEnd } from '@angular/router';
 import {Location} from '@angular/common';
 
 import QuillCursors from 'quill-cursors';
+import ImageResize from 'quill-image-resize-module';
+import { ImageDrop } from 'quill-image-drop-module';
+import { ImageFormat } from '../../../../shared/utils/image-format/base-image-format';
+
 import ReconnectingWebSocket, {Options} from 'reconnecting-websocket';
 import * as ShareDB from '../../../../../../node_modules/sharedb/lib/client';
 // import * as Quill from 'quill';
@@ -49,8 +53,11 @@ let Scroll = Quill.import('blots/scroll');
 // !--Register Required Modules--! //
 ShareDB.types.register(require('rich-text').type);
 Quill.register('modules/cursors', QuillCursors);
+Quill.register('modules/imageResize', ImageResize);
+Quill.register('modules/imageDrop', ImageDrop);
 Quill.register(Mark);
 Quill.register(Authorship);
+Quill.register(ImageFormat, true);
 
 
 
@@ -121,63 +128,64 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     'emoji': function () {
       //console.log('clicked');
     },
-    'image': () => {
-      //Creates an element which accepts image file as the input
-      const input = document.createElement('input');
-      input.setAttribute('type', 'file');
-      input.click();
+    // Do not enable the handler, the standard format from quill works for us
+    // 'image': () => {
+    //   //Creates an element which accepts image file as the input
+    //   const input = document.createElement('input');
+    //   input.setAttribute('type', 'file');
+    //   input.click();
 
-      // Listen upload local image and save to server
-      input.onchange = () => {
-        const file = input.files[0];
-        const range = quill.getSelection();
-        const text = '\nImage is being uploaded, please wait...';
-        var length = quill.getLength();
-        var currentIndex = quill.getSelection().index;
-        quill.insertText(range.index, text, 'bold', true);
+    //   // Listen upload local image and save to server
+    //   input.onchange = () => {
+    //     const file = input.files[0];
+    //     const range = quill.getSelection();
+    //     const text = '\nImage is being uploaded, please wait...';
+    //     var length = quill.getLength();
+    //     var currentIndex = quill.getSelection().index;
+    //     quill.insertText(range.index, text, 'bold', true);
 
-        // file type is only image.
-        if (/^image\//.test(file.type)) {
-          //here we are calling the upload Image API, which saves the image to server
-          const fd = new FormData();
-          fd.append('attachments', file);
+    //     // file type is only image.
+    //     if (/^image\//.test(file.type)) {
+    //       //here we are calling the upload Image API, which saves the image to server
+    //       const fd = new FormData();
+    //       fd.append('attachments', file);
 
-          //Calling Custom XML HTTP REQUEST
-          const xhr = new XMLHttpRequest();
+    //       //Calling Custom XML HTTP REQUEST
+    //       const xhr = new XMLHttpRequest();
 
-          xhr.open('POST', environment.BASE_API_URL+'/posts/upload', true);
-          xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('token'));
+    //       xhr.open('POST', environment.BASE_API_URL+'/posts/upload', true);
+    //       xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('token'));
 
-          xhr.onload = () => {
-            if (xhr.status === 200) {
-              // this is callback data: url
-              const url = JSON.parse(xhr.responseText).file[0].modified_name;
+    //       xhr.onload = () => {
+    //         if (xhr.status === 200) {
+    //           // this is callback data: url
+    //           const url = JSON.parse(xhr.responseText).file[0].modified_name;
 
-              //Here we insert the image and replace the BASE64 with our custom URL, which is been saved to the server
-              //ex - img src = "http://localhost:3000/uploads/image-name.jpg"
-              const range = quill.getSelection();
-              let quillDelta = quill.insertEmbed(range.index, 'image', environment.BASE_URL+'/uploads/'+url, 'user');
-              //console.log(this.quill.getLength(), text.length, range.index);
-              //here we delete the uploading text from the editor
-              quill.deleteText(currentIndex, text.length);
+    //           //Here we insert the image and replace the BASE64 with our custom URL, which is been saved to the server
+    //           //ex - img src = "http://localhost:3000/uploads/image-name.jpg"
+    //           const range = quill.getSelection();
+    //           let quillDelta = quill.insertEmbed(range.index, 'image', environment.BASE_URL+'/uploads/'+url, 'user');
+    //           //console.log(this.quill.getLength(), text.length, range.index);
+    //           //here we delete the uploading text from the editor
+    //           quill.deleteText(currentIndex, text.length);
  
-              // console.log(quillDelta);
+    //           // console.log(quillDelta);
 
-              // doc.submitOp(quillDelta, {
-              //   source: quill
-              // }, (err: any) => {
-              //   if (err)
-              //     console.error('Submit OP returned an error:', err);
-              // });
-            }
-          };
-          xhr.send(fd);
-        } else {
-          console.warn('You could only upload images.');
-        }
-      };
+    //           // doc.submitOp(quillDelta, {
+    //           //   source: quill
+    //           // }, (err: any) => {
+    //           //   if (err)
+    //           //     console.error('Submit OP returned an error:', err);
+    //           // });
+    //         }
+    //       };
+    //       xhr.send(fd);
+    //     } else {
+    //       console.warn('You could only upload images.');
+    //     }
+    //   };
 
-    }
+    // }
   }
 };
   post: any;
@@ -424,6 +432,25 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
             hideDelayMs: 5000,
             hideSpeedMs: 0,
             selectionChangeSource: null
+          },
+          imageDrop: true,
+          imageResize: {
+            displaySize: true,
+            handleStyles: {
+              backgroundColor: 'black',
+              border: 'none',
+              color: 'white',
+              zIndex: '1000'
+            },
+            toolbarStyles: {
+              backgroundColor: 'black',
+              border: 'none',
+              color: 'white',
+              zIndex: '1000'
+            },
+            displayStyles:{
+              zIndex: '1000'
+            }
           },
           autoLink: true,
           mention: {
@@ -728,6 +755,9 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     });
 
     // local -> server
+    // quill.on('editor-change', () => 
+    // console.log('I changed bruh!')
+    // );
     quill.on('text-change', (delta, oldDelta, source) => {
       this.docStatus = "Updating...";
       if (source == 'user') {
