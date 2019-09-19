@@ -28,7 +28,7 @@ import {Group} from "../../../../shared/models/group.model";
 import { QuillAutoLinkService } from '../../../../shared/services/quill-auto-link.service';
 import {months} from "../../../../common/data";
 import Swal from 'sweetalert2';
-import { MentionBlot } from '../../../../shared/utils/mention-module/quill.mention.blot';
+import { MentionBlot } from '../../../../shared/utils/mention-module/quill.mention.blot'
 import * as Quill from 'quill';
 (window as any).Quill = Quill;
 import 'quill-emoji/dist/quill-emoji';
@@ -37,15 +37,8 @@ import {GroupActivityFiltersComponent} from "./group-activity-filters/group-acti
 import { NgxSpinnerService } from 'ngx-spinner';
 import { DocumentFileService } from '../../../../shared/services/document-file.service';
 
-import ImageResize from 'quill-image-resize-module';
-import { ImageDrop } from 'quill-image-drop-module';
-import { ImageFormat } from '../../../../shared/utils/image-format/base-image-format';
-
 Quill.register(MentionBlot);
 Quill.register('modules/mention', Mention);
-Quill.register('modules/imageResize', ImageResize);
-Quill.register('modules/imageDrop', ImageDrop);
-Quill.register(ImageFormat, true);
 
 @Component({
   selector: 'app-group-activity',
@@ -583,25 +576,6 @@ export class GroupActivityComponent implements OnInit {
       "emoji-toolbar": true,
       "emoji-shortname": true,
       autoLink: true,
-      // imageDrop: true,
-      // imageResize: {
-      //   displaySize: true,
-      //   handleStyles: {
-      //     backgroundColor: 'black',
-      //     border: 'none',
-      //     color: 'white',
-      //     zIndex: '10000'
-      //   },
-      //   toolbarStyles: {
-      //     backgroundColor: 'black',
-      //     border: 'none',
-      //     color: 'white',
-      //     zIndex: '10000'
-      //   },
-      //   displayStyles:{
-      //     zIndex: '10000'
-      //   }
-      // },
       mention: {
         allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
         mentionDenotationChars: ["@", "#"],
