@@ -356,11 +356,11 @@ const getWorkspaceMembers = async (req, res, next) => {
           new mongoose.Types.ObjectId(e)
         )}}
         ).sort('_id')
-        .limit(6)
+        .limit(11)
         .exec() 
   
         var moreUsersToLoad = false;
-        if (userMembersQuery.length == 6){
+        if (userMembersQuery.length == 11){
           userMembersQuery.pop()
           moreUsersToLoad = true;
         }
