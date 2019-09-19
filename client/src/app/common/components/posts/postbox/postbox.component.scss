@@ -73,16 +73,3 @@ div.collab-dropdown-menu.dropdown-menu.show{
   border: 1px solid #FD7714;
   box-sizing:border-box;
 }
-
-div.layoutRow {
-  display: -ms-flex;
-  display: -webkit-flex;
-  display: flex;
-}
-
-div.layoutCol {
-  flex: 1;
-  border: 1px dashed black;
-  padding:5px;
-  margin-right: 5px;
-}

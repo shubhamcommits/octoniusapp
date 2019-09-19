@@ -1172,6 +1172,7 @@ const editPulseDescription = async (req, res) => {
 };
 
 
+
 const deletePulseDescription = async (req, res) => {
   try {
     const {
@@ -1357,7 +1358,6 @@ module.exports = {
   // Main
   get,
   getPrivate,
-  getUserGroups,
   getAllForUser,
   getPublicGroups,
   getUsersPublicGroups,

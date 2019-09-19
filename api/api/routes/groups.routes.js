@@ -55,10 +55,6 @@ router.get('/all/pulse/:workspaceId', groups.getUserGroups);
 // Get a user's smart groups within the given workspace
 router.get('/smart/:workspace', groups.getSmartGroups);
 
-// Get name id of groups of user
-router.get('/all/pulse', groups.getUserGroups);
-
-
 // Add a new member into a public group
 router.post('/public/:groupId', groups.addNewMember);
 
