@@ -1,15 +1,17 @@
 <nav class="navbar navbar-expand-md fixed-top">
-  <div class="row" style="margin-left: 2rem;" >
+  <div class="container">
 
     <a class="navbar-brand" (click)="clickOnBack()" style="cursor: pointer;">
       <i class="material-icons">
         arrow_back
         </i>
     </a>
+
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
       aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"><i class="material-icons">menu</i></span>
     </button>
+
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="nav mr-auto" id="example-one">
         <li class="nav-item" id="li_overview">
@@ -27,46 +29,53 @@
 
     </div>
   </div>
-  <div class="row" style="position: fixed; float: right; margin-left: 62%;">
+  <div class="btn-group">
+   
+        <div class="dropdown">
+            <button class="btn btn-light" type="button" data-toggle="dropdown" (click)="clickOnPreview()"><i class="material-icons font16">description</i> Preview</button>
+          </div>
+
+    
+   
+  
     <div class="dropdown">
-      <button class="btn btn-primary" type="button" data-toggle="dropdown" (click)="clickOnPreview()">Preview</button>
-    </div>
-  </div>
-  <div class="row" style="position: fixed; float: right; margin-left: 70%;">
-    <div class="dropdown">
-      <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Authors
-      <span class="caret"></span></button>
+      <button class="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown"><i class="material-icons font16">person</i> Authors
+     </button>
       <ul class="dropdown-menu">
         <li class="dropdown-item" *ngFor = "let author of authorsList"><div class="dot" [ngStyle]="{'background-color': author.color}"></div> {{ author?.name }}</li>
       </ul>
     </div>
-  </div>
-  <div class="row" style="position: fixed; float:right; margin-left:87%;">
-  <b style="color: #00c853; font-size: 16px;">Status: <b style="color: black;">{{ docStatus }}</b></b>    
-  </div>
-  <div class="row" style="position: fixed; float: right; margin-left: 79%;">
+  
     <div class="dropdown">
-      <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Export
-      <span class="caret"></span></button>
-      <ul class="dropdown-menu">
-        <li class="dropdown-item" (click)="exportPDF()">Export as (.pdf) File</li>
-        <li class="dropdown-item" (click)="exportDOC()">Export as (.doc) File</li>
-        <li class="dropdown-item" (click)="exportDOCX()">Export as (.docx) File</li>
-        <li class="dropdown-item dropdown-hover">
-            Export to Agora
-            <div class="dropdown-content">
-              <!-- <a *ngFor="let agora of agoras" href="#/dashboard/group/{{agora?._id}}/files"> -->
-                <a *ngFor="let agora of agoras" (click) = "exportAGORA(agora?._id,agora?.group_name)">
-                <img src="{{this.BASE_URL}}/uploads/{{agora?.group_avatar}}" 
-                  onerror="this.src='/assets/images/user.png'"
-                  class="feed-avatar"/>
-                {{agora?.group_name}}</a>
-            </div>
+        <button class="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown"><i class="material-icons font16">cloud_download</i> Export
+       </button>
+        <ul class="dropdown-menu">
+          <li class="dropdown-item" (click)="exportPDF()">Export as (.pdf) File</li>
+          <li class="dropdown-item" (click)="exportDOC()">Export as (.doc) File</li>
+          <li class="dropdown-item" (click)="exportDOCX()">Export as (.docx) File</li>
+          <li class="dropdown-item dropdown-hover">
+              Export to Agora
+              <div class="dropdown-content">
+                <!-- <a *ngFor="let agora of agoras" href="#/dashboard/group/{{agora?._id}}/files"> -->
+                  <a *ngFor="let agora of agoras" (click) = "exportAGORA(agora?._id,agora?.group_name)">
+                  <img src="{{this.BASE_URL}}/uploads/{{agora?.group_avatar}}" 
+                    onerror="this.src='/assets/images/user.png'"
+                    class="feed-avatar"/>
+                  {{agora?.group_name}}</a>
+              </div>
+  
+          </li>
+        </ul>
+  
+      </div>
+     
 
-        </li>
-      </ul>
-
-    </div>
+  
   </div>
+  
+  <div class="alert alert-primary text-small" role="alert" style="padding:6px; margin:auto">
+      <i class="material-icons font16">check</i> Status: {{ docStatus }}
+    </div>
+
 </nav>
 
