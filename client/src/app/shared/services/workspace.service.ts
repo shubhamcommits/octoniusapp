@@ -29,6 +29,20 @@ export class WorkspaceService {
   updateWorkspace(workspce_id, data) {
     return this._http.put(this.BASE_API_URL + `/workspace/${workspce_id}`, data);
   }
+  
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
+  getWorkspaceMembers(workspce_id) {
+    return this._http.get(this.BASE_API_URL + `/workspace/members/${workspce_id}`);
+  }
+
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
+  getNextWorkspaceMembers(workspce_id,last_id_loaded) {
+    return this._http.get(this.BASE_API_URL + `/workspace/next/members/${workspce_id}/${last_id_loaded}`);
+  }
 
   ///// Workspace billing
 

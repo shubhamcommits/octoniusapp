@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Workspace } from '../../../shared/models/workspace.model';
 import { WorkspaceService } from '../../../shared/services/workspace.service';
 import { Router } from '@angular/router';
+import { PostService } from '../../../shared/services/post.service';
 import { AdminService } from '../../../shared/services/admin.service';
 import { ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Subject, BehaviorSubject } from 'rxjs';
@@ -20,6 +21,8 @@ export class AdminMembersComponent implements OnInit {
   user_data;
   profileImage;
   BASE_URL = environment.BASE_URL;
+  memberList;
+  moreMembersToLoad:Boolean;
 
   modalReference: any;
   @ViewChild('content', { static: false }) private content;
@@ -35,7 +38,7 @@ export class AdminMembersComponent implements OnInit {
   isLoading$ = new BehaviorSubject(false);
 
   constructor(private _workspaceService: WorkspaceService, private _router: Router, private alertConfig: NgbAlertConfig,
-    private adminService: AdminService, private modalService: NgbModal, private ngxService: NgxUiLoaderService) { }
+    private adminService: AdminService, private modalService: NgbModal, private postService: PostService, private ngxService: NgxUiLoaderService) { }
 
   ngOnInit() {
     this.ngxService.start(); // start foreground loading with 'default' id
@@ -48,6 +51,14 @@ export class AdminMembersComponent implements OnInit {
     .catch((err)=>{
       console.log('Error while fetching the loading the workpace', err);
     })
+    this.loadWorkspaceMembers()
+    .then(()=>{
+  
+    })
+    .catch((err)=>{
+      console.log('Error while fetching the loading the workpace', err);
+    })
+    
     this.alertMessageSettings();
   }
 
@@ -78,6 +89,44 @@ export class AdminMembersComponent implements OnInit {
         reject(err);
       });
     })
+  }
+
+  loadWorkspaceMembers() {
+    this.isLoading$.next(true);
+
+    return new Promise((resolve, reject)=>{
+      this._workspaceService.getWorkspaceMembers(this.user_data.workspace._id)
+      .subscribe((res) => {
+        this.memberList = res['results']
+        this.moreMembersToLoad = res['moreToLoad']
+        this.isLoading$.next(false);
+      //  console.log('loadworkspace res: ', res);
+        resolve();
+      }, (err) => {
+        console.log("called2")
+        reject(err);
+      });
+    })
+
+  }
+
+  loadMoreMembers(){
+    this.isLoading$.next(true);
+    //this.spinner.show();
+    this.ngxService.startBackground();
+
+    this._workspaceService.getNextWorkspaceMembers(this.user_data.workspace._id, this.memberList[this.memberList.length - 1]._id)
+      .subscribe((res) => {
+
+        // console.log(res,this.memberList)
+        this.memberList = this.postService.removeDuplicates([...this.memberList, ...res['results']], '_id');
+        this.moreMembersToLoad = res['moreToLoad']
+        this.isLoading$.next(false);
+        this.ngxService.stopBackground();
+        //this.spinner.hide();
+      }, (err) => {
+        //this.snotifyService.error('Error while retrieving the next recent posts', 'Error!');
+      });
 
   }
 
