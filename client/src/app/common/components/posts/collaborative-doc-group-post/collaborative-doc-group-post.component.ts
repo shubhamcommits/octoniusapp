@@ -753,7 +753,9 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     });
 
     // local -> server
-    quill.on('editor-change', () => console.log('I changed bruh!'));
+    // quill.on('editor-change', () => 
+    // console.log('I changed bruh!')
+    // );
     quill.on('text-change', (delta, oldDelta, source) => {
       this.docStatus = "Updating...";
       if (source == 'user') {
