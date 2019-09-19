@@ -6,7 +6,7 @@
     <h4>All members from your workplace</h4>
   
     <hr>
-    <div class="media card-tile user-list" *ngFor="let member of workspace?.members">
+    <div class="media card-tile user-list" *ngFor="let member of memberList">
   <!--<img class="feed-avatar " src="assets/images/user.png" alt="User">-->
       <img src="{{this.BASE_URL}}/uploads/{{member?.profile_pic}}" onerror="this.src='/assets/images/user.png'" class="feed-avatar">
       <div class="media-body">
@@ -29,6 +29,11 @@
   
       </div>
   
+    </div>
+    <div>
+      <button style="margin-left: 45%;" *ngIf = "moreMembersToLoad" (click)="loadMoreMembers()">
+        loadmore
+      </button>
     </div>
   
     <ng-template #content let-c="close" let-d="dismiss">

@@ -54,4 +54,10 @@ router.get('/skills/:workspaceId/:query', workspaces.getUniqueSkills);
 // Remove user from workspace
 router.delete('/:workspaceId/users/:userId', workspaces.deleteUser);
 
+// Get workspace members
+router.get('/members/:workspaceId/', workspaces.getWorkspaceMembers);
+
+// Get more workspace members
+router.get('/next/members/:workspaceId/:amountLoaded', workspaces.getNextWorkspaceMembers);
+
 module.exports = router;
