@@ -769,7 +769,8 @@ post = {
   }
 
   onContentChanged(quill) {
-    this.editorTextLength = quill.text.length;
+    //this.editorTextLength = quill.text.length;
+    //console.log(quill);
   }
 
   onEditorCreated(quill) {
