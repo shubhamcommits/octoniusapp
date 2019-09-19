@@ -142,6 +142,19 @@ i.icon-blue {
 	margin-right: 10px;
 }
 
+div.layoutRow {
+    display: -ms-flex;
+    display: -webkit-flex;
+    display: flex;
+  }
+  
+  div.layoutCol {
+    flex: 1;
+    border: 1px dashed black;
+    padding:5px;
+    margin-right: 5px;
+  }
+
 //.fade-in {
 //  animation-name: fadeInOpacity;
 //
