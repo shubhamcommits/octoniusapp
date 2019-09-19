@@ -3,10 +3,6 @@ import { ActivatedRoute, Router, Route, ResolveEnd } from '@angular/router';
 import {Location} from '@angular/common';
 
 import QuillCursors from 'quill-cursors';
-import ImageResize from 'quill-image-resize-module';
-import { ImageDrop } from 'quill-image-drop-module';
-import { ImageFormat } from '../../../../shared/utils/image-format/base-image-format';
-
 import ReconnectingWebSocket, {Options} from 'reconnecting-websocket';
 import * as ShareDB from '../../../../../../node_modules/sharedb/lib/client';
 // import * as Quill from 'quill';
@@ -53,11 +49,9 @@ let Scroll = Quill.import('blots/scroll');
 // !--Register Required Modules--! //
 ShareDB.types.register(require('rich-text').type);
 Quill.register('modules/cursors', QuillCursors);
-Quill.register('modules/imageResize', ImageResize);
-Quill.register('modules/imageDrop', ImageDrop);
 Quill.register(Mark);
 Quill.register(Authorship);
-Quill.register(ImageFormat, true);
+
 
 
 Quill.register({
@@ -76,7 +70,7 @@ Quill.register({
 
 // !-- Variables Required to use and export Globally--! //
 var postId: any;
-var cursors: any = {};
+var cursors: any = {}; 
 var comment_range = {};
 var quill: any;
 var editor: any;
@@ -85,6 +79,7 @@ var editorAsFile: any;
 // !-- Variables Required to use and export Globally--! //
 var shareDBSocket: any;
 var doc;
+
 
 @Component({
   selector: 'app-collaborative-doc-group-post',
@@ -99,16 +94,16 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     [{table: this.tableOptions}, {table: 'append-row'}, {table:'append-col'}],
     ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
     ['blockquote', 'code-block'],
-
+  
     [{ 'header': 1 }, { 'header': 2 }],               // custom button values
     [{ 'list': 'ordered'}, { 'list': 'bullet' }],
     [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
     [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
     [{ 'direction': 'rtl' }],                         // text direction
-
+  
     [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
     [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-
+  
     [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
     [{ 'font': [] }],
     [{ 'align': [] }],
@@ -126,64 +121,63 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     'emoji': function () {
       //console.log('clicked');
     },
-    // Do not enable the handler, the standard format from quill works for us
-    // 'image': () => {
-    //   //Creates an element which accepts image file as the input
-    //   const input = document.createElement('input');
-    //   input.setAttribute('type', 'file');
-    //   input.click();
+    'image': () => {
+      //Creates an element which accepts image file as the input
+      const input = document.createElement('input');
+      input.setAttribute('type', 'file');
+      input.click();
 
-    //   // Listen upload local image and save to server
-    //   input.onchange = () => {
-    //     const file = input.files[0];
-    //     const range = quill.getSelection();
-    //     const text = '\nImage is being uploaded, please wait...';
-    //     var length = quill.getLength();
-    //     var currentIndex = quill.getSelection().index;
-    //     quill.insertText(range.index, text, 'bold', true);
+      // Listen upload local image and save to server
+      input.onchange = () => {
+        const file = input.files[0];
+        const range = quill.getSelection();
+        const text = '\nImage is being uploaded, please wait...';
+        var length = quill.getLength();
+        var currentIndex = quill.getSelection().index;
+        quill.insertText(range.index, text, 'bold', true);
 
-    //     // file type is only image.
-    //     if (/^image\//.test(file.type)) {
-    //       //here we are calling the upload Image API, which saves the image to server
-    //       const fd = new FormData();
-    //       fd.append('attachments', file);
+        // file type is only image.
+        if (/^image\//.test(file.type)) {
+          //here we are calling the upload Image API, which saves the image to server
+          const fd = new FormData();
+          fd.append('attachments', file);
 
-    //       //Calling Custom XML HTTP REQUEST
-    //       const xhr = new XMLHttpRequest();
+          //Calling Custom XML HTTP REQUEST
+          const xhr = new XMLHttpRequest();
 
-    //       xhr.open('POST', environment.BASE_API_URL+'/posts/upload', true);
-    //       xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('token'));
+          xhr.open('POST', environment.BASE_API_URL+'/posts/upload', true);
+          xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('token'));
 
-    //       xhr.onload = () => {
-    //         if (xhr.status === 200) {
-    //           // this is callback data: url
-    //           const url = JSON.parse(xhr.responseText).file[0].modified_name;
+          xhr.onload = () => {
+            if (xhr.status === 200) {
+              // this is callback data: url
+              const url = JSON.parse(xhr.responseText).file[0].modified_name;
 
-    //           //Here we insert the image and replace the BASE64 with our custom URL, which is been saved to the server
-    //           //ex - img src = "http://localhost:3000/uploads/image-name.jpg"
-    //           const range = quill.getSelection();
-    //           let quillDelta = quill.insertEmbed(range.index, 'image', environment.BASE_URL+'/uploads/'+url, 'user');
-    //           //console.log(this.quill.getLength(), text.length, range.index);
-    //           //here we delete the uploading text from the editor
-    //           quill.deleteText(currentIndex, text.length);
+              //Here we insert the image and replace the BASE64 with our custom URL, which is been saved to the server
+              //ex - img src = "http://localhost:3000/uploads/image-name.jpg"
+              const range = quill.getSelection();
+              let quillDelta = quill.insertEmbed(range.index, 'image', environment.BASE_URL+'/uploads/'+url, 'user');
+              //console.log(this.quill.getLength(), text.length, range.index);
+              //here we delete the uploading text from the editor
+              quill.deleteText(currentIndex, text.length);
  
-    //           // console.log(quillDelta);
+              // console.log(quillDelta);
 
-    //           // doc.submitOp(quillDelta, {
-    //           //   source: quill
-    //           // }, (err: any) => {
-    //           //   if (err)
-    //           //     console.error('Submit OP returned an error:', err);
-    //           // });
-    //         }
-    //       };
-    //       xhr.send(fd);
-    //     } else {
-    //       console.warn('You could only upload images.');
-    //     }
-    //   };
+              // doc.submitOp(quillDelta, {
+              //   source: quill
+              // }, (err: any) => {
+              //   if (err)
+              //     console.error('Submit OP returned an error:', err);
+              // });
+            }
+          };
+          xhr.send(fd);
+        } else {
+          console.warn('You could only upload images.');
+        }
+      };
 
-    // }
+    }
   }
 };
   post: any;
@@ -342,17 +336,17 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     var trimmedArray = [];
     var values = [];
     var value;
-
+  
     for(var i = 0; i < originalArray.length; i++) {
       value = originalArray[i][objKey];
-
+  
       if(values.indexOf(value) === -1) {
         trimmedArray.push(originalArray[i]);
         values.push(value);
       }
     }
     return trimmedArray;
-
+  
   }
 
   getDocument(postId){
@@ -377,15 +371,15 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
         connectionTimeout: 1000,
         maxRetries: 10,
     };
-      // !-- Connect ShareDB and Cursors to ReconnectingWebSocket--! //
-      shareDBSocket = new ReconnectingWebSocket(((location.protocol === 'https:') ? 'wss' : 'wss') + '://' + environment.REAL_TIME_URL + '/sharedb', [], options);
+      // !-- Connect ShareDB and Cursors to ReconnectingWebSocket--! //  
+      shareDBSocket = new ReconnectingWebSocket(((location.protocol === 'https:') ? 'wss' : 'ws') + '://' + environment.REAL_TIME_URL + '/sharedb', [], options);
       var shareDBConnection = new ShareDB.Connection(shareDBSocket);
       // Create browserchannel socket
-      cursors.socket = new ReconnectingWebSocket(((location.protocol === 'https:') ? 'wss' : 'wss') + '://' + environment.REAL_TIME_URL + '/cursors', [], options);
+      cursors.socket = new ReconnectingWebSocket(((location.protocol === 'https:') ? 'wss' : 'ws') + '://' + environment.REAL_TIME_URL + '/cursors', [], options);
       // !-- Connect ShareDB and Cursors to ReconnectingWebSocket--! //
       //have color here
       var colorFromUser:any
-
+   
       if (this.user_document_information){
         colorFromUser = this.user_document_information['color']
       }else{
@@ -430,25 +424,6 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
             hideDelayMs: 5000,
             hideSpeedMs: 0,
             selectionChangeSource: null
-          },
-          imageDrop: true,
-          imageResize: {
-            displaySize: true,
-            handleStyles: {
-              backgroundColor: 'black',
-              border: 'none',
-              color: 'white',
-              zIndex: '1000'
-            },
-            toolbarStyles: {
-              backgroundColor: 'black',
-              border: 'none',
-              color: 'white',
-              zIndex: '1000'
-            },
-            displayStyles:{
-              zIndex: '1000'
-            }
           },
           autoLink: true,
           mention: {
@@ -503,53 +478,53 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
       // Init a blank user connection to store local conn data
       cursors.localConnection = connection;
 
-
+      
       // Update
       cursors.update = function() {
         cursors.socket.send(JSON.stringify(cursors.localConnection));
       };
-
+      
       // Init connections array
       cursors.connections = [];
-
+      
       // Send initial message to register the client, and
       // retrieve a list of current clients so we can set a colour.
       cursors.socket.onopen = function() {
         cursors.update();
       };
-
+      
       // Handle updates
       cursors.socket.onmessage = async (message) => {
-
-        var data = JSON.parse(message.data);
-        this.documentService.authorsList(data);
+      
+        var data = JSON.parse(message.data);    
+        this.documentService.authorsList(data); 
         var source = {},
           removedConnections = [],
           forceUpdate = false,
           reportNewConnections = true;
-
+      
         if (!cursors.localConnection.id)
           forceUpdate = true;
-
+      
         // Refresh local connection ID (because session ID might have changed because server restarts, crashes, etc.)
         cursors.localConnection.id = data.id;
-
+      
         if (forceUpdate) {
           cursors.update();
           return;
         }
-
+      
         //Find removed connections
         for (var i = 0; i < cursors.connections.length; i++) {
           var testConnection = data.connections.find( (connection) => {
             return connection.id == cursors.connections[i].id;
           });
-
+      
           if (!testConnection) {
-
+      
             removedConnections.push(cursors.connections[i]);
             //console.log('[cursors] User disconnected:', cursors.connections[i]);
-
+      
             // If the source connection was removed set it
             if (data.sourceId == cursors.connections[i])
               source = cursors.connections[i];
@@ -558,7 +533,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
             //console.log('[cursors] Connections after username update:', data.connections);
           }
         }
-
+  
         if (cursors.connections.length == 0 && data.connections.length != 0) {
           //data.connections = removeDuplicates(data.connections, 'user_id');
           data.connections.forEach(async (element)=>{
@@ -618,11 +593,11 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
           // Set the source if it's still on active connections
           if (data.sourceId == data.connections[i].id)
             source = data.connections[i];
-
+      
           if (reportNewConnections && !cursors.connections.find((connection) => {
               return connection.id == data.connections[i].id
             })) {
-
+  
             //data.connections = removeDuplicates(data.connections, 'user_id');
             //console.log('[cursors] User connected:', data.connections[i]);
             let authorData = {
@@ -661,7 +636,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
         // Update connections array
         cursors.connections = data.connections;
         //cursors.connections = removeDuplicates(cursors.connections, 'user_id');
-
+      
         // Fire event
         document.dispatchEvent(new CustomEvent('cursors-update', {
           detail: {
@@ -670,15 +645,15 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
           }
         }));
       };
-
+      
       cursors.socket.onclose = function (event) {
         console.log('[cursors] Socket closed. Event:', event);
       };
-
+      
       cursors.socket.onerror = function (event) {
         console.log('[cursors] Error on socket. Event:', event);
       };
-
+  
       this.handleDocument(doc, user, cursorsModule);
 
       //fired from cursor.js when a user is disconnected.
@@ -694,16 +669,16 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
 
       //subscribe ends
       //this.documentService.updateCursors(cursors.localConnection, cursors, cursorsModule);
-
+    
     // DEBUG
-
+    
     shareDBConnection.on('state', (state: any, reason: any)=> {
-
+  
       if (state === "connected") {
         cursors.localConnection.user_id = user.user_id;
         cursors.update();
       }
-
+    
       //console.log('[sharedb] New connection state: ' + state + ' Reason: ' + reason);
     });
      } 
@@ -753,9 +728,6 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     });
 
     // local -> server
-    // quill.on('editor-change', () => 
-    // console.log('I changed bruh!')
-    // );
     quill.on('text-change', (delta, oldDelta, source) => {
       this.docStatus = "Updating...";
       if (source == 'user') {
