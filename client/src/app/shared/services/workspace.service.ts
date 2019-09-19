@@ -36,6 +36,20 @@ export class WorkspaceService {
   getWorkspaceMembers(workspce_id) {
     return this._http.get(this.BASE_API_URL + `/workspace/members/${workspce_id}`);
   }
+  
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
+  getWorkspaceMembers(workspce_id) {
+    return this._http.get(this.BASE_API_URL + `/workspace/members/${workspce_id}`);
+  }
+
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
+  getNextWorkspaceMembers(workspce_id,last_id_loaded) {
+    return this._http.get(this.BASE_API_URL + `/workspace/next/members/${workspce_id}/${last_id_loaded}`);
+  }
 
   @CacheBuster({
     cacheBusterNotifier: cacheBuster$
