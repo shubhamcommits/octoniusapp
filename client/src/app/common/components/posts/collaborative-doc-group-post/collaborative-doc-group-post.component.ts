@@ -3,7 +3,7 @@ import { ActivatedRoute, Router, Route, ResolveEnd } from '@angular/router';
 import {Location} from '@angular/common';
 
 import QuillCursors from 'quill-cursors';
-import ImageResize from 'quill-image-resize-module';
+import { ImageResize } from 'quill-image-resize-module';
 import { ImageDrop } from 'quill-image-drop-module';
 import { ImageFormat } from '../../../../shared/utils/image-format/base-image-format';
 
