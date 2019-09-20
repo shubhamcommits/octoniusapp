@@ -29,6 +29,7 @@ export class GroupFilesComponent implements OnInit {
   posts = new Array();
   documentFiles = new Array();
   allFiles = new Array();
+  moreFilesToLoad = false
   selectedDocuments = new Array()
   pdfSourceLinks = ""
   iFrameSourceLinks
@@ -287,6 +288,7 @@ export class GroupFilesComponent implements OnInit {
       this.isLoading$.next(true);
       this.groupService.getGroupFileInFileSection(this.group_id)
       .subscribe((res)=>{
+        this.moreFilesToLoad = res['moreUsersToLoad']
         if(res['concatAllFiles'].length > 0){
           this.has_file = true
           
@@ -319,6 +321,40 @@ export class GroupFilesComponent implements OnInit {
       })
     })
   }
+
+  loadNextGroupUploadedFiles(){
+
+      this.groupService.getNextGroupFileInFileSection(this.group_id, this.allFiles[this.allFiles.length - 1]._id)
+      .subscribe((res)=>{
+        if(res['concatAllFiles'].length > 0){
+          this.moreFilesToLoad = res['moreFilesToLoad']
+          const indexedFile = res['concatAllFiles'].forEach(allFiles => {
+            
+              if(allFiles.files){
+                const allCurrentIndexFiles = allFiles.files.forEach(innerPostFiles => {
+                  if (innerPostFiles.orignal_name){
+                    const mimeTypeFile = innerPostFiles.orignal_name.substring(innerPostFiles.orignal_name.lastIndexOf('.') + 1)
+                    innerPostFiles["mimeType"] = mimeTypeFile
+
+                  }else{
+                    innerPostFiles["mimeType"] = "noMime"
+                  }
+                });
+              }
+              if(allFiles._name){
+             //checks for octo-doc published files but I will just make this default file
+              }
+          })
+          this.allFiles = [...this.allFiles, ...res['concatAllFiles']]
+        }else{
+          this.moreFilesToLoad = res['moreFilesToLoad']
+        }
+      }, (err)=>{
+        console.log('Error occured while fetching the group document files', err);
+
+      })
+  }
+
   pdfPreviewClicked(src:string){
     this.pdfSourceLinks = `${this.BASE_URL}/uploads/${src}`
     document.body.style.overflow = "hidden"

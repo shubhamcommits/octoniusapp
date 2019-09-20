@@ -82,8 +82,65 @@ const getUserGroups = async (req, res) => {
   }
 };
 
-
-
+const getUserGroupsQuery = async (req, res) => {
+  // const { userId } = req;
+   const { workspaceId } = req.params;
+   // console.log(workspace);
+   /**
+    * We need to fetch all the groups exist in the workspace, irrespective of which user is a part or not.
+    */
+   try {
+     const pulesGroupQuery = await Group.find({
+       group_name:{ $not: {$eq: 'private'}},
+       _workspace: workspaceId
+     }).sort('_id')
+     .limit(11)
+     .select('_id group_name group_avatar description pulse_description');
+ 
+     var moreUsersToLoad = false;
+     if (pulesGroupQuery.length == 11){
+      pulesGroupQuery.pop()
+       moreUsersToLoad = true;
+     }
+     return res.status(200).json({
+       // workspaceId,
+       groups: pulesGroupQuery,
+       moreToLoad: moreUsersToLoad
+     });
+   } catch (err) {
+     return sendErr(res, err);
+   }
+ };
+ const getNextUserGroupsQuery = async (req, res) => {
+  // const { userId } = req;
+   const { workspaceId , nextGroup} = req.params;
+   // console.log(workspace);
+   /**
+    * We need to fetch all the groups exist in the workspace, irrespective of which user is a part or not.
+    */
+   try {
+     const pulesGroupQuery = await Group.find({
+       group_name:{ $not: {$eq: 'private'}},
+       _workspace: workspaceId,
+       _id:{$gt:nextGroup}
+     }).sort('_id')
+     .limit(6)
+     .select('_id group_name group_avatar description pulse_description');
+ 
+     var moreUsersToLoad = false;
+     if (pulesGroupQuery.length == 6){
+      pulesGroupQuery.pop()
+       moreUsersToLoad = true;
+     }
+     return res.status(200).json({
+       // workspaceId,
+       groups: pulesGroupQuery,
+       moreToLoad: moreUsersToLoad
+     });
+   } catch (err) {
+     return sendErr(res, err);
+   }
+ };
 /**
  * Fetches all groups associated with the current user in a given
  * workspace.
@@ -1391,6 +1448,8 @@ module.exports = {
   getTasksUndoneLastWeek,
   // PULSE
   getUserGroups,
+  getUserGroupsQuery,
+  getNextUserGroupsQuery,
   getTotalNumTasks,
   getNumTodoTasks,
   getNumInProgressTasks,

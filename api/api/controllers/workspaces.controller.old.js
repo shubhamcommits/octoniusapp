@@ -264,6 +264,80 @@ const getUserGroups = async (req, res, next) => {
   }
 };
 
+const getUserGroupsQuery = async (req, res, next) => {
+  try {
+    const {userId, workspaceId} = req.params
+
+    const userGroupsQuery = await Group.find({
+      _workspace: workspaceId,
+      $or: [{
+        _members: userId
+      }, {
+        _admins: userId
+      }],
+      type: { $ne: 'smart' },
+      group_name: {$ne: 'private'}
+    }).sort('_id')
+      .limit(11)
+      .populate('_members');
+
+
+      var moreUsersToLoad = false;
+      if (userGroupsQuery.length == 11){
+        userGroupsQuery.pop()
+        moreUsersToLoad = true;
+      }
+
+    if (!userGroupsQuery) {
+      return sendErr(res, err, 'Invalid workspace id, or user id!', 404);
+    }
+
+    return res.status(200).json({
+      message: `${userGroupsQuery.length} groups found.`,
+      groups: userGroupsQuery,
+      moreToLoad: moreUsersToLoad,
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+const getNextUserGroupsQuery = async (req, res, next) => {
+  try {
+    const {userId, workspaceId,nextQuery} = req.params
+    const userNextGroupsQuery = await Group.find({
+      _workspace: workspaceId,
+      $or: [{
+        _members: userId
+      }, {
+        _admins: userId
+      }],
+      type: { $ne: 'smart' },
+      group_name: {$ne: 'private'},
+      _id: {$gt : nextQuery}
+    }).sort('_id')
+      .limit(6)
+      .populate('_members');
+
+
+      var moreUsersToLoad = false;
+      if (userNextGroupsQuery.length == 6){
+        userNextGroupsQuery.pop()
+        moreUsersToLoad = true;
+      }
+
+    if (!userNextGroupsQuery) {
+      return sendErr(res, err, 'Invalid workspace id, or user id!', 404);
+    }
+
+    return res.status(200).json({
+      message: `${userNextGroupsQuery.length} groups found.`,
+      groups: userNextGroupsQuery,
+      moreToLoad: moreUsersToLoad,
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
 /*	=============
  *	-- EXPORTS --
  *	=============
@@ -279,5 +353,7 @@ module.exports = {
   searchWorkspaceUsers,
   // groups
   createNewGroup,
-  getUserGroups
+  getUserGroups,
+  getUserGroupsQuery,
+  getNextUserGroupsQuery
 };

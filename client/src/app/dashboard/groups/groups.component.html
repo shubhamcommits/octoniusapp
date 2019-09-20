@@ -71,6 +71,7 @@
           <!-- <p class="card-text">Group description</p>  -->
         </div>
       </div>
+
     </ng-container>
 
     <ng-template #content let-c="close" let-d="dismiss">
@@ -161,6 +162,9 @@
       </div>
     </ng-template>
   </div>
+  <button *ngIf="groupsMoreToLoad" (click)="getNextUserGroups()" style="margin-left:45%; margin-top: 5%; margin-bottom:2%;">
+      Load More Groups
+    </button>
 
   <!-- <div *ngIf="smartGroups.length > 0" class="row no-margin mt-3">
     <h5 class="w-100">Smart Groups</h5>

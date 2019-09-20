@@ -52,6 +52,12 @@ router.get('/public/usersGroups/:workspaceId/:userId', groups.getUsersPublicGrou
 // Get name id of groups of user
 router.get('/all/pulse/:workspaceId', groups.getUserGroups);
 
+// Get query id of pulse groups of user
+router.get('/all/pulse/query/:workspaceId', groups.getUserGroupsQuery);
+
+// Get query id of pulse groups of user
+router.get('/all/pulse/query/next/:workspaceId/:nextGroup', groups.getNextUserGroupsQuery);
+
 // Get a user's smart groups within the given workspace
 router.get('/smart/:workspace', groups.getSmartGroups);
 
