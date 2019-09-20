@@ -33,7 +33,7 @@ export class PulseComponent implements OnInit {
   pulseInProgressTasks = {};
   pulseDoneTasks = {};
   BASE_URL = environment.BASE_URL;
-
+  morePulseToLoad: Boolean;
   constructor(private _workspaceService: WorkspaceService,
     private _router: Router,
     private _userService: UserService,
@@ -49,7 +49,7 @@ export class PulseComponent implements OnInit {
     // Stop the foreground loading after 5s
     this.user_data = JSON.parse(localStorage.getItem('user'));
     this.workspace_id = this.user_data.workspace._id;
-    console.log(this.workspace_id);
+
     await this.loadWorkspace();
     await this.getAllPulse(this.workspace_id);
     await this.getPulseTotalNumTasks();
@@ -72,12 +72,11 @@ export class PulseComponent implements OnInit {
     }
 
     getAllPulse (workspace_id) {
-      console.log('workspace_id ' + workspace_id);
       return new Promise((resolve, reject) => {
-        this.groupService.getAllPulse(workspace_id)
+        this.groupService.getAllPulseQuery(workspace_id)
           .subscribe((res) => {
             this.allGroups = res['groups'];
-            console.log('response in getAllPulse:', res);
+            this.morePulseToLoad = res['moreToLoad'];
             resolve();
           }, (err) => {
             reject();
@@ -144,5 +143,19 @@ export class PulseComponent implements OnInit {
         }
       });
     }
+    getNextUserGroups() {
 
+      this.groupService.getNextPulseQuery(this.workspace_id,this.allGroups[this.allGroups.length - 1]._id).subscribe((res) => {
+        this.allGroups = [...this.allGroups, ...res['groups']]
+        this.morePulseToLoad = res['moreToLoad']
+        this.getPulseTotalNumTasks();
+        this.getPulseNumTodoTasks();
+        this.getPulseNumInProgressTasks();
+        this.getPulseNumDoneTasks();
+    
+      },(err) =>{
+            // console.log(err);
+            throw err;
+      })
+    }
 }

@@ -257,6 +257,15 @@
   </div>
 </div>
 
+<div class="card-tile" *ngIf = "moreFilesToLoad">
+
+    <div class="row">
+      <button  type="button" class="btn btn-outline-warning" (click)="loadNextGroupUploadedFiles()"  style="margin-left:45%;">
+         Load More Files
+      </button>
+
+  
+  </div>
 <div class= "outer-overlay" *ngIf = "pdfSourceLinks || iFrameSourceLinks">
     <div class = "overlay-navbar" *ngIf = "pdfSourceLinks" >
         <div class="row" style="margin-left: 0.5rem;" >

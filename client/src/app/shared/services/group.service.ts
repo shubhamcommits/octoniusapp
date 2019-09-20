@@ -80,6 +80,16 @@ export class GroupService {
   getAllPulse(workspaceId) {
     return this._http.get(this.BASE_API_URL + '/groups/all/pulse/' + workspaceId);
   }
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
+  })
+  getAllPulseQuery(workspaceId) {
+    return this._http.get(this.BASE_API_URL + '/groups/all/pulse/query/' + workspaceId);
+  }
+  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
+  })
+  getNextPulseQuery(workspaceId,nextQuery) {
+    return this._http.get(this.BASE_API_URL + '/groups/all/pulse/query/next/' + workspaceId + '/' + nextQuery);
+  }
 
   // @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
   // })
@@ -276,43 +286,49 @@ export class GroupService {
     return this._http.get<any>(`${this.BASE_API_URL}/groups/${workspaceId}/smart/rules`);
   }
   //Group files start
-  // @CacheBuster({
-  //   cacheBusterNotifier: cacheBuster$
-  // })
-  getGroupSharedFileCheck(group_id) {
-    return this._http.get<any>(this.BASE_API_URL + `/groups/${group_id}/sharedFileCheck`);
-  }
-  // @CacheBuster({
-  //   cacheBusterNotifier: cacheBuster$
-  // })
-  updateSharedFile(group_id, checkbool) {
-    return this._http.put<any>(this.BASE_API_URL + `/groups/${group_id}/updateSharedFile`, { checkbool: checkbool });
-  }
-  // @CacheBuster({
-  //   cacheBusterNotifier: cacheBuster$
-  // })
-  getAllSharedGroupFiles(group_id, workspace_id, user_id) {
-    return this._http.get<any>(this.BASE_API_URL + `/groups/${group_id}/allGroupSharedFile/${workspace_id}/${user_id}`);
-  }
-  // @CacheBuster({
-  //   cacheBusterNotifier: cacheBuster$
-  // })
-  addGroupFileInFileSection(group_id, user_id, add_files) {
-    return this._http.post<any>(this.BASE_API_URL + `/groupFileUploads/${group_id}/FilesUpload/${user_id}`, add_files);
-  }
-  // @CacheBuster({
-  //   cacheBusterNotifier: cacheBuster$
-  // })
-  getGroupFileInFileSection(group_id) {
-    return this._http.get<any>(this.BASE_API_URL + `/groupFileUploads/${group_id}/allGroupFiles`);
-  }
-  // @CacheBuster({
-  //     cacheBusterNotifier: cacheBuster$
-  //   })
-  deleteGroupFile(group_id, file_post_type, fileToDeleteGroupFile, fileValues) {
-    return this._http.post(this.BASE_API_URL + `/groupFileUploads/${group_id}/DeleteFiles/${file_post_type}`, { allFileInfo: fileValues, fileToDeleteGroup: fileToDeleteGroupFile });
-  }
-
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
+    getGroupSharedFileCheck(group_id){
+      return this._http.get<any>(this.BASE_API_URL + `/groups/${group_id}/sharedFileCheck`);
+    }
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
+    updateSharedFile(group_id, checkbool){
+      return this._http.put<any>(this.BASE_API_URL + `/groups/${group_id}/updateSharedFile`, {checkbool:checkbool});
+    }
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
+    getAllSharedGroupFiles(group_id,workspace_id,user_id){
+      return this._http.get<any>(this.BASE_API_URL + `/groups/${group_id}/allGroupSharedFile/${workspace_id}/${user_id}`);
+    }   
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
+    addGroupFileInFileSection(group_id,user_id,add_files){
+      return this._http.post<any>(this.BASE_API_URL + `/groupFileUploads/${group_id}/FilesUpload/${user_id}`, add_files);
+    }   
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
+    getGroupFileInFileSection(group_id){
+      return this._http.get<any>(this.BASE_API_URL + `/groupFileUploads/${group_id}/allGroupFiles`);
+    }
+  @CacheBuster({
+    cacheBusterNotifier: cacheBuster$
+  })
+    getNextGroupFileInFileSection(group_id,nextFiles){
+      return this._http.get<any>(this.BASE_API_URL + `/groupFileUploads/${group_id}/next/allGroupFiles/${nextFiles}`);
+    }   
+  @CacheBuster({
+      cacheBusterNotifier: cacheBuster$
+    })
+    deleteGroupFile(group_id, file_post_type, fileToDeleteGroupFile ,fileValues) {
+      return this._http.post(this.BASE_API_URL + `/groupFileUploads/${group_id}/DeleteFiles/${file_post_type}`, {allFileInfo:fileValues, fileToDeleteGroup: fileToDeleteGroupFile});
+    }
+  
   //Group files end
 }
 

@@ -20,6 +20,8 @@ router.post('/:groupId/FilesUpload/:userId',postFileHandler,groupSectionFiles.ad
 
 router.get('/:groupId/allGroupFiles', authorization.groupAccess, groupSectionFiles.getAllFilesFromGroup);
 
+router.get('/:groupId/next/allGroupFiles/:nextFiles', authorization.groupAccess, groupSectionFiles.getNextFilesFromGroup);
+
 router.post('/:groupId/DeleteFiles/:filePostType', authorization.groupAccess, groupSectionFiles.deleteGroupFiles)
 
 module.exports = router

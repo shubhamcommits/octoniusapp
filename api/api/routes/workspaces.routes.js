@@ -25,6 +25,9 @@ router.put('/updateUserRole', cleanCache, workspacesController.updateUserRole);
 router.put('/:workspace_id', workspaceFileHandler, workspacesController.updateWorkspace);
 router.post('/groups', workspacesController.createNewGroup);
 router.get('/groups/:user_id/:workspace_id', workspacesController.getUserGroups);
+router.get('/groups/query/:userId/:workspaceId', workspacesController.getUserGroupsQuery);
+router.get('/groups/query/next/:userId/:workspaceId/:nextQuery', workspacesController.getNextUserGroupsQuery);
+
 // ^^^^| BAD REST PATTERN, to be replaced! |^^^^
 
 // -| Workspaces routes |-
