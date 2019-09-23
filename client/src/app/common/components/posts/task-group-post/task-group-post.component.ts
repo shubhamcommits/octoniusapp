@@ -229,7 +229,8 @@ return doc.body.innerHTML;
   OnSaveEditPost() {
 
     // we create a new date object based on whether we added time
-    const date_due_to = new Date(this.model_date.year, this.model_date.month - 1, this.model_date.day);
+    //const date_due_to = new Date(this.model_date.year, this.model_date.month - 1, this.model_date.day);
+    const date_due_to = new Date(this.model_date.year, this.model_date.month, this.model_date.day); 
     var post;
     //over here its Unassigned and the way the array is sent back we need an object id
     if(this.assignment == "Unassigned" && this.selectedGroupUsers.length == 0){
