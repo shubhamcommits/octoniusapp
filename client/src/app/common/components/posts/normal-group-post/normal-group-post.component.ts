@@ -6,7 +6,8 @@ import {Subject} from "rxjs";
 import {takeUntil} from "rxjs/operators";
 import {PostService} from "../../../../shared/services/post.service";
 import {FormGroup} from "@angular/forms";
-import * as moment from "moment";
+//import * as moment from "moment";
+import moment from 'moment';
 import {CommentSectionComponent} from "../../comments/comment-section/comment-section.component";
 import {SnotifyService} from "ng-snotify";
 import { SearchService } from '../../../../shared/services/search.service';
@@ -245,30 +246,27 @@ export class NormalGroupPostComponent implements OnInit, AfterViewInit, OnDestro
         saveAs(file_toDownload, fileName);
       }, (err) => {});
   }
-
+ 
   editPost() {
-
+    console.log('post;', this.post)
     // set the initial value of the editor
     this.edit_content = this.post.content;
-    this.edit_title = this.post.title;
-
+    this.edit_title = this.post.title; 
     // show the edit section
     this.displayEditPostSection = true;
   }
-
-
+ 
   onSaveEditPost() {
     // this is a normal post, so we don't need to assign user & date buttons on the editor
 
     // set the initial value of the editor
     this.edit_content = this.post.content;
-
+    console.log('post;', this.post)
     // show the edit section
     this.displayEditPostSection = true;
   }
 
-  OnSaveEditPost() {
-
+  OnSaveEditPost() { 
     // NOT NEEDED FOR NORMAL POSTS
     // // we create a new date object based on whether we added time
     // const date_due_to =
@@ -281,15 +279,13 @@ export class NormalGroupPostComponent implements OnInit, AfterViewInit, OnDestro
       'content': this.edit_content,
       '_content_mentions': this.content_mentions,
       'type': this.post.type,
-      'tags': this.tags
+      'tags': this.tags,
       // 'assigned_to': this.selectedGroupUsers
     };
-
-    console.log(post);
-
+ 
     // // for tasks we don't want to transform the time to UTC, for events we do want it
-    // post['date_due_to'] = this.post.type === 'event' ? moment.utc(date_due_to).format() : moment(date_due_to).format();
-
+    //post['date_due_to'] = this.post.type === 'event' ? moment.utc(this.post.date_due_to).format() : moment(this.post.date_due_to).format();
+ 
     // // if we edit a task we want to inform about its status
     // if ( this.post.type === 'task') {
     //   post['status'] =  this.post.task.status;
@@ -370,7 +366,7 @@ export class NormalGroupPostComponent implements OnInit, AfterViewInit, OnDestro
 
       });
   }
-
+ 
   togglePostCommentEditor() {
     this.commentSectionComponent.displayCommentEditor = !this.commentSectionComponent.displayCommentEditor;
   }

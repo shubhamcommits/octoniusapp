@@ -44,7 +44,7 @@ const PostSchema = new Schema({
   },
   task: {
     due_to: {
-      type: String,
+      type: Date,
       default: null
     },
     _assigned_to: {

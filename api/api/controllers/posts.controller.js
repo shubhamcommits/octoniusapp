@@ -82,19 +82,19 @@ const edit = async (req, res, next) => {
             task: {
               due_to: moment(req.body.date_due_to).format('YYYY-MM-DD'),
               _assigned_to: req.body.assigned_to,
-              status: req.body.status , 
+              status: req.body.status, 
               unassigned : req.body.unassigned
             }
           }
         }
-        if(req.body.unassigned == 'No'){
+        if(req.body.unassigned == 'No'){   
           postData = {
             title: req.body.title,
             content: req.body.content,
             _content_mentions: req.body._content_mentions,
             tags: req.body.tags,
             task: {
-              due_to: moment(req.body.date_due_to).format('YYYY-MM-DD'),
+             due_to: moment(req.body.date_due_to).format('YYYY-MM-DD'),
               _assigned_to: req.body.assigned_to[0]._id,
               status: req.body.status , 
               unassigned : req.body.unassigned
