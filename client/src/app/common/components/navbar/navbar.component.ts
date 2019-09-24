@@ -12,7 +12,7 @@ import { async } from '@angular/core/testing'
 import {WorkspaceService} from "../../../shared/services/workspace.service";
 import {SearchService} from "../../../shared/services/search.service";
 
-import { Cacheable, CacheBuster } from 'ngx-cacheable';
+// import { Cacheable, CacheBuster } from 'ngx-cacheable';
 
 const cacheBuster$ = new Subject<void>();
 

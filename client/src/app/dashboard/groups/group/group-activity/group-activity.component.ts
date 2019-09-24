@@ -34,7 +34,6 @@ import * as Quill from 'quill';
 import 'quill-emoji/dist/quill-emoji';
 import { GoogleCloudService } from '../../../../shared/services/google-cloud.service';
 import {GroupActivityFiltersComponent} from "./group-activity-filters/group-activity-filters.component";
-import { NgxSpinnerService } from 'ngx-spinner';
 import { DocumentFileService } from '../../../../shared/services/document-file.service';
 
 Quill.register(MentionBlot);
@@ -104,7 +103,7 @@ export class GroupActivityComponent implements OnInit {
               private modalService: NgbModal, private postService: PostService, private _sanitizer: DomSanitizer,
               private ngxService: NgxUiLoaderService, private snotifyService: SnotifyService, config: NgbDropdownConfig,
               private scrollService: ScrollToService, private quillInitializeService: QuillAutoLinkService,
-              private googleService: GoogleCloudService, private spinner: NgxSpinnerService,
+              private googleService: GoogleCloudService,
               private documentFileService: DocumentFileService,) {
 
     config.placement = 'left';

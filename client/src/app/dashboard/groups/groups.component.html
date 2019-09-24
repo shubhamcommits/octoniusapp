@@ -63,6 +63,7 @@
       <div *ngIf="group.group_name !== 'private'" class="card col-md-3 groups" [routerLink]="['/dashboard/group/',group._id,'activity']">
         <span class="badge badge-members" >{{group._members?.length + group._admins?.length}} Members</span>
         <img class="card-img-top" src = "{{this.BASE_URL}}/uploads/{{group.group_avatar}}" onerror="this.src='/assets/images/group.png'" >
+        <a *ngIf= "group?.type == 'agora'" class="btn btn-success btn-public">Agora</a>
         <div class="card-body ">
           <a>
             <h2 class="card-title">{{group?.group_name}}</h2>
@@ -161,20 +162,20 @@
     </ng-template>
   </div>
 
-  <div *ngIf="smartGroups.length > 0" class="row no-margin mt-3">
+  <!-- <div *ngIf="smartGroups.length > 0" class="row no-margin mt-3">
     <h5 class="w-100">Smart Groups</h5>
-  </div>
+  </div> -->
 
   <div class="row no-margin">
     <ng-container *ngFor="let group of smartGroups">
       <div *ngIf="group.group_name !== 'private'" class="card col-md-3 groups" [routerLink]="['/dashboard/group/',group._id,'activity']" class="card col-md-3 groups" style="cursor: default !important">
         <span class="badge badge-members" >{{group._members?.length + group._admins?.length}} Members</span>
         <img class="card-img-top" src = "{{this.BASE_URL}}/uploads/{{group.group_avatar}}" onerror="this.src='/assets/images/group.png'" >
+        <a *ngIf= "group?.type == 'smart'" class="btn btn-info btn-smart">Smart</a>
         <div class="card-body ">
           <a>
             <h2 class="card-title">{{group?.group_name}}</h2>
           </a>
-          <!-- <p class="card-text">Group description</p>  -->
         </div>
       </div>
     </ng-container>
@@ -188,7 +189,7 @@
     <ng-container *ngFor="let agora of agoras">
       <div class="card col-md-3 groups" style="cursor: default !important">
         <span class="badge badge-members" >{{agora._members?.length + agora._admins?.length}} Members</span>
-        <img class="card-img-top" src = "{{this.BASE_URL}}/uploads/{{agora.group_avatar}}" onerror="this.src='/assets/images/group.png'" >
+        <img class="card-img-top" src = "{{agora.group_avatar}}" onerror="this.src='/assets/images/group.png'" >
         <a class="btn btn-warning btn-join" (click)="joinPublicGroup(agora._id)">Join</a>
         <div class="card-body ">
           <a>

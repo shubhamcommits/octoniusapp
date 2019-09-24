@@ -4,8 +4,10 @@ import { environment } from '../../../environments/environment';
 import * as chance from 'chance';
 import { SnotifyService, SnotifyPosition, SnotifyToastConfig, Snotify } from 'ng-snotify';
 import { Observable, Observer, Subject } from 'rxjs';
-import { Cacheable, CacheBuster } from 'ngx-cacheable';
-import { DOMStorageStrategy } from 'ngx-cacheable/common/DOMStorageStrategy';
+
+// Disabling client side caching
+// import { Cacheable, CacheBuster } from 'ngx-cacheable';
+// import { DOMStorageStrategy } from 'ngx-cacheable/common/DOMStorageStrategy';
 
 const cacheBuster$ = new Subject<void>();
 
@@ -29,28 +31,28 @@ export class DocumentService {
     this.authorsListSubject.next(data);
 }
 
-  @CacheBuster({
-    cacheBusterNotifier: cacheBuster$
-  })
+  // @CacheBuster({
+  //   cacheBusterNotifier: cacheBuster$
+  // })
   addAuthor(authorData: any){
     return this._http.post(environment.BASE_API_URL + `/posts/documents/${authorData._post_id}/addAuthor`, authorData);
   }
 
-  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
-  })
+  // @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
+  // })
   getAuthors(documentId: any){
     return this._http.get(environment.BASE_API_URL + `/posts/documents/${documentId}/authors`);
   }
 
-  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
-  })
+  // @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
+  // })
   getTableCells(documentId: any){
     return this._http.get(environment.BASE_API_URL + `/posts/table/cells/${documentId}`);
   }
 
-  @CacheBuster({
-    cacheBusterNotifier: cacheBuster$
-  })
+  // @CacheBuster({
+  //   cacheBusterNotifier: cacheBuster$
+  // })
   addTableCells(documentData: any){
     return this._http.post(environment.BASE_API_URL + `/posts/table/cells/${documentData._post_id}/addCell`, documentData);
   }
