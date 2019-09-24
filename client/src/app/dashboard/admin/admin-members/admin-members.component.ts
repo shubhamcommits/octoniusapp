@@ -40,24 +40,12 @@ export class AdminMembersComponent implements OnInit {
   constructor(private _workspaceService: WorkspaceService, private _router: Router, private alertConfig: NgbAlertConfig,
     private adminService: AdminService, private modalService: NgbModal, private postService: PostService, private ngxService: NgxUiLoaderService) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.ngxService.start(); // start foreground loading with 'default' id
 
     this.user_data = JSON.parse(localStorage.getItem('user'));
-    this.loadWorkspace()
-    .then(()=>{
-      this.ngxService.stop();
-    })
-    .catch((err)=>{
-      console.log('Error while fetching the loading the workpace', err);
-    })
-    this.loadWorkspaceMembers()
-    .then(()=>{
-  
-    })
-    .catch((err)=>{
-      console.log('Error while fetching the loading the workpace', err);
-    })
+    await this.loadWorkspaceMembers()
+    .then(()=> this.ngxService.stop())
     
     this.alertMessageSettings();
   }
@@ -75,6 +63,7 @@ export class AdminMembersComponent implements OnInit {
 
   loadWorkspace() {
     this.isLoading$.next(true);
+    this.ngxService.startBackground();
     return new Promise((resolve, reject)=>{
       this._workspaceService.getWorkspace(this.user_data.workspace)
       .subscribe((res) => {
@@ -83,6 +72,7 @@ export class AdminMembersComponent implements OnInit {
         this.profileImage = res.workspace['profile_pic'];
         this.profileImage = `http://localhost:3000/uploads/${this.profileImage}`;
         this.isLoading$.next(false);
+        this.ngxService.stopBackground();
       //  console.log('loadworkspace res: ', res);
         resolve();
       }, (err) => {
@@ -92,14 +82,15 @@ export class AdminMembersComponent implements OnInit {
   }
 
   loadWorkspaceMembers() {
-    this.isLoading$.next(true);
-
+    // this.isLoading$.next(true);
+    this.ngxService.startBackground();
     return new Promise((resolve, reject)=>{
       this._workspaceService.getWorkspaceMembers(this.user_data.workspace._id)
       .subscribe((res) => {
         this.memberList = res['results']
         this.moreMembersToLoad = res['moreToLoad']
-        this.isLoading$.next(false);
+        // this.isLoading$.next(false);
+        this.ngxService.stopBackground();
       //  console.log('loadworkspace res: ', res);
         resolve();
       }, (err) => {
@@ -111,11 +102,12 @@ export class AdminMembersComponent implements OnInit {
   }
 
   loadMoreMembers(){
-    this.isLoading$.next(true);
-    //this.spinner.show();
-    this.ngxService.startBackground();
-
-    this._workspaceService.getNextWorkspaceMembers(this.user_data.workspace._id, this.memberList[this.memberList.length - 1]._id)
+    if(this.moreMembersToLoad)
+    {
+      this.isLoading$.next(true);
+      //this.spinner.show();
+      this.ngxService.startBackground();
+      this._workspaceService.getNextWorkspaceMembers(this.user_data.workspace._id, this.memberList[this.memberList.length - 1]._id)
       .subscribe((res) => {
 
         // console.log(res,this.memberList)
@@ -127,20 +119,21 @@ export class AdminMembersComponent implements OnInit {
       }, (err) => {
         //this.snotifyService.error('Error while retrieving the next recent posts', 'Error!');
       });
+    }
 
   }
 
 
-  updateUserRole(role, user_id, first_name, last_name) {
+  updateUserRole(role, member) {
    // console.log('Role: ', role, 'user_id', user_id);
     const data = {
-      user_id: user_id,
+      user_id: member._id,
       role: role
     };
 
     Swal.fire({
       title: "Are you sure?",
-      text: "You want to make "+first_name+" "+last_name+" as - "+role,
+      text: "You want to make "+member.first_name+" "+member.last_name+" as - "+role,
       type: "info",
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -152,21 +145,16 @@ export class AdminMembersComponent implements OnInit {
       if (willupdate) {
         this.adminService.updateUserRole(data)
         .subscribe((res) => {
-        //  console.log('update respose: ', res);
-
-          // setTimeout(() => {
-          //   this.modalReference.close();
-          // }, 3000);
-
-
-          this.loadWorkspace();
-
+          member.role = role;
+          Swal.fire("Done!", member.first_name+"'s role has been updated to - "+role+"!", "success");
         }, (err) => {
         //  console.log('update respose err: ', err);
-
+          Swal.fire({
+            type: 'error',
+            title: 'Oops!',
+            text: 'Looks like there\'s some network error, please try again later!',
+          })
         });
-
-        Swal.fire("Done!", first_name+"'s role has been updated to - "+role+"!", "success");
       }
       });
   }

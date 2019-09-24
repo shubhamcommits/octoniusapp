@@ -331,12 +331,13 @@ const getWorkspaceMembers = async (req, res, next) => {
         moreUsersToLoad = true;
       }
         return res.status(200).json({ 
+          message: `${ userMembersQuery.length } workspace members found !`,
           results: userMembersQuery,
-           moreToLoad: moreUsersToLoad });
+          moreToLoad: moreUsersToLoad });
        
       
     } catch (err) {
-      console.log('err', err);
+      // console.log('err', err);
       sendErr(res, err);
     }
   };
@@ -365,12 +366,13 @@ const getWorkspaceMembers = async (req, res, next) => {
           moreUsersToLoad = true;
         }
         return res.status(200).json({ 
+          message: `Next ${ userMembersQuery.length } workspace members found !`,
           results: userMembersQuery,
           moreToLoad: moreUsersToLoad });
          
         
       } catch (err) {
-        console.log('err', err);
+        // console.log('err', err);
         sendErr(res, err);
       }
     };
