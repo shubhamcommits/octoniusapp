@@ -51,7 +51,6 @@
     "jspdf": "^1.5.3",
     "linkifyjs": "^2.1.8",
     "moment": "^2.24.0",
-    "ng-animate": "^0.3.4",
     "ng-circle-progress": "^1.4.1",
     "ng-click-outside": "^4.0.0",
     "ng-pick-datetime": "^7.0.0",
