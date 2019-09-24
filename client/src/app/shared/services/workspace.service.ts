@@ -3,8 +3,10 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Observable, Subject } from 'rxjs';
-import { Cacheable, CacheBuster } from 'ngx-cacheable';
-import { DOMStorageStrategy } from 'ngx-cacheable/common/DOMStorageStrategy';
+
+// Disabling client side caching
+// import { Cacheable, CacheBuster } from 'ngx-cacheable';
+// import { DOMStorageStrategy } from 'ngx-cacheable/common/DOMStorageStrategy';
 
 const cacheBuster$ = new Subject<void>();
 
@@ -15,58 +17,58 @@ export class WorkspaceService {
 
   constructor(private _http: HttpClient) { }
 
-  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
-  })
+  // @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
+  // })
   getWorkspace(workspace) {
     return this._http.get<any>(this.BASE_API_URL + '/workspace/' + workspace._id);
   }
 
-  @CacheBuster({
-    cacheBusterNotifier: cacheBuster$
-  })
+  // @CacheBuster({
+  //   cacheBusterNotifier: cacheBuster$
+  // })
   updateWorkspace(workspce_id, data) {
     return this._http.put(this.BASE_API_URL + `/workspace/${workspce_id}`, data);
   }
 
   ///// Workspace billing
 
-  @CacheBuster({
-    cacheBusterNotifier: cacheBuster$
-  })
+  // @CacheBuster({
+  //   cacheBusterNotifier: cacheBuster$
+  // })
   createSubscription(token, amount) {
     const data = {token, amount};
     return this._http.post(this.BASE_API_URL + `/billing/createSubscription`, data);
   }
 
-  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
-  })
+  // @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
+  // })
   getBillingStatus(workspaceId) {
     return this._http.get(this.BASE_API_URL + `/billing/getBillingStatus/${workspaceId}`);
   }
 
-  @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
-  })
+  // @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
+  // })
   getSubscription() {
     return this._http.get(this.BASE_API_URL + `/billing/getSubscription`);
   }
 
-  @CacheBuster({
-    cacheBusterNotifier: cacheBuster$
-  })
+  // @CacheBuster({
+  //   cacheBusterNotifier: cacheBuster$
+  // })
   cancelSubscription() {
     return this._http.get(this.BASE_API_URL + `/billing/cancelSubscription`);
   }
 
-  @CacheBuster({
-    cacheBusterNotifier: cacheBuster$
-  })
+  // @CacheBuster({
+  //   cacheBusterNotifier: cacheBuster$
+  // })
   renewSubscription() {
     return this._http.get(this.BASE_API_URL + `/billing/renewSubscription`);
   }
 
-  @CacheBuster({
-    cacheBusterNotifier: cacheBuster$
-  })
+  // @CacheBuster({
+  //   cacheBusterNotifier: cacheBuster$
+  // })
   resumeSubscription() {
     return this._http.get(this.BASE_API_URL + `/billing/resumeSubscription`);
   }
