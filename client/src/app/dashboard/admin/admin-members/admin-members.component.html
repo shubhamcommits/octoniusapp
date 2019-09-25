@@ -6,7 +6,7 @@
     <h4>All members from your workplace</h4>
     <div>
       <div class="search">
-         <input type="text" class="searchTerm" placeholder="Whom you are looking for?">
+         <input (keyup)= "userSearchQuery($event)" type="text" class="searchTerm" placeholder="Whom you are looking for?">
          <button type="submit" class="searchButton">
            <i class="fa fa-search"></i>
         </button>

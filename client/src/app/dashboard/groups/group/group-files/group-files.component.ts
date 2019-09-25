@@ -23,7 +23,7 @@ declare var $;
 })
 export class GroupFilesComponent implements OnInit {
 
-  user_id;
+  userInfo;
   group_id;
   groupImageUrl = '';
   posts = new Array();
@@ -33,7 +33,7 @@ export class GroupFilesComponent implements OnInit {
   selectedDocuments = new Array()
   pdfSourceLinks = ""
   iFrameSourceLinks
-
+  fileQueryInput = ""
   imglink = ""
 
   has_file = false;
@@ -55,7 +55,7 @@ export class GroupFilesComponent implements OnInit {
 
   ngOnInit() {
     this.ngxService.start(); // start foreground loading with 'default' id
-    this.user_id = JSON.parse(localStorage.getItem('user'))['user_id']
+    this.userInfo = JSON.parse(localStorage.getItem('user'))
     this.group_id = this.groupDataService.groupId;
     // this.loadDocumentFiles();
     this.loadGroupUploadedFiles()
@@ -210,7 +210,7 @@ export class GroupFilesComponent implements OnInit {
           formData.append('attachments', files[i], files[i]['name']);
         }
       }
-    this.groupService.addGroupFileInFileSection(this.group_id,this.user_id,formData)
+    this.groupService.addGroupFileInFileSection(this.group_id,this.userInfo['user_id'],formData)
     .subscribe((res) => {
       const allCurrentIndexFiles = res['filesFromFileSectionNewUpload'].files.forEach(innerPostFiles => {
         if (innerPostFiles.orignal_name){
@@ -251,7 +251,7 @@ export class GroupFilesComponent implements OnInit {
           formData.append('attachments', files[i], files[i]['name']);
         }
       }
-    this.groupService.addGroupFileInFileSection(this.group_id,this.user_id,formData)
+    this.groupService.addGroupFileInFileSection(this.group_id,this.userInfo['user_id'],formData)
     .subscribe((res) => {
 
       const allCurrentIndexFiles = res['filesFromFileSectionNewUpload'].files.forEach(innerPostFiles => {
@@ -391,4 +391,75 @@ export class GroupFilesComponent implements OnInit {
        break;
    }
   }
+
+  fileSearchQuery(event){
+      this.fileQueryInput = event.target.value
+      this.groupService.getQueryGroupFileInFileSection(this.group_id,this.userInfo.workspace._id, this.fileQueryInput )
+      .subscribe((res) => {
+        console.log(res)
+
+        this.moreFilesToLoad = res['moreFilesToLoad']
+        if(res['concatAllFiles'].length > 0){
+          this.has_file = true
+          
+          const indexedFile = res['concatAllFiles'].forEach(allFiles => {
+            
+              if(allFiles.files){
+                const allCurrentIndexFiles = allFiles.files.forEach(innerPostFiles => {
+                  if (innerPostFiles.orignal_name){
+                    const mimeTypeFile = innerPostFiles.orignal_name.substring(innerPostFiles.orignal_name.lastIndexOf('.') + 1)
+                    innerPostFiles["mimeType"] = mimeTypeFile
+
+                  }else{
+                    innerPostFiles["mimeType"] = "noMime"
+                  }
+                });
+              }
+              if(allFiles._name){
+             //checks for octo-doc published files but I will just make this default file
+              }
+          })
+          this.allFiles = res['concatAllFiles']
+        }else{
+          this.has_file = false
+        }
+      }, (err) => {
+
+      });
+  }
+  nextFileSearchQuery(){
+
+    this.groupService.getNextQueryGroupFileInFileSection(this.group_id,this.userInfo.workspace._id, 
+      {'lastMemberQueryID': this.allFiles[this.allFiles.length - 1]._id,'queryInput':this.fileQueryInput} )
+    .subscribe((res) => {
+      this.moreFilesToLoad = res['moreFilesToLoad']
+      if(res['concatAllFiles'].length > 0){
+        this.has_file = true
+        
+        const indexedFile = res['concatAllFiles'].forEach(allFiles => {
+          
+            if(allFiles.files){
+              const allCurrentIndexFiles = allFiles.files.forEach(innerPostFiles => {
+                if (innerPostFiles.orignal_name){
+                  const mimeTypeFile = innerPostFiles.orignal_name.substring(innerPostFiles.orignal_name.lastIndexOf('.') + 1)
+                  innerPostFiles["mimeType"] = mimeTypeFile
+
+                }else{
+                  innerPostFiles["mimeType"] = "noMime"
+                }
+              });
+            }
+            if(allFiles._name){
+           //checks for octo-doc published files but I will just make this default file
+            }
+        })
+        this.allFiles = [...this.allFiles, ...res['concatAllFiles']]
+      }else{
+        this.has_file = false
+      }
+    }, (err) => {
+
+    });
+}
+
 }

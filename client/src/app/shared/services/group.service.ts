@@ -328,6 +328,14 @@ export class GroupService {
     deleteGroupFile(group_id, file_post_type, fileToDeleteGroupFile ,fileValues) {
       return this._http.post(this.BASE_API_URL + `/groupFileUploads/${group_id}/DeleteFiles/${file_post_type}`, {allFileInfo:fileValues, fileToDeleteGroup: fileToDeleteGroupFile});
     }
+
+    getQueryGroupFileInFileSection(group_id,workspace, query){
+      return this._http.post<any>(this.BASE_API_URL + `/groupFileUploads/query/${workspace}/${group_id}/allGroupFiles`,{query});
+    }
+
+    getNextQueryGroupFileInFileSection(group_id,workspace,query){
+      return this._http.post<any>(this.BASE_API_URL + `/groupFileUploads/query/${workspace}/next/${group_id}/allGroupFiles`,{query});
+    }  
   
   //Group files end
 }

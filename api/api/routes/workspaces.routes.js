@@ -63,4 +63,10 @@ router.get('/members/:workspaceId/', workspaces.getWorkspaceMembers);
 // Get more workspace members
 router.get('/next/members/:workspaceId/:amountLoaded', workspaces.getNextWorkspaceMembers);
 
+// Get query workspace members
+router.post('/query/members/:workspaceId/', workspaces.getQueryWorkspaceMembers);
+
+// Get next query workspace members
+router.post('/next/query/members/:workspaceId/', workspaces.getNextQueryWorkspaceMembers);
+
 module.exports = router;
