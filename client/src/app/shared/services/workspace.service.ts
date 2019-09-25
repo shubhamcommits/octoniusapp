@@ -44,6 +44,13 @@ export class WorkspaceService {
     return this._http.get(this.BASE_API_URL + `/workspace/next/members/${workspce_id}/${last_id_loaded}`);
   }
 
+  getQueryWorkspaceMembers(workspce_id,query) {
+    return this._http.post(this.BASE_API_URL + `/workspace/query/members/${workspce_id}`,{query});
+  }
+  getNextQueryWorkspaceMembers(workspce_id,query) {
+    return this._http.post(this.BASE_API_URL + `/workspace/next/query/members/${workspce_id}`,{query});
+  }
+
 
   ///// Workspace billing
 

@@ -23,6 +23,7 @@ export class AdminMembersComponent implements OnInit {
   BASE_URL = environment.BASE_URL;
   memberList;
   moreMembersToLoad:Boolean;
+  userMemberQueryInput:String;
 
   modalReference: any;
   @ViewChild('content', { static: false }) private content;
@@ -94,7 +95,7 @@ export class AdminMembersComponent implements OnInit {
       //  console.log('loadworkspace res: ', res);
         resolve();
       }, (err) => {
-        console.log("called2")
+       
         reject(err);
       });
     })
@@ -122,7 +123,47 @@ export class AdminMembersComponent implements OnInit {
     }
 
   }
+  userSearchQuery(event){
+    this.ngxService.startBackground();
+    return new Promise((resolve, reject)=>{
+      this.userMemberQueryInput = event.target.value
+      this._workspaceService.getQueryWorkspaceMembers(this.user_data.workspace._id, this.userMemberQueryInput )
+      .subscribe((res) => {
+        this.memberList = res['results']
+        this.moreMembersToLoad = res['moreToLoad']
+        // this.isLoading$.next(false);
+        this.ngxService.stopBackground();
+      //  console.log('loadworkspace res: ', res);
+        resolve();
+      }, (err) => {
+        
+        reject(err);
+      });
+    })
+  }
 
+  loadMoreQueryMembers(){
+    if(this.moreMembersToLoad)
+    {
+      this.isLoading$.next(true);
+      //this.spinner.show();
+      this.ngxService.startBackground();
+      this._workspaceService.getNextQueryWorkspaceMembers(this.user_data.workspace._id, 
+        {'lastMemberQueryID': this.memberList[this.memberList.length - 1]._id,'queryInput':this.userMemberQueryInput})
+      .subscribe((res) => {
+        console.log(res)
+        // console.log(res,this.memberList)
+        this.memberList = [...this.memberList, ...res['results']]
+        this.moreMembersToLoad = res['moreToLoad']
+        this.isLoading$.next(false);
+        this.ngxService.stopBackground();
+        //this.spinner.hide();
+      }, (err) => {
+        //this.snotifyService.error('Error while retrieving the next recent posts', 'Error!');
+      });
+    }
+
+  }
 
   updateUserRole(role, member) {
    // console.log('Role: ', role, 'user_id', user_id);

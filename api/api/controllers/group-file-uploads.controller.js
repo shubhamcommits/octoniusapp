@@ -139,6 +139,154 @@ const getNextFilesFromGroup = async (req, res, next) => {
     }
 }
 
+const getAllQueryFilesFromGroup = async (req, res, next) => {
+    try{
+         const { groupId,
+            workspaceId
+        } = req.params;
+        const{ query 
+        } = req.body
+
+        const filesFromFileSectionUpload = await GroupFilesUpload.find({
+            $and: [
+            { _group: groupId } ,
+            { files: { $exists: true, $ne: [] } },
+            {files: {$elemMatch:{ orignal_name: {$regex: query, $options: 'i' }}}}    
+            ]
+        }).sort('_id: -1')
+        .populate('_posted_by', 'first_name last_name profile_pic')
+        .select('_posted_by _id files created_date');
+//workspace check so that we have information for Post/DocumentFile queries
+        const filesFromPost = await Post.find({
+            $and: [
+            { _group: groupId } ,
+            { files: { $exists: true, $ne: [] } },
+            {files: {$elemMatch:{ orignal_name: {$regex: query, $options: 'i' }}}}    
+        ],
+        }).sort('_id: -1')
+        .populate('_posted_by', 'first_name last_name profile_pic')
+        .select('_posted_by _id files created_date');
+
+        const filesFromAgora = await DocumentFile.find({
+            _group_id: groupId,
+            _name:{$regex: query, $options: 'i' }
+        }).sort('_id: -1')
+        .populate('_posted_by', 'first_name last_name profile_pic')
+        .select('_posted_by _id _name created_date _post_id _group_id');
+
+        const concatAllFiles = await Promise.all([filesFromFileSectionUpload, filesFromPost, filesFromAgora])
+        .then(res=>{
+            const concatfiles = filesFromFileSectionUpload.concat(filesFromAgora,filesFromPost)
+            
+            concatfiles.sort(function(a,b){
+                //get object id for timestamp instead, so we dont need to do different queries
+                //newly made will adhere to created date so we can write a mongo shell command 
+                //if we want to switch out from doing it from object id timestamps
+                const id_a = mongoose.Types.ObjectId(a._id).getTimestamp()
+                const id_b = mongoose.Types.ObjectId(b._id).getTimestamp()
+
+                
+                return new Date(id_b) - new Date(id_a);
+              });
+
+            return concatfiles
+          })
+        .catch(err=>{
+          console.log(err);
+        })
+
+        var moreUsersToLoad = false;
+        if(concatAllFiles.length >= 11){
+            moreUsersToLoad = true
+            concatAllFiles.length = 10
+        }
+
+        return res.status(200).json({
+            message: 'Document File Found!',
+            concatAllFiles,
+            moreUsersToLoad,
+          });
+
+    }   catch(err){
+        return sendErr(res, err);
+    }
+}
+
+const getNextQueryFilesFromGroup = async (req, res, next) => {
+    try{
+         const { groupId,
+            workspaceId
+        } = req.params;
+        const{ query 
+        } = req.body
+
+        const filesFromFileSectionUpload = await GroupFilesUpload.find({
+            $and: [
+            { _group: groupId } ,
+            { files: { $exists: true, $ne: [] } },
+            { files: {$elemMatch:{ orignal_name: {$regex: query.queryInput, $options: 'i' }}}}    
+            ]
+        }).sort('_id: -1')
+        .populate('_posted_by', 'first_name last_name profile_pic')
+        .select('_posted_by _id files created_date');
+//workspace check so that we have information for Post/DocumentFile queries
+        const filesFromPost = await Post.find({
+            $and: [
+            { _group: groupId } ,
+            { files: { $exists: true, $ne: [] } },
+            {files: {$elemMatch:{ orignal_name: {$regex: query.queryInput, $options: 'i' }}}}    
+        ],
+        }).sort('_id: -1')
+        .populate('_posted_by', 'first_name last_name profile_pic')
+        .select('_posted_by _id files created_date');
+
+        const filesFromAgora = await DocumentFile.find({
+            _group_id: groupId,
+            _name:{$regex: query.queryInput, $options: 'i' }
+        }).sort('_id: -1')
+        .populate('_posted_by', 'first_name last_name profile_pic')
+        .select('_posted_by _id _name created_date _post_id _group_id');
+
+        const concatAllFiles = await Promise.all([filesFromFileSectionUpload, filesFromPost, filesFromAgora])
+        .then(res=>{
+            const concatfiles = filesFromFileSectionUpload.concat(filesFromAgora,filesFromPost)
+            
+            const filteredFiles = concatfiles.filter(files => mongoose.Types.ObjectId(files._id).getTimestamp() < mongoose.Types.ObjectId(query.lastMemberQueryID).getTimestamp() )
+            
+            filteredFiles.sort(function(a,b){
+              //get object id for timestamp instead, so we dont need to do different queries
+              //newly made will adhere to created date so we can write a mongo shell command 
+              //if we want to switch out from doing it from object id timestamps
+              const id_a = mongoose.Types.ObjectId(a._id).getTimestamp()
+              const id_b = mongoose.Types.ObjectId(b._id).getTimestamp()
+
+              
+              return new Date(id_b) - new Date(id_a);
+            });
+
+          return filteredFiles
+          })
+        .catch(err=>{
+          console.log(err);
+        })
+
+        var moreUsersToLoad = false;
+        if(concatAllFiles.length > 5){
+            moreUsersToLoad = true
+            concatAllFiles.length = 5
+        }
+
+        return res.status(200).json({
+            message: 'Document File Found!',
+            concatAllFiles,
+            moreUsersToLoad,
+          });
+
+    }   catch(err){
+        return sendErr(res, err);
+    }
+}
+
 const addGroupUploadedFiles = async (req, res, next) => {
     try{
          const { groupId,
@@ -251,5 +399,7 @@ module.exports = {
     addGroupUploadedFiles,
     getAllFilesFromGroup,
     getNextFilesFromGroup,
+    getAllQueryFilesFromGroup,
+    getNextQueryFilesFromGroup,
     deleteGroupFiles,
 }

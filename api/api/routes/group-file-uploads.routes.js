@@ -24,4 +24,7 @@ router.get('/:groupId/next/allGroupFiles/:nextFiles', authorization.groupAccess,
 
 router.post('/:groupId/DeleteFiles/:filePostType', authorization.groupAccess, groupSectionFiles.deleteGroupFiles)
 
+router.post('/query/:workspaceId/:groupId/allGroupfiles', authorization.groupAccess, groupSectionFiles.getAllQueryFilesFromGroup)
+
+router.post('/query/:workspaceId/next/:groupId/allGroupfiles', authorization.groupAccess, groupSectionFiles.getNextQueryFilesFromGroup)
 module.exports = router
