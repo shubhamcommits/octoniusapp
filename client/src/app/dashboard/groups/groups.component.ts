@@ -86,13 +86,13 @@ export class GroupsComponent implements OnInit {
       ({ groups }) => {
         this.agoras = groups;
        // Set the correct path to the group avatar
-        for (let i = 0; i < this.agoras.length; i++) {
-          if (this.agoras[i]['group_avatar'] == null) {
-            this.agoras[i]['group_avatar'] = '/assets/images/group.png';
-          } else {
-            this.agoras[i]['group_avatar'] = environment.BASE_URL + `/uploads/${this.agoras[i]['group_avatar']}`;
-          }
-        }
+        // for (let i = 0; i < this.agoras.length; i++) {
+        //   if (this.agoras[i]['group_avatar'] == null) {
+        //     this.agoras[i]['group_avatar'] = '/assets/images/group.png';
+        //   } else {
+        //     this.agoras[i]['group_avatar'] = environment.BASE_URL + `/uploads/${this.agoras[i]['group_avatar']}`;
+        //   }
+        // }
       },
       err => console.error(`Could not fetch public groups! ${err}`)
     );
@@ -167,13 +167,13 @@ export class GroupsComponent implements OnInit {
       this._groupsService.getUserGroupsQuery(user).subscribe((res) => {
         this.groups = res['groups'];
         this.groupsMoreToLoad = res['moreToLoad']
-            for (let i = 0; i < this.groups.length; i++) {
-              if (this.groups[i]['group_avatar'] == null) {
-                this.groups[i]['group_avatar'] = '/assets/images/group.png';
-              } else {
-                this.groups[i]['group_avatar'] = environment.BASE_URL + `/uploads/${this.groups[i]['group_avatar']}`;
-              }
-            }
+            // for (let i = 0; i < this.groups.length; i++) {
+            //   if (this.groups[i]['group_avatar'] == null) {
+            //     this.groups[i]['group_avatar'] = '/assets/images/group.png';
+            //   } else {
+            //     this.groups[i]['group_avatar'] = environment.BASE_URL + `/uploads/${this.groups[i]['group_avatar']}`;
+            //   }
+            // }
 
         resolve();
       },(err) =>{
@@ -207,13 +207,13 @@ export class GroupsComponent implements OnInit {
       this.groups = [...this.groups, ...res['groups']]
       this.groupsMoreToLoad = res['moreToLoad']
       this.ngxService.stopBackground();
-          for (let i = 0; i < this.groups.length; i++) {
-            if (this.groups[i]['group_avatar'] == null) {
-              this.groups[i]['group_avatar'] = '/assets/images/group.png';
-            } else {
-              this.groups[i]['group_avatar'] = environment.BASE_URL + `/uploads/${this.groups[i]['group_avatar']}`;
-            }
-          }
+          // for (let i = 0; i < this.groups.length; i++) {
+          //   if (this.groups[i]['group_avatar'] == null) {
+          //     this.groups[i]['group_avatar'] = '/assets/images/group.png';
+          //   } else {
+          //     this.groups[i]['group_avatar'] = environment.BASE_URL + `/uploads/${this.groups[i]['group_avatar']}`;
+          //   }
+          // }
 
     },(err) =>{
           // console.log(err);
