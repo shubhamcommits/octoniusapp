@@ -375,9 +375,15 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
 
     try{
       const options: Options = {
-        WebSocket: typeof window !== 'undefined' ? WebSocket : WebSocket, // custom WebSocket constructor
-        connectionTimeout: 1000,
-        maxRetries: 10,
+        //WebSocket: typeof window !== 'undefined' ? WebSocket : WebSocket, // custom WebSocket constructor
+        WebSocket: undefined,
+        maxReconnectionDelay: 10000,
+        minReconnectionDelay: 1000 + Math.random() * 4000,
+        reconnectionDelayGrowFactor: 1.3,
+        minUptime: 5000,
+        connectionTimeout: 4000,
+        maxRetries: Infinity,
+        debug: false,
     };
       // !-- Connect ShareDB and Cursors to ReconnectingWebSocket--! //  
       shareDBSocket = new ReconnectingWebSocket(((location.protocol === 'https:') ? 'wss' : 'ws') + '://' + environment.REAL_TIME_URL + '/sharedb', [], options);
