@@ -15,6 +15,7 @@ import { environment } from '../../../environments/environment';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { GroupService } from '../../shared/services/group.service';
 import { SnotifyService } from 'ng-snotify';
+import { PostService } from '../../shared/services/post.service';
 
 @Component({
   selector: 'app-groups',
@@ -24,6 +25,7 @@ import { SnotifyService } from 'ng-snotify';
 })
 export class GroupsComponent implements OnInit {
   groups = new Array();
+  groupsMoreToLoad = false
   BASE_URL = environment.BASE_URL;
 
   workspace: Workspace;
@@ -51,7 +53,8 @@ export class GroupsComponent implements OnInit {
     private _groupsService: GroupsService,
     private groupService: GroupService,
     private modalService: NgbModal,  private ngxService: NgxUiLoaderService,
-    private snotifyService: SnotifyService) { }
+    private snotifyService: SnotifyService,
+    private postService: PostService,) { }
 
 
   ngOnInit() {
@@ -161,43 +164,74 @@ export class GroupsComponent implements OnInit {
         user_id: this.user_data.user_id,
         workspace_id: this.user_data.workspace._id,
       };
-  
-      this._groupsService.getUserGroups(user)
-        .subscribe((res) => {
-          // console.log('All groups:', res);
-          this.groups = res['groups'];
-  
-          // for (let i = 0; i < this.groups.length; i++) {
-          //   if (this.groups[i]['group_avatar'] == null) {
-          //     this.groups[i]['group_avatar'] = '/assets/images/group.png';
-  
-          //   } else {
-  
-          //     this.groups[i]['group_avatar'] = environment.BASE_URL + `/uploads/${this.groups[i]['group_avatar']}`;
-          //   }
-          // }
+      this._groupsService.getUserGroupsQuery(user).subscribe((res) => {
+        this.groups = res['groups'];
+        this.groupsMoreToLoad = res['moreToLoad']
+            for (let i = 0; i < this.groups.length; i++) {
+              if (this.groups[i]['group_avatar'] == null) {
+                this.groups[i]['group_avatar'] = '/assets/images/group.png';
+              } else {
+                this.groups[i]['group_avatar'] = environment.BASE_URL + `/uploads/${this.groups[i]['group_avatar']}`;
+              }
+            }
 
-          resolve();
-        }, (err) => {
-         // console.log(err);
-          this.alert.class = 'alert alert-danger';
-          if (err.status === 401) {
-            this.alert.message = err.error.message;
-            setTimeout(() => {
-              localStorage.clear();
-              this._router.navigate(['']);
-            }, 3000);
-          } else if (err.status) {
-            this.alert.message = err.error.message;
-          } else {
-            this.alert.message = 'Error! either server is down or no internet connection';
-          }
-            reject(err);
-        });
+        resolve();
+      },(err) =>{
+            // console.log(err);
+        this.alert.class = 'alert alert-danger';
+        if (err.status === 401) {
+          this.alert.message = err.error.message;
+          setTimeout(() => {
+            localStorage.clear();
+            this._router.navigate(['']);
+          }, 3000);
+        } else if (err.status) {
+          this.alert.message = err.error.message;
+        } else {
+          this.alert.message = 'Error! either server is down or no internet connection';
+        }
+          reject(err);
+      })
     })
-
-
   }
+
+  getNextUserGroups() {
+      this.ngxService.startBackground();
+    const user = {
+      user_id: this.user_data.user_id,
+      workspace_id: this.user_data.workspace._id,
+      next_query: this.groups[this.groups.length - 1]._id
+    };
+
+    this._groupsService.getNextUserGroupsQuery(user).subscribe((res) => {
+      this.groups = [...this.groups, ...res['groups']]
+      this.groupsMoreToLoad = res['moreToLoad']
+      this.ngxService.stopBackground();
+          for (let i = 0; i < this.groups.length; i++) {
+            if (this.groups[i]['group_avatar'] == null) {
+              this.groups[i]['group_avatar'] = '/assets/images/group.png';
+            } else {
+              this.groups[i]['group_avatar'] = environment.BASE_URL + `/uploads/${this.groups[i]['group_avatar']}`;
+            }
+          }
+
+    },(err) =>{
+          // console.log(err);
+      this.alert.class = 'alert alert-danger';
+      if (err.status === 401) {
+        this.alert.message = err.error.message;
+        setTimeout(() => {
+          localStorage.clear();
+          this._router.navigate(['']);
+        }, 3000);
+      } else if (err.status) {
+        this.alert.message = err.error.message;
+      } else {
+        this.alert.message = 'Error! either server is down or no internet connection';
+      }
+    })
+  }
+
   // getting currently logged in user's profile
   getUserProfile() {
     this._userService.getUser()

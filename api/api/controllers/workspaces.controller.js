@@ -1,4 +1,4 @@
-
+const mongoose = require('mongoose');
 const {
   Group, User, Workspace, Post
 } = require('../models');
@@ -314,7 +314,138 @@ const deleteUser = async (req, res, next) => {
   }
 };
 
+const getWorkspaceMembers = async (req, res, next) => {
+    try {
+      const {workspaceId} = req.params;
+      const workspaceMembers = await Workspace.findOne({
+        _id: workspaceId
+      })
+      const userMembersQuery = await User.find({_id:{$in: workspaceMembers.members.map(e=> new mongoose.Types.ObjectId(e))}}
+      ).sort('_id')
+      .limit(11)
+      .exec() 
 
+      var moreUsersToLoad = false;
+      if (userMembersQuery.length == 11){
+        userMembersQuery.pop()
+        moreUsersToLoad = true;
+      }
+        return res.status(200).json({ 
+          message: `${ userMembersQuery.length } workspace members found !`,
+          results: userMembersQuery,
+          moreToLoad: moreUsersToLoad });
+       
+      
+    } catch (err) {
+      // console.log('err', err);
+      sendErr(res, err);
+    }
+  };
+  const getNextWorkspaceMembers = async (req, res, next) => {
+      try {
+        const {workspaceId ,amountLoaded } = req.params;
+        const workspaceMembers = await Workspace.findOne({
+          _id: workspaceId
+        })
+
+       const memberCheck = await workspaceMembers.members.filter(e=> 
+         new mongoose.Types.ObjectId(e).getTimestamp() > new mongoose.Types.ObjectId(amountLoaded).getTimestamp()
+       
+        )
+
+        const userMembersQuery = await User.find({_id:{$in: memberCheck.map(e=> 
+          new mongoose.Types.ObjectId(e)
+        )}}
+        ).sort('_id')
+        .limit(6)
+        .exec() 
+  
+        var moreUsersToLoad = false;
+        if (userMembersQuery.length == 6){
+          userMembersQuery.pop()
+          moreUsersToLoad = true;
+        }
+        return res.status(200).json({ 
+          message: `Next ${ userMembersQuery.length } workspace members found !`,
+          results: userMembersQuery,
+          moreToLoad: moreUsersToLoad });
+         
+        
+      } catch (err) {
+        // console.log('err', err);
+        sendErr(res, err);
+      }
+    };
+
+    const getQueryWorkspaceMembers = async (req, res, next) => {
+      try {
+        const {workspaceId} = req.params;
+        const {query} = req.body;
+        const userMembersQuery = await User.find({
+          $or:[
+            {full_name:{ $regex: query, $options: 'i' }},
+            {email:{ $regex: query, $options: 'i' }}
+          ],
+          _workspace:{$eq:workspaceId},
+          active:{$eq:true}
+        }
+        ).sort('_id')
+        .limit(11)
+        .exec() 
+  
+        var moreUsersToLoad = false;
+        if (userMembersQuery.length == 11){
+          userMembersQuery.pop()
+          moreUsersToLoad = true;
+        }
+          return res.status(200).json({ 
+            message: `${ userMembersQuery.length } workspace members found !`,
+            results: userMembersQuery,
+            moreToLoad: moreUsersToLoad });
+         
+        
+      } catch (err) {
+        // console.log('err', err);
+        sendErr(res, err);
+      }
+    };
+
+    const getNextQueryWorkspaceMembers = async (req, res, next) => {
+      try {
+        const {workspaceId} = req.params;
+        const {query} = req.body
+
+        const userMembersQuery = await User.find({
+          $or:[
+            {full_name:{ $regex: query.queryInput, $options: 'i' }},
+            {email:{ $regex: query.queryInput, $options: 'i' }}
+          ],
+          $and:[
+            {_id:{$gt:new mongoose.Types.ObjectId(query.lastMemberQueryID)}},
+            {_workspace:{$eq:workspaceId}},
+            {active:{$eq:true}},
+          ]
+        }
+        ).sort('_id')
+        .limit(6)
+        .exec()
+  
+        var moreUsersToLoad = false;
+        if (userMembersQuery.length == 6){
+          userMembersQuery.pop()
+          moreUsersToLoad = true;
+        }
+        return res.status(200).json({ 
+          message: `Next ${ userMembersQuery.length } workspace members found !`,
+          results: userMembersQuery,
+          moreToLoad: moreUsersToLoad });
+         
+        
+      } catch (err) {
+        // console.log('err', err);
+        sendErr(res, err);
+      }
+    };
 /*  =============
  *  -- EXPORTS --
  *  =============
@@ -329,7 +460,11 @@ module.exports = {
   getUniqueJobPositions,
   getUniqueSkills,
   // users
-  deleteUser
+  deleteUser,
+  getWorkspaceMembers,
+  getNextWorkspaceMembers,
+  getQueryWorkspaceMembers,
+  getNextQueryWorkspaceMembers,
 };
 
 

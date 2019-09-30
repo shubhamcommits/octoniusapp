@@ -25,6 +25,9 @@ router.put('/updateUserRole', cleanCache, workspacesController.updateUserRole);
 router.put('/:workspace_id', workspaceFileHandler, workspacesController.updateWorkspace);
 router.post('/groups', workspacesController.createNewGroup);
 router.get('/groups/:user_id/:workspace_id', workspacesController.getUserGroups);
+router.get('/groups/query/:userId/:workspaceId', workspacesController.getUserGroupsQuery);
+router.get('/groups/query/next/:userId/:workspaceId/:nextQuery', workspacesController.getNextUserGroupsQuery);
+
 // ^^^^| BAD REST PATTERN, to be replaced! |^^^^
 
 // -| Workspaces routes |-
@@ -53,5 +56,17 @@ router.get('/skills/:workspaceId/:query', workspaces.getUniqueSkills);
 
 // Remove user from workspace
 router.delete('/:workspaceId/users/:userId', workspaces.deleteUser);
+
+// Get workspace members
+router.get('/members/:workspaceId/', workspaces.getWorkspaceMembers);
+
+// Get more workspace members
+router.get('/next/members/:workspaceId/:amountLoaded', workspaces.getNextWorkspaceMembers);
+
+// Get query workspace members
+router.post('/query/members/:workspaceId/', workspaces.getQueryWorkspaceMembers);
+
+// Get next query workspace members
+router.post('/next/query/members/:workspaceId/', workspaces.getNextQueryWorkspaceMembers);
 
 module.exports = router;

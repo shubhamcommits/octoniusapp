@@ -30,6 +30,16 @@ export class GroupsService {
     return this._http.get(this.BASE_API_URL + '/workspace/groups/' + user.user_id + '/' + user.workspace_id);
   }
 
+  // @Cacheable({ cacheBusterObserver: cacheBuster$})
+  getUserGroupsQuery(user) {
+    return this._http.get(this.BASE_API_URL + '/workspace/groups/query/' + user.user_id + '/' + user.workspace_id);
+  }
+
+  // @Cacheable({ cacheBusterObserver: cacheBuster$})
+  getNextUserGroupsQuery(user) {
+    return this._http.get(this.BASE_API_URL + '/workspace/groups/query/next/' + user.user_id + '/' + user.workspace_id + '/' + user.next_query);
+  }
+
   // @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
   // })
   getGroupsForUser(workspace: string) {

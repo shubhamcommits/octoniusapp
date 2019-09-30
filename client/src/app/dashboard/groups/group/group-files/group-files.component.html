@@ -30,6 +30,16 @@
 
 
 </div>
+
+<div>
+  <div class="search">
+     <input (keyup)= "fileSearchQuery($event)" type="text" class="searchTerm" placeholder="File Search">
+     <button type="submit" class="searchButton">
+       <i class="fa fa-search"></i>
+    </button>
+  </div>
+</div>
+
 <div class="card-tile">
   <h4>Everything uploaded by your team </h4>
   <hr>
@@ -257,6 +267,15 @@
   </div>
 </div>
 
+<div class="card-tile" *ngIf = "moreFilesToLoad">
+
+    <div class="row">
+      <button  type="button" class="btn btn-outline-warning" (click)="loadNextGroupUploadedFiles()"  style="margin-left:45%;">
+         Load More Files
+      </button>
+
+  
+  </div>
 <div class= "outer-overlay" *ngIf = "pdfSourceLinks || iFrameSourceLinks">
     <div class = "overlay-navbar" *ngIf = "pdfSourceLinks" >
         <div class="row" style="margin-left: 0.5rem;" >

@@ -29,6 +29,28 @@ export class WorkspaceService {
   updateWorkspace(workspce_id, data) {
     return this._http.put(this.BASE_API_URL + `/workspace/${workspce_id}`, data);
   }
+  
+  // @CacheBuster({
+  //   cacheBusterNotifier: cacheBuster$
+  // })
+  getWorkspaceMembers(workspce_id) {
+    return this._http.get(this.BASE_API_URL + `/workspace/members/${workspce_id}`);
+  }
+
+  // @CacheBuster({
+  //   cacheBusterNotifier: cacheBuster$
+  // })
+  getNextWorkspaceMembers(workspce_id,last_id_loaded) {
+    return this._http.get(this.BASE_API_URL + `/workspace/next/members/${workspce_id}/${last_id_loaded}`);
+  }
+
+  getQueryWorkspaceMembers(workspce_id,query) {
+    return this._http.post(this.BASE_API_URL + `/workspace/query/members/${workspce_id}`,{query});
+  }
+  getNextQueryWorkspaceMembers(workspce_id,query) {
+    return this._http.post(this.BASE_API_URL + `/workspace/next/query/members/${workspce_id}`,{query});
+  }
+
 
   ///// Workspace billing
 

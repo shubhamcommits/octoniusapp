@@ -5,7 +5,7 @@
 
 
   <div *ngIf="alert.message" [ngClass]="alert.class">{{alert.message}}</div>
-  <div class="row no-margin">
+  <div class="row no-margin" infiniteScroll [infiniteScrollDistance]="1" [immediateCheck]="true" (scrolled)="getNextUserGroups()">
       <div *ngIf="user?.role== 'admin' || user?.role== 'owner'" (click)="openLg(content)" class="card col-md-3 overlay" style="text-align:center; background-image:url(https://picsum.photos/600/300/?random&gravity=south ) !important; cursor: pointer;">
         <!-- <img class="card-img-top" src="https://picsum.photos/1920/1200/?random&gravity=south">  -->
         <div class="card-body content" style="background:transparent">
@@ -71,6 +71,7 @@
           <!-- <p class="card-text">Group description</p>  -->
         </div>
       </div>
+
     </ng-container>
 
     <ng-template #content let-c="close" let-d="dismiss">
@@ -161,6 +162,9 @@
       </div>
     </ng-template>
   </div>
+  <!-- <button *ngIf="groupsMoreToLoad" (click)="getNextUserGroups()" style="margin-left:45%; margin-top: 5%; margin-bottom:2%;">
+      Load More Groups
+    </button> -->
 
   <!-- <div *ngIf="smartGroups.length > 0" class="row no-margin mt-3">
     <h5 class="w-100">Smart Groups</h5>

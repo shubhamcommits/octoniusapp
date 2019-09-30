@@ -1,12 +1,19 @@
-<div class="media card-tile user-list" *ngIf="isLoading$ | async; else adminMembers">
-  <span class="loading-spinner"></span>
-</div>
-<ng-template #adminMembers>
+<!-- <div class="media card-tile user-list" *ngIf="isLoading$ | async; else adminMembers">
+
+</div> -->
+<div #adminMembers infiniteScroll [infiniteScrollDistance]="1" [immediateCheck]="true" (scrolled)="loadMoreMembers()">
   <div class="card-tile">
     <h4>All members from your workplace</h4>
-  
+    <div>
+      <div class="search">
+         <input (keyup)= "userSearchQuery($event)" type="text" class="searchTerm" placeholder="Whom you are looking for?">
+         <button type="submit" class="searchButton">
+           <i class="fa fa-search"></i>
+        </button>
+      </div>
+   </div>
     <hr>
-    <div class="media card-tile user-list" *ngFor="let member of workspace?.members">
+    <div class="media card-tile user-list" *ngFor="let member of memberList">
   <!--<img class="feed-avatar " src="assets/images/user.png" alt="User">-->
       <img src="{{this.BASE_URL}}/uploads/{{member?.profile_pic}}" onerror="this.src='/assets/images/user.png'" class="feed-avatar">
       <div class="media-body">
@@ -19,8 +26,8 @@
           <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
             <button class="btn btn-primary dropdown-toggle-split btn-sm" ngbDropdownToggle>Manage user </button>
             <div class="dropdown-menu" ngbDropdownMenu>
-              <button class="dropdown-item" (click)="updateUserRole('admin',member._id, member.first_name, member.last_name)">Change to Admin</button>
-              <button class="dropdown-item" (click)="updateUserRole('member ',member._id, member.first_name, member.last_name)">Change to Member</button>
+              <button class="dropdown-item" (click)="updateUserRole('admin',member)">Change to Admin</button>
+              <button class="dropdown-item" (click)="updateUserRole('member ',member)">Change to Member</button>
               <div class="dropdown-divider"></div>
               <button class="dropdown-item" (click)="removeUserfromWorkspace(member._id, member.first_name, member.last_name)">Delete Member</button>
             </div>
@@ -30,7 +37,6 @@
       </div>
   
     </div>
-  
     <ng-template #content let-c="close" let-d="dismiss">
       <!-- <div class="modal-header">
         <h4 class="modal-title">Update User Role</h4>
@@ -67,4 +73,4 @@
     </ng-template>
   </div>
   
-</ng-template>
+</div>
