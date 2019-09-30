@@ -196,7 +196,7 @@ export class GroupsComponent implements OnInit {
   }
 
   getNextUserGroups() {
-
+      this.ngxService.startBackground();
     const user = {
       user_id: this.user_data.user_id,
       workspace_id: this.user_data.workspace._id,
@@ -206,6 +206,7 @@ export class GroupsComponent implements OnInit {
     this._groupsService.getNextUserGroupsQuery(user).subscribe((res) => {
       this.groups = [...this.groups, ...res['groups']]
       this.groupsMoreToLoad = res['moreToLoad']
+      this.ngxService.stopBackground();
           for (let i = 0; i < this.groups.length; i++) {
             if (this.groups[i]['group_avatar'] == null) {
               this.groups[i]['group_avatar'] = '/assets/images/group.png';
