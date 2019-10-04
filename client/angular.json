@@ -24,7 +24,10 @@
               "node_modules/bootstrap/scss/bootstrap.scss",
               "src/assets/scss/main.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/quill/dist/quill.min.js",
+              "node_modules/quill-image-resize-module/image-resize.min.js"
+            ]
           },
           "configurations": {
             "production": {
