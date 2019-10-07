@@ -39,13 +39,13 @@ $border-radius: 1rem;
 }
 
 .pink{
-  color:$pink;
+  color:$pink !important;
 }
 .todo{
   color: $pumpkin-orange;
 }
 .working{
-  color: $turquoise;
+  color: $turquoise !important;
 }
 .done{
   color: $dark-sky-blue;
