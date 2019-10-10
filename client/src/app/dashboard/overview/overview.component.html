@@ -194,10 +194,10 @@
 
   <h5 class="title-overview" *ngIf="this.recentPosts.length != 0 || comments.length != 0">Recent activity</h5>
 
-  
+
   <!-- RECENT POSTS -->
   <div *ngIf="this.recentPosts.length != 0">
-    
+
 
     <div *ngFor="let post of this.recentPosts; let i = index;">
       <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/post/{{post._id}}"
@@ -209,14 +209,14 @@
               <i class="material-icons pink">chat</i>
               <img src="{{this.BASE_URL}}/uploads/{{post._posted_by?.profile_pic}}"
                 onerror="this.src='/assets/images/user.png'" class="feed-avatar">
-              <p class="overview-item">{{post._posted_by?.first_name}}</p>
-              <p class="overview-item overview-post" [innerHTML]="post?.title"></p>
+              <p class="overview-item2" style="flex: none; line-height: 35px">{{post._posted_by?.first_name}}</p>
+              <p class="overview-item2 overview-post" style="line-height: 35px" [innerHTML]="post?.title | safe: 'html'"></p>
             </div>
-            
+
 
             <div class="col-md-4 text-right">
-              <span class="overview-item small-blue-text text-right" [innerHTML]="post?._group?.group_name"></span>
-              <span class="overview-item small text-muted text-right">{{post.created_date | date:'MMMM d y, h:mm a' }}
+              <span class="overview-item2 small-blue-text text-right" [innerHTML]="post?._group?.group_name"></span>
+              <span class="overview-item2 small text-muted text-right">{{post.created_date | date:'MMMM d y, h:mm a' }}
               </span>
             </div>
           </div>
@@ -229,131 +229,45 @@
   <!-- endof RECENT POSTS -->
 
   <div *ngIf="comments.length != 0">
-
-
-
     <div *ngFor="let comment of comments; let i = index;">
+      <a [routerLink]="['/dashboard/group/', comment._post._group._id, 'post', comment._post._id]"
+        (click)="this.markCommentAsRead(comment._id)">
 
-      <div *ngIf="comment?._post?.type == 'normal'" class="card-tile shadow-sm">
-        <div [routerLink]="['/dashboard/group/', comment._post._group._id, 'post', comment._post._id]"
-          class="media overview-post" (click)="this.markCommentAsRead(comment._id)">
-
-
+        <div class="media card-tile shadow-sm">
           <div class=" row media-body">
             <div class="col-md-8 flex">
               <i class="material-icons working">chat_bubble</i>
               <img src="{{this.BASE_URL}}/uploads/{{comment._commented_by?.profile_pic}}"
                 onerror="this.src='/assets/images/user.png'" class="feed-avatar float-left">
-              <p class="overview-item">{{comment._commented_by?.first_name}} replied</p>
-              <p [innerHTML]="comment?.content" class="overview-item overview-post"></p>
+              <p class="overview-item2" style="flex: none; line-height: 35px">{{comment._commented_by?.first_name}}
+                replied</p>
+              <div [innerHTML]="comment?.content | slice:0:100" class="overview-item2 overview-post" style="font-size: 14px"> </div>
             </div>
-
-
-           
-
-
-
             <div class="col-md-4 text-right">
-            
-              <div class="overview-item small text-muted text-right">{{comment.created_date | date:'MMMM d y, h:mm a' }}
+              <div class="overview-item2 small text-muted text-right">
+                {{comment.created_date | date:'MMMM d y, h:mm a' }}
               </div>
             </div>
 
           </div>
-
-
-
         </div>
-        <div class="row">
-          <div class="col-md-8 offset-md-3">
-            <!-- read more / read less button -->
-            <button *ngIf="comment?.content?.split('').length > 350" class="btn btn-link p-0 ml-1 my-3"
-              (click)="comment.readMore = !comment.readMore">
-              <span *ngIf="comment.readMore">Read more</span>
-              <span *ngIf="!comment.readMore">Read less</span>
-            </button>
-          </div>
-        </div>
-      </div>
 
 
-      <div *ngIf="comment?._post?.type== 'task' && comment?._post?.comments_count > 0" class="card-tile shadow-sm">
-        <div [routerLink]="['/dashboard/group/', comment._post._group._id, 'post', comment._post._id]" class="media"
-          (click)="this.markCommentAsRead(comment._id)">
-          <div class=" row media-body">
-            <div class="col-md-8 flex">
-              <i class="material-icons working">chat_bubble</i>
-              <img src="{{this.BASE_URL}}/uploads/{{comment._commented_by?.profile_pic}}"
-                onerror="this.src='/assets/images/user.png'" class="feed-avatar float-left">
-              <p class="overview-item">{{comment._commented_by?.first_name}} replied</p>
-              <p [innerHTML]="comment?.content" class="overview-item overview-post"></p>
-            </div>
-
-
-            
-
-
-
-            <div class="col-md-4 text-right">
-              <div class="overview-item small text-muted text-right">{{comment.created_date | date:'MMMM d y, h:mm a' }}
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-        <div class="row">
-          <div class="col-md-8 offset-md-3">
-            <!-- read more / read less button -->
-            <button *ngIf="comment?.content?.split('').length > 350" class="btn btn-link p-0 ml-1 my-3"
-              (click)="comment.readMore = !comment.readMore">
-              <span *ngIf="comment.readMore">Read more</span>
-              <span *ngIf="!comment.readMore">Read less</span>
-            </button>
-          </div>
+      </a>
+      <div class="row">
+        <div class="col-md-8 offset-md-3">
+          <!-- read more / read less button -->
+          <button *ngIf="comment?.content?.split('').length > 350" class="btn btn-link p-0 ml-1 my-3"
+            (click)="comment.readMore = !comment.readMore">
+            <span *ngIf="comment.readMore">Read more</span>
+            <span *ngIf="!comment.readMore">Read less</span>
+          </button>
         </div>
       </div>
 
-      <div *ngIf="comment?._post?.type== 'event' && comment?._post?.comments_count > 0" class="card-tile shadow-sm">
-
-        <div [routerLink]="['/dashboard/group/', comment._post._group._id, 'post', comment._post._id]" class="media"
-          (click)="this.markCommentAsRead(comment._id)">
-          <!-- <img src="/uploads/{{post._group?.group_avatar}}" onerror="this.src='/assets/images/group.png'" class="mr-3 feed-avatar"> -->
-
-          <div class=" row media-body">
-            <div class="col-md-8 flex">
-              <i class="material-icons working">chat_bubble</i>
-              <img src="{{this.BASE_URL}}/uploads/{{comment._commented_by?.profile_pic}}"
-                onerror="this.src='/assets/images/user.png'" class="feed-avatar float-left">
-              <p class="overview-item">{{comment._commented_by?.first_name}} replied</p>
-              <p [innerHTML]="comment?.content" class="overview-item overview-post"></p>
-            </div>
-
-
-           
 
 
 
-            <div class="col-md-4 text-right">
-              <div class="overview-item small text-muted text-right">{{comment.created_date | date:'MMMM d y, h:mm a' }}
-              </div>
-            </div>
-
-          </div>
-
-
-        </div>
-        <div class="row">
-          <div class="col-md-8 offset-md-3">
-            <!-- read more / read less button -->
-            <button *ngIf="comment?.content?.split('').length > 350" class="btn btn-link p-0 ml-1 my-3"
-              (click)="comment.readMore = !comment.readMore">
-              <span *ngIf="comment.readMore">Read more</span>
-              <span *ngIf="!comment.readMore">Read less</span>
-            </button>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </div>

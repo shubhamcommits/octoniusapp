@@ -133,6 +133,21 @@
   padding: 0 5px;
 }
 
+.overview-item2{
+  width: auto;
+  font-size: 14px;
+  line-height: 35px;
+  padding: 0 5px;
+  p{
+    font-size: 14px !important;
+    span{
+      p{
+        font-size: 14px !important;
+      }
+    }
+  }
+}
+
 // .avatar-name-container{
 //   width: 150px;
 //   display: flex;
@@ -163,4 +178,8 @@
 
 .flex{
   display: flex;
+}
+
+a{
+  text-decoration: none !important;
 }
