@@ -41,9 +41,10 @@ app.use(cors());
 
 // Set Bodyparser middleware
 app.use(bodyParser.urlencoded({
-  extended: true
+  extended: true,
+  urlencoded: { limit: '50mb', extended: true }
 }));
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '50mb', extended: true }));
 
 // Use Morgan middleware for logging every request status on console
 app.use(morgan('dev'));
