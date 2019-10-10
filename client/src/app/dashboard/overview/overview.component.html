@@ -192,13 +192,13 @@
 
 
 
+  <h5 class="title-overview" *ngIf="this.recentPosts.length != 0 || comments.length != 0">Recent activity</h5>
 
-
-
-
+  
   <!-- RECENT POSTS -->
   <div *ngIf="this.recentPosts.length != 0">
-    <h5 class="title-overview">Recent activity</h5>
+    
+
     <div *ngFor="let post of this.recentPosts; let i = index;">
       <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/post/{{post._id}}"
         (click)="this.markPostAsRead(post._id)">
@@ -229,6 +229,7 @@
   <!-- endof RECENT POSTS -->
 
   <div *ngIf="comments.length != 0">
+
 
 
     <div *ngFor="let comment of comments; let i = index;">
