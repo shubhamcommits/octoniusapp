@@ -91,7 +91,7 @@
 
 
 
-      <a class="nav-link" routerLink="/dashboard/admin" (click)="onSignOut()">Logout
+      <a class="nav-link" [routerLink]="['/home']" routerLinkActive="router-link-active"  (click)="onSignOut()">Logout
         <span class="sr-only">(current)</span>
       </a>
     </div>
