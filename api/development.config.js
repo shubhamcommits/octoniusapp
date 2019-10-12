@@ -12,7 +12,8 @@ const init = () => {
   process.env.REDIS_PORT = '6379';
   process.env.SENDGRID_KEY = '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';
   process.env.FILE_UPLOAD_FOLDER = `${__dirname}/uploads/`;
-  process.env.SK_STRIPE = 'sk_test_dvebbZQPA4Vk8kKZaEuN32sD';
+  //process.env.SK_STRIPE = 'sk_test_dvebbZQPA4Vk8kKZaEuN32sD';
+  process.env.SK_STRIPE = 'sk_live_WupyMoQf93S59gwTqmYpmWel';
   process.env.stripe_plan = 'plan_EK1uRUJLJcDS6e';
   process.env.WEBHOOK_PS_SECRET = 'whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn';
 };
