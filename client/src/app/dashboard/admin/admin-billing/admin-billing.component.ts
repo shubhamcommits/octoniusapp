@@ -43,7 +43,7 @@ export class AdminBillingComponent implements OnInit {
 
     this.handler = StripeCheckout.configure({
       key: environment.pk_stripe,
-      image: 'https://octonius.com/img/octonius-icon.png',
+      image: 'https://www.octonius.com/wp-content/uploads/2019/08/octonius-huge-logo.png',
       currency: 'EUR',
       locale: 'auto',
       token: token => {

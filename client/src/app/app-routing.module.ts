@@ -106,15 +106,15 @@ const appRoutes: Routes = [
     path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard],
     children: [
       { path: 'all-search-results/:query', component: AllSearchResultsComponent },
-      { path: 'overview', component: OverviewComponent },
-      { path: 'overview/mytasks', component: OverviewMyTasksComponent },
-      { path: 'overview/myworkplace', component: OverviewMyWorkplaceComponent },
+      { path: 'overview', component: OverviewComponent, canActivate: [ValidSubscriptionGuard] },
+      { path: 'overview/mytasks', component: OverviewMyTasksComponent, canActivate: [ValidSubscriptionGuard] },
+      { path: 'overview/myworkplace', component: OverviewMyWorkplaceComponent, canActivate: [ValidSubscriptionGuard] },
       {
-        path: 'groups', component: GroupsComponent
+        path: 'groups', component: GroupsComponent, canActivate: [ValidSubscriptionGuard]
       },
-      { path: 'pulse', component: PulseComponent },
+      { path: 'pulse', component: PulseComponent, canActivate: [ValidSubscriptionGuard] },
       {
-        path: 'group/:id', component: GroupComponent,
+        path: 'group/:id', component: GroupComponent, canActivate: [ValidSubscriptionGuard],
 
         children: [
           { path: 'activity', component: GroupActivityComponent },
@@ -132,19 +132,19 @@ const appRoutes: Routes = [
       {
         path: 'admin', component: AdminComponent,
         children: [
-          { path: 'general', component: AdminGeneralComponent },
-          { path: 'members', component: AdminMembersComponent }
-          // {
-          //   path: 'billing',
-          //   component: AdminBillingComponent,
-          //   canDeactivate: [DenyNavigationGuard]
-          // }
+          { path: 'general', component: AdminGeneralComponent, canActivate: [ValidSubscriptionGuard] },
+          { path: 'members', component: AdminMembersComponent, canActivate: [ValidSubscriptionGuard] },
+          {
+            path: 'billing',
+            component: AdminBillingComponent,
+            canDeactivate: [DenyNavigationGuard]
+          }
         ]
       },
 
       // ----- USER PROFILE -----
       {
-        path: 'profile/:userId', component: UserProfileComponent,
+        path: 'profile/:userId', component: UserProfileComponent, canActivate: [ValidSubscriptionGuard],
         children: [{ path: 'profile', component: ProfileComponent },
         { path: 'clouds', component: CloudsComponent }]
       }
