@@ -86,13 +86,7 @@
 
 ---
 
-1.2.3. Go to `api/development.config.js` change the environment variables of the following:
-
-*  `process.env.dbURL = 'mongodb://mongodb:27017/octonius'` to `process.env.dbURL = 'mongodb://127.0.0.1:27017/octonius'`.
-
-*  `process.env.REDIS_HOST = 'redis'` to ` process.env.REDIS_HOST = '127.0.0.1'`.
-
-1.2.4. Go to `client/src/environments/environment.hmr.ts` and change the `REAL_TIME_URL: 'localhost:3000/editor'` to `REAL_TIME_URL: 'localhost:3001'`.
+1.2.3. Go to `client/src/environments/environment.hmr.ts` and change the `REAL_TIME_URL: 'localhost:3000/editor'` to `REAL_TIME_URL: 'localhost:3001'`.
 
 ##  
 
