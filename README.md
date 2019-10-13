@@ -86,13 +86,7 @@
 
 ---
 
-1.2.3. Go to `api/development.config.js` change the environment variables of the following:
-
-*  `process.env.dbURL = 'mongodb://mongodb:27017/octonius'` to `process.env.dbURL = 'mongodb://127.0.0.1:27017/octonius'`.
-
-*  `process.env.REDIS_HOST = 'redis'` to ` process.env.REDIS_HOST = '127.0.0.1'`.
-
-1.2.4. Go to `client/src/environments/environment.hmr.ts` and change the `REAL_TIME_URL: 'localhost:3000/editor'` to `REAL_TIME_URL: 'localhost:3001'`.
+1.2.3. Go to `client/src/environments/environment.hmr.ts` and change the `REAL_TIME_URL: 'localhost:3000/editor'` to `REAL_TIME_URL: 'localhost:3001'`.
 
 ##  
 
@@ -330,7 +324,7 @@ On terminal, run the command `ssh ubuntu@86.122.94.224` and fill in the password
 
 4.3.1. Go to `/home/ubuntu/octonius` and run the following commands:
 
-*  `docker-compose -f docker-compose-deploy.yml pull`
+*   `docker-compose -f docker-compose-deploy.yml pull`
 
 *   `docker-compose -f docker-compose-deploy.yml up -d`
 
@@ -340,7 +334,25 @@ On terminal, run the command `ssh ubuntu@86.122.94.224` and fill in the password
 
 4.4.1.  Go to `/home/ubuntu/octonius` and run the following commands:
 
-*   `docker stack deploy -c stack-octonius-deploy.yml octonius`
+*   Run `./deploy.sh` script - this will do everything from start to end.
+
+#### OR
+
+4.4.1. Follow the sets of commands below to deploy
+
+*   `docker login`
+
+*   `docker pull octoniusapp/octonius:api`
+
+*   `docker pull octoniusapp/octonius:client`
+
+*   `docker pull octoniusapp/octonius:nginx`
+
+*   `docker pull mongo:latest`
+
+*   `docker pull redis:latest`
+
+*   `docker stack deploy -c stack-octonius-deploy.yml --with-registry-auth octonius`
 
 4.4.2.  Check the status of stack and services via the following:
 

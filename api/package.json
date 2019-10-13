@@ -48,7 +48,7 @@
   "scripts": {
     "test": "jest",
     "dev": "nodemon server",
-    "start": "node server"
+    "start": "NODE_ENV=production node server"
   },
   "jest": {
     "verbose": true,

@@ -5,7 +5,9 @@ const fileUpload = require('express-fileupload');
 const morgan = require('morgan');
 const path = require('path');
 
-const devEnv = require('../development.config');
+const devEnv = require('../environments/development.config');
+
+const prodEnv = require('../environments/production.config');
 
 // Correct REST naming
 const {
@@ -28,6 +30,9 @@ const app = express();
 // Load 'development' configs for dev environment
 if (process.env.NODE_ENV !== 'production') {
   devEnv.init();
+}
+else{
+  prodEnv.init();
 }
 
 // Open Mongoose connection to db
