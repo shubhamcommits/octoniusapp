@@ -7,6 +7,8 @@ const path = require('path');
 
 const devEnv = require('../development.config');
 
+const prodEnv = require('../production.config');
+
 // Correct REST naming
 const {
   authsRoutes,
@@ -28,6 +30,9 @@ const app = express();
 // Load 'development' configs for dev environment
 if (process.env.NODE_ENV !== 'production') {
   devEnv.init();
+}
+else{
+  prodEnv.init();
 }
 
 // Open Mongoose connection to db

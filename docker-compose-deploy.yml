@@ -28,8 +28,8 @@ services:
       - SENDGRID_KEY=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
       - REDIS_HOST=redis
       - REDIS_PORT=6379
-      - SK_STRIPE=sk_test_dvebbZQPA4Vk8kKZaEuN32sD
-      - stripe_plan=plan_EK1uRUJLJcDS6e
+      - SK_STRIPE=sk_live_WupyMoQf93S59gwTqmYpmWel
+      - stripe_plan=plan_EK1rDLfKr9NRkU
       - WEBHOOK_PS_SECRET=whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn
     depends_on:
       - mongodb
