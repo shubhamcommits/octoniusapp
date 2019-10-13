@@ -5,9 +5,9 @@ const fileUpload = require('express-fileupload');
 const morgan = require('morgan');
 const path = require('path');
 
-const devEnv = require('../environments/development.config');
+const devEnv = require('../development.config');
 
-const prodEnv = require('../environments/production.config');
+const prodEnv = require('../production.config');
 
 // Correct REST naming
 const {
