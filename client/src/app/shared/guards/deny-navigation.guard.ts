@@ -37,5 +37,9 @@ export class DenyNavigationGuard implements CanDeactivate<AdminBillingComponent>
               }));
       }
 
+      else{
+        return true;
+      }
+
   }
 }
