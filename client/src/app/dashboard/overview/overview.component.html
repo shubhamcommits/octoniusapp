@@ -200,7 +200,7 @@
 
 
     <div *ngFor="let post of this.recentPosts; let i = index;">
-      <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/post/{{post._id}}"
+      <a *ngIf="post?.type != 'document'" style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/post/{{post._id}}"
         (click)="this.markPostAsRead(post._id)">
 
         <div class="media card-tile shadow-sm">
@@ -224,6 +224,32 @@
         </div>
 
       </a>
+
+      <a *ngIf="post?.type == 'document'" style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/document/{{post._id}}"
+      (click)="this.markPostAsRead(post._id)">
+
+      <div class="media card-tile shadow-sm">
+        <div class=" row media-body">
+          <div class="col-md-8 flex">
+            <i class="material-icons pink">chat</i>
+            <img src="{{this.BASE_URL}}/uploads/{{post._posted_by?.profile_pic}}"
+              onerror="this.src='/assets/images/user.png'" class="feed-avatar">
+            <p class="overview-item2" style="flex: none; line-height: 35px">{{post._posted_by?.first_name}}</p>
+            <p class="overview-item2 overview-post" style="line-height: 35px" [innerHTML]="post?.title | safe: 'html'"></p>
+          </div>
+
+
+          <div class="col-md-4 text-right">
+            <span class="overview-item2 small-blue-text text-right" [innerHTML]="post?._group?.group_name"></span>
+            <span class="overview-item2 small text-muted text-right">{{post.created_date | date:'MMMM d y, h:mm a' }}
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+    </a>
+
     </div>
   </div>
   <!-- endof RECENT POSTS -->

@@ -49,7 +49,7 @@ export class GroupHeaderComponent implements OnInit {
 
   BASE_URL = environment.BASE_URL;
 
-  constructor(private groupService: GroupService, private modalService: NgbModal,
+  constructor(private groupService: GroupService, private _activatedRoute: ActivatedRoute, private modalService: NgbModal,
               private _router: Router, public groupDataService: GroupDataService,
               private snotifyService: SnotifyService, private userService: UserService,
               private ngxService: NgxUiLoaderService) { }
@@ -57,14 +57,21 @@ export class GroupHeaderComponent implements OnInit {
   async ngOnInit() {
     this.ngxService.start();
     this.group_id = this.groupDataService.groupId;
+    this.isItMyWorkplace = this._activatedRoute.snapshot.queryParamMap.get('myworkplace') == 'true' || false;
     await this.loadUser();
-    this.loadGroup()
-    .then(()=>{
-      this.ngxService.stop();
-    })
-    .catch((err)=>{
-      console.log('Error while loading the group', err);
-    })
+    if (this.isItMyWorkplace) {
+      await this.getPrivateGroup();
+    } else {
+      // group needs to be defined
+      await this.loadGroup()
+      .then(()=>{
+        this.ngxService.stop();
+      })
+      .catch((err)=>{
+        console.log('Error while loading the group', err);
+      })
+    }
+
   }
 
   fileChangeEvent(event: any): void {
@@ -96,6 +103,25 @@ export class GroupHeaderComponent implements OnInit {
       console.log('Load failed');
   }
 
+  getPrivateGroup() {
+    return new Promise((resolve, reject) => {
+
+      this.groupService.getPrivateGroup()
+        .subscribe(async (res) => {
+
+
+          this.group = res['privateGroup'];
+          this.group_id = res['privateGroup']['_id'];
+          this.group.group_name = 'My Space';
+          this.groupImageUrl = await this.profilePic == null
+          ? '/assets/images/user.png' : environment.BASE_URL + `/uploads/${this.profilePic}`;
+          // this.group_name = res['privateGroup']['group_name'];
+          resolve();
+        }, (err) => {
+          reject(err);
+        })
+    })
+  }
 
   loadGroup() {
     return new Promise((resolve, reject)=>{

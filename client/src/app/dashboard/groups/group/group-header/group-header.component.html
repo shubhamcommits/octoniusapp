@@ -6,8 +6,14 @@
     <div>
       <h2>{{ group.group_name }}</h2>
       <ul class="nav">
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="!isItMyWorkplace">
           <a class="nav-link" [routerLink]="['/dashboard/group/',group_id,'activity' ]" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Activity
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
+
+        <li class="nav-item" *ngIf="isItMyWorkplace">
+          <a class="nav-link" routerLink="/dashboard/overview/myworkplace" [queryParams]="{myworkplace: true}" routerLinkActive="active">Activity
             <span class="sr-only">(current)</span>
           </a>
         </li>
@@ -48,7 +54,7 @@
 
   </div>
   <!-- For 'Invite Only' groups, only show the edit button if the current user is the owner or an admin of the workplace -->
-  <ng-container *ngIf="user && group.type !== 'agora'">
+  <ng-container *ngIf="user && !isItMyWorkplace && group.type !== 'agora'">
     <div *ngIf="user.role === 'admin' || user.role === 'owner'" class="col-md-3 text-right">
       <button type="button" name="button" class="btn pink btn-link" (click)="openLg(contentEditGroup)">
         <i class="material-icons">create</i>
@@ -57,7 +63,7 @@
   </ng-container>
 
   <!-- For public groups, only show the edit button if the current user is the creator of that group -->
-  <ng-container *ngIf="user && group.type === 'agora'">
+  <ng-container *ngIf="user && !isItMyWorkplace &&  group.type === 'agora'">
     <div *ngIf="ownerOfGroup" class="col-md-3 text-right">
       <button type="button" name="button" class="btn pink btn-link" (click)="openLg(contentEditGroup)">
         <i class="material-icons">create</i>

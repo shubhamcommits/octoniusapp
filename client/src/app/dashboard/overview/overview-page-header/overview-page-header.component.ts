@@ -55,7 +55,7 @@ export class OverviewPageHeaderComponent implements OnInit {
       .subscribe((res) => {
         this.user = res.user;
         this.workspaceImageUrl=environment.BASE_URL + '/uploads/'+ res['user']['profile_pic'];
-        console.log(this.workspaceImageUrl);
+        // console.log(this.workspaceImageUrl);
         resolve();
       }, (err) => {
         reject(err);

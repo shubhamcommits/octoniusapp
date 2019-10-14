@@ -9,6 +9,8 @@ const devEnv = require('../development.config');
 
 const prodEnv = require('../production.config');
 
+var compression = require('compression');
+
 // Correct REST naming
 const {
   authsRoutes,
@@ -26,6 +28,8 @@ const {
 
 const app = express();
 
+// Compressing the application
+app.use(compression());
 
 // Load 'development' configs for dev environment
 if (process.env.NODE_ENV !== 'production') {
