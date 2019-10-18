@@ -180,6 +180,7 @@ import { ngxUiLoaderConfig, ngCircle } from './shared/config/config';
  * 8. !===== DIRECTIVES =====!
  */
 import { ClickStopPropagationDirective } from './shared/directives/click-stop-propagation.directive';
+import { GroupKanbanBoardsComponent } from './dashboard/groups/group/group-kanban-boards/group-kanban-boards.component';
 
 
 /**
@@ -215,7 +216,9 @@ import { ClickStopPropagationDirective } from './shared/directives/click-stop-pr
     LimitCharacterPipe,
 
     // DIRECTIVES
-    ClickStopPropagationDirective
+    ClickStopPropagationDirective,
+
+    GroupKanbanBoardsComponent
   ],
   imports: [
 

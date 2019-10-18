@@ -66,6 +66,10 @@ const PostSchema = new Schema({
     unassigned : {
       type : String , 
       default: "No"
+    },
+    _column:{
+      type: Schema.Types.Mixed,
+      ref: 'Column'
     }
   },
   performance_task: {

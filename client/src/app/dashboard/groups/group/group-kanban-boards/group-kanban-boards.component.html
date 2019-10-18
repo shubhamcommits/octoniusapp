@@ -1,0 +1,108 @@
+<div class="root">
+  <!-- <div class="navbar has-background-dark">
+      <div class="navbar-brand">
+        <div class="navbar-item">
+          <h1 class="app-name has-gradient-text">kanban</h1>
+        </div>
+      </div>
+    </div> -->
+
+  <div class="board">
+
+    <div class="board-bar">
+      <p class="board-name">
+        <a class="navbar-brand" (click)="goBack()" style="cursor: pointer;">
+          <i class="material-icons">
+            arrow_back
+          </i>
+        </a>{{ groupData?.group_name }} Board</p>
+    </div>
+
+    <div class="board-wrapper">
+
+      <div class="board-columns" cdkDropListGroup>
+        <div class="board-column" id="column.title" *ngFor="let column of columns; trackBy: trackByIdx">
+
+          <div class="column-title">
+            {{ column?.title }}
+            <div class="delete-column"
+              *ngIf="!(column.title =='to do' || column.title =='in progress' || column.title =='done')"
+              (click)="deleteColumn(this.groupId, column.title)">
+              <i class="material-icons">
+                delete
+              </i>
+            </div>
+            <div class="edit-column"
+              *ngIf="!(column.title =='to do' || column.title =='in progress' || column.title =='done')"
+              (click)="column.editColumn = true; this.newColumnName = column.title;">
+              <i class="material-icons">
+                edit
+              </i>
+            </div>
+          </div>
+
+          <div class="column-title" *ngIf="column.editColumn">
+            <input class="form-control" style="margin-bottom: 10%;" type="text" placeholder="Provide the column name"
+              [(ngModel)]="newColumnName">
+            <div class="row button-group">
+              <button class="col-md-6 btn btn-sm btn-primary"
+                (click)="editExistingColumn(this.groupId, column.title ,this.newColumnName); column.editColumn = false; this.newColumnName = '';">Save</button>
+              <button class="col-md-6 btn btn-sm btn-danger"
+                (click)="column.editColumn = false; this.newColumnName = '';">Cancel</button>
+            </div>
+          </div>
+
+          <div class="tasks-container" [id]="column.title" cdkDropList [cdkDropListData]="column.tasks" (cdkDropListDropped)="drop($event)">
+            <div class="create-task task" (click)="column.addTask = true;">
+              + Create New Task
+            </div>
+
+            <div class="task" *ngIf="column.addTask">
+              <input class="form-control" style="margin-bottom: 10%; margin-right: 10%;" type="text" placeholder="Provide the task title"
+                [(ngModel)]="newTaskTitle">
+              <div class="row button-group">
+                <div class="approve-task" (click)="createNewTask(column, this.newTaskTitle); column.addTask = false; this.newTaskTitle = '';">
+                  <i class="material-icons">
+                    done
+                  </i>
+                </div>
+                <div class="discard-task" (click)="column.addTask = false; this.newTaskTitle = '';">
+                  <i class="material-icons">
+                    clear
+                  </i>
+                </div>
+
+              </div>
+            </div>
+            <div class="task" *ngFor="let task of column.tasks; let j = index; trackBy: trackByIdx" cdkDrag>
+              {{ task?.title }}
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="board-column">
+
+          <div class="column-title create-column" (click)="this.createColumn = true">
+            + Create new column
+          </div>
+
+          <div class="column-title" *ngIf="this.createColumn">
+            <input class="form-control" style="margin-bottom: 10%;" type="text" placeholder="Provide the column name"
+              [(ngModel)]="newColumnName">
+            <div class="row button-group">
+              <button class="col-md-6 btn btn-sm btn-primary"
+                (click)="createNewColumn(this.groupId, this.newColumnName)">Save</button>
+              <button class="col-md-6 btn btn-sm btn-danger" (click)="this.createColumn = false">Cancel</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

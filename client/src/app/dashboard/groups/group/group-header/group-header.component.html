@@ -24,6 +24,11 @@
             </a>
           </li>
 
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/dashboard/group/',group_id,'kanban' ]" routerLinkActive="active" (click)=" sendGroupData();">Kanban
+            </a>
+          </li>
+
         <li class="nav-item">
           <a class="nav-link" [routerLink]="['/dashboard/group/',group_id,'files' ]" routerLinkActive="active">Files
             <span class="sr-only">(current)</span>

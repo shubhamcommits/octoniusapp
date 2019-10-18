@@ -28,11 +28,7 @@ export class GroupHeaderComponent implements OnInit {
   // fileToUpload: File = null;
   fileToUpload: Blob = null;
 
-  group = {
-    group_name: '',
-    description: '',
-    type: ''
-  };
+  group: any= {};
 
   alert = {
     class: '',
@@ -133,6 +129,7 @@ export class GroupHeaderComponent implements OnInit {
 
         this.group.description = res['group']['description'] || '';
         this.group.group_name = res['group']['group_name'];
+        this.group = res['group'];
         this.groupDataService.group = res['group'];
 
         // Determine if the current user is the admin of the group
@@ -231,6 +228,10 @@ export class GroupHeaderComponent implements OnInit {
 
   openLg(content) {
     this.modalReference = this.modalService.open(content, { size: 'lg', centered: true });
+  }
+
+  sendGroupData() {
+    this.groupDataService.sendGroupData(this.group);
   }
   
 }

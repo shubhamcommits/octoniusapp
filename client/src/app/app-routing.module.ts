@@ -67,6 +67,7 @@ import { GroupMembersComponent } from './dashboard/groups/group/group-members/gr
 import { GroupPostComponent } from './dashboard/groups/group/group-post/group-post.component';
 import { GroupTasksComponent } from './dashboard/groups/group/group-tasks/group-tasks.component';
 import { GroupTasksNewComponent } from './dashboard/groups/group/group-tasks-new/group-tasks-new.component';
+import { GroupKanbanBoardsComponent } from './dashboard/groups/group/group-kanban-boards/group-kanban-boards.component';
 import { PulseComponent } from './dashboard/groups/pulse/pulse.component';
 
 // ----- OVERVIEW -----
@@ -102,6 +103,7 @@ const appRoutes: Routes = [
   // ----- DASHBOARD -----
   { path: 'dashboard/group/:id/document/:postId', component: CollaborativeDocGroupPostComponent, canActivate: [AuthGuard] },
   { path: 'dashboard/group/:id/files/:postId', component: DocumentFileComponent },
+  { path: 'dashboard/group/:id/kanban', component: GroupKanbanBoardsComponent },
   {
     path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard],
     children: [

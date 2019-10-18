@@ -226,6 +226,7 @@ const get = async (req, res, next) => {
       .populate('_liked_by', 'first_name last_name')
       .populate('comments._commented_by', 'first_name last_name profile_pic')
       .populate('task._assigned_to', 'first_name last_name')
+      .populate('task._column', 'title')
       .populate('performance_task._assigned_to', 'first_name last_name')
       .populate('event._assigned_to', 'first_name last_name')
       .lean();
