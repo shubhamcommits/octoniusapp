@@ -8,3 +8,7 @@ export interface Column{
     groupId: string;
     columns: Data[];
 }
+
+export class Column {
+    constructor(public name: string, public tasks: string[]) {}
+}

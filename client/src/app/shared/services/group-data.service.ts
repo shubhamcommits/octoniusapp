@@ -1,10 +1,15 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class GroupDataService {
+  
+  constructor() { }
+
   public _groupId;
   public _group: any;
-  constructor() { }
+  private groupData = new BehaviorSubject<any>({});
+  currentGroupData = this.groupData.asObservable();
 
   set groupId(groupId) {
     this._groupId = groupId;
@@ -22,6 +27,10 @@ export class GroupDataService {
 
   get group() {
     return this._group;
+  }
+
+  sendGroupData(message: any) {
+    this.groupData.next(message)
   }
 
 
