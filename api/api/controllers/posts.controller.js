@@ -79,11 +79,13 @@ const edit = async (req, res, next) => {
             content: req.body.content,
             _content_mentions: req.body._content_mentions,
             tags: req.body.tags,
+            _read_by: [],
             task: {
               due_to: moment(req.body.date_due_to).format('YYYY-MM-DD'),
               _assigned_to: req.body.assigned_to,
               status: req.body.status, 
-              unassigned : req.body.unassigned
+              unassigned : req.body.unassigned,
+              _column: req.body._column
             }
           }
         }
@@ -93,11 +95,13 @@ const edit = async (req, res, next) => {
             content: req.body.content,
             _content_mentions: req.body._content_mentions,
             tags: req.body.tags,
+            _read_by: [],
             task: {
              due_to: moment(req.body.date_due_to).format('YYYY-MM-DD'),
-              _assigned_to: req.body.assigned_to[0]._id,
+              _assigned_to: req.body.assigned_to,
               status: req.body.status , 
-              unassigned : req.body.unassigned
+              unassigned : req.body.unassigned,
+              _column: req.body._column
             }
           };
         }
@@ -109,6 +113,7 @@ const edit = async (req, res, next) => {
           content: req.body.content,
           _content_mentions: req.body._content_mentions,
           skill: req.body.skill,
+          _read_by: [],
           performance_task: {
             _assigned_to: req.body.assigned_to[0]._id,
             status: req.body.status
@@ -128,6 +133,7 @@ const edit = async (req, res, next) => {
           content: req.body.content,
           _content_mentions: req.body._content_mentions,
           tags: req.body.tags,
+          _read_by: [],
           event: {
             due_to: req.body.date_due_to,
             _assigned_to: assignedUsers
@@ -142,6 +148,7 @@ const edit = async (req, res, next) => {
           content: req.body.content,
           _content_mentions: req.body._content_mentions,
           tags: req.body.tags,
+          _read_by: [],
         };
         break;
 
@@ -149,7 +156,7 @@ const edit = async (req, res, next) => {
 
         postData = {
           title: req.body.title,
-          content: req.body.content
+          content: req.body.content,
         };
         break;
     }
@@ -168,8 +175,8 @@ const edit = async (req, res, next) => {
       return sendErr(res, null, 'User not allowed to edit this post!', 403);
     }
 
-    postData["_read_by"] = []
-
+    // postData._read_by = []
+    // console.log(postData);
     const updatedPost = await Post.findOneAndUpdate({
       _id: req.params.postId
     }, {
@@ -218,15 +225,15 @@ const get = async (req, res, next) => {
     const { postId } = req.params;
 
     // Get post data
-    const post = await Post.findOne({
-      _id: postId
+    const post = await Post.findOne({ 
+      _id: postId 
     })
       .populate('_group', '_id')
       .populate('_posted_by', 'first_name last_name profile_pic')
       .populate('_liked_by', 'first_name last_name')
       .populate('comments._commented_by', 'first_name last_name profile_pic')
       .populate('task._assigned_to', 'first_name last_name')
-      .populate('task._column', 'title')
+      // .populate('task._column', 'title')
       .populate('performance_task._assigned_to', 'first_name last_name')
       .populate('event._assigned_to', 'first_name last_name')
       .lean();

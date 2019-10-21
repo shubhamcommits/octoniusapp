@@ -38,14 +38,14 @@
           <div class="column-title">
            <h4> {{ column?.title }}</h4>
             <div class="delete-column"
-              *ngIf="!(column.title =='to do' || column.title =='in progress' || column.title =='done')"
-              (click)="deleteColumn(this.groupId, column.title)">
+              *ngIf="!(column.title =='to do')"
+              (click)="deleteColumn(this.groupId, column)">
               <i class="material-icons">
                 delete
               </i>
             </div>
             <div class="edit-column"
-              *ngIf="!(column.title =='to do' || column.title =='in progress' || column.title =='done')"
+              *ngIf="!(column.title =='to do')"
               (click)="column.editColumn = true; this.newColumnName = column.title;">
               <i class="material-icons">
                 edit
@@ -88,8 +88,18 @@
 
               </div>
             </div>
-            <div class="task" *ngFor="let task of column.tasks; let j = index; trackBy: trackByIdx" cdkDrag>
+            <div class="task" *ngFor="let task of column.tasks; let j = index; trackBy: trackByIdx" (click)="openTask(content)" cdkDrag>
               {{ task?.title }}
+              <ng-template #content let-modal>
+
+              <app-group-kanban-task-view
+              [task] = "task"
+              [columns] = "columns"
+              [allMembersId]="allMembersId"
+              (closeModal) = "closeTaskModal($event)">
+              </app-group-kanban-task-view>
+
+              </ng-template>
             </div>
 
           </div>

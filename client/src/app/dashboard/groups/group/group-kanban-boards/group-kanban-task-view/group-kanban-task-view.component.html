@@ -1,0 +1,109 @@
+<!-- TASK MODAL DEFINATION STARTS -->
+
+<!-- TASK TITLE STARTS-->
+<div class="modal-header">
+    <h3 class="modal-title"><b>{{ task?.title }}</b></h3>
+    <button type="button" class="close" aria-label="Close" (click)="sendCloseModalMessage();">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<!-- TASK TITLE ENDS -->
+
+<div class="modal-body">
+
+    <!-- TASK DETAILS STARTS -->
+    <div class="row container">
+        <div class="col-md-6 align-left">
+
+            <!-- TASK ASSIGNMENT STARTS -->
+            <div class="inline-block" *ngIf="task.task.unassigned == 'No'">
+                <span class="assigned">
+                    <i class="material-icons assign-icons">perm_identity</i>
+                    Assigned to {{task.task._assigned_to?.first_name}}
+                    {{task.task._assigned_to?.last_name}}
+                </span>
+            </div>
+            <div class="inline-block" *ngIf="task.task.unassigned == 'Yes'">
+                <span class="assigned">
+                    <i class="material-icons assign-icons">perm_identity</i>
+                    Unassigned
+                </span>
+            </div>
+            <!-- TASK ASSIGNMENT ENDS -->
+
+            <!-- TASK DUE DATE STARTS -->
+            <div class="inline-block" *ngIf="task.task?.due_to != 'Invalid date'">
+                <span class="assigned">
+                    <i class="material-icons assign-icons">event</i>
+                    due {{task.task?.due_to | date}}
+                </span>
+            </div>
+            <!-- TASK DUE DATE ENDS -->
+
+        </div>
+        <div class="col-md-6 align-right">
+
+            <!-- TASK STATUS STARTS -->
+            <div ngbDropdown class="inline-block">
+                <button class="btn btn-sm kbn-todo" id="dropdownDone" *ngIf="task?.task?.status == 'to do'"
+                    ngbDropdownToggle> To Do </button>
+                <button class="btn btn-sm kbn-working" id="dropdownDone" *ngIf="task?.task?.status == 'in progress'"
+                    ngbDropdownToggle> In Progress </button>
+                <button class="btn btn-sm kbn-done" id="dropdownDone" *ngIf="task?.task?.status == 'done'"
+                    ngbDropdownToggle> Done </button>
+                <div ngbDropdownMenu aria-labelledby="dropdownToDo">
+                    <button class="dropdown-item" (click)="changeStatus(task, 'to do')">To Do</button>
+                    <button class="dropdown-item" (click)="changeStatus(task, 'in progress')">In
+                        Progress
+                    </button>
+                    <button class="dropdown-item" (click)="changeStatus(task, 'done')">Done</button>
+                </div>
+            </div>
+            <!-- TASK STATUS ENDS -->
+
+            <!-- TASK CHANGE COLUMN STARTS -->
+            <div ngbDropdown class="inline-block">
+                <button class="btn btn-sm btn-light"
+                    ngbDropdownToggle> Move To </button>
+                <div ngbDropdownMenu>
+                    <button *ngFor="let column of columns" class="dropdown-item column-title">{{column?.title}}</button>
+                </div>
+            </div>
+            <!-- TASK CHANGE COLUMN ENDS -->
+
+            <!-- DELETE TASK STARTS -->
+            <div class="inline-block">
+                <i class="material-icons delete-icon">
+                    delete
+                </i>
+            </div>
+            <!-- DELETE TASK ENDS -->
+
+        </div>
+    </div>
+    <!-- TASK DETAILS ENDS -->
+
+    <!-- TASK CONTENT STARTS -->
+    <p class="container lead" [innerHTML]="task.content"></p>
+    <!-- TASK CONTENT ENDS -->
+
+    <!-- TASK ACTIONS STARTS -->
+    <post-actions *ngIf="user" [post]="task" [commentCount]="commentCount" [commentsDisplayed]="commentsDisplayed"
+    [user]="user" (toggleComments)="toggleComments()" (sendComments)="setComments($event)"
+    (togglePostCommentEditor)="togglePostCommentEditor()" (editPost)="editPost()" (deletePost)="deletePost()">
+    </post-actions>
+    <!-- TASK ACTIONS ENDS -->
+
+    <!-- COMMENT SECTION STARTS -->
+    <comment-section [post]="task" [(commentsDisplayed)]="commentsDisplayed" [modules]="{}" [user]="user"
+    [allMembersId]="allMembersId" [user_data]="user_data" [socket]="socket" [group]="groupData" [comments]="comments"
+    [(commentCount)]="commentCount">
+    </comment-section>
+    <!-- COMMENT SECTION ENDS -->
+
+
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-dark" ngbAutofocus (click)="sendCloseModalMessage();">Close</button>
+</div>
+<!-- TASK MODAL DEFINATION ENDS -->

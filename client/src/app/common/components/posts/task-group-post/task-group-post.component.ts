@@ -149,9 +149,22 @@ export class TaskGroupPostComponent implements OnInit, AfterViewInit{
     });
     }
     this.readMore = this.preview;
-    this.initColumns();
-    this.getAllColumns();
+    // this.initColumns();
+    // this.getAllColumns();
 
+  }
+
+  async changeStatus(post, status){
+    const object = {
+      status: status
+    }
+    return new Promise((resolve)=>{
+      this.postService.complete(post._id, object)
+      .subscribe((res)=>{
+        post.task.status = status;
+        resolve();
+      })
+    })
   }
 
   ngAfterViewInit(): void {

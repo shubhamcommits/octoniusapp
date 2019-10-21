@@ -1,0 +1,33 @@
+.inline-block{
+    display: inline-block;
+    margin-left: 1%;
+    margin-right: 1%;
+}
+
+.align-right{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.align-left{
+    display: flex;
+    justify-content: flex-start;
+}
+
+span.assigned{
+    display: flex;
+}
+
+.delete-icon{
+    color: #FF6584;
+    cursor: pointer;
+}
+
+.assign-icons{
+    color: #FD7714;
+    cursor: pointer;
+}
+
+.column-title{
+    text-transform: capitalize;
+}
