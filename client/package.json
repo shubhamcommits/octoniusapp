@@ -11,9 +11,6 @@
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
-  "resolutions": {
-    "https-proxy-agent": "^3.0.0"
-  },
   "private": true,
   "dependencies": {
     "@angular/animations": "8.0.1",
