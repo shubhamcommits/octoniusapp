@@ -26,7 +26,7 @@
           </div>
           </div>  
         <div class="col-md-4 text-right padding-topright" style=" object-fit: cover;">
-          <div ngbDropdown (openChange)="toggled($event)" autoClose="outside" #taskStatusList="ngbDropdown" class="d-inline-block">
+          <!-- <div ngbDropdown (openChange)="toggled($event)" autoClose="outside" #taskStatusList="ngbDropdown" class="d-inline-block">
             <div *ngFor="let column of allColumns; let i = index;">
               <div *ngIf="column.title == post.task.status">
                 <button class="btn btn-sm" style=" color: white;" [style.backgroundColor] = "bgColor[i%bgColor.length]" ngbDropdownToggle> {{ post.task.status }} </button> 
@@ -37,7 +37,22 @@
                 <button class="dropdown-item" (click)="updateTaskColumn(this.post._id, this.post.task.status, col.title)"> {{ col.title }}</button>  
               </div>
             </div>
-          </div>
+          </div> -->
+          <div ngbDropdown class="inline-block" [autoClose]="true">
+            <button class="btn btn-sm kbn-todo" id="dropdownDone" *ngIf="post?.task?.status == 'to do'"
+                ngbDropdownToggle> To Do </button>
+            <button class="btn btn-sm kbn-working" id="dropdownDone" *ngIf="post?.task?.status == 'in progress'"
+                ngbDropdownToggle> In Progress </button>
+            <button class="btn btn-sm kbn-done" id="dropdownDone" *ngIf="post?.task?.status == 'done'"
+                ngbDropdownToggle> Done </button>
+            <div ngbDropdownMenu aria-labelledby="dropdownToDo">
+                <button class="dropdown-item" (click)="changeStatus(post, 'to do')">To Do</button>
+                <button class="dropdown-item" (click)="changeStatus(post, 'in progress')">In
+                    Progress
+                </button>
+                <button class="dropdown-item" (click)="changeStatus(post, 'done')">Done</button>
+            </div>
+        </div>
           <p class="small font-weight-bold" style="margin-top: 5px" *ngIf="post.task?.due_to != 'Invalid date'"> due
             {{post.task?.due_to | date}} <br> <span class="small kbn-working-color font-weight-bold"
               *ngIf="post.task?.started_at && post.task?.completed_at"> time spent:

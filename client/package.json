@@ -11,6 +11,9 @@
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
+  "resolutions": {
+    "https-proxy-agent": "^3.0.0"
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "8.0.1",
@@ -27,7 +30,7 @@
     "@fortawesome/fontawesome-free": "^5.9.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.19",
     "@fortawesome/free-solid-svg-icons": "^5.9.0",
-    "@ng-bootstrap/ng-bootstrap": "^4.2.2",
+    "@ng-bootstrap/ng-bootstrap": "^5.1.1",
     "@tweenjs/tween.js": "^18.1.0",
     "@types/jest": "^24.0.18",
     "@types/mocha": "^5.2.7",
@@ -82,7 +85,6 @@
     "rxjs": "^6.5.2",
     "rxjs-compat": "^6.5.2",
     "sharedb": "^1.0.0-beta.20",
-    "sharedb-mongo": "^1.0.0-beta.8",
     "socket.io-client": "^2.2.0",
     "sweetalert2": "^8.12.1",
     "time-ago-pipe": "^1.3.2",
@@ -111,6 +113,7 @@
     "karma-coverage-istanbul-reporter": "^2.0.5",
     "karma-jasmine": "~2.0.1",
     "karma-jasmine-html-reporter": "^1.4.2",
+    "npm-force-resolutions": "0.0.2",
     "protractor": "^5.4.2",
     "ts-node": "~8.3.0",
     "tslint": "~5.17.0"

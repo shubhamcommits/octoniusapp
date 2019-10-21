@@ -68,8 +68,10 @@ const PostSchema = new Schema({
       default: "No"
     },
     _column:{
-      type: Schema.Types.Mixed,
-      ref: 'Column'
+      title: {
+        type: String,
+        default: 'to do'
+      }
     }
   },
   performance_task: {
@@ -124,7 +126,8 @@ const PostSchema = new Schema({
   }],
   _read_by: [{
     type: Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'User',
+    default: []
   }],
   _followers: [{
     type: Schema.Types.ObjectId,

@@ -6,6 +6,10 @@ import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { ColumnService } from '../../../../shared/services/column.service';
 import { PostService } from '../../../../shared/services/post.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import io from 'socket.io-client';
+import { environment } from '../../../../../environments/environment';
+import { SnotifyService } from 'ng-snotify';
 
 @Component({
   selector: 'app-group-kanban-boards',
@@ -20,11 +24,14 @@ export class GroupKanbanBoardsComponent implements OnInit {
     private route: ActivatedRoute,
     private location: Location,
     private columnService: ColumnService,
-    private postService: PostService) { }
+    private postService: PostService,
+    private modalService: NgbModal,
+    private snotifyService: SnotifyService) { }
 
   // Groups
   groupData: any = {};
   groupId;
+  allMembersId;
 
   // Columns
   createColumn = false;
@@ -33,6 +40,13 @@ export class GroupKanbanBoardsComponent implements OnInit {
 
   // Tasks
   newTaskTitle = '';
+
+  /*Initiating socket and related data*/
+  socket = io(environment.BASE_URL, {
+    path: '/socket.io',
+    transports: ['websocket'],
+    secure: true,
+  });
 
   async ngOnInit() {
     this.groupId = await this.fetchGroupId();
@@ -44,6 +58,10 @@ export class GroupKanbanBoardsComponent implements OnInit {
       this.groupData = await this.getGroup(this.groupId);
     }
     // console.log(this.groupData);
+    this.allMembersId = this.groupData._members.map((member)=>{
+      return member._id;
+    })
+    // console.log(this.allMembersId);
     /**
      * Here we fetch all the columns available in a group, and if null we initialise them with the basic 3 ones
      */
@@ -92,6 +110,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
       .subscribe((res)=>{
         resolve(res['columns']);
       }, (err)=>{
+        this.snotifyService.error('Unable to initialise the columns, please try again later!');
         console.log('Error occured while initiliasing columns', err);
         reject({});
       })
@@ -108,6 +127,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
       .subscribe((res)=>{
         resolve(res['columns']);
       }, (err)=>{
+        this.snotifyService.error('Unable to fetch the columns from the server, please try again later!');
         console.log('Error occured while fetching columns', err);
         reject({});
       })
@@ -124,22 +144,27 @@ export class GroupKanbanBoardsComponent implements OnInit {
     } else {
       var post = event.previousContainer.data[event.previousIndex];
       // console.log(post, event.previousContainer, event.container);
-        if(event.previousContainer.id == 'done' && (event.container.id == 'to do' || event.container.id == 'in progress')){
+        // if(event.previousContainer.id == 'done' && (event.container.id == 'to do' || event.container.id == 'in progress')){
+        //   transferArrayItem(event.previousContainer.data,
+        //     event.container.data,
+        //     event.previousIndex,
+        //     event.currentIndex);
+        //     this.moveTaskToNewColumn(post, event.previousContainer.id, event.container.id);
+        // }
+        // else if(event.previousContainer.id != 'done'){
+        //   transferArrayItem(event.previousContainer.data,
+        //     event.container.data,
+        //     event.previousIndex,
+        //     event.currentIndex);
+        //   this.moveTaskToNewColumn(post, event.previousContainer.id, event.container.id);
+        // }
+        // else
+        //   console.log('Not allowed');
           transferArrayItem(event.previousContainer.data,
             event.container.data,
             event.previousIndex,
             event.currentIndex);
             this.moveTaskToNewColumn(post, event.previousContainer.id, event.container.id);
-        }
-        else if(event.previousContainer.id != 'done'){
-          transferArrayItem(event.previousContainer.data,
-            event.container.data,
-            event.previousIndex,
-            event.currentIndex);
-          this.moveTaskToNewColumn(post, event.previousContainer.id, event.container.id);
-        }
-        else
-          console.log('Not allowed');
     }
   }
 
@@ -155,6 +180,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
         // console.log('Group Data', res);
         resolve(res['group']);
       }, (err)=>{
+        this.snotifyService.error('Unable to fetch current group details from the server, please try again later!');
         console.log('Error while fetching the data', err);
         reject({});
       })
@@ -177,18 +203,19 @@ export class GroupKanbanBoardsComponent implements OnInit {
       this.groupService.getGroupTasks(groupId)
       .subscribe(async (res) => {
         for(let i = 0; i < this.columns.length; i++){
-          if(this.columns[i]['title'] != 'done'){
+          // if(this.columns[i]['title'] != 'done'){
             this.columns[i]['tasks'] = res['posts']
             .filter(post => post.task.hasOwnProperty('_column') === true && post.task._column.title === this.columns[i]['title'])
-          }
-          if(this.columns[i]['title'] != 'done'){
+          // }
+          // if(this.columns[i]['title'] != 'done'){
             Array.prototype.push.apply(this.columns[i]['tasks'], res['posts']
             .filter(post => post.task.status === this.columns[i]['title'] && post.task.hasOwnProperty('_column') === false));
-          }
+          // }
         }
-        await this.getCompletedTasks(groupId);
+        // await this.getCompletedTasks(groupId);
         resolve(this.columns)
       }, (err) => {
+        this.snotifyService.error('Unable to fetch the tasks from the server, please try again later!');
         console.log('Error Fetching the Pending Tasks Posts', err);
         reject({});
       });
@@ -214,6 +241,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
         this.columns[index]['tasks'] = res['posts'].filter(completedTask => completedTask.task.status == 'done');
         resolve();
       }, (err) => {
+        this.snotifyService.error('Unable to fetch all the completed tasks from the server, please try again later!');
         console.log('Error Fetching the Completed Tasks Posts', err);
         reject([]);
       });
@@ -236,8 +264,10 @@ export class GroupKanbanBoardsComponent implements OnInit {
           tasks:[]
         })
         this.createColumn = false;
+        this.snotifyService.success('New Column created sucessfully!');
         resolve();
       }, (err)=>{
+        this.snotifyService.error('There\'s some unexpected error occured, please try again later!');
         console.log('Error occured while creating a new Column', err);
         this.createColumn = false;
         reject({});
@@ -259,8 +289,10 @@ export class GroupKanbanBoardsComponent implements OnInit {
         let index = this.columns.findIndex(column => column.title === currentColumnName);
         if(index != -1)
           this.columns[index]['title'] = newColumnName;
+        this.snotifyService.success('Column name edited sucessfully!');
         resolve();
       }, (err)=>{
+        this.snotifyService.error('There\'s some unexpected error occured, please try again later!');
         console.log('Error occured while editing the column', err);
         reject();
       })
@@ -273,20 +305,26 @@ export class GroupKanbanBoardsComponent implements OnInit {
    * @param columnName 
    * Makes a HTTP PUT Request(? Change to DELETE maybe)
    */
-  async deleteColumn(groupId, columnName){
-    return new Promise((resolve, reject)=>{
-      this.columnService.deleteColumn(groupId, columnName)
-      .subscribe((res)=>{
-        let index = this.columns.findIndex(column => column.title === columnName);
-        if(index != -1)
-          this.columns.splice(index, 1);
-        
-        resolve();
-      }, (err)=>{
-        console.log('Error occured while removing the column', err);
-        reject();
+  async deleteColumn(groupId, column){
+    if(column.tasks.length == 0){
+      return new Promise((resolve, reject)=>{
+        this.columnService.deleteColumn(groupId, column.title)
+        .subscribe((res)=>{
+          let index = this.columns.findIndex(col => col.title === column.title);
+          if(index != -1)
+            this.columns.splice(index, 1);
+          this.snotifyService.success('Column deleted sucessfully!');
+          resolve();
+        }, (err)=>{
+          this.snotifyService.error('There\'s some unexpected error occured, please try again later!');
+          console.log('Error occured while removing the column', err);
+          reject();
+        })
       })
-    })
+    } else{
+      this.snotifyService.warning('You can\'t delete a column, with having tasks in it!');
+    }
+
   }
 
   /**
@@ -294,6 +332,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
    * We can sort the tasks based on their columns titles
    * @param column 
    * @param taskTitle 
+   * Makes a HTTP POST Request to add a new Unassigned task
    */
   async createNewTask(column, taskTitle){
     return new Promise((resolve, reject)=>{
@@ -303,12 +342,12 @@ export class GroupKanbanBoardsComponent implements OnInit {
         case 'to do':
           taskStatus = 'to do';
           break;
-        case 'in progress':
-          taskStatus = 'in progress';
-          break;
-        case 'done':
-          taskStatus = 'done';
-          break;
+        // case 'in progress':
+        //   taskStatus = 'in progress';
+        //   break;
+        // case 'done':
+        //   taskStatus = 'done';
+        //   break;
       }
 
       const taskPost = {
@@ -321,8 +360,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
           unassigned: 'Yes',
           status: (taskStatus === '') ? 'to do' : taskStatus,
           _column:{
-            title: column.title,
-            _id: column._id
+            title: column.title
           }
         }
       }
@@ -333,8 +371,10 @@ export class GroupKanbanBoardsComponent implements OnInit {
         if(index != -1){
           this.columns[index]['tasks'].unshift(res['post']);
         }
+        this.snotifyService.success('New task created sucessfully!');
         resolve(res['post']);
       }, (err)=>{
+        this.snotifyService.error('There\'s some unexpected error occured, please try again later!');
         console.log('Error occured while adding the task to the column', err);
         reject();
       })
@@ -342,7 +382,8 @@ export class GroupKanbanBoardsComponent implements OnInit {
   }
 
   /**
-   * This function is responsib
+   * This function is responsible for moving the tasks from one column to another
+   * And Updating the _column field
    * @param task 
    * @param oldColumn 
    * @param newColumn 
@@ -354,12 +395,12 @@ export class GroupKanbanBoardsComponent implements OnInit {
         case 'to do':
           taskStatus = 'to do';
           break;
-        case 'in progress':
-          taskStatus = 'in progress';
-          break;
-        case 'done':
-          taskStatus = 'done';
-          break;
+        // case 'in progress':
+        //   taskStatus = 'in progress';
+        //   break;
+        // case 'done':
+        //   taskStatus = 'done';
+        //   break;
       }
 
       const taskPost = {
@@ -368,26 +409,34 @@ export class GroupKanbanBoardsComponent implements OnInit {
         content: task.content,
         _content_mentions: task._content_mentions,
         tags: task.tags,
-        // _read_by: task._read_by,
+        _read_by: [],
         unassigned: task.task.unassigned,
         due_to: task.task.due_to,
-        _assigned_to: task.task._assigned_to,
+        assigned_to: task.task._assigned_to,
+        _column: {
+          title:newColumn
+        },
         status: (taskStatus === task.task.status)? task.task.status : taskStatus
       }
       // console.log(taskPost)
       this.postService.editPost(task._id, taskPost)
       .subscribe((res)=>{
-        console.log(res);
+        // console.log(res);
         resolve()
       }, (err)=>{
+        this.snotifyService.error('There\'s some unexpected error occured, please try again later!');
         console.log('Error occured while moving the task to the column', err);
         reject();
       })
     })
   }
   
-  cancelCreateColumn(){
-    this.createColumn = false;
+  async openTask(content){
+    this.modalService.open(content, {'size': 'xl'}); 
+  }
+
+  closeTaskModal($event){
+    this.modalService.dismissAll();
   }
 
   trackByIdx(index, element){
@@ -397,6 +446,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
   ngOnDestroy(): void {
     //Called once, before the instance is destroyed.
     //Add 'implements OnDestroy' to the class.
+    this.modalService.dismissAll();
   }
 
 

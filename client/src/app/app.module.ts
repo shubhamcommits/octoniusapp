@@ -98,7 +98,7 @@ import { AppRoutingModule, routingComponents } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DragDropModule, CdkDragExit } from '@angular/cdk/drag-drop';
-import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { HashLocationStrategy, LocationStrategy, CommonModule } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { OverlayModule } from '@angular/cdk/overlay';
@@ -181,7 +181,7 @@ import { ngxUiLoaderConfig, ngCircle } from './shared/config/config';
  */
 import { ClickStopPropagationDirective } from './shared/directives/click-stop-propagation.directive';
 import { GroupKanbanBoardsComponent } from './dashboard/groups/group/group-kanban-boards/group-kanban-boards.component';
-
+import { GroupKanbanTaskViewComponent } from './dashboard/groups/group/group-kanban-boards/group-kanban-task-view/group-kanban-task-view.component';
 
 /**
  * 9. !===== IMPORTS & DECLARATIONS =====!
@@ -218,17 +218,19 @@ import { GroupKanbanBoardsComponent } from './dashboard/groups/group/group-kanba
     // DIRECTIVES
     ClickStopPropagationDirective,
 
-    GroupKanbanBoardsComponent
+    GroupKanbanBoardsComponent,
+
+    GroupKanbanTaskViewComponent
   ],
   imports: [
 
     // THIRD PARTY MODULES 
     AngularMultiSelectModule, AppRoutingModule, BrowserAnimationsModule, BrowserModule,
-    ClickOutsideModule, CalendarModule.forRoot({
+    CommonModule, ClickOutsideModule, CalendarModule.forRoot({
       provide: DateAdapter,
       useFactory: adapterFactory
     }), DragDropModule, FontAwesomeModule, FormsModule, HttpClientModule, ImageCropperModule,
-    InfiniteScrollModule, MomentModule, NgbModule.forRoot(), NgCircleProgressModule.forRoot(ngCircle),
+    InfiniteScrollModule, MomentModule, NgbModule, NgCircleProgressModule.forRoot(ngCircle),
     NgxSkillBarModule, NgxUiLoaderModule.forRoot(ngxUiLoaderConfig), OverlayModule, OwlDateTimeModule,
     OwlNativeDateTimeModule, PdfViewerModule, QuillModule, ReactiveFormsModule, ScrollToModule.forRoot(), SnotifyModule
   ],

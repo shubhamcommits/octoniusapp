@@ -17,12 +17,6 @@ const ColumnSchema = new Schema({
         default: [{
             title: 'to do',
             taskCount: 0
-        },{
-            title: 'in progress',
-            taskCount: 0
-        },{
-            title: 'done',
-            taskCount: 0
         }]
     }
 });
