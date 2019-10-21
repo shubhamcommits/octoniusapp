@@ -20,8 +20,8 @@ import { GoogleCloudService } from '../../../../shared/services/google-cloud.ser
 import { ActivatedRoute, Router, Route } from '@angular/router';
 
 // added by Amit for collaborative editing starts
-import QuillCursors from 'quill-cursors';
-import ReconnectingWebSocket from 'reconnecting-websocket';
+// import QuillCursors from 'quill-cursors';
+// import ReconnectingWebSocket from 'reconnecting-websocket';
 // import ShareDB from 'sharedb';
 import {cursors} from '../../../../shared/utils/cursors';
 import * as utils from '../../../../shared/utils/utils';

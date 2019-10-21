@@ -2,7 +2,7 @@ import { Component, OnInit, Output, EventEmitter, Input, Inject,ChangeDetectorRe
 import { ActivatedRoute, Router, Route, ResolveEnd } from '@angular/router';
 import {Location} from '@angular/common';
 
-import QuillCursors from 'quill-cursors';
+// import QuillCursors from 'quill-cursors';
 import  ImageResize  from 'quill-image-resize-module';
 import { ImageDrop } from 'quill-image-drop-module';
 import { ImageFormat } from '../../../../shared/utils/image-format/base-image-format';
@@ -50,9 +50,10 @@ let Parchment = Quill.import('parchment');
 let Container = Quill.import('blots/container');
 let Scroll = Quill.import('blots/scroll');
 
+// const QuillCursors = require('quill-cursors');
 // !--Register Required Modules--! //
 ShareDB.types.register(require('rich-text').type);
-Quill.register('modules/cursors', QuillCursors);
+// Quill.register('modules/cursors', QuillCursors);
 Quill.register('modules/imageResize', ImageResize);
 Quill.register('modules/imageDrop', ImageDrop);
 Quill.register(Mark);
@@ -434,11 +435,11 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
             authorId: connection.user_id, // Current author id
             //color: connection.color // Current author color
           },
-          cursors:{
-            hideDelayMs: 5000,
-            hideSpeedMs: 0,
-            selectionChangeSource: null
-          },
+          // cursors:{
+          //   hideDelayMs: 5000,
+          //   hideSpeedMs: 0,
+          //   selectionChangeSource: null
+          // },
           imageDrop: true,
           imageResize: {
             displaySize: true,
@@ -505,7 +506,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
         },
       });
       
-      let cursorsModule = quill.getModule('cursors');
+      // let cursorsModule = quill.getModule('cursors');
      // cursorsModule.createCursor(1, 'User 1', 'red');
 
       // Init a blank user connection to store local conn data
@@ -687,15 +688,15 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
         console.log('[cursors] Error on socket. Event:', event);
       };
   
-      this.handleDocument(doc, user, cursorsModule);
+      this.handleDocument(doc, user);
 
       //fired from cursor.js when a user is disconnected.
       // so we remove that cursor.
       document.addEventListener('cursors-update', (e: any) => {
         // Handle Removed Connections
         e.detail.removedConnections.forEach((connection: any) => {
-          if (cursorsModule.cursors[connection.id])
-            cursorsModule.removeCursor(connection.id);
+          // if (cursorsModule.cursors[connection.id])
+          //   cursorsModule.removeCursor(connection.id);
         });
         //this.documentService.updateCursors(e.detail.source, cursors, cursorsModule);
       });
@@ -721,7 +722,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
 
   }
 
-  handleDocument(doc, user, cursorsModule) {
+  handleDocument(doc, user) {
     doc.subscribe(async () => {
       if (!doc.type)
         doc.create([{
