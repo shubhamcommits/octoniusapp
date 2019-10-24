@@ -156,6 +156,7 @@ export class GroupActivityComponent implements OnInit {
     this.initializeGroupMembersSearchForm();
     this.mentionmembers();
     this.socketio();
+    this.sendGroupQuillModules();
   }
 
   addNewPostToPosts(post) {
@@ -627,5 +628,12 @@ export class GroupActivityComponent implements OnInit {
       },
     };
     this.modulesLoaded = true;
+  }
+
+  /**
+   * This function sends the quill modules of the current group
+   */
+  sendGroupQuillModules(){
+    this.groupDataService.sendGroupQuillModules(this.modules);
   }
 }

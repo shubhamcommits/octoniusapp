@@ -30,11 +30,17 @@ const searchGroupUsers = async (req, res, next) => {
     const group = req.params.group_id;
 
     const users = await User.find({
-      _groups: group,
-      full_name: {
-        $regex: new RegExp(query, 'i')
+      $and:[
+        { _groups: group},{
+        $or:[
+         { full_name: { $regex: new RegExp(query, 'i')} },
+         { email: { $regex: new RegExp(query, 'i')} }
+        ]
       }
-    });
+    ]
+    })
+    .limit(20)
+    .lean();
 
 
     return res.status(200).json({

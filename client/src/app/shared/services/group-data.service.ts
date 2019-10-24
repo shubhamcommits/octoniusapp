@@ -11,6 +11,9 @@ export class GroupDataService {
   private groupData = new BehaviorSubject<any>({});
   currentGroupData = this.groupData.asObservable();
 
+  private quillModules = new BehaviorSubject<any>({});
+  currentGroupQuillModules = this.quillModules.asObservable();
+
   set groupId(groupId) {
     this._groupId = groupId;
   }
@@ -31,6 +34,10 @@ export class GroupDataService {
 
   sendGroupData(message: any) {
     this.groupData.next(message)
+  }
+
+  sendGroupQuillModules(message: any){
+    this.quillModules.next(message);
   }
 
 

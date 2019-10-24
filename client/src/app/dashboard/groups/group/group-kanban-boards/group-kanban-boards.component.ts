@@ -41,6 +41,9 @@ export class GroupKanbanBoardsComponent implements OnInit {
   // Tasks
   newTaskTitle = '';
 
+  // Quill Modules
+  quillModules = {}
+
   /*Initiating socket and related data*/
   socket = io(environment.BASE_URL, {
     path: '/socket.io',
@@ -72,7 +75,10 @@ export class GroupKanbanBoardsComponent implements OnInit {
 
     // console.log(this.columns);
     await this.getTasks(this.groupId);
-    console.log(this.columns);
+    // console.log(this.columns);
+
+    this.quillModules = await this.getGroupQuillModules();
+    // console.log(this.quillModules);
   }
 
   /**
@@ -94,6 +100,20 @@ export class GroupKanbanBoardsComponent implements OnInit {
   async getGroupData(){
     return new Promise((resolve)=>{
       this.dataService.currentGroupData
+      .subscribe((res)=>{
+        resolve(res);
+      })
+    })
+  }
+
+  /**
+   * Returns data as the new promise from groupDataService(shared)
+   * This service is fetching data from Group Activity Component
+   * This function is made to reduce the HTTP calls and load on server
+   */
+  async getGroupQuillModules(){
+    return new Promise((resolve)=>{
+      this.dataService.currentGroupQuillModules
       .subscribe((res)=>{
         resolve(res);
       })
@@ -124,7 +144,10 @@ export class GroupKanbanBoardsComponent implements OnInit {
   async getAllColums(groupId){
     return new Promise((resolve, reject)=>{
       this.columnService.getAllColumns(groupId)
-      .subscribe((res)=>{
+      .subscribe(async (res)=>{
+        if(res == null)
+          resolve(null)
+        else
         resolve(res['columns']);
       }, (err)=>{
         this.snotifyService.error('Unable to fetch the columns from the server, please try again later!');
@@ -164,6 +187,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
             event.container.data,
             event.previousIndex,
             event.currentIndex);
+            console.log(event, event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
             this.moveTaskToNewColumn(post, event.previousContainer.id, event.container.id);
     }
   }
@@ -429,6 +453,14 @@ export class GroupKanbanBoardsComponent implements OnInit {
         reject();
       })
     })
+  }
+
+  async moveTaskFromDropDown($event){
+    this.moveTaskToNewColumn($event.task, $event.oldColumn, $event.newColumn);
+    let oldColumnIndex = this.columns.findIndex((column)=> column.title.toLowerCase() === $event.oldColumn.toLowerCase());
+    let newColumnIndex = this.columns.findIndex((column)=> column.title.toLowerCase() === $event.newColumn.toLowerCase());
+    this.columns[oldColumnIndex]['tasks'].splice($event.task, 1);
+    this.columns[newColumnIndex]['tasks'].unshift($event.task);
   }
   
   async openTask(content){

@@ -2,7 +2,14 @@
 
 <!-- TASK TITLE STARTS-->
 <div class="modal-header">
-    <h3 class="modal-title"><b>{{ task?.title }}</b></h3>
+    <h3 class="modal-title" *ngIf="!editingTitle" (click)="editingTitle= true"><b>{{ task?.title }}</b></h3>
+    <p style="font-size: 20px; font-weight: bold;">
+            <input *ngIf="editingTitle" [(ngModel)]="postTitle" type="text" id="title" class="tags" 
+            (keyup.enter)="saveTaskContent(task); editingTitle = false;" 
+            placeholder="Your Task title here" 
+            name="title" 
+            placement="right" 
+            ngbTooltip="Type & hit enter to add your title"></p>
     <button type="button" class="close" aria-label="Close" (click)="sendCloseModalMessage();">
         <span aria-hidden="true">&times;</span>
     </button>
@@ -16,27 +23,43 @@
         <div class="col-md-6 align-left">
 
             <!-- TASK ASSIGNMENT STARTS -->
+            <div ngbDropdown autoClose=true class="d-inline-block">
             <div class="inline-block" *ngIf="task.task.unassigned == 'No'">
                 <span class="assigned">
-                    <i class="material-icons assign-icons">perm_identity</i>
+                    <img ngbDropdownToggle src = "{{this.BASE_URL}}/uploads/{{task.task._assigned_to?.profile_pic}}" onerror="this.src = '/assets/images/user.png'" class="feed-avatar">
                     Assigned to {{task.task._assigned_to?.first_name}}
                     {{task.task._assigned_to?.last_name}}
                 </span>
             </div>
             <div class="inline-block" *ngIf="task.task.unassigned == 'Yes'">
                 <span class="assigned">
-                    <i class="material-icons assign-icons">perm_identity</i>
+                    <i class="material-icons assign-icons" ngbDropdownToggle>perm_identity</i>
                     Unassigned
                 </span>
+            </div>
+                    <div ngbDropdownMenu>
+                      <div ngbDropdownItem><span>Search a member whom you'd like to assign this task</span></div>
+                      <div class="input-group input-group-sm">
+                        <input type="text" class="form-control" (keyup) = "onSearchMember($event)">
+                      </div>
+                        <button class="btn dropdown-item" *ngFor="let member of usersInGroup" (click) = "onSelectUser(task, member)">
+                            <img src = "{{this.BASE_URL}}/uploads/{{member?.profile_pic}}" onerror="this.src = '/assets/images/user.png'" class="feed-avatar">
+                           {{member?.first_name}} {{member?.last_name}}<br> <span class="small muted">{{member?.email}}</span>
+                        </button>
+                  </div>
             </div>
             <!-- TASK ASSIGNMENT ENDS -->
 
             <!-- TASK DUE DATE STARTS -->
             <div class="inline-block" *ngIf="task.task?.due_to != 'Invalid date'">
                 <span class="assigned">
-                    <i class="material-icons assign-icons">event</i>
+                        <date-picker-modal
+                        [model_date]="modelDate"
+                        (picked_date)="setDate(task, $event)">
+                    </date-picker-modal>
                     due {{task.task?.due_to | date}}
                 </span>
+
             </div>
             <!-- TASK DUE DATE ENDS -->
 
@@ -63,10 +86,10 @@
 
             <!-- TASK CHANGE COLUMN STARTS -->
             <div ngbDropdown class="inline-block">
-                <button class="btn btn-sm btn-light"
-                    ngbDropdownToggle> Move To </button>
+                <button class="btn btn-sm btn-light capitalise"
+                    ngbDropdownToggle> {{ task?.task?._column?.title }} </button>
                 <div ngbDropdownMenu>
-                    <button *ngFor="let column of columns" class="dropdown-item column-title">{{column?.title}}</button>
+                    <button *ngFor="let column of columns" class="dropdown-item column-title" (click)="sendMoveTaskMessage(task, task?.task?._column?.title, column?.title)">{{column?.title}}</button>
                 </div>
             </div>
             <!-- TASK CHANGE COLUMN ENDS -->
@@ -84,7 +107,12 @@
     <!-- TASK DETAILS ENDS -->
 
     <!-- TASK CONTENT STARTS -->
-    <p class="container lead" [innerHTML]="task.content"></p>
+    <button class="btn btn-primary btn-sm save-task-content" (click)="saveTaskContent(task)" [disabled]="taskContent == task?.content">Save Current Content</button>
+    <quill-editor [modules]="quillModules" [spellcheck]="true" (onContentChanged)="onContentChanged($event)" 
+    [value]="task?.content"
+    [(ngModel)]="taskContent">
+    </quill-editor>
+    <!-- <p class="container lead" [innerHTML]="task.content"></p> -->
     <!-- TASK CONTENT ENDS -->
 
     <!-- TASK ACTIONS STARTS -->
