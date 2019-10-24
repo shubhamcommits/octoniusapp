@@ -31,3 +31,27 @@ span.assigned{
 .column-title{
     text-transform: capitalize;
 }
+
+.capitalise{
+    text-transform: capitalize;
+}
+
+.assigned.dropdown-toggle::after {
+    display:none;
+}
+
+input{
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+img{
+    cursor: pointer;
+}
+
+.save-task-content{
+    display: flex;
+    flex-flow: row-reverse;
+    margin-left: auto;
+    
+}

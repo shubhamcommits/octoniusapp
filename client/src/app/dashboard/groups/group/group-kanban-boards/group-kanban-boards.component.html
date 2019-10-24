@@ -96,7 +96,11 @@
               [task] = "task"
               [columns] = "columns"
               [allMembersId]="allMembersId"
-              (closeModal) = "closeTaskModal($event)">
+              [groupData]="groupData"
+              [socket] = "socket"
+              [quillModules]="quillModules"
+              (closeModal) = "closeTaskModal($event)"
+              (moveTask)="moveTaskFromDropDown($event)">
               </app-group-kanban-task-view>
 
               </ng-template>
