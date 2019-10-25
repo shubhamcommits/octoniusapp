@@ -2,14 +2,11 @@
 
 <!-- TASK TITLE STARTS-->
 <div class="modal-header">
-    <h3 class="modal-title" *ngIf="!editingTitle" (click)="editingTitle= true"><b>{{ task?.title }}</b></h3>
+    <h4 class="modal-title" *ngIf="!editingTitle" (click)="editingTitle= true">{{ task?.title }}</h4>
     <p style="font-size: 20px; font-weight: bold;">
-            <input *ngIf="editingTitle" [(ngModel)]="postTitle" type="text" id="title" class="tags" 
-            (keyup.enter)="saveTaskContent(task); editingTitle = false;" 
-            placeholder="Your Task title here" 
-            name="title" 
-            placement="right" 
-            ngbTooltip="Type & hit enter to add your title"></p>
+        <input *ngIf="editingTitle" [(ngModel)]="postTitle" type="text" id="title" class="tags"
+            (keyup.enter)="saveTaskContent(task); editingTitle = false;" placeholder="Your Task title here" name="title"
+            placement="right" ngbTooltip="Type & hit enter to add your title"></p>
     <button type="button" class="close" aria-label="Close" (click)="sendCloseModalMessage();">
         <span aria-hidden="true">&times;</span>
     </button>
@@ -19,44 +16,52 @@
 <div class="modal-body">
 
     <!-- TASK DETAILS STARTS -->
-    <div class="row container">
-        <div class="col-md-6 align-left">
+    <div class="row">
+        <div class="col-md-3">
 
             <!-- TASK ASSIGNMENT STARTS -->
-            <div ngbDropdown autoClose=true class="d-inline-block">
-            <div class="inline-block" *ngIf="task.task.unassigned == 'No'">
-                <span class="assigned">
-                    <img ngbDropdownToggle src = "{{this.BASE_URL}}/uploads/{{task.task._assigned_to?.profile_pic}}" onerror="this.src = '/assets/images/user.png'" class="feed-avatar">
-                    Assigned to {{task.task._assigned_to?.first_name}}
-                    {{task.task._assigned_to?.last_name}}
-                </span>
-            </div>
-            <div class="inline-block" *ngIf="task.task.unassigned == 'Yes'">
-                <span class="assigned">
-                    <i class="material-icons assign-icons" ngbDropdownToggle>perm_identity</i>
-                    Unassigned
-                </span>
-            </div>
-                    <div ngbDropdownMenu>
-                      <div ngbDropdownItem><span>Search a member whom you'd like to assign this task</span></div>
-                      <div class="input-group input-group-sm">
-                        <input type="text" class="form-control" (keyup) = "onSearchMember($event)">
-                      </div>
-                        <button class="btn dropdown-item" *ngFor="let member of usersInGroup" (click) = "onSelectUser(task, member)">
-                            <img src = "{{this.BASE_URL}}/uploads/{{member?.profile_pic}}" onerror="this.src = '/assets/images/user.png'" class="feed-avatar">
-                           {{member?.first_name}} {{member?.last_name}}<br> <span class="small muted">{{member?.email}}</span>
-                        </button>
-                  </div>
+            <div ngbDropdown autoClose=true>
+                <div *ngIf="task.task.unassigned == 'No'">
+                    <span class="assigned">
+                        <img ngbDropdownToggle src="{{this.BASE_URL}}/uploads/{{task.task._assigned_to?.profile_pic}}"
+                            onerror="this.src = '/assets/images/user.png'" class="feed-avatar">
+                        Assigned to {{task.task._assigned_to?.first_name}}
+                        {{task.task._assigned_to?.last_name}}
+                    </span>
+                </div>
+                <div *ngIf="task.task.unassigned == 'Yes'">
+                    <span class="assigned">
+                        <button class="btn btn-outline-warning"> <i class="material-icons assign-icons" ngbDropdownToggle>perm_identity</i></button>
+                        Unassigned
+                    </span>
+                </div>
+                <div ngbDropdownMenu>
+                    <div ngbDropdownItem><span>Search member to assign</span></div>
+                    <div class="input-group input-group-sm">
+                        <input type="text" class="form-control" (keyup)="onSearchMember($event)">
+                    </div>
+                    <button class="btn dropdown-item" *ngFor="let member of usersInGroup"
+                        (click)="onSelectUser(task, member)">
+                        <img src="{{this.BASE_URL}}/uploads/{{member?.profile_pic}}"
+                            onerror="this.src = '/assets/images/user.png'" class="feed-avatar">
+                        {{member?.first_name}} {{member?.last_name}}<br> <span
+                            class="small muted">{{member?.email}}</span>
+                    </button>
+                </div>
             </div>
             <!-- TASK ASSIGNMENT ENDS -->
 
+
+
+        </div>
+        <div class="col-md-3">
+
             <!-- TASK DUE DATE STARTS -->
-            <div class="inline-block" *ngIf="task.task?.due_to != 'Invalid date'">
-                <span class="assigned">
-                        <date-picker-modal
-                        [model_date]="modelDate"
-                        (picked_date)="setDate(task, $event)">
-                    </date-picker-modal>
+            <div *ngIf="task.task?.due_to != 'Invalid date'">
+                    
+                <span class="date">
+                        <date-picker-modal [model_date]="modelDate" (picked_date)="setDate(task, $event)">
+                            </date-picker-modal>
                     due {{task.task?.due_to | date}}
                 </span>
 
@@ -64,7 +69,8 @@
             <!-- TASK DUE DATE ENDS -->
 
         </div>
-        <div class="col-md-6 align-right">
+
+        <div class="col-md-6 text-right">
 
             <!-- TASK STATUS STARTS -->
             <div ngbDropdown class="inline-block">
@@ -86,46 +92,47 @@
 
             <!-- TASK CHANGE COLUMN STARTS -->
             <div ngbDropdown class="inline-block">
-                <button class="btn btn-sm btn-light capitalise"
-                    ngbDropdownToggle> {{ task?.task?._column?.title }} </button>
+                <button class="btn btn-sm btn-light capitalise" ngbDropdownToggle> {{ task?.task?._column?.title }}
+                </button>
                 <div ngbDropdownMenu>
-                    <button *ngFor="let column of columns" class="dropdown-item column-title" (click)="sendMoveTaskMessage(task, task?.task?._column?.title, column?.title)">{{column?.title}}</button>
+                    <button *ngFor="let column of columns" class="dropdown-item column-title"
+                        (click)="sendMoveTaskMessage(task, task?.task?._column?.title, column?.title)">{{column?.title}}</button>
                 </div>
             </div>
             <!-- TASK CHANGE COLUMN ENDS -->
 
-            <!-- DELETE TASK STARTS -->
-            <div class="inline-block">
-                <i class="material-icons delete-icon">
-                    delete
-                </i>
-            </div>
-            <!-- DELETE TASK ENDS -->
+
 
         </div>
     </div>
     <!-- TASK DETAILS ENDS -->
 
     <!-- TASK CONTENT STARTS -->
-    <button class="btn btn-primary btn-sm save-task-content" (click)="saveTaskContent(task)" [disabled]="taskContent == task?.content">Save Current Content</button>
-    <quill-editor [modules]="quillModules" [spellcheck]="true" (onContentChanged)="onContentChanged($event)" 
-    [value]="task?.content"
-    [(ngModel)]="taskContent">
+
+    <quill-editor [modules]="quillModules" [spellcheck]="true" (onContentChanged)="onContentChanged($event)"
+        [value]="task?.content" [(ngModel)]="taskContent">
     </quill-editor>
+    <div style="margin-top: 15px;">
+        <button class="btn btn-primary float-left" (click)="saveTaskContent(task)"
+            [disabled]="taskContent == task?.content">Update description</button>
+        <!-- DELETE TASK STARTS -->
+        <button class="btn btn-danger float-right">delete task</button>
+        <!-- DELETE TASK ENDS -->
+    </div>
     <!-- <p class="container lead" [innerHTML]="task.content"></p> -->
     <!-- TASK CONTENT ENDS -->
 
     <!-- TASK ACTIONS STARTS -->
     <post-actions *ngIf="user" [post]="task" [commentCount]="commentCount" [commentsDisplayed]="commentsDisplayed"
-    [user]="user" (toggleComments)="toggleComments()" (sendComments)="setComments($event)"
-    (togglePostCommentEditor)="togglePostCommentEditor()" (editPost)="editPost()" (deletePost)="deletePost()">
+        [user]="user" (toggleComments)="toggleComments()" (sendComments)="setComments($event)"
+        (togglePostCommentEditor)="togglePostCommentEditor()" (editPost)="editPost()" (deletePost)="deletePost()">
     </post-actions>
     <!-- TASK ACTIONS ENDS -->
 
     <!-- COMMENT SECTION STARTS -->
     <comment-section [post]="task" [(commentsDisplayed)]="commentsDisplayed" [modules]="{}" [user]="user"
-    [allMembersId]="allMembersId" [user_data]="user_data" [socket]="socket" [group]="groupData" [comments]="comments"
-    [(commentCount)]="commentCount">
+        [allMembersId]="allMembersId" [user_data]="user_data" [socket]="socket" [group]="groupData"
+        [comments]="comments" [(commentCount)]="commentCount">
     </comment-section>
     <!-- COMMENT SECTION ENDS -->
 
