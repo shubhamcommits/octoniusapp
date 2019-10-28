@@ -182,6 +182,7 @@ import { ngxUiLoaderConfig, ngCircle } from './shared/config/config';
 import { ClickStopPropagationDirective } from './shared/directives/click-stop-propagation.directive';
 import { GroupKanbanBoardsComponent } from './dashboard/groups/group/group-kanban-boards/group-kanban-boards.component';
 import { GroupKanbanTaskViewComponent } from './dashboard/groups/group/group-kanban-boards/group-kanban-task-view/group-kanban-task-view.component';
+import { GroupKanbanTaskAssignmentComponent } from './dashboard/groups/group/group-kanban-boards/group-kanban-task-assignment/group-kanban-task-assignment.component';
 
 /**
  * 9. !===== IMPORTS & DECLARATIONS =====!
@@ -220,7 +221,9 @@ import { GroupKanbanTaskViewComponent } from './dashboard/groups/group/group-kan
 
     GroupKanbanBoardsComponent,
 
-    GroupKanbanTaskViewComponent
+    GroupKanbanTaskViewComponent,
+
+    GroupKanbanTaskAssignmentComponent
   ],
   imports: [
 

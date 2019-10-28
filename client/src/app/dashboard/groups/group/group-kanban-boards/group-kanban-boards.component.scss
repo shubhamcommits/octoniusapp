@@ -62,7 +62,8 @@ $border-color:#E4EDF8;
                 }
 
                 .column-title {
-                    // display: flex;
+                    display: flex;
+                    justify-content: space-between;
                     text-transform: uppercase;
                     margin-bottom: 20px;
                 }
@@ -89,28 +90,38 @@ $border-color:#E4EDF8;
 }
 
 .edit-column {
-    color: black;
-    float: right;
-    cursor: pointer;
-    :hover{
-        color: #005fd5;
+    margin-bottom: 5%;
+    .container{
+        display: flex;
+        justify-content: space-around;
+        button{
+            margin-left: auto;
+            margin-right: auto;
+        }
     }
 }
 
-.approve-task{
-    cursor: pointer;
-    float: right;
-    :hover{
-        color: #005fd5;
+.add-task{
+    margin-bottom: 5%;
+    .container{
+        display: flex;
+        justify-content: space-around;
+        button{
+            margin-left: auto;
+            margin-right: auto;
+        }
     }
 }
 
-.discard-task {
-    color: black;
-    float: right;
-    cursor: pointer;
-    :hover{
-        color: red;
+.add-column{
+    margin-bottom: 5%;
+    .container{
+        display: flex;
+        justify-content: space-around;
+        button{
+            margin-left: auto;
+            margin-right: auto;
+        }
     }
 }
 
@@ -123,6 +134,7 @@ $border-color:#E4EDF8;
     flex-grow: 1;
     overflow-y: auto; 
     height: 50vh;
+    overflow-x: hidden;
 }
 
 .task {
@@ -132,7 +144,6 @@ $border-color:#E4EDF8;
     border: 1px solid $border-color;
     border-radius: 4px;
     margin-bottom: 15px;
-    cursor: pointer;
 }
 
 .cdk-drag-preview {
@@ -154,3 +165,20 @@ $border-color:#E4EDF8;
 .tasks-container.cdk-drop-list-dragging .task:not(.cdk-drag-placeholder) {
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
+
+.kanban-card-title{
+    // margin-top: 15%;
+    // margin-left: -80px;
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    color: #242D3A;
+    cursor: pointer;
+}
+
+.due-date{
+    margin-left: auto;
+}
+
+.dropdown-toggle:after { content: none }

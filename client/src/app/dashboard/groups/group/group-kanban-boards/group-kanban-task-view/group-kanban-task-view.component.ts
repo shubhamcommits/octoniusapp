@@ -6,6 +6,8 @@ import { GroupService } from '../../../../../shared/services/group.service';
 import { SnotifyService } from 'ng-snotify';
 import { environment } from '../../../../../../environments/environment';
 import moment from 'moment';
+import { ReplaySubject } from 'rxjs/internal/ReplaySubject';
+import { takeUntil } from 'rxjs/internal/operators/takeUntil';
 
 @Component({
   selector: 'app-group-kanban-task-view',
@@ -27,6 +29,7 @@ export class GroupKanbanTaskViewComponent implements OnInit {
   @Input ('quillModules') quillModules: any;
   @Output() closeModal = new EventEmitter();
   @Output() moveTask = new EventEmitter();
+  @Output() delTask = new EventEmitter();
   @ViewChild(CommentSectionComponent, { static: true }) commentSectionComponent;
 
   user = JSON.parse(localStorage.getItem('user_data'));
@@ -59,11 +62,21 @@ export class GroupKanbanTaskViewComponent implements OnInit {
   editingTitle = false;
   postTitle;
 
+  // Unsubscribe the Data
+  private unSubscribe$: ReplaySubject<boolean> = new ReplaySubject(1);
+
   ngOnInit() {
     const dateTask = moment(this.task.task.due_to);
     this.modelDate = {year: dateTask.year(), month: dateTask.month() + 1, day: dateTask.date()};
     this.taskContent = this.task.content;
     this.postTitle = this.task.title;
+  }
+
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    this.unSubscribe$.next(true);
+    this.unSubscribe$.complete();
   }
 
   /**
@@ -101,58 +114,10 @@ export class GroupKanbanTaskViewComponent implements OnInit {
     }
     return new Promise((resolve)=>{
       this.postService.complete(post._id, object)
+      .pipe(takeUntil(this.unSubscribe$))
       .subscribe((res)=>{
         post.task.status = status;
         resolve();
-      })
-    })
-  }
-
-  /**
-   * This function searches for the member present in the group
-   * @param $event 
-   * Makes a HTTP GET Request to retrieve the results
-   */
-  async onSearchMember($event){
-    return new Promise((resolve, reject)=>{
-      if($event.target.value.length == 0)
-        resolve([]);
-      else{
-        this.groupService.searchGroupUsers(this.groupData._id, $event.target.value)
-        .subscribe((res)=>{
-          // console.log(res);
-          this.usersInGroup = res['users'];
-          resolve(res['users']);
-        }, (err)=>{
-          this.snotifyService.error('Unable to fetch the users, please try again!');
-          console.log('Error occured while searching the group members', err);
-          reject([]);
-        })
-      }
-    })
-  }
-
-  /**
-   * This function changes the task assignee 
-   * @param task - data of current task
-   * @param user - data of assignee
-   * Makes a HTTP PUT request
-   */
-  async onSelectUser(task, user){
-    // console.log(task, user, assignee);
-    const assigneeId = {
-      assigneeId: user._id
-    }
-    return new Promise((resolve, reject)=>{
-      this.groupService.changeTaskAssignee(task._id, assigneeId)
-      .subscribe((res)=>{
-        this.task = res['post'];
-        this.snotifyService.success('Task reassigned successfully!');
-        resolve();
-      }, (err)=>{
-        this.snotifyService.error('Unepxected error occured while re-assigning, please try again!');
-        console.log('Error occured while searching the group members', err);
-        reject();
       })
     })
   }
@@ -186,8 +151,9 @@ export class GroupKanbanTaskViewComponent implements OnInit {
       }
       // console.log(taskPost)
       this.postService.editPost(task._id, taskPost)
+      .pipe(takeUntil(this.unSubscribe$))
       .subscribe((res)=>{
-        console.log(res);
+        // console.log(res);
         // this.task.task.due_to = res['post'].task.due_to;
         this.snotifyService.success('Due date changed successfully!');
         resolve()
@@ -229,6 +195,7 @@ export class GroupKanbanTaskViewComponent implements OnInit {
       }
       // console.log(taskPost)
       this.postService.editPost(task._id, taskPost)
+      .pipe(takeUntil(this.unSubscribe$))
       .subscribe((res)=>{
         // console.log(res);
         this.task.content = res['post'].content;
@@ -275,11 +242,88 @@ export class GroupKanbanTaskViewComponent implements OnInit {
     this.displayEditPostSection = true;
   }
 
-  deletePost() {
+  /**
+   * This function is responsible for removing the task post
+   * @param task 
+   * @param user 
+   * Makes the HTTP Delete request to delete the post
+   */
+  async deleteTask(task, user) {
+    if (user.role != 'member') {
+      this.snotifyService.confirm('Are you sure that you want to remove this task?', 'Warning!', {
+        timeout: 5000,
+        showProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: true,
+        buttons: [
+          {
+            text: 'Yes', action: (toast) => {
+              this.snotifyService.remove(toast.id);
+              this.snotifyService.async('Please wait while we delete this task', new Promise((resolve, reject) => {
+                this.postService.deletePost(task._id)
+                  .pipe(takeUntil(this.unSubscribe$))
+                  .subscribe((res) => {
+                    // console.log('Post Deleted Sucessfully', res);
+                    let columnIndex = this.columns.findIndex((column) => column.title.toLowerCase() === task.task._column.title.toLowerCase());
+                    this.delTask.emit({
+                      task,
+                      user,
+                      columnIndex
+                    });
+                    this.modalService.dismissAll();
+                    resolve({
+                      body: 'Task deleted successfully!',
+                      config: {
+                        timeout: 3000,
+                        type: 'warning',
+                        closeOnClick: true,
+                        pauseOnHover: false,
+                        showProgressBar: true
+                      }
+                    });
+                  }, (err) => {
+                    console.log('Error occured while deleting the task', err);
+                    reject({
+                      body: 'There\'s some unexpected error occured, please try again later!',
+                      config: {
+                        timeout: 3000,
+                        type: 'error',
+                        showProgressBar: true,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                      }
+                    });
+                  })
+              }))
+            }
+          },
+          {
+            text: 'No', action: (toast) => {
+              this.snotifyService.remove(toast.id)
+            }
+          }
+        ]
+      })
+
+    } else {
+      this.snotifyService.info('You have insufficient permissions to perform this function, kindly contact your superior to do the same for you!');
+    }
+
   }
 
   togglePostCommentEditor() {
     this.commentSectionComponent.displayCommentEditor = !this.commentSectionComponent.displayCommentEditor;
+  }
+
+  /**
+   * This function recieves the emitted value of updated task after reassigning from task-assignment component
+   * @param $event 
+   */
+  getUpdatedTask($event){
+    let columnIndex = this.columns.findIndex((column) => column.title.toLowerCase() === this.task.task._column.title.toLowerCase());
+    let taskIndex = this.columns[columnIndex]['tasks'].findIndex((task)=> task._id === this.task._id);
+    this.task = $event.task;
+    this.columns[columnIndex]['tasks'][taskIndex] = $event.task;
   }
 
 }
