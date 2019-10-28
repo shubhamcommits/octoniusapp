@@ -1,30 +1,29 @@
 <div class="root">
-  <!-- <div class="navbar has-background-dark">
-      <div class="navbar-brand">
-        <div class="navbar-item">
-          <h1 class="app-name has-gradient-text">kanban</h1>
-        </div>
-      </div>
-    </div> -->
-
-
   <div class="board">
-
-
     <div class="board-bar">
       <div class="row">
+
+        <!-- BACK TO LOCATION STARTS -->
         <div class="col-md-1">
           <a class="navbar-brand" (click)="goBack()" style="cursor: pointer;">
             <a class="navbar-brand" routerLink="/dashboard/overview">
-              <i class="material-icons"  style="line-height: 45px;">arrow_back </i>
+              <i class="material-icons" style="line-height: 45px;">arrow_back </i>
             </a>
           </a>
-
         </div>
+        <!-- BACK TO LOCATION ENDS -->
+
+        <!-- GROUP DETAILS STARTS -->
         <div class="col-md-10 text-center">
           <h1 style="margin-top:15px">{{ groupData?.group_name }} Board</h1>
         </div>
-        <div class="col-md-1"><i class="icon-octo-logo" style="line-height: 55px;"></i></div>
+        <!-- GROUP DETAILS ENDS -->
+
+        <!-- OCTONIUS LOGO ICON -->
+        <div class="col-md-1">
+          <i class="icon-octo-logo" style="line-height: 55px;"></i>
+        </div>
+        <!-- OCTONIUS LOGO ICON -->
 
       </div>
     </div>
@@ -32,102 +31,136 @@
 
     <div class="board-wrapper">
 
+      <!-- ALL COLUMN DETAILS STARTS -->
       <div class="board-columns" cdkDropListGroup>
-        <div class="board-column" id="column.title" *ngFor="let column of columns; trackBy: trackByIdx">
+        <div class="board-column" id="column.title" *ngFor="let column of columns; let i = index; trackBy: trackByIdx">
 
+          <!-- COLUMN TITLE AND EDIT/DELETE DETAILS STARTS -->
           <div class="column-title">
-           <h4> {{ column?.title }}</h4>
-            <div class="delete-column"
-              *ngIf="!(column.title =='to do')"
-              (click)="deleteColumn(this.groupId, column)">
-              <i class="material-icons">
-                delete
-              </i>
-            </div>
-            <div class="edit-column"
-              *ngIf="!(column.title =='to do')"
-              (click)="column.editColumn = true; this.newColumnName = column.title;">
-              <i class="material-icons">
-                edit
-              </i>
+            <h4> {{ column?.title }}</h4>
+            <div ngbDropdown #postActionsDrop="ngbDropdown" class="inline-block" *ngIf="!(column.title =='to do')">
+              <i class="material-icons action" ngbDropdownToggle>more_horiz</i>
+              <div ngbDropdownMenu aria-labelledby="postActionsDrop">
+                <button class="dropdown-item" (click)="column.editColumn = true; this.newColumnName = column.title;">
+                  Edit</button>
+                <button class="dropdown-item" (click)="deleteColumn(this.groupId, column)"> Delete</button>
+              </div>
             </div>
           </div>
+          <!-- COLUMN TITLE AND EDIT/DELETE DETAILS ENDS -->
 
-          <div class="column-title" *ngIf="column.editColumn">
-            <input class="form-control" style="margin-bottom: 10%;" type="text" placeholder="Provide the column name"
+          <!-- EDIT COLUMN STARTS -->
+          <div class="edit-column" *ngIf="column.editColumn">
+            <input class="form-control" style="margin-bottom: 3%;" type="text" placeholder="Provide the column name"
               [(ngModel)]="newColumnName">
-            <div class="row button-group">
-              <button class="col-md-6 btn btn-sm btn-primary"
+            <div class="container">
+              <button class="col-md-4 btn btn-sm btn-primary"
                 (click)="editExistingColumn(this.groupId, column.title ,this.newColumnName); column.editColumn = false; this.newColumnName = '';">Save</button>
-              <button class="col-md-6 btn btn-sm btn-danger"
+              <button class="col-md-4 btn btn-sm btn-danger"
                 (click)="column.editColumn = false; this.newColumnName = '';">Cancel</button>
             </div>
           </div>
+          <!-- EDIT COLUMN ENDS -->
 
+          <!-- TASK CONTAINER STARTS -->
           <div class="tasks-container" [id]="column.title" cdkDropList [cdkDropListData]="column.tasks"
             (cdkDropListDropped)="drop($event)">
+
+            <!-- CREATE TASK STARTS -->
             <div class="create-task task" (click)="column.addTask = true;">
               + Create New Task
             </div>
-
-            <div class="task" *ngIf="column.addTask">
-              <input class="form-control" style="margin-bottom: 10%; margin-right: 10%;" type="text"
-                placeholder="Provide the task title" [(ngModel)]="newTaskTitle">
-              <div class="row button-group">
-                <div class="approve-task"
+            <div class="add-task" *ngIf="column.addTask">
+              <input class="form-control" style="margin-bottom: 3%;" type="text" placeholder="Provide the task title"
+                [(ngModel)]="newTaskTitle">
+              <div class="container">
+                <button class="col-md-4 btn btn-sm btn-primary"
                   (click)="createNewTask(column, this.newTaskTitle); column.addTask = false; this.newTaskTitle = '';">
-                  <i class="material-icons">
-                    done
-                  </i>
-                </div>
-                <div class="discard-task" (click)="column.addTask = false; this.newTaskTitle = '';">
-                  <i class="material-icons">
-                    clear
-                  </i>
-                </div>
-
+                  Save
+                </button>
+                <button class="col-md-4 btn btn-sm btn-danger"
+                  (click)="column.addTask = false; this.newTaskTitle = '';">
+                  Cancel
+                </button>
               </div>
             </div>
-            <div class="task" *ngFor="let task of column.tasks; let j = index; trackBy: trackByIdx" (click)="openTask(content)" cdkDrag>
-              {{ task?.title }}
-              <ng-template #content let-modal>
+            <!-- CREATE TASK ENDS -->
 
-              <app-group-kanban-task-view
-              [task] = "task"
-              [columns] = "columns"
-              [allMembersId]="allMembersId"
-              [groupData]="groupData"
-              [socket] = "socket"
-              [quillModules]="quillModules"
-              (closeModal) = "closeTaskModal($event)"
-              (moveTask)="moveTaskFromDropDown($event)">
-              </app-group-kanban-task-view>
+            <!-- TASK DETAILS STARTS -->
+            <div class="task" *ngFor="let task of column.tasks; let j = index; trackBy: trackByIdx" cdkDrag>
+              <div class="row">
 
-              </ng-template>
+                <!-- TASK TOP BAR STARTS -->
+                <div class="col-md-12">
+                  <div class="row">
+
+                    <!-- TASK ASSIGNMENT STARTS -->
+                    <div class="col-md-7">
+                      <app-group-kanban-task-assignment [task]="task" [groupData]="groupData" [isModalView]="false" (updatedTask)="getUpdatedTask(task, i , j, $event)">
+                      </app-group-kanban-task-assignment>
+                    </div>
+                    <!-- TASK DETAILS ENDS -->
+
+                    <!-- TASK DUE DATE STARTs -->
+                    <div class="col-md-5 text-right">
+                      <i class="material-icons small font-weight-bold text-right"
+                        [ngClass]="checkOverdue(task) === true ? 'overdue' : 'due'">alarm</i>
+                      <!-- <span class="small font-weight-bold" *ngIf="task?.task?.due_to != 'Invalid date'"
+                        [ngClass]="checkOverdue(task) === true ? 'overdue' : 'due'">
+                        {{task?.task?.due_to | date}}</span> -->
+                    </div>
+                    <!-- TASK DUE DATE ENDS -->
+
+                  </div>
+                </div>
+                <!-- TASK TOP BAR ENDS -->
+
+                <!-- TASK CONTENT & DETAILS STARTS -->
+                <div class="col-md-12">
+                  <div class="container">
+                    <div class="kanban-card-title" (click)="openTask(content)">{{ task?.title }}</div>
+
+                    <!-- TASK DETAILS STARTS -->
+                    <ng-template #content let-modal>
+                      <app-group-kanban-task-view [task]="task" [columns]="columns" [allMembersId]="allMembersId"
+                        [groupData]="groupData" [socket]="socket" [quillModules]="quillModules"
+                        (closeModal)="closeTaskModal($event)" (moveTask)="moveTaskFromDropDown($event)"
+                        (delTask)="deleteTask($event)">
+                      </app-group-kanban-task-view>
+                    </ng-template>
+                    <!-- TASK DETAILS ENDS -->
+
+                  </div>
+                </div>
+                <!-- TASK CONTENT & DETAILS ENDS -->
+              </div>
             </div>
+            <!-- TASK DETAILS ENDS -->
 
           </div>
+          <!-- TASK CONTAINER ENDS -->
 
         </div>
 
+        <!-- CREATE NEW COLUMN START -->
         <div class="board-column">
-
           <div class="column-title create-column" (click)="this.createColumn = true">
             + Create new column
           </div>
-
-          <div class="column-title" *ngIf="this.createColumn">
-            <input class="form-control" style="margin-bottom: 10%;" type="text" placeholder="Provide the column name"
+          <div class="add-column" *ngIf="this.createColumn">
+            <input class="form-control" style="margin-bottom: 3%;" type="text" placeholder="Provide the column name"
               [(ngModel)]="newColumnName">
-            <div class="row button-group">
-              <button class="col-md-6 btn btn-sm btn-primary"
+            <div class="container">
+              <button class="col-md-4 btn btn-sm btn-primary"
                 (click)="createNewColumn(this.groupId, this.newColumnName)">Save</button>
-              <button class="col-md-6 btn btn-sm btn-danger" (click)="this.createColumn = false">Cancel</button>
+              <button class="col-md-4 btn btn-sm btn-danger" (click)="this.createColumn = false">Cancel</button>
             </div>
           </div>
         </div>
+        <!-- CREATE NEW COLUMN ENDS -->
 
       </div>
+      <!-- ALL COLUMN DETAILS ENDS -->
 
     </div>
 

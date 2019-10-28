@@ -20,38 +20,13 @@
         <div class="col-md-3">
 
             <!-- TASK ASSIGNMENT STARTS -->
-            <div ngbDropdown autoClose=true>
-                <div *ngIf="task.task.unassigned == 'No'">
-                    <span class="assigned">
-                        <img ngbDropdownToggle src="{{this.BASE_URL}}/uploads/{{task.task._assigned_to?.profile_pic}}"
-                            onerror="this.src = '/assets/images/user.png'" class="feed-avatar">
-                        Assigned to {{task.task._assigned_to?.first_name}}
-                        {{task.task._assigned_to?.last_name}}
-                    </span>
-                </div>
-                <div *ngIf="task.task.unassigned == 'Yes'">
-                    <span class="assigned">
-                        <button class="btn btn-outline-warning"> <i class="material-icons assign-icons" ngbDropdownToggle>perm_identity</i></button>
-                        Unassigned
-                    </span>
-                </div>
-                <div ngbDropdownMenu>
-                    <div ngbDropdownItem><span>Search member to assign</span></div>
-                    <div class="input-group input-group-sm">
-                        <input type="text" class="form-control" (keyup)="onSearchMember($event)">
-                    </div>
-                    <button class="btn dropdown-item" *ngFor="let member of usersInGroup"
-                        (click)="onSelectUser(task, member)">
-                        <img src="{{this.BASE_URL}}/uploads/{{member?.profile_pic}}"
-                            onerror="this.src = '/assets/images/user.png'" class="feed-avatar">
-                        {{member?.first_name}} {{member?.last_name}}<br> <span
-                            class="small muted">{{member?.email}}</span>
-                    </button>
-                </div>
-            </div>
+            <app-group-kanban-task-assignment
+            [task]="task"
+            [groupData]="groupData"
+            [isModalView]=true
+            (updatedTask) = "getUpdatedTask($event)">
+            </app-group-kanban-task-assignment>
             <!-- TASK ASSIGNMENT ENDS -->
-
-
 
         </div>
         <div class="col-md-3">
@@ -60,9 +35,9 @@
             <div *ngIf="task.task?.due_to != 'Invalid date'">
                     
                 <span class="date">
-                        <date-picker-modal [model_date]="modelDate" (picked_date)="setDate(task, $event)">
-                            </date-picker-modal>
-                    due {{task.task?.due_to | date}}
+                    <date-picker-modal [model_date]="modelDate" (picked_date)="setDate(task, $event)">
+                    </date-picker-modal>
+                        due {{task.task?.due_to | date}}
                 </span>
 
             </div>
@@ -116,21 +91,21 @@
         <button class="btn btn-primary float-left" (click)="saveTaskContent(task)"
             [disabled]="taskContent == task?.content">Update description</button>
         <!-- DELETE TASK STARTS -->
-        <button class="btn btn-danger float-right">delete task</button>
+        <button class="btn btn-danger float-right" (click)="deleteTask(task, user)">delete task</button>
         <!-- DELETE TASK ENDS -->
     </div>
-    <!-- <p class="container lead" [innerHTML]="task.content"></p> -->
+
     <!-- TASK CONTENT ENDS -->
 
     <!-- TASK ACTIONS STARTS -->
     <post-actions *ngIf="user" [post]="task" [commentCount]="commentCount" [commentsDisplayed]="commentsDisplayed"
         [user]="user" (toggleComments)="toggleComments()" (sendComments)="setComments($event)"
-        (togglePostCommentEditor)="togglePostCommentEditor()" (editPost)="editPost()" (deletePost)="deletePost()">
+        (togglePostCommentEditor)="togglePostCommentEditor()" (editPost)="editPost()" (deletePost)="deleteTask(task, user)">
     </post-actions>
     <!-- TASK ACTIONS ENDS -->
 
     <!-- COMMENT SECTION STARTS -->
-    <comment-section [post]="task" [(commentsDisplayed)]="commentsDisplayed" [modules]="{}" [user]="user"
+    <comment-section [post]="task" [(commentsDisplayed)]="commentsDisplayed" [modules]="quillModules" [user]="user"
         [allMembersId]="allMembersId" [user_data]="user_data" [socket]="socket" [group]="groupData"
         [comments]="comments" [(commentCount)]="commentCount">
     </comment-section>

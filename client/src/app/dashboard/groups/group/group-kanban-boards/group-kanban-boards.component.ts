@@ -10,6 +10,9 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import io from 'socket.io-client';
 import { environment } from '../../../../../environments/environment';
 import { SnotifyService } from 'ng-snotify';
+import moment from 'moment';
+import { ReplaySubject } from 'rxjs/internal/ReplaySubject';
+import { takeUntil } from 'rxjs/internal/operators/takeUntil';
 
 @Component({
   selector: 'app-group-kanban-boards',
@@ -51,6 +54,12 @@ export class GroupKanbanBoardsComponent implements OnInit {
     secure: true,
   });
 
+  // Today's date object
+  today = moment().local().startOf('day').format('YYYY-MM-DD');
+
+  // Unsubscribe the Data
+  private unSubscribe$: ReplaySubject<boolean> = new ReplaySubject(1);
+
   async ngOnInit() {
     this.groupId = await this.fetchGroupId();
     this.groupData = await this.getGroupData();
@@ -86,7 +95,9 @@ export class GroupKanbanBoardsComponent implements OnInit {
    */
   async fetchGroupId(){
     return new Promise((resolve)=>{
-      this.route.params.subscribe((params) => {
+      this.route.params
+      .pipe(takeUntil(this.unSubscribe$))
+      .subscribe((params) => {
         resolve(params['id']);
       });
     })
@@ -100,6 +111,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
   async getGroupData(){
     return new Promise((resolve)=>{
       this.dataService.currentGroupData
+      .pipe(takeUntil(this.unSubscribe$))
       .subscribe((res)=>{
         resolve(res);
       })
@@ -114,6 +126,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
   async getGroupQuillModules(){
     return new Promise((resolve)=>{
       this.dataService.currentGroupQuillModules
+      .pipe(takeUntil(this.unSubscribe$))
       .subscribe((res)=>{
         resolve(res);
       })
@@ -127,6 +140,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
   async initialiseColumns(groupId){
     return new Promise((resolve, reject)=>{
       this.columnService.initColumns(groupId)
+      .pipe(takeUntil(this.unSubscribe$))
       .subscribe((res)=>{
         resolve(res['columns']);
       }, (err)=>{
@@ -144,6 +158,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
   async getAllColums(groupId){
     return new Promise((resolve, reject)=>{
       this.columnService.getAllColumns(groupId)
+      .pipe(takeUntil(this.unSubscribe$))
       .subscribe(async (res)=>{
         if(res == null)
           resolve(null)
@@ -166,29 +181,11 @@ export class GroupKanbanBoardsComponent implements OnInit {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
       var post = event.previousContainer.data[event.previousIndex];
-      // console.log(post, event.previousContainer, event.container);
-        // if(event.previousContainer.id == 'done' && (event.container.id == 'to do' || event.container.id == 'in progress')){
-        //   transferArrayItem(event.previousContainer.data,
-        //     event.container.data,
-        //     event.previousIndex,
-        //     event.currentIndex);
-        //     this.moveTaskToNewColumn(post, event.previousContainer.id, event.container.id);
-        // }
-        // else if(event.previousContainer.id != 'done'){
-        //   transferArrayItem(event.previousContainer.data,
-        //     event.container.data,
-        //     event.previousIndex,
-        //     event.currentIndex);
-        //   this.moveTaskToNewColumn(post, event.previousContainer.id, event.container.id);
-        // }
-        // else
-        //   console.log('Not allowed');
-          transferArrayItem(event.previousContainer.data,
+      this.moveTaskToNewColumn(post, event.previousContainer.id, event.container.id);
+      transferArrayItem(event.previousContainer.data,
             event.container.data,
             event.previousIndex,
             event.currentIndex);
-            console.log(event, event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
-            this.moveTaskToNewColumn(post, event.previousContainer.id, event.container.id);
     }
   }
 
@@ -200,6 +197,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
   async getGroup(groupId){
     return new Promise((resolve, reject)=>{
       this.groupService.getGroup(groupId)
+      .pipe(takeUntil(this.unSubscribe$))
       .subscribe((res)=>{
         // console.log('Group Data', res);
         resolve(res['group']);
@@ -225,6 +223,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
   async getTasks(groupId) { 
     return new Promise((resolve, reject)=>{
       this.groupService.getGroupTasks(groupId)
+      .pipe(takeUntil(this.unSubscribe$))
       .subscribe(async (res) => {
         for(let i = 0; i < this.columns.length; i++){
           // if(this.columns[i]['title'] != 'done'){
@@ -253,14 +252,8 @@ export class GroupKanbanBoardsComponent implements OnInit {
   async getCompletedTasks(groupId) {
     return new Promise((resolve, reject)=>{
       this.groupService.getCompletedGroupTasks(groupId)
+      .pipe(takeUntil(this.unSubscribe$))
       .subscribe((res) => {
-        // if (res['posts'].length == 0){
-        //   this.loadCount = 0;
-        // }
-  
-        // else{
-        //   this.loadCount = 1;
-        // }
         let index = this.columns.findIndex((column)=> column.title === 'done');
         this.columns[index]['tasks'] = res['posts'].filter(completedTask => completedTask.task.status == 'done');
         resolve();
@@ -281,6 +274,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
   async createNewColumn(groupId, columnName){
     return new Promise((resolve, reject)=>{
       this.columnService.addColumn(groupId, columnName)
+      .pipe(takeUntil(this.unSubscribe$))
       .subscribe((res)=>{
         this.columns.push({
           title: columnName,
@@ -309,6 +303,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
   async editExistingColumn(groupId, currentColumnName, newColumnName){
     return new Promise((resolve, reject)=>{
       this.columnService.editColumnName(groupId, currentColumnName, newColumnName)
+      .pipe(takeUntil(this.unSubscribe$))
       .subscribe((res)=>{
         let index = this.columns.findIndex(column => column.title === currentColumnName);
         if(index != -1)
@@ -333,6 +328,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
     if(column.tasks.length == 0){
       return new Promise((resolve, reject)=>{
         this.columnService.deleteColumn(groupId, column.title)
+        .pipe(takeUntil(this.unSubscribe$))
         .subscribe((res)=>{
           let index = this.columns.findIndex(col => col.title === column.title);
           if(index != -1)
@@ -366,12 +362,6 @@ export class GroupKanbanBoardsComponent implements OnInit {
         case 'to do':
           taskStatus = 'to do';
           break;
-        // case 'in progress':
-        //   taskStatus = 'in progress';
-        //   break;
-        // case 'done':
-        //   taskStatus = 'done';
-        //   break;
       }
 
       const taskPost = {
@@ -389,8 +379,9 @@ export class GroupKanbanBoardsComponent implements OnInit {
         }
       }
       this.postService.addNewTaskPost(taskPost)
+      .pipe(takeUntil(this.unSubscribe$))
       .subscribe((res)=>{
-        console.log(res);
+        // console.log(res);
         let index = this.columns.findIndex(col => col.title === column.title);
         if(index != -1){
           this.columns[index]['tasks'].unshift(res['post']);
@@ -419,12 +410,6 @@ export class GroupKanbanBoardsComponent implements OnInit {
         case 'to do':
           taskStatus = 'to do';
           break;
-        // case 'in progress':
-        //   taskStatus = 'in progress';
-        //   break;
-        // case 'done':
-        //   taskStatus = 'done';
-        //   break;
       }
 
       const taskPost = {
@@ -435,7 +420,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
         tags: task.tags,
         _read_by: [],
         unassigned: task.task.unassigned,
-        due_to: task.task.due_to,
+        date_due_to: task.task.due_to,
         assigned_to: task.task._assigned_to,
         _column: {
           title:newColumn
@@ -444,8 +429,10 @@ export class GroupKanbanBoardsComponent implements OnInit {
       }
       // console.log(taskPost)
       this.postService.editPost(task._id, taskPost)
+      .pipe(takeUntil(this.unSubscribe$))
       .subscribe((res)=>{
         // console.log(res);
+        task.task._column.title = newColumn;
         resolve()
       }, (err)=>{
         this.snotifyService.error('There\'s some unexpected error occured, please try again later!');
@@ -455,6 +442,10 @@ export class GroupKanbanBoardsComponent implements OnInit {
     })
   }
 
+  /**
+   * @param $event - recieves task, oldColumn and newColumn object
+   * In order that we can perform this function from modal's change task column as well
+   */
   async moveTaskFromDropDown($event){
     this.moveTaskToNewColumn($event.task, $event.oldColumn, $event.newColumn);
     let oldColumnIndex = this.columns.findIndex((column)=> column.title.toLowerCase() === $event.oldColumn.toLowerCase());
@@ -462,23 +453,73 @@ export class GroupKanbanBoardsComponent implements OnInit {
     this.columns[oldColumnIndex]['tasks'].splice($event.task, 1);
     this.columns[newColumnIndex]['tasks'].unshift($event.task);
   }
+
+  /**
+   * @param $event - recieves task, currentUser, and columnIndex and deletes the task from the current view 
+   * As soon as we hit the delete post API
+   */
+  async deleteTask($event){
+    let columnIndex = this.columns.findIndex((column)=> column.title.toLowerCase() === $event.task.task._column.title.toLowerCase());
+    // this.columns[columnIndex]['tasks'].splice(, 1);
+    let taskIndex = this.columns[columnIndex]['tasks'].findIndex((task)=> task._id === $event.task._id);
+    // console.log(columnIndex, taskIndex);
+    this.columns[columnIndex]['tasks'].splice(taskIndex, 1);
+  }
+
+  /**
+   * This function checks the task board if a particular task is overdue or not
+   * @param taskPost 
+   * And applies the respective ng-class
+   * 
+   * -----Tip:- Don't make the date functions asynchronous-----
+   * 
+   */
+   checkOverdue(taskPost) {
+     return taskPost.task.due_to < this.today;
+   }
   
+   /**
+    * This function opens up the task content in a new modal, and takes #content in the ng-template inside HTML layout
+    * @param content 
+    */
   async openTask(content){
     this.modalService.open(content, {'size': 'xl'}); 
   }
 
+  /**
+   * This function closes all the active modals in NGBMODAL module
+   * @param $event 
+   */
   closeTaskModal($event){
     this.modalService.dismissAll();
   }
 
+  /**
+   * The trackBy function takes the index and the current item as arguments 
+   * and returns the unique identifier by which that item should be tracked
+   * @param index 
+   * @param element 
+   * This is used to avoid heavy DOM Manipulations at run-time and improve performance in *ngFor
+   */
   trackByIdx(index, element){
     return element._id;
+  }
+
+  /**
+   * This function recieves the emitted value of updated task after reassigning from task-assignment component
+   * @param $event 
+   */
+  getUpdatedTask(oldTask, columnIndex, taskIndex,  $event){
+    oldTask = $event.task;
+    this.columns[columnIndex]['tasks'][taskIndex] = $event.task;
   }
 
   ngOnDestroy(): void {
     //Called once, before the instance is destroyed.
     //Add 'implements OnDestroy' to the class.
     this.modalService.dismissAll();
+    this.unSubscribe$.next(true);
+    this.unSubscribe$.complete();
   }
 
 

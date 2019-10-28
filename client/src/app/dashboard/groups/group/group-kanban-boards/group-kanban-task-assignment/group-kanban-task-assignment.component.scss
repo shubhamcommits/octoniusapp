@@ -1,0 +1,48 @@
+.assign-icons{
+    color:#fd7714;
+    cursor: pointer;
+    width: 34px;
+    height: 34px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin:5px 10px;
+    border: #fd7714 solid 1px;
+}
+
+.assigned.dropdown-toggle::after {
+    display:none;
+}
+
+span.assigned{
+    // display: flex;
+    cursor: pointer;
+    line-height: 40px;
+}
+
+// .btn-outline-warning{
+//     object-fit: cover;
+//     color: #FD7714;
+//     border: 1px solid #FD7714;
+//     border-radius: 50%;
+//     width: 34px;
+//     height: 34px;
+//     box-sizing: border-box;
+//     margin: 0 10px;
+//     // margin-top: -10px !important;
+// }
+
+.dropdown-toggle:after { content: none }
+
+.feed-avatar{
+    width: 34px;
+    height: 34px;
+}
+
+.modal-view{
+    margin-right: 3px;
+}
+
+input{
+    margin-left: 10%;
+    margin-right: 10%;
+}
