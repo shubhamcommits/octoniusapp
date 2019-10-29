@@ -190,11 +190,11 @@ $turquoise: #0bc6a0;
 $dark-sky-blue: #4a90e2;
 
 .status-todo{
-    border-left: 3px solid $pumpkin-orange;
+    border-top: 3px solid $pumpkin-orange;
 }
 .status-inprogress{
-    border-left: 3px solid $turquoise;
+    border-top: 3px solid $turquoise;
 }
 .status-done{
-    border-left: 3px solid $dark-sky-blue;
+    border-top: 3px solid $dark-sky-blue;
 }
