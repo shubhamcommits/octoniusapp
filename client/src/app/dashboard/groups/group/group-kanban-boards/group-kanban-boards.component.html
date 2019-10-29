@@ -51,12 +51,12 @@
 
           <!-- EDIT COLUMN STARTS -->
           <div class="edit-column" *ngIf="column.editColumn">
-            <input class="form-control" style="margin-bottom: 3%;" type="text" placeholder="Provide the column name"
+            <input class="form-control" style="margin-bottom: 3%;" type="text" placeholder="Column name"
               [(ngModel)]="newColumnName">
             <div class="container">
-              <button class="col-md-4 btn btn-sm btn-primary"
+              <button class="col-md-4 btn btn-primary"
                 (click)="editExistingColumn(this.groupId, column.title ,this.newColumnName); column.editColumn = false; this.newColumnName = '';">Save</button>
-              <button class="col-md-4 btn btn-sm btn-danger"
+              <button class="col-md-4 btn btn-danger"
                 (click)="column.editColumn = false; this.newColumnName = '';">Cancel</button>
             </div>
           </div>
@@ -68,17 +68,17 @@
 
             <!-- CREATE TASK STARTS -->
             <div class="create-task task" (click)="column.addTask = true;">
-              + Create New Task
+              + New Task
             </div>
             <div class="add-task" *ngIf="column.addTask">
-              <input class="form-control" style="margin-bottom: 3%;" type="text" placeholder="Provide the task title"
+              <input class="form-control" style="margin-bottom: 3%;" type="text" placeholder="Enter task title"
                 [(ngModel)]="newTaskTitle">
               <div class="container">
-                <button class="col-md-4 btn btn-sm btn-primary"
+                <button class="col-md-4 btn btn-primary"
                   (click)="createNewTask(column, this.newTaskTitle); column.addTask = false; this.newTaskTitle = '';">
                   Save
                 </button>
-                <button class="col-md-4 btn btn-sm btn-danger"
+                <button class="col-md-4 btn btn-danger"
                   (click)="column.addTask = false; this.newTaskTitle = '';">
                   Cancel
                 </button>
@@ -87,7 +87,7 @@
             <!-- CREATE TASK ENDS -->
 
             <!-- TASK DETAILS STARTS -->
-            <div class="task" *ngFor="let task of column.tasks; let j = index; trackBy: trackByIdx" cdkDrag>
+            <div class="task status-inprogress" *ngFor="let task of column.tasks; let j = index; trackBy: trackByIdx" cdkDrag>
               <div class="row">
 
                 <!-- TASK TOP BAR STARTS -->
@@ -95,7 +95,7 @@
                   <div class="row">
 
                     <!-- TASK ASSIGNMENT STARTS -->
-                    <div class="col-md-7">
+                    <div class="col-md-7" style="margin-top: -10px;">
                       <app-group-kanban-task-assignment [task]="task" [groupData]="groupData" [isModalView]="false" (updatedTask)="getUpdatedTask(task, i , j, $event)">
                       </app-group-kanban-task-assignment>
                     </div>
@@ -103,7 +103,7 @@
 
                     <!-- TASK DUE DATE STARTs -->
                     <div class="col-md-5 text-right">
-                      <i class="material-icons small font-weight-bold text-right"
+                      <i class="material-icons text-right"
                         [ngClass]="checkOverdue(task) === true ? 'overdue' : 'due'">alarm</i>
                       <!-- <span class="small font-weight-bold" *ngIf="task?.task?.due_to != 'Invalid date'"
                         [ngClass]="checkOverdue(task) === true ? 'overdue' : 'due'">
@@ -145,10 +145,10 @@
         <!-- CREATE NEW COLUMN START -->
         <div class="board-column">
           <div class="column-title create-column" (click)="this.createColumn = true">
-            + Create new column
+            + New column
           </div>
           <div class="add-column" *ngIf="this.createColumn">
-            <input class="form-control" style="margin-bottom: 3%;" type="text" placeholder="Provide the column name"
+            <input class="form-control" style="margin-bottom: 3%;" type="text" placeholder="Column name"
               [(ngModel)]="newColumnName">
             <div class="container">
               <button class="col-md-4 btn btn-sm btn-primary"

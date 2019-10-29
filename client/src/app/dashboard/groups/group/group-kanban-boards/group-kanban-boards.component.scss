@@ -20,7 +20,7 @@ $border-color:#E4EDF8;
 .board {
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
+    // flex-grow: 1;
 
     // Override Automatic Minimum Size
     // https://stackoverflow.com/questions/36247140/why-dont-flex-items-shrink-past-content-size
@@ -41,7 +41,7 @@ $border-color:#E4EDF8;
 
         .board-columns {
             display: flex;
-            flex-grow: 1;
+            // flex-grow: 1;
 
             .board-column {
                 display: flex;
@@ -49,7 +49,7 @@ $border-color:#E4EDF8;
                 flex-grow: 1;
                 flex-basis: 0; // to force the columns to all be the same size, regardless of content
 
-                min-width: 300px;
+                width: 340px;
                 margin: 50px;
                 padding: 25px;
 
@@ -66,6 +66,7 @@ $border-color:#E4EDF8;
                     justify-content: space-between;
                     text-transform: uppercase;
                     margin-bottom: 20px;
+                    width:300px;
                 }
             }
         }
@@ -133,8 +134,9 @@ $border-color:#E4EDF8;
 .tasks-container {
     flex-grow: 1;
     overflow-y: auto; 
-    height: 50vh;
+    height: 70vh;
     overflow-x: hidden;
+    width: 300px;
 }
 
 .task {
@@ -182,3 +184,17 @@ $border-color:#E4EDF8;
 }
 
 .dropdown-toggle:after { content: none }
+
+$pumpkin-orange: #fd7714;
+$turquoise: #0bc6a0;
+$dark-sky-blue: #4a90e2;
+
+.status-todo{
+    border-left: 3px solid $pumpkin-orange;
+}
+.status-inprogress{
+    border-left: 3px solid $turquoise;
+}
+.status-done{
+    border-left: 3px solid $dark-sky-blue;
+}
