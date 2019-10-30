@@ -210,7 +210,7 @@
               <img src="{{this.BASE_URL}}/uploads/{{post._posted_by?.profile_pic}}"
                 onerror="this.src='/assets/images/user.png'" class="feed-avatar">
               <p class="overview-item2" style="flex: none; line-height: 35px">{{post._posted_by?.first_name}}</p>
-              <p class="overview-item2 overview-post" style="line-height: 35px" [innerHTML]="post?.title | safe: 'html' | slice:0:100"></p>
+              <p class="overview-item2 overview-post" style="line-height: 35px" [innerHTML]="post?.title | safe: 'html'"></p>
             </div>
 
 
@@ -235,7 +235,7 @@
             <img src="{{this.BASE_URL}}/uploads/{{post._posted_by?.profile_pic}}"
               onerror="this.src='/assets/images/user.png'" class="feed-avatar">
             <p class="overview-item2" style="flex: none; line-height: 35px">{{post._posted_by?.first_name}}</p>
-            <p class="overview-item2 overview-post" style="line-height: 35px" [innerHTML]="post?.title | safe: 'html' | slice:0:100"></p>
+            <p class="overview-item2 overview-post" style="line-height: 35px" [innerHTML]="post?.title | safe: 'html'"></p>
           </div>
 
 
