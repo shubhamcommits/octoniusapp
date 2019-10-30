@@ -81,7 +81,7 @@ const edit = async (req, res, next) => {
             tags: req.body.tags,
             _read_by: [],
             task: {
-              due_to: moment(req.body.date_due_to).format('YYYY-MM-DD'),
+              due_to: (req.body.date_due_to) ? moment(req.body.date_due_to).format('YYYY-MM-DD') : null,
               _assigned_to: req.body.assigned_to,
               status: req.body.status, 
               unassigned : req.body.unassigned,
@@ -97,7 +97,7 @@ const edit = async (req, res, next) => {
             tags: req.body.tags,
             _read_by: [],
             task: {
-             due_to: moment(req.body.date_due_to).format('YYYY-MM-DD'),
+              due_to: (req.body.date_due_to) ? moment(req.body.date_due_to).format('YYYY-MM-DD') : null,
               _assigned_to: req.body.assigned_to,
               status: req.body.status , 
               unassigned : req.body.unassigned,
