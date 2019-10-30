@@ -32,39 +32,27 @@
 
         <!-- Tasks -->
         <div *ngIf="post.type== 'task'">
-          <div class="media card-tile overview-task">
+          <div *ngIf="post.task.status === 'to do'">
+            <!-- change kbn-to with kbn-working and kbn-done -->
+            <div class="media card-tile overview-task kbn-todo">
 
-            <div class=" row media-body">
-              <div class="col-md-2" *ngIf="post.task.status === 'to do'">
-                <div class="kanbanoverview kbn-todo">
-                  To Do
-                </div>
-              </div>
+              <div class=" row media-body">
 
-              <div class="col-md-2" *ngIf="post.task.status === 'in progress'">
-                <div class="kanbanoverview kbn-working">
-                  In Progress
-                </div>
-              </div>
 
-              <div class="col-md-2"
-                *ngIf="post.task.status.trim() === 'completed' || post.task.status.trim() === 'done' ">
-                <div class="kanbanoverview kbn-done">
-                  Done
-                </div>
-              </div>
-
-              <div class="col-md-6 overview-item" [innerHTML]="post?.title"></div>
-              <div class="col-md-2 overview-item small-blue-text" [innerHTML]="post?._group?.group_name"></div>
+                <div class="col-md-8 overview-item" [innerHTML]="post?.title"></div>
+                <div class="col-md-2 overview-item small-blue-text" [innerHTML]="post?._group?.group_name"></div>
 
 
 
-              <div class="col-md-2">
-                <div class="overview-item small text-muted text-right ">Due {{post.task.due_to | date:'MMMM d, y' }}
+                <div class="col-md-2">
+                  <div class="overview-item small text-muted text-right ">Due {{post.task.due_to | date:'MMMM d, y' }}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+
+
         </div>
       </a>
     </div>
@@ -116,33 +104,13 @@
       <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/post/{{post._id}}">
         <!-- Tasks -->
         <div *ngIf="post.type== 'task'">
-          <div class="media card-tile overview-task">
+          <!-- change kbn-to with kbn-working and kbn-done -->
+          <div class="media card-tile overview-task kbn-todo">
 
             <div class=" row media-body">
-              <div class="col-md-2" *ngIf="post.task.status === 'to do'">
-                <div class="kanbanoverview kbn-todo">
-                  To Do
-                </div>
-              </div>
 
-              <div class="col-md-2" *ngIf="post.task.status === 'in progress'">
-                <div class="kanbanoverview kbn-working">
-                  In Progress
-                </div>
-              </div>
-
-              <div class="col-md-2"
-                *ngIf="post.task.status.trim() === 'completed' || post.task.status.trim() === 'done' ">
-                <div class="kanbanoverview kbn-done">
-                  Done
-                </div>
-              </div>
-
-              <div class="col-md-6 overview-item" [innerHTML]="post?.title"></div>
+              <div class="col-md-8 overview-item" [innerHTML]="post?.title"></div>
               <div class="col-md-2 overview-item small-blue-text" [innerHTML]="post?._group?.group_name"></div>
-
-
-
               <div class="col-md-2">
                 <div class="overview-item small text-muted text-right ">Due {{post.task.due_to | date:'MMMM d, y' }}
                 </div>
@@ -200,8 +168,8 @@
 
 
     <div *ngFor="let post of this.recentPosts; let i = index;">
-      <a *ngIf="post?.type != 'document'" style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/post/{{post._id}}"
-        (click)="this.markPostAsRead(post._id)">
+      <a *ngIf="post?.type != 'document'" style="text-decoration:none; color:inherit;"
+        href="/#/dashboard/group/{{post._group?._id}}/post/{{post._id}}" (click)="this.markPostAsRead(post._id)">
 
         <div class="media card-tile shadow-sm">
           <div class=" row media-body">
@@ -210,7 +178,8 @@
               <img src="{{this.BASE_URL}}/uploads/{{post._posted_by?.profile_pic}}"
                 onerror="this.src='/assets/images/user.png'" class="feed-avatar">
               <p class="overview-item2" style="flex: none; line-height: 35px">{{post._posted_by?.first_name}}</p>
-              <p class="overview-item2 overview-post" style="line-height: 35px" [innerHTML]="post?.title | safe: 'html'"></p>
+              <p class="overview-item2 overview-post" style="line-height: 35px"
+                [innerHTML]="post?.title | safe: 'html'"></p>
             </div>
 
 
@@ -225,30 +194,31 @@
 
       </a>
 
-      <a *ngIf="post?.type == 'document'" style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/document/{{post._id}}"
-      (click)="this.markPostAsRead(post._id)">
+      <a *ngIf="post?.type == 'document'" style="text-decoration:none; color:inherit;"
+        href="/#/dashboard/group/{{post._group?._id}}/document/{{post._id}}" (click)="this.markPostAsRead(post._id)">
 
-      <div class="media card-tile shadow-sm">
-        <div class=" row media-body">
-          <div class="col-md-8 flex">
-            <i class="material-icons pink">chat</i>
-            <img src="{{this.BASE_URL}}/uploads/{{post._posted_by?.profile_pic}}"
-              onerror="this.src='/assets/images/user.png'" class="feed-avatar">
-            <p class="overview-item2" style="flex: none; line-height: 35px">{{post._posted_by?.first_name}}</p>
-            <p class="overview-item2 overview-post" style="line-height: 35px" [innerHTML]="post?.title | safe: 'html'"></p>
+        <div class="media card-tile shadow-sm">
+          <div class=" row media-body">
+            <div class="col-md-8 flex">
+              <i class="material-icons pink">chat</i>
+              <img src="{{this.BASE_URL}}/uploads/{{post._posted_by?.profile_pic}}"
+                onerror="this.src='/assets/images/user.png'" class="feed-avatar">
+              <p class="overview-item2" style="flex: none; line-height: 35px">{{post._posted_by?.first_name}}</p>
+              <p class="overview-item2 overview-post" style="line-height: 35px"
+                [innerHTML]="post?.title | safe: 'html'"></p>
+            </div>
+
+
+            <div class="col-md-4 text-right">
+              <span class="overview-item2 small-blue-text text-right" [innerHTML]="post?._group?.group_name"></span>
+              <span class="overview-item2 small text-muted text-right">{{post.created_date | date:'MMMM d y, h:mm a' }}
+              </span>
+            </div>
           </div>
 
-
-          <div class="col-md-4 text-right">
-            <span class="overview-item2 small-blue-text text-right" [innerHTML]="post?._group?.group_name"></span>
-            <span class="overview-item2 small text-muted text-right">{{post.created_date | date:'MMMM d y, h:mm a' }}
-            </span>
-          </div>
         </div>
 
-      </div>
-
-    </a>
+      </a>
 
     </div>
   </div>
@@ -267,7 +237,8 @@
                 onerror="this.src='/assets/images/user.png'" class="feed-avatar float-left">
               <p class="overview-item2" style="flex: none; line-height: 35px">{{comment._commented_by?.first_name}}
                 replied</p>
-              <div [innerHTML]="comment?.content | slice:0:100" class="overview-item2 overview-post" style="font-size: 14px"> </div>
+              <div [innerHTML]="comment?.content | slice:0:100" class="overview-item2 overview-post"
+                style="font-size: 14px"> </div>
             </div>
             <div class="col-md-4 text-right">
               <div class="overview-item2 small text-muted text-right">
@@ -280,7 +251,7 @@
 
 
       </a>
-    
+
 
 
 
