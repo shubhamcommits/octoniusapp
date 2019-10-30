@@ -420,7 +420,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
         tags: task.tags,
         _read_by: [],
         unassigned: task.task.unassigned,
-        date_due_to: task.task.due_to,
+        date_due_to: (task.task.due_to) ? task.task.due_to: null,
         assigned_to: task.task._assigned_to,
         _column: {
           title:newColumn
