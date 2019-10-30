@@ -433,18 +433,46 @@ color:#787878 !important;
   border-radius: 4px 4px 4px 4px;
 }
 
+// activity related status
 .kbn-todo{
-  border-left:3px solid  $pumpkin-orange;
+  background:$pumpkin-orange;
   color: white;
 }
 .kbn-working{
-  border-left:3px solid $turquoise;
+  background: $turquoise;
   color: white;
 }
 .kbn-done{
-  border-left:3px solid $dark-sky-blue;
+  background: $dark-sky-blue;
   color: white;
 }
+
+
+
+.pill-todo{
+  background: $pumpkin-orange;
+  width: 40px;
+  height: 8px;
+  border-radius: 4px;
+  margin-top: 10px;
+}
+.pill-inprogress{
+  background: $turquoise;
+  width: 40px;
+  height: 8px;
+  border-radius: 4px;
+  margin-top: 10px;
+}
+.pill-done{
+  background: $turquoise;
+  width: 40px;
+  height: 8px;
+  border-radius: 4px;
+  margin-top: 10px;
+}
+
+
+
 .kbn-working-color{
   color: $turquoise;
 }
