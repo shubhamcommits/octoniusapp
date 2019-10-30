@@ -104,8 +104,6 @@
 
                     <!-- TASK DUE DATE STARTs -->
                     <div class="col-md-5 text-right">
-                      <i class="material-icons text-right"
-                        [ngClass]="checkOverdue(task) === true ? 'overdue' : 'due'">alarm</i>
                       <span class="small" *ngIf="task?.task?.due_to != 'Invalid date'"
                         [ngClass]="checkOverdue(task) === true ? 'overdue' : 'due'">
                         {{task?.task?.due_to | date}}</span>
