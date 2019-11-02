@@ -131,7 +131,7 @@ import { PostService } from './shared/services/post.service';
 import { ProfileDataService } from "./shared/services/profile-data.service";
 import { QuillAutoLinkService } from './shared/services/quill-auto-link.service';
 import { SearchService } from "./shared/services/search.service";
-import { StorageService } from './shared/services/storage-service/storage.service';
+import { StorageService } from './shared/services/storage.service';
 import { TokenInterceptorService } from './shared/services/token-interceptor.service';
 import { UserService } from './shared/services/user.service';
 import { UtilityService } from './shared/services/utility-service/utility.service';
@@ -205,7 +205,7 @@ import { ClickStopPropagationDirective } from './shared/directives/click-stop-pr
     CollaborativeDocGroupPostCommentComponent, CollaborativeDocGroupPostComponent,
     CommentSectionComponent, ContentSearchResultComponent, DatePickerComponent,
     DialogOverviewExampleDialog, DocumentFileComponent, EventGroupPostComponent,
-    FilesComponent, ForgotPasswordComponent, GroupActivityFiltersComponent, GroupActivityProgressComponent,
+    FilesComponent, GroupActivityFiltersComponent, GroupActivityProgressComponent,
     GroupComponent, GroupHeaderComponent, GroupKanbanBoardsComponent, 
     GroupKanbanTaskViewComponent, GroupKanbanTaskAssignmentComponent, GroupPostComponent, GroupSmartAdminComponent,
     GroupsPageHeaderComponent, GroupTasksComponent, GroupTasksNewComponent,
@@ -247,7 +247,7 @@ import { ClickStopPropagationDirective } from './shared/directives/click-stop-pr
     AdminService, AuthService, ColumnService, DocumentFileService,
     DocumentService, GoogleCloudService, GroupDataService, GroupService,
     GroupsService, PostService, ProfileDataService, QuillAutoLinkService,
-    SearchService, SnotifyService, StorageService, UserService, UtilityService, WorkspaceService,
+    SearchService, SnotifyService, StorageService, UserService, WorkspaceService,
     // GUARDS
     DenyNavigationGuard, AuthGuard,
     NotAuthGuard, ValidSubscriptionGuard,
