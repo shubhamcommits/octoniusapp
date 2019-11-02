@@ -94,6 +94,7 @@
     </div>
       </ng-container>
 
+      <ng-container *ngIf="!displayEditPostSection">
       <!-- event post content -->
       <div class="col-md-12 innercard ">
         <div class="row" style="margin-top:10px">
@@ -199,7 +200,8 @@
             <span class="badge badge-primary" style="margin-right: 0.5rem;" *ngFor="let tag of tags; let i = index">{{tag}}</span>
           </div>
         </div>
-
+      </ng-container>
+    
       <!-- POST ACTIONS -->
 
       <post-actions

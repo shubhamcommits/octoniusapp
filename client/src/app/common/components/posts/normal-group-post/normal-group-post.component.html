@@ -76,7 +76,8 @@
     </div>
       </ng-container>
 
-      <!-- POST TITLE -->
+      <ng-container *ngIf="!displayEditPostSection">
+              <!-- POST TITLE -->
       <div class="col-md-12 innercard font-weight-bold" [innerHTML]="post?.title | safe: 'html'">
       </div>
 
@@ -164,6 +165,8 @@
             <span class="badge badge-primary" style="margin-right: 0.5rem;" *ngFor="let tag of tags; let i = index">{{tag}}</span>
           </div>
         </div>
+      </ng-container>
+      
 
       <post-actions
         *ngIf="user"

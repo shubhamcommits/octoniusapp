@@ -770,6 +770,7 @@ post = {
 
   onContentChanged(quill) {
     this.editorTextLength = quill.text.length;
+    this.post.content = quill.html;
   }
 
   onEditorCreated(quill) {

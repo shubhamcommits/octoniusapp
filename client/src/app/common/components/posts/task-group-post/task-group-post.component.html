@@ -143,94 +143,97 @@
 </div>
       </ng-container>
 
-      <!-- TASK POST TITLE -->
-      <div class="col-md-12 innercard font-weight-bold" [innerHTML]="post?.title | safe: 'html'">
+      <ng-container *ngIf="!displayEditPostSection">
+     <!-- TASK POST TITLE -->
+     <div class="col-md-12 innercard font-weight-bold" [innerHTML]="post?.title | safe: 'html'">
+    </div>
+
+    <div [ngStyle]="{ 'height': this.readMore  ? '107px' : '100%', 'overflow': 'hidden'}">
+      <!-- TASK POST CONTENT -->
+      <div class="col-md-12 innercard " [innerHTML]="applyZoom(post?.content) | safe: 'html'">
       </div>
+      <!--<pre class="card-text ">{{post?.content}}
+      </pre>-->
 
-      <div [ngStyle]="{ 'height': this.readMore  ? '107px' : '100%', 'overflow': 'hidden'}">
-        <!-- TASK POST CONTENT -->
-        <div class="col-md-12 innercard " [innerHTML]="applyZoom(post?.content) | safe: 'html'">
+        <!-- POST FILES -->
+        <div class="col-md-12 innercard" *ngFor="let file of post.files">
+          <br>
+          <div class = "imagePreview" *ngIf = "file?.mimeType == 'jpg' || file?.mimeType == 'jpeg' || file?.mimeType == 'png' ">
+          <div class="col-md-12 attachfile">  <i class="material-icons event-title">attach_file</i> <a id = "imagePreviewLink" role="button" href="{{this.BASE_URL}}/uploads/{{file.modified_name}}" >{{file?.orignal_name}}</a></div>
         </div>
-        <!--<pre class="card-text ">{{post?.content}}
-        </pre>-->
-
-          <!-- POST FILES -->
-          <div class="col-md-12 innercard" *ngFor="let file of post.files">
-            <br>
-            <div class = "imagePreview" *ngIf = "file?.mimeType == 'jpg' || file?.mimeType == 'jpeg' || file?.mimeType == 'png' ">
-            <div class="col-md-12 attachfile">  <i class="material-icons event-title">attach_file</i> <a id = "imagePreviewLink" role="button" href="{{this.BASE_URL}}/uploads/{{file.modified_name}}" >{{file?.orignal_name}}</a></div>
-          </div>
-          <div *ngIf = "file?.mimeType == 'pdf' ">
-            <div class="col-md-12 attachfile">  <i class="material-icons event-title">attach_file</i> <a role="button" href="javascript:void(0)" (click) = "pdfPreviewClicked(file.modified_name)" >{{file?.orignal_name}}</a></div>
-          </div>
-          <div *ngIf = "file?.mimeType == 'docx' || file?.mimeType == 'doc' || file?.mimeType == 'ppt' || file?.mimeType == 'pptx' || file?.mimeType == 'xls' || file?.mimeType == 'xlsx' ">
-            <div class="col-md-12 attachfile"> <i class="material-icons event-title">attach_file</i><a role="button" href="javascript:void(0)" (click) = "officeMimeTypeclick(file.modified_name)" >{{file?.orignal_name}}</a></div>
-          </div>
-          <div *ngIf = "file?.mimeType == 'gif' 
-          || file?.mimeType == 'tiff' 
-          || file?.mimeType == 'mpeg4'
-          || file?.mimeType == 'mov'
-          || file?.mimeType == 'avi'
-          || file?.mimeType == 'mpegps'
-          || file?.mimeType == 'wmv'
-          || file?.mimeType == 'flv'
-          || file?.mimeType == 'txt'
-          || file?.mimeType == 'css'
-          || file?.mimeType == 'html'
-          || file?.mimeType == 'pages'
-          || file?.mimeType == 'ai'
-          || file?.mimeType == 'psd'
-          || file?.mimeType == 'svg'
-          ">
-          <div class="col-md-12 attachfile">  <i class="material-icons event-title">attach_file</i><a role="button" href="javascript:void(0)" (click) = "googleMimeTypeclick(file.modified_name)" >{{file?.orignal_name}}</a></div>
+        <div *ngIf = "file?.mimeType == 'pdf' ">
+          <div class="col-md-12 attachfile">  <i class="material-icons event-title">attach_file</i> <a role="button" href="javascript:void(0)" (click) = "pdfPreviewClicked(file.modified_name)" >{{file?.orignal_name}}</a></div>
         </div>
-          <div *ngIf = "
-          file?.mimeType != 'jpg' 
-          && file?.mimeType !== 'jpeg' 
-          && file?.mimeType != 'png' 
-          && file?.mimeType != 'pdf' 
-          && file?.mimeType != 'docx' 
-          && file?.mimeType != 'doc' 
-          && file?.mimeType != 'ppt' 
-          && file?.mimeType != 'pptx' 
-          && file?.mimeType != 'xls' 
-          && file?.mimeType != 'xlsx'
-          && file?.mimeType == 'gif' 
-          && file?.mimeType == 'tiff' 
-          && file?.mimeType == 'mpeg4'
-          && file?.mimeType == 'mov'
-          && file?.mimeType == 'avi'
-          && file?.mimeType == 'mpegps'
-          && file?.mimeType == 'wmv'
-          && file?.mimeType == 'flv'
-          && file?.mimeType == 'txt'
-          && file?.mimeType == 'css'
-          && file?.mimeType == 'html'
-          && file?.mimeType == 'pages'
-          && file?.mimeType == 'ai'
-          && file?.mimeType == 'psd'
-          && file?.mimeType == 'svg'
-          ">
-          <div class="col-md-12 attachfile">  <i class="material-icons event-title">attach_file</i><a role="button" href="javascript:void(0)" href="{{this.BASE_URL}}/uploads/{{file.modified_name}}" >{{file?.orignal_name}}</a></div>
-          </div>
+        <div *ngIf = "file?.mimeType == 'docx' || file?.mimeType == 'doc' || file?.mimeType == 'ppt' || file?.mimeType == 'pptx' || file?.mimeType == 'xls' || file?.mimeType == 'xlsx' ">
+          <div class="col-md-12 attachfile"> <i class="material-icons event-title">attach_file</i><a role="button" href="javascript:void(0)" (click) = "officeMimeTypeclick(file.modified_name)" >{{file?.orignal_name}}</a></div>
+        </div>
+        <div *ngIf = "file?.mimeType == 'gif' 
+        || file?.mimeType == 'tiff' 
+        || file?.mimeType == 'mpeg4'
+        || file?.mimeType == 'mov'
+        || file?.mimeType == 'avi'
+        || file?.mimeType == 'mpegps'
+        || file?.mimeType == 'wmv'
+        || file?.mimeType == 'flv'
+        || file?.mimeType == 'txt'
+        || file?.mimeType == 'css'
+        || file?.mimeType == 'html'
+        || file?.mimeType == 'pages'
+        || file?.mimeType == 'ai'
+        || file?.mimeType == 'psd'
+        || file?.mimeType == 'svg'
+        ">
+        <div class="col-md-12 attachfile">  <i class="material-icons event-title">attach_file</i><a role="button" href="javascript:void(0)" (click) = "googleMimeTypeclick(file.modified_name)" >{{file?.orignal_name}}</a></div>
+      </div>
+        <div *ngIf = "
+        file?.mimeType != 'jpg' 
+        && file?.mimeType !== 'jpeg' 
+        && file?.mimeType != 'png' 
+        && file?.mimeType != 'pdf' 
+        && file?.mimeType != 'docx' 
+        && file?.mimeType != 'doc' 
+        && file?.mimeType != 'ppt' 
+        && file?.mimeType != 'pptx' 
+        && file?.mimeType != 'xls' 
+        && file?.mimeType != 'xlsx'
+        && file?.mimeType == 'gif' 
+        && file?.mimeType == 'tiff' 
+        && file?.mimeType == 'mpeg4'
+        && file?.mimeType == 'mov'
+        && file?.mimeType == 'avi'
+        && file?.mimeType == 'mpegps'
+        && file?.mimeType == 'wmv'
+        && file?.mimeType == 'flv'
+        && file?.mimeType == 'txt'
+        && file?.mimeType == 'css'
+        && file?.mimeType == 'html'
+        && file?.mimeType == 'pages'
+        && file?.mimeType == 'ai'
+        && file?.mimeType == 'psd'
+        && file?.mimeType == 'svg'
+        ">
+        <div class="col-md-12 attachfile">  <i class="material-icons event-title">attach_file</i><a role="button" href="javascript:void(0)" href="{{this.BASE_URL}}/uploads/{{file.modified_name}}" >{{file?.orignal_name}}</a></div>
         </div>
       </div>
+    </div>
 
-      <!-- read more / read less button -->
-      <button *ngIf="post?.content?.split('').length > 50 && this.preview" class="btn btn-link mt-3" (click)="this.readMore = !this.readMore">
-        <span *ngIf="this.readMore">Read more</span>
-        <span *ngIf="!this.readMore">Read less</span>
-      </button>
-      <!--POST TAGS-->
-      <div class="row innercard" *ngIf="post?.tags?.length > 0">
-          <div class="col-xs" style="margin-left: 20px">  <i class="material-icons tagslabel" ngbTooltip="Tags">
-              local_offer
-              </i></div>
-              <div class="col-md-10" style="margin-left: -20px">
-       
-            <span class="badge badge-primary" style="margin-right: 0.5rem;" *ngFor="let tag of tags; let i = index">{{tag}}</span>
-          </div>
+    <!-- read more / read less button -->
+    <button *ngIf="post?.content?.split('').length > 50 && this.preview" class="btn btn-link mt-3" (click)="this.readMore = !this.readMore">
+      <span *ngIf="this.readMore">Read more</span>
+      <span *ngIf="!this.readMore">Read less</span>
+    </button>
+    <!--POST TAGS-->
+    <div class="row innercard" *ngIf="post?.tags?.length > 0">
+        <div class="col-xs" style="margin-left: 20px">  <i class="material-icons tagslabel" ngbTooltip="Tags">
+            local_offer
+            </i></div>
+            <div class="col-md-10" style="margin-left: -20px">
+     
+          <span class="badge badge-primary" style="margin-right: 0.5rem;" *ngFor="let tag of tags; let i = index">{{tag}}</span>
         </div>
+      </div>
+      </ng-container>
+      
 
       <post-actions *ngIf="user" [post]="post" [commentCount]="commentCount" [commentsDisplayed]="commentsDisplayed"
         [user]="user" (toggleComments)="toggleComments()" (sendComments)="setComments($event)"
