@@ -38,7 +38,7 @@
                           <i class="material-icons action" ngbDropdownToggle>more_horiz</i>
                           <div ngbDropdownMenu aria-labelledby="postActionsDrop">
                             <button *ngIf="post?.type != 'document'" class="dropdown-item" [routerLink]="['/dashboard', 'group', post?._group, 'post', post?._id]" > View</button>
-                            <button *ngIf="post?.type != 'document' &&(post?._posted_by?._id == user._id || user?.role === 'owner' || user?.role === 'admin')" class="dropdown-item" (click)="editPost.emit();"> Edit</button>
+                            <button *ngIf="post?.type != 'document' && post?.type != 'task' &&(post?._posted_by?._id == user._id || user?.role === 'owner' || user?.role === 'admin')" class="dropdown-item" (click)="editPost.emit();"> Edit</button>
                             <button *ngIf="post?.type == 'document'" class="dropdown-item" [routerLink]="['/dashboard', 'group', post?._group, 'document', post?._id]"> Edit</button>
                             <button  *ngIf="post?._posted_by?._id == user._id || user?.role === 'owner' || user?.role === 'admin'"class="dropdown-item" (click)="deletePost.emit()"> Delete</button>
                             <button  class="dropdown-item" (click)="copyToClipboard(post?._id)"> Copy Link</button>
