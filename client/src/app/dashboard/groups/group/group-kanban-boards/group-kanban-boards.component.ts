@@ -228,11 +228,11 @@ export class GroupKanbanBoardsComponent implements OnInit {
         for(let i = 0; i < this.columns.length; i++){
           // if(this.columns[i]['title'] != 'done'){
             this.columns[i]['tasks'] = res['posts']
-            .filter(post => post.task.hasOwnProperty('_column') === true && post.task._column.title === this.columns[i]['title'])
+            .filter(post => post.task.hasOwnProperty('_column') === true && post.task._column != null && post.task._column.title === this.columns[i]['title'])
           // }
           // if(this.columns[i]['title'] != 'done'){
             Array.prototype.push.apply(this.columns[i]['tasks'], res['posts']
-            .filter(post => post.task.status === this.columns[i]['title'] && post.task.hasOwnProperty('_column') === false));
+            .filter(post => post.task.status === this.columns[i]['title'] && post.task.hasOwnProperty('_column') === false && post.task._column != null));
           // }
         }
         // await this.getCompletedTasks(groupId);
