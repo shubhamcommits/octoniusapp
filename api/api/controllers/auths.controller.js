@@ -30,7 +30,9 @@ const signIn = async (req, res, next) => {
     const user = await User.findOne({
       workspace_name,
       email
-    }).populate('_workspace', 'workspace_name _id');
+    })
+    .select('_id first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group')
+    .populate('_workspace', 'workspace_name _id');
 
     // If user wasn't found or user was previsously removed/disabled, return error
     if (!user || user.active === false) {
@@ -67,7 +69,8 @@ const signIn = async (req, res, next) => {
     return res.status(200).json({
       message: `User signed in ${user.workspace_name} Workspace!`,
       token,
-      user: currentUser
+      // user: currentUser
+      user
     });
   } catch (err) {
     return sendErr(res, err, 'Error, username');
@@ -543,7 +546,8 @@ const createNewWorkspace = async (req, res, next) => {
     return res.status(200).json({
       message: 'Workspace created!',
       token,
-      user: currentUser
+      user: user,
+      workspace: workspace
     });
   } catch (err) {
     return sendErr(res, err);

@@ -54,7 +54,7 @@ const signIn = async (req, res, next) => {
     return res.status(200).json({
       message: `User signed in ${user.workspace_name} Workspace!`,
       token: token,
-      user: currentUser
+      user: user
     });
 
   } catch (err) {

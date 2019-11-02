@@ -9,6 +9,11 @@ export const environment = {
   BASE_API_URL: 'http://localhost:3000/api',
   BASE_URL: 'http://localhost:3000',
   pk_stripe: 'pk_test_rgLsr0HrrbMcqQr5G7Wz1zFK',
+
+  /**
+   * BROWSER STORAGE KEY
+   */
+  storageKey: 'storageKey@20xx',
   
   // !--GOOGLE DEVELOPER CONSOLE CREDENTIALS--! //
   developerKey: 'AIzaSyDGM66BZhGSmBApm3PKL-xCrri-3Adb06I',
