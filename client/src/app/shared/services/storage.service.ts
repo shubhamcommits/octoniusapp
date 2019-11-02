@@ -1,0 +1,74 @@
+import { Injectable } from '@angular/core';
+import * as CryptoJS from 'crypto-js';
+import { environment } from '../../../environments/environment';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class StorageService {
+
+  constructor() { }
+
+  storageKey = environment.storageKey;
+
+  /**
+   * This function encrypts the key value which is supposed to be stored
+   * So that key value is not visible/exposed to the client side
+   * @param key 
+   */
+  encryptKey(key: any){
+    return CryptoJS.AES.encrypt(key, this.storageKey.trim()).toString();
+  }
+
+  /**
+   * This function encrypts the data which is associated with storageKey
+   * Following CryptoJS Standard functions
+   * @param data 
+   */
+  encryptData(data: Object){
+    return CryptoJS.AES.encrypt(data, this.storageKey.trim()).toString();
+  }
+
+  /**
+   * This function decrypts the data which is associated with storageKey
+   * Following CryptoJS Standard functions
+   * Returns JSON Data
+   * @param data 
+   */
+  decryptData(data : Object){
+    return JSON.parse(CryptoJS.AES.decrypt(data, this.storageKey.trim()).toString(CryptoJS.enc.Utf8));
+  }
+
+  /**
+   * This function replaces the localstorage data to encrypted data, which is more secured
+   * @param data - requires an object and the storageKey from the environment
+   */
+  setLocalData(key: any, data: Object) {
+    key = this.encryptKey(key);
+    data = this.encryptData(data);
+
+    return localStorage.setItem(key, JSON.stringify(data));
+  }
+
+  /**
+   * This function removes the localstorage data which is associated with the key and exists in the encrypted form
+   */
+  removeLocalData(key: any) {
+    return localStorage.removeItem(key);
+  }
+
+  /**
+   * This function fetches the localstorage data which is associated with the key and exists in the encrypted form
+   */
+  getLocalData(key: any) {
+    return this.decryptData(localStorage.getItem(key));
+  }
+
+  /**
+   * This function clears all the local & session storage data
+   */
+  clear() {
+    localStorage.clear();
+    sessionStorage.clear();
+  }
+}
