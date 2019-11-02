@@ -75,14 +75,17 @@ export class SigninComponent implements OnInit {
     this._auth.signIn(this.user)
       .subscribe((res) => {
         // this._auth.setToken(res.token);
-        this.alert.class = 'alert alert-success';
-        this.alert.message = res.message;
-        this._auth.storeUserData(res.token, res.user);
-       // console.log('Inside signin: ', res.user);
-
-        setTimeout(() => {
-          this._router.navigate(['/dashboard/overview']);
-        }, 2000);
+      //   this.alert.class = 'alert alert-success';
+      //   this.alert.message = res.message;
+      //   localStorage.setItem('token', res.token);
+      //   localStorage.setItem('user', JSON.stringify(res.user));
+      //   // localStorage.setItem('user', JSON.stringify(res.));
+      //   // this._auth.storeUserData(res.token, res.user);
+      //  // console.log('Inside signin: ', res.user);
+      console.log(res);
+        // setTimeout(() => {
+        //   this._router.navigate(['/dashboard/overview']);
+        // }, 2000);
 
 
       }, (err) => {
