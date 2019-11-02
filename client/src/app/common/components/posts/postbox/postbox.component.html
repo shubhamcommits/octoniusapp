@@ -126,8 +126,8 @@
 
               <input id="post-title" name="postTitle" type="text" formControlName="postTitle" [(ngModel)]="post.title" placeholder="Insert title here ..." style="padding: 12px 15px; font-style: italic; width: 100%; outline: none; box-shadow: none"/>
 
-              <quill-editor id="post-content" [modules]="modules" [(ngModel)]="post.content"
-                            [spellcheck]="true" name="postContent" formControlName="postContent"
+              <quill-editor id="post-content" [modules]="modules" 
+                            [spellcheck]="true" name="postContent" 
                             (ready)="onEditorCreated($event)" (onEditorCreated)="onEditorCreated($event)" (change)="onContentChanged($event)"
                             (onContentChanged)="onContentChanged($event)">
               </quill-editor>
@@ -202,8 +202,7 @@
 
           <div class="col-md-4 text-right ">
             <button type="button " name="button" class="btn btn-default " (click)="togglePostbox()">Cancel</button>
-            <button [disabled]="(this.postForm.invalid && this.post.type === 'normal' )
-    || this.processing
+            <button [disabled]=" this.processing
     || (this.selectedGroupUsers.length === 0 && this.post.type === 'event' && !this.isItMyWorkplace)"
                     type="button " name="button" (click)="OnAddNewPost()" class="btn btn-primary">Post</button>
           </div>

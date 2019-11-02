@@ -215,7 +215,8 @@ return doc.body.innerHTML;
     // set the values for the modal so that they display the current values of the post
     const dateObj = moment(this.post.task.due_to, 'YYYY-MM-DD');
     this.model_date = { year: dateObj.year(), month: dateObj.month(), day: dateObj.date() };
-    this.selectedGroupUsers = [this.post.task._assigned_to];
+    // console.log(this.post.task)
+    this.selectedGroupUsers = this.post.task._assigned_to;
     this.assignment = 'Assigned';
 
     // set the initial value of the editor
