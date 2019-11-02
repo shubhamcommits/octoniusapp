@@ -124,6 +124,7 @@ import { PostService } from './shared/services/post.service';
 import { ProfileDataService } from "./shared/services/profile-data.service";
 import { QuillAutoLinkService } from './shared/services/quill-auto-link.service';
 import { SearchService } from "./shared/services/search.service";
+import { StorageService } from './shared/services/storage.service';
 import { TokenInterceptorService } from './shared/services/token-interceptor.service';
 import { UserService } from './shared/services/user.service';
 import { WorkspaceService } from './shared/services/workspace.service';
@@ -199,7 +200,8 @@ import { GroupKanbanTaskAssignmentComponent } from './dashboard/groups/group/gro
     CommentSectionComponent, ContentSearchResultComponent, DatePickerComponent,
     DialogOverviewExampleDialog, DocumentFileComponent, EventGroupPostComponent,
     FilesComponent, GroupActivityFiltersComponent, GroupActivityProgressComponent,
-    GroupComponent, GroupHeaderComponent, GroupPostComponent, GroupSmartAdminComponent,
+    GroupComponent, GroupHeaderComponent, GroupKanbanBoardsComponent, 
+    GroupKanbanTaskViewComponent, GroupKanbanTaskAssignmentComponent, GroupPostComponent, GroupSmartAdminComponent,
     GroupsPageHeaderComponent, GroupTasksComponent, GroupTasksNewComponent,
     NavbarComponent, NormalGroupPostComponent, OverviewMyTasksComponent,
     OverviewMyWorkplaceComponent, OverviewPageHeaderComponent, PostActionsComponent,
@@ -219,11 +221,6 @@ import { GroupKanbanTaskAssignmentComponent } from './dashboard/groups/group/gro
     // DIRECTIVES
     ClickStopPropagationDirective,
 
-    GroupKanbanBoardsComponent,
-
-    GroupKanbanTaskViewComponent,
-
-    GroupKanbanTaskAssignmentComponent
   ],
   imports: [
 
@@ -243,7 +240,7 @@ import { GroupKanbanTaskAssignmentComponent } from './dashboard/groups/group/gro
     AdminService, AuthService, ColumnService, DocumentFileService,
     DocumentService, GoogleCloudService, GroupDataService, GroupService,
     GroupsService, PostService, ProfileDataService, QuillAutoLinkService,
-    SearchService, SnotifyService, UserService, WorkspaceService,
+    SearchService, SnotifyService, StorageService, UserService, WorkspaceService,
     // GUARDS
     DenyNavigationGuard, AuthGuard,
     NotAuthGuard, ValidSubscriptionGuard,

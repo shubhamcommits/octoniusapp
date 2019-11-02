@@ -12,7 +12,7 @@ export class ValidSubscriptionGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    const userId = JSON.parse(localStorage.getItem('user')).user_id;
+    const userId = JSON.parse(localStorage.getItem('user'))._id;
 
     return this.authService.checkSubscriptionValidity(userId)
       .map((res) => {

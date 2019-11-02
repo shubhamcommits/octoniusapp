@@ -6,6 +6,11 @@ export const environment = {
   BASE_API_URL: 'https://workplace.octonius.com/api',
   BASE_URL: 'https://workplace.octonius.com',
   pk_stripe: 'pk_live_C6kLYxOOeUXt0hzaK6PockGM',
+
+  /**
+   * BROWSER STORAGE KEY
+   */
+  storageKey: 'storageKey@20xx',
   
   // !--GOOGLE DEVELOPER CONSOLE CREDENTIALS--! //
   developerKey: 'AIzaSyDGM66BZhGSmBApm3PKL-xCrri-3Adb06I',
