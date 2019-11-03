@@ -5,6 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0",
+    "dev": "ng serve --configuration hmr",
     "hmr": "ng serve --configuration hmr --host 0.0.0.0",
     "build": "ng build --prod",
     "test": "ng test",
@@ -29,6 +30,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.11.2",
     "@ng-bootstrap/ng-bootstrap": "^5.1.2",
     "@tweenjs/tween.js": "^18.3.2",
+    "@types/crypto-js": "^3.1.43",
     "@types/jest": "^24.0.21",
     "@types/mocha": "^5.2.7",
     "@types/socket.io-client": "^1.4.32",

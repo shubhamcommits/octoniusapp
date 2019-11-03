@@ -42,6 +42,7 @@ import { NewWorkspacePage1Component } from './Authentication/new-workspace-page-
 import { NewWorkspacePage2Component } from './Authentication/new-workspace-page-2/new-workspace-page-2.component';
 import { SigninComponent } from './Authentication/signin/signin.component';
 import { SignupComponent } from './Authentication/signup/signup.component';
+import { AuthSignInComponent } from './Authentication/auth-sign-in/auth-sign-in.component';
 import { WelcomePageComponent } from './Authentication/welcome-page/welcome-page.component';
 
 // ----- ADMIN SECTION -----
@@ -92,7 +93,8 @@ const appRoutes: Routes = [
 
   // ----- AUTHENTICATION -----
   { path: 'signup', component: SignupComponent, canActivate: [NotAuthGuard] },
-  { path: 'signin', component: SigninComponent, canActivate: [NotAuthGuard] },
+  // { path: 'signin', component: SigninComponent, canActivate: [NotAuthGuard] },
+  { path: 'signin', component: AuthSignInComponent, canActivate: [NotAuthGuard] },
   { path: 'home', component: WelcomePageComponent, canActivate: [NotAuthGuard] },
   { path: 'create-new-Workspace-page2', component: NewWorkspacePage2Component, canActivate: [NotAuthGuard] },
   { path: 'create-new-Workspace-page1', component: NewWorkspacePage1Component, canActivate: [NotAuthGuard] },

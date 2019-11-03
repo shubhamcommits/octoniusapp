@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as CryptoJS from 'crypto-js';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -25,8 +25,8 @@ export class StorageService {
    * Following CryptoJS Standard functions
    * @param data 
    */
-  encryptData(data: Object){
-    return CryptoJS.AES.encrypt(data, this.storageKey.trim()).toString();
+  encryptData(key, data: string){
+    return CryptoJS.AES.encrypt(data, key).toString();
   }
 
   /**
@@ -35,17 +35,16 @@ export class StorageService {
    * Returns JSON Data
    * @param data 
    */
-  decryptData(data : Object){
-    return JSON.parse(CryptoJS.AES.decrypt(data, this.storageKey.trim()).toString(CryptoJS.enc.Utf8));
+  decryptData(key, data : string){
+    return JSON.parse(CryptoJS.AES.decrypt(data, key).toString(CryptoJS.enc.Utf8));
   }
 
   /**
    * This function replaces the localstorage data to encrypted data, which is more secured
    * @param data - requires an object and the storageKey from the environment
    */
-  setLocalData(key: any, data: Object) {
-    key = this.encryptKey(key);
-    data = this.encryptData(data);
+  setLocalData(key: any, data: string) {
+    data = this.encryptData(key, data);
 
     return localStorage.setItem(key, JSON.stringify(data));
   }
@@ -61,7 +60,7 @@ export class StorageService {
    * This function fetches the localstorage data which is associated with the key and exists in the encrypted form
    */
   getLocalData(key: any) {
-    return this.decryptData(localStorage.getItem(key));
+    return this.decryptData(key, JSON.parse(localStorage.getItem(key)));
   }
 
   /**
