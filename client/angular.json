@@ -26,6 +26,7 @@
             ],
             "scripts": [
               "node_modules/quill/dist/quill.min.js",
+              "node_modules/crypto-js/crypto-js.js",
               "node_modules/quill-image-resize-module/image-resize.min.js"
             ]
           },

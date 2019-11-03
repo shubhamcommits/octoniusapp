@@ -1,10 +1,10 @@
 import Swal from 'sweetalert2';
 import {map} from 'rxjs/operators';
-import {Injectable, OnInit, } from '@angular/core';
-import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, CanDeactivate, Router} from '@angular/router';
-import { Observable } from 'rxjs';
+import {Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, RouterStateSnapshot, CanDeactivate, Router} from '@angular/router';
 import {AdminBillingComponent} from "../../dashboard/admin/admin-billing/admin-billing.component";
 import {WorkspaceService} from "../services/workspace.service";
+import { StorageService } from '../services/storage-service/storage.service';
 
 @Injectable()
 
@@ -14,6 +14,7 @@ export class DenyNavigationGuard implements CanDeactivate<AdminBillingComponent>
 
   constructor(
     private workspaceService: WorkspaceService,
+    private storageService: StorageService,
     private router: Router
   ) {}
 
@@ -23,7 +24,7 @@ export class DenyNavigationGuard implements CanDeactivate<AdminBillingComponent>
     currentState: RouterStateSnapshot) {
 
       if(localStorage.length > 0){
-        this.workspaceId = JSON.parse(localStorage.getItem('user')).workspace._id;
+        this.workspaceId = JSON.parse(localStorage.getItem('user'))._workspace._id;
         // we want to check whether the owner of the workspace has paid
         //  If he has, we'll allow the user to navigate to other pages
         //   if he hasn't, the user won't be able to navigate away

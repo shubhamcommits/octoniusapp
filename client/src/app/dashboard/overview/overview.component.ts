@@ -93,17 +93,17 @@ export class OverviewComponent implements OnInit {
     this.ngxService.start(); // start foreground loading with 'default' id
 
     const user = {
-      'userId': this.user_data.user_id
+      'userId': this.user_data._id
       }
       this.socket.on('notificationsFeed', (user) => {
         console.log('Get Notifications socket on', user);
         this.notifications_data = user;
       });
-      this.socket.emit('getNotifications', this.user_data.user_id);
+      this.socket.emit('getNotifications', this.user_data._id);
 
     // The next few lines are responsible for joining all groups
     // in the workspace associated with the current user
-    const workspace: string = this.user_data.workspace.workspace_name;
+    const workspace: string = this.user_data._workspace.workspace_name;
     this._groupservice.getGroupsForUser(workspace).subscribe(
       // @ts-ignore
       ({ groups }) => {
@@ -153,7 +153,7 @@ export class OverviewComponent implements OnInit {
     return new Promise((resolve, reject)=>{
       this.isLoading$.next(true);
 
-      this._postservice.useroverviewposts(this.user_data.user_id)
+      this._postservice.useroverviewposts(this.user_data._id)
       .subscribe((res) => {
         //console.log('Group posts:', res);
         this.posts = res['posts'];
@@ -212,7 +212,7 @@ export class OverviewComponent implements OnInit {
     return new Promise((resolve, reject) => {
       this.isLoading$.next(true);
 
-      this._postservice.userOverviewPostsToday(this.user_data.user_id)
+      this._postservice.userOverviewPostsToday(this.user_data._id)
         .subscribe((res) => {
           // console.log('Group posts:', res);
           this.todayPosts = res['posts'];
@@ -264,7 +264,7 @@ export class OverviewComponent implements OnInit {
     return new Promise((resolve, reject) => {
       this.isLoading$.next(true);
 
-      this._postservice.userOverviewPostsWeek(this.user_data.user_id)
+      this._postservice.userOverviewPostsWeek(this.user_data._id)
         .subscribe((res) => {
           // console.log('Group posts:', res);
           this.weekPosts = res['posts'];
@@ -337,7 +337,7 @@ export class OverviewComponent implements OnInit {
    * without having to refresh the page once a new post has been added.
    */
   liveUpdatesAdd() {
-    const currentUserId: string = this.user_data.user_id.toString();
+    const currentUserId: string = this.user_data._id.toString();
     this.socket.on('postAddedInGroup', data => {
       if (data.type === 'post') {
         this._postservice.getPost(data.postId).subscribe(

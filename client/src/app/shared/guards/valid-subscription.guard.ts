@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router} from '@angular/router';
 import { Observable } from 'rxjs';
 import {AuthService} from "../services/auth.service";
+import { StorageService } from '../services/storage-service/storage.service';
 
 @Injectable()
 export class ValidSubscriptionGuard implements CanActivate {
 
-  constructor(private authService: AuthService, private router: Router){}
+  constructor(private authService: AuthService, private router: Router, private storageService: StorageService){}
 
 
   canActivate(

@@ -27,6 +27,10 @@
 
 import { AppComponent } from './app.component';
 
+// ----- AUTHENTICATION COMPONENTS -----
+import { AuthSignInComponent } from './Authentication/auth-sign-in/auth-sign-in.component';
+import { ForgotPasswordComponent } from './Authentication/forgot-password/forgot-password.component';
+
 // ----- SEARCH BAR & NAVBAR COMPONENTS -----
 import { NavbarComponent } from './common/components/navbar/navbar.component';
 
@@ -47,6 +51,9 @@ import { GroupActivityFiltersComponent } from './dashboard/groups/group/group-ac
 import { GroupActivityProgressComponent } from './dashboard/groups/group/group-activity/group-activity-progress/group-activity-progress.component';
 import { GroupComponent } from './dashboard/groups/group/group.component';
 import { GroupHeaderComponent } from './dashboard/groups/group/group-header/group-header.component';
+import { GroupKanbanBoardsComponent } from './dashboard/groups/group/group-kanban-boards/group-kanban-boards.component';
+import { GroupKanbanTaskViewComponent } from './dashboard/groups/group/group-kanban-boards/group-kanban-task-view/group-kanban-task-view.component';
+import { GroupKanbanTaskAssignmentComponent } from './dashboard/groups/group/group-kanban-boards/group-kanban-task-assignment/group-kanban-task-assignment.component';
 import { GroupsPageHeaderComponent } from './dashboard/groups/groups-page-header/groups-page-header.component';
 import { GroupPostComponent } from './dashboard/groups/group/group-post/group-post.component';
 import { GroupSmartAdminComponent } from './dashboard/groups/group/group-smart-admin/group-smart-admin.component';
@@ -124,9 +131,10 @@ import { PostService } from './shared/services/post.service';
 import { ProfileDataService } from "./shared/services/profile-data.service";
 import { QuillAutoLinkService } from './shared/services/quill-auto-link.service';
 import { SearchService } from "./shared/services/search.service";
-import { StorageService } from './shared/services/storage.service';
+import { StorageService } from './shared/services/storage-service/storage.service';
 import { TokenInterceptorService } from './shared/services/token-interceptor.service';
 import { UserService } from './shared/services/user.service';
+import { UtilityService } from './shared/services/utility-service/utility.service';
 import { WorkspaceService } from './shared/services/workspace.service';
 
 
@@ -181,9 +189,7 @@ import { ngxUiLoaderConfig, ngCircle } from './shared/config/config';
  * 8. !===== DIRECTIVES =====!
  */
 import { ClickStopPropagationDirective } from './shared/directives/click-stop-propagation.directive';
-import { GroupKanbanBoardsComponent } from './dashboard/groups/group/group-kanban-boards/group-kanban-boards.component';
-import { GroupKanbanTaskViewComponent } from './dashboard/groups/group/group-kanban-boards/group-kanban-task-view/group-kanban-task-view.component';
-import { GroupKanbanTaskAssignmentComponent } from './dashboard/groups/group/group-kanban-boards/group-kanban-task-assignment/group-kanban-task-assignment.component';
+
 
 /**
  * 9. !===== IMPORTS & DECLARATIONS =====!
@@ -194,12 +200,12 @@ import { GroupKanbanTaskAssignmentComponent } from './dashboard/groups/group/gro
     // COMPONENTS
     ActivityComponent, AdminBillingComponent, AdminPageHeaderComponent,
     AllSearchResultsComponent, AppComponent, AssignUsersModalComponent,
-    CalendarComponent, CloudsComponent, CollabDocPostComponent,
+    AuthSignInComponent, CalendarComponent, CloudsComponent, CollabDocPostComponent,
     CollaborativeDocGroupCommentsComponent, CollaborativeDocGroupNavbarComponent,
     CollaborativeDocGroupPostCommentComponent, CollaborativeDocGroupPostComponent,
     CommentSectionComponent, ContentSearchResultComponent, DatePickerComponent,
     DialogOverviewExampleDialog, DocumentFileComponent, EventGroupPostComponent,
-    FilesComponent, GroupActivityFiltersComponent, GroupActivityProgressComponent,
+    FilesComponent, ForgotPasswordComponent, GroupActivityFiltersComponent, GroupActivityProgressComponent,
     GroupComponent, GroupHeaderComponent, GroupKanbanBoardsComponent, 
     GroupKanbanTaskViewComponent, GroupKanbanTaskAssignmentComponent, GroupPostComponent, GroupSmartAdminComponent,
     GroupsPageHeaderComponent, GroupTasksComponent, GroupTasksNewComponent,
@@ -240,7 +246,7 @@ import { GroupKanbanTaskAssignmentComponent } from './dashboard/groups/group/gro
     AdminService, AuthService, ColumnService, DocumentFileService,
     DocumentService, GoogleCloudService, GroupDataService, GroupService,
     GroupsService, PostService, ProfileDataService, QuillAutoLinkService,
-    SearchService, SnotifyService, StorageService, UserService, WorkspaceService,
+    SearchService, SnotifyService, StorageService, UserService, UtilityService, WorkspaceService,
     // GUARDS
     DenyNavigationGuard, AuthGuard,
     NotAuthGuard, ValidSubscriptionGuard,
