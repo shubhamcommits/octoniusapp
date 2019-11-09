@@ -169,7 +169,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { MomentModule } from "ngx-moment";
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgCircleProgressModule } from 'ng-circle-progress';
+// import { NgCircleProgressModule } from 'ng-circle-progress';
 import { NgxSkillBarModule } from "ngx-skill-bar";
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
@@ -236,7 +236,8 @@ import { ClickStopPropagationDirective } from './shared/directives/click-stop-pr
       provide: DateAdapter,
       useFactory: adapterFactory
     }), DragDropModule, FontAwesomeModule, FormsModule, HttpClientModule, ImageCropperModule,
-    InfiniteScrollModule, MomentModule, NgbModule, NgCircleProgressModule.forRoot(ngCircle),
+    InfiniteScrollModule, MomentModule, NgbModule, 
+    // NgCircleProgressModule.forRoot(ngCircle),
     NgxSkillBarModule, NgxUiLoaderModule.forRoot(ngxUiLoaderConfig), OverlayModule, OwlDateTimeModule,
     OwlNativeDateTimeModule, PdfViewerModule, QuillModule, ReactiveFormsModule, ScrollToModule.forRoot(), SnotifyModule
   ],
