@@ -28,8 +28,6 @@ const {
 
 const app = express();
 
-// Compressing the application
-app.use(compression());
 
 // Load 'development' configs for dev environment
 if (process.env.NODE_ENV !== 'production') {
@@ -64,6 +62,9 @@ app.use('/uploads', express.static(process.env.FILE_UPLOAD_FOLDER));
 
 // static folder
 app.use(express.static(path.join(__dirname, '../../client/dist')));
+
+// Compressing the application
+app.use(compression());
 
 // Routes which should handle request
 app.all('/', (req, res, next) => {
