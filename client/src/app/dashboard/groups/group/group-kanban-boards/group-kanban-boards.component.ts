@@ -13,6 +13,7 @@ import { SnotifyService } from 'ng-snotify';
 import moment from 'moment';
 import { ReplaySubject } from 'rxjs/internal/ReplaySubject';
 import { takeUntil } from 'rxjs/internal/operators/takeUntil';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Component({
   selector: 'app-group-kanban-boards',
@@ -29,7 +30,8 @@ export class GroupKanbanBoardsComponent implements OnInit {
     private columnService: ColumnService,
     private postService: PostService,
     private modalService: NgbModal,
-    private snotifyService: SnotifyService) { }
+    private snotifyService: SnotifyService,
+    private ngxService: NgxUiLoaderService) { }
 
   // Groups
   groupData: any = {};
@@ -57,10 +59,14 @@ export class GroupKanbanBoardsComponent implements OnInit {
   // Today's date object
   today = moment().local().startOf('day').format('YYYY-MM-DD');
 
+  // Is it Private group/My space
+  isItMySpace = false;
+
   // Unsubscribe the Data
   private unSubscribe$: ReplaySubject<boolean> = new ReplaySubject(1);
 
   async ngOnInit() {
+    this.ngxService.start();
     this.groupId = await this.fetchGroupId();
     this.groupData = await this.getGroupData();
     /**
@@ -73,6 +79,12 @@ export class GroupKanbanBoardsComponent implements OnInit {
     this.allMembersId = this.groupData._members.map((member)=>{
       return member._id;
     })
+
+    /**
+     * Check if the current group is my space/private group
+     */
+    if(this.groupData.group_name === 'private' || this.groupData.group_name === 'My Space')
+      this.isItMySpace = true;
     // console.log(this.allMembersId);
     /**
      * Here we fetch all the columns available in a group, and if null we initialise them with the basic 3 ones
@@ -83,7 +95,8 @@ export class GroupKanbanBoardsComponent implements OnInit {
     }
 
     // console.log(this.columns);
-    await this.getTasks(this.groupId);
+    await this.getTasks(this.groupId)
+    .then(() => this.ngxService.stop())
     // console.log(this.columns);
 
     this.quillModules = await this.getGroupQuillModules();
@@ -378,6 +391,13 @@ export class GroupKanbanBoardsComponent implements OnInit {
           }
         }
       }
+
+      // Adding condition to ensure that if a task is added in my space/private group, then it automatically gets assigned to the current user
+      if(this.isItMySpace){
+        taskPost.task.unassigned = 'No';
+        taskPost.task['_assigned_to'] =  taskPost._posted_by;
+      }
+        
       this.postService.addNewTaskPost(taskPost)
       .pipe(takeUntil(this.unSubscribe$))
       .subscribe((res)=>{

@@ -66,6 +66,7 @@ export class GroupKanbanTaskViewComponent implements OnInit {
   private unSubscribe$: ReplaySubject<boolean> = new ReplaySubject(1);
 
   ngOnInit() {
+    this.commentCount = this.task.comments.length;
     const dateTask = moment(this.task.task.due_to);
     this.modelDate = {year: dateTask.year(), month: dateTask.month() + 1, day: dateTask.date()};
     this.taskContent = this.task.content;
