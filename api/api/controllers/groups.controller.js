@@ -374,7 +374,8 @@ const updateSmartGroupMembers = async (req, res) => {
   try {
     // Get users in the group's workspace
     const users = await User.find({
-      _workspace: workspaceId
+      _workspace: workspaceId,
+      active: true
     });
 
     const validUsers = new Set();
