@@ -403,7 +403,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
         })
       }
 
-      let connection: any = await this.documentService.cursorConnection(null, colorFromUser);
+      let connection: any = await this.documentService.cursorConnection(null, colorFromUser, null);
 
       let user = JSON.parse(localStorage.getItem('user'));
 
@@ -530,9 +530,12 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
       
       // Handle updates
       cursors.socket.onmessage = async (message) => {
-      
-        var data = JSON.parse(message.data);    
-        this.documentService.authorsList(data); 
+        var data = JSON.parse(message.data);
+
+        console.log('data present', data);
+
+
+        this.documentService.authorsList(data);
         var source = {},
           removedConnections = [],
           forceUpdate = false,
@@ -670,7 +673,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
       }
         // Update connections array
         cursors.connections = data.connections;
-        //cursors.connections = removeDuplicates(cursors.connections, 'user_id');
+        // cursors.connections = removeDuplicates(cursors.connections, 'user_id');
       
         // Fire event
         document.dispatchEvent(new CustomEvent('cursors-update', {
@@ -679,6 +682,10 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
             removedConnections: removedConnections
           }
         }));
+
+
+        // console.log(cursors);
+
       };
       
       cursors.socket.onclose = function (event) {
@@ -838,20 +845,21 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
       this.docStatus = "Updated!";
     });
 
-    quill.on('selection-change', (range: any, oldRange: any, source: any) => {
-      this.documentService.sendCursorData(cursors, range);
+    quill.on('selection-change', async (range: any, oldRange: any, source: any) => {
+
+      await this.documentService.sendCursorData(cursors, range);
       if (range) {
         if (range.length == 0) {
-          //console.log('User cursor is on', range.index);
+          console.log('User cursor is on', range.index);
           const cursorsModule = quill.getModule('cursors');
 
           const connection = cursors.localConnection;
-          console.log('settings applied');
+          console.log('settings applied', connection, range);
           cursorsModule.moveCursor(
             connection.user_id,
             range,
             connection.name,
-            'red'
+            connection.color
           );
         } else {
           var text = quill.getText(range.index, range.length);

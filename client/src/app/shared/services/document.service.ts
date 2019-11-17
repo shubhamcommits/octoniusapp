@@ -63,8 +63,7 @@ export class DocumentService {
     });
 }
 
-  async cursorConnection(name: any, color: any) {
-
+  async cursorConnection(name: any, color: any, range) {
     return new Promise((resolve, reject) => {
 
       const getUserName = new XMLHttpRequest();
@@ -86,7 +85,8 @@ export class DocumentService {
             //   length: 0
             // };
 
-            resolve({ name, color, user_id});
+
+            resolve({ name, color, user_id, range});
           }
           else {
             console.log('Error while fetching user details', JSON.parse(getUserName.responseText));
@@ -105,6 +105,7 @@ export class DocumentService {
   }
 
   async sendCursorData(cursors: any, range: any) {
+    console.log('Cursor connection params : ', name,  range);
     return new Promise((resolve, reject)=>{
       try{
         cursors.localConnection.range = range;
