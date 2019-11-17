@@ -2,7 +2,7 @@ import { Component, OnInit, Output, EventEmitter, Input, Inject,ChangeDetectorRe
 import { ActivatedRoute, Router, Route, ResolveEnd } from '@angular/router';
 import {Location} from '@angular/common';
 
-// import QuillCursors from 'quill-cursors';
+import QuillCursors from 'quill-cursors';
 import  ImageResize  from 'quill-image-resize-module';
 import { ImageDrop } from 'quill-image-drop-module';
 import { ImageFormat } from '../../../../shared/utils/image-format/base-image-format';
@@ -53,7 +53,7 @@ let Scroll = Quill.import('blots/scroll');
 // const QuillCursors = require('quill-cursors');
 // !--Register Required Modules--! //
 ShareDB.types.register(require('rich-text').type);
-// Quill.register('modules/cursors', QuillCursors);
+Quill.register('modules/cursors', QuillCursors);
 Quill.register('modules/imageResize', ImageResize);
 Quill.register('modules/imageDrop', ImageDrop);
 Quill.register(Mark);
@@ -435,11 +435,11 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
             authorId: connection.user_id, // Current author id
             //color: connection.color // Current author color
           },
-          // cursors:{
-          //   hideDelayMs: 5000,
-          //   hideSpeedMs: 0,
-          //   selectionChangeSource: null
-          // },
+          cursors:{
+            hideDelayMs: 5000,
+            hideSpeedMs: 0,
+            selectionChangeSource: null
+          },
           imageDrop: true,
           imageResize: {
             displaySize: true,
@@ -506,8 +506,9 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
         },
       });
       
-      // let cursorsModule = quill.getModule('cursors');
-     // cursorsModule.createCursor(1, 'User 1', 'red');
+      let cursorsModule = quill.getModule('cursors');
+      console.log('init connection', connection);
+     cursorsModule.createCursor(connection.user_id, connection.name, 'red');
 
       // Init a blank user connection to store local conn data
       cursors.localConnection = connection;
@@ -842,6 +843,16 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
       if (range) {
         if (range.length == 0) {
           //console.log('User cursor is on', range.index);
+          const cursorsModule = quill.getModule('cursors');
+
+          const connection = cursors.localConnection;
+          console.log('settings applied');
+          cursorsModule.moveCursor(
+            connection.user_id,
+            range,
+            connection.name,
+            'red'
+          );
         } else {
           var text = quill.getText(range.index, range.length);
           comment_range = range;
