@@ -2,7 +2,6 @@ import { SocketIoConfig } from 'ngx-socket-io';
 import { environment } from 'src/environments/environment';
 
 export const socketConfig: SocketIoConfig = { url: environment.BASE_URL, options: {
-    transports: ['websocket', 'polling'],
     secure: true,
     reconnection: true,
     reconnectionAttempts: Infinity,
