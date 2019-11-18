@@ -35,9 +35,9 @@ import { AppComponent } from './app.component';
 /**
  * 3. !===== SERVICES =====!
  */
-import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { StorageService } from 'src/shared/services/storage-service/storage.service';
-import { UserService } from 'src/shared/services/user-service/user.service';
+// import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+// import { StorageService } from 'src/shared/services/storage-service/storage.service';
+// import { UserService } from 'src/shared/services/user-service/user.service';
 
 
 /**
@@ -51,26 +51,38 @@ import { GlobalErrorHandler } from 'src/shared/error-handler/global-error-handle
 import { ServerErrorInterceptor } from 'src/shared/error-handler/server-error.interceptor';
 import { socketConfig } from 'src/shared/config/socket.config';
 
+import { AuthenticationModule } from './authentication/authentication.module';
+import { PageNotFoundComponent } from './common/page-not-found/page-not-found.component';
+import { WelcomePageComponent } from './common/welcome-page/welcome-page.component';
+import { DashboardModule } from './dashboard/dashboard.module';
+// import { NavbarComponent } from './common/navbar/navbar.component';
+// import { SearchBarComponent } from './common/navbar/search-bar/search-bar.component';
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    PageNotFoundComponent,
+    WelcomePageComponent,
+    // NavbarComponent,
+    // SearchBarComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    AuthenticationModule,
+    DashboardModule,
     HttpClientModule,
     SnotifyModule,
     NgbModule,
     SocketIoModule.forRoot(socketConfig)
   ],
   providers: [
-    UtilityService,
+    // UtilityService,
     
-    StorageService,
+    // StorageService,
 
-    UserService,
+    // UserService,
 
     SnotifyService,
     { provide: 'SnotifyToastConfig', useValue: ToastDefaults },

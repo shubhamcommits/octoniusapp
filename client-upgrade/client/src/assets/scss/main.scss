@@ -2,9 +2,10 @@
 @import "variables";
 
 $font-size-base: 16px;
+$body-bg: #f3f4f6;
 
 body {
-    background-color: #f3f4f6;
+    background-color: $body-bg !important ;
     font-size: $font-size-base;
     font-family: $font-family-base; 
 }

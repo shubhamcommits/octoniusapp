@@ -1,0 +1,64 @@
+<nav class="navbar navbar-expand-md fixed-top">
+    <div class="container">
+      <!-- OCTONIUS BRANDING STARTS -->
+       <a class="navbar-brand" [routerLink]="['/dashboard', 'myspace', 'inbox']" routerLinkActive="router-link-active" >
+          <i class="icon-octo-logo"></i>
+       </a>
+       <!-- OCTONIUS BRANDING ENDS -->
+
+       <!-- COLLAPSABLE MENU STARTS -->
+
+       <!-- TOGGLE MENU BUTTON STARTS -->
+       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+          aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon">
+              <i class="material-icons">menu</i>
+            </span>
+       </button>
+       <!-- TOGGLE MENU BUTTON ENDS -->
+
+       <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <!-- MENU ITEMS STARTS -->
+          <ul class="nav mr-auto">
+             <li class="nav-item">
+                <a class="nav-link" [routerLink]="['/dashboard', 'myspace', 'inbox']" routerLinkActive="router-link-active"  routerLinkActive="active">
+                  <i class="material-icons">whatshot</i> <br> My Space
+                    <span class="sr-only">(current)</span>
+                </a>
+             </li>
+             <li class="nav-item">
+                <a class="nav-link" [routerLink]="['/dashboard', 'groups']" routerLinkActive="active">
+                  <i class="material-icons">group</i><br>  Groups
+                    <span class="sr-only">(current)</span>
+                </a>
+             </li>
+             <li class="nav-item">
+                <a class="nav-link" [routerLink]="['/dashboard', 'admin']" routerLinkActive="active">
+                  <i class="material-icons">settings</i> <br> Admin
+                    <span class="sr-only">(current)</span>
+                </a>
+             </li>
+          </ul>
+        <!-- MENU ITEMS ENDS -->
+
+          <!-- PUSH NOTIFICATIONS STARTS -->
+          <push-notifications></push-notifications>
+          <!-- PUSH NOTIFICATIONS ENDS -->
+
+          <!-- USER PROFILE BADGE STARTS -->
+          <a class="nav-link">
+            <img src="{{BASE_URL}}/uploads/{{userData?.profile_pic}}" [routerLink]="['/dashboard', 'user']"  onerror="this.src='/assets/images/user.png'"  class="topnav-avatar">
+          </a>
+          <!-- USER PROFILE BADGE ENDS -->
+          
+          <!-- LOGOUT FUNCTION STARTS-->
+          <a class="nav-link" [routerLink]="['/home']" routerLinkActive="router-link-active">Logout
+              <span class="sr-only">(current)</span>
+          </a>
+          <!-- LOGOUT FUNCTION ENDS-->
+
+       </div>
+       <!-- COLLAPSABLE MENU ENDS -->
+    </div>
+ </nav>
+ <router-outlet></router-outlet>
