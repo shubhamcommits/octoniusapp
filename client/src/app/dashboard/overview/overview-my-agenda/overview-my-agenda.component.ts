@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {NgxUiLoaderService} from 'ngx-ui-loader';
 import {UserService} from '../../../shared/services/user.service';
 import moment from 'moment';
+import {GroupDataService} from "../../../shared/services/group-data.service";
 
 @Component({
   selector: 'app-overview-my-agenda',
@@ -15,11 +16,7 @@ export class OverviewMyAgendaComponent implements OnInit {
 
   viewDate: Date = new Date();
 
-  currentDay = moment(this.viewDate).day();
-  currentYear = moment(this.viewDate).year();
-  currentMonth = moment(this.viewDate).month();
-
-  constructor(private ngxService: NgxUiLoaderService, private userService: UserService) {
+  constructor(private ngxService: NgxUiLoaderService, private groupDataService: GroupDataService, private userService: UserService) {
 
   }
 
@@ -36,9 +33,19 @@ export class OverviewMyAgendaComponent implements OnInit {
   getTodayTimelineEvents() {
     return new Promise((resolve, reject) => {
 
-      console.log(this.currentDay + '-' + this.currentMonth + '-' + this.currentYear);
+      const year = moment(this.viewDate).year();
+      const month = moment(this.viewDate).month();
+      const groupId = this.groupDataService.groupId;
 
-      const data = {};
+      const data = {
+        userId: 'All Team',
+        groupId: groupId,
+        year,
+        month
+      };
+
+      console.log('GroupId = ' + groupId);
+      console.log(data);
 
       this.userService.getUserCalendarPosts(data)
         .subscribe((res) => {
