@@ -1,0 +1,60 @@
+<div class="container" style="margin-bottom: 30px">
+  <app-overview-page-header></app-overview-page-header>
+
+  <h5 class="title-overview" *ngIf="this.todayTimelineEvents.length != 0">Today</h5>
+
+  <div *ngFor="let timelineEvent of todayTimelineEvents; let i = index;">
+    <!-- Agenda Timeline Today Events -->
+    <div *ngIf="timelineEvent.type== 'task'">
+      <div class="media card-tile overview-timeline-event">
+
+        <div class=" row media-body">
+          <div class="col-md-2">
+            <div class="kanbanoverview kbn-todo">
+              TODO: render the Hour
+            </div>
+          </div>
+
+          <div class="col-md-6 overview-item" [innerHTML]="timelineEvent?.title"></div>
+          <div class="col-md-2 overview-item small-blue-text" [innerHTML]="timelineEvent?._group?.group_name"></div>
+
+
+          <div class="col-md-2">
+            <div class="overview-item small text-muted text-right ">
+              Due {{timelineEvent.task.due_to | date:'MMMM d, y' }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h5 class="title-overview" *ngIf="this.thisWeekTimelineEvents.length != 0">This week</h5>
+
+  <div *ngFor="let timelineEvent of thisWeekTimelineEvents; let i = index;">
+    <!-- Agenda Timeline This Week Events -->
+    <div *ngIf="timelineEvent.type== 'task'">
+      <div class="media card-tile overview-timeline-event">
+
+        <div class=" row media-body">
+          <div class="col-md-2">
+            <div class="kanbanoverview kbn-todo">
+              TODO: render the Hour
+            </div>
+          </div>
+
+          <div class="col-md-6 overview-item" [innerHTML]="timelineEvent?.title"></div>
+          <div class="col-md-2 overview-item small-blue-text" [innerHTML]="timelineEvent?._group?.group_name"></div>
+
+
+          <div class="col-md-2">
+            <div class="overview-item small text-muted text-right ">
+              Due {{timelineEvent.task.due_to | date:'MMMM d, y' }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
