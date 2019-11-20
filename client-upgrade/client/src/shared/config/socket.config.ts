@@ -10,4 +10,5 @@ export const socketConfig: SocketIoConfig = { url: environment.BASE_URL, options
     randomizationFactor: 0.5,
     autoConnect: true,
     timeout: Infinity
-} };
+    } 
+};

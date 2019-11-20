@@ -69,12 +69,10 @@ export class AuthSignInComponent implements OnInit {
                   email: null,
                   password: null
                 }
+                this.storageService.setLocalData('userData', JSON.stringify(res['user']));
+                this.storageService.setLocalData('authToken', JSON.stringify(res['token']));
                 this.router.navigate(['dashboard','myspace', 'inbox'])
                   .then(() => {
-                    this.storageService.setLocalData('userData', JSON.stringify(res['user']));
-                    this.storageService.setLocalData('authToken', JSON.stringify(res['token']));
-                    localStorage.setItem('token', res['token']);
-                    localStorage.setItem('user', JSON.stringify(res['user']));
                     resolve(this.utilityService.resolveAsyncPromise(`Hi ${res['user']['first_name']}, welcome back to your workplace!`));
                   })
                   .catch((err) => {

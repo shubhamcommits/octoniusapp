@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SnotifyService, SnotifyToastConfig } from 'ng-snotify';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,7 @@ export class UtilityService {
     private modalService: NgbModal
     ) { }
 
+  // After Resolving Promise in case of async notification 
   snotifySucessConfig: SnotifyToastConfig = {
     timeout: 2000,
     type: 'success',
@@ -20,6 +22,7 @@ export class UtilityService {
     showProgressBar: true
   }
 
+  // After Rejecting the Promise in case of async notification
   snotifyErrorConfig: SnotifyToastConfig = {
     timeout: 2000,
     type: 'error',
@@ -27,6 +30,18 @@ export class UtilityService {
     pauseOnHover: true,
     showProgressBar: true
   }
+  
+  // USERDATA FOR THE CURRENT USER
+  private userData: any
+
+  /**
+   * Both of the variables listed down below are used to share the data through this common service among different components in the app
+   * @constant dataSource
+   * @constant currentData
+   */
+  private userDataSource = new BehaviorSubject<any>({});
+  currentUserData = this.userDataSource.asObservable();
+
   /**
    * This function checks whether the input string is a vaild email or not
    * @param email 
@@ -40,36 +55,40 @@ export class UtilityService {
    * This function generates a custom snotify notification for success event
    * @param text
    * @param title - optional 
+   * @param config - optional
    */
-  successNotification(text: string, title?: string){
-    return this.snotifyService.success(text, title);
+  successNotification(text: string, title?: string, config?: SnotifyToastConfig){
+    return this.snotifyService.success(text, title, config);
   }
 
   /**
    * This function generates a custom snotify notification for warning event
    * @param text 
    * @param title - optional
+   * @param config - optional
    */
-  warningNotification(text: string, title?: string){
-    return this.snotifyService.warning(text, title);
+  warningNotification(text: string, title?: string, config?: SnotifyToastConfig){
+    return this.snotifyService.warning(text, title, config);
   }
 
   /**
    * This function generates a custom snotify notification for error event
    * @param text 
    * @param title - optional
+   * @param config - optional
    */
-  errorNotification(text: string, title?: string){
-    return this.snotifyService.error(text, title);
+  errorNotification(text: string, title?: string, config?: SnotifyToastConfig){
+    return this.snotifyService.error(text, title, config);
   }
 
   /**
    * This function generates a custom snotify notification for asynchronous event
    * @param text 
    * @param promise - which resolves() or rejects() on the basis of response
+   * @param config - optional
    */
-  asyncNotification(text: string, promise: Promise<any>){
-    return this.snotifyService.async(text, promise);
+  asyncNotification(text: string, promise: Promise<any>, config?: SnotifyToastConfig){
+    return this.snotifyService.async(text, promise, config);
   }
 
   /**
@@ -126,6 +145,34 @@ export class UtilityService {
     return array.filter((obj, pos, arr) => {
       return arr.map(mapObj => mapObj[property]).indexOf(obj[property]) === pos;
     });
+  }
+
+  /**
+   * This functions is responsible for maintaining track the index while iterating through *ngFor 
+   * @param index - index of the element
+   * @param element - entire element which needs to be tracked
+   */
+  trackByIndex(index, element){
+    return element._id;
+  }
+
+  /**
+   * Get the user data which can be shared across the application using this service function
+   */
+  getUserData(){
+    return this.userData;
+  }
+
+  /**
+   * Sets the user data which can be shared across the application using this service function
+   * @param userData 
+   */  
+  setUserData(userData: any){
+    return this.userData = userData 
+  }
+
+  public updateUserData(userData: any){
+    this.userDataSource.next(userData);
   }
 
 }
