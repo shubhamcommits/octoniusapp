@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { environment } from 'src/environments/environment';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { SubSink } from 'subsink';
 
 @Component({
   selector: 'app-myspace-header',
@@ -9,15 +10,34 @@ import { environment } from 'src/environments/environment';
 })
 export class MyspaceHeaderComponent implements OnInit {
 
-  constructor(private storageService: StorageService) { }
+  constructor(
+    private utilityService: UtilityService
+  ) { }
 
+  // CURRENT USER DATA
   userData: any;
+
+  // BASE URL OF THE APPLICATION
   BASE_URL = environment.BASE_URL;
 
+  // UNSUBSCRIBE THE DATA
+  private subSink = new SubSink();
+
   async ngOnInit() {
-   // Fetching the userdata object and decrypting it from the localStorage
-   this.userData = await this.storageService.getLocalData('userData');
-   console.log(this.userData)
+
+   // GETTING USER DATA FROM THE SHARED SERVICE
+    this.subSink.add(
+      this.utilityService.currentUserData
+      .subscribe(res => this.userData = res)
+    );
+
+  }
+
+  /**
+   * This functions unsubscribes all the observables subscription to avoid memory leak
+   */
+  ngOnDestroy(): void {
+    this.subSink.unsubscribe();
   }
 
 }

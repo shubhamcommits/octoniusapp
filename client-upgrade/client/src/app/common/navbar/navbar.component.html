@@ -21,7 +21,7 @@
         <!-- MENU ITEMS STARTS -->
           <ul class="nav mr-auto">
              <li class="nav-item">
-                <a class="nav-link" [routerLink]="['/dashboard', 'myspace', 'inbox']" routerLinkActive="router-link-active"  routerLinkActive="active">
+                <a class="nav-link" [routerLink]="['/dashboard', 'myspace', 'inbox']" routerLinkActive="active">
                   <i class="material-icons">whatshot</i> <br> My Space
                     <span class="sr-only">(current)</span>
                 </a>
@@ -42,12 +42,12 @@
         <!-- MENU ITEMS ENDS -->
 
           <!-- PUSH NOTIFICATIONS STARTS -->
-          <push-notifications></push-notifications>
+          <push-notifications *ngIf="userData && baseUrl" [userData]="userData" [baseUrl]="baseUrl"></push-notifications>
           <!-- PUSH NOTIFICATIONS ENDS -->
 
           <!-- USER PROFILE BADGE STARTS -->
           <a class="nav-link">
-            <img src="{{BASE_URL}}/uploads/{{userData?.profile_pic}}" [routerLink]="['/dashboard', 'user']"  onerror="this.src='/assets/images/user.png'"  class="topnav-avatar">
+            <img src="{{baseUrl}}/uploads/{{userData?.profile_pic}}" [routerLink]="['/dashboard', 'user']"  onerror="this.src='/assets/images/user.png'"  class="topnav-avatar">
           </a>
           <!-- USER PROFILE BADGE ENDS -->
           

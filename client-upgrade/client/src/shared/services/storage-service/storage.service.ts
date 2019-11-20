@@ -64,6 +64,14 @@ export class StorageService {
   }
 
   /**
+   * This function checks if a particular @key exists in the @localStorage or not
+   * @param key 
+   */
+  existData(key: any){
+    return localStorage.getItem(key);
+  }
+
+  /**
    * This function clears all the local & session storage data
    */
   clear() {

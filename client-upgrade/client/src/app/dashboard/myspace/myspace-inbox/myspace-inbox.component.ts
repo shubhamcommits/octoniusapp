@@ -10,7 +10,6 @@ export class MyspaceInboxComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log('tmkb')
   }
 
 }
