@@ -12,12 +12,15 @@ export class AuthorizationInterceptorService implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>{
     const storageService = this.injector.get(StorageService);
-    const tokenizedRequest = request.clone({
-      setHeaders: {
-        Authorization: `Bearer ${storageService.getLocalData('authToken')}`
-      }
-    });
-    return next.handle(tokenizedRequest);
+    if(storageService.existData('authToken')){
+      const tokenizedRequest = request.clone({
+        setHeaders: {
+          Authorization: `Bearer ${storageService.getLocalData('authToken')}`
+        }
+      });
+      return next.handle(tokenizedRequest);
+    }
+    return next.handle(request.clone());
   }
   
 }

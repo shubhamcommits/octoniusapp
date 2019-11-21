@@ -21,7 +21,7 @@ export class AdminGuard implements CanActivate, CanActivateChild, CanLoad {
       if(userAdminState === true)
         return true;
       else{
-        this.utilityService.warningNotification('Oops seems like you don\'t have the permission to access this page, kindly contact your superior to provide you the proper admin rights!', '', {
+        this.utilityService.warningNotification('Oops seems like you don\'t have the permission to access the admin section, kindly contact your superior to provide you the proper admin rights!', '', {
           showProgressBar: true,
           closeOnClick: true,
           backdrop: 0.8,

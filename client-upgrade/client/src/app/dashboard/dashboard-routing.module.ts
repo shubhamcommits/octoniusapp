@@ -8,8 +8,8 @@ const routes: Routes = [
     { path: 'myspace', loadChildren: './myspace/myspace.module#MyspaceModule' },
     { path: 'groups', loadChildren: './groups/groups.module#GroupsModule' },
     { path: 'admin', loadChildren: './admin/admin.module#AdminModule', canActivate:[AdminGuard] },
-    { path: 'user', loadChildren: './user/user.module#UserModule' }
-  ] },
+    { path: 'user', loadChildren: './user/user.module#UserModule' }] 
+  },
 ];
 
 @NgModule({

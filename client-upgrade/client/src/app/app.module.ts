@@ -44,7 +44,7 @@ import { AppComponent } from './app.component';
  * 6. !===== THIRD PARTY MODULES =====!
  */
 import { SnotifyModule, SnotifyService, ToastDefaults } from 'ng-snotify';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { SocketIoModule } from 'ngx-socket-io';
 
 import { GlobalErrorHandler } from 'src/shared/error-handler/global-error-handler';
@@ -74,7 +74,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
     DashboardModule,
     HttpClientModule,
     SnotifyModule,
-    NgbModule,
+    NgbModalModule,
     SocketIoModule.forRoot(socketConfig)
   ],
   providers: [

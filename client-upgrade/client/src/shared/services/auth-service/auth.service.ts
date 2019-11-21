@@ -46,7 +46,6 @@ export class AuthService {
    * And clears the session and local storage from the client side
    */
   signout() {
-    this.storageService.clear();
     return this.httpClient.get(this.BASE_API_URL + '/auth/signout')
   }
   
