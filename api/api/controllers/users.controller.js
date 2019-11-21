@@ -188,7 +188,7 @@ const getOverview = async (req, res, next) => {
     recentPosts = recentPosts.filter(post => post._posted_by._id.toString() !== userId);
 //follow Post check begins
     //all followed post (task/events/post) controlled here when there is an edit
-    //made edit from emtying read by since an edit post is new and is not read yet 
+    //made edit from emtying read by since an edit post is new and is not read yet
     let followedPost = await Post.find({
       '_group': { $in: _groups },
       '_posted_by': { $ne: req.userId },
@@ -201,7 +201,7 @@ const getOverview = async (req, res, next) => {
       .populate('_posted_by', '_id first_name last_name profile_pic')
       .select('_id title type _group _posted_by created_date');
 
-  //follow post in comments 
+  //follow post in comments
     let allFollowedPosts = await Post.find({
       '_group': { $in: _groups },
       '_followers': {$elemMatch: { $eq: new mongoose.Types.ObjectId(userId) }},
@@ -211,7 +211,7 @@ const getOverview = async (req, res, next) => {
       .populate('comments')
       .populate('_posted_by', '_id first_name last_name profile_pic')
       .select('_id title type _group _posted_by created_date');
-    //set var here to gather all unread followed comments 
+    //set var here to gather all unread followed comments
     var allUnReadFollowedComments = []
 
     if(allFollowedPosts){
@@ -227,7 +227,7 @@ const getOverview = async (req, res, next) => {
                 if(checkReadItemed === false){
                   //push unread followed comments onto variable for promise check below
                   allUnReadFollowedComments.push(commentItem)
-                } 
+                }
               } catch (err) {
                 return sendErr(res, err);
               }
@@ -237,7 +237,7 @@ const getOverview = async (req, res, next) => {
           }
         })
       }
-    //promise checking unread followed comments so we can populate 
+    //promise checking unread followed comments so we can populate
     Promise.all(allUnReadFollowedComments.map(unreadComment => {
       return Comment.findOne({
             "_id": unreadComment._id
@@ -567,6 +567,79 @@ const getGdriveToken = async (req, res, next) => {
   }
 };
 
+const getTodayEvents = async (req, res, next) => {
+  try {
+    const {userId} = req;
+
+    // Generate the actual time
+    const todayForEvent = moment().local().startOf('day').format();
+
+    const today = moment().local().format('YYYY-MM-DD');
+    // Generate the +24h time
+    const todayPlus24ForEvent = moment().local().endOf('day').format();
+    const tomorrow = moment().local().add(1, 'days').format('YYYY-MM-DD');
+
+    // find the user's today agenda events
+    const events = await Post.find({
+      $or: [{
+        $and: [
+          // Find events due to today
+          {'event._assigned_to': userId},
+          {'event.due_to': {$gte: todayForEvent, $lte: todayPlus24ForEvent}}
+        ]
+      }]
+    })
+        .sort('event.due_to')
+        .populate('event._assigned_to', 'first_name last_name');
+
+    return res.status(200).json({
+      today: today,
+      tomorrow: tomorrow,
+      todayForEvent: todayForEvent,
+      message: `Found ${events.length} events!`,
+      events
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+const getThisWeekEvents = async (req, res, next) => {
+  try {
+    const {userId} = req;
+
+    // Generate the actual time
+    const todayForEvent = moment().local().add(1, 'days').startOf('day').format();
+
+    const today = moment().local().add(1, 'days').format('YYYY-MM-DD');
+
+    // Generate the +24h time
+    const todayPlus7DaysForEvent = moment().local().add(7, 'days').endOf('day').format();
+
+    // find the user's today agenda events
+    const events = await Post.find({
+      $or: [{
+        $and: [
+          // Find events due to today
+          {'event._assigned_to': userId},
+          {'event.due_to': {$gte: todayForEvent, $lte: todayPlus7DaysForEvent}}
+        ]
+      }]
+    })
+        .sort('event.due_to')
+        .populate('event._assigned_to', 'first_name last_name');
+
+    return res.status(200).json({
+      today: today,
+      todayForEvent: todayForEvent,
+      message: `Found ${events.length} events!`,
+      events
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
 module.exports = {
   // Main
   edit,
@@ -589,5 +662,9 @@ module.exports = {
   getTasksDone,
   // Integrations
   addGdriveToken,
-  getGdriveToken
+  getGdriveToken,
+  // Events
+  getTodayEvents,
+  getThisWeekEvents
+
 };
