@@ -39,9 +39,9 @@ module.exports = function(server) {
     //if the user was already in connection pull it and then check for other connections
      for (let i=0;i<connections.length;i++){
       if(connections[i].user_id == data.user_id){
-    // swap over connection's data 
-        data = connections[i]
-        ws.id = connections[i].id
+    // swap over connection's data
+        // data = connections[i]
+        ws.id = data.id
     //remove first connection
         connections.splice(i,1)
     // Find connection index and remove it from hashtable

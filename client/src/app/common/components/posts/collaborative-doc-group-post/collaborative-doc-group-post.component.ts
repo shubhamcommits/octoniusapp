@@ -403,7 +403,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
         })
       }
 
-      let connection: any = await this.documentService.cursorConnection(null, colorFromUser, {index: 0, length: 0});
+      let connection: any = await this.documentService.cursorConnection('name', colorFromUser, {index: 0, length: 0});
 
       let user = JSON.parse(localStorage.getItem('user'));
 
@@ -437,8 +437,9 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
           },
           cursors:{
             hideDelayMs: 5000,
-            hideSpeedMs: 0,
-            selectionChangeSource: null
+            hideSpeedMs: 1000,
+            selectionChangeSource: null,
+            transformOnTextChange: true
           },
           imageDrop: true,
           imageResize: {
@@ -534,16 +535,15 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
       cursors.socket.onmessage = async (message) => {
         var data = JSON.parse(message.data);
 
-        console.log('data present', data);
-
         for(let i = 0; i < data.connections.length; i++) {
           if(data.connections[i].user_id !== cursors.localConnection.user_id) {
-            console.log('datas',   data.connections[i],         data.connections[i].id,
-              data.connections[i].range,
+            cursorsModule.createCursor(data.connections[i].user_id,
               data.connections[i].name,
-              data.connections[i].color);
+              data.connections[i].color
+            );
+
             cursorsModule.moveCursor(
-              data.connections[i].id,
+              data.connections[i].user_id,
               data.connections[i].range,
               data.connections[i].name,
               data.connections[i].color
@@ -863,20 +863,13 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
       this.docStatus = "Updated!";
     });
 
-    quill.on('selection-change', (range: any, oldRange: any, source: any) => {
+    quill.on('selection-change', async (range: any, oldRange: any, source: any) => {
       if (range) {
         if (range.length == 0) {
           console.log('User cursor is on', range.index);
           const cursorsModule = quill.getModule('cursors');
 
           const connection = cursors.localConnection;
-          // console.log('settings applied', connection, range);
-          // cursorsModule.moveCursor(
-          //   connection.user_id,
-          //   range,
-          //   connection.name,
-          //   connection.color
-          // );
         } else {
           var text = quill.getText(range.index, range.length);
           comment_range = range;
@@ -884,7 +877,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
           //console.log("User has highlighted: ", text);
         }
 
-        this.documentService.sendCursorData(cursors, range).then(success => console.log('success', success));
+        await this.documentService.sendCursorData(cursors, range);
       } else {
         //console.log('Cursor not in the editor', source);
       }
