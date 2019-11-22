@@ -90,9 +90,14 @@
 }
 
 .overview-item {
-  width: auto;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 500;
   font-size: 16px;
-  line-height: 35px;
+  line-height: 24px;
+  display: flex;
+  align-items: center;
+  color: #242D3A;
 }
 
 .overview-item2 {
@@ -128,7 +133,15 @@
 }
 
 .timestamp {
-  font-size: 11px !important;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 18px;
+  display: flex;
+  align-items: center;
+  text-align: right;
+  color: #9B9B9B;
 }
 
 .mb-2 {
@@ -138,4 +151,39 @@
 
 .flex {
   display: flex;
+}
+
+.event-current-hour {
+  background: #FFC107;
+  color: white;
+}
+
+.timeline-hour-box {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 30px;
+  display: flex;
+  align-items: center;
+  color: white;
+  width: 59px;
+  height: 29px;
+  padding: 4px;
+  padding-left: 12px;
+  border-radius: 4px 4px 4px 4px;
+}
+
+.chevron-right {
+  position: absolute;
+  left: 49.17%;
+  right: 9.46%;
+  top: -25.5%;
+  bottom: 24.44%;
+  font-family: Material Icons;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 24px;
+  line-height: 24px;
+  color: #9B9B9B;
 }
