@@ -281,7 +281,7 @@ export class PostboxComponent implements OnInit, OnDestroy {
               timeZone: this.timeZone
             },
             title: post.title,
-            summary: 'Event | Octonius',
+            summary: `${post.title} | Octonius`,
             description: post.content,
             attendees: googleCalendarAttendees
           }
@@ -661,7 +661,7 @@ post = {
               date:moment(date).format('YYYY-MM-DD'),
               timeZone: this.timeZone
             },
-            summary: 'Task | Octonius',
+            summary: `${post.title} | Octonius`,
             description: post.content,
             attendees: googleCalendarAttendees
         }
