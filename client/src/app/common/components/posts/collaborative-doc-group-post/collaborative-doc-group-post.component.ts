@@ -78,7 +78,7 @@ Quill.register({
 
 // !-- Variables Required to use and export Globally--! //
 var postId: any;
-var cursors: any = {}; 
+var cursors: any = {};
 var comment_range = {};
 var quill: any;
 var editor: any;
@@ -95,23 +95,23 @@ var doc;
   styleUrls: ['./collaborative-doc-group-post.component.scss']
 })
 export class CollaborativeDocGroupPostComponent implements OnInit {
-  
+
  tableOptions = [];
  toolbarOptions = {
    container:[
     [{table: this.tableOptions}, {table: 'append-row'}, {table:'append-col'}],
     ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
     ['blockquote', 'code-block'],
-  
+
     [{ 'header': 1 }, { 'header': 2 }],               // custom button values
     [{ 'list': 'ordered'}, { 'list': 'bullet' }],
     [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
     [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
     [{ 'direction': 'rtl' }],                         // text direction
-  
+
     [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
     [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-  
+
     [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
     [{ 'font': [] }],
     [{ 'align': [] }],
@@ -122,7 +122,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
   ],
   handlers: {
     'clear': () => {
-      
+
       quill.setContents(new Delta().insert("\n"));
 
     },
@@ -169,7 +169,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     //           //console.log(this.quill.getLength(), text.length, range.index);
     //           //here we delete the uploading text from the editor
     //           quill.deleteText(currentIndex, text.length);
- 
+
     //           // console.log(quillDelta);
 
     //           // doc.submitOp(quillDelta, {
@@ -279,7 +279,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
       }, (err)=>{
         console.log('Error while fetching the authors', err);
       })
-    });    
+    });
 
     this.groupService.getAllSharedGroupFiles(this.groupId,this.user_data._workspace,this.user_data._id)
     .subscribe((res) => {
@@ -291,7 +291,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     }, (err) => {
       console.log('Error while fetching shared files', err);
     })
-  
+
   }
 
   ngOnDestroy(): void {
@@ -345,17 +345,17 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     var trimmedArray = [];
     var values = [];
     var value;
-  
+
     for(var i = 0; i < originalArray.length; i++) {
       value = originalArray[i][objKey];
-  
+
       if(values.indexOf(value) === -1) {
         trimmedArray.push(originalArray[i]);
         values.push(value);
       }
     }
     return trimmedArray;
-  
+
   }
 
   getDocument(postId){
@@ -386,7 +386,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
         maxRetries: Infinity,
         debug: false,
     };
-      // !-- Connect ShareDB and Cursors to ReconnectingWebSocket--! //  
+      // !-- Connect ShareDB and Cursors to ReconnectingWebSocket--! //
       shareDBSocket = new ReconnectingWebSocket(((location.protocol === 'https:') ? 'wss' : 'ws') + '://' + environment.REAL_TIME_URL + '/sharedb', [], options);
       var shareDBConnection = new ShareDB.Connection(shareDBSocket);
       // Create browserchannel socket
@@ -394,7 +394,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
       // !-- Connect ShareDB and Cursors to ReconnectingWebSocket--! //
       //have color here
       var colorFromUser:any
-   
+
       if (this.user_document_information){
         colorFromUser = this.user_document_information['color']
       }else{
@@ -403,7 +403,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
         })
       }
 
-      let connection: any = await this.documentService.cursorConnection(null, colorFromUser, null);
+      let connection: any = await this.documentService.cursorConnection(null, colorFromUser, {index: 0, length: 0});
 
       let user = JSON.parse(localStorage.getItem('user'));
 
@@ -470,17 +470,17 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
                 this.documentFiles = templateMention;
               }
               if (mentionChar === "#" && searchTerm.length === 0) {
-  
+
                 this.groupService.getAllSharedGroupFiles(this.groupId,this.user_data._workspace,this.user_data._id)
                 .subscribe((res) => {
                   this.documentFiles = this.postService.removeDuplicates([ ...this.documentFiles, ...res['concatAllFiles']['allFiles']], 'id')
-    
+
                 }, (err) => {
                   console.log('Error while fetching shared files', err);
                 })
 
               }
-              if (searchTerm.length === 0) { 
+              if (searchTerm.length === 0) {
                 renderList(this.documentFiles, searchTerm);
               } else {
                 const matches = [];
@@ -492,7 +492,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
             onSelect:(item, insertItem) =>{
               switch (item.denotationChar) {
                 case '#':
-                  insertItem(item); 
+                  insertItem(item);
                   break;
                 case '/':
                     insertItem(item);
@@ -505,34 +505,52 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
           }
         },
       });
-      
+
       let cursorsModule = quill.getModule('cursors');
       console.log('init connection', connection);
      cursorsModule.createCursor(connection.user_id, connection.name, 'red');
 
       // Init a blank user connection to store local conn data
-      cursors.localConnection = connection;
+      cursors.localConnection = {...connection}
 
-      
+
       // Update
       cursors.update = function() {
+        cursors.localConnection.index = cursors.localConnection.range.index;
+        cursors.localConnection.length = cursors.localConnection.range.length;
         cursors.socket.send(JSON.stringify(cursors.localConnection));
       };
-      
+
       // Init connections array
       cursors.connections = [];
-      
+
       // Send initial message to register the client, and
       // retrieve a list of current clients so we can set a colour.
       cursors.socket.onopen = function() {
         cursors.update();
       };
-      
+
       // Handle updates
       cursors.socket.onmessage = async (message) => {
         var data = JSON.parse(message.data);
 
         console.log('data present', data);
+
+        for(let i = 0; i < data.connections.length; i++) {
+          if(data.connections[i].user_id !== cursors.localConnection.user_id) {
+            console.log('datas',   data.connections[i],         data.connections[i].id,
+              data.connections[i].range,
+              data.connections[i].name,
+              data.connections[i].color);
+            cursorsModule.moveCursor(
+              data.connections[i].id,
+              data.connections[i].range,
+              data.connections[i].name,
+              data.connections[i].color
+            );
+          }
+
+        }
 
 
         this.documentService.authorsList(data);
@@ -540,29 +558,29 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
           removedConnections = [],
           forceUpdate = false,
           reportNewConnections = true;
-      
+
         if (!cursors.localConnection.id)
           forceUpdate = true;
-      
+
         // Refresh local connection ID (because session ID might have changed because server restarts, crashes, etc.)
         cursors.localConnection.id = data.id;
-      
+
         if (forceUpdate) {
           cursors.update();
           return;
         }
-      
+
         //Find removed connections
         for (var i = 0; i < cursors.connections.length; i++) {
           var testConnection = data.connections.find( (connection) => {
             return connection.id == cursors.connections[i].id;
           });
-      
+
           if (!testConnection) {
-      
+
             removedConnections.push(cursors.connections[i]);
             //console.log('[cursors] User disconnected:', cursors.connections[i]);
-      
+
             // If the source connection was removed set it
             if (data.sourceId == cursors.connections[i])
               source = cursors.connections[i];
@@ -571,7 +589,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
             //console.log('[cursors] Connections after username update:', data.connections);
           }
         }
-  
+
         if (cursors.connections.length == 0 && data.connections.length != 0) {
           //data.connections = removeDuplicates(data.connections, 'user_id');
           data.connections.forEach(async (element)=>{
@@ -631,11 +649,11 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
           // Set the source if it's still on active connections
           if (data.sourceId == data.connections[i].id)
             source = data.connections[i];
-      
+
           if (reportNewConnections && !cursors.connections.find((connection) => {
               return connection.id == data.connections[i].id
             })) {
-  
+
             //data.connections = removeDuplicates(data.connections, 'user_id');
             //console.log('[cursors] User connected:', data.connections[i]);
             let authorData = {
@@ -674,7 +692,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
         // Update connections array
         cursors.connections = data.connections;
         // cursors.connections = removeDuplicates(cursors.connections, 'user_id');
-      
+
         // Fire event
         document.dispatchEvent(new CustomEvent('cursors-update', {
           detail: {
@@ -687,15 +705,15 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
         // console.log(cursors);
 
       };
-      
+
       cursors.socket.onclose = function (event) {
         console.log('[cursors] Socket closed. Event:', event);
       };
-      
+
       cursors.socket.onerror = function (event) {
         console.log('[cursors] Error on socket. Event:', event);
       };
-  
+
       this.handleDocument(doc, user);
 
       //fired from cursor.js when a user is disconnected.
@@ -711,19 +729,19 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
 
       //subscribe ends
       //this.documentService.updateCursors(cursors.localConnection, cursors, cursorsModule);
-    
+
     // DEBUG
-    
+
     shareDBConnection.on('state', (state: any, reason: any)=> {
-  
+
       if (state === "connected") {
         cursors.localConnection.user_id = user.user_id;
         cursors.update();
       }
-    
+
       //console.log('[sharedb] New connection state: ' + state + ' Reason: ' + reason);
     });
-     } 
+     }
     catch(err){
       console.log('Error', err);
     }
@@ -753,7 +771,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
                 tds[i]['bgColor'] = res['tableCells'][tableCellIndex]['_color']
                 console.log('Table Cell', tableCellIndex);
               }
-              
+
             }
           }
         }, (err)=>{
@@ -770,7 +788,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     });
 
     // local -> server
-    // quill.on('editor-change', () => 
+    // quill.on('editor-change', () =>
     // console.log('I changed bruh!')
     // );
     quill.on('text-change', (delta, oldDelta, source) => {
@@ -845,28 +863,28 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
       this.docStatus = "Updated!";
     });
 
-    quill.on('selection-change', async (range: any, oldRange: any, source: any) => {
-
-      await this.documentService.sendCursorData(cursors, range);
+    quill.on('selection-change', (range: any, oldRange: any, source: any) => {
       if (range) {
         if (range.length == 0) {
           console.log('User cursor is on', range.index);
           const cursorsModule = quill.getModule('cursors');
 
           const connection = cursors.localConnection;
-          console.log('settings applied', connection, range);
-          cursorsModule.moveCursor(
-            connection.user_id,
-            range,
-            connection.name,
-            connection.color
-          );
+          // console.log('settings applied', connection, range);
+          // cursorsModule.moveCursor(
+          //   connection.user_id,
+          //   range,
+          //   connection.name,
+          //   connection.color
+          // );
         } else {
           var text = quill.getText(range.index, range.length);
           comment_range = range;
           //console.log('Comment Range', comment_range);
           //console.log("User has highlighted: ", text);
         }
+
+        this.documentService.sendCursorData(cursors, range).then(success => console.log('success', success));
       } else {
         //console.log('Cursor not in the editor', source);
       }
@@ -890,7 +908,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
       this.table_handler('newtable_1_1', quill, options);
       this.table_handler('newtable_3_4', quill);
     }
-    
+
   }
 
   random_id() {
@@ -1009,13 +1027,13 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
   showPreview(){
     this.fixedForPreview = "fixed"
     this.previewbool = true
-    this.editorPreview = document.getElementsByClassName("ql-editor")[0].innerHTML 
+    this.editorPreview = document.getElementsByClassName("ql-editor")[0].innerHTML
     const toolbarElement = (<HTMLElement>document.querySelector('.ql-toolbar'))
     const commentElement = (<HTMLElement>document.querySelector('.comments'))
     toolbarElement.style.position = "fixed"
     toolbarElement.style.width = "65%"
     commentElement.style.position = "fixed"
-    
+
   }
   closePreview(event:string){
     this.fixedForPreview = ""
@@ -1042,7 +1060,7 @@ export class DialogOverviewExampleDialog {
   isShowing:Boolean = true
   currentpage = 0
 
-  constructor(private changeDetector: ChangeDetectorRef){ 
+  constructor(private changeDetector: ChangeDetectorRef){
   }
 
   @Input() set receivedParentMessage(value: string) {
@@ -1060,7 +1078,7 @@ export class DialogOverviewExampleDialog {
           var el = document.createElement("div");
           el.appendChild(innerFirstElementNode[k]);
           this._editorDataArray[this.currentpage] += el.innerHTML
-          
+
           this.changeDetector.detectChanges()
           var pagePreviewHeight = document.getElementsByClassName('pagePreview')[this.currentpage].clientHeight;
           //console.log(pagePreviewHeight,"height")
@@ -1068,7 +1086,7 @@ export class DialogOverviewExampleDialog {
             if (k >= innerFirstElementNode.length - 1){
               this._listArrayForPageCheck[this.currentpage] = "29.7"
             }
-            
+
           }
           if (pagePreviewHeight > 1100){
           //last element added
@@ -1081,7 +1099,7 @@ export class DialogOverviewExampleDialog {
         }
     }
  }
-  
+
   @Output() closeView11: EventEmitter<any> = new EventEmitter();
   get receivedParentMessage(): string {
       return this._editorData;

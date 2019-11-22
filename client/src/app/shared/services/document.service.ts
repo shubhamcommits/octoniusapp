@@ -20,7 +20,7 @@ export class DocumentService {
   authorsList$: Observable<any>;
   private authorsListSubject = new Subject<any>();
 
-  constructor(private _http: HttpClient, private snotifyService: SnotifyService,) { 
+  constructor(private _http: HttpClient, private snotifyService: SnotifyService,) {
     this.authorsList$ = this.authorsListSubject.asObservable();
   }
 
@@ -79,7 +79,7 @@ export class DocumentService {
             let cursor_user = await JSON.parse(getUserName.responseText).user;
             name = cursor_user.first_name + " " + cursor_user.last_name;
             color = color;
-            let user_id = this.user.user_id; 
+            let user_id = this.user.user_id;
             // range = {
             //   index: 0,
             //   length: 0
@@ -109,7 +109,7 @@ export class DocumentService {
     return new Promise((resolve, reject)=>{
       try{
         cursors.localConnection.range = range;
-        cursors.update();
+        cursors.update(range);
         resolve();
       }
       catch(err){
@@ -119,12 +119,12 @@ export class DocumentService {
   }
 
   async updateCursors(source: any, cursors: any, cursorsModule: any) {
-  
+
     return new Promise((resolve, reject)=>{
       try{
         var activeConnections = {},
         updateAll = Object.keys(cursorsModule.cursors).length == 0;
-  
+
       cursors.connections.forEach((connection: any) => {
         // if (connection.id != cursors.localConnection.id) {
         //   if (connection.user_id && connection.color) {
@@ -134,7 +134,7 @@ export class DocumentService {
         //   }
         //   // Update cursor that sent the update, source (or update all if we're initting)
         //   if ((connection.id == source.id || updateAll) && connection.range) {
-  
+
         //     // changed by AMit instead of setCursor starts
         //     if(cursorsModule.cursors().find((cursor: any) => cursor.id==connection.id)) {
         //       cursorsModule.moveCursor(
@@ -149,7 +149,7 @@ export class DocumentService {
         //       );
         //     } //ends
         //   }
-  
+
         //   // Add to active connections hashtable
         //   activeConnections[connection.id] = connection;
         // }
@@ -163,19 +163,19 @@ export class DocumentService {
               connection.color
             );
           }
-  
+
           // Add to active connections hashtable
           activeConnections[connection.id] = connection;
         }
       });
-  
+
       // Clear 'disconnected' cursors
       Object.keys(cursorsModule.cursors).forEach(function(cursorId) {
         if (!activeConnections[cursorId]) {
           cursorsModule.removeCursor(cursorId);
         }
       });
-  
+
       // Clear 'disconnected' cursors
       Object.keys(cursorsModule.cursors).forEach(function(cursorId) {
         if (!activeConnections[cursorId]) {
@@ -188,11 +188,11 @@ export class DocumentService {
       catch(err){
         reject(err);
       }
-     
+
   })
 
   }
-  
+
 
   async getDocumentHistory(documentId: any, cursors: any) {
     try {
