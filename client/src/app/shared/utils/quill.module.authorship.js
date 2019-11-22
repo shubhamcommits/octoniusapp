@@ -82,7 +82,7 @@ class Authorship {
 
   addAuthor(id, color) {
     //console.log('added');
-    let css = ".ql-authorship .ql-author-" + id + " { " + "background-color:" + color + "; }\n";
+    let css = ".ql-authorship .ql-author-" + id + " { " + "color:" + color + "; }\n";
     this.addStyle(css);
   }
 
