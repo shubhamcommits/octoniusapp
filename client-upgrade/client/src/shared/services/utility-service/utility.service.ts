@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SnotifyService, SnotifyToastConfig } from 'ng-snotify';
-import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 
 @Injectable({
@@ -34,13 +34,24 @@ export class UtilityService {
   // USERDATA FOR THE CURRENT USER
   private userData: any
 
+  // WORKPLACEDATA FOR THE CURRENT USER
+  private workplaceData: any
+
   /**
    * Both of the variables listed down below are used to share the data through this common service among different components in the app
-   * @constant dataSource
-   * @constant currentData
+   * @constant userDataSource
+   * @constant currentUserData
    */
   private userDataSource = new BehaviorSubject<any>({});
   currentUserData = this.userDataSource.asObservable();
+
+  /**
+   * Both of the variables listed down below are used to share the data through this common service among different components in the app
+   * @constant workplaceDataSource
+   * @constant currentWorkplaceData
+   */
+  private workplaceDataSource = new BehaviorSubject<any>({});
+  currentWorkplaceData = this.workplaceDataSource.asObservable();
 
   /**
    * This function checks whether the input string is a vaild email or not
@@ -171,8 +182,20 @@ export class UtilityService {
     return this.userData = userData 
   }
 
+  /**
+   * Used to emit the next value of observable so that where this is subscribed, will get the updated value
+   * @param userData 
+   */
   public updateUserData(userData: any){
     this.userDataSource.next(userData);
+  }
+
+  /**
+   * Used to emit the next value of observable so that where this is subscribed, will get the updated value
+   * @param workplaceData
+   */
+  public updateWorkplaceData(workplaceData: any){
+    this.workplaceDataSource.next(workplaceData);
   }
 
 }
