@@ -7,6 +7,7 @@ import { retry } from 'rxjs/internal/operators/retry';
 import { SubSink } from 'subsink';
 import { AuthService } from 'src/shared/services/auth-service/auth.service';
 import { Router } from '@angular/router';
+import { SocketService } from 'src/shared/services/socket-service/socket.service';
 
 @Component({
   selector: 'app-navbar',
@@ -21,7 +22,8 @@ export class NavbarComponent implements OnInit {
     private userService: UserService,
     private utilityService: UtilityService,
     private authService: AuthService,
-    private router: Router) { }
+    private router: Router,
+    private socketService: SocketService) { }
 
   // CURRENT USER DATA
   userData: any;
@@ -78,6 +80,7 @@ export class NavbarComponent implements OnInit {
         this.subSink.add(this.authService.signout()
           .subscribe((res) => {
             this.storageService.clear();
+            this.socketService.disconnectSocket();
             this.router.navigate(['/home'])
             .then(()=> this.utilityService.successNotification('Succesfully Logged out!'))
             resolve();
