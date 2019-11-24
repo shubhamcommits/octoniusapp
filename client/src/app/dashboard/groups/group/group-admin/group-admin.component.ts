@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { SnotifyService } from 'ng-snotify';
-import { GroupService } from '../../../../shared/services/group.service';
-import { GroupDataService } from '../../../../shared/services/group-data.service';
-import { Subject } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
-import { NgxUiLoaderService } from 'ngx-ui-loader'; 
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {SnotifyService} from 'ng-snotify';
+import {GroupService} from '../../../../shared/services/group.service';
+import {GroupDataService} from '../../../../shared/services/group-data.service';
+import {Subject} from 'rxjs';
+import {debounceTime} from 'rxjs/operators';
+import {NgxUiLoaderService} from 'ngx-ui-loader';
 import Swal from 'sweetalert2';
 import {Location} from '@angular/common';
+import {FormControl} from '@angular/forms'
 
 @Component({
   selector: 'app-group-admin',
@@ -22,7 +23,7 @@ export class GroupAdminComponent implements OnInit {
   itemList: any = [];
   selectedItems = [];
   settings = {};
-  fileSharedCheck:boolean = false;
+  fileSharedCheck: boolean = false;
   staticAlertClosed = false;
   private _message = new Subject<string>();
   alert = {
@@ -39,12 +40,15 @@ export class GroupAdminComponent implements OnInit {
     search: true // enables the search plugin to search in the list
   };
   dataModel;
-  constructor(private groupService: GroupService, 
-    public groupDataService: GroupDataService, 
-    private ngxService: NgxUiLoaderService, 
-    private router: Router, 
-    private snotifyServive: SnotifyService,
-    private _location: Location) { }
+  queryField: FormControl = new FormControl();
+
+  constructor(private groupService: GroupService,
+              public groupDataService: GroupDataService,
+              private ngxService: NgxUiLoaderService,
+              private router: Router,
+              private snotifyServive: SnotifyService,
+              private _location: Location) {
+  }
 
   ngOnInit() {
     this.ngxService.start(); // start foreground loading with 'default' id
@@ -52,66 +56,56 @@ export class GroupAdminComponent implements OnInit {
     this.group_id = this.groupDataService.groupId;
     this.user = JSON.parse(localStorage.getItem('user_data'));
     this.alertMessageSettings();
-    this.inilizeWrokspaceMembersSearchForm();
+    this.initSearch()
     this.loadGroup()
-    .then(()=>{
-      this.ngxService.stop();
-    })
-    .then(()=>{
-      if(this.user && this.user.role === 'member'){
-        setTimeout(() => {
-          Swal.fire({
-            type: 'info',
-            title: 'You can\'t access this section!',
-            text: 'Kindly contact your superior to update your role from member to admin.',
-            showConfirmButton: true,
-            allowEscapeKey: false,
-            allowOutsideClick: false,
-          }).then((result) => {
-            if (result.value) {
-              this._location.back();
-            }
-          });
-        }, 1500);
-
-      }
-    })
-    .then(() =>{
-      this.groupService.getGroupSharedFileCheck(this.group_id).subscribe(
-        res => {
-          if(res['sharedFilesBool']['share_files'] != null){
-            this.fileSharedCheck = res['sharedFilesBool']['share_files']
-          }
-        },
-        err => {
-          console.error(`Failed to get group file information! ${err}`);
+      .then(() => {
+        this.ngxService.stop();
+      })
+      .then(() => {
+        if (this.user && this.user.role === 'member') {
+          setTimeout(() => {
+            Swal.fire({
+              type: 'info',
+              title: 'You can\'t access this section!',
+              text: 'Kindly contact your superior to update your role from member to admin.',
+              showConfirmButton: true,
+              allowEscapeKey: false,
+              allowOutsideClick: false,
+            }).then((result) => {
+              if (result.value) {
+                this._location.back();
+              }
+            });
+          }, 1500);
         }
-      );
-    })
+      })
+      .then(() => {
+        this.groupService.getGroupSharedFileCheck(this.group_id).subscribe(
+          res => {
+            if (res['sharedFilesBool']['share_files'] != null) {
+              this.fileSharedCheck = res['sharedFilesBool']['share_files']
+            }
+          },
+          err => {
+            console.error(`Failed to get group file information! ${err}`);
+          }
+        );
+      })
   }
 
 
   loadGroup() {
-    return new Promise((resolve, reject)=>{
+    return new Promise((resolve, reject) => {
       this.groupService.getGroup(this.group_id)
-      .subscribe((res) => {
-       // console.log('Group: ', res);
-        this.group = res['group'];
-
-        this.group.description = res['group']['description'];
-        resolve();
-
-      }, (err) => {
-        reject(err);
-      //  console.log('err: ', err);
-
-      });
+        .subscribe((res) => {
+          this.group = res['group'];
+          this.group.description = res['group']['description'];
+          resolve();
+        }, (err) => {
+          reject(err);
+        });
     })
-
-
   }
-  
-
 
   alertMessageSettings() {
     setTimeout(() => this.staticAlertClosed = true, 20000);
@@ -123,34 +117,40 @@ export class GroupAdminComponent implements OnInit {
 
   }
 
-
-  inilizeWrokspaceMembersSearchForm() {
-
-    this.settings = {
-      text: 'Click to select Workspace Members',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      classes: 'myclass custom-class',
-      primaryKey: '_id',
-      labelKey: 'full_name',
-      noDataLabel: 'Search Members...',
-      enableSearchFilter: true,
-      searchBy: ['full_name', 'capital']
-    };
+  initSearch() {
+    this.queryField.valueChanges
+      .subscribe(queryValue => {
+        if (this.isEmptyValue(queryValue)) {
+          return;
+        }
+        this.groupService.searchWorkspaceUsers(queryValue, this.user_data.workspace._id)
+          .subscribe((res) => {
+            this.itemList = res['users'];
+            this.selectedItems = [];
+          })
+      });
   }
 
-  onAddNewMembers() {
+  isEmptyValue(queryValue: any) {
+    if (!queryValue || queryValue.trim() === '') {
+      this.itemList = [];
+      return true;
+    }
+    return false;
+  }
+
+  isGroupMember(item: any) {
+    return item._groups.includes(this.group_id);
+  }
+
+  onAddNewMember(item: any) {
     const data = {
       group: this.group_id,
-      members: this.selectedItems
+      members: [item]
     };
     this.groupService.addMembersInGroup(data)
       .subscribe((res) => {
-        // console.log('add new user response:', res);
-        this.selectedItems = [];
-        //this._message.next(res['message']);
-        Swal.fire("Good Job!", "You have added "+data.members.length+" new member(s)!", "success");
-
+        this.selectedItems.push(item);
       }, (err) => {
         this.alert.class = 'danger';
         if (err.status) {
@@ -162,20 +162,8 @@ export class GroupAdminComponent implements OnInit {
       });
   }
 
-  onSearch(evt: any) {
-  //  console.log(evt.target.value);
-    this.itemList = [];
-
-    this.groupService.searchWorkspaceUsers(evt.target.value, this.user_data.workspace._id)
-      .subscribe((res) => {
-        // console.log('workspace users: ', res);
-
-        // console.log(res);
-        this.itemList = res['users'];
-
-      }, (err) => {
-
-      });
+  memberJustAddedToGroup(item: any) {
+    return this.selectedItems.includes(item);
   }
 
   // Makes a request to the backend to delete the current group
@@ -208,21 +196,6 @@ export class GroupAdminComponent implements OnInit {
     });
   }
 
-  onItemSelect(item: any) {
-    // console.log(item);
-    // console.log('selected items: ', this.selectedItems);
-  }
-  OnItemDeSelect(item: any) {
-    // console.log(item);
-    // console.log(this.selectedItems);
-  }
-  onSelectAll(items: any) {
-    // console.log(items);
-  }
-  onDeSelectAll(items: any) {
-    // console.log(items);
-  }
-
   onChange() {
     switch (this.fileSharedCheck) {
       case true:
@@ -231,16 +204,16 @@ export class GroupAdminComponent implements OnInit {
       case false:
         this.fileSharedCheck = true
         break;
-    
+
       default:
         break;
     }
-    this.groupService.updateSharedFile(this.group_id,this.fileSharedCheck).subscribe(
+    this.groupService.updateSharedFile(this.group_id, this.fileSharedCheck).subscribe(
       res => {
       },
       err => {
         console.error(`Failed to get group file information! ${err}`);
       }
     );
-  } 
+  }
 }
