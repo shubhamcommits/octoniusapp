@@ -9,7 +9,8 @@
 
       <!--<h5 class="title-overview" *ngIf="this.isTimelineEventExpired(timelineEvent.event.due_to)">In trecut</h5>-->
 
-      <div class=" row media-body" *ngIf="this.isTimelineEventExpired(timelineEvent.event.due_to) && !this.isTimelineEventInPresent(timelineEvent.event.due_to)">
+      <div class=" row media-body"
+           *ngIf="this.isTimelineEventExpired(timelineEvent.event.due_to) && !this.isTimelineEventInPresent(timelineEvent.event.due_to)">
         <div class="col-md-1">
           <div class="event-expired-hour-box event-future-or-expired-hour">
             {{timelineEvent.event.due_to | date:'h:mm' }}
@@ -23,11 +24,16 @@
           <div class="overview-item small text-right timestamp opacity">
             {{timelineEvent.event.due_to | date:'MMMM d, y' }}
           </div>
-          <div class="chevron-right opacity"> ></div>
+          <div class="chevron-right opacity">
+            <i class="material-icons arrow-forward">
+              arrow_forward_ios
+            </i>
+          </div>
         </div>
       </div>
 
-      <div class=" row media-body" *ngIf="this.isTimelineEventInFuture(timelineEvent.event.due_to) && !this.isTimelineEventInPresent(timelineEvent.event.due_to)">
+      <div class=" row media-body"
+           *ngIf="this.isTimelineEventInFuture(timelineEvent.event.due_to) && !this.isTimelineEventInPresent(timelineEvent.event.due_to)">
         <div class="col-md-1">
           <div class="event-future-hour-box event-future-or-expired-hour">
             {{timelineEvent.event.due_to | date:'h:mm' }}
@@ -40,7 +46,11 @@
           <div class="overview-item small text-right timestamp">
             {{timelineEvent.event.due_to | date:'MMMM d, y' }}
           </div>
-          <div class="chevron-right"> ></div>
+          <div class="chevron-right">
+            <i class="material-icons arrow-forward">
+              arrow_forward_ios
+            </i>
+          </div>
         </div>
       </div>
 
@@ -57,7 +67,11 @@
           <div class="overview-item small text-right timestamp">
             {{timelineEvent.event.due_to | date:'MMMM d, y' }}
           </div>
-          <div class="chevron-right"> ></div>
+          <div class="chevron-right">
+            <i class="material-icons arrow-forward">
+              arrow_forward_ios
+            </i>
+          </div>
         </div>
       </div>
     </div>
@@ -81,7 +95,11 @@
           <div class="overview-item small text-right timestamp">
             {{timelineEvent.event.due_to | date:'MMMM d, y' }}
           </div>
-          <div class="chevron-right"> ></div>
+          <div class="chevron-right">
+            <i class="material-icons arrow-forward">
+              arrow_forward_ios
+            </i>
+          </div>
         </div>
       </div>
     </div>
