@@ -14,9 +14,9 @@ export class OverviewMyAgendaComponent implements OnInit {
   todayTimelineEvents: any = [];
   thisWeekTimelineEvents: any = [];
 
-  viewDate: Date = new Date();
+  now: Date = new Date();
 
-  currentHour;
+  currentAuthenticatedUserId;
 
   constructor(private ngxService: NgxUiLoaderService, private groupDataService: GroupDataService, private userService: UserService) {
 
@@ -28,18 +28,15 @@ export class OverviewMyAgendaComponent implements OnInit {
       this.ngxService.stop();
     }, 500);
 
+    this.currentAuthenticatedUserId = await this.getCurrentAuthenticatedUser();
     this.todayTimelineEvents = await this.getTodayTimelineEvents();
     this.thisWeekTimelineEvents = await this.getThisWeekTimelineEvents();
-
-    this.currentHour = moment(this.viewDate).hour();
   }
 
   getTodayTimelineEvents() {
     return new Promise((resolve, reject) => {
-
-      //TODO: extract current USER
       const data = {
-        userId: '5dd2ed0d2ec9072dad7316ab'
+        userId: this.currentAuthenticatedUserId
       };
 
       this.userService.getUserTodayEvents(data)
@@ -74,16 +71,27 @@ export class OverviewMyAgendaComponent implements OnInit {
   }
 
   isTimelineEventExpired(eventDueTo) {
-    return moment(moment(eventDueTo)).isBefore(moment(this.viewDate));
+    return moment(moment(eventDueTo)).isBefore(moment(this.now));
   }
 
   isTimelineEventInFuture(eventDueTo) {
-    return moment(moment(eventDueTo)).isAfter(moment(this.viewDate));
+    return moment(moment(eventDueTo)).isAfter(moment(this.now));
   }
 
   isTimelineEventInPresent(eventDueTo) {
+    return moment(moment(eventDueTo)).isBetween(moment(this.now), moment(this.now).add(moment(eventDueTo).minute(), 'minutes'));
+  }
 
-    return moment(moment(eventDueTo)).isBetween(moment(this.viewDate), moment(this.viewDate).add(30, 'minutes'));
+  getCurrentAuthenticatedUser() {
+    return new Promise((resolve, reject) => {
+      this.userService.getUser()
+        .subscribe((res) => {
+          resolve(res['user']._id);
+        }, (err) => {
+          console.log('Error while fetching the user', err);
+          reject(err);
+        })
+    })
   }
 }
 
