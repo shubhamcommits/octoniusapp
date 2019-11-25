@@ -579,6 +579,9 @@ const getTodayEvents = async (req, res, next) => {
     const todayPlus24ForEvent = moment().local().endOf('day').format();
     const tomorrow = moment().local().add(1, 'days').format('YYYY-MM-DD');
 
+    // Get the group(s) that the user belongs to
+    const { _groups } = await User.findById(userId).select('_groups');
+
     // find the user's today agenda events
     const events = await Post.find({
       $or: [{
@@ -588,16 +591,15 @@ const getTodayEvents = async (req, res, next) => {
           {'event.due_to': {$gte: todayForEvent, $lte: todayPlus24ForEvent}}
         ]
       }]
-    })
-        .sort('event.due_to')
-        .populate('event._assigned_to', 'first_name last_name');
+    }).sort('event.due_to').populate('event._assigned_to', 'first_name last_name').populate('_group', 'group_name');
 
     return res.status(200).json({
       today: today,
       tomorrow: tomorrow,
       todayForEvent: todayForEvent,
       message: `Found ${events.length} events!`,
-      events
+      events,
+      _groups
     });
   } catch (err) {
     return sendErr(res, err);
@@ -616,6 +618,9 @@ const getThisWeekEvents = async (req, res, next) => {
     // Generate the +24h time
     const todayPlus7DaysForEvent = moment().local().add(7, 'days').endOf('day').format();
 
+    // Get the group(s) that the user belongs to
+    const { _groups } = await User.findById(userId).select('_groups');
+
     // find the user's today agenda events
     const events = await Post.find({
       $or: [{
@@ -633,7 +638,8 @@ const getThisWeekEvents = async (req, res, next) => {
       today: today,
       todayForEvent: todayForEvent,
       message: `Found ${events.length} events!`,
-      events
+      events,
+      _groups
     });
   } catch (err) {
     return sendErr(res, err);

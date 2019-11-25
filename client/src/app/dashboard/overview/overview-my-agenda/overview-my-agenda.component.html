@@ -6,9 +6,6 @@
   <div *ngFor="let timelineEvent of todayTimelineEvents; let i = index;">
     <!-- Agenda Timeline Today Events -->
     <div class="media card-tile overview-timeline-event">
-
-      <!--<h5 class="title-overview" *ngIf="this.isTimelineEventExpired(timelineEvent.event.due_to)">In trecut</h5>-->
-
       <div class=" row media-body"
            *ngIf="this.isTimelineEventExpired(timelineEvent.event.due_to) && !this.isTimelineEventInPresent(timelineEvent.event.due_to)">
         <div class="col-md-1">
