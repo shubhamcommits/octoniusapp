@@ -16,23 +16,23 @@
       <h4>Add new member</h4>
       <p>You can search for persons inside the organization's Workplace and add them to your group.</p>
 
-      <section class="filter-wrapper">
-        <div class="keyword-wrapper">
-          <input [formControl]="queryField" type="text" id="keyword" placeholder="Type a name to search" class="input-search"/>
+      <section>
+        <div>
+          <input [formControl]="queryField" type="search" id="keyword" placeholder="Type a name to search" class="input-search"/>
         </div>
 
-        <div class="media card-tile user-list" style="width: 50%" *ngFor=" let item of itemList">
+        <div class="media card-tile user-list w-50 mb-0" *ngFor=" let item of itemList">
 
           <img src="{{this.BASE_URL}}/uploads/{{item?.profile_pic}}" onerror="this.src='/assets/images/user.png'"class="feed-avatar-search">
-          <div class="media-body" style="margin-top: 10px">
-            <div class="float-left" style="margin-left: 0">
+          <div class="media-body mt-2">
+            <div class="float-left ml-0 mt-1" >
               <h4 class="mt-0 full-name-text">{{item?.full_name}}</h4>
             </div>
-            <div class="btn-group mr-3 float-right" style="margin-left:10px">
+            <div class="btn-group mr-3 ml-2 float-right">
 
               <div *ngIf="!isGroupMember(item)">
                 <button  [hidden] = "memberJustAddedToGroup(item)" (click)="onAddNewMember(item)" class="btn btn-primary dropdown-toggle-split btn-sm">add</button>
-                <i [hidden] = "!memberJustAddedToGroup(item)" class="material-icons dropdown-toggle-split btn-sm" style="color: #0BC6A0; margin-right: 6px">check_circle</i>
+                <i [hidden] = "!memberJustAddedToGroup(item)" class="material-icons mr-1 dropdown-toggle-split btn-sm working">check_circle</i>
               </div>
               <div *ngIf="isGroupMember(item)">
                 <p class="btn btn-sm btn-text">joined</p>
