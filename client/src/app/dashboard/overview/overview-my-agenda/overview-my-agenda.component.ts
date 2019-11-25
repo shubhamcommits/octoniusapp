@@ -18,7 +18,8 @@ export class OverviewMyAgendaComponent implements OnInit {
 
   currentAuthenticatedUserId;
 
-  constructor(private ngxService: NgxUiLoaderService, private groupDataService: GroupDataService, private userService: UserService) {
+  constructor(private ngxService: NgxUiLoaderService, private groupDataService: GroupDataService,
+              private userService: UserService) {
 
   }
 
@@ -55,7 +56,7 @@ export class OverviewMyAgendaComponent implements OnInit {
     return new Promise((resolve, reject) => {
 
       const data = {
-        userId: '5dd2ed0d2ec9072dad7316ab'
+        userId: this.currentAuthenticatedUserId
       };
 
       this.userService.getUserThisWeekEvents(data)

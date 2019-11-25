@@ -591,7 +591,9 @@ const getTodayEvents = async (req, res, next) => {
           {'event.due_to': {$gte: todayForEvent, $lte: todayPlus24ForEvent}}
         ]
       }]
-    }).sort('event.due_to').populate('event._assigned_to', 'first_name last_name').populate('_group', 'group_name');
+    }).sort('event.due_to')
+        .populate('event._assigned_to', 'first_name last_name')
+        .populate('_group', 'group_name');
 
     return res.status(200).json({
       today: today,
@@ -630,9 +632,7 @@ const getThisWeekEvents = async (req, res, next) => {
           {'event.due_to': {$gte: todayForEvent, $lte: todayPlus7DaysForEvent}}
         ]
       }]
-    })
-        .sort('event.due_to')
-        .populate('event._assigned_to', 'first_name last_name');
+    }).sort('event.due_to').populate('event._assigned_to', 'first_name last_name').populate('_group', 'group_name');
 
     return res.status(200).json({
       today: today,
