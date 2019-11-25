@@ -1,10 +1,10 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Workspace } from '../models/workspace.model';
-import { User } from '../models/user.model';
-import { AuthService } from './auth.service';
-import { environment } from '../../../environments/environment';
-import { Subject } from 'rxjs/Subject';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Workspace} from '../models/workspace.model';
+import {User} from '../models/user.model';
+import {AuthService} from './auth.service';
+import {environment} from '../../../environments/environment';
+import {Subject} from 'rxjs/Subject';
 
 // Disabling client side caching
 // import { Cacheable, CacheBuster } from 'ngx-cacheable';
@@ -19,7 +19,8 @@ export class UserService {
 
   BASE_API_URL = environment.BASE_API_URL;
 
-  constructor(private _http: HttpClient, private _authService: AuthService) { }
+  constructor(private _http: HttpClient, private _authService: AuthService) {
+  }
 
   // @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
   // })
@@ -40,15 +41,16 @@ export class UserService {
     return this._http.put<any>(this.BASE_API_URL + `/users`, user);
 
   }
+
   downloadFile(file) {
-    return this._http.post(this.BASE_API_URL + `/file/download`, file, { responseType: 'blob' });
+    return this._http.post(this.BASE_API_URL + `/file/download`, file, {responseType: 'blob'});
   }
 
   // @CacheBuster({
   //   cacheBusterNotifier: cacheBuster$
   // })
-  addSkills(skills){
-    return this._http.put(this.BASE_API_URL+'/users/skills', skills);
+  addSkills(skills) {
+    return this._http.put(this.BASE_API_URL + '/users/skills', skills);
   }
 
   // @CacheBuster({
@@ -57,8 +59,8 @@ export class UserService {
   updateUserProfileImage(fileToUpload: File) {
     const formData: FormData = new FormData();
     formData.append('profileImage', fileToUpload, fileToUpload.name);
-  // console.log('formData:', formData);
-  //  console.log('fileToUpload:', fileToUpload);
+    // console.log('formData:', formData);
+    //  console.log('fileToUpload:', fileToUpload);
 
     return this._http.put<any>(this.BASE_API_URL + `/users/updateImage`, formData);
 
@@ -84,9 +86,16 @@ export class UserService {
 
   // @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
   // })
-  getUserCalendarPosts(data){
+  getUserCalendarPosts(data) {
     return this._http.get(this.BASE_API_URL + `/groups/${data.groupId}/user/${data.userId}/calendar/${data.year}/${data.month}`);
   }
 
+  getUserTodayEvents(data) {
+    return this._http.get(this.BASE_API_URL + `/users/${data.userId}/todayEvents`);
+  }
+
+  getUserThisWeekEvents(data) {
+    return this._http.get(this.BASE_API_URL + `/users/${data.userId}/weeklyEvents`);
+  }
 
 }
