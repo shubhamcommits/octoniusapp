@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { SnotifyService, SnotifyToastConfig } from 'ng-snotify';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,8 @@ export class UtilityService {
 
   constructor(
     private snotifyService: SnotifyService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private ngxUiLoaderService: NgxUiLoaderService
     ) { }
 
   // After Resolving Promise in case of async notification 
@@ -196,6 +198,46 @@ export class UtilityService {
    */
   public updateWorkplaceData(workplaceData: any){
     this.workplaceDataSource.next(workplaceData);
+  }
+
+  /**
+   * This function starts the foreground loader of master loader
+   * @param taskId
+   */
+  public startForegroundLoader(taskId?: string){
+    console.log('start')
+    return this.ngxUiLoaderService.start(taskId);
+  }
+
+  /**
+   * This function stops the foreground loader of master loader
+   * @param taskId
+   */
+  public stopForegroundLoader(taskId?: string){
+    return this.ngxUiLoaderService.stop(taskId);
+  }
+
+  /**
+   * This function starts the background loader of master loader
+   * @param taskId - optional
+   */
+  public startBackgroundLoader(taskId?: string){
+    this.ngxUiLoaderService.startBackground(taskId);
+  }
+
+  /**
+   * This function stops the background loader of master loader
+   * @param taskId 
+   */
+  public stopBackgroundLoader(taskId?: string){
+    this.ngxUiLoaderService.stopBackground(taskId);
+  }
+  
+  /**
+   * This function stops all the foreground and background loader of master loader
+   */
+  public stopAllLoader(){
+    this.ngxUiLoaderService.stopAll();
   }
 
 }

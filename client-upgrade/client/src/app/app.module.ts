@@ -70,6 +70,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
  */
 import { SnotifyModule, SnotifyService, ToastDefaults } from 'ng-snotify';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxUiLoaderModule } from  'ngx-ui-loader';
 import { SocketIoModule } from 'ngx-socket-io';
 
 
@@ -77,6 +78,7 @@ import { SocketIoModule } from 'ngx-socket-io';
 /**
  * 7. !===== ERROR HANDLERS =====!
  */
+import { ngxUiLoaderConfig } from 'src/shared/config/ngx-ui-loader.config';
 import { socketConfig } from 'src/shared/config/socket.config';
 
 
@@ -126,6 +128,9 @@ import { ServerErrorInterceptor } from 'src/shared/error-handler/server-error.in
     
     // ANGULAR BOOTSTRAP MODAL MODULE
     NgbModalModule,
+
+    // NGX UI LOADER MODULE
+    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
 
     // SOCKET MODULE AND INITIALISATION
     SocketIoModule.forRoot(socketConfig)

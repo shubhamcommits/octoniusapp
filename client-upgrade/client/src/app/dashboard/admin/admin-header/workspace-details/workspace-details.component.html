@@ -6,7 +6,7 @@
 
         <div class="form-group">
             <img *ngIf="!croppedImage" src="{{ baseUrl }}/uploads/{{ workspaceData?.workspace_avatar }}">
-            <app-crop-image></app-crop-image>
+            <app-crop-image (outputImage)="getCroppedImage($event)"></app-crop-image>
         </div>
     </div>
     <div class="modal-footer">

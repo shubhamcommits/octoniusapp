@@ -14,7 +14,6 @@ import { UserService } from 'src/shared/services/user-service/user.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthorizationInterceptorService } from 'src/shared/services/authorization-interceptor-service/authorization-interceptor.service';
 
-
 @NgModule({
   declarations: [NavbarComponent, PushNotificationsComponent, TimeAgoPipe],
   imports: [

@@ -16,11 +16,16 @@ export class WorkspaceDetailsComponent implements OnInit {
   @Input('workspaceData') workspaceData: any;
   
   // BASE URL OF THE APPLICATION
-  @Input('baseUrl') baseUrl: string
+  @Input('baseUrl') baseUrl: string;
 
-  croppedImage;
+  croppedImage: any;
 
   ngOnInit() {
+  }
+
+  getCroppedImage($event: Event){
+    console.log($event);
+    this.croppedImage = $event;
   }
 
 }
