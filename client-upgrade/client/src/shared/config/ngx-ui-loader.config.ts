@@ -1,4 +1,6 @@
-export const ngxUiLoaderConfig: any = {
+import { NgxUiLoaderConfig } from 'ngx-ui-loader';
+
+export const ngxUiLoaderConfig: NgxUiLoaderConfig = {
 
     "bgsColor": "#005fd5",
     "bgsOpacity": 0.9,

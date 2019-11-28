@@ -1,15 +1,25 @@
+<!-- WORKSPACE DETAIL MODAL STARTS -->
 
-    <div class="modal-header">
-        <h4 class="modal-title">Workspace Update</h4>
-    </div>
-    <div class="modal-body" style=" max-height: calc(100vh - 200px);overflow-y: auto">
+<!-- WORKSPACE HEADER STARTS -->
+<div class="modal-header">
+    <h4 class="modal-title">Workspace Update</h4>
+</div>
+<!-- WORKSPACE HEADER ENDS -->
 
-        <div class="form-group">
-            <img *ngIf="!croppedImage" src="{{ baseUrl }}/uploads/{{ workspaceData?.workspace_avatar }}">
-            <app-crop-image (outputImage)="getCroppedImage($event)"></app-crop-image>
-        </div>
+<!-- WORKSPACE MODAL CHANGE IMAGE STARTS -->
+<div class="modal-body">
+    <div class="form-group">
+        <img src="{{ baseUrl }}/uploads/{{ workspaceData?.workspace_avatar }}">
+        <app-crop-image class="container" (outputImage)="getCroppedImage($event)"></app-crop-image>
     </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-success">Save</button>
-        <button type="button" class="btn btn-primary">Cancel</button>
-    </div>
+</div>
+<!-- WORKSPACE MODAL CHANGE IMAGE ENDS -->
+
+<!-- WORKSPACE FOOTER STARTS -->
+<div class="modal-footer">
+    <button type="button" class="btn btn-success"
+        (click)="updateWorkplaceDetails( workspaceData?._id, croppedImage )">Save</button>
+</div>
+<!-- WORKSPACE FOOTER ENDS -->
+
+<!-- WORKSPACE DETAIL MODAL ENDS -->

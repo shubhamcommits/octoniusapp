@@ -10,10 +10,13 @@ import { WorkspaceService } from 'src/shared/services/workspace-service/workspac
 import { WorkspaceDetailsComponent } from './admin-header/workspace-details/workspace-details.component';
 import { CropImageComponent } from 'src/app/common/crop-image/crop-image.component';
 import { ImageCropperModule } from 'ngx-image-cropper';
+import { WorkplaceInformationComponent } from './admin-general/workplace-information/workplace-information.component';
+import { WorkplaceAddDomainComponent } from './admin-general/workplace-add-domain/workplace-add-domain.component';
+import { WorkplaceInviteUserComponent } from './admin-general/workplace-invite-user/workplace-invite-user.component';
 
 
 @NgModule({
-  declarations: [AdminGeneralComponent, AdminMembersComponent, AdminBillingComponent, AdminHeaderComponent, CropImageComponent, WorkspaceDetailsComponent],
+  declarations: [AdminGeneralComponent, AdminMembersComponent, AdminBillingComponent, AdminHeaderComponent, CropImageComponent, WorkspaceDetailsComponent, WorkplaceInformationComponent, WorkplaceAddDomainComponent, WorkplaceInviteUserComponent],
   imports: [
     CommonModule,
     AdminRoutingModule,

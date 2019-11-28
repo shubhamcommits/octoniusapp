@@ -205,7 +205,6 @@ export class UtilityService {
    * @param taskId
    */
   public startForegroundLoader(taskId?: string){
-    console.log('start')
     return this.ngxUiLoaderService.start(taskId);
   }
 

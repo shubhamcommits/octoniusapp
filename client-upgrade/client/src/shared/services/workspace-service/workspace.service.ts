@@ -11,12 +11,26 @@ export class WorkspaceService {
 
   constructor(private _http: HttpClient) { }
 
+  /**
+   * This function is responsible for fetching the workspace details
+   * @param workspaceId 
+   */
   getWorkspace(workspaceId: string) {
     return this._http.get<any>(this.BASE_API_URL + '/workspace/' + workspaceId);
   }
 
-  updateWorkspace(workspce_id, data) {
-    return this._http.put(this.BASE_API_URL + `/workspace/${workspce_id}`, data);
+  /**
+   * This function is responsible for updating the workspace data(only workspace_avatar)
+   * @param workspaceId 
+   * @param workspaceAvatar
+   */
+  updateWorkspace(workspaceId: string, workspaceAvatar: File) {
+    
+    // PREPARING FORM DATA
+    let formData = new FormData();
+    formData.append('workspace_avatar', workspaceAvatar)
+
+    return this._http.put<any>(this.BASE_API_URL + `/workspace/${ workspaceId }`, formData);
   }
 
   getWorkspaceMembers(workspce_id) {

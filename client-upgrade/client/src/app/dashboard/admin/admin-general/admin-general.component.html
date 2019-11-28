@@ -1,1 +1,13 @@
-<p>admin-general works!</p>
+<div class="container">
+    <div class="row main-actvity">
+
+        <div class="col-md-4">
+            <app-workplace-information [workspaceData]="workspaceData"></app-workplace-information>
+        </div>
+
+        <div class="col-md-8">
+            <app-workplace-add-domain [workspaceData]="workspaceData"></app-workplace-add-domain>
+            <app-workplace-invite-user></app-workplace-invite-user>
+        </div>
+    </div>
+</div>

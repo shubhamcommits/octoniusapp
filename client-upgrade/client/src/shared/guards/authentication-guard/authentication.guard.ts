@@ -20,7 +20,7 @@ export class AuthenticationGuard implements CanActivate, CanActivateChild, CanLo
     if (authToken) {
       return true;
     } else{
-      this.router.navigate(['/home']);
+      this.router.navigate(['/home'], {queryParams: {next, state}})
       return false;
     }
 

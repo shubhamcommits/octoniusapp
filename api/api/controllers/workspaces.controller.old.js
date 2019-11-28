@@ -136,7 +136,7 @@ const updateWorkspace = async (req, res, next) => {
     });
 
     return res.status(200).json({
-      message: `${workspace.workspaceName} workspace was updated!`,
+      message: `${workspace.workspace_name} workspace was updated!`,
       workspace
     });
   } catch (err) {
