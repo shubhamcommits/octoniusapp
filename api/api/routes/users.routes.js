@@ -66,4 +66,12 @@ router.get('/integrations/gdrive/token', users.getGdriveToken);
 // Add a new token for a specific integration
 router.post('/integrations/gdrive/token', users.addGdriveToken);
 
+// - Events -
+
+// Get user's today agenda events
+router.get('/:userId/todayEvents', users.getTodayEvents);
+
+// Get user's agenda events of this coming week, sorted by due date
+router.get('/:userId/weeklyEvents', users.getThisWeekEvents);
+
 module.exports = router;

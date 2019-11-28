@@ -1,15 +1,15 @@
 /**
  * !===== APP MODULE OF OCTONIUS CLIENT =====!
- * 
+ *
  * Please read the points below, before importing and injecting any dependencies:-
- * 1. Make sure that you document your import and if it's a part of exisiting module then import that under that 
+ * 1. Make sure that you document your import and if it's a part of exisiting module then import that under that
  * particular section, otherwise make a new suitable one.
  * 2. Insert the entries under the section in lexographical order.
  */
 
 /**
  * !===== INDEX =====!
- * 
+ *
  * 1. COMPONENTS
  * 2. ANGULAR MODULES
  * 3. SERVICES
@@ -42,6 +42,7 @@ import { UserSearchResultComponent } from './common/components/search/user-searc
 import { UserSearchResultMainComponent } from './common/components/search/user-search-result-main/user-search-result-main.component';
 
 // ----- OVERVIEW COMPONENTS -----
+import { OverviewMyAgendaComponent } from './dashboard/overview/overview-my-agenda/overview-my-agenda.component';
 import { OverviewMyTasksComponent } from './dashboard/overview/overview-my-tasks/overview-my-tasks.component';
 import { OverviewMyWorkplaceComponent } from './dashboard/overview/overview-my-workplace/overview-my-workplace.component';
 import { OverviewPageHeaderComponent } from './dashboard/overview/overview-page-header/overview-page-header.component';
@@ -209,7 +210,7 @@ import { ClickStopPropagationDirective } from './shared/directives/click-stop-pr
     GroupComponent, GroupHeaderComponent, GroupKanbanBoardsComponent, 
     GroupKanbanTaskViewComponent, GroupKanbanTaskAssignmentComponent, GroupPostComponent, GroupSmartAdminComponent,
     GroupsPageHeaderComponent, GroupTasksComponent, GroupTasksNewComponent,
-    NavbarComponent, NormalGroupPostComponent, OverviewMyTasksComponent,
+    NavbarComponent, NormalGroupPostComponent, OverviewMyAgendaComponent, OverviewMyTasksComponent,
     OverviewMyWorkplaceComponent, OverviewPageHeaderComponent, PostActionsComponent,
     PostboxComponent, PostCommentComponent, PulseComponent, ResetPwdComponent, SearchBarComponent,
     TaskGroupPostComponent, TimePickerComponent, UserProfileHeaderComponent,
@@ -230,7 +231,7 @@ import { ClickStopPropagationDirective } from './shared/directives/click-stop-pr
   ],
   imports: [
 
-    // THIRD PARTY MODULES 
+    // THIRD PARTY MODULES
     AngularMultiSelectModule, AppRoutingModule, BrowserAnimationsModule, BrowserModule,
     CommonModule, ClickOutsideModule, CalendarModule.forRoot({
       provide: DateAdapter,

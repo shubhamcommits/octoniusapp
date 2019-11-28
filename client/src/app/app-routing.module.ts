@@ -1,15 +1,15 @@
 /**
  * !===== APP ROUTING MODULE OF OCTONIUS CLIENT =====!
- * 
+ *
  * Please read the points below, before importing and injecting any dependencies:-
- * 1. Make sure that you document your import and if it's a part of exisiting module then import that under that 
+ * 1. Make sure that you document your import and if it's a part of exisiting module then import that under that
  * particular section, otherwise make a new suitable one.
  * 2. Insert the entries under the section in lexographical order.
  */
 
 /**
  * !===== INDEX =====!
- * 
+ *
  * 1. ANGULAR MODULES
  * 2. GUARDS
  * 3. CUSTOM COMPONENTS
@@ -82,6 +82,7 @@ import { CollaborativeDocGroupPostComponent } from './common/components/posts/co
 import { DocumentFileComponent } from './shared/utils/document-file/document-file.component';
 import { PageNotFoundComponent } from './common/components/page-not-found/page-not-found.component';
 import { ResetPwdComponent } from "./Authentication/reset-password/reset-password.component";
+import {OverviewMyAgendaComponent} from "./dashboard/overview/overview-my-agenda/overview-my-agenda.component";
 
 
 /**
@@ -112,6 +113,7 @@ const appRoutes: Routes = [
       { path: 'all-search-results/:query', component: AllSearchResultsComponent },
       { path: 'overview', component: OverviewComponent, canActivate: [ValidSubscriptionGuard] },
       { path: 'overview/mytasks', component: OverviewMyTasksComponent, canActivate: [ValidSubscriptionGuard] },
+      { path: 'overview/myagenda', component: OverviewMyAgendaComponent, canActivate: [ValidSubscriptionGuard] },
       { path: 'overview/myworkplace', component: OverviewMyWorkplaceComponent, canActivate: [ValidSubscriptionGuard] },
       {
         path: 'groups', component: GroupsComponent, canActivate: [ValidSubscriptionGuard]

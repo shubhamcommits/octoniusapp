@@ -1,29 +1,34 @@
 <div class="media user-sticky-card">
 
 
-  
+
   <img class="mr-3 feed-avatar" [src]="workspaceImageUrl" onerror="this.src='/assets/images/organization.png'">
   <div class="media-body">
     <div>
       <h2>My Space</h2>
 
       <ul class="nav">
-          <li class="nav-item">
-              <a class="nav-link" routerLink="/dashboard/overview/">Inbox
-                <span class="sr-only">(current)</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" routerLink="/dashboard/overview/mytasks" [queryParams]="{mytasks: true}">Tasks
-                <span class="sr-only">(current)</span>
-              </a>
-            </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/dashboard/overview/myworkplace" [queryParams]="{myworkplace: true}" >My Workplace
+          <a class="nav-link" routerLink="/dashboard/overview/">Inbox
             <span class="sr-only">(current)</span>
           </a>
         </li>
-
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/dashboard/overview/mytasks" [queryParams]="{mytasks: true}">Tasks
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/dashboard/overview/myagenda" [queryParams]="{myagenda: true}">Agenda
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/dashboard/overview/myworkplace" [queryParams]="{myworkplace: true}">My
+            Workplace
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
       </ul>
 
       <div *ngIf="alert.message" [ngClass]="alert.class">{{alert.message}}</div>
