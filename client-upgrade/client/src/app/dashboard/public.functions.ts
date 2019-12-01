@@ -39,7 +39,7 @@ export class PublicFunctions {
 
     async getUserDetailsFromStorage() {
         const storageService = this.injector.get(StorageService);
-        return storageService.getLocalData('userData');
+        return (storageService.existData('userData') === null) ? {}: storageService.getLocalData('userData');
     }
 
     async getUserDetailsFromHTTP() {
@@ -62,10 +62,10 @@ export class PublicFunctions {
     public async getCurrentWorkspace() {
         let worspaceData = await this.getWorkspaceDetailsFromService();
 
-        if (JSON.stringify(worspaceData) == JSON.stringify({}))
+        if (JSON.stringify(worspaceData) == JSON.stringify({}) || JSON.stringify(worspaceData) == JSON.stringify(undefined))
             worspaceData = await this.getWorkspaceDetailsFromStorage();
 
-        if (JSON.stringify(worspaceData) == JSON.stringify({}))
+        if (JSON.stringify(worspaceData) == JSON.stringify({}) || JSON.stringify(worspaceData) == JSON.stringify(undefined))
             worspaceData = await this.getWorkspaceDetailsFromHTTP();
 
         this.sendUpdatesToWorkspaceData(worspaceData);
@@ -84,7 +84,7 @@ export class PublicFunctions {
 
     async getWorkspaceDetailsFromStorage() {
         const storageService = this.injector.get(StorageService);
-        return storageService.getLocalData('workspaceData');
+        return (storageService.existData('workspaceData') === null) ? {}: storageService.getLocalData('workspaceData');
     }
 
     async getWorkspaceDetailsFromHTTP() {
