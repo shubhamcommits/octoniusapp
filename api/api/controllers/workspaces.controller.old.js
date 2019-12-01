@@ -15,6 +15,7 @@ const inviteUserViaEmail = async (req, res, next) => {
   try {
     const workspaceId = req.body.workspace_id;
     const invitedUserEmail = req.body.email;
+    const userId = req.body.user_id;
 
     //if user was kicked out 
     const user = await User.findOneAndUpdate({
@@ -73,7 +74,7 @@ const inviteUserViaEmail = async (req, res, next) => {
         return sendErr(res, '', 'Some error ocurred trying to update the user!');
       }
     }else{
-//else this is a new member invite 
+      // else this is a new member invite 
       const workspace = await Workspace.findByIdAndUpdate({
         _id: workspaceId
       }, {
@@ -90,7 +91,7 @@ const inviteUserViaEmail = async (req, res, next) => {
       }
     }
     // Send invitation via email
-    await sendMail.joinWorkspace(req.body);
+     await sendMail.joinWorkspace(req.body);
 
     return res.status(200).json({
       message: `Email invitation sent to ${invitedUserEmail}`

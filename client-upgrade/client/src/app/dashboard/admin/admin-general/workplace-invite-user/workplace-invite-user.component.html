@@ -1,11 +1,14 @@
 <div class="card-tile invite-users">
-    <h4>Invite individual users by email</h4>
-    <p>The option is mainly for inviting super-admins,group admins and external guests.</p>
-
+    <h6>Invite individual users by email</h6>
+    <hr />
     <div class="form-group">
-        <label for="usr">Email:</label>
-        <input type="text" class="form-control" name="email">
+        <app-email-input 
+        [email] = "email"
+        [label] = "label"
+        [placeholder] = "placeholder"
+        (outputEmail) = "getValidEmail($event)">
+        </app-email-input>
     </div>
-    <button class="btn btn-primary">Invite</button>
+    <button class="btn btn-primary" (click)="inviteUser(workspaceData?._id, this.email, userData?._id)">Invite to Join</button>
 
 </div>

@@ -15,17 +15,18 @@ export class AdminGeneralComponent implements OnInit {
   ) { }
   
   workspaceData: Object;
+
+  userData: Object;
   
   publicFunctions = new PublicFunctions(this.injector);
 
   async ngOnInit() {
     this.utilityService.startForegroundLoader();
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+    this.userData = await this.publicFunctions.getCurrentUser();
   }
 
-  ngAfterViewInit(): void {
-    //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
-    //Add 'implements AfterViewInit' to the class.
+  ngAfterViewChecked(): void {
     this.utilityService.stopForegroundLoader();
   }
 

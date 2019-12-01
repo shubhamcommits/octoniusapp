@@ -1,9 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'app-workplace-information',
   templateUrl: './workplace-information.component.html',
-  styleUrls: ['./workplace-information.component.scss']
+  styleUrls: ['./workplace-information.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class WorkplaceInformationComponent implements OnInit {
 

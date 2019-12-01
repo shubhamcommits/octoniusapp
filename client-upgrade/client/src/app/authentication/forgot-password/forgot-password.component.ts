@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/shared/services/auth-service/auth.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { Subject } from 'rxjs/internal/Subject';
-import { debounceTime } from 'rxjs/internal/operators/debounceTime';
-import { distinctUntilChanged } from 'rxjs/internal/operators/distinctUntilChanged';
 import { SubSink } from 'subsink';
 
 @Component({
@@ -30,15 +28,11 @@ export class ForgotPasswordComponent implements OnInit {
   // Unsubscribe the Observables using SubSink()
   private subSink = new SubSink();
 
+  // EMAIL DATA
+  label: string = "Email";
+  placeholder: string = "";
+
   ngOnInit() {
-  }
-  
-  /**
-   * This method is binded to keyup event of email input field
-   * @param $event 
-   */
-  emailChange($event: Event) {
-    this.emailChanged.next($event);
   }
 
   /**
@@ -83,19 +77,11 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   /**
-   * This function handles of sending the notification to the user about the email validation
-   * Uses Debounce time and subscribe to the emailChanged Observable
+   * This function gets the Valid Email from the @module <app-email-input></app-email-input>
+   * @param $event 
    */
-  ngAfterViewInit(): void {
-    // Adding the service function to the subsink(), so that we can unsubscribe the observable when the component gets destroyed
-    this.subSink.add(this.emailChanged
-    .pipe(debounceTime(500), distinctUntilChanged())
-    .subscribe(model => {
-      this.utilityService.clearAllNotifications();
-      let validatedEmailState = this.utilityService.validateEmail(this.user.email)
-      ? this.utilityService.successNotification('Correct Email Format!')
-      : this.utilityService.warningNotification('Kindly follow the standard format which uses user@domain nomenclature, e.g - username@example.com', 'Wrong format!')
-    }))
+  getValidEmail($event: string){
+    this.user.email = $event;
   }
 
   ngOnDestroy(): void {

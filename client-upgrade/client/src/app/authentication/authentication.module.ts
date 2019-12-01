@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 
 import { AuthenticationRoutingModule } from './authentication-routing.module';
-
+import { SharedModule } from '../common/shared/shared.module';
 
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { AuthSignInComponent } from './auth-sign-in/auth-sign-in.component';
@@ -21,8 +21,9 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
   ],
   imports: [
     CommonModule,
+    AuthenticationRoutingModule,
     FormsModule,
-    AuthenticationRoutingModule
+    SharedModule
   ],
   providers:[AuthService, UtilityService, StorageService]
 })

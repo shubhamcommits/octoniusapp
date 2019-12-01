@@ -3,6 +3,7 @@ import { SnotifyService, SnotifyToastConfig } from 'ng-snotify';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
+import Swal, { SweetAlertIcon } from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root'
@@ -237,6 +238,46 @@ export class UtilityService {
    */
   public stopAllLoader(){
     this.ngxUiLoaderService.stopAll();
+  }
+
+  /**
+   * This function is resposible for showing a confirm dialog, with a function attached to the "Confirm"-button
+   * and by passing a parameter, we can execute something else for "Cancel
+   */
+  public getConfirmDialogAlert(){
+    return Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    })
+  }
+
+  /**
+   * This function is responsible for showing the swal toast
+   * @param icon - 'success', 'error', 'warning', 'info', 'question'
+   */
+  public getSwalToast(icon: SweetAlertIcon, title: string, text: string){
+    let Toast = Swal.mixin({
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      onOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+      }
+    })
+    
+    return Toast.fire({
+      icon: icon,
+      title: title,
+      text: text
+    })
   }
 
 }

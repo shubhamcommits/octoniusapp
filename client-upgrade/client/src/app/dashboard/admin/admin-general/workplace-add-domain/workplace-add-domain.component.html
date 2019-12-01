@@ -7,26 +7,32 @@
         (ex - if you specify example.com, then users having email address with domain as example.com, can sign up!)</p>
     <div class="form-group">
         <label for="domain">Using this workplace name(as "<b>{{ workspaceData?.workspace_name }}</b>"), any email adress from these domain can signup:</label>
-        <input type="text" class="form-control" name="domain">
+        <input type="text" class="form-control" name="domain" [(ngModel)]="addDomain" placeholder="Please provide the domain name">
     </div>
-    <button class="btn btn-primary">Add this Domain</button>
+    <button class="btn btn-primary" (click)="addDomainName(workspaceData?._id, addDomain)">Add this Domain</button>
 
 </div>
 
 <div class="card-tile invite-users">
-    <h4>Allowed Domains</h4>
+    <h6>Allowed Domains</h6>
+    <hr />
     <p>List of all allowed domains from where user can sign up to this workplace.</p>
-
-    <div class="container">
+    <hr />
+    <ng-container *ngIf="isLoading$ | async">
+            <app-loading-spinner></app-loading-spinner>
+    </ng-container>
+    
+    <div *ngIf="!(isLoading$ | async)">
+    <div class="container" *ngFor="let domain of allowedDomains; trackBy: utilityService.trackByIndex;">
         <div class="row">
             <div class="col-md-6">
-                <b></b>
+                <b>{{ domain }}</b>
             </div>
             <div class="col-md-6">
-                <button class="btn btn-danger btn-sm">Remove Domain</button>
+                <button class="btn btn-danger btn-sm" (click)="removeDomain(workspaceData._id, domain)">Remove Domain</button>
             </div>
         </div>
         <br />
-
     </div>
+</div>
 </div>
