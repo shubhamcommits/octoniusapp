@@ -26,7 +26,7 @@
 
           <div class="form-group">
             <label for="worskapce-name">Workplace</label>
-            <input type="text" class="form-control" id="worskapce-name" formControlName="workspaceName" [(ngModel)]="user.workspace_name" [attr.disabled]="user.workspace_name !== ''"
+            <input type="text" class="form-control" id="worskapce-name" formControlName="workspaceName" [(ngModel)]="user.workspace_name" [attr.disabled]="user.workspace_name"
               name="workspaceName">
 
             <div *ngIf="_workspaceName.invalid && _workspaceName.touched" style="color:red">
