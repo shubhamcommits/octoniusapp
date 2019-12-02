@@ -3,7 +3,7 @@ import { User } from '../../shared/models/user.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { InputValidators } from '../../common/validators/input.validator';
 import { AuthService } from '../../shared/services/auth.service';
-import { Router } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { GroupService } from '../../shared/services/group.service';
 
 @Component({
@@ -27,10 +27,14 @@ export class SignupComponent implements OnInit {
   processing = false;
 
   signupForm: FormGroup;
-  constructor(private _auth: AuthService, private _router: Router, private groupService: GroupService) { }
+  constructor(private _auth: AuthService,
+              private _router: Router,
+              private _activateRoute: ActivatedRoute,
+              private groupService: GroupService) { }
 
   ngOnInit() {
     this.createSignupForm();
+    this._activateRoute.queryParams.subscribe(queryParams => this.user.workspace_name = queryParams.workplace)
   }
 
   createSignupForm() {
