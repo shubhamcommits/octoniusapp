@@ -84,7 +84,15 @@ color: $dark-text !important;
 }
 
 .text-muted{
-  //line-height: 35px;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 18px;
+  display: flex;
+  align-items: center;
+  text-align: right;
+  color: #9B9B9B;
 }
 
 .card-tile{
@@ -146,8 +154,14 @@ color: $dark-text !important;
 .overview-item{
   width: auto;
   font-size: 16px;
-  line-height: 35px;
-  // padding: 0 5px;
+  padding-left: 80px;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 24px;
+  display: flex;
+  align-items: center;
+  color: #242D3A;
 }
 
 .overview-item2{
@@ -165,22 +179,22 @@ color: $dark-text !important;
   }
 }
 
-// .avatar-name-container{
-//   width: 150px;
-//   display: flex;
-//   flex-direction: row;
-// }
-
 .avtar-name-child{
   width: 80px;
   border-right: 10px solid transparent;
 }
 
 .small-blue-text{
-  color: $dark-sky-blue;
-  font-size: 12px !important;
-  font-weight: 700;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 18px;
+  display: flex;
+  align-items: center;
+  color: #4A90E2;
 }
+
 .small{
   font-size: 12px;
 }
@@ -199,4 +213,32 @@ color: $dark-text !important;
 
 a{
   text-decoration: none !important;
+}
+
+.chevron-right {
+  position: absolute;
+  left: 49.17%;
+  right: 9.46%;
+  top: -25.5%;
+  bottom: 24.44%;
+  font-family: Material Icons;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 24px;
+  line-height: 24px;
+  color: #9B9B9B;
+}
+
+.arrow-forward {
+  display: flex;
+  align-items: center;
+  font-family: Material Icons;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 30px;
+  color: #9B9B9B;
+  margin-left: 90px;
+  padding-top: 5px;
+  padding-top: 5px;
 }

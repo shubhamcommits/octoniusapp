@@ -517,6 +517,83 @@ const getTasksDone = async (req, res, next) => {
   }
 };
 
+const getTodayTasks = async (req, res, next) => {
+  try {
+    const { userId } = req;
+
+    // Generate the actual time
+    const todayForTask = moment().local().startOf('day').format();
+
+    const today = moment().local().format('YYYY-MM-DD');
+    // Generate the +24h time
+    const todayPlus24ForTask = moment().local().endOf('day').format();
+    const tomorrow = moment().local().add(1, 'days').format('YYYY-MM-DD');
+
+    const tasks = await Post.find({
+      'task._assigned_to': userId,
+      'task.due_to': {$gte: todayForTask, $lte: todayPlus24ForTask},
+      $or: [
+        { 'task.status': 'to do' },
+        { 'task.status': 'in progress' },
+        { 'task.status': 'done' }
+      ]
+    })
+        .sort('-task.due_to')
+        .populate('_group', 'group_name')
+        .populate('_posted_by', 'first_name last_name profile_pic')
+        .populate('task._assigned_to', 'first_name last_name profile_pic')
+        .lean();
+
+    return res.status(200).json({
+      today: today,
+      tomorrow: tomorrow,
+      todayForEvent: todayForTask,
+      message: `Found ${tasks.length} pending tasks.`,
+      tasks
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+const getThisWeekTasks = async (req, res, next) => {
+  try {
+    const { userId } = req;
+
+    // Generate the actual time
+    const todayForTask = moment().local().add(1, 'days').startOf('day').format();
+
+    const today = moment().local().add(1, 'days').format('YYYY-MM-DD');
+
+    // Generate the +24h time
+    const todayPlus7DaysForTask = moment().local().add(7, 'days').endOf('day').format();
+
+    const tasks = await Post.find({
+      'task._assigned_to': userId,
+      'task.due_to': {$gte: todayForTask, $lte: todayPlus7DaysForTask},
+      $or: [
+        { 'task.status': 'to do' },
+        { 'task.status': 'in progress' },
+        { 'task.status': 'done' }
+      ]
+    })
+        .sort('-task.due_to')
+        .populate('_group', 'group_name')
+        .populate('_posted_by', 'first_name last_name profile_pic')
+        .populate('task._assigned_to', 'first_name last_name profile_pic')
+        .lean();
+
+    return res.status(200).json({
+      today: today,
+      todayForEvent: todayForTask,
+      message: `Found ${tasks.length} pending tasks.`,
+      tasks
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
 // -| TOKENS |-
 
 const addGdriveToken = async (req, res, next) => {
@@ -666,6 +743,8 @@ module.exports = {
   getNextTasksDone,
   getTasks,
   getTasksDone,
+  getTodayTasks,
+  getThisWeekTasks,
   // Integrations
   addGdriveToken,
   getGdriveToken,
