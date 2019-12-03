@@ -1,1 +1,34 @@
-<p>admin-members works!</p>
+<div class="container">
+    <div class="card-tile">
+        <h4>All members from your workplace</h4>
+        <app-component-search-bar [workspaceId] = "workspaceData?._id" [placeholder]="searchBarPlaceholder"></app-component-search-bar>
+        <hr>
+        <div class="media card-tile user-list" *ngFor="let member of members">
+            <img src="{{ baseUrl }}/uploads/{{member?.profile_pic}}" onerror="this.src='/assets/images/user.png'"
+                class="feed-avatar">
+            <div class="media-body">
+                <div class="float-left">
+                    <h4 class="mt-0">{{member?.first_name}} {{member?.last_name}}</h4>
+                    <p>Role: {{member?.role}} (<a href="mailto:{{member?.email}}">{{member?.email}}</a>)</p>
+                </div>
+                <div class="btn-group mr-3 float-right" style="margin-left:10px">
+
+                    <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                        <button class="btn btn-primary dropdown-toggle-split btn-sm">Manage user
+                        </button>
+                        <div class="dropdown-menu">
+                            <button class="dropdown-item">Change to
+                                Admin</button>
+                            <button class="dropdown-item">Change to
+                                Member</button>
+                            <div class="dropdown-divider"></div>
+                            <button class="dropdown-item">Delete
+                                Member</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

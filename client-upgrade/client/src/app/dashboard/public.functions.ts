@@ -111,6 +111,28 @@ export class PublicFunctions {
         storageService.setLocalData('workspaceData', JSON.stringify(workspaceData))
     }
 
+    async getWorkspaceMembers(workspaceId?: string) {
+        return new Promise(async (resolve, reject) => {
+          let userData = await this.getCurrentUser();
+          const workspaceService = this.injector.get(WorkspaceService);
+          const utilityService = this.injector.get(UtilityService);
+          this.subSink.add(workspaceService.getWorkspaceMembers(workspaceId || userData['_workspace'])
+            .subscribe((res) => {
+              resolve(res['results']);
+            }, (err) => {
+                console.log('Error occured while fetching the workspace members!', err);
+                utilityService.errorNotification('Error occured while fetching the workspace members!, please try again!');
+                reject({}) 
+            }))
+        })
+      }
+
+      async catchError(err: Error){
+        let utilityService = this.injector.get(UtilityService)
+        console.log('There\'s some unexpected error occured, please try again!', err);
+        utilityService.errorNotification('There\'s some unexpected error occured, please try again!');
+      }
+
     /**
      * This function unsubscribes the data from the observables
      */

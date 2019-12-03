@@ -669,6 +669,40 @@ button.ql-authorship-toggle {
   overflow: visible !important;
 }
 
+/* AUTHENTICATION SECTION */
+
+// BACK HOME BUTTON
+
+.back-home{
+  position: absolute; 
+  bottom: 0; 
+  right: 0;    
+  margin-right: 2%;
+  margin-bottom: 1%;
+  z-index: 1;
+}
+
+// BRANDING PANEL STYLES
+app-branding-panel{
+  padding: 100px 30px;
+  width: 90%;
+}
+
+.sign-up-branding {
+  margin-top: 30px;
+}
+
+.sign-in-branding {
+  margin-top: 30px;
+}
+
+.home-branding {
+  margin-top: 30px;
+}
+// BRANDING PANEL STYLES
+
+/* AUTHENTICATION SECTION */
+
 
 /* PUSH NOTIFICATION CSS */
 

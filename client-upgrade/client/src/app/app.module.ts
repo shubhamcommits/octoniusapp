@@ -37,6 +37,7 @@ import { WelcomePageComponent } from './common/welcome-page/welcome-page.compone
 // CUSTOM MODULES
 import { AuthenticationModule } from './authentication/authentication.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { SharedModule } from './common/shared/shared.module';
 
 // ANGULAR MODULES
 import { AppRoutingModule } from './app-routing.module';
@@ -131,6 +132,9 @@ import { ServerErrorInterceptor } from 'src/shared/error-handler/server-error.in
 
     // NGX UI LOADER MODULE
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
+
+    //SHARED MODULES
+    SharedModule,
 
     // SOCKET MODULE AND INITIALISATION
     SocketIoModule.forRoot(socketConfig)

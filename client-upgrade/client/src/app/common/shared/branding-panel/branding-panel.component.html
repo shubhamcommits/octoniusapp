@@ -1,0 +1,35 @@
+<div class="content container">
+    <h1 class="white">
+        <i class="icon-octo-logo white"></i>Octonius</h1>
+    <h1 class="slim white">
+        Your smart workplace. <br>
+        Single source of truth for your team.
+    </h1>
+
+    <!-- TEMPLATE FOR SIGNIN PAGE -->
+    <div class="sign-up-branding" *ngIf="routerState == 'signin'">
+        <p class="white">Are you new here?</p>
+        <button type="submit" class="btn btn-outline-light" routerLink="/authentication/signup">Sign Up</button>
+    </div>
+    <!-- TEMPLATE FOR SIGNIN PAGE -->
+
+    <!-- TEMPLATE FOR SIGNUP && NEW WORKPLACE PAGE -->
+    <div class="sign-in-branding" *ngIf="routerState == 'signup' || routerState == 'new-workplace'">
+        <p class="white">If you already have an account</p>
+        <button type="submit" class="btn btn-outline-light" [routerLink]="['/authentication', 'signin']"
+            routerLinkActive="router-link-active">Sign
+            In</button>
+    </div>
+    <!-- TEMPLATE FOR SIGNUP && NEW WORKPLACE PAGE -->
+
+    <!-- TEMPLATE FOR HOME PAGE -->
+    <div class="home-branding" *ngIf="routerState == 'home'">
+        <h3 class="white">Continue your work</h3>
+        <button type="submit" class="btn btn-outline-light" [routerLink]="['/authentication', 'signin']"
+            routerLinkActive="router-link-active">Sign in</button>
+    </div>
+    <!-- TEMPLATE FOR HOME PAGE -->
+
+</div>
+<button *ngIf="routerState != 'home'" class="btn btn-lg back-home btn-outline-light" routerLink="/home">
+    << Home</button>

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, CanActivateChild, CanLoad, Route, UrlSegment, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { CanActivate, CanActivateChild, CanLoad, Router, Route, UrlSegment, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs/internal/Observable';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -11,7 +11,8 @@ export class AdminGuard implements CanActivate, CanActivateChild, CanLoad {
   
   constructor(
     private storageService: StorageService,
-    private utilityService: UtilityService
+    private utilityService: UtilityService,
+    private router: Router
   ){ }
 
   canActivate(
@@ -27,7 +28,9 @@ export class AdminGuard implements CanActivate, CanActivateChild, CanLoad {
           backdrop: 0.8,
           timeout: 3000
         });
-        return false;
+        if(state.url.match('/dashboard/admin/.*'))
+          this.router.navigate(['dashboard', 'myspace', 'inbox']);
+        return true;
       }
         
   }

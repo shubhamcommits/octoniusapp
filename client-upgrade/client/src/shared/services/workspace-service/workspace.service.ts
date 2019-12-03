@@ -1,15 +1,17 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs/internal/Observable';
-
 
 @Injectable()
 export class WorkspaceService {
 
   BASE_API_URL = environment.BASE_API_URL;
 
-  constructor(private _http: HttpClient) { }
+
+  constructor(
+    private _http: HttpClient, 
+    private injector: Injector) { }
 
   /**
    * This function is responsible for fetching the workspace details
@@ -33,19 +35,43 @@ export class WorkspaceService {
     return this._http.put<any>(this.BASE_API_URL + `/workspace/${ workspaceId }`, formData);
   }
 
-  getWorkspaceMembers(workspce_id) {
-    return this._http.get(this.BASE_API_URL + `/workspace/members/${workspce_id}`);
+  /**
+   * This function is responsible for fetching the workspace members
+   * @param workspceId 
+   */
+  getWorkspaceMembers(workspceId: string) {
+    return this._http.get(this.BASE_API_URL + `/workspace/members/${workspceId}`);
   }
 
-  getNextWorkspaceMembers(workspce_id, last_id_loaded) {
-    return this._http.get(this.BASE_API_URL + `/workspace/next/members/${workspce_id}/${last_id_loaded}`);
+  /**
+   * This function is responsible for fetching the next set of workspace members
+   * @param workspaceId 
+   * @param lastMemberId 
+   */
+  getNextWorkspaceMembers(workspaceId: string, lastMemberId: string) {
+    return this._http.get(this.BASE_API_URL + `/workspace/next/members/${workspaceId}/${lastMemberId}`);
   }
 
-  getQueryWorkspaceMembers(workspce_id, query) {
-    return this._http.post(this.BASE_API_URL + `/workspace/query/members/${workspce_id}`, { query });
+  /**
+   * 
+   * @param workspaceId 
+   * @param query 
+   */
+  searchWorkspaceMembers(workspaceId: string, query: string) {
+    return this._http.post(this.BASE_API_URL + `/workspace/query/members/${workspaceId}`, { query })
+    .toPromise()
+    .catch((err: Error)=>{
+     console.log('test');
+    })
   }
-  getNextQueryWorkspaceMembers(workspce_id, query) {
-    return this._http.post(this.BASE_API_URL + `/workspace/next/query/members/${workspce_id}`, { query });
+
+  /**
+   * 
+   * @param workspaceId 
+   * @param query 
+   */
+  searchNextWorkspaceMembers(workspaceId: string, query: string) {
+    return this._http.post(this.BASE_API_URL + `/workspace/next/query/members/${ workspaceId }`, { query });
   }
 
 

@@ -75,25 +75,25 @@ export class NavbarComponent implements OnInit {
    * This function is responsible for logging the user out
    */
   async logout() {
-    return new Promise((resolve, reject) => {
       try {
-        this.subSink.add(this.authService.signout()
+        this.utilityService.asyncNotification('Please wait, while we log you out securely...', 
+        new Promise((resolve, reject)=>{
+          this.subSink.add(this.authService.signout()
           .subscribe((res) => {
             this.storageService.clear();
             this.socketService.disconnectSocket();
             this.router.navigate(['/home'])
-            .then(()=> this.utilityService.successNotification('Succesfully Logged out!'))
-            resolve();
+            .then(()=> resolve(this.utilityService.resolveAsyncPromise('Succesfully Logged out!')))
+            
           }, (err) => {
             console.log('Error occured while logging out!', err);
-            this.utilityService.errorNotification('Error occured while logging you out!');
-            reject();
+            reject(this.utilityService.rejectAsyncPromise('Error occured while logging you out!, please try again!'));
           }))
+        }))
       } catch (err) {
         console.log('Error occured while logging out!', err);
         this.utilityService.errorNotification('Error occured while logging you out!');
       }
-    })
   }
 
   /**

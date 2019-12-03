@@ -64,7 +64,7 @@ export class AuthService {
    * @param workspaceData : { workspace_name: string }
    */
   checkWorkspaceName(workspaceData: Object) {
-    return this.httpClient.post(this.BASE_API_URL + '/auth/checkWorkspaceName', workspaceData);
+    return this.httpClient.post(this.BASE_API_URL + '/auth/checkWorkspaceName', workspaceData).toPromise();
   }
 
   /**
@@ -79,7 +79,7 @@ export class AuthService {
    * @param workspaceData : { owner_first_name: string, owner_last_name: string, owner_email: string, company_name: string, workspace_name: string, owner_password: string }
    */
   createNewWorkspace(workspaceData: Object) {
-    return this.httpClient.post(this.BASE_API_URL + '/auth/createNewWorkspace', workspaceData);
+    return this.httpClient.post(this.BASE_API_URL + '/auth/createNewWorkspace', workspaceData).toPromise();
   }
 
   /**

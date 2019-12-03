@@ -41,7 +41,7 @@ export class AppComponent {
           showProgressBar: false,
           closeOnClick: false,
           backdrop: 0.8,
-          timeout: Infinity
+          timeout: 500
         })
       }
       else

@@ -14,10 +14,8 @@ export class RoutingGuard implements CanActivate, CanActivateChild, CanLoad {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
       if (!this.storageService.existData('authToken')) {
-        console.log(state)
         return true;
       } else {
-        console.log(state)
         this.router.navigate(['dashboard', 'myspace', 'inbox']);
         return false;
       }
