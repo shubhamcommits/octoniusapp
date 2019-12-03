@@ -21,7 +21,10 @@ function createWindow() {
       nodeIntegration: true,
       allowRunningInsecureContent: (serve) ? true : false,
     },
+    icon: `file://${ __dirname}/dist/assets/images/octonius-logo.png`
   });
+
+  console.log(win.icon);
 
   if (serve) {
     require('electron-reload')(__dirname, {
