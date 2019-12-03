@@ -5,7 +5,6 @@
 
   <div *ngFor="let task of todayTasks; let i = index;">
     <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{task._group?._id}}/post/{{task._id}}">
-
       <!-- My Space Today Tasks -->
       <div *ngIf="task.type== 'task'">
         <div class="media card-tile overview-task">
@@ -53,7 +52,6 @@
 
   <div *ngFor="let task of thisWeekTasks; let i = index;">
     <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{task._group?._id}}/post/{{task._id}}">
-
       <!-- My Space This week Tasks -->
       <div *ngIf="task.type== 'task'">
         <div class="media card-tile overview-task">
@@ -95,5 +93,4 @@
       </div>
     </a>
   </div>
-
 </div>
