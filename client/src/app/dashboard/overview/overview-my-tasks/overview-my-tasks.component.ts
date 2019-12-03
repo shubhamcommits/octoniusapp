@@ -10,9 +10,6 @@ import {UserService} from '../../../shared/services/user.service';
 })
 export class OverviewMyTasksComponent implements OnInit {
 
-  posts = [];
-  recentPosts: any = [];
-
   todayTasks: any = [];
   thisWeekTasks: any = [];
 
@@ -28,48 +25,14 @@ export class OverviewMyTasksComponent implements OnInit {
       this.ngxService.stop(); // stop foreground loading with 'default' id
     }, 500);
 
-    /*this.recentPosts = await this.getRecentPosts();
-    this.recentPosts = this.recentPosts.concat(await this.getCompletedPosts());*/
-
     this.todayTasks = await this.getTodayTasks();
     this.thisWeekTasks = await this.getThisWeekTasks();
-
-    console.log(this.todayTasks);
-    console.log(this.thisWeekTasks);
-
-  }
-
-  getRecentPosts() {
-    return new Promise((resolve, reject) => {
-      this.userService.getUserTasks()
-        .subscribe((res) => {
-          //console.log('Group posts:', res);
-          resolve(res['posts']);
-        }, (err) => {
-          reject([]);
-        });
-    });
-  }
-
-  getCompletedPosts() {
-    return new Promise((resolve, reject) => {
-      this.userService.getCompletedUserTasks()
-        .subscribe((res) => {
-          //console.log('Group posts:', res);
-          resolve(res['posts']);
-        }, (err) => {
-          reject([]);
-        });
-    });
   }
 
   getTodayTasks() {
     return new Promise((resolve, reject) => {
       this.userService.getUserTodayTasks()
         .subscribe((res) => {
-
-          console.log('Today tasks:', res);
-
           resolve(res['tasks']);
         }, (err) => {
           reject([]);
@@ -81,9 +44,6 @@ export class OverviewMyTasksComponent implements OnInit {
     return new Promise((resolve, reject) => {
       this.userService.getUserThisWeekTasks()
         .subscribe((res) => {
-
-          console.log('This week tasks:', res);
-
           resolve(res['tasks']);
         }, (err) => {
           reject([]);
