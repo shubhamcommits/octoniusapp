@@ -78,6 +78,14 @@ export class UserService {
     return this._http.get<any>(this.BASE_API_URL + `/users/tasksDone`);
   }
 
+  getUserTodayTasks() {
+    return this._http.get<any>(this.BASE_API_URL + `/users/todayTasks`);
+  }
+
+  getUserThisWeekTasks() {
+    return this._http.get<any>(this.BASE_API_URL + `/users/weeklyTasks`);
+  }
+
   // @Cacheable({ cacheBusterObserver: cacheBuster$, storageStrategy: DOMStorageStrategy
   // })
   getRecentUserTasks(postId) {

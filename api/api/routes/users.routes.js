@@ -58,6 +58,12 @@ router.get('/tasksDone', users.getTasksDone);
 // Get next 20 most recently created user's completed tasks
 router.get('/nextTasksDone/:postId', users.getNextTasksDone);
 
+// Get user's today to do/in progress/done tasks
+router.get('/todayTasks', users.getTodayTasks);
+
+// Get user's tasks of this coming week, sorted by due dateGet
+router.get('/weeklyTasks', users.getThisWeekTasks);
+
 // - Integrations -
 
 // Get user token for a specific integration
