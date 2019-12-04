@@ -21,9 +21,9 @@
  * 9. DECLARATIONS, IMPORTS, & PROVIDERS
  */
 
- /**
- * 1. !===== COMPONENTS =====!
- */
+/**
+* 1. !===== COMPONENTS =====!
+*/
 import { AppComponent } from './app.component';
 import { PageNotFoundComponent } from './common/page-not-found/page-not-found.component';
 import { WelcomePageComponent } from './common/welcome-page/welcome-page.component';
@@ -71,7 +71,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
  */
 import { SnotifyModule, SnotifyService, ToastDefaults } from 'ng-snotify';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgxUiLoaderModule } from  'ngx-ui-loader';
+import { NgxUiLoaderModule } from 'ngx-ui-loader';
 import { SocketIoModule } from 'ngx-socket-io';
 
 
@@ -93,7 +93,7 @@ import { ServerErrorInterceptor } from 'src/shared/error-handler/server-error.in
 
 
 /**
- * 9. !===== DECLARATIONS, IMPORTS, & PROVIDERS =====!
+ * 9. !===== DECLARATIONS, IMPORTS, EXPORTS, & PROVIDERS =====!
  */
 @NgModule({
 
@@ -114,7 +114,7 @@ import { ServerErrorInterceptor } from 'src/shared/error-handler/server-error.in
 
     // APP ROUTING MODULE
     AppRoutingModule,
-    
+
     // AUTHENTICATION MODULE
     AuthenticationModule,
 
@@ -126,14 +126,14 @@ import { ServerErrorInterceptor } from 'src/shared/error-handler/server-error.in
 
     // SNOTIFY MODULE
     SnotifyModule,
-    
+
     // ANGULAR BOOTSTRAP MODAL MODULE
     NgbModalModule,
 
     // NGX UI LOADER MODULE
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
 
-    //SHARED MODULES
+    // SHARED MODULES
     SharedModule,
 
     // SOCKET MODULE AND INITIALISATION
@@ -144,14 +144,27 @@ import { ServerErrorInterceptor } from 'src/shared/error-handler/server-error.in
 
     // SNOTIFY SERVICE AND CONFIG
     SnotifyService,
-    { provide: 'SnotifyToastConfig', useValue: ToastDefaults },
+    {
+      provide: 'SnotifyToastConfig',
+      useValue: ToastDefaults
+    },
 
     // HASH LOCATION STRATEGY
-    { provide: LocationStrategy, useClass: HashLocationStrategy },
-  
+    {
+      provide: LocationStrategy,
+      useClass: HashLocationStrategy
+    },
+
     // ERROR HANDLERS
-    { provide: ErrorHandler, useClass: GlobalErrorHandler },
-    { provide: HTTP_INTERCEPTORS, useClass: ServerErrorInterceptor, multi: true }],
+    {
+      provide: ErrorHandler,
+      useClass: GlobalErrorHandler
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ServerErrorInterceptor,
+      multi: true
+    }],
 
   bootstrap: [AppComponent]
 })
