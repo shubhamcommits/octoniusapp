@@ -33,9 +33,7 @@ export class OverviewComponent implements OnInit {
    * Jessie Jia Edit Starts
    */
   todayPosts = [];
-  weekPosts = [];
-  todayComments = [];
-  weekComments = [];
+  todayFirstTwoEvents = [];
   today_event_count = 0;
   today_task_count = 0;
   to_do_task_count = 0;
@@ -43,8 +41,6 @@ export class OverviewComponent implements OnInit {
   done_task_count = 0;
   overdue_task_count = 0;
 
-  week_event_count = 0;
-  week_task_count = 0;
 
   /***
    * Jessie Jia Edit Ends
@@ -143,14 +139,6 @@ export class OverviewComponent implements OnInit {
       .catch((err) => {
         console.log('Error while getting today posts', err);
       });
-
-    this.getWeekPosts()
-      .then(() => {
-        this.ngxService.stop();
-      })
-      .catch((err) => {
-        console.log('Error while getting week posts', err);
-      });
   }
 
   getRecentPosts() {
@@ -159,7 +147,6 @@ export class OverviewComponent implements OnInit {
 
       this._postservice.useroverviewposts(this.user_data.user_id)
         .subscribe((res) => {
-          //console.log('Group posts:', res);
           this.posts = res['posts'];
           this.comments = res['comments'];
           // Adding the readMore property to every comment.
@@ -170,12 +157,10 @@ export class OverviewComponent implements OnInit {
           });
           //concat recent posts with followed posts
           this.recentPosts = [...res['recentPosts'], ...res["followedPost"]];
-          //console.log('recent posts', this.recentPosts);
 
           if (this.comments.length > 0) {
             this.normal_count = 1;
           }
-
           for (let i = 0; i < this.posts.length; i++) {
             if (this.posts[i].type === 'task' && this.posts[i].task.status !== 'done') {
               this.task_count = 1;
@@ -214,35 +199,9 @@ export class OverviewComponent implements OnInit {
 
       this._postservice.userOverviewPostsToday(this.user_data.user_id)
         .subscribe((res) => {
-          // console.log('Group posts:', res);
           this.todayPosts = res['posts'];
-          this.todayComments = res['comments'];
+          this.getTodayTasksAndEvents();
 
-          // Adding the readMore property to every comment.
-          // This property is used when making the post collapsible.
-          this.todayComments = this.todayComments.map(comment => {
-            comment.readMore = true;
-            return comment;
-          });
-
-          if (this.todayComments.length > 0) {
-            this.normal_count = 1;
-          }
-
-          for (let i = 0; i < this.todayPosts.length; i++) {
-            if (this.todayPosts[i].type === 'task') {
-              this.computeTasksCounts(this.todayPosts[i].task);
-            }
-            if (this.todayPosts[i].type === 'event') {
-              this.today_event_count++;
-            }
-            if (this.todayPosts[i].type === 'event' && this.todayPosts[i].comments_count > 0) {
-              this.normal_count = 1;
-            }
-            if (this.todayPosts[i].type === 'task' && this.todayPosts[i].comments_count > 0) {
-              this.normal_count = 1;
-            }
-          }
           if (this.todayPosts.length === 0) {
             this.isLoading$.next(true);
           } else {
@@ -256,52 +215,39 @@ export class OverviewComponent implements OnInit {
     });
   }
 
-  getWeekPosts() {
-    return new Promise((resolve, reject) => {
-      this.isLoading$.next(true);
+  getTodayTasksAndEvents() {
+    for (let i = 0; i < this.todayPosts.length; i++) {
+      if (this.todayPosts[i].type === 'task') {
+        this.computeTasksCounts(this.todayPosts[i].task);
+      }
+      if (this.todayPosts[i].type === 'event') {
+        this.computeEventsData(this.todayPosts[i]);
 
-      this._postservice.userOverviewPostsWeek(this.user_data.user_id)
-        .subscribe((res) => {
-          // console.log('Group posts:', res);
-          this.weekPosts = res['posts'];
-          this.weekComments = res['comments'];
+      }
+    }
+  }
 
-          // Adding the readMore property to every comment.
-          // This property is used when making the post collapsible.
-          this.weekComments = this.weekComments.map(comment => {
-            comment.readMore = true;
-            return comment;
-          });
+  private computeTasksCounts(task: any) {
+    this.today_task_count++;
+    if (task.status === 'to do') {
+      this.to_do_task_count++;
+    }
 
-          if (this.weekComments.length > 0) {
-            this.normal_count = 1;
-          }
+    if (task.status === 'in progress') {
+      this.in_progress_task_count++;
+    }
 
-          for (let i = 0; i < this.weekPosts.length; i++) {
-            if (this.weekPosts[i].type === 'task') {
-              this.week_task_count = 1;
-            }
-            if (this.weekPosts[i].type === 'event') {
-              this.week_event_count = 1;
-            }
-            if (this.weekPosts[i].type === 'event' && this.weekPosts[i].comments_count > 0) {
-              this.normal_count = 1;
-            }
-            if (this.weekPosts[i].type === 'task' && this.weekPosts[i].comments_count > 0) {
-              this.normal_count = 1;
-            }
-          }
-          if (this.weekPosts.length === 0) {
-            this.isLoading$.next(true);
-          } else {
-            this.isLoading$.next(false);
-          }
-          resolve();
+    if (task.status.trim() === 'completed' || task.status.trim() === 'done') {
+      this.done_task_count++;
+    }
 
-        }, (err) => {
-          reject(err);
-        });
-    });
+  }
+
+  computeEventsData(post: any) {
+    this.today_event_count++;
+    if (this.today_event_count <= 2) {
+      this.todayFirstTwoEvents.push(post);
+    }
   }
 
   /***
@@ -489,20 +435,4 @@ export class OverviewComponent implements OnInit {
     });
   }
 
-  private computeTasksCounts(task: any) {
-    debugger
-    this.today_task_count++;
-    if (task.status === 'to do') {
-      this.to_do_task_count++;
-    }
-
-    if (task.status === 'in progress') {
-      this.in_progress_task_count++;
-    }
-
-    if (task.status.trim() === 'completed' || task.status.trim() === 'done') {
-      this.done_task_count++;
-    }
-
-  }
 }
