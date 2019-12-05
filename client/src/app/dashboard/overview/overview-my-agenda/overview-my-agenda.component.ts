@@ -43,8 +43,6 @@ export class OverviewMyAgendaComponent implements OnInit {
       this.userService.getUserTodayEvents(data)
         .subscribe((res) => {
 
-          console.log('User timeline events:', res);
-
           resolve(res['events']);
         }, () => {
           reject([]);
@@ -61,8 +59,6 @@ export class OverviewMyAgendaComponent implements OnInit {
 
       this.userService.getUserThisWeekEvents(data)
         .subscribe((res) => {
-
-          console.log('User timeline events:', res);
 
           resolve(res['events']);
         }, () => {

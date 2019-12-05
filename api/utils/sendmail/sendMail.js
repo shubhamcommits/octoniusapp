@@ -120,7 +120,7 @@ const joinWorkspace = async (reqData) => {
       fromName: from.first_name,
       fromEmail: from.email,
       workspace: workspace.workspace_name,
-      link: defaults.signupLink
+      link: defaults.signupLink(workspace.workspace_name)
     };
 
     // Generate email body from template
