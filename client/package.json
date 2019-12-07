@@ -74,7 +74,7 @@
     "quill-emoji": "^0.1.7",
     "quill-image-drop-module": "^1.0.3",
     "quill-image-resize-module": "^3.0.0",
-    "quill-mention": "^2.1.1",
+    "quill-mention": "2.1.5",
     "quill-table": "^1.0.0",
     "readmore-js": "^2.2.1",
     "reconnecting-websocket": "^4.1.10",
