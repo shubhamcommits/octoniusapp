@@ -184,6 +184,7 @@ import { ClickStopPropagationDirective } from './shared/directives/click-stop-pr
 import { GroupKanbanBoardsComponent } from './dashboard/groups/group/group-kanban-boards/group-kanban-boards.component';
 import { GroupKanbanTaskViewComponent } from './dashboard/groups/group/group-kanban-boards/group-kanban-task-view/group-kanban-task-view.component';
 import { GroupKanbanTaskAssignmentComponent } from './dashboard/groups/group/group-kanban-boards/group-kanban-task-assignment/group-kanban-task-assignment.component';
+import { CollaborativeDocModalTemplatesComponent } from './common/components/posts/collaborative-doc-modal-templates/collaborative-doc-modal-templates.component';
 
 /**
  * 9. !===== IMPORTS & DECLARATIONS =====!
@@ -224,7 +225,9 @@ import { GroupKanbanTaskAssignmentComponent } from './dashboard/groups/group/gro
 
     GroupKanbanTaskViewComponent,
 
-    GroupKanbanTaskAssignmentComponent
+    GroupKanbanTaskAssignmentComponent,
+
+    CollaborativeDocModalTemplatesComponent
   ],
   imports: [
 
@@ -253,7 +256,7 @@ import { GroupKanbanTaskAssignmentComponent } from './dashboard/groups/group/gro
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true },
     { provide: LocationStrategy, useClass: HashLocationStrategy }],
   bootstrap: [AppComponent],
-  entryComponents: [DialogOverviewExampleDialog],
+  entryComponents: [DialogOverviewExampleDialog, CollaborativeDocModalTemplatesComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule { }

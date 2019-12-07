@@ -1,0 +1,43 @@
+<button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+  <span aria-hidden="true">&times;</span>
+</button>
+<div class="modal-body">
+  <h2 class="modal-title text-center mt-4 mb-5">Template gallery</h2>
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-4">
+        <h5 class="text-primary font-weight-bold">Save as template</h5>
+        <img src="./../../../../../assets/images/save-template.svg" alt="">
+      </div>
+      <div class="col-8">
+        <div class="container">
+          <p class="mb-5">Speed un your document creation by using pre-build blocks of text. Each template your team creates will show
+            up in this gallery</p>
+          <p class="text-muted text-small my-2">Document title will be used as template title</p>
+          <textarea class="form-control mt-3" name="template_description" id="" cols="5" rows="2" placeholder="enter short description"></textarea>
+          <button class="btn btn-primary float-left px-4">save</button>
+        </div>
+
+      </div>
+    </div>
+    <h5 class="text-primary font-weight-bold">Template blocks</h5>
+    <p>Supercharge your document creation! Select a template to insert in your document</p>
+    <div class="row mt-4">
+      <div class="col-4" *ngFor="let template of templates">
+        <div class="row">
+          <div class="col-2">
+            <img src="./../../../../../assets/images/template-img.svg" alt="">
+          </div>
+          <div class="col-8">
+            <p class="font-weight-bold">{{ template.title}}</p>
+            <p class="text-muted">{{template.description}}</p>
+          </div>
+          <div class="col-2">
+            :
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
