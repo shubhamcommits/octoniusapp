@@ -80,4 +80,15 @@ router.get('/:userId/todayEvents', users.getTodayEvents);
 // Get user's agenda events of this coming week, sorted by due date
 router.get('/:userId/weeklyEvents', users.getThisWeekEvents);
 
+
+// Get user's today to do/in progress/done tasks
+router.get('/overdueTasks', users.getOverdueTasks);
+
+// Get user's number of liked posts
+router.get('/likedPostsCount', users.getLikedPostsCount);
+
+// Get user number of follows
+router.get('/followedPostsCount', users.getFollowedPostsCount);
+
+
 module.exports = router;

@@ -1,194 +1,186 @@
 <div class="container" style="margin-bottom: 30px">
   <app-overview-page-header></app-overview-page-header>
 
+  <!--Smart cards-->
 
+  <div class="media">
+    <div class="flex media-body">
+      <!--Tasks smart card-->
 
+      <div *ngIf="today_task_count == 0 && overdueTasks.length == 0; else tasksCard" class="smart-card col" style="margin-right: 70px">
+        <a style="text-decoration:none; color:inherit;" href="/#/dashboard/overview/mytasks?mytasks=true">
+          <div class="card-title mt-1">Tasks</div>
+          <div class="row">
+            <div class="card-first-column col-md-12">You're all done.</div>
+          </div>
+          <div class="row">
+            <div class="card-first-column col-md-12">Get some fresh air.</div>
+          </div>
+          <div class="row">
+          </div>
 
-  <!--  Start of posts -->
-  <div
-    *ngIf="todayPosts.length == 0 && posts.length === 0 && weekPosts.length === 0 && comments.length === 0 && this.recentPosts.length === 0">
-    <img src='../../../assets/images/empty-activity.svg' style=" margin: 0 auto; display:block; width: 60%">
-  </div>
-  <div
-    *ngIf="posts.length > 0 && (this.todayPosts.length == 0 && this.weekPosts.length === 0 && this.event_count == 0 && this.normal_count == 0 && this.task_count == 0 && this.recentPosts.length === 0)">
-    <img src='../../../assets/images/empty-activity.svg' style=" margin: 0 auto; display:block; width: 60%">
-  </div>
-
-
-  <div *ngIf="todayPosts.length > 0">
-    <div *ngIf="this.today_event_count == 1 || this.today_task_count == 1; else postif">
-      <h5 class="title-overview">Today</h5>
-    </div>
-
-    <ng-template #postif></ng-template>
-    <div *ngFor="let post of todayPosts; let i = index;">
-      <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/post/{{post._id}}">
-
-      <!-- Tasks -->
-      <div *ngIf="post.type== 'task'">
-          <div class="media card-tile overview-task">
-
-            <div class=" row media-body">
-              <div class="col-md-2" *ngIf="post.task.status === 'to do'">
-                <div class="kanbanoverview kbn-todo">
-                  To Do
-                </div>
-              </div>
-
-              <div class="col-md-2" *ngIf="post.task.status === 'in progress'">
-                <div class="kanbanoverview kbn-working">
-                  In Progress
-                </div>
-              </div>
-
-              <div class="col-md-2"
-                *ngIf="post.task.status.trim() === 'completed' || post.task.status.trim() === 'done' ">
-                <div class="kanbanoverview kbn-done">
-                  Done
-                </div>
-              </div>
-
-              <div class="col-md-6 overview-item" [innerHTML]="post?.title"></div>
-              <div class="col-md-2 overview-item small-blue-text" [innerHTML]="post?._group?.group_name"></div>
-
-
-
-              <div class="col-md-2">
-                <div class="overview-item small text-muted text-right ">Due {{post.task.due_to | date:'MMMM d, y' }}
-                </div>
-              </div>
+          <div class="row mt-4">
+            <div class="col-md-5"></div>
+            <div class="col-md-7">
+              <img src='../../../assets/images/inbox-tasks-card-empty.svg' style="display:block; width: 100%">
             </div>
           </div>
-        </div>
-      </a>
-    </div>
+        </a>
+      </div>
 
-    <ng-template #postif></ng-template>
-    <div *ngFor="let post of todayPosts; let i = index;">
-      <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/post/{{post._id}}">
+      <ng-template #tasksCard>
+        <div class="smart-card col" style="margin-right: 70px">
+          <a style="text-decoration:none; color:inherit;" href="/#/dashboard/overview/mytasks?mytasks=true">
+            <div class="card-title mt-1">Tasks</div>
+            <div class="row">
 
-        <!-- Events -->
-
-        <div *ngIf="post.type== 'event'">
-
-          <div class="media card-tile-event overview-event">
-            <div class="row media-body">
-
-              <div class="col-md-2 calendar-glyph">
-                <i class="material-icons">calendar_today</i>
-              </div>
               <div class="col-md-6">
-
-                <div class="event-title">
-                  <div [innerHTML]="post?.title | safe: 'html' " class="overview-item"> </div>
-                </div>
-
-              </div>
-              <div class="col-md-2 overview-item text-white small bold" [innerHTML]="post?._group?.group_name"></div>
-
-
-              <div class="col-md-2">
-                <div class="overview-item small text-white text-right timestamp">
-                  {{post.event.due_to | date:'MMMM d, y - h:mm a' }}</div>
-
-              </div>
-            </div>
-          </div>
-        </div>
-      </a>
-    </div>
-  </div>
-
-  <!--  week posts -->
-  <div *ngIf="weekPosts.length > 0">
-    <div *ngIf="this.week_event_count == 1 || this.week_task_count == 1; else postif">
-      <h5 class="title-overview">This week</h5>
-    </div>
-
-    <ng-template #postif></ng-template>
-    <div *ngFor="let post of weekPosts; let i = index;">
-      <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/post/{{post._id}}">
-        <!-- Tasks -->
-        <div *ngIf="post.type== 'task'">
-          <div class="media card-tile overview-task">
-
-            <div class=" row media-body">
-              <div class="col-md-2" *ngIf="post.task.status === 'to do'">
-                <div class="kanbanoverview kbn-todo">
-                  To Do
-                </div>
+                <div class="card-first-column">{{today_task_count}} for today</div>
               </div>
 
-              <div class="col-md-2" *ngIf="post.task.status === 'in progress'">
-                <div class="kanbanoverview kbn-working">
-                  In Progress
-                </div>
-              </div>
-
-              <div class="col-md-2"
-                *ngIf="post.task.status.trim() === 'completed' || post.task.status.trim() === 'done' ">
-                <div class="kanbanoverview kbn-done">
-                  Done
-                </div>
-              </div>
-
-              <div class="col-md-6 overview-item" [innerHTML]="post?.title"></div>
-              <div class="col-md-2 overview-item small-blue-text" [innerHTML]="post?._group?.group_name"></div>
-
-
-
-              <div class="col-md-2">
-                <div class="overview-item small text-muted text-right ">Due {{post.task.due_to | date:'MMMM d, y' }}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </a>
-    </div>
-
-
-    <ng-template #postif></ng-template>
-    <div *ngFor="let post of weekPosts; let i = index;">
-      <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{post._group?._id}}/post/{{post._id}}">
-
-        <!-- Week Events -->
-
-        <div *ngIf="post.type== 'event'">
-
-          <div class="media card-tile-event overview-event">
-            <div class="row media-body">
-
-              <div class="col-md-2 calendar-glyph">
-                <i class="material-icons">calendar_today</i>
-              </div>
               <div class="col-md-6">
-
-                <div class="event-title">
-                  <div [innerHTML]="post?.title | safe: 'html' " class="overview-item"> </div>
+                <div class="media card-tile overview-task">
+                  <div class="group-tasks to-do-task col-md-3">{{to_do_task_count}}</div>
+                  <div class="group-tasks in-progress-task col-md-3">{{in_progress_task_count}}</div>
+                  <div class="group-tasks done-task col-md-3">{{done_task_count}}</div>
+                  <div class="group-tasks overdue-task col-md-3">{{overdueTasks.length}}</div>
                 </div>
-
               </div>
-              <div class="col-md-2 overview-item text-white small bold" [innerHTML]="post?._group?.group_name"></div>
 
+            </div>
 
-              <div class="col-md-2">
-                <div class="overview-item small text-white text-right timestamp">
-                  {{post.event.due_to | date:'MMMM d, y - h:mm a' }}</div>
-
+            <div class="overdue-total-tasks">{{overdueTasks.length}} overdue</div>
+            <div class="row mt-4">
+              <div class="col-md-6"></div>
+              <div class="col-md-6">
+                <img src='../../../assets/images/tasks-smart-card.svg' style="display:block; width: 100%">
               </div>
             </div>
+          </a>
+        </div>
+      </ng-template>
+
+
+      <!--Agenda smart card-->
+      <div *ngIf="todayFirstTwoEvents.length == 0 ; else eventsCard" class="smart-card col"
+           style="margin-right: 70px">
+        <a style="text-decoration:none; color:inherit;" href="/#/dashboard/overview/myagenda?myagenda=true">
+          <div class="row">
+            <div class="col-md-8">
+              <div class="card-title mt-1">Today's agenda</div>
+            </div>
+            <div class="col-md-4">
+              <i
+                class="float-right material-icons blue card-icon mt-1" id="icon_event">event
+              </i>
+            </div>
+          </div>
+          <div class="row">
+            <div class="card-first-column col-md-12">Ta-da!</div>
+          </div>
+          <div class="row">
+            <div class="card-first-column col-md-12">You're free today.</div>
+          </div>
+          <div class="row">
+          </div>
+
+          <div class="row mt-3">
+            <div class="col-md-5"></div>
+            <div class="col-md-7">
+              <img src='../../../assets/images/inbox-agenda-card-empty.svg' style="display:block; width: 100%">
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <ng-template #eventsCard>
+        <div class="smart-card col" style="margin-right: 70px">
+          <a style="text-decoration:none; color:inherit;" href="/#/dashboard/overview/myagenda?myagenda=true">
+            <div class="row">
+              <div class="col-md-8">
+                <div class="card-title mt-1">Today's agenda</div>
+              </div>
+              <div class="col-md-4">
+                <i
+                  class="float-right material-icons blue card-icon mt-1" id="icon_event">event
+                </i>
+              </div>
+            </div>
+
+
+            <div *ngFor="let post of todayFirstTwoEvents; let i = index;">
+
+              <div *ngIf="post.type == 'event' && i <= 2" class="row media-body">
+                <div class="col-md-3">
+                  <div class="card-first-column blue">{{post.event.due_to | date:'HH:mm' }}</div>
+                </div>
+                <div class="col-md-8 mt-1">
+                  <div class="post-title title-nowrap">{{post?.title }}</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="post-title">
+              {{today_event_count - 2 > 0 ? today_event_count - 2 : 0 }} more...
+            </div>
+
+
+            <div class="row">
+              <div class="col-md-6"></div>
+              <div class="col-md-6">
+                <img src='../../../assets/images/events-smart-card.svg' style="display:block; width: 100%">
+              </div>
+            </div>
+          </a>
+        </div>
+      </ng-template>
+
+
+      <!--Social engagement-->
+      <div class="smart-card col">
+        <div class="card-title mt-1">Social Engagement</div>
+        <div class="row">
+
+          <div class="col-md-1">
+            <div class="card-first-column mt-1">{{likedPostsCount}}</div>
+          </div>
+          <div class="col-md-2">
+            <i class="material-icons blue card-icon">thumb_up</i>
+          </div>
+          <div class="col-md-7 post-title ml-1">most liked posts</div>
+          <div class="col-md-1">
+            <i class="material-icons blue float-right">keyboard_arrow_right</i>
+          </div>
+
+        </div>
+        <div class="row">
+
+          <div class="col-md-1">
+            <div class="card-first-column mt-1">{{followedPostsCount}}</div>
+          </div>
+          <div class="col-md-2">
+            <i class="material-icons overdue card-icon">star</i>
+          </div>
+          <div class="col-md-7 post-title ml-1">most followed post</div>
+          <div class="col-md-1">
+            <i class="material-icons blue float-right">keyboard_arrow_right</i>
+          </div>
+
+        </div>
+
+        <div class="row mt-4">
+          <div class="col-md-6"></div>
+          <div class="col-md-6">
+            <img src='../../../assets/images/social-smart-card.svg' style="display:block; width: 100%">
           </div>
         </div>
-      </a>
+      </div>
+
     </div>
   </div>
-
-
 
 
   <h5 class="title-overview" *ngIf="this.recentPosts.length != 0 || comments.length != 0">Recent activity</h5>
-
 
   <!-- RECENT POSTS -->
   <div *ngIf="this.recentPosts.length != 0">
@@ -196,17 +188,17 @@
 
     <div *ngFor="let post of this.recentPosts; let i = index;">
       <a *ngIf="post?.type != 'document'" style="text-decoration:none; color:inherit;"
-        href="/#/dashboard/group/{{post._group?._id}}/post/{{post._id}}" (click)="this.markPostAsRead(post._id)">
+         href="/#/dashboard/group/{{post._group?._id}}/post/{{post._id}}" (click)="this.markPostAsRead(post._id)">
 
         <div class="media card-tile shadow-sm">
           <div class=" row media-body">
             <div class="col-md-8 flex">
               <i class="material-icons pink">chat</i>
               <img src="{{this.BASE_URL}}/uploads/{{post._posted_by?.profile_pic}}"
-                onerror="this.src='/assets/images/user.png'" class="feed-avatar">
+                   onerror="this.src='/assets/images/user.png'" class="feed-avatar">
               <p class="overview-item2" style="flex: none; line-height: 35px">{{post._posted_by?.first_name}}</p>
               <p class="overview-item2 overview-post" style="line-height: 35px"
-                [innerHTML]="post?.title | safe: 'html'"></p>
+                 [innerHTML]="post?.title | safe: 'html'"></p>
             </div>
 
 
@@ -222,17 +214,17 @@
       </a>
 
       <a *ngIf="post?.type == 'document'" style="text-decoration:none; color:inherit;"
-        href="/#/dashboard/group/{{post._group?._id}}/document/{{post._id}}" (click)="this.markPostAsRead(post._id)">
+         href="/#/dashboard/group/{{post._group?._id}}/document/{{post._id}}" (click)="this.markPostAsRead(post._id)">
 
         <div class="media card-tile shadow-sm">
           <div class=" row media-body">
             <div class="col-md-8 flex">
               <i class="material-icons pink">chat</i>
               <img src="{{this.BASE_URL}}/uploads/{{post._posted_by?.profile_pic}}"
-                onerror="this.src='/assets/images/user.png'" class="feed-avatar">
+                   onerror="this.src='/assets/images/user.png'" class="feed-avatar">
               <p class="overview-item2" style="flex: none; line-height: 35px">{{post._posted_by?.first_name}}</p>
               <p class="overview-item2 overview-post" style="line-height: 35px"
-                [innerHTML]="post?.title | safe: 'html'"></p>
+                 [innerHTML]="post?.title | safe: 'html'"></p>
             </div>
 
 
@@ -254,18 +246,18 @@
   <div *ngIf="comments.length != 0">
     <div *ngFor="let comment of comments; let i = index;">
       <a [routerLink]="['/dashboard/group/', comment._post._group._id, 'post', comment._post._id]"
-        (click)="this.markCommentAsRead(comment._id)">
+         (click)="this.markCommentAsRead(comment._id)">
 
         <div class="media card-tile shadow-sm">
           <div class=" row media-body">
             <div class="col-md-8 flex">
               <i class="material-icons working">chat_bubble</i>
               <img src="{{this.BASE_URL}}/uploads/{{comment._commented_by?.profile_pic}}"
-                onerror="this.src='/assets/images/user.png'" class="feed-avatar float-left">
+                   onerror="this.src='/assets/images/user.png'" class="feed-avatar float-left">
               <p class="overview-item2" style="flex: none; line-height: 35px">{{comment._commented_by?.first_name}}
                 replied</p>
               <div [innerHTML]="comment?.content | slice:0:100" class="overview-item2 overview-post"
-                style="font-size: 14px"> </div>
+                   style="font-size: 14px"></div>
             </div>
             <div class="col-md-4 text-right">
               <div class="overview-item2 small text-muted text-right">
@@ -278,9 +270,6 @@
 
 
       </a>
-
-
-
 
 
     </div>
