@@ -6,39 +6,64 @@
   <div class="media">
     <div class="flex media-body">
       <!--Tasks smart card-->
-      <div class="smart-card col" style="margin-right: 70px">
+
+      <div *ngIf="today_task_count == 0 && overdueTasks.length == 0; else tasksCard" class="smart-card col" style="margin-right: 70px">
         <a style="text-decoration:none; color:inherit;" href="/#/dashboard/overview/mytasks?mytasks=true">
           <div class="card-title mt-1">Tasks</div>
           <div class="row">
-
-            <div class="col-md-6">
-              <div class="card-first-column">{{today_task_count}} for today</div>
-            </div>
-
-            <div class="col-md-6">
-              <div class="media card-tile overview-task">
-                <div class="group-tasks to-do-task col-md-3">{{to_do_task_count}}</div>
-                <div class="group-tasks in-progress-task col-md-3">{{in_progress_task_count}}</div>
-                <div class="group-tasks done-task col-md-3">{{done_task_count}}</div>
-                <div class="group-tasks overdue-task col-md-3">{{overdue_task_count}}</div>
-              </div>
-            </div>
-
+            <div class="card-first-column col-md-12">You're all done.</div>
+          </div>
+          <div class="row">
+            <div class="card-first-column col-md-12">Get some fresh air.</div>
+          </div>
+          <div class="row">
           </div>
 
-          <div class="overdue-total-tasks">{{overdue_task_count}} overdue</div>
-          <div class="row">
-            <div class="col-md-6"></div>
-            <div class="col-md-6">
-              <img src='../../../assets/images/tasks-smart-card.svg' style="display:block; width: 100%">
+          <div class="row mt-4">
+            <div class="col-md-5"></div>
+            <div class="col-md-7">
+              <img src='../../../assets/images/inbox-tasks-card-empty.svg' style="display:block; width: 100%">
             </div>
           </div>
         </a>
       </div>
 
+      <ng-template #tasksCard>
+        <div class="smart-card col" style="margin-right: 70px">
+          <a style="text-decoration:none; color:inherit;" href="/#/dashboard/overview/mytasks?mytasks=true">
+            <div class="card-title mt-1">Tasks</div>
+            <div class="row">
+
+              <div class="col-md-6">
+                <div class="card-first-column">{{today_task_count}} for today</div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="media card-tile overview-task">
+                  <div class="group-tasks to-do-task col-md-3">{{to_do_task_count}}</div>
+                  <div class="group-tasks in-progress-task col-md-3">{{in_progress_task_count}}</div>
+                  <div class="group-tasks done-task col-md-3">{{done_task_count}}</div>
+                  <div class="group-tasks overdue-task col-md-3">{{overdueTasks.length}}</div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="overdue-total-tasks">{{overdueTasks.length}} overdue</div>
+            <div class="row mt-4">
+              <div class="col-md-6"></div>
+              <div class="col-md-6">
+                <img src='../../../assets/images/tasks-smart-card.svg' style="display:block; width: 100%">
+              </div>
+            </div>
+          </a>
+        </div>
+      </ng-template>
+
 
       <!--Agenda smart card-->
-      <div class="smart-card col" style="margin-right: 70px">
+      <div *ngIf="todayFirstTwoEvents.length == 0 ; else eventsCard" class="smart-card col"
+           style="margin-right: 70px">
         <a style="text-decoration:none; color:inherit;" href="/#/dashboard/overview/myagenda?myagenda=true">
           <div class="row">
             <div class="col-md-8">
@@ -46,37 +71,69 @@
             </div>
             <div class="col-md-4">
               <i
-                class="float-right material-icons blue" id="icon_event">event
+                class="float-right material-icons blue card-icon mt-1" id="icon_event">event
               </i>
             </div>
           </div>
-
-
-          <div *ngFor="let post of todayFirstTwoEvents; let i = index;">
-
-            <div *ngIf="post.type == 'event' && i <= 2" class="row media-body">
-              <div class="col-md-3">
-                <div class="card-first-column blue">{{post.event.due_to | date:'HH:mm' }}</div>
-              </div>
-              <div class="col-md-8 mt-1">
-                <div [innerHTML]="post?.title | safe: 'html' " class="post-title title-nowrap"></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="post-title">
-            {{today_event_count - 2 > 0 ? today_event_count - 2 : 0 }} more...
-          </div>
-
-
           <div class="row">
-            <div class="col-md-6"></div>
-            <div class="col-md-6">
-              <img src='../../../assets/images/events-smart-card.svg' style="display:block; width: 100%">
+            <div class="card-first-column col-md-12">Ta-da!</div>
+          </div>
+          <div class="row">
+            <div class="card-first-column col-md-12">You're free today.</div>
+          </div>
+          <div class="row">
+          </div>
+
+          <div class="row mt-3">
+            <div class="col-md-5"></div>
+            <div class="col-md-7">
+              <img src='../../../assets/images/inbox-agenda-card-empty.svg' style="display:block; width: 100%">
             </div>
           </div>
         </a>
       </div>
+
+      <ng-template #eventsCard>
+        <div class="smart-card col" style="margin-right: 70px">
+          <a style="text-decoration:none; color:inherit;" href="/#/dashboard/overview/myagenda?myagenda=true">
+            <div class="row">
+              <div class="col-md-8">
+                <div class="card-title mt-1">Today's agenda</div>
+              </div>
+              <div class="col-md-4">
+                <i
+                  class="float-right material-icons blue card-icon mt-1" id="icon_event">event
+                </i>
+              </div>
+            </div>
+
+
+            <div *ngFor="let post of todayFirstTwoEvents; let i = index;">
+
+              <div *ngIf="post.type == 'event' && i <= 2" class="row media-body">
+                <div class="col-md-3">
+                  <div class="card-first-column blue">{{post.event.due_to | date:'HH:mm' }}</div>
+                </div>
+                <div class="col-md-8 mt-1">
+                  <div class="post-title title-nowrap">{{post?.title }}</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="post-title">
+              {{today_event_count - 2 > 0 ? today_event_count - 2 : 0 }} more...
+            </div>
+
+
+            <div class="row">
+              <div class="col-md-6"></div>
+              <div class="col-md-6">
+                <img src='../../../assets/images/events-smart-card.svg' style="display:block; width: 100%">
+              </div>
+            </div>
+          </a>
+        </div>
+      </ng-template>
 
 
       <!--Social engagement-->
@@ -85,12 +142,12 @@
         <div class="row">
 
           <div class="col-md-1">
-            <div class="card-first-column mt-1">107</div>
+            <div class="card-first-column mt-1">{{likedPostsCount}}</div>
           </div>
           <div class="col-md-2">
-            <i class="material-icons blue">thumb_up</i>
+            <i class="material-icons blue card-icon">thumb_up</i>
           </div>
-          <div class="col-md-7 post-title">40 most liked posts</div>
+          <div class="col-md-7 post-title ml-1">most liked posts</div>
           <div class="col-md-1">
             <i class="material-icons blue float-right">keyboard_arrow_right</i>
           </div>
@@ -99,19 +156,19 @@
         <div class="row">
 
           <div class="col-md-1">
-            <div class="card-first-column mt-1">34</div>
+            <div class="card-first-column mt-1">{{followedPostsCount}}</div>
           </div>
           <div class="col-md-2">
-            <i class="material-icons overdue">star</i>
+            <i class="material-icons overdue card-icon">star</i>
           </div>
-          <div class="col-md-7 post-title">13 most followed post</div>
+          <div class="col-md-7 post-title ml-1">most followed post</div>
           <div class="col-md-1">
             <i class="material-icons blue float-right">keyboard_arrow_right</i>
           </div>
 
         </div>
 
-        <div class="row">
+        <div class="row mt-4">
           <div class="col-md-6"></div>
           <div class="col-md-6">
             <img src='../../../assets/images/social-smart-card.svg' style="display:block; width: 100%">

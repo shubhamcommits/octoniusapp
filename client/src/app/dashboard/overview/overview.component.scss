@@ -266,7 +266,16 @@ a{
 }
 
 .title-nowrap {
+  width: 90%;
+  display: inline-block;
   white-space: nowrap;
   overflow: hidden !important;
   text-overflow: ellipsis;
+}
+
+.card-icon {
+  font-size: 40px;
+  line-height: 40px;
+  display: flex;
+  align-items: center;
 }

@@ -34,12 +34,15 @@ export class OverviewComponent implements OnInit {
    */
   todayPosts = [];
   todayFirstTwoEvents = [];
+  thisWeekTasks = [];
+  overdueTasks = [];
   today_event_count = 0;
   today_task_count = 0;
   to_do_task_count = 0;
   in_progress_task_count = 0;
   done_task_count = 0;
-  overdue_task_count = 0;
+  likedPostsCount = 0;
+  followedPostsCount = 0;
 
 
   /***
@@ -76,7 +79,7 @@ export class OverviewComponent implements OnInit {
 
   constructor(private _userService: UserService, private _authService: AuthService, private _router: Router, private ngxService: NgxUiLoaderService,
               private _postservice: PostService, private _groupservice: GroupsService,
-              private googlCloudService: GoogleCloudService) {
+              private googlCloudService: GoogleCloudService, private userService: UserService) {
 
     this.user_data = JSON.parse(localStorage.getItem('user'));
     this.loadGoogleDrive();
@@ -139,7 +142,42 @@ export class OverviewComponent implements OnInit {
       .catch((err) => {
         console.log('Error while getting today posts', err);
       });
+
+    this.getThisWeekTasks()
+      .then(() => {
+        this.ngxService.stop();
+      })
+      .catch((err) => {
+        console.log('Error while getting this week tasks', err);
+      });
+
+    this.getOverdueTasks()
+      .then(() => {
+        this.ngxService.stop();
+      })
+      .catch((err) => {
+        console.log('Error while getting overdue tasks', err);
+      });
+
+    this.getLikedPostsCount()
+      .then(() => {
+        this.ngxService.stop();
+      })
+      .catch((err) => {
+        console.log('Error while getting liked posts', err);
+      });
+
+    this.getFollowedPostsCount()
+      .then(() => {
+        this.ngxService.stop();
+      })
+      .catch((err) => {
+        console.log('Error while getting followed posts', err);
+      });
+
   }
+
+
 
   getRecentPosts() {
     return new Promise((resolve, reject) => {
@@ -161,6 +199,7 @@ export class OverviewComponent implements OnInit {
           if (this.comments.length > 0) {
             this.normal_count = 1;
           }
+
           for (let i = 0; i < this.posts.length; i++) {
             if (this.posts[i].type === 'task' && this.posts[i].task.status !== 'done') {
               this.task_count = 1;
@@ -215,10 +254,58 @@ export class OverviewComponent implements OnInit {
     });
   }
 
-  getTodayTasksAndEvents() {
+
+  getThisWeekTasks() {
+    return new Promise((resolve, reject) => {
+      this.userService.getUserThisWeekTasks()
+        .subscribe((res) => {
+          this.thisWeekTasks = res['tasks'];
+          this.countTasksForToday();
+        }, (err) => {
+          reject([]);
+        });
+    });
+  }
+
+
+  getOverdueTasks() {
+    return new Promise((resolve, reject) => {
+      this.userService.getUserOverdueTasks()
+        .subscribe((res) => {
+          this.overdueTasks = res['tasks'];
+        }, (err) => {
+          reject([]);
+        });
+    });
+
+  }
+
+  private getLikedPostsCount() {
+    return new Promise((resolve, reject) => {
+      this.userService.getLikedPostsCount()
+        .subscribe((res) => {
+          this.likedPostsCount = res['likedPostsCount'];
+        }, (err) => {
+          reject([]);
+        });
+    });
+  }
+
+  private getFollowedPostsCount() {
+    return new Promise((resolve, reject) => {
+      this.userService.getFollowedPostsCount()
+        .subscribe((res) => {
+          this.followedPostsCount = res['followedPostsCount'];
+        }, (err) => {
+          reject([]);
+        });
+    });
+  }
+
+  private getTodayTasksAndEvents() {
     for (let i = 0; i < this.todayPosts.length; i++) {
       if (this.todayPosts[i].type === 'task') {
-        this.computeTasksCounts(this.todayPosts[i].task);
+        this.computeTasksCounts(this.todayPosts[i].task, true);
       }
       if (this.todayPosts[i].type === 'event') {
         this.computeEventsData(this.todayPosts[i]);
@@ -227,23 +314,31 @@ export class OverviewComponent implements OnInit {
     }
   }
 
-  private computeTasksCounts(task: any) {
-    this.today_task_count++;
+  private countTasksForToday() {
+    for (let i = 0; i < this.thisWeekTasks.length; i++) {
+      this.computeTasksCounts(this.thisWeekTasks[i].task, false);
+    }
+  }
+
+  private computeTasksCounts(task: any, countDoneTasks: boolean) {
     if (task.status === 'to do') {
+      this.today_task_count++;
       this.to_do_task_count++;
     }
 
     if (task.status === 'in progress') {
+      this.today_task_count++;
       this.in_progress_task_count++;
     }
 
-    if (task.status.trim() === 'completed' || task.status.trim() === 'done') {
+    if (countDoneTasks && (task.status.trim() === 'completed' || task.status.trim() === 'done')) {
+      this.today_task_count++;
       this.done_task_count++;
     }
 
   }
 
-  computeEventsData(post: any) {
+  private computeEventsData(post: any) {
     this.today_event_count++;
     if (this.today_event_count <= 2) {
       this.todayFirstTwoEvents.push(post);
@@ -434,5 +529,4 @@ export class OverviewComponent implements OnInit {
       }
     });
   }
-
 }
