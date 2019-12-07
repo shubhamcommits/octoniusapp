@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
+import * as Quill from "quill";
 
 @Component({
   selector: 'app-collaborative-doc-modal-templates',
@@ -7,7 +8,9 @@ import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
   styleUrls: ['./collaborative-doc-modal-templates.component.scss']
 })
 export class CollaborativeDocModalTemplatesComponent implements OnInit {
-  @Input() name;
+  // @ts-ignore
+  @Input() quill: Quill;
+
   templates = [{title: 'title', description: 'description'}, {
     title: 'title',
     description: 'description'
@@ -20,6 +23,7 @@ export class CollaborativeDocModalTemplatesComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('lalalllal', this.quill.getContents());
   }
 
 }

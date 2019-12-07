@@ -491,7 +491,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
                   backdrop: 'static',
                   windowClass: 'w-100 h-100 m-0 p-0'
                 });
-                modalRef.componentInstance.name = 'Userica';
+                modalRef.componentInstance.quill = quill;
                 this.documentFiles = templateMention;
               } else {
                 const matches = [];

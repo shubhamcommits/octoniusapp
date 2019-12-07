@@ -9,6 +9,7 @@ const searchRoutes = require('./search.routes');
 const columnsRoutes = require('./columns.routes');
 const documentFileRoutes = require('./document-file.routes');
 const groupFileSectionRoutes = require('./group-file-uploads.routes');
+const templateRoutes = require('./template.routes');
 
 module.exports = {
   authsRoutes,
@@ -22,4 +23,5 @@ module.exports = {
   columnsRoutes,
   documentFileRoutes,
   groupFileSectionRoutes,
+  templateRoutes
 };
