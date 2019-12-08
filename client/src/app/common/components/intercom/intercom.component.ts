@@ -16,7 +16,6 @@ export class IntercomComponent implements OnInit {
   @ViewChild('searchDrop', {static: false}) searchDrop;
 
   user: User;
-  userProfileImage;
   user_data;
   isLoading$ = new BehaviorSubject(false);
   alert = {
@@ -68,15 +67,11 @@ export class IntercomComponent implements OnInit {
     this._userService.getUser()
       .subscribe(async (res) => {
         this.user = await res.user;
-        this.userProfileImage = await res.user['profile_pic'];
-        //  console.log(this.user._id);
 
-        if (this.user['profile_pic'] == null) {
-          this.userProfileImage = 'assets/images/user.png';
-        } else {
-          // console.log('Inside else');
-          this.userProfileImage = await `${environment.BASE_URL}/uploads/${this.user['profile_pic']}`;
-        }
+
+        console.log(this.user._id);
+
+
         this.isLoading$.next(true);
       }, (err) => {
         this.alert.class = 'alert alert-danger';
