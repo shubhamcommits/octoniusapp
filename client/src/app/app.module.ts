@@ -91,6 +91,9 @@ import { CalendarComponent } from './dashboard/user-profile/calendar/calendar.co
 // ----- ADMIN BILLING COMPONENTS(THIS SECTION HAS BEEN DISABLED) -----
 import { AdminBillingComponent } from './dashboard/admin/admin-billing/admin-billing.component';
 
+// ----- INTERCOM COMPONENT -----
+import { IntercomComponent } from './common/components/intercom/intercom.component';
+
 
 /**
  * 2. !===== ANGULAR MODULES =====!
@@ -206,7 +209,7 @@ import { GroupKanbanTaskAssignmentComponent } from './dashboard/groups/group/gro
     OverviewMyWorkplaceComponent, OverviewPageHeaderComponent, PostActionsComponent,
     PostboxComponent, PostCommentComponent, PulseComponent, ResetPwdComponent, SearchBarComponent,
     TaskGroupPostComponent, TimePickerComponent, UserProfileHeaderComponent,
-    UserSearchResultComponent, UserSearchResultMainComponent,
+    UserSearchResultComponent, UserSearchResultMainComponent, IntercomComponent,
 
     // ROUTING COMPONENTS
     routingComponents,
