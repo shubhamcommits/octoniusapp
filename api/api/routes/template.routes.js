@@ -17,6 +17,6 @@ router.use(auth.isLoggedIn);
 
 
 router.get('/:groupId', templateController.getAll);
-
+router.post('/', templateController.create);
 
 module.exports = router;

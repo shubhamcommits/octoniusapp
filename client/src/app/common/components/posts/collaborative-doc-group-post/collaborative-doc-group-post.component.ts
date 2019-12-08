@@ -492,6 +492,9 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
                   windowClass: 'w-100 h-100 m-0 p-0'
                 });
                 modalRef.componentInstance.quill = quill;
+                modalRef.componentInstance.groupId = this._activatedRoute.snapshot.params.id;
+                modalRef.componentInstance.postTitle = this.postTitle;
+
                 this.documentFiles = templateMention;
               } else {
                 const matches = [];

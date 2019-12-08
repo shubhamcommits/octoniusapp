@@ -14,8 +14,12 @@
           <p class="mb-5">Speed un your document creation by using pre-build blocks of text. Each template your team creates will show
             up in this gallery</p>
           <p class="text-muted text-small my-2">Document title will be used as template title</p>
-          <textarea class="form-control mt-3" name="template_description" id="" cols="5" rows="2" placeholder="enter short description"></textarea>
-          <button class="btn btn-primary float-left px-4">save</button>
+          <form (ngSubmit)="saveForm($event)">
+            <textarea class="form-control mt-3" name="template_description" id="" cols="5" rows="2"
+                      [(ngModel)]="template_description" placeholder="enter short description" required></textarea>
+            <button type="submit" class="btn btn-primary float-left px-4">save</button>
+          </form>
+
         </div>
 
       </div>

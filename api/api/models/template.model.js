@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const TemplateSchema = new Schema({
-    name: {
+    title: {
         type: String,
         required: true
     },
@@ -19,6 +19,10 @@ const TemplateSchema = new Schema({
         required: true,
     },
     groupId: {
+        type: String,
+        required: true
+    },
+    content: {
         type: String,
         required: true
     }
