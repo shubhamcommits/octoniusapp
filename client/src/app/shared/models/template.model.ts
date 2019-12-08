@@ -1,4 +1,5 @@
 interface ITemplate {
+  _id?: string,
   groupId: string,
   userId: string,
   title: string,

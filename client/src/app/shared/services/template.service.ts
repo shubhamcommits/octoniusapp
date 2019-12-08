@@ -20,4 +20,12 @@ export class TemplateService {
   public saveTemplate(template: ITemplate) {
     return this.http.post<ITemplate>(`${this.apiUrl}/templates`, template);
   }
+
+  public deleteTemplate(templateId: string) {
+    return this.http.delete(`${this.apiUrl}/templates/${templateId}`);
+  }
+
+  public editTemplate(template: ITemplate): Observable<ITemplate> {
+    return this.http.put<ITemplate>(`${this.apiUrl}/templates/${template._id}`, template);
+  }
 }

@@ -18,5 +18,6 @@ router.use(auth.isLoggedIn);
 
 router.get('/:groupId', templateController.getAll);
 router.post('/', templateController.create);
+router.delete('/:templateId', templateController.delete);
 
 module.exports = router;

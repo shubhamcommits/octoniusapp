@@ -484,7 +484,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
 
               }
               if (searchTerm.length === 0) {
-                renderList(this.documentFiles, searchTerm);
+                // renderList(this.documentFiles, searchTerm);
                 // this.showModalPopUp = true;
                 const modalRef = this.modalService.open(CollaborativeDocModalTemplatesComponent, {
                   size: 'lg',
@@ -495,7 +495,12 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
                 modalRef.componentInstance.groupId = this._activatedRoute.snapshot.params.id;
                 modalRef.componentInstance.postTitle = this.postTitle;
 
-                this.documentFiles = templateMention;
+                modalRef.result.then(data => {
+                  data.reason === 'addTemplate' ? quill.setContents(quill.getContents().ops.concat(JSON.parse(data.template.content))) : null;
+                  quill.setSelection(quill.getLength());
+                });
+
+                // this.documentFiles = templateMention;
               } else {
                 const matches = [];
                 for (var i = 0; i < this.documentFiles.length; i++)

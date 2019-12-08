@@ -7,37 +7,44 @@
     <div class="row">
       <div class="col-4">
         <h5 class="text-primary font-weight-bold">Save as template</h5>
-        <img src="./../../../../../assets/images/save-template.svg" alt="">
+        <img src="./../../../../../assets/images/template-save-icon.svg" alt="">
       </div>
       <div class="col-8">
         <div class="container">
-          <p class="mb-5">Speed un your document creation by using pre-build blocks of text. Each template your team creates will show
+          <p class="mb-3">Speed un your document creation by using pre-build blocks of text. Each template your team
+            creates will show
             up in this gallery</p>
           <p class="text-muted text-small my-2">Document title will be used as template title</p>
           <form (ngSubmit)="saveForm($event)">
             <textarea class="form-control mt-3" name="template_description" id="" cols="5" rows="2"
                       [(ngModel)]="template_description" placeholder="enter short description" required></textarea>
-            <button type="submit" class="btn btn-primary float-left px-4">save</button>
+            <button type="submit" class="btn btn-primary float-left px-4 mt-2">save</button>
           </form>
 
         </div>
 
       </div>
     </div>
-    <h5 class="text-primary font-weight-bold">Template blocks</h5>
+    <h5 class="text-primary font-weight-bold mt-5 mb-2">Template blocks</h5>
     <p>Supercharge your document creation! Select a template to insert in your document</p>
     <div class="row mt-4">
-      <div class="col-4" *ngFor="let template of templates">
-        <div class="row">
+      <div class="col-4" *ngFor="let template of templates;">
+        <div class="row mt-2">
           <div class="col-2">
-            <img src="./../../../../../assets/images/template-img.svg" alt="">
+            <img src="./../../../../../assets/images/template-img.svg" class="mt-1">
           </div>
-          <div class="col-8">
+          <div class="col-8" (click)="addTemplateToEditor(template)">
             <p class="font-weight-bold">{{ template.title}}</p>
             <p class="text-muted">{{template.description}}</p>
           </div>
           <div class="col-2">
-            :
+            <div role="group" ngbDropdown>
+              <div ngbDropdownToggle><i class="material-icons text-muted" style="cursor: pointer">more_vert</i></div>
+              <div ngbDropdownMenu>
+                <button ngbDropdownItem (click)="editTemplate(template)">Edit</button>
+                <button ngbDropdownItem (click)="deleteTemplate(template)">Delete</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>

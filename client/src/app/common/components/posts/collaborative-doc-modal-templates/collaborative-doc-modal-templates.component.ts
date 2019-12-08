@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbActiveModal, NgbDropdown} from "@ng-bootstrap/ng-bootstrap";
 import * as Quill from "quill";
 import {TemplateService} from "../../../../shared/services/template.service";
 import {AuthService} from "../../../../shared/services/auth.service";
@@ -7,7 +7,8 @@ import {AuthService} from "../../../../shared/services/auth.service";
 @Component({
   selector: 'app-collaborative-doc-modal-templates',
   templateUrl: './collaborative-doc-modal-templates.component.html',
-  styleUrls: ['./collaborative-doc-modal-templates.component.scss']
+  styleUrls: ['./collaborative-doc-modal-templates.component.scss'],
+  providers: [NgbDropdown]
 })
 export class CollaborativeDocModalTemplatesComponent implements OnInit {
   // @ts-ignore
@@ -31,6 +32,22 @@ export class CollaborativeDocModalTemplatesComponent implements OnInit {
     })
   }
 
+  addTemplateToEditor(template) {
+    this.activeModal.close({
+      reason: 'addTemplate',
+      template: template
+    });
+  }
+
+  editTemplate(template: ITemplate) {
+    console.log('edit template', template);
+  }
+
+  deleteTemplate(template: ITemplate) {
+    console.log('delete template', template);
+    this.templateService.deleteTemplate(template._id).subscribe(() => this.templates = this.templates.filter(item => item._id !== template._id));
+  }
+
   saveForm(event) {
     console.log('save form', event, this.template_description);
     const template: ITemplate = {
@@ -41,7 +58,7 @@ export class CollaborativeDocModalTemplatesComponent implements OnInit {
       content: this.quill.getContents().ops
     };
 
-    this.templateService.saveTemplate(template).subscribe(data => console.log('success', data));
+    this.templateService.saveTemplate(template).subscribe(data => this.templates.push(data));
   }
 
 }
