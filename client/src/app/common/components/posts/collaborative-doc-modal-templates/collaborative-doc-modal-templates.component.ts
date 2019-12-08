@@ -25,7 +25,7 @@ export class CollaborativeDocModalTemplatesComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.postTitle);
+    console.log(this.quill.getContents());
     this.templateService.getTemplates(this.groupId).subscribe(templates => {
       console.log('templates here', templates);
       this.templates = templates;
@@ -49,13 +49,14 @@ export class CollaborativeDocModalTemplatesComponent implements OnInit {
   }
 
   saveForm(event) {
-    console.log('save form', event, this.template_description);
+    const ops = this.quill.getContents().ops;
+    ops[ops.length-2].insert = ops[ops.length-2].insert.slice(0,-1);
     const template: ITemplate = {
       userId: this.authService.getAuthenticatedUser().user_id,
       groupId: this.groupId,
       title: this.postTitle,
       description: this.template_description,
-      content: this.quill.getContents().ops
+      content: ops
     };
 
     this.templateService.saveTemplate(template).subscribe(data => this.templates.push(data));

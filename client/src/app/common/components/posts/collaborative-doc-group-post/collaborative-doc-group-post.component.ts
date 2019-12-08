@@ -496,8 +496,12 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
                 modalRef.componentInstance.postTitle = this.postTitle;
 
                 modalRef.result.then(data => {
-                  data.reason === 'addTemplate' ? quill.setContents(quill.getContents().ops.concat(JSON.parse(data.template.content))) : null;
-                  quill.setSelection(quill.getLength());
+                  if (data.reason === 'addTemplate') {
+                    const ops = quill.getContents().ops;
+                    ops[ops.length-2].insert = ops[ops.length-2].insert.slice(0,-1);
+                    quill.setContents(ops.concat(JSON.parse(data.template.content)));
+                    quill.setSelection(quill.getLength());
+                  }
                 });
 
                 // this.documentFiles = templateMention;
