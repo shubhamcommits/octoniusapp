@@ -3,6 +3,7 @@ import {NgbActiveModal, NgbDropdown} from "@ng-bootstrap/ng-bootstrap";
 import * as Quill from "quill";
 import {TemplateService} from "../../../../shared/services/template.service";
 import {AuthService} from "../../../../shared/services/auth.service";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-collaborative-doc-modal-templates',
@@ -17,7 +18,7 @@ export class CollaborativeDocModalTemplatesComponent implements OnInit {
   @Input() postTitle: string;
 
   templates: Array<ITemplate>;
-  public template_description: string = '';
+  createTemplateForm: FormGroup;
 
   constructor(public activeModal: NgbActiveModal,
               private templateService: TemplateService,
@@ -25,9 +26,11 @@ export class CollaborativeDocModalTemplatesComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.quill.getContents());
+    this.createTemplateForm = new FormGroup({
+      description: new FormControl('', Validators.required)
+    });
+
     this.templateService.getTemplates(this.groupId).subscribe(templates => {
-      console.log('templates here', templates);
       this.templates = templates;
     })
   }
@@ -39,23 +42,22 @@ export class CollaborativeDocModalTemplatesComponent implements OnInit {
     });
   }
 
-  editTemplate(template: ITemplate) {
-    console.log('edit template', template);
-  }
-
   deleteTemplate(template: ITemplate) {
-    console.log('delete template', template);
     this.templateService.deleteTemplate(template._id).subscribe(() => this.templates = this.templates.filter(item => item._id !== template._id));
   }
 
-  saveForm(event) {
+  saveForm(form) {
+    if(!this.createTemplateForm.valid) {
+      this.createTemplateForm.markAsDirty();
+      return;
+    }
     const ops = this.quill.getContents().ops;
     ops[ops.length-2].insert = ops[ops.length-2].insert.slice(0,-1);
     const template: ITemplate = {
       userId: this.authService.getAuthenticatedUser().user_id,
       groupId: this.groupId,
       title: this.postTitle,
-      description: this.template_description,
+      description: form.description,
       content: ops
     };
 
