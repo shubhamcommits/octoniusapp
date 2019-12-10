@@ -7,7 +7,7 @@
     <div class="flex media-body">
       <!--Tasks smart card-->
 
-      <div *ngIf="today_task_count == 0 && overdueTasks.length == 0; else tasksCard" class="smart-card col" style="margin-right: 70px">
+      <div *ngIf="today_task_count == 0 && overdueTasks.length == 0; else tasksCard" class="smart-card col" style="margin-right: 24px">
         <a style="text-decoration:none; color:inherit;" href="/#/dashboard/overview/mytasks?mytasks=true">
           <div class="card-title mt-1">Tasks</div>
           <div class="row">
@@ -29,7 +29,7 @@
       </div>
 
       <ng-template #tasksCard>
-        <div class="smart-card col" style="margin-right: 70px">
+        <div class="smart-card col" style="margin-right: 24px">
           <a style="text-decoration:none; color:inherit;" href="/#/dashboard/overview/mytasks?mytasks=true">
             <div class="card-title mt-1">Tasks</div>
             <div class="row">
@@ -63,7 +63,7 @@
 
       <!--Agenda smart card-->
       <div *ngIf="todayFirstTwoEvents.length == 0 ; else eventsCard" class="smart-card col"
-           style="margin-right: 70px">
+           style="margin-right: 24px">
         <a style="text-decoration:none; color:inherit;" href="/#/dashboard/overview/myagenda?myagenda=true">
           <div class="row">
             <div class="col-md-8">
