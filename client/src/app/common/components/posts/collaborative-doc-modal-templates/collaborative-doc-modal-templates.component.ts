@@ -47,12 +47,12 @@ export class CollaborativeDocModalTemplatesComponent implements OnInit {
   }
 
   saveForm(form) {
-    if(!this.createTemplateForm.valid) {
+    if (!this.createTemplateForm.valid) {
       this.createTemplateForm.markAsDirty();
       return;
     }
     const ops = this.quill.getContents().ops;
-    ops[ops.length-2].insert = ops[ops.length-2].insert.slice(0,-1);
+    ops[ops.length - 2].insert = ops[ops.length - 2].insert.slice(0, -1);
     const template: ITemplate = {
       userId: this.authService.getAuthenticatedUser().user_id,
       groupId: this.groupId,
@@ -61,7 +61,10 @@ export class CollaborativeDocModalTemplatesComponent implements OnInit {
       content: ops
     };
 
-    this.templateService.saveTemplate(template).subscribe(data => this.templates.push(data));
+    this.templateService.saveTemplate(template).subscribe(data => {
+      this.templates.push(data);
+      this.createTemplateForm.reset()
+    });
   }
 
 }
