@@ -117,9 +117,9 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     [{ 'font': [] }],
     [{ 'align': [] }],
     ['image', 'link'],
-    ['authorship-toggle'],
     ['clean'],
-    ['clear']                                         // remove formatting button
+    ['clear'],// remove formatting button
+     ['authorship-toggle']
   ],
   handlers: {
     'clear': () => {

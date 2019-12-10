@@ -652,6 +652,8 @@ textarea {
 
 button.ql-authorship-toggle:after {
   content: "Track Changes";
+  white-space: nowrap;
+  margin-left: -55px;
 }
 
 button.ql-authorship-toggle {
