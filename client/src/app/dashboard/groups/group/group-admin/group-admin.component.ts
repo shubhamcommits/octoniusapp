@@ -9,6 +9,7 @@ import {NgxUiLoaderService} from 'ngx-ui-loader';
 import Swal from 'sweetalert2';
 import {Location} from '@angular/common';
 import {FormControl} from '@angular/forms'
+import {environment} from "../../../../../environments/environment";
 
 @Component({
   selector: 'app-group-admin',
@@ -25,6 +26,8 @@ export class GroupAdminComponent implements OnInit {
   settings = {};
   fileSharedCheck: boolean = false;
   staticAlertClosed = false;
+  BASE_URL = environment.BASE_URL;
+
   private _message = new Subject<string>();
   alert = {
     class: '',
