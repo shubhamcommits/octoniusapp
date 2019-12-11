@@ -16,6 +16,7 @@ export class OverviewPageHeaderComponent implements OnInit {
   user: User;
   workspaceImageUrl;
   userProfileImage;
+  currentAuthenticatedUser;
 
   user_data;
   alert = {
@@ -24,46 +25,31 @@ export class OverviewPageHeaderComponent implements OnInit {
   };
 
   constructor(private _userService: UserService, private _router: Router,
-    private _workspaceService: WorkspaceService,
-    private ngxService: NgxUiLoaderService,) { }
+              private _workspaceService: WorkspaceService,
+              private ngxService: NgxUiLoaderService) {
+  }
 
-  ngOnInit() {
-    this.ngxService.start(); 
+  async ngOnInit() {
+    this.ngxService.start();
+    setTimeout(() => {
+      this.ngxService.stop();
+    }, 500);
+
     this.user_data = JSON.parse(localStorage.getItem('user'));
 
-    // this.loadUser()
-    // .then(()=>{
-    //    this.loadWorkspace()
-    //   .then(()=>{
-    //      this.loadWorkspace();
-    //   })
-    //   .catch((err)=>{
-    //     console.log('Error while loading the workspace', err);
-    //   })
-    // })
-    // .catch((err)=>{
-    //   console.log('Error while loading the user', err);
-    // })
-    this.loadUser();
+    this.currentAuthenticatedUser = await this.getCurrentAuthenticatedUser();
+
+    (<any>window).Intercom('boot', {
+      app_id: "wlumqtu3",
+      name: this.currentAuthenticatedUser.first_name + ' ' + this.currentAuthenticatedUser.last_name,
+      email: this.currentAuthenticatedUser.email,
+      user_id: this.user_data.user_id,
+      company_name: this.currentAuthenticatedUser.company_name,
+      workspace: this.user_data.workspace.workspace_name,
+      role: this.currentAuthenticatedUser.role
+    });
 
   }
-
-
-  loadUser() {
-    return new Promise((resolve, reject)=>{
-      this._userService.getUser() 
-      .subscribe((res) => {
-        this.user = res.user;
-        this.workspaceImageUrl=environment.BASE_URL + '/uploads/'+ res['user']['profile_pic'];
-        // console.log(this.workspaceImageUrl);
-        resolve();
-      }, (err) => {
-        reject(err);
-      });
-    })
-
-  }
-
 
   loadWorkspace() {
     return new Promise((resolve, reject)=>{
@@ -79,7 +65,21 @@ export class OverviewPageHeaderComponent implements OnInit {
         reject(err);
       });
     })
+  }
 
+  getCurrentAuthenticatedUser() {
+    return new Promise((resolve, reject) => {
+      this._userService.getUser()
+        .subscribe((res) => {
+          this.user = res.user;
+          this.workspaceImageUrl = environment.BASE_URL + '/uploads/' + res['user']['profile_pic'];
+
+          resolve(res['user']);
+        }, (err) => {
+          console.log('Error while fetching the user', err);
+          reject(err);
+        })
+    })
   }
 
 }
