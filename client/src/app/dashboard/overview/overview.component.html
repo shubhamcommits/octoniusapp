@@ -180,13 +180,21 @@
   </div>
 
 
-  <h5 class="title-overview" *ngIf="this.recentPosts.length != 0 || comments.length != 0">Recent activity</h5>
 
   <!-- RECENT POSTS -->
-  <div *ngIf="this.recentPosts.length != 0">
+  <h5 class="title-overview">Recent activity</h5>
 
+  <div *ngIf="recentPosts.length === 0 && comments.length === 0 && emptyActivityImageNumber === 0">
+    <img src='../../../assets/images/empty-recent-activity.svg' style="margin: 0 auto; display:block;">
+  </div>
+  <div
+    *ngIf="recentPosts.length === 0 && comments.length === 0 && emptyActivityImageNumber === 1">
+    <img src='../../../assets/images/empty-recent-activity1.svg' style="margin: 0 auto; display:block;">
+  </div>
 
-    <div *ngFor="let post of this.recentPosts; let i = index;">
+  <div *ngIf="recentPosts.length != 0">
+
+    <div *ngFor="let post of recentPosts; let i = index;">
       <a *ngIf="post?.type != 'document'" style="text-decoration:none; color:inherit;"
          href="/#/dashboard/group/{{post._group?._id}}/post/{{post._id}}" (click)="this.markPostAsRead(post._id)">
 

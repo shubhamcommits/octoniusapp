@@ -43,6 +43,7 @@ export class OverviewComponent implements OnInit {
   done_task_count = 0;
   likedPostsCount = 0;
   followedPostsCount = 0;
+  emptyActivityImageNumber = 0;
 
 
   /***
@@ -175,8 +176,9 @@ export class OverviewComponent implements OnInit {
         console.log('Error while getting followed posts', err);
       });
 
-  }
+    this.emptyActivityImageNumber = Math.round(Math.random());
 
+  }
 
 
   getRecentPosts() {
