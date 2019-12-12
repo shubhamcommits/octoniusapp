@@ -23,7 +23,7 @@
 
         <div class="media card-tile user-list w-50 mb-0" *ngFor=" let item of itemList">
 
-          <img src="{{this.BASE_URL}}/uploads/{{item?.profile_pic}}" onerror="this.src='/assets/images/user.png'"class="feed-avatar-search">
+          <img src="{{BASE_URL}}/uploads/{{item?.profile_pic}}" onerror="this.src='/assets/images/user.png'"class="feed-avatar-search">
           <div class="media-body mt-2">
             <div class="float-left ml-0 mt-1" >
               <h4 class="mt-0 full-name-text">{{item?.full_name}}</h4>
