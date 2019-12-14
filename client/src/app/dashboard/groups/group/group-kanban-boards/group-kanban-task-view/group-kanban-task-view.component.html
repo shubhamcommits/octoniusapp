@@ -90,6 +90,7 @@
     <div style="margin-top: 15px;">
         <button class="btn btn-primary float-left" (click)="saveTaskContent(task)"
             [disabled]="taskContent == task?.content">Update description</button>
+      <app-search-users (onUserSelect)="selectedUser($event)"></app-search-users>
         <!-- DELETE TASK STARTS -->
         <button class="btn btn-danger float-right" (click)="deleteTask(task, user)">delete task</button>
         <!-- DELETE TASK ENDS -->

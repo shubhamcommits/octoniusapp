@@ -990,6 +990,21 @@ const getTasks = async (req, res, next) => {
   }
 };
 
+const getTaskById = async (req, res, next) => {
+  try {
+    return res.status(200).json(
+        await Post.find({
+          type: 'task',
+          _id: req.params.taskId
+        })
+    );
+  } catch (e) {
+    return res.status(500).json({
+      message: 'Unable to retrieve task'
+    });
+  }
+};
+
 const getTasksDone = async (req, res, next) => {
   try {
     const {
@@ -1445,6 +1460,7 @@ module.exports = {
   // Tasks
   getNextTasksDone,
   getTasks,
+  getTaskById,
   getTasksDone,
   getTasksUndoneLastWeek,
   // PULSE

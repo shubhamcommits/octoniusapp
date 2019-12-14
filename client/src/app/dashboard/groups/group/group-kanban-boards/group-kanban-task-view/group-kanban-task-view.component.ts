@@ -324,7 +324,12 @@ export class GroupKanbanTaskViewComponent implements OnInit {
     let columnIndex = this.columns.findIndex((column) => column.title.toLowerCase() === this.task.task._column.title.toLowerCase());
     let taskIndex = this.columns[columnIndex]['tasks'].findIndex((task)=> task._id === this.task._id);
     this.task = $event.task;
-    this.columns[columnIndex]['tasks'][taskIndex] = $event.task;
+    this.columns[columnIndex][ 'tasks'][taskIndex] = $event.task;
+  }
+
+  selectedUser(data) {
+    console.log('taskkkk', this.task);
+    console.log(data);
   }
 
 }
