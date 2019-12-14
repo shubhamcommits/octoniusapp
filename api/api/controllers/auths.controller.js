@@ -242,7 +242,8 @@ const signUp = async (req, res, next) => {
     return res.status(201).json({
       message: `Welcome to ${workspaceUpdate.workspace_name} Workspace!`,
       token,
-      user: currentUser
+      // user: currentUser
+      user
     });
   } catch (err) {
     return sendErr(res, err);

@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, Injector} from '@angular/core';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { PublicFunctions } from '../../public.functions';
 
 @Component({
   selector: 'app-admin-billing',
@@ -7,9 +9,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminBillingComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private utilityService: UtilityService, 
+    private injector: Injector
+    ) { }
 
-  ngOnInit() {
+  userData: any;
+  publicFunctions = new PublicFunctions(this.injector)
+  workspaceData: any;
+
+  async ngOnInit() {
+    this.utilityService.startForegroundLoader();
+    this.userData = await this.publicFunctions.getCurrentUser();
+    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+    return this.utilityService.stopForegroundLoader();
   }
+
 
 }

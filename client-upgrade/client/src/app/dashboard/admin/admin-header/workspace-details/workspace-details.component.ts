@@ -3,6 +3,8 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
 import { PublicFunctions } from 'src/app/dashboard/public.functions';
 import { SubSink } from 'subsink';
+import { SocketService } from 'src/shared/services/socket-service/socket.service';
+import { retry } from 'rxjs/internal/operators/retry';
 
 @Component({
   selector: 'app-workspace-details',
@@ -14,7 +16,8 @@ export class WorkspaceDetailsComponent implements OnInit {
   constructor(
     private utilityService: UtilityService,
     private workspaceService: WorkspaceService,
-    private injector: Injector
+    private injector: Injector,
+    private socketService: SocketService
   ) { }
 
   // USER DATA
@@ -59,6 +62,10 @@ export class WorkspaceDetailsComponent implements OnInit {
               console.log(res);
               this.workspaceData['workspace_avatar'] = res['workspace']['workspace_avatar'];
               this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData);
+              this.workspaceData.workspaceId = workspaceId;
+              this.subSink.add(this.socketService.onEmit('workspaceUpdated', this.workspaceData)
+              .pipe(retry(Infinity))
+              .subscribe((res)=> console.log(res)));
               resolve(this.utilityService.resolveAsyncPromise('Workspace avatar updated!'))
             }, (err) => {
               console.log('Error occured, while updating the workspace avatar', err);

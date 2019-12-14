@@ -252,8 +252,18 @@ export class UtilityService {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
+      confirmButtonText: 'Yes, I am sure!'
     })
+  }
+
+  /**
+   * This function return the SWAL modal
+   * @param title 
+   * @param text 
+   * @param icon 
+   */
+  public getSwalFire(title?: string, text?: string, icon?: SweetAlertIcon){
+    return Swal.fire(title, text, icon);
   }
 
   /**

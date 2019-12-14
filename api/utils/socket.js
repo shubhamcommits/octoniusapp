@@ -1,6 +1,7 @@
 const socketIO = require('socket.io');
 
 const notifications = require('../api/controllers/notifications.controller');
+const workspace = require('../api/controllers/workspaces.controller.old')
 const { Post, Comment } = require('../api/models');
 
 const init = (server) => {
@@ -30,6 +31,16 @@ const init = (server) => {
 
       sendNotificationsFeed(socket, userId, io);
     });
+
+    /* =================
+     * - WORKSPACE DATA -
+     * =================
+     */
+    socket.on('workspaceUpdated', async(data) =>{
+      const roomName = `${data.workspaceId}`;
+      // Broadcast add event to workspace
+      socket.broadcast.to(roomName).emit('workspaceData', data);
+    })
 
     // -| GROUP ACTIVITY ROOM |-
 

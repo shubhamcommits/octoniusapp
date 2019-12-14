@@ -11,11 +11,13 @@ import { AdminHeaderComponent } from './admin-header/admin-header.component';
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
 import { WorkspaceDetailsComponent } from './admin-header/workspace-details/workspace-details.component';
 
-import { WorkplaceInformationComponent } from './admin-general/workplace-information/workplace-information.component';
+import { WorkplaceInformationComponent } from './workplace-information/workplace-information.component';
 import { WorkplaceAddDomainComponent } from './admin-general/workplace-add-domain/workplace-add-domain.component';
 import { WorkplaceInviteUserComponent } from './admin-general/workplace-invite-user/workplace-invite-user.component';
 import { AdminService } from 'src/shared/services/admin-service/admin.service';
 import { FormsModule } from '@angular/forms';
+import { MomentModule } from "ngx-moment";
+import { StripePaymentComponent } from './admin-billing/stripe-payment/stripe-payment.component';
 
 
 @NgModule({
@@ -27,11 +29,12 @@ import { FormsModule } from '@angular/forms';
     WorkspaceDetailsComponent, 
     WorkplaceInformationComponent, 
     WorkplaceAddDomainComponent, 
-    WorkplaceInviteUserComponent],
+    WorkplaceInviteUserComponent, StripePaymentComponent],
   imports: [
     CommonModule,
     AdminRoutingModule,
     FormsModule,
+    MomentModule,
     SharedModule
   ],
   providers:[WorkspaceService, AdminService]

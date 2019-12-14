@@ -1,5 +1,8 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
+
+const { Schema } = mongoose;
 
 const {
   Auth, Group, User, Workspace
@@ -154,11 +157,11 @@ const getWorkspace = async (req, res, next) => {
   try {
     const workspaceId = req.params.workspace_id;
 
-    const workspace = await Workspace.findOne({
+    const workspace = await Workspace
+    .findOne({
       _id: workspaceId
-    })
-      .populate('members', 'first_name last_name role profile_pic email')
-      .select('-billing.subscription_id');
+    })  
+    .select('-billing.subscription_id');
 
     if (!workspace) {
       return sendErr(res, err, 'Workspace not found, provide a valid workspace id!', 404);

@@ -116,7 +116,7 @@ export class AuthUserDetailsComponent implements OnInit {
     this.subSink.add(this.matchPassword.pipe(debounceTime(500), distinctUntilChanged())
     .subscribe((matchStatus) => {
       this.utilityService.clearAllNotifications();
-      let matchPass = (this.user.password.toLowerCase().trim() === this.user.repeatPassword.toLowerCase().trim())
+      let matchPass = (JSON.stringify(this.user.password) === JSON.stringify(this.user.repeatPassword))
         ? this.utilityService.successNotification('Password matches successfully!')
         : this.utilityService.warningNotification("Password doesn\'t match!");
     }))

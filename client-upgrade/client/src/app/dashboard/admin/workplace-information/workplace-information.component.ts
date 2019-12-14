@@ -11,8 +11,10 @@ export class WorkplaceInformationComponent implements OnInit {
   constructor() { }
 
   @Input('workspaceData') workspaceData: any;
+  @Input('routerState') routerState: string;
 
   ngOnInit() {
+    console.log(this.workspaceData);
   }
 
 }

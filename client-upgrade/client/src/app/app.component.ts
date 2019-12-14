@@ -56,6 +56,13 @@ export class AppComponent {
           // Here we send the message to change and update the notifications feed through the shared service
           this.socketService.changeData(notifications);
     })
+
+    let workspaceData = this.socketService.onEvent('workspaceData').pipe(retry(Infinity))
+    .subscribe((workspaceData)=>{
+      // Here we send the message to change and update the workspace data through the shared service
+      this.socketService.changeData(workspaceData);
+      console.log(workspaceData);
+})
   }
 
 }
