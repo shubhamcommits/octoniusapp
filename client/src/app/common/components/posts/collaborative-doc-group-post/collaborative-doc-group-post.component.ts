@@ -1,11 +1,11 @@
-import { Component, OnInit, Output, EventEmitter, Input, Inject,ChangeDetectorRef } from '@angular/core';
-import { ActivatedRoute, Router, Route, ResolveEnd } from '@angular/router';
+import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
 
 import QuillCursors from 'quill-cursors';
-import  ImageResize  from 'quill-image-resize-module';
-import { ImageDrop } from 'quill-image-drop-module';
-import { ImageFormat } from '../../../../shared/utils/image-format/base-image-format';
+import ImageResize from 'quill-image-resize-module';
+import {ImageDrop} from 'quill-image-drop-module';
+import {ImageFormat} from '../../../../shared/utils/image-format/base-image-format';
 
 import ReconnectingWebSocket, {Options} from 'reconnecting-websocket';
 import * as ShareDB from '../../../../../../node_modules/sharedb/lib/client';
@@ -14,23 +14,23 @@ import * as ShareDB from '../../../../../../node_modules/sharedb/lib/client';
 // import {Mark, MarkDelete} from '../../../../shared/utils/quill.module.mark';
 import {Mark} from '../../../../shared/utils/quill.module.mark';
 import * as utils from '../../../../shared/utils/utils';
-import { PostService } from '../../../../shared/services/post.service';
-import { environment } from '../../../../../environments/environment';
-import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { SnotifyService } from 'ng-snotify';
-import { UserService } from '../../../../shared/services/user.service';
-import { GroupService } from '../../../../shared/services/group.service';
+import {PostService} from '../../../../shared/services/post.service';
+import {environment} from '../../../../../environments/environment';
+import {NgxUiLoaderService} from 'ngx-ui-loader';
+import {SnotifyService} from 'ng-snotify';
+import {UserService} from '../../../../shared/services/user.service';
+import {GroupService} from '../../../../shared/services/group.service';
 import * as chance from 'chance';
-import { QuillAutoLinkService } from '../../../../shared/services/quill-auto-link.service';
-import { DocumentService } from '../../../../shared/services/document.service';
-import { Authorship } from '../../../../shared/utils/quill.module.authorship';
-import { LayoutCol, LayoutRow } from '../../../../shared/utils/template-layout/quill.layout';
-import { TableCell, TableRow, TableBody, TableContainer, tableId, TableModule } from '../../../../shared/utils/template-layout/quill.table';
+import {QuillAutoLinkService} from '../../../../shared/services/quill-auto-link.service';
+import {DocumentService} from '../../../../shared/services/document.service';
+import {Authorship} from '../../../../shared/utils/quill.module.authorship';
+import {LayoutCol, LayoutRow} from '../../../../shared/utils/template-layout/quill.layout';
+import {TableBody, TableCell, TableContainer, TableRow} from '../../../../shared/utils/template-layout/quill.table';
 import Mention from 'quill-mention';
-import { MentionBlot } from '../../../../shared/utils/mention-module/quill.mention.blot'
-import { Item } from 'angular2-multiselect-dropdown';
-import deltaToHtml from 'delta-to-html';
-import { DocumentFileService } from '../../../../shared/services/document-file.service';
+import {MentionBlot} from '../../../../shared/utils/mention-module/quill.mention.blot'
+import {DocumentFileService} from '../../../../shared/services/document-file.service';
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {CollaborativeDocModalTemplatesComponent} from "../collaborative-doc-modal-templates/collaborative-doc-modal-templates.component";
 
 Quill.register(MentionBlot);
 Quill.register('modules/mention', Mention);
@@ -92,7 +92,8 @@ var doc;
 @Component({
   selector: 'app-collaborative-doc-group-post',
   templateUrl: './collaborative-doc-group-post.component.html',
-  styleUrls: ['./collaborative-doc-group-post.component.scss']
+  styleUrls: ['./collaborative-doc-group-post.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class CollaborativeDocGroupPostComponent implements OnInit {
 
@@ -116,9 +117,9 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     [{ 'font': [] }],
     [{ 'align': [] }],
     ['image', 'link'],
-    ['authorship-toggle'],
     ['clean'],
-    ['clear']                                         // remove formatting button
+    ['clear'],// remove formatting button
+     ['authorship-toggle']
   ],
   handlers: {
     'clear': () => {
@@ -218,7 +219,8 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     private documentService: DocumentService,
     private groupService: GroupService,
     private quillInitializeService: QuillAutoLinkService,
-    private documentFileService: DocumentFileService,) {
+    private documentFileService: DocumentFileService,
+    private modalService: NgbModal) {
       postId = this._activatedRoute.snapshot.paramMap.get('postId');
       this.groupId = this._activatedRoute.snapshot.paramMap.get('id')
      }
@@ -468,7 +470,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
             source: (searchTerm, renderList, mentionChar) => {
               //let values;
               if (mentionChar === "/") {
-                this.documentFiles = templateMention;
+                console.log('si');
               }
               if (mentionChar === "#" && searchTerm.length === 0) {
 
@@ -482,7 +484,27 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
 
               }
               if (searchTerm.length === 0) {
-                renderList(this.documentFiles, searchTerm);
+                // renderList(this.documentFiles, searchTerm);
+                // this.showModalPopUp = true;
+                const modalRef = this.modalService.open(CollaborativeDocModalTemplatesComponent, {
+                  size: 'lg',
+                  backdrop: 'static',
+                  windowClass: 'w-100 h-100 m-0 p-0'
+                });
+                modalRef.componentInstance.quill = quill;
+                modalRef.componentInstance.groupId = this._activatedRoute.snapshot.params.id;
+                modalRef.componentInstance.postTitle = this.postTitle;
+
+                modalRef.result.then(data => {
+                  if (data.reason === 'addTemplate') {
+                    const ops = quill.getContents().ops;
+                    ops[ops.length-2].insert = ops[ops.length-2].insert.slice(0,-1);
+                    quill.setContents(ops.concat(JSON.parse(data.template.content)));
+                    quill.setSelection(quill.getLength());
+                  }
+                });
+
+                // this.documentFiles = templateMention;
               } else {
                 const matches = [];
                 for (var i = 0; i < this.documentFiles.length; i++)
@@ -496,6 +518,8 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
                   insertItem(item);
                   break;
                 case '/':
+                  console.log('bbbbbbbbbbbbbbbbb');
+                  console.log('lalalalalalla');
                     insertItem(item);
                     this.renderTemplate(item.id);
                   break;

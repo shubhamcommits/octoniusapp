@@ -52,9 +52,6 @@ import { GroupActivityFiltersComponent } from './dashboard/groups/group/group-ac
 import { GroupActivityProgressComponent } from './dashboard/groups/group/group-activity/group-activity-progress/group-activity-progress.component';
 import { GroupComponent } from './dashboard/groups/group/group.component';
 import { GroupHeaderComponent } from './dashboard/groups/group/group-header/group-header.component';
-import { GroupKanbanBoardsComponent } from './dashboard/groups/group/group-kanban-boards/group-kanban-boards.component';
-import { GroupKanbanTaskViewComponent } from './dashboard/groups/group/group-kanban-boards/group-kanban-task-view/group-kanban-task-view.component';
-import { GroupKanbanTaskAssignmentComponent } from './dashboard/groups/group/group-kanban-boards/group-kanban-task-assignment/group-kanban-task-assignment.component';
 import { GroupsPageHeaderComponent } from './dashboard/groups/groups-page-header/groups-page-header.component';
 import { GroupPostComponent } from './dashboard/groups/group/group-post/group-post.component';
 import { GroupSmartAdminComponent } from './dashboard/groups/group/group-smart-admin/group-smart-admin.component';
@@ -190,7 +187,10 @@ import { ngxUiLoaderConfig, ngCircle } from './shared/config/config';
  * 8. !===== DIRECTIVES =====!
  */
 import { ClickStopPropagationDirective } from './shared/directives/click-stop-propagation.directive';
-
+import { GroupKanbanBoardsComponent } from './dashboard/groups/group/group-kanban-boards/group-kanban-boards.component';
+import { GroupKanbanTaskViewComponent } from './dashboard/groups/group/group-kanban-boards/group-kanban-task-view/group-kanban-task-view.component';
+import { GroupKanbanTaskAssignmentComponent } from './dashboard/groups/group/group-kanban-boards/group-kanban-task-assignment/group-kanban-task-assignment.component';
+import { CollaborativeDocModalTemplatesComponent } from './common/components/posts/collaborative-doc-modal-templates/collaborative-doc-modal-templates.component';
 
 /**
  * 9. !===== IMPORTS & DECLARATIONS =====!
@@ -228,6 +228,13 @@ import { ClickStopPropagationDirective } from './shared/directives/click-stop-pr
     // DIRECTIVES
     ClickStopPropagationDirective,
 
+    GroupKanbanBoardsComponent,
+
+    GroupKanbanTaskViewComponent,
+
+    GroupKanbanTaskAssignmentComponent,
+
+    CollaborativeDocModalTemplatesComponent
   ],
   imports: [
 
@@ -257,7 +264,7 @@ import { ClickStopPropagationDirective } from './shared/directives/click-stop-pr
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true },
     { provide: LocationStrategy, useClass: HashLocationStrategy }],
   bootstrap: [AppComponent],
-  entryComponents: [DialogOverviewExampleDialog],
+  entryComponents: [DialogOverviewExampleDialog, CollaborativeDocModalTemplatesComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule { }

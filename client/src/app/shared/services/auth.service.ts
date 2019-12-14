@@ -106,4 +106,8 @@ export class AuthService {
 
   }
 
+  public getAuthenticatedUser() {
+    return JSON.parse(localStorage.getItem('user'));
+  }
+
 }

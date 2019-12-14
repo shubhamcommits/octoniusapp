@@ -11,7 +11,7 @@
 @import '../../assets/scss/fontello2.css';
 @import '~ng-snotify/styles/material';
 @import '../../../node_modules/angular-calendar/css/angular-calendar.css';
-@import '../../../node_modules/quill-mention/src/quill.mention.css';
+@import '../../../node_modules/quill-mention/dist/quill.mention.min.css';
 @import '../../../node_modules/quill-emoji/dist/quill-emoji.css';
 @import '../../../node_modules/quill-authorship/quill.authorship.css';
 
@@ -652,6 +652,8 @@ textarea {
 
 button.ql-authorship-toggle:after {
   content: "Track Changes";
+  white-space: nowrap;
+  margin-left: -55px;
 }
 
 button.ql-authorship-toggle {
@@ -664,7 +666,7 @@ button.ql-authorship-toggle {
 }
 
 .overdue {
-  color: #FF6584;
+  color: #FF6584!important;
 }
 .complete{
   color: #4A90E2;

@@ -556,6 +556,35 @@ const getTodayTasks = async (req, res, next) => {
   }
 };
 
+const getOverdueTasks = async (req, res, next) => {
+  try {
+    const { userId } = req;
+
+    const today = moment().local().format('YYYY-MM-DD');
+
+    const tasks = await Post.find({
+      'task._assigned_to': userId,
+      'task.due_to': {$lt: today},
+      $or: [
+        { 'task.status': 'to do' },
+        { 'task.status': 'in progress' }
+      ]
+    })
+        .sort('-task.due_to')
+        .populate('_group', 'group_name')
+        .populate('_posted_by', 'first_name last_name profile_pic')
+        .populate('task._assigned_to', 'first_name last_name profile_pic')
+        .lean();
+
+    return res.status(200).json({
+      message: `Found ${tasks.length} overdue tasks.`,
+      tasks
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
 const getThisWeekTasks = async (req, res, next) => {
   try {
     const { userId } = req;
@@ -723,6 +752,41 @@ const getThisWeekEvents = async (req, res, next) => {
   }
 };
 
+const getLikedPostsCount = async (req, res, next) => {
+  try {
+    const { userId } = req;
+    const likedPostsCount = await Post.countDocuments({
+      '_liked_by': userId
+    });
+
+    return res.status(200).json({
+      message: `User like ${likedPostsCount} posts.`,
+      likedPostsCount
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+const getFollowedPostsCount = async (req, res, next) => {
+  try {
+    const { userId } = req;
+
+    const followedPostsCount = await Post.countDocuments({
+      '_followers': userId
+    });
+
+
+    return res.status(200).json({
+      message: `User follow ${followedPostsCount} posts.`,
+      followedPostsCount
+    });
+  } catch (err) {
+    return sendErr(res, err);
+  }
+};
+
+
 module.exports = {
   // Main
   edit,
@@ -745,11 +809,15 @@ module.exports = {
   getTasksDone,
   getTodayTasks,
   getThisWeekTasks,
+  getOverdueTasks,
   // Integrations
   addGdriveToken,
   getGdriveToken,
   // Events
   getTodayEvents,
-  getThisWeekEvents
+  getThisWeekEvents,
+  //SocialEngagement
+  getLikedPostsCount,
+  getFollowedPostsCount
 
 };
