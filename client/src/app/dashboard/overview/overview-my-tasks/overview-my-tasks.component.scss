@@ -242,3 +242,31 @@ a{
   padding-top: 5px;
   padding-top: 5px;
 }
+
+.todo-bar {
+  width: 25%;
+  background-color: $pumpkin-orange !important;
+}
+
+.working-bar {
+  width: 64%;
+  background-color: $turquoise !important;
+}
+
+.done-bar {
+  width: 100%;
+  background-color: $dark-sky-blue !important;
+}
+
+.small-bar {
+  height: 8px;
+  margin-top: 0.5rem !important;
+}
+
+.title-nowrap {
+  width: 90%;
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+}
