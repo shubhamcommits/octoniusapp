@@ -154,7 +154,7 @@ color: $dark-text !important;
 .overview-item{
   width: auto;
   font-size: 16px;
-  padding-left: 80px;
+  padding-left: 15px;
   font-family: Poppins;
   font-style: normal;
   font-weight: 500;
@@ -217,9 +217,9 @@ a{
 
 .chevron-right {
   position: absolute;
-  left: 49.17%;
+  left: 20%;
   right: 9.46%;
-  top: -25.5%;
+  top: -36%;
   bottom: 24.44%;
   font-family: Material Icons;
   font-style: normal;
@@ -261,10 +261,11 @@ a{
 .small-bar {
   height: 8px;
   margin-top: 0.5rem !important;
+  width: 48px;
 }
 
 .title-nowrap {
-  width: 90%;
+  width: 55%;
   display: inline-block;
   white-space: nowrap;
   overflow: hidden !important;
