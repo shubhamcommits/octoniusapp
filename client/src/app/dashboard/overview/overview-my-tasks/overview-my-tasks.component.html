@@ -11,7 +11,7 @@
       <!-- My Space Today Tasks -->
       <div *ngIf="task.type== 'task'">
         <div class="media card-tile overview-task">
-          <div class=" row media-body">
+          <div class="row media-body">
             <div class="col-md-1" *ngIf="task.task.status === 'to do'">
               <div class="progress small-bar">
                 <div class="progress-bar todo-bar" role="progressbar"></div>
@@ -34,14 +34,16 @@
             <div class="col-md-8 pl-0">
               <div class="overview-item title-nowrap pl-0" [innerHTML]="task?.title"></div>
             </div>
-            <div class="col-md-1 overview-item small-blue-text" [innerHTML]="task?._group?.group_name"></div>
+            <div class="col-md-1" >
+              <div class="overview-item small-blue-text group-nowrap" [innerHTML]="task?._group?.group_name"></div>
+            </div>
 
-            <div class="col-md-2 pl-0">
-              <div *ngIf="task.overdue" class="overview-item small text-right overdue pl-0">
+            <div class="col-md-2 pl-4">
+              <div *ngIf="task.overdue" class="overview-item small text-right overdue pl-4">
                OVERDUE
               </div>
-              <div *ngIf="!task.overdue" class="overview-item small text-muted text-right pl-0">
-                Due {{task.task.due_to | date:'MMMM d, y' }}
+              <div *ngIf="!task.overdue" class="overview-item small text-muted text-right pl-4">
+                Due {{task.task.due_to | date:'MMM d, y' }}
               </div>
               <div class="chevron-right">
                 <i class="material-icons arrow-forward">
@@ -63,7 +65,7 @@
       <!-- My Space This week Tasks -->
       <div *ngIf="task.type== 'task'">
         <div class="media card-tile overview-task">
-          <div class=" row media-body">
+          <div class="row media-body">
             <div class="col-md-1" *ngIf="task.task.status === 'to do'">
               <div class="progress small-bar">
                 <div class="progress-bar todo-bar" role="progressbar"></div>
@@ -86,11 +88,13 @@
             <div class="col-md-8 pl-0">
               <div class="overview-item title-nowrap pl-0" [innerHTML]="task?.title"></div>
             </div>
-            <div class="col-md-1 overview-item small-blue-text" [innerHTML]="task?._group?.group_name"></div>
+            <div class="col-md-1" >
+              <div class="overview-item small-blue-text group-nowrap" [innerHTML]="task?._group?.group_name"></div>
+            </div>
 
-            <div class="col-md-2 pl-0">
-              <div class="overview-item small text-muted text-right pl-0">
-                Due {{task.task.due_to | date:'MMMM d, y' }}
+            <div class="col-md-2 pl-4">
+              <div class="overview-item small text-muted text-right pl-4">
+                Due {{task.task.due_to | date:'MMM d, y' }}
               </div>
               <div class="chevron-right">
                 <i class="material-icons arrow-forward">
