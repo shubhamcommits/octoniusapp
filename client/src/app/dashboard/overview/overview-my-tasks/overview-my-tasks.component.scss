@@ -158,7 +158,6 @@ color: $dark-text !important;
   font-family: Poppins;
   font-style: normal;
   font-weight: 500;
-  line-height: 24px;
   display: flex;
   align-items: center;
   color: #242D3A;
@@ -217,9 +216,9 @@ a{
 
 .chevron-right {
   position: absolute;
-  left: 20%;
+  left: 25%;
   right: 9.46%;
-  top: -36%;
+  top: -37%;
   bottom: 24.44%;
   font-family: Material Icons;
   font-style: normal;
@@ -266,6 +265,15 @@ a{
 
 .title-nowrap {
   width: 55%;
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+}
+
+
+.group-nowrap {
+  width: 175%;
   display: inline-block;
   white-space: nowrap;
   overflow: hidden !important;
