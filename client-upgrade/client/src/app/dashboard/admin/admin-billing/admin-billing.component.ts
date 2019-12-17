@@ -1,4 +1,4 @@
-import {Component, OnInit, Injector} from '@angular/core';
+import { Component, OnInit, Injector } from '@angular/core';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from '../../public.functions';
 
@@ -10,19 +10,33 @@ import { PublicFunctions } from '../../public.functions';
 export class AdminBillingComponent implements OnInit {
 
   constructor(
-    private utilityService: UtilityService, 
     private injector: Injector
-    ) { }
+  ) { }
 
+  // User Data Variable
   userData: any;
-  publicFunctions = new PublicFunctions(this.injector)
+
+  // Workspace Data Varibale
   workspaceData: any;
 
+  // Public Function Object
+  publicFunctions = new PublicFunctions(this.injector)
+
   async ngOnInit() {
-    this.utilityService.startForegroundLoader();
+
+    let utilityService = this.injector.get(UtilityService)
+    
+    // Starts the foreground loader
+    utilityService.startForegroundLoader();
+
+    // Fetches the user data
     this.userData = await this.publicFunctions.getCurrentUser();
+
+    // Fetches the workspace data
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
-    return this.utilityService.stopForegroundLoader();
+
+    // Stops the foreground loader
+    return utilityService.stopForegroundLoader();
   }
 
 

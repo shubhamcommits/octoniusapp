@@ -9,7 +9,7 @@ const devEnv = require('../development.config');
 
 const prodEnv = require('../production.config');
 
-var compression = require('compression');
+const compression = require('compression');
 
 // Correct REST naming
 const {
@@ -61,15 +61,27 @@ app.use(morgan('dev'));
 app.use(fileUpload());
 app.use('/uploads', express.static(process.env.FILE_UPLOAD_FOLDER));
 
+// const encodeResToGzip = contentType => (req, res, next) => {
+//   req.url = req.url + '.gz';
+//   res.set('Content-Encoding', 'gzip');
+//   res.set('Content-Type', contentType);
+
+//   next();
+// };
+
+// app.get("*.js", encodeResToGzip('text/javascript'));
+// app.get("*.css", encodeResToGzip('text/css'));
+// app.get("*.html", encodeResToGzip('text/html'));
+
 // static folder
-app.use(express.static(path.join(__dirname, '../../client-upgrade/client/dist/client')));
+app.use(express.static(path.join(__dirname, '../../client-upgrade/client/dist')));
 
 // Compressing the application
 app.use(compression());
 
 // Routes which should handle request
 app.all('/', (req, res, next) => {
-  res.sendFile(path.join(__dirname, '../../client-upgrade/client/dist/client/index.html'));
+  res.sendFile(path.join(__dirname, '../../client-upgrade/client/dist/index.html'));
 });
 
 // Correct REST naming

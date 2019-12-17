@@ -34,10 +34,10 @@
       </ng-template>
     </ng-container>
   </div>
-  <div *ngIf="failed_payments.length > 0" class="card-tile">
+  <div *ngIf="failedPayments.length > 0" class="card-tile">
     <h3 class="f-payments-title">Failed payments:</h3>
     <ul class="list-group">
-      <li *ngFor="let f_payment of failed_payments" class="list-group-item disabled">
+      <li *ngFor="let f_payment of failedPayments" class="list-group-item disabled">
         <span>{{f_payment.data.object.period_start | amFromUnix | amDateFormat:'MMMM Do YYYY'}} - {{f_payment.data.object.period_end | amFromUnix | amDateFormat:'MMMM Do YYYY'}}</span>
         <span>{{f_payment.data.object.amount_due | currency:'EUR'}}</span>
         <button (click)="renewSubscription()" class="btn btn-outline-danger">Renew subcription</button>

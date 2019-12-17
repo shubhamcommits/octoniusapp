@@ -1,9 +1,11 @@
 import { Component, OnInit, HostListener, Input, Injector } from '@angular/core';
-import * as moment from 'moment';
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
 import { environment } from 'src/environments/environment';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import * as moment from 'moment';
+
+// STRIPE CHECKOUT VARIABLE
 declare const StripeCheckout: any;
 
 @Component({
@@ -25,14 +27,14 @@ export class StripePaymentComponent implements OnInit {
 
   subscription = null;
 
-  failed_payments;
-  success_payments;
+  failedPayments = [];
+  successPayments = [];
 
   publicFunctions = new PublicFunctions(this.injector);
 
   async ngOnInit() {
-    this.failed_payments = this.workspaceData.billing.failed_payments;
-    this.success_payments = this.workspaceData.billing.success_payments;
+    this.failedPayments = this.workspaceData.billing.failed_payments;
+    this.successPayments = this.workspaceData.billing.success_payments;
     await this.configureHandler();
     await this.subscriptionExistCheck(this.workspaceData);
 
@@ -114,7 +116,7 @@ export class StripePaymentComponent implements OnInit {
         // update the workspace data
         this.workspaceData = res['workspace'];
         // The failed payments should be empty after this
-        this.failed_payments = this.workspaceData.billing.failed_payments;
+        this.failedPayments = this.workspaceData.billing.failed_payments;
         this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData)
       });
   }

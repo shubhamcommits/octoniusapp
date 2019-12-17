@@ -20,21 +20,22 @@ export class WorkspaceDetailsComponent implements OnInit {
     private socketService: SocketService
   ) { }
 
-  // USER DATA
+  // User Data Variable
   @Input('userData') userData: any;
 
-  // WORKSPACE DATA
+  // Workspace Data Variable
   @Input('workspaceData') workspaceData: any;
 
-  // BASE URL OF THE APPLICATION
+  // Base Url of the Application
   @Input('baseUrl') baseUrl: string;
 
-  // CROPPED IMAGE OR OUTPUT IMAGE
+  // Cropped Image of the Input Image File
   croppedImage: File;
 
-  // UNSUBSCRIBE THE DATA
+  // Unsubscribe the Data
   private subSink = new SubSink();
 
+  // Public Functions
   private publicFunctions = new PublicFunctions(this.injector);
 
   ngOnInit() {
@@ -49,7 +50,7 @@ export class WorkspaceDetailsComponent implements OnInit {
   }
 
   /**
-   * 
+   * This function updates the workspace data
    * @param workspaceId 
    * @param workspaceAvatar 
    */
@@ -59,13 +60,16 @@ export class WorkspaceDetailsComponent implements OnInit {
         new Promise((resolve, reject) => {
           this.subSink.add(this.workspaceService.updateWorkspace(workspaceId, workspaceAvatar)
             .subscribe((res) => {
-              console.log(res);
+              // console.log(res);
+              
               this.workspaceData['workspace_avatar'] = res['workspace']['workspace_avatar'];
+              
+              // Updating the data across the shared service in the application
               this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData);
-              this.workspaceData.workspaceId = workspaceId;
-              this.subSink.add(this.socketService.onEmit('workspaceUpdated', this.workspaceData)
-              .pipe(retry(Infinity))
-              .subscribe((res)=> console.log(res)));
+              
+              // Sends the updates to all the user connected in the same workspace
+              this.subSink.add(this.emitWorkspaceData(this.socketService, this.workspaceData))
+
               resolve(this.utilityService.resolveAsyncPromise('Workspace avatar updated!'))
             }, (err) => {
               console.log('Error occured, while updating the workspace avatar', err);
@@ -76,6 +80,15 @@ export class WorkspaceDetailsComponent implements OnInit {
       console.log('There\'s some unexpected error occured, please try again!', err);
       this.utilityService.errorNotification('There\'s some unexpected error occured, please try again!');
     }
+  }
+
+  /**
+   * This functions sends the update to other users about the updated workspace data
+   * @param socketService 
+   * @param workspaceData
+   */
+  emitWorkspaceData(socketService: SocketService, workspaceData: any){
+    return socketService.onEmit('workspaceData', workspaceData).pipe(retry(Infinity)).subscribe()
   }
 
   /**

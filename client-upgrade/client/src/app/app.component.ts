@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, Injector } from '@angular/core';
 import { ConnectionService } from 'ng-connection-service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { retry } from 'rxjs/internal/operators/retry';
 import { map } from 'rxjs/internal/operators/map';
+import { SubSink } from 'subsink';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +12,10 @@ import { map } from 'rxjs/internal/operators/map';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  
+
+  // Subsink
+  private subSink = new SubSink();
+
   /**
    * This function checks the following things in the application
    * @param connectionService - connection service 
@@ -19,50 +23,106 @@ export class AppComponent {
    * 1. Connects with Socket server
    * 2. Checks if the internet connection is valid of not
    * 3. Enabling and calling the @event notificationsFeed from the socket server
+   * 4. Enabling and calling the @event workspaceData from the socket server
    */
   constructor(
-    private connectionService: ConnectionService, 
-    private socketService: SocketService,
-    private utilityService: UtilityService){
+    private injector: Injector
+  ) {
+
+    let connectionService = this.injector.get(ConnectionService);
+    let socketService = this.injector.get(SocketService);
+    let utilityService = this.injector.get(UtilityService);
+
+    // Internet connection validity
+    this.subSink.add(this.checkInternetConnectivity(connectionService, utilityService));
 
     // Socket connection initilisation
-    let connection = this.socketService.onEvent('connect').pipe(retry(Infinity)).subscribe();
-    
-    // Observable which return the value from the shared service, now we can use this as the data transmitter across the entire application
-    let messageData = this.socketService.currentData
-    .pipe(map((res) => res))
-    .subscribe();
-    
-    // Internet connection Validity
-    this.connectionService.monitor()
-    .subscribe((isConnected)=>{
-      if(!isConnected){
-        this.utilityService.warningNotification('Oops, seems like you lost your internet connection', '' ,{
-          showProgressBar: false,
-          closeOnClick: false,
-          backdrop: 0.8,
-          timeout: 500
-        })
-      }
-      else
-        this.utilityService.clearAllNotifications();
-    })
+    this.subSink.add(this.enableSocketConnection(socketService));
 
-    /**
-    * calling the @event notificationsFeed to get the notifications for the user
-    */
-    let notificationsFeed = this.socketService.onEvent('notificationsFeed').pipe(retry(Infinity))
-        .subscribe((notifications)=>{
-          // Here we send the message to change and update the notifications feed through the shared service
-          this.socketService.changeData(notifications);
-    })
+    // Socket Notifications Data Transmitter
+    this.subSink.add(this.enableNotificationDataTransmitter(socketService));
 
-    let workspaceData = this.socketService.onEvent('workspaceData').pipe(retry(Infinity))
-    .subscribe((workspaceData)=>{
-      // Here we send the message to change and update the workspace data through the shared service
-      this.socketService.changeData(workspaceData);
-      console.log(workspaceData);
-})
+    // Notifications Feed Socket
+    this.subSink.add(this.enableNotificationsFeedSocket(socketService));
+
+    // Workspace Data Socket
+    this.subSink.add(this.enableWorkspaceDataSocket(socketService, utilityService));
+  }
+
+  /**
+   * This function checks for the active internet connection
+   * @param connectionService 
+   * @param utilityService 
+   */
+  checkInternetConnectivity(connectionService: ConnectionService, utilityService: UtilityService) {
+    return connectionService.monitor()
+      .subscribe((isConnected) => {
+        if (!isConnected) {
+          utilityService.warningNotification('Oops, seems like you lost your internet connection', '', {
+            showProgressBar: false,
+            closeOnClick: false,
+            backdrop: 0.8,
+            timeout: 500
+          })
+        }
+        else
+          utilityService.clearAllNotifications();
+      })
+  }
+
+  /**
+   * This function enables the socket connection in the application
+   * @param socketService 
+   */
+  enableSocketConnection(socketService: SocketService) {
+    return socketService.onEvent('connect')
+      .pipe(retry(Infinity))
+      .subscribe();
+  }
+
+  /**
+   * Observable which return the value from the shared service, 
+   * now we can use this as the data transmitter across the entire application
+   * @param socketService 
+   */
+  enableNotificationDataTransmitter(socketService: SocketService) {
+    return socketService.currentData.pipe(map((res) => res)).subscribe();
+  }
+
+  /**
+   * This function enables the notifications feed for the user
+   * @param socketService
+   * calling the @event notificationsFeed to get the notifications for the user
+   */
+  enableNotificationsFeedSocket(socketService: SocketService) {
+    return socketService.onEvent('notificationsFeed')
+      .pipe(retry(Infinity))
+      .subscribe((notifications) => {
+        // Here we send the message to change and update the notifications feed through the shared service
+        socketService.changeData(notifications);
+      })
+  }
+
+  /**
+   * This function enables the workspace data sharing over the socket
+   * @param utilityService
+   * @param socketService
+   * calling the @event workspaceData to get the workspace data if there's any change in workspace
+   */
+  enableWorkspaceDataSocket(socketService: SocketService, utilityService: UtilityService) {
+    return socketService.onEvent('workspaceData')
+      .pipe(retry(Infinity))
+      .subscribe((workspaceData) => {
+        // Here we send the message to change and update the workspace data through the shared service
+        utilityService.updateWorkplaceData(workspaceData);
+      })
+  }
+
+  /**
+   * This function unsubscribes all the observables as soon as the component is destroyed
+   */
+  ngOnDestroy(): void {
+    this.subSink.unsubscribe();
   }
 
 }

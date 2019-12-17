@@ -94,7 +94,7 @@ export class PublicFunctions {
             const utilityService = this.injector.get(UtilityService);
             this.subSink.add(workspaceService.getWorkspace(userData['_workspace'])
                 .pipe(retry(3))
-                .subscribe((res) => resolve(res['workspace']),
+                .subscribe((res) =>{console.log(res);resolve(res['workspace'])},
                     (err) => {
                         console.log('Error occured while fetching the workspace details!', err);
                         utilityService.errorNotification('Error occured while fetching the workspace details, please try again!');

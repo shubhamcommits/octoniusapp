@@ -176,6 +176,20 @@ const getWorkspace = async (req, res, next) => {
   }
 };
 
+const getWorkspaceDetails = async (workspaceId) => {
+  try {
+    
+    const workspace = await Workspace.findOne({
+      _id: workspaceId
+    }).lean()
+
+    return workspace;
+
+  } catch (err) {
+    return err;
+  }
+};
+
 const searchWorkspaceUsers = async (req, res, next) => {
   try {
     const query = req.params.query;
@@ -354,6 +368,7 @@ module.exports = {
   updateWorkspace,
   // core
   getWorkspace,
+  getWorkspaceDetails,
   searchWorkspaceUsers,
   // groups
   createNewGroup,

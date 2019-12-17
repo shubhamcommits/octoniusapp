@@ -36,11 +36,11 @@ const init = (server) => {
      * - WORKSPACE DATA -
      * =================
      */
-    socket.on('workspaceUpdated', async(data) =>{
-      const roomName = `${data.workspaceId}`;
-      // Broadcast add event to workspace
-      socket.broadcast.to(roomName).emit('workspaceData', data);
-    })
+    socket.on("workspaceData", async (workspaceData) => {
+      // const workspaceData = await workspace.getWorkspaceDetails(workspaceId);
+
+      io.emit("workspaceData", workspaceData);
+    });
 
     // -| GROUP ACTIVITY ROOM |-
 
