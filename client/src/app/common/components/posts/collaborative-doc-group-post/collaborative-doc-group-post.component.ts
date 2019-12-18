@@ -504,7 +504,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
               if (searchTerm.length === 0) {
                 // renderList(this.documentFiles, searchTerm);
                 // this.showModalPopUp = true;
-                // this.documentFiles = templateMention;
+                this.documentFiles = templateMention;
               } else {
                 const matches = [];
                 for (var i = 0; i < this.documentFiles.length; i++)
@@ -513,10 +513,10 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
               }
             },
             onSelect:(item, insertItem) =>{
-              // switch (item.denotationChar) {
-              //   case '#':
-              //     insertItem(item);
-              //     break;
+              switch (item.denotationChar) {
+                case '#':
+                  insertItem(item);
+                  break;
               //   case '/':
               //     console.log('bbbbbbbbbbbbbbbbb');
               //     console.log('lalalalalalla');
@@ -525,7 +525,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
               //     break;
               //   default:
               //     break;
-              // }
+              }
             }
           }
         },
