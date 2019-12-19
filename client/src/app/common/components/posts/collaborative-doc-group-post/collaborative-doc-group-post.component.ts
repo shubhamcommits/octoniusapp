@@ -97,99 +97,99 @@ var doc;
 })
 export class CollaborativeDocGroupPostComponent implements OnInit {
 
- tableOptions = [];
- toolbarOptions = {
-   container:[
-    [{table: this.tableOptions}, {table: 'append-row'}, {table:'append-col'}],
-    ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-    ['blockquote', 'code-block'],
+  tableOptions = [];
+  toolbarOptions = {
+    container:[
+      [{table: this.tableOptions}, {table: 'append-row'}, {table:'append-col'}],
+      ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+      ['blockquote', 'code-block'],
 
-    [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-    [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-    [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-    [{ 'direction': 'rtl' }],                         // text direction
+      [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+      [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+      [{ 'direction': 'rtl' }],                         // text direction
 
-    [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+      [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
 
-    [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-    [{ 'font': [] }],
-    [{ 'align': [] }],
-    ['image', 'link'],
-    ['clean'],
-    ['clear'],// remove formatting button
-     ['authorship-toggle']
-  ],
-  handlers: {
-    'clear': () => {
+      [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+      [{ 'font': [] }],
+      [{ 'align': [] }],
+      ['image', 'link'],
+      ['clean'],
+      ['clear'],// remove formatting button
+      ['authorship-toggle']
+    ],
+    handlers: {
+      'clear': () => {
 
-      quill.setContents(new Delta().insert("\n"));
+        quill.setContents(new Delta().insert("\n"));
 
-    },
-    'emoji': function () {
-      //console.log('clicked');
-    },
-    // Do not enable the handler, the standard format from quill works for us
-    // 'image': () => {
-    //   //Creates an element which accepts image file as the input
-    //   const input = document.createElement('input');
-    //   input.setAttribute('type', 'file');
-    //   input.click();
+      },
+      'emoji': function () {
+        //console.log('clicked');
+      },
+      // Do not enable the handler, the standard format from quill works for us
+      // 'image': () => {
+      //   //Creates an element which accepts image file as the input
+      //   const input = document.createElement('input');
+      //   input.setAttribute('type', 'file');
+      //   input.click();
 
-    //   // Listen upload local image and save to server
-    //   input.onchange = () => {
-    //     const file = input.files[0];
-    //     const range = quill.getSelection();
-    //     const text = '\nImage is being uploaded, please wait...';
-    //     var length = quill.getLength();
-    //     var currentIndex = quill.getSelection().index;
-    //     quill.insertText(range.index, text, 'bold', true);
+      //   // Listen upload local image and save to server
+      //   input.onchange = () => {
+      //     const file = input.files[0];
+      //     const range = quill.getSelection();
+      //     const text = '\nImage is being uploaded, please wait...';
+      //     var length = quill.getLength();
+      //     var currentIndex = quill.getSelection().index;
+      //     quill.insertText(range.index, text, 'bold', true);
 
-    //     // file type is only image.
-    //     if (/^image\//.test(file.type)) {
-    //       //here we are calling the upload Image API, which saves the image to server
-    //       const fd = new FormData();
-    //       fd.append('attachments', file);
+      //     // file type is only image.
+      //     if (/^image\//.test(file.type)) {
+      //       //here we are calling the upload Image API, which saves the image to server
+      //       const fd = new FormData();
+      //       fd.append('attachments', file);
 
-    //       //Calling Custom XML HTTP REQUEST
-    //       const xhr = new XMLHttpRequest();
+      //       //Calling Custom XML HTTP REQUEST
+      //       const xhr = new XMLHttpRequest();
 
-    //       xhr.open('POST', environment.BASE_API_URL+'/posts/upload', true);
-    //       xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('token'));
+      //       xhr.open('POST', environment.BASE_API_URL+'/posts/upload', true);
+      //       xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('token'));
 
-    //       xhr.onload = () => {
-    //         if (xhr.status === 200) {
-    //           // this is callback data: url
-    //           const url = JSON.parse(xhr.responseText).file[0].modified_name;
+      //       xhr.onload = () => {
+      //         if (xhr.status === 200) {
+      //           // this is callback data: url
+      //           const url = JSON.parse(xhr.responseText).file[0].modified_name;
 
-    //           //Here we insert the image and replace the BASE64 with our custom URL, which is been saved to the server
-    //           //ex - img src = "http://localhost:3000/uploads/image-name.jpg"
-    //           const range = quill.getSelection();
-    //           let quillDelta = quill.insertEmbed(range.index, 'image', environment.BASE_URL+'/uploads/'+url, 'user');
-    //           //console.log(this.quill.getLength(), text.length, range.index);
-    //           //here we delete the uploading text from the editor
-    //           quill.deleteText(currentIndex, text.length);
+      //           //Here we insert the image and replace the BASE64 with our custom URL, which is been saved to the server
+      //           //ex - img src = "http://localhost:3000/uploads/image-name.jpg"
+      //           const range = quill.getSelection();
+      //           let quillDelta = quill.insertEmbed(range.index, 'image', environment.BASE_URL+'/uploads/'+url, 'user');
+      //           //console.log(this.quill.getLength(), text.length, range.index);
+      //           //here we delete the uploading text from the editor
+      //           quill.deleteText(currentIndex, text.length);
 
-    //           // console.log(quillDelta);
+      //           // console.log(quillDelta);
 
-    //           // doc.submitOp(quillDelta, {
-    //           //   source: quill
-    //           // }, (err: any) => {
-    //           //   if (err)
-    //           //     console.error('Submit OP returned an error:', err);
-    //           // });
-    //         }
-    //       };
-    //       xhr.send(fd);
-    //     } else {
-    //       console.warn('You could only upload images.');
-    //     }
-    //   };
+      //           // doc.submitOp(quillDelta, {
+      //           //   source: quill
+      //           // }, (err: any) => {
+      //           //   if (err)
+      //           //     console.error('Submit OP returned an error:', err);
+      //           // });
+      //         }
+      //       };
+      //       xhr.send(fd);
+      //     } else {
+      //       console.warn('You could only upload images.');
+      //     }
+      //   };
 
-    // }
-  }
-};
+      // }
+    }
+  };
   post: any;
   postTitle: any = 'Untitled';
   groupId: any;
@@ -210,20 +210,20 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
 
 
   constructor(private router: Router,
-    private _activatedRoute: ActivatedRoute,
-    private postService: PostService,
-    private _location: Location,
-    public ngxService: NgxUiLoaderService,
-    private snotifyService: SnotifyService,
-    private _userService: UserService,
-    private documentService: DocumentService,
-    private groupService: GroupService,
-    private quillInitializeService: QuillAutoLinkService,
-    private documentFileService: DocumentFileService,
-    private modalService: NgbModal) {
-      postId = this._activatedRoute.snapshot.paramMap.get('postId');
-      this.groupId = this._activatedRoute.snapshot.paramMap.get('id')
-     }
+              private _activatedRoute: ActivatedRoute,
+              private postService: PostService,
+              private _location: Location,
+              public ngxService: NgxUiLoaderService,
+              private snotifyService: SnotifyService,
+              private _userService: UserService,
+              private documentService: DocumentService,
+              private groupService: GroupService,
+              private quillInitializeService: QuillAutoLinkService,
+              private documentFileService: DocumentFileService,
+              private modalService: NgbModal) {
+    postId = this._activatedRoute.snapshot.paramMap.get('postId');
+    this.groupId = this._activatedRoute.snapshot.paramMap.get('id')
+  }
 
   async ngOnInit() {
     for (let r = 1; r <= maxRows; r++) {
@@ -241,13 +241,13 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
     await this.getUser().then(()=>{
       //grab user id then call for authors check
       this.documentService.getAuthors(postId)
-      .subscribe((res)=>{
-        // console.log(res)
+        .subscribe((res)=>{
+          // console.log(res)
           if(res.hasOwnProperty('authors')){
             var got_author:Boolean = false
             for(let i = 0; i < res['authors'].length; i++){
               if(res['authors'][i]['_user_id'] == this.user_data._id){
-    // user is already an author pass author information here and start quill
+                // user is already an author pass author information here and start quill
                 got_author = true
                 this.user_document_information = res['authors'][i]
                 this.initializeQuillEditor()
@@ -258,15 +258,15 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
             //else if this is the first init of this document to import document
             if(got_author == false && res['authors'].length == 0){
               this.groupService.getDocFileForEditorImport(postId)
-              .subscribe((res) => {
-                if(res['htmlConversion'] != null && res['htmlConversion'] != ""){
-                  this.document_imported_information = res['htmlConversion']
-                }
-                this.initializeQuillEditor()
-                this.getPost()
-              }, (err) => {
-                console.log("error",err)
-              });
+                .subscribe((res) => {
+                  if(res['htmlConversion'] != null && res['htmlConversion'] != ""){
+                    this.document_imported_information = res['htmlConversion']
+                  }
+                  this.initializeQuillEditor()
+                  this.getPost()
+                }, (err) => {
+                  console.log("error",err)
+                });
             }
             //else if the user is not in authors loop after import doc init check
             if (got_author == false && res['authors'].length > 0){
@@ -274,25 +274,25 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
               this.getPost();
             }
           }else{
-        //start quill if there are 0 authors for this doc
-              this.initializeQuillEditor()
-              this.getPost();
-            }
-      }, (err)=>{
-        console.log('Error while fetching the authors', err);
-      })
+            //start quill if there are 0 authors for this doc
+            this.initializeQuillEditor()
+            this.getPost();
+          }
+        }, (err)=>{
+          console.log('Error while fetching the authors', err);
+        })
     });
 
     this.groupService.getAllSharedGroupFiles(this.groupId,this.user_data._workspace,this.user_data._id)
-    .subscribe((res) => {
-      if(this.documentFiles.length != 0){
-        this.documentFiles.concat(res['concatAllFiles']['allFiles'])
-      }else{
-        this.documentFiles = res['concatAllFiles']['allFiles']
-      }
-    }, (err) => {
-      console.log('Error while fetching shared files', err);
-    })
+      .subscribe((res) => {
+        if(this.documentFiles.length != 0){
+          this.documentFiles.concat(res['concatAllFiles']['allFiles'])
+        }else{
+          this.documentFiles = res['concatAllFiles']['allFiles']
+        }
+      }, (err) => {
+        console.log('Error while fetching shared files', err);
+      })
 
   }
 
@@ -305,32 +305,32 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
   getUser(){
     return new Promise((resolve, reject)=>{
       this._userService.getUser()
-      .subscribe((res)=>{
-        //console.log('Current User',res['user']);
-        this.user_data = res['user'];
-        resolve();
-      }, (err)=>{
-        console.log('Error while fetching the user', err);
-        reject(err);
-      })
+        .subscribe((res)=>{
+          //console.log('Current User',res['user']);
+          this.user_data = res['user'];
+          resolve();
+        }, (err)=>{
+          console.log('Error while fetching the user', err);
+          reject(err);
+        })
     })
   }
 
   getPost(){
-   return new Promise((resolve, reject)=>{
-    this.postService.getPost(postId)
-    .subscribe((res)=>{
-      //console.log('Fetched post', res);
-      this.postTitle = res['post']['title'];
-      this.post = res['post'];
-      this.comments = this.post.comments;
-      this.comment_count = this.post.comments_count;
-      resolve();
-    }, (err)=>{
-      console.log('Error while fetching the post', err);
-      reject(err);
+    return new Promise((resolve, reject)=>{
+      this.postService.getPost(postId)
+        .subscribe((res)=>{
+          //console.log('Fetched post', res);
+          this.postTitle = res['post']['title'];
+          this.post = res['post'];
+          this.comments = this.post.comments;
+          this.comment_count = this.post.comments_count;
+          resolve();
+        }, (err)=>{
+          console.log('Error while fetching the post', err);
+          reject(err);
+        })
     })
-   })
   }
 
   getPostTitle(event){
@@ -363,13 +363,13 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
   getDocument(postId){
     return new Promise((resolve, reject)=>{
       this.postService.getDocument(postId)
-      .subscribe((res)=>{
-        //console.log('Document Found', res);
-        resolve();
-      }, (err)=>{
-        console.log('Error while fetching the document', err);
-        reject(err);
-      })
+        .subscribe((res)=>{
+          //console.log('Document Found', res);
+          resolve();
+        }, (err)=>{
+          console.log('Error while fetching the document', err);
+          reject(err);
+        })
     })
 
   }
@@ -387,7 +387,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
         connectionTimeout: 4000,
         maxRetries: Infinity,
         debug: false,
-    };
+      };
       // !-- Connect ShareDB and Cursors to ReconnectingWebSocket--! //
       shareDBSocket = new ReconnectingWebSocket(((location.protocol === 'https:') ? 'wss' : 'ws') + '://' + environment.REAL_TIME_URL + '/sharedb', [], options);
       var shareDBConnection = new ShareDB.Connection(shareDBSocket);
@@ -426,7 +426,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
         'value': 'Procedure Template 3'
       }]
 
-       quill = new Quill('#editor', {
+      quill = new Quill('#editor', {
         theme: 'snow',
         modules: {
           toolbar: this.toolbarOptions,
@@ -471,21 +471,6 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
               //let values;
               if (mentionChar === "/") {
                 console.log('si');
-              }
-              if (mentionChar === "#" && searchTerm.length === 0) {
-
-                this.groupService.getAllSharedGroupFiles(this.groupId,this.user_data._workspace,this.user_data._id)
-                .subscribe((res) => {
-                  this.documentFiles = this.postService.removeDuplicates([ ...this.documentFiles, ...res['concatAllFiles']['allFiles']], 'id')
-
-                }, (err) => {
-                  console.log('Error while fetching shared files', err);
-                })
-
-              }
-              if (searchTerm.length === 0) {
-                // renderList(this.documentFiles, searchTerm);
-                // this.showModalPopUp = true;
                 const modalRef = this.modalService.open(CollaborativeDocModalTemplatesComponent, {
                   size: 'lg',
                   backdrop: 'static',
@@ -504,7 +489,22 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
                   }
                 });
 
-                // this.documentFiles = templateMention;
+              }
+              if (mentionChar === "#" && searchTerm.length === 0) {
+                console.log('group files');
+                this.groupService.getAllSharedGroupFiles(this.groupId,this.user_data._workspace,this.user_data._id)
+                  .subscribe((res) => {
+                    this.documentFiles = this.postService.removeDuplicates([ ...this.documentFiles, ...res['concatAllFiles']['allFiles']], 'id')
+
+                  }, (err) => {
+                    console.log('Error while fetching shared files', err);
+                  })
+
+              }
+              if (searchTerm.length === 0) {
+                // renderList(this.documentFiles, searchTerm);
+                // this.showModalPopUp = true;
+                this.documentFiles = templateMention;
               } else {
                 const matches = [];
                 for (var i = 0; i < this.documentFiles.length; i++)
@@ -517,14 +517,14 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
                 case '#':
                   insertItem(item);
                   break;
-                case '/':
-                  console.log('bbbbbbbbbbbbbbbbb');
-                  console.log('lalalalalalla');
-                    insertItem(item);
-                    this.renderTemplate(item.id);
-                  break;
-                default:
-                  break;
+              //   case '/':
+              //     console.log('bbbbbbbbbbbbbbbbb');
+              //     console.log('lalalalalalla');
+              //       insertItem(item);
+              //       this.renderTemplate(item.id);
+              //     break;
+              //   default:
+              //     break;
               }
             }
           }
@@ -533,7 +533,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
 
       let cursorsModule = quill.getModule('cursors');
       console.log('init connection', connection);
-     cursorsModule.createCursor(connection.user_id, connection.name, 'red');
+      cursorsModule.createCursor(connection.user_id, connection.name, 'red');
 
       // Init a blank user connection to store local conn data
       cursors.localConnection = {...connection}
@@ -628,37 +628,37 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
               authorId: authorData._user_id,
               color: authorData.color
             });
-          //add author
-             this.documentService.addAuthor(authorData)
-            .subscribe((res)=>{
-              //console.log(res['message'], res);
-            }, (err)=>{
-              //console.log('Error while adding the author', err);
-            })
-            });
+            //add author
+            this.documentService.addAuthor(authorData)
+              .subscribe((res)=>{
+                //console.log(res['message'], res);
+              }, (err)=>{
+                //console.log('Error while adding the author', err);
+              })
+          });
 
           this.documentService.getAuthors(postId)
-          .subscribe((res)=>{
-            //console.log('Authors for the document', res);
-            if(res.hasOwnProperty('authors')){
-              for(let i = 0; i < res['authors'].length; i++){
-                //if(res['authors'][i]['_user_id'] != connection.user_id){
+            .subscribe((res)=>{
+              //console.log('Authors for the document', res);
+              if(res.hasOwnProperty('authors')){
+                for(let i = 0; i < res['authors'].length; i++){
+                  //if(res['authors'][i]['_user_id'] != connection.user_id){
                   let connectionIndex = data.connections.findIndex(connection => (connection.user_id === res['authors'][i]['_user_id']));
                   if(connectionIndex === -1){
                     var authModule = new Authorship(quill, {
                       enabled: true,
                       authorId: res['authors'][i]['_user_id'],
                       color: res['authors'][i]['color']
-                     });
+                    });
                   }
-                   //console.log(authModule);
-                //}
+                  //console.log(authModule);
+                  //}
+                }
               }
-            }
-          }, (err)=>{
-            console.log('Error while fetching the authors', err);
-          })
-         // console.log('[cursors] Initial list of connections received from server:', data.connections);
+            }, (err)=>{
+              console.log('Error while fetching the authors', err);
+            })
+          // console.log('[cursors] Initial list of connections received from server:', data.connections);
           reportNewConnections = false;
         }
         if (this.switchCheck == 3){
@@ -669,39 +669,39 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
           this.switchCheck = 3
           //console.log(this.dataCounter, data.connections.length, cursors.connections.length)
           this.dataCounter = data.connections.length
-        for (var i = 0; i < data.connections.length; i++) {
-          // Set the source if it's still on active connections
-          if (data.sourceId == data.connections[i].id)
-            source = data.connections[i];
+          for (var i = 0; i < data.connections.length; i++) {
+            // Set the source if it's still on active connections
+            if (data.sourceId == data.connections[i].id)
+              source = data.connections[i];
 
-          if (reportNewConnections && !cursors.connections.find((connection) => {
+            if (reportNewConnections && !cursors.connections.find((connection) => {
               return connection.id == data.connections[i].id
             })) {
 
-            //data.connections = removeDuplicates(data.connections, 'user_id');
-            //console.log('[cursors] User connected:', data.connections[i]);
-            let authorData = {
-              _user_id: data.connections[i]['user_id'],
-              color: data.connections[i]['color'],
-              name: data.connections[i]['name'],
-              _post_id: postId
-            };
-            var authModule = new Authorship(quill, {
-              enabled: true,
-              authorId: authorData._user_id,
-              color: authorData.color
-             });
-               this.documentService.addAuthor(authorData)
-              .subscribe((res)=>{
-                var authModule = new Authorship(quill, {
-                  enabled: true,
-                  authorId: authorData._user_id,
-                  color: authorData.color
-                 });
-                //console.log(res['message'], res);
-              }, (err)=>{
-                //console.log('Error while adding the author', err);
+              //data.connections = removeDuplicates(data.connections, 'user_id');
+              //console.log('[cursors] User connected:', data.connections[i]);
+              let authorData = {
+                _user_id: data.connections[i]['user_id'],
+                color: data.connections[i]['color'],
+                name: data.connections[i]['name'],
+                _post_id: postId
+              };
+              var authModule = new Authorship(quill, {
+                enabled: true,
+                authorId: authorData._user_id,
+                color: authorData.color
               });
+              this.documentService.addAuthor(authorData)
+                .subscribe((res)=>{
+                  var authModule = new Authorship(quill, {
+                    enabled: true,
+                    authorId: authorData._user_id,
+                    color: authorData.color
+                  });
+                  //console.log(res['message'], res);
+                }, (err)=>{
+                  //console.log('Error while adding the author', err);
+                });
               /*this.documentService.getAuthors(postId)
               .subscribe((res)=>{
                 console.log('Authors for the document', res);
@@ -709,10 +709,10 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
               }, (err)=>{
                 console.log('Error while fetching the authors', err);
               })*/
-            //console.log('[cursors] Connections after new user:', data.connections);
+              //console.log('[cursors] Connections after new user:', data.connections);
+            }
           }
         }
-      }
         // Update connections array
         cursors.connections = data.connections;
         // cursors.connections = removeDuplicates(cursors.connections, 'user_id');
@@ -754,18 +754,18 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
       //subscribe ends
       //this.documentService.updateCursors(cursors.localConnection, cursors, cursorsModule);
 
-    // DEBUG
+      // DEBUG
 
-    shareDBConnection.on('state', (state: any, reason: any)=> {
+      shareDBConnection.on('state', (state: any, reason: any)=> {
 
-      if (state === "connected") {
-        cursors.localConnection.user_id = user.user_id;
-        cursors.update();
-      }
+        if (state === "connected") {
+          cursors.localConnection.user_id = user.user_id;
+          cursors.update();
+        }
 
-      //console.log('[sharedb] New connection state: ' + state + ' Reason: ' + reason);
-    });
-     }
+        //console.log('[sharedb] New connection state: ' + state + ' Reason: ' + reason);
+      });
+    }
     catch(err){
       console.log('Error', err);
     }
@@ -778,7 +778,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
         doc.create([{
           insert: '\n'
         }], 'rich-text');
-        this.docStatus = "Updating...";
+      this.docStatus = "Updating...";
       // update editor contents
       let Document = await this.documentService.getDocumentHistory(postId, cursors);
       quill.setContents(Document);
@@ -786,21 +786,21 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
       let tds = document.getElementsByTagName("td");
       if(tds){
         this.documentService.getTableCells(postId)
-        .subscribe((res)=>{
-          console.log('Formatted table cells', res);
-          if(tds.length !=0){
-            for(let i = 0 ; i < tds.length; i++){
-              let tableCellIndex = res['tableCells'].findIndex((element)=> element._cell_id === tds[i]['attributes']['cell_id']['value']);
-              if(tableCellIndex != -1){
-                tds[i]['bgColor'] = res['tableCells'][tableCellIndex]['_color']
-                console.log('Table Cell', tableCellIndex);
-              }
+          .subscribe((res)=>{
+            console.log('Formatted table cells', res);
+            if(tds.length !=0){
+              for(let i = 0 ; i < tds.length; i++){
+                let tableCellIndex = res['tableCells'].findIndex((element)=> element._cell_id === tds[i]['attributes']['cell_id']['value']);
+                if(tableCellIndex != -1){
+                  tds[i]['bgColor'] = res['tableCells'][tableCellIndex]['_color']
+                  console.log('Table Cell', tableCellIndex);
+                }
 
+              }
             }
-          }
-        }, (err)=>{
-          console.log('Error occured while fetching the table cells', err);
-        })
+          }, (err)=>{
+            console.log('Error occured while fetching the table cells', err);
+          })
       }
       editor = document.getElementsByClassName("ql-editor")[0].innerHTML;
       editorAsFile = document.getElementsByClassName("ql-editor")[0];
@@ -849,7 +849,7 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
         });
       }
       else if (source == 'api') {
-       // console.log("An API action triggered this change.");
+        // console.log("An API action triggered this change.");
       }
     }); //text change ends
 
@@ -978,11 +978,11 @@ export class CollaborativeDocGroupPostComponent implements OnInit {
         }
 
         this.documentService.addTableCells(tableCellData)
-        .subscribe((res)=>{
-          console.log("Table Cell Formatted", res);
-        }, (err)=>{
-          console.log("Error while adding table cells!", err);
-        })
+          .subscribe((res)=>{
+            console.log("Table Cell Formatted", res);
+          }, (err)=>{
+            console.log("Error while adding table cells!", err);
+          })
         let td = table.domNode.getElementsByTagName('td')[0];
         td.bgColor = tableCellData._color;
       }
@@ -1083,43 +1083,43 @@ export class DialogOverviewExampleDialog {
   @Input() set receivedParentMessage(value: string) {
     var docTypeValue = `<!DOCTYPE html><html><head></head><body>${value}</body></html>`
     var pars = (new DOMParser()).parseFromString(docTypeValue, "text/html");
-   // console.log(pars,"pars",value)
+    // console.log(pars,"pars",value)
     var x = pars.documentElement.childNodes;
     // console.log(x)
 
     for (let i = 0; i < x.length ; i++) {
       const innerFirstElementNode = Array.from(x[i].childNodes)
-        for (let k = 0; k < innerFirstElementNode.length; k++){
+      for (let k = 0; k < innerFirstElementNode.length; k++){
 
-         //console.log(k,innerFirstElementNode[k],"innerfirst")
-          var el = document.createElement("div");
-          el.appendChild(innerFirstElementNode[k]);
-          this._editorDataArray[this.currentpage] += el.innerHTML
+        //console.log(k,innerFirstElementNode[k],"innerfirst")
+        var el = document.createElement("div");
+        el.appendChild(innerFirstElementNode[k]);
+        this._editorDataArray[this.currentpage] += el.innerHTML
 
-          this.changeDetector.detectChanges()
-          var pagePreviewHeight = document.getElementsByClassName('pagePreview')[this.currentpage].clientHeight;
-          //console.log(pagePreviewHeight,"height")
-          if (pagePreviewHeight <= 1100){
-            if (k >= innerFirstElementNode.length - 1){
-              this._listArrayForPageCheck[this.currentpage] = "29.7"
-            }
-
+        this.changeDetector.detectChanges()
+        var pagePreviewHeight = document.getElementsByClassName('pagePreview')[this.currentpage].clientHeight;
+        //console.log(pagePreviewHeight,"height")
+        if (pagePreviewHeight <= 1100){
+          if (k >= innerFirstElementNode.length - 1){
+            this._listArrayForPageCheck[this.currentpage] = "29.7"
           }
-          if (pagePreviewHeight > 1100){
-          //last element added
-            this._editorDataArray[this.currentpage].replace(el.innerHTML,"")
- ///////// new one here
-             this.currentpage += 1
-            this._editorDataArray = [...this._editorDataArray, ""]
-            this._listArrayForPageCheck = [...this._listArrayForPageCheck, "0"]
-          }
+
         }
+        if (pagePreviewHeight > 1100){
+          //last element added
+          this._editorDataArray[this.currentpage].replace(el.innerHTML,"")
+          ///////// new one here
+          this.currentpage += 1
+          this._editorDataArray = [...this._editorDataArray, ""]
+          this._listArrayForPageCheck = [...this._listArrayForPageCheck, "0"]
+        }
+      }
     }
- }
+  }
 
   @Output() closeView11: EventEmitter<any> = new EventEmitter();
   get receivedParentMessage(): string {
-      return this._editorData;
+    return this._editorData;
   }
   get editorInformation():String{
     return this.receivedParentMessage

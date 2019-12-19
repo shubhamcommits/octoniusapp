@@ -12,6 +12,8 @@ export class OverviewMyTasksComponent implements OnInit {
 
   todayTasks: any = [];
   thisWeekTasks: any = [];
+  overdueTasks: any = [];
+  overdueAndTodayTasks = [];
 
   constructor(private ngxService: NgxUiLoaderService, private _postservice: PostService, private userService: UserService) {
 
@@ -27,6 +29,9 @@ export class OverviewMyTasksComponent implements OnInit {
 
     this.todayTasks = await this.getTodayTasks();
     this.thisWeekTasks = await this.getThisWeekTasks();
+    this.overdueTasks = await this.getOverdueTasks();
+    this.markOverdueTasks();
+    this.overdueAndTodayTasks = this.overdueTasks.concat(this.todayTasks);
   }
 
   getTodayTasks() {
@@ -51,4 +56,22 @@ export class OverviewMyTasksComponent implements OnInit {
     });
   }
 
+  getOverdueTasks() {
+    return new Promise((resolve, reject) => {
+      this.userService.getUserOverdueTasks()
+        .subscribe((res) => {
+          resolve(res['tasks']);
+        }, (err) => {
+          reject([]);
+        });
+    });
+
+  }
+
+  private markOverdueTasks() {
+    this.overdueTasks = this.overdueTasks.map(task => {
+      task.overdue = true;
+      return task;
+    });
+  }
 }

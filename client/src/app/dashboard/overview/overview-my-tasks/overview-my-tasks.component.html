@@ -1,42 +1,49 @@
 <div class="container" style="margin-bottom: 30px">
   <app-overview-page-header></app-overview-page-header>
-  <div *ngIf="this.todayTasks.length == 0">
+  <div *ngIf="this.overdueAndTodayTasks.length == 0">
     <img src='../../../assets/images/today_empty_tasks.svg' style=" margin: 0 auto; display:block; width: 60%;">
   </div>
 
-  <h5 class="title-overview" *ngIf="this.todayTasks.length != 0">Today</h5>
+  <h5 class="title-overview" *ngIf="this.overdueAndTodayTasks.length != 0">Today</h5>
 
-  <div *ngFor="let task of todayTasks; let i = index;">
+  <div *ngFor="let task of overdueAndTodayTasks; let i = index;">
     <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{task._group?._id}}/post/{{task._id}}">
       <!-- My Space Today Tasks -->
       <div *ngIf="task.type== 'task'">
         <div class="media card-tile overview-task">
-          <div class=" row media-body">
+          <div class="row media-body">
             <div class="col-md-1" *ngIf="task.task.status === 'to do'">
-              <div class="kanbanoverview kbn-todo">
-                To Do
+              <div class="progress small-bar">
+                <div class="progress-bar todo-bar" role="progressbar"></div>
               </div>
             </div>
 
             <div class="col-md-1" *ngIf="task.task.status === 'in progress'">
-              <div class="kanbanoverview kbn-working">
-                In Progress
+              <div class="progress small-bar">
+                <div class="progress-bar working-bar" role="progressbar"></div>
               </div>
             </div>
 
             <div class="col-md-1"
                  *ngIf="task.task.status.trim() === 'completed' || task.task.status.trim() === 'done' ">
-              <div class="kanbanoverview kbn-done">
-                Done
+              <div class="progress small-bar">
+                <div class="progress-bar done-bar" role="progressbar"></div>
               </div>
             </div>
 
-            <div class="col-md-6 overview-item" [innerHTML]="task?.title"></div>
-            <div class="col-md-2 overview-item small-blue-text" [innerHTML]="task?._group?.group_name"></div>
+            <div class="col-md-8 pl-0">
+              <div class="overview-item title-nowrap pl-0" [innerHTML]="task?.title"></div>
+            </div>
+            <div class="col-md-1" >
+              <div class="overview-item small-blue-text group-nowrap" [innerHTML]="task?._group?.group_name"></div>
+            </div>
 
-            <div class="col-md-3">
-              <div class="overview-item small text-muted text-right ">
-                Due {{task.task.due_to | date:'MMMM d, y' }}
+            <div class="col-md-2 pl-4">
+              <div *ngIf="task.overdue" class="overview-item small text-right overdue pl-4">
+               OVERDUE
+              </div>
+              <div *ngIf="!task.overdue" class="overview-item small text-muted text-right pl-4">
+                Due {{task.task.due_to | date:'MMM d, y' }}
               </div>
               <div class="chevron-right">
                 <i class="material-icons arrow-forward">
@@ -58,32 +65,36 @@
       <!-- My Space This week Tasks -->
       <div *ngIf="task.type== 'task'">
         <div class="media card-tile overview-task">
-          <div class=" row media-body">
+          <div class="row media-body">
             <div class="col-md-1" *ngIf="task.task.status === 'to do'">
-              <div class="kanbanoverview kbn-todo">
-                To Do
+              <div class="progress small-bar">
+                <div class="progress-bar todo-bar" role="progressbar"></div>
               </div>
             </div>
 
             <div class="col-md-1" *ngIf="task.task.status === 'in progress'">
-              <div class="kanbanoverview kbn-working">
-                In Progress
+              <div class="progress small-bar">
+                <div class="progress-bar working-bar" role="progressbar"></div>
               </div>
             </div>
 
             <div class="col-md-1"
                  *ngIf="task.task.status.trim() === 'completed' || task.task.status.trim() === 'done' ">
-              <div class="kanbanoverview kbn-done">
-                Done
+              <div class="progress small-bar">
+                <div class="progress-bar done-bar" role="progressbar"></div>
               </div>
             </div>
 
-            <div class="col-md-6 overview-item" [innerHTML]="task?.title"></div>
-            <div class="col-md-2 overview-item small-blue-text" [innerHTML]="task?._group?.group_name"></div>
+            <div class="col-md-8 pl-0">
+              <div class="overview-item title-nowrap pl-0" [innerHTML]="task?.title"></div>
+            </div>
+            <div class="col-md-1" >
+              <div class="overview-item small-blue-text group-nowrap" [innerHTML]="task?._group?.group_name"></div>
+            </div>
 
-            <div class="col-md-3">
-              <div class="overview-item small text-muted text-right ">
-                Due {{task.task.due_to | date:'MMMM d, y' }}
+            <div class="col-md-2 pl-4">
+              <div class="overview-item small text-muted text-right pl-4">
+                Due {{task.task.due_to | date:'MMM d, y' }}
               </div>
               <div class="chevron-right">
                 <i class="material-icons arrow-forward">
