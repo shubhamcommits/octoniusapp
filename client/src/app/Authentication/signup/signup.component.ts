@@ -25,6 +25,8 @@ export class SignupComponent implements OnInit {
     class: ''
   };
   processing = false;
+  disabledWorkspace = false;
+
 
   signupForm: FormGroup;
   constructor(private _auth: AuthService,
@@ -34,7 +36,10 @@ export class SignupComponent implements OnInit {
 
   ngOnInit() {
     this.createSignupForm();
-    this._activateRoute.queryParams.subscribe(queryParams => this.user.workspace_name = queryParams.workplace)
+    this._activateRoute.queryParams.subscribe(queryParams => {
+      this.user.workspace_name = queryParams.workplace;
+      this.disabledWorkspace = !!this.user.workspace_name;
+    });
   }
 
   createSignupForm() {
@@ -84,7 +89,7 @@ export class SignupComponent implements OnInit {
                     };
                     this.groupService.updateSmartGroupMembers(group._id, data)
                       .subscribe(
-                        res => // console.log('Added to smart group successfully!'),
+                        r => // console.log('Added to smart group successfully!'),
                         error => {
                           console.error('Could not auto add member to smart group!');
                           console.error(error);
