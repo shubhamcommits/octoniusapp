@@ -88,12 +88,29 @@
         [value]="task?.content" [(ngModel)]="taskContent">
     </quill-editor>
     <div style="margin-top: 15px;">
-        <button class="btn btn-primary float-left" (click)="saveTaskContent(task)"
-            [disabled]="taskContent == task?.content">Update description</button>
-      <app-search-users (onUserSelect)="selectedUser($event)"></app-search-users>
-        <!-- DELETE TASK STARTS -->
-        <button class="btn btn-danger float-right" (click)="deleteTask(task, user)">delete task</button>
-        <!-- DELETE TASK ENDS -->
+      <div class="row">
+        <div class="col-9">
+        <div>
+            <div class="d-inline">
+              <button class="btn btn-primary float-left" (click)="saveTaskContent(task)"
+                      [disabled]="taskContent == task?.content">Update description</button>
+            </div>
+            <div class="d-inline mx-2">
+              <img *ngFor="let follower of followerList.slice(0,sliceLimitFollowerList ? 2 : followerList.length)"  class="followers-img" [src]="BASE_URL + '/uploads/' + follower.profile_pic" onerror="this.src='/assets/images/user.png'"/>
+              <button *ngIf="followerList.length > 2" class="add-followers" (click)="sliceLimitFollowerList = !sliceLimitFollowerList"><mat-icon class="material-icons"> more_horiz </mat-icon></button>
+              <button class="add-followers" (click)="displaySearch = !displaySearch"><mat-icon class="material-icons"> add </mat-icon></button>
+            </div>
+            <div class="d-inline-block search-users">
+              <app-search-users *ngIf="displaySearch" (onUserSelect)="selectedUser($event)"></app-search-users>
+            </div>
+          </div>
+        </div>
+        <div class="col-3">
+          <!-- DELETE TASK STARTS -->
+          <button class="btn btn-danger float-right" (click)="deleteTask(task, user)">delete task</button>
+          <!-- DELETE TASK ENDS -->
+        </div>
+      </div>
     </div>
 
     <!-- TASK CONTENT ENDS -->

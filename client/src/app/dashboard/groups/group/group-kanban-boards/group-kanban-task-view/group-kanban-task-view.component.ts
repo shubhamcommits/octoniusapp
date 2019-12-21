@@ -8,6 +8,7 @@ import { environment } from '../../../../../../environments/environment';
 import moment from 'moment';
 import { ReplaySubject } from 'rxjs/internal/ReplaySubject';
 import { takeUntil } from 'rxjs/internal/operators/takeUntil';
+import {FollowersService} from "../../../../../shared/services/followers.service";
 
 @Component({
   selector: 'app-group-kanban-task-view',
@@ -19,6 +20,7 @@ export class GroupKanbanTaskViewComponent implements OnInit {
   constructor(public modalService: NgbModal, 
     public postService: PostService,
     private groupService: GroupService,
+    private followerService: FollowersService,
     private snotifyService: SnotifyService) { }
 
   @Input('task') task: any;
@@ -62,6 +64,11 @@ export class GroupKanbanTaskViewComponent implements OnInit {
   editingTitle = false;
   postTitle;
 
+  displaySearch = false;
+
+  followerList = [];
+  sliceLimitFollowerList = true;
+
   // Unsubscribe the Data
   private unSubscribe$: ReplaySubject<boolean> = new ReplaySubject(1);
 
@@ -71,6 +78,7 @@ export class GroupKanbanTaskViewComponent implements OnInit {
     this.modelDate = {year: dateTask.year(), month: dateTask.month() + 1, day: dateTask.date()};
     this.taskContent = this.task.content;
     this.postTitle = this.task.title;
+    this.followerService.getFollowers(this.task._id).subscribe(followers => this.followerList = followers);
   }
 
   ngOnDestroy(): void {
@@ -330,6 +338,10 @@ export class GroupKanbanTaskViewComponent implements OnInit {
   selectedUser(data) {
     console.log('taskkkk', this.task);
     console.log(data);
+    this.followerService.setFollower({
+      userId: data._id,
+      taskId: this.task._id
+    }).subscribe(follower => this.followerList.push(follower));
   }
 
 }

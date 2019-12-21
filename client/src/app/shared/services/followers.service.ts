@@ -14,11 +14,11 @@ export class FollowersService {
   constructor(private http: HttpClient) { }
 
 
-  getFollowers(): Observable<Array<User>> {
-    return this.http.get<Array<User>>(`${this.apiUrl}/followers`);
+  getFollowers(taskId = ''): Observable<Array<User>> {
+    return this.http.get<Array<User>>(`${this.apiUrl}/followers/${taskId}`);
   }
 
-  setFollower(follower: User): Observable<User> {
-    return this.http.post<User>(`${this.apiUrl}/followers`, follower);
+  setFollower(follower): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/followers`, follower);
   }
 }

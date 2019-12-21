@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation} from '@angular/core';
 import {FormControl} from "@angular/forms";
 import {GroupService} from "../../../shared/services/group.service";
 import {environment} from "../../../../environments/environment";
@@ -8,7 +8,8 @@ import {Subject} from "rxjs";
 @Component({
   selector: 'app-search-users',
   templateUrl: './search-users.component.html',
-  styleUrls: ['./search-users.component.scss']
+  styleUrls: ['./search-users.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class SearchUsersComponent implements OnInit {
 

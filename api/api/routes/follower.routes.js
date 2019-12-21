@@ -16,6 +16,6 @@ router.use(auth.verifyToken);
 router.use(auth.isLoggedIn);
 
 router.get('/:taskId', followerController.getFollowersForTask);
-router.post('/:taskId', followerController.addToTask);
+router.post('/', followerController.addToTask);
 
 module.exports = router;
