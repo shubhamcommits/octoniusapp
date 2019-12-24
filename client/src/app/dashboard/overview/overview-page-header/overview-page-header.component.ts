@@ -44,9 +44,12 @@ export class OverviewPageHeaderComponent implements OnInit {
       name: this.currentAuthenticatedUser.first_name + ' ' + this.currentAuthenticatedUser.last_name,
       email: this.currentAuthenticatedUser.email,
       user_id: this.user_data.user_id,
-      company_name: this.currentAuthenticatedUser.company_name,
       workspace: this.user_data.workspace.workspace_name,
-      role: this.currentAuthenticatedUser.role
+      role: this.currentAuthenticatedUser.role,
+      phone: this.currentAuthenticatedUser.integrations.mobile_number,
+      company: {
+        name: this.currentAuthenticatedUser.company_name,
+      }
     });
 
   }
