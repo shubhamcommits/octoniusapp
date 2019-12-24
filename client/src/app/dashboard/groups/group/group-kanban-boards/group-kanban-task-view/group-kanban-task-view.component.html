@@ -90,7 +90,8 @@
     <div style="margin-top: 15px;">
       <div class="row">
         <div class="col-9">
-        <div>
+        <div class="row">
+          <div class="col-lg-7 col-xl-6">
             <div class="d-inline">
               <button class="btn btn-primary float-left" (click)="saveTaskContent(task)"
                       [disabled]="taskContent == task?.content">Update description</button>
@@ -100,8 +101,11 @@
               <button *ngIf="followerList.length > 2" class="add-followers" (click)="sliceLimitFollowerList = !sliceLimitFollowerList"><mat-icon class="material-icons"> more_horiz </mat-icon></button>
               <button class="add-followers" (click)="displaySearch = !displaySearch"><mat-icon class="material-icons"> add </mat-icon></button>
             </div>
-            <div class="d-inline-block search-users">
-              <app-search-users *ngIf="displaySearch" (onUserSelect)="selectedUser($event)" [items]="followerList"></app-search-users>
+          </div>
+            <div class="col-5">
+              <div class="d-inline-block search-users">
+                <app-search-users *ngIf="displaySearch" (onUserSelect)="selectedUser($event)" [items]="followerList"></app-search-users>
+              </div>
             </div>
           </div>
         </div>
