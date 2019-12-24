@@ -101,7 +101,7 @@
               <button class="add-followers" (click)="displaySearch = !displaySearch"><mat-icon class="material-icons"> add </mat-icon></button>
             </div>
             <div class="d-inline-block search-users">
-              <app-search-users *ngIf="displaySearch" (onUserSelect)="selectedUser($event)"></app-search-users>
+              <app-search-users *ngIf="displaySearch" (onUserSelect)="selectedUser($event)" [items]="followerList"></app-search-users>
             </div>
           </div>
         </div>

@@ -341,7 +341,7 @@ export class GroupKanbanTaskViewComponent implements OnInit {
     this.followerService.setFollower({
       userId: data._id,
       taskId: this.task._id
-    }).subscribe(follower => this.followerList.push(follower));
+    }).subscribe(() => this.followerList.push(data));
   }
 
 }

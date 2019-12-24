@@ -1,4 +1,13 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation} from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewEncapsulation
+} from '@angular/core';
 import {FormControl} from "@angular/forms";
 import {GroupService} from "../../../shared/services/group.service";
 import {environment} from "../../../../environments/environment";
@@ -11,7 +20,7 @@ import {Subject} from "rxjs";
   styleUrls: ['./search-users.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class SearchUsersComponent implements OnInit {
+export class SearchUsersComponent implements OnInit, OnChanges {
 
   @Input()
   addText = 'add';
@@ -19,6 +28,8 @@ export class SearchUsersComponent implements OnInit {
   alreadyAdded = 'Added';
   @Input()
   joinedText = 'joined';
+  @Input()
+  items = [];
 
   @Output()
   userList: EventEmitter<object> = new EventEmitter();
@@ -47,6 +58,11 @@ export class SearchUsersComponent implements OnInit {
     this.initSearch();
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    console.log(changes.items.currentValue);
+    this.items = changes.items.currentValue || this.items;
+  }
+
   initSearch() {
     this.queryField.valueChanges
       .subscribe(queryValue => {
@@ -70,27 +86,12 @@ export class SearchUsersComponent implements OnInit {
   }
 
   isGroupMember(item: any) {
-    return item._groups.includes(this.group_id);
+    console.log(this.items);
+    return this.items.map(el => el._id).includes(item._id);
   }
 
   onAddNewMember(item: any) {
-    // const data = {
-    //   group: this.group_id,
-    //   members: [item]
-    // };
-    // this.groupService.addMembersInGroup(data)
-    //   .subscribe((res) => {
-    //     this.selectedItems.push(item);
-    //   }, (err) => {
-    //     this.alert.class = 'danger';
-    //     if (err.status) {
-    //       this._message.next(err.error.message);
-    //     } else {
-    //       this._message.next('Error! either server is down or no internet connection');
-    //     }
-    //
-    //   });
-
+    this.selectedItems.push(item);
     this.onUserSelect.emit(item);
 
   }
