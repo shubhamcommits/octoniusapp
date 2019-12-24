@@ -156,6 +156,8 @@ router.get('/:groupId/:alreadyLoaded/getNextFilteredPosts',
 // Get group's to do/in progress tasks
 router.get('/:groupId/tasks', groups.getTasks);
 
+router.get('/:groupId/tasks/:taskId', groups.getTaskById);
+
 // Get 20 most recently created group's completed tasks
 router.get('/:groupId/tasksDone', groups.getTasksDone);
 
