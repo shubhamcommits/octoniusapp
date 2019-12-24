@@ -6,6 +6,10 @@ let win = null;
 const args = process.argv.slice(1),
     serve = args.some(val => val === '--serve');
 
+// const nativeImage = require('electron').nativeImage;
+// let image = nativeImage.createFromPath(__dirname + '/dist/assets/images/octonius-logo.png'); 
+// image.setTemplateImage(true);
+
 function createWindow() {
 
   const electronScreen = screen;
@@ -21,10 +25,9 @@ function createWindow() {
       nodeIntegration: true,
       allowRunningInsecureContent: (serve) ? true : false,
     },
-    icon: `file://${ __dirname}/dist/assets/images/octonius-logo.png`
+    icon: `https://www.octonius.com/wp-content/uploads/2019/08/cropped-octonius-huge-logo.png`
   });
 
-  console.log(win.icon);
 
   if (serve) {
     require('electron-reload')(__dirname, {

@@ -35,7 +35,6 @@ import { WelcomePageComponent } from './common/welcome-page/welcome-page.compone
  */
 
 // CUSTOM MODULES
-import { AuthenticationModule } from './authentication/authentication.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { SharedModule } from './common/shared/shared.module';
 
@@ -89,7 +88,8 @@ import { socketConfig } from 'src/shared/config/socket.config';
  */
 import { GlobalErrorHandler } from 'src/shared/error-handler/global-error-handler';
 import { ServerErrorInterceptor } from 'src/shared/error-handler/server-error.interceptor';
-
+import { GroupsSharedModule } from 'projects/groups/src/app/app.module';
+import { AuthenticationSharedModule } from 'projects/authentication/src/app/app.module';
 
 
 /**
@@ -105,7 +105,7 @@ import { ServerErrorInterceptor } from 'src/shared/error-handler/server-error.in
     PageNotFoundComponent,
 
     // WELCOME PAGE COMPONENT
-    WelcomePageComponent
+    WelcomePageComponent,
   ],
 
   imports: [
@@ -116,10 +116,12 @@ import { ServerErrorInterceptor } from 'src/shared/error-handler/server-error.in
     AppRoutingModule,
 
     // AUTHENTICATION MODULE
-    AuthenticationModule,
+    AuthenticationSharedModule.forRoot(),
 
     // DASHBOARD MODULE
     DashboardModule,
+
+    GroupsSharedModule.forRoot(),
 
     // HTTP CLIENT MODULE
     HttpClientModule,

@@ -39,7 +39,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 // CUSTOM MODULES
-import { SharedModule } from '../common/shared/shared.module';
+import { SharedModule } from 'src/app/common/shared/shared.module';
 
 
 
@@ -49,6 +49,7 @@ import { SharedModule } from '../common/shared/shared.module';
 import { AuthService } from 'src/shared/services/auth-service/auth.service';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+
 
 
 /**

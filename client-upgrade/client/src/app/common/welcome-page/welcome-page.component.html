@@ -12,11 +12,24 @@
                First time here? <br> Let's get you started! <br><br>
             </h3>
             <div class="text-center">
-               <button type="button" class="btn btn-primary btn-block" [routerLink]="['/authentication', 'signup']">
-                  Join your workplace</button>
-               <button type="button" class="btn btn-outline-primary btn-block"
-               [routerLink]="['/authentication', 'new-workplace']">
-               Create new workplace</button>
+               <button type="button" [disabled]="isLoadingJoinWorkspace$ | async" class="btn btn-primary btn-block"
+                  [routerLink]="['/authentication', 'signup']" routerLinkActive="router-link-active"
+                  (click)="nextLoadingJoinWorskpaceState()">
+                  <ng-container *ngIf="isLoadingJoinWorkspace$ | async">
+                     <app-loading-spinner-small></app-loading-spinner-small>
+                  </ng-container>
+                  <ng-container *ngIf="!(isLoadingJoinWorkspace$ | async)">Join your workplace</ng-container>
+               </button>
+
+               <button type="button" class="btn btn-block" [ngClass]="{'btn-primary': (isLoadingCreateWorkspace$ | async) === true,
+               'btn-outline-primary': !(isLoadingCreateWorkspace$ | async)}"
+                  [disabled]="isLoadingCreateWorkspace$ | async" (click)="nextLoadingCreateWorskpaceState()"
+                  [routerLink]="['/authentication', 'new-workplace']" routerLinkActive="router-link-active">
+                  <ng-container *ngIf="isLoadingCreateWorkspace$ | async">
+                     <app-loading-spinner-small></app-loading-spinner-small>
+                  </ng-container>
+                  <ng-container *ngIf="!(isLoadingCreateWorkspace$ | async)">Create new workplace</ng-container>
+               </button>
             </div>
          </div>
       </div>

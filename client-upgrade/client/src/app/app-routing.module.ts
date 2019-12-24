@@ -9,6 +9,8 @@ import { WelcomePageComponent } from './common/welcome-page/welcome-page.compone
 // GUARDS
 import { AuthenticationGuard } from 'src/shared/guards/authentication-guard/authentication.guard';
 import { RoutingGuard } from 'src/shared/guards/routing-guard/routing.guard';
+import { AuthenticationSharedModule } from 'projects/authentication/src/app/app.module';
+
 
 const routes: Routes = [
   // MAIN OR DEFAULT ROUTE
@@ -36,8 +38,8 @@ const routes: Routes = [
   // 'authentication' ROUTE - LAZY LOAD THE AUTHENTICATION MODULE
   {
     path: 'authentication',
-    loadChildren: () => import('./authentication/authentication.module')
-      .then((module) => module.AuthenticationModule),
+    loadChildren: () => import('projects/authentication/src/app/app.module')
+      .then((module) => module.AuthenticationSharedModule),
     canActivate: [RoutingGuard]
   },
 
@@ -50,7 +52,15 @@ const routes: Routes = [
 
 // IMPORTS, EXPORTS, & PROVIDERS
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    
+    // ROUTER MODULE
+    RouterModule.forRoot(routes),
+
+    // AUTHENTICATION MODULE
+    AuthenticationSharedModule.forRoot()
+    
+  ],
   exports: [RouterModule],
   providers: [AuthenticationGuard]
 })

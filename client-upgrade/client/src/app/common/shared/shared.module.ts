@@ -10,6 +10,7 @@ import { InfiniteScrollComponent } from './infinite-scroll/infinite-scroll.compo
 import { ComponentSearchBarComponent } from './component-search-bar/component-search-bar.component';
 import { BrandingPanelComponent } from './branding-panel/branding-panel.component';
 import { RouterModule } from '@angular/router';
+import { LoadingSpinnerSmallComponent } from './loading-spinner-small/loading-spinner-small.component';
 
 
 
@@ -20,7 +21,8 @@ import { RouterModule } from '@angular/router';
     EmailInputComponent,
     LoadingSpinnerComponent,
     InfiniteScrollComponent,
-    ComponentSearchBarComponent
+    ComponentSearchBarComponent,
+    LoadingSpinnerSmallComponent
   ],
   imports: [
     CommonModule,
@@ -34,7 +36,8 @@ import { RouterModule } from '@angular/router';
     ComponentSearchBarComponent,
     EmailInputComponent,
     InfiniteScrollComponent,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    LoadingSpinnerSmallComponent
   ]
 })
 export class SharedModule { }
