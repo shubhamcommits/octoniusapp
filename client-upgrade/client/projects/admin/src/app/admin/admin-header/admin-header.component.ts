@@ -45,6 +45,7 @@ export class AdminHeaderComponent implements OnInit {
 
     // INITIALISE THE WORKSPACE DATA FROM SHARED SERVICE, STORED LOCAL DATA OR FROM SERVER USING PUBLIC FUNCTIONS
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+    console.log('test')
 
   }
 

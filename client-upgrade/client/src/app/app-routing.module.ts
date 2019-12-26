@@ -10,6 +10,7 @@ import { WelcomePageComponent } from './common/welcome-page/welcome-page.compone
 import { AuthenticationGuard } from 'src/shared/guards/authentication-guard/authentication.guard';
 import { RoutingGuard } from 'src/shared/guards/routing-guard/routing.guard';
 import { AuthenticationSharedModule } from 'projects/authentication/src/app/app.module';
+// import { AdminSharedModule } from 'projects/admin/src/app/app.module';
 
 
 const routes: Routes = [
@@ -58,7 +59,9 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
 
     // AUTHENTICATION MODULE
-    AuthenticationSharedModule.forRoot()
+    AuthenticationSharedModule.forRoot(),
+
+    // AdminSharedModule.forRoot()
     
   ],
   exports: [RouterModule],

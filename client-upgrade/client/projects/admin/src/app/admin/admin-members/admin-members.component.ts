@@ -1,7 +1,7 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { SubSink } from 'subsink';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { PublicFunctions } from '../../public.functions';
+import { PublicFunctions } from 'src/app/dashboard/public.functions';
 import { environment } from 'src/environments/environment';
 
 @Component({

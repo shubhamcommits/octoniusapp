@@ -1,6 +1,6 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { PublicFunctions } from '../../public.functions';
+import { PublicFunctions } from 'src/app/dashboard/public.functions';
 
 @Component({
   selector: 'app-admin-general',
