@@ -191,6 +191,7 @@ import { GroupKanbanBoardsComponent } from './dashboard/groups/group/group-kanba
 import { GroupKanbanTaskViewComponent } from './dashboard/groups/group/group-kanban-boards/group-kanban-task-view/group-kanban-task-view.component';
 import { GroupKanbanTaskAssignmentComponent } from './dashboard/groups/group/group-kanban-boards/group-kanban-task-assignment/group-kanban-task-assignment.component';
 import { CollaborativeDocModalTemplatesComponent } from './common/components/posts/collaborative-doc-modal-templates/collaborative-doc-modal-templates.component';
+import { SearchUsersComponent } from './common/components/search-users/search-users.component';
 
 /**
  * 9. !===== IMPORTS & DECLARATIONS =====!
@@ -234,7 +235,9 @@ import { CollaborativeDocModalTemplatesComponent } from './common/components/pos
 
     GroupKanbanTaskAssignmentComponent,
 
-    CollaborativeDocModalTemplatesComponent
+    CollaborativeDocModalTemplatesComponent,
+
+    SearchUsersComponent
   ],
   imports: [
 

@@ -24,7 +24,8 @@ const {
   columnsRoutes,
   documentFileRoutes,
   groupFileSectionRoutes,
-  templateRoutes
+  templateRoutes,
+  followerRoutes
 } = require('./routes');
 
 const app = express();
@@ -103,6 +104,7 @@ app.use('/api/group', groupsRoutes);
 app.use('/api/workspace', workspacesRoutes);
 
 app.use('/api/templates', templateRoutes);
+app.use('/api/followers', followerRoutes);
 
 // Invalid routes handling middleware
 app.use((req, res, next) => {

@@ -1,0 +1,35 @@
+.input-search {
+  //width: 50%;
+  height: 38px;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 21px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #000000;
+
+}
+
+input:focus {
+  outline: none;
+  border-bottom: 1px solid royalblue;
+}
+
+.full-name-text {
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.btn-text {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 16px;
+  text-align: center;
+  letter-spacing: 0.02em;
+  color: #C4C4C4;
+}
+

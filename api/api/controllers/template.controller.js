@@ -3,8 +3,6 @@ const Template = require('./../models/template.model');
 class TemplateController {
 
    async getAll(req, res) {
-       console.log('bodyyyyyyyyyyyyyyyyyy', req.body);
-       console.log('paramssssssssssssssss', req.params);
         return res.status(200).json(
             await Template.find({
                 groupId: req.params.groupId
@@ -13,8 +11,6 @@ class TemplateController {
     };
 
    async create(req, res) {
-       console.log('bodyyyyyyyyyyyyyyyyyy', req.body);
-       console.log('paramssssssssssssssss', req.params);
        try {
 
            res.status(200).json(
