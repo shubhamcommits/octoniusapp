@@ -21,7 +21,9 @@ const followerService = {
     async getAllFollowers(taskId, res) {
         try {
             const followers = await follower.find({taskId: taskId});
-            return res.status(200).json(await user.find({ "_id": {$in: followers.map(f => f.userId)}}));
+            return res.status(200)
+                      .json(await user.find({ "_id": {$in: followers.map(f => f.userId)}})
+                                      .select('full_name profile_pic'));
         } catch (e) {
             console.log(e);
             return res.status(500).json({
