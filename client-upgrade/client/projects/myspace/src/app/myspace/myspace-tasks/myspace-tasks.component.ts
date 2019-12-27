@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Injector } from '@angular/core';
+import { UserService } from 'src/shared/services/user-service/user.service';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-myspace-tasks',
@@ -7,9 +9,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MyspaceTasksComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private injector: Injector,
+    private utilityService: UtilityService
+  ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.utilityService.startForegroundLoader();
+    return this.utilityService.stopForegroundLoader();
+  }
+
+  async getTodayTasks() {
+    let userService = this.injector.get(UserService);
+    userService.getUserTodayTasks()
+    .then((res)=>{
+      return res['tasks']
+    })
+    .catch(()=>{
+      return [];
+    })
   }
 
 }

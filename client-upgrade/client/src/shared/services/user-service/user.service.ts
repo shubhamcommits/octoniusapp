@@ -56,5 +56,30 @@ export class UserService {
     return this._http.get(this.BASE_API_URL + `/groups/${data.groupId}/user/${data.userId}/calendar/${data.year}/${data.month}`);
   }
 
+  getUserTodayEvents(data) {
+    return this._http.get(this.BASE_API_URL + `/users/${data.userId}/todayEvents`);
+  }
+
+  getUserThisWeekEvents(data) {
+    return this._http.get(this.BASE_API_URL + `/users/${data.userId}/weeklyEvents`);
+  }
+
+  getUserOverdueTasks() {
+    return this._http.get<any>(this.BASE_API_URL + `/users/overdueTasks`);
+  }
+
+  getLikedPostsCount() {
+    return this._http.get<any>(this.BASE_API_URL + `/users/likedPostsCount`);
+  }
+
+  getFollowedPostsCount() {
+    return this._http.get<any>(this.BASE_API_URL + `/users/followedPostsCount`);
+  }
+
+  getUserTodayTasks() {
+    return this._http.get(this.BASE_API_URL + `/users/todayTasks`).toPromise();
+  }
+
+
 
 }
