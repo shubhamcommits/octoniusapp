@@ -986,10 +986,6 @@ const changeTaskStatus = async (req, res, next) => {
     // send email to user and poster when task status is done
     if (status === 'done') {
 
-      // const followerId = (await postService.getNextFollowerForTask(postId)).userId;
-      // await Post.findOneAndUpdate({ _id: postId }, { 'task.completed_at' : moment(), 'task._assigned_to': followerId, 'task.unassigned': 'No' } );
-      // await postService.removeFollower(postId, followerId);
-
       await postService.completeTask(postId);
 
       sendMail.userCompletedTask(req.userId, postUpdated);

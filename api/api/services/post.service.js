@@ -1,5 +1,9 @@
 const moment = require('moment');
 
+const notifications = require('../controllers/notifications.controller');
+
+const { sendMail } = require('../../utils');
+
 const Follower = require('../models/follower.model');
 const Post = require('../models/post.model');
 
@@ -14,13 +18,19 @@ const postUtil = {
     },
 
     async completeTaskWithFollowers(postId, followerId) {
-        await Post.findOneAndUpdate({ _id: postId }, {
+       const postUpdated = await Post.findOneAndUpdate({ _id: postId }, {
                                             'task.completed_at' : moment(),
                                             'task._assigned_to': followerId,
                                             'task.unassigned': 'No',
                                             'task.status': 'to do'
-                                        });
+                                        })      .populate('task._assigned_to', 'first_name last_name profile_pic')
+            .populate('_group', '_id group_name')
+            .populate('_posted_by', 'first_name last_name profile_pic');
+
         await postService.removeFollower(postId, followerId);
+
+        await notifications.newTaskReassignment(postUpdated);
+        await sendMail.taskReassigned(postUpdated);
     },
 
     async completeTaskWithNoFollowers(postId) {
