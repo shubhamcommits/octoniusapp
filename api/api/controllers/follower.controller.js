@@ -1,4 +1,4 @@
-const followerService = require('./../services/index');
+const {followerService} = require('./../services/index');
 
 
 class FollowerController {

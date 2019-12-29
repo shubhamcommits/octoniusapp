@@ -1,4 +1,5 @@
 const moment = require('moment');
+const mongoose = require('mongoose');
 
 const notifications = require('./notifications.controller');
 const {
@@ -7,6 +8,7 @@ const {
 const { sendMail, sendErr } = require('../../utils');
 const fs = require('fs');
 
+const { postService } = require('../services/index');
 
 /*  ======================
  *  -- POST CONTROLLERS --
@@ -983,7 +985,9 @@ const changeTaskStatus = async (req, res, next) => {
 
     // send email to user and poster when task status is done
     if (status === 'done') {
-      await Post.findOneAndUpdate({ _id: postId }, { 'task.completed_at' : moment() });
+
+      await postService.completeTask(postId);
+
       sendMail.userCompletedTask(req.userId, postUpdated);
     } else if (status === 'in progress') {
       await Post.findOneAndUpdate({ _id: postId }, { 'task.started_at': moment(), 'task.completed_at': null });
