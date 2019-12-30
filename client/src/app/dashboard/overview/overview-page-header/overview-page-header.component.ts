@@ -49,6 +49,7 @@ export class OverviewPageHeaderComponent implements OnInit {
       phone: this.currentAuthenticatedUser.integrations.mobile_number,
       company: {
         name: this.currentAuthenticatedUser.company_name,
+        id: this.currentAuthenticatedUser._workspace
       }
     });
 
@@ -76,7 +77,6 @@ export class OverviewPageHeaderComponent implements OnInit {
         .subscribe((res) => {
           this.user = res.user;
           this.workspaceImageUrl = environment.BASE_URL + '/uploads/' + res['user']['profile_pic'];
-
           resolve(res['user']);
         }, (err) => {
           console.log('Error while fetching the user', err);
