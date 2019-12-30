@@ -6,6 +6,7 @@ import { AdminGuard } from 'src/shared/guards/admin-guard/admin.guard';
 
 import { AdminSharedModule } from 'projects/admin/src/app/app.module';
 import { MySpaceSharedModule } from 'projects/myspace/src/app/app.module';
+import { GroupsSharedModule } from 'projects/groups/src/app/app.module';
 
 const routes: Routes = [
   {
@@ -15,7 +16,11 @@ const routes: Routes = [
         loadChildren: () => import('projects/myspace/src/app/app.module')
           .then((module) => module.MySpaceSharedModule)
       },
-      { path: 'groups', loadChildren: './groups/groups.module#GroupsModule' },
+      {
+        path: 'groups',
+        loadChildren: () => import('projects/groups/src/app/app.module')
+          .then((module) => module.GroupsSharedModule)
+      },
       {
         path: 'admin',
         loadChildren: () => import('projects/admin/src/app/app.module')
@@ -30,6 +35,7 @@ const routes: Routes = [
   imports: [
     RouterModule.forChild(routes),
     AdminSharedModule.forRoot(),
+    GroupsSharedModule.forRoot(),
     MySpaceSharedModule.forRoot()
   ],
   exports: [RouterModule],

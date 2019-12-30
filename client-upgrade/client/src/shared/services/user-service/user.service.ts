@@ -64,10 +64,6 @@ export class UserService {
     return this._http.get(this.BASE_API_URL + `/users/${data.userId}/weeklyEvents`);
   }
 
-  getUserOverdueTasks() {
-    return this._http.get<any>(this.BASE_API_URL + `/users/overdueTasks`);
-  }
-
   getLikedPostsCount() {
     return this._http.get<any>(this.BASE_API_URL + `/users/likedPostsCount`);
   }
@@ -76,8 +72,25 @@ export class UserService {
     return this._http.get<any>(this.BASE_API_URL + `/users/followedPostsCount`);
   }
 
+  /**
+   * USER TODAY'S TASK
+   */
   getUserTodayTasks() {
     return this._http.get(this.BASE_API_URL + `/users/todayTasks`).toPromise();
+  }
+
+  /**
+   * USER THIS WEEK'S TASK
+   */
+  getUserThisWeekTasks() {
+    return this._http.get(this.BASE_API_URL + `/users/weeklyTasks`).toPromise();
+  }
+
+  /**
+   * USER OVERDUE TASK
+   */
+  getUserOverdueTasks() {
+    return this._http.get(this.BASE_API_URL + `/users/overdueTasks`).toPromise();
   }
 
 

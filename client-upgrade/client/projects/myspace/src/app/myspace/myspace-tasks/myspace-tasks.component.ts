@@ -14,20 +14,50 @@ export class MyspaceTasksComponent implements OnInit {
     private utilityService: UtilityService
   ) { }
 
+  todayTasks: any = [];
+  thisWeekTasks: any = [];
+  overdueTasks: any = [];
+  overdueAndTodayTasks = [];
+
   async ngOnInit() {
     this.utilityService.startForegroundLoader();
+    this.todayTasks = await this.getUserTodayTasks();
+    this.thisWeekTasks = await this.getUserThisWeekTasks();
+    this.overdueTasks = await this.getUserOverdueTasks();
     return this.utilityService.stopForegroundLoader();
   }
 
-  async getTodayTasks() {
+  async getUserTodayTasks() {
     let userService = this.injector.get(UserService);
     userService.getUserTodayTasks()
-    .then((res)=>{
-      return res['tasks']
-    })
-    .catch(()=>{
-      return [];
-    })
+      .then((res) => {
+        return res['tasks']
+      })
+      .catch(() => {
+        return [];
+      })
+  }
+
+  async getUserThisWeekTasks() {
+    let userService = this.injector.get(UserService);
+    userService.getUserThisWeekTasks()
+      .then((res) => {
+        return res['tasks']
+      })
+      .catch(() => {
+        return [];
+      })
+  }
+
+  async getUserOverdueTasks() {
+    let userService = this.injector.get(UserService);
+    userService.getUserOverdueTasks()
+      .then((res) => {
+        return res['tasks']
+      })
+      .catch(() => {
+        return [];
+      })
   }
 
 }

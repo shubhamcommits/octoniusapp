@@ -6,7 +6,7 @@ import { TimeAgoPipe } from 'time-ago-pipe';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { NavbarComponent } from '../common/navbar/navbar.component';
 // import { MyspaceModule } from './myspace/myspace.module';
-import { GroupsModule } from './groups/groups.module';
+// import { GroupsModule } from './groups/groups.module';
 import { UserModule } from './user/user.module';
 import { PushNotificationsComponent } from '../common/navbar/push-notifications/push-notifications.component';
 import { UserService } from 'src/shared/services/user-service/user.service';
@@ -19,7 +19,7 @@ import { AuthorizationInterceptorService } from 'src/shared/services/authorizati
     CommonModule,
     DashboardRoutingModule,
     // MyspaceModule,
-    GroupsModule,
+    // GroupsModule,
     UserModule
   ],
   providers:[
