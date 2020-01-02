@@ -20,8 +20,9 @@ p {
   font-family: $poppins;
   font-weight: 500;
   font-size: 14px;
-  color:#787878;
+  color: #787878;
   text-align: center;
+
   &:hover {
     text-decoration: none;
     background: #ffffff;
@@ -33,7 +34,8 @@ p {
 .active {
   text-decoration: none;
 }
-a:active{
+
+a:active {
   text-decoration: none;
 }
 
@@ -45,45 +47,16 @@ a:active{
     display: flex;
     align-items: center;
   }
-  .form-control{
+
+  .form-control {
     margin-right: 10px;
   }
 }
 
 .navbar-brand .icon-octo-logo {
-  color:$brand-primary;
+  color: $brand-primary;
 }
 
-.triangle {
-	width: 0;
-	height: 0;
-	position: absolute;
-	border-left: 8px solid transparent;
-	border-right: 8px solid transparent;
-	border-bottom: 8px solid #787878;
-	top: -8px;
-	right: 3%;
-	margin-left: -8px;
-}
 
-.notif-bullet-transparent {
-
-  color: transparent;
-  background: transparent;
-
-}
-
-.notification-back {
-  background: #005fd5;
-  color: inherit;
-}
-
-a.notifications.btn.dropdown-toggle-split.dropdown-toggle::after
-{
-  color: transparent;
-}
-.text-small{
-  font-size: 10px;
-}
 
 
