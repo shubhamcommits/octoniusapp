@@ -27,7 +27,8 @@ const routes: Routes = [
           .then((module) => module.AdminSharedModule),
         canActivate: [AdminGuard]
       },
-      { path: 'user', loadChildren: './user/user.module#UserModule' }]
+      // { path: 'user', loadChildren: './user/user.module#UserModule' }
+    ]
   },
 ];
 

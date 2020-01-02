@@ -3,9 +3,8 @@ import { NgModule, ModuleWithProviders } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { CommonModule } from '@angular/common';
-
 import { GroupsModule } from './groups/groups.module';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [

@@ -5,6 +5,7 @@ import { SocketService } from 'src/shared/services/socket-service/socket.service
 import { retry } from 'rxjs/internal/operators/retry';
 import { map } from 'rxjs/internal/operators/map';
 import { SubSink } from 'subsink';
+import { Observable, Observer, fromEvent, merge } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -47,6 +48,9 @@ export class AppComponent {
 
     // Workspace Data Socket
     this.subSink.add(this.enableWorkspaceDataSocket(socketService, utilityService));
+
+    // Internet connection validity(replace it with the ng-connection-service, maybe?)
+    this.subSink.add(this.createOnline$().subscribe(isOnline => console.log(isOnline)));
   }
 
   /**
@@ -116,6 +120,19 @@ export class AppComponent {
         // Here we send the message to change and update the workspace data through the shared service
         utilityService.updateWorkplaceData(workspaceData);
       })
+  }
+
+  /**
+   * This function checks for the active internet connection 
+   */
+  createOnline$() {
+    return merge<boolean>(
+      fromEvent(window, 'offline').pipe(map(() => false)),
+      fromEvent(window, 'online').pipe(map(() => true)),
+      new Observable((sub: Observer<boolean>) => {
+        sub.next(navigator.onLine);
+        sub.complete();
+      }));
   }
 
   /**
