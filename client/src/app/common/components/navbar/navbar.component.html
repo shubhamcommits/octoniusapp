@@ -1,35 +1,25 @@
 <nav class="navbar navbar-expand-md fixed-top">
   <div class="container">
 
-    <a class="navbar-brand" routerLink="/dashboard/overview">
+    <a *ngIf="navbarLevel == 0" class="navbar-brand" routerLink="/dashboard/overview">
       <i class="icon-octo-logo"></i>
     </a>
+
+    <a *ngIf="navbarLevel != 0" class="navbar-brand" (click)="goBack()" style="cursor: pointer;">
+      <a class="navbar-brand" routerLink="/dashboard/overview">
+        <i class="material-icons" style="line-height: 45px;">arrow_back </i>
+      </a>
+    </a>
+
+
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent"
             aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"><i class="material-icons">menu</i></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="nav mr-auto" id="example-one">
-        <li class="nav-item" id="li_overview">
-          <a class="nav-link" routerLink="/dashboard/overview" (click)="underline_navbar_overview()"
-             routerLinkActive="active"><i class="material-icons">whatshot</i> <br> My Space
-            <span class="sr-only">(current)</span>
-          </a>
-        </li>
-        <li class="nav-item" id="li_group">
-          <a class="nav-link" routerLink="/dashboard/groups" (click)="underline_navbar_group()"
-             routerLinkActive="active"><i class="material-icons">group</i><br> Groups
-            <span class="sr-only">(current)</span>
-          </a>
-        </li>
-        <li *ngIf="user?.role=='admin' || user?.role=='owner'" id="li_admin" class="nav-item">
-          <a class="nav-link" routerLink="/dashboard/admin/general" (click)="underline_navbar_admin()"
-             routerLinkActive="active"><i class="material-icons">settings</i> <br> Admin
-            <span class="sr-only">(current)</span>
-          </a>
-        </li>
-      </ul>
+      <main-navbar *ngIf="navbarLevel == 0" [user]="user" class="mr-auto"></main-navbar>
+      <second-level-navbar *ngIf="navbarLevel == 1" class="mr-auto"></second-level-navbar>
 
       <!-- SEARCH BAR -->
       <search-bar style="width:20% !important" [user]="user"></search-bar>

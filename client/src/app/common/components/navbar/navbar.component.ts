@@ -1,12 +1,14 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {AuthService} from '../../../shared/services/auth.service';
-import {Router} from '@angular/router';
+import {NavigationEnd, Router} from '@angular/router';
 import {UserService} from '../../../shared/services/user.service';
 import {User} from '../../../shared/models/user.model';
 import io from 'socket.io-client';
 import {environment} from '../../../../environments/environment'
 import {BehaviorSubject} from 'rxjs';
 import {Subject} from 'rxjs/Subject';
+import {filter} from "rxjs/operators";
+import {Location} from "@angular/common";
 
 const cacheBuster$ = new Subject<void>();
 
@@ -43,53 +45,50 @@ export class NavbarComponent implements OnInit {
   });
 
   BASE_URL = environment.BASE_URL;
+  navbarLevel = 0;
 
 
-  constructor(private _auth: AuthService, private _userService: UserService, private _router: Router, private router: Router) {
+  constructor(private _auth: AuthService, private _userService: UserService, private _router: Router, private router: Router, private location: Location) {
     this.user_data = JSON.parse(localStorage.getItem('user'));
+
   }
 
   async ngOnInit() {
     await this.getUserProfile();
-
+    this.setNavbarLevel(this.router.url);
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        this.setNavbarLevel(event.urlAfterRedirects);
+      });
   }
 
-  underline_navbar_overview() {
-    const x = document.getElementById("li_overview");
-    const y = document.getElementById("li_group");
-    const z = document.getElementById("li_admin");
+  private setNavbarLevel(url: String) {
+    console.log(url);
 
-    if (z != null) {
-      x.className = "active";
-      y.className = "none";
-      z.className = "none";
+    if (url == '/dashboard/overview') {
+      this.navbarLevel = 0;
+    } else if (url == '/dashboard/groups') {
+      this.navbarLevel = 1;
+    } else if (url == '/dashboard/admin/general') {
+      this.navbarLevel = 1;
+    } else if (url == '/dashboard/pulse') {
+      this.navbarLevel = 1;
+    } else if (url.includes('/dashboard/overview') && url != '/dashboard/overview/myworkplace?myworkplace=true') {
+        this.navbarLevel = 1
+
+    } else {
+      this.navbarLevel = 0;
     }
-
   }
 
-
-  underline_navbar_group() {
-    const x = document.getElementById("li_overview");
-    const y = document.getElementById("li_group");
-    const z = document.getElementById("li_admin");
-    if (z != null) {
-      y.className = "active";
-      x.className = "none";
-      z.className = "none";
+  goBack() {
+    if (this.navbarLevel == 1) {
+      this.router.navigate(['/dashboard/overview']);
+    } else {
+      this.location.back();
     }
 
-  }
-
-
-  underline_navbar_admin() {
-    const x = document.getElementById("li_overview");
-    const y = document.getElementById("li_group");
-    const z = document.getElementById("li_admin");
-    if (z != null) {
-      z.className = "active";
-      y.className = "none";
-      x.className = "none";
-    }
   }
 
 

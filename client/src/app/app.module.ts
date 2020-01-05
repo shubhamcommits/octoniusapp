@@ -187,6 +187,8 @@ import { GroupKanbanTaskAssignmentComponent } from './dashboard/groups/group/gro
 import { CollaborativeDocModalTemplatesComponent } from './common/components/posts/collaborative-doc-modal-templates/collaborative-doc-modal-templates.component';
 import { SearchUsersComponent } from './common/components/search-users/search-users.component';
 import { NotificationsBarComponent } from './common/components/navbar/notifications-bar/notifications-bar.component';
+import { MainNavbarComponent } from './common/components/navbar/main-navbar/main-navbar.component';
+import { SecondLevelNavbarComponent } from './common/components/navbar/second-level-navbar/second-level-navbar.component';
 
 /**
  * 9. !===== IMPORTS & DECLARATIONS =====!
@@ -233,7 +235,11 @@ import { NotificationsBarComponent } from './common/components/navbar/notificati
 
     SearchUsersComponent,
 
-    NotificationsBarComponent
+    NotificationsBarComponent,
+
+    MainNavbarComponent,
+
+    SecondLevelNavbarComponent
   ],
   imports: [
 

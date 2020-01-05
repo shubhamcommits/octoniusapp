@@ -1,0 +1,23 @@
+@import "../../../../../assets/scss/variables.scss";
+
+.navbar {
+  min-height: 80px;
+  flex-direction: row !important;
+  background-color: #fff;
+  box-shadow: 0 4px 24px 0 rgba(37, 38, 94, 0.1);
+}
+
+.nav-link {
+  font-family: $poppins;
+  font-weight: 500;
+  font-size: 14px;
+  color: #787878;
+  text-align: center;
+
+  &:hover {
+    text-decoration: none;
+    background: #ffffff;
+    color: $brand-primary !important;
+    border-radius: 6px;
+  }
+}
