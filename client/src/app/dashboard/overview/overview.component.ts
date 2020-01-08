@@ -34,7 +34,6 @@ export class OverviewComponent implements OnInit {
    */
   todayPosts = [];
   todayFirstTwoEvents = [];
-  thisWeekTasks = [];
   overdueTasks = [];
   today_event_count = 0;
   today_task_count = 0;
@@ -144,14 +143,6 @@ export class OverviewComponent implements OnInit {
         console.log('Error while getting today posts', err);
       });
 
-    this.getThisWeekTasks()
-      .then(() => {
-        this.ngxService.stop();
-      })
-      .catch((err) => {
-        console.log('Error while getting this week tasks', err);
-      });
-
     this.getOverdueTasks()
       .then(() => {
         this.ngxService.stop();
@@ -257,24 +248,12 @@ export class OverviewComponent implements OnInit {
   }
 
 
-  getThisWeekTasks() {
-    return new Promise((resolve, reject) => {
-      this.userService.getUserThisWeekTasks()
-        .subscribe((res) => {
-          this.thisWeekTasks = res['tasks'];
-          this.countTasksForToday();
-        }, (err) => {
-          reject([]);
-        });
-    });
-  }
-
-
   getOverdueTasks() {
     return new Promise((resolve, reject) => {
       this.userService.getUserOverdueTasks()
         .subscribe((res) => {
           this.overdueTasks = res['tasks'];
+          this.today_task_count = +this.overdueTasks.length;
         }, (err) => {
           reject([]);
         });
@@ -307,7 +286,7 @@ export class OverviewComponent implements OnInit {
   private getTodayTasksAndEvents() {
     for (let i = 0; i < this.todayPosts.length; i++) {
       if (this.todayPosts[i].type === 'task') {
-        this.computeTasksCounts(this.todayPosts[i].task, true);
+        this.computeTasksCounts(this.todayPosts[i].task);
       }
       if (this.todayPosts[i].type === 'event') {
         this.computeEventsData(this.todayPosts[i]);
@@ -316,13 +295,7 @@ export class OverviewComponent implements OnInit {
     }
   }
 
-  private countTasksForToday() {
-    for (let i = 0; i < this.thisWeekTasks.length; i++) {
-      this.computeTasksCounts(this.thisWeekTasks[i].task, false);
-    }
-  }
-
-  private computeTasksCounts(task: any, countDoneTasks: boolean) {
+  private computeTasksCounts(task: any) {
     if (task.status === 'to do') {
       this.today_task_count++;
       this.to_do_task_count++;
@@ -333,7 +306,7 @@ export class OverviewComponent implements OnInit {
       this.in_progress_task_count++;
     }
 
-    if (countDoneTasks && (task.status.trim() === 'completed' || task.status.trim() === 'done')) {
+    if (task.status.trim() === 'completed' || task.status.trim() === 'done') {
       this.today_task_count++;
       this.done_task_count++;
     }

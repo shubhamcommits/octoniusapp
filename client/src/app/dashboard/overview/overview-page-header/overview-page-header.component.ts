@@ -39,19 +39,25 @@ export class OverviewPageHeaderComponent implements OnInit {
 
     this.currentAuthenticatedUser = await this.getCurrentAuthenticatedUser();
 
-    (<any>window).Intercom('boot', {
-      app_id: "wlumqtu3",
-      name: this.currentAuthenticatedUser.first_name + ' ' + this.currentAuthenticatedUser.last_name,
-      email: this.currentAuthenticatedUser.email,
-      user_id: this.user_data.user_id,
-      workspace: this.user_data.workspace.workspace_name,
-      role: this.currentAuthenticatedUser.role,
-      phone: this.currentAuthenticatedUser.integrations.mobile_number,
-      company: {
-        name: this.currentAuthenticatedUser.company_name,
-        id: this.currentAuthenticatedUser._workspace
-      }
-    });
+    /**
+     * DISABLING INTERCOM STARTS
+     */
+    // (<any>window).Intercom('boot', {
+    //   app_id: "wlumqtu3",
+    //   name: this.currentAuthenticatedUser.first_name + ' ' + this.currentAuthenticatedUser.last_name,
+    //   email: this.currentAuthenticatedUser.email,
+    //   user_id: this.user_data.user_id,
+    //   workspace: this.user_data.workspace.workspace_name,
+    //   role: this.currentAuthenticatedUser.role,
+    //   phone: this.currentAuthenticatedUser.integrations.mobile_number,
+    //   company: {
+    //     name: this.currentAuthenticatedUser.company_name,
+    //     id: this.currentAuthenticatedUser._workspace
+    //   }
+    // });
+    /**
+     * DISABLING INTERCOM ENDS
+     */
 
   }
 
