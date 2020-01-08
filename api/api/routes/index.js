@@ -11,6 +11,8 @@ const documentFileRoutes = require('./document-file.routes');
 const groupFileSectionRoutes = require('./group-file-uploads.routes');
 const templateRoutes = require('./template.routes');
 const followerRoutes = require('./follower.routes');
+const externalRoutes = require('./external.routes');
+
 
 module.exports = {
   authsRoutes,
@@ -25,5 +27,6 @@ module.exports = {
   documentFileRoutes,
   groupFileSectionRoutes,
   templateRoutes,
-  followerRoutes
+  followerRoutes,
+  externalRoutes
 };
