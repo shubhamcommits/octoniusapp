@@ -11,7 +11,7 @@ const init = () => {
     process.env.SK_STRIPE = 'sk_live_WupyMoQf93S59gwTqmYpmWel';
     process.env.stripe_plan = 'plan_EK1rDLfKr9NRkU';
     process.env.WEBHOOK_PS_SECRET = 'whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn';
+    process.env.HEADER_EXTERNAL_KEY = 'HEADERIDSHAREDFOROCTONIUS';
   };
   
 module.exports = { init }; 
-  
