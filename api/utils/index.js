@@ -7,6 +7,7 @@ const socket = require('./socket');
 // auth/
 const auth = require('./auth/auth');
 const authorization = require('./auth/authorization');
+const externalRequestHandler = require('./auth/external_requests_handler');
 
 // billing/
 const billing = require('./billing/billing');
@@ -47,5 +48,6 @@ module.exports = {
   sendMail,
 
   //    search
-  search
+  search,
+  externalRequestHandler
 };

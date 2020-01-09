@@ -31,6 +31,7 @@ services:
       - SK_STRIPE=sk_live_WupyMoQf93S59gwTqmYpmWel
       - stripe_plan=plan_EK1rDLfKr9NRkU
       - WEBHOOK_PS_SECRET=whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn
+      - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
     depends_on:
       - mongodb
       - redis
