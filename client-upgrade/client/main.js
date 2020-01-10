@@ -1,14 +1,10 @@
-const { app, BrowserWindow, screen } =  require('electron');
+const { app, BrowserWindow, screen } = require('electron');
 const path = require('path');
 const url = require('url');
 
 let win = null;
 const args = process.argv.slice(1),
-    serve = args.some(val => val === '--serve');
-
-// const nativeImage = require('electron').nativeImage;
-// let image = nativeImage.createFromPath(__dirname + '/dist/assets/images/octonius-logo.png'); 
-// image.setTemplateImage(true);
+  serve = args.some(val => val === '--serve');
 
 function createWindow() {
 

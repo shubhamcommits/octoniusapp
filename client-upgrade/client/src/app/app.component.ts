@@ -50,7 +50,7 @@ export class AppComponent {
     this.subSink.add(this.enableWorkspaceDataSocket(socketService, utilityService));
 
     // Internet connection validity(replace it with the ng-connection-service, maybe?)
-    this.subSink.add(this.createOnline$().subscribe(isOnline => console.log(isOnline)));
+    this.subSink.add(this.createOnline$().subscribe(isOnline => console.log('Network is online - ',isOnline, 'replace this config with the library?')));
   }
 
   /**

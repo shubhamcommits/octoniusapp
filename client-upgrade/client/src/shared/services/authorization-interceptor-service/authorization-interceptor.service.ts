@@ -10,6 +10,10 @@ export class AuthorizationInterceptorService implements HttpInterceptor {
 
   constructor(private injector: Injector) { }
 
+  /**
+   * This function handles and intercepts the incoming request to check if that has a valid @name AuthorizationHeader or not
+   * Fetches the token stored on @localhost named as @name authToken
+   */
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>{
     const storageService = this.injector.get(StorageService);
     if(storageService.existData('authToken')){

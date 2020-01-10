@@ -49,14 +49,14 @@ router.get('/public/all/:workspaceId', groups.getPublicGroups);
 // Get all public groups user is a part of
 router.get('/public/usersGroups/:workspaceId/:userId', groups.getUsersPublicGroups);
 
-// Get name id of groups of user
-router.get('/all/pulse/:workspaceId', groups.getUserGroups);
+// Get first 10 groups present in the workplace for pulse
+router.get('/all/pulse/:workspaceId/groups/', groups.getPulseGroups);
+
+// Get next 5 groups present in the workplace for pulse
+router.get('/all/pulse/:workspaceId/nextGroups/:lastGroupId', groups.getNextPulseGroups);
 
 // Get query id of pulse groups of user
-router.get('/all/pulse/query/:workspaceId', groups.getUserGroupsQuery);
-
-// Get query id of pulse groups of user
-router.get('/all/pulse/query/next/:workspaceId/:nextGroup', groups.getNextUserGroupsQuery);
+// router.get('/all/pulse/query/next/:workspaceId/:nextGroup', groups.getNextUserGroupsQuery);
 
 // Get a user's smart groups within the given workspace
 router.get('/smart/:workspace', groups.getSmartGroups);

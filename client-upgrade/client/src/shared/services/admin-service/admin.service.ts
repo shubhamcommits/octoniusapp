@@ -5,12 +5,12 @@ import { environment } from 'src/environments/environment';
 @Injectable()
 export class AdminService {
 
-  BASE_API_URL = environment.BASE_API_URL;
-
   constructor(private _http: HttpClient) { }
 
+  baseURL = environment.BASE_API_URL;
+
   /**
-   * This function is responsible for adding the domain to list of domains from which sign-up to a particular workspace is allowed
+   * This function is responsible for adding the domain to list of domains from which sign-up to a particular workspace is allowed.
    * @param workspaceId 
    * @param domain 
    */
@@ -20,16 +20,16 @@ export class AdminService {
       domain: domain.trim()
     }
 
-    return this._http.post(this.BASE_API_URL + `/workspaces/${workspaceId}/domains`, domainData);
+    return this._http.post(this.baseURL + `/workspaces/${workspaceId}/domains`, domainData);
   }
 
   /**
-   * 
-   * @param workspaceId 
-   * @param domain 
+   * This function is resposible for removing the domain from allowed domains array list.
+   * @param workspaceId
+   * @param domain - string name of the domain is required
    */
   removeDomain(workspaceId: string, domain: string) {
-    return this._http.delete(this.BASE_API_URL + `/workspaces/${workspaceId}/domains/${domain}`);
+    return this._http.delete(this.baseURL + `/workspaces/${workspaceId}/domains/${domain}`);
   }
 
   /**
@@ -37,14 +37,15 @@ export class AdminService {
    * @param workspaceId 
    */
   getAllowedDomains(workspaceId: string) {
-    return this._http.get(this.BASE_API_URL + '/workspaces/'+ workspaceId + '/domains');
+    return this._http.get(this.baseURL + '/workspaces/'+ workspaceId + '/domains');
   }
 
   /**
    * This function is responsible for inviting a user to Join your current workspace
    * @param workspaceId - workspaceId of the current workspace
    * @param email - Email of the user, whom we would like to send the invitation
-   * @param userId - 
+   * @param userId - UserId as the string of the person who is inviting.
+   * @param userId (make it fetch from the redis-cache, maybe?)
    */
   inviteNewUserViaEmail(workspaceId: string, email: string, userId: string) {
     
@@ -54,14 +55,14 @@ export class AdminService {
       user_id: userId
     }
 
-    return this._http.post(this.BASE_API_URL + '/workspace/inviteUserViaEmail', emailData);
+    return this._http.post(this.baseURL + '/workspace/inviteUserViaEmail', emailData);
   }
 
   updateUserRole(data) {
-    return this._http.put<any>(this.BASE_API_URL + '/workspace/updateUserRole', data);
+    return this._http.put<any>(this.baseURL + '/workspace/updateUserRole', data);
   }
 
   removeUser(workspaceId, userId) {
-    return this._http.delete(this.BASE_API_URL + `/workspaces/${workspaceId}/users/${userId}`);
+    return this._http.delete(this.baseURL + `/workspaces/${workspaceId}/users/${userId}`);
   }
 }

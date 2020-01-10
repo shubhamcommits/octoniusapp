@@ -9,34 +9,41 @@ export class GroupsService {
 
   constructor(private _http: HttpClient) { }
 
-  BASE_API_URL = environment.BASE_API_URL;
+  baseURL = environment.BASE_API_URL;
 
-  getAllPulse(workspaceId: string) {
-    return this._http.get(this.BASE_API_URL + '/groups/all/pulse/' + workspaceId);
+  /**
+   * This function is responsible for fetching first 10 groups present in a workspace
+   * @param workspaceId 
+   */
+  getPulseGroups(workspaceId: string) {
+    return this._http.get(this.baseURL + `/groups/all/pulse/${workspaceId}/groups`)
+    .toPromise()
   }
 
-  getAllPulseQuery(workspaceId: string) {
-    return this._http.get(this.BASE_API_URL + '/groups/all/pulse/query/' + workspaceId);
-  }
-
-  getNextPulseQuery(workspaceId: string, nextQuery: string) {
-    return this._http.get(this.BASE_API_URL + '/groups/all/pulse/query/next/' + workspaceId + '/' + nextQuery);
+  /**
+   * This function is responsible for next 5 groups present in a workspace
+   * @param workspaceId 
+   * @param lastGroupId 
+   */
+  getNextPulseGroups(workspaceId: string, lastGroupId: string){
+    return this._http.get(this.baseURL + `/groups/all/pulse/${workspaceId}/nextGroups/${lastGroupId}`)
+    .toPromise()
   }
 
   getPulseTotalNumTasks(groupId: string) {
-    return this._http.get(this.BASE_API_URL + '/group/' + groupId + '/totalNumTasks');
+    return this._http.get(this.baseURL + '/group/' + groupId + '/totalNumTasks');
   }
 
   getPulseNumTodoTasks(groupId: string) {
-    return this._http.get(this.BASE_API_URL + '/group/' + groupId + '/numTodoTasks');
+    return this._http.get(this.baseURL + '/group/' + groupId + '/numTodoTasks');
   }
 
   getPulseNumInProgressTasks(groupId: string) {
-    return this._http.get(this.BASE_API_URL + '/group/' + groupId + '/numInProgressTasks');
+    return this._http.get(this.baseURL + '/group/' + groupId + '/numInProgressTasks');
   }
 
   getPulseNumDoneTasks(groupId: string) {
-    return this._http.get(this.BASE_API_URL + '/group/' + groupId + '/numDoneTasks');
+    return this._http.get(this.baseURL + '/group/' + groupId + '/numDoneTasks');
   }
 
   editPulseDesc(groupId: string, description: string) {
@@ -46,6 +53,6 @@ export class GroupsService {
       description: description
     }
 
-    return this._http.post(this.BASE_API_URL + '/groups/' + groupId + '/pulse/editDescription', pulseData);
+    return this._http.post(this.baseURL + '/groups/' + groupId + '/pulse/editDescription', pulseData);
   }
 }
