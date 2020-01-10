@@ -189,6 +189,7 @@ import { SearchUsersComponent } from './common/components/search-users/search-us
 import { NotificationsBarComponent } from './common/components/navbar/notifications-bar/notifications-bar.component';
 import { MainNavbarComponent } from './common/components/navbar/main-navbar/main-navbar.component';
 import { SecondLevelNavbarComponent } from './common/components/navbar/second-level-navbar/second-level-navbar.component';
+import { ThirdLevelNavbarComponent } from './common/components/navbar/third-level-navbar/third-level-navbar.component';
 
 /**
  * 9. !===== IMPORTS & DECLARATIONS =====!
@@ -239,7 +240,9 @@ import { SecondLevelNavbarComponent } from './common/components/navbar/second-le
 
     MainNavbarComponent,
 
-    SecondLevelNavbarComponent
+    SecondLevelNavbarComponent,
+
+    ThirdLevelNavbarComponent
   ],
   imports: [
 

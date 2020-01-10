@@ -6,11 +6,8 @@ import {User} from '../../../shared/models/user.model';
 import io from 'socket.io-client';
 import {environment} from '../../../../environments/environment'
 import {BehaviorSubject} from 'rxjs';
-import {Subject} from 'rxjs/Subject';
 import {filter} from "rxjs/operators";
 import {Location} from "@angular/common";
-
-const cacheBuster$ = new Subject<void>();
 
 var profile_pic: any;
 
@@ -48,7 +45,8 @@ export class NavbarComponent implements OnInit {
   navbarLevel = 0;
 
 
-  constructor(private _auth: AuthService, private _userService: UserService, private _router: Router, private router: Router, private location: Location) {
+  constructor(private _auth: AuthService, private _userService: UserService, private _router: Router,
+              private router: Router, private location: Location) {
     this.user_data = JSON.parse(localStorage.getItem('user'));
 
   }
@@ -70,14 +68,15 @@ export class NavbarComponent implements OnInit {
       this.navbarLevel = 0;
     } else if (url == '/dashboard/groups') {
       this.navbarLevel = 1;
-    } else if (url == '/dashboard/admin/general') {
+    } else if (url == '/dashboard/admin/general' || url == '/dashboard/admin/members' || url == '/dashboard/admin/billing') {
       this.navbarLevel = 1;
     } else if (url == '/dashboard/pulse') {
       this.navbarLevel = 1;
     } else if (url.includes('/dashboard/overview') && url != '/dashboard/overview/myworkplace?myworkplace=true') {
-        this.navbarLevel = 1
-
-    } else {
+        this.navbarLevel = 1;
+    } else if (url == '/dashboard/overview/myworkplace?myworkplace=true' || url.includes('/dashboard/group/')) {
+      this.navbarLevel = 2;
+    }else {
       this.navbarLevel = 0;
     }
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 
 @Component({
@@ -23,7 +23,7 @@ export class SecondLevelNavbarComponent implements OnInit {
       this.navbarType = 'MY_SPACE';
     } else if (url == '/dashboard/groups' || url == '/dashboard/pulse') {
       this.navbarType = 'WORK';
-    } else if (url == '/dashboard/admin/general') {
+    } else if (url.includes('/dashboard/admin/')) {
       this.navbarType = 'ADMIN';
     }
   }
