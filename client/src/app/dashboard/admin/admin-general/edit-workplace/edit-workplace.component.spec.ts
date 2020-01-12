@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GroupsPageHeaderComponent } from './groups-page-header.component';
+import { EditWorkplaceComponent } from './edit-workplace.component';
 
-describe('GroupsPageHeaderComponent', () => {
-  let component: GroupsPageHeaderComponent;
-  let fixture: ComponentFixture<GroupsPageHeaderComponent>;
+describe('EditWorkplaceComponent', () => {
+  let component: EditWorkplaceComponent;
+  let fixture: ComponentFixture<EditWorkplaceComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GroupsPageHeaderComponent ]
+      declarations: [ EditWorkplaceComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GroupsPageHeaderComponent);
+    fixture = TestBed.createComponent(EditWorkplaceComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

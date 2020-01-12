@@ -25,6 +25,7 @@ export class NavbarComponent implements OnInit {
   @ViewChild('searchDrop', {static: false}) searchDrop;
 
   user: User;
+  currentAuthenticatedUser;
   userProfileImage;
   user_data;
   isLoading$ = new BehaviorSubject(false);
@@ -52,13 +53,31 @@ export class NavbarComponent implements OnInit {
   }
 
   async ngOnInit() {
-    await this.getUserProfile();
+    this.currentAuthenticatedUser = await this.getUserProfile();
     this.setNavbarLevel(this.router.url);
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
         this.setNavbarLevel(event.urlAfterRedirects);
       });
+
+    this.initIntercom();
+  }
+
+  private initIntercom() {
+    (<any>window).Intercom('boot', {
+      app_id: "wlumqtu3",
+      name: this.currentAuthenticatedUser.first_name + ' ' + this.currentAuthenticatedUser.last_name,
+      email: this.currentAuthenticatedUser.email,
+      user_id: this.user_data.user_id,
+      workspace: this.user_data.workspace.workspace_name,
+      role: this.currentAuthenticatedUser.role,
+      phone: this.currentAuthenticatedUser.integrations.mobile_number,
+      company: {
+        name: this.currentAuthenticatedUser.company_name,
+        id: this.currentAuthenticatedUser._workspace
+      }
+    });
   }
 
   private setNavbarLevel(url: String) {
@@ -73,10 +92,10 @@ export class NavbarComponent implements OnInit {
     } else if (url == '/dashboard/pulse') {
       this.navbarLevel = 1;
     } else if (url.includes('/dashboard/overview') && url != '/dashboard/overview/myworkplace?myworkplace=true') {
-        this.navbarLevel = 1;
+      this.navbarLevel = 1;
     } else if (url == '/dashboard/overview/myworkplace?myworkplace=true' || url.includes('/dashboard/group/')) {
       this.navbarLevel = 2;
-    }else {
+    } else {
       this.navbarLevel = 0;
     }
   }
@@ -92,10 +111,12 @@ export class NavbarComponent implements OnInit {
 
 
   getUserProfile() {
+    return new Promise((resolve, reject) => {
     this.isLoading$.next(false);
     this._userService.getUser()
       .subscribe(async (res) => {
         this.user = await res.user;
+        this.currentAuthenticatedUser = await res.user;
         this.userProfileImage = await res.user['profile_pic'];
 
         if (this.user['profile_pic'] == null) {
@@ -105,6 +126,8 @@ export class NavbarComponent implements OnInit {
         }
         this.isLoading$.next(true);
         profile_pic = await this.userProfileImage;
+        resolve(res['user']);
+
       }, (err) => {
         this.alert.class = 'alert alert-danger';
         if (err.status === 401) {
@@ -119,6 +142,7 @@ export class NavbarComponent implements OnInit {
           this.alert.message = 'Error! either server is down or no internet connection';
         }
       });
+    })
   }
 
   onSignOut() {
