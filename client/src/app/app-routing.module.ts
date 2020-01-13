@@ -110,6 +110,7 @@ const appRoutes: Routes = [
     children: [
       { path: 'all-search-results/:query', component: AllSearchResultsComponent },
       { path: 'overview', component: OverviewComponent, canActivate: [ValidSubscriptionGuard] },
+      { path: 'overview/inbox', component: OverviewComponent, canActivate: [ValidSubscriptionGuard] },
       { path: 'overview/mytasks', component: OverviewMyTasksComponent, canActivate: [ValidSubscriptionGuard] },
       { path: 'overview/myagenda', component: OverviewMyAgendaComponent, canActivate: [ValidSubscriptionGuard] },
       { path: 'overview/myworkplace', component: OverviewMyWorkplaceComponent, canActivate: [ValidSubscriptionGuard] },

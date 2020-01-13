@@ -1,4 +1,4 @@
-@import "../../../../assets/scss/variables.scss";
+@import "../../../../../assets/scss/variables.scss";
 
 // resets
 h4 {
@@ -57,10 +57,17 @@ a:active {
   color: $brand-primary;
 }
 
-.navbar-go-back {
-  color: black;
+.svg-images {
+  display: inline-block;
+  position: relative;
 }
-
-
-
-
+.svg-images .img-hover {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 99;
+}
+.nav-link:hover .svg-images .img-hover {
+  display: inline;
+}

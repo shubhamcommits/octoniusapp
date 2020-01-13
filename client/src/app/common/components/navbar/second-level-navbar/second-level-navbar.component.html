@@ -1,0 +1,95 @@
+<div class="media">
+  <!--My space navbar-->
+  <div *ngIf="navbarType == 'MY_SPACE'" class="media align-items-center">
+    <div class="nav-item">
+      <a class="nav-link blue" routerLink="/dashboard/overview/inbox"
+         routerLinkActive="active"><img src="/assets/images/icon_my_space.svg"> <br> My Space
+        <span class="sr-only">(current)</span>
+      </a>
+    </div>
+    <div class="media-body nav-item-small">
+      <ul class="nav">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/dashboard/overview/inbox">Inbox
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/dashboard/overview/mytasks" [queryParams]="{mytasks: true}">Tasks
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/dashboard/overview/myagenda" [queryParams]="{myagenda: true}">Agenda
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/dashboard/overview/myworkplace" [queryParams]="{myworkplace: true}">
+            Workplace
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!--Work navbar-->
+  <div *ngIf="navbarType == 'WORK'" class=" media align-items-center">
+    <div class="nav-item">
+      <a class="nav-link blue" routerLink="/dashboard/groups"
+         routerLinkActive="active"><img src="/assets/images/icon_work_active.svg" alt=""> <br> Work
+        <span class="sr-only">(current)</span>
+      </a>
+    </div>
+    <div class="media-body nav-item-small">
+      <ul class="nav">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/dashboard/groups">Groups
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/dashboard/groups">Projects
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/dashboard/pulse">Pulse
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!--Admin navbar-->
+  <div *ngIf="navbarType == 'ADMIN'" class=" media align-items-center">
+    <div class="nav-item">
+      <a class="nav-link blue" routerLink="/dashboard/admin/general"
+         routerLinkActive="active"><img src="/assets/images/icon_admin_active.svg" alt=""> <br> Admin
+        <span class="sr-only">(current)</span>
+      </a>
+    </div>
+    <div class="media-body nav-item-small">
+      <ul class="nav">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/dashboard/admin/general">General
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/dashboard/admin/members">Members
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/dashboard/admin/billing">Billing
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+</div>

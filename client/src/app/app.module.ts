@@ -41,14 +41,11 @@ import { UserSearchResultMainComponent } from './common/components/search/user-s
 import { OverviewMyAgendaComponent } from './dashboard/overview/overview-my-agenda/overview-my-agenda.component';
 import { OverviewMyTasksComponent } from './dashboard/overview/overview-my-tasks/overview-my-tasks.component';
 import { OverviewMyWorkplaceComponent } from './dashboard/overview/overview-my-workplace/overview-my-workplace.component';
-import { OverviewPageHeaderComponent } from './dashboard/overview/overview-page-header/overview-page-header.component';
 
 // ----- GROUP COMPONENTS -----
 import { GroupActivityFiltersComponent } from './dashboard/groups/group/group-activity/group-activity-filters/group-activity-filters.component';
 import { GroupActivityProgressComponent } from './dashboard/groups/group/group-activity/group-activity-progress/group-activity-progress.component';
 import { GroupComponent } from './dashboard/groups/group/group.component';
-import { GroupHeaderComponent } from './dashboard/groups/group/group-header/group-header.component';
-import { GroupsPageHeaderComponent } from './dashboard/groups/groups-page-header/groups-page-header.component';
 import { GroupPostComponent } from './dashboard/groups/group/group-post/group-post.component';
 import { GroupSmartAdminComponent } from './dashboard/groups/group/group-smart-admin/group-smart-admin.component';
 import { GroupTasksComponent } from './dashboard/groups/group/group-tasks/group-tasks.component';
@@ -78,7 +75,6 @@ import { CollaborativeDocGroupPostCommentComponent } from './common/components/p
 import { DocumentFileComponent } from './shared/utils/document-file/document-file.component';
 
 // ----- ADMIN COMPONENTS -----
-import { AdminPageHeaderComponent } from './dashboard/admin/admin-page-header/admin-page-header.component';
 import { ResetPwdComponent } from "./Authentication/reset-password/reset-password.component";
 
 // ----- USER PROFILE COMPONENTS -----
@@ -186,6 +182,12 @@ import { GroupKanbanTaskViewComponent } from './dashboard/groups/group/group-kan
 import { GroupKanbanTaskAssignmentComponent } from './dashboard/groups/group/group-kanban-boards/group-kanban-task-assignment/group-kanban-task-assignment.component';
 import { CollaborativeDocModalTemplatesComponent } from './common/components/posts/collaborative-doc-modal-templates/collaborative-doc-modal-templates.component';
 import { SearchUsersComponent } from './common/components/search-users/search-users.component';
+import { NotificationsBarComponent } from './common/components/navbar/notifications-bar/notifications-bar.component';
+import { MainNavbarComponent } from './common/components/navbar/main-navbar/main-navbar.component';
+import { SecondLevelNavbarComponent } from './common/components/navbar/second-level-navbar/second-level-navbar.component';
+import { ThirdLevelNavbarComponent } from './common/components/navbar/third-level-navbar/third-level-navbar.component';
+import { GroupEditComponent } from './dashboard/groups/group/group-edit/group-edit.component';
+import { EditWorkplaceComponent } from './dashboard/admin/admin-general/edit-workplace/edit-workplace.component';
 
 /**
  * 9. !===== IMPORTS & DECLARATIONS =====!
@@ -194,7 +196,7 @@ import { SearchUsersComponent } from './common/components/search-users/search-us
   declarations: [
 
     // COMPONENTS
-    ActivityComponent, AdminBillingComponent, AdminPageHeaderComponent,
+    ActivityComponent, AdminBillingComponent,
     AllSearchResultsComponent, AppComponent, AssignUsersModalComponent,
     CalendarComponent, CloudsComponent, CollabDocPostComponent,
     CollaborativeDocGroupCommentsComponent, CollaborativeDocGroupNavbarComponent,
@@ -202,10 +204,10 @@ import { SearchUsersComponent } from './common/components/search-users/search-us
     CommentSectionComponent, ContentSearchResultComponent, DatePickerComponent,
     DialogOverviewExampleDialog, DocumentFileComponent, EventGroupPostComponent,
     FilesComponent, GroupActivityFiltersComponent, GroupActivityProgressComponent,
-    GroupComponent, GroupHeaderComponent, GroupPostComponent, GroupSmartAdminComponent,
-    GroupsPageHeaderComponent, GroupTasksComponent, GroupTasksNewComponent,
+    GroupComponent, GroupPostComponent, GroupSmartAdminComponent,
+    GroupTasksComponent, GroupTasksNewComponent,
     NavbarComponent, NormalGroupPostComponent, OverviewMyAgendaComponent, OverviewMyTasksComponent,
-    OverviewMyWorkplaceComponent, OverviewPageHeaderComponent, PostActionsComponent,
+    OverviewMyWorkplaceComponent, PostActionsComponent,
     PostboxComponent, PostCommentComponent, PulseComponent, ResetPwdComponent, SearchBarComponent,
     TaskGroupPostComponent, TimePickerComponent, UserProfileHeaderComponent,
     UserSearchResultComponent, UserSearchResultMainComponent,
@@ -230,7 +232,19 @@ import { SearchUsersComponent } from './common/components/search-users/search-us
 
     CollaborativeDocModalTemplatesComponent,
 
-    SearchUsersComponent
+    SearchUsersComponent,
+
+    NotificationsBarComponent,
+
+    MainNavbarComponent,
+
+    SecondLevelNavbarComponent,
+
+    ThirdLevelNavbarComponent,
+
+    GroupEditComponent,
+
+    EditWorkplaceComponent
   ],
   imports: [
 
