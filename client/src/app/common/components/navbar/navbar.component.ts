@@ -61,10 +61,10 @@ export class NavbarComponent implements OnInit {
         this.setNavbarLevel(event.urlAfterRedirects);
       });
 
-    this.initIntercom();
+    //this.initIntercom();
   }
 
-  private initIntercom() {
+  /*private initIntercom() {
     (<any>window).Intercom('boot', {
       app_id: "wlumqtu3",
       name: this.currentAuthenticatedUser.first_name + ' ' + this.currentAuthenticatedUser.last_name,
@@ -78,7 +78,7 @@ export class NavbarComponent implements OnInit {
         id: this.currentAuthenticatedUser._workspace
       }
     });
-  }
+  }*/
 
   private setNavbarLevel(url: String) {
     console.log(url);
