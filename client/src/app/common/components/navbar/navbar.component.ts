@@ -8,6 +8,7 @@ import {environment} from '../../../../environments/environment'
 import {BehaviorSubject} from 'rxjs';
 import {filter} from "rxjs/operators";
 import {Location} from "@angular/common";
+import {ThirdLevelNavbarComponent} from "./third-level-navbar/third-level-navbar.component";
 
 var profile_pic: any;
 
@@ -23,6 +24,7 @@ var profile_pic: any;
 })
 export class NavbarComponent implements OnInit {
   @ViewChild('searchDrop', {static: false}) searchDrop;
+  @ViewChild(ThirdLevelNavbarComponent, {static: false}) thirdLevelNavbar;
 
   user: User;
   currentAuthenticatedUser;
@@ -103,6 +105,12 @@ export class NavbarComponent implements OnInit {
   goBack() {
     if (this.navbarLevel == 1) {
       this.router.navigate(['/dashboard/overview']);
+    } else if (this.navbarLevel == 2) {
+      if (this.thirdLevelNavbar.isItMyWorkplace) {
+        this.router.navigate(['/dashboard/overview/inbox']);
+      } else {
+        this.router.navigate(['/dashboard/groups']);
+      }
     } else {
       this.location.back();
     }
@@ -112,36 +120,36 @@ export class NavbarComponent implements OnInit {
 
   getUserProfile() {
     return new Promise((resolve, reject) => {
-    this.isLoading$.next(false);
-    this._userService.getUser()
-      .subscribe(async (res) => {
-        this.user = await res.user;
-        this.currentAuthenticatedUser = await res.user;
-        this.userProfileImage = await res.user['profile_pic'];
+      this.isLoading$.next(false);
+      this._userService.getUser()
+        .subscribe(async (res) => {
+          this.user = await res.user;
+          this.currentAuthenticatedUser = await res.user;
+          this.userProfileImage = await res.user['profile_pic'];
 
-        if (this.user['profile_pic'] == null) {
-          this.userProfileImage = 'assets/images/user.png';
-        } else {
-          this.userProfileImage = await `${environment.BASE_URL}/uploads/${this.user['profile_pic']}`;
-        }
-        this.isLoading$.next(true);
-        profile_pic = await this.userProfileImage;
-        resolve(res['user']);
+          if (this.user['profile_pic'] == null) {
+            this.userProfileImage = 'assets/images/user.png';
+          } else {
+            this.userProfileImage = await `${environment.BASE_URL}/uploads/${this.user['profile_pic']}`;
+          }
+          this.isLoading$.next(true);
+          profile_pic = await this.userProfileImage;
+          resolve(res['user']);
 
-      }, (err) => {
-        this.alert.class = 'alert alert-danger';
-        if (err.status === 401) {
-          this.alert.message = err.error.message;
-          setTimeout(() => {
-            localStorage.clear();
-            this._router.navigate(['']);
-          }, 3000);
-        } else if (err.status) {
-          this.alert.class = err.error.message;
-        } else {
-          this.alert.message = 'Error! either server is down or no internet connection';
-        }
-      });
+        }, (err) => {
+          this.alert.class = 'alert alert-danger';
+          if (err.status === 401) {
+            this.alert.message = err.error.message;
+            setTimeout(() => {
+              localStorage.clear();
+              this._router.navigate(['']);
+            }, 3000);
+          } else if (err.status) {
+            this.alert.class = err.error.message;
+          } else {
+            this.alert.message = 'Error! either server is down or no internet connection';
+          }
+        });
     })
   }
 
