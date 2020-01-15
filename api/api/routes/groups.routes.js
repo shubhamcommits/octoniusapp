@@ -50,10 +50,10 @@ router.get('/public/all/:workspaceId', groups.getPublicGroups);
 router.get('/public/usersGroups/:workspaceId/:userId', groups.getUsersPublicGroups);
 
 // Get first 10 groups present in the workplace for pulse
-router.get('/all/pulse/:workspaceId/groups/', groups.getPulseGroups);
+// router.get('/all/pulse/:workspaceId/groups/', groups.getPulseGroups);
 
 // Get next 5 groups present in the workplace for pulse
-router.get('/all/pulse/:workspaceId/nextGroups/:lastGroupId', groups.getNextPulseGroups);
+// router.get('/all/pulse/:workspaceId/nextGroups/:lastGroupId', groups.getNextPulseGroups);
 
 // Get query id of pulse groups of user
 // router.get('/all/pulse/query/next/:workspaceId/:nextGroup', groups.getNextUserGroupsQuery);

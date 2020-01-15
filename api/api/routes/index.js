@@ -12,21 +12,27 @@ const groupFileSectionRoutes = require('./group-file-uploads.routes');
 const templateRoutes = require('./template.routes');
 const followerRoutes = require('./follower.routes');
 const externalRoutes = require('./external.routes');
+const pulseRoutes = require('./pulse.routes');
 
 
+/*  =============
+ *  -- EXPORTS --
+ *  =============
+ */
 module.exports = {
   authsRoutes,
   billingRoutes,
+  columnsRoutes,
+  documentFileRoutes,
+  externalRoutes,
+  followerRoutes,
   groupsRoutes,
+  groupFileSectionRoutes,
   postsRoutes,
+  pulseRoutes,
   searchRoutes,
+  templateRoutes,
   usersRoutes,
   webhooksRoutes,
   workspacesRoutes,
-  columnsRoutes,
-  documentFileRoutes,
-  groupFileSectionRoutes,
-  templateRoutes,
-  followerRoutes,
-  externalRoutes
 };

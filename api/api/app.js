@@ -15,18 +15,19 @@ const compression = require('compression');
 const {
   authsRoutes,
   billingRoutes,
+  columnsRoutes,
+  documentFileRoutes,
+  externalRoutes,
+  followerRoutes,
   groupsRoutes,
+  groupFileSectionRoutes,
   postsRoutes,
+  pulseRoutes,
   searchRoutes,
+  templateRoutes,
   usersRoutes,
   webhooksRoutes,
   workspacesRoutes,
-  columnsRoutes,
-  documentFileRoutes,
-  groupFileSectionRoutes,
-  templateRoutes,
-  followerRoutes,
-  externalRoutes
 } = require('./routes');
 
 const app = express();
@@ -90,6 +91,7 @@ app.all('/', (req, res, next) => {
 app.use('/api/auths', authsRoutes);
 app.use('/api/groups', groupsRoutes);
 app.use('/api/posts', postsRoutes);
+app.use('/api/pulse', pulseRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/api/workspaces', workspacesRoutes);
 app.use('/api/billing', billingRoutes);

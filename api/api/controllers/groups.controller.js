@@ -82,66 +82,6 @@ const getUserGroups = async (req, res) => {
   }
 };
 
-/**
- * This function fetches first 10 groups present in the workspace for pulse
- * @param {* workspaceId} req 
- * @param {*} res 
- * @param {*} next 
- */
-const getPulseGroups = async (req, res, next) => {
-  try {
-    const { workspaceId } = req.params;
-
-    const groups = await Group.find({
-      $and: [
-        { group_name: { $not: { $eq: 'private' } } },
-        { _workspace: workspaceId }
-      ]
-    })
-      .sort('_id')
-      .limit(10)
-      .select('_id group_name group_avatar description pulse_description')
-      .lean();
-
-    return res.status(200).json({
-      message: `The ${groups.length} most recent posts!`,
-      groups: groups 
-    });
-  } catch (err) {
-    return sendErr(res, err);
-  }
-};
-
-/**
- * This function fetches next 5 groups present in the workspace for pulse
- * @param {* workspaceId, lastGroupId} req 
- * @param {*} res 
- * @param {*} next 
- */
-const getNextPulseGroups = async (req, res, next) => {
-  try {
-    const { workspaceId, lastGroupId } = req.params;
-
-    const groups = await Group.find({
-      $and: [
-        { group_name: { $not: { $eq: 'private' } } },
-        { _workspace: workspaceId },
-        { _id: { $lt: lastGroupId } }]
-    })
-      .sort('_id')
-      .limit(5)
-      .select('_id group_name group_avatar description pulse_description')
-      .lean();
-
-    return res.status(200).json({
-      message: `The ${groups.length} most recent posts!`,
-      groups: groups 
-    });
-  } catch (err) {
-    return sendErr(res, err);
-  }
-};
-
 const getUserGroupsQuery = async (req, res) => {
   // const { userId } = req;
    const { workspaceId } = req.params;
@@ -1527,8 +1467,6 @@ module.exports = {
   getUserGroups,
   getUserGroupsQuery,
   getNextUserGroupsQuery,
-  getPulseGroups,
-  getNextPulseGroups,
   getTotalNumTasks,
   getNumTodoTasks,
   getNumInProgressTasks,

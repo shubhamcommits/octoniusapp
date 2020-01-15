@@ -9,6 +9,7 @@ const search = require('./search.controller');
 const columns = require('./columns.controller');
 const documentFile = require('./document-file.controller');
 const groupSectionFiles = require('./group-file-uploads.controller');
+const pulse = require('./pulse.controller');
 
 // !! old Controllers, to be removed after implementation
 const authsController = require('./auths.controller.old');
@@ -26,6 +27,7 @@ module.exports = {
   groups,
   notifications,
   posts,
+  pulse,
   search,
   users,
   workspaces,
