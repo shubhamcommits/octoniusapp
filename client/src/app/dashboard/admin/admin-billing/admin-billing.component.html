@@ -21,16 +21,27 @@
 
       <div *ngIf="!workspace_information?.billing?.current_period_end; else subscribed" class="card-tile">
         <h2>Welcome to your workspace</h2>
-        <h4>To start using your workspace, please complete your subscription below</h4>
-        <hr>
+        <p>To start using your workplace, please complete your subscription below. <br> <span class="text-primary">14 days FREE TRIAL</span></p>
+        <div class="row" style="margin-top: 32px;">
+          <div class="col-6">
+        <img src='../../../assets/images/start-subscription.svg' style=" margin: 0 auto; display:block; width: 90%">
+      </div>
+      <div class="col-6">
+        <button (click)="handlePayment()" class="btn btn-lg btn-success" style="margin: 14px 0">Start subscription</button>
         <h4><b>Current Plan </b></h4>
         <h4>1 user - 10 EUR(€)/month</h4>
         <hr/>
-        <p><b>Price</b><br/> 10 Eur(€)/seat - Per Month. Billed Monthly.</p>
-        <button (click)="handlePayment()" class="btn btn-lg btn-primary">Start a monthly subscription</button>
-        <!-- <div class="row" style="margin-top: 10%; margin-bottom: 20%; margin-left:1%; ">
-          <img src="src/assets/images/powered_by_stripe@2x.png">
-        </div> -->
+        <p><b>Price</b><br/> 10 Eur(€)/seat. Billed monthly.</p>
+      </div>
+        
+      </div>
+        <hr>
+       
+        
+      <div style="margin: 20px auto; width: 300px ">
+        <p class="small">Our payments are processed by STRIPE, we do not access or store your payment information.</p>  
+        <img src="../../../assets/images/powered_by_stripe@2x.png">
+        </div>
       </div>
 
     <!--here we add created property to use change detection.-->
@@ -38,12 +49,18 @@
 
     <ng-template #subscribed>
       <div *ngIf="subscription" class="card-tile">
-        <h3>Your subscription details:</h3>
-        <h4>Created: {{subscription.created | amFromUnix | amDateFormat:'LL'}}</h4>
-        <h4 *ngIf="!workspace_information.billing.cancelled">Current payment valid until: {{subscription.current_period_end | amFromUnix | amDateFormat:'LL'}}</h4>
-        <h4>Status: <span *ngIf="!workspace_information.billing.cancelled; else inactive">Active</span><ng-template #inactive><span>Inactive</span></ng-template></h4>
-        <h4>Cost: {{subscription.quantity * subscription.amount | insertDecimalPoint: 2 | currency:'EUR'}}  / {{subscription.interval}}</h4>
-        <h4>Number of users on this subscription: {{subscription.quantity}}</h4>
+        <h4 class="card-title">Your subscription details:</h4>
+        <div class="row" style="margin-top: 32px;">
+          <div class="col-6">
+        <img src='../../../assets/images/see-subscription.svg' style=" margin: 0 auto; display:block; width: 90%">
+      </div>
+      <div class="col-6">
+        <p>Created: {{subscription.created | amFromUnix | amDateFormat:'LL'}}</p>
+        <p *ngIf="!workspace_information.billing.cancelled">Next payment: {{subscription.current_period_end | amFromUnix | amDateFormat:'LL'}}</p>
+        <p>Status: <span *ngIf="!workspace_information.billing.cancelled; else inactive">Active</span><ng-template #inactive><span>Inactive</span></ng-template></p>
+        <p>Cost: {{subscription.quantity * subscription.amount | insertDecimalPoint: 2 | currency:'EUR'}}  / {{subscription.interval}}</p>
+        <p>Users: {{subscription.quantity}}</p>
+        <hr>
         <ng-container *ngIf="isWorkspaceOwner()">
           <button
             *ngIf="!workspace_information.billing?.scheduled_cancellation; else resumeSubscriptionTemp"
@@ -57,7 +74,15 @@
               class="btn btn-warning">Resume subscription</button>
           </ng-template>
         </ng-container>
+        
       </div>
+        
+      </div>
+       
+       
+      
+      </div>
+
       <div *ngIf="failed_payments.length > 0" class="card-tile">
         <h3 class="f-payments-title">Failed payments:</h3>
         <ul class="list-group">
@@ -69,7 +94,7 @@
         </ul>
       </div>
       <div *ngIf="workspace_information.billing.success_payments.length > 0" class="card-tile">
-        <h3 class="s-payments-title">Completed payments:</h3>
+        <h3>Completed payments:</h3>
         <ul class="list-group">
           <li *ngFor="let s_payment of workspace_information.billing.success_payments" class="list-group-item disabled">
             <span>{{s_payment.data.object.period_start | amFromUnix | amDateFormat:'MMMM Do YYYY'}} - {{s_payment.data.object.period_end | amFromUnix | amDateFormat:'MMMM Do YYYY'}}</span>
