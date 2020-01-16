@@ -1,5 +1,4 @@
-import {Component, OnInit} from '@angular/core';
-import {Router} from "@angular/router";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'second-level-navbar',
@@ -8,24 +7,14 @@ import {Router} from "@angular/router";
 })
 export class SecondLevelNavbarComponent implements OnInit {
 
-  navbarType = 'MY_SPACE';
-
-  constructor(private router: Router) {
-
-  }
+  @Output() setNavLevel: EventEmitter<number> = new EventEmitter();
+  @Input() navbarType;
 
   ngOnInit() {
-    this.initNavbarType(this.router.url);
   }
 
-  private initNavbarType(url: string) {
-    if (url.includes('/dashboard/overview')) {
-      this.navbarType = 'MY_SPACE';
-    } else if (url == '/dashboard/groups' || url == '/dashboard/pulse') {
-      this.navbarType = 'WORK';
-    } else if (url.includes('/dashboard/admin/')) {
-      this.navbarType = 'ADMIN';
-    }
+  displayMainNavbar() {
+    this.setNavLevel.emit(0);
   }
 
 }
