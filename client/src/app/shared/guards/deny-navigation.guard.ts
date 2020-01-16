@@ -30,7 +30,7 @@ export class DenyNavigationGuard implements CanDeactivate<AdminBillingComponent>
             return this.workspaceService.getBillingStatus(this.workspaceId).pipe(
               map((res) => {
                 if ( !res['status'] ) {
-                  Swal.fire("Unable to navigate to other pages", "Please subscribe and complete payment first")
+                  Swal.fire("Access restricted", "Please start your subscription.")
                 }
                 return res['status'];
         
