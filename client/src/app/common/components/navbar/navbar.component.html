@@ -18,8 +18,8 @@
       <span class="navbar-toggler-icon"><i class="material-icons">menu</i></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <main-navbar *ngIf="navbarLevel == 0" [user]="user" class="mr-auto"></main-navbar>
-      <second-level-navbar *ngIf="navbarLevel == 1" class="mr-auto"></second-level-navbar>
+      <main-navbar *ngIf="navbarLevel == 0" [user]="user" (displaySecondLevelNavbar)="displaySecondLevelNavbar($event);" class="mr-auto"></main-navbar>
+      <second-level-navbar *ngIf="navbarLevel == 1" [navbarType]="navbarType" (setNavLevel)="setNavLevel($event);" class="mr-auto"></second-level-navbar>
       <third-level-navbar *ngIf="navbarLevel == 2" class="mr-auto"></third-level-navbar>
 
       <!-- SEARCH BAR -->

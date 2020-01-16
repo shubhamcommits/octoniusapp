@@ -46,23 +46,25 @@ export class NavbarComponent implements OnInit {
 
   BASE_URL = environment.BASE_URL;
   navbarLevel = 0;
+  navbarType = 'MY_SPACE';
 
 
   constructor(private _auth: AuthService, private _userService: UserService, private _router: Router,
               private router: Router, private location: Location) {
     this.user_data = JSON.parse(localStorage.getItem('user'));
-
+    this.setNavbarLevel(this.router.url);
+    this.setNavbarType(this.router.url);
   }
 
   async ngOnInit() {
     this.currentAuthenticatedUser = await this.getUserProfile();
-    this.setNavbarLevel(this.router.url);
+
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
         this.setNavbarLevel(event.urlAfterRedirects);
+        this.setNavbarType(event.urlAfterRedirects);
       });
-
     //this.initIntercom();
   }
 
@@ -82,9 +84,34 @@ export class NavbarComponent implements OnInit {
     });
   }*/
 
-  private setNavbarLevel(url: String) {
-    console.log(url);
 
+  setNavLevel(level: number) {
+    if (this.navbarLevel != level) {
+      this.navbarLevel = level;
+    }
+  }
+
+  displaySecondLevelNavbar(type) {
+    if (this.navbarType != type) {
+      this.redirectToSpaceType(type);
+      this.navbarType = type;
+    }
+
+    this.setNavLevel(1);
+  }
+
+  private redirectToSpaceType(type) {
+    if (type === 'MY_SPACE') {
+      this.router.navigate(['/dashboard/overview/inbox']);
+    } else if (type === 'WORK') {
+      this.router.navigate(['/dashboard/groups']);
+    } else if (type === 'ADMIN') {
+      this.router.navigate(['/dashboard/admin/general']);
+    }
+  }
+
+
+  private setNavbarLevel(url: String) {
     if (url == '/dashboard/overview') {
       this.navbarLevel = 0;
     } else if (url == '/dashboard/groups') {
@@ -102,19 +129,30 @@ export class NavbarComponent implements OnInit {
     }
   }
 
+  private setNavbarType(url: String) {
+    if (url.includes('/dashboard/overview')) {
+      this.navbarType = 'MY_SPACE';
+    } else if (url == '/dashboard/groups' || url == '/dashboard/pulse') {
+      this.navbarType = 'WORK';
+    } else if (url.includes('/dashboard/admin/')) {
+      this.navbarType = 'ADMIN';
+    }
+  }
+
   goBack() {
     if (this.navbarLevel == 1) {
       this.router.navigate(['/dashboard/overview']);
+      this.navbarLevel = 0;
     } else if (this.navbarLevel == 2) {
       if (this.thirdLevelNavbar.isItMyWorkplace) {
         this.router.navigate(['/dashboard/overview/inbox']);
       } else {
         this.router.navigate(['/dashboard/groups']);
       }
+      this.navbarLevel = 1;
     } else {
       this.location.back();
     }
-
   }
 
 

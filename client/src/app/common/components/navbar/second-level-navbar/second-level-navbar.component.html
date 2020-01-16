@@ -2,10 +2,10 @@
   <!--My space navbar-->
   <div *ngIf="navbarType == 'MY_SPACE'" class="media align-items-center">
     <div class="nav-item">
-      <a class="nav-link blue" routerLink="/dashboard/overview"
+      <button class="nav-link blue btn btn-link" (click)="displayMainNavbar();"
          routerLinkActive="active"><img src="/assets/images/icon_my_space.svg"> <br> My Space
         <span class="sr-only">(current)</span>
-      </a>
+      </button>
     </div>
     <div class="media-body nav-item-small">
       <ul class="nav">
@@ -37,10 +37,10 @@
   <!--Work navbar-->
   <div *ngIf="navbarType == 'WORK'" class=" media align-items-center">
     <div class="nav-item">
-      <a class="nav-link blue" routerLink="/dashboard/overview"
+      <button class="nav-link blue btn btn-link" (click)="displayMainNavbar()"
          routerLinkActive="active"><img src="/assets/images/icon_work_active.svg" alt=""> <br> Work
         <span class="sr-only">(current)</span>
-      </a>
+      </button>
     </div>
     <div class="media-body nav-item-small">
       <ul class="nav">
@@ -66,10 +66,10 @@
   <!--Admin navbar-->
   <div *ngIf="navbarType == 'ADMIN'" class=" media align-items-center">
     <div class="nav-item">
-      <a class="nav-link blue" routerLink="/dashboard/overview"
+      <button class="nav-link blue btn btn-link" (click)="displayMainNavbar()"
          routerLinkActive="active"><img src="/assets/images/icon_admin_active.svg" alt=""> <br> Admin
         <span class="sr-only">(current)</span>
-      </a>
+      </button>
     </div>
     <div class="media-body nav-item-small">
       <ul class="nav">
