@@ -604,7 +604,7 @@ const checkSubscriptionValidity = async (req, res) => {
     if (!user._workspace.billing.current_period_end) {
       return res.status(200).json({
         message: 'no subscription yet',
-        valid: false
+          valid: moment().isBetween(user._workspace.created_date, moment(user._workspace.created_date).add(14, 'days'))
       });
     }
 

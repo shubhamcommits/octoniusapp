@@ -1,0 +1,25 @@
+@import "../../../../../assets/scss/variables.scss";
+
+.group-title {
+  font-family: $poppins;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.nav-link {
+  font-family: $poppins;
+  font-style: normal;
+  font-size: 16px;
+  line-height: 24px;
+  color: #787878;
+  padding-left: 0;
+
+  &:hover {
+    text-decoration: none;
+    background: #ffffff;
+    color: $brand-primary !important;
+    border-radius: 6px;
+  }
+}

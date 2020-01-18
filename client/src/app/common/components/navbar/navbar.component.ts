@@ -1,20 +1,14 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import { AuthService } from '../../../shared/services/auth.service';
-import { Router } from '@angular/router';
-import { UserService } from '../../../shared/services/user.service';
-import { User } from '../../../shared/models/user.model';
-import moment from 'moment';
+import {AuthService} from '../../../shared/services/auth.service';
+import {NavigationEnd, Router} from '@angular/router';
+import {UserService} from '../../../shared/services/user.service';
+import {User} from '../../../shared/models/user.model';
 import io from 'socket.io-client';
-import { environment } from '../../../../environments/environment'
-import { BehaviorSubject } from 'rxjs';
-import { Subject } from 'rxjs/Subject';
-import { async } from '@angular/core/testing'
-import {WorkspaceService} from "../../../shared/services/workspace.service";
-import {SearchService} from "../../../shared/services/search.service";
-
-// import { Cacheable, CacheBuster } from 'ngx-cacheable';
-
-const cacheBuster$ = new Subject<void>();
+import {environment} from '../../../../environments/environment'
+import {BehaviorSubject} from 'rxjs';
+import {filter} from "rxjs/operators";
+import {Location} from "@angular/common";
+import {ThirdLevelNavbarComponent} from "./third-level-navbar/third-level-navbar.component";
 
 var profile_pic: any;
 
@@ -29,9 +23,11 @@ var profile_pic: any;
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
-  @ViewChild('searchDrop', { static: false }) searchDrop;
+  @ViewChild('searchDrop', {static: false}) searchDrop;
+  @ViewChild(ThirdLevelNavbarComponent, {static: false}) thirdLevelNavbar;
 
   user: User;
+  currentAuthenticatedUser;
   userProfileImage;
   user_data;
   isLoading$ = new BehaviorSubject(false);
@@ -39,8 +35,6 @@ export class NavbarComponent implements OnInit {
     class: '',
     message: ''
   };
-
-  notifications_data: any;
 
   Date = new Date;
 
@@ -50,131 +44,153 @@ export class NavbarComponent implements OnInit {
     secure: true,
   });
 
-  isCollapsed = true;
   BASE_URL = environment.BASE_URL;
+  navbarLevel = 0;
+  navbarType = 'MY_SPACE';
 
 
-  constructor(
-    private _auth: AuthService,
-    private _userService: UserService,
-    private _router: Router,
-    private router: Router,
-    private workspaceService: WorkspaceService,
-    private searchService: SearchService) {
-      this.user_data = JSON.parse(localStorage.getItem('user'));
-     }
+  constructor(private _auth: AuthService, private _userService: UserService, private _router: Router,
+              private router: Router, private location: Location) {
+    this.user_data = JSON.parse(localStorage.getItem('user'));
+    this.setNavbarLevel(this.router.url);
+    this.setNavbarType(this.router.url);
+  }
 
   async ngOnInit() {
+    this.currentAuthenticatedUser = await this.getUserProfile();
 
-    await this.socket.on('connect', async () => {
-      // we can probably delete this  second parameter since every server request already has access to the current userId
-      await this.socket.emit('joinUser', this.user_data.user_id);
-    });
-
-    await this.getUserProfile();
-      const user = {
-        'userId': this.user_data.user_id
-        };
-        this.socket.on('notificationsFeed', (feed) => {
-          this.notifications_data = feed;
-         // console.log(this.notifications_data);
-        });
-        this.socket.emit('getNotifications', this.user_data.user_id);
-
-    }
-
-  gotToPostPage(groupId, postId) {
-   this.router.navigate(['dashboard', 'group', groupId, 'post', postId]);
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        this.setNavbarLevel(event.urlAfterRedirects);
+        this.setNavbarType(event.urlAfterRedirects);
+      });
+    //this.initIntercom();
   }
 
-  refreshPage() {
-    location.reload();
-}
-
-  toggled(event) {
-    if (event) {
-       // console.log('is open');
-    } else {
-     // console.log('is closed');
-      if(this.notifications_data['unreadNotifications'].length > 0){
-
-        this.socket.emit('markRead', this.notifications_data['unreadNotifications'][0]._id , this.user_data.user_id);
-
+  /*private initIntercom() {
+    (<any>window).Intercom('boot', {
+      app_id: "wlumqtu3",
+      name: this.currentAuthenticatedUser.first_name + ' ' + this.currentAuthenticatedUser.last_name,
+      email: this.currentAuthenticatedUser.email,
+      user_id: this.user_data.user_id,
+      workspace: this.user_data.workspace.workspace_name,
+      role: this.currentAuthenticatedUser.role,
+      phone: this.currentAuthenticatedUser.integrations.mobile_number,
+      company: {
+        name: this.currentAuthenticatedUser.company_name,
+        id: this.currentAuthenticatedUser._workspace
       }
+    });
+  }*/
 
+
+  setNavLevel(level: number) {
+    if (this.navbarLevel != level) {
+      this.navbarLevel = level;
     }
   }
 
-  underline_navbar_overview(){
-    const x = document.getElementById("li_overview");
-    const y = document.getElementById("li_group");
-    const z = document.getElementById("li_admin");
-
-    if( z != null){
-      x.className = "active";
-      y.className = "none";
-      z.className = "none";
+  displaySecondLevelNavbar(type) {
+    if (this.navbarType != type) {
+      this.redirectToSpaceType(type);
+      this.navbarType = type;
     }
 
+    this.setNavLevel(1);
+  }
+
+  private redirectToSpaceType(type) {
+    if (type === 'MY_SPACE') {
+      this.router.navigate(['/dashboard/overview/inbox']);
+    } else if (type === 'WORK') {
+      this.router.navigate(['/dashboard/groups']);
+    } else if (type === 'ADMIN') {
+      this.router.navigate(['/dashboard/admin/general']);
+    }
   }
 
 
-  underline_navbar_group(){
-    const x = document.getElementById("li_overview");
-    const y = document.getElementById("li_group");
-    const z = document.getElementById("li_admin");
-    if( z != null){
-      y.className = "active";
-      x.className = "none";
-      z.className = "none";
+  private setNavbarLevel(url: String) {
+    if (url == '/dashboard/overview') {
+      this.navbarLevel = 0;
+    } else if (url == '/dashboard/groups') {
+      this.navbarLevel = 1;
+    } else if (url == '/dashboard/admin/general' || url == '/dashboard/admin/members' || url == '/dashboard/admin/billing') {
+      this.navbarLevel = 1;
+    } else if (url == '/dashboard/pulse') {
+      this.navbarLevel = 1;
+    } else if (url.includes('/dashboard/overview') && url != '/dashboard/overview/myworkplace?myworkplace=true') {
+      this.navbarLevel = 1;
+    } else if (url == '/dashboard/overview/myworkplace?myworkplace=true' || url.includes('/dashboard/group/')) {
+      this.navbarLevel = 2;
+    } else {
+      this.navbarLevel = 0;
     }
-
   }
 
+  private setNavbarType(url: String) {
+    if (url.includes('/dashboard/overview')) {
+      this.navbarType = 'MY_SPACE';
+    } else if (url == '/dashboard/groups' || url == '/dashboard/pulse') {
+      this.navbarType = 'WORK';
+    } else if (url.includes('/dashboard/admin/')) {
+      this.navbarType = 'ADMIN';
+    }
+  }
 
-  underline_navbar_admin(){
-    const x = document.getElementById("li_overview");
-    const y = document.getElementById("li_group");
-    const z = document.getElementById("li_admin");
-    if( z!= null){
-      z.className = "active";
-      y.className = "none";
-      x.className = "none";
+  goBack() {
+    if (this.navbarLevel == 1) {
+      this.router.navigate(['/dashboard/overview']);
+      this.navbarLevel = 0;
+    } else if (this.navbarLevel == 2) {
+      if (this.thirdLevelNavbar.isItMyWorkplace) {
+        this.router.navigate(['/dashboard/overview/inbox']);
+      } else {
+        this.router.navigate(['/dashboard/groups']);
+      }
+      this.navbarLevel = 1;
+    } else {
+      this.location.back();
     }
   }
 
 
   getUserProfile() {
-    this.isLoading$.next(false);
-    this._userService.getUser()
-      .subscribe(async (res) => {
-        this.user = await res.user;
-        this.userProfileImage = await res.user['profile_pic'];
-      //  console.log(this.user._id);
+    return new Promise((resolve, reject) => {
+      this.isLoading$.next(false);
+      this._userService.getUser()
+        .subscribe(async (res) => {
+          this.user = await res.user;
+          this.currentAuthenticatedUser = await res.user;
+          this.userProfileImage = await res.user['profile_pic'];
 
-      if (this.user['profile_pic'] == null) {
-        this.userProfileImage = 'assets/images/user.png';
-      } else {
-        // console.log('Inside else');
-        this.userProfileImage = await `${environment.BASE_URL}/uploads/${this.user['profile_pic']}`;
-       }
-        this.isLoading$.next(true);
-        profile_pic = await this.userProfileImage;
-      }, (err) => {
-        this.alert.class = 'alert alert-danger';
-        if (err.status === 401) {
-          this.alert.message = err.error.message;
-          setTimeout(() => {
-            localStorage.clear();
-            this._router.navigate(['']);
-          }, 3000);
-        } else if (err.status) {
-          this.alert.class = err.error.message;
-        } else {
-          this.alert.message = 'Error! either server is down or no internet connection';
-        }
-      });
+          if (this.user['profile_pic'] == null) {
+            this.userProfileImage = 'assets/images/user.png';
+          } else {
+            this.userProfileImage = await `${environment.BASE_URL}/uploads/${this.user['profile_pic']}`;
+          }
+          this.isLoading$.next(true);
+          profile_pic = await this.userProfileImage;
+          resolve(res['user']);
+
+        }, (err) => {
+          this.alert.class = 'alert alert-danger';
+          if (err.status === 401) {
+            this.alert.message = err.error.message;
+            setTimeout(() => {
+              localStorage.clear();
+              this._router.navigate(['']);
+            }, 3000);
+          } else if (err.status) {
+            this.alert.class = err.error.message;
+          } else {
+            this.alert.message = 'Error! either server is down or no internet connection';
+          }
+        });
+    })
   }
+
   onSignOut() {
     this._auth.signout()
       .subscribe((res) => {
@@ -188,7 +204,7 @@ export class NavbarComponent implements OnInit {
           this.alert.message = err.error.message;
           setTimeout(() => {
             localStorage.clear();
-            sessionStorage.clear();         
+            sessionStorage.clear();
             this.router.navigate(['']);
           }, 2000);
         } else if (err.status) {
@@ -199,10 +215,11 @@ export class NavbarComponent implements OnInit {
 
       });
   }
+
   public closeAlert() {
     this.alert.message = '';
   }
 
 }
 
-export { profile_pic }
+export {profile_pic}

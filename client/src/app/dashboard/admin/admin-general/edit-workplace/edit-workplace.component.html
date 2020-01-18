@@ -1,0 +1,62 @@
+<div class="media">
+  <div class="col-md-3 text-right">
+    <button type="button" name="button" class="btn btn-link" (click)="openLg(contentEditWorkspace)">
+      <i class="material-icons">create</i>
+    </button>
+  </div>
+
+  <ng-template #content let-c="close" let-d="dismiss">
+
+    <div class="modal-body">
+      <div *ngIf="alert.message" [ngClass]="alert.class">{{alert.message}}</div>
+
+    </div>
+
+  </ng-template>
+
+  <ng-template #contentEditWorkspace let-c="close" let-dd="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title">Workspace Update</h4>
+      <button type="button" class="close" aria-label="Close" (click)="dd('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body" style=" max-height: calc(100vh - 200px);overflow-y: auto">
+      <div class="form-group">
+
+        <img *ngIf="!croppedImage" [src]="workspaceImageUrl" style="border-radius: 50%; width:15% ; height:15%;">
+        <img *ngIf="croppedImage" [src]="croppedImage" #Image accept="image/*" style="border-radius: 50%; width:15% ; height:15%;">
+        <input type="file" (change)="fileChangeEvent($event)" />
+
+        <div>
+          <br><br>
+          <image-cropper
+            [imageChangedEvent]="imageChangedEvent"
+            [maintainAspectRatio]="true"
+            [aspectRatio]="1 / 1"
+            [resizeToWidth]="300"
+            [cropperMinWidth]="300"
+            [onlyScaleDown]="true"
+            [roundCropper]="false"
+            format="png,jpeg,webp,bmp,ico"
+            outputType="file"
+            (imageCropped)="imageCropped($event)"
+            (imageLoaded)="imageLoaded()"
+            (cropperReady)="cropperReady()"
+            (loadImageFailed)="loadImageFailed()"
+
+          ></image-cropper>
+        </div>
+        <!-- <img [src]="croppedImage" /> -->
+
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-success" (click)="onUpdateWorkspace()">Save</button>
+      <button type="button" class="btn btn-primary" (click)="c('Close click')">Cancel</button>
+    </div>
+
+  </ng-template>
+
+</div>

@@ -1,69 +1,47 @@
-
-  <div class="container">
-  <app-groups-page-header></app-groups-page-header>
-
-
+<div class="container" style="margin-top: 110px">
 
   <div *ngIf="alert.message" [ngClass]="alert.class">{{alert.message}}</div>
-  <div class="row no-margin" infiniteScroll [infiniteScrollDistance]="1" [immediateCheck]="true" (scrolled)="getNextUserGroups()">
-      <div *ngIf="user?.role== 'admin' || user?.role== 'owner'" (click)="openLg(content)" class="card col-md-3 overlay" style="text-align:center; background-image:url(https://picsum.photos/600/300/?random&gravity=south ) !important; cursor: pointer;">
-        <!-- <img class="card-img-top" src="https://picsum.photos/1920/1200/?random&gravity=south">  -->
-        <div class="card-body content" style="background:transparent">
-         
-              <h2 class="card-title white" style="color: #fff; margin-top: 60px;">  <i class="material-icons">group</i> <br> Create Group</h2>
-          
-          <!-- <p class="card-text">Group description</p>  -->
-        </div>
+  <div class="row no-margin" infiniteScroll [infiniteScrollDistance]="1" [immediateCheck]="true"
+       (scrolled)="getNextUserGroups()">
+    <div *ngIf="user?.role== 'admin' || user?.role== 'owner'" (click)="openLg(content)" class="card col-md-3 overlay"
+         style="text-align:center; background-image:url(https://picsum.photos/600/300/?random&gravity=south ) !important; cursor: pointer;">
+      <!-- <img class="card-img-top" src="https://picsum.photos/1920/1200/?random&gravity=south">  -->
+      <div class="card-body content" style="background:transparent">
+
+        <h2 class="card-title white" style="color: #fff; margin-top: 60px;"><i class="material-icons">group</i> <br>
+          Create Group</h2>
+
+        <!-- <p class="card-text">Group description</p>  -->
       </div>
-      <div (click)="openAgoraModal(agora)" class="card col-md-3 overlay" style="text-align:center; background-image:url(https://picsum.photos/600/300/?random ) !important; cursor: pointer;">
-        <!-- <img class="card-img-top" src="https://picsum.photos/1920/1200/?random&gravity=south">  -->
-        <div class="card-body content" style="background:transparent">
-         
-          <h2 class="card-title white" style="color: #fff; margin-top: 60px;">  <i class="material-icons">account_balance</i> <br> Create Agora</h2>
-          
-          
-          <!-- <p class="card-text">Group description</p>  -->
-        </div>
+    </div>
+    <div (click)="openAgoraModal(agora)" class="card col-md-3 overlay"
+         style="text-align:center; background-image:url(https://picsum.photos/600/300/?random ) !important; cursor: pointer;">
+      <div class="card-body content" style="background:transparent">
+
+        <h2 class="card-title white" style="color: #fff; margin-top: 60px;"><i
+          class="material-icons">account_balance</i> <br> Create Agora</h2>
+
       </div>
-      <div *ngIf="user?.role== 'admin' || user?.role== 'owner'" (click)="openSmartGroupModal(smartGroup)" class="card col-md-3 overlay" style="text-align:center; background-image:url(https://picsum.photos/600/300/?random&gravity=north ) !important; cursor: pointer;">
-        <!-- <img class="card-img-top" src="https://picsum.photos/1920/1200/?random&gravity=south">  -->
-        <div class="card-body content" style="background:transparent">
-         
-          <h2 class="card-title white" style="color: #fff; margin-top: 60px;">  <i class="material-icons">fingerprint</i> <br> Create Smart Group</h2>
-          
-          <!-- <p class="card-text">Group description</p>  -->
-        </div>
+    </div>
+    <div *ngIf="user?.role== 'admin' || user?.role== 'owner'" (click)="openSmartGroupModal(smartGroup)"
+         class="card col-md-3 overlay"
+         style="text-align:center; background-image:url(https://picsum.photos/600/300/?random&gravity=north ) !important; cursor: pointer;">
+
+      <div class="card-body content" style="background:transparent">
+
+        <h2 class="card-title white" style="color: #fff; margin-top: 60px;"><i class="material-icons">fingerprint</i>
+          <br> Create Smart Group</h2>
+
       </div>
+    </div>
 
-    <!-- <div *ngIf="user?.role== 'admin' || user?.role== 'owner'" (click)="openLg(content)" class="card col-md-3" style="cursor: pointer;">
-
-        <a>
-
-           <button class="btn btn-primary btn-block btn-lg"> <i class="material-icons" style="font-size: 3.5rem">add_circle_outline</i><br> New Group</button>
-
-        </a>
-
-
-    </div> -->
-
-    <!--     <div class="card col-md-3 m-1" [routerLink]="['/dashboard/group/',group._id,'activity']">
-      <img class="card-img-top " src="https://source.unsplash.com/random">
-      <div class="card-body ">
-        <a>
-          <h4 class="card-title ">Global</h4>
-        </a>
-        <p class="card-text ">{{'This is Gloabl group'}}
-          <br>
-          <span class="badge badge-success ">{{workspace?.members.length}} Members</span>
-          <span class="small ">including you</span>
-        </p>
-      </div>
-    </div> -->
     <ng-container *ngFor="let group of groups " style="margin-bottom: 30px">
-      <div *ngIf="group.group_name !== 'private'" class="card col-md-3 groups" [routerLink]="['/dashboard/group/',group._id,'activity']">
-        <span class="badge badge-members" >{{group._members?.length + group._admins?.length}} Members</span>
-        <img class="card-img-top" src = "{{this.BASE_URL}}/uploads/{{group.group_avatar}}" onerror="this.src='/assets/images/group.png'" >
-        <a *ngIf= "group?.type == 'agora'" class="btn btn-light btn-public"><i class="material-icons">account_balance</i></a>
+      <div *ngIf="group.group_name !== 'private'" class="card col-md-3 groups"
+           [routerLink]="['/dashboard/group/',group._id,'activity']">
+        <span class="badge badge-members">{{group._members?.length + group._admins?.length}} Members</span>
+        <img class="card-img-top" src="{{this.BASE_URL}}/uploads/{{group.group_avatar}}"
+             onerror="this.src='/assets/images/group.png'">
+        <a *ngIf="group?.type == 'agora'" class="btn btn-light btn-public"><i class="material-icons">account_balance</i></a>
         <div class="card-body ">
           <a>
             <h2 class="card-title">{{group?.group_name}}</h2>
@@ -82,25 +60,30 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <ngb-alert *ngIf="alert.message" [type]="alert.class" (close)="successMessage = null">{{ alert.message}}</ngb-alert>
+      <ngb-alert *ngIf="alert.message" [type]="alert.class"
+                 (close)="successMessage = null">{{ alert.message}}</ngb-alert>
 
       <div class="modal-body">
         <form [formGroup]="createNewGroupForm">
           <div class="form-row">
-            <div class="col"><img src="/assets/images/create-group.svg" alt="" style="width: 250px; height: auto;"></div>
-            <div class="col">   
-            <input type="text" class="form-control" id="group_name" formControlName="groupName" [(ngModel)]="group.group_name" name="groupName" placeholder="Group name" style="margin-top: 40px">
-            <label for="group_name" class="small">Try to add a short name</label>  
+            <div class="col"><img src="/assets/images/create-group.svg" alt="" style="width: 250px; height: auto;">
+            </div>
+            <div class="col">
+              <input type="text" class="form-control" id="group_name" formControlName="groupName"
+                     [(ngModel)]="group.group_name" name="groupName" placeholder="Group name" style="margin-top: 40px">
+              <label for="group_name" class="small">Try to add a short name</label>
+            </div>
           </div>
-        </div>
-         
+
         </form>
 
       </div>
       <div class="modal-footer">
-          <button class="btn btn-default btn-block" (click)="c('Close click')">Cancel</button>
-        <button [disabled]="createNewGroupForm.invalid" class="btn btn-primary btn-block" (click)="onCreateNewGroup()">Create Group</button>
-        
+        <button class="btn btn-default btn-block" (click)="c('Close click')">Cancel</button>
+        <button [disabled]="createNewGroupForm.invalid" class="btn btn-primary btn-block" (click)="onCreateNewGroup()">
+          Create Group
+        </button>
+
       </div>
     </ng-template>
 
@@ -111,25 +94,31 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <ngb-alert *ngIf="alert.message" [type]="alert.class" (close)="successMessage = null">{{ alert.message}}</ngb-alert>
+      <ngb-alert *ngIf="alert.message" [type]="alert.class"
+                 (close)="successMessage = null">{{ alert.message}}</ngb-alert>
 
       <div class="modal-body">
         <form [formGroup]="createNewGroupForm">
-            <div class="form-row">
-                <div class="col"><img src="/assets/images/create-agora.svg" alt="" style="width: 250px; height: auto;"></div>
-          <div class="col">
-           
-            <input type="text" style="margin-top: 40px" class="form-control" id="group_name" formControlName="groupName" [(ngModel)]="group.group_name" name="groupName" placeholder="Agora name">
-            <label for="group_name" class="small">Try to add a short name</label> 
+          <div class="form-row">
+            <div class="col"><img src="/assets/images/create-agora.svg" alt="" style="width: 250px; height: auto;">
+            </div>
+            <div class="col">
+
+              <input type="text" style="margin-top: 40px" class="form-control" id="group_name"
+                     formControlName="groupName" [(ngModel)]="group.group_name" name="groupName"
+                     placeholder="Agora name">
+              <label for="group_name" class="small">Try to add a short name</label>
+            </div>
           </div>
-        </div>
         </form>
 
       </div>
       <div class="modal-footer">
-          <button type="button" class="btn btn-default btn-block" (click)="c('Close click')">Cancel</button>
-        <button [disabled]="createNewGroupForm.invalid" class="btn btn-primary btn-block" (click)="onCreateAgora()">Create Agora</button>
-        
+        <button type="button" class="btn btn-default btn-block" (click)="c('Close click')">Cancel</button>
+        <button [disabled]="createNewGroupForm.invalid" class="btn btn-primary btn-block" (click)="onCreateAgora()">
+          Create Agora
+        </button>
+
       </div>
     </ng-template>
 
@@ -140,42 +129,44 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <ngb-alert *ngIf="alert.message" [type]="alert.class" (close)="successMessage = null">{{ alert.message}}</ngb-alert>
+      <ngb-alert *ngIf="alert.message" [type]="alert.class"
+                 (close)="successMessage = null">{{ alert.message}}</ngb-alert>
 
       <div class="modal-body">
         <form [formGroup]="createNewGroupForm">
-            <div class="form-row">
-                <div class="col"><img src="/assets/images/create-smartgroup.svg" alt="" style="width: 250px; height: auto;"></div>
-          <div class="col">
-            
-            <input type="text" style="margin-top: 40px" class="form-control" id="group_name" formControlName="groupName" [(ngModel)]="group.group_name" name="groupName" placeholder="Smart group name">
-            <label for="group_name" class="small">Try to add a short name</label> 
+          <div class="form-row">
+            <div class="col"><img src="/assets/images/create-smartgroup.svg" alt="" style="width: 250px; height: auto;">
+            </div>
+            <div class="col">
+
+              <input type="text" style="margin-top: 40px" class="form-control" id="group_name"
+                     formControlName="groupName" [(ngModel)]="group.group_name" name="groupName"
+                     placeholder="Smart group name">
+              <label for="group_name" class="small">Try to add a short name</label>
+            </div>
           </div>
-        </div>
         </form>
 
       </div>
       <div class="modal-footer">
-          <button type="button" class="btn btn-default btn-block" (click)="c('Close click')">Cancel</button>
-        <button [disabled]="createNewGroupForm.invalid" class="btn btn-primary btn-block" (click)="onCreateSmartGroup()">Create Smart Group</button>
-        
+        <button type="button" class="btn btn-default btn-block" (click)="c('Close click')">Cancel</button>
+        <button [disabled]="createNewGroupForm.invalid" class="btn btn-primary btn-block"
+                (click)="onCreateSmartGroup()">Create Smart Group
+        </button>
+
       </div>
     </ng-template>
   </div>
-  <!-- <button *ngIf="groupsMoreToLoad" (click)="getNextUserGroups()" style="margin-left:45%; margin-top: 5%; margin-bottom:2%;">
-      Load More Groups
-    </button> -->
-
-  <!-- <div *ngIf="smartGroups.length > 0" class="row no-margin mt-3">
-    <h5 class="w-100">Smart Groups</h5>
-  </div> -->
 
   <div class="row no-margin">
     <ng-container *ngFor="let group of smartGroups">
-      <div *ngIf="group.group_name !== 'private'" class="card col-md-3 groups" [routerLink]="['/dashboard/group/',group._id,'activity']" class="card col-md-3 groups" style="cursor: default !important">
-        <span class="badge badge-members" >{{group._members?.length + group._admins?.length}} Members</span>
-        <img class="card-img-top" src = "{{this.BASE_URL}}/uploads/{{group.group_avatar}}" onerror="this.src='/assets/images/group.png'" >
-        <a *ngIf= "group?.type == 'smart'" class="btn btn-info btn-smart"><i class="material-icons">fingerprint</i></a>
+      <div *ngIf="group.group_name !== 'private'" class="card col-md-3 groups"
+           [routerLink]="['/dashboard/group/',group._id,'activity']" class="card col-md-3 groups"
+           style="cursor: default !important">
+        <span class="badge badge-members">{{group._members?.length + group._admins?.length}} Members</span>
+        <img class="card-img-top" src="{{this.BASE_URL}}/uploads/{{group.group_avatar}}"
+             onerror="this.src='/assets/images/group.png'">
+        <a *ngIf="group?.type == 'smart'" class="btn btn-info btn-smart"><i class="material-icons">fingerprint</i></a>
         <div class="card-body ">
           <a>
             <h2 class="card-title">{{group?.group_name}}</h2>
@@ -192,14 +183,14 @@
   <div class="row no-margin">
     <ng-container *ngFor="let agora of agoras">
       <div class="card col-md-3 groups" style="cursor: default !important">
-        <span class="badge badge-members" >{{agora._members?.length + agora._admins?.length}} Members</span>
-        <img class="card-img-top" src = "{{this.BASE_URL}}/uploads/{{agora.group_avatar}}" onerror="this.src='/assets/images/group.png'" >
+        <span class="badge badge-members">{{agora._members?.length + agora._admins?.length}} Members</span>
+        <img class="card-img-top" src="{{this.BASE_URL}}/uploads/{{agora.group_avatar}}"
+             onerror="this.src='/assets/images/group.png'">
         <a class="btn btn-warning btn-join" (click)="joinPublicGroup(agora._id)">Join</a>
         <div class="card-body ">
           <a>
             <h2 class="card-title">{{agora?.group_name}}</h2>
           </a>
-          <!-- <p class="card-text">Group description</p>  -->
         </div>
       </div>
     </ng-container>

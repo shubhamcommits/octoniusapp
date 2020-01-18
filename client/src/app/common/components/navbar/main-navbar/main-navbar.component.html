@@ -1,0 +1,28 @@
+  <ul class="nav mr-auto" id="example-one">
+    <li class="nav-item" id="li_overview">
+      <button class="nav-link btn btn-link" (click)="displayMySpace()"
+         routerLinkActive="active"><img src="/assets/images/icon_my_space.svg" alt=""> <br> My Space
+        <span class="sr-only">(current)</span>
+      </button>
+    </li>
+    <li class="nav-item" id="li_group">
+      <button class="nav-link btn btn-link"   routerLinkActive="active" (click)="displayWork()">
+        <div class="svg-images">
+          <img src="/assets/images/icon_work.svg" alt="">
+          <img class="img-hover" src="/assets/images/icon_work_active.svg" alt="">
+        </div>
+        <br> Work
+        <span class="sr-only">(current)</span>
+      </button>
+    </li>
+    <li *ngIf="user?.role=='admin' || user?.role=='owner'" id="li_admin" class="nav-item">
+      <button class="nav-link btn btn-link"  routerLinkActive="active" (click)="displayAdmin()">
+        <div class="svg-images">
+          <img src="/assets/images/icon_admin.svg" alt="">
+          <img class="img-hover" src="/assets/images/icon_admin_active.svg" alt="">
+        </div>
+        <br> Admin
+        <span class="sr-only">(current)</span>
+      </button>
+    </li>
+  </ul>

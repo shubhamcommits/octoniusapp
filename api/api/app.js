@@ -61,7 +61,12 @@ app.use(bodyParser.json({ limit: '50mb', extended: true }));
 app.use(morgan('dev'));
 
 // Set file upload middleware
-app.use(fileUpload());
+app.use(fileUpload({
+  limits: {
+      fileSize: 5000000 //50mb
+  },
+  abortOnLimit: true
+}));
 app.use('/uploads', express.static(process.env.FILE_UPLOAD_FOLDER));
 
 // const encodeResToGzip = contentType => (req, res, next) => {
