@@ -7,7 +7,7 @@
     "start": "ng serve --host 0.0.0.0",
     "dev": "ng serve --configuration hmr",
     "hmr": "ng serve --configuration hmr --host 0.0.0.0",
-    "build": "ng build --prod && gzipper --exclude<html> --verbose --output-file-format [filename].[ext] ./dist",
+    "build": "ng build --prod && gzipper --verbose ./dist -i js,css",
     "gzip": "gzipper --exclude html --verbose --output-file-format [filename].[ext] ./dist ./gzipped",
     "test": "ng test",
     "lint": "ng lint",
@@ -96,7 +96,7 @@
     "zone.js": "~0.9.1"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^0.803.21",
+    "@angular-devkit/build-angular": "^0.803.23",
     "@angular/cli": "^8.0.3",
     "@angular/compiler-cli": "8.0.1",
     "@angular/language-service": "8.0.1",

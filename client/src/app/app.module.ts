@@ -209,7 +209,7 @@ import { EditWorkplaceComponent } from './dashboard/admin/admin-general/edit-wor
     CollaborativeDocGroupPostCommentComponent, CollaborativeDocGroupPostComponent,
     CommentSectionComponent, ContentSearchResultComponent, DatePickerComponent,
     DialogOverviewExampleDialog, DocumentFileComponent, EventGroupPostComponent,
-    FilesComponent, GroupActivityFiltersComponent, GroupActivityProgressComponent,
+    FilesComponent, ForgotPasswordComponent, GroupActivityFiltersComponent, GroupActivityProgressComponent,
     GroupComponent, GroupPostComponent, GroupSmartAdminComponent,
     GroupTasksComponent, GroupTasksNewComponent,
     NavbarComponent, NormalGroupPostComponent, OverviewMyAgendaComponent, OverviewMyTasksComponent,

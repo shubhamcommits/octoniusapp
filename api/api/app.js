@@ -79,13 +79,9 @@ app.use('/uploads', express.static(process.env.FILE_UPLOAD_FOLDER));
 
 // app.get("*.js", encodeResToGzip('text/javascript'));
 // app.get("*.css", encodeResToGzip('text/css'));
-// app.get("*.html", encodeResToGzip('text/html'));
 
 // static folder
 app.use(express.static(path.join(__dirname, '../../client-upgrade/client/dist')));
-
-// Compressing the application
-app.use(compression());
 
 // Routes which should handle request
 app.all('/', (req, res, next) => {
@@ -131,5 +127,8 @@ app.use((error, req, res, next) => {
     }
   });
 });
+
+// Compressing the application
+app.use(compression());
 
 module.exports = app;
