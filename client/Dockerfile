@@ -12,7 +12,7 @@ COPY ./package.json ./
 RUN yarn global add @angular/cli
 RUN yarn install
 COPY ./ ./
-RUN ng build --prod
+RUN yarn run build
 
 FROM nginx
 
