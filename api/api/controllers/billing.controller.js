@@ -96,7 +96,7 @@ const getBillingStatus = async (req, res) => {
     } else {
       res.status(200).json({
         message: 'No payment yet',
-        status: false
+        status: moment().isBetween(workspace.created_date, moment(workspace.created_date).add(14, 'days'))
       });
     }
   } catch (err) {
