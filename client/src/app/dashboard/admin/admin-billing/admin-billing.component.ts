@@ -1,6 +1,6 @@
 import {Component, HostListener, OnInit} from '@angular/core';
-import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { WorkspaceService } from '../../../shared/services/workspace.service';
+import {NgxUiLoaderService} from 'ngx-ui-loader';
+import {WorkspaceService} from '../../../shared/services/workspace.service';
 import moment from 'moment';
 import Swal from 'sweetalert2';
 import {environment} from "../../../../environments/environment";
@@ -19,6 +19,7 @@ export class AdminBillingComponent implements OnInit {
   admins_count = 0;
   guests_count = 0;
   groups_count = 0;
+  time_remaining = 0;
 
   handler: any;
   amount = 1000; // equals 10 dollars
@@ -103,6 +104,7 @@ export class AdminBillingComponent implements OnInit {
         this.success_payments = res.workspace.billing.success_payments;
         this.members_count = res['workspace']['members'].length;
         this.guests_count = res['workspace']['invited_users'].length;
+        this.time_remaining = res['workspace']['time_remaining'];
         for(let i = 0; i < this.members_count; i ++){
           if(res['workspace']['members'][i].role == 'admin'){
             this.admins_count ++;

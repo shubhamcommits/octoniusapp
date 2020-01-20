@@ -21,7 +21,8 @@
 
       <div *ngIf="!workspace_information?.billing?.current_period_end; else subscribed" class="card-tile">
         <h2>Welcome to your workspace</h2>
-        <p>To start using your workplace, please complete your subscription below. <br> <span class="text-primary">14 days FREE TRIAL</span></p>
+        <p>To start using your workplace, please complete your subscription below. <br> <span
+          class="text-primary">{{ time_remaining}} days of your FREE TRIAL</span></p>
         <div class="row" style="margin-top: 32px;">
           <div class="col-6">
         <img src='../../../assets/images/start-subscription.svg' style=" margin: 0 auto; display:block; width: 90%">
