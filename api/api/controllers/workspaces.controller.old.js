@@ -166,7 +166,7 @@ const getWorkspace = async (req, res, next) => {
             return sendErr(res, err, 'Workspace not found, provide a valid workspace id!', 404);
         }
 
-        workspace.time_remaining = moment().add(14, 'days').diff(moment(workspace.created_date), 'days');
+        workspace.time_remaining = moment(workspace.created_date).add(14, 'days').diff(moment(), 'days');
 
         return res.status(200).json({
             message: `${workspace.workspace_name} workspace found!`,
