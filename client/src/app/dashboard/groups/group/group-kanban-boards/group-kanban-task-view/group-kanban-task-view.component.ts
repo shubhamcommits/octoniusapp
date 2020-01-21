@@ -1,13 +1,13 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef} from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { CommentSectionComponent } from '../../../../../common/components/comments/comment-section/comment-section.component';
-import { PostService } from '../../../../../shared/services/post.service';
-import { GroupService } from '../../../../../shared/services/group.service';
-import { SnotifyService } from 'ng-snotify';
-import { environment } from '../../../../../../environments/environment';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {CommentSectionComponent} from '../../../../../common/components/comments/comment-section/comment-section.component';
+import {PostService} from '../../../../../shared/services/post.service';
+import {GroupService} from '../../../../../shared/services/group.service';
+import {SnotifyService} from 'ng-snotify';
+import {environment} from '../../../../../../environments/environment';
 import moment from 'moment';
-import { ReplaySubject } from 'rxjs/internal/ReplaySubject';
-import { takeUntil } from 'rxjs/internal/operators/takeUntil';
+import {ReplaySubject} from 'rxjs/internal/ReplaySubject';
+import {takeUntil} from 'rxjs/internal/operators/takeUntil';
 import {FollowersService} from "../../../../../shared/services/followers.service";
 
 @Component({
@@ -336,12 +336,16 @@ export class GroupKanbanTaskViewComponent implements OnInit {
   }
 
   selectedUser(data) {
-    console.log('taskkkk', this.task);
-    console.log(data);
     this.followerService.setFollower({
       userId: data._id,
       taskId: this.task._id
     }).subscribe(() => this.followerList.push(data));
+  }
+
+  removeFollower(follower) {
+    this.followerService.removeFollower(this.task._id, follower._id).subscribe(() => {
+      this.followerList = this.followerList.filter(item => item._id !== follower._id);
+    });
   }
 
 }

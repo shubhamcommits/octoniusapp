@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {environment} from "../../../environments/environment";
 import {User} from "../models/user.model";
 import {HttpClient} from "@angular/common/http";
@@ -20,5 +20,9 @@ export class FollowersService {
 
   setFollower(follower): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/followers`, follower);
+  }
+
+  removeFollower(taskId, userId): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/followers/${taskId}/${userId}`);
   }
 }

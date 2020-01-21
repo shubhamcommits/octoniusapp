@@ -10,6 +10,10 @@ class FollowerController {
     async addToTask(req, res) {
         return await followerService.addToTask(req.body.taskId, req.body.userId, res);
     }
+
+    async remove(req, res) {
+        return await followerService.remove(req.params.taskId, req.params.userId, res);
+    }
 }
 
 module.exports = new FollowerController();
