@@ -4,8 +4,7 @@ const user = require('./../models/user.model');
 const followerServiceUtil = {
     async saveFollower(taskId, userId, res) {
         const dbFollower = await follower.findOne({userId: userId, taskId: taskId});
-        console.log(dbFollower);
-        if(dbFollower) {
+        if (dbFollower) {
             return res.status(400).json({
                 message: 'Already a follower'
             });
@@ -22,14 +21,15 @@ const followerService = {
         try {
             const followers = await follower.find({taskId: taskId});
             return res.status(200)
-                      .json(await user.find({ "_id": {$in: followers.map(f => f.userId)}})
-                                      .select('full_name profile_pic'));
+                .json(await user.find({"_id": {$in: followers.map(f => f.userId)}})
+                    .select('full_name profile_pic'));
         } catch (e) {
             console.log(e);
             return res.status(500).json({
                 message: 'Failed to retrieve all followers'
             });
-        };
+        }
+        ;
     },
 
     async addToTask(taskId, userId, res) {
@@ -39,6 +39,17 @@ const followerService = {
             return res.status(500).json({
                 message: 'Failed to save follower'
             });
+        }
+    },
+
+    async remove(taskId, userId, res) {
+        try {
+            await follower.deleteOne({taskId: taskId, userId: userId});
+            return await this.getAllFollowers('5e027cf8223ba2545795e2d4', res);
+        } catch (e) {
+            return res.status(500).json({
+                message: 'Unable to delete follower'
+            })
         }
     }
 };

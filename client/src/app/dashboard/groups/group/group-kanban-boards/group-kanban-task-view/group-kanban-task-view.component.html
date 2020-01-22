@@ -97,7 +97,9 @@
                       [disabled]="taskContent == task?.content">Update description</button>
             </div>
             <div class="d-inline mx-2">
-              <img *ngFor="let follower of followerList.slice(0,sliceLimitFollowerList ? 2 : followerList.length)"  class="followers-img" [src]="BASE_URL + '/uploads/' + follower.profile_pic" onerror="this.src='/assets/images/user.png'"/>
+              <img *ngFor="let follower of followerList.slice(0,sliceLimitFollowerList ? 2 : followerList.length)"
+                   class="followers-img" [src]="BASE_URL + '/uploads/' + follower.profile_pic"
+                   onerror="this.src='/assets/images/user.png'" (click)="removeFollower(follower)"/>
               <button *ngIf="followerList.length > 2" class="add-followers" (click)="sliceLimitFollowerList = !sliceLimitFollowerList"><mat-icon class="material-icons"> more_horiz </mat-icon></button>
               <button class="add-followers" (click)="displaySearch = !displaySearch"><mat-icon class="material-icons"> add </mat-icon></button>
             </div>

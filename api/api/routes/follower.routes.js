@@ -17,5 +17,5 @@ router.use(auth.isLoggedIn);
 
 router.get('/:taskId', followerController.getFollowersForTask);
 router.post('/', followerController.addToTask);
-
+router.delete('/:taskId/:userId', followerController.remove);
 module.exports = router;
