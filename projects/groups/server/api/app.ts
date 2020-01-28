@@ -2,7 +2,10 @@ import express, { Request, Response, NextFunction } from 'express';
 import path from 'path';
 import compression from 'compression';
 import { developmentConfig, productionConfig } from '../configs';
-import { groupsRoutes } from './routes';
+import { 
+    groupsRoutes,
+    pulseRoutes
+} from './routes';
 
 // Defining new Express application
 const app = express();
@@ -58,6 +61,7 @@ app.all('/', (req: Request, res: Response, next: NextFunction) => {
 
 // Correct REST naming
 app.use('/api/groups', groupsRoutes);
+app.use('/api/pulse', pulseRoutes);
 
 // Invalid routes handling middleware
 app.use((req: Request, res: Response, next: NextFunction) => {
