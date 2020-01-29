@@ -37,7 +37,7 @@ const app = express();
 if (process.env.NODE_ENV !== 'production') {
   devEnv.init();
 }
-else{
+else {
   prodEnv.init();
 }
 
@@ -63,22 +63,23 @@ app.use(morgan('dev'));
 // Set file upload middleware
 app.use(fileUpload({
   limits: {
-      fileSize: 5000000 //50mb
+    fileSize: 5000000 //50mb
   },
   abortOnLimit: true
 }));
 app.use('/uploads', express.static(process.env.FILE_UPLOAD_FOLDER));
 
-// const encodeResToGzip = contentType => (req, res, next) => {
-//   req.url = req.url + '.gz';
-//   res.set('Content-Encoding', 'gzip');
-//   res.set('Content-Type', contentType);
+const encodeResToGzip = contentType => (req, res, next) => {
+  req.url = req.url + '.gz';
+  res.set('Content-Encoding', 'gzip');
+  res.set('Content-Type', contentType);
 
-//   next();
-// };
+  next();
+};
 
-// app.get("*.js", encodeResToGzip('text/javascript'));
-// app.get("*.css", encodeResToGzip('text/css'));
+app.get("*.js", encodeResToGzip('text/javascript'));
+app.get("*.css", encodeResToGzip('text/css'));
+
 
 // static folder
 app.use(express.static(path.join(__dirname, '../../client-upgrade/client/dist')));

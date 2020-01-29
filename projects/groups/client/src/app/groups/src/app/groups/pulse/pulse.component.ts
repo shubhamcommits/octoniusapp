@@ -1,6 +1,6 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { GroupsService } from 'src/shared/services/groups-service/groups.service';
-import { PublicFunctions } from 'src/app/dashboard/public.functions';
+// import { PublicFunctions } from 'src/app/dashboard/public.functions';
 
 @Component({
   selector: 'app-pulse',
@@ -18,13 +18,13 @@ export class PulseComponent implements OnInit {
   public pulseGroups: any = [];
 
   // PUBLIC FUNCTIONS
-  publicFunctions = new PublicFunctions(this.injector);
+  // publicFunctions = new PublicFunctions(this.injector);
 
   // WORKSPACE DATA
   workspaceData: Object = {};
 
   async ngOnInit() {
-    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+    // this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
     this.pulseGroups = await this.getAllPulseGroups(this.workspaceData['_id'])
     console.log(this.pulseGroups);
   }

@@ -1,7 +1,7 @@
 import { Component, OnInit, Injector } from '@angular/core';
-import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+// import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { environment } from 'src/environments/environment';
-import { PublicFunctions } from 'src/app/dashboard/public.functions';
+// import { PublicFunctions } from 'src/app/dashboard/public.functions';
 import { SubSink } from 'subsink';
 
 @Component({
@@ -12,7 +12,7 @@ import { SubSink } from 'subsink';
 export class GroupsHeaderComponent implements OnInit {
 
   constructor(
-    private utilityService: UtilityService,
+    // private utilityService: UtilityService,
     private injector: Injector
   ) { }
 
@@ -29,22 +29,22 @@ export class GroupsHeaderComponent implements OnInit {
   private subSink = new SubSink();
 
   // PUBLIC FUNCTIONS
-  private publicFunctions = new PublicFunctions(this.injector);
+  // private publicFunctions = new PublicFunctions(this.injector);
 
   async ngOnInit() {
 
     // Subscribe to the change in workspace data from the socket server
-    this.subSink.add(this.utilityService.currentWorkplaceData.subscribe((res) => {
-      if (res != {}) {
-        this.workspaceData = res;
-      }
-    }));
+    // this.subSink.add(this.utilityService.currentWorkplaceData.subscribe((res) => {
+    //   if (res != {}) {
+    //     this.workspaceData = res;
+    //   }
+    // }));
 
     // FETCH THE USER DETAILS EITHER FROM SHARED SERVICE, STORED LOCAL DATA OR FROM SERVER USING PUBLIC FUNCTIONS
-    this.userData = await this.publicFunctions.getCurrentUser();
+    // this.userData = await this.publicFunctions.getCurrentUser();
 
     // INITIALISE THE WORKSPACE DATA FROM SHARED SERVICE, STORED LOCAL DATA OR FROM SERVER USING PUBLIC FUNCTIONS
-    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+    // this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
   }
 
 }

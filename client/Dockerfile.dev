@@ -1,11 +1,17 @@
-FROM node:11.10
+# We label our stage as ‘builder’
+FROM node:alpine as builder
 
+# Defining Workdir
 WORKDIR '/app'
+
+# Copy package.json
 COPY ./package.json ./
-# RUN apt-get update \
-#           && apt-get install -y node-gyp
-RUN yarn global add @angular/cli
-RUN yarn
+
+## Installing and storing node modules
+RUN yarn install
+
 COPY ./ ./
+
 EXPOSE 4200
+
 CMD ["yarn", "hmr"]
