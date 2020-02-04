@@ -185,9 +185,11 @@ import { SearchUsersComponent } from './common/components/search-users/search-us
 import { NotificationsBarComponent } from './common/components/navbar/notifications-bar/notifications-bar.component';
 import { MainNavbarComponent } from './common/components/navbar/main-navbar/main-navbar.component';
 import { SecondLevelNavbarComponent } from './common/components/navbar/second-level-navbar/second-level-navbar.component';
-import { ThirdLevelNavbarComponent } from './common/components/navbar/third-level-navbar/third-level-navbar.component';
 import { GroupEditComponent } from './dashboard/groups/group/group-edit/group-edit.component';
 import { EditWorkplaceComponent } from './dashboard/admin/admin-general/edit-workplace/edit-workplace.component';
+import { OverviewPageHeaderComponent } from './dashboard/overview/overview-page-header/overview-page-header.component';
+import { GroupsPageHeaderComponent } from './dashboard/groups/groups-page-header/groups-page-header.component';
+import { AdminPageHeaderComponent } from './dashboard/admin/admin-page-header/admin-page-header.component';
 
 /**
  * 9. !===== IMPORTS & DECLARATIONS =====!
@@ -210,7 +212,10 @@ import { EditWorkplaceComponent } from './dashboard/admin/admin-general/edit-wor
     OverviewMyWorkplaceComponent, PostActionsComponent,
     PostboxComponent, PostCommentComponent, PulseComponent, ResetPwdComponent, SearchBarComponent,
     TaskGroupPostComponent, TimePickerComponent, UserProfileHeaderComponent,
-    UserSearchResultComponent, UserSearchResultMainComponent,
+    UserSearchResultComponent, UserSearchResultMainComponent, OverviewPageHeaderComponent,
+    GroupsPageHeaderComponent, AdminPageHeaderComponent, NotificationsBarComponent,
+    MainNavbarComponent, SecondLevelNavbarComponent, GroupEditComponent,
+    EditWorkplaceComponent,
 
     // ROUTING COMPONENTS
     routingComponents,
@@ -223,28 +228,12 @@ import { EditWorkplaceComponent } from './dashboard/admin/admin-general/edit-wor
 
     // DIRECTIVES
     ClickStopPropagationDirective,
-
     GroupKanbanBoardsComponent,
-
     GroupKanbanTaskViewComponent,
-
     GroupKanbanTaskAssignmentComponent,
-
     CollaborativeDocModalTemplatesComponent,
+    SearchUsersComponent
 
-    SearchUsersComponent,
-
-    NotificationsBarComponent,
-
-    MainNavbarComponent,
-
-    SecondLevelNavbarComponent,
-
-    ThirdLevelNavbarComponent,
-
-    GroupEditComponent,
-
-    EditWorkplaceComponent
   ],
   imports: [
 

@@ -114,9 +114,8 @@ const appRoutes: Routes = [
       { path: 'overview/mytasks', component: OverviewMyTasksComponent, canActivate: [ValidSubscriptionGuard] },
       { path: 'overview/myagenda', component: OverviewMyAgendaComponent, canActivate: [ValidSubscriptionGuard] },
       { path: 'overview/myworkplace', component: OverviewMyWorkplaceComponent, canActivate: [ValidSubscriptionGuard] },
-      {
-        path: 'groups', component: GroupsComponent, canActivate: [ValidSubscriptionGuard]
-      },
+      { path: 'groups', component: GroupsComponent, canActivate: [ValidSubscriptionGuard] },
+      { path: 'projects', component: GroupsComponent, canActivate: [ValidSubscriptionGuard] },
       { path: 'pulse', component: PulseComponent, canActivate: [ValidSubscriptionGuard] },
       {
         path: 'group/:id', component: GroupComponent, canActivate: [ValidSubscriptionGuard],

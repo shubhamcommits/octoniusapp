@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ThirdLevelNavbarComponent } from './third-level-navbar.component';
+import { GroupsPageHeaderComponent } from './groups-page-header.component';
 
-describe('ThirdLevelNavbarComponent', () => {
-  let component: ThirdLevelNavbarComponent;
-  let fixture: ComponentFixture<ThirdLevelNavbarComponent>;
+describe('GroupsPageHeaderComponent', () => {
+  let component: GroupsPageHeaderComponent;
+  let fixture: ComponentFixture<GroupsPageHeaderComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ThirdLevelNavbarComponent ]
+      declarations: [ GroupsPageHeaderComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ThirdLevelNavbarComponent);
+    fixture = TestBed.createComponent(GroupsPageHeaderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

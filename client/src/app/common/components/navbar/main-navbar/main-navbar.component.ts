@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'main-navbar',
@@ -9,21 +9,44 @@ export class MainNavbarComponent implements OnInit {
 
   @Input('user') user;
 
-  @Output() displaySecondLevelNavbar: EventEmitter<any> = new EventEmitter();
-
   ngOnInit() {
+
   }
 
-  displayMySpace() {
-    this.displaySecondLevelNavbar.emit('MY_SPACE');
+  underline_navbar_overview() {
+    const x = document.getElementById("li_overview");
+    const y = document.getElementById("li_group");
+    const z = document.getElementById("li_admin");
+
+    if (z != null) {
+      x.className = "active";
+      y.className = "none";
+      z.className = "none";
+    }
+
   }
 
-  displayWork() {
-    this.displaySecondLevelNavbar.emit('WORK');
+  underline_navbar_group() {
+    const x = document.getElementById("li_overview");
+    const y = document.getElementById("li_group");
+    const z = document.getElementById("li_admin");
+    if (z != null) {
+      y.className = "active";
+      x.className = "none";
+      z.className = "none";
+    }
+
   }
 
-  displayAdmin() {
-    this.displaySecondLevelNavbar.emit('ADMIN');
+  underline_navbar_admin() {
+    const x = document.getElementById("li_overview");
+    const y = document.getElementById("li_group");
+    const z = document.getElementById("li_admin");
+    if (z != null) {
+      z.className = "active";
+      y.className = "none";
+      x.className = "none";
+    }
   }
 
 }
