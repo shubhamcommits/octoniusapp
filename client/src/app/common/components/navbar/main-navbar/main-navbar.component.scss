@@ -33,6 +33,7 @@ p {
 
 .active {
   text-decoration: none;
+  color: $brand-primary;
 }
 
 a:active {
@@ -70,4 +71,12 @@ a:active {
 }
 .nav-link:hover .svg-images .img-hover {
   display: inline;
+}
+
+.active .svg-images .img-hover {
+  display: inline;
+}
+.active .nav-link {
+  color: $brand-primary;
+  font-weight: 700 !important;
 }

@@ -1,12 +1,12 @@
 <nav class="navbar navbar-expand-md fixed-top">
   <div class="container">
 
-    <a *ngIf="navbarLevel == 0" class="navbar-brand" routerLink="/dashboard/overview">
+    <a *ngIf="navbarLevel == 0" class="navbar-brand" routerLink="/dashboard/overview/inbox">
       <i class="icon-octo-logo"></i>
     </a>
 
     <a *ngIf="navbarLevel != 0" class="navbar-brand" (click)="goBack()" style="cursor: pointer;">
-      <a class="navbar-brand navbar-go-back" routerLink="/dashboard/overview">
+      <a class="navbar-brand navbar-go-back" routerLink="/dashboard/overview/inbox">
         <i class="material-icons">arrow_back </i>
       </a>
     </a>
@@ -18,9 +18,8 @@
       <span class="navbar-toggler-icon"><i class="material-icons">menu</i></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <main-navbar *ngIf="navbarLevel == 0" [user]="user" (displaySecondLevelNavbar)="displaySecondLevelNavbar($event);" class="mr-auto"></main-navbar>
-      <second-level-navbar *ngIf="navbarLevel == 1" [navbarType]="navbarType" (setNavLevel)="setNavLevel($event);" class="mr-auto"></second-level-navbar>
-      <third-level-navbar *ngIf="navbarLevel == 2" class="mr-auto"></third-level-navbar>
+      <main-navbar *ngIf="navbarLevel == 0" [user]="user" class="mr-auto"></main-navbar>
+      <second-level-navbar *ngIf="navbarLevel == 1" class="mr-auto"></second-level-navbar>
 
       <!-- SEARCH BAR -->
       <search-bar style="width:20% !important" [user]="user"></search-bar>

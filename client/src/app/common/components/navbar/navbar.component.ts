@@ -8,7 +8,8 @@ import {environment} from '../../../../environments/environment'
 import {BehaviorSubject} from 'rxjs';
 import {filter} from "rxjs/operators";
 import {Location} from "@angular/common";
-import {ThirdLevelNavbarComponent} from "./third-level-navbar/third-level-navbar.component";
+import {SecondLevelNavbarComponent} from "./second-level-navbar/second-level-navbar.component";
+
 
 var profile_pic: any;
 
@@ -24,7 +25,7 @@ var profile_pic: any;
 })
 export class NavbarComponent implements OnInit {
   @ViewChild('searchDrop', {static: false}) searchDrop;
-  @ViewChild(ThirdLevelNavbarComponent, {static: false}) thirdLevelNavbar;
+  @ViewChild(SecondLevelNavbarComponent, {static: false}) secondLevelNavbar;
 
   user: User;
   currentAuthenticatedUser;
@@ -46,14 +47,12 @@ export class NavbarComponent implements OnInit {
 
   BASE_URL = environment.BASE_URL;
   navbarLevel = 0;
-  navbarType = 'MY_SPACE';
 
 
   constructor(private _auth: AuthService, private _userService: UserService, private _router: Router,
               private router: Router, private location: Location) {
     this.user_data = JSON.parse(localStorage.getItem('user'));
     this.setNavbarLevel(this.router.url);
-    this.setNavbarType(this.router.url);
   }
 
   async ngOnInit() {
@@ -63,7 +62,6 @@ export class NavbarComponent implements OnInit {
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
         this.setNavbarLevel(event.urlAfterRedirects);
-        this.setNavbarType(event.urlAfterRedirects);
       });
     //this.initIntercom();
   }
@@ -85,71 +83,22 @@ export class NavbarComponent implements OnInit {
   }*/
 
 
-  setNavLevel(level: number) {
-    if (this.navbarLevel != level) {
-      this.navbarLevel = level;
-    }
-  }
-
-  displaySecondLevelNavbar(type) {
-    if (this.navbarType != type) {
-      this.redirectToSpaceType(type);
-      this.navbarType = type;
-    }
-
-    this.setNavLevel(1);
-  }
-
-  private redirectToSpaceType(type) {
-    if (type === 'MY_SPACE') {
-      this.router.navigate(['/dashboard/overview/inbox']);
-    } else if (type === 'WORK') {
-      this.router.navigate(['/dashboard/groups']);
-    } else if (type === 'ADMIN') {
-      this.router.navigate(['/dashboard/admin/general']);
-    }
-  }
-
-
   private setNavbarLevel(url: String) {
-    if (url == '/dashboard/overview') {
-      this.navbarLevel = 0;
-    } else if (url == '/dashboard/groups') {
+    if (url == '/dashboard/overview/myworkplace?myworkplace=true' || url.includes('/dashboard/group/')) {
       this.navbarLevel = 1;
-    } else if (url == '/dashboard/admin/general' || url == '/dashboard/admin/members' || url == '/dashboard/admin/billing') {
-      this.navbarLevel = 1;
-    } else if (url == '/dashboard/pulse') {
-      this.navbarLevel = 1;
-    } else if (url.includes('/dashboard/overview') && url != '/dashboard/overview/myworkplace?myworkplace=true') {
-      this.navbarLevel = 1;
-    } else if (url == '/dashboard/overview/myworkplace?myworkplace=true' || url.includes('/dashboard/group/')) {
-      this.navbarLevel = 2;
     } else {
       this.navbarLevel = 0;
     }
   }
 
-  private setNavbarType(url: String) {
-    if (url.includes('/dashboard/overview')) {
-      this.navbarType = 'MY_SPACE';
-    } else if (url == '/dashboard/groups' || url == '/dashboard/pulse') {
-      this.navbarType = 'WORK';
-    } else if (url.includes('/dashboard/admin/')) {
-      this.navbarType = 'ADMIN';
-    }
-  }
-
   goBack() {
-    if (this.navbarLevel == 1) {
-      this.router.navigate(['/dashboard/overview']);
-      this.navbarLevel = 0;
-    } else if (this.navbarLevel == 2) {
-      if (this.thirdLevelNavbar.isItMyWorkplace) {
-        this.router.navigate(['/dashboard/overview/inbox']);
+   if (this.navbarLevel == 1) {
+      if (this.secondLevelNavbar.isItMyWorkplace) {
+        this.router.navigate(['/dashboard/overview']);
       } else {
         this.router.navigate(['/dashboard/groups']);
       }
-      this.navbarLevel = 1;
+      this.navbarLevel = 0;
     } else {
       this.location.back();
     }
