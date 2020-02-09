@@ -4,7 +4,7 @@
 </app-collaborative-doc-group-navbar>
 
 
-<div class="row" [style.position] = "fixedForPreview" style="margin-top: 110px; margin-left: 1%">
+<div class="row mx-0" [style.position]="fixedForPreview" style="margin-top: 110px; margin-left: 1%">
   <div class="col-md-8">
     
 <!-- <div class="toolbar" id="toolbar">
@@ -68,7 +68,9 @@
       </span>
     </div>
   </div>  -->
-      <div id="editor" style="background: white;">
+    <div
+      style="height: 30px;position: fixed;z-index: 2;left: 0;right: 0;top: 80px;width: 67vw;background: #f3f4f6;"></div>
+    <div id="editor" style="background: white; margin-top: 68px;">
       </div>
     </div>
 
