@@ -12,6 +12,8 @@ export const environment = {
   hmr: false,
   BASE_API_URL: 'http://localhost:3000/api',
   BASE_URL: 'http://localhost:3000',
+  GROUPS_BASE_API_URL: 'http://localhost:2000/api',
+  GROUPS_BASE_URL: 'http://localhost:2000',
   pk_stripe: 'pk_test_rgLsr0HrrbMcqQr5G7Wz1zFK',
 
   /**

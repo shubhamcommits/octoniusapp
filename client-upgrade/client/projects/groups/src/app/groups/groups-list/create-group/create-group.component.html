@@ -1,0 +1,35 @@
+<!-- NORMAL GROUP STARTS -->
+<div *ngIf="(userData?.role== 'admin' || userData?.role== 'owner') && state == 'normal'" class="card overlay group"
+    (click)="openCreateGroupModal()">
+    <div class="card-body content">
+
+        <h2 class="card-title white"><i class="material-icons">group</i>
+            <br>
+            Create Group</h2>
+    </div>
+</div>
+<!-- NORMAL GROUP STARTS -->
+
+<!-- AGORA GROUP STARTS -->
+<div *ngIf="(userData?.role== 'admin' || userData?.role== 'owner') && state == 'agora'" class="card overlay agora-group"
+    (click)="openCreateAgoraModal()">
+    <div class="card-body content">
+
+        <h2 class="card-title white"><i class="material-icons">account_balance</i>
+            <br>
+            Create Agora</h2>
+    </div>
+</div>
+<!-- AGORA GROUP STARTS -->
+
+<!-- SMART GROUP STARTS -->
+<div *ngIf="(userData?.role== 'admin' || userData?.role== 'owner') && state == 'smart'" class="card overlay smart-group"
+    (click)="openCreateSmartGroupModal()">
+    <div class="card-body content">
+
+        <h2 class="card-title white"><i class="material-icons">fingerprint</i>
+            <br>
+            Create Smart Group</h2>
+    </div>
+</div>
+<!-- SMART GROUP ENDS -->

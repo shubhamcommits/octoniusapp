@@ -1,11 +1,11 @@
 <div *ngIf="!workspaceData?.billing?.current_period_end; else subscribed" class="card-tile">
-    <h2>Welcome to your workspace</h2>
+    <h6><b>Welcome to your workspace!</b></h6>
     <h6>To start using your workspace, please complete your subscription below</h6>
     <hr>
     <h6><b>Current Plan </b></h6>
     <h6>1 user - 10 EUR(€)/month</h6>
     <hr/>
-    <p><b>Price</b><br/> 10 Eur(€)/user - Per Month. Billed Monthly.</p>
+    <h6><b>Price</b><br/> 10 Eur(€)/user - Per Month. Billed Monthly.</h6>
     <button (click)="handlePayment()" class="btn btn-md btn-primary">Start a monthly subscription</button>
   </div>
 

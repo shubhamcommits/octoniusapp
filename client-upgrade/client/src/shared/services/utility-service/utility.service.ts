@@ -266,6 +266,10 @@ export class UtilityService {
     return Swal.fire(title, text, icon);
   }
 
+  public getSwalModal(swalOptions: any){
+    return Swal.fire(swalOptions);
+  }
+
   /**
    * This function is responsible for showing the swal toast
    * @param icon - 'success', 'error', 'warning', 'info', 'question'

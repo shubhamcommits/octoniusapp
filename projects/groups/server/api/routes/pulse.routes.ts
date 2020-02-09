@@ -16,6 +16,9 @@ routes.get('/list', pulse.getPulseGroups);
 // GET - Get list of next 5 groups present in the workspace based on the lastGroupId from fetched from the list of first 10 groups
 routes.get('/list/next', pulse.getNextPulseGroups);
 
+// GET - Get count of tasks due this week
+routes.get('/tasks', pulse.getPulseTasks);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

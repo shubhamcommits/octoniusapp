@@ -36,8 +36,8 @@ export class AdminMembersComponent implements OnInit {
 
   async ngOnInit() {
     this.utilityService.startForegroundLoader();
-    this.members = await this.publicFunctions.getWorkspaceMembers();
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+    this.members = await this.publicFunctions.getWorkspaceMembers(this.workspaceData._id);
     return this.utilityService.stopForegroundLoader();
   }
 

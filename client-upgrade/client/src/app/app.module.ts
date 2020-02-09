@@ -88,9 +88,6 @@ import { socketConfig } from 'src/shared/config/socket.config';
  */
 import { GlobalErrorHandler } from 'src/shared/error-handler/global-error-handler';
 import { ServerErrorInterceptor } from 'src/shared/error-handler/server-error.interceptor';
-// import { GroupsSharedModule } from 'projects/groups/src/app/app.module';
-// import { AuthenticationSharedModule } from 'projects/authentication/src/app/app.module';
-// import { AdminSharedModule } from 'projects/admin/src/app/app.module';
 
 
 /**

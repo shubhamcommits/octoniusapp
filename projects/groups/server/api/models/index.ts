@@ -1,4 +1,5 @@
 import { Group } from './group.model';
+import { Post } from './post.model';
 import { User } from './user.model';
 
 /*  =====================
@@ -10,6 +11,9 @@ export {
     // GROUP
     Group as Group,
 
-    //USER
+    // POST
+    Post as Post,
+
+    // USER
     User as User
 };

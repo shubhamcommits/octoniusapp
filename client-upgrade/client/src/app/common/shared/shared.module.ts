@@ -11,6 +11,7 @@ import { ComponentSearchBarComponent } from './component-search-bar/component-se
 import { BrandingPanelComponent } from './branding-panel/branding-panel.component';
 import { RouterModule } from '@angular/router';
 import { LoadingSpinnerSmallComponent } from './loading-spinner-small/loading-spinner-small.component';
+import { SectionSeparatorComponent } from './section-separator/section-separator.component';
 
 
 
@@ -22,7 +23,8 @@ import { LoadingSpinnerSmallComponent } from './loading-spinner-small/loading-sp
     LoadingSpinnerComponent,
     InfiniteScrollComponent,
     ComponentSearchBarComponent,
-    LoadingSpinnerSmallComponent
+    LoadingSpinnerSmallComponent,
+    SectionSeparatorComponent
   ],
   imports: [
     CommonModule,
@@ -37,7 +39,8 @@ import { LoadingSpinnerSmallComponent } from './loading-spinner-small/loading-sp
     EmailInputComponent,
     InfiniteScrollComponent,
     LoadingSpinnerComponent,
-    LoadingSpinnerSmallComponent
+    LoadingSpinnerSmallComponent,
+    SectionSeparatorComponent
   ]
 })
 export class SharedModule { }

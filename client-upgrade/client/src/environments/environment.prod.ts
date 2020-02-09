@@ -4,6 +4,8 @@ export const environment = {
 
   BASE_API_URL: 'http://localhost:3000/api',
   BASE_URL: 'http://localhost:3000',
+  GROUPS_BASE_API_URL: 'http://localhost:2000/api',
+  GROUPS_BASE_URL: 'http://localhost:2000',
   // BASE_API_URL: 'https://workplace.octonius.com/api',
   // BASE_URL: 'https://workplace.octonius.com',
   pk_stripe: 'pk_live_C6kLYxOOeUXt0hzaK6PockGM',

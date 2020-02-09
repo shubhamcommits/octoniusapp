@@ -17,7 +17,7 @@ export class GroupController {
         try {
 
             // Fetch first 10 groups in the database which are not private
-            const groups = await Group.find({ group_name: { $not: { $eq: 'private' } } })
+            const groups = await Group.find({ group_name: { $not: { $eq: 'private' || 'personal' } } })
                 .sort('_id')
                 .populate({
                     path: '_members',
@@ -74,7 +74,7 @@ export class GroupController {
             // Fetch next 5 groups in the database based on the list of @lastGroupId which are not private
             const groups = await Group.find({
                 $and: [
-                    { group_name: { $not: { $eq: 'private' } } },
+                    { group_name: { $not: { $eq: 'private' || 'personal' } } },
                     { _id: { $gt: lastGroupId } }]
             })
                 .sort('_id')
@@ -105,6 +105,114 @@ export class GroupController {
         }
     };
 
+    async getUserGroups(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            const { workspaceId, userId } = req.query;
+
+            // If either workspaceId or userId is null or not provided then we throw BAD REQUEST 
+            if (!workspaceId || !userId) {
+                return res.status(400).json({
+                    message: 'Please provide both workspaceId and userId as the query parameter!'
+                })
+            }
+
+            // Finding groups for the user of which they are a part of
+            const groups = await Group.find({
+                $and: [
+                    { group_name: { $not: { $eq: 'private' || 'personal' } } },
+                    { _workspace: workspaceId, },
+                    { $or: [{ _members: userId }, { _admins: userId }] },
+                    // { type: { $ne: 'smart' } }
+                ]
+            })
+                .sort('_id')
+                .limit(10)
+                .populate({
+                    path: '_members',
+                    select: '_id',
+                    options: {
+                        count: true
+                    }
+                })
+                .populate({
+                    path: '_admins',
+                    select: '_id',
+                    options: {
+                        count: true
+                    }
+                })
+                .lean() || []
+
+            // If there are no groups then we send error response
+            if (!groups) {
+                return sendError(res, new Error('Oops, no groups found!'), 'Group not found, Invalid workspaceId or userId!', 404);
+            }
+            
+            // Send the status 200 response
+            return res.status(200).json({
+                message: `${groups.length} groups found.`,
+                groups
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
+
+    /**
+     * This function fetches next 5 groups which exist in the database based on the list of @lastGroupId
+     * @param req 
+     * @param res 
+     */
+    async getNextUserGroups(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { workspaceId, userId } = req.query;
+            const { lastGroupId } = req.params;
+
+            // If lastGroupId, workspaceId, or userId is null or not provided then we throw BAD REQUEST 
+            if (!lastGroupId || !workspaceId || !userId) {
+                return res.status(400).json({
+                    message: 'Please provide the lastGroupId, workspaceId, and userId as the query parameter!'
+                })
+            }
+
+            // Fetch next 5 groups in the database based on the list of @lastGroupId which are not private
+            const groups = await Group.find({
+                $and: [
+                    { group_name: { $not: { $eq: 'private' || 'personal' } } },
+                    { _workspace: workspaceId, },
+                    { $or: [{ _members: userId }, { _admins: userId }] },
+                    { _id: { $gt: lastGroupId } }
+                ]
+            })
+                .sort('_id')
+                .limit(5)
+                .populate({
+                    path: '_members',
+                    select: '_id',
+                    options: {
+                        count: true
+                    }
+                })
+                .populate({
+                    path: '_admins',
+                    select: '_id',
+                    options: {
+                        count: true
+                    }
+                })
+                .lean() || [];
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: `The next ${groups.length} groups!`,
+                groups: groups
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
+
     /**
      * This function fetches the group details corresponding to the @constant groupId 
      * @param req - @constant groupId
@@ -112,7 +220,7 @@ export class GroupController {
     async get(req: Request, res: Response) {
         try {
 
-            const { groupId } = req.query;
+            const { groupId } = req.params;
 
             // Find the Group based on the groupId
             const group = await Group.findOne({
@@ -166,7 +274,8 @@ export class GroupController {
                 group_name: req.body.group_name,
                 workspace_name: req.body.workspace_name,
                 _workspace: req.body.workspaceId,
-                _admins: req.body.userId
+                _admins: req.body.userId,
+                type: req.body.type
             }
 
             // Checking if group already exists

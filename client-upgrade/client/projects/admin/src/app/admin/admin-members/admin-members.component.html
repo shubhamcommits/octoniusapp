@@ -1,6 +1,6 @@
 <div class="container">
     <div class="card-tile">
-        <h4>All members from your workplace</h4>
+        <h6><b>All members from your workplace</b></h6>
         <app-component-search-bar [workspaceId] = "workspaceData?._id" [placeholder]="searchBarPlaceholder"></app-component-search-bar>
         <hr>
         <div class="media card-tile user-list" *ngFor="let member of members">
@@ -8,7 +8,7 @@
                 class="feed-avatar">
             <div class="media-body">
                 <div class="float-left">
-                    <h4 class="mt-0">{{member?.first_name}} {{member?.last_name}}</h4>
+                    <p class="mt-0">{{member?.first_name}} {{member?.last_name}}</p>
                     <p>Role: {{member?.role}} (<a href="mailto:{{member?.email}}">{{member?.email}}</a>)</p>
                 </div>
                 <div class="btn-group mr-3 float-right" style="margin-left:10px">

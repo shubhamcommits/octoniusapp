@@ -3,7 +3,7 @@
  */
 function prodConfigInit() {
   process.env.NODE_ENV = 'production';
-  process.env.PORT = '3000';
+  process.env.PORT = '2000';
   process.env.host = `http://localhost:${process.env.PORT}/`;
   process.env.dbURL = 'mongodb://mongodb:27017/octonius' || 'mongodb://127.0.0.1:27017/octonius';
   process.env.REDIS_HOST = 'redis';

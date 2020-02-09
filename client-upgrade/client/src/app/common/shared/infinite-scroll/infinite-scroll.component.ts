@@ -16,7 +16,7 @@ export class InfiniteScrollComponent implements OnInit {
   @Output() scrolled = new EventEmitter();
 
   // ANCHOR DIV REFERENCE
-  @ViewChild('anchor', {static: false}) anchor: ElementRef<HTMLElement>;
+  @ViewChild('anchor', {static: true}) anchor: ElementRef<HTMLElement>;
 
   // OBSERVER WHICH OBSERVES FOR THE SCROLL CHANGE
   private observer: IntersectionObserver;

@@ -5,6 +5,7 @@ import { StorageService } from 'src/shared/services/storage-service/storage.serv
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { retry } from 'rxjs/internal/operators/retry';
 import { SubSink } from 'subsink';
+import { GroupsService } from 'src/shared/services/groups-service/groups.service';
 
 export class PublicFunctions {
 
@@ -127,10 +128,45 @@ export class PublicFunctions {
         })
       }
 
+      /**
+       * Fetch list of first 10 groups of which a user is a part of
+       * @param workspaceId 
+       * @param userId 
+       */
+      public async getUserGroups(workspaceId: string, userId: string){
+        return new Promise((resolve, reject)=>{
+          let groupsService = this.injector.get(GroupsService);
+          groupsService.getUserGroups(workspaceId, userId)
+          .then((res)=> resolve(res['groups']))
+          .catch(()=> reject([]))
+        })
+      }
+    
+      /**
+       * Fetch list of next 5 groups of which a user is a part of based on the lastGroupId
+       * @param workspaceId 
+       * @param userId 
+       * @param lastGroupId 
+       */
+      public async getNextUserGroups(workspaceId: string, userId: string, lastGroupId: string){
+        return new Promise((resolve, reject)=>{
+          let groupsService = this.injector.get(GroupsService);
+          groupsService.getNextUserGroups(workspaceId, userId, lastGroupId)
+          .then((res)=> resolve(res['groups']))
+          .catch(()=> reject([]))
+        })
+      }
+
       async catchError(err: Error){
         let utilityService = this.injector.get(UtilityService)
         console.log('There\'s some unexpected error occured, please try again!', err);
         utilityService.errorNotification('There\'s some unexpected error occured, please try again!');
+      }
+
+      async sendError(err: Error){
+        let utilityService = this.injector.get(UtilityService)
+        console.log('There\'s some unexpected error occured, please try again!', err);
+        utilityService.errorNotification(err.message);
       }
 
     /**

@@ -28,7 +28,7 @@ if (cluster.isMaster) {
 } else {
 
   // Define Groups Application port
-  const port = 3000;
+  const port = 2000;
 
   // Defining the Host Name
   const host = '127.0.0.1';

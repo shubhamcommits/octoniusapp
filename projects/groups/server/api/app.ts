@@ -1,5 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 import path from 'path';
+import cors from 'cors';
+import morgan from 'morgan';
 import compression from 'compression';
 import { developmentConfig, productionConfig } from '../configs';
 import { 
@@ -20,6 +22,12 @@ else {
 
 // Initiliazing Database Connection
 require('../db');
+
+// cors middleware for orign and Headers
+app.use(cors());
+
+// Use Morgan middleware for logging every request status on console
+app.use(morgan('dev'));
 
 // Allow any method from any host and log requests
 app.use((req: Request, res: Response, next: NextFunction) => {

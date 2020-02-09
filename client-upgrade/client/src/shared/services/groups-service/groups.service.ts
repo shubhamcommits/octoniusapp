@@ -9,50 +9,103 @@ export class GroupsService {
 
   constructor(private _http: HttpClient) { }
 
-  baseURL = environment.BASE_API_URL;
+  baseURL = environment.GROUPS_BASE_API_URL;
 
   /**
    * This function is responsible for fetching first 10 groups present in a workspace
    * @param workspaceId 
    */
   getPulseGroups(workspaceId: string) {
-    return this._http.get(this.baseURL + `/groups/all/pulse/${workspaceId}/groups`)
-    .toPromise()
+    return this._http.get(this.baseURL + `/pulse/list`, {
+      params: {
+        workspaceId: workspaceId
+      }
+    }).toPromise()
   }
 
   /**
-   * This function is responsible for next 5 groups present in a workspace
+   * This function is responsible for fetching next 5 groups present based on the lastGroupId fetched
    * @param workspaceId 
    * @param lastGroupId 
    */
-  getNextPulseGroups(workspaceId: string, lastGroupId: string){
-    return this._http.get(this.baseURL + `/groups/all/pulse/${workspaceId}/nextGroups/${lastGroupId}`)
-    .toPromise()
+  getNextPulseGroups(workspaceId: string, lastGroupId: string) {
+    return this._http.get(this.baseURL + `/pulse/list/next`, {
+      params: {
+        workspaceId: workspaceId,
+        lastGroupId: lastGroupId
+      }
+    }).toPromise()
   }
 
-  getPulseTotalNumTasks(groupId: string) {
-    return this._http.get(this.baseURL + '/group/' + groupId + '/totalNumTasks');
-  }
-
-  getPulseNumTodoTasks(groupId: string) {
-    return this._http.get(this.baseURL + '/group/' + groupId + '/numTodoTasks');
-  }
-
-  getPulseNumInProgressTasks(groupId: string) {
-    return this._http.get(this.baseURL + '/group/' + groupId + '/numInProgressTasks');
-  }
-
-  getPulseNumDoneTasks(groupId: string) {
-    return this._http.get(this.baseURL + '/group/' + groupId + '/numDoneTasks');
-  }
-
-  editPulseDesc(groupId: string, description: string) {
-
-    // Preparing Pulse Data
-    let pulseData = {
-      description: description
+  /**
+   * This function is responsible for fetching the tasks count based on the groupId and/or status
+   * @param groupId 
+   * @param status 
+   */
+  getPulseTasks(groupId: string, status?: string) {
+    if (status) {
+      return this._http.get(this.baseURL + `/pulse/tasks`, {
+        params: {
+          groupId,
+          status
+        }
+      }).toPromise()
     }
 
-    return this._http.post(this.baseURL + '/groups/' + groupId + '/pulse/editDescription', pulseData);
+    else {
+      return this._http.get(this.baseURL + `/pulse/tasks`, {
+        params: {
+          groupId
+        }
+      }).toPromise()
+    }
+
   }
+
+  /**
+   * This function create a new normal group and makes the POST request
+   * @param groupName 
+   * @param workspace_name 
+   * @param workspaceId 
+   * @param userId 
+   */
+  createGroup(groupName: string, workspace_name: string, workspaceId: string, userId: string, type: string) {
+    return this._http.post(this.baseURL + `/groups`, {
+      group_name: groupName,
+      workspace_name: workspace_name,
+      workspaceId: workspaceId,
+      userId: userId,
+      type: type
+    }).toPromise();
+  }
+
+  /**
+   * This function is responsible for fetching the list of all first 10 groups(normal, agora and smart) for which a user is a part of
+   * @param workspaceId 
+   * @param userId 
+   */
+  getUserGroups(workspaceId: string, userId: string){
+    return this._http.get(this.baseURL + `/groups`, {
+      params: {
+        workspaceId,
+        userId
+      }
+    }).toPromise();
+  }
+
+  /**
+   * This function is responsible for fetching the list of next 5 all groups(normal, agora and smart) for which a user is a part of based on the lastGroupId
+   * @param workspaceId 
+   * @param userId 
+   * @param lastGroupId 
+   */
+  getNextUserGroups(workspaceId: string, userId: string, lastGroupId: string){
+    return this._http.get(this.baseURL + `/groups/${lastGroupId}/next`, {
+      params: {
+        workspaceId,
+        userId
+      }
+    }).toPromise();
+  }
+
 }
