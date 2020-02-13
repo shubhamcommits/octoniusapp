@@ -23,4 +23,7 @@ uploads/
 .vscode/
 *.vim
 
+yarn.lock
+yarn-error.log
+
 stack-deploy-octonius.yml
