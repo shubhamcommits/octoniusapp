@@ -9,8 +9,6 @@ import { WelcomePageComponent } from './common/welcome-page/welcome-page.compone
 // GUARDS
 import { AuthenticationGuard } from 'src/shared/guards/authentication-guard/authentication.guard';
 import { RoutingGuard } from 'src/shared/guards/routing-guard/routing.guard';
-import { AuthenticationSharedModule } from 'projects/authentication/src/app/app.module';
-// import { AdminSharedModule } from 'projects/admin/src/app/app.module';
 
 
 const routes: Routes = [
@@ -39,8 +37,17 @@ const routes: Routes = [
   // 'authentication' ROUTE - LAZY LOAD THE AUTHENTICATION MODULE
   {
     path: 'authentication',
-    loadChildren: () => import('projects/authentication/src/app/app.module')
-      .then((module) => module.AuthenticationSharedModule),
+    loadChildren: () => import('modules/authentication/authentication.module')
+      .then((module) => module.AuthenticationModule),
+    canActivate: [RoutingGuard]
+  },
+
+  // 'document' ROUTE - LAZY LOAD THE OCTODOC MODULE
+
+  {
+    path: 'document',
+    loadChildren: () => import('modules/octodoc/octodoc.module')
+    .then((module) => module.OctodocModule),
     canActivate: [RoutingGuard]
   },
 
@@ -57,11 +64,6 @@ const routes: Routes = [
     
     // ROUTER MODULE
     RouterModule.forRoot(routes),
-
-    // AUTHENTICATION MODULE
-    AuthenticationSharedModule.forRoot(),
-
-    // AdminSharedModule.forRoot()
     
   ],
   exports: [RouterModule],
