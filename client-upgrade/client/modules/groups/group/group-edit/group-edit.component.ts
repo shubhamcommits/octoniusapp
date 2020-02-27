@@ -1,0 +1,198 @@
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {environment} from "../../../../../environments/environment";
+import {GroupService} from "../../../../shared/services/group.service";
+import {ActivatedRoute, Router} from "@angular/router";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {GroupDataService} from "../../../../shared/services/group-data.service";
+import {SnotifyService} from "ng-snotify";
+import {UserService} from "../../../../shared/services/user.service";
+import {NgxUiLoaderService} from "ngx-ui-loader";
+import {ImageCroppedEvent} from "ngx-image-cropper";
+
+@Component({
+  selector: 'app-group-edit',
+  templateUrl: './group-edit.component.html',
+  styleUrls: ['./group-edit.component.scss']
+})
+export class GroupEditComponent implements OnInit {
+  modalReference: any;
+  imageChangedEvent: any = '';
+  croppedImage: any = '';
+
+  @ViewChild('content', { static: false }) private content;
+
+  group_id;
+
+  groupImageUrl = '';
+  profilePic = '';
+  fileToUpload: Blob = null;
+
+  group: any= {};
+
+  user;
+
+  isItMyWorkplace = false;
+
+  ownerOfGroup: boolean = false;  // True if the current user is the owner of the public group
+
+  joined: boolean = false;
+
+  BASE_URL = environment.BASE_URL;
+
+  constructor(private groupService: GroupService, private _activatedRoute: ActivatedRoute, private modalService: NgbModal,
+              private _router: Router, public groupDataService: GroupDataService,
+              private snotifyService: SnotifyService, private userService: UserService,
+              private ngxService: NgxUiLoaderService) { }
+
+  async ngOnInit() {
+    this.ngxService.start();
+    this.group_id = this.groupDataService.groupId;
+    this.isItMyWorkplace = this._activatedRoute.snapshot.queryParamMap.get('myworkplace') == 'true' || false;
+    await this.loadUser();
+    if (this.isItMyWorkplace) {
+      await this.getPrivateGroup();
+    } else {
+      // group needs to be defined
+      await this.loadGroup()
+        .then(()=>{
+          this.ngxService.stop();
+        })
+        .catch((err)=>{
+          console.log('Error while loading the group', err);
+        })
+    }
+
+  }
+
+  fileChangeEvent(event: any): void {
+    this.imageChangedEvent = event;
+  }
+
+  imageCropped(event: ImageCroppedEvent) {
+    this.fileToUpload = event.file;
+    const reader = new FileReader();
+    reader.readAsDataURL(this.fileToUpload);
+    this.fileToUpload = new File([this.fileToUpload], "-group-avatar.jpg", { type: this.fileToUpload.type });
+  }
+
+  imageLoaded() {
+    // show cropper
+    console.log('Image loaded');
+  }
+  cropperReady() {
+    console.log('Cropper ready');
+  }
+
+  loadImageFailed() {
+    // show message
+    console.log('Load failed');
+  }
+
+  getPrivateGroup() {
+    return new Promise((resolve, reject) => {
+
+      this.groupService.getPrivateGroup()
+        .subscribe(async (res) => {
+
+
+          this.group = res['privateGroup'];
+          this.group_id = res['privateGroup']['_id'];
+          this.group.group_name = 'My Space';
+          this.groupImageUrl = await this.profilePic == null
+            ? '/assets/images/user.png' : environment.BASE_URL + `/uploads/${this.profilePic}`;
+          // this.group_name = res['privateGroup']['group_name'];
+          resolve();
+        }, (err) => {
+          reject(err);
+        })
+    })
+  }
+
+  loadGroup() {
+    return new Promise((resolve, reject)=>{
+      this.groupService.getGroup(this.group_id)
+        .subscribe(async (res) => {
+          //console.log(res);
+          this.groupImageUrl = await res['group']['group_avatar'] == null
+            ? '/assets/images/group.png' : environment.BASE_URL + `/uploads/${res['group']['group_avatar']}`;
+
+          this.group.description = res['group']['description'] || '';
+          this.group.group_name = res['group']['group_name'];
+          this.group = res['group'];
+          this.groupDataService.group = res['group'];
+
+          // Determine if the current user is the admin of the group
+          // @ts-ignore
+          this.group.type = res.group.type;
+          let admin = this.groupDataService._group._admins.filter(_user => {
+            return _user._id.toString() === this.user._id.toString();
+          });
+
+          if (admin.length > 0) {
+            this.ownerOfGroup = true;
+          }
+
+          if(this.group.group_name === 'private'){
+            this.isItMyWorkplace = true;
+            this.group.group_name = 'My Space';
+            this.groupImageUrl = await this.profilePic == null
+              ? '/assets/images/user.png' : environment.BASE_URL + `/uploads/${this.profilePic}`;
+          }
+          resolve();
+        }, (err) => {
+          reject(err);
+        });
+    })
+
+  }
+
+  loadUser() {
+    return new Promise((resolve, reject) => {
+      this.userService.getUser()
+        .subscribe((res) => {
+            this.user = res['user'];
+            this.profilePic = this.user.profile_pic;
+            //console.log(this.user);
+            resolve();
+          },
+          err => reject(err)
+        );
+    });
+  }
+
+  onUpdateGroup() {
+    const formData = new FormData();
+
+    formData.append('description', this.group.description);
+    formData.append('group_name', this.group.group_name);
+
+    if (this.fileToUpload !== null) {
+      formData.append('group_avatar', this.fileToUpload);
+    }
+
+    this.groupService.updateGroup(this.group_id, formData)
+      .subscribe((res) => {
+        this.modalReference.close();
+        this.snotifyService.success('Succesfully updated group data');
+        this.loadGroup();
+
+      }, (err) => {
+
+        if (err.status === 401) {
+          this.snotifyService.error('Error! You are not allowed to edit this group\'s data');
+          setTimeout(() => {
+            localStorage.clear();
+            this._router.navigate(['']);
+          }, 3000);
+        } else if (err.status) {
+          this.snotifyService.error(err.error.message, 'Error!');
+        } else {
+          this.snotifyService.error('Error! either server is down or no internet connection');
+        }
+      });
+
+  }
+  openLg(content) {
+    this.modalReference = this.modalService.open(content, { size: 'lg', centered: true });
+  }
+}

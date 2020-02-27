@@ -3,7 +3,10 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs/internal/Observable';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
+
 export class UserService {
 
   BASE_API_URL = environment.BASE_API_URL;

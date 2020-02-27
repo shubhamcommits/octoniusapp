@@ -3,7 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs/internal/Observable';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
+
 export class WorkspaceService {
 
   BASE_API_URL = environment.BASE_API_URL;

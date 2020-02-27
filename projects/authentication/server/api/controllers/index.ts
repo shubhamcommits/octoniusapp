@@ -1,5 +1,15 @@
 import { AuthsController } from "./auths.controller";
+import { PasswordsControllers } from "./passwords.controller";
 
+/*  ==========================
+ *  -- EXPORTS CONTROLLERS --
+ *  ==========================
+ * */
 export {
-    AuthsController as AuthsController
+
+    // AUTHS
+    AuthsController as AuthsController,
+
+    // PASSWORDS
+    PasswordsControllers as PasswordsControllers
 }

@@ -2,9 +2,18 @@ version: "3.3"
 
 services:
 
-  server:
-    container_name: auth-server
-    image: auth:server
+  mongodb:
+    container_name: auths-mongo
+    image: mongo:latest
+    restart: always
+    volumes:
+      - data:/data/db
+    ports:
+      - 27017:27017
+
+  auths-server:
+    container_name: auths-server
+    image: auths:server
     restart: always
     build:
       dockerfile: Dockerfile

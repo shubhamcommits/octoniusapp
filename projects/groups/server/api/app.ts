@@ -60,11 +60,11 @@ app.get("*.js", encodeResToGzip('text/javascript'));
 app.get("*.css", encodeResToGzip('text/css'));
 
 // static assets folder
-app.use(express.static(path.join(__dirname, '../../client/dist')));
+// app.use(express.static(path.join(__dirname, '../../client/dist')));
 
 // Routes which should handle request
 app.all('/', (req: Request, res: Response, next: NextFunction) => {
-    res.sendFile(path.join(__dirname, '../../client/dist/index.html'));
+    res.sendFile(path.join(__dirname, './views/index.html'));
 });
 
 // Correct REST naming

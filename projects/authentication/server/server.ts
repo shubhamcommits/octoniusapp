@@ -28,7 +28,7 @@ if (cluster.isMaster) {
 } else {
 
   // Define Authentication Application port
-  const port = 4000;
+  const port = 3000;
 
   // Defining the Host Name
   const host = '127.0.0.1';

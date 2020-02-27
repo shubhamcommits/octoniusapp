@@ -1,0 +1,81 @@
+<div class="card-tile workspace-signupmode">
+
+  <div class="row">
+    <div class="col-md-9">
+      <h4>Group description</h4>
+    </div>
+    <div class="col-md-3">
+      <app-group-edit class="float-right"></app-group-edit>
+    </div>
+  </div>
+  <p>{{group?.description}}</p>
+
+</div>
+
+
+<div [hidden]="groupDataService.group?.group_name =='Global'" class="card-tile invite-users">
+
+  <h4>Add new member</h4>
+  <p>You can search for persons inside the organization's Workplace and add them to your group.</p>
+
+  <section>
+    <div>
+      <input [formControl]="queryField" type="search" id="keyword" placeholder="Type a name to search"
+             class="input-search"/>
+    </div>
+
+    <div class="media card-tile user-list w-50 mb-0" *ngFor=" let item of itemList">
+
+      <img src="{{BASE_URL}}/uploads/{{item?.profile_pic}}" onerror="this.src='/assets/images/user.png'"
+           class="feed-avatar-search">
+      <div class="media-body mt-2">
+        <div class="float-left ml-0 mt-1">
+          <h4 class="mt-0 full-name-text">{{item?.full_name}}</h4>
+        </div>
+        <div class="btn-group mr-3 ml-2 float-right">
+
+          <div *ngIf="!isGroupMember(item)">
+            <button [hidden]="memberJustAddedToGroup(item)" (click)="onAddNewMember(item)"
+                    class="btn btn-primary dropdown-toggle-split btn-sm">add
+            </button>
+            <i [hidden]="!memberJustAddedToGroup(item)"
+               class="material-icons mr-1 dropdown-toggle-split btn-sm working">check_circle</i>
+          </div>
+          <div *ngIf="isGroupMember(item)">
+            <p class="btn btn-sm btn-text">joined</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <hr>
+  <p>If you want to invite someone from outside the organization, send them an invite from the Workplace Settings. </p>
+
+</div>
+
+<group-smart-admin></group-smart-admin>
+<div class="row card-tile">
+  <div class="col-md-3"><img src="/assets/images/share-files.svg" alt="" style="width: 250px"></div>
+  <div class="col-md-9">
+    <h4>Share files with the organization?</h4>
+    <p class="muted">If you want to share your files with the rest of the organization, please switch this ON.</p>
+    <label class="switch">
+      <input type="checkbox" (click)="onChange()" [checked]="fileSharedCheck">
+      <span class="slider round"></span>
+    </label></div>
+
+
+</div>
+
+<div [hidden]="groupDataService.group?.group_name =='Global'" class="card-tile">
+  <h4>Delete the group</h4>
+  <p>Please keep in mind that this action is irreversible.</p>
+  <button class="btn btn-danger" (click)="onDelete()">Delete</button>
+</div>
+
+   
+
+
+

@@ -3,9 +3,9 @@
  */
 function devConfigInit() {
   process.env.NODE_ENV = 'development';
-  process.env.PORT = '2000';
-  process.env.host = `http://localhost:${process.env.PORT}/`;
-  process.env.dbURL = 'mongodb://127.0.0.1:27017/octonius';
+  process.env.PORT = '4000';
+  process.env.HOST = '127.0.0.1';
+  process.env.dbURL = 'mongodb://mongodb:27017/octonius' || 'mongodb://127.0.0.1:27017/octonius';
   process.env.REDIS_HOST = '127.0.0.1';
   process.env.REDIS_PORT = '6379';
   process.env.SENDGRID_KEY = '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';

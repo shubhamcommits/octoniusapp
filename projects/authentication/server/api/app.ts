@@ -5,7 +5,8 @@ import morgan from 'morgan';
 import compression from 'compression';
 import { developmentConfig, productionConfig } from '../configs';
 import { 
-    authsRoutes
+    authsRoutes,
+    passwordsRoutes
 } from './routes';
 
 // Defining new Express application
@@ -68,6 +69,7 @@ app.all('/', (req: Request, res: Response, next: NextFunction) => {
 
 // Correct REST naming
 app.use('/api/auths', authsRoutes);
+app.use('/api/passwords', passwordsRoutes);
 
 // Invalid routes handling middleware
 app.use((req: Request, res: Response, next: NextFunction) => {

@@ -1,0 +1,110 @@
+version: "3.3"
+
+services:
+
+  mongodb:
+    container_name: mongodb
+    image: mvertes/alpine-mongo:latest
+    restart: always
+    volumes:
+      - data_db:/data/db
+    ports:
+      - 27017:27017
+
+  mailing-server:
+    container_name: mailing-server
+    image: mailing:server
+    ports:
+      - 2000:2000
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./mailing/server
+    volumes:
+      # Avoid overwriting container's node_modules folder
+      - /usr/app/node_modules
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
+
+  auths-server:
+    container_name: auths-server
+    image: auths:server
+    ports:
+      - 3000:3000
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./authentication/server
+    volumes:
+      # Avoid overwriting container's node_modules folder
+      - /usr/app/node_modules
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
+    
+  groups-server:
+    container_name: groups-server
+    image: groups:server
+    ports:
+      - 4000:4000
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./groups/server
+    volumes:
+      # Avoid overwriting container's node_modules folder
+      - /usr/app/node_modules
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
+
+  workspace-server:
+    container_name: workspace-server
+    image: workspace:server
+    ports:
+      - 5000:5000
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./workspace/server
+    volumes:
+      # Avoid overwriting container's node_modules folder
+      - /usr/app/node_modules
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
+
+  # nginx:
+  #   container_name: nginx
+  #   image: nginx
+  #   restart: always
+  #   build:
+  #     dockerfile: Dockerfile
+  #     context: ./nginx
+  #   ports:
+  #     - 8080:80
+  #   depends_on:
+  #     - auths-server
+  #     - mailing-server
+  #     - groups-server
+  #     - workspace-server
+
+volumes:
+  data_db:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/shubham/projects/octonius/data/db
+      o: bind
+
+  data_uploads:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/shubham/projects/octonius/data/uploads
+      o: bind

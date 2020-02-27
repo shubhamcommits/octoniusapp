@@ -24,7 +24,7 @@ export class AuthService {
    * @param user : { email: string, workspace_name: string, password: string }
    */
   signIn(userData: Object) {
-    return this.httpClient.post(this.BASE_API_URL + '/auth/signin', userData);
+    return this.httpClient.post(this.BASE_API_URL + '/auths/sign-in', userData);
   }
 
   /**
@@ -38,7 +38,7 @@ export class AuthService {
    * @param user : { first_name: string, last_name:string, email: string, workspace_name: string, password: string }
    */
   signUp(userData: Object) {
-    return this.httpClient.post(this.BASE_API_URL + '/auth/signup', userData);
+    return this.httpClient.post(this.BASE_API_URL + '/auths/sign-up', userData);
   }
 
   /**
@@ -46,7 +46,7 @@ export class AuthService {
    * And clears the session and local storage from the client side
    */
   signout() {
-    return this.httpClient.get(this.BASE_API_URL + '/auth/signout')
+    return this.httpClient.get(this.BASE_API_URL + '/auths/sign-out')
   }
   
   /**

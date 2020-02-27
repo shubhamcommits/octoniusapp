@@ -48,7 +48,7 @@ const routes: Routes = [
     path: 'document',
     loadChildren: () => import('modules/octodoc/octodoc.module')
     .then((module) => module.OctodocModule),
-    canActivate: [RoutingGuard]
+    canActivate: [AuthenticationGuard]
   },
 
   // NOT FOUND ROUTE

@@ -28,10 +28,10 @@ if (cluster.isMaster) {
 } else {
 
   // Define Groups Application port
-  const port = 2000;
+  const port = process.env.PORT || 4000;
 
   // Defining the Host Name
-  const host = '127.0.0.1';
+  const host: any = process.env.HOST || '127.0.0.1';
 
   // Environment State Variable
   const env = process.env.NODE_ENV;

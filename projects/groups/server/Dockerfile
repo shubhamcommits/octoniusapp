@@ -1,7 +1,7 @@
 ### STAGE 1: Build ###
 
 # We label our stage as ‘builder’
-FROM node:10-alpine as builder
+FROM mhart/alpine-node:12 as builder
 
 # Create app directory
 WORKDIR /usr/app
@@ -21,7 +21,7 @@ RUN yarn run build
 RUN mv ./node_modules/ /usr/ && rm -rf *.ts && mv /usr/node_modules ./
 
 # Expose the port
-EXPOSE 3000
+EXPOSE 4000
 
 # Start the Server
 CMD ["yarn", "run", "prod"]

@@ -30,8 +30,12 @@ export const environment = {
   // !--GOOGLE DEVELOPER CONSOLE CREDENTIALS--! //
 
   // !--REAL TIME DOC LOCATION PROTOCOLS--! //
-  REAL_TIME_URL: 'localhost:3001'
+  REAL_TIME_URL: 'localhost:3001',
   // !--REAL TIME DOC LOCATION PROTOCOLS--! //
+
+  // Authentication URLs
+  AUTH_BASE_URL: 'http://localhost:3000',
+  AUTH_BASE_API_URL: 'http://localhost:3000/api'
 };
 
 

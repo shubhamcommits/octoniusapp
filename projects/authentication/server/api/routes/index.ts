@@ -1,5 +1,15 @@
 import { authRoutes } from './auths.routes';
+import { passwordRoutes } from './passwords.routes';
 
+/*  =====================
+ *  -- EXPORTS ROUTES --
+ *  =====================
+ * */
 export {
-    authRoutes as authsRoutes
+
+    // AUTH
+    authRoutes as authsRoutes,
+
+    // PASSWORD
+    passwordRoutes as passwordsRoutes
 }

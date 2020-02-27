@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { Auth, User, Workspace, Group } from '../models';
 import { sendError, Auths, PasswordHelper } from '../../utils';
+import http from 'axios';
 
 // Password Helper Class
 const passwordHelper = new PasswordHelper();
@@ -76,7 +77,7 @@ export class AuthsController {
                     userData.full_name = `${first_name} ${last_name}`;
 
                     // Check if the workspace exist with particular (workspace_name and allowed_domains) or (workspace_name and invited_users)
-                    let workspace = await Workspace.findOne({
+                    let workspace: any = await Workspace.findOne({
                         $or: [{
                             workspace_name: workspace_name,
                             allowed_domains: userEmailDomain
@@ -205,8 +206,13 @@ export class AuthsController {
                     // Generate new token and logs the auth record
                     let token = await auths.generateToken(user, workspace_name);
 
-                    // Send signup confirmation email
-                    //sendMail.signup(userUpdate);
+                    // Send signup confirmation email using mailing microservice
+                    await http.post('http://localhost:2000/api/mails/sign-up', {
+                        user: userUpdate
+                    })
+
+                    // Updating quantity += 1 in stripe module using workspace microservice
+                    await http.put(`http://localhost:5000/api/billings/add-user?subscriptionId=${workspace.billing.subscription_id}`)
 
                     // Signup user and return the token
                     return res.status(200).json({
@@ -221,7 +227,7 @@ export class AuthsController {
                 })
 
         } catch (err) {
-            return sendError(res, err);
+            return sendError(res, err, 'Internal Server Error!', 500);
         }
     };
 

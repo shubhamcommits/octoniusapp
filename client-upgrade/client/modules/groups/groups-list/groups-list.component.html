@@ -1,11 +1,14 @@
 <div class="container">
     <div class="row no-margin">
         <ng-container *ngIf="userData && workspaceData">
-            <app-create-group class="col-md-4" [userData]="userData" [state]="'normal'" [workspaceData]="workspaceData" (group)="receiveGroupUpdates($event)">
+            <app-create-group class="col-md-4" [userData]="userData" [state]="'normal'" [workspaceData]="workspaceData"
+                (group)="receiveGroupUpdates($event)">
             </app-create-group>
-            <app-create-group class="col-md-4" [userData]="userData" [state]="'agora'" [workspaceData]="workspaceData" (group)="receiveGroupUpdates($event)">
+            <app-create-group class="col-md-4" [userData]="userData" [state]="'agora'" [workspaceData]="workspaceData"
+                (group)="receiveGroupUpdates($event)">
             </app-create-group>
-            <app-create-group class="col-md-4" [userData]="userData" [state]="'smart'" [workspaceData]="workspaceData" (group)="receiveGroupUpdates($event)">
+            <app-create-group class="col-md-4" [userData]="userData" [state]="'smart'" [workspaceData]="workspaceData"
+                (group)="receiveGroupUpdates($event)">
             </app-create-group>
         </ng-container>
     </div>
@@ -14,7 +17,7 @@
         <div class="row no-margin groups-section">
             <ng-container *ngFor="let group of userGroups; trackBy: utilityService.trackByIndex">
                 <div *ngIf="group.group_name !== 'private'" class="card col-md-3 groups"
-                    [routerLink]="['/dashboard/group/',group._id,'activity']">
+                    [routerLink]="['/dashboard/groups/',group._id]">
                     <span class="badge badge-members">{{group._members?.length + group._admins?.length}} Members</span>
                     <img class="card-img-top" src="{{ this.baseUrl }}/uploads/{{group.group_avatar}}"
                         onerror="this.src='/assets/images/group.png'">
