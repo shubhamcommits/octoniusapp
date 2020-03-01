@@ -1,7 +1,7 @@
 import { SocketIoConfig } from 'ngx-socket-io';
 import { environment } from 'src/environments/environment';
 
-export const socketConfig: SocketIoConfig = { url: environment.BASE_URL, options: {
+export const socketConfig: SocketIoConfig = { url: environment.SOCKETS_BASE_URL, options: {
     secure: true,
     reconnection: true,
     reconnectionAttempts: Infinity,
@@ -9,6 +9,8 @@ export const socketConfig: SocketIoConfig = { url: environment.BASE_URL, options
     reconnectionDelayMax: 5000,
     randomizationFactor: 0.5,
     autoConnect: true,
-    timeout: Infinity
+    timeout: Infinity,
+    transports: ['websocket'],
+    upgrade: false
     } 
 };

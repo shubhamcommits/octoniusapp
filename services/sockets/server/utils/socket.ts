@@ -1,0 +1,111 @@
+import socketIO from 'socket.io';
+import { helperFunctions } from '../utils';
+import { NotificationsController } from '../api/controllers';
+
+// Creating notification controllers class
+const notifications = new NotificationsController();
+
+function init(server: any){
+
+    const io: any = socketIO(server);
+
+    /* =================
+     * - NOTIFICATIONS -
+     * =================
+     */
+
+    // Allowing all the origins to connect
+    io.set('origins', '*:*');
+
+    // Initiate the connection
+    io.on('connection', (socket: any) => {
+
+        console.log('user connected');
+
+        // -| USER NOTIFICATION CENTER |-
+
+        // Join user on private user room
+        socket.on('joinUser', (userId: string) => {
+            // join room
+            socket.join(userId);
+        });
+
+        // Get notifications based on the userId
+        socket.on('getNotifications', async (userId: string) => {
+            
+            // Send notification to the user
+            await helperFunctions.sendNotificationsFeed(socket, userId, io);
+        });
+
+        // Mark the unreadNotifications as read
+        socket.on('markRead', async (topListId: string, userId: string) => {
+            
+            // Mark the notification as read
+            await notifications.markRead(topListId);
+
+            // And immediately respond to the user about markRead
+            await helperFunctions.sendNotificationsFeed(socket, userId, io);
+        });
+
+        /* =================
+         * - WORKSPACE DATA -
+         * =================
+         */
+        socket.on("workspaceData", async (workspaceData) => {
+            // const workspaceData = await workspace.getWorkspaceDetails(workspaceId);
+
+            io.emit("workspaceData", workspaceData);
+        });
+
+        // -| GROUP ACTIVITY ROOM |-
+
+        // Join user on specific group room
+        socket.on('joinGroup', (room) => {
+            // generate room name
+            const roomName = `${room.workspace}_${room.group}`;
+
+            // join room
+            socket.join(roomName);
+        });
+
+        // -| POSTS NOTIFICATIONS |-
+
+        // Listen to user likes who follows a post
+        socket.on('userLiked', (data) => {
+            console.log('userLiked: ', data);
+        });
+
+        // Listen to new post creation
+        socket.on('newPost', (data) => {
+            // notifyRelatedUsers(io, socket, data);
+            // notifyGroupPage(socket, data);
+        });
+
+        socket.on('postAdded', (data) => {
+            const roomName = `${data.workspace}_${data.group}`;
+            // Broadcast add event to group
+            socket.broadcast.to(roomName).emit('postAddedInGroup', data);
+        });
+
+        socket.on('postDeleted', (data) => {
+            const roomName = `${data.workspace}_${data.group}`;
+            // Broadcast delete event to group
+            socket.broadcast.to(roomName).emit('postDeletedInGroup', data);
+        });
+
+        socket.on('postEdited', (data) => {
+            const roomName = `${data.workspace}_${data.group}`;
+            // Broadcast edit event to group
+            socket.broadcast.to(roomName).emit('postEditedInGroup', data);
+        });
+
+        socket.on('disconnect', () => {
+            // do nothing...
+            console.log('User disconnected');
+        });
+    });
+};
+
+export {
+    init
+}

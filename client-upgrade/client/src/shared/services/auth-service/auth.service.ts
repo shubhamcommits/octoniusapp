@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { StorageService } from '../storage-service/storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,8 +8,8 @@ import { StorageService } from '../storage-service/storage.service';
 
 export class AuthService {
 
-  private BASE_API_URL = environment.BASE_API_URL;
-  private storageService: StorageService;
+  private AUTH_BASE_API_URL = environment.AUTH_BASE_API_URL;
+  private WORKSPACE_BASE_API_URL = environment.WORKSPACE_BASE_API_URL;
 
   constructor(private httpClient: HttpClient) {
   }
@@ -24,7 +23,7 @@ export class AuthService {
    * @param user : { email: string, workspace_name: string, password: string }
    */
   signIn(userData: Object) {
-    return this.httpClient.post(this.BASE_API_URL + '/auths/sign-in', userData);
+    return this.httpClient.post(this.AUTH_BASE_API_URL + '/auths/sign-in', userData);
   }
 
   /**
@@ -38,7 +37,7 @@ export class AuthService {
    * @param user : { first_name: string, last_name:string, email: string, workspace_name: string, password: string }
    */
   signUp(userData: Object) {
-    return this.httpClient.post(this.BASE_API_URL + '/auths/sign-up', userData);
+    return this.httpClient.post(this.AUTH_BASE_API_URL + '/auths/sign-up', userData);
   }
 
   /**
@@ -46,15 +45,14 @@ export class AuthService {
    * And clears the session and local storage from the client side
    */
   signout() {
-    return this.httpClient.get(this.BASE_API_URL + '/auths/sign-out')
+    return this.httpClient.post(this.AUTH_BASE_API_URL + '/auths/sign-out', '')
   }
-  
+
   /**
    * This function is responsible for requesting the check subscription validity API from the server
-   * @param userId - needs to be passed as the functional parameter to be used in the request params
    */
-  checkSubscriptionValidity(userId: string) {
-    return this.httpClient.get(this.BASE_API_URL + `/auth/checkSubscriptionValidity/${userId}`);
+  checkSubscriptionValidity() {
+    return this.httpClient.get(this.WORKSPACE_BASE_API_URL + `/billings/subscription-validity`);
   }
 
   /**
@@ -64,7 +62,7 @@ export class AuthService {
    * @param workspaceData : { workspace_name: string }
    */
   checkWorkspaceName(workspaceData: Object) {
-    return this.httpClient.post(this.BASE_API_URL + '/auth/checkWorkspaceName', workspaceData).toPromise();
+    return this.httpClient.get(this.WORKSPACE_BASE_API_URL + '/workspaces/check-availability', workspaceData).toPromise();
   }
 
   /**
@@ -79,18 +77,7 @@ export class AuthService {
    * @param workspaceData : { owner_first_name: string, owner_last_name: string, owner_email: string, company_name: string, workspace_name: string, owner_password: string }
    */
   createNewWorkspace(workspaceData: Object) {
-    return this.httpClient.post(this.BASE_API_URL + '/auth/createNewWorkspace', workspaceData).toPromise();
-  }
-
-  /**
-   * This function is responsible for requesting the check user availability API from the server
-   * @param userData - needs to be passed as the functional parameter with the following @properties to be used in the request body
-   * @name email
-   * @name workspace_name
-   * @param userData : { email: string, workspace_name: string }
-   */
-  checkUserAvailability(userData: Object) {
-    return this.httpClient.post(this.BASE_API_URL + '/auths/checkUserAvailability', userData);
+    return this.httpClient.post(this.WORKSPACE_BASE_API_URL + '/workspaces/', workspaceData).toPromise();
   }
 
   /**
@@ -98,7 +85,7 @@ export class AuthService {
    * @param userId - userId of the current user needs to be passed as the functional parameter to be used in the request params 
    */
   getResetPwdDetails(userId: string) {
-    return this.httpClient.get(this.BASE_API_URL + `/auth/resetPasswordDetails/${userId}`);
+    return this.httpClient.get(this.AUTH_BASE_API_URL + `/passwords/reset-details/${userId}`);
   }
 
   /**
@@ -109,7 +96,7 @@ export class AuthService {
    * @param resetPasswordData : { resetPwdId: string, password: string }
    */
   resetPassword(resetPasswordData: Object) {
-    return this.httpClient.put(this.BASE_API_URL + `/auth/resetPassword`, resetPasswordData);
+    return this.httpClient.put(this.AUTH_BASE_API_URL + `/passwords/reset`, resetPasswordData);
   }
 
   /**
@@ -119,8 +106,8 @@ export class AuthService {
    * @name email
    * @param mailData : { workspace: string, email: string }
    */
-   sendResetPasswordMail(mailData: Object) {
-    return this.httpClient.post(this.BASE_API_URL + '/auth/sendResetPasswordMail', mailData);
+  sendResetPasswordMail(mailData: Object) {
+    return this.httpClient.post(this.AUTH_BASE_API_URL + '/passwords/send-mail', mailData);
   }
 
 }

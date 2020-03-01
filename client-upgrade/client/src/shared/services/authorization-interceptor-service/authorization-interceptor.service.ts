@@ -19,7 +19,7 @@ export class AuthorizationInterceptorService implements HttpInterceptor {
     if(storageService.existData('authToken')){
       const tokenizedRequest = request.clone({
         setHeaders: {
-          Authorization: `Bearer ${storageService.getLocalData('authToken')}`
+          Authorization: `Bearer ${storageService.getLocalData('authToken')['token']}`
         }
       });
       return next.handle(tokenizedRequest);

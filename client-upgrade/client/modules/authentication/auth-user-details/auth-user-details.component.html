@@ -4,11 +4,11 @@
         <!-- HEADING FOR NEW WORKPLACE FORM COMPONENT -->
 
         <!-- HEADING FOR SIGNIN FORM COMPONENT -->
-        <h3 *ngIf="routerState === 'signin'">Sign In</h3>
+        <h3 *ngIf="routerState === 'sign-in'">Sign In</h3>
         <!-- HEADING FOR NEW SIGNIN FORM COMPONENT -->
 
         <!-- HEADING FOR NEW SIGNUP FORM COMPONENT -->
-        <h3 *ngIf="routerState === 'signup'">Join your workplace</h3>
+        <h3 *ngIf="routerState === 'sign-up'">Join your workplace</h3>
         <!-- HEADING FOR NEW SIGNUP FORM COMPONENT -->
 
         <!-- FORM FIELD FOR NEW WORKPLACE, & SIGNUP COMPONENT -->
@@ -20,8 +20,8 @@
         <!-- FORM FIELD FOR NEW WORKPLACE, & SIGNUP COMPONENT -->
 
         <!-- FORM FIELD FOR NEW WORKPLACE, SIGNIN, & SIGNUP COMPONENT -->
-        <div class="form-group" *ngIf="routerState === 'new-workplace' || routerState === 'signup' || routerState === 'signin'">
-                <label for="workplaceName" *ngIf="routerState === 'signup' || routerState == 'signin' || !newWorkplaceNextState" >Workplace name</label>
+        <div class="form-group" *ngIf="routerState === 'new-workplace' || routerState === 'sign-up' || routerState === 'sign-in'">
+                <label for="workplaceName" *ngIf="routerState === 'sign-up' || routerState == 'sign-in' || !newWorkplaceNextState" >Workplace name</label>
                 <input 
                 type="text" 
                 *ngIf="routerState === 'new-workplace' && !newWorkplaceNextState" 
@@ -29,12 +29,12 @@
                 [(ngModel)]="user.workspace" 
                 class="form-control" 
                 name="workplaceName">
-                <input type="text" *ngIf="routerState == 'signup' || routerState == 'signin'" [(ngModel)]="user.workspace" class="form-control" name="workplaceName">
+                <input type="text" *ngIf="routerState == 'sign-up' || routerState == 'sign-in'" [(ngModel)]="user.workspace" class="form-control" name="workplaceName">
         </div>
         <!-- FORM FIELD FOR NEW WORKPLACE, SIGNIN, & SIGNUP COMPONENT -->
 
         <!-- FORM FIELD FOR NEW WORKPLACE, SIGNIN, & SIGNUP COMPONENT -->
-        <div class="form-group" *ngIf="newWorkplaceNextState || routerState === 'signup' || routerState === 'signin'">
+        <div class="form-group" *ngIf="newWorkplaceNextState || routerState === 'sign-up' || routerState === 'sign-in'">
                 <label for="workEmail">Work Email</label>
                 <input type="email" [(ngModel)]="user.email" (keyup)="validateEmail($event)" class="form-control"
                         name="workEmail">
@@ -42,14 +42,14 @@
         <!-- FORM FIELD FOR NEW WORKPLACE, SIGNIN, & SIGNUP COMPONENT -->
 
         <!-- FORM FIELD FOR NEW WORKPLACE, SIGNIN & SIGNUP COMPONENT -->
-        <div class="form-group" *ngIf="newWorkplaceNextState || routerState === 'signup' || routerState === 'signin'">
+        <div class="form-group" *ngIf="newWorkplaceNextState || routerState === 'sign-up' || routerState === 'sign-in'">
                 <label for="password">Password</label>
                 <input type="password" [(ngModel)]="user.password" class="form-control" name="password">
         </div>
         <!-- FORM FIELD FOR NEW WORKPLACE, SIGNIN & SIGNUP COMPONENT -->
 
         <!-- FORM FIELD FOR NEW WORKPLACE & SIGNUP COMPONENT -->
-        <div class="form-group" *ngIf="newWorkplaceNextState || routerState === 'signup'">
+        <div class="form-group" *ngIf="newWorkplaceNextState || routerState === 'sign-up'">
                 <label for="repeatPassword">Repeat Password</label>
                 <input type="password" (keyup)="matchUserPassword($event)" [(ngModel)]="user.repeatPassword"
                         class="form-control" name="repeatPassword">
@@ -57,21 +57,21 @@
         <!-- FORM FIELD FOR NEW WORKPLACE & SIGNUP COMPONENT -->
 
         <!-- FORM FIELD FOR NEW WORKPLACE & SIGNUP COMPONENT -->
-        <div class="form-group" *ngIf="newWorkplaceNextState || routerState === 'signup'">
+        <div class="form-group" *ngIf="newWorkplaceNextState || routerState === 'sign-up'">
                 <label for="firstName">First Name</label>
                 <input type="text"  [(ngModel)]="user.firstName" class="form-control" name="firstName">
         </div>
         <!-- FORM FIELD FOR NEW WORKPLACE & SIGNUP COMPONENT -->
 
         <!-- FORM FIELD FOR NEW WORKPLACE & SIGNUP COMPONENT -->
-        <div class="form-group" *ngIf="newWorkplaceNextState || routerState === 'signup'">
+        <div class="form-group" *ngIf="newWorkplaceNextState || routerState === 'sign-up'">
                 <label for="lastName">Last Name</label>
                 <input type="text" [(ngModel)]="user.lastName" class="form-control" name="lastName">
         </div>
         <!-- FORM FIELD FOR NEW WORKPLACE & SIGNUP COMPONENT -->
 
         <!-- FORGOT PASSWORD MODULE STARTS -->
-        <p (click)="openForgotPassword(content)" class="forgot-password" *ngIf="routerState === 'signin'">Forgot
+        <p (click)="openForgotPassword(content)" class="forgot-password" *ngIf="routerState === 'sign-in'">Forgot
                 password?</p>
         <ng-template #content let-modal>
                 <forgot-password></forgot-password>
@@ -89,12 +89,12 @@
         <!-- SUBMIT BUTTON FOR NEW WORKPLACE -->
 
         <!-- SUBMIT BUTTON FOR SIGN IN COMPONENT-->
-        <button type="submit" class="btn btn-primary" *ngIf="routerState === 'signin'"
+        <button type="submit" class="btn btn-primary" *ngIf="routerState === 'sign-in'"
                 (click)="signIn(user?.workspace, user?.email, user?.password)">Sign In</button>
         <!-- SUBMIT BUTTON SIGN IN COMPONENT -->
 
         <!-- SUBMIT BUTTON SIGN UP COMPONENT -->
-        <button type="submit" class="btn btn-primary" *ngIf="routerState === 'signup'"
+        <button type="submit" class="btn btn-primary" *ngIf="routerState === 'sign-up'"
         (click)="signUp(user?.workspace, user?.email, user?.password, user?.firstName, user?.lastName)">Done</button>
         <!-- SUBMIT BUTTON SIGN UP COMPONENT -->
 

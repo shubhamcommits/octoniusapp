@@ -22,7 +22,7 @@ export class AuthUserDetailsComponent implements OnInit {
     private storageService: StorageService
   ) { }
 
-  // ROUTER NAME STATE OF THE COMPONENT - 'new-workplace', 'signup', 'signin', or 'home'
+  // ROUTER NAME STATE OF THE COMPONENT - 'new-workplace', 'sign-up', 'sign-in', or 'home'
   @Input("routerState") routerState: string;
 
   // NEXT SET OF WORKPLACE FORM

@@ -7,16 +7,16 @@
     </h1>
 
     <!-- TEMPLATE FOR SIGNIN PAGE -->
-    <div class="sign-up-branding" *ngIf="routerState == 'signin'">
+    <div class="sign-up-branding" *ngIf="routerState == 'sign-in'">
         <p class="white">Are you new here?</p>
-        <button type="submit" class="btn btn-outline-light" routerLink="/authentication/signup">Sign Up</button>
+        <button type="submit" class="btn btn-outline-light" routerLink="/authentication/sign-up">Sign Up</button>
     </div>
     <!-- TEMPLATE FOR SIGNIN PAGE -->
 
     <!-- TEMPLATE FOR SIGNUP && NEW WORKPLACE PAGE -->
-    <div class="sign-in-branding" *ngIf="routerState == 'signup' || routerState == 'new-workplace'">
+    <div class="sign-in-branding" *ngIf="routerState == 'sign-up' || routerState == 'new-workplace'">
         <p class="white">If you already have an account</p>
-        <button type="submit" class="btn btn-outline-light" [routerLink]="['/authentication', 'signin']"
+        <button type="submit" class="btn btn-outline-light" [routerLink]="['/authentication', 'sign-in']"
             routerLinkActive="router-link-active">Sign
             In</button>
     </div>
@@ -25,7 +25,7 @@
     <!-- TEMPLATE FOR HOME PAGE -->
     <div class="home-branding" *ngIf="routerState == 'home'">
         <h3 class="white">Continue your work</h3>
-        <button type="submit" class="btn btn-outline-light" [routerLink]="['/authentication', 'signin']"
+        <button type="submit" class="btn btn-outline-light" [routerLink]="['/authentication', 'sign-in']"
             routerLinkActive="router-link-active">Sign In</button>
     </div>
     <!-- TEMPLATE FOR HOME PAGE -->

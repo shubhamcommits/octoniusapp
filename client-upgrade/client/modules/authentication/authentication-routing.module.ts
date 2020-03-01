@@ -8,15 +8,15 @@ import { AuthSignInComponent } from './auth-sign-in/auth-sign-in.component';
 import { AuthSignUpComponent } from './auth-sign-up/auth-sign-up.component';
 
 const routes: Routes = [
-  // 'signin' ROUTE
+  // 'sign-in' ROUTE
   {
-    path: 'signin',
+    path: 'sign-in',
     component: AuthSignInComponent
   },
 
-  // 'signup' ROUTE
+  // 'sign-up' ROUTE
   {
-    path: 'signup',
+    path: 'sign-up',
     component: AuthSignUpComponent
   },
 
