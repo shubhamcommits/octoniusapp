@@ -44,4 +44,38 @@ export class UsersControllers {
         }
     }
 
+    /**
+     * This function is responsible for changing the role of the other user
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async updateUserRole(req: Request, res: Response, next: NextFunction){
+        
+        const { userId, role } = req.body;
+        
+        try {
+            
+            // Find the user and update their respective role
+            const user: any = await User.findByIdAndUpdate({
+                $and: [
+                    { _id: userId },
+                    { active: true }
+                ]
+            }, {
+                role: role
+            }, {
+                new: true
+            }).select('first_name last_name profile_pic email role');
+    
+            // Send status 200 response
+            return res.status(200).json({
+                message: `Role updated for user ${user.first_name}`,
+                user: user
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
 }

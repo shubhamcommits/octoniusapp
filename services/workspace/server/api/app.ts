@@ -4,7 +4,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import compression from 'compression';
 import { developmentConfig, productionConfig } from '../configs';
-import { billingRoutes, workspaceRoutes } from './routes';
+import { billingRoutes, domainRoutes, memberRoutes, workspaceRoutes } from './routes';
 
 // Defining new Express application
 const app = express();
@@ -66,6 +66,8 @@ app.all('/', (req: Request, res: Response, next: NextFunction) => {
 
 // Correct REST naming
 app.use('/api/billings', billingRoutes);
+app.use('/api/domains', domainRoutes);
+app.use('/api/members', memberRoutes);
 app.use('/api/workspaces', workspaceRoutes);
 
 // Invalid routes handling middleware

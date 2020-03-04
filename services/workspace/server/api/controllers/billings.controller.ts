@@ -485,10 +485,10 @@ export class BillingControllers {
         try {
 
             // SubscriptionId of the subscription
-            const { subscriptionId } = req.query;
+            const { subscriptionId, workspaceId } = req.query;
 
             // Adding user to the subscription
-            await addUserToSubscription(stripe, subscriptionId)
+            await addUserToSubscription(stripe, subscriptionId, workspaceId)
                 .then(() => {
 
                     // Send the status 200 response
@@ -514,10 +514,10 @@ export class BillingControllers {
         try {
 
             // SubscriptionId of the subscription
-            const { subscriptionId } = req.query;
+            const { subscriptionId, workspaceId } = req.query;
 
             // Adding user to the subscription
-            await removeUserFromSubscription(stripe, subscriptionId)
+            await removeUserFromSubscription(stripe, subscriptionId, workspaceId)
                 .then(() => {
 
                     // Send the status 200 response

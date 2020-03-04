@@ -11,6 +11,8 @@ const authsHelper = new Auths();
 // Routes List
 const routes = express.Router();
 
+// -| Workspace Billings |-
+
 // POST - create a subscription
 routes.post('/create-subscription', authsHelper.verifyToken, authsHelper.isLoggedIn, billing.createSubscription);
 

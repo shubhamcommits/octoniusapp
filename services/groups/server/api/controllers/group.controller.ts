@@ -17,7 +17,9 @@ export class GroupController {
         try {
 
             // Fetch first 10 groups in the database which are not private
-            const groups = await Group.find({ group_name: { $not: { $eq: 'private' || 'personal' } } })
+            const groups = await Group.find(
+                { group_name: { $ne: 'personal' } },
+                { group_name: { $ne: 'private' } })
                 .sort('_id')
                 .populate({
                     path: '_members',
@@ -74,7 +76,8 @@ export class GroupController {
             // Fetch next 5 groups in the database based on the list of @lastGroupId which are not private
             const groups = await Group.find({
                 $and: [
-                    { group_name: { $not: { $eq: 'private' || 'personal' } } },
+                    { group_name: { $ne: 'personal' } },
+                    { group_name: { $ne: 'private' } },
                     { _id: { $gt: lastGroupId } }]
             })
                 .sort('_id')
@@ -120,7 +123,8 @@ export class GroupController {
             // Finding groups for the user of which they are a part of
             const groups = await Group.find({
                 $and: [
-                    { group_name: { $not: { $eq: 'private' || 'personal' } } },
+                    { group_name: { $ne: 'personal' } },
+                    { group_name: { $ne: 'private' } },
                     { _workspace: workspaceId, },
                     { $or: [{ _members: userId }, { _admins: userId }] },
                     // { type: { $ne: 'smart' } }
@@ -148,7 +152,7 @@ export class GroupController {
             if (!groups) {
                 return sendError(res, new Error('Oops, no groups found!'), 'Group not found, Invalid workspaceId or userId!', 404);
             }
-            
+
             // Send the status 200 response
             return res.status(200).json({
                 message: `${groups.length} groups found.`,
@@ -179,7 +183,8 @@ export class GroupController {
             // Fetch next 5 groups in the database based on the list of @lastGroupId which are not private
             const groups = await Group.find({
                 $and: [
-                    { group_name: { $not: { $eq: 'private' || 'personal' } } },
+                    { group_name: { $ne: 'personal' } },
+                    { group_name: { $ne: 'private' } },
                     { _workspace: workspaceId, },
                     { $or: [{ _members: userId }, { _admins: userId }] },
                     { _id: { $gt: lastGroupId } }

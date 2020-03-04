@@ -25,15 +25,13 @@ routes.use(authsHelper.verifyToken);
 // Checks whether the current user is loggedIn or not
 routes.use(authsHelper.isLoggedIn);
 
-// GET - Get all workspace domains
-routes.get('/:workspaceId/domains', workspaces.getDomains);
+// -| Workspace General |-
 
-// POST - Add new domain to workspace's allowed domains
-routes.post('/:workspaceId/domains', workspaces.addDomain);
+// GET - Get workspace details
+routes.get('/:workspaceId', workspaces.getWorkspace);
 
-// DELETE - Removes the domain from the workspace allowed domains
-routes.delete('/:workspaceId/domains/:domain', workspaces.removeDomain);
-
+// PUT - Edit the workspace details
+routes.put('/:workspaceId', workspaces.updateWorkspace);
 
 /*  ===================
  *  -- EXPORT ROUTES --

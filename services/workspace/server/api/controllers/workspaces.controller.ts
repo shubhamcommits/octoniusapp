@@ -2,6 +2,7 @@ import { sendError, PasswordHelper, Auths } from '../../utils';
 import { Group, Workspace, User } from '../models';
 import { Request, Response, NextFunction } from 'express';
 import http from 'axios';
+import moment from 'moment';
 
 // Password Helper Class
 const passwordHelper = new PasswordHelper();
@@ -43,8 +44,63 @@ export class WorkspaceController {
     }
 
     /**
+     * This function is responsible for fetching the workspace details
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async getWorkspace(req: Request, res: Response, next: NextFunction) {
+
+        const { workspaceId } = req.params;
+
+        try {
+
+            // Find the workspace based on the workspaceId
+            const workspace = await Workspace.findOne({
+                _id: workspaceId
+            })
+                .populate({
+                    path: 'members',
+                    select: 'first_name last_name profile_pic role email',
+                    options: {
+                        limit: 10
+                    }
+                })
+                .lean()
+                .exec();
+
+            // Workspace Company Members Count
+            const membersCount = await User.find({
+                $and: [
+                    { _workspace: workspaceId },
+                    { active: true }
+                ]
+            }).countDocuments();
+
+            // If unable to find the workspace
+            if (!workspace) {
+                return sendError(res, new Error('Unable to fetch the workspace details, as the workspaceId was invalid!'), 'Unable to fetch the workspace details, as the workspaceId was invalid!', 404);
+            }
+
+            // Add time remaining property to maintain the trial version of the user
+            workspace.time_remaining = moment(workspace.created_date).add(14, 'days').diff(moment(), 'days');
+
+            // Add company members count
+            workspace.company_members_count = membersCount;
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: `${workspace.workspace_name} workspace found!`,
+                workspace: workspace
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
      * This function is responsible for creating a new workspace
-     * @param {body: { owner_first_name, owner_last_name, owner_password, owner_email, workspace_name, company_name } }req 
+     * @param { body: { owner_first_name, owner_last_name, owner_password, owner_email, workspace_name, company_name } }req 
      * @param res 
      * @param next 
      * 
@@ -219,185 +275,129 @@ export class WorkspaceController {
     }
 
     /**
-     * This function add's the domain to the allowed_domain set which allows those specific domains to signup to the workspace
-     * @param { userId, params: { workspaceId }, body: { domain } }req 
+     * This function updates the workspace data based on the workspaceId
+     * @param { params: { workspaceId }, body: { workspace } }req 
      * @param res 
      * @param next 
      */
-    async addDomain(req: Request, res: Response, next: NextFunction) {
+    async updateWorkspace(req: Request, res: Response, next: NextFunction) {
+
+        const { params: { workspaceId }, body: { workspace } } = req;
+
         try {
 
-            // Request Data
-            const { params: { workspaceId }, body: { domain } } = req;
-
-            // userId comes from the authorization
-            const userId = req['userId'];
-
-            // Add the domain to the 'allowed_domains' set 
-            const workspace: any = await Workspace.findOneAndUpdate({
-                $and: [
-                    { _id: workspaceId },
-                    { _owner: userId }
-                ]
+            // Update the workspace by setting the new data
+            const workspaceData: any = await Workspace.findOneAndUpdate({
+                _id: workspaceId
             }, {
-                $addToSet: {
-                    allowed_domains: domain
-                }
+                $set: workspace
             }, {
                 new: true
-            }).select('allowed_domains');
-
-            // Unable to update the workspace
-            if (!workspace) {
-                return sendError(res, new Error('Unable to update the workspace, reason might be - Invalid workspaceId or user in not the workspace owner'), 'Unable to update the workspace, reason might be - Invalid workspaceId or user in not the workspace owner', 404);
-            }
+            })
+                .populate({
+                    path: 'members',
+                    select: 'first_name last_name profile_pic role email',
+                    options: {
+                        limit: 10
+                    }
+                })
+                .lean()
 
             // Send the status 200 response
             return res.status(200).json({
-                message: "New domain was added to workspace's allowed domains!",
-                allowedDomains: workspace.allowed_domains
-            });
+                message: `${workspaceData.workspace_name} workspace was updated!`,
+                workspace: workspaceData
+            })
+
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
     }
 
     /**
-     * This function is responsible for fetching the list of allowed domains from which users can sign-up
-     * @param { params: { workspaceId } }req 
-     * @param res 
-     * @param next 
+     * Fetches the unique email domains that exist within
+     * the given workspace that match the given query.
      */
-    async getDomains(req: Request, res: Response, next: NextFunction) {
+    async getUniqueEmailDomains(req: Request, res: Response) {
+        const { workspaceId, query } = req.params;
+
         try {
+            // Get the emails
+            let emails: any = await User.find({ _workspace: workspaceId }).select('email');
+            emails = emails.map(userDoc => userDoc.email); // get rid of _id
 
-            const { workspaceId } = req.params;
+            // Generate the domails
+            const emailDomains = emails.map((email: any) => {
+                const index = email.indexOf('@');
+                return email.substring(index + 1);
+            });
 
-            // Find the list of domains
-            const domains: any = await Workspace.findOne({ _id: workspaceId })
-                .select('allowed_domains')
+            // Remove duplicates
+            let domains = Array.from(new Set(emailDomains));
 
-            // Unable to find the domains
-            if (!domains) {
-                return sendError(res, new Error('Unable to fetch the data as the workspaceId is invalid!'), 'Unable to fetch the data as the workspaceId is invalid!', 404);
-            }
-
-            // Send the status 200 response
+            // Match the query
+            domains = domains.filter((domain: any) => { domain.includes(query) });
             return res.status(200).json({
-                message: `Found ${domains.allowed_domains.length} domains allowed on this workspace!`,
-                domains: domains.allowed_domains
-            })
-        } catch (err) {
-            return sendError(res, err, 'Internal Server Error!', 500);
+                domains: domains.slice(0, 5) // Limit result to 5
+            });
+        } catch (error) {
+            return sendError(res, error, 'Internal Server Error!', 500);
         }
-    }
+    };
 
     /**
-     * This function is responsible for removing the domain from the allowed_domains list and disabling the users who are signed up with those domain's email
-     * @param { userId, { params: { workspaceId, domain } } }req 
-     * @param res 
-     * @param next 
-     * 
-     * It performs the following functionalities:
-     * 1. Removes the domain from the allowed domain list.
-     * 2. Updates the status of all the users with the concerned domain as disabled.
-     * 3. Fetch the list of disabled users along with their userIds.
-     * 4. Remove all the userIds from the workspace members field.
-     * 5. Update all the groups from workspace to remove all the members inside them.
+     * Fetches the unique job positions that exist within
+     * the given workspace that match the given query.
      */
-    async removeDomain(req: Request, res: Response, next: NextFunction) {
+    async getUniqueJobPositions(req: Request, res: Response) {
+        const { workspaceId, query } = req.params;
+
         try {
+            const positions = await User
+                .find({
+                    _workspace: workspaceId,
+                    current_position: { $regex: new RegExp(query, 'i') }
+                })
+                .distinct('current_position')
+                .where('current_position').ne(null);
 
-            const { params: { workspaceId, domain } } = req;
-
-            const userId = req['userId'];
-
-            // Remove domain from domains array
-            const workspace: any = await Workspace.findOneAndUpdate({
-                $and: [
-                    { _id: workspaceId },
-                    { _owner: userId }
-                ]
-            }, {
-                $pull: {
-                    allowed_domains: domain
-                }
-            }, {
-                new: true
-            });
-
-            // Unable to remove the domain from domains list
-            if (!workspace) {
-                return sendError(res, new Error('Unable to remove the domain from the allowed domains list as due to Invalid workspaceId or user in not the workspace owner'), 'Unable to remove the domain from the allowed domains list as due to Invalid workspaceId or user in not the workspace owner', 404);
-            }
-
-            // Disable all users from that domain from that workspace
-            await User.updateMany({
-                $and: [
-                    { workspace_name: workspace.workspace_name },
-                    { email: { $regex: new RegExp(domain, 'i') } }
-                ]
-            }, {
-                $set: { active: false }
-            });
-
-            // Fetch the list of workspace members that must be deleted
-            const membersToRemove = await User.find({
-                $and: [
-                    { _workspace: workspace._id },
-                    { email: { $regex: new RegExp(domain, 'i') } }
-                ]
-            })  .select('first_name last_name email')
-                .lean();
-
-            // Generate an array of user ids
-            const idsToRemove = [];
-
-            membersToRemove.forEach((member) => {
-                // Don't push workspace owner
-                if (!workspace._owner.equals(member._id)) {
-                    idsToRemove.push(member._id);
-                }
-            })
-
-            // Remove users ids from workspace's members & invited users
-            const workspaceUpdated: any = await Workspace.findOneAndUpdate({
-                $and: [
-                    { _id: workspaceId },
-                    { _owner: userId }
-                ]
-            }, {
-                $pullAll: {
-                    members: idsToRemove,
-                    invited_users: idsToRemove
-                }
-            }, {
-                new: true
-            }).select('allowed_domains');
-
-            // Remove users from all group's _members & _admins
-            await Group.update({
-                $or: [
-                    { _members: req.params.userId },
-                    { _admins: req.params.userId }
-                ]
-            }, {
-                $pullAll: {
-                    _members: idsToRemove,
-                    _admins: idsToRemove
-                }
-            }, {
-                multi: true
-            });
-
-            // Send the status 200 response
             return res.status(200).json({
-                message: `Domain removed from workspace. All the ${membersToRemove.length} user(s) from this domain are disabled!`,
-                allowedDomains: workspaceUpdated.allowed_domains,
-                membersRemoved: membersToRemove
+                positions: positions.slice(0, 5) // Limit results to 5
             });
-        } catch (err) {
-            return sendError(res, err, 'Internal Server Error!', 500);
+        } catch (error) {
+            return sendError(res, error, 'Internal Server Error!', 500);
+        }
+    };
+
+    /**
+     * Fetches the unique skills that exist within
+     * the given workspace that match the given query.
+     */
+    async getUniqueSkills(req: Request, res: Response) {
+        const { workspaceId, query } = req.params;
+
+        try {
+            const users: any = await User
+                .find({ _workspace: workspaceId })
+                .select('skills')
+                .where('skills').ne(null);
+
+            // Get skills from user documents
+            const skills = [];
+            users.map(userDoc => userDoc.skills.map(skill => skills.push(skill)));
+
+            // Remove duplicates
+            let filteredSkills = Array.from(new Set(skills));
+
+            // Match the query
+            filteredSkills = filteredSkills.filter(skill => skill.includes(query));
+
+            return res.status(200).json({
+                skills: filteredSkills.slice(0, 5) // Limit result to 5
+            });
+        } catch (error) {
+            return sendError(res, error, 'Internal Server Error!', 500);
         }
     }
+
 }

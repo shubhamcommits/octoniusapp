@@ -212,7 +212,7 @@ export class AuthsController {
                     })
 
                     // Updating quantity += 1 in stripe module using workspace microservice
-                    await http.put(`http://localhost:5000/api/billings/add-user?subscriptionId=${workspace.billing.subscription_id}`)
+                    await http.put(`http://localhost:5000/api/billings/add-user?subscriptionId=${workspace.billing.subscription_id}&workspaceId=${workspace._id}`)
 
                     // Signup user and return the token
                     return res.status(200).json({

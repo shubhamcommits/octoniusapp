@@ -9,7 +9,7 @@ import { Observable } from 'rxjs/internal/Observable';
 
 export class WorkspaceService {
 
-  BASE_API_URL = environment.BASE_API_URL;
+  BASE_API_URL = environment.WORKSPACE_BASE_API_URL;
 
 
   constructor(
@@ -21,7 +21,7 @@ export class WorkspaceService {
    * @param workspaceId 
    */
   getWorkspace(workspaceId: string) {
-    return this._http.get<any>(this.BASE_API_URL + '/workspace/' + workspaceId);
+    return this._http.get<any>(this.BASE_API_URL + '/workspaces/' + workspaceId);
   }
 
   /**
@@ -35,7 +35,7 @@ export class WorkspaceService {
     let formData = new FormData();
     formData.append('workspace_avatar', workspaceAvatar)
 
-    return this._http.put<any>(this.BASE_API_URL + `/workspace/${ workspaceId }`, formData);
+    return this._http.put<any>(this.BASE_API_URL + `/workspaces/${ workspaceId }`, formData);
   }
 
   /**
@@ -43,7 +43,7 @@ export class WorkspaceService {
    * @param workspceId 
    */
   getWorkspaceMembers(workspceId: string) {
-    return this._http.get(this.BASE_API_URL + `/workspace/members/${workspceId}`);
+    return this._http.get(this.BASE_API_URL + `/workspaces/members/${workspceId}`);
   }
 
   /**
@@ -52,7 +52,7 @@ export class WorkspaceService {
    * @param lastMemberId 
    */
   getNextWorkspaceMembers(workspaceId: string, lastMemberId: string) {
-    return this._http.get(this.BASE_API_URL + `/workspace/next/members/${workspaceId}/${lastMemberId}`);
+    return this._http.get(this.BASE_API_URL + `/workspaces/next/members/${workspaceId}/${lastMemberId}`);
   }
 
   /**
@@ -61,7 +61,7 @@ export class WorkspaceService {
    * @param query 
    */
   searchWorkspaceMembers(workspaceId: string, query: string) {
-    return this._http.post(this.BASE_API_URL + `/workspace/query/members/${workspaceId}`, { query })
+    return this._http.post(this.BASE_API_URL + `/workspaces/query/members/${workspaceId}`, { query })
     .toPromise()
     .catch((err: Error)=>{
      console.log('test');
@@ -74,7 +74,7 @@ export class WorkspaceService {
    * @param query 
    */
   searchNextWorkspaceMembers(workspaceId: string, query: string) {
-    return this._http.post(this.BASE_API_URL + `/workspace/next/query/members/${ workspaceId }`, { query });
+    return this._http.post(this.BASE_API_URL + `/workspaces/next/query/members/${ workspaceId }`, { query });
   }
 
 
@@ -82,27 +82,27 @@ export class WorkspaceService {
 
   createSubscription(token, amount) {
     const data = { token, amount };
-    return this._http.post(this.BASE_API_URL + `/billing/createSubscription`, data);
+    return this._http.post(this.BASE_API_URL + `/billings/createSubscription`, data);
   }
 
   getBillingStatus(workspaceId) {
-    return this._http.get(this.BASE_API_URL + `/billing/getBillingStatus/${workspaceId}`);
+    return this._http.get(this.BASE_API_URL + `/billings/getBillingStatus/${workspaceId}`);
   }
 
   getSubscription() {
-    return this._http.get(this.BASE_API_URL + `/billing/getSubscription`);
+    return this._http.get(this.BASE_API_URL + `/billings/getSubscription`);
   }
 
   cancelSubscription() {
-    return this._http.get(this.BASE_API_URL + `/billing/cancelSubscription`);
+    return this._http.get(this.BASE_API_URL + `/billings/cancelSubscription`);
   }
 
   renewSubscription() {
-    return this._http.get(this.BASE_API_URL + `/billing/renewSubscription`);
+    return this._http.get(this.BASE_API_URL + `/billings/renewSubscription`);
   }
 
   resumeSubscription() {
-    return this._http.get(this.BASE_API_URL + `/billing/resumeSubscription`);
+    return this._http.get(this.BASE_API_URL + `/billings/resumeSubscription`);
   }
 
   /**
@@ -113,7 +113,7 @@ export class WorkspaceService {
    * @param query The email domains to search for.
    */
   getUniqueEmailDomains(workspaceId: string, query: string): Observable<any> {
-    return this._http.get<any>(`${this.BASE_API_URL}/workspace/emailDomains/${workspaceId}/${query}`);
+    return this._http.get<any>(`${this.BASE_API_URL}/workspaces/emailDomains/${workspaceId}/${query}`);
   }
 
   /**
@@ -124,7 +124,7 @@ export class WorkspaceService {
    * @param query The job positions to search for.
    */
   getUniqueJobPositions(workspaceId: string, query: string): Observable<any> {
-    return this._http.get<any>(`${this.BASE_API_URL}/workspace/jobPositions/${workspaceId}/${query}`);
+    return this._http.get<any>(`${this.BASE_API_URL}/workspaces/jobPositions/${workspaceId}/${query}`);
   }
 
   /**
@@ -135,6 +135,6 @@ export class WorkspaceService {
    * @param query The skills to search for.
    */
   getUniqueSkills(workspaceId: string, query: string): Observable<any> {
-    return this._http.get<any>(`${this.BASE_API_URL}/workspace/skills/${workspaceId}/${query}`);
+    return this._http.get<any>(`${this.BASE_API_URL}/workspaces/skills/${workspaceId}/${query}`);
   }
 }

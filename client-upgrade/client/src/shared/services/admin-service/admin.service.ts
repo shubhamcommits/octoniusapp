@@ -10,7 +10,7 @@ export class AdminService {
 
   constructor(private _http: HttpClient) { }
 
-  baseURL = environment.BASE_API_URL;
+  baseURL = environment.WORKSPACE_BASE_API_URL;
 
   /**
    * This function is responsible for adding the domain to list of domains from which sign-up to a particular workspace is allowed.

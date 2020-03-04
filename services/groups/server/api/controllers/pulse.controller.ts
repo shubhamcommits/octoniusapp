@@ -71,7 +71,8 @@ export class PulseController {
 
             const groups = await Group.find({
                 $and: [
-                    { group_name: { $not: { $eq: 'private' || 'personal' } } },
+                    { group_name: { $ne: 'personal' } },
+                    { group_name: { $ne: 'private' } },
                     { _workspace: workspaceId }
                 ]
             })
@@ -109,7 +110,8 @@ export class PulseController {
 
             const groups = await Group.find({
                 $and: [
-                    { group_name: { $not: { $eq: 'private' || 'personal' } } },
+                    { group_name: { $ne: 'personal' } },
+                    { group_name: { $ne: 'private' } },
                     { _workspace: workspaceId },
                     { _id: { $gt: lastGroupId } }]
             })
