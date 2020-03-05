@@ -54,7 +54,7 @@ export const environment = {
   USER_BASE_API_URL: 'http://localhost:7000/api',
 
   // Sockets URLs
-  SOCKETS_BASE_URL: 'http://localhost:9000',
+  SOCKETS_BASE_URL: 'ws://localhost:9000',
   SOCKETS_BASE_API_URL: 'http://localhost:9000/api'
 };
 

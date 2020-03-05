@@ -13,16 +13,28 @@ export class UserService {
 
   constructor(private _http: HttpClient) { }
 
+  /**
+   * This function fetches the details of the currently loggedIn user
+   */
   getUser(): Observable<any> {
     return this._http.get(this.BASE_API_URL + `/users`)
   }
 
+  /**
+   * This function fetches the details of user based on the @userId
+   * @param userId 
+   */
   getOtherUser(userId: string): Observable<any> {
-    return this._http.get(this.BASE_API_URL + `/users/getOtherUser/${userId}`);
+    return this._http.get(this.BASE_API_URL + `/users/${userId}`);
   }
 
-  updateUser(userData: Object): Observable<any> {
-    return this._http.put<any>(this.BASE_API_URL + `/users`, userData);
+  /**
+   * This function updates the details of currently loggedIn user
+   * @param userData 
+   */
+  updateUser(userData: Object) {
+    return this._http.put(this.BASE_API_URL + `/users`, userData)
+    .toPromise();
 
   }
   downloadFile(file: File): Observable<any> {

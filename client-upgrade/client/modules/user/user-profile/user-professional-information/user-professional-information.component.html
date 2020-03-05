@@ -1,0 +1,14 @@
+<div class="card-tile">
+    <div class="card-block">
+        <h6 class="card-title"><b>User Professional Information</b></h6>
+        <hr />
+        <p class="card-text"><strong>Current Position:</strong>
+            {{ userData?.current_position}}</p>
+        <p class="card-text"><strong>Company Joining Date:</strong>
+            {{ userData?.company_join_date | date: 'longDate' }}</p>
+        <p class="card-text"><strong>Groups Count:</strong>
+            {{ userData?._groups?.length || 0 }}</p>
+        <p class="card-text"><strong>Biography:</strong>
+            {{ userData?.bio }}</p>
+    </div>
+</div>

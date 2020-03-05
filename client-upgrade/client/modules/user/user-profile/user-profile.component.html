@@ -1,0 +1,14 @@
+<div class="container">
+    <div class="row main-actvity" *ngIf="userData">
+
+        <div class="col-md-4">
+            <app-user-information [userData]="userData"></app-user-information>
+        </div>
+
+        <div class="col-md-8">
+            <app-user-professional-information [userData]="userData"></app-user-professional-information>
+
+            <app-user-skills [userData]="userData"></app-user-skills>
+        </div>
+    </div>
+</div>

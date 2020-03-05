@@ -107,7 +107,7 @@ export class DomainsControllers {
     async removeDomain(req: Request, res: Response, next: NextFunction) {
         try {
 
-            const { query: { workspaceId, domain } } = req;
+            const { query: { workspaceId }, params: { domain } } = req;
 
             // If either workspaceId or domain is null or not provided then we throw BAD REQUEST 
             if (!workspaceId || !domain) {

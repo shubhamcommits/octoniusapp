@@ -18,12 +18,16 @@ export class AdminService {
    * @param domain 
    */
   addToAllowedDomain(workspaceId: string, domain: string) {
-    
+
     let domainData: { domain: string } = {
       domain: domain.trim()
     }
 
-    return this._http.post(this.baseURL + `/workspaces/${workspaceId}/domains`, domainData);
+    return this._http.post(this.baseURL + `/domains`, domainData, {
+      params: {
+        workspaceId: workspaceId
+      }
+    });
   }
 
   /**
@@ -32,7 +36,11 @@ export class AdminService {
    * @param domain - string name of the domain is required
    */
   removeDomain(workspaceId: string, domain: string) {
-    return this._http.delete(this.baseURL + `/workspaces/${workspaceId}/domains/${domain}`);
+    return this._http.delete(this.baseURL + `/domains/${domain}`, {
+      params: {
+        workspaceId: workspaceId
+      }
+    });
   }
 
   /**
@@ -40,7 +48,11 @@ export class AdminService {
    * @param workspaceId 
    */
   getAllowedDomains(workspaceId: string) {
-    return this._http.get(this.baseURL + '/workspaces/'+ workspaceId + '/domains');
+    return this._http.get(this.baseURL + '/domains/', {
+      params: {
+        workspaceId: workspaceId
+      }
+    });
   }
 
   /**
@@ -51,7 +63,7 @@ export class AdminService {
    * @param userId (make it fetch from the redis-cache, maybe?)
    */
   inviteNewUserViaEmail(workspaceId: string, email: string, userId: string) {
-    
+
     let emailData: { workspace_id: string, email: string, user_id: string } = {
       workspace_id: workspaceId,
       email: email,

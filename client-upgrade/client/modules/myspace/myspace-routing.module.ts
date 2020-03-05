@@ -8,12 +8,13 @@ import { MyspaceWorkplaceComponent } from './myspace-workplace/myspace-workplace
 import { MyspaceHeaderComponent } from './myspace-header/myspace-header.component';
 
 const routes: Routes = [
-  { path: '' , component: MyspaceHeaderComponent, children:[
-    { path: 'inbox', component: MyspaceInboxComponent },
-    { path: 'tasks', component: MyspaceTasksComponent },
-    { path: 'agenda', component: MyspaceAgendaComponent },
-    { path: 'workplace', component: MyspaceWorkplaceComponent }
-  ]
+  {
+    path: '', component: MyspaceHeaderComponent, children: [
+      { path: 'inbox', component: MyspaceInboxComponent },
+      { path: 'tasks', component: MyspaceTasksComponent },
+      { path: 'agenda', component: MyspaceAgendaComponent },
+      { path: 'workplace', component: MyspaceWorkplaceComponent }
+    ]
   }
 ];
 

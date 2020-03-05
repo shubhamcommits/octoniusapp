@@ -50,7 +50,11 @@ export class AppComponent {
     this.subSink.add(this.enableWorkspaceDataSocket(socketService, utilityService));
 
     // Internet connection validity(replace it with the ng-connection-service, maybe?)
-    this.subSink.add(this.createOnline$().subscribe(isOnline => console.log('Network is online - ',isOnline, 'replace this config with the library?')));
+    this.subSink.add(this.createOnline$().subscribe(isOnline => console.log('Network is online - ', isOnline, 'replace this config with the library?')));
+
+    // Reconnection Socket Emitter
+    this.subSink.add(this.enableReconnectSocket(socketService));
+
   }
 
   /**
@@ -75,13 +79,22 @@ export class AppComponent {
   }
 
   /**
+   * This function makes the HTTP initial request to the socket server in order to initiate the connection
+   * @param socketService 
+   */
+  initSockerServer(socketService: SocketService) {
+    socketService.serverInit()
+      .subscribe()
+  }
+
+  /**
    * This function enables the socket connection in the application
    * @param socketService 
    */
   enableSocketConnection(socketService: SocketService) {
     return socketService.onEvent('connect')
       .pipe(retry(Infinity))
-      .subscribe();
+      .subscribe()
   }
 
   /**
@@ -120,6 +133,16 @@ export class AppComponent {
         // Here we send the message to change and update the workspace data through the shared service
         utilityService.updateWorkplaceData(workspaceData);
       })
+  }
+
+  /**
+   * This function enables the reconnect_attempt socket, to check how many times the socket has been connecting
+   * @param socketService 
+   */
+  enableReconnectSocket(socketService: SocketService) {
+    return socketService.onEvent('reconnect_attempt')
+      .pipe(retry(Infinity))
+      .subscribe();
   }
 
   /**

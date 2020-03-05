@@ -21,6 +21,12 @@ routes.use(auths.isLoggedIn);
 // GET - Get current loggedIn user on the basis of userId
 routes.get('/', user.get);
 
+// GET - Get other user details on the basis of userId
+routes.get('/:userId', user.getOtherUser);
+
+// PUT - Updates the user details on the basis of userId
+routes.put('/', user.edit);
+
 // PUT - Updates the role of the user on the basis of userId
 routes.put('/update-role', user.updateUserRole);
 
