@@ -1,9 +1,14 @@
 <div class="card-tile">
     <div class="card-block">
         <h6 class="card-title"><b>User Skills</b></h6>
+        <app-component-search-bar 
+        [placeholder]="'Type here to search and add a new skill'" 
+        [userData] = "userData"
+        [type]="'skill'">
+        </app-component-search-bar>
         <hr />
         <ul class="skills" style="clear:both">
-            <li class="tags" *ngFor="let skill of user?.skills; let i = index; trackBy: utilityService.trackByIndex;">
+            <li class="tags" *ngFor="let skill of userData?.skills; let i = index; trackBy: utilityService.trackByIndex;">
                 {{skill}}
                 <button type="button" name="button" class="btn btn-link">
                     <i class="material-icons" placement="top" ngbTooltip="Delete this skill">

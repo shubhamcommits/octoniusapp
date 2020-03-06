@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { SharedModule } from 'src/app/common/shared/shared.module';
 
 import { UserRoutingModule } from './user-routing.module';
 import { UserHeaderComponent } from './user-header/user-header.component';
@@ -14,6 +15,7 @@ import { UserSkillsComponent } from './user-profile/user-skills/user-skills.comp
   declarations: [UserHeaderComponent, UserProfileComponent, UserCloudsComponent, UserInformationComponent, UserProfessionalInformationComponent, UserSkillsComponent],
   imports: [
     CommonModule,
+    SharedModule,
     UserRoutingModule
   ]
 })

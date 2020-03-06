@@ -4,18 +4,43 @@
 
 echo "Stoping all the node services..."
 
-# Defining the number of ports
-PORT_NUMBERS=([1]=2000 [2]=3000 [3]=4000 [4]=4200 [5]=5000 [6]=7000 [7]=9000)
+# Stops and kills the mailing server
+pm2 stop mailing-server
 
-# Loop through all the port numbers and remove the running services in the background
-for i in "${PORT_NUMBERS[@]}"
-do
-   lsof -i tcp:$i | awk 'NR!=1 {print $2}' | xargs kill 
-   echo "Process running on $i has been stopped"
-done
+pm2 delete mailing-server
 
-# Send status that all the services have been stopped
-echo "All the services have been stopped, terminal will exit soon..."
 
-# Exit out of the script
-exec sleep 3
+# Stops and kills the auths server
+pm2 stop auths-server
+
+pm2 delete auths-server
+
+
+# Stops and kills the groups server
+pm2 stop groups-server
+
+pm2 delete groups-server
+
+
+# Stops and kills the workspace server
+pm2 stop workspaces-server
+
+pm2 delete workspaces-server
+
+
+# Stops and kills the users server
+pm2 stop users-server
+
+pm2 delete users-server
+
+
+# Stops and kills the sockets sever
+pm2 stop sockets-server
+
+pm2 delete sockets-server
+
+
+# Stops and kills the client server
+pm2 stop client-server
+
+pm2 delete client-server

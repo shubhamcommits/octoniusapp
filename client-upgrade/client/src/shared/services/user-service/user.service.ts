@@ -13,6 +13,8 @@ export class UserService {
 
   constructor(private _http: HttpClient) { }
 
+  /* | ======================================= USER DETAILS ========================================== | */
+
   /**
    * This function fetches the details of the currently loggedIn user
    */
@@ -28,21 +30,48 @@ export class UserService {
     return this._http.get(this.BASE_API_URL + `/users/${userId}`);
   }
 
+  /* | ======================================= USER DETAILS ========================================== | */
+
   /**
    * This function updates the details of currently loggedIn user
    * @param userData 
    */
   updateUser(userData: Object) {
     return this._http.put(this.BASE_API_URL + `/users`, userData)
-    .toPromise();
+      .toPromise();
 
   }
+
+  /* | ======================================= USER SKILLS ========================================== | */
+
+  /**
+   * This function fetches the skill set array of current loggedIn user
+   */
+  getUserSkills() {
+    return this._http.get(this.BASE_API_URL + `/users/skills/`);
+  }
+
+  /**
+   * This function is responsible for adding a new skill to users' current skill set
+   * @param skill 
+   */
+  addSkill(skill: string): Observable<any> {
+    return this._http.post(this.BASE_API_URL + `/users/skills/${skill}`, '');
+  }
+
+  /**
+   * This function is responsible for adding a new skill to users' current skill set
+   * @param skill 
+   */
+  removeSkill(skill: string): Observable<any> {
+    return this._http.delete(this.BASE_API_URL + `/users/skills/${skill}`);
+  }
+
+  /* | ======================================= USER SKILLS ========================================== | */
+
+
   downloadFile(file: File): Observable<any> {
     return this._http.post(this.BASE_API_URL + `/file/download`, file, { responseType: 'blob' });
-  }
-
-  addSkills(skills: Array<any>): Observable<any> {
-    return this._http.put(this.BASE_API_URL+'/users/skills', skills);
   }
 
   updateUserProfileImage(fileToUpload: File): Observable<any> {

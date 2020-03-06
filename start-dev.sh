@@ -18,7 +18,7 @@ then
     cd mailing/server
 
     # Start the dev server and push the process into background - port 2000
-    yarn run dev &
+    pm2 start "yarn run dev" --name "mailing-server"
 
     # Go back to main working directory(i.e. - services/)
     cd -
@@ -29,7 +29,7 @@ then
     cd authentication/server
 
     # Start the dev server and push the process into background - port 3000
-    yarn run dev &
+    pm2 start "yarn run dev" --name "auths-server"
 
     # Go back to main working directory(i.e. - services/)
     cd -
@@ -40,7 +40,7 @@ then
     cd groups/server
 
     # Start the dev server and push the process into background - port 4000
-    yarn run dev &
+    pm2 start "yarn run dev" --name "groups-server"
 
     # Go back to main working directory(i.e. - services/)
     cd -
@@ -50,7 +50,7 @@ then
     cd workspace/server
 
     # Start the dev server and push the process into background - port 5000
-    yarn run dev &
+    pm2 start "yarn run dev" --name "workspaces-server"
 
     # Go back to main working directory(i.e. - services/)
     cd -
@@ -60,7 +60,7 @@ then
     cd users/server
 
     # Start the dev server and push the process into background - port 7000
-    yarn run dev &
+    pm2 start "yarn run dev" --name "users-server"
 
     # Go back to main working directory(i.e. - services/)
     cd -
@@ -70,7 +70,7 @@ then
     cd sockets/server
 
     # Start the dev server and push the process into background - port 9000
-    yarn run dev &
+    pm2 start "yarn run dev" --name "sockets-server"
 
     # Go back to main working directory(i.e. - services/)
     cd -
@@ -83,8 +83,11 @@ then
     # Go to the client directory
     cd client-upgrade/client
 
+    # Console Message
+    echo "Starting the client server..."
+
     # Start the dev server and push the process into background - port 4200
-    yarn run start &
+    pm2 start "ng serve" --name "client-server"
 
     # Go back to main working directory(i.e. - services/)
     cd -

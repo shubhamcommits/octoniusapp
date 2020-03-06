@@ -84,8 +84,7 @@ export class UserHeaderComponent implements OnInit {
     return this.utilityService.getSwalModal({
       title: title,
       html:
-        `<label for="phone-number"><b>Phone Number:</b></label
-        <input id="phone-number" type="tel" placeholder="Your Phone Number" 
+        `<input id="phone-number" type="tel" placeholder="Your Phone Number" 
         value="${this.userData.phone_number}" class="swal2-input">` +
 
         `<input id="mobile-number" type="tel" placeholder="Your Mobile Number" 

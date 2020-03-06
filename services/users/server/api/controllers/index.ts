@@ -1,3 +1,4 @@
+import { SkillsControllers } from "./skills.controllers";
 import { UsersControllers } from "./users.controller";
 
 /*  =======================
@@ -5,5 +6,10 @@ import { UsersControllers } from "./users.controller";
  *  =======================
  * */
 export {
+    
+    // Skills Controllers
+    SkillsControllers as SkillControllers,
+
+    // Users Controllers
     UsersControllers as UserControllers
 }
