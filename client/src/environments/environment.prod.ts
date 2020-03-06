@@ -5,6 +5,7 @@ export const environment = {
   //  BASE_API_URL: 'http://localhost:3000/api'
   BASE_API_URL: 'https://workplace.octonius.com/api',
   BASE_URL: 'https://workplace.octonius.com',
+  SOCKET_BASE_URL: 'wss://workplace.octonius.com',
   pk_stripe: 'pk_live_C6kLYxOOeUXt0hzaK6PockGM',
   
   // !--GOOGLE DEVELOPER CONSOLE CREDENTIALS--! //

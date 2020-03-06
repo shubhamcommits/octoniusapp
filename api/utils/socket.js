@@ -15,6 +15,8 @@ const init = (server) => {
   io.on('connection', (socket) => {
     // -| USER NOTIFICATION CENTER |-
 
+    console.log('user connected!');
+
     // Join user on private user room
     socket.on('joinUser', (userId) => {
       // join room
@@ -75,6 +77,7 @@ const init = (server) => {
 
     socket.on('disconnect', () => {
       // do nothing...
+      console.log('user disconnected!');
     });
   });
 };

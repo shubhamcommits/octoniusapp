@@ -8,6 +8,7 @@ export const environment = {
   hmr: false,
   BASE_API_URL: 'http://localhost:3000/api',
   BASE_URL: 'http://localhost:3000',
+  SOCKET_BASE_URL: 'ws://localhost:3000',
   pk_stripe: 'pk_test_rgLsr0HrrbMcqQr5G7Wz1zFK',
   
   // !--GOOGLE DEVELOPER CONSOLE CREDENTIALS--! //

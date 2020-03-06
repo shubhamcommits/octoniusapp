@@ -8,6 +8,7 @@ data/
 **/api/package-lock.json
 **/client/package-lock.json
 
+# Don't commit package-lock.json
 package-lock.json
 
 **/client/yarn.lock
@@ -17,6 +18,9 @@ public/
 
 # Octonius uploaded files on development
 uploads/
+
+# Don't commit yarn.lock 
+yarn.lock
 
 # Code editor related files and dirs
 .idea/
