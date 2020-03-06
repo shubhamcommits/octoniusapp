@@ -39,10 +39,8 @@ export class NavbarComponent implements OnInit {
 
   Date = new Date;
 
-  socket = io(environment.BASE_URL, {
-    path: '/socket.io',
-    transports: ['websocket'],
-    secure: true,
+  socket = io(environment.SOCKET_BASE_URL, {
+    transports: ['websocket']
   });
 
   BASE_URL = environment.BASE_URL;

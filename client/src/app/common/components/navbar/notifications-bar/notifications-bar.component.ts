@@ -14,10 +14,8 @@ export class NotificationsBarComponent implements OnInit {
   BASE_URL = environment.BASE_URL;
   user_data;
   notifications_data: any;
-  socket = io(environment.BASE_URL, {
-    path: '/socket.io',
+  socket = io(environment.SOCKET_BASE_URL, {
     transports: ['websocket'],
-    secure: true,
   });
 
   constructor(private router: Router) {
