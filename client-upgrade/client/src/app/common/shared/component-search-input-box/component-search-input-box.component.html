@@ -1,0 +1,74 @@
+<div *ngIf="userData">
+
+    <!-- INPUT BAR STARTS -->
+    <input type="search" id="keyword" [placeholder]="placeholder" class="input-search" [(ngModel)]="itemValue"
+        (keyup)="onSearch($event)" />
+    <!-- INPUT BAR ENDS -->
+
+    <!-- ITEM LIST STARTS -->
+    <ng-container *ngIf="!(isLoading$ | async)">
+        <div class="media card-tile user-list w-50 mb-0" *ngFor=" let item of itemList">
+
+            <!-- User Profile Image for type 'group' and 'workspace' -->
+            <img *ngIf="type != 'skill'" src="{{ userBaseUrl }}/uploads/{{item?.profile_pic}}"
+                onerror="this.src='/assets/images/user.png'" class="feed-avatar-search">
+
+            <div class="media-body mt-2">
+                <div class="float-left ml-0 mt-1">
+
+                    <!-- Display full name of the member starts -->
+                    <h4 class="mt-0 full-name-text" *ngIf="type != 'skill'">{{item?.full_name}}</h4>
+                    <!-- Display full name of the member ends -->
+
+                    <!-- Display full name of skill starts -->
+                    <h4 class="mt-0 full-name-text" *ngIf="type == 'skill'">{{item}}</h4>
+                    <!-- Display full name of skill ends -->
+                </div>
+                <div class="btn-group mr-3 ml-2 float-right">
+
+                    <!-- Skill section starts -->
+                    <section *ngIf="type == 'skill'">
+
+                        <!-- If current skill exist in the skills array -->
+                        <div *ngIf="hasSkill(item)">
+                            <i class="material-icons mr-1 dropdown-toggle-split btn-sm working">check_circle</i>
+                        </div>
+
+                        <!-- If current skill doesn't exists in the skills array -->
+                        <div *ngIf="!hasSkill(item)">
+                            <button (click)="onAddSkill(item)"
+                                class="btn mr-1 btn-primary dropdown-toggle-split btn-sm">Add
+                                skill
+                            </button>
+                        </div>
+                    </section>
+                    <!-- Skill section ends -->
+
+                    <!-- Group and workspace section starts -->
+                    <section *ngIf="type != 'skill'">
+                        <div *ngIf="!isGroupMember(item)">
+                            <button [hidden]="memberJustAddedToGroup(item)" (click)="onAddNewMember(item)"
+                                class="btn btn-primary dropdown-toggle-split btn-sm">add
+                            </button>
+                            <i [hidden]="!memberJustAddedToGroup(item)"
+                                class="material-icons mr-1 dropdown-toggle-split btn-sm working">check_circle</i>
+                        </div>
+                        <div *ngIf="isGroupMember(item)">
+                            <p class="btn btn-sm btn-text">joined</p>
+                        </div>
+                    </section>
+                    <!-- Group and workspace section ends -->
+                </div>
+
+            </div>
+        </div>
+    </ng-container>
+
+    <!-- ITEM LIST ENDS -->
+
+    <!-- LOADING SPINNER STARTS -->
+    <ng-container *ngIf="isLoading$ | async">
+        <app-loading-spinner class="media"></app-loading-spinner>
+    </ng-container>
+    <!-- LOADING SPINNER ENDS -->
+</div>

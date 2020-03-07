@@ -187,7 +187,7 @@ export class SkillsControllers {
         const userId = req['userId'];
 
         // Get the query to be where the query needs to be searched
-        const { query } = req.query;
+        const { skill } = req.query;
 
         try {
 
@@ -195,7 +195,7 @@ export class SkillsControllers {
             const user = await User.findOne({ _id: userId });
 
             // Convert the query into regex 
-            let regexConvert = query.replace(/[#.*+?^${}()|[\]\\]/g, '\\$&')
+            let regexConvert = skill.replace(/[#.*+?^${}()|[\]\\]/g, '\\$&')
 
             // Create the skills query and start aggregating the results & Execute the query and limit the result to 10
             let skills: any = await new SkillsControllers()

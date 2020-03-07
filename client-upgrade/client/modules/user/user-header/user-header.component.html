@@ -7,12 +7,12 @@
                 <h2>{{ userData?.first_name }} {{ userData?.last_name }}</h2>
                 <ul class="nav">
                     <li class="nav-item">
-                        <a class="nav-link" [routerLink]="['/dashboard', 'user', 'profile']"
+                        <a class="nav-link" *ngIf="isCurrentUser" [routerLink]="['/dashboard', 'user', 'profile']"
                             [queryParams]="{ userId: userData?._id }" routerLinkActive="active">Profile
                             <span class="sr-only">(current)</span>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" *ngIf="isCurrentUser">
                         <a class="nav-link" [routerLink]="['/dashboard', 'user', 'clouds']"
                             [queryParams]="{ userId: userData?._id }" routerLinkActive="active">Clouds
                             <span class="sr-only">(current)</span>
@@ -22,10 +22,10 @@
             </div>
         </div>
         <div *ngIf="isCurrentUser" class="col-md-3 text-right">
-            <button type="button" name="button" class="btn btn-link" (click)="editUserDetails()">
+            <button type="button" name="button" class="btn btn-link">
                 <i class="material-icons">create</i>
             </button>
         </div>
     </div>
 </div>
-<router-outlet ></router-outlet>
+<router-outlet></router-outlet>

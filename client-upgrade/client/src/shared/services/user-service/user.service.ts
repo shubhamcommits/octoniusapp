@@ -52,6 +52,17 @@ export class UserService {
   }
 
   /**
+   * This function fetches the skill set array of current loggedIn user
+   */
+  searchSkills(skill: string) {
+    return this._http.get(this.BASE_API_URL + `/users/skills/list`, {
+      params: {
+        skill: skill.toString().trim()
+      }
+    }).toPromise();
+  }
+
+  /**
    * This function is responsible for adding a new skill to users' current skill set
    * @param skill 
    */

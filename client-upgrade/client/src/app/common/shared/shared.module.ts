@@ -12,6 +12,7 @@ import { BrandingPanelComponent } from './branding-panel/branding-panel.componen
 import { RouterModule } from '@angular/router';
 import { LoadingSpinnerSmallComponent } from './loading-spinner-small/loading-spinner-small.component';
 import { SectionSeparatorComponent } from './section-separator/section-separator.component';
+import { ComponentSearchInputBoxComponent } from './component-search-input-box/component-search-input-box.component';
 
 
 
@@ -24,7 +25,8 @@ import { SectionSeparatorComponent } from './section-separator/section-separator
     InfiniteScrollComponent,
     ComponentSearchBarComponent,
     LoadingSpinnerSmallComponent,
-    SectionSeparatorComponent
+    SectionSeparatorComponent,
+    ComponentSearchInputBoxComponent
   ],
   imports: [
     CommonModule,
@@ -36,6 +38,7 @@ import { SectionSeparatorComponent } from './section-separator/section-separator
     BrandingPanelComponent,
     CropImageComponent,
     ComponentSearchBarComponent,
+    ComponentSearchInputBoxComponent,
     EmailInputComponent,
     InfiniteScrollComponent,
     LoadingSpinnerComponent,

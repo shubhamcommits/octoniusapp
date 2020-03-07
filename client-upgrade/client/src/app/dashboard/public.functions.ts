@@ -6,6 +6,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { retry } from 'rxjs/internal/operators/retry';
 import { SubSink } from 'subsink';
 import { GroupsService } from 'src/shared/services/groups-service/groups.service';
+import { Router, NavigationEnd } from '@angular/router';
 
 export class PublicFunctions {
 
@@ -13,7 +14,7 @@ export class PublicFunctions {
         private injector: Injector
     ) { }
 
-    private subSink =  new SubSink();
+    private subSink = new SubSink();
 
     public async getCurrentUser() {
         let userData = await this.getUserDetailsFromService();
@@ -29,24 +30,42 @@ export class PublicFunctions {
         return userData || {};
     }
 
+    public async getOtherUser(userId: string) {
+
+        let userData = await this.getOtherUserDetailsFromHTTP(userId);
+
+        return userData || {}
+    }
+
     async getUserDetailsFromService() {
         return new Promise((resolve) => {
             const utilityService = this.injector.get(UtilityService);
             this.subSink.add(utilityService.currentUserData.subscribe((res) => {
-                resolve(res)})
+                resolve(res)
+            })
             )
         })
     }
 
     async getUserDetailsFromStorage() {
         const storageService = this.injector.get(StorageService);
-        return (storageService.existData('userData') === null) ? {}: storageService.getLocalData('userData');
+        return (storageService.existData('userData') === null) ? {} : storageService.getLocalData('userData');
     }
 
     async getUserDetailsFromHTTP() {
         return new Promise((resolve, reject) => {
             const userService = this.injector.get(UserService);
             this.subSink.add(userService.getUser()
+                .pipe(retry(3))
+                .subscribe((res) => resolve(res['user']), (err) => reject({}))
+            )
+        })
+    }
+
+    async getOtherUserDetailsFromHTTP(userId: string) {
+        return new Promise((resolve, reject) => {
+            const userService = this.injector.get(UserService);
+            this.subSink.add(userService.getOtherUser(userId)
                 .pipe(retry(3))
                 .subscribe((res) => resolve(res['user']), (err) => reject({}))
             )
@@ -78,14 +97,15 @@ export class PublicFunctions {
         return new Promise((resolve) => {
             const utilityService = this.injector.get(UtilityService);
             this.subSink.add(utilityService.currentWorkplaceData.subscribe((res) => {
-                resolve(res)})
+                resolve(res)
+            })
             )
         })
     }
 
     async getWorkspaceDetailsFromStorage() {
         const storageService = this.injector.get(StorageService);
-        return (storageService.existData('workspaceData') === null) ? {}: storageService.getLocalData('workspaceData');
+        return (storageService.existData('workspaceData') === null) ? {} : storageService.getLocalData('workspaceData');
     }
 
     async getWorkspaceDetailsFromHTTP() {
@@ -95,11 +115,11 @@ export class PublicFunctions {
             const utilityService = this.injector.get(UtilityService);
             this.subSink.add(workspaceService.getWorkspace(userData['_workspace'])
                 .pipe(retry(3))
-                .subscribe((res) =>{console.log(res);resolve(res['workspace'])},
+                .subscribe((res) => { console.log(res); resolve(res['workspace']) },
                     (err) => {
                         console.log('Error occured while fetching the workspace details!', err);
                         utilityService.errorNotification('Error occured while fetching the workspace details, please try again!');
-                        reject({}) 
+                        reject({})
                     })
             )
         })
@@ -114,60 +134,122 @@ export class PublicFunctions {
 
     async getWorkspaceMembers(workspaceId?: string) {
         return new Promise(async (resolve, reject) => {
-          let userData = await this.getCurrentUser();
-          const workspaceService = this.injector.get(WorkspaceService);
-          const utilityService = this.injector.get(UtilityService);
-          this.subSink.add(workspaceService.getWorkspaceMembers(workspaceId || userData['_workspace'])
-            .subscribe((res) => {
-              resolve(res['results']);
-            }, (err) => {
-                console.log('Error occured while fetching the workspace members!', err);
-                utilityService.errorNotification('Error occured while fetching the workspace members!, please try again!');
-                reject({}) 
-            }))
+            let userData = await this.getCurrentUser();
+            const workspaceService = this.injector.get(WorkspaceService);
+            const utilityService = this.injector.get(UtilityService);
+            this.subSink.add(workspaceService.getWorkspaceMembers(workspaceId || userData['_workspace'])
+                .subscribe((res) => {
+                    resolve(res['results']);
+                }, (err) => {
+                    console.log('Error occured while fetching the workspace members!', err);
+                    utilityService.errorNotification('Error occured while fetching the workspace members!, please try again!');
+                    reject({})
+                }))
         })
-      }
+    }
 
-      /**
-       * Fetch list of first 10 groups of which a user is a part of
-       * @param workspaceId 
-       * @param userId 
-       */
-      public async getUserGroups(workspaceId: string, userId: string){
-        return new Promise((resolve, reject)=>{
-          let groupsService = this.injector.get(GroupsService);
-          groupsService.getUserGroups(workspaceId, userId)
-          .then((res)=> resolve(res['groups']))
-          .catch(()=> reject([]))
-        })
-      }
-    
-      /**
-       * Fetch list of next 5 groups of which a user is a part of based on the lastGroupId
-       * @param workspaceId 
-       * @param userId 
-       * @param lastGroupId 
-       */
-      public async getNextUserGroups(workspaceId: string, userId: string, lastGroupId: string){
-        return new Promise((resolve, reject)=>{
-          let groupsService = this.injector.get(GroupsService);
-          groupsService.getNextUserGroups(workspaceId, userId, lastGroupId)
-          .then((res)=> resolve(res['groups']))
-          .catch(()=> reject([]))
-        })
-      }
+    public reuseRoute(router: Router) {
 
-      async catchError(err: Error){
+        // Adding shouldReuseRoute property
+        router.routeReuseStrategy.shouldReuseRoute = function () {
+            return false;
+        };
+
+        // Subscribe to router events and reload the page
+        router.events.subscribe((evt) => {
+            if (evt instanceof NavigationEnd) {
+                router.navigated = false;
+                window.scrollTo(0, 0);
+            }
+        });
+    }
+
+    /**
+     * Fetch list of first 10 groups of which a user is a part of
+     * @param workspaceId 
+     * @param userId 
+     */
+    public async getUserGroups(workspaceId: string, userId: string) {
+        return new Promise((resolve, reject) => {
+            let groupsService = this.injector.get(GroupsService);
+            groupsService.getUserGroups(workspaceId, userId)
+                .then((res) => resolve(res['groups']))
+                .catch(() => reject([]))
+        })
+    }
+
+    /**
+     * Fetch list of next 5 groups of which a user is a part of based on the lastGroupId
+     * @param workspaceId 
+     * @param userId 
+     * @param lastGroupId 
+     */
+    public async getNextUserGroups(workspaceId: string, userId: string, lastGroupId: string) {
+        return new Promise((resolve, reject) => {
+            let groupsService = this.injector.get(GroupsService);
+            groupsService.getNextUserGroups(workspaceId, userId, lastGroupId)
+                .then((res) => resolve(res['groups']))
+                .catch(() => reject([]))
+        })
+    }
+
+    /**
+     * This is the service function which calls the edit user API
+     * @param userService 
+     * @param userData 
+     */
+    public async userDetailsServiceFunction(userService: UserService, userData: Object) {
+        return new Promise((resolve, reject) => {
+            userService.updateUser(userData)
+                .then((res) => resolve(res['user']))
+                .catch(() => reject({}))
+        })
+    }
+
+    /**
+     * This function is responsible for editing the user details
+     */
+    async editUserDetails(openModal) {
+
+        // Utility Service
+        const utilityService = this.injector.get(UtilityService);
+
+        // User service
+        let userService = this.injector.get(UserService);
+
+        // Open Model Function, which opens up the modal
+        const { value: value } = await openModal;
+        if (value) {
+            utilityService.asyncNotification('Please wait we are updating your information...',
+                new Promise((resolve, reject) => {
+                    this.userDetailsServiceFunction(userService, value)
+                        .then((user) => {
+
+                            // Send the updates to the userData in the app for the updated data
+                            this.sendUpdatesToUserData(user);
+
+                            // Resolve with success
+                            resolve(utilityService.resolveAsyncPromise('Details updated sucessfully!'))
+                        })
+                        .catch(() =>
+                            reject(utilityService.rejectAsyncPromise('An unexpected occured while updating the details, please try again!')))
+                }))
+        } else if (JSON.stringify(value) == '') {
+            utilityService.warningNotification('Kindly fill up all the details properly!');
+        }
+    }
+
+    async catchError(err: Error) {
         let utilityService = this.injector.get(UtilityService)
         console.log('There\'s some unexpected error occured, please try again!', err);
         utilityService.errorNotification('There\'s some unexpected error occured, please try again!');
-      }
+    }
 
-      async sendError(err: Error){
+    async sendError(err: Error) {
         let utilityService = this.injector.get(UtilityService)
         console.log('There\'s some unexpected error occured, please try again!', err);
         utilityService.errorNotification(err.message);
-      }
+    }
 
     /**
      * This function unsubscribes the data from the observables

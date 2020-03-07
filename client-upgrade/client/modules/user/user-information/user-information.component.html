@@ -1,7 +1,12 @@
 <div class="sidecontent">
     <div class="card sideinnercard">
         <div class="card-block">
-            <h6 class="card-title"><b>User Information</b></h6>
+            <h6 class="card-title"><b>User Information</b>
+                <button *ngIf="currentUser" type="button" name="button" class="btn btn-link" 
+                (click)="this.publicFunctions.editUserDetails(this.openModal('Update your Information!', '/assets/images/create-group.svg'))">
+                    <i class="material-icons">create</i>
+                </button>
+            </h6>
             <hr />
             <p class="card-text"><strong>Email:</strong>
                 {{ userData?.email}}</p>

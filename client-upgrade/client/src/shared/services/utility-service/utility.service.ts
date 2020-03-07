@@ -57,6 +57,14 @@ export class UtilityService {
   currentWorkplaceData = this.workplaceDataSource.asObservable();
 
   /**
+   * Both of the variables listed down below are used to share the data through this common service among different components in the app
+   * @constant otherUserDataSource
+   * @constant otherUserData 
+   */
+  private otherUserDataSource = new BehaviorSubject<any>({});
+  otherUserData = this.otherUserDataSource.asObservable();
+
+  /**
    * This function checks whether the input string is a vaild email or not
    * @param email 
    */
@@ -191,6 +199,14 @@ export class UtilityService {
    */
   public updateUserData(userData: any){
     this.userDataSource.next(userData);
+  }
+
+  /**
+   * Used to emit the next value of observable so that where this is subscribed, will get the updated value
+   * @param userData 
+   */
+  public updateOtherUserData(userData: any){
+    this.otherUserDataSource.next(userData);
   }
 
   /**
