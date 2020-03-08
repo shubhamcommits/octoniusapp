@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Injector } from '@angular/core';
+import { PublicFunctions } from 'src/app/dashboard/public.functions';
 
 @Component({
   selector: 'app-user-clouds',
@@ -7,9 +8,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserCloudsComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    public injector: Injector
+  ) { }
 
-  ngOnInit() {
+  // User Data Variable
+  userData: Object;
+
+  // Public functions class member
+  publicFunctions = new PublicFunctions(this.injector);
+
+  async ngOnInit() {
+    
+    // Intialise the userData variable
+    this.userData = await this.publicFunctions.getCurrentUser();
   }
 
 }

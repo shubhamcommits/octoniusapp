@@ -1,11 +1,13 @@
 import { Component, Injector } from '@angular/core';
-import { ConnectionService } from 'ng-connection-service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { retry } from 'rxjs/internal/operators/retry';
 import { map } from 'rxjs/internal/operators/map';
 import { SubSink } from 'subsink';
 import { Observable, Observer, fromEvent, merge } from 'rxjs';
+
+// Google API Variable
+declare const gapi: any;
 
 @Component({
   selector: 'app-root',
@@ -16,6 +18,7 @@ export class AppComponent {
 
   // Subsink
   private subSink = new SubSink();
+  
 
   /**
    * This function checks the following things in the application
@@ -30,12 +33,11 @@ export class AppComponent {
     private injector: Injector
   ) {
 
-    let connectionService = this.injector.get(ConnectionService);
     let socketService = this.injector.get(SocketService);
     let utilityService = this.injector.get(UtilityService);
 
     // Internet connection validity
-    this.subSink.add(this.checkInternetConnectivity(connectionService, utilityService));
+    this.subSink.add(this.checkInternetConnectivity(utilityService));
 
     // Socket connection initilisation
     this.subSink.add(this.enableSocketConnection(socketService));
@@ -49,33 +51,32 @@ export class AppComponent {
     // Workspace Data Socket
     this.subSink.add(this.enableWorkspaceDataSocket(socketService, utilityService));
 
-    // Internet connection validity(replace it with the ng-connection-service, maybe?)
-    this.subSink.add(this.createOnline$().subscribe(isOnline => console.log('Network is online - ', isOnline, 'replace this config with the library?')));
-
     // Reconnection Socket Emitter
     this.subSink.add(this.enableReconnectSocket(socketService));
+
+    // Initiate the gapi variable to confirm the check the gapi is ready to work
+    this.loadGoogleAPI();
 
   }
 
   /**
    * This function checks for the active internet connection
-   * @param connectionService 
    * @param utilityService 
    */
-  checkInternetConnectivity(connectionService: ConnectionService, utilityService: UtilityService) {
-    return connectionService.monitor()
-      .subscribe((isConnected) => {
-        if (!isConnected) {
-          utilityService.warningNotification('Oops, seems like you lost your internet connection', '', {
-            showProgressBar: false,
-            closeOnClick: false,
-            backdrop: 0.8,
-            timeout: 500
-          })
-        }
-        else
-          utilityService.clearAllNotifications();
-      })
+  checkInternetConnectivity(utilityService: UtilityService) {
+    return this.createOnline$()
+    .subscribe((isOnline) => {
+      if (!isOnline) {
+        utilityService.warningNotification('Oops, seems like you lost your internet connection', '', {
+          showProgressBar: true,
+          closeOnClick: false,
+          backdrop: 0.8,
+          timeout: 3000
+        })
+      }
+      else
+        utilityService.clearAllNotifications();
+    })
   }
 
   /**
@@ -156,6 +157,15 @@ export class AppComponent {
         sub.next(navigator.onLine);
         sub.complete();
       }));
+  }
+
+  /**
+   * This function enables the google api connection to the client
+   */
+  async loadGoogleAPI() {
+    await gapi.load('auth', (() => {
+      console.log('Google API is connected!')
+    }));
   }
 
   /**

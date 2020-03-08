@@ -9,10 +9,12 @@ import { UserCloudsComponent } from './user-clouds/user-clouds.component';
 import { UserInformationComponent } from './user-information/user-information.component';
 import { UserProfessionalInformationComponent } from './user-profile/user-professional-information/user-professional-information.component';
 import { UserSkillsComponent } from './user-profile/user-skills/user-skills.component';
+import { UserAvailableCloudsComponent } from './user-clouds/user-available-clouds/user-available-clouds.component';
+import { UserConnectedCloudsComponent } from './user-clouds/user-connected-clouds/user-connected-clouds.component';
 
 
 @NgModule({
-  declarations: [UserHeaderComponent, UserProfileComponent, UserCloudsComponent, UserInformationComponent, UserProfessionalInformationComponent, UserSkillsComponent],
+  declarations: [UserHeaderComponent, UserProfileComponent, UserCloudsComponent, UserInformationComponent, UserProfessionalInformationComponent, UserSkillsComponent, UserAvailableCloudsComponent, UserConnectedCloudsComponent],
   imports: [
     CommonModule,
     SharedModule,

@@ -62,6 +62,7 @@ export class UserHeaderComponent implements OnInit {
    */
   ngOnDestroy(): void {
     this.subSink.unsubscribe();
+    this.publicFunctions.stopReuseRoute(this._router)
   }
 
   /**

@@ -40,6 +40,7 @@ async function generateFeed(userId: string, io: any) {
 async function sendNotificationsFeed(socket: any, userId: string, io: any) {
     //  here the same as before, I deleted the emit code
     generateFeed(userId, io);
+    console.log('Notifications Sent!')
 };
 
 /*  =======================

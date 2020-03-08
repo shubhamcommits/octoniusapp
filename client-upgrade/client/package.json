@@ -9,7 +9,7 @@
   "main": "main.js",
   "build": {
     "directories": {
-    "output": "release/"
+      "output": "release/"
     }
   },
   "scripts": {
@@ -40,7 +40,6 @@
     "bootstrap": "^4.3.1",
     "crypto-js": "^3.1.9-1",
     "moment": "^2.24.0",
-    "ng-connection-service": "^1.0.4",
     "ng-snotify": "^4.3.1",
     "ngx-image-cropper": "^2.0.2",
     "ngx-moment": "^3.5.0",
