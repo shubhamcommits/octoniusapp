@@ -37,6 +37,13 @@ function init(server: any){
             socket.join(userId);
         });
 
+        // User Role Socket 
+        socket.on('userData', (userId: string, userData: Object) => {
+            
+            // Emit socket with 
+            io.sockets.in(userId).emit('userDataUpdate', userData);
+        });
+
         // Get notifications based on the userId
         socket.on('getNotifications', async (userId: string) => {
             

@@ -1,7 +1,7 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { SubSink } from 'subsink';
-import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PublicFunctions } from 'src/app/dashboard/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
@@ -22,6 +22,8 @@ export class UserHeaderComponent implements OnInit {
   // CURRENT USER DATA
   public userData: any;
 
+  public workspaceData: any;
+
   // BASE URL OF THE APPLICATION
   BASE_URL = environment.UTILITIES_BASE_URL;
 
@@ -41,6 +43,9 @@ export class UserHeaderComponent implements OnInit {
 
     // Get current loggedIn user data
     this.userData = await this.publicFunctions.getCurrentUser();
+
+    // Get current workspaceData
+    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
     // Check if the profile view is private or is it for the other user
     this.isCurrentUser = this.checkIsCurrentUser(this.userData);

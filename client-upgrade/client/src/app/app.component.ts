@@ -54,6 +54,9 @@ export class AppComponent {
     // Workspace Data Socket
     this.subSink.add(this.enableWorkspaceDataSocket(socketService, this.publicFunctions));
 
+    // User Role Data Socket
+    this.subSink.add(this.enableUserRoleSocket(socketService, this.publicFunctions, utilityService));    
+
     // Reconnection Socket Emitter
     this.subSink.add(this.enableReconnectSocket(socketService));
 
@@ -136,6 +139,38 @@ export class AppComponent {
       .subscribe((workspaceData) => {
         // Here we send the message to change and update the workspace data through the shared service
         publicFunctions.sendUpdatesToWorkspaceData(workspaceData)
+      })
+  }
+
+  /**
+   * This function enables the user role sharing over the socket
+   * @param publicFunctions
+   * @param socketService
+   * calling the @event userRoleUpdate to get the userRole data if there's any change in userRole
+   */
+  enableUserRoleSocket(socketService: SocketService, publicFunctions: PublicFunctions, utilityService: UtilityService) {
+    return socketService.onEvent('userDataUpdate')
+      .pipe(retry(Infinity))
+      .subscribe( async (userData) => {
+
+        // Fetch the current user
+        let currentUser: any = await publicFunctions.getCurrentUser();
+
+        // Update the profile picture and send the update accross the app
+        if(userData.hasOwnProperty('profile_pic'))
+          if(userData.profile_pic !== 'default_user.png')
+              currentUser.profile_pic = userData.profile_pic || currentUser.profile_pic;
+
+        // Update the role
+        if(userData.hasOwnProperty('role'))
+        {
+          currentUser.role = userData.role || currentUser.role;
+          utilityService.infoNotification(`Your role has been updated to ${currentUser.role}!`)
+        }
+          
+
+        // Here we send the message to change and update the current user through the shared service and storage too
+        publicFunctions.sendUpdatesToUserData(currentUser)
       })
   }
 

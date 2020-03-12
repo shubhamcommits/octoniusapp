@@ -104,6 +104,17 @@ export class UtilityService {
   }
 
   /**
+   * This function generates a custom snotify notification for info event
+   * @param text 
+   * @param title - optional
+   * @param config - optional
+   */
+  infoNotification(text: string, title?: string, config?: SnotifyToastConfig){
+    return this.snotifyService.info(text, title, config);
+  }
+
+
+  /**
    * This function generates a custom snotify notification for asynchronous event
    * @param text 
    * @param promise - which resolves() or rejects() on the basis of response

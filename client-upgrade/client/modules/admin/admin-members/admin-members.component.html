@@ -1,9 +1,10 @@
 <div class="container">
     <div class="card-tile">
         <h6><b>All members from your workplace</b></h6>
-        <app-component-search-bar [workspaceId] = "workspaceData?._id" [placeholder]="searchBarPlaceholder"></app-component-search-bar>
+        <app-component-search-bar [workspaceId]="workspaceData?._id" [placeholder]="searchBarPlaceholder">
+        </app-component-search-bar>
         <hr>
-        <div class="media card-tile user-list" *ngFor="let member of members">
+        <div class="media card-tile user-list" *ngFor="let member of members; let index = index;">
             <img src="{{ baseUrl }}/uploads/{{member?.profile_pic}}" onerror="this.src='/assets/images/user.png'"
                 class="feed-avatar">
             <div class="media-body">
@@ -11,20 +12,17 @@
                     <p class="mt-0">{{member?.first_name}} {{member?.last_name}}</p>
                     <p>Role: {{member?.role}} (<a href="mailto:{{member?.email}}">{{member?.email}}</a>)</p>
                 </div>
-                <div class="btn-group mr-3 float-right" style="margin-left:10px">
+                <div class="btn-group mr-3 float-right">
 
-                    <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-                        <button class="btn btn-primary dropdown-toggle-split btn-sm">Manage user
-                        </button>
-                        <div class="dropdown-menu">
-                            <button class="dropdown-item">Change to
-                                Admin</button>
-                            <button class="dropdown-item">Change to
-                                Member</button>
-                            <div class="dropdown-divider"></div>
-                            <button class="dropdown-item">Delete
-                                Member</button>
-                        </div>
+                    <div class="dropdown" *ngIf="member.role != 'owner'">
+                        <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">Manage {{ member?.first_name }}
+                            <span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-item" *ngIf="member.role != 'admin'" (click)="changeRole(member._id, 'admin', index)">Change to Admin</li>
+                            <li class="dropdown-item" *ngIf="member.role != 'member'" (click)="changeRole(member._id, 'member', index)">Change to Member</li>
+                            <li class="dropdown-divider"></li>
+                            <li class="dropdown-item">Remove from workplace</li>
+                        </ul>
                     </div>
                 </div>
 

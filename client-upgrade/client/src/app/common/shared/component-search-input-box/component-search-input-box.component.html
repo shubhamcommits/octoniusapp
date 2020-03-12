@@ -1,7 +1,7 @@
 <div *ngIf="userData">
 
     <!-- INPUT BAR STARTS -->
-    <input type="search" id="keyword" [placeholder]="placeholder" class="input-search" [(ngModel)]="itemValue"
+    <input type="search" id="keyword" autocomplete="off" [placeholder]="placeholder" class="input-search" [(ngModel)]="itemValue"
         (keyup)="onSearch($event)" />
     <!-- INPUT BAR ENDS -->
 

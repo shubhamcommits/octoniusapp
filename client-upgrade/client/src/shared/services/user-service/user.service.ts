@@ -56,6 +56,25 @@ export class UserService {
     return this._http.put(this.BASE_API_URL + `/users/image`, formData);
   }
 
+
+  /**
+   * This function is responsible for updating users' role 
+   * @param { userId, role }
+   * @role - 'admin' or 'member'
+   */
+  updateUserRole(userId: string, role: string) {
+
+    // Preparing the request body data
+    let userData = {
+      userId: userId.trim(),
+      role: role.trim().toLowerCase()
+    }
+
+    // Call the API
+    return this._http.put(this.BASE_API_URL + '/users/update-role', userData)
+    .toPromise();
+  }
+
   /* | ======================================= USER SKILLS ========================================== | */
 
   /**

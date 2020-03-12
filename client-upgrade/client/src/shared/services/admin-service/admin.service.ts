@@ -73,10 +73,6 @@ export class AdminService {
     return this._http.post(this.baseURL + '/workspace/inviteUserViaEmail', emailData);
   }
 
-  updateUserRole(data) {
-    return this._http.put<any>(this.baseURL + '/workspace/updateUserRole', data);
-  }
-
   removeUser(workspaceId, userId) {
     return this._http.delete(this.baseURL + `/workspaces/${workspaceId}/users/${userId}`);
   }

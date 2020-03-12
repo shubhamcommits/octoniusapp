@@ -7,6 +7,7 @@ import { retry } from 'rxjs/internal/operators/retry';
 import { SubSink } from 'subsink';
 import { GroupsService } from 'src/shared/services/groups-service/groups.service';
 import { Router, NavigationEnd } from '@angular/router';
+import { SocketService } from 'src/shared/services/socket-service/socket.service';
 
 export class PublicFunctions {
 
@@ -237,6 +238,25 @@ export class PublicFunctions {
         } else if (JSON.stringify(value) == '') {
             utilityService.warningNotification('Kindly fill up all the details properly!');
         }
+    }
+
+    /**
+   * This functions sends the update to other users about the updated workspace data
+   * @param socketService 
+   * @param workspaceData
+   */
+    emitWorkspaceData(socketService: SocketService, workspaceData: any) {
+        return socketService.onEmit('workspaceData', workspaceData).pipe(retry(Infinity)).subscribe()
+    }
+
+    /**
+     * This functions sends the update to the user whose role has been updated
+     * @param socketService 
+     * @param userId
+     * @param userData
+     */
+    emitUserData(socketService: SocketService, userId: string, userData: Object) {
+        return socketService.onEmit('userData', userId, userData).pipe(retry(Infinity)).subscribe()
     }
 
     async catchError(err: Error) {
