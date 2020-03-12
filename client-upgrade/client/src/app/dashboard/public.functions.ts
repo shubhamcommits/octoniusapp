@@ -164,22 +164,6 @@ export class PublicFunctions {
         });
     }
 
-    public stopReuseRoute(router: Router) {
-
-        // Adding shouldReuseRoute property
-        router.routeReuseStrategy.shouldReuseRoute = function () {
-            return true;
-        };
-
-        // Subscribe to router events and reload the page
-        // router.events.subscribe((evt) => {
-        //     if (evt instanceof NavigationEnd) {
-        //         router.navigated = false;
-        //         window.scrollTo(0, 0);
-        //     }
-        // });
-    }
-
     /**
      * Fetch list of first 10 groups of which a user is a part of
      * @param workspaceId 

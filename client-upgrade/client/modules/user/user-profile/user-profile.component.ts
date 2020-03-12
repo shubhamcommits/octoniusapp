@@ -40,7 +40,7 @@ export class UserProfileComponent implements OnInit {
     })
 
     // Start the Foreground Loader
-    this.utilityService.startForegroundLoader();
+    // this.utilityService.startForegroundLoader();
     
     // Intialise the userData variable
     this.userData = await this.publicFunctions.getCurrentUser();
@@ -61,7 +61,7 @@ export class UserProfileComponent implements OnInit {
   ngAfterViewChecked(): void {
 
     // Stop the Foreground Loader
-    this.utilityService.stopForegroundLoader();
+    // this.utilityService.stopForegroundLoader();
   }
   
 

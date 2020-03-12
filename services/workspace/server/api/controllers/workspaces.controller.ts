@@ -282,7 +282,7 @@ export class WorkspaceController {
      */
     async updateWorkspace(req: Request, res: Response, next: NextFunction) {
 
-        const { params: { workspaceId }, body: { workspace } } = req;
+        const { params: { workspaceId }, body } = req;
 
         try {
 
@@ -290,7 +290,7 @@ export class WorkspaceController {
             const workspaceData: any = await Workspace.findOneAndUpdate({
                 _id: workspaceId
             }, {
-                $set: workspace
+                $set: body
             }, {
                 new: true
             })

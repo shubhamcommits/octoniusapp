@@ -5,6 +5,9 @@ import { NotificationsController } from '../api/controllers';
 // Creating notification controllers class
 const notifications = new NotificationsController();
 
+// Maintains the count of all the connected users
+const globalConnections = [];
+
 function init(server: any){
 
     const io: any = socketIO(server);
@@ -18,9 +21,13 @@ function init(server: any){
     io.set('origins', '*:*');
 
     // Initiate the connection
-    io.on('connection', (socket: any) => {
+    io.sockets.on('connection', (socket: any) => {
 
-        console.log('user connected');
+        // Push the socket into the array
+        globalConnections.push(socket);
+
+        // Console the present sockets connections
+        console.log('New User Connected: %s sockets are connected', globalConnections.length);
 
         // -| USER NOTIFICATION CENTER |-
 
@@ -51,10 +58,28 @@ function init(server: any){
          * - WORKSPACE DATA -
          * =================
          */
-        socket.on("workspaceData", async (workspaceData) => {
-            // const workspaceData = await workspace.getWorkspaceDetails(workspaceId);
 
-            io.emit("workspaceData", workspaceData);
+        //  Joins the user to the workspace room
+        socket.on("joinWorkspace", async (workspaceData: any) => {
+            
+            // Create the room name
+            const roomName = `${workspaceData.workspace_name}`;
+
+            // Join the workspace room
+            socket.join(roomName, ()=>{
+                console.log('User joined: ', roomName)
+            });
+            
+        });
+
+        // Listen to workspace data change
+        socket.on("workspaceData", async (workspaceData: any) => {
+            
+            // Create the room name
+            const roomName = `${workspaceData.workspace_name}`;
+
+            // Send the update to all the members in the room
+            socket.broadcast.to(roomName).emit("workspaceDataUpdate", workspaceData);
         });
 
         // -| GROUP ACTIVITY ROOM |-
@@ -100,8 +125,12 @@ function init(server: any){
         });
 
         socket.on('disconnect', () => {
-            // do nothing...
-            console.log('User disconnected');
+            
+            // Remove the socket from globalConnection array
+            globalConnections.splice(globalConnections.indexOf(socket), 1);
+
+            // Console the present list of of sockets
+            console.log('User disconnected: %s sockets connected', globalConnections.length);
         });
     });
 };

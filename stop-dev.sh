@@ -39,6 +39,11 @@ pm2 stop sockets-server
 
 pm2 delete sockets-server
 
+# Stops and kills the utilities sever
+pm2 stop utilities-server
+
+pm2 delete utilities-server
+
 
 # Stops and kills the client server
 pm2 stop client-server

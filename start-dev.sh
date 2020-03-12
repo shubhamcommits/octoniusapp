@@ -65,6 +65,16 @@ then
     # Go back to main working directory(i.e. - services/)
     cd -
 
+    : '|- UTILITIES SERVER -|'
+    # Go to utilities directory
+    cd utilities/server
+
+    # Start the dev server and push the process into background - port 8000
+    pm2 start "yarn run dev" --name "utilities-server"
+
+    # Go back to main working directory(i.e. - services/)
+    cd -
+
     : '|- SOCKETS SERVER -|'
     # Go to sockets directory
     cd sockets/server

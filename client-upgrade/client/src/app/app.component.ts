@@ -5,9 +5,10 @@ import { retry } from 'rxjs/internal/operators/retry';
 import { map } from 'rxjs/internal/operators/map';
 import { SubSink } from 'subsink';
 import { Observable, Observer, fromEvent, merge } from 'rxjs';
+import { PublicFunctions } from './dashboard/public.functions';
 
 // Google API Variable
-declare const gapi: any;
+ declare const gapi: any;
 
 @Component({
   selector: 'app-root',
@@ -19,6 +20,8 @@ export class AppComponent {
   // Subsink
   private subSink = new SubSink();
   
+  // Create public functions object
+  public publicFunctions = new PublicFunctions(this.injector);
 
   /**
    * This function checks the following things in the application
@@ -49,7 +52,7 @@ export class AppComponent {
     this.subSink.add(this.enableNotificationsFeedSocket(socketService));
 
     // Workspace Data Socket
-    this.subSink.add(this.enableWorkspaceDataSocket(socketService, utilityService));
+    this.subSink.add(this.enableWorkspaceDataSocket(socketService, this.publicFunctions));
 
     // Reconnection Socket Emitter
     this.subSink.add(this.enableReconnectSocket(socketService));
@@ -123,16 +126,16 @@ export class AppComponent {
 
   /**
    * This function enables the workspace data sharing over the socket
-   * @param utilityService
+   * @param publicFunctions
    * @param socketService
-   * calling the @event workspaceData to get the workspace data if there's any change in workspace
+   * calling the @event workspaceDataUpdate to get the workspace data if there's any change in workspace
    */
-  enableWorkspaceDataSocket(socketService: SocketService, utilityService: UtilityService) {
-    return socketService.onEvent('workspaceData')
+  enableWorkspaceDataSocket(socketService: SocketService, publicFunctions: PublicFunctions) {
+    return socketService.onEvent('workspaceDataUpdate')
       .pipe(retry(Infinity))
       .subscribe((workspaceData) => {
         // Here we send the message to change and update the workspace data through the shared service
-        utilityService.updateWorkplaceData(workspaceData);
+        publicFunctions.sendUpdatesToWorkspaceData(workspaceData)
       })
   }
 

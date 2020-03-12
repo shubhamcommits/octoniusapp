@@ -1,7 +1,7 @@
 <div class="container" style="margin-bottom: 30px">
     <div class="media user-sticky-card">
         <img class="mr-3 feed-avatar" src="{{BASE_URL}}/uploads/{{userData?.profile_pic}}"
-            onerror="this.src='/assets/images/organization.png'">
+            onerror="this.src='/assets/images/user.png'">
         <div class="media-body">
             <div>
                 <h2>{{ userData?.first_name }} {{ userData?.last_name }}</h2>
@@ -22,10 +22,16 @@
             </div>
         </div>
         <div *ngIf="isCurrentUser" class="col-md-3 text-right">
-            <button type="button" name="button" class="btn btn-link">
+            <button type="button" name="button" class="btn btn-link" (click)="openUserDetails(content)">
                 <i class="material-icons">create</i>
             </button>
         </div>
+
+        <ng-template #content let-modal>
+            <app-user-image-details [userData]="userData" [baseUrl]="BASE_URL">
+            </app-user-image-details>
+         </ng-template>
+   
     </div>
 </div>
 <router-outlet></router-outlet>

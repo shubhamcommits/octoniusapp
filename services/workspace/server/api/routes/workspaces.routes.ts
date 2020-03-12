@@ -1,5 +1,5 @@
 import express from 'express';
-import { Auths } from '../../utils';
+import { Auths, workspaceFileHandler } from '../../utils';
 import { WorkspaceController } from '../controllers';
 
 // Create Workspace controller Class
@@ -31,7 +31,7 @@ routes.use(authsHelper.isLoggedIn);
 routes.get('/:workspaceId', workspaces.getWorkspace);
 
 // PUT - Edit the workspace details
-routes.put('/:workspaceId', workspaces.updateWorkspace);
+routes.put('/:workspaceId', workspaceFileHandler, workspaces.updateWorkspace);
 
 /*  ===================
  *  -- EXPORT ROUTES --

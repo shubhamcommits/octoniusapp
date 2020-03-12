@@ -42,6 +42,20 @@ export class UserService {
 
   }
 
+  /**
+   * This function is responsible for updating the user data(only profile_pic)
+   * @param workspaceId 
+   * @param workspaceAvatar
+   */
+  updateUserProfileImage(fileToUpload: File): Observable<any> {
+
+    // PREPARING FORM DATA
+    let formData = new FormData();
+    formData.append('profileImage', fileToUpload)
+
+    return this._http.put(this.BASE_API_URL + `/users/image`, formData);
+  }
+
   /* | ======================================= USER SKILLS ========================================== | */
 
   /**
@@ -83,16 +97,6 @@ export class UserService {
 
   downloadFile(file: File): Observable<any> {
     return this._http.post(this.BASE_API_URL + `/file/download`, file, { responseType: 'blob' });
-  }
-
-  updateUserProfileImage(fileToUpload: File): Observable<any> {
-    // const formData: FormData = new FormData();
-    // formData.append('profileImage', fileToUpload, fileToUpload.name);
-    let image = {
-      profileImage: fileToUpload
-    }
-    return this._http.put<any>(this.BASE_API_URL + `/users/updateImage`, image);
-
   }
 
   getUserTasks(): Observable<any> {

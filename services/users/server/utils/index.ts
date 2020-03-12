@@ -1,9 +1,19 @@
 import { Auths } from './auth';
 import { sendErr } from './sendError';
 import { hasProperty } from './helperFunctions';
+import { userFileHandler } from "./filehandler";
 
 export {
+
+    // AUTHS
     Auths as Auths,
+
+    // SEND ERROR
     sendErr as sendError,
-    hasProperty as hasProperty
+
+    // HAS PROPERTY
+    hasProperty as hasProperty,
+
+    // USER FILEHANDLER
+    userFileHandler as userFileHandler
 }

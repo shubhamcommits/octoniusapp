@@ -5,6 +5,7 @@ import morgan from 'morgan';
 import compression from 'compression';
 import { developmentConfig, productionConfig } from '../configs';
 import { userRoutes } from './routes';
+import fileUpload from 'express-fileupload';
 
 // Defining new Express application
 const app = express();
@@ -58,6 +59,14 @@ app.get("*.css", encodeResToGzip('text/css'));
 
 // static assets folder
 // app.use(express.static(path.join(__dirname, '../../client/dist')));
+
+// Set file upload middleware
+app.use(fileUpload({
+    limits: {
+        fileSize: 1024 * 1024 * 1024
+    },
+    abortOnLimit: true
+}));
 
 // Routes which should handle request
 app.all('/', (req: Request, res: Response, next: NextFunction) => {

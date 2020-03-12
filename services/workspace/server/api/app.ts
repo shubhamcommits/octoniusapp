@@ -3,6 +3,7 @@ import path from 'path';
 import cors from 'cors';
 import morgan from 'morgan';
 import compression from 'compression';
+import fileUpload from 'express-fileupload';
 import { developmentConfig, productionConfig } from '../configs';
 import { billingRoutes, domainRoutes, memberRoutes, workspaceRoutes } from './routes';
 
@@ -55,6 +56,14 @@ const encodeResToGzip = (contentType: any) => {
 // Converting static files to Gzipped Extensions
 app.get("*.js", encodeResToGzip('text/javascript'));
 app.get("*.css", encodeResToGzip('text/css'));
+
+// Set file upload middleware
+app.use(fileUpload({
+    limits: {
+        fileSize: 1024 * 1024 * 1024
+    },
+    abortOnLimit: true
+}));
 
 // static assets folder
 // app.use(express.static(path.join(__dirname, '../../client/dist')));

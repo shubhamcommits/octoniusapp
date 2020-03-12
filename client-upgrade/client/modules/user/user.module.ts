@@ -12,12 +12,16 @@ import { UserSkillsComponent } from './user-profile/user-skills/user-skills.comp
 import { UserAvailableCloudsComponent } from './user-clouds/user-available-clouds/user-available-clouds.component';
 import { UserConnectedCloudsComponent } from './user-clouds/user-connected-clouds/user-connected-clouds.component';
 
+import { GoogleCloudModule } from './user-clouds/user-available-clouds/google-cloud/google-cloud.module';
+import { UserImageDetailsComponent } from './user-header/user-image-details/user-image-details.component';
+
 
 @NgModule({
-  declarations: [UserHeaderComponent, UserProfileComponent, UserCloudsComponent, UserInformationComponent, UserProfessionalInformationComponent, UserSkillsComponent, UserAvailableCloudsComponent, UserConnectedCloudsComponent],
+  declarations: [UserHeaderComponent, UserProfileComponent, UserCloudsComponent, UserInformationComponent, UserProfessionalInformationComponent, UserSkillsComponent, UserAvailableCloudsComponent, UserConnectedCloudsComponent, UserImageDetailsComponent],
   imports: [
     CommonModule,
     SharedModule,
+    GoogleCloudModule,
     UserRoutingModule
   ]
 })

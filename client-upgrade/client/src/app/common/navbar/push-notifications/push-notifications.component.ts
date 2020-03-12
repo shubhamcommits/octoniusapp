@@ -52,6 +52,15 @@ export class PushNotificationsComponent implements OnInit {
             .subscribe());
 
         /**
+         * emitting the @event joinWorkspace to let the server know that user has joined
+         */
+        this.subSink.add(this.socketService.onEmit('joinWorkspace', { 
+            workspace_name: this.userData['workspace_name']
+        })
+            .pipe(retry(Infinity))
+            .subscribe());
+
+        /**
          * emitting the @event getNotifications to let the server know to give back the push notifications
          */
         this.subSink.add(this.socketService.onEmit('getNotifications', this.userData['_id'])

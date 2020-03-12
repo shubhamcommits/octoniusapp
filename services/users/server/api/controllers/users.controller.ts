@@ -133,7 +133,7 @@ export class UsersControllers {
         try {
 
             // Find the user and update their respective role
-            const user: any = await User.findByIdAndUpdate({
+            const user: any = await User.findOneAndUpdate({
                 $and: [
                     { _id: userId },
                     { active: true }
@@ -147,6 +147,40 @@ export class UsersControllers {
             // Send status 200 response
             return res.status(200).json({
                 message: `Role updated for user ${user.first_name}`,
+                user: user
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for updating the image for the particular user
+     * @param { userId, fileName }req 
+     * @param res 
+     */
+    async updateImage(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the details from currently loggedIn user
+        const userId = req['userId'];
+
+        // Fetch the fileName from fileHandler middleware
+        const fileName = req['fileName'];
+
+        try {
+
+            // Find the user and update their respective profileImage
+            const user = await User.findByIdAndUpdate({
+                _id: userId
+            }, {
+                profile_pic: fileName
+            }, {
+                new: true
+            }).select('first_name last_name profile_pic email role');
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'User profile picture updated!',
                 user: user
             });
         } catch (err) {

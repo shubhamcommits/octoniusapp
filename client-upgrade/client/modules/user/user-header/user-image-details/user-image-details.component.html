@@ -1,0 +1,25 @@
+<!-- USER DETAIL MODAL STARTS -->
+
+<!-- USER HEADER STARTS -->
+<div class="modal-header">
+    <h4 class="modal-title">Update your profile Image</h4>
+</div>
+<!-- USER HEADER ENDS -->
+
+<!-- USER MODAL CHANGE IMAGE STARTS -->
+<div class="modal-body">
+    <div class="form-group">
+        <img src="{{ baseUrl }}/uploads/{{ userData?.profile_pic }}">
+        <app-crop-image class="container" (outputImage)="getCroppedImage($event)"></app-crop-image>
+    </div>
+</div>
+<!-- USER MODAL CHANGE IMAGE ENDS -->
+
+<!-- USER FOOTER STARTS -->
+<div class="modal-footer">
+    <button type="button" class="btn btn-success"
+        (click)="updateUserDetails( croppedImage )">Update your Image!</button>
+</div>
+<!-- USER FOOTER ENDS -->
+
+<!-- USER DETAIL MODAL ENDS -->

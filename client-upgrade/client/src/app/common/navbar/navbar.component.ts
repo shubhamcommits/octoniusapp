@@ -29,7 +29,7 @@ export class NavbarComponent implements OnInit {
   userData: any;
 
   // BASE URL OF THE APPLICATION
-  baseUrl = environment.BASE_URL;
+  baseUrl = environment.UTILITIES_BASE_URL;
 
   // UNSUBSCRIBE THE DATA
   private subSink = new SubSink();

@@ -1,3 +1,5 @@
+import path from 'path';
+
 /**
  * This function is responsible for initilising the development configuration and environment variables
  */
@@ -22,7 +24,7 @@ function devConfigInit() {
   process.env.SENDGRID_KEY = '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';
 
   // FILE UPLOADS FOLDER
-  process.env.FILE_UPLOAD_FOLDER = `${__dirname}/uploads/`;
+  process.env.FILE_UPLOAD_FOLDER = path.join(__dirname, '../../../../uploads/');
 
   // EXTERNAL KEY
   process.env.HEADER_EXTERNAL_KEY = "HEADERIDSHAREDFOROCTONIUS";

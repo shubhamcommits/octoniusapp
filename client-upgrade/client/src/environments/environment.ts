@@ -29,6 +29,11 @@ export const environment = {
   apiKey: 'AIzaSyDGM66BZhGSmBApm3PKL-xCrri-3Adb06I',
   clientSecret: 'erp6ZMRG6XFiMqHkjTDby2UI',
   google_redirect_url: 'http://localhost:4200',
+  scope: [
+    'https://www.googleapis.com/auth/drive',
+    'https://www.googleapis.com/auth/calendar',
+    'https://www.googleapis.com/auth/calendar.events'
+  ].join(' '),
 
   // Octo-doc URL
   REAL_TIME_URL: 'localhost:3001',
@@ -36,7 +41,7 @@ export const environment = {
   // Mailing URLs
   MAILING_BASE_URL: 'http://localhost:2000',
   MAILING_BASE_API_URL: 'http://localhost:2000/api',
-  
+
   // Authentication URLs
   AUTH_BASE_URL: 'http://localhost:3000',
   AUTH_BASE_API_URL: 'http://localhost:3000/api',
@@ -52,6 +57,9 @@ export const environment = {
   // User URLs
   USER_BASE_URL: 'http://localhost:7000',
   USER_BASE_API_URL: 'http://localhost:7000/api',
+
+  // Utilities URLs
+  UTILITIES_BASE_URL: 'http://localhost:8000',
 
   // Sockets URLs
   SOCKETS_BASE_URL: 'ws://localhost:9000',

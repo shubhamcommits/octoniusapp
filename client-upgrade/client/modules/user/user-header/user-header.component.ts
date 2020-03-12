@@ -23,7 +23,7 @@ export class UserHeaderComponent implements OnInit {
   public userData: any;
 
   // BASE URL OF THE APPLICATION
-  BASE_URL = environment.BASE_URL;
+  BASE_URL = environment.UTILITIES_BASE_URL;
 
   // Is current user variable
   public isCurrentUser: any = false;
@@ -37,7 +37,7 @@ export class UserHeaderComponent implements OnInit {
   async ngOnInit() {
 
     // Reuse this route as userId as the queryParam will change
-    this.publicFunctions.reuseRoute(this._router)
+    // this.publicFunctions.reuseRoute(this._router)
 
     // Get current loggedIn user data
     this.userData = await this.publicFunctions.getCurrentUser();
@@ -62,7 +62,6 @@ export class UserHeaderComponent implements OnInit {
    */
   ngOnDestroy(): void {
     this.subSink.unsubscribe();
-    this.publicFunctions.stopReuseRoute(this._router)
   }
 
   /**
@@ -75,6 +74,17 @@ export class UserHeaderComponent implements OnInit {
       return true
     else
       return false
+  }
+
+  /**
+    * This function opens up the task content in a new modal, and takes #content in the ng-template inside HTML layout
+    * @param content 
+    */
+   async openUserDetails(content) {
+    this.utilityService.openModal(content, {
+      size: 'xl',
+      centered: true
+    });
   }
 
 }

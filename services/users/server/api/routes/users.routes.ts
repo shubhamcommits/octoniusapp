@@ -1,4 +1,4 @@
-import { Auths } from '../../utils';
+import { Auths, userFileHandler } from '../../utils';
 import express from 'express';
 import { SkillControllers, UserControllers } from '../controllers';
 
@@ -49,6 +49,9 @@ routes.put('/', user.edit);
 
 // PUT - Updates the role of the user on the basis of userId
 routes.put('/update-role', user.updateUserRole);
+
+// PUT - Updates the profileImage of the user on the basis of userId
+routes.put('/image', userFileHandler, user.updateImage);
 
 /*  ===================
  *  -- EXPORT ROUTES --
