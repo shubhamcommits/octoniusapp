@@ -2,11 +2,33 @@
 
 # Octonius development server
 
-if sudo service mongodb start
+echo -e "\n \t ============================ |- Welcome to Octonius Development Server -| ========================== \n"
+echo -e "\t Kindly choose the package manager below to start the application locally(type the option number)..."
+echo "  1) npm"
+echo "  2) yarn"
 
-then 
-    echo "Mongodb service started!"
+read n
 
+case $n in
+  1) echo "You have selected npm as your package manager";;
+  2) echo "You have selected yarn as your package manager";;
+  *) echo "Default option 'npm' is selected";;
+esac
+
+# Package Manager Variable
+packageManager="npm"
+
+# Checking if Selected package manager is npm
+if [ "$n" == 1 ]
+
+then
+    packageManager="npm"
+
+# Else package manager is yarn
+else
+    packageManager="yarn"
+
+fi
     # Assign Current workdir
     mainDir=$PWD
     
@@ -18,7 +40,7 @@ then
     cd mailing/server
 
     # Start the dev server and push the process into background - port 2000
-    pm2 start "yarn run dev" --name "mailing-server"
+    pm2 start "$packageManager run dev" --name "mailing-server"
 
     # Go back to main working directory(i.e. - services/)
     cd -
@@ -29,7 +51,7 @@ then
     cd authentication/server
 
     # Start the dev server and push the process into background - port 3000
-    pm2 start "yarn run dev" --name "auths-server"
+    pm2 start "$packageManager run dev" --name "auths-server"
 
     # Go back to main working directory(i.e. - services/)
     cd -
@@ -40,7 +62,7 @@ then
     cd groups/server
 
     # Start the dev server and push the process into background - port 4000
-    pm2 start "yarn run dev" --name "groups-server"
+    pm2 start "$packageManager run dev" --name "groups-server"
 
     # Go back to main working directory(i.e. - services/)
     cd -
@@ -50,7 +72,7 @@ then
     cd workspace/server
 
     # Start the dev server and push the process into background - port 5000
-    pm2 start "yarn run dev" --name "workspaces-server"
+    pm2 start "$packageManager run dev" --name "workspaces-server"
 
     # Go back to main working directory(i.e. - services/)
     cd -
@@ -60,7 +82,7 @@ then
     cd users/server
 
     # Start the dev server and push the process into background - port 7000
-    pm2 start "yarn run dev" --name "users-server"
+    pm2 start "$packageManager run dev" --name "users-server"
 
     # Go back to main working directory(i.e. - services/)
     cd -
@@ -70,7 +92,7 @@ then
     cd utilities/server
 
     # Start the dev server and push the process into background - port 8000
-    pm2 start "yarn run dev" --name "utilities-server"
+    pm2 start "$packageManager run dev" --name "utilities-server"
 
     # Go back to main working directory(i.e. - services/)
     cd -
@@ -80,7 +102,7 @@ then
     cd sockets/server
 
     # Start the dev server and push the process into background - port 9000
-    pm2 start "yarn run dev" --name "sockets-server"
+    pm2 start "$packageManager run dev" --name "sockets-server"
 
     # Go back to main working directory(i.e. - services/)
     cd -
@@ -101,10 +123,3 @@ then
 
     # Go back to main working directory(i.e. - services/)
     cd -
-
-else
-    echo "Unable to start the mongodb service, please try again!"
-    
-    exit 1
-
-fi

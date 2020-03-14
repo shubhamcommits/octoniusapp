@@ -1,12 +1,79 @@
 <div class="search">
-    <input 
-    (keyup)="userSearchQuery($event)" 
-    type="text" 
-    class="searchTerm"    
-    [placeholder] = "placeholder">
+
+    <!-- Component search bar starts -->
+    <input (keyup)="userSearchQuery(query)" type="text" [(ngModel)]="query" class="searchTerm" [placeholder]="placeholder">
     <button type="submit" class="searchButton">
         <i class="material-icons">
             search
-            </i>
+        </i>
     </button>
+    <!-- Component search bar ends -->
+
 </div>
+
+<!-- Horizontal line starts -->
+<hr>
+<!-- Horizontal line ends -->
+
+<!-- Infinite scroll component starts -->
+<app-infinite-scroll (scrolled)="onScroll()">
+
+    <!-- Members array template starts -->
+    <div class="media card-tile user-list"
+        *ngFor="let member of members; let index = index; trackBy: utilityService.trackByIndex;">
+
+        <!-- Avatar Image of the member -->
+        <img src="{{ baseUrl }}/uploads/{{member?.profile_pic}}" onerror="this.src='/assets/images/user.png'"
+            class="feed-avatar">
+        <!-- Avatar Image of the member -->
+
+        <div class="media-body">
+
+            <!-- Member Details Starts -->
+            <div class="float-left">
+                <p class="mt-0">{{member?.first_name}} {{member?.last_name}}</p>
+                <p>Role: {{member?.role}} (<a href="mailto:{{member?.email}}">{{member?.email}}</a>)</p>
+            </div>
+            <!-- Member Details Ends -->
+
+            <div class="btn-group mr-3 float-right">
+
+                <!-- Changing role functionality starts -->
+                <div class="dropdown" *ngIf="member.role != 'owner'">
+                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">Manage
+                        {{ member?.first_name }}
+                        <span class="caret"></span>
+                    </button>
+
+                    <!-- Menu Drawer Starts -->
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-item" *ngIf="member.role != 'admin'"
+                            (click)="changeRole(member._id, 'admin', index)">Change to Admin</li>
+                        <li class="dropdown-item" *ngIf="member.role != 'member'"
+                            (click)="changeRole(member._id, 'member', index)">Change to Member</li>
+                        <li class="dropdown-divider"></li>
+                        <li class="dropdown-item">Remove from workplace</li>
+                    </ul>
+                    <!-- Menu Drawer Ends -->
+
+                </div>
+                <!-- Changing role functionality ends -->
+
+            </div>
+
+        </div>
+    </div>
+    <!-- Members array template ends -->
+
+</app-infinite-scroll>
+<!-- Infinite scroll component ends -->
+
+<!-- Loading Spinner Starts -->
+<ng-container *ngIf="isLoading$ | async">
+    <app-loading-spinner></app-loading-spinner>
+</ng-container>
+<!-- Loading Spinner Ends -->
+
+<!-- Section separator indicator starts -->
+<app-section-separator *ngIf="!moreToLoad"></app-section-separator>
+<!-- Section separator indicator ends -->

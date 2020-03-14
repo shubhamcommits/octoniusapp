@@ -1,32 +1,17 @@
 <div class="container">
+
     <div class="card-tile">
-        <h6><b>All members from your workplace</b></h6>
-        <app-component-search-bar [workspaceId]="workspaceData?._id" [placeholder]="searchBarPlaceholder">
+
+        <!-- Heading of the component starts -->
+        <h6><strong>All members from your workplace</strong></h6>
+        <!-- Heading of the component ends -->
+
+        <!-- Fetch the current workspace members list starts -->
+        <app-component-search-bar *ngIf="workspaceData && members && searchBarPlaceholder" [type]="'workspace'" [workspaceId]="workspaceData?._id"
+            [placeholder]="searchBarPlaceholder" [workspaceData]="workspaceData" [members]="members">
         </app-component-search-bar>
-        <hr>
-        <div class="media card-tile user-list" *ngFor="let member of members; let index = index;">
-            <img src="{{ baseUrl }}/uploads/{{member?.profile_pic}}" onerror="this.src='/assets/images/user.png'"
-                class="feed-avatar">
-            <div class="media-body">
-                <div class="float-left">
-                    <p class="mt-0">{{member?.first_name}} {{member?.last_name}}</p>
-                    <p>Role: {{member?.role}} (<a href="mailto:{{member?.email}}">{{member?.email}}</a>)</p>
-                </div>
-                <div class="btn-group mr-3 float-right">
+        <!-- Fetch the current workspace members list ends -->
 
-                    <div class="dropdown" *ngIf="member.role != 'owner'">
-                        <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">Manage {{ member?.first_name }}
-                            <span class="caret"></span></button>
-                        <ul class="dropdown-menu">
-                            <li class="dropdown-item" *ngIf="member.role != 'admin'" (click)="changeRole(member._id, 'admin', index)">Change to Admin</li>
-                            <li class="dropdown-item" *ngIf="member.role != 'member'" (click)="changeRole(member._id, 'member', index)">Change to Member</li>
-                            <li class="dropdown-divider"></li>
-                            <li class="dropdown-item">Remove from workplace</li>
-                        </ul>
-                    </div>
-                </div>
-
-            </div>
-        </div>
     </div>
+
 </div>

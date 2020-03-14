@@ -52,7 +52,8 @@ import { SharedModule } from 'src/app/common/shared/shared.module';
  /**
  * 3. !===== SERVICES =====!
  */
-import { GroupsService } from 'src/shared/services/groups-service/groups.service'; 
+import { GroupsService } from 'src/shared/services/groups-service/groups.service';
+import { PulseGroupDetailsComponent } from './pulse/pulse-group-details/pulse-group-details.component'; 
 
  
 /**
@@ -71,7 +72,7 @@ import { GroupsService } from 'src/shared/services/groups-service/groups.service
     PulseComponent, 
 
     // Create Group Component
-    CreateGroupComponent,
+    CreateGroupComponent, PulseGroupDetailsComponent,
 
     // // Group Kanban Task View Component
     // GroupKanbanTaskViewComponent,

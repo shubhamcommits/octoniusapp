@@ -39,20 +39,33 @@ export class WorkspaceService {
   }
 
   /**
-   * This function is responsible for fetching the workspace members
-   * @param workspceId 
+   * This function is responsible for fetching first 10 workspace members
+   * @param workspaceId
+   * @param query - optional parameter(which searches for name and email too)
    */
-  getWorkspaceMembers(workspceId: string) {
-    return this._http.get(this.BASE_API_URL + `/workspaces/members/${workspceId}`);
+  getWorkspaceMembers(workspaceId: string, query?: any) {
+    return this._http.get(this.BASE_API_URL + `/members`, {
+      params: {
+        workspaceId: workspaceId,
+        query: query
+      }
+    }).toPromise()
   }
 
   /**
    * This function is responsible for fetching the next set of workspace members
    * @param workspaceId 
-   * @param lastMemberId 
+   * @param lastUserId 
+   * @param query - optional parameter(which searches for name and email too)
    */
-  getNextWorkspaceMembers(workspaceId: string, lastMemberId: string) {
-    return this._http.get(this.BASE_API_URL + `/workspaces/next/members/${workspaceId}/${lastMemberId}`);
+  getNextWorkspaceMembers(workspaceId: string, lastUserId: string, query?: string) {
+    return this._http.get(this.BASE_API_URL + `/members/next`, {
+      params: {
+        workspaceId: workspaceId,
+        lastUserId: lastUserId,
+        query: query
+      }
+    }).toPromise()
   }
 
   /**

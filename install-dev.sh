@@ -1,6 +1,46 @@
 #!/bin/bash
 
+
 # Octonius development server
+
+echo -e "\n \t ============================ |- Welcome to Octonius Development Server -| ========================== \n"
+echo -e "\t Kindly choose the package manager below to start installing the app locally(type the option number)..."
+echo "  1) npm"
+echo "  2) yarn"
+
+read n
+
+case $n in
+  1) echo "You have selected npm as your package manager";;
+  2) echo "You have selected yarn as your package manager";;
+  *) echo "Default option 'npm' is selected";;
+esac
+
+# Package Manager Variable
+packageManager="npm"
+
+# Checking if Selected package manager is npm
+if [ "$n" == 1 ]
+
+then
+    packageManager="npm"
+
+# Else package manager is yarn
+else
+    packageManager="yarn"
+
+fi
+
+    # Installing pm2 globally
+    if [ "$packageManager" == "npm" ]
+
+    then    
+        sudo $packageManager -g install pm2
+
+    else
+        sudo $packageManager global add pm2 --prefix /usr/bin
+
+    fi
 
     # Assign Current workdir
     mainDir=$PWD
@@ -8,77 +48,36 @@
     # Go to services directory
     cd services
 
-    : '|- MAILING SERVER -|'
-    # Go to mailing directory
-    cd mailing/server
+    # Define the service Directory array
+    serviceArray=( 'mailing/server' 'authentication/server' 'groups/server' 'workspace/server' 'users/server' 'utilities/server' 'sockets/server' 'client-upgrade/client' )
 
-    # Start the dev server and push the process into background - port 2000
-    yarn install &
+    # Loop through all the directories and install the packages 
+    for i in "${serviceArray[@]}"
+    do
+        if [ "$i" == 'client-upgrade/client' ]
+            
+        then
+            cd $mainDir
+        
+        fi
 
-    # Go back to main working directory(i.e. - services/)
-    cd -
+        # Go to service directory
+        cd $i
 
-    : '|- AUTHENTICATION SERVER -|'
+        service="$(cut -d'/' -f1 <<<"$i")"
 
-    # Go to authentication directory
-    cd authentication/server
+        # Echo the Status
+        echo -e "\n \t Installing $service Service..."
 
-    # Start the dev server and push the process into background - port 3000
-    yarn install &
+        # Start the process and push it to background
+        $packageManager install &
 
-    # Go back to main working directory(i.e. - services/)
-    cd -
+        # Wait for process to get completed
+        wait
 
-    : '|- GROUPS SERVER -|'
+        # Echo the status
+        echo -e "\n \t $service Service installed successfully!"  
 
-    # Go to groups directory
-    cd groups/server
-
-    # Start the dev server and push the process into background - port 4000
-    yarn install &
-
-    # Go back to main working directory(i.e. - services/)
-    cd -
-
-    : '|- WORKSPACE SERVER -|'
-    # Go to workspace directory
-    cd workspace/server
-
-    # Start the dev server and push the process into background - port 5000
-    yarn install &
-
-    # Go back to main working directory(i.e. - services/)
-    cd -
-
-    : '|- USERS SERVER -|'
-    # Go to users directory
-    cd users/server
-
-    # Start the dev server and push the process into background - port 7000
-    yarn install &
-
-    # Go back to main working directory(i.e. - services/)
-    cd -
-
-    : '|- SOCKETS SERVER -|'
-    # Go to sockets directory
-    cd sockets/server
-
-    # Start the dev server and push the process into background - port 9000
-    yarn install &
-
-    # Go back to main working directory(i.e. - services/)
-    cd -
-
-    : '|- CLIENT SERVER -|'
-    
-    # Checkout to main directory
-    cd $mainDir
-
-    # Go to the client directory
-    cd client-upgrade/client
-
-    # Start the dev server and push the process into background - port 4200
-    yarn install &
-
-    exit
+        # Go back to main working directory(i.e. - services/)
+        cd -
+    done

@@ -2,7 +2,8 @@
 <app-infinite-scroll (scrolled)="onScroll()">
   <!-- PULSE GROUPS ITERATOR STARTS -->
   <div *ngFor="let group of pulseGroups; let i = index; trackBy: utilityService.trackByIndex" class="group-elem">
-    <div class="row">
+    <div class="row" 
+    (click)="openModal(group.group_name, this.baseUrl + '/uploads/' + group.group_avatar, group.pulse_description ? group.pulse_description: 'Waiting for a new Pulse...', pulseToDoTasks[group._id], pulseInProgressTasks[group._id], pulseDoneTasks[group._id])">
 
       <!-- GROUP DETAILS STARTS -->
       <div class="col-md-1"><img class="feed-avatar" src="{{ this.baseUrl }}/uploads/{{group?.group_avatar}}"
@@ -20,7 +21,7 @@
 
       <!-- TOTAL TASKS STARTS -->
       <div class="col-md-2">
-        <div class="group-total-tasks">{{ pulseTotalTasks[group?._id] || 0 }} Tasks this week</div>
+        <div class="group-total-tasks float-left">{{ pulseTotalTasks[group?._id] || 0 }}</div>
       </div>
       <!-- TOTAL TASKS ENDS -->
 

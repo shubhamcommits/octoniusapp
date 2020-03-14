@@ -116,7 +116,7 @@ export class PublicFunctions {
             const utilityService = this.injector.get(UtilityService);
             this.subSink.add(workspaceService.getWorkspace(userData['_workspace'])
                 .pipe(retry(3))
-                .subscribe((res) => { console.log(res); resolve(res['workspace']) },
+                .subscribe((res) => { resolve(res['workspace']) },
                     (err) => {
                         console.log('Error occured while fetching the workspace details!', err);
                         utilityService.errorNotification('Error occured while fetching the workspace details, please try again!');
@@ -138,14 +138,15 @@ export class PublicFunctions {
             let userData = await this.getCurrentUser();
             const workspaceService = this.injector.get(WorkspaceService);
             const utilityService = this.injector.get(UtilityService);
-            this.subSink.add(workspaceService.getWorkspaceMembers(workspaceId || userData['_workspace'])
-                .subscribe((res) => {
+            workspaceService.getWorkspaceMembers(workspaceId || userData['_workspace'])
+                .then((res) => {
                     resolve(res['results']);
-                }, (err) => {
+                })
+                .catch((err) => {
                     console.log('Error occured while fetching the workspace members!', err);
                     utilityService.errorNotification('Error occured while fetching the workspace members!, please try again!');
                     reject({})
-                }))
+                })
         })
     }
 
@@ -238,6 +239,57 @@ export class PublicFunctions {
         } else if (JSON.stringify(value) == '') {
             utilityService.warningNotification('Kindly fill up all the details properly!');
         }
+    }
+
+
+    /**
+     * This function is responsible for fetching the users present inside a workspace
+     * @param workspaceId 
+     * @param query 
+     */
+    searchWorkspaceMembers(workspaceId: string, query: string) {
+        try {
+            return new Promise(async (resolve) => {
+
+                // Create workspace service instance
+                let workspaceService = this.injector.get(WorkspaceService);
+
+                // Fetch the users based on the query and workspaceId
+                let users = await workspaceService.getWorkspaceMembers(workspaceId, query)
+
+                // Resolve with success
+                resolve(users)
+            })
+
+        } catch (err) {
+            this.catchError(err);
+        }
+    }
+
+    /**
+     * Helper function fetching the next workspace members
+     * @param workspaceId - current workspaceId
+     * @param lastUserId - lastUserId fetched from current members array list
+     */
+    getNextWorkspaceMembers(workspaceId: string, lastUserId: string, query: string) {
+        return new Promise((resolve, reject) => {
+
+            // Create workspace service instance
+            let workspaceService = this.injector.get(WorkspaceService);
+
+            // Fetch the users from server
+            workspaceService.getNextWorkspaceMembers(workspaceId, lastUserId, query)
+                .then((res) => {
+
+                    // Resolve with sucess
+                    resolve(res['users'])
+                })
+                .catch(() => {
+
+                    // If there's an error, then
+                    reject([]);
+                })
+        })
     }
 
     /**

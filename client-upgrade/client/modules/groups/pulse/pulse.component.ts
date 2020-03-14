@@ -19,7 +19,7 @@ export class PulseComponent implements OnInit {
   ) { }
 
   // Base URL
-  baseUrl = environment.BASE_URL;
+  baseUrl = environment.UTILITIES_BASE_URL;
 
   // Workspace data
   public workspaceData: Object = {};
@@ -66,11 +66,11 @@ export class PulseComponent implements OnInit {
 
     // Fetches the groups from the server
     this.pulseGroups = await this.getAllPulseGroups(this.workspaceData['_id'])
-    .catch(()=>{
-      // If the function breaks, then catch the error and console to the application
-      this.publicFunctions.sendError(new Error('Unable to connect to the server, please try again later!'));
-      this.isLoading$.next(false);
-    })
+      .catch(() => {
+        // If the function breaks, then catch the error and console to the application
+        this.publicFunctions.sendError(new Error('Unable to connect to the server, please try again later!'));
+        this.isLoading$.next(false);
+      })
 
     // Initialises the lastGroupId variable
     this.lastGroupId = this.pulseGroups[this.pulseGroups.length - 1]['_id'];
@@ -125,19 +125,19 @@ export class PulseComponent implements OnInit {
    * This function calculates the tasks count for all the groups including all the status
    */
   public async calculatePulseTasks(pulseGroups: any) {
-    
+
     // Iterating over the net array to calculate the tasks count
     for (let i = 0; i < pulseGroups.length; i++) {
-      
+
       // Get all tasks count for a group
       this.pulseTotalTasks[pulseGroups[i]._id] = await this.getTasksCount(pulseGroups[i]._id);
-      
+
       // Get all tasks count having status as 'to do'
       this.pulseToDoTasks[pulseGroups[i]._id] = await this.getTasksCount(pulseGroups[i]._id, 'to do');
-      
+
       // Get all tasks count having status as 'in progresss'
       this.pulseInProgressTasks[pulseGroups[i]._id] = await this.getTasksCount(pulseGroups[i]._id, 'in progress');
-      
+
       // Get all tasks count having status as 'done'
       this.pulseDoneTasks[pulseGroups[i]._id] = this.pulseTotalTasks[pulseGroups[i]._id] - (this.pulseToDoTasks[pulseGroups[i]._id] + this.pulseInProgressTasks[pulseGroups[i]._id]);
     }
@@ -169,7 +169,7 @@ export class PulseComponent implements OnInit {
 
       // If we have groups then calculate the pulse tasks for fetched groups
       if (this.moreToLoad) {
-        
+
         // Adding into exisiting array
         this.pulseGroups = [...this.pulseGroups, ...nextPulseGroups];
 
@@ -181,6 +181,64 @@ export class PulseComponent implements OnInit {
       }
 
     }
+  }
+
+  /**
+   * This function opens the sweet alert model for the pulse details
+   * @param title 
+   * @param imageUrl 
+   */
+  openModal(title: string, imageUrl: string, pulse: string, todo: number, inprogress: number, done: number) {
+
+    // Swal modal for update details
+    return this.utilityService.getSwalModal({
+      html:
+        `<div class="form-group inline-elements">
+                <label class="group-name-label"><strong>Group Name</strong></label> 
+                <p class="group-elements-content">${title}</p>
+        </div>` +
+
+        `<div class="form-group inline-elements">
+                <label class="group-pulse-label"><strong>This week's Pulse</strong></label> 
+                <p class="group-elements-content">${pulse}</p>
+        </div>` +
+
+        `<div class="form-group inline-elements">
+                <label class="group-todo-tasks"><strong>To Do Tasks this week</strong></label>
+                <p class="group-elements-content">${todo}</p>
+        </div>` +
+
+        `<div class="form-group inline-elements">
+                <label class="group-in-progress-tasks"><strong>In Progress Tasks this week</strong></label>
+                <p class="group-elements-content">${inprogress}</p>
+        </div>` +
+
+        `<div class="form-group inline-elements">
+                <label class="group-done-tasks"><strong>Done Tasks this week</strong></label>
+                <p class="group-elements-content">${done}</p>
+        </div>` + 
+        
+        `<div class="form-group inline-elements">
+                <label class="group-total-tasks"><strong>Total Tasks this week</strong></label>
+                <p class="group-elements-content">${todo + inprogress + done}</p>
+        </div>`,
+
+      focusConfirm: false,
+      showConfirmButton: true,
+      showCancelButton: false,
+      cancelButtonText: 'Cancel',
+      cancelButtonColor: '#d33',
+      scrollbarPadding: true,
+      imageUrl: imageUrl,
+      imageAlt: title,
+      imageWidth: 200,
+      imageHeight: 200,
+      grow: 'column',
+      customClass: {
+        content: 'content-class',
+        container: 'container-class',
+      }
+    })
   }
 
 }

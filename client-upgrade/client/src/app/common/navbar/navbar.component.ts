@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Injector } from '@angular/core';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { environment } from 'src/environments/environment';
 import { UserService } from 'src/shared/services/user-service/user.service';
@@ -8,6 +8,7 @@ import { SubSink } from 'subsink';
 import { AuthService } from 'src/shared/services/auth-service/auth.service';
 import { Router } from '@angular/router';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
+import { PublicFunctions } from 'src/app/dashboard/public.functions';
 
 @Component({
   selector: 'app-navbar',
@@ -23,10 +24,17 @@ export class NavbarComponent implements OnInit {
     private utilityService: UtilityService,
     private authService: AuthService,
     private router: Router,
-    private socketService: SocketService) { }
+    private socketService: SocketService,
+    private injector: Injector) { }
 
   // CURRENT USER DATA
   userData: any;
+
+  // Current Workspace Data
+  workspaceData: any;
+
+  // Public Functions Object
+  publicFunctions = new PublicFunctions(this.injector)
 
   // BASE URL OF THE APPLICATION
   baseUrl = environment.UTILITIES_BASE_URL;
@@ -39,17 +47,25 @@ export class NavbarComponent implements OnInit {
     // FETCH THE USER DETAILS FROM THE SERVER
     this.userData = await this.getCurrentUser();
 
+    // Call the HTTP API to fetch the current workspace details
+    this.workspaceData = await this.publicFunctions.getWorkspaceDetailsFromHTTP();
+
     // IF WE FIND THAT THE GET REQUEST HAS FAILED, THEN WE USE LOCAL DATA TO INTIALISE THE userData
     if (JSON.stringify(this.userData) === JSON.stringify({}))
-      this.userData = this.storageService.getLocalData('userData');
+      this.userData = this.publicFunctions.getUserDetailsFromStorage();
 
-    // SENDING THE UPDATE THROUGH SERVICE TO UPDATE THE USER DETAILS AT ALL COMPONENTS
-    if (this.userData) {
-      this.utilityService.updateUserData(this.userData);
-      this.storageService.setLocalData('userData', JSON.stringify(this.userData))
+    // IF WE FIND THAT THE GET REQUEST HAS FAILED, THEN WE USE LOCAL DATA TO INTIALISE THE workspaceData
+    if (JSON.stringify(this.workspaceData) === JSON.stringify({}))
+      this.userData = this.publicFunctions.getWorkspaceDetailsFromStorage();
+
+    // SENDING THE UPDATE THROUGH SERVICE TO UPDATE THE USER & WORKSPACE DETAILS AT ALL COMPONENTS
+    if (this.userData && this.workspaceData) {
+      this.publicFunctions.sendUpdatesToUserData(this.userData)
+      this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData)
     }
 
-    console.log(this.userData)
+    console.log('User Data', this.userData)
+    console.log('Workspace Data', this.workspaceData)
 
   }
 
