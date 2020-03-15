@@ -1,54 +1,76 @@
 <div *ngIf="!workspaceData?.billing?.current_period_end; else subscribed" class="card-tile">
-    <h6><b>Welcome to your workspace!</b></h6>
-    <h6>To start using your workspace, please complete your subscription below</h6>
-    <hr>
-    <h6><b>Current Plan </b></h6>
-    <h6>1 user - 10 EUR(€)/month</h6>
-    <hr/>
-    <h6><b>Price</b><br/> 10 Eur(€)/user - Per Month. Billed Monthly.</h6>
-    <button (click)="handlePayment()" class="btn btn-md btn-primary">Start a monthly subscription</button>
-  </div>
+  <h6><b>Welcome to your workspace!</b></h6>
+  <h6>To start using your workspace, please complete your subscription below</h6>
+  <hr>
+  <h6><b>Current Plan </b></h6>
+  <h6>1 user - 10 EUR(€)/month</h6>
+  <hr />
+  <h6><b>Price</b><br /> 10 Eur(€)/user - Per Month. Billed Monthly.</h6>
+  <button (click)="handlePayment()" class="btn btn-md btn-primary">Start a monthly subscription</button>
+</div>
 
 <!--here we add created property to use change detection.-->
 
 
 <ng-template #subscribed>
   <div *ngIf="subscription" class="card-tile">
-    <h3>Your subscription details:</h3>
-    <h4>Created: {{subscription.created | amFromUnix | amDateFormat:'LL'}}</h4>
-    <h4 *ngIf="!workspaceData.billing.cancelled">Current payment valid until: {{subscription.current_period_end | amFromUnix | amDateFormat:'LL'}}</h4>
-    <h4>Status: <span *ngIf="!workspaceData.billing.cancelled; else inactive">Active</span><ng-template #inactive><span>Inactive</span></ng-template></h4>
-    <h4>Cost: {{subscription.quantity * subscription.amount | currency:'EUR'}}  / {{subscription.interval}}</h4>
-    <h4>Number of users on this subscription: {{subscription.quantity}}</h4>
-    <ng-container *ngIf="isWorkspaceOwner()">
-      <button
-        *ngIf="!workspaceData.billing?.scheduled_cancellation; else resumeSubscriptionTemp"
-        (click)="cancelSubscription()"
-        class="btn btn-danger">
+    
+    <h6><strong>Your Subscription Details</strong></h6>
+
+    <hr>
+
+    <h6><strong>Started on - </strong> 
+      {{subscription.created | amFromUnix | amDateFormat:'LL'}}
+    </h6>
+
+    <h6 *ngIf="!workspaceData.billing.cancelled"><strong>Current payment valid until - </strong>
+      {{subscription.current_period_end | amFromUnix | amDateFormat:'LL'}}
+    </h6>
+
+    <h6><strong>Status - </strong> 
+      <span *ngIf="!workspaceData.billing.cancelled; else inactive">Active</span>
+      <ng-template #inactive><span>Inactive</span></ng-template>
+    </h6>
+
+    <h6><strong>Cost - </strong> 
+      {{subscription.quantity * subscription.amount | currency:'EUR'}} / {{subscription.interval}}
+    </h6>
+
+    <h6><strong>Number of users on this subscription - </strong> 
+      {{subscription.quantity}}
+    </h6>
+
+    <ng-container>
+      <button *ngIf="!workspaceData.billing?.scheduled_cancellation; else resumeSubscriptionTemp"
+        (click)="cancelSubscription()" class="btn btn-danger">
         Cancel subscription
       </button>
       <ng-template #resumeSubscriptionTemp>
-        <button
-          (click)="resumeSubscription()"
-          class="btn btn-warning">Resume subscription</button>
+        <button (click)="resumeSubscription()" class="btn btn-warning">Resume subscription</button>
       </ng-template>
     </ng-container>
+
   </div>
+
+
   <div *ngIf="failedPayments.length > 0" class="card-tile">
     <h3 class="f-payments-title">Failed payments:</h3>
     <ul class="list-group">
-      <li *ngFor="let f_payment of failedPayments" class="list-group-item disabled">
-        <span>{{f_payment.data.object.period_start | amFromUnix | amDateFormat:'MMMM Do YYYY'}} - {{f_payment.data.object.period_end | amFromUnix | amDateFormat:'MMMM Do YYYY'}}</span>
+      <li *ngFor="let f_payment of failedPayments; let index = index ; trackBy: utilityService.trackByIdx" class="list-group-item disabled">
+        <span>{{f_payment.data.object.period_start | amFromUnix | amDateFormat:'MMMM Do YYYY'}} -
+          {{f_payment.data.object.period_end | amFromUnix | amDateFormat:'MMMM Do YYYY'}}</span>
         <span>{{f_payment.data.object.amount_due | currency:'EUR'}}</span>
         <button (click)="renewSubscription()" class="btn btn-outline-danger">Renew subcription</button>
       </li>
     </ul>
   </div>
+
   <div *ngIf="workspaceData.billing.success_payments.length > 0" class="card-tile">
     <h3 class="s-payments-title">Completed payments:</h3>
     <ul class="list-group">
       <li *ngFor="let s_payment of workspaceData.billing.success_payments" class="list-group-item disabled">
-        <span>{{s_payment.data.object.period_start | amFromUnix | amDateFormat:'MMMM Do YYYY'}} - {{s_payment.data.object.period_end | amFromUnix | amDateFormat:'MMMM Do YYYY'}}</span>
+        <span>{{s_payment.data.object.period_start | amFromUnix | amDateFormat:'MMMM Do YYYY'}} -
+          {{s_payment.data.object.period_end | amFromUnix | amDateFormat:'MMMM Do YYYY'}}</span>
         <span>{{s_payment.data.object.amount_due | currency:'EUR'}}</span>
       </li>
     </ul>

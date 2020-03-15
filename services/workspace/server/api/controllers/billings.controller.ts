@@ -29,7 +29,7 @@ export class BillingControllers {
                 .select('_workspace');
 
             // Count all the users present inside the workspace
-            const usersCount: any = await User.find({ _id: user['_workspace'] })
+            const usersCount: number = await User.find({ _workspace: user['_workspace'] })
                 .countDocuments();
 
             // Current loggedIn User's ID
@@ -67,7 +67,8 @@ export class BillingControllers {
                 {
                     $set: {
                         'billing.subscription_id': subscription.id,
-                        'billing.current_period_end': subscription.current_period_end
+                        'billing.current_period_end': subscription.current_period_end,
+                        'billing.quantity': subscription.quantity
                     }
                 }, {
                 new: true

@@ -13,7 +13,7 @@ export class WorkspaceService {
 
 
   constructor(
-    private _http: HttpClient, 
+    private _http: HttpClient,
     private injector: Injector) { }
 
   /**
@@ -30,12 +30,12 @@ export class WorkspaceService {
    * @param workspaceAvatar
    */
   updateWorkspace(workspaceId: string, workspaceAvatar: File) {
-    
+
     // PREPARING FORM DATA
     let formData = new FormData();
     formData.append('workspace_avatar', workspaceAvatar)
 
-    return this._http.put<any>(this.BASE_API_URL + `/workspaces/${ workspaceId }`, formData);
+    return this._http.put<any>(this.BASE_API_URL + `/workspaces/${workspaceId}`, formData);
   }
 
   /**
@@ -75,10 +75,10 @@ export class WorkspaceService {
    */
   searchWorkspaceMembers(workspaceId: string, query: string) {
     return this._http.post(this.BASE_API_URL + `/workspaces/query/members/${workspaceId}`, { query })
-    .toPromise()
-    .catch((err: Error)=>{
-     console.log('test');
-    })
+      .toPromise()
+      .catch((err: Error) => {
+        console.log('test');
+      })
   }
 
   /**
@@ -87,36 +87,67 @@ export class WorkspaceService {
    * @param query 
    */
   searchNextWorkspaceMembers(workspaceId: string, query: string) {
-    return this._http.post(this.BASE_API_URL + `/workspaces/next/query/members/${ workspaceId }`, { query });
+    return this._http.post(this.BASE_API_URL + `/workspaces/next/query/members/${workspaceId}`, { query });
   }
 
+  /* | ======================================= BILLING ========================================== | */
 
-  ///// Workspace billing
+  /**
+   * This function is responsible for creating the subscription
+   * @param { id, email }token 
+   * @param amount 
+   */
+  createSubscription(token: any, amount) {
 
-  createSubscription(token, amount) {
-    const data = { token, amount };
-    return this._http.post(this.BASE_API_URL + `/billings/createSubscription`, data);
+    // Preparing the token data
+    const data = { token };
+
+    return this._http.post(this.BASE_API_URL + `/billings/create-subscription`, data)
+    .toPromise()
   }
 
-  getBillingStatus(workspaceId) {
-    return this._http.get(this.BASE_API_URL + `/billings/getBillingStatus/${workspaceId}`);
+  /**
+   * This function is responsible for getting the current billing status
+   * @param workspaceId 
+   */
+  getBillingStatus(workspaceId: string) {
+    return this._http.get(this.BASE_API_URL + `/billings/get-billing-status/${workspaceId}`)
+    .toPromise()
   }
 
+  /**
+   * This function fetches the subscription details for the currently loggedIn user
+   */
   getSubscription() {
-    return this._http.get(this.BASE_API_URL + `/billings/getSubscription`);
+    return this._http.get(this.BASE_API_URL + `/billings/get-subscription`)
+    .toPromise()
   }
 
+  /**
+   * This function cancels the current subscription for the currently loggedIn user
+   */
   cancelSubscription() {
-    return this._http.get(this.BASE_API_URL + `/billings/cancelSubscription`);
+    return this._http.get(this.BASE_API_URL + `/billings/cancel-subscription`)
+    .toPromise()
   }
 
+  /**
+   * This function renews ths current subscription
+   */
   renewSubscription() {
-    return this._http.get(this.BASE_API_URL + `/billings/renewSubscription`);
+    return this._http.get(this.BASE_API_URL + `/billings/renew-subscription`)
+    .toPromise()
   }
 
+  /**
+   * This function resumes the cancelled subscription
+   */
   resumeSubscription() {
-    return this._http.get(this.BASE_API_URL + `/billings/resumeSubscription`);
+    return this._http.get(this.BASE_API_URL + `/billings/resume-subscription`)
+    .toPromise()
   }
+
+  /* | ======================================= BILLING ========================================== | */
 
   /**
    * Fetches unique email domains that exist within the given workspace

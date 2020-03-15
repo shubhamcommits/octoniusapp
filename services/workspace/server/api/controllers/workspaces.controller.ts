@@ -56,7 +56,7 @@ export class WorkspaceController {
         try {
 
             // Find the workspace based on the workspaceId
-            const workspace = await Workspace.findOne({
+            const workspace: any = await Workspace.findOne({
                 _id: workspaceId
             })
                 .populate({
