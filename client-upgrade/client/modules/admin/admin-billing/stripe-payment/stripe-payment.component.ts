@@ -78,7 +78,9 @@ export class StripePaymentComponent implements OnInit {
       token: (token: any) => {
 
         // On recieving the token, create a new subcription
-        workspaceService.createSubscription(token, this.amount)
+        utilityService.asyncNotification('Please wait we creating the subscription for you...', 
+        new Promise((resolve, reject)=>{
+          workspaceService.createSubscription(token, this.amount)
           .then(res => {
 
             // Set the subscription object 
@@ -90,15 +92,18 @@ export class StripePaymentComponent implements OnInit {
             // Set the Workspace Data
             this.workspaceData.billing = res['workspace'];
 
-            console.log(this.workspaceData);
-
             // Send the workspace data to other parts of the application
             this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData);
 
             // Update the localdata of all the connected users 
             this.publicFunctions.emitWorkspaceData(socketService, this.workspaceData)
+
+            // Resolve the promise
+            resolve(this.utilityService.resolveAsyncPromise('Subscription Created Successfully!'))
           })
-          .catch(() => utilityService.errorNotification('Unable to create the Subscription, please try again!'))
+          .catch(() => reject(utilityService.rejectAsyncPromise('Unable to create the Subscription, please try again!')))
+        }))
+
       }
     });
   }
@@ -120,23 +125,26 @@ export class StripePaymentComponent implements OnInit {
       .then((result) => {
         if (result.value) {
 
-          // Cancel Subscription
-          workspaceService.cancelSubscription()
-            .then((res) => {
+          utilityService.asyncNotification('Please wait we are cancelling your subscription...',
+            new Promise((resolve, reject) => {
+              // Cancel Subscription
+              workspaceService.cancelSubscription()
+                .then((res) => {
 
-              // Update the workspace Data
-              this.workspaceData.billing.scheduled_cancellation = true;
+                  // Update the workspace Data
+                  this.workspaceData.billing.scheduled_cancellation = true;
 
-              // Send updates to the workspaceData
-              this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData);
+                  // Send updates to the workspaceData
+                  this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData);
 
-              // Update the localdata of all the connected users 
-              this.publicFunctions.emitWorkspaceData(socketService, this.workspaceData);
+                  // Update the localdata of all the connected users 
+                  this.publicFunctions.emitWorkspaceData(socketService, this.workspaceData);
 
-              // Send notification to the user
-              utilityService.warningNotification('Subscription Cancelled successfully!');
-            })
-            .catch(() => utilityService.errorNotification('Unable to cancel the Subscription, please try again!'))
+                  // Send notification to the user
+                  resolve(utilityService.resolveAsyncPromise('Subscription Cancelled successfully!'));
+                })
+                .catch(() => reject(utilityService.rejectAsyncPromise('Unable to cancel the Subscription, please try again!')))
+            }))
         }
       })
   }
