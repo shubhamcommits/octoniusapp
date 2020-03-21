@@ -35,7 +35,7 @@ export class AdminBillingComponent implements OnInit {
 
     // Subscribe to the change in workspace data from the socket server
     this.subSink.add(utilityService.currentWorkplaceData.subscribe((res) => {
-      if (res != {}) {
+      if (JSON.stringify(res) != JSON.stringify({})) {
         this.workspaceData = res;
       }
     }));

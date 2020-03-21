@@ -8,6 +8,9 @@ function prodConfigInit() {
   process.env.PORT = '4000';
   process.env.HOST = '0.0.0.0';
 
+  // JWT KEY
+  process.env.JWT_KEY = 'asfsaf12safas23fsafa12sf';
+
   // DATABASE CONNECTION
   process.env.dbURL = 'mongodb://mongodb:27017/octonius' || 'mongodb://127.0.0.1:27017/octonius';
 

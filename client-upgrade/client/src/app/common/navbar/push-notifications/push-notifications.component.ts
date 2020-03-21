@@ -38,7 +38,7 @@ export class PushNotificationsComponent implements OnInit {
 
         // Subscribe to the change in notifications data from the server
         this.subSink.add(this.socketService.currentData.subscribe((res) => {
-            if (res != {})
+            if (JSON.stringify(res) != JSON.stringify({}))
                 this.notificationsData = res;
 
             console.log(this.notificationsData);

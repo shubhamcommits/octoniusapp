@@ -13,6 +13,9 @@ routes.post('/reset-password', sendMail.resetPassword);
 // POST - Reset password
 routes.post('/new-workspace', sendMail.newWorkspace);
 
+// POST - Joined New Group
+routes.post('/group-joined', sendMail.joinedGroup);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

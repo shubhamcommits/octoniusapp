@@ -1,8 +1,20 @@
 import express from 'express';
 import { PulseFunctions } from '../controllers';
+import { Auths } from '../../utils';
 
 const routes = express.Router();
 const pulse = new PulseFunctions();
+
+// Auths Helper Function
+const authsHelper = new Auths();
+
+// -| Authentication |-
+
+// Verify the token
+routes.use(authsHelper.verifyToken);
+
+// Checks whether the current user is loggedIn or not
+routes.use(authsHelper.isLoggedIn);
 
 // GET - Get pulse description based on the groupId
 routes.get('/', pulse.get);

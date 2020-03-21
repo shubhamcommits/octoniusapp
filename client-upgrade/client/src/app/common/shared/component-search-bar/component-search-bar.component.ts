@@ -9,6 +9,7 @@ import { Subject } from 'rxjs/internal/Subject';
 import { debounceTime } from 'rxjs/internal/operators/debounceTime';
 import { distinctUntilChanged } from 'rxjs/internal/operators/distinctUntilChanged';
 import { SubSink } from 'subsink';
+import { GroupService } from 'src/shared/services/group-service/group.service';
 
 @Component({
   selector: 'app-component-search-bar',
@@ -29,6 +30,9 @@ export class ComponentSearchBarComponent implements OnInit {
 
   // Incase the type is 'group'
   @Input('groupId') groupId?: string;
+
+  // Group Data Object
+  @Input('groupData') groupData?: any = {};
 
   // User Data Object
   @Input('userData') userData: any = {};
@@ -93,13 +97,26 @@ export class ComponentSearchBarComponent implements OnInit {
         // Results array which stores the members list
         let results: any = []
 
-        if (this.type === 'workspace') {
+        if (this.type === 'workspace' || this.type === 'group') {
 
           // If value is null then update the array back to normal
           if (this.query == "") {
 
             // Intialise the members back to normal
-            this.members = this.workspaceData.members;
+            if (this.type === 'workspace')
+              this.members = this.workspaceData.members;
+
+            // Intialise the members back to normal  
+            if (this.type === 'group') {
+
+              // Merge the Admin and Members array
+              Array.prototype.push.apply(this.groupData._members, this.groupData._admins)
+
+              // Set the value of members and remove the duplicates
+              this.members = Array.from(new Set(this.groupData._members));
+
+            }
+
 
             // Set the moreload to true
             this.moreToLoad = true
@@ -110,7 +127,12 @@ export class ComponentSearchBarComponent implements OnInit {
           } else {
 
             // Fetch the results from the helper function
-            results = await this.publicFunctions.searchWorkspaceMembers(this.workspaceId, this.query) || []
+            if (this.type === 'workspace')
+              results = await this.publicFunctions.searchWorkspaceMembers(this.workspaceId, this.query) || []
+
+            // Fetch the results from the helper function
+            if (this.type === 'group')
+              results = await this.publicFunctions.searchGroupMembers(this.groupId, this.query) || []
 
             // Update the members array
             this.members = results['users'];
@@ -120,6 +142,44 @@ export class ComponentSearchBarComponent implements OnInit {
         // Set the loading state to be false
         this.isLoading$.next(false);
       }))
+  }
+
+  /**
+   * This function is responsible for removing the user from the group
+   * @param groupId 
+   * @param userId 
+   * @param index 
+   */
+  removeUserFromGroup(groupId: string, userId: string, index: number){
+
+    // Create Service Instance
+    let groupService = this.injector.get(GroupService)
+
+    // Remove the User
+    this.utilityService.asyncNotification('Please wait while we are removing the user ...', 
+    new Promise((resolve, reject)=>{
+      groupService.removeUser(groupId, userId)
+      .then(()=> { 
+
+        // Member Details
+        let member = this.members[index];
+
+        // Update the GroupData
+        this.groupData._members.splice(this.groupData._members.findIndex((user: any)=> user._id === member._id), 1)
+        this.groupData._admins.splice(this.groupData._admins.findIndex((user: any)=> user._id === member._id), 1)
+        
+        // Update UI via removing from array
+        this.members.splice(index, 1);
+
+        // Send updates to groupData via service
+        this.publicFunctions.sendUpdatesToGroupData(this.groupData)
+
+        // Resolve with success
+        resolve(this.utilityService.resolveAsyncPromise('User removed!'))
+
+      })
+      .catch(() => reject(this.utilityService.rejectAsyncPromise('Unable to remove the user from the group, please try again!')))
+    }))
   }
 
   /**

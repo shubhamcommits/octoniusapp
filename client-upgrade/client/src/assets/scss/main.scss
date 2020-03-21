@@ -1,6 +1,16 @@
 @import "global";
 @import "variables";
 
+// Import Calendar Scss
+@import "calendar";
+
+// Import Pulse Scss
+@import "pulse";
+
+// Import Push Notifications Scss
+@import "notifications.scss";
+
+
 $font-size-base: 16px;
 $body-bg: #f3f4f6;
 
@@ -380,13 +390,6 @@ p{
   border: 1px solid $brand-primary;
   border-radius: $card-radius;
 }
-.notif-bullet{
-  width: 10px;
-  height: 10px;
-  background: red;
-  border-radius: 50%;
-  float: right;
-}
 
 .kanbanheader{
   font-size: 10px;
@@ -701,83 +704,6 @@ app-branding-panel{
 }
 // BRANDING PANEL STYLES
 
-/* AUTHENTICATION SECTION */
-
-
-/* PUSH NOTIFICATION CSS */
-
-// NOTIFICATIONS BASE ELEMENT CLASS
-.notifications{
-  color:#787878 !important;
-   margin-right: 15px;
-   padding: 5px;
-   width: 45px;
-    &:hover {
-      text-decoration: none;
-      background: #ffffff;
-      color: $brand-primary !important;
-      border-radius: 6px;
-    }
-  }
-
-// TIME STAMP CLASS
-.text-small {
-  font-size: 10px;
-}
-
-// TRANSPARENT RED NOTIFICATION BULLET CLASS
-.notif-bullet-transparent {
-  color: transparent;
-  background: transparent;
-}
-
-// MARK NOTIFICATIONS AS READ CLASS
-.mark-notification-read {
-  display: flexbox;
-  opacity: 0;
-  -webkit-transition: all 500ms ease-in-out;
-  -moz-transition: all 500ms ease-in-out;
-  -ms-transition: all 500ms ease-in-out;
-  -o-transition: all 500ms ease-in-out;
-  transition: all 500ms ease-in-out;
-  :hover {
-    color: $brand-primary
-  }
-}
-
-// VIEW NOTIFICATION CLASS
-.view-notification {
-  display: flexbox;
-  opacity: 0;
-  -webkit-transition: all 500ms ease-in-out;
-  -moz-transition: all 500ms ease-in-out;
-  -ms-transition: all 500ms ease-in-out;
-  -o-transition: all 500ms ease-in-out;
-  transition: all 500ms ease-in-out;
-  :hover {
-    color: $brand-primary
-  }
-}
-
-// NOTIFICATION ITEM HOVER CLASS
-.notification-item :hover{ 
-    
-    .view-notification {
-      opacity: 1.0;
-    }
-
-    .mark-notification-read {
-      opacity: 1.0;
-    }
-
-    // Changes the color of the notification bar
-    -webkit-filter: grayscale(60%);
-    filter: grayscale(60%);
-
-}
-
-/* PUSH NOTIFICATION CSS */
-
 /* FEED AVATAR CSS */
 
 // Avatar image for search display
@@ -799,171 +725,3 @@ app-branding-panel{
 }
 
 /* MATERIAL ICON CSS */
-
-/* GROUP PULSE CSS */
-
-// Inline the elements of group pulse details
-.inline-elements{
-  display:flex; 
-  flex-direction: row; 
-  justify-content: space-between; 
-  align-items: center;
-}
-
-// Group element in the array
-.group-elem {
-  background: #ffffff;
-  margin: 10px 0;
-  padding: 5px 0;
-  list-style-type: none;
-  cursor: pointer;
-  transition: transform .3s ease;
-  overflow: hidden;
-}
-
-// Create transition effect
-.group-elem:hover {
-  transform: scale(1.1);
-}
-
-// Group Name style element
-.group-name {
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 12px;
-  line-height: 18px;
-  display: flex;
-  align-items: center;
-  color: #4a90e2;
-}
-
-// Group Total Tasks banner
-.group-total-tasks {
-  color: #ffffff;
-  background: #242d3a;
-  border-radius: 4px;
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 12px;
-  line-height: 18px;
-  display: flex;
-  align-items: center;
-  text-align: center;
-  margin: 10px;
-  padding: 10px;
-}
-
-// Group todo tasks banner
-.group-todo-tasks {
-  color: #ffffff;
-  background: #fd7714;
-  border-radius: 4px;
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 12px;
-  line-height: 18px;
-  display: flex;
-  align-items: center;
-  text-align: center;
-  margin: 10px;
-  padding: 10px;
-}
-
-// Group In Progress tasks banner
-.group-in-progress-tasks {
-  color: #ffffff;
-  background: #0bc6a0;
-  border-radius: 4px;
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 12px;
-  line-height: 18px;
-  display: flex;
-  align-items: center;
-  text-align: center;
-  margin: 10px;
-  padding: 10px;
-}
-
-// Group Done tasks banner
-.group-done-tasks {
-  color: #ffffff;
-  background: #4a90e2;
-  border-radius: 4px;
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 12px;
-  line-height: 18px;
-  display: flex;
-  align-items: center;
-  text-align: center;
-  margin: 10px;
-  padding: 10px;
-}
-
-// Group Done tasks banner
-.group-pulse-label {
-  color: #ffffff;
-  background: #ffc107;
-  border-radius: 4px;
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 12px;
-  line-height: 18px;
-  display: flex;
-  align-items: center;
-  text-align: center;
-  margin: 10px;
-  padding: 10px;
-}
-
-// Group Done tasks banner
-.group-name-label {
-  color: #ffffff;
-  background: #FF6584;
-  border-radius: 4px;
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 12px;
-  line-height: 18px;
-  display: flex;
-  align-items: center;
-  text-align: center;
-  margin: 10px;
-  padding: 10px;
-}
-
-.group-elements-content{
-  text-align: center;
-  margin: 10px;
-  padding: 10px;
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 16px;
-  line-height: 18px;
-}
-
-// Pulse description banner
-.pulse-desc {
-  color: #787878;
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 18px;
-  display: flex;
-  align-items: center;
-}
-
-.spacex{
-  width:140px;
-}
-/* GROUP PULSE CSS */

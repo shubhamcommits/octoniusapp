@@ -20,7 +20,7 @@ export class GroupsHeaderComponent implements OnInit {
   userData: any;
 
   // BASE URL OF THE APPLICATION
-  baseUrl = environment.BASE_URL;
+  baseUrl = environment.UTILITIES_BASE_URL;
 
   // WORKSPACE DATA
   workspaceData: any;
@@ -35,7 +35,7 @@ export class GroupsHeaderComponent implements OnInit {
 
     // Subscribe to the change in workspace data from the socket server
     this.subSink.add(this.utilityService.currentWorkplaceData.subscribe((res) => {
-      if (res != {}) {
+      if (JSON.stringify(res) != JSON.stringify({})) {
         this.workspaceData = res;
       }
     }));

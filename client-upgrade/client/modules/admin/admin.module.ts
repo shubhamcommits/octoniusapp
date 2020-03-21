@@ -18,6 +18,8 @@ import { AdminService } from 'src/shared/services/admin-service/admin.service';
 import { FormsModule } from '@angular/forms';
 import { MomentModule } from "ngx-moment";
 import { StripePaymentComponent } from './admin-billing/stripe-payment/stripe-payment.component';
+import { StartSubscriptionComponent } from './admin-billing/stripe-payment/start-subscription/start-subscription.component';
+import { SubscriptionDetailsComponent } from './admin-billing/stripe-payment/subscription-details/subscription-details.component';
 
 
 @NgModule({
@@ -29,7 +31,7 @@ import { StripePaymentComponent } from './admin-billing/stripe-payment/stripe-pa
     WorkspaceDetailsComponent, 
     WorkplaceInformationComponent, 
     WorkplaceAddDomainComponent, 
-    WorkplaceInviteUserComponent, StripePaymentComponent],
+    WorkplaceInviteUserComponent, StripePaymentComponent, StartSubscriptionComponent, SubscriptionDetailsComponent],
   imports: [
     CommonModule,
     AdminRoutingModule,

@@ -1,44 +1,21 @@
-<div class="card-tile">
-  <h4>Group Members</h4>
-  <hr>
-<div class="media card-tile user-list" *ngFor="let admin of group_admins" >
- 
-      <img src="{{this.BASE_URL}}/uploads/{{admin?.profile_pic}}" onerror="this.src='/assets/images/user.png'"class="feed-avatar">
-      <div class="media-body">
-        <div class="float-left">
-          <h4 class="mt-0">{{admin?.first_name}} {{admin?.last_name}}</h4>
-          <p>Role: {{admin?.role}} (<a href="mailto:{{admin?.email}}">{{admin?.email}}</a>)</p>
-        </div>
-        <div class="btn-group mr-3 float-right" style="margin-left:10px">
-  
-          <div *ngIf="isUserAdmin" class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
-            <button class="btn btn-danger dropdown-toggle-split btn-sm" (click)="removeUserfromGroup(admin._id, admin.first_name, admin.last_name)">Remove Member</button>
-          </div>
-        </div>
-  
-      </div>
-  
-  </div>
-  <div class="media card-tile user-list" *ngFor=" let member of group_members">
-   
-    <img src="{{this.BASE_URL}}/uploads/{{member?.profile_pic}}" onerror="this.src='/assets/images/user.png'"class="feed-avatar">
-    <div class="media-body">
-      <div class="float-left">
-        <h4 class="mt-0">{{member?.first_name}} {{member?.last_name}}</h4>
-        <p>Role: {{member?.role}} (<a href="mailto:{{member?.email}}">{{member?.email}}</a>)</p>
-      </div>
-      <div class="btn-group mr-3 float-right" style="margin-left:10px">
+<div class="container">
 
-        <div *ngIf="isUserAdmin" class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
-          <button class="btn btn-danger dropdown-toggle-split btn-sm" (click)="removeUserfromGroup(member._id, member.first_name, member.last_name)">Remove Member</button>
-        </div>
-      </div>
+  <div class="card-tile">
 
-    </div>
+      <!-- Heading of the component starts -->
+      <h6><strong>All members from your group</strong></h6>
+      <!-- Heading of the component ends -->
+
+      <!-- Fetch the current workspace members list starts -->
+      <app-component-search-bar *ngIf="groupData && members && searchBarPlaceholder && groupData" 
+          [type]="'group'"
+          [groupData]="groupData" 
+          [groupId]="groupData?._id"
+          [placeholder]="searchBarPlaceholder" 
+          [members]="members">
+      </app-component-search-bar>
+      <!-- Fetch the current workspace members list ends -->
 
   </div>
-
-
-
 
 </div>

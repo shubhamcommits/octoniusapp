@@ -44,7 +44,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler } from '@angular/core';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 /**
@@ -109,6 +109,9 @@ import { ServerErrorInterceptor } from 'src/shared/error-handler/server-error.in
   imports: [
     // BROWSER MODULE
     BrowserModule,
+
+    // BROWSER ANIMATION MODULE
+    BrowserAnimationsModule,
 
     // APP ROUTING MODULE
     AppRoutingModule,

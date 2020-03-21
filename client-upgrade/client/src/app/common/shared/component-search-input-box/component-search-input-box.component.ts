@@ -19,7 +19,7 @@ export class ComponentSearchInputBoxComponent implements OnInit {
   constructor(private injector: Injector) { }
 
   // Define User server base Url
-  userBaseUrl = environment.USER_BASE_URL;
+  userBaseUrl = environment.UTILITIES_BASE_URL;
 
   @Input('placeholder') placeholder: string = '';
 
@@ -37,6 +37,9 @@ export class ComponentSearchInputBoxComponent implements OnInit {
 
   // Skill Emitter which emits the skill object on creation
   @Output('skill') skillEmitter = new EventEmitter();
+
+  // Member Emitter which emits the member object on creation
+  @Output('member') memberEmitter = new EventEmitter();
 
   // Public Functions class
   private publicFunctions = new PublicFunctions(this.injector);
@@ -69,7 +72,7 @@ export class ComponentSearchInputBoxComponent implements OnInit {
     this.subSink.add(this.itemValueChanged
       .pipe(distinctUntilChanged(), debounceTime(500))
       .subscribe(async () => {
-        if (this.type == 'skill') {
+        if (this.type == 'skill' || this.type == 'group') {
 
           // If value is null then empty the array
           if (this.itemValue == "")
@@ -78,12 +81,24 @@ export class ComponentSearchInputBoxComponent implements OnInit {
           else {
 
             // Update the itemList with the skill set
-            this.itemList = await this.searchSkills(this.itemValue);
+            if(this.type === 'skill')
+              this.itemList = await this.searchSkills(this.itemValue);
+
+            if(this.type === 'group'){
+
+                // Fetch the Items from the group search list
+                this.itemList = await this.publicFunctions.membersNotInGroup(this.workspaceId, this.itemValue, this.groupId)
+
+                // Update the itemList
+                this.itemList = Array.from(new Set(this.itemList['users']))
+
+              }
 
             // Don't add the null or existing skills value to the list
-            if (!this.itemList.includes(this.itemValue) && this.itemValue != "")
-              this.itemList = [this.itemValue, ...this.itemList];
-              
+            if(this.type === 'skill')
+              if (!this.itemList.includes(this.itemValue) && this.itemValue != "")
+                  this.itemList = [this.itemValue, ...this.itemList];
+            
           }
 
           // Stop the loading state once the values are loaded
@@ -137,7 +152,12 @@ export class ComponentSearchInputBoxComponent implements OnInit {
   }
 
   async onAddNewMember(item: any) {
+    
+    // Set the Add Member state to false
+    item.showAddMem = false
 
+    // Emit the message to add the member
+    this.memberEmitter.emit(item);
   }
 
   /**

@@ -1,13 +1,10 @@
-import { Component, OnInit, HostListener, Input, Injector } from '@angular/core';
+import * as moment from 'moment';
+import { Component, OnInit, Input, Injector } from '@angular/core';
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
-import { environment } from 'src/environments/environment';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'src/app/dashboard/public.functions';
-import * as moment from 'moment';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
-
-// STRIPE CHECKOUT VARIABLE
-declare const StripeCheckout: any;
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 
 @Component({
   selector: 'app-stripe-payment',
@@ -27,12 +24,6 @@ export class StripePaymentComponent implements OnInit {
   // User Data Object
   @Input('userData') userData: any;
 
-  // Stripe Payment Handler
-  handler: any;
-
-  // Amount per seat (1000 is equals to 10 Dollars/Euros) - Calculate the maths according to this
-  amount = 1000; // equals 10 dollars
-
   // Subscription Object
   subscription = null;
 
@@ -45,127 +36,15 @@ export class StripePaymentComponent implements OnInit {
   // Public Functions object
   publicFunctions = new PublicFunctions(this.injector);
 
-  async ngOnInit() {
+  // isLoading BehaviourSubject
+  isLoading$ = new BehaviorSubject(false);
 
-    // Configure the payment handler
-    this.handler = await this.configureHandler();
+  async ngOnInit() {
 
     // Check and fetch the subscription details
     await this.subscriptionExistCheck(this.workspaceData);
 
   }
-
-  /**
-   * This function prepares the stripe payment handler for accepting the cards and initiate the payments
-   */
-  async configureHandler() {
-
-    // Workspace object
-    let workspaceService = this.injector.get(WorkspaceService)
-
-    // Socket Service Object
-    let socketService = this.injector.get(SocketService)
-
-    // Utility Service Object
-    let utilityService = this.injector.get(UtilityService)
-
-    // Intantiate the stripe checkout modal
-    return StripeCheckout.configure({
-      key: environment.pk_stripe,
-      image: '/favicon.256x256.png',
-      currency: 'EUR',
-      locale: 'auto',
-      token: (token: any) => {
-
-        // On recieving the token, create a new subcription
-        utilityService.asyncNotification('Please wait we creating the subscription for you...', 
-        new Promise((resolve, reject)=>{
-          workspaceService.createSubscription(token, this.amount)
-          .then(res => {
-
-            // Set the subscription object 
-            this.subscription = res['subscription'];
-
-            // Update the subscription amount
-            this.subscription.amount = (this.subscription.amount / 100);
-
-            // Set the Workspace Data
-            this.workspaceData.billing = res['workspace'];
-
-            // Send the workspace data to other parts of the application
-            this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData);
-
-            // Update the localdata of all the connected users 
-            this.publicFunctions.emitWorkspaceData(socketService, this.workspaceData)
-
-            // Resolve the promise
-            resolve(this.utilityService.resolveAsyncPromise('Subscription Created Successfully!'))
-          })
-          .catch(() => reject(utilityService.rejectAsyncPromise('Unable to create the Subscription, please try again!')))
-        }))
-
-      }
-    });
-  }
-
-  /**
-   * This Function is responsible for cancelling the subscription
-   */
-  async cancelSubscription() {
-    // Workspace object
-    let workspaceService = this.injector.get(WorkspaceService)
-
-    // Socket Service Object
-    let socketService = this.injector.get(SocketService)
-
-    // Utility Service Object
-    let utilityService = this.injector.get(UtilityService)
-
-    return utilityService.getConfirmDialogAlert()
-      .then((result) => {
-        if (result.value) {
-
-          utilityService.asyncNotification('Please wait we are cancelling your subscription...',
-            new Promise((resolve, reject) => {
-              // Cancel Subscription
-              workspaceService.cancelSubscription()
-                .then((res) => {
-
-                  // Update the workspace Data
-                  this.workspaceData.billing.scheduled_cancellation = true;
-
-                  // Send updates to the workspaceData
-                  this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData);
-
-                  // Update the localdata of all the connected users 
-                  this.publicFunctions.emitWorkspaceData(socketService, this.workspaceData);
-
-                  // Send notification to the user
-                  resolve(utilityService.resolveAsyncPromise('Subscription Cancelled successfully!'));
-                })
-                .catch(() => reject(utilityService.rejectAsyncPromise('Unable to cancel the Subscription, please try again!')))
-            }))
-        }
-      })
-  }
-
-  /**
-   * This is the helper function to initiate the payment
-   */
-  handlePayment() {
-    this.handler.open({
-      name: 'Octonius workspace',
-      description: 'Start a monthly subscription',
-      amount: this.amount
-    });
-  }
-
-  // when user redirects or presses the back button
-  @HostListener('window: popstate')
-  onPopstate() {
-    this.handler.close();
-  }
-
   isWorkspaceOwner() {
     return this.workspaceData._owner == this.userData['_id'];
   }
@@ -246,39 +125,6 @@ export class StripePaymentComponent implements OnInit {
         utilityService.successNotification('Subscription renewed successfully!');
       })
       .catch(() => utilityService.errorNotification('Unable to renew the Subscription, please try again!'))
-  }
-
-  /**
-   * This function is responsible for resuming the subscription
-   */
-  async resumeSubscription() {
-
-    // Workspace Service Object
-    let workspaceService = this.injector.get(WorkspaceService)
-
-    // Socket Service Object
-    let socketService = this.injector.get(SocketService)
-
-    // Utility Service Object
-    let utilityService = this.injector.get(UtilityService)
-
-    // Resume the subscription
-    return workspaceService.resumeSubscription()
-      .then((res) => {
-
-        // Workspace Data Update
-        this.workspaceData.billing.scheduled_cancellation = false;
-
-        // Send updates to the workspaceData
-        this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData)
-
-        // Update the localdata of all the connected users 
-        this.publicFunctions.emitWorkspaceData(socketService, this.workspaceData);
-
-        // Send notification to the user
-        utilityService.successNotification('Subscription resumed successfully!');
-      })
-      .catch(() => utilityService.errorNotification('Unable to resume the Subscription, please try again!'))
   }
 
 }

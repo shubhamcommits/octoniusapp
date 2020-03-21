@@ -160,7 +160,7 @@ const newWorkspace = async (req: Request, res: Response, next: NextFunction) => 
 
         // Send email
         await sendMail(emailBody, emailData);
-        
+
         // Send status 200 response
         return res.status(200).json({
             message: `New Workspace email sent!`,
@@ -224,10 +224,49 @@ const resetPassword = async (req: Request, res: Response, next: NextFunction) =>
 
         return sendError(res, err, 'Internal Server Error!', 500);
     }
+}
+
+// Welcome user when user is added to a group
+const joinedGroup = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+
+        const { groupData, adminData, memberData } = req.body
+
+        const emailType = 'joinedGroup';
+
+        // Generate email data
+        const emailData = {
+            subject: subjects[emailType],
+            toName: memberData.first_name,
+            toEmail: memberData.email,
+            fromName: adminData.first_name,
+            fromEmail: adminData.email,
+            group: groupData.group_name,
+            workspace: groupData.workspace_name,
+            link: defaults.signinLink
+        };
+
+        // Generate email body from template
+        const emailBody = await generateEmailBody(emailType, emailData);
+
+        // Send email
+        await sendMail(emailBody, emailData);
+
+        // Send status 200 response
+        return res.status(200).json({
+            message: `Join Group email sent!`,
+        })
+
+    } catch (err) {
+        // eslint-disable-next-line no-console
+        console.log(err);
+
+        return sendError(res, err, 'Internal Server Error!', 500);
+    }
 };
 
 export {
-    
+
     // Signup
     signup,
 
@@ -235,5 +274,8 @@ export {
     newWorkspace,
 
     // Reset Password
-    resetPassword
+    resetPassword,
+
+    // Join Group
+    joinedGroup
 }

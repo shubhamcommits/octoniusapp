@@ -6,6 +6,7 @@ import compression from 'compression';
 import { developmentConfig, productionConfig } from '../configs';
 import { 
     groupsRoutes,
+    memberRoutes,
     pulseRoutes
 } from './routes';
 
@@ -69,6 +70,7 @@ app.all('/', (req: Request, res: Response, next: NextFunction) => {
 
 // Correct REST naming
 app.use('/api/groups', groupsRoutes);
+app.use('/api/members', memberRoutes);
 app.use('/api/pulse', pulseRoutes);
 
 // Invalid routes handling middleware

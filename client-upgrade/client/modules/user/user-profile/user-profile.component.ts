@@ -34,7 +34,7 @@ export class UserProfileComponent implements OnInit {
 
     // Subscribe to the change in userData
     this.utilityService.currentUserData.subscribe((res) => {
-      if(res != {}){
+      if(JSON.stringify(res) != JSON.stringify({})){
         this.userData = res;
       }
     })
@@ -52,7 +52,7 @@ export class UserProfileComponent implements OnInit {
     if(!this.isCurrentUser)
       this.utilityService.otherUserData.subscribe((res) => {
         console.log(res);
-        if(res != {}){
+        if(JSON.stringify(res) != JSON.stringify({})){
           this.userData = res;
         }
       })

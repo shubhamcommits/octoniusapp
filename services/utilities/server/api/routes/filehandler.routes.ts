@@ -1,10 +1,5 @@
 import express from 'express';
-import { 
-    groupFileHandler,
-    postFileHandler,
-    userFileHandler,
-    workspaceFileHandler
- } from '../../utils/filehandlers';
+import { groupFileHandler, postFileHandler, userFileHandler, workspaceFileHandler } from '../../utils/filehandlers';
 
 const routes = express.Router();
 

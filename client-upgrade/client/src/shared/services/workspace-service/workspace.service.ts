@@ -69,6 +69,22 @@ export class WorkspaceService {
   }
 
   /**
+   * This function is responsible for fetching first 10 workspace members who are not present in a group
+   * @param workspaceId
+   * @param groupId
+   * @param query - optional parameter(which searches for name and email too)
+   */
+  getMembersNotInGroup(workspaceId: string, query?: any, groupId?: string) {
+    return this._http.get(this.BASE_API_URL + `/members/groups`, {
+      params: {
+        workspaceId: workspaceId,
+        query: query,
+        groupId: groupId
+      }
+    }).toPromise()
+  }
+
+  /**
    * 
    * @param workspaceId 
    * @param query 

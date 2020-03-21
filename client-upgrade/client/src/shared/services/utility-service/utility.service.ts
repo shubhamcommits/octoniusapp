@@ -33,12 +33,6 @@ export class UtilityService {
     pauseOnHover: true,
     showProgressBar: true
   }
-  
-  // USERDATA FOR THE CURRENT USER
-  private userData: any
-
-  // WORKPLACEDATA FOR THE CURRENT USER
-  private workplaceData: any
 
   /**
    * Both of the variables listed down below are used to share the data through this common service among different components in the app
@@ -63,6 +57,14 @@ export class UtilityService {
    */
   private otherUserDataSource = new BehaviorSubject<any>({});
   otherUserData = this.otherUserDataSource.asObservable();
+
+  /**
+   * Both of the variables listed down below are used to share the data through this common service among different components in the app
+   * @constant groupDataSource
+   * @constant groupData 
+   */
+  private groupDataSource = new BehaviorSubject<any>({});
+  currentGroupData = this.groupDataSource.asObservable();
 
   /**
    * This function checks whether the input string is a vaild email or not
@@ -190,21 +192,6 @@ export class UtilityService {
   }
 
   /**
-   * Get the user data which can be shared across the application using this service function
-   */
-  getUserData(){
-    return this.userData;
-  }
-
-  /**
-   * Sets the user data which can be shared across the application using this service function
-   * @param userData 
-   */  
-  setUserData(userData: any){
-    return this.userData = userData 
-  }
-
-  /**
    * Used to emit the next value of observable so that where this is subscribed, will get the updated value
    * @param userData 
    */
@@ -226,6 +213,14 @@ export class UtilityService {
    */
   public updateWorkplaceData(workplaceData: any){
     this.workplaceDataSource.next(workplaceData);
+  }
+
+  /**
+   * Used to emit the next value of observable so that where this is subscribed, will get the updated value
+   * @param groupData
+   */
+  public updateGroupData(groupData: any){
+    this.groupDataSource.next(groupData);
   }
 
   /**

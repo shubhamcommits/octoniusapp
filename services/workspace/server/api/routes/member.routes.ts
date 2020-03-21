@@ -27,6 +27,10 @@ routes.get('/', members.getWorkspaceMembers);
 // GET - Get a list of next 5 workspace members based on the lastUserId fetched from the first 10 workspace
 routes.get('/next', members.getNextWorkspaceMembers);
 
+// GET - Get a list of first 10 workspace members who are not present in a group
+routes.get('/groups', members.membersNotInGroup);
+
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

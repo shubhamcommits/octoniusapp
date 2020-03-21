@@ -1,8 +1,20 @@
 import express from 'express';
 import { GroupFunctions } from '../controllers';
+import { Auths } from '../../utils';
 
 const routes = express.Router();
 const group = new GroupFunctions();
+
+// Auths Helper Function
+const authsHelper = new Auths();
+
+// -| Authentication |-
+
+// Verify the token
+routes.use(authsHelper.verifyToken);
+
+// Checks whether the current user is loggedIn or not
+routes.use(authsHelper.isLoggedIn);
 
 // GET - Get group based on the groupId
 routes.get('/:groupId', group.get);

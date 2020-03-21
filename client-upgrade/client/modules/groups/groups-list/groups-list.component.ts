@@ -17,7 +17,7 @@ export class GroupsListComponent implements OnInit {
   ) { }
 
   // Base Url
-  baseUrl = environment.BASE_URL;
+  baseUrl = environment.UTILITIES_BASE_URL;
 
   // Groups Service
   public groupsService = this.injector.get(GroupsService);

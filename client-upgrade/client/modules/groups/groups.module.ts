@@ -21,12 +21,16 @@
  */
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
 import { GroupsRoutingModule } from './groups-routing.module';
 import { GroupsHeaderComponent } from './groups-header/groups-header.component';
 import { GroupsListComponent } from './groups-list/groups-list.component';
 import { PulseComponent } from './pulse/pulse.component';
+import { PulseGroupDetailsComponent } from './pulse/pulse-group-details/pulse-group-details.component';
 import { CreateGroupComponent } from './groups-list/create-group/create-group.component';
-// import { GroupComponent } from './group/group.component';
+import { GroupComponent } from './group/group.component';
+import { GroupHeaderComponent } from './group/group-header/group-header.component';
 // import { GroupActivityComponent } from './group/group-activity/group-activity.component';
 // import { GroupActivityFiltersComponent } from './group/group-activity/group-activity-filters/group-activity-filters.component';
 // import { GroupActivityProgressComponent } from './group/group-activity/group-activity-progress/group-activity-progress.component';
@@ -39,7 +43,7 @@ import { CreateGroupComponent } from './groups-list/create-group/create-group.co
 // import { GroupKanbanBoardsComponent } from './group/group-kanban-boards/group-kanban-boards.component';
 // import { GroupKanbanTaskAssignmentComponent } from './group/group-kanban-boards/group-kanban-task-assignment/group-kanban-task-assignment.component';
 // import { GroupKanbanTaskViewComponent } from './group/group-kanban-boards/group-kanban-task-view/group-kanban-task-view.component';
-// import { GroupMembersComponent } from './group/group-members/group-members.component';
+import { GroupMembersComponent } from './group/group-members/group-members.component';
 // import { GroupPostComponent } from './group/group-post/group-post.component';
 
 
@@ -48,12 +52,18 @@ import { CreateGroupComponent } from './groups-list/create-group/create-group.co
  * 2. !===== MODULES =====!
  */
 import { SharedModule } from 'src/app/common/shared/shared.module';
+// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 
  /**
  * 3. !===== SERVICES =====!
  */
 import { GroupsService } from 'src/shared/services/groups-service/groups.service';
-import { PulseGroupDetailsComponent } from './pulse/pulse-group-details/pulse-group-details.component'; 
+import { GroupService } from 'src/shared/services/group-service/group.service';
+import { GroupAdminComponent } from './group/group-admin/group-admin.component';
+import { GroupCalendarComponent } from './group/group-calendar/group-calendar.component'; 
+
 
  
 /**
@@ -90,7 +100,7 @@ import { PulseGroupDetailsComponent } from './pulse/pulse-group-details/pulse-gr
     // GroupPostComponent,
 
     // // Group Members Component
-    // GroupMembersComponent,
+    GroupMembersComponent,
 
     // // Group Kanban Boards Component
     // GroupKanbanBoardsComponent,
@@ -117,13 +127,30 @@ import { PulseGroupDetailsComponent } from './pulse/pulse-group-details/pulse-gr
     // GroupActivityComponent,
   
     // Group Component
-    // GroupComponent
+    GroupComponent,
+
+    GroupHeaderComponent,
+
+    GroupAdminComponent,
+
+    GroupCalendarComponent
   ],
   imports: [
     CommonModule,
     GroupsRoutingModule,
-    SharedModule
+    SharedModule,
+
+    // FORMS MODULE
+    FormsModule,
+
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory
+    })
   ],
-  providers: [GroupsService]
+  providers: [
+    GroupsService,
+    GroupService
+  ]
 })
 export class GroupsModule { }

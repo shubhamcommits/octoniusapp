@@ -1,11 +1,23 @@
 import { GroupController } from './group.controller';
+import { MembersControllers } from "./members.controllers";
 import { PulseController } from './pulse.controller';
+import { SmartGroupControllers } from './smart-group.controllers'
 
 /*  =======================
  *  -- FUNCTION EXPORTS --
  *  =======================
  * */
-export{
+export {
+
+    // GROUP
     GroupController as GroupFunctions,
-    PulseController as PulseFunctions
+
+    // MEMBERS
+    MembersControllers as MemberControllers,
+
+    // PULSE
+    PulseController as PulseFunctions,
+
+    // SMART GROUP
+    SmartGroupControllers as SmartGroupControllers
 }

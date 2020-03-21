@@ -1,4 +1,5 @@
 import { groupRoutes } from './group.routes';
+import { memberRoutes } from './member.routes';
 import { pulseRoutes } from './pulse.routes';
 
 /*  =====================
@@ -7,5 +8,6 @@ import { pulseRoutes } from './pulse.routes';
  * */
 export {
     groupRoutes as groupsRoutes,
+    memberRoutes as memberRoutes,
     pulseRoutes as pulseRoutes
 }

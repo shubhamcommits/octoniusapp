@@ -8,6 +8,7 @@ import { SubSink } from 'subsink';
 import { GroupsService } from 'src/shared/services/groups-service/groups.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
+import { GroupService } from 'src/shared/services/group-service/group.service';
 
 export class PublicFunctions {
 
@@ -150,6 +151,31 @@ export class PublicFunctions {
         })
     }
 
+    public async getCurrentGroup() {
+
+        let groupData = await this.getCurrentGroupFromService()
+
+        this.sendUpdatesToGroupData(groupData);
+
+        return groupData || {}
+    }
+
+    async getCurrentGroupFromService() {
+        return new Promise((resolve) => {
+            const utilityService = this.injector.get(UtilityService);
+            this.subSink.add(utilityService.currentGroupData.subscribe((res) => {
+                if(JSON.stringify(res) != JSON.stringify({}))
+                    resolve(res)
+            })
+            )
+        })
+    }
+
+    async sendUpdatesToGroupData(groupData: Object) {
+        const utilityService = this.injector.get(UtilityService);
+        utilityService.updateGroupData(groupData);
+    }
+
     public reuseRoute(router: Router) {
 
         // Adding shouldReuseRoute property
@@ -165,6 +191,98 @@ export class PublicFunctions {
             }
         });
     }
+
+    /**
+     * This function fetches the group details
+     * @param groupId 
+     */
+    public async getGroupDetails(groupId: string) {
+        return new Promise((resolve, reject) => {
+            let groupService = this.injector.get(GroupService);
+            groupService.getGroup(groupId)
+                .then((res) => {
+                    resolve(res['group'])
+                })
+                .catch(() => {
+                    this.sendError(new Error('Unable to fetch the group details, please try again!'))
+                    reject({})
+                })
+        })
+    }
+
+    /**
+     * This function is responsible for fetching the users who are not present inside a group
+     * @param groupId 
+     * @param query 
+     */
+    membersNotInGroup(workspaceId: string, query: string, groupId: string, ) {
+        try {
+            return new Promise(async (resolve) => {
+
+                // Create workspace service instance
+                let workspaceService = this.injector.get(WorkspaceService);
+
+                // Fetch the users based on the query and groupId
+                let users = await workspaceService.getMembersNotInGroup(workspaceId, query, groupId)
+
+                // Resolve with success
+                resolve(users)
+            })
+
+        } catch (err) {
+            this.catchError(err);
+        }
+    }
+
+    /**
+     * This function is responsible for fetching the users present inside a group
+     * @param groupId 
+     * @param query 
+     */
+    searchGroupMembers(groupId: string, query: string) {
+        try {
+            return new Promise(async (resolve) => {
+
+                // Create group service instance
+                let groupService = this.injector.get(GroupService);
+
+                // Fetch the users based on the query and groupId
+                let users = await groupService.getGroupMembers(groupId, query)
+
+                // Resolve with success
+                resolve(users)
+            })
+
+        } catch (err) {
+            this.catchError(err);
+        }
+    }
+
+    /**
+     * Helper function fetching the next group members
+     * @param groupId - current groupId
+     * @param lastUserId - lastUserId fetched from current members array list
+     */
+    getNextGroupMembers(groupId: string, lastUserId: string, query: string) {
+        return new Promise((resolve, reject) => {
+
+            // Create group service instance
+            let groupService = this.injector.get(GroupService);
+
+            // Fetch the users from server
+            groupService.getNextGroupMembers(groupId, lastUserId, query)
+                .then((res) => {
+
+                    // Resolve with sucess
+                    resolve(res['users'])
+                })
+                .catch(() => {
+
+                    // If there's an error, then
+                    reject([]);
+                })
+        })
+    }   
 
     /**
      * Fetch list of first 10 groups of which a user is a part of

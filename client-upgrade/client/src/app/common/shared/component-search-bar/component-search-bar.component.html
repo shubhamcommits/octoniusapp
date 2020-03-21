@@ -1,7 +1,8 @@
 <div class="search">
 
     <!-- Component search bar starts -->
-    <input (keyup)="userSearchQuery(query)" type="text" [(ngModel)]="query" class="searchTerm" [placeholder]="placeholder">
+    <input (keyup)="userSearchQuery(query)" type="text" [(ngModel)]="query" class="searchTerm"
+        [placeholder]="placeholder">
     <button type="submit" class="searchButton">
         <i class="material-icons">
             search
@@ -23,8 +24,8 @@
         *ngFor="let member of members; let index = index; trackBy: utilityService.trackByIndex;">
 
         <!-- Avatar Image of the member -->
-        <img src="{{ baseUrl }}/uploads/{{member?.profile_pic}}" onerror="this.src='/assets/images/user.png'"
-            class="feed-avatar">
+        <img src="{{ baseUrl }}/uploads/{{member?.profile_pic}}" routerLink="/dashboard/user/profile"
+            [queryParams]="{ userId: member._id }" onerror="this.src='/assets/images/user.png'" class="feed-avatar">
         <!-- Avatar Image of the member -->
 
         <div class="media-body">
@@ -39,7 +40,7 @@
             <div class="btn-group mr-3 float-right">
 
                 <!-- Changing role functionality starts -->
-                <div class="dropdown" *ngIf="member.role != 'owner'">
+                <div class="dropdown" *ngIf="member.role != 'owner' && type == 'workspace'">
                     <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">Manage
                         {{ member?.first_name }}
                         <span class="caret"></span>
@@ -57,8 +58,13 @@
                     <!-- Menu Drawer Ends -->
 
                 </div>
-                <!-- Changing role functionality ends -->
 
+                <!-- Remove from Group -->
+                <section *ngIf="type == 'group'">
+                    <button class="btn btn-danger btn-sm" *ngIf="groupData.group_name != 'Global'"
+                        (click)="removeUserFromGroup(groupId, member._id, index)">Remove Member</button>
+                </section>
+                <!-- Remove from Group -->
             </div>
 
         </div>
