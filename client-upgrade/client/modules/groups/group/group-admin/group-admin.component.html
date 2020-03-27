@@ -7,12 +7,9 @@
             <!-- Template Heading ends -->
 
             <!-- Search member component starts -->
-            <app-component-search-input-box *ngIf="userData && checkDataExist(userData)" 
+            <app-component-search-input-box *ngIf="userData && checkDataExist(userData)"
                 [placeholder]="'Type here to search here with email, first name or last name and add a new member to your group'"
-                [groupId]="groupId"
-                [workspaceId]="userData._workspace"
-                [userData]="userData" 
-                [type]="'group'"
+                [groupId]="groupId" [workspaceId]="userData._workspace" [userData]="userData" [type]="'group'"
                 (member)="addNewUser($event)">
             </app-component-search-input-box>
             <!-- Search member component ends -->
@@ -21,4 +18,10 @@
 
         </div>
     </div>
+
+    <!-- Delete Group Component starts -->
+    <app-delete-group *ngIf="groupId && groupId != null && groupId != undefined" [groupId]="groupId">
+    </app-delete-group>
+    <!-- Delete Group Component ends -->
+
 </div>

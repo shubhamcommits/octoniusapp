@@ -33,13 +33,19 @@
             ],
             "styles": [
               "src/styles.scss",
-              "node_modules/bootstrap/dist/css/bootstrap.min.css"
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/quill/dist/quill.core.css",
+              "node_modules/quill/dist/quill.snow.css",
+              "src/shared/utilities/highlight.js/monokai-sublime.min.css",
+              "node_modules/ng-pick-datetime/assets/style/picker.min.css"
             ],
             "scripts": [
               "src/shared/utilities/jquery.js",
               "src/shared/utilities/popper.js",
               "node_modules/bootstrap/dist/js/bootstrap.min.js",
-              "src/shared/utilities/stripe.checkout.js"
+              "src/shared/utilities/stripe.checkout.js",
+              "node_modules/quill/dist/quill.js",
+              "src/shared/utilities/highlight.js/highlight.min.js"
             ]
           },
           "configurations": {

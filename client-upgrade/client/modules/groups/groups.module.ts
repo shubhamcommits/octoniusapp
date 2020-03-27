@@ -27,7 +27,6 @@ import { GroupsRoutingModule } from './groups-routing.module';
 import { GroupsHeaderComponent } from './groups-header/groups-header.component';
 import { GroupsListComponent } from './groups-list/groups-list.component';
 import { PulseComponent } from './pulse/pulse.component';
-import { PulseGroupDetailsComponent } from './pulse/pulse-group-details/pulse-group-details.component';
 import { CreateGroupComponent } from './groups-list/create-group/create-group.component';
 import { GroupComponent } from './group/group.component';
 import { GroupHeaderComponent } from './group/group-header/group-header.component';
@@ -62,7 +61,15 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { GroupsService } from 'src/shared/services/groups-service/groups.service';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { GroupAdminComponent } from './group/group-admin/group-admin.component';
-import { GroupCalendarComponent } from './group/group-calendar/group-calendar.component'; 
+import { GroupCalendarComponent } from './group/group-calendar/group-calendar.component';
+import { GroupActivityComponent } from './group/group-activity/group-activity.component';
+import { SendPulseComponent } from './group/group-activity/send-pulse/send-pulse.component';
+import { GroupInformationComponent } from './group/group-activity/group-information/group-information.component';
+import { DeleteGroupComponent } from './group/group-admin/delete-group/delete-group.component';
+import { GroupPostboxComponent } from './group/group-postbox/group-postbox.component';
+import { NewsPillComponent } from './group/group-activity/news-pill/news-pill.component';
+import { GroupPostSelectionComponent } from './group/group-postbox/group-post-selection/group-post-selection.component';
+import { GroupCreatePostComponent } from './group/group-postbox/group-create-post/group-create-post.component'; 
 
 
  
@@ -82,7 +89,7 @@ import { GroupCalendarComponent } from './group/group-calendar/group-calendar.co
     PulseComponent, 
 
     // Create Group Component
-    CreateGroupComponent, PulseGroupDetailsComponent,
+    CreateGroupComponent,
 
     // // Group Kanban Task View Component
     // GroupKanbanTaskViewComponent,
@@ -99,7 +106,7 @@ import { GroupCalendarComponent } from './group/group-calendar/group-calendar.co
     // // Group Post Component
     // GroupPostComponent,
 
-    // // Group Members Component
+    // Group Members Component
     GroupMembersComponent,
 
     // // Group Kanban Boards Component
@@ -133,7 +140,23 @@ import { GroupCalendarComponent } from './group/group-calendar/group-calendar.co
 
     GroupAdminComponent,
 
-    GroupCalendarComponent
+    GroupCalendarComponent,
+
+    GroupActivityComponent,
+
+    SendPulseComponent,
+
+    GroupInformationComponent,
+
+    DeleteGroupComponent,
+
+    GroupPostboxComponent,
+
+    NewsPillComponent,
+
+    GroupPostSelectionComponent,
+
+    GroupCreatePostComponent
   ],
   imports: [
     CommonModule,

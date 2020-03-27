@@ -124,7 +124,8 @@ export class AuthsController {
                     }, {
                         $push: {
                             _members: user._id
-                        }
+                        },
+                        $inc: { members_count: 1 }
                     });
 
                     // Error updating the Global group

@@ -33,16 +33,22 @@ pm2 stop users-server
 
 pm2 delete users-server
 
+# Stops and kills the utilities sever
+pm2 stop utilities-server
+
+pm2 delete utilities-server
+
 
 # Stops and kills the sockets sever
 pm2 stop sockets-server
 
 pm2 delete sockets-server
 
-# Stops and kills the utilities sever
-pm2 stop utilities-server
 
-pm2 delete utilities-server
+# Stops and kills the posts sever
+pm2 stop posts-server
+
+pm2 delete posts-server
 
 
 # Stops and kills the client server

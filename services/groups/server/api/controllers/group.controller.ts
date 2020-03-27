@@ -17,20 +17,22 @@ export class GroupController {
         try {
 
             // Fetch first 10 groups in the database which are not private
-            const groups = await Group.find(
+            const groups = await Group.find({
+                $and: [
                 { group_name: { $ne: 'personal' } },
-                { group_name: { $ne: 'private' } })
+                { group_name: { $ne: 'private' } }]
+            })
                 .sort('_id')
                 .populate({
                     path: '_members',
-                    select: 'first_name last_name profile_pic role email',
+                    select: 'first_name last_name profile_pic role email created_date',
                     options: {
                         limit: 10
                     }
                 })
                 .populate({
                     path: '_admins',
-                    select: 'first_name last_name profile_pic role email',
+                    select: 'first_name last_name profile_pic role email created_date',
                     options: {
                         limit: 10
                     }
@@ -52,7 +54,7 @@ export class GroupController {
             });
 
         } catch (err) {
-            return sendError(res, err);
+            return sendError(res, err, 'Internal Server Error!', 500);
         }
     };
 
@@ -84,14 +86,14 @@ export class GroupController {
                 .limit(5)
                 .populate({
                     path: '_members',
-                    select: 'first_name last_name profile_pic role email',
+                    select: 'first_name last_name profile_pic role email created_date',
                     options: {
                         limit: 10
                     }
                 })
                 .populate({
                     path: '_admins',
-                    select: 'first_name last_name profile_pic role email',
+                    select: 'first_name last_name profile_pic role email created_date',
                     options: {
                         limit: 10
                     }
@@ -233,14 +235,14 @@ export class GroupController {
             })
                 .populate({
                     path: '_members',
-                    select: 'first_name last_name profile_pic role email',
+                    select: 'first_name last_name profile_pic role email created_date',
                     options: {
                         limit: 10
                     }
                 })
                 .populate({
                     path: '_admins',
-                    select: 'first_name last_name profile_pic role email',
+                    select: 'first_name last_name profile_pic role email created_date',
                     options: {
                         limit: 10
                     }
@@ -280,7 +282,8 @@ export class GroupController {
                 workspace_name: req.body.workspace_name,
                 _workspace: req.body.workspaceId,
                 _admins: req.body.userId,
-                type: req.body.type
+                type: req.body.type,
+                members_count: 1
             }
 
             // Checking if group already exists
@@ -330,7 +333,7 @@ export class GroupController {
      */
     async update(req: Request, res: Response) {
         try {
-            const groupId = req.query.groupId;
+            const groupId = req.params.groupId;
 
             if (hasProperty(req.query, 'description') || hasProperty(req.query, 'group_name')) {
                 const group = await Group.findOneAndUpdate(
@@ -340,14 +343,14 @@ export class GroupController {
                 )
                     .populate({
                         path: '_members',
-                        select: 'first_name last_name profile_pic role email',
+                        select: 'first_name last_name profile_pic role email created_date',
                         options: {
                             limit: 10
                         }
                     })
                     .populate({
                         path: '_admins',
-                        select: 'first_name last_name profile_pic role email',
+                        select: 'first_name last_name profile_pic role email created_date',
                         options: {
                             limit: 10
                         }
@@ -381,12 +384,13 @@ export class GroupController {
      */
     async remove(req: Request, res: Response) {
 
-        const { groupId } = req.query;
+        const { groupId } = req.params;
 
         try {
 
             // Find the group and remove it from the database
-            const group: any = await Group.findByIdAndDelete(groupId);
+            const group: any = await Group.findByIdAndDelete(groupId)
+            .select('group_name')
 
             // Find list of users who were part of this group 
             const users = await User.find({
@@ -412,6 +416,8 @@ export class GroupController {
                     new: true
                 })
             })
+
+            // Delete Posts and Files too(create the API for this and serve as a microservice)
 
             // Send the status 200 response
             return res.status(200).json({

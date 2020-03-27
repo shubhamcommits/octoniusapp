@@ -5,7 +5,7 @@ function prodConfigInit() {
 
   // ENVIRONMENTS
   process.env.NODE_ENV = 'production';
-  process.env.PORT = '8000';
+  process.env.PORT = '10000';
   process.env.HOST = '0.0.0.0';
 
   // JWT KEYS

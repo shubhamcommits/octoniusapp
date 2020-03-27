@@ -28,7 +28,7 @@ if (cluster.isMaster) {
 } else {
 
   // Define Utilities Application port
-  const port = process.env.PORT || 8000;
+  const port = process.env.PORT || 10000;
 
   // Defining the Host Name
   const host: any = process.env.HOST || '0.0.0.0';

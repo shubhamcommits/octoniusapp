@@ -45,7 +45,7 @@ export class PulseController {
                 groupId,
                 {
                     $set: {
-                        "pulse_description": pulse_description
+                        pulse_description: pulse_description
                     }
                 }
             ).select('group_name pulse_description');

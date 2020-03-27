@@ -38,6 +38,21 @@ export class GroupsService {
   }
 
   /**
+   * This function is responsible for sending the pulse information
+   * @param workspaceId 
+   * @param lastGroupId 
+   */
+  sendPulse(groupId: string, pulse_description: string) {
+    return this._http.put(this.baseURL + `/pulse/`, { 
+      pulse_description: pulse_description
+    }, {
+      params: {
+        groupId: groupId
+      }
+    }).toPromise()
+  }
+
+  /**
    * This function is responsible for fetching the tasks count based on the groupId and/or status
    * @param groupId 
    * @param status 

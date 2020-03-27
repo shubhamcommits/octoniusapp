@@ -10,9 +10,30 @@
 // Import Push Notifications Scss
 @import "notifications.scss";
 
+// Import Group Scss
+@import "group.scss";
+
 
 $font-size-base: 16px;
 $body-bg: #f3f4f6;
+
+/* COMPONENT CSS */
+
+// Post Box CSS
+app-group-postbox{
+  cursor: pointer;
+}
+
+// Post Type Selection
+app-group-post-selection {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* COMPONENT CSS */
 
 body {
     background-color: $body-bg !important ;
@@ -30,6 +51,7 @@ body {
   object-fit: cover;
   border-radius: 50%;
   margin:5px 10px;
+  cursor: pointer;
 }
 
 .feed-avatar-big{ //avatar image for group img display
@@ -38,6 +60,7 @@ body {
   object-fit: cover;
   margin-right: 10px;
   border-radius: 50%;
+  cursor: pointer;
 }
 
 .topnav-avatar{ //avatar image for in-feed display
@@ -45,6 +68,7 @@ body {
   height:50px;
   object-fit: cover;
   border-radius: 50%;
+  cursor: pointer;
 }
 
 .list-group-item{
@@ -248,12 +272,6 @@ margin-bottom: 20px;
   margin-right: 0 !important;
 }
 
-.noborder-btn{
-  border:0 !important;
-  :focus{
-    border: 0! important;
-  }
-}
 
 .media-body{
   .float-left{
@@ -331,26 +349,6 @@ p{
   .ql-mention-list-item.selected{
     background: $brand-primary;
     color:#fff !important;
-  }
-}
-
-.feed-new-update-pill {
-  position: absolute;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
-.inner-news{
-  height: 32px;
-  width: 130px;
-  margin: 0px auto;
-  .news-badge{
-    z-index: 99999;
-    position: fixed;
-    box-shadow: 0 0 0 1px rgba(0,0,0,.15), 0 6px 9px rgba(0,0,0,.2);
-    .material-icons{
-      font-size: 14px;
-    }
   }
 }
 

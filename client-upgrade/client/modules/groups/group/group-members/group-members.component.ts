@@ -38,7 +38,9 @@ export class GroupMembersComponent implements OnInit {
         Array.prototype.push.apply(this.groupData._members, this.groupData._admins)
 
         // Assign the members array to this new array
-        this.members = Array.from(new Set(this.groupData._members.reverse()))
+        this.members = Array.from(new Set(this.groupData._members.sort((a: any, b: any)=> {
+          return new Date(a.created_date).valueOf() - new Date(b.created_date).valueOf()
+        })))
       }
     }))
 

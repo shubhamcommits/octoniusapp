@@ -51,10 +51,14 @@ export const environment = {
   USER_BASE_URL: 'http://localhost:7000',
   USER_BASE_API_URL: 'http://localhost:7000/api',
 
-  // Utilities URLs
-  UTILITIES_BASE_URL: 'http://localhost:8000',
+  // Posts URLs
+  POST_BASE_URL: 'http://localhost:8000',
+  POST_BASE_API_URL: 'http://localhost:8000/api',
 
   // Sockets URLs
   SOCKETS_BASE_URL: 'http://localhost:9000',
-  SOCKETS_BASE_API_URL: 'http://localhost:9000/api'
+  SOCKETS_BASE_API_URL: 'http://localhost:9000/api',
+
+  // Utilities URLs
+  UTILITIES_BASE_URL: 'http://localhost:10000',
 };

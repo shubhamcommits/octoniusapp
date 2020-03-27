@@ -150,36 +150,44 @@ export class ComponentSearchBarComponent implements OnInit {
    * @param userId 
    * @param index 
    */
-  removeUserFromGroup(groupId: string, userId: string, index: number){
+  removeUserFromGroup(groupId: string, userId: string, index: number) {
 
     // Create Service Instance
     let groupService = this.injector.get(GroupService)
 
-    // Remove the User
-    this.utilityService.asyncNotification('Please wait while we are removing the user ...', 
-    new Promise((resolve, reject)=>{
-      groupService.removeUser(groupId, userId)
-      .then(()=> { 
+    // Ask User to remove this user from the group or not
+    this.utilityService.getConfirmDialogAlert()
+      .then((result) => {
+        if (result.value) {
+          // Remove the User
+          this.utilityService.asyncNotification('Please wait while we are removing the user ...',
+            new Promise((resolve, reject) => {
+              groupService.removeUser(groupId, userId)
+                .then(() => {
 
-        // Member Details
-        let member = this.members[index];
+                  // Member Details
+                  let member = this.members[index];
 
-        // Update the GroupData
-        this.groupData._members.splice(this.groupData._members.findIndex((user: any)=> user._id === member._id), 1)
-        this.groupData._admins.splice(this.groupData._admins.findIndex((user: any)=> user._id === member._id), 1)
-        
-        // Update UI via removing from array
-        this.members.splice(index, 1);
+                  // Update the GroupData
+                  this.groupData._members.splice(this.groupData._members.findIndex((user: any) => user._id === member._id), 1)
+                  this.groupData._admins.splice(this.groupData._admins.findIndex((user: any) => user._id === member._id), 1)
 
-        // Send updates to groupData via service
-        this.publicFunctions.sendUpdatesToGroupData(this.groupData)
+                  // Update UI via removing from array
+                  this.members.splice(index, 1);
 
-        // Resolve with success
-        resolve(this.utilityService.resolveAsyncPromise('User removed!'))
+                  // Send updates to groupData via service
+                  this.publicFunctions.sendUpdatesToGroupData(this.groupData)
 
+                  // Resolve with success
+                  resolve(this.utilityService.resolveAsyncPromise('User removed!'))
+
+                })
+                .catch(() => reject(this.utilityService.rejectAsyncPromise('Unable to remove the user from the group, please try again!')))
+            }))
+        }
       })
-      .catch(() => reject(this.utilityService.rejectAsyncPromise('Unable to remove the user from the group, please try again!')))
-    }))
+
+
   }
 
   /**
@@ -269,6 +277,9 @@ export class ComponentSearchBarComponent implements OnInit {
       // Fetching next users based on the lastUserId
       if (this.type === 'workspace')
         nextUsers = await this.publicFunctions.getNextWorkspaceMembers(this.workspaceData['_id'], this.lastUserId, this.query);
+
+      if(this.type === 'group')
+        nextUsers = await this.publicFunctions.getNextGroupMembers(this.groupId, this.lastUserId, this.query)
 
       // If we have 0 users, then stop the function immediately and set moreToLoad to false
       if (nextUsers.length == 0) {

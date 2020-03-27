@@ -39,7 +39,7 @@ export class MembersControllers {
             })
                 .sort('_id')
                 .limit(10)
-                .select('first_name last_name email role profile_pic')
+                .select('first_name last_name email role profile_pic created_date')
                 .lean() || []
 
             // Send the status 200 response
@@ -88,7 +88,7 @@ export class MembersControllers {
             })
                 .sort('_id')
                 .limit(5)
-                .select('first_name last_name email role profile_pic')
+                .select('first_name last_name email role profile_pic created_date')
                 .lean() || []
 
             // Send the status 200 response
@@ -127,14 +127,15 @@ export class MembersControllers {
             // Update the group object
             let groupData: any = {}
 
-            // Update the group _members section and feed the memberId
+            // Update the group _members section and feed the memberId, and also increment the count of members by 1
             if (role === 'member') {
                 groupData = await Group.findByIdAndUpdate({
                     _id: groupId
                 }, {
                     $addToSet: {
                         _members: _member
-                    }
+                    },
+                    $inc: { members_count: 1 }
                 }, {
                     new: true
                 })
@@ -163,7 +164,8 @@ export class MembersControllers {
                 }, {
                     $addToSet: {
                         _admins: _member
-                    }
+                    },
+                    $inc: { members_count: 1 }
                 }, {
                     new: true
                 })
@@ -235,11 +237,12 @@ export class MembersControllers {
 
         try {
 
-            // Remove userId from group users
+            // Remove userId from group users and decrement the count of members
             let groupUpdate: any = await Group.findOneAndUpdate({
                 _id: groupId
             }, {
-                $pull: { _members: userId, _admins: userId }
+                $pull: { _members: userId, _admins: userId },
+                $inc: { members_count: -1 }
             }, {
                 new: true
             })

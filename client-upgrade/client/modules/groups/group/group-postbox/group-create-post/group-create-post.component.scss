@@ -1,0 +1,48 @@
+.post-title{
+    padding: 12px 15px; 
+    font-style: italic; 
+    width: 100%; 
+    box-shadow: none
+}
+
+p{
+    font-size: medium;
+    margin-top: 2%;
+}
+
+i{
+    font-size: xx-large;
+    color: #005fd5;
+}
+
+.file-input{
+    display: none
+}
+
+.attach-files{
+    width: 100%; 
+    outline: 1px gray; 
+    box-shadow: none;
+
+    button{
+        outline: 0.5px solid #005fd5
+    }
+}
+
+section{
+    margin-bottom: 10px;
+    vertical-align: middle;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+app-component-search-input-box{
+    margin: auto;
+    position: absolute;
+    top: 0; 
+    left: 50% !important; 
+    bottom: 0; 
+    right: 0;
+    z-index: 99;
+}

@@ -1,0 +1,11 @@
+<div class="card sideinnercard">
+    <div class="card-block">
+        <h6 class="card-title"> <strong>What's your PULSE?</strong> <i class="material-icons float-right">whatshot</i>
+        </h6>
+        <hr />
+        <textarea [(ngModel)]="pulseDescription" rows="3" cols="35" placeholder="Type here to send a pulse for this week"></textarea>
+        <button class="btn btn-primary btn-sm" (click)="onClickSendPulse(pulseDescription)">
+            Send Pulse
+        </button>
+    </div>
+</div>

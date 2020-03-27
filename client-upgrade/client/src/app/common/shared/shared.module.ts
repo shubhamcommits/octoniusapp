@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { OverlayModule } from '@angular/cdk/overlay';
 import { ImageCropperModule } from 'ngx-image-cropper';
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 
 import { CropImageComponent } from './crop-image/crop-image.component';
 import { EmailInputComponent } from './email-input/email-input.component';
@@ -13,7 +15,9 @@ import { RouterModule } from '@angular/router';
 import { LoadingSpinnerSmallComponent } from './loading-spinner-small/loading-spinner-small.component';
 import { SectionSeparatorComponent } from './section-separator/section-separator.component';
 import { ComponentSearchInputBoxComponent } from './component-search-input-box/component-search-input-box.component';
-
+import { QuillEditorComponent } from './quill-editor/quill-editor.component';
+import { DatePickerComponent } from './date-picker/date-picker.component';
+import { TimePickerComponent } from './time-picker/time-picker.component';
 
 
 @NgModule({
@@ -26,13 +30,19 @@ import { ComponentSearchInputBoxComponent } from './component-search-input-box/c
     ComponentSearchBarComponent,
     LoadingSpinnerSmallComponent,
     SectionSeparatorComponent,
-    ComponentSearchInputBoxComponent
+    ComponentSearchInputBoxComponent,
+    QuillEditorComponent,
+    DatePickerComponent,
+    TimePickerComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
     ImageCropperModule,
-    RouterModule
+    RouterModule,
+    OverlayModule,
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule,
   ], 
   exports: [
     BrandingPanelComponent,
@@ -43,7 +53,8 @@ import { ComponentSearchInputBoxComponent } from './component-search-input-box/c
     InfiniteScrollComponent,
     LoadingSpinnerComponent,
     LoadingSpinnerSmallComponent,
-    SectionSeparatorComponent
+    SectionSeparatorComponent,
+    QuillEditorComponent
   ]
 })
 export class SharedModule { }

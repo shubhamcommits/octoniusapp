@@ -1,0 +1,26 @@
+.postbox{
+    outline: none; 
+    box-shadow: none !important; 
+    margin-top: 15px;
+    border: 0px solid #ccc !important; 
+    text-align: left; 
+    cursor: pointer;
+}
+
+// Adding pointer to image
+img{
+    cursor: pointer;
+    margin-top: 10px;
+    transition: transform .2s ease;
+  }
+  
+  img:hover{
+    transform: scale(1.05);
+  }
+
+  .noborder-btn{
+    border:0 !important;
+    :focus{
+      border: 0! important;
+    }
+  }

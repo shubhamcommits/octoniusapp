@@ -20,6 +20,14 @@ export class GroupService {
   }
 
   /**
+   * This function is responsible for deleting the group
+   * @param groupId 
+   */
+  removeGroup(groupId: string){
+    return this._http.delete(this.baseURL + `/groups/${groupId}`).toPromise()
+  }
+
+  /**
    * This function is responsible for fetching first 10 group members
    * @param groupId
    * @param query - optional parameter(which searches for name and email too)

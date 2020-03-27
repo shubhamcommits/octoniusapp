@@ -23,7 +23,7 @@ export class ComponentSearchInputBoxComponent implements OnInit {
 
   @Input('placeholder') placeholder: string = '';
 
-  // Type are 'workspace', 'group', 'skill'
+  // Type are 'task', 'event', 'group', 'skill'
   @Input('type') type: string;
 
   // Incase the type is 'workspace'
@@ -59,6 +59,12 @@ export class ComponentSearchInputBoxComponent implements OnInit {
   // Create subsink class to unsubscribe the observables
   public subSink = new SubSink();
 
+  // Member array to store the selected members for task and events
+  selectedMembers: any = new Map();
+
+  // Members array
+  members: any = []
+
   ngOnInit() {
 
   }
@@ -68,11 +74,13 @@ export class ComponentSearchInputBoxComponent implements OnInit {
    * Uses Debounce time and subscribe to the itemValueChanged Observable
    */
   ngAfterViewInit(): void {
+    if (this.itemValue == "")
+      this.itemList = []
     // Adding the service function to the subsink(), so that we can unsubscribe the observable when the component gets destroyed
     this.subSink.add(this.itemValueChanged
       .pipe(distinctUntilChanged(), debounceTime(500))
       .subscribe(async () => {
-        if (this.type == 'skill' || this.type == 'group') {
+        if (this.type == 'skill' || this.type == 'group' || this.type == 'task' || this.type == 'event') {
 
           // If value is null then empty the array
           if (this.itemValue == "")
@@ -81,24 +89,31 @@ export class ComponentSearchInputBoxComponent implements OnInit {
           else {
 
             // Update the itemList with the skill set
-            if(this.type === 'skill')
+            if (this.type === 'skill')
               this.itemList = await this.searchSkills(this.itemValue);
 
-            if(this.type === 'group'){
+            if (this.type === 'task' || this.type === 'event') {
+              this.itemList = await this.publicFunctions.searchGroupMembers(this.groupId, this.itemValue) || []
 
-                // Fetch the Items from the group search list
-                this.itemList = await this.publicFunctions.membersNotInGroup(this.workspaceId, this.itemValue, this.groupId)
+              // Update the itemList
+              this.itemList = Array.from(new Set(this.itemList['users']))
+            }
 
-                // Update the itemList
-                this.itemList = Array.from(new Set(this.itemList['users']))
+            if (this.type === 'group') {
 
-              }
+              // Fetch the Items from the group search list
+              this.itemList = await this.publicFunctions.membersNotInGroup(this.workspaceId, this.itemValue, this.groupId)
+
+              // Update the itemList
+              this.itemList = Array.from(new Set(this.itemList['users']))
+
+            }
 
             // Don't add the null or existing skills value to the list
-            if(this.type === 'skill')
+            if (this.type === 'skill')
               if (!this.itemList.includes(this.itemValue) && this.itemValue != "")
-                  this.itemList = [this.itemValue, ...this.itemList];
-            
+                this.itemList = [this.itemValue, ...this.itemList];
+
           }
 
           // Stop the loading state once the values are loaded
@@ -112,7 +127,7 @@ export class ComponentSearchInputBoxComponent implements OnInit {
    * @param $event - value of item
    */
   onSearch($event: Event) {
-    
+
     // Set loading state to be true
     this.isLoading$.next(true);
 
@@ -147,12 +162,57 @@ export class ComponentSearchInputBoxComponent implements OnInit {
 
   }
 
-  async memberJustAddedToGroup(item: any) {
+  removeMemberFromMap(item: any) {
+
+    if (this.members.length >= 0 && this.selectedMembers.size >= 0) {
+      
+      // Removing the user from array
+      this.members.slice(this.members.findIndex((member) => item._id === member), 1);
+
+      // Enable the user so that it can be added again
+      item.showAddMem = true
+
+      // Removing the user from map
+      this.selectedMembers.delete(item._id);
+
+      // Emit the selectedMembers map to the other components
+      this.memberEmitter.emit(this.selectedMembers);
+    }
 
   }
 
-  async onAddNewMember(item: any) {
-    
+  memberJustAddedToMap(item: any) {
+    return this.selectedMembers.has(item._id)
+  }
+
+  addToSelectedMember(item: any) {
+
+    if (this.type == 'task') {
+
+      // Mark all the other items on the UI to be as not assigned
+      this.itemList.forEach((element: any) => {
+        element.showAddMem = true
+      });
+
+      // Empty the members array since we have to push only one element to the selectedMembers Map
+      this.members = []
+    }
+
+    // Set the Add Member state to false
+    item.showAddMem = false
+
+    // Push item into array
+    this.members.push(item)
+
+    // Map the array and return a map without duplicates
+    this.selectedMembers = new Map(this.members.map((member: any) => [member._id, member]))
+
+    // Emit the selectedMembers map to the other components
+    this.memberEmitter.emit(this.selectedMembers);
+  }
+
+  onAddNewMember(item: any) {
+
     // Set the Add Member state to false
     item.showAddMem = false
 
@@ -185,7 +245,7 @@ export class ComponentSearchInputBoxComponent implements OnInit {
    * @param skill 
    */
   async onAddSkill(skill: any) {
-    
+
     // Emit the message to add the skill
     this.skillEmitter.emit(skill);
 
@@ -216,7 +276,7 @@ export class ComponentSearchInputBoxComponent implements OnInit {
   /**
    * Unsubscribe all the observables on destroying the component
    */
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.subSink.unsubscribe()
   }
 }

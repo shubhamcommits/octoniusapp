@@ -187,7 +187,8 @@ export class WorkspaceController {
                 group_name: 'Global',
                 _workspace: workspaceUpdate._id,
                 _admins: user,
-                workspace_name: workspaceUpdate.workspace_name
+                workspace_name: workspaceUpdate.workspace_name,
+                members_count: 1
             };
 
             // Create new global group
