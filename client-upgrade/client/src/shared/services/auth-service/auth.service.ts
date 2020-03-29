@@ -23,7 +23,7 @@ export class AuthService {
    * @param user : { email: string, workspace_name: string, password: string }
    */
   signIn(userData: Object) {
-    return this.httpClient.post(this.AUTH_BASE_API_URL + '/auths/sign-in', userData);
+    return this.httpClient.post(this.AUTH_BASE_API_URL + '/sign-in', userData);
   }
 
   /**
@@ -37,7 +37,7 @@ export class AuthService {
    * @param user : { first_name: string, last_name:string, email: string, workspace_name: string, password: string }
    */
   signUp(userData: Object) {
-    return this.httpClient.post(this.AUTH_BASE_API_URL + '/auths/sign-up', userData);
+    return this.httpClient.post(this.AUTH_BASE_API_URL + '/sign-up', userData);
   }
 
   /**
@@ -45,7 +45,7 @@ export class AuthService {
    * And clears the session and local storage from the client side
    */
   signout() {
-    return this.httpClient.post(this.AUTH_BASE_API_URL + '/auths/sign-out', '')
+    return this.httpClient.post(this.AUTH_BASE_API_URL + '/sign-out', '')
   }
 
   /**
@@ -104,7 +104,7 @@ export class AuthService {
    * @param mailData - needs to be passed as the functional parameter with the following @properties to be used in the request body
    * @name workspace
    * @name email
-   * @param mailData : { workspace: string, email: string }
+   * @param mailData : { workspace_name: string, email: string }
    */
   sendResetPasswordMail(mailData: Object) {
     return this.httpClient.post(this.AUTH_BASE_API_URL + '/passwords/send-mail', mailData);

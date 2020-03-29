@@ -9,7 +9,12 @@ export class TimePickerComponent implements OnInit {
 
   constructor() { }
 
+  time = { hour: 13, minute: 30 };
+
+  meridian = true;
+
+  showPicker: boolean = false;
+
   ngOnInit() {
   }
-
 }

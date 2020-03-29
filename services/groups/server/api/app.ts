@@ -69,7 +69,7 @@ app.all('/', (req: Request, res: Response, next: NextFunction) => {
 });
 
 // Correct REST naming
-app.use('/api/groups', groupsRoutes);
+app.use('/api', groupsRoutes);
 app.use('/api/members', memberRoutes);
 app.use('/api/pulse', pulseRoutes);
 

@@ -1,1 +1,11 @@
-<p>time-picker works!</p>
+
+    <!-- Time Picker Toggle starts -->
+    <button class="btn btn-outline-primary" (click)="showPicker = !showPicker">
+        <span class="material-icons">
+            alarm
+        </span>
+    </button>
+    <!-- Date Time Toggle ends -->
+<div class="time-picker">
+    <ngb-timepicker *ngIf="showPicker" [(ngModel)]="time" [meridian]="meridian"></ngb-timepicker>
+</div>

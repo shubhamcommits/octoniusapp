@@ -123,6 +123,15 @@ export class ComponentSearchInputBoxComponent implements OnInit {
   }
 
   /**
+   * This function clears the list on the UI if the input changes accordingly
+   * @param $event 
+   */
+  modelChange($event: any){
+    if($event == "" || $event === null || $event === undefined)
+      this.itemList = []
+  }
+
+  /**
    * This function observers on the change value of item
    * @param $event - value of item
    */

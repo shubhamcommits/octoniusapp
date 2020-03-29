@@ -67,7 +67,7 @@ app.all('/', (req: Request, res: Response, next: NextFunction) => {
 });
 
 // Correct REST naming
-app.use('/api/mails', mailRoutes);
+app.use('/api', mailRoutes);
 
 // Invalid routes handling middleware
 app.use((req: Request, res: Response, next: NextFunction) => {

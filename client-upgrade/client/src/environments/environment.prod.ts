@@ -36,8 +36,8 @@ export const environment = {
   MAILING_BASE_API_URL: 'http://localhost:2000/api',
 
   // Authentication URLs
-  AUTH_BASE_URL: 'http://localhost:3000',
-  AUTH_BASE_API_URL: 'http://localhost:3000/api',
+  AUTH_BASE_URL: 'http://localhost:80',
+  AUTH_BASE_API_URL: 'http://localhost:80/api/auths',
 
   // Groups URLs
   GROUPS_BASE_URL: 'http://localhost:4000',

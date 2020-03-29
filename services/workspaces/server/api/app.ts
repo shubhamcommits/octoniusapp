@@ -74,10 +74,10 @@ app.all('/', (req: Request, res: Response, next: NextFunction) => {
 });
 
 // Correct REST naming
+app.use('/api', workspaceRoutes);
 app.use('/api/billings', billingRoutes);
 app.use('/api/domains', domainRoutes);
 app.use('/api/members', memberRoutes);
-app.use('/api/workspaces', workspaceRoutes);
 
 // Invalid routes handling middleware
 app.use((req: Request, res: Response, next: NextFunction) => {

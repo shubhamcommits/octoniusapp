@@ -68,8 +68,8 @@ fi
     cd -
 
     : '|- WORKSPACE SERVER -|'
-    # Go to workspace directory
-    cd workspace/server
+    # Go to workspaces directory
+    cd workspaces/server
 
     # Start the dev server and push the process into background - port 5000
     pm2 start "$packageManager run dev" --name "workspaces-server"

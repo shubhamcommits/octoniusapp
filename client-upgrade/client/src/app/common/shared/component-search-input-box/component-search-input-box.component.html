@@ -2,7 +2,7 @@
 
     <!-- INPUT BAR STARTS -->
     <input type="search" id="keyword" autocomplete="off" [placeholder]="placeholder" class="input-search"
-        [(ngModel)]="itemValue" (keyup)="onSearch($event)" />
+        [(ngModel)]="itemValue" (keyup)="onSearch($event)" (ngModelChange)="modelChange($event)" />
     <!-- INPUT BAR ENDS -->
 
     <!-- ITEM LIST STARTS -->

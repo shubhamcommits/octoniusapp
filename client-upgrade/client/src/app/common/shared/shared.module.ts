@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { OverlayModule } from '@angular/cdk/overlay';
 import { ImageCropperModule } from 'ngx-image-cropper';
-import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+import { NgbTimepickerModule, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { CropImageComponent } from './crop-image/crop-image.component';
 import { EmailInputComponent } from './email-input/email-input.component';
@@ -18,12 +17,17 @@ import { ComponentSearchInputBoxComponent } from './component-search-input-box/c
 import { QuillEditorComponent } from './quill-editor/quill-editor.component';
 import { DatePickerComponent } from './date-picker/date-picker.component';
 import { TimePickerComponent } from './time-picker/time-picker.component';
+import { AttachFilesComponent } from './attach-files/attach-files.component';
+import { AttachCloudFilesComponent } from './attach-cloud-files/attach-cloud-files.component';
 
 
 @NgModule({
   declarations: [
+    AttachFilesComponent,
+    AttachCloudFilesComponent,
     BrandingPanelComponent,
     CropImageComponent,
+    DatePickerComponent,
     EmailInputComponent,
     LoadingSpinnerComponent,
     InfiniteScrollComponent,
@@ -32,7 +36,6 @@ import { TimePickerComponent } from './time-picker/time-picker.component';
     SectionSeparatorComponent,
     ComponentSearchInputBoxComponent,
     QuillEditorComponent,
-    DatePickerComponent,
     TimePickerComponent
   ],
   imports: [
@@ -40,21 +43,29 @@ import { TimePickerComponent } from './time-picker/time-picker.component';
     FormsModule,
     ImageCropperModule,
     RouterModule,
-    OverlayModule,
-    OwlDateTimeModule,
-    OwlNativeDateTimeModule,
-  ], 
+
+    // ANGULAR BOOTSTRAP DATE PICKER MODULE
+    NgbDatepickerModule,
+
+    // ANGULAR BOOTSTRAP TIME PICKER MODULE
+    NgbTimepickerModule,
+
+  ],
   exports: [
+    AttachFilesComponent,
+    AttachCloudFilesComponent,
     BrandingPanelComponent,
     CropImageComponent,
     ComponentSearchBarComponent,
     ComponentSearchInputBoxComponent,
+    DatePickerComponent,
     EmailInputComponent,
     InfiniteScrollComponent,
     LoadingSpinnerComponent,
     LoadingSpinnerSmallComponent,
     SectionSeparatorComponent,
-    QuillEditorComponent
+    QuillEditorComponent,
+    TimePickerComponent
   ]
 })
 export class SharedModule { }

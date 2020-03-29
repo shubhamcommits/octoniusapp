@@ -5,9 +5,19 @@
     box-shadow: none
 }
 
+.post-header{
+    margin-top: 2%;
+    margin-bottom: 2%;
+}
+
 p{
     font-size: medium;
     margin-top: 2%;
+}
+
+.due-date{
+    margin-left: 2%;
+    margin-right: 2%;
 }
 
 i{
@@ -15,17 +25,13 @@ i{
     color: #005fd5;
 }
 
-.file-input{
-    display: none
-}
-
 .attach-files{
     width: 100%; 
     outline: 1px gray; 
     box-shadow: none;
 
-    button{
-        outline: 0.5px solid #005fd5
+    app-attach-files, app-attach-cloud-files{
+        outline: 0.5px solid gray
     }
 }
 
@@ -42,6 +48,16 @@ app-component-search-input-box{
     position: absolute;
     top: 0; 
     left: 50% !important; 
+    bottom: 0; 
+    right: 0;
+    z-index: 99;
+}
+
+app-time-picker {
+    margin: auto;
+    position: absolute;
+    top: 0; 
+    left: 40% !important; 
     bottom: 0; 
     right: 0;
     z-index: 99;

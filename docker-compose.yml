@@ -62,15 +62,15 @@ services:
     links:
       - mongodb
 
-  workspace-server:
-    container_name: workspace-server
-    image: workspace:server
+  workspaces-server:
+    container_name: workspaces-server
+    image: workspaces:server
     ports:
       - 5000:5000
     restart: always
     build:
       dockerfile: Dockerfile
-      context: ./services/workspace/server
+      context: ./services/workspaces/server
     volumes:
       # Avoid overwriting container's node_modules folder
       - /usr/app/node_modules
@@ -96,6 +96,23 @@ services:
     links:
       - mongodb
 
+  posts-server:
+    container_name: posts-server
+    image: posts:server
+    ports:
+      - 8000:8000
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./services/posts/server
+    volumes:
+      # Avoid overwriting container's node_modules folder
+      - /usr/app/node_modules
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
+
   sockets-server:
     container_name: sockets-server
     image: sockets:server
@@ -113,6 +130,45 @@ services:
     links:
       - mongodb
 
+  utilities-server:
+    container_name: utilities-server
+    image: utilities:server
+    ports:
+      - 10000:10000
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./services/utilities/server
+    volumes:
+      # Avoid overwriting container's node_modules folder
+      - /usr/app/node_modules
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
+
+  client:
+    container_name: client
+    image: client
+    build:
+      dockerfile: Dockerfile
+      context: ./client-upgrade/client
+    volumes:
+      # Avoid overwriting container's node_modules folder
+      - /usr/app/node_modules
+
+      # mount client folder inside container's app folder
+      - ${PWD}/client-upgrade/client:/usr/app
+    depends_on:
+      - mailing-server
+      - auths-server
+      - groups-server
+      - workspaces-server
+      - users-server
+      - posts-server
+      - sockets-server
+      - utilities-server
+
   nginx:
     container_name: nginx
     image: nginx
@@ -126,7 +182,12 @@ services:
       - mailing-server
       - auths-server
       - groups-server
-      - workspace-server
+      - workspaces-server
+      - users-server
+      - posts-server
+      - sockets-server
+      - utilities-server
+      - client
 
 volumes:
   data_db:

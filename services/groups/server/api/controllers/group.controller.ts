@@ -336,7 +336,7 @@ export class GroupController {
             const groupId = req.params.groupId;
 
             if (hasProperty(req.query, 'description') || hasProperty(req.query, 'group_name')) {
-                const group = await Group.findOneAndUpdate(
+                const group: any = await Group.findOneAndUpdate(
                     { _id: groupId },
                     { $set: req.query },
                     { new: true }

@@ -1,1 +1,11 @@
-<p>date-picker works!</p>
+<!-- Input Placeholder for date picker starts -->
+<input class="form-control" placeholder="yyyy-mm-dd" name="dp" [ngModel]="model" ngbDatepicker #d="ngbDatepicker" (ngModelChange)="emitDate($event)">
+<!-- Input Placeholder for date picker ends -->
+
+<!-- Date Picker Toggle starts -->
+<button class="btn btn-outline-primary" (click)="d.toggle()">
+    <span class="material-icons">
+        date_range
+    </span>
+</button>
+<!-- Date Picker Toggle ends -->

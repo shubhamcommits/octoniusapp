@@ -68,7 +68,7 @@ app.all('/', (req: Request, res: Response, next: NextFunction) => {
 });
 
 // Correct REST naming
-app.use('/api/auths', authsRoutes);
+app.use('/api', authsRoutes);
 app.use('/api/passwords', passwordsRoutes);
 
 // Invalid routes handling middleware

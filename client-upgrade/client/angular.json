@@ -36,8 +36,7 @@
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/quill/dist/quill.core.css",
               "node_modules/quill/dist/quill.snow.css",
-              "src/shared/utilities/highlight.js/monokai-sublime.min.css",
-              "node_modules/ng-pick-datetime/assets/style/picker.min.css"
+              "src/shared/utilities/highlight.js/monokai-sublime.min.css"
             ],
             "scripts": [
               "src/shared/utilities/jquery.js",

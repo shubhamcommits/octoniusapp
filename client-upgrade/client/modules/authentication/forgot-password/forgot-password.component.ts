@@ -53,7 +53,7 @@ export class ForgotPasswordComponent implements OnInit {
           // Preparing the email data
           let mailData: Object = {
             email: email.trim(),
-            workspace: workspace.trim()
+            workspace_name: workspace.trim()
           };
 
           // Adding the service function to the SubSink(), so that we can unsubscribe the observable when the component gets destroyed

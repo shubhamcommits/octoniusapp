@@ -13,6 +13,9 @@ export class GroupCreatePostComponent implements OnInit {
   // BASE URL OF THE APPLICATION
   baseUrl = environment.UTILITIES_BASE_URL;
 
+  // Date Object to map the due dates
+  dueDate = new Date(Date.now())
+
   /* Task Variables */
 
   // Task Assignee Variable
@@ -81,6 +84,14 @@ export class GroupCreatePostComponent implements OnInit {
 
     }
 
+  }
+
+  /**
+   * This function is responsible for receiving the date from @module <app-date-picker></app-date-picker>
+   * @param dateObject 
+   */
+  getDate(dateObject: any){
+    this.dueDate =  new Date(dateObject.year, dateObject.month-1, dateObject.day)
   }
 
   // Check if the data provided is not empty{}
