@@ -203,3 +203,8 @@ volumes:
       type: none
       device: ${PWD}/data/uploads
       o: bind
+
+networks:
+  octonius:
+    driver: overlay
+    attachable: true
