@@ -37,27 +37,27 @@ export const environment = {
   
     // Mailing URLs
     MAILING_BASE_URL: 'http://localhost:2000',
-    MAILING_BASE_API_URL: 'http://localhost:2000/api',
+    MAILING_BASE_API_URL: 'http://localhost:8080/api/mails',
   
     // Authentication URLs
     AUTH_BASE_URL: 'http://localhost:3000',
-    AUTH_BASE_API_URL: 'http://localhost:3000/api',
+    AUTH_BASE_API_URL: 'http://localhost:8080/api/auths',
   
     // Groups URLs
     GROUPS_BASE_URL: 'http://localhost:4000',
-    GROUPS_BASE_API_URL: 'http://localhost:4000/api',
+    GROUPS_BASE_API_URL: 'http://localhost:8080/api/groups',
   
     // Workspace URLs
     WORKSPACE_BASE_URL: 'http://localhost:5000',
-    WORKSPACE_BASE_API_URL: 'http://localhost:5000/api',
+    WORKSPACE_BASE_API_URL: 'http://localhost:8080/api/workspaces',
   
     // User URLs
     USER_BASE_URL: 'http://localhost:7000',
-    USER_BASE_API_URL: 'http://localhost:7000/api',
+    USER_BASE_API_URL: 'http://localhost:8080/api/users',
   
     // Posts URLs
     POST_BASE_URL: 'http://localhost:8000',
-    POST_BASE_API_URL: 'http://localhost:8000/api',
+    POST_BASE_API_URL: 'http://localhost:8080/api/posts',
   
     // Sockets URLs
     SOCKETS_BASE_URL: 'ws://localhost:9000',

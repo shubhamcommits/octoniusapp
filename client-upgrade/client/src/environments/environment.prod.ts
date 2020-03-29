@@ -33,32 +33,33 @@ export const environment = {
 
   // Mailing URLs
   MAILING_BASE_URL: 'http://localhost:2000',
-  MAILING_BASE_API_URL: 'http://localhost:2000/api',
+  MAILING_BASE_API_URL: 'http://flash.octonius.com/api/mails',
 
   // Authentication URLs
   AUTH_BASE_URL: 'http://localhost:80',
-  AUTH_BASE_API_URL: 'http://localhost:80/api/auths',
+  AUTH_BASE_API_URL: 'http://flash.octonius.com/api/auths',
 
   // Groups URLs
   GROUPS_BASE_URL: 'http://localhost:4000',
-  GROUPS_BASE_API_URL: 'http://localhost:4000/api',
+  GROUPS_BASE_API_URL: 'http://flash.octonius.com/api/groups',
 
   // Workspace URLs
   WORKSPACE_BASE_URL: 'http://localhost:5000',
-  WORKSPACE_BASE_API_URL: 'http://localhost:5000/api',
+  WORKSPACE_BASE_API_URL: 'http://flash.octonius.com/api/workspaces',
 
   // User URLs
   USER_BASE_URL: 'http://localhost:7000',
-  USER_BASE_API_URL: 'http://localhost:7000/api',
+  USER_BASE_API_URL: 'http://flash.octonius.com/api/users',
 
   // Posts URLs
   POST_BASE_URL: 'http://localhost:8000',
-  POST_BASE_API_URL: 'http://localhost:8000/api',
+  POST_BASE_API_URL: 'http://flash.octonius.com/api/posts',
 
   // Sockets URLs
-  SOCKETS_BASE_URL: 'http://localhost:9000',
-  SOCKETS_BASE_API_URL: 'http://localhost:9000/api',
+  SOCKETS_BASE_URL: 'wss://flash.octonius.com',
+  SOCKETS_BASE_API_URL: 'https://flash.octonius.com/api/sockets',
 
   // Utilities URLs
-  UTILITIES_BASE_URL: 'http://localhost:10000',
+  UTILITIES_BASE_URL: 'https://flash.octonius.com/uploads',
+  UTILITIES_BASE_API_URL: 'https://flash.octonius.com/api/utilities'
 };
