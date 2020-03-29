@@ -21,7 +21,7 @@ export class WorkspaceService {
    * @param workspaceId 
    */
   getWorkspace(workspaceId: string) {
-    return this._http.get<any>(this.BASE_API_URL + '/workspaces/' + workspaceId);
+    return this._http.get<any>(this.BASE_API_URL + '/' + workspaceId);
   }
 
   /**
@@ -35,7 +35,7 @@ export class WorkspaceService {
     let formData = new FormData();
     formData.append('workspace_avatar', workspaceAvatar)
 
-    return this._http.put<any>(this.BASE_API_URL + `/workspaces/${workspaceId}`, formData);
+    return this._http.put<any>(this.BASE_API_URL + `/${workspaceId}`, formData);
   }
 
   /**
@@ -90,7 +90,7 @@ export class WorkspaceService {
    * @param query 
    */
   searchWorkspaceMembers(workspaceId: string, query: string) {
-    return this._http.post(this.BASE_API_URL + `/workspaces/query/members/${workspaceId}`, { query })
+    return this._http.post(this.BASE_API_URL + `/query/members/${workspaceId}`, { query })
       .toPromise()
       .catch((err: Error) => {
         console.log('test');
@@ -103,7 +103,7 @@ export class WorkspaceService {
    * @param query 
    */
   searchNextWorkspaceMembers(workspaceId: string, query: string) {
-    return this._http.post(this.BASE_API_URL + `/workspaces/next/query/members/${workspaceId}`, { query });
+    return this._http.post(this.BASE_API_URL + `/next/query/members/${workspaceId}`, { query });
   }
 
   /* | ======================================= BILLING ========================================== | */
@@ -173,7 +173,7 @@ export class WorkspaceService {
    * @param query The email domains to search for.
    */
   getUniqueEmailDomains(workspaceId: string, query: string): Observable<any> {
-    return this._http.get<any>(`${this.BASE_API_URL}/workspaces/emailDomains/${workspaceId}/${query}`);
+    return this._http.get<any>(`${this.BASE_API_URL}/emailDomains/${workspaceId}/${query}`);
   }
 
   /**
@@ -184,7 +184,7 @@ export class WorkspaceService {
    * @param query The job positions to search for.
    */
   getUniqueJobPositions(workspaceId: string, query: string): Observable<any> {
-    return this._http.get<any>(`${this.BASE_API_URL}/workspaces/jobPositions/${workspaceId}/${query}`);
+    return this._http.get<any>(`${this.BASE_API_URL}/jobPositions/${workspaceId}/${query}`);
   }
 
   /**
@@ -195,6 +195,6 @@ export class WorkspaceService {
    * @param query The skills to search for.
    */
   getUniqueSkills(workspaceId: string, query: string): Observable<any> {
-    return this._http.get<any>(`${this.BASE_API_URL}/workspaces/skills/${workspaceId}/${query}`);
+    return this._http.get<any>(`${this.BASE_API_URL}/skills/${workspaceId}/${query}`);
   }
 }

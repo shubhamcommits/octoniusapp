@@ -19,7 +19,7 @@ export class UserService {
    * This function fetches the details of the currently loggedIn user
    */
   getUser(): Observable<any> {
-    return this._http.get(this.BASE_API_URL + `/users`)
+    return this._http.get(this.BASE_API_URL + `/`)
   }
 
   /**
@@ -27,7 +27,7 @@ export class UserService {
    * @param userId 
    */
   getOtherUser(userId: string): Observable<any> {
-    return this._http.get(this.BASE_API_URL + `/users/${userId}`);
+    return this._http.get(this.BASE_API_URL + `/${userId}`);
   }
 
   /* | ======================================= USER DETAILS ========================================== | */
@@ -37,7 +37,7 @@ export class UserService {
    * @param userData 
    */
   updateUser(userData: Object) {
-    return this._http.put(this.BASE_API_URL + `/users`, userData)
+    return this._http.put(this.BASE_API_URL + `/`, userData)
       .toPromise();
 
   }
@@ -53,7 +53,7 @@ export class UserService {
     let formData = new FormData();
     formData.append('profileImage', fileToUpload)
 
-    return this._http.put(this.BASE_API_URL + `/users/image`, formData);
+    return this._http.put(this.BASE_API_URL + `/image`, formData);
   }
 
 
@@ -71,7 +71,7 @@ export class UserService {
     }
 
     // Call the API
-    return this._http.put(this.BASE_API_URL + '/users/update-role', userData)
+    return this._http.put(this.BASE_API_URL + '/update-role', userData)
     .toPromise();
   }
 
@@ -81,14 +81,14 @@ export class UserService {
    * This function fetches the skill set array of current loggedIn user
    */
   getUserSkills() {
-    return this._http.get(this.BASE_API_URL + `/users/skills/`);
+    return this._http.get(this.BASE_API_URL + `/skills/`);
   }
 
   /**
    * This function fetches the skill set array of current loggedIn user
    */
   searchSkills(skill: string) {
-    return this._http.get(this.BASE_API_URL + `/users/skills/list`, {
+    return this._http.get(this.BASE_API_URL + `/skills/list`, {
       params: {
         skill: skill.toString().trim()
       }
@@ -100,7 +100,7 @@ export class UserService {
    * @param skill 
    */
   addSkill(skill: string): Observable<any> {
-    return this._http.post(this.BASE_API_URL + `/users/skills/${skill}`, '');
+    return this._http.post(this.BASE_API_URL + `/skills/${skill}`, '');
   }
 
   /**
@@ -108,7 +108,7 @@ export class UserService {
    * @param skill 
    */
   removeSkill(skill: string): Observable<any> {
-    return this._http.delete(this.BASE_API_URL + `/users/skills/${skill}`);
+    return this._http.delete(this.BASE_API_URL + `/skills/${skill}`);
   }
 
   /* | ======================================= USER SKILLS ========================================== | */
@@ -119,42 +119,42 @@ export class UserService {
   }
 
   getUserTasks(): Observable<any> {
-    return this._http.get<any>(this.BASE_API_URL + `/users/tasks`);
+    return this._http.get<any>(this.BASE_API_URL + `/tasks`);
   }
 
   getCompletedUserTasks(): Observable<any> {
-    return this._http.get<any>(this.BASE_API_URL + `/users/tasksDone`);
+    return this._http.get<any>(this.BASE_API_URL + `/tasksDone`);
   }
 
   getRecentUserTasks(postId: string): Observable<any> {
-    return this._http.get<any>(this.BASE_API_URL + `/users/nextTasksDone/${postId}`);
+    return this._http.get<any>(this.BASE_API_URL + `/nextTasksDone/${postId}`);
   }
 
   getUserCalendarPosts(data: any): Observable<any> {
-    return this._http.get(this.BASE_API_URL + `/groups/${data.groupId}/user/${data.userId}/calendar/${data.year}/${data.month}`);
+    return this._http.get(this.BASE_API_URL + `/${data.groupId}/user/${data.userId}/calendar/${data.year}/${data.month}`);
   }
 
   getUserTodayEvents(data) {
-    return this._http.get(this.BASE_API_URL + `/users/${data.userId}/todayEvents`);
+    return this._http.get(this.BASE_API_URL + `/${data.userId}/todayEvents`);
   }
 
   getUserThisWeekEvents(data) {
-    return this._http.get(this.BASE_API_URL + `/users/${data.userId}/weeklyEvents`);
+    return this._http.get(this.BASE_API_URL + `/${data.userId}/weeklyEvents`);
   }
 
   getLikedPostsCount() {
-    return this._http.get<any>(this.BASE_API_URL + `/users/likedPostsCount`);
+    return this._http.get<any>(this.BASE_API_URL + `/likedPostsCount`);
   }
 
   getFollowedPostsCount() {
-    return this._http.get<any>(this.BASE_API_URL + `/users/followedPostsCount`);
+    return this._http.get<any>(this.BASE_API_URL + `/followedPostsCount`);
   }
 
   /**
    * USER TODAY'S TASK
    */
   getUserTodayTasks() {
-    return this._http.get(this.BASE_API_URL + `/users/todayTasks`).toPromise();
+    return this._http.get(this.BASE_API_URL + `/todayTasks`).toPromise();
   }
 
   /**

@@ -62,7 +62,7 @@ export class AuthService {
    * @param workspaceData : { workspace_name: string }
    */
   checkWorkspaceName(workspaceData: Object) {
-    return this.httpClient.get(this.WORKSPACE_BASE_API_URL + '/workspaces/check-availability', workspaceData).toPromise();
+    return this.httpClient.get(this.WORKSPACE_BASE_API_URL + '/check-availability', workspaceData).toPromise();
   }
 
   /**
@@ -77,7 +77,7 @@ export class AuthService {
    * @param workspaceData : { owner_first_name: string, owner_last_name: string, owner_email: string, company_name: string, workspace_name: string, owner_password: string }
    */
   createNewWorkspace(workspaceData: Object) {
-    return this.httpClient.post(this.WORKSPACE_BASE_API_URL + '/workspaces/', workspaceData).toPromise();
+    return this.httpClient.post(this.WORKSPACE_BASE_API_URL + '/', workspaceData).toPromise();
   }
 
   /**

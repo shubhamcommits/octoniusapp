@@ -85,7 +85,7 @@ export class GroupsService {
    * @param userId 
    */
   createGroup(groupName: string, workspace_name: string, workspaceId: string, userId: string, type: string) {
-    return this._http.post(this.baseURL + `/groups`, {
+    return this._http.post(this.baseURL + `/`, {
       group_name: groupName,
       workspace_name: workspace_name,
       workspaceId: workspaceId,
@@ -100,7 +100,7 @@ export class GroupsService {
    * @param userId 
    */
   getUserGroups(workspaceId: string, userId: string){
-    return this._http.get(this.baseURL + `/groups`, {
+    return this._http.get(this.baseURL + `/`, {
       params: {
         workspaceId,
         userId
@@ -115,7 +115,7 @@ export class GroupsService {
    * @param lastGroupId 
    */
   getNextUserGroups(workspaceId: string, userId: string, lastGroupId: string){
-    return this._http.get(this.baseURL + `/groups/${lastGroupId}/next`, {
+    return this._http.get(this.baseURL + `/${lastGroupId}/next`, {
       params: {
         workspaceId,
         userId
