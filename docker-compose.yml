@@ -4,12 +4,13 @@ services:
 
   mongodb:
     container_name: mongodb
+    command: mongod --port 27018
     image: mvertes/alpine-mongo:latest
     restart: always
     volumes:
       - data_db:/data/db
     ports:
-      - 27017:27018
+      - 27018:27018
     networks:
       - gateway
       
