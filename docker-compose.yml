@@ -9,7 +9,7 @@ services:
     volumes:
       - data_db:/data/db
     ports:
-      - 27018:27017
+      - 27017:27018
     networks:
       - gateway
       
@@ -36,7 +36,7 @@ services:
     container_name: auths-server
     image: auths:server
     ports:
-      - 3002:3000
+      - 3000:3002
     restart: always
     build:
       dockerfile: Dockerfile
@@ -197,7 +197,7 @@ services:
       dockerfile: Dockerfile
       context: ./nginx
     ports:
-      - 8080:80
+      - 80:8080
     depends_on:
       - mailing-server
       - auths-server
