@@ -20,7 +20,7 @@ export class WorkspaceController {
     async checkWorkspaceAvailability(req: Request, res: Response, next: NextFunction) {
         try {
 
-            let { workspace_name } = req.query;
+            let { workspace_name } = req.body;
 
             // Find the workspace on the basis of workspace_name
             const workspace = await Workspace.findOne({ workspace_name: workspace_name })
