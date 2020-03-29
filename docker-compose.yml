@@ -10,7 +10,9 @@ services:
       - data_db:/data/db
     ports:
       - 27017:27017
-
+    networks:
+      - gateway
+      
   mailing-server:
     container_name: mailing-server
     image: mailing:server
@@ -27,7 +29,9 @@ services:
       - mongodb
     links:
       - mongodb
-
+    networks:
+      - gateway
+      
   auths-server:
     container_name: auths-server
     image: auths:server
@@ -44,7 +48,9 @@ services:
       - mongodb
     links:
       - mongodb
-    
+    networks:
+      - gateway
+         
   groups-server:
     container_name: groups-server
     image: groups:server
@@ -61,7 +67,9 @@ services:
       - mongodb
     links:
       - mongodb
-
+    networks:
+      - gateway
+      
   workspaces-server:
     container_name: workspaces-server
     image: workspaces:server
@@ -78,7 +86,9 @@ services:
       - mongodb
     links:
       - mongodb
-
+    networks:
+      - gateway
+      
   users-server:
     container_name: users-server
     image: users:server
@@ -95,7 +105,9 @@ services:
       - mongodb
     links:
       - mongodb
-
+    networks:
+      - gateway
+      
   posts-server:
     container_name: posts-server
     image: posts:server
@@ -112,7 +124,9 @@ services:
       - mongodb
     links:
       - mongodb
-
+    networks:
+      - gateway
+      
   sockets-server:
     container_name: sockets-server
     image: sockets:server
@@ -129,7 +143,9 @@ services:
       - mongodb
     links:
       - mongodb
-
+    networks:
+      - gateway
+      
   utilities-server:
     container_name: utilities-server
     image: utilities:server
@@ -146,7 +162,9 @@ services:
       - mongodb
     links:
       - mongodb
-
+    networks:
+      - gateway
+      
   client:
     container_name: client
     image: client
@@ -168,6 +186,8 @@ services:
       - posts-server
       - sockets-server
       - utilities-server
+    networks:
+      - gateway
 
   nginx:
     container_name: nginx
@@ -188,6 +208,8 @@ services:
       - sockets-server
       - utilities-server
       - client
+    networks:
+      - gateway
 
 volumes:
   data_db:
@@ -203,8 +225,6 @@ volumes:
       type: none
       device: ${PWD}/data/uploads
       o: bind
-
+      
 networks:
-  octonius:
-    driver: overlay
-    attachable: true
+  gateway: {}
