@@ -66,6 +66,7 @@
     "@types/jasmine": "~3.5.0",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "~12.12.14",
+    "@babel/compat-data": "~7.8.0",
     "codelyzer": "^5.0.0",
     "electron": "^7.1.2",
     "electron-builder": "^21.2.0",
