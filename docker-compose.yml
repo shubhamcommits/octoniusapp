@@ -2,16 +2,16 @@ version: "3.3"
 
 services:
 
-  mongo:
-    container_name: mongo
-    image: mvertes/alpine-mongo:latest
-    restart: always
-    volumes:
-      - data_db:/data/db
-    ports:
-      - 27019:27017
-    networks:
-      - gateway
+  # mongodb:
+  #   container_name: mongodb
+  #   image: mvertes/alpine-mongo:latest
+  #   restart: always
+  #   volumes:
+  #     - data_db:/data/db
+  #   ports:
+  #     - 27019:27017
+  #   networks:
+  #     - gateway
       
   mailing-server:
     container_name: mailing-server
@@ -25,10 +25,10 @@ services:
     volumes:
       # Avoid overwriting container's node_modules folder
       - /usr/app/node_modules
-    depends_on:
-      - mongo
-    links:
-      - mongo
+    # depends_on:
+    #   - mongodb
+    # links:
+    #   - mongodb
     networks:
       - gateway
       
@@ -44,10 +44,10 @@ services:
     volumes:
       # Avoid overwriting container's node_modules folder
       - /usr/app/node_modules
-    depends_on:
-      - mongo
-    links:
-      - mongo
+    # depends_on:
+    #   - mongodb
+    # links:
+    #   - mongodb
     networks:
       - gateway
          
@@ -63,10 +63,10 @@ services:
     volumes:
       # Avoid overwriting container's node_modules folder
       - /usr/app/node_modules
-    depends_on:
-      - mongo
-    links:
-      - mongo
+    # depends_on:
+    #   - mongodb
+    # links:
+    #   - mongodb
     networks:
       - gateway
       
@@ -82,10 +82,10 @@ services:
     volumes:
       # Avoid overwriting container's node_modules folder
       - /usr/app/node_modules
-    depends_on:
-      - mongo
-    links:
-      - mongo
+    # depends_on:
+    #   - mongodb
+    # links:
+    #   - mongodb
     networks:
       - gateway
       
@@ -101,10 +101,10 @@ services:
     volumes:
       # Avoid overwriting container's node_modules folder
       - /usr/app/node_modules
-    depends_on:
-      - mongo
-    links:
-      - mongo
+    # depends_on:
+    #   - mongodb
+    # links:
+    #   - mongodb
     networks:
       - gateway
       
@@ -120,10 +120,10 @@ services:
     volumes:
       # Avoid overwriting container's node_modules folder
       - /usr/app/node_modules
-    depends_on:
-      - mongo
-    links:
-      - mongo
+    # depends_on:
+    #   - mongodb
+    # links:
+    #   - mongodb
     networks:
       - gateway
       
@@ -139,10 +139,10 @@ services:
     volumes:
       # Avoid overwriting container's node_modules folder
       - /usr/app/node_modules
-    depends_on:
-      - mongo
-    links:
-      - mongo
+    # depends_on:
+    #   - mongodb
+    # links:
+    #   - mongodb
     networks:
       - gateway
       
@@ -158,10 +158,10 @@ services:
     volumes:
       # Avoid overwriting container's node_modules folder
       - /usr/app/node_modules
-    depends_on:
-      - mongo
-    links:
-      - mongo
+    # depends_on:
+    #   - mongodb
+    # links:
+    #   - mongodb
     networks:
       - gateway
       
