@@ -132,7 +132,7 @@ import { WorkspaceService } from './shared/services/workspace.service';
 import { AuthGuard } from './shared/guards/auth.guard';
 import { DenyNavigationGuard } from "./shared/guards/deny-navigation.guard";
 import { NotAuthGuard } from './shared/guards/not-auth.guard';
-import { ValidSubscriptionGuard } from "./shared/guards/valid-subscription.guard";
+// import { ValidSubscriptionGuard } from "./shared/guards/valid-subscription.guard";
 
 
 /**
@@ -256,7 +256,8 @@ import { AdminPageHeaderComponent } from './dashboard/admin/admin-page-header/ad
     SearchService, SnotifyService, UserService, WorkspaceService,
     // GUARDS
     DenyNavigationGuard, AuthGuard,
-    NotAuthGuard, ValidSubscriptionGuard,
+    NotAuthGuard, 
+    // ValidSubscriptionGuard,
     // PROVIDERS
     { provide: 'SnotifyToastConfig', useValue: ToastDefaults },
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true },
