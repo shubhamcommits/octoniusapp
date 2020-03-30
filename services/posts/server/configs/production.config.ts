@@ -12,7 +12,7 @@ function prodConfigInit() {
   process.env.JWT_KEY = 'asfsaf12safas23fsafa12sf';  
 
   // DATABASE CONNECTIONS
-  process.env.dbURL = 'mongodb://mongodb:27017/octonius' || 'mongodb://127.0.0.1:27017/octonius';
+  process.env.dbURL = 'mongodb://mongo:27017/octonius' || 'mongodb://127.0.0.1:27017/octonius';
 
   // REDIS 
   process.env.REDIS_HOST = 'redis';
