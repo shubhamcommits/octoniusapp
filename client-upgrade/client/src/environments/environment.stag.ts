@@ -8,7 +8,7 @@ export const environment = {
     protocol: 'https://',
 
     // Domain Name
-    domain: 'flash.octonius.com',
+    domain: 'localhost',
   
     // Base URLs
     BASE_API_URL: 'http://localhost:3000/api',

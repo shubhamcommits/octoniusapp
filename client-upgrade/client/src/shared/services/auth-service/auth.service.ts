@@ -61,8 +61,12 @@ export class AuthService {
    * @name workspace_name
    * @param workspaceData : { workspace_name: string }
    */
-  checkWorkspaceName(workspaceData: Object) {
-    return this.httpClient.get(this.WORKSPACE_BASE_API_URL + '/check-availability', workspaceData).toPromise();
+  checkWorkspaceName(workspaceData: any) {
+    return this.httpClient.get(this.WORKSPACE_BASE_API_URL + '/check-availability', {
+      params :{
+        workspace_name: workspaceData.workspace_name
+      }
+    }).toPromise();
   }
 
   /**
