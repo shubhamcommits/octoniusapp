@@ -2,6 +2,8 @@ import { Notification } from "../models";
 import { Response, Request, NextFunction } from "express";
 import { sendError } from "../../utils";
 import { NotificationsService } from "../service";
+import { sendErr } from "../../utils/sendError";
+import { validateId } from "../../utils/helperFunctions";
 
 // Creating Service class in order to build wrapper class
 const notificationService = new NotificationsService()
@@ -17,23 +19,23 @@ export class NotificationsController {
      * This function is responsible for notifying the user on mention on new comment
      * @param { _id, _content_mentions, _commented_by, _post } comment 
      */
-    async newCommentMentions(req: Request, res: Response, neext: NextFunction) {
+    async newCommentMentions(req: Request, res: Response, next: NextFunction) {
 
-        // Yaha se comment object lele
         const { comment } = req.body;
 
         try {
 
             // Call Service Function for newCommentMentions
-            await notificationService.newCommentMentions(comment);
-
-            // Send status 200 response
-            return res.status(200).json({
-                message: `Comment Mentions succeded!`,
+            await notificationService.newCommentMentions(comment).then(() => {
+                return res.status(200).json({
+                    message: `Comment Mentions succeded!`,
+                });
+            }).catch(err => {
+                return sendError(res, new Error(err), 'Internal Server Error!', 500);
             });
 
         } catch (err) {
-            // ab yaha se error catch ho jaega
+            // Error Handling
             return sendError(res, new Error(err), 'Internal Server Error!', 500);
         }
     };
@@ -42,19 +44,21 @@ export class NotificationsController {
      * This function is responsible to notifying all the user on assigning of a new event to them
      * @param { _id, event._assigned_to, _posted_by } post 
      */
-    async newEventAssignments(post: any) {
+    async newEventAssignments(req: Request, res: Response, next: NextFunction) {
+
+        const { post } = req.body;
         try {
-            await post.event._assigned_to.forEach(async (user: any) => {
-                const notification = await Notification.create({
-                    _actor: post._posted_by,
-                    _owner: user,
-                    _origin_post: post._id,
-                    message: 'assigned an event to you.',
-                    type: 'assignment'
-                });
+
+            // Call Service Function for newEventAssignments
+            await notificationService.newEventAssignments(post);
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: `Event Assignments succeded!`,
             });
         } catch (err) {
-            return err;
+            // Error Handling
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
         }
     };
 
@@ -62,19 +66,21 @@ export class NotificationsController {
      * This function is responsible for notifying the user on mention on new post
      * @param { _id, _posted_by, _content_mentions } post 
      */
-    async newPostMentions(post: any) {
+    async newPostMentions(req: Request, res: Response, next: NextFunction) {
+
+        const { post } = req.body;
         try {
-            await post._content_mentions.forEach(async (user: any) => {
-                const notification = await Notification.create({
-                    _actor: post._posted_by,
-                    _owner: user,
-                    _origin_post: post._id,
-                    message: 'mentioned you in a post.',
-                    type: 'mention'
-                });
+            
+            // Call Service function for newPostMentions
+            await notificationService.newPostMentions(post);
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'New Post Mention succeded!'
             });
         } catch (err) {
-            return err;
+            // Error Handling
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
         }
     };
 
@@ -82,17 +88,21 @@ export class NotificationsController {
      * This function is responsible to notifying all the user on assigning of a new task to them
      * @param { _id, task._assigned_to, _posted_by } post 
      */
-    async newTaskAssignment(post: any) {
+    async newTaskAssignment(req: Request, res: Response, next: NextFunction) {
+
+        const { post } = req.body;
         try {
-            const notification = await Notification.create({
-                _actor: post._posted_by,
-                _owner: post.task._assigned_to,
-                _origin_post: post._id,
-                message: 'assigned a task to you.',
-                type: 'assignment'
+            
+            // Call Service Function for newTaskAssignments
+            await notificationService.newTaskAssignment(post);
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'New Task Assignment Succeded!'
             });
         } catch (err) {
-            return err;
+            // Error Handling
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
         }
     };
 
@@ -100,17 +110,22 @@ export class NotificationsController {
      * This function is responsible to notifying all the user on re-assigning of a new task to them
      * @param { _id, task._assigned_to, _posted_by } postUpdated 
      */
-    async newTaskReassignment(postUpdated: any) {
+    async newTaskReassignment(req: Request, res: Response, next: NextFunction) {
+
+        const { postUpdated } = req.body;
+
         try {
-            const notification = await Notification.create({
-                _actor: postUpdated._posted_by,
-                _owner: postUpdated.task._assigned_to,
-                _origin_post: postUpdated._id,
-                message: 'reassigned a task to you.',
-                type: 'assignment'
+            
+            // Call Service function for newTaskReassignment
+            await notificationService.newTaskReassignment(postUpdated);
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'New Task Reassignment Succeded!'
             });
         } catch (err) {
-            return err;
+            // Error Handling
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
         }
     };
 
@@ -118,23 +133,30 @@ export class NotificationsController {
      * This function is responsible for fetching the latest first 5 read notifications
      * @param userId 
      */
-    async getRead(userId: string) {
-        try {
-            const notifications = await Notification.find({
-                _owner: userId,
-                read: true
-            })
-                .limit(5)
-                .sort('-created_date')
-                .populate('_actor', 'first_name last_name profile_pic')
-                .populate('_origin_post', '_group')
-                .populate('_origin_comment', '_post')
-                .populate('_owner', 'first_name last_name profile_pic')
-                .lean();
+    async getRead(req: Request, res: Response, next: NextFunction) {
 
-            return notifications;
+        const { userId } = req.body;
+
+        // Validate userID
+        if (!validateId(userId)){
+            return sendErr(res, new Error('Invalid ObjectId'), 'The ObjectId you entered is invalid!', 500);
+        }
+        try {
+            
+            // Call service function for getRead
+            await notificationService.getRead(userId).then(notifications => {
+                    return res.status(200).json({
+                    message: 'Notification successfully retrieved',
+                    notifications: notifications
+                });
+            }).catch(err => {
+                return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+            });
+
+
         } catch (err) {
-            return err;
+            // Error Handling
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
         }
     };
 
@@ -142,22 +164,28 @@ export class NotificationsController {
      * This function is responsible for fetching the latest first 5 un-read notifications
      * @param userId 
      */
-    async getUnread(userId: string) {
-        try {
-            const notifications = await Notification.find({
-                _owner: userId,
-                read: false
-            })
-                .sort('-created_date')
-                .populate('_actor', 'first_name last_name profile_pic')
-                .populate('_origin_post', '_group')
-                .populate('_origin_comment', '_post')
-                .populate('_owner', 'first_name last_name profile_pic')
-                .lean();
+    async getUnread(req: Request, res: Response, next: NextFunction) {
 
-            return notifications;
+        const { userId } = req.body;
+
+        // Validate userId
+        if (!validateId(userId)){
+            return sendErr(res, new Error('Invalid ObjectId'), 'The ObjectId you entered is invalid!', 500);
+        }
+        try {
+
+            // Call service function for getUnread
+            await notificationService.getUnread(userId).then(notifications => {
+                return res.status(200).json({
+                    message: 'Successfully retrieved unread notifications',
+                    notifications: notifications
+                });
+            }).catch(err => {
+                return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+            })
         } catch (err) {
-            return err;
+            // Error Handling
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
         }
     };
 
@@ -165,22 +193,20 @@ export class NotificationsController {
      * This function is responsible for fetching the marking the notifications to read
      * @param topListId 
      */
-    async markRead(topListId: string) {
-        try {
-            const markRead = await Notification.updateMany({
-                $and: [
-                    { read: false },
-                    { _id: { $lte: topListId } }
-                ]
-            }, {
-                $set: {
-                    read: true
-                }
-            });
+    async markRead(req: Request, res: Response, next: NextFunction) {
 
-            return true;
+        const { topListId } = req.body;
+        try{
+        // Call service function for markRead
+        await notificationService.markRead(topListId).then(updated => {
+            return res.status(200).json({
+                message: updated
+            });
+        }).catch(err => {
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        })
         } catch (err) {
-            return err;
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
         }
     };
 }

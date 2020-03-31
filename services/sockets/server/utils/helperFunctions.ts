@@ -1,4 +1,5 @@
 import { NotificationsService } from "../api/service"
+const ObjectId = require('mongoose').Types.ObjectId;
 
 // Create Notifications controller class
 const notifications = new NotificationsService()
@@ -43,6 +44,24 @@ async function sendNotificationsFeed(socket: any, userId: string, io: any) {
     console.log('Notifications Sent!')
 };
 
+/**
+ * This function is used to validate an ObjectId
+ * @param id
+ */
+
+function validateId(id: any){
+    var stringId: String = id.toString();
+    if (!ObjectId.isValid(stringId)){
+        return false;
+    }
+    var result = new ObjectId(stringId);
+    if (result.toString() != stringId){
+        return false;
+    }
+    return true;
+}
+
+
 /*  =======================
  *  --  HELPER FUNCTIONS --
  *  =======================
@@ -56,5 +75,8 @@ export {
     generateFeed,
 
     // SEND NOTIFICATIONS FEED
-    sendNotificationsFeed
+    sendNotificationsFeed,
+
+    // Validate ObjectId
+    validateId
 }
