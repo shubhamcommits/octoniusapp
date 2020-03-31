@@ -65,6 +65,8 @@ export class DomainsControllers {
 
             const { workspaceId } = req.query;
 
+            console.log(req.query)
+
             // If either workspaceId is null or not provided then we throw BAD REQUEST 
             if (!workspaceId) {
                 return res.status(400).json({
@@ -73,7 +75,7 @@ export class DomainsControllers {
             }
 
             // Find the list of domains
-            const domains: any = await Workspace.findOne({ _id: workspaceId })
+            const domains: any = await Workspace.findById({ _id: workspaceId })
                 .select('allowed_domains')
 
             // Unable to find the domains

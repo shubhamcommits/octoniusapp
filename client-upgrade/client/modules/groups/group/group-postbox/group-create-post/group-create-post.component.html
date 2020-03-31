@@ -46,7 +46,7 @@
     <input name="postTitle" type="text" class="post-title" placeholder="Insert title here ..." />
     <app-quill-editor (content)="getQuillData($event)"></app-quill-editor>
     <div class="btn-group attach-files">
-      <app-attach-files></app-attach-files>
+      <app-attach-files (files)="onAttach($event)"></app-attach-files>
       <app-attach-cloud-files></app-attach-cloud-files>
     </div>
   </div>

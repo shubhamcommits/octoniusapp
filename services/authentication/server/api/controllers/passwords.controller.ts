@@ -113,13 +113,16 @@ export class PasswordsControllers {
             }
 
             // Send email to user using mailing microservice
-            await http.post('http://localhost:2000/api/mails/reset-password', {
+            await http.post('http://localhost:2000/api/reset-password', {
                 user: user,
                 workspace: workspace
             })
+            .catch((err)=>{
+                console.log(err)
+            })
 
             // Send the status 200 response 
-            res.status(200).json({
+            return res.status(200).json({
                 message: 'successfully sent email'
             });
         } catch (err) {

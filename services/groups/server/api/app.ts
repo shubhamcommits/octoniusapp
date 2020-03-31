@@ -69,9 +69,9 @@ app.all('/', (req: Request, res: Response, next: NextFunction) => {
 });
 
 // Correct REST naming
-app.use('/api', groupsRoutes);
 app.use('/api/members', memberRoutes);
 app.use('/api/pulse', pulseRoutes);
+app.use('/api', groupsRoutes);
 
 // Invalid routes handling middleware
 app.use((req: Request, res: Response, next: NextFunction) => {

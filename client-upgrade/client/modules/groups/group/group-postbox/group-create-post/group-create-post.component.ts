@@ -86,6 +86,10 @@ export class GroupCreatePostComponent implements OnInit {
 
   }
 
+  onAttach(files: any){
+    console.log(files)
+  }
+
   /**
    * This function is responsible for receiving the date from @module <app-date-picker></app-date-picker>
    * @param dateObject 

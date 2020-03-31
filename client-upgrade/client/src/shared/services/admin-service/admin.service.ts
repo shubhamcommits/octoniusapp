@@ -48,7 +48,7 @@ export class AdminService {
    * @param workspaceId 
    */
   getAllowedDomains(workspaceId: string) {
-    return this._http.get(this.baseURL + '/domains/', {
+    return this._http.get(this.baseURL + '/domains', {
       params: {
         workspaceId: workspaceId
       }

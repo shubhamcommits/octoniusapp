@@ -255,12 +255,12 @@ export class WorkspaceController {
             let token = await auths.generateToken(userUpdate, workspaceUpdate.workspace_name);
 
             // Send signup confirmation email using mailing microservice
-            await http.post('http://localhost:2000/api/mails/sign-up', {
+            await http.post('http://localhost:2000/api/sign-up', {
                 user: userUpdate
             })
 
             // Send new workspace confirmation email
-            await http.post('http://localhost:2000/api/mails/new-workspace', {
+            await http.post('http://localhost:2000/api/new-workspace', {
                 workspace: workspaceUpdate
             })
 
