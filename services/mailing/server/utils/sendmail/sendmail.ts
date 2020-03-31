@@ -4,7 +4,7 @@ import ejs from 'ejs';
 import fs from 'fs';
 import http from 'axios';
 import moment from "moment";
-import { Resetpwd } from "../../api/models";
+import { Resetpwd, User, Group } from "../../api/models";
 import { Response, Request, NextFunction } from "express";
 import { sendError } from "../../utils";
 
@@ -265,6 +265,264 @@ const joinedGroup = async (req: Request, res: Response, next: NextFunction) => {
     }
 };
 
+
+// =========================
+//          MENTIONS
+// ==========================
+
+// Send an email when a user is mentioned in a post
+const userMentionedPost = async (req: Request, res: Response, next: NextFunction) => {
+    
+    const { post, user } = req.body;
+    
+    try {
+      const emailType = 'userMentionedPost';
+  
+      // Generate email data
+      //  proposal to perhaps load these three lines parallel instead of waterfall, since their outcomes are not depending on each other
+      const to:any = await User.findById({ _id: user });
+      const from:any = await User.findById({ _id: post._posted_by });
+      const group:any = await Group.findById({ _id: post._group });
+  
+      const emailData = {
+        subject: subjects[emailType],
+        toName: to.first_name,
+        toEmail: to.email,
+        fromName: from.first_name,
+        fromEmail: from.email,
+        postContent: post.content,
+        workspace: group.workspace_name,
+        group: group.group_name,
+        link: defaults.signinLink,
+        postLink: defaults.postLink(group._id, post._id)
+      };
+  
+      // Generate email body from template
+      const emailBody = await generateEmailBody(emailType, emailData);
+  
+      // Send email
+      const send = await sendMail(emailBody, emailData);
+
+      return res.status(200).json({
+        message: 'User Mentioned Post mail sent'
+      });
+    } catch (err) {
+      // Error Handling
+      return sendError(res, new Error(err), 'Internal Server Error!', 500);
+    }
+  };
+  
+  // send an email when a user is mentioned in a comment
+  const userMentionedComment = async (req: Request, res: Response, next: NextFunction) => {
+      const { comment, post, user } = req.body;
+    try {
+      // const date = new Date();
+      // const date2 = moment('2019-01-11', 'YYYY-MM-DD').startOf('day').format();
+      // console.log(date2);
+  
+      const emailType = 'userMentionedComment';
+  
+      // Generate email data
+      //  proposal to perhaps load these three lines parallel instead of waterfall, since their outcomes are not depending on each other
+      const to:any = await User.findById({ _id: user });
+      const from:any = await User.findById({ _id: comment._commented_by._id });
+      const group:any = await Group.findById({ _id: post._group });
+  
+      const emailData = {
+        subject: subjects[emailType],
+        toName: to.first_name,
+        toEmail: to.email,
+        fromName: from.first_name,
+        fromEmail: from.email,
+        commentContent: comment.content,
+        workspace: group.workspace_name,
+        group: group.group_name,
+        link: defaults.signinLink,
+        postLink: defaults.postLink(group._id, post._id)
+      };
+  
+      // Generate email body from template
+      const emailBody = await generateEmailBody(emailType, emailData);
+  
+      // Send email
+      const send = await sendMail(emailBody, emailData);
+      return res.status(200).json({
+        message: 'User Mentioned Post mail sent'
+      });
+    } catch (err) {
+        return sendError(res, new Error(err), 'Internal Server Error!', 500);
+    }
+  };
+
+
+  // Send email when a task assigned to a user
+const taskAssigned = async (req: Request, res: Response, next: NextFunction) => {
+    const { taskPost } = req.body;
+    try {
+      const emailType = 'taskAssigned';
+  
+      // Generate email data
+      const to:any = await User.findById({ _id: taskPost.task._assigned_to });
+      const from:any = await User.findById({ _id: taskPost._posted_by });
+      const group:any = await Group.findById({ _id: taskPost._group });
+  
+      const emailData = {
+        subject: subjects[emailType],
+        toName: to.first_name,
+        toEmail: to.email,
+        fromName: from.first_name,
+        fromEmail: from.email,
+        contentTitle: taskPost.title,
+        contentPost: taskPost.content,
+        workspace: group.workspace_name,
+        group: group.group_name,
+        link: defaults.signinLink,
+        taskLink: defaults.postLink(group._id, taskPost._id)
+      };
+  
+      console.log('emailData', emailData);
+  
+      // Generate email body from template
+      const emailBody = await generateEmailBody(emailType, emailData);
+  
+      // Send email
+      const send = await sendMail(emailBody, emailData);
+      return res.status(200).json({
+        message: 'User Mentioned Post mail sent'
+      });
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      return sendError(res, new Error(err), 'Internal Server Error!', 500);
+    }
+  };
+
+
+  // Send email when a task assigned to a user
+const eventAssigned = async (req: Request, res: Response, next: NextFunction) => {
+    const { eventPost } = req.body;
+    try {
+      const emailType = 'eventAssigned';
+  
+      // Generate common email data
+      const from:any = await User.findById({ _id: eventPost._posted_by });
+      const group:any = await Group.findById({ _id: eventPost._group });
+  
+  
+      for (const userId of eventPost.event._assigned_to) {
+        const to:any = await User.findById({ _id: userId });
+  
+        // Generate email data
+        const emailData = {
+          subject: subjects[emailType],
+          toName: to.first_name,
+          toEmail: to.email,
+          fromName: from.first_name,
+          contentTitle: eventPost.title,
+          contentPost: eventPost.content,
+          fromEmail: from.email,
+          workspace: group.workspace_name,
+          group: group.group_name,
+          link: defaults.signinLink,
+          postLink: defaults.postLink(group._id, eventPost._id)
+        };
+  
+        // Generate email body from template
+        const emailBody = await generateEmailBody(emailType, emailData);
+  
+        // Send email
+        const send = await sendMail(emailBody, emailData);
+        return res.status(200).json({
+            message: 'User Mentioned Post mail sent'
+          });
+      }
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      return sendError(res, new Error(err), 'Internal Server Error!', 500);
+    }
+  };
+
+
+  // =========================
+//          REMINDERS
+// ==========================
+
+const scheduleTaskReminder = async (req: Request, res: Response, next: NextFunction) => {
+    const { post } = req.body;
+    try {
+      const emailType = 'scheduleTaskReminder';
+  
+      const to:any = await User.findById({ _id: post.task._assigned_to });
+      const from:any = await User.findById({ _id: post._posted_by });
+      const group:any = await Group.findById({ _id: post._group });
+  
+      const emailData = {
+        subject: subjects[emailType],
+        toName: to.first_name,
+        toEmail: to.email,
+        fromName: from.first_name,
+        fromEmail: from.email,
+        postTitle: post.title,
+        postContent: post.content,
+        workspace: group.workspace_name,
+        group: group.group_name,
+        link: defaults.signinLink,
+        postLink: defaults.postLink(group._id, post._id)
+      };
+  
+      // Generate email body from template
+      const emailBody = await generateEmailBody(emailType, emailData);
+  
+      // Send email
+      const send = await sendMail(emailBody, emailData, { date: moment.utc(post.task.due_to, 'YYYY-MM-DD').startOf('day').format() });
+      return res.status(200).json({
+        message: 'User Mentioned Post mail sent'
+      });
+    } catch (err) {
+        return sendError(res, new Error(err), 'Internal Server Error!', 500);
+
+    }
+  };
+  
+  const scheduleEventReminder = async (req: Request, res: Response, next: NextFunction) => {
+      const { post } = req.body;
+    try {
+      const emailType = 'scheduleEventReminder';
+  
+      const from:any = await User.findById({ _id: post._posted_by });
+      const group:any = await Group.findById({ _id: post._group });
+  
+      post.event._assigned_to.forEach(async (user) => {
+        const to:any = await User.findById({ _id: user });
+  
+        const emailData = {
+          subject: subjects[emailType],
+          toName: to.first_name,
+          toEmail: to.email,
+          fromName: from.first_name,
+          fromEmail: from.email,
+          postTitle: post.title,
+          postContent: post.content,
+          workspace: group.workspace_name,
+          group: group.group_name,
+          link: defaults.signinLink,
+          postLink: defaults.postLink(group._id, post._id)
+        };
+  
+        // Generate email body from template.
+        const emailBody = await generateEmailBody(emailType, emailData);
+  
+        // Send email
+        const send = await sendMail(emailBody, emailData, { date: moment.utc(post.event.due_to, 'YYYY-MM-DD').startOf('day').format() });
+        return res.status(200).json({
+            message: 'User Mentioned Post mail sent'
+          });
+      });
+    } catch (err) {
+        return sendError(res, new Error(err), 'Internal Server Error!', 500);
+    }
+  };
+  
+
 export {
 
     // Signup
@@ -277,5 +535,23 @@ export {
     resetPassword,
 
     // Join Group
-    joinedGroup
+    joinedGroup,
+
+    // User Mentioned Post
+    userMentionedPost,
+
+    //User Mentioned Comment
+    userMentionedComment,
+
+    // Task Assigned
+    taskAssigned,
+
+    // Task Reminder
+    scheduleTaskReminder,
+
+    // Event Reminder
+    scheduleEventReminder,
+
+    // Event Assigned
+    eventAssigned
 }
