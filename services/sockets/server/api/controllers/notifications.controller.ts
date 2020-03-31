@@ -1,4 +1,6 @@
 import { Notification } from "../models";
+import { Response, Request, NextFunction } from "express";
+import { sendError } from "../../utils";
 
 /*  ===============================
  *  -- NOTIFICATIONS CONTROLLERS --
@@ -11,7 +13,11 @@ export class NotificationsController {
      * This function is responsible for notifying the user on mention on new comment
      * @param { _id, _content_mentions, _commented_by, _post } comment 
      */
-    async newCommentMentions(comment: any) {
+    async newCommentMentions(req: Request, res: Response, neext: NextFunction) {
+
+        // Yaha se comment object lele
+        const { comment } = req.body;
+
         try {
             await comment._content_mentions.forEach(async (user: any) => {
                 const notification = await Notification.create({
@@ -24,7 +30,8 @@ export class NotificationsController {
                 });
             });
         } catch (err) {
-            return err;
+            // ab yaha se error catch ho jaega
+            return sendError(res, new Error(err), 'Internal Server Error!', 500);
         }
     };
 

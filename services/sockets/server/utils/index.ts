@@ -1,5 +1,6 @@
 import * as sockets from "./socket";
 import * as helperFunctions from './helperFunctions';
+import { sendErr } from './sendError';
 
 /*  =====================
  *  -- UTILS EXPORTS --
@@ -11,5 +12,8 @@ export{
     sockets as sockets,
 
     // HELPER FUNCTIONS
-    helperFunctions as helperFunctions
+    helperFunctions as helperFunctions,
+
+    // Send Error
+    sendErr as sendError,
 }
