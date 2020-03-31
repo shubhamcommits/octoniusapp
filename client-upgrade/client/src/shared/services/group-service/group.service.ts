@@ -16,7 +16,7 @@ export class GroupService {
    * @param groupId 
    */
   getGroup(groupId: string) {
-    return this._http.get(this.baseURL + `/groups/${groupId}`).toPromise()
+    return this._http.get(this.baseURL + `/${groupId}`).toPromise()
   }
 
   /**
@@ -24,7 +24,7 @@ export class GroupService {
    * @param groupId 
    */
   removeGroup(groupId: string){
-    return this._http.delete(this.baseURL + `/groups/${groupId}`).toPromise()
+    return this._http.delete(this.baseURL + `/${groupId}`).toPromise()
   }
 
   /**
