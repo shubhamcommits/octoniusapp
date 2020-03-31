@@ -1,7 +1,7 @@
-import { NotificationsController } from "../api/controllers";
+import { NotificationsService } from "../api/service"
 
 // Create Notifications controller class
-const notifications = new NotificationsController()
+const notifications = new NotificationsService()
 
 /**
  * This function is resposible for checking if an object has certain property or not
