@@ -1,9 +1,9 @@
 import socketIO from 'socket.io';
 import { helperFunctions } from '../utils';
-import { NotificationsController } from '../api/controllers';
+import { NotificationsService } from '../api/service/notification.service';
 
-// Creating notification controllers class
-const notifications = new NotificationsController();
+// Creating notification service class
+const notifications = new NotificationsService();
 
 // Maintains the count of all the connected users
 const globalConnections = [];

@@ -1,40 +1,31 @@
 import { Notification } from "../models";
-import { Response, Request, NextFunction } from "express";
-import { sendError } from "../../utils";
-import { NotificationsService } from "../service";
-
-// Creating Service class in order to build wrapper class
-const notificationService = new NotificationsService()
 
 /*  ===============================
- *  -- NOTIFICATIONS CONTROLLERS --
+ *  -- NOTIFICATIONS Service --
  *  ===============================
  */
 
-export class NotificationsController {
+export class NotificationsService {
 
     /**
      * This function is responsible for notifying the user on mention on new comment
      * @param { _id, _content_mentions, _commented_by, _post } comment 
      */
-    async newCommentMentions(req: Request, res: Response, neext: NextFunction) {
-
-        // Yaha se comment object lele
-        const { comment } = req.body;
-
+    async newCommentMentions(comment: any) {
         try {
-
-            // Call Service Function for newCommentMentions
-            await notificationService.newCommentMentions(comment);
-
-            // Send status 200 response
-            return res.status(200).json({
-                message: `Comment Mentions succeded!`,
+            await comment._content_mentions.forEach(async (user: any) => {
+                const notification = await Notification.create({
+                    _actor: comment._commented_by,
+                    _owner: user,
+                    _origin_comment: comment._id,
+                    _origin_post: comment._post,
+                    message: 'mentioned you in a comment.',
+                    type: 'mention'
+                });
             });
-
         } catch (err) {
             // ab yaha se error catch ho jaega
-            return sendError(res, new Error(err), 'Internal Server Error!', 500);
+            return err
         }
     };
 
@@ -141,7 +132,7 @@ export class NotificationsController {
     /**
      * This function is responsible for fetching the latest first 5 un-read notifications
      * @param userId 
-     */
+     */    
     async getUnread(userId: string) {
         try {
             const notifications = await Notification.find({
