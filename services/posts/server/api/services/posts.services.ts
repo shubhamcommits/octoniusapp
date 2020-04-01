@@ -366,5 +366,70 @@ const fs = require('fs');
           throw(err);
         }
       };
+
+      /**
+       * This function is used to like a post
+       * @param { userId, postId }
+       */
+      like = async (userId, postId) => {
+        
+        try{
+          const post = await Post.findOneAndUpdate({
+            _id: postId
+          }, {
+              $addToSet: {
+                _liked_by: userId
+              }
+            }, {
+              new: true
+            })
+            .populate('_liked_by', 'first_name last_name')
+            .lean();
+      
+          const user = await User.findOne({
+            _id: userId
+          }).select('first_name last_name');
+      
+          return {
+            post,
+            user
+          };
+        } catch (err) {
+          throw(err);
+        }
+      };
+
+
+      /**
+       * This function is used to unlike a post
+       * @param { userId, postId }
+       */
+      unlike = async (userId, postId) => {
+        try {
+          const post = await Post.findOneAndUpdate({
+            _id: postId
+          }, {
+              $pull: {
+                _liked_by: userId
+              }
+            }, {
+              new: true
+            })
+            .populate('_liked_by', 'first_name last_name')
+            .lean();
+      
+          const user = await User.findOne({
+            _id: userId
+          }).select('first_name last_name');
+      
+      
+          return {
+            post,
+            user
+          };
+        } catch (err) {
+          throw(err);
+        }
+      };
       
  }

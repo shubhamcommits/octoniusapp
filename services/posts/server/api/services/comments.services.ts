@@ -282,4 +282,69 @@ import moment from 'moment';
         }
       };
 
+
+
+      /**
+       * This function is used to like a comment
+       * @param { userId, commentId }
+       */
+    likeComment = async (userId, commentId) => {
+        try {
+          const comment = await Comment.findOneAndUpdate({
+            _id: commentId
+          }, {
+              $addToSet: {
+                _liked_by: userId
+              }
+            }, {
+              new: true
+            })
+            .populate('_liked_by', 'first_name last_name')
+            .lean();
+      
+          const user = await User.findOne({
+            _id: userId
+          }).select('first_name last_name');
+      
+          return {
+              comment: comment,
+              user: user
+          };
+        } catch (err) {
+          throw(err);
+        }
+      };
+
+
+      /**
+     * This function is used to unlike a comment
+     * @param { userId, commentId }
+     */
+    unlikeComment = async (userId, commentId) => {
+        try {
+          const comment = await Comment.findOneAndUpdate({
+            _id: commentId
+          }, {
+              $pull: {
+                _liked_by: userId
+              }
+            }, {
+              new: true
+            })
+            .populate('_liked_by', 'first_name last_name')
+            .lean();
+      
+          const user = await User.findOne({
+            _id: userId
+          }).select('first_name last_name');
+      
+      
+          return {
+            comment,
+            user
+          };
+        } catch (err) {
+          throw(err);
+        }
+      };
  }

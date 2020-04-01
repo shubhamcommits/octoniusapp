@@ -106,4 +106,56 @@ export class PostController{
   }
 
 
+  /**
+   * This function is used to like a post
+   * @param req 
+   * @param res 
+   * @param next 
+   */
+  async like(req: Request, res: Response, next: NextFunction){
+    try {
+        const { params: { postId } } = req;
+        const userId = req['userId'];
+
+        // Call Service function to like a post
+        const data = await postService.like(userId, postId);
+
+        // Send status 200 response
+        return res.status(200).json({
+            message: 'Post Successfully Liked',
+            post: data.post,
+            user: data.user
+        });
+    } catch (error) {
+        return sendErr(res, new Error(error), 'Internal Server Error!', 500);
+    }  
+  }
+
+
+  /**
+   * This function is used to unlike a post
+   * @param req 
+   * @param res 
+   * @param next 
+   */
+  async unlike(req: Request, res: Response, next: NextFunction){
+      try {
+        const { params: { postId } } = req;
+        const userId = req['userId'];
+
+        // Call Service function to unlike a post
+        const data = await postService.unlike(userId, postId);
+
+        // Send status 200 response
+        return res.status(200).json({
+            message: 'Post Successfully Unliked',
+            post: data.post,
+            user: data.user
+        });
+      } catch (error) {
+        return sendErr(res, new Error(error), 'Internal Server Error!', 500);
+      }
+  }
+
+
 }

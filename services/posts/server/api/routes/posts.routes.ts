@@ -16,5 +16,11 @@ routes.get('/get', postController.get);
 // This route is used to remove a post
 routes.post('/remove', postController.remove);
 
+// This route is used to like a post
+routes.post('/like', postController.like);
+
+// This route is used to unlike a post
+routes.post('/unlike', postController.unlike);
+
 
 export { routes as postRoutes };
