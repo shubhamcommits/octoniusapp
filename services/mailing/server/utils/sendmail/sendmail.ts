@@ -7,6 +7,7 @@ import moment from "moment";
 import { Resetpwd, User, Group, Workspace } from "../../api/models";
 import { Response, Request, NextFunction } from "express";
 import { sendError } from "../../utils";
+import { Readable } from 'stream';
 
 /*	=============
  *	-- HELPERS --
@@ -14,17 +15,129 @@ import { sendError } from "../../utils";
  */
 
 const generateEmailBody = async (type: any, data: any) => {
-    try {
-        // Pass email data to the template
-        const templateStr = fs.readFileSync(`${__dirname}/templates/${type}.ejs`);
-        const body = ejs.render(templateStr.toString(), data);
+  try {
+    // Pass email data to the template
+    const templateStr = fs.readFileSync(`${__dirname}/templates/${type}.ejs`);
+    const body = ejs.render(templateStr.toString(), data);
 
-        return body;
-    } catch (err) {
-        // eslint-disable-next-line no-console
-        console.log(err);
-    }
-};
+    return body;
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.log(err);
+  }
+}
+
+/**
+ * This function is acting as a helper function for post mails
+ * @param post 
+ * @param emailType 
+ */
+const postMailHelper = async (post: any, emailType: any, user?: any) => {
+
+  // Details of user to be sent mail to
+  var to: any;
+
+  // Fetch the details of assignee
+  if (post.type === 'task')
+    to = await User.findById({ _id: post.task._assigned_to })
+
+  // Else this is post mention
+  else if (post.type === 'normal')
+    to = await User.findById({ _id: user });
+
+  // Fetch the Email Sender Details or task assigner
+  const from: any = await User.findById({ _id: post._posted_by })
+
+  // Fetch the Group Details
+  const group: any = await Group.findById({ _id: post._group })
+
+  // Prepare Email Data
+  const emailData = {
+    subject: subjects[emailType],
+    toName: to.first_name,
+    toEmail: to.email,
+    fromName: from.first_name,
+    fromEmail: from.email,
+    postTitle: post.title,
+    postContent: post.content,
+    workspace: group.workspace_name,
+    group: group.group_name,
+    link: defaults.signinLink,
+    postLink: defaults.postLink(group._id, post._id)
+  }
+
+  // Generate email body from template
+  const emailBody = await generateEmailBody(emailType, emailData);
+
+  // Send email as a task reminder post
+  if (post.type === 'task' && emailType === 'scheduleTaskReminder')
+    await sendMail(emailBody, emailData, { date: moment.utc(post.task.due_to, 'YYYY-MM-DD').startOf('day').format() })
+
+  // Send email to task post
+  else if (post.type === 'task' && (emailType === 'taskAssigned' || emailType === 'taskReassigned'))
+    await sendMail(emailBody, emailData)
+
+  // Else send mail to normal post
+  else if (post.type === 'normal')
+    await sendMail(emailBody, emailData);
+
+}
+
+/**
+ * This function is acting as a helper function for event posts
+ * @param res 
+ * @param post 
+ * @param emailType 
+ */
+const eventMailHelper = async (res: Response, post: any, emailType: any) => {
+
+  // Fetch the Email Sender Details
+  const from: any = await User.findById({ _id: post._posted_by });
+
+  // Fetch the Group Details
+  const group: any = await Group.findById({ _id: post._group });
+
+  // Create Readble Stream from the Event Assignee
+  const userStream = Readable.from(post.event._assigned_to);
+
+  // Send Mails to each assigned user
+  userStream.on('data', async function (user) {
+
+    // Fetch the detail of assignee
+    const to: any = await User.findById({ _id: user })
+
+    // Prepare Email Data
+    const emailData = {
+      subject: subjects[emailType],
+      toName: to.first_name,
+      toEmail: to.email,
+      fromName: from.first_name,
+      fromEmail: from.email,
+      postTitle: post.title,
+      postContent: post.content,
+      workspace: group.workspace_name,
+      group: group.group_name,
+      link: defaults.signinLink,
+      postLink: defaults.postLink(group._id, post._id)
+    };
+
+    // Generate email body from template.
+    const emailBody = await generateEmailBody(emailType, emailData);
+
+    // Send email to event reminder
+    if(emailType === 'scheduleEventReminder')
+      await sendMail(emailBody, emailData, { date: moment.utc(post.event.due_to, 'YYYY-MM-DD').startOf('day').format() })
+
+    // Else only event assigned
+    else if(emailType === 'eventAssigned')
+      await sendMail(emailBody, emailData)
+
+    // Send status 200 response
+    return res.status(200).json({
+      message: 'User event email sent!'
+    })
+  })
+}
 
 /*	===================
  *	-- MAIN FUNCTION --
@@ -32,64 +145,64 @@ const generateEmailBody = async (type: any, data: any) => {
  */
 
 const sendMail = async (emailBody: any, emailData: any, scheduled: any = {}) => {
-    try {
-        // Sendgrid API settings
-        const config: any = {
-            url: '/v3/mail/send',
-            method: 'post',
-            baseURL: 'https://api.sendgrid.com',
-            port: null,
-            transformRequest: [function (data) {
-                return JSON.stringify(data);
-            }],
-            headers: {
-                authorization: `Bearer ${process.env.SENDGRID_KEY}`,
-                'content-type': 'application/json'
-            },
-            data: {
-                personalizations: [
-                    {
-                        to: [
-                            {
-                                email: emailData.toEmail,
-                                name: emailData.toName
-                            }
-                        ],
-                        subject: emailData.subject
-                    }
-                ],
-                from:
-                {
-                    email: defaults.fromEmail,
-                    name: defaults.fromName
-                },
-                reply_to: {
-                    email: emailData.replyToEmail || defaults.replyToEmail,
-                    name: emailData.replyToName || defaults.replyToName
-                },
-                content: [
-                    {
-                        type: 'text/html',
-                        value: emailBody
-                    }
-                ]
-            }
-        };
+  try {
+    // Sendgrid API settings
+    const config: any = {
+      url: '/v3/mail/send',
+      method: 'post',
+      baseURL: 'https://api.sendgrid.com',
+      port: null,
+      transformRequest: [function (data) {
+        return JSON.stringify(data);
+      }],
+      headers: {
+        authorization: `Bearer ${process.env.SENDGRID_KEY}`,
+        'content-type': 'application/json'
+      },
+      data: {
+        personalizations: [
+          {
+            to: [
+              {
+                email: emailData.toEmail,
+                name: emailData.toName
+              }
+            ],
+            subject: emailData.subject
+          }
+        ],
+        from:
+        {
+          email: defaults.fromEmail,
+          name: defaults.fromName
+        },
+        reply_to: {
+          email: emailData.replyToEmail || defaults.replyToEmail,
+          name: emailData.replyToName || defaults.replyToName
+        },
+        content: [
+          {
+            type: 'text/html',
+            value: emailBody
+          }
+        ]
+      }
+    };
 
 
-        // if we're creating an email that is scheduled in the future, then we add the property send_at to config
-        //  we add 360 seconds to avoid the bussiest moment
-        if (scheduled.date) {
-            config.data.send_at = moment(scheduled.date).unix() + 360;
-        }
-
-        // Fire the request to sendgrid server, check the reponse
-        const res = await http.request(config);
-        return res;
-    } catch (err) {
-        // eslint-disable-next-line no-console
-        console.log(err);
+    // if we're creating an email that is scheduled in the future, then we add the property send_at to config
+    //  we add 360 seconds to avoid the bussiest moment
+    if (scheduled.date) {
+      config.data.send_at = moment(scheduled.date).unix() + 360;
     }
+
+    // Fire the request to sendgrid server, check the reponse
+    const res = await http.request(config);
+    return res;
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.log(err);
+  }
 }
 
 /*	===================
@@ -99,38 +212,38 @@ const sendMail = async (emailBody: any, emailData: any, scheduled: any = {}) => 
 
 // Sign up confirmation email
 const signup = async (req: Request, res: Response, next: NextFunction) => {
-    try {
+  try {
 
-        const { user } = req.body;
+    const { user } = req.body;
 
-        // Define emailType for templates
-        const emailType = 'signup';
+    // Define emailType for templates
+    const emailType = 'signup';
 
-        // Generate email data
-        const emailData = {
-            subject: subjects[emailType],
-            toName: user.first_name,
-            toEmail: user.email,
-            workspace: user.workspace_name
-        };
+    // Generate email data
+    const emailData = {
+      subject: subjects[emailType],
+      toName: user.first_name,
+      toEmail: user.email,
+      workspace: user.workspace_name
+    };
 
-        // Generate email body from template
-        const emailBody = await generateEmailBody(emailType, emailData);
+    // Generate email body from template
+    const emailBody = await generateEmailBody(emailType, emailData);
 
-        // Send email
-        await sendMail(emailBody, emailData);
+    // Send email
+    await sendMail(emailBody, emailData);
 
-        // Send status 200 response
-        return res.status(200).json({
-            message: `Sign-up email sent!`,
-        });
+    // Send status 200 response
+    return res.status(200).json({
+      message: `Sign-up email sent!`,
+    });
 
-    } catch (err) {
-        // eslint-disable-next-line no-console
-        console.log(err);
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.log(err);
 
-        return sendError(res, err, 'Internal Server Error!', 500);
-    }
+    return sendError(res, err, 'Internal Server Error!', 500);
+  }
 }
 
 /*	=========================
@@ -140,37 +253,37 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
 
 // 	New workspace confirmation email
 const newWorkspace = async (req: Request, res: Response, next: NextFunction) => {
-    try {
+  try {
 
-        const { workspace } = req.body;
+    const { workspace } = req.body;
 
-        // Defining emailType
-        const emailType = 'newWorkspace';
+    // Defining emailType
+    const emailType = 'newWorkspace';
 
-        // Generate email data
-        const emailData = {
-            subject: subjects[emailType],
-            toName: workspace.owner_first_name,
-            toEmail: workspace.owner_email,
-            workspace: workspace.workspace_name
-        };
+    // Generate email data
+    const emailData = {
+      subject: subjects[emailType],
+      toName: workspace.owner_first_name,
+      toEmail: workspace.owner_email,
+      workspace: workspace.workspace_name
+    };
 
-        // Generate email body from template
-        const emailBody = await generateEmailBody(emailType, emailData);
+    // Generate email body from template
+    const emailBody = await generateEmailBody(emailType, emailData);
 
-        // Send email
-        await sendMail(emailBody, emailData);
+    // Send email
+    await sendMail(emailBody, emailData);
 
-        // Send status 200 response
-        return res.status(200).json({
-            message: `New Workspace email sent!`,
-        });
-    } catch (err) {
-        // eslint-disable-next-line no-console
-        console.log(err);
+    // Send status 200 response
+    return res.status(200).json({
+      message: `New Workspace email sent!`,
+    });
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.log(err);
 
-        return sendError(res, err, 'Internal Server Error!', 500);
-    }
+    return sendError(res, err, 'Internal Server Error!', 500);
+  }
 }
 
 /*	=========================
@@ -180,510 +293,435 @@ const newWorkspace = async (req: Request, res: Response, next: NextFunction) => 
 
 // send mail to user to reset their password
 const resetPassword = async (req: Request, res: Response, next: NextFunction) => {
-    try {
+  try {
 
-        const { workspace, user } = req.body;
+    const { workspace, user } = req.body;
 
-        const resetPwdData = {
-            user: user._id
-        };
+    const resetPwdData = {
+      user: user._id
+    };
 
-        // so this is a new document we create whenever a user requests a password reset
-        // it has user and _id properties. We use user to show the info and we use the _id
-        // to add it to link in the mail.
-        const newResetPwdDoc = await Resetpwd.create(resetPwdData);
+    // so this is a new document we create whenever a user requests a password reset
+    // it has user and _id properties. We use user to show the info and we use the _id
+    // to add it to link in the mail.
+    const newResetPwdDoc = await Resetpwd.create(resetPwdData);
 
-        // this is the link in the email that users can click that will lead them to the page where they can
-        // reset their password
-        const resetPwdlink = `${defaults.resetPwdLink}/${newResetPwdDoc._id}`;
+    // this is the link in the email that users can click that will lead them to the page where they can
+    // reset their password
+    const resetPwdlink = `${defaults.resetPwdLink}/${newResetPwdDoc._id}`;
 
-        const emailType = 'resetPassword';
+    const emailType = 'resetPassword';
 
-        // Preparing the email data
-        const emailData = {
-            subject: subjects[emailType],
-            toName: user.first_name,
-            toEmail: user.email,
-            workspace: workspace.workspace_name,
-            link: resetPwdlink
-        };
+    // Preparing the email data
+    const emailData = {
+      subject: subjects[emailType],
+      toName: user.first_name,
+      toEmail: user.email,
+      workspace: workspace.workspace_name,
+      link: resetPwdlink
+    };
 
-        // Generate email body from template
-        const emailBody = await generateEmailBody(emailType, emailData);
+    // Generate email body from template
+    const emailBody = await generateEmailBody(emailType, emailData);
 
-        // Send email
-        await sendMail(emailBody, emailData);
+    // Send email
+    await sendMail(emailBody, emailData);
 
-        // Send status 200 response
-        return res.status(200).json({
-            message: `Reset password email sent!`,
-        });
+    // Send status 200 response
+    return res.status(200).json({
+      message: `Reset password email sent!`,
+    });
 
-    } catch (err) {
-        console.log(err);
+  } catch (err) {
+    console.log(err);
 
-        return sendError(res, err, 'Internal Server Error!', 500);
-    }
+    return sendError(res, err, 'Internal Server Error!', 500);
+  }
 }
 
 // Welcome user when user is added to a group
 const joinedGroup = async (req: Request, res: Response, next: NextFunction) => {
-    try {
+  try {
 
-        const { groupData, adminData, memberData } = req.body
+    const { groupData, adminData, memberData } = req.body
 
-        const emailType = 'joinedGroup';
+    const emailType = 'joinedGroup';
 
-        // Generate email data
-        const emailData = {
-            subject: subjects[emailType],
-            toName: memberData.first_name,
-            toEmail: memberData.email,
-            fromName: adminData.first_name,
-            fromEmail: adminData.email,
-            group: groupData.group_name,
-            workspace: groupData.workspace_name,
-            link: defaults.signinLink
-        };
+    // Generate email data
+    const emailData = {
+      subject: subjects[emailType],
+      toName: memberData.first_name,
+      toEmail: memberData.email,
+      fromName: adminData.first_name,
+      fromEmail: adminData.email,
+      group: groupData.group_name,
+      workspace: groupData.workspace_name,
+      link: defaults.signinLink
+    };
 
-        // Generate email body from template
-        const emailBody = await generateEmailBody(emailType, emailData);
+    // Generate email body from template
+    const emailBody = await generateEmailBody(emailType, emailData);
 
-        // Send email
-        await sendMail(emailBody, emailData);
+    // Send email
+    await sendMail(emailBody, emailData);
 
-        // Send status 200 response
-        return res.status(200).json({
-            message: `Join Group email sent!`,
-        });
+    // Send status 200 response
+    return res.status(200).json({
+      message: `Join Group email sent!`,
+    })
 
-    } catch (err) {
-        // eslint-disable-next-line no-console
-        console.log(err);
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.log(err);
 
-        return sendError(res, err, 'Internal Server Error!', 500);
-    }
+    return sendError(res, err, 'Internal Server Error!', 500);
+  }
 };
 
 
 // Join workspace invitation email
 const joinWorkspace = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const emailType = 'joinWorkspace';
-      const { reqData } = req.body;
-      // Generate email data
-      const from:any = await User.findById({ _id: reqData.user_id });
-      const workspace:any = await Workspace.findById({ _id: reqData.workspace_id });
-  
-      const emailData = {
-        subject: subjects[emailType],
-        toName: '',
-        toEmail: reqData.email,
-        fromName: from.first_name,
-        fromEmail: from.email,
-        workspace: workspace.workspace_name,
-        link: defaults.signupLink(workspace.workspace_name)
-      };
-  
-      // Generate email body from template
-      const emailBody = await generateEmailBody(emailType, emailData);
-  
-      // Send email
-      const send = await sendMail(emailBody, emailData);
-      return res.status(200).json({
-        message: `Join Group email sent!`,
+  try {
+    const emailType = 'joinWorkspace';
+    const { reqData } = req.body;
+    // Generate email data
+    const from: any = await User.findById({ _id: reqData.user_id });
+    const workspace: any = await Workspace.findById({ _id: reqData.workspace_id });
+
+    const emailData = {
+      subject: subjects[emailType],
+      toName: '',
+      toEmail: reqData.email,
+      fromName: from.first_name,
+      fromEmail: from.email,
+      workspace: workspace.workspace_name,
+      link: defaults.signupLink(workspace.workspace_name)
+    };
+
+    // Generate email body from template
+    const emailBody = await generateEmailBody(emailType, emailData);
+
+    // Send email
+    const send = await sendMail(emailBody, emailData);
+    return res.status(200).json({
+      message: `Join Group email sent!`,
     });
-    } catch (err) {
-      // eslint-disable-next-line no-console
-      return sendError(res, err, 'Internal Server Error!', 500);
-    }
-  };
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    return sendError(res, err, 'Internal Server Error!', 500);
+  }
+};
 
 
-// =========================
-//          MENTIONS
-// ==========================
+/**
+ * =========================
+ *           MENTIONS
+ * ==========================
+ */
 
-// Send an email when a user is mentioned in a post
+/**
+ * This function is responsible for sending the mail to the mentioned user
+ * @param { body: { post, user } } req 
+ * @param res 
+ * @param next 
+ */
 const userMentionedPost = async (req: Request, res: Response, next: NextFunction) => {
-    
-    const { post, user } = req.body;
-    
-    try {
-      const emailType = 'userMentionedPost';
-  
-      // Generate email data
-      //  proposal to perhaps load these three lines parallel instead of waterfall, since their outcomes are not depending on each other
-      const to:any = await User.findById({ _id: user });
-      const from:any = await User.findById({ _id: post._posted_by });
-      const group:any = await Group.findById({ _id: post._group });
-  
-      const emailData = {
-        subject: subjects[emailType],
-        toName: to.first_name,
-        toEmail: to.email,
-        fromName: from.first_name,
-        fromEmail: from.email,
-        postContent: post.content,
-        workspace: group.workspace_name,
-        group: group.group_name,
-        link: defaults.signinLink,
-        postLink: defaults.postLink(group._id, post._id)
-      };
-  
-      // Generate email body from template
-      const emailBody = await generateEmailBody(emailType, emailData);
-  
-      // Send email
-      const send = await sendMail(emailBody, emailData);
 
-      return res.status(200).json({
-        message: 'User Mentioned Post mail sent'
-      });
-    } catch (err) {
-      // Error Handling
-      return sendError(res, new Error(err), 'Internal Server Error!', 500);
-    }
-  };
-  
-  // send an email when a user is mentioned in a comment
-  const userMentionedComment = async (req: Request, res: Response, next: NextFunction) => {
-      const { comment, post, user } = req.body;
-    try {
-      // const date = new Date();
-      // const date2 = moment('2019-01-11', 'YYYY-MM-DD').startOf('day').format();
-      // console.log(date2);
-  
-      const emailType = 'userMentionedComment';
-  
-      // Generate email data
-      //  proposal to perhaps load these three lines parallel instead of waterfall, since their outcomes are not depending on each other
-      const to:any = await User.findById({ _id: user });
-      const from:any = await User.findById({ _id: comment._commented_by._id });
-      const group:any = await Group.findById({ _id: post._group });
-  
-      const emailData = {
-        subject: subjects[emailType],
-        toName: to.first_name,
-        toEmail: to.email,
-        fromName: from.first_name,
-        fromEmail: from.email,
-        commentContent: comment.content,
-        workspace: group.workspace_name,
-        group: group.group_name,
-        link: defaults.signinLink,
-        postLink: defaults.postLink(group._id, post._id)
-      };
-  
-      // Generate email body from template
-      const emailBody = await generateEmailBody(emailType, emailData);
-  
-      // Send email
-      const send = await sendMail(emailBody, emailData);
-      return res.status(200).json({
-        message: 'User Mentioned Post mail sent'
-      });
-    } catch (err) {
-        return sendError(res, new Error(err), 'Internal Server Error!', 500);
-    }
-  };
+  // Post and User Data from request
+  const { post, user } = req.body;
+
+  try {
+
+    // Defining Email Type for templates
+    const emailType = 'userMentionedPost';
+
+    // Send Mail to task assignee
+    await postMailHelper(post, emailType, user)
+
+    // Send status 200 response
+    return res.status(200).json({
+      message: 'User Mentioned Post mail sent'
+    });
+  } catch (err) {
+    // Error Handling
+    return sendError(res, new Error(err), 'Internal Server Error!', 500);
+  }
+};
+
+// send an email when a user is mentioned in a comment
+const userMentionedComment = async (req: Request, res: Response, next: NextFunction) => {
+  const { comment, post, user } = req.body;
+  try {
+    // const date = new Date();
+    // const date2 = moment('2019-01-11', 'YYYY-MM-DD').startOf('day').format();
+    // console.log(date2);
+
+    const emailType = 'userMentionedComment';
+
+    // Generate email data
+    //  proposal to perhaps load these three lines parallel instead of waterfall, since their outcomes are not depending on each other
+    const to: any = await User.findById({ _id: user });
+    const from: any = await User.findById({ _id: comment._commented_by._id });
+    const group: any = await Group.findById({ _id: post._group });
+
+    const emailData = {
+      subject: subjects[emailType],
+      toName: to.first_name,
+      toEmail: to.email,
+      fromName: from.first_name,
+      fromEmail: from.email,
+      commentContent: comment.content,
+      workspace: group.workspace_name,
+      group: group.group_name,
+      link: defaults.signinLink,
+      postLink: defaults.postLink(group._id, post._id)
+    };
+
+    // Generate email body from template
+    const emailBody = await generateEmailBody(emailType, emailData);
+
+    // Send email
+    const send = await sendMail(emailBody, emailData);
+    return res.status(200).json({
+      message: 'User Mentioned Post mail sent'
+    });
+  } catch (err) {
+    return sendError(res, new Error(err), 'Internal Server Error!', 500);
+  }
+};
 
 
-  // Send email when a task assigned to a user
+/**
+ * This function is responsible for sending email to the assigned user of task
+ * @param { body:{ post } }req 
+ * @param res 
+ * @param next 
+ */
 const taskAssigned = async (req: Request, res: Response, next: NextFunction) => {
-    const { taskPost } = req.body;
-    try {
-      const emailType = 'taskAssigned';
-  
-      // Generate email data
-      const to:any = await User.findById({ _id: taskPost.task._assigned_to });
-      const from:any = await User.findById({ _id: taskPost._posted_by });
-      const group:any = await Group.findById({ _id: taskPost._group });
-  
-      const emailData = {
-        subject: subjects[emailType],
-        toName: to.first_name,
-        toEmail: to.email,
-        fromName: from.first_name,
-        fromEmail: from.email,
-        contentTitle: taskPost.title,
-        contentPost: taskPost.content,
-        workspace: group.workspace_name,
-        group: group.group_name,
-        link: defaults.signinLink,
-        taskLink: defaults.postLink(group._id, taskPost._id)
-      };
-  
-      console.log('emailData', emailData);
-  
-      // Generate email body from template
-      const emailBody = await generateEmailBody(emailType, emailData);
-  
-      // Send email
-      const send = await sendMail(emailBody, emailData);
-      return res.status(200).json({
-        message: 'User Mentioned Post mail sent'
-      });
-    } catch (err) {
-      // eslint-disable-next-line no-console
-      return sendError(res, new Error(err), 'Internal Server Error!', 500);
-    }
-  };
+
+  // Post object from request
+  const { post } = req.body;
+
+  try {
+
+    // Defining Email Type for templates
+    const emailType = 'taskAssigned';
+
+    // Send Mail to task assignee
+    await postMailHelper(post, emailType);
+
+    // Send status 200 response
+    return res.status(200).json({
+      message: 'User task mail sent!'
+    })
+
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    return sendError(res, new Error(err), 'Internal Server Error!', 500);
+  }
+};
 
 
-  // Send email when a task is reassigned to a user
+/**
+ * This function is responsible for sending email to the assigned user of task(reassigning mail)
+ * @param { body:{ post } }req 
+ * @param res 
+ * @param next 
+ */
 const taskReassigned = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const { postUpdated } = req.body;
-      const emailType = 'taskReassigned';
-  
-      // Generate email data
-      const to:any = await User.findById({ _id: postUpdated.task._assigned_to  });
-      const from:any = await User.findById({ _id: postUpdated._posted_by });
-      const group:any = await Group.findById({ _id: postUpdated._group });
-  
-      const emailData = {
-        subject: subjects[emailType],
-        toName: to.first_name,
-        toEmail: to.email,
-        fromName: from.first_name,
-        fromEmail: from.email,
-        contentTitle: postUpdated.title,
-        contentPost: postUpdated.content,
-        workspace: group.workspace_name,
-        group: group.group_name,
-        link: defaults.signinLink,
-        taskLink: defaults.postLink(group._id, postUpdated._id)
-      };
-  
-      console.log('emailData', emailData);
-  
-      // Generate email body from template
-      const emailBody = await generateEmailBody(emailType, emailData);
-  
-      // Send email
-      const send = await sendMail(emailBody, emailData);
-      return res.status(200).json({
-        message: 'Task Reassigned mail sent'
-      });
-    } catch (err) {
-      // eslint-disable-next-line no-console
-      return sendError(res, new Error(err), 'Internal Server Error!', 500);
-    }
-  };
+
+  // Post object from request
+  const { post } = req.body;
+
+  try {
+
+    // Defining Email Type for templates
+    const emailType = 'taskReassigned';
+
+    // Send Mail to task assignee
+    await postMailHelper(post, emailType);
+
+    // Send status 200 response
+    return res.status(200).json({
+      message: 'User task reassigned mail sent!'
+    })
+
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    return sendError(res, new Error(err), 'Internal Server Error!', 500);
+  }
+};
 
 
-  // send an email when a task is completed
+// send an email when a task is completed
 const userCompletedTask = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const { userWhoChangedStatusId, post } = req.body;
-      const emailType = 'userCompletedTask';
-  
-      // Generate email data
-      const appointer:any = await User.findById({ _id: post._posted_by });
-      const appointee:any = await User.findById({ _id: post.task._assigned_to });
-      const userWhoChangedStatus:any = await User.findById({ _id: userWhoChangedStatusId });
-      const group:any = await Group.findById({ _id: post._group });
-  
-      // we want to send emails to the appointer and the appointee
-      // if they are the same person then we only want to send one email
-      const destinationUsers = appointer._id === appointee._id ? [appointer] : [appointer, appointee];
-  
-      destinationUsers.forEach(async (user) => {
-        const emailData = {
-          subject: subjects[emailType],
-          appointeeName: appointee.first_name,
-          appointerName: appointer.first_name,
-          userWhoChangedStatusName: userWhoChangedStatus.first_name,
-          toName: user.first_name,
-          toEmail: user.email,
-          contentTitle: post.title,
-          contentPost: post.content,
-          workspace: group.workspace_name,
-          group: group.group_name,
-          link: defaults.signinLink,
-          postLink: defaults.postLink(group._id, post._id)
-        };
-  
-        // Generate email body from template
-        const emailBody = await generateEmailBody(emailType, emailData);
-  
-        // Send email
-        const send = await sendMail(emailBody, emailData);
-        return res.status(200).json({
-            message: 'User Task Completed mail sent'
-          });
-      });
-    } catch (err) {
-        return sendError(res, new Error(err), 'Internal Server Error!', 500);
-    }
-  };
+  try {
+    const { userWhoChangedStatusId, post } = req.body;
+    const emailType = 'userCompletedTask';
 
+    // Generate email data
+    const appointer: any = await User.findById({ _id: post._posted_by });
+    const appointee: any = await User.findById({ _id: post.task._assigned_to });
+    const userWhoChangedStatus: any = await User.findById({ _id: userWhoChangedStatusId });
+    const group: any = await Group.findById({ _id: post._group });
 
-  // Send email when a task assigned to a user
-const eventAssigned = async (req: Request, res: Response, next: NextFunction) => {
-    const { eventPost } = req.body;
-    try {
-      const emailType = 'eventAssigned';
-  
-      // Generate common email data
-      const from:any = await User.findById({ _id: eventPost._posted_by });
-      const group:any = await Group.findById({ _id: eventPost._group });
-  
-  
-      for (const userId of eventPost.event._assigned_to) {
-        const to:any = await User.findById({ _id: userId });
-  
-        // Generate email data
-        const emailData = {
-          subject: subjects[emailType],
-          toName: to.first_name,
-          toEmail: to.email,
-          fromName: from.first_name,
-          contentTitle: eventPost.title,
-          contentPost: eventPost.content,
-          fromEmail: from.email,
-          workspace: group.workspace_name,
-          group: group.group_name,
-          link: defaults.signinLink,
-          postLink: defaults.postLink(group._id, eventPost._id)
-        };
-  
-        // Generate email body from template
-        const emailBody = await generateEmailBody(emailType, emailData);
-  
-        // Send email
-        const send = await sendMail(emailBody, emailData);
-        return res.status(200).json({
-            message: 'User Mentioned Post mail sent'
-          });
-      }
-    } catch (err) {
-      // eslint-disable-next-line no-console
-      return sendError(res, new Error(err), 'Internal Server Error!', 500);
-    }
-  };
+    // we want to send emails to the appointer and the appointee
+    // if they are the same person then we only want to send one email
+    const destinationUsers = appointer._id === appointee._id ? [appointer] : [appointer, appointee];
 
-
-  // =========================
-//          REMINDERS
-// ==========================
-
-const scheduleTaskReminder = async (req: Request, res: Response, next: NextFunction) => {
-    const { post } = req.body;
-    try {
-      const emailType = 'scheduleTaskReminder';
-  
-      const to:any = await User.findById({ _id: post.task._assigned_to });
-      const from:any = await User.findById({ _id: post._posted_by });
-      const group:any = await Group.findById({ _id: post._group });
-  
+    destinationUsers.forEach(async (user) => {
       const emailData = {
         subject: subjects[emailType],
-        toName: to.first_name,
-        toEmail: to.email,
-        fromName: from.first_name,
-        fromEmail: from.email,
-        postTitle: post.title,
-        postContent: post.content,
+        appointeeName: appointee.first_name,
+        appointerName: appointer.first_name,
+        userWhoChangedStatusName: userWhoChangedStatus.first_name,
+        toName: user.first_name,
+        toEmail: user.email,
+        contentTitle: post.title,
+        contentPost: post.content,
         workspace: group.workspace_name,
         group: group.group_name,
         link: defaults.signinLink,
         postLink: defaults.postLink(group._id, post._id)
       };
-  
+
       // Generate email body from template
       const emailBody = await generateEmailBody(emailType, emailData);
-  
-      // Send email
-      const send = await sendMail(emailBody, emailData, { date: moment.utc(post.task.due_to, 'YYYY-MM-DD').startOf('day').format() });
-      return res.status(200).json({
-        message: 'User Mentioned Post mail sent'
-      });
-    } catch (err) {
-        return sendError(res, new Error(err), 'Internal Server Error!', 500);
 
-    }
-  };
-  
-  const scheduleEventReminder = async (req: Request, res: Response, next: NextFunction) => {
-      const { post } = req.body;
-    try {
-      const emailType = 'scheduleEventReminder';
-  
-      const from:any = await User.findById({ _id: post._posted_by });
-      const group:any = await Group.findById({ _id: post._group });
-  
-      post.event._assigned_to.forEach(async (user) => {
-        const to:any = await User.findById({ _id: user });
-  
-        const emailData = {
-          subject: subjects[emailType],
-          toName: to.first_name,
-          toEmail: to.email,
-          fromName: from.first_name,
-          fromEmail: from.email,
-          postTitle: post.title,
-          postContent: post.content,
-          workspace: group.workspace_name,
-          group: group.group_name,
-          link: defaults.signinLink,
-          postLink: defaults.postLink(group._id, post._id)
-        };
-  
-        // Generate email body from template.
-        const emailBody = await generateEmailBody(emailType, emailData);
-  
-        // Send email
-        const send = await sendMail(emailBody, emailData, { date: moment.utc(post.event.due_to, 'YYYY-MM-DD').startOf('day').format() });
-        return res.status(200).json({
-            message: 'User Mentioned Post mail sent'
-          });
+      // Send email
+      const send = await sendMail(emailBody, emailData);
+      return res.status(200).json({
+        message: 'User Task Completed mail sent'
       });
-    } catch (err) {
-        return sendError(res, new Error(err), 'Internal Server Error!', 500);
-    }
-  };
-  
+    });
+  } catch (err) {
+    return sendError(res, new Error(err), 'Internal Server Error!', 500);
+  }
+};
+
+/**
+ * This function is responsible for sending email to the assigned users of event
+ * @param { body:{ post } }req 
+ * @param res 
+ * @param next 
+ */
+const eventAssigned = async (req: Request, res: Response, next: NextFunction) => {
+
+  // Post object from request
+  const { post } = req.body;
+
+  try {
+
+    // Defining Email Type for templates
+    const emailType = 'eventAssigned';
+
+    // Send Mail to all the event assignee
+    await eventMailHelper(res, post, emailType);
+
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    return sendError(res, new Error(err), 'Internal Server Error!', 500);
+  }
+};
+
+/**
+ * =========================
+ *          REMINDERS
+ * ==========================
+ */
+
+/**
+ * This function is responsible for sending task reminder to the user
+ * @param { body: { post } } req 
+ * @param res 
+ * @param next 
+ */
+const scheduleTaskReminder = async (req: Request, res: Response, next: NextFunction) => {
+
+  // Post object from request
+  const { post } = req.body
+
+  try {
+
+    // Defining Email Type for templates
+    const emailType = 'scheduleTaskReminder';
+
+    // Send Mail to task assignee
+    await postMailHelper(post, emailType);
+
+    // Send status 200 response
+    return res.status(200).json({
+      message: 'User task reminder mail sent!'
+    })
+
+  } catch (err) {
+    return sendError(res, new Error(err), 'Internal Server Error!', 500)
+  }
+}
+
+/**
+ * This function is responsible for sending event reminder to the user
+ * @param { body: { post } } req 
+ * @param res 
+ * @param next 
+ */
+const scheduleEventReminder = async (req: Request, res: Response, next: NextFunction) => {
+
+  // Post object from request
+  const { post } = req.body;
+
+  try {
+
+    // Defining Email Type for templates
+    const emailType = 'scheduleEventReminder';
+
+    // Send Mail to all the event assignee
+    await eventMailHelper(res, post, emailType);
+
+  } catch (err) {
+    return sendError(res, new Error(err), 'Internal Server Error!', 500);
+  }
+}
+
 
 export {
 
-    // Signup
-    signup,
+  // Signup
+  signup,
 
-    // New Workspace
-    newWorkspace,
+  // New Workspace
+  newWorkspace,
 
-    // Reset Password
-    resetPassword,
+  // Reset Password
+  resetPassword,
 
-    // Join Group
-    joinedGroup,
+  // Join Group
+  joinedGroup,
 
-    // User Mentioned Post
-    userMentionedPost,
+  // User Mentioned Post
+  userMentionedPost,
 
-    //User Mentioned Comment
-    userMentionedComment,
+  //User Mentioned Comment
+  userMentionedComment,
 
-    // Task Assigned
-    taskAssigned,
+  // Task Assigned
+  taskAssigned,
 
-    // Task Reminder
-    scheduleTaskReminder,
+  // Task Reminder
+  scheduleTaskReminder,
 
-    // Event Reminder
-    scheduleEventReminder,
+  // Event Reminder
+  scheduleEventReminder,
 
-    // Event Assigned
-    eventAssigned,
+  // Event Assigned
+  eventAssigned,
 
-    // Workspace Joined
-    joinWorkspace,
+  // Workspace Joined
+  joinWorkspace,
 
-    // Task Reassigned
-    taskReassigned,
+  // Task Reassigned
+  taskReassigned,
 
-    // User Task Completed
-    userCompletedTask
+  // User Task Completed
+  userCompletedTask
 }
