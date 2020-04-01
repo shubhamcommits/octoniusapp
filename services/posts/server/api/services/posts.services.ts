@@ -1,7 +1,8 @@
-import { Post, User } from '../models';
+import { Post, User, Comment } from '../models';
 import http from 'axios';
 const moment = require('moment');
 import { Request } from 'express';
+const fs = require('fs');
 
 /*  ===============================
  *  -- POSTS Service --
@@ -90,6 +91,9 @@ import { Request } from 'express';
     }
 
 
+    /**
+     * This function is responsible for editing a post
+     */
     edit = async (req: Request) => {
         try {
           let postData: any;
@@ -182,10 +186,11 @@ import { Request } from 'express';
               };
               break;
           }
+
       
           const post:any = await Post.findOne({ _id: req.params.postId });
       
-          const user:any = await User.findOne({ _id: req.userId });
+          const user:any = await User.findOne({ _id: req['userId'] });
       
           // Allow all group's users to edit a multi editor post
           if (post.type === 'document' && user._groups.includes(post._group)) {
@@ -193,7 +198,7 @@ import { Request } from 'express';
           }
       
           // if the user is not an owner or an admin and is not the one who posted, we throw auth error
-          if (!(user.role === 'owner' || user.role === 'admin') && !post._posted_by == req.userId) {
+          if (!(user.role === 'owner' || user.role === 'admin') && !post._posted_by == req['userId']) {
             throw(null);
           }
       
@@ -255,6 +260,10 @@ import { Request } from 'express';
       };
 
 
+      /**
+       * This function is responsible for retrieving a post
+       * @param postId
+       */
       get = async (postId) => {
         try {
           // Get post data
@@ -278,5 +287,84 @@ import { Request } from 'express';
       };
       
 
+      /**
+       * This function is used to remove a post
+       * @param { userId, postId }
+       */
+      remove = async (userId, postId,) => {
+        try {
+          // Get post data
+          const post:any = await Post.findOne({
+            _id: postId
+          }).lean();
+      
+          // Get user data
+          const user:any = await User.findOne({ _id: userId });
+      
+          if (
+            // If user is not an admin or owner
+            !(user.role === 'admin' || user.role === 'owner')
+            // ...user is not the post author...
+            && !post._posted_by.equals(userId)
+          ) {
+            // Deny access!
+            throw(null);
+            // return sendErr(res, null, 'User not allowed to remove this post!', 403);
+          }
+      
+          await post.comments.forEach(async (commentId) => {
+            try {
+              await Comment.findByIdAndRemove(commentId);
+      
+              return true;
+            } catch (err) {
+              throw(err);
+            }
+          });
+      //delete files, this catches both document insertion as well as multiple file attachment deletes
+         if(post.files.length > 0){
+          //gather source file
+          function deleteFiles(files, callback){
+            var i = files.length;
+            files.forEach(function(filepath){
+              const finalpath =`${process.env.FILE_UPLOAD_FOLDER}${filepath.modified_name}`
+              fs.unlink(finalpath, function(err) {
+                i--;
+                if (err) {
+                  callback(err);
+                  return;
+                } else if (i <= 0) {
+                  callback(null);
+                }
+              });
+            });
+          }
+          deleteFiles(post.files, function(err) {
+            if (err) {throw(err);}
+             //all files removed);
+          });
+        }
+      //chec/delete document files that were exported
+          const filepath = `${process.env.FILE_UPLOAD_FOLDER}${postId + post._group + 'export' + '.docx'}`;
+          //check if file exists
+          fs.access(filepath, fs.F_OK, error => {
+            //if error there was no file
+            if(!error){
+              //the file was there now unlink it
+              fs.unlink(filepath, (err) => {
+              //handle error when file was not deleted properly
+              if (err) {throw(err);}
+              //deleted document
+              })
+            }
+          })
+      //
+          const postRemoved = await Post.findByIdAndRemove(postId);
+      
+          return postRemoved;
+        } catch (err) {
+          throw(err);
+        }
+      };
       
  }

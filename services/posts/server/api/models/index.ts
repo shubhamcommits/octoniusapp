@@ -2,6 +2,7 @@ import { Auth } from './auth.model';
 import { Group } from './group.model';
 import { Post } from './post.model';
 import { User } from './user.model';
+import { Comment } from './comment.model';
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -19,5 +20,8 @@ export {
     Post as Post,
 
     // USER
-    User as User
+    User as User,
+
+    // COMMENT
+    Comment as Comment
 };

@@ -75,4 +75,35 @@ export class PostController{
   }
 
 
+  /**
+   * This function is responsible for removing a post
+   * @param req 
+   * @param res 
+   * @param next 
+   */
+  async remove(req: Request, res: Response, next: NextFunction){
+        try {
+            
+            // Retrieving data from request 
+            const { postId } = req.params;
+            const userId:any = req['userId'];
+
+            // Calling service function to remove post
+            const postRemoved = postService.remove(userId, postId);
+
+            // Returning status 200 response
+            res.status(200).json({
+                message: 'Post removed successfully',
+                postRemoved: postRemoved
+            });
+
+        } catch (error) {
+            if (error == null){
+                return sendErr(res, null, 'User not allowed to remove this post!', 403)
+            }
+            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
+        }
+  }
+
+
 }
