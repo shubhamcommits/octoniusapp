@@ -1,4 +1,5 @@
 import { PostController } from './posts.controller';
+import { CommentsController } from './comments.controller';
 
 
 /*  ==========================
@@ -7,5 +8,6 @@ import { PostController } from './posts.controller';
  * */
 
 export {
-    PostController as PostController
+    PostController as PostController,
+    CommentsController as CommentsController
 }

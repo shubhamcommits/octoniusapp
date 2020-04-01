@@ -21,7 +21,7 @@ const fs = require('fs');
               
             if (post._content_mentions.length !== 0) {
               // Create Notification for mentions on post content
-              await http.post('http://localhost:9000/api/notifications/new-mention',{
+              await http.post('http://localhost:9000/api/new-mention',{
                   post: post
               });
             //   notifications.newPostMentions(post);
@@ -43,30 +43,30 @@ const fs = require('fs');
                 if(post.task.unassigned != 'Yes')
                 {
                 // await notifications.newTaskAssignment(post);
-                await http.post('http://localhost:9000/api/notifications/new-task', {
+                await http.post('http://localhost:9000/api/new-task', {
                     post: post
                 });
                 // await sendMail.taskAssigned(post);
-                await http.post('http://localhost:2000/task-assigned', {
+                await http.post('http://localhost:2000/api/task-assigned', {
                     post: post
                 });
                 // await sendMail.scheduleTaskReminder(post);
-                await http.post('http://localhost:2000/task-reminder', {
+                await http.post('http://localhost:2000/api/task-reminder', {
                     post: post
                 });
                 }
                 break;
               case 'event':
                 // await notifications.newEventAssignments(post);
-                await http.post('http://localhost:9000/api/notifications/new-event', {
+                await http.post('http://localhost:9000/api/new-event', {
                     post: post
                 });
                 // await sendMail.eventAssigned(post);
-                await http.post('http://localhost:2000/event-assigned', {
+                await http.post('http://localhost:2000/api/event-assigned', {
                     post: post
                 });
                 // await sendMail.scheduleEventReminder(post);
-                await http.post('http://localhost:2000/event-reminder', {
+                await http.post('http://localhost:2000/api/event-reminder', {
                     post: post
                 });
                 break;
@@ -222,7 +222,7 @@ const fs = require('fs');
           // Create Notification for mentions on post content
           if (post._content_mentions.length !== 0) {
             // notifications.newPostMentions(post);
-            await http.post('http://localhost:9000/api/notifications/new-mention', {
+            await http.post('http://localhost:9000/api/new-mention', {
                 post: post
             });
           }
@@ -231,21 +231,21 @@ const fs = require('fs');
           switch (post.type) {
             case 'task':
             //   await notifications.newTaskAssignment(post);
-              await http.post('http://localhost:9000/api/notifications/new-task', {
+              await http.post('http://localhost:9000/api/new-task', {
                   post: post
               });
             //   await sendMail.taskAssigned(post);
-              await http.post('http://localhost:2000/task-assigned', {
+              await http.post('http://localhost:2000/api/task-assigned', {
                   post: post
               });
               break;
             case 'event':
             //   await notifications.newEventAssignments(post);
-              await http.post('http://localhost:9000/api/notifications/new-event', {
+              await http.post('http://localhost:9000/api/new-event', {
                   post: post
               });
             //   await sendMail.eventAssigned(post);
-              await http.post('http://localhost:2000/event-assigned', {
+              await http.post('http://localhost:2000/api/event-assigned', {
                   post: post
               });
               break;

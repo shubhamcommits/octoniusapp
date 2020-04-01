@@ -5,7 +5,7 @@ import morgan from 'morgan';
 import compression from 'compression';
 import { developmentConfig, productionConfig } from '../configs';
 import fileUpload from 'express-fileupload';
-import { postRoutes } from './routes';
+import { postRoutes, commentRoutes } from './routes';
 
 // Defining new Express application
 const app = express();
@@ -75,6 +75,7 @@ app.all('/', (req: Request, res: Response, next: NextFunction) => {
 
 // Post Routes
 app.use('/posts', postRoutes);
+app.use('/comments', commentRoutes);
 
 // Correct REST naming
 // app.use('/api/users', userRoutes);

@@ -14,7 +14,7 @@ routes.post('/edit', postController.edit);
 routes.get('/get', postController.get);
 
 // This route is used to remove a post
-routes.delete('/remove', postController.remove);
+routes.post('/remove', postController.remove);
 
 
 export { routes as postRoutes };
