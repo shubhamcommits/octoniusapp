@@ -1,6 +1,7 @@
 import { Resetpwd } from './resetpwd.model';
 import { Group } from './group.model';
 import { User } from './user.model';
+import { Workspace } from './workspace.model';
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -15,6 +16,9 @@ export {
     Group as Group,
 
     //User
-    User as User
+    User as User,
+
+    // Workspace
+    Workspace as Workspace
 
 };

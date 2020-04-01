@@ -34,6 +34,15 @@ routes.post('/event-reminder', sendMail.scheduleEventReminder);
 // POST - Event Assigned
 routes.post('/event-assigned', sendMail.eventAssigned);
 
+// POST - Workspace Joined
+routes.post('/join-workspace', sendMail.joinWorkspace);
+
+// POST - Task Reassigned
+routes.post('/task-reassign', sendMail.taskReassigned);
+
+// POST - User Completed Task
+routes.post('/task-complete', sendMail.userCompletedTask);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================
