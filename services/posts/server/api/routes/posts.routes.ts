@@ -23,22 +23,22 @@ routes.post('/like', postController.like);
 routes.post('/unlike', postController.unlike);
 
 // This route is used to get this month's tasks
-routes.post('/month-tasks', postController.getThisMonthTasks);
+routes.get('/month-tasks', postController.getThisMonthTasks);
 
 // This route is used to get this week's tasks
-routes.post('/week-tasks', postController.getThisMonthTasks);
+routes.get('/week-tasks', postController.getThisMonthTasks);
 
 // This route is used to get next 5 tasks for this week
-routes.post('/next-tasks', postController.getNextTasks);
+routes.get('/next-tasks', postController.getNextTasks);
 
 // This route is used to get this month's events
-routes.post('/month-events', postController.getThisMonthEvents);
+routes.get('/month-events', postController.getThisMonthEvents);
 
 // This route is used to get this week's events
-routes.post('/week-events', postController.getThisMonthEvents);
+routes.get('/week-events', postController.getThisMonthEvents);
 
 // This route is used to get next 5 events for this week
-routes.post('/next-events', postController.getNextEvents);
+routes.get('/next-events', postController.getNextEvents);
 
 
 export { routes as postRoutes };
