@@ -1,4 +1,4 @@
-# | DOCS - Authentication REST API
+# | DOCS - Group REST API
 
 ## | Index:
 
