@@ -1,0 +1,25 @@
+<!-- CARD FOOTER starts -->
+
+<div class="card-footer action-post innercard">
+    <div class="row ">
+        <div class="col-md-6" style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <span><b>{{post?._liked_by.length || 0 }}</b>
+                Likes </span>
+            <span><b>{{ post?.comments.length || 0 }}</b> Comments</span>
+            <span><b>{{post?._followers?.length || 0 }}</b> Followers</span>
+        </div>
+        <div class="col-md-6" style="display: flex; justify-content: flex-end; align-items: stretch;">
+
+            <app-comment-on-post></app-comment-on-post>
+
+            <app-like-post></app-like-post>
+
+            <app-follow-post></app-follow-post>
+
+            <app-post-utils *ngIf="post" [post]="post"></app-post-utils>
+        </div>
+    </div>
+
+</div>
+
+<!-- END CARD FOOTER and footer component-->

@@ -43,8 +43,8 @@
         </section>
       </div>
     </div>
-    <input name="postTitle" type="text" class="post-title" placeholder="Insert title here ..." />
-    <app-quill-editor (content)="getQuillData($event)"></app-quill-editor>
+    <input name="postTitle" type="text" [(ngModel)]="title" class="post-title" placeholder="Insert title here ..." />
+    <app-quill-editor [editorId]="'postbox-editor'" [toolbar]="true" [readOnly]="false" (content)="getQuillData($event)"></app-quill-editor>
     <div class="btn-group attach-files">
       <app-attach-files (files)="onAttach($event)"></app-attach-files>
       <app-attach-cloud-files></app-attach-cloud-files>
@@ -54,5 +54,5 @@
 
 <div class="modal-footer">
   <button type="button" class="btn btn-md btn-danger" (click)="this.closeModal()">Cancel</button>
-  <button type="button" class="btn btn-md btn-primary">Post</button>
+  <button type="button" class="btn btn-md btn-primary" (click)="createPost()">Post</button>
 </div>

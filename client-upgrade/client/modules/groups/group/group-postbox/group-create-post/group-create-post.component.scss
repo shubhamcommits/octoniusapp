@@ -27,12 +27,10 @@ i{
 
 .attach-files{
     width: 100%; 
-    outline: 1px gray; 
     box-shadow: none;
-
-    app-attach-files, app-attach-cloud-files{
-        outline: 0.5px solid gray
-    }
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 section{

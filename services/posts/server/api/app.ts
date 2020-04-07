@@ -74,8 +74,8 @@ app.all('/', (req: Request, res: Response, next: NextFunction) => {
 });
 
 // Post Routes
-app.use('/posts', postRoutes);
-app.use('/comments', commentRoutes);
+app.use('/api/comments', commentRoutes);
+app.use('/api', postRoutes);
 
 // Correct REST naming
 // app.use('/api/users', userRoutes);

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -19,6 +19,9 @@ export class GroupPostboxComponent implements OnInit {
   // UserData Object
   @Input('userData') userData: any;
 
+  // Output the post received from component
+  @Output('post') post = new EventEmitter()
+
   // Variable to showpostbox or not
   showPostBox: boolean = false;
 
@@ -28,6 +31,16 @@ export class GroupPostboxComponent implements OnInit {
   // Check if the data provided is not empty{}
   checkDataExist(object: Object) {
     return !(JSON.stringify(object) === JSON.stringify({}))
+  }
+
+  /**
+   * This function is responsible for emitting the post object to other components
+   * @param post 
+   */
+  getPost(post: any) {
+
+    // Emit the post to other connected components
+    this.post.emit(post)
   }
 
 }

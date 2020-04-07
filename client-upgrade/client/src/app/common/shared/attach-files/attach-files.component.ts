@@ -12,6 +12,9 @@ export class AttachFilesComponent implements OnInit {
   // Files Output Event Emitter
   @Output('files') files = new EventEmitter();
 
+  // Files Array
+  filesArray = new Array<File>()
+
   ngOnInit() {
   }
 
@@ -20,7 +23,31 @@ export class AttachFilesComponent implements OnInit {
    * @param files 
    */
   onAttach(files: any){
-    return this.files.emit(<Array<File>>files.target.files)
+
+    // Set the files array to the incoming output
+    this.filesArray = files.target.files;
+
+    // Emit the value to other components
+    return this.files.emit(this.filesArray)
+  }
+
+  /**
+   * This function is responsible for removing the specific file attached
+   * @param index 
+   */
+  removeFile(index: number){
+
+    // Remove element at the specific index
+    let arr = Array.from(this.filesArray)
+
+    // Remove the element
+    arr.splice(index, 1)
+
+    // Updated array
+    this.filesArray = arr
+
+    // Emit the value to other components
+    return this.files.emit(this.filesArray)
   }
 
 }

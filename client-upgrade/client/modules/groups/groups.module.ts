@@ -70,6 +70,7 @@ import { GroupPostboxComponent } from './group/group-postbox/group-postbox.compo
 import { NewsPillComponent } from './group/group-activity/news-pill/news-pill.component';
 import { GroupPostSelectionComponent } from './group/group-postbox/group-post-selection/group-post-selection.component';
 import { GroupCreatePostComponent } from './group/group-postbox/group-create-post/group-create-post.component'; 
+import { PostService } from 'src/shared/services/post-service/post.service';
 
 
  
@@ -173,7 +174,8 @@ import { GroupCreatePostComponent } from './group/group-postbox/group-create-pos
   ],
   providers: [
     GroupsService,
-    GroupService
+    GroupService,
+    PostService
   ]
 })
 export class GroupsModule { }

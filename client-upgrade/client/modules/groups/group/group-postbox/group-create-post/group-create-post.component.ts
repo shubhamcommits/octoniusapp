@@ -1,5 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { PostService } from 'src/shared/services/post-service/post.service';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { SubSink } from 'subsink';
 
 @Component({
   selector: 'app-group-create-post',
@@ -8,13 +11,28 @@ import { environment } from 'src/environments/environment';
 })
 export class GroupCreatePostComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private postService: PostService,
+    private utilityService: UtilityService
+  ) { }
 
   // BASE URL OF THE APPLICATION
   baseUrl = environment.UTILITIES_BASE_URL;
 
   // Date Object to map the due dates
   dueDate = new Date(Date.now())
+
+  // Files Variable 
+  files: [] = []
+
+  // Title of the Post
+  title: string = 'Untitled'
+
+  // Quill Data Object
+  quillData: any
+
+  // Content Mentions Variables keeps a track of mentioned members
+  _content_mentions: any = []
 
   /* Task Variables */
 
@@ -51,6 +69,12 @@ export class GroupCreatePostComponent implements OnInit {
   // Close event emitter takes care of closing the modal
   @Output('close') close = new EventEmitter();
 
+  // Post Event Emitter - Emits the post to the other components
+  @Output('post') post = new EventEmitter()
+
+  // Subsink Object to unsubscribe the observables
+  subSink = new SubSink()
+
   ngOnInit() {
   }
 
@@ -59,7 +83,9 @@ export class GroupCreatePostComponent implements OnInit {
    * @param $event 
    */
   getQuillData(quillData: any) {
-    console.log(quillData)
+
+    // Set the quill data object to the quillData output
+    this.quillData = quillData
   }
 
   closeModal() {
@@ -86,8 +112,14 @@ export class GroupCreatePostComponent implements OnInit {
 
   }
 
+  /**
+   * This function is responsible for receiving the files
+   * @param files 
+   */
   onAttach(files: any){
-    console.log(files)
+
+    // Set the current files variable to the output of the module
+    this.files = files
   }
 
   /**
@@ -104,9 +136,64 @@ export class GroupCreatePostComponent implements OnInit {
   }
 
   /**
+   * This function creates a new post in the activity
+   */
+  createPost(){
+
+    // Prepare Post Data
+    let postData = {
+      title: this.title,
+      content: JSON.stringify(this.quillData.contents),
+      type: this.type,
+      _posted_by: this.userData._id,
+      _group: this.groupId,
+      _content_mentions: this._content_mentions
+    }
+
+    // Create FormData Object
+    let formData = new FormData();
+
+    // Append Post Data
+    formData.append('post', JSON.stringify(postData))
+
+    // Append all the file attachments
+    if(this.files.length != 0)
+      this.files.forEach((file)=>{
+        formData.append('attachments', file, file['name']);
+      })
+
+    // Call the Helper Function
+    this.onCreatePost(formData)
+    
+  }
+
+  /**
+   * This function is responsible for calling add post service functions
+   * @param postData 
+   */
+  onCreatePost(postData: FormData){
+    this.utilityService.asyncNotification('Please wait we are creating the post...', new Promise((resolve, reject)=>{
+      this.subSink.add(this.postService.create(postData)
+      .subscribe((res)=>{
+
+        // Emit the Post to the other compoentns
+        this.post.emit(res['post'])
+
+        // Resolve with success
+        resolve(this.utilityService.resolveAsyncPromise('Post Created!'))
+      }, (err)=>{
+
+        // Catch the error and reject the promise
+        reject(this.utilityService.rejectAsyncPromise('Unable to create post, please try again!'))
+      }))
+    }))
+  }
+
+  /**
    * This function is called whenever the component is destroyed
    */
   ngOnDestroy() {
+    this.subSink.unsubscribe()
   }
 
 }

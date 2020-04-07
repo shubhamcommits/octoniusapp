@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 
 // Highlight.js 
 import * as hljs from 'highlight.js';
@@ -25,18 +25,8 @@ export class QuillEditorComponent implements OnInit {
 
     // Initialise the modules in constructor
     this.modules = {
-      'syntax': true,
-      'toolbar': [
-        [{ 'font': [] }, { 'size': [] }],
-        ['bold', 'italic', 'underline', 'strike'],
-        [{ 'color': [] }, { 'background': [] }],
-        [{ 'script': 'super' }, { 'script': 'sub' }],
-        [{ 'header': '1' }, { 'header': '2' }, 'blockquote', 'code-block'],
-        [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
-        ['direction', { 'align': [] }],
-        ['link', 'image', 'video', 'formula'],
-        ['clean']
-      ]
+      syntax: true,
+      toolbar: this.toolbar
     }
   }
 
@@ -44,24 +34,66 @@ export class QuillEditorComponent implements OnInit {
   quill: any;
 
   // Quill modules variable
-  modules: {};
+  modules: any;
+
+  // EditorId variable
+  @Input('editorId') editorId: any;
+
+  // ShowToolbar variable
+  @Input('toolbar') toolbar = true;
+
+  // ReadOnly Variable
+  @Input('readOnly') readOnly = true;
+
+  // Quill Contents Variable
+  @Input('contents') contents: any
 
   // Output the content present in the editor
   @Output('content') content = new EventEmitter();
 
   ngOnInit() {
 
+    // Set the Status of the toolbar
+    this.modules.toolbar = (this.toolbar === false) ? false : this.quillFullToolbar()
+
+  }
+
+  ngAfterViewInit() {
+
     // Initialise quill editor
     this.quill = this.quillEditor(this.modules)
 
-    // console.log(myToolTip)
-    console.log('Quill Editor', this.quill)
-  }
+    // Set contents to the quill
+    if(this.contents){
+     
+     // Fetch the delta ops from the JSON string 
+     let delta = JSON.parse(this.contents)['ops']
 
-  ngAfterViewInit(){
+      // Set the content inside quill container  
+      this.setContents(this.quill, delta)
+    }
+
+    // console.log('Quill Editor', this.quill, 'Quill Contents', this.getQuillContents(this.quill))
 
     // Turn on the quill text change event handler
     this.quillContentChanges(this.quill)
+  }
+
+  /**
+   * This function return the full toolbar for quilleditor
+   */
+  quillFullToolbar() {
+    return [
+      [{ 'font': [] }, { 'size': [] }],
+      ['bold', 'italic', 'underline', 'strike'],
+      [{ 'color': [] }, { 'background': [] }],
+      [{ 'script': 'super' }, { 'script': 'sub' }],
+      [{ 'header': '1' }, { 'header': '2' }, 'blockquote', 'code-block'],
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
+      ['direction', { 'align': [] }],
+      ['link', 'image', 'video', 'formula'],
+      ['clean']
+    ]
   }
 
   /**
@@ -71,13 +103,14 @@ export class QuillEditorComponent implements OnInit {
   quillEditor(modules: Object) {
 
     // Create Quill Instance locally
-    let quill: Quill 
+    let quill: Quill
 
     // Return the instance with modules
-    return quill = new Quill('#editor', {
+    return quill = new Quill(`#${this.editorId}`, {
       theme: 'snow',
       modules: modules,
-      placeholder: 'Start typing here...'
+      readOnly: this.readOnly,
+      placeholder: (this.readOnly) ? '' : 'Start typing here...'
     })
   }
 
@@ -85,7 +118,7 @@ export class QuillEditorComponent implements OnInit {
    * Get quill contents present in the editor
    * @param quill 
    */
-  getQuillContents(quill: any){
+  getQuillContents(quill: any) {
     return {
       contents: quill.getContents(),
       html: quill.root.innerHTML,
@@ -97,7 +130,7 @@ export class QuillEditorComponent implements OnInit {
    * This function is resposible for detecting the changes in quill contents
    * @param quill 
    */
-  quillContentChanges(quill: Quill){
+  quillContentChanges(quill: Quill) {
     return quill.on('text-change', (delta, oldDelta, source) => {
       if (source == 'api') {
         console.log("An API call triggered this change.");
@@ -119,5 +152,14 @@ export class QuillEditorComponent implements OnInit {
         this.content.emit(quillData);
       }
     })
+  }
+
+  /**
+   * This function is responsible for setting the contents in the quill container
+   * @param quill 
+   * @param contents of type Delta 
+   */
+  setContents(quill: Quill, contents: any){
+    quill.setContents(contents)
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
@@ -21,6 +21,9 @@ export class GroupPostSelectionComponent implements OnInit {
   // Post Type
   type: string
 
+  // Output the post received from component
+  @Output('post') post = new EventEmitter()
+
   ngOnInit() {
 
   }
@@ -29,6 +32,16 @@ export class GroupPostSelectionComponent implements OnInit {
     this.utilityService.openModal(content, {
       size: 'xl',
     });
+  }
+
+  /**
+   * This function is responsible for emitting the post object to other components
+   * @param post 
+   */
+  getPost(post: any){
+
+    // Emit the post to other connected components
+    this.post.emit(post)
   }
 
   /**

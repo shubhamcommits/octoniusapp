@@ -6,3 +6,11 @@ i{
 input{
     display: none;
 }
+
+span {
+    cursor: pointer;
+}
+
+span:hover {
+    color: indianred;
+}

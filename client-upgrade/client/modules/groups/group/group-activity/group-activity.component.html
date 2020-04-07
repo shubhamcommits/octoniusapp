@@ -1,14 +1,41 @@
+
 <div class="container">
-    <div class="row main-actvity">
+        <div class="row main-actvity">
 
-        <div class="col-md-4" >
-            <app-group-information *ngIf="groupData && checkDataExist(groupData)" [groupData]="groupData"></app-group-information>
-            <app-send-pulse *ngIf="groupId" [groupId]="groupId"></app-send-pulse>
-        </div>
+            <div class="col-md-4">
+                <app-group-information *ngIf="groupData && checkDataExist(groupData)" [groupData]="groupData">
+                </app-group-information>
+                <app-send-pulse *ngIf="groupId" [groupId]="groupId"></app-send-pulse>
+            </div>
 
-        <div class="col-md-8">
-            <!-- <app-news-pill></app-news-pill> -->
-            <app-group-postbox *ngIf="userData && checkDataExist(userData)" [userData]="userData" [groupId]="groupId"></app-group-postbox>
+            <div class="col-md-8">
+
+                <!-- News Feed Pill -->
+                <app-news-pill *ngIf="showNewPosts" (click)="newPosts()"></app-news-pill>
+                <!-- News Feed Pill -->
+
+                <!-- Group activity postbox starts -->
+                <app-group-postbox *ngIf="userData && checkDataExist(userData)" [userData]="userData"
+                    [groupId]="groupId" (post)="getPost($event)"></app-group-postbox>
+                <!-- Group activity postbox ends -->
+
+                <!-- Activity posts section starts -->
+                <section infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="1500" [immediateCheck]="true"
+                (scrolled)="onScroll()" class="mt-3" *ngIf="posts.size > 0">
+                    <ul class="list-group"
+                        *ngFor="let post of posts | keyvalue: compare; let index = index ; trackBy: this.utilityService.trackByIndex">
+                        <app-post-view *ngIf="post.value.type != 'task' && post" [post]="post.value"></app-post-view>
+                    </ul>
+                </section>
+                <!-- Activity posts section ends -->
+
+
+                <!-- Loading Spinner Starts -->
+                <ng-container *ngIf="isLoading$ | async">
+                    <app-loading-spinner class="media"></app-loading-spinner>
+                </ng-container>
+                <!-- Loading Spinner Ends -->
+
+            </div>
         </div>
-    </div>
 </div>

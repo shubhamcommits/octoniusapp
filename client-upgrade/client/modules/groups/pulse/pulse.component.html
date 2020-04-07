@@ -1,42 +1,40 @@
-<!-- INFINITE SCROLL STARTS FOR PULSE GROUPS -->
-<app-infinite-scroll (scrolled)="onScroll()">
-  <!-- PULSE GROUPS ITERATOR STARTS -->
-  <div *ngFor="let group of pulseGroups; let i = index; trackBy: utilityService.trackByIndex" class="group-elem">
-    <div class="row" 
+<!-- PULSE GROUPS ITERATOR STARTS -->
+<div infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" [immediateCheck]="true"
+  (scrolled)="onScroll()" *ngFor="let group of pulseGroups; let i = index; trackBy: utilityService.trackByIndex"
+  class="group-elem">
+  <div class="row"
     (click)="openModal(group.group_name, this.baseUrl + '/uploads/' + group.group_avatar, group.pulse_description ? group.pulse_description: 'Waiting for a new Pulse...', pulseToDoTasks[group._id], pulseInProgressTasks[group._id], pulseDoneTasks[group._id])">
 
-      <!-- GROUP DETAILS STARTS -->
-      <div class="col-md-1"><img class="feed-avatar" src="{{ this.baseUrl }}/uploads/{{group?.group_avatar}}"
-          onerror="this.src='/assets/images/group.png'" alt="group_avatar">
-      </div>
-      <div class="group-name col-md-2"> {{ group.group_name }} </div>
-      <div class="pulse-desc col-md-4">
-        {{ group.pulse_description ? group.pulse_description : "Waiting for a new Pulse..." }}
-      </div>
-      <!-- GROUP DETAILS ENDS -->
-
-      <!-- SPACE INCREMENTOR STARTS -->
-      <div class="col-md-1"></div>
-      <!-- SPACE INCREMENTOR ENDS -->
-
-      <!-- TOTAL TASKS STARTS -->
-      <div class="col-md-2">
-        <div class="group-total-tasks float-left">{{ pulseTotalTasks[group?._id] || 0 }}</div>
-      </div>
-      <!-- TOTAL TASKS ENDS -->
-
-      <!-- TO DO, IN PROGRESS AND DONE TASKS STARTS -->
-      <div class="col-md-2">
-        <div class="group-todo-tasks float-left">{{ pulseToDoTasks[group?._id] || 0 }}</div>
-        <div class="group-in-progress-tasks float-left">{{ pulseInProgressTasks[group?._id] || 0 }}</div>
-        <div class="group-done-tasks float-left ">{{ pulseDoneTasks[group?._id] || 0 }}</div>
-      </div>
-      <!-- TO DO, IN PROGRESS AND DONE TASKS ENDS -->
+    <!-- GROUP DETAILS STARTS -->
+    <div class="col-md-1"><img class="feed-avatar" src="{{ this.baseUrl }}/uploads/{{group?.group_avatar}}"
+        onerror="this.src='/assets/images/group.png'" alt="group_avatar">
     </div>
+    <div class="group-name col-md-2"> {{ group.group_name }} </div>
+    <div class="pulse-desc col-md-4">
+      {{ group.pulse_description ? group.pulse_description : "Waiting for a new Pulse..." }}
+    </div>
+    <!-- GROUP DETAILS ENDS -->
+
+    <!-- SPACE INCREMENTOR STARTS -->
+    <div class="col-md-1"></div>
+    <!-- SPACE INCREMENTOR ENDS -->
+
+    <!-- TOTAL TASKS STARTS -->
+    <div class="col-md-2">
+      <div class="group-total-tasks float-left">{{ pulseTotalTasks[group?._id] || 0 }}</div>
+    </div>
+    <!-- TOTAL TASKS ENDS -->
+
+    <!-- TO DO, IN PROGRESS AND DONE TASKS STARTS -->
+    <div class="col-md-2">
+      <div class="group-todo-tasks float-left">{{ pulseToDoTasks[group?._id] || 0 }}</div>
+      <div class="group-in-progress-tasks float-left">{{ pulseInProgressTasks[group?._id] || 0 }}</div>
+      <div class="group-done-tasks float-left ">{{ pulseDoneTasks[group?._id] || 0 }}</div>
+    </div>
+    <!-- TO DO, IN PROGRESS AND DONE TASKS ENDS -->
   </div>
-  <!-- PULSE GROUPS ITERATOR ENDS -->
-</app-infinite-scroll>
-<!-- INFINITE SCROLL ENDS FOR PULSE GROUPS -->
+</div>
+<!-- PULSE GROUPS ITERATOR ENDS -->
 
 <!-- LOADING SPINNER STARTS -->
 <ng-container *ngIf="isLoading$ | async">

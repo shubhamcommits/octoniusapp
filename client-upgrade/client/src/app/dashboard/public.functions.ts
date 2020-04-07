@@ -9,6 +9,7 @@ import { GroupsService } from 'src/shared/services/groups-service/groups.service
 import { Router, NavigationEnd } from '@angular/router';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { GroupService } from 'src/shared/services/group-service/group.service';
+import { PostService } from 'src/shared/services/post-service/post.service';
 
 export class PublicFunctions {
 
@@ -164,7 +165,7 @@ export class PublicFunctions {
         return new Promise((resolve) => {
             const utilityService = this.injector.get(UtilityService);
             this.subSink.add(utilityService.currentGroupData.subscribe((res) => {
-                if(JSON.stringify(res) != JSON.stringify({}))
+                if (JSON.stringify(res) != JSON.stringify({}))
                     resolve(res)
             })
             )
@@ -282,7 +283,7 @@ export class PublicFunctions {
                     reject([]);
                 })
         })
-    }   
+    }
 
     /**
      * Fetch list of first 10 groups of which a user is a part of
@@ -405,6 +406,31 @@ export class PublicFunctions {
                 .catch(() => {
 
                     // If there's an error, then
+                    reject([]);
+                })
+        })
+    }
+
+    /**
+     * This function is responsible for fetching the posts from the server based on the groupId
+     * @param groupId 
+     * @param lastPostId: optional 
+     */
+    getPosts(groupId: string, lastPostId?: string) {
+
+        // Post Service Instance
+        let postService = this.injector.get(PostService);
+
+        return new Promise((resolve, reject) => {
+            postService.getPosts(groupId, lastPostId)
+                .then((res) => {
+
+                    // Resolve with sucess
+                    resolve(res['posts'])
+                })
+                .catch(() => {
+
+                    // If there's an error, then reject with empty array
                     reject([]);
                 })
         })

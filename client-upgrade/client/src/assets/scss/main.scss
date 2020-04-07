@@ -33,6 +33,14 @@ app-group-post-selection {
   margin-right: auto;
 }
 
+// Loading Spinner
+app-loading-spinner{
+  display: flex;
+  margin-top: 2%;
+  justify-content: center;
+  align-items: center;
+}
+
 /* COMPONENT CSS */
 
 body {
@@ -150,10 +158,11 @@ margin-bottom: 20px;
 
 }
 .card-footer{
-  background: transparent;
+  background: transparent !important;
   border: none;
-  span{
-    margin-right:20px;
+  span {
+    // margin-right: 15px;
+    cursor: pointer;
   }
   margin-bottom: 0px;
   .material-icons{
