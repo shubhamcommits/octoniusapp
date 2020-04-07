@@ -160,4 +160,187 @@ export class PostController {
     }
 
 
+  /**
+   * This function is used to like a post
+   * @param req 
+   * @param res 
+   * @param next 
+   */
+  async like(req: Request, res: Response, next: NextFunction){
+    try {
+        const { params: { postId } } = req;
+        const userId = req['userId'];
+
+        // Call Service function to like a post
+        const data = await postService.like(userId, postId);
+
+        // Send status 200 response
+        return res.status(200).json({
+            message: 'Post Successfully Liked',
+            post: data.post,
+            user: data.user
+        });
+    } catch (error) {
+        return sendErr(res, new Error(error), 'Internal Server Error!', 500);
+    }  
+  }
+
+
+  /**
+   * This function is used to unlike a post
+   * @param req 
+   * @param res 
+   * @param next 
+   */
+  async unlike(req: Request, res: Response, next: NextFunction){
+      try {
+        const { params: { postId } } = req;
+        const userId = req['userId'];
+
+        // Call Service function to unlike a post
+        const data = await postService.unlike(userId, postId);
+
+        // Send status 200 response
+        return res.status(200).json({
+            message: 'Post Successfully Unliked',
+            post: data.post,
+            user: data.user
+        });
+      } catch (error) {
+        return sendErr(res, new Error(error), 'Internal Server Error!', 500);
+      }
+  }
+
+
+  /**
+   * Anish 02/04 edits start
+   */
+
+
+   /**
+    * This function is used to retrieve all of this month's tasks
+    * @param req 
+    * @param res 
+    * @param next 
+    */
+   async getThisMonthTasks(req: Request, res: Response, next: NextFunction){
+       try {
+           const userId = req['userId'];
+
+            // Call service function to retrieve this months task
+            const data = await postService.getThisMonthTasks(userId);
+
+            // Send status 200 response
+            return res.status(200).json(data);
+       } catch (error) {
+           return sendErr(res, new Error(error), 'Internal Server Error!', 500);
+       }
+   }
+
+
+   /**
+    * This function is used to get first 10 tasks for this week
+    * @param req 
+    * @param res 
+    * @param next 
+    */
+   async getThisWeekTasks(req: Request, res: Response, next: NextFunction){
+    try {
+        const userId = req['userId'];
+
+         // Call service function to retrieve this week's task
+         const data = await postService.getThisWeekTasks(userId);
+
+         // Send status 200 response
+         return res.status(200).json(data);
+    } catch (error) {
+        return sendErr(res, new Error(error), 'Internal Server Error!', 500);
+        }
+    }
+
+
+    /**
+     * This function is used to get next 5 tasks for this week
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async getNextTasks(req: Request, res: Response, next: NextFunction){
+        try {
+            const userId = req['userId'];
+            const { lastTaskId } = req.query;
+
+            // Service function to get next 5 tasks for this week
+            const data = await postService.getNextTasks(userId, lastTaskId);
+
+            // Status 200 response status
+            return res.status(200).json(data);
+        } catch (error) {
+            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
+        }
+    }
+
+
+    /**
+     * This function is used to get this month's events
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async getThisMonthEvents(req: Request, res: Response, next: NextFunction){
+        try {
+            const userId = req['userId'];
+
+            // Call service function to get events
+            const data = await postService.getThisMonthsEvents(userId);
+
+            // Send status 200 response
+            return res.status(200).json(data);
+        } catch (error) {
+            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
+        }
+    }
+
+
+    /**
+     * This function is used to get first 10 events of this week
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async getThisWeekEvents(req: Request, res: Response, next: NextFunction){
+        try {
+            const userId = req['userId'];
+
+            // Call service function to get events
+            const data = await postService.getThisWeekEvents(userId);
+
+            // Send status 200 response
+            return res.status(200).json(data);
+        } catch (error) {
+            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
+        }
+    }
+
+
+    /**
+     * This function is used to get next 5 events for this week
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async getNextEvents(req: Request, res: Response, next: NextFunction){
+        try {
+            const userId = req['userId'];
+            const { lastEventIId } = req.query;
+
+            // Call service function to get events
+            const data = await postService.getNextEvents(userId, lastEventIId);
+
+            // Send status 200 response
+            return res.status(200).json(data);
+        } catch (error) {
+            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
+        }
+    }
 }

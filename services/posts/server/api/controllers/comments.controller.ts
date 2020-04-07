@@ -87,8 +87,8 @@ export class CommentsController{
      * @param next 
      */
     async getComments(req: Request, res: Response, next: NextFunction){
-        const { postId } = req.params;
         try {
+            const { postId } = req.params;
             // Service function to get all comments
             const comments = await commentsService.getComments(postId);
 
@@ -110,9 +110,8 @@ export class CommentsController{
      * @param next 
      */
     async getNextComments(req: Request, res: Response, next: NextFunction){
-        const { postId, commentId } = req.params;
         try {
-
+            const { postId, commentId } = req.params;
             // Service function to get next comments
             const comments = await commentsService.getNextComments(postId, commentId);
 
@@ -134,9 +133,9 @@ export class CommentsController{
      * @param next 
      */
     async removeComment(req: Request, res: Response, next: NextFunction){
-        const { params: { commentId } } = req;
-        const userId = req['userId'];
         try {
+            const { params: { commentId } } = req;
+            const userId = req['userId'];
             // Service function to remove comment
             const commentRemoved = await commentsService.removeComment(userId, commentId);
 
@@ -161,16 +160,66 @@ export class CommentsController{
      * @param next 
      */
     async markCommentAsRead(req: Request, res: Response, next: NextFunction){
-        const userId = req['userId'];
-        const { commentId } = req.params;
-
         try {
+            const { params: { commentId } } = req;
+            const userId = req['userId'];
             // Service function to mark comment as read
             const message = await commentsService.markCommentAsRead(userId, commentId);
 
             // Status 200 response
             return res.status(200).json({
                 message: message
+            });
+        } catch (error) {
+            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
+        }
+    }
+
+
+    /**
+     * This function is used to like a comment
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async like(req: Request, res: Response, next: NextFunction){
+        try {
+            const { params: { commentId } } = req;
+            const userId = req['userId'];
+            // Service function call
+            const data = await commentsService.likeComment(userId, commentId);
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Comment Successfully Liked',
+                comment: data.comment,
+                user: data.user
+            });
+        } catch (error) {
+            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
+        }
+    }
+
+
+    /**
+     * This function is used to unlike a comment
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async unlike(req: Request, res: Response, next: NextFunction){
+        try {
+            const { params: { commentId } } = req;
+            const userId = req['userId'];
+
+            // Call service functio to unlike
+            const data = await commentsService.unlikeComment(userId, commentId);
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Comment Successfully Unliked',
+                comment: data.comment,
+                user: data.user
             });
         } catch (error) {
             return sendErr(res, new Error(error), 'Internal Server Error!', 500);

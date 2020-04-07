@@ -35,5 +35,29 @@ routes.get('/:postId', postController.get);
 // This route is used to remove a post
 routes.delete('/:postId', postController.remove);
 
+// This route is used to like a post
+routes.post('/like', postController.like);
+
+// This route is used to unlike a post
+routes.post('/unlike', postController.unlike);
+
+// This route is used to get this month's tasks
+routes.get('/month-tasks', postController.getThisMonthTasks);
+
+// This route is used to get this week's tasks
+routes.get('/week-tasks', postController.getThisMonthTasks);
+
+// This route is used to get next 5 tasks for this week
+routes.get('/next-tasks', postController.getNextTasks);
+
+// This route is used to get this month's events
+routes.get('/month-events', postController.getThisMonthEvents);
+
+// This route is used to get this week's events
+routes.get('/week-events', postController.getThisMonthEvents);
+
+// This route is used to get next 5 events for this week
+routes.get('/next-events', postController.getNextEvents);
+
 
 export { routes as postRoutes };

@@ -25,4 +25,10 @@ router.post('/remove-comment', commentsController.removeComment);
 // This route is used to mark a comment as read
 router.post('/mark-read', commentsController.markCommentAsRead);
 
+// This route is used to like a comment
+router.post('/like', commentsController.like);
+
+// This route is used to unlike a comment
+router.post('/unlike', commentsController.unlike);
+
 export { router as commentRoutes};

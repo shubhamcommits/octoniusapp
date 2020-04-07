@@ -23,9 +23,9 @@ export class PostService {
    * @param groupId 
    * @param lastPostId 
    */
-  async getPosts(groupId: string, lastPostId?: string){
-    
-    try{
+  async getPosts(groupId: string, lastPostId?: string) {
+
+    try {
 
       // Posts Variable
       var posts = []
@@ -39,7 +39,7 @@ export class PostService {
               { _id: { $lt: lastPostId } }
             ]
           }))
-      
+
       // If lastPostId is not there
       else
         posts = await this.filterGroupPosts(
@@ -52,7 +52,7 @@ export class PostService {
       // Return first 5 recent posts 
       return posts;
 
-    } catch(err){
+    } catch (err) {
 
       // Return With error
       return err;
@@ -64,7 +64,7 @@ export class PostService {
    * @param posts 
    */
   filterGroupPosts(posts: any) {
-    
+
     // Return group posts
     return posts
       .sort('-_id')
@@ -152,26 +152,26 @@ export class PostService {
 
         // Populate task properties
         post = await Post.populate(post, [
-          { path: 'task._assigned_to', select: this.userFields }, 
-          { path: '_group', select: this.groupFields }, 
+          { path: 'task._assigned_to', select: this.userFields },
+          { path: '_group', select: this.groupFields },
           { path: '_posted_by', select: this.userFields }
         ]);
 
       } else if (post.type === 'performance_task') {
 
         // Populate performance task properties
-        post = await Post.populate(post,[
-            { path: 'performance_task._assigned_to', select: this.userFields }, 
-            { path: '_group', select: this.groupFields }, 
-            { path: '_posted_by', select: this.userFields }
-          ]);
+        post = await Post.populate(post, [
+          { path: 'performance_task._assigned_to', select: this.userFields },
+          { path: '_group', select: this.groupFields },
+          { path: '_posted_by', select: this.userFields }
+        ]);
 
       } else if (post.type === 'event') {
 
         // Populate event properties
         post = await Post.populate(post, [
-          { path: 'event._assigned_to', select: this.userFields }, 
-          { path: '_group', select: this.groupFields }, 
+          { path: 'event._assigned_to', select: this.userFields },
+          { path: '_group', select: this.groupFields },
           { path: '_posted_by', select: this.userFields }
         ]);
 
@@ -179,7 +179,7 @@ export class PostService {
 
         // Populate normal post properties
         post = await Post.populate(post, [
-          { path: '_group', select: this.groupFields }, 
+          { path: '_group', select: this.groupFields },
           { path: '_posted_by', select: this.userFields }
         ]);
       }
@@ -470,5 +470,333 @@ export class PostService {
       throw (err);
     }
   };
+
+  /**
+   * This function is used to like a post
+   * @param { userId, postId }
+   */
+  like = async (userId, postId) => {
+
+    try {
+      const post = await Post.findOneAndUpdate({
+        _id: postId
+      }, {
+        $addToSet: {
+          _liked_by: userId
+        }
+      }, {
+        new: true
+      })
+        .populate('_liked_by', 'first_name last_name')
+        .lean();
+
+      const user = await User.findOne({
+        _id: userId
+      }).select('first_name last_name');
+
+      return {
+        post,
+        user
+      };
+    } catch (err) {
+      throw (err);
+    }
+  };
+
+
+  /**
+   * This function is used to unlike a post
+   * @param { userId, postId }
+   */
+  unlike = async (userId, postId) => {
+    try {
+      const post = await Post.findOneAndUpdate({
+        _id: postId
+      }, {
+        $pull: {
+          _liked_by: userId
+        }
+      }, {
+        new: true
+      })
+        .populate('_liked_by', 'first_name last_name')
+        .lean();
+
+      const user = await User.findOne({
+        _id: userId
+      }).select('first_name last_name');
+
+
+      return {
+        post,
+        user
+      };
+    } catch (err) {
+      throw (err);
+    }
+  };
+
+
+  /**
+   * Anish 02/04 edits start
+   */
+
+
+  /**
+   * This function is used to retrieve this month's tasks
+   * @param userId 
+   */
+  async getThisMonthTasks(userId) {
+    try {
+
+      // Generate the actual time
+      const todayForTask = moment().local().add(1, 'days').startOf('day').format();
+
+      const today = moment().local().add(1, 'days').format('YYYY-MM-DD');
+
+      // Generate the +24h time
+      const todayPlus30DaysForTask = moment().local().add(30, 'days').endOf('day').format();
+
+      const tasks = await Post.find({
+        'task._assigned_to': userId,
+        'task.due_to': { $gte: todayForTask, $lte: todayPlus30DaysForTask },
+        $or: [
+          { 'task.status': 'to do' },
+          { 'task.status': 'in progress' },
+          { 'task.status': 'done' }
+        ]
+      })
+        .sort('-task.due_to')
+        .populate('_group', 'group_name')
+        .populate('_posted_by', 'first_name last_name profile_pic')
+        .populate('task._assigned_to', 'first_name last_name profile_pic')
+        .lean();
+
+      return {
+        today: today,
+        todayForTask: todayForTask,
+        message: `Found ${tasks.length} pending tasks.`,
+        tasks: tasks
+      };
+    } catch (err) {
+      throw (err);
+    }
+  }
+
+
+  /**
+   * This function is used to get first 10 tasks for this week
+   * @param userId 
+   */
+  async getThisWeekTasks(userId) {
+    try {
+
+      // Generate the actual time
+      const todayForTask = moment().local().add(1, 'days').startOf('day').format();
+
+      const today = moment().local().add(1, 'days').format('YYYY-MM-DD');
+
+      // Generate the +24h time
+      const todayPlus7DaysForTask = moment().local().add(7, 'days').endOf('day').format();
+
+      const tasks = await Post.find({
+        'task._assigned_to': userId,
+        'task.due_to': { $gte: todayForTask, $lte: todayPlus7DaysForTask },
+        $or: [
+          { 'task.status': 'to do' },
+          { 'task.status': 'in progress' },
+          { 'task.status': 'done' }
+        ]
+      })
+        .sort('-task.due_to')
+        .limit(10)
+        .populate('_group', 'group_name')
+        .populate('_posted_by', 'first_name last_name profile_pic')
+        .populate('task._assigned_to', 'first_name last_name profile_pic')
+        .lean();
+
+      return {
+        today: today,
+        todayForTask: todayForTask,
+        message: `Found ${tasks.length} pending tasks.`,
+        tasks: tasks
+      };
+    } catch (err) {
+      throw (err);
+    }
+  }
+
+
+  /**
+   * This function is used to get next 5 tasks for this week
+   * @param userId 
+   * @param lastTaskId 
+   */
+  async getNextTasks(userId, lastTaskId) {
+    try {
+
+      // Generate the actual time
+      const todayForTask = moment().local().add(1, 'days').startOf('day').format();
+
+      const today = moment().local().add(1, 'days').format('YYYY-MM-DD');
+
+      // Generate the +24h time
+      const todayPlus7DaysForTask = moment().local().add(7, 'days').endOf('day').format();
+
+      const tasks = await Post.find({
+        'task._assigned_to': userId,
+        'task.due_to': { $gte: todayForTask, $lte: todayPlus7DaysForTask },
+        '_id': { $gte: lastTaskId },
+        $or: [
+          { 'task.status': 'to do' },
+          { 'task.status': 'in progress' },
+          { 'task.status': 'done' }
+        ]
+      })
+        .sort('-task.due_to')
+        .limit(5)
+        .populate('_group', 'group_name')
+        .populate('_posted_by', 'first_name last_name profile_pic')
+        .populate('task._assigned_to', 'first_name last_name profile_pic')
+        .lean();
+
+      return {
+        today: today,
+        todayForTask: todayForTask,
+        message: `Found ${tasks.length} pending tasks.`,
+        tasks: tasks
+      };
+    } catch (err) {
+      throw (err);
+    }
+  }
+
+
+  /**
+   * This function is used to get this month's events
+   * @param userId 
+   */
+  async getThisMonthsEvents(userId) {
+    try {
+
+      // Generate the actual time
+      const todayForEvent = moment().local().add(1, 'days').startOf('day').format();
+
+      const today = moment().local().add(1, 'days').format('YYYY-MM-DD');
+
+      // Generate the +24h time
+      const todayPlus7DaysForEvent = moment().local().add(30, 'days').endOf('day').format();
+
+      // Get the group(s) that the user belongs to
+      const groups = await User.findById(userId).select('_groups');
+
+      // find the user's today agenda events
+      const events = await Post.find({
+        $or: [{
+          $and: [
+            // Find events due to today
+            { 'event._assigned_to': userId },
+            { 'event.due_to': { $gte: todayForEvent, $lte: todayPlus7DaysForEvent } }
+          ]
+        }]
+      }).sort('event.due_to').populate('event._assigned_to', 'first_name last_name').populate('_group', 'group_name');
+
+      return {
+        today: today,
+        todayForEvent: todayForEvent,
+        message: `Found ${events.length} events!`,
+        events: events,
+        groups: groups
+      };
+    } catch (err) {
+      throw (err);
+    }
+  }
+
+
+  /**
+   * This function is used to get first 10 events for this week
+   * @param userId 
+   */
+  async getThisWeekEvents(userId) {
+    try {
+
+      // Generate the actual time
+      const todayForEvent = moment().local().add(1, 'days').startOf('day').format();
+
+      const today = moment().local().add(1, 'days').format('YYYY-MM-DD');
+
+      // Generate the +24h time
+      const todayPlus7DaysForEvent = moment().local().add(7, 'days').endOf('day').format();
+
+      // Get the group(s) that the user belongs to
+      const groups = await User.findById(userId).select('_groups');
+
+      // find the user's today agenda events
+      const events = await Post.find({
+        $or: [{
+          $and: [
+            // Find events due to today
+            { 'event._assigned_to': userId },
+            { 'event.due_to': { $gte: todayForEvent, $lte: todayPlus7DaysForEvent } }
+          ]
+        }]
+      }).sort('event.due_to').limit(10).populate('event._assigned_to', 'first_name last_name').populate('_group', 'group_name');
+
+      return {
+        today: today,
+        todayForEvent: todayForEvent,
+        message: `Found ${events.length} events!`,
+        events: events,
+        groups: groups
+      };
+    } catch (err) {
+      throw (err);
+    }
+  }
+
+
+  /**
+   * This function is used to get next 5 events for this week
+   * @param userId 
+   * @param lastEventId 
+   */
+  async getNextEvents(userId, lastEventId) {
+    try {
+
+      // Generate the actual time
+      const todayForEvent = moment().local().add(1, 'days').startOf('day').format();
+
+      const today = moment().local().add(1, 'days').format('YYYY-MM-DD');
+
+      // Generate the +24h time
+      const todayPlus7DaysForEvent = moment().local().add(7, 'days').endOf('day').format();
+
+      // Get the group(s) that the user belongs to
+      const groups = await User.findById(userId).select('_groups');
+
+      // find the user's today agenda events
+      const events = await Post.find({
+        '_id': { $gte: lastEventId },
+        $or: [{
+          $and: [
+            // Find events due to today
+            { 'event._assigned_to': userId },
+            { 'event.due_to': { $gte: todayForEvent, $lte: todayPlus7DaysForEvent } }
+          ]
+        }]
+      }).sort('event.due_to').limit(5).populate('event._assigned_to', 'first_name last_name').populate('_group', 'group_name');
+
+      return {
+        today: today,
+        todayForEvent: todayForEvent,
+        message: `Found ${events.length} events!`,
+        events: events,
+        groups: groups
+      };
+    } catch (err) {
+      throw (err);
+    }
+  }
 
 }
