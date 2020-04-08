@@ -404,7 +404,7 @@ const joinWorkspace = async (req: Request, res: Response, next: NextFunction) =>
     // Send email
     const send = await sendMail(emailBody, emailData);
     return res.status(200).json({
-      message: `Join Group email sent!`,
+      message: `Join workspace email sent!`,
     });
   } catch (err) {
     // eslint-disable-next-line no-console
@@ -618,6 +618,10 @@ const eventAssigned = async (req: Request, res: Response, next: NextFunction) =>
     // Send Mail to all the event assignee
     await eventMailHelper(res, post, emailType);
 
+    return res.status(200).json({
+      message: 'Event assigned mail sent'
+    });
+
   } catch (err) {
     // eslint-disable-next-line no-console
     return sendError(res, new Error(err), 'Internal Server Error!', 500);
@@ -677,6 +681,10 @@ const scheduleEventReminder = async (req: Request, res: Response, next: NextFunc
 
     // Send Mail to all the event assignee
     await eventMailHelper(res, post, emailType);
+
+    return res.status(200).json({
+      message: 'Event reminder mail sent!'
+    })
 
   } catch (err) {
     return sendError(res, new Error(err), 'Internal Server Error!', 500);
