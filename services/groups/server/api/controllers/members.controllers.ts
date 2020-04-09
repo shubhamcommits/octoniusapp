@@ -1,5 +1,5 @@
 import { sendError } from '../../utils';
-import { User, Group } from '../models';
+import { User, Group, GroupOnly, Workspace } from '../models';
 import { Request, Response, NextFunction } from 'express';
 import http from 'axios';
 
@@ -270,6 +270,52 @@ export class MembersControllers {
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
+    }
+
+
+    async inviteUserInGroup(req: Request, res: Response, next: NextFunction){
+        try {
+            const { email, groupId, workspaceId } = req.body;
+            const userId = req['userId'];
+
+            let group: any = await Group.findById({ _id: groupId });
+            if (group && email){
+                const groupOnlyData = {
+                    group_id: groupId,
+                    invited_user: email
+                };
+
+                // Add entry to group only table
+                const groupOnlyUpdate = await GroupOnly.create(groupOnlyData);
+
+                // Add invited to workspace
+                const workspaceUpdate = await Workspace.findByIdAndUpdate({
+                    _id: workspaceId
+                },{
+                    $push: {
+                        invited_users: email
+                    }
+                })
+
+                if (!workspaceUpdate || !groupOnlyUpdate){
+                    return sendError(res, new Error('Error updating workspace or group only!'), 'Internal Server Error!', 500);
+                }
+
+                // Send email
+                await http.post('http://localhost:2000/api/mails/join-group', {
+                    email: email,
+                    userId: userId,
+                    groupId: groupId
+                });
+
+                return res.status(200).json({
+                    message: `Group Invitation Mail Sent!`
+                });
+            }
+        } catch (error) {
+            return sendError(res, error, 'Internal Server Error!', 500);
+        }
+
     }
 
 }

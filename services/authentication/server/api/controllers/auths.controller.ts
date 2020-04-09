@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { Auth, User, Workspace, Group } from '../models';
+import { Auth, User, Workspace, Group, GroupOnly } from '../models';
 import { sendError, Auths, PasswordHelper } from '../../utils';
 import http from 'axios';
 
@@ -59,9 +59,8 @@ export class AuthsController {
      */
     async signUp(req: Request, res: Response, next: NextFunction) {
         try {
-
-            // Request Body Data
             const { workspace_name, email, password, first_name, last_name } = req.body;
+            const groupOnlyData: any = GroupOnly.find({ invited_user: req.body['email'] });
 
             // Check the Workspace and User Availability
             await new AuthsController().checkUserAvailability(email, workspace_name)
@@ -116,8 +115,49 @@ export class AuthsController {
                     if (!user) {
                         return sendError(res, new Error('Unable to create the user, some unexpected error occured!'), 'Unable to create the user, some unexpected error occured!', 500);
                     }
+                    var userUpdate: any;
+                    // Check for groupOnly
 
-                    // Add new user to workspace's Global group
+                    if (groupOnlyData && groupOnlyData['invited_user']==false){
+
+                        const groupUpdate: any = Group.findOneAndUpdate({
+                            _id: groupOnlyData['group_id']
+                        },{
+                            $push: {
+                                _members: user._id
+                            },
+                            $inc: { members_count: 1 }
+                        });
+
+                        // Error updating the group
+                    if (!groupUpdate) {
+                        return sendError(res, new Error('Unable to update the group, some unexpected error occured!'), 'Unable to update the group, some unexpected error occured!', 500);
+                    }
+                    userUpdate = await User.findByIdAndUpdate({
+                        _id: user._id
+                    }, {
+                        $push: {
+                            _groups: groupUpdate._id
+                        }
+                    }, {
+                        new: true
+                    });
+
+                    if (!userUpdate) {
+                        return sendError(res, new Error('Unable to update the user, some unexpected error occured!'), 'Unable to update the user, some unexpected error occured!', 500);
+                    }
+
+                    await GroupOnly.findOneAndUpdate({
+                        invited_user: email
+                    }, {
+                        $set: {
+                            joined: true
+                        }
+                    });
+                }
+                    // Not group only user
+                    else{
+                        // Add new user to workspace's Global group
                     const globalGroupUpdate = await Group.findOneAndUpdate({
                         group_name: 'Global',
                         workspace_name: workspace_name
@@ -134,7 +174,7 @@ export class AuthsController {
                     }
 
                     // Add Global group to user's groups
-                    const userUpdate = await User.findByIdAndUpdate({
+                    userUpdate = await User.findByIdAndUpdate({
                         _id: user._id
                     }, {
                         $push: {
@@ -183,6 +223,7 @@ export class AuthsController {
                         }, {
                             new: true
                         });
+                    }
                     }
 
                     // Add new user to workspace members and remove user email from invited users

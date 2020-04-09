@@ -33,6 +33,9 @@ routes.post('/add', members.addNewUserInGroup);
 // DELETE - Removes a user from the group
 routes.post('/remove', members.removeUserFromGroup);
 
+// POST - Invite member in group
+routes.post('/invite-group', members.inviteUserInGroup);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

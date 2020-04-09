@@ -401,4 +401,114 @@ export class WorkspaceController {
         }
     }
 
+    /**
+     * Anish 09/04 edit starts here
+     */
+
+     /**
+      * Function to invite user via email
+      */
+    inviteUserViaEmail = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const workspaceId = req.body.workspace_id;
+            const invitedUserEmail = req.body.email;
+    
+            //if user was kicked out
+            const user = await User.findOneAndUpdate({
+                $and:[{
+                    email: invitedUserEmail,
+                    _workspace: workspaceId,
+                    active:false,
+                }]
+    
+            }, {
+                $set: {
+                    active: true
+                }
+            });
+    
+            if(user){
+                const globalGroupUpdate = await Group.findOneAndUpdate({
+                    group_name: 'Global',
+                    _workspace: workspaceId
+                }, {
+                    $push: {
+                        _members: user._id
+                    }
+                });
+    
+                // Error updating the Global group
+                if (!globalGroupUpdate) {
+                    return sendError(res, '', 'Some error ocurred trying to update the Global group!');
+                }
+                const workspaceUpdate = await Workspace.findByIdAndUpdate({
+                    _id: workspaceId
+                }, {
+                    $push: {
+                        members: user,
+                        was_invited: {
+                            invited_user: invitedUserEmail,
+                            date_invited: moment().format()
+                        }
+                    },
+                }, {
+                    new: true
+                });
+    
+                // Error updating the Workspace
+                if (!workspaceUpdate) {
+                    return sendError(res, '', 'Some error ocurred trying to update the Workspace!');
+                }
+                const userUpdate = await User.findByIdAndUpdate({
+                    _id: user._id
+                }, {
+                    $push: {
+                        _groups: globalGroupUpdate
+                    }
+                }, {
+                    new: true
+                });
+    
+                // Error updating the user
+                if (!userUpdate) {
+                    return sendError(res, '', 'Some error ocurred trying to update the user!');
+                }
+            }else{
+                //else this is a new member invite 
+                const workspace = await Workspace.findByIdAndUpdate({
+                    _id: workspaceId
+                }, {
+                    // !!REFACTOR THIS, WHILE IT'S NOT IN SYNC WITH SIGNUP METHOD
+                    $push: {
+                        invited_users: invitedUserEmail,
+                        was_invited: {
+                            invited_user: invitedUserEmail,
+                            date_invited: moment().format()
+                        }
+                    }
+                }, {
+                    new: true
+                });
+    
+                if (!workspace) {
+                    return sendError(res, '', 'Please enter a valid workspace id', 404);
+                }
+            }
+            // Send invitation via email
+            // await sendMail.joinWorkspace(req.body);
+            await http.post('http://localhost:2000/api/join-workspace', {
+                workspace_id: workspaceId,
+                email: invitedUserEmail,
+                // Yeh wala param check krlio
+                user_id: req['user_id']
+            })
+    
+            return res.status(200).json({
+                message: `Email invitation sent to ${invitedUserEmail}`
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
+
 }
