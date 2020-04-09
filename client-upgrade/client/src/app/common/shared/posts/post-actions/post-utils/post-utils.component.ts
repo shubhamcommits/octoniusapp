@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-post-utils',
@@ -15,16 +16,61 @@ export class PostUtilsComponent implements OnInit {
   // Post Object 
   @Input('post') post: any
 
-  ngOnInit(){
+  // Delete Post Event Emitter
+  @Output('delete') delete = new EventEmitter()
+
+  ngOnInit() {
   }
 
   ngAfterViewInit() {
   }
 
-  openEditPostModal(content: any){
+  openEditPostModal(content: any) {
     return this.utilityService.openModal(content, {
       size: 'xl'
     })
+  }
+
+  copyToClipboard(post: any) {
+
+    // Create Selection Box
+    let selBox = document.createElement('textarea');
+
+    // Set the CSS Properties
+    selBox.style.position = 'fixed';
+    selBox.style.left = '0';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
+
+    // Set the Value of element selection box to be the url of the post
+    selBox.value = environment.clientUrl + '/#/dashboard/group/' + post._group + '/post/' + post._id;
+
+    // Append the element to the DOM
+    document.body.appendChild(selBox);
+
+    // Set the focus and Child
+    selBox.focus();
+    selBox.select();
+
+    // Execute Copy Command
+    document.execCommand('copy');
+
+    // Once Copied remove the child from the dom
+    document.body.removeChild(selBox);
+
+    // Show Confirmed notification
+    this.utilityService.simpleNotification(`Copied to Clipboard!`, '', {
+      timeout: 500,
+      showProgressBar: false,
+      backdrop: 0.5
+    })
+  }
+
+  /**
+   * This function emits the delete post to the parent components
+   */
+  deletePost() {
+    this.delete.emit(this.post);
   }
 
 }

@@ -86,6 +86,17 @@ export class UtilityService {
   }
 
   /**
+   * This function generates a custom snotify notification for simple event
+   * @param text
+   * @param title - optional 
+   * @param config - optional
+   */
+  simpleNotification(text: string, title?: string, config?: SnotifyToastConfig){
+    return this.snotifyService.simple(text, title, config);
+  }
+
+
+  /**
    * This function generates a custom snotify notification for warning event
    * @param text 
    * @param title - optional

@@ -35,6 +35,9 @@ export const environment = {
     'https://www.googleapis.com/auth/calendar.events'
   ].join(' '),
 
+  // Base Client Url
+  clientUrl: 'http://localhost:4200',
+
   // Octo-doc URL
   REAL_TIME_URL: 'localhost:3001',
 

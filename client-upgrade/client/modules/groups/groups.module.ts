@@ -71,6 +71,10 @@ import { NewsPillComponent } from './group/group-activity/news-pill/news-pill.co
 import { GroupPostSelectionComponent } from './group/group-postbox/group-post-selection/group-post-selection.component';
 import { GroupCreatePostComponent } from './group/group-postbox/group-create-post/group-create-post.component'; 
 import { PostService } from 'src/shared/services/post-service/post.service';
+import { GroupKanbanBoardsComponent } from './group/group-kanban-boards/group-kanban-boards.component';
+import { CreateColumnComponent } from './group/group-kanban-boards/create-column/create-column.component';
+import { BoardBarComponent } from './group/group-kanban-boards/board-bar/board-bar.component';
+import { NewTaskComponent } from './group/group-kanban-boards/new-task/new-task.component';
 
 
  
@@ -157,7 +161,15 @@ import { PostService } from 'src/shared/services/post-service/post.service';
 
     GroupPostSelectionComponent,
 
-    GroupCreatePostComponent
+    GroupCreatePostComponent,
+
+    GroupKanbanBoardsComponent,
+
+    CreateColumnComponent,
+
+    BoardBarComponent,
+
+    NewTaskComponent
   ],
   imports: [
     CommonModule,

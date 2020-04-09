@@ -1,0 +1,14 @@
+<div class="board-column">
+    <div class="create-column" (click)="this.showCreateColumn = !this.showCreateColumn">
+        + New column
+    </div>
+    <div class="add-column" *ngIf="this.showCreateColumn">
+        <input class="form-control" style="margin-bottom: 3%;" type="text" placeholder="Column name">
+        <div class="container">
+            <button class="col-md-4 btn btn-sm btn-primary"
+                (click)="this.showCreateColumn = !this.showCreateColumn; openCreateColumnModal()">Save</button>
+            <button class="col-md-4 btn btn-sm btn-danger"
+                (click)=" this.showCreateColumn = !this.showCreateColumn">Cancel</button>
+        </div>
+    </div>
+</div>

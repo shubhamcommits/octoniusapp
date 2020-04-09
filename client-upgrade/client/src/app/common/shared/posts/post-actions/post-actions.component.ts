@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-post-actions',
@@ -12,7 +12,17 @@ export class PostActionsComponent implements OnInit {
   // Post Input
   @Input('post') post: any
 
+  // Delete Post Event Emitter
+  @Output('delete') delete = new EventEmitter()
+
   ngOnInit() {
+  }
+
+  /**
+   * This function emits the delete post to the parent components
+   */
+  deletePost(post: any){
+    this.delete.emit(post);
   }
 
 }

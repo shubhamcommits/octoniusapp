@@ -28,6 +28,9 @@ export const environment = {
     'https://www.googleapis.com/auth/calendar.events'
   ].join(' '),
 
+  // Base Client Url
+  clientUrl: 'https://workplace.octonius.com',
+
   // Octo-doc URL
   REAL_TIME_URL: 'workplace.octonius.com/editor',
 

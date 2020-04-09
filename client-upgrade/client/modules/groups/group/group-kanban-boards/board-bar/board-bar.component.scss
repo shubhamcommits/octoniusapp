@@ -1,0 +1,22 @@
+$box-shadow:0 4px 24px 0 rgba(37,38,94,.1);
+$border-color:#E4EDF8;
+
+.board-bar {
+    background: rgba(white, 1.0);
+    padding: 10px 15px;
+    box-shadow: $box-shadow;
+ 
+}
+
+h1{
+    margin-top: 10px;
+    font-size: 32px;
+}
+
+a{
+    cursor: pointer;
+}
+
+i{
+    line-height: 45px;
+}

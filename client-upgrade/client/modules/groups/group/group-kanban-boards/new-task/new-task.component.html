@@ -1,0 +1,14 @@
+<div class="create-task task" (click)="column.addTask = !column.addTask">
+    + New Task
+</div>
+<div class="add-task" *ngIf="column.addTask">
+    <input class="form-control" style="margin-bottom: 3%;" type="text" placeholder="Enter task title">
+    <div class="container">
+        <button class="col-md-4 btn btn-primary" (click)="column.addTask = false; this.newTaskTitle = '';">
+            Save
+        </button>
+        <button class="col-md-4 btn btn-danger" (click)="column.addTask = false; this.newTaskTitle = '';">
+            Cancel
+        </button>
+    </div>
+</div>

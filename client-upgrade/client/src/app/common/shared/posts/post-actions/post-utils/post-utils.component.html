@@ -9,17 +9,21 @@
         <li class="dropdown-item">
             <span>View</span>
         </li>
-        <li class="dropdown-item" (click)="openEditPostModal('Edit Post!')">
+        <li class="dropdown-item" (click)="openEditPostModal(content)">
             <span>Edit</span>
         </li>
-        <li class="dropdown-item">
+        <li class="dropdown-item" (click)="copyToClipboard(post)">
             <span>Copy Link</span>
         </li>
         <li class="dropdown-divider"></li>
-        <li class="dropdown-item">
+        <li class="dropdown-item" (click)="deletePost()">
          <span>Delete</span>
         </li>
     </ul>
     <!-- Menu Drawer Ends -->
 
 </span>
+
+<ng-template #content let-modal>
+    <app-post-edit></app-post-edit>
+</ng-template>

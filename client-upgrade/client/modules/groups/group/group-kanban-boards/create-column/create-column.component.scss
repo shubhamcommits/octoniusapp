@@ -1,0 +1,49 @@
+
+// Define Variables
+$box-shadow:0 4px 24px 0 rgba(37,38,94,.1);
+$border-color:#E4EDF8;
+
+
+.board-column {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    flex-basis: 0; // to force the columns to all be the same size, regardless of content
+
+    width: 340px;
+    padding: 25px;
+
+    &:not(:first-child) {
+        margin-left: 0;
+    }
+}
+
+.create-column {
+    cursor: pointer;
+    background: rgba(white, 1.0);
+    padding: 8px 15px;
+    text-transform: capitalize;
+    box-shadow: $box-shadow;
+    transition: transform .2s ease;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    width:300px;
+}
+  
+.create-column:hover{
+    transform: scale(1.1);
+    color: #005fd5;
+  }
+
+  .add-column{
+    margin-bottom: 5%;
+    .container{
+        display: flex;
+        justify-content: space-around;
+        button{
+            margin-left: auto;
+            margin-right: auto;
+        }
+    }
+}

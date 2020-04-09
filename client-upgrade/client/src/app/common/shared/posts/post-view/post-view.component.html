@@ -31,7 +31,7 @@
             <!-- Post Content ends -->
             
             <!-- Post Actions starts -->
-            <app-post-actions [post]="post"></app-post-actions>
+            <app-post-actions [post]="post" (delete)="deletePost($event)"></app-post-actions>
             <!-- Post Actions ends -->
         </div>
     <!-- </div> -->

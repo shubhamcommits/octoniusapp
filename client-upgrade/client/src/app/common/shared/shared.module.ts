@@ -26,6 +26,7 @@ import { LikePostComponent } from './posts/post-actions/like-post/like-post.comp
 import { CommentOnPostComponent } from './posts/post-actions/comment-on-post/comment-on-post.component';
 import { FollowPostComponent } from './posts/post-actions/follow-post/follow-post.component';
 import { PostUtilsComponent } from './posts/post-actions/post-utils/post-utils.component';
+import { PostEditComponent } from './posts/post-edit/post-edit.component';
 
 
 @NgModule({
@@ -51,7 +52,9 @@ import { PostUtilsComponent } from './posts/post-actions/post-utils/post-utils.c
     PostUtilsComponent,
 
     // Safe Pipe
-    SafePipe
+    SafePipe,
+
+    PostEditComponent
   ],
   imports: [
     CommonModule,
@@ -81,6 +84,7 @@ import { PostUtilsComponent } from './posts/post-actions/post-utils/post-utils.c
     LoadingSpinnerComponent,
     LoadingSpinnerSmallComponent,
     PostViewComponent,
+    PostEditComponent,
     SectionSeparatorComponent,
     QuillEditorComponent,
     TimePickerComponent,

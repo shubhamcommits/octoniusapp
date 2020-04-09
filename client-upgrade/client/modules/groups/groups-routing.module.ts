@@ -15,6 +15,7 @@ import { GroupComponent } from './group/group.component';
 import { GroupActivityComponent } from './group/group-activity/group-activity.component';
 import { GroupAdminComponent } from './group/group-admin/group-admin.component';
 import { GroupCalendarComponent } from './group/group-calendar/group-calendar.component';
+import { GroupKanbanBoardsComponent } from './group/group-kanban-boards/group-kanban-boards.component';
 // import { GroupFilesComponent } from './group/group-files/group-files.component';
 import { GroupMembersComponent } from './group/group-members/group-members.component';
 // import { GroupPostComponent } from './group/group-post/group-post.component';
@@ -42,7 +43,7 @@ const routes: Routes = [
       { path: 'activity', component: GroupActivityComponent },
 
       // Group Kanban/tasks
-      // { path: 'tasks', component: GroupTasksComponent },
+      { path: 'tasks', component: GroupKanbanBoardsComponent },
 
       // Group Files
       // { path: 'files', component: GroupFilesComponent },

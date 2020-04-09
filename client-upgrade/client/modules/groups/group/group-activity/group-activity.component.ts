@@ -3,7 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import { PublicFunctions } from 'src/app/dashboard/public.functions';
 import { SubSink } from 'subsink';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { KeyValue } from '@angular/common';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 
 @Component({
@@ -94,6 +93,22 @@ export class GroupActivityComponent implements OnInit {
     // Set the Show New Posts to be true
     this.showNewPosts = true;
 
+  }
+
+  /**
+   * This function removes the post from the posts Map
+   * @param post 
+   */
+  deletePost(post: any) {
+
+    this.utilityService.getConfirmDialogAlert()
+      .then((result) => {
+        if (result.value) {
+
+          // Find the key(postId) and remove the post
+          this.posts.delete(post._id)
+        }
+      })
   }
 
   /**

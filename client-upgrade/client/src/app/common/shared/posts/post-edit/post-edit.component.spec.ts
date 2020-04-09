@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GroupKanbanBoardsComponent } from './group-kanban-boards.component';
+import { PostEditComponent } from './post-edit.component';
 
-describe('GroupKanbanBoardsComponent', () => {
-  let component: GroupKanbanBoardsComponent;
-  let fixture: ComponentFixture<GroupKanbanBoardsComponent>;
+describe('PostEditComponent', () => {
+  let component: PostEditComponent;
+  let fixture: ComponentFixture<PostEditComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GroupKanbanBoardsComponent ]
+      declarations: [ PostEditComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GroupKanbanBoardsComponent);
+    fixture = TestBed.createComponent(PostEditComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
