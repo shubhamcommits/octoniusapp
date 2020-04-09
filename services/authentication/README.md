@@ -8,7 +8,7 @@
 
 ## | 1. `api/auths` routes
 
-### 1.x. POST `api/auths/sign-in` Signs In the user and generate a new token
+### 1.1. POST `api/auths/sign-in` Signs In the user and generate a new token
     * Data Params
         * email
         * password
@@ -25,7 +25,7 @@
         Code: 500
         Content: 'Internal Server Error!'
 
-### 1.x. POST `api/auths/sign-up` Signs Up the user and creates a new account
+### 1.2. POST `api/auths/sign-up` Signs Up the user and creates a new account
     * Data Params
         * workspace_name
         * email
@@ -54,7 +54,7 @@
         Code: 409
         Content: 'Group name already taken, please choose another name!'
 
-### 1.x. POST `api/auths/sign-out` Signs Out the current loggedIn User
+### 1.3. POST `api/auths/sign-out` Signs Out the current loggedIn User
     * Success Response
         Code: 200
         Content: 'User Logged Out!'
@@ -66,7 +66,7 @@
 
 ## | 2. `api/auths/passwords` rooutes
 
-### 2.x. POST `api/auths/passwords/reset` reset user password
+### 2.1. POST `api/auths/passwords/reset` reset user password
     * Data Params
         * resetPwdId
         * password
@@ -82,7 +82,7 @@
         Code: 500
         Content: 'Internal Server Error!'
 
-### 2.x. POST `api/auths/passwords/send-mail` send reset password email
+### 2.2. POST `api/auths/passwords/send-mail` send reset password email
     * Data Params
         * workspace_name
         * email
@@ -98,7 +98,7 @@
         Code: 500
         Content: 'Internal Server Error!'
 
-### 2.x. GET `api/auths/passwords/rest-details/:userId` get reset password details
+### 2.3. GET `api/auths/passwords/rest-details/:userId` get reset password details
     * URL Params
         * userId
     * Success Response

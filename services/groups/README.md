@@ -9,7 +9,7 @@
 
 ## | 1. `api/groups` routes
 
-### 1.x. GET `api/groups/list` Get list of first 10 groups present in the database
+### 1.1. GET `api/groups/list` Get list of first 10 groups present in the database
     * Success Response
         Code: 200
         Content: groups
@@ -17,7 +17,7 @@
         Code: 500
         Content: 'Internal Server Error!'
 
-### 1.x. GET `api/groups/list/next` Get list of next 5 groups present in the database based on the lastGroupId from fetched from the list of first 10 groups
+### 1.2. GET `api/groups/list/next` Get list of next 5 groups present in the database based on the lastGroupId from fetched from the list of first 10 groups
     * Query Params
         * lastGroupId
     * Success Response
@@ -32,7 +32,7 @@
         Code: 500
         Content: 'Internal Server Error!'
 
-### 1.x. GET `api/groups/:groupId` Get group based on the groupId
+### 1.3. GET `api/groups/:groupId` Get group based on the groupId
     * URL Params
         * groupId
     * Success Response
@@ -47,7 +47,7 @@
         Code: 500
         Content: 'Internal Server Error!'
 
-### 1.x. POST `api/groups/` Create new group in the workspace
+### 1.4. POST `api/groups/` Create new group in the workspace
     * Data Params
         * group_name
         * workspace_name
@@ -66,7 +66,7 @@
         Code: 500
         Content: 'Internal Server Error!'
 
-### 1.x. PUT `api/groups/:groupId` Updates the group data(only description and group_name)
+### 1.5. PUT `api/groups/:groupId` Updates the group data(only description and group_name)
     * URL Params
         * groupId
     * Query Params
@@ -89,7 +89,7 @@
         Code: 500
         Content: 'Internal Server Error!'
 
-### 1.x. DELETE `api/groups/:groupId` Removes the group from the database
+### 1.6. DELETE `api/groups/:groupId` Removes the group from the database
     * URL Params
         * groupId
     * Success Response
@@ -98,7 +98,7 @@
     * Error Response
         Error
 
-### 1.x. GET `api/groups` Get list of first 10 groups of which a user is a part of
+### 1.7. GET `api/groups` Get list of first 10 groups of which a user is a part of
     * Query Params
         * workspaceId
         * userId
@@ -117,7 +117,7 @@
         Or 
         Error
 
-### 1.x. GET `api/groups/:lastGroupId/next` Get list of next 5 groups of which a user is a part of, based on the lastGroupId fetched from the list of first 10 groups
+### 1.8. GET `api/groups/:lastGroupId/next` Get list of next 5 groups of which a user is a part of, based on the lastGroupId fetched from the list of first 10 groups
     * URL Params
         * lastGroupId
     * Query Params
@@ -138,7 +138,7 @@
 
 ## | 2. `api/groups/pulse` routes
 
-### 2.x. GET `api/groups/pulse` Get pulse description based on the groupId
+### 2.1. GET `api/groups/pulse` Get pulse description based on the groupId
     * Query Params
         * groupId
     * Success Response
@@ -147,7 +147,7 @@
     * Error Response
         Error
 
-### 2.x. PUT `api/groups/pulse` Updates the group pulse data(only pulse_description)
+### 2.2. PUT `api/groups/pulse` Updates the group pulse data(only pulse_description)
     * Query Params
         * groupId
     * Data Params
@@ -158,7 +158,7 @@
     * Error Response
         Error
     
-### 2.x. GET `/api/groups/pulse/list` Get list of first 10 groups present in the workspace
+### 2.3. GET `/api/groups/pulse/list` Get list of first 10 groups present in the workspace
     * Query Params
         * workspaceId
     * Success Response
@@ -167,7 +167,7 @@
     * Error Response
         Error
 
-### 2.x. GET `api/groups/pulse/list/next` Get list of next 5 groups present in the workspace based on the lastGroupId from fetched from the list of first 10 groups
+### 2.4. GET `api/groups/pulse/list/next` Get list of next 5 groups present in the workspace based on the lastGroupId from fetched from the list of first 10 groups
     * Query Params
         * workspaceId
         * lastGroupId
@@ -177,7 +177,7 @@
     * Error Response
         Error
 
-### 2.x. GET `api/groups/pulse/tasks` Get count of tasks due this week
+### 2.5. GET `api/groups/pulse/tasks` Get count of tasks due this week
     * Query Params
         * groupId
         * status [Optional]
@@ -188,9 +188,9 @@
         Error
 
 
-## | 2. `api/groups/members` routes
+## | 3. `api/groups/members` routes
 
-### 3.x. GET `api/groups/members` Get a list of first 10 workspace members
+### 3.1. GET `api/groups/members` Get a list of first 10 workspace members
 
     * Query Params
         * groupId
@@ -207,7 +207,7 @@
         Code: 500
         Content: 'Internal Server Error!'
 
-### 3.x. GET `api/groups/members/next` Get a list of next 5 workspace members based on the lastUserId fetched from the first 10 workspace
+### 3.2. GET `api/groups/members/next` Get a list of next 5 workspace members based on the lastUserId fetched from the first 10 workspace
 
     * Query Params
         * groupId
@@ -225,7 +225,7 @@
         Code: 500
         Content: 'Internal Server Error!'
 
-### 3.x. POST `api/groups/members/add` Add a new user to the group
+### 3.3. POST `api/groups/members/add` Add a new user to the group
 
     * Data Params
         * groupId
@@ -239,7 +239,7 @@
         Code: 500
         Content: 'Internal Server Error!'
 
-### 3.x. DELETE `api/groups/members/remove` Removes a user from the group
+### 3.4. DELETE `api/groups/members/remove` Removes a user from the group
 
     * Data Params
         * groupId

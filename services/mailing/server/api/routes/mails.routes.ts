@@ -10,7 +10,7 @@ routes.post('/sign-up', sendMail.signup);;
 // POST - Reset password
 routes.post('/reset-password', sendMail.resetPassword);
 
-// POST - Reset password
+// POST - New Workspace
 routes.post('/new-workspace', sendMail.newWorkspace);
 
 // POST - Joined New Group
