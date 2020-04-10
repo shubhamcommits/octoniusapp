@@ -23,6 +23,9 @@ export = {
     signupLink(urlParam = null) {
         return generateLink('signup', urlParam);
     },
+    groupOnlyLink(group = null, workplace = null){
+        return `https://workplace.octonius.com/#/signup${group ? `?group=${group}` : ''}${workplace ? `?group=${workplace}` : ''}`;
+    },
     signinLink: generateLink('signin'),
     resetPwdLink: generateLink('resetPassword'),
     postLink

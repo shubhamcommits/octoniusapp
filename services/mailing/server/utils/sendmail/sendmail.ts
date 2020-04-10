@@ -379,6 +379,48 @@ const joinedGroup = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 
+/**
+ * Anish edit starts here
+ * @param req 
+ * @param res 
+ * @param next 
+ */
+const joinGroupOnly = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { email, userId, groupId, workspaceName } = req.body;
+    const emailType = "groupOnly";
+
+    // Generate email data
+    const from: any = await User.findById({ _id: userId });
+    const group: any = await Group.findById({ _id: groupId });
+
+    const emailData = {
+      subject: subjects[emailType],
+      toName: '',
+      toEmail: email,
+      fromName: from.first_name,
+      fromEmail: from.email,
+      workspace: workspaceName,
+      group: group.group_name,
+      link: defaults.groupOnlyLink(group.group_name, workspaceName)
+    }
+
+    // TODO : Generate template for email
+    const emailBody = await generateEmailBody(emailType, emailData);
+
+    // Send email
+    const send = await sendMail(emailBody, emailData);
+    return res.status(200).json({
+      message: `Join group email sent!`,
+    });
+  } catch (error) {
+    return sendError(res, error, 'Internal Server Error!', 500);
+  }
+}
+
+//Anish edit ends
+
+
 // Join workspace invitation email
 const joinWorkspace = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -731,5 +773,8 @@ export {
   taskReassigned,
 
   // User Task Completed
-  userCompletedTask
+  userCompletedTask,
+
+  // Join group
+  joinGroupOnly
 }
