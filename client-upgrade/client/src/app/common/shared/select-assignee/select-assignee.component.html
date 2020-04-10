@@ -1,0 +1,10 @@
+<section *ngIf="post.type === 'task'">
+    <img src="{{baseUrl}}/uploads/{{taskAssignee?.profile_pic}}" onerror="this.src='/assets/images/user.png'"
+        class="feed-avatar">
+    <p *ngIf="assigned">Assigned to {{taskAssignee?.first_name}}</p>
+    <p *ngIf="!assigned">Unassigned</p>
+    <app-component-search-input-box *ngIf="post.type === 'task' && userData && checkDataExist(userData) && type != 'board'"
+        [placeholder]="'Search a member to assign this task...'" [groupId]="groupId" [workspaceId]="userData._workspace"
+        [userData]="userData" [type]="post.type" (member)="getMemberDetails($event)">
+    </app-component-search-input-box>
+</section>

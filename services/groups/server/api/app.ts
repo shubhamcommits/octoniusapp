@@ -7,7 +7,8 @@ import { developmentConfig, productionConfig } from '../configs';
 import { 
     groupsRoutes,
     memberRoutes,
-    pulseRoutes
+    pulseRoutes,
+    columnRoutes,
 } from './routes';
 
 // Defining new Express application
@@ -69,6 +70,7 @@ app.all('/', (req: Request, res: Response, next: NextFunction) => {
 });
 
 // Correct REST naming
+app.use('/api/columns', columnRoutes);
 app.use('/api/members', memberRoutes);
 app.use('/api/pulse', pulseRoutes);
 app.use('/api', groupsRoutes);

@@ -30,7 +30,8 @@ $border-color:#E4EDF8;
     .board-wrapper {
         display: flex;
         flex-grow: 1;
-        overflow-x: auto;
+        overflow-x: scroll;
+        white-space: nowrap;
 
         .board-columns {
             display: flex;
@@ -44,6 +45,7 @@ $border-color:#E4EDF8;
 
                 width: 340px;
                 margin: 50px;
+                margin-left: 10px;
                 padding: 25px;
 
                 outline: 1px dashed grey;
@@ -59,7 +61,6 @@ $border-color:#E4EDF8;
                 .column-title {
                     display: flex;
                     justify-content: space-between;
-                    text-transform: uppercase;
                     margin-bottom: 20px;
                     width:300px;
                 }
@@ -67,18 +68,6 @@ $border-color:#E4EDF8;
         }
     }
 }
-
-.create-column {
-    cursor: pointer;
-    background: rgba(white, 1.0);
-    padding: 8px 15px;
-    box-shadow: $box-shadow;
-    transition: transform .2s ease;
-}
-  
-.create-column:hover{
-    transform: scale(1.1);
-  }
 
 .column-title.create-column:hover{
     color: #005fd5;
@@ -93,32 +82,18 @@ $border-color:#E4EDF8;
     }
 }
 
-.edit-column {
-    margin-bottom: 5%;
-    .container{
-        display: flex;
-        justify-content: space-around;
-        button{
-            margin-left: auto;
-            margin-right: auto;
-        }
-    }
-}
-
-.add-task{
-    margin-bottom: 5%;
-    .container{
-        display: flex;
-        justify-content: space-around;
-        button{
-            margin-left: auto;
-            margin-right: auto;
-        }
-    }
-}
-
 .create-task{
     cursor: pointer;
+}
+
+.dropdown-item{
+    cursor: pointer;
+}
+
+.dropdown-item:hover{
+    span{
+        color: #FF6584;
+    }
 }
 
 

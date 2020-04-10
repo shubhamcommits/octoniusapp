@@ -2,12 +2,12 @@
     + New Task
 </div>
 <div class="add-task" *ngIf="column.addTask">
-    <input class="form-control" style="margin-bottom: 3%;" type="text" placeholder="Enter task title">
+    <input class="form-control" type="text" placeholder="Enter task title" [(ngModel)]="postTitle">
     <div class="container">
-        <button class="col-md-4 btn btn-primary" (click)="column.addTask = false; this.newTaskTitle = '';">
+        <button class="col-md-4 btn btn-primary" (click)="column.addTask = false; createPost()">
             Save
         </button>
-        <button class="col-md-4 btn btn-danger" (click)="column.addTask = false; this.newTaskTitle = '';">
+        <button class="col-md-4 btn btn-danger" (click)="column.addTask = false;">
             Cancel
         </button>
     </div>

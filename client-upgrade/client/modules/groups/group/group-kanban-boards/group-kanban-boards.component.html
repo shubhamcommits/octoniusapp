@@ -4,19 +4,19 @@
             <!-- <app-board-bar *ngIf="groupData" [groupData]="groupData" ></app-board-bar> -->
 
             <!-- CREATE NEW COLUMN START -->
-            <app-create-column (column)="getColumn($event)"></app-create-column>
+            <app-create-column (column)="addColumn($event)"></app-create-column>
             <!-- CREATE NEW COLUMN ENDS -->
 
 
             <div class="board-wrapper">
 
                 <!-- ALL COLUMN DETAILS STARTS -->
-                <div class="board-columns" cdkDropListGroup>
+                <div class="board-columns" cdkDropListGroup *ngIf="this.columns">
                     <div class="board-column" id="column.title" *ngFor="let column of columns; let i = index;">
 
                         <!-- COLUMN TITLE AND EDIT/DELETE DETAILS STARTS -->
                         <div class="column-title">
-                            <h4> {{ column?.title }}</h4>
+                            <h4 class="text-uppercase"> {{ column?.title }}</h4>
                             <div class="inline-block" *ngIf="!(column.title =='to do')">
                                 <div class="dropdown">
                                     <i class="material-icons action dropdown-toggle"
@@ -24,40 +24,29 @@
 
                                     <!-- Menu Drawer Starts -->
                                     <ul class="dropdown-menu">
-                                        <li class="dropdown-item">Edit</li>
-                                        <li class="dropdown-item">Delete Column</li>
+                                        <li class="dropdown-item" (click)="column.editColumn = !column.editColumn">
+                                            <span class="material-icons">create</span>
+                                            Edit</li>
+                                        <li class="dropdown-item" (click)="deleteColumn(column)">
+                                            <span class="material-icons">delete</span>
+                                            Delete</li>
                                     </ul>
                                     <!-- Menu Drawer Ends -->
 
                                 </div>
-
-                                <!-- <div ngbDropdownMenu aria-labelledby="postActionsDrop">
-                  <button class="dropdown-item" (click)="column.editColumn = true; this.newColumnName = column.title;">
-                    Edit</button>
-                  <button class="dropdown-item" (click)="deleteColumn(this.groupId, column)"> Delete</button>
-                </div> -->
                             </div>
                         </div>
                         <!-- COLUMN TITLE AND EDIT/DELETE DETAILS ENDS -->
 
                         <!-- EDIT COLUMN STARTS -->
-                        <div class="edit-column" *ngIf="column.editColumn">
-                            <input class="form-control" style="margin-bottom: 3%;" type="text"
-                                placeholder="Column name">
-                            <div class="container">
-                                <button class="col-md-4 btn btn-primary"
-                                    (click)="column.editColumn = false; this.newColumnName = '';">Save</button>
-                                <button class="col-md-4 btn btn-danger"
-                                    (click)="column.editColumn = false; this.newColumnName = '';">Cancel</button>
-                            </div>
-                        </div>
+                        <app-edit-column *ngIf="column" [column]="column" (column)="editColumn(column, $event)"></app-edit-column>
                         <!-- EDIT COLUMN ENDS -->
 
                         <!-- TASK CONTAINER STARTS -->
                         <div class="tasks-container" [id]="column.title" cdkDropList>
 
                             <!-- CREATE TASK STARTS -->
-                            <app-new-task [column]="column"></app-new-task>
+                            <app-new-task [groupData]="groupData" [userData]="userData" [column]="column" (post)="getPost($event, column)"></app-new-task>
                             <!-- CREATE TASK ENDS -->
 
                             <!-- TASK DETAILS STARTS -->
@@ -73,8 +62,7 @@
 
                                             <!-- TASK ASSIGNMENT STARTS -->
                                             <div class="col-md-7" style="margin-top: -10px;">
-                                                <!-- <app-group-kanban-task-assignment [task]="task" [groupData]="groupData" [isModalView]="false" (updatedTask)="getUpdatedTask(task, i , j, $event)">
-                        </app-group-kanban-task-assignment> -->
+                                                <app-select-assignee [type]="'board'" [post]="task" [userData]="userData" [groupId]="groupData._id"></app-select-assignee>
                                             </div>
                                             <!-- TASK DETAILS ENDS -->
 

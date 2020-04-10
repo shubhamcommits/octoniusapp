@@ -1,4 +1,5 @@
 import { Auth } from './auth.model';
+import { Column } from './column.model';
 import { Group } from './group.model';
 import { Post } from './post.model';
 import { User } from './user.model';
@@ -12,6 +13,9 @@ export {
     // AUTH
     Auth as Auth,
 
+    // COLUMN
+    Column as Column,
+
     // GROUP
     Group as Group,
 
@@ -20,4 +24,5 @@ export {
 
     // USER
     User as User
+
 };

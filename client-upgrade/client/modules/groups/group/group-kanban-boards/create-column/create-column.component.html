@@ -3,10 +3,10 @@
         + New column
     </div>
     <div class="add-column" *ngIf="this.showCreateColumn">
-        <input class="form-control" style="margin-bottom: 3%;" type="text" placeholder="Column name">
+        <input class="form-control" type="text" placeholder="Column name" [(ngModel)]="newColumn">
         <div class="container">
             <button class="col-md-4 btn btn-sm btn-primary"
-                (click)="this.showCreateColumn = !this.showCreateColumn; openCreateColumnModal()">Save</button>
+                (click)="this.showCreateColumn = !this.showCreateColumn; openCreateColumn()">Save</button>
             <button class="col-md-4 btn btn-sm btn-danger"
                 (click)=" this.showCreateColumn = !this.showCreateColumn">Cancel</button>
         </div>

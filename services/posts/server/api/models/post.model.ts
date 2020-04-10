@@ -96,8 +96,8 @@ const PostSchema = new Schema({
             default: null
         },
         unassigned: {
-            type: String,
-            default: "No"
+            type: Boolean,
+            default: true 
         },
         _column: {
             title: {

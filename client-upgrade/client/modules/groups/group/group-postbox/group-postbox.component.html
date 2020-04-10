@@ -8,7 +8,7 @@
             </div>
             <div class="col-md-11" *ngIf="!showPostBox">
                 <button type="text" class="form-control btn-md noborder-btn postbox"
-                    placeholder="What are you working on?">Hi {{ userData?.first_name }}, what are you working on?</button>
+                    placeholder="What are you working on?">What are you working on, {{ userData?.first_name }}?</button>
             </div>
             <section  [ngClass]="(showPostBox) ? 'show-container' : 'hide-container'">
                 <app-group-post-selection  *ngIf="userData && checkDataExist(userData)" 

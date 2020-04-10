@@ -10,6 +10,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { PostService } from 'src/shared/services/post-service/post.service';
+import { ColumnService } from 'src/shared/services/column-service/column.service';
 
 export class PublicFunctions {
 
@@ -433,6 +434,31 @@ export class PublicFunctions {
                     // If there's an error, then reject with empty array
                     reject([]);
                 })
+        })
+    }
+
+    /**
+     * This function is responsible for fetching all the columns present in a group
+     * @param groupId 
+     */
+    getAllColumns(groupId: string){
+
+        // Column Service Insctance
+        let columnService = this.injector.get(ColumnService)
+
+        // Call the HTTP Request to fetch the columns
+        return new Promise((resolve, reject)=>{
+            columnService.getAllColumns(groupId)
+            .then((res) => {
+
+                 // Resolve with sucess
+                resolve(res['columns'])
+            })
+            .catch(() => {
+
+                // If there's an error, then reject with empty object
+                reject({})
+            })
         })
     }
 

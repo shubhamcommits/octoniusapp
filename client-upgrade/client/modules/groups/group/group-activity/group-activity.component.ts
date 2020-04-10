@@ -93,6 +93,8 @@ export class GroupActivityComponent implements OnInit {
     // Set the Show New Posts to be true
     this.showNewPosts = true;
 
+    console.log(post)
+
   }
 
   /**
@@ -129,7 +131,7 @@ export class GroupActivityComponent implements OnInit {
     this.showNewPosts = !this.showNewPosts
 
     // Stop the loading spinner
-    this.isLoading$.next(false);
+    return this.isLoading$.next(false);
   }
 
   /**

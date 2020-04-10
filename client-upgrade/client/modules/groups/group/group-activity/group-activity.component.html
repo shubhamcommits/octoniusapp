@@ -1,41 +1,58 @@
-
 <div class="container">
-        <div class="row main-actvity">
+    <div class="row main-actvity">
 
-            <div class="col-md-4">
-                <app-group-information *ngIf="groupData && checkDataExist(groupData)" [groupData]="groupData">
-                </app-group-information>
-                <app-send-pulse *ngIf="groupId" [groupId]="groupId"></app-send-pulse>
-            </div>
+        <div class="col-md-4">
+            <app-group-information *ngIf="groupData && checkDataExist(groupData)" [groupData]="groupData">
+            </app-group-information>
+            <app-send-pulse *ngIf="groupId" [groupId]="groupId"></app-send-pulse>
+        </div>
 
-            <div class="col-md-8">
+        <div class="col-md-8">
 
-                <!-- News Feed Pill -->
-                <app-news-pill *ngIf="showNewPosts" (click)="newPosts()"></app-news-pill>
-                <!-- News Feed Pill -->
+            <!-- News Feed Pill -->
+            <app-news-pill *ngIf="showNewPosts" (click)="newPosts()"></app-news-pill>
+            <!-- News Feed Pill -->
 
-                <!-- Group activity postbox starts -->
-                <app-group-postbox *ngIf="userData && checkDataExist(userData)" [userData]="userData"
-                    [groupId]="groupId" (post)="getPost($event)"></app-group-postbox>
-                <!-- Group activity postbox ends -->
+            <!-- Group activity postbox starts -->
+            <app-group-postbox *ngIf="userData && checkDataExist(userData)" [userData]="userData" [groupId]="groupId"
+                (post)="getPost($event)"></app-group-postbox>
+            <!-- Group activity postbox ends -->
 
-                <!-- Activity posts section starts -->
-                <section infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="1500" [immediateCheck]="true"
-                (scrolled)="onScroll()" class="mt-3" *ngIf="posts.size > 0">
+            <!-- Activity posts section starts -->
+            <div infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="1500"
+                (scrolled)="onScroll()" class="mt-3">
+                <div *ngIf="posts.size > 0">
                     <ul class="list-group"
                         *ngFor="let post of posts | keyvalue: compare; let index = index ; trackBy: this.utilityService.trackByIndex">
-                        <app-post-view *ngIf="post.value.type != 'task' && post" [post]="post.value" (delete)="deletePost($event)"></app-post-view>
+                        <app-post-view *ngIf="post.value.type != 'task' && post" [post]="post.value"
+                            (delete)="deletePost($event)"></app-post-view>
                     </ul>
-                </section>
-                <!-- Activity posts section ends -->
+                </div>
+            </div>
 
 
-                <!-- Loading Spinner Starts -->
-                <ng-container *ngIf="isLoading$ | async">
-                    <app-loading-spinner class="media"></app-loading-spinner>
-                </ng-container>
-                <!-- Loading Spinner Ends -->
+            <div class="mt-3" *ngIf="posts.size === 0">
+
+                <ng-template *ngIf="isLoading$ | async; else blankScreen">
+                    <ng-container *ngIf="isLoading$ | async">
+                        <app-loading-spinner class="media"></app-loading-spinner>
+                    </ng-container>
+                </ng-template>
+                
+                <ng-template #blankScreen>
+                    <img src='../../../assets/images/overview-emptystate.svg'>
+                </ng-template>
 
             </div>
+            <!-- Activity posts section ends -->
+
+
+            <!-- Loading Spinner Starts -->
+            <ng-container *ngIf="isLoading$ | async">
+                <app-loading-spinner class="media"></app-loading-spinner>
+            </ng-container>
+            <!-- Loading Spinner Ends -->
+
         </div>
+    </div>
 </div>

@@ -17,7 +17,7 @@
 <!-- Horizontal line ends -->
 
 <!-- Members array template starts -->
-<div infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="1500" [immediateCheck]="true"
+<div infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="1500"
     (scrolled)="onScroll()" class="media card-tile user-list"
     *ngFor="let member of members; let index = index; trackBy: utilityService.trackByIndex;">
 

@@ -15,6 +15,9 @@ export class CreateColumnComponent implements OnInit {
   // Show Create Column Variable
   showCreateColumn = false
 
+  // newColumn variable
+  newColumn: any
+
   // Output Created Column
   @Output('column') column = new EventEmitter();
 
@@ -56,13 +59,14 @@ export class CreateColumnComponent implements OnInit {
 /**
  * This function creates the new column
  */
-  async openCreateColumnModal() {
-    const { value: value } = await this.openModal('Create New Column', '/assets/images/create-group.svg');
-    if (value) {
+  async openCreateColumn() {
 
-      this.createNewColumn(value)
+    if (this.newColumn) {
 
-    } else if (value == '') {
+      this.createNewColumn(this.newColumn)
+      this.newColumn = undefined
+
+    } else if (this.newColumn == '') {
       this.utilityService.warningNotification('Column name can\'t be empty!');
     }
   }

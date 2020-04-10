@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Injector, EventEmitter, Output } from '@angular/core';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { PostService } from 'src/shared/services/post-service/post.service';
 
 @Component({
   selector: 'app-new-task',
@@ -9,49 +10,87 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 export class NewTaskComponent implements OnInit {
 
   constructor(
-    public utilityService: UtilityService
+    public injector: Injector
   ) { }
 
   // Column as the Input object
-  @Input('column') column: any
+  @Input('column') column: any;
+
+  // Post Title Variable
+  postTitle: any
+
+  // User Data Object
+  @Input('userData') userData: any;
+
+  // Group Data Object
+  @Input('groupData') groupData: any;
+
+  // Post Event Emitter
+  @Output('post') post = new EventEmitter()
 
   ngOnInit() {
   }
 
   /**
-   * This function opens the Swal modal to create Columns
-   * @param title 
-   * @param imageUrl 
+   * This function creates a new post in the activity
    */
-  openModal(title: string, imageUrl: string) {
-    return this.utilityService.getSwalModal({
-      title: title,
-      input: 'text',
-      inputPlaceholder: 'Add your task title here',
-      inputAttributes: {
-        maxlength: 20,
-        autocapitalize: 'off',
-        autocorrect: 'off'
-      },
-      imageUrl: imageUrl,
-      imageAlt: title,
-      confirmButtonText: title,
-      showCancelButton: true,
-      cancelButtonText: 'Cancel',
-      cancelButtonColor: '#d33',
-    })
+  createPost() {
+
+    // Prepare Post Data
+    let postData = {
+      title: this.postTitle,
+      content: '',
+      type: 'task',
+      _posted_by: this.userData._id,
+      _group: this.groupData._id,
+      _content_mentions: [],
+      task: {
+        unassigned: true,
+        status: 'to do',
+        _column: {
+          title: this.column.title
+        }
+      }
+    }
+
+    // Create FormData Object
+    let formData = new FormData();
+
+    // Append Post Data
+    formData.append('post', JSON.stringify(postData))
+
+    // Call the Helper Function
+    this.onCreatePost(formData, this.post)
+
   }
 
-/**
-  * This function creates the new task inside a column
-  */
-  async openCreateTaskModal() {
-    const { value: value } = await this.openModal('Create New Task', '/assets/images/create-group.svg');
-    if (value) {
+  /**
+   * This function is responsible for calling add post service functions
+   * @param postData 
+   */
+  onCreatePost(postData: FormData, post: EventEmitter<any>) {
 
-    } else if (value == '') {
-      this.utilityService.warningNotification('Task title can\'t be empty!');
-    }
+    // Create Utility Service Instance
+    let utilityService = this.injector.get(UtilityService)
+    let postService = this.injector.get(PostService)
+
+    // Asynchronously call the utility service
+    utilityService.asyncNotification('Please wait we are creating the post...', new Promise((resolve, reject) => {
+      postService.create(postData)
+        .then((res) => {
+
+          // Emit the Post to the other compoentns
+          post.emit(res['post'])
+
+          // Resolve with success
+          resolve(utilityService.resolveAsyncPromise('Post Created!'))
+        })
+        .catch((err) => {
+
+          // Catch the error and reject the promise
+          reject(utilityService.rejectAsyncPromise('Unable to create post, please try again!'))
+        })
+    }))
   }
 
 }

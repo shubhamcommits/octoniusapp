@@ -1,0 +1,20 @@
+section{
+    margin-bottom: 10px;
+    vertical-align: middle;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    p{
+        margin-top: auto !important;
+    }
+}
+
+app-component-search-input-box{
+    margin: auto;
+    position: absolute;
+    top: 0; 
+    left: 50% !important; 
+    bottom: 0; 
+    right: 0;
+    z-index: 99;
+}

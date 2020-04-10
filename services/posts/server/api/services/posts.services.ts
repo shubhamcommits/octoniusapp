@@ -112,7 +112,7 @@ export class PostService {
       switch (post.type) {
 
         case 'task':
-          if (post.task.unassigned != 'Yes') {
+          if (!post.task.unassigned) {
             // await notifications.newTaskAssignment(post);
             await http.post('http://localhost:9000/api/new-task', {
               post: post

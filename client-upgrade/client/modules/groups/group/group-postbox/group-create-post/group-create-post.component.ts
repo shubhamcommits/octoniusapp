@@ -2,7 +2,6 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { SubSink } from 'subsink';
 
 @Component({
   selector: 'app-group-create-post',
@@ -71,9 +70,6 @@ export class GroupCreatePostComponent implements OnInit {
 
   // Post Event Emitter - Emits the post to the other components
   @Output('post') post = new EventEmitter()
-
-  // Subsink Object to unsubscribe the observables
-  subSink = new SubSink()
 
   ngOnInit() {
   }
@@ -173,27 +169,20 @@ export class GroupCreatePostComponent implements OnInit {
    */
   onCreatePost(postData: FormData){
     this.utilityService.asyncNotification('Please wait we are creating the post...', new Promise((resolve, reject)=>{
-      this.subSink.add(this.postService.create(postData)
-      .subscribe((res)=>{
+      this.postService.create(postData)
+      .then((res)=>{
 
         // Emit the Post to the other compoentns
         this.post.emit(res['post'])
 
         // Resolve with success
         resolve(this.utilityService.resolveAsyncPromise('Post Created!'))
-      }, (err)=>{
+      })
+      .catch((err)=>{
 
         // Catch the error and reject the promise
         reject(this.utilityService.rejectAsyncPromise('Unable to create post, please try again!'))
-      }))
+      })
     }))
   }
-
-  /**
-   * This function is called whenever the component is destroyed
-   */
-  ngOnDestroy() {
-    this.subSink.unsubscribe()
-  }
-
 }

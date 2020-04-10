@@ -75,6 +75,7 @@ import { GroupKanbanBoardsComponent } from './group/group-kanban-boards/group-ka
 import { CreateColumnComponent } from './group/group-kanban-boards/create-column/create-column.component';
 import { BoardBarComponent } from './group/group-kanban-boards/board-bar/board-bar.component';
 import { NewTaskComponent } from './group/group-kanban-boards/new-task/new-task.component';
+import { EditColumnComponent } from './group/group-kanban-boards/edit-column/edit-column.component';
 
 
  
@@ -169,7 +170,9 @@ import { NewTaskComponent } from './group/group-kanban-boards/new-task/new-task.
 
     BoardBarComponent,
 
-    NewTaskComponent
+    NewTaskComponent,
+
+    EditColumnComponent
   ],
   imports: [
     CommonModule,

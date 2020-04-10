@@ -19,7 +19,8 @@ export class PostService {
   create(formData: FormData) {
 
     // Call the HTTP Request
-    return this._http.post(this.baseURL + '/', formData);
+    return this._http.post(this.baseURL + '/', formData).
+    toPromise()
   }
 
   /**
@@ -28,12 +29,27 @@ export class PostService {
    * @param lastPostId - optional
    */
   getPosts(groupId: string, lastPostId?: string) {
-    return this._http.get(this.baseURL + `/`, {
+
+    // Create the request variable
+    let request: any;
+
+    if(!lastPostId)
+      request = this._http.get(this.baseURL + `/`, {
       params: {
-        groupId: groupId,
-        lastPostId: lastPostId || ''
+        groupId: groupId
       }
     }).toPromise()
+
+    else {
+      request = this._http.get(this.baseURL + `/`, {
+        params: {
+          groupId: groupId,
+          lastPostId: lastPostId
+        }
+      }).toPromise()
+    }
+
+    return request;
   }
 
 }
