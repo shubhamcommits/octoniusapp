@@ -289,12 +289,13 @@ export class MembersControllers {
                 const groupOnlyUpdate = await GroupOnly.create(groupOnlyData);
 
                 // Add invited to workspace
-                const workspaceUpdate = await Workspace.findByIdAndUpdate({
+                const workspaceUpdate: any = await Workspace.findByIdAndUpdate({
                     _id: workspaceId
                 },{
                     $push: {
                         invited_users: email
-                    }
+                    },
+                    new: true
                 })
 
                 if (!workspaceUpdate || !groupOnlyUpdate){
@@ -305,7 +306,8 @@ export class MembersControllers {
                 await http.post('http://localhost:2000/api/mails/join-group', {
                     email: email,
                     userId: userId,
-                    groupId: groupId
+                    groupId: groupId,
+                    workspaceName: workspaceUpdate.workspace_name
                 });
 
                 return res.status(200).json({

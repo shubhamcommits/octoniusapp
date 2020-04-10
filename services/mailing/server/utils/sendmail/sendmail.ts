@@ -387,7 +387,7 @@ const joinedGroup = async (req: Request, res: Response, next: NextFunction) => {
  */
 const joinGroupOnly = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { email, userId, groupId } = req.body;
+    const { email, userId, groupId, workspaceName } = req.body;
     const emailType = "groupOnly";
 
     // Generate email data
@@ -400,8 +400,9 @@ const joinGroupOnly = async (req: Request, res: Response, next: NextFunction) =>
       toEmail: email,
       fromName: from.first_name,
       fromEmail: from.email,
-      workspace: group.group_name,
-      link: defaults.groupOnlyLink(group.group_name)
+      workspace: workspaceName,
+      group: group.group_name,
+      link: defaults.groupOnlyLink(group.group_name, workspaceName)
     }
 
     // TODO : Generate template for email
