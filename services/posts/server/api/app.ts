@@ -61,12 +61,12 @@ app.get("*.css", encodeResToGzip('text/css'));
 // app.use(express.static(path.join(__dirname, '../../client/dist')));
 
 // Set file upload middleware
-app.use(fileUpload({
-    limits: {
-        fileSize: 1024 * 1024 * 1024
-    },
-    abortOnLimit: true
-}));
+// app.use(fileUpload({
+//     limits: {
+//         fileSize: 1024 * 1024 * 1024
+//     },
+//     abortOnLimit: true
+// }));
 
 // Routes which should handle request
 app.all('/', (req: Request, res: Response, next: NextFunction) => {

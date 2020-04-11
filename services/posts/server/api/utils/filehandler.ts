@@ -115,8 +115,15 @@ const postFileHandler = async (req: Request, res: Response, next: NextFunction) 
 
   let form = new FormData();
   let files: any = req['files'];
-  form.set('files', files);
-  await http.post('http://localhost:10000/api/posts', form);
+  if (files.length>0){
+    files.forEach((file)=>{
+      form.append('files', file, file['name']);
+    })
+    await http.post('http://localhost:10000/api/posts', form);
+  }
+  else{
+    console.log('No files!');
+  }
   next();
 }
 

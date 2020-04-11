@@ -100,8 +100,7 @@ const postFileHandler = (req: Request, res: Response, next: NextFunction) => {
   //   // Pass the middleware
   //   next();
   // }
-
-  let files: any = req['files']['files'];
+  let files: any = req['files'];
   // If no files present
   if (!files){
     return res.status(500).json({
@@ -109,36 +108,11 @@ const postFileHandler = (req: Request, res: Response, next: NextFunction) => {
     })
   }
 
-  let folder = process.env.FILE_UPLOAD_FOLDER;
-  console.log(folder);
-  var Storage = multer.diskStorage({
-    destination: folder,
-    filename: function(req, file, callback) {
-      callback(null, file.fieldname + "_" + Date.now() + '_' + file.file.originalname);
-    }
-  });
-
-
-  req['files'] = files;
-  console.log(req['files']);
-
-  
-  var upload = multer({
-    storage: Storage
-  }).array('files', 20);
-
-  upload(req, res, function(err){
-    if (err){
-      return res.status(500).json({
-        message: err
-      })
-    }
-    else{
-      return res.status(200).json({
-        message: "success"
-      })
-    }
+  return res.status(200).json({
+    message: `${files.length} files uploaded!`
   })
 }
+
+
 
 export { postFileHandler }
