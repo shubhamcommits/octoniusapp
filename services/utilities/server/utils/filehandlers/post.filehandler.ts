@@ -101,8 +101,7 @@ const postFileHandler = (req: Request, res: Response, next: NextFunction) => {
   //   next();
   // }
 
-  let files: any = req['files'];
-
+  let files: any = req['files']['files'];
   // If no files present
   if (!files){
     return res.status(500).json({
@@ -110,16 +109,20 @@ const postFileHandler = (req: Request, res: Response, next: NextFunction) => {
     })
   }
 
-  const folder = process.env.FILE_UPLOAD_FOLDER;
+  let folder = process.env.FILE_UPLOAD_FOLDER;
   console.log(folder);
   var Storage = multer.diskStorage({
-    destination: function(req, file, callback) {
-      callback(null, folder);
-    },
+    destination: folder,
     filename: function(req, file, callback) {
       callback(null, file.fieldname + "_" + Date.now() + '_' + file.file.originalname);
     }
   });
+
+
+  req['files'] = files;
+  console.log(req['files']);
+
+  
   var upload = multer({
     storage: Storage
   }).array('files', 20);
