@@ -21,7 +21,7 @@ function devConfigInit() {
   process.env.REDIS_PORT = '6379';
 
   // FILE UPLOADS FOLDER
-  process.env.FILE_UPLOAD_FOLDER = path.join(__dirname, '../../../../uploads/');
+  // process.env.FILE_UPLOAD_FOLDER = path.join(__dirname, '../../../../uploads/');
 
   // MAILING SERVER
   process.env.MAILING_SERVER = 'http://0.0.0.0:2000';

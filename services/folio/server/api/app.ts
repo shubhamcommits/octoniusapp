@@ -1,11 +1,11 @@
 const express = require('express');
 import { Request, Response, NextFunction } from 'express';
-import path from 'path';
-import cors from 'cors';
-import morgan from 'morgan';
-import compression from 'compression';
+const path = require('path');
+const cors = require('cors');
+const morgan = require('morgan');
+const compression = require('compression');
 import { developmentConfig, productionConfig } from '../configs';
-import fileUpload from 'express-fileupload';
+// import fileUpload from 'express-fileupload';
 
 // Defining new Express application
 const app = express();
@@ -61,12 +61,12 @@ app.get("*.css", encodeResToGzip('text/css'));
 // app.use(express.static(path.join(__dirname, '../../client/dist')));
 
 // Set file upload middleware
-app.use(fileUpload({
-    limits: {
-        fileSize: 1024 * 1024 * 1024
-    },
-    abortOnLimit: true
-}));
+// app.use(fileUpload({
+//     limits: {
+//         fileSize: 1024 * 1024 * 1024
+//     },
+//     abortOnLimit: true
+// }));
 
 // Routes which should handle request
 app.all('/', (req: Request, res: Response, next: NextFunction) => {

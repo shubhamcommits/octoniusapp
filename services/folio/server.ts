@@ -2,7 +2,7 @@ const http = require('http');
 
 const app = require('./server/api/app');
 
-const { socket } = require('./utils');
+const socket = require('./server/utils/socket');
 
 const port = process.env.PORT || '3000';
 const env = process.env.NODE_ENV;
@@ -54,8 +54,8 @@ else {
   appCE.use(express.static(path.join(__dirname, 'node_modules/quill/dist'))); //
   appCE.use(express.static(path.join(__dirname, 'node_modules/quill-cursors/dist')));
 
-  var wssShareDB = require('./utils/sharedb/wss-sharedb')(serverCE);
-  var wssCursors = require('./utils/sharedb/wss-cursors')(serverCE);
+  var wssShareDB = require('./server/sharedb/wss-sharedb')(serverCE);
+  var wssCursors = require('./server/sharedb/wss-cursors')(serverCE);
 
   serverCE.on('upgrade', (request, socket, head) => {
 

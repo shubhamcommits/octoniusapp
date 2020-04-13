@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 // Get Mongoose to use global promise library to avoid error messages
 mongoose.Promise = global.Promise;

@@ -28,7 +28,7 @@ module.exports = function(server) {
     // generate an id for the socket
     ws.id = uuid();
     ws.isAlive = true;
-  
+    
      debug('A new client (%s) connected.', ws.id);
     // closure
     ws.on('message', function(data) {
@@ -122,6 +122,7 @@ module.exports = function(server) {
 
     ws.on('error', function(error) {
       debug('Client connection errored (%s). (Error: %s)', ws.id, error);
+      var connectionIndex;
 
       if (~(connectionIndex = _.findIndex(connections, {
           'id': ws.id
