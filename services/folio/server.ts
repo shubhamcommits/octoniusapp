@@ -1,6 +1,6 @@
 const http = require('http');
 
-const app = require('./api/app');
+const app = require('./server/api/app');
 
 const { socket } = require('./utils');
 

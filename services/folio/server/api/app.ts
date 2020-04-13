@@ -1,4 +1,5 @@
-import express, { Request, Response, NextFunction } from 'express';
+const express = require('express');
+import { Request, Response, NextFunction } from 'express';
 import path from 'path';
 import cors from 'cors';
 import morgan from 'morgan';
