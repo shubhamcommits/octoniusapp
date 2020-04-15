@@ -1,0 +1,35 @@
+<div class="card-tile">
+    <div class="card-block">
+        
+        <!-- Template Heading starts -->
+        <h6 class="card-title"><b>Post Tags</b></h6>
+        <!-- Template Heading ends -->
+
+        <!-- Search tag component starts -->
+        <app-component-search-input-box 
+        *ngIf="userData && checkDataExist(userData)"
+        [placeholder]="'Type here to search and add a new tag'" 
+        [userData] = "userData"
+        [type]="'tag'"
+        [groupId]="groupId"
+        (tag)="addNewTag($event)">
+        </app-component-search-input-box>
+        <!-- Search tag component ends -->
+
+        <hr />
+
+        <!-- Iterate over all the tags present for a particular user starts -->
+        <ul class="skills">
+            <li *ngFor="let tag of tags; let index = index; trackBy: utilityService.trackByIndex;">
+                {{ tag }}
+                <button type="button" name="button" class="btn btn-link" (click)="removeTag(tag, index)">
+                    <i class="material-icons" placement="top" ngbTooltip="Remove this Tag">
+                        delete_sweep
+                    </i>
+                </button>
+            </li>
+        </ul>
+        <!-- Iterate over all the tags present for a particular user ends -->
+
+    </div>
+</div>

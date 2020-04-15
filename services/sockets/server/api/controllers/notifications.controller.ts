@@ -108,16 +108,19 @@ export class NotificationsController {
 
     /**
      * This function is responsible to notifying all the user on re-assigning of a new task to them
-     * @param { _id, task._assigned_to, _posted_by } postUpdated 
+     * @param { _id, task._assigned_to, _posted_by } post
      */
     async newTaskReassignment(req: Request, res: Response, next: NextFunction) {
 
-        const { postUpdated } = req.body;
+        // Fetch Data from request
+        // const { post } = req.body;
+
+        // console.log(post)
 
         try {
             
             // Call Service function for newTaskReassignment
-            await notificationService.newTaskReassignment(postUpdated);
+            // await notificationService.newTaskReassignment(post);
 
             // Send status 200 response
             return res.status(200).json({

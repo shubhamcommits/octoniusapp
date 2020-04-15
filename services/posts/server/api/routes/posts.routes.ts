@@ -16,12 +16,14 @@ routes.use(auths.verifyToken);
 // Checks whether the current user is loggedIn or not
 routes.use(auths.isLoggedIn);
 
+// -| MAIN |-
+
 // This route is used to add a post
 routes.post('/', postFileHandler, postController.add);
 
 /**
  * GET - This route fetches the list of posts present in a group
- * @param { groupId, lastPostId } query
+ * @param { group Id, lastPostId } query
  * @param lastPostId - optional
  */
 routes.get('/', postController.getPosts);
@@ -35,11 +37,20 @@ routes.get('/:postId', postController.get);
 // This route is used to remove a post
 routes.delete('/:postId', postController.remove);
 
+// -| TAGS |-
+
+// GET - This function fetches the tags list from a group
+routes.get('/tags', postController.getTags)
+
+// -| POST ACTIONS |-
+
 // This route is used to like a post
 routes.post('/like', postController.like);
 
 // This route is used to unlike a post
 routes.post('/unlike', postController.unlike);
+
+// -| FETCH POSTS |-
 
 // This route is used to get this month's tasks
 routes.get('/month-tasks', postController.getThisMonthTasks);
@@ -59,5 +70,15 @@ routes.get('/week-events', postController.getThisMonthEvents);
 // This route is used to get next 5 events for this week
 routes.get('/next-events', postController.getNextEvents);
 
+// -| TASKS |-
+
+// Change task assignee
+routes.put('/:postId/task-assignee', postController.changeTaskAssignee);
+
+// Change task assignee
+routes.put('/:postId/task-due-date', postController.changeTaskDueDate);
+
+// Change task assignee
+routes.put('/:postId/task-status', postController.changeTaskStatus);
 
 export { routes as postRoutes };

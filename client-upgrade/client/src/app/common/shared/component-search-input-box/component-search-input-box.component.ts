@@ -23,7 +23,7 @@ export class ComponentSearchInputBoxComponent implements OnInit {
 
   @Input('placeholder') placeholder: string = '';
 
-  // Type are 'task', 'event', 'group', 'skill'
+  // Type are 'task', 'event', 'group', 'skill', 'tag'
   @Input('type') type: string;
 
   // Incase the type is 'workspace'
@@ -80,7 +80,7 @@ export class ComponentSearchInputBoxComponent implements OnInit {
     this.subSink.add(this.itemValueChanged
       .pipe(distinctUntilChanged(), debounceTime(500))
       .subscribe(async () => {
-        if (this.type == 'skill' || this.type == 'group' || this.type == 'task' || this.type == 'event') {
+        if (this.type == 'skill' || this.type == 'group' || this.type == 'task' || this.type == 'event' || this.type === 'tag') {
 
           // If value is null then empty the array
           if (this.itemValue == "")
@@ -91,6 +91,11 @@ export class ComponentSearchInputBoxComponent implements OnInit {
             // Update the itemList with the skill set
             if (this.type === 'skill')
               this.itemList = await this.searchSkills(this.itemValue);
+
+            // Update the itemList with tags set
+            if(this.type === 'tag')
+              this.itemList = await this.publicFunctions.getTags(this.groupId, this.itemValue)
+
 
             if (this.type === 'task' || this.type === 'event') {
               this.itemList = await this.publicFunctions.searchGroupMembers(this.groupId, this.itemValue) || []
@@ -110,7 +115,7 @@ export class ComponentSearchInputBoxComponent implements OnInit {
             }
 
             // Don't add the null or existing skills value to the list
-            if (this.type === 'skill')
+            if (this.type === 'skill' || this.type === 'tag')
               if (!this.itemList.includes(this.itemValue) && this.itemValue != "")
                 this.itemList = [this.itemValue, ...this.itemList];
 

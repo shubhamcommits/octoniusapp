@@ -11,6 +11,7 @@ import { SocketService } from 'src/shared/services/socket-service/socket.service
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
+import moment from 'moment';
 
 export class PublicFunctions {
 
@@ -417,14 +418,14 @@ export class PublicFunctions {
      * @param groupId 
      * @param lastPostId: optional 
      */
-    getPosts(groupId: string, lastPostId?: string) {
+    getPosts(groupId: string, type?: string, lastPostId?: string) {
 
         // Post Service Instance
         let postService = this.injector.get(PostService);
 
         return new Promise((resolve, reject) => {
-            postService.getPosts(groupId, lastPostId)
-                .then((res) => {
+            postService.getPosts(groupId, type, lastPostId)
+                .then((res: any) => {
 
                     // Resolve with sucess
                     resolve(res['posts'])
@@ -438,28 +439,166 @@ export class PublicFunctions {
     }
 
     /**
+     * This function is responsible for fetching the tags from the server based on the groupId
+     * @param groupId 
+     * @param tag: optional 
+     */
+    getTags(groupId: string, tag: string) {
+
+        // Post Service Instance
+        let postService = this.injector.get(PostService);
+
+        return new Promise((resolve, reject) => {
+            postService.getTags(groupId, tag)
+                .then((res: any) => {
+
+                    // Resolve with success
+                    resolve(res['tags'])
+                })
+                .catch(() => {
+
+                    // If there's an error, then reject with empty array
+                    reject([]);
+                })
+        })
+    }
+
+    /**
+     * This function is responsible for editing a post
+     * @param postId 
+     * @param postData 
+     */
+    onEditPost(postId: string, postData: FormData) {
+
+        // Create Post Service Instance
+        let postService = this.injector.get(PostService)
+
+        // Asynchronously call the utility service
+        return new Promise((resolve, reject) => {
+            postService.edit(postId, postData)
+                .then((res) => {
+
+                    // Resolve with success
+                    resolve(res['post'])
+                })
+                .catch((err) => {
+
+                    // Catch the error and reject the promise
+                    reject({})
+                })
+        })
+    }
+
+    /**
      * This function is responsible for fetching all the columns present in a group
      * @param groupId 
      */
-    getAllColumns(groupId: string){
+    getAllColumns(groupId: string) {
 
         // Column Service Insctance
         let columnService = this.injector.get(ColumnService)
 
         // Call the HTTP Request to fetch the columns
-        return new Promise((resolve, reject)=>{
+        return new Promise((resolve, reject) => {
             columnService.getAllColumns(groupId)
-            .then((res) => {
+                .then((res) => {
 
-                 // Resolve with sucess
-                resolve(res['columns'])
-            })
-            .catch(() => {
+                    if (res == null)
+                        resolve(null)
 
-                // If there's an error, then reject with empty object
-                reject({})
-            })
+                    // Resolve with sucess
+                    resolve(res['columns'])
+                })
+                .catch(() => {
+
+                    // If there's an error, then reject with empty object
+                    reject({})
+                })
         })
+    }
+
+    /**
+     * This function is responsible for changing the task assignee
+     * @param postId 
+     * @param assigneeId 
+     */
+    changeTaskAssignee(postId: string, assigneeId: string) {
+
+        // Post Service Instance
+        let postService = this.injector.get(PostService)
+
+        // Utility Service Instance
+        let utilityService = this.injector.get(UtilityService)
+
+        utilityService.asyncNotification('Please wait we are changing the task assignee...',
+            new Promise((resolve, reject) => {
+
+                // Call HTTP Request to change the assignee
+                postService.changeTaskAssignee(postId, assigneeId)
+                    .then((res) => {
+                        resolve(utilityService.resolveAsyncPromise(`Task assigned to ${res['post']['task']['_assigned_to']['first_name']}`))
+                    })
+                    .catch(() => {
+                        reject(utilityService.rejectAsyncPromise(`Unable to assign the new assignee, please try again!`))
+                    })
+
+            }))
+    }
+
+    /**
+     * This function is responsible to changing the task due date
+     * @param postId 
+     * @param dueDate 
+     */
+    changeTaskDueDate(postId: string, dueDate: string) {
+
+        // Post Service Instance
+        let postService = this.injector.get(PostService)
+
+        // Utility Service Instance
+        let utilityService = this.injector.get(UtilityService)
+
+        utilityService.asyncNotification('Please wait we are changing the task due date...',
+            new Promise((resolve, reject) => {
+
+                // Call HTTP Request to change the request
+                postService.changeTaskDueDate(postId, dueDate)
+                    .then((res) => {
+                        resolve(utilityService.resolveAsyncPromise(`Task due date changed to ${moment(dueDate).format('YYYY-MM-DD')}!`))
+                    })
+                    .catch(() => {
+                        reject(utilityService.rejectAsyncPromise(`Unable to change the due date, please try again!`))
+                    })
+
+            }))
+    }
+
+    /**
+     * This function is responsible to changing the task status
+     * @param postId 
+     * @param status
+     */
+    changeTaskStatus(postId: string, status: string) {
+
+        // Post Service Instance
+        let postService = this.injector.get(PostService)
+
+        // Utility Service Instance
+        let utilityService = this.injector.get(UtilityService)
+
+        utilityService.asyncNotification('Please wait we are updating the task status...',
+            new Promise((resolve, reject) => {
+
+                // Call HTTP Request to change the request
+                postService.changeTaskStatus(postId, status)
+                    .then((res) => {
+                        resolve(utilityService.resolveAsyncPromise(`Task status marked as ${status}!`))
+                    })
+                    .catch(() => {
+                        reject(utilityService.rejectAsyncPromise(`Unable to change the status, please try again!`))
+                    })
+
+            }))
     }
 
     /**

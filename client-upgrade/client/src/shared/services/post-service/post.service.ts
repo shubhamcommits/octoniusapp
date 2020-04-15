@@ -24,11 +24,22 @@ export class PostService {
   }
 
   /**
+   * This function is responsible for editing a post
+   * @param postData 
+   */
+  edit(postId: string, formData: FormData) {
+
+    // Call the HTTP Request
+    return this._http.put(this.baseURL + `/${postId}`, formData).
+    toPromise()
+  }
+
+  /**
    * This function fetches the list of posts present in a group
-   * @param { groupId, lastPostId } query
+   * @param { groupId, type, lastPostId } query
    * @param lastPostId - optional
    */
-  getPosts(groupId: string, lastPostId?: string) {
+  getPosts(groupId: string, type: string, lastPostId?: string) {
 
     // Create the request variable
     let request: any;
@@ -36,7 +47,8 @@ export class PostService {
     if(!lastPostId)
       request = this._http.get(this.baseURL + `/`, {
       params: {
-        groupId: groupId
+        groupId: groupId,
+        type: type
       }
     }).toPromise()
 
@@ -44,12 +56,72 @@ export class PostService {
       request = this._http.get(this.baseURL + `/`, {
         params: {
           groupId: groupId,
+          type: type,
           lastPostId: lastPostId
         }
       }).toPromise()
     }
 
     return request;
+  }
+
+  /**
+   * This function is resposible for changing the task status of a post
+   * @param postId 
+   * @param assigneeId 
+   */
+  changeTaskAssignee(postId: string, assigneeId: string){
+    
+    // Call the HTTP Request
+    return this._http.put(this.baseURL + `/${postId}/task-assignee`, {
+      assigneeId: assigneeId
+    }).
+    toPromise()
+  }
+
+  /**
+   * This function is resposible for changing the task status of a post
+   * @param postId 
+   * @param dateDueTo
+   */
+  changeTaskDueDate(postId: string, dateDueTo: string){
+    
+    // Call the HTTP Request
+    return this._http.put(this.baseURL + `/${postId}/task-due-date`, {
+      date_due_to: dateDueTo
+    }).
+    toPromise()
+  }
+
+  /**
+   * This function is resposible for changing the task status of a post
+   * @param postId 
+   * @param status
+   */
+  changeTaskStatus(postId: string, status: string){
+    
+    // Call the HTTP Request
+    return this._http.put(this.baseURL + `/${postId}/task-status`, {
+      status: status
+    }).
+    toPromise()
+  }
+
+  /**
+   * This function is resposible for fetching tags from a group
+   * @param groupId 
+   * @param tag 
+   */
+  getTags(groupId: string, tag: string) {
+
+    // Call the HTTP Request
+    return this._http.get(this.baseURL + `/tags`, {
+      params: {
+        groupId: groupId,
+        tag: tag
+      }
+    }).
+      toPromise()
   }
 
 }

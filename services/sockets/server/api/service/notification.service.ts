@@ -89,14 +89,17 @@ export class NotificationsService {
 
     /**
      * This function is responsible to notifying all the user on re-assigning of a new task to them
-     * @param { _id, task._assigned_to, _posted_by } postUpdated 
+     * @param { _id, task._assigned_to, _posted_by } post
      */
-    async newTaskReassignment(postUpdated: any) {
+    async newTaskReassignment(post: any) {
+
+        console.log(JSON.parse(post))
+
         try {
             const notification = await Notification.create({
-                _actor: postUpdated._posted_by,
-                _owner: postUpdated.task._assigned_to,
-                _origin_post: postUpdated._id,
+                _actor: post._posted_by,
+                _owner: post.task._assigned_to,
+                _origin_post: post._id,
                 message: 'reassigned a task to you.',
                 type: 'assignment'
             });

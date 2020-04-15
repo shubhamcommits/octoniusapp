@@ -1,15 +1,17 @@
 import { Post } from '../models';
 import { Response, Request, NextFunction } from "express";
-import { PostService } from '../services';
+import { PostService, TagsService } from '../services';
 import { sendErr } from '../utils/sendError';
 
 const postService = new PostService();
+
+const tagsService = new TagsService()
 
 export class PostController {
 
     /**
      * This function is responsible to add a post
-     * @param { postData }
+     * @param { post } req
      */
     async add(req: Request, res: Response, next: NextFunction) {
 
@@ -26,7 +28,7 @@ export class PostController {
 
             // Send Status 200 response
             return res.status(200).json({
-                message: 'Post Added Successfully',
+                message: 'Post Added Successfully!',
                 post: postData
             });
         } catch (error) {
@@ -37,17 +39,26 @@ export class PostController {
 
     /**
      * This function is responsible for editing a post
-     * @param req 
+     * @param { post } req
      * @param res 
      * @param next 
      */
     async edit(req: Request, res: Response, next: NextFunction) {
+
+        // Post Object From request
+        const { body: { post }, params: { postId } } = req;
+
         try {
 
             // Call service function to edit
-            const updatedPost = postService.edit(req);
+            const updatedPost = await postService.editPost(post, postId)
+                .catch((err) => {
+                    return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
+                })
+
+            // Send Status 200 response
             return res.status(200).json({
-                message: 'Post Edit Successful',
+                message: 'Post Edited Successfully!',
                 post: updatedPost
             });
         } catch (error) {
@@ -121,26 +132,31 @@ export class PostController {
     async getPosts(req: Request, res: Response, next: NextFunction) {
 
         // Fetch groupId and lastPostId from request
-        const { groupId, lastPostId } = req.query;
+        var { groupId, lastPostId, type } = req.query;
+
+        // If type is not defined, then fetch all the posts by default
+        if (!type || type == '' || type === "") {
+            type = 'all'
+        }
 
         try {
 
             // If groupId is not present, then return error
-            if(!groupId){
+            if (!groupId) {
                 return sendErr(res, new Error('Please provide the groupId as the query parameter'), 'Please provide the groupId as the query paramater!', 400);
             }
 
             // Fetch the next 5 recent posts
-            await postService.getPosts(groupId, lastPostId)
+            await postService.getPosts(groupId, type, lastPostId)
                 .then((posts) => {
 
                     // If lastPostId is there then, send status 200 response
-                    if(lastPostId)
+                    if (lastPostId)
                         return res.status(200).json({
                             message: `The next ${posts.length} most recent posts!`,
                             posts: posts
                         });
-                    
+
                     // If lastPostId is not there then, send status 200 response
                     else
                         return res.status(200).json({
@@ -160,101 +176,101 @@ export class PostController {
     }
 
 
-  /**
-   * This function is used to like a post
-   * @param req 
-   * @param res 
-   * @param next 
-   */
-  async like(req: Request, res: Response, next: NextFunction){
-    try {
-        const { params: { postId } } = req;
-        const userId = req['userId'];
+    /**
+     * This function is used to like a post
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async like(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { params: { postId } } = req;
+            const userId = req['userId'];
 
-        // Call Service function to like a post
-        const data = await postService.like(userId, postId);
+            // Call Service function to like a post
+            const data = await postService.like(userId, postId);
 
-        // Send status 200 response
-        return res.status(200).json({
-            message: 'Post Successfully Liked',
-            post: data.post,
-            user: data.user
-        });
-    } catch (error) {
-        return sendErr(res, new Error(error), 'Internal Server Error!', 500);
-    }  
-  }
-
-
-  /**
-   * This function is used to unlike a post
-   * @param req 
-   * @param res 
-   * @param next 
-   */
-  async unlike(req: Request, res: Response, next: NextFunction){
-      try {
-        const { params: { postId } } = req;
-        const userId = req['userId'];
-
-        // Call Service function to unlike a post
-        const data = await postService.unlike(userId, postId);
-
-        // Send status 200 response
-        return res.status(200).json({
-            message: 'Post Successfully Unliked',
-            post: data.post,
-            user: data.user
-        });
-      } catch (error) {
-        return sendErr(res, new Error(error), 'Internal Server Error!', 500);
-      }
-  }
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Post Successfully Liked',
+                post: data.post,
+                user: data.user
+            });
+        } catch (error) {
+            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
+        }
+    }
 
 
-  /**
-   * Anish 02/04 edits start
-   */
+    /**
+     * This function is used to unlike a post
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async unlike(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { params: { postId } } = req;
+            const userId = req['userId'];
+
+            // Call Service function to unlike a post
+            const data = await postService.unlike(userId, postId);
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Post Successfully Unliked',
+                post: data.post,
+                user: data.user
+            });
+        } catch (error) {
+            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
+        }
+    }
 
 
-   /**
-    * This function is used to retrieve all of this month's tasks
-    * @param req 
-    * @param res 
-    * @param next 
-    */
-   async getThisMonthTasks(req: Request, res: Response, next: NextFunction){
-       try {
-           const userId = req['userId'];
+    /**
+     * Anish 02/04 edits start
+     */
+
+
+    /**
+     * This function is used to retrieve all of this month's tasks
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async getThisMonthTasks(req: Request, res: Response, next: NextFunction) {
+        try {
+            const userId = req['userId'];
 
             // Call service function to retrieve this months task
             const data = await postService.getThisMonthTasks(userId);
 
             // Send status 200 response
             return res.status(200).json(data);
-       } catch (error) {
-           return sendErr(res, new Error(error), 'Internal Server Error!', 500);
-       }
-   }
+        } catch (error) {
+            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
+        }
+    }
 
 
-   /**
-    * This function is used to get first 10 tasks for this week
-    * @param req 
-    * @param res 
-    * @param next 
-    */
-   async getThisWeekTasks(req: Request, res: Response, next: NextFunction){
-    try {
-        const userId = req['userId'];
+    /**
+     * This function is used to get first 10 tasks for this week
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async getThisWeekTasks(req: Request, res: Response, next: NextFunction) {
+        try {
+            const userId = req['userId'];
 
-         // Call service function to retrieve this week's task
-         const data = await postService.getThisWeekTasks(userId);
+            // Call service function to retrieve this week's task
+            const data = await postService.getThisWeekTasks(userId);
 
-         // Send status 200 response
-         return res.status(200).json(data);
-    } catch (error) {
-        return sendErr(res, new Error(error), 'Internal Server Error!', 500);
+            // Send status 200 response
+            return res.status(200).json(data);
+        } catch (error) {
+            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
         }
     }
 
@@ -265,7 +281,7 @@ export class PostController {
      * @param res 
      * @param next 
      */
-    async getNextTasks(req: Request, res: Response, next: NextFunction){
+    async getNextTasks(req: Request, res: Response, next: NextFunction) {
         try {
             const userId = req['userId'];
             const { lastTaskId } = req.query;
@@ -287,7 +303,7 @@ export class PostController {
      * @param res 
      * @param next 
      */
-    async getThisMonthEvents(req: Request, res: Response, next: NextFunction){
+    async getThisMonthEvents(req: Request, res: Response, next: NextFunction) {
         try {
             const userId = req['userId'];
 
@@ -308,7 +324,7 @@ export class PostController {
      * @param res 
      * @param next 
      */
-    async getThisWeekEvents(req: Request, res: Response, next: NextFunction){
+    async getThisWeekEvents(req: Request, res: Response, next: NextFunction) {
         try {
             const userId = req['userId'];
 
@@ -329,7 +345,7 @@ export class PostController {
      * @param res 
      * @param next 
      */
-    async getNextEvents(req: Request, res: Response, next: NextFunction){
+    async getNextEvents(req: Request, res: Response, next: NextFunction) {
         try {
             const userId = req['userId'];
             const { lastEventIId } = req.query;
@@ -339,6 +355,125 @@ export class PostController {
 
             // Send status 200 response
             return res.status(200).json(data);
+        } catch (error) {
+            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for changing the task assignee
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async changeTaskAssignee(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch Data from request
+        const { params: { postId }, body: { assigneeId } } = req;
+
+        try {
+
+            // Call Service function to change the assignee
+            const post = await postService.changeTaskAssignee(postId, assigneeId)
+                .catch((err) => {
+                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+                })
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Task assignee updated!',
+                post: post
+            });
+        } catch (err) {
+            return sendErr(res, err);
+        }
+    }
+
+    /**
+     * This function is responsible for changing the task due date
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async changeTaskDueDate(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch Data from request
+        const { params: { postId }, body: { date_due_to } } = req;
+
+        try {
+
+            // Call Service function to change the assignee
+            const post = await postService.changeTaskDueDate(postId, date_due_to)
+                .catch((err) => {
+                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+                })
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Task due date updated!',
+                post: post
+            });
+        } catch (err) {
+            return sendErr(res, err);
+        }
+    }
+
+    /**
+     * This function is responsible for changing the task status
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async changeTaskStatus(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch Data from request
+        const { params: { postId }, body: { status } } = req;
+
+        try {
+
+            // Call Service function to change the assignee
+            const post = await postService.changeTaskStatus(postId, status)
+                .catch((err) => {
+                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+                })
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Task status updated!',
+                post: post
+            });
+        } catch (err) {
+            return sendErr(res, err);
+        }
+    }
+
+    /**
+     * This function is responsible for fetching the tags
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async getTags(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch Data from request
+        let groupId: any = req.query.groupId;
+        let tag: any = req.query.tag;
+
+        console.log(groupId, tag)
+
+        try {
+
+            // Call Service function to fetch the tags
+            // const tags = await tagsService.getTagsSearchResults(groupId, tag)
+            //     .catch((err) => {
+            //         return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+            //     })
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Task status updated!',
+                // tags: tags
+            });
         } catch (error) {
             return sendErr(res, new Error(error), 'Internal Server Error!', 500);
         }

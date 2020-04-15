@@ -62,6 +62,9 @@ export class NewTaskComponent implements OnInit {
     // Call the Helper Function
     this.onCreatePost(formData, this.post)
 
+    // Clear the postTitle
+    this.postTitle = undefined
+
   }
 
   /**

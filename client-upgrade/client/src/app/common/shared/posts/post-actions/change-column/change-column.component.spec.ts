@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PostEditComponent } from './post-edit.component';
+import { ChangeColumnComponent } from './change-column.component';
 
-describe('PostEditComponent', () => {
-  let component: PostEditComponent;
-  let fixture: ComponentFixture<PostEditComponent>;
+describe('ChangeColumnComponent', () => {
+  let component: ChangeColumnComponent;
+  let fixture: ComponentFixture<ChangeColumnComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PostEditComponent ]
+      declarations: [ ChangeColumnComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PostEditComponent);
+    fixture = TestBed.createComponent(ChangeColumnComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

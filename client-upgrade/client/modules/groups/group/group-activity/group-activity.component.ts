@@ -121,6 +121,8 @@ export class GroupActivityComponent implements OnInit {
     // Clear the Posts Map
     this.posts.clear()
 
+    this.moreToLoad = true
+
     // Start the loading spinner
     this.isLoading$.next(true);
 
@@ -142,7 +144,7 @@ export class GroupActivityComponent implements OnInit {
   async fetchPosts(groupId: string, lastPostId?: string) {
 
     // Fetch the set of posts from the server
-    let posts: any = await this.publicFunctions.getPosts(groupId, lastPostId)
+    let posts: any = await this.publicFunctions.getPosts(groupId, 'group', lastPostId)
 
     // If post has no content, then set the moreToLoad to false
     if (posts.length == 0) {

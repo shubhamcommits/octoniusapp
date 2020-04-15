@@ -16,7 +16,7 @@
 
                         <!-- COLUMN TITLE AND EDIT/DELETE DETAILS STARTS -->
                         <div class="column-title">
-                            <h4 class="text-uppercase"> {{ column?.title }}</h4>
+                            <p class="text-capitalize"> {{ column?.title }}</p>
                             <div class="inline-block" *ngIf="!(column.title =='to do')">
                                 <div class="dropdown">
                                     <i class="material-icons action dropdown-toggle"
@@ -39,14 +39,17 @@
                         <!-- COLUMN TITLE AND EDIT/DELETE DETAILS ENDS -->
 
                         <!-- EDIT COLUMN STARTS -->
-                        <app-edit-column *ngIf="column" [column]="column" (column)="editColumn(column, $event)"></app-edit-column>
+                        <app-edit-column *ngIf="column" [column]="column" (column)="editColumn(column, $event)">
+                        </app-edit-column>
                         <!-- EDIT COLUMN ENDS -->
 
                         <!-- TASK CONTAINER STARTS -->
-                        <div class="tasks-container" [id]="column.title" cdkDropList>
+                        <div class="tasks-container" [id]="column.title" cdkDropList [cdkDropListData]="column.tasks"
+                            (cdkDropListDropped)="drop($event)">
 
                             <!-- CREATE TASK STARTS -->
-                            <app-new-task [groupData]="groupData" [userData]="userData" [column]="column" (post)="getPost($event, column)"></app-new-task>
+                            <app-new-task [groupData]="groupData" [userData]="userData" [column]="column"
+                                (post)="getPost($event, column)"></app-new-task>
                             <!-- CREATE TASK ENDS -->
 
                             <!-- TASK DETAILS STARTS -->
@@ -54,22 +57,30 @@
                             <div class="task"
                                 [ngClass]="{'status-todo': task?.task?.status === 'to do', 'status-inprogress': task?.task?.status === 'in progress', 'status-done': task?.task?.status === 'done'}"
                                 *ngFor="let task of column.tasks; let j = index;" cdkDrag>
-                                <div class="row">
+                                <div class="row" (click)="openModal(content)">
 
                                     <!-- TASK TOP BAR STARTS -->
                                     <div class="col-md-12">
                                         <div class="row">
 
                                             <!-- TASK ASSIGNMENT STARTS -->
-                                            <div class="col-md-7" style="margin-top: -10px;">
-                                                <app-select-assignee [type]="'board'" [post]="task" [userData]="userData" [groupId]="groupData._id"></app-select-assignee>
+                                            <div class="col-md-7 mt-n2">
+                                                <section>
+                                                    <img src="{{baseUrl}}/uploads/{{task?.task?._assigned_to?.profile_pic}}"
+                                                        onerror="this.src='/assets/images/user.png'" class="feed-avatar">
+                                                    <span *ngIf="!task?.task?.unassigned">
+                                                        {{task?.task?._assigned_to?.first_name}} {{ task?.task?._assigned_to?.last_name }}</span>
+                                                    <span *ngIf="task?.task?.unassigned">Unassigned</span>
+                                                </section>
+
                                             </div>
                                             <!-- TASK DETAILS ENDS -->
 
                                             <!-- TASK DUE DATE STARTs -->
-                                            <div class="col-md-5 text-right">
-                                                <span class="small"
-                                                    *ngIf="task?.task?.due_to != 'Invalid date' && task?.task?.status != 'done'">
+                                            <div class="col-md-5 text-right mt-2">
+                                                <span class="small font-weight-bold"
+                                                *ngIf="task?.task?.due_to != 'Invalid date' && task?.task?.status != 'done'"
+                                                [ngClass]="checkOverdue(task) === true ? 'overdue' : 'due'">
                                                     {{task?.task?.due_to | date}}</span>
                                             </div>
                                             <!-- TASK DUE DATE ENDS -->
@@ -85,11 +96,14 @@
 
                                             <!-- TASK DETAILS STARTS -->
                                             <ng-template #content let-modal>
-                                                <!-- <app-group-kanban-task-view [task]="task" [columns]="columns" [allMembersId]="allMembersId"
-                          [groupData]="groupData" [socket]="socket" [quillModules]="quillModules"
-                          (closeModal)="closeTaskModal($event)" (moveTask)="moveTaskFromDropDown($event)"
-                          (delTask)="deleteTask($event)">
-                        </app-group-kanban-task-view> -->
+                                                <app-group-create-post *ngIf="userData && checkDataExist(userData)"
+                                                    [edit]="true" [post]="task" [columns]="columns"
+                                                    [userData]="userData" [groupId]="groupId" [type]="'task'"
+                                                    (close)="closeModal()" (moveTask)="moveTaskToColumn($event)"
+                                                    (taskStatus)="changeStatus(task, $event)"
+                                                    (member)="changeAssignee(task, $event)"
+                                                    (date)="changeDueDate(task, $event)">
+                                                </app-group-create-post>
                                             </ng-template>
                                             <!-- TASK DETAILS ENDS -->
 

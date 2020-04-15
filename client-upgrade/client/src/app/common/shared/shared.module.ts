@@ -4,6 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { NgbTimepickerModule, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+
+import { QuicklinkModule } from 'ngx-quicklink';
+
 import { SafePipe } from 'src/shared/pipes/safe.pipe';
 
 import { CropImageComponent } from './crop-image/crop-image.component';
@@ -26,8 +29,10 @@ import { LikePostComponent } from './posts/post-actions/like-post/like-post.comp
 import { CommentOnPostComponent } from './posts/post-actions/comment-on-post/comment-on-post.component';
 import { FollowPostComponent } from './posts/post-actions/follow-post/follow-post.component';
 import { PostUtilsComponent } from './posts/post-actions/post-utils/post-utils.component';
-import { PostEditComponent } from './posts/post-edit/post-edit.component';
 import { SelectAssigneeComponent } from './select-assignee/select-assignee.component';
+import { TaskStatusComponent } from './posts/post-actions/task-status/task-status.component';
+import { ChangeColumnComponent } from './posts/post-actions/change-column/change-column.component';
+import { PostTagsComponent } from './posts/post-tags/post-tags.component';
 
 
 @NgModule({
@@ -55,9 +60,13 @@ import { SelectAssigneeComponent } from './select-assignee/select-assignee.compo
     // Safe Pipe
     SafePipe,
 
-    PostEditComponent,
+    SelectAssigneeComponent,
 
-    SelectAssigneeComponent
+    TaskStatusComponent,
+
+    ChangeColumnComponent,
+
+    PostTagsComponent
   ],
   imports: [
     CommonModule,
@@ -74,6 +83,9 @@ import { SelectAssigneeComponent } from './select-assignee/select-assignee.compo
     // Infinite Scroll Module
     InfiniteScrollModule,
 
+    // Preloading Routes Module
+    QuicklinkModule
+
   ],
   exports: [
     AttachFilesComponent,
@@ -87,12 +99,15 @@ import { SelectAssigneeComponent } from './select-assignee/select-assignee.compo
     LoadingSpinnerComponent,
     LoadingSpinnerSmallComponent,
     PostViewComponent,
-    PostEditComponent,
+    PostTagsComponent,
     SectionSeparatorComponent,
     SelectAssigneeComponent,
     QuillEditorComponent,
     TimePickerComponent,
-    InfiniteScrollModule
+    TaskStatusComponent,
+    ChangeColumnComponent,
+    InfiniteScrollModule,
+    QuicklinkModule
   ]
 })
 export class SharedModule { }

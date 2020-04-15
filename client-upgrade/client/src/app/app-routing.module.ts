@@ -10,6 +10,9 @@ import { WelcomePageComponent } from './common/welcome-page/welcome-page.compone
 import { AuthenticationGuard } from 'src/shared/guards/authentication-guard/authentication.guard';
 import { RoutingGuard } from 'src/shared/guards/routing-guard/routing.guard';
 
+// Preloading Routes Strategy
+import { QuicklinkStrategy, QuicklinkModule } from 'ngx-quicklink';
+
 
 const routes: Routes = [
   // MAIN OR DEFAULT ROUTE
@@ -47,7 +50,7 @@ const routes: Routes = [
   {
     path: 'document',
     loadChildren: () => import('modules/octodoc/octodoc.module')
-    .then((module) => module.OctodocModule),
+      .then((module) => module.OctodocModule),
     canActivate: [AuthenticationGuard]
   },
 
@@ -61,10 +64,12 @@ const routes: Routes = [
 // IMPORTS, EXPORTS, & PROVIDERS
 @NgModule({
   imports: [
-    
+
     // ROUTER MODULE
-    RouterModule.forRoot(routes),
-    
+    RouterModule.forRoot(routes,{
+        preloadingStrategy: QuicklinkStrategy
+    }),
+
   ],
   exports: [RouterModule],
   providers: [AuthenticationGuard]

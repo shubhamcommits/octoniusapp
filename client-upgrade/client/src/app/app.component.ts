@@ -6,6 +6,7 @@ import { map } from 'rxjs/internal/operators/map';
 import { SubSink } from 'subsink';
 import { Observable, Observer, fromEvent, merge } from 'rxjs';
 import { PublicFunctions } from './dashboard/public.functions';
+import { Router, RouterEvent, NavigationStart, NavigationEnd } from '@angular/router';
 
 // Google API Variable
  declare const gapi: any;
@@ -33,11 +34,22 @@ export class AppComponent {
    * 4. Enabling and calling the @event workspaceData from the socket server
    */
   constructor(
-    private injector: Injector
+    private injector: Injector,
+    router: Router
   ) {
 
     let socketService = this.injector.get(SocketService);
     let utilityService = this.injector.get(UtilityService);
+
+    router.events.subscribe(
+      (event: RouterEvent): void => {
+        if (event instanceof NavigationStart) {
+          utilityService.startForegroundLoader();
+        } else if (event instanceof NavigationEnd) {
+          utilityService.stopForegroundLoader()
+        }
+      }
+    )
 
     // Internet connection validity
     this.subSink.add(this.checkInternetConnectivity(utilityService));

@@ -1,5 +1,6 @@
 <div class="modal-header">
-  <h4 class="modal-title" *ngIf="type === 'task'">New Task</h4>
+  <h4 class="modal-title" *ngIf="type === 'task' && edit === false">New Task</h4>
+  <h5 class="modal-title" *ngIf="type === 'task' && edit === true">{{ title }}</h5>
   <h4 class="modal-title" *ngIf="type === 'event'">New Event</h4>
   <h4 class="modal-title" *ngIf="type === 'normal'">New Post</h4>
 
@@ -15,44 +16,31 @@
     <div class="row post-header"  *ngIf="type === 'task' || type ==='event'">
       <div class="col-md-6">
 
-        <section *ngIf="type === 'task'">
-          <img src="{{baseUrl}}/uploads/{{taskAssignee?.profile_pic}}" onerror="this.src='/assets/images/user.png'"
-            class="feed-avatar">
-          <p *ngIf="assigned"><strong>Assigned to {{taskAssignee?.first_name}}</strong></p>
-          <p *ngIf="!assigned"><strong>Not assigned</strong></p>
-          <app-component-search-input-box *ngIf="type === 'task' && userData && checkDataExist(userData)"
-            [placeholder]="'Search a member to assign this task...'" [groupId]="groupId"
-            [workspaceId]="userData._workspace" [userData]="userData" [type]="type" (member)="getMemberDetails($event)">
-          </app-component-search-input-box>
-        </section>
+        <app-select-assignee [post]="postData" [userData]="userData" [groupId]="groupId" [type]="type" (member)="getMemberDetails($event)"></app-select-assignee>
 
-        <section *ngIf="type === 'event'">
-          <p><strong>Assigned to {{ eventMembersMap.size }} member(s)</strong></p>
-          <app-component-search-input-box *ngIf="type === 'event' && userData && checkDataExist(userData)"
-            [placeholder]="'Search members to assign this event...'" [groupId]="groupId"
-            [workspaceId]="userData._workspace" [userData]="userData" [type]="type" (member)="getMemberDetails($event)">
-          </app-component-search-input-box>
-        </section>
       </div>
 
       <div class="col-md-6">
         <section>
-          <p class="due-date"><strong>{{ dueDate | date:'mediumDate' || 'Date Not Selected' }}</strong></p>
+          <p class="due-date" *ngIf="dueDate"><strong>{{ dueDate | date:'mediumDate' || 'Date Not Selected' }}</strong></p>
           <app-date-picker (date)="getDate($event)"></app-date-picker>
-          <app-time-picker *ngIf="type === 'event'"></app-time-picker>
+          <app-task-status class="inline-block ml-5" *ngIf="type === 'task' && edit === true" [post]="postData" (status)="changeTaskStatus($event)"></app-task-status>
+          <app-change-column class="inline-block ml-5" *ngIf="type === 'task' && columns" [post]="postData" [columns]="columns" (moveTask)="moveTaskToColumn($event)"></app-change-column>
+          <app-time-picker class="ml-5" *ngIf="type === 'event'"></app-time-picker>
         </section>
       </div>
     </div>
     <input name="postTitle" type="text" [(ngModel)]="title" class="post-title" placeholder="Insert title here ..." />
     <app-quill-editor [editorId]="'postbox-editor'" [toolbar]="true" [readOnly]="false" (content)="getQuillData($event)"></app-quill-editor>
-    <div class="btn-group attach-files">
+    <div class="attach-files">
       <app-attach-files (files)="onAttach($event)"></app-attach-files>
-      <app-attach-cloud-files></app-attach-cloud-files>
+      <button *ngIf="edit" class="btn float-right btn-primary btn-md">Update Details</button>
     </div>
+    <app-post-tags [userData]="userData" [groupId]="groupId"></app-post-tags>
   </div>
 </div>
 
 <div class="modal-footer">
-  <button type="button" class="btn btn-md btn-danger" (click)="this.closeModal()">Cancel</button>
-  <button type="button" class="btn btn-md btn-primary" (click)="createPost()">Post</button>
+  <button type="button" class="btn btn-md btn-danger" (click)="this.closeModal()">Close</button>
+  <button type="button" *ngIf="!edit" class="btn btn-md btn-primary" (click)="createPost()">Post</button>
 </div>

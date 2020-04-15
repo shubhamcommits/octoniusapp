@@ -52,6 +52,7 @@ import { GroupMembersComponent } from './group/group-members/group-members.compo
  */
 import { SharedModule } from 'src/app/common/shared/shared.module';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 
@@ -181,6 +182,8 @@ import { EditColumnComponent } from './group/group-kanban-boards/edit-column/edi
 
     // FORMS MODULE
     FormsModule,
+
+    DragDropModule,
 
     CalendarModule.forRoot({
       provide: DateAdapter,

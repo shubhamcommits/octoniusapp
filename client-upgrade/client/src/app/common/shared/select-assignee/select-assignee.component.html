@@ -1,10 +1,19 @@
-<section *ngIf="post.type === 'task'">
+<section [id]="post?._id" *ngIf="type === 'task'">
     <img src="{{baseUrl}}/uploads/{{taskAssignee?.profile_pic}}" onerror="this.src='/assets/images/user.png'"
         class="feed-avatar">
-    <p *ngIf="assigned">Assigned to {{taskAssignee?.first_name}}</p>
+    <p *ngIf="assigned"><span *ngIf="showBar">Assigned to</span> {{taskAssignee?.first_name}} <span *ngIf="!showBar">{{ taskAssignee?.last_name }}</span></p>
     <p *ngIf="!assigned">Unassigned</p>
-    <app-component-search-input-box *ngIf="post.type === 'task' && userData && checkDataExist(userData) && type != 'board'"
+    <app-component-search-input-box
+        *ngIf="type === 'task' && userData && checkDataExist(userData) && showBar"
         [placeholder]="'Search a member to assign this task...'" [groupId]="groupId" [workspaceId]="userData._workspace"
-        [userData]="userData" [type]="post.type" (member)="getMemberDetails($event)">
+        [userData]="userData" [type]="type" (member)="getMemberDetails($event)">
+    </app-component-search-input-box>
+</section>
+
+<section [id]="post?._id" *ngIf="type === 'event'">
+    <p><strong>Assigned to {{ eventMembersMap.size }} member(s)</strong></p>
+    <app-component-search-input-box *ngIf="type === 'event' && userData && checkDataExist(userData)"
+        [placeholder]="'Search members to assign this event...'" [groupId]="groupId" [workspaceId]="userData._workspace"
+        [userData]="userData" [type]="type" (member)="getMemberDetails($event)">
     </app-component-search-input-box>
 </section>

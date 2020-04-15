@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -19,8 +19,11 @@ export class SelectAssigneeComponent implements OnInit {
   // Group Id Input
   @Input('groupId') groupId: any;
 
-  // Type as the input from component 'board' or 'task'
+  // Type as the input from component 'event' or 'task'
   @Input('type') type: any;
+
+  // Show Input Search Bar
+  @Input('showBar') showBar = true
 
   // BASE URL OF THE APPLICATION
   baseUrl = environment.UTILITIES_BASE_URL;
@@ -41,7 +44,23 @@ export class SelectAssigneeComponent implements OnInit {
 
   /* Task Variables */
 
+  /* Event Variables */
+
+  // Members Map of Event Asignee
+  eventMembersMap: any = new Map()
+
+  /* Event Variables */
+
+  // Output the assignee
+  @Output('member') member = new EventEmitter()
+
   ngOnInit() {
+    if(this.post){
+      if(this.post.task._assigned_to){
+        this.assigned = true
+        this.taskAssignee = this.post.task._assigned_to
+      }
+    }
   }
 
   // Check if the data provided is not empty{}
@@ -49,9 +68,13 @@ export class SelectAssigneeComponent implements OnInit {
     return !(JSON.stringify(object) === JSON.stringify({}))
   }
 
+  /**
+   * This function is responsible for assigning the assignee
+   * @param memberMap 
+   */
   getMemberDetails(memberMap: any) {
 
-    if (this.post.type == 'task') {
+    if (this.type == 'task') {
 
       // Set the Assign state of task to be true
       this.assigned = true
@@ -59,6 +82,17 @@ export class SelectAssigneeComponent implements OnInit {
       // Assign the value of member map to the taskAssignee variable
       for (let member of memberMap.values())
         this.taskAssignee = member
+
+      // Emit the output as the taskAssignee
+      this.member.emit(this.taskAssignee)
+
+    } else if (this.type == 'event') {
+
+      // Assign the eventMembersMap to the output from component
+      this.eventMembersMap = memberMap
+
+      // Emit the output as the taskAssignee
+      this.member.emit(this.eventMembersMap)
 
     }
 

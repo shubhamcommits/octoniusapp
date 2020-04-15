@@ -24,7 +24,7 @@
                 <div *ngIf="posts.size > 0">
                     <ul class="list-group"
                         *ngFor="let post of posts | keyvalue: compare; let index = index ; trackBy: this.utilityService.trackByIndex">
-                        <app-post-view *ngIf="post.value.type != 'task' && post" [post]="post.value"
+                        <app-post-view *ngIf="post" [post]="post.value"
                             (delete)="deletePost($event)"></app-post-view>
                     </ul>
                 </div>

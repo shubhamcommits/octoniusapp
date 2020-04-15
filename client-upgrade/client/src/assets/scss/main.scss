@@ -423,16 +423,16 @@ p{
 
 // activity related status
 .kbn-todo{
-  background:$pumpkin-orange;
-  color: white;
+  background: $pumpkin-orange !important;
+  color: white !important;
 }
 .kbn-working{
-  background: $turquoise;
-  color: white;
+  background: $turquoise !important;
+  color: white !important;
 }
 .kbn-done{
-  background: $dark-sky-blue;
-  color: white;
+  background: $dark-sky-blue !important;
+  color: white !important;
 }
 
 

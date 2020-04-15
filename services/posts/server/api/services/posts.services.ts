@@ -1,7 +1,6 @@
-import { Post, User, Comment } from '../models';
+import { Group, Post, User, Comment } from '../models';
 import http from 'axios';
 import moment from 'moment';
-import { Request } from 'express';
 import * as fs from 'fs';
 
 /*  ===============================
@@ -12,7 +11,7 @@ import * as fs from 'fs';
 export class PostService {
 
   // Select User Fields on population
-  userFields: any = 'first_name last_name profile_pic';
+  userFields: any = 'first_name last_name profile_pic role email';
 
   // Select Group Fileds on population
   groupFields: any = 'group_name group_avatar';
@@ -23,7 +22,7 @@ export class PostService {
    * @param groupId 
    * @param lastPostId 
    */
-  async getPosts(groupId: string, lastPostId?: string) {
+  async getPosts(groupId: any, type?: any, lastPostId?: any) {
 
     try {
 
@@ -31,25 +30,143 @@ export class PostService {
       var posts = []
 
       // Fetch posts on the basis of the params @lastPostId
-      if (lastPostId)
-        posts = await this.filterGroupPosts(
-          Post.find({
-            $and: [
-              { _group: groupId },
-              { _id: { $lt: lastPostId } }
-            ]
-          }))
+      if (lastPostId) {
+
+        switch (type) {
+
+          // Fetch all next posts
+          case 'all':
+            posts = await this.filterGroupPosts(
+              Post.find({
+                $and: [
+                  { _group: groupId },
+                  { _id: { $lt: lastPostId } }
+                ]
+              }), type)
+
+            break;
+
+          // Special type for only group posts where we don't need tasks post
+          case 'group':
+            posts = await this.filterGroupPosts(
+              Post.find({
+                $and: [
+                  { _group: groupId },
+                  { type: { $ne: 'task' } },
+                  { _id: { $lt: lastPostId } }
+                ]
+              }), 'all')
+
+            break;
+
+          // Fetch only next normal posts
+          case 'normal':
+            posts = await this.filterGroupPosts(
+              Post.find({
+                $and: [
+                  { _group: groupId },
+                  { type: type },
+                  { _id: { $lt: lastPostId } }
+                ]
+              }), type)
+
+            break;
+
+          // Fetch only next tasks post
+          case 'task':
+            posts = await this.filterGroupPosts(
+              Post.find({
+                $and: [
+                  { _group: groupId },
+                  { type: type },
+                  { _id: { $lt: lastPostId } }
+                ]
+              }), type)
+
+            break;
+
+          // Fetch only next event posts
+          case 'event':
+            posts = await this.filterGroupPosts(
+              Post.find({
+                $and: [
+                  { _group: groupId },
+                  { type: type },
+                  { _id: { $lt: lastPostId } }
+                ]
+              }), type)
+
+            break;
+
+        }
+      }
 
       // If lastPostId is not there
-      else
-        posts = await this.filterGroupPosts(
-          Post.find({
-            $and: [
-              { _group: groupId }
-            ]
-          }))
+      else if (!lastPostId) {
+        switch (type) {
 
-      // Return first 5 recent posts 
+          // Fetch first set of all posts
+          case 'all':
+            posts = await this.filterGroupPosts(
+              Post.find({
+                $and: [
+                  { _group: groupId }
+                ]
+              }), type)
+
+            break;
+
+          // Special type for only group posts where we don't need tasks post
+          case 'group':
+            posts = await this.filterGroupPosts(
+              Post.find({
+                $and: [
+                  { _group: groupId },
+                  { type: { $ne: 'task' } }
+                ]
+              }), type)
+
+            break;
+
+          // Fetch first set of normal posts
+          case 'normal':
+            posts = await this.filterGroupPosts(
+              Post.find({
+                $and: [
+                  { _group: groupId },
+                  { type: type }
+                ]
+              }), type)
+
+            break;
+
+          // Fetch first set of task posts
+          case 'task':
+            posts = await this.filterGroupPosts(
+              Post.find({
+                $and: [
+                  { _group: groupId },
+                  { type: type }
+                ]
+              }), type)
+
+            break;
+
+          // Fetch first set of event posts
+          case 'event':
+            posts = await this.filterGroupPosts(
+              Post.find({
+                $and: [
+                  { _group: groupId },
+                  { type: type },
+                ]
+              }), type)
+
+            break;
+        }
+      }
+
+      // Return set of posts 
       return posts;
 
     } catch (err) {
@@ -63,18 +180,150 @@ export class PostService {
    * This is the helper function which returns the filtered posts
    * @param posts 
    */
-  filterGroupPosts(posts: any) {
+  filterGroupPosts(posts: any, type?: string) {
+
+    // Filtered posts array
+    var filteredPosts = posts
+
+    // If all types of posts are selected
+    if (type == 'all' || type == 'group')
+      filteredPosts = posts
+        .sort('-_id')
+        .limit(5)
+        .populate('_posted_by', this.userFields)
+        .populate('task._assigned_to', this.userFields)
+        .populate('event._assigned_to', this.userFields)
+        .populate('_liked_by', this.userFields)
+        .populate('_followers', this.userFields)
+        .lean();
+
+    // If all tasks are selected
+    else if (type === 'task')
+      filteredPosts = posts
+        .sort('-task.due_to')
+        .populate('_group', this.groupFields)
+        .populate('_posted_by', this.userFields)
+        .populate('task._assigned_to', this.userFields)
+        .populate('_liked_by', 'first_name')
+        .lean();
 
     // Return group posts
-    return posts
-      .sort('-_id')
-      .limit(5)
-      .populate('_posted_by', this.userFields)
-      .populate('task._assigned_to', this.userFields)
-      .populate('event._assigned_to', this.userFields)
-      .populate('_liked_by', this.userFields)
-      .populate('_followers', this.userFields)
-      .lean();
+    return filteredPosts
+  }
+
+  /**
+   * This function is used to populate a post with all the possible properties
+   * @param post 
+   */
+  async populatePostProperties(post: any) {
+    if (post.type === 'task') {
+
+      // Populate task properties
+      post = await Post.populate(post, [
+        { path: 'task._assigned_to', select: this.userFields },
+        { path: '_group', select: this.groupFields },
+        { path: '_posted_by', select: this.userFields }
+      ]);
+
+    } else if (post.type === 'performance_task') {
+
+      // Populate performance task properties
+      post = await Post.populate(post, [
+        { path: 'performance_task._assigned_to', select: this.userFields },
+        { path: '_group', select: this.groupFields },
+        { path: '_posted_by', select: this.userFields }
+      ]);
+
+    } else if (post.type === 'event') {
+
+      // Populate event properties
+      post = await Post.populate(post, [
+        { path: 'event._assigned_to', select: this.userFields },
+        { path: '_group', select: this.groupFields },
+        { path: '_posted_by', select: this.userFields }
+      ]);
+
+    } else if (post.type === 'normal') {
+
+      // Populate normal post properties
+      post = await Post.populate(post, [
+        { path: '_group', select: this.groupFields },
+        { path: '_posted_by', select: this.userFields }
+      ]);
+    }
+
+    // Return post with populated properties
+    return post;
+  }
+
+  /**
+   * This function is responsible for sending the related real time notifications/emails to the user(s)
+   * @param post 
+   */
+  async sendNotifications(post: any) {
+
+    if (post._content_mentions.length !== 0) {
+
+      // Create Real time Notification for all the mentions on post content
+      await http.post('http://localhost:9000/api/new-mention', {
+        post: post
+      });
+
+      // start the process to send an email to every user mentioned in the post coneten
+      await post._content_mentions.forEach((user: any, index: number) => {
+        http.post('http://localhost:2000/api/user-post-mention', {
+          post: post,
+          user: user
+        })
+      });
+    }
+
+    // Send notification after post creation
+    switch (post.type) {
+
+      case 'task':
+        if (!post.task.unassigned) {
+
+          // Real time notification for new task assignment
+          await http.post('http://localhost:9000/api/new-task', {
+            post: post
+          })
+
+          // Email notification for the new task
+          await http.post('http://localhost:2000/api/task-assigned', {
+            post: post
+          })
+
+          // Schedule task reminder, which will be called in future
+          await http.post('http://localhost:2000/api/task-reminder', {
+            post: post
+          })
+        }
+        break;
+
+      case 'event':
+
+        // Real time notification for new event assignment
+        await http.post('http://localhost:9000/api/new-event', {
+          post: post
+        })
+
+        // Email notification for the new email assignment
+        await http.post('http://localhost:2000/api/event-assigned', {
+          post: post
+        })
+
+        // Schedule event reminder, which will be called in future
+        await http.post('http://localhost:2000/api/event-reminder', {
+          post: post
+        })
+
+        break;
+
+      default:
+        break;
+    }
+
   }
 
   /**
@@ -90,99 +339,11 @@ export class PostService {
       // Create new post
       let post: any = await Post.create(postData);
 
-      if (post._content_mentions.length !== 0) {
-        // Create Notification for mentions on post content
-        await http.post('http://localhost:9000/api/new-mention', {
-          post: post
-        });
-        //   notifications.newPostMentions(post);
+      // Send all the required emails and notifications
+      await this.sendNotifications(post);
 
-        // start the process to send an email to every user mentioned
-        await post._content_mentions.forEach((user, i) => {
-
-          http.post('http://localhost:2000/api/user-post-mention', {
-            post: post,
-            user: user
-          });
-          // sendMail.userMentionedPost(post, user, i);
-        });
-      }
-
-      // Send Email notification after post creation
-      switch (post.type) {
-
-        case 'task':
-          if (!post.task.unassigned) {
-            // await notifications.newTaskAssignment(post);
-            await http.post('http://localhost:9000/api/new-task', {
-              post: post
-            });
-            // await sendMail.taskAssigned(post);
-            await http.post('http://localhost:2000/api/task-assigned', {
-              post: post
-            });
-            // await sendMail.scheduleTaskReminder(post);
-            await http.post('http://localhost:2000/api/task-reminder', {
-              post: post
-            });
-          }
-          break;
-
-        case 'event':
-          // await notifications.newEventAssignments(post);
-          await http.post('http://localhost:9000/api/new-event', {
-            post: post
-          });
-          // await sendMail.eventAssigned(post);
-          await http.post('http://localhost:2000/api/event-assigned', {
-            post: post
-          });
-          // await sendMail.scheduleEventReminder(post);
-          await http.post('http://localhost:2000/api/event-reminder', {
-            post: post
-          });
-          break;
-
-        default:
-          break;
-      }
-
-      //  populate the assigned_to property of this document
-      if (post.type === 'task') {
-
-        // Populate task properties
-        post = await Post.populate(post, [
-          { path: 'task._assigned_to', select: this.userFields },
-          { path: '_group', select: this.groupFields },
-          { path: '_posted_by', select: this.userFields }
-        ]);
-
-      } else if (post.type === 'performance_task') {
-
-        // Populate performance task properties
-        post = await Post.populate(post, [
-          { path: 'performance_task._assigned_to', select: this.userFields },
-          { path: '_group', select: this.groupFields },
-          { path: '_posted_by', select: this.userFields }
-        ]);
-
-      } else if (post.type === 'event') {
-
-        // Populate event properties
-        post = await Post.populate(post, [
-          { path: 'event._assigned_to', select: this.userFields },
-          { path: '_group', select: this.groupFields },
-          { path: '_posted_by', select: this.userFields }
-        ]);
-
-      } else if (post.type === 'normal') {
-
-        // Populate normal post properties
-        post = await Post.populate(post, [
-          { path: '_group', select: this.groupFields },
-          { path: '_posted_by', select: this.userFields }
-        ]);
-      }
+      // populate the assigned_to property of this document
+      post = await this.populatePostProperties(post);
 
       // Return Post Object
       return post;
@@ -197,169 +358,103 @@ export class PostService {
 
   /**
    * This function is responsible for editing a post
+   * @param post 
+   * @param postId 
    */
-  edit = async (req: Request) => {
+  async editPost(post: any, postId: string) {
     try {
-      let postData: any;
-      switch (req.body.type) {
+
+      // Parse the String to JSON Object
+      post = JSON.parse(post)
+
+      // Post Data Object
+      var postData: any = {
+        title: post.title,
+        content: post.content,
+        _content_mentions: post._content_mentions,
+        tags: post.tags,
+        _read_by: [],
+      }
+
+      switch (post.type) {
         case 'task':
-          if (req.body.unassigned == 'Yes') {
-            postData = {
-              title: req.body.title,
-              content: req.body.content,
-              _content_mentions: req.body._content_mentions,
-              tags: req.body.tags,
-              _read_by: [],
-              task: {
-                due_to: (req.body.date_due_to) ? moment(req.body.date_due_to).format('YYYY-MM-DD') : null,
-                _assigned_to: req.body.assigned_to,
-                status: req.body.status,
-                unassigned: req.body.unassigned,
-                _column: req.body._column
-              }
-            }
+
+          // Add task property details
+          postData.task = {
+            due_to: (post.date_due_to) ? moment(post.date_due_to).format('YYYY-MM-DD') : null,
+            _assigned_to: post.assigned_to,
+            status: post.status,
+            unassigned: post.unassigned,
+            _column: post._column
           }
-          if (req.body.unassigned == 'No') {
-            postData = {
-              title: req.body.title,
-              content: req.body.content,
-              _content_mentions: req.body._content_mentions,
-              tags: req.body.tags,
-              _read_by: [],
-              task: {
-                due_to: (req.body.date_due_to) ? moment(req.body.date_due_to).format('YYYY-MM-DD') : null,
-                _assigned_to: req.body.assigned_to,
-                status: req.body.status,
-                unassigned: req.body.unassigned,
-                _column: req.body._column
-              }
-            };
-          }
+
           break;
 
         case 'performance_task':
-          postData = {
-            title: req.body.title,
-            content: req.body.content,
-            _content_mentions: req.body._content_mentions,
-            skill: req.body.skill,
-            _read_by: [],
-            performance_task: {
-              _assigned_to: req.body.assigned_to[0]._id,
-              status: req.body.status
-            }
-          };
+
+          // Adding skills to the post
+          postData.skill = post.skill
+
+          // Adding performance task details
+          postData.performance_task = {
+            _assigned_to: post.assigned_to[0]._id,
+            status: post.status
+          }
+
           break;
 
         case 'event':
           // transform due_to time to UTC
-          req.body.date_due_to = moment.utc(req.body.date_due_to).format();
+          post.date_due_to = moment.utc(post.date_due_to).format();
 
           // make arr with ids user who got assigned to event
-          const assignedUsers = req.body.assigned_to.map((item, index) => item._id);
+          const assignedUsers = post.assigned_to.map((item, index) => item._id);
 
-          postData = {
-            title: req.body.title,
-            content: req.body.content,
-            _content_mentions: req.body._content_mentions,
-            tags: req.body.tags,
-            _read_by: [],
-            event: {
-              due_to: req.body.date_due_to,
-              _assigned_to: assignedUsers
-            }
-          };
+          // Add Event property details
+          postData.event = {
+            due_to: post.date_due_to,
+            _assigned_to: assignedUsers
+          }
+
           break;
 
         case 'normal':
 
-          postData = {
-            title: req.body.title,
-            content: req.body.content,
-            _content_mentions: req.body._content_mentions,
-            tags: req.body.tags,
-            _read_by: [],
-          };
+          // Postdata remains the same for normal post
+          postData = postData
+
           break;
 
         case 'document':
 
-          postData = {
-            title: req.body.title,
-            content: req.body.content,
-          };
+          // Postdata remains the same for document post
+          postData = postData
+
           break;
       }
 
-
-      const post: any = await Post.findOne({ _id: req.params.postId });
-
-      const user: any = await User.findOne({ _id: req['userId'] });
-
-      // Allow all group's users to edit a multi editor post
-      if (post.type === 'document' && user._groups.includes(post._group)) {
-        user.role = 'admin';
-      }
-
-      // if the user is not an owner or an admin and is not the one who posted, we throw auth error
-      if (!(user.role === 'owner' || user.role === 'admin') && !post._posted_by == req['userId']) {
-        throw (null);
-      }
-
-      // postData._read_by = []
-      // console.log(postData);
-      const updatedPost = await Post.findOneAndUpdate({
-        _id: req.params.postId
+      // Update the post
+      post = await Post.findOneAndUpdate({
+        _id: postId
       }, {
         $set: postData
       }, {
         new: true
       })
-        .populate('_posted_by')
-        .populate('task._assigned_to')
-        .populate('performance_task._assigned_to')
-        .populate('performance_task._skills')
-        .populate('event._assigned_to')
-        .populate('_liked_by');
 
+      // Send all the required emails and notifications
+      this.sendNotifications(post);
 
-      // Create Notification for mentions on post content
-      if (post._content_mentions.length !== 0) {
-        // notifications.newPostMentions(post);
-        await http.post('http://localhost:9000/api/new-mention', {
-          post: post
-        });
-      }
+      // populate the assigned_to property of this document
+      post = await this.populatePostProperties(post);
 
-      // Send Email notification after post creation
-      switch (post.type) {
-        case 'task':
-          //   await notifications.newTaskAssignment(post);
-          await http.post('http://localhost:9000/api/new-task', {
-            post: post
-          });
-          //   await sendMail.taskAssigned(post);
-          await http.post('http://localhost:2000/api/task-assigned', {
-            post: post
-          });
-          break;
-        case 'event':
-          //   await notifications.newEventAssignments(post);
-          await http.post('http://localhost:9000/api/new-event', {
-            post: post
-          });
-          //   await sendMail.eventAssigned(post);
-          await http.post('http://localhost:2000/api/event-assigned', {
-            post: post
-          });
-          break;
-        default:
-          break;
-      }
+      // Return the post
+      return post;
 
-      return updatedPost;
     } catch (err) {
-      throw (err);
+
+      // Return with error
+      return err;
     }
   };
 
@@ -535,6 +630,112 @@ export class PostService {
       throw (err);
     }
   };
+
+  // -| TASKS |-
+
+  /**
+   * This function is responsible for changing the task assignee
+   * @param postId 
+   * @param assigneeId 
+   */
+  async changeTaskAssignee(postId: string, assigneeId: string) {
+
+    try {
+
+      // Get post data
+      var post: any = await Post.findOneAndUpdate({
+        _id: postId
+      }, {
+        'task._assigned_to': assigneeId,
+        'task.unassigned': false
+      }, {
+        new: true
+      })
+
+      // Create Real time Notification to notify user about the task reassignment
+      http.post('http://localhost:9000/api/task-reassign', {
+        post: post
+      })
+        .catch((err) => {
+          console.error(err)
+        })
+
+      // Email notification for the new task reassignment
+      http.post('http://localhost:2000/api/task-reassign', {
+        post: post
+      })
+        .catch((err) => {
+          console.error(err)
+        })
+
+      // Populate the post properties
+      post = await this.populatePostProperties(post)
+
+      // Return the post
+      return post;
+
+    } catch (err) {
+      return err
+    }
+  }
+
+  /**
+   * This function is responsible for changing the task due date
+   * @param postId
+   * @param date_due_to
+   */
+  async changeTaskDueDate(postId: string, date_due_to: string) {
+
+    try {
+
+      // Get post data
+      var post: any = await Post.findOneAndUpdate({
+        _id: postId
+      }, {
+        "task.due_to": date_due_to ? moment(date_due_to).format('YYYY-MM-DD') : null,
+      }, {
+        new: true
+      })
+
+      // Populate the post properties
+      post = await this.populatePostProperties(post)
+
+      // Return the post
+      return post;
+
+    } catch (err) {
+      return err
+    }
+  }
+
+  /**
+   * This function is responsible for changing the task status
+   * @param postId
+   * @param status
+   */
+  async changeTaskStatus(postId: string, status: string) {
+
+    try {
+
+      // Get post data
+      var post: any = await Post.findOneAndUpdate({
+        _id: postId
+      }, {
+        "task.status": status ? status : 'to do',
+      }, {
+        new: true
+      })
+
+      // Populate the post properties
+      post = await this.populatePostProperties(post)
+
+      // Return the post
+      return post;
+
+    } catch (err) {
+      return err
+    }
+  }
 
 
   /**

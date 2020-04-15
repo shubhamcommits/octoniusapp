@@ -66,7 +66,7 @@ app.all('/', (req: Request, res: Response, next: NextFunction) => {
 });
 
 // Routes to handle notifications
-app.use('/api/notifications', notificationRoutes);
+app.use('/api', notificationRoutes);
 
 // // Correct REST naming
 // app.use('/api/billings', billingRoutes);

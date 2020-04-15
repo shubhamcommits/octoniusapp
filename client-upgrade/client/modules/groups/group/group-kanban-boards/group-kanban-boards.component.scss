@@ -39,12 +39,14 @@ $border-color:#E4EDF8;
 
             .board-column {
                 display: flex;
+                cursor: grab;
                 flex-direction: column;
                 flex-grow: 1;
                 flex-basis: 0; // to force the columns to all be the same size, regardless of content
 
                 width: 340px;
                 margin: 50px;
+                margin-top: 10px;
                 margin-left: 10px;
                 padding: 25px;
 
@@ -63,6 +65,10 @@ $border-color:#E4EDF8;
                     justify-content: space-between;
                     margin-bottom: 20px;
                     width:300px;
+                    p{
+                        font-size: 18px;
+                        font-weight: 600;
+                    }
                 }
             }
         }
@@ -163,4 +169,15 @@ $dark-sky-blue: #4a90e2;
 }
 .status-done{
     border-top: 3px solid $dark-sky-blue;
+}
+
+section{
+    margin-bottom: 10px;
+    vertical-align: middle;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    p{
+        margin-top: auto !important;
+    }
 }

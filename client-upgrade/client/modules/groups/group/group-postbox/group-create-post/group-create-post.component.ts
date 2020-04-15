@@ -19,7 +19,7 @@ export class GroupCreatePostComponent implements OnInit {
   baseUrl = environment.UTILITIES_BASE_URL;
 
   // Date Object to map the due dates
-  dueDate = new Date(Date.now())
+  dueDate: any;
 
   // Files Variable 
   files: [] = []
@@ -56,6 +56,15 @@ export class GroupCreatePostComponent implements OnInit {
 
   /* Event Variables */
 
+  // PostData Variable which is used for showing post content
+  @Input('post') postData: any
+
+  // Edit Check variable to keep a track whether the modal opened is in the edit mode or not
+  @Input('edit') edit: boolean = false;
+
+  // Columns variable to keep a track of for list of kanban columns
+  @Input('columns') columns: any
+
   // UserData Object
   @Input('userData') userData: any;
 
@@ -71,7 +80,36 @@ export class GroupCreatePostComponent implements OnInit {
   // Post Event Emitter - Emits the post to the other components
   @Output('post') post = new EventEmitter()
 
+  // Move Task to another column output event emitter
+  @Output('moveTask') moveTask = new EventEmitter();
+
+  // Change task status output event emitter
+  @Output('taskStatus') taskStatus = new EventEmitter();
+
+  // Output the task assignee
+  @Output('member') member = new EventEmitter()
+
+  // Output the task due date
+  @Output('date') date = new EventEmitter()
+
   ngOnInit() {
+    if (this.edit) {
+
+      this.title = this.postData.title
+
+      this.quillData = this.postData.content
+
+      if (!this.postData.task.unassigned) {
+        this.taskAssignee = this.postData.task._assigned_to
+        this.dueDate = undefined
+      }
+
+
+      if (this.postData.task.due_to && this.postData.task.due_to != null)
+        this.dueDate = new Date(this.postData.task.due_to)
+
+    }
+    // console.log(this.postData)
   }
 
   /**
@@ -84,27 +122,37 @@ export class GroupCreatePostComponent implements OnInit {
     this.quillData = quillData
   }
 
+  moveTaskToColumn($event) {
+    this.moveTask.emit($event)
+  }
+
+  changeTaskStatus($event){
+    this.taskStatus.emit($event)
+  }
+
   closeModal() {
     this.close.emit()
   }
 
   getMemberDetails(memberMap: any) {
 
-    if (this.type == 'task') {
+    this.member.emit(memberMap)
 
-      // Set the Assign state of task to be true
-      this.assigned = true
+    // if (this.type == 'task') {
 
-      // Assign the value of member map to the taskAssignee variable
-      for (let member of memberMap.values())
-        this.taskAssignee = member
+    //   // Set the Assign state of task to be true
+    //   this.assigned = true
 
-    } else if(this.type == 'event'){
+    //   // Assign the value of member map to the taskAssignee variable
+    //   for (let member of memberMap.values())
+    //     this.taskAssignee = member
 
-      // Assign the eventMembersMap to the output from component
-      this.eventMembersMap = memberMap
+    // } else if (this.type == 'event') {
 
-    }
+    //   // Assign the eventMembersMap to the output from component
+    //   this.eventMembersMap = memberMap
+
+    // }
 
   }
 
@@ -112,7 +160,7 @@ export class GroupCreatePostComponent implements OnInit {
    * This function is responsible for receiving the files
    * @param files 
    */
-  onAttach(files: any){
+  onAttach(files: any) {
 
     // Set the current files variable to the output of the module
     this.files = files
@@ -122,8 +170,12 @@ export class GroupCreatePostComponent implements OnInit {
    * This function is responsible for receiving the date from @module <app-date-picker></app-date-picker>
    * @param dateObject 
    */
-  getDate(dateObject: any){
-    this.dueDate =  new Date(dateObject.year, dateObject.month-1, dateObject.day)
+  getDate(dateObject: any) {
+    this.dueDate = new Date(dateObject.year, dateObject.month - 1, dateObject.day)
+
+    if(this.edit){
+      this.date.emit(this.dueDate)
+    }
   }
 
   // Check if the data provided is not empty{}
@@ -134,7 +186,7 @@ export class GroupCreatePostComponent implements OnInit {
   /**
    * This function creates a new post in the activity
    */
-  createPost(){
+  createPost() {
 
     // Prepare Post Data
     let postData = {
@@ -153,36 +205,36 @@ export class GroupCreatePostComponent implements OnInit {
     formData.append('post', JSON.stringify(postData))
 
     // Append all the file attachments
-    if(this.files.length != 0)
-      this.files.forEach((file)=>{
+    if (this.files.length != 0)
+      this.files.forEach((file) => {
         formData.append('attachments', file, file['name']);
       })
 
     // Call the Helper Function
     this.onCreatePost(formData)
-    
+
   }
 
   /**
    * This function is responsible for calling add post service functions
    * @param postData 
    */
-  onCreatePost(postData: FormData){
-    this.utilityService.asyncNotification('Please wait we are creating the post...', new Promise((resolve, reject)=>{
+  onCreatePost(postData: FormData) {
+    this.utilityService.asyncNotification('Please wait we are creating the post...', new Promise((resolve, reject) => {
       this.postService.create(postData)
-      .then((res)=>{
+        .then((res) => {
 
-        // Emit the Post to the other compoentns
-        this.post.emit(res['post'])
+          // Emit the Post to the other compoentns
+          this.post.emit(res['post'])
 
-        // Resolve with success
-        resolve(this.utilityService.resolveAsyncPromise('Post Created!'))
-      })
-      .catch((err)=>{
+          // Resolve with success
+          resolve(this.utilityService.resolveAsyncPromise('Post Created!'))
+        })
+        .catch((err) => {
 
-        // Catch the error and reject the promise
-        reject(this.utilityService.rejectAsyncPromise('Unable to create post, please try again!'))
-      })
+          // Catch the error and reject the promise
+          reject(this.utilityService.rejectAsyncPromise('Unable to create post, please try again!'))
+        })
     }))
   }
 }

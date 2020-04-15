@@ -119,21 +119,25 @@ const postFileHandler = (req: Request, res: Response, next: NextFunction) => {
   });
 
 
-  req['files'] = files;
-  console.log(req['files']);
+  // req['files'] = files;
+  // console.log(files);
 
   
   var upload = multer({
     storage: Storage
-  }).array('files', 20);
+  }).array(req['files']['files'], 20);
+
+  // console.log(req['files'])
 
   upload(req, res, function(err){
+      console.log(req['files'])
     if (err){
       return res.status(500).json({
         message: err
       })
     }
     else{
+
       return res.status(200).json({
         message: "success"
       })

@@ -5,6 +5,9 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { PublicFunctions } from 'src/app/dashboard/public.functions';
 import { ActivatedRoute } from '@angular/router';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
+import { PostService } from 'src/shared/services/post-service/post.service';
+import { environment } from 'src/environments/environment';
+import moment from 'moment';
 
 @Component({
   selector: 'app-group-kanban-boards',
@@ -21,9 +24,14 @@ export class GroupKanbanBoardsComponent implements OnInit {
 
   columns: any = []
 
+  // Base URL of the uploads
+  baseUrl = environment.UTILITIES_BASE_URL;
+
   // Fetch groupId from router snapshot
   groupId = this.router.snapshot['_urlSegment']['segments'][2]['path'];
 
+  // Task Posts array variable
+  tasks: any = []
 
   // Current Group Data
   groupData: any;
@@ -36,6 +44,9 @@ export class GroupKanbanBoardsComponent implements OnInit {
 
   // PUBLIC FUNCTIONS
   public publicFunctions = new PublicFunctions(this.injector);
+
+  // Today's date object
+  today = moment().local().startOf('day').format('YYYY-MM-DD');
 
   async ngOnInit() {
 
@@ -66,8 +77,48 @@ export class GroupKanbanBoardsComponent implements OnInit {
       column.tasks = []
     });
 
-    console.log(this.columns)
+    // Fetch all the tasks posts from the server
+    this.tasks = await this.publicFunctions.getPosts(this.groupId, 'task');
 
+    // console.log('Tasks', this.tasks)
+
+    /**
+     * Sort the tasks into their respective columns
+     */
+    this.sortTasksInColumns(this.columns, this.tasks)
+
+  }
+
+  /**
+   * Standard Angular CDK Event which monitors the drop functionality between different columns
+   * @param event 
+   */
+  drop(event: CdkDragDrop<string[]>) {
+    if (event.previousContainer === event.container) {
+
+      // Move items in array
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+
+    } else {
+      var post = event.previousContainer.data[event.previousIndex];
+
+      // Update the task column when changed with dropping events to reflect back in the task view modal
+      event.previousContainer.data[event.previousIndex]['task']._column.title = event.container.id
+
+      // If new column is 'to do' then, set the status of the task to 'to do' as well
+      if (event.container.id === 'to do') {
+        event.previousContainer.data[event.previousIndex]['task'].status = 'to do'
+      }
+
+      // Call move task to a new column
+      this.moveTaskToNewColumn(post, event.previousContainer.id, event.container.id);
+
+      // Trasnfer Items into another array list
+      transferArrayItem(event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex);
+    }
   }
 
   /**
@@ -113,11 +164,11 @@ export class GroupKanbanBoardsComponent implements OnInit {
       // Create the Column asynchronously
       this.createNewColumn(this.groupId, column.title)
 
-      // Push the Column 
+      // Assign the tasks to be [] 
       column.tasks = []
-      this.columns.push(column)
 
-      console.log(this.columns)
+      // Push the Column  
+      this.columns.push(column)
     }
 
   }
@@ -196,8 +247,147 @@ export class GroupKanbanBoardsComponent implements OnInit {
   }
 
   getPost(post: any, column: any) {
-    console.log(post, column)
     column.tasks.push(post)
+  }
+
+  /**
+   * This Function is responsible for sorting the tasks into columns
+   * @param columns 
+   * @param tasks 
+   */
+  sortTasksInColumns(columns: any, tasks: any) {
+
+    columns.forEach((column: any) => {
+
+      // Feed the tasks into that column which has matching property _column with the column title
+      column['tasks'] = tasks
+        .filter((post: any) => post.task.hasOwnProperty('_column') === true && post.task._column != null && post.task._column.title === column['title'])
+
+      // Array.prototype.push.apply(column['tasks'], tasks
+      // .filter((post: any) => post.task.status === column['title'] && post.task.hasOwnProperty('_column') === false && post.task._column != null));
+    });
+  }
+
+  /**
+   * This function handles the response of moving the task to another column
+   * @param task 
+   * @param oldColumn 
+   * @param newColumn 
+   */
+  moveTaskToNewColumn(task: any, oldColumn: string, newColumn: string) {
+
+    // Set the column status
+    let taskStatus = task.task.status;
+
+    // If new column is 'to do' then set the taskStatus as 'to do' too
+    switch (newColumn) {
+      case 'to do':
+        taskStatus = 'to do';
+        break;
+    }
+
+    // Prepare taskPost Object
+    const taskPost = {
+      title: task.title,
+      type: task.type,
+      content: task.content,
+      _content_mentions: task._content_mentions,
+      tags: task.tags,
+      _read_by: [],
+      unassigned: task.task.unassigned,
+      date_due_to: (task.task.due_to) ? task.task.due_to : null,
+      assigned_to: task.task._assigned_to,
+      _column: {
+        title: newColumn
+      },
+      status: (taskStatus === task.task.status) ? task.task.status : taskStatus
+    }
+
+    // Create the form data
+    let formData = new FormData();
+
+    // Append the post as an stryify object in the formdata
+    formData.append('post', JSON.stringify(taskPost))
+
+    /**
+     * Call the asynchronous function to change the column
+     */
+    this.utilityService.asyncNotification('Please wait we are updating the column...', new Promise((resolve, reject) => {
+      this.publicFunctions.onEditPost(task._id, formData)
+        .then(() => {
+          resolve(this.utilityService.resolveAsyncPromise(`Task moved to - ${newColumn}!`))
+        })
+        .catch(() => {
+          reject(this.utilityService.rejectAsyncPromise(`Unable to move the task, please try again!`))
+        })
+    }))
+  }
+
+  // Check if the data provided is not empty{}
+  checkDataExist(object: Object) {
+    return !(JSON.stringify(object) === JSON.stringify({}))
+  }
+
+  openModal(content: any) {
+    this.utilityService.openModal(content, {
+      size: 'xl',
+    });
+  }
+
+  /**
+   * This function handles the UI updation of the moving tasks into various columns
+   * @param $event 
+   */
+  moveTaskToColumn($event: any) {
+
+    // Call the HTTP Request to move the task
+    this.moveTaskToNewColumn($event.post, $event.oldColumn, $event.newColumn)
+
+    // Find the oldColumnIndex in which task existed
+    let oldColumnIndex = this.columns.findIndex((column: any) => column.title.toLowerCase() === $event.oldColumn.toLowerCase());
+
+    // Find the newColumnIndex in which task is to be shifted
+    let newColumnIndex = this.columns.findIndex((column: any) => column.title.toLowerCase() === $event.newColumn.toLowerCase());
+
+    // Remove the task from the old Column
+    this.columns[oldColumnIndex]['tasks'].splice(this.columns[oldColumnIndex]['tasks'].findIndex((post: any) => post._id === $event.post._id), 1);
+
+    // Add the task into the new column
+    this.columns[newColumnIndex]['tasks'].unshift($event.post);
+
+  }
+
+  changeStatus(task: any, status: any) {
+
+    this.publicFunctions.changeTaskStatus(task._id, status)
+
+    task.task.status = status
+  }
+
+  changeAssignee(task: any, memberMap: any) {
+
+    this.publicFunctions.changeTaskAssignee(task._id, memberMap['_id'])
+
+    task.task._assigned_to = memberMap
+  }
+
+  changeDueDate(task: any, dueDate: any) {
+
+    this.publicFunctions.changeTaskDueDate(task._id, dueDate)
+
+    task.task.due_to = moment(dueDate).format('YYYY-MM-DD')
+  }
+
+  /**
+   * This function checks the task board if a particular task is overdue or not
+   * @param taskPost 
+   * And applies the respective ng-class
+   * 
+   * -----Tip:- Don't make the date functions asynchronous-----
+   * 
+   */
+  checkOverdue(taskPost: any) {
+    return taskPost.task.due_to < this.today;
   }
 
   /**
