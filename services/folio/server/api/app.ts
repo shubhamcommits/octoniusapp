@@ -1,11 +1,11 @@
-import express, { Request, Response, NextFunction } from 'express';
-import path from 'path';
-import cors from 'cors';
-import morgan from 'morgan';
-import compression from 'compression';
+const express = require('express');
+import { Request, Response, NextFunction } from 'express';
+const path = require('path');
+const cors = require('cors');
+const morgan = require('morgan');
+const compression = require('compression');
 import { developmentConfig, productionConfig } from '../configs';
-import fileUpload from 'express-fileupload';
-import { postRoutes, commentRoutes } from './routes';
+// import fileUpload from 'express-fileupload';
 
 // Defining new Express application
 const app = express();
@@ -73,12 +73,6 @@ app.all('/', (req: Request, res: Response, next: NextFunction) => {
     res.sendFile(path.join(__dirname, './views/index.html'));
 });
 
-// Post Routes
-app.use('/api/comments', commentRoutes);
-app.use('/api', postRoutes);
-
-// Correct REST naming
-// app.use('/api/users', userRoutes);
 
 // Invalid routes handling middleware
 app.use((req: Request, res: Response, next: NextFunction) => {

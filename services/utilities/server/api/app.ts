@@ -40,8 +40,8 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     }
 });
 
-// Handle POST requests that come in formatted as JSON
-app.use(express.json());
+// // Handle POST requests that come in formatted as JSON
+// app.use(express.json());
 
 // Handling GZIPPED ROUTES
 const encodeResToGzip = (contentType: any) => {
@@ -60,13 +60,13 @@ app.get("*.css", encodeResToGzip('text/css'));
 // static assets folder
 // app.use(express.static(path.join(__dirname, '../../client/dist')));
 
-// Set file upload middleware
-app.use(fileUpload({
-    limits: {
-        fileSize: 1024 * 1024 * 1024
-    },
-    abortOnLimit: true
-}));
+// // Set file upload middleware
+// app.use(fileUpload({
+//     limits: {
+//         fileSize: 1024 * 1024 * 1024 * 1024
+//     },
+//     abortOnLimit: true
+// }));
 
 // Availing the static uploads folder to access from server
 app.use('/uploads', express.static(process.env.FILE_UPLOAD_FOLDER));

@@ -100,8 +100,7 @@ const postFileHandler = (req: Request, res: Response, next: NextFunction) => {
   //   // Pass the middleware
   //   next();
   // }
-
-  let files: any = req['files']['files'];
+  let files: any = req['files'];
   // If no files present
   if (!files){
     return res.status(500).json({
@@ -144,5 +143,7 @@ const postFileHandler = (req: Request, res: Response, next: NextFunction) => {
     }
   })
 }
+
+
 
 export { postFileHandler }
