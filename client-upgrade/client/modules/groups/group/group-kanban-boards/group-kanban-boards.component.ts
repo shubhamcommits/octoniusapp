@@ -8,6 +8,8 @@ import { ColumnService } from 'src/shared/services/column-service/column.service
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { environment } from 'src/environments/environment';
 import moment from 'moment';
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { isThisMinute } from 'date-fns';
 
 @Component({
   selector: 'app-group-kanban-boards',
@@ -48,7 +50,13 @@ export class GroupKanbanBoardsComponent implements OnInit {
   // Today's date object
   today = moment().local().startOf('day').format('YYYY-MM-DD');
 
+  // IsLoading behaviou subject maintains the state for loading spinner
+  public isLoading$ = new BehaviorSubject(false);
+
   async ngOnInit() {
+
+    // Start the loading spinner
+    this.isLoading$.next(true);
 
     // Fetch current group from the service
     this.subSink.add(this.utilityService.currentGroupData.subscribe(async (res) => {
@@ -86,6 +94,9 @@ export class GroupKanbanBoardsComponent implements OnInit {
      * Sort the tasks into their respective columns
      */
     this.sortTasksInColumns(this.columns, this.tasks)
+
+    // Return the function via stopping the loader
+    return this.isLoading$.next(false);
 
   }
 
@@ -276,51 +287,15 @@ export class GroupKanbanBoardsComponent implements OnInit {
    */
   moveTaskToNewColumn(task: any, oldColumn: string, newColumn: string) {
 
-    // Set the column status
-    let taskStatus = task.task.status;
+    this.publicFunctions.changeTaskColumn(task._id, newColumn);
 
     // If new column is 'to do' then set the taskStatus as 'to do' too
     switch (newColumn) {
       case 'to do':
-        taskStatus = 'to do';
+        this.changeStatus(task, newColumn)
         break;
     }
 
-    // Prepare taskPost Object
-    const taskPost = {
-      title: task.title,
-      type: task.type,
-      content: task.content,
-      _content_mentions: task._content_mentions,
-      tags: task.tags,
-      _read_by: [],
-      unassigned: task.task.unassigned,
-      date_due_to: (task.task.due_to) ? task.task.due_to : null,
-      assigned_to: task.task._assigned_to,
-      _column: {
-        title: newColumn
-      },
-      status: (taskStatus === task.task.status) ? task.task.status : taskStatus
-    }
-
-    // Create the form data
-    let formData = new FormData();
-
-    // Append the post as an stryify object in the formdata
-    formData.append('post', JSON.stringify(taskPost))
-
-    /**
-     * Call the asynchronous function to change the column
-     */
-    this.utilityService.asyncNotification('Please wait we are updating the column...', new Promise((resolve, reject) => {
-      this.publicFunctions.onEditPost(task._id, formData)
-        .then(() => {
-          resolve(this.utilityService.resolveAsyncPromise(`Task moved to - ${newColumn}!`))
-        })
-        .catch(() => {
-          reject(this.utilityService.rejectAsyncPromise(`Unable to move the task, please try again!`))
-        })
-    }))
   }
 
   // Check if the data provided is not empty{}
@@ -368,6 +343,8 @@ export class GroupKanbanBoardsComponent implements OnInit {
 
     this.publicFunctions.changeTaskAssignee(task._id, memberMap['_id'])
 
+    task.task.unassigned = false
+
     task.task._assigned_to = memberMap
   }
 
@@ -376,6 +353,31 @@ export class GroupKanbanBoardsComponent implements OnInit {
     this.publicFunctions.changeTaskDueDate(task._id, dueDate)
 
     task.task.due_to = moment(dueDate).format('YYYY-MM-DD')
+  }
+
+  changeDetails(task: any, post: any){
+
+    // Update task title
+    task.title = post.title
+
+    // Update task content
+    task.content = post.content
+
+    // Update task tags
+    task.tags = post.tags
+
+    // Update task files
+    task.files = post.files
+
+    // Update the liked by
+    task._liked_by = post._liked_by
+
+    // Update the content mentions
+    task._content_mentions = post._content_mentions
+
+    // Update the task comments
+    task.comments = post.comments
+
   }
 
   /**
@@ -388,6 +390,13 @@ export class GroupKanbanBoardsComponent implements OnInit {
    */
   checkOverdue(taskPost: any) {
     return taskPost.task.due_to < this.today;
+  }
+
+  /**
+   * This function is responsible for closing the modals
+   */
+  closeModal(){
+    this.utilityService.closeAllModals()
   }
 
   /**

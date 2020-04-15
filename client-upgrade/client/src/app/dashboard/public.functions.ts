@@ -602,6 +602,34 @@ export class PublicFunctions {
     }
 
     /**
+     * This function is responsible to changing the task column
+     * @param postId 
+     * @param title
+     */
+    changeTaskColumn(postId: string, title: string) {
+
+        // Post Service Instance
+        let postService = this.injector.get(PostService)
+
+        // Utility Service Instance
+        let utilityService = this.injector.get(UtilityService)
+
+        utilityService.asyncNotification('Please wait we are moving the task to a new column...',
+            new Promise((resolve, reject) => {
+
+                // Call HTTP Request to change the request
+                postService.changeTaskColumn(postId, title)
+                    .then((res) => {
+                        resolve(utilityService.resolveAsyncPromise(`Task moved to - ${title}!`))
+                    })
+                    .catch(() => {
+                        reject(utilityService.rejectAsyncPromise(`Unable to move the task, please try again!`))
+                    })
+
+            }))
+    }
+
+    /**
    * This functions sends the update to other users about the updated workspace data
    * @param socketService 
    * @param workspaceData

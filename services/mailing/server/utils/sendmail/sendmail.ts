@@ -35,21 +35,21 @@ const generateEmailBody = async (type: any, data: any) => {
 const postMailHelper = async (post: any, emailType: any, user?: any) => {
 
   // Details of user to be sent mail to
-  var to: any;
+  var to: any, from: any, group: any;
 
   // Fetch the details of assignee
   if (post.type === 'task')
-    to = await User.findById({ _id: post.task._assigned_to })
+    to = post.task._assigned_to
 
   // Else this is post mention
   else if (post.type === 'normal')
-    to = await User.findById({ _id: user });
+    to = user
 
   // Fetch the Email Sender Details or task assigner
-  const from: any = await User.findById({ _id: post._posted_by })
+  from = post._posted_by
 
   // Fetch the Group Details
-  const group: any = await Group.findById({ _id: post._group })
+  group = post._group
 
   // Prepare Email Data
   const emailData = {
@@ -125,11 +125,11 @@ const eventMailHelper = async (res: Response, post: any, emailType: any) => {
     const emailBody = await generateEmailBody(emailType, emailData);
 
     // Send email to event reminder
-    if(emailType === 'scheduleEventReminder')
+    if (emailType === 'scheduleEventReminder')
       await sendMail(emailBody, emailData, { date: moment.utc(post.event.due_to, 'YYYY-MM-DD').startOf('day').format() })
 
     // Else only event assigned
-    else if(emailType === 'eventAssigned')
+    else if (emailType === 'eventAssigned')
       await sendMail(emailBody, emailData)
 
     // Send status 200 response

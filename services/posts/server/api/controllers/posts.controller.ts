@@ -385,7 +385,7 @@ export class PostController {
                 post: post
             });
         } catch (err) {
-            return sendErr(res, err);
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
         }
     }
 
@@ -414,7 +414,7 @@ export class PostController {
                 post: post
             });
         } catch (err) {
-            return sendErr(res, err);
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
         }
     }
 
@@ -443,7 +443,36 @@ export class PostController {
                 post: post
             });
         } catch (err) {
-            return sendErr(res, err);
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for changing the task column
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async changeTaskColumn(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch Data from request
+        const { params: { postId }, body: { title } } = req;
+
+        try {
+
+            // Call Service function to change the assignee
+            const post = await postService.changeTaskColumn(postId, title)
+                .catch((err) => {
+                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+                })
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Task column updated!',
+                post: post
+            });
+        } catch (err) {
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
         }
     }
 

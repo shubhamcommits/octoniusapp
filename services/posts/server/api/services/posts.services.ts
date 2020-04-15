@@ -374,6 +374,7 @@ export class PostService {
         _content_mentions: post._content_mentions,
         tags: post.tags,
         _read_by: [],
+        files: post.files
       }
 
       switch (post.type) {
@@ -442,11 +443,11 @@ export class PostService {
         new: true
       })
 
-      // Send all the required emails and notifications
-      this.sendNotifications(post);
-
       // populate the assigned_to property of this document
       post = await this.populatePostProperties(post);
+
+      // Send all the required emails and notifications
+      this.sendNotifications(post);
 
       // Return the post
       return post;
@@ -722,6 +723,35 @@ export class PostService {
         _id: postId
       }, {
         "task.status": status ? status : 'to do',
+      }, {
+        new: true
+      })
+
+      // Populate the post properties
+      post = await this.populatePostProperties(post)
+
+      // Return the post
+      return post;
+
+    } catch (err) {
+      return err
+    }
+  }
+
+  /**
+   * This function is responsible for changing the task column
+   * @param postId
+   * @param status
+   */
+  async changeTaskColumn(postId: string, title: string) {
+
+    try {
+
+      // Get post data
+      var post: any = await Post.findOneAndUpdate({
+        _id: postId
+      }, {
+        "task._column.title": title ? title : 'to do',
       }, {
         new: true
       })

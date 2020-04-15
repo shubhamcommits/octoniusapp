@@ -29,7 +29,7 @@ routes.post('/', postFileHandler, postController.add);
 routes.get('/', postController.getPosts);
 
 // This route is used to edit a post
-routes.put('/:postId', postController.edit);
+routes.put('/:postId', postFileHandler, postController.edit);
 
 // This route is used to retrieve a post
 routes.get('/:postId', postController.get);
@@ -72,13 +72,16 @@ routes.get('/next-events', postController.getNextEvents);
 
 // -| TASKS |-
 
-// Change task assignee
+// PUT - Change task assignee
 routes.put('/:postId/task-assignee', postController.changeTaskAssignee);
 
-// Change task assignee
+// PUT - Change task due-date
 routes.put('/:postId/task-due-date', postController.changeTaskDueDate);
 
-// Change task assignee
+// PUT - Change task status
 routes.put('/:postId/task-status', postController.changeTaskStatus);
+
+// PUT - Change task column
+routes.put('/:postId/task-column', postController.changeTaskColumn);
 
 export { routes as postRoutes };
