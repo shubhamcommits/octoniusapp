@@ -115,10 +115,10 @@ export class PostService {
   getTags(groupId: string, tag: string) {
 
     // Call the HTTP Request
-    return this._http.get(this.baseURL + `/tags`, {
+    return this._http.get(this.baseURL + `/group/tags`, {
       params: {
-        groupId: groupId,
-        tag: tag
+        groupId: groupId.toString().trim(),
+        tag: tag.toString().trim()
       }
     }).
       toPromise()

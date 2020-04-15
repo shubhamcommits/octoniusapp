@@ -453,7 +453,7 @@ export class PublicFunctions {
                 .then((res: any) => {
 
                     // Resolve with success
-                    resolve(res['tags'])
+                    resolve(res['tags'].map((tag: any) => tag.tags))
                 })
                 .catch(() => {
 

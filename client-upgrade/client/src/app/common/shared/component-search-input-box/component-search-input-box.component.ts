@@ -41,6 +41,9 @@ export class ComponentSearchInputBoxComponent implements OnInit {
   // Member Emitter which emits the member object on creation
   @Output('member') memberEmitter = new EventEmitter();
 
+  // Tag Emitter which emits the tag object on creation
+  @Output('tag') tagEmitter = new EventEmitter();
+
   // Public Functions class
   private publicFunctions = new PublicFunctions(this.injector);
 
@@ -64,6 +67,9 @@ export class ComponentSearchInputBoxComponent implements OnInit {
 
   // Members array
   members: any = []
+
+  // Tags array
+  tags: any = []
 
   ngOnInit() {
 
@@ -94,7 +100,7 @@ export class ComponentSearchInputBoxComponent implements OnInit {
 
             // Update the itemList with tags set
             if(this.type === 'tag')
-              this.itemList = await this.publicFunctions.getTags(this.groupId, this.itemValue)
+              this.itemList = await this.publicFunctions.getTags(this.groupId, this.itemValue) || []
 
 
             if (this.type === 'task' || this.type === 'event') {
@@ -153,7 +159,6 @@ export class ComponentSearchInputBoxComponent implements OnInit {
     try {
       console.log(query.target['value']);
       let results = await this.searchWorkspaceMembers(this.workspaceId, query.target['value']);
-      console.log(results);
     } catch (err) {
       this.publicFunctions.catchError(err);
     }
@@ -164,7 +169,6 @@ export class ComponentSearchInputBoxComponent implements OnInit {
       return new Promise(async (resolve) => {
         let workspaceService = this.injector.get(WorkspaceService);
         let test = await workspaceService.searchWorkspaceMembers(workspaceId, query)
-        console.log(test);
       })
 
     } catch (err) {
@@ -281,6 +285,39 @@ export class ComponentSearchInputBoxComponent implements OnInit {
 
     // Check if the skill exist in the users' skills array
     if (this.userData.skills.includes(skill))
+      return true;
+
+    else
+      return false
+  }
+
+  /**
+   * This function emits the tag as an object
+   * @param tag 
+   */
+  async onAddTag(tag: any) {
+
+    // Emit the message to add the tag
+    this.tagEmitter.emit(tag);
+
+    // Update the tags array
+    this.tags.push(tag);
+
+    // Set the itemList to []
+    this.itemList = [];
+
+    // Set the itemValue to ""
+    this.itemValue = "";
+  }
+
+  /**
+   * This function checks if a tag exist in post skills array
+   * @param tag
+   */
+  hasTag(tag: string) {
+
+    // Check if the tag exist in the tags array
+    if (this.tags.includes(tag))
       return true;
 
     else

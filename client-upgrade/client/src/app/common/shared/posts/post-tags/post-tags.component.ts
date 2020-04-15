@@ -28,12 +28,21 @@ export class PostTagsComponent implements OnInit {
     return !(JSON.stringify(object) === JSON.stringify({}))
   }
 
-  addNewTag($event){
-    console.log($event)
+  /**
+   * This function adds the new tag into tags array
+   * @param tag 
+   */
+  addNewTag(tag: any){
+    this.tags.push(tag)
   }
 
-  removeTag(tag, index){
-
+  /**
+   * This function removes the tag from the tags list
+   * @param tag 
+   * @param index 
+   */
+  removeTag(tag: any, index: any){
+    this.tags.splice(index, 1)
   }
 
 }

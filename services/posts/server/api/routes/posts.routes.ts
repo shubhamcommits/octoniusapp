@@ -40,7 +40,7 @@ routes.delete('/:postId', postController.remove);
 // -| TAGS |-
 
 // GET - This function fetches the tags list from a group
-routes.get('/tags', postController.getTags)
+routes.get('/group/tags', postController.getTags)
 
 // -| POST ACTIONS |-
 

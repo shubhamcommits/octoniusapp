@@ -456,26 +456,23 @@ export class PostController {
     async getTags(req: Request, res: Response, next: NextFunction) {
 
         // Fetch Data from request
-        let groupId: any = req.query.groupId;
-        let tag: any = req.query.tag;
-
-        console.log(groupId, tag)
+        const  { groupId, tag }  = req.query;
 
         try {
 
             // Call Service function to fetch the tags
-            // const tags = await tagsService.getTagsSearchResults(groupId, tag)
-            //     .catch((err) => {
-            //         return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-            //     })
+            const tags = await tagsService.getTagsSearchResults(groupId, tag)
+                .catch((err) => {
+                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+                })
 
-            // Send status 200 response
+            // // Send status 200 response
             return res.status(200).json({
-                message: 'Task status updated!',
-                // tags: tags
+                message: 'Tags list fetched!',
+                tags: tags
             });
-        } catch (error) {
-            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
+        } catch (err) {
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
         }
     }
 }

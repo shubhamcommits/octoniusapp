@@ -10,20 +10,21 @@
         <div class="media card-tile user-list w-100 mb-0" *ngFor=" let item of itemList; let index = index;">
 
             <!-- User Profile Image for type 'group' and 'workspace' -->
-            <img *ngIf="type != 'skill'" src="{{ userBaseUrl }}/uploads/{{item?.profile_pic}}"
+            <img *ngIf="type != 'skill' && type != 'tag'" src="{{ userBaseUrl }}/uploads/{{item?.profile_pic}}"
                 onerror="this.src='/assets/images/user.png'" class="feed-avatar-search">
 
             <div class="media-body mt-2">
                 <div class="float-left ml-0 mt-1">
 
                     <!-- Display full name of the member starts -->
-                    <h4 class="mt-0 full-name-text" *ngIf="type != 'skill'">{{item?.first_name}} {{item?.last_name}}
+                    <h4 class="mt-0 full-name-text" *ngIf="type != 'skill' || type != 'tag'">{{item?.first_name}}
+                        {{item?.last_name}}
                     </h4>
                     <!-- Display full name of the member ends -->
 
-                    <!-- Display full name of skill starts -->
-                    <h4 class="mt-0 full-name-text" *ngIf="type == 'skill'">{{item}}</h4>
-                    <!-- Display full name of skill ends -->
+                    <!-- Display full name of skill or tag starts -->
+                    <h4 class="mt-0 full-name-text" *ngIf="type == 'skill' || type == 'tag'">{{item}}</h4>
+                    <!-- Display full name of skill or tag ends -->
                 </div>
                 <div class="btn-group mr-3 ml-2 float-right">
 
@@ -44,6 +45,18 @@
                         </div>
                     </section>
                     <!-- Skill section ends -->
+
+                    <!-- Tag section starts -->
+                    <section *ngIf="type == 'tag'">
+
+                        <!-- Add tags starts -->
+                        <button (click)="onAddTag(item)" class="btn mr-1 btn-primary dropdown-toggle-split btn-sm">Add
+                            tag
+                        </button>
+                        <!-- Add tags ends -->
+
+                    </section>
+                    <!-- Tag section ends -->
 
                     <!-- Group section starts -->
                     <section *ngIf="type == 'group'">
