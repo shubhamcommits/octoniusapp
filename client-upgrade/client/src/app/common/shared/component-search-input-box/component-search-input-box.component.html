@@ -17,7 +17,7 @@
                 <div class="float-left ml-0 mt-1">
 
                     <!-- Display full name of the member starts -->
-                    <h4 class="mt-0 full-name-text" *ngIf="type != 'skill' || type != 'tag'">{{item?.first_name}}
+                    <h4 class="mt-0 full-name-text" *ngIf="type != 'skill' && type != 'tag'">{{item?.first_name}}
                         {{item?.last_name}}
                     </h4>
                     <!-- Display full name of the member ends -->

@@ -46,10 +46,9 @@ export class PostTagsComponent implements OnInit {
 
   /**
    * This function removes the tag from the tags list
-   * @param tag 
    * @param index 
    */
-  removeTag(tag: any, index: any) {
+  removeTag(index: any) {
 
     // Remove the tag from the desired index
     this.tags.splice(index, 1)
