@@ -131,10 +131,11 @@ export class GroupCreatePostComponent implements OnInit {
     // Set the quill data object to the quillData output
     this.quillData = quillData
 
-    if(this.postData.content != JSON.stringify(this.quillData.contents)){
-      this.showUpdateDetails = true
+    if(this.edit){
+      if(this.postData.content != JSON.stringify(this.quillData.contents)){
+        this.showUpdateDetails = true
+      }
     }
-    
   }
 
   moveTaskToColumn($event) {

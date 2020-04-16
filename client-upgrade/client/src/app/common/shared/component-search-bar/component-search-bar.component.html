@@ -17,56 +17,57 @@
 <!-- Horizontal line ends -->
 
 <!-- Members array template starts -->
-<div infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="1500"
-    (scrolled)="onScroll()" class="media card-tile user-list"
-    *ngFor="let member of members; let index = index; trackBy: utilityService.trackByIndex;">
+<app-infinite-scroll (scrolled)="onScroll()">
+    <div class="media card-tile user-list"
+        *ngFor="let member of members; let index = index; trackBy: utilityService.trackByIndex;">
 
-    <!-- Avatar Image of the member -->
-    <img src="{{ baseUrl }}/uploads/{{member?.profile_pic}}" routerLink="/dashboard/user/profile"
-        [queryParams]="{ userId: member._id }" onerror="this.src='/assets/images/user.png'" class="feed-avatar">
-    <!-- Avatar Image of the member -->
+        <!-- Avatar Image of the member -->
+        <img src="{{ baseUrl }}/uploads/{{member?.profile_pic}}" routerLink="/dashboard/user/profile"
+            [queryParams]="{ userId: member._id }" onerror="this.src='/assets/images/user.png'" class="feed-avatar">
+        <!-- Avatar Image of the member -->
 
-    <div class="media-body">
+        <div class="media-body">
 
-        <!-- Member Details Starts -->
-        <div class="float-left">
-            <p class="mt-0">{{member?.first_name}} {{member?.last_name}}</p>
-            <p>Role: {{member?.role}} (<a href="mailto:{{member?.email}}">{{member?.email}}</a>)</p>
-        </div>
-        <!-- Member Details Ends -->
+            <!-- Member Details Starts -->
+            <div class="float-left">
+                <p class="mt-0">{{member?.first_name}} {{member?.last_name}}</p>
+                <p>Role: {{member?.role}} (<a href="mailto:{{member?.email}}">{{member?.email}}</a>)</p>
+            </div>
+            <!-- Member Details Ends -->
 
-        <div class="btn-group mr-3 float-right">
+            <div class="btn-group mr-3 float-right">
 
-            <!-- Changing role functionality starts -->
-            <div class="dropdown" *ngIf="member.role != 'owner' && type == 'workspace'">
-                <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">Manage
-                    {{ member?.first_name }}
-                    <span class="caret"></span>
-                </button>
+                <!-- Changing role functionality starts -->
+                <div class="dropdown" *ngIf="member.role != 'owner' && type == 'workspace'">
+                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">Manage
+                        {{ member?.first_name }}
+                        <span class="caret"></span>
+                    </button>
 
-                <!-- Menu Drawer Starts -->
-                <ul class="dropdown-menu">
-                    <li class="dropdown-item" *ngIf="member.role != 'admin'"
-                        (click)="changeRole(member._id, 'admin', index)">Change to Admin</li>
-                    <li class="dropdown-item" *ngIf="member.role != 'member'"
-                        (click)="changeRole(member._id, 'member', index)">Change to Member</li>
-                    <li class="dropdown-divider"></li>
-                    <li class="dropdown-item">Remove from workplace</li>
-                </ul>
-                <!-- Menu Drawer Ends -->
+                    <!-- Menu Drawer Starts -->
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-item" *ngIf="member.role != 'admin'"
+                            (click)="changeRole(member._id, 'admin', index)">Change to Admin</li>
+                        <li class="dropdown-item" *ngIf="member.role != 'member'"
+                            (click)="changeRole(member._id, 'member', index)">Change to Member</li>
+                        <li class="dropdown-divider"></li>
+                        <li class="dropdown-item">Remove from workplace</li>
+                    </ul>
+                    <!-- Menu Drawer Ends -->
 
+                </div>
+
+                <!-- Remove from Group -->
+                <section *ngIf="type == 'group'">
+                    <button class="btn btn-danger btn-sm" *ngIf="groupData.group_name != 'Global'"
+                        (click)="removeUserFromGroup(groupId, member._id, index)">Remove Member</button>
+                </section>
+                <!-- Remove from Group -->
             </div>
 
-            <!-- Remove from Group -->
-            <section *ngIf="type == 'group'">
-                <button class="btn btn-danger btn-sm" *ngIf="groupData.group_name != 'Global'"
-                    (click)="removeUserFromGroup(groupId, member._id, index)">Remove Member</button>
-            </section>
-            <!-- Remove from Group -->
         </div>
-
     </div>
-</div>
+</app-infinite-scroll>
 <!-- Members array template ends -->
 
 <!-- Loading Spinner Starts -->

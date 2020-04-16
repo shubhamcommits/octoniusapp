@@ -159,6 +159,8 @@ export class GroupActivityComponent implements OnInit {
         this.posts.set(post._id, post);
       })
 
+      // this.postsArray = [...this.postsArray, ...posts]
+
       // Calculate the lastPostId from the currently fetched posts
       this.lastPostId = posts[posts.length - 1]._id
     }

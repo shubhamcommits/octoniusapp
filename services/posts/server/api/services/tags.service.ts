@@ -26,7 +26,7 @@ export class TagsService {
             $match: {
                 $and: [
                     { tags: { $regex: new RegExp(query, 'i') } },
-                    { _group: groupId }
+                    // { _group: groupId }
                 ]
             }
         },
@@ -35,7 +35,7 @@ export class TagsService {
             $match: {
                 $and: [
                     { tags: { $regex: new RegExp(query, 'i') } },
-                    { _group: groupId }
+                    // { _group: groupId }
                 ]
             }
         },

@@ -44,10 +44,10 @@
     <!-- Post Content ends -->
 
     <div class="attach-files">
-      <app-attach-files (files)="onAttach($event)"></app-attach-files>
+      <app-attach-files [post]="postData" (files)="onAttach($event)"></app-attach-files>
       <button [disabled]="!showUpdateDetails" *ngIf="edit" class="btn float-right btn-primary btn-md" (click)="updateDetails()">Update Details</button>
     </div>
-    <app-post-tags [userData]="userData" [groupId]="groupId" (tags)="getTags($event)"></app-post-tags>
+    <app-post-tags [post]="postData" [userData]="userData" [groupId]="groupId" (tags)="getTags($event)"></app-post-tags>
   </div>
 </div>
 

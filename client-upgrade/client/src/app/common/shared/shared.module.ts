@@ -33,6 +33,7 @@ import { SelectAssigneeComponent } from './select-assignee/select-assignee.compo
 import { TaskStatusComponent } from './posts/post-actions/task-status/task-status.component';
 import { ChangeColumnComponent } from './posts/post-actions/change-column/change-column.component';
 import { PostTagsComponent } from './posts/post-tags/post-tags.component';
+import { InfiniteScrollComponent } from './infinite-scroll/infinite-scroll.component';
 
 
 @NgModule({
@@ -66,7 +67,9 @@ import { PostTagsComponent } from './posts/post-tags/post-tags.component';
 
     ChangeColumnComponent,
 
-    PostTagsComponent
+    PostTagsComponent,
+
+    InfiniteScrollComponent
   ],
   imports: [
     CommonModule,
@@ -107,7 +110,8 @@ import { PostTagsComponent } from './posts/post-tags/post-tags.component';
     TaskStatusComponent,
     ChangeColumnComponent,
     InfiniteScrollModule,
-    QuicklinkModule
+    QuicklinkModule,
+    InfiniteScrollComponent
   ]
 })
 export class SharedModule { }
