@@ -1000,4 +1000,42 @@ export class PostService {
     }
   }
 
+
+  async getRecentActivity(userId: any){
+    try {
+      var groupList: any = await User.findById(userId).populate('_groups');
+      if (groupList.length > 0){
+        var posts: any = Group.find({
+          '_group': { $in: groupList }
+        }).sort(['created_date', -1]).limit(10);
+        return posts;
+      }
+      else{
+        return null;
+      }
+    } catch (error) {
+      throw(error);
+    }
+  }
+
+
+  async getNextRecentActivity(userId: any, lastPostId: any){
+    try {
+      var groupList: any = await User.findById(userId).populate('_groups');
+      if (groupList.length > 0){
+        var posts: any = Group.find({
+          '_id': { $gte: lastPostId },
+          $and: [
+          { '_group': { $in: groupList } },
+          ]
+        }).sort(['created_date', -1]).limit(5);
+        return posts;
+      }
+      else{
+        return null;
+      }
+    } catch (error) {
+      throw(error);
+    }
+  }
 }
