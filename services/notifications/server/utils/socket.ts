@@ -1,5 +1,5 @@
 import socketIO from 'socket.io';
-import { helperFunctions } from '../utils';
+import { helperFunctions } from '.';
 import { NotificationsService } from '../api/service/notification.service';
 
 // Creating notification service class

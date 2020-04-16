@@ -9,9 +9,9 @@ services:
     volumes:
       - data_db:/data/db
     ports:
-      - 27017:27017
+      - 27019:27017
     networks:
-      - gateway
+      - octonius
       
   mailing-server:
     container_name: mailing-server
@@ -23,14 +23,13 @@ services:
       dockerfile: Dockerfile
       context: ./services/mailing/server
     volumes:
-      # Avoid overwriting container's node_modules folder
       - /usr/app/node_modules
     depends_on:
       - mongodb
     links:
       - mongodb
     networks:
-      - gateway
+      - octonius
       
   auths-server:
     container_name: auths-server
@@ -42,14 +41,13 @@ services:
       dockerfile: Dockerfile
       context: ./services/authentication/server
     volumes:
-      # Avoid overwriting container's node_modules folder
       - /usr/app/node_modules
     depends_on:
       - mongodb
     links:
       - mongodb
     networks:
-      - gateway
+      - octonius
          
   groups-server:
     container_name: groups-server
@@ -61,14 +59,13 @@ services:
       dockerfile: Dockerfile
       context: ./services/groups/server
     volumes:
-      # Avoid overwriting container's node_modules folder
       - /usr/app/node_modules
     depends_on:
       - mongodb
     links:
       - mongodb
     networks:
-      - gateway
+      - octonius
       
   workspaces-server:
     container_name: workspaces-server
@@ -80,14 +77,13 @@ services:
       dockerfile: Dockerfile
       context: ./services/workspaces/server
     volumes:
-      # Avoid overwriting container's node_modules folder
       - /usr/app/node_modules
     depends_on:
       - mongodb
     links:
       - mongodb
     networks:
-      - gateway
+      - octonius
       
   users-server:
     container_name: users-server
@@ -99,14 +95,13 @@ services:
       dockerfile: Dockerfile
       context: ./services/users/server
     volumes:
-      # Avoid overwriting container's node_modules folder
       - /usr/app/node_modules
     depends_on:
       - mongodb
     links:
       - mongodb
     networks:
-      - gateway
+      - octonius
       
   posts-server:
     container_name: posts-server
@@ -118,33 +113,31 @@ services:
       dockerfile: Dockerfile
       context: ./services/posts/server
     volumes:
-      # Avoid overwriting container's node_modules folder
       - /usr/app/node_modules
     depends_on:
       - mongodb
     links:
       - mongodb
     networks:
-      - gateway
+      - octonius
       
-  sockets-server:
-    container_name: sockets-server
-    image: sockets:server
+  notifications-server:
+    container_name: notifications-server
+    image: notifications:server
     ports:
       - 9000:9000
     restart: always
     build:
       dockerfile: Dockerfile
-      context: ./services/sockets/server
+      context: ./services/notifications/server
     volumes:
-      # Avoid overwriting container's node_modules folder
       - /usr/app/node_modules
     depends_on:
       - mongodb
     links:
       - mongodb
     networks:
-      - gateway
+      - octonius
       
   utilities-server:
     container_name: utilities-server
@@ -156,14 +149,13 @@ services:
       dockerfile: Dockerfile
       context: ./services/utilities/server
     volumes:
-      # Avoid overwriting container's node_modules folder
       - /usr/app/node_modules
     depends_on:
       - mongodb
     links:
       - mongodb
     networks:
-      - gateway
+      - octonius
       
   client:
     container_name: client
@@ -172,10 +164,7 @@ services:
       dockerfile: Dockerfile
       context: ./client-upgrade/client
     volumes:
-      # Avoid overwriting container's node_modules folder
       - /usr/app/node_modules
-
-      # mount client folder inside container's app folder
       - ${PWD}/client-upgrade/client:/usr/app
     depends_on:
       - mailing-server
@@ -184,10 +173,10 @@ services:
       - workspaces-server
       - users-server
       - posts-server
-      - sockets-server
+      - notifications-server
       - utilities-server
     networks:
-      - gateway
+      - octonius
 
   nginx:
     container_name: nginx
@@ -205,11 +194,11 @@ services:
       - workspaces-server
       - users-server
       - posts-server
-      - sockets-server
+      - notifications-server
       - utilities-server
       - client
     networks:
-      - gateway
+      - octonius
 
 volumes:
   data_db:
@@ -227,4 +216,4 @@ volumes:
       o: bind
       
 networks:
-  gateway: {}
+  octonius: {}

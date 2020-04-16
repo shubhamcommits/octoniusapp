@@ -39,10 +39,10 @@ pm2 stop utilities-server
 pm2 delete utilities-server
 
 
-# Stops and kills the sockets sever
-pm2 stop sockets-server
+# Stops and kills the notifications sever
+pm2 stop notifications-server
 
-pm2 delete sockets-server
+pm2 delete notifications-server
 
 
 # Stops and kills the posts sever

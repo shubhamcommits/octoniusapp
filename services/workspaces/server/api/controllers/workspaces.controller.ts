@@ -255,12 +255,12 @@ export class WorkspaceController {
             let token = await auths.generateToken(userUpdate, workspaceUpdate.workspace_name);
 
             // Send signup confirmation email using mailing microservice
-            await http.post('http://localhost:2000/api/sign-up', {
+            http.post('http://localhost:2000/api/sign-up', {
                 user: userUpdate
             })
 
             // Send new workspace confirmation email
-            await http.post('http://localhost:2000/api/new-workspace', {
+            http.post('http://localhost:2000/api/new-workspace', {
                 workspace: workspaceUpdate
             })
 
@@ -496,7 +496,7 @@ export class WorkspaceController {
             }
             // Send invitation via email
             // await sendMail.joinWorkspace(req.body);
-            await http.post('http://localhost:2000/api/join-workspace', {
+            http.post('http://localhost:2000/api/join-workspace', {
                 workspace_id: workspaceId,
                 email: invitedUserEmail,
                 // Yeh wala param check krlio

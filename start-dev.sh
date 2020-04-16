@@ -97,12 +97,12 @@ fi
     # Go back to main working directory(i.e. - services/)
     cd -
 
-    : '|- SOCKETS SERVER -|'
-    # Go to sockets directory
-    cd sockets/server
+    : '|- NOTIFICATIONS SERVER -|'
+    # Go to notifications directory
+    cd notifications/server
 
     # Start the dev server and push the process into background - port 9000
-    pm2 start "$packageManager run dev" --name "sockets-server"
+    pm2 start "$packageManager run dev" --name "notifications-server"
 
     # Go back to main working directory(i.e. - services/)
     cd -
