@@ -17,6 +17,9 @@ export class PostTagsComponent implements OnInit {
   // GroupId Data Variable
   @Input('groupId') groupId: any;
 
+  // Post Data Variable
+  @Input('post') post: any;
+
   // Tags Output Emitter
   @Output('tags') tagEmitter = new EventEmitter()
 
@@ -24,6 +27,11 @@ export class PostTagsComponent implements OnInit {
   tags: any = []
 
   ngOnInit() {
+
+    // If post variable exist then add it to existing tags array
+    if(this.post){
+      this.tags = this.post.tags
+    }
   }
 
   // Check if the data provided is not empty{}

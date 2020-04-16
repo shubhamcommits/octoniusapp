@@ -418,7 +418,7 @@ export class PublicFunctions {
      * @param groupId 
      * @param lastPostId: optional 
      */
-    getPosts(groupId: string, type?: string, lastPostId?: string) {
+    getPosts(groupId: string, type: string, lastPostId?: string) {
 
         // Post Service Instance
         let postService = this.injector.get(PostService);

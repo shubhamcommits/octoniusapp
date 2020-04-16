@@ -1,4 +1,5 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-attach-files',
@@ -9,11 +10,17 @@ export class AttachFilesComponent implements OnInit {
 
   constructor() { }
 
+  // Post Object Input
+  @Input('post') post: any;
+
   // Files Output Event Emitter
   @Output('files') files = new EventEmitter();
 
   // Files Array
   filesArray = new Array<File>()
+
+  // Base URL for the uploads
+  baseUrl = environment.UTILITIES_BASE_URL
 
   ngOnInit() {
   }

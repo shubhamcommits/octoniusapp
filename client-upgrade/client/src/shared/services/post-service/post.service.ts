@@ -44,7 +44,7 @@ export class PostService {
     // Create the request variable
     let request: any;
 
-    if(!lastPostId)
+    if(!lastPostId || lastPostId === undefined || lastPostId === null)
       request = this._http.get(this.baseURL + `/`, {
       params: {
         groupId: groupId,

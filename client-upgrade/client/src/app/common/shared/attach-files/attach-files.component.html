@@ -3,9 +3,21 @@
     <i class="material-icons" placement="top" (click)="fileInput.click()">attach_file</i>
 </button>
 
+<!-- Cloud Files Starts -->
 <app-attach-cloud-files></app-attach-cloud-files>
+<!-- Cloud Files Ends -->
 
-<div *ngFor="let file of filesArray; let index = index">
+<!-- Attached Files Starts -->
+<div *ngIf="post" class="ml-2 mt-2">
+    <p><strong *ngIf="post.files">Attached Files </strong></p>
+    <a href="{{ baseUrl }}/uploads/{{ file?.modified_name }}" target="_blank" *ngFor="let file of post.files; let index = index">
+        {{ file?.orignal_name }}
+    </a>
+</div>
+<!-- Attached Files Ends -->
+
+<!-- Selected Files Starts -->
+<div class="ml-2 mt-2" *ngFor="let file of filesArray; let index = index">
     <p>
         <strong>Selected File: </strong>
         {{ file?.name }}
@@ -14,3 +26,4 @@
         </span>
     </p>
 </div>
+<!-- Selected Files Ends -->
