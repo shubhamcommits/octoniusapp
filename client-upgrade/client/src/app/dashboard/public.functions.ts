@@ -453,7 +453,7 @@ export class PublicFunctions {
                 .then((res: any) => {
 
                     // Resolve with success
-                    resolve(res['tags'])
+                    resolve(res['tags'].map((tag: any) => tag.tags))
                 })
                 .catch(() => {
 
@@ -596,6 +596,34 @@ export class PublicFunctions {
                     })
                     .catch(() => {
                         reject(utilityService.rejectAsyncPromise(`Unable to change the status, please try again!`))
+                    })
+
+            }))
+    }
+
+    /**
+     * This function is responsible to changing the task column
+     * @param postId 
+     * @param title
+     */
+    changeTaskColumn(postId: string, title: string) {
+
+        // Post Service Instance
+        let postService = this.injector.get(PostService)
+
+        // Utility Service Instance
+        let utilityService = this.injector.get(UtilityService)
+
+        utilityService.asyncNotification('Please wait we are moving the task to a new column...',
+            new Promise((resolve, reject) => {
+
+                // Call HTTP Request to change the request
+                postService.changeTaskColumn(postId, title)
+                    .then((res) => {
+                        resolve(utilityService.resolveAsyncPromise(`Task moved to - ${title}!`))
+                    })
+                    .catch(() => {
+                        reject(utilityService.rejectAsyncPromise(`Unable to move the task, please try again!`))
                     })
 
             }))

@@ -1,7 +1,8 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, Injector } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { PublicFunctions } from 'src/app/dashboard/public.functions';
 
 @Component({
   selector: 'app-group-create-post',
@@ -12,7 +13,8 @@ export class GroupCreatePostComponent implements OnInit {
 
   constructor(
     private postService: PostService,
-    private utilityService: UtilityService
+    private utilityService: UtilityService,
+    private injector: Injector
   ) { }
 
   // BASE URL OF THE APPLICATION
@@ -22,7 +24,7 @@ export class GroupCreatePostComponent implements OnInit {
   dueDate: any;
 
   // Files Variable 
-  files: [] = []
+  files: any = []
 
   // Title of the Post
   title: string = 'Untitled'
@@ -32,6 +34,15 @@ export class GroupCreatePostComponent implements OnInit {
 
   // Content Mentions Variables keeps a track of mentioned members
   _content_mentions: any = []
+
+  // Tags Object
+  tags: any = []
+
+  // Public Functions class object
+  publicFunctions = new PublicFunctions(this.injector)
+
+  // Show Update Details Variable
+  showUpdateDetails = false
 
   /* Task Variables */
 
@@ -46,6 +57,18 @@ export class GroupCreatePostComponent implements OnInit {
 
   // Assigned State of Task
   assigned: boolean = false;
+
+  // Move Task to another column output event emitter
+  @Output('moveTask') moveTask = new EventEmitter();
+
+  // Change task status output event emitter
+  @Output('taskStatus') taskStatus = new EventEmitter();
+
+  // Output the task assignee
+  @Output('member') member = new EventEmitter()
+
+  // Output the task due date
+  @Output('date') date = new EventEmitter()
 
   /* Task Variables */
 
@@ -80,24 +103,11 @@ export class GroupCreatePostComponent implements OnInit {
   // Post Event Emitter - Emits the post to the other components
   @Output('post') post = new EventEmitter()
 
-  // Move Task to another column output event emitter
-  @Output('moveTask') moveTask = new EventEmitter();
-
-  // Change task status output event emitter
-  @Output('taskStatus') taskStatus = new EventEmitter();
-
-  // Output the task assignee
-  @Output('member') member = new EventEmitter()
-
-  // Output the task due date
-  @Output('date') date = new EventEmitter()
-
   ngOnInit() {
+
     if (this.edit) {
 
       this.title = this.postData.title
-
-      this.quillData = this.postData.content
 
       if (!this.postData.task.unassigned) {
         this.taskAssignee = this.postData.task._assigned_to
@@ -120,13 +130,18 @@ export class GroupCreatePostComponent implements OnInit {
 
     // Set the quill data object to the quillData output
     this.quillData = quillData
+
+    if(this.postData.content != JSON.stringify(this.quillData.contents)){
+      this.showUpdateDetails = true
+    }
+    
   }
 
   moveTaskToColumn($event) {
     this.moveTask.emit($event)
   }
 
-  changeTaskStatus($event){
+  changeTaskStatus($event) {
     this.taskStatus.emit($event)
   }
 
@@ -173,9 +188,19 @@ export class GroupCreatePostComponent implements OnInit {
   getDate(dateObject: any) {
     this.dueDate = new Date(dateObject.year, dateObject.month - 1, dateObject.day)
 
-    if(this.edit){
+    if (this.edit) {
       this.date.emit(this.dueDate)
     }
+  }
+
+  /**
+   * This function receives the output from the tags components
+   * @param tags 
+   */
+  getTags(tags: any) {
+
+    // Set the tags value
+    this.tags = tags
   }
 
   // Check if the data provided is not empty{}
@@ -205,10 +230,11 @@ export class GroupCreatePostComponent implements OnInit {
     formData.append('post', JSON.stringify(postData))
 
     // Append all the file attachments
-    if (this.files.length != 0)
-      this.files.forEach((file) => {
-        formData.append('attachments', file, file['name']);
-      })
+    if (this.files.length != 0) {
+      for (let index = 0; index < this.files.length; index++) {
+        formData.append('attachments', this.files[index], this.files[index]['name']);
+      }
+    }
 
     // Call the Helper Function
     this.onCreatePost(formData)
@@ -234,6 +260,62 @@ export class GroupCreatePostComponent implements OnInit {
 
           // Catch the error and reject the promise
           reject(this.utilityService.rejectAsyncPromise('Unable to create post, please try again!'))
+        })
+    }))
+  }
+
+  updateDetails() {
+
+    // Prepare the taskPost object
+    const taskPost = {
+      title: this.title,
+      type: this.type,
+      content: JSON.stringify(this.quillData.contents),
+      _content_mentions: this._content_mentions,
+      tags: this.tags,
+      _read_by: [],
+      unassigned: this.postData.task.unassigned,
+      date_due_to: (this.postData.task.due_to) ? this.postData.task.due_to : null,
+      assigned_to: this.postData.task._assigned_to,
+      _column: {
+        title: this.postData.task._column.title
+      },
+      status: this.postData.task.status
+    }
+
+    // Create FormData Object
+    let formData = new FormData();
+
+    // Append Post Data
+    formData.append('post', JSON.stringify(taskPost))
+
+    // Append all the file attachments
+    if (this.files.length != 0) {
+      for (let index = 0; index < this.files.length; index++) {
+        formData.append('attachments', this.files[index], this.files[index]['name']);
+      }
+    }
+
+    // Call the edit post function
+    this.editPost(this.postData._id, formData)
+  }
+
+  /**
+   * Call the asynchronous function to change the column
+   */
+  editPost(postId: any, formData: FormData) {
+    this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
+      this.publicFunctions.onEditPost(postId, formData)
+        .then((res) => {
+
+          // Emit the post to other components
+          this.post.emit(res)
+
+          // Resolve with success
+          resolve(this.utilityService.resolveAsyncPromise(`Task details updated!`))
+        })
+        .catch(() => {
+          reject(this.utilityService.rejectAsyncPromise(`Unable to update the task details, please try again!`))
         })
     }))
   }

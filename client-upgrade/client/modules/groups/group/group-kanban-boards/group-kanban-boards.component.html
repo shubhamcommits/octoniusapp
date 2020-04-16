@@ -1,5 +1,5 @@
 <div class="container">
-    <div class="root">
+    <div *ngIf="!(isLoading$ | async)" class="root">
         <div class="board">
             <!-- <app-board-bar *ngIf="groupData" [groupData]="groupData" ></app-board-bar> -->
 
@@ -67,9 +67,11 @@
                                             <div class="col-md-7 mt-n2">
                                                 <section>
                                                     <img src="{{baseUrl}}/uploads/{{task?.task?._assigned_to?.profile_pic}}"
-                                                        onerror="this.src='/assets/images/user.png'" class="feed-avatar">
+                                                        onerror="this.src='/assets/images/user.png'"
+                                                        class="feed-avatar">
                                                     <span *ngIf="!task?.task?.unassigned">
-                                                        {{task?.task?._assigned_to?.first_name}} {{ task?.task?._assigned_to?.last_name }}</span>
+                                                        {{task?.task?._assigned_to?.first_name}}
+                                                        {{ task?.task?._assigned_to?.last_name }}</span>
                                                     <span *ngIf="task?.task?.unassigned">Unassigned</span>
                                                 </section>
 
@@ -79,8 +81,8 @@
                                             <!-- TASK DUE DATE STARTs -->
                                             <div class="col-md-5 text-right mt-2">
                                                 <span class="small font-weight-bold"
-                                                *ngIf="task?.task?.due_to != 'Invalid date' && task?.task?.status != 'done'"
-                                                [ngClass]="checkOverdue(task) === true ? 'overdue' : 'due'">
+                                                    *ngIf="task?.task?.due_to != 'Invalid date' && task?.task?.status != 'done'"
+                                                    [ngClass]="checkOverdue(task) === true ? 'overdue' : 'due'">
                                                     {{task?.task?.due_to | date}}</span>
                                             </div>
                                             <!-- TASK DUE DATE ENDS -->
@@ -102,7 +104,8 @@
                                                     (close)="closeModal()" (moveTask)="moveTaskToColumn($event)"
                                                     (taskStatus)="changeStatus(task, $event)"
                                                     (member)="changeAssignee(task, $event)"
-                                                    (date)="changeDueDate(task, $event)">
+                                                    (date)="changeDueDate(task, $event)"
+                                                    (post)="changeDetails(task, $event)">
                                                 </app-group-create-post>
                                             </ng-template>
                                             <!-- TASK DETAILS ENDS -->
@@ -127,4 +130,10 @@
         </div>
 
     </div>
+
+    <!-- Loading Spinner Starts -->
+    <ng-container *ngIf="isLoading$ | async">
+        <app-loading-spinner class="media"></app-loading-spinner>
+    </ng-container>
+    <!-- Loading Spinner Ends -->
 </div>

@@ -52,17 +52,15 @@ export class TagsService {
      * @param groupId
      * @param tag
      * */
-    async getTagsSearchResults(groupId: string, tag: string) {
+    async getTagsSearchResults(groupId: any, tag: any) {
 
         try {
 
             // Convert the query into regex 
             let regexConvert = tag.replace(/[#.*+?^${}()|[\]\\]/g, '\\$&')
 
-            console.log(groupId)
-
             // Create the tags query and start aggregating the results & Execute the query and limit the result to 10
-            let tags: any = await new TagsService().createTagsListQuery(groupId, regexConvert)
+            let tags: any = await this.createTagsListQuery(groupId, regexConvert)
                 .skip(0)
                 .limit(10)
                 .exec() || [];

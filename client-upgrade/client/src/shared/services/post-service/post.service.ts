@@ -108,6 +108,20 @@ export class PostService {
   }
 
   /**
+   * This function is resposible for changing the column of a task
+   * @param postId 
+   * @param title
+   */
+  changeTaskColumn(postId: string, title: string){
+    
+    // Call the HTTP Request
+    return this._http.put(this.baseURL + `/${postId}/task-column`, {
+      title: title
+    }).
+    toPromise()
+  }
+
+  /**
    * This function is resposible for fetching tags from a group
    * @param groupId 
    * @param tag 
@@ -115,10 +129,10 @@ export class PostService {
   getTags(groupId: string, tag: string) {
 
     // Call the HTTP Request
-    return this._http.get(this.baseURL + `/tags`, {
+    return this._http.get(this.baseURL + `/group/tags`, {
       params: {
-        groupId: groupId,
-        tag: tag
+        groupId: groupId.toString().trim(),
+        tag: tag.toString().trim()
       }
     }).
       toPromise()
