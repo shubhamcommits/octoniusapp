@@ -84,4 +84,14 @@ routes.put('/:postId/task-status', postController.changeTaskStatus);
 // PUT - Change task column
 routes.put('/:postId/task-column', postController.changeTaskColumn);
 
+
+// -| RECENT ACTIVITY |-
+
+// GET - Get Recent Activity
+routes.get('/test/recents', postController.getRecentActivity);
+
+// GET - Get next 5 recent posts
+routes.get('/test/recents/next', postController.getNextRecentActivity);
+
+
 export { routes as postRoutes };
