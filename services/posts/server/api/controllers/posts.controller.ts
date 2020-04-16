@@ -504,4 +504,44 @@ export class PostController {
             return sendErr(res, new Error(err), 'Internal Server Error!', 500);
         }
     }
+
+    async getRecentActivity(req: Request, res: Response, next: NextFunction){
+        try {
+            
+            // Fetch data from request
+            const userId = req['userId'];
+
+            // Call service function to get recent activity
+            const posts = await postService.getRecentActivity(userId);
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Successfully Retrieved Posts!',
+                posts: posts
+            }); 
+        } catch (error) {
+            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
+        }
+    }
+
+
+    async getNextRecentActivity(req: Request, res: Response, next: NextFunction){
+        try {
+            
+            // Fetch data from request
+            const userId = req['userId'];
+            const { lastPostId } = req.params;
+
+            // Call service function to get next recent activity
+            const posts:any = await postService.getNextRecentActivity(userId, lastPostId);
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: `Successfully Retrieved Next ${posts.length} Posts!`,
+                posts: posts
+            }); 
+        } catch (error) {
+            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
+        }
+    }
 }

@@ -1031,13 +1031,20 @@ export class PostService {
   }
 
 
+  /**
+   * Fetch posts for recent activity
+   * @param userId 
+   */
   async getRecentActivity(userId: any){
     try {
-      var groupList: any = await User.findById(userId).populate('_groups');
+      var groupList: any = await User.find({ '_id': userId }).select("_groups");
+      groupList = groupList[0]['_groups'];
+      const today = moment().local().startOf('day').format();
       if (groupList.length > 0){
-        var posts: any = Group.find({
-          '_group': { $in: groupList }
-        }).sort(['created_date', -1]).limit(10);
+        var posts: any = await Post.find({
+          '_group': { $in: groupList },
+          $and: [ { 'created_date': { $gte: today } } ]
+        }).sort('-created_date').limit(10);
         return posts;
       }
       else{
@@ -1049,16 +1056,24 @@ export class PostService {
   }
 
 
+  /**
+   * Fetch next 5 recent activity posts
+   * @param userId 
+   * @param lastPostId 
+   */
   async getNextRecentActivity(userId: any, lastPostId: any){
     try {
-      var groupList: any = await User.findById(userId).populate('_groups');
+      var groupList: any = await User.find({ '_id': userId }).select("_groups");
+      groupList = groupList[0]['_groups'];
+      const todayMinus7Days = moment().local().subtract(7, 'days').endOf('day').format();
       if (groupList.length > 0){
-        var posts: any = Group.find({
-          '_id': { $gte: lastPostId },
+        var posts: any = await Post.find({
+          '_group': { $in: groupList },
           $and: [
-          { '_group': { $in: groupList } },
+          { '_id': { $lt: lastPostId } },
+          { 'created_date': { $gte: todayMinus7Days } }
           ]
-        }).sort(['created_date', -1]).limit(5);
+        }).sort('-created_date').limit(5);
         return posts;
       }
       else{
