@@ -357,7 +357,7 @@ export class WorkspaceController {
             const positions = await User
                 .find({
                     _workspace: workspaceId,
-                    current_position: { $regex: new RegExp(query, 'i') }
+                    current_position: { $regex: new RegExp(query.toString(), 'i') }
                 })
                 .distinct('current_position')
                 .where('current_position').ne(null);

@@ -143,7 +143,7 @@ export class DomainsControllers {
             await User.updateMany({
                 $and: [
                     { workspace_name: workspace.workspace_name },
-                    { email: { $regex: new RegExp(domain, 'i') } }
+                    { email: { $regex: new RegExp(domain.toString(), 'i') } }
                 ]
             }, {
                 $set: { active: false }
@@ -153,7 +153,7 @@ export class DomainsControllers {
             const membersToRemove = await User.find({
                 $and: [
                     { _workspace: workspace._id },
-                    { email: { $regex: new RegExp(domain, 'i') } }
+                    { email: { $regex: new RegExp(domain.toString(), 'i') } }
                 ]
             }).select('first_name last_name email')
                 .lean();

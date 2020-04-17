@@ -15,8 +15,8 @@ export class MembersControllers {
             $and: [
                 {
                     $or: [
-                        { full_name: { $regex: new RegExp(query, 'i') } },
-                        { email: { $regex: new RegExp(query, 'i') } }
+                        { full_name: { $regex: new RegExp(query.toString(), 'i') } },
+                        { email: { $regex: new RegExp(query.toString(), 'i') } }
                     ]
                 },
                 { _workspace: workspaceId },
@@ -120,8 +120,8 @@ export class MembersControllers {
                 $and: [
                     {
                         $or: [
-                            { full_name: { $regex: new RegExp(query, 'i') } },
-                            { email: { $regex: new RegExp(query, 'i') } }
+                            { full_name: { $regex: new RegExp(query.toString(), 'i') } },
+                            { email: { $regex: new RegExp(query.toString(), 'i') } }
                         ]
                     },
                     { _id: { $gt: lastUserId } },
