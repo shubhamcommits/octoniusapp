@@ -93,5 +93,8 @@ routes.get('/test/recents', postController.getRecentActivity);
 // GET - Get next 5 recent posts
 routes.get('/test/recents/next', postController.getNextRecentActivity);
 
+// GET - Get recent groups
+routes.get('/test/recents/groups', postController.getRecentGroups);
+
 
 export { routes as postRoutes };

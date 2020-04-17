@@ -544,4 +544,23 @@ export class PostController {
             return sendErr(res, new Error(error), 'Internal Server Error!', 500);
         }
     }
+
+
+    async getRecentGroups(req: Request, res: Response, next: NextFunction){
+        try {
+            // Fetch data from request
+            const userId = req['userId'];
+
+            // Call service function to get recent groups
+            const groupSet = await postService.getRecentGroups(userId);
+            
+            // Send status 200 response
+            return res.status(200).json({
+                message: `Successfully Retrieved Groups List`,
+                groups: groupSet
+            }); 
+        } catch (error) {
+            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
+        }
+    }
 }
