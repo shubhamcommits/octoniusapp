@@ -9,7 +9,9 @@ services:
     volumes:
       - data_db:/data/db
     ports:
-      - 27018:27017
+      - 27027:27017
+      - 27028:27018
+      - 27029:27019
     networks:
       - octonius
       
