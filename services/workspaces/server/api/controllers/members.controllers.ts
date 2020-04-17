@@ -10,7 +10,7 @@ export class MembersControllers {
      * @param query 
      * @param groupId 
      */
-    async fetchUsers(workspaceId: string, query: any, groupId?: string) {
+    async fetchUsers(workspaceId: string, query: string, groupId?: string) {
         return await User.find({
             $and: [
                 {
@@ -38,9 +38,7 @@ export class MembersControllers {
      */
     async membersNotInGroup(req: Request, res: Response, next: NextFunction){
 
-        const { query: { workspaceId, groupId } } = req;
-
-        const query: any = req.query
+        let { query: { workspaceId, query, groupId } } = req;
 
         try {
 
@@ -52,7 +50,7 @@ export class MembersControllers {
             }
 
             // Find the users based on the regex expression matched with either full_name or email property present in the current workspace and not inside a particular group
-            const users = await new MembersControllers().fetchUsers(workspaceId, query, groupId)
+            const users = await new MembersControllers().fetchUsers(workspaceId, query.toString(), groupId)
 
             // Send the status 200 response
             return res.status(200).json({
@@ -73,9 +71,7 @@ export class MembersControllers {
      */
     async getWorkspaceMembers(req: Request, res: Response, next: NextFunction) {
 
-        const { query: { workspaceId } } = req;
-
-        const query: any = req.query
+        let { query: { workspaceId, query } } = req;
 
         try {
 
@@ -87,7 +83,7 @@ export class MembersControllers {
             }
 
             // Find the users based on the regex expression matched with either full_name or email property present in the current workspace
-            const users = await new MembersControllers().fetchUsers(workspaceId, query)
+            const users = await new MembersControllers().fetchUsers(workspaceId, query.toString())
 
             // Send the status 200 response
             return res.status(200).json({
@@ -108,9 +104,7 @@ export class MembersControllers {
      */
     async getNextWorkspaceMembers(req: Request, res: Response, next: NextFunction) {
 
-        const { query: { workspaceId, lastUserId } } = req;
-
-        const query: any = req.query
+        let { query: { workspaceId, query, lastUserId } } = req;
 
         try {
 
@@ -126,8 +120,8 @@ export class MembersControllers {
                 $and: [
                     {
                         $or: [
-                            { full_name: { $regex: new RegExp(query, 'i') } },
-                            { email: { $regex: new RegExp(query, 'i') } }
+                            { full_name: { $regex: new RegExp(query.toString(), 'i') } },
+                            { email: { $regex: new RegExp(query.toString(), 'i') } }
                         ]
                     },
                     { _id: { $gt: lastUserId } },

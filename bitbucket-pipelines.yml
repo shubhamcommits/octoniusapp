@@ -60,7 +60,14 @@ pipelines:
           - docker login --username $DOCKER_ID --password $DOCKER_PASSWORD
           # push the new Docker image to the Docker registry
           - docker push $CLIENT_IMAGE_NAME
-          - docker push $API_IMAGE_NAME
+          - docker push $MAILS_IMAGE_NAME
+          - docker push $AUTHS_IMAGE_NAME
+          - docker push $GROUPS_IMAGE_NAME
+          - docker push $WORKSPACES_IMAGE_NAME
+          - docker push $USERS_IMAGE_NAME
+          - docker push $POSTS_IMAGE_NAME
+          - docker push $NOTIFICATIONS_IMAGE_NAME
+          - docker push $UTILITIES_IMAGE_NAME
           - docker push $NGINX_IMAGE_NAME
           
 definitions:
