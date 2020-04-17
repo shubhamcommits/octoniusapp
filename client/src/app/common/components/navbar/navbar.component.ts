@@ -102,6 +102,8 @@ export class NavbarComponent implements OnInit {
     }
   }
 
+  
+
 
   getUserProfile() {
     return new Promise((resolve, reject) => {
