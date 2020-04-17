@@ -653,24 +653,18 @@ export class PostService {
         new: true
       })
 
+      // Populate the post properties
+      post = await this.populatePostProperties(post)
+
       // Create Real time Notification to notify user about the task reassignment
       http.post(`${process.env.NOTIFICATIONS_SERVER_API}/task-reassign`, {
         post: post
       })
-        .catch((err) => {
-          console.error(err)
-        })
 
       // Email notification for the new task reassignment
       http.post(`${process.env.MAILING_SERVER_API}/task-reassign`, {
         post: post
       })
-        .catch((err) => {
-          console.error(err)
-        })
-
-      // Populate the post properties
-      post = await this.populatePostProperties(post)
 
       // Return the post
       return post;

@@ -14,7 +14,7 @@ export class SocketService {
     private socket: Socket, 
     private http: HttpClient) { }
 
-  public baseUrl = environment.SOCKETS_BASE_URL;
+  public baseUrl = environment.NOTIFICATIONS_BASE_URL;
 
   /**
    * Both of the variables listed down below are used to share the data through this common service among different components in the app

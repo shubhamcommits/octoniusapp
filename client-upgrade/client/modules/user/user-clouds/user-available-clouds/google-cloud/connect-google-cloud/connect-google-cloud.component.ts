@@ -50,7 +50,7 @@ export class ConnectGoogleCloudComponent implements OnInit {
               localStorage.setItem('google-cloud-token', JSON.stringify(google_cloud_token));
 
               const saveToken = new XMLHttpRequest();
-              saveToken.open('POST', environment.BASE_API_URL + '/users/integrations/gdrive/token', true);
+              saveToken.open('POST', environment.USER_BASE_API_URL + '/integrations/gdrive/token', true);
               saveToken.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('token'));
 
               const tokenData = new FormData();

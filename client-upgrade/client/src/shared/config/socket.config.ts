@@ -2,7 +2,7 @@ import { SocketIoConfig } from 'ngx-socket-io';
 import { environment } from 'src/environments/environment';
 
 export const socketConfig: SocketIoConfig = {
-    url: environment.SOCKETS_BASE_URL, options: {
+    url: environment.NOTIFICATIONS_BASE_URL, options: {
         reconnection: true,
         reconnectionAttempts: Infinity,
         reconnectionDelay: 1000,

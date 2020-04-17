@@ -33,7 +33,7 @@ export UTILITIES_IMAGE_NAME=octoniusapp/octonius-alpha:utilities-server
 export NGINX_IMAGE_NAME=octoniusapp/octonius-alpha:nginx
 
 # build the Docker image (this will use the Dockerfile in the root of the repo)
-        #   docker build -t $CLIENT_IMAGE_NAME ./client-upgrade/client
+          docker build -t $CLIENT_IMAGE_NAME ./client-upgrade/client
           docker build -t $MAILS_IMAGE_NAME ./services/mailing/server
           docker build -t $AUTHS_IMAGE_NAME ./services/authentication/server
           docker build -t $GROUPS_IMAGE_NAME ./services/groups/server

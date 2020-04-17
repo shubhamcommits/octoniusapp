@@ -13,10 +13,6 @@ export const environment = {
   production: false,
   hmr: false,
 
-  // Base URLs
-  BASE_API_URL: 'http://localhost:3000/api',
-  BASE_URL: 'http://localhost:3000',
-
   // Stripe key
   pk_stripe: 'pk_test_rgLsr0HrrbMcqQr5G7Wz1zFK',
 
@@ -65,9 +61,9 @@ export const environment = {
   POST_BASE_URL: 'http://localhost:8000',
   POST_BASE_API_URL: 'http://localhost:8000/api',
 
-  // Sockets URLs
-  SOCKETS_BASE_URL: 'ws://localhost:9000',
-  SOCKETS_BASE_API_URL: 'http://localhost:9000/api',
+  // Notifications URLs
+  NOTIFICATIONS_BASE_URL: 'ws://localhost:9000',
+  NOTFICATIONS_BASE_API_URL: 'http://localhost:9000/api',
 
   // Utilities URLs
   UTILITIES_BASE_URL: 'http://localhost:10000',
