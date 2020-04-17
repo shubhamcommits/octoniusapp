@@ -10,13 +10,13 @@ export class MembersControllers {
      * @param query 
      * @param groupId 
      */
-    async fetchUsers(workspaceId: string, query: string, groupId?: string) {
+    async fetchUsers(workspaceId: string, query: any, groupId?: string) {
         return await User.find({
             $and: [
                 {
                     $or: [
-                        { full_name: { $regex: new RegExp(query.toString(), 'i') } },
-                        { email: { $regex: new RegExp(query.toString(), 'i') } }
+                        { full_name: { $regex: new RegExp(query, 'i') } },
+                        { email: { $regex: new RegExp(query, 'i') } }
                     ]
                 },
                 { _workspace: workspaceId },
@@ -38,7 +38,9 @@ export class MembersControllers {
      */
     async membersNotInGroup(req: Request, res: Response, next: NextFunction){
 
-        const { query: { workspaceId, query, groupId } } = req;
+        const { query: { workspaceId, groupId } } = req;
+
+        const query: any = req.query
 
         try {
 
@@ -71,7 +73,9 @@ export class MembersControllers {
      */
     async getWorkspaceMembers(req: Request, res: Response, next: NextFunction) {
 
-        const { query: { workspaceId, query } } = req;
+        const { query: { workspaceId } } = req;
+
+        const query: any = req.query
 
         try {
 
@@ -104,7 +108,9 @@ export class MembersControllers {
      */
     async getNextWorkspaceMembers(req: Request, res: Response, next: NextFunction) {
 
-        const { query: { workspaceId, query, lastUserId } } = req;
+        const { query: { workspaceId, lastUserId } } = req;
+
+        const query: any = req.query
 
         try {
 
@@ -120,8 +126,8 @@ export class MembersControllers {
                 $and: [
                     {
                         $or: [
-                            { full_name: { $regex: new RegExp(query.toString(), 'i') } },
-                            { email: { $regex: new RegExp(query.toString(), 'i') } }
+                            { full_name: { $regex: new RegExp(query, 'i') } },
+                            { email: { $regex: new RegExp(query, 'i') } }
                         ]
                     },
                     { _id: { $gt: lastUserId } },
