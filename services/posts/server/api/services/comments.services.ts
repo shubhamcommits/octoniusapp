@@ -58,14 +58,14 @@ import moment from 'moment';
           if (comment._content_mentions.length !== 0) {
             // Create Notification for mentions on comments
             // notifications.newCommentMentions(comment);
-            await http.post('http://localhost:9000/api/new-comment', {
+            await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-comment`, {
                 comment: comment
             });
       
             // for every user mentioned in the comment, we send an email
             await comment._content_mentions.forEach((user) => {
             //   sendMail.userMentionedComment(comment, post, user);
-                http.post('http://localhost:2000/api/user-comment-mention',{
+                http.post(`${process.env.MAILING_SERVER_API}/user-comment-mention`,{
                     comment: comment,
                     post: post,
                     user: user
@@ -120,7 +120,7 @@ import moment from 'moment';
           // Create Notification for mentions on comments
           if (comment._content_mentions.length !== 0) {
             // notifications.newCommentMentions(comment);
-            await http.post('http://localhost:9000/api/new-comment', {
+            await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-comment`, {
                 comment: updatedComment
             });
           }

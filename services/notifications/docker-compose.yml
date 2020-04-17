@@ -3,8 +3,8 @@ version: "3.3"
 services:
 
   server:
-    container_name: sockets-server
-    image: sockets:server
+    container_name: notifications-server
+    image: notifications:server
     restart: always
     build:
       dockerfile: Dockerfile

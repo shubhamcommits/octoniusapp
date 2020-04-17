@@ -87,12 +87,12 @@ fi
     # Go back to main working directory(i.e. - services/)
     cd -
 
-    : '|- UTILITIES SERVER -|'
-    # Go to utilities directory
-    cd utilities/server
+    : '|- POSTS SERVER -|'
+    # Go to posts directory
+    cd posts/server
 
     # Start the dev server and push the process into background - port 8000
-    pm2 start "$packageManager run dev" --name "utilities-server"
+    pm2 start "$packageManager run dev" --name "posts-server"
 
     # Go back to main working directory(i.e. - services/)
     cd -
@@ -107,12 +107,12 @@ fi
     # Go back to main working directory(i.e. - services/)
     cd -
 
-    : '|- POSTS SERVER -|'
-    # Go to posts directory
-    cd posts/server
+    : '|- UTILITIES SERVER -|'
+    # Go to utilities directory
+    cd utilities/server
 
     # Start the dev server and push the process into background - port 10000
-    pm2 start "$packageManager run dev" --name "posts-server"
+    pm2 start "$packageManager run dev" --name "utilities-server"
 
     # Go back to main working directory(i.e. - services/)
     cd -

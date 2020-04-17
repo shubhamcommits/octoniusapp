@@ -3,45 +3,76 @@
  */
 function prodConfigInit() {
 
-  // ENVIRONMENTS
-  process.env.NODE_ENV = 'production';
-  process.env.PORT = '8000';
-  process.env.HOST = '0.0.0.0';
+  // Node Environment
+  process.env.NODE_ENV = process.env.NODE_ENV || 'production'
 
-  // JWT KEYS
-  process.env.JWT_KEY = 'asfsaf12safas23fsafa12sf';  
+  // Application Port
+  process.env.PORT = process.env.PORT ||'8000'
 
-  // DATABASE CONNECTIONS
-  // db.createUser({ user:'octonius', pwd: 'octonius2020', roles: [{ role: 'readWrite', db: 'octonius' }] })
-  process.env.dbURL = 'mongodb://mongodb:27017/octonius' || 'mongodb://127.0.0.1:27017/octonius';
+  // Application Host
+  process.env.HOST = process.env.HOST ||'0.0.0.0'
 
-  // REDIS 
-  process.env.REDIS_HOST = 'redis';
-  process.env.REDIS_PORT = '6379';
+  // Jwt Key
+  process.env.JWT_KEY = process.env.JWT_KEY ||'asfsaf12safas23fsafa12sf'
 
-  // FILE UPLOADS FOLDER
-  process.env.FILE_UPLOAD_FOLDER = `${__dirname}/uploads/`;
+  // Database Url String
+  process.env.dbURL = process.env.dbURL || 'mongodb://mongodb:27017/octonius' || 'mongodb://127.0.0.1:27017/octonius'
 
-  // MAILING SERVER
-  process.env.MAILING_SERVER = 'https://flash.octonius.com/api/mails';
+  // Redis Environments
+  process.env.REDIS_HOST = process.env.REDIS_HOST ||'redis'
+  process.env.REDIS_PORT = process.env.REDIS_PORT ||'6379'
 
-  // AUTHS SERVER
-  process.env.AUTHS_SERVER = 'https://flash.octonius.com/api/auths';
+  // Files Uploads Folder
+  process.env.FILE_UPLOAD_FOLDER = process.env.FILE_UPLOAD_FOLDER ||`${__dirname}/uploads/`
 
-  // GROUPS SERVER
-  process.env.GROUPS_SERVER = 'https://flash.octonius.com/api/groups';
+  // Sendgrid Key
+  process.env.SENDGRID_KEY = process.env.SENDGRID_KEY || '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'
 
-  // WORKSPACES SERVER
-  process.env.WORKSPACES_SERVER = 'https://flash.octonius.com/api/workspaces';
+  // Stripe Keys
+  process.env.SK_STRIPE = process.env.SK_STRIPE || 'sk_live_WupyMoQf93S59gwTqmYpmWel'
+  process.env.stripe_plan = process.env.stripe_plan || 'plan_EK1rDLfKr9NRkU'
+  process.env.WEBHOOK_PS_SECRET = process.env.WEBHOOK_PS_SECRET ||'whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn'
 
-  // USERS SERVER
-  process.env.USERS_SERVER = 'https://flash.octonius.com/api/users';
+  // External Key
+  process.env.HEADER_EXTERNAL_KEY = process.env.HEADER_EXTERNAL_KEY || 'HEADERIDSHAREDFOROCTONIUS';
 
-  // SOCKETS SERVER
-  process.env.SOCKETS_SERVER = 'https://flash.octonius.com/api/users';
+  // Protocol- 'http' or 'https'
+  process.env.PROTOCOL = process.env.PROTOCOL ||'http'
 
-  // UTILITIES SERVER
-  process.env.UTILITIES_SERVER = 'https://flash.octonius.com/api/utilities';
+  // Domain
+  process.env.DOMAIN = process.env.DOMAIN ||'localhost'
+
+  // Mailing Mircoservice
+  process.env.MAILING_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}/mails`
+  process.env.MAILING_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}/api/mails`
+
+  // Auths Microservice
+  process.env.AUTHS_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}/auths`
+  process.env.AUTHS_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}/api/auths`
+
+  // Groups Microservice
+  process.env.GROUPS_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}/groups`
+  process.env.GROUPS_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}/api/groups`
+
+  // Workspaces Microservice
+  process.env.WORKSPACES_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}/workspaces`
+  process.env.WORKSPACES_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}/api/workspaces`
+
+  // Users Microservice
+  process.env.USERS_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}/users`
+  process.env.USERS_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}/api/users`
+
+  // Posts Microservice
+  process.env.POSTS_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}/posts`
+  process.env.POSTS_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}/api/posts`
+
+  // Notifications Microservice
+  process.env.NOTIFICATIONS_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}/notifications`
+  process.env.NOTIFICATIONS_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}/api/notifications`
+
+  // Utilities Microservice
+  process.env.UTILITIES_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}/utilities`
+  process.env.UTILITIES_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}/api/utilities`
 };
 
 export { prodConfigInit as productionConfig } 

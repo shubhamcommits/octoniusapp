@@ -265,13 +265,13 @@ export class PostService {
     if (post._content_mentions.length !== 0) {
 
       // Create Real time Notification for all the mentions on post content
-      await http.post('http://localhost:9000/api/new-mention', {
+      await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-mention`, {
         post: post
       });
 
       // start the process to send an email to every user mentioned in the post coneten
       await post._content_mentions.forEach((user: any, index: number) => {
-        http.post('http://localhost:2000/api/user-post-mention', {
+        http.post(`${process.env.MAILING_SERVER_API}/user-post-mention`, {
           post: post,
           user: user
         })
@@ -285,17 +285,17 @@ export class PostService {
         if (!post.task.unassigned) {
 
           // Real time notification for new task assignment
-          await http.post('http://localhost:9000/api/new-task', {
+          await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-task`, {
             post: post
           })
 
           // Email notification for the new task
-          await http.post('http://localhost:2000/api/task-assigned', {
+          await http.post(`${process.env.MAILING_SERVER_API}/task-assigned`, {
             post: post
           })
 
           // Schedule task reminder, which will be called in future
-          await http.post('http://localhost:2000/api/task-reminder', {
+          await http.post(`${process.env.MAILING_SERVER_API}/task-reminder`, {
             post: post
           })
         }
@@ -304,17 +304,17 @@ export class PostService {
       case 'event':
 
         // Real time notification for new event assignment
-        await http.post('http://localhost:9000/api/new-event', {
+        await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-event`, {
           post: post
         })
 
         // Email notification for the new email assignment
-        await http.post('http://localhost:2000/api/event-assigned', {
+        await http.post(`${process.env.MAILING_SERVER_API}/event-assigned`, {
           post: post
         })
 
         // Schedule event reminder, which will be called in future
-        await http.post('http://localhost:2000/api/event-reminder', {
+        await http.post(`${process.env.MAILING_SERVER_API}/event-reminder`, {
           post: post
         })
 
@@ -654,7 +654,7 @@ export class PostService {
       })
 
       // Create Real time Notification to notify user about the task reassignment
-      http.post('http://localhost:9000/api/task-reassign', {
+      http.post(`${process.env.NOTIFICATIONS_SERVER_API}/task-reassign`, {
         post: post
       })
         .catch((err) => {
@@ -662,7 +662,7 @@ export class PostService {
         })
 
       // Email notification for the new task reassignment
-      http.post('http://localhost:2000/api/task-reassign', {
+      http.post(`${process.env.MAILING_SERVER_API}/task-reassign`, {
         post: post
       })
         .catch((err) => {

@@ -204,7 +204,7 @@ export class MembersControllers {
             }).select('first_name email')
 
             // Send join group confirmation email using mailing microservice
-            await http.post('http://localhost:2000/api/mails/group-joined', {
+            http.post(`${process.env.MAILING_SERVER_API}/group-joined`, {
                 groupData: {
                     group_name: groupData.group_name,
                     workspace_name: groupData.workspace_name
@@ -303,7 +303,7 @@ export class MembersControllers {
                 }
 
                 // Send email
-                await http.post('http://localhost:2000/api/mails/join-group', {
+                http.post(`${process.env.MAILING_SERVER_API}/join-group`, {
                     email: email,
                     userId: userId,
                     groupId: groupId,

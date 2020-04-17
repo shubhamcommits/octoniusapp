@@ -113,7 +113,7 @@ export class PasswordsControllers {
             }
 
             // Send email to user using mailing microservice
-            await http.post('http://localhost:2000/api/reset-password', {
+            http.post(`${process.env.MAILING_SERVER_API}/reset-password`, {
                 user: user,
                 workspace: workspace
             })

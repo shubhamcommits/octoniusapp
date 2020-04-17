@@ -249,12 +249,12 @@ export class AuthsController {
                     let token = await auths.generateToken(user, workspace_name);
 
                     // Send signup confirmation email using mailing microservice
-                    await http.post('http://localhost:2000/api/sign-up', {
+                    http.post(`${process.env.MAILING_SERVER_API}/sign-up`, {
                         user: userUpdate
                     })
 
                     // Updating quantity += 1 in stripe module using workspace microservice
-                    // await http.put(`http://localhost:5000/api/billings/add-user?subscriptionId=${workspace.billing.subscription_id}&workspaceId=${workspace._id}`)
+                    // await http.put(`${process.env.MAILING_SERVER_API}/billings/add-user?subscriptionId=${workspace.billing.subscription_id}&workspaceId=${workspace._id}`)
 
                     // Signup user and return the token
                     return res.status(200).json({
