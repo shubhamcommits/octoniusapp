@@ -1,7 +1,7 @@
 import { Group, Post, User, Comment } from '../models';
 import http from 'axios';
 import moment from 'moment';
-import * as fs from 'fs';
+const fs = require('fs');
 
 /*  ===============================
  *  -- POSTS Service --

@@ -27,12 +27,12 @@ pipelines:
           - docker push $API_IMAGE_NAME
           - docker push $NGINX_IMAGE_NAME
 
-      "{refactorApplication}":
+    "{refactorApplication}":
     - step:
         name: Deploy to dockerhub
         services:
           - docker
-        deployment: staging   # can be test, staging or production.
+        deployment: production   # can be test, staging or production.
         script: # Modify the commands below to build your repository.
           # Set $DOCKER_HUB_USERNAME and $DOCKER_HUB_PASSWORD as environment variables in repository settings
           - export CLIENT_IMAGE_NAME=octoniusapp/octonius-alpha:client

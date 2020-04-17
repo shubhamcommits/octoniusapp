@@ -1,6 +1,6 @@
 import express from 'express';
 import { ColumnsController } from '../controllers';
-import { Auths } from '../../../../posts/server/api/utils';
+// import { Auths } from '../../../../posts/server/api/utils';
 
 // Create Router to handle the routes
 const router = express.Router();
@@ -9,7 +9,7 @@ const router = express.Router();
 const columns = new ColumnsController();
 
 // Define auths helper controllers
-const auths = new Auths();
+// const auths = new Auths();
 
 // -| AUTHENTICATION |-
 

@@ -252,24 +252,6 @@ services:
       - mongodb
     networks:
       - octonius
-      
-  client:
-    container_name: client
-    image: octoniusapp/octonius2.0:client
-    volumes:
-      - /usr/app/node_modules
-      - ${PWD}/client-upgrade/client:/usr/app
-    depends_on:
-      - mailing-server
-      - auths-server
-      - groups-server
-      - workspaces-server
-      - users-server
-      - posts-server
-      - notifications-server
-      - utilities-server
-    networks:
-      - octonius
 
   nginx:
     container_name: nginx
@@ -286,7 +268,6 @@ services:
       - posts-server
       - notifications-server
       - utilities-server
-      - client
     networks:
       - octonius
 
