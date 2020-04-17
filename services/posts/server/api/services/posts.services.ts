@@ -1083,4 +1083,43 @@ export class PostService {
       throw(error);
     }
   }
+
+
+  /**
+   * Fetch recent groups
+   * @param userId 
+   */
+  async getRecentGroups(userId: any){
+    try {
+      // Get 2 recent posted groups
+      var fromPost: any = await Post.find({
+        '_posted_by': userId,
+      }).sort('-created_date').limit(2).select('_group created_date');
+
+      // Get 2 recent commented groups
+      var fromComment: any = await Comment.find({
+        '_commented_by': userId
+      }).sort('-created_date').limit(2).select('_post._group created_date');
+
+      // Create groupList and sort
+      var groupsList = [];
+      for (var i in fromPost)groupsList.push(fromPost[i]);
+      for (var i in fromComment)groupsList.push(fromComment[i]);
+      groupsList.sort((obj1, obj2)=>{
+        return obj2.created_date > obj1.created_date?1:-1;
+      });
+
+      // Get unique groups
+      var groupSet = new Set();
+      var index = 0;
+      while (groupSet.size != 2){
+        groupSet.add(groupsList[index]._group);
+        index++;
+      }
+      return groupSet;
+    } catch (error) {
+      throw(error);
+    }
+  }
+
 }
