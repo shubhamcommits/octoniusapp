@@ -5,12 +5,11 @@ services:
   mongodb:
     container_name: mongodb
     image: mvertes/alpine-mongo:latest
-    command: mongod --port 27018
     restart: always
     volumes:
       - data_db:/data/db
     ports:
-      - 27018:27018
+      - 27018:27017
     networks:
       - octonius
       
@@ -27,7 +26,7 @@ services:
       - PORT=2000
       - HOST=0.0.0.0
       - JWT_KEY=asfsaf12safas23fsafa12sf
-      - dbURL=mongodb://mongodb:27018/octonius
+      - dbURL=mongodb://mongodb:27017/octonius
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - SENDGRID_KEY=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
@@ -57,7 +56,7 @@ services:
       - PORT=3000
       - HOST=0.0.0.0
       - JWT_KEY=asfsaf12safas23fsafa12sf
-      - dbURL=mongodb://mongodb:27018/octonius
+      - dbURL=mongodb://mongodb:27017/octonius
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - SENDGRID_KEY=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
@@ -87,7 +86,7 @@ services:
       - PORT=4000
       - HOST=0.0.0.0
       - JWT_KEY=asfsaf12safas23fsafa12sf
-      - dbURL=mongodb://mongodb:27018/octonius
+      - dbURL=mongodb://mongodb:27017/octonius
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - SENDGRID_KEY=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
@@ -117,7 +116,7 @@ services:
       - PORT=5000
       - HOST=0.0.0.0
       - JWT_KEY=asfsaf12safas23fsafa12sf
-      - dbURL=mongodb://mongodb:27018/octonius
+      - dbURL=mongodb://mongodb:27017/octonius
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - SENDGRID_KEY=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
@@ -147,7 +146,7 @@ services:
       - PORT=7000
       - HOST=0.0.0.0
       - JWT_KEY=asfsaf12safas23fsafa12sf
-      - dbURL=mongodb://mongodb:27018/octonius
+      - dbURL=mongodb://mongodb:27017/octonius
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - SENDGRID_KEY=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
@@ -177,7 +176,7 @@ services:
       - PORT=8000
       - HOST=0.0.0.0
       - JWT_KEY=asfsaf12safas23fsafa12sf
-      - dbURL=mongodb://mongodb:27018/octonius
+      - dbURL=mongodb://mongodb:27017/octonius
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - SENDGRID_KEY=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
@@ -207,7 +206,7 @@ services:
       - PORT=9000
       - HOST=0.0.0.0
       - JWT_KEY=asfsaf12safas23fsafa12sf
-      - dbURL=mongodb://mongodb:27018/octonius
+      - dbURL=mongodb://mongodb:27017/octonius
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - SENDGRID_KEY=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
@@ -237,7 +236,7 @@ services:
       - PORT=10000
       - HOST=0.0.0.0
       - JWT_KEY=asfsaf12safas23fsafa12sf
-      - dbURL=mongodb://mongodb:27018/octonius
+      - dbURL=mongodb://mongodb:27017/octonius
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - SENDGRID_KEY=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
@@ -307,4 +306,5 @@ volumes:
       o: bind
       
 networks:
-  octonius: {}
+  octonius:
+    driver: bridge
