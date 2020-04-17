@@ -15,7 +15,7 @@ services:
       
   mailing-server:
     container_name: mailing-server
-    image: octoniusapp/octonius2.0:mailing-server
+    image: octoniusapp/octonius-alpha:mailing-server
     ports:
       - 2000:2000
     restart: always
@@ -45,7 +45,7 @@ services:
       
   auths-server:
     container_name: auths-server
-    image: octoniusapp/octonius2.0:auths-server
+    image: octoniusapp/octonius-alpha:auths-server
     ports:
       - 3002:3000
     restart: always
@@ -75,7 +75,7 @@ services:
          
   groups-server:
     container_name: groups-server
-    image: octoniusapp/octonius2.0:groups-server
+    image: octoniusapp/octonius-alpha:groups-server
     ports:
       - 4000:4000
     restart: always
@@ -105,7 +105,7 @@ services:
       
   workspaces-server:
     container_name: workspaces-server
-    image: octoniusapp/octonius2.0:workspaces-server
+    image: octoniusapp/octonius-alpha:workspaces-server
     ports:
       - 5000:5000
     restart: always
@@ -135,7 +135,7 @@ services:
       
   users-server:
     container_name: users-server
-    image: octoniusapp/octonius2.0:users-server
+    image: octoniusapp/octonius-alpha:users-server
     ports:
       - 7000:7000
     restart: always
@@ -165,7 +165,7 @@ services:
       
   posts-server:
     container_name: posts-server
-    image: octoniusapp/octonius2.0:posts-server
+    image: octoniusapp/octonius-alpha:posts-server
     ports:
       - 8000:8000
     restart: always
@@ -195,7 +195,7 @@ services:
       
   notifications-server:
     container_name: notifications-server
-    image: octoniusapp/octonius2.0:notifications-server
+    image: octoniusapp/octonius-alpha:notifications-server
     ports:
       - 9000:9000
     restart: always
@@ -225,7 +225,7 @@ services:
       
   utilities-server:
     container_name: utilities-server
-    image: octoniusapp/octonius2.0:utilities-server
+    image: octoniusapp/octonius-alpha:utilities-server
     ports:
       - 10000:10000
     restart: always
@@ -255,7 +255,7 @@ services:
 
   nginx:
     container_name: nginx
-    image: octoniusapp/octonius2.0:nginx
+    image: octoniusapp/octonius-alpha:nginx
     restart: always
     ports:
       - 8080:80
