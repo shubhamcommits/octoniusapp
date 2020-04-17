@@ -7,11 +7,9 @@ services:
     image: mvertes/alpine-mongo:latest
     restart: always
     volumes:
-      - data_db:/data/db
+      - db_data:/data/db
     ports:
-      - 27027:27017
-      - 27028:27018
-      - 27029:27019
+      - 27018:27017
     networks:
       - octonius
       
@@ -293,18 +291,18 @@ services:
       - octonius
 
 volumes:
-  data_db:
-    driver: local
+  db_data:
+    driver: bridge
     driver_opts:
       type: none
-      device: ${PWD}/data/db
+      device: ./data/db
       o: bind
 
-  data_uploads:
-    driver: local
+  uploads_data:
+    driver: bridge
     driver_opts:
       type: none
-      device: ${PWD}/data/uploads
+      device: ./data/uploads
       o: bind
       
 networks:
