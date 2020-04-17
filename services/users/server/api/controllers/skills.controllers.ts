@@ -187,7 +187,7 @@ export class SkillsControllers {
         const userId = req['userId'];
 
         // Get the query to be where the query needs to be searched
-        const { skill } = req.query;
+        let skill: any  = req.query.skill;
 
         try {
 

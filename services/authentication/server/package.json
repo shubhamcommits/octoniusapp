@@ -34,7 +34,6 @@
     "typescript": "^3.7.4"
   },
   "devDependencies": {
-    "@types/axios": "^0.14.0",
     "@types/compression": "^1.0.1",
     "@types/ejs": "^3.0.1",
     "gzipper": "^3.4.2"
