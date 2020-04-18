@@ -7,11 +7,11 @@ services:
     image: mvertes/alpine-mongo:latest
     restart: always
     volumes:
-      - data_db:/data/db
+      - alpha_db_data:/data/db
     ports:
-      - 27019:27017
+      - 27018:27017
     networks:
-      - octonius
+      - alpha
       
   mailing-server:
     container_name: mailing-server
@@ -41,7 +41,7 @@ services:
     links:
       - mongodb
     networks:
-      - octonius
+      - alpha
       
   auths-server:
     container_name: auths-server
@@ -71,7 +71,7 @@ services:
     links:
       - mongodb
     networks:
-      - octonius
+      - alpha
          
   groups-server:
     container_name: groups-server
@@ -101,7 +101,7 @@ services:
     links:
       - mongodb
     networks:
-      - octonius
+      - alpha
       
   workspaces-server:
     container_name: workspaces-server
@@ -131,7 +131,7 @@ services:
     links:
       - mongodb
     networks:
-      - octonius
+      - alpha
       
   users-server:
     container_name: users-server
@@ -161,7 +161,7 @@ services:
     links:
       - mongodb
     networks:
-      - octonius
+      - alpha
       
   posts-server:
     container_name: posts-server
@@ -191,7 +191,7 @@ services:
     links:
       - mongodb
     networks:
-      - octonius
+      - alpha
       
   notifications-server:
     container_name: notifications-server
@@ -221,7 +221,7 @@ services:
     links:
       - mongodb
     networks:
-      - octonius
+      - alpha
       
   utilities-server:
     container_name: utilities-server
@@ -251,7 +251,7 @@ services:
     links:
       - mongodb
     networks:
-      - octonius
+      - alpha
 
   nginx:
     container_name: nginx
@@ -269,17 +269,17 @@ services:
       - notifications-server
       - utilities-server
     networks:
-      - octonius
+      - alpha
 
 volumes:
-  data_db:
+  alpha_db_data:
     driver: local
     driver_opts:
       type: none
       device: ${PWD}/data/db
       o: bind
 
-  data_uploads:
+  alpha_uploads_data:
     driver: local
     driver_opts:
       type: none
@@ -287,4 +287,5 @@ volumes:
       o: bind
       
 networks:
-  octonius: {}
+  alpha: 
+    driver: bridge
