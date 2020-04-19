@@ -5,8 +5,10 @@ options:
 
 pipelines:
   branches:
-    "{refactorApplication}":
+    "{master}":
     - step:
+        caches:
+          - docker
         name: Deploy to dockerhub
         services:
           - docker
@@ -29,6 +31,8 @@ pipelines:
 
     "{refactorApplication}":
     - step:
+        caches:
+          - docker
         name: Deploy to dockerhub
         services:
           - docker
