@@ -36,7 +36,7 @@ pipelines:
         name: Deploy to dockerhub
         services:
           - docker
-        deployment: production   # can be test, staging or production.
+        deployment: staging   # can be test, staging or production.
         script: # Modify the commands below to build your repository.
           # Set $DOCKER_HUB_USERNAME and $DOCKER_HUB_PASSWORD as environment variables in repository settings
           - export CLIENT_IMAGE_NAME=octoniusapp/octonius-alpha:client
