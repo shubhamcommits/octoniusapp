@@ -1,39 +1,78 @@
-<!-- Normal Post Starts-->
+<!-- Post Starts-->
 <li class="list-group-item" *ngIf="post">
-    <!-- <div class="card "> -->
-        <div class="card-block">
-            <div class="row card-title">
+    <div class="card-block">
+        <div class="row card-title">
 
-                <!-- Image Avatar Starts -->
-                <div class="col-md-1 ">
-                    <img src="{{ baseUrl }}/uploads/{{post?._posted_by?.profile_pic}}"
-                        onerror="this.src='/assets/images/user.png'" class="feed-avatar ml-0"
-                        routerLink="/dashboard/user/profile" [queryParams]="{ userId: post?._posted_by?._id }" />
-                </div>
-                <!-- Image Avatar Ends -->
-                
-                <!-- Details of the Post Creator Starts -->
-                <div class="col-md-7">
-                    <h6>{{post?._posted_by?.first_name || 'First Name'}} {{post?._posted_by?.last_name || 'Last Name'}} <br>
-                        <span class="small lightgray date"> {{ (post?.created_date | date : 'medium') || ( this.date | date: 'medium') }}</span>
-                    </h6>
-                </div>
-                <!-- Details of the Post Creator Ends -->
+            <!-- Image Avatar Starts -->
+            <div class="col-md-1 ">
+                <img src="{{ baseUrl }}/uploads/{{post?._posted_by?.profile_pic}}"
+                    onerror="this.src='/assets/images/user.png'" class="feed-avatar ml-0"
+                    routerLink="/dashboard/user/profile" [queryParams]="{ userId: post?._posted_by?._id }" />
             </div>
+            <!-- Image Avatar Ends -->
 
-            <!-- Post Title starts -->
-            <div class="font-weight-bold" [innerHTML]="(post?.title || 'Untitled') | safe: 'html'">
+            <!-- Details of the Post Creator Starts -->
+            <div class="col-md-7">
+                <h6>{{post?._posted_by?.first_name || 'First Name'}} {{post?._posted_by?.last_name || 'Last Name'}} <br>
+                    <span class="small lightgray date">
+                        {{ (post?.created_date | date : 'medium') || ( this.date | date: 'medium') }}</span>
+                </h6>
+
+                <!-- Event Assignee detail starts -->
+                <section *ngIf="post?.type === 'event'">
+                    <span class="assigned" *ngIf="!eventAssignedToAll(post)">Assigned
+                        to {{post.event._assigned_to.length}} Member(s)
+                    </span>
+                    <span class="assigned" *ngIf="eventAssignedToAll(post)">Assigned
+                        to all Members
+                    </span>
+                </section>
+                <!-- Event Assignee detail ends -->
+
             </div>
-            <!-- Post Title ends -->
-
-            <!-- Post Content starts -->
-            <app-quill-editor *ngIf="post.content" [editorId]="('editor_' + post._id) || 'editor'" [toolbar]="false" [readOnly]="true" [contents]="post.content"></app-quill-editor>
-            <!-- Post Content ends -->
-            
-            <!-- Post Actions starts -->
-            <app-post-actions [post]="post" (delete)="deletePost($event)"></app-post-actions>
-            <!-- Post Actions ends -->
+            <!-- Details of the Post Creator Ends -->
         </div>
+
+        <!-- Normal Post Title starts -->
+        <div class="font-weight-bold" *ngIf="post.type != 'event'"
+            [innerHTML]="(post?.title || 'Untitled') | safe: 'html'">
+        </div>
+        <!-- Normal Post Title ends -->
+
+        <div class="row" *ngIf="post?.type === 'event'">
+            <div class="col-md-2 dateblock">
+                <span class="bigdate">{{post?.event.due_to | date :'dd' }}</span>
+                <br>
+                <span class="time">{{post?.event.due_to | date: 'MMMM' }}</span>
+                <br>
+                <span class="time">{{post.event.due_to | date:'HH:mm'}}</span>
+            </div>
+            <div class="col-md-9">
+                <div class="row">
+
+                    <!-- Events Post Title starts -->
+                    <div class="col-md-12 innercard font-weight-bold"
+                        [innerHTML]="(post?.title || 'Untitled') | safe: 'html'">
+                    </div>
+                    <!-- Event Post Title ends -->
+
+                    <!-- Event Post Content Starts -->
+                    <app-quill-editor *ngIf="post.content" [editorId]="('editor_' + post._id) || 'editor'"
+                        [toolbar]="false" [readOnly]="true" [contents]="post.content"></app-quill-editor>
+                    <!-- Event Post Content Ends -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Normal Post Content starts -->
+        <app-quill-editor *ngIf="post.content && post.type != 'event'" [editorId]="('editor_' + post._id) || 'editor'"
+            [toolbar]="false" [readOnly]="true" [contents]="post.content"></app-quill-editor>
+        <!-- Normal Post Content ends -->
+
+        <!-- Post Actions starts -->
+        <app-post-actions [post]="post" (delete)="deletePost($event)"></app-post-actions>
+        <!-- Post Actions ends -->
+    </div>
     <!-- </div> -->
 </li>
-<!-- Normal Post Ends -->
+<!-- Post Ends -->

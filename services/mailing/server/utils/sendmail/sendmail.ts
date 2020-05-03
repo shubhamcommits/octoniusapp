@@ -85,32 +85,41 @@ const postMailHelper = async (post: any, emailType: any, user?: any) => {
 
 /**
  * This function is acting as a helper function for event posts
- * @param res 
  * @param post 
  * @param emailType 
  */
-const eventMailHelper = async (res: Response, post: any, emailType: any) => {
+const eventMailHelper = async (post: any, emailType: any) => {
 
   // Fetch the Email Sender Details
-  const from: any = await User.findById({ _id: post._posted_by });
+  const from: any = post._posted_by
 
   // Fetch the Group Details
-  const group: any = await Group.findById({ _id: post._group });
+  const group: any = post._group
 
-  // Create Readble Stream from the Event Assignee
-  const userStream = Readable.from(post.event._assigned_to);
+  // Let usersStream
+  let userStream: any;
+
+  // If all members are selected
+  if (post.event._assigned_to.includes('all')) {
+
+    // Create Readble Stream from the Event Assignee
+    userStream = Readable.from(await User.find({
+      _groups: post._group
+    }).select('first_name email'))
+  } else {
+
+    // Create Readble Stream from the Event Assignee
+    userStream = Readable.from(post.event._assigned_to);
+  }
 
   // Send Mails to each assigned user
-  userStream.on('data', async function (user) {
-
-    // Fetch the detail of assignee
-    const to: any = await User.findById({ _id: user })
+  userStream.on('data', async (user: any) => {
 
     // Prepare Email Data
     const emailData = {
       subject: subjects[emailType],
-      toName: to.first_name,
-      toEmail: to.email,
+      toName: user.first_name,
+      toEmail: user.email,
       fromName: from.first_name,
       fromEmail: from.email,
       postTitle: post.title,
@@ -132,10 +141,6 @@ const eventMailHelper = async (res: Response, post: any, emailType: any) => {
     else if (emailType === 'eventAssigned')
       await sendMail(emailBody, emailData)
 
-    // Send status 200 response
-    return res.status(200).json({
-      message: 'User event email sent!'
-    })
   })
 }
 
@@ -658,7 +663,7 @@ const eventAssigned = async (req: Request, res: Response, next: NextFunction) =>
     const emailType = 'eventAssigned';
 
     // Send Mail to all the event assignee
-    await eventMailHelper(res, post, emailType);
+    await eventMailHelper(post, emailType);
 
     return res.status(200).json({
       message: 'Event assigned mail sent'
@@ -722,7 +727,7 @@ const scheduleEventReminder = async (req: Request, res: Response, next: NextFunc
     const emailType = 'scheduleEventReminder';
 
     // Send Mail to all the event assignee
-    await eventMailHelper(res, post, emailType);
+    await eventMailHelper(post, emailType);
 
     return res.status(200).json({
       message: 'Event reminder mail sent!'

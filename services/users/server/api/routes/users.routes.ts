@@ -1,7 +1,8 @@
 import { Auths, userFileHandler } from '../../utils';
 import express from 'express';
-import { SkillControllers, UserControllers } from '../controllers';
+import {  PostsControllers, SkillControllers, UserControllers } from '../controllers';
 
+// Routes 
 const routes = express.Router();
 
 // Define skill controllers
@@ -9,6 +10,9 @@ const skill = new SkillControllers();
 
 // Define user controllers
 const user = new UserControllers();
+
+// Define post controllers
+const post = new PostsControllers()
 
 // Define auths helper controllers
 const auths = new Auths();
@@ -34,6 +38,27 @@ routes.post('/skills/:skill', skill.addSkill);
 
 // DELETE - Remove a skill from users' skill set
 routes.delete('/skills/:skill', skill.removeSkill);
+
+
+// -| POSTS |- 
+
+// GET - Fetches the today's tasks
+routes.get('/tasks/today', post.getTodayTasks)
+
+// GET - Fetches all the overdue tasks
+routes.get('/tasks/overdue', post.getOverdueTasks);
+
+// GET - Fetches this week's tasks
+routes.get('/tasks/week', post.getThisWeekTasks)
+
+// GET - Fetches today's events
+routes.get('/events/today', post.getTodayEvents)
+
+// GET - Fetches this week's events
+routes.get('/events/week', post.getThisWeekEvents)
+
+// GET - Fetches the global feeds posts, events, and tasks
+routes.get('/global/feed', post.getGlobalFeed);
 
 
 // -| USER |-

@@ -64,20 +64,13 @@ import { GroupService } from 'src/shared/services/group-service/group.service';
 import { GroupAdminComponent } from './group/group-admin/group-admin.component';
 import { GroupCalendarComponent } from './group/group-calendar/group-calendar.component';
 import { GroupActivityComponent } from './group/group-activity/group-activity.component';
-import { SendPulseComponent } from './group/group-activity/send-pulse/send-pulse.component';
-import { GroupInformationComponent } from './group/group-activity/group-information/group-information.component';
 import { DeleteGroupComponent } from './group/group-admin/delete-group/delete-group.component';
-import { GroupPostboxComponent } from './group/group-postbox/group-postbox.component';
-import { NewsPillComponent } from './group/group-activity/news-pill/news-pill.component';
-import { GroupPostSelectionComponent } from './group/group-postbox/group-post-selection/group-post-selection.component';
-import { GroupCreatePostComponent } from './group/group-postbox/group-create-post/group-create-post.component'; 
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { GroupKanbanBoardsComponent } from './group/group-kanban-boards/group-kanban-boards.component';
 import { CreateColumnComponent } from './group/group-kanban-boards/create-column/create-column.component';
 import { BoardBarComponent } from './group/group-kanban-boards/board-bar/board-bar.component';
 import { NewTaskComponent } from './group/group-kanban-boards/new-task/new-task.component';
 import { EditColumnComponent } from './group/group-kanban-boards/edit-column/edit-column.component';
-
 
  
 /**
@@ -151,19 +144,7 @@ import { EditColumnComponent } from './group/group-kanban-boards/edit-column/edi
 
     GroupActivityComponent,
 
-    SendPulseComponent,
-
-    GroupInformationComponent,
-
     DeleteGroupComponent,
-
-    GroupPostboxComponent,
-
-    NewsPillComponent,
-
-    GroupPostSelectionComponent,
-
-    GroupCreatePostComponent,
 
     GroupKanbanBoardsComponent,
 

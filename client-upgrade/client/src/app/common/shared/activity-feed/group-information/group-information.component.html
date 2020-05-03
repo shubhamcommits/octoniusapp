@@ -1,0 +1,21 @@
+<div class="sidecontent">
+    <div class="card sideinnercard">
+        <div class="card-block">
+
+            <!-- Group Information Header starts -->
+            <h6 class="card-title" *ngIf="!myWorkplace"><b>Group Info</b></h6>
+            <h6 class="card-title" *ngIf="myWorkplace"><b>Personal Workplace</b></h6>
+            <!-- Group Information Header ends -->
+
+            <hr />
+
+            <!-- Group Information details starts -->
+            <p class="card-text" *ngIf="!myWorkplace"><strong>{{groupData?.members_count || 0 }}</strong> Members</p>
+            <p class="card-text" *ngIf="!myWorkplace">{{groupData?.description}}</p>
+            <p class="card-text" *ngIf="myWorkplace">This is your personal space. Everything you create here is private.
+            </p>
+            <!-- Group Information details ends -->
+            
+        </div>
+    </div>
+</div>

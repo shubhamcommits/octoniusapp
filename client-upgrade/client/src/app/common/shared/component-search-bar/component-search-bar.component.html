@@ -39,8 +39,7 @@
 
                 <!-- Changing role functionality starts -->
                 <div class="dropdown" *ngIf="member.role != 'owner' && type == 'workspace'">
-                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">Manage
-                        {{ member?.first_name }}
+                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">Manage User
                         <span class="caret"></span>
                     </button>
 
@@ -77,5 +76,5 @@
 <!-- Loading Spinner Ends -->
 
 <!-- Section separator indicator starts -->
-<app-section-separator *ngIf="!moreToLoad"></app-section-separator>
+<!-- <app-section-separator *ngIf="!moreToLoad"></app-section-separator> -->
 <!-- Section separator indicator ends -->

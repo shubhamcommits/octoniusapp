@@ -15,6 +15,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "dev": "ng serve",
     "build": "ng build",
     "prod": "ng build --prod",
     "gzip": "gzipper --verbose ./dist ./gzipped",

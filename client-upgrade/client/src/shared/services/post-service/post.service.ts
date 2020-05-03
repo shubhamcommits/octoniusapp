@@ -65,6 +65,36 @@ export class PostService {
     return request;
   }
 
+
+  /**
+   * This service function is responsible for fetching the tasks and events present in month
+   * @param year 
+   * @param month 
+   * @param groupId 
+   * @param userId 
+   */
+  getCalendarPosts(year: any, month: any, groupId: string, userId?: string){
+    if(userId){
+      return this._http.get(this.baseURL + `/calendar/posts`, {
+        params:{
+          year: year,
+          month: month,
+          groupId: groupId,
+          userId: userId
+        }
+      }).toPromise();
+    }
+    else{
+      return this._http.get(this.baseURL + `/calendar/posts`, {
+        params:{
+          year: year,
+          month: month,
+          groupId: groupId
+        }
+      }).toPromise();
+    }
+  }
+
   /**
    * This function is resposible for changing the task status of a post
    * @param postId 

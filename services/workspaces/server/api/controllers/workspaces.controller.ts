@@ -224,14 +224,14 @@ export class WorkspaceController {
             };
 
             // Check if the group exist or not
-            const groupExist = await Group.findOne({
+            const privateGroup = await Group.findOne({
                 group_name: newGroupData.group_name,
                 _admins: newGroupData._admins,
                 workspace_name: newGroupData.workspace_name
             });
 
             // Send error if the personal group exists
-            if (!!groupExist) {
+            if (!!privateGroup) {
                 return sendError(res, new Error('Group name already taken, please choose another name!'), 'Group name already taken, please choose another name!', 409);
             } else {
 
@@ -245,7 +245,10 @@ export class WorkspaceController {
                 }, {
                     $push: {
                         _groups: group
-                    }
+                    },
+                    $set: {
+                        _private_group: privateGroup
+                      }
                 }, {
                     new: true
                 });

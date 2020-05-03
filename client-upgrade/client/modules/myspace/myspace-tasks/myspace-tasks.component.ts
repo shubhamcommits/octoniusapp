@@ -20,44 +20,58 @@ export class MyspaceTasksComponent implements OnInit {
   overdueAndTodayTasks = [];
 
   async ngOnInit() {
-    this.utilityService.startForegroundLoader();
     this.todayTasks = await this.getUserTodayTasks();
     this.thisWeekTasks = await this.getUserThisWeekTasks();
     this.overdueTasks = await this.getUserOverdueTasks();
-    return this.utilityService.stopForegroundLoader();
+
+    this.markOverdueTasks();
+    this.overdueAndTodayTasks = this.overdueTasks.concat(this.todayTasks);
   }
 
   async getUserTodayTasks() {
-    let userService = this.injector.get(UserService);
-    userService.getUserTodayTasks()
-      .then((res) => {
-        return res['tasks']
-      })
-      .catch(() => {
-        return [];
-      })
+    return new Promise((resolve, reject) => {
+      let userService = this.injector.get(UserService);
+      userService.getUserTodayTasks()
+        .then((res) => {
+          resolve(res['tasks'])
+        })
+        .catch(() => {
+          reject([])
+        })
+    })
   }
 
   async getUserThisWeekTasks() {
-    let userService = this.injector.get(UserService);
-    userService.getUserThisWeekTasks()
-      .then((res) => {
-        return res['tasks']
-      })
-      .catch(() => {
-        return [];
-      })
+    return new Promise((resolve, reject) => {
+      let userService = this.injector.get(UserService);
+      userService.getUserThisWeekTasks()
+        .then((res) => {
+          resolve(res['tasks'])
+        })
+        .catch(() => {
+          reject([])
+        })
+    })
   }
 
   async getUserOverdueTasks() {
-    let userService = this.injector.get(UserService);
-    userService.getUserOverdueTasks()
-      .then((res) => {
-        return res['tasks']
-      })
-      .catch(() => {
-        return [];
-      })
+    return new Promise((resolve, reject) => {
+      let userService = this.injector.get(UserService);
+      userService.getUserOverdueTasks()
+        .then((res) => {
+          resolve(res['tasks'])
+        })
+        .catch(() => {
+          reject([])
+        })
+    })
+  }
+
+  private markOverdueTasks() {
+    this.overdueTasks = this.overdueTasks.map(task => {
+      task.overdue = true;
+      return task;
+    });
   }
 
 }

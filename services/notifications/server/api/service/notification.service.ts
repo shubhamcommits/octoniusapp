@@ -1,4 +1,5 @@
-import { Notification } from "../models";
+import { Notification, User } from "../models";
+import { Readable } from 'stream';
 
 /*  ===============================
  *  -- NOTIFICATIONS Service --
@@ -35,7 +36,24 @@ export class NotificationsService {
      */
     async newEventAssignments(post: any) {
         try {
-            await post.event._assigned_to.forEach(async (user: any) => {
+
+            // Let usersStream
+            let userStream: any;
+
+            // If all members are selected
+            if (post.event._assigned_to.includes('all')) {
+
+                // Create Readble Stream from the Event Assignee
+                userStream = Readable.from(await User.find({
+                    _groups: post._group
+                }).select('first_name email'))
+            } else {
+
+                // Create Readble Stream from the Event Assignee
+                userStream = Readable.from(post.event._assigned_to);
+            }
+
+            await userStream.on('data', async (user: any) => {
                 const notification = await Notification.create({
                     _actor: post._posted_by,
                     _owner: user,
@@ -135,7 +153,7 @@ export class NotificationsService {
     /**
      * This function is responsible for fetching the latest first 5 un-read notifications
      * @param userId 
-     */    
+     */
     async getUnread(userId: string) {
         try {
             const notifications = await Notification.find({

@@ -1,3 +1,4 @@
+<!-- Assignee section for tasks starts -->
 <section [id]="post?._id" *ngIf="type === 'task'">
     <img src="{{baseUrl}}/uploads/{{taskAssignee?.profile_pic}}" onerror="this.src='/assets/images/user.png'"
         class="feed-avatar">
@@ -9,11 +10,15 @@
         [userData]="userData" [type]="type" (member)="getMemberDetails($event)">
     </app-component-search-input-box>
 </section>
+<!-- Assignee section for tasks ends -->
 
+<!-- Assignee section for events starts -->
 <section [id]="post?._id" *ngIf="type === 'event'">
-    <p><strong>Assigned to {{ eventMembersMap.size }} member(s)</strong></p>
+    <p *ngIf="!eventAssignedToAll(eventMembersMap)"><strong>Assigned to {{ eventMembersMap.size }} member(s)</strong></p>
+    <p *ngIf="eventAssignedToAll(eventMembersMap)"><strong>Assigned to all team member(s)</strong></p>
     <app-component-search-input-box *ngIf="type === 'event' && userData && checkDataExist(userData)"
         [placeholder]="'Search members to assign this event...'" [groupId]="groupId" [workspaceId]="userData._workspace"
         [userData]="userData" [type]="type" (member)="getMemberDetails($event)">
     </app-component-search-input-box>
 </section>
+<!-- Assignee section for events ends -->

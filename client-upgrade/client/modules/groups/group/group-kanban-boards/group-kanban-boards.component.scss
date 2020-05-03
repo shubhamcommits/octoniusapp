@@ -181,3 +181,12 @@ section{
         margin-top: auto !important;
     }
 }
+
+img{
+    cursor: pointer;
+    transition: transform .2s ease;
+  }
+  
+  img:hover{
+    transform: scale(1.1);
+  }

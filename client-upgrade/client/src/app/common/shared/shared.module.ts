@@ -34,7 +34,19 @@ import { TaskStatusComponent } from './posts/post-actions/task-status/task-statu
 import { ChangeColumnComponent } from './posts/post-actions/change-column/change-column.component';
 import { PostTagsComponent } from './posts/post-tags/post-tags.component';
 import { InfiniteScrollComponent } from './infinite-scroll/infinite-scroll.component';
-
+import { ProgressBarComponent } from './progress-bar/progress-bar.component';
+import { SelectMemberComponent } from './select-member/select-member.component';
+import { ActivityFeedComponent } from './activity-feed/activity-feed.component';
+import { NewsPillComponent } from './activity-feed/news-pill/news-pill.component';
+import { GroupTaskProgressComponent } from './activity-feed/group-task-progress/group-task-progress.component';
+import { GroupInformationComponent } from './activity-feed/group-information/group-information.component';
+import { SendPulseComponent } from './activity-feed/send-pulse/send-pulse.component';
+import { GroupActivityFeedComponent } from './activity-feed/group-activity-feed/group-activity-feed.component';
+import { GroupPostboxComponent } from './activity-feed/group-postbox/group-postbox.component';
+import { GroupPostSelectionComponent } from './activity-feed/group-postbox/group-post-selection/group-post-selection.component';
+import { GroupCreatePostComponent } from './activity-feed/group-postbox/group-create-post/group-create-post.component';
+import { TaskSmartCardComponent } from './activity-feed/task-smart-card/task-smart-card.component';
+import { AgendaSmartCardComponent } from './activity-feed/agenda-smart-card/agenda-smart-card.component';
 
 @NgModule({
   declarations: [
@@ -69,7 +81,33 @@ import { InfiniteScrollComponent } from './infinite-scroll/infinite-scroll.compo
 
     PostTagsComponent,
 
-    InfiniteScrollComponent
+    InfiniteScrollComponent,
+
+    ProgressBarComponent,
+
+    SelectMemberComponent,
+
+    ActivityFeedComponent,
+
+    SendPulseComponent,
+
+    GroupInformationComponent,
+
+    GroupTaskProgressComponent,
+
+    NewsPillComponent,
+
+    GroupActivityFeedComponent,
+
+    GroupPostboxComponent,
+
+    GroupPostSelectionComponent,
+
+    GroupCreatePostComponent,
+
+    TaskSmartCardComponent,
+
+    AgendaSmartCardComponent
   ],
   imports: [
     CommonModule,
@@ -111,7 +149,30 @@ import { InfiniteScrollComponent } from './infinite-scroll/infinite-scroll.compo
     ChangeColumnComponent,
     InfiniteScrollModule,
     QuicklinkModule,
-    InfiniteScrollComponent
+    InfiniteScrollComponent,
+    ProgressBarComponent,
+    SelectMemberComponent,
+    SendPulseComponent,
+
+    GroupInformationComponent,
+
+    GroupTaskProgressComponent,
+
+    NewsPillComponent,
+
+    GroupActivityFeedComponent,
+
+    GroupPostboxComponent,
+
+    GroupPostSelectionComponent,
+
+    GroupCreatePostComponent,
+
+    ActivityFeedComponent,
+
+    TaskSmartCardComponent,
+
+    AgendaSmartCardComponent
   ]
 })
 export class SharedModule { }

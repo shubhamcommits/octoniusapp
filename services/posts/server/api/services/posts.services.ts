@@ -14,7 +14,7 @@ export class PostService {
   userFields: any = 'first_name last_name profile_pic role email';
 
   // Select Group Fileds on population
-  groupFields: any = 'group_name group_avatar';
+  groupFields: any = 'group_name group_avatar workspace_name';
 
 
   /**
@@ -190,21 +190,22 @@ export class PostService {
       filteredPosts = posts
         .sort('-_id')
         .limit(5)
-        .populate('_posted_by', this.userFields)
-        .populate('task._assigned_to', this.userFields)
-        .populate('event._assigned_to', this.userFields)
-        .populate('_liked_by', this.userFields)
-        .populate('_followers', this.userFields)
+        .populate({ path: '_posted_by', select: this.userFields })
+        .populate({ path: 'task._assigned_to', select: this.userFields })
+        // .populate({ path: 'event._assigned_to', select: this.userFields })
+        .populate({ path: '_liked_by', select: this.userFields, options: { limit: 10 } })
+        .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
         .lean();
 
     // If all tasks are selected
     else if (type === 'task')
       filteredPosts = posts
         .sort('-task.due_to')
-        .populate('_group', this.groupFields)
-        .populate('_posted_by', this.userFields)
-        .populate('task._assigned_to', this.userFields)
-        .populate('_liked_by', 'first_name')
+        .populate({ path: '_group', select: this.groupFields })
+        .populate({ path: '_posted_by', select: this.userFields })
+        .populate({ path: 'task._assigned_to', select: this.userFields })
+        .populate({ path: '_liked_by', select: this.userFields, options: { limit: 10 } })
+        .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
         .lean();
 
     // Return group posts
@@ -222,7 +223,8 @@ export class PostService {
       post = await Post.populate(post, [
         { path: 'task._assigned_to', select: this.userFields },
         { path: '_group', select: this.groupFields },
-        { path: '_posted_by', select: this.userFields }
+        { path: '_posted_by', select: this.userFields },
+        { path: '_liked_by', select: this.userFields, options: { limit: 10 } }
       ]);
 
     } else if (post.type === 'performance_task') {
@@ -231,24 +233,36 @@ export class PostService {
       post = await Post.populate(post, [
         { path: 'performance_task._assigned_to', select: this.userFields },
         { path: '_group', select: this.groupFields },
-        { path: '_posted_by', select: this.userFields }
+        { path: '_posted_by', select: this.userFields },
+        { path: '_liked_by', select: this.userFields, options: { limit: 10 } }
       ]);
 
     } else if (post.type === 'event') {
 
       // Populate event properties
-      post = await Post.populate(post, [
-        { path: 'event._assigned_to', select: this.userFields },
-        { path: '_group', select: this.groupFields },
-        { path: '_posted_by', select: this.userFields }
-      ]);
+      if(post.event._assigned_to.includes('all')){
+        post = await Post.populate(post, [
+          { path: '_group', select: this.groupFields },
+          { path: '_posted_by', select: this.userFields },
+          { path: '_liked_by', select: this.userFields, options: { limit: 10 } }
+        ])
+      } else {
+        post = await Post.populate(post, [
+          { path: 'event._assigned_to', select: this.userFields },
+          { path: '_group', select: this.groupFields },
+          { path: '_posted_by', select: this.userFields },
+          { path: '_liked_by', select: this.userFields, options: { limit: 10 } }
+        ])
+      }
+
 
     } else if (post.type === 'normal') {
 
       // Populate normal post properties
       post = await Post.populate(post, [
         { path: '_group', select: this.groupFields },
-        { path: '_posted_by', select: this.userFields }
+        { path: '_posted_by', select: this.userFields },
+        { path: '_liked_by', select: this.userFields, options: { limit: 10 } }
       ]);
     }
 
@@ -304,17 +318,17 @@ export class PostService {
       case 'event':
 
         // Real time notification for new event assignment
-        await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-event`, {
+        http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-event`, {
           post: post
         })
 
         // Email notification for the new email assignment
-        await http.post(`${process.env.MAILING_SERVER_API}/event-assigned`, {
+        http.post(`${process.env.MAILING_SERVER_API}/event-assigned`, {
           post: post
         })
 
         // Schedule event reminder, which will be called in future
-        await http.post(`${process.env.MAILING_SERVER_API}/event-reminder`, {
+        http.post(`${process.env.MAILING_SERVER_API}/event-reminder`, {
           post: post
         })
 
@@ -339,11 +353,11 @@ export class PostService {
       // Create new post
       let post: any = await Post.create(postData);
 
-      // Send all the required emails and notifications
-      await this.sendNotifications(post);
-
       // populate the assigned_to property of this document
       post = await this.populatePostProperties(post);
+
+      // Send all the required emails and notifications
+      this.sendNotifications(post);
 
       // Return Post Object
       return post;
@@ -408,8 +422,7 @@ export class PostService {
           // transform due_to time to UTC
           post.date_due_to = moment.utc(post.date_due_to).format();
 
-          // make arr with ids user who got assigned to event
-          const assignedUsers = post.assigned_to.map((item, index) => item._id);
+          let assignedUsers: any = post._assigned_to
 
           // Add Event property details
           postData.event = {
@@ -464,24 +477,29 @@ export class PostService {
    * This function is responsible for retrieving a post
    * @param postId
    */
-  get = async (postId) => {
+  async get(postId: string) {
     try {
+
       // Get post data
       const post = await Post.findOne({
         _id: postId
       })
-        .populate('_group', '_id')
-        .populate('_posted_by', 'first_name last_name profile_pic')
-        .populate('_liked_by', 'first_name last_name')
-        .populate('comments._commented_by', 'first_name last_name profile_pic')
-        .populate('task._assigned_to', 'first_name last_name')
-        // .populate('task._column', 'title')
-        .populate('performance_task._assigned_to', 'first_name last_name')
-        .populate('event._assigned_to', 'first_name last_name')
+        .populate('_group', this.groupFields)
+        .populate('_posted_by', this.userFields)
+        .populate('_liked_by', this.userFields)
+        .populate('comments._commented_by', this.userFields)
+        .populate('task._assigned_to', this.userFields)
+        .populate('task._column', 'title')
+        .populate('performance_task._assigned_to', this.userFields)
+        .populate('event._assigned_to', this.userFields)
         .lean();
 
-      return post;
+      // Return the post
+      return post
+
     } catch (err) {
+
+      // Return with error
       throw (err);
     }
   };
@@ -577,9 +595,8 @@ export class PostService {
       const post = await Post.findOneAndUpdate({
         _id: postId
       }, {
-        $addToSet: {
-          _liked_by: userId
-        }
+        $addToSet: { _liked_by: userId },
+        $inc:{ likes_count: 1 }
       }, {
         new: true
       })
@@ -609,9 +626,8 @@ export class PostService {
       const post = await Post.findOneAndUpdate({
         _id: postId
       }, {
-        $pull: {
-          _liked_by: userId
-        }
+        $pull: { _liked_by: userId },
+        $inc:{ likes_count: -1 }
       }, {
         new: true
       })
@@ -1029,23 +1045,23 @@ export class PostService {
    * Fetch posts for recent activity
    * @param userId 
    */
-  async getRecentActivity(userId: any){
+  async getRecentActivity(userId: any) {
     try {
       var groupList: any = await User.find({ '_id': userId }).select("_groups");
       groupList = groupList[0]['_groups'];
       const today = moment().local().startOf('day').format();
-      if (groupList.length > 0){
+      if (groupList.length > 0) {
         var posts: any = await Post.find({
           '_group': { $in: groupList },
-          $and: [ { 'created_date': { $gte: today } } ]
+          $and: [{ 'created_date': { $gte: today } }]
         }).sort('-created_date').limit(10);
         return posts;
       }
-      else{
+      else {
         return null;
       }
     } catch (error) {
-      throw(error);
+      throw (error);
     }
   }
 
@@ -1055,26 +1071,26 @@ export class PostService {
    * @param userId 
    * @param lastPostId 
    */
-  async getNextRecentActivity(userId: any, lastPostId: any){
+  async getNextRecentActivity(userId: any, lastPostId: any) {
     try {
       var groupList: any = await User.find({ '_id': userId }).select("_groups");
       groupList = groupList[0]['_groups'];
       const todayMinus7Days = moment().local().subtract(7, 'days').endOf('day').format();
-      if (groupList.length > 0){
+      if (groupList.length > 0) {
         var posts: any = await Post.find({
           '_group': { $in: groupList },
           $and: [
-          { '_id': { $lt: lastPostId } },
-          { 'created_date': { $gte: todayMinus7Days } }
+            { '_id': { $lt: lastPostId } },
+            { 'created_date': { $gte: todayMinus7Days } }
           ]
         }).sort('-created_date').limit(5);
         return posts;
       }
-      else{
+      else {
         return null;
       }
     } catch (error) {
-      throw(error);
+      throw (error);
     }
   }
 
@@ -1083,7 +1099,7 @@ export class PostService {
    * Fetch recent groups
    * @param userId 
    */
-  async getRecentGroups(userId: any){
+  async getRecentGroups(userId: any) {
     try {
       // Get 2 recent posted groups
       var fromPost: any = await Post.find({
@@ -1097,22 +1113,22 @@ export class PostService {
 
       // Create groupList and sort
       var groupsList = [];
-      for (var i in fromPost)groupsList.push(fromPost[i]);
-      for (var i in fromComment)groupsList.push(fromComment[i]);
-      groupsList.sort((obj1, obj2)=>{
-        return obj2.created_date > obj1.created_date?1:-1;
+      for (var i in fromPost) groupsList.push(fromPost[i]);
+      for (var i in fromComment) groupsList.push(fromComment[i]);
+      groupsList.sort((obj1, obj2) => {
+        return obj2.created_date > obj1.created_date ? 1 : -1;
       });
 
       // Get unique groups
       var groupSet = new Set();
       var index = 0;
-      while (groupSet.size != 2){
+      while (groupSet.size != 2) {
         groupSet.add(groupsList[index]._group);
         index++;
       }
       return groupSet;
     } catch (error) {
-      throw(error);
+      throw (error);
     }
   }
 

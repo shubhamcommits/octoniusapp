@@ -34,10 +34,18 @@ const CommentSchema = new Schema({
         ref: 'Post',
         required: true
     },
+    likes_count: {
+        type: Number,
+        default: 0
+    },
     _liked_by: [{
         type: Schema.Types.ObjectId,
         ref: 'User'
     }],
+    read_count:{
+        type: Number,
+        default: 0
+    },
     _read_by: [{
         type: Schema.Types.ObjectId,
         ref: 'User'

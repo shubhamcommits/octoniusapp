@@ -1,0 +1,52 @@
+<div *ngIf="today_task_count == 0 && overdueTasks.length == 0" class="smart-card col mr-24">
+    <a href="/#/dashboard/overview/mytasks?mytasks=true">
+        <div class="card-title mt-1">Tasks</div>
+        <div class="row">
+            <div class="card-first-column col-md-12">You're all done.</div>
+        </div>
+        <div class="row">
+            <div class="card-first-column col-md-12">Get some fresh air.</div>
+        </div>
+        <div class="row">
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-5"></div>
+            <div class="col-md-7">
+                <img src='../../../../../assets/images/inbox-tasks-card-empty.svg'>
+            </div>
+        </div>
+    </a>
+</div>
+
+<div>
+    <div class="smart-card mr-24 col">
+        <a href="/#/dashboard/overview/mytasks?mytasks=true">
+            <div class="card-title mt-1">Tasks</div>
+            <div class="row">
+
+                <div class="col-md-6">
+                    <div class="card-first-column">{{today_task_count}} for today</div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="media card-tile overview-task">
+                        <div class="group-tasks to-do-task col-md-3">{{to_do_task_count}}</div>
+                        <div class="group-tasks in-progress-task col-md-3">{{in_progress_task_count}}</div>
+                        <div class="group-tasks done-task col-md-3">{{done_task_count}}</div>
+                        <div class="group-tasks overdue-task col-md-3">{{overdueTasks.length}}</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="overdue-total-tasks">{{overdueTasks.length}} overdue</div>
+            <div class="row">
+                <div class="col-md-6"></div>
+                <div class="col-md-6">
+                    <img src='../../../../../assets/images/tasks-smart-card.svg'>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>

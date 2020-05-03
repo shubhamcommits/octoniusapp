@@ -10,7 +10,10 @@ export class GroupInformationComponent implements OnInit {
   constructor() { }
 
   // Group Data Variable
-  @Input('groupData') groupData: any
+  @Input('groupData') groupData: any;
+
+  // My workplace variable check
+  @Input('myWorkplace') myWorkplace = false;
 
   ngOnInit() {
   }

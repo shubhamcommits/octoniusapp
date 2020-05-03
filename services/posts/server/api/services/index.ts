@@ -1,5 +1,6 @@
-import { PostService } from './posts.services';
+import { CalendarService } from './calendars.services';
 import { CommentsService } from './comments.services';
+import { PostService } from './posts.services';
 import { TagsService } from './tags.service';
 
 
@@ -8,7 +9,8 @@ import { TagsService } from './tags.service';
  *  ==========================
  * */
 export { 
-    PostService as PostService,
+    CalendarService as CalendarService,
     CommentsService as CommentsService,
+    PostService as PostService,
     TagsService as TagsService 
 };

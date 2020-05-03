@@ -35,101 +35,47 @@ fi
     # Go to services directory
     cd services
 
-    : '|- MAILING SERVER -|'
-    # Go to mailing directory
-    cd mailing/server
+    # Define the service Directory array
+    serviceArray=( 'mailing/server' 'authentication/server' 'groups/server' 'workspaces/server' 'users/server' 'utilities/server' 'notifications/server' 'posts/server' 'client-upgrade/client' )
 
-    # Start the dev server and push the process into background - port 2000
-    pm2 start "$packageManager run dev" --name "mailing-server"
+    # Loop through all the directories and install the packages 
+    for i in "${serviceArray[@]}"
+    do
+        # Slice the name of service from the entire directory name
+        service="$(cut -d'/' -f1 <<<"$i")"
 
-    # Go back to main working directory(i.e. - services/)
-    cd -
+        # If Directory is client-upgrade
+        if [ "$i" == 'client-upgrade/client' ]
+            
+        then
+            cd $mainDir
+            service="client"
+        
+        fi
 
-    : '|- AUTHENTICATION SERVER -|'
+        # If Directory is authentication
+        if [ "$service" == "authentication" ]
+            
+        then
+            service="auths"
+        
+        fi
 
-    # Go to authentication directory
-    cd authentication/server
+        # Go to service directory
+        cd $i
 
-    # Start the dev server and push the process into background - port 3000
-    pm2 start "$packageManager run dev" --name "auths-server"
+        # Echo the Status
+        echo -e "\n \t Starting $service Service..."
 
-    # Go back to main working directory(i.e. - services/)
-    cd -
+        # Start the process and push it to background
+        pm2 start "$packageManager run dev" --name "$service-server"
 
-    : '|- GROUPS SERVER -|'
+        # Wait for process to get completed
+        wait
 
-    # Go to groups directory
-    cd groups/server
+        # Echo the status
+        echo -e "\n \t $service Service has been started successfully!"  
 
-    # Start the dev server and push the process into background - port 4000
-    pm2 start "$packageManager run dev" --name "groups-server"
-
-    # Go back to main working directory(i.e. - services/)
-    cd -
-
-    : '|- WORKSPACE SERVER -|'
-    # Go to workspaces directory
-    cd workspaces/server
-
-    # Start the dev server and push the process into background - port 5000
-    pm2 start "$packageManager run dev" --name "workspaces-server"
-
-    # Go back to main working directory(i.e. - services/)
-    cd -
-
-    : '|- USERS SERVER -|'
-    # Go to users directory
-    cd users/server
-
-    # Start the dev server and push the process into background - port 7000
-    pm2 start "$packageManager run dev" --name "users-server"
-
-    # Go back to main working directory(i.e. - services/)
-    cd -
-
-    : '|- POSTS SERVER -|'
-    # Go to posts directory
-    cd posts/server
-
-    # Start the dev server and push the process into background - port 8000
-    pm2 start "$packageManager run dev" --name "posts-server"
-
-    # Go back to main working directory(i.e. - services/)
-    cd -
-
-    : '|- NOTIFICATIONS SERVER -|'
-    # Go to notifications directory
-    cd notifications/server
-
-    # Start the dev server and push the process into background - port 9000
-    pm2 start "$packageManager run dev" --name "notifications-server"
-
-    # Go back to main working directory(i.e. - services/)
-    cd -
-
-    : '|- UTILITIES SERVER -|'
-    # Go to utilities directory
-    cd utilities/server
-
-    # Start the dev server and push the process into background - port 10000
-    pm2 start "$packageManager run dev" --name "utilities-server"
-
-    # Go back to main working directory(i.e. - services/)
-    cd -
-
-    : '|- CLIENT SERVER -|'
-    
-    # Checkout to main directory
-    cd $mainDir
-
-    # Go to the client directory
-    cd client-upgrade/client
-
-    # Console Message
-    echo "Starting the client server..."
-
-    # Start the dev server and push the process into background - port 4200
-    pm2 start "ng serve" --name "client-server"
-
-    # Go back to main working directory(i.e. - services/)
-    cd -
+        # Go back to main working directory(i.e. - services/)
+        cd -
+    done

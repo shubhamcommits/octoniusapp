@@ -3,6 +3,7 @@ import { environment } from 'src/environments/environment';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import moment from 'moment';
 
 @Component({
   selector: 'app-group-create-post',
@@ -76,6 +77,12 @@ export class GroupCreatePostComponent implements OnInit {
 
   // Members Map of Event Asignee
   eventMembersMap: any = new Map()
+
+  // Due Time Object to map the due dates
+  dueTime: any = {
+    hour: 1,
+    minute: 30
+  }
 
   /* Event Variables */
 
@@ -154,21 +161,9 @@ export class GroupCreatePostComponent implements OnInit {
 
     this.member.emit(memberMap)
 
-    // if (this.type == 'task') {
-
-    //   // Set the Assign state of task to be true
-    //   this.assigned = true
-
-    //   // Assign the value of member map to the taskAssignee variable
-    //   for (let member of memberMap.values())
-    //     this.taskAssignee = member
-
-    // } else if (this.type == 'event') {
-
-    //   // Assign the eventMembersMap to the output from component
-    //   this.eventMembersMap = memberMap
-
-    // }
+    if(this.type == 'event'){
+      this.eventMembersMap = memberMap;
+    }
 
   }
 
@@ -195,6 +190,14 @@ export class GroupCreatePostComponent implements OnInit {
   }
 
   /**
+   * This function is responsible for receiving the time from @module <app-time-picker></app-time-picker>
+   * @param timeObject 
+   */
+  getTime(timeObject: any) {
+    this.dueTime = timeObject
+  }
+
+  /**
    * This function receives the output from the tags components
    * @param tags 
    */
@@ -215,13 +218,32 @@ export class GroupCreatePostComponent implements OnInit {
   createPost() {
 
     // Prepare Post Data
-    let postData = {
+    let postData: any = {
       title: this.title,
       content: JSON.stringify(this.quillData.contents),
       type: this.type,
       _posted_by: this.userData._id,
       _group: this.groupId,
-      _content_mentions: this._content_mentions
+      _content_mentions: this._content_mentions,
+      tags: this.tags
+    }
+
+    // If Post type is event, then add due_to property too
+    if(this.type === 'event'){
+
+      // Create the due_to date
+      let due_to = new Date(
+        new Date(this.dueDate).getFullYear(), 
+        new Date(this.dueDate).getMonth(), 
+        new Date(this.dueDate).getDate(), 
+        this.dueTime.hour, 
+        this.dueTime.minute)
+
+      // Add event.due_to property to the postData
+      postData.event = {
+        due_to:moment(due_to).format(),
+        _assigned_to: (this.eventMembersMap.has('all')) ? 'all' : Array.from( this.eventMembersMap.keys() )
+      }
     }
 
     // Create FormData Object

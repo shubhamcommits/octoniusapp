@@ -97,7 +97,9 @@ function init(server: any){
             const roomName = `${room.workspace}_${room.group}`;
 
             // join room
-            socket.join(roomName);
+            socket.join(roomName, ()=>{
+                console.log('User joined Group: ', roomName)
+            });
         });
 
         // -| POSTS NOTIFICATIONS |-
@@ -108,14 +110,12 @@ function init(server: any){
         });
 
         // Listen to new post creation
-        socket.on('newPost', (data) => {
-            // notifyRelatedUsers(io, socket, data);
-            // notifyGroupPage(socket, data);
-        });
-
         socket.on('postAdded', (data) => {
             const roomName = `${data.workspace}_${data.group}`;
             // Broadcast add event to group
+
+            console.log(roomName)
+
             socket.broadcast.to(roomName).emit('postAddedInGroup', data);
         });
 

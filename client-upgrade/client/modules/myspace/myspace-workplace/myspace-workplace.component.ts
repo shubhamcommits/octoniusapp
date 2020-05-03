@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Injector } from '@angular/core';
+import { PublicFunctions } from 'src/app/dashboard/public.functions';
 
 @Component({
   selector: 'app-myspace-workplace',
@@ -7,9 +8,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MyspaceWorkplaceComponent implements OnInit {
 
-  constructor() { }
+  constructor(private injector: Injector) { }
 
-  ngOnInit() {
+  // Current User Data
+  userData: any;
+
+  // Public Functions
+  public publicFunctions = new PublicFunctions(this.injector);
+
+  async ngOnInit() {
+
+    // Fetch current user details
+    this.userData = await this.publicFunctions.getCurrentUser();
   }
 
 }

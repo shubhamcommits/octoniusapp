@@ -30,7 +30,7 @@
             (status)="changeTaskStatus($event)"></app-task-status>
           <app-change-column class="inline-block ml-5" *ngIf="type === 'task' && columns" [post]="postData"
             [columns]="columns" (moveTask)="moveTaskToColumn($event)"></app-change-column>
-          <app-time-picker class="ml-5" *ngIf="type === 'event'"></app-time-picker>
+          <app-time-picker class="ml-5" *ngIf="type === 'event'" (time)="getTime($event)"></app-time-picker>
         </section>
       </div>
     </div>

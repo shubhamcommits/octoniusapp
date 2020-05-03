@@ -134,14 +134,6 @@ export class UserService {
     return this._http.get(this.BASE_API_URL + `/${data.groupId}/user/${data.userId}/calendar/${data.year}/${data.month}`);
   }
 
-  getUserTodayEvents(data) {
-    return this._http.get(this.BASE_API_URL + `/${data.userId}/todayEvents`);
-  }
-
-  getUserThisWeekEvents(data) {
-    return this._http.get(this.BASE_API_URL + `/${data.userId}/weeklyEvents`);
-  }
-
   getLikedPostsCount() {
     return this._http.get<any>(this.BASE_API_URL + `/likedPostsCount`);
   }
@@ -154,23 +146,52 @@ export class UserService {
    * USER TODAY'S TASK
    */
   getUserTodayTasks() {
-    return this._http.get(this.BASE_API_URL + `/todayTasks`).toPromise();
+    return this._http.get(this.BASE_API_URL + `/tasks/today`).toPromise();
   }
 
   /**
    * USER THIS WEEK'S TASK
    */
   getUserThisWeekTasks() {
-    return this._http.get(this.BASE_API_URL + `/users/weeklyTasks`).toPromise();
+    return this._http.get(this.BASE_API_URL + `/tasks/week`).toPromise();
   }
 
   /**
    * USER OVERDUE TASK
    */
   getUserOverdueTasks() {
-    return this._http.get(this.BASE_API_URL + `/users/overdueTasks`).toPromise();
+    return this._http.get(this.BASE_API_URL + `/tasks/overdue`).toPromise();
   }
 
+  /**
+   * USER TODAY'S EVENTS
+   */
+  getUserTodayEvents() {
+    return this._http.get(this.BASE_API_URL + `/events/today`).toPromise();
+  }
+
+  /**
+   * USER THIS WEEK'S EVENTS
+   */
+  getUserThisWeekEvents() {
+    return this._http.get(this.BASE_API_URL + `/events/week`).toPromise();
+  }
+
+  /**
+   * USER GLOBAL FEED
+   */
+  getUserGlobalFeed(userId?: string){
+    
+    if(userId != undefined)
+      return this._http.get(this.BASE_API_URL + `/global/feed`, {
+        params: {
+          userId: userId
+        }
+      }).toPromise();
+
+    else
+      return this._http.get(this.BASE_API_URL + `/global/feed`).toPromise();
+  }
 
 
 }

@@ -1,6 +1,7 @@
 import express from 'express';
 import { PulseFunctions } from '../controllers';
 import { Auths } from '../../utils';
+import http from 'axios';
 
 const routes = express.Router();
 const pulse = new PulseFunctions();
@@ -30,6 +31,9 @@ routes.get('/list/next', pulse.getNextPulseGroups);
 
 // GET - Get count of tasks due this week
 routes.get('/tasks', pulse.getPulseTasks);
+
+// GET - Get count of undone tasks which were due this week
+routes.get('/undone-tasks', pulse.getPulseTasks);
 
 /*  ===================
  *  -- EXPORT ROUTES --

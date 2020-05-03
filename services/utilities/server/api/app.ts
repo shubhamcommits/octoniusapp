@@ -4,7 +4,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import compression from 'compression';
 import { developmentConfig, productionConfig } from '../configs';
-import { fileRoutes } from './routes';
+import { authRoutes, fileRoutes } from './routes';
 import fileUpload from 'express-fileupload';
 
 // Defining new Express application
@@ -77,7 +77,8 @@ app.all('/', (req: Request, res: Response, next: NextFunction) => {
 });
 
 // Correct REST naming
-app.use('/api', fileRoutes);
+app.use('/api/auths', authRoutes)
+app.use('/api/files', fileRoutes);
 
 // Invalid routes handling middleware
 app.use((req: Request, res: Response, next: NextFunction) => {

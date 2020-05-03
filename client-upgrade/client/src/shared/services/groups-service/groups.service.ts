@@ -78,6 +78,19 @@ export class GroupsService {
   }
 
   /**
+   * This function is responsible for fetching the undone tasks count based on the groupId which were due this week
+   * @param groupId 
+   * @param status 
+   */
+  getUndoneTask(groupId: string){
+    return this._http.get(this.baseURL + `/pulse/undone-tasks`, {
+      params: {
+        groupId
+      }
+    }).toPromise()
+  }
+
+  /**
    * This function create a new normal group and makes the POST request
    * @param groupName 
    * @param workspace_name 

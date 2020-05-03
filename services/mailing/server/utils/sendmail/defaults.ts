@@ -4,7 +4,7 @@
  * @param urlParam 
  */
 const generateLink = (linkType: any, urlParam = null) => {
-    return `https://workplace.octonius.com/#/${linkType}${urlParam ? `?workplace=${urlParam}` : ''}`;
+    return `${process.env.PROTOCOL}://${process.env.DOMAIN}/#/${linkType}${urlParam ? `?workplace=${urlParam}` : ''}`;
 };
 
 /**
@@ -12,7 +12,7 @@ const generateLink = (linkType: any, urlParam = null) => {
  * @param groupId 
  * @param postId 
  */
-const postLink = (groupId: string, postId: string) => (`https://workplace.octonius.com/#/dashboard/group/${groupId}/post/${postId}`);
+const postLink = (groupId: string, postId: string) => (`${process.env.PROTOCOL}://${process.env.DOMAIN}/#/dashboard/group/${groupId}/post/${postId}`);
 
 
 export = {
@@ -24,7 +24,7 @@ export = {
         return generateLink('signup', urlParam);
     },
     groupOnlyLink(group = null, workplace = null){
-        return `https://workplace.octonius.com/#/signup${group ? `?group=${group}` : ''}${workplace ? `?group=${workplace}` : ''}`;
+        return `${process.env.PROTOCOL}://${process.env.DOMAIN}/#/signup${group ? `?group=${group}` : ''}${workplace ? `?group=${workplace}` : ''}`;
     },
     signinLink: generateLink('signin'),
     resetPwdLink: generateLink('resetPassword'),

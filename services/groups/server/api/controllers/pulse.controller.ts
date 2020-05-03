@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { Group, Post } from '../models';
 import { sendError } from '../../utils';
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 
 /*  ===================
  *  -- PULSE METHODS --
@@ -205,6 +205,46 @@ export class PulseController {
         } catch (err) {
             return sendError(res, err);
         }
-    };
+    }
+
+    /**
+     * This function fetches the undone task count for a group which were due this week
+     * @param { query: { groupId } }req 
+     * @param res 
+     * @param next 
+     */
+    async getTasksUndoneLastWeek(req: Request, res: Response, next: NextFunction) {
+        
+        // Fetch GroupId from the request
+        const { query: { groupId } } = req;
+        
+        try {
+
+            // Defining Start of week
+            const start = moment().local().startOf('week').subtract(1, 'weeks').format('YYYY-MM-DD');
+
+            // Calculating End date of week
+            const end = moment().local().endOf('week').subtract(1, 'weeks').format('YYYY-MM-DD');
+
+            // If status is not 'done' then fetch the respectives
+            const numTasks = await Post.find({
+                $and: [
+                    { type: 'task' },
+                    { _group: groupId },
+                    { $or: [{ 'task.status': 'to do' }, { 'task.status': 'in progress' }] },
+                    { 'task.due_to': { $gte: start, $lte: end } }
+                ]
+            }).countDocuments()
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: `Found ${numTasks} total tasks.`,
+                numTasks: numTasks
+            });
+
+        } catch (err) {
+            return sendError(res, err);
+        }
+    }
 
 }

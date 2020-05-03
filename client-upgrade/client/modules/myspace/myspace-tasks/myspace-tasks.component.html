@@ -1,7 +1,10 @@
-<div class="container" style="margin-bottom: 30px">
-    <div *ngIf="this.overdueAndTodayTasks.length == 0">
-      <img src='../../../assets/images/today_empty_tasks.svg' style=" margin: 0 auto; display:block; width: 60%;">
-    </div>
+<div class="container">
+
+  <!-- Empty State of tasks starts -->
+  <div *ngIf="this.overdueAndTodayTasks.length == 0 && this.thisWeekTasks.length == 0">
+    <img src='../../../assets/images/today_empty_tasks.svg'>
+  </div>
+  <!-- Empty State of tasks ends -->
   
     <h5 class="title-overview" *ngIf="this.overdueAndTodayTasks.length != 0">Today</h5>
   
@@ -57,7 +60,7 @@
       </a>
     </div>
   
-    <h5 class="title-overview" *ngIf="this.thisWeekTasks">This week</h5>
+    <h5 class="title-overview" *ngIf="this.thisWeekTasks.length !=  0">This week</h5>
   
     <div *ngFor="let task of thisWeekTasks; let i = index;">
       <a style="text-decoration:none; color:inherit;" href="/#/dashboard/group/{{task._group?._id}}/post/{{task._id}}">

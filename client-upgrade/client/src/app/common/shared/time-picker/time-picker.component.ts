@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-time-picker',
@@ -9,12 +9,25 @@ export class TimePickerComponent implements OnInit {
 
   constructor() { }
 
-  time = { hour: 13, minute: 30 };
+  // Time Modal
+  timeModal = { hour: 13, minute: 30 };
 
+  // Meridian variable
   meridian = true;
 
-  showPicker: boolean = false;
+  // Output time event emitter
+  @Output('time') time = new EventEmitter();
 
   ngOnInit() {
+  }
+
+  /**
+   * This function is binded to the event change of @constant model
+   * @param timeObject 
+   */
+  emitTime(timeObject: any){
+
+    // Emit the time to the other components
+    this.time.emit(timeObject)
   }
 }

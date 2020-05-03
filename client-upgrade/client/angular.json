@@ -36,7 +36,8 @@
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/quill/dist/quill.core.css",
               "node_modules/quill/dist/quill.snow.css",
-              "src/shared/utilities/highlight.js/monokai-sublime.min.css"
+              "src/shared/utilities/highlight.js/monokai-sublime.min.css",
+              "src/shared/utilities/loading-bar/loading-bar.min.css"
             ],
             "scripts": [
               "src/shared/utilities/jquery.js",
@@ -44,7 +45,8 @@
               "node_modules/bootstrap/dist/js/bootstrap.min.js",
               "src/shared/utilities/stripe.checkout.js",
               "node_modules/quill/dist/quill.js",
-              "src/shared/utilities/highlight.js/highlight.min.js"
+              "src/shared/utilities/highlight.js/highlight.min.js",
+              "src/shared/utilities/loading-bar/loading-bar.min.js"
             ]
           },
           "configurations": {

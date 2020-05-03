@@ -32,4 +32,12 @@ export class PostViewComponent implements OnInit {
     this.delete.emit(post);
   }
 
+  /**
+   * This function checks if an event is assigned to all the members of the group
+   * @param post 
+   */
+  eventAssignedToAll(post: any){
+    return post.event._assigned_to.includes('all')
+  }
+
 }

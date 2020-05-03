@@ -1,10 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-group-post-selection',
   templateUrl: './group-post-selection.component.html',
-  styleUrls: ['./group-post-selection.component.scss']
+  styleUrls: ['./group-post-selection.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class GroupPostSelectionComponent implements OnInit {
 

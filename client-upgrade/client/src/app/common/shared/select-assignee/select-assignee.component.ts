@@ -98,4 +98,12 @@ export class SelectAssigneeComponent implements OnInit {
 
   }
 
+  /**
+   * This function checks if the map consists of all team as the assignee for the event type selection
+   * @param map 
+   */
+  eventAssignedToAll(map: Map<any, any>){
+    return map.has('all');
+  }
+
 }

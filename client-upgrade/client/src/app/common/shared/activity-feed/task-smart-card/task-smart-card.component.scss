@@ -1,0 +1,106 @@
+@import "../../../../../assets/scss/variables";
+
+a{
+    text-decoration: none !important; 
+    color: inherit;
+}
+
+img{
+    display:block; 
+    width: 100%;
+}
+
+.smart-card {
+  background: #FFFFFF;
+  border: 1px solid #E4EDF8;
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+
+.card-title{
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  color: #242D3A;
+}
+
+.group-tasks {
+  color: #ffffff;
+  border-radius: 4px;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 18px;
+  align-items: center;
+  text-align: center;
+  margin: 0px 2px 0px 2px;
+  padding: 10px;
+}
+
+.to-do-task {
+  background: #fd7714;
+}
+
+
+.in-progress-task {
+  background: #0bc6a0;
+}
+
+
+.done-task {
+  background: #4a90e2;
+}
+
+.overdue-task {
+  background: #FF6584;
+}
+
+.overdue-total-tasks {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  display: flex;
+  align-items: center;
+  color: #FF6584;
+}
+
+.card-first-column {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 30px;
+  display: flex;
+  align-items: center;
+}
+
+.post-title {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 21px;
+  display: flex;
+  align-items: center;
+
+}
+
+.title-nowrap {
+  width: 90%;
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+}
+
+.card-icon {
+  font-size: 40px;
+  line-height: 40px;
+  display: flex;
+  align-items: center;
+}

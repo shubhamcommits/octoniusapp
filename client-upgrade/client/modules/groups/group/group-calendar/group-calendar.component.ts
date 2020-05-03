@@ -1,8 +1,11 @@
-import { Component, ChangeDetectionStrategy, ViewChild, TemplateRef, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ViewChild, TemplateRef, OnInit, Injector } from '@angular/core';
 import { startOfDay, endOfDay, subDays, addDays, endOfMonth, isSameDay, isSameMonth, addHours } from 'date-fns';
 import { Subject } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent, CalendarView } from 'angular-calendar';
+import { ActivatedRoute } from '@angular/router';
+import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import moment from 'moment';
 
 const colors: any = {
   red: {
@@ -27,9 +30,19 @@ const colors: any = {
 })
 export class GroupCalendarComponent implements OnInit {
 
-  constructor(private modal: NgbModal) { }
+  constructor( 
+    private router: ActivatedRoute, 
+    private modal: NgbModal,
+    private injector: Injector) { }
 
-  ngOnInit() {
+  // Fetch groupId from router snapshot
+  groupId = this.router.snapshot['_urlSegment']['segments'][2]['path'];
+
+  // PUBLIC FUNCTIONS
+  public publicFunctions = new PublicFunctions(this.injector);
+
+  async ngOnInit() {
+    this.publicFunctions.getCalendarPosts(moment(this.viewDate).year(), moment(this.viewDate).month()+1, this.groupId);
   }
 
   @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;

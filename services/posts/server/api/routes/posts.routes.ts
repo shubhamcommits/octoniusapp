@@ -1,9 +1,18 @@
 import express from 'express';
-import { PostController } from '../controllers';
+import { CalendarController, PostController } from '../controllers';
 import { Auths, postFileHandler } from '../utils';
 
 const routes = express.Router();
+
+/**
+ * Posts Controller Class Object
+ */
 const postController = new PostController();
+
+/**
+ * Calendar Controller Class Object
+ */
+let calendarController = new CalendarController()
 
 // Define auths helper controllers
 const auths = new Auths();
@@ -51,6 +60,13 @@ routes.post('/like', postController.like);
 routes.post('/unlike', postController.unlike);
 
 // -| FETCH POSTS |-
+
+/**
+ * GET - This route is used to get this months task and events for the calendar
+ * @param { year, month, groupId, userId } query
+ * @param userId - optional
+ */
+routes.get('/calendar/posts', calendarController.getCalendarPosts);
 
 // This route is used to get this month's tasks
 routes.get('/month-tasks', postController.getThisMonthTasks);

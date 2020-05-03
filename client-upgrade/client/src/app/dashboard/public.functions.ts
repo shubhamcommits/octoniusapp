@@ -214,6 +214,78 @@ export class PublicFunctions {
     }
 
     /**
+     * This function returns the count of tasks of pulse for specific status
+     * @param groupId 
+     * @param status - optional
+     */
+    public async getTasksThisWeekCount(groupId: string, status?: string) {
+
+        // Groups service instance
+        let groupsService = this.injector.get(GroupsService)
+
+        return new Promise((resolve, reject) => {
+            groupsService.getPulseTasks(groupId, status)
+                .then((res) => resolve(res['numTasks']))
+                .catch(() => reject(0));
+        })
+    }
+
+    /**
+     * This function returns the count of undone task which were due this week
+     * @param groupId 
+     */
+    public async getUndoneTasksThisWeek(groupId: string) {
+
+        // Groups service instance
+        let groupsService = this.injector.get(GroupsService)
+
+        return new Promise((resolve, reject) => {
+            groupsService.getUndoneTask(groupId)
+                .then((res) => resolve(res['numTasks']))
+                .catch(() => reject(0));
+        })
+    }
+
+    /**
+     * This function returns the tasks and posts which are present in a month for calendar
+     * @param groupId 
+     * @param year
+     * @param month
+     * @param userId - optional
+     */
+    public async getCalendarPosts(year: any, month: any, groupId: string, userId?: any) {
+
+        // Post service instance
+        let postService = this.injector.get(PostService)
+
+        return new Promise((resolve, reject) => {
+            postService.getCalendarPosts(year, month, groupId, userId)
+                .then((res) => resolve(res['posts']))
+                .catch(() => reject([]));
+        })
+    }
+
+    /**
+     * This function is responsible for fetching the global feed for the currently loggedIn user
+     */
+    public getGlobalFeed(userId?: string) {
+        return new Promise((resolve, reject) => {
+
+            // User Service Instance
+            let userService = this.injector.get(UserService)
+
+            // Call the service function to fetch the data
+            userService.getUserGlobalFeed(userId)
+                .then((res) => {
+                    resolve(res)
+                })
+                .catch(() => {
+                    reject({})
+                })
+        })
+    }
+
+    /**
      * This function is responsible for fetching the users who are not present inside a group
      * @param groupId 
      * @param query 
