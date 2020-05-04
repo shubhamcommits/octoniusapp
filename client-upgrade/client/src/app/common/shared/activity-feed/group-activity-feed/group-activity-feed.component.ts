@@ -68,7 +68,7 @@ export class GroupActivityFeedComponent implements OnInit {
       this.fetchCurrentGroupData()
 
     if (this.myWorkplace === false) {
-      
+
       // Posted Added in Group Socket
       this.subSink.add(this.enableAddPostInGroupSocket(this.socketService))
 
@@ -135,6 +135,10 @@ export class GroupActivityFeedComponent implements OnInit {
       .pipe(retry(Infinity))
       .subscribe((post) => {
 
+        // Show new posts
+        if(post.group === this.groupId)
+          this.showNewPosts = true;
+
         // Console the newly added post in group
         console.log(post)
       })
@@ -197,8 +201,6 @@ export class GroupActivityFeedComponent implements OnInit {
     this.showNewPosts = true;
 
     this.emitNewPostSocket(post)
-
-    console.log(post)
 
   }
 

@@ -8,7 +8,7 @@ import moment from 'moment';
 
 export class CalendarService {
 
-    async getCalendarPosts(year: number, month: string, groupId: string, userId?: string) {
+    async getCalendarPosts(year: any, month: any, groupId: any, userId?: any) {
             // Create current date in view
             const date = moment().month(month).year(year);
 
