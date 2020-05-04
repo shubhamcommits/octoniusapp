@@ -36,6 +36,7 @@ import { NgModule } from '@angular/core';
 */
 import { MyspaceRoutingModule } from './myspace-routing.module';
 import { SharedModule } from 'src/app/common/shared/shared.module';
+import { MomentModule } from "ngx-moment";
 
 /**
 * 4. !===== IMPORTS & DECLARATIONS =====!
@@ -66,6 +67,8 @@ import { SharedModule } from 'src/app/common/shared/shared.module';
 
     // Myspace Routing Module
     MyspaceRoutingModule,
+
+    MomentModule,
 
     // Shared Module
     SharedModule

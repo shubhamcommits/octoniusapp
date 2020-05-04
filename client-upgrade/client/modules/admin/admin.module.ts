@@ -16,7 +16,7 @@ import { WorkplaceAddDomainComponent } from './admin-general/workplace-add-domai
 import { WorkplaceInviteUserComponent } from './admin-general/workplace-invite-user/workplace-invite-user.component';
 import { AdminService } from 'src/shared/services/admin-service/admin.service';
 import { FormsModule } from '@angular/forms';
-// import { MomentModule } from "ngx-moment";
+import { MomentModule } from "ngx-moment";
 import { StripePaymentComponent } from './admin-billing/stripe-payment/stripe-payment.component';
 import { StartSubscriptionComponent } from './admin-billing/stripe-payment/start-subscription/start-subscription.component';
 import { SubscriptionDetailsComponent } from './admin-billing/stripe-payment/subscription-details/subscription-details.component';
@@ -36,7 +36,7 @@ import { SubscriptionDetailsComponent } from './admin-billing/stripe-payment/sub
     CommonModule,
     AdminRoutingModule,
     FormsModule,
-    // MomentModule,
+    MomentModule,
     SharedModule
   ],
   providers:[WorkspaceService, AdminService]
