@@ -55,7 +55,7 @@ import { SharedModule } from 'src/app/common/shared/shared.module';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
-import { MomentModule } from "ngx-moment";
+// import { MomentModule } from "ngx-moment";
 
  /**
  * 3. !===== SERVICES =====!
@@ -172,7 +172,7 @@ import { EditColumnComponent } from './group/group-kanban-boards/edit-column/edi
       useFactory: adapterFactory
     }),
 
-    MomentModule
+    // MomentModule
   ],
   providers: [
     GroupsService,

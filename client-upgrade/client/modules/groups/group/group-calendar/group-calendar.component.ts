@@ -5,7 +5,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent, CalendarView } from 'angular-calendar';
 import { ActivatedRoute } from '@angular/router';
 import { PublicFunctions } from 'src/app/dashboard/public.functions';
-import * as moment from 'moment';
+import moment from 'moment/moment';
 
 const colors: any = {
   red: {

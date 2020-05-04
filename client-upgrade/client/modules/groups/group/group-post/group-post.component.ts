@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import * as moment from 'moment';
+import moment from 'moment/moment';
 import { PostService } from '../../../../shared/services/post.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { FormControl, Validators, FormGroup } from '@angular/forms';

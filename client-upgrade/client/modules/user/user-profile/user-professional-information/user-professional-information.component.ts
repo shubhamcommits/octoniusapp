@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ChangeDetectionStrategy, Injector } from '@angular/core';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'src/app/dashboard/public.functions';
-import * as moment from 'moment';
+import moment from 'moment/moment';
 
 @Component({
   selector: 'app-user-professional-information',

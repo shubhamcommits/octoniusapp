@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/shared/services/user-service/user.service';
-import * as moment from 'moment';
+import moment from 'moment/moment';
 
 @Component({
   selector: 'app-myspace-agenda',

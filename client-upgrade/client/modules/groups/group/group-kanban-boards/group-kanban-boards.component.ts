@@ -7,7 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { environment } from 'src/environments/environment';
-import * as moment from 'moment';
+import moment from 'moment/moment';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { isThisMinute } from 'date-fns';
 

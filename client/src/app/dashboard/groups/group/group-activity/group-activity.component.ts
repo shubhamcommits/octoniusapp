@@ -1,4 +1,4 @@
-import * as moment from 'moment';
+import moment from 'moment/moment';
 import io from 'socket.io-client';
 import {Component, OnInit, ViewChild, ViewChildren} from '@angular/core';
 import { ActivatedRoute, Router, Route, NavigationEnd } from '@angular/router';
