@@ -136,7 +136,7 @@ export class GroupActivityFeedComponent implements OnInit {
       .subscribe((post) => {
 
         // Show new posts
-        if(post.group === this.groupId)
+        // if(post.group === this.groupId)
           this.showNewPosts = true;
 
         // Console the newly added post in group
