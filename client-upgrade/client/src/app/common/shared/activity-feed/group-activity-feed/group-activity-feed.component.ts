@@ -67,6 +67,18 @@ export class GroupActivityFeedComponent implements OnInit {
     if (this.myWorkplace === true)
       this.fetchCurrentGroupData()
 
+    if (this.myWorkplace === false) {
+      
+      // Posted Added in Group Socket
+      this.subSink.add(this.enableAddPostInGroupSocket(this.socketService))
+
+      // Post Edited in Group Socket
+      this.subSink.add(this.enableEditPostInGroupSocket(this.socketService))
+
+      // Post Deleted in Group Socket
+      this.subSink.add(this.enableDeletePostInGroupSocket(this.socketService))
+    }
+
     // Utility Service Instance
     let utilityService = this.injector.get(UtilityService)
 
@@ -110,6 +122,54 @@ export class GroupActivityFeedComponent implements OnInit {
     this.subSink.add(this.socketService.onEmit('postAdded', postData)
       .pipe(retry(Infinity))
       .subscribe());
+  }
+
+  /**
+   * This function enables the post data sharing over the socket
+   * @param publicFunctions
+   * @param socketService
+   * calling the @event postAddedInGroup to notify user about newly added post in a group
+   */
+  enableAddPostInGroupSocket(socketService: SocketService) {
+    return socketService.onEvent('postAddedInGroup')
+      .pipe(retry(Infinity))
+      .subscribe((post) => {
+
+        // Console the newly added post in group
+        console.log(post)
+      })
+  }
+
+  /**
+   * This function enables the post data sharing over the socket
+   * @param publicFunctions
+   * @param socketService
+   * calling the @event postEditedInGroup to notify user about a post which got edited in a group
+   */
+  enableEditPostInGroupSocket(socketService: SocketService) {
+    return socketService.onEvent('postEditedInGroup')
+      .pipe(retry(Infinity))
+      .subscribe((post) => {
+
+        // Console the edited post in group
+        console.log(post)
+      })
+  }
+
+  /**
+   * This function enables the post data sharing over the socket
+   * @param publicFunctions
+   * @param socketService
+   * calling the @event postDeletedInGroup to notify user about a post which was deleted from a group
+   */
+  enableDeletePostInGroupSocket(socketService: SocketService) {
+    return socketService.onEvent('postDeletedInGroup')
+      .pipe(retry(Infinity))
+      .subscribe((post) => {
+
+        // Console the deleted post in group
+        console.log(post)
+      })
   }
 
   /**
