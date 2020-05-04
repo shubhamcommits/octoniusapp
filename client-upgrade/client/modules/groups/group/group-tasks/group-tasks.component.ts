@@ -8,7 +8,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import { GroupDataService } from '../../../../shared/services/group-data.service';
 import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../../../../../environments/environment';
-import moment from 'moment';
+import * as moment from 'moment';
 import io from 'socket.io-client';
 import {SearchService} from "../../../../shared/services/search.service";
 import Swal from 'sweetalert2';
