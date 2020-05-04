@@ -72,7 +72,6 @@ import { SnotifyModule, SnotifyService, ToastDefaults } from 'ng-snotify';
 import { NgbModalModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
 import { SocketIoModule } from 'ngx-socket-io';
-import  { MomentModule } from 'ngx-moment';
 
 
 /**
@@ -133,8 +132,6 @@ import { ServerErrorInterceptor } from 'src/shared/error-handler/server-error.in
 
     // NGX UI LOADER MODULE
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
-
-    MomentModule,
 
     // SHARED MODULES
     SharedModule,
