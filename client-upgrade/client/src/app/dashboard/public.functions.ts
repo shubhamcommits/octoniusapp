@@ -11,7 +11,7 @@ import { SocketService } from 'src/shared/services/socket-service/socket.service
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
-import moment from 'moment';
+import * as moment from 'moment';
 
 export class PublicFunctions {
 

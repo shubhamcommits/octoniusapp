@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/shared/services/user-service/user.service';
-import moment from 'moment';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-myspace-agenda',
@@ -11,6 +11,7 @@ export class MyspaceAgendaComponent implements OnInit {
 
 
   todayTimelineEvents: any = [];
+  
   thisWeekTimelineEvents: any = [];
 
   now: Date = new Date();

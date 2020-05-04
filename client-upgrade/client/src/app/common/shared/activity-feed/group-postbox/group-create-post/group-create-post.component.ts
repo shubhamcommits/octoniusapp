@@ -3,7 +3,7 @@ import { environment } from 'src/environments/environment';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'src/app/dashboard/public.functions';
-import moment from 'moment';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-group-create-post',
