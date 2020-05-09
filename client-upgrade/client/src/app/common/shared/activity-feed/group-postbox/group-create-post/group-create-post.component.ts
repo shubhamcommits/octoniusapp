@@ -114,32 +114,64 @@ export class GroupCreatePostComponent implements OnInit {
 
     if (this.edit) {
 
+      // Set the title of the post
       this.title = this.postData.title
 
-      if (!this.postData.task.unassigned) {
+      // If Post is task and is not unassigned
+      if (!this.postData.task.unassigned && this.type == 'task') {
+
+        // Set the taskAssignee
         this.taskAssignee = this.postData.task._assigned_to
+
+        // Set the due date to be undefined
         this.dueDate = undefined
       }
 
+      // Set the due date variable for both task and event type posts
+      if ((this.postData.task.due_to && this.postData.task.due_to != null) ||
+        (this.postData.event.due_to && this.postData.event.due_to != null)) {
 
-      if (this.postData.task.due_to && this.postData.task.due_to != null)
-        this.dueDate = new Date(this.postData.task.due_to)
+        // Set the DueDate variable
+        this.dueDate = new Date(this.postData.task.due_to || this.postData.event.due_to)
+      }
+
+      // If post type is event, set the dueTime
+      if (this.type == 'event') {
+        this.dueTime.hour = new Date(this.dueDate).getHours();
+        this.dueTime.minute = new Date(this.dueDate).getMinutes();
+      }
 
     }
-    // console.log(this.postData)
+  }
+
+  /**
+   * This function is mapped with the event change of @variable - title
+   * Show update detail option if title has been changed
+   * @param event - new title value
+   */
+  titleChange(event: any) {
+    if (this.edit) {
+      if (event === this.title)
+        this.showUpdateDetails = false
+      else
+        this.showUpdateDetails = true
+    }
   }
 
   /**
    * Get Quill Data from the @module <quill-editor></quill-editor>
-   * @param $event 
+   *  Show update detail option if post content has been changed
+   * @param quillData
    */
   getQuillData(quillData: any) {
 
     // Set the quill data object to the quillData output
     this.quillData = quillData
 
-    if(this.edit){
-      if(this.postData.content != JSON.stringify(this.quillData.contents)){
+    if (this.edit) {
+      if (this.postData.content === JSON.stringify(this.quillData.contents)) {
+        this.showUpdateDetails = false
+      } else {
         this.showUpdateDetails = true
       }
     }
@@ -163,6 +195,7 @@ export class GroupCreatePostComponent implements OnInit {
 
     if(this.type == 'event'){
       this.eventMembersMap = memberMap;
+      this.showUpdateDetails = true;
     }
 
   }

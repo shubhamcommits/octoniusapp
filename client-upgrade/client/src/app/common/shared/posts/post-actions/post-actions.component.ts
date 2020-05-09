@@ -10,7 +10,10 @@ export class PostActionsComponent implements OnInit {
   constructor() { }
 
   // Post Input
-  @Input('post') post: any
+  @Input('post') post: any;
+
+  // User Data Object
+  @Input('userData') userData: any;
 
   // Delete Post Event Emitter
   @Output('delete') delete = new EventEmitter()

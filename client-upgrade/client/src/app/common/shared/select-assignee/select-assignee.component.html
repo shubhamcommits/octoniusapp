@@ -6,8 +6,12 @@
     <p *ngIf="!assigned">Unassigned</p>
     <app-component-search-input-box
         *ngIf="type === 'task' && userData && checkDataExist(userData) && showBar"
-        [placeholder]="'Search a member to assign this task...'" [groupId]="groupId" [workspaceId]="userData._workspace"
-        [userData]="userData" [type]="type" (member)="getMemberDetails($event)">
+        [placeholder]="'Search a member to assign this task...'" 
+        [groupId]="groupId" 
+        [workspaceId]="userData._workspace"
+        [userData]="userData" 
+        [type]="type" 
+        (member)="getMemberDetails($event)">
     </app-component-search-input-box>
 </section>
 <!-- Assignee section for tasks ends -->
@@ -16,9 +20,15 @@
 <section [id]="post?._id" *ngIf="type === 'event'">
     <p *ngIf="!eventAssignedToAll(eventMembersMap)"><strong>Assigned to {{ eventMembersMap.size }} member(s)</strong></p>
     <p *ngIf="eventAssignedToAll(eventMembersMap)"><strong>Assigned to all team member(s)</strong></p>
-    <app-component-search-input-box *ngIf="type === 'event' && userData && checkDataExist(userData)"
-        [placeholder]="'Search members to assign this event...'" [groupId]="groupId" [workspaceId]="userData._workspace"
-        [userData]="userData" [type]="type" (member)="getMemberDetails($event)">
+    
+    <app-component-search-input-box 
+        *ngIf="type === 'event' && userData && checkDataExist(userData) && showBar"
+        [placeholder]="'Search members to assign this event...'" 
+        [groupId]="groupId" 
+        [workspaceId]="userData._workspace"
+        [userData]="userData" 
+        [type]="type" 
+        (member)="getMemberDetails($event)">
     </app-component-search-input-box>
 </section>
 <!-- Assignee section for events ends -->

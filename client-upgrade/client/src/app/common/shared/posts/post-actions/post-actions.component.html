@@ -16,7 +16,7 @@
 
             <app-follow-post></app-follow-post>
 
-            <app-post-utils *ngIf="post" [post]="post" (delete)="deletePost($event)"></app-post-utils>
+            <app-post-utils *ngIf="post" [post]="post" [userData]="userData" (delete)="deletePost($event)"></app-post-utils>
         </div>
     </div>
 

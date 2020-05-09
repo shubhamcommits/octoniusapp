@@ -59,6 +59,12 @@ export class SelectAssigneeComponent implements OnInit {
       if(this.post.task._assigned_to){
         this.assigned = true
         this.taskAssignee = this.post.task._assigned_to
+      } else if(this.post.event._assigned_to){
+        this.post.event._assigned_to
+        .forEach((member) => {
+          this.eventMembersMap.set(member, member)
+        })
+       
       }
     }
   }

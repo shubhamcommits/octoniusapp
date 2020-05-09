@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 
 @Component({
   selector: 'app-time-picker',
@@ -10,13 +10,16 @@ export class TimePickerComponent implements OnInit {
   constructor() { }
 
   // Time Modal
-  timeModal = { hour: 13, minute: 30 };
+  @Input('time') timeModal = { hour: 13, minute: 30 };
 
   // Meridian variable
   meridian = true;
 
   // Output time event emitter
   @Output('time') time = new EventEmitter();
+
+  // Show Picker State
+  showPicker = false;
 
   ngOnInit() {
   }

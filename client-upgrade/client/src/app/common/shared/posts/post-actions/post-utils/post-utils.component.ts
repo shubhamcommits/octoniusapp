@@ -14,7 +14,10 @@ export class PostUtilsComponent implements OnInit {
   ) { }
 
   // Post Object 
-  @Input('post') post: any
+  @Input('post') post: any;
+
+  // User Data Object
+  @Input('userData') userData: any;
 
   // Delete Post Event Emitter
   @Output('delete') delete = new EventEmitter()
@@ -31,6 +34,9 @@ export class PostUtilsComponent implements OnInit {
     })
   }
 
+  /**
+   * This function is responsible for copying the post link to the clipboard
+   */
   copyToClipboard(post: any) {
 
     // Create Selection Box
@@ -71,6 +77,13 @@ export class PostUtilsComponent implements OnInit {
    */
   deletePost() {
     this.delete.emit(this.post);
+  }
+
+  /**
+   * This function is responsible for closing the modals
+   */
+  closeModal(){
+    this.utilityService.closeAllModals()
   }
 
 }

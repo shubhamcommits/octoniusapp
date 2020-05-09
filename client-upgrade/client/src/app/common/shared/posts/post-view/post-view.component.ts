@@ -19,6 +19,9 @@ export class PostViewComponent implements OnInit {
   // Post as the Input from component
   @Input('post') post: any;
 
+  // User Data Object
+  @Input('userData') userData: any;
+
   // Delete Post Event Emitter
   @Output('delete') delete = new EventEmitter()
 

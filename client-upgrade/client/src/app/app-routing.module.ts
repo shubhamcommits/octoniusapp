@@ -54,6 +54,15 @@ const routes: Routes = [
     canActivate: [AuthenticationGuard]
   },
 
+  // 'search' ROUTE - LAZY LOAD THE SEARCH MODULE
+
+  {
+    path: 'search',
+    loadChildren: () => import('modules/search/search.module')
+      .then((module) => module.SearchModule),
+    canActivate: [AuthenticationGuard]
+  },
+
   // NOT FOUND ROUTE
   {
     path: '**',

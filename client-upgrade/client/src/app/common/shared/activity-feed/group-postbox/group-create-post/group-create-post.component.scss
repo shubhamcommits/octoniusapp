@@ -6,7 +6,6 @@
 }
 
 .post-header{
-    margin-top: 2%;
     margin-bottom: 2%;
 }
 
@@ -15,10 +14,6 @@ p{
     margin-top: 2%;
 }
 
-.due-date{
-    margin-left: 2%;
-    margin-right: 2%;
-}
 
 i{
     font-size: xx-large;
@@ -33,7 +28,7 @@ i{
     align-items: center;
 }
 
-section{
+.right-section{
     margin-bottom: 10px;
     vertical-align: middle;
     display: flex;
@@ -53,10 +48,10 @@ app-component-search-input-box{
 
 app-time-picker {
     margin: auto;
-    position: absolute;
-    top: 0; 
-    left: 30% !important; 
-    bottom: 0; 
-    right: 0;
-    z-index: 99;
+    // position: absolute;
+    // top: 0; 
+    // left: 30% !important; 
+    // bottom: 0; 
+    // right: 0;
+    // z-index: 99;
 }

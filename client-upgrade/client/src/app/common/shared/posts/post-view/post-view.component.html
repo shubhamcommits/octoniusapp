@@ -40,7 +40,7 @@
         <!-- Normal Post Title ends -->
 
         <div class="row" *ngIf="post?.type === 'event'">
-            <div class="col-md-2 dateblock">
+            <div class="col-md-2 dateblock" *ngIf="post.event.due_to != 'Invalid date'">
                 <span class="bigdate">{{post?.event.due_to | date :'dd' }}</span>
                 <br>
                 <span class="time">{{post?.event.due_to | date: 'MMMM' }}</span>
@@ -70,7 +70,7 @@
         <!-- Normal Post Content ends -->
 
         <!-- Post Actions starts -->
-        <app-post-actions [post]="post" (delete)="deletePost($event)"></app-post-actions>
+        <app-post-actions [post]="post" [userData]="userData" (delete)="deletePost($event)"></app-post-actions>
         <!-- Post Actions ends -->
     </div>
     <!-- </div> -->

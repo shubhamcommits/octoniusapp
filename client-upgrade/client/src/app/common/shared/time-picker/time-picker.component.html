@@ -1,13 +1,25 @@
-<!-- Time Picker Toggle starts -->
-<button class="btn btn-outline-primary">
-    <span class="material-icons">
-        alarm
-    </span>
-</button>
-<!-- Time Toggler ends -->
+<div class="btn-group">
+    <!-- Time Picker Toggle starts -->
+    <button class="btn btn-outline-primary dropdown-toggle" 
+        type="button" 
+        data-toggle="dropdown" 
+        aria-haspopup="true"
+        aria-expanded="false">
+        <span class="material-icons">
+            alarm
+        </span>
+    </button>
+    <!-- Time Toggler ends -->
 
-<!-- Input Placeholder for date picker starts -->
-<div class="time-picker">
-    <ngb-timepicker [ngModel]="timeModal" [meridian]="meridian" (ngModelChange)="emitTime($event)"></ngb-timepicker>
+    <!-- Input Placeholder for date picker starts -->
+    <div class="dropdown-menu">
+        <div class="time-picker" (click)="$event.stopPropagation()">
+            <ngb-timepicker 
+                [ngModel]="timeModal" 
+                [meridian]="meridian" 
+                (ngModelChange)="emitTime($event)">
+            </ngb-timepicker>
+        </div>
+    </div>
+    <!-- Input Placeholder for date picker ends -->
 </div>
-<!-- Input Placeholder for date picker ends -->

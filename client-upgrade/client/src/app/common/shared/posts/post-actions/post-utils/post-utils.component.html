@@ -17,7 +17,7 @@
         </li>
         <li class="dropdown-divider"></li>
         <li class="dropdown-item" (click)="deletePost()">
-         <span>Delete</span>
+            <span>Delete</span>
         </li>
     </ul>
     <!-- Menu Drawer Ends -->
@@ -25,4 +25,5 @@
 </span>
 
 <ng-template #content let-modal>
+    <app-group-create-post [post]="post" [edit]="true" [userData]="userData" [type]="post.type" [groupId]="post._group" (close)="closeModal()"></app-group-create-post>
 </ng-template>
