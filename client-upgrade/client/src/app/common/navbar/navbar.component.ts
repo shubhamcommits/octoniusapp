@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector } from '@angular/core';
+import { Component, OnInit, Injector, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { environment } from 'src/environments/environment';
 import { UserService } from 'src/shared/services/user-service/user.service';
@@ -9,6 +9,7 @@ import { AuthService } from 'src/shared/services/auth-service/auth.service';
 import { Router } from '@angular/router';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { HotkeysService, Hotkey } from 'angular2-hotkeys';
 
 @Component({
   selector: 'app-navbar',
@@ -16,7 +17,9 @@ import { PublicFunctions } from 'src/app/dashboard/public.functions';
   styleUrls: ['./navbar.component.scss']
 })
 
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, AfterViewInit{
+
+  @ViewChild('search', {static: false}) search: ElementRef;
 
   constructor(
     private storageService: StorageService,
@@ -25,7 +28,9 @@ export class NavbarComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private socketService: SocketService,
-    private injector: Injector) { }
+    private injector: Injector,
+    private hotKeysService: HotkeysService,
+    ) { }
 
   // CURRENT USER DATA
   userData: any;
@@ -69,6 +74,11 @@ export class NavbarComponent implements OnInit {
 
   }
 
+  ngAfterViewInit(){
+    const searchRef = this.search;
+    this.addHotKeys(searchRef);
+  }
+
   /**
    * This function fetches the user details, makes a GET request to the server
    */
@@ -110,6 +120,28 @@ export class NavbarComponent implements OnInit {
         console.log('Error occured while logging out!', err);
         this.utilityService.errorNotification('Error occured while logging you out!');
       }
+  }
+
+
+  /**
+   * Add Hot Keys
+   */
+  addHotKeys(searchRef: any){
+    this.hotKeysService.add(new Hotkey(['shift+space'], (event: KeyboardEvent, combo: string): boolean =>{
+      this.openModal(searchRef);
+      return false;
+    }))
+  }
+
+  closeModal(){
+    this.utilityService.closeAllModals();
+  }
+
+  openModal(content: any){
+    this.utilityService.openModal(content, {
+      size: 'l',
+      windowClass: 'search'
+    });
   }
 
   /**

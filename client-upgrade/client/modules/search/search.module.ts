@@ -11,6 +11,6 @@ import { SearchResultsComponent } from './search-results/search-results.componen
   imports: [
     CommonModule,
     SearchRoutingModule
-  ]
+  ],
 })
 export class SearchModule { }

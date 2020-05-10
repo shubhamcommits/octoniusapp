@@ -37,6 +37,7 @@ import { WelcomePageComponent } from './common/welcome-page/welcome-page.compone
 // CUSTOM MODULES
 import { DashboardModule } from './dashboard/dashboard.module';
 import { SharedModule } from './common/shared/shared.module';
+import { HotkeyModule } from 'angular2-hotkeys';
 
 // ANGULAR MODULES
 import { AppRoutingModule } from './app-routing.module';
@@ -137,7 +138,9 @@ import { ServerErrorInterceptor } from 'src/shared/error-handler/server-error.in
     SharedModule,
 
     // SOCKET MODULE AND INITIALISATION
-    SocketIoModule.forRoot(socketConfig)
+    SocketIoModule.forRoot(socketConfig),
+
+    HotkeyModule.forRoot()
   ],
 
   providers: [

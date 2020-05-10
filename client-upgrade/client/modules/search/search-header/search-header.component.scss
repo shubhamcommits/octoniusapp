@@ -1,0 +1,41 @@
+
+input {
+    outline: none;
+    padding-right: 10px;
+}
+
+.search-input{
+    width: 100%;
+    border: none;
+}
+
+.inner-addon { 
+    position: relative; 
+}
+
+/* style icon */
+.inner-addon .material-icons {
+  position: absolute;
+  padding: 3px;
+  pointer-events: none;
+}
+
+/* align icon */
+.left-addon .material-icons  { left:  0px;}
+.right-addon .material-icons { right: 0px;}
+
+/* add padding  */
+.left-addon input  { padding-left:  30px; }
+.right-addon input { padding-right: 30px; }
+
+a{
+    display: block;
+    text-decoration-line: none;
+}
+
+p{
+    font-size: 10px;
+    font-weight: bold;
+    background-color: lightgray;
+    width: 100%;
+}
