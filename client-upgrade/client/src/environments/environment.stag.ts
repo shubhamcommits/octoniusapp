@@ -57,6 +57,10 @@ export const environment = {
   NOTIFICATIONS_BASE_API_URL: 'http://localhost:8080/api/notifications',
 
   // Utilities URLs
-  UTILITIES_BASE_URL: 'http://localhost:8080/uploads',
-  UTILITIES_BASE_API_URL: 'http://localhost:8080/api/utilities'
+  UTILITIES_BASE_URL: 'http://localhost:8080/utilities',
+  UTILITIES_BASE_API_URL: 'http://localhost:8080/api/utilities',
+  UTILITIES_GROUPS_UPLOADS: 'http://localhost:8080/uploads/groups',
+  UTILITIES_POSTS_UPLOADS: 'http://localhost:8080/uploads/posts',
+  UTILITIES_USERS_UPLOADS: 'http://localhost:8080/uploads/users',
+  UTILITIES_WORKSPACES_UPLOADS: 'http://localhost:8080/uploads/workspaces'
 };

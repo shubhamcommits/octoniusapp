@@ -27,7 +27,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
   columns: any = []
 
   // Base URL of the uploads
-  baseUrl = environment.UTILITIES_BASE_URL;
+  baseUrl = environment.UTILITIES_USERS_UPLOADS;
 
   // Fetch groupId from router snapshot
   groupId = this.router.snapshot['_urlSegment']['segments'][2]['path'];
@@ -334,8 +334,6 @@ export class GroupKanbanBoardsComponent implements OnInit {
 
   changeStatus(task: any, status: any) {
 
-    this.publicFunctions.changeTaskStatus(task._id, status)
-
     task.task.status = status
   }
 
@@ -404,6 +402,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
    */
   ngOnDestroy() {
     this.subSink.unsubscribe()
+    this.isLoading$.complete()
   }
 
 }

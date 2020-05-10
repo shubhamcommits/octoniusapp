@@ -47,7 +47,7 @@
 
           <!-- USER PROFILE BADGE STARTS -->
           <a class="nav-link">
-            <img src="{{baseUrl}}/uploads/{{userData?.profile_pic}}" [routerLink]="['/dashboard', 'user', 'profile']" [queryParams]="{ userId: userData?._id}"  onerror="this.src='/assets/images/user.png'"  class="topnav-avatar">
+            <img src="{{baseUrl}}/{{userData?.profile_pic}}" [routerLink]="['/dashboard', 'user', 'profile']" [queryParams]="{ userId: userData?._id}"  onerror="this.src='/assets/images/user.png'"  class="topnav-avatar">
           </a>
           <!-- USER PROFILE BADGE ENDS -->
           

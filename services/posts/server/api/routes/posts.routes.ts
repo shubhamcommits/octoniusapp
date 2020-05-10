@@ -54,10 +54,10 @@ routes.get('/group/tags', postController.getTags)
 // -| POST ACTIONS |-
 
 // This route is used to like a post
-routes.post('/like', postController.like);
+routes.post('/:postId/like', postController.like);
 
 // This route is used to unlike a post
-routes.post('/unlike', postController.unlike);
+routes.post('/:postId/unlike', postController.unlike);
 
 // -| FETCH POSTS |-
 
@@ -66,7 +66,7 @@ routes.post('/unlike', postController.unlike);
  * @param { year, month, groupId, userId } query
  * @param userId - optional
  */
-routes.get('/calendar/posts', calendarController.getCalendarPosts);
+routes.get('/calendar/timeline', calendarController.getCalendarPosts);
 
 // This route is used to get this month's tasks
 routes.get('/month-tasks', postController.getThisMonthTasks);

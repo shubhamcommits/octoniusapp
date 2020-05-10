@@ -57,6 +57,10 @@ export const environment = {
   NOTIFICATIONS_BASE_API_URL: 'https://flash.octonius.com/api/notifications',
 
   // Utilities URLs
-  UTILITIES_BASE_URL: 'https://flash.octonius.com/uploads',
-  UTILITIES_BASE_API_URL: 'https://flash.octonius.com/api/utilities'
+  UTILITIES_BASE_URL: 'https://flash.octonius.com/utilities',
+  UTILITIES_BASE_API_URL: 'https://flash.octonius.com/api/utilities',
+  UTILITIES_GROUPS_UPLOADS: 'https://flash.octonius.com/uploads/groups',
+  UTILITIES_POSTS_UPLOADS: 'https://flash.octonius.com/uploads/posts',
+  UTILITIES_USERS_UPLOADS: 'https://flash.octonius.com/uploads/users',
+  UTILITIES_WORKSPACES_UPLOADS: 'https://flash.octonius.com/uploads/workspaces'
 };

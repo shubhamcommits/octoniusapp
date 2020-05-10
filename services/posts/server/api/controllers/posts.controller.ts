@@ -1,13 +1,29 @@
-import { Post } from '../models';
 import { Response, Request, NextFunction } from "express";
 import { PostService, TagsService } from '../services';
 import { sendErr } from '../utils/sendError';
+const ObjectId = require('mongoose').Types.ObjectId;
 
 const postService = new PostService();
 
 const tagsService = new TagsService()
 
 export class PostController {
+
+    /**
+     * This function is used to validate an ObjectId
+     * @param id
+     */
+    validateId(id: any) {
+        var stringId: String = id.toString();
+        if (!ObjectId.isValid(stringId)) {
+            return false;
+        }
+        var result = new ObjectId(stringId);
+        if (result.toString() != stringId) {
+            return false;
+        }
+        return true;
+    }    
 
     /**
      * This function is responsible to add a post
@@ -78,7 +94,7 @@ export class PostController {
     async get(req: Request, res: Response, next: NextFunction) {
         try {
 
-            const { postId } = req.params;
+            let { postId } = req.params;
 
             // Call service function to get
             const post = await postService.get(postId);
@@ -184,11 +200,18 @@ export class PostController {
      */
     async like(req: Request, res: Response, next: NextFunction) {
         try {
+
+            // Fetch postId from request
             const { params: { postId } } = req;
+
+            // Fetch userId from the request
             const userId = req['userId'];
 
             // Call Service function to like a post
-            const data = await postService.like(userId, postId);
+            let data: any = await postService.like(userId, postId)
+                .catch((err) => {
+                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+                })
 
             // Send status 200 response
             return res.status(200).json({
@@ -210,11 +233,18 @@ export class PostController {
      */
     async unlike(req: Request, res: Response, next: NextFunction) {
         try {
+
+            // Fetch postId from the request
             const { params: { postId } } = req;
+
+            // Fetch userId from the request
             const userId = req['userId'];
 
             // Call Service function to unlike a post
-            const data = await postService.unlike(userId, postId);
+            let data: any = await postService.unlike(userId, postId)
+                .catch((err) => {
+                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+                })
 
             // Send status 200 response
             return res.status(200).json({

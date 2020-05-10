@@ -22,7 +22,7 @@
         *ngFor="let member of members; let index = index; trackBy: utilityService.trackByIndex;">
 
         <!-- Avatar Image of the member -->
-        <img src="{{ baseUrl }}/uploads/{{member?.profile_pic}}" routerLink="/dashboard/user/profile"
+        <img src="{{ baseUrl }}/{{member?.profile_pic}}" routerLink="/dashboard/user/profile"
             [queryParams]="{ userId: member._id }" onerror="this.src='/assets/images/user.png'" class="feed-avatar">
         <!-- Avatar Image of the member -->
 

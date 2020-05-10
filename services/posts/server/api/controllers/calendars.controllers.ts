@@ -19,15 +19,16 @@ export class CalendarController {
         try {
 
             // Fetch Data from request
-            const { year, month, groupId, userId } = req.query
+            const { month, year, groupId, userId } = req.query
 
             // Call service function to get
-            let posts: any = calendarService.getCalendarPosts(year, month, groupId, userId) || [];
+            let posts: any = await calendarService.getMonthCalendarPosts(month, year, groupId, userId);
 
             // Send Status 200 response
             return res.status(200).json({
                 message: 'Calendar posts found!',
-                posts: posts
+                tasks: posts.tasks,
+                events: posts.events
             });
         } catch (error) {
             return sendErr(res, new Error(error), 'Internal Server Error', 500);

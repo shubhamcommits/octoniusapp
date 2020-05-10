@@ -10,6 +10,7 @@ import {
     pulseRoutes,
     columnRoutes,
 } from './routes';
+import fileUpload from 'express-fileupload';
 
 // Defining new Express application
 const app = express();
@@ -61,8 +62,16 @@ const encodeResToGzip = (contentType: any) => {
 app.get("*.js", encodeResToGzip('text/javascript'));
 app.get("*.css", encodeResToGzip('text/css'));
 
-// static assets folder
-// app.use(express.static(path.join(__dirname, '../../client/dist')));
+// Set file upload middleware
+app.use(fileUpload({
+    limits: {
+        fileSize: 1024 * 1024 * 1024
+    },
+    abortOnLimit: true
+}));
+
+// Availing the static uploads folder to access from server
+app.use('/uploads', express.static(process.env.FILE_UPLOAD_FOLDER));
 
 // Routes which should handle request
 app.all('/', (req: Request, res: Response, next: NextFunction) => {

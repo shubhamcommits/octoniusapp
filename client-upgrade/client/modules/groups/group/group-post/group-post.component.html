@@ -1,56 +1,10 @@
-<ul class="list-group " style="list-style-type: none;">
-  <!-- Normal post -->
-  <li *ngIf="this.post?.type== 'normal'">
-              <!-- Normal post -->
-              <normal-group-post
-              *ngIf="post?.type === 'normal'"
-              [post]="post"
-              [user]="user"
-              [modules]="modules"
-              [user_data]="user_data"
-              [allMembersId]="allMembersId"
-              [group]="group"
-              [socket]="socket"
-              [preview]="false"
-              (deletePost)="onDeletePost($event)">
-            </normal-group-post>
-  </li>
+<div class="container">
+    <app-post-view *ngIf="post && userData && checkDataExist(userData)" [post]="post" [userData]="userData">
+    </app-post-view>
 
-  <li *ngIf="this.post?.type=='task'">
-     <!-- task post -->
-     <task-group-post
-     *ngIf="post?.type === 'task'"
-     [post]="post"
-     [user]="user"
-     [isItMyWorkplace]="isItMyWorkplace"
-     [modules]="modules"
-     [user_data]="user_data"
-     [allMembersId]="allMembersId"
-     [group]="group"
-     [socket]="socket"
-     [preview]="false"
-     (deletePost)="onDeletePost($event)"
-     ng-repeat="post in posts">
-   </task-group-post>
-
-  </li>
-
-  <li *ngIf="this.post?.type=='event'">
-
-              <!--EVENT post-->
-              <event-group-post
-              *ngIf="post?.type === 'event'"
-              [post]="post"
-              [user]="user"
-              [isItMyWorkplace]="isItMyWorkplace"
-              [modules]="modules"
-              [user_data]="user_data"
-              [allMembersId]="allMembersId"
-              [group]="group"
-              [socket]="socket"
-              [preview]="false"
-              (deletePost)="onDeletePost($event)">
-            </event-group-post>
-  </li>
-
-</ul>
+    <!-- Loading Spinner Starts -->
+    <ng-container *ngIf="isLoading$ | async">
+        <app-loading-spinner class="media"></app-loading-spinner>
+    </ng-container>
+    <!-- Loading Spinner Ends -->
+</div>

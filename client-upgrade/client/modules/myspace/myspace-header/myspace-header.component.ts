@@ -18,7 +18,7 @@ export class MyspaceHeaderComponent implements OnInit {
   userData: any;
 
   // BASE URL OF THE APPLICATION
-  BASE_URL = environment.UTILITIES_BASE_URL;
+  BASE_URL = environment.UTILITIES_USERS_UPLOADS;
 
   // UNSUBSCRIBE THE DATA
   private subSink = new SubSink();

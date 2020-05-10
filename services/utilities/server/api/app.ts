@@ -57,19 +57,16 @@ const encodeResToGzip = (contentType: any) => {
 app.get("*.js", encodeResToGzip('text/javascript'));
 app.get("*.css", encodeResToGzip('text/css'));
 
-// static assets folder
-// app.use(express.static(path.join(__dirname, '../../client/dist')));
-
-// // Set file upload middleware
-// app.use(fileUpload({
-//     limits: {
-//         fileSize: 1024 * 1024 * 1024 * 1024
-//     },
-//     abortOnLimit: true
-// }));
+// Set file upload middleware
+app.use(fileUpload({
+    limits: {
+        fileSize: 1024 * 1024 * 1024 * 1024
+    },
+    abortOnLimit: true
+}));
 
 // Availing the static uploads folder to access from server
-app.use('/uploads', express.static(process.env.FILE_UPLOAD_FOLDER));
+app.use('/uploads', fileRoutes);
 
 // Routes which should handle request
 app.all('/', (req: Request, res: Response, next: NextFunction) => {
@@ -78,7 +75,6 @@ app.all('/', (req: Request, res: Response, next: NextFunction) => {
 
 // Correct REST naming
 app.use('/api/auths', authRoutes)
-app.use('/api/files', fileRoutes);
 
 // Invalid routes handling middleware
 app.use((req: Request, res: Response, next: NextFunction) => {

@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, Injector } from '@angular/core';
+import { PublicFunctions } from 'src/app/dashboard/public.functions';
 
 @Component({
   selector: 'app-task-status',
@@ -17,6 +18,9 @@ export class TaskStatusComponent implements OnInit {
   // Move Task Output Emitter
   @Output('status') status = new EventEmitter();
 
+  // Public Functions
+  publicFunctions = new PublicFunctions(this.injector)
+
   ngOnInit() {
   }
 
@@ -25,6 +29,9 @@ export class TaskStatusComponent implements OnInit {
    * @param status 
    */
   changeStatus(status: string){
+
+    // Change the task status
+    this.publicFunctions.changeTaskStatus(this.post._id, status)
 
     // Emit the status to other parent components
     this.status.emit(status)

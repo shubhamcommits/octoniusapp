@@ -14,12 +14,10 @@ import { PulseComponent } from './pulse/pulse.component';
 import { GroupComponent } from './group/group.component';
 import { GroupActivityComponent } from './group/group-activity/group-activity.component';
 import { GroupAdminComponent } from './group/group-admin/group-admin.component';
-import { GroupCalendarComponent } from './group/group-calendar/group-calendar.component';
 import { GroupKanbanBoardsComponent } from './group/group-kanban-boards/group-kanban-boards.component';
 // import { GroupFilesComponent } from './group/group-files/group-files.component';
 import { GroupMembersComponent } from './group/group-members/group-members.component';
-// import { GroupPostComponent } from './group/group-post/group-post.component';
-// import { GroupTasksComponent } from './group/group-tasks/group-tasks.component';
+import { GroupPostComponent } from './group/group-post/group-post.component';
 
 
 /**
@@ -49,7 +47,11 @@ const routes: Routes = [
       // { path: 'files', component: GroupFilesComponent },
 
       // Group Calendar
-      { path: 'calendar', component: GroupCalendarComponent },
+      {
+        path: 'calendar',
+          loadChildren: () => import('modules/calendar/calendar.module')
+            .then((module) => module.CalendarModule),
+      },
 
       // Group Members
       { path: 'members', component: GroupMembersComponent },
@@ -58,7 +60,7 @@ const routes: Routes = [
       { path: 'admin', component: GroupAdminComponent },
 
       // Group Post View
-      // { path: 'post/:postId', component: GroupPostComponent },
+      { path: 'post/:postId', component: GroupPostComponent },
     ]
   }
 ];

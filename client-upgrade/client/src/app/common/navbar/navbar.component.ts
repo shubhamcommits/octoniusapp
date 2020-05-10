@@ -37,7 +37,7 @@ export class NavbarComponent implements OnInit {
   publicFunctions = new PublicFunctions(this.injector)
 
   // BASE URL OF THE APPLICATION
-  baseUrl = environment.UTILITIES_BASE_URL;
+  baseUrl = environment.UTILITIES_USERS_UPLOADS;
 
   // UNSUBSCRIBE THE DATA
   private subSink = new SubSink();

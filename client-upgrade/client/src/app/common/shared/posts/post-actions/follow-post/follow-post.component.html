@@ -1,6 +1,8 @@
-<span placement="top" ngbTooltip="Follow Post">
+<span *ngIf="userData && post">
     <button class="btn btn-link">
-        <i class="material-icons muted">label_important</i>
-        <ng-template #followif><i class="material-icons active">label_important</i></ng-template>
+        <i class="material-icons muted" *ngIf="!this.isFollowedByUser(); else followIf"
+            (click)="followPost()">label_important</i>
+        <ng-template #followIf><i class="material-icons active" (click)="unfollowPost()">label_important</i>
+        </ng-template>
     </button>
 </span>

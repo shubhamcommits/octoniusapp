@@ -53,8 +53,6 @@ import { GroupMembersComponent } from './group/group-members/group-members.compo
 import { SharedModule } from 'src/app/common/shared/shared.module';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { CalendarModule, DateAdapter } from 'angular-calendar';
-import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 // import { MomentModule } from "ngx-moment";
 
  /**
@@ -63,7 +61,6 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { GroupsService } from 'src/shared/services/groups-service/groups.service';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { GroupAdminComponent } from './group/group-admin/group-admin.component';
-import { GroupCalendarComponent } from './group/group-calendar/group-calendar.component';
 import { GroupActivityComponent } from './group/group-activity/group-activity.component';
 import { DeleteGroupComponent } from './group/group-admin/delete-group/delete-group.component';
 import { PostService } from 'src/shared/services/post-service/post.service';
@@ -72,6 +69,7 @@ import { CreateColumnComponent } from './group/group-kanban-boards/create-column
 import { BoardBarComponent } from './group/group-kanban-boards/board-bar/board-bar.component';
 import { NewTaskComponent } from './group/group-kanban-boards/new-task/new-task.component';
 import { EditColumnComponent } from './group/group-kanban-boards/edit-column/edit-column.component';
+import { GroupPostComponent } from './group/group-post/group-post.component';
 
  
 /**
@@ -141,8 +139,6 @@ import { EditColumnComponent } from './group/group-kanban-boards/edit-column/edi
 
     GroupAdminComponent,
 
-    GroupCalendarComponent,
-
     GroupActivityComponent,
 
     DeleteGroupComponent,
@@ -155,7 +151,9 @@ import { EditColumnComponent } from './group/group-kanban-boards/edit-column/edi
 
     NewTaskComponent,
 
-    EditColumnComponent
+    EditColumnComponent,
+
+    GroupPostComponent
   ],
   imports: [
     CommonModule,
@@ -166,11 +164,6 @@ import { EditColumnComponent } from './group/group-kanban-boards/edit-column/edi
     FormsModule,
 
     DragDropModule,
-
-    CalendarModule.forRoot({
-      provide: DateAdapter,
-      useFactory: adapterFactory
-    }),
 
     // MomentModule
   ],

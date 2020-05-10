@@ -52,12 +52,10 @@
             </mwl-calendar-day-view>
         </div>
 
-        <!-- Everything you see below is just for the demo, you don't need to include it in your app -->
-
         <br /><br /><br />
 
         <h3>
-            Edit events
+            Edit Timeline
             <button class="btn btn-primary pull-right" (click)="addEvent()">
                 Add new
             </button>
@@ -72,7 +70,7 @@
                         <th>Primary color</th>
                         <th>Secondary color</th>
                         <th>Starts at</th>
-                        <th>Ends at</th>
+                        <th>Type</th>
                         <th>Remove</th>
                     </tr>
                 </thead>
@@ -94,10 +92,8 @@
                                 (ngModelChange)="refresh.next()" dateFormat="Y-m-dTH:i" altFormat="F j, Y H:i"
                                 placeholder="Not set" />
                         </td>
-                        <td>
-                            <input class="form-control" type="text" [(ngModel)]="event.end"
-                                (ngModelChange)="refresh.next()" dateFormat="Y-m-dTH:i" altFormat="F j, Y H:i"
-                                placeholder="Not set" />
+                        <td class="text-capitalize">
+                            {{ event.post.type }}
                         </td>
                         <td>
                             <button class="btn btn-danger" (click)="deleteEvent(event)">
@@ -109,28 +105,14 @@
             </table>
         </div>
 
+        <!-- Post View Template -->
         <ng-template #modalContent let-close="close">
-            <div class="modal-header">
-                <h5 class="modal-title">Event action occurred</h5>
-                <button type="button" class="close" (click)="close()">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div>
-                    Action:
-                    <pre>{{ modalData?.action }}</pre>
-                </div>
-                <div>
-                    Event:
-                    <pre>{{ modalData?.event | json }}</pre>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary" (click)="close()">
-                    OK
-                </button>
-            </div>
+            <app-post-view 
+                *ngIf="post && userData && checkDataExist(userData)" 
+                [post]="post" 
+                [userData]="userData"
+                (taskStatus)="changeTaskStatus($event)">
+            </app-post-view>
         </ng-template>
     </div>
 </div>

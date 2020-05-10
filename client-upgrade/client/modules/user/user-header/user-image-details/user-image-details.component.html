@@ -9,7 +9,7 @@
 <!-- USER MODAL CHANGE IMAGE STARTS -->
 <div class="modal-body">
     <div class="form-group">
-        <img src="{{ baseUrl }}/uploads/{{ userData?.profile_pic }}">
+        <img src="{{ baseUrl }}/{{ userData?.profile_pic }}">
         <app-crop-image class="container" (outputImage)="getCroppedImage($event)"></app-crop-image>
     </div>
 </div>

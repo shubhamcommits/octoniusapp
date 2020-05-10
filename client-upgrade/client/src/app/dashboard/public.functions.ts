@@ -260,7 +260,7 @@ export class PublicFunctions {
 
         return new Promise((resolve, reject) => {
             postService.getCalendarPosts(year, month, groupId, userId)
-                .then((res) => resolve(res['posts']))
+                .then((res) => resolve(res))
                 .catch(() => reject([]));
         })
     }
@@ -548,6 +548,31 @@ export class PublicFunctions {
         // Asynchronously call the utility service
         return new Promise((resolve, reject) => {
             postService.edit(postId, postData)
+                .then((res) => {
+
+                    // Resolve with success
+                    resolve(res['post'])
+                })
+                .catch((err) => {
+
+                    // Catch the error and reject the promise
+                    reject({})
+                })
+        })
+    }
+
+    /**
+     * This function is responsible for fetching a post details
+     * @param postId 
+     */
+    getPost(postId: string) {
+
+        // Create Post Service Instance
+        let postService = this.injector.get(PostService)
+
+        // Asynchronously call the utility service
+        return new Promise((resolve, reject) => {
+            postService.get(postId)
                 .then((res) => {
 
                     // Resolve with success

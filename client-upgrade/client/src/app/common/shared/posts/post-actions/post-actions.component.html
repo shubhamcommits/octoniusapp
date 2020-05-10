@@ -12,11 +12,16 @@
 
             <app-comment-on-post></app-comment-on-post>
 
-            <app-like-post></app-like-post>
+            <!-- Like Post starts-->
+            <app-like-post *ngIf="post && userData" [post]="post" [userData]="userData"></app-like-post>
+            <!-- Like Post ends-->
 
-            <app-follow-post></app-follow-post>
+            <!-- Follow Post starts -->
+            <app-follow-post *ngIf="post" [post]="post" [userData]="userData"></app-follow-post>
+            <!-- Follow Post ends -->
 
-            <app-post-utils *ngIf="post" [post]="post" [userData]="userData" (delete)="deletePost($event)"></app-post-utils>
+            <app-post-utils *ngIf="post" [post]="post" [userData]="userData" (delete)="deletePost($event)">
+            </app-post-utils>
         </div>
     </div>
 

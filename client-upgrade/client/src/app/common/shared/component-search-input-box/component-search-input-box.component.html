@@ -10,7 +10,7 @@
         <div class="media card-tile user-list w-100 mb-0" *ngFor=" let item of itemList; let index = index;">
 
             <!-- User Profile Image for type 'group' and 'workspace' -->
-            <img *ngIf="type != 'skill' && type != 'tag'" src="{{ userBaseUrl }}/uploads/{{item?.profile_pic}}"
+            <img *ngIf="type != 'skill' && type != 'tag'" src="{{ userBaseUrl }}/{{item?.profile_pic}}"
                 onerror="this.src='/assets/images/user.png'" class="feed-avatar-search">
 
             <div class="media-body mt-2">

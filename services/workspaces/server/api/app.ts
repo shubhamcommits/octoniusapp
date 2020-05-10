@@ -65,8 +65,8 @@ app.use(fileUpload({
     abortOnLimit: true
 }));
 
-// static assets folder
-// app.use(express.static(path.join(__dirname, '../../client/dist')));
+// Availing the static uploads folder to access from server
+app.use('/uploads', express.static(process.env.FILE_UPLOAD_FOLDER));
 
 // Routes which should handle request
 app.all('/', (req: Request, res: Response, next: NextFunction) => {

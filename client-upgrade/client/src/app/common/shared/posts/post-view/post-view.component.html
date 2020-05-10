@@ -5,7 +5,7 @@
 
             <!-- Image Avatar Starts -->
             <div class="col-md-1 ">
-                <img src="{{ baseUrl }}/uploads/{{post?._posted_by?.profile_pic}}"
+                <img src="{{ baseUrl }}/{{post?._posted_by?.profile_pic}}"
                     onerror="this.src='/assets/images/user.png'" class="feed-avatar ml-0"
                     routerLink="/dashboard/user/profile" [queryParams]="{ userId: post?._posted_by?._id }" />
             </div>
@@ -29,8 +29,40 @@
                 </section>
                 <!-- Event Assignee detail ends -->
 
+                <!-- Task Assignee detail starts -->
+                <section *ngIf="post?.type === 'task'">
+                    <span class="assigned" *ngIf="post.task.unassigned == false">
+                        Assigned to {{post.task._assigned_to?.first_name}}
+                        {{post.task._assigned_to?.last_name}}
+                    </span>
+                    <span class="assigned" *ngIf="post.task.unassigned == true"> Unassigned
+                    </span>
+                </section>
+                <!-- Task Assignee detail ends -->
+
             </div>
             <!-- Details of the Post Creator Ends -->
+
+            <!-- Task Status Starts -->
+            <div *ngIf="post?.type === 'task'" class="col-md-4 text-right padding-topright">
+                
+                <!-- Change task status starts -->
+                <app-task-status 
+                    class="ml-5" 
+                    [post]="post" 
+                    (status)="changeTaskStatus($event)">
+                </app-task-status>
+                <!-- Change task status ends -->
+                
+                <!-- Due Date starts -->
+                <p class="small font-weight-bold mt-3" *ngIf="post.task?.due_to != 'Invalid date'"> 
+                    due {{post.task?.due_to | date}}
+                </p>
+                <!-- Due Date ends -->
+
+            </div>
+            <!-- Task Status Ends -->
+
         </div>
 
         <!-- Normal Post Title starts -->
@@ -70,7 +102,8 @@
         <!-- Normal Post Content ends -->
 
         <!-- Post Actions starts -->
-        <app-post-actions [post]="post" [userData]="userData" (delete)="deletePost($event)"></app-post-actions>
+        <app-post-actions *ngIf="post && userData" [post]="post" [userData]="userData" (delete)="deletePost($event)">
+        </app-post-actions>
         <!-- Post Actions ends -->
     </div>
     <!-- </div> -->

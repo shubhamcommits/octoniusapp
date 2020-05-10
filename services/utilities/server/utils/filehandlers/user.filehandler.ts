@@ -1,4 +1,5 @@
 import { Response, Request, NextFunction } from "express";
+import { sendError } from "../senderror";
 
 /**
  * This function is the boiler plate for file handler mechanism for user profileImage
@@ -7,33 +8,17 @@ import { Response, Request, NextFunction } from "express";
  * @param next 
  */
 const userFileHandler = (req: Request, res: Response, next: NextFunction) => {
+  try {
 
-  // Instantiate the fileName variable and add the date object in the name
-  let fileName = Date.now().toString() + '_' + req['files'].profileImage['name'];
+    // Fetch the File Name From the request
+    let { params: { file } } = req;
 
-  // Get the file from the request
-  const file: any = req['files'].profileImage;
+    // Redirect the Response to the Users Microservice
+    return res.status(301).redirect(`${process.env.USERS_SERVER}/uploads/${file}`)
 
-  // Get the folder link from the environment
-  const folder = process.env.FILE_UPLOAD_FOLDER;
-
-  // Modify the file accordingly and handle request
-  file.mv(folder + fileName, (error: Error) => {
-    if (error) {
-      fileName = null;
-      return res.status(500).json({
-        status: '500',
-        message: 'file upload error',
-        error: error
-      });
-    }
-
-    // Modify the current request to add fileName
-    req['fileName'] = fileName;
-
-    // Pass the middleware
-    next()
-  });
+  } catch (err) {
+    return sendError(res, err, 'Internal Server Error!', 500);
+  }
 
 }
 

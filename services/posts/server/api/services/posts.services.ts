@@ -2,6 +2,7 @@ import { Group, Post, User, Comment } from '../models';
 import http from 'axios';
 import moment from 'moment';
 const fs = require('fs');
+const ObjectId = require('mongoose').Types.ObjectId;
 
 /*  ===============================
  *  -- POSTS Service --
@@ -193,7 +194,7 @@ export class PostService {
         .populate({ path: '_posted_by', select: this.userFields })
         .populate({ path: 'task._assigned_to', select: this.userFields })
         // .populate({ path: 'event._assigned_to', select: this.userFields })
-        .populate({ path: '_liked_by', select: this.userFields, options: { limit: 10 } })
+        // .populate({ path: '_liked_by', select: this.userFields, options: { limit: 10 } })
         .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
         .lean();
 
@@ -204,7 +205,7 @@ export class PostService {
         .populate({ path: '_group', select: this.groupFields })
         .populate({ path: '_posted_by', select: this.userFields })
         .populate({ path: 'task._assigned_to', select: this.userFields })
-        .populate({ path: '_liked_by', select: this.userFields, options: { limit: 10 } })
+        // .populate({ path: '_liked_by', select: this.userFields, options: { limit: 10 } })
         .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
         .lean();
 
@@ -224,7 +225,7 @@ export class PostService {
         { path: 'task._assigned_to', select: this.userFields },
         { path: '_group', select: this.groupFields },
         { path: '_posted_by', select: this.userFields },
-        { path: '_liked_by', select: this.userFields, options: { limit: 10 } }
+        // { path: '_liked_by', select: this.userFields, options: { limit: 10 } }
       ]);
 
     } else if (post.type === 'performance_task') {
@@ -234,24 +235,24 @@ export class PostService {
         { path: 'performance_task._assigned_to', select: this.userFields },
         { path: '_group', select: this.groupFields },
         { path: '_posted_by', select: this.userFields },
-        { path: '_liked_by', select: this.userFields, options: { limit: 10 } }
+        // { path: '_liked_by', select: this.userFields, options: { limit: 10 } }
       ]);
 
     } else if (post.type === 'event') {
 
       // Populate event properties
-      if(post.event._assigned_to.includes('all')){
+      if (post.event._assigned_to.includes('all')) {
         post = await Post.populate(post, [
           { path: '_group', select: this.groupFields },
           { path: '_posted_by', select: this.userFields },
-          { path: '_liked_by', select: this.userFields, options: { limit: 10 } }
+          // { path: '_liked_by', select: this.userFields, options: { limit: 10 } }
         ])
       } else {
         post = await Post.populate(post, [
           { path: 'event._assigned_to', select: this.userFields },
           { path: '_group', select: this.groupFields },
           { path: '_posted_by', select: this.userFields },
-          { path: '_liked_by', select: this.userFields, options: { limit: 10 } }
+          // { path: '_liked_by', select: this.userFields, options: { limit: 10 } }
         ])
       }
 
@@ -262,7 +263,7 @@ export class PostService {
       post = await Post.populate(post, [
         { path: '_group', select: this.groupFields },
         { path: '_posted_by', select: this.userFields },
-        { path: '_liked_by', select: this.userFields, options: { limit: 10 } }
+        // { path: '_liked_by', select: this.userFields, options: { limit: 10 } }
       ]);
     }
 
@@ -477,32 +478,22 @@ export class PostService {
    * This function is responsible for retrieving a post
    * @param postId
    */
-  async get(postId: string) {
-    try {
+  async get(postId: any) {
 
-      // Get post data
-      const post = await Post.findOne({
-        _id: postId
-      })
-        .populate('_group', this.groupFields)
-        .populate('_posted_by', this.userFields)
-        .populate('_liked_by', this.userFields)
-        .populate('comments._commented_by', this.userFields)
-        .populate('task._assigned_to', this.userFields)
-        .populate('task._column', 'title')
-        .populate('performance_task._assigned_to', this.userFields)
-        .populate('event._assigned_to', this.userFields)
-        .lean();
+    // Post Object
+    let post: any;
 
-      // Return the post
-      return post
+    // Find the Post By ID
+    post = await Post.findOne({ _id: postId })
+      .populate('_group', this.groupFields)
+      .populate('_posted_by', this.userFields)
+      .populate('task._assigned_to', this.userFields)
+      .populate('performance_task._assigned_to', this.userFields)
+      .lean();
 
-    } catch (err) {
-
-      // Return with error
-      throw (err);
-    }
-  };
+    // Return the post
+    return post
+  }
 
 
   /**
@@ -589,64 +580,60 @@ export class PostService {
    * This function is used to like a post
    * @param { userId, postId }
    */
-  like = async (userId, postId) => {
+  async like(userId: string, postId: string) {
 
-    try {
-      const post = await Post.findOneAndUpdate({
-        _id: postId
-      }, {
-        $addToSet: { _liked_by: userId },
-        $inc:{ likes_count: 1 }
-      }, {
-        new: true
-      })
-        .populate('_liked_by', 'first_name last_name')
-        .lean();
+    // Find the post and update the _liked_by array and increment the likes_count
+    const post = await Post.findOneAndUpdate
+      (
+        { _id: postId },
+        { $addToSet: { _liked_by: userId }, $inc: { likes_count: 1 } },
+        { new: true }
+      )
+      .lean();
 
-      const user = await User.findOne({
-        _id: userId
-      }).select('first_name last_name');
+    // Find the User 
+    const user = await User.findOne
+      (
+        { _id: userId }
+      )
+      .select('first_name last_name');
 
-      return {
-        post,
-        user
-      };
-    } catch (err) {
-      throw (err);
+    // Return the Data
+    return {
+      post,
+      user
     }
-  };
+  }
 
 
   /**
    * This function is used to unlike a post
    * @param { userId, postId }
    */
-  unlike = async (userId, postId) => {
-    try {
-      const post = await Post.findOneAndUpdate({
-        _id: postId
-      }, {
-        $pull: { _liked_by: userId },
-        $inc:{ likes_count: -1 }
-      }, {
-        new: true
-      })
-        .populate('_liked_by', 'first_name last_name')
-        .lean();
+  async unlike(userId: string, postId: string) {
 
-      const user = await User.findOne({
-        _id: userId
-      }).select('first_name last_name');
+    // Find the post and update the _liked_by array and decrement the likes_count
+    const post = await Post.findOneAndUpdate
+      (
+        { _id: postId },
+        { $pull: { _liked_by: userId }, $inc: { likes_count: -1 } },
+        { new: true }
+      )
+      .lean();
 
+    // Find the User 
+    const user = await User.findOne
+      (
+        { _id: userId }
+      )
+      .select('first_name last_name');
 
-      return {
-        post,
-        user
-      };
-    } catch (err) {
-      throw (err);
+    // Return the Data
+    return {
+      post,
+      user
     }
-  };
+  }
 
   // -| TASKS |-
 

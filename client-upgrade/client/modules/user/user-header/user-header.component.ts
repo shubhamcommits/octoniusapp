@@ -25,7 +25,7 @@ export class UserHeaderComponent implements OnInit {
   public workspaceData: any;
 
   // BASE URL OF THE APPLICATION
-  BASE_URL = environment.UTILITIES_BASE_URL;
+  BASE_URL = environment.UTILITIES_USERS_UPLOADS;
 
   // Is current user variable
   public isCurrentUser: any = false;

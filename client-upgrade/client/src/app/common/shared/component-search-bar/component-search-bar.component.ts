@@ -47,7 +47,7 @@ export class ComponentSearchBarComponent implements OnInit {
   @Input('members') members: any = [];
 
   // BASE URL OF THE APPLICATION
-  public baseUrl = environment.UTILITIES_BASE_URL;
+  public baseUrl = environment.UTILITIES_USERS_UPLOADS;
 
   // Public Functions class
   private publicFunctions = new PublicFunctions(this.injector);
@@ -315,5 +315,6 @@ export class ComponentSearchBarComponent implements OnInit {
    */
   ngOnDestroy() {
     this.subSink.unsubscribe()
+    this.isLoading$.complete()
   }
 }

@@ -25,7 +25,7 @@ function devConfigInit() {
   process.env.REDIS_PORT = process.env.REDIS_PORT || '6379'
 
   // Files Uploads Folder
-  process.env.FILE_UPLOAD_FOLDER = process.env.FILE_UPLOAD_FOLDER || path.join(__dirname, '../../../../uploads/');
+  process.env.FILE_UPLOAD_FOLDER = process.env.FILE_UPLOAD_FOLDER || path.join(__dirname, '../uploads/');
 
   // Sendgrid Key
   process.env.SENDGRID_KEY = process.env.SENDGRID_KEY || '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'

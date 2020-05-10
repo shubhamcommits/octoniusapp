@@ -123,5 +123,9 @@ export class GroupsListComponent implements OnInit {
     this.userGroups.push($event);
   }
 
+  ngOnDestroy(){
+    this.isLoading$.complete()
+  }
+
 
 }

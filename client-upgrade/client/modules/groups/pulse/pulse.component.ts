@@ -241,4 +241,8 @@ export class PulseComponent implements OnInit {
     })
   }
 
+  ngOnDestroy(){
+    this.isLoading$.complete()
+  }
+
 }

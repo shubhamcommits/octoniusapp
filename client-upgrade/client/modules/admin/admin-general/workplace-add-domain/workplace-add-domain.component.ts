@@ -97,5 +97,9 @@ export class WorkplaceAddDomainComponent implements OnInit {
     }
   }
 
+  ngOnDestroy(){
+    this.isLoading$.complete();
+  }
+
 
 }

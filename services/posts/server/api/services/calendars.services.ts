@@ -8,77 +8,135 @@ import moment from 'moment';
 
 export class CalendarService {
 
-    async getCalendarPosts(year: any, month: any, groupId: any, userId?: any) {
-            // Create current date in view
-            const date = moment().month(month).year(year);
+    // Select User Fields on population
+    userFields: any = 'first_name last_name profile_pic role email';
 
-            // Find posts between the start and end of given month
-            const startOfMonthEvent = date.startOf('month').toDate();
-            const endOfMonthEvent = date.endOf('month').toDate();
+    // Select Group Fileds on population
+    groupFields: any = 'group_name group_avatar workspace_name';
 
-            // Convert format to match date from frontend
-            const convertedStartMonthEvent = moment(startOfMonthEvent).utc().format('YYYY-MM-DDTHH:mm:ss');
-            const convertedEndOfMonthEvent = moment(endOfMonthEvent).utc().format('YYYY-MM-DDTHH:mm:ss');
+    /**
+     * This function is responsible for fetching tasks due this week
+     * @param userId 
+     */
+    async getMonthTasks(month: any, year: any, groupId: any, userId?: any) {
 
-            // Tasks are saved under different format in DB
-            const startOfMonthTask = date.startOf('month').format('YYYY-MM-DD');
-            const endOfMonthTask = date.endOf('month').format('YYYY-MM-DD');
+        // current date in view
+        const date = moment().month(parseInt(month)).year(parseInt(year))
 
-            // Fetch the posts from a specific group AND either type task/event AND between the start and the end of the month given
-            let posts: any = []
+        // Generate the actual time
+        const startOfMonth = date.startOf('month').format();
 
-            // If userId doesn't exist
-            if (!userId) {
-                posts = await Post.find({
-                    $and: [
-                        { _group: groupId },
-                        {
-                            $or: [
-                                { type: 'event' },
-                                { type: 'task' }
-                            ]
-                        },
-                        {
-                            $or: [
-                                { 'event.due_to': { $gte: convertedStartMonthEvent, $lte: convertedEndOfMonthEvent } },
-                                { 'task.due_to': { $gte: startOfMonthTask, $lte: endOfMonthTask } }
-                            ]
-                        }
-                    ]
-                })
-            } else if (userId) {
-                posts = await Post.find({
-                    $and: [
-                        { _group: groupId },
-                        {
-                            $or: [
-                                { type: 'event' },
-                                { type: 'task' }
-                            ]
-                        },
-                        {
-                            $or: [
-                                { 'task._assigned_to': userId },
-                                {
-                                    $or: [
-                                        { 'event._assigned_to': userId },
-                                        { 'event._assigned_to': 'all' },
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            $or: [
-                                { 'event.due_to': { $gte: convertedStartMonthEvent, $lte: convertedEndOfMonthEvent } },
-                                { 'task.due_to': { $gte: startOfMonthTask, $lte: endOfMonthTask } }
-                            ]
-                        }
-                    ]
-                })
-            }
+        // Generate the 30 days time
+        const endOfMonth = date.endOf('month').format();
 
-            // Return posts array
-            return posts || []
+        // Tasks List
+        let tasks: any = []
+
+        // Fetch the tasks posts
+        if(userId === undefined)
+            tasks = await Post.find({
+                '_group': groupId,
+                'type': 'task',
+                'task.due_to': { $gte: startOfMonth, $lte: endOfMonth }
+            })
+                .sort('-task.due_to')
+                .populate('_group', this.groupFields)
+                .populate('_posted_by', this.userFields)
+                .populate('task._assigned_to', this.userFields)
+                .lean();
+
+        // Find user's month tasks
+        else
+            tasks = await Post.find({
+                'task._assigned_to': userId,
+                'task.due_to': { $gte: startOfMonth, $lte: endOfMonth },
+                $or: [
+                    { 'task.status': 'to do' },
+                    { 'task.status': 'in progress' },
+                    { 'task.status': 'done' }
+                ]
+            })
+                .sort('-task.due_to')
+                .populate('_group', this.groupFields)
+                .populate('_posted_by', this.userFields)
+                .populate('task._assigned_to', this.userFields)
+                .lean();
+
+        // Return tasks
+        return tasks
+    }
+
+    /**
+     * This function is responsible for fetching events due this month
+     */
+    async getMonthEvents(month: any, year: any, groupId: any, userId?: any) {
+
+        // current date in view
+        const date = moment().month(parseInt(month)).year(parseInt(year))
+
+        // Generate the actual time
+        const startOfMonth = date.startOf('month').format();
+
+        // Generate the 30 days time
+        const endOfMonth = date.endOf('month').format();
+
+        // Events list object
+        let events: any = [];
+
+        // Find the group's month events
+        if(userId === undefined)
+            events = await Post.find({
+
+                // Find events due to this month
+                '_group': groupId,
+                'type': 'event',
+                'event.due_to': { $gte: startOfMonth, $lte: endOfMonth }
+            })
+            .sort('event.due_to')
+            .populate('_posted_by', this.userFields)
+            .populate('_group', this.groupFields)
+            .lean();
+
+        // Find the user's month events
+        else 
+            events = await Post.find({
+
+                // Find events due to this week
+                'type': 'event',
+                $or: [
+                    { 'event._assigned_to': userId },
+                    { 'event._assigned_to': 'all' }
+                ],
+                'event.due_to': { $gte: startOfMonth, $lte: endOfMonth }
+            })  
+            .sort('event.due_to')
+            .populate('_posted_by', this.userFields)
+            .populate('_group', this.groupFields)
+            .lean();
+
+        // Return Events
+        return events
+    }
+
+    /**
+     * This function is resposible for fetching the calendar posts
+     * @param month
+     * @param year
+     */
+    async getMonthCalendarPosts(month: any, year: any, groupId: any, userId?: any) {
+
+        // Get Events
+        let events: any = await this.getMonthEvents(month, year, groupId, userId);
+
+        // Get Tasks
+        let tasks: any = await this.getMonthTasks(month, year, groupId, userId);
+
+        // Return set of events and tasks
+        return {
+            events: events,
+            tasks: tasks,
+        }
+
     }
 
 }

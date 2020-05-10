@@ -19,7 +19,7 @@ export class ComponentSearchInputBoxComponent implements OnInit {
   constructor(private injector: Injector) { }
 
   // Define User server base Url
-  userBaseUrl = environment.UTILITIES_BASE_URL;
+  userBaseUrl = environment.UTILITIES_USERS_UPLOADS;
 
   @Input('placeholder') placeholder: string = '';
 
@@ -385,5 +385,6 @@ export class ComponentSearchInputBoxComponent implements OnInit {
    */
   ngOnDestroy() {
     this.subSink.unsubscribe()
+    this.isLoading$.complete()
   }
 }

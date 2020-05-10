@@ -11,7 +11,7 @@ export class GroupPostboxComponent implements OnInit {
   constructor() { }
 
   // BASE URL OF THE APPLICATION
-  baseUrl = environment.UTILITIES_BASE_URL;
+  baseUrl = environment.UTILITIES_USERS_UPLOADS;
 
   // GroupId variable
   @Input('groupId') groupId: any;

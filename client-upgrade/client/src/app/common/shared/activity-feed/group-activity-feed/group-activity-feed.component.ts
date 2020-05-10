@@ -325,5 +325,6 @@ export class GroupActivityFeedComponent implements OnInit {
    */
   ngOnDestroy() {
     this.subSink.unsubscribe()
+    this.isLoading$.complete()
   }
 }

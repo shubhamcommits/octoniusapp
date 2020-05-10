@@ -87,4 +87,14 @@ a.notifications.btn.dropdown-toggle-split.dropdown-toggle::after
   font-size: 10px;
 }
 
+// Adding pointer to image
+img{
+  cursor: pointer;
+  transition: transform .2s ease;
+}
+
+img:hover{
+  transform: scale(1.1);
+}
+
 

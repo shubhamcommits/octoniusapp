@@ -11,7 +11,7 @@ export class PostViewComponent implements OnInit {
   constructor() { }
 
   // Base Url for uploads
-  baseUrl = environment.UTILITIES_BASE_URL 
+  baseUrl = environment.UTILITIES_USERS_UPLOADS; 
   
   // Date Object for undefined dates
   date = Date.now()
@@ -24,6 +24,9 @@ export class PostViewComponent implements OnInit {
 
   // Delete Post Event Emitter
   @Output('delete') delete = new EventEmitter()
+
+  // Task Status Event Emitter
+  @Output('taskStatus') taskStatus = new EventEmitter();
 
   ngOnInit() {
   }
@@ -41,6 +44,19 @@ export class PostViewComponent implements OnInit {
    */
   eventAssignedToAll(post: any){
     return post.event._assigned_to.includes('all')
+  }
+
+  /**
+   * This Function is responsible for changing the status on the UI
+   * @param status 
+   */
+  changeTaskStatus(status: any){
+
+    // Update the UI for the task status change
+    this.post.task.status = status;
+
+    // Emit the taskStatus to other components
+    this.taskStatus.emit(status);
   }
 
 }

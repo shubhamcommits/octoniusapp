@@ -1,5 +1,5 @@
 import { Response, Request, NextFunction } from "express";
-const multer = require("multer");
+import { sendError } from "../senderror";
 
 /**
  * This function is the boiler plate for file handler mechanism for user post attachements
@@ -8,142 +8,17 @@ const multer = require("multer");
  * @param next 
  */
 const postFileHandler = (req: Request, res: Response, next: NextFunction) => {
+  try {
 
-  // // Initialize the req['files'] object
-  // let files: any = req['files']
+    // Fetch the File Name From the request
+    let { params: { file } } = req;
 
-  // // Check the current request has files object underlying
-  // if (!files) {
+    // Redirect the Response to the Posts Microservice
+    return res.status(301).redirect(`${process.env.POSTS_SERVER}/uploads/${file}`)
 
-  //   // Set the body.files object as null
-  //   req.body.files = null;
-
-  //   // Pass the middleware
-  //   next();
-
-  //   // If multiple files are attached with post
-  // } else if (files.attachments.length > 1) {
-
-  //   // Set the files property to an array
-  //   req.body.files = [];
-
-  //   // Fetch the files from the current request
-  //   files.attachments.forEach((currentFile: any, index: Number) => {
-
-  //     // Instantiate the fileName variable and add the date object in the name
-  //     let fileName = Date.now().toString() + currentFile.name;
-
-  //     // Get the folder link from the environment
-  //     const folder = process.env.FILE_UPLOAD_FOLDER;
-
-  //     // Modify the file accordingly and handle request
-  //     currentFile.mv(folder + fileName, (error: Error) => {
-  //       if (error) {
-  //         fileName = null;
-  //         return res.status(500).json({
-  //           status: '500',
-  //           message: 'file upload error',
-  //           error: error
-  //         });
-  //       }
-  //     });
-
-  //     // Modify the file and serialise the object
-  //     const file = {
-  //       orignal_name: currentFile.name,
-  //       modified_name: fileName
-  //     };
-
-  //     // Push the file object
-  //     req.body.files.push(file);
-  //   });
-
-  //   // Pass the middleware
-  //   next();
-
-  //   // If only single file is attached with post
-  // } else {
-
-  //   // Set the files property to an array
-  //   req.body.files = [];
-
-  //   // Instantiate the fileName variable and add the date object in the name
-  //   let fileName = Date.now().toString() + req['files'].attachments['name'];
-
-  //   // Fetch the file from the current request
-  //   const currentFile: any = req['files'].attachments;
-
-  //   // Get the folder link from the environment
-  //   const folder = process.env.FILE_UPLOAD_FOLDER;
-
-  //   // Modify the file accordingly and handle request
-  //   currentFile.mv(folder + fileName, (error: Error) => {
-  //     if (error) {
-  //       fileName = null;
-  //       return res.status(500).json({
-  //         status: '500',
-  //         message: 'file upload error',
-  //         error: error
-  //       });
-  //     }
-  //   })
-
-  //   // Modify the file and serialise the object
-  //   const file = {
-  //     orignal_name: req['files'].attachments['name'],
-  //     modified_name: fileName
-  //   };
-
-  //   // Push the file object
-  //   req.body.files.push(file);
-
-  //   // Pass the middleware
-  //   next();
-  // }
-  let files: any = req['files'];
-  // If no files present
-  if (!files){
-    return res.status(500).json({
-      message: "0 Files selected"
-    })
+  } catch (err) {
+    return sendError(res, err, 'Internal Server Error!', 500);
   }
-
-  let folder = process.env.FILE_UPLOAD_FOLDER;
-  console.log(folder);
-  var Storage = multer.diskStorage({
-    destination: folder,
-    filename: function(req, file, callback) {
-      callback(null, file.fieldname + "_" + Date.now() + '_' + file.file.originalname);
-    }
-  });
-
-
-  // req['files'] = files;
-  // console.log(files);
-
-  
-  var upload = multer({
-    storage: Storage
-  }).array(req['files']['files'], 20);
-
-  // console.log(req['files'])
-
-  upload(req, res, function(err){
-      console.log(req['files'])
-    if (err){
-      return res.status(500).json({
-        message: err
-      })
-    }
-    else{
-
-      return res.status(200).json({
-        message: "success"
-      })
-    }
-  })
 }
-
-
 
 export { postFileHandler }

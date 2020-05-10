@@ -25,12 +25,46 @@ export class PostService {
 
   /**
    * This function is responsible for editing a post
-   * @param postData 
+   * @param postId
+   * @param formData
    */
   edit(postId: string, formData: FormData) {
 
     // Call the HTTP Request
     return this._http.put(this.baseURL + `/${postId}`, formData).
+    toPromise()
+  }
+
+  /**
+   * This function is responsible for fetching a post details
+   * @param postId
+   */
+  get(postId: string) {
+
+    // Call the HTTP Request
+    return this._http.get(this.baseURL + `/${postId}`).
+    toPromise()
+  }
+
+  /**
+   * This function is responsible for liking a post
+   * @param postId 
+   */
+  like(postId: string){
+    
+    // Call the HTTP Request
+    return this._http.post(this.baseURL + `/${postId}/like`, '').
+    toPromise()
+  }
+
+  /**
+   * This function is responsible for unliking a post
+   * @param postId 
+   */
+  unlike(postId: string){
+    
+    // Call the HTTP Request
+    return this._http.post(this.baseURL + `/${postId}/unlike`, '').
     toPromise()
   }
 
@@ -75,7 +109,7 @@ export class PostService {
    */
   getCalendarPosts(year: any, month: any, groupId: string, userId?: string){
     if(userId){
-      return this._http.get(this.baseURL + `/calendar/posts`, {
+      return this._http.get(this.baseURL + `/calendar/timeline`, {
         params:{
           year: year,
           month: month,
@@ -85,7 +119,7 @@ export class PostService {
       }).toPromise();
     }
     else{
-      return this._http.get(this.baseURL + `/calendar/posts`, {
+      return this._http.get(this.baseURL + `/calendar/timeline`, {
         params:{
           year: year,
           month: month,

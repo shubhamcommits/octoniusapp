@@ -20,7 +20,7 @@ export class GroupsHeaderComponent implements OnInit {
   userData: any;
 
   // BASE URL OF THE APPLICATION
-  baseUrl = environment.UTILITIES_BASE_URL;
+  baseUrl = environment.UTILITIES_WORKSPACES_UPLOADS;
 
   // WORKSPACE DATA
   workspaceData: any;
