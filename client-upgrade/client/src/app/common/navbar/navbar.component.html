@@ -50,6 +50,13 @@
             <img src="{{baseUrl}}/uploads/{{userData?.profile_pic}}" [routerLink]="['/dashboard', 'user', 'profile']" [queryParams]="{ userId: userData?._id}"  onerror="this.src='/assets/images/user.png'"  class="topnav-avatar">
           </a>
           <!-- USER PROFILE BADGE ENDS -->
+
+          <!-- SEARCH -->
+          <a class="nav-link" (click)="openModal(search)">
+            <span class="material-icons">
+              search
+              </span>
+          </a>
           
           <!-- LOGOUT FUNCTION STARTS-->
           <a class="nav-link" [routerLink]="['/home']" routerLinkActive="router-link-active" (click)="logout()">Logout
@@ -62,3 +69,5 @@
     </div>
  </nav>
  <router-outlet></router-outlet>
+ <!-- Search Modal -->
+ <ng-template #search let-modal><app-search-header (close)="closeModal()"></app-search-header></ng-template>

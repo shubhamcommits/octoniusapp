@@ -735,3 +735,17 @@ app-branding-panel{
 }
 
 /* MATERIAL ICON CSS */
+
+// Seach Modal
+.search{
+  border: none;
+  background: none;
+
+  .modal-dialog{
+    top: 20%;
+  }
+}
+
+.search .modal-dialog .modal-content{
+  padding: .4rem;
+}
