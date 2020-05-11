@@ -56,7 +56,7 @@ const postFileHandler = async (req: Request, res: Response, next: NextFunction) 
 
       // Modify the file and serialise the object
       const file = {
-        orignal_name: currentFile.name,
+        original_name: currentFile.name,
         modified_name: fileName
       };
 
@@ -99,7 +99,7 @@ const postFileHandler = async (req: Request, res: Response, next: NextFunction) 
 
     // Modify the file and serialise the object
     const file = {
-      orignal_name: req['files'].attachments['name'],
+      original_name: req['files'].attachments['name'],
       modified_name: fileName
     };
 

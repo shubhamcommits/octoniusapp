@@ -155,6 +155,8 @@ export class GroupCreatePostComponent implements OnInit {
         this.showUpdateDetails = false
       else
         this.showUpdateDetails = true
+    } else if(this.edit === false) {
+      this.title = event
     }
   }
 

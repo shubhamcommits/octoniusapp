@@ -11,7 +11,7 @@
 <div *ngIf="post" class="ml-2 mt-2">
     <p><strong *ngIf="post.files">Attached Files </strong></p>
     <a href="{{ baseUrl }}/uploads/{{ file?.modified_name }}" target="_blank" *ngFor="let file of post.files; let index = index">
-        {{ file?.orignal_name }}
+        {{ file?.original_name }}
     </a>
 </div>
 <!-- Attached Files Ends -->

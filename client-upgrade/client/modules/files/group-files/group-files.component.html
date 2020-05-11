@@ -1,0 +1,62 @@
+<div class="container">
+
+    <div class="card-tile">
+
+        <!-- Heading of the component starts -->
+        <h6><strong>Your files. Ready when you are</strong></h6>
+        <!-- Heading of the component ends -->
+
+        <app-group-new-file></app-group-new-file>
+
+        <div class="search">
+
+            <!-- Component search bar starts -->
+            <input type="text" [ngModel]="query" (ngModelChange)="fileSearchQuery($event)" class="searchTerm"
+                [placeholder]="'File search'">
+            <button type="submit" class="searchButton">
+                <i class="material-icons">
+                    search
+                </i>
+            </button>
+            <!-- Component search bar ends -->
+
+        </div>
+
+        <!-- Horizontal line starts -->
+        <hr>
+        <!-- Horizontal line ends -->
+
+        <!-- Files array template starts -->
+        <app-infinite-scroll (scrolled)="onScroll()">
+            <div class="media card-tile user-list"
+                *ngFor="let file of files; let index = index; trackBy: utilityService.trackByIndex;">
+
+                <!-- Avatar Image of the member -->
+                <img src="{{ baseUrl }}/{{file._posted_by?.profile_pic}}" routerLink="/dashboard/user/profile"
+                    [queryParams]="{ userId: file._posted_by._id }" onerror="this.src='/assets/images/user.png'"
+                    class="feed-avatar">
+                <!-- Avatar Image of the member -->
+
+                <div class="media-body">
+
+                    <!-- File Details Starts -->
+                    <div class="float-left">
+                        <p class="mt-0">{{file._posted_by?.first_name}} {{file._posted_by?.last_name}}</p>
+                    </div>
+                    <!-- File Details Ends -->
+
+                </div>
+            </div>
+        </app-infinite-scroll>
+        <!-- Files array template ends -->
+
+        <!-- Loading Spinner Starts -->
+        <ng-container *ngIf="isLoading$ | async">
+            <app-loading-spinner></app-loading-spinner>
+        </ng-container>
+        <!-- Loading Spinner Ends -->
+
+
+    </div>
+
+</div>

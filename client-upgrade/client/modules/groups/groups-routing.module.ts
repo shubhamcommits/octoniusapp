@@ -44,13 +44,17 @@ const routes: Routes = [
       { path: 'tasks', component: GroupKanbanBoardsComponent },
 
       // Group Files
-      // { path: 'files', component: GroupFilesComponent },
+      {
+        path: 'files',
+        loadChildren: () => import('modules/files/files.module')
+          .then((module) => module.FilesModule),
+      },
 
       // Group Calendar
       {
         path: 'calendar',
-          loadChildren: () => import('modules/calendar/calendar.module')
-            .then((module) => module.CalendarModule),
+        loadChildren: () => import('modules/calendar/calendar.module')
+          .then((module) => module.CalendarModule),
       },
 
       // Group Members
