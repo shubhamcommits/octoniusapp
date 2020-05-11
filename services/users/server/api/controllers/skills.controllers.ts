@@ -1,6 +1,7 @@
 import { User } from '../models';
 import { Response, Request, NextFunction } from 'express';
 import { sendError } from '../../utils';
+import http from 'axios';
 
 /*  ===================
  *  -- SKILLS METHODS --
@@ -79,6 +80,15 @@ export class SkillsControllers {
                 return sendError(res, new Error('Unable to find and update the user, either userId is invalid or any unexpected error has occured'), 'Unable to find the user find and update, either userId is invalid or or any unexpected error has occured', 404);
             }
 
+            // Index
+            http.post(`${process.env.QUERY_SERVER_API}/indexing/post`, {
+                id: user.id,
+                fullName: user.full_name,
+                email: user.email,
+                active: user.active,
+                userSkills: user.skills
+              });
+
             // Send status 200 response
             return res.status(200).json({
                 message: `${skill} has been added to user skills!`,
@@ -123,6 +133,16 @@ export class SkillsControllers {
             if (!user) {
                 return sendError(res, new Error('Unable to find and update the user, either userId is invalid or any unexpected error has occured'), 'Unable to find the user find and update, either userId is invalid or or any unexpected error has occured', 404);
             }
+
+            // Index
+            http.post(`${process.env.QUERY_SERVER_API}/indexing/post`, {
+                id: user.id,
+                fullName: user.full_name,
+                email: user.email,
+                active: user.active,
+                userSkills: user.skills
+              });
+
 
             // Send status 200 response
             return res.status(200).json({

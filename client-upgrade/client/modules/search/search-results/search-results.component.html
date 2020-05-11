@@ -10,12 +10,11 @@
 
 <div *ngIf="type=='user'" style="text-align: left;">
     <h5>User</h5>
-    <p><strong>Username: </strong>{{ data.username }}</p>
     <p><strong>Full Name: </strong>{{ data.fullName }}</p>
     <p><strong>Email: </strong>{{ data.email }}</p>
     <p><strong>Skills: </strong></p>
     <ul>
-        <li *ngFor="let skill of data.userSkills">{{ skill.name }}</li>
+        <li *ngFor="let skill of data.userSkills">{{ skill }}</li>
     </ul>
 </div>
 
