@@ -98,20 +98,24 @@ export class SearchHeaderComponent implements OnInit {
 
 
   searchPosts(postQuery){
-    new Promise((resolve, reject)=>{
-      this.searchService.searchPostByQuery(postQuery).then((res: any)=>{
-        if (res.content.length > 0){
-          for (let post of res.content){
-            var found = false;
-            for (let item of this.searchedPosts) if (item.id == post.id) {found = true; break;}
-            if (found == false)this.searchedPosts.push(post);
-          }  
-        }
-        resolve();
-      }).catch((err)=>{
-        reject();
+    try {
+      new Promise((resolve, reject)=>{
+        this.searchService.searchPostByQuery(postQuery).then((res: any)=>{
+          if (res.content.length > 0){
+            for (let post of res.content){
+              var found = false;
+              for (let item of this.searchedPosts) if (item.id == post.id) {found = true; break;}
+              if (found == false)this.searchedPosts.push(post);
+            }  
+          }
+          resolve();
+        }).catch((err)=>{
+          reject();
+        })
       })
-    })
+    } catch (error) {
+      
+    }
   }
 
   /**
@@ -197,20 +201,24 @@ export class SearchHeaderComponent implements OnInit {
 
 
    searchFiles(fileQuery){
-    new Promise((resolve, reject)=>{
-      this.searchService.searchFileByQuery(fileQuery).then((res: any)=>{
-        if (res.content.length > 0){
-          for (let file of res.content){
-            var found = false;
-            for (let item of this.searchedFiles) if (item.id == file.id) {found = true; break;}
-            if (found == false)this.searchedFiles.push(file);
-          }  
-        }
-        resolve();
-      }).catch((err)=>{
-        reject();
+    try {
+      new Promise((resolve, reject)=>{
+        this.searchService.searchFileByQuery(fileQuery).then((res: any)=>{
+          if (res.content.length > 0){
+            for (let file of res.content){
+              var found = false;
+              for (let item of this.searchedFiles) if (item.id == file.id) {found = true; break;}
+              if (found == false)this.searchedFiles.push(file);
+            }  
+          }
+          resolve();
+        }).catch((err)=>{
+          reject();
+        })
       })
-    })
+    } catch (error) {
+      
+    }
    }
 
    /**
@@ -280,20 +288,28 @@ export class SearchHeaderComponent implements OnInit {
   
   
      searchUsers(userQuery){
-      new Promise((resolve, reject)=>{
-        this.searchService.searchUserByQuery(userQuery).then((res: any)=>{
-          if (res.content.length > 0){
-            for (let user of res.content){
-              var found = false;
-              for (let item of this.searchedUsers) if (item.id == user.id) {found = true; break;}
-              if (found == false)this.searchedUsers.push(user);
-            }  
-          }
-          resolve();
-        }).catch((err)=>{
-          reject();
+      try {
+        new Promise((resolve, reject)=>{
+          this.searchService.searchUserByQuery(userQuery).then((res: any)=>{
+            if (res.content.length > 0){
+              for (let user of res.content){
+                var found = false;
+                for (let item of this.searchedUsers) if (item.id == user.id) {found = true; break;}
+                if (found == false)this.searchedUsers.push(user);
+              }  
+            }
+            resolve();
+          }).catch((err)=>{
+            reject();
+          })
         })
-      })
+      } catch (error) {
+        
+      }
      }
+
+     /**
+     * User Query Ends
+     */
 
 }

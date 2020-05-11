@@ -109,7 +109,7 @@ export class AuthsController {
                     userData.role = 'member';
 
                     // Create new user with all the properties of userData
-                    let user = await User.create(userData);
+                    let user: any = await User.create(userData);
 
                     // Error creating the new user
                     if (!user) {
@@ -255,6 +255,15 @@ export class AuthsController {
                     http.post(`${process.env.MAILING_SERVER_API}/sign-up`, {
                         user: userUpdate
                     })
+
+                    // Index
+                    http.post(`${process.env.QUERY_SERVER_API}/indexing/user`, {
+                        id: user._id,
+                        fullName: user.full_name,
+                        email: user.email,
+                        active: user.active,
+                        userSkills: user.skills
+                      });
 
                     // Updating quantity += 1 in stripe module using workspace microservice
                     // await http.put(`${process.env.MAILING_SERVER_API}/billings/add-user?subscriptionId=${workspace.billing.subscription_id}&workspaceId=${workspace._id}`)
