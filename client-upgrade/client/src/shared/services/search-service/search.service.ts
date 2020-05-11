@@ -14,6 +14,8 @@ export class SearchService {
 
   localURL: string = "http://localhost:8080/api/query-service";
 
+  solrURL: string = "http://localhost:8983/solr/octonius"
+
 
   searchPostById(id: any){
     return this._http.get(this.localURL + `/post/${id}`).toPromise();
