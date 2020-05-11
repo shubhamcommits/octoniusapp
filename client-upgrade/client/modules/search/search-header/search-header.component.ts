@@ -86,6 +86,14 @@ export class SearchHeaderComponent implements OnInit {
     });
     postQuery.conditions = conditions;
     this.searchPosts(postQuery);
+    conditions = [];
+    conditions.push({
+      "columnName": "attachedTags",
+      "conditionOperator": "IN",
+      "value": [this.searchQuery]
+    });
+    postQuery.conditions = conditions;
+    this.searchPosts(postQuery);
   }
 
 
@@ -257,6 +265,14 @@ export class SearchHeaderComponent implements OnInit {
         "columnName": "email",
         "conditionOperator": "CONTAINS",
         "value": this.searchQuery
+      });
+      userQuery.conditions = conditions;
+      this.searchUsers(userQuery);
+      conditions = [];
+      conditions.push({
+        "columnName": "userSkills",
+        "conditionOperator": "IN",
+        "value": [this.searchQuery]
       });
       userQuery.conditions = conditions;
       this.searchUsers(userQuery);

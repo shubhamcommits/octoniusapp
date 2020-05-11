@@ -73,6 +73,14 @@ function prodConfigInit() {
   // Utilities Microservice
   process.env.UTILITIES_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}/utilities`
   process.env.UTILITIES_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}/api/utilities`
+
+  // Query Service
+  process.env.QUERY_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}`
+  process.env.QUERY_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.QUERY_PORT}/api/query-service`
+
+  // Query Microservice Monitor
+  process.env.QUERY_MONITOR = `${process.env.PROTOCOL}://${process.env.DOMAIN}`
+  process.env.QUERY_MONITOR_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.QUERY_MONITOR}/`
 };
 
 export { prodConfigInit as productionConfig } 
