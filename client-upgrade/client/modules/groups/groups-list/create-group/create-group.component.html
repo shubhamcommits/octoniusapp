@@ -1,6 +1,6 @@
 <!-- Select Group Type starts -->
-<button class="btn btn-primary stickybtn mb-3 mt-2 dropdown-toggle" type="button" data-toggle="dropdown">
-    <i class="material-icons">add</i> New
+<button class="btn  btn-outline-primary stickybtn mb-3 mt-0 dropdown-toggle" type="button" data-toggle="dropdown">
+   <img src="/assets/images/icon-new-group.svg" alt="" style="width: 20px; height: 20px; margin-right: 10px;"> New
 </button>
 <!-- Select Group Type ends -->
 
@@ -19,7 +19,7 @@
     <li *ngIf="(userData?.role== 'admin' || userData?.role== 'owner')" 
         class="dropdown-item"
         (click)="openCreateSmartGroupModal()">
-        <span>Smart</span>
+        <span>Smart Group</span>
     </li>
 </ul>
 <!-- Menu Drawer Ends -->

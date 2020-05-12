@@ -18,9 +18,9 @@ p {
 
 .nav-link {
   font-family: $poppins;
-  font-weight: 700;
+  font-weight: 400;
   font-size: 14px;
-  color:#787878;
+  color:#1B1D1F;
   text-align: center;
   cursor: pointer;
   &:hover {
@@ -29,6 +29,7 @@ p {
     color: $brand-primary !important;
     border-radius: 6px;
   }
+
 }
 
 .active {
@@ -36,6 +37,7 @@ p {
 }
 a:active{
   text-decoration: none;
+  color:#fff;
 }
 
 .form-inline {
