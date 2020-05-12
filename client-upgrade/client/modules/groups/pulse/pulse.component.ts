@@ -19,7 +19,7 @@ export class PulseComponent implements OnInit {
   ) { }
 
   // Base URL
-  baseUrl = environment.UTILITIES_BASE_URL;
+  baseUrl = environment.UTILITIES_GROUPS_UPLOADS;
 
   // Workspace data
   public workspaceData: Object = {};

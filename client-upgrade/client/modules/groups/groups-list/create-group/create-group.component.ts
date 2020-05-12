@@ -16,9 +16,6 @@ export class CreateGroupComponent implements OnInit {
 
   // User Data Object
   @Input('userData') userData: any;
-  
-  // Maintains the state of the componet
-  @Input('state') state: string = 'normal';
 
   // Workspace Data Object
   @Input('workspaceData') workspaceData: any = {}; 

@@ -3,10 +3,10 @@
 
   <div *ngFor="let group of pulseGroups; let i = index; trackBy: utilityService.trackByIndex" class="group-elem">
     <div class="row"
-      (click)="openModal(group.group_name, this.baseUrl + '/uploads/' + group.group_avatar, group.pulse_description ? group.pulse_description: 'Waiting for a new Pulse...', pulseToDoTasks[group._id], pulseInProgressTasks[group._id], pulseDoneTasks[group._id])">
+      (click)="openModal(group.group_name, this.baseUrl + '/' + group.group_avatar, group.pulse_description ? group.pulse_description: 'Waiting for a new Pulse...', pulseToDoTasks[group._id], pulseInProgressTasks[group._id], pulseDoneTasks[group._id])">
 
       <!-- GROUP DETAILS STARTS -->
-      <div class="col-md-1"><img class="feed-avatar" src="{{ this.baseUrl }}/uploads/{{group?.group_avatar}}"
+      <div class="col-md-1"><img class="feed-avatar" src="{{ this.baseUrl }}/{{group?.group_avatar}}"
           onerror="this.src='/assets/images/group.png'" alt="group_avatar">
       </div>
       <div class="group-name col-md-2"> {{ group.group_name }} </div>
