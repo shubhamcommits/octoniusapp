@@ -263,6 +263,8 @@ export class GroupCreatePostComponent implements OnInit {
       tags: this.tags
     }
 
+    console.log(this.quillData)
+
     // If Post type is event, then add due_to property too
     if(this.type === 'event'){
 
@@ -295,7 +297,7 @@ export class GroupCreatePostComponent implements OnInit {
     }
 
     // Call the Helper Function
-    this.onCreatePost(formData)
+    // this.onCreatePost(formData)
 
   }
 
@@ -367,7 +369,7 @@ export class GroupCreatePostComponent implements OnInit {
         .then((res) => {
 
           // Emit the post to other components
-          this.post.emit(res)
+          this.post.emit(res['post'])
 
           // Resolve with success
           resolve(this.utilityService.resolveAsyncPromise(`Task details updated!`))

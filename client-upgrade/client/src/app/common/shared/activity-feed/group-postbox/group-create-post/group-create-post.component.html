@@ -42,7 +42,7 @@
   <div class="float-right">
 
           <!-- Date Picker starts -->
-          <app-date-picker 
+          <app-date-picker *ngIf="type === 'event' || type === 'type'"
             (date)="getDate($event)">
           </app-date-picker>
           <!-- Date Picker ends -->
@@ -138,6 +138,7 @@
       [editorId]="'postbox-editor'" 
       [toolbar]="true" 
       [readOnly]="false"
+      [groupId]="groupId"
       (content)="getQuillData($event)">
     </app-quill-editor>
     <!-- Quill Editor with content of post if edit property is enabled -->
@@ -149,6 +150,7 @@
       [toolbar]="true"
       [readOnly]="false" 
       [contents]="postData.content" 
+      [groupId]="groupId"
       (content)="getQuillData($event)">
     </app-quill-editor>
     <!-- Post Content ends -->

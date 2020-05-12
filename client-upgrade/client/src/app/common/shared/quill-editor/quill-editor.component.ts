@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, Injector } from '@angular/core';
 
 // Highlight.js 
 import * as hljs from 'highlight.js';
@@ -14,6 +14,12 @@ hljs.configure({
 // Quill Import
 import Quill from 'quill';
 
+// Quill Mention
+import "quill-mention";
+
+// Public Functions
+import { PublicFunctions } from 'src/app/dashboard/public.functions';
+
 @Component({
   selector: 'app-quill-editor',
   templateUrl: './quill-editor.component.html',
@@ -21,12 +27,15 @@ import Quill from 'quill';
 })
 export class QuillEditorComponent implements OnInit {
 
-  constructor() {
+  constructor(
+    private Injector: Injector
+  ) {
 
     // Initialise the modules in constructor
     this.modules = {
       syntax: true,
-      toolbar: this.toolbar
+      toolbar: this.toolbar,
+      mention: { }
     }
   }
 
@@ -48,13 +57,22 @@ export class QuillEditorComponent implements OnInit {
   // Quill Contents Variable
   @Input('contents') contents: any
 
+  // GroupId variable
+  @Input('groupId') groupId: any;
+
   // Output the content present in the editor
   @Output('content') content = new EventEmitter();
+
+  // Public Functions class
+  public publicFunctions = new PublicFunctions(this.Injector);
 
   ngOnInit() {
 
     // Set the Status of the toolbar
     this.modules.toolbar = (this.toolbar === false) ? false : this.quillFullToolbar()
+
+    // Set the Mention Module
+    this.modules.mention = this.metionModule();
 
   }
 
@@ -94,6 +112,66 @@ export class QuillEditorComponent implements OnInit {
       ['link', 'image', 'video', 'formula'],
       ['clean']
     ]
+  }
+
+  /**
+   * This function returns the mention module
+   */
+  metionModule() {
+    return {
+      allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
+      mentionDenotationChars: ["@", "#"],
+      source: async (searchTerm, renderList, mentionChar) => {
+        
+        // Value of the mention list
+        let values: any;
+
+        // If User types "@" then trigger the list for user mentioning
+        if (mentionChar === "@") {
+
+          // Initialise values with list of members
+          values = await this.suggestMembers(this.groupId, searchTerm);
+
+        // If User types "#" then trigger the list for files mentioning
+        } else if(mentionChar === "#") {
+
+          // Initialise values with list of files
+        }
+
+        // If searchTerm length is 0, then show the full list
+        if (searchTerm.length === 0) {
+          renderList(values, searchTerm);
+        } else {
+          const matches = [];
+          for (let i = 0; i < values.length; i++)
+            if (
+              ~values[i].value.toLowerCase().indexOf(searchTerm.toLowerCase())
+            )
+              matches.push(values[i]);
+          renderList(matches, searchTerm);
+        }
+      }
+    }
+  }
+
+  /**
+   * This function is responsible for fetching the group members list
+   * @param groupId 
+   * @param searchTerm 
+   */
+  async suggestMembers(groupId: string, searchTerm: string){
+    
+    // Fetch the users list from the server
+    let usersList: any = await this.publicFunctions.searchGroupMembers(groupId, searchTerm);
+
+    // Map the users list
+    usersList = usersList['users'].map((user) => ({
+      id: user._id,
+      value: user.first_name + " " +user.last_name
+    }))
+
+    // Return the Array without duplicates
+    return Array.from(new Set(usersList))
   }
 
   /**
