@@ -4,7 +4,10 @@
         <div class="col-md-4">
 
             <!-- Group Information starts -->
-            <app-group-information *ngIf="groupData && checkDataExist(groupData)" [groupData]="groupData"
+            <app-group-information 
+                *ngIf="groupData && userData && checkDataExist(groupData) && checkDataExist(userData)" 
+                [userData]="userData"
+                [groupData]="groupData"
                 [myWorkplace]="myWorkplace">
             </app-group-information>
             <!-- Group Information ends -->

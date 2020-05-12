@@ -1,0 +1,24 @@
+<!-- GROUP DETAIL MODAL STARTS -->
+
+<!-- GROUP HEADER STARTS -->
+<div class="modal-header">
+    <h4 class="modal-title">Update your group avatar</h4>
+</div>
+<!-- GROUP HEADER ENDS -->
+
+<!-- GROUP MODAL CHANGE IMAGE STARTS -->
+<div class="modal-body">
+    <div class="form-group">
+        <img src="{{ baseUrl }}/{{ groupData?.group_avatar }}" onerror="this.src='/assets/images/group.png'">
+        <app-crop-image class="container" (outputImage)="getCroppedImage($event)"></app-crop-image>
+    </div>
+</div>
+<!-- GROUP MODAL CHANGE IMAGE ENDS -->
+
+<!-- GROUP FOOTER STARTS -->
+<div class="modal-footer">
+    <button type="button" class="btn btn-success" (click)="updateImage()">Update your Image!</button>
+</div>
+<!-- GROUP FOOTER ENDS -->
+
+<!-- GROUP DETAIL MODAL ENDS -->

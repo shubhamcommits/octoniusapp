@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs/internal/Observable';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,27 @@ export class GroupService {
    */
   removeGroup(groupId: string){
     return this._http.delete(this.baseURL + `/${groupId}`).toPromise()
+  }
+
+  /**
+   * This function is responsible for updating the group details
+   * @param groupId 
+   */
+  updateGroup(groupId: string, groupData: any){
+    return this._http.put(this.baseURL + `/${groupId}`, groupData).toPromise()
+  }
+
+  /**
+   * This function is responsible for updating the group avatar
+   * @param groupId 
+   */
+  updateGroupAvatar(groupId: any, fileToUpload: File) {
+
+    // PREPARING FORM DATA
+    let formData = new FormData();
+    formData.append('groupAvatar', fileToUpload)
+
+    return this._http.put(this.baseURL + `/${groupId}/image`, formData).toPromise()
   }
 
   /**

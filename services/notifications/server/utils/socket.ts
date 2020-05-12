@@ -110,11 +110,12 @@ function init(server: any){
         });
 
         // Listen to new post creation
-        socket.on('postAdded', (data) => {
+        socket.on('postAdded', async (data) => {
             const roomName = `${data.workspace}_${data.group}`;
             // Broadcast add event to group
 
-            console.log(roomName)
+            // Notify the related users
+            await helperFunctions.notifyRelatedUsers(io, socket, data)
 
             socket.broadcast.to(roomName).emit('postAddedInGroup', data);
         });

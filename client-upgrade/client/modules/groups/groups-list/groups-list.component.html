@@ -19,7 +19,7 @@
                 <div *ngIf="group.group_name !== 'private'" class="card col-md-3 groups"
                     [routerLink]="['/dashboard/groups/',group._id, 'activity']">
                     <span class="badge badge-members">{{ group?.members_count }} Members</span>
-                    <img class="card-img-top" src="{{ this.baseUrl }}/uploads/{{group.group_avatar}}"
+                    <img class="card-img-top" src="{{ this.baseUrl }}/{{group.group_avatar}}"
                         onerror="this.src='/assets/images/group.png'">
                     <a *ngIf="group?.type == 'agora'" class="btn btn-light btn-public"><i
                             class="material-icons">account_balance</i></a>

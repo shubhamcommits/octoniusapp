@@ -1,73 +1,77 @@
 <nav class="navbar navbar-expand-md fixed-top">
-    <div class="container">
-      <!-- OCTONIUS BRANDING STARTS -->
-       <a class="navbar-brand" [routerLink]="['/dashboard', 'myspace', 'inbox']" routerLinkActive="router-link-active" >
-          <i class="icon-octo-logo"></i>
-       </a>
-       <!-- OCTONIUS BRANDING ENDS -->
+  <div class="container">
+    <!-- OCTONIUS BRANDING STARTS -->
+    <a class="navbar-brand" [routerLink]="['/dashboard', 'myspace', 'inbox']" routerLinkActive="router-link-active">
+      <i class="icon-octo-logo"></i>
+    </a>
+    <!-- OCTONIUS BRANDING ENDS -->
 
-       <!-- COLLAPSABLE MENU STARTS -->
+    <!-- COLLAPSABLE MENU STARTS -->
 
-       <!-- TOGGLE MENU BUTTON STARTS -->
-       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-          aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon">
-              <i class="material-icons">menu</i>
-            </span>
-       </button>
-       <!-- TOGGLE MENU BUTTON ENDS -->
+    <!-- TOGGLE MENU BUTTON STARTS -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon">
+        <i class="material-icons">menu</i>
+      </span>
+    </button>
+    <!-- TOGGLE MENU BUTTON ENDS -->
 
-       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <!-- MENU ITEMS STARTS -->
-          <ul class="nav mr-auto">
-             <li class="nav-item">
-                <a class="nav-link" [routerLink]="['/dashboard', 'myspace', 'inbox']" routerLinkActive="active">
-                  <i class="material-icons">whatshot</i> <br> My Space
-                    <span class="sr-only">(current)</span>
-                </a>
-             </li>
-             <li class="nav-item">
-                <a class="nav-link" [routerLink]="['/dashboard', 'groups', 'all']" routerLinkActive="active">
-                  <i class="material-icons">group</i><br>  Groups
-                    <span class="sr-only">(current)</span>
-                </a>
-             </li>
-             <li class="nav-item">
-                <a class="nav-link" [routerLink]="['/dashboard', 'admin', 'general']" routerLinkActive="active">
-                  <i class="material-icons">settings</i> <br> Admin
-                    <span class="sr-only">(current)</span>
-                </a>
-             </li>
-          </ul>
-        <!-- MENU ITEMS ENDS -->
-
-          <!-- PUSH NOTIFICATIONS STARTS -->
-          <push-notifications *ngIf="userData && baseUrl" [userData]="userData" [baseUrl]="baseUrl"></push-notifications>
-          <!-- PUSH NOTIFICATIONS ENDS -->
-
-          <!-- USER PROFILE BADGE STARTS -->
-          <a class="nav-link">
-            <img src="{{baseUrl}}/{{userData?.profile_pic}}" [routerLink]="['/dashboard', 'user', 'profile']" [queryParams]="{ userId: userData?._id}"  onerror="this.src='/assets/images/user.png'"  class="topnav-avatar">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <!-- MENU ITEMS STARTS -->
+      <ul class="nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/dashboard', 'myspace', 'inbox']" routerLinkActive="active">
+            <i class="material-icons">whatshot</i> <br> My Space
+            <span class="sr-only">(current)</span>
           </a>
-          <!-- USER PROFILE BADGE ENDS -->
-
-          <!-- SEARCH -->
-          <a class="nav-link" (click)="openModal(search)">
-            <span class="material-icons">
-              search
-              </span>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/dashboard', 'groups', 'all']" routerLinkActive="active">
+            <i class="material-icons">group</i><br> Groups
+            <span class="sr-only">(current)</span>
           </a>
-          
-          <!-- LOGOUT FUNCTION STARTS-->
-          <a class="nav-link" [routerLink]="['/home']" routerLinkActive="router-link-active" (click)="logout()">Logout
-              <span class="sr-only">(current)</span>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/dashboard', 'admin', 'general']" routerLinkActive="active">
+            <i class="material-icons">settings</i> <br> Admin
+            <span class="sr-only">(current)</span>
           </a>
-          <!-- LOGOUT FUNCTION ENDS-->
+        </li>
+      </ul>
+      <!-- MENU ITEMS ENDS -->
 
-       </div>
-       <!-- COLLAPSABLE MENU ENDS -->
+      <!-- SEARCH starts -->
+      <a class="nav-link" (click)="openModal(search)">
+        <span class="material-icons mt-3">
+          search
+        </span>
+      </a>
+      <!-- SEARCH ends -->
+
+      <!-- PUSH NOTIFICATIONS STARTS -->
+      <push-notifications class="nav-link" *ngIf="userData && baseUrl" [userData]="userData" [baseUrl]="baseUrl"></push-notifications>
+      <!-- PUSH NOTIFICATIONS ENDS -->
+
+      <!-- USER PROFILE BADGE STARTS -->
+      <a class="nav-link">
+        <img src="{{baseUrl}}/{{userData?.profile_pic}}" [routerLink]="['/dashboard', 'user', 'profile']"
+          [queryParams]="{ userId: userData?._id}" onerror="this.src='/assets/images/user.png'" class="topnav-avatar">
+      </a>
+      <!-- USER PROFILE BADGE ENDS -->
+
+      <!-- LOGOUT FUNCTION STARTS-->
+      <a class="nav-link" [routerLink]="['/home']" routerLinkActive="router-link-active" (click)="logout()">Logout
+        <span class="sr-only">(current)</span>
+      </a>
+      <!-- LOGOUT FUNCTION ENDS-->
+
     </div>
- </nav>
- <router-outlet></router-outlet>
- <!-- Search Modal -->
- <ng-template #search let-modal><app-search-header (close)="closeModal()"></app-search-header></ng-template>
+    <!-- COLLAPSABLE MENU ENDS -->
+  </div>
+</nav>
+<router-outlet></router-outlet>
+<!-- Search Modal -->
+<ng-template #search let-modal>
+  <app-search-header (close)="closeModal()"></app-search-header>
+</ng-template>

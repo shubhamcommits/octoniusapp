@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-group-information',
@@ -7,10 +8,15 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class GroupInformationComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private utilityService: UtilityService
+  ) { }
 
   // Group Data Variable
   @Input('groupData') groupData: any;
+
+  // User Data Variable
+  @Input('userData') userData: any;
 
   // My workplace variable check
   @Input('myWorkplace') myWorkplace = false;

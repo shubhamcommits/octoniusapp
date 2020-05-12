@@ -21,8 +21,9 @@
         <!-- NOTIFICATION ITEM STARTS-->
         <div class="notification-item" *ngIf="this.notificationsData?.unreadNotifications?.length != 0">
                 <button class="dropdown-item" 
-                *ngFor="let notifications of notificationsData?.unreadNotifications; trackBy: utilityService.trackByIndex">
-                        <img src="{{ baseUrl }}/uploads/{{notifications?._actor?.profile_pic}}"
+                (click)="$event.stopPropagation()"
+                *ngFor="let notifications of notificationsData?.unreadNotifications;">
+                        <img src="{{ baseUrl }}/{{notifications?._actor?.profile_pic}}"
                             onerror="this.src='/assets/images/user.png'" alt="" class="topnav-avatar"
                             style="margin-right:15px">
                         {{notifications?._actor?.first_name}} {{notifications?.message}}
@@ -54,8 +55,8 @@
 
         <!-- NOTIFICATION ITEM STARTS-->
         <div class="notification-item" *ngIf="this.notificationsData?.readNotifications?.length != 0">        
-                <button class="dropdown-item notification-item" *ngFor="let notifications of notificationsData?.readNotifications; trackBy: utilityService.trackByIndex">
-                        <img src="{{ baseUrl }}/uploads/{{ notifications?._actor?.profile_pic }}"
+                <button (click)="$event.stopPropagation()" class="dropdown-item notification-item" *ngFor="let notifications of notificationsData?.readNotifications;">
+                        <img src="{{ baseUrl }}/{{ notifications?._actor?.profile_pic }}"
                             onerror="this.src='/assets/images/user.png'" alt="" class="topnav-avatar"
                             style="margin-right:15px">
                         {{notifications?._actor?.first_name}} {{notifications?.message}}

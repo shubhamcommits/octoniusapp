@@ -1,9 +1,17 @@
-<div class="sidecontent">
+<div class="sidecontent" *ngIf="userData && groupData">
     <div class="card sideinnercard">
         <div class="card-block">
 
             <!-- Group Information Header starts -->
-            <h6 class="card-title" *ngIf="!myWorkplace"><b>Group Info</b></h6>
+            <h6 class="card-title" *ngIf="!myWorkplace"><b>Group Info</b>
+
+                <!-- Edit Group Details starts -->
+                <button *ngIf="userData.role != 'member'" type="button" name="button" class="btn btn-link">
+                    <i class="material-icons">create</i>
+                </button>
+                <!-- Edit Group Details ends -->
+
+            </h6>
             <h6 class="card-title" *ngIf="myWorkplace"><b>Personal Workplace</b></h6>
             <!-- Group Information Header ends -->
 
@@ -15,7 +23,7 @@
             <p class="card-text" *ngIf="myWorkplace">This is your personal space. Everything you create here is private.
             </p>
             <!-- Group Information details ends -->
-            
+
         </div>
     </div>
 </div>

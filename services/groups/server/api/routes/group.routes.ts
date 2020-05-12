@@ -1,6 +1,6 @@
 import express from 'express';
 import { GroupFunctions } from '../controllers';
-import { Auths } from '../../utils';
+import { Auths, groupFileHandler } from '../../utils';
 
 const routes = express.Router();
 const group = new GroupFunctions();
@@ -33,6 +33,9 @@ routes.put('/:groupId', group.update);
 
 // DELETE - Removes the group from the database
 routes.delete('/:groupId', group.remove);
+
+// PUT - Change the Group Image
+routes.put('/:groupId/image', groupFileHandler, group.updateImage);
 
 // GET - Get list of first 10 groups of which a user is a part of
 routes.get('/', group.getUserGroups);

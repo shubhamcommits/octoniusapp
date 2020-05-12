@@ -47,6 +47,7 @@ import { GroupPostSelectionComponent } from './activity-feed/group-postbox/group
 import { GroupCreatePostComponent } from './activity-feed/group-postbox/group-create-post/group-create-post.component';
 import { TaskSmartCardComponent } from './activity-feed/task-smart-card/task-smart-card.component';
 import { AgendaSmartCardComponent } from './activity-feed/agenda-smart-card/agenda-smart-card.component';
+import { GroupUpdateInformationComponent } from './activity-feed/group-information/group-update-information/group-update-information.component';
 
 @NgModule({
   declarations: [
@@ -107,7 +108,9 @@ import { AgendaSmartCardComponent } from './activity-feed/agenda-smart-card/agen
 
     TaskSmartCardComponent,
 
-    AgendaSmartCardComponent
+    AgendaSmartCardComponent,
+
+    GroupUpdateInformationComponent,
   ],
   imports: [
     CommonModule,

@@ -58,3 +58,9 @@ app-loading-spinner{
     color: #fff !important;
     cursor: default;
 }
+
+// Adding pointer to image
+img{
+    cursor: pointer;
+    transform: scale(1.05);
+  }

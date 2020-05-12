@@ -44,6 +44,7 @@ import { GroupHeaderComponent } from './group/group-header/group-header.componen
 // import { GroupKanbanTaskViewComponent } from './group/group-kanban-boards/group-kanban-task-view/group-kanban-task-view.component';
 import { GroupMembersComponent } from './group/group-members/group-members.component';
 // import { GroupPostComponent } from './group/group-post/group-post.component';
+import { GroupImageDetailsComponent } from './group/group-header/group-image-details/group-image-details.component';
 
 
 
@@ -153,7 +154,9 @@ import { GroupPostComponent } from './group/group-post/group-post.component';
 
     EditColumnComponent,
 
-    GroupPostComponent
+    GroupPostComponent,
+
+    GroupImageDetailsComponent
   ],
   imports: [
     CommonModule,

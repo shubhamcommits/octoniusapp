@@ -74,6 +74,7 @@ export class PushNotificationsComponent implements OnInit {
      * @param userId - userId of the current user
      */
     markNotificationAsRead(notificationId: string, userId: string) {
+        console.log('hitted')
         this.subSink.add(this.socketService.onEmit('markRead', notificationId, userId)
             .pipe(take(1))
             .subscribe())

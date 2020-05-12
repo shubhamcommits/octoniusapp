@@ -19,8 +19,8 @@ export class GroupController {
             // Fetch first 10 groups in the database which are not private
             const groups = await Group.find({
                 $and: [
-                { group_name: { $ne: 'personal' } },
-                { group_name: { $ne: 'private' } }]
+                    { group_name: { $ne: 'personal' } },
+                    { group_name: { $ne: 'private' } }]
             })
                 .sort('_id')
                 .populate({
@@ -390,7 +390,7 @@ export class GroupController {
 
             // Find the group and remove it from the database
             const group: any = await Group.findByIdAndDelete(groupId)
-            .select('group_name')
+                .select('group_name')
 
             // Find list of users who were part of this group 
             const users = await User.find({
@@ -427,5 +427,39 @@ export class GroupController {
         } catch (error) {
             return sendError(res, error);
         }
-    };
+    }
+
+    /**
+     * This function is responsible for updating the image for the particular group
+     * @param { userId, fileName }req 
+     * @param res 
+     */
+    async updateImage(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the groupId
+        const { groupId } = req.params;
+
+        // Fetch the fileName from fileHandler middleware
+        const fileName = req['fileName'];
+
+        try {
+
+            // Find the group and update their respective group avatar
+            const group = await Group.findByIdAndUpdate({
+                _id: groupId
+            }, {
+                group_avatar: fileName
+            }, {
+                new: true
+            }).select('group_name group_avatar');
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Group avatar updated!',
+                group: group
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
 }
