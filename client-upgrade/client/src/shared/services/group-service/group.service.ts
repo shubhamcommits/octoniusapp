@@ -33,7 +33,7 @@ export class GroupService {
    * @param groupId 
    */
   updateGroup(groupId: string, groupData: any){
-    return this._http.put(this.baseURL + `/${groupId}`, groupData).toPromise()
+    return this._http.put(this.baseURL + `/${groupId}`, { groupData }).toPromise()
   }
 
   /**

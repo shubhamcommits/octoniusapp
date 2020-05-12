@@ -50,12 +50,12 @@ export class UserProfessionalInformationComponent implements OnInit {
       title: title,
       html:
         `<input id="current-position" type="text" placeholder="Your Current position" 
-      value="${this.userData.current_position}" class="swal2-input">` +
+      value="${this.userData.current_position || ''}" class="swal2-input">` +
 
         `<input id="company-joining-date" type="date" placeholder="Your Company Joining Date" 
       value="${this.userData.company_join_date}" class="swal2-input">` +
 
-        `<textarea id="biography" type="textarea" placeholder="Your Short Bio" class="swal2-textarea">${this.userData.bio}</textarea>`,
+        `<textarea id="biography" type="textarea" placeholder="Your Short Bio" class="swal2-textarea">${this.userData.bio || ''}</textarea>`,
 
       focusConfirm: false,
       preConfirm: () => {

@@ -6,7 +6,8 @@
             <h6 class="card-title" *ngIf="!myWorkplace"><b>Group Info</b>
 
                 <!-- Edit Group Details starts -->
-                <button *ngIf="userData.role != 'member'" type="button" name="button" class="btn btn-link">
+                <button *ngIf="userData.role != 'member'" type="button" name="button" class="btn btn-link"
+                (click)="this.editGroupDetails(openModal('Update Group Information!', '/assets/images/user-professional-info.svg'))">
                     <i class="material-icons">create</i>
                 </button>
                 <!-- Edit Group Details ends -->
@@ -18,8 +19,9 @@
             <hr />
 
             <!-- Group Information details starts -->
-            <p class="card-text" *ngIf="!myWorkplace"><strong>{{groupData?.members_count || 0 }}</strong> Members</p>
-            <p class="card-text" *ngIf="!myWorkplace">{{groupData?.description}}</p>
+            <p class="card-text" *ngIf="!myWorkplace"><strong>Name: </strong>{{groupData?.group_name }}</p>
+            <p class="card-text" *ngIf="!myWorkplace"><strong>Members Count: </strong>{{groupData?.members_count || 0 }}</p>
+            <p class="card-text" *ngIf="!myWorkplace"><strong>Description: </strong>{{groupData?.description}}</p>
             <p class="card-text" *ngIf="myWorkplace">This is your personal space. Everything you create here is private.
             </p>
             <!-- Group Information details ends -->

@@ -23,11 +23,11 @@
             <!-- Send pulse ends -->
 
             <!-- Task Smart Card Starts -->
-            <app-task-smart-card></app-task-smart-card>
+            <app-task-smart-card *ngIf="globalFeed"></app-task-smart-card>
             <!-- Task Smart Card Ends -->
 
             <!-- Agenda Smart Card Starts -->
-            <app-agenda-smart-card></app-agenda-smart-card>
+            <app-agenda-smart-card *ngIf="globalFeed"></app-agenda-smart-card>
             <!-- Agenda Smart Card Ends -->
         </div>
 

@@ -38,14 +38,14 @@ export class UserInformationComponent implements OnInit {
     return this.utilityService.getSwalModal({
       title: title,
       html:
-        `<input id="phone-number" type="tel" placeholder="Your Phone Number" 
-      value="${this.userData.phone_number}" class="swal2-input">` +
+        `<input id="phone-number" type="text" placeholder="Your Phone Number" 
+      value="${this.userData.phone_number || ''}" class="swal2-input">` +
 
-        `<input id="mobile-number" type="tel" placeholder="Your Mobile Number" 
-      value="${this.userData.mobile_number}" class="swal2-input">` +
+        `<input id="mobile-number" type="text" placeholder="Your Mobile Number" 
+      value="${this.userData.mobile_number || ''}" class="swal2-input">` +
 
         `<input id="company-name" type="text" placeholder="Your Company Name" 
-      value="${this.userData.company_name}" class="swal2-input">`,
+      value="${this.userData.company_name || ''}" class="swal2-input">`,
 
       focusConfirm: false,
       preConfirm: () => {

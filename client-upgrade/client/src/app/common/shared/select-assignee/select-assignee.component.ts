@@ -26,7 +26,7 @@ export class SelectAssigneeComponent implements OnInit {
   @Input('showBar') showBar = true
 
   // BASE URL OF THE APPLICATION
-  baseUrl = environment.UTILITIES_BASE_URL;
+  baseUrl = environment.UTILITIES_USERS_UPLOADS;
 
   /* Task Variables */
 

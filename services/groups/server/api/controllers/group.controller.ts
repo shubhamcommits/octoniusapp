@@ -335,42 +335,35 @@ export class GroupController {
         try {
             const groupId = req.params.groupId;
 
-            if (hasProperty(req.query, 'description') || hasProperty(req.query, 'group_name')) {
-                const group: any = await Group.findOneAndUpdate(
-                    { _id: groupId },
-                    { $set: req.query },
-                    { new: true }
-                )
-                    .populate({
-                        path: '_members',
-                        select: 'first_name last_name profile_pic role email created_date',
-                        options: {
-                            limit: 10
-                        }
-                    })
-                    .populate({
-                        path: '_admins',
-                        select: 'first_name last_name profile_pic role email created_date',
-                        options: {
-                            limit: 10
-                        }
-                    })
-                    .lean();
-
-                if (!group) {
-                    return sendError(res, new Error('Oops, group not found!'), 'Group not found, invalid groupId!', 404);
-                }
-
-                return res.status(200).json({
-                    message: `${group.group_name} group was updated successfully!`,
-                    group: group
-                });
-            }
-            else {
-                return res.status(400).json({
-                    message: 'Insufficient data, please check if you are passing description or group_name or both of them together in the query parameter!'
+            const group: any = await Group.findOneAndUpdate(
+                { _id: groupId },
+                { $set: req.body.groupData },
+                { new: true }
+            )
+                .populate({
+                    path: '_members',
+                    select: 'first_name last_name profile_pic role email created_date',
+                    options: {
+                        limit: 10
+                    }
                 })
+                .populate({
+                    path: '_admins',
+                    select: 'first_name last_name profile_pic role email created_date',
+                    options: {
+                        limit: 10
+                    }
+                })
+                .lean();
+
+            if (!group) {
+                return sendError(res, new Error('Oops, group not found!'), 'Group not found, invalid groupId!', 404);
             }
+
+            return res.status(200).json({
+                message: `${group.group_name} group was updated successfully!`,
+                group: group
+            });
 
         } catch (err) {
             return sendError(res, err);
