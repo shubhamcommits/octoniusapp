@@ -1,0 +1,8 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: query-service-ingress-v1
+spec:
+  backend:
+    serviceName: query-service-production-v1
+    servicePort: 8080

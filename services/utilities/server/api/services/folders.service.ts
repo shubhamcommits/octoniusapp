@@ -3,6 +3,10 @@ import { Readable } from 'stream';
 
 export class FoldersService {
 
+    /**
+     * This function is responsible for adding a new folder
+     * @param folderData 
+     */
     async add(folderData: any) {
 
         // Prepare Folder Data
@@ -19,6 +23,10 @@ export class FoldersService {
         return folder
     }
 
+    /**
+     * This function is responsible for removing a folder and its related files
+     * @param folderId 
+     */
     async remove(folderId: string) {
 
         // Find the Folder
@@ -35,15 +43,17 @@ export class FoldersService {
             })
 
             // Find all the files 
-            let filesStream = Readable.from( await File.find({
+            let filesStream = Readable.from(await File.find({
                 _folder: folderId
-            }).select('id'))
+            }).select('_id'))
 
-            filesStream.on('data', async(file)=>{
-                await File.findByIdAndRemove(file)
+            // Delete all the files present in a folder
+            filesStream.on('data', async (file) => {
+                await File.findByIdAndRemove(file._id)
             })
 
-            
+            // Return the deleted folder
+            return folder;
         }
 
     }

@@ -4,7 +4,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import compression from 'compression';
 import { developmentConfig, productionConfig } from '../configs';
-import { authRoutes, fileRoutes } from './routes';
+import { authRoutes, fileHandlerRoutes, filesRoutes } from './routes';
 import fileUpload from 'express-fileupload';
 
 // Defining new Express application
@@ -66,7 +66,7 @@ app.use(fileUpload({
 }));
 
 // Availing the static uploads folder to access from server
-app.use('/uploads', fileRoutes);
+app.use('/uploads', fileHandlerRoutes);
 
 // Routes which should handle request
 app.all('/', (req: Request, res: Response, next: NextFunction) => {
@@ -75,6 +75,7 @@ app.all('/', (req: Request, res: Response, next: NextFunction) => {
 
 // Correct REST naming
 app.use('/api/auths', authRoutes)
+app.use('/api/files', filesRoutes)
 
 // Invalid routes handling middleware
 app.use((req: Request, res: Response, next: NextFunction) => {

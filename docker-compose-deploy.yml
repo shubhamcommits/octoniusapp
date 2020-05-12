@@ -81,6 +81,7 @@ services:
     restart: always
     volumes:
       - /usr/app/node_modules
+      - alpha_groups_uploads_data:/usr/app/uploads
     environment:
       - NODE_ENV=production
       - PORT=4000
@@ -111,6 +112,7 @@ services:
     restart: always
     volumes:
       - /usr/app/node_modules
+      - alpha_workspaces_uploads_data:/usr/app/uploads
     environment:
       - NODE_ENV=production
       - PORT=5000
@@ -141,6 +143,7 @@ services:
     restart: always
     volumes:
       - /usr/app/node_modules
+      - alpha_users_uploads_data:/usr/app/uploads
     environment:
       - NODE_ENV=production
       - PORT=7000
@@ -171,6 +174,7 @@ services:
     restart: always
     volumes:
       - /usr/app/node_modules
+      - alpha_posts_uploads_data:/usr/app/uploads
     environment:
       - NODE_ENV=production
       - PORT=8000
@@ -231,6 +235,7 @@ services:
     restart: always
     volumes:
       - /usr/app/node_modules
+      - alpha_utilities_uploads_data:/usr/app/uploads
     environment:
       - NODE_ENV=production
       - PORT=10000
@@ -250,6 +255,37 @@ services:
       - mongodb
     links:
       - mongodb
+    networks:
+      - alpha
+
+  query-server:
+    container_name: query-server
+    image: octonius/query-service:latest
+    ports: 
+      - 11000:8080
+    restart: always
+    volumes:
+      - alpha_solr_data:/data/query-service-app
+    environment:
+      WAIT_HOST: solr-octonius
+      WAIT_PORT: '8983'
+      JAVA_OPTS: -Xmx512m
+      APPLICATION_CONFIG_SOLR_CLIENT_URL: 'http://solr-octonius:8983/solr'
+    links:
+      - solr-octonius:solr-octonius
+    networks:
+      - alpha
+  
+  solr-octonius:
+    image: solr:7.7.1
+    container_name: solr-octonius
+    command: solr-precreate octonius
+    ports:
+      - 12000:8983
+    environment:
+      - SOLR_JAVA_MEM=-Xms256m -Xmx256m -XX:MaxRAM=512m
+    volumes:
+      - ./solr/configsets:/opt/solr/server/solr/configsets
     networks:
       - alpha
       
@@ -286,6 +322,8 @@ services:
       - posts-server
       - notifications-server
       - utilities-server
+      - query-server
+      - solr-octonius
       - client
     networks:
       - alpha
@@ -298,11 +336,46 @@ volumes:
       device: ${PWD}/data/db
       o: bind
 
-  alpha_uploads_data:
+  alpha_groups_uploads_data:
     driver: local
     driver_opts:
       type: none
-      device: ${PWD}/data/uploads
+      device: ${PWD}/data/uploads/groups
+      o: bind
+  
+  alpha_posts_uploads_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/uploads/posts
+      o: bind
+
+  alpha_users_uploads_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/uploads/users
+      o: bind
+
+  alpha_workspaces_uploads_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/uploads/workspaces
+      o: bind
+
+  alpha_utilities_uploads_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/uploads/utilities
+      o: bind
+
+  alpha_solr_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/solr
       o: bind
       
 networks:

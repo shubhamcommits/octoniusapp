@@ -28,7 +28,7 @@ const FileSchema = new Schema({
     _folder : {
         type: Schema.Types.ObjectId,
         ref: 'Folder',
-        required: true
+        required: false
     }
 });
 

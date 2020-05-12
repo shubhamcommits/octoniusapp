@@ -26,41 +26,41 @@ export const environment = {
   clientUrl: 'http://localhost:4200',
 
   // Octo-doc URL
-  REAL_TIME_URL: 'localhost:8080/editor',
+  REAL_TIME_URL: 'localhost:80/editor',
 
   // Mailing URLs
-  MAILING_BASE_URL: 'http://localhost:8080/mails',
-  MAILING_BASE_API_URL: 'http://localhost:8080/api/mails',
+  MAILING_BASE_URL: 'http://localhost:80/mails',
+  MAILING_BASE_API_URL: 'http://localhost:80/api/mails',
 
   // Authentication URLs
-  AUTH_BASE_URL: 'http://localhost:8080/auths',
-  AUTH_BASE_API_URL: 'http://localhost:8080/api/auths',
+  AUTH_BASE_URL: 'http://localhost:80/auths',
+  AUTH_BASE_API_URL: 'http://localhost:80/api/auths',
 
   // Groups URLs
-  GROUPS_BASE_URL: 'http://localhost:8080/groups',
-  GROUPS_BASE_API_URL: 'http://localhost:8080/api/groups',
+  GROUPS_BASE_URL: 'http://localhost:80/groups',
+  GROUPS_BASE_API_URL: 'http://localhost:80/api/groups',
 
   // Workspace URLs
-  WORKSPACE_BASE_URL: 'http://localhost:8080/workspaces',
-  WORKSPACE_BASE_API_URL: 'http://localhost:8080/api/workspaces',
+  WORKSPACE_BASE_URL: 'http://localhost:80/workspaces',
+  WORKSPACE_BASE_API_URL: 'http://localhost:80/api/workspaces',
 
   // User URLs
-  USER_BASE_URL: 'http://localhost:8080/users',
-  USER_BASE_API_URL: 'http://localhost:8080/api/users',
+  USER_BASE_URL: 'http://localhost:80/users',
+  USER_BASE_API_URL: 'http://localhost:80/api/users',
 
   // Posts URLs
-  POST_BASE_URL: 'http://localhost:8080/posts',
-  POST_BASE_API_URL: 'http://localhost:8080/api/posts',
+  POST_BASE_URL: 'http://localhost:80/posts',
+  POST_BASE_API_URL: 'http://localhost:80/api/posts',
 
   // Notifications URLs
-  NOTIFICATIONS_BASE_URL: 'ws://localhost:8080',
-  NOTIFICATIONS_BASE_API_URL: 'http://localhost:8080/api/notifications',
+  NOTIFICATIONS_BASE_URL: 'ws://localhost:80',
+  NOTIFICATIONS_BASE_API_URL: 'http://localhost:80/api/notifications',
 
   // Utilities URLs
-  UTILITIES_BASE_URL: 'http://localhost:8080/utilities',
-  UTILITIES_BASE_API_URL: 'http://localhost:8080/api/utilities',
-  UTILITIES_GROUPS_UPLOADS: 'http://localhost:8080/uploads/groups',
-  UTILITIES_POSTS_UPLOADS: 'http://localhost:8080/uploads/posts',
-  UTILITIES_USERS_UPLOADS: 'http://localhost:8080/uploads/users',
-  UTILITIES_WORKSPACES_UPLOADS: 'http://localhost:8080/uploads/workspaces'
+  UTILITIES_BASE_URL: 'http://localhost:80/utilities',
+  UTILITIES_BASE_API_URL: 'http://localhost:80/api/utilities',
+  UTILITIES_GROUPS_UPLOADS: 'http://localhost:80/uploads/groups',
+  UTILITIES_POSTS_UPLOADS: 'http://localhost:80/uploads/posts',
+  UTILITIES_USERS_UPLOADS: 'http://localhost:80/uploads/users',
+  UTILITIES_WORKSPACES_UPLOADS: 'http://localhost:80/uploads/workspaces'
 };
