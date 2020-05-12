@@ -113,7 +113,7 @@ export class UsersControllers {
 
             // Index
             http.post(`${process.env.QUERY_SERVER_API}/indexing/user`, {
-                id: user.id,
+                id: user._id,
                 fullName: user.full_name,
                 email: user.email,
                 active: user.active,

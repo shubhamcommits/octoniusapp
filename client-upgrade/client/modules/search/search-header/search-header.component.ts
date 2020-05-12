@@ -254,14 +254,6 @@ export class SearchHeaderComponent implements OnInit {
       this.searchUsers(userQuery);
       conditions = [];
       conditions.push({
-        "columnName": "username",
-        "conditionOperator": "CONTAINS",
-        "value": this.searchQuery
-      });
-      userQuery.conditions = conditions;
-      this.searchUsers(userQuery);
-      conditions = [];
-      conditions.push({
         "columnName": "fullName",
         "conditionOperator": "CONTAINS",
         "value": this.searchQuery

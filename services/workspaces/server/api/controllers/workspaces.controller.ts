@@ -155,7 +155,7 @@ export class WorkspaceController {
             };
 
             // Create new user with owner rights
-            const user = await User.create(newUser);
+            const user: any = await User.create(newUser);
 
             // Error creating user
             if (!user) {
@@ -266,6 +266,15 @@ export class WorkspaceController {
             http.post(`${process.env.MAILING_SERVER_API}/new-workspace`, {
                 workspace: workspaceUpdate
             })
+
+            // Index User
+            http.post(`${process.env.QUERY_SERVER_API}/indexing/user`, {
+                id: user._id,
+                fullName: user.full_name,
+                email: user.email,
+                active: user.active,
+                userSkills: user.skills
+              });
 
             // Send the status 200 response
             return res.status(200).json({

@@ -81,7 +81,7 @@ export class SkillsControllers {
             }
 
             // Index
-            http.post(`${process.env.QUERY_SERVER_API}/indexing/post`, {
+            http.post(`${process.env.QUERY_SERVER_API}/indexing/user`, {
                 id: user.id,
                 fullName: user.full_name,
                 email: user.email,
@@ -135,8 +135,8 @@ export class SkillsControllers {
             }
 
             // Index
-            http.post(`${process.env.QUERY_SERVER_API}/indexing/post`, {
-                id: user.id,
+            http.post(`${process.env.QUERY_SERVER_API}/indexing/user`, {
+                id: user._id,
                 fullName: user.full_name,
                 email: user.email,
                 active: user.active,
