@@ -297,7 +297,7 @@ export class GroupCreatePostComponent implements OnInit {
     }
 
     // Call the Helper Function
-    // this.onCreatePost(formData)
+    this.onCreatePost(formData)
 
   }
 
