@@ -260,7 +260,7 @@ services:
 
   query-server:
     container_name: query-server
-    image: octonius/query-service:latest
+    image: octoniusapp/octonius-alpha:query-server
     ports: 
       - 11000:8080
     restart: always
