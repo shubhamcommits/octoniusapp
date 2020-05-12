@@ -1,26 +1,26 @@
 <div *ngIf="type=='post'" style="text-align: left;">
-    <h5>Post</h5>
-    <p><strong>Title: </strong>{{ data.title }}</p>
-    <p><strong>Content: </strong>{{ data.content }}</p>
-    <p><strong>Attached Tags: </strong></p>
+   
+    <p class="octo-search-category">Title: {{ data.title }}</p>
+    <p>Content: {{ data.content }}</p>
+    <p>Tags:</p>
     <ul>
-        <li *ngFor="let tag of data.attachedTags">{{ tag }}</li>
+        <li *ngFor="let tag of data.attachedTags" class="label">{{ tag }}</li>
     </ul>
 </div>
 
 <div *ngIf="type=='user'" style="text-align: left;">
-    <h5>User</h5>
-    <p><strong>Full Name: </strong>{{ data.fullName }}</p>
-    <p><strong>Email: </strong>{{ data.email }}</p>
-    <p><strong>Skills: </strong></p>
+    
+    <p class="octo-search-category">Full Name: {{ data.fullName }}</p>
+    <p>mail:{{ data.email }}</p>
+    <p>Skills: </p>
     <ul>
-        <li *ngFor="let skill of data.userSkills">{{ skill }}</li>
+        <li *ngFor="let skill of data.userSkills" class="label"> {{ skill }}</li>
     </ul>
 </div>
 
 <div *ngIf="type=='file'" style="text-align: left;">
-    <h5>File</h5>
-    <p><strong>Original File Name: </strong>{{ data.originalFileName }}</p>
+   
+    <p class="octo-search-category">Original File Name: {{ data.originalFileName }}</p>
     <p><strong>Modified File Name: </strong>{{ data.modifiedFileName }}</p>
     <p><strong>Group: </strong>{{ data.group }}</p>
     <p><strong>MimeType: </strong>{{ data.mimeType }}</p>

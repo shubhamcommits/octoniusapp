@@ -27,6 +27,10 @@ app-group-postbox{
   cursor: pointer;
 }
 
+.nav{
+  font-family: $font-family-base;
+}
+
 // Post Type Selection
 app-group-post-selection {
   display: flex;
@@ -49,7 +53,8 @@ app-loading-spinner{
 body {
     background-color: $body-bg !important ;
     font-size: $font-size-base;
-    font-family: $font-family-base; 
+    font-family: $font-family-base !important; 
+    font-weight: 400;
 }
 
 .general-style{
@@ -100,7 +105,7 @@ h2{
   font-family: $poppins;
   font-size: 20px !important;
   color: $dark-text;
-  font-weight: 500 !important;
+  font-weight: 700 !important;
 }
 
 .small {
@@ -320,7 +325,7 @@ h2 {
 
 h4{
   font-size: 16px;
-  font-weight: 500 !important;
+  font-weight: 700 !important;
 }
 
 p{
@@ -743,9 +748,10 @@ app-branding-panel{
 
   .modal-dialog{
     top: 20%;
+    max-width: 800px;
   }
 }
 
 .search .modal-dialog .modal-content{
-  padding: .4rem;
+  padding: 1.5rem;
 }

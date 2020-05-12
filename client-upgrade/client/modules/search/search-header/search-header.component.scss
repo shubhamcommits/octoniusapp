@@ -33,9 +33,20 @@ a{
     text-decoration-line: none;
 }
 
-p{
-    font-size: 10px;
-    font-weight: bold;
-    background-color: lightgray;
-    width: 100%;
+
+
+.octo-search-category{
+    font-size: 14px;
+    font-weight: 400;
+    padding: 4px;
+    background-color: #E4EDF8;
+    color: #4A90E2;
+    margin-bottom: 1rem !important;
+}
+
+.octo-search-results{
+    font-size: 16px;
+    font-weight: 400;
+    color: #242D3A;
+    margin-bottom: 1rem !important;
 }
