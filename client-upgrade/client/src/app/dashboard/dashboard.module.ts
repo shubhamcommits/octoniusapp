@@ -10,25 +10,21 @@ import { UserService } from 'src/shared/services/user-service/user.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthorizationInterceptorService } from 'src/shared/services/authorization-interceptor-service/authorization-interceptor.service';
 import { HotkeyModule } from 'angular2-hotkeys';
-import { SearchHeaderComponent } from 'modules/search/search-header/search-header.component';
 import { SearchModule } from 'modules/search/search.module';
-import { SearchResultsComponent } from 'modules/search/search-results/search-results.component';
 import { FormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [NavbarComponent, PushNotificationsComponent, TimeAgoPipe, SearchHeaderComponent, SearchResultsComponent],
+  declarations: [NavbarComponent, PushNotificationsComponent, TimeAgoPipe],
   imports: [
     CommonModule,
     DashboardRoutingModule,
-    HotkeyModule,
-    FormsModule
+    HotkeyModule.forRoot(),
+    FormsModule,
+    SearchModule
   ],
   providers:[
     UserService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthorizationInterceptorService, multi: true }
   ],
-  entryComponents: [
-    SearchHeaderComponent,
-  ]
 })
 export class DashboardModule { }
