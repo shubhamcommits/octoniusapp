@@ -43,7 +43,7 @@ $border-color:#E4EDF8;
                 flex-direction: column;
                 flex-grow: 1;
                 flex-basis: 0; // to force the columns to all be the same size, regardless of content
-                width: 100%;
+                width: 320px;
                 margin: 0px;
                 padding: 8px;
 
@@ -116,6 +116,7 @@ $border-color:#E4EDF8;
     border: 1px solid $border-color;
     border-radius: 4px;
     margin-bottom: 15px;
+    width: 320px;
 }
 
 .cdk-drag-preview {
