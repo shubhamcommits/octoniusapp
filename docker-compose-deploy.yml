@@ -270,7 +270,7 @@ services:
       WAIT_HOST: solr-octonius
       WAIT_PORT: '8983'
       JAVA_OPTS: -Xmx512m
-      APPLICATION_CONFIG_SOLR_CLIENT_URL: 'http://solr-octonius:8983/solr'
+      APPLICATION_CONFIG_SOLR_CLIENT_URL: 'http://solr-octonius:8983'
     links:
       - solr-octonius:solr-octonius
     networks:
