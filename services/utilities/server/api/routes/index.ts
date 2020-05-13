@@ -1,5 +1,6 @@
 import { authRoutes } from './auths.routes';
-import { fileRoutes } from "./filehandler.routes";
+import { fileHandlerRoutes } from "./filehandler.routes";
+import { filesRoutes } from './files.routes';
 
 /*  =====================
  *  -- EXPORTS ROUTES --
@@ -10,6 +11,9 @@ export {
     // Auth Routes
     authRoutes as authRoutes,
 
+    // Files Handler Routes
+    fileHandlerRoutes as fileHandlerRoutes,
+
     // Files Routes
-    fileRoutes as fileRoutes
+    filesRoutes as filesRoutes
 }

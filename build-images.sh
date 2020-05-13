@@ -29,6 +29,9 @@ export NOTIFICATIONS_IMAGE_NAME=octoniusapp/octonius-alpha:notifications-server
 # Utilities Microservice Image Name
 export UTILITIES_IMAGE_NAME=octoniusapp/octonius-alpha:utilities-server
 
+# Query Microservice Image Name
+export QUERY_IMAGE_NAME=octoniusapp/octonius-alpha:query-server
+
 # Nginx Image Name
 export NGINX_IMAGE_NAME=octoniusapp/octonius-alpha:nginx
 
@@ -42,6 +45,7 @@ export NGINX_IMAGE_NAME=octoniusapp/octonius-alpha:nginx
           docker build -t $POSTS_IMAGE_NAME ./services/posts/server
           docker build -t $NOTIFICATIONS_IMAGE_NAME ./services/notifications/server
           docker build -t $UTILITIES_IMAGE_NAME ./services/utilities/server
+          docker build -t $QUERY_IMAGE_NAME ./services/query-service
           docker build -t $NGINX_IMAGE_NAME ./nginx
 
 # authenticate with the Docker Hub registry
@@ -57,4 +61,5 @@ export NGINX_IMAGE_NAME=octoniusapp/octonius-alpha:nginx
           docker push $POSTS_IMAGE_NAME
           docker push $NOTIFICATIONS_IMAGE_NAME
           docker push $UTILITIES_IMAGE_NAME
+          docker push $QUERY_IMAGE_NAME
           docker push $NGINX_IMAGE_NAME

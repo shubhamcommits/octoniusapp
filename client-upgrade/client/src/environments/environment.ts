@@ -65,6 +65,11 @@ export const environment = {
   NOTIFICATIONS_BASE_URL: 'ws://localhost:9000',
   NOTFICATIONS_BASE_API_URL: 'http://localhost:9000/api',
 
+  // Query Service URLs
+  QUERY_SERVICE_BASE_URL: 'http://localhost:8080',
+  QUERY_SERVICE_BASE_API_URL: 'http://localhost:8080/api/query-service',
+  QUERY_SERVICE_MONITOR_URL: 'http://localhost:8983/solr/octonius',
+
   // Utilities URLs
   UTILITIES_BASE_URL: 'http://localhost:10000',
   UTILITIES_BASE_API_URL: 'http://localhost:10000/api',

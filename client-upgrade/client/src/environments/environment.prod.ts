@@ -56,6 +56,11 @@ export const environment = {
   NOTIFICATIONS_BASE_URL: 'wss://flash.octonius.com',
   NOTIFICATIONS_BASE_API_URL: 'https://flash.octonius.com/api/notifications',
 
+  // Query Service URLs
+  QUERY_SERVICE_BASE_URL: 'https://flash.octonius.com/query',
+  QUERY_SERVICE_BASE_API_URL: 'https://flash.octonius.com/api/query',
+  QUERY_SERVICE_MONITOR_URL: 'https://flash.octonius.com/monitor/solr',
+
   // Utilities URLs
   UTILITIES_BASE_URL: 'https://flash.octonius.com/utilities',
   UTILITIES_BASE_API_URL: 'https://flash.octonius.com/api/utilities',

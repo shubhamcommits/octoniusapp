@@ -19,4 +19,4 @@ routes.get('/workspaces/:file', workspaceFileHandler);
  *  -- EXPORT ROUTES --
  *  ===================
  * */
-export { routes as fileRoutes }
+export { routes as fileHandlerRoutes }

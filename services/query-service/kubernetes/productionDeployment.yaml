@@ -1,0 +1,49 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: query-service-production-v1
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      run: query-service-production-v1
+  template:
+    metadata:
+      labels:
+        run: query-service-production-v1
+    spec:
+      containers:
+        - env:
+            - name: JAVA_OPTS
+              value: "-Xms128m -Xmx512m"
+            - name: SERVER_PORT
+              value: "8080"
+            - name: APPLICATION_CONFIG_SOLR_CLIENT_URL
+              value: "http://35.190.122.124/solr/"
+          name: query-service-production-v1
+          image: octoniusapp/query-service:latest
+          readinessProbe:
+            httpGet:
+              path: /api/query-service/status/health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 30
+            timeoutSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /api/query-service/status/health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 30
+            timeoutSeconds: 5
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources:
+            requests:
+              memory: "512Mi"
+            limits:
+              memory: "512Mi"
+      imagePullSecrets:
+        - name: dockersecret

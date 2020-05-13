@@ -1,5 +1,6 @@
 import { Injectable, Injector } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +13,9 @@ export class SearchService {
   ) { }
 
 
-  localURL: string = "http://localhost:8080/api/query-service";
+  localURL: string = environment.QUERY_SERVICE_BASE_API_URL;
 
-  solrURL: string = "http://localhost:8983/solr/octonius"
+  solrURL: string = environment.QUERY_SERVICE_MONITOR_URL
 
 
   searchPostById(id: any){

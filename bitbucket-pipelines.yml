@@ -12,18 +12,26 @@ pipelines:
         name: Deploy to dockerhub
         services:
           - docker
-        deployment: production   # can be test, staging or production.
-        script: # Modify the commands below to build your repository.
+
+        # can be test, staging or production.
+        deployment: production
+        script: 
+        
+          # Modify the commands below to build your repository.
+          
           # Set $DOCKER_HUB_USERNAME and $DOCKER_HUB_PASSWORD as environment variables in repository settings
           - export CLIENT_IMAGE_NAME=octoniusapp/octonius:client
           - export API_IMAGE_NAME=octoniusapp/octonius:api
           - export NGINX_IMAGE_NAME=octoniusapp/octonius:nginx
+          
           # build the Docker image (this will use the Dockerfile in the root of the repo)
           - docker build -t $CLIENT_IMAGE_NAME ./client
           - docker build -t $API_IMAGE_NAME ./api
           - docker build -t $NGINX_IMAGE_NAME ./nginx
+          
           # authenticate with the Docker Hub registry
           - docker login --username $DOCKER_ID --password $DOCKER_PASSWORD
+          
           # push the new Docker image to the Docker registry
           - docker push $CLIENT_IMAGE_NAME
           - docker push $API_IMAGE_NAME
@@ -36,8 +44,13 @@ pipelines:
         name: Deploy to dockerhub
         services:
           - docker
-        deployment: staging   # can be test, staging or production.
-        script: # Modify the commands below to build your repository.
+
+        # can be test, staging or production.
+        deployment: staging   
+        script: 
+        
+          # Modify the commands below to build your repository.
+          
           # Set $DOCKER_HUB_USERNAME and $DOCKER_HUB_PASSWORD as environment variables in repository settings
           - export CLIENT_IMAGE_NAME=octoniusapp/octonius-alpha:client
           - export MAILS_IMAGE_NAME=octoniusapp/octonius-alpha:mailing-server
@@ -48,7 +61,9 @@ pipelines:
           - export POSTS_IMAGE_NAME=octoniusapp/octonius-alpha:posts-server
           - export NOTIFICATIONS_IMAGE_NAME=octoniusapp/octonius-alpha:notifications-server
           - export UTILITIES_IMAGE_NAME=octoniusapp/octonius-alpha:utilities-server
+          - export QUERY_IMAGE_NAME=octoniusapp/octonius-alpha:query-server
           - export NGINX_IMAGE_NAME=octoniusapp/octonius-alpha:nginx
+
           # build the Docker image (this will use the Dockerfile in the root of the repo)
           - docker build -t $CLIENT_IMAGE_NAME ./client-upgrade/client
           - docker build -t $MAILS_IMAGE_NAME ./services/mailing/server
@@ -59,9 +74,12 @@ pipelines:
           - docker build -t $POSTS_IMAGE_NAME ./services/posts/server
           - docker build -t $NOTIFICATIONS_IMAGE_NAME ./services/notifications/server
           - docker build -t $UTILITIES_IMAGE_NAME ./services/utilities/server
+          - docker build -t $QUERY_IMAGE_NAME ./services/query-service
           - docker build -t $NGINX_IMAGE_NAME ./nginx
+          
           # authenticate with the Docker Hub registry
           - docker login --username $DOCKER_ID --password $DOCKER_PASSWORD
+
           # push the new Docker image to the Docker registry
           - docker push $CLIENT_IMAGE_NAME
           - docker push $MAILS_IMAGE_NAME
@@ -72,6 +90,7 @@ pipelines:
           - docker push $POSTS_IMAGE_NAME
           - docker push $NOTIFICATIONS_IMAGE_NAME
           - docker push $UTILITIES_IMAGE_NAME
+          - docker push $QUERY_IMAGE_NAME
           - docker push $NGINX_IMAGE_NAME
           
 definitions:

@@ -29,6 +29,9 @@ export NOTIFICATIONS_IMAGE_NAME=octoniusapp/octonius-alpha:notifications-server
 # Utilities Microservice Image Name
 export UTILITIES_IMAGE_NAME=octoniusapp/octonius-alpha:utilities-server
 
+# Query Microservice Image Name
+export QUERY_IMAGE_NAME=octoniusapp/octonius-alpha:query-server
+
 # Nginx Image Name
 export NGINX_IMAGE_NAME=octoniusapp/octonius-alpha:nginx
 
@@ -45,4 +48,5 @@ export NGINX_IMAGE_NAME=octoniusapp/octonius-alpha:nginx
           docker pull $POSTS_IMAGE_NAME
           docker pull $NOTIFICATIONS_IMAGE_NAME
           docker pull $UTILITIES_IMAGE_NAME
+          docker pull $QUERY_IMAGE_NAME
           docker pull $NGINX_IMAGE_NAME

@@ -276,6 +276,39 @@ services:
       - mongodb
     networks:
       - alpha
+
+  query-server:
+    container_name: query-server
+    image: query-server
+    build:
+      context: ./services/query-service
+      dockerfile: Dockerfile
+    volumes:
+      - /data/query-service-app
+    ports:
+      - 11000:8080
+    environment:
+      WAIT_HOST: solr-octonius
+      WAIT_PORT: '8983'
+      JAVA_OPTS: -Xmx512m
+      APPLICATION_CONFIG_SOLR_CLIENT_URL: 'http://solr-octonius:8983/solr'
+    links:
+      - solr-octonius:solr-octonius
+    networks:
+      - alpha
+
+  solr-octonius:
+    image: solr:7.7.1
+    container_name: solr-octonius
+    command: solr-precreate octonius
+    ports:
+      - 12000:8983
+    environment:
+      - SOLR_JAVA_MEM=-Xms256m -Xmx256m -XX:MaxRAM=512m
+    volumes:
+      - ./services/query-service/solr/configsets:/opt/solr/server/solr/configsets
+    networks:
+      - alpha
       
   client:
     container_name: client
@@ -306,7 +339,7 @@ services:
       dockerfile: Dockerfile
       context: ./nginx
     ports:
-      - 8080:80
+      - 80:80
     depends_on:
       - mailing-server
       - auths-server
@@ -316,6 +349,8 @@ services:
       - posts-server
       - notifications-server
       - utilities-server
+      - query-server
+      - solr-octonius
       - client
     networks:
       - alpha
@@ -328,11 +363,46 @@ volumes:
       device: ${PWD}/data/db
       o: bind
 
-  alpha_uploads_data:
+  alpha_groups_uploads_data:
     driver: local
     driver_opts:
       type: none
-      device: ${PWD}/data/uploads
+      device: ${PWD}/data/uploads/groups
+      o: bind
+  
+  alpha_posts_uploads_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/uploads/posts
+      o: bind
+
+  alpha_users_uploads_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/uploads/users
+      o: bind
+
+  alpha_workspaces_uploads_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/uploads/workspaces
+      o: bind
+
+  alpha_utilities_uploads_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/uploads/utilities
+      o: bind
+
+  alpha_solr_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/solr
       o: bind
       
 networks:
