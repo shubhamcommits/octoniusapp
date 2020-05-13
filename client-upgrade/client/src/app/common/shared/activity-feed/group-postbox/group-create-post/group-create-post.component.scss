@@ -1,8 +1,8 @@
 .post-title{
     padding: 12px 15px; 
-    font-style: italic; 
     width: 100%; 
-    box-shadow: none
+    box-shadow: none;
+    border:none;
 }
 
 .post-header{
@@ -10,14 +10,13 @@
 }
 
 p{
-    font-size: medium;
+    // font-size: medium;
     margin-top: 2%;
 }
 
 
 i{
-    font-size: xx-large;
-    color: #005fd5;
+    font-size: 24px;
 }
 
 .attach-files{
@@ -54,4 +53,7 @@ app-time-picker {
     // bottom: 0; 
     // right: 0;
     // z-index: 99;
+}
+.ql-container{
+    border:none !important;
 }

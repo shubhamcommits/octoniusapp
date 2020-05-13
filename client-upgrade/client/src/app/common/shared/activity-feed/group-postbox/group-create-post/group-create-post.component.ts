@@ -28,7 +28,7 @@ export class GroupCreatePostComponent implements OnInit {
   files: any = []
 
   // Title of the Post
-  title: string = 'Untitled'
+  title: string = ''
 
   // Quill Data Object
   quillData: any

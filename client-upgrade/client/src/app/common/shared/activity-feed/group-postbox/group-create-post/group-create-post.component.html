@@ -4,7 +4,7 @@
 
   <!-- Normal Post Header starts -->
   <h4 class="modal-title" *ngIf="type === 'normal' && edit === false">
-    <i *ngIf="type === 'normal'" class="material-icons">comment</i>
+    <i *ngIf="type === 'normal'" class="material-icons-outlined">comment</i>
     New Post
   </h4>
 
@@ -16,19 +16,19 @@
 
   <!-- Task Post Header starts -->
   <h4 class="modal-title" *ngIf="type === 'task' && edit === false">
-    <i *ngIf="type === 'task'" class="material-icons">check_box</i>
+    <i *ngIf="type === 'task'" class="material-icons-outlined">check_box</i>
     New Task
   </h4>
 
   <h5 class="modal-title" *ngIf="type === 'task' && edit === true">
-    <i *ngIf="type === 'task'" class="material-icons">check_box</i>
+    <i *ngIf="type === 'task'" class="material-icons-outlined">check_box</i>
     {{ title }}
   </h5>
   <!-- Task Post Header ends -->
   
   <!-- Event Post Header starts -->
   <h4 class="modal-title" *ngIf="type === 'event' && edit === false" >
-    <i *ngIf="type === 'event'" class="material-icons">event</i>
+    <i *ngIf="type === 'event'" class="material-icons-outlined">event</i>
     New Event
   </h4>
 
@@ -129,7 +129,7 @@
       [ngModel]="title" 
       (ngModelChange)="titleChange($event)"
       class="post-title" 
-      placeholder="Insert title here ..." />
+      placeholder="Insert title here..." />
     <!-- Post Title ends -->
     
     <!-- Quill Editor with content of post if edit property is enabled -->
@@ -164,12 +164,7 @@
     </div>
     <!-- Attach files ends -->
 
-    <!-- Update Details Button starts -->
-    <button [disabled]="!showUpdateDetails" *ngIf="edit" class="btn float-right btn-primary btn-md"
-    (click)="updateDetails()">
-    Update Details
-    </button>
-    <!-- Update Details Button ends -->
+   
     
     <!-- Post Tags starts -->
     <app-post-tags 
@@ -184,6 +179,12 @@
 </div>
 
 <div class="modal-footer">
-  <button type="button" class="btn btn-md btn-danger" (click)="this.closeModal()">Close</button>
-  <button type="button" *ngIf="!edit" class="btn btn-md btn-primary" (click)="createPost()">Post</button>
+  <button type="button" class="btn btn-md btn-outline-danger" (click)="this.closeModal()" style="margin-right: 30px; width: 100px">Close</button>
+  <button type="button" *ngIf="!edit" class="btn btn-md btn-primary" (click)="createPost()" style="width: 100px;">Post</button>
+   <!-- Update Details Button starts -->
+   <button [disabled]="!showUpdateDetails" *ngIf="edit" class="btn float-right btn-primary btn-md"
+   (click)="updateDetails()">
+   Update Details
+   </button>
+   <!-- Update Details Button ends -->
 </div>
