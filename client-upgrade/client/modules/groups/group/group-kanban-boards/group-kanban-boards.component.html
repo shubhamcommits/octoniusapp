@@ -57,63 +57,43 @@
                             <div class="task"
                                 [ngClass]="{'status-todo': task?.task?.status === 'to do', 'status-inprogress': task?.task?.status === 'in progress', 'status-done': task?.task?.status === 'done'}"
                                 *ngFor="let task of column.tasks; let j = index;" cdkDrag>
-                                <div class="row">
-
-                                    <!-- TASK TOP BAR STARTS -->
-                                    <div class="col-md-12">
-                                        <div class="row">
-
-                                            <!-- TASK ASSIGNMENT STARTS -->
-                                            <div class="col-md-7 mt-n2">
-                                                <section>
-                                                    <img src="{{baseUrl}}/{{task?.task?._assigned_to?.profile_pic}}"
-                                                        onerror="this.src='/assets/images/user.png'"
-                                                        class="feed-avatar">
-                                                    <span *ngIf="!task?.task?.unassigned">
-                                                        {{task?.task?._assigned_to?.first_name}}
-                                                        {{ task?.task?._assigned_to?.last_name }}</span>
-                                                    <span *ngIf="task?.task?.unassigned">Unassigned</span>
-                                                </section>
-
-                                            </div>
-                                            <!-- TASK DETAILS ENDS -->
-
-                                            <!-- TASK DUE DATE STARTs -->
-                                            <div class="col-md-5 text-right mt-2">
-                                                <span class="small font-weight-bold"
-                                                    *ngIf="task?.task?.due_to != 'Invalid date' && task?.task?.status != 'done'"
-                                                    [ngClass]="checkOverdue(task) === true ? 'overdue' : 'due'">
-                                                    {{task?.task?.due_to | date}}</span>
-                                            </div>
-                                            <!-- TASK DUE DATE ENDS -->
-
-                                        </div>
+                              
+                                <div class="media" (click)="openModal(content)">
+                                    <div class="media-body">
+                                      <h5 class="mt-0 mb-1 kanban-card-title">{{ task?.title }}</h5>
+                                      <span class="small"
+                                      *ngIf="task?.task?.due_to != 'Invalid date' && task?.task?.status != 'done'"
+                                      [ngClass]="checkOverdue(task) === true ? 'overdue' : 'due'">
+                                      {{task?.task?.due_to | date}}</span>
+                                      <!-- TASK DETAILS STARTS -->
+                                      <ng-template #content let-modal>
+                                          <app-group-create-post *ngIf="userData && checkDataExist(userData)"
+                                              [edit]="true" [post]="task" [columns]="columns"
+                                              [userData]="userData" [groupId]="groupId" [type]="'task'"
+                                              (close)="closeModal()" (moveTask)="moveTaskToColumn($event)"
+                                              (taskStatus)="changeStatus(task, $event)"
+                                              (member)="changeAssignee(task, $event)"
+                                              (date)="changeDueDate(task, $event)"
+                                              (post)="changeDetails(task, $event)">
+                                          </app-group-create-post>
+                                      </ng-template>
                                     </div>
-                                    <!-- TASK TOP BAR ENDS -->
+                                    
+                                        <img src="{{baseUrl}}/{{task?.task?._assigned_to?.profile_pic}}"
+                                            onerror="this.src='/assets/images/user.png'"
+                                            class="feed-avatar">
+                                        <!-- <span *ngIf="!task?.task?.unassigned">
+                                            {{task?.task?._assigned_to?.first_name}}
+                                            {{ task?.task?._assigned_to?.last_name }}</span>
+                                        <span *ngIf="task?.task?.unassigned">Unassigned</span> -->
+                                    
+                                  </div>
 
-                                    <!-- TASK CONTENT & DETAILS STARTS -->
-                                    <div class="col-md-12"  (click)="openModal(content)">
-                                        <div class="container">
-                                            <div class="kanban-card-title">{{ task?.title }}</div>
 
-                                            <!-- TASK DETAILS STARTS -->
-                                            <ng-template #content let-modal>
-                                                <app-group-create-post *ngIf="userData && checkDataExist(userData)"
-                                                    [edit]="true" [post]="task" [columns]="columns"
-                                                    [userData]="userData" [groupId]="groupId" [type]="'task'"
-                                                    (close)="closeModal()" (moveTask)="moveTaskToColumn($event)"
-                                                    (taskStatus)="changeStatus(task, $event)"
-                                                    (member)="changeAssignee(task, $event)"
-                                                    (date)="changeDueDate(task, $event)"
-                                                    (post)="changeDetails(task, $event)">
-                                                </app-group-create-post>
-                                            </ng-template>
-                                            <!-- TASK DETAILS ENDS -->
+                                    
 
-                                        </div>
-                                    </div>
-                                    <!-- TASK CONTENT & DETAILS ENDS -->
-                                </div>
+                                    
+                                
                             </div>
                             <!-- TASK DETAILS ENDS -->
 

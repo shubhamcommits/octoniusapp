@@ -39,18 +39,13 @@ $border-color:#E4EDF8;
 
             .board-column {
                 display: flex;
-                cursor: grab;
+                // cursor: grab;
                 flex-direction: column;
                 flex-grow: 1;
                 flex-basis: 0; // to force the columns to all be the same size, regardless of content
-
-                width: 340px;
-                margin: 50px;
-                margin-top: 10px;
-                margin-left: 10px;
-                padding: 25px;
-
-                outline: 1px dashed grey;
+                width: 100%;
+                margin: 0px;
+                padding: 8px;
 
                 // border-radius: 4px;
 
@@ -63,11 +58,13 @@ $border-color:#E4EDF8;
                 .column-title {
                     display: flex;
                     justify-content: space-between;
-                    margin-bottom: 20px;
-                    width:300px;
+                    margin: 24px 0;
+                    width:100%;
                     p{
-                        font-size: 18px;
-                        font-weight: 600;
+                        font-size: 15px;
+                        font-weight: 400;
+                        text-transform: uppercase !important;
+
                     }
                 }
             }
@@ -108,12 +105,13 @@ $border-color:#E4EDF8;
     overflow-y: auto; 
     height: 70vh;
     overflow-x: hidden;
-    width: 300px;
+    // width: 300px;
+    cursor: pointer;
 }
 
 .task {
-    display: flex;
-    padding: 15px 12px;
+    // display: flex;
+    padding: 8px;
     background: white;
     border: 1px solid $border-color;
     border-radius: 4px;
@@ -143,12 +141,13 @@ $border-color:#E4EDF8;
 .kanban-card-title{
     // margin-top: 15%;
     // margin-left: -80px;
-    font-family: Poppins;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
+    font-weight: 400;
+    font-size: 15px;
     color: #242D3A;
     cursor: pointer;
+    width: 100%;
+    white-space: normal;
+
 }
 
 .due-date{
