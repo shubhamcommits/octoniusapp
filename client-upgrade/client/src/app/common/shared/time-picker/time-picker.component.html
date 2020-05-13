@@ -5,9 +5,7 @@
         data-toggle="dropdown" 
         aria-haspopup="true"
         aria-expanded="false">
-        <span class="material-icons">
-            alarm
-        </span>
+        {{ timeModal.hour + ":" + timeModal.minute }}
     </button>
     <!-- Time Toggler ends -->
 
@@ -16,7 +14,6 @@
         <div class="time-picker" (click)="$event.stopPropagation()">
             <ngb-timepicker 
                 [ngModel]="timeModal" 
-                [meridian]="meridian" 
                 (ngModelChange)="emitTime($event)">
             </ngb-timepicker>
         </div>

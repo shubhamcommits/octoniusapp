@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter} from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -13,10 +13,20 @@ export class DatePickerComponent implements OnInit {
   // Date Model Variable
   model: NgbDateStruct;
 
+  @Input('dueDate') dueDate: Date;
+
   // Output date event emitter
   @Output('date') date = new EventEmitter();
 
+  selectedDate: Date;
+
   ngOnInit() {
+    if (this.dueDate){
+      this.selectedDate = this.dueDate;
+    }
+    else{
+      this.selectedDate = new Date();
+    }
   }
 
   /**
@@ -26,6 +36,7 @@ export class DatePickerComponent implements OnInit {
   emitDate(dateObject: any){
 
     // Emit the date to the other components
+    this.selectedDate = new Date(dateObject.year, dateObject.month - 1, dateObject.day)
     this.date.emit(dateObject)
   }
 

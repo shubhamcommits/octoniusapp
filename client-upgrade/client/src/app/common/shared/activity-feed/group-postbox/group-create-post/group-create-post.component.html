@@ -42,8 +42,12 @@
   <div class="float-right">
 
           <!-- Date Picker starts -->
-          <app-date-picker *ngIf="type === 'event' || type === 'type'"
-            (date)="getDate($event)">
+          <app-date-picker *ngIf="type === 'task'"
+            (date)="getDate($event)" [dueDate]="postData?.task.due_to">
+          </app-date-picker>
+
+          <app-date-picker *ngIf="type === 'event'"
+            (date)="getDate($event)" [dueDate]="postData?.event.due_to">
           </app-date-picker>
           <!-- Date Picker ends -->
 
@@ -83,20 +87,20 @@
       <div class="col-md-6 right-section">
 
           <!-- Due Date Placeholder starts -->
-          <p class="ml-5">
+          <!-- <p class="ml-5">
             <strong *ngIf="dueDate"><span class="material-icons">date_range</span>
               On {{ dueDate | date:'mediumDate' || 'Date Not Selected' }}</strong>
             <strong *ngIf="!dueDate"><span class="material-icons">date_range</span>
               Due Date Not Selected</strong>
-          </p>
+          </p> -->
           <!-- Due Date Placeholder ends -->
           
           <!-- Due Time Placeholder starts -->
-          <p class="ml-5" *ngIf="dueTime && type === 'event'">
+          <!-- <p class="ml-5" *ngIf="dueTime && type === 'event'">
             <strong> <span class="material-icons">alarm</span>
               At {{ dueTime.hour }}:{{ dueTime.minute }}
             </strong>
-          </p>
+          </p> -->
           <!-- Due Time Placeholder ends -->
 
           <!-- Change task status starts -->

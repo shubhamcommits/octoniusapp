@@ -315,6 +315,7 @@ export class GroupCreatePostComponent implements OnInit {
 
           // Resolve with success
           resolve(this.utilityService.resolveAsyncPromise('Post Created!'))
+          this.closeModal();
         })
         .catch((err) => {
 

@@ -1,9 +1,7 @@
 <div class="btn-group">
     <!-- Date Picker Toggle starts -->
     <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-        <span class="material-icons">
-            date_range
-        </span>
+        {{ selectedDate | date:'fullDate' }}
     </button>
     <!-- Date Picker Toggle ends -->
 
