@@ -1,7 +1,6 @@
 <div class="board-column">
-    <div class="create-column" (click)="this.showCreateColumn = !this.showCreateColumn">
-        + New column
-    </div>
+    <button class="btn btn-lg btn-outline-primary" (click)="this.showCreateColumn = !this.showCreateColumn"> + New column</button>
+    
     <div class="add-column" *ngIf="this.showCreateColumn">
         <input class="form-control" type="text" placeholder="Column name" [(ngModel)]="newColumn">
         <div class="container">
