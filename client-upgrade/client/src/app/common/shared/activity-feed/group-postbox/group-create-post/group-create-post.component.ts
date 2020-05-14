@@ -397,11 +397,13 @@ export class GroupCreatePostComponent implements OnInit {
           // Emit the post to other components
           this.post.emit(res['post'])
 
+          this.closeModal();
+
           // Resolve with success
-          resolve(this.utilityService.resolveAsyncPromise(`Task details updated!`))
+          resolve(this.utilityService.resolveAsyncPromise(`Details updated!`))
         })
         .catch(() => {
-          reject(this.utilityService.rejectAsyncPromise(`Unable to update the task details, please try again!`))
+          reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`))
         })
     }))
   }
