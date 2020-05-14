@@ -760,3 +760,12 @@ app-branding-panel{
 .search .modal-dialog .modal-content{
   padding: 1.5rem;
 }
+.ql-editor ul{
+  padding-left: 0;
+  font-size: 15px;
+  font-family: 'Nunito', sans-serif;
+}
+.ql-editor ul[data-checked=true] > 
+li::before, .ql-editor ul[data-checked=false] > li::before{
+  color: $dark-text !important;
+}
