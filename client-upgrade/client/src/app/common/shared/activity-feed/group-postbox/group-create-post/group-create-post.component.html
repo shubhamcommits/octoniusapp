@@ -59,8 +59,7 @@
           (time)="getTime($event)">
           </app-time-picker>
         <!-- Time Picker ends -->
-
-
+        
   </div>
   <!-- Top Right Section ends -->
 
@@ -180,15 +179,22 @@
     <!-- Post Tags ends -->
 
   </div>
-</div>
 
-<div class="modal-footer">
-  <button type="button" class="btn btn-md btn-outline-danger" (click)="this.closeModal()" style="margin-right: 30px; width: 100px">Close</button>
-  <button type="button" *ngIf="!edit" class="btn btn-md btn-primary" (click)="createPost()" style="width: 100px;">Post</button>
+<button type="button" class="btn btn-md btn-link delete-btn" (click)="this.closeModal()" style="margin-right: 30px;">X DELETE</button>
+  <button type="button" *ngIf="!edit" class="btn btn-md btn-primary float-right" (click)="createPost()" style="width: 100px;">Post</button>
    <!-- Update Details Button starts -->
    <button [disabled]="!showUpdateDetails" *ngIf="edit" class="btn float-right btn-primary btn-md"
    (click)="updateDetails()">
-   Update Details
+   Update
    </button>
    <!-- Update Details Button ends -->
+
+ 
+  
+
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-md btn-outline-secondary" (click)="this.closeModal()" style="width: 100px">Close</button>
+ 
 </div>

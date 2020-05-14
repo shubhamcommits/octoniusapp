@@ -25,6 +25,7 @@ i{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin: 24px auto;
 }
 
 .right-section{
@@ -62,4 +63,9 @@ app-time-picker {
 h4{
     font-size: 16px;
     line-height: 18px;
+}
+
+.delete-btn{
+    color: #FF6584;
+    text-decoration: none !important;
 }
