@@ -275,10 +275,15 @@ export class GroupActivityFeedComponent implements OnInit {
     // Else if moreToLoad is true
     if (this.moreToLoad) {
 
+
       // Set the value of posts into the map
-      posts.forEach((post: any) => {
+      // posts.forEach((post: any) => {
+      //   this.posts.set(post._id, post);
+      // })
+
+      for (let post of posts){
         this.posts.set(post._id, post);
-      })
+      }
 
       // Calculate the lastPostId from the currently fetched posts
       this.lastPostId = posts[posts.length - 1]._id

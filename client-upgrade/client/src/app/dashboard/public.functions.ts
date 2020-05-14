@@ -22,7 +22,7 @@ export class PublicFunctions {
     private subSink = new SubSink();
 
     public async getCurrentUser() {
-        let userData = await this.getUserDetailsFromService();
+        let userData:any = await this.getUserDetailsFromService();
 
         if (JSON.stringify(userData) == JSON.stringify({}))
             userData = await this.getUserDetailsFromStorage();
