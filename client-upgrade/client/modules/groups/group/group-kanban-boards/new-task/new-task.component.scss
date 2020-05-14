@@ -10,7 +10,7 @@ $border-color:#E4EDF8;
     border-radius: 4px;
     margin-bottom: 15px;
     cursor: pointer;
-    transition: transform .2s ease;
+    transition: color .2s ease;
     background: rgba(white, 1.0);
     text-transform: capitalize;
     box-shadow: $box-shadow;
@@ -26,7 +26,6 @@ input{
 }
 
 .task:hover{
-    transform: scale(1.05);
     color: #005fd5;
   }
 

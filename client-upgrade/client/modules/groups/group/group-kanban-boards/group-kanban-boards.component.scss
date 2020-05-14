@@ -7,7 +7,7 @@ $border-color:#E4EDF8;
     flex-direction: column;
     height: 100%;
     overflow-y: hidden;
-    overflow-x: hidden;
+    // overflow-x: hidden;
 }
 
 
@@ -30,8 +30,8 @@ $border-color:#E4EDF8;
     .board-wrapper {
         display: flex;
         flex-grow: 1;
-        overflow-x: scroll;
-        white-space: nowrap;
+        overflow-x: auto;
+        // white-space: nowrap;
 
         .board-columns {
             display: flex;
@@ -43,9 +43,9 @@ $border-color:#E4EDF8;
                 flex-direction: column;
                 flex-grow: 1;
                 flex-basis: 0; // to force the columns to all be the same size, regardless of content
-                width: 320px;
+                width: 340px;
                 margin: 0px;
-                padding: 8px;
+                padding: 0px;
 
                 // border-radius: 4px;
 
@@ -105,9 +105,10 @@ $border-color:#E4EDF8;
     overflow-y: auto; 
     height: 70vh;
     overflow-x: hidden;
-    // width: 300px;
-    cursor: pointer;
+    width: 310px;
 }
+// to fix the annoying scroll bar but still being able to scroll vertically
+.tasks-container::-webkit-scrollbar { width: 0 !important }
 
 .task {
     // display: flex;
@@ -116,7 +117,8 @@ $border-color:#E4EDF8;
     border: 1px solid $border-color;
     border-radius: 4px;
     margin-bottom: 15px;
-    width: 320px;
+    // width: 320px;
+    transition: box-shadow 0.3s ease-in-out;
 }
 
 .cdk-drag-preview {
@@ -189,4 +191,8 @@ img{
   
   img:hover{
     transform: scale(1.1);
+  }
+
+  .task:hover{
+    box-shadow: $box-shadow;
   }

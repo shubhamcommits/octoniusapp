@@ -8,10 +8,10 @@
     New Post
   </h4>
 
-  <h5 class="modal-title" *ngIf="type === 'normal' && edit === true">
-    <i *ngIf="type === 'normal'" class="material-icons">comment</i>
+  <h4 class="modal-title" *ngIf="type === 'normal' && edit === true">
+    <i *ngIf="type === 'normal'" class="material-icons-outlined">comment</i>
     {{ title }}
-  </h5> 
+  </h4> 
   <!-- Normal Post Header ends -->
 
   <!-- Task Post Header starts -->
@@ -20,10 +20,10 @@
     New Task
   </h4>
 
-  <h5 class="modal-title" *ngIf="type === 'task' && edit === true">
+  <h4 class="modal-title" *ngIf="type === 'task' && edit === true">
     <i *ngIf="type === 'task'" class="material-icons-outlined">check_box</i>
     {{ title }}
-  </h5>
+  </h4>
   <!-- Task Post Header ends -->
   
   <!-- Event Post Header starts -->
@@ -32,10 +32,10 @@
     New Event
   </h4>
 
-  <h5 class="modal-title" *ngIf="type === 'event' && edit === true">
-    <i *ngIf="type === 'event'" class="material-icons">event</i>
+  <h4 class="modal-title" *ngIf="type === 'event' && edit === true">
+    <i *ngIf="type === 'event'" class="material-icons-outlined">event</i>
     {{ title }}
-  </h5>
+  </h4>
   <!-- Event Post Header ends -->
 
   <!-- Top Right Section starts -->
@@ -72,7 +72,7 @@
     <div class="row post-header" *ngIf="type === 'task' || type ==='event'">
 
       <!-- Assignee Modal starts -->
-      <div class="col-md-6">
+      <div class="col-md-8">
         <app-select-assignee 
           class="top-margin"
           [post]="postData" 
@@ -84,7 +84,7 @@
       </div>
       <!-- Assignee Modal ends -->
       
-      <div class="col-md-6 right-section">
+      <div class="col-md-4 right-section">
 
           <!-- Due Date Placeholder starts -->
           <!-- <p class="ml-5">
@@ -105,7 +105,7 @@
 
           <!-- Change task status starts -->
           <app-task-status 
-            class="ml-5" 
+            class="ml-3" 
             *ngIf="type === 'task' && edit === true" 
             [post]="postData"
             (status)="changeTaskStatus($event)">
@@ -114,7 +114,7 @@
           
           <!-- Change task column starts -->
           <app-change-column 
-            class="ml-5" 
+            class="ml-3" 
             *ngIf="type === 'task' && columns" 
             [post]="postData"
             [columns]="columns" 
