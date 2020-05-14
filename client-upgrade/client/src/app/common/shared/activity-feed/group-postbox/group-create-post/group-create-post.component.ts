@@ -137,9 +137,13 @@ export class GroupCreatePostComponent implements OnInit {
 
       // If post type is event, set the dueTime
       if (this.type == 'event') {
-        this.dueTime.hour = new Date(this.dueDate).getHours();
-        this.dueTime.minute = new Date(this.dueDate).getMinutes();
+        this.dueTime.hour = this.dueDate.getHours();
+        this.dueTime.minute = this.dueDate.getMinutes();
+        this.eventMembersMap = this.postData._assigned_to;
       }
+
+      this.tags = this.postData.tags;
+      console.log(this.eventMembersMap);
 
     }
   }
@@ -153,8 +157,10 @@ export class GroupCreatePostComponent implements OnInit {
     if (this.edit) {
       if (event === this.title)
         this.showUpdateDetails = false
-      else
+      else{
         this.showUpdateDetails = true
+        this.title = event;
+      }
     } else if(this.edit === false) {
       this.title = event
     }
@@ -220,7 +226,7 @@ export class GroupCreatePostComponent implements OnInit {
     this.dueDate = new Date(dateObject.year, dateObject.month - 1, dateObject.day)
 
     if (this.edit) {
-      this.date.emit(this.dueDate)
+      this.date.emit(this.dueDate);
     }
   }
 
@@ -268,13 +274,21 @@ export class GroupCreatePostComponent implements OnInit {
     // If Post type is event, then add due_to property too
     if(this.type === 'event'){
 
+      var due_to;
+
+      if (this.dueDate==null){
+        due_to = new Date();
+      }
+
       // Create the due_to date
-      let due_to = new Date(
-        new Date(this.dueDate).getFullYear(), 
-        new Date(this.dueDate).getMonth(), 
-        new Date(this.dueDate).getDate(), 
-        this.dueTime.hour, 
-        this.dueTime.minute)
+      else{
+        due_to = new Date(
+          new Date(this.dueDate).getFullYear(), 
+          new Date(this.dueDate).getMonth(), 
+          new Date(this.dueDate).getDate(), 
+          this.dueTime.hour, 
+          this.dueTime.minute)
+      }
 
       // Add event.due_to property to the postData
       postData.event = {
@@ -328,21 +342,32 @@ export class GroupCreatePostComponent implements OnInit {
   updateDetails() {
 
     // Prepare the taskPost object
+    if (this.type=='event'){
+      this.dueDate = new Date(
+        new Date(this.dueDate).getFullYear(), 
+        new Date(this.dueDate).getMonth(), 
+        new Date(this.dueDate).getDate(), 
+        this.dueTime.hour, 
+        this.dueTime.minute)
+    }
+
     const taskPost = {
       title: this.title,
       type: this.type,
-      content: JSON.stringify(this.quillData.contents),
+      content: this.quillData? JSON.stringify(this.quillData.contents) : this.postData.content,
       _content_mentions: this._content_mentions,
       tags: this.tags,
       _read_by: [],
       unassigned: this.postData.task.unassigned,
-      date_due_to: (this.postData.task.due_to) ? this.postData.task.due_to : null,
-      assigned_to: this.postData.task._assigned_to,
+      date_due_to: this.dueDate,
+      assigned_to: this.postData.task._assigned_to || this.postData.event._assigned_to,
       _column: {
         title: this.postData.task._column.title
       },
       status: this.postData.task.status
     }
+
+    console.log(JSON.stringify(taskPost));
 
     // Create FormData Object
     let formData = new FormData();

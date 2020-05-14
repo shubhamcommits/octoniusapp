@@ -21,7 +21,7 @@
                 <!-- Event Assignee detail starts -->
                 <section *ngIf="post?.type === 'event'">
                     <span class="assigned" *ngIf="!eventAssignedToAll(post)">Assigned
-                        to {{post.event._assigned_to.length}} Member(s)
+                        to {{post.event._assigned_to?.length || 0}} Member(s)
                     </span>
                     <span class="assigned" *ngIf="eventAssignedToAll(post)">Assigned
                         to all Members
