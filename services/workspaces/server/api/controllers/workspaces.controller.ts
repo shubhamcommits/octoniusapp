@@ -219,7 +219,7 @@ export class WorkspaceController {
             const newGroupData = {
                 group_name: 'personal',
                 _workspace: workspaceUpdate._id,
-                _admins: user._id,
+                _admins: [user._id],
                 workspace_name: workspaceUpdate.workspace_name
             };
 
@@ -247,7 +247,7 @@ export class WorkspaceController {
                         _groups: group
                     },
                     $set: {
-                        _private_group: privateGroup
+                        _private_group: group
                       }
                 }, {
                     new: true

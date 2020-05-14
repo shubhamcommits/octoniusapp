@@ -193,7 +193,7 @@ export class AuthsController {
                         const personalGroupData = {
                             group_name: 'personal',
                             _workspace: workspace._id,
-                            _admins: user._id,
+                            _admins: [user._id],
                             workspace_name: workspace_name
                         };
 
@@ -221,7 +221,7 @@ export class AuthsController {
                                     _groups: group._id
                                 },
                                 $set: {
-                                    _private_group: personalGroup
+                                    _private_group: group
                                   }
                             }, {
                                 new: true
