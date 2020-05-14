@@ -1,6 +1,6 @@
 <span *ngIf="userData && post">
     <button class="btn btn-link">
-        <i class="material-icons active" *ngIf="this.isLikedByUser(); else likeif" (click)="unlikePost()">thumb_up</i>
-        <ng-template #likeif><i class="material-icons muted" (click)="likePost()">thumb_up</i></ng-template>
+        <i class="material-icons-outlined active" *ngIf="this.isLikedByUser(); else likeif" (click)="unlikePost()">thumb_up</i>
+        <ng-template #likeif><i class="material-icons-outlined muted" (click)="likePost()">thumb_up</i></ng-template>
     </button>
 </span>

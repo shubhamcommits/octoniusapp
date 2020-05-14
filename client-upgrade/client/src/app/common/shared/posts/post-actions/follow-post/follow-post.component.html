@@ -1,8 +1,8 @@
 <span *ngIf="userData && post">
     <button class="btn btn-link">
-        <i class="material-icons muted" *ngIf="!this.isFollowedByUser(); else followIf"
-            (click)="followPost()">label_important</i>
-        <ng-template #followIf><i class="material-icons active" (click)="unfollowPost()">label_important</i>
+        <i class="material-icons-outlined muted" *ngIf="!this.isFollowedByUser(); else followIf"
+            (click)="followPost()">star</i>
+        <ng-template #followIf><i class="material-icons-outlined active" (click)="unfollowPost()">star</i>
         </ng-template>
     </button>
 </span>

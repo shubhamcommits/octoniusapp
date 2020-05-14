@@ -188,14 +188,8 @@
    Update
    </button>
    <!-- Update Details Button ends -->
-
- 
-  
+<div class="clearfix"></div>
+<app-post-actions *ngIf="edit" [post]="postData" [userData]="userData"></app-post-actions>
 
 </div>
 
-<div class="modal-footer">
-  <button type="button" class="btn btn-md btn-outline-secondary" (click)="this.closeModal()" style="width: 100px">Close</button>
-  <app-post-actions *ngIf="edit" [post]="postData" [userData]="userData"></app-post-actions>
- 
-</div>
