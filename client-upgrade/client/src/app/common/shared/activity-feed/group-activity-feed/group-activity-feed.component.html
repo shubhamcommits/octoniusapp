@@ -39,7 +39,7 @@
 
             <!-- Group activity postbox starts -->
             <app-group-postbox *ngIf="userData && checkDataExist(userData) && this.globalFeed == false"
-                [userData]="userData" [groupId]="groupId" (post)="getPost($event)"></app-group-postbox>
+                [userData]="userData" [groupId]="groupId" (post)="getPost($event)" (edited)="editedPost($event)"></app-group-postbox>
             <!-- Group activity postbox ends -->
 
             <!-- Activity posts section starts -->

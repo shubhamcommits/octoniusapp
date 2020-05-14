@@ -220,6 +220,11 @@ export class GroupActivityFeedComponent implements OnInit {
       })
   }
 
+  editedPost(event: any){
+    console.log(event);
+    this.posts.set(event._id, event);
+  }
+
   /**
    * This function refreshes the feed and fetches the updated posts from the server
    */

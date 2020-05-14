@@ -25,6 +25,9 @@ export class GroupPostSelectionComponent implements OnInit {
   // Output the post received from component
   @Output('post') post = new EventEmitter()
 
+  // Output edited post
+  @Output('edited') edited = new EventEmitter();
+
   ngOnInit() {
 
   }
@@ -55,6 +58,10 @@ export class GroupPostSelectionComponent implements OnInit {
   // Check if the data provided is not empty{}
   checkDataExist(object: Object) {
     return !(JSON.stringify(object) === JSON.stringify({}))
+  }
+
+  editedPost(post: any){
+    this.edited.emit(post);
   }
 
 }

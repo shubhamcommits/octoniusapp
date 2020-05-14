@@ -14,7 +14,8 @@
                 <app-group-post-selection  *ngIf="userData && checkDataExist(userData)" 
                     [userData]="userData" 
                     [groupId]="groupId"
-                    (post)="getPost($event)">
+                    (post)="getPost($event)"
+                    (edited)="editedPost($event)">
                 </app-group-post-selection>
             </section>
         </div>

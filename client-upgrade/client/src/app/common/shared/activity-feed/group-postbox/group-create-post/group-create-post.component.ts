@@ -110,6 +110,9 @@ export class GroupCreatePostComponent implements OnInit {
   // Post Event Emitter - Emits the post to the other components
   @Output('post') post = new EventEmitter()
 
+  // Edited EVent Emitter - Emits edited event
+  @Output('edited') edited = new EventEmitter();
+
   ngOnInit() {
 
     if (this.edit) {
@@ -143,7 +146,6 @@ export class GroupCreatePostComponent implements OnInit {
       }
 
       this.tags = this.postData.tags;
-      console.log(this.eventMembersMap);
 
     }
   }
@@ -367,8 +369,6 @@ export class GroupCreatePostComponent implements OnInit {
       status: this.postData.task.status
     }
 
-    console.log(JSON.stringify(taskPost));
-
     // Create FormData Object
     let formData = new FormData();
 
@@ -395,7 +395,9 @@ export class GroupCreatePostComponent implements OnInit {
         .then((res) => {
 
           // Emit the post to other components
-          this.post.emit(res['post'])
+          let post = res['post'];
+          this.post.emit(post)
+          this.edited.emit(post);
 
           this.closeModal();
 
