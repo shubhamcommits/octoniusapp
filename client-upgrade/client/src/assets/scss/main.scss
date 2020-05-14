@@ -769,3 +769,7 @@ app-branding-panel{
 li::before, .ql-editor ul[data-checked=false] > li::before{
   color: $dark-text !important;
 }
+
+input{
+  outline: none !important;
+}
