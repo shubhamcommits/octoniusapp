@@ -16,6 +16,21 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.octonius.queryservice.solr.*;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.solr.client.solrj.SolrClient;
+import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.SolrDocumentList;
+
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Slf4j
 public class SolrRepository {
 
@@ -54,11 +69,8 @@ public class SolrRepository {
             final QueryResponse response = solrClient.query(solrCatalog, solrQuery);
             final SolrDocumentList documentList = response.getResults();
 
-            List<T> list = documentList.stream()
-                    .map(document -> {
-                        final List<String> documentValue = Collections.singletonList(String.valueOf(document.getFieldValue("json_document")));
-                        return toMapConvertor(documentValue, clazz);
-                    })
+            List<T> list = documentList.stream().map(document -> String.valueOf(((ArrayList<String>) document.getFieldValue("json_document")).get(0)))
+                    .map(documentValue -> toMapConvertor(documentValue, clazz))
                     .collect(Collectors.toList());
 
             return new SolrList<T>()
@@ -86,8 +98,8 @@ public class SolrRepository {
         return query(query, clazz);
     }
 
-    private <T> T toMapConvertor(final List<String>  documentValue, final Class<T> clazz) {
-        if (documentValue.size() == 0) {
+    private <T> T toMapConvertor(final String  documentValue, final Class<T> clazz) {
+        if (documentValue == null) {
             try {
                 return (T) clazz.getDeclaredConstructor().newInstance();
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
@@ -95,7 +107,7 @@ public class SolrRepository {
             }
         }
         try {
-            return objectMapper.readValue(documentValue.get(0), clazz);
+            return objectMapper.readValue(documentValue, clazz);
         } catch (final IOException e) {
             log.error("Object mapper failed to convert documentValue to " + clazz);
             throw new RuntimeException(e);
