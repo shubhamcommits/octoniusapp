@@ -4,17 +4,19 @@ section{
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    
     p{
         margin-top: auto !important;
     }
 }
 
 app-component-search-input-box{
-    margin: auto 32px;
-    // position: absolute;
-    // top: 0; 
-    // left: 50% !important; 
-    // bottom: 0; 
-    // right: 0;
+    // margin: auto 32px;
+    position: absolute;
+    top: 0; 
+    left: 150px !important; 
+    bottom: 0; 
+    right: 0;
     z-index: 99;
+    width: auto !important;
 }

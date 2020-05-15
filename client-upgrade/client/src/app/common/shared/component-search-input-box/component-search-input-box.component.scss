@@ -1,12 +1,11 @@
 .input-search {
-    width: 100%;
+    width: auto;
     height: 38px;
-   
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
     line-height: 21px;
-    background: transparent;
+    background: #fff;
     border: none;
     border-bottom: 1px solid #000000;
   
@@ -27,4 +26,9 @@
     margin-top: 2%;
     justify-content: center;
     align-items: center;
+}
+
+.user-results{
+  width: fit-content;
+  padding: 5px 10px;
 }
