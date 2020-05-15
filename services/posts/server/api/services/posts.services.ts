@@ -362,7 +362,7 @@ export class PostService {
 
       // Index Post
       http.post(`${process.env.QUERY_SERVER_API}/indexing/post`, {
-        id: post.id,
+        id: post._id,
         title: post.title,
         content: post.content,
         type: post.type,
@@ -474,7 +474,7 @@ export class PostService {
 
       // Update index
       http.post(`${process.env.QUERY_SERVER_API}/indexing/post`, {
-        id: post.id,
+        id: post._id,
         title: post.title,
         content: post.content,
         type: post.type,
