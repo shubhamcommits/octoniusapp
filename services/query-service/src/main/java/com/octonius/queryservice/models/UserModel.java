@@ -19,4 +19,15 @@ public class UserModel {
     private String email;
     private Boolean active;
     private List<String> userSkills;
+
+    @Override
+    public String toString() {
+        return "UserModel{" +
+                "id='" + id + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", email='" + email + '\'' +
+                ", active=" + active +
+                ", userSkills=" + userSkills.toString() +
+                '}';
+    }
 }
