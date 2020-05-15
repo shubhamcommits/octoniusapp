@@ -41,6 +41,8 @@ pipelines:
     - step:
         caches:
           - docker
+          - node
+          - maven
         name: Deploy to dockerhub
         services:
           - docker

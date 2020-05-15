@@ -78,7 +78,7 @@ function prodConfigInit() {
 
   // Query Service
   process.env.QUERY_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}/query`
-  process.env.QUERY_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.QUERY_PORT}/api/query`
+  process.env.QUERY_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}/api/query`
 
   // Query Microservice Monitor
   process.env.QUERY_MONITOR = `${process.env.PROTOCOL}://${process.env.DOMAIN}/solr/monitor`
