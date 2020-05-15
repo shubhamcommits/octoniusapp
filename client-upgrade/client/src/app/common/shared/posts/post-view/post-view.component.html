@@ -101,6 +101,16 @@
             [toolbar]="false" [readOnly]="true" [contents]="post.content"></app-quill-editor>
         <!-- Normal Post Content ends -->
 
+        <!-- Tags Display -->
+        <div class="col-md-auto" *ngIf="post.tags?.length>0">
+              
+            <i class="material-icons-outlined tagslabel" ngbTooltip="Tags">
+            local_offer
+            </i>
+            <p *ngFor="let tag of post.tags">{{ tag }}</p>
+        
+        </div>
+
         <!-- Post Actions starts -->
         <app-post-actions *ngIf="post && userData" [post]="post" [userData]="userData" (delete)="deletePost($event)">
         </app-post-actions>
