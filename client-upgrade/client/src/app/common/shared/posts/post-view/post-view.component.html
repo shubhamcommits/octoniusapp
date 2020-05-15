@@ -104,10 +104,7 @@
         <!-- Tags Display -->
         <div class="col-md-auto" *ngIf="post.tags?.length>0">
               
-            <i class="material-icons-outlined tagslabel" ngbTooltip="Tags">
-            local_offer
-            </i>
-            <p *ngFor="let tag of post.tags">{{ tag }}</p>
+            <span *ngFor="let tag of post.tags" class="tagslabel">{{ tag }}</span>
         
         </div>
 
