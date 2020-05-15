@@ -80,6 +80,8 @@ export class GroupCreatePostComponent implements OnInit {
   // Members Map of Event Asignee
   eventMembersMap: any = new Map()
 
+  eventAssignees: any = [];
+
   // Due Time Object to map the due dates
   dueTime: any = {
     hour: 1,
@@ -150,7 +152,7 @@ export class GroupCreatePostComponent implements OnInit {
       if (this.type == 'event') {
         this.dueTime.hour = this.dueDate.getHours();
         this.dueTime.minute = this.dueDate.getMinutes();
-        this.eventMembersMap = this.postData._assigned_to;
+        this.eventMembersMap = this.postData.event._assigned_to;
       }
 
       this.tags = this.postData.tags;
@@ -213,6 +215,8 @@ export class GroupCreatePostComponent implements OnInit {
 
     if(this.type == 'event'){
       this.eventMembersMap = memberMap;
+      this.eventAssignees = (this.eventMembersMap.has('all')) ? 'all' : Array.from( this.eventMembersMap.keys());
+      console.log(this.eventAssignees);
       this.showUpdateDetails = true;
     }
 
@@ -284,8 +288,14 @@ export class GroupCreatePostComponent implements OnInit {
 
       var due_to;
 
-      if (this.dueDate==null){
-        due_to = new Date();
+      if (this.dueDate==undefined || this.dueDate==null){
+        due_to = new Date(
+          new Date().getFullYear(),
+          new Date().getMonth(),
+          new Date().getDate(),
+          this.dueTime.hour,
+          this.dueTime.minute
+        );
       }
 
       // Create the due_to date
@@ -368,7 +378,7 @@ export class GroupCreatePostComponent implements OnInit {
       _read_by: [],
       unassigned: this.postData.task.unassigned,
       date_due_to: this.dueDate,
-      assigned_to: this.postData.task._assigned_to || this.postData.event._assigned_to,
+      _assigned_to: this.type == 'event' ? this.eventAssignees : this.postData.task._assigned_to,
       _column: {
         title: this.postData.task._column.title
       },
