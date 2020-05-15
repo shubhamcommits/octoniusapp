@@ -1,4 +1,5 @@
 @import "../../../src/assets/scss/variables";
+@import "../../../src/assets/scss/main";
 
 .card{
     margin-bottom: 10px;
@@ -82,6 +83,8 @@ img{
 .overview-task{
 //  border-left:4px solid !important;
 color: $dark-text !important;
+margin: 2px auto;
+border-radius: 2px;
 }
 
 .text-white{
@@ -90,12 +93,12 @@ color: $dark-text !important;
 }
 
 .text-muted{
-  font-family: Poppins;
+  font-family: 'Nunito', sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 12px;
   line-height: 18px;
-  display: flex;
+  // display: flex;
   align-items: center;
   text-align: right;
   color: #9B9B9B;
@@ -103,7 +106,6 @@ color: $dark-text !important;
 
 .card-tile{
   padding: 0;
-  margin: 0px 2px 0px 2px;
   .media-body{
     padding: 10px;
   }
@@ -119,7 +121,6 @@ color: $dark-text !important;
 }
 
 .card-tile-event{
-  border-radius: 4px 4px 4px 4px;
   margin: 2px;
   .media-body{
     padding: 10px;
@@ -161,10 +162,10 @@ color: $dark-text !important;
   width: auto;
   font-size: 16px;
   padding-left: 15px;
-  font-family: Poppins;
+  font-family: 'Nunito', sans-serif;
   font-style: normal;
-  font-weight: 500;
-  display: flex;
+  font-weight: 400;
+  // display: flex;
   align-items: center;
   color: #242D3A;
 }
@@ -190,12 +191,12 @@ color: $dark-text !important;
 }
 
 .small-blue-text{
-  font-family: Poppins;
+  font-family: 'Nunito', sans-serif;
   font-style: normal;
   font-weight: bold;
   font-size: 12px;
   line-height: 18px;
-  display: flex;
+  // display: flex;
   align-items: center;
   color: #4A90E2;
 }
@@ -220,47 +221,44 @@ a{
   text-decoration: none !important;
 }
 
-.chevron-right {
-  position: absolute;
-  left: 25%;
-  right: 9.46%;
-  top: -37%;
-  bottom: 24.44%;
-  font-family: Material Icons;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 24px;
-  line-height: 24px;
-  color: #9B9B9B;
-}
+// .chevron-right {
+//   position: absolute;
+//   left: 25%;
+//   right: 9.46%;
+//   top: -37%;
+//   bottom: 24.44%;
+//   font-family: Material Icons;
+//   font-style: normal;
+//   font-weight: normal;
+//   font-size: 24px;
+//   line-height: 24px;
+//   color: #9B9B9B;
+// }
 
-.arrow-forward {
-  display: flex;
-  align-items: center;
-  font-family: Material Icons;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 30px;
-  color: #9B9B9B;
-  margin-left: 90px;
-  padding-top: 5px;
-  padding-top: 5px;
-}
+// .arrow-forward {
+//   display: flex;
+//   align-items: center;
+//   font-family: Material Icons;
+//   font-style: normal;
+//   font-weight: normal;
+//   font-size: 14px;
+//   line-height: 30px;
+//   color: #9B9B9B;
+//   margin-left: 90px;
+//   padding-top: 5px;
+//   padding-top: 5px;
+// }
 
 .todo-bar {
-  width: 25%;
-  background-color: $pumpkin-orange !important;
+  border-left: 3px solid $pumpkin-orange !important;
 }
 
 .working-bar {
-  width: 64%;
-  background-color: $turquoise !important;
+  border-left: 3px solid $turquoise !important;
 }
 
 .done-bar {
-  width: 100%;
-  background-color: $dark-sky-blue !important;
+  border-left: 3px solid $dark-sky-blue !important;
 }
 
 .small-bar {
@@ -284,4 +282,12 @@ a{
   white-space: nowrap;
   overflow: hidden !important;
   text-overflow: ellipsis;
+}
+.overdue {
+  color: #FF6584;
+}
+
+.row{
+  margin-left: 0;
+  margin-right: 0;
 }
