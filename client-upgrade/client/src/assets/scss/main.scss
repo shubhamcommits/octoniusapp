@@ -16,18 +16,17 @@
 // Import Custom Scrollbar Scss
 @import "scrollbar.scss";
 
-
 $font-size-base: 16px;
 $body-bg: #f3f4f6;
 
 /* COMPONENT CSS */
 
 // Post Box CSS
-app-group-postbox{
+app-group-postbox {
   cursor: pointer;
 }
 
-.nav{
+.nav {
   font-family: $font-family-base;
 }
 
@@ -41,7 +40,7 @@ app-group-post-selection {
 }
 
 // Loading Spinner
-app-loading-spinner{
+app-loading-spinner {
   display: flex;
   margin-top: 2%;
   justify-content: center;
@@ -51,26 +50,28 @@ app-loading-spinner{
 /* COMPONENT CSS */
 
 body {
-    background-color: $body-bg !important ;
-    font-size: $font-size-base;
-    font-family: $font-family-base !important; 
-    font-weight: 400;
+  background-color: $body-bg !important ;
+  font-size: $font-size-base;
+  font-family: $font-family-base !important;
+  font-weight: 400;
 }
 
-.general-style{
+.general-style {
   width: 100% !important;
 }
 
-.feed-avatar{ //avatar image for in-feed display
+.feed-avatar {
+  //avatar image for in-feed display
   width: 50px;
   height: 50px;
   object-fit: cover;
   border-radius: 50%;
-  margin:5px 10px;
+  margin: 5px 10px;
   cursor: pointer;
 }
 
-.feed-avatar-big{ //avatar image for group img display
+.feed-avatar-big {
+  //avatar image for group img display
   width: 80px;
   height: 80px;
   object-fit: cover;
@@ -79,29 +80,31 @@ body {
   cursor: pointer;
 }
 
-.topnav-avatar{ //avatar image for in-feed display
+.topnav-avatar {
+  //avatar image for in-feed display
   width: 50px;
-  height:50px;
+  height: 50px;
   object-fit: cover;
   border-radius: 50%;
   cursor: pointer;
 }
 
-.list-group-item{
+.list-group-item {
   margin: 0px 0px 10px 0px !important;
   // background-color: transparent;
   border: none;
   padding: 0px;
 }
 
-
-h6, h5, h4{
+h6,
+h5,
+h4 {
   font-size: 16px;
   color: $dark-text;
   font-weight: 400 !important;
 }
 
-h2{
+h2 {
   font-family: $poppins;
   font-size: 20px !important;
   color: $dark-text;
@@ -111,61 +114,59 @@ h2{
 .small {
   font-size: 11px;
 }
-.group-overview-avatar{
+.group-overview-avatar {
   width: 120px;
   height: 100px;
   object-fit: cover;
 }
 
-.overview-post{
-  $dark-text: #242D3A;
+.overview-post {
+  $dark-text: #242d3a;
   // font-family: $poppins;
   font-size: 14px;
 }
 
 // main sticker from any page
-.user-sticky-card{
+.user-sticky-card {
   border: 1px solid $border-color;
-  background-color: #FFFFFF;
-  margin:100px 0 10px 0;
+  background-color: #ffffff;
+  margin: 100px 0 10px 0;
   position: relative;
   padding: 10px;
-    .feed-avatar{
-      margin-right: 20px;
-      width: 80px;
-      height: 80px;
-      object-fit: cover;
-      border-radius: 50%;
+  .feed-avatar {
+    margin-right: 20px;
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 50%;
   }
-  .nav-link{
+  .nav-link {
     padding-left: 0;
   }
 }
 
-.muted{
+.muted {
   color: #9b9b9b;
 }
 
-.user-list{
-border-bottom: 1px solid $border-color;
-padding:0px;
+.user-list {
+  border-bottom: 1px solid $border-color;
+  padding: 0px;
 }
-
 
 .sidecontent {
-margin-left: 0px;
-margin-bottom: 20px;
+  margin-left: 0px;
+  margin-bottom: 20px;
 }
 .card {
-    padding:0px;
-    width:100%;
-    margin: 0;
-    border: 1px solid $border-color;
-    border-radius: $card-radius;
-    // margin-bottom: 20px;
-
+  padding: 0px;
+  width: 100%;
+  margin: 0;
+  border: 1px solid $border-color;
+  border-radius: $card-radius;
+  // margin-bottom: 20px;
 }
-.card-footer{
+.card-footer {
   background: transparent !important;
   border: none;
   span {
@@ -173,125 +174,126 @@ margin-bottom: 20px;
     cursor: pointer;
   }
   margin-bottom: 0px;
-  .material-icons{
+  .material-icons {
     font-size: 16px;
-    &:hover{
+    &:hover {
       color: $brand-primary;
     }
   }
 }
 
-.card-title{
+.card-title {
   margin-top: 0px;
   margin-bottom: 0;
 
   .small {
     font-size: 12px;
     margin: 20px 0;
-    .material-icons{
+    .material-icons {
       font-size: 12px;
     }
   }
-  h6{
+  h6 {
     font-family: $poppins;
     font-weight: 500 !important;
     font-size: 18px;
     color: $dark-text;
     margin-top: 10px;
   }
-
 }
-.innercard{
+.innercard {
   // padding: 10px 10px 10px 60px;
   width: 100%;
-  .material-icons{
+  .material-icons {
     font-size: 28px;
   }
 }
-.sideinnercard{
+.sideinnercard {
   padding: 20px;
   width: 100%;
   margin-bottom: 15px;
 }
 
-.post-card{
-  margin:5px 0px;
-  background-color:#fff;
+.post-card {
+  margin: 5px 0px;
+  background-color: #fff;
   border: $border-color;
   border-radius: $card-radius;
   padding: 0px;
   height: 52px;
-  .col-md-1{
+  .col-md-1 {
     padding-left: 0;
   }
-  .feed-avatar{
+  .feed-avatar {
     margin: 0;
   }
-  .text-muted{
+  .text-muted {
     font-family: $poppins;
     line-height: 50px;
   }
 }
 
-.task{
+.task {
   line-height: 20px;
-  .material-icons{
+  .material-icons {
     vertical-align: bottom;
     font-size: 24px;
   }
 }
 
 //date picker fix
-[_nghost-c6], .ngb-dp-month{
+[_nghost-c6],
+.ngb-dp-month {
   width: 100% !important;
 }
-.ngb-dp-day, .ngb-dp-weekday, .ngb-dp-week-number{
+.ngb-dp-day,
+.ngb-dp-weekday,
+.ngb-dp-week-number {
   margin: 0 1rem !important;
 }
 
-.action{
-  color:$lightgray !important;
-  &:hover{
+.action {
+  color: $lightgray !important;
+  &:hover {
     color: $brand-primary;
     cursor: pointer;
   }
-  .material-icons{
+  .material-icons {
     font-size: 24px !important;
   }
 }
 
-.dateblock{
+.dateblock {
   background: $brand-primary;
   padding: 15px;
   text-align: center !important;
 }
-.bigdate{
-  color:#fff !important;
+.bigdate {
+  color: #fff !important;
   font-size: 30px;
 }
-.time{
-  color:#fff;
+.time {
+  color: #fff;
   font-size: 14px;
   font-weight: bold;
 }
-.event-title{
+.event-title {
   font-size: 14px;
   font-weight: bold;
   color: $brand-primary;
 }
 
-.card-footer .dropdown-toggle::after{
+.card-footer .dropdown-toggle::after {
   display: none;
 }
 
-.no-margin{
+.no-margin {
   margin-left: 0 !important;
   margin-right: 0 !important;
 }
 
-
-.media-body{
-  .float-left{
+.media-body {
+  .float-left {
     margin-left: 15px;
   }
 }
@@ -299,15 +301,19 @@ margin-bottom: 20px;
 // .btn{
 //   border-radius: 1rem;
 // }
-.cool{
-  &:hover{
+.cool {
+  &:hover {
     background: rgb(245, 246, 247);
     border-radius: 2rem;
   }
-
 }
 
-h1,h2,h3,h4,h5,h6{
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: $headings-font-family;
 }
 h1 {
@@ -323,69 +329,66 @@ h2 {
   color: $headings-color;
 }
 
-h4{
+h4 {
   font-size: 16px;
   font-weight: 700 !important;
 }
 
-p{
+p {
   font-size: $font-size-base;
   margin-bottom: auto !important;
   font-family: $font-family-base;
 }
 
-
-
-.btn-pink{
-  color:$pink;
+.btn-pink {
+  color: $pink;
   background: #fff;
-  border: 1px solid #9D85D2 !important;
-  &:hover{
-    background:#9D85D2;
+  border: 1px solid #9d85d2 !important;
+  &:hover {
+    background: #9d85d2;
     color: #fff;
   }
 }
-.btn-success{
+.btn-success {
   color: #fff !important;
   background-color: #4fc68b;
   border-color: #4fc68b;
 }
 
-.overview-item{
+.overview-item {
   width: 100%;
-  img{
+  img {
     width: 30%;
   }
 }
 
-.ql-mention-list-container{
+.ql-mention-list-container {
   z-index: 9999;
   width: 700px;
   border-radius: 6px;
   border: 1px solid $border-color;
   box-shadow: $box-shadow;
-  .ql-mention-list-item.selected{
+  .ql-mention-list-item.selected {
     background: $brand-primary;
-    color:#fff !important;
+    color: #fff !important;
   }
 }
 
-.mention{
+.mention {
   background: transparent;
   color: $brand-primary;
   font-weight: 700;
 }
 
-
 .ql-container {
   min-height: 100px !important;
   overflow: visible !important;
 }
-.ql-video{
-  width: 100% ;
+.ql-video {
+  width: 100%;
   height: 360px;
 }
-.ql-video button{
+.ql-video button {
   background: none;
   border: none;
   cursor: pointer;
@@ -396,19 +399,18 @@ p{
   width: 28px;
 }
 
-.ql-toolbar{
+.ql-toolbar {
   // background: white;
   z-index: 10;
   border-radius: 20px;
 }
 
-
-.editor{
+.editor {
   border: 1px solid $brand-primary;
   border-radius: $card-radius;
 }
 
-.kanbanheader{
+.kanbanheader {
   font-size: 10px;
   color: white;
   text-align: center;
@@ -417,7 +419,7 @@ p{
   border-radius: 4px 4px 0 0;
 }
 
-.kanbanoverview{
+.kanbanoverview {
   font-size: 12px;
   color: white;
   text-align: center;
@@ -429,36 +431,34 @@ p{
 }
 
 // activity related status
-.kbn-todo{
+.kbn-todo {
   background: $pumpkin-orange !important;
   color: white !important;
 }
-.kbn-working{
+.kbn-working {
   background: $turquoise !important;
   color: white !important;
 }
-.kbn-done{
+.kbn-done {
   background: $dark-sky-blue !important;
   color: white !important;
 }
 
-
-
-.pill-todo{
+.pill-todo {
   background: $pumpkin-orange;
   width: 40px;
   height: 8px;
   border-radius: 4px;
   margin-top: 10px;
 }
-.pill-inprogress{
+.pill-inprogress {
   background: $turquoise;
   width: 40px;
   height: 8px;
   border-radius: 4px;
   margin-top: 10px;
 }
-.pill-done{
+.pill-done {
   background: $turquoise;
   width: 40px;
   height: 8px;
@@ -466,58 +466,55 @@ p{
   margin-top: 10px;
 }
 
-
-
-.kbn-working-color{
+.kbn-working-color {
   color: $turquoise;
 }
-.kbn{
+.kbn {
   margin: 0 10px;
 }
-.assigned{
+.assigned {
   font-size: 12px;
   font-weight: 700;
   color: $headings-color;
 }
 
-.groups{
+.groups {
   transition: all 0.3s ease 0s;
-  &:hover{
+  &:hover {
     cursor: pointer;
     box-shadow: 0 10px 10px 0 rgba(0, 0, 0, 0.07);
     padding: 0 !important;
   }
 }
 
-
-.card-img-top{
+.card-img-top {
   width: 100%;
   height: 180px;
   border-radius: $card-radius;
   object-fit: cover;
 }
-.topnav-avatar.float-left.kbn{
+.topnav-avatar.float-left.kbn {
   &:hover {
     border: 1px solid $brand-primary;
     cursor: pointer;
   }
 }
-.status{
+.status {
   margin-top: -15px;
 }
-.white.icon-octo-logo{
-  color:white !important;
+.white.icon-octo-logo {
+  color: white !important;
 }
 
-.skills{
-  li{
+.skills {
+  li {
     list-style-type: none;
     border-bottom: 1px solid $border-color;
     margin-bottom: 10px;
   }
 }
 
-.slim{
+.slim {
   font-weight: 300 !important;
 }
 
@@ -525,117 +522,127 @@ p{
 //   border-radius: 1rem !important;
 // }
 
-.active{
+.active {
   font-weight: 700 !important;
 }
-.form-control{
+.form-control {
   border-radius: 1em !important;
 }
 
-.emoji_completions{
+.emoji_completions {
   z-index: 1;
   border: 1px solid black;
 }
-.stickybtn{
-  .material-icons{
+.stickybtn {
+  .material-icons {
     font-size: 14px !important;
   }
   box-shadow: $box-shadow;
 }
-.picker-dialog{
+.picker-dialog {
   z-index: 1060 !important; //picker positioning for modal selection of gdrive files
 }
-.cal-month-view .cal-open-day-events{
+.cal-month-view .cal-open-day-events {
   background: #ececec !important;
-  color:$dark-text;
+  color: $dark-text;
   box-shadow: $box-shadow;
 }
 // .form-group .form-control{
 //   border: none !important;
 // }
-.margin5{
+.margin5 {
   border: none !important;
 }
-#normalComments{
+#normalComments {
   padding-bottom: 1px;
 }
-quill-editor{
-    border: none !important;
+quill-editor {
+  border: none !important;
 }
 
-.bar{
+.bar {
   border-radius: 1em !important;
 }
-.tags{
+.tags {
   padding: 8px;
   display: block;
   border: none;
   border-bottom: 1px solid #ccc;
   width: 100%;
 }
-.tagsbtn{
+.tagsbtn {
   font-size: 12px;
   padding: 3px 4px;
   background: $dark-sky-blue;
   color: #fff;
   border-radius: $card-radius;
 }
-.tagslabel{
+.tagslabel {
   font-size: 24px !important;
   color: $brand-primary;
   margin: 0 10px;
   // float: left;
 }
 
-.link{
-  &:hover{
+.link {
+  &:hover {
     cursor: pointer;
     text-decoration: none;
     color: $brand-primary;
   }
 }
 
-.clearfix{
+.clearfix {
   clear: both;
 }
 
-.cal-week-view .cal-event-title:link, .cal-day-view .cal-event-title:link {
-  color:#fff !important;
+.cal-week-view .cal-event-title:link,
+.cal-day-view .cal-event-title:link {
+  color: #fff !important;
 }
 
-.loading-spinner{
-  width:100px;
-  height:100px;
-  border-radius:150px;
-  border:15px solid #005df5;
-  border-top-color:rgba(0,0,0,0.3);
-  box-sizing:border-box;
-  position:absolute;
-  top:50%;left:50%;
+.loading-spinner {
+  width: 100px;
+  height: 100px;
+  border-radius: 150px;
+  border: 15px solid #005df5;
+  border-top-color: rgba(0, 0, 0, 0.3);
+  box-sizing: border-box;
+  position: absolute;
+  top: 50%;
+  left: 50%;
   z-index: 10;
-  margin-top:-80px;
-  margin-left:-80px;
-  animation:loading-spinner 1.2s linear infinite;
-  -webkit-animation:loading-spinner 1.2s linear infinite;
+  margin-top: -80px;
+  margin-left: -80px;
+  animation: loading-spinner 1.2s linear infinite;
+  -webkit-animation: loading-spinner 1.2s linear infinite;
 }
-@keyframes loading-spinner{
-  0%{transform:rotate(0deg)}
-  100%{transform:rotate(360deg)}
+@keyframes loading-spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
-@-webkit-keyframes loading-spinner{
-  0%{-webkit-transform:rotate(0deg)}
-  100%{-webkit-transform:rotate(360deg)}
+@-webkit-keyframes loading-spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
 }
 
-.attachfile{
+.attachfile {
   font-size: 14px;
-  .material-icons{
+  .material-icons {
     font-size: 18px !important;
   }
 }
 
 textarea {
-  width:100%;
+  width: 100%;
 }
 
 button.ql-authorship-toggle:after {
@@ -643,45 +650,44 @@ button.ql-authorship-toggle:after {
 }
 
 button.ql-authorship-toggle {
-	width: 120px!important;
+  width: 120px !important;
 }
 
-
-.due{
-  color: #4A90E2;
+.due {
+  color: #4a90e2;
 }
 
 .overdue {
-  color: #FF6584;
+  color: #ff6584;
 }
-.complete{
-  color: #4A90E2;
+.complete {
+  color: #4a90e2;
   text-align: right;
 }
-.list-tags{
-  padding-left:0;
+.list-tags {
+  padding-left: 0;
 }
 
-.overview-post p{
+.overview-post p {
   font-size: 14px;
 }
 
 //fixing octo-doc reader to look like a page
-.documentContainer{
+.documentContainer {
   max-width: 80% !important;
   margin: 0 auto !important;
 }
 
-.font16{
+.font16 {
   font-size: 16px !important;
 }
 
 // quill resets
-.ql-align-right{
+.ql-align-right {
   text-align: right !important;
 }
 
-.ql-align-center{
+.ql-align-center {
   text-align: center !important;
 }
 .ql-syntax {
@@ -694,17 +700,17 @@ button.ql-authorship-toggle {
 
 // BACK HOME BUTTON
 
-.back-home{
-  position: absolute; 
-  bottom: 0; 
-  right: 0;    
+.back-home {
+  position: absolute;
+  bottom: 0;
+  right: 0;
   margin-right: 2%;
   margin-bottom: 1%;
   z-index: 1;
 }
 
 // BRANDING PANEL STYLES
-app-branding-panel{
+app-branding-panel {
   padding: 100px 30px;
   width: 90%;
 }
@@ -725,12 +731,12 @@ app-branding-panel{
 /* FEED AVATAR CSS */
 
 // Avatar image for search display
-.feed-avatar-search{ 
+.feed-avatar-search {
   width: 30px;
   height: 32.54px;
   object-fit: cover;
   border-radius: 50%;
-  margin:5px 10px;
+  margin: 5px 10px;
 }
 
 /* FEED AVATAR CSS */
@@ -738,39 +744,54 @@ app-branding-panel{
 /* MATERIAL ICON CSS */
 
 // Align Icons CSS
-.material-icons{
+.material-icons {
   vertical-align: middle !important;
 }
-.material-icons-outlined{
+.material-icons-outlined {
   vertical-align: middle !important;
 }
 
 /* MATERIAL ICON CSS */
 
 // Seach Modal
-.search{
+.search {
   border: none;
   background: none;
 
-  .modal-dialog{
+  .modal-dialog {
     top: 20%;
     max-width: 800px;
   }
 }
 
-.search .modal-dialog .modal-content{
+.search .modal-dialog .modal-content {
   padding: 1.5rem;
 }
-.ql-editor ul{
+.ql-editor ul {
   padding-left: 0;
   font-size: 15px;
-  font-family: 'Nunito', sans-serif;
+  font-family: "Nunito", sans-serif;
 }
-.ql-editor ul[data-checked=true] > 
-li::before, .ql-editor ul[data-checked=false] > li::before{
+.ql-editor ul[data-checked="true"] > li::before,
+.ql-editor ul[data-checked="false"] > li::before {
   color: $dark-text !important;
 }
 
-input{
+input {
   outline: none !important;
+}
+
+.grouplabel{
+  font-family: "Nunito", sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 12px;
+  align-items: center;
+  color:$brand-primary;
+  text-align: right;
+  background-color:$border-color;
+  border-radius: 10px;
+  padding: 2px 10px;
+  width:fit-content;
+  line-height: 20px;
 }
