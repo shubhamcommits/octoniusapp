@@ -4,6 +4,7 @@ import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'src/app/dashboard/public.functions';
 import moment from 'moment/moment';
+import {HotkeysService, Hotkey, HotkeyModule} from 'angular2-hotkeys';
 
 @Component({
   selector: 'app-group-create-post',
@@ -15,7 +16,8 @@ export class GroupCreatePostComponent implements OnInit {
   constructor(
     private postService: PostService,
     private utilityService: UtilityService,
-    private injector: Injector
+    private injector: Injector,
+    private hotKeyService: HotkeysService
   ) { }
 
   // BASE URL OF THE APPLICATION
@@ -114,6 +116,12 @@ export class GroupCreatePostComponent implements OnInit {
   @Output('edited') edited = new EventEmitter();
 
   ngOnInit() {
+
+    this.hotKeyService.add(new Hotkey(['meta+return', 'meta+enter'], (event: KeyboardEvent, combo: string):boolean=>{
+      console.log('hotkey');
+      this.createPost();
+      return false;
+    }));
 
     if (this.edit) {
 
@@ -263,15 +271,13 @@ export class GroupCreatePostComponent implements OnInit {
     // Prepare Post Data
     let postData: any = {
       title: this.title,
-      content: JSON.stringify(this.quillData.contents),
+      content: this.quillData? JSON.stringify(this.quillData.contents) : "",
       type: this.type,
       _posted_by: this.userData._id,
       _group: this.groupId,
       _content_mentions: this._content_mentions,
       tags: this.tags
     }
-
-    console.log(this.quillData)
 
     // If Post type is event, then add due_to property too
     if(this.type === 'event'){

@@ -55,7 +55,7 @@ public class SolrRepository {
 
             List<T> list = documentList.stream()
                     .map(document -> {
-                        final List<String> documentValue = Arrays.asList((String) document.getFieldValue("json_document"));
+                        final List<String> documentValue = Collections.singletonList(String.valueOf(document.getFieldValue("json_document")));
                         return toMapConvertor(documentValue, clazz);
                     })
                     .collect(Collectors.toList());

@@ -19,4 +19,15 @@ public class PostModel {
     private String content;
     private String type;
     private List<String> attachedTags;
+
+    @Override
+    public String toString() {
+        return "PostModel{" +
+                "id='" + id + '\'' +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", type='" + type + '\'' +
+                ", attachedTags=" + attachedTags.toString() +
+                '}';
+    }
 }
