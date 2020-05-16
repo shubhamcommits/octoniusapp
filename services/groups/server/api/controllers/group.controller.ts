@@ -128,7 +128,7 @@ export class GroupController {
                     { group_name: { $ne: 'personal' } },
                     { group_name: { $ne: 'private' } },
                     { _workspace: workspaceId, },
-                    { $or: [{ _members: userId }, { _admins: userId }] },
+                    { $or: [{ _members: userId }, { _admins: userId }, {type: 'agora'}] },
                     // { type: { $ne: 'smart' } }
                 ]
             })
@@ -188,7 +188,7 @@ export class GroupController {
                     { group_name: { $ne: 'personal' } },
                     { group_name: { $ne: 'private' } },
                     { _workspace: workspaceId, },
-                    { $or: [{ _members: userId }, { _admins: userId }] },
+                    { $or: [{ _members: userId }, { _admins: userId }, {type: 'agora'}] },
                     { _id: { $gt: lastGroupId } }
                 ]
             })
