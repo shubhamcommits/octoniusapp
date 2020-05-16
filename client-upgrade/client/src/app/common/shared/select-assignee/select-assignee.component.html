@@ -18,8 +18,8 @@
 
 <!-- Assignee section for events starts -->
 <section [id]="post?._id" *ngIf="type === 'event'">
-    <p *ngIf="!eventAssignedToAll(eventMembersMap)">Assigned to {{ eventMembersMap.size }}</p>
-    <p *ngIf="eventAssignedToAll(eventMembersMap)">Assigned to all</p>
+    <p *ngIf="!eventAssignedToAll(eventMembersMap)" style="padding-top: 20px;">Assigned to {{ eventMembersMap.size }}</p>
+    <p *ngIf="eventAssignedToAll(eventMembersMap)" style="padding-top: 20px;">Assigned to all</p>
     
     <app-component-search-input-box 
         *ngIf="type === 'event' && userData && checkDataExist(userData) && showBar"
