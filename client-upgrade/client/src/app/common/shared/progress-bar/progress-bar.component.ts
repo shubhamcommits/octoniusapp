@@ -1,11 +1,11 @@
-import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, ViewChild, AfterViewInit, AfterContentInit } from '@angular/core';
 
 @Component({
   selector: 'app-progress-bar',
   templateUrl: './progress-bar.component.html',
   styleUrls: ['./progress-bar.component.scss']
 })
-export class ProgressBarComponent implements OnInit {
+export class ProgressBarComponent implements OnInit, AfterViewInit {
 
   constructor() { }
 
@@ -22,7 +22,7 @@ export class ProgressBarComponent implements OnInit {
   @Input('stroke') stroke: any;
 
   // DOM element div
-  @ViewChild('progressbar', { static: false }) public progressBar: ElementRef;
+  @ViewChild('progressbar', { static: false }) progressBar: ElementRef;
 
   ngOnInit() {
   }
@@ -40,5 +40,4 @@ export class ProgressBarComponent implements OnInit {
     this.progressBar.nativeElement.setAttribute('data-stroke', this.stroke);
 
   }
-
 }

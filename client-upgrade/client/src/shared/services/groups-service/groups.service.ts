@@ -85,7 +85,7 @@ export class GroupsService {
   getUndoneTask(groupId: string){
     return this._http.get(this.baseURL + `/pulse/undone-tasks`, {
       params: {
-        groupId
+        groupId: groupId,
       }
     }).toPromise()
   }

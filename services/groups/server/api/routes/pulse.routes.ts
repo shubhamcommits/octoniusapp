@@ -33,7 +33,7 @@ routes.get('/list/next', pulse.getNextPulseGroups);
 routes.get('/tasks', pulse.getPulseTasks);
 
 // GET - Get count of undone tasks which were due this week
-routes.get('/undone-tasks', pulse.getPulseTasks);
+routes.get('/undone-tasks', pulse.getTasksUndoneLastWeek);
 
 /*  ===================
  *  -- EXPORT ROUTES --
