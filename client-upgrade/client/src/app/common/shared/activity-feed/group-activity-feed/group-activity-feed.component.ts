@@ -6,6 +6,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { retry } from 'rxjs/internal/operators/retry';
+import { PostService } from 'src/shared/services/post-service/post.service';
 
 @Component({
   selector: 'app-group-activity-feed',
@@ -19,7 +20,9 @@ export class GroupActivityFeedComponent implements OnInit {
     private router: ActivatedRoute,
     private injector: Injector,
     public utilityService: UtilityService,
-    private socketService: SocketService, ) { }
+    private socketService: SocketService,
+    private postService: PostService
+    ) { }
 
   // Fetch groupId from router snapshot or as an input parameter
   @Input('groupId') groupId = this.router.snapshot['_urlSegment']['segments'][2]['path'];
@@ -213,9 +216,16 @@ export class GroupActivityFeedComponent implements OnInit {
     this.utilityService.getConfirmDialogAlert()
       .then((result) => {
         if (result.value) {
-
-          // Find the key(postId) and remove the post
-          this.posts.delete(post._id)
+          new Promise((resolve, reject)=>{
+            this.postService.deletePost(post._id).then((res)=>{
+               // Find the key(postId) and remove the post
+              this.posts.delete(post._id);
+              resolve();
+            }).catch((err)=>{
+              console.log(err);
+              reject();
+            })
+          })
         }
       })
   }

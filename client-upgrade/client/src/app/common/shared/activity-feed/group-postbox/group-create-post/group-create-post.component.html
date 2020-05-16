@@ -180,7 +180,7 @@
 
   </div>
 
-<button type="button" class="btn btn-md btn-link delete-btn" (click)="this.closeModal()" style="margin-right: 30px;" *ngIf="edit">X DELETE</button>
+<button type="button" class="btn btn-md btn-link delete-btn" (click)="this.closeModal()" style="margin-right: 30px;" *ngIf="edit" (click)="deletePost()">X DELETE</button>
   <button type="button" *ngIf="!edit" class="btn btn-md btn-primary float-right" (click)="createPost()" style="width: 100px;">Post</button>
    <!-- Update Details Button starts -->
    <button [disabled]="!showUpdateDetails" *ngIf="edit" class="btn float-right btn-primary btn-md"

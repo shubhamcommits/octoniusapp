@@ -202,4 +202,13 @@ export class PostService {
       toPromise()
   }
 
+
+  /**
+   * This function is used to delete a post
+   * @param postId 
+   */
+  deletePost(postId: string){
+    return this._http.delete(this.baseURL + `/${postId}`).toPromise();
+  }
+
 }

@@ -539,7 +539,7 @@ export class PostService {
         // return sendErr(res, null, 'User not allowed to remove this post!', 403);
       }
 
-      await post.comments.forEach(async (commentId) => {
+      await post.comments?.forEach(async (commentId) => {
         try {
           await Comment.findByIdAndRemove(commentId);
 
@@ -549,7 +549,7 @@ export class PostService {
         }
       });
       //delete files, this catches both document insertion as well as multiple file attachment deletes
-      if (post.files.length > 0) {
+      if (post.files?.length > 0) {
         //gather source file
         function deleteFiles(files, callback) {
           var i = files.length;

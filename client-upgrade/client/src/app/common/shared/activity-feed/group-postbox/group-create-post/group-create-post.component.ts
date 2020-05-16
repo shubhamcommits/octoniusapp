@@ -425,4 +425,20 @@ export class GroupCreatePostComponent implements OnInit {
         })
     }))
   }
+
+/**
+ * Call function to delete post
+ * @param postId 
+ */
+  deletePost(){
+    this.utilityService.asyncNotification('Please wait we are deleting the post...', new Promise((resolve, reject)=>{
+      this.postService.deletePost(this.postData._id)
+      .then((res)=>{
+        this.closeModal();
+        resolve(this.utilityService.resolveAsyncPromise('Post deleted!'));
+      }).catch((err)=>{
+        reject(this.utilityService.rejectAsyncPromise('Unable to delete post, please try again!'));
+      })
+    }))
+  }
 }
