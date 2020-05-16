@@ -1,8 +1,11 @@
 .post-title{
     padding: 12px 15px; 
-    width: 100% !important; 
+    width: 95% !important; 
     box-shadow: none;
     border:none;
+}
+.modal-title{
+    width: 100%;
 }
 
 .post-header{
@@ -74,4 +77,9 @@ h4{
     display: block;
     flex-wrap: inherit;
   
+}
+
+.w300{
+    width: 350px !important;
+    text-align: right;
 }

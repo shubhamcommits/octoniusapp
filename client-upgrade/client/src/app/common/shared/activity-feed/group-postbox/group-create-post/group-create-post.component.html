@@ -5,42 +5,91 @@
   <!-- Normal Post Header starts -->
   <h4 class="modal-title" *ngIf="type === 'normal' && edit === false">
     <i *ngIf="type === 'normal'" class="material-icons-outlined">comment</i>
-    New Post
+     <!-- Post Title starts -->
+     <input 
+     name="postTitle" 
+     type="text" 
+     [ngModel]="title" 
+     (ngModelChange)="titleChange($event)"
+     class="post-title" 
+     placeholder="✍🏻 Title" />
+   <!-- Post Title ends -->
   </h4>
   
 
   <h4 class="modal-title" *ngIf="type === 'normal' && edit === true">
     <i *ngIf="type === 'normal'" class="material-icons-outlined">comment</i>
-    {{ title }}
+      <!-- Post Title starts -->
+      <input 
+      name="postTitle" 
+      type="text" 
+      [ngModel]="title" 
+      (ngModelChange)="titleChange($event)"
+      class="post-title" 
+      placeholder="{{ title }}" />
+    <!-- Post Title ends -->
+   
   </h4> 
   <!-- Normal Post Header ends -->
 
   <!-- Task Post Header starts -->
   <h4 class="modal-title" *ngIf="type === 'task' && edit === false">
     <i *ngIf="type === 'task'" class="material-icons-outlined">check_box</i>
-    New Task
+     <!-- Post Title starts -->
+     <input 
+     name="postTitle" 
+     type="text" 
+     [ngModel]="title" 
+     (ngModelChange)="titleChange($event)"
+     class="post-title" 
+     placeholder="✍🏻 Title" />
+   <!-- Post Title ends -->
   </h4>
 
   <h4 class="modal-title" *ngIf="type === 'task' && edit === true">
     <i *ngIf="type === 'task'" class="material-icons-outlined">check_box</i>
-    {{ title }}
+     <!-- Post Title starts -->
+     <input 
+     name="postTitle" 
+     type="text" 
+     [ngModel]="title" 
+     (ngModelChange)="titleChange($event)"
+     class="post-title" 
+     placeholder="{{ title }}" />
+   <!-- Post Title ends -->
   </h4>
   <!-- Task Post Header ends -->
   
   <!-- Event Post Header starts -->
   <h4 class="modal-title" *ngIf="type === 'event' && edit === false" >
     <i *ngIf="type === 'event'" class="material-icons-outlined">event</i>
-    New Event
+    <!-- Post Title starts -->
+    <input 
+    name="postTitle" 
+    type="text" 
+    [ngModel]="title" 
+    (ngModelChange)="titleChange($event)"
+    class="post-title" 
+    placeholder="✍🏻 Title" />
+  <!-- Post Title ends -->
   </h4>
 
   <h4 class="modal-title" *ngIf="type === 'event' && edit === true">
     <i *ngIf="type === 'event'" class="material-icons-outlined">event</i>
-    {{ title }}
+    <!-- Post Title starts -->
+    <input 
+    name="postTitle" 
+    type="text" 
+    [ngModel]="title" 
+    (ngModelChange)="titleChange($event)"
+    class="post-title" 
+    placeholder="{{ title }}" />
+  <!-- Post Title ends -->
   </h4>
   <!-- Event Post Header ends -->
 
   <!-- Top Right Section starts -->
-  <div class="float-right">
+  <div class="w300 float-right">
 
           <!-- Date Picker starts -->
           <app-date-picker *ngIf="type === 'task'"
@@ -126,15 +175,7 @@
 
     </div>
 
-    <!-- Post Title starts -->
-    <input 
-      name="postTitle" 
-      type="text" 
-      [ngModel]="title" 
-      (ngModelChange)="titleChange($event)"
-      class="post-title" 
-      placeholder="Insert title here..." />
-    <!-- Post Title ends -->
+  
     
     <!-- Quill Editor with content of post if edit property is enabled -->
     <app-quill-editor 
