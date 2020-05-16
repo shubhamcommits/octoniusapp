@@ -73,7 +73,7 @@ export class SkillsControllers {
             }, {
                 new: true
             })
-                .select('skills');
+                .select('skills full_name email active _id');
 
             // If unable to update the user skills
             if (!user) {
@@ -127,7 +127,7 @@ export class SkillsControllers {
             }, {
                 new: true
             })
-                .select('skills');
+                .select('skills full_name email active _id');
 
             // If unable to update the user skills
             if (!user) {
