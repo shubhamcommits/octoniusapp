@@ -23,32 +23,32 @@
                 </div>
             </div>
         
-            <div class="row mt-2">
+            <div class="row mt-2" *ngIf="percentageTodo >= 0">
                 <div class="col-md-6">
                     <h6 class="todo"><b>{{todoTasksCount}} To do</b></h6>
-                    <app-progress-bar *ngIf="percentageTodo >= 0" [preset]="'line'" [value]="percentageTodo" [stroke]="'#fd7714'"></app-progress-bar>
+                    <app-progress-bar [preset]="'line'" [value]="percentageTodo" [stroke]="'#fd7714'"></app-progress-bar>
                 </div>
                 <div class="col-md-12">
                     
                 </div>
             </div>
         
-            <div class="row mt-2 mb-2">
+            <div class="row mt-2 mb-2" *ngIf="percentageInProgress >= 0">
                 <div class="col-md-6">
                     <h6 class="working"><b>{{inprogressTasksCount}} In progress</b></h6>
                 </div>
                 <div class="col-md-12">
-                    <app-progress-bar style="width: 100%;" *ngIf="percentageInProgress >= 0" [preset]="'line'" [value]="percentageInProgress" [stroke]="'#0bc6a0'"></app-progress-bar>
+                    <app-progress-bar style="width: 100%;" [preset]="'line'" [value]="percentageInProgress" [stroke]="'#0bc6a0'"></app-progress-bar>
         
                 </div>
             </div>
         
-            <div class="row mt-2">
+            <div class="row mt-2" *ngIf="percentageDone >=0">
                 <div class="col-md-12">
                     <h6 class="done"><b>{{doneTasksCount}} Done</b></h6>
                 </div>
                 <div class="col-md-12">
-                    <app-progress-bar [preset]="'line'" [value]="percentageDone" *ngIf="percentageDone >=0" [stroke]="'#005FD5'"></app-progress-bar>
+                    <app-progress-bar [preset]="'line'" [value]="percentageDone" [stroke]="'#005FD5'"></app-progress-bar>
                 </div>
             </div>
         
