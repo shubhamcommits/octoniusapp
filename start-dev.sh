@@ -79,3 +79,8 @@ fi
         # Go back to main working directory(i.e. - services/)
         cd -
     done
+
+    # cd services/query-service
+    # docker-compose up > /dev/null &
+
+    # echo -e "\n \t Query Service has been started successfully!"  

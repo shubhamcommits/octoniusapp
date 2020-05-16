@@ -55,3 +55,6 @@ pm2 delete posts-server
 pm2 stop client-server
 
 pm2 delete client-server
+
+# cd services/query-service
+# docker-compose down

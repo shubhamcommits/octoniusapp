@@ -38,7 +38,14 @@ export class SearchHeaderComponent implements OnInit {
     this.searchedFiles = [];
     this.selected = undefined;
     this.selectedType = undefined;
-    if (this.searchQuery=='')return;
+    if (this.searchQuery=='' || this.searchQuery == " "){
+      this.searchedPosts = [];
+      this.searchedUsers = [];
+      this.searchedFiles = [];
+      this.selected = undefined;
+      this.selectedType = undefined;
+      return;
+    }
     this.createPostQuery()
     this.createUserQuery();
     this.createFileQuery();
