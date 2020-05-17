@@ -1,7 +1,6 @@
 <div *ngIf="type=='post'" style="text-align: left;">
    
     <p class="octo-search-category">Title: {{ data.title }}</p>
-    <p>Content: {{ data.content }}</p>
     <app-quill-editor 
       [editorId]="'postbox-editor'" 
       [toolbar]="false" 
