@@ -48,6 +48,8 @@ export class QuillEditorComponent implements OnInit {
   // EditorId variable
   @Input('editorId') editorId: any;
 
+  @Input('id') id: any;
+
   // ShowToolbar variable
   @Input('toolbar') toolbar = true;
 

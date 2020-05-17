@@ -2,7 +2,8 @@
    
     <p class="octo-search-category">Title: {{ data.title }}</p>
     <app-quill-editor
-      [editorId]=data.id
+      [editorId]="'postbox-editor'"
+      [id]=data.id
       [toolbar]="false" 
       [readOnly]="true"
       [contents]="data.content">
