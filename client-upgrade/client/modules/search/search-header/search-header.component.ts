@@ -16,7 +16,7 @@ export class SearchHeaderComponent implements OnInit {
 
   searchedFiles = [];
 
-  selected: string;
+  selected: any;
 
   searchQuery: string;
 
@@ -36,14 +36,14 @@ export class SearchHeaderComponent implements OnInit {
     this.searchedPosts = [];
     this.searchedUsers = [];
     this.searchedFiles = [];
-    this.selected = undefined;
-    this.selectedType = undefined;
+    this.selected = null;
+    this.selectedType = null;
     if (this.searchQuery=='' || this.searchQuery == " "){
       this.searchedPosts = [];
       this.searchedUsers = [];
       this.searchedFiles = [];
-      this.selected = undefined;
-      this.selectedType = undefined;
+      this.selected = null;
+      this.selectedType = null;
       return;
     }
     this.createPostQuery()
