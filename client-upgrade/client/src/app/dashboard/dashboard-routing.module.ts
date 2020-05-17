@@ -10,12 +10,18 @@ const routes: Routes = [
         path: 'admin',
         loadChildren: () => import('modules/admin/admin.module')
           .then((module) => module.AdminModule),
-        canActivate: [AdminGuard]
+        canActivate: [AdminGuard],
+        data: {
+          preload: false
+        }
       },
       {
         path: 'groups',
         loadChildren: () => import('modules/groups/groups.module')
-          .then((module) => module.GroupsModule)
+          .then((module) => module.GroupsModule),
+          data: {
+            preload: false
+          }
       },
       {
         path: 'myspace',
@@ -26,6 +32,9 @@ const routes: Routes = [
         path: 'user',
         loadChildren: () => import('modules/user/user.module')
           .then((module) => module.UserModule),
+          data: {
+            preload: false
+          }
       }
     ]
   },

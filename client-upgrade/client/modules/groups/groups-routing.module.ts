@@ -48,6 +48,9 @@ const routes: Routes = [
         path: 'files',
         loadChildren: () => import('modules/files/files.module')
           .then((module) => module.FilesModule),
+          data: {
+            preload: false
+          }
       },
 
       // Group Calendar
@@ -55,6 +58,9 @@ const routes: Routes = [
         path: 'calendar',
         loadChildren: () => import('modules/calendar/calendar.module')
           .then((module) => module.CalendarModule),
+          data: {
+            preload: false
+          }
       },
 
       // Group Members

@@ -6,7 +6,14 @@
         <h6><strong>Your files. Ready when you are</strong></h6>
         <!-- Heading of the component ends -->
 
-        <app-group-new-file></app-group-new-file>
+        <!-- Group New File starts -->
+        <app-group-new-file 
+            *ngIf="groupId && userData && checkDataExist(userData)"
+            [groupId]="groupId" 
+            [userData]="userData"
+            (file)="getFile($event)">
+        </app-group-new-file>
+        <!-- Group New File ends -->
 
         <div class="search">
 
@@ -32,7 +39,7 @@
                 *ngFor="let file of files; let index = index; trackBy: utilityService.trackByIndex;">
 
                 <!-- Avatar Image of the member -->
-                <img src="{{ baseUrl }}/{{file._posted_by?.profile_pic}}" routerLink="/dashboard/user/profile"
+                <img src="{{ userBaseUrl }}/{{file._posted_by?.profile_pic}}" routerLink="/dashboard/user/profile"
                     [queryParams]="{ userId: file._posted_by._id }" onerror="this.src='/assets/images/user.png'"
                     class="feed-avatar">
                 <!-- Avatar Image of the member -->
@@ -41,7 +48,11 @@
 
                     <!-- File Details Starts -->
                     <div class="float-left">
-                        <p class="mt-0">{{file._posted_by?.first_name}} {{file._posted_by?.last_name}}</p>
+                        <p class="mt-2">{{file._posted_by?.first_name}} {{file._posted_by?.last_name}}</p>
+                    </div>
+
+                    <div class="float-right">
+                        <a class="mt-2" target="_blank" href="{{filesBaseUrl}}/{{file?.modified_name}}">{{file?.original_name}}</a>
                     </div>
                     <!-- File Details Ends -->
 

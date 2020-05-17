@@ -8,6 +8,10 @@ import { SharedModule } from 'src/app/common/shared/shared.module';
 import { FormsModule } from '@angular/forms';
 import { GroupNewFileComponent } from './group-files/group-new-file/group-new-file.component';
 
+/**
+ * Services
+ */
+import { FilesService } from 'src/shared/services/files-service/files.service';
 
 @NgModule({
   declarations: [GroupFilesComponent, GroupNewFileComponent],
@@ -21,6 +25,11 @@ import { GroupNewFileComponent } from './group-files/group-new-file/group-new-fi
 
     // Shared Module
     SharedModule
+  ],
+  providers:[
+
+    // Files Service
+    FilesService
   ]
 })
 export class FilesModule { }

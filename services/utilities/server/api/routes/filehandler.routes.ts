@@ -15,6 +15,9 @@ routes.get('/users/:file', userFileHandler);
 // GET - Handles the file attachment(workspace_avatar) for the workspace
 routes.get('/workspaces/:file', workspaceFileHandler);
 
+// GET - Fetches the files attachment
+routes.use('/files', express.static(process.env.FILE_UPLOAD_FOLDER));
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

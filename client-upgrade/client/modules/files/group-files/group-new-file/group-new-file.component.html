@@ -6,17 +6,19 @@
 
 <!-- Menu Drawer Starts -->
 <ul class="dropdown-menu">
-    <li class="dropdown-item">
+    <li class="dropdown-item" (click)="$event.stopPropagation()">
         <span>Folder</span>
     </li>
-    <li class="dropdown-item">
-        <span>File</span>
+    <li class="dropdown-item" (click)="file.click()">
+        <span>File</span> 
+        <input #file type="file" placeholder="File" multiple (change)="fileInput(file.files)"/>
     </li>
-    <li class="dropdown-item">
+    <li class="dropdown-item" (click)="folderInput.click()">
         <span>Folder Upload</span>
+        <input #folderInput type="file" placeholder="File" webkitDirectory />
     </li>
     <li class="dropdown-divider"></li>
-    <li class="dropdown-item">
+    <li class="dropdown-item" (click)="$event.stopPropagation()">
         <span>Folio</span>
     </li>
 </ul>

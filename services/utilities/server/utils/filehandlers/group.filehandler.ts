@@ -34,7 +34,7 @@ const groupFileUploader = (req: Request, res: Response, next: NextFunction) => {
   } else {
 
     /// Instantiate the fileName variable and add the date object in the name
-    let fileName: any = Date.now().toString() + req['files'].file['name'];
+    let fileName: any = Date.now().toString() + "_" + req['files'].file['name'];
 
     // Get the file from the request
     const file: any = req['files'].file;
@@ -59,9 +59,11 @@ const groupFileUploader = (req: Request, res: Response, next: NextFunction) => {
         modified_name: fileName
       };
 
+      req.body.fileData = JSON.parse(req.body.fileData);
+
       // Modify the current request to add 
-      req.body.file.original_name = file.original_name;
-      req.body.file.modified_name = file.modified_name;
+      req.body.fileData.original_name = file.original_name;
+      req.body.fileData.modified_name = file.modified_name;
 
       // Pass the middleware// Pass the middleware
       next();

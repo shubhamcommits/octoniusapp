@@ -7,6 +7,8 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 import { QuicklinkModule } from 'ngx-quicklink';
 
+import { NgxImageCompressService } from 'ngx-image-compress';
+
 import { SafePipe } from 'src/shared/pipes/safe.pipe';
 
 import { CropImageComponent } from './crop-image/crop-image.component';
@@ -176,6 +178,9 @@ import { GroupUpdateInformationComponent } from './activity-feed/group-informati
     TaskSmartCardComponent,
 
     AgendaSmartCardComponent
+  ],
+  providers: [
+    NgxImageCompressService
   ]
 })
 export class SharedModule { }

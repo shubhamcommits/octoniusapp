@@ -38,7 +38,7 @@ fi
         sudo $packageManager -g install pm2
 
     else
-        sudo $packageManager global add pm2 --prefix /usr/bin
+        sudo $packageManager global add pm2
 
     fi
 
@@ -68,6 +68,9 @@ fi
 
         # Echo the Status
         echo -e "\n \t Installing $service Service..."
+
+        # Create Uploads Folder
+        mkdir uploads
 
         # Start the process and push it to background
         $packageManager install &

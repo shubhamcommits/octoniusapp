@@ -9,7 +9,8 @@
 <!-- GROUP MODAL CHANGE IMAGE STARTS -->
 <div class="modal-body">
     <div class="form-group">
-        <img src="{{ baseUrl }}/{{ groupData?.group_avatar }}" onerror="this.src='/assets/images/group.png'">
+        <img src="{{ baseUrl }}/{{ groupData?.group_avatar }}" 
+            onerror="this.src='/assets/images/icon-new-group.svg'">
         <app-crop-image class="container" (outputImage)="getCroppedImage($event)"></app-crop-image>
     </div>
 </div>

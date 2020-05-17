@@ -8,7 +8,10 @@ let files = new FilesControllers()
 const routes = express.Router();
 
 // POST - Handles the adding files inside a group
-routes.post('/groups/', groupFileUploader, files.add);
+routes.post('/groups', groupFileUploader, files.add);
+
+// GET - Fetches the files list
+routes.get('/groups', files.get);
 
 /*  ===================
  *  -- EXPORT ROUTES --

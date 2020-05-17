@@ -12,6 +12,7 @@ import { GroupService } from 'src/shared/services/group-service/group.service';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
 import moment from 'moment/moment';
+import { FilesService } from 'src/shared/services/files-service/files.service';
 
 export class PublicFunctions {
 
@@ -526,6 +527,31 @@ export class PublicFunctions {
 
                     // Resolve with success
                     resolve(res['tags'].map((tag: any) => tag.tags))
+                })
+                .catch(() => {
+
+                    // If there's an error, then reject with empty array
+                    reject([]);
+                })
+        })
+    }
+
+    /**
+     * This function is responsible for fetching the files from the server based on the groupId
+     * @param groupId 
+     * @param lastFileId: optional 
+     */
+    getFiles(groupId: string, lastFileId?: string) {
+
+        // Files Service Instance
+        let filesService = this.injector.get(FilesService);
+
+        return new Promise((resolve, reject) => {
+            filesService.get(groupId, lastFileId)
+                .then((res: any) => {
+
+                    // Resolve with sucess
+                    resolve(res['files'])
                 })
                 .catch(() => {
 

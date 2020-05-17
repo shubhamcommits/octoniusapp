@@ -21,7 +21,11 @@ function createWindow() {
       nodeIntegration: true,
       allowRunningInsecureContent: (serve) ? true : false,
     },
-    icon: `https://www.octonius.com/wp-content/uploads/2019/08/cropped-octonius-huge-logo.png`
+    icon: url.format({
+      pathname: path.join(__dirname, 'dist/icons.icns'),
+      protocol: 'file:',
+      slashes: true
+    })
   });
 
 
