@@ -43,6 +43,15 @@ routes.get('/', group.getUserGroups);
 // GET - Get list of next 5 groups of which a user is a part of, based on the lastGroupId fetched from the list of first 10 groups
 routes.get('/:lastGroupId/next', group.getNextUserGroups);
 
+// GET - Get first 10 Agora groups not joined by user
+routes.get('/agora/not-joined', group.getAgoraGroupsNotJoined);
+
+// GET - Get next 5 Agora groups not joined by user
+routes.get('/agora/not-joined-next', group.getNextAgoraGroupsNotJoined);
+
+// POST - User  join Agora group
+routes.post('/agora/join', group.joinAgoraGroup);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

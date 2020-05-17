@@ -45,6 +45,35 @@
     </app-infinite-scroll>
     <!-- INFINITE SCROLL ENDS FOR USER GROUPS -->
 
+    <!-- INFINITE SCROLL STARTS FOR AGORA GROUPS -->
+    <app-infinite-scroll (scrolled)="onAgoraScroll()"  *ngIf="agoraGroups.length>0">
+        <h2 class="section-title">AGORA</h2>
+        <div class="row">
+            
+        
+            <ng-container *ngFor="let group of agoraGroups; trackBy: utilityService.trackByIndex">
+              
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                <div *ngIf="group.group_name !== 'private'" class=" card">
+                    <span class="badge badge-members">{{ group?.members_count }} Members</span>
+                    <img class="card-img-top" src="{{ this.baseUrl }}/{{group.group_avatar}}"
+                        onerror="this.src='/assets/images/icon-new-group.svg'">
+                        <a *ngIf="group?.type == 'agora'" class="btn btn-warning btn-public" (click)="joinGroup(group._id)">JOIN</a>
+                       
+                    <div class="card-body">
+                        <a>
+                            <h2 class="card-title">{{group?.group_name}}</h2>
+                        </a>
+                    </div>
+                  </div>
+
+
+                </div>
+            </ng-container>
+        </div>
+    </app-infinite-scroll>
+    <!-- INFINITE SCROLL ENDS FOR AGOORA GROUPS -->
+
     <!-- LOADING SPINNER STARTS -->
     <ng-container *ngIf="isLoading$ | async">
         <app-loading-spinner></app-loading-spinner>

@@ -783,6 +783,41 @@ export class PublicFunctions {
         utilityService.errorNotification(err.message);
     }
 
+    async getAgoraGroupsNotJoined(workplaceId, userId){
+        let groupService = this.injector.get(GroupsService);
+        return new Promise((resolve, reject)=>{
+            groupService.getAgoraGroupsNotJoined(workplaceId, userId).then((res)=>{
+                resolve(res['group']);
+            }).catch((err)=>{
+                console.log(err);
+                reject();
+            })
+        })
+    }
+
+    async joinAgora(groupId, userId){
+        let groupService = this.injector.get(GroupsService);
+        let utilityService = this.injector.get(UtilityService);
+        utilityService.asyncNotification('Joining Group...', new Promise((resolve, reject)=>{
+            groupService.joinAgora(groupId, userId).then((res)=>{
+                resolve(utilityService.resolveAsyncPromise('Successfully Joined Group'));
+            }).catch((err)=>{
+                throw(err);
+            })
+        }))
+    }
+
+    async getNextAgoraGroups(workspaceId, userId, lastGroupId){
+        let groupService = this.injector.get(GroupsService);
+        return new Promise((resolve, reject)=>{
+            groupService.getNextAgoraGroups(workspaceId, userId, lastGroupId).then((res)=>{
+                resolve(res['group']);
+            }).catch((err)=>{
+                throw(err);
+            })
+        })
+    }
+
     /**
      * This function unsubscribes the data from the observables
      */

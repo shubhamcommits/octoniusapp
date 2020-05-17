@@ -44,10 +44,10 @@ app-loading-spinner{
 
 .btn-public {
     position: absolute;
-    right: 20px;
-    bottom: 80px;
+    left: 5px;
+    top: 5px;
     font-weight: bold;
-    cursor: default;
+    cursor: pointer;
 }
 
 .btn-smart {
@@ -70,4 +70,11 @@ h2{
 }
 .col-md-3{
     padding: 8px;
+}
+
+.section-title{
+    font-family: "Nunito", sans-serif;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    margin-top: 24px;
 }
