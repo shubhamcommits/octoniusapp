@@ -42,11 +42,19 @@ export class GroupsListComponent implements OnInit {
   // More to load maintains check if we have more to load groups on scroll
   public moreToLoad: boolean = true;
 
+  // More Agora groups boolean
+  public moreAgora: boolean = true;
+
   // LastGroupId
   public lastGroupId: string = '';
 
+  // Last agora group ID
+  public lastAgoraGroupId: string = '';
+
   // IsLoading behaviou subject maintains the state for loading spinner
   public isLoading$ = new BehaviorSubject(false);
+
+  public isLoadingAgora$ = new BehaviorSubject(false);
 
   // Utility Service
   public utilityService = this.injector.get(UtilityService);
@@ -55,6 +63,7 @@ export class GroupsListComponent implements OnInit {
     
     // Starts the spinner 
     this.isLoading$.next(true);
+    this.isLoadingAgora$.next(true);
 
     // Fetch the current loggedIn user data
     this.userData = await this.publicFunctions.getCurrentUser();
@@ -74,20 +83,31 @@ export class GroupsListComponent implements OnInit {
     .catch(()=>{
       // If the function breaks, then catch the error and console to the application
       this.publicFunctions.sendError(new Error('Unable to connect to the server, please try again later!'));
-      this.isLoading$.next(false);
+      this.isLoadingAgora$.next(false);
     })
 
     // Calculates the lastGroupId based on the userGroups
     this.lastGroupId = this.userGroups[(this.userGroups.length-1)]['_id'];
+    if (this.agoraGroups.length>0){
+      this.lastAgoraGroupId = this.agoraGroups[this.agoraGroups.length-1]['_id'];
+    }
     
     // Stops the spinner and return the value with ngOnInit
-    return this.isLoading$.next(false);
+    this.isLoading$.next(false);
+    this.isLoadingAgora$.next(false);
   }
 
   public async onScroll() {
     if (this.moreToLoad) {
       this.isLoading$.next(true);
       await this.scrolled();
+    }
+  }
+
+  public async onAgoraScroll(){
+    if (this.moreAgora){
+      this.isLoadingAgora$.next(true);
+      await this.AgoraScrolled();
     }
   }
 
@@ -129,6 +149,31 @@ export class GroupsListComponent implements OnInit {
       }
 
     }
+  }
+
+  /**
+   * Helper function of AgoraScroll to work on the business logic
+   */
+  public async AgoraScrolled(){
+
+    let nextAgoraGroups:any = await this.publicFunctions.getNextAgoraGroups(this.workspaceData['_id'], this.userData['_id'], this.lastAgoraGroupId);
+    
+    // Adding into existing array
+    this.agoraGroups = [...this.agoraGroups, ...nextAgoraGroups];
+
+    // Removing Duplicates
+    this.utilityService.removeDuplicates(this.agoraGroups, '_id').then((groups)=>{
+      this.agoraGroups = groups;
+    })
+
+    if (this.moreAgora && this.agoraGroups.length>0){
+      this.lastAgoraGroupId = this.agoraGroups[this.agoraGroups.length-1]['_id'];
+
+    }
+
+     // Stop the loading spinner
+     this.isLoadingAgora$.next(false);
+
   }
 
   receiveGroupUpdates($event: Event){

@@ -457,6 +457,12 @@ export class GroupController {
     }
 
 
+    /**
+     * This function is used to get first 10 agora groups not joined by a user
+     * @param req \
+     * @param res 
+     * @param next 
+     */
     async getAgoraGroupsNotJoined(req: Request, res: Response, next: NextFunction){
         try {
             const { workspaceId, userId } = req.query;
@@ -475,7 +481,7 @@ export class GroupController {
                     { type: "agora" },
                 ]
             })
-            .sort('group_name')
+            .sort('_id')
                 .limit(10)
                 .populate({
                     path: '_members',
@@ -504,6 +510,12 @@ export class GroupController {
     }
 
 
+    /**
+     * This function is used to add user to an agora group
+     * @param req 
+     * @param res 
+     * @param next 
+     */
     async joinAgoraGroup(req: Request, res: Response, next: NextFunction){
         try {
             const { groupId, userId } = req.body;
@@ -541,6 +553,60 @@ export class GroupController {
                 message: `User added to group successfully!`,
             });
 
+        } catch (error) {
+            return sendError(res, error, 'Internal Server Error!', 500);
+        }
+    }
+
+
+    /**
+     * This function is used to get next 5 not joined agoras
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async getNextAgoraGroupsNotJoined(req: Request, res: Response, next: NextFunction){
+        try {
+            const { workspaceId, userId, lastGroupId } = req.query;
+
+            if (!workspaceId || !userId) {
+                return res.status(400).json({
+                    message: 'Please provide both workspaceId and userId as the query parameter!'
+                })
+            }
+
+            const agoraGroups = await Group.find({
+                $and: [
+                    { _members: { $ne: userId} },
+                    { _admins: { $ne: userId} },
+                    { _workspace: workspaceId },
+                    { type: "agora" },
+                    { _id: { $gt: lastGroupId } }
+                ]
+            })
+            .sort('_id')
+                .limit(5)
+                .populate({
+                    path: '_members',
+                    select: '_id',
+                    options: {
+                        count: true
+                    }
+                })
+                .populate({
+                    path: '_admins',
+                    select: '_id',
+                    options: {
+                        count: true
+                    }
+                })
+                .lean() || []
+
+                return res.status(200).json({
+                    message: `Agora groups retrieved successfully!`,
+                    group: agoraGroups
+                });
+    
         } catch (error) {
             return sendError(res, error, 'Internal Server Error!', 500);
         }

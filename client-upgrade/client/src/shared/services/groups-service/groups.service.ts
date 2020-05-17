@@ -153,4 +153,14 @@ export class GroupsService {
     }).toPromise();
   }
 
+  getNextAgoraGroups(workspaceId: string, userId: string, lastGroupId: string){
+    return this._http.get(this.baseURL + '/agora/not-joined-next', {
+      params: {
+        workspaceId,
+        userId,
+        lastGroupId
+      }
+    }).toPromise();
+  }
+
 }

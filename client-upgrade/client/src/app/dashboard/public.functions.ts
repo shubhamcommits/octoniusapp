@@ -781,6 +781,17 @@ export class PublicFunctions {
         }))
     }
 
+    async getNextAgoraGroups(workspaceId, userId, lastGroupId){
+        let groupService = this.injector.get(GroupsService);
+        return new Promise((resolve, reject)=>{
+            groupService.getNextAgoraGroups(workspaceId, userId, lastGroupId).then((res)=>{
+                resolve(res['group']);
+            }).catch((err)=>{
+                throw(err);
+            })
+        })
+    }
+
     /**
      * This function unsubscribes the data from the observables
      */
