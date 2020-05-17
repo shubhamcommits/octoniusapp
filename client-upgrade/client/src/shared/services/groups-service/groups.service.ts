@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
@@ -133,6 +133,23 @@ export class GroupsService {
         workspaceId,
         userId
       }
+    }).toPromise();
+  }
+
+
+  getAgoraGroupsNotJoined(workspaceId: string, userId: string){
+    return this._http.get(this.baseURL + '/agora/not-joined', {
+      params: {
+        workspaceId,
+        userId
+      }
+    }).toPromise();
+  }
+
+  joinAgora(groupId: string, userId: string){
+    return this._http.post(this.baseURL + '/agora/join', {
+      groupId,
+      userId
     }).toPromise();
   }
 

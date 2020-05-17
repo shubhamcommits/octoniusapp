@@ -128,7 +128,7 @@ export class GroupController {
                     { group_name: { $ne: 'personal' } },
                     { group_name: { $ne: 'private' } },
                     { _workspace: workspaceId, },
-                    { $or: [{ _members: userId }, { _admins: userId }, {type: 'agora'}] },
+                    { $or: [{ _members: userId }, { _admins: userId }] },
                     // { type: { $ne: 'smart' } }
                 ]
             })
@@ -188,7 +188,7 @@ export class GroupController {
                     { group_name: { $ne: 'personal' } },
                     { group_name: { $ne: 'private' } },
                     { _workspace: workspaceId, },
-                    { $or: [{ _members: userId }, { _admins: userId }, {type: 'agora'}] },
+                    { $or: [{ _members: userId }, { _admins: userId }] },
                     { _id: { $gt: lastGroupId } }
                 ]
             })
@@ -453,6 +453,96 @@ export class GroupController {
             });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+
+    async getAgoraGroupsNotJoined(req: Request, res: Response, next: NextFunction){
+        try {
+            const { workspaceId, userId } = req.query;
+
+            if (!workspaceId || !userId) {
+                return res.status(400).json({
+                    message: 'Please provide both workspaceId and userId as the query parameter!'
+                })
+            }
+
+            const agoraGroups = await Group.find({
+                $and: [
+                    { _members: { $ne: userId} },
+                    { _admins: { $ne: userId} },
+                    { _workspace: workspaceId },
+                    { type: "agora" },
+                ]
+            })
+            .sort('group_name')
+                .limit(10)
+                .populate({
+                    path: '_members',
+                    select: '_id',
+                    options: {
+                        count: true
+                    }
+                })
+                .populate({
+                    path: '_admins',
+                    select: '_id',
+                    options: {
+                        count: true
+                    }
+                })
+                .lean() || []
+
+                return res.status(200).json({
+                    message: `Agora groups retrieved successfully!`,
+                    group: agoraGroups
+                });
+    
+        } catch (error) {
+            return sendError(res, error, 'Internal Server Error!', 500);
+        }
+    }
+
+
+    async joinAgoraGroup(req: Request, res: Response, next: NextFunction){
+        try {
+            const { groupId, userId } = req.body;
+
+            if (!groupId || !userId) {
+                return res.status(400).json({
+                    message: 'Please provide both groupId and userId as the query parameter!'
+                })
+            }
+
+            // Add User to group
+            const group = await Group.findByIdAndUpdate({
+                _id: groupId
+            }, {
+                $addToSet: {
+                     _members: userId
+                },
+                $inc: { members_count: 1 }
+            },{
+                new: true
+            });
+
+            // Add Group to user
+            const user = await User.findByIdAndUpdate({
+                _id: userId
+            }, {
+                $addToSet: {
+                    _groups: groupId
+                }
+            }, {
+                new: true
+            });
+
+            return res.status(200).json({
+                message: `User added to group successfully!`,
+            });
+
+        } catch (error) {
+            return sendError(res, error, 'Internal Server Error!', 500);
         }
     }
 }

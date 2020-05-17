@@ -163,13 +163,11 @@ export class QuillEditorComponent implements OnInit {
     
     // Fetch the users list from the server
     let usersList: any = await this.publicFunctions.searchGroupMembers(groupId, searchTerm);
-
     // Map the users list
     usersList = usersList['users'].map((user) => ({
       id: user._id,
       value: user.first_name + " " +user.last_name
     }))
-
     // Return the Array without duplicates
     return Array.from(new Set(usersList))
   }
@@ -216,6 +214,7 @@ export class QuillEditorComponent implements OnInit {
 
         // Get the quill cotents from the editor
         let quillData = this.getQuillContents(quill)
+        console.log(quillData);
 
         // Get Quill Contents
         let quillContents = quillData.contents

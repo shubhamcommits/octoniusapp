@@ -4,6 +4,7 @@ import { PublicFunctions } from 'src/app/dashboard/public.functions';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { environment } from 'src/environments/environment';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-groups-list',
@@ -13,7 +14,8 @@ import { environment } from 'src/environments/environment';
 export class GroupsListComponent implements OnInit {
 
   constructor(
-    public injector: Injector
+    public injector: Injector,
+    private router: Router
   ) { }
 
   // Base Url
@@ -33,6 +35,9 @@ export class GroupsListComponent implements OnInit {
 
   // Array of user groups
   public userGroups: any = [];
+
+  // Agora groups not joined
+  public agoraGroups: any = [];
 
   // More to load maintains check if we have more to load groups on scroll
   public moreToLoad: boolean = true;
@@ -59,6 +64,13 @@ export class GroupsListComponent implements OnInit {
 
     // Fetches the user groups from the server
     this.userGroups = await this.publicFunctions.getUserGroups(this.workspaceData['_id'], this.userData['_id'])
+    .catch(()=>{
+      // If the function breaks, then catch the error and console to the application
+      this.publicFunctions.sendError(new Error('Unable to connect to the server, please try again later!'));
+      this.isLoading$.next(false);
+    })
+
+    this.agoraGroups = await this.publicFunctions.getAgoraGroupsNotJoined(this.workspaceData['_id'], this.userData['_id'])
     .catch(()=>{
       // If the function breaks, then catch the error and console to the application
       this.publicFunctions.sendError(new Error('Unable to connect to the server, please try again later!'));
@@ -121,6 +133,15 @@ export class GroupsListComponent implements OnInit {
 
   receiveGroupUpdates($event: Event){
     this.userGroups.push($event);
+  }
+
+  async joinGroup(groupId: any){
+    await this.publicFunctions.joinAgora(groupId, this.userData['_id']).then((res)=>{
+      this.router.navigate(['/dashboard/groups/', groupId, 'activity']);
+    }).catch((err)=>{
+      console.log(err);
+    });
+
   }
 
   ngOnDestroy(){
