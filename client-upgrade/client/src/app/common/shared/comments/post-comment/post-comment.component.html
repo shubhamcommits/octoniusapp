@@ -1,0 +1,47 @@
+<div class="card muted comment">
+    <div class="card-block">
+        <div class="row card-title ">
+            <div class="col-md-1">
+
+                <img src="{{baseUrl}}/{{comment._commented_by?.profile_pic}}"
+                    onerror="this.src='/assets/images/user.png'" class="feed-avatar">
+
+            </div>
+            <div class="col-md-11 ">
+                <h6>{{comment?._commented_by?.first_name}} {{comment?._commented_by?.last_name}} replied
+                    <br>
+                    <span class="small lightgray date">
+                        {{comment?.created_date | date : 'medium'}}</span>
+                </h6>
+            </div>
+        </div>
+        <ng-container *ngIf="displayCommentEditor">
+            <div class="col-md-12 text-right" style="padding-bottom: 1em;">
+                <button class="btn btn-primary btn-sm" contenteditable="false">Save</button>
+            </div>
+            <div class="col-md-12 innercard">
+
+            </div>
+        </ng-container>
+
+        <div class="col-md-12 innercard ">
+            <app-quill-editor *ngIf="comment.content" 
+                [editorId]="('comment_view_'+ index + comment?._id) || 'editor'"
+                [toolbar]="false" 
+                [readOnly]="true" 
+                [contents]="comment.content">
+            </app-quill-editor>
+        </div>
+        <div class="row card-footer innercard action-post clearfix">
+            <div class="col-md-6">
+                <span class="stats"><b>{{comment?.likes_count || 0 }}</b>
+                    Likes </span>
+            </div>
+            <div class="col-md-6 text-right">
+                <app-like-comment [userData]="userData" [comment]="comment"></app-like-comment>
+                <span style="margin-right: -12px">
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

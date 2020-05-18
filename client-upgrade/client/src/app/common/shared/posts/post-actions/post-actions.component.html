@@ -5,7 +5,7 @@
         <div class="col-md-6">
             <span class="stats"><b>{{post?._liked_by.length || 0 }}</b>
                 Likes </span>
-            <span class="stats"><b>{{ post?.comments.length || 0 }}</b> Comments</span>
+            <span class="stats" (click)="fetchComments()"><b>{{ post?.comments.length || 0 }}</b> Comments</span>
             <span class="stats"><b>{{post?._followers?.length || 0 }}</b> Followers</span>
         </div>
         <div class="col-md-6 text-right">

@@ -71,6 +71,7 @@ import { BoardBarComponent } from './group/group-kanban-boards/board-bar/board-b
 import { NewTaskComponent } from './group/group-kanban-boards/new-task/new-task.component';
 import { EditColumnComponent } from './group/group-kanban-boards/edit-column/edit-column.component';
 import { GroupPostComponent } from './group/group-post/group-post.component';
+import { CommentService } from 'src/shared/services/comment-service/comment.service';
 
  
 /**
@@ -173,7 +174,8 @@ import { GroupPostComponent } from './group/group-post/group-post.component';
   providers: [
     GroupsService,
     GroupService,
-    PostService
+    PostService,
+    CommentService
   ]
 })
 export class GroupsModule { }

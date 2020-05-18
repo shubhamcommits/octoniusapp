@@ -50,6 +50,7 @@ import { AgendaSmartCardComponent } from './activity-feed/agenda-smart-card/agen
 import { GroupUpdateInformationComponent } from './activity-feed/group-information/group-update-information/group-update-information.component';
 import { CommentSectionComponent } from './comments/comment-section/comment-section.component';
 import { PostCommentComponent } from './comments/post-comment/post-comment.component';
+import { LikeCommentComponent } from './comments/post-comment/like-comment/like-comment.component';
 
 @NgModule({
   declarations: [
@@ -114,7 +115,9 @@ import { PostCommentComponent } from './comments/post-comment/post-comment.compo
 
     PostCommentComponent,
     
-    CommentSectionComponent
+    CommentSectionComponent,
+    
+    LikeCommentComponent
   ],
   imports: [
     CommonModule,
@@ -186,7 +189,9 @@ import { PostCommentComponent } from './comments/post-comment/post-comment.compo
 
     AgendaSmartCardComponent,
 
-    NgbTooltipModule
+    NgbTooltipModule,
+
+    LikeCommentComponent
   ]
 })
 export class SharedModule { }

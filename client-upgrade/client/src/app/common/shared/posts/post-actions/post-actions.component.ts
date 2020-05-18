@@ -18,8 +18,14 @@ export class PostActionsComponent implements OnInit {
   // Delete Post Event Emitter
   @Output('delete') delete = new EventEmitter()
 
+  // Show Comment State
+  showComments: boolean = false;
+
   // Show Comment Editor
   @Output('showCommentEditor') showCommentEditorEmitter = new EventEmitter()
+
+  // Comments
+  @Output('comments') showCommentsEmitter = new EventEmitter()
 
   ngOnInit() {
   }
@@ -37,6 +43,14 @@ export class PostActionsComponent implements OnInit {
    */
   showCommentditor(editorState: boolean){
     this.showCommentEditorEmitter.emit(editorState)
-  } 
+  }
+  
+  /**
+   * Fetch Comments
+   */
+  fetchComments(){
+    if(this.post.comments.length > 0)
+      this.showCommentsEmitter.emit(this.showComments = !this.showComments)
+  }
 
 }

@@ -19,6 +19,12 @@ export class PostViewComponent implements OnInit {
   // Show Comment Editor Variable
   showCommentQuillEditor = false;
 
+  // Show Comment Editor Variable
+  showComments = false;
+
+  // Comments Array
+  comments: any = []
+
   // Post as the Input from component
   @Input('post') post: any;
 
@@ -70,6 +76,23 @@ export class PostViewComponent implements OnInit {
    */
   showCommentEditor(emiterState: boolean){
     this.showCommentQuillEditor = emiterState
+  }
+
+  hideCommentEditor(emiterState: string){
+    this.showCommentQuillEditor = !this.showCommentQuillEditor
+  }
+
+  /**
+   * This function is responsible for showing the comments
+   * @param comments 
+   */
+  displayComments(commentsDisplayState: boolean){
+    this.showComments = commentsDisplayState
+  }
+
+  newComment(comment: any){
+    this.comments.unshift(comment)
+    this.post.comments = this.comments
   }
 
 }
