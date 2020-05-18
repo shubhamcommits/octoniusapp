@@ -10,38 +10,90 @@
             <div class="col-md-11 ">
                 <h6 class="ml-2">{{comment?._commented_by?.first_name}} {{comment?._commented_by?.last_name}}
                     <br>
-                    <span class="small lightgray date">
-                       23213213</span>
+                    <span class="small lightgray date">{{comment?.created_date | date: 'medium'}}</span>
                 </h6>
             </div>
         </div>
+
+        <!-- Edit comment Content starts -->
         <ng-container *ngIf="displayCommentEditor">
-            <div class="col-md-12 text-right" style="padding-bottom: 1em;">
-                <button class="btn btn-primary btn-sm" contenteditable="false">Save</button>
+
+            <!-- Save Button starts -->
+            <div class="col-md-12 text-right padding-bottom-md mb-2">
+                <button class="btn btn-primary btn-sm" 
+                (click)="saveCommentData()">Save</button>
             </div>
+            <!-- Save Button ends -->
+
+            <!-- Comment Edit starts -->
             <div class="col-md-12 innercard">
-
+                <app-quill-editor *ngIf="comment.content"
+                    [editorId]="('comment_view_edit_'+ index + comment?._id) || 'editor'" [toolbar]="true" [readOnly]="false"
+                    [contents]="comment.content" [groupId]="groupId" (content)="getQuillData($event)">
+                </app-quill-editor>
             </div>
-        </ng-container>
+            <!-- Comment Edit ends -->
 
-        <div class="col-md-12 innercard ">
-            <app-quill-editor *ngIf="comment.content" 
-                [editorId]="('comment_view_'+ index + comment?._id) || 'editor'"
-                [toolbar]="false" 
-                [readOnly]="true" 
-                [contents]="comment.content">
+        </ng-container>
+        <!-- Edit comment Content starts -->
+
+        <!-- Comment Content starts -->
+        <div class="col-md-12 innercard " *ngIf="!displayCommentEditor">
+            <app-quill-editor *ngIf="comment.content" [editorId]="('comment_view_'+ index + comment?._id) || 'editor'"
+                [toolbar]="false" [readOnly]="true" [contents]="comment.content">
             </app-quill-editor>
         </div>
-        <div class="row card-footer innercard action-post clearfix" style="margin-left:0; margin-right:0">
+        <!-- Comment Content ends -->
+
+        <!-- Comment Action Starts -->
+        <div class="row card-footer innercard action-post clearfix ml-0 mr-0">
+
+            <!-- Likes Placeholder starts -->
             <div class="col-md-6">
-                <span class="stats"><b>{{comment?.likes_count || 0 }}</b>
-                    Likes </span>
+                <span class="stats"><b>{{comment?.likes_count || 0 }}</b> Likes </span>
             </div>
+            <!-- Likes Placeholder ends -->
+
             <div class="col-md-6 text-right">
+
+                <!-- Like Comment starts -->
                 <app-like-comment [userData]="userData" [comment]="comment"></app-like-comment>
-                <span style="margin-right: -12px">
+                <!-- Like Comment ends -->
+
+                <!-- Comment Utils starts -->
+                <span class="mr-n12">
+
+                    <!-- Three dotted button starts -->
+                    <button class="btn btn-link btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                        <i class="material-icons-outlined action">more_horiz</i>
+                        <span class="caret"></span>
+                    </button>
+                    <!-- Three dotted button ends -->
+
+                    <!-- Menu Drawer Starts -->
+                    <ul class="dropdown-menu">
+
+                        <!-- Edit Comment starts -->
+                        <li class="dropdown-item" (click)="this.displayCommentEditor = true">
+                            <span>Edit</span>
+                        </li>
+                        <!-- Edit Comment ends -->
+
+                        <li class="dropdown-divider"></li>
+
+                        <!-- Delete Comment starts -->
+                        <li class="dropdown-item" (click)="deleteComment(index)">
+                            <span>Delete</span>
+                        </li>
+                        <!-- Delete Comment ends-->
+
+                    </ul>
+                    <!-- Menu Drawer Ends -->
                 </span>
+                <!-- Comment Utils ends -->
+
             </div>
         </div>
+        <!-- Comment Action Ends -->
     </div>
 </div>

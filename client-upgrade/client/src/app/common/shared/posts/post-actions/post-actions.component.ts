@@ -21,6 +21,12 @@ export class PostActionsComponent implements OnInit {
   // Show Comment State
   showComments: boolean = false;
 
+  // Show Comment Editor Variable
+  showCommentQuillEditor = false;
+
+  // Comments Array
+  comments: any = []
+
   // Show Comment Editor
   @Output('showCommentEditor') showCommentEditorEmitter = new EventEmitter()
 
@@ -33,24 +39,45 @@ export class PostActionsComponent implements OnInit {
   /**
    * This function emits the delete post to the parent components
    */
-  deletePost(post: any){
+  deletePost(post: any) {
     this.delete.emit(post);
   }
 
   /**
-   * This functions emits the state of editor to the parents components
-   * @param editorState 
+   * Show the comment Editor State
+   * @param emiterState 
    */
-  showCommentditor(editorState: boolean){
-    this.showCommentEditorEmitter.emit(editorState)
+  showCommentEditor(emiterState: boolean) {
+    this.showCommentQuillEditor = !this.showCommentQuillEditor
   }
-  
+
   /**
    * Fetch Comments
    */
-  fetchComments(){
-    if(this.post.comments.length > 0)
-      this.showCommentsEmitter.emit(this.showComments = !this.showComments)
+  fetchComments() {
+    if (this.post.comments.length > 0)
+      this.showComments = !this.showComments
+  }
+
+  hideCommentEditor(emiterState: string) {
+    this.showCommentQuillEditor = !this.showCommentQuillEditor
+  }
+
+  /**
+   * This function is responsible for showing the comments
+   * @param comments 
+   */
+  displayComments(commentsDisplayState: boolean) {
+    this.showComments = commentsDisplayState
+  }
+
+  newComment(comment: any) {
+    this.comments.unshift(comment)
+    this.post.comments = this.comments
+  }
+
+  removeComment(index: number){
+    this.comments.splice(index, 1);
   }
 
 }

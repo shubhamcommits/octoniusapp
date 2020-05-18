@@ -114,25 +114,9 @@
         <!-- Tags Display ends -->
 
         <!-- Post Actions starts -->
-        <app-post-actions *ngIf="post && userData" [post]="post" [userData]="userData" (delete)="deletePost($event)"
-            (showCommentEditor)="showCommentEditor($event)" (comments)="displayComments($event)">
+        <app-post-actions *ngIf="post && userData" [post]="post" [userData]="userData" (delete)="deletePost($event)">
         </app-post-actions>
         <!-- Post Actions ends -->
-
-        <comment-section *ngIf="showCommentQuillEditor && userData && post" 
-            [userData]="userData" 
-            [editorId]="post._id"
-            [groupId]="post._group || post._group._id"
-            (comment)="newComment($event)"
-            (close)="hideCommentEditor($event)">
-        </comment-section>
-
-
-        <section *ngIf="showComments && comments && post && userData">
-            <section *ngFor="let comment of comments; let index = index;">
-                <post-comment [comment]="comment" [index]="index" [userData]="userData" [groupId]="post._group || post._group._id"></post-comment>
-            </section>
-        </section>
 
     </div>
     <!-- </div> -->

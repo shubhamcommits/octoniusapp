@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild, Injector } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'post-comment',
@@ -8,7 +9,9 @@ import { environment } from 'src/environments/environment';
 })
 export class PostCommentComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private injector: Injector
+  ) { }
 
   // Baseurl
   baseUrl = environment.UTILITIES_USERS_UPLOADS;
@@ -36,12 +39,44 @@ export class PostCommentComponent implements OnInit {
     created_date: new Date(Date.now())
   }
 
+  // Remove Comment Event Emitter
+  @Output('remove') remove = new EventEmitter();
+
   // Display Comment editor variable
   displayCommentEditor: boolean = false;
 
-  ngOnInit() {
-    console.log(this.comment)
+  // Quill Data 
+  quillData: any;
 
+  ngOnInit() {
+  }
+
+  /**
+   * This function is responsible for feeding the quill data from current instance
+   * @param quillData 
+   */
+  getQuillData(quillData: any) {
+    this.quillData = quillData;
+  }
+
+  saveCommentData() {
+    this.comment.content = JSON.stringify(this.quillData.contents)
+    this.displayCommentEditor = false
+  }
+
+  deleteComment(index: number) {
+
+    // Utility Service Instancr
+    let utilityService = this.injector.get(UtilityService);
+
+    // Ask User to delete the group or not
+    utilityService.getConfirmDialogAlert()
+      .then((result) => {
+        if (result.value) {
+          this.remove.emit(index)
+          utilityService.warningNotification('Comment Removed!');
+        }
+      })
   }
 
 }

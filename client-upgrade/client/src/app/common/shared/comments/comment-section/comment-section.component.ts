@@ -46,6 +46,7 @@ export class CommentSectionComponent implements OnInit {
 
     let comment = {
       content: JSON.stringify(this.quillData.contents),
+      created_date: new Date(Date.now()),
       likes_count: 0,
       _liked_by: [],
       _commented_by:{
