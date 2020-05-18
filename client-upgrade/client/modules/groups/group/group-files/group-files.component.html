@@ -24,7 +24,7 @@
             </button>
             <p class="small muted" style="margin-top: 10px">Upload files or folders to make them available to your team.</p>
        </div>
-       <div class="col-md-8 text-right"><img src="/assets/images/files_placeholder.svg" alt=""></div>
+       <div class="col-md-8 text-right"><img src="assets/images/files_placeholder.svg" alt=""></div>
 
     </div>
 
@@ -57,7 +57,7 @@
 <!-- start of file check for file preview link -->
             <div class="media-body row">
               <div *ngIf = "file?.mimeType" class="col-md-7">
-                  <img src= "/assets/images/{{file.mimeType}}-file-icon.png" onerror="this.src='/assets/images/file-icon.png'"class="feed-avatar float-left">
+                  <img src= "assets/images/{{file.mimeType}}-file-icon.png" onerror="this.src='/assets/images/file-icon.png'"class="feed-avatar float-left">
                     
                     <div *ngIf = "file?.mimeType == 'jpg' || file?.mimeType == 'jpeg' || file?.mimeType == 'png' " >
                         <p style="padding-top:10px; margin:0"> <a class="btn btn-link" role="button" href="javascript:void(0)" (click) = "gotimg(file.modified_name)">{{file?.orignal_name}}</a></p>
@@ -119,7 +119,7 @@
               </div>
              
               <div class="col-md-4 text-left">
-                  <img src="{{this.BASE_URL}}/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"class="feed-avatar float-left">
+                  <img src="{{this.BASE_URL}}/uploads/{{post._posted_by?.profile_pic}}" onerror="this.src='assets/images/user.png'"class="feed-avatar float-left">
                   <h4 style="padding-top:20px">{{post._posted_by?.first_name}} {{post._posted_by?.last_name}}</h4>
               </div>
               <div class="col-md text-right" style="padding-top: 10px">
@@ -222,7 +222,7 @@
         <div class="media card-tile user-list" *ngIf="post?._name" >
             <div class="media-body row">
                 <div class="col-md-7">
-                <img src= "/assets/images/agora-file-icon.png" onerror="this.src='/assets/images/file-icon.png'"class="feed-avatar float-left">
+                <img src= "assets/images/agora-file-icon.png" onerror="this.src='/assets/images/file-icon.png'"class="feed-avatar float-left">
                 <p style="padding-top:10px; margin:0"><a role="button" class="btn btn-link" [routerLink]="['/dashboard', 'group', post?._group_id, 'files', post?._post_id]" routerLinkActive="router-link-active" >{{post._name}}</a></p>
                  </div>
                  <div class="col-md-4 text-left">
