@@ -5,9 +5,9 @@
 
             <!-- Image Avatar Starts -->
             <div class="col-md-1 ">
-                <img src="{{ baseUrl }}/{{post?._posted_by?.profile_pic}}"
-                    onerror="this.src='/assets/images/user.png'" class="feed-avatar ml-0"
-                    routerLink="/dashboard/user/profile" [queryParams]="{ userId: post?._posted_by?._id }" />
+                <img src="{{ baseUrl }}/{{post?._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"
+                    class="feed-avatar ml-0" routerLink="/dashboard/user/profile"
+                    [queryParams]="{ userId: post?._posted_by?._id }" />
             </div>
             <!-- Image Avatar Ends -->
 
@@ -45,17 +45,14 @@
 
             <!-- Task Status Starts -->
             <div *ngIf="post?.type === 'task'" class="col-md-4 text-right padding-topright">
-                
+
                 <!-- Change task status starts -->
-                <app-task-status 
-                    class="ml-5" 
-                    [post]="post" 
-                    (status)="changeTaskStatus($event)">
+                <app-task-status class="ml-5" [post]="post" (status)="changeTaskStatus($event)">
                 </app-task-status>
                 <!-- Change task status ends -->
-                
+
                 <!-- Due Date starts -->
-                <p class="small font-weight-bold mt-3" *ngIf="post.task?.due_to != 'Invalid date'"> 
+                <p class="small font-weight-bold mt-3" *ngIf="post.task?.due_to != 'Invalid date'">
                     due {{post.task?.due_to | date}}
                 </p>
                 <!-- Due Date ends -->
@@ -100,19 +97,23 @@
         <app-quill-editor *ngIf="post.content && post.type != 'event'" [editorId]="('editor_' + post._id) || 'editor'"
             [toolbar]="false" [readOnly]="true" [contents]="post.content"></app-quill-editor>
         <!-- Normal Post Content ends -->
-
+        <!-- Attached Files Starts -->
+        <div *ngIf="post" class="ml-2 mt-2">
+            <a href="{{ baseUrl }}/uploads/{{ file?.modified_name }}" target="_blank"
+                *ngFor="let file of post.files; let index = index">
+                <span class="fileslabel">{{ file?.original_name }}</span>
+            </a>
+        </div>
+        <!-- Attached Files Ends -->
         <!-- Tags Display -->
-        <div class="col-md-auto" *ngIf="post.tags?.length>0">
-              
+        <div class="col-md-auto mt-3" *ngIf="post.tags?.length>0">
+           
             <span *ngFor="let tag of post.tags" class="tagslabel">{{ tag }}</span>
-        
+
         </div>
 
         <!-- Post Actions starts -->
-        <app-post-actions *ngIf="post && userData" 
-            [post]="post" 
-            [userData]="userData" 
-            (delete)="deletePost($event)"
+        <app-post-actions *ngIf="post && userData" [post]="post" [userData]="userData" (delete)="deletePost($event)"
             (showCommentEditor)="showCommentEditor($event)">
         </app-post-actions>
         <!-- Post Actions ends -->
