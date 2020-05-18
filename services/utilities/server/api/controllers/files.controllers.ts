@@ -23,9 +23,9 @@ export class FilesControllers {
             let files: any = []
 
             // Get files list
-            if(lastFileId == undefined || lastFileId == 'undefined')
+            if (lastFileId == undefined || lastFileId == 'undefined')
                 files = await filesService.get(groupId.toString());
-            
+
             else
                 files = await filesService.get(groupId.toString(), lastFileId.toString());
 
@@ -59,6 +59,35 @@ export class FilesControllers {
             return res.status(200).json({
                 message: 'File has been uploaded!',
                 file: fileData
+            });
+
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is used to search list of the files
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async search(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            // Fetch the File Name From the request
+            let { query: { groupId, query } } = req;
+
+            // Files List
+            let files: any = []
+
+            // Get files list
+            files = await filesService.searchFiles(groupId.toString(), query);
+
+            // Send Status 200 response
+            return res.status(200).json({
+                message: 'Files list fetched!',
+                files: files
             });
 
         } catch (err) {

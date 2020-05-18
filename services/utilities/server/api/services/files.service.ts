@@ -95,4 +95,31 @@ export class FilesService {
         return file
     }
 
+    /**
+     * This function is responsible for searching files inside of a group
+     * @param groupId 
+     * @param query 
+     */
+    async searchFiles(groupId: any, query: any) {
+
+        // Files Array List
+        let files: any = []
+
+        // Fetch files on the basis of the params @lastPostId
+        files = await File.find({
+                 _group: groupId ,
+                 original_name: { $regex: new RegExp(query, 'i') } 
+        })
+            .sort('-_id')
+            .limit(5)
+            .populate([
+                { path: '_group', select: this.groupFields },
+                { path: '_posted_by', select: this.userFields }
+            ])
+            .lean();
+
+        // Return Files
+        return files;
+    }
+
 }

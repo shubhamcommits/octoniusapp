@@ -13,6 +13,9 @@ routes.post('/groups', groupFileUploader, files.add);
 // GET - Fetches the files list
 routes.get('/groups', files.get);
 
+// GET - Search the files inside of a group
+routes.get('/search', files.search);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

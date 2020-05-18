@@ -4,6 +4,12 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { environment } from 'src/environments/environment';
 import { ActivatedRoute } from '@angular/router';
 import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { Subject } from 'rxjs/internal/Subject';
+import { SubSink } from 'subsink';
+import { debounceTime } from 'rxjs/internal/operators/debounceTime';
+import { distinctUntilChanged } from 'rxjs/internal/operators/distinctUntilChanged';
+import { FilesService } from 'src/shared/services/files-service/files.service';
+import { resolve } from 'dns';
 
 @Component({
   selector: 'app-group-files',
@@ -33,8 +39,11 @@ export class GroupFilesComponent implements OnInit {
   // Public Functions
   public publicFunctions = new PublicFunctions(this.injector)
 
-  // File Search Query
-  query: any;
+  // Query value variable mapped with search field
+  query: string = "";
+
+  // This observable is mapped with query field to recieve updates on change value
+  queryChanged: Subject<any> = new Subject<any>();
 
   // Files array variable
   files: any = [];
@@ -44,6 +53,9 @@ export class GroupFilesComponent implements OnInit {
 
   // IsLoading behaviou subject maintains the state for loading spinner
   public isLoading$ = new BehaviorSubject(false);
+
+  // Create subsink class to unsubscribe the observables
+  public subSink = new SubSink();
 
   async ngOnInit() {
 
@@ -61,12 +73,23 @@ export class GroupFilesComponent implements OnInit {
     this.files.unshift(file)
   }
 
+  ngAfterViewInit(){
+    this.subSink.add(this.queryChanged
+      .pipe(debounceTime(500), distinctUntilChanged())
+      .subscribe(async (res)=>{
+
+        this.files = await this.publicFunctions.searchFiles(this.groupId, res)
+        // console.log(files)
+
+      }))
+  }
+
   /**
    * This function observes the change in the search query variable
    * @param fileQuery 
    */
   fileSearchQuery(fileQuery: any) {
-    console.log(fileQuery)
+    this.queryChanged.next(fileQuery)
   }
 
   // Check if the data provided is not empty{}
@@ -76,6 +99,14 @@ export class GroupFilesComponent implements OnInit {
 
   onScroll() {
 
+  }
+
+  /**
+   * Unsubscribe all the observables on destroying the component
+   */
+  ngOnDestroy() {
+    this.subSink.unsubscribe()
+    this.isLoading$.complete()
   }
 
 }

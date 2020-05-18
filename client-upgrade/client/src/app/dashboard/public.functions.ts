@@ -23,7 +23,7 @@ export class PublicFunctions {
     private subSink = new SubSink();
 
     public async getCurrentUser() {
-        let userData:any = await this.getUserDetailsFromService();
+        let userData: any = await this.getUserDetailsFromService();
 
         if (JSON.stringify(userData) == JSON.stringify({}))
             userData = await this.getUserDetailsFromStorage();
@@ -562,6 +562,19 @@ export class PublicFunctions {
     }
 
     /**
+     * This function is responsible for fetching the files from the server
+     * @param query 
+     */
+    searchFiles(groupId: string, query: any) {
+        return new Promise((resolve) => {
+            let filesService = this.injector.get(FilesService)
+            filesService.searchFiles(groupId, query)
+                .then((res) => resolve(res['files']))
+                .catch(() => resolve([]))
+        })
+    }
+
+    /**
      * This function is responsible for editing a post
      * @param postId 
      * @param postData 
@@ -783,37 +796,37 @@ export class PublicFunctions {
         utilityService.errorNotification(err.message);
     }
 
-    async getAgoraGroupsNotJoined(workplaceId, userId){
+    async getAgoraGroupsNotJoined(workplaceId, userId) {
         let groupService = this.injector.get(GroupsService);
-        return new Promise((resolve, reject)=>{
-            groupService.getAgoraGroupsNotJoined(workplaceId, userId).then((res)=>{
+        return new Promise((resolve, reject) => {
+            groupService.getAgoraGroupsNotJoined(workplaceId, userId).then((res) => {
                 resolve(res['group']);
-            }).catch((err)=>{
+            }).catch((err) => {
                 console.log(err);
                 reject();
             })
         })
     }
 
-    async joinAgora(groupId, userId){
+    async joinAgora(groupId, userId) {
         let groupService = this.injector.get(GroupsService);
         let utilityService = this.injector.get(UtilityService);
-        utilityService.asyncNotification('Joining Group...', new Promise((resolve, reject)=>{
-            groupService.joinAgora(groupId, userId).then((res)=>{
+        utilityService.asyncNotification('Joining Group...', new Promise((resolve, reject) => {
+            groupService.joinAgora(groupId, userId).then((res) => {
                 resolve(utilityService.resolveAsyncPromise('Successfully Joined Group'));
-            }).catch((err)=>{
-                throw(err);
+            }).catch((err) => {
+                throw (err);
             })
         }))
     }
 
-    async getNextAgoraGroups(workspaceId, userId, lastGroupId){
+    async getNextAgoraGroups(workspaceId, userId, lastGroupId) {
         let groupService = this.injector.get(GroupsService);
-        return new Promise((resolve, reject)=>{
-            groupService.getNextAgoraGroups(workspaceId, userId, lastGroupId).then((res)=>{
+        return new Promise((resolve, reject) => {
+            groupService.getNextAgoraGroups(workspaceId, userId, lastGroupId).then((res) => {
                 resolve(res['group']);
-            }).catch((err)=>{
-                throw(err);
+            }).catch((err) => {
+                throw (err);
             })
         })
     }

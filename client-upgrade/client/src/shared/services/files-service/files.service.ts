@@ -30,7 +30,7 @@ export class FilesService {
   }
 
   /**
-   * This function is responsible for 
+   * This function is responsible for fetching list of files
    * @param groupId 
    * @param lastFileId 
    */
@@ -50,6 +50,20 @@ export class FilesService {
         }
       }).toPromise()
     }
-
   }
+
+  /**
+   * This function is responsible searching files inside of a group
+   * @param groupId 
+   * @param query 
+   */
+  searchFiles(groupId: string, query: any) {
+    return this._http.get(this.baseURL + `/files/search`, {
+      params: {
+        groupId: groupId,
+        query: query
+      }
+    }).toPromise()
+  }
+
 }
