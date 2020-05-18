@@ -1,11 +1,11 @@
 {
-  "name": "client",
-  "description": "Client Side application of Octonius",
+  "name": "Octonius",
+  "description": "Desktop application of Octonius",
   "author": {
     "name": "Team Octonius",
     "email": "dev@octonius.com"
   },
-  "version": "0.0.0",
+  "version": "1.0.0",
   "main": "main.js",
   "build": {
     "directories": {
