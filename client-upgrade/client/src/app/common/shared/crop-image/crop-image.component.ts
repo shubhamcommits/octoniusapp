@@ -1,7 +1,6 @@
 import { Component, OnInit, EventEmitter, Output, ViewChild } from '@angular/core';
 import { ImageCroppedEvent, ImageCropperComponent } from 'ngx-image-cropper';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { NgxImageCompressService } from 'ngx-image-compress';
 
 @Component({
   selector: 'app-crop-image',
@@ -11,8 +10,7 @@ import { NgxImageCompressService } from 'ngx-image-compress';
 export class CropImageComponent implements OnInit {
 
   constructor(
-    private utilityService: UtilityService,
-    private imageCompressService: NgxImageCompressService
+    private utilityService: UtilityService
   ) { }
 
   // OUTPUT IMAGE EMITTER
@@ -38,6 +36,7 @@ export class CropImageComponent implements OnInit {
 
     // START LOADING THE IMAGE
     this.utilityService.startBackgroundLoader();
+
     this.imageChangedEvent = event;
   }
 
@@ -50,24 +49,8 @@ export class CropImageComponent implements OnInit {
 
     this.croppedImage = event.file;
 
-    // CREATING A FILE READER FOR CONVERTING THE INPUT
-    let fileReader = new FileReader();
-    fileReader.readAsDataURL(this.croppedImage);
-
-    // this.croppedImage = await this.compressFile(event.base64, 'abc')
-
     // Convert the event Blob to File
-    // this.croppedImage = new File([this.croppedImage], "-avatar.jpg", { type: this.croppedImage.type });
-
-    // console.log(event.file, this.croppedImage)
-
-    // // Convert the File to base 64
-    // let base64image = await this.fileToBase64(this.croppedImage)
-
-    // // Compress the image
-    // this.croppedImage = await this.compressFile(base64image, this.croppedImage['name'])
-
-    console.log('cropped', this.imageChangedEvent)
+    this.croppedImage = new File([this.croppedImage], this.imageChangedEvent.target['files'][0]['name'], { type: this.imageChangedEvent.target['files'][0]['type'] });
 
     // Emit the image
     this.outputImage.emit(this.croppedImage);
@@ -131,55 +114,6 @@ export class CropImageComponent implements OnInit {
   }
 
   /**
-   * This function is responsible for compressing an image
-   * @param image 
-   * @param fileName 
-   */
-  compressFile(image: any, fileName: string) {
-
-    return new Promise((resolve) => {
-      
-      // Orientation variable
-      let orientation = -2;
-
-      // Size of original Image
-      let sizeOfOriginalImage = this.imageCompressService.byteCount(image) / (1024 * 1024)
-
-      // console.warn('Size in Mega bytes is now:', sizeOfOriginalImage)
-
-      console.log(image)
-
-      // Compress the image file
-      this.imageCompressService.compressFile(image, orientation, 50, 50)
-        .then((result) => {
-
-          // Calculate size of compressed image
-          let sizeOFCompressedImage = this.imageCompressService.byteCount(result) / (1024 * 1024)
-
-          // console.warn('Size in Meag bytes after compression:', sizeOFCompressedImage);
-
-          console.log(result)
-
-          // create file from byte
-          const imageName = fileName
-
-          // call method that creates a blob from dataUri
-          const imageBlob = this.dataURItoBlob(result.split(',')[1])
-
-          //imageFile created below is the new compressed file which can be send to API in form data
-          const imageFile = new File([image], imageName, { type: image.type })
-
-          // Resolve the Compressed Image data
-          resolve({
-            blob: imageBlob,
-            file: imageFile
-          })
-        })
-    })
-
-  }
-
-  /**
    * This function is resposible for converting a data URI to Blob
    * @param dataURI 
    */
@@ -221,7 +155,7 @@ export class CropImageComponent implements OnInit {
     })
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.utilityService.stopAllLoader();
   }
 

@@ -6,7 +6,6 @@ import { TimeAgoPipe } from 'time-ago-pipe';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { NavbarComponent } from '../common/navbar/navbar.component';
 import { PushNotificationsComponent } from '../common/navbar/push-notifications/push-notifications.component';
-import { UserService } from 'src/shared/services/user-service/user.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthorizationInterceptorService } from 'src/shared/services/authorization-interceptor-service/authorization-interceptor.service';
 import { HotkeyModule } from 'angular2-hotkeys';
@@ -23,7 +22,6 @@ import { FormsModule } from '@angular/forms';
     SearchModule
   ],
   providers:[
-    UserService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthorizationInterceptorService, multi: true }
   ],
 })

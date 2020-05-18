@@ -1,13 +1,11 @@
 <div class="container" style="margin-bottom: 30px">
     <div class="media user-sticky-card">
-        <img *ngIf="!isCurrentUser" class="mr-3 feed-avatar" src="{{BASE_URL}}/{{userData?.profile_pic}}"
+        <img *ngIf="!isCurrentUser && userData" class="mr-3 feed-avatar" src="{{BASE_URL}}/{{userData?.profile_pic}}"
             onerror="this.src='/assets/images/user.png'">
 
-        <img *ngIf="isCurrentUser" class="mr-3 feed-avatar" src="{{BASE_URL}}/{{userData?.profile_pic}}"
+        <img *ngIf="isCurrentUser && userData" class="mr-3 feed-avatar" src="{{BASE_URL}}/{{userData?.profile_pic}}"
             onerror="this.src='/assets/images/user.png'" (click)="openUserDetails(content)"
-            data-toggle="tooltip" 
-            data-placement="bottom" 
-            title="Change your avatar">
+            placement="bottom" ngbTooltip="Change your avatar">
         <div class="media-body">
             <div>
                 <h2>{{ userData?.first_name }} {{ userData?.last_name }}</h2>

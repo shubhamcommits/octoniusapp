@@ -26,7 +26,6 @@
 */
 import { AppComponent } from './app.component';
 import { PageNotFoundComponent } from './common/page-not-found/page-not-found.component';
-import { WelcomePageComponent } from './common/welcome-page/welcome-page.component';
 
 
 
@@ -36,7 +35,7 @@ import { WelcomePageComponent } from './common/welcome-page/welcome-page.compone
 
 // CUSTOM MODULES
 import { DashboardModule } from './dashboard/dashboard.module';
-import { SharedModule } from './common/shared/shared.module';
+// import { SharedModule } from './common/shared/shared.module';
 
 
 // ANGULAR MODULES
@@ -70,7 +69,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
  * 6. !===== THIRD PARTY MODULES & SERVICES =====!
  */
 import { SnotifyModule, SnotifyService, ToastDefaults } from 'ng-snotify';
-import { NgbModalModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+// import { NgbModalModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
 import { SocketIoModule } from 'ngx-socket-io';
 
@@ -100,10 +99,7 @@ import { ServerErrorInterceptor } from 'src/shared/error-handler/server-error.in
     AppComponent,
 
     // PAGE NOT FOUND COMPONENT
-    PageNotFoundComponent,
-
-    // WELCOME PAGE COMPONENT
-    WelcomePageComponent,
+    PageNotFoundComponent
   ],
 
   imports: [
@@ -126,16 +122,16 @@ import { ServerErrorInterceptor } from 'src/shared/error-handler/server-error.in
     SnotifyModule,
 
     // ANGULAR BOOTSTRAP MODAL MODULE
-    NgbModalModule,
+    // NgbModalModule,
 
     // ANGULAR TOOLTIP MODULE
-    NgbTooltipModule,
+    // NgbTooltipModule,
 
     // NGX UI LOADER MODULE
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
 
     // SHARED MODULES
-    SharedModule,
+    // SharedModule,
 
     // SOCKET MODULE AND INITIALISATION
     SocketIoModule.forRoot(socketConfig),

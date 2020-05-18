@@ -4,14 +4,13 @@ import { Routes, RouterModule } from '@angular/router';
 
 // COMPONENTS
 import { PageNotFoundComponent } from './common/page-not-found/page-not-found.component';
-import { WelcomePageComponent } from './common/welcome-page/welcome-page.component';
 
 // GUARDS
 import { AuthenticationGuard } from 'src/shared/guards/authentication-guard/authentication.guard';
 import { RoutingGuard } from 'src/shared/guards/routing-guard/routing.guard';
 
 // Preloading Routes Strategy
-import { QuicklinkStrategy, QuicklinkModule } from 'ngx-quicklink';
+// import { QuicklinkStrategy, QuicklinkModule } from 'ngx-quicklink';
 
 
 const routes: Routes = [
@@ -25,8 +24,9 @@ const routes: Routes = [
   // 'home' ROUTE
   {
     path: 'home',
-    component: WelcomePageComponent,
-    canActivate: [RoutingGuard]
+    loadChildren: () => import('modules/home/home.module')
+      .then((module) => module.HomeModule),
+    canActivate: [RoutingGuard],
   },
 
   // 'dashboard' ROUTE - LAZY LOAD THE DASHBOARD MODULE
@@ -54,15 +54,6 @@ const routes: Routes = [
     canActivate: [AuthenticationGuard]
   },
 
-  // 'search' ROUTE - LAZY LOAD THE SEARCH MODULE
-
-  {
-    path: 'search',
-    loadChildren: () => import('modules/search/search.module')
-      .then((module) => module.SearchModule),
-    canActivate: [AuthenticationGuard]
-  },
-
   // NOT FOUND ROUTE
   {
     path: '**',
@@ -75,9 +66,7 @@ const routes: Routes = [
   imports: [
 
     // ROUTER MODULE
-    RouterModule.forRoot(routes,{
-        preloadingStrategy: QuicklinkStrategy
-    }),
+    RouterModule.forRoot(routes),
 
   ],
   exports: [RouterModule],

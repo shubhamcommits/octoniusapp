@@ -3,9 +3,7 @@
       <img class="mr-3 feed-avatar" 
          src="{{ baseUrl }}/{{ workspaceData?.workspace_avatar }}"
          onerror="this.src='/assets/images/organization.png'" 
-         data-toggle="tooltip" 
-         data-placement="bottom" 
-         title="Change this workplace's avatar"
+         placement="bottom" ngbTooltip="Change this workspace's avatar"
          (click)="openWorkspaceDetails(content)">
       <div class="media-body">
          <div>

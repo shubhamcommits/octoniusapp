@@ -214,7 +214,6 @@ export class QuillEditorComponent implements OnInit {
 
         // Get the quill cotents from the editor
         let quillData = this.getQuillContents(quill)
-        console.log(quillData);
 
         // Get Quill Contents
         let quillContents = quillData.contents

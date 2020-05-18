@@ -26,7 +26,10 @@ const routes: Routes = [
       {
         path: 'myspace',
         loadChildren: () => import('modules/myspace/myspace.module')
-          .then((module) => module.MyspaceModule)
+          .then((module) => module.MyspaceModule),
+          data: {
+            preload: false
+          }
       },
       {
         path: 'user',

@@ -39,6 +39,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 // CUSTOM MODULES
+import { HomeModule } from 'modules/home/home.module';
 import { SharedModule } from 'src/app/common/shared/shared.module';
 
 
@@ -84,6 +85,9 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 
     // FORMS MODULE
     FormsModule,
+
+    // HOME MODULE
+    HomeModule,
 
     // SHARED MODULE
     SharedModule

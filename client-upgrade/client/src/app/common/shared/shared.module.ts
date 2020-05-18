@@ -5,9 +5,9 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 import { NgbTimepickerModule, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
-import { QuicklinkModule } from 'ngx-quicklink';
+// import { QuicklinkModule } from 'ngx-quicklink';
 
-import { NgxImageCompressService } from 'ngx-image-compress';
+import { NgbModalModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { SafePipe } from 'src/shared/pipes/safe.pipe';
 
@@ -15,9 +15,7 @@ import { CropImageComponent } from './crop-image/crop-image.component';
 import { EmailInputComponent } from './email-input/email-input.component';
 import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
 import { ComponentSearchBarComponent } from './component-search-bar/component-search-bar.component';
-import { BrandingPanelComponent } from './branding-panel/branding-panel.component';
 import { RouterModule } from '@angular/router';
-import { LoadingSpinnerSmallComponent } from './loading-spinner-small/loading-spinner-small.component';
 import { SectionSeparatorComponent } from './section-separator/section-separator.component';
 import { ComponentSearchInputBoxComponent } from './component-search-input-box/component-search-input-box.component';
 import { QuillEditorComponent } from './quill-editor/quill-editor.component';
@@ -50,18 +48,18 @@ import { GroupCreatePostComponent } from './activity-feed/group-postbox/group-cr
 import { TaskSmartCardComponent } from './activity-feed/task-smart-card/task-smart-card.component';
 import { AgendaSmartCardComponent } from './activity-feed/agenda-smart-card/agenda-smart-card.component';
 import { GroupUpdateInformationComponent } from './activity-feed/group-information/group-update-information/group-update-information.component';
+import { CommentSectionComponent } from './comments/comment-section/comment-section.component';
+import { PostCommentComponent } from './comments/post-comment/post-comment.component';
 
 @NgModule({
   declarations: [
     AttachFilesComponent,
     AttachCloudFilesComponent,
-    BrandingPanelComponent,
     CropImageComponent,
     DatePickerComponent,
     EmailInputComponent,
     LoadingSpinnerComponent,
     ComponentSearchBarComponent,
-    LoadingSpinnerSmallComponent,
     SectionSeparatorComponent,
     ComponentSearchInputBoxComponent,
     QuillEditorComponent,
@@ -113,6 +111,10 @@ import { GroupUpdateInformationComponent } from './activity-feed/group-informati
     AgendaSmartCardComponent,
 
     GroupUpdateInformationComponent,
+
+    PostCommentComponent,
+    
+    CommentSectionComponent
   ],
   imports: [
     CommonModule,
@@ -130,20 +132,25 @@ import { GroupUpdateInformationComponent } from './activity-feed/group-informati
     InfiniteScrollModule,
 
     // Preloading Routes Module
-    QuicklinkModule
+    // QuicklinkModule,
+
+    // ANGULAR BOOTSTRAP MODAL MODULE
+    NgbModalModule,
+
+    // ANGULAR TOOLTIP MODULE
+    NgbTooltipModule,
+
 
   ],
   exports: [
     AttachFilesComponent,
     AttachCloudFilesComponent,
-    BrandingPanelComponent,
     CropImageComponent,
     ComponentSearchBarComponent,
     ComponentSearchInputBoxComponent,
     DatePickerComponent,
     EmailInputComponent,
     LoadingSpinnerComponent,
-    LoadingSpinnerSmallComponent,
     PostViewComponent,
     PostTagsComponent,
     SectionSeparatorComponent,
@@ -153,7 +160,7 @@ import { GroupUpdateInformationComponent } from './activity-feed/group-informati
     TaskStatusComponent,
     ChangeColumnComponent,
     InfiniteScrollModule,
-    QuicklinkModule,
+    // QuicklinkModule,
     InfiniteScrollComponent,
     ProgressBarComponent,
     SelectMemberComponent,
@@ -177,10 +184,9 @@ import { GroupUpdateInformationComponent } from './activity-feed/group-informati
 
     TaskSmartCardComponent,
 
-    AgendaSmartCardComponent
-  ],
-  providers: [
-    NgxImageCompressService
+    AgendaSmartCardComponent,
+
+    NgbTooltipModule
   ]
 })
 export class SharedModule { }

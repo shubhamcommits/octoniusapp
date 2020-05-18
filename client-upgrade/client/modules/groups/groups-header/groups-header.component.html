@@ -2,7 +2,7 @@
     <div class="media user-sticky-card">
 
         <!-- Workspace Avatar Image  starts -->
-        <img class="mr3 feed-avatar-big" src="{{ baseUrl }}/{{ workspaceData?.workspace_avatar }}"
+        <img *ngIf="workspaceData" class="mr3 feed-avatar-big" src="{{ baseUrl }}/{{ workspaceData?.workspace_avatar }}"
             onerror="this.src='/assets/images/icon-new-group.svg'">
         <!-- Workspace Avatar Image  ends -->
 

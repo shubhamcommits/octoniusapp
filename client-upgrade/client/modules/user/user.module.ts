@@ -14,6 +14,7 @@ import { UserConnectedCloudsComponent } from './user-clouds/user-connected-cloud
 
 import { GoogleCloudModule } from './user-clouds/user-available-clouds/google-cloud/google-cloud.module';
 import { UserImageDetailsComponent } from './user-header/user-image-details/user-image-details.component';
+import { UserService } from 'src/shared/services/user-service/user.service';
 
 
 @NgModule({
@@ -23,6 +24,9 @@ import { UserImageDetailsComponent } from './user-header/user-image-details/user
     SharedModule,
     GoogleCloudModule,
     UserRoutingModule
+  ],
+  providers:[
+    UserService
   ]
 })
 export class UserModule { }

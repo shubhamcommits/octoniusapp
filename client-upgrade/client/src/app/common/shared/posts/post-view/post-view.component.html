@@ -112,6 +112,8 @@
         <app-post-actions *ngIf="post && userData" [post]="post" [userData]="userData" (delete)="deletePost($event)">
         </app-post-actions>
         <!-- Post Actions ends -->
+
+        <comment-section [editorId]="post._id"></comment-section>
     </div>
     <!-- </div> -->
 </li>

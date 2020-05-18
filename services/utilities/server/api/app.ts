@@ -68,6 +68,9 @@ app.use(fileUpload({
 // Availing the static uploads folder to access from server
 app.use('/uploads', fileHandlerRoutes);
 
+// GET - Fetches the files attachment
+app.use('/uploads/files', express.static(process.env.FILE_UPLOAD_FOLDER));
+
 // Routes which should handle request
 app.all('/', (req: Request, res: Response, next: NextFunction) => {
     res.sendFile(path.join(__dirname, './views/index.html'));

@@ -52,6 +52,15 @@ export class NavbarComponent implements OnInit, AfterViewInit{
     // FETCH THE USER DETAILS FROM THE SERVER
     this.userData = await this.getCurrentUser();
 
+    // Fetch current user from the service
+    this.subSink.add(this.utilityService.currentUserData.subscribe(async (res) => {
+      if (JSON.stringify(res) != JSON.stringify({})) {
+
+        // Assign the GroupData
+        this.userData = res;
+      }
+    }))
+
     // Call the HTTP API to fetch the current workspace details
     this.workspaceData = await this.publicFunctions.getWorkspaceDetailsFromHTTP();
 

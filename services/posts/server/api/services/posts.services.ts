@@ -360,6 +360,8 @@ export class PostService {
       // Send all the required emails and notifications
       this.sendNotifications(post);
 
+      console.log(process.env.QUERY_SERVER_API)
+
       // Index Post
       http.post(`${process.env.QUERY_SERVER_API}/indexing/post`, {
         id: post._id,

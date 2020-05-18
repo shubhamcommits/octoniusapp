@@ -58,8 +58,7 @@ export class GroupFilesComponent implements OnInit {
   }
 
   getFile(file: any){
-    console.log(file)
-    this.files.push(file)
+    this.files.unshift(file)
   }
 
   /**
