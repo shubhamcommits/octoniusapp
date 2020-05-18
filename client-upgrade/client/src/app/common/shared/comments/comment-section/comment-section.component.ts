@@ -9,9 +9,14 @@ export class CommentSectionComponent implements OnInit {
 
   constructor() { }
 
+  // EditorId of the Quill Comment Content
   @Input('editorId') editorId: any;
 
   ngOnInit() {
+  }
+
+  getQuillData(quillData: any){
+    console.log(quillData)
   }
 
 }

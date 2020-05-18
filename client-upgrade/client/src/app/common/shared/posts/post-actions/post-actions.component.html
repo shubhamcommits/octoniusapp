@@ -10,7 +10,7 @@
         </div>
         <div class="col-md-6 text-right">
 
-            <app-comment-on-post></app-comment-on-post>
+            <app-comment-on-post (showCommentEditor)="showCommentditor($event)"></app-comment-on-post>
 
             <!-- Like Post starts-->
             <app-like-post *ngIf="post && userData" [post]="post" [userData]="userData"></app-like-post>

@@ -18,6 +18,9 @@ export class PostActionsComponent implements OnInit {
   // Delete Post Event Emitter
   @Output('delete') delete = new EventEmitter()
 
+  // Show Comment Editor
+  @Output('showCommentEditor') showCommentEditorEmitter = new EventEmitter()
+
   ngOnInit() {
   }
 
@@ -27,5 +30,13 @@ export class PostActionsComponent implements OnInit {
   deletePost(post: any){
     this.delete.emit(post);
   }
+
+  /**
+   * This functions emits the state of editor to the parents components
+   * @param editorState 
+   */
+  showCommentditor(editorState: boolean){
+    this.showCommentEditorEmitter.emit(editorState)
+  } 
 
 }

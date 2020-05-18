@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-comment-on-post',
@@ -8,6 +8,12 @@ import { Component, OnInit } from '@angular/core';
 export class CommentOnPostComponent implements OnInit {
 
   constructor() { }
+
+  // Show Editor
+  showEditor: boolean = false;
+
+  // Emit the Show Comment Editor
+  @Output('showCommentEditor') showCommentEditor = new EventEmitter()
 
   ngOnInit() {
   }

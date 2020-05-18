@@ -16,6 +16,9 @@ export class PostViewComponent implements OnInit {
   // Date Object for undefined dates
   date = Date.now()
 
+  // Show Comment Editor Variable
+  showCommentQuillEditor = false;
+
   // Post as the Input from component
   @Input('post') post: any;
 
@@ -59,6 +62,14 @@ export class PostViewComponent implements OnInit {
 
     // Emit the taskStatus to other components
     this.taskStatus.emit(status);
+  }
+
+  /**
+   * Show the comment Editor State
+   * @param emiterState 
+   */
+  showCommentEditor(emiterState: boolean){
+    this.showCommentQuillEditor = emiterState
   }
 
 }
