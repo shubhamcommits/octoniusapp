@@ -97,10 +97,17 @@
         <app-quill-editor *ngIf="post.content && post.type != 'event'" [editorId]="('editor_' + post._id) || 'editor'"
             [toolbar]="false" [readOnly]="true" [contents]="post.content"></app-quill-editor>
         <!-- Normal Post Content ends -->
-
-        <!-- Tags Display starts -->
-        <div class="col-md-auto" *ngIf="post.tags?.length>0">
-
+        <!-- Attached Files Starts -->
+        <div *ngIf="post" class="ml-2 mt-2">
+            <a href="{{ fileBaseUrl }}/{{ file?.modified_name }}" target="_blank"
+                *ngFor="let file of post.files; let index = index">
+                <span class="fileslabel">{{ file?.original_name }}</span>
+            </a>
+        </div>
+        <!-- Attached Files Ends -->
+        <!-- Tags Display -->
+        <div class="col-md-auto mt-3" *ngIf="post.tags?.length>0">
+           
             <span *ngFor="let tag of post.tags" class="tagslabel">{{ tag }}</span>
 
         </div>

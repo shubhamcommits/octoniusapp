@@ -12,6 +12,9 @@ export class PostViewComponent implements OnInit {
 
   // Base Url for uploads
   baseUrl = environment.UTILITIES_USERS_UPLOADS; 
+
+  // Post Files baseURL
+  fileBaseUrl = environment.UTILITIES_POSTS_UPLOADS;
   
   // Date Object for undefined dates
   date = Date.now()

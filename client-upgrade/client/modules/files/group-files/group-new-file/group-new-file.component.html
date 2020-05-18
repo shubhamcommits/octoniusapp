@@ -1,25 +1,25 @@
 <!-- Create new file starts -->
-<button class="btn btn-warning stickybtn mb-3 mt-2 dropdown-toggle" type="button" data-toggle="dropdown">
-    <i class="material-icons">add</i> New
+<button class="btn btn-warning mb-3 mt-3 dropdown-toggle" type="button" data-toggle="dropdown">
+    <i class="material-icons-outlined">add</i> New
 </button>
 <!-- Create new file ends -->
 
 <!-- Menu Drawer Starts -->
 <ul class="dropdown-menu">
     <li class="dropdown-item" (click)="$event.stopPropagation()">
-        <span>Folder</span>
+        <i class="material-icons-outlined mr-2">folder</i><span>Folder</span>
     </li>
     <li class="dropdown-item" (click)="file.click()">
-        <span>File</span> 
+        <i class="material-icons-outlined mr-2">cloud_upload</i> <span>File upload</span> 
         <input #file type="file" placeholder="File" multiple (change)="fileInput(file.files)"/>
     </li>
     <li class="dropdown-item" (click)="folderInput.click()">
-        <span>Folder Upload</span>
+        <i class="material-icons-outlined mr-2">cloud_upload</i> <span> Folder upload</span>
         <input #folderInput type="file" placeholder="File" webkitDirectory />
     </li>
     <li class="dropdown-divider"></li>
     <li class="dropdown-item" (click)="$event.stopPropagation()">
-        <span>Folio</span>
+        <img src="assets/images/icon_folio.svg" alt="" class="mr-2"> <span>Folio</span>
     </li>
 </ul>
 <!-- Menu Drawer Ends -->
