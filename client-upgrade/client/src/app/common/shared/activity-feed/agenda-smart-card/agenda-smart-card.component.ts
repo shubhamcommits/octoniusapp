@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UserService } from 'src/shared/services/user-service/user.service';
 
 @Component({
   selector: 'app-agenda-smart-card',
@@ -7,12 +8,27 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AgendaSmartCardComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private userService: UserService
+  ) { }
 
-  todayFirstTwoEvents: any = [];
-  today_event_count = 0
+  todayEvents: any = [];
+  today_event_count:any = 0
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.todayEvents = await this.todayTimelineEvents();
+    this.today_event_count = this.todayEvents.length;
+  }
+
+  todayTimelineEvents(){
+    return new Promise((resolve, reject)=>{
+      this.userService.getUserTodayEvents()
+        .then((res) => {
+          resolve(res['events'])
+        }).catch(() => {
+          reject([])
+        })
+    })
   }
 
 }

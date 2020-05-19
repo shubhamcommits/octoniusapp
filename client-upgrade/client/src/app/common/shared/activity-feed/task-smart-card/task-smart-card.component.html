@@ -1,5 +1,5 @@
 <div *ngIf="today_task_count == 0 && overdueTasks.length == 0" class="smart-card col mr-24">
-    <a href="/#/dashboard/overview/mytasks?mytasks=true">
+    <a href="/#/dashboard/myspace/tasks">
         <div class="card-title mt-1">Tasks</div>
         <div class="row">
             <div class="card-first-column col-md-12">You're all done.</div>
@@ -19,9 +19,9 @@
     </a>
 </div>
 
-<div>
+<div *ngIf="today_task_count != 0 || overdueTasks.length != 0">
     <div class="smart-card mr-24 col">
-        <a href="/#/dashboard/overview/mytasks?mytasks=true">
+        <a href="/#/dashboard/myspace/tasks">
             <div class="card-title mt-1">Tasks</div>
             <div class="row">
 

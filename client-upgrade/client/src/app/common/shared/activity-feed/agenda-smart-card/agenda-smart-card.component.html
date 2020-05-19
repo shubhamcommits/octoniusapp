@@ -1,5 +1,5 @@
-<div *ngIf="todayFirstTwoEvents.length == 0" class="smart-card col" style="margin-right: 24px">
-    <a style="text-decoration:none; color:inherit;" href="/#/dashboard/overview/myagenda?myagenda=true">
+<div *ngIf="today_event_count.length == 0" class="smart-card col" style="margin-right: 24px">
+    <a style="text-decoration:none; color:inherit;" href="/#/dashboard/myspace/agenda">
         <div class="row">
             <div class="col-md-8">
                 <div class="card-title mt-1">Today's agenda</div>
@@ -28,7 +28,7 @@
 </div>
 
     <div class="smart-card col" style="margin-right: 24px">
-        <a style="text-decoration:none; color:inherit;" href="/#/dashboard/overview/myagenda?myagenda=true">
+        <a style="text-decoration:none; color:inherit;" href="/#/dashboard/myspace/agenda">
             <div class="row">
                 <div class="col-md-8">
                     <div class="card-title mt-1">Today's agenda</div>
@@ -40,7 +40,7 @@
             </div>
 
 
-            <div *ngFor="let post of todayFirstTwoEvents; let i = index;">
+            <div *ngFor="let post of todayEvents; let i = index;">
 
                 <div *ngIf="post.type == 'event' && i <= 2" class="row media-body">
                     <div class="col-md-3">
@@ -52,7 +52,7 @@
                 </div>
             </div>
 
-            <div class="post-title">
+            <div class="post-title" *ngIf="today_event_count-2>0">
                 {{today_event_count - 2 > 0 ? today_event_count - 2 : 0 }} more...
             </div>
 

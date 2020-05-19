@@ -5,7 +5,7 @@
 
             <!-- Group Information starts -->
             <app-group-information 
-                *ngIf="groupData && userData && checkDataExist(groupData) && checkDataExist(userData)" 
+                *ngIf="groupData && userData && checkDataExist(groupData) && checkDataExist(userData) && !globalFeed" 
                 [userData]="userData"
                 [groupData]="groupData"
                 [myWorkplace]="myWorkplace">
@@ -27,7 +27,7 @@
             <!-- Task Smart Card Ends -->
 
             <!-- Agenda Smart Card Starts -->
-            <app-agenda-smart-card *ngIf="globalFeed"></app-agenda-smart-card>
+            <app-agenda-smart-card *ngIf="globalFeed" [routerLink]="'/dashboard/myspace/agenda'"></app-agenda-smart-card>
             <!-- Agenda Smart Card Ends -->
         </div>
 
