@@ -802,3 +802,13 @@ input {
   vertical-align: baseline;
   // margin-top: 14px;
 }
+
+
+// .ql-snow a {
+//   color: #ffffff !important;
+// }
+
+.ql-mention-list-item.selected a{
+  background: #005fd5;
+  color: #fff !important;
+}
