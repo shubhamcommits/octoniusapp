@@ -19,6 +19,7 @@ import "quill-mention";
 
 // Public Functions
 import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-quill-editor',
@@ -44,6 +45,9 @@ export class QuillEditorComponent implements OnInit {
 
   // Quill modules variable
   modules: any;
+
+  // Uploads url for Files
+  filesBaseUrl = environment.UTILITIES_FILES_UPLOADS
 
   // EditorId variable
   @Input('editorId') editorId: any;
@@ -130,12 +134,13 @@ export class QuillEditorComponent implements OnInit {
         if (mentionChar === "@") {
 
           // Initialise values with list of members
-          values = await this.suggestMembers(this.groupId, searchTerm);
+          values = await this.suggestMembers(this.groupId, searchTerm)
 
         // If User types "#" then trigger the list for files mentioning
         } else if(mentionChar === "#") {
 
           // Initialise values with list of files
+          values = await this.suggestFiles(this.groupId, searchTerm)
         }
 
         // If searchTerm length is 0, then show the full list
@@ -162,14 +167,37 @@ export class QuillEditorComponent implements OnInit {
   async suggestMembers(groupId: string, searchTerm: string){
     
     // Fetch the users list from the server
-    let usersList: any = await this.publicFunctions.searchGroupMembers(groupId, searchTerm);
+    let usersList: any = await this.publicFunctions.searchGroupMembers(groupId, searchTerm)
+
     // Map the users list
     usersList = usersList['users'].map((user) => ({
       id: user._id,
       value: user.first_name + " " +user.last_name
     }))
+
     // Return the Array without duplicates
     return Array.from(new Set(usersList))
+  }
+
+  /**
+   * This function is responsible for fetching the files list
+   * @param groupId 
+   * @param searchTerm 
+   */
+  async suggestFiles(groupId: string, searchTerm: string){
+    
+    // Fetch the users list from the server
+    let filesList: any = await this.publicFunctions.searchFiles(groupId, searchTerm)
+
+    // Map the users list
+    filesList = filesList.map((file) => ({
+      id: file._id,
+      value: 
+      `<a href="${this.filesBaseUrl}/${file.modified_name}" target="_blank">${file.original_name}</a>`
+    }))
+
+    // Return the Array without duplicates
+    return Array.from(new Set(filesList))
   }
 
   /**
