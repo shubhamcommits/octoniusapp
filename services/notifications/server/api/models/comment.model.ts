@@ -8,7 +8,7 @@ const CommentSchema = new Schema({
         trim: true
     },
     _content_mentions: [{
-        type: Schema.Types.ObjectId,
+        type: Schema.Types.Mixed,
         ref: 'User'
     }],
     _highlighted_content_range: {

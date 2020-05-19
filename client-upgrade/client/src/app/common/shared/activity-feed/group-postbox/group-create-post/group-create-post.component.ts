@@ -188,6 +188,16 @@ export class GroupCreatePostComponent implements OnInit {
     // Set the quill data object to the quillData output
     this.quillData = quillData
 
+    // Filter the Mention users content and map them into arrays of Ids
+    this._content_mentions = this.quillData.mention.users.map((user)=> user.insert.mention.id)
+
+    // If content mentions has 'all' then only pass 'all' inside the array
+    if(this._content_mentions.includes('all'))
+      this._content_mentions = ['all']
+
+    // Set the values of the array
+    this._content_mentions = Array.from(new Set(this._content_mentions))
+
     if (this.edit) {
       if (this.postData.content === JSON.stringify(this.quillData.contents)) {
         this.showUpdateDetails = false

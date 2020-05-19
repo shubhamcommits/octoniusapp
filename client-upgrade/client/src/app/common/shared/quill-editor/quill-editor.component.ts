@@ -36,7 +36,7 @@ export class QuillEditorComponent implements OnInit {
     this.modules = {
       syntax: true,
       toolbar: this.toolbar,
-      mention: { }
+      mention: {}
     }
   }
 
@@ -86,10 +86,10 @@ export class QuillEditorComponent implements OnInit {
     this.quill = this.quillEditor(this.modules)
 
     // Set contents to the quill
-    if(this.contents){
-     
-     // Fetch the delta ops from the JSON string 
-     let delta = JSON.parse(this.contents)['ops']
+    if (this.contents) {
+
+      // Fetch the delta ops from the JSON string 
+      let delta = JSON.parse(this.contents)['ops']
 
       // Set the content inside quill container  
       this.setContents(this.quill, delta)
@@ -126,7 +126,7 @@ export class QuillEditorComponent implements OnInit {
       allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
       mentionDenotationChars: ["@", "#"],
       source: async (searchTerm, renderList, mentionChar) => {
-        
+
         // Value of the mention list
         let values: any;
 
@@ -136,8 +136,14 @@ export class QuillEditorComponent implements OnInit {
           // Initialise values with list of members
           values = await this.suggestMembers(this.groupId, searchTerm)
 
-        // If User types "#" then trigger the list for files mentioning
-        } else if(mentionChar === "#") {
+          // Adding All Object to mention all the members
+          values.unshift({
+            id: 'all',
+            value: 'all'
+          })
+
+          // If User types "#" then trigger the list for files mentioning
+        } else if (mentionChar === "#") {
 
           // Initialise values with list of files
           values = await this.suggestFiles(this.groupId, searchTerm)
@@ -164,15 +170,15 @@ export class QuillEditorComponent implements OnInit {
    * @param groupId 
    * @param searchTerm 
    */
-  async suggestMembers(groupId: string, searchTerm: string){
-    
+  async suggestMembers(groupId: string, searchTerm: string) {
+
     // Fetch the users list from the server
     let usersList: any = await this.publicFunctions.searchGroupMembers(groupId, searchTerm)
 
     // Map the users list
     usersList = usersList['users'].map((user) => ({
       id: user._id,
-      value: user.first_name + " " +user.last_name
+      value: user.first_name + " " + user.last_name
     }))
 
     // Return the Array without duplicates
@@ -184,16 +190,16 @@ export class QuillEditorComponent implements OnInit {
    * @param groupId 
    * @param searchTerm 
    */
-  async suggestFiles(groupId: string, searchTerm: string){
-    
+  async suggestFiles(groupId: string, searchTerm: string) {
+
     // Fetch the users list from the server
     let filesList: any = await this.publicFunctions.searchFiles(groupId, searchTerm)
 
     // Map the users list
     filesList = filesList.map((file) => ({
       id: file._id,
-      value: 
-      `<a href="${this.filesBaseUrl}/${file.modified_name}" target="_blank">${file.original_name}</a>`
+      value:
+        `<a href="${this.filesBaseUrl}/${file.modified_name}" style="color: inherit" target="_blank">${file.original_name}</a>`
     }))
 
     // Return the Array without duplicates
@@ -241,7 +247,7 @@ export class QuillEditorComponent implements OnInit {
       } else if (source == 'user') {
 
         // Get the quill cotents from the editor
-        let quillData = this.getQuillContents(quill)
+        let quillData: any = this.getQuillContents(quill)
 
         // Get Quill Contents
         let quillContents = quillData.contents
@@ -251,6 +257,9 @@ export class QuillEditorComponent implements OnInit {
 
         // Get Quill Text
         let quillText = quillData.text
+
+        // Set the Mentioned list property
+        quillData['mention'] = this.getMentionList(quillContents)
 
         // Emit the quill data to other components
         this.content.emit(quillData);
@@ -263,7 +272,23 @@ export class QuillEditorComponent implements OnInit {
    * @param quill 
    * @param contents of type Delta 
    */
-  setContents(quill: Quill, contents: any){
+  setContents(quill: Quill, contents: any) {
     quill.setContents(contents)
+  }
+
+  /**
+   * This function is resposible for fetching the list of the mentions
+   * @param content 
+   */
+  getMentionList(content: any) {
+    
+    // Create Mention Array
+    let mention = content.ops.filter((object)=> object.insert.hasOwnProperty('mention'))
+
+    // Return Users and files mentioned
+    return {
+      users: mention.filter((object)=> object.insert.mention.denotationChar === "@"),
+      files: mention.filter((object)=> object.insert.mention.denotationChar === "#"),
+    }
   }
 }

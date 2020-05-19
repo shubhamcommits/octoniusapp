@@ -27,6 +27,8 @@ async function generateFeed(userId: string, io: any) {
 
         const feed = { unreadNotifications, readNotifications };
 
+        // console.log(feed)
+
         // I moved this line from outside this function to inside
         io.sockets.in(userId).emit('notificationsFeed', feed);
     } catch (err) {
@@ -59,58 +61,79 @@ async function notifyRelatedUsers(io: any, socket: any, data: any) {
         // we had a problem that the flow got interrupted because of the db search
         //  by adding type property (at the moment post or comment) to data  we can specify which database to search through
 
-            // If there are mentions on post content...
-            if (post._content_mentions.length !== 0) {
-                // ...emit notificationsFeed for every user mentioned
-                //  generateFeed seems to always be followed by emitting it to the specified user, so I placed the socket.emit function inside the generateFeed function
-                //  this way I wouldn't put an await inside a for function
-                //  proposal: we might want to change name generateFeed to generateFeedAndEmitToUser
-                for (const userId of post._content_mentions) {
-                    generateFeed(userId, io);
+        // If there are mentions on post content...
+        if (post._content_mentions.length !== 0) {
+            // ...emit notificationsFeed for every user mentioned
+            //  generateFeed seems to always be followed by emitting it to the specified user, so I placed the socket.emit function inside the generateFeed function
+            //  this way I wouldn't put an await inside a for function
+            //  proposal: we might want to change name generateFeed to generateFeedAndEmitToUser
+
+            let userStream: any;
+
+            if (post._content_mentions.includes('all')) {
+
+                // Create Readble Stream from the Post Contents
+                userStream = Readable.from(await User.find({
+                    _groups: post._group
+                }).distinct('_id'))
+
+            }   else {
+
+                // User Stream from the post contents
+                userStream = Readable.from(post._content_mentions)
+            }
+
+            userStream.on('data', (user: any) => {
+                console.log(user)
+                generateFeed(user, io);
+            })
+
+            // for (const userId of post._content_mentions) {
+            //     generateFeed(userId, io);
+            // }
+        }
+
+        // If there are followers on post content...
+        if (post._followers && post._followers.length !== 0) {
+            // ...emit notificationsFeed for every follower
+            for (const userId of post._followers) {
+                generateFeed(userId, io);
+            }
+        }
+
+        switch (post.type) {
+            //  task posts have only one assigned member so generatefeed needs to only be called once
+            case 'task':
+                if (post.task.unassigned === false) {
+                    generateFeed(post.task._assigned_to, io);
                 }
-            }
+                break;
+            case 'event':
+                let userStream: any;
 
-            // If there are followers on post content...
-            if (post._followers && post._followers.length !== 0) {
-                // ...emit notificationsFeed for every follower
-                for (const userId of post._followers) {
-                    generateFeed(userId, io);
+                if (post.event._assigned_to.includes('all')) {
+
+                    // Create Readble Stream from the Event Assignee
+                    userStream = Readable.from(await User.find({
+                        _groups: post._group
+                    }).select('id'))
+
+                } else {
+
+                    // Create Readble Stream from the Event Assignee
+                    userStream = Readable.from(post.event._assigned_to);
                 }
-            }
 
-            switch (post.type) {
-                //  task posts have only one assigned member so generatefeed needs to only be called once
-                case 'task':
-                    if (post.task.unassigned === false) {
-                        generateFeed(post.task._assigned_to, io);
-                    }
-                    break;
-                case 'event':
-                    let userStream: any;
+                await userStream.on('data', async (user: any) => {
+                    generateFeed(user._id, io);
+                })
 
-                    if (post.event._assigned_to.includes('all')) {
-
-                        // Create Readble Stream from the Event Assignee
-                        userStream = Readable.from(await User.find({
-                            _groups: post._group
-                        }).select('id'))
-
-                    } else {
-        
-                        // Create Readble Stream from the Event Assignee
-                        userStream = Readable.from(post.event._assigned_to);
-                    }
-
-                    await userStream.on('data', async (user: any) => {
-                        generateFeed(user._id, io);
-                    })
-
-                    break;
-                default:
-                // do nothing!
-            }
-            //  if we mentioned someone in a comment we trigger this part
-            //    same process, we generate the feed and emit it to the mentioned user, tiggering a notification in real-time
+                break;
+            default:
+            // do nothing!
+        }
+        //  if we mentioned someone in a comment we trigger this part
+        //    same process, we generate the feed and emit it to the mentioned user, tiggering a notification in real-time
     } catch (err) {
         console.log('err', err);
     }

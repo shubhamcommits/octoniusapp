@@ -73,15 +73,31 @@ export class NotificationsService {
      */
     async newPostMentions(post: any) {
         try {
-            await post._content_mentions.forEach(async (user: any) => {
+
+            let userStream: any;
+
+            if (post._content_mentions.includes('all')) {
+
+                // Create Readble Stream from the Post Contents
+                userStream = Readable.from(await User.find({
+                    _groups: post._group
+                }).distinct('_id'))
+
+            }   else {
+
+                // User Stream from the post contents
+                userStream = Readable.from(post._content_mentions)
+            }
+
+            userStream.on('data', async (user: any) => {
                 const notification = await Notification.create({
                     _actor: post._posted_by,
                     _owner: user,
                     _origin_post: post._id,
                     message: 'mentioned you in a post.',
                     type: 'mention'
-                });
-            });
+                })
+            })
         } catch (err) {
             return err;
         }
@@ -110,8 +126,6 @@ export class NotificationsService {
      * @param { _id, task._assigned_to, _posted_by } post
      */
     async newTaskReassignment(post: any) {
-
-        console.log(JSON.parse(post))
 
         try {
             const notification = await Notification.create({
@@ -179,7 +193,7 @@ export class NotificationsService {
      */
     async markRead(topListId: string) {
         try {
-            const markRead = await Notification.updateMany({
+            const markRead = await Notification.updateOne({
                 $and: [
                     { read: false },
                     { _id: { $lte: topListId } }

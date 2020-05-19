@@ -365,7 +365,7 @@ p {
 
 .ql-mention-list-container {
   z-index: 9999;
-  width: 700px;
+  width: 50% !important;
   border-radius: 6px;
   border: 1px solid $border-color;
   box-shadow: $box-shadow;
@@ -801,14 +801,4 @@ input {
   height: 24px !important;
   vertical-align: baseline;
   // margin-top: 14px;
-}
-
-
-// .ql-snow a {
-//   color: #ffffff !important;
-// }
-
-.ql-mention-list-item.selected a{
-  background: #005fd5;
-  color: #fff !important;
 }

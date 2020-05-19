@@ -2,7 +2,7 @@ import { Group, Post, User, Comment } from '../models';
 import http from 'axios';
 import moment from 'moment';
 const fs = require('fs');
-const ObjectId = require('mongoose').Types.ObjectId;
+import { Readable } from 'stream';
 
 /*  ===============================
  *  -- POSTS Service --
@@ -282,15 +282,34 @@ export class PostService {
       // Create Real time Notification for all the mentions on post content
       await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-mention`, {
         post: post
-      });
+      })
 
-      // start the process to send an email to every user mentioned in the post coneten
-      await post._content_mentions.forEach((user: any, index: number) => {
+      // // Create User Stream
+      let userStream: any;
+
+      if (post._content_mentions.includes('all')) {
+
+        // Create Readble Stream from the Post Contents
+        userStream = Readable.from(await User.find({
+          _groups: post._group
+        }).distinct('_id'))
+
+      } else {
+
+        // User Stream from the post contents
+        userStream = Readable.from(post._content_mentions)
+      }
+
+      userStream.on('data', async (user: any) => {
+        user = await User.findOne({
+          _id: user
+        }).select('first_name email')
+
         http.post(`${process.env.MAILING_SERVER_API}/user-post-mention`, {
           post: post,
           user: user
         })
-      });
+      })
     }
 
     // Send notification after post creation
@@ -358,9 +377,7 @@ export class PostService {
       post = await this.populatePostProperties(post);
 
       // Send all the required emails and notifications
-      this.sendNotifications(post);
-
-      console.log(process.env.QUERY_SERVER_API)
+      this.sendNotifications(post)
 
       // Index Post
       http.post(`${process.env.QUERY_SERVER_API}/indexing/post`, {
