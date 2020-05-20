@@ -383,7 +383,7 @@ export class GroupController {
 
             // Find the group and remove it from the database
             const group: any = await Group.findByIdAndDelete(groupId)
-                .select('group_name')
+                .select('group_name _workspace')
 
             // Find list of users who were part of this group 
             const users = await User.find({
@@ -396,7 +396,7 @@ export class GroupController {
             // Updating the Users
             userStream.on('data', async function (user) {
                 // Find the user and update the _groups array in the corresponding user document 
-                await User.findOneAndUpdate({
+                let abc = await User.findOneAndUpdate({
                     $and: [
                         { _id: user._id, },
                         { _workspace: group._workspace }
@@ -408,7 +408,9 @@ export class GroupController {
                 }, {
                     new: true
                 })
+                console.log(abc);
             })
+
 
             // Delete Posts and Files too(create the API for this and serve as a microservice)
 
