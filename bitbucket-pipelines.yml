@@ -67,17 +67,20 @@ pipelines:
           - export NGINX_IMAGE_NAME=octoniusapp/octonius-alpha:nginx
 
           # build the Docker image (this will use the Dockerfile in the root of the repo)
-          - docker build -t $CLIENT_IMAGE_NAME ./client-upgrade/client
-          - docker build -t $MAILS_IMAGE_NAME ./services/mailing/server
-          - docker build -t $AUTHS_IMAGE_NAME ./services/authentication/server
-          - docker build -t $GROUPS_IMAGE_NAME ./services/groups/server
-          - docker build -t $WORKSPACES_IMAGE_NAME ./services/workspaces/server
-          - docker build -t $USERS_IMAGE_NAME ./services/users/server
-          - docker build -t $POSTS_IMAGE_NAME ./services/posts/server
-          - docker build -t $NOTIFICATIONS_IMAGE_NAME ./services/notifications/server
-          - docker build -t $UTILITIES_IMAGE_NAME ./services/utilities/server
-          - docker build -t $QUERY_IMAGE_NAME ./services/query-service
-          - docker build -t $NGINX_IMAGE_NAME ./nginx
+          - docker build -t $CLIENT_IMAGE_NAME --compress  ./client-upgrade/client
+          - docker build -t $MAILS_IMAGE_NAME --compress  ./services/mailing/server
+          - docker build -t $AUTHS_IMAGE_NAME --compress  ./services/authentication/server
+          - docker build -t $GROUPS_IMAGE_NAME --compress  ./services/groups/server
+          - docker build -t $WORKSPACES_IMAGE_NAME --compress  ./services/workspaces/server
+          - docker build -t $USERS_IMAGE_NAME --compress  ./services/users/server
+          - docker build -t $POSTS_IMAGE_NAME --compress  ./services/posts/server
+          - docker build -t $NOTIFICATIONS_IMAGE_NAME --compress  ./services/notifications/server
+          - docker build -t $UTILITIES_IMAGE_NAME --compress  ./services/utilities/server
+          - docker build -t $QUERY_IMAGE_NAME --compress  ./services/query-service
+          - docker build -t $NGINX_IMAGE_NAME --compress  ./nginx
+
+          #clear Uneccesary Image build
+          - docker image prune -f 
           
           # authenticate with the Docker Hub registry
           - docker login --username $DOCKER_ID --password $DOCKER_PASSWORD
