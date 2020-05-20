@@ -37,14 +37,17 @@
         <app-infinite-scroll (scrolled)="onScroll()">
             <div class="media card-tile user-list" style="border-bottom: 1px solid #e4edf8;"
                 *ngFor="let file of files; let index = index; trackBy: utilityService.trackByIndex;">
-                <img src="assets/images/{{file.mimeType}}-file-icon.png"
-                    onerror="this.src='/assets/images/icon_file.svg'" class="file-type float-left mt-3">
+             
 
                 <a *ngIf="file?.type === 'file' || file?.type === undefined" class="mt-3" target="_blank"
-                    href="{{filesBaseUrl}}/{{file?.modified_name}}">{{file?.original_name}}</a>
+                    href="{{filesBaseUrl}}/{{file?.modified_name}}">
+                    <img src="assets/images/assets/images/icon_file.svg"
+                    onerror="this.src='/assets/images/icon_file.svg'" class="file-type mt-3 mr-1" style="vertical-align: bottom;">
+                    {{file?.original_name}}</a>
 
-                <a *ngIf="file?.type === 'folio'" class="mt-3" target="_blank"
-                    href="/#/document/{{file?._id}}">{{file?.original_name}}</a>
+                <a *ngIf="file?.type === 'folio'" class="mt-0" target="_blank"
+                    href="/#/document/{{file?._id}}">  <img src="assets/images/icon_folio.svg"
+                    onerror="this.src='assets/images/icon_file.svg'" class="file-type mt-3 mr-1" style="vertical-align: bottom;">{{file?.original_name}}</a>
 
                 <div class="media-body">
 
