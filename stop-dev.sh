@@ -33,22 +33,29 @@ pm2 stop users-server
 
 pm2 delete users-server
 
-# Stops and kills the utilities sever
-pm2 stop utilities-server
 
-pm2 delete utilities-server
+# Stops and kills the posts server
+pm2 stop posts-server
+
+pm2 delete posts-server
 
 
-# Stops and kills the notifications sever
+# Stops and kills the notifications server
 pm2 stop notifications-server
 
 pm2 delete notifications-server
 
 
-# Stops and kills the posts sever
-pm2 stop posts-server
+# Stops and kills the utilities server
+pm2 stop utilities-server
 
-pm2 delete posts-server
+pm2 delete utilities-server
+
+
+# Stops and kills the folio server
+pm2 stop folio-server
+
+pm2 delete folio-server
 
 
 # Stops and kills the client server

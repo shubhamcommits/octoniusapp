@@ -5,44 +5,94 @@ import path from 'path';
  */
 function devConfigInit() {
 
-  // ENVIRONMENTS
-  process.env.NODE_ENV = 'development';
-  process.env.PORT = '7000';
-  process.env.HOST = '0.0.0.0';
+  // Node Environment
+  process.env.NODE_ENV = process.env.NODE_ENV || 'development'
 
-  // JWT KEYS
-  process.env.JWT_KEY = 'asfsaf12safas23fsafa12sf';
+  // Application Port
+  process.env.PORT = process.env.PORT || '11000'
 
-  // DATABASE CONNECTIONS
-  process.env.dbURL = 'mongodb://127.0.0.1:27017/octonius';
+  // Application Host
+  process.env.HOST = process.env.HOST || '0.0.0.0'
 
-  // REDIS
-  process.env.REDIS_HOST = '127.0.0.1';
-  process.env.REDIS_PORT = '6379';
+  // Jwt Key
+  process.env.JWT_KEY = process.env.JWT_KEY || 'asfsaf12safas23fsafa12sf'
 
-  // FILE UPLOADS FOLDER
-  // process.env.FILE_UPLOAD_FOLDER = path.join(__dirname, '../../../../uploads/');
+  // Database Url String
+  process.env.dbURL = process.env.dbURL || 'mongodb://127.0.0.1:27017/octonius'
 
-  // MAILING SERVER
-  process.env.MAILING_SERVER = 'http://0.0.0.0:2000';
+  // Redis Environments
+  process.env.REDIS_HOST = process.env.REDIS_HOST || '127.0.0.1'
+  process.env.REDIS_PORT = process.env.REDIS_PORT || '6379'
 
-  // AUTHS SERVER
-  process.env.AUTHS_SERVER = 'http://0.0.0.0:3000';
+  // Files Uploads Folder
+  process.env.FILE_UPLOAD_FOLDER = process.env.FILE_UPLOAD_FOLDER || path.join(__dirname, '../uploads/');
 
-  // GROUPS SERVER
-  process.env.GROUPS_SERVER = 'http://0.0.0.0:4000';
+  // Sendgrid Key
+  process.env.SENDGRID_KEY = process.env.SENDGRID_KEY || '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'
 
-  // WORKSPACES SERVER
-  process.env.WORKSPACES_SERVER = 'http://0.0.0.0:5000';
+  // Stripe Keys
+  process.env.SK_STRIPE = process.env.SK_STRIPE || 'sk_test_dvebbZQPA4Vk8kKZaEuN32sD';
+  process.env.stripe_plan = process.env.stripe_plan || 'plan_EK1uRUJLJcDS6e';
+  process.env.WEBHOOK_PS_SECRET = process.env.WEBHOOK_PS_SECRET || 'whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn';
 
-  // USERS SERVER
-  process.env.USERS_SERVER = 'http://0.0.0.0:7000';
+  // External Key
+  process.env.HEADER_EXTERNAL_KEY = process.env.HEADER_EXTERNAL_KEY || 'HEADERIDSHAREDFOROCTONIUS'
 
-  // UTILITIES SERVER
-  process.env.UTILITIES_SERVER = 'http://0.0.0.0:8000';
+  // Protocol- 'http' or 'https'
+  process.env.PROTOCOL = process.env.PROTOCOL || 'http'
 
-  // SOCKETS SERVER
-  process.env.SOCKETS_SERVER = 'http://0.0.0.0:9000';
+  // Domain
+  process.env.DOMAIN = process.env.DOMAIN || 'localhost'
+
+  // Mailing Mircoservice
+  process.env.MAILING_PORT = process.env.MAILING_PORT || '2000'
+  process.env.MAILING_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.MAILING_PORT}`
+  process.env.MAILING_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}${process.env.MAILING_PORT}/api`
+
+  // Auths Microservice
+  process.env.AUTHS_PORT = process.env.AUTHS_PORT || '3000'
+  process.env.AUTHS_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.AUTHS_PORT}`
+  process.env.AUTHS_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}/api`
+
+  // Groups Microservice
+  process.env.GROUPS_PORT = process.env.GROUPS || '4000'
+  process.env.GROUPS_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.GROUPS_PORT}`
+  process.env.GROUPS_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.GROUPS_PORT}/api`
+
+  // Workspaces Microservice
+  process.env.WORKSPACES_PORT = process.env.WORKSPACES_PORT || '5000'
+  process.env.WORKSPACES_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.WORKSPACES_PORT}`
+  process.env.WORKSPACES_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.WORKSPACES_PORT}/api`
+
+  // Users Microservice
+  process.env.USERS_PORT = process.env.USERS_PORT || '7000'
+  process.env.USERS_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.USERS_PORT}`
+  process.env.USERS_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.USERS_PORT}/api`
+
+  // Posts Microservice
+  process.env.POSTS_PORT = process.env.POSTS_PORT || '8000'
+  process.env.POSTS_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.POSTS_PORT}`
+  process.env.POSTS_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.POSTS_PORT}/api`
+
+  // Notifications Microservice
+  process.env.NOTIFICATIONS_PORT = process.env.NOTIFICATIONS_PORT || '9000'
+  process.env.NOTIFICATIONS_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.NOTIFICATIONS_PORT}`
+  process.env.NOTIFICATIONS_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.NOTIFICATIONS_PORT}/api`
+
+  // Utilities Microservice
+  process.env.UTILITIES_PORT = process.env.UTILITIES_PORT || '10000'
+  process.env.UTILITIES_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.UTILITIES_PORT}`
+  process.env.UTILITIES_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.UTILITIES_PORT}/api`
+
+  // Query Microservice
+  process.env.QUERY_PORT = process.env.QUERY_PORT || '8080'
+  process.env.QUERY_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.QUERY_PORT}`
+  process.env.QUERY_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.QUERY_PORT}/api/query-service`
+
+  // Query Microservice Monitor
+  process.env.QUERY_MONITOR_PORT = process.env.QUERY_MONITOR_PORT || '8983'
+  process.env.QUERY_MONITOR_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.QUERY_MONITOR_PORT}`
 };
 
 export { devConfigInit as developmentConfig }
+

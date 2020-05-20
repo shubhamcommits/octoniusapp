@@ -2,15 +2,25 @@ version: "3.3"
 
 services:
 
-  server:
-    container_name: octodoc-server
-    image: octodoc:server
+  mongodb:
+    container_name: folio-mongo
+    image: mvertes/alpine-mongo:latest
     restart: always
+    volumes:
+      - data:/data/db
+    ports:
+      - '27017:27017'
+
+  folio-server:
+    container_name: folio-server
+    image: folio:server
+    restart: always
+    ports:
+      - '11000:11000'
     build:
       dockerfile: Dockerfile
       context: ./server
     volumes:
-      # Avoid overwriting container's node_modules folder
       - /usr/app/node_modules
     depends_on:
       - mongodb

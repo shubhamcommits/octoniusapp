@@ -24,7 +24,8 @@ export class FilesService {
             _posted_by: fileData._posted_by,
             original_name: fileData.original_name,
             modified_name: fileData.modified_name,
-            type: fileData.type
+            type: fileData.type,
+            mime_type: fileData.mime_type
         }
 
         // Create the new File

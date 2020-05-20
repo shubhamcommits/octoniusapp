@@ -277,6 +277,39 @@ services:
     networks:
       - alpha
 
+  folio-server:
+    container_name: folio-server
+    image: folio-server
+    ports:
+      - 11000:11000
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./services/folio/server
+    volumes:
+      - /usr/app/node_modules
+    environment:
+      - NODE_ENV=production
+      - PORT=11000
+      - HOST=0.0.0.0
+      - JWT_KEY=asfsaf12safas23fsafa12sf
+      - dbURL=mongodb://mongodb:27017/octonius
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - SENDGRID_KEY=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
+      - SK_STRIPE=sk_live_WupyMoQf93S59gwTqmYpmWel
+      - stripe_plan=plan_EK1rDLfKr9NRkU
+      - WEBHOOK_PS_SECRET=whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn
+      - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
+      - PROTOCOL=http
+      - DOMAIN=localhost
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
+    networks:
+      - alpha
+
   query-server:
     container_name: query-server
     image: query-server
@@ -286,7 +319,7 @@ services:
     volumes:
       - /data/query-service-app
     ports:
-      - 11000:8080
+      - 12000:8080
     environment:
       WAIT_HOST: solr-octonius
       WAIT_PORT: '8983'
@@ -302,7 +335,7 @@ services:
     container_name: solr-octonius
     command: solr-precreate octonius
     ports:
-      - 12000:8983
+      - 13000:8983
     environment:
       - SOLR_JAVA_MEM=-Xms256m -Xmx256m -XX:MaxRAM=512m
     volumes:
@@ -328,6 +361,7 @@ services:
       - posts-server
       - notifications-server
       - utilities-server
+      - folio-server
     networks:
       - alpha
 
@@ -349,6 +383,7 @@ services:
       - posts-server
       - notifications-server
       - utilities-server
+      - folio-server
       - query-server
       - solr-octonius
       - client

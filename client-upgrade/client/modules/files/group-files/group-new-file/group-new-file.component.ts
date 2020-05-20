@@ -58,6 +58,9 @@ export class GroupNewFileComponent implements OnInit {
     // Loop through each file and begin the process of uploading
     Array.prototype.forEach.call(files, (file: File) => {
 
+      // Adding Mime Type of the file uploaded
+      this.fileData.mime_type = file.type
+
       // Call the Upload file service function
       this.uploadFile(this.fileData, file);
 

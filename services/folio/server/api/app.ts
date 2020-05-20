@@ -1,11 +1,9 @@
-const express = require('express');
-import { Request, Response, NextFunction } from 'express';
-const path = require('path');
-const cors = require('cors');
-const morgan = require('morgan');
-const compression = require('compression');
+import express, { Request, Response, NextFunction } from 'express';
+import path from 'path';
+import cors from 'cors';
+import morgan from 'morgan';
+import compression from 'compression';
 import { developmentConfig, productionConfig } from '../configs';
-// import fileUpload from 'express-fileupload';
 
 // Defining new Express application
 const app = express();
@@ -17,9 +15,6 @@ if (process.env.NODE_ENV !== 'production') {
 else {
     productionConfig();
 }
-
-// Initiliazing Database Connection
-require('../db');
 
 // cors middleware for orign and Headers
 app.use(cors());
@@ -57,22 +52,10 @@ const encodeResToGzip = (contentType: any) => {
 app.get("*.js", encodeResToGzip('text/javascript'));
 app.get("*.css", encodeResToGzip('text/css'));
 
-// static assets folder
-// app.use(express.static(path.join(__dirname, '../../client/dist')));
-
-// Set file upload middleware
-// app.use(fileUpload({
-//     limits: {
-//         fileSize: 1024 * 1024 * 1024
-//     },
-//     abortOnLimit: true
-// }));
-
 // Routes which should handle request
 app.all('/', (req: Request, res: Response, next: NextFunction) => {
     res.sendFile(path.join(__dirname, './views/index.html'));
 });
-
 
 // Invalid routes handling middleware
 app.use((req: Request, res: Response, next: NextFunction) => {

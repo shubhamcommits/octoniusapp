@@ -17,6 +17,10 @@ const FileSchema = new Schema({
         required: false,
         enum: ['file', 'folio']
     },
+    mime_type: {
+        type: String,
+        default: null
+    },
     created_date: {
         type: Date,
         default: Date.now
