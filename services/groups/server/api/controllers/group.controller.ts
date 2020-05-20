@@ -396,7 +396,7 @@ export class GroupController {
             // Updating the Users
             userStream.on('data', async function (user) {
                 // Find the user and update the _groups array in the corresponding user document 
-                let abc = await User.findOneAndUpdate({
+                await User.findOneAndUpdate({
                     $and: [
                         { _id: user._id, },
                         { _workspace: group._workspace }
@@ -408,7 +408,6 @@ export class GroupController {
                 }, {
                     new: true
                 })
-                console.log(abc);
             })
 
 
