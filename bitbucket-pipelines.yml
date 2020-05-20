@@ -63,6 +63,7 @@ pipelines:
           - export POSTS_IMAGE_NAME=octoniusapp/octonius-alpha:posts-server
           - export NOTIFICATIONS_IMAGE_NAME=octoniusapp/octonius-alpha:notifications-server
           - export UTILITIES_IMAGE_NAME=octoniusapp/octonius-alpha:utilities-server
+          - export FOLIO_IMAGE_NAME=octoniusapp/octonius-alpha:folio-server
           - export QUERY_IMAGE_NAME=octoniusapp/octonius-alpha:query-server
           - export NGINX_IMAGE_NAME=octoniusapp/octonius-alpha:nginx
 
@@ -76,6 +77,7 @@ pipelines:
           - docker build -t $POSTS_IMAGE_NAME --compress  ./services/posts/server
           - docker build -t $NOTIFICATIONS_IMAGE_NAME --compress  ./services/notifications/server
           - docker build -t $UTILITIES_IMAGE_NAME --compress  ./services/utilities/server
+          - docker build -t $FOLIO_IMAGE_NAME --compress ./services/folio/server
           - docker build -t $QUERY_IMAGE_NAME --compress  ./services/query-service
           - docker build -t $NGINX_IMAGE_NAME --compress  ./nginx
 
