@@ -92,7 +92,7 @@ body {
 .list-group-item {
   margin: 0px 0px 10px 0px !important;
   // background-color: transparent;
-  border: none;
+  border: 1px solid $border-color !important;
   padding: 0px;
 }
 

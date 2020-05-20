@@ -1,4 +1,4 @@
-<div *ngIf="today_task_count == 0 && overdueTasks.length == 0" class="smart-card col mr-24">
+<div *ngIf="today_task_count == 0 && overdueTasks.length == 0" class="smart-card col mr-24" style="margin-bottom: 10px;">
     <a href="/#/dashboard/myspace/tasks">
         <div class="card-title mt-1">Tasks</div>
         <div class="row">
@@ -20,21 +20,22 @@
 </div>
 
 <div *ngIf="today_task_count != 0 || overdueTasks.length != 0">
-    <div class="smart-card mr-24 col">
+    <div class="smart-card mr-24 col" style="margin-bottom: 10px;">
         <a href="/#/dashboard/myspace/tasks">
             <div class="card-title mt-1">Tasks</div>
             <div class="row">
 
-                <div class="col-md-6">
-                    <div class="card-first-column">{{today_task_count}} for today</div>
+                <div class="col-md">
+                    <div class="card-first-column mb-1">{{today_task_count}} for today</div>
                 </div>
-
-                <div class="col-md-6">
+            </div>
+            <div class="row">
+                <div class="col-md">
                     <div class="media card-tile overview-task">
-                        <div class="group-tasks to-do-task col-md-3">{{to_do_task_count}}</div>
-                        <div class="group-tasks in-progress-task col-md-3">{{in_progress_task_count}}</div>
-                        <div class="group-tasks done-task col-md-3">{{done_task_count}}</div>
-                        <div class="group-tasks overdue-task col-md-3">{{overdueTasks.length}}</div>
+                        <div class="group-tasks to-do-task col-md">{{to_do_task_count}}</div>
+                        <div class="group-tasks in-progress-task col-md">{{in_progress_task_count}}</div>
+                        <div class="group-tasks done-task col-md">{{done_task_count}}</div>
+                        <div class="group-tasks overdue-task col-md">{{overdueTasks.length}}</div>
                     </div>
                 </div>
 
