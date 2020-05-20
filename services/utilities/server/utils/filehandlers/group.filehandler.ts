@@ -29,6 +29,8 @@ const groupFileHandler = async (req: Request, res: Response, next: NextFunction)
  */
 const groupFileUploader = (req: Request, res: Response, next: NextFunction) => {
 
+  req.body.fileData = JSON.parse(req.body.fileData);
+
   if (!req.files) {
     next();
   } else {
@@ -58,8 +60,6 @@ const groupFileUploader = (req: Request, res: Response, next: NextFunction) => {
         original_name: req['files'].file['name'],
         modified_name: fileName
       };
-
-      req.body.fileData = JSON.parse(req.body.fileData);
 
       // Modify the current request to add 
       req.body.fileData.original_name = file.original_name;

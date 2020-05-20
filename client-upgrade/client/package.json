@@ -1,5 +1,5 @@
 {
-  "name": "Octonius",
+  "name": "octonius",
   "description": "Desktop application of Octonius",
   "author": {
     "name": "Team Octonius",
@@ -56,6 +56,7 @@
     "ngx-socket-io": "^3.0.1",
     "ngx-ui-loader": "^8.0.0",
     "quill": "^1.3.7",
+    "quill-cursors": "^3.0.0",
     "quill-mention": "^2.2.5",
     "rxjs": "~6.5.3",
     "subsink": "^1.0.0",

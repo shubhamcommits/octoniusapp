@@ -8,8 +8,6 @@ import { Subject } from 'rxjs/internal/Subject';
 import { SubSink } from 'subsink';
 import { debounceTime } from 'rxjs/internal/operators/debounceTime';
 import { distinctUntilChanged } from 'rxjs/internal/operators/distinctUntilChanged';
-import { FilesService } from 'src/shared/services/files-service/files.service';
-import { resolve } from 'dns';
 
 @Component({
   selector: 'app-group-files',

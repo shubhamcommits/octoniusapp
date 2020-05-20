@@ -15,7 +15,7 @@ export class FilesService {
    * This function is responsible for uploding a file to the group
    * @param fileData 
    */
-  addFile(fileData: any, fileToUpload: File) {
+  addFile(fileData: any, fileToUpload?: File) {
 
     // PREPARING FORM DATA
     let formData = new FormData();
@@ -24,7 +24,8 @@ export class FilesService {
     formData.append('fileData', JSON.stringify(fileData))
 
     // Appending file
-    formData.append('file', fileToUpload, fileToUpload['name'])
+    if(fileToUpload)
+        formData.append('file', fileToUpload, fileToUpload['name'])
 
     return this._http.post(this.baseURL + `/files/groups`, formData).toPromise()
   }

@@ -20,9 +20,10 @@ export class GroupNewFileComponent implements OnInit {
   @Input('groupId') groupId: any;
 
   // File Data variable
-  file = {
+  fileData: any = {
     _group: '',
-    _posted_by: ''
+    _posted_by: '',
+    type: 'file'
   }
 
   // Output folder event emitter
@@ -37,9 +38,10 @@ export class GroupNewFileComponent implements OnInit {
   ngAfterViewInit() {
 
     // Set the File Credentials after view initialization
-    this.file = {
+    this.fileData = {
       _group: this.groupId,
-      _posted_by: this.userData._id
+      _posted_by: this.userData._id,
+      type: 'file'
     }
   }
 
@@ -57,7 +59,7 @@ export class GroupNewFileComponent implements OnInit {
     Array.prototype.forEach.call(files, (file: File) => {
 
       // Call the Upload file service function
-      this.uploadFile(this.file, file);
+      this.uploadFile(this.fileData, file);
 
     })
   }
@@ -67,7 +69,7 @@ export class GroupNewFileComponent implements OnInit {
    * @param fileData 
    * @param file 
    */
-  uploadFile(fileData: any, file: File) {
+  uploadFile(fileData: any, file?: File) {
 
     // Files Service Instance
     let fileService = this.Injector.get(FilesService)
@@ -76,19 +78,23 @@ export class GroupNewFileComponent implements OnInit {
     let utilityService = this.Injector.get(UtilityService)
 
     // Call the HTTP Request Asynschronously
-    utilityService.asyncNotification(`Please wait we are uploading your file - ${file['name']} ...`, new Promise((resolve, reject) => {
-      fileService.addFile(fileData, file)
-        .then((res) => {
+    utilityService.asyncNotification(
+      (file) ? `Please wait we are uploading your file - ${file['name']} ...` : `Please wait while we are creating a new folio`,
+      new Promise((resolve, reject) => {
+        fileService.addFile(fileData, file)
+          .then((res) => {
 
-          // Output the created file to the top components
-          this.fileEmitter.emit(res['file']);
+            // Output the created file to the top components
+            this.fileEmitter.emit(res['file']);
 
-          resolve(utilityService.resolveAsyncPromise('File has been uploaded!'))
-        })
-        .catch(() => {
-          reject(utilityService.rejectAsyncPromise('Unexpected error occured while uploading, please try again!'))
-        })
-    }))
+            resolve((file) ? utilityService.resolveAsyncPromise('File has been uploaded!') :
+              utilityService.resolveAsyncPromise('New folio has been created!'))
+
+          })
+          .catch(() => {
+            reject(utilityService.rejectAsyncPromise('Unexpected error occured while uploading, please try again!'))
+          })
+      }))
   }
 
 }

@@ -14,6 +14,9 @@ hljs.configure({
 // Quill Import
 import Quill from 'quill';
 
+// Decalring Current Window Quill to the global instance
+(window as any).Quill = Quill;
+
 // Quill Mention
 import "quill-mention";
 
@@ -119,6 +122,18 @@ export class QuillEditorComponent implements OnInit {
   }
 
   /**
+   * This function is returns the configuration for quill image and compress it if required
+   */
+  quillImageCompressor(){
+    return {
+      quality: 0.9,
+      maxWidth: 1000,
+      maxHeight: 1000,
+      imageType: 'image/jpeg'
+    }
+  }
+
+  /**
    * This function returns the mention module
    */
   metionModule() {
@@ -213,10 +228,10 @@ export class QuillEditorComponent implements OnInit {
   quillEditor(modules: Object) {
 
     // Create Quill Instance locally
-    let quill: Quill
+    // let quill: Quill
 
     // Return the instance with modules
-    return quill = new Quill(`#${this.editorId}`, {
+    return new Quill(`#${this.editorId}`, {
       theme: 'snow',
       modules: modules,
       readOnly: this.readOnly,

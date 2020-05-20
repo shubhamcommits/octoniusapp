@@ -5,11 +5,17 @@ const { Schema } = mongoose;
 const FileSchema = new Schema({
     original_name: {
         type: String,
-        default: null
+        default: 'New Folio'
     },
     modified_name: {
         type: String,
-        default: null
+        default: 'New Folio'
+    },
+    type: {
+        type: String,
+        default: 'file',
+        required: false,
+        enum: ['file', 'folio']
     },
     created_date: {
         type: Date,

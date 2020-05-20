@@ -23,7 +23,8 @@ export class FilesService {
             _group: fileData._group,
             _posted_by: fileData._posted_by,
             original_name: fileData.original_name,
-            modified_name: fileData.modified_name
+            modified_name: fileData.modified_name,
+            type: fileData.type
         }
 
         // Create the new File

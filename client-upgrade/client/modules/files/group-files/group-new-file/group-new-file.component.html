@@ -18,7 +18,7 @@
         <input #folderInput type="file" placeholder="File" webkitDirectory />
     </li>
     <li class="dropdown-divider"></li>
-    <li class="dropdown-item" (click)="$event.stopPropagation()">
+    <li class="dropdown-item" (click)="this.fileData.type = 'folio'; uploadFile(this.fileData)">
         <img src="assets/images/icon_folio.svg" alt="" class="mr-2"> <span>Folio</span>
     </li>
 </ul>

@@ -46,11 +46,10 @@ const routes: Routes = [
   },
 
   // 'document' ROUTE - LAZY LOAD THE OCTODOC MODULE
-
   {
     path: 'document',
-    loadChildren: () => import('modules/octodoc/octodoc.module')
-      .then((module) => module.OctodocModule),
+    loadChildren: () => import('modules/folio/folio.module')
+      .then((module) => module.FolioModule),
     canActivate: [AuthenticationGuard]
   },
 

@@ -12,10 +12,10 @@
         </app-group-new-file>
         <!-- Group New File ends -->
 
-        <div style="width: 200px;" class="float-right mt-n30"><img
-                src="/assets/images/files_placeholder.svg" alt=""></div>
-        
-                <br class="clearfix">
+        <div style="width: 200px;" class="float-right mt-n30"><img src="/assets/images/files_placeholder.svg" alt="">
+        </div>
+
+        <br class="clearfix">
 
 
         <div class="search mb-3">
@@ -39,8 +39,12 @@
                 *ngFor="let file of files; let index = index; trackBy: utilityService.trackByIndex;">
                 <img src="assets/images/{{file.mimeType}}-file-icon.png"
                     onerror="this.src='/assets/images/icon_file.svg'" class="file-type float-left mt-3">
-                <a class="mt-3" target="_blank"
+
+                <a *ngIf="file?.type === 'file' || file?.type === undefined" class="mt-3" target="_blank"
                     href="{{filesBaseUrl}}/{{file?.modified_name}}">{{file?.original_name}}</a>
+
+                <a *ngIf="file?.type === 'folio'" class="mt-3" target="_blank"
+                    href="/#/document/{{file?._id}}">{{file?.original_name}}</a>
 
                 <div class="media-body">
 
