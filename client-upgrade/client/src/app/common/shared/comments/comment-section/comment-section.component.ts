@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
+import { CommentService } from 'src/shared/services/comment-service/comment.service';
 
 @Component({
   selector: 'comment-section',
@@ -7,7 +8,9 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angula
 })
 export class CommentSectionComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private commentService: CommentService
+  ) { }
 
   // EditorId of the Quill Comment Content
   @Input('editorId') editorId: any
@@ -26,6 +29,8 @@ export class CommentSectionComponent implements OnInit {
 
   // Quill Data Variable
   quillData: any
+
+  _content_mentions: any;
 
   ngOnInit() {
   }
@@ -57,6 +62,15 @@ export class CommentSectionComponent implements OnInit {
       }
     }
 
+    // Filter the Mention users content and map them into arrays of Ids
+    this._content_mentions = this.quillData.mention.users.map((user)=> user.insert.mention.id)
+
+    // If content mentions has 'all' then only pass 'all' inside the array
+    if(this._content_mentions.includes('all'))
+      this._content_mentions = ['all']
+
+    // Set the values of the array
+    this._content_mentions = Array.from(new Set(this._content_mentions))
     // Output the Comment
     this.comment.emit(comment)
   
