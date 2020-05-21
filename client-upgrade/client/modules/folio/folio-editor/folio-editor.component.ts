@@ -114,7 +114,7 @@ export class FolioEditorComponent implements OnInit {
   ngOnInit() {
 
     // Initialise the connection for folio
-    this.initializeConnection()
+    this.folio = this.initializeConnection()
   }
 
   async ngAfterViewInit() {
@@ -133,7 +133,7 @@ export class FolioEditorComponent implements OnInit {
 
     // this.folio = new ShareDB.doc
 
-    // this.initializeFolio(this.folio, this.quill)
+    this.initializeFolio(this.folio, this.quill)
 
   }
 
@@ -148,42 +148,8 @@ export class FolioEditorComponent implements OnInit {
     // Initialise the Realtime DB Connection 
     let shareDBConnection = new ShareDB.Connection(this.shareDBSocket)
 
-    // Initialise the Folio Document
-    // doc = shareDBConnection.get('documents', this.folioId)
-
-    var doc = shareDBConnection.get('documents', this.folioId);
-
-    console.log(doc.id)
-
-    console.log(doc.type)
-
-    console.log(doc.data)
-
-    console.log(doc)
-
-    // doc.create([]);
-
-    // doc.subscribe(function(err) {
-    //   if (err) throw err;
-
-    //   if (!doc.data)
-    //     doc.create([{
-    //       insert: '\n'
-    //     }], 'rich-text');
-
-    //   // var quill = new Quill('#editor', {theme: 'snow'});
-    //   this.quill.setContents(doc.data);
-    //   this.quill.on('text-change', function(delta, oldDelta, source) {
-    //     if (source !== 'user') return;
-    //     doc.submitOp(delta, {source: this.quill});
-    //   });
-    //   doc.on('op', function(op, source) {
-    //     if (source === this.quill) return;
-    //     this.quill.updateContents(op);
-    //   });
-    // });
-
-    
+    // Return the Document with the respective folioId
+    return shareDBConnection.get('documents', this.folioId);  
   }
 
   /**
@@ -241,18 +207,18 @@ export class FolioEditorComponent implements OnInit {
    */
   initializeFolio(folio: any, quill: Quill) {
 
-    console.log(this.folio, this.quill)
+    console.log(folio, quill)
 
     // Subscribe to the folio data and update the quill instance with the data
     folio.subscribe(async () =>{
 
       if (!folio.type)
-        folio.create();
-
-      // if (!folio.type)
-
+        folio.create([{
+          insert: '\n'
+        }], 'rich-text');
+    
       // update editor contents
-      // quill.setContents(folio.data)
+      quill.setContents(folio.data)
 
     })
   }

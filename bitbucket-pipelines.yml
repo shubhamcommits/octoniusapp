@@ -97,6 +97,7 @@ pipelines:
           - docker push $POSTS_IMAGE_NAME
           - docker push $NOTIFICATIONS_IMAGE_NAME
           - docker push $UTILITIES_IMAGE_NAME
+          - docker push $FOLIO_IMAGE_NAME
           - docker push $QUERY_IMAGE_NAME
           - docker push $NGINX_IMAGE_NAME
           

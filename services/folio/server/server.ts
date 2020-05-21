@@ -11,7 +11,7 @@ if (cluster.isMaster) {
   console.log('Master cluster setting up ' + numWorkers + ' workers...');
 
   // Fork the process and make clusters
-  for (let i = 0; i < numWorkers; i++) {
+  for (let i = 0; i < 1; i++) {
     cluster.fork();
   }
 
@@ -41,7 +41,10 @@ if (cluster.isMaster) {
   const server = http.createServer(app);
 
   // Import Sharedb connection
-  var wssShareDB = require('./utils/folio/wss-sharedb')(server);
+  var wssShareDB = require('./utils/folio/wss-sharedb')(server)
+
+  // Import Cursors connection
+  var wssCursors = require('./utils/folio/wss-cursors')(server);
 
   // Turn on the sockets to create the connection
   server.on('upgrade', (request, socket, head) => {
@@ -54,7 +57,13 @@ if (cluster.isMaster) {
       wssShareDB.handleUpgrade(request, socket, head, (ws) => {
         wssShareDB.emit('connection', ws)
       })
-    } else {
+    }
+    else if (pathname === '/cursors') {
+      wssCursors.handleUpgrade(request, socket, head, (ws) => {
+        wssCursors.emit('connection', ws);
+      }); 
+    }
+    else {
       socket.destroy()
     }
   });

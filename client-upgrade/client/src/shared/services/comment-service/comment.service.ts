@@ -16,29 +16,29 @@ export class CommentService {
    * This function is responsible for liking a comment
    * @param commentId
    */
-  like(commentId: string){
-    
+  like(commentId: string) {
+
     // Call the HTTP Request
     return this._http.post(this.baseURL + `/comments/like`, {}, {
-      params: {commentId}
+      params: { commentId }
     }).
-    toPromise()
+      toPromise()
   }
 
   /**
    * This function is responsible for unliking a comment
    * @param commentId
    */
-  unlike(commentId: string){
-    
+  unlike(commentId: string) {
+
     // Call the HTTP Request
     return this._http.post(this.baseURL + `/comments/unlike`, {}, {
-      params: {commentId}
+      params: { commentId }
     }).
-    toPromise()
+      toPromise()
   }
 
-  
+
   /**
    * This function is responsible for adding a new comment
    * @param postId 
@@ -46,12 +46,14 @@ export class CommentService {
    * @param contentMentions 
    * @param _highlighted_content_range 
    */
-  new(postId: any, content: any, contentMentions: any, _highlighted_content_range: any){
+  new(postId: any, content: any, contentMentions: any, _highlighted_content_range: any) {
     return this._http.post(this.baseURL + '/comments/new-comment', {
-      content, contentMentions,  _highlighted_content_range
+      content, contentMentions, _highlighted_content_range
     }, {
-      params: new HttpParams().set("postId", postId)
-    });
+      params: { 
+        postId : postId
+      }
+    }).toPromise()
   }
 
 
@@ -61,11 +63,11 @@ export class CommentService {
    * @param content 
    * @param contentMentions 
    */
-  edit(commentId: any, content: any, contentMentions: any){
+  edit(commentId: any, content: any, contentMentions: any) {
     return this._http.post(this.baseURL + '/edit-comment', {
       content, contentMentions
     }, {
-      params: {commentId}
+      params: { commentId }
     });
   }
 
@@ -74,9 +76,9 @@ export class CommentService {
    * This function is responsible for fetching a comment
    * @param commentId 
    */
-  getComment(commentId: any){
+  getComment(commentId: any) {
     return this._http.get(this.baseURL + '/get-comment', {
-      params: {commentId}
+      params: { commentId }
     });
   }
 
@@ -85,9 +87,9 @@ export class CommentService {
    * This function is responsible for fetching all comments
    * @param postId 
    */
-  getComments(postId: any){
+  getComments(postId: any) {
     return this._http.get(this.baseURL + '/comments', {
-      params: {postId}
+      params: { postId }
     })
   }
 
@@ -97,9 +99,9 @@ export class CommentService {
    * @param postId 
    * @param commentId 
    */
-  getNextComments(postId: any, commentId: any){
+  getNextComments(postId: any, commentId: any) {
     return this._http.get(this.baseURL + '/next-comments', {
-      params: {postId, commentId}
+      params: { postId, commentId }
     });
   }
 
@@ -108,9 +110,9 @@ export class CommentService {
    * This function is responsible for removing a comment
    * @param commentId 
    */
-  remove(commentId: any){
-    return this._http.post(this.baseURL + '/remove-comment', {} , {
-      params: {commentId}
+  remove(commentId: any) {
+    return this._http.post(this.baseURL + '/remove-comment', {}, {
+      params: { commentId }
     });
   }
 
@@ -119,9 +121,9 @@ export class CommentService {
    * This function is used to mark a comment as read
    * @param commentId 
    */
-  markRead(commentId: any){
+  markRead(commentId: any) {
     this._http.post(this.baseURL + '/mark-read', {}, {
-      params: {commentId}
+      params: { commentId }
     });
   }
 }
