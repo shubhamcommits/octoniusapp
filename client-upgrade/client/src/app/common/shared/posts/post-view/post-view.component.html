@@ -18,7 +18,7 @@
                         {{ (post?.created_date | date : 'medium') || ( this.date | date: 'medium') }}</span>
                 </h6>
 
-                <p *ngIf="isGlobal==true">{{ post?._group.group_name }}</p>
+                <div *ngIf="isGlobal==true" class="grouplabel">{{ post?._group.group_name }}</div>
 
                 <!-- Event Assignee detail starts -->
                 <section *ngIf="post?.type === 'event'">
@@ -114,7 +114,7 @@
 
         </div>
         <!-- Tags Display ends -->
-
+       
         <!-- Post Actions starts -->
         <app-post-actions *ngIf="post && userData" [post]="post" [userData]="userData" (delete)="deletePost($event)">
         </app-post-actions>
