@@ -802,3 +802,10 @@ input {
   vertical-align: baseline;
   // margin-top: 14px;
 }
+
+@media (max-width: 575.98px) { 
+  .hidden-xs-down{
+    display: none;
+  }
+
+ }
