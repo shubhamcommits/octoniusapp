@@ -1,4 +1,21 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Injector } from '@angular/core';
+
+import { ActivatedRoute } from '@angular/router';
+
+// Public Functions
+import { PublicFunctions } from 'src/app/dashboard/public.functions';
+
+// Reconnecting WebSockets
+import ReconnectingWebSocket from 'reconnecting-websocket'
+
+// ShareDB Client
+import * as ShareDB from 'sharedb/lib/client'
+
+// Register the Types of the Sharedb
+ShareDB.types.register(require('rich-text').type);
+
+// Environment Variables
+import { environment } from 'src/environments/environment';
 
 // Highlight.js 
 import * as hljs from 'highlight.js';
@@ -20,6 +37,10 @@ import QuillCursors from 'quill-cursors';
 // Register Quill Cursor Module
 Quill.register('modules/cursors', QuillCursors);
 
+// Subsink Class
+import { SubSink } from 'subsink';
+
+
 @Component({
   selector: 'app-folio-editor',
   templateUrl: './folio-editor.component.html',
@@ -27,7 +48,10 @@ Quill.register('modules/cursors', QuillCursors);
 })
 export class FolioEditorComponent implements OnInit {
 
-  constructor() {
+  constructor(
+    private _Injector: Injector,
+    private _ActivatedRoute: ActivatedRoute
+  ) {
 
     // Initialise the modules in constructor
     this.modules = {
@@ -36,27 +60,67 @@ export class FolioEditorComponent implements OnInit {
       cursors: {
         hideDelayMs: 5000,
         hideSpeedMs: 0,
-        transformOnTextChange: true
+        transformOnTextChange: true,
+        autoRegisterListener: false
+      },
+      history: {
+        userOnly: true
       }
     }
   }
 
   // EditorId variable
-  @Input('editorId') editorId: any = 'normal-editor';
+  @Input('editorId') editorId: any = 'normal-editor'
 
   // ShowToolbar variable
-  @Input('toolbar') toolbar = true;
+  @Input('toolbar') toolbar = true
 
   // Quill instance variable
-  quill: any;
+  quill: any
 
   // Quill modules variable
-  modules: any;
+  modules: any
 
-  ngOnInit() {
+  // Public functions class member
+  publicFunctions = new PublicFunctions(this._Injector)
+
+  // User Data Variable
+  userData: any
+
+  // ShareDB Variable
+  shareDBSocket: any
+
+  // Websocket Options
+  webSocketOptions = {
+    WebSocket: undefined,
+    maxReconnectionDelay: 10000,
+    minReconnectionDelay: 1000 + Math.random() * 4000,
+    reconnectionDelayGrowFactor: 1.3,
+    minUptime: 5000,
+    connectionTimeout: 4000,
+    maxRetries: Infinity,
+    debug: false,
   }
 
-  ngAfterViewInit() {
+  // Folio Variable
+  folio: any
+
+  // Folio ID Variable
+  folioId = this._ActivatedRoute.snapshot.paramMap.get('id')
+
+  // SubSink Variable
+  subSink = new SubSink();
+
+  ngOnInit() {
+
+    // Initialise the connection for folio
+    this.initializeConnection()
+  }
+
+  async ngAfterViewInit() {
+
+    // Fetch User Data
+    this.userData = await this.publicFunctions.getCurrentUser()
 
     // Set the Status of the toolbar
     this.modules.toolbar = (this.toolbar === false) ? false : this.quillFullToolbar()
@@ -64,10 +128,62 @@ export class FolioEditorComponent implements OnInit {
     // Initialise quill editor
     this.quill = this.quillEditor(this.modules)
 
-    let cursor = this.createCursor(this.quill)
+    // Create the Cursor
+    let cursor = this.createCursor(this.quill, this.userData)
 
-    console.log(cursor)
+    // this.folio = new ShareDB.doc
 
+    // this.initializeFolio(this.folio, this.quill)
+
+  }
+
+  /**
+   * This fuction is responsible for initialising the connection to sharedb backend
+   */
+  initializeConnection() {
+
+    // Connect with the Socket Backend
+    this.shareDBSocket = new ReconnectingWebSocket(environment.FOLIO_BASE_URL + '/folio', [], this.webSocketOptions)
+
+    // Initialise the Realtime DB Connection 
+    let shareDBConnection = new ShareDB.Connection(this.shareDBSocket)
+
+    // Initialise the Folio Document
+    // doc = shareDBConnection.get('documents', this.folioId)
+
+    var doc = shareDBConnection.get('documents', this.folioId);
+
+    console.log(doc.id)
+
+    console.log(doc.type)
+
+    console.log(doc.data)
+
+    console.log(doc)
+
+    // doc.create([]);
+
+    // doc.subscribe(function(err) {
+    //   if (err) throw err;
+
+    //   if (!doc.data)
+    //     doc.create([{
+    //       insert: '\n'
+    //     }], 'rich-text');
+
+    //   // var quill = new Quill('#editor', {theme: 'snow'});
+    //   this.quill.setContents(doc.data);
+    //   this.quill.on('text-change', function(delta, oldDelta, source) {
+    //     if (source !== 'user') return;
+    //     doc.submitOp(delta, {source: this.quill});
+    //   });
+    //   doc.on('op', function(op, source) {
+    //     if (source === this.quill) return;
+    //     this.quill.updateContents(op);
+    //   });
+    // });
+
+    
   }
 
   /**
@@ -104,13 +220,82 @@ export class FolioEditorComponent implements OnInit {
     ]
   }
 
-  createCursor(quill: Quill){
+  /**
+   * This function is responsible for creating the cursor
+   * @param quill 
+   * @param user 
+   */
+  createCursor(quill: Quill, user: any) {
 
     // Get the Cursor Module
     let cursorModule = quill.getModule('cursors')
 
-    return cursorModule.createCursor('cursor', 'User 2', 'blue');
+    // Return Cursor Name
+    return cursorModule.createCursor(user._id, user.full_name, 'blue');
 
+  }
+
+  /**
+   * This function is responsible for fetching the folio
+   * @param folio 
+   */
+  initializeFolio(folio: any, quill: Quill) {
+
+    console.log(this.folio, this.quill)
+
+    // Subscribe to the folio data and update the quill instance with the data
+    folio.subscribe(async () =>{
+
+      if (!folio.type)
+        folio.create();
+
+      // if (!folio.type)
+
+      // update editor contents
+      // quill.setContents(folio.data)
+
+    })
+  }
+
+  handleFolio(folio: any, user: any, quill: Quill) {
+
+    // local -> server
+    quill.on('text-change', (delta: any, oldDelta, source) => {
+      if (source == 'user') {
+        var formattingDelta = delta.reduce(function (check, op) {
+          return (op.insert || op.delete) ? false : check;
+        }, true);
+
+        // If it's not a formatting-only delta, collapse local selection
+        delta.userId = user._id;
+
+        folio.submitOp(delta, {
+          source: this.quill
+        }, (err: any) => {
+          if (err)
+            console.error('Submit OP returned an error:', err);
+        });
+      }
+      else if (source == 'api') {
+        // console.log("An API action triggered this change.");
+      }
+    })
+
+    // server -> local
+    folio.on('op', function (op, source) {
+      if (source !== this.quill) {
+        this.quill.updateContents(op);
+      }
+    })
+  }
+
+
+  /**
+   * This function is responsible for closing the socket on destroying the component
+   */
+  ngOnDestroy() {
+    this.subSink.unsubscribe();
+    this.shareDBSocket.close();
   }
 
 }

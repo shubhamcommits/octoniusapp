@@ -77,7 +77,10 @@ export const environment = {
   UTILITIES_FILES_UPLOADS: 'http://localhost:10000/uploads/files',
   UTILITIES_POSTS_UPLOADS: 'http://localhost:10000/uploads/posts',
   UTILITIES_USERS_UPLOADS: 'http://localhost:10000/uploads/users',
-  UTILITIES_WORKSPACES_UPLOADS: 'http://localhost:10000/uploads/workspaces'
+  UTILITIES_WORKSPACES_UPLOADS: 'http://localhost:10000/uploads/workspaces',
+
+  // Folio URLs
+  FOLIO_BASE_URL: 'ws://localhost:11000'
 };
 
 

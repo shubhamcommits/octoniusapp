@@ -68,5 +68,8 @@ export const environment = {
   UTILITIES_FILES_UPLOADS: 'https://flash.octonius.com/uploads/files',
   UTILITIES_POSTS_UPLOADS: 'https://flash.octonius.com/uploads/posts',
   UTILITIES_USERS_UPLOADS: 'https://flash.octonius.com/uploads/users',
-  UTILITIES_WORKSPACES_UPLOADS: 'https://flash.octonius.com/uploads/workspaces'
+  UTILITIES_WORKSPACES_UPLOADS: 'https://flash.octonius.com/uploads/workspaces',
+
+  // Folio URLs
+  FOLIO_BASE_URL: 'wss://flash.octonius.com/folio'
 };

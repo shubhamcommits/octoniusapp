@@ -50,12 +50,12 @@ if (cluster.isMaster) {
     const pathname = url.parse(request.url).pathname;
 
     // If path is sharedb, then emit the connection
-    if (pathname === '/sharedb') {
+    if (pathname === '/folio') {
       wssShareDB.handleUpgrade(request, socket, head, (ws) => {
-        wssShareDB.emit('connection', ws);
-      });
+        wssShareDB.emit('connection', ws)
+      })
     } else {
-      socket.destroy();
+      socket.destroy()
     }
   });
 
