@@ -62,11 +62,11 @@ export class CommentService {
    * @param contentMentions 
    */
   edit(commentId: any, content: any, contentMentions: any){
-    return this._http.post(this.baseURL + '/edit-comment', {
+    return this._http.post(this.baseURL + '/comments/edit-comment', {
       content, contentMentions
     }, {
       params: {commentId}
-    });
+    }).toPromise();
   }
 
 
@@ -75,9 +75,9 @@ export class CommentService {
    * @param commentId 
    */
   getComment(commentId: any){
-    return this._http.get(this.baseURL + '/get-comment', {
+    return this._http.get(this.baseURL + '/comments/get-comment', {
       params: {commentId}
-    });
+    }).toPromise();
   }
 
 
@@ -86,9 +86,9 @@ export class CommentService {
    * @param postId 
    */
   getComments(postId: any){
-    return this._http.get(this.baseURL + '/comments', {
+    return this._http.get(this.baseURL + '/comments/comments', {
       params: {postId}
-    })
+    }).toPromise();
   }
 
 
@@ -98,9 +98,9 @@ export class CommentService {
    * @param commentId 
    */
   getNextComments(postId: any, commentId: any){
-    return this._http.get(this.baseURL + '/next-comments', {
+    return this._http.get(this.baseURL + '/comments/next-comments', {
       params: {postId, commentId}
-    });
+    }).toPromise();
   }
 
 
@@ -109,9 +109,9 @@ export class CommentService {
    * @param commentId 
    */
   remove(commentId: any){
-    return this._http.post(this.baseURL + '/remove-comment', {} , {
+    return this._http.post(this.baseURL + '/comments/remove-comment', {} , {
       params: {commentId}
-    });
+    }).toPromise();
   }
 
 
@@ -120,8 +120,8 @@ export class CommentService {
    * @param commentId 
    */
   markRead(commentId: any){
-    this._http.post(this.baseURL + '/mark-read', {}, {
+    this._http.post(this.baseURL + '/comments/mark-read', {}, {
       params: {commentId}
-    });
+    }).toPromise();
   }
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { CommentService } from 'src/shared/services/comment-service/comment.service';
 
 @Component({
   selector: 'app-post-actions',
@@ -7,7 +8,9 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class PostActionsComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private commentService: CommentService
+  ) { }
 
   // Post Input
   @Input('post') post: any;
@@ -55,6 +58,13 @@ export class PostActionsComponent implements OnInit {
    * Fetch Comments
    */
   fetchComments() {
+    if (this.showComments==false){
+      this.commentService.getComments(this.post._id).then((res)=>{
+        this.comments = res['comments'];
+      }).catch((err)=>{
+        console.log(err);
+      })
+    }
     if (this.post.comments.length > 0){
       this.showComments = !this.showComments
     }
