@@ -18,6 +18,8 @@
                         {{ (post?.created_date | date : 'medium') || ( this.date | date: 'medium') }}</span>
                 </h6>
 
+                <p *ngIf="isGlobal==true">{{ post?._group.group_name }}</p>
+
                 <!-- Event Assignee detail starts -->
                 <section *ngIf="post?.type === 'event'">
                     <span class="assigned" *ngIf="!eventAssignedToAll(post)">Assigned

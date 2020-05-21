@@ -25,6 +25,8 @@ export class PostViewComponent implements OnInit {
   // User Data Object
   @Input('userData') userData: any;
 
+  @Input('globalFeed') isGlobal: boolean = false;
+
   // Delete Post Event Emitter
   @Output('delete') delete = new EventEmitter()
 
