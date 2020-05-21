@@ -3,12 +3,12 @@
         <div class="card-block">
 
             <!-- Group Information Header starts -->
-            <h6 class="card-title" *ngIf="!myWorkplace"><b>Group Info</b>
+            <h6 class="card-title" *ngIf="!myWorkplace" style="margin-bottom: -10px;"><b>Group Info</b>
 
                 <!-- Edit Group Details starts -->
-                <button *ngIf="userData.role != 'member'" type="button" name="button" class="btn btn-link"
+                <button *ngIf="userData.role != 'member'" type="button" name="button" class="btn btn-link" style="margin-top: -10px;" 
                 (click)="this.editGroupDetails(openModal('Update Group Information!', '/assets/images/user-professional-info.svg'))">
-                    <i class="material-icons">create</i>
+                    <i class="material-icons-outlined">create</i>
                 </button>
                 <!-- Edit Group Details ends -->
 
