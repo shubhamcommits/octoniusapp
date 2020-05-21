@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 import { CommentService } from 'src/shared/services/comment-service/comment.service';
+import { rejects } from 'assert';
 
 @Component({
   selector: 'comment-section',
@@ -20,6 +21,8 @@ export class CommentSectionComponent implements OnInit {
 
   // User Data Variable
   @Input('userData') userData: any
+
+  @Input('postId') postId: any;
 
   // Comment Emitter
   @Output('comment') comment: any = new EventEmitter()
@@ -71,9 +74,14 @@ export class CommentSectionComponent implements OnInit {
 
     // Set the values of the array
     this._content_mentions = Array.from(new Set(this._content_mentions))
-    // Output the Comment
-    this.comment.emit(comment)
-  
+    new Promise((resolve, reject)=>{
+      this.commentService.new(this.postId, comment.content, this._content_mentions, []).toPromise().then((res)=>{
+        console.log(res);
+        // Output the Comment
+        this.comment.emit(comment)
+        resolve()
+      })
+    })
   }
 
 }

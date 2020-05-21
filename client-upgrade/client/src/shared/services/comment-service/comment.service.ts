@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -19,7 +19,9 @@ export class CommentService {
   like(commentId: string){
     
     // Call the HTTP Request
-    return this._http.post(this.baseURL + `/${commentId}/like`, '').
+    return this._http.post(this.baseURL + `/comments/like`, {}, {
+      params: {commentId}
+    }).
     toPromise()
   }
 
@@ -30,7 +32,9 @@ export class CommentService {
   unlike(commentId: string){
     
     // Call the HTTP Request
-    return this._http.post(this.baseURL + `/${commentId}/unlike`, '').
+    return this._http.post(this.baseURL + `/comments/unlike`, {}, {
+      params: {commentId}
+    }).
     toPromise()
   }
 
@@ -43,10 +47,10 @@ export class CommentService {
    * @param _highlighted_content_range 
    */
   new(postId: any, content: any, contentMentions: any, _highlighted_content_range: any){
-    return this._http.post(this.baseURL + '/new-comment', {
+    return this._http.post(this.baseURL + '/comments/new-comment', {
       content, contentMentions,  _highlighted_content_range
     }, {
-      params: {postId}
+      params: new HttpParams().set("postId", postId)
     });
   }
 

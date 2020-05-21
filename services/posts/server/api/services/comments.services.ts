@@ -18,10 +18,10 @@ import moment from 'moment';
         try {
           const {
             userId,
-            params: { postId },
+            query: { postId },
             body: { content, contentMentions,  _highlighted_content_range}
           } = req;
-      
+          console.log(postId);
           // Generate comment data
           const commentData = {
             content,
@@ -88,7 +88,7 @@ import moment from 'moment';
         try {
           const {
             userId,
-            params: { commentId },
+            query: { commentId },
             body: { content, contentMentions }
           } = req;
       

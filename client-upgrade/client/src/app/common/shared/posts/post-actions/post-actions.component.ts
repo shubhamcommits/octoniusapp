@@ -55,8 +55,9 @@ export class PostActionsComponent implements OnInit {
    * Fetch Comments
    */
   fetchComments() {
-    if (this.post.comments.length > 0)
+    if (this.post.comments.length > 0){
       this.showComments = !this.showComments
+    }
   }
 
   hideCommentEditor(emiterState: string) {
@@ -74,6 +75,7 @@ export class PostActionsComponent implements OnInit {
   newComment(comment: any) {
     this.comments.unshift(comment)
     this.post.comments = this.comments
+    console.log(this.comments);
   }
 
   removeComment(index: number){

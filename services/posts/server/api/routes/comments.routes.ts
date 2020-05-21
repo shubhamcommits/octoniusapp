@@ -1,8 +1,20 @@
 import express from 'express';
 import { CommentsController } from '../controllers';
+import { Auths, postFileHandler } from '../utils';
 
 const router = express.Router();
 const commentsController = new CommentsController();
+
+// Define auths helper controllers
+const auths = new Auths();
+
+// -| AUTHENTICATION |-
+
+// Verify the token
+router.use(auths.verifyToken);
+
+// Checks whether the current user is loggedIn or not
+router.use(auths.isLoggedIn);
 
 // This route is used to add a new comment
 router.post('/new-comment', commentsController.addComment);
