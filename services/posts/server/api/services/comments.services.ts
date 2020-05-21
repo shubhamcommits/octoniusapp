@@ -295,7 +295,8 @@ import moment from 'moment';
           }, {
               $addToSet: {
                 _liked_by: userId
-              }
+              }, 
+              $inc: { likes_count: 1 }
             }, {
               new: true
             })
@@ -327,7 +328,8 @@ import moment from 'moment';
           }, {
               $pull: {
                 _liked_by: userId
-              }
+              }, 
+              $inc: { likes_count: -1 }
             }, {
               new: true
             })

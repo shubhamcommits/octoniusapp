@@ -34,22 +34,22 @@ export class LikeCommentComponent implements OnInit {
 
     // Call the Service Function to like a comment
     // this.onLikeComment(this.comment._id);
+    this.onLikeComment();
   }
 
   /**
    * This function is responsible for calling the HTTP request to like a comment
-   * @param commentId 
    */
-  onLikeComment(commentId: string) {
+  onLikeComment() {
 
     // comment Service Instance
     let commentService = this._Injector.get(CommentService)
 
     // Return a new promise to call the service function
     return new Promise((resolve, reject) => {
-      commentService.like(commentId)
+      commentService.like(this.comment._id)
         .then((res) => {
-          resolve(res);
+          resolve();
         })
         .catch((err) => {
           reject()
@@ -72,7 +72,7 @@ export class LikeCommentComponent implements OnInit {
     this.comment.likes_count -= 1
 
     // Call the Service Function to unlike a comment
-    // this.onUnlikeComment(this.comment._id);
+    this.onUnlikeComment(this.comment._id);
   }
 
   /**

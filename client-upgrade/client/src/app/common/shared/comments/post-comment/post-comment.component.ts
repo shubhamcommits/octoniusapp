@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild, Injector } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { CommentService } from 'src/shared/services/comment-service/comment.service';
 
 @Component({
   selector: 'post-comment',
@@ -48,6 +49,8 @@ export class PostCommentComponent implements OnInit {
   // Quill Data 
   quillData: any;
 
+  _content_mentions: any;
+
   ngOnInit() {
   }
 
@@ -62,6 +65,20 @@ export class PostCommentComponent implements OnInit {
   saveCommentData() {
     this.comment.content = JSON.stringify(this.quillData.contents)
     this.displayCommentEditor = false
+    let commentService = this.injector.get(CommentService);
+    this._content_mentions = this.quillData.mention.users.map((user)=> user.insert.mention.id)
+
+    // If content mentions has 'all' then only pass 'all' inside the array
+    if(this._content_mentions.includes('all'))
+      this._content_mentions = ['all']
+
+    // Set the values of the array
+    this._content_mentions = Array.from(new Set(this._content_mentions))
+    commentService.edit(this.comment._id, this.comment.content, this._content_mentions).then((res)=>{
+      console.log(res);
+    }).catch((err)=>{
+      console.log(err);
+    })
   }
 
   deleteComment(index: number) {
@@ -73,8 +90,12 @@ export class PostCommentComponent implements OnInit {
     utilityService.getConfirmDialogAlert()
       .then((result) => {
         if (result.value) {
-          this.remove.emit(index)
-          utilityService.warningNotification('Comment Removed!');
+          let commentService = this.injector.get(CommentService);
+          commentService.remove(this.comment._id).then((res)=>{
+            console.log(res);
+            this.remove.emit(index)
+            utilityService.warningNotification('Comment Removed!');
+          })
         }
       })
   }
