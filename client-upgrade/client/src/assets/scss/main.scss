@@ -17,7 +17,7 @@
 @import "scrollbar.scss";
 
 $font-size-base: 16px;
-$body-bg: #f3f4f6;
+// $body-bg: #f3f4f6;
 
 /* COMPONENT CSS */
 
@@ -50,7 +50,7 @@ app-loading-spinner {
 /* COMPONENT CSS */
 
 body {
-  background-color: $body-bg !important ;
+  background-color: $body-bg !important;
   font-size: $font-size-base;
   font-family: $font-family-base !important;
   font-weight: 400;
