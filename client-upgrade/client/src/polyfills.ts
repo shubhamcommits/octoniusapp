@@ -57,6 +57,14 @@
  */
 import 'zone.js/dist/zone';  // Included with Angular CLI.
 
+// Imported Process to be able to support the implementation of nextTick in the Browserify bundle
+import * as process from 'process';
+
+// Adding Process to the Window
+window['process'] = process;
+
+(window as any).global = window
+
 
 /***************************************************************************************************
  * APPLICATION IMPORTS

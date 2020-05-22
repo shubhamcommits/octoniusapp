@@ -120,7 +120,7 @@ export class FolioEditorComponent implements OnInit {
   async ngAfterViewInit() {
 
     // Fetch User Data
-    this.userData = await this.publicFunctions.getCurrentUser()
+    // this.userData = await this.publicFunctions.getCurrentUser()
 
     // Set the Status of the toolbar
     this.modules.toolbar = (this.toolbar === false) ? false : this.quillFullToolbar()
@@ -129,10 +129,9 @@ export class FolioEditorComponent implements OnInit {
     this.quill = this.quillEditor(this.modules)
 
     // Create the Cursor
-    let cursor = this.createCursor(this.quill, this.userData)
+    // let cursor = this.createCursor(this.quill, this.userData);
 
-    // this.folio = new ShareDB.doc
-
+    // 
     this.initializeFolio(this.folio, this.quill)
 
   }
@@ -143,13 +142,13 @@ export class FolioEditorComponent implements OnInit {
   initializeConnection() {
 
     // Connect with the Socket Backend
-    this.shareDBSocket = new ReconnectingWebSocket(environment.FOLIO_BASE_URL + '/folio', [], this.webSocketOptions)
+    this.shareDBSocket = new ReconnectingWebSocket(environment.FOLIO_BASE_URL + '/editor', [], this.webSocketOptions)
 
     // Initialise the Realtime DB Connection 
     let shareDBConnection = new ShareDB.Connection(this.shareDBSocket)
 
     // Return the Document with the respective folioId
-    return shareDBConnection.get('documents', this.folioId);  
+    return shareDBConnection.get('documents', this.folioId);
   }
 
   /**
@@ -207,18 +206,36 @@ export class FolioEditorComponent implements OnInit {
    */
   initializeFolio(folio: any, quill: Quill) {
 
-    console.log(folio, quill)
-
     // Subscribe to the folio data and update the quill instance with the data
-    folio.subscribe(async () =>{
+    folio.subscribe(async () => {
 
       if (!folio.type)
         folio.create([{
           insert: '\n'
         }], 'rich-text');
-    
+
       // update editor contents
       quill.setContents(folio.data)
+
+      // local -> server
+      quill.on('text-change', function (delta, oldDelta, source) {
+        if (source == 'user') {
+
+          folio.submitOp(delta, {
+            source: quill
+          }, function (err) {
+            if (err)
+              console.error('Submit OP returned an error:', err);
+          });
+
+        }
+      });
+
+      // server -> local
+      folio.on('op', function (op, source) {
+        if (source === quill) return;
+        quill.updateContents(op);
+      });
 
     })
   }

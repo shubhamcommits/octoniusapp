@@ -49,8 +49,7 @@ const routes: Routes = [
   {
     path: 'document',
     loadChildren: () => import('modules/folio/folio.module')
-      .then((module) => module.FolioModule),
-    canActivate: [AuthenticationGuard]
+      .then((module) => module.FolioModule)
   },
 
   // NOT FOUND ROUTE
