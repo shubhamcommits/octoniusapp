@@ -122,7 +122,7 @@ export class FolioEditorComponent implements OnInit {
     this.folio = this.initializeConnection()
 
 
-    document.body.style.background = '#ffffff'
+    document.body.style.setProperty('background', '#ffffff', 'important')
 
   }
 
