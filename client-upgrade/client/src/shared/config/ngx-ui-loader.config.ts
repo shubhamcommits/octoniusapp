@@ -13,7 +13,7 @@ export const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     "fgsSize": 100,
     "fgsType": "three-strings",
     "gap": 24,
-    "logoUrl":"/assets/images/white-logo.png",
+    "logoUrl":"assets/images/white-logo.png",
     "logoPosition": "bottom-right",
     "logoSize": 80,
     "overlayColor": "rgb(0, 95, 213, 1.0)",

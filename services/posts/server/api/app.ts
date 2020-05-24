@@ -21,6 +21,9 @@ else {
 // Initiliazing Database Connection
 require('../db');
 
+// Adding The 'body-parser' middleware only handles JSON and urlencoded data
+app.use(express.json())
+
 // cors middleware for orign and Headers
 app.use(cors());
 

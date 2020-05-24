@@ -19,6 +19,9 @@ else {
 // cors middleware for orign and Headers
 app.use(cors());
 
+// Adding The 'body-parser' middleware only handles JSON and urlencoded data
+app.use(express.json())
+
 // Use Morgan middleware for logging every request status on console
 app.use(morgan('dev'));
 

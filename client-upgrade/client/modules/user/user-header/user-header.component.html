@@ -1,10 +1,10 @@
 <div class="container" style="margin-bottom: 30px">
     <div class="media user-sticky-card">
         <img *ngIf="!isCurrentUser && userData" class="mr-3 feed-avatar" src="{{BASE_URL}}/{{userData?.profile_pic}}"
-            onerror="this.src='/assets/images/user.png'">
+            onerror="this.src='assets/images/user.png'">
 
         <img *ngIf="isCurrentUser && userData" class="mr-3 feed-avatar" src="{{BASE_URL}}/{{userData?.profile_pic}}"
-            onerror="this.src='/assets/images/user.png'" (click)="openUserDetails(content)"
+            onerror="this.src='assets/images/user.png'" (click)="openUserDetails(content)"
             placement="bottom" ngbTooltip="Change your avatar">
         <div class="media-body">
             <div>

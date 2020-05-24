@@ -1,6 +1,6 @@
 <!-- Assignee section for tasks starts -->
 <section [id]="post?._id" *ngIf="type === 'task'">
-    <img src="{{baseUrl}}/{{taskAssignee?.profile_pic}}" onerror="this.src='/assets/images/user.png'"
+    <img src="{{baseUrl}}/{{taskAssignee?.profile_pic}}" onerror="this.src='assets/images/user.png'"
         class="feed-avatar">
     <p *ngIf="assigned"><span *ngIf="showBar">Assigned to</span> <br>{{taskAssignee?.first_name}} <span *ngIf="!showBar">{{ taskAssignee?.last_name }}</span></p>
     <p *ngIf="!assigned">Unassigned</p>

@@ -54,6 +54,27 @@ export class FilesService {
   }
 
   /**
+   * This function is responsible for fetching the file details on the basis of the fileId
+   * @param fileId 
+   */
+  getOne(fileId: string){
+    if(fileId)
+      return this._http.get(this.baseURL + `/files/${fileId}`).toPromise()
+  }
+
+  /**
+   * This function is responsible for editing the file details on the basis of the fileId
+   * @param fileId 
+   * @param file
+   */
+  edit(fileId: string, file: any){
+    if(fileId)
+      return this._http.put(this.baseURL + `/files/${fileId}`, {
+          file: file
+      }).toPromise()
+  }
+
+  /**
    * This function is responsible searching files inside of a group
    * @param groupId 
    * @param query 

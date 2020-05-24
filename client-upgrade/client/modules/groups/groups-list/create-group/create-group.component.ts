@@ -54,7 +54,7 @@ export class CreateGroupComponent implements OnInit {
    * This function creates the new normal group
    */
   async openCreateGroupModal() {
-    const { value: value } = await this.openModal('Create Group', '/assets/images/create-group.svg');
+    const { value: value } = await this.openModal('Create Group', 'assets/images/create-group.svg');
     if (value) {
       this.utilityService.asyncNotification('Please wait, while we are creating group for you...', new Promise((resolve, reject) => {
         this.createGroup(value, this.workspaceData['workspace_name'], this.workspaceData['_id'], this.userData['_id'], 'normal')
@@ -76,7 +76,7 @@ export class CreateGroupComponent implements OnInit {
    * This function creates the new agora group
    */
   async openCreateAgoraModal(){
-    const { value: value } = await this.openModal('Create Agora', '/assets/images/create-agora.svg');
+    const { value: value } = await this.openModal('Create Agora', 'assets/images/create-agora.svg');
     if(value){
       this.utilityService.asyncNotification('Please wait, while we are creating agora for you...', new Promise((resolve, reject) => {
         this.createGroup(value, this.workspaceData['workspace_name'], this.workspaceData['_id'], this.userData['_id'], 'agora')
@@ -99,7 +99,7 @@ export class CreateGroupComponent implements OnInit {
    * This function creates the new smart group
    */
   async openCreateSmartGroupModal(){
-    const { value: value } = await this.openModal('Create Smart Group', '/assets/images/create-smartgroup.svg');
+    const { value: value } = await this.openModal('Create Smart Group', 'assets/images/create-smartgroup.svg');
     if(value){
       this.utilityService.asyncNotification('Please wait, while we are creating smart group for you...', new Promise((resolve, reject) => {
         this.createGroup(value, this.workspaceData['workspace_name'], this.workspaceData['_id'], this.userData['_id'], 'smart')

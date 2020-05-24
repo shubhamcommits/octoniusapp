@@ -41,6 +41,70 @@ export class FilesControllers {
     }
 
     /**
+     * This function is responsible for fetching a file details
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async getOne(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            // Fetch the fileId from the request
+            let { fileId } = req.params
+
+            // If fileId is not found, then throw the error
+            if (!fileId)
+                return res.status(400).json({
+                    message: 'Please pass the fileId in the request params'
+                })
+
+            // Get File on the basis of the fileId
+            let file = await filesService.getOne(fileId)
+
+            // Send Status 200 response
+            return res.status(200).json({
+                message: 'File details retrieved!',
+                file: file
+            })
+
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for editing a file details
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async edit(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            // Fetch the fileId from the request
+            const { params: { fileId }, body: { file } } = req;
+
+            // If fileId is not found, then throw the error
+            if (!fileId)
+                return res.status(400).json({
+                    message: 'Please pass the fileId in the request params'
+                })
+
+            // Get File on the basis of the fileId
+            let fileData = await filesService.edit(fileId, file)
+
+            // Send Status 200 response
+            return res.status(200).json({
+                message: 'File details edited!',
+                file: fileData
+            })
+
+        } catch (err) {
+            return sendError(res, new Error('Internal Server Error!'), 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
      * This function is the boiler plate for adding files to the group
      * @param req 
      * @param res 

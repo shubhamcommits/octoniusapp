@@ -31,6 +31,9 @@ export class GroupFilesComponent implements OnInit {
   // Base Url of the files uploads
   filesBaseUrl = environment.UTILITIES_FILES_UPLOADS;
 
+  // Client Url of the global application
+  clientUrl = environment.clientUrl;
+
   // Current User Data
   userData: any;
 

@@ -16,6 +16,12 @@ routes.get('/groups', files.get);
 // GET - Search the files inside of a group
 routes.get('/search', files.search);
 
+// GET - Get details of a file on the basis of fileId
+routes.get('/:fileId', files.getOne);
+
+// PUT - Edit details of a file on the basis of fileId
+routes.put('/:fileId', files.edit)
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

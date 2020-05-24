@@ -1,0 +1,26 @@
+span {
+    cursor: pointer;
+}
+
+.input-search {
+    width: auto;
+    height: 38px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 21px;
+    border: none;
+    border-bottom: 1px solid #000000;
+  
+  }
+  
+  input:focus {
+    outline: none;
+    border-bottom: 1px solid royalblue;
+  }
+
+  nav{
+    -webkit-box-shadow: 1px 10px 28px -6px rgba(0,0,0,0.75);
+    -moz-box-shadow: 1px 10px 28px -6px rgba(0,0,0,0.75);
+    box-shadow: 1px 10px 28px -6px rgba(0,0,0,0.75);
+  }

@@ -40,7 +40,6 @@ Quill.register('modules/cursors', QuillCursors);
 // Subsink Class
 import { SubSink } from 'subsink';
 
-
 @Component({
   selector: 'app-folio-editor',
   templateUrl: './folio-editor.component.html',
@@ -52,6 +51,9 @@ export class FolioEditorComponent implements OnInit {
     private _Injector: Injector,
     private _ActivatedRoute: ActivatedRoute
   ) {
+
+    // Get the State of the ReadOnly
+    this.readOnly = this._ActivatedRoute.snapshot.queryParamMap.get('readOnly') == 'true' || false
 
     // Initialise the modules in constructor
     this.modules = {
@@ -108,19 +110,26 @@ export class FolioEditorComponent implements OnInit {
   // Folio ID Variable
   folioId = this._ActivatedRoute.snapshot.paramMap.get('id')
 
+  // Read Only State of the folio
+  readOnly = true
+
   // SubSink Variable
-  subSink = new SubSink();
+  subSink = new SubSink()
 
   ngOnInit() {
 
     // Initialise the connection for folio
     this.folio = this.initializeConnection()
+
+
+    document.body.style.background = '#ffffff'
   }
 
   async ngAfterViewInit() {
 
     // Fetch User Data
-    // this.userData = await this.publicFunctions.getCurrentUser()
+    if(!this.readOnly)
+      this.userData = await this.publicFunctions.getCurrentUser()
 
     // Set the Status of the toolbar
     this.modules.toolbar = (this.toolbar === false) ? false : this.quillFullToolbar()
@@ -129,7 +138,8 @@ export class FolioEditorComponent implements OnInit {
     this.quill = this.quillEditor(this.modules)
 
     // Create the Cursor
-    // let cursor = this.createCursor(this.quill, this.userData);
+    if(!this.readOnly)
+      var cursor = this.createCursor(this.quill, this.userData);
 
     // 
     this.initializeFolio(this.folio, this.quill)
@@ -164,6 +174,7 @@ export class FolioEditorComponent implements OnInit {
     return quill = new Quill(`#${this.editorId}`, {
       theme: 'bubble',
       modules: modules,
+      readOnly: this.readOnly,
       placeholder: 'Start typing here...'
     })
   }
@@ -218,12 +229,12 @@ export class FolioEditorComponent implements OnInit {
       quill.setContents(folio.data)
 
       // local -> server
-      quill.on('text-change', function (delta, oldDelta, source) {
+      quill.on('text-change', (delta, oldDelta, source) => {
         if (source == 'user') {
 
           folio.submitOp(delta, {
             source: quill
-          }, function (err) {
+          }, (err: Error) => {
             if (err)
               console.error('Submit OP returned an error:', err);
           });
@@ -232,7 +243,7 @@ export class FolioEditorComponent implements OnInit {
       });
 
       // server -> local
-      folio.on('op', function (op, source) {
+      folio.on('op', (op, source) => {
         if (source === quill) return;
         quill.updateContents(op);
       });

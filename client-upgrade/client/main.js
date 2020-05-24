@@ -22,7 +22,7 @@ function createWindow() {
       allowRunningInsecureContent: (serve) ? true : false,
     },
     icon: url.format({
-      pathname: path.join(__dirname, 'dist/icons.icns'),
+      pathname: path.join(__dirname, 'dist/favicon.png'),
       protocol: 'file:',
       slashes: true
     })

@@ -56,7 +56,7 @@
       <!-- USER PROFILE BADGE STARTS -->
       <a class="nav-link" *ngIf="this.userData">
         <img src="{{baseUrl}}/{{userData?.profile_pic}}" [routerLink]="['/dashboard', 'user', 'profile']"
-          [queryParams]="{ userId: userData?._id}" onerror="this.src='/assets/images/user.png'" class="topnav-avatar">
+          [queryParams]="{ userId: userData?._id}" onerror="this.src='assets/images/user.png'" class="topnav-avatar">
       </a>
       <!-- USER PROFILE BADGE ENDS -->
 

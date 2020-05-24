@@ -2,7 +2,7 @@
     <div class="media user-sticky-card">
 
         <img class="mr3 feed-avatar-big" *ngIf="groupData" (click)="openDetails(content)"
-            src="{{ baseUrl }}/{{ groupData?.group_avatar }}" onerror="this.src='/assets/images/icon-new-group.svg'"
+            src="{{ baseUrl }}/{{ groupData?.group_avatar }}" onerror="this.src='assets/images/icon-new-group.svg'"
             placement="bottom" ngbTooltip="Change this group's avatar">
 
         <ng-template #content let-modal>

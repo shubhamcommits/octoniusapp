@@ -5,7 +5,7 @@
 
             <!-- Image Avatar Starts -->
             <div class="col-md-1 ">
-                <img src="{{ baseUrl }}/{{post?._posted_by?.profile_pic}}" onerror="this.src='/assets/images/user.png'"
+                <img src="{{ baseUrl }}/{{post?._posted_by?.profile_pic}}" onerror="this.src='assets/images/user.png'"
                     class="feed-avatar ml-0" routerLink="/dashboard/user/profile"
                     [queryParams]="{ userId: post?._posted_by?._id }" />
             </div>

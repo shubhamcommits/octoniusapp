@@ -35,8 +35,17 @@ export class AuthenticationGuard implements CanActivate, CanActivateChild, CanLo
       return true;
 
     } else {
-      this.router.navigate(['/home'], { queryParams: { next, state } })
-      return false;
+
+      // If Document type has the readOnly mode to eb true
+      if(next.queryParamMap.get('readOnly') == 'true')
+        return true;
+
+      // Else Redirect the traffic to home page
+      else{
+        this.router.navigate(['/home'], { queryParams: { next, state } })
+        return false;
+      }
+
     }
 
 

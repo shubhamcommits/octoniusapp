@@ -39,6 +39,49 @@ export class FilesService {
     }
 
     /**
+     * This function is responsible for fetching files details
+     * @param fileId 
+     */
+    async getOne(fileId: string) {
+
+        if (fileId) {
+
+            // Find the file by Id
+            let file: any = await File.findById(fileId)
+
+            // Populate File Properties
+            file = this.populateFileProperties(file)
+
+            // Return file
+            return file;
+        }
+    }
+
+    /**
+     * This function is responsible for editing files details
+     * @param fileId 
+     */
+    async edit(fileId: string, fileData: any) {
+
+        if (fileId) {
+
+            // Find the file by Id
+            let file: any = await File.findByIdAndUpdate(fileId,
+                {
+                    $set: fileData
+                }, {
+                new: true
+            })
+
+            // Populate File Properties
+            file = this.populateFileProperties(file)
+
+            // Return file
+            return file;
+        }
+    }
+
+    /**
      * This function is responsible 
      * @param groupId 
      */
@@ -109,8 +152,8 @@ export class FilesService {
 
         // Fetch files on the basis of the params @lastPostId
         files = await File.find({
-                 _group: groupId ,
-                 original_name: { $regex: new RegExp(query, 'i') } 
+            _group: groupId,
+            original_name: { $regex: new RegExp(query, 'i') }
         })
             .sort('-_id')
             .limit(5)
