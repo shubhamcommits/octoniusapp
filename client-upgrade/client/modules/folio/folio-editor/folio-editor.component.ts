@@ -123,6 +123,7 @@ export class FolioEditorComponent implements OnInit {
 
 
     document.body.style.background = '#ffffff'
+
   }
 
   async ngAfterViewInit() {
@@ -175,7 +176,7 @@ export class FolioEditorComponent implements OnInit {
       theme: 'bubble',
       modules: modules,
       readOnly: this.readOnly,
-      placeholder: 'Start typing here...'
+      placeholder: 'Write something awesome...'
     })
   }
 
