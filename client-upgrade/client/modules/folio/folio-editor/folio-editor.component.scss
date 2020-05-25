@@ -5,12 +5,13 @@ body{
 
 .folio-container{
     padding-top: 90px;
-    // height: 100vh;
-    min-height: 80%;
-    background-color: #ffffff;
+    height: 100vh;
+    background-color: #ffffff !important;
     // -webkit-font-smoothing: antialiased;
     width: 100%;
     overflow-y: auto;
+    position: relative;
+    display: table;
 }
 
 .folio {
