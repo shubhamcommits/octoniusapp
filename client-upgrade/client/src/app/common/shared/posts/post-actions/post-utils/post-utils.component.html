@@ -6,7 +6,7 @@
 
     <!-- Menu Drawer Starts -->
     <ul class="dropdown-menu">
-        <li class="dropdown-item" [routerLink]="['/dashboard', 'groups', post?._group, 'post', post?._id]">
+        <li class="dropdown-item" [routerLink]="['/dashboard', 'groups', post?._group?._id || post?._group, 'post', post?._id]">
             <span>View</span>
         </li>
         <li class="dropdown-item" (click)="openEditPostModal(content)">

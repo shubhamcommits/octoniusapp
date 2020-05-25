@@ -1,6 +1,8 @@
-import { Component, OnInit, Injector } from '@angular/core';
+import { Component, OnInit, Injector, ViewChild, TemplateRef } from '@angular/core';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-myspace-tasks',
@@ -11,7 +13,8 @@ export class MyspaceTasksComponent implements OnInit {
 
   constructor(
     private injector: Injector,
-    private utilityService: UtilityService
+    private utilityService: UtilityService,
+    private modal: NgbModal,
   ) { }
 
   todayTasks: any = [];
@@ -19,13 +22,32 @@ export class MyspaceTasksComponent implements OnInit {
   overdueTasks: any = [];
   overdueAndTodayTasks = [];
 
+  userData: any
+
+  post: any;
+
+  // Modal Content 
+  @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>
+
+  // Public Functions
+  public publicFunctions = new PublicFunctions(this.injector)
+
   async ngOnInit() {
+
+    // Fetch the current user
+    this.userData = await this.publicFunctions.getCurrentUser();
+
     this.todayTasks = await this.getUserTodayTasks();
     this.thisWeekTasks = await this.getUserThisWeekTasks();
     this.overdueTasks = await this.getUserOverdueTasks();
 
     this.markOverdueTasks();
     this.overdueAndTodayTasks = this.overdueTasks.concat(this.todayTasks);
+  }
+
+  // Check if the data provided is not empty{}
+  checkDataExist(object: Object) {
+    return !(JSON.stringify(object) === JSON.stringify({}))
   }
 
   async getUserTodayTasks() {
@@ -72,6 +94,18 @@ export class MyspaceTasksComponent implements OnInit {
       task.overdue = true;
       return task;
     });
+  }
+
+  openModal(task) {
+
+    this.post = task;
+
+    // Open the Modal
+    this.modal.open(this.modalContent, { size: 'xl' });
+  }
+
+  ngOnDestroy(){
+    this.utilityService.closeAllModals()
   }
 
 }

@@ -191,6 +191,8 @@ import { LikeCommentComponent } from './comments/post-comment/like-comment/like-
 
     NgbTooltipModule,
 
+    NgbModalModule,
+
     LikeCommentComponent
   ]
 })

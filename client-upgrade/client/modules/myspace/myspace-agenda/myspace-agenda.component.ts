@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, Injector } from '@angular/core';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import moment from 'moment/moment';
+import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-myspace-agenda',
@@ -16,13 +19,46 @@ export class MyspaceAgendaComponent implements OnInit {
 
   now: Date = new Date();
 
-  constructor(private userService: UserService) {
+  userData: any
+
+  post: any;
+
+  // Modal Content 
+  @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>
+
+  // Public Functions
+  public publicFunctions = new PublicFunctions(this.injector)
+
+  constructor(
+    private userService: UserService,
+    private injector: Injector,
+    private utilityService: UtilityService,
+    private modal: NgbModal,) {
 
   }
 
   async ngOnInit() {
+    // Fetch the current user
+    this.userData = await this.publicFunctions.getCurrentUser();
     this.todayTimelineEvents = await this.getTodayTimelineEvents();
     this.thisWeekTimelineEvents = await this.getThisWeekTimelineEvents();
+  }
+
+  // Check if the data provided is not empty{}
+  checkDataExist(object: Object) {
+    return !(JSON.stringify(object) === JSON.stringify({}))
+  }
+
+  openModal(event) {
+
+    this.post = event;
+
+    // Open the Modal
+    this.modal.open(this.modalContent, { size: 'xl' });
+  }
+
+  ngOnDestroy(){
+    this.utilityService.closeAllModals()
   }
 
   getTodayTimelineEvents() {
