@@ -24,6 +24,21 @@ export class CreateColumnComponent implements OnInit {
   ngOnInit() {
   }
 
+  /**
+   * This function is responsible for enabling enter and espace function keys
+   * @param $event 
+   * @param column 
+   */
+  enableFunctionKeys($event: any){
+    if($event.keyCode == 13){
+      this.openCreateColumn()
+      this.showCreateColumn = false
+    } else if($event.keyCode == 27){
+      this.showCreateColumn = false;
+    }
+  }
+
+
   createNewColumn(title: string) {
     this.column.emit({
       title: title,

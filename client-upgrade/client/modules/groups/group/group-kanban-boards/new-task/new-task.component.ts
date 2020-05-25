@@ -32,6 +32,19 @@ export class NewTaskComponent implements OnInit {
   }
 
   /**
+   * This function is responsible for enabling enter and espace function keys
+   * @param $event 
+   * @param column 
+   */
+  newTask($event: any, column: any){
+    if($event.keyCode == 13){
+      this.createPost()
+    } else if($event.keyCode == 27){
+      column.addTask = false
+    }
+  }
+
+  /**
    * This function creates a new post in the activity
    */
   createPost() {
@@ -86,12 +99,12 @@ export class NewTaskComponent implements OnInit {
           post.emit(res['post'])
 
           // Resolve with success
-          resolve(utilityService.resolveAsyncPromise('Post Created!'))
+          resolve(utilityService.resolveAsyncPromise('Task Created!'))
         })
         .catch((err) => {
 
           // Catch the error and reject the promise
-          reject(utilityService.rejectAsyncPromise('Unable to create post, please try again!'))
+          reject(utilityService.rejectAsyncPromise('Unable to create new task, please try again!'))
         })
     }))
   }

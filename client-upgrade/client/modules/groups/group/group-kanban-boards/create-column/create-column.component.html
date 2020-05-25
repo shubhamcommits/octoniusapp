@@ -2,7 +2,7 @@
     <button class="btn btn-outline-primary" (click)="this.showCreateColumn = !this.showCreateColumn"> + New column</button>
     
     <div class="add-column" *ngIf="this.showCreateColumn">
-        <input class="form-control" type="text" placeholder="Column name" [(ngModel)]="newColumn">
+        <input class="form-control" type="text" placeholder="Column name" [(ngModel)]="newColumn" (keyup)="enableFunctionKeys($event)">
         <div class="container">
             <button class="col-md-4 btn btn-sm btn-primary"
                 (click)="this.showCreateColumn = !this.showCreateColumn; openCreateColumn()">Save</button>
