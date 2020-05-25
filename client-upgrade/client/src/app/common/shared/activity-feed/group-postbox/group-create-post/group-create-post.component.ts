@@ -379,7 +379,7 @@ export class GroupCreatePostComponent implements OnInit {
         this.dueTime.minute)
     }
 
-    const taskPost = {
+    const post = {
       title: this.title,
       type: this.type,
       content: this.quillData? JSON.stringify(this.quillData.contents) : this.postData.content,
@@ -388,7 +388,7 @@ export class GroupCreatePostComponent implements OnInit {
       _read_by: [],
       unassigned: this.postData.task.unassigned,
       date_due_to: this.dueDate,
-      _assigned_to: this.type == 'event' ? this.eventAssignees : this.postData.task._assigned_to,
+      assigned_to: this.type == 'event' ? this.eventAssignees : this.postData.task._assigned_to._id,
       _column: {
         title: this.postData.task._column.title
       },
@@ -399,7 +399,7 @@ export class GroupCreatePostComponent implements OnInit {
     let formData = new FormData();
 
     // Append Post Data
-    formData.append('post', JSON.stringify(taskPost))
+    formData.append('post', JSON.stringify(post))
 
     // Append all the file attachments
     if (this.files.length != 0) {
@@ -421,9 +421,10 @@ export class GroupCreatePostComponent implements OnInit {
         .then((res) => {
 
           // Emit the post to other components
-          let post = res['post'];
-          this.post.emit(post)
-          this.edited.emit(post);
+          // let post = res['post'];
+          this.post.emit(res)
+
+          this.edited.emit(res)
 
           this.closeModal();
 

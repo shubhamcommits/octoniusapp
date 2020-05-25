@@ -111,7 +111,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
 
     } else {
-      var post = event.previousContainer.data[event.previousIndex];
+      var post: any = event.previousContainer.data[event.previousIndex];
 
       // Update the task column when changed with dropping events to reflect back in the task view modal
       event.previousContainer.data[event.previousIndex]['task']._column.title = event.container.id
@@ -119,6 +119,9 @@ export class GroupKanbanBoardsComponent implements OnInit {
       // If new column is 'to do' then, set the status of the task to 'to do' as well
       if (event.container.id === 'to do') {
         event.previousContainer.data[event.previousIndex]['task'].status = 'to do'
+        
+        // Change the task status
+        this.publicFunctions.changeTaskStatus(post._id, 'to do')
       }
 
       // Call move task to a new column
@@ -353,7 +356,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
     task.task.due_to = moment(dueDate).format('YYYY-MM-DD')
   }
 
-  changeDetails(task: any, post: any){
+  changeDetails(task: any, post: any) {
 
     // Update task title
     task.title = post.title
@@ -393,7 +396,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
   /**
    * This function is responsible for closing the modals
    */
-  closeModal(){
+  closeModal() {
     this.utilityService.closeAllModals()
   }
 
