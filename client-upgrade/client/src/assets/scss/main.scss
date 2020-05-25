@@ -776,7 +776,15 @@ app-branding-panel {
 }
 .ql-editor ul[data-checked="true"] > li::before,
 .ql-editor ul[data-checked="false"] > li::before {
+  color: $lightgray !important;
+  font-size: 22px;
+  vertical-align: middle;
+}
+
+.ql-editor ul[data-checked="true"] > li,
+.ql-editor ul[data-checked="false"] > li{
   color: $dark-text !important;
+  margin: 2px 0 !important;
 }
 
 input {
