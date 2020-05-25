@@ -20,7 +20,7 @@ export class AttachFilesComponent implements OnInit {
   filesArray = new Array<File>()
 
   // Base URL for the uploads
-  baseUrl = environment.UTILITIES_BASE_URL
+  baseUrl = environment.UTILITIES_POSTS_UPLOADS
 
   ngOnInit() {
   }

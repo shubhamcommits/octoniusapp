@@ -74,7 +74,8 @@
                                               (taskStatus)="changeStatus(task, $event)"
                                               (member)="changeAssignee(task, $event)"
                                               (date)="changeDueDate(task, $event)"
-                                              (post)="changeDetails(task, $event)">
+                                              (post)="changeDetails(task, $event)"
+                                              (delete)="removeTask(column, $event)">
                                           </app-group-create-post>
                                       </ng-template>
                                     </div>

@@ -537,8 +537,9 @@ export class PostService {
    * This function is used to remove a post
    * @param { userId, postId }
    */
-  remove = async (userId, postId, ) => {
+  async remove (userId: string, postId: string ){
     try {
+
       // Get post data
       const post: any = await Post.findOne({
         _id: postId
@@ -558,15 +559,18 @@ export class PostService {
         // return sendErr(res, null, 'User not allowed to remove this post!', 403);
       }
 
-      await post.comments?.forEach(async (commentId) => {
-        try {
-          await Comment.findByIdAndRemove(commentId);
+      if(post.comments.length > 0){
+        await post.comments?.forEach(async (commentId) => {
+          try {
+            await Comment.findByIdAndRemove(commentId);
+  
+            return true;
+          } catch (err) {
+            throw (err);
+          }
+        })
+      }
 
-          return true;
-        } catch (err) {
-          throw (err);
-        }
-      });
       //delete files, this catches both document insertion as well as multiple file attachment deletes
       if (post.files?.length > 0) {
         //gather source file
@@ -607,7 +611,8 @@ export class PostService {
       //
       const postRemoved = await Post.findByIdAndRemove(postId);
 
-      return postRemoved;
+      return postRemoved
+
     } catch (err) {
       throw (err);
     }

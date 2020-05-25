@@ -4,7 +4,7 @@ import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'src/app/dashboard/public.functions';
 import moment from 'moment/moment';
-import {HotkeysService, Hotkey, HotkeyModule} from 'angular2-hotkeys';
+import { HotkeysService, Hotkey, HotkeyModule } from 'angular2-hotkeys';
 
 @Component({
   selector: 'app-group-create-post',
@@ -117,9 +117,12 @@ export class GroupCreatePostComponent implements OnInit {
   // Edited EVent Emitter - Emits edited event
   @Output('edited') edited = new EventEmitter();
 
+  // Delete Event Emitter - Emits delete event
+  @Output('delete') delete = new EventEmitter();
+
   ngOnInit() {
 
-    this.hotKeyService.add(new Hotkey(['meta+return', 'meta+enter'], (event: KeyboardEvent, combo: string):boolean=>{
+    this.hotKeyService.add(new Hotkey(['meta+return', 'meta+enter'], (event: KeyboardEvent, combo: string): boolean => {
       console.log('hotkey');
       this.createPost();
       return false;
@@ -169,11 +172,11 @@ export class GroupCreatePostComponent implements OnInit {
     if (this.edit) {
       if (event === this.title)
         this.showUpdateDetails = false
-      else{
+      else {
         this.showUpdateDetails = true
         this.title = event;
       }
-    } else if(this.edit === false) {
+    } else if (this.edit === false) {
       this.title = event
     }
   }
@@ -189,10 +192,10 @@ export class GroupCreatePostComponent implements OnInit {
     this.quillData = quillData
 
     // Filter the Mention users content and map them into arrays of Ids
-    this._content_mentions = this.quillData.mention.users.map((user)=> user.insert.mention.id)
+    this._content_mentions = this.quillData.mention.users.map((user) => user.insert.mention.id)
 
     // If content mentions has 'all' then only pass 'all' inside the array
-    if(this._content_mentions.includes('all'))
+    if (this._content_mentions.includes('all'))
       this._content_mentions = ['all']
 
     // Set the values of the array
@@ -223,9 +226,9 @@ export class GroupCreatePostComponent implements OnInit {
 
     this.member.emit(memberMap)
 
-    if(this.type == 'event'){
+    if (this.type == 'event') {
       this.eventMembersMap = memberMap;
-      this.eventAssignees = (this.eventMembersMap.has('all')) ? 'all' : Array.from( this.eventMembersMap.keys());
+      this.eventAssignees = (this.eventMembersMap.has('all')) ? 'all' : Array.from(this.eventMembersMap.keys());
       console.log(this.eventAssignees);
       this.showUpdateDetails = true;
     }
@@ -240,6 +243,10 @@ export class GroupCreatePostComponent implements OnInit {
 
     // Set the current files variable to the output of the module
     this.files = files
+
+    if (this.edit) {
+      this.showUpdateDetails = true
+    }
   }
 
   /**
@@ -285,7 +292,7 @@ export class GroupCreatePostComponent implements OnInit {
     // Prepare Post Data
     let postData: any = {
       title: this.title,
-      content: this.quillData? JSON.stringify(this.quillData.contents) : "",
+      content: this.quillData ? JSON.stringify(this.quillData.contents) : "",
       type: this.type,
       _posted_by: this.userData._id,
       _group: this.groupId,
@@ -294,11 +301,11 @@ export class GroupCreatePostComponent implements OnInit {
     }
 
     // If Post type is event, then add due_to property too
-    if(this.type === 'event'){
+    if (this.type === 'event') {
 
       var due_to;
 
-      if (this.dueDate==undefined || this.dueDate==null){
+      if (this.dueDate == undefined || this.dueDate == null) {
         due_to = new Date(
           new Date().getFullYear(),
           new Date().getMonth(),
@@ -309,19 +316,19 @@ export class GroupCreatePostComponent implements OnInit {
       }
 
       // Create the due_to date
-      else{
+      else {
         due_to = new Date(
-          new Date(this.dueDate).getFullYear(), 
-          new Date(this.dueDate).getMonth(), 
-          new Date(this.dueDate).getDate(), 
-          this.dueTime.hour, 
+          new Date(this.dueDate).getFullYear(),
+          new Date(this.dueDate).getMonth(),
+          new Date(this.dueDate).getDate(),
+          this.dueTime.hour,
           this.dueTime.minute)
       }
 
       // Add event.due_to property to the postData
       postData.event = {
-        due_to:moment(due_to).format(),
-        _assigned_to: (this.eventMembersMap.has('all')) ? 'all' : Array.from( this.eventMembersMap.keys() )
+        due_to: moment(due_to).format(),
+        _assigned_to: (this.eventMembersMap.has('all')) ? 'all' : Array.from(this.eventMembersMap.keys())
       }
     }
 
@@ -370,19 +377,19 @@ export class GroupCreatePostComponent implements OnInit {
   updateDetails() {
 
     // Prepare the taskPost object
-    if (this.type=='event'){
+    if (this.type == 'event') {
       this.dueDate = new Date(
-        new Date(this.dueDate).getFullYear(), 
-        new Date(this.dueDate).getMonth(), 
-        new Date(this.dueDate).getDate(), 
-        this.dueTime.hour, 
+        new Date(this.dueDate).getFullYear(),
+        new Date(this.dueDate).getMonth(),
+        new Date(this.dueDate).getDate(),
+        this.dueTime.hour,
         this.dueTime.minute)
     }
 
     const post = {
       title: this.title,
       type: this.type,
-      content: this.quillData? JSON.stringify(this.quillData.contents) : this.postData.content,
+      content: this.quillData ? JSON.stringify(this.quillData.contents) : this.postData.content,
       _content_mentions: this._content_mentions,
       tags: this.tags,
       _read_by: [],
@@ -437,19 +444,25 @@ export class GroupCreatePostComponent implements OnInit {
     }))
   }
 
-/**
- * Call function to delete post
- * @param postId 
- */
-  deletePost(){
-    this.utilityService.asyncNotification('Please wait we are deleting the post...', new Promise((resolve, reject)=>{
+  /**
+   * Call function to delete post
+   * @param postId 
+   */
+  deletePost() {
+    this.utilityService.asyncNotification('Please wait we are deleting the post...', new Promise((resolve, reject) => {
       this.postService.deletePost(this.postData._id)
-      .then((res)=>{
-        this.closeModal();
-        resolve(this.utilityService.resolveAsyncPromise('Post deleted!'));
-      }).catch((err)=>{
-        reject(this.utilityService.rejectAsyncPromise('Unable to delete post, please try again!'));
-      })
+        .then((res) => {
+
+          // Emit the Deleted post to all the compoents in order to update the UI
+          this.delete.emit(res['post'])
+
+          // Close the modal
+          this.closeModal()
+
+          resolve(this.utilityService.resolveAsyncPromise('Post deleted!'));
+        }).catch((err) => {
+          reject(this.utilityService.rejectAsyncPromise('Unable to delete post, please try again!'));
+        })
     }))
   }
 }

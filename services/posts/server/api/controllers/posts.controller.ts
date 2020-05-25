@@ -123,12 +123,12 @@ export class PostController {
             const userId: any = req['userId'];
 
             // Calling service function to remove post
-            const postRemoved = postService.remove(userId, postId);
+            const post = await postService.remove(userId, postId);
 
             // Returning status 200 response
             return res.status(200).json({
                 message: 'Post removed successfully',
-                postRemoved: postRemoved
+                post: post
             });
 
         } catch (error) {

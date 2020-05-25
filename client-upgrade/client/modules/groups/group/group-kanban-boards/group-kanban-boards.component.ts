@@ -119,7 +119,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
       // If new column is 'to do' then, set the status of the task to 'to do' as well
       if (event.container.id === 'to do') {
         event.previousContainer.data[event.previousIndex]['task'].status = 'to do'
-        
+
         // Change the task status
         this.publicFunctions.changeTaskStatus(post._id, 'to do')
       }
@@ -214,6 +214,31 @@ export class GroupKanbanBoardsComponent implements OnInit {
   }
 
   /**
+   * This function is responsible for removing the column
+   * @param groupId 
+   * @param columnName 
+   */
+  removeColumn(groupId: string, columnName: string){
+
+    // Column Service Instance
+    let columnService = this.injector.get(ColumnService)
+
+    // Utility Service Instance
+    let utilityService = this.injector.get(UtilityService)
+
+    // Call the HTTP Service function
+    utilityService.asyncNotification('Please wait we are removing your column...', new Promise((resolve, reject) => {
+      columnService.deleteColumn(groupId, columnName)
+        .then((res) => {
+          resolve(utilityService.resolveAsyncPromise('Column Removed!'));
+        })
+        .catch((err) => {
+          reject(utilityService.rejectAsyncPromise('Unable to removed the column at the moment, please try again!'))
+        })
+    }))
+  }
+
+  /**
    * This function is responsible for renaming a column
    * @param oldCol 
    * @param newColTitle 
@@ -254,14 +279,61 @@ export class GroupKanbanBoardsComponent implements OnInit {
 
           // If not found, then remove the element
           else if (index != -1) {
+
+            // Move All the columns' task to 'to do' column
+            if(this.columns[index]['tasks'].length > 0){
+
+              // Call for each task present in the board
+              this.columns[index]['tasks'].forEach((task)=>{
+
+                // Prepare Event
+                let columnEvent = {
+                  post: task,
+                  oldColumn: this.columns[index]['title'],
+                  newColumn: 'to do'
+                }
+  
+                // Call HTTP Put request to move the tasks
+                this.moveTaskToColumn(columnEvent)
+              })
+            }
+            // Remove the column from the array
             this.columns.splice(index, 1)
+
+            // This function removes the column
+            this.removeColumn(this.groupId, column.title)
           }
         }
       })
   }
 
+  /**
+   * This function is responsible for removing the task from the UI
+   * @param column - column data
+   * @param post - post
+   */
+  removeTask(column: any, post: any){
+
+    // Find the index of the tasks inside the column
+    let index = column.tasks.findIndex((task: any)=> task._id == post._id)
+
+    // If the index is not found
+    if(index != -1){
+
+      // Remove the tasks from the array
+      column.tasks.splice(index, 1)
+    }
+  }
+
+  /**
+   * This function is responsible for fetching the post
+   * @param post 
+   * @param column 
+   */
   getPost(post: any, column: any) {
-    column.tasks.push(post)
+
+    // Adding the post to column
+    column.tasks.unshift(post)
   }
 
   /**
@@ -306,6 +378,10 @@ export class GroupKanbanBoardsComponent implements OnInit {
     return !(JSON.stringify(object) === JSON.stringify({}))
   }
 
+  /**
+   * This function is responsible for opening the modal
+   * @param content 
+   */
   openModal(content: any) {
     this.utilityService.openModal(content, {
       size: 'xl',
@@ -335,27 +411,53 @@ export class GroupKanbanBoardsComponent implements OnInit {
 
   }
 
+  /**
+   * This function updates the status on the UI
+   * @param task 
+   * @param status 
+   */
   changeStatus(task: any, status: any) {
 
+    // Set the status
     task.task.status = status
   }
 
+  /**
+   * This function changes the assignee
+   * @param task 
+   * @param memberMap 
+   */
   changeAssignee(task: any, memberMap: any) {
 
+    // Call the HTTP Request to change the assignee
     this.publicFunctions.changeTaskAssignee(task._id, memberMap['_id'])
 
+    // Set the unassigned to be false on the UI
     task.task.unassigned = false
 
+    // Set the assigned_to variable
     task.task._assigned_to = memberMap
   }
 
+  /**
+   * This function is responsible for changing the due date
+   * @param task 
+   * @param dueDate 
+   */
   changeDueDate(task: any, dueDate: any) {
 
+    // Call the HTTP Request to change the due date
     this.publicFunctions.changeTaskDueDate(task._id, dueDate)
 
+    // Set the task due date on the UI
     task.task.due_to = moment(dueDate).format('YYYY-MM-DD')
   }
 
+  /**
+   * This function changes the details on the UI
+   * @param task 
+   * @param post 
+   */
   changeDetails(task: any, post: any) {
 
     // Update task title
