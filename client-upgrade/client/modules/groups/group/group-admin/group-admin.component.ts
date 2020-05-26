@@ -23,7 +23,7 @@ export class GroupAdminComponent implements OnInit {
   private publicFunctions = new PublicFunctions(this.injector);
 
   // Fetch groupId from router snapshot
-  groupId = this.router.snapshot['_urlSegment']['segments'][2]['path'];
+  groupId = this.router.snapshot.queryParamMap.get('group');
 
   // Current Group Data
   groupData: any = {}

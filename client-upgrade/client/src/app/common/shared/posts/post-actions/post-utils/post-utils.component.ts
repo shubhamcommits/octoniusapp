@@ -49,7 +49,7 @@ export class PostUtilsComponent implements OnInit {
     selBox.style.opacity = '0';
 
     // Set the Value of element selection box to be the url of the post
-    selBox.value = environment.clientUrl + '/#/dashboard/groups/' + post._group._id || post._group + '/post/' + post._id;
+    selBox.value = environment.clientUrl + '/#/dashboard/work/groups/' + post._group._id || post._group + '/post/' + post._id;
 
     // Append the element to the DOM
     document.body.appendChild(selBox);

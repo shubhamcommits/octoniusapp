@@ -59,6 +59,11 @@ export class UserHeaderComponent implements OnInit {
       // Update the other user data over the shared service
       this.utilityService.updateOtherUserData(this.userData);
     }
+
+    // Setting Home State
+    this.publicFunctions.sendUpdatesToRouterState({
+      state: 'home'
+    })
           
   }
 

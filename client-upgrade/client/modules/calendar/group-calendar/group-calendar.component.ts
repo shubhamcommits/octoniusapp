@@ -31,7 +31,7 @@ export class GroupCalendarComponent implements OnInit {
     private utilityService: UtilityService) { }
 
   // Fetch groupId from router snapshot
-  groupId = this.router.snapshot['_urlSegment']['segments'][2]['path']
+  groupId = this.router.snapshot.queryParamMap.get('group')
 
   // Public Functions
   public publicFunctions = new PublicFunctions(this.injector)

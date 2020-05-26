@@ -5,11 +5,11 @@ import { PublicFunctions } from 'src/app/dashboard/public.functions';
 import { SubSink } from 'subsink';
 
 @Component({
-  selector: 'app-groups-header',
-  templateUrl: './groups-header.component.html',
-  styleUrls: ['./groups-header.component.scss']
+  selector: 'app-work-navbar',
+  templateUrl: './work-navbar.component.html',
+  styleUrls: ['./work-navbar.component.scss']
 })
-export class GroupsHeaderComponent implements OnInit {
+export class WorkNavbarComponent implements OnInit {
 
   constructor(
     private utilityService: UtilityService,

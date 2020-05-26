@@ -23,7 +23,7 @@ export class GroupFilesComponent implements OnInit {
   ) { }
 
   // Fetch groupId from router snapshot
-  groupId = this.router.snapshot['_urlSegment']['segments'][2]['path'];
+  groupId = this.router.snapshot.queryParamMap.get('group');
 
   // Base Url of the users uploads
   userBaseUrl = environment.UTILITIES_USERS_UPLOADS;

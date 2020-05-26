@@ -16,9 +16,9 @@ const routes: Routes = [
         }
       },
       {
-        path: 'groups',
-        loadChildren: () => import('modules/groups/groups.module')
-          .then((module) => module.GroupsModule),
+        path: 'work',
+        loadChildren: () => import('modules/work/work.module')
+          .then((module) => module.WorkModule),
           data: {
             preload: false
           }

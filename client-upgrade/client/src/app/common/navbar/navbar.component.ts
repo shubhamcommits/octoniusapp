@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Injector, ViewChild, ElementRef, AfterViewInit, ChangeDetectionStrategy } from '@angular/core';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { environment } from 'src/environments/environment';
 import { UserService } from 'src/shared/services/user-service/user.service';
@@ -10,11 +10,13 @@ import { Router } from '@angular/router';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { PublicFunctions } from 'src/app/dashboard/public.functions';
 import { HotkeysService, Hotkey } from 'angular2-hotkeys';
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss']
+  styleUrls: ['./navbar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class NavbarComponent implements OnInit, AfterViewInit{
@@ -33,19 +35,62 @@ export class NavbarComponent implements OnInit, AfterViewInit{
     ) { }
 
   // CURRENT USER DATA
-  userData: any;
+  userData: any
 
   // Current Workspace Data
-  workspaceData: any;
+  workspaceData: any
 
   // Public Functions Object
-  publicFunctions = new PublicFunctions(this.injector)
+  public publicFunctions = new PublicFunctions(this.injector)
 
   // BASE URL OF THE APPLICATION
-  baseUrl = environment.UTILITIES_USERS_UPLOADS;
+  baseUrl = environment.UTILITIES_USERS_UPLOADS
 
   // UNSUBSCRIBE THE DATA
-  private subSink = new SubSink();
+  private subSink = new SubSink()
+
+  // Router state of the application
+  routerState: any = 'home'
+
+ 
+  isGroupNavbar$ = new BehaviorSubject(false);
+  isCommonNavbar$ = new BehaviorSubject(false);
+  isWorkNavbar$ = new BehaviorSubject(false);
+
+  nextGroupNavbarState(){
+    this.isGroupNavbar$.next(true);
+    this.isCommonNavbar$.next(false)
+    this.isWorkNavbar$.next(false)
+  }
+
+  nextCommonNavbarState(){
+    this.isCommonNavbar$.next(true);
+    this.isGroupNavbar$.next(false)
+    this.isWorkNavbar$.next(false)
+  }
+
+  nextWorkNavbar(){
+    this.isWorkNavbar$.next(true);
+    this.isCommonNavbar$.next(false)
+    this.isGroupNavbar$.next(false)
+  }
+
+  ngAfterContentChecked(){
+    this.subSink.add(this.utilityService.routerStateData.subscribe((res)=>{
+      if (JSON.stringify(res) != JSON.stringify({})) {
+        this.routerState = res['state']
+        if( this.routerState === 'home'){
+          this.nextCommonNavbarState()
+        }
+        else if(this.routerState === 'group'){
+          this.nextGroupNavbarState()
+        }
+        else if(this.routerState === 'work'){
+          this.nextWorkNavbar()
+        }
+      }
+    }))
+  }
 
   async ngOnInit() {
 
@@ -85,7 +130,7 @@ export class NavbarComponent implements OnInit, AfterViewInit{
 
   ngAfterViewInit(){
     const searchRef = this.search;
-    this.addHotKeys(searchRef);
+    this.addHotKeys(searchRef)
   }
 
   /**

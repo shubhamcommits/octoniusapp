@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GroupHeaderComponent } from './group-header.component';
+import { GroupNavbarComponent } from './group-navbar.component';
 
-describe('GroupHeaderComponent', () => {
-  let component: GroupHeaderComponent;
-  let fixture: ComponentFixture<GroupHeaderComponent>;
+describe('GroupNavbarComponent', () => {
+  let component: GroupNavbarComponent;
+  let fixture: ComponentFixture<GroupNavbarComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GroupHeaderComponent ]
+      declarations: [ GroupNavbarComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GroupHeaderComponent);
+    fixture = TestBed.createComponent(GroupNavbarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

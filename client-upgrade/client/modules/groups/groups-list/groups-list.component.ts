@@ -64,6 +64,11 @@ export class GroupsListComponent implements OnInit {
     // Starts the spinner 
     this.isLoading$.next(true);
     this.isLoadingAgora$.next(true);
+    
+    // Send Updates to router state
+    this.publicFunctions.sendUpdatesToRouterState({
+      state: 'work'
+    })
 
     // Fetch the current loggedIn user data
     this.userData = await this.publicFunctions.getCurrentUser();
@@ -182,7 +187,7 @@ export class GroupsListComponent implements OnInit {
 
   async joinGroup(groupId: any){
     await this.publicFunctions.joinAgora(groupId, this.userData['_id']).then((res)=>{
-      this.router.navigate(['/dashboard/groups/', groupId, 'activity']);
+      this.router.navigate(['/dashboard/work/groups/', groupId, 'activity']);
     }).catch((err)=>{
       console.log(err);
     });

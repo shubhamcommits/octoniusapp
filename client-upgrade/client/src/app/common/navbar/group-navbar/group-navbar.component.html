@@ -1,0 +1,51 @@
+<ul class="nav">
+
+
+    <img class="mr-3 feed-avatar-big" *ngIf="groupData" (click)="openDetails(content)"
+        src="{{ baseUrl }}/{{ groupData?.group_avatar }}" onerror="this.src='assets/images/icon-new-group.svg'"
+        placement="bottom" ngbTooltip="Change this group's avatar">
+
+    <ng-template #content let-modal>
+        <app-group-image-details [groupData]="groupData" [baseUrl]="baseUrl">
+        </app-group-image-details>
+    </ng-template>
+
+    <h2>{{groupData?.group_name}}</h2>
+
+    <li class="nav-item">
+        <a class="nav-link" routerLink="/dashboard/work/groups/activity" [queryParams]="{ group: groupData?._id }"
+            routerLinkActive="active">Activity
+            <span class="sr-only">(current)</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" routerLink="/dashboard/work/groups/tasks" [queryParams]="{ group: groupData?._id }"
+            routerLinkActive="active">Tasks
+            <span class="sr-only">(current)</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" routerLink="/dashboard/work/groups/files" [queryParams]="{ group: groupData?._id }"
+            routerLinkActive="active">Files
+            <span class="sr-only">(current)</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" routerLink="/dashboard/work/groups/calendar" [queryParams]="{ group: groupData?._id }"
+            routerLinkActive="active">Calendar
+            <span class="sr-only">(current)</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" routerLink="/dashboard/work/groups/members" [queryParams]="{ group: groupData?._id }"
+            routerLinkActive="active">Members
+            <span class="sr-only">(current)</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" routerLink="/dashboard/work/groups/admin" [queryParams]="{ group: groupData?._id }"
+            routerLinkActive="active">Admin
+            <span class="sr-only">(current)</span>
+        </a>
+    </li>
+</ul>

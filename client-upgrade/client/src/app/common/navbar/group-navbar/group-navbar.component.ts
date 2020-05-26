@@ -5,11 +5,12 @@ import { ActivatedRoute } from '@angular/router';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
-  selector: 'app-group-header',
-  templateUrl: './group-header.component.html',
-  styleUrls: ['./group-header.component.scss']
+  selector: 'app-group-navbar',
+  templateUrl: './group-navbar.component.html',
+  styleUrls: ['./group-navbar.component.scss']
 })
-export class GroupHeaderComponent implements OnInit {
+export class GroupNavbarComponent implements OnInit {
+
 
   constructor(
     private injector: Injector,
@@ -23,7 +24,7 @@ export class GroupHeaderComponent implements OnInit {
   groupData: any;
 
   // Fetch groupId from router snapshot
-  groupId = this.router.snapshot.params['id'];
+  groupId = this.router.snapshot.queryParamMap.get('group');
 
   // PUBLIC FUNCTIONS
   private publicFunctions = new PublicFunctions(this.injector);

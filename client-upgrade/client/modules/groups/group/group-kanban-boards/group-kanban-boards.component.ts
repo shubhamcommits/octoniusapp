@@ -30,7 +30,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
   baseUrl = environment.UTILITIES_USERS_UPLOADS;
 
   // Fetch groupId from router snapshot
-  groupId = this.router.snapshot['_urlSegment']['segments'][2]['path'];
+  groupId = this.router.snapshot.queryParamMap.get('group');
 
   // Task Posts array variable
   tasks: any = []

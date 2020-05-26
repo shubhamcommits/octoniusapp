@@ -180,6 +180,22 @@ export class PublicFunctions {
         utilityService.updateGroupData(groupData);
     }
 
+    getRouterStateFromService() {
+        return new Promise((resolve) => {
+            const utilityService = this.injector.get(UtilityService);
+            this.subSink.add(utilityService.routerStateData.subscribe((res) => {
+                if (JSON.stringify(res) != JSON.stringify({}))
+                    resolve(res)
+            })
+            )
+        })
+    }
+
+    sendUpdatesToRouterState(routerStateData: Object) {
+        const utilityService = this.injector.get(UtilityService);
+        utilityService.updateRouterStateData(routerStateData);
+    }
+
     public reuseRoute(router: Router) {
 
         // Adding shouldReuseRoute property

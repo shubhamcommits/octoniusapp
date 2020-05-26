@@ -1,0 +1,17 @@
+@import "src/assets/scss/_variables";
+
+.nav-link {
+    font-family: $poppins;
+    font-weight: 400;
+    font-size: 14px;
+    color:#1B1D1F;
+    text-align: center;
+    cursor: pointer;
+    &:hover {
+      text-decoration: none;
+      background: #ffffff;
+      color: $brand-primary !important;
+      border-radius: 6px;
+    }
+  
+  }

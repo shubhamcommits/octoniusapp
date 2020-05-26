@@ -12,7 +12,7 @@ const generateLink = (linkType: any, urlParam = null) => {
  * @param groupId 
  * @param postId 
  */
-const postLink = (groupId: string, postId: string) => (`${process.env.PROTOCOL}://${process.env.DOMAIN}/#/dashboard/group/${groupId}/post/${postId}`);
+const postLink = (groupId: string, postId: string) => (`${process.env.PROTOCOL}://${process.env.DOMAIN}/#/dashboard/work/group/${groupId}/post/${postId}`);
 
 
 export = {

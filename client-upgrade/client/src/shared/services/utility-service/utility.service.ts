@@ -67,6 +67,14 @@ export class UtilityService {
   currentGroupData = this.groupDataSource.asObservable();
 
   /**
+   * Both of the variables listed down below are used to share the data through this common service among different components in the app
+   * @constant routerStateDataSource
+   * @constant routerState
+   */
+  private routerStateDataSource = new BehaviorSubject<any>({});
+  routerStateData = this.routerStateDataSource.asObservable();
+
+  /**
    * This function checks whether the input string is a vaild email or not
    * @param email 
    */
@@ -233,6 +241,15 @@ export class UtilityService {
   public updateGroupData(groupData: any){
     this.groupDataSource.next(groupData);
   }
+
+  /**
+   * Used to emit the next value of observable so that where this is subscribed, will get the updated value
+   * @param routerStateData
+   */
+  public updateRouterStateData(routerStateData: any){
+    this.routerStateDataSource.next(routerStateData);
+  }
+
 
   /**
    * This function starts the foreground loader of master loader

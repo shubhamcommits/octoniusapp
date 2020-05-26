@@ -22,7 +22,8 @@
             <ng-container *ngFor="let group of userGroups; trackBy: utilityService.trackByIndex">
               
                 <div class="col-md-3 col-sm-6 col-xs-12">
-                <div *ngIf="group.group_name !== 'private'" class=" card"  [routerLink]="['/dashboard/groups/',group._id, 'activity']">
+                <div *ngIf="group.group_name !== 'private'" class=" card"  [routerLink]="['/dashboard', 'work', 'groups', 'activity']"
+                [queryParams]="{ group: group?._id }">
                     <span class="badge badge-members">{{ group?.members_count }} Members</span>
                     <img class="card-img-top" src="{{ this.baseUrl }}/{{group.group_avatar}}"
                         onerror="this.src='assets/images/icon-new-group.svg'">

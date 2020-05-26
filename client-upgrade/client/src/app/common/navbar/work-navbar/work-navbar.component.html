@@ -1,0 +1,36 @@
+<!-- <div class="container" style="margin-bottom: 30px">
+    <div class="media user-sticky-card"> -->
+
+<!-- Workspace Avatar Image  starts -->
+<!-- Workspace Avatar Image  ends -->
+<!-- Groups List Header starts -->
+
+<!-- Groups List Header ends -->
+<!-- </div>
+</div> -->
+
+<ul class="nav mr-auto">
+    <li class="nav-item">
+        <img *ngIf="workspaceData" class="mr-3 feed-avatar" src="{{ baseUrl }}/{{ workspaceData?.workspace_avatar }}"
+            onerror="this.src='assets/images/icon-new-group.svg'">
+    </li>
+
+    <h2>Work</h2>
+
+    <!-- All Groups Route starts -->
+    <li class="nav-item">
+        <a class="nav-link" routerLink="/dashboard/work/groups/all" routerLinkActive="active">Groups
+            <span class="sr-only">(current)</span>
+        </a>
+    </li>
+    <!-- All Groups Route ends -->
+
+    <!-- Pulse Group Route starts -->
+    <li class="nav-item">
+        <a class="nav-link" routerLink="/dashboard/work/pulse" routerLinkActive="active">Pulse
+            <span class="sr-only">(current)</span>
+        </a>
+    </li>
+    <!-- Pulse Group Route ends -->
+
+</ul>

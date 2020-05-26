@@ -25,13 +25,13 @@ export class GroupActivityFeedComponent implements OnInit {
     ) { }
 
   // Fetch groupId from router snapshot or as an input parameter
-  @Input('groupId') groupId = this.router.snapshot['_urlSegment']['segments'][2]['path'];
+  @Input('groupId') groupId = this.router.snapshot.queryParamMap.get('group');
 
   // My Workplace variable check
-  myWorkplace: boolean = (this.router.snapshot['_urlSegment']['segments'][2]['path'] === 'workplace')
+  myWorkplace: boolean = (this.router.snapshot.url.findIndex((segment)=> segment.path == 'workplace') == -1) ? false : true
 
   // Global Feed Variable check
-  globalFeed: boolean = (this.router.snapshot['_urlSegment']['segments'][2]['path'] === 'inbox')
+  globalFeed: boolean = (this.router.snapshot.url.findIndex((segment)=> segment.path == 'inbox') == -1) ? false : true
 
   // Current Group Data
   groupData: any;

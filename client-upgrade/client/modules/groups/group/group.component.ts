@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Injector } from '@angular/core';
+import { PublicFunctions } from 'src/app/dashboard/public.functions';
 
 @Component({
   selector: 'app-group',
@@ -7,9 +8,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GroupComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private injector: Injector
+  ) { }
+
+  // Public Functions Object
+  publicFunctions = new PublicFunctions(this.injector)
 
   ngOnInit() {
+
+    // Send Updates to router state
+    this.publicFunctions.sendUpdatesToRouterState({
+      state: 'group'
+    })
   }
 
 }

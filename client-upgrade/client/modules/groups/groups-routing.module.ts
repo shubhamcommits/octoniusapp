@@ -4,9 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 /**
  * GROUPS COMPONENTS
  */
-import { GroupsHeaderComponent } from './groups-header/groups-header.component';
 import { GroupsListComponent } from './groups-list/groups-list.component';
-import { PulseComponent } from './pulse/pulse.component';
 
 /**
  * GROUP COMPONENTS
@@ -24,18 +22,13 @@ import { GroupPostComponent } from './group/group-post/group-post.component';
  * ROUTES
  */
 const routes: Routes = [
-  {
-    path: '', component: GroupsHeaderComponent, children: [
 
-      // Groups List
-      { path: 'all', component: GroupsListComponent },
-
-      // Pulse Groups
-      { path: 'pulse', component: PulseComponent },
-    ]
-  },
+  // All Groups List Route
+  { path: 'all', component: GroupsListComponent },
+  
+  // Group Specific Route
   {
-    path: ':id', component: GroupComponent, children: [
+    path: '', component: GroupComponent, children: [
 
       // Group Activity
       { path: 'activity', component: GroupActivityComponent },

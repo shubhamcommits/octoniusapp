@@ -24,12 +24,10 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { GroupsRoutingModule } from './groups-routing.module';
-import { GroupsHeaderComponent } from './groups-header/groups-header.component';
 import { GroupsListComponent } from './groups-list/groups-list.component';
-import { PulseComponent } from './pulse/pulse.component';
 import { CreateGroupComponent } from './groups-list/create-group/create-group.component';
 import { GroupComponent } from './group/group.component';
-import { GroupHeaderComponent } from './group/group-header/group-header.component';
+// import { GroupHeaderComponent } from './group/group-header/group-header.component';
 // import { GroupActivityComponent } from './group/group-activity/group-activity.component';
 // import { GroupActivityFiltersComponent } from './group/group-activity/group-activity-filters/group-activity-filters.component';
 // import { GroupActivityProgressComponent } from './group/group-activity/group-activity-progress/group-activity-progress.component';
@@ -44,7 +42,7 @@ import { GroupHeaderComponent } from './group/group-header/group-header.componen
 // import { GroupKanbanTaskViewComponent } from './group/group-kanban-boards/group-kanban-task-view/group-kanban-task-view.component';
 import { GroupMembersComponent } from './group/group-members/group-members.component';
 // import { GroupPostComponent } from './group/group-post/group-post.component';
-import { GroupImageDetailsComponent } from './group/group-header/group-image-details/group-image-details.component';
+// import { GroupImageDetailsComponent } from './group/group-header/group-image-details/group-image-details.component';
 
 
 
@@ -79,15 +77,9 @@ import { CommentService } from 'src/shared/services/comment-service/comment.serv
  */
 @NgModule({
   declarations: [
-    
-    // Groups Header Component
-    GroupsHeaderComponent, 
-
+  
     // Groups List Component
     GroupsListComponent, 
-
-    // Pulse Component
-    PulseComponent, 
 
     // Create Group Component
     CreateGroupComponent,
@@ -137,7 +129,7 @@ import { CommentService } from 'src/shared/services/comment-service/comment.serv
     // Group Component
     GroupComponent,
 
-    GroupHeaderComponent,
+    // GroupHeaderComponent,
 
     GroupAdminComponent,
 
@@ -157,7 +149,7 @@ import { CommentService } from 'src/shared/services/comment-service/comment.serv
 
     GroupPostComponent,
 
-    GroupImageDetailsComponent
+    // GroupImageDetailsComponent
   ],
   imports: [
     CommonModule,

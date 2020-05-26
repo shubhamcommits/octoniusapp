@@ -46,6 +46,11 @@ export class AdminHeaderComponent implements OnInit {
     // INITIALISE THE WORKSPACE DATA FROM SHARED SERVICE, STORED LOCAL DATA OR FROM SERVER USING PUBLIC FUNCTIONS
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
+    // Setting Home State
+    this.publicFunctions.sendUpdatesToRouterState({
+      state: 'home'
+    })
+
   }
 
   /**
