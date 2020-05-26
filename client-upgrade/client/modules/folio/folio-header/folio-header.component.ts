@@ -63,7 +63,7 @@ export class FolioHeaderComponent implements OnInit {
    * This function is responsible for taking the user back to their previous locations
    */
   goBackToFiles() {
-    this.router.navigate(['/dashboard', 'groups', this.groupId, 'files'])
+    this.router.navigate(['/dashboard', 'work', 'groups', 'files'], {queryParams: {group: this.groupId}})
 
     // Change the title of the tab
     this.titleService.setTitle('Octonius');
