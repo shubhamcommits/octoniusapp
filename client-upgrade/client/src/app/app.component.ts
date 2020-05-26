@@ -42,17 +42,17 @@ export class AppComponent {
     let utilityService = this.injector.get(UtilityService);
 
     // As soon as router starts the events, start the spinning loader
-    router.events.subscribe(
-      (event: RouterEvent): void => {
-        if (event instanceof NavigationStart) {
-          utilityService.startForegroundLoader();
-        } else if (event instanceof NavigationEnd) {
-          utilityService.stopForegroundLoader()
-        } else {
-          utilityService.stopForegroundLoader()
-        }
-      }
-    )
+    // router.events.subscribe(
+    //   (event: RouterEvent): void => {
+    //     if (event instanceof NavigationStart) {
+    //       utilityService.startForegroundLoader();
+    //     } else if (event instanceof NavigationEnd) {
+    //       utilityService.stopForegroundLoader()
+    //     } else {
+    //       utilityService.stopForegroundLoader()
+    //     }
+    //   }
+    // )
 
     // Internet connection validity
     this.subSink.add(this.checkInternetConnectivity(utilityService));
