@@ -211,10 +211,12 @@ export class QuillEditorComponent implements OnInit {
     let filesList: any = await this.publicFunctions.searchFiles(groupId, searchTerm)
 
     // Map the users list
-    filesList = filesList.map((file) => ({
+    filesList = filesList.map((file: any) => ({
       id: file._id,
       value:
-        `<a href="${this.filesBaseUrl}/${file.modified_name}" style="color: inherit" target="_blank">${file.original_name}</a>`
+        (file.type == 'folio')
+        ?`<a href="/#/document/${file._id}?group=${file._group._id }&readOnly=true" style="color: inherit" target="_blank">${file.original_name}</a>`
+        :`<a href="${this.filesBaseUrl}/${file.modified_name}" style="color: inherit" target="_blank">${file.original_name}</a>`
     }))
 
     // Return the Array without duplicates
