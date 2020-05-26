@@ -732,7 +732,7 @@ export class PostService {
       var post: any = await Post.findOneAndUpdate({
         _id: postId
       }, {
-        "task.due_to": date_due_to ? moment(date_due_to).format('YYYY-MM-DD') : null,
+        "task.due_to": date_due_to ? moment.utc(date_due_to).format() : null,
       }, {
         new: true
       })
