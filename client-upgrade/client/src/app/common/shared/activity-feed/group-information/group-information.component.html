@@ -3,7 +3,7 @@
         <div class="card-block">
 
             <!-- Group Information Header starts -->
-            <h6 class="card-title" *ngIf="!myWorkplace" style="margin-bottom: -10px;"><b>Group Info</b>
+            <h6 class="card-title" *ngIf="!myWorkplace" style="margin-bottom: -10px;"><b>{{groupData?.group_name }}</b>
 
                 <!-- Edit Group Details starts -->
                 <button *ngIf="userData.role != 'member'" type="button" name="button" class="btn btn-link" style="margin-top: -10px;" 
@@ -19,7 +19,7 @@
             <hr />
 
             <!-- Group Information details starts -->
-            <p class="card-text" *ngIf="!myWorkplace"><strong>Name: </strong>{{groupData?.group_name }}</p>
+            <!-- <p class="card-text" *ngIf="!myWorkplace"><strong>Name: </strong>{{groupData?.group_name }}</p> -->
             <p class="card-text" *ngIf="!myWorkplace"><strong>Members Count: </strong>{{groupData?.members_count || 0 }}</p>
             <p class="card-text" *ngIf="!myWorkplace"><strong>Description: </strong>{{groupData?.description}}</p>
             <p class="card-text" *ngIf="myWorkplace">This is your personal space. Everything you create here is private.

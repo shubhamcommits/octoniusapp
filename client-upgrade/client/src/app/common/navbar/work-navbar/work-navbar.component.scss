@@ -7,6 +7,7 @@
     color:#1B1D1F;
     text-align: center;
     cursor: pointer;
+    line-height: 44px;
     &:hover {
       text-decoration: none;
       background: #ffffff;
@@ -16,11 +17,16 @@
   
   }
 
-  img{
-    cursor: pointer;
-    transition: transform .2s ease;
+
+
+  h2{
+    float: left;
+    line-height: 60px;
+    .material-icons{
+      font-size: 30px;
+      color:#E0E3E6;
+    }
   }
-  
-  img:hover{
-    transform: scale(1.1);
+  .feed-avatar{
+    float: left;
   }

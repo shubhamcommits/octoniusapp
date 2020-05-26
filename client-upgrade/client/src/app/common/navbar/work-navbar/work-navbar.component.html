@@ -10,12 +10,15 @@
 </div> -->
 
 <ul class="nav mr-auto">
-    <li class="nav-item">
+    <li class="nav-item mr-3">
         <img *ngIf="workspaceData" class="mr-3 feed-avatar" src="{{ baseUrl }}/{{ workspaceData?.workspace_avatar }}"
             onerror="this.src='assets/images/icon-new-group.svg'">
+            <h2>Work <i class="material-icons">arrow_forward_ios
+            </i></h2>
+            
     </li>
 
-    <h2>Work</h2>
+   
 
     <!-- All Groups Route starts -->
     <li class="nav-item">
