@@ -1,5 +1,5 @@
 <div *ngIf="today_event_count == 0" class="smart-card col" style="margin-right: 24px">
-    <a style="text-decoration:none; color:inherit;" href="/#/dashboard/myspace/agenda">
+    <a style="text-decoration:none; color:inherit;" routerLink="/dashboard/myspace/agenda">
         <div class="row">
             <div class="col-md-auto">
                 <div class="card-title mt-1">Today's agenda</div>
@@ -25,7 +25,7 @@
 </div>
 
     <div *ngIf="today_event_count > 0" class="smart-card col" style="margin-right: 24px">
-        <a style="text-decoration:none; color:inherit;" href="/#/dashboard/myspace/agenda">
+        <a style="text-decoration:none; color:inherit;" routerLink="/dashboard/myspace/agenda">
             <div class="row">
                 <div class="col-md-auto">
                     <div class="card-title mt-1">Today's agenda</div>
