@@ -348,10 +348,10 @@ services:
     image: client
     build:
       dockerfile: Dockerfile
-      context: ./client-upgrade/client
+      context: ./client
     volumes:
       - /usr/app/node_modules
-      - ${PWD}/client-upgrade/client:/usr/app
+      - ${PWD}/client:/usr/app
     depends_on:
       - mailing-server
       - auths-server

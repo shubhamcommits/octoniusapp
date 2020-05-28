@@ -1,44 +1,76 @@
 #!/bin/bash
 # Octonius image deployment to Docker Hub
 
-# current working branch
-# gitbranch='master'
+# Make Suitable Directories
+mkdir data \
+      data/db \
+      data/solr \
+      data/uploads \
+      data/uploads/groups \
+      data/uploads/posts \
+      data/uploads/users \
+      data/uploads/utilities \
+      data/uploads/workspaces \
 
-# git checkout master
+# Give permissions to data folder
+sudo chmod u+x data
 
-# git pull
-
-# docker deploy commands which are used to deploy to server/local host.
-
+# Login to dockerhub
 docker login
 
-docker pull octoniusapp/octonius:api
+# Pull the images
+# Client Microservice Image Name
+export CLIENT_IMAGE_NAME=octoniusapp/octonius-alpha:client
 
-docker pull octoniusapp/octonius:client
+# Mails Microservice Image Name
+export MAILS_IMAGE_NAME=octoniusapp/octonius-alpha:mailing-server
 
-docker pull octoniusapp/octonius:nginx
+# Auths Microservice Image Name
+export AUTHS_IMAGE_NAME=octoniusapp/octonius-alpha:auths-server
 
-docker pull mongo:latest
+# Groups Microservice Image Name
+export GROUPS_IMAGE_NAME=octoniusapp/octonius-alpha:groups-server
 
-docker pull redis:latest
+# Workspaces Microservice Image Name
+export WORKSPACES_IMAGE_NAME=octoniusapp/octonius-alpha:workspaces-server
 
-docker stack deploy -c stack-octonius-deploy.yml octonius
+# Users Microservice Image Name
+export USERS_IMAGE_NAME=octoniusapp/octonius-alpha:users-server
 
-# export the githash to be used on image names
-# git checkout $gitbranch \
-#         && git pull \
-#         && export GITHASH=$(git rev-parse HEAD) \
-#         && export CLIENT_IMAGE_NAME=octoniusapp/octonius-client:$GITHASH \
-#         && export API_IMAGE_NAME=octoniusapp/octonius-api:$GITHASH \
-#         && export NGINX_IMAGE_NAME=octoniusapp/octonius-nginx:$GITHASH \
-#         && docker build -t $CLIENT_IMAGE_NAME ./public \
-#         && docker build -t $API_IMAGE_NAME ./src \
-#         && docker build -t $NGINX_IMAGE_NAME ./nginx \
-#         && docker login \
-#         && docker push $CLIENT_IMAGE_NAME \
-#         && docker push $API_IMAGE_NAME \
-#         && docker push $NGINX_IMAGE_NAME \
-#         && vim stack-octonius.yml -c '%s/GIT_HASH/\=expand($GITHASH)/g | w! stack-deploy-octonius.yml | qa!' \
-#         && scp stack-deploy-octonius.yml ubuntu@86.122.94.224:~/alphaoctonius/ 
+# Posts Microservice Image Name
+export POSTS_IMAGE_NAME=octoniusapp/octonius-alpha:posts-server
+
+# Notifications Microservice Image Name
+export NOTIFICATIONS_IMAGE_NAME=octoniusapp/octonius-alpha:notifications-server
+
+# Utilities Microservice Image Name
+export UTILITIES_IMAGE_NAME=octoniusapp/octonius-alpha:utilities-server
+
+# Folio Microservice Image Name
+export FOLIO_IMAGE_NAME=octoniusapp/octonius-alpha:folio-server
+
+# Query Microservice Image Name
+export QUERY_IMAGE_NAME=octoniusapp/octonius-alpha:query-server
+
+# Nginx Image Name
+export NGINX_IMAGE_NAME=octoniusapp/octonius-alpha:nginx
+
+# pull the new Docker image to the Docker registry
+          docker pull $CLIENT_IMAGE_NAME
+          docker pull $MAILS_IMAGE_NAME
+          docker pull $AUTHS_IMAGE_NAME
+          docker pull $GROUPS_IMAGE_NAME
+          docker pull $WORKSPACES_IMAGE_NAME
+          docker pull $USERS_IMAGE_NAME
+          docker pull $POSTS_IMAGE_NAME
+          docker pull $NOTIFICATIONS_IMAGE_NAME
+          docker pull $UTILITIES_IMAGE_NAME
+          docker pull $FOLIO_IMAGE_NAME
+          docker pull $QUERY_IMAGE_NAME
+          docker pull $NGINX_IMAGE_NAME
+
+# Deploy the Stack
+docker stack deploy -c stack-octonius-deploy.yml octonius-alpha --with-registry-auth
+
 
 

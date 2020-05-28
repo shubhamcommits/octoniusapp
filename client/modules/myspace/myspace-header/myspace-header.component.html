@@ -1,0 +1,48 @@
+<div class="container" style="margin-bottom: 30px">
+    <div class="media user-sticky-card">
+        <img class="mr-3 feed-avatar" src="{{BASE_URL}}/{{userData?.profile_pic}}" onerror="this.src='assets/images/user.png'">
+        <div class="media-body">
+           <div>
+              <h2>My Space</h2>
+              <ul class="nav">
+                 <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/dashboard', 'myspace', 'inbox']">Inbox
+                    <span class="sr-only">(current)</span>
+                    </a>
+                 </li>
+                 <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/dashboard', 'myspace', 'tasks']">Tasks
+                    <span class="sr-only">(current)</span>
+                    </a>
+                 </li>
+                 <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['/dashboard', 'myspace', 'agenda']">Agenda
+                        <span class="sr-only">(current)</span>
+                        </a>
+                </li>
+                 <li class="nav-item" (click)="showExtendedNav = !showExtendedNav">
+                    <a class="nav-link" [routerLink]="['/dashboard', 'myspace', 'workplace']" >Workplace
+                    <span class="sr-only">(current)</span>
+                    </a>
+                 </li>
+                  <li class="nav-item" *ngIf="showExtendedNav">
+                     <a class="nav-link" [routerLink]="['/dashboard', 'myspace', 'inbox']">Kanban
+                     <span class="sr-only">(current)</span>
+                     </a>
+                  </li>
+                  <li class="nav-item" *ngIf="showExtendedNav">
+                     <a class="nav-link" [routerLink]="['/dashboard', 'myspace', 'tasks']">Files
+                     <span class="sr-only">(current)</span>
+                     </a>
+                  </li>
+                  <li class="nav-item" *ngIf="showExtendedNav">
+                         <a class="nav-link" [routerLink]="['/dashboard', 'myspace', 'agenda']">Calendar
+                         <span class="sr-only">(current)</span>
+                         </a>
+                 </li>
+              </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<router-outlet></router-outlet>

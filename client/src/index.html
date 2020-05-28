@@ -1,68 +1,29 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
   <meta charset="utf-8">
   <title>Octonius</title>
-  <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-  <!-- FAVICON -->
+  <base href="./">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 
-  <!-- QUILL THEMES -->
-  <link href="https://cdn.quilljs.com/1.2.2/quill.snow.css" rel="stylesheet">
-  <link href="https://cdn.quilljs.com/1.2.2/quill.bubble.css" rel="stylesheet">
+  <!-- Adding Font Library -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;700&display=swap" rel="stylesheet" crossorigin="anonymous">
+  <!-- Adding Font Library -->
 
-  <!-- GOOGLE APIs -->
+  <!-- GOOGLE API STARTS -->
   <script src="https://apis.google.com/js/platform.js" async defer></script>
   <script type="text/javascript" src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
+  <!-- GOOGLE API ENDS -->
 
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
-    integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-  <!-- BOOTSTRAP -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-    crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-    crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-    crossorigin="anonymous"></script>
-
-  <!-- IMAGE DRAWER GALLERY -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.12/css/lightgallery.css">
-  <script type="text/javascript"
-    src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.12/js/lightgallery-all.js"></script>
-
-  <!-- CUSTOM SCRIPT -->
-  <script src='assets\simulateProcess.js'></script>
-
-  <!-- STRIP JS -->
-  <script src="https://checkout.stripe.com/checkout.js"></script>
-
+  <!-- MODIFYING THE BUILDED SCRIPTS -->
+  <script>if (typeof module === 'object') { window.module = module; module = undefined; }</script>
+  <script>if (window.module) module = window.module;</script>
 </head>
 
 <body>
-  <app-root>
-
-  </app-root>
-
-  <!-- DISABLING INTERCOM STARTS -->
-  <!--<app-navbar>
-    <script>
-      window.intercomSettings = {
-      };
-    </script>
-
-    <script>(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',w.intercomSettings);}else{var d=document;var i=function(){i.c(arguments);};i.q=[];i.c=function(args){i.q.push(args);};w.Intercom=i;var l=function(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/wlumqtu3';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);};if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();</script>
-  </app-navbar>-->
-  <!-- DISABLING INTERCOM ENDS -->
+  <app-root></app-root>
 </body>
 
 </html>

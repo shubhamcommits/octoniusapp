@@ -325,7 +325,7 @@ services:
     image: octoniusapp/octonius-alpha:client
     volumes:
       - /usr/app/node_modules
-      - ${PWD}/client-upgrade/client:/usr/app
+      - ${PWD}/client:/usr/app
     depends_on:
       - mailing-server
       - auths-server

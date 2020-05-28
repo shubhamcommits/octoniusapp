@@ -49,12 +49,12 @@ fi
     cd services
 
     # Define the service Directory array
-    serviceArray=( 'mailing/server' 'authentication/server' 'groups/server' 'workspaces/server' 'users/server' 'posts/server' 'notifications/server' 'utilities/server' 'folio/server' 'client-upgrade/client' )
+    serviceArray=( 'mailing/server' 'authentication/server' 'groups/server' 'workspaces/server' 'users/server' 'posts/server' 'notifications/server' 'utilities/server' 'folio/server' 'client' )
 
     # Loop through all the directories and install the packages 
     for i in "${serviceArray[@]}"
     do
-        if [ "$i" == 'client-upgrade/client' ]
+        if [ "$i" == 'client' ]
             
         then
             cd $mainDir
