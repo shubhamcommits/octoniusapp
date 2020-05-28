@@ -125,7 +125,7 @@ export class CreateGroupComponent implements OnInit {
    * @param userId 
    * @param type 
    */
-  createGroup(groupName: string, workspaceName: string, workspaceId: string, userId: string, type: string){
+  createGroup(groupName: any, workspaceName: any, workspaceId: any, userId: any, type: any){
     return new Promise((resolve, reject)=>{
       this.groupsService.createGroup(groupName, workspaceName, workspaceId, userId, type)
       .then((res)=> resolve(res['group']))
