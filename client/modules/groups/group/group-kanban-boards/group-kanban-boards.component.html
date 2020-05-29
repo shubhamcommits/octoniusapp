@@ -1,4 +1,4 @@
-<div class="container">
+
     <div *ngIf="!(isLoading$ | async)" class="root">
         <div class="board">
             <!-- <app-board-bar *ngIf="groupData" [groupData]="groupData" ></app-board-bar> -->
@@ -111,7 +111,7 @@
         </div>
 
     </div>
-</div>
+
     <!-- Loading Spinner Starts -->
     <ng-container *ngIf="isLoading$ | async">
         <app-loading-spinner class="media"></app-loading-spinner>
