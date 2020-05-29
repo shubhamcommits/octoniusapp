@@ -28,9 +28,6 @@ export class MyspaceHeaderComponent implements OnInit {
   // Public Functions Object
   publicFunctions = new PublicFunctions(this.injector)
 
-  // Show Extended Navigation bar
-  showExtendedNav = false;
-
   async ngOnInit() {
 
     // GETTING USER DATA FROM THE SHARED SERVICE

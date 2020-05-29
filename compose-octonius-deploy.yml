@@ -4,7 +4,7 @@ services:
 
   mongodb:
     container_name: mongodb
-    image: mvertes/alpine-mongo:latest
+    image: 'mongo:latest'
     restart: always
     volumes:
       - alpha_db_data:/data/db
@@ -315,7 +315,7 @@ services:
     environment:
       - SOLR_JAVA_MEM=-Xms256m -Xmx256m -XX:MaxRAM=1024m
     volumes:
-      - ./services/query-service/solr/configsets:/opt/solr/server/solr/configsets
+      - ${PWD}/solr/configsets:/opt/solr/server/solr/configsets
       - alpha_solr_data:/data/query-service-app
     networks:
       - alpha
@@ -325,7 +325,6 @@ services:
     image: octoniusapp/octonius-alpha:client
     volumes:
       - /usr/app/node_modules
-      - ${PWD}/client:/usr/app
     depends_on:
       - mailing-server
       - auths-server

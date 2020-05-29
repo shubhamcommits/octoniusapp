@@ -390,6 +390,10 @@ On terminal, run the command `ssh ubuntu@86.122.94.224` and fill in the password
 
 * To remove everything or clean up the system - `docker system prune`
 
+sudo chown -R $USER:$(id -gn $USER) directory - `To make the user as a the owner with all the permissions`
+
+scp -r ubuntu@82.76.122.151:/home/ubuntu/dailybackup/db $PWD/data/ - `To clone the database into local machine`
+
 
 ### *The following sections below, have been deprecated and they are not in active state for production purposes, however if something needs to be debugged and checked then you may use the following steps(Not recommended).*
 

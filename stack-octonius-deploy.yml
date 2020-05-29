@@ -3,7 +3,7 @@ version: '3.6'
 services:
 
   mongodb:
-    image: mvertes/alpine-mongo:latest
+    image: 'mongo:latest'
     volumes:
       - alpha_db_data:/data/db
     ports:

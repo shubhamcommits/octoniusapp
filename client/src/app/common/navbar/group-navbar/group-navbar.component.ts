@@ -20,11 +20,20 @@ export class GroupNavbarComponent implements OnInit {
   // baseUrl for uploads
   baseUrl = environment.UTILITIES_GROUPS_UPLOADS
 
+  // baseUrl for users
+  userBaseUrl = environment.UTILITIES_USERS_UPLOADS;
+
   // Groups Data
   groupData: any;
 
+  // User Data
+  userData: any;
+
   // Fetch groupId from router snapshot
   groupId = this.router.snapshot.queryParamMap.get('group');
+
+  // My Workplace variable check
+  myWorkplace: boolean = this.router.snapshot.queryParamMap.get('group') ? true : false
 
   // PUBLIC FUNCTIONS
   private publicFunctions = new PublicFunctions(this.injector);
@@ -33,6 +42,9 @@ export class GroupNavbarComponent implements OnInit {
 
     // Fetch the group data from HTTP Request
     this.groupData = await this.publicFunctions.getGroupDetails(this.groupId)
+
+    // Fetch the current user
+    this.userData = await this.publicFunctions.getCurrentUser();
 
     if (this.groupData) {
       // Send the updates of the groupdata through shared service

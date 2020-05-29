@@ -20,25 +20,10 @@
                         <span class="sr-only">(current)</span>
                         </a>
                 </li>
-                 <li class="nav-item" (click)="showExtendedNav = !showExtendedNav">
-                    <a class="nav-link" [routerLink]="['/dashboard', 'myspace', 'workplace']" >Workplace
+                 <li class="nav-item">
+                    <a class="nav-link" routerLink="/dashboard/work/groups/activity" [queryParams]="{ group: userData?._private_group, myWorkplace: true }" >Workplace
                     <span class="sr-only">(current)</span>
                     </a>
-                 </li>
-                  <li class="nav-item" *ngIf="showExtendedNav">
-                     <a class="nav-link" [routerLink]="['/dashboard', 'myspace', 'inbox']">Kanban
-                     <span class="sr-only">(current)</span>
-                     </a>
-                  </li>
-                  <li class="nav-item" *ngIf="showExtendedNav">
-                     <a class="nav-link" [routerLink]="['/dashboard', 'myspace', 'tasks']">Files
-                     <span class="sr-only">(current)</span>
-                     </a>
-                  </li>
-                  <li class="nav-item" *ngIf="showExtendedNav">
-                         <a class="nav-link" [routerLink]="['/dashboard', 'myspace', 'agenda']">Calendar
-                         <span class="sr-only">(current)</span>
-                         </a>
                  </li>
               </ul>
             </div>

@@ -6,7 +6,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { retry } from 'rxjs/internal/operators/retry';
 import { SubSink } from 'subsink';
 import { AuthService } from 'src/shared/services/auth-service/auth.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { PublicFunctions } from 'src/app/dashboard/public.functions';
 import { HotkeysService, Hotkey } from 'angular2-hotkeys';
@@ -29,6 +29,7 @@ export class NavbarComponent implements OnInit, AfterViewInit{
     private utilityService: UtilityService,
     private authService: AuthService,
     private router: Router,
+    private _ActivatedRoute: ActivatedRoute,
     private socketService: SocketService,
     private injector: Injector,
     private hotKeysService: HotkeysService,
@@ -52,6 +53,8 @@ export class NavbarComponent implements OnInit, AfterViewInit{
   // Router state of the application
   routerState: any = 'home'
 
+  // My Workplace variable check
+  myWorkplace: boolean = this._ActivatedRoute.snapshot.queryParamMap.get('myWorkplace') ? true : false
  
   isGroupNavbar$ = new BehaviorSubject(false);
   isCommonNavbar$ = new BehaviorSubject(false);
@@ -84,6 +87,9 @@ export class NavbarComponent implements OnInit, AfterViewInit{
         }
         else if(this.routerState === 'group'){
           this.nextGroupNavbarState()
+          
+          // Check for myWorkplace
+          this.myWorkplace = this._ActivatedRoute.snapshot.queryParamMap.get('myWorkplace') ? true : false
         }
         else if(this.routerState === 'work'){
           this.nextWorkNavbar()

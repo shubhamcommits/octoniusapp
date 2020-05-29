@@ -9,7 +9,7 @@
     <!-- Go back Starts -->
 
     <!-- Go back from group navigation to the work navigation -->
-    <a *ngIf="isGroupNavbar$ | async" 
+    <a *ngIf="(isGroupNavbar$ | async) && !myWorkplace" 
       class="navbar-brand ml-5 mr-5" 
       ngbTooltip="Go Back to Work" 
       placement="bottom"
@@ -19,6 +19,18 @@
       </i>
     </a>
     <!-- Go back from group navigation to the work navigation -->
+
+    <!-- Go back from my workplace navigation to the home navigation -->
+    <a *ngIf="(isGroupNavbar$ | async) && myWorkplace" 
+      class="navbar-brand ml-5 mr-5" 
+      ngbTooltip="Go Back to Home" 
+      placement="bottom"
+      (click)="publicFunctions.sendUpdatesToRouterState({state: 'home'})">
+      <i class="material-icons">
+        arrow_back
+      </i>
+    </a>
+    <!-- Go back from my workplace navigation to the home navigation -->
 
     <!-- Go back from work navigation to the home navigation -->
     <a *ngIf="isWorkNavbar$ | async" 

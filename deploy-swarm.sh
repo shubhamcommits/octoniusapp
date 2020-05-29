@@ -55,6 +55,9 @@ export QUERY_IMAGE_NAME=octoniusapp/octonius-alpha:query-server
 # Nginx Image Name
 export NGINX_IMAGE_NAME=octoniusapp/octonius-alpha:nginx
 
+# Mongo Image Name
+export MONGO_IMAGE_NAME=mongo:latest
+
 # pull the new Docker image to the Docker registry
           docker pull $CLIENT_IMAGE_NAME
           docker pull $MAILS_IMAGE_NAME
@@ -68,9 +71,7 @@ export NGINX_IMAGE_NAME=octoniusapp/octonius-alpha:nginx
           docker pull $FOLIO_IMAGE_NAME
           docker pull $QUERY_IMAGE_NAME
           docker pull $NGINX_IMAGE_NAME
+          docker pull $MONGO_IMAGE_NAME
 
 # Deploy the Stack
 docker stack deploy -c stack-octonius-deploy.yml octonius-alpha --with-registry-auth
-
-
-
