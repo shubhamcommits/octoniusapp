@@ -33,7 +33,7 @@ export class GroupNavbarComponent implements OnInit {
   groupId = this.router.snapshot.queryParamMap.get('group');
 
   // My Workplace variable check
-  myWorkplace: boolean = this.router.snapshot.queryParamMap.get('group') ? true : false
+  myWorkplace: boolean = this.router.snapshot.queryParamMap.get('myWorkplace') ? true : false
 
   // PUBLIC FUNCTIONS
   private publicFunctions = new PublicFunctions(this.injector);
