@@ -1,5 +1,5 @@
 <div class="board-column">
-    <button class="btn btn-outline-primary" (click)="this.showCreateColumn = !this.showCreateColumn"> + New column</button>
+    <button class="btn create-column" (click)="this.showCreateColumn = !this.showCreateColumn"> <i class="material-icons-outlined">table_chart</i> New column</button>
     
     <div class="add-column" *ngIf="this.showCreateColumn">
         <input class="form-control" type="text" placeholder="Column name" [(ngModel)]="newColumn" (keyup)="enableFunctionKeys($event)">

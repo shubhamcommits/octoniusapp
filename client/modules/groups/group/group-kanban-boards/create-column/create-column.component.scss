@@ -11,6 +11,9 @@ $border-color:#E4EDF8;
     flex-basis: 0; // to force the columns to all be the same size, regardless of content
     width: 300px;
     // padding: 25px;
+    // position: fixed;
+    // margin-bottom: 24px;
+    // z-index: 200;
 
     &:not(:first-child) {
         margin-left: 0;
@@ -23,16 +26,16 @@ $border-color:#E4EDF8;
     padding: 8px 15px;
     text-transform: capitalize;
     box-shadow: $box-shadow;
-    transition: transform .2s ease;
+    // transition: transform .1s;
     display: flex;
     justify-content: space-between;
-    margin-bottom: 20px;
+    // margin-bottom: 20px;
     width:300px;
 }
   
 .create-column:hover{
-    transform: scale(1.05);
-    color: #005fd5;
+    color: #ffffff;
+    background-color:#4a90e2 ;
   }
 
   .add-column{

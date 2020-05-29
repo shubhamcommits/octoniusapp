@@ -1,11 +1,12 @@
 
     <div *ngIf="!(isLoading$ | async)" class="root">
+           
         <div class="board">
             <!-- <app-board-bar *ngIf="groupData" [groupData]="groupData" ></app-board-bar> -->
 
-            <!-- CREATE NEW COLUMN START -->
-            <app-create-column (column)="addColumn($event)"></app-create-column>
-            <!-- CREATE NEW COLUMN ENDS -->
+         <!-- CREATE NEW COLUMN START -->
+         <app-create-column (column)="addColumn($event)"></app-create-column>
+         <!-- CREATE NEW COLUMN ENDS -->
 
 
             <div class="board-wrapper">
@@ -25,10 +26,10 @@
                                     <!-- Menu Drawer Starts -->
                                     <ul class="dropdown-menu">
                                         <li class="dropdown-item" (click)="column.editColumn = !column.editColumn">
-                                            <span class="material-icons">create</span>
+                                            <span class="material-icons-outlined">create</span>
                                             Edit</li>
                                         <li class="dropdown-item" (click)="deleteColumn(column)">
-                                            <span class="material-icons">delete</span>
+                                            <span class="material-icons-outlined">delete</span>
                                             Delete</li>
                                     </ul>
                                     <!-- Menu Drawer Ends -->
