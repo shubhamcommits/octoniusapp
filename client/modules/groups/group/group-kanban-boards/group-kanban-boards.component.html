@@ -4,9 +4,7 @@
         <div class="board">
             <!-- <app-board-bar *ngIf="groupData" [groupData]="groupData" ></app-board-bar> -->
 
-         <!-- CREATE NEW COLUMN START -->
-         <app-create-column (column)="addColumn($event)"></app-create-column>
-         <!-- CREATE NEW COLUMN ENDS -->
+      
 
 
             <div class="board-wrapper">
@@ -103,6 +101,10 @@
                         <!-- TASK CONTAINER ENDS -->
 
                     </div>
+
+                       <!-- CREATE NEW COLUMN START -->
+         <app-create-column (column)="addColumn($event)"></app-create-column>
+         <!-- CREATE NEW COLUMN ENDS -->
 
                 </div>
                 <!-- ALL COLUMN DETAILS ENDS -->
