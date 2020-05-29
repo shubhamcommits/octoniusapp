@@ -20,8 +20,26 @@ import Quill from 'quill';
 // Quill Mention
 import "quill-mention";
 
+// Quill Image Compress
+import ImageCompress from 'quill-image-compress';
+
+// Register Image compress module
+Quill.register('modules/imageCompress', ImageCompress);
+
+// Quill Image Resize 
+import ImageResize from './quill-image-resize/quill.image-resize.js';
+
+// Register Quill Image resize module
+Quill.register('modules/imageResize', ImageResize);
+
+import ImageDrop from './quill-image-drop/quill.image-drop.js';
+
+Quill.register('modules/imageDrop', ImageDrop);
+
 // Public Functions
 import { PublicFunctions } from 'src/app/dashboard/public.functions';
+
+// Environments
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -81,6 +99,19 @@ export class QuillEditorComponent implements OnInit {
     // Set the Mention Module
     this.modules.mention = this.metionModule();
 
+    // If the toolbar is supposed to be visible, then enable imageCompress module
+    if (this.toolbar) {
+
+      // Set Image Resize Module
+      this.modules.imageResize = this.quillImageResize()
+
+      // Set Image Drop Module
+      this.modules.imageDrop = true
+
+      // Set Image Compression Module
+      this.modules.imageCompress = this.quillImageCompress()
+    }
+
   }
 
   ngAfterViewInit() {
@@ -124,12 +155,36 @@ export class QuillEditorComponent implements OnInit {
   /**
    * This function is returns the configuration for quill image and compress it if required
    */
-  quillImageCompressor(){
+  quillImageCompress() {
     return {
       quality: 0.9,
       maxWidth: 1000,
       maxHeight: 1000,
       imageType: 'image/jpeg'
+    }
+  }
+
+  /**
+   * This function is returns the configuration for quill image resize module
+   */
+  quillImageResize() {
+    return {
+      displaySize: true,
+      handleStyles: {
+        backgroundColor: 'black',
+        border: 'none',
+        color: 'white',
+        zIndex: '1000'
+      },
+      toolbarStyles: {
+        backgroundColor: 'black',
+        border: 'none',
+        color: 'white',
+        zIndex: '1000'
+      },
+      displayStyles: {
+        zIndex: '1000'
+      }
     }
   }
 
@@ -215,8 +270,8 @@ export class QuillEditorComponent implements OnInit {
       id: file._id,
       value:
         (file.type == 'folio')
-        ?`<a href="/#/document/${file._id}?group=${file._group._id }&readOnly=true" style="color: inherit" target="_blank">${file.original_name}</a>`
-        :`<a href="${this.filesBaseUrl}/${file.modified_name}" style="color: inherit" target="_blank">${file.original_name}</a>`
+          ? `<a href="/#/document/${file._id}?group=${file._group._id}&readOnly=true" style="color: inherit" target="_blank">${file.original_name}</a>`
+          : `<a href="${this.filesBaseUrl}/${file.modified_name}" style="color: inherit" target="_blank">${file.original_name}</a>`
     }))
 
     // Return the Array without duplicates
@@ -298,14 +353,14 @@ export class QuillEditorComponent implements OnInit {
    * @param content 
    */
   getMentionList(content: any) {
-    
+
     // Create Mention Array
-    let mention = content.ops.filter((object)=> object.insert.hasOwnProperty('mention'))
+    let mention = content.ops.filter((object) => object.insert.hasOwnProperty('mention'))
 
     // Return Users and files mentioned
     return {
-      users: mention.filter((object)=> object.insert.mention.denotationChar === "@"),
-      files: mention.filter((object)=> object.insert.mention.denotationChar === "#"),
+      users: mention.filter((object) => object.insert.mention.denotationChar === "@"),
+      files: mention.filter((object) => object.insert.mention.denotationChar === "#"),
     }
   }
 }
