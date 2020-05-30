@@ -40,6 +40,9 @@ Quill.register('modules/cursors', QuillCursors);
 // Subsink Class
 import { SubSink } from 'subsink';
 
+// Import Quill Editor Component
+import { QuillEditorComponent } from 'src/app/common/shared/quill-editor/quill-editor.component';
+
 @Component({
   selector: 'app-folio-editor',
   templateUrl: './folio-editor.component.html',
@@ -116,12 +119,28 @@ export class FolioEditorComponent implements OnInit {
   // SubSink Variable
   subSink = new SubSink()
 
+  // Create new Object of quillEditorComponent
+  quillEditorComponent = new QuillEditorComponent(this._Injector)
+
   ngOnInit() {
 
     // Initialise the connection for folio
     this.folio = this.initializeConnection()
 
+    // If the toolbar is supposed to be visible, then enable following modules
+    if (this.toolbar) {
 
+      // Set Image Resize Module
+      this.modules.imageResize = this.quillEditorComponent.quillImageResize()
+
+      // Set Image Drop Module
+      this.modules.imageDrop = true
+
+      // Set Image Compression Module
+      this.modules.imageCompress = this.quillEditorComponent.quillImageCompress()
+    }
+
+    // Set the White as the background color for quill
     document.body.style.setProperty('background', '#ffffff', 'important')
 
   }
@@ -133,7 +152,7 @@ export class FolioEditorComponent implements OnInit {
       this.userData = await this.publicFunctions.getCurrentUser()
 
     // Set the Status of the toolbar
-    this.modules.toolbar = (this.toolbar === false) ? false : this.quillFullToolbar()
+    this.modules.toolbar = (this.toolbar === false) ? false : this.quillEditorComponent.quillFullToolbar()
 
     // Initialise quill editor
     this.quill = this.quillEditor(this.modules)
@@ -178,23 +197,6 @@ export class FolioEditorComponent implements OnInit {
       readOnly: this.readOnly,
       placeholder: 'Write something awesome...'
     })
-  }
-
-  /**
-   * This function return the full toolbar for quilleditor
-   */
-  quillFullToolbar() {
-    return [
-      [{ 'font': [] }, { 'size': [] }],
-      ['bold', 'italic', 'underline', 'strike'],
-      [{ 'color': [] }, { 'background': [] }],
-      [{ 'script': 'super' }, { 'script': 'sub' }],
-      [{ 'header': '1' }, { 'header': '2' }, 'blockquote', 'code-block'],
-      [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
-      ['direction', { 'align': [] }],
-      ['link', 'image', 'video', 'formula'],
-      ['clean']
-    ]
   }
 
   /**

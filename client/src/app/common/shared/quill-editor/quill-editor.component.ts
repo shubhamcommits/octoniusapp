@@ -99,7 +99,7 @@ export class QuillEditorComponent implements OnInit {
     // Set the Mention Module
     this.modules.mention = this.metionModule();
 
-    // If the toolbar is supposed to be visible, then enable imageCompress module
+    // If the toolbar is supposed to be visible, then enable following modules
     if (this.toolbar) {
 
       // Set Image Resize Module
@@ -281,18 +281,16 @@ export class QuillEditorComponent implements OnInit {
   /**
    * This function is responsible for initialising the quill editor
    * @param modules 
+   * @param {String} theme - 'snow' or 'bubble'
    */
-  quillEditor(modules: Object) {
-
-    // Create Quill Instance locally
-    // let quill: Quill
+  quillEditor(modules: any, theme?: string) {
 
     // Return the instance with modules
     return new Quill(`#${this.editorId}`, {
-      theme: 'snow',
+      theme: theme || 'snow',
       modules: modules,
       readOnly: this.readOnly,
-      placeholder: (this.readOnly) ? '' : 'Start typing here...'
+      placeholder: (this.readOnly) ? '' : 'Write something awesome...'
     })
   }
 
