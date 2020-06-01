@@ -3,7 +3,6 @@ import { Group } from './group.model';
 import { Resetpwd } from './resetpwd.model';
 import { User } from './user.model';
 import { Workspace } from './workspace.model';
-import { GroupOnly } from './groupOnly.model';
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -24,8 +23,5 @@ export {
     User as User,
 
     // WORKSPACE
-    Workspace as Workspace,
-
-    // Group Only model
-    GroupOnly as GroupOnly
+    Workspace as Workspace
 };

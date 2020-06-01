@@ -3,11 +3,11 @@ import { AdminService } from 'src/shared/services/admin-service/admin.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
-  selector: 'app-workplace-invite-user',
-  templateUrl: './workplace-invite-user.component.html',
-  styleUrls: ['./workplace-invite-user.component.scss']
+  selector: 'app-invite-user',
+  templateUrl: './invite-user.component.html',
+  styleUrls: ['./invite-user.component.scss']
 })
-export class WorkplaceInviteUserComponent implements OnInit {
+export class InviteUserComponent implements OnInit {
 
   constructor(
     private adminService: AdminService,
@@ -16,8 +16,9 @@ export class WorkplaceInviteUserComponent implements OnInit {
 
   @Input('workspaceData') workspaceData: any;
   @Input('userData') userData: any;
+  @Input('groupData') groupData: any;
   email: string = '';
-  label: string = "The option is mainly for inviting super-admins, group admins, and external guests.";
+  label: string = "The option is mainly for inviting external guests to this group.";
   placeholder: string = "Please provide the email";
 
   ngOnInit() {
@@ -41,10 +42,10 @@ export class WorkplaceInviteUserComponent implements OnInit {
   inviteUser(workspace_name: string, email: string, group_name?: string){
     try{
       this.utilityService.asyncNotification('Please wait, while we are sending the email...', new Promise((resolve, reject)=>{
-        this.adminService.inviteNewUserViaEmail(workspace_name, email, 'workspace', group_name)
+        this.adminService.inviteNewUserViaEmail(workspace_name, email, 'group', group_name)
         .subscribe((res)=>{
           this.email = '';
-          resolve(this.utilityService.resolveAsyncPromise(`We have sent the invitation email at ${email} to join your workplace!`))
+          resolve(this.utilityService.resolveAsyncPromise(`We have sent the invitation email at ${email} to join your group!`))
         }, (err)=>{
           this.email = '';
           console.log('Error occured, while sending the email', err);

@@ -19,6 +19,8 @@
         </div>
     </div>
 
+    <app-invite-user *ngIf="groupData && workspaceData" [workspaceData]="workspaceData" [groupData]="groupData"></app-invite-user>
+
     <!-- Delete Group Component starts -->
     <app-delete-group *ngIf="groupId && groupId != null && groupId != undefined" [groupId]="groupId">
     </app-delete-group>

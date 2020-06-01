@@ -20,11 +20,8 @@ export = {
     fromName: 'Team Octonius',
     replyToEmail: 'support@octonius.com',
     replyToName: 'Support',
-    signupLink(urlParam = null) {
-        return generateLink('signup', urlParam);
-    },
-    groupOnlyLink(group = null, workplace = null){
-        return `${process.env.PROTOCOL}://${process.env.DOMAIN}/#/signup${group ? `?group=${group}` : ''}${workplace ? `?group=${workplace}` : ''}`;
+    signupLink(workplace, email?, type?, group?) {
+        return `${process.env.PROTOCOL}://${process.env.DOMAIN}/#/authentication/sign-up${workplace ? `?workspace=${workplace}` : ''}${email ? `&email=${email}` : ''}${type ? `&type=${type}` : ''}${group ? `&group=${group}` : ''}`;
     },
     signinLink: generateLink('signin'),
     resetPwdLink: generateLink('resetPassword'),

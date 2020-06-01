@@ -1,11 +1,15 @@
 import { sendError, PasswordHelper, Auths } from '../../utils';
 import { Group, Workspace, User } from '../models';
 import { Request, Response, NextFunction } from 'express';
+import { UsersService } from '../services';
 import http from 'axios';
 import moment from 'moment';
 
 // Password Helper Class
 const passwordHelper = new PasswordHelper();
+
+// User Service Instance
+const usersService = new UsersService();
 
 const auths = new Auths();
 
@@ -248,7 +252,7 @@ export class WorkspaceController {
                     },
                     $set: {
                         _private_group: group
-                      }
+                    }
                 }, {
                     new: true
                 });
@@ -274,7 +278,7 @@ export class WorkspaceController {
                 email: user.email,
                 active: user.active,
                 userSkills: user.skills
-              });
+            });
 
             // Send the status 200 response
             return res.status(200).json({
@@ -414,113 +418,46 @@ export class WorkspaceController {
     }
 
     /**
-     * Anish 09/04 edit starts here
+     * This function is responsible for inviting a user
+     * @param req 
+     * @param res 
+     * @param next 
      */
-
-     /**
-      * Function to invite user via email
-      */
-    inviteUserViaEmail = async (req: Request, res: Response, next: NextFunction) => {
+    async inviteUser(req: Request, res: Response, next: NextFunction) {
         try {
-            const workspaceId = req.body.workspace_id;
-            const invitedUserEmail = req.body.email;
-    
-            //if user was kicked out
-            const user = await User.findOneAndUpdate({
-                $and:[{
-                    email: invitedUserEmail,
-                    _workspace: workspaceId,
-                    active:false,
-                }]
-    
-            }, {
-                $set: {
-                    active: true
-                }
-            });
-    
-            if(user){
-                const globalGroupUpdate = await Group.findOneAndUpdate({
-                    group_name: 'Global',
-                    _workspace: workspaceId
-                }, {
-                    $push: {
-                        _members: user._id
-                    }
-                });
-    
-                // Error updating the Global group
-                if (!globalGroupUpdate) {
-                    return sendError(res, '', 'Some error ocurred trying to update the Global group!');
-                }
-                const workspaceUpdate = await Workspace.findByIdAndUpdate({
-                    _id: workspaceId
-                }, {
-                    $push: {
-                        members: user,
-                        was_invited: {
-                            invited_user: invitedUserEmail,
-                            date_invited: moment().format()
-                        }
-                    },
-                }, {
-                    new: true
-                });
-    
-                // Error updating the Workspace
-                if (!workspaceUpdate) {
-                    return sendError(res, '', 'Some error ocurred trying to update the Workspace!');
-                }
-                const userUpdate = await User.findByIdAndUpdate({
-                    _id: user._id
-                }, {
-                    $push: {
-                        _groups: globalGroupUpdate
-                    }
-                }, {
-                    new: true
-                });
-    
-                // Error updating the user
-                if (!userUpdate) {
-                    return sendError(res, '', 'Some error ocurred trying to update the user!');
-                }
-            }else{
-                //else this is a new member invite 
-                const workspace = await Workspace.findByIdAndUpdate({
-                    _id: workspaceId
-                }, {
-                    // !!REFACTOR THIS, WHILE IT'S NOT IN SYNC WITH SIGNUP METHOD
-                    $push: {
-                        invited_users: invitedUserEmail,
-                        was_invited: {
-                            invited_user: invitedUserEmail,
-                            date_invited: moment().format()
-                        }
-                    }
-                }, {
-                    new: true
-                });
-    
-                if (!workspace) {
-                    return sendError(res, '', 'Please enter a valid workspace id', 404);
-                }
-            }
-            // Send invitation via email
-            // await sendMail.joinWorkspace(req.body);
-            http.post(`${process.env.MAILING_SERVER_API}/join-workspace`, {
-                workspace_id: workspaceId,
-                email: invitedUserEmail,
-                // Yeh wala param check krlio
-                user_id: req['user_id']
-            })
-    
-            return res.status(200).json({
-                message: `Email invitation sent to ${invitedUserEmail}`
-            });
-        } catch (err) {
-            return sendError(res, err);
-        }
-    };
 
+            // Fetch the user from the req.body
+            let { body: { user } } = req;
+
+            // Check if the user data is not an empty object
+            if (JSON.stringify(user) == JSON.stringify({}) || JSON.stringify(req.body) == JSON.stringify({}))
+                return res.status(400).json({
+                    message: 'Bad request as the request body was empty!'
+                })
+
+            // Send the invite to workspace
+            let send = await usersService.inviteUserToJoin(
+                user.email, user.workspace_name, user.type, user.group_name
+            )
+
+            // Send signup invite to user
+            if(send == true)
+                http.post(`${process.env.MAILING_SERVER_API}/invite-user`, {
+                    data: {
+                        from: req['userId'],
+                        email: user.email,
+                        workspace: user.workspace_name,
+                        type: user.type,
+                        group_name: user.group_name
+                    }
+                })
+
+            return res.status(200).json({
+                message: 'User has been invited!'
+            })
+
+        } catch (error) {
+            return sendError(res, new Error(error), 'Internal Server Error!', 500);
+        }
+    }
 }

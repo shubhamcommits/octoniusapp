@@ -70,6 +70,7 @@ import { NewTaskComponent } from './group/group-kanban-boards/new-task/new-task.
 import { EditColumnComponent } from './group/group-kanban-boards/edit-column/edit-column.component';
 import { GroupPostComponent } from './group/group-post/group-post.component';
 import { CommentService } from 'src/shared/services/comment-service/comment.service';
+import { InviteUserComponent } from './group/group-admin/invite-user/invite-user.component';
 
  
 /**
@@ -148,6 +149,8 @@ import { CommentService } from 'src/shared/services/comment-service/comment.serv
     EditColumnComponent,
 
     GroupPostComponent,
+
+    InviteUserComponent,
 
     // GroupImageDetailsComponent
   ],

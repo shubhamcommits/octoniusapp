@@ -57,20 +57,19 @@ export class AdminService {
 
   /**
    * This function is responsible for inviting a user to Join your current workspace
-   * @param workspaceId - workspaceId of the current workspace
+   * @param workspace_name - workspace_name of the current workspace
    * @param email - Email of the user, whom we would like to send the invitation
-   * @param userId - UserId as the string of the person who is inviting.
-   * @param userId (make it fetch from the redis-cache, maybe?)
    */
-  inviteNewUserViaEmail(workspaceId: string, email: string, userId: string) {
+  inviteNewUserViaEmail(workspace_name: string, email: string, type: string, group_name?: string) {
 
-    let emailData: { workspace_id: string, email: string, user_id: string } = {
-      workspace_id: workspaceId,
-      email: email,
-      user_id: userId
-    }
-
-    return this._http.post(this.baseURL + '/workspace/inviteUserViaEmail', emailData);
+    return this._http.post(this.baseURL + '/invite', {
+      user:{
+        workspace_name: workspace_name,
+        email: email.toLowerCase(),
+        type: type,
+        group_name: group_name
+      }
+    });
   }
 
   removeUser(workspaceId, userId) {

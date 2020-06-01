@@ -4,9 +4,10 @@ import { distinctUntilChanged } from "rxjs/internal/operators/distinctUntilChang
 import { UtilityService } from "src/shared/services/utility-service/utility.service";
 import { AuthService } from "src/shared/services/auth-service/auth.service";
 import { StorageService } from "src/shared/services/storage-service/storage.service";
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 import { SubSink } from "subsink";
 import { Subject } from 'rxjs/internal/Subject';
+
 
 @Component({
   selector: "app-auth-user-details",
@@ -19,7 +20,8 @@ export class AuthUserDetailsComponent implements OnInit {
     private utilityService: UtilityService,
     public router: Router,
     private authenticationService: AuthService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private _ActivatedRoute: ActivatedRoute
   ) { }
 
   // ROUTER NAME STATE OF THE COMPONENT - 'new-workplace', 'sign-up', 'sign-in', or 'home'
@@ -54,7 +56,24 @@ export class AuthUserDetailsComponent implements OnInit {
   // ADD ALL SUBSCRIPTIONS HERE TO DESTROY THEM ALL TOGETHER
   private subSink = new SubSink();
 
-  ngOnInit() { }
+  // Finding the group_name
+  group_name = this._ActivatedRoute.snapshot.queryParamMap.get('group');
+
+  // Finding the type
+  type = this._ActivatedRoute.snapshot.queryParamMap.get('type');
+
+  // Workspace
+  workspace_name = this._ActivatedRoute.snapshot.queryParamMap.get('workspace');
+
+  // Email
+  email = this._ActivatedRoute.snapshot.queryParamMap.get('email');
+
+  ngOnInit() {
+    if(this.workspace_name)
+      this.user.workspace = this.workspace_name
+    if(this.email)
+      this.user.email = this.email
+   }
 
   /**
    * This function unsubscribes the observables
@@ -220,13 +239,19 @@ export class AuthUserDetailsComponent implements OnInit {
         this.utilityService.warningNotification('Insufficient data, kindly fill up all the fields correctly!');
       } else {
         // Preparing the user data
-        let userData: Object = {
+        let userData: any = {
           workspace_name: workspace.trim(),
           email: email.trim(),
           password: password.trim(),
           first_name: firstName.trim(),
           last_name: lastName.trim()
         }
+
+        if(this.group_name && this.type){
+          userData.group_name = this.group_name;
+          userData.type = this.type
+        }
+
         this.utilityService.asyncNotification('Please wait while we are setting up your new account...',
         this.signUpServiceFunction(userData))
       }

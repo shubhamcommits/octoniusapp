@@ -43,8 +43,8 @@ routes.post('/task-reassign', sendMail.taskReassigned);
 // POST - User Completed Task
 routes.post('/task-complete', sendMail.userCompletedTask);
 
-// POST - Group Join Invitation
-routes.post('/join-group', sendMail.joinGroupOnly);
+// POST - Join Workplace
+routes.post('/invite-user', sendMail.joinWorkspace);
 
 /*  ===================
  *  -- EXPORT ROUTES --

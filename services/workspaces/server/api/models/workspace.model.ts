@@ -48,23 +48,34 @@ const workspaceSchema = new Schema({
         required: true
     }],
     invited_users: [{
-        type: String,
-        required: true
-    }],
-
-    // Anish edit starts here 09/04
-    was_invited:[{
-        invited_user: {
+        email: {
             type: String,
             required: true
         },
-        date_invited: {
+        invited_date: {
             type: Date,
+            required: true
+        },
+        type: {
+            type: String,
+            enum: ['group', 'workspace']
+        },
+        _user: {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+            required: false
+        },
+        _group: {
+            type: Schema.Types.ObjectId,
+            ref: 'Group',
+            required: false
+        },
+        accepted: {
+            type: Boolean,
+            default: false,
             required: true
         }
     }],
-    // Anish edit ends here
-
     created_date: {
         type: Date,
         default: moment().format()

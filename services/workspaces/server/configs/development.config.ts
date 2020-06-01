@@ -47,7 +47,7 @@ function devConfigInit() {
   // Mailing Mircoservice
   process.env.MAILING_PORT = process.env.MAILING_PORT || '2000'
   process.env.MAILING_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.MAILING_PORT}`
-  process.env.MAILING_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}${process.env.MAILING_PORT}/api`
+  process.env.MAILING_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.MAILING_PORT}/api`
 
   // Auths Microservice
   process.env.AUTHS_PORT = process.env.AUTHS_PORT || '3000'

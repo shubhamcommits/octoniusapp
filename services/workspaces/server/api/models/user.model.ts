@@ -9,6 +9,11 @@ const UserSchema = new Schema({
         required: true,
         default: true
     },
+    invited: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
     first_name: {
         type: String,
         required: true

@@ -384,45 +384,6 @@ const joinedGroup = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 
-/**
- * Anish edit starts here
- * @param req 
- * @param res 
- * @param next 
- */
-const joinGroupOnly = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const { email, userId, groupId, workspaceName } = req.body;
-    const emailType = "groupOnly";
-
-    // Generate email data
-    const from: any = await User.findById({ _id: userId });
-    const group: any = await Group.findById({ _id: groupId });
-
-    const emailData = {
-      subject: subjects[emailType],
-      toName: '',
-      toEmail: email,
-      fromName: from.first_name,
-      fromEmail: from.email,
-      workspace: workspaceName,
-      group: group.group_name,
-      link: defaults.groupOnlyLink(group.group_name, workspaceName)
-    }
-
-    // TODO : Generate template for email
-    const emailBody = await generateEmailBody(emailType, emailData);
-
-    // Send email
-    const send = await sendMail(emailBody, emailData);
-    return res.status(200).json({
-      message: `Join group email sent!`,
-    });
-  } catch (error) {
-    return sendError(res, error, 'Internal Server Error!', 500);
-  }
-}
-
 //Anish edit ends
 
 
@@ -430,19 +391,19 @@ const joinGroupOnly = async (req: Request, res: Response, next: NextFunction) =>
 const joinWorkspace = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const emailType = 'joinWorkspace';
-    const { reqData } = req.body;
+    const { data } = req.body;
     // Generate email data
-    const from: any = await User.findById({ _id: reqData.user_id });
-    const workspace: any = await Workspace.findById({ _id: reqData.workspace_id });
+    const from: any = await User.findById({ _id: data.from });
+    const workspace: any =  data.workspace
 
     const emailData = {
       subject: subjects[emailType],
       toName: '',
-      toEmail: reqData.email,
+      toEmail: data.email,
       fromName: from.first_name,
       fromEmail: from.email,
-      workspace: workspace.workspace_name,
-      link: defaults.signupLink(workspace.workspace_name)
+      workspace: workspace,
+      link: defaults.signupLink(workspace, data.email, data.type, data.group_name)
     };
 
     // Generate email body from template
@@ -778,8 +739,5 @@ export {
   taskReassigned,
 
   // User Task Completed
-  userCompletedTask,
-
-  // Join group
-  joinGroupOnly
+  userCompletedTask
 }

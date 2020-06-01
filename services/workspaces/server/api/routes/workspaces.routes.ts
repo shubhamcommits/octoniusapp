@@ -33,8 +33,8 @@ routes.get('/:workspaceId', workspaces.getWorkspace);
 // PUT - Edit the workspace details
 routes.put('/:workspaceId', workspaceFileHandler, workspaces.updateWorkspace);
 
-// POST - Invite user via emails
-routes.post('/invite-email', workspaces.inviteUserViaEmail);
+// POST - Invite the user
+routes.post('/invite', workspaces.inviteUser);
 
 /*  ===================
  *  -- EXPORT ROUTES --

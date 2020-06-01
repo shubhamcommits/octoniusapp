@@ -28,6 +28,9 @@ export class GroupAdminComponent implements OnInit {
   // Current Group Data
   groupData: any = {}
 
+  // Current Workspace Data
+  workspaceData: any = {}
+
 
   async ngOnInit() {
 
@@ -36,6 +39,9 @@ export class GroupAdminComponent implements OnInit {
 
     // Fetch Current User
     this.userData = await this.publicFunctions.getCurrentUser();
+
+    // Fetch Current Workspace
+    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
   }
 
   // Check if the data provided is not empty{}
