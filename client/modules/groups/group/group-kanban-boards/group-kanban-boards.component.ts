@@ -499,7 +499,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
    * 
    */
   checkOverdue(taskPost: any) {
-    return taskPost.task.due_to < this.today;
+    return moment(taskPost.task.due_to).format('YYYY-MM-DD') < this.today;
   }
 
   /**

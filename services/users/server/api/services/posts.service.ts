@@ -16,10 +16,10 @@ export class PostsService {
     async getTodayTasks(userId: string) {
 
         // Generate the actual time
-        const startOfDay = moment().local().startOf('day').format();
+        const startOfDay = moment().startOf('day').format();
 
         // Generate the +24h time
-        const endOfDay = moment().local().endOf('day').format();
+        const endOfDay = moment().endOf('day').format();
 
         // Fetch users task for today
         const tasks = await Post.find({
@@ -48,7 +48,7 @@ export class PostsService {
     async getOverdueTasks(userId: string) {
 
         // Generate the actual time
-        const today = moment().local().startOf('day').format();
+        const today = moment().startOf('day').format();
 
         // Fetch the tasks posts
         const tasks = await Post.find({
@@ -76,10 +76,10 @@ export class PostsService {
     async getThisWeekTasks(userId: string) {
 
         // Generate the today
-        const today = moment().local().add(1, 'days').startOf('day').format();
+        const today = moment().add(1, 'days').startOf('day').format();
 
         // Generate the +7days from today time
-        const todayPlus7Days = moment().local().add(7, 'days').endOf('day').format();
+        const todayPlus7Days = moment().add(7, 'days').endOf('day').format();
 
         // Fetch the tasks posts
         const tasks = await Post.find({
@@ -108,10 +108,10 @@ export class PostsService {
     async getTodayEvents(userId: string) {
 
         // Generate the actual time
-        const startOfDay = moment().local().startOf('day').format();
+        const startOfDay = moment().startOf('day').format();
 
         // Generate the +24h time
-        const endOfDay = moment().local().endOf('day').format();
+        const endOfDay = moment().endOf('day').format();
 
         // Find the user's today agenda events
         const events = await Post.find({
@@ -140,10 +140,10 @@ export class PostsService {
     async getThisWeekEvents(userId: string) {
 
         // Generate the actual time
-        const todayForEvent = moment().local().add(1, 'days').startOf('day').format();
+        const todayForEvent = moment().add(1, 'days').startOf('day').format();
 
         // Generate the +24h time
-        const todayPlus7Days = moment().local().add(7, 'days').endOf('day').format();
+        const todayPlus7Days = moment().add(7, 'days').endOf('day').format();
 
         // Find the user's today agenda events
         const events = await Post.find({
