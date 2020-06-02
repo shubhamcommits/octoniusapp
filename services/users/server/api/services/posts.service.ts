@@ -48,7 +48,7 @@ export class PostsService {
     async getOverdueTasks(userId: string) {
 
         // Generate the actual time
-        const today = moment().local().format('YYYY-MM-DD');
+        const today = moment().local().startOf('day').format();
 
         // Fetch the tasks posts
         const tasks = await Post.find({

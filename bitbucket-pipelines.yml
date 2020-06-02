@@ -39,10 +39,11 @@ pipelines:
 
     "{staging}":
     - step:
-        caches:
-          - docker
-          - node
-          - maven
+        # Disable cache as our build size is lot more than 1GB
+        # caches:
+        #   - docker
+        #   - node
+        #   - maven
         name: Deploy to dockerhub
         services:
           - docker

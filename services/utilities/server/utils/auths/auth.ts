@@ -84,7 +84,7 @@ export class Auths {
             } else {
 
                 // Send status 200 response
-                return res.status(201).json({
+                return res.status(401).json({
                     message: 'Unauthorized request, Please signIn to continue!',
                 })
 
