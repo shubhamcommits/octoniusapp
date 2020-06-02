@@ -25,6 +25,9 @@ routes.use(authsHelper.verifyToken);
 // Checks whether the current user is loggedIn or not
 routes.use(authsHelper.isLoggedIn);
 
+// POST - Logout from the server
+routes.post('/auths/sign-out', authsHelper.signOut);
+
 // -| Workspace General |-
 
 // GET - Get workspace details

@@ -129,4 +129,25 @@ export class Auths {
         })
     }
 
+    /**
+     * This function is responsible for signing out a user
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async signOut(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            req['userId'] = '';
+            req.headers.authorization = undefined
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: 'User logged out!',
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
 }

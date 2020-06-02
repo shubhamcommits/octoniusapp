@@ -16,6 +16,9 @@ routes.use(authsHelper.verifyToken);
 // Checks whether the current user is loggedIn or not
 routes.use(authsHelper.isLoggedIn);
 
+// POST - Logout from the server
+routes.post('/auths/sign-out', authsHelper.signOut);
+
 // GET - Get list of first 10 groups present in the database
 routes.get('/list', group.getAllGroupsList);
 

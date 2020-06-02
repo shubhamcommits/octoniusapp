@@ -25,6 +25,9 @@ routes.use(auths.verifyToken);
 // Checks whether the current user is loggedIn or not
 routes.use(auths.isLoggedIn);
 
+// POST - Logout from the server
+routes.post('/auths/sign-out', auths.signOut);
+
 // -| SKILL |-
 
 // GET - Get the skills search result on the basis of userId and query(request parameter)

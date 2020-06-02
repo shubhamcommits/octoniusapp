@@ -167,6 +167,10 @@ export class NavbarComponent implements OnInit, AfterViewInit{
           this.subSink.add(this.authService.signout()
           .subscribe((res) => {
             this.storageService.clear();
+            this.publicFunctions.sendUpdatesToGroupData({})
+            this.publicFunctions.sendUpdatesToRouterState({})
+            this.publicFunctions.sendUpdatesToUserData({})
+            this.publicFunctions.sendUpdatesToWorkspaceData({})
             this.socketService.disconnectSocket();
             this.router.navigate(['/home'])
             .then(()=> resolve(this.utilityService.resolveAsyncPromise('Succesfully Logged out!')))

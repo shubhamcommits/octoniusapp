@@ -6,10 +6,9 @@ import { map } from 'rxjs/internal/operators/map';
 import { SubSink } from 'subsink';
 import { Observable, Observer, fromEvent, merge } from 'rxjs';
 import { PublicFunctions } from './dashboard/public.functions';
-import { Router, RouterEvent, NavigationStart, NavigationEnd } from '@angular/router';
 
 // Google API Variable
- declare const gapi: any;
+declare const gapi: any;
 
 @Component({
   selector: 'app-root',
@@ -20,7 +19,7 @@ export class AppComponent {
 
   // Subsink
   private subSink = new SubSink();
-  
+
   // Create public functions object
   public publicFunctions = new PublicFunctions(this.injector);
 
@@ -34,43 +33,17 @@ export class AppComponent {
    * 4. Enabling and calling the @event workspaceData from the socket server
    */
   constructor(
-    private injector: Injector,
-    router: Router
+    private injector: Injector
   ) {
 
     let socketService = this.injector.get(SocketService);
     let utilityService = this.injector.get(UtilityService);
 
-    // As soon as router starts the events, start the spinning loader
-    // router.events.subscribe(
-    //   (event: RouterEvent): void => {
-    //     if (event instanceof NavigationStart) {
-    //       utilityService.startForegroundLoader();
-    //     } else if (event instanceof NavigationEnd) {
-    //       utilityService.stopForegroundLoader()
-    //     } else {
-    //       utilityService.stopForegroundLoader()
-    //     }
-    //   }
-    // )
-
     // Internet connection validity
     this.subSink.add(this.checkInternetConnectivity(utilityService));
 
     // Socket connection initilisation
-    this.subSink.add(this.enableSocketConnection(socketService));
-
-    // Socket Notifications Data Transmitter
-    this.subSink.add(this.enableNotificationDataTransmitter(socketService));
-
-    // Notifications Feed Socket
-    this.subSink.add(this.enableNotificationsFeedSocket(socketService));
-
-    // Workspace Data Socket
-    this.subSink.add(this.enableWorkspaceDataSocket(socketService, this.publicFunctions));
-
-    // User Role Data Socket
-    this.subSink.add(this.enableUserRoleSocket(socketService, this.publicFunctions, utilityService));    
+    this.subSink.add(this.enableSocketConnection(socketService, utilityService));
 
     // Reconnection Socket Emitter
     this.subSink.add(this.enableReconnectSocket(socketService));
@@ -86,18 +59,18 @@ export class AppComponent {
    */
   checkInternetConnectivity(utilityService: UtilityService) {
     return this.createOnline$()
-    .subscribe((isOnline) => {
-      if (!isOnline) {
-        utilityService.warningNotification('Oops, seems like you lost your internet connection', '', {
-          showProgressBar: true,
-          closeOnClick: false,
-          backdrop: 0.8,
-          timeout: 3000
-        })
-      }
-      else
-        utilityService.clearAllNotifications();
-    })
+      .subscribe((isOnline) => {
+        if (!isOnline) {
+          utilityService.warningNotification('Oops, seems like you lost your internet connection', '', {
+            showProgressBar: true,
+            closeOnClick: false,
+            backdrop: 0.8,
+            timeout: 3000
+          })
+        }
+        else
+          utilityService.clearAllNotifications();
+      })
   }
 
   /**
@@ -113,10 +86,22 @@ export class AppComponent {
    * This function enables the socket connection in the application
    * @param socketService 
    */
-  enableSocketConnection(socketService: SocketService) {
+  enableSocketConnection(socketService: SocketService, utilityService: UtilityService) {
     return socketService.onEvent('connect')
       .pipe(retry(Infinity))
-      .subscribe()
+      .subscribe(() => {
+        // Socket Notifications Data Transmitter
+        this.subSink.add(this.enableNotificationDataTransmitter(socketService));
+
+        // Notifications Feed Socket
+        this.subSink.add(this.enableNotificationsFeedSocket(socketService));
+
+        // Workspace Data Socket
+        this.subSink.add(this.enableWorkspaceDataSocket(socketService, this.publicFunctions));
+
+        // User Role Data Socket
+        this.subSink.add(this.enableUserRoleSocket(socketService, this.publicFunctions, utilityService));
+      })
   }
 
   /**
@@ -166,22 +151,22 @@ export class AppComponent {
   enableUserRoleSocket(socketService: SocketService, publicFunctions: PublicFunctions, utilityService: UtilityService) {
     return socketService.onEvent('userDataUpdate')
       .pipe(retry(Infinity))
-      .subscribe( async (userData) => {
+      .subscribe(async (userData) => {
 
         // Fetch the current user
         let currentUser: any = await publicFunctions.getCurrentUser();
 
         // Update the profile picture and send the update accross the app
-        if(userData.hasOwnProperty('profile_pic'))
-          if(userData.profile_pic !== 'default_user.png')
-              currentUser.profile_pic = userData.profile_pic || currentUser.profile_pic;
+        if (userData.hasOwnProperty('profile_pic'))
+          if (userData.profile_pic !== 'default_user.png')
+            currentUser.profile_pic = userData.profile_pic || currentUser.profile_pic;
 
         // Update the role
-        if(userData.hasOwnProperty('role')){
+        if (userData.hasOwnProperty('role')) {
           currentUser.role = userData.role || currentUser.role;
           utilityService.infoNotification(`Your role has been updated to ${currentUser.role}!`)
         }
-          
+
 
         // Here we send the message to change and update the current user through the shared service and storage too
         publicFunctions.sendUpdatesToUserData(currentUser)

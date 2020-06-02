@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Injector } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { PublicFunctions } from 'src/app/dashboard/public.functions';
 
 @Component({
   selector: 'app-welcome-page',
@@ -8,12 +9,20 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 })
 export class WelcomePageComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private _Injector: Injector
+  ) { }
 
   isLoadingJoinWorkspace$ = new BehaviorSubject(false);
   isLoadingCreateWorkspace$ = new BehaviorSubject(false);
 
-  ngOnInit() {
+  publicFunctions = new PublicFunctions(this._Injector)
+
+  async ngOnInit() {
+    this.publicFunctions.sendUpdatesToGroupData({})
+    this.publicFunctions.sendUpdatesToRouterState({})
+    this.publicFunctions.sendUpdatesToUserData({})
+    this.publicFunctions.sendUpdatesToWorkspaceData({})
   }
 
   nextLoadingJoinWorskpaceState(){
