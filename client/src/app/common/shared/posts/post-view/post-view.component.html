@@ -6,7 +6,7 @@
             <!-- Image Avatar Starts -->
             <div class="col-md-1 ">
                 <img src="{{ baseUrl }}/{{post?._posted_by?.profile_pic}}" onerror="this.src='assets/images/user.png'"
-                    class="feed-avatar ml-0" routerLink="/dashboard/user/profile"
+                    class="feed-avatar ml-2" routerLink="/dashboard/user/profile"
                     [queryParams]="{ userId: post?._posted_by?._id }" />
             </div>
             <!-- Image Avatar Ends -->
@@ -65,12 +65,12 @@
         </div>
 
         <!-- Normal Post Title starts -->
-        <div class="font-weight-bold" *ngIf="post.type != 'event'"
-            [innerHTML]="(post?.title || 'Untitled') | safe: 'html'">
-        </div>
+        <h4 *ngIf="post.type != 'event'"
+            [innerHTML]="(post?.title || 'Untitled') | safe: 'html'" class="post-title">
+    </h4>
         <!-- Normal Post Title ends -->
 
-        <div class="row" *ngIf="post?.type === 'event'">
+        <div class="row" style="margin-left: 0; margin-right:0;" *ngIf="post?.type === 'event'">
             <div class="col-md-2 dateblock" *ngIf="post.event.due_to != 'Invalid date'">
                 <span class="bigdate">{{post?.event.due_to | date :'dd' }}</span>
                 <br>
@@ -78,11 +78,11 @@
                 <br>
                 <span class="time">{{post.event.due_to | date:'HH:mm'}}</span>
             </div>
-            <div class="col-md-9">
-                <div class="row">
+            <div class="col-md-10">
+               
 
                     <!-- Events Post Title starts -->
-                    <div class="col-md-12 innercard font-weight-bold"
+                    <div class=" innercard font-weight-bold"
                         [innerHTML]="(post?.title || 'Untitled') | safe: 'html'">
                     </div>
                     <!-- Event Post Title ends -->
@@ -91,7 +91,7 @@
                     <app-quill-editor *ngIf="post.content" [editorId]="('editor_' + post._id) || 'editor'"
                         [toolbar]="false" [readOnly]="true" [contents]="post.content"></app-quill-editor>
                     <!-- Event Post Content Ends -->
-                </div>
+                
             </div>
         </div>
 

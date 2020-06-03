@@ -141,7 +141,7 @@ export class FolioEditorComponent implements OnInit {
     }
 
     // Set the White as the background color for quill
-    document.body.style.setProperty('background', '#ffffff', 'important')
+    // document.body.style.setProperty('background', '#ffffff', 'important')
 
   }
 

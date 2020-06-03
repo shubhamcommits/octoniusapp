@@ -821,3 +821,11 @@ input {
 .material-icons-outlined{
   font-weight: 400 !important;
 }
+
+.dark-mode{
+  background-color: #171b22 !important;
+  color: #ffffff !important;
+  h1,h2,h3,h4,h5{
+      color: #ffffff !important;
+  }
+}
