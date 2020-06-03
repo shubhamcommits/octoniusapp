@@ -376,30 +376,53 @@ export class GroupCreatePostComponent implements OnInit {
 
   updateDetails() {
 
-    // Prepare the taskPost object
+    // Prepare the normal  object
+    const post: any = {
+      title: this.title,
+      type: this.type,
+      content: this.quillData ? JSON.stringify(this.quillData.contents) : this.postData.content,
+      _content_mentions: this._content_mentions,
+      tags: this.tags,
+      _read_by: []
+    }
+
+    // If type is event, then add the following properties too
     if (this.type == 'event') {
+
+      // Set the due date for the events
       this.dueDate = new Date(
         new Date(this.dueDate).getFullYear(),
         new Date(this.dueDate).getMonth(),
         new Date(this.dueDate).getDate(),
         this.dueTime.hour,
         this.dueTime.minute)
+      
+      // Adding Due Date to event
+      post.date_due_to = this.dueDate
+      
+      // Adding assigned to for the events
+      post.assigned_to = this.eventAssignees
     }
 
-    const post = {
-      title: this.title,
-      type: this.type,
-      content: this.quillData ? JSON.stringify(this.quillData.contents) : this.postData.content,
-      _content_mentions: this._content_mentions,
-      tags: this.tags,
-      _read_by: [],
-      unassigned: this.postData.task.unassigned,
-      date_due_to: this.dueDate,
-      assigned_to: this.type == 'event' ? this.eventAssignees : this.postData.task._assigned_to._id,
-      _column: {
+    // If type is task, then add following properties too
+    if(this.type == 'task'){
+
+      // Unassigned property
+      post.unassigned = this.postData.task.unassigned,
+
+      // Task due date
+      post.date_due_to = this.dueDate,
+
+      // Task Assigned to
+      post.assigned_to = this.postData.task._assigned_to._id,
+
+      // Task column
+      post._column = {
         title: this.postData.task._column.title
       },
-      status: this.postData.task.status
+
+      // Task status
+      post.status = this.postData.task.status
     }
 
     // Create FormData Object
@@ -427,16 +450,18 @@ export class GroupCreatePostComponent implements OnInit {
       this.publicFunctions.onEditPost(postId, formData)
         .then((res) => {
 
+          console.log(res)
+
           // Emit the post to other components
           // let post = res['post'];
           this.post.emit(res)
 
           this.edited.emit(res)
 
-          this.closeModal();
-
           // Resolve with success
           resolve(this.utilityService.resolveAsyncPromise(`Details updated!`))
+
+          this.closeModal();
         })
         .catch(() => {
           reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`))
