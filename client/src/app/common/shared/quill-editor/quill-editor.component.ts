@@ -123,7 +123,7 @@ export class QuillEditorComponent implements OnInit {
     if (this.contents) {
 
       // Fetch the delta ops from the JSON string 
-      let delta = JSON.parse(this.contents)['ops']
+      let delta = JSON.parse(this.contents)['ops'] || this.quill.clipboard.convert(this.content);
 
       // Set the content inside quill container  
       this.setContents(this.quill, delta)
