@@ -2,7 +2,7 @@
 # Octonius image deployment to Docker Hub
 
 # Make Suitable Directories
-mkdir data \
+mkdir -p data \
       data/db \
       data/solr \
       data/uploads \

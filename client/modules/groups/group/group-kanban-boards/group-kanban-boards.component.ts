@@ -5,11 +5,9 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { PublicFunctions } from 'src/app/dashboard/public.functions';
 import { ActivatedRoute } from '@angular/router';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
-import { PostService } from 'src/shared/services/post-service/post.service';
 import { environment } from 'src/environments/environment';
 import moment from 'moment/moment';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import { isThisMinute } from 'date-fns';
 
 @Component({
   selector: 'app-group-kanban-boards',

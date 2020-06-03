@@ -425,7 +425,7 @@ export class PostService {
 
           // Add task property details
           postData.task = {
-            due_to: (post.date_due_to) ? moment(post.date_due_to).format('YYYY-MM-DD') : null,
+            due_to: (post.date_due_to) ? moment(post.date_due_to).format() : null,
             _assigned_to: post.assigned_to,
             status: post.status,
             unassigned: post.unassigned,
@@ -732,7 +732,7 @@ export class PostService {
       var post: any = await Post.findOneAndUpdate({
         _id: postId
       }, {
-        "task.due_to": date_due_to ? moment.utc(date_due_to).format() : null,
+        "task.due_to": date_due_to ? moment(date_due_to).format() : null,
       }, {
         new: true
       })
