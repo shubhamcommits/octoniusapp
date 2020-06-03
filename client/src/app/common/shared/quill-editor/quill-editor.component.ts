@@ -123,7 +123,9 @@ export class QuillEditorComponent implements OnInit {
     if (this.contents) {
 
       // Fetch the delta ops from the JSON string 
-      let delta = JSON.parse(this.contents)['ops'] || this.quill.clipboard.convert(this.content);
+      let delta = (this.isJSON(this.contents))
+      ? JSON.parse(this.contents)['ops']
+      : this.quill.clipboard.convert(this.contents);
 
       // Set the content inside quill container  
       this.setContents(this.quill, delta)
@@ -133,6 +135,19 @@ export class QuillEditorComponent implements OnInit {
 
     // Turn on the quill text change event handler
     this.quillContentChanges(this.quill)
+  }
+
+  /**
+   * This function is used to check if a function is already strigified
+   * @param str 
+   */
+  isJSON(str: string) {
+    try {
+        JSON.parse(str)
+    } catch (e) {
+        return false
+    }
+    return true
   }
 
   /**

@@ -7,6 +7,13 @@
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
+// DNS Details
+const url = {
+  protocol: `http`, // standard protocol
+  domain: `localhost`, // your domain name where application is supposed to be visible
+  websocket: `ws` // wss in case of https protocol, else pass ws here
+}
+
 export const environment = {
 
   // Environment Configs
@@ -14,73 +21,73 @@ export const environment = {
   hmr: false,
 
   // Stripe key
-  pk_stripe: 'pk_test_rgLsr0HrrbMcqQr5G7Wz1zFK',
+  pk_stripe: `pk_test_rgLsr0HrrbMcqQr5G7Wz1zFK`,
 
   // Browser Storage Key
-  storageKey: 'storageKey@20xx',
+  storageKey: `storageKey@20xx`,
 
   // Google developer console credentials
-  developerKey: 'AIzaSyDGM66BZhGSmBApm3PKL-xCrri-3Adb06I',
-  clientId: '971238950983-aef7kjl23994hjj9e8m5tch4a22b5dut.apps.googleusercontent.com',
-  apiKey: 'AIzaSyDGM66BZhGSmBApm3PKL-xCrri-3Adb06I',
-  clientSecret: 'erp6ZMRG6XFiMqHkjTDby2UI',
-  google_redirect_url: 'http://localhost:4200',
+  developerKey: `AIzaSyDGM66BZhGSmBApm3PKL-xCrri-3Adb06I`,
+  clientId: `971238950983-aef7kjl23994hjj9e8m5tch4a22b5dut.apps.googleusercontent.com`,
+  apiKey: `AIzaSyDGM66BZhGSmBApm3PKL-xCrri-3Adb06I`,
+  clientSecret: `erp6ZMRG6XFiMqHkjTDby2UI`,
+  google_redirect_url: `${url.protocol}://${url.domain}:4200`,
   scope: [
-    'https://www.googleapis.com/auth/drive',
-    'https://www.googleapis.com/auth/calendar',
-    'https://www.googleapis.com/auth/calendar.events'
-  ].join(' '),
+    `https://www.googleapis.com/auth/drive`,
+    `https://www.googleapis.com/auth/calendar`,
+    `https://www.googleapis.com/auth/calendar.events`
+  ].join(` `),
 
   // Base Client Url
-  clientUrl: 'http://localhost:4200',
+  clientUrl: `${url.protocol}://${url.domain}:4200`,
 
   // Octo-doc URL
-  REAL_TIME_URL: 'localhost:3001',
+  REAL_TIME_URL: `${url.domain}:3001`,
 
   // Mailing URLs
-  MAILING_BASE_URL: 'http://localhost:2000',
-  MAILING_BASE_API_URL: 'http://localhost:2000/api',
+  MAILING_BASE_URL: `${url.protocol}://${url.domain}:2000`,
+  MAILING_BASE_API_URL: `${url.protocol}://${url.domain}:2000/api`,
 
   // Authentication URLs
-  AUTH_BASE_URL: 'http://localhost:3000',
-  AUTH_BASE_API_URL: 'http://localhost:3000/api',
+  AUTH_BASE_URL: `${url.protocol}://${url.domain}:3000`,
+  AUTH_BASE_API_URL: `${url.protocol}://${url.domain}:3000/api`,
 
   // Groups URLs
-  GROUPS_BASE_URL: 'http://localhost:4000',
-  GROUPS_BASE_API_URL: 'http://localhost:4000/api',
+  GROUPS_BASE_URL: `${url.protocol}://${url.domain}:4000`,
+  GROUPS_BASE_API_URL: `${url.protocol}://${url.domain}:4000/api`,
 
   // Workspace URLs
-  WORKSPACE_BASE_URL: 'http://localhost:5000',
-  WORKSPACE_BASE_API_URL: 'http://localhost:5000/api',
+  WORKSPACE_BASE_URL: `${url.protocol}://${url.domain}:5000`,
+  WORKSPACE_BASE_API_URL: `${url.protocol}://${url.domain}:5000/api`,
 
   // User URLs
-  USER_BASE_URL: 'http://localhost:7000',
-  USER_BASE_API_URL: 'http://localhost:7000/api',
+  USER_BASE_URL: `${url.protocol}://${url.domain}:7000`,
+  USER_BASE_API_URL: `${url.protocol}://${url.domain}:7000/api`,
 
   // Posts URLs
-  POST_BASE_URL: 'http://localhost:8000',
-  POST_BASE_API_URL: 'http://localhost:8000/api',
+  POST_BASE_URL: `${url.protocol}://${url.domain}:8000`,
+  POST_BASE_API_URL: `${url.protocol}://${url.domain}:8000/api`,
 
   // Notifications URLs
-  NOTIFICATIONS_BASE_URL: 'ws://localhost:9000',
-  NOTFICATIONS_BASE_API_URL: 'http://localhost:9000/api',
+  NOTIFICATIONS_BASE_URL: `ws://${url.domain}:9000`,
+  NOTFICATIONS_BASE_API_URL: `${url.protocol}://${url.domain}:9000/api`,
 
   // Query Service URLs
-  QUERY_SERVICE_BASE_URL: 'http://localhost:8080',
-  QUERY_SERVICE_BASE_API_URL: 'http://localhost:8080/api/query-service',
-  QUERY_SERVICE_MONITOR_URL: 'http://localhost:8983/solr/octonius',
+  QUERY_SERVICE_BASE_URL: `${url.protocol}://${url.domain}:8080`,
+  QUERY_SERVICE_BASE_API_URL: `${url.protocol}://${url.domain}:8080/api/query-service`,
+  QUERY_SERVICE_MONITOR_URL: `${url.protocol}://${url.domain}:8983/solr/octonius`,
 
   // Utilities URLs
-  UTILITIES_BASE_URL: 'http://localhost:10000',
-  UTILITIES_BASE_API_URL: 'http://localhost:10000/api',
-  UTILITIES_GROUPS_UPLOADS: 'http://localhost:10000/uploads/groups',
-  UTILITIES_FILES_UPLOADS: 'http://localhost:10000/uploads/files',
-  UTILITIES_POSTS_UPLOADS: 'http://localhost:10000/uploads/posts',
-  UTILITIES_USERS_UPLOADS: 'http://localhost:10000/uploads/users',
-  UTILITIES_WORKSPACES_UPLOADS: 'http://localhost:10000/uploads/workspaces',
+  UTILITIES_BASE_URL: `${url.protocol}://${url.domain}:10000`,
+  UTILITIES_BASE_API_URL: `${url.protocol}://${url.domain}:10000/api`,
+  UTILITIES_GROUPS_UPLOADS: `${url.protocol}://${url.domain}:10000/uploads/groups`,
+  UTILITIES_FILES_UPLOADS: `${url.protocol}://${url.domain}:10000/uploads/files`,
+  UTILITIES_POSTS_UPLOADS: `${url.protocol}://${url.domain}:10000/uploads/posts`,
+  UTILITIES_USERS_UPLOADS: `${url.protocol}://${url.domain}:10000/uploads/users`,
+  UTILITIES_WORKSPACES_UPLOADS: `${url.protocol}://${url.domain}:10000/uploads/workspaces`,
 
   // Folio URLs
-  FOLIO_BASE_URL: 'ws://localhost:11000'
+  FOLIO_BASE_URL: `${url.websocket}://${url.domain}:11000`
 };
 
 
@@ -91,4 +98,4 @@ export const environment = {
  * This import should be commented out in production mode because it will have a negative impact
  * on performance if an error is thrown.
  */
-// import 'zone.js/dist/zone-error';  // Included with Angular CLI.
+// import `zone.js/dist/zone-error`;  // Included with Angular CLI.
