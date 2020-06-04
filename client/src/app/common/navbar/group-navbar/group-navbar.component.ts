@@ -33,12 +33,16 @@ export class GroupNavbarComponent implements OnInit {
   groupId = this.router.snapshot.queryParamMap.get('group');
 
   // My Workplace variable check
-  myWorkplace: boolean = this.router.snapshot.queryParamMap.get('myWorkplace') ? true : false
+  myWorkplace: boolean = this.router.snapshot.queryParamMap.has('myWorkplace')
+  ? (this.router.snapshot.queryParamMap.get('myWorkplace') == ('false') ? (false): (true))
+  : false
 
   // PUBLIC FUNCTIONS
   private publicFunctions = new PublicFunctions(this.injector);
 
   async ngOnInit() {
+
+    console.log(this.myWorkplace)
 
     // Fetch the group data from HTTP Request
     this.groupData = await this.publicFunctions.getGroupDetails(this.groupId)

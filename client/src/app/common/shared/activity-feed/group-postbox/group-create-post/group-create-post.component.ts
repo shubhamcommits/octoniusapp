@@ -447,10 +447,8 @@ export class GroupCreatePostComponent implements OnInit {
    */
   editPost(postId: any, formData: FormData) {
     this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
-      this.publicFunctions.onEditPost(postId, formData)
+      this.postService.edit(postId, formData)
         .then((res) => {
-
-          console.log(res)
 
           // Emit the post to other components
           // let post = res['post'];

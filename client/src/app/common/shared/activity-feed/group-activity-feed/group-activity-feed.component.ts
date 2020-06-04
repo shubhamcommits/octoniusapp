@@ -28,7 +28,9 @@ export class GroupActivityFeedComponent implements OnInit {
   @Input('groupId') groupId = this.router.snapshot.queryParamMap.get('group');
 
   // My Workplace variable check
-  myWorkplace: boolean = this.router.snapshot.queryParamMap.get('myWorkplace') ? true : false
+  myWorkplace: boolean = this.router.snapshot.queryParamMap.has('myWorkplace')
+  ? (this.router.snapshot.queryParamMap.get('myWorkplace') == ('false') ? (false): (true))
+  : false
 
   // Global Feed Variable check
   globalFeed: boolean = (this.router.snapshot.url.findIndex((segment)=> segment.path == 'inbox') == -1) ? false : true
