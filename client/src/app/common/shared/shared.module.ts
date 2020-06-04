@@ -1,0 +1,199 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { ImageCropperModule } from 'ngx-image-cropper';
+import { NgbTimepickerModule, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+
+// import { QuicklinkModule } from 'ngx-quicklink';
+
+import { NgbModalModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+
+import { SafePipe } from 'src/shared/pipes/safe.pipe';
+
+import { CropImageComponent } from './crop-image/crop-image.component';
+import { EmailInputComponent } from './email-input/email-input.component';
+import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
+import { ComponentSearchBarComponent } from './component-search-bar/component-search-bar.component';
+import { RouterModule } from '@angular/router';
+import { SectionSeparatorComponent } from './section-separator/section-separator.component';
+import { ComponentSearchInputBoxComponent } from './component-search-input-box/component-search-input-box.component';
+import { QuillEditorComponent } from './quill-editor/quill-editor.component';
+import { DatePickerComponent } from './date-picker/date-picker.component';
+import { TimePickerComponent } from './time-picker/time-picker.component';
+import { AttachFilesComponent } from './attach-files/attach-files.component';
+import { AttachCloudFilesComponent } from './attach-cloud-files/attach-cloud-files.component';
+import { PostViewComponent } from './posts/post-view/post-view.component';
+import { PostActionsComponent } from './posts/post-actions/post-actions.component';
+import { LikePostComponent } from './posts/post-actions/like-post/like-post.component';
+import { CommentOnPostComponent } from './posts/post-actions/comment-on-post/comment-on-post.component';
+import { FollowPostComponent } from './posts/post-actions/follow-post/follow-post.component';
+import { PostUtilsComponent } from './posts/post-actions/post-utils/post-utils.component';
+import { SelectAssigneeComponent } from './select-assignee/select-assignee.component';
+import { TaskStatusComponent } from './posts/post-actions/task-status/task-status.component';
+import { ChangeColumnComponent } from './posts/post-actions/change-column/change-column.component';
+import { PostTagsComponent } from './posts/post-tags/post-tags.component';
+import { InfiniteScrollComponent } from './infinite-scroll/infinite-scroll.component';
+import { ProgressBarComponent } from './progress-bar/progress-bar.component';
+import { SelectMemberComponent } from './select-member/select-member.component';
+import { ActivityFeedComponent } from './activity-feed/activity-feed.component';
+import { NewsPillComponent } from './activity-feed/news-pill/news-pill.component';
+import { GroupTaskProgressComponent } from './activity-feed/group-task-progress/group-task-progress.component';
+import { GroupInformationComponent } from './activity-feed/group-information/group-information.component';
+import { SendPulseComponent } from './activity-feed/send-pulse/send-pulse.component';
+import { GroupActivityFeedComponent } from './activity-feed/group-activity-feed/group-activity-feed.component';
+import { GroupPostboxComponent } from './activity-feed/group-postbox/group-postbox.component';
+import { GroupPostSelectionComponent } from './activity-feed/group-postbox/group-post-selection/group-post-selection.component';
+import { GroupCreatePostComponent } from './activity-feed/group-postbox/group-create-post/group-create-post.component';
+import { TaskSmartCardComponent } from './activity-feed/task-smart-card/task-smart-card.component';
+import { AgendaSmartCardComponent } from './activity-feed/agenda-smart-card/agenda-smart-card.component';
+import { GroupUpdateInformationComponent } from './activity-feed/group-information/group-update-information/group-update-information.component';
+import { CommentSectionComponent } from './comments/comment-section/comment-section.component';
+import { PostCommentComponent } from './comments/post-comment/post-comment.component';
+import { LikeCommentComponent } from './comments/post-comment/like-comment/like-comment.component';
+
+@NgModule({
+  declarations: [
+    AttachFilesComponent,
+    AttachCloudFilesComponent,
+    CropImageComponent,
+    DatePickerComponent,
+    EmailInputComponent,
+    LoadingSpinnerComponent,
+    ComponentSearchBarComponent,
+    SectionSeparatorComponent,
+    ComponentSearchInputBoxComponent,
+    QuillEditorComponent,
+    TimePickerComponent,
+    PostViewComponent,
+    PostActionsComponent,
+    LikePostComponent,
+    CommentOnPostComponent,
+    FollowPostComponent,
+    PostUtilsComponent,
+
+    // Safe Pipe
+    SafePipe,
+
+    SelectAssigneeComponent,
+
+    TaskStatusComponent,
+
+    ChangeColumnComponent,
+
+    PostTagsComponent,
+
+    InfiniteScrollComponent,
+
+    ProgressBarComponent,
+
+    SelectMemberComponent,
+
+    ActivityFeedComponent,
+
+    SendPulseComponent,
+
+    GroupInformationComponent,
+
+    GroupTaskProgressComponent,
+
+    NewsPillComponent,
+
+    GroupActivityFeedComponent,
+
+    GroupPostboxComponent,
+
+    GroupPostSelectionComponent,
+
+    GroupCreatePostComponent,
+
+    TaskSmartCardComponent,
+
+    AgendaSmartCardComponent,
+
+    GroupUpdateInformationComponent,
+
+    PostCommentComponent,
+    
+    CommentSectionComponent,
+    
+    LikeCommentComponent
+  ],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ImageCropperModule,
+    RouterModule,
+
+    // ANGULAR BOOTSTRAP DATE PICKER MODULE
+    NgbDatepickerModule,
+
+    // ANGULAR BOOTSTRAP TIME PICKER MODULE
+    NgbTimepickerModule,
+
+    // Infinite Scroll Module
+    InfiniteScrollModule,
+
+    // Preloading Routes Module
+    // QuicklinkModule,
+
+    // ANGULAR BOOTSTRAP MODAL MODULE
+    NgbModalModule,
+
+    // ANGULAR TOOLTIP MODULE
+    NgbTooltipModule,
+
+
+  ],
+  exports: [
+    AttachFilesComponent,
+    AttachCloudFilesComponent,
+    CropImageComponent,
+    ComponentSearchBarComponent,
+    ComponentSearchInputBoxComponent,
+    DatePickerComponent,
+    EmailInputComponent,
+    LoadingSpinnerComponent,
+    PostViewComponent,
+    PostTagsComponent,
+    SectionSeparatorComponent,
+    SelectAssigneeComponent,
+    QuillEditorComponent,
+    TimePickerComponent,
+    TaskStatusComponent,
+    ChangeColumnComponent,
+    InfiniteScrollModule,
+    // QuicklinkModule,
+    InfiniteScrollComponent,
+    ProgressBarComponent,
+    SelectMemberComponent,
+    SendPulseComponent,
+
+    GroupInformationComponent,
+
+    GroupTaskProgressComponent,
+
+    NewsPillComponent,
+
+    GroupActivityFeedComponent,
+
+    GroupPostboxComponent,
+
+    GroupPostSelectionComponent,
+
+    GroupCreatePostComponent,
+
+    ActivityFeedComponent,
+
+    TaskSmartCardComponent,
+
+    AgendaSmartCardComponent,
+
+    NgbTooltipModule,
+
+    NgbModalModule,
+
+    LikeCommentComponent
+  ]
+})
+export class SharedModule { }

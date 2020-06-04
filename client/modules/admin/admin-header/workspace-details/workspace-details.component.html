@@ -1,0 +1,25 @@
+<!-- WORKSPACE DETAIL MODAL STARTS -->
+
+<!-- WORKSPACE HEADER STARTS -->
+<div class="modal-header">
+    <h4 class="modal-title">Workspace Update</h4>
+</div>
+<!-- WORKSPACE HEADER ENDS -->
+
+<!-- WORKSPACE MODAL CHANGE IMAGE STARTS -->
+<div class="modal-body">
+    <div class="form-group">
+        <img src="{{ baseUrl }}/{{ workspaceData?.workspace_avatar }}" onerror="this.src='assets/images/organization.png'" >
+        <app-crop-image class="container" (outputImage)="getCroppedImage($event)"></app-crop-image>
+    </div>
+</div>
+<!-- WORKSPACE MODAL CHANGE IMAGE ENDS -->
+
+<!-- WORKSPACE FOOTER STARTS -->
+<div class="modal-footer">
+    <button type="button" class="btn btn-success"
+        (click)="updateWorkplaceDetails( workspaceData?._id, croppedImage )">Save</button>
+</div>
+<!-- WORKSPACE FOOTER ENDS -->
+
+<!-- WORKSPACE DETAIL MODAL ENDS -->

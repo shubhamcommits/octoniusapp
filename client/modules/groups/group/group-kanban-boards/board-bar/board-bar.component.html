@@ -1,0 +1,27 @@
+<div class="board-bar">
+    <div class="row">
+
+        <!-- BACK TO LOCATION STARTS -->
+        <div class="col-md-1">
+            <a class="navbar-brand" (click)="this._location.back()">
+                <i class="material-icons">arrow_back </i>
+            </a>
+        </div>
+        <!-- BACK TO LOCATION ENDS -->
+
+        <!-- GROUP DETAILS STARTS -->
+        <div class="col-md-10 text-center">
+            <h1>{{ groupData?.group_name }} Board</h1>
+        </div>
+        <!-- GROUP DETAILS ENDS -->
+
+        <!-- OCTONIUS LOGO ICON -->
+        <div class="col-md-1">
+            <a class="navbar-brand">
+                <i class="icon-octo-logo"></i>
+            </a>
+        </div>
+        <!-- OCTONIUS LOGO ICON -->
+
+    </div>
+</div>

@@ -1,0 +1,17 @@
+<div class="container">
+
+    <div class="card-tile">
+
+        <!-- Heading of the component starts -->
+        <h6><strong>All members from your workplace</strong></h6>
+        <!-- Heading of the component ends -->
+
+        <!-- Fetch the current workspace members list starts -->
+        <app-component-search-bar *ngIf="workspaceData && members && searchBarPlaceholder" [type]="'workspace'" [workspaceId]="workspaceData?._id"
+            [placeholder]="searchBarPlaceholder" [workspaceData]="workspaceData" [members]="members">
+        </app-component-search-bar>
+        <!-- Fetch the current workspace members list ends -->
+
+    </div>
+
+</div>

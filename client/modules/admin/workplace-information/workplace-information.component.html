@@ -1,0 +1,19 @@
+<div class="sidecontent">
+    <div class="card sideinnercard">
+        <div class="card-block">
+            <h6 class="card-title" *ngIf="routerState === 'general'"><b>Workplace Info</b></h6>
+            <h6 class="card-title" *ngIf="routerState === 'billing'"><b>Company Stats</b></h6>
+            <hr />
+            <p class="card-text" *ngIf="routerState === 'billing'">Company Name:
+                {{ workspaceData?.company_name }}</p>
+            <p class="card-text">Owner Name:
+                {{ workspaceData?.owner_first_name }} {{ workspaceData?.owner_last_name }}</p>
+            <p class="card-text">Total Members:
+                {{ workspaceData?.company_members_count + workspaceData?.invited_users?.length }}</p>
+            <p class="card-text">Company Members:
+                {{ workspaceData?.company_members_count }}</p>
+            <p class="card-text">Invited Guests:
+                {{ workspaceData?.invited_users?.length }}</p>
+        </div>
+    </div>
+</div>

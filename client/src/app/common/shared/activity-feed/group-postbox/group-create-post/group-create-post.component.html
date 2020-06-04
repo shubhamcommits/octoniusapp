@@ -1,0 +1,237 @@
+
+<!-- Post Header Title starts -->
+<div class="modal-header">
+
+  <!-- Normal Post Header starts -->
+  <h4 class="modal-title" *ngIf="type === 'normal' && edit === false">
+    <i *ngIf="type === 'normal'" class="material-icons-outlined">comment</i>
+     <!-- Post Title starts -->
+     <input 
+     name="postTitle" 
+     type="text" 
+     [ngModel]="title" 
+     (ngModelChange)="titleChange($event)"
+     class="post-title" 
+     placeholder="✍🏻 Title" />
+   <!-- Post Title ends -->
+  </h4>
+  
+
+  <h4 class="modal-title" *ngIf="type === 'normal' && edit === true">
+    <i *ngIf="type === 'normal'" class="material-icons-outlined">comment</i>
+      <!-- Post Title starts -->
+      <input 
+      name="postTitle" 
+      type="text" 
+      [ngModel]="title" 
+      (ngModelChange)="titleChange($event)"
+      class="post-title" 
+      placeholder="{{ title }}" />
+    <!-- Post Title ends -->
+   
+  </h4> 
+  <!-- Normal Post Header ends -->
+
+  <!-- Task Post Header starts -->
+  <h4 class="modal-title" *ngIf="type === 'task' && edit === false">
+    <i *ngIf="type === 'task'" class="material-icons-outlined">check_box</i>
+     <!-- Post Title starts -->
+     <input 
+     name="postTitle" 
+     type="text" 
+     [ngModel]="title" 
+     (ngModelChange)="titleChange($event)"
+     class="post-title" 
+     placeholder="✍🏻 Title" />
+   <!-- Post Title ends -->
+  </h4>
+
+  <h4 class="modal-title" *ngIf="type === 'task' && edit === true">
+    <i *ngIf="type === 'task'" class="material-icons-outlined">check_box</i>
+     <!-- Post Title starts -->
+     <input 
+     name="postTitle" 
+     type="text" 
+     [ngModel]="title" 
+     (ngModelChange)="titleChange($event)"
+     class="post-title" 
+     placeholder="{{ title }}" />
+   <!-- Post Title ends -->
+  </h4>
+  <!-- Task Post Header ends -->
+  
+  <!-- Event Post Header starts -->
+  <h4 class="modal-title" *ngIf="type === 'event' && edit === false" >
+    <i *ngIf="type === 'event'" class="material-icons-outlined">event</i>
+    <!-- Post Title starts -->
+    <input 
+    name="postTitle" 
+    type="text" 
+    [ngModel]="title" 
+    (ngModelChange)="titleChange($event)"
+    class="post-title" 
+    placeholder="✍🏻 Title" />
+  <!-- Post Title ends -->
+  </h4>
+
+  <h4 class="modal-title" *ngIf="type === 'event' && edit === true">
+    <i *ngIf="type === 'event'" class="material-icons-outlined">event</i>
+    <!-- Post Title starts -->
+    <input 
+    name="postTitle" 
+    type="text" 
+    [ngModel]="title" 
+    (ngModelChange)="titleChange($event)"
+    class="post-title" 
+    placeholder="{{ title }}" />
+  <!-- Post Title ends -->
+  </h4>
+  <!-- Event Post Header ends -->
+
+  <!-- Top Right Section starts -->
+  <div class="w300 float-right">
+
+          <!-- Date Picker starts -->
+          <app-date-picker *ngIf="type === 'task'"
+            (date)="getDate($event)" [dueDate]="postData?.task.due_to">
+          </app-date-picker>
+
+          <app-date-picker *ngIf="type === 'event'"
+            (date)="getDate($event)" [dueDate]="postData?.event.due_to">
+          </app-date-picker>
+          <!-- Date Picker ends -->
+
+          <!-- Time Picker starts -->
+          <app-time-picker  
+          class="ml-3"
+          *ngIf="type === 'event'" 
+          [time]="this.dueTime" 
+          (time)="getTime($event)">
+          </app-time-picker>
+        <!-- Time Picker ends -->
+        
+  </div>
+  <!-- Top Right Section ends -->
+
+</div>
+<!-- Post Header Title ends -->
+
+<div class="modal-body">
+  <div class="form-group">
+    <div class="row post-header" *ngIf="type === 'task' || type ==='event'">
+
+      <!-- Assignee Modal starts -->
+      <div class="col-md-8">
+        <app-select-assignee 
+          class="top-margin"
+          [post]="postData" 
+          [userData]="userData" 
+          [groupId]="groupId" 
+          [type]="type"
+          (member)="getMemberDetails($event)">
+        </app-select-assignee>
+      </div>
+      <!-- Assignee Modal ends -->
+      
+      <div class="col-md-4 right-section">
+
+          <!-- Due Date Placeholder starts -->
+          <!-- <p class="ml-5">
+            <strong *ngIf="dueDate"><span class="material-icons">date_range</span>
+              On {{ dueDate | date:'mediumDate' || 'Date Not Selected' }}</strong>
+            <strong *ngIf="!dueDate"><span class="material-icons">date_range</span>
+              Due Date Not Selected</strong>
+          </p> -->
+          <!-- Due Date Placeholder ends -->
+          
+          <!-- Due Time Placeholder starts -->
+          <!-- <p class="ml-5" *ngIf="dueTime && type === 'event'">
+            <strong> <span class="material-icons">alarm</span>
+              At {{ dueTime.hour }}:{{ dueTime.minute }}
+            </strong>
+          </p> -->
+          <!-- Due Time Placeholder ends -->
+
+          <!-- Change task status starts -->
+          <app-task-status 
+            class="ml-3" 
+            *ngIf="type === 'task' && edit === true" 
+            [post]="postData"
+            (status)="changeTaskStatus($event)">
+          </app-task-status>
+          <!-- Change task status ends -->
+          
+          <!-- Change task column starts -->
+          <app-change-column 
+            class="ml-3" 
+            *ngIf="type === 'task' && columns" 
+            [post]="postData"
+            [columns]="columns" 
+            (moveTask)="moveTaskToColumn($event)">
+          </app-change-column>
+          <!-- Change task column ends -->
+
+      </div>
+
+    </div>
+
+  
+    
+    <!-- Quill Editor with content of post if edit property is enabled -->
+    <app-quill-editor 
+      *ngIf="!edit" 
+      [editorId]="'postbox-editor'" 
+      [toolbar]="true" 
+      [readOnly]="false"
+      [groupId]="groupId"
+      (content)="getQuillData($event)">
+    </app-quill-editor>
+    <!-- Quill Editor with content of post if edit property is enabled -->
+
+    <!-- Post Content starts -->
+    <app-quill-editor 
+      *ngIf="edit" 
+      [editorId]="'postbox-editor'" 
+      [toolbar]="true"
+      [readOnly]="false" 
+      [contents]="postData.content" 
+      [groupId]="groupId"
+      (content)="getQuillData($event)">
+    </app-quill-editor>
+    <!-- Post Content ends -->
+
+    <!-- Attach files starts -->
+    <div class="attach-files">
+      <app-attach-files 
+        [post]="postData" 
+        (files)="onAttach($event)">
+      </app-attach-files>
+    </div>
+    <!-- Attach files ends -->
+
+   
+    
+    <!-- Post Tags starts -->
+    <app-post-tags 
+      [post]="postData" 
+      [userData]="userData" 
+      [groupId]="groupId" 
+      (tags)="getTags($event)">
+    </app-post-tags>
+    <!-- Post Tags ends -->
+
+  </div>
+
+<button type="button" class="btn btn-md btn-link delete-btn" style="margin-right: 30px;" *ngIf="edit" (click)="deletePost()">X DELETE</button>
+  <button type="button" *ngIf="!edit" class="btn btn-md btn-primary float-right" (click)="createPost()" style="width: 100px;">Post</button>
+   <!-- Update Details Button starts -->
+   <button [disabled]="!showUpdateDetails" *ngIf="edit" class="btn float-right btn-primary btn-md"
+   (click)="updateDetails()">
+   Update
+   </button>
+   <!-- Update Details Button ends -->
+<div class="clearfix"></div>
+<app-post-actions *ngIf="edit" [post]="postData" [userData]="userData"></app-post-actions>
+
+</div>
+

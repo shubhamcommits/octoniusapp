@@ -1,0 +1,41 @@
+<nav class="navbar navbar-expand-md fixed-top">
+
+    <!-- Go Back starts -->
+    <span *ngIf="!this.readOnly" class="navbar-brand ml-5 mr-5" ngbTooltip="Go Back to Files" placement="bottom"
+        (click)="goBackToFiles()">
+        <i class="material-icons">
+            arrow_back
+        </i>
+    </span>
+    <!-- Go Back ends -->
+
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav mr-auto ml-4">
+            <li class="nav-item active" *ngIf="file">
+
+                <!-- Folio Static Title starts -->
+                <span *ngIf="!editTitle" 
+                    (click)="editTitle = !editTitle"
+                    ngbTooltip="Click me to rename" 
+                    placement="bottom">{{file?.original_name}}
+                </span>
+                <!-- Folio Static Title ends -->
+                
+                <!-- Folio edit title name starts -->
+                <input *ngIf="editTitle" type="search" 
+                    autocomplete="off" 
+                    [(ngModel)]="file.original_name" 
+                    (keyup)="changeTitle($event)"
+                    placeholder="Give me a name"
+                    class="input-search" />
+                <!-- Folio edit title name ends -->
+            </li>
+        </ul>
+        <!-- <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form> -->
+    </div>
+</nav>
+
+<router-outlet></router-outlet>

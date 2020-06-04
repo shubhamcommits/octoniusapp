@@ -1,0 +1,75 @@
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+
+/**
+ * GROUPS COMPONENTS
+ */
+import { GroupsListComponent } from './groups-list/groups-list.component';
+
+/**
+ * GROUP COMPONENTS
+ */
+import { GroupComponent } from './group/group.component';
+import { GroupActivityComponent } from './group/group-activity/group-activity.component';
+import { GroupAdminComponent } from './group/group-admin/group-admin.component';
+import { GroupKanbanBoardsComponent } from './group/group-kanban-boards/group-kanban-boards.component';
+// import { GroupFilesComponent } from './group/group-files/group-files.component';
+import { GroupMembersComponent } from './group/group-members/group-members.component';
+import { GroupPostComponent } from './group/group-post/group-post.component';
+
+
+/**
+ * ROUTES
+ */
+const routes: Routes = [
+
+  // All Groups List Route
+  { path: 'all', component: GroupsListComponent },
+  
+  // Group Specific Route
+  {
+    path: '', component: GroupComponent, children: [
+
+      // Group Activity
+      { path: 'activity', component: GroupActivityComponent },
+
+      // Group Kanban/tasks
+      { path: 'tasks', component: GroupKanbanBoardsComponent },
+
+      // Group Files
+      {
+        path: 'files',
+        loadChildren: () => import('modules/files/files.module')
+          .then((module) => module.FilesModule),
+          data: {
+            preload: false
+          }
+      },
+
+      // Group Calendar
+      {
+        path: 'calendar',
+        loadChildren: () => import('modules/calendar/calendar.module')
+          .then((module) => module.CalendarModule),
+          data: {
+            preload: false
+          }
+      },
+
+      // Group Members
+      { path: 'members', component: GroupMembersComponent },
+
+      // Group Admin
+      { path: 'admin', component: GroupAdminComponent },
+
+      // Group Post View
+      { path: 'post/:postId', component: GroupPostComponent },
+    ]
+  }
+];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
+})
+export class GroupsRoutingModule { }

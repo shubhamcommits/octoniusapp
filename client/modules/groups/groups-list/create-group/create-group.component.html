@@ -1,0 +1,25 @@
+<!-- Select Group Type starts -->
+<button class="btn  btn-outline-primary stickybtn mb-3 mt-0 dropdown-toggle" type="button" data-toggle="dropdown">
+   <img src="assets/images/icon-new-group.svg" alt="" style="width: 20px; height: 20px; margin-right: 10px;"> New
+</button>
+<!-- Select Group Type ends -->
+
+<!-- Menu Drawer Starts -->
+<ul class="dropdown-menu">
+    <li *ngIf="(userData?.role== 'admin' || userData?.role== 'owner')" 
+        class="dropdown-item"
+        (click)="openCreateGroupModal()">
+        <span>Group</span>
+    </li>
+    <li
+        class="dropdown-item"
+        (click)="openCreateAgoraModal()">
+        <span>Agora</span>
+    </li>
+    <li *ngIf="(userData?.role== 'admin' || userData?.role== 'owner')" 
+        class="dropdown-item"
+        (click)="openCreateSmartGroupModal()">
+        <span>Smart Group</span>
+    </li>
+</ul>
+<!-- Menu Drawer Ends -->

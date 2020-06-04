@@ -1,0 +1,81 @@
+<div class="container">
+
+    <div class="card-tile">
+
+        <!-- Heading of the component starts -->
+        <h4>Your files. Ready when you are</h4>
+        <!-- Heading of the component ends -->
+
+        <!-- Group New File starts -->
+        <app-group-new-file *ngIf="groupId && userData && checkDataExist(userData)" [groupId]="groupId"
+            [userData]="userData" (file)="getFile($event)">
+        </app-group-new-file>
+        <!-- Group New File ends -->
+
+        <div style="width: 200px;" class="float-right mt-n30"><img src="assets/images/files_placeholder.svg" alt="">
+        </div>
+
+        <br class="clearfix">
+
+
+        <div class="search mb-3">
+
+            <!-- Component search bar starts -->
+            <input type="text" [ngModel]="query" (ngModelChange)="fileSearchQuery($event)" class="searchTerm"
+                [placeholder]="'File search'">
+            <button type="submit" class="searchButton">
+                <i class="material-icons">
+                    search
+                </i>
+            </button>
+            <!-- Component search bar ends -->
+
+        </div>
+
+
+        <!-- Files array template starts -->
+        <app-infinite-scroll (scrolled)="onScroll()">
+            <div class="media card-tile user-list" style="border-bottom: 1px solid #e4edf8;"
+                *ngFor="let file of files; let index = index; trackBy: utilityService.trackByIndex;">
+             
+
+                <a *ngIf="file?.type === 'file' || file?.type === undefined" class="mt-0" target="_blank"
+                    href="{{filesBaseUrl}}/{{file?.modified_name}}">
+                    <img src="assets/images/icon_file.svg"
+                    onerror="this.src='assets/images/icon_file.svg'" class="file-type mt-3 mr-1" style="vertical-align: bottom;">
+                    {{file?.original_name}}</a>
+
+
+                <a *ngIf="file?.type === 'folio'" class="mt-0"
+                    routerLink="/document/{{file?._id}}" [queryParams]="{ group: file?._group?._id }">  
+                    <img src="assets/images/icon_folio.svg"
+                    onerror="this.src='assets/images/icon_file.svg'" class="file-type mt-3 mr-1" style="vertical-align: bottom;">{{file?.original_name}}</a>
+
+                <div class="media-body">
+
+
+                    <div class="float-right">
+
+                        <img src="{{ userBaseUrl }}/{{file._posted_by?.profile_pic}}"
+                            routerLink="/dashboard/user/profile" [queryParams]="{ userId: file._posted_by._id }"
+                            onerror="this.src='assets/images/user.png'" class="feed-avatar">
+                        <i class="material-icons-outlined ml-2">more_horiz</i>
+
+                    </div>
+                    <!-- File Details Ends -->
+
+                </div>
+            </div>
+        </app-infinite-scroll>
+        <!-- Files array template ends -->
+
+        <!-- Loading Spinner Starts -->
+        <ng-container *ngIf="isLoading$ | async">
+            <app-loading-spinner></app-loading-spinner>
+        </ng-container>
+        <!-- Loading Spinner Ends -->
+
+
+    </div>
+
+</div>

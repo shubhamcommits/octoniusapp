@@ -1,0 +1,200 @@
+import { Injectable, Injector } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
+import { Observable } from 'rxjs/internal/Observable';
+
+@Injectable({
+  providedIn: 'root'
+})
+
+export class WorkspaceService {
+
+  BASE_API_URL = environment.WORKSPACE_BASE_API_URL;
+
+
+  constructor(
+    private _http: HttpClient,
+    private injector: Injector) { }
+
+  /**
+   * This function is responsible for fetching the workspace details
+   * @param workspaceId 
+   */
+  getWorkspace(workspaceId: string) {
+    return this._http.get<any>(this.BASE_API_URL + '/' + workspaceId);
+  }
+
+  /**
+   * This function is responsible for updating the workspace data(only workspace_avatar)
+   * @param workspaceId 
+   * @param workspaceAvatar
+   */
+  updateWorkspace(workspaceId: string, workspaceAvatar: File) {
+
+    // PREPARING FORM DATA
+    let formData = new FormData();
+    formData.append('workspace_avatar', workspaceAvatar)
+
+    return this._http.put<any>(this.BASE_API_URL + `/${workspaceId}`, formData);
+  }
+
+  /**
+   * This function is responsible for fetching first 10 workspace members
+   * @param workspaceId
+   * @param query - optional parameter(which searches for name and email too)
+   */
+  getWorkspaceMembers(workspaceId: string, query?: any) {
+    return this._http.get(this.BASE_API_URL + `/members`, {
+      params: {
+        workspaceId: workspaceId,
+        query: query
+      }
+    }).toPromise()
+  }
+
+  /**
+   * This function is responsible for fetching the next set of workspace members
+   * @param workspaceId 
+   * @param lastUserId 
+   * @param query - optional parameter(which searches for name and email too)
+   */
+  getNextWorkspaceMembers(workspaceId: string, lastUserId: string, query?: string) {
+    return this._http.get(this.BASE_API_URL + `/members/next`, {
+      params: {
+        workspaceId: workspaceId,
+        lastUserId: lastUserId,
+        query: query
+      }
+    }).toPromise()
+  }
+
+  /**
+   * This function is responsible for fetching first 10 workspace members who are not present in a group
+   * @param workspaceId
+   * @param groupId
+   * @param query - optional parameter(which searches for name and email too)
+   */
+  getMembersNotInGroup(workspaceId: string, query?: any, groupId?: string) {
+    return this._http.get(this.BASE_API_URL + `/members/groups`, {
+      params: {
+        workspaceId: workspaceId,
+        query: query,
+        groupId: groupId
+      }
+    }).toPromise()
+  }
+
+  /**
+   * 
+   * @param workspaceId 
+   * @param query 
+   */
+  searchWorkspaceMembers(workspaceId: string, query: string) {
+    return this._http.post(this.BASE_API_URL + `/query/members/${workspaceId}`, { query })
+      .toPromise()
+      .catch((err: Error) => {
+        console.log('test');
+      })
+  }
+
+  /**
+   * 
+   * @param workspaceId 
+   * @param query 
+   */
+  searchNextWorkspaceMembers(workspaceId: string, query: string) {
+    return this._http.post(this.BASE_API_URL + `/next/query/members/${workspaceId}`, { query });
+  }
+
+  /* | ======================================= BILLING ========================================== | */
+
+  /**
+   * This function is responsible for creating the subscription
+   * @param { id, email }token 
+   * @param amount 
+   */
+  createSubscription(token: any, amount) {
+
+    // Preparing the token data
+    const data = { token };
+
+    return this._http.post(this.BASE_API_URL + `/billings/create-subscription`, data)
+    .toPromise()
+  }
+
+  /**
+   * This function is responsible for getting the current billing status
+   * @param workspaceId 
+   */
+  getBillingStatus(workspaceId: string) {
+    return this._http.get(this.BASE_API_URL + `/billings/get-billing-status/${workspaceId}`)
+    .toPromise()
+  }
+
+  /**
+   * This function fetches the subscription details for the currently loggedIn user
+   */
+  getSubscription() {
+    return this._http.get(this.BASE_API_URL + `/billings/get-subscription`)
+    .toPromise()
+  }
+
+  /**
+   * This function cancels the current subscription for the currently loggedIn user
+   */
+  cancelSubscription() {
+    return this._http.get(this.BASE_API_URL + `/billings/cancel-subscription`)
+    .toPromise()
+  }
+
+  /**
+   * This function renews ths current subscription
+   */
+  renewSubscription() {
+    return this._http.get(this.BASE_API_URL + `/billings/renew-subscription`)
+    .toPromise()
+  }
+
+  /**
+   * This function resumes the cancelled subscription
+   */
+  resumeSubscription() {
+    return this._http.get(this.BASE_API_URL + `/billings/resume-subscription`)
+    .toPromise()
+  }
+
+  /* | ======================================= BILLING ========================================== | */
+
+  /**
+   * Fetches unique email domains that exist within the given workspace
+   * that match the given query.
+   * 
+   * @param workspaceId The workspace to search within.
+   * @param query The email domains to search for.
+   */
+  getUniqueEmailDomains(workspaceId: string, query: string): Observable<any> {
+    return this._http.get<any>(`${this.BASE_API_URL}/emailDomains/${workspaceId}/${query}`);
+  }
+
+  /**
+   * Fetches unique job positions that exist within the given workspace
+   * that match the given query.
+   * 
+   * @param workspaceId The workspace to search within.
+   * @param query The job positions to search for.
+   */
+  getUniqueJobPositions(workspaceId: string, query: string): Observable<any> {
+    return this._http.get<any>(`${this.BASE_API_URL}/jobPositions/${workspaceId}/${query}`);
+  }
+
+  /**
+   * Fetches unique skills that exist within the given workspace
+   * that match the given query.
+   * 
+   * @param workspaceId The workspace to search within.
+   * @param query The skills to search for.
+   */
+  getUniqueSkills(workspaceId: string, query: string): Observable<any> {
+    return this._http.get<any>(`${this.BASE_API_URL}/skills/${workspaceId}/${query}`);
+  }
+}
