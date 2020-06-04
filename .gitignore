@@ -1,19 +1,13 @@
 # Node.js packages
 node_modules/
+
 # MongoDB development database
 data/
 
-/api/yarn.lock
-/client/yarn.lock
-**/api/package-lock.json
-**/client/package-lock.json
-
+# Package lock files
 package-lock.json
+yarn.lock
 
-**/client/yarn.lock
-**/api/yarn.lock
-
-public/
 
 # Octonius uploaded files on development
 uploads/
@@ -23,10 +17,9 @@ uploads/
 .vscode/
 *.vim
 
-yarn.lock
+# Error Logs
 yarn-error.log
 
-stack-deploy-octonius.yml
 
 HELP.md
 target/

@@ -74,7 +74,7 @@ export MONGO_IMAGE_NAME=mongo:latest
           docker pull $MONGO_IMAGE_NAME
 
 # Deploy the Stack
-docker-compose -f compose-octonius-deploy.yml -p octonius up -d
+docker-compose -f compose-octonius-deploy.yml -p octonius-alpha up -d
 
 
 

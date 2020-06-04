@@ -17,7 +17,7 @@ services:
     container_name: mailing-server
     image: octoniusapp/octonius-alpha:mailing-server
     ports:
-      - 2000:2000
+      - 2001:2000
     restart: always
     volumes:
       - /usr/app/node_modules
@@ -47,7 +47,7 @@ services:
     container_name: auths-server
     image: octoniusapp/octonius-alpha:auths-server
     ports:
-      - 3002:3000
+      - 3001:3000
     restart: always
     volumes:
       - /usr/app/node_modules
@@ -77,7 +77,7 @@ services:
     container_name: groups-server
     image: octoniusapp/octonius-alpha:groups-server
     ports:
-      - 4000:4000
+      - 4001:4000
     restart: always
     volumes:
       - /usr/app/node_modules
@@ -108,7 +108,7 @@ services:
     container_name: workspaces-server
     image: octoniusapp/octonius-alpha:workspaces-server
     ports:
-      - 5000:5000
+      - 5001:5000
     restart: always
     volumes:
       - /usr/app/node_modules
@@ -139,7 +139,7 @@ services:
     container_name: users-server
     image: octoniusapp/octonius-alpha:users-server
     ports:
-      - 7000:7000
+      - 7001:7000
     restart: always
     volumes:
       - /usr/app/node_modules
@@ -170,7 +170,7 @@ services:
     container_name: posts-server
     image: octoniusapp/octonius-alpha:posts-server
     ports:
-      - 8000:8000
+      - 8001:8000
     restart: always
     volumes:
       - /usr/app/node_modules
@@ -201,7 +201,7 @@ services:
     container_name: notifications-server
     image: octoniusapp/octonius-alpha:notifications-server
     ports:
-      - 9000:9000
+      - 9001:9000
     restart: always
     volumes:
       - /usr/app/node_modules
@@ -231,7 +231,7 @@ services:
     container_name: utilities-server
     image: octoniusapp/octonius-alpha:utilities-server
     ports:
-      - 10000:10000
+      - 10001:10000
     restart: always
     volumes:
       - /usr/app/node_modules
@@ -262,7 +262,7 @@ services:
     container_name: folio-server
     image: octoniusapp/octonius-alpha:folio-server
     ports:
-      - 11000:11000
+      - 11001:11000
     restart: always
     volumes:
       - /usr/app/node_modules
@@ -292,7 +292,7 @@ services:
     container_name: query-server
     image: octoniusapp/octonius-alpha:query-server
     ports: 
-      - 12000:8080
+      - 12001:8080
     restart: always
     volumes:
       - alpha_solr_data:/data/query-service-app
@@ -311,7 +311,7 @@ services:
     container_name: solr-octonius
     command: solr-precreate octonius
     ports:
-      - 13000:8983
+      - 13001:8983
     environment:
       - SOLR_JAVA_MEM=-Xms256m -Xmx256m -XX:MaxRAM=1024m
     volumes:
@@ -343,7 +343,7 @@ services:
     image: octoniusapp/octonius-alpha:nginx
     restart: always
     ports:
-      - 8080:80
+      - 8081:80
     depends_on:
       - mailing-server
       - auths-server
