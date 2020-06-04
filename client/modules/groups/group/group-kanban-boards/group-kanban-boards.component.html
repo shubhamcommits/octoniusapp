@@ -1,0 +1,122 @@
+
+   <div *ngIf="!(isLoading$ | async)" class="root">
+           
+        <div class="board">
+            <!-- <app-board-bar *ngIf="groupData" [groupData]="groupData" ></app-board-bar> -->
+
+      
+
+
+            <div class="board-wrapper">
+
+                <!-- ALL COLUMN DETAILS STARTS -->
+                <div class="board-columns" cdkDropListGroup *ngIf="this.columns">
+                    <div class="board-column" id="column.title" *ngFor="let column of columns; let i = index;">
+
+                        <!-- COLUMN TITLE AND EDIT/DELETE DETAILS STARTS -->
+                        <div class="column-title">
+                            <p class="text-capitalize"> {{ column?.title }}</p>
+                            <div class="inline-block" *ngIf="!(column.title =='to do')">
+                                <div class="dropdown">
+                                    <i class="material-icons action dropdown-toggle"
+                                        data-toggle="dropdown">more_horiz</i>
+
+                                    <!-- Menu Drawer Starts -->
+                                    <ul class="dropdown-menu">
+                                        <li class="dropdown-item" (click)="column.editColumn = !column.editColumn">
+                                            <span class="material-icons-outlined">create</span>
+                                            Edit</li>
+                                        <li class="dropdown-item" (click)="deleteColumn(column)">
+                                            <span class="material-icons-outlined">delete</span>
+                                            Delete</li>
+                                    </ul>
+                                    <!-- Menu Drawer Ends -->
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- COLUMN TITLE AND EDIT/DELETE DETAILS ENDS -->
+
+                        <!-- EDIT COLUMN STARTS -->
+                        <app-edit-column *ngIf="column" [column]="column" (column)="editColumn(column, $event)">
+                        </app-edit-column>
+                        <!-- EDIT COLUMN ENDS -->
+
+                        <!-- TASK CONTAINER STARTS -->
+                        <div class="tasks-container" [id]="column.title" cdkDropList [cdkDropListData]="column.tasks"
+                            (cdkDropListDropped)="drop($event)">
+
+                            <!-- CREATE TASK STARTS -->
+                            <app-new-task [groupData]="groupData" [userData]="userData" [column]="column"
+                                (post)="getPost($event, column)"></app-new-task>
+                            <!-- CREATE TASK ENDS -->
+
+                            <!-- TASK DETAILS STARTS -->
+                            <!-- add class="status-todo" or status-inprogress or status-done for each status accordingly -->
+                            <div class="task"
+                                [ngClass]="{'status-todo': task?.task?.status === 'to do', 'status-inprogress': task?.task?.status === 'in progress', 'status-done': task?.task?.status === 'done'}"
+                                *ngFor="let task of column.tasks; let j = index;" cdkDrag>
+                              
+                                <div class="media" (click)="openModal(content)">
+                                    <div class="media-body">
+                                      <h5 class="mt-0 mb-1 kanban-card-title">{{ task?.title }}</h5>
+                                      <span class="small"
+                                      *ngIf="task?.task?.due_to != 'Invalid date' && task?.task?.status != 'done'"
+                                      [ngClass]="checkOverdue(task) === true ? 'overdue' : 'due'">
+                                      {{task?.task?.due_to | date}}</span>
+                                      <!-- TASK DETAILS STARTS -->
+                                      <ng-template #content let-modal>
+                                          <app-group-create-post *ngIf="userData && checkDataExist(userData)"
+                                              [edit]="true" [post]="task" [columns]="columns"
+                                              [userData]="userData" [groupId]="groupId" [type]="'task'"
+                                              (close)="closeModal()" (moveTask)="moveTaskToColumn($event)"
+                                              (taskStatus)="changeStatus(task, $event)"
+                                              (member)="changeAssignee(task, $event)"
+                                              (date)="changeDueDate(task, $event)"
+                                              (post)="changeDetails(task, $event)"
+                                              (delete)="removeTask(column, $event)">
+                                          </app-group-create-post>
+                                      </ng-template>
+                                    </div>
+                                    
+                                        <img src="{{baseUrl}}/{{task?.task?._assigned_to?.profile_pic}}"
+                                            onerror="this.src='assets/images/user.png'"
+                                            class="feed-avatar">
+                                        <!-- <span *ngIf="!task?.task?.unassigned">
+                                            {{task?.task?._assigned_to?.first_name}}
+                                            {{ task?.task?._assigned_to?.last_name }}</span>
+                                        <span *ngIf="task?.task?.unassigned">Unassigned</span> -->
+                                    
+                                  </div>
+
+
+                                    
+
+                                    
+                                
+                            </div>
+                            <!-- TASK DETAILS ENDS -->
+
+                        </div>
+                        <!-- TASK CONTAINER ENDS -->
+
+                    </div>
+
+                       <!-- CREATE NEW COLUMN START -->
+         <app-create-column (column)="addColumn($event)"></app-create-column>
+         <!-- CREATE NEW COLUMN ENDS -->
+
+                </div>
+                <!-- ALL COLUMN DETAILS ENDS -->
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Loading Spinner Starts -->
+    <ng-container *ngIf="isLoading$ | async">
+        <app-loading-spinner class="media"></app-loading-spinner>
+    </ng-container>
+    <!-- Loading Spinner Ends -->

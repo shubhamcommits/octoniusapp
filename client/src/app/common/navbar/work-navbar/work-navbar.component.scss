@@ -1,0 +1,36 @@
+@import "src/assets/scss/_variables";
+
+.nav-link {
+    font-family: $poppins;
+    font-weight: 400;
+    font-size: 14px;
+    color:#1B1D1F;
+    text-align: center;
+    cursor: pointer;
+    line-height: 44px;
+    &:hover {
+      text-decoration: none;
+      background: #ffffff;
+      color: $brand-primary !important;
+      border-radius: 6px;
+    }
+  
+  }
+
+
+
+  h2{
+    float: left;
+    line-height: 60px;
+    .material-icons{
+      font-size: 30px;
+      color:#E0E3E6;
+    }
+  }
+  .feed-avatar{
+    float: left;
+  }
+  .material-icons-outlined{
+    font-size: 34px;
+    line-height: 60px;
+  }

@@ -1,0 +1,26 @@
+<div class="card margin5">
+  <div class="row no-margin">
+    <div class="col-md-12">
+      <div class="form-group mt-3">
+        <h6 class="font-weight-bold">Add a comment</h6>
+        <div class="quill-container">
+          <app-quill-editor 
+            [editorId]="'commentbox-editor' + editorId" 
+            [readOnly]="false"
+            [groupId]="groupId"
+            (content)="getQuillData($event)">
+          </app-quill-editor>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-8"></div>
+    <div class="col-md-4 text-right" style="padding-right:30px">
+      <button type="button " name="button " class="btn btn-default"(click)="this.close.emit('close')">Cancel</button>
+      <button type="button " name="button" class="btn btn-primary" (click)="create(this.userData._id); this.close.emit('close')">Comment</button>
+    </div>
+  </div>
+  <br>
+</div>

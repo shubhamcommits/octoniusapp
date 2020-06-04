@@ -1,0 +1,17 @@
+# We label our stage as ‘builder’
+FROM node:alpine as builder
+
+# Defining Workdir
+WORKDIR '/app'
+
+# Copy package.json
+COPY ./package.json ./
+
+## Installing and storing node modules
+RUN yarn install
+
+COPY ./ ./
+
+EXPOSE 80
+
+CMD ["yarn", "hmr"]

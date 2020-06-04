@@ -1,0 +1,13 @@
+<div class="container">
+    <div class="row main-actvity" *ngIf="workspaceData && userData">
+
+        <div class="col-md-4">
+            <app-workplace-information [workspaceData]="workspaceData" [routerState]="'general'"></app-workplace-information>
+        </div>
+
+        <div class="col-md-8">
+            <app-workplace-add-domain [workspaceData]="workspaceData"></app-workplace-add-domain>
+            <app-workplace-invite-user [workspaceData]="workspaceData" [userData] = "userData"></app-workplace-invite-user>
+        </div>
+    </div>
+</div>

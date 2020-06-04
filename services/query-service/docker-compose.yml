@@ -1,0 +1,28 @@
+version: '3'
+services:
+  query-service-container:
+    image: query-service-app:1
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      - /data/query-service-app
+    ports:
+      - 8080:8080
+    environment:
+      WAIT_HOST: solr-octonius
+      WAIT_PORT: '8983'
+      JAVA_OPTS: -Xmx512m
+      APPLICATION_CONFIG_SOLR_CLIENT_URL: 'http://solr-octonius:8983/solr'
+    links:
+      - solr-octonius:solr-octonius
+  solr-octonius:
+    image: solr:7.7.1
+    container_name: solr-octonius
+    command: solr-precreate octonius
+    ports:
+      - 8983:8983
+    environment:
+      - SOLR_JAVA_MEM=-Xms256m -Xmx256m -XX:MaxRAM=512m
+    volumes:
+      - ./solr/configsets:/opt/solr/server/solr/configsets

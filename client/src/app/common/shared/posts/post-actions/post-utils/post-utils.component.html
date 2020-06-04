@@ -1,0 +1,31 @@
+<span>
+    <button class="btn btn-link btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+        <i class="material-icons-outlined action">more_horiz</i>
+        <span class="caret"></span>
+    </button>
+
+    <!-- Menu Drawer Starts -->
+    <ul class="dropdown-menu">
+        <li class="dropdown-item" [routerLink]="['/dashboard', 'work', 'groups', 'post', post?._id]" [queryParams]="{ group: post?._group?._id || post?._group }">
+            <span>View</span>
+        </li>
+        <li class="dropdown-item" (click)="openEditPostModal(content)">
+            <span>Edit</span>
+        </li>
+        <li class="dropdown-item" (click)="copyToClipboard(post)">
+            <span>Copy Link</span>
+        </li>
+        <li class="dropdown-divider"></li>
+
+        <li class="dropdown-item" (click)="deletePost()">
+            <span>Delete</span>
+        </li>
+        
+    </ul>
+    <!-- Menu Drawer Ends -->
+
+</span>
+
+<ng-template #content let-modal>
+    <app-group-create-post [post]="post" [edit]="true" [userData]="userData" [type]="post.type" [groupId]="post._group" (close)="closeModal()"></app-group-create-post>
+</ng-template>

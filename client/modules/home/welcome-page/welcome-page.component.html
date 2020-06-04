@@ -1,0 +1,39 @@
+<div class="container-fluid h-100">
+   <div class="row h-100">
+
+      <!-- OCTONIUS LEFT BRANDING PANEL STARTS -->
+      <app-branding-panel [routerState]="'home'" class="col-md-8 overlay welcome"></app-branding-panel>
+      <!-- OCTONIUS LEFT BRANDING PANEL ENDS -->
+
+      <!-- HOME PANEL STARTS -->
+      <div class="col-md-4">
+         <div style="padding:100px 30px">
+            <h3 class="text-center">
+               First time here? <br> Let's get you started! <br><br>
+            </h3>
+            <div class="text-center">
+               <button type="button" [disabled]="isLoadingJoinWorkspace$ | async" class="btn btn-primary btn-block"
+                  [routerLink]="['/authentication', 'sign-up']" routerLinkActive="router-link-active"
+                  (click)="nextLoadingJoinWorskpaceState()">
+                  <ng-container *ngIf="isLoadingJoinWorkspace$ | async">
+                     <app-loading-spinner-small></app-loading-spinner-small>
+                  </ng-container>
+                  <ng-container *ngIf="!(isLoadingJoinWorkspace$ | async)">Join your workplace</ng-container>
+               </button>
+
+               <button type="button" class="btn btn-block" [ngClass]="{'btn-primary': (isLoadingCreateWorkspace$ | async) === true,
+               'btn-outline-primary': !(isLoadingCreateWorkspace$ | async)}"
+                  [disabled]="isLoadingCreateWorkspace$ | async" (click)="nextLoadingCreateWorskpaceState()"
+                  [routerLink]="['/authentication', 'new-workplace']" routerLinkActive="router-link-active">
+                  <ng-container *ngIf="isLoadingCreateWorkspace$ | async">
+                     <app-loading-spinner-small></app-loading-spinner-small>
+                  </ng-container>
+                  <ng-container *ngIf="!(isLoadingCreateWorkspace$ | async)">Create new workplace</ng-container>
+               </button>
+            </div>
+         </div>
+      </div>
+      <!-- HOME PANEL ENDS -->
+
+   </div>
+</div>

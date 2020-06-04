@@ -1,0 +1,126 @@
+<!-- Post Starts-->
+<li class="list-group-item" *ngIf="post">
+    <div class="card-block">
+        <div class="row card-title">
+
+            <!-- Image Avatar Starts -->
+            <div class="col-md-1 ">
+                <img src="{{ baseUrl }}/{{post?._posted_by?.profile_pic}}" onerror="this.src='assets/images/user.png'"
+                    class="feed-avatar ml-2" routerLink="/dashboard/user/profile"
+                    [queryParams]="{ userId: post?._posted_by?._id }" />
+            </div>
+            <!-- Image Avatar Ends -->
+
+            <!-- Details of the Post Creator Starts -->
+            <div class="col-md-7">
+                <h6>{{post?._posted_by?.first_name || 'First Name'}} {{post?._posted_by?.last_name || 'Last Name'}} <br>
+                    <span class="small lightgray date">
+                        {{ (post?.created_date | date : 'medium') || ( this.date | date: 'medium') }}</span>
+                </h6>
+
+                <div *ngIf="isGlobal==true" class="grouplabel">{{ post?._group.group_name }}</div>
+
+                <!-- Event Assignee detail starts -->
+                <section *ngIf="post?.type === 'event'">
+                    <span class="assigned" *ngIf="!eventAssignedToAll(post)">Assigned
+                        to {{post.event._assigned_to?.length || 0}} Member(s)
+                    </span>
+                    <span class="assigned" *ngIf="eventAssignedToAll(post)">Assigned
+                        to all Members
+                    </span>
+                </section>
+                <!-- Event Assignee detail ends -->
+
+                <!-- Task Assignee detail starts -->
+                <section *ngIf="post?.type === 'task'">
+                    <span class="assigned" *ngIf="post.task.unassigned == false">
+                        Assigned to {{post.task._assigned_to?.first_name}}
+                        {{post.task._assigned_to?.last_name}}
+                    </span>
+                    <span class="assigned" *ngIf="post.task.unassigned == true"> Unassigned
+                    </span>
+                </section>
+                <!-- Task Assignee detail ends -->
+
+            </div>
+            <!-- Details of the Post Creator Ends -->
+
+            <!-- Task Status Starts -->
+            <div *ngIf="post?.type === 'task'" class="col-md-4 text-right padding-topright">
+
+                <!-- Change task status starts -->
+                <app-task-status class="ml-5" [post]="post" (status)="changeTaskStatus($event)">
+                </app-task-status>
+                <!-- Change task status ends -->
+
+                <!-- Due Date starts -->
+                <p class="small font-weight-bold mt-3" *ngIf="post.task?.due_to != 'Invalid date'">
+                    due {{post.task?.due_to | date}}
+                </p>
+                <!-- Due Date ends -->
+
+            </div>
+            <!-- Task Status Ends -->
+
+        </div>
+
+        <!-- Normal Post Title starts -->
+        <h4 *ngIf="post.type != 'event'"
+            [innerHTML]="(post?.title || 'Untitled') | safe: 'html'" class="post-title">
+    </h4>
+        <!-- Normal Post Title ends -->
+
+        <div class="row" style="margin-left: 0; margin-right:0;" *ngIf="post?.type === 'event'">
+            <div class="col-md-2 dateblock" *ngIf="post.event.due_to != 'Invalid date'">
+                <span class="bigdate">{{post?.event.due_to | date :'dd' }}</span>
+                <br>
+                <span class="time">{{post?.event.due_to | date: 'MMMM' }}</span>
+                <br>
+                <span class="time">{{post.event.due_to | date:'HH:mm'}}</span>
+            </div>
+            <div class="col-md-10">
+               
+
+                    <!-- Events Post Title starts -->
+                    <div class=" innercard font-weight-bold"
+                        [innerHTML]="(post?.title || 'Untitled') | safe: 'html'">
+                    </div>
+                    <!-- Event Post Title ends -->
+
+                    <!-- Event Post Content Starts -->
+                    <app-quill-editor *ngIf="post.content" [editorId]="('editor_' + post._id) || 'editor'"
+                        [toolbar]="false" [readOnly]="true" [contents]="post.content"></app-quill-editor>
+                    <!-- Event Post Content Ends -->
+                
+            </div>
+        </div>
+
+        <!-- Normal Post Content starts -->
+        <app-quill-editor *ngIf="post.content && post.type != 'event'" [editorId]="('editor_' + post._id) || 'editor'"
+            [toolbar]="false" [readOnly]="true" [contents]="post.content"></app-quill-editor>
+        <!-- Normal Post Content ends -->
+        <!-- Attached Files Starts -->
+        <div *ngIf="post" class="ml-2 mt-2">
+            <a href="{{ fileBaseUrl }}/{{ file?.modified_name }}" target="_blank"
+                *ngFor="let file of post.files; let index = index">
+                <span class="fileslabel">{{ file?.original_name }}</span>
+            </a>
+        </div>
+        <!-- Attached Files Ends -->
+        <!-- Tags Display -->
+        <div class="col-md-auto mt-3" *ngIf="post.tags?.length>0">
+           
+            <span *ngFor="let tag of post.tags" class="tagslabel">{{ tag }}</span>
+
+        </div>
+        <!-- Tags Display ends -->
+       
+        <!-- Post Actions starts -->
+        <app-post-actions *ngIf="post && userData" [post]="post" [userData]="userData" (delete)="deletePost($event)">
+        </app-post-actions>
+        <!-- Post Actions ends -->
+
+    </div>
+    <!-- </div> -->
+</li>
+<!-- Post Ends -->

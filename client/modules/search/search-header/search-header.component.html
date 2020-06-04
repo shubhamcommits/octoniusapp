@@ -1,0 +1,21 @@
+<div class="inner-addon left-addon">
+    <i class="material-icons">search</i>
+    <input type="text" name="search" id="" placeholder="Search" class="search-input" [(ngModel)]="searchQuery"
+        (ngModelChange)="search()">
+    <div class="row">
+        <div class="col-md-4" style="border-right: 2px solid #E4EDF8;">
+            <p *ngIf="searchedPosts.length>0" class="octo-search-category">POSTS</p>
+            <a *ngFor="let post of searchedPosts" href="#" onclick="return false"
+                (click)="selected=post; selectedType='post'" class="octo-search-results">{{ post.title }}</a>
+            <p *ngIf="searchedUsers.length>0" class="octo-search-category">USERS</p>
+            <a *ngFor="let user of searchedUsers" href="#" onclick="return false"
+                (click)="selected=user; selectedType='user'" class="octo-search-results">{{ user.fullName }}</a>
+            <p *ngIf="searchedFiles.length>0" class="octo-search-category">FILES</p>
+            <a *ngFor="let file of searchedFiles" href="#" onclick="return false"
+                (click)="selected=file; selectedType='file'" class="octo-search-results">{{ file.originalFileName }}</a>
+        </div>
+        <div class="col-md-8">
+            <app-search-results *ngIf="selected" [data]="selected" [type]='selectedType'></app-search-results>
+        </div>
+    </div>
+</div>

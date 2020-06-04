@@ -1,0 +1,202 @@
+import { Component, OnInit, Injector } from '@angular/core';
+import { GroupsService } from 'src/shared/services/groups-service/groups.service';
+import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { environment } from 'src/environments/environment';
+import { Router } from '@angular/router';
+
+@Component({
+  selector: 'app-groups-list',
+  templateUrl: './groups-list.component.html',
+  styleUrls: ['./groups-list.component.scss']
+})
+export class GroupsListComponent implements OnInit {
+
+  constructor(
+    public injector: Injector,
+    private router: Router
+  ) { }
+
+  // Base Url
+  baseUrl = environment.UTILITIES_GROUPS_UPLOADS;
+
+  // Groups Service
+  public groupsService = this.injector.get(GroupsService);
+
+  // Public functions
+  public publicFunctions = new PublicFunctions(this.injector);
+
+  // User data for the current user
+  public userData: any = {};
+
+  // Workspace data for the current workspace
+  public workspaceData: any = {};
+
+  // Array of user groups
+  public userGroups: any = [];
+
+  // Agora groups not joined
+  public agoraGroups: any = [];
+
+  // More to load maintains check if we have more to load groups on scroll
+  public moreToLoad: boolean = true;
+
+  // More Agora groups boolean
+  public moreAgora: boolean = true;
+
+  // LastGroupId
+  public lastGroupId: string = '';
+
+  // Last agora group ID
+  public lastAgoraGroupId: string = '';
+
+  // IsLoading behaviou subject maintains the state for loading spinner
+  public isLoading$ = new BehaviorSubject(false);
+
+  public isLoadingAgora$ = new BehaviorSubject(false);
+
+  // Utility Service
+  public utilityService = this.injector.get(UtilityService);
+
+  async ngOnInit() {
+    
+    // Starts the spinner 
+    this.isLoading$.next(true);
+    this.isLoadingAgora$.next(true);
+    
+    // Send Updates to router state
+    this.publicFunctions.sendUpdatesToRouterState({
+      state: 'work'
+    })
+
+    // Fetch the current loggedIn user data
+    this.userData = await this.publicFunctions.getCurrentUser();
+
+    // Fetch the current workspace data
+    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+
+    // Fetches the user groups from the server
+    this.userGroups = await this.publicFunctions.getUserGroups(this.workspaceData['_id'], this.userData['_id'])
+    .catch(()=>{
+      // If the function breaks, then catch the error and console to the application
+      this.publicFunctions.sendError(new Error('Unable to connect to the server, please try again later!'));
+      this.isLoading$.next(false);
+    })
+
+    this.agoraGroups = await this.publicFunctions.getAgoraGroupsNotJoined(this.workspaceData['_id'], this.userData['_id'])
+    .catch(()=>{
+      // If the function breaks, then catch the error and console to the application
+      this.publicFunctions.sendError(new Error('Unable to connect to the server, please try again later!'));
+      this.isLoadingAgora$.next(false);
+    })
+
+    // Calculates the lastGroupId based on the userGroups
+    this.lastGroupId = this.userGroups[(this.userGroups.length-1)]['_id'];
+    if (this.agoraGroups.length>0){
+      this.lastAgoraGroupId = this.agoraGroups[this.agoraGroups.length-1]['_id'];
+    }
+    
+    // Stops the spinner and return the value with ngOnInit
+    this.isLoading$.next(false);
+    this.isLoadingAgora$.next(false);
+  }
+
+  public async onScroll() {
+    if (this.moreToLoad) {
+      this.isLoading$.next(true);
+      await this.scrolled();
+    }
+  }
+
+  public async onAgoraScroll(){
+    if (this.moreAgora){
+      this.isLoadingAgora$.next(true);
+      await this.AgoraScrolled();
+    }
+  }
+
+  /**
+   * Helper function of onScroll to work on the business logic
+   */
+  public async scrolled() {
+    if (this.userGroups && this.lastGroupId && this.lastGroupId != '' && this.lastGroupId != null) {
+
+      // Fetching next pulse groups based on the lasgGroupId
+      let nextPulseGroups: any = await this.publicFunctions.getNextUserGroups(this.workspaceData['_id'], this.userData['_id'], this.lastGroupId);
+
+      // If we have 0 groups, then stop the function immediately and set moreToLoad to false
+      if (nextPulseGroups.length == 0) {
+        
+        // Set more to load to false and stop the function
+        this.moreToLoad = false;
+
+        // Stop the loading spinner
+        this.isLoading$.next(false);
+      }
+
+      // If we have groups then update the userGroups array and lastGroupId
+      if (this.moreToLoad) {
+        
+        // Adding into exisiting array
+        this.userGroups = [...this.userGroups, ...nextPulseGroups];
+
+        // Removing duplicates from the array if any
+        this.utilityService.removeDuplicates(this.userGroups, '_id').then((groups)=>{
+          this.userGroups = groups;
+        })
+
+        // Updating lastGroupId with the lastest fetched data
+        this.lastGroupId = this.userGroups[this.userGroups.length - 1]['_id'];
+
+        // Stop the loading spinner
+        this.isLoading$.next(false);
+      }
+
+    }
+  }
+
+  /**
+   * Helper function of AgoraScroll to work on the business logic
+   */
+  public async AgoraScrolled(){
+
+    let nextAgoraGroups:any = await this.publicFunctions.getNextAgoraGroups(this.workspaceData['_id'], this.userData['_id'], this.lastAgoraGroupId);
+    
+    // Adding into existing array
+    this.agoraGroups = [...this.agoraGroups, ...nextAgoraGroups];
+
+    // Removing Duplicates
+    this.utilityService.removeDuplicates(this.agoraGroups, '_id').then((groups)=>{
+      this.agoraGroups = groups;
+    })
+
+    if (this.moreAgora && this.agoraGroups.length>0){
+      this.lastAgoraGroupId = this.agoraGroups[this.agoraGroups.length-1]['_id'];
+
+    }
+
+     // Stop the loading spinner
+     this.isLoadingAgora$.next(false);
+
+  }
+
+  receiveGroupUpdates($event: Event){
+    this.userGroups.push($event);
+  }
+
+  async joinGroup(groupId: any){
+    await this.publicFunctions.joinAgora(groupId, this.userData['_id']).then((res)=>{
+      this.router.navigate(['/dashboard/work/groups/', groupId, 'activity']);
+    }).catch((err)=>{
+      console.log(err);
+    });
+
+  }
+
+  ngOnDestroy(){
+    this.isLoading$.complete()
+  }
+
+
+}
