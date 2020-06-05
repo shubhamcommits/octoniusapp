@@ -1,2 +1,8 @@
-node_modules
 .git
+node_modules
+dist
+release
+build
+uploads
+package-lock.json
+yarn.lock
