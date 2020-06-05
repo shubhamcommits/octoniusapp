@@ -18,6 +18,7 @@
     "dev": "ng serve",
     "build": "ng build",
     "prod": "ng build --prod",
+    "postprod": "gzipper --verbose ./dist",
     "gzip": "gzipper --verbose ./dist ./gzipped",
     "test": "ng test",
     "lint": "ng lint",
