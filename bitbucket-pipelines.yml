@@ -128,7 +128,7 @@ pipelines:
           # - docker push $QUERY_IMAGE_NAME
           # - docker push $NGINX_IMAGE_NAME
 
-          - apt get install sshpass -y
+          - apt-get update && apt-get install -y sshpass
 
           # Deploy to server
           - sshpass -p $HOST_PWD ssh -t $HOST_ADDR "cd /home/ubuntu/flash; sudo ./deploy-swarm.sh" 
