@@ -73,7 +73,7 @@ pipelines:
         image: ubuntu:latest
         deployment: staging
         script:
-          # - apt-get update && apt-get install -y sshpass
+          - apt-get update && apt-get install -y sshpass
           - sshpass -p $HOST_PASSWORD ssh -t -t $HOST_ADDRESS "cd /home/ubuntu/flash; echo $PWD" 
     # - step:
     #     name: Deploy to dockerhub
