@@ -74,11 +74,7 @@ pipelines:
         deployment: staging
         script:
           - apt-get update && apt-get install -y sshpass
-          - sshpass -p $HOST_PASSWORD ssh $HOST_ADDRESS 
-          "$( cat <<'EOT'
-          echo "shubham singh"
-          EOT
-          )"
+          - sshpass -p $HOST_PASSWORD ssh -t -t $HOST_ADDRESS "cd /home/ubuntu/flash; sudo -S ls -la" 
     # - step:
     #     name: Deploy to dockerhub
     #     services:
