@@ -74,7 +74,7 @@ pipelines:
         deployment: staging
         script:
           - apt-get update && apt-get install -y sshpass
-          - sshpass -p $HOST_PASSWORD ssh -o IPQoS=throughput -tt $HOST_ADDRESS "stty raw -echo; cd /home/ubuntu/flash; sudo ./deploy-swarm.sh  | cat" < <(cat)
+          - sshpass -p $HOST_PASSWORD ssh -tt $HOST_ADDRESS "cd /home/ubuntu/flash; ./deploy-swarm.sh"
     # - step:
     #     name: Deploy to dockerhub
     #     services:
