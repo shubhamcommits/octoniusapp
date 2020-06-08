@@ -73,8 +73,8 @@ pipelines:
         image: ubuntu:latest
         deployment: staging
         script:
-          - apt-get update && apt-get install -y sshpass
-          - sshpass -p $HOST_PASSWORD ssh -tt $HOST_ADDRESS "cd /home/ubuntu/flash; sudo ./deploy-swarm.sh" 
+          # - apt-get update && apt-get install -y sshpass
+          - sshpass -p $HOST_PASSWORD ssh -t -t $HOST_ADDRESS "cd /home/ubuntu/flash; echo $PWD" 
     # - step:
     #     name: Deploy to dockerhub
     #     services:
