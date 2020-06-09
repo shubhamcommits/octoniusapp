@@ -35,7 +35,7 @@ services:
       - WEBHOOK_PS_SECRET=whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn
       - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
       - PROTOCOL=https
-      - DOMAIN=flash.octonius.com
+      - DOMAIN=workplace.octonius.com
     depends_on:
       - mongodb
     links:
@@ -65,7 +65,7 @@ services:
       - WEBHOOK_PS_SECRET=whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn
       - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
       - PROTOCOL=https
-      - DOMAIN=flash.octonius.com
+      - DOMAIN=workplace.octonius.com
     depends_on:
       - mongodb
     links:
@@ -95,7 +95,7 @@ services:
       - WEBHOOK_PS_SECRET=whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn
       - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
       - PROTOCOL=https
-      - DOMAIN=flash.octonius.com
+      - DOMAIN=workplace.octonius.com
     depends_on:
       - mongodb
     links:
@@ -125,7 +125,7 @@ services:
       - WEBHOOK_PS_SECRET=whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn
       - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
       - PROTOCOL=https
-      - DOMAIN=flash.octonius.com
+      - DOMAIN=workplace.octonius.com
     depends_on:
       - mongodb
     links:
@@ -155,7 +155,7 @@ services:
       - WEBHOOK_PS_SECRET=whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn
       - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
       - PROTOCOL=https
-      - DOMAIN=flash.octonius.com
+      - DOMAIN=workplace.octonius.com
     depends_on:
       - mongodb
     links:
@@ -185,7 +185,7 @@ services:
       - WEBHOOK_PS_SECRET=whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn
       - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
       - PROTOCOL=https
-      - DOMAIN=flash.octonius.com
+      - DOMAIN=workplace.octonius.com
     depends_on:
       - mongodb
     links:
@@ -215,7 +215,7 @@ services:
       - WEBHOOK_PS_SECRET=whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn
       - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
       - PROTOCOL=https
-      - DOMAIN=flash.octonius.com
+      - DOMAIN=workplace.octonius.com
     depends_on:
       - mongodb
     links:
@@ -245,7 +245,7 @@ services:
       - WEBHOOK_PS_SECRET=whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn
       - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
       - PROTOCOL=https
-      - DOMAIN=flash.octonius.com
+      - DOMAIN=workplace.octonius.com
     depends_on:
       - mongodb
     links:
@@ -258,7 +258,7 @@ services:
     image: octoniusapp/octonius:nginx
     restart: always
     ports:
-      - 8081:80
+      - 8080:80
     depends_on:
       - mailing-server
       - auths-server
