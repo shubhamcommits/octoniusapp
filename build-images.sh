@@ -3,40 +3,40 @@
 # Octonius Build Docker Images
 
 # Client Microservice Image Name
-export CLIENT_IMAGE_NAME=octoniusapp/octonius-alpha:client
+export CLIENT_IMAGE_NAME=octoniusapp/octonius:client
 
 # Mails Microservice Image Name
-export MAILS_IMAGE_NAME=octoniusapp/octonius-alpha:mailing-server
+export MAILS_IMAGE_NAME=octoniusapp/octonius:mailing-server
 
 # Auths Microservice Image Name
-export AUTHS_IMAGE_NAME=octoniusapp/octonius-alpha:auths-server
+export AUTHS_IMAGE_NAME=octoniusapp/octonius:auths-server
 
 # Groups Microservice Image Name
-export GROUPS_IMAGE_NAME=octoniusapp/octonius-alpha:groups-server
+export GROUPS_IMAGE_NAME=octoniusapp/octonius:groups-server
 
 # Workspaces Microservice Image Name
-export WORKSPACES_IMAGE_NAME=octoniusapp/octonius-alpha:workspaces-server
+export WORKSPACES_IMAGE_NAME=octoniusapp/octonius:workspaces-server
 
 # Users Microservice Image Name
-export USERS_IMAGE_NAME=octoniusapp/octonius-alpha:users-server
+export USERS_IMAGE_NAME=octoniusapp/octonius:users-server
 
 # Posts Microservice Image Name
-export POSTS_IMAGE_NAME=octoniusapp/octonius-alpha:posts-server
+export POSTS_IMAGE_NAME=octoniusapp/octonius:posts-server
 
 # Notifications Microservice Image Name
-export NOTIFICATIONS_IMAGE_NAME=octoniusapp/octonius-alpha:notifications-server
+export NOTIFICATIONS_IMAGE_NAME=octoniusapp/octonius:notifications-server
 
 # Utilities Microservice Image Name
-export UTILITIES_IMAGE_NAME=octoniusapp/octonius-alpha:utilities-server
+export UTILITIES_IMAGE_NAME=octoniusapp/octonius:utilities-server
 
 # Folio Microservice Image Name
-export FOLIO_IMAGE_NAME=octoniusapp/octonius-alpha:folio-server
+export FOLIO_IMAGE_NAME=octoniusapp/octonius:folio-server
 
 # Query Microservice Image Name
-export QUERY_IMAGE_NAME=octoniusapp/octonius-alpha:query-server
+export QUERY_IMAGE_NAME=octoniusapp/octonius:query-server
 
 # Nginx Image Name
-export NGINX_IMAGE_NAME=octoniusapp/octonius-alpha:nginx
+export NGINX_IMAGE_NAME=octoniusapp/octonius:nginx
 
 # build the Docker image (this will use the Dockerfile in the root of the repo)
         docker build -t $CLIENT_IMAGE_NAME --compress=true --force-rm=true ./client

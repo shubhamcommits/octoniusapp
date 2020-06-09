@@ -7,17 +7,17 @@ services:
     image: 'mongo:latest'
     restart: always
     volumes:
-      - alpha_db_data:/data/db
+      - production_db_data:/data/db
     ports:
-      - 27018:27017
+      - 27017:27017
     networks:
-      - alpha
+      - production
       
   mailing-server:
     container_name: mailing-server
-    image: octoniusapp/octonius-alpha:mailing-server
+    image: octoniusapp/octonius:mailing-server
     ports:
-      - 2001:2000
+      - 2000:2000
     restart: always
     volumes:
       - /usr/app/node_modules
@@ -41,13 +41,13 @@ services:
     links:
       - mongodb
     networks:
-      - alpha
+      - production
       
   auths-server:
     container_name: auths-server
-    image: octoniusapp/octonius-alpha:auths-server
+    image: octoniusapp/octonius:auths-server
     ports:
-      - 3001:3000
+      - 3000:3000
     restart: always
     volumes:
       - /usr/app/node_modules
@@ -71,17 +71,17 @@ services:
     links:
       - mongodb
     networks:
-      - alpha
+      - production
          
   groups-server:
     container_name: groups-server
-    image: octoniusapp/octonius-alpha:groups-server
+    image: octoniusapp/octonius:groups-server
     ports:
-      - 4001:4000
+      - 4000:4000
     restart: always
     volumes:
       - /usr/app/node_modules
-      - alpha_groups_uploads_data:/usr/app/uploads
+      - production_groups_uploads_data:/usr/app/uploads
     environment:
       - NODE_ENV=production
       - PORT=4000
@@ -102,17 +102,17 @@ services:
     links:
       - mongodb
     networks:
-      - alpha
+      - production
       
   workspaces-server:
     container_name: workspaces-server
-    image: octoniusapp/octonius-alpha:workspaces-server
+    image: octoniusapp/octonius:workspaces-server
     ports:
-      - 5001:5000
+      - 5000:5000
     restart: always
     volumes:
       - /usr/app/node_modules
-      - alpha_workspaces_uploads_data:/usr/app/uploads
+      - production_workspaces_uploads_data:/usr/app/uploads
     environment:
       - NODE_ENV=production
       - PORT=5000
@@ -133,17 +133,17 @@ services:
     links:
       - mongodb
     networks:
-      - alpha
+      - production
       
   users-server:
     container_name: users-server
-    image: octoniusapp/octonius-alpha:users-server
+    image: octoniusapp/octonius:users-server
     ports:
-      - 7001:7000
+      - 7000:7000
     restart: always
     volumes:
       - /usr/app/node_modules
-      - alpha_users_uploads_data:/usr/app/uploads
+      - production_users_uploads_data:/usr/app/uploads
     environment:
       - NODE_ENV=production
       - PORT=7000
@@ -164,17 +164,17 @@ services:
     links:
       - mongodb
     networks:
-      - alpha
+      - production
       
   posts-server:
     container_name: posts-server
-    image: octoniusapp/octonius-alpha:posts-server
+    image: octoniusapp/octonius:posts-server
     ports:
-      - 8001:8000
+      - 8000:8000
     restart: always
     volumes:
       - /usr/app/node_modules
-      - alpha_posts_uploads_data:/usr/app/uploads
+      - production_posts_uploads_data:/usr/app/uploads
     environment:
       - NODE_ENV=production
       - PORT=8000
@@ -195,13 +195,13 @@ services:
     links:
       - mongodb
     networks:
-      - alpha
+      - production
       
   notifications-server:
     container_name: notifications-server
-    image: octoniusapp/octonius-alpha:notifications-server
+    image: octoniusapp/octonius:notifications-server
     ports:
-      - 9001:9000
+      - 9000:9000
     restart: always
     volumes:
       - /usr/app/node_modules
@@ -225,17 +225,17 @@ services:
     links:
       - mongodb
     networks:
-      - alpha
+      - production
       
   utilities-server:
     container_name: utilities-server
-    image: octoniusapp/octonius-alpha:utilities-server
+    image: octoniusapp/octonius:utilities-server
     ports:
-      - 10001:10000
+      - 10000:10000
     restart: always
     volumes:
       - /usr/app/node_modules
-      - alpha_utilities_uploads_data:/usr/app/uploads
+      - production_utilities_uploads_data:/usr/app/uploads
     environment:
       - NODE_ENV=production
       - PORT=10000
@@ -256,13 +256,13 @@ services:
     links:
       - mongodb
     networks:
-      - alpha
+      - production
 
   folio-server:
     container_name: folio-server
-    image: octoniusapp/octonius-alpha:folio-server
+    image: octoniusapp/octonius:folio-server
     ports:
-      - 11001:11000
+      - 11000:11000
     restart: always
     volumes:
       - /usr/app/node_modules
@@ -286,16 +286,16 @@ services:
     links:
       - mongodb
     networks:
-      - alpha
+      - production
 
   query-server:
     container_name: query-server
-    image: octoniusapp/octonius-alpha:query-server
+    image: octoniusapp/octonius:query-server
     ports: 
-      - 12001:8080
+      - 12000:8080
     restart: always
     volumes:
-      - alpha_solr_data:/data/query-service-app
+      - production_solr_data:/data/query-service-app
     environment:
       WAIT_HOST: solr-octonius
       WAIT_PORT: '8983'
@@ -304,25 +304,25 @@ services:
     links:
       - solr-octonius:solr-octonius
     networks:
-      - alpha
+      - production
   
   solr-octonius:
     image: solr:7.7.1
     container_name: solr-octonius
     command: solr-precreate octonius
     ports:
-      - 13001:8983
+      - 13000:8983
     environment:
       - SOLR_JAVA_MEM=-Xms256m -Xmx256m -XX:MaxRAM=1024m
     volumes:
       - ${PWD}/solr/configsets:/opt/solr/server/solr/configsets
-      - alpha_solr_data:/data/query-service-app
+      - production_solr_data:/data/query-service-app
     networks:
-      - alpha
+      - production
       
   client:
     container_name: client
-    image: octoniusapp/octonius-alpha:client
+    image: octoniusapp/octonius:client
     volumes:
       - /usr/app/node_modules
     depends_on:
@@ -336,11 +336,11 @@ services:
       - utilities-server
       - folio-server
     networks:
-      - alpha
+      - production
 
   nginx:
     container_name: nginx
-    image: octoniusapp/octonius-alpha:nginx
+    image: octoniusapp/octonius:nginx
     restart: always
     ports:
       - 8081:80
@@ -358,52 +358,52 @@ services:
       - solr-octonius
       - client
     networks:
-      - alpha
+      - production
 
 volumes:
-  alpha_db_data:
+  production_db_data:
     driver: local
     driver_opts:
       type: none
       device: ${PWD}/data/db
       o: bind
 
-  alpha_groups_uploads_data:
+  production_groups_uploads_data:
     driver: local
     driver_opts:
       type: none
       device: ${PWD}/data/uploads/groups
       o: bind
   
-  alpha_posts_uploads_data:
+  production_posts_uploads_data:
     driver: local
     driver_opts:
       type: none
       device: ${PWD}/data/uploads/posts
       o: bind
 
-  alpha_users_uploads_data:
+  production_users_uploads_data:
     driver: local
     driver_opts:
       type: none
       device: ${PWD}/data/uploads/users
       o: bind
 
-  alpha_workspaces_uploads_data:
+  production_workspaces_uploads_data:
     driver: local
     driver_opts:
       type: none
       device: ${PWD}/data/uploads/workspaces
       o: bind
 
-  alpha_utilities_uploads_data:
+  production_utilities_uploads_data:
     driver: local
     driver_opts:
       type: none
       device: ${PWD}/data/uploads/utilities
       o: bind
 
-  alpha_solr_data:
+  production_solr_data:
     driver: local
     driver_opts:
       type: none
@@ -411,5 +411,5 @@ volumes:
       o: bind
       
 networks:
-  alpha: 
+  production: 
     driver: bridge
