@@ -7,8 +7,6 @@ pipelines:
   branches:
     "{master}":
     - step:
-        caches:
-          - docker
         name: Deploy to dockerhub
         services:
           - docker
