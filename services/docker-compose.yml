@@ -17,7 +17,7 @@ services:
     container_name: mailing-server
     image: mailing-server
     ports:
-      - 2001:2000
+      - 2000:2000
     restart: always
     build:
       dockerfile: Dockerfile
@@ -50,7 +50,7 @@ services:
     container_name: auths-server
     image: auths-server
     ports:
-      - 3001:3000
+      - 3000:3000
     restart: always
     build:
       dockerfile: Dockerfile
@@ -83,7 +83,7 @@ services:
     container_name: groups-server
     image: groups-server
     ports:
-      - 4001:4000
+      - 4000:4000
     restart: always
     build:
       dockerfile: Dockerfile
@@ -116,7 +116,7 @@ services:
     container_name: workspaces-server
     image: workspaces-server
     ports:
-      - 5001:5000
+      - 5000:5000
     restart: always
     build:
       dockerfile: Dockerfile
@@ -149,7 +149,7 @@ services:
     container_name: users-server
     image: users-server
     ports:
-      - 7001:7000
+      - 7000:7000
     restart: always
     build:
       dockerfile: Dockerfile
@@ -182,7 +182,7 @@ services:
     container_name: posts-server
     image: posts-server
     ports:
-      - 8001:8000
+      - 8000:8000
     restart: always
     build:
       dockerfile: Dockerfile
@@ -215,7 +215,7 @@ services:
     container_name: notifications-server
     image: notifications-server
     ports:
-      - 9001:9000
+      - 9000:9000
     restart: always
     build:
       dockerfile: Dockerfile
@@ -248,7 +248,7 @@ services:
     container_name: utilities-server
     image: utilities-server
     ports:
-      - 10001:10000
+      - 10000:10000
     restart: always
     build:
       dockerfile: Dockerfile
