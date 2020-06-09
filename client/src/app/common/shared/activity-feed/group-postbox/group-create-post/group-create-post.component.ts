@@ -408,13 +408,14 @@ export class GroupCreatePostComponent implements OnInit {
     if(this.type == 'task'){
 
       // Unassigned property
-      post.unassigned = this.postData.task.unassigned,
+      post.unassigned = this.postData.task.unassigned
 
       // Task due date
-      post.date_due_to = this.dueDate,
+      post.date_due_to = this.dueDate
 
       // Task Assigned to
-      post.assigned_to = this.postData.task._assigned_to._id,
+      if(!post.unassigned)
+        post.assigned_to = this.postData.task._assigned_to._id
 
       // Task column
       post._column = {
@@ -452,7 +453,7 @@ export class GroupCreatePostComponent implements OnInit {
 
           // Emit the post to other components
           // let post = res['post'];
-          this.post.emit(res)
+          this.post.emit(res['post'])
 
           this.edited.emit(res)
 

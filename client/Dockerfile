@@ -10,7 +10,7 @@ WORKDIR /usr/app
 COPY ./package.json ./
 
 ## Installing and storing node modules on a separate layer will prevent unnecessary npm installs at each build
-RUN yarn install
+RUN yarn install --network-timeout 100000
 
 COPY ./ ./
 
