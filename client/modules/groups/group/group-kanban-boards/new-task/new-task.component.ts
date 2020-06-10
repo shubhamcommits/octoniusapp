@@ -49,19 +49,42 @@ export class NewTaskComponent implements OnInit {
    */
   createPost() {
 
+    var postData: any;
     // Prepare Post Data
-    let postData = {
-      title: this.postTitle,
-      content: '',
-      type: 'task',
-      _posted_by: this.userData._id,
-      _group: this.groupData._id,
-      _content_mentions: [],
-      task: {
-        unassigned: true,
-        status: 'to do',
-        _column: {
-          title: this.column.title
+
+    // Check if private group
+    if (this.groupData._id == this.userData._private_group){
+      postData = {
+        title: this.postTitle,
+        content: '',
+        type: 'task',
+        _posted_by: this.userData._id,
+        _group: this.groupData._id,
+        _content_mentions: [],
+        task: {
+          _assigned_to: this.userData._id,
+          unassigned: false,
+          status: 'to do',
+          _column: {
+            title: this.column.title
+          }
+        }
+      }
+    }
+    else{
+      postData = {
+        title: this.postTitle,
+        content: '',
+        type: 'task',
+        _posted_by: this.userData._id,
+        _group: this.groupData._id,
+        _content_mentions: [],
+        task: {
+          unassigned: true,
+          status: 'to do',
+          _column: {
+            title: this.column.title
+          }
         }
       }
     }
