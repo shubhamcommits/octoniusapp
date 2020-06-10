@@ -26,8 +26,7 @@ export const environment = {
   google_redirect_url: `${url.protocol}://${url.domain}`,
   scope: [
     `https://www.googleapis.com/auth/drive`,
-    `https://www.googleapis.com/auth/calendar`,
-    `https://www.googleapis.com/auth/calendar.events`
+    `https://www.googleapis.com/auth/calendar`
   ].join(` `),
 
   // Base Client Url
