@@ -204,7 +204,7 @@ export class WorkspaceController {
             }
 
             // Add Global group to user's groups
-            const userUpdate = await User.findByIdAndUpdate({
+            var userUpdate = await User.findByIdAndUpdate({
                 _id: user._id
             }, {
                 $push: {
@@ -243,7 +243,7 @@ export class WorkspaceController {
                 const group = await Group.create(newGroupData);
 
                 // Add personal group to user's groups
-                await User.findByIdAndUpdate({
+                userUpdate = await User.findByIdAndUpdate({
                     _id: newGroupData._admins,
                     _workspace: newGroupData._workspace
                 }, {
