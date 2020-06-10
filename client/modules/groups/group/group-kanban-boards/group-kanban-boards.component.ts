@@ -253,7 +253,21 @@ export class GroupKanbanBoardsComponent implements OnInit {
 
     // If not found, then change the element details
     else if (index === -1) {
+      let oldTitle = oldCol.title;
       oldCol.title = newColTitle
+      // Column Service Instance
+      let columnService = this.injector.get(ColumnService)
+
+      // Call the HTTP Service function
+      this.utilityService.asyncNotification('Please wait we are renaming your column...', new Promise((resolve, reject) => {
+        columnService.editColumnName(this.groupId, oldTitle, newColTitle)
+        .then((res) => {
+          resolve(this.utilityService.resolveAsyncPromise('Column Renamed!'));
+        })
+        .catch((err) => {
+          reject(this.utilityService.rejectAsyncPromise('Unable to rename the column at the moment, please try again!'))
+        })
+    }))
     }
   }
 
