@@ -92,7 +92,9 @@ export class GroupsListComponent implements OnInit {
     })
 
     // Calculates the lastGroupId based on the userGroups
-    this.lastGroupId = this.userGroups[(this.userGroups.length-1)]['_id'];
+    if(this.userGroups.length > 0)
+      this.lastGroupId = this.userGroups[(this.userGroups.length-1)]['_id'];
+
     if (this.agoraGroups.length>0){
       this.lastAgoraGroupId = this.agoraGroups[this.agoraGroups.length-1]['_id'];
     }
@@ -103,11 +105,11 @@ export class GroupsListComponent implements OnInit {
   }
 
   public async onScroll() {
-    if (this.moreToLoad) {
       this.isLoading$.next(true);
       await this.scrolled();
+      // Stop the loading spinner
+      this.isLoading$.next(false);
     }
-  }
 
   public async onAgoraScroll(){
     if (this.moreAgora){
@@ -130,9 +132,6 @@ export class GroupsListComponent implements OnInit {
         
         // Set more to load to false and stop the function
         this.moreToLoad = false;
-
-        // Stop the loading spinner
-        this.isLoading$.next(false);
       }
 
       // If we have groups then update the userGroups array and lastGroupId
@@ -148,9 +147,6 @@ export class GroupsListComponent implements OnInit {
 
         // Updating lastGroupId with the lastest fetched data
         this.lastGroupId = this.userGroups[this.userGroups.length - 1]['_id'];
-
-        // Stop the loading spinner
-        this.isLoading$.next(false);
       }
 
     }

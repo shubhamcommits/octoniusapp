@@ -36,6 +36,7 @@ export class InfiniteScrollComponent implements OnInit, OnDestroy {
     const options = {
       // root: this.isHostScrollable() ? this.host.nativeElement : null,
       root: null,
+      threshold: 0.8,
       ...this.options
     };
 

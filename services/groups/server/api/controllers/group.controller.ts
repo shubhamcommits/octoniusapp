@@ -37,7 +37,7 @@ export class GroupController {
                         limit: 10
                     }
                 })
-                .limit(10)
+                .limit(20)
                 .lean() || [];
 
             // Send the status 200 response
@@ -133,7 +133,7 @@ export class GroupController {
                 ]
             })
                 .sort('_id')
-                .limit(10)
+                .limit(20)
                 .populate({
                     path: '_members',
                     select: '_id',
@@ -483,7 +483,7 @@ export class GroupController {
                 ]
             })
             .sort('_id')
-                .limit(10)
+                // .limit(10)
                 .populate({
                     path: '_members',
                     select: '_id',
