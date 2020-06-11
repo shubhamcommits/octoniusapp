@@ -198,7 +198,7 @@ export class ComponentSearchBarComponent implements OnInit {
    * @param workspaceId Workspace to remove from
    * @param index
    */
-  removeUserFromWorkplace(userId, workspaceId, index){
+  removeUserFromWorkplace(userId, workspaceId, index) {
 
     // Create Service Instance
     let workspaceService = this.injector.get(WorkspaceService);
@@ -207,23 +207,30 @@ export class ComponentSearchBarComponent implements OnInit {
     this.utilityService.getConfirmDialogAlert()
       .then((result) => {
         if (result.value) {
+
           // Remove the User
-          workspaceService.removeUserFromWorkspace(userId, workspaceId)
-              .then(() => {
+          this.utilityService.asyncNotification('Please wait while we are removing the user ...',
+            new Promise((resolve, reject) => {
+              workspaceService.removeUserFromWorkspace(userId, workspaceId)
+                .then(() => {
 
-                // Member Details
-                let member = this.members[index];
+                  // Member Details
+                  let member = this.members[index];
 
-                // Update the GroupData
-                this.groupData._members.splice(this.groupData._members.findIndex((user: any) => user._id === member._id), 1)
-                this.groupData._admins.splice(this.groupData._admins.findIndex((user: any) => user._id === member._id), 1)
+                  // Update the Workspace Data
+                  this.workspaceData.members.splice(this.workspaceData.members.findIndex((user: any) => user._id === member._id), 1)
 
-                // Update UI via removing from array
-                this.members.splice(index, 1);
+                  // Update UI via removing from array
+                  this.members.splice(index, 1);
 
-                // Send updates to groupData via service
-                this.publicFunctions.sendUpdatesToGroupData(this.groupData)
-              })
+                  // Send updates to workspaceData via service
+                  this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData)
+
+                  // Resolve with success
+                  resolve(this.utilityService.resolveAsyncPromise('User removed!'))
+                })
+                .catch(() => reject(this.utilityService.rejectAsyncPromise('Unable to remove the user from the workplace, please try again!')))
+            }))
         }
       })
 
@@ -317,7 +324,7 @@ export class ComponentSearchBarComponent implements OnInit {
       if (this.type === 'workspace')
         nextUsers = await this.publicFunctions.getNextWorkspaceMembers(this.workspaceData['_id'], this.lastUserId, this.query);
 
-      if(this.type === 'group')
+      if (this.type === 'group')
         nextUsers = await this.publicFunctions.getNextGroupMembers(this.groupId, this.lastUserId, this.query)
 
       // If we have 0 users, then stop the function immediately and set moreToLoad to false

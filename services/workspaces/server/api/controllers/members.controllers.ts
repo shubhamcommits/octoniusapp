@@ -36,7 +36,7 @@ export class MembersControllers {
      * @param res 
      * @param next 
      */
-    async membersNotInGroup(req: Request, res: Response, next: NextFunction){
+    async membersNotInGroup(req: Request, res: Response, next: NextFunction) {
 
         // let { query: { workspaceId, groupId } } = req;
 
@@ -160,12 +160,12 @@ export class MembersControllers {
     }
 
 
-     /**
-     * This function is responsible for removing the user from workspace
-     * @param req 
-     * @param res 
-     * @param next 
-     */
+    /**
+    * This function is responsible for removing the user from workspace
+    * @param req 
+    * @param res 
+    * @param next 
+    */
     async removeUserFromWorkplace(req: Request, res: Response, next: NextFunction) {
 
         const { userId, workplaceId } = req.body;
@@ -188,12 +188,12 @@ export class MembersControllers {
             }).select('first_name last_name profile_pic email role');
 
             // User found
-            if (user){
+            if (user) {
 
                 // Remove from workspace
                 const workspace = await Workspace.findByIdAndUpdate(workplaceId, {
-                    $pull: { "invited_users._user": userId , "members": userId },
-                });
+                    $pull: { "invited_users._user": userId, "members": userId },
+                }, { new: true });
 
                 // Remove from all groups
                 const groups = await Group.updateMany({
@@ -206,8 +206,8 @@ export class MembersControllers {
                 });
             }
 
-            else{
-                return sendError(res, new Error("No Such User"), 'No Such User!', 404);
+            else {
+                return sendError(res, new Error("No Such User"), 'No Such User!', 400);
             }
 
             // Send status 200 response
