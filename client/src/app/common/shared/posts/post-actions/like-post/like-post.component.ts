@@ -100,10 +100,12 @@ export class LikePostComponent implements OnInit {
    * Check if the post is liked by the currently loggedIn user
    */
   isLikedByUser() {
-    if (this.post.hasOwnProperty('_liked_by') && this.post._liked_by.includes(this.userData._id))
-      return true;
-    else
-      return false
-  }
+    if (this.post.hasOwnProperty('_liked_by')) {
+      if (this.post._liked_by.includes(this.userData._id))
+        return true;
+      else
+        return false
+    }
 
+  }
 }
