@@ -30,6 +30,9 @@ routes.get('/next', members.getNextWorkspaceMembers);
 // GET - Get a list of first 10 workspace members who are not present in a group
 routes.get('/groups', members.membersNotInGroup);
 
+// POST - Delete a user from workspace
+routes.post('/delete', members.removeUserFromWorkplace)
+
 
 /*  ===================
  *  -- EXPORT ROUTES --
