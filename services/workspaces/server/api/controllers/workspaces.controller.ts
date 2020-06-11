@@ -68,6 +68,9 @@ export class WorkspaceController {
                     select: 'first_name last_name profile_pic role email',
                     options: {
                         limit: 10
+                    },
+                    match: {
+                        active: true
                     }
                 })
                 .lean()
@@ -316,6 +319,9 @@ export class WorkspaceController {
                     select: 'first_name last_name profile_pic role email',
                     options: {
                         limit: 10
+                    },
+                    match: {
+                        active: true
                     }
                 })
                 .lean()
@@ -441,7 +447,7 @@ export class WorkspaceController {
             )
 
             // Send signup invite to user
-            if(send == true)
+            // if(send == true)
                 http.post(`${process.env.MAILING_SERVER_API}/invite-user`, {
                     data: {
                         from: req['userId'],

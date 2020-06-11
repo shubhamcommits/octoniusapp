@@ -50,7 +50,7 @@
                         <li class="dropdown-item" *ngIf="member.role != 'member'"
                             (click)="changeRole(member._id, 'member', index)">Change to Member</li>
                         <li class="dropdown-divider"></li>
-                        <li class="dropdown-item">Remove from workplace</li>
+                        <li class="dropdown-item" (click)="removeUserFromWorkplace(member._id, workspaceId, index)">Remove from workplace</li>
                     </ul>
                     <!-- Menu Drawer Ends -->
 

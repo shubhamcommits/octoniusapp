@@ -106,6 +106,18 @@ export class WorkspaceService {
     return this._http.post(this.BASE_API_URL + `/next/query/members/${workspaceId}`, { query });
   }
 
+  /**
+   * 
+   * @param userId 
+   * @param workspaceId 
+   */
+  removeUserFromWorkspace(userId: string, workspaceId: string){
+    return this._http.post(this.BASE_API_URL + '/members/delete', {
+      userId,
+      workspaceId
+    }).toPromise();
+  }
+
   /* | ======================================= BILLING ========================================== | */
 
   /**

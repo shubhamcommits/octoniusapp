@@ -144,6 +144,9 @@ export class MembersControllers {
                         select: 'first_name last_name profile_pic role email',
                         options: {
                             limit: 10
+                        },
+                        match: {
+                            active: true
                         }
                     })
                     .populate({
@@ -151,6 +154,9 @@ export class MembersControllers {
                         select: 'first_name last_name profile_pic role email',
                         options: {
                             limit: 10
+                        },
+                        match: {
+                            active: true
                         }
                     })
                     .lean();
@@ -174,6 +180,9 @@ export class MembersControllers {
                         select: 'first_name last_name profile_pic role email',
                         options: {
                             limit: 10
+                        },
+                        match: {
+                            active: true
                         }
                     })
                     .populate({
@@ -181,6 +190,9 @@ export class MembersControllers {
                         select: 'first_name last_name profile_pic role email',
                         options: {
                             limit: 10
+                        },
+                        match: {
+                            active: true
                         }
                     })
                     .lean();
