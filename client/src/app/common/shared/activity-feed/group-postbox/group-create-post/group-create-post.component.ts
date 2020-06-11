@@ -407,6 +407,14 @@ export class GroupCreatePostComponent implements OnInit {
     // If type is task, then add following properties too
     if(this.type == 'task'){
 
+      // Adding unassigned property for previous tasks model
+      if(this.postData.task.unassigned == 'No')
+        this.postData.task.unassigned = false
+
+      // Adding unassigned property for previous tasks model
+      if(this.postData.task.unassigned == 'Yes')
+      this.postData.task.unassigned = true
+
       // Unassigned property
       post.unassigned = this.postData.task.unassigned
 
@@ -455,7 +463,7 @@ export class GroupCreatePostComponent implements OnInit {
           // let post = res['post'];
           this.post.emit(res['post'])
 
-          this.edited.emit(res)
+          this.edited.emit(res['post'])
 
           // Resolve with success
           resolve(this.utilityService.resolveAsyncPromise(`Details updated!`))

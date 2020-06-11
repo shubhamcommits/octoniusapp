@@ -108,7 +108,7 @@ const PostSchema = new Schema({
             default: null
         },
         unassigned: {
-            type: Boolean,
+            type: Schema.Types.Mixed,
             default: true 
         },
         _column: {
