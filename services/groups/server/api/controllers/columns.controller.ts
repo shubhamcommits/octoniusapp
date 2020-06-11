@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { Column } from '../models';
+import { Column, Post } from '../models';
 import { sendError } from '../../utils';
 
 export class ColumnsController {
@@ -145,6 +145,16 @@ export class ColumnsController {
                         if (err) {
                             return res.status(200).json({ "err": "Error in updating columns" });
                         } else {
+                            var tasks = Post.updateMany({
+                                "task._column.title": oldColumnName
+                            }, {
+                                "$set" : { "task._column.title": newColumnName }
+                            }, {
+                                new: true
+                            }, function(err, result){
+                                if (err)console.log(err);
+                                else console.log(result);
+                            });
                             return res.status(200).json(col);
                         }
                     });
