@@ -1,5 +1,5 @@
 import { sendError } from '../../utils';
-import { User } from '../models';
+import { User, Workspace, Group } from '../models';
 import { Request, Response, NextFunction } from 'express';
 
 export class MembersControllers {
@@ -154,6 +154,67 @@ export class MembersControllers {
                 users: users
             })
 
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+
+     /**
+     * This function is responsible for removing the user from workspace
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async removeUserFromWorkplace(req: Request, res: Response, next: NextFunction) {
+
+        const { userId, workplaceId } = req.body;
+
+        try {
+
+            // Find the user and delete them
+            const user: any = await User.findOneAndUpdate({
+                $and: [
+                    { _id: userId },
+                    { active: true },
+                    { workspace: workplaceId }
+                ]
+            }, {
+                active: false,
+                invited: false,
+                _groups: []
+            }, {
+                new: true
+            }).select('first_name last_name profile_pic email role');
+
+            // User found
+            if (user){
+
+                // Remove from workspace
+                const workspace = await Workspace.findByIdAndUpdate(workplaceId, {
+                    $pull: { "invited_users._user": userId , "members": userId },
+                });
+
+                // Remove from all groups
+                const groups = await Group.updateMany({
+                    $or: [
+                        { "_members": userId },
+                        { "_admins": userId }
+                    ]
+                }, {
+                    $pull: { "_members": userId, "_admins": userId }
+                });
+            }
+
+            else{
+                return sendError(res, new Error("No Such User"), 'No Such User!', 404);
+            }
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: `Removed user ${user.first_name}`,
+                user: user
+            });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
         }

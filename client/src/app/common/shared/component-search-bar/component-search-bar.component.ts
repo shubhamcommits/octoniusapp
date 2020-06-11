@@ -10,6 +10,7 @@ import { debounceTime } from 'rxjs/internal/operators/debounceTime';
 import { distinctUntilChanged } from 'rxjs/internal/operators/distinctUntilChanged';
 import { SubSink } from 'subsink';
 import { GroupService } from 'src/shared/services/group-service/group.service';
+import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
 
 @Component({
   selector: 'app-component-search-bar',
@@ -187,6 +188,44 @@ export class ComponentSearchBarComponent implements OnInit {
         }
       })
 
+
+  }
+
+
+  /**
+   * Function to remove member from workspace
+   * @param userId User to remove
+   * @param workspaceId Workspace to remove from
+   * @param index
+   */
+  removeUserFromWorkplace(userId, workspaceId, index){
+
+    // Create Service Instance
+    let workspaceService = this.injector.get(WorkspaceService);
+
+    // Ask User to remove this user from the group or not
+    this.utilityService.getConfirmDialogAlert()
+      .then((result) => {
+        if (result.value) {
+          // Remove the User
+          workspaceService.removeUserFromWorkspace(userId, workspaceId)
+              .then(() => {
+
+                // Member Details
+                let member = this.members[index];
+
+                // Update the GroupData
+                this.groupData._members.splice(this.groupData._members.findIndex((user: any) => user._id === member._id), 1)
+                this.groupData._admins.splice(this.groupData._admins.findIndex((user: any) => user._id === member._id), 1)
+
+                // Update UI via removing from array
+                this.members.splice(index, 1);
+
+                // Send updates to groupData via service
+                this.publicFunctions.sendUpdatesToGroupData(this.groupData)
+              })
+        }
+      })
 
   }
 
