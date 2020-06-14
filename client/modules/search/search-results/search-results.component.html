@@ -1,12 +1,7 @@
 <div *ngIf="type=='post'" style="text-align: left;">
    
     <p class="octo-search-category">Title: {{ data.title }}</p>
-    <app-quill-editor
-      [editorId]="('editor_' + data.id) || 'editor'"
-      [toolbar]="false" 
-      [readOnly]="true"
-      [contents]="data.content">
-    </app-quill-editor>
+    <p [innerHTML]="data?.html"></p>
     <p>Tags:</p>
     <ul>
         <li *ngFor="let tag of data.attachedTags" class="label">{{ tag }}</li>

@@ -1,4 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
+import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
 
 @Component({
   selector: 'app-search-results',
@@ -15,7 +16,30 @@ export class SearchResultsComponent implements OnInit {
 
   ngOnInit() {
 
-    console.log(this.data)
+  }
+
+  ngOnChanges(changes: SimpleChanges){
+
+    // Fetch the changed contents
+    let changedContent = changes.data.currentValue.content
+
+    // Add the data content 
+    this.data.content = changedContent
+
+    // Create an empyt cfg object
+    let cfg = {}
+
+    if(this.data.content != "" && this.data.content != null){
+
+      // Initiate the converter
+      var converter = new QuillDeltaToHtmlConverter(JSON.parse(this.data.content)['ops'], cfg)
+
+      // Convert into html
+      var html = converter.convert()
+
+      // Add the html dynamically
+      this.data.html = html
+    }
   }
 
 }
