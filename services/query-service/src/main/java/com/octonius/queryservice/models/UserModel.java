@@ -19,6 +19,7 @@ public class UserModel {
     private String email;
     private Boolean active;
     private List<String> userSkills;
+    private String workspace;
 
     @Override
     public String toString() {
@@ -27,7 +28,7 @@ public class UserModel {
                 ", fullName='" + fullName + '\'' +
                 ", email='" + email + '\'' +
                 ", active=" + active +
-                ", userSkills=" + userSkills.toString() +
+                ", userSkills=" + userSkills.toString() + ", workspace=" + workspace +
                 '}';
     }
 }

@@ -251,7 +251,8 @@ export class AuthsController {
                         fullName: user.full_name,
                         email: user.email,
                         active: user.active,
-                        userSkills: user.skills
+                        userSkills: user.skills,
+                        workspace: user.workspace_name
                     });
 
                     // Updating quantity += 1 in stripe module using workspace microservice

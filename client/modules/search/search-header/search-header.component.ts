@@ -1,6 +1,6 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
-import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { Component, OnInit, ElementRef, Injector } from '@angular/core';
 import { SearchService } from 'src/shared/services/search-service/search.service';
+import { PublicFunctions } from 'src/app/dashboard/public.functions';
 
 @Component({
   selector: 'app-search-header',
@@ -22,13 +22,19 @@ export class SearchHeaderComponent implements OnInit {
 
   selectedType: string;
 
+  workplaceId: any;
+
   constructor(
-    private utilityService: UtilityService,
-    private searchService: SearchService
+    private searchService: SearchService,
+    private injector: Injector
   ) { }
 
-  ngOnInit() {
-    
+  publicFunction = new PublicFunctions(this.injector);
+
+  async ngOnInit() {
+    await this.publicFunction.getCurrentUser().then((res)=>{
+      this.workplaceId = res.workspace_name
+    });
   }
 
 
@@ -65,7 +71,11 @@ export class SearchHeaderComponent implements OnInit {
     }
 
     var postQuery = new PostQuery();
-    var conditions = [];
+    var conditions = [{
+      "columnName": "workspace",
+      "conditionOperator": "EQUAL",
+      "value": this.workplaceId
+    }];
     conditions.push({
       "columnName": "id",
       "conditionOperator": "EQUAL",
@@ -77,7 +87,11 @@ export class SearchHeaderComponent implements OnInit {
       "sortDirection": "desc"
     });
     this.searchPosts(postQuery);
-    conditions = [];
+    conditions = [{
+      "columnName": "workspace",
+      "conditionOperator": "EQUAL",
+      "value": this.workplaceId
+    }];
     conditions.push({
       "columnName": "title",
       "conditionOperator": "CONTAINS",
@@ -85,7 +99,11 @@ export class SearchHeaderComponent implements OnInit {
     });
     postQuery.conditions = conditions;
     this.searchPosts(postQuery);
-    conditions = [];
+    conditions = [{
+      "columnName": "workspace",
+      "conditionOperator": "EQUAL",
+      "value": this.workplaceId
+    }];
     conditions.push({
       "columnName": "content",
       "conditionOperator": "CONTAINS",
@@ -93,7 +111,11 @@ export class SearchHeaderComponent implements OnInit {
     });
     postQuery.conditions = conditions;
     this.searchPosts(postQuery);
-    conditions = [];
+    conditions = [{
+      "columnName": "workspace",
+      "conditionOperator": "EQUAL",
+      "value": this.workplaceId
+    }];
     conditions.push({
       "columnName": "attachedTags",
       "conditionOperator": "IN",
@@ -144,7 +166,11 @@ export class SearchHeaderComponent implements OnInit {
     }
 
     var fileQuery = new FileQuery();
-    var conditions = [];
+    var conditions = [{
+      "columnName": "workspace",
+      "conditionOperator": "EQUAL",
+      "value": this.workplaceId
+    }];
     conditions.push({
       "columnName": "id",
       "conditionOperator": "EQUAL",
@@ -156,7 +182,11 @@ export class SearchHeaderComponent implements OnInit {
       "sortDirection": "desc"
     });
     this.searchFiles(fileQuery);
-    conditions = [];
+    conditions = [{
+      "columnName": "workspace",
+      "conditionOperator": "EQUAL",
+      "value": this.workplaceId
+    }];
     conditions.push({
       "columnName": "originalFileName",
       "conditionOperator": "CONTAINS",
@@ -164,7 +194,11 @@ export class SearchHeaderComponent implements OnInit {
     });
     fileQuery.conditions = conditions;
     this.searchFiles(fileQuery);
-    conditions = [];
+    conditions = [{
+      "columnName": "workspace",
+      "conditionOperator": "EQUAL",
+      "value": this.workplaceId
+    }];
     conditions.push({
       "columnName": "modifiedFileName",
       "conditionOperator": "CONTAINS",
@@ -172,7 +206,11 @@ export class SearchHeaderComponent implements OnInit {
     });
     fileQuery.conditions = conditions;
     this.searchFiles(fileQuery);
-    conditions = [];
+    conditions = [{
+      "columnName": "workspace",
+      "conditionOperator": "EQUAL",
+      "value": this.workplaceId
+    }];
     conditions.push({
       "columnName": "group",
       "conditionOperator": "CONTAINS",
@@ -180,7 +218,11 @@ export class SearchHeaderComponent implements OnInit {
     });
     fileQuery.conditions = conditions;
     this.searchFiles(fileQuery);
-    conditions = [];
+    conditions = [{
+      "columnName": "workspace",
+      "conditionOperator": "EQUAL",
+      "value": this.workplaceId
+    }];
     conditions.push({
       "columnName": "mimeType",
       "conditionOperator": "CONTAINS",
@@ -188,7 +230,11 @@ export class SearchHeaderComponent implements OnInit {
     });
     fileQuery.conditions = conditions;
     this.searchFiles(fileQuery);
-    conditions = [];
+    conditions = [{
+      "columnName": "workspace",
+      "conditionOperator": "EQUAL",
+      "value": this.workplaceId
+    }];
     conditions.push({
       "columnName": "postedBy",
       "conditionOperator": "CONTAINS",
@@ -196,7 +242,11 @@ export class SearchHeaderComponent implements OnInit {
     });
     fileQuery.conditions = conditions;
     this.searchFiles(fileQuery);
-    conditions = [];
+    conditions = [{
+      "columnName": "workspace",
+      "conditionOperator": "EQUAL",
+      "value": this.workplaceId
+    }];
     conditions.push({
       "columnName": "content",
       "conditionOperator": "CONTAINS",
@@ -247,7 +297,11 @@ export class SearchHeaderComponent implements OnInit {
       }
   
       var userQuery = new UserQuery();
-      var conditions = [];
+      var conditions = [{
+        "columnName": "workspace",
+        "conditionOperator": "EQUAL",
+        "value": this.workplaceId
+      }];
       conditions.push({
         "columnName": "id",
         "conditionOperator": "EQUAL",
@@ -259,7 +313,11 @@ export class SearchHeaderComponent implements OnInit {
         "sortDirection": "desc"
       });
       this.searchUsers(userQuery);
-      conditions = [];
+      conditions = [{
+        "columnName": "workspace",
+        "conditionOperator": "EQUAL",
+        "value": this.workplaceId
+      }];
       conditions.push({
         "columnName": "fullName",
         "conditionOperator": "CONTAINS",
@@ -267,7 +325,11 @@ export class SearchHeaderComponent implements OnInit {
       });
       userQuery.conditions = conditions;
       this.searchUsers(userQuery);
-      conditions = [];
+      conditions = [{
+        "columnName": "workspace",
+        "conditionOperator": "EQUAL",
+        "value": this.workplaceId
+      }];
       conditions.push({
         "columnName": "email",
         "conditionOperator": "CONTAINS",
@@ -275,7 +337,11 @@ export class SearchHeaderComponent implements OnInit {
       });
       userQuery.conditions = conditions;
       this.searchUsers(userQuery);
-      conditions = [];
+      conditions = [{
+        "columnName": "workspace",
+        "conditionOperator": "EQUAL",
+        "value": this.workplaceId
+      }];
       conditions.push({
         "columnName": "userSkills",
         "conditionOperator": "IN",

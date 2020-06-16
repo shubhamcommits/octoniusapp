@@ -385,7 +385,8 @@ export class PostService {
         title: post.title,
         content: post.content,
         type: post.type,
-        attachedTags: post.tags
+        attachedTags: post.tags,
+        workspace: post._group.workspace_name
       });
 
       // Return Post Object
@@ -497,7 +498,8 @@ export class PostService {
         title: post.title,
         content: post.content,
         type: post.type,
-        attachedTags: post.tags
+        attachedTags: post.tags,
+        workspace: post._group.workspace_name
       });
 
       // Return the post
