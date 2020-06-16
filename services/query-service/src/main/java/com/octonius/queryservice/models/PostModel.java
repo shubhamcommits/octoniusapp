@@ -19,6 +19,7 @@ public class PostModel {
     private String content;
     private String type;
     private List<String> attachedTags;
+    private String workspace;
 
     @Override
     public String toString() {
@@ -27,7 +28,7 @@ public class PostModel {
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 ", type='" + type + '\'' +
-                ", attachedTags=" + attachedTags.toString() +
+                ", attachedTags=" + attachedTags.toString() + ", workspace=" + workspace + 
                 '}';
     }
 }

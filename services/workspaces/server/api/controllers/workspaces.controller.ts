@@ -280,7 +280,8 @@ export class WorkspaceController {
                 fullName: user.full_name,
                 email: user.email,
                 active: user.active,
-                userSkills: user.skills
+                userSkills: user.skills,
+                workspace: user.workspace_name
             });
 
             // Send the status 200 response

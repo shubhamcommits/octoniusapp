@@ -21,4 +21,5 @@ public class FileModel {
     private String group;
     private String mimeType;
     private String content;
+    private String workspace;
 }

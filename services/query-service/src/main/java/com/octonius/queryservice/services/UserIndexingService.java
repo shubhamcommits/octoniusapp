@@ -40,6 +40,7 @@ public class UserIndexingService {
         doc.addString("email", userModel.getEmail());
         doc.addBoolean("active", userModel.getActive());
         doc.addStrings("userSkills", userModel.getUserSkills().toArray());
+        doc.addString("workspace", userModel.getWorkspace());
 
         solrRepository.save(doc);
         return Optional.of(userModel);
@@ -51,6 +52,7 @@ public class UserIndexingService {
         doc.addString("content", postModel.getContent());
         doc.addStrings("attachedTags", postModel.getAttachedTags().toArray());
         doc.addString("type", postModel.getType());
+        doc.addString("workspace", postModel.getWorkspace());
 
         solrRepository.save(doc);
         return Optional.of(postModel);
@@ -73,6 +75,7 @@ public class UserIndexingService {
         doc.addString("modifiedFileName", fileModel.getModifiedFileName());
         doc.addString("group", fileModel.getGroup());
         doc.addString("content", fileModel.getContent().toLowerCase());
+        doc.addString("workspace", fileModel.getWorkspace());
         solrRepository.save(doc);
         return Optional.of(fileModel);
     }

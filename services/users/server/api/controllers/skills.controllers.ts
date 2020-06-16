@@ -86,7 +86,8 @@ export class SkillsControllers {
                 fullName: user.full_name,
                 email: user.email,
                 active: user.active,
-                userSkills: user.skills
+                userSkills: user.skills,
+                workspace: user.workspace_name
               });
 
             // Send status 200 response
@@ -140,7 +141,8 @@ export class SkillsControllers {
                 fullName: user.full_name,
                 email: user.email,
                 active: user.active,
-                userSkills: user.skills
+                userSkills: user.skills,
+                workspace: user.workspace_name
               });
 
 
