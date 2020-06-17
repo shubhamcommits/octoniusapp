@@ -10,12 +10,12 @@ $brand-primary: #005fd5;
 $pumpkin-orange: #ffab00;
 $turquoise: #0bc6a0;
 $dark-sky-blue: #4a90e2;
-$card-radius: 4px;
+$card-radius: 10px;
 $border-gray: 1px solid #e4edf8;
 $dark-text: #242d3a;
 $poppins: "Nunito", sans-serif;
 $roboto: "Nunito", sans-serif;
-$border-color: #E0E3E6;
+$border-color: #f7f7f7;
 $pink: #9f55ff;
 $lightgray: #9b9b9b;
 $box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15), 0 6px 9px rgba(0, 0, 0, 0.2);
@@ -65,9 +65,13 @@ $body-bg: #f3f4f6;
 }
 
 .comment {
-  background: #f3f4f6 !important;
+  background: #fafafa !important;
   margin: 5px !important;
   width: auto !important;
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-bottom: 4px solid #f7f7f7 !important;
 }
 .margin5 {
   margin: 5px !important;
