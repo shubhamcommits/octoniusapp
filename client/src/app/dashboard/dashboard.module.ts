@@ -16,6 +16,7 @@ import { FormsModule } from '@angular/forms';
 import { WorkNavbarComponent } from '../common/navbar/work-navbar/work-navbar.component';
 import { GroupImageDetailsComponent } from '../common/navbar/group-navbar/group-image-details/group-image-details.component';
 import { SharedModule } from '../common/shared/shared.module';
+import { SidebarComponent } from '../common/navbar/sidebar/sidebar.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { SharedModule } from '../common/shared/shared.module';
     GroupNavbarComponent,
     CommonNavbarComponent,
     WorkNavbarComponent,
-    GroupImageDetailsComponent
+    GroupImageDetailsComponent,
+    SidebarComponent
   ],
   imports: [
     CommonModule,

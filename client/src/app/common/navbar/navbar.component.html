@@ -1,7 +1,13 @@
+
 <nav class="navbar navbar-expand-md fixed-top">
   <div class="container">
+
+    <!-- SIDE MENU ICON STARTS -->
+    <app-sidebar class="nav navbar-nav navbar-left"></app-sidebar>
+    <!-- SIDE MENU ICON ENDS -->
+
     <!-- OCTONIUS BRANDING STARTS -->
-    <a *ngIf="isCommonNavbar$ | async" class="navbar-brand" [routerLink]="['/dashboard', 'myspace', 'inbox']" routerLinkActive="router-link-active">
+    <a *ngIf="isCommonNavbar$ | async" class="nav navbar-nav navbar-center navbar-brand" [routerLink]="['/dashboard', 'myspace', 'inbox']" routerLinkActive="router-link-active">
       <img src="assets/images/logo.svg" alt="" class="octonius-logo">
     </a>
     <!-- OCTONIUS BRANDING ENDS -->
@@ -9,6 +15,7 @@
     <!-- Go back Starts -->
 
     <!-- Go back from group navigation to the work navigation -->
+    <!--
     <a *ngIf="(isGroupNavbar$ | async) && !myWorkplace" 
       class="navbar-brand ml-5 mr-5" 
       ngbTooltip="Go Back to Work" 
@@ -18,9 +25,11 @@
         arrow_back
       </i>
     </a>
+    -->
     <!-- Go back from group navigation to the work navigation -->
 
     <!-- Go back from my workplace navigation to the home navigation -->
+    <!--
     <a *ngIf="(isGroupNavbar$ | async) && myWorkplace" 
       class="navbar-brand ml-5 mr-5" 
       ngbTooltip="Go Back to Home" 
@@ -30,9 +39,11 @@
         arrow_back
       </i>
     </a>
+    -->
     <!-- Go back from my workplace navigation to the home navigation -->
 
     <!-- Go back from work navigation to the home navigation -->
+    <!--
     <a *ngIf="isWorkNavbar$ | async" 
       class="navbar-brand ml-5 mr-5" 
       ngbTooltip="Go Back to Home" 
@@ -42,6 +53,7 @@
         arrow_back
       </i>
     </a>
+    -->
     <!-- Go back from work navigation to the home navigation -->
     <!-- Go back ends -->
 
@@ -59,12 +71,12 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <!-- MENU ITEMS STARTS -->
 
-      <app-common-navbar *ngIf="isCommonNavbar$ | async"></app-common-navbar>
+      <!-- <app-common-navbar *ngIf="isCommonNavbar$ | async"></app-common-navbar> -->
       <app-group-navbar *ngIf="isGroupNavbar$ | async"></app-group-navbar>
       <app-work-navbar *ngIf="isWorkNavbar$ | async"></app-work-navbar>
       <!-- MENU ITEMS ENDS -->
 
-      <ul class="navbar-nav ml-auto">
+      <ul class="navbar-nav ml-auto navbar-right">
         <li class="nav-item">
 
           <!-- SEARCH starts -->
@@ -83,26 +95,28 @@
           <!-- PUSH NOTIFICATIONS ENDS -->
         </li>
 
+        <!-- USER PROFILE BADGE STARTS -->
+        <!--
         <li class="nav-item">
-          <!-- USER PROFILE BADGE STARTS -->
           <a class="nav-link  mt-1" *ngIf="this.userData">
             <img src="{{baseUrl}}/{{userData?.profile_pic}}" [routerLink]="['/dashboard', 'user', 'profile']"
               [queryParams]="{ userId: userData?._id}" onerror="this.src='assets/images/user.png'"
               class="topnav-avatar">
-          </a>
-          <!-- USER PROFILE BADGE ENDS -->
+          </a>  
         </li>
+        -->
+        <!-- USER PROFILE BADGE ENDS -->
 
+        <!-- LOGOUT FUNCTION STARTS-->
+        <!--
         <li class="nav-item">
-
-          <!-- LOGOUT FUNCTION STARTS-->
           <a class="nav-link mt-3" [routerLink]="['/home']" routerLinkActive="router-link-active"
             (click)="logout()">Logout
             <span class="sr-only">(current)</span>
           </a>
-          <!-- LOGOUT FUNCTION ENDS-->
-
         </li>
+        -->
+        <!-- LOGOUT FUNCTION ENDS-->
       </ul>
 
 

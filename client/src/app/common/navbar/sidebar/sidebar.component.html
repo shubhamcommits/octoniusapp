@@ -1,0 +1,123 @@
+<button type="button" id="sidebarCollapse" class="btn btn-link" (click)="sidebar.toggle()" >
+    <h2><i class="material-icons">menu</i></h2>
+</button>
+
+<nav id="sidebar" #sidebar>
+    <div id="dismiss">
+        <i class="material-icons">close</i>
+    </div>
+
+    <div class="sidebar-header">
+        <a [routerLink]="['/dashboard', 'myspace', 'inbox']" routerLinkActive="router-link-active">
+            <img src="assets/images/logo.svg" alt="" class="octonius-logo">
+        </a>
+    </div>
+
+    <ul class="list-unstyled components">
+        <li>
+            <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">
+                <i class="material-icons-outlined carret">person</i> MY SPACE 
+                <i class="material-icons-outlined carret">keyboard_arrow_down</i>
+            </a>
+            <ul class="collapse list-unstyled" id="homeSubmenu">
+                <li>
+                    <a [routerLink]="['/dashboard', 'myspace', 'inbox']" routerLinkActive="router-link-active">
+                        Inbox
+                    </a>
+                </li>
+                <li>
+                    <a [routerLink]="['/dashboard', 'myspace', 'tasks']">
+                        Tasks
+                    </a>
+                </li>
+                <li>
+                    <a [routerLink]="['/dashboard', 'myspace', 'agenda']">
+                        Agenda
+                    </a>
+                </li>
+                <li>
+                    <a routerLink="/dashboard/work/groups/activity" [queryParams]="{ group: userData?._private_group, myWorkplace: true }">
+                        Personal workplace
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li>
+
+            <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">
+                <i class="material-icons-outlined carret">business_center</i>
+                 WORK 
+                <i class="material-icons-outlined carret">keyboard_arrow_down</i>
+            </a>
+
+            <ul class="collapse list-unstyled" id="pageSubmenu">
+                <li *ngFor="let group of userGroups; trackBy: utilityService.trackByIndex">
+                    <a [routerLink]="['/dashboard', 'work', 'groups', 'activity']"
+                        [queryParams]="{ group: group?._id, myWorkplace: false  }">
+
+                        <img class="avatar" src="{{ this.baseUrl }}/{{group.group_avatar}}"
+                            onerror="this.src='assets/images/icon-new-group.svg'">
+                        {{group?.group_name}}
+                    </a>
+                </li>
+
+                <li>
+                    <a routerLinkActive="active" routerLink="/dashboard/work/groups/all"> <span class="badge badge-secondary">see all</span></a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a class="nav-link" [routerLink]="['/dashboard', 'admin', 'general']" routerLinkActive="active">
+                <i class="material-icons-outlined">settings</i>
+                Admin<span class="sr-only">(current)</span>
+            </a>
+        </li>
+       
+    </ul>
+
+    <div style="position: fixed; bottom: 100px">
+       
+                <!-- USER PROFILE BADGE STARTS -->
+                <a class="nav-link  mt-1" *ngIf="this.userData"
+                    [routerLink]="['/dashboard', 'user', 'profile']"
+                    [queryParams]="{ userId: userData?._id}" >
+                    <img src="{{baseUrl}}/{{userData?.profile_pic}}" 
+                    onerror="this.src='assets/images/user.png'"
+                    class="topnav-avatar">
+                    ACCOUNT SETTINGS
+                </a>
+                <!-- USER PROFILE BADGE ENDS -->
+       
+                <!-- LOGOUT FUNCTION STARTS-->
+                <a class="nav-link mt-3" [routerLink]="['/home']" routerLinkActive="router-link-active"
+                  (click)="logout()">
+                  <i class="material-icons-outlined carret">power_settings_new</i>
+                  Logout
+                  <span class="sr-only">(current)</span>
+                </a>
+                <!-- LOGOUT FUNCTION ENDS-->
+       
+    </div>
+</nav>
+
+<!--
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#sidebar").mCustomScrollbar({
+            theme: "minimal"
+        });
+
+        $('#dismiss, .overlay').on('click', function () {
+            $('#sidebar').removeClass('active');
+            $('.overlay').removeClass('active');
+        });
+
+        $('#sidebarCollapse').on('click', function () {
+            $('#sidebar').addClass('active');
+            $('.overlay').addClass('active');
+            $('.collapse.in').toggleClass('in');
+            $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+        });
+    });
+</script>
+-->
