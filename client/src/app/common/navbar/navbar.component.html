@@ -1,132 +1,143 @@
-
-<nav class="navbar navbar-expand-md fixed-top">
-  <div class="container">
-
+<mat-sidenav-container (backdropClick)="this.sidenav.close()" >
+  <mat-sidenav #sidenav (keydown.escape)="this.sidenav.close()" disableClose>
+    
     <!-- SIDE MENU ICON STARTS -->
     <app-sidebar class="nav navbar-nav navbar-left"></app-sidebar>
     <!-- SIDE MENU ICON ENDS -->
 
-    <!-- OCTONIUS BRANDING STARTS -->
-    <a *ngIf="isCommonNavbar$ | async" class="nav navbar-nav navbar-center navbar-brand" [routerLink]="['/dashboard', 'myspace', 'inbox']" routerLinkActive="router-link-active">
-      <img src="assets/images/logo.svg" alt="" class="octonius-logo">
-    </a>
-    <!-- OCTONIUS BRANDING ENDS -->
+  </mat-sidenav>
 
-    <!-- Go back Starts -->
+  <mat-sidenav-content>
+    <nav class="navbar navbar-expand-md fixed-top">
+      <div class="container">
 
-    <!-- Go back from group navigation to the work navigation -->
-    <!--
-    <a *ngIf="(isGroupNavbar$ | async) && !myWorkplace" 
-      class="navbar-brand ml-5 mr-5" 
-      ngbTooltip="Go Back to Work" 
-      placement="bottom"
-      (click)="publicFunctions.sendUpdatesToRouterState({state: 'work'})">
-      <i class="material-icons">
-        arrow_back
-      </i>
-    </a>
-    -->
-    <!-- Go back from group navigation to the work navigation -->
-
-    <!-- Go back from my workplace navigation to the home navigation -->
-    <!--
-    <a *ngIf="(isGroupNavbar$ | async) && myWorkplace" 
-      class="navbar-brand ml-5 mr-5" 
-      ngbTooltip="Go Back to Home" 
-      placement="bottom"
-      (click)="publicFunctions.sendUpdatesToRouterState({state: 'home'})">
-      <i class="material-icons">
-        arrow_back
-      </i>
-    </a>
-    -->
-    <!-- Go back from my workplace navigation to the home navigation -->
-
-    <!-- Go back from work navigation to the home navigation -->
-    <!--
-    <a *ngIf="isWorkNavbar$ | async" 
-      class="navbar-brand ml-5 mr-5" 
-      ngbTooltip="Go Back to Home" 
-      placement="bottom"
-      (click)="publicFunctions.sendUpdatesToRouterState({state: 'home'})">
-      <i class="material-icons">
-        arrow_back
-      </i>
-    </a>
-    -->
-    <!-- Go back from work navigation to the home navigation -->
-    <!-- Go back ends -->
-
-    <!-- COLLAPSABLE MENU STARTS -->
-
-    <!-- TOGGLE MENU BUTTON STARTS -->
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon">
-        <i class="material-icons">menu</i>
-      </span>
-    </button>
-    <!-- TOGGLE MENU BUTTON ENDS -->
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <!-- MENU ITEMS STARTS -->
-
-      <!-- <app-common-navbar *ngIf="isCommonNavbar$ | async"></app-common-navbar> -->
-      <app-group-navbar *ngIf="isGroupNavbar$ | async"></app-group-navbar>
-      <app-work-navbar *ngIf="isWorkNavbar$ | async"></app-work-navbar>
-      <!-- MENU ITEMS ENDS -->
-
-      <ul class="navbar-nav ml-auto navbar-right">
-        <li class="nav-item">
-
-          <!-- SEARCH starts -->
-          <a class="nav-link mt-3" (click)="openModal(search)">
-            <span class="material-icons">
-              search
-            </span>
-          </a>
-          <!-- SEARCH ends -->
-
-        </li>
-        <li class="nav-item">
-          <!-- PUSH NOTIFICATIONS STARTS -->
-          <push-notifications class="nav-link" *ngIf="userData && baseUrl" [userData]="userData" [baseUrl]="baseUrl">
-          </push-notifications>
-          <!-- PUSH NOTIFICATIONS ENDS -->
-        </li>
-
-        <!-- USER PROFILE BADGE STARTS -->
+        <button type="button" id="sidebarCollapse" class="btn btn-link" (click)="sidenav.open()" >
+          <h2><i class="material-icons">menu</i></h2>
+        </button>
+        
+        <!-- OCTONIUS BRANDING STARTS -->
+        <a *ngIf="isCommonNavbar$ | async" class="nav navbar-nav navbar-center navbar-brand" [routerLink]="['/dashboard', 'myspace', 'inbox']" routerLinkActive="router-link-active">
+          <img src="assets/images/logo.svg" alt="" class="octonius-logo">
+        </a>
+        <!-- OCTONIUS BRANDING ENDS -->
+    
+        <!-- Go back Starts -->
+    
+        <!-- Go back from group navigation to the work navigation -->
         <!--
-        <li class="nav-item">
-          <a class="nav-link  mt-1" *ngIf="this.userData">
-            <img src="{{baseUrl}}/{{userData?.profile_pic}}" [routerLink]="['/dashboard', 'user', 'profile']"
-              [queryParams]="{ userId: userData?._id}" onerror="this.src='assets/images/user.png'"
-              class="topnav-avatar">
-          </a>  
-        </li>
+        <a *ngIf="(isGroupNavbar$ | async) && !myWorkplace" 
+          class="navbar-brand ml-5 mr-5" 
+          ngbTooltip="Go Back to Work" 
+          placement="bottom"
+          (click)="publicFunctions.sendUpdatesToRouterState({state: 'work'})">
+          <i class="material-icons">
+            arrow_back
+          </i>
+        </a>
         -->
-        <!-- USER PROFILE BADGE ENDS -->
-
-        <!-- LOGOUT FUNCTION STARTS-->
+        <!-- Go back from group navigation to the work navigation -->
+    
+        <!-- Go back from my workplace navigation to the home navigation -->
         <!--
-        <li class="nav-item">
-          <a class="nav-link mt-3" [routerLink]="['/home']" routerLinkActive="router-link-active"
-            (click)="logout()">Logout
-            <span class="sr-only">(current)</span>
-          </a>
-        </li>
+        <a *ngIf="(isGroupNavbar$ | async) && myWorkplace" 
+          class="navbar-brand ml-5 mr-5" 
+          ngbTooltip="Go Back to Home" 
+          placement="bottom"
+          (click)="publicFunctions.sendUpdatesToRouterState({state: 'home'})">
+          <i class="material-icons">
+            arrow_back
+          </i>
+        </a>
         -->
-        <!-- LOGOUT FUNCTION ENDS-->
-      </ul>
-
-
-
-    </div>
-    <!-- COLLAPSABLE MENU ENDS -->
-  </div>
-</nav>
-<router-outlet></router-outlet>
-<!-- Search Modal -->
-<ng-template #search let-modal>
-  <app-search-header (close)="closeModal()"></app-search-header>
-</ng-template>
+        <!-- Go back from my workplace navigation to the home navigation -->
+    
+        <!-- Go back from work navigation to the home navigation -->
+        <!--
+        <a *ngIf="isWorkNavbar$ | async" 
+          class="navbar-brand ml-5 mr-5" 
+          ngbTooltip="Go Back to Home" 
+          placement="bottom"
+          (click)="publicFunctions.sendUpdatesToRouterState({state: 'home'})">
+          <i class="material-icons">
+            arrow_back
+          </i>
+        </a>
+        -->
+        <!-- Go back from work navigation to the home navigation -->
+        <!-- Go back ends -->
+    
+        <!-- COLLAPSABLE MENU STARTS -->
+    
+        <!-- TOGGLE MENU BUTTON STARTS -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon">
+            <i class="material-icons">menu</i>
+          </span>
+        </button>
+        <!-- TOGGLE MENU BUTTON ENDS -->
+    
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <!-- MENU ITEMS STARTS -->
+    
+          <!-- <app-common-navbar *ngIf="isCommonNavbar$ | async"></app-common-navbar> -->
+          <app-group-navbar *ngIf="isGroupNavbar$ | async"></app-group-navbar>
+          <app-work-navbar *ngIf="isWorkNavbar$ | async"></app-work-navbar>
+          <!-- MENU ITEMS ENDS -->
+    
+          <ul class="navbar-nav ml-auto navbar-right">
+            <li class="nav-item">
+    
+              <!-- SEARCH starts -->
+              <a class="nav-link mt-3" (click)="openModal(search)">
+                <span class="material-icons">
+                  search
+                </span>
+              </a>
+              <!-- SEARCH ends -->
+    
+            </li>
+            <li class="nav-item">
+              <!-- PUSH NOTIFICATIONS STARTS -->
+              <push-notifications class="nav-link" *ngIf="userData && baseUrl" [userData]="userData" [baseUrl]="baseUrl">
+              </push-notifications>
+              <!-- PUSH NOTIFICATIONS ENDS -->
+            </li>
+    
+            <!-- USER PROFILE BADGE STARTS -->
+            <!--
+            <li class="nav-item">
+              <a class="nav-link  mt-1" *ngIf="this.userData">
+                <img src="{{baseUrl}}/{{userData?.profile_pic}}" [routerLink]="['/dashboard', 'user', 'profile']"
+                  [queryParams]="{ userId: userData?._id}" onerror="this.src='assets/images/user.png'"
+                  class="topnav-avatar">
+              </a>  
+            </li>
+            -->
+            <!-- USER PROFILE BADGE ENDS -->
+    
+            <!-- LOGOUT FUNCTION STARTS-->
+            <!--
+            <li class="nav-item">
+              <a class="nav-link mt-3" [routerLink]="['/home']" routerLinkActive="router-link-active"
+                (click)="logout()">Logout
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            -->
+            <!-- LOGOUT FUNCTION ENDS-->
+          </ul>
+    
+    
+    
+        </div>
+        <!-- COLLAPSABLE MENU ENDS -->
+      </div>
+    </nav>
+    <router-outlet></router-outlet>
+    <!-- Search Modal -->
+    <ng-template #search let-modal>
+      <app-search-header (close)="closeModal()"></app-search-header>
+    </ng-template>
+  </mat-sidenav-content>
+</mat-sidenav-container>

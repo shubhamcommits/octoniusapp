@@ -1,6 +1,15 @@
 @import "src/assets/scss/_variables";
 
 // resets
+h2{
+  float: left;
+  line-height: 60px;
+  .material-icons{
+    font-size: 30px;
+    color:#E0E3E6;
+  }
+}
+
 h4 {
   margin-bottom: 0;
 }

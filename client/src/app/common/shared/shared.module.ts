@@ -52,6 +52,8 @@ import { CommentSectionComponent } from './comments/comment-section/comment-sect
 import { PostCommentComponent } from './comments/post-comment/post-comment.component';
 import { LikeCommentComponent } from './comments/post-comment/like-comment/like-comment.component';
 
+import { MatSidenavModule } from '@angular/material';
+
 @NgModule({
   declarations: [
     AttachFilesComponent,
@@ -114,9 +116,9 @@ import { LikeCommentComponent } from './comments/post-comment/like-comment/like-
     GroupUpdateInformationComponent,
 
     PostCommentComponent,
-    
+
     CommentSectionComponent,
-    
+
     LikeCommentComponent
   ],
   imports: [
@@ -143,6 +145,8 @@ import { LikeCommentComponent } from './comments/post-comment/like-comment/like-
     // ANGULAR TOOLTIP MODULE
     NgbTooltipModule,
 
+    // MAT SIDE MODULE
+    MatSidenavModule
 
   ],
   exports: [
@@ -193,7 +197,9 @@ import { LikeCommentComponent } from './comments/post-comment/like-comment/like-
 
     NgbModalModule,
 
-    LikeCommentComponent
+    LikeCommentComponent,
+
+    MatSidenavModule
   ]
 })
 export class SharedModule { }

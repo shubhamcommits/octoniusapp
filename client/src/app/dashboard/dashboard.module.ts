@@ -20,9 +20,9 @@ import { SidebarComponent } from '../common/navbar/sidebar/sidebar.component';
 
 @NgModule({
   declarations: [
-    NavbarComponent, 
-    PushNotificationsComponent, 
-    TimeAgoPipe, 
+    NavbarComponent,
+    PushNotificationsComponent,
+    TimeAgoPipe,
     GroupNavbarComponent,
     CommonNavbarComponent,
     WorkNavbarComponent,
@@ -37,7 +37,7 @@ import { SidebarComponent } from '../common/navbar/sidebar/sidebar.component';
     FormsModule,
     SearchModule
   ],
-  providers:[
+  providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthorizationInterceptorService, multi: true }
   ],
 })
