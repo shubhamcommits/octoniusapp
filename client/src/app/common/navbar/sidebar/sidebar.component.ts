@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Injector } from '@angular/core';
+import { Component, OnInit, OnDestroy, Injector, Inject, Input, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { PublicFunctions } from 'src/app/dashboard/public.functions';
 import { environment } from 'src/environments/environment';
@@ -7,6 +7,8 @@ import { StorageService } from 'src/shared/services/storage-service/storage.serv
 import { AuthService } from 'src/shared/services/auth-service/auth.service';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { SubSink } from 'subsink';
+import { NavbarComponent } from '../navbar.component';
+import { MatSidenav } from '@angular/material/sidenav';
 // import * as $ from 'jquery';
 
 @Component({
@@ -21,8 +23,10 @@ export class SidebarComponent implements OnInit, OnDestroy {
     private storageService: StorageService,
     private authService: AuthService,
     private socketService: SocketService,
-    private router: Router,
+    private router: Router
   ) { }
+
+  @Input() sideNav: MatSidenav;
 
   // CURRENT USER DATA
   userData: any;

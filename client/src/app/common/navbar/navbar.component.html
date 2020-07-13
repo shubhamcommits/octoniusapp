@@ -2,7 +2,7 @@
   <mat-sidenav #sidenav (keydown.escape)="this.sidenav.close()" disableClose autosize>
     
     <!-- SIDE MENU ICON STARTS -->
-    <app-sidebar class="nav navbar-nav navbar-left"></app-sidebar>
+    <app-sidebar class="nav navbar-nav navbar-left" [sideNav]="sidenav"></app-sidebar>
     <!-- SIDE MENU ICON ENDS -->
 
   </mat-sidenav>
