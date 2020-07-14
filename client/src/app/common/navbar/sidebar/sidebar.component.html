@@ -1,15 +1,15 @@
 <nav id="sidebar">
-    <div id="dismiss">
-        <i class="material-icons" (click)="this.sideNav.toggle()">close</i>
-    </div>
-  
     <div class="sidebar-header">
         <a [routerLink]="['/dashboard', 'myspace', 'inbox']" routerLinkActive="router-link-active" (click)="this.sideNav.toggle()">
             <img src="assets/images/logo.svg" alt="" class="octonius-logo">
         </a>
+
+        <div id="dismiss">
+            <i class="material-icons" (click)="this.sideNav.toggle()">close</i>
+        </div>
     </div>
 
-    <div id="mnav">
+    <div class="menu-options">
         <ul class="list-unstyled components">
             <li>
                 <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">
@@ -68,29 +68,32 @@
                 </a>
             </li>
         </ul>
-    </div>
 
-    <div style="position: fixed; bottom: 100px">
-    
-        <!-- USER PROFILE BADGE STARTS -->
-        <a class="nav-link  mt-1" *ngIf="this.userData"
-            [routerLink]="['/dashboard', 'user', 'profile']"
-            [queryParams]="{ userId: userData?._id}" (click)="this.sideNav.toggle()" >
-            <img src="{{userBaseUrl}}/{{userData?.profile_pic}}" 
-            onerror="this.src='assets/images/user.png'"
-            class="topnav-avatar">
-            ACCOUNT SETTINGS
-        </a>
-        <!-- USER PROFILE BADGE ENDS -->
+        <div>
+            <ul class="list-unstyled">
+                <li>
+                    <!-- USER PROFILE BADGE STARTS -->
+                    <a class="nav-link" *ngIf="this.userData"
+                        [routerLink]="['/dashboard', 'user', 'profile']"
+                        [queryParams]="{ userId: userData?._id}" (click)="this.sideNav.toggle()" >
+                        <img src="{{userBaseUrl}}/{{userData?.profile_pic}}" 
+                        onerror="this.src='assets/images/user.png'"
+                        class="topnav-avatar">
+                        ACCOUNT SETTINGS
+                    </a>
+                    <!-- USER PROFILE BADGE ENDS -->
+                </li>
 
-        <!-- LOGOUT FUNCTION STARTS-->
-        <a class="nav-link mt-3" [routerLink]="['/home']" routerLinkActive="router-link-active"
-        (click)="logout()">
-        <i class="material-icons-outlined carret">power_settings_new</i>
-        Logout
-        <span class="sr-only">(current)</span>
-        </a>
-        <!-- LOGOUT FUNCTION ENDS-->
-    
+                <li>
+                    <!-- LOGOUT FUNCTION STARTS-->
+                    <a class="nav-link" [routerLink]="['/home']" routerLinkActive="router-link-active" (click)="logout()">
+                        <i class="material-icons-outlined carret">power_settings_new</i>
+                        Logout
+                        <span class="sr-only">(current)</span>
+                    </a>
+                    <!-- LOGOUT FUNCTION ENDS-->
+                </li>
+            </ul>
+        </div>
     </div>
 </nav>
