@@ -40,14 +40,15 @@
 }
 
 #sidebar ul li a:hover {
-    color: #005fd5;
+    color: #005fd5 !important;
     background: #fff;
+    text-decoration: none !important;
 }
 
 #sidebar ul li.active>a,
 a[aria-expanded="true"] {
     color: #005fd5;
-    /* background: #6d7fcc; */
+    
 }
   
 a[data-toggle="collapse"] {
@@ -95,4 +96,7 @@ ul ul a {
     margin-top: 50px;
     z-index: 5;
     overflow: auto;
+}
+ul ul{
+    width: 100%;
 }
