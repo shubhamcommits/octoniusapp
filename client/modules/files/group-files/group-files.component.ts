@@ -1,5 +1,5 @@
 import { FilesService } from './../../../src/shared/services/files-service/files.service';
-import { Component, OnInit, Injector, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Injector, Output, EventEmitter, Inject } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { environment } from 'src/environments/environment';
@@ -9,6 +9,7 @@ import { Subject } from 'rxjs/internal/Subject';
 import { SubSink } from 'subsink';
 import { debounceTime } from 'rxjs/internal/operators/debounceTime';
 import { distinctUntilChanged } from 'rxjs/internal/operators/distinctUntilChanged';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
   selector: 'app-group-files',
@@ -22,6 +23,7 @@ export class GroupFilesComponent implements OnInit {
     private injector: Injector,
     private router: ActivatedRoute,
     private filesService: FilesService,
+    public dialog: MatDialog,
   ) { }
 
   // Fetch groupId from router snapshot
@@ -137,4 +139,44 @@ export class GroupFilesComponent implements OnInit {
     }));
   }
 
+  openViewFileDialog(fileUrl: string) {
+    const dialogRef = this.dialog.open(PreviewFilesDialogComponent, {
+      width: '90%',
+      height: '90%',
+      data: {
+        url: fileUrl
+      }
+    });
+  }
+
+  openViewFolioDialog(folioId: string) {
+    const dialogRef = this.dialog.open(PreviewFilesDialogComponent, {
+      width: '90%',
+      height: '90%',
+      data: {
+        id: folioId
+      }
+    });
+  }
+}
+
+@Component({
+  selector: 'app-preview-files-dialog',
+  templateUrl: 'preview-files-dialog.html',
+})
+export class PreviewFilesDialogComponent implements OnInit {
+
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
+  }
+
+  folioId: string;
+  fileUrl: string;
+
+  ngOnInit() {
+    if (this.data.url !== undefined) {
+      this.fileUrl = this.data.url;
+    } else if (this.data.id !== undefined) {
+      this.folioId = this.data.id;
+    }
+  }
 }
