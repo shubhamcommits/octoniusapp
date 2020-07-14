@@ -167,4 +167,20 @@ export class FilesService {
         return files;
     }
 
+    /**
+     * This function is responsible for deleting a file
+     * @param fileId 
+     */
+    async delete(fileId: string) {
+
+        if (fileId) {
+
+            // Find the file by Id
+            let deletedFile: any = await File.findByIdAndDelete(fileId);
+
+            // Return file
+            return deletedFile;
+        }
+    }
+
 }

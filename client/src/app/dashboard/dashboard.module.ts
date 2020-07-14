@@ -16,16 +16,18 @@ import { FormsModule } from '@angular/forms';
 import { WorkNavbarComponent } from '../common/navbar/work-navbar/work-navbar.component';
 import { GroupImageDetailsComponent } from '../common/navbar/group-navbar/group-image-details/group-image-details.component';
 import { SharedModule } from '../common/shared/shared.module';
+import { SidebarComponent } from '../common/navbar/sidebar/sidebar.component';
 
 @NgModule({
   declarations: [
-    NavbarComponent, 
-    PushNotificationsComponent, 
-    TimeAgoPipe, 
+    NavbarComponent,
+    PushNotificationsComponent,
+    TimeAgoPipe,
     GroupNavbarComponent,
     CommonNavbarComponent,
     WorkNavbarComponent,
-    GroupImageDetailsComponent
+    GroupImageDetailsComponent,
+    SidebarComponent
   ],
   imports: [
     CommonModule,
@@ -35,7 +37,7 @@ import { SharedModule } from '../common/shared/shared.module';
     FormsModule,
     SearchModule
   ],
-  providers:[
+  providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthorizationInterceptorService, multi: true }
   ],
 })

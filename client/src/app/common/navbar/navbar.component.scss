@@ -1,6 +1,15 @@
 @import "src/assets/scss/_variables";
 
 // resets
+h2{
+  float: left;
+  line-height: 60px;
+  .material-icons{
+    font-size: 30px;
+    color:#E0E3E6;
+  }
+}
+
 h4 {
   margin-bottom: 0;
 }
@@ -14,6 +23,12 @@ p {
   flex-direction: row !important;
   background-color: #fff;
   box-shadow: 0 4px 24px 0 rgba(37, 38, 94, 0.1);
+}
+
+.navbar-nav.navbar-center {
+  position: absolute;
+  left: 50%;
+  transform: translatex(-50%);
 }
 
 a{
@@ -106,4 +121,8 @@ img:hover{
 
 .octonius-logo{
   margin-right: 14px;
+}
+
+.mat-drawer {
+  overflow-y: hidden;
 }

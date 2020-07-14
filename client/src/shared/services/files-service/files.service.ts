@@ -88,4 +88,11 @@ export class FilesService {
     }).toPromise()
   }
 
+  /**
+   * This function is used to delete a file
+   * @param fileId
+   */
+  deleteFile(fileId: string) {
+    return this._http.delete(this.baseURL + `/files/${fileId}`).toPromise();
+  }
 }

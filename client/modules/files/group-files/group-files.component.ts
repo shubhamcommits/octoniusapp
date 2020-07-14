@@ -1,4 +1,5 @@
-import { Component, OnInit, Injector } from '@angular/core';
+import { FilesService } from './../../../src/shared/services/files-service/files.service';
+import { Component, OnInit, Injector, Output, EventEmitter } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { environment } from 'src/environments/environment';
@@ -20,6 +21,7 @@ export class GroupFilesComponent implements OnInit {
     public utilityService: UtilityService,
     private injector: Injector,
     private router: ActivatedRoute,
+    private filesService: FilesService,
   ) { }
 
   // Fetch groupId from router snapshot
@@ -57,6 +59,9 @@ export class GroupFilesComponent implements OnInit {
 
   // Create subsink class to unsubscribe the observables
   public subSink = new SubSink();
+
+  // Delete Event Emitter - Emits delete event
+  @Output('delete') delete = new EventEmitter();
 
   async ngOnInit() {
 
@@ -108,6 +113,28 @@ export class GroupFilesComponent implements OnInit {
   ngOnDestroy() {
     this.subSink.unsubscribe()
     this.isLoading$.complete()
+  }
+
+  /**
+   * Call function to delete file
+   * @param fileId
+   */
+  deleteFile(fileId: string) {
+    this.utilityService.asyncNotification('Please wait we are deleting the file...', new Promise((resolve, reject) => {
+      this.filesService.deleteFile(fileId)
+        .then((res) => {
+
+          // Emit the Deleted file to all the components in order to update the UI
+          this.delete.emit(res['file']);
+
+          // Remove the file from the list
+          this.files = this.files.filter(file => file._id !== fileId);
+
+          resolve(this.utilityService.resolveAsyncPromise('File deleted!'));
+        }).catch((err) => {
+          reject(this.utilityService.rejectAsyncPromise('Unable to delete file, please try again!'));
+        });
+    }));
   }
 
 }

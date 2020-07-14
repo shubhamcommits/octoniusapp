@@ -159,4 +159,35 @@ export class FilesControllers {
         }
     }
 
+    /**
+     * This function is responsible for deleting a file
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async delete(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            // Fetch the fileId from the request
+            let { fileId } = req.params
+
+            // If fileId is not found, then throw the error
+            if (!fileId)
+                return res.status(400).json({
+                    message: 'Please pass the fileId in the request params'
+                })
+
+            // Get File on the basis of the fileId
+            let file = await filesService.delete(fileId)
+
+            // Send Status 200 response
+            return res.status(200).json({
+                message: 'File deleted!'
+            })
+
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
 }
