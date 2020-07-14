@@ -20,7 +20,10 @@ routes.get('/search', files.search);
 routes.get('/:fileId', files.getOne);
 
 // PUT - Edit details of a file on the basis of fileId
-routes.put('/:fileId', files.edit)
+routes.put('/:fileId', files.edit);
+
+// DELETE - Delete the file on the basis of fileId
+routes.delete('/:fileId', files.delete);
 
 /*  ===================
  *  -- EXPORT ROUTES --
