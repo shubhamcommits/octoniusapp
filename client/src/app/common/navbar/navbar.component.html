@@ -1,5 +1,5 @@
-<mat-sidenav-container (backdropClick)="this.sidenav.close()" >
-  <mat-sidenav #sidenav (keydown.escape)="this.sidenav.close()" disableClose autosize>
+<mat-sidenav-container (backdropClick)="this.sidenav.toggle()" >
+  <mat-sidenav #sidenav (keydown.escape)="this.sidenav.toggle()" disableClose autosize>
     
     <!-- SIDE MENU ICON STARTS -->
     <app-sidebar class="nav navbar-nav navbar-left" [sideNav]="sidenav"></app-sidebar>
@@ -11,7 +11,7 @@
     <nav class="navbar navbar-expand-md fixed-top">
       <div class="container">
 
-        <button type="button" id="sidebarCollapse" class="btn btn-link" (click)="sidenav.open()" >
+        <button type="button" id="sidebarCollapse" class="btn btn-link" (click)="sidenav.toggle()" >
           <h2><i class="material-icons">menu</i></h2>
         </button>
         
