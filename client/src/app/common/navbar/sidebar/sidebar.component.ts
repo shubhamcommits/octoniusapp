@@ -37,8 +37,11 @@ export class SidebarComponent implements OnInit, OnDestroy {
   // Public Functions Object
   public publicFunctions = new PublicFunctions(this.injector);
 
-  // BASE URL OF THE APPLICATION
-  baseUrl = environment.UTILITIES_USERS_UPLOADS;
+  // Users Base Url
+  userBaseUrl = environment.UTILITIES_USERS_UPLOADS;
+
+  // Group Base Url
+  groupBaseUrl = environment.UTILITIES_GROUPS_UPLOADS;
 
   // UNSUBSCRIBE THE DATA
   private subSink = new SubSink();

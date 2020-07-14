@@ -9,66 +9,66 @@
         </a>
     </div>
 
-    <ul class="list-unstyled components">
-        <li>
-            <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">
-                <i class="material-icons-outlined carret">keyboard_arrow_down</i>
-                <i class="material-icons-outlined carret">person</i>
-                 MY SPACE 
-            </a>
-            <ul class="collapse list-unstyled" id="homeSubmenu">
-                <li>
-                    <a [routerLink]="['/dashboard', 'myspace', 'inbox']" routerLinkActive="router-link-active" (click)="this.sideNav.toggle()">
-                        Inbox
-                    </a>
-                </li>
-                <li>
-                    <a [routerLink]="['/dashboard', 'myspace', 'tasks']" (click)="this.sideNav.toggle()">
-                        Tasks
-                    </a>
-                </li>
-                <li>
-                    <a [routerLink]="['/dashboard', 'myspace', 'agenda']" (click)="this.sideNav.toggle()">
-                        Agenda
-                    </a>
-                </li>
-                <li>
-                    <a routerLink="/dashboard/work/groups/activity" [queryParams]="{ group: userData?._private_group, myWorkplace: true }" (click)="this.sideNav.toggle()">
-                        Personal workplace
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <li>
+    <div id="mnav">
+        <ul class="list-unstyled components">
+            <li>
+                <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">
+                    <i class="material-icons-outlined carret">keyboard_arrow_down</i>
+                    <i class="material-icons-outlined carret">person</i>
+                    MY SPACE 
+                </a>
+                <ul class="collapse list-unstyled" id="homeSubmenu">
+                    <li>
+                        <a [routerLink]="['/dashboard', 'myspace', 'inbox']" routerLinkActive="router-link-active" (click)="this.sideNav.toggle()">
+                            Inbox
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/dashboard', 'myspace', 'tasks']" (click)="this.sideNav.toggle()">
+                            Tasks
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/dashboard', 'myspace', 'agenda']" (click)="this.sideNav.toggle()">
+                            Agenda
+                        </a>
+                    </li>
+                    <li>
+                        <a routerLink="/dashboard/work/groups/activity" [queryParams]="{ group: userData?._private_group, myWorkplace: true }" (click)="this.sideNav.toggle()">
+                            Personal workplace
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" style="float: left;">
+                    <i class="material-icons-outlined carret">keyboard_arrow_down</i>
+                    <i class="material-icons-outlined carret">business_center</i>
+                    WORK 
+                </a>
+                <a routerLinkActive="active" routerLink="/dashboard/work/groups/all" style="margin-left: 250px;">
+                    <span class="badge badge-secondary">see all</span>
+                </a>
+                <ul class="collapse list-unstyled" id="pageSubmenu">
+                    <li *ngFor="let group of userGroups; trackBy: utilityService.trackByIndex">
+                        <a [routerLink]="['/dashboard', 'work', 'groups', 'activity']"
+                            [queryParams]="{ group: group?._id, myWorkplace: false  }" (click)="this.sideNav.toggle()">
 
-            <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" style="float: left;">
-                <i class="material-icons-outlined carret">keyboard_arrow_down</i>
-                <i class="material-icons-outlined carret">business_center</i>
-                WORK 
-            </a>
-            <a routerLinkActive="active" routerLink="/dashboard/work/groups/all" style="margin-left: 250px;">
-                <span class="badge badge-secondary">see all</span>
-            </a>
-            <ul class="collapse list-unstyled" id="pageSubmenu">
-                <li *ngFor="let group of userGroups; trackBy: utilityService.trackByIndex">
-                    <a [routerLink]="['/dashboard', 'work', 'groups', 'activity']"
-                        [queryParams]="{ group: group?._id, myWorkplace: false  }" (click)="this.sideNav.toggle()">
-
-                        <img class="avatar" src="{{ this.baseUrl }}/{{group.group_avatar}}"
-                            onerror="this.src='assets/images/icon-new-group.svg'">
-                        {{group?.group_name}}
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <li>
-            <a class="nav-link" [routerLink]="['/dashboard', 'admin', 'general']" routerLinkActive="active" (click)="this.sideNav.toggle()">
-                <i class="material-icons-outlined">settings</i>
-                Admin<span class="sr-only">(current)</span>
-            </a>
-        </li>
-    
-    </ul>
+                            <img class="avatar" src="{{ this.groupBaseUrl }}/{{group.group_avatar}}"
+                                onerror="this.src='assets/images/icon-new-group.svg'">
+                            {{group?.group_name}}
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a class="nav-link" [routerLink]="['/dashboard', 'admin', 'general']" routerLinkActive="active" (click)="this.sideNav.toggle()">
+                    <i class="material-icons-outlined">settings</i>
+                    Admin<span class="sr-only">(current)</span>
+                </a>
+            </li>
+        </ul>
+    </div>
 
     <div style="position: fixed; bottom: 100px">
     
@@ -76,7 +76,7 @@
         <a class="nav-link  mt-1" *ngIf="this.userData"
             [routerLink]="['/dashboard', 'user', 'profile']"
             [queryParams]="{ userId: userData?._id}" (click)="this.sideNav.toggle()" >
-            <img src="{{baseUrl}}/{{userData?.profile_pic}}" 
+            <img src="{{userBaseUrl}}/{{userData?.profile_pic}}" 
             onerror="this.src='assets/images/user.png'"
             class="topnav-avatar">
             ACCOUNT SETTINGS
