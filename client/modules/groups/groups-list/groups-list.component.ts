@@ -181,10 +181,10 @@ export class GroupsListComponent implements OnInit {
     this.userGroups.push($event);
   }
 
-  async joinGroup(groupId: any){
-    await this.publicFunctions.joinAgora(groupId, this.userData['_id']).then((res)=>{
-      this.router.navigate(['/dashboard/work/groups/', groupId, 'activity']);
-    }).catch((err)=>{
+  async joinGroup(groupId: any) {
+    await this.publicFunctions.joinAgora(groupId, this.userData._id).then((res) => {
+      this.router.navigateByUrl('/dashboard/work/groups/activity?group=' + groupId);
+    }).catch((err) => {
       console.log(err);
     });
 
