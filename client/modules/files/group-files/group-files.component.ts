@@ -9,7 +9,8 @@ import { Subject } from 'rxjs/internal/Subject';
 import { SubSink } from 'subsink';
 import { debounceTime } from 'rxjs/internal/operators/debounceTime';
 import { distinctUntilChanged } from 'rxjs/internal/operators/distinctUntilChanged';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog } from '@angular/material';
+import { PreviewFilesDialogComponent } from 'src/app/common/shared/preview-files-dialog/preview-files-dialog.component';
 
 @Component({
   selector: 'app-group-files',
@@ -154,29 +155,9 @@ export class GroupFilesComponent implements OnInit {
       width: '90%',
       height: '90%',
       data: {
-        id: folioId
+        id: folioId,
+        group: this.groupId
       }
     });
-  }
-}
-
-@Component({
-  selector: 'app-preview-files-dialog',
-  templateUrl: 'preview-files-dialog.html',
-})
-export class PreviewFilesDialogComponent implements OnInit {
-
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
-  }
-
-  folioId: string;
-  fileUrl: string;
-
-  ngOnInit() {
-    if (this.data.url !== undefined) {
-      this.fileUrl = this.data.url;
-    } else if (this.data.id !== undefined) {
-      this.folioId = this.data.id;
-    }
   }
 }

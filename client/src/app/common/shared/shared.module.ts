@@ -52,7 +52,9 @@ import { CommentSectionComponent } from './comments/comment-section/comment-sect
 import { PostCommentComponent } from './comments/post-comment/post-comment.component';
 import { LikeCommentComponent } from './comments/post-comment/like-comment/like-comment.component';
 
-import { MatSidenavModule } from '@angular/material';
+import { MatSidenavModule, MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material';
+import { PreviewFilesDialogComponent } from './preview-files-dialog/preview-files-dialog.component';
+import { NgxDocViewerModule } from 'ngx-doc-viewer';
 
 @NgModule({
   declarations: [
@@ -119,7 +121,9 @@ import { MatSidenavModule } from '@angular/material';
 
     CommentSectionComponent,
 
-    LikeCommentComponent
+    LikeCommentComponent,
+
+    PreviewFilesDialogComponent
   ],
   imports: [
     CommonModule,
@@ -146,8 +150,12 @@ import { MatSidenavModule } from '@angular/material';
     NgbTooltipModule,
 
     // MAT SIDE MODULE
-    MatSidenavModule
+    MatSidenavModule,
 
+    // Angular Material Dialog
+    MatDialogModule,
+
+    NgxDocViewerModule
   ],
   exports: [
     AttachFilesComponent,
@@ -200,6 +208,12 @@ import { MatSidenavModule } from '@angular/material';
     LikeCommentComponent,
 
     MatSidenavModule
+  ],
+  providers: [
+    {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}
+  ],
+  entryComponents: [
+    PreviewFilesDialogComponent
   ]
 })
 export class SharedModule { }
