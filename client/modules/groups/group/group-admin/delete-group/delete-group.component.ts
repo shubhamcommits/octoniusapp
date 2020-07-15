@@ -45,28 +45,23 @@ export class DeleteGroupComponent implements OnInit {
           // Delete the group from the workspace
           utilityService.asyncNotification('Please Wait while we are deleting the group',
             new Promise((resolve, reject) => {
-
               // Call Remove Group Service Function
               groupService.removeGroup(groupId)
                 .then(() => {
-
                   // Redirect the user to groups page
-                  this.router.navigate(['/dashboard', 'groups', 'all'])
+                  this.router.navigate(['/dashboard', 'work', 'groups', 'all'])
                     .then(() => {
-
                       // Resolve the async promise
                       resolve(utilityService.resolveAsyncPromise('Group removed!'))
-                    })
-
+                    });
                 })
                 .catch(() => {
-
                   // Reject the promise
                   reject(utilityService.rejectAsyncPromise('Unable to delete the group, please try again!'))
-                })
-            }))
+                });
+            }));
         }
-      })
+      });
   }
 
 }
