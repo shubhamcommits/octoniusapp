@@ -123,21 +123,27 @@ export class GroupFilesComponent implements OnInit {
    * @param fileId
    */
   deleteFile(fileId: string) {
-    this.utilityService.asyncNotification('Please wait we are deleting the file...', new Promise((resolve, reject) => {
-      this.filesService.deleteFile(fileId)
-        .then((res) => {
+    // Ask User to remove this file or not
+    this.utilityService.getConfirmDialogAlert()
+      .then((result) => {
+        if (result.value) {
+          // Remove the file
+          this.utilityService.asyncNotification('Please wait we are deleting the file...', new Promise((resolve, reject) => {
+            this.filesService.deleteFile(fileId)
+              .then((res) => {
+                // Emit the Deleted file to all the components in order to update the UI
+                this.delete.emit(res['file']);
 
-          // Emit the Deleted file to all the components in order to update the UI
-          this.delete.emit(res['file']);
+                // Remove the file from the list
+                this.files = this.files.filter(file => file._id !== fileId);
 
-          // Remove the file from the list
-          this.files = this.files.filter(file => file._id !== fileId);
-
-          resolve(this.utilityService.resolveAsyncPromise('File deleted!'));
-        }).catch((err) => {
-          reject(this.utilityService.rejectAsyncPromise('Unable to delete file, please try again!'));
-        });
-    }));
+                resolve(this.utilityService.resolveAsyncPromise('File deleted!'));
+              }).catch((err) => {
+                reject(this.utilityService.rejectAsyncPromise('Unable to delete file, please try again!'));
+              });
+          }));
+        }
+      });
   }
 
   openViewFileDialog(fileUrl: string) {
