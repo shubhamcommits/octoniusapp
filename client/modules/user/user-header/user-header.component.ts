@@ -1,7 +1,7 @@
-import { Component, OnInit, Injector } from '@angular/core';
+import { Component, OnInit, Injector, OnDestroy } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { SubSink } from 'subsink';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { PublicFunctions } from 'src/app/dashboard/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
@@ -10,14 +10,26 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
   templateUrl: './user-header.component.html',
   styleUrls: ['./user-header.component.scss']
 })
-export class UserHeaderComponent implements OnInit {
+export class UserHeaderComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: ActivatedRoute,
     private _router: Router,
     private injector: Injector,
     public utilityService: UtilityService
-  ) { }
+  ) {
+
+    // Sunscribe to router updates
+    this.subSink.add(this._router.events.subscribe((e: any) => {
+      // If it is a NavigationEnd event re-initalise the component
+      if (e instanceof NavigationEnd) {
+        this.ngOnInit()
+      }
+    }))
+  }
+
+  // Router Subscription
+  public navigationSubscription: any;
 
   // CURRENT USER DATA
   public userData: any;

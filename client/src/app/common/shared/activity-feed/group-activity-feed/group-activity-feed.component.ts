@@ -1,5 +1,5 @@
 import { Component, OnInit, Injector, Input } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { PublicFunctions } from 'src/app/dashboard/public.functions';
 import { SubSink } from 'subsink';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -18,22 +18,54 @@ export class GroupActivityFeedComponent implements OnInit {
 
   constructor(
     private router: ActivatedRoute,
+    private _router: Router,
     private injector: Injector,
     public utilityService: UtilityService,
     private socketService: SocketService,
     private postService: PostService
-    ) { }
+  ) {
+
+    this.subSink.add(this._router.events.subscribe(async (e: any) => {
+      // If it is a NavigationEnd event re-initalise the component
+      if (e instanceof NavigationEnd) {
+        // this.ngOnInit()
+
+        // Fetch groupId from router snapshot or as an input parameter
+        this.groupId = this._router.routerState.snapshot.root.queryParamMap.get('group')
+
+        // My Workplace variable check
+        this.myWorkplace = this._router.routerState.snapshot.root.queryParamMap.has('myWorkplace')
+          ? (this._router.routerState.snapshot.root.queryParamMap.get('myWorkplace') == ('false') ? (false) : (true))
+          : false
+
+        // Global Feed Variable check
+        this.globalFeed = (this._router.routerState.snapshot.root.url.findIndex((segment) => segment.path == 'inbox') == -1) ? false : true
+
+        this.posts.clear()
+
+        this.showNewPosts = false
+
+        this.moreToLoad = true
+
+        await this.ngOnInit()
+
+        // console.log(this.groupId, this.myWorkplace, this.globalFeed)
+
+      }
+    }))
+
+  }
 
   // Fetch groupId from router snapshot or as an input parameter
   @Input('groupId') groupId = this.router.snapshot.queryParamMap.get('group');
 
   // My Workplace variable check
   myWorkplace: boolean = this.router.snapshot.queryParamMap.has('myWorkplace')
-  ? (this.router.snapshot.queryParamMap.get('myWorkplace') == ('false') ? (false): (true))
-  : false
+    ? (this.router.snapshot.queryParamMap.get('myWorkplace') == ('false') ? (false) : (true))
+    : false
 
   // Global Feed Variable check
-  globalFeed: boolean = (this.router.snapshot.url.findIndex((segment)=> segment.path == 'inbox') == -1) ? false : true
+  globalFeed: boolean = (this.router.snapshot.url.findIndex((segment) => segment.path == 'inbox') == -1) ? false : true
 
   // Current Group Data
   groupData: any;
@@ -92,7 +124,7 @@ export class GroupActivityFeedComponent implements OnInit {
       if (JSON.stringify(res) != JSON.stringify({})) {
 
         // Assign the GroupData
-        this.groupData = res;
+        this.groupData = res
       }
     }))
 
@@ -187,7 +219,8 @@ export class GroupActivityFeedComponent implements OnInit {
   async fetchCurrentGroupData() {
 
     // Fetch the group data from HTTP Request
-    this.groupData = await this.publicFunctions.getGroupDetails(this.groupId)
+    if(this.groupId != null || this.groupId != undefined)
+      this.groupData = await this.publicFunctions.getGroupDetails(this.groupId)
 
     if (this.groupData) {
 

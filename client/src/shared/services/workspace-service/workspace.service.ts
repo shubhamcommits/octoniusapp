@@ -93,7 +93,6 @@ export class WorkspaceService {
     return this._http.post(this.BASE_API_URL + `/query/members/${workspaceId}`, { query })
       .toPromise()
       .catch((err: Error) => {
-        console.log('test');
       })
   }
 
