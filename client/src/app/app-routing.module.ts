@@ -50,7 +50,7 @@ const routes: Routes = [
     path: 'document',
     loadChildren: () => import('modules/folio/folio.module')
       .then((module) => module.FolioModule),
-      canActivate: [AuthenticationGuard]
+    canActivate: [AuthenticationGuard]
   },
 
   // NOT FOUND ROUTE
@@ -65,7 +65,7 @@ const routes: Routes = [
   imports: [
 
     // ROUTER MODULE
-    RouterModule.forRoot(routes),
+    RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' }),
 
   ],
   exports: [RouterModule],

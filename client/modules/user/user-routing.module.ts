@@ -9,7 +9,8 @@ const routes: Routes = [
     path: '', component: UserHeaderComponent, children: [
       { path: 'profile', component: UserProfileComponent },
       { path: 'clouds', component: UserCloudsComponent },
-    ]
+    ],
+    runGuardsAndResolvers: `always`
   }
 ];
 
