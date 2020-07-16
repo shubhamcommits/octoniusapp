@@ -1,12 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { GoogleCloudService } from '../user-available-clouds/google-cloud/services/google-cloud.service';
-import { AuthService } from 'src/shared/services/auth-service/auth.service';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 
 // Google API Variables
 declare var gapi: any;
-declare var google: any;
 // Google API Variables
 
 
@@ -15,21 +13,20 @@ declare var google: any;
   templateUrl: './user-connected-clouds.component.html',
   styleUrls: ['./user-connected-clouds.component.scss']
 })
-export class UserConnectedCloudsComponent implements OnInit {
+export class UserConnectedCloudsComponent implements OnInit, OnDestroy {
 
-  constructor(
-      private ngxService: NgxUiLoaderService,
-      private authService: AuthService,
-      private googleService: GoogleCloudService) {
-
-    this.loadGoogleDrive();
-  }
-
-  googleAuthSucessful: any;
+  googleAuthSuccessful: any;
   googleDriveUsed = 0;
   googleUser: any;
 
   isLoading$ = new BehaviorSubject(false);
+
+  constructor(
+      private ngxService: NgxUiLoaderService,
+      private googleService: GoogleCloudService) {
+
+    this.loadGoogleDrive();
+  }
 
   ngOnInit() {
       this.ngxService.start(); // start foreground loading with 'default' id
@@ -42,7 +39,7 @@ export class UserConnectedCloudsComponent implements OnInit {
       this.googleService.refreshGoogleToken().then(() => {
         // refresh the token and initialism the google user-data if google-cloud is already stored
         if (localStorage.getItem('google-cloud') != null) {
-          this.googleAuthSucessful = true;
+          this.googleAuthSuccessful = true;
           this.googleUser = JSON.parse(localStorage.getItem('google-cloud'));
           this.googleDriveUsed = Math.round(
               (this.googleUser.user_data.storageQuota.usage / this.googleUser.user_data.storageQuota.limit) * 100
@@ -51,14 +48,14 @@ export class UserConnectedCloudsComponent implements OnInit {
           // we have set a time-interval of 30mins so as to refresh the access_token in the group
           setInterval(() => {
             this.googleService.refreshGoogleToken();
-            this.googleAuthSucessful = true;
+            this.googleAuthSuccessful = true;
             this.googleUser = JSON.parse(localStorage.getItem('google-cloud'));
             this.googleDriveUsed = Math.round(
                 (this.googleUser.user_data.storageQuota.usage / this.googleUser.user_data.storageQuota.limit) * 100
               );
           }, 1800000);
         } else {
-          this.googleAuthSucessful = false;
+          this.googleAuthSuccessful = false;
           this.isLoading$.next(false);
         }
       }).catch(() => {
@@ -74,7 +71,7 @@ export class UserConnectedCloudsComponent implements OnInit {
     this.googleService.disconnectGoogleCloud()
     .subscribe((res) => {
       console.log('Google Disconnected', res);
-      this.googleAuthSucessful = false;
+      this.googleAuthSuccessful = false;
       this.googleUser = new Object();
       this.googleDriveUsed = 0;
     }, (err) => {

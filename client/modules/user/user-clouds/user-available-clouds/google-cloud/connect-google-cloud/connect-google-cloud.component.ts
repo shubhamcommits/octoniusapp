@@ -13,7 +13,7 @@ declare const gapi: any;
 })
 export class ConnectGoogleCloudComponent implements OnInit {
 
-  googleAuthSucessful: any;
+  googleAuthSuccessful: any;
 
   constructor(private googleService: GoogleCloudService) { }
 
@@ -21,14 +21,14 @@ export class ConnectGoogleCloudComponent implements OnInit {
     this.googleService.refreshGoogleToken().then(() => {
         // refresh the token and initialism the google user-data if google-cloud is already stored
         if (localStorage.getItem('google-cloud') != null) {
-          this.googleAuthSucessful = true;
+          this.googleAuthSuccessful = true;
           // we have set a time-interval of 30mins so as to refresh the access_token in the group
           setInterval(() => {
             this.googleService.refreshGoogleToken();
-            this.googleAuthSucessful = true;
+            this.googleAuthSuccessful = true;
           }, 1800000);
         } else {
-          this.googleAuthSucessful = false;
+          this.googleAuthSuccessful = false;
         }
     }).catch(() => {
       console.log('You haven\'t connected your google cloud yet');
@@ -120,10 +120,11 @@ export class ConnectGoogleCloudComponent implements OnInit {
         'approval_prompt': 'force',
         'response_type': 'token code',
         'grant_type': 'authorization_code'
-      },this.handleAuthResult)
-      .then((res: any)=>{
+      }, this.handleAuthResult)
+      .then((res: any) => {
         console.log(res);
-      })
+        // TODO we need to change this in order to reload the specific components when google is connected.
+      });
   }
 
 }
