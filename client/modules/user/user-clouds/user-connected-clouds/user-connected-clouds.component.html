@@ -1,1 +1,51 @@
-<img src="assets/images/empty-clouds.svg">
+<img *ngIf="!googleAuthSucessful;" src="assets/images/empty-clouds.svg">
+
+<div class="col-md-8" *ngIf="googleAuthSucessful;">
+    <div class="card-tile">
+        <h2>Information about connected clouds</h2>
+    </div>
+    <div *ngIf="isLoading$ | async;">
+        <div class="load-8">
+            <h6><b>Loading Data...</b></h6>
+            <div class="line"></div>
+        </div>
+    </div>
+
+    <!--
+    <div class="card-tile" *ngIf="!googleAuthSucessful;">
+        <h2>No Google Account Connected</h2>
+    </div>
+    -->
+
+    <div class="card-tile">
+        <div class="card-title" style="clear:both">
+            <h2 class="float-left">
+                <strong>Google</strong>
+            </h2>
+            <button style="float: right;" class="btn btn-danger" (click)="disconnectGoogle();">Disconnect</button>
+        </div>
+        <div class="user-sticky-card media" style="margin-top: 40px;">
+            <hr>
+            <img class="mr-3 feed-avatar" src="{{googleUser?.user_data?.user?.photoLink}}" onerror="this.src='/assets/images/user.png'">
+            <div class="media-body">
+                <div>
+                    <h2>{{googleUser?.user_data?.user?.displayName}}</h2>
+                    <h4>{{googleUser?.user_data?.user?.emailAddress}}</h4>
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <a class="nav-link active">Drive Usage
+                                <span class="sr-only">(current)</span>
+                            </a>
+                            <ngx-skill-bar 
+                                [percentage]="googleDriveUsed" 
+                                bgColor="#cccccc" 
+                                color="#0bc6a0"
+                                showFigures="true"></ngx-skill-bar>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

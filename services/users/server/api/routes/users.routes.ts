@@ -81,6 +81,14 @@ routes.put('/update-role', user.updateUserRole);
 // PUT - Updates the profileImage of the user on the basis of userId
 routes.put('/image', userFileHandler, user.updateImage);
 
+// - Integrations -
+
+// Get user token for a specific integration
+routes.get('/integrations/gdrive/token', user.getGdriveToken);
+
+// Add a new token for a specific integration
+routes.post('/integrations/gdrive/token', user.addGdriveToken);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================
