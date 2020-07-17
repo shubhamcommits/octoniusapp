@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { GoogleCloudService } from '../user-available-clouds/google-cloud/services/google-cloud.service';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
@@ -13,7 +13,7 @@ declare var gapi: any;
   templateUrl: './user-connected-clouds.component.html',
   styleUrls: ['./user-connected-clouds.component.scss']
 })
-export class UserConnectedCloudsComponent implements OnInit, OnDestroy {
+export class UserConnectedCloudsComponent implements OnInit {
 
   googleAuthSuccessful: any;
   googleDriveUsed = 0;
