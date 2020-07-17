@@ -391,4 +391,8 @@ export class ComponentSearchInputBoxComponent implements OnInit {
     this.subSink.unsubscribe()
     this.isLoading$.complete()
   }
+
+  focusOut() {
+    this.itemList = [];
+  }
 }
