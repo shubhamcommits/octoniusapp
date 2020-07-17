@@ -5,6 +5,7 @@
         </p>
     </div>
     <div class="col-md-6 push-right">
-        <button id="google-connect" class="btn btn-primary btn-sm" (click) ="onAuthApiLoad()">Connect</button>
+        <button *ngIf="!googleAuthSuccessful" id="google-connect" class="btn btn-primary btn-sm" (click) ="onAuthApiLoad()">Connect</button>
+        <button *ngIf="googleAuthSuccessful" class="btn btn-success btn-sm">Connected</button>
     </div>
 </div>

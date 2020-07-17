@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from 'src/app/common/shared/shared.module';
 
@@ -16,17 +16,27 @@ import { GoogleCloudModule } from './user-clouds/user-available-clouds/google-cl
 import { UserImageDetailsComponent } from './user-header/user-image-details/user-image-details.component';
 import { UserService } from 'src/shared/services/user-service/user.service';
 
-
 @NgModule({
-  declarations: [UserHeaderComponent, UserProfileComponent, UserCloudsComponent, UserInformationComponent, UserProfessionalInformationComponent, UserSkillsComponent, UserAvailableCloudsComponent, UserConnectedCloudsComponent, UserImageDetailsComponent],
+  declarations: [
+    UserHeaderComponent,
+    UserProfileComponent,
+    UserCloudsComponent,
+    UserInformationComponent,
+    UserProfessionalInformationComponent,
+    UserSkillsComponent,
+    UserAvailableCloudsComponent,
+    UserConnectedCloudsComponent,
+    UserImageDetailsComponent
+  ],
   imports: [
     CommonModule,
     SharedModule,
     GoogleCloudModule,
     UserRoutingModule
   ],
-  providers:[
+  providers: [
     UserService
-  ]
+  ],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })
 export class UserModule { }

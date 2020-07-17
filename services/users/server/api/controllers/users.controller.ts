@@ -199,4 +199,64 @@ export class UsersControllers {
         }
     }
 
+    // -| TOKENS |-
+    /**
+     * This function is responsible for updating the google token for the particular user
+     * @param { userId, token }req 
+     * @param res 
+     */
+    async addGdriveToken(req: Request, res: Response, next: NextFunction) {
+        try{
+            const {
+                body: { token }
+              } = req;
+            const userId = req['userId'];
+            // const token = req['token'];
+
+            const user = await User.findByIdAndUpdate(
+                {
+                    _id: userId
+                }, {
+                    'integrations.gdrive.token': token
+                }, {
+                    new: true
+                });
+        
+            return res.status(200).json({
+                message: 'Saved gdrive token.',
+                user
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    }
+
+    /**
+     * This function is responsible for retrieving the google token for the particular user
+     * @param { userId }req 
+     * @param res 
+     */
+    async getGdriveToken(req: Request, res: Response, next: NextFunction) {
+        try {
+            const userId = req['userId'];
+            const user: any = await User.findOne({
+                $and: [
+                    { _id: userId },
+                    { active: true }
+                ]
+            }).select('integrations');
+
+            // If user not found
+            if (!user) {
+                return sendError(res, new Error('Unable to find the user, either userId is invalid or you have made an unauthorized request!'), 'Unable to find the user, either userId is invalid or you have made an unauthorized request!', 404);
+            }
+
+            // Send status 200 response
+            return res.status(200).json({
+                gDriveToken: user.integrations.gdrive.token
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    }
 }

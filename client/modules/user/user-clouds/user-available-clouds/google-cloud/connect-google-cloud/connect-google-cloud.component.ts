@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Injector } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { StorageService } from 'src/shared/services/storage-service/storage.service';
+import { GoogleCloudService } from '../services/google-cloud.service';
 
 // Google API Variable
 declare const gapi: any;
@@ -11,9 +13,26 @@ declare const gapi: any;
 })
 export class ConnectGoogleCloudComponent implements OnInit {
 
-  constructor() { }
+  googleAuthSuccessful: any;
 
-  ngOnInit() {
+  constructor(private googleService: GoogleCloudService) { }
+
+  ngOnInit(): void {
+    this.googleService.refreshGoogleToken().then(() => {
+        // refresh the token and initialism the google user-data if google-cloud is already stored
+        if (localStorage.getItem('google-cloud') != null) {
+          this.googleAuthSuccessful = true;
+          // we have set a time-interval of 30mins so as to refresh the access_token in the group
+          setInterval(() => {
+            this.googleService.refreshGoogleToken();
+            this.googleAuthSuccessful = true;
+          }, 1800000);
+        } else {
+          this.googleAuthSuccessful = false;
+        }
+    }).catch(() => {
+      console.log('You haven\'t connected your google cloud yet');
+    });
   }
 
   /**
@@ -22,7 +41,7 @@ export class ConnectGoogleCloudComponent implements OnInit {
    * 2. Use access_token to get a refresh_token
    * 3. Store the refresh_token to server
    * 4. Use refresh_token to get the access_token all the times
-   * @param authResult 
+   * @param authResult
    */
   handleAuthResult( authResult: any ) {
     return new Promise((resolve, reject) => {
@@ -44,14 +63,15 @@ export class ConnectGoogleCloudComponent implements OnInit {
           getRefreshToken.onload = () => {
             if (getRefreshToken.status === 200) {
               console.log(JSON.parse(getRefreshToken.responseText));
-              const google_cloud_token = {
+              const googleCloudToken = {
                 'google_token_data': JSON.parse(getRefreshToken.responseText)
               };
-              localStorage.setItem('google-cloud-token', JSON.stringify(google_cloud_token));
+              localStorage.setItem('google-cloud-token', JSON.stringify(googleCloudToken));
 
               const saveToken = new XMLHttpRequest();
+              const storageService = new StorageService();
               saveToken.open('POST', environment.USER_BASE_API_URL + '/integrations/gdrive/token', true);
-              saveToken.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('token'));
+              saveToken.setRequestHeader('Authorization', 'Bearer ' + storageService.getLocalData('authToken')['token']);
 
               const tokenData = new FormData();
               tokenData.append('token', JSON.parse(getRefreshToken.responseText).refresh_token);
@@ -60,7 +80,7 @@ export class ConnectGoogleCloudComponent implements OnInit {
                 if (saveToken.status === 200) {
                   console.log(JSON.parse(saveToken.responseText));
                 }
-              }
+              };
 
               saveToken.send(tokenData);
 
@@ -72,11 +92,11 @@ export class ConnectGoogleCloudComponent implements OnInit {
               getUserAPI.onload = () => {
                 if (getUserAPI.status === 200) {
                   console.log(JSON.parse(getUserAPI.responseText));
-                  const google_cloud = {
+                  const googleCloud = {
                     'user_data': JSON.parse(getUserAPI.responseText),
                     'refresh_token': JSON.parse(getRefreshToken.responseText).refresh_token
                   };
-                  localStorage.setItem('google-cloud', JSON.stringify(google_cloud));
+                  localStorage.setItem('google-cloud', JSON.stringify(googleCloud));
                 }
               };
               getUserAPI.send();
@@ -85,13 +105,10 @@ export class ConnectGoogleCloudComponent implements OnInit {
           getRefreshToken.send(fd);
           resolve();
         }
-      }
-      else {
+      } else {
         reject();
       }
-    })
-
-
+    });
   }
 
   async onAuthApiLoad() {
@@ -103,10 +120,11 @@ export class ConnectGoogleCloudComponent implements OnInit {
         'approval_prompt': 'force',
         'response_type': 'token code',
         'grant_type': 'authorization_code'
-      },this.handleAuthResult)
-      .then((res: any)=>{
+      }, this.handleAuthResult)
+      .then((res: any) => {
         console.log(res);
-      })
+        // TODO we need to change this in order to reload the specific components when google is connected.
+      });
   }
 
 }

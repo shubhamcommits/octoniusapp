@@ -230,27 +230,27 @@ export class ComponentSearchInputBoxComponent implements OnInit {
   addToSelectedMember(item: any) {
 
     // If We have all team selected as the assignee for the event
-    if(item._id === 'all'){
+    if (item._id === 'all') {
 
       // Empty the members array
-      this.members = []
+      this.members = [];
 
       // Empty the members map
-      this.selectedMembers.clear()
+      this.selectedMembers.clear();
 
       // Set all the other items to be as not Assigned
       this.itemList.forEach((element: any) => {
-        element.showAddMem = true
-      })
+        element.showAddMem = true;
+      });
 
       // Set the Add Member state to false
-      item.showAddMem = false
+      item.showAddMem = false;
 
       // Push item into array
-      this.members.push(item)
+      this.members.push(item);
 
       // Map the array and return a map without duplicates
-      this.selectedMembers = new Map(this.members.map((member: any) => [member._id, member]))
+      this.selectedMembers = new Map(this.members.map((member: any) => [member._id, member]));
 
       // Emit the selectedMembers map to the other components
       this.memberEmitter.emit(this.selectedMembers);
@@ -258,31 +258,35 @@ export class ComponentSearchInputBoxComponent implements OnInit {
 
     // If we don'y have all team selected as the assignee
     if (!this.selectedMembers.has('all')) {
-      if (this.type == 'task') {
+      if (this.type === 'task') {
 
         // Mark all the other items on the UI to be as not assigned
         this.itemList.forEach((element: any) => {
-          element.showAddMem = true
+          element.showAddMem = true;
         });
 
         // Empty the members array since we have to push only one element to the selectedMembers Map
-        this.members = []
+        this.members = [];
       }
 
       // Set the Add Member state to false
-      item.showAddMem = false
+      item.showAddMem = false;
 
       // Push item into array
-      this.members.push(item)
+      this.members.push(item);
 
       // Map the array and return a map without duplicates
-      this.selectedMembers = new Map(this.members.map((member: any) => [member._id, member]))
+      this.selectedMembers = new Map(this.members.map((member: any) => [member._id, member]));
 
       // Emit the selectedMembers map to the other components
       this.memberEmitter.emit(this.selectedMembers);
     }
 
+    // Clear search input after assigning
+    this.itemValue = '';
 
+    // Close the list after assigning
+    this.itemList = [];
   }
 
   onAddNewMember(item: any) {
