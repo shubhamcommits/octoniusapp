@@ -16,6 +16,7 @@ import { GroupKanbanBoardsComponent } from './group/group-kanban-boards/group-ka
 // import { GroupFilesComponent } from './group/group-files/group-files.component';
 import { GroupMembersComponent } from './group/group-members/group-members.component';
 import { GroupPostComponent } from './group/group-post/group-post.component';
+import { GroupTasksViewsComponent } from './group/group-tasks-views/group-tasks-views.component';
 
 
 /**
@@ -34,7 +35,7 @@ const routes: Routes = [
       { path: 'activity', component: GroupActivityComponent },
 
       // Group Kanban/tasks
-      { path: 'tasks', component: GroupKanbanBoardsComponent },
+      { path: 'tasks', component: GroupTasksViewsComponent },
 
       // Group Files
       {

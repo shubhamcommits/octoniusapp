@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector } from '@angular/core';
+import { Component, OnInit, Injector, Input } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { SubSink } from 'subsink';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -22,25 +22,19 @@ export class GroupKanbanBoardsComponent implements OnInit {
     private injector: Injector,
   ) { }
 
-  columns: any = []
-
   // Base URL of the uploads
   baseUrl = environment.UTILITIES_USERS_UPLOADS;
 
   // Fetch groupId from router snapshot
   groupId = this.router.snapshot.queryParamMap.get('group');
 
-  // Task Posts array variable
-  tasks: any = []
-
   // Current Group Data
-  groupData: any;
-
+  @Input() groupData: any;
   // Current User Data
-  userData: any;
-
-  // Subsink Object
-  subSink = new SubSink();
+  @Input() userData: any;
+  @Input() columns: any;
+  // Task Posts array variable
+  @Input() tasks: any;
 
   // PUBLIC FUNCTIONS
   public publicFunctions = new PublicFunctions(this.injector);
@@ -48,55 +42,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
   // Today's date object
   today = moment().local().startOf('day').format('YYYY-MM-DD');
 
-  // IsLoading behaviou subject maintains the state for loading spinner
-  public isLoading$ = new BehaviorSubject(false);
-
-  async ngOnInit() {
-
-    // Start the loading spinner
-    this.isLoading$.next(true);
-
-    // Fetch current group from the service
-    this.subSink.add(this.utilityService.currentGroupData.subscribe(async (res) => {
-      if (JSON.stringify(res) != JSON.stringify({})) {
-
-        // Assign the GroupData
-        this.groupData = res;
-      }
-    }))
-
-    // Fetch current user details
-    this.userData = await this.publicFunctions.getCurrentUser();
-
-    /**
-     * Here we fetch all the columns available in a group, and if null we initialise them with the default one
-     */
-    this.columns = await this.publicFunctions.getAllColumns(this.groupId);
-    if (this.columns == null) {
-      this.columns = await this.initialiseColumns(this.groupId);
-    }
-
-    /**
-     * Adding the property of tasks in every column
-     */
-    this.columns.forEach((column: any) => {
-      column.tasks = []
-    });
-
-    // Fetch all the tasks posts from the server
-    this.tasks = await this.publicFunctions.getPosts(this.groupId, 'task');
-
-    // console.log('Tasks', this.tasks)
-
-    /**
-     * Sort the tasks into their respective columns
-     */
-    this.sortTasksInColumns(this.columns, this.tasks)
-
-    // Return the function via stopping the loader
-    return this.isLoading$.next(false);
-
-  }
+  async ngOnInit() {}
 
   /**
    * Standard Angular CDK Event which monitors the drop functionality between different columns
@@ -132,29 +78,6 @@ export class GroupKanbanBoardsComponent implements OnInit {
         event.currentIndex);
     }
   }
-
-  /**
-   * This function initialises the default column - todo
-   * @param groupId 
-   */
-  async initialiseColumns(groupId: string) {
-
-    // Column Service Instance
-    let columnService = this.injector.get(ColumnService)
-
-    // Call the HTTP Put request
-    return new Promise((resolve, reject) => {
-      columnService.initColumns(groupId)
-        .then((res) => {
-          resolve(res['columns']);
-        })
-        .catch((err) => {
-          this.utilityService.errorNotification('Unable to initialise the columns, please try again later!');
-          reject({});
-        })
-    })
-  }
-
 
   /**
    * This function recieves the output from the other component for creating column
@@ -349,24 +272,6 @@ export class GroupKanbanBoardsComponent implements OnInit {
   }
 
   /**
-   * This Function is responsible for sorting the tasks into columns
-   * @param columns 
-   * @param tasks 
-   */
-  sortTasksInColumns(columns: any, tasks: any) {
-
-    columns.forEach((column: any) => {
-
-      // Feed the tasks into that column which has matching property _column with the column title
-      column['tasks'] = tasks
-        .filter((post: any) => post.task.hasOwnProperty('_column') === true && post.task._column != null && post.task._column.title === column['title'])
-
-      // Array.prototype.push.apply(column['tasks'], tasks
-      // .filter((post: any) => post.task.status === column['title'] && post.task.hasOwnProperty('_column') === false && post.task._column != null));
-    });
-  }
-
-  /**
    * This function handles the response of moving the task to another column
    * @param task 
    * @param oldColumn 
@@ -519,14 +424,6 @@ export class GroupKanbanBoardsComponent implements OnInit {
    */
   closeModal() {
     this.utilityService.closeAllModals()
-  }
-
-  /**
-   * Unsubscribe all the observables to avoid memory leaks
-   */
-  ngOnDestroy() {
-    this.subSink.unsubscribe()
-    this.isLoading$.complete()
   }
 
 }

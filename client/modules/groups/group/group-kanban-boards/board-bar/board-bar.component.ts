@@ -1,6 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Location } from '@angular/common';
-
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-board-bar',
@@ -9,14 +7,18 @@ import { Location } from '@angular/common';
 })
 export class BoardBarComponent implements OnInit {
 
-  constructor(
-    public _location: Location
-  ) { }
+  constructor() {}
 
   // GroupData Variable
-  @Input('groupData') groupData: any
+  @Input() groupData: any;
+
+  // Emitter to notify that the view is changing
+  @Output() changeViewEmitter: EventEmitter<string> = new EventEmitter<string>();
 
   ngOnInit() {
   }
 
+  changeView(view: string) {
+    this.changeViewEmitter.emit(view);
+  }
 }

@@ -1,0 +1,110 @@
+<div class="list">
+    <div class="list-wrapper">
+        <!-- HEADER ROW -->
+        <div class="list-view-header">
+            <div class="header task">
+                <div class="media" (click)="openModal(content)">
+                    <div class="media-body">
+                        <p>Title</p>
+                    </div>
+
+                    <div class="tags">
+                        <p>Tags</p>
+                    </div>
+
+                    <div class="taskStatus">
+                        <p>Status</p>
+                    </div>
+                    
+                    <div class="assignee">
+                        <p>Assignee</p>
+                    </div>
+
+                    <div class="taskDate">
+                        <p>Due Date</p>
+                    </div>
+
+                    <div class="newProperty">
+                        <!-- <i class="material-icons-outlined">add</i> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- HEADER ROW -->
+
+        <!-- ALL COLUMN DETAILS STARTS -->
+        <div class="list-columns" *ngIf="this.columns">
+            <div class="list-column" id="column.title" *ngFor="let column of columns; let i = index;">
+                <!-- COLUMN TITLE -->
+                <div class="column-title">
+                    <p class="text-capitalize"> {{ column?.title }}</p>
+                </div>
+                <!-- COLUMN TITLE -->
+
+                <!-- TASK CONTAINER STARTS -->
+                <div class="tasks-container" [id]="column.title">
+
+                    <!-- CREATE TASK STARTS -->
+                    <app-new-task [groupData]="groupData" [userData]="userData" [column]="column"
+                        (post)="getPost($event, column)"></app-new-task>
+                    <!-- CREATE TASK ENDS -->
+
+                    <!-- TASK DETAILS STARTS -->
+                    <div class="task"
+                        [ngClass]="{'status-todo': task?.task?.status === 'to do', 'status-inprogress': task?.task?.status === 'in progress', 'status-done': task?.task?.status === 'done'}"
+                        *ngFor="let task of column.tasks; let j = index;">
+                        
+                        <div class="media" (click)="openModal(content)">
+                            <div class="media-body">
+                                <p class="list-card-title">{{ task?.title }}</p>
+
+                                <!-- TASK DETAILS STARTS -->
+                                <ng-template #content let-modal>
+                                    <app-group-create-post *ngIf="userData && checkDataExist(userData)"
+                                        [edit]="true" [post]="task" [columns]="columns"
+                                        [userData]="userData" [groupId]="groupId" [type]="'task'"
+                                        (close)="closeModal()" (moveTask)="moveTaskToColumn($event)"
+                                        (taskStatus)="changeStatus(task, $event)"
+                                        (member)="changeAssignee(task, $event)"
+                                        (date)="changeDueDate(task, $event)"
+                                        (post)="changeDetails(task, $event)"
+                                        (delete)="removeTask(column, $event)">
+                                    </app-group-create-post>
+                                </ng-template>
+                            </div>
+
+                            <div class="tags">
+                                <span class="badge" *ngFor="let tag of task?.tags">
+                                    {{ tag }}
+                                </span>
+                            </div>
+
+                            <div class="taskStatus">
+                                <span class="badge"
+                                    [ngClass]="{'badge-todo': task?.task?.status === 'to do', 'badge-inprogress': task?.task?.status === 'in progress', 'badge-done': task?.task?.status === 'done'}">
+                                        {{ task?.task?.status }}
+                                </span>
+                            </div>
+                            
+                            <div class="assignee">
+                                <img src="{{baseUrl}}/{{task?.task?._assigned_to?.profile_pic}}"
+                                    onerror="this.src='assets/images/user.png'"
+                                    class="feed-avatar">
+                            </div>
+
+                            <div class="taskDate">
+                                <span class="small"
+                                    *ngIf="task?.task?.due_to != 'Invalid date' && task?.task?.status != 'done'"
+                                    [ngClass]="checkOverdue(task) === true ? 'overdue' : 'due'">
+                                    {{task?.task?.due_to | date}}</span>
+                            </div>
+                            <div class="newProperty"></div>
+                        </div>
+                    </div>
+                    <!-- TASK DETAILS ENDS -->
+                </div>
+                <!-- TASK CONTAINER ENDS -->
+            </div>
+        </div>
+    </div>
+</div>
