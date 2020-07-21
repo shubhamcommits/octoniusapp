@@ -19,7 +19,7 @@
  /**
  * 1. !===== COMPONENTS =====!
  */
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -185,6 +185,9 @@ import { MatButtonModule, MatMenuModule, MatChipsModule } from '@angular/materia
     GroupService,
     PostService,
     CommentService
+  ],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA
   ]
 })
 export class GroupsModule { }

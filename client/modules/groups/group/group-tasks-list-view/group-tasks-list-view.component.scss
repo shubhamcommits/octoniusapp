@@ -35,19 +35,21 @@ $dark-sky-blue: #4a90e2;
 }
 
 .task {
-    padding: 8px;
+    padding: 0px;
     background: white;
-    border: 1px solid $border-color;
-    border-radius: 5px;
+    // border: 1px solid $border-color;
+    border-radius: 2px;
     box-sizing: border-box;
-    margin-bottom: 1px;
+    margin: 2px auto;
     transition: box-shadow 0.3s ease-in-out;
-    line-height: 25px;
-    height: 40px;
+    // line-height: 25px;
+    // height: 40px;
     //cursor: pointer;
     
     .media {
         // vertical-align: middle;
+        align-items: center;
+        padding: 10px;
 
         .list-card-title {
             font-weight: 400;
@@ -61,13 +63,20 @@ $dark-sky-blue: #4a90e2;
             width: 10%;
             text-align: center;
             border: none !important;
-            padding: 0px !important;
 
             .badge {
                 background-color: $dark-sky-blue;
-                color: white;
                 margin: 0 1px !important;
                 display: inline;
+                font-family: Nunito,sans-serif;
+                font-style: normal;
+                font-weight: 700!important;
+                font-size: 12px;
+                align-items: center;
+                color: #005fd5;
+                background-color: #e4edf8;
+                border-radius: 10px;
+                padding: 2px 10px !important;
             }
         }
 
@@ -83,7 +92,7 @@ $dark-sky-blue: #4a90e2;
             .feed-avatar{
                 width: 35px;
                 height: 35px;
-                margin: -6px 5px 5px 5px;
+                margin: 0;
             }
         }
 
@@ -110,16 +119,36 @@ $dark-sky-blue: #4a90e2;
 }
 
 
+.badge {
+    background-color: $dark-sky-blue;
+    margin: 0 1px !important;
+    display: inline;
+    font-family: Nunito,sans-serif;
+    font-style: normal;
+    font-weight: 700!important;
+    font-size: 12px;
+    align-items: center;
+    color: #005fd5;
+    background-color: #e4edf8;
+    border-radius: 10px;
+    padding: 2px 10px !important;
+}
 
 .badge-todo {
     background-color: $pumpkin-orange;
     color: white;
+    border-radius: 10px;
+    padding: 2px 10px !important;
 }
 .badge-inprogress {
     background-color: $turquoise;
     color: white;
+    border-radius: 10px;
+    padding: 2px 10px !important;
 }
 .badge-done {
     background-color: $dark-sky-blue;
     color: white;
+    border-radius: 10px;
+    padding: 2px 10px !important;
 }

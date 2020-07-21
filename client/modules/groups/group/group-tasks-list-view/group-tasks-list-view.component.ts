@@ -235,5 +235,4 @@ export class GroupTasksListViewComponent implements OnInit {
     }
     return color;
   }
-
 }

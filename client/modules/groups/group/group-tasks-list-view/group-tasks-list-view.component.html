@@ -57,8 +57,18 @@
                         <!-- <div class="media" (click)="openModal(content)"> -->
                         <div class="media">
                             <div class="media-body">
-                                <p class="list-card-title">{{ task?.title }}</p>
-
+                                <app-inline-input 
+                                    [(ngModel)]="task.title"
+                                    label="Name"
+                                    [domainObject]="task"
+                                    fieldName="title"
+                                    [required]="true"
+                                    type="text">
+                                </app-inline-input>
+                                <!--
+                                    <p class="list-card-title">{{ task?.title }}</p>
+                                -->
+                                
                                 <!-- TASK DETAILS STARTS -->
                                 <ng-template #content let-modal>
                                     <app-group-create-post *ngIf="userData && checkDataExist(userData)"
