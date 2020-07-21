@@ -55,6 +55,7 @@ import { LikeCommentComponent } from './comments/post-comment/like-comment/like-
 import { MatSidenavModule, MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material';
 import { PreviewFilesDialogComponent } from './preview-files-dialog/preview-files-dialog.component';
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
+import { InlineInputComponent } from './inline-input/inline-input.component';
 
 @NgModule({
   declarations: [
@@ -123,7 +124,9 @@ import { NgxDocViewerModule } from 'ngx-doc-viewer';
 
     LikeCommentComponent,
 
-    PreviewFilesDialogComponent
+    PreviewFilesDialogComponent,
+
+    InlineInputComponent
   ],
   imports: [
     CommonModule,
@@ -207,7 +210,8 @@ import { NgxDocViewerModule } from 'ngx-doc-viewer';
 
     LikeCommentComponent,
 
-    MatSidenavModule
+    MatSidenavModule,
+    InlineInputComponent
   ],
   providers: [
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}
