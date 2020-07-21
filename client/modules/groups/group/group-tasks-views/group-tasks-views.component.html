@@ -1,0 +1,25 @@
+<div *ngIf="!(isLoading$ | async)" class="root">
+    
+        <app-board-bar *ngIf="groupData" [groupData]="groupData" (changeViewEmitter)='onChangeViewEmitter($event)' ></app-board-bar>
+        
+        <app-group-kanban-boards *ngIf="viewType ==='kanban'"
+            [groupData]="groupData"
+            [userData]="userData"
+            [columns]="columns"
+            [tasks]="tasks">
+        </app-group-kanban-boards>
+
+        <app-group-tasks-list-view *ngIf="viewType ==='list'"
+            [groupData]="groupData"
+            [userData]="userData"
+            [columns]="columns"
+            [tasks]="tasks">
+        </app-group-tasks-list-view>
+
+</div>
+
+<!-- Loading Spinner Starts -->
+<ng-container *ngIf="isLoading$ | async">
+    <app-loading-spinner class="media"></app-loading-spinner>
+</ng-container>
+<!-- Loading Spinner Ends -->

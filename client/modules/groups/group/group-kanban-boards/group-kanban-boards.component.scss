@@ -3,15 +3,6 @@ $box-shadow:0 4px 24px 0 rgba(37,38,94,.1);
 $border-color:#E4EDF8;
 
 
-.root {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    overflow-y: hidden;
-    // overflow-x: hidden;
-}
-
-
 .has-gradient-text {
     background: -webkit-linear-gradient(#13f7f4, #2af598);
     -webkit-text-fill-color: transparent;
@@ -29,8 +20,8 @@ $border-color:#E4EDF8;
     min-height: 0;
 
     .board-wrapper {
-        display: flex;
-        flex-grow: 1;
+        // display: flex;
+        // flex-grow: 1;
         margin-top: 2rem;
         // overflow-x: auto;
         // white-space: nowrap;

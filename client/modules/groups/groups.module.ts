@@ -71,6 +71,9 @@ import { EditColumnComponent } from './group/group-kanban-boards/edit-column/edi
 import { GroupPostComponent } from './group/group-post/group-post.component';
 import { CommentService } from 'src/shared/services/comment-service/comment.service';
 import { InviteUserComponent } from './group/group-admin/invite-user/invite-user.component';
+import { GroupTasksViewsComponent } from './group/group-tasks-views/group-tasks-views.component';
+import { GroupTasksListViewComponent } from './group/group-tasks-list-view/group-tasks-list-view.component';
+import { MatButtonModule, MatMenuModule, MatChipsModule } from '@angular/material';
 
  
 /**
@@ -80,7 +83,7 @@ import { InviteUserComponent } from './group/group-admin/invite-user/invite-user
   declarations: [
   
     // Groups List Component
-    GroupsListComponent, 
+    GroupsListComponent,
 
     // Create Group Component
     CreateGroupComponent,
@@ -126,7 +129,7 @@ import { InviteUserComponent } from './group/group-admin/invite-user/invite-user
 
     // // Group Activity Component
     // GroupActivityComponent,
-  
+
     // Group Component
     GroupComponent,
 
@@ -139,6 +142,7 @@ import { InviteUserComponent } from './group/group-admin/invite-user/invite-user
     DeleteGroupComponent,
 
     GroupKanbanBoardsComponent,
+    GroupTasksListViewComponent,
 
     CreateColumnComponent,
 
@@ -152,7 +156,9 @@ import { InviteUserComponent } from './group/group-admin/invite-user/invite-user
 
     InviteUserComponent,
 
-    // GroupImageDetailsComponent
+    // GroupImageDetailsComponent,
+
+    GroupTasksViewsComponent
   ],
   imports: [
     CommonModule,
@@ -164,7 +170,15 @@ import { InviteUserComponent } from './group/group-admin/invite-user/invite-user
 
     DragDropModule,
 
+    // Angular Material Buttons
+    MatButtonModule,
+
+    // Angular Material Menu Module
+    MatMenuModule,
+
     // MomentModule
+
+    MatChipsModule,
   ],
   providers: [
     GroupsService,

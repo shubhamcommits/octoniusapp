@@ -1,0 +1,125 @@
+$border-color:#E4EDF8;
+$pumpkin-orange: #FFAB00;
+$turquoise: #0bc6a0;
+$dark-sky-blue: #4a90e2;
+
+.list {
+    .list-wrapper {
+        margin-top: 2rem;
+        .list-columns {
+            .list-column {
+                &:not(:first-child) {
+                    margin-top: 0;
+                }
+                .column-title {
+                    justify-content: space-between;
+                    margin: 24px 0 10px 0;
+                    p {
+                        font-size: 15px;
+                        font-weight: 400;
+                        text-transform: uppercase !important;
+
+                    }
+                }
+            }
+        }
+    }
+}
+
+.header {
+    background-color: #fafafa !important;
+    border-radius: 0px !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+}
+
+.task {
+    padding: 8px;
+    background: white;
+    border: 1px solid $border-color;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-bottom: 1px;
+    transition: box-shadow 0.3s ease-in-out;
+    line-height: 25px;
+    height: 40px;
+    //cursor: pointer;
+    
+    .media {
+        // vertical-align: middle;
+
+        .list-card-title {
+            font-weight: 400;
+            font-size: 15px;
+            color: #242D3A;
+            width: 100%;
+            white-space: normal;
+        }
+
+        .tags {
+            width: 10%;
+            text-align: center;
+            border: none !important;
+            padding: 0px !important;
+
+            .badge {
+                background-color: $dark-sky-blue;
+                color: white;
+                margin: 0 1px !important;
+                display: inline;
+            }
+        }
+
+        .taskStatus {
+            width: 10%;
+            text-align: center;
+        }
+
+        .assignee {
+            width: 10%;
+            text-align: center;
+            
+            .feed-avatar{
+                width: 35px;
+                height: 35px;
+                margin: -6px 5px 5px 5px;
+            }
+        }
+
+        .taskDate {
+            width: 10%;
+            text-align: center;
+        }
+
+        .newProperty {
+            width: 5%;
+            text-align: center;
+        }
+    }
+}
+
+.status-todo{
+    border-left: 3px solid $pumpkin-orange;
+}
+.status-inprogress{
+    border-left: 3px solid $turquoise;
+}
+.status-done{
+    border-left: 3px solid $dark-sky-blue;
+}
+
+
+
+.badge-todo {
+    background-color: $pumpkin-orange;
+    color: white;
+}
+.badge-inprogress {
+    background-color: $turquoise;
+    color: white;
+}
+.badge-done {
+    background-color: $dark-sky-blue;
+    color: white;
+}
