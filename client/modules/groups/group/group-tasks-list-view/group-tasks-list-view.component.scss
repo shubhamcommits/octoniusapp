@@ -44,6 +44,7 @@ $dark-sky-blue: #4a90e2;
     transition: box-shadow 0.3s ease-in-out;
     line-height: 25px;
     height: 40px;
+    //cursor: pointer;
     
     .media {
         // vertical-align: middle;
@@ -52,7 +53,6 @@ $dark-sky-blue: #4a90e2;
             font-weight: 400;
             font-size: 15px;
             color: #242D3A;
-            cursor: pointer;
             width: 100%;
             white-space: normal;
         }
