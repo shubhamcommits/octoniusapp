@@ -1,7 +1,15 @@
-<div>
+<div *ngIf="type === 'text'">
+    <div *ngIf="!editing">
+        <p
+            class="list-card-title" 
+            (click)="edit(value)"
+            (focus)="edit(value);"
+            tabindex="0" class="inline-edit">
+            {{value}}
+        </p>
+    </div>
     <div *ngIf="editing">
         <input #inlineEditControl
-            *ngIf="type === 'text'"
             [required]="required"
             (blur)="onBlur($event)"
             [name]="value"
@@ -9,27 +17,24 @@
             [type]="type"
             [placeholder]="label"
              />
-        
-        <app-date-picker *ngIf="type === 'date'"
-            (date)="getDate($event)"
-            [dueDate]="domainObject.task.due_to"
-            #inlineEditControl
-            [required]="required"
-            (blur)="onBlur($event)"
-            [name]="value"
-            [(ngModel)]="value"
-            >
-        </app-date-picker>
     </div>
-    <div *ngIf="!editing">
-        <p  *ngIf="type === 'text'"
-            class="list-card-title" 
-            (click)="edit(value)"
-            (focus)="edit(value);"
-            tabindex="0" class="inline-edit">
-            {{value}}
-        </p>
+</div>
 
-        <span *ngIf="type === 'date'" class="small" >{{value | date}}</span>
+<div *ngIf="type === 'date'" class="btn-group">
+    <!-- Date Picker Toggle starts -->
+    <button class="btn btn-link dropdown-toggle btn-sm" data-toggle="dropdown">
+        {{ value | date }}
+    </button>
+    <!-- Date Picker Toggle ends -->
+
+    <!-- Input Placeholder for date picker starts -->
+    <div class="dropdown-menu">
+        <ngb-datepicker 
+            [(ngModel)]="value" 
+            (ngModelChange)="onModelChange($event)"
+            #d="ngbDatepicker"
+            (click)="d.toggle(); $event.stopPropagation()">
+        </ngb-datepicker>
     </div>
+    <!-- Input Placeholder for date picker ends -->
 </div>

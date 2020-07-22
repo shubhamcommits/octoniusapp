@@ -40,10 +40,6 @@ export class InlineInputComponent implements ControlValueAccessor, OnInit {
 
   // Post Event Emitter - Emits the post to the other components
   @Output() post = new EventEmitter();
-  // Output the task due date
-  @Output() date = new EventEmitter();
-  // Date Object to map the due dates
-  dueDate: any;
 
   // Control Value Accessors for ngModel
   get value(): any {
@@ -91,6 +87,16 @@ export class InlineInputComponent implements ControlValueAccessor, OnInit {
     this.saveData();
   }
 
+  /**
+   * Do stuff when the date element change
+   * @param dateObject
+   */
+  onModelChange(dateObject: any) {
+    // Emit the date to the other components
+    this.value = new Date(dateObject.year, dateObject.month - 1, dateObject.day);
+    this.saveData();
+  }
+
   // Start the editting process for the input element
   edit(value) {
     if (this.disabled) {
@@ -102,18 +108,6 @@ export class InlineInputComponent implements ControlValueAccessor, OnInit {
     // Focus on the input element just as the editing begins
     setTimeout(_ => this.renderer.invokeElementMethod(this.inlineEditControl,
       'focus', []));
-  }
-
-  /**
-   * This function is responsible for receiving the date from @module <app-date-picker></app-date-picker>
-   * @param dateObject
-   */
-  getDate(dateObject: any) {
-    this.dueDate = new Date(dateObject.year, dateObject.month - 1, dateObject.day);
-
-    if (this.edit) {
-      this.date.emit(this.dueDate);
-    }
   }
 
   saveData() {
@@ -147,7 +141,11 @@ export class InlineInputComponent implements ControlValueAccessor, OnInit {
       postToUpdate.unassigned = this.domainObject.task.unassigned;
 
       // Task due date
-      postToUpdate.date_due_to = this.domainObject.dueDate;
+      if (this.type === 'date') {
+        postToUpdate.date_due_to = this.value;
+      } else {
+        postToUpdate.date_due_to = this.domainObject.dueDate;
+      }
 
       // Task Assigned to
       if (!postToUpdate.unassigned) {

@@ -104,10 +104,22 @@
                             </div>
 
                             <div class="taskDate">
+                                <app-inline-input
+                                    *ngIf="task.task.due_to != 'Invalid date' && task.task.status != 'done'"
+                                    [(ngModel)]="task.task.due_to"
+                                    [ngClass]="checkOverdue(task) === true ? 'overdue' : 'due'"
+                                    label="Due to"
+                                    [domainObject]="task"
+                                    fieldName="title"
+                                    [required]="true"
+                                    type="date">
+                                </app-inline-input>
+                                <!--
                                 <span class="small"
                                     *ngIf="task?.task?.due_to != 'Invalid date' && task?.task?.status != 'done'"
                                     [ngClass]="checkOverdue(task) === true ? 'overdue' : 'due'">
                                     {{task?.task?.due_to | date}}</span>
+                                -->
                             </div>
                             <div class="newProperty">
                                 <i class="material-icons-outlined ml-2" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
