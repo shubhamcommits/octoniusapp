@@ -1,6 +1,7 @@
 <div>
     <div *ngIf="editing">
         <input #inlineEditControl
+            *ngIf="type === 'text'"
             [required]="required"
             (blur)="onBlur($event)"
             [name]="value"
@@ -8,8 +9,27 @@
             [type]="type"
             [placeholder]="label"
              />
+        
+        <app-date-picker *ngIf="type === 'date'"
+            (date)="getDate($event)"
+            [dueDate]="domainObject.task.due_to"
+            #inlineEditControl
+            [required]="required"
+            (blur)="onBlur($event)"
+            [name]="value"
+            [(ngModel)]="value"
+            >
+        </app-date-picker>
     </div>
     <div *ngIf="!editing">
-        <p class="list-card-title" (click)="edit(value)" (focus)="edit(value);" tabindex="0" class="inline-edit">{{value}}</p>
+        <p  *ngIf="type === 'text'"
+            class="list-card-title" 
+            (click)="edit(value)"
+            (focus)="edit(value);"
+            tabindex="0" class="inline-edit">
+            {{value}}
+        </p>
+
+        <span *ngIf="type === 'date'" class="small" >{{value | date}}</span>
     </div>
 </div>

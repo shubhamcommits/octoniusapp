@@ -40,6 +40,10 @@ export class InlineInputComponent implements ControlValueAccessor, OnInit {
 
   // Post Event Emitter - Emits the post to the other components
   @Output() post = new EventEmitter();
+  // Output the task due date
+  @Output() date = new EventEmitter();
+  // Date Object to map the due dates
+  dueDate: any;
 
   // Control Value Accessors for ngModel
   get value(): any {
@@ -100,17 +104,76 @@ export class InlineInputComponent implements ControlValueAccessor, OnInit {
       'focus', []));
   }
 
+  /**
+   * This function is responsible for receiving the date from @module <app-date-picker></app-date-picker>
+   * @param dateObject
+   */
+  getDate(dateObject: any) {
+    this.dueDate = new Date(dateObject.year, dateObject.month - 1, dateObject.day);
+
+    if (this.edit) {
+      this.date.emit(this.dueDate);
+    }
+  }
+
   saveData() {
+
+    // Prepare the normal  object
+    const postToUpdate: any = {
+      title: this.domainObject.title,
+      type: this.domainObject.type,
+      content: this.domainObject.quillData ? JSON.stringify(this.domainObject.quillData.contents) : this.domainObject.content,
+      _content_mentions: this.domainObject._content_mentions,
+      tags: this.domainObject.tags,
+      _read_by: this.domainObject._read_by
+    };
+
     // [domainObject]="task"
     // fieldName="title"
     // If type is task, then add following properties too
     if (this.domainObject.type === 'task') {
 
+      // Adding unassigned property for previous tasks model
+      if (this.domainObject.task.unassigned === 'No') {
+        this.domainObject.task.unassigned = false;
+      }
+
+      // Adding unassigned property for previous tasks model
+      if (this.domainObject.task.unassigned === 'Yes') {
+        this.domainObject.task.unassigned = true;
+      }
+
+      // Unassigned property
+      postToUpdate.unassigned = this.domainObject.task.unassigned;
+
+      // Task due date
+      postToUpdate.date_due_to = this.domainObject.dueDate;
+
+      // Task Assigned to
+      if (!postToUpdate.unassigned) {
+        postToUpdate.assigned_to = this.domainObject.task._assigned_to._id;
+      }
+
+      // Task column
+      postToUpdate._column = {
+        title: this.domainObject.task._column.title
+      },
+
+      // Task status
+      postToUpdate.status = this.domainObject.task.status;
+
       // Create FormData Object
       let formData = new FormData();
 
       // Append Post Data
-      formData.append('post', JSON.stringify(this.domainObject));
+      formData.append('post', JSON.stringify(postToUpdate));
+
+      // Append all the file attachments
+      if (this.domainObject.files !== null && this.domainObject.files.length !== 0) {
+        for (let index = 0; index < this.domainObject.files.length; index++) {
+          formData.append('attachments', this.domainObject.files[index], this.domainObject.files[index]['name']);
+        }
+      }
 
       this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
         this.postService.edit(this.domainObject._id, formData)
