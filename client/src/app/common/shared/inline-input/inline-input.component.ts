@@ -39,12 +39,13 @@ export class InlineInputComponent implements ControlValueAccessor, OnInit {
 
   private _value = ''; // Private variable for input value
   private preValue = ''; // The value before clicking to edit
-  private editing = false; // Is Component in edit mode?
+  editing = false; // Is Component in edit mode?
 
   profilePicUrl = '';
 
   public onChange: any = Function.prototype; // Trascend the onChange event
   public onTouched: any = Function.prototype; // Trascend the onTouch event
+  public onFocusout: any = Function.prototype; // Trascend the onTouch event
 
   // Post Event Emitter - Emits the post to the other components
   @Output() post = new EventEmitter();
@@ -92,14 +93,22 @@ export class InlineInputComponent implements ControlValueAccessor, OnInit {
     this.onTouched = fn;
   }
 
+  // Required forControlValueAccessor interface
+  public registerOnFocusout(fn: () => {}): void {
+    this.onFocusout = fn;
+  }
+
+  // Do stuff when the input element loses focus
+  focusout($event: Event) {
+    this.editing = false;
+  }
+
   // Do stuff when the input element loses focus
   onBlur($event: Event) {
     this.editing = false;
 
-    if (this.type !== 'assignee') {
-      // Save the data
-      this.saveData();
-    }
+    // Save the data
+    this.saveData();
   }
 
   /**
@@ -170,21 +179,21 @@ export class InlineInputComponent implements ControlValueAccessor, OnInit {
       }
 
       // Unassigned property
-      postToUpdate.task.unassigned = this.domainObject.task.unassigned;
-      if (!postToUpdate.task.unassigned && this.type === 'assignee') {
-        postToUpdate.task._assigned_to = this.value;
+      postToUpdate.unassigned = this.domainObject.task.unassigned;
+      if (!postToUpdate.unassigned && this.type === 'assignee') {
+        postToUpdate.assigned_to = this.value;
+      }
+
+      // Task Assigned to
+      if (!postToUpdate.unassigned) {
+        postToUpdate.assigned_to = this.domainObject.task._assigned_to._id;
       }
 
       // Task due date
       if (this.type === 'date') {
         postToUpdate.date_due_to = this.value;
       } else {
-        postToUpdate.date_due_to = this.domainObject.dueDate;
-      }
-
-      // Task Assigned to
-      if (!postToUpdate.unassigned) {
-        postToUpdate.assigned_to = this.domainObject.task._assigned_to._id;
+        postToUpdate.date_due_to = this.domainObject.task.due_to;
       }
 
       // Task column
