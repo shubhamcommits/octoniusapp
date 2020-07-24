@@ -42,7 +42,6 @@ export class InlineInputComponent implements ControlValueAccessor, OnInit {
   private editing = false; // Is Component in edit mode?
 
   profilePicUrl = '';
-  initialAssignee;
 
   public onChange: any = Function.prototype; // Trascend the onChange event
   public onTouched: any = Function.prototype; // Trascend the onTouch event
