@@ -33,7 +33,7 @@
             [(ngModel)]="value" 
             (ngModelChange)="onModelChange($event)"
             #d="ngbDatepicker"
-            (click)="d.toggle(); $event.stopPropagation()">
+            (click)="$event.stopPropagation()">
         </ngb-datepicker>
     </div>
     <!-- Input Placeholder for date picker ends -->
@@ -54,6 +54,7 @@
             [workspaceId]="workspaceId"
             [userData]="userData" 
             [type]="domainObject.type"
+            (onFocusout)="focusout($event)"
             (member)="getMemberDetails($event)">
         </app-component-search-input-box>
     </section>

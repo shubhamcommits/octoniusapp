@@ -179,21 +179,21 @@ export class InlineInputComponent implements ControlValueAccessor, OnInit {
       }
 
       // Unassigned property
-      postToUpdate.task.unassigned = this.domainObject.task.unassigned;
-      if (!postToUpdate.task.unassigned && this.type === 'assignee') {
-        postToUpdate.task._assigned_to = this.value;
+      postToUpdate.unassigned = this.domainObject.task.unassigned;
+      if (!postToUpdate.unassigned && this.type === 'assignee') {
+        postToUpdate.assigned_to = this.value;
+      }
+
+      // Task Assigned to
+      if (!postToUpdate.unassigned) {
+        postToUpdate.assigned_to = this.domainObject.task._assigned_to._id;
       }
 
       // Task due date
       if (this.type === 'date') {
         postToUpdate.date_due_to = this.value;
       } else {
-        postToUpdate.date_due_to = this.domainObject.dueDate;
-      }
-
-      // Task Assigned to
-      if (!postToUpdate.unassigned) {
-        postToUpdate.assigned_to = this.domainObject.task._assigned_to._id;
+        postToUpdate.date_due_to = this.domainObject.task.due_to;
       }
 
       // Task column
