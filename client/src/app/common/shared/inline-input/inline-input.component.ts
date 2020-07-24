@@ -10,6 +10,7 @@ import { Component,
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { environment } from 'src/environments/environment';
 
 const INLINE_EDIT_CONTROL_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
@@ -25,16 +26,23 @@ const INLINE_EDIT_CONTROL_VALUE_ACCESSOR = {
 })
 export class InlineInputComponent implements ControlValueAccessor, OnInit {
 
-  @ViewChild('inlineEditControl') inlineEditControl: ElementRef; // input DOM element
+  @ViewChild('inlineEditControl', {static: true}) inlineEditControl: ElementRef; // input DOM element
   @Input() label = '';  // Label value for input element
   @Input() type = 'text'; // The type of input element
   @Input() required = false; // Is input requried?
   @Input() disabled = false; // Is input disabled?
   @Input() domainObject: any; // Complete object to be updated
-  @Input() fieldName: string; // Field name to update
+
+  @Input() workspaceId: string;
+  @Input() userData;
+  @Input() groupId: string;
+
   private _value = ''; // Private variable for input value
   private preValue = ''; // The value before clicking to edit
   private editing = false; // Is Component in edit mode?
+
+  profilePicUrl = '';
+
   public onChange: any = Function.prototype; // Trascend the onChange event
   public onTouched: any = Function.prototype; // Trascend the onTouch event
 
@@ -62,6 +70,11 @@ export class InlineInputComponent implements ControlValueAccessor, OnInit {
   }
 
   ngOnInit() {
+    if (this.domainObject.task._assigned_to) {
+      this.profilePicUrl = environment.UTILITIES_USERS_UPLOADS + '/' + this.domainObject.task._assigned_to.profile_pic;
+    } else {
+      this.profilePicUrl = 'assets/images/user.png';
+    }
   }
 
   // Required for ControlValueAccessor interface
@@ -83,8 +96,10 @@ export class InlineInputComponent implements ControlValueAccessor, OnInit {
   onBlur($event: Event) {
     this.editing = false;
 
-    // TODO Save the data
-    this.saveData();
+    if (this.type !== 'assignee') {
+      // Save the data
+      this.saveData();
+    }
   }
 
   /**
@@ -92,6 +107,7 @@ export class InlineInputComponent implements ControlValueAccessor, OnInit {
    * @param dateObject
    */
   onModelChange(dateObject: any) {
+    this.editing = false;
     // Emit the date to the other components
     this.value = new Date(dateObject.year, dateObject.month - 1, dateObject.day);
     this.saveData();
@@ -106,8 +122,25 @@ export class InlineInputComponent implements ControlValueAccessor, OnInit {
     this.preValue = value;
     this.editing = true;
     // Focus on the input element just as the editing begins
-    setTimeout(_ => this.renderer.invokeElementMethod(this.inlineEditControl,
-      'focus', []));
+    // setTimeout(_ => this.renderer.invokeElementMethod(this.inlineEditControl, 'focus', []));
+  }
+
+  getMemberDetails(memberMap: any) {
+    this.editing = false;
+
+    if (this.domainObject.type === 'task') {
+      // Set the unassigned state of task to be false
+      this.domainObject.task.unassigned = false;
+
+      // Assign the value of member map to the taskAssignee variable
+      for (const member of memberMap.values()) {
+        this.value = member;
+      }
+
+      this.profilePicUrl = environment.UTILITIES_USERS_UPLOADS + '/' + this.value.profile_pic;
+
+      this.saveData();
+    }
   }
 
   saveData() {
@@ -119,11 +152,10 @@ export class InlineInputComponent implements ControlValueAccessor, OnInit {
       content: this.domainObject.quillData ? JSON.stringify(this.domainObject.quillData.contents) : this.domainObject.content,
       _content_mentions: this.domainObject._content_mentions,
       tags: this.domainObject.tags,
-      _read_by: this.domainObject._read_by
+      _read_by: this.domainObject._read_by,
+      task: this.domainObject.task
     };
 
-    // [domainObject]="task"
-    // fieldName="title"
     // If type is task, then add following properties too
     if (this.domainObject.type === 'task') {
 
@@ -138,7 +170,10 @@ export class InlineInputComponent implements ControlValueAccessor, OnInit {
       }
 
       // Unassigned property
-      postToUpdate.unassigned = this.domainObject.task.unassigned;
+      postToUpdate.task.unassigned = this.domainObject.task.unassigned;
+      if (!postToUpdate.task.unassigned && this.type === 'assignee') {
+        postToUpdate.task._assigned_to = this.value;
+      }
 
       // Task due date
       if (this.type === 'date') {

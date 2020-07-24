@@ -11,11 +11,11 @@
                     <div class="tags">
                         <p>Tags</p>
                     </div>
-
+                    <!--
                     <div class="taskStatus">
                         <p>Status</p>
                     </div>
-                    
+                    -->                    
                     <div class="assignee">
                         <p>Assignee</p>
                     </div>
@@ -61,7 +61,6 @@
                                     [(ngModel)]="task.title"
                                     label="Name"
                                     [domainObject]="task"
-                                    fieldName="title"
                                     [required]="true"
                                     type="text">
                                 </app-inline-input>
@@ -89,37 +88,35 @@
                                     {{ tag }}
                                 </span>
                             </div>
-
+                            <!--
                             <div class="taskStatus">
                                 <span class="badge"
                                     [ngClass]="{'badge-todo': task?.task?.status === 'to do', 'badge-inprogress': task?.task?.status === 'in progress', 'badge-done': task?.task?.status === 'done'}">
                                         {{ task?.task?.status }}
                                 </span>
                             </div>
-                            
+                            -->
                             <div class="assignee">
-                                <img src="{{baseUrl}}/{{task?.task?._assigned_to?.profile_pic}}"
-                                    onerror="this.src='assets/images/user.png'"
-                                    class="feed-avatar">
+                                <app-inline-input
+                                    [(ngModel)]="task.task._assigned_to"
+                                    [domainObject]="task"
+                                    [required]="true"
+                                    [workspaceId]="groupData._workspace._id"
+                                    [userData]="userData"
+                                    [groupId]="groupData._id"
+                                    type="assignee">
+                                </app-inline-input>
                             </div>
 
                             <div class="taskDate">
                                 <app-inline-input
-                                    *ngIf="task.task.due_to != 'Invalid date' && task.task.status != 'done'"
+                                    *ngIf="task.task.due_to != 'Invalid date'"
                                     [(ngModel)]="task.task.due_to"
                                     [ngClass]="checkOverdue(task) === true ? 'overdue' : 'due'"
-                                    label="Due to"
                                     [domainObject]="task"
-                                    fieldName="title"
                                     [required]="true"
                                     type="date">
                                 </app-inline-input>
-                                <!--
-                                <span class="small"
-                                    *ngIf="task?.task?.due_to != 'Invalid date' && task?.task?.status != 'done'"
-                                    [ngClass]="checkOverdue(task) === true ? 'overdue' : 'due'">
-                                    {{task?.task?.due_to | date}}</span>
-                                -->
                             </div>
                             <div class="newProperty">
                                 <i class="material-icons-outlined ml-2" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
