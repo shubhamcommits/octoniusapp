@@ -1,4 +1,12 @@
-<div>
+<div *ngIf="type === 'text'">
+    <div *ngIf="!editing">
+        <p class="list-card-title" 
+            (click)="edit(value)"
+            (focus)="edit(value);"
+            tabindex="0" class="inline-edit">
+            {{value}}
+        </p>
+    </div>
     <div *ngIf="editing">
         <input #inlineEditControl
             [required]="required"
@@ -9,7 +17,45 @@
             [placeholder]="label"
              />
     </div>
-    <div *ngIf="!editing">
-        <p class="list-card-title" (click)="edit(value)" (focus)="edit(value);" tabindex="0" class="inline-edit">{{value}}</p>
+</div>
+
+<div *ngIf="type === 'date'" class="btn-group">
+    <!-- Date Picker Toggle starts -->
+    <button *ngIf="value !== null && value !== ''" class="btn btn-link dropdown-toggle btn-sm" data-toggle="dropdown">
+        {{ value | date }}
+    </button>
+    <i *ngIf="value === null || value === ''" class="material-icons" data-toggle="dropdown" style="cursor: pointer;">calendar_today</i>
+    <!-- Date Picker Toggle ends -->
+
+    <!-- Input Placeholder for date picker starts -->
+    <div class="dropdown-menu">
+        <ngb-datepicker #inlineEditControl
+            [(ngModel)]="value" 
+            (ngModelChange)="onModelChange($event)"
+            #d="ngbDatepicker"
+            (click)="d.toggle(); $event.stopPropagation()">
+        </ngb-datepicker>
     </div>
+    <!-- Input Placeholder for date picker ends -->
+</div>
+
+<div *ngIf="type === 'assignee'" class="assignee">
+    <!-- Assignee section for tasks starts -->
+    <section>
+        <div *ngIf="!editing">
+            <img src="{{ profilePicUrl }}"
+                onerror="this.src='assets/images/user.png'"
+                class="feed-avatar" (click)="edit(value)">
+        </div>
+        <app-component-search-input-box
+            *ngIf="editing" class="feed-avatar"
+            [placeholder]="'Assign...'" 
+            [groupId]="groupId" 
+            [workspaceId]="workspaceId"
+            [userData]="userData" 
+            [type]="domainObject.type"
+            (member)="getMemberDetails($event)">
+        </app-component-search-input-box>
+    </section>
+    <!-- Assignee section for tasks ends -->
 </div>

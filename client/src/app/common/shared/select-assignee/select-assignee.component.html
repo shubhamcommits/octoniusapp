@@ -6,7 +6,7 @@
     <p *ngIf="!assigned">Unassigned</p>
     <app-component-search-input-box
         *ngIf="type === 'task' && userData && checkDataExist(userData) && showBar"
-        [placeholder]="'Assign this task...'" 
+        [placeholder]="'Assign...'" 
         [groupId]="groupId" 
         [workspaceId]="userData._workspace"
         [userData]="userData" 
@@ -23,7 +23,7 @@
     
     <app-component-search-input-box 
         *ngIf="type === 'event' && userData && checkDataExist(userData) && showBar"
-        [placeholder]="'Assign this event...'" 
+        [placeholder]="'Assign...'" 
         [groupId]="groupId" 
         [workspaceId]="userData._workspace"
         [userData]="userData" 
