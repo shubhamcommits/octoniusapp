@@ -14,3 +14,9 @@ input {
     padding: 4px 10px;
     margin-top: -6px;
 }
+
+.dropdown-menu{
+    padding: 0;
+    border:none !important;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15), 0 6px 9px rgba(0, 0, 0, 0.2);
+}
