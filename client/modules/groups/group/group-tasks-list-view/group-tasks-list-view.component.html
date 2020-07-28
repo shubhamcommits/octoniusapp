@@ -28,12 +28,22 @@
                     </div>
 
                     <div class="newProperty">
-                        <i class="material-icons-outlined"
-                            (click)="openAddColumnDialog()"
-                            style="cursor: pointer;">
-                            add
-                        </i>
+                        <i class="material-icons-outlined" style="cursor: pointer;" [matMenuTriggerFor]="addColumn">add</i>
                     </div>
+                    <mat-menu #addColumn="matMenu">
+                        <div class="newColumnMatMenu">
+                            <p>Add custom field</p>
+                            <mat-form-field>
+                                <mat-select ngDefaultControl
+                                        (selectionChange)="addNewColumn($event)"
+                                        (click)="$event.stopPropagation()"
+                                        [(ngModel)]="newColumnSelected"
+                                        name="new_column">
+                                    <mat-option *ngFor="let f of fields" [value]="f">{{f.title}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </mat-menu>
                 </div>
             </div>
         </div>

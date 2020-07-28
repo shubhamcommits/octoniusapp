@@ -74,9 +74,8 @@ import { InviteUserComponent } from './group/group-admin/invite-user/invite-user
 import { GroupTasksViewsComponent } from './group/group-tasks-views/group-tasks-views.component';
 import { GroupTasksListViewComponent } from './group/group-tasks-list-view/group-tasks-list-view.component';
 import { MatButtonModule, MatMenuModule, MatChipsModule, MatDialogModule, MatSelectModule } from '@angular/material';
-import { AddColumnPropertyDialogComponent } from './group/group-tasks-list-view/add-column-property-dialog/add-column-property-dialog.component';
 
- 
+
 /**
  * 4. !===== DECLARATIONS, IMPORTS, EXPORTS, & PROVIDERS =====!
  */
@@ -158,8 +157,7 @@ import { AddColumnPropertyDialogComponent } from './group/group-tasks-list-view/
 
     // GroupImageDetailsComponent,
 
-    GroupTasksViewsComponent,
-    AddColumnPropertyDialogComponent
+    GroupTasksViewsComponent
   ],
   imports: [
     CommonModule,
@@ -193,9 +191,6 @@ import { AddColumnPropertyDialogComponent } from './group/group-tasks-list-view/
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
-  ],
-  entryComponents: [
-    AddColumnPropertyDialogComponent
   ]
 })
 export class GroupsModule { }

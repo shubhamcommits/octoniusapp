@@ -41,6 +41,9 @@ export class GroupTasksListViewComponent implements OnInit {
   // Property to know the selected field to add as column
   field: string;
 
+  newColumnSelected;
+  fields = [];
+
   constructor(
       public utilityService: UtilityService,
       private groupService: GroupService,
@@ -56,6 +59,10 @@ export class GroupTasksListViewComponent implements OnInit {
           this.customFieldsToShow.push(field);
         });
       });
+
+      this.fields = [
+        {name: 'status', title: 'Status', values: ['to do', 'in progress', 'done']}
+      ];
   }
 
   /**
@@ -252,26 +259,10 @@ export class GroupTasksListViewComponent implements OnInit {
     return color;
   }
 
-  openAddColumnDialog(): void {
-    const dialogRef = this.dialog.open(AddColumnPropertyDialogComponent, {
-      width: '250px',
-      data: { field: this.field }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      this.field = result;
-      this.addColumn(this.field);
-    });
-  }
-
-  /**
-   * This function recieves the output from the other component for creating column
-   * @param field
-   */
-  addColumn(field: any) {
+  addNewColumn($event: Event) {
 
     // Find the index of the column to check if the same named column exist or not
-    const index = this.customFieldsToShow.findIndex((f: any) => f.name.toLowerCase() === field.name.toLowerCase());
+    const index = this.customFieldsToShow.findIndex((f: any) => f.name.toLowerCase() === this.newColumnSelected.name.toLowerCase());
 
     // If index is found, then throw error notification
     if (index !== -1) {
@@ -280,7 +271,7 @@ export class GroupTasksListViewComponent implements OnInit {
     // If not found, then push the element
 
       // Create the Column
-      this.saveCustomFieldsToShow(field);
+      this.saveCustomFieldsToShow(this.newColumnSelected);
     }
   }
 
