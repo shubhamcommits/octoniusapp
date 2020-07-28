@@ -90,9 +90,17 @@
                                 </ng-template>
                             </div>
 
-                            <div class="tags">
+                            <div class="tags" *ngIf="task?.tags.length <= 1">
                                 <span class="badge" *ngFor="let tag of task?.tags">
                                     {{ tag }}
+                                </span>
+                            </div>
+                            <div class="tags" *ngIf="task?.tags.length > 1">
+                                <span class="badge">
+                                    {{ task?.tags[0] }}
+                                </span>
+                                <span class="badge">
+                                    +{{ task?.tags.length-1 }}
                                 </span>
                             </div>
 
