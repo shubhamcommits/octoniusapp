@@ -11,11 +11,7 @@
                     <div class="tags">
                         <p>Tags</p>
                     </div>
-                    <!--
-                    <div class="taskStatus">
-                        <p>Status</p>
-                    </div>
-                    -->                    
+                    
                     <div class="assignee">
                         <p>Assignee</p>
                     </div>
@@ -25,7 +21,7 @@
                     </div>
 
                     <div class="customFields" *ngFor="let field of customFieldsToShow" >
-                        <p>{{ field.name }}
+                        <p>{{ field.title }}
                             <i class="material-icons"
                                 (click)="removeColumn(field)"
                                 style="cursor: pointer;">highlight_off</i></p>
