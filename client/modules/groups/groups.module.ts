@@ -73,7 +73,8 @@ import { CommentService } from 'src/shared/services/comment-service/comment.serv
 import { InviteUserComponent } from './group/group-admin/invite-user/invite-user.component';
 import { GroupTasksViewsComponent } from './group/group-tasks-views/group-tasks-views.component';
 import { GroupTasksListViewComponent } from './group/group-tasks-list-view/group-tasks-list-view.component';
-import { MatButtonModule, MatMenuModule, MatChipsModule } from '@angular/material';
+import { MatButtonModule, MatMenuModule, MatChipsModule, MatDialogModule, MatSelectModule } from '@angular/material';
+import { AddColumnPropertyDialogComponent } from './group/group-tasks-list-view/add-column-property-dialog/add-column-property-dialog.component';
 
  
 /**
@@ -81,7 +82,6 @@ import { MatButtonModule, MatMenuModule, MatChipsModule } from '@angular/materia
  */
 @NgModule({
   declarations: [
-  
     // Groups List Component
     GroupsListComponent,
 
@@ -158,7 +158,8 @@ import { MatButtonModule, MatMenuModule, MatChipsModule } from '@angular/materia
 
     // GroupImageDetailsComponent,
 
-    GroupTasksViewsComponent
+    GroupTasksViewsComponent,
+    AddColumnPropertyDialogComponent
   ],
   imports: [
     CommonModule,
@@ -179,6 +180,10 @@ import { MatButtonModule, MatMenuModule, MatChipsModule } from '@angular/materia
     // MomentModule
 
     MatChipsModule,
+
+    MatDialogModule,
+
+    MatSelectModule
   ],
   providers: [
     GroupsService,
@@ -188,6 +193,9 @@ import { MatButtonModule, MatMenuModule, MatChipsModule } from '@angular/materia
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
+  ],
+  entryComponents: [
+    AddColumnPropertyDialogComponent
   ]
 })
 export class GroupsModule { }

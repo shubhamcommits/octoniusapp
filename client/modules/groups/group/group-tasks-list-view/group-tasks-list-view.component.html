@@ -24,8 +24,19 @@
                         <p>Due Date</p>
                     </div>
 
+                    <div class="customFields" *ngFor="let field of customFieldsToShow" >
+                        <p>{{ field.name }}
+                            <i class="material-icons"
+                                (click)="removeColumn(field)"
+                                style="cursor: pointer;">highlight_off</i></p>
+                    </div>
+
                     <div class="newProperty">
-                        <!-- <i class="material-icons-outlined">add</i> -->
+                        <i class="material-icons-outlined"
+                            (click)="openAddColumnDialog()"
+                            style="cursor: pointer;">
+                            add
+                        </i>
                     </div>
                 </div>
             </div>
@@ -88,14 +99,7 @@
                                     {{ tag }}
                                 </span>
                             </div>
-                            <!--
-                            <div class="taskStatus">
-                                <span class="badge"
-                                    [ngClass]="{'badge-todo': task?.task?.status === 'to do', 'badge-inprogress': task?.task?.status === 'in progress', 'badge-done': task?.task?.status === 'done'}">
-                                        {{ task?.task?.status }}
-                                </span>
-                            </div>
-                            -->
+
                             <div class="assignee">
                                 <app-inline-input
                                     [(ngModel)]="task.task._assigned_to"
@@ -118,6 +122,26 @@
                                     type="date">
                                 </app-inline-input>
                             </div>
+
+                            <div class="customFields" *ngFor="let field of customFieldsToShow" >
+                                <!--
+                                <app-inline-input
+                                    [(ngModel)]="task.customFields[field.name]"
+                                    [domainObject]="task"
+                                    [required]="true"
+                                    [options]="customFieldValues(field.name)"
+                                    type="customField">
+                                </app-inline-input>
+                                -->
+                                <app-inline-input
+                                    [(ngModel)]="task.task[field.name]"
+                                    [domainObject]="task"
+                                    [required]="true"
+                                    [options]="customFieldValues(field.name)"
+                                    type="customField">
+                                </app-inline-input>
+                            </div>
+
                             <div class="newProperty">
                                 <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
                                 <mat-menu #menu="matMenu">

@@ -55,6 +55,12 @@ routes.get('/agora/not-joined-next', group.getNextAgoraGroupsNotJoined);
 // POST - User  join Agora group
 routes.post('/agora/join', group.joinAgoraGroup);
 
+// PUT - Save custom fiels to show
+routes.put('/:groupId/customFieldsToShow', group.updateCustomFieldsToShow);
+
+// GET - Get custom fiels to show
+routes.get('/:groupId/customFieldsToShow', group.getCustomFieldsToShow);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

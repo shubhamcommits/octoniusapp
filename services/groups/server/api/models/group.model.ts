@@ -71,6 +71,23 @@ const GroupSchema = new Schema({
     members_count: {
         type: Number,
         default: 0
+    },
+    custom_fields: [{
+        type: Schema.Types.ObjectId,
+        ref: 'CustomField'
+    }],
+    custom_fields_to_show: {
+        type: [{
+            name: {
+                type: String
+            },
+            title: {
+                type: String
+            },
+            values: {
+                type: [String]
+            }
+        }]
     }
 });
 

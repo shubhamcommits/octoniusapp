@@ -5,6 +5,9 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { AddColumnPropertyDialogComponent } from './add-column-property-dialog/add-column-property-dialog.component';
+import { MatDialog } from '@angular/material';
+import { GroupService } from 'src/shared/services/group-service/group.service';
 
 @Component({
   selector: 'app-group-tasks-list-view',
@@ -21,6 +24,8 @@ export class GroupTasksListViewComponent implements OnInit {
   // Task Posts array variable
   @Input() tasks: any;
 
+  customFieldsToShow: any[] = [];
+
   // Today's date object
   today = moment().local().startOf('day').format('YYYY-MM-DD');
 
@@ -33,13 +38,24 @@ export class GroupTasksListViewComponent implements OnInit {
   // Base URL of the uploads
   baseUrl = environment.UTILITIES_USERS_UPLOADS;
 
+  // Property to know the selected field to add as column
+  field: string;
+
   constructor(
       public utilityService: UtilityService,
+      private groupService: GroupService,
       private injector: Injector,
-      private router: ActivatedRoute
-    ) { }
+      private router: ActivatedRoute,
+      public dialog: MatDialog
+    ) {
+    }
 
-  ngOnInit() {
+  async ngOnInit() {
+      await this.groupService.getGroupCustomFieldsToShow(this.groupId).then((res) => {
+        res['group']['custom_fields_to_show'].forEach(field => {
+          this.customFieldsToShow.push(field);
+        });
+      });
   }
 
   /**
@@ -234,5 +250,57 @@ export class GroupTasksListViewComponent implements OnInit {
       color = 'dark-sky-blue';
     }
     return color;
+  }
+
+  openAddColumnDialog(): void {
+    const dialogRef = this.dialog.open(AddColumnPropertyDialogComponent, {
+      width: '250px',
+      data: { field: this.field }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.field = result;
+      this.addColumn(this.field);
+    });
+  }
+
+  /**
+   * This function recieves the output from the other component for creating column
+   * @param field
+   */
+  addColumn(field: any) {
+
+    // Find the index of the column to check if the same named column exist or not
+    const index = this.customFieldsToShow.findIndex((f: any) => f.name.toLowerCase() === field.name.toLowerCase());
+
+    // If index is found, then throw error notification
+    if (index !== -1) {
+      this.utilityService.warningNotification('Column already exist!');
+    } else {
+    // If not found, then push the element
+
+      // Create the Column
+      this.saveCustomFieldsToShow(field);
+    }
+  }
+
+  saveCustomFieldsToShow(field) {
+    // Push the Column
+    this.customFieldsToShow.push(field);
+
+    this.groupService.saveCustomFieldsToShow(this.groupData._id, this.customFieldsToShow);
+  }
+
+  removeColumn(field: any) {
+    const index: number = this.customFieldsToShow.indexOf(field);
+    if (index !== -1) {
+        this.customFieldsToShow.splice(index, 1);
+    }
+    this.groupService.saveCustomFieldsToShow(this.groupData._id, this.customFieldsToShow);
+  }
+
+  customFieldValues(fieldName: string) {
+    const index = this.customFieldsToShow.findIndex((field: any) => field.name === fieldName);
+    return this.customFieldsToShow[index].values;
   }
 }

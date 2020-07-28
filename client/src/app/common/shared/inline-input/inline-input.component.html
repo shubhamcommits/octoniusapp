@@ -60,3 +60,21 @@
     </section>
     <!-- Assignee section for tasks ends -->
 </div>
+
+<div *ngIf="type === 'customField'">
+    <div *ngIf="!editing">
+        <p class="list-card-title" 
+            (click)="edit(value)"
+            (focus)="edit(value);"
+            tabindex="0" class="inline-edit">
+            {{value}}
+        </p>
+    </div>
+    <div *ngIf="editing">
+        <mat-form-field>
+            <mat-select #inlineEditControl ngDefaultControl [(ngModel)]="value" [name]="value" (selectionChange)="onCustomFieldChange($event)">
+                <mat-option *ngFor="let opt of options" [value]="opt">{{ opt }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+</div>

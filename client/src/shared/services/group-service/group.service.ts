@@ -112,4 +112,12 @@ export class GroupService {
     return this._http.post(this.baseURL + `/members/remove`, bodyData)
     .toPromise()
   }
+
+  saveCustomFieldsToShow(groupId: string, customFieldsToShow: any[]) {
+    return this._http.put(this.baseURL + `/${groupId}/customFieldsToShow`, { customFieldsToShow }).toPromise();
+  }
+
+  getGroupCustomFieldsToShow(groupId: string) {
+    return this._http.get(this.baseURL + `/${groupId}/customFieldsToShow`).toPromise();
+  }
 }

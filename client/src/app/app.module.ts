@@ -99,7 +99,7 @@ import { ServerErrorInterceptor } from 'src/shared/error-handler/server-error.in
     AppComponent,
 
     // PAGE NOT FOUND COMPONENT
-    PageNotFoundComponent
+    PageNotFoundComponent,
   ],
 
   imports: [

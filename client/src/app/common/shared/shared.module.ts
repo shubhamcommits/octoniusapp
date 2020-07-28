@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ImageCropperModule } from 'ngx-image-cropper';
@@ -52,7 +52,7 @@ import { CommentSectionComponent } from './comments/comment-section/comment-sect
 import { PostCommentComponent } from './comments/post-comment/post-comment.component';
 import { LikeCommentComponent } from './comments/post-comment/like-comment/like-comment.component';
 
-import { MatSidenavModule, MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material';
+import { MatSidenavModule, MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS, MatSelectModule } from '@angular/material';
 import { PreviewFilesDialogComponent } from './preview-files-dialog/preview-files-dialog.component';
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
 import { InlineInputComponent } from './inline-input/inline-input.component';
@@ -158,7 +158,9 @@ import { InlineInputComponent } from './inline-input/inline-input.component';
     // Angular Material Dialog
     MatDialogModule,
 
-    NgxDocViewerModule
+    NgxDocViewerModule,
+
+    MatSelectModule
   ],
   exports: [
     AttachFilesComponent,
@@ -215,6 +217,9 @@ import { InlineInputComponent } from './inline-input/inline-input.component';
   ],
   providers: [
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}
+  ],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA
   ],
   entryComponents: [
     PreviewFilesDialogComponent

@@ -141,7 +141,17 @@ const PostSchema = new Schema({
             type: Schema.Types.ObjectId,
             ref: 'User'
         }]
-    }
+    },
+
+    // Custom Fields
+    custom_fields: [{
+        name: {
+            type: String
+        },
+        value: {
+            type: String
+        }
+    }]
 });
 
 const Post = mongoose.model('Post', PostSchema);

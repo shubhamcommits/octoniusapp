@@ -37,6 +37,8 @@ export class InlineInputComponent implements ControlValueAccessor, OnInit {
   @Input() userData;
   @Input() groupId: string;
 
+  @Input() options: [string];
+
   private _value = ''; // Private variable for input value
   private preValue = ''; // The value before clicking to edit
   editing = false; // Is Component in edit mode?
@@ -122,6 +124,13 @@ export class InlineInputComponent implements ControlValueAccessor, OnInit {
     this.saveData();
   }
 
+  onCustomFieldChange($event: Event) {
+    this.editing = false;
+
+    // Save the data
+    this.saveData();
+  }
+
   // Start the editting process for the input element
   edit(value) {
     if (this.disabled) {
@@ -185,7 +194,7 @@ export class InlineInputComponent implements ControlValueAccessor, OnInit {
       }
 
       // Task Assigned to
-      if (!postToUpdate.unassigned) {
+      if (!postToUpdate.unassigned && this.domainObject.task._assigned_to !== null) {
         postToUpdate.assigned_to = this.domainObject.task._assigned_to._id;
       }
 
