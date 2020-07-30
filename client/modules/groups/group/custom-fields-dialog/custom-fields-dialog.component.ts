@@ -1,0 +1,130 @@
+import { Component, OnInit, Inject } from '@angular/core';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { GroupService } from 'src/shared/services/group-service/group.service';
+import { MAT_DIALOG_DATA } from '@angular/material';
+
+@Component({
+  selector: 'app-custom-fields-dialog',
+  templateUrl: './custom-fields-dialog.component.html',
+  styleUrls: ['./custom-fields-dialog.component.scss']
+})
+export class CustomFieldsDialogComponent implements OnInit {
+
+  customFields = [];
+
+  showNewCustomField = false;
+  newCustomFieldTitle = '';
+
+  newValue = '';
+
+  groupData;
+
+  constructor(
+    public utilityService: UtilityService,
+    private groupService: GroupService,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) { }
+
+  ngOnInit() {
+    this.groupData = this.data.groupData;
+
+    this.groupService.getGroupCustomFields(this.groupData._id).then((res) => {
+      res['group']['custom_fields'].forEach(field => {
+        this.customFields.push(field);
+      });
+    });
+  }
+
+  createCustomField() {
+    if (this.newCustomFieldTitle !== '') {
+      // Find the index of the field to check if the same named field exist or not
+      const index = this.customFields.findIndex((f: any) => f.name.toLowerCase() === this.newCustomFieldTitle.toLowerCase());
+
+      // If index is found, then throw error notification
+      if (index !== -1) {
+        this.utilityService.warningNotification('Field already exist!');
+      } else {
+        const newCF = {
+          name: this.newCustomFieldTitle.toLowerCase(),
+          title: this.titleCase(this.newCustomFieldTitle),
+          values: []
+        };
+        this.customFields.push(newCF);
+
+        // Save the new field
+        this.groupService.saveNewCustomField(newCF, this.groupData._id);
+
+        this.showNewCustomField = false;
+        this.newCustomFieldTitle = '';
+      }
+    }
+  }
+
+  /**
+   * Call function to delete a custom field
+   * @param field
+   */
+  removeCustomField(field) {
+
+    // Ask User to remove this field or not
+    this.utilityService.getConfirmDialogAlert()
+      .then((result) => {
+        if (result.value) {
+          // Remove the file
+          this.utilityService.asyncNotification('Please wait we are deleting the custom field...', new Promise((resolve, reject) => {
+            const index = this.customFields.findIndex((f: any) => f.name.toLowerCase() === field.name.toLowerCase());
+            if (index !== -1) {
+              // Remove the value
+              this.groupService.removeCustomField(field._id, this.groupData._id)
+                .then((res) => {
+                  // Remove the field from the list
+                  this.customFields.splice(index, 1);
+
+                  resolve(this.utilityService.resolveAsyncPromise('Field deleted!'));
+                }).catch((err) => {
+                  reject(this.utilityService.rejectAsyncPromise('Unable to delete field, please try again!'));
+                });
+            }
+          }));
+        }
+      });
+  }
+
+  addValue(field) {
+    if (this.newValue !== '') {
+      // Find the index of the field to check if the same named field exist or not
+      const index = field.values.findIndex((v: string) => v.toLowerCase() === this.newValue.toLowerCase());
+
+      // If index is found, then throw error notification
+      if (index !== -1) {
+        this.utilityService.warningNotification('Value already exist!');
+      } else {
+        field.values.push(this.newValue);
+
+        // Save the new value
+        this.groupService.addCustomFieldNewValue(this.newValue, field._id, this.groupData._id);
+
+        this.newValue = '';
+      }
+    }
+  }
+
+  removeValue(field, value: string) {
+    const index = field.values.findIndex((v: string) => v.toLowerCase() === value.toLowerCase());
+
+    if (index !== -1) {
+      // Remove the value
+      this.groupService.removeCustomFieldValue(value, field._id, this.groupData._id)
+        .then((res) => {
+          field.values.splice(index, 1);
+        });
+    }
+  }
+
+  titleCase(word: string) {
+    if (!word) {
+      return word;
+    }
+    return word[0].toUpperCase() + word.substr(1).toLowerCase();
+  }
+}

@@ -24,7 +24,8 @@
                         <p>{{ field.title }}
                             <i class="material-icons"
                                 (click)="removeColumn(field)"
-                                style="cursor: pointer;">highlight_off</i></p>
+                                style="cursor: pointer;">highlight_off</i>
+                        </p>
                     </div>
 
                     <div class="newProperty">
@@ -39,7 +40,7 @@
                                         (click)="$event.stopPropagation()"
                                         [(ngModel)]="newColumnSelected"
                                         name="new_column">
-                                    <mat-option *ngFor="let f of fields" [value]="f">{{f.title}}</mat-option>
+                                    <mat-option *ngFor="let f of customFields" [value]="f">{{f.title}}</mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </div>
@@ -138,7 +139,6 @@
                             </div>
 
                             <div class="customFields" *ngFor="let field of customFieldsToShow" >
-                                <!--
                                 <app-inline-input
                                     [(ngModel)]="task.customFields[field.name]"
                                     [domainObject]="task"
@@ -146,7 +146,7 @@
                                     [options]="customFieldValues(field.name)"
                                     type="customField">
                                 </app-inline-input>
-                                -->
+                                <!--
                                 <app-inline-input
                                     [(ngModel)]="task.task[field.name]"
                                     [domainObject]="task"
@@ -154,6 +154,7 @@
                                     [options]="customFieldValues(field.name)"
                                     type="customField">
                                 </app-inline-input>
+                                -->
                             </div>
 
                             <div class="newProperty">

@@ -5,8 +5,6 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { AddColumnPropertyDialogComponent } from './add-column-property-dialog/add-column-property-dialog.component';
-import { MatDialog } from '@angular/material';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 
 @Component({
@@ -42,27 +40,27 @@ export class GroupTasksListViewComponent implements OnInit {
   field: string;
 
   newColumnSelected;
-  fields = [];
+  customFields = [];
 
   constructor(
       public utilityService: UtilityService,
       private groupService: GroupService,
       private injector: Injector,
-      private router: ActivatedRoute,
-      public dialog: MatDialog
-    ) {
-    }
+      private router: ActivatedRoute
+    ) {}
 
-  async ngOnInit() {
-      await this.groupService.getGroupCustomFieldsToShow(this.groupId).then((res) => {
-        res['group']['custom_fields_to_show'].forEach(field => {
-          this.customFieldsToShow.push(field);
-        });
+  ngOnInit() {
+    this.groupService.getGroupCustomFieldsToShow(this.groupId).then((res) => {
+      res['group']['custom_fields_to_show'].forEach(field => {
+        this.customFieldsToShow.push(field);
       });
+    });
 
-      this.fields = [
-        {name: 'status', title: 'Status', values: ['to do', 'in progress', 'done']}
-      ];
+    this.groupService.getGroupCustomFields(this.groupId).then((res) => {
+      res['group']['custom_fields'].forEach(field => {
+        this.customFields.push(field);
+      });
+    });
   }
 
   /**
@@ -230,11 +228,11 @@ export class GroupTasksListViewComponent implements OnInit {
   }
 
   /**
-  * This function handles the response of moving the task to another column
-  * @param task
-  * @param oldColumn
-  * @param newColumn
-  */
+   * This function handles the response of moving the task to another column
+   * @param task
+   * @param oldColumn
+   * @param newColumn
+   */
   moveTaskToNewColumn(task: any, oldColumn: string, newColumn: string) {
 
    this.publicFunctions.changeTaskColumn(task._id, newColumn);

@@ -72,10 +72,23 @@ const GroupSchema = new Schema({
         type: Number,
         default: 0
     },
-    custom_fields: [{
-        type: Schema.Types.ObjectId,
-        ref: 'CustomField'
-    }],
+    custom_fields: {
+        type: [{
+            name: {
+                type: String,
+                required: true
+            },
+            title: {
+                type: String,
+                required: true
+            },
+            values: {
+                type: [String],
+                required: true,
+                default: []
+            }
+        }]
+    },
     custom_fields_to_show: {
         type: [{
             name: {

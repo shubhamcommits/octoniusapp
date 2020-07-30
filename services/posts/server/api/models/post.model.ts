@@ -85,6 +85,16 @@ const PostSchema = new Schema({
         ref: 'User'
     }],
 
+    // Custom Fields
+    custom_fields: [{
+        name: {
+            type: String
+        },
+        value: {
+            type: String
+        }
+    }],
+
     // TASK
     task: {
         due_to: {

@@ -1,0 +1,110 @@
+$dark-sky-blue: #4a90e2;
+
+.customFieldsDialog {
+    text-align: center;
+
+    .createCustomFieldsLink {
+        margin-right: .7rem;
+        background-color: #E4EDF8;
+        padding: 7px;
+        line-height: 36px;
+        min-width: 36px;
+        border-radius: 4px;
+    }
+
+    .description {
+        margin: 30px 0;
+    }
+
+    .customFieldsList {
+        margin: 0 120px;
+
+        h3 {
+            text-align: left;
+        }
+
+        .customFieldsHeader {
+            border-radius: 0px !important;
+            border-top: none !important;
+            border-left: none !important;
+            border-right: none !important;
+            margin: 10px 0;
+        }
+
+        .title {
+            width: 20%;
+            text-align: left;
+            float: left;
+        }
+
+        .values {
+            text-align: left;
+
+            .badge {
+                background-color: $dark-sky-blue;
+                margin: 0 1px !important;
+                display: inline;
+                font-family: Nunito,sans-serif;
+                font-style: normal;
+                font-weight: 700!important;
+                font-size: 12px;
+                align-items: center;
+                color: #005fd5;
+                background-color: #e4edf8;
+                border-radius: 10px;
+                padding: 2px 10px !important;
+                float: left;
+            }
+
+            .newValue {
+                line-height: 17px;
+
+                .newValueInput {
+                    margin-left: 20px;
+                    border-top: none;
+                    border-left: none;
+                    border-right: none;
+                    border-bottom: 1px solid #e4edf8 !important;
+                    width: 110px;
+                }
+
+                button {
+                    margin-left: 10px;
+                    line-height: 19px;
+                    background-color: $dark-sky-blue;
+                }
+            }
+        }
+
+        .customFieldsBody {
+
+            .field {
+                height: 40px;
+                border-bottom: 1px solid #e4edf8 !important;
+                padding-top: 10px;
+            }
+
+        }
+    }
+
+    .newCustomFieldForm {
+        margin: 30px 120px;
+        float: left;
+
+        button {
+            padding-left: 0px;
+        }
+
+        .add-field {
+            margin: 10px;
+
+            .actions {
+                margin: 5px;
+
+                button {
+                    margin: 5px;
+                }
+            }
+        }
+    }
+}
