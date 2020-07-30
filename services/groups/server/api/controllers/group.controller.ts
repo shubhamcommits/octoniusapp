@@ -752,7 +752,8 @@ export class GroupController {
             const group = await Group.findByIdAndUpdate({
                 _id: groupId
             }, {
-                custom_fields: newCustomField
+                //custom_fields: newCustomField
+                $push: { "custom_fields": newCustomField }
             }, {
                 new: true
             }).select('custom_fields');
