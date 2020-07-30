@@ -36,7 +36,7 @@
                                 style="cursor: pointer;">highlight_off</i>
                         </span>
                         <div class="newValue">
-                            <input type="text" id="newValue" autocomplete="off" placeholder="Add value..." 
+                            <input type="text" autocomplete="off" placeholder="Add value..." 
                                 class="newValueInput" 
                                 [(ngModel)]="newValue"
                                 (keyup.enter)="addValue(field)"/>
@@ -64,6 +64,6 @@
         </div>
     </mat-dialog-content>
     <mat-dialog-actions align="end">
-        <button mat-dialog-close class="btn btn-danger">Close</button>
+        <button mat-dialog-close class="btn btn-danger" (click)="onCloseDialog()">Close</button>
     </mat-dialog-actions>
 </div>

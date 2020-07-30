@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, Output, EventEmitter } from '@angular/core';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { MAT_DIALOG_DATA } from '@angular/material';
@@ -19,6 +19,8 @@ export class CustomFieldsDialogComponent implements OnInit {
 
   groupData;
 
+  @Output() customFieldsEvent = new EventEmitter();
+
   constructor(
     public utilityService: UtilityService,
     private groupService: GroupService,
@@ -33,6 +35,10 @@ export class CustomFieldsDialogComponent implements OnInit {
         this.customFields.push(field);
       });
     });
+  }
+
+  onCloseDialog() {
+    this.customFieldsEvent.emit(this.customFields);
   }
 
   createCustomField() {

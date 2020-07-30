@@ -28,13 +28,15 @@ export class BoardBarComponent implements OnInit {
 
   openCustomFieldsDialog(): void {
     const dialogRef = this.dialog.open(CustomFieldsDialogComponent, {
-      disableClose: false,
       width: '80%',
       data: { groupData: this.groupData }
     });
-
+    const sub = dialogRef.componentInstance.customFieldsEvent.subscribe((data) => {
+      console.log(data);
+      // TODO how to bring this information to the list view component
+    });
     dialogRef.afterClosed().subscribe(result => {
-      // this.field = result;
+      sub.unsubscribe();
     });
   }
 }
