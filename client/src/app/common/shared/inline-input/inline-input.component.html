@@ -45,7 +45,7 @@
         <div *ngIf="!editing" (click)="edit(value)">
             <img src="{{ profilePicUrl }}"
                 onerror="this.src='assets/images/user.png'"
-                class="feed-avatar assignee-avatar">
+                [ngClass]="(showAssigneeName) ? 'feed-avatar assignee-avatar' : 'feed-avatar'">
             <p *ngIf="showAssigneeName && domainObject.task._assigned_to !== null"
                     style="padding-top: 5px;">
                 <span>Assigned to</span>
