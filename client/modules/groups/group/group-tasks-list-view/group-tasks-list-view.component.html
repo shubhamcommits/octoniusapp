@@ -82,22 +82,6 @@
                                     [required]="true"
                                     type="text">
                                 </app-inline-input>
-                                
-                                <!-- TASK DETAILS STARTS -->
-                                <!--
-                                <ng-template #content let-modal>
-                                    <app-group-create-post *ngIf="userData && checkDataExist(userData)"
-                                        [edit]="true" [post]="task" [columns]="columns"
-                                        [userData]="userData" [groupId]="groupId" [type]="'task'"
-                                        (close)="closeModal()" (moveTask)="moveTaskToColumn($event)"
-                                        (taskStatus)="changeStatus(task, $event)"
-                                        (member)="changeAssignee(task, $event)"
-                                        (date)="changeDueDate(task, $event)"
-                                        (post)="changeDetails(task, $event)"
-                                        (delete)="removeTask(column, $event)">
-                                    </app-group-create-post>
-                                </ng-template>
-                                -->
                             </div>
 
                             <div class="tags" *ngIf="task?.tags.length <= 1">
@@ -158,6 +142,20 @@
                                         <span>View</span>
                                     </a>
                                 </mat-menu>
+
+                                <!-- TASK DETAILS STARTS -->
+                                <ng-template #content let-modal>
+                                    <app-group-create-post *ngIf="userData && checkDataExist(userData)"
+                                        [edit]="true" [post]="task" [columns]="columns"
+                                        [userData]="userData" [groupId]="groupId" [type]="'task'"
+                                        (close)="closeModal()" (moveTask)="moveTaskToColumn($event)"
+                                        (taskStatus)="changeStatus(task, $event)"
+                                        (member)="changeAssignee(task, $event)"
+                                        (date)="changeDueDate(task, $event)"
+                                        (post)="changeDetails(task, $event)"
+                                        (delete)="removeTask(column, $event)">
+                                    </app-group-create-post>
+                                </ng-template>
                             </div>
                         </div>
                     </div>
