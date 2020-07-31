@@ -42,10 +42,20 @@
 <div *ngIf="type === 'assignee'" class="assignee">
     <!-- Assignee section for tasks starts -->
     <section>
-        <div *ngIf="!editing">
+        <div *ngIf="!editing" (click)="edit(value)">
             <img src="{{ profilePicUrl }}"
                 onerror="this.src='assets/images/user.png'"
-                class="feed-avatar" (click)="edit(value)">
+                class="feed-avatar assignee-avatar">
+            <p *ngIf="showAssigneeName && domainObject.task._assigned_to !== null"
+                    style="padding-top: 5px;">
+                <span>Assigned to</span>
+                <br>{{domainObject?.task?._assigned_to?.first_name}}
+                <span>{{ domainObject?.task?._assigned_to?.last_name }}</span>
+            </p>
+            <p *ngIf="showAssigneeName && domainObject.task._assigned_to === null"
+                    style="padding-top: 20px;">
+                Unassigned
+            </p>
         </div>
         <app-component-search-input-box
             *ngIf="editing" class="feed-avatar"

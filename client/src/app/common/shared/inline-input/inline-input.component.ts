@@ -36,6 +36,7 @@ export class InlineInputComponent implements ControlValueAccessor, OnInit {
   @Input() workspaceId: string;
   @Input() userData;
   @Input() groupId: string;
+  @Input() showAssigneeName: boolean = false;
 
   @Input() options: [string];
 
