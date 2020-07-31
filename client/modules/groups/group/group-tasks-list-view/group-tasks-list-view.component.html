@@ -124,7 +124,7 @@
                             <div class="customFields" *ngFor="let field of customFieldsToShow" >
                                 <!--
                                 <app-inline-input
-                                    [(ngModel)]="task.customFields[field.name]"
+                                    [(ngModel)]="task.task.customFields[field.name]"
                                     [domainObject]="task"
                                     [required]="true"
                                     [options]="customFieldValues(field.name)"

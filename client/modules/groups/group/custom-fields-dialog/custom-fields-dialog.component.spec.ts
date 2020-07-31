@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CustomFieldsComponent } from './custom-fields.component';
+import { CustomFieldsDialogComponent } from './custom-fields-dialog.component';
 
-describe('CustomFieldsComponent', () => {
-  let component: CustomFieldsComponent;
-  let fixture: ComponentFixture<CustomFieldsComponent>;
+describe('CustomFieldsDialogComponent', () => {
+  let component: CustomFieldsDialogComponent;
+  let fixture: ComponentFixture<CustomFieldsDialogComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CustomFieldsComponent ]
+      declarations: [ CustomFieldsDialogComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CustomFieldsComponent);
+    fixture = TestBed.createComponent(v);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
