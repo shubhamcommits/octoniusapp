@@ -74,7 +74,7 @@
                         
                         <!-- <div class="media" (click)="openModal(content)"> -->
                         <div class="media">
-                            <div class="media-body">
+                            <div class="title">
                                 <app-inline-input 
                                     [(ngModel)]="task.title"
                                     label="Name"
@@ -82,11 +82,9 @@
                                     [required]="true"
                                     type="text">
                                 </app-inline-input>
-                                <!--
-                                    <p class="list-card-title">{{ task?.title }}</p>
-                                -->
                                 
                                 <!-- TASK DETAILS STARTS -->
+                                <!--
                                 <ng-template #content let-modal>
                                     <app-group-create-post *ngIf="userData && checkDataExist(userData)"
                                         [edit]="true" [post]="task" [columns]="columns"
@@ -99,6 +97,7 @@
                                         (delete)="removeTask(column, $event)">
                                     </app-group-create-post>
                                 </ng-template>
+                                -->
                             </div>
 
                             <div class="tags" *ngIf="task?.tags.length <= 1">
@@ -139,6 +138,7 @@
                             </div>
 
                             <div class="customFields" *ngFor="let field of customFieldsToShow" >
+                                <!--
                                 <app-inline-input
                                     [(ngModel)]="task.customFields[field.name]"
                                     [domainObject]="task"
@@ -146,6 +146,8 @@
                                     [options]="customFieldValues(field.name)"
                                     type="customField">
                                 </app-inline-input>
+                                -->
+                                {{ field.name }}
                             </div>
 
                             <div class="newProperty">

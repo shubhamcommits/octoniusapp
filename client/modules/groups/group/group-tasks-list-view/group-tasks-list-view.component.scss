@@ -4,8 +4,15 @@ $turquoise: #0bc6a0;
 $dark-sky-blue: #4a90e2;
 
 .list {
+
+    overflow-x: auto;
+
     .list-wrapper {
         margin-top: 2rem;
+        
+        float: left;
+        width: 100%;
+        
         .list-columns {
             .list-column {
                 &:not(:first-child) {
@@ -23,6 +30,126 @@ $dark-sky-blue: #4a90e2;
                 }
             }
         }
+
+        .task {
+            padding: 0px;
+            background: white;
+            // border: 1px solid $border-color;
+            border-radius: 2px;
+            box-sizing: border-box;
+            margin: 2px auto;
+            transition: box-shadow 0.3s ease-in-out;
+            // line-height: 25px;
+            // height: 40px;
+            // cursor: pointer;
+            
+            .media {
+                // vertical-align: middle;
+                align-items: center;
+                padding: 10px;
+        
+                .title {
+                    flex: 1;
+                }
+        
+                .tags {
+                    width: 100px;
+                    text-align: center;
+                    border: none !important;
+        
+                    .badge {
+                        background-color: $dark-sky-blue;
+                        margin: 0 1px !important;
+                        display: inline;
+                        font-family: Nunito,sans-serif;
+                        font-style: normal;
+                        font-weight: 700!important;
+                        font-size: 12px;
+                        align-items: center;
+                        color: #005fd5;
+                        background-color: #e4edf8;
+                        border-radius: 10px;
+                        padding: 2px 10px !important;
+                    }
+                }
+        
+                .taskStatus {
+                    width: 10%;
+                    text-align: center;
+                }
+        
+                .assignee {
+                    width: 100px;
+                    text-align: center;
+                    
+                    .feed-avatar{
+                        width: 35px;
+                        height: 35px;
+                        margin: 0;
+                    }
+                }
+        
+                .taskDate {
+                    width: 100px;
+                    text-align: center;
+                }
+        
+                .customFields {
+                    width: 100px;
+                    text-align: center;
+                }
+        
+                .newProperty {
+                    // width: 5%;
+                    text-align: center;
+                }
+            }
+        }
+        
+        .status-todo{
+            border-left: 3px solid $pumpkin-orange;
+        }
+        .status-inprogress{
+            border-left: 3px solid $turquoise;
+        }
+        .status-done{
+            border-left: 3px solid $dark-sky-blue;
+        }
+        
+        
+        .badge {
+            background-color: $dark-sky-blue;
+            margin: 0 1px !important;
+            display: inline;
+            font-family: Nunito,sans-serif;
+            font-style: normal;
+            font-weight: 700!important;
+            font-size: 12px;
+            align-items: center;
+            color: #005fd5;
+            background-color: #e4edf8;
+            border-radius: 10px;
+            padding: 2px 10px !important;
+        }
+        
+        .badge-todo {
+            background-color: $pumpkin-orange;
+            color: white;
+            border-radius: 10px;
+            padding: 2px 10px !important;
+        }
+        .badge-inprogress {
+            background-color: $turquoise;
+            color: white;
+            border-radius: 10px;
+            padding: 2px 10px !important;
+        }
+        .badge-done {
+            background-color: $dark-sky-blue;
+            color: white;
+            border-radius: 10px;
+            padding: 2px 10px !important;
+        }
     }
 }
 
@@ -34,130 +161,6 @@ $dark-sky-blue: #4a90e2;
     border-right: none !important;
 }
 
-.task {
-    padding: 0px;
-    background: white;
-    // border: 1px solid $border-color;
-    border-radius: 2px;
-    box-sizing: border-box;
-    margin: 2px auto;
-    transition: box-shadow 0.3s ease-in-out;
-    // line-height: 25px;
-    // height: 40px;
-    //cursor: pointer;
-    
-    .media {
-        // vertical-align: middle;
-        align-items: center;
-        padding: 10px;
-
-        .list-card-title {
-            font-weight: 400;
-            font-size: 15px;
-            color: #242D3A;
-            width: 100%;
-            white-space: normal;
-        }
-
-        .tags {
-            width: 10%;
-            text-align: center;
-            border: none !important;
-
-            .badge {
-                background-color: $dark-sky-blue;
-                margin: 0 1px !important;
-                display: inline;
-                font-family: Nunito,sans-serif;
-                font-style: normal;
-                font-weight: 700!important;
-                font-size: 12px;
-                align-items: center;
-                color: #005fd5;
-                background-color: #e4edf8;
-                border-radius: 10px;
-                padding: 2px 10px !important;
-            }
-        }
-
-        .taskStatus {
-            width: 10%;
-            text-align: center;
-        }
-
-        .assignee {
-            width: 15%;
-            text-align: center;
-            
-            .feed-avatar{
-                width: 35px;
-                height: 35px;
-                margin: 0;
-            }
-        }
-
-        .taskDate {
-            width: 10%;
-            text-align: center;
-        }
-
-        .customFields {
-            width: 10%;
-            text-align: center;
-        }
-
-        .newProperty {
-            // width: 5%;
-            text-align: center;
-        }
-    }
-}
-
 .newColumnMatMenu {
     padding: 20px;
-}
-
-.status-todo{
-    border-left: 3px solid $pumpkin-orange;
-}
-.status-inprogress{
-    border-left: 3px solid $turquoise;
-}
-.status-done{
-    border-left: 3px solid $dark-sky-blue;
-}
-
-
-.badge {
-    background-color: $dark-sky-blue;
-    margin: 0 1px !important;
-    display: inline;
-    font-family: Nunito,sans-serif;
-    font-style: normal;
-    font-weight: 700!important;
-    font-size: 12px;
-    align-items: center;
-    color: #005fd5;
-    background-color: #e4edf8;
-    border-radius: 10px;
-    padding: 2px 10px !important;
-}
-
-.badge-todo {
-    background-color: $pumpkin-orange;
-    color: white;
-    border-radius: 10px;
-    padding: 2px 10px !important;
-}
-.badge-inprogress {
-    background-color: $turquoise;
-    color: white;
-    border-radius: 10px;
-    padding: 2px 10px !important;
-}
-.badge-done {
-    background-color: $dark-sky-blue;
-    color: white;
-    border-radius: 10px;
-    padding: 2px 10px !important;
 }

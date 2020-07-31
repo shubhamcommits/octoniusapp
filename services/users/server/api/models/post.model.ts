@@ -116,7 +116,17 @@ const PostSchema = new Schema({
                 type: String,
                 default: 'to do'
             }
-        }
+        },
+
+        // Custom Fields
+        custom_fields: [{
+            name: {
+                type: String
+            },
+            value: {
+                type: String
+            }
+        }]
     },
 
     // PERFORMANCE TASK

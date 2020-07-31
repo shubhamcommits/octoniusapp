@@ -266,10 +266,11 @@ export class GroupTasksListViewComponent implements OnInit {
     if (index !== -1) {
       this.utilityService.warningNotification('Column already exist!');
     } else {
-    // If not found, then push the element
+      // If not found, then push the element
 
       // Create the Column
       this.saveCustomFieldsToShow(this.newColumnSelected);
+      this.newColumnSelected = null;
     }
   }
 

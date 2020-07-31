@@ -85,16 +85,6 @@ const PostSchema = new Schema({
         ref: 'User'
     }],
 
-    // Custom Fields
-    custom_fields: [{
-        name: {
-            type: String
-        },
-        value: {
-            type: String
-        }
-    }],
-
     // TASK
     task: {
         due_to: {
@@ -126,7 +116,17 @@ const PostSchema = new Schema({
                 type: String,
                 default: 'to do'
             }
-        }
+        },
+
+        // Custom Fields
+        custom_fields: [{
+            name: {
+                type: String
+            },
+            value: {
+                type: String
+            }
+        }]
     },
 
     // PERFORMANCE TASK

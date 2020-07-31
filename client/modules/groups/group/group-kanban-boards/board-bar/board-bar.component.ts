@@ -28,7 +28,9 @@ export class BoardBarComponent implements OnInit {
 
   openCustomFieldsDialog(): void {
     const dialogRef = this.dialog.open(CustomFieldsDialogComponent, {
-      width: '80%',
+      width: '100%',
+      height: '100%',
+      disableClose: true,
       data: { groupData: this.groupData }
     });
     const sub = dialogRef.componentInstance.customFieldsEvent.subscribe((data) => {
