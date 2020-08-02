@@ -57,6 +57,14 @@
                 Unassigned
             </p>
         </div>
+        <i class="material-icons unassing-btn"
+            *ngIf="!editing && !showAssigneeName && domainObject.task._assigned_to !== null"
+            (click)="unassignTask()">highlight_off</i>
+        <p *ngIf="!editing && showAssigneeName && domainObject.task._assigned_to !== null" style="margin-left: 180px; margin-top: -40px;">
+            <button (click)="unassignTask()" class="btn btn-md btn-danger">
+                Unassign
+            </button>
+        </p>
         <app-component-search-input-box
             *ngIf="editing" class="feed-avatar"
             [placeholder]="'Assign...'" 

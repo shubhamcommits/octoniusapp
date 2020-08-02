@@ -28,3 +28,11 @@ input {
 .assignee-avatar {
     float: left;
 }
+
+.unassing-btn {
+    cursor: pointer;
+    color: red;
+    position: absolute;
+    margin-top: -60px;
+    margin-left: 20px;
+}

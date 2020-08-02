@@ -176,6 +176,13 @@ export class InlineInputComponent implements ControlValueAccessor, OnInit {
     }
   }
 
+  unassignTask() {
+    this.domainObject.task.unassigned = 'Yes';
+    this.value = null;
+    
+    this.saveData();
+  }
+
   saveData() {
 
     // Prepare the normal  object
