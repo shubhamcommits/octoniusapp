@@ -3,6 +3,7 @@ import http from 'axios';
 import moment from 'moment';
 const fs = require('fs');
 import { Readable } from 'stream';
+import { CommentsController } from '../controllers';
 
 /*  ===============================
  *  -- POSTS Service --
@@ -1163,4 +1164,24 @@ export class PostService {
     }
   }
 
+  async changeCustomFieldValue(postId: string, customFieldName: any, customFieldValue: any) {
+    try {
+      const task = await Post.findById(postId);
+      
+      if (!task['task']['custom_fields']) {
+        task['task']['custom_fields'] = new Map<string, string>();
+      }
+      task['task']['custom_fields'].set(customFieldName, customFieldValue);
+
+      // Find the post and update the custom field
+      const post = await Post.findByIdAndUpdate({
+        _id: postId
+      }, {
+        $set: { "task.custom_fields": task['task']['custom_fields'] }
+      }) .select('custom_fields');
+
+    } catch (error) {
+      throw(error);
+    }  
+  }
 }

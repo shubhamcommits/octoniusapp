@@ -115,5 +115,8 @@ routes.get('/test/recents/next', postController.getNextRecentActivity);
 // GET - Get recent groups
 routes.get('/test/recents/groups', postController.getRecentGroups);
 
+// -| CUSTOM FIELDS |-
+// PUT - Change custom field value
+routes.put('/:postId/customField', postController.saveCustomField);
 
 export { routes as postRoutes };

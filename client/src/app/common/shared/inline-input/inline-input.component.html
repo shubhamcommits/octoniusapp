@@ -1,9 +1,9 @@
 <div *ngIf="type === 'text'">
     <div *ngIf="!editing">
-        <p class="list-card-title" 
+        <p class="list-card-title inline-edit" 
             (click)="edit(value)"
             (focus)="edit(value);"
-            tabindex="0" class="inline-edit">
+            tabindex="0">
             {{value}}
         </p>
     </div>
@@ -73,16 +73,22 @@
 
 <div *ngIf="type === 'customField'">
     <div *ngIf="!editing">
-        <p class="list-card-title" 
-            (click)="edit(value)"
-            (focus)="edit(value);"
-            tabindex="0" class="inline-edit">
-            {{value}}
+        <p class="list-card-title inline-edit" *ngIf="customFieldValue !== ''"
+            (click)="edit(customFieldValue)"
+            (focus)="edit(customFieldValue);"
+            tabindex="0">
+            {{customFieldValue}}
         </p>
+        <p *ngIf="customFieldValue === ''"
+            (click)="edit(customFieldValue)"
+            (focus)="edit(customFieldValue);"
+            tabindex="0" class="inline-edit">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
     </div>
     <div *ngIf="editing">
-        <mat-form-field>
-            <mat-select #inlineEditControl ngDefaultControl [(ngModel)]="value" [name]="value" (selectionChange)="onCustomFieldChange($event)">
+        <mat-form-field style="width: 90%; float: right;">
+            <mat-select ngDefaultControl
+                    (selectionChange)="onCustomFieldChange($event)"
+                    [(ngModel)]="customFieldValue">
                 <mat-option *ngFor="let opt of options" [value]="opt">{{ opt }}</mat-option>
             </mat-select>
         </mat-form-field>

@@ -119,14 +119,10 @@ const PostSchema = new Schema({
         },
 
         // Custom Fields
-        custom_fields: [{
-            name: {
-                type: String
-            },
-            value: {
-                type: String
-            }
-        }]
+        custom_fields: {
+            type: Map,
+            of: String
+        }
     },
 
     // PERFORMANCE TASK

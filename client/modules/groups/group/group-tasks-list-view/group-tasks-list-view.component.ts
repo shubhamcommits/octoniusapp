@@ -269,14 +269,14 @@ export class GroupTasksListViewComponent implements OnInit {
       // If not found, then push the element
 
       // Create the Column
-      this.saveCustomFieldsToShow(this.newColumnSelected);
+      this.saveCustomFieldsToShow(this.newColumnSelected.name);
       this.newColumnSelected = null;
     }
   }
 
-  saveCustomFieldsToShow(field) {
+  saveCustomFieldsToShow(fieldName) {
     // Push the Column
-    this.customFieldsToShow.push(field);
+    this.customFieldsToShow.push(fieldName);
 
     this.groupService.saveCustomFieldsToShow(this.groupData._id, this.customFieldsToShow);
   }
@@ -290,7 +290,7 @@ export class GroupTasksListViewComponent implements OnInit {
   }
 
   customFieldValues(fieldName: string) {
-    const index = this.customFieldsToShow.findIndex((field: any) => field.name === fieldName);
-    return this.customFieldsToShow[index].values;
+    const index = this.groupData.custom_fields.findIndex((field: any) => field.name === fieldName);
+    return this.groupData.custom_fields[index].values;
   }
 }

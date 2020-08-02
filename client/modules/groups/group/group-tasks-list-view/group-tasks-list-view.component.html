@@ -40,7 +40,7 @@
                                         (click)="$event.stopPropagation()"
                                         [(ngModel)]="newColumnSelected"
                                         name="new_column">
-                                    <mat-option *ngFor="let f of customFields" [value]="f">{{f.title}}</mat-option>
+                                    <mat-option *ngFor="let f of customFields" [value]="f">{{ f.title }}</mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </div>
@@ -122,16 +122,13 @@
                             </div>
 
                             <div class="customFields" *ngFor="let field of customFieldsToShow" >
-                                <!--
                                 <app-inline-input
-                                    [(ngModel)]="task.task.customFields[field.name]"
+                                    [customFieldName]="field.name"
                                     [domainObject]="task"
                                     [required]="true"
                                     [options]="customFieldValues(field.name)"
                                     type="customField">
                                 </app-inline-input>
-                                -->
-                                {{ field.name }}
                             </div>
 
                             <div class="newProperty">
