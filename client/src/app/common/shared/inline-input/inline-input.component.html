@@ -1,9 +1,9 @@
 <div *ngIf="type === 'text'">
     <div *ngIf="!editing">
-        <p class="list-card-title" 
+        <p class="list-card-title inline-edit" 
             (click)="edit(value)"
             (focus)="edit(value);"
-            tabindex="0" class="inline-edit">
+            tabindex="0">
             {{value}}
         </p>
     </div>
@@ -24,7 +24,7 @@
     <button *ngIf="value !== null && value !== ''" class="btn btn-link dropdown-toggle btn-sm" data-toggle="dropdown">
         {{ value | date }}
     </button>
-    <i *ngIf="value === null || value === ''" class="material-icons" data-toggle="dropdown" style="cursor: pointer;">calendar_today</i>
+    <i *ngIf="value === null || value === ''" class="material-icons-outlined" data-toggle="dropdown" style="cursor: pointer;">calendar_today</i>
     <!-- Date Picker Toggle ends -->
 
     <!-- Input Placeholder for date picker starts -->
@@ -42,11 +42,29 @@
 <div *ngIf="type === 'assignee'" class="assignee">
     <!-- Assignee section for tasks starts -->
     <section>
-        <div *ngIf="!editing">
+        <div *ngIf="!editing" (click)="edit(value)" id="avatar-assignee">
             <img src="{{ profilePicUrl }}"
                 onerror="this.src='assets/images/user.png'"
-                class="feed-avatar" (click)="edit(value)">
+                [ngClass]="(showAssigneeName) ? 'feed-avatar assignee-avatar' : 'feed-avatar'">
+            <p *ngIf="showAssigneeName && domainObject.task._assigned_to !== null"
+                    style="padding-top: 5px;">
+                <span>Assigned to</span>
+                <br>{{domainObject?.task?._assigned_to?.first_name}}
+                <span>{{ domainObject?.task?._assigned_to?.last_name }}</span>
+            </p>
+            <p *ngIf="showAssigneeName && domainObject.task._assigned_to === null"
+                    style="padding-top: 20px;">
+                Unassigned
+            </p>
         </div>
+        <i class="material-icons unassing-btn" id="unassing"
+            *ngIf="!editing && !showAssigneeName && domainObject.task._assigned_to !== null"
+            (click)="unassignTask()">highlight_off</i>
+        <p *ngIf="!editing && showAssigneeName && domainObject.task._assigned_to !== null" style="margin-left: 180px; margin-top: -40px;">
+            <button (click)="unassignTask()" class="btn btn-md btn-danger">
+                Unassign
+            </button>
+        </p>
         <app-component-search-input-box
             *ngIf="editing" class="feed-avatar"
             [placeholder]="'Assign...'" 
@@ -59,4 +77,28 @@
         </app-component-search-input-box>
     </section>
     <!-- Assignee section for tasks ends -->
+</div>
+
+<div *ngIf="type === 'customField'">
+    <div *ngIf="!editing">
+        <p class="list-card-title inline-edit" *ngIf="customFieldValue !== ''"
+            (click)="edit(customFieldValue)"
+            (focus)="edit(customFieldValue);"
+            tabindex="0">
+            {{customFieldValue}}
+        </p>
+        <p *ngIf="customFieldValue === ''"
+            (click)="edit(customFieldValue)"
+            (focus)="edit(customFieldValue);"
+            tabindex="0" class="inline-edit">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+    </div>
+    <div *ngIf="editing">
+        <mat-form-field style="width: 90%; float: right;">
+            <mat-select ngDefaultControl
+                    (selectionChange)="onCustomFieldChange($event)"
+                    [(ngModel)]="customFieldValue">
+                <mat-option *ngFor="let opt of options" [value]="opt">{{ opt }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
 </div>

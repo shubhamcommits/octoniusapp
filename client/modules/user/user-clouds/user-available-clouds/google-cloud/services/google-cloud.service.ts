@@ -22,7 +22,7 @@ export class GoogleCloudService {
 
   onPickerApiLoad() {
     this.pickerApiLoaded = true;
-    //console.log('Picker Loaded');
+    // console.log('Picker Loaded');
   }
 
   loadGoogleDrivePicker() {
@@ -91,7 +91,7 @@ export class GoogleCloudService {
     return new Promise((resolve, reject) => {
       const fetchToken = new XMLHttpRequest();
       const storageService = new StorageService();
-      fetchToken.open('GET', environment.USER_BASE_API_URL + '/integrations/gdrive/token', true);
+      fetchToken.open('GET', this.BASE_API_URL + '/integrations/gdrive/token', true);
       fetchToken.setRequestHeader('Authorization', 'Bearer ' + storageService.getLocalData('authToken')['token']);
 
       fetchToken.onload = () => {

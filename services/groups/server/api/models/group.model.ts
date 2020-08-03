@@ -71,6 +71,36 @@ const GroupSchema = new Schema({
     members_count: {
         type: Number,
         default: 0
+    },
+    custom_fields: {
+        type: [{
+            name: {
+                type: String,
+                required: true
+            },
+            title: {
+                type: String,
+                required: true
+            },
+            values: {
+                type: [String],
+                required: true,
+                default: []
+            }
+        }]
+    },
+    custom_fields_to_show: {
+        type: [{
+            name: {
+                type: String
+            },
+            title: {
+                type: String
+            },
+            values: {
+                type: [String]
+            }
+        }]
     }
 });
 

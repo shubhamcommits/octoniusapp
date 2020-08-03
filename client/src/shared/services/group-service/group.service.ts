@@ -112,4 +112,32 @@ export class GroupService {
     return this._http.post(this.baseURL + `/members/remove`, bodyData)
     .toPromise()
   }
+
+  saveCustomFieldsToShow(groupId: string, customFieldsToShow: any[]) {
+    return this._http.put(this.baseURL + `/${groupId}/customFieldsToShow`, { customFieldsToShow }).toPromise();
+  }
+
+  getGroupCustomFieldsToShow(groupId: string) {
+    return this._http.get(this.baseURL + `/${groupId}/customFieldsToShow`).toPromise();
+  }
+
+  saveNewCustomField(newCustomField: { name: string; title: string; values: any[]; }, groupId: any) {
+    return this._http.put(this.baseURL + `/${groupId}/customFields`, { newCustomField }).toPromise();
+  }
+
+  getGroupCustomFields(groupId: string) {
+    return this._http.get(this.baseURL + `/${groupId}/customFields`).toPromise();
+  }
+
+  removeCustomField(fieldId: string, groupId: string) {
+    return this._http.delete(this.baseURL + `/${groupId}/customFields/${fieldId}`).toPromise();
+  }
+
+  addCustomFieldNewValue(value: string, fieldId: string, groupId: string) {
+    return this._http.put(this.baseURL + `/${groupId}/customFields/addValue`, { fieldId, value }).toPromise();
+  }
+
+  removeCustomFieldValue(value: string, fieldId: string, groupId: string) {
+    return this._http.put(this.baseURL + `/${groupId}/customFields/removeValue`, { fieldId, value }).toPromise();
+  }
 }

@@ -211,4 +211,16 @@ export class PostService {
     return this._http.delete(this.baseURL + `/${postId}`).toPromise();
   }
 
+  /**
+   * This function is used to save a custom field value
+   * @param postId 
+   */
+  saveCustomField(postId: string, customFieldName: string, customFieldValue: string) {
+    // Call the HTTP Request
+    return this._http.put(this.baseURL + `/${postId}/customField`, {
+      customFieldName: customFieldName,
+      customFieldValue: customFieldValue
+    }).toPromise();
+  }
+
 }

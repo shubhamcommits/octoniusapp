@@ -5,6 +5,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { GroupService } from 'src/shared/services/group-service/group.service';
 
 @Component({
   selector: 'app-group-tasks-list-view',
@@ -21,6 +22,8 @@ export class GroupTasksListViewComponent implements OnInit {
   // Task Posts array variable
   @Input() tasks: any;
 
+  customFieldsToShow: any[] = [];
+
   // Today's date object
   today = moment().local().startOf('day').format('YYYY-MM-DD');
 
@@ -33,13 +36,31 @@ export class GroupTasksListViewComponent implements OnInit {
   // Base URL of the uploads
   baseUrl = environment.UTILITIES_USERS_UPLOADS;
 
+  // Property to know the selected field to add as column
+  field: string;
+
+  newColumnSelected;
+  customFields = [];
+
   constructor(
       public utilityService: UtilityService,
+      private groupService: GroupService,
       private injector: Injector,
       private router: ActivatedRoute
-    ) { }
+    ) {}
 
   ngOnInit() {
+    this.groupService.getGroupCustomFieldsToShow(this.groupId).then((res) => {
+      res['group']['custom_fields_to_show'].forEach(field => {
+        this.customFieldsToShow.push(field);
+      });
+    });
+
+    this.groupService.getGroupCustomFields(this.groupId).then((res) => {
+      res['group']['custom_fields'].forEach(field => {
+        this.customFields.push(field);
+      });
+    });
   }
 
   /**
@@ -207,11 +228,11 @@ export class GroupTasksListViewComponent implements OnInit {
   }
 
   /**
-  * This function handles the response of moving the task to another column
-  * @param task
-  * @param oldColumn
-  * @param newColumn
-  */
+   * This function handles the response of moving the task to another column
+   * @param task
+   * @param oldColumn
+   * @param newColumn
+   */
   moveTaskToNewColumn(task: any, oldColumn: string, newColumn: string) {
 
    this.publicFunctions.changeTaskColumn(task._id, newColumn);
@@ -234,5 +255,42 @@ export class GroupTasksListViewComponent implements OnInit {
       color = 'dark-sky-blue';
     }
     return color;
+  }
+
+  addNewColumn($event: Event) {
+
+    // Find the index of the column to check if the same named column exist or not
+    const index = this.customFieldsToShow.findIndex((f: any) => f.name.toLowerCase() === this.newColumnSelected.name.toLowerCase());
+
+    // If index is found, then throw error notification
+    if (index !== -1) {
+      this.utilityService.warningNotification('Column already exist!');
+    } else {
+      // If not found, then push the element
+
+      // Create the Column
+      this.saveCustomFieldsToShow(this.newColumnSelected.name);
+      this.newColumnSelected = null;
+    }
+  }
+
+  saveCustomFieldsToShow(fieldName) {
+    // Push the Column
+    this.customFieldsToShow.push(fieldName);
+
+    this.groupService.saveCustomFieldsToShow(this.groupData._id, this.customFieldsToShow);
+  }
+
+  removeColumn(field: any) {
+    const index: number = this.customFieldsToShow.indexOf(field);
+    if (index !== -1) {
+        this.customFieldsToShow.splice(index, 1);
+    }
+    this.groupService.saveCustomFieldsToShow(this.groupData._id, this.customFieldsToShow);
+  }
+
+  customFieldValues(fieldName: string) {
+    const index = this.groupData.custom_fields.findIndex((field: any) => field.name === fieldName);
+    return this.groupData.custom_fields[index].values;
   }
 }

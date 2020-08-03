@@ -1,0 +1,73 @@
+<div class="customFieldsDialog">
+
+    <mat-dialog-actions align="end">
+        <i mat-dialog-close class="material-icons" (click)="onCloseDialog()" style="cursor: pointer">close</i>
+    </mat-dialog-actions>
+
+    <h2 mat-dialog-title>
+        <span class="createCustomFieldsLink">
+            <i class="material-icons" style="color: #005FD5">label</i>
+        </span>
+        Custom Fields
+    </h2>
+
+    <mat-dialog-content>
+        <div class="description">
+            <p>Create custom fields to improve how you organize your workflows in task boards.</p>
+        </div>
+
+        <div class="customFieldsList" *ngIf="customFields.length <= 0">
+            <h3>There are no custom fields created yet.</h3>
+        </div>
+
+        <div class="customFieldsList" *ngIf="customFields.length > 0">
+            <div class="customFieldsHeader">
+                <div class="title">Title</div>
+                <div class="values">Values</div>
+            </div>
+            <div class="customFieldsBody">
+                <div class="field" *ngFor="let field of customFields">
+                    <div class="title">
+                        <i class="material-icons" style="color: #005FD5">label</i>
+                        {{ field.title }}
+                        <i class="material-icons"
+                            (click)="removeCustomField(field)"
+                            style="color: red; cursor: pointer; margin-left: 20px;">highlight_off</i>
+                    </div>
+                    <div class="values">
+                        <span class="badge" *ngFor="let value of field.values">
+                            {{ value }}
+                            <i class="material-icons"
+                                (click)="removeValue(field, value)"
+                                style="cursor: pointer;">highlight_off</i>
+                        </span>
+                        <div class="newValue">
+                            <input type="text" autocomplete="off" placeholder="Add value..." 
+                                class="newValueInput" 
+                                (keyup.enter)="addValue(field, $event)"/>
+                            <!--
+                            <button mat-button (click)="addValue(field, $event)">Add</button>
+                            -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="newCustomFieldForm">
+            <button class="btn btn-block" (click)="showNewCustomField = !showNewCustomField">
+                <i class="material-icons" style="color: #005FD5">label</i> ADD ANOTHER CUSTOM FIELD
+             </button>
+             <div class="add-field" *ngIf="showNewCustomField">
+                 <input class="form-control" type="text" placeholder="Enter field name" [(ngModel)]="newCustomFieldTitle" (keyup.enter)="createCustomField()">
+                 <div class="actions">
+                     <button class="col-md-4 btn btn-primary" (click)="createCustomField()">
+                         Save
+                     </button>
+                     <button class="col-md-4 btn btn-danger" (click)="showNewCustomField = false; this.newCustomFieldTitle = ''">
+                         Cancel
+                     </button>
+                 </div>
+             </div>
+        </div>
+    </mat-dialog-content>
+</div>

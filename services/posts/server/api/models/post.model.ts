@@ -116,6 +116,12 @@ const PostSchema = new Schema({
                 type: String,
                 default: 'to do'
             }
+        },
+
+        // Custom Fields
+        custom_fields: {
+            type: Map,
+            of: String
         }
     },
 

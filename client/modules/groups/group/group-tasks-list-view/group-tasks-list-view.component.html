@@ -11,11 +11,7 @@
                     <div class="tags">
                         <p>Tags</p>
                     </div>
-                    <!--
-                    <div class="taskStatus">
-                        <p>Status</p>
-                    </div>
-                    -->                    
+                    
                     <div class="assignee">
                         <p>Assignee</p>
                     </div>
@@ -24,9 +20,31 @@
                         <p>Due Date</p>
                     </div>
 
-                    <div class="newProperty">
-                        <!-- <i class="material-icons-outlined">add</i> -->
+                    <div class="customFields" *ngFor="let field of customFieldsToShow" >
+                        <p>{{ field.title }}
+                            <i class="material-icons"
+                                (click)="removeColumn(field)"
+                                style="cursor: pointer;">highlight_off</i>
+                        </p>
                     </div>
+
+                    <div class="newProperty">
+                        <i class="material-icons-outlined" style="cursor: pointer;" [matMenuTriggerFor]="addColumn">add</i>
+                    </div>
+                    <mat-menu #addColumn="matMenu">
+                        <div class="newColumnMatMenu">
+                            <p>Add custom field</p>
+                            <mat-form-field>
+                                <mat-select ngDefaultControl
+                                        (selectionChange)="addNewColumn($event)"
+                                        (click)="$event.stopPropagation()"
+                                        [(ngModel)]="newColumnSelected"
+                                        name="new_column">
+                                    <mat-option *ngFor="let f of customFields" [value]="f">{{ f.title }}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </mat-menu>
                 </div>
             </div>
         </div>
@@ -56,7 +74,7 @@
                         
                         <!-- <div class="media" (click)="openModal(content)"> -->
                         <div class="media">
-                            <div class="media-body">
+                            <div class="title">
                                 <app-inline-input 
                                     [(ngModel)]="task.title"
                                     label="Name"
@@ -64,38 +82,22 @@
                                     [required]="true"
                                     type="text">
                                 </app-inline-input>
-                                <!--
-                                    <p class="list-card-title">{{ task?.title }}</p>
-                                -->
-                                
-                                <!-- TASK DETAILS STARTS -->
-                                <ng-template #content let-modal>
-                                    <app-group-create-post *ngIf="userData && checkDataExist(userData)"
-                                        [edit]="true" [post]="task" [columns]="columns"
-                                        [userData]="userData" [groupId]="groupId" [type]="'task'"
-                                        (close)="closeModal()" (moveTask)="moveTaskToColumn($event)"
-                                        (taskStatus)="changeStatus(task, $event)"
-                                        (member)="changeAssignee(task, $event)"
-                                        (date)="changeDueDate(task, $event)"
-                                        (post)="changeDetails(task, $event)"
-                                        (delete)="removeTask(column, $event)">
-                                    </app-group-create-post>
-                                </ng-template>
                             </div>
 
-                            <div class="tags">
+                            <div class="tags" *ngIf="task?.tags.length <= 1">
                                 <span class="badge" *ngFor="let tag of task?.tags">
                                     {{ tag }}
                                 </span>
                             </div>
-                            <!--
-                            <div class="taskStatus">
-                                <span class="badge"
-                                    [ngClass]="{'badge-todo': task?.task?.status === 'to do', 'badge-inprogress': task?.task?.status === 'in progress', 'badge-done': task?.task?.status === 'done'}">
-                                        {{ task?.task?.status }}
+                            <div class="tags" *ngIf="task?.tags.length > 1">
+                                <span class="badge">
+                                    {{ task?.tags[0] }}
+                                </span>
+                                <span class="badge">
+                                    +{{ task?.tags.length-1 }}
                                 </span>
                             </div>
-                            -->
+
                             <div class="assignee">
                                 <app-inline-input
                                     [(ngModel)]="task.task._assigned_to"
@@ -118,14 +120,39 @@
                                     type="date">
                                 </app-inline-input>
                             </div>
+
+                            <div class="customFields" *ngFor="let field of customFieldsToShow" >
+                                <app-inline-input
+                                    [customFieldName]="field.name"
+                                    [domainObject]="task"
+                                    [required]="true"
+                                    [options]="customFieldValues(field.name)"
+                                    type="customField">
+                                </app-inline-input>
+                            </div>
+
                             <div class="newProperty">
-                                <i class="material-icons-outlined ml-2" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
+                                <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
                                 <mat-menu #menu="matMenu">
                                     <a mat-menu-item (click)="openModal(content)">
                                         <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
                                         <span>View</span>
                                     </a>
                                 </mat-menu>
+
+                                <!-- TASK DETAILS STARTS -->
+                                <ng-template #content let-modal>
+                                    <app-group-create-post *ngIf="userData && checkDataExist(userData)"
+                                        [edit]="true" [post]="task" [columns]="columns"
+                                        [userData]="userData" [groupId]="groupId" [type]="'task'"
+                                        (close)="closeModal()" (moveTask)="moveTaskToColumn($event)"
+                                        (taskStatus)="changeStatus(task, $event)"
+                                        (member)="changeAssignee(task, $event)"
+                                        (date)="changeDueDate(task, $event)"
+                                        (post)="changeDetails(task, $event)"
+                                        (delete)="removeTask(column, $event)">
+                                    </app-group-create-post>
+                                </ng-template>
                             </div>
                         </div>
                     </div>

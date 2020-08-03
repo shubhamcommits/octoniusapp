@@ -593,4 +593,28 @@ export class PostController {
             return sendErr(res, new Error(error), 'Internal Server Error!', 500);
         }
     }
+    
+    async saveCustomField(req: Request, res: Response, next: NextFunction) {
+        // Fetch the groupId
+        const { postId } = req.params;
+
+        // Fetch the newCustomField from fileHandler middleware
+        const customFieldValue = req.body['customFieldValue'];
+        const customFieldName = req.body['customFieldName'];
+
+        try {
+            const post = await postService.changeCustomFieldValue(postId, customFieldName, customFieldValue)
+                .catch((err) => {
+                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+                })
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Task column updated!',
+                post: post
+            });
+        } catch (err) {
+            return sendErr(res, err, 'Internal Server Error!', 500);
+        }
+    }
 }

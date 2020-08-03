@@ -1,5 +1,5 @@
 .input-search {
-    width: auto;
+    width: 90px;
     height: 38px;
     font-style: normal;
     font-weight: 400;
@@ -30,10 +30,11 @@
 }
 
 .user-results{
-  width: fit-content;
-  padding: 5px 10px;
+  width: max-content;
+  padding: 0;
   position: absolute;
   z-index: 1000;
   background: #fff !important;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15), 0 6px 9px rgba(0, 0, 0, 0.2);
 }
 

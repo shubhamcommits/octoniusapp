@@ -122,35 +122,20 @@
 
       <!-- Assignee Modal starts -->
       <div class="col-md-8">
-        <app-select-assignee 
-          class="top-margin"
-          [post]="postData" 
-          [userData]="userData" 
-          [groupId]="groupId" 
-          [type]="type"
-          (member)="getMemberDetails($event)">
-        </app-select-assignee>
+        <app-inline-input
+            [(ngModel)]="postData.task._assigned_to"
+            [domainObject]="postData"
+            [required]="true"
+            [workspaceId]="userData._workspace"
+            [userData]="userData"
+            [groupId]="groupId"
+            [showAssigneeName]="true"
+            type="assignee">
+        </app-inline-input>
       </div>
       <!-- Assignee Modal ends -->
       
       <div class="col-md-4 right-section">
-
-          <!-- Due Date Placeholder starts -->
-          <!-- <p class="ml-5">
-            <strong *ngIf="dueDate"><span class="material-icons">date_range</span>
-              On {{ dueDate | date:'mediumDate' || 'Date Not Selected' }}</strong>
-            <strong *ngIf="!dueDate"><span class="material-icons">date_range</span>
-              Due Date Not Selected</strong>
-          </p> -->
-          <!-- Due Date Placeholder ends -->
-          
-          <!-- Due Time Placeholder starts -->
-          <!-- <p class="ml-5" *ngIf="dueTime && type === 'event'">
-            <strong> <span class="material-icons">alarm</span>
-              At {{ dueTime.hour }}:{{ dueTime.minute }}
-            </strong>
-          </p> -->
-          <!-- Due Time Placeholder ends -->
 
           <!-- Change task status starts -->
           <app-task-status 
@@ -175,8 +160,6 @@
 
     </div>
 
-  
-    
     <!-- Quill Editor with content of post if edit property is enabled -->
     <app-quill-editor 
       *ngIf="!edit" 
@@ -209,8 +192,6 @@
     </div>
     <!-- Attach files ends -->
 
-   
-    
     <!-- Post Tags starts -->
     <app-post-tags 
       [post]="postData" 
