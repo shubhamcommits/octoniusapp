@@ -44,9 +44,10 @@
                         <div class="newValue">
                             <input type="text" autocomplete="off" placeholder="Add value..." 
                                 class="newValueInput" 
-                                [(ngModel)]="newValue"
-                                (keyup.enter)="addValue(field)"/>
-                            <button mat-button (click)="addValue(field)">Add</button>
+                                (keyup.enter)="addValue(field, $event)"/>
+                            <!--
+                            <button mat-button (click)="addValue(field, $event)">Add</button>
+                            -->
                         </div>
                     </div>
                 </div>

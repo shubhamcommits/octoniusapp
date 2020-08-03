@@ -15,8 +15,6 @@ export class CustomFieldsDialogComponent implements OnInit {
   showNewCustomField = false;
   newCustomFieldTitle = '';
 
-  newValue = '';
-
   groupData;
 
   @Output() customFieldsEvent = new EventEmitter();
@@ -96,21 +94,23 @@ export class CustomFieldsDialogComponent implements OnInit {
       });
   }
 
-  addValue(field) {
-    if (this.newValue !== '') {
+  addValue(field, event: Event) {
+    const newValue = event.target['value'];
+    console.log(newValue);
+    if (newValue !== '') {
       // Find the index of the field to check if the same named field exist or not
-      const index = field.values.findIndex((v: string) => v.toLowerCase() === this.newValue.toLowerCase());
+      const index = field.values.findIndex((v: string) => v.toLowerCase() === newValue.toLowerCase());
 
       // If index is found, then throw error notification
       if (index !== -1) {
         this.utilityService.warningNotification('Value already exist!');
       } else {
-        field.values.push(this.newValue);
+        field.values.push(newValue);
 
         // Save the new value
-        this.groupService.addCustomFieldNewValue(this.newValue, field._id, this.groupData._id);
+        this.groupService.addCustomFieldNewValue(newValue, field._id, this.groupData._id);
 
-        this.newValue = '';
+        event.target['value'] = '';
       }
     }
   }
