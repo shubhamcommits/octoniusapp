@@ -34,5 +34,13 @@ input {
     color: red;
     position: absolute;
     margin-top: -60px;
-    margin-left: 20px;
+    margin-left: 50px;
+}
+
+#avatar-assignee:hover + #unassing{
+    display: block;
+}
+
+#unassing {
+    display: none;
 }

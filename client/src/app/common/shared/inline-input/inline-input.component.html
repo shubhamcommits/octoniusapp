@@ -42,7 +42,7 @@
 <div *ngIf="type === 'assignee'" class="assignee">
     <!-- Assignee section for tasks starts -->
     <section>
-        <div *ngIf="!editing" (click)="edit(value)">
+        <div *ngIf="!editing" (click)="edit(value)" id="avatar-assignee">
             <img src="{{ profilePicUrl }}"
                 onerror="this.src='assets/images/user.png'"
                 [ngClass]="(showAssigneeName) ? 'feed-avatar assignee-avatar' : 'feed-avatar'">
@@ -57,7 +57,7 @@
                 Unassigned
             </p>
         </div>
-        <i class="material-icons unassing-btn"
+        <i class="material-icons unassing-btn" id="unassing"
             *ngIf="!editing && !showAssigneeName && domainObject.task._assigned_to !== null"
             (click)="unassignTask()">highlight_off</i>
         <p *ngIf="!editing && showAssigneeName && domainObject.task._assigned_to !== null" style="margin-left: 180px; margin-top: -40px;">
