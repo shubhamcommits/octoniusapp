@@ -96,7 +96,7 @@ export class CustomFieldsDialogComponent implements OnInit {
 
   addValue(field, event: Event) {
     const newValue = event.target['value'];
-    console.log(newValue);
+
     if (newValue !== '') {
       // Find the index of the field to check if the same named field exist or not
       const index = field.values.findIndex((v: string) => v.toLowerCase() === newValue.toLowerCase());
