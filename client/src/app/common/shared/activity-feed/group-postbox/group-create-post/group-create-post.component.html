@@ -122,7 +122,7 @@
 
       <!-- Assignee Modal starts -->
       <div class="col-md-8">
-        <app-inline-input
+        <app-inline-input *ngIf="type === 'task'"
             [(ngModel)]="postData.task._assigned_to"
             [domainObject]="postData"
             [required]="true"
@@ -132,6 +132,14 @@
             [showAssigneeName]="true"
             type="assignee">
         </app-inline-input>
+        <app-select-assignee *ngIf="type ==='event'"
+            class="top-margin"
+            [post]="postData" 
+            [userData]="userData" 
+            [groupId]="groupId" 
+            [type]="type"
+            (member)="getMemberDetails($event)">
+        </app-select-assignee>
       </div>
       <!-- Assignee Modal ends -->
       
