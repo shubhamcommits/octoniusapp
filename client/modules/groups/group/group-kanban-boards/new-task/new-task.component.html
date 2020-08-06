@@ -1,5 +1,5 @@
-<button class="btn btn-block task" (click)="column.addTask = !column.addTask">
-   <i class="material-icons-outlined">check_box</i> New Task
+<button class="btn btn-block task muted" (click)="column.addTask = !column.addTask">
+   <i class="material-icons-outlined">add</i> New Task
 </button>
 <div class="add-task" *ngIf="column.addTask">
     <input class="form-control" type="text" placeholder="Enter task title" [(ngModel)]="postTitle" (keyup)="newTask($event, column)">
