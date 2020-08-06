@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Injector } from '@angular/core';
+import { Component, OnInit, Input, Injector, EventEmitter, Output } from '@angular/core';
 import moment from 'moment/moment';
 import { PublicFunctions } from 'src/app/dashboard/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -6,6 +6,8 @@ import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { GroupService } from 'src/shared/services/group-service/group.service';
+import { MatDialog } from '@angular/material';
+import { GroupCreatePostDialogComponent } from 'src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component';
 
 @Component({
   selector: 'app-group-tasks-list-view',
@@ -21,6 +23,9 @@ export class GroupTasksListViewComponent implements OnInit {
   @Input() columns: any;
   // Task Posts array variable
   @Input() tasks: any;
+  @Input() customFields: any;
+
+  @Output() closeModalEvent = new EventEmitter();
 
   customFieldsToShow: any[] = [];
 
@@ -40,25 +45,19 @@ export class GroupTasksListViewComponent implements OnInit {
   field: string;
 
   newColumnSelected;
-  customFields = [];
 
   constructor(
       public utilityService: UtilityService,
       private groupService: GroupService,
       private injector: Injector,
-      private router: ActivatedRoute
+      private router: ActivatedRoute,
+      public dialog: MatDialog
     ) {}
 
   ngOnInit() {
     this.groupService.getGroupCustomFieldsToShow(this.groupId).then((res) => {
       res['group']['custom_fields_to_show'].forEach(field => {
         this.customFieldsToShow.push(field);
-      });
-    });
-
-    this.groupService.getGroupCustomFields(this.groupId).then((res) => {
-      res['group']['custom_fields'].forEach(field => {
-        this.customFields.push(field);
       });
     });
   }
@@ -75,7 +74,6 @@ export class GroupTasksListViewComponent implements OnInit {
 
     // If the index is not found
     if (index !== -1) {
-
       // Remove the tasks from the array
       column.tasks.splice(index, 1);
     }
@@ -124,7 +122,28 @@ export class GroupTasksListViewComponent implements OnInit {
   closeModal() {
     this.utilityService.closeAllModals();
   }
-  
+
+  openFullscreenModal(postData: any): void {
+    const dialogRef = this.dialog.open(GroupCreatePostDialogComponent, {
+      width: '100%',
+      height: '100%',
+      disableClose: true,
+      panelClass: 'groupCreatePostDialog',
+      data: {
+        postData: postData,
+        userData: this.userData,
+        groupId: this.groupId,
+        columns: this.columns
+      }
+    });
+    const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
+      this.closeModalEvent.emit();
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      closeEventSubs.unsubscribe();
+    });
+  }
+
   /**
    * This function updates the status on the UI
    * @param task 
@@ -159,8 +178,6 @@ export class GroupTasksListViewComponent implements OnInit {
    * @param dueDate
    */
   changeDueDate(task: any, dueDate: any) {
-
-    // dueDate = new Date(dueDate)
 
     // dueDate = new Date(dueDate.getFull
     dueDate = new Date(dueDate.getFullYear(), dueDate.getMonth(), dueDate.getDate());
@@ -292,5 +309,9 @@ export class GroupTasksListViewComponent implements OnInit {
   customFieldValues(fieldName: string) {
     const index = this.groupData.custom_fields.findIndex((field: any) => field.name === fieldName);
     return this.groupData.custom_fields[index].values;
+  }
+
+  fieldUpdated(post, task) {
+    task = post;
   }
 }

@@ -3,9 +3,8 @@
 <div class="card-footer action-post" *ngIf="post">
     <div class="row ">
         <div class="col-md-6">
-            <span class="stats"><b>{{post?._liked_by.length || 0 }}</b>
-                Likes </span>
-            <span class="stats" (click)="fetchComments()"><b>{{ post?.comments.length || 0 }}</b> Comments</span>
+            <span class="stats"><b>{{post?._liked_by.length || 0 }}</b>Likes </span>
+            <span class="stats" *ngIf="!fullscreen" (click)="fetchComments()"><b>{{ post?.comments.length || 0 }}</b> Comments</span>
             <span class="stats"><b>{{post?._followers?.length || 0 }}</b> Followers</span>
         </div>
         <div class="col-md-6 text-right">
@@ -20,7 +19,7 @@
             <app-follow-post *ngIf="post" [post]="post" [userData]="userData"></app-follow-post>
             <!-- Follow Post ends -->
 
-            <app-post-utils *ngIf="post" [post]="post" [userData]="userData" (delete)="deletePost($event)">
+            <app-post-utils *ngIf="!fullscreen" [post]="post" [userData]="userData" (delete)="deletePost($event)">
             </app-post-utils>
         </div>
     </div>
@@ -32,7 +31,7 @@
 </comment-section>
 
 
-<section *ngIf="showComments && comments && post && userData">
+<section *ngIf="showComments && comments && post && userData && !fullscreen">
     <section *ngFor="let comment of comments; let index = index;">
         <post-comment [comment]="comment" [index]="index" [userData]="userData"
             [groupId]="post._group || post._group._id" (remove)="removeComment($event)"></post-comment>

@@ -19,6 +19,9 @@ export class BoardBarComponent implements OnInit {
   // Emitter to notify that the view is changing
   @Output() changeViewEmitter: EventEmitter<string> = new EventEmitter<string>();
 
+  // Emitter to notify that a customField was edited/added
+  @Output() customFieldEmitter= new EventEmitter();
+
   ngOnInit() {
   }
 
@@ -34,8 +37,7 @@ export class BoardBarComponent implements OnInit {
       data: { groupData: this.groupData }
     });
     const sub = dialogRef.componentInstance.customFieldsEvent.subscribe((data) => {
-      console.log(data);
-      // TODO how to bring this information to the list view component
+      this.customFieldEmitter.emit(data);
     });
     dialogRef.afterClosed().subscribe(result => {
       sub.unsubscribe();

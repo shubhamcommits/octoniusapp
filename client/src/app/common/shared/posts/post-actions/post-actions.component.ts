@@ -18,6 +18,8 @@ export class PostActionsComponent implements OnInit {
   // User Data Object
   @Input('userData') userData: any;
 
+  @Input() fullscreen: boolean = false;
+
   // Delete Post Event Emitter
   @Output('delete') delete = new EventEmitter()
 
@@ -85,7 +87,6 @@ export class PostActionsComponent implements OnInit {
   newComment(comment: any) {
     this.comments.unshift(comment)
     this.post.comments = this.comments
-    console.log(this.comments);
   }
 
   removeComment(index: number){

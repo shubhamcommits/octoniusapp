@@ -1,0 +1,163 @@
+<div class="post-dialog-content">
+    <mat-dialog-actions align="end">
+        <div class="action-box">
+            <i mat-dialog-close class="material-icons" (click)="onCloseDialog()" style="cursor: pointer">close</i>
+        </div>
+    </mat-dialog-actions>
+
+    <div class="post-content">
+        <div class="content-box">
+            <div class="modal-header">
+                <!-- Event Post Header starts -->
+                <h4 class="modal-title">
+                    <!-- Post Title starts -->
+                    <input 
+                        name="postTitle" 
+                        type="text" 
+                        [ngModel]="title" 
+                        (ngModelChange)="titleChange($event)"
+                        class="post-title" 
+                        placeholder="✍🏻 Title" />
+                    <!-- Post Title ends -->
+                </h4>
+
+                <app-post-utils [post]="postData" [userData]="userData" (delete)="deletePost($event)">
+                </app-post-utils>
+            </div>
+            <!-- Post Header Title ends -->
+
+            <!-- Post Content starts -->
+            <app-quill-editor 
+                [editorId]="'postbox-editor'" 
+                [toolbar]="true"
+                [readOnly]="false" 
+                [contents]="postData.content" 
+                [groupId]="groupId"
+                (content)="getQuillData($event)">
+            </app-quill-editor>
+            <!-- Post Content ends -->
+
+            <!-- Attach files starts -->
+            <div class="attach-files">
+                <app-attach-files 
+                    [post]="postData" 
+                    (files)="onAttach($event)">
+                </app-attach-files>
+            </div>
+            <!-- Attach files ends -->
+
+            <div class="clearfix"></div>
+
+            <app-post-actions
+                [post]="postData"
+                [userData]="userData"
+                [fullscreen]="true">
+            </app-post-actions>
+
+        </div>
+
+        <div class="content-box">
+            <section *ngFor="let comment of comments; let index = index;">
+                <post-comment [comment]="comment" [index]="index" [userData]="userData"
+                    [groupId]="postData._group || postData._group._id" (remove)="removeComment($event)"></post-comment>
+            </section>
+        </div>
+    </div>
+
+    <div class="post-properties">
+        <div class="content-box">
+            <p class="box-title">Status</p>
+            <!-- Change task status starts -->
+            <app-task-status 
+                class="ml-3" 
+                [post]="postData"
+                (status)="changeTaskStatus($event)">
+            </app-task-status>
+            <!-- Change task status ends -->
+
+            <br />
+
+            <p class="box-title">Section</p>
+            <!-- Change task column starts -->
+            <app-change-column 
+                class="ml-3" 
+                *ngIf="columns" 
+                [post]="postData"
+                [columns]="columns" 
+                (moveTask)="moveTaskToColumn($event)">
+            </app-change-column>
+            <!-- Change task column ends -->
+        </div>
+
+        <!-- Top Right Section starts -->
+        <div class="content-box">
+            <p class="box-title">Due date</p>
+            <!-- Date Picker starts -->
+            <app-date-picker
+                (date)="getDate($event)" [dueDate]="postData?.task.due_to">
+            </app-date-picker>
+
+            <!--
+            <app-date-picker *ngIf="type === 'event'"
+                (date)="getDate($event)" [dueDate]="postData?.event.due_to">
+            </app-date-picker>
+            -->
+            <!-- Date Picker ends -->
+
+            <!-- Time Picker starts -->
+            <!--
+            <app-time-picker  
+                class="ml-3"
+                *ngIf="type === 'event'" 
+                [time]="this.dueTime" 
+                (time)="getTime($event)">
+            </app-time-picker>
+            -->
+            <!-- Time Picker ends -->
+        </div>
+        <!-- Top Right Section ends -->
+        
+        <!-- Assignee Modal starts -->
+        <div class="content-box">
+            <p class="box-title">Assigned member</p>
+            <app-inline-input
+                [(ngModel)]="postData.task._assigned_to"
+                [domainObject]="postData"
+                [required]="true"
+                [workspaceId]="userData._workspace"
+                [userData]="userData"
+                [groupId]="groupId"
+                [showAssigneeName]="true"
+                type="assignee">
+            </app-inline-input>
+        </div>
+        <!-- Assignee Modal ends -->
+
+        <div class="content-box">
+            <p class="box-title">Tags</p>
+            <!-- Post Tags starts -->
+            <app-post-tags 
+                [post]="postData" 
+                [userData]="userData" 
+                [groupId]="groupId" 
+                (tags)="getTags($event)">
+            </app-post-tags>
+            <!-- Post Tags ends -->
+        </div>
+
+        <div class="content-box">
+            <p class="box-title">Custom fields</p>
+            <div *ngFor="let cf of customFields" class="custom-field">
+                <p>{{ cf.title }}</p>
+                <mat-form-field>
+                    <mat-select ngDefaultControl
+                            [(value)]="selectedCFValues[cf.name]"
+                            (selectionChange)="onCustomFieldChange($event, cf.name)">
+                        <mat-select-trigger>{{ selectedCFValues[cf.name] }}</mat-select-trigger>
+                        <mat-option *ngFor="let val of cf.values" [value]="val">{{ val }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+</div>

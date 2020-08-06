@@ -5,6 +5,7 @@ import { SubSink } from 'subsink';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
 import { PublicFunctions } from 'src/app/dashboard/public.functions';
 import { ActivatedRoute } from '@angular/router';
+import { GroupService } from 'src/shared/services/group-service/group.service';
 
 @Component({
   selector: 'app-group-tasks-views',
@@ -20,6 +21,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
   columns: any = [];
   tasks: any = [];
   userData: any;
+  customFields: any = [];
 
   // Fetch groupId from router snapshot
   groupId = this.router.snapshot.queryParamMap.get('group');
@@ -36,6 +38,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
   constructor(
     private router: ActivatedRoute,
     public utilityService: UtilityService,
+    private groupService: GroupService,
     private injector: Injector) { }
 
 
@@ -60,6 +63,16 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
   async onChangeViewEmitter(view: string) {
       this.viewType = view;
       this.initView();
+  }
+
+  async onCustomFieldEmitter() {
+    if (this.viewType === 'list') {
+      this.initView();
+    }
+  }
+
+  async onModalCloseEvent() {
+    this.initView();
   }
 
   async initView() {
@@ -93,12 +106,20 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     // Fetch all the tasks posts from the server
     this.tasks = await this.publicFunctions.getPosts(this.groupId, 'task');
 
-    // console.log('Tasks', this.tasks)
-
     /**
      * Sort the tasks into their respective columns
      */
     this.sortTasksInColumns(this.columns, this.tasks);
+
+    /**
+     * Obtain the custom fields
+     */
+    this.customFields = [];
+    this.groupService.getGroupCustomFields(this.groupId).then((res) => {
+      res['group']['custom_fields'].forEach(field => {
+        this.customFields.push(field);
+      });
+    });
   }
 
   /**
@@ -123,8 +144,6 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     });
   }
 
-
-
   /**
    * This Function is responsible for sorting the tasks into columns
    * @param columns
@@ -133,7 +152,6 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
   sortTasksInColumns(columns: any, tasks: any) {
 
     columns.forEach((column: any) => {
-
       // Feed the tasks into that column which has matching property _column with the column title
       column.tasks = tasks
         .filter((post: any) => post.task.hasOwnProperty(
