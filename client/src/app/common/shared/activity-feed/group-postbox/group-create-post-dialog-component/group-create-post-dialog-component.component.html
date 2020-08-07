@@ -1,7 +1,8 @@
 <div class="post-dialog-content">
     <mat-dialog-actions align="end">
         <div class="action-box">
-            <i mat-dialog-close class="material-icons" (click)="onCloseDialog()" style="cursor: pointer">close</i>
+            <i mat-dialog-close class="material-icons" style="cursor: pointer"
+                (click)="onCloseDialog()">close</i>
         </div>
     </mat-dialog-actions>
 
@@ -14,26 +15,30 @@
                     <input 
                         name="postTitle" 
                         type="text" 
-                        [ngModel]="title" 
-                        (ngModelChange)="titleChange($event)"
+                        [ngModel]="title"
+                        (blur)="titleChange($event)"
                         class="post-title" 
                         placeholder="✍🏻 Title" />
                     <!-- Post Title ends -->
                 </h4>
 
-                <app-post-utils [post]="postData" [userData]="userData" (delete)="deletePost($event)">
+                <app-post-utils
+                    [post]="postData"
+                    [userData]="userData"
+                    mode="fullscreen"
+                    (delete)="deletePost($event)">
                 </app-post-utils>
             </div>
             <!-- Post Header Title ends -->
 
             <!-- Post Content starts -->
             <app-quill-editor 
-                [editorId]="'postbox-editor'" 
+                [editorId]="'postbox-editor'"
                 [toolbar]="true"
                 [readOnly]="false" 
                 [contents]="postData.content" 
                 [groupId]="groupId"
-                (content)="getQuillData($event)">
+                (content)="quillContentChanged($event)">
             </app-quill-editor>
             <!-- Post Content ends -->
 
@@ -56,6 +61,14 @@
 
         </div>
 
+        <div class="clearfix save-content">
+            <button [disabled]="!contentChanged"
+                    class="btn float-right btn-primary btn-md"
+                    (click)="updateDetails()">
+                Save
+            </button>
+        </div>
+    
         <div class="content-box">
             <section *ngFor="let comment of comments; let index = index;">
                 <post-comment [comment]="comment" [index]="index" [userData]="userData"

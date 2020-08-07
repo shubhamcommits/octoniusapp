@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output, Inject, Injector } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Inject, Injector, AfterViewInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { environment } from 'src/environments/environment';
 import { PublicFunctions } from 'src/app/dashboard/public.functions';
@@ -6,13 +6,18 @@ import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { CommentService } from 'src/shared/services/comment-service/comment.service';
+// import Quill from 'quill';
+// import { QuillEditorComponent } from '../../../quill-editor/quill-editor.component';
+// import ReconnectingWebSocket from 'reconnecting-websocket';
+// ShareDB Client
+import * as ShareDB from 'sharedb/lib/client'
 
 @Component({
   selector: 'app-group-create-post-dialog-component',
   templateUrl: './group-create-post-dialog-component.component.html',
   styleUrls: ['./group-create-post-dialog-component.component.scss']
 })
-export class GroupCreatePostDialogComponent implements OnInit {
+export class GroupCreatePostDialogComponent implements OnInit, AfterViewInit {
 
   // Close Event Emitter - Emits when closing dialog
   @Output() closeEvent = new EventEmitter();
@@ -33,6 +38,8 @@ export class GroupCreatePostDialogComponent implements OnInit {
   // Quill Data Object
   quillData: any;
 
+  // postEditor: any;
+
   // Content Mentions Variables keeps a track of mentioned members
   _content_mentions: any = [];
 
@@ -42,8 +49,8 @@ export class GroupCreatePostDialogComponent implements OnInit {
   // Public Functions class object
   publicFunctions = new PublicFunctions(this.injector);
 
-  // Show Update Details Variable
-  showUpdateDetails = false;
+  // Variable to enable or disable save button
+  contentChanged = false;
 
   /* Task Variables */
 
@@ -60,7 +67,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
   assigned: boolean = false;
 
   // Date Object to map the due dates
-  dueDate: any;;
+  dueDate: any;
 
   // Files Variable 
   files: any = [];
@@ -71,7 +78,10 @@ export class GroupCreatePostDialogComponent implements OnInit {
   eventMembersMap: any = new Map();
 
   // Comments Array
-  comments: any = []
+  comments: any = [];
+
+  // @ViewChild(QuillEditorComponent, {read: false, static: false})
+  // quillEditorComponent: QuillEditorComponent;
   
   constructor(
     private postService: PostService,
@@ -81,7 +91,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
     private commentService: CommentService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private mdDialogRef: MatDialogRef<GroupCreatePostDialogComponent>
-    ) { }
+    ) {}
 
   ngOnInit() {
     this.postData = this.data.postData;
@@ -92,46 +102,108 @@ export class GroupCreatePostDialogComponent implements OnInit {
     // Set the title of the post
     this.title = this.postData.title;
 
-    // If Post is task and is not unassigned
-    if (!this.postData.task.unassigned) {
+    // this.postEditor = this.initializeEditorConnection();
 
+    // If Post is not unassigned
+    if (!this.postData.task.unassigned) {
       // Set the taskAssignee
       this.taskAssignee = this.postData.task._assigned_to;
-
-      // Set the due date to be undefined
-      this.dueDate = undefined;
-
-      this.groupService.getGroupCustomFields(this.groupId).then((res) => {
-        res['group']['custom_fields'].forEach(field => {
-          this.customFields.push(field);
-
-          if (!this.postData.task.custom_fields) {
-            this.postData.task.custom_fields = new Map<string, string>();
-          }
-          
-          if (!this.postData.task.custom_fields[field.name]) {
-            this.postData.task.custom_fields[field.name] = '';
-            this.selectedCFValues[field.name] = '';
-          } else {
-            this.selectedCFValues[field.name] = this.postData.task.custom_fields[field.name];
-          }
-        });
-      });
-      
-      // Set the due date variable for both task and event type posts
-      if ((this.postData.task.due_to && this.postData.task.due_to != null) ||
-        (this.postData.event.due_to && this.postData.event.due_to != null)) {
-
-        // Set the DueDate variable
-        this.dueDate = new Date(this.postData.task.due_to || this.postData.event.due_to);
-      }
-
-      this.tags = this.postData.tags;
-
     }
+
+    // Set the due date to be undefined
+    this.dueDate = undefined;
+
+    this.groupService.getGroupCustomFields(this.groupId).then((res) => {
+      res['group']['custom_fields'].forEach(field => {
+        this.customFields.push(field);
+
+        if (!this.postData.task.custom_fields) {
+          this.postData.task.custom_fields = new Map<string, string>();
+        }
+        
+        if (!this.postData.task.custom_fields[field.name]) {
+          this.postData.task.custom_fields[field.name] = '';
+          this.selectedCFValues[field.name] = '';
+        } else {
+          this.selectedCFValues[field.name] = this.postData.task.custom_fields[field.name];
+        }
+      });
+    });
+    
+    // Set the due date variable for both task and event type posts
+    if ((this.postData.task.due_to && this.postData.task.due_to != null) ||
+      (this.postData.event.due_to && this.postData.event.due_to != null)) {
+
+      // Set the DueDate variable
+      this.dueDate = new Date(this.postData.task.due_to || this.postData.event.due_to);
+    }
+
+    this.tags = this.postData.tags;
+
     
     this.fetchComments();
   }
+
+  ngAfterViewInit() {
+    // this.initializeEditor();
+  }
+
+  /**
+   * This fuction is responsible for initialising the connection to sharedb backend
+   */
+  /*
+  initializeEditorConnection() {
+
+    // Connect with the Socket Backend
+    const shareDBSocket = new ReconnectingWebSocket(environment.FOLIO_BASE_URL + '/post', [], {
+      WebSocket: undefined,
+      maxReconnectionDelay: 10000,
+      minReconnectionDelay: 1000 + Math.random() * 4000,
+      reconnectionDelayGrowFactor: 1.3,
+      minUptime: 5000,
+      connectionTimeout: 4000,
+      maxRetries: Infinity,
+      debug: false,
+    });
+
+    // Initialise the Realtime DB Connection 
+    let shareDBConnection = new ShareDB.Connection(shareDBSocket);
+
+    // Return the post with the respective postId
+    return shareDBConnection.get('posts', this.postData._id);
+  }
+  */
+
+  /**
+   * This function is responsible for fetching the post 
+   */
+  /*
+  initializeEditor() {
+    let quill = this.quillEditorComponent.quill;
+    // Subscribe to the post data and update the quill instance with the data
+    this.postEditor.subscribe(async () => {
+        
+        // update editor contents
+        quill.setContents(this.postEditor.contents)
+  
+        // local -> server
+        quill.on('text-change', (delta, oldDelta, source) => {
+            this.postEditor.submitOp(delta, {
+              source: quill
+            }, (err: Error) => {
+              if (err)
+                console.error('Submit OP returned an error:', err);
+            });
+        });
+
+        // server -> local
+        this.postEditor.on('op', (op, source) => {
+          if (source === quill) return;
+          quill.updateContents(op);
+        });
+    })
+  }
+  */
 
   moveTaskToColumn($event) {
     this.updateDetails();
@@ -147,12 +219,16 @@ export class GroupCreatePostDialogComponent implements OnInit {
    * @param event - new title value
    */
   titleChange(event: any) {
-    if (event === this.title)
-      this.showUpdateDetails = false;
-    else {
-      this.showUpdateDetails = true;
-      this.title = event;
+    const newTitle = event.target.value;
+    if (newTitle !== this.title) {
+      this.title = newTitle;
+      this.updateDetails();
     }
+  }
+
+  quillContentChanged(event: any) {
+    this.contentChanged = true;
+    this.quillData = event;
   }
 
   /**
@@ -185,36 +261,6 @@ export class GroupCreatePostDialogComponent implements OnInit {
   }
 
   /**
-   * Get Quill Data from the @module <quill-editor></quill-editor>
-   *  Show update detail option if post content has been changed
-   * @param quillData
-   */
-  getQuillData(quillData: any) {
-
-    // Set the quill data object to the quillData output
-    this.quillData = quillData;
-
-    // Filter the Mention users content and map them into arrays of Ids
-    this._content_mentions = this.quillData.mention.users.map((user) => user.insert.mention.id);
-
-    // If content mentions has 'all' then only pass 'all' inside the array
-    if (this._content_mentions.includes('all')) {
-      this._content_mentions = ['all'];
-    }
-
-    // Set the values of the array
-    this._content_mentions = Array.from(new Set(this._content_mentions));
-
-    if (this.postData.content === JSON.stringify(this.quillData.contents)) {
-      this.showUpdateDetails = false;
-    } else {
-      this.showUpdateDetails = true;
-    }
-    
-    this.updateDetails();
-  }
-
-  /**
    * Fetch Comments
    */
   fetchComments() {
@@ -237,8 +283,6 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
     // Set the current files variable to the output of the module
     this.files = files;
-
-    this.showUpdateDetails = true;
 
     this.updateDetails();
   }
@@ -263,7 +307,6 @@ export class GroupCreatePostDialogComponent implements OnInit {
   }
 
   updateDetails() {
-
     // Prepare the normal  object
     const post: any = {
       title: this.title,
@@ -325,10 +368,10 @@ export class GroupCreatePostDialogComponent implements OnInit {
    * Call the asynchronous function to change the column
    */
   editPost(postId: any, formData: FormData) {
-    // if (!sync) {
       this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
         this.postService.edit(postId, formData)
           .then((res) => {
+            this.contentChanged = false;
             // Resolve with success
             resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
           })
@@ -336,14 +379,6 @@ export class GroupCreatePostDialogComponent implements OnInit {
             reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
           });
       }));
-      /*
-    } else {
-      this.postService.edit(postId, formData)
-        .then((res) => {
-          this.edited.emit(res['post']);
-        });
-    }
-    */
   }
 
   /**

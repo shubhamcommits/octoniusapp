@@ -19,6 +19,8 @@ export class PostUtilsComponent implements OnInit {
   // User Data Object
   @Input('userData') userData: any;
 
+  @Input() mode: string = 'normal';
+
   // Delete Post Event Emitter
   @Output('delete') delete = new EventEmitter()
 
