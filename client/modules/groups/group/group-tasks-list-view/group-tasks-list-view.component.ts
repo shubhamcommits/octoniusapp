@@ -110,11 +110,13 @@ export class GroupTasksListViewComponent implements OnInit {
    * This function is responsible for opening the modal
    * @param content
    */
+  /*
   openModal(content: any) {
     this.utilityService.openModal(content, {
       size: 'xl',
     });
   }
+  */
 
   /**
    * This function is responsible for closing the modals
@@ -123,6 +125,9 @@ export class GroupTasksListViewComponent implements OnInit {
     this.utilityService.closeAllModals();
   }
 
+  /**
+   * This function is responsible for opening a fullscreen dialog to edit a task
+   */
   openFullscreenModal(postData: any): void {
     const dialogRef = this.dialog.open(GroupCreatePostDialogComponent, {
       width: '100%',

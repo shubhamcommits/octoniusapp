@@ -50,7 +50,7 @@
                         [ngClass]="{'status-todo': task?.task?.status === 'to do', 'status-inprogress': task?.task?.status === 'in progress', 'status-done': task?.task?.status === 'done'}"
                         *ngFor="let task of column.tasks; let j = index;" cdkDrag>
                         
-                        <div class="media" (click)="openModal(content)">
+                        <div class="media" (click)="openFullscreenModal(task)">
                             <div class="media-body">
                                 <h5 class="mt-0 mb-1 kanban-card-title">{{ task?.title }}</h5>
                                 <span class="small"
@@ -72,21 +72,11 @@
                                 </ng-template>
                             </div>
                             
-                                <img src="{{baseUrl}}/{{task?.task?._assigned_to?.profile_pic}}"
-                                    onerror="this.src='assets/images/user.png'"
-                                    class="feed-avatar">
-                                <!-- <span *ngIf="!task?.task?.unassigned">
-                                    {{task?.task?._assigned_to?.first_name}}
-                                    {{ task?.task?._assigned_to?.last_name }}</span>
-                                <span *ngIf="task?.task?.unassigned">Unassigned</span> -->
-                            
-                            </div>
+                            <img src="{{baseUrl}}/{{task?.task?._assigned_to?.profile_pic}}"
+                                onerror="this.src='assets/images/user.png'"
+                                class="feed-avatar">
+                        </div>
 
-
-                            
-
-                            
-                        
                     </div>
                     <!-- TASK DETAILS ENDS -->
 

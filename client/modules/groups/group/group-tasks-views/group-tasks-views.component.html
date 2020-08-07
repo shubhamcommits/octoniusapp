@@ -10,7 +10,8 @@
             [groupData]="groupData"
             [userData]="userData"
             [columns]="columns"
-            [tasks]="tasks">
+            [tasks]="tasks"
+            (closeModalEvent)="onModalCloseEvent()">
         </app-group-kanban-boards>
 
         <app-group-tasks-list-view *ngIf="viewType ==='list'"
