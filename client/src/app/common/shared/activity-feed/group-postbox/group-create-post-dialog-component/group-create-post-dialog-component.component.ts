@@ -209,8 +209,9 @@ export class GroupCreatePostDialogComponent implements OnInit, AfterViewInit {
     this.updateDetails();
   }
 
-  changeTaskStatus($event) {
-    this.updateDetails();
+  changeTaskStatus(event) {
+    // Set the status
+    this.postData.task.status = event;
   }
 
   /**
