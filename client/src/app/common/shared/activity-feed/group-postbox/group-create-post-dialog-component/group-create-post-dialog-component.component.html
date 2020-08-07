@@ -148,7 +148,7 @@
         <div class="content-box">
             <p class="box-title">Custom fields</p>
             <div *ngFor="let cf of customFields" class="d-flex custom-field justify-content-start mb-3 row">
-                <p class="ml-3 mb-0">{{ cf.title }}</p>
+                <p class="ml-3 mt-2 mb-0">{{ cf.title }}</p>
                 <mat-select ngDefaultControl
                     [(value)]="selectedCFValues[cf.name]"
                     (selectionChange)="onCustomFieldChange($event, cf.name)"
