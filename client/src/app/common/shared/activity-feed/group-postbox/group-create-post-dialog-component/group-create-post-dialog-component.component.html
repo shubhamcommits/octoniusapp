@@ -56,7 +56,8 @@
             <app-post-actions
                 [post]="postData"
                 [userData]="userData"
-                [fullscreen]="true">
+                [fullscreen]="true"
+                (newCommentEmitter)="newCommentAdded($event)">
             </app-post-actions>
 
         </div>

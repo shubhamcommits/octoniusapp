@@ -272,6 +272,10 @@ export class GroupCreatePostDialogComponent implements OnInit, AfterViewInit {
     });
   }
 
+  newCommentAdded(event) {
+    this.comments.unshift(event);
+  }
+
   removeComment(index: number){
     this.comments.splice(index, 1);
   }
