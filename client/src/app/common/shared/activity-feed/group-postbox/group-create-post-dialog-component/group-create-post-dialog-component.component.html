@@ -147,16 +147,17 @@
 
         <div class="content-box">
             <p class="box-title">Custom fields</p>
-            <div *ngFor="let cf of customFields" class="custom-field">
-                <p>{{ cf.title }}</p>
-                <mat-form-field>
-                    <mat-select ngDefaultControl
-                            [(value)]="selectedCFValues[cf.name]"
-                            (selectionChange)="onCustomFieldChange($event, cf.name)">
-                        <mat-select-trigger>{{ selectedCFValues[cf.name] }}</mat-select-trigger>
-                        <mat-option *ngFor="let val of cf.values" [value]="val">{{ val }}</mat-option>
-                    </mat-select>
-                </mat-form-field>
+            <div *ngFor="let cf of customFields" class="d-flex custom-field justify-content-start mb-3 row">
+                <p class="ml-3 mb-0">{{ cf.title }}</p>
+                <mat-select ngDefaultControl
+                    [(value)]="selectedCFValues[cf.name]"
+                    (selectionChange)="onCustomFieldChange($event, cf.name)"
+                    appearance="fill"
+                    class="ml-2 col-4"
+                    >
+                    <mat-select-trigger>{{ selectedCFValues[cf.name] }}</mat-select-trigger>
+                    <mat-option *ngFor="let val of cf.values" [value]="val">{{ val }}</mat-option>
+                </mat-select>
             </div>
         </div>
     </div>

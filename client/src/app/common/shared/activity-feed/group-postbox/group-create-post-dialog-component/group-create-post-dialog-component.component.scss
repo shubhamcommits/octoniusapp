@@ -78,17 +78,24 @@
         margin-bottom: 10px;
 
         p {
-            float: left;
             color: #5E6268;
             font-size: 15px;
+            display: table-cell;
+            vertical-align: middle;
         }
-
-        mat-form-field {
-            width: 65%;
-            float: right;
-            height: 30px;
-            border-radius: 3px;
-            background-color: #F3F4F6;
+        mat-select{
+            background-color: rgba(0,0,0,0.04);
+            border-radius: 4px 4px 0 0;
+            padding: 5px;   
+            display: table-cell;
+            vertical-align: middle;
         }
+        // mat-form-field {
+        //     width: 65%;
+        //     float: right;
+        //     height: 30px;
+        //     border-radius: 3px;
+        //     background-color: #F3F4F6;
+        // }
     }
 }
