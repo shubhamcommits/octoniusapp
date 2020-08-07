@@ -32,6 +32,7 @@ export class InlineInputComponent implements ControlValueAccessor, OnInit {
   @Input() required = false; // Is input requried?
   @Input() disabled = false; // Is input disabled?
   @Input() domainObject: any; // Complete object to be updated
+  @Input() styleClass = '';
 
   @Input() workspaceId: string;
   @Input() userData;
@@ -48,6 +49,8 @@ export class InlineInputComponent implements ControlValueAccessor, OnInit {
   editing = false; // Is Component in edit mode?
 
   profilePicUrl = '';
+
+  dateStyleClass = '';
 
   public onChange: any = Function.prototype; // Trascend the onChange event
   public onTouched: any = Function.prototype; // Trascend the onTouch event
@@ -93,6 +96,8 @@ export class InlineInputComponent implements ControlValueAccessor, OnInit {
         this.customFieldValue = this.domainObject.task.custom_fields[this.customFieldName];
       }
     }
+
+    this.dateStyleClass = 'btn btn-link dropdown-toggle btn-sm ' +  this.styleClass;
   }
 
   // Required for ControlValueAccessor interface
