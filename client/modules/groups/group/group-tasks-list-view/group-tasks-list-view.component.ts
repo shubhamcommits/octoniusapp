@@ -107,18 +107,6 @@ export class GroupTasksListViewComponent implements OnInit {
   }
 
   /**
-   * This function is responsible for opening the modal
-   * @param content
-   */
-  /*
-  */
-  openModal(content: any) {
-    this.utilityService.openModal(content, {
-      size: 'xl',
-    });
-  }
-
-  /**
    * This function is responsible for closing the modals
    */
   closeModal() {

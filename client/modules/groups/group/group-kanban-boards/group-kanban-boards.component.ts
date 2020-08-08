@@ -301,18 +301,6 @@ export class GroupKanbanBoardsComponent implements OnInit {
   }
 
   /**
-   * This function is responsible for opening the modal
-   * @param content 
-   */
-  /*
-  openModal(content: any) {
-    this.utilityService.openModal(content, {
-      size: 'xl',
-    });
-  }
-  */
-
-  /**
    * This function is responsible for opening a fullscreen dialog to edit a task
    */
   openFullscreenModal(postData: any): void {
