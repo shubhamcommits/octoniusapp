@@ -311,23 +311,13 @@ export class GroupKanbanBoardsComponent implements OnInit {
     });
   }
   */
-  
+
   /**
    * This function is responsible for opening a fullscreen dialog to edit a task
    */
   openFullscreenModal(postData: any): void {
-    const dialogRef = this.dialog.open(GroupCreatePostDialogComponent, {
-      width: '100%',
-      height: '100%',
-      disableClose: true,
-      panelClass: 'groupCreatePostDialog',
-      data: {
-        postData: postData,
-        userData: this.userData,
-        groupId: this.groupId,
-        columns: this.columns
-      }
-    });
+    const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, this.groupId, this.columns);
+    
     const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
       this.closeModalEvent.emit();
     });
