@@ -17,7 +17,7 @@ import * as ShareDB from 'sharedb/lib/client'
   templateUrl: './group-create-post-dialog-component.component.html',
   styleUrls: ['./group-create-post-dialog-component.component.scss']
 })
-export class GroupCreatePostDialogComponent implements OnInit, AfterViewInit {
+export class GroupCreatePostDialogComponent implements OnInit {
 
   // Close Event Emitter - Emits when closing dialog
   @Output() closeEvent = new EventEmitter();
@@ -79,9 +79,6 @@ export class GroupCreatePostDialogComponent implements OnInit, AfterViewInit {
 
   // Comments Array
   comments: any = [];
-
-  // @ViewChild(QuillEditorComponent, {read: false, static: false})
-  // quillEditorComponent: QuillEditorComponent;
   
   constructor(
     private postService: PostService,
@@ -101,8 +98,6 @@ export class GroupCreatePostDialogComponent implements OnInit, AfterViewInit {
 
     // Set the title of the post
     this.title = this.postData.title;
-
-    // this.postEditor = this.initializeEditorConnection();
 
     // If Post is not unassigned
     if (!this.postData.task.unassigned) {
@@ -143,67 +138,6 @@ export class GroupCreatePostDialogComponent implements OnInit, AfterViewInit {
     
     this.fetchComments();
   }
-
-  ngAfterViewInit() {
-    // this.initializeEditor();
-  }
-
-  /**
-   * This fuction is responsible for initialising the connection to sharedb backend
-   */
-  /*
-  initializeEditorConnection() {
-
-    // Connect with the Socket Backend
-    const shareDBSocket = new ReconnectingWebSocket(environment.FOLIO_BASE_URL + '/post', [], {
-      WebSocket: undefined,
-      maxReconnectionDelay: 10000,
-      minReconnectionDelay: 1000 + Math.random() * 4000,
-      reconnectionDelayGrowFactor: 1.3,
-      minUptime: 5000,
-      connectionTimeout: 4000,
-      maxRetries: Infinity,
-      debug: false,
-    });
-
-    // Initialise the Realtime DB Connection 
-    let shareDBConnection = new ShareDB.Connection(shareDBSocket);
-
-    // Return the post with the respective postId
-    return shareDBConnection.get('posts', this.postData._id);
-  }
-  */
-
-  /**
-   * This function is responsible for fetching the post 
-   */
-  /*
-  initializeEditor() {
-    let quill = this.quillEditorComponent.quill;
-    // Subscribe to the post data and update the quill instance with the data
-    this.postEditor.subscribe(async () => {
-        
-        // update editor contents
-        quill.setContents(this.postEditor.contents)
-  
-        // local -> server
-        quill.on('text-change', (delta, oldDelta, source) => {
-            this.postEditor.submitOp(delta, {
-              source: quill
-            }, (err: Error) => {
-              if (err)
-                console.error('Submit OP returned an error:', err);
-            });
-        });
-
-        // server -> local
-        this.postEditor.on('op', (op, source) => {
-          if (source === quill) return;
-          quill.updateContents(op);
-        });
-    })
-  }
-  */
 
   moveTaskToColumn($event) {
     this.updateDetails();
