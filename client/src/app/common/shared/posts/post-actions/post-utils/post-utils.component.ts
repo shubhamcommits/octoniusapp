@@ -19,6 +19,8 @@ export class PostUtilsComponent implements OnInit {
   // User Data Object
   @Input('userData') userData: any;
 
+  @Input() mode: string = 'normal';
+
   // Delete Post Event Emitter
   @Output('delete') delete = new EventEmitter()
 
@@ -37,7 +39,7 @@ export class PostUtilsComponent implements OnInit {
   /**
    * This function is responsible for copying the post link to the clipboard
    */
-  copyToClipboard(post: any) {
+  copyToClipboard() {
 
     // Create Selection Box
     let selBox = document.createElement('textarea');
@@ -47,9 +49,11 @@ export class PostUtilsComponent implements OnInit {
     selBox.style.left = '0';
     selBox.style.top = '0';
     selBox.style.opacity = '0';
+    
+    const group = (this.post._group._id) ? this.post._group._id : this.post._group;
 
     // Set the Value of element selection box to be the url of the post
-    selBox.value = environment.clientUrl + '/#/dashboard/work/groups/' + post._group._id || post._group + '/post/' + post._id;
+    selBox.value = environment.clientUrl + '/#/dashboard/work/groups/post/' + this.post._id + '?group=' + group;
 
     // Append the element to the DOM
     document.body.appendChild(selBox);

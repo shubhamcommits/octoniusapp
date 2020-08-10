@@ -1,0 +1,98 @@
+.post-dialog-content {
+    // padding: 10px;
+    background-color: #E4EDF8;
+    // height: 95%;
+    width: 100%;
+    padding-bottom: 1px;
+
+    .modal-header {
+        border: none;
+    }
+
+    .action-box {
+        color: #969A9E;
+        background: #FFFFFF;
+        border: 1px solid #E4EDF8;
+        border-radius: 5px;
+        padding: 5px;
+    }
+
+    .content-box {
+        background: #FFFFFF;
+        border: 1px solid #E4EDF8;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        padding: 15px;
+
+        .modal-title {
+            width: 100%;
+
+            .post-title {
+                width: 95% !important; 
+                box-shadow: none;
+                border:none;
+
+                font-family: Nunito;
+                font-style: normal;
+                font-weight: bold;
+                font-size: 16px;
+                line-height: 22px;
+                color: #000000;
+            }
+        }
+
+        p.box-title {
+            font-family: Nunito;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 16px;
+            line-height: 22px;
+            color: #000000;
+            padding-bottom: 10px;
+        }
+    }
+
+    .post-content {
+        width: 70%;
+        float: left;
+        margin-top: -21px;
+
+        .attach-files {
+            width: 100%; 
+            box-shadow: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 24px auto;
+        }
+
+        .save-content {
+            margin-bottom: 10px;
+        }
+    }
+
+    .post-properties {
+        width: 25%;
+        margin-left: 71%;
+        margin-top: -45px;
+    }
+
+    .custom-field {
+        display: table;
+        margin-bottom: 10px;
+
+        p {
+            color: #5E6268;
+            font-size: 15px;
+            display: table-cell;
+            vertical-align: middle;
+        }
+        mat-select{
+            background-color: rgba(0,0,0,0.04);
+            border-radius: 4px 4px 0 0;
+            padding: 5px;   
+            display: table-cell;
+            vertical-align: middle;
+        }
+    }
+}

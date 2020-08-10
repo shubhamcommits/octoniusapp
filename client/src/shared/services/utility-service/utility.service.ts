@@ -4,6 +4,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import Swal, { SweetAlertIcon } from 'sweetalert2';
+import { MatDialog } from '@angular/material';
+import { GroupCreatePostDialogComponent } from 'src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +15,8 @@ export class UtilityService {
   constructor(
     private snotifyService: SnotifyService,
     private modalService: NgbModal,
-    private ngxUiLoaderService: NgxUiLoaderService
+    private ngxUiLoaderService: NgxUiLoaderService,
+    public dialog: MatDialog
     ) { }
 
   // After Resolving Promise in case of async notification 
@@ -181,6 +184,24 @@ export class UtilityService {
    */
   openModal(content, config?){
     return this.modalService.open(content, config);
+  }
+
+  /**
+   * This function is responsible for opening a fullscreen dialog to edit a task
+   */
+  openCreatePostFullscreenModal(postData: any, userData: any, groupId: string, columns: any) {
+    return this.dialog.open(GroupCreatePostDialogComponent, {
+      width: '100%',
+      height: '100%',
+      disableClose: true,
+      panelClass: 'groupCreatePostDialog',
+      data: {
+        postData: postData,
+        userData: userData,
+        groupId: groupId,
+        columns: columns
+      }
+    });
   }
 
   /**

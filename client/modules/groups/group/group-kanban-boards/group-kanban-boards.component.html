@@ -50,43 +50,20 @@
                         [ngClass]="{'status-todo': task?.task?.status === 'to do', 'status-inprogress': task?.task?.status === 'in progress', 'status-done': task?.task?.status === 'done'}"
                         *ngFor="let task of column.tasks; let j = index;" cdkDrag>
                         
-                        <div class="media" (click)="openModal(content)">
+                        <div class="media" (click)="openFullscreenModal(task)">
                             <div class="media-body">
                                 <h5 class="mt-0 mb-1 kanban-card-title">{{ task?.title }}</h5>
                                 <span class="small"
                                 *ngIf="task?.task?.due_to != 'Invalid date' && task?.task?.status != 'done'"
                                 [ngClass]="checkOverdue(task) === true ? 'overdue' : 'due'">
                                 {{task?.task?.due_to | date}}</span>
-                                <!-- TASK DETAILS STARTS -->
-                                <ng-template #content let-modal>
-                                    <app-group-create-post *ngIf="userData && checkDataExist(userData)"
-                                        [edit]="true" [post]="task" [columns]="columns"
-                                        [userData]="userData" [groupId]="groupId" [type]="'task'"
-                                        (close)="closeModal()" (moveTask)="moveTaskToColumn($event)"
-                                        (taskStatus)="changeStatus(task, $event)"
-                                        (member)="changeAssignee(task, $event)"
-                                        (date)="changeDueDate(task, $event)"
-                                        (post)="changeDetails(task, $event)"
-                                        (delete)="removeTask(column, $event)">
-                                    </app-group-create-post>
-                                </ng-template>
                             </div>
                             
-                                <img src="{{baseUrl}}/{{task?.task?._assigned_to?.profile_pic}}"
-                                    onerror="this.src='assets/images/user.png'"
-                                    class="feed-avatar">
-                                <!-- <span *ngIf="!task?.task?.unassigned">
-                                    {{task?.task?._assigned_to?.first_name}}
-                                    {{ task?.task?._assigned_to?.last_name }}</span>
-                                <span *ngIf="task?.task?.unassigned">Unassigned</span> -->
-                            
-                            </div>
+                            <img src="{{baseUrl}}/{{task?.task?._assigned_to?.profile_pic}}"
+                                onerror="this.src='assets/images/user.png'"
+                                class="feed-avatar">
+                        </div>
 
-
-                            
-
-                            
-                        
                     </div>
                     <!-- TASK DETAILS ENDS -->
 

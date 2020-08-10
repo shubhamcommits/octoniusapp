@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector, Input } from '@angular/core';
+import { Component, OnInit, Injector, Input, EventEmitter, Output } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { SubSink } from 'subsink';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -8,6 +8,8 @@ import { ColumnService } from 'src/shared/services/column-service/column.service
 import { environment } from 'src/environments/environment';
 import moment from 'moment/moment';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { GroupCreatePostDialogComponent } from 'src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-group-kanban-boards',
@@ -20,6 +22,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
     private router: ActivatedRoute,
     public utilityService: UtilityService,
     private injector: Injector,
+    public dialog: MatDialog,
   ) { }
 
   // Base URL of the uploads
@@ -35,6 +38,8 @@ export class GroupKanbanBoardsComponent implements OnInit {
   @Input() columns: any;
   // Task Posts array variable
   @Input() tasks: any;
+
+  @Output() closeModalEvent = new EventEmitter();
 
   // PUBLIC FUNCTIONS
   public publicFunctions = new PublicFunctions(this.injector);
@@ -296,12 +301,16 @@ export class GroupKanbanBoardsComponent implements OnInit {
   }
 
   /**
-   * This function is responsible for opening the modal
-   * @param content 
+   * This function is responsible for opening a fullscreen dialog to edit a task
    */
-  openModal(content: any) {
-    this.utilityService.openModal(content, {
-      size: 'xl',
+  openFullscreenModal(postData: any): void {
+    const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, this.groupId, this.columns);
+    
+    const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
+      this.closeModalEvent.emit();
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      closeEventSubs.unsubscribe();
     });
   }
 

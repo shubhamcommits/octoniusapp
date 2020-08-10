@@ -56,6 +56,7 @@ import { MatSidenavModule, MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS, MatSelec
 import { PreviewFilesDialogComponent } from './preview-files-dialog/preview-files-dialog.component';
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
 import { InlineInputComponent } from './inline-input/inline-input.component';
+import { GroupCreatePostDialogComponent } from './activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component';
 
 @NgModule({
   declarations: [
@@ -126,7 +127,9 @@ import { InlineInputComponent } from './inline-input/inline-input.component';
 
     PreviewFilesDialogComponent,
 
-    InlineInputComponent
+    InlineInputComponent,
+
+    GroupCreatePostDialogComponent
   ],
   imports: [
     CommonModule,
@@ -213,7 +216,8 @@ import { InlineInputComponent } from './inline-input/inline-input.component';
     LikeCommentComponent,
 
     MatSidenavModule,
-    InlineInputComponent
+    InlineInputComponent,
+    GroupCreatePostDialogComponent
   ],
   providers: [
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}
@@ -222,7 +226,8 @@ import { InlineInputComponent } from './inline-input/inline-input.component';
     CUSTOM_ELEMENTS_SCHEMA
   ],
   entryComponents: [
-    PreviewFilesDialogComponent
+    PreviewFilesDialogComponent,
+    GroupCreatePostDialogComponent
   ]
 })
 export class SharedModule { }

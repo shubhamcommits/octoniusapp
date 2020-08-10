@@ -830,3 +830,9 @@ input {
       color: #ffffff !important;
   }
 }
+
+.groupCreatePostDialog {
+    mat-dialog-container {
+        background-color: #E4EDF8;
+    }
+}

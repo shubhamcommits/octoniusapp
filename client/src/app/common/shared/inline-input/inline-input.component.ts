@@ -32,6 +32,7 @@ export class InlineInputComponent implements ControlValueAccessor, OnInit {
   @Input() required = false; // Is input requried?
   @Input() disabled = false; // Is input disabled?
   @Input() domainObject: any; // Complete object to be updated
+  @Input() styleClass = '';
 
   @Input() workspaceId: string;
   @Input() userData;
@@ -48,6 +49,8 @@ export class InlineInputComponent implements ControlValueAccessor, OnInit {
   editing = false; // Is Component in edit mode?
 
   profilePicUrl = '';
+
+  dateStyleClass = '';
 
   public onChange: any = Function.prototype; // Trascend the onChange event
   public onTouched: any = Function.prototype; // Trascend the onTouch event
@@ -93,6 +96,8 @@ export class InlineInputComponent implements ControlValueAccessor, OnInit {
         this.customFieldValue = this.domainObject.task.custom_fields[this.customFieldName];
       }
     }
+
+    this.dateStyleClass = 'btn btn-link dropdown-toggle btn-sm ' +  this.styleClass;
   }
 
   // Required for ControlValueAccessor interface
@@ -141,6 +146,8 @@ export class InlineInputComponent implements ControlValueAccessor, OnInit {
 
   onCustomFieldChange($event: Event) {
     this.editing = false;
+    
+    this.domainObject.task.custom_fields[this.customFieldName] = this.customFieldValue;
 
     // Save the data
     this.saveData();
@@ -236,49 +243,32 @@ export class InlineInputComponent implements ControlValueAccessor, OnInit {
       // Task status
       postToUpdate.status = this.domainObject.task.status;
 
-      if (this.type === 'customField') {
-        this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
-          this.postService.saveCustomField(this.domainObject._id, this.customFieldName, this.customFieldValue)
-            .then((res) => {
-              // Emit the post to other components
-              this.post.emit(res['post']);
-  
-              // Resolve with success
-              resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
-            })
-            .catch(() => {
-              reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
-            });
-        }));
-      } else {
+      // Create FormData Object
+      let formData = new FormData();
 
-        // Create FormData Object
-        let formData = new FormData();
+      // Append Post Data
+      formData.append('post', JSON.stringify(postToUpdate));
 
-        // Append Post Data
-        formData.append('post', JSON.stringify(postToUpdate));
-
-        // Append all the file attachments
-        if (this.domainObject.files !== null && this.domainObject.files.length !== 0) {
-          for (let index = 0; index < this.domainObject.files.length; index++) {
-            formData.append('attachments', this.domainObject.files[index], this.domainObject.files[index]['name']);
-          }
+      // Append all the file attachments
+      if (this.domainObject.files !== null && this.domainObject.files.length !== 0) {
+        for (let index = 0; index < this.domainObject.files.length; index++) {
+          formData.append('attachments', this.domainObject.files[index], this.domainObject.files[index]['name']);
         }
-
-        this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
-          this.postService.edit(this.domainObject._id, formData)
-            .then((res) => {
-              // Emit the post to other components
-              this.post.emit(res['post']);
-
-              // Resolve with success
-              resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
-            })
-            .catch(() => {
-              reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
-            });
-        }));
       }
+
+      this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
+        this.postService.edit(this.domainObject._id, formData)
+          .then((res) => {
+            // Emit the post to other components
+            this.post.emit(res['post']);
+
+            // Resolve with success
+            resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
+          })
+          .catch(() => {
+            reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
+          });
+      }));
     }
   }
 }

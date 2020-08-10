@@ -18,6 +18,8 @@ export class PostActionsComponent implements OnInit {
   // User Data Object
   @Input('userData') userData: any;
 
+  @Input() fullscreen: boolean = false;
+
   // Delete Post Event Emitter
   @Output('delete') delete = new EventEmitter()
 
@@ -34,7 +36,9 @@ export class PostActionsComponent implements OnInit {
   @Output('showCommentEditor') showCommentEditorEmitter = new EventEmitter()
 
   // Comments
-  @Output('comments') showCommentsEmitter = new EventEmitter()
+  @Output('comments') showCommentsEmitter = new EventEmitter();
+
+  @Output() newCommentEmitter = new EventEmitter
 
   ngOnInit() {
   }
@@ -85,7 +89,7 @@ export class PostActionsComponent implements OnInit {
   newComment(comment: any) {
     this.comments.unshift(comment)
     this.post.comments = this.comments
-    console.log(this.comments);
+    this.newCommentEmitter.emit(comment);
   }
 
   removeComment(index: number){

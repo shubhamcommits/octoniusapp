@@ -431,7 +431,8 @@ export class PostService {
             _assigned_to: post.assigned_to,
             status: post.status,
             unassigned: post.unassigned,
-            _column: post._column
+            _column: post._column,
+            custom_fields: post.task.custom_fields
           }
 
           break;
@@ -1178,7 +1179,7 @@ export class PostService {
         _id: postId
       }, {
         $set: { "task.custom_fields": task['task']['custom_fields'] }
-      }) .select('custom_fields');
+      });
 
     } catch (error) {
       throw(error);
