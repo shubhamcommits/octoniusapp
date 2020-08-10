@@ -274,6 +274,7 @@ export class GroupCreatePostDialogComponent implements OnInit, AfterViewInit {
 
   newCommentAdded(event) {
     this.comments.unshift(event);
+    this.fetchComments();
   }
 
   removeComment(index: number){
