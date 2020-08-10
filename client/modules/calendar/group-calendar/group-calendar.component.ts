@@ -162,7 +162,6 @@ export class GroupCalendarComponent implements OnInit {
         start: new Date(moment(post.event.due_to || post.task.due_to).toDate()),
         title: `${post.title}`,
         color: color,
-        actions: this.actions,
         allDay: true,
         resizable: {
           beforeStart: true,
