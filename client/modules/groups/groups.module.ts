@@ -2,7 +2,7 @@
  * !===== GROUPS MODULE OF OCTONIUS CLIENT =====!
  *
  * Please read the points below, before importing and injecting any dependencies:-
- * 1. Make sure that you document your import and if it's a part of exisiting module then import 
+ * 1. Make sure that you document your import and if it's a part of exisiting module then import
  * that under the particular section, otherwise make a new suitable one.
  * 2. Insert the entries under the section in lexographical order.
  */
@@ -32,7 +32,6 @@ import { GroupComponent } from './group/group.component';
 // import { GroupActivityFiltersComponent } from './group/group-activity/group-activity-filters/group-activity-filters.component';
 // import { GroupActivityProgressComponent } from './group/group-activity/group-activity-progress/group-activity-progress.component';
 // import { GroupAdminComponent } from './group/group-admin/group-admin.component';
-// import { GroupSmartAdminComponent } from './group/group-smart-admin/group-smart-admin.component';
 // import { GroupCalendarComponent } from './group/group-calendar/group-calendar.component';
 // import { GroupEditComponent } from './group/group-edit/group-edit.component';
 // import { GroupFilesComponent } from './group/group-files/group-files.component';
@@ -75,6 +74,8 @@ import { GroupTasksViewsComponent } from './group/group-tasks-views/group-tasks-
 import { GroupTasksListViewComponent } from './group/group-tasks-list-view/group-tasks-list-view.component';
 import { MatButtonModule, MatMenuModule, MatChipsModule, MatDialogModule, MatSelectModule } from '@angular/material';
 import { CustomFieldsDialogComponent } from './group/custom-fields-dialog/custom-fields-dialog.component';
+import { GroupSmartAdminComponent } from './group/group-admin/group-smart-admin/group-smart-admin.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 
 /**
@@ -98,7 +99,7 @@ import { CustomFieldsDialogComponent } from './group/custom-fields-dialog/custom
     // GroupTasksComponent,
 
     // // Group Smart Admin Component
-    // GroupSmartAdminComponent,
+    GroupSmartAdminComponent,
 
     // // Group Post Component
     // GroupPostComponent,
@@ -165,25 +166,18 @@ import { CustomFieldsDialogComponent } from './group/custom-fields-dialog/custom
     CommonModule,
     GroupsRoutingModule,
     SharedModule,
-
     // FORMS MODULE
     FormsModule,
-
     DragDropModule,
-
     // Angular Material Buttons
     MatButtonModule,
-
     // Angular Material Menu Module
     MatMenuModule,
-
     // MomentModule
-
     MatChipsModule,
-
     MatDialogModule,
-
-    MatSelectModule
+    MatSelectModule,
+    MatSlideToggleModule
   ],
   providers: [
     GroupsService,
