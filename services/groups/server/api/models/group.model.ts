@@ -90,17 +90,8 @@ const GroupSchema = new Schema({
         }]
     },
     custom_fields_to_show: {
-        type: [{
-            name: {
-                type: String
-            },
-            title: {
-                type: String
-            },
-            values: {
-                type: [String]
-            }
-        }]
+        type: [String],
+        default: []
     }
 });
 

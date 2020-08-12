@@ -49,7 +49,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     // Start the loading spinner
     this.isLoading$.next(true);
 
-    this.initView();
+    await this.initView();
 
     // Return the function via stopping the loader
     return this.isLoading$.next(false);
@@ -118,7 +118,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
      * Obtain the custom fields
      */
     this.customFields = [];
-    this.groupService.getGroupCustomFields(this.groupId).then((res) => {
+    await this.groupService.getGroupCustomFields(this.groupId).then((res) => {
       res['group']['custom_fields'].forEach(field => {
         this.customFields.push(field);
       });
