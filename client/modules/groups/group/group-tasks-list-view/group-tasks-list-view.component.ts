@@ -25,6 +25,8 @@ export class GroupTasksListViewComponent implements OnInit {
   @Input() tasks: any;
   @Input() customFields: any;
 
+  @Input() isAdmin = false;
+
   @Output() closeModalEvent = new EventEmitter();
 
   customFieldsToShow: any[] = [];
