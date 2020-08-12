@@ -79,7 +79,7 @@
     </div>
 
     <div class="post-properties">
-        <div class="content-box">
+        <div class="content-box" *ngIf="postData.type === 'task'">
             <p class="box-title">Status</p>
             <!-- Change task status starts -->
             <app-task-status 
@@ -104,37 +104,33 @@
         </div>
 
         <!-- Top Right Section starts -->
-        <div class="content-box">
+        <div class="content-box" *ngIf="postData.type === 'task' || postData.type === 'event'">
             <p class="box-title">Due date</p>
             <!-- Date Picker starts -->
-            <app-date-picker
+            <app-date-picker *ngIf="postData.type === 'task'"
                 (date)="getDate($event)" [dueDate]="postData?.task.due_to">
             </app-date-picker>
 
-            <!--
-            <app-date-picker *ngIf="type === 'event'"
+            <app-date-picker *ngIf="postData.type === 'event'"
                 (date)="getDate($event)" [dueDate]="postData?.event.due_to">
             </app-date-picker>
-            -->
             <!-- Date Picker ends -->
 
             <!-- Time Picker starts -->
-            <!--
             <app-time-picker  
                 class="ml-3"
-                *ngIf="type === 'event'" 
+                *ngIf="postData.type === 'event'"
                 [time]="this.dueTime" 
                 (time)="getTime($event)">
             </app-time-picker>
-            -->
             <!-- Time Picker ends -->
         </div>
         <!-- Top Right Section ends -->
         
         <!-- Assignee Modal starts -->
-        <div class="content-box">
+        <div class="content-box" *ngIf="postData.type === 'task' || postData.type === 'event'">
             <p class="box-title">Assigned member</p>
-            <app-inline-input
+            <app-inline-input *ngIf="postData.type === 'task'"
                 [(ngModel)]="postData.task._assigned_to"
                 [domainObject]="postData"
                 [required]="true"
@@ -144,6 +140,17 @@
                 [showAssigneeName]="true"
                 type="assignee">
             </app-inline-input>
+
+            <p *ngIf="postData.type === 'event'" style="padding-top: 20px;">Assigned to {{ eventAssignedToCount }} member(s)</p>
+            <app-component-search-input-box 
+                *ngIf="postData.type === 'event' && userData && checkDataExist(userData)"
+                [placeholder]="'Assign...'" 
+                [groupId]="groupId" 
+                [workspaceId]="userData._workspace"
+                [userData]="userData" 
+                [type]="'event'" 
+                (member)="getMemberDetails($event)">
+            </app-component-search-input-box>
         </div>
         <!-- Assignee Modal ends -->
 
@@ -159,7 +166,7 @@
             <!-- Post Tags ends -->
         </div>
 
-        <div class="content-box">
+        <div class="content-box" *ngIf="postData.type === 'task'">
             <p class="box-title">Custom fields</p>
             <div *ngFor="let cf of customFields" class="d-flex custom-field justify-content-start mb-3 row">
                 <p class="ml-3 mt-2 mb-0">{{ cf.title }}</p>

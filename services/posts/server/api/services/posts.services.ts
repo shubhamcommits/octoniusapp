@@ -454,11 +454,11 @@ export class PostService {
           // transform due_to time to UTC
           post.date_due_to = moment.utc(post.date_due_to).format();
 
-          let assignedUsers: any = post._assigned_to
+          let assignedUsers: any = post.event._assigned_to
 
           // Add Event property details
           postData.event = {
-            due_to: post.date_due_to,
+            due_to: post.event.due_to,
             _assigned_to: assignedUsers
           }
 

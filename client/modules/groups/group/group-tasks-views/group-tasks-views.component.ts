@@ -4,8 +4,9 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { SubSink } from 'subsink';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
 import { PublicFunctions } from 'src/app/dashboard/public.functions';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GroupService } from 'src/shared/services/group-service/group.service';
+import { PostService } from 'src/shared/services/post-service/post.service';
 
 @Component({
   selector: 'app-group-tasks-views',
@@ -39,7 +40,9 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     private router: ActivatedRoute,
     public utilityService: UtilityService,
     private groupService: GroupService,
-    private injector: Injector) { }
+    private _router: Router,
+    private injector: Injector,
+    private postService: PostService) { }
 
 
   async ngOnInit() {
@@ -120,6 +123,12 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
         this.customFields.push(field);
       });
     });
+
+    if (this._router.routerState.snapshot.root.queryParamMap.has('postId')) {
+      const postId = this._router.routerState.snapshot.root.queryParamMap.get('postId');
+      const post = await this.publicFunctions.getPost(postId);
+      this.utilityService.openCreatePostFullscreenModal(post, this.userData, this.groupId);
+    }
   }
 
   /**

@@ -101,10 +101,23 @@ export class MyspaceTasksComponent implements OnInit {
     this.post = task;
 
     // Open the Modal
-    this.modal.open(this.modalContent, { size: 'xl' });
+    // this.modal.open(this.modalContent, { size: 'xl' });
+    let dialogRef;
+    if (this.post.type === 'task') {
+      dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.post._group._id, await this.publicFunctions.getAllColumns(this.post._group._id));
+    } else {
+      dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.post._group._id);
+    }
+
+    const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
+      // TODO Refresh content after dialog is closed
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      closeEventSubs.unsubscribe();
+    });
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.utilityService.closeAllModals()
   }
 

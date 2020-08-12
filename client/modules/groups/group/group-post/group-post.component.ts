@@ -50,4 +50,8 @@ export class GroupPostComponent implements OnInit {
     return !(JSON.stringify(object) === JSON.stringify({}))
   }
 
+  editedPost(event: any) {
+    this.post = event;
+  }
+
 }

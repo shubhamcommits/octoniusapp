@@ -38,7 +38,9 @@ export class PostActionsComponent implements OnInit {
   // Comments
   @Output('comments') showCommentsEmitter = new EventEmitter();
 
-  @Output() newCommentEmitter = new EventEmitter
+  @Output() newCommentEmitter = new EventEmitter;
+
+  @Output() closeModalEvent = new EventEmitter();
 
   ngOnInit() {
   }
@@ -96,4 +98,7 @@ export class PostActionsComponent implements OnInit {
     this.comments.splice(index, 1);
   }
 
+  postModalCloseEvent() {
+    this.closeModalEvent.emit();
+  }
 }

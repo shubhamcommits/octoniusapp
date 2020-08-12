@@ -99,15 +99,18 @@ export class GroupCalendarComponent implements OnInit {
     // Fetch the current user
     this.userData = await this.publicFunctions.getCurrentUser();
 
+    this.loadTimeline();
+  }
+
+  async loadTimeline() {
     // Fetch Posts from the server
     this.posts = await this.publicFunctions.getCalendarPosts(moment(this.viewDate).year(), moment(this.viewDate).month(), this.groupId);
 
     // Timeline array
-    this.timeline = [...this.posts.events, ...this.posts.tasks]
+    this.timeline = [...this.posts.events, ...this.posts.tasks];
 
     // Prepare timeline array and make the events
-    this.prepareTimeline(this.timeline)
-
+    this.prepareTimeline(this.timeline);
   }
 
   // Check if the data provided is not empty{}
@@ -214,9 +217,23 @@ export class GroupCalendarComponent implements OnInit {
 
     // Set the Value of post to the event post propery
     this.post = event.post
+    let dialogRef;
+    if (this.post.type === 'task') {
+      dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.groupId, this.publicFunctions.getAllColumns(this.groupId));
+    } else {
+      dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.groupId);
+    }
+
+    const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
+      // TODO reload data
+      // this.loadTimeline();
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      closeEventSubs.unsubscribe();
+    });
 
     // Open the Modal
-    this.modal.open(this.modalContent, { size: 'xl' });
+    // this.modal.open(this.modalContent, { size: 'xl' });
   }
 
   addEvent(): void {

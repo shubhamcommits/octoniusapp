@@ -6,9 +6,7 @@ import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { CommentService } from 'src/shared/services/comment-service/comment.service';
-// import Quill from 'quill';
-// import { QuillEditorComponent } from '../../../quill-editor/quill-editor.component';
-// import ReconnectingWebSocket from 'reconnecting-websocket';
+import moment from 'moment/moment';
 // ShareDB Client
 import * as ShareDB from 'sharedb/lib/client'
 
@@ -68,6 +66,10 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
   // Date Object to map the due dates
   dueDate: any;
+  dueTime: any = {
+    hour: 1,
+    minute: 30
+  };
 
   // Files Variable 
   files: any = [];
@@ -79,6 +81,8 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
   // Comments Array
   comments: any = [];
+
+  eventAssignedToCount;
   
   constructor(
     private postService: PostService,
@@ -99,44 +103,82 @@ export class GroupCreatePostDialogComponent implements OnInit {
     // Set the title of the post
     this.title = this.postData.title;
 
-    // If Post is not unassigned
-    if (!this.postData.task.unassigned) {
-      // Set the taskAssignee
-      this.taskAssignee = this.postData.task._assigned_to;
-    }
-
     // Set the due date to be undefined
     this.dueDate = undefined;
 
-    this.groupService.getGroupCustomFields(this.groupId).then((res) => {
-      res['group']['custom_fields'].forEach(field => {
-        this.customFields.push(field);
-
-        if (!this.postData.task.custom_fields) {
-          this.postData.task.custom_fields = new Map<string, string>();
-        }
-        
-        if (!this.postData.task.custom_fields[field.name]) {
-          this.postData.task.custom_fields[field.name] = '';
-          this.selectedCFValues[field.name] = '';
-        } else {
-          this.selectedCFValues[field.name] = this.postData.task.custom_fields[field.name];
-        }
-      });
-    });
+    if (this.postData.type === 'task') {
+      // If Post is not unassigned
+      if (!this.postData.task.unassigned) {
+        // Set the taskAssignee
+        this.taskAssignee = this.postData.task._assigned_to;
+      }
     
-    // Set the due date variable for both task and event type posts
-    if ((this.postData.task.due_to && this.postData.task.due_to != null) ||
-      (this.postData.event.due_to && this.postData.event.due_to != null)) {
+      // Set the due date variable for both task and event type posts
+      if (this.postData.task.due_to && this.postData.task.due_to != null) {
+  
+        // Set the DueDate variable
+        this.dueDate = new Date(this.postData.task.due_to || this.postData.event.due_to);
+      }
 
-      // Set the DueDate variable
-      this.dueDate = new Date(this.postData.task.due_to || this.postData.event.due_to);
+      this.groupService.getGroupCustomFields(this.groupId).then((res) => {
+        res['group']['custom_fields'].forEach(field => {
+          this.customFields.push(field);
+  
+          if (!this.postData.task.custom_fields) {
+            this.postData.task.custom_fields = new Map<string, string>();
+          }
+          
+          if (!this.postData.task.custom_fields[field.name]) {
+            this.postData.task.custom_fields[field.name] = '';
+            this.selectedCFValues[field.name] = '';
+          } else {
+            this.selectedCFValues[field.name] = this.postData.task.custom_fields[field.name];
+          }
+        });
+      });
+    }
+
+    // If post type is event, set the dueTime
+    if (this.postData.type === 'event') {
+    
+      // Set the due date variable for both task and event type posts
+      if (this.postData.event.due_to && this.postData.event.due_to != null) {
+  
+        // Set the DueDate variable
+        this.dueDate = new Date(this.postData.task.due_to || this.postData.event.due_to);
+      }
+
+      if (this.dueDate) {
+        this.dueTime.hour = this.dueDate.getHours();
+        this.dueTime.minute = this.dueDate.getMinutes();
+        this.eventMembersMap = this.postData.event._assigned_to;
+      }
+
+      this.eventAssignedToCount = (this.postData.event._assigned_to) ? this.postData.event._assigned_to.size : 0;
     }
 
     this.tags = this.postData.tags;
 
     
     this.fetchComments();
+  }
+
+  getMemberDetails(memberMap: any) {
+    if (this.postData.type == 'event') {
+      this.eventMembersMap = memberMap;
+      this.eventAssignees = (this.eventMembersMap.has('all')) ? 'all' : Array.from(this.eventMembersMap.keys());
+
+      this.eventAssignedToCount = (this.eventMembersMap) ? ((this.eventMembersMap.has('all')) ? 'all' : this.eventMembersMap.size) : 0;
+    }
+    this.updateDetails();
+  }
+
+  /**
+   * This function checks if the map consists of all team as the assignee for the event type selection
+   * @param map 
+   */
+  eventAssignedToAll() {
+    return (this.eventMembersMap['all']) ? true : false;
   }
 
   moveTaskToColumn($event) {
@@ -177,6 +219,16 @@ export class GroupCreatePostDialogComponent implements OnInit {
   }
 
   /**
+   * This function is responsible for receiving the time from @module <app-time-picker></app-time-picker>
+   * @param timeObject 
+   */
+  getTime(timeObject: any) {
+    this.dueTime = timeObject;
+
+    this.updateDetails();
+  }
+
+  /**
    * This function receives the output from the tags components
    * @param tags 
    */
@@ -184,6 +236,8 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
     // Set the tags value
     this.tags = tags;
+
+    this.updateDetails();
   }
 
   // Check if the data provided is not empty{}
@@ -250,42 +304,75 @@ export class GroupCreatePostDialogComponent implements OnInit {
     // Prepare the normal  object
     const post: any = {
       title: this.title,
-      type: 'task',
+      type: this.postData.type,
       content: this.quillData ? JSON.stringify(this.quillData.contents) : this.postData.content,
       _content_mentions: this._content_mentions,
       tags: this.tags,
-      _read_by: this.postData._read_by,
-      task: this.postData.task
+      _read_by: this.postData._read_by
     };
 
-    // Adding unassigned property for previous tasks model
-    if(this.postData.task.unassigned == 'No') {
-      this.postData.task.unassigned = false;
+    // If Post type is event, then add due_to property too
+    if (this.postData.type === 'event') {
+
+      var due_to;
+
+      if (this.dueDate == undefined || this.dueDate == null) {
+        due_to = new Date(
+          new Date().getFullYear(),
+          new Date().getMonth(),
+          new Date().getDate(),
+          this.dueTime.hour,
+          this.dueTime.minute
+        );
+      } else {
+        // Create the due_to date
+        due_to = new Date(
+          new Date(this.dueDate).getFullYear(),
+          new Date(this.dueDate).getMonth(),
+          new Date(this.dueDate).getDate(),
+          this.dueTime.hour,
+          this.dueTime.minute)
+      }
+
+      // Add event.due_to property to the postData and assignees
+      post.event = {
+        due_to: moment(due_to).format(),
+        _assigned_to: this.eventAssignees
+      }
     }
 
-    // Adding unassigned property for previous tasks model
-    if(this.postData.task.unassigned == 'Yes') {
-      this.postData.task.unassigned = true;
+    if (this.postData.type === 'task') {
+      post.task = this.postData.task;
+
+      // Adding unassigned property for previous tasks model
+      if(this.postData.task.unassigned == 'No') {
+        this.postData.task.unassigned = false;
+      }
+
+      // Adding unassigned property for previous tasks model
+      if(this.postData.task.unassigned == 'Yes') {
+        this.postData.task.unassigned = true;
+      }
+
+      // Unassigned property
+      post.unassigned = this.postData.task.unassigned;
+
+      // Task due date
+      post.date_due_to = this.dueDate;
+
+      // Task Assigned to
+      if(post.unassigned!== null && !post.unassigned) {
+        post.assigned_to = this.postData.task._assigned_to._id;
+      }
+
+      // Task column
+      post._column = {
+        title: this.postData.task._column.title
+      };
+
+      // Task status
+      post.status = this.postData.task.status;
     }
-
-    // Unassigned property
-    post.unassigned = this.postData.task.unassigned;
-
-    // Task due date
-    post.date_due_to = this.dueDate;
-
-    // Task Assigned to
-    if(post.unassigned!== null && !post.unassigned) {
-      post.assigned_to = this.postData.task._assigned_to._id;
-    }
-
-    // Task column
-    post._column = {
-      title: this.postData.task._column.title
-    };
-
-    // Task status
-    post.status = this.postData.task.status;
 
     // Create FormData Object
     let formData = new FormData();

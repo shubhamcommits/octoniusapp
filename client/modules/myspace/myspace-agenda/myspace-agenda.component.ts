@@ -50,14 +50,19 @@ export class MyspaceAgendaComponent implements OnInit {
   }
 
   openModal(event) {
-
     this.post = event;
-
-    // Open the Modal
-    this.modal.open(this.modalContent, { size: 'xl' });
+    const dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.post._group._id);
+    
+    const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
+      // TODO try not to reload the whole data of the page
+      this.ngOnInit();
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      closeEventSubs.unsubscribe();
+    });
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.utilityService.closeAllModals()
   }
 
