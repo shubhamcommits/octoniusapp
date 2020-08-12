@@ -1,5 +1,8 @@
 <div class="container">
-    <app-post-view *ngIf="post && userData && checkDataExist(userData)" [post]="post" [userData]="userData">
+    <app-post-view *ngIf="post && userData && checkDataExist(userData)"
+        [post]="post"
+        [userData]="userData"
+        (closeModalEvent)="editedPost($event)">
     </app-post-view>
 
     <!-- Loading Spinner Starts -->

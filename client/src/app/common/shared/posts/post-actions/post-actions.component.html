@@ -19,7 +19,11 @@
             <app-follow-post *ngIf="post" [post]="post" [userData]="userData"></app-follow-post>
             <!-- Follow Post ends -->
 
-            <app-post-utils *ngIf="!fullscreen" [post]="post" [userData]="userData" (delete)="deletePost($event)">
+            <app-post-utils *ngIf="!fullscreen"
+                [post]="post"
+                [userData]="userData"
+                (delete)="deletePost($event)"
+                (closeModalEvent)="postModalCloseEvent()">
             </app-post-utils>
         </div>
     </div>

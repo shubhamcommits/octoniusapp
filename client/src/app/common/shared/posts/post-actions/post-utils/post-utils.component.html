@@ -6,16 +6,18 @@
 
     <!-- Menu Drawer Starts -->
     <ul class="dropdown-menu">
+        <!--
         <li class="dropdown-item"
                 *ngIf="mode !== 'fullscreen'"
                 [routerLink]="['/dashboard', 'work', 'groups', 'post', post?._id]"
                 [queryParams]="{ group: post?._group?._id || post?._group }">
             <span>View</span>
         </li>
+        -->
         <li class="dropdown-item"
                 *ngIf="mode !== 'fullscreen'"
-                (click)="openEditPostModal(content)">
-            <span>Edit</span>
+                (click)="openFullscreenModal()">
+            <span>View</span>
         </li>
         <li class="dropdown-item" (click)="copyToClipboard()">
             <span>Copy Link</span>

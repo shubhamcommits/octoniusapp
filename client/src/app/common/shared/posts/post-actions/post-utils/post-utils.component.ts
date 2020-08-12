@@ -22,7 +22,9 @@ export class PostUtilsComponent implements OnInit {
   @Input() mode: string = 'normal';
 
   // Delete Post Event Emitter
-  @Output('delete') delete = new EventEmitter()
+  @Output('delete') delete = new EventEmitter();
+
+  @Output() closeModalEvent = new EventEmitter();
 
   ngOnInit() {
   }
@@ -30,10 +32,19 @@ export class PostUtilsComponent implements OnInit {
   ngAfterViewInit() {
   }
 
-  openEditPostModal(content: any) {
-    return this.utilityService.openModal(content, {
-      size: 'xl'
-    })
+  /**
+   * This function is responsible for opening a fullscreen dialog to edit a task
+   */
+  openFullscreenModal(): void {
+    const group = (this.post._group._id) ? this.post._group._id : this.post._group;
+    const dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, group);
+    
+    const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
+      this.closeModalEvent.emit();
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      closeEventSubs.unsubscribe();
+    });
   }
 
   /**
@@ -53,8 +64,12 @@ export class PostUtilsComponent implements OnInit {
     const group = (this.post._group._id) ? this.post._group._id : this.post._group;
 
     // Set the Value of element selection box to be the url of the post
-    selBox.value = environment.clientUrl + '/#/dashboard/work/groups/post/' + this.post._id + '?group=' + group;
-
+    if (this.post.type === 'task') {
+      //selBox.value = environment.clientUrl + '/#/dashboard/work/groups/post/' + this.post._id + '?group=' + group;
+      selBox.value = environment.clientUrl + '/#/dashboard/work/groups/tasks?group=' + group + '&myWorkplace=false&postId=' + this.post._id;
+    } else {
+      selBox.value = environment.clientUrl + '/#/dashboard/work/groups/activity?group=' + group + '&myWorkplace=false&postId=' + this.post._id;
+    }
     // Append the element to the DOM
     document.body.appendChild(selBox);
 
