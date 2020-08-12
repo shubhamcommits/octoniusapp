@@ -104,7 +104,7 @@ export class MyspaceTasksComponent implements OnInit {
     // this.modal.open(this.modalContent, { size: 'xl' });
     let dialogRef;
     if (this.post.type === 'task') {
-      dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.post._group._id, await this.publicFunctions.getAllColumns(this.post._group._id));
+      dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.post._group._id, this.publicFunctions.getAllColumns(this.post._group._id));
     } else {
       dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.post._group._id);
     }
