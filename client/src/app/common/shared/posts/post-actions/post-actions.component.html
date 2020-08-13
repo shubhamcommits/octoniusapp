@@ -3,20 +3,35 @@
 <div class="card-footer action-post" *ngIf="post">
     <div class="row ">
         <div class="col-md-6">
-            <span class="stats"><b>{{post?._liked_by.length || 0 }}</b>Likes </span>
+            <ng-template #likedContent>
+                <p *ngFor="let liked_by of likedByUsers">{{ liked_by }}</p>
+            </ng-template>
+            <span class="stats" placement="right" [ngbTooltip]="likedContent"><b>{{post?._liked_by.length || 0 }}</b>Likes </span>
             <span class="stats" *ngIf="!fullscreen" (click)="fetchComments()"><b>{{ post?.comments.length || 0 }}</b> Comments</span>
-            <span class="stats"><b>{{post?._followers?.length || 0 }}</b> Followers</span>
+
+            <ng-template #followContent>
+                <p *ngFor="let followed_by of followedByUsers">{{ followed_by }}</p>
+            </ng-template>
+            <span class="stats" placement="right" [ngbTooltip]="followContent"><b>{{post?._followers?.length || 0 }}</b> Followers</span>
         </div>
         <div class="col-md-6 text-right">
 
             <app-comment-on-post (showCommentEditor)="showCommentEditor($event)"></app-comment-on-post>
 
             <!-- Like Post starts-->
-            <app-like-post *ngIf="post && userData" [post]="post" [userData]="userData"></app-like-post>
+            <app-like-post *ngIf="post && userData"
+                [post]="post"
+                [userData]="userData"
+                (postLiked)="onPostLikedEmitter($event)"
+                (postUnLiked)="onPostUnLikedEmitter($event)"></app-like-post>
             <!-- Like Post ends-->
 
             <!-- Follow Post starts -->
-            <app-follow-post *ngIf="post" [post]="post" [userData]="userData"></app-follow-post>
+            <app-follow-post *ngIf="post"
+                [post]="post"
+                [userData]="userData"
+                (postLiked)="onPostFollowEmitter($event)"
+                (postUnLiked)="onPostUnFollowEmitter($event)"></app-follow-post>
             <!-- Follow Post ends -->
 
             <app-post-utils *ngIf="!fullscreen"

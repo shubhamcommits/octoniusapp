@@ -681,6 +681,65 @@ export class PostService {
     }
   }
 
+  /**
+   * This function is used to follow a post
+   * @param { userId, postId }
+   */
+  async follow(userId: string, postId: string) {
+
+    // Find the post and update the _followers array and increment the followers_count
+    const post = await Post.findOneAndUpdate
+      (
+        { _id: postId },
+        { $addToSet: { _followers: userId }, $inc: { followers_count: 1 } },
+        { new: true }
+      )
+      .lean();
+
+    // Find the User 
+    const user = await User.findOne
+      (
+        { _id: userId }
+      )
+      .select('first_name last_name');
+
+    // Return the Data
+    return {
+      post,
+      user
+    }
+  }
+
+
+  /**
+   * This function is used to ununfollow a post
+   * @param { userId, postId }
+   */
+  async unfollow(userId: string, postId: string) {
+
+    // Find the post and update the _followers array and decrement the followers_count
+    const post = await Post.findOneAndUpdate
+      (
+        { _id: postId },
+        { $pull: { _followers: userId }, $inc: { followers_count: -1 } },
+        { new: true }
+      )
+      .lean();
+
+    // Find the User 
+    const user = await User.findOne
+      (
+        { _id: userId }
+      )
+      .select('first_name last_name');
+
+    // Return the Data
+    return {
+      post,
+      user
+    }
+  }
+
   // -| TASKS |-
 
   /**

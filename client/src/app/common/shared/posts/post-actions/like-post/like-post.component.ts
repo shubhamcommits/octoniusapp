@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Injector } from '@angular/core';
+import { Component, OnInit, Input, Injector, EventEmitter, Output } from '@angular/core';
 import { PostService } from 'src/shared/services/post-service/post.service';
 
 @Component({
@@ -18,6 +18,9 @@ export class LikePostComponent implements OnInit {
   // User Data Variable
   @Input('userData') userData: any;
 
+  @Output() postLiked = new EventEmitter();
+  @Output() postUnLiked = new EventEmitter();
+
   ngOnInit() {
   }
 
@@ -31,6 +34,8 @@ export class LikePostComponent implements OnInit {
 
     // Increment the likes count by 1
     this.post.likes_count += 1
+
+    this.postLiked.emit(this.userData._id);
 
     // Call the Service Function to like a post
     this.onLikePost(this.post._id);
@@ -70,6 +75,8 @@ export class LikePostComponent implements OnInit {
 
     // Decrement the likes count by 1
     this.post.likes_count -= 1
+
+    this.postUnLiked.emit(this.userData);
 
     // Call the Service Function to unlike a post
     this.onUnlikePost(this.post._id);
