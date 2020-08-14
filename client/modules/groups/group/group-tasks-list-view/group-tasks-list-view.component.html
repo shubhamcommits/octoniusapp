@@ -2,25 +2,27 @@
     <div class="list-wrapper">
         <!-- HEADER ROW -->
         <div class="list-view-header">
-            <div class="header task">
-                <div class="media">
-                    <div class="media-body">
-                        <p>Title</p>
-                    </div>
 
-                    <div class="tags">
+
+            <div class="task_row_header">
+                <div class="task_content">
+                    
+                        <div class="task_title"><p>Title</p></div>
+
+
+                    <div class="task_cell_tag">
                         <p>Tags</p>
                     </div>
                     
-                    <div class="assignee">
+                    <div class="task_cell_assignee">
                         <p>Assignee</p>
                     </div>
 
-                    <div class="taskDate">
+                    <div class="task_cell_date">
                         <p>Due Date</p>
                     </div>
 
-                    <div class="customFields" *ngFor="let field of customFieldsToShow" >
+                    <div class="task_cell_cf" *ngFor="let field of customFieldsToShow" >
                         <p>{{ field.title }}
                             <i class="material-icons"
                                 *ngIf="isAdmin"
@@ -73,13 +75,13 @@
                     <!-- CREATE TASK ENDS -->
 
                     <!-- TASK DETAILS STARTS -->
-                    <div class="task"
+                    <div class="task_row"
                         [ngClass]="{'status-todo': task?.task?.status === 'to do', 'status-inprogress': task?.task?.status === 'in progress', 'status-done': task?.task?.status === 'done'}"
                         *ngFor="let task of column.tasks; let j = index;">
                         
                         <!-- <div class="media" (click)="openModal(content)"> -->
-                        <div class="media">
-                            <div class="title">
+                        <div class="task_content">
+                            <div class="task_title">
                                 <app-inline-input 
                                     [(ngModel)]="task.title"
                                     label="Name"
@@ -89,7 +91,7 @@
                                     (post)="fieldUpdated($event, task)">
                                 </app-inline-input>
                             </div>
-
+                            <div class="task_cell_tag">
                             <div class="tags" *ngIf="task?.tags.length <= 1">
                                 <span class="badge" *ngFor="let tag of task?.tags">
                                     {{ tag }}
@@ -103,8 +105,8 @@
                                     +{{ task?.tags.length-1 }}
                                 </span>
                             </div>
-
-                            <div class="assignee">
+                        </div>
+                            <div class="task_cell_asignee">
                                 <app-inline-input
                                     [(ngModel)]="task.task._assigned_to"
                                     [domainObject]="task"
@@ -117,7 +119,7 @@
                                 </app-inline-input>
                             </div>
 
-                            <div class="taskDate">
+                            <div class="task_cell_date">
                                 <app-inline-input
                                     *ngIf="task.task.due_to != 'Invalid date'"
                                     [(ngModel)]="task.task.due_to"
@@ -129,7 +131,7 @@
                                 </app-inline-input>
                             </div>
 
-                            <div class="customFields" *ngFor="let field of customFieldsToShow" >
+                            <div class="task_cell_cf" *ngFor="let field of customFieldsToShow" >
                                 <app-inline-input
                                     [customFieldName]="field.name"
                                     [domainObject]="task"
@@ -140,7 +142,7 @@
                                 </app-inline-input>
                             </div>
 
-                            <div class="newProperty">
+                            <div class="task_cell_more">
                                 <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
                                 <mat-menu #menu="matMenu">
                                     <a mat-menu-item (click)="openFullscreenModal(task)">
