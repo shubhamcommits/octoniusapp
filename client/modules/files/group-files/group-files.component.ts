@@ -87,15 +87,13 @@ export class GroupFilesComponent implements OnInit {
       .pipe(debounceTime(500), distinctUntilChanged())
       .subscribe(async (res)=>{
 
-        this.files = await this.publicFunctions.searchFiles(this.groupId, res)
-        // console.log(files)
-
+        this.files = await this.publicFunctions.searchFiles(this.groupId, res);
       }))
   }
 
   /**
    * This function observes the change in the search query variable
-   * @param fileQuery 
+   * @param fileQuery
    */
   fileSearchQuery(fileQuery: any) {
     this.queryChanged.next(fileQuery)

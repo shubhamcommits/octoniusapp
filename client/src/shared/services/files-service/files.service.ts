@@ -13,7 +13,7 @@ export class FilesService {
 
   /**
    * This function is responsible for uploding a file to the group
-   * @param fileData 
+   * @param fileData
    */
   addFile(fileData: any, fileToUpload?: File) {
 
@@ -32,8 +32,8 @@ export class FilesService {
 
   /**
    * This function is responsible for fetching list of files
-   * @param groupId 
-   * @param lastFileId 
+   * @param groupId
+   * @param lastFileId
    */
   get(groupId: string, lastFileId: string) {
 
@@ -55,7 +55,7 @@ export class FilesService {
 
   /**
    * This function is responsible for fetching the file details on the basis of the fileId
-   * @param fileId 
+   * @param fileId
    */
   getOne(fileId: string){
     if(fileId)
@@ -64,7 +64,7 @@ export class FilesService {
 
   /**
    * This function is responsible for editing the file details on the basis of the fileId
-   * @param fileId 
+   * @param fileId
    * @param file
    */
   edit(fileId: string, file: any){
@@ -76,14 +76,16 @@ export class FilesService {
 
   /**
    * This function is responsible searching files inside of a group
-   * @param groupId 
-   * @param query 
+   * @param groupId
+   * @param query
+   * @param postRef
    */
-  searchFiles(groupId: string, query: any) {
+  searchFiles(groupId: string, query: any, postRef?: any) {
     return this._http.get(this.baseURL + `/files/search`, {
       params: {
         groupId: groupId,
-        query: query
+        query: query,
+        postRef: postRef
       }
     }).toPromise()
   }

@@ -140,16 +140,18 @@ export class FilesControllers {
         try {
 
             // Fetch the File Name From the request
-            let { query: { groupId, query } } = req;
+            let { query: { groupId, query, postRef } } = req;
 
             // Files List
             let files = [];
 
             // TODO try to add a join query in the searchFiles method instead of making two calls to the DB
             let groupsIdArray = [];
-            await filesService.findGroupsShareFiles(groupId.toString()).then(groups => {
-                groupsIdArray = groups;
-            });
+            if (postRef === 'true') {
+                await filesService.findGroupsShareFiles(groupId.toString()).then(groups => {
+                    groupsIdArray = groups;
+                });
+            }
 
             groupsIdArray.push(groupId.toString());
 
