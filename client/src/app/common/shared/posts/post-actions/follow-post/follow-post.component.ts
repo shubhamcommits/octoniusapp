@@ -1,4 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, Injector } from '@angular/core';
+import { PostService } from 'src/shared/services/post-service/post.service';
 
 @Component({
   selector: 'app-follow-post',
@@ -7,13 +8,16 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class FollowPostComponent implements OnInit {
 
-  constructor() { }
+  constructor(private _injector: Injector) { }
 
   // Post Data
   @Input('post') post: any;
 
   // User Data Variable
   @Input('userData') userData: any;
+
+  @Output() postLiked = new EventEmitter();
+  @Output() postUnLiked = new EventEmitter();
 
   ngOnInit() {
   }
@@ -28,6 +32,10 @@ export class FollowPostComponent implements OnInit {
 
     // Increment the likes count by 1
     this.post.followers_count += 1
+
+    this.postLiked.emit(this.userData._id);
+
+    this.onFollowPost(this.post._id);
   }
 
   /**
@@ -43,16 +51,62 @@ export class FollowPostComponent implements OnInit {
 
     // Decrement the likes count by 1
     this.post.followers_count -= 1
+
+    this.postUnLiked.emit(this.userData);
+
+    this.onUnfollowPost(this.post._id);
   }
 
   /**
    * Check if the post is followed by the currently loggedIn user
    */
   isFollowedByUser() {
-    if (this.post._followers.includes(this.userData._id))
+    if (this.post.hasOwnProperty('_followers') && this.post._followers.findIndex(follower => follower._id === this.userData._id)>=0) {
       return true;
-    else
-      return false
+    }
+    return false;
+  }
+
+  /**
+   * This function is responsible for calling the HTTP request to like a post
+   * @param postId 
+   */
+  onFollowPost(postId: string){
+
+    // Post Service Instance
+    let postService = this._injector.get(PostService)
+
+    // Return a new promise to call the service function
+    return new Promise((resolve, reject)=>{
+      postService.follow(postId)
+      .then((res)=>{
+        resolve(res);
+      })
+      .catch((err)=>{
+        reject()
+      })
+    })
+  }
+
+  /**
+   * This function is responsible for calling the HTTP request to unlike a post
+   * @param postId 
+   */
+  onUnfollowPost(postId: string){
+
+    // Post Service Instance
+    let postService = this._injector.get(PostService)
+
+    // Return a new promise to call the service function
+    return new Promise((resolve, reject)=>{
+      postService.unfollow(postId)
+      .then((res)=>{
+        resolve(res);
+      })
+      .catch((err)=>{
+        reject()
+      })
+    })
   }
 
 }

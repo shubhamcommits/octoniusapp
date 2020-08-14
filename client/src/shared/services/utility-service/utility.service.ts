@@ -189,18 +189,28 @@ export class UtilityService {
   /**
    * This function is responsible for opening a fullscreen dialog to edit a task
    */
-  openCreatePostFullscreenModal(postData: any, userData: any, groupId: string, columns: any) {
-    return this.dialog.open(GroupCreatePostDialogComponent, {
-      width: '100%',
-      height: '100%',
-      disableClose: true,
-      panelClass: 'groupCreatePostDialog',
-      data: {
+  openCreatePostFullscreenModal(postData: any, userData: any, groupId: string, columns?: any) {
+
+    const data = (columns) ? 
+      {
         postData: postData,
         userData: userData,
         groupId: groupId,
         columns: columns
       }
+    :
+      {
+        postData: postData,
+        userData: userData,
+        groupId: groupId
+      }
+
+    return this.dialog.open(GroupCreatePostDialogComponent, {
+      width: '100%',
+      height: '100%',
+      disableClose: true,
+      panelClass: 'groupCreatePostDialog',
+      data: data
     });
   }
 

@@ -220,7 +220,10 @@
    </button>
    <!-- Update Details Button ends -->
 <div class="clearfix"></div>
-<app-post-actions *ngIf="edit" [post]="postData" [userData]="userData"></app-post-actions>
+<app-post-actions *ngIf="edit"
+  [post]="postData"
+  [userData]="userData"
+  (closeModalEvent)="postModalCloseEvent()"></app-post-actions>
 
 </div>
 

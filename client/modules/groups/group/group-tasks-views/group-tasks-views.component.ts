@@ -4,8 +4,9 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { SubSink } from 'subsink';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
 import { PublicFunctions } from 'src/app/dashboard/public.functions';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GroupService } from 'src/shared/services/group-service/group.service';
+import { PostService } from 'src/shared/services/post-service/post.service';
 
 @Component({
   selector: 'app-group-tasks-views',
@@ -39,14 +40,16 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     private router: ActivatedRoute,
     public utilityService: UtilityService,
     private groupService: GroupService,
-    private injector: Injector) { }
+    private _router: Router,
+    private injector: Injector,
+    private postService: PostService) { }
 
 
   async ngOnInit() {
     // Start the loading spinner
     this.isLoading$.next(true);
 
-    this.initView();
+    await this.initView();
 
     // Return the function via stopping the loader
     return this.isLoading$.next(false);
@@ -115,11 +118,17 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
      * Obtain the custom fields
      */
     this.customFields = [];
-    this.groupService.getGroupCustomFields(this.groupId).then((res) => {
+    await this.groupService.getGroupCustomFields(this.groupId).then((res) => {
       res['group']['custom_fields'].forEach(field => {
         this.customFields.push(field);
       });
     });
+
+    if (this._router.routerState.snapshot.root.queryParamMap.has('postId')) {
+      const postId = this._router.routerState.snapshot.root.queryParamMap.get('postId');
+      const post = await this.publicFunctions.getPost(postId);
+      this.utilityService.openCreatePostFullscreenModal(post, this.userData, this.groupId);
+    }
   }
 
   /**
@@ -142,6 +151,11 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
           reject({});
         });
     });
+  }
+
+  isAdminUser() {
+    const index = this.groupData._admins.findIndex((admin: any) => admin._id === this.userData._id);
+    return index >= 0;
   }
 
   /**

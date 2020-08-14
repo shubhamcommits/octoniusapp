@@ -1,4 +1,4 @@
-import { Folder, File } from '../models';
+import { Folder, File, Group } from '../models';
 import { Readable } from 'stream';
 
 export class FilesService {
@@ -145,14 +145,14 @@ export class FilesService {
      * @param groupId 
      * @param query 
      */
-    async searchFiles(groupId: any, query: any) {
+    async searchFiles(groupsIdArray, query: any) {
 
         // Files Array List
         let files: any = []
 
         // Fetch files on the basis of the params @lastPostId
         files = await File.find({
-            _group: groupId,
+            _group: { "$in": groupsIdArray },
             original_name: { $regex: new RegExp(query, 'i') }
         })
             .sort('-_id')
@@ -183,4 +183,19 @@ export class FilesService {
         }
     }
 
+    async findGroupsShareFiles(groupId: string) {
+        const groups = await Group.find({
+            $and: [
+                { share_files: true},
+                { _id: { $ne: groupId} },
+            ]
+        }).select('_id');
+        
+        let groupsIds = [];
+        groups.forEach(group => {
+            groupsIds.push(group._id);
+        });
+
+        return groupsIds;
+    }
 }

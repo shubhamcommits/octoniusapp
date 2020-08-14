@@ -116,7 +116,11 @@
         <!-- Tags Display ends -->
        
         <!-- Post Actions starts -->
-        <app-post-actions *ngIf="post && userData" [post]="post" [userData]="userData" (delete)="deletePost($event)">
+        <app-post-actions *ngIf="post && userData"
+            [post]="post"
+            [userData]="userData"
+            (delete)="deletePost($event)"
+            (closeModalEvent)="postModalCloseEvent()">
         </app-post-actions>
         <!-- Post Actions ends -->
 

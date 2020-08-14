@@ -357,10 +357,15 @@ export class WorkspaceController {
             });
 
             // Remove duplicates
-            let domains = Array.from(new Set(emailDomains));
-
+            const domainsTmp = Array.from(new Set(emailDomains));
+            let domains = [];
             // Match the query
-            domains = domains.filter((domain: any) => { domain.includes(query) });
+            domainsTmp.forEach((domain: string) => {
+                if (domain.includes(query)) {
+                    domains.push(domain);
+                }
+            });
+
             return res.status(200).json({
                 domains: domains.slice(0, 5) // Limit result to 5
             });

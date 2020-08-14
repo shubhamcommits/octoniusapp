@@ -33,6 +33,9 @@ export class PostViewComponent implements OnInit {
   // Task Status Event Emitter
   @Output('taskStatus') taskStatus = new EventEmitter();
 
+  // Fullscreen modal closed
+  @Output() closeModalEvent = new EventEmitter();
+
   ngOnInit() {
   }
 
@@ -43,6 +46,9 @@ export class PostViewComponent implements OnInit {
     this.delete.emit(post);
   }
 
+  postModalCloseEvent() {
+    this.closeModalEvent.emit(this.post);
+  }
   /**
    * This function checks if an event is assigned to all the members of the group
    * @param post 

@@ -54,7 +54,7 @@ export class GroupAdminComponent implements OnInit {
 
     if(member.role === 'member')
       this.groupData._members.push(member)
-    
+
     else
       this.groupData._admins.push(member)
 
@@ -65,8 +65,8 @@ export class GroupAdminComponent implements OnInit {
 
   /**
    * This function is responsible for adding a new user to the group
-   * @param groupId 
-   * @param { _id, first_name, email } member 
+   * @param groupId
+   * @param { _id, first_name, email } member
    */
   onAddNewUser(groupId: string, member: any){
 
@@ -77,7 +77,7 @@ export class GroupAdminComponent implements OnInit {
     let groupService = this.injector.get(GroupService);
 
     // Add a new member to group
-    utilityService.asyncNotification('Please wait we are adding the new user to your group...', 
+    utilityService.asyncNotification('Please wait we are adding the new user to your group...',
     new Promise((resolve, reject)=>{
       groupService.addNewUserToGroup(groupId, member)
       .then(()=> resolve(utilityService.resolveAsyncPromise(`${member.first_name} added to your group!`)))
@@ -85,4 +85,19 @@ export class GroupAdminComponent implements OnInit {
     }))
   }
 
+  saveSettings(selected) {
+
+    // Utility Service
+    let utilityService = this.injector.get(UtilityService);
+
+    // Group Service
+    let groupService = this.injector.get(GroupService);
+
+    utilityService.asyncNotification('Please wait we are saving the new setting...',
+    new Promise((resolve, reject)=>{
+      groupService.saveSettings(this.groupId, selected.source.name, selected.checked)
+      .then(()=> resolve(utilityService.resolveAsyncPromise('Settings saved to your group!')))
+      .catch(() => reject(utilityService.rejectAsyncPromise('Unable to save the settings to your group, please try again!')))
+    }))
+  }
 }

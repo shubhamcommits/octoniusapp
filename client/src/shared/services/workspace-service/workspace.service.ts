@@ -11,14 +11,13 @@ export class WorkspaceService {
 
   BASE_API_URL = environment.WORKSPACE_BASE_API_URL;
 
-
   constructor(
     private _http: HttpClient,
     private injector: Injector) { }
 
   /**
    * This function is responsible for fetching the workspace details
-   * @param workspaceId 
+   * @param workspaceId
    */
   getWorkspace(workspaceId: string) {
     return this._http.get<any>(this.BASE_API_URL + '/' + workspaceId);
@@ -26,7 +25,7 @@ export class WorkspaceService {
 
   /**
    * This function is responsible for updating the workspace data(only workspace_avatar)
-   * @param workspaceId 
+   * @param workspaceId
    * @param workspaceAvatar
    */
   updateWorkspace(workspaceId: string, workspaceAvatar: File) {
@@ -54,8 +53,8 @@ export class WorkspaceService {
 
   /**
    * This function is responsible for fetching the next set of workspace members
-   * @param workspaceId 
-   * @param lastUserId 
+   * @param workspaceId
+   * @param lastUserId
    * @param query - optional parameter(which searches for name and email too)
    */
   getNextWorkspaceMembers(workspaceId: string, lastUserId: string, query?: string) {
@@ -85,9 +84,9 @@ export class WorkspaceService {
   }
 
   /**
-   * 
-   * @param workspaceId 
-   * @param query 
+   *
+   * @param workspaceId
+   * @param query
    */
   searchWorkspaceMembers(workspaceId: string, query: string) {
     return this._http.post(this.BASE_API_URL + `/query/members/${workspaceId}`, { query })
@@ -97,18 +96,18 @@ export class WorkspaceService {
   }
 
   /**
-   * 
-   * @param workspaceId 
-   * @param query 
+   *
+   * @param workspaceId
+   * @param query
    */
   searchNextWorkspaceMembers(workspaceId: string, query: string) {
     return this._http.post(this.BASE_API_URL + `/next/query/members/${workspaceId}`, { query });
   }
 
   /**
-   * 
-   * @param userId 
-   * @param workspaceId 
+   *
+   * @param userId
+   * @param workspaceId
    */
   removeUserFromWorkspace(userId: string, workspaceId: string){
     return this._http.post(this.BASE_API_URL + '/members/delete', {
@@ -121,8 +120,8 @@ export class WorkspaceService {
 
   /**
    * This function is responsible for creating the subscription
-   * @param { id, email }token 
-   * @param amount 
+   * @param { id, email }token
+   * @param amount
    */
   createSubscription(token: any, amount) {
 
@@ -135,7 +134,7 @@ export class WorkspaceService {
 
   /**
    * This function is responsible for getting the current billing status
-   * @param workspaceId 
+   * @param workspaceId
    */
   getBillingStatus(workspaceId: string) {
     return this._http.get(this.BASE_API_URL + `/billings/get-billing-status/${workspaceId}`)
@@ -179,7 +178,7 @@ export class WorkspaceService {
   /**
    * Fetches unique email domains that exist within the given workspace
    * that match the given query.
-   * 
+   *
    * @param workspaceId The workspace to search within.
    * @param query The email domains to search for.
    */
@@ -190,7 +189,7 @@ export class WorkspaceService {
   /**
    * Fetches unique job positions that exist within the given workspace
    * that match the given query.
-   * 
+   *
    * @param workspaceId The workspace to search within.
    * @param query The job positions to search for.
    */
@@ -201,7 +200,7 @@ export class WorkspaceService {
   /**
    * Fetches unique skills that exist within the given workspace
    * that match the given query.
-   * 
+   *
    * @param workspaceId The workspace to search within.
    * @param query The skills to search for.
    */

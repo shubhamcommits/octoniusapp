@@ -69,6 +69,28 @@ export class PostService {
   }
 
   /**
+   * This function is responsible for liking a post
+   * @param postId 
+   */
+  follow(postId: string){
+    
+    // Call the HTTP Request
+    return this._http.post(this.baseURL + `/${postId}/follow`, '').
+    toPromise()
+  }
+
+  /**
+   * This function is responsible for unliking a post
+   * @param postId 
+   */
+  unfollow(postId: string){
+    
+    // Call the HTTP Request
+    return this._http.post(this.baseURL + `/${postId}/unfollow`, '').
+    toPromise()
+  }
+
+  /**
    * This function fetches the list of posts present in a group
    * @param { groupId, type, lastPostId } query
    * @param lastPostId - optional

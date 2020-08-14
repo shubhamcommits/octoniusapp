@@ -23,13 +23,18 @@
                     <div class="customFields" *ngFor="let field of customFieldsToShow" >
                         <p>{{ field.title }}
                             <i class="material-icons"
+                                *ngIf="isAdmin"
                                 (click)="removeColumn(field)"
                                 style="cursor: pointer;">highlight_off</i>
                         </p>
                     </div>
 
                     <div class="newProperty">
-                        <i class="material-icons-outlined" style="cursor: pointer;" [matMenuTriggerFor]="addColumn">add</i>
+                        <i class="material-icons-outlined" style="cursor: pointer;"
+                                *ngIf="isAdmin"
+                                [matMenuTriggerFor]="addColumn">
+                            add
+                        </i>
                     </div>
                     <mat-menu #addColumn="matMenu">
                         <div class="newColumnMatMenu">
