@@ -62,6 +62,12 @@ routes.post('/:postId/like', postController.like);
 // This route is used to unlike a post
 routes.post('/:postId/unlike', postController.unlike);
 
+// This route is used to like a post
+routes.post('/:postId/follow', postController.follow);
+
+// This route is used to unlike a post
+routes.post('/:postId/unfollow', postController.unfollow);
+
 // -| FETCH POSTS |-
 
 /**

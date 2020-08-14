@@ -19,7 +19,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
   // Close Event Emitter - Emits when closing dialog
   @Output() closeEvent = new EventEmitter();
-  
+
   // BASE URL OF THE APPLICATION
   baseUrl = environment.UTILITIES_BASE_URL;
 
@@ -83,7 +83,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
   comments: any = [];
 
   eventAssignedToCount;
-  
+
   constructor(
     private postService: PostService,
     private groupService: GroupService,
@@ -112,10 +112,10 @@ export class GroupCreatePostDialogComponent implements OnInit {
         // Set the taskAssignee
         this.taskAssignee = this.postData.task._assigned_to;
       }
-    
+
       // Set the due date variable for both task and event type posts
       if (this.postData.task.due_to && this.postData.task.due_to != null) {
-  
+
         // Set the DueDate variable
         this.dueDate = new Date(this.postData.task.due_to || this.postData.event.due_to);
       }
@@ -123,11 +123,11 @@ export class GroupCreatePostDialogComponent implements OnInit {
       this.groupService.getGroupCustomFields(this.groupId).then((res) => {
         res['group']['custom_fields'].forEach(field => {
           this.customFields.push(field);
-  
+
           if (!this.postData.task.custom_fields) {
             this.postData.task.custom_fields = new Map<string, string>();
           }
-          
+
           if (!this.postData.task.custom_fields[field.name]) {
             this.postData.task.custom_fields[field.name] = '';
             this.selectedCFValues[field.name] = '';
@@ -140,10 +140,10 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
     // If post type is event, set the dueTime
     if (this.postData.type === 'event') {
-    
+
       // Set the due date variable for both task and event type posts
       if (this.postData.event.due_to && this.postData.event.due_to != null) {
-  
+
         // Set the DueDate variable
         this.dueDate = new Date(this.postData.task.due_to || this.postData.event.due_to);
       }
@@ -151,15 +151,14 @@ export class GroupCreatePostDialogComponent implements OnInit {
       if (this.dueDate) {
         this.dueTime.hour = this.dueDate.getHours();
         this.dueTime.minute = this.dueDate.getMinutes();
-        this.eventMembersMap = this.postData.event._assigned_to;
       }
-
+      this.eventMembersMap = this.postData.event._assigned_to;
       this.eventAssignedToCount = (this.postData.event._assigned_to) ? this.postData.event._assigned_to.size : 0;
     }
 
     this.tags = this.postData.tags;
 
-    
+
     this.fetchComments();
   }
 
@@ -173,12 +172,18 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.updateDetails();
   }
 
+  /*
+  profilePicURL(filename: string) {
+    return environment.UTILITIES_USERS_UPLOADS + '/' + filename;
+  }
+  */
+
   /**
    * This function checks if the map consists of all team as the assignee for the event type selection
    * @param map 
    */
   eventAssignedToAll() {
-    return (this.eventMembersMap['all']) ? true : false;
+    return (this.eventMembersMap && this.eventMembersMap['all']) ? true : false;
   }
 
   moveTaskToColumn($event) {
@@ -203,7 +208,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
     }
   }
 
-  quillContentChanged(event: any) {
+  quillContentChanged(event: any) {
     this.contentChanged = true;
     this.quillData = event;
   }
@@ -253,10 +258,10 @@ export class GroupCreatePostDialogComponent implements OnInit {
    * Fetch Comments
    */
   fetchComments() {
-    this.commentService.getComments(this.postData._id).then((res)=>{
-        this.comments = res['comments'];
-      }).catch((err)=>{
-        console.log(err);
+    this.commentService.getComments(this.postData._id).then((res) => {
+      this.comments = res['comments'];
+    }).catch((err) => {
+      console.log(err);
     });
   }
 
@@ -265,7 +270,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.fetchComments();
   }
 
-  removeComment(index: number){
+  removeComment(index: number) {
     this.comments.splice(index, 1);
   }
 
@@ -345,12 +350,12 @@ export class GroupCreatePostDialogComponent implements OnInit {
       post.task = this.postData.task;
 
       // Adding unassigned property for previous tasks model
-      if(this.postData.task.unassigned == 'No') {
+      if (this.postData.task.unassigned == 'No') {
         this.postData.task.unassigned = false;
       }
 
       // Adding unassigned property for previous tasks model
-      if(this.postData.task.unassigned == 'Yes') {
+      if (this.postData.task.unassigned == 'Yes') {
         this.postData.task.unassigned = true;
       }
 
@@ -361,7 +366,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
       post.date_due_to = this.dueDate;
 
       // Task Assigned to
-      if(post.unassigned!== null && !post.unassigned) {
+      if (post.unassigned !== null && !post.unassigned) {
         post.assigned_to = this.postData.task._assigned_to._id;
       }
 
@@ -395,17 +400,17 @@ export class GroupCreatePostDialogComponent implements OnInit {
    * Call the asynchronous function to change the column
    */
   editPost(postId: any, formData: FormData) {
-      this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
-        this.postService.edit(postId, formData)
-          .then((res) => {
-            this.contentChanged = false;
-            // Resolve with success
-            resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
-          })
-          .catch(() => {
-            reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
-          });
-      }));
+    this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
+      this.postService.edit(postId, formData)
+        .then((res) => {
+          this.contentChanged = false;
+          // Resolve with success
+          resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
+        })
+        .catch(() => {
+          reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
+        });
+    }));
   }
 
   /**

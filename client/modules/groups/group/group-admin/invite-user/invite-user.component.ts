@@ -18,7 +18,7 @@ export class InviteUserComponent implements OnInit {
   @Input('userData') userData: any;
   @Input('groupData') groupData: any;
   email: string = '';
-  label: string = "The option is mainly for inviting external guests to this group.";
+  //  label: string = "The option is mainly for inviting external guests to this group.";
   placeholder: string = "Please provide the email";
 
   ngOnInit() {
@@ -26,7 +26,7 @@ export class InviteUserComponent implements OnInit {
 
   /**
    * This function gets the Valid Email from the @module <app-email-input></app-email-input>
-   * @param $event 
+   * @param $event
    */
   getValidEmail($event: string){
     this.email = $event;
@@ -35,7 +35,7 @@ export class InviteUserComponent implements OnInit {
   /**
    * This function is resposible for sending the invitation email to the user to join this current workspace
    * @param workspace_name
-   * @param email 
+   * @param email
    * @param group_name
    * Calls the service function via making a POST request
    */

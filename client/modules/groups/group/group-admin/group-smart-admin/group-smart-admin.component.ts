@@ -1,16 +1,16 @@
-import { Component, OnInit, Input} from '@angular/core';
-import { GroupDataService } from '../../../../shared/services/group-data.service';
-import { WorkspaceService } from '../../../../shared/services/workspace.service';
+import { Component, OnInit, Input, Injector} from '@angular/core';
+// import { GroupDataService } from '../../../../shared/services/group-data.service';
 import { SnotifyService } from 'ng-snotify';
-import { GroupService } from '../../../../shared/services/group.service';
+import { GroupService } from 'src/shared/services/group-service/group.service';
+import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
+import { PublicFunctions } from 'src/app/dashboard/public.functions';
 
 @Component({
-  selector: 'group-smart-admin',
+  selector: 'app-group-smart-admin',
   templateUrl: './group-smart-admin.component.html',
   styleUrls: ['./group-smart-admin.component.scss']
 })
 export class GroupSmartAdminComponent implements OnInit {
-  @Input() group;
 
   // The currently selected rule and condition
   rule: string;
@@ -21,13 +21,20 @@ export class GroupSmartAdminComponent implements OnInit {
 
   rules: string[];
 
+  currentSettings: any;
 
-  currentSettings: object;
+  group: any;
 
-  constructor(public groupDataService: GroupDataService, private workspaceService: WorkspaceService,
-    private snotifyService: SnotifyService, private groupService: GroupService) { }
+  // PUBLIC FUNCTIONS
+  private publicFunctions = new PublicFunctions(this.injector);
 
-  ngOnInit() {
+  constructor(
+    private injector: Injector,
+    private workspaceService: WorkspaceService,
+    private snotifyService: SnotifyService,
+    private groupService: GroupService) {}
+
+  async ngOnInit() {
     this.rule = '';
     this.condition = '';
     this.conditions = [];
@@ -37,13 +44,17 @@ export class GroupSmartAdminComponent implements OnInit {
       jobPositions: [],
       skills: []
     };
+
+    // Fetch current group from the service
+    this.group = await this.publicFunctions.getCurrentGroup();
+
     this.getCurrentSettings();
   }
 
   /**
    * Event handler that executes every time a
    * new rule is selected.
-   * 
+   *
    * @param rule The new rule.
    */
   onRuleSelect(rule: string): void {
@@ -53,7 +64,7 @@ export class GroupSmartAdminComponent implements OnInit {
   /**
    * Event handler that executes every time a
    * new condition is selected.
-   * 
+   *
    * @param condition The new condition.
    */
   onConditionSelect(condition: string): void {
@@ -63,46 +74,50 @@ export class GroupSmartAdminComponent implements OnInit {
   /**
    * Retrieves conditions from the DB
    * based on whatever is entered by the user.
-   * 
+   *
    * @param input The user's query.
    */
   search(input: string): void {
-    if (this.rule === 'Email domain') {
-      // populate the current workspace's email domains
-      this.workspaceService
-        .getUniqueEmailDomains(this.groupDataService.group._workspace, input)
-        .subscribe(
-          ({ domains }) => this.conditions = domains,
-          error => {
-            //this.snotifyService.error('An error occurred whilst fetching email domains.');
-            console.error('Could not fetch email domains!');
-            console.error(error);
-          }
-        );
-    } else if (this.rule === 'Job position') {
-      // populate the current workspace's job positions
-      this.workspaceService
-        .getUniqueJobPositions(this.groupDataService.group._workspace, input)
-        .subscribe(
-          ({ positions }) => this.conditions = positions,
-          error => {
-            //this.snotifyService.error('An error occurred whilst fetching job positions.');
-            console.error('Could not fetch job positions!');
-            console.error(error);
-          }
-        );
-    } else if (this.rule === 'Skills') {
-      // populate the current workspace's skills
-      this.workspaceService
-        .getUniqueSkills(this.groupDataService.group._workspace, input)
-        .subscribe(
-          ({ skills }) => this.conditions = skills,
-          error => {
-            //this.snotifyService.error('An error occurred whilst fetching skills.');
-            console.error('Could not fetch skills!');
-            console.error(error);
-          }
-        );
+    if (input.length > 0) {
+      if (this.rule === 'Email domain') {
+        // populate the current workspace's email domains
+        this.workspaceService
+          .getUniqueEmailDomains(this.group._workspace, input)
+          .subscribe(
+            ({ domains }) => {
+              this.conditions = domains;
+            },
+            error => {
+              //this.snotifyService.error('An error occurred whilst fetching email domains.');
+              console.error('Could not fetch email domains!');
+              console.error(error);
+            }
+          );
+      } else if (this.rule === 'Job position') {
+        // populate the current workspace's job positions
+        this.workspaceService
+          .getUniqueJobPositions(this.group._workspace, input)
+          .subscribe(
+            ({ positions }) => this.conditions = positions,
+            error => {
+              //this.snotifyService.error('An error occurred whilst fetching job positions.');
+              console.error('Could not fetch job positions!');
+              console.error(error);
+            }
+          );
+      } else if (this.rule === 'Skills') {
+        // populate the current workspace's skills
+        this.workspaceService
+          .getUniqueSkills(this.group._workspace, input)
+          .subscribe(
+            ({ skills }) => this.conditions = skills,
+            error => {
+              //this.snotifyService.error('An error occurred whilst fetching skills.');
+              console.error('Could not fetch skills!');
+              console.error(error);
+            }
+          );
+      }
     }
   }
 
@@ -158,7 +173,7 @@ export class GroupSmartAdminComponent implements OnInit {
     }
 
     // Update DB
-    this.groupService.updateSmartGroupRules(data, this.groupDataService.groupId).subscribe(
+    this.groupService.updateSmartGroupRules(data, this.group._id).subscribe(
       res => {
         this.snotifyService.success('The rule has been successfully added!');
         this.rule = '';
@@ -179,7 +194,7 @@ export class GroupSmartAdminComponent implements OnInit {
    * on page load.
    */
   getCurrentSettings(): void {
-    this.groupService.getSmartGroupSettings(this.groupDataService.groupId).subscribe(
+    this.groupService.getSmartGroupSettings(this.group._id).subscribe(
       res => {
         // @ts-ignore
         this.currentSettings.emailDomains = res.domains;
@@ -198,11 +213,11 @@ export class GroupSmartAdminComponent implements OnInit {
 
   /**
    * Event handler that is executed when a rule is deleted.
-   * 
+   *
    * @param rule The rule to delete.
    */
   onDeleteRule(rule: string): void {
-    this.groupService.deleteSmartGroupRule(this.groupDataService.groupId, rule).subscribe(
+    this.groupService.deleteSmartGroupRule(this.group._id, rule).subscribe(
       res => {
         this.snotifyService.success('The rule has been successfully deleted!');
 
@@ -235,11 +250,11 @@ export class GroupSmartAdminComponent implements OnInit {
    */
   autoAdd(): void {
     const data = {
-      workspaceId: this.groupDataService.group._workspace,
+      workspaceId: this.group._workspace,
       currentSettings: this.currentSettings
     };
     this.groupService.updateSmartGroupMembers(
-      this.groupDataService.groupId,
+      this.group._id,
       data
     ).subscribe(
       res => //this.snotifyService.info('The members of the group have been successfully modified!'),

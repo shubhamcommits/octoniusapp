@@ -14,7 +14,7 @@ export class GroupService {
 
   /**
    * This function is responsible for fetching the group details
-   * @param groupId 
+   * @param groupId
    */
   getGroup(groupId: string) {
     return this._http.get(this.baseURL + `/${groupId}`).toPromise()
@@ -22,7 +22,7 @@ export class GroupService {
 
   /**
    * This function is responsible for deleting the group
-   * @param groupId 
+   * @param groupId
    */
   removeGroup(groupId: string){
     return this._http.delete(this.baseURL + `/${groupId}`).toPromise()
@@ -30,7 +30,7 @@ export class GroupService {
 
   /**
    * This function is responsible for updating the group details
-   * @param groupId 
+   * @param groupId
    */
   updateGroup(groupId: string, groupData: any){
     return this._http.put(this.baseURL + `/${groupId}`, { groupData }).toPromise()
@@ -38,7 +38,7 @@ export class GroupService {
 
   /**
    * This function is responsible for updating the group avatar
-   * @param groupId 
+   * @param groupId
    */
   updateGroupAvatar(groupId: any, fileToUpload: File) {
 
@@ -65,8 +65,8 @@ export class GroupService {
 
   /**
    * This function is responsible for fetching the next set of group members
-   * @param groupId 
-   * @param lastUserId 
+   * @param groupId
+   * @param lastUserId
    * @param query - optional parameter(which searches for name and email too)
    */
   getNextGroupMembers(groupId: string, lastUserId: string, query?: string) {
@@ -81,8 +81,8 @@ export class GroupService {
 
   /**
    * This function is responsible for adding a new user to the group
-   * @param groupId 
-   * @param { _id, role, first_name, email } member 
+   * @param groupId
+   * @param { _id, role, first_name, email } member
    */
   addNewUserToGroup(groupId: string, member: any){
 
@@ -98,7 +98,7 @@ export class GroupService {
 
   /**
    * This function is responsible for removing the user from the group
-   * @param groupId 
+   * @param groupId
    * @param userId - of the user who needs to be removed
    */
   removeUser(groupId: string, userId: string){
@@ -139,5 +139,54 @@ export class GroupService {
 
   removeCustomFieldValue(value: string, fieldId: string, groupId: string) {
     return this._http.put(this.baseURL + `/${groupId}/customFields/removeValue`, { fieldId, value }).toPromise();
+  }
+
+  saveSettings(groupId: string, propertyName: string, value: boolean, ) {
+    if (propertyName === 'share_files') {
+      return this._http.put(this.baseURL + `/${groupId}/settings/shareFiles`, { propertyName, value }).toPromise();
+    }
+  }
+
+  /**
+   * Makes an HTTP POST request to update a smart group's
+   * rules.
+   *
+   * @param data The new rules to add
+   * @param groupId The smart group to update
+   */
+  updateSmartGroupRules(data: object, groupId: string): Observable<any> {
+    return this._http.post<any>(`${this.baseURL}/smart/${groupId}`, data);
+  }
+
+  /**
+   * Makes an HTTP GET request to retrieve a smart group's
+   * current settings.
+   *
+   * @param groupdId The group to query
+   */
+  getSmartGroupSettings(groupdId: string): Observable<any> {
+    return this._http.get<any>(`${this.baseURL}/smart/${groupdId}/settings`);
+  }
+
+  /**
+   * Makes an HTTP PUT request that removes a smart group's
+   * rule.
+   *
+   * @param groupId The ID of the smart group.
+   * @param rule The rule to delete.
+   */
+  deleteSmartGroupRule(groupId: string, rule: string): Observable<any> {
+    return this._http.put<any>(`${this.baseURL}/smart/${groupId}/${rule}`, null);
+  }
+
+  /**
+   * Makes an HTTP PUT request to update the members of a
+   * Smart Group.
+   *
+   * @param groupId The group to update.
+   * @param data The requirements that the users must meet.
+   */
+  updateSmartGroupMembers(groupId: string, data: object): Observable<any> {
+    return this._http.put<any>(`${this.baseURL}/smart/${groupId}`, data);
   }
 }

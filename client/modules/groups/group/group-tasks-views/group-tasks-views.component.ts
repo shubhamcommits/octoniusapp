@@ -153,6 +153,11 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     });
   }
 
+  isAdminUser() {
+    const index = this.groupData._admins.findIndex((admin: any) => admin._id === this.userData._id);
+    return index >= 0;
+  }
+
   /**
    * This Function is responsible for sorting the tasks into columns
    * @param columns

@@ -73,8 +73,23 @@ routes.delete('/:groupId/customFields/:fieldId', group.removeCustomField);
 // PUT - Add new value to a custom field
 routes.put('/:groupId/customFields/addValue', group.addCustomFieldValue);
 
+// PUT - Add new value to a custom field
+routes.put('/:groupId/settings/shareFiles', group.saveShareFilesSettings);
+
 // PUT - Remove custom field value
 routes.put('/:groupId/customFields/removeValue', group.removeCustomFieldValue);
+
+// Update a smart group with the given rules.
+routes.post('/smart/:groupId', group.updateSmartGroup);
+
+// Get a smart group's settings
+routes.get('/smart/:groupId/settings', group.getSmartGroupSettings);
+
+// Delete a smart group's rule
+routes.put('/smart/:groupId/:rule', group.deleteSmartGroupRule);
+
+// Update a smart group's members
+routes.put('/smart/:groupId', group.updateSmartGroupMembers);
 
 /*  ===================
  *  -- EXPORT ROUTES --

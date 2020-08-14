@@ -259,6 +259,72 @@ export class PostController {
 
 
     /**
+     * This function is used to like a post
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async follow(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            // Fetch postId from request
+            const { params: { postId } } = req;
+
+            // Fetch userId from the request
+            const userId = req['userId'];
+
+            // Call Service function to like a post
+            let data: any = await postService.follow(userId, postId)
+                .catch((err) => {
+                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+                })
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Post Successfully Liked',
+                post: data.post,
+                user: data.user
+            });
+        } catch (error) {
+            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
+        }
+    }
+
+
+    /**
+     * This function is used to unlike a post
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async unfollow(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            // Fetch postId from the request
+            const { params: { postId } } = req;
+
+            // Fetch userId from the request
+            const userId = req['userId'];
+
+            // Call Service function to unlike a post
+            let data: any = await postService.unfollow(userId, postId)
+                .catch((err) => {
+                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+                })
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Post Successfully Unliked',
+                post: data.post,
+                user: data.user
+            });
+        } catch (error) {
+            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
+        }
+    }
+
+
+    /**
      * Anish 02/04 edits start
      */
 

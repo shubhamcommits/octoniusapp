@@ -1,7 +1,9 @@
 <div class="board-bar">
     <div class="row">
         <div class="actions">
-            <a class="createCustomFieldsLink" (click)="openCustomFieldsDialog()">
+            <a class="createCustomFieldsLink"
+                *ngIf="isAdmin"
+                (click)="openCustomFieldsDialog()">
                 <i class="material-icons" style="color: #005FD5">label</i>
             </a>
             <button mat-raised-button color="accent" [matMenuTriggerFor]="menu">Views</button>
