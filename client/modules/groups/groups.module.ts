@@ -76,6 +76,7 @@ import { MatButtonModule, MatMenuModule, MatChipsModule, MatDialogModule, MatSel
 import { CustomFieldsDialogComponent } from './group/custom-fields-dialog/custom-fields-dialog.component';
 import { GroupSmartAdminComponent } from './group/group-admin/group-smart-admin/group-smart-admin.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 
 /**
@@ -177,7 +178,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatChipsModule,
     MatDialogModule,
     MatSelectModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatExpansionModule
   ],
   providers: [
     GroupsService,

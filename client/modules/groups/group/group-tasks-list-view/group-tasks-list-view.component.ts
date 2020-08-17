@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Injector, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, Injector, EventEmitter, Output, ViewChild } from '@angular/core';
 import moment from 'moment/moment';
 import { PublicFunctions } from 'src/app/dashboard/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -6,7 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { GroupService } from 'src/shared/services/group-service/group.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatAccordion } from '@angular/material';
 import { GroupCreatePostDialogComponent } from 'src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component';
 
 @Component({
@@ -28,6 +28,8 @@ export class GroupTasksListViewComponent implements OnInit {
   @Input() isAdmin = false;
 
   @Output() closeModalEvent = new EventEmitter();
+
+  @ViewChild(MatAccordion, { static: true }) accordion: MatAccordion;
 
   customFieldsToShow: any[] = [];
 
@@ -124,7 +126,7 @@ export class GroupTasksListViewComponent implements OnInit {
    */
   openFullscreenModal(postData: any): void {
     const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, this.groupId, this.columns);
-    
+
     const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
       this.closeModalEvent.emit();
     });
@@ -135,8 +137,8 @@ export class GroupTasksListViewComponent implements OnInit {
 
   /**
    * This function updates the status on the UI
-   * @param task 
-   * @param status 
+   * @param task
+   * @param status
    */
   changeStatus(task: any, status: any) {
 
