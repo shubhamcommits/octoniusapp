@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { GoogleCloudService } from '../services/google-cloud.service';
@@ -15,7 +15,8 @@ export class ConnectGoogleCloudComponent implements OnInit {
 
   googleAuthSuccessful: any;
 
-  constructor(private googleService: GoogleCloudService) { }
+  constructor(
+    private googleService: GoogleCloudService) { }
 
   ngOnInit(): void {
     this.googleService.refreshGoogleToken().then(() => {
@@ -79,6 +80,8 @@ export class ConnectGoogleCloudComponent implements OnInit {
               saveToken.onload = () => {
                 if (saveToken.status === 200) {
                   console.log(JSON.parse(saveToken.responseText));
+                  // Save the current user with the token in localstorage
+                  storageService.setLocalData('userData', JSON.stringify(JSON.parse(saveToken.responseText).user));
                 }
               };
 
