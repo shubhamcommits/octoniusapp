@@ -31,7 +31,7 @@
                         </p>
                     </div>
 
-                    <div class="newProperty">
+                    <div class="task_cell_more">
                         <i class="material-icons-outlined" style="cursor: pointer;"
                                 *ngIf="isAdmin"
                                 [matMenuTriggerFor]="addColumn">
@@ -62,7 +62,7 @@
             <div class="list-column" id="column.title" *ngFor="let column of columns; let i = index;">
                 <!-- COLUMN TITLE -->
                 <div class="column-title">
-                    <p class="text-capitalize"> {{ column?.title }}</p>
+                    <p class="muted"> {{ column?.title }}</p>
                 </div>
                 <!-- COLUMN TITLE -->
 
