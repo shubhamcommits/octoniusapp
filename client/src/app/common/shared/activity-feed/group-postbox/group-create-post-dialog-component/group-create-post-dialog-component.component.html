@@ -12,12 +12,12 @@
                 <!-- Event Post Header starts -->
                 <h4 class="modal-title">
                     <!-- Post Title starts -->
-                    <input 
-                        name="postTitle" 
-                        type="text" 
+                    <input
+                        name="postTitle"
+                        type="text"
                         [ngModel]="title"
                         (blur)="titleChange($event)"
-                        class="post-title" 
+                        class="post-title"
                         placeholder="✍🏻 Title" />
                     <!-- Post Title ends -->
                 </h4>
@@ -32,11 +32,11 @@
             <!-- Post Header Title ends -->
 
             <!-- Post Content starts -->
-            <app-quill-editor 
+            <app-quill-editor
                 [editorId]="'postbox-editor'"
                 [toolbar]="true"
-                [readOnly]="false" 
-                [contents]="postData.content" 
+                [readOnly]="false"
+                [contents]="postData.content"
                 [groupId]="groupId"
                 (content)="quillContentChanged($event)">
             </app-quill-editor>
@@ -44,9 +44,10 @@
 
             <!-- Attach files starts -->
             <div class="attach-files">
-                <app-attach-files 
-                    [post]="postData" 
-                    (files)="onAttach($event)">
+                <app-attach-files
+                    [post]="postData"
+                    (files)="onAttach($event)"
+                    (cloudFiles)="onCloudFileAttach($event)">
                 </app-attach-files>
             </div>
             <!-- Attach files ends -->
@@ -69,7 +70,7 @@
                 Save
             </button>
         </div>
-    
+
         <div class="content-box" *ngIf="comments.length > 0">
             <section *ngFor="let comment of comments; let index = index;">
                 <post-comment [comment]="comment" [index]="index" [userData]="userData"
@@ -82,8 +83,8 @@
         <div class="content-box" *ngIf="postData.type === 'task'">
             <p class="box-title">Status</p>
             <!-- Change task status starts -->
-            <app-task-status 
-                class="ml-3" 
+            <app-task-status
+                class="ml-3"
                 [post]="postData"
                 (status)="changeTaskStatus($event)">
             </app-task-status>
@@ -93,11 +94,11 @@
 
             <p class="box-title">Section</p>
             <!-- Change task column starts -->
-            <app-change-column 
-                class="ml-3" 
-                *ngIf="columns" 
+            <app-change-column
+                class="ml-3"
+                *ngIf="columns"
                 [post]="postData"
-                [columns]="columns" 
+                [columns]="columns"
                 (moveTask)="moveTaskToColumn($event)">
             </app-change-column>
             <!-- Change task column ends -->
@@ -117,16 +118,16 @@
             <!-- Date Picker ends -->
 
             <!-- Time Picker starts -->
-            <app-time-picker  
+            <app-time-picker
                 class="ml-3"
                 *ngIf="postData.type === 'event'"
-                [time]="this.dueTime" 
+                [time]="this.dueTime"
                 (time)="getTime($event)">
             </app-time-picker>
             <!-- Time Picker ends -->
         </div>
         <!-- Top Right Section ends -->
-        
+
         <!-- Assignee Modal starts -->
         <div class="content-box" *ngIf="postData.type === 'task' || postData.type === 'event'">
             <p class="box-title">Assigned member</p>
@@ -142,13 +143,13 @@
             </app-inline-input>
 
             <p *ngIf="postData.type === 'event'" style="padding-top: 20px;">Assigned to {{ eventAssignedToCount }} member(s)</p>
-            <app-component-search-input-box 
+            <app-component-search-input-box
                 *ngIf="postData.type === 'event' && userData && checkDataExist(userData)"
-                [placeholder]="'Assign...'" 
-                [groupId]="groupId" 
+                [placeholder]="'Assign...'"
+                [groupId]="groupId"
                 [workspaceId]="userData._workspace"
-                [userData]="userData" 
-                [type]="'event'" 
+                [userData]="userData"
+                [type]="'event'"
                 (member)="getMemberDetails($event)">
             </app-component-search-input-box>
             <!--
@@ -169,10 +170,10 @@
         <div class="content-box">
             <p class="box-title">Tags</p>
             <!-- Post Tags starts -->
-            <app-post-tags 
-                [post]="postData" 
-                [userData]="userData" 
-                [groupId]="groupId" 
+            <app-post-tags
+                [post]="postData"
+                [userData]="userData"
+                [groupId]="groupId"
                 (tags)="getTags($event)">
             </app-post-tags>
             <!-- Post Tags ends -->
