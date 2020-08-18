@@ -31,7 +31,7 @@
                         </p>
                     </div>
 
-                    <div class="newProperty">
+                    <div class="task_cell_more">
                         <i class="material-icons-outlined" style="cursor: pointer;"
                                 *ngIf="isAdmin"
                                 [matMenuTriggerFor]="addColumn">
@@ -62,10 +62,12 @@
 
           <mat-accordion class="list-column" id="column.title" *ngFor="let column of columns; let i = index;" multi>
             <mat-expansion-panel style="background-color: #fafafa; margin-bottom: 15px; box-shadow: none;">
-              <mat-expansion-panel-header>
-                <mat-panel-title class="column-title">
-                  <p class="text-capitalize"> {{ column?.title }}</p>
+              <mat-expansion-panel-header class="column-title">
+                <!-- COLUMN TITLE -->
+                <mat-panel-title>
+                  <p class="muted"> {{ column?.title }}</p>
                 </mat-panel-title>
+                <!-- COLUMN TITLE -->
                 <mat-panel-description>
                 </mat-panel-description>
               </mat-expansion-panel-header>
@@ -96,70 +98,70 @@
                             </app-inline-input>
                         </div>
                         <div class="task_cell_tag">
-                        <div class="tags" *ngIf="task?.tags.length <= 1">
-                            <span class="badge" *ngFor="let tag of task?.tags">
-                                {{ tag }}
-                            </span>
-                        </div>
-                        <div class="tags" *ngIf="task?.tags.length > 1">
-                            <span class="badge">
-                                {{ task?.tags[0] }}
-                            </span>
-                            <span class="badge">
-                                +{{ task?.tags.length-1 }}
-                            </span>
-                        </div>
-                    </div>
-                        <div class="task_cell_asignee">
-                            <app-inline-input
-                                [(ngModel)]="task.task._assigned_to"
-                                [domainObject]="task"
-                                [required]="true"
-                                [workspaceId]="groupData._workspace._id"
-                                [userData]="userData"
-                                [groupId]="groupData._id"
-                                type="assignee"
-                                (post)="fieldUpdated($event, task)">
-                            </app-inline-input>
-                        </div>
+                          <div class="tags" *ngIf="task?.tags.length <= 1">
+                              <span class="badge" *ngFor="let tag of task?.tags">
+                                  {{ tag }}
+                              </span>
+                          </div>
+                          <div class="tags" *ngIf="task?.tags.length > 1">
+                              <span class="badge">
+                                  {{ task?.tags[0] }}
+                              </span>
+                              <span class="badge">
+                                  +{{ task?.tags.length-1 }}
+                              </span>
+                          </div>
+                      </div>
+                      <div class="task_cell_asignee">
+                          <app-inline-input
+                              [(ngModel)]="task.task._assigned_to"
+                              [domainObject]="task"
+                              [required]="true"
+                              [workspaceId]="groupData._workspace._id"
+                              [userData]="userData"
+                              [groupId]="groupData._id"
+                              type="assignee"
+                              (post)="fieldUpdated($event, task)">
+                          </app-inline-input>
+                      </div>
 
-                        <div class="task_cell_date">
-                            <app-inline-input
-                                *ngIf="task.task.due_to != 'Invalid date'"
-                                [(ngModel)]="task.task.due_to"
-                                [styleClass]="checkOverdue(task) === true ? 'overdue' : 'due'"
-                                [domainObject]="task"
-                                [required]="true"
-                                type="date"
-                                (post)="fieldUpdated($event, task)">
-                            </app-inline-input>
-                        </div>
+                      <div class="task_cell_date">
+                          <app-inline-input
+                              *ngIf="task.task.due_to != 'Invalid date'"
+                              [(ngModel)]="task.task.due_to"
+                              [styleClass]="checkOverdue(task) === true ? 'overdue' : 'due'"
+                              [domainObject]="task"
+                              [required]="true"
+                              type="date"
+                              (post)="fieldUpdated($event, task)">
+                          </app-inline-input>
+                      </div>
 
-                        <div class="task_cell_cf" *ngFor="let field of customFieldsToShow" >
-                            <app-inline-input
-                                [customFieldName]="field.name"
-                                [domainObject]="task"
-                                [required]="true"
-                                [options]="customFieldValues(field.name)"
-                                type="customField"
-                                (post)="fieldUpdated($event, task)">
-                            </app-inline-input>
-                        </div>
+                      <div class="task_cell_cf" *ngFor="let field of customFieldsToShow" >
+                          <app-inline-input
+                              [customFieldName]="field.name"
+                              [domainObject]="task"
+                              [required]="true"
+                              [options]="customFieldValues(field.name)"
+                              type="customField"
+                              (post)="fieldUpdated($event, task)">
+                          </app-inline-input>
+                      </div>
 
-                        <div class="task_cell_more">
-                            <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
-                            <mat-menu #menu="matMenu">
-                                <a mat-menu-item (click)="openFullscreenModal(task)">
-                                    <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
-                                    <span>View</span>
-                                </a>
-                            </mat-menu>
-                        </div>
-                    </div>
+                      <div class="task_cell_more">
+                          <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
+                          <mat-menu #menu="matMenu">
+                              <a mat-menu-item (click)="openFullscreenModal(task)">
+                                  <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
+                                  <span>View</span>
+                              </a>
+                          </mat-menu>
+                      </div>
+                  </div>
                 </div>
                 <!-- TASK DETAILS ENDS -->
-            </div>
-            <!-- TASK CONTAINER ENDS -->
+              </div>
+              <!-- TASK CONTAINER ENDS -->
 
             </mat-expansion-panel>
           </mat-accordion>
