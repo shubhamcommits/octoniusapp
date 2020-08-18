@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, Input, Injector } from '@angular/core';
 
-// Highlight.js 
+// Highlight.js
 import * as hljs from 'highlight.js';
 
 // Highlight.js sublime css
@@ -26,7 +26,7 @@ import ImageCompress from 'quill-image-compress';
 // Register Image compress module
 Quill.register('modules/imageCompress', ImageCompress);
 
-// Quill Image Resize 
+// Quill Image Resize
 import ImageResize from './quill-image-resize/quill.image-resize.js';
 
 // Register Quill Image resize module
@@ -122,12 +122,12 @@ export class QuillEditorComponent implements OnInit {
     // Set contents to the quill
     if (this.contents) {
 
-      // Fetch the delta ops from the JSON string 
+      // Fetch the delta ops from the JSON string
       let delta = (this.isJSON(this.contents))
       ? JSON.parse(this.contents)['ops']
       : this.quill.clipboard.convert(this.contents);
 
-      // Set the content inside quill container  
+      // Set the content inside quill container
       this.setContents(this.quill, delta)
     }
 
@@ -139,7 +139,7 @@ export class QuillEditorComponent implements OnInit {
 
   /**
    * This function is used to check if a function is already strigified
-   * @param str 
+   * @param str
    */
   isJSON(str: string) {
     try {
@@ -252,8 +252,8 @@ export class QuillEditorComponent implements OnInit {
 
   /**
    * This function is responsible for fetching the group members list
-   * @param groupId 
-   * @param searchTerm 
+   * @param groupId
+   * @param searchTerm
    */
   async suggestMembers(groupId: string, searchTerm: string) {
 
@@ -272,13 +272,13 @@ export class QuillEditorComponent implements OnInit {
 
   /**
    * This function is responsible for fetching the files list
-   * @param groupId 
-   * @param searchTerm 
+   * @param groupId
+   * @param searchTerm
    */
   async suggestFiles(groupId: string, searchTerm: string) {
 
     // Fetch the users list from the server
-    let filesList: any = await this.publicFunctions.searchFiles(groupId, searchTerm)
+    let filesList: any = await this.publicFunctions.searchFiles(groupId, searchTerm, 'true');
 
     // Map the users list
     filesList = filesList.map((file: any) => ({
@@ -295,7 +295,7 @@ export class QuillEditorComponent implements OnInit {
 
   /**
    * This function is responsible for initialising the quill editor
-   * @param modules 
+   * @param modules
    * @param {String} theme - 'snow' or 'bubble'
    */
   quillEditor(modules: any, theme?: string) {
@@ -311,7 +311,7 @@ export class QuillEditorComponent implements OnInit {
 
   /**
    * Get quill contents present in the editor
-   * @param quill 
+   * @param quill
    */
   getQuillContents(quill: any) {
     return {
@@ -323,7 +323,7 @@ export class QuillEditorComponent implements OnInit {
 
   /**
    * This function is resposible for detecting the changes in quill contents
-   * @param quill 
+   * @param quill
    */
   quillContentChanges(quill: Quill) {
     return quill.on('text-change', (delta, oldDelta, source) => {
@@ -354,8 +354,8 @@ export class QuillEditorComponent implements OnInit {
 
   /**
    * This function is responsible for setting the contents in the quill container
-   * @param quill 
-   * @param contents of type Delta 
+   * @param quill
+   * @param contents of type Delta
    */
   setContents(quill: Quill, contents: any) {
     quill.setContents(contents)
@@ -363,7 +363,7 @@ export class QuillEditorComponent implements OnInit {
 
   /**
    * This function is resposible for fetching the list of the mentions
-   * @param content 
+   * @param content
    */
   getMentionList(content: any) {
 

@@ -214,7 +214,7 @@ export class PublicFunctions {
 
     /**
      * This function fetches the group details
-     * @param groupId 
+     * @param groupId
      */
     public async getGroupDetails(groupId: string) {
         return new Promise((resolve, reject) => {
@@ -232,7 +232,7 @@ export class PublicFunctions {
 
     /**
      * This function returns the count of tasks of pulse for specific status
-     * @param groupId 
+     * @param groupId
      * @param status - optional
      */
     public async getTasksThisWeekCount(groupId: string, status?: string) {
@@ -249,7 +249,7 @@ export class PublicFunctions {
 
     /**
      * This function returns the count of undone task which were due this week
-     * @param groupId 
+     * @param groupId
      */
     public async getUndoneTasksThisWeek(groupId: string) {
 
@@ -265,7 +265,7 @@ export class PublicFunctions {
 
     /**
      * This function returns the tasks and posts which are present in a month for calendar
-     * @param groupId 
+     * @param groupId
      * @param year
      * @param month
      * @param userId - optional
@@ -304,8 +304,8 @@ export class PublicFunctions {
 
     /**
      * This function is responsible for fetching the users who are not present inside a group
-     * @param groupId 
-     * @param query 
+     * @param groupId
+     * @param query
      */
     membersNotInGroup(workspaceId: string, query: string, groupId: string, ) {
         try {
@@ -328,8 +328,8 @@ export class PublicFunctions {
 
     /**
      * This function is responsible for fetching the users present inside a group
-     * @param groupId 
-     * @param query 
+     * @param groupId
+     * @param query
      */
     searchGroupMembers(groupId: string, query: string) {
         try {
@@ -378,8 +378,8 @@ export class PublicFunctions {
 
     /**
      * Fetch list of first 10 groups of which a user is a part of
-     * @param workspaceId 
-     * @param userId 
+     * @param workspaceId
+     * @param userId
      */
     public async getUserGroups(workspaceId: string, userId: string) {
         return new Promise((resolve, reject) => {
@@ -392,9 +392,9 @@ export class PublicFunctions {
 
     /**
      * Fetch list of next 5 groups of which a user is a part of based on the lastGroupId
-     * @param workspaceId 
-     * @param userId 
-     * @param lastGroupId 
+     * @param workspaceId
+     * @param userId
+     * @param lastGroupId
      */
     public async getNextUserGroups(workspaceId: string, userId: string, lastGroupId: string) {
         return new Promise((resolve, reject) => {
@@ -407,8 +407,8 @@ export class PublicFunctions {
 
     /**
      * This is the service function which calls the edit user API
-     * @param userService 
-     * @param userData 
+     * @param userService
+     * @param userData
      */
     public async userDetailsServiceFunction(userService: UserService, userData: Object) {
         return new Promise((resolve, reject) => {
@@ -454,8 +454,8 @@ export class PublicFunctions {
 
     /**
      * This function is responsible for fetching the users present inside a workspace
-     * @param workspaceId 
-     * @param query 
+     * @param workspaceId
+     * @param query
      */
     searchWorkspaceMembers(workspaceId: string, query: string) {
         try {
@@ -504,8 +504,8 @@ export class PublicFunctions {
 
     /**
      * This function is responsible for fetching the posts from the server based on the groupId
-     * @param groupId 
-     * @param lastPostId: optional 
+     * @param groupId
+     * @param lastPostId: optional
      */
     getPosts(groupId: string, type: string, lastPostId?: string) {
 
@@ -529,8 +529,8 @@ export class PublicFunctions {
 
     /**
      * This function is responsible for fetching the tags from the server based on the groupId
-     * @param groupId 
-     * @param tag: optional 
+     * @param groupId
+     * @param tag: optional
      */
     getTags(groupId: string, tag: string) {
 
@@ -554,8 +554,8 @@ export class PublicFunctions {
 
     /**
      * This function is responsible for fetching the files from the server based on the groupId
-     * @param groupId 
-     * @param lastFileId: optional 
+     * @param groupId
+     * @param lastFileId: optional
      */
     getFiles(groupId: string, lastFileId?: string) {
 
@@ -579,12 +579,12 @@ export class PublicFunctions {
 
     /**
      * This function is responsible for fetching the files from the server
-     * @param query 
+     * @param query
      */
-    searchFiles(groupId: string, query: any) {
+    searchFiles(groupId: string, query: any, groupRef?: any) {
         return new Promise((resolve) => {
             let filesService = this.injector.get(FilesService)
-            filesService.searchFiles(groupId, query)
+            filesService.searchFiles(groupId, query, groupRef)
                 .then((res) => resolve(res['files']))
                 .catch(() => resolve([]))
         })
@@ -592,8 +592,8 @@ export class PublicFunctions {
 
     /**
      * This function is responsible for editing a post
-     * @param postId 
-     * @param postData 
+     * @param postId
+     * @param postData
      */
     onEditPost(postId: string, postData: FormData) {
 
@@ -618,7 +618,7 @@ export class PublicFunctions {
 
     /**
      * This function is responsible for fetching a post details
-     * @param postId 
+     * @param postId
      */
     getPost(postId: string) {
 
@@ -643,7 +643,7 @@ export class PublicFunctions {
 
     /**
      * This function is responsible for fetching all the columns present in a group
-     * @param groupId 
+     * @param groupId
      */
     getAllColumns(groupId: string) {
 
@@ -671,8 +671,8 @@ export class PublicFunctions {
 
     /**
      * This function is responsible for changing the task assignee
-     * @param postId 
-     * @param assigneeId 
+     * @param postId
+     * @param assigneeId
      */
     changeTaskAssignee(postId: string, assigneeId: string) {
 
@@ -699,8 +699,8 @@ export class PublicFunctions {
 
     /**
      * This function is responsible to changing the task due date
-     * @param postId 
-     * @param dueDate 
+     * @param postId
+     * @param dueDate
      */
     changeTaskDueDate(postId: string, dueDate: string) {
 
@@ -727,7 +727,7 @@ export class PublicFunctions {
 
     /**
      * This function is responsible to changing the task status
-     * @param postId 
+     * @param postId
      * @param status
      */
     changeTaskStatus(postId: string, status: string) {
@@ -755,7 +755,7 @@ export class PublicFunctions {
 
     /**
      * This function is responsible to changing the task column
-     * @param postId 
+     * @param postId
      * @param title
      */
     changeTaskColumn(postId: string, title: string) {
@@ -783,7 +783,7 @@ export class PublicFunctions {
 
     /**
    * This functions sends the update to other users about the updated workspace data
-   * @param socketService 
+   * @param socketService
    * @param workspaceData
    */
     emitWorkspaceData(socketService: SocketService, workspaceData: any) {
@@ -792,7 +792,7 @@ export class PublicFunctions {
 
     /**
      * This functions sends the update to the user whose role has been updated
-     * @param socketService 
+     * @param socketService
      * @param userId
      * @param userData
      */
