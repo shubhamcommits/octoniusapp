@@ -7,28 +7,28 @@
             <div class="task_row_header">
                 <div class="task_content">
 
-                        <div class="task_title"><p>Title</p></div>
+                        <div class="task_title">Title</div>
 
 
                     <div class="task_cell_tag">
-                        <p>Tags</p>
+                        Tags
                     </div>
 
                     <div class="task_cell_assignee">
-                        <p>Assignee</p>
+                        Assignee
                     </div>
 
                     <div class="task_cell_date">
-                        <p>Due Date</p>
+                        Due Date
                     </div>
 
                     <div class="task_cell_cf" *ngFor="let field of customFieldsToShow" >
-                        <p>{{ field.title }}
+                        {{ field.title }}
                             <i class="material-icons"
                                 *ngIf="isAdmin"
                                 (click)="removeColumn(field)"
                                 style="cursor: pointer;">highlight_off</i>
-                        </p>
+
                     </div>
 
                     <div class="task_cell_more">
@@ -40,7 +40,7 @@
                     </div>
                     <mat-menu #addColumn="matMenu">
                         <div class="newColumnMatMenu">
-                            <p>Add custom field</p>
+                            Add custom field
                             <mat-form-field>
                                 <mat-select ngDefaultControl
                                         (selectionChange)="addNewColumn($event)"
@@ -85,7 +85,6 @@
                     [ngClass]="{'status-todo': task?.task?.status === 'to do', 'status-inprogress': task?.task?.status === 'in progress', 'status-done': task?.task?.status === 'done'}"
                     *ngFor="let task of column.tasks; let j = index;">
 
-                    <!-- <div class="media" (click)="openModal(content)"> -->
                     <div class="task_content">
                         <div class="task_title">
                             <app-inline-input
