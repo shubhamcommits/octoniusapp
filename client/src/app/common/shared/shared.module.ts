@@ -60,6 +60,7 @@ import { GroupCreatePostDialogComponent } from './activity-feed/group-postbox/gr
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material';
 import { MomentDateModule } from '@angular/material-moment-adapter';
+import { TruncateTextPipe } from 'src/shared/pipes/truncate-text.pipe';
 
 @NgModule({
   declarations: [
@@ -83,6 +84,7 @@ import { MomentDateModule } from '@angular/material-moment-adapter';
 
     // Safe Pipe
     SafePipe,
+    TruncateTextPipe,
 
     SelectAssigneeComponent,
 

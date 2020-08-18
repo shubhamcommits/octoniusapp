@@ -4,7 +4,7 @@
             (click)="edit(value)"
             (focus)="edit(value);"
             tabindex="0">
-            {{value}}
+            {{value | truncatetext:60}}
         </p>
     </div>
     <div *ngIf="editing">
