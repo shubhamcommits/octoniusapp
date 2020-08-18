@@ -1,14 +1,9 @@
-<button class="btn btn-block task muted" (click)="column.addTask = !column.addTask">
+<button class="btn btn-block task muted" (click)="column.addTask = true" *ngIf="!column.addTask">
    <i class="material-icons-outlined">add</i> New Task
 </button>
 <div class="add-task" *ngIf="column.addTask">
-    <input class="form-control" type="text" placeholder="Enter task title" [(ngModel)]="postTitle" (keyup)="newTask($event, column)">
-    <div class="container">
-        <button class="col-md-4 btn btn-primary" (click)="column.addTask = false; createPost()">
-            Save
-        </button>
-        <button class="col-md-4 btn btn-danger" (click)="column.addTask = false;">
-            Cancel
-        </button>
-    </div>
+    <input class="form-control" type="text" placeholder="Enter task title"
+      [(ngModel)]="postTitle"
+      (keyup.enter)="newTask()"
+      (keyup.esc)="column.addTask = false">
 </div>

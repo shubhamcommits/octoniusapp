@@ -33,15 +33,12 @@ export class NewTaskComponent implements OnInit {
 
   /**
    * This function is responsible for enabling enter and espace function keys
-   * @param $event 
-   * @param column 
+   * @param $event
+   * @param column
    */
-  newTask($event: any, column: any){
-    if($event.keyCode == 13){
-      this.createPost()
-    } else if($event.keyCode == 27){
-      column.addTask = false
-    }
+  newTask(){
+    this.createPost();
+    this.column.addTask = false;
   }
 
   /**
@@ -105,7 +102,7 @@ export class NewTaskComponent implements OnInit {
 
   /**
    * This function is responsible for calling add post service functions
-   * @param postData 
+   * @param postData
    */
   onCreatePost(postData: FormData, post: EventEmitter<any>) {
 
