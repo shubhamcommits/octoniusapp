@@ -15,6 +15,12 @@ input {
     margin-top: -6px;
 }
 
+input.input-date {
+  border: none;
+  background-color: white;
+  width: 100%;
+}
+
 .dropdown-menu{
     padding: 0;
     border:none !important;

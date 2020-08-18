@@ -57,6 +57,9 @@ import { PreviewFilesDialogComponent } from './preview-files-dialog/preview-file
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
 import { InlineInputComponent } from './inline-input/inline-input.component';
 import { GroupCreatePostDialogComponent } from './activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material';
+import { MomentDateModule } from '@angular/material-moment-adapter';
 
 @NgModule({
   declarations: [
@@ -163,7 +166,10 @@ import { GroupCreatePostDialogComponent } from './activity-feed/group-postbox/gr
 
     NgxDocViewerModule,
 
-    MatSelectModule
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MomentDateModule
   ],
   exports: [
     AttachFilesComponent,
