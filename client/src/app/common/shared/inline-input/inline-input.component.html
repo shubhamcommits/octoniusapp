@@ -21,7 +21,7 @@
 
 <div *ngIf="type === 'date'" class="btn-group">
     <!-- Date Picker starts -->
-    <input matInput [matDatepicker]='d' [value]="value" [ngClass]="dateStyleClass" disabled>
+    <input matInput [matDatepicker]='d' (dateChange)="onModelChange($event)" [value]="value" [ngClass]="dateStyleClass" disabled>
     <mat-datepicker-toggle matSuffix [for]="d"></mat-datepicker-toggle>
     <mat-datepicker #d disabled="false"></mat-datepicker>
     <!--Date Picker ends -->
