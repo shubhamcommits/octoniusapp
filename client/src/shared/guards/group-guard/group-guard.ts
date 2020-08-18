@@ -31,7 +31,7 @@ export class GroupGuard implements CanActivate  {
     if (userData._groups.includes(currentGroup)) {
         return true;
     } else {
-        this.router.navigate(['/dashboard/myspace/inbox']);
+        this.router.navigate(['/dashboard/myspace/tasks']);
         return false;
     }
   }
