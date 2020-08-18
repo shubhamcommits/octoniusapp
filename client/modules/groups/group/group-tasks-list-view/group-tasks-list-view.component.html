@@ -60,8 +60,8 @@
         <!-- ALL COLUMN DETAILS STARTS -->
         <div class="list-columns" *ngIf="this.columns">
 
-          <mat-accordion class="list-column" id="column.title" *ngFor="let column of columns; let i = index;" multi>
-            <mat-expansion-panel style="background-color: #fafafa; margin-bottom: 15px; box-shadow: none;">
+          <mat-accordion multi>
+            <mat-expansion-panel class="list-column" style="background-color: #fafafa; box-shadow: none;"  id="column.title" *ngFor="let column of columns; first as isFirst" [expanded]="isFirst" >
               <mat-expansion-panel-header class="column-title">
                 <!-- COLUMN TITLE -->
                 <mat-panel-title>
