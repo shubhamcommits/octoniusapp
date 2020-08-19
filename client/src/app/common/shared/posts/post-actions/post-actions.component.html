@@ -53,7 +53,8 @@
 <section *ngIf="showComments && comments && post && userData && !fullscreen">
     <section *ngFor="let comment of comments; let index = index;">
         <post-comment [comment]="comment" [index]="index" [userData]="userData"
-            [groupId]="post._group || post._group._id" (remove)="removeComment($event)"></post-comment>
+            [groupId]="post._group || post._group._id" (remove)="removeComment($event)">
+        </post-comment>
     </section>
 </section>
 
