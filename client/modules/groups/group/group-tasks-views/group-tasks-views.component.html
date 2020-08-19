@@ -2,6 +2,7 @@
     
         <app-board-bar *ngIf="groupData"
             [groupData]="groupData"
+            [isAdmin]="isAdminUser()"
             (changeViewEmitter)='onChangeViewEmitter($event)'
             (customFieldEmitter)="onCustomFieldEmitter()">
         </app-board-bar>
@@ -20,6 +21,7 @@
             [columns]="columns"
             [tasks]="tasks"
             [customFields]="customFields"
+            [isAdmin]="isAdminUser()"
             (closeModalEvent)="onModalCloseEvent()">
         </app-group-tasks-list-view>
 

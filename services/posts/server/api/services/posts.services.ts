@@ -454,11 +454,11 @@ export class PostService {
           // transform due_to time to UTC
           post.date_due_to = moment.utc(post.date_due_to).format();
 
-          let assignedUsers: any = post._assigned_to
+          let assignedUsers: any = post.event._assigned_to
 
           // Add Event property details
           postData.event = {
-            due_to: post.date_due_to,
+            due_to: post.event.due_to,
             _assigned_to: assignedUsers
           }
 
@@ -663,6 +663,65 @@ export class PostService {
       (
         { _id: postId },
         { $pull: { _liked_by: userId }, $inc: { likes_count: -1 } },
+        { new: true }
+      )
+      .lean();
+
+    // Find the User 
+    const user = await User.findOne
+      (
+        { _id: userId }
+      )
+      .select('first_name last_name');
+
+    // Return the Data
+    return {
+      post,
+      user
+    }
+  }
+
+  /**
+   * This function is used to follow a post
+   * @param { userId, postId }
+   */
+  async follow(userId: string, postId: string) {
+
+    // Find the post and update the _followers array and increment the followers_count
+    const post = await Post.findOneAndUpdate
+      (
+        { _id: postId },
+        { $addToSet: { _followers: userId }, $inc: { followers_count: 1 } },
+        { new: true }
+      )
+      .lean();
+
+    // Find the User 
+    const user = await User.findOne
+      (
+        { _id: userId }
+      )
+      .select('first_name last_name');
+
+    // Return the Data
+    return {
+      post,
+      user
+    }
+  }
+
+
+  /**
+   * This function is used to ununfollow a post
+   * @param { userId, postId }
+   */
+  async unfollow(userId: string, postId: string) {
+
+    // Find the post and update the _followers array and decrement the followers_count
+    const post = await Post.findOneAndUpdate
+      (
+        { _id: postId },
+        { $pull: { _followers: userId }, $inc: { followers_count: -1 } },
         { new: true }
       )
       .lean();

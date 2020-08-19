@@ -1,29 +1,62 @@
 <div class="container">
-    <div class="card-tile">
-        <div class="card-block">
 
-            <!-- Template Heading starts -->
-            <h6 class="card-title"><b>Add new member to your group</b></h6>
-            <!-- Template Heading ends -->
+  <!-- Group presentation -->
+  <div class="card-tile">
+    <div class="card-block">
+        <h6 class="card-title"><b>{{ groupData.group_name }} group</b></h6>
+        {{ groupData.description }}
+    </div>
+  </div>
 
-            <!-- Search member component starts -->
-            <app-component-search-input-box *ngIf="userData && checkDataExist(userData)"
-                [placeholder]="'Search member'"
-                [groupId]="groupId" [workspaceId]="userData._workspace" [userData]="userData" [type]="'group'"
-                (member)="addNewUser($event)">
-            </app-component-search-input-box>
-            <!-- Search member component ends -->
+  <!-- Invite guest -->
+  <app-invite-user *ngIf="groupData && workspaceData"
+    [workspaceData]="workspaceData"
+    [groupData]="groupData">
+  </app-invite-user>
 
-            <hr />
+  <!-- Smart admin content -->
+  <app-group-smart-admin *ngIf="groupData" [group]="groupData">
+  </app-group-smart-admin>
 
+  <!-- Add Users -->
+  <div class="card-tile">
+    <div class="card-block">
+
+        <!-- Template Heading starts -->
+        <h6 class="card-title"><b>Add users</b></h6>
+        <!-- Template Heading ends -->
+
+        <!-- Search member component starts -->
+        <app-component-search-input-box *ngIf="userData && checkDataExist(userData)"
+            [placeholder]="'Search member'"
+            [groupId]="groupId" [workspaceId]="userData._workspace" [userData]="userData" [type]="'group'"
+            (member)="addNewUser($event)">
+        </app-component-search-input-box>
+        <!-- Search member component ends -->
+    </div>
+  </div>
+
+  <!-- Settings -->
+  <div class="card-tile" style="height: 350px;">
+    <div class="card-block" style="float: left;">
+        <h6 class="card-title"><b>Settings</b></h6>
+
+        <div>
+          <p>Shared files with the organization?</p>
+          <mat-slide-toggle color="primary"
+            [checked]="groupData.share_files"
+            [name]="'share_files'"
+            (change)="saveSettings($event)">
+          </mat-slide-toggle>
         </div>
     </div>
 
-    <app-invite-user *ngIf="groupData && workspaceData" [workspaceData]="workspaceData" [groupData]="groupData"></app-invite-user>
+    <img src="assets/images/group_settings_placeholder.svg" alt="Invite a guest" style="float: right;"/>
+  </div>
 
-    <!-- Delete Group Component starts -->
-    <app-delete-group *ngIf="groupId && groupId != null && groupId != undefined" [groupId]="groupId">
-    </app-delete-group>
-    <!-- Delete Group Component ends -->
+  <!-- Delete Group Component starts -->
+  <app-delete-group *ngIf="groupId && groupId != null && groupId != undefined" [groupId]="groupId">
+  </app-delete-group>
+  <!-- Delete Group Component ends -->
 
 </div>

@@ -39,6 +39,15 @@ routes.put('/:workspaceId', workspaceFileHandler, workspaces.updateWorkspace);
 // POST - Invite the user
 routes.post('/invite', workspaces.inviteUser);
 
+// Get all unique email domains that belong within the given workspace that match the query.
+routes.get('/emailDomains/:workspaceId/:query', workspaces.getUniqueEmailDomains);
+
+// Get all unique job positions that belong within the given workspace that match the query.
+routes.get('/jobPositions/:workspaceId/:query', workspaces.getUniqueJobPositions);
+
+// Get all unique skills that belong within the given workspace that match the query.
+routes.get('/skills/:workspaceId/:query', workspaces.getUniqueSkills);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

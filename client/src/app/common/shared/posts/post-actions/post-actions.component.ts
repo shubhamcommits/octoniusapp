@@ -1,5 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, Injector } from '@angular/core';
 import { CommentService } from 'src/shared/services/comment-service/comment.service';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { PublicFunctions } from 'src/app/dashboard/public.functions';
 
 @Component({
   selector: 'app-post-actions',
@@ -9,7 +11,8 @@ import { CommentService } from 'src/shared/services/comment-service/comment.serv
 export class PostActionsComponent implements OnInit {
 
   constructor(
-    private commentService: CommentService
+    private commentService: CommentService,
+    private injector: Injector
   ) { }
 
   // Post Input
@@ -30,7 +33,13 @@ export class PostActionsComponent implements OnInit {
   showCommentQuillEditor = false;
 
   // Comments Array
-  comments: any = []
+  comments: any = [];
+
+  likedByUsers = [];
+  followedByUsers = [];
+
+  // Public Functions class object
+  publicFunctions = new PublicFunctions(this.injector);
 
   // Show Comment Editor
   @Output('showCommentEditor') showCommentEditorEmitter = new EventEmitter()
@@ -38,9 +47,42 @@ export class PostActionsComponent implements OnInit {
   // Comments
   @Output('comments') showCommentsEmitter = new EventEmitter();
 
-  @Output() newCommentEmitter = new EventEmitter
+  @Output() newCommentEmitter = new EventEmitter();
 
-  ngOnInit() {
+  @Output() closeModalEvent = new EventEmitter();
+
+  async ngOnInit() {
+    await this.post._liked_by.forEach(userId => {
+      this.publicFunctions.getOtherUser(userId).then(user => {
+        this.likedByUsers.push(user['first_name'] + ' ' + user['last_name']);
+      });
+    });
+
+    await this.post._followers.forEach(user => {
+      this.followedByUsers.push(user['first_name'] + ' ' + user['last_name']);
+    });
+  }
+
+  onPostLikedEmitter(userId) {
+    this.publicFunctions.getOtherUser(userId).then(user => {
+      this.likedByUsers.push(user['first_name'] + ' ' + user['last_name']);
+    });
+  }
+
+  onPostUnLikedEmitter(user) {
+    const index = this.likedByUsers.findIndex((username: string) => username.toLowerCase() === (user.first_name + ' ' + user.last_name).toLowerCase())
+    this.likedByUsers.splice(index, 1);
+  }
+
+  onPostFollowEmitter(userId) {
+    this.publicFunctions.getOtherUser(userId).then(user => {
+      this.followedByUsers.push(user['first_name'] + ' ' + user['last_name']);
+    });
+  }
+
+  onPostUnFollowEmitter(user) {
+    const index = this.likedByUsers.findIndex((username: string) => username.toLowerCase() === (user.first_name + ' ' + user.last_name).toLowerCase())
+    this.followedByUsers.splice(index, 1);
   }
 
   /**
@@ -96,4 +138,7 @@ export class PostActionsComponent implements OnInit {
     this.comments.splice(index, 1);
   }
 
+  postModalCloseEvent() {
+    this.closeModalEvent.emit();
+  }
 }

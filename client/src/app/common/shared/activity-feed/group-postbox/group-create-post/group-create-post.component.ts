@@ -222,6 +222,10 @@ export class GroupCreatePostComponent implements OnInit {
     this.close.emit()
   }
 
+  postModalCloseEvent() {
+    this.closeModal();
+  }
+
   getMemberDetails(memberMap: any) {
 
     this.member.emit(memberMap)

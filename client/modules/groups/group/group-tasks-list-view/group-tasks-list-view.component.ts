@@ -25,6 +25,8 @@ export class GroupTasksListViewComponent implements OnInit {
   @Input() tasks: any;
   @Input() customFields: any;
 
+  @Input() isAdmin = false;
+
   @Output() closeModalEvent = new EventEmitter();
 
   customFieldsToShow: any[] = [];
@@ -54,10 +56,14 @@ export class GroupTasksListViewComponent implements OnInit {
       public dialog: MatDialog
     ) {}
 
-  ngOnInit() {
-    this.groupService.getGroupCustomFieldsToShow(this.groupId).then((res) => {
+  async ngOnInit() {
+    await this.groupService.getGroupCustomFieldsToShow(this.groupId).then((res) => {
       res['group']['custom_fields_to_show'].forEach(field => {
-        this.customFieldsToShow.push(field);
+        const cf = this.getCustomField(field);
+        // Push the Column
+        if (cf) {
+          this.customFieldsToShow.push(cf);
+        }
       });
     });
   }
@@ -275,10 +281,23 @@ export class GroupTasksListViewComponent implements OnInit {
   }
 
   saveCustomFieldsToShow(fieldName) {
+    const cf = this.getCustomField(fieldName);
     // Push the Column
-    this.customFieldsToShow.push(fieldName);
+    if (cf) {
+      this.customFieldsToShow.push(cf);
+    }
 
-    this.groupService.saveCustomFieldsToShow(this.groupData._id, this.customFieldsToShow);
+    let customFieldsToShowNames = [];
+    this.customFieldsToShow.forEach(cf => {
+      customFieldsToShowNames.push(cf.name);
+    });
+
+    this.groupService.saveCustomFieldsToShow(this.groupData._id, customFieldsToShowNames);
+  }
+
+  getCustomField(fieldName: string) {
+    const index = this.customFields.findIndex((f: any) => f.name === fieldName);
+    return this.customFields[index];
   }
 
   removeColumn(field: any) {
@@ -291,7 +310,7 @@ export class GroupTasksListViewComponent implements OnInit {
 
   customFieldValues(fieldName: string) {
     const index = this.groupData.custom_fields.findIndex((field: any) => field.name === fieldName);
-    return this.groupData.custom_fields[index].values;
+    return (this.groupData.custom_fields[index]) ? this.groupData.custom_fields[index].values : '';
   }
 
   fieldUpdated(post, task) {

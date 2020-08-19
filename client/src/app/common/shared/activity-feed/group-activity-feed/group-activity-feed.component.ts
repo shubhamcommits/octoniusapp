@@ -47,13 +47,9 @@ export class GroupActivityFeedComponent implements OnInit {
 
         this.moreToLoad = true
 
-        await this.ngOnInit()
-
-        // console.log(this.groupId, this.myWorkplace, this.globalFeed)
-
+        await this.ngOnInit();
       }
-    }))
-
+    }));
   }
 
   // Fetch groupId from router snapshot or as an input parameter
@@ -134,6 +130,24 @@ export class GroupActivityFeedComponent implements OnInit {
     // Fetch the first 5 posts from the server
     await this.fetchPosts(this.groupId)
 
+    if (this._router.routerState.snapshot.root.queryParamMap.has('postId')) {
+      const postId = this._router.routerState.snapshot.root.queryParamMap.get('postId');
+      const post = await this.publicFunctions.getPost(postId);
+      let dialogRef;
+      if (post['type'] === 'task') {
+        dialogRef = this.utilityService.openCreatePostFullscreenModal(post, this.userData, this.groupId, await this.publicFunctions.getAllColumns(this.groupId));
+      } else {
+        dialogRef = this.utilityService.openCreatePostFullscreenModal(post, this.userData, this.groupId);
+      }
+
+      const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
+        this.editedPost(post);
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        closeEventSubs.unsubscribe();
+      });
+    }
+
     // Return the function via stopping the loader
     return this.isLoading$.next(false);
 
@@ -175,10 +189,7 @@ export class GroupActivityFeedComponent implements OnInit {
         // Show new posts
         // if(post.group === this.groupId)
           this.showNewPosts = true;
-
-        // Console the newly added post in group
-        console.log(post)
-      })
+      });
   }
 
   /**
@@ -265,8 +276,8 @@ export class GroupActivityFeedComponent implements OnInit {
       })
   }
 
-  editedPost(event: any){
-    console.log(event);
+  editedPost(event: any) {
+    // TODO when closing the fullscreen dialog, it is not updating the information in the screen
     this.posts.set(event._id, event);
   }
 

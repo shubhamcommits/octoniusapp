@@ -16,6 +16,8 @@ export class BoardBarComponent implements OnInit {
   // GroupData Variable
   @Input() groupData: any;
 
+  @Input() isAdmin = false;
+
   // Emitter to notify that the view is changing
   @Output() changeViewEmitter: EventEmitter<string> = new EventEmitter<string>();
 
