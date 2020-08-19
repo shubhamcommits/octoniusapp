@@ -34,5 +34,5 @@
 </span>
 
 <ng-template #content let-modal>
-    <app-group-create-post [post]="post" [edit]="true" [userData]="userData" [type]="post.type" [groupId]="post._group" (close)="closeModal()"></app-group-create-post>
+    <app-group-create-post [post]="post" [edit]="true" [userData]="userData" [type]="post.type" [groupId]="post._group._id" (close)="closeModal()"></app-group-create-post>
 </ng-template>
