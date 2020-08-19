@@ -40,7 +40,7 @@
         <!-- Comment Content starts -->
         <div class="col-md-12 innercard " *ngIf="!displayCommentEditor">
             <app-quill-editor *ngIf="comment.content" [editorId]="('comment_view_'+ index + comment?._id) || 'editor'"
-                [toolbar]="false" [readOnly]="true" [contents]="comment.content">
+                [toolbar]="false" [readOnly]="true" [groupId]="groupId" [contents]="comment.content">
             </app-quill-editor>
         </div>
         <!-- Comment Content ends -->
