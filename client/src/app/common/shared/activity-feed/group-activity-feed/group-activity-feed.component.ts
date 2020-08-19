@@ -242,7 +242,7 @@ export class GroupActivityFeedComponent implements OnInit {
 
   /**
    * This function is responsible for emitting the post object to other components
-   * @param post 
+   * @param post
    */
   getPost(post: any) {
 
@@ -255,7 +255,7 @@ export class GroupActivityFeedComponent implements OnInit {
 
   /**
    * This function removes the post from the posts Map
-   * @param post 
+   * @param post
    */
   deletePost(post: any) {
 
@@ -306,8 +306,8 @@ export class GroupActivityFeedComponent implements OnInit {
 
   /**
    * This function fetches the set of posts for the activity
-   * @param groupId 
-   * @param lastPostId 
+   * @param groupId
+   * @param lastPostId
    */
   async fetchPosts(groupId?: string, lastPostId?: string) {
 
@@ -329,21 +329,16 @@ export class GroupActivityFeedComponent implements OnInit {
     }
 
     // If post has no content, then set the moreToLoad to false
-    if (posts.length == 0) {
+    if (posts.length === 0) {
       this.moreToLoad = false
     }
 
     // Else if moreToLoad is true
     if (this.moreToLoad) {
-
-
-      // Set the value of posts into the map
-      // posts.forEach((post: any) => {
-      //   this.posts.set(post._id, post);
-      // })
-
-      for (let post of posts){
-        this.posts.set(post._id, post);
+      if (posts) {
+        for (let post of posts){
+          this.posts.set(post._id, post);
+        }
       }
 
       // Calculate the lastPostId from the currently fetched posts
@@ -378,8 +373,8 @@ export class GroupActivityFeedComponent implements OnInit {
   /**
    * This function is responsible for sorting the map into reverse order,
    * It compares the integer key and sorts them in descedning order aka most recent first in the activity
-   * @param a 
-   * @param b 
+   * @param a
+   * @param b
    */
   compare(a: any, b: any) {
     return parseInt(a.key, 20) > parseInt(b.key, 20) ? -1 :

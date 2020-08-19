@@ -119,9 +119,11 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
      */
     this.customFields = [];
     await this.groupService.getGroupCustomFields(this.groupId).then((res) => {
-      res['group']['custom_fields'].forEach(field => {
-        this.customFields.push(field);
-      });
+      if (res['group']['custom_fields']) {
+        res['group']['custom_fields'].forEach(field => {
+          this.customFields.push(field);
+        });
+      }
     });
 
     if (this._router.routerState.snapshot.root.queryParamMap.has('postId')) {
