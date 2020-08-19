@@ -46,14 +46,14 @@
 </div>
 
 <comment-section *ngIf="showCommentQuillEditor && userData && post" [userData]="userData" [editorId]="post._id" [postId]="post?._id"
-    [groupId]="post._group || post._group._id" (comment)="newComment($event)" (close)="hideCommentEditor($event)">
+    [groupId]="post._group._id || post._group._id" (comment)="newComment($event)" (close)="hideCommentEditor($event)">
 </comment-section>
 
 
 <section *ngIf="showComments && comments && post && userData && !fullscreen">
     <section *ngFor="let comment of comments; let index = index;">
         <post-comment [comment]="comment" [index]="index" [userData]="userData"
-            [groupId]="post._group || post._group._id" (remove)="removeComment($event)"></post-comment>
+            [groupId]="post._group._id || post._group._id" (remove)="removeComment($event)"></post-comment>
     </section>
 </section>
 
