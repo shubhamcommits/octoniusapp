@@ -329,16 +329,15 @@ export class GroupActivityFeedComponent implements OnInit {
     }
 
     // If post has no content, then set the moreToLoad to false
-    if (posts.length === 0) {
+    // I had to add the "|| posts.value" because when posts is empty sometimes the service is returning a none array element.
+    if (posts.length === 0 || posts.value) {
       this.moreToLoad = false
     }
 
     // Else if moreToLoad is true
     if (this.moreToLoad) {
-      if (posts) {
-        for (let post of posts){
-          this.posts.set(post._id, post);
-        }
+      for (let post of posts){
+        this.posts.set(post._id, post);
       }
 
       // Calculate the lastPostId from the currently fetched posts
