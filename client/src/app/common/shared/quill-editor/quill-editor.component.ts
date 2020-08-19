@@ -207,6 +207,12 @@ export class QuillEditorComponent implements OnInit {
    * This function returns the mention module
    */
   metionModule() {
+
+    // Check if groupId is object to take id... 
+    // In some places in code it is sending object, in other it is sending _id... needs refactoring
+    if (typeof this.groupId === 'object' && this.groupId !== null){
+      this.groupId = this.groupId._id;
+    }
     return {
       allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
       mentionDenotationChars: ["@", "#"],
