@@ -22,18 +22,24 @@ export class ConnectGoogleCloudComponent implements OnInit {
     this.googleService.refreshGoogleToken().then(() => {
         // refresh the token and initialism the google user-data if google-cloud is already stored
         if (localStorage.getItem('google-cloud') != null) {
-          this.googleAuthSuccessful = true;
+          this.changeGoogleAuth(true);
           // we have set a time-interval of 30mins so as to refresh the access_token in the group
           setInterval(() => {
             this.googleService.refreshGoogleToken();
-            this.googleAuthSuccessful = true;
+            this.changeGoogleAuth(true);
           }, 1800000);
         } else {
-          this.googleAuthSuccessful = false;
+          this.changeGoogleAuth(false);
         }
     }).catch(() => {
       console.log('You haven\'t connected your google cloud yet');
     });
+
+    this.googleService.googleAuthSuccessful.subscribe(auth => this.googleAuthSuccessful = auth);
+  }
+
+  changeGoogleAuth(auth: boolean) {
+    this.googleService.changeGoogleAuth(auth);
   }
 
   /**
@@ -46,7 +52,6 @@ export class ConnectGoogleCloudComponent implements OnInit {
    */
   handleAuthResult( authResult: any ) {
     return new Promise((resolve, reject) => {
-      console.log('Auth Results', authResult);
       if (authResult && !authResult.error) {
         if (authResult.access_token) {
           const getRefreshToken = new XMLHttpRequest();
@@ -94,7 +99,6 @@ export class ConnectGoogleCloudComponent implements OnInit {
 
               getUserAPI.onload = () => {
                 if (getUserAPI.status === 200) {
-                  console.log(JSON.parse(getUserAPI.responseText));
                   const googleCloud = {
                     'user_data': JSON.parse(getUserAPI.responseText),
                     'refresh_token': JSON.parse(getRefreshToken.responseText).refresh_token
@@ -125,8 +129,9 @@ export class ConnectGoogleCloudComponent implements OnInit {
         'grant_type': 'authorization_code'
       }, this.handleAuthResult)
       .then((res: any) => {
-        console.log(res);
-        // TODO we need to change this in order to reload the specific components when google is connected.
+        this.changeGoogleAuth(true);
+      }).catch((error: any) => {
+        this.changeGoogleAuth(false);
       });
   }
 

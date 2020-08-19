@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
+import { BehaviorSubject } from 'rxjs';
 
 // Google APIs varibale
 declare var gapi: any;
@@ -12,13 +13,22 @@ declare var gapi: any;
 
 export class GoogleCloudService {
 
+  private googleAuthSuccessfulBehavior = new BehaviorSubject(false);
+  googleAuthSuccessful = this.googleAuthSuccessfulBehavior.asObservable();
+
   pickerApiLoaded = false;
   googleToken: any;
   BASE_API_URL = environment.USER_BASE_API_URL;
 
   constructor(private _http: HttpClient) {
     this.loadGoogleDrivePicker();
-   }
+  }
+
+  changeGoogleAuth(auth: boolean) {
+    this.googleAuthSuccessfulBehavior.next(auth);
+    console.log(this.googleAuthSuccessfulBehavior);
+    console.log(this.googleAuthSuccessful);
+  }
 
   onPickerApiLoad() {
     this.pickerApiLoaded = true;
