@@ -58,13 +58,15 @@ export class GroupTasksListViewComponent implements OnInit {
 
   async ngOnInit() {
     await this.groupService.getGroupCustomFieldsToShow(this.groupId).then((res) => {
-      res['group']['custom_fields_to_show'].forEach(field => {
-        const cf = this.getCustomField(field);
-        // Push the Column
-        if (cf) {
-          this.customFieldsToShow.push(cf);
-        }
-      });
+      if (res['group']['custom_fields_to_show']) {
+        res['group']['custom_fields_to_show'].forEach(field => {
+          const cf = this.getCustomField(field);
+          // Push the Column
+          if (cf) {
+            this.customFieldsToShow.push(cf);
+          }
+        });
+      }
     });
   }
 
@@ -124,7 +126,7 @@ export class GroupTasksListViewComponent implements OnInit {
    */
   openFullscreenModal(postData: any): void {
     const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, this.groupId, this.columns);
-    
+
     const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
       this.closeModalEvent.emit();
     });
@@ -135,8 +137,8 @@ export class GroupTasksListViewComponent implements OnInit {
 
   /**
    * This function updates the status on the UI
-   * @param task 
-   * @param status 
+   * @param task
+   * @param status
    */
   changeStatus(task: any, status: any) {
 
