@@ -60,13 +60,15 @@ export class GroupTasksListViewComponent implements OnInit {
 
   async ngOnInit() {
     await this.groupService.getGroupCustomFieldsToShow(this.groupId).then((res) => {
-      res['group']['custom_fields_to_show'].forEach(field => {
-        const cf = this.getCustomField(field);
-        // Push the Column
-        if (cf) {
-          this.customFieldsToShow.push(cf);
-        }
-      });
+      if (res['group']['custom_fields_to_show']) {
+        res['group']['custom_fields_to_show'].forEach(field => {
+          const cf = this.getCustomField(field);
+          // Push the Column
+          if (cf) {
+            this.customFieldsToShow.push(cf);
+          }
+        });
+      }
     });
   }
 
