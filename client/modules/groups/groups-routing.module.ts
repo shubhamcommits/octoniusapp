@@ -17,7 +17,6 @@ import { GroupKanbanBoardsComponent } from './group/group-kanban-boards/group-ka
 import { GroupMembersComponent } from './group/group-members/group-members.component';
 import { GroupPostComponent } from './group/group-post/group-post.component';
 import { GroupTasksViewsComponent } from './group/group-tasks-views/group-tasks-views.component';
-import { GroupGuard } from 'src/shared/guards/group-guard/group-guard';
 
 
 /**
@@ -67,8 +66,7 @@ const routes: Routes = [
       // Group Post View
       { path: 'post/:postId', component: GroupPostComponent },
     ],
-    runGuardsAndResolvers: `always`,
-    canActivate: [GroupGuard]
+    runGuardsAndResolvers: `always`
   }
 ];
 
