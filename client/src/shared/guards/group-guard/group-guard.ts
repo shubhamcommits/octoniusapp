@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import {
   CanActivate,
   Router,
@@ -8,6 +8,8 @@ import {
 } from '@angular/router';
 import { Observable } from 'rxjs/internal/Observable';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
+import { UserService } from 'src/shared/services/user-service/user.service';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -15,24 +17,26 @@ import { StorageService } from 'src/shared/services/storage-service/storage.serv
 export class GroupGuard implements CanActivate  {
   constructor(
     private storageService: StorageService,
+    private userService: UserService,
     private router: Router
   ) {}
-
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ):
-    | Observable<boolean | UrlTree>
-    | Promise<boolean | UrlTree>
-    | boolean
-    | UrlTree {
+  ): Observable<boolean> {
     const currentGroup = state.root.queryParamMap.get('group');
-    const userData = this.storageService.getLocalData('userData');
-    if (userData._groups.includes(currentGroup)) {
-        return true;
-    } else {
-        this.router.navigate(['dashboard', 'myspace', 'inbox']);
-        return false;
-    }
+    return this.checkUserGroups(currentGroup);
+  }
+
+  checkUserGroups(currentGroup): Observable<boolean> {
+    return this.userService.getUser().pipe(map((res) => {
+      if ((res.user._groups !== undefined && res.user._groups.includes(currentGroup)) ||
+          (res.user._private_groups !== undefined && res.user._private_groups.includes(currentGroup))) {
+          return true;
+      } else {
+          this.router.navigate(['dashboard', 'myspace', 'inbox']);
+          return false;
+      }
+    }));
   }
 }
