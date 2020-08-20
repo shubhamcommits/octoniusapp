@@ -135,6 +135,37 @@ services:
     networks:
       - production
       
+  search-server:
+    container_name: search-server
+    image: octoniusapp/octonius:search-server
+    ports:
+      - 12000:12000
+    restart: always
+    volumes:
+      - /usr/app/node_modules
+      - production_search_uploads_data:/usr/app/uploads
+    environment:
+      - NODE_ENV=production
+      - PORT=12000
+      - HOST=0.0.0.0
+      - JWT_KEY=asfsaf12safas23fsafa12sf
+      - dbURL=mongodb://mongodb:27017/octonius
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - SENDGRID_KEY=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
+      - SK_STRIPE=sk_live_WupyMoQf93S59gwTqmYpmWel
+      - stripe_plan=plan_EK1rDLfKr9NRkU
+      - WEBHOOK_PS_SECRET=whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn
+      - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
+      - PROTOCOL=https
+      - DOMAIN=workplace.octonius.com
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
+    networks:
+      - production
+      
   users-server:
     container_name: users-server
     image: octoniusapp/octonius:users-server
@@ -287,38 +318,6 @@ services:
       - mongodb
     networks:
       - production
-
-  query-server:
-    container_name: query-server
-    image: octoniusapp/octonius:query-server
-    ports: 
-      - 12000:8080
-    restart: always
-    volumes:
-      - production_solr_data:/data/query-service-app
-    environment:
-      WAIT_HOST: solr-octonius
-      WAIT_PORT: '8983'
-      JAVA_OPTS: -Xmx512m
-      APPLICATION_CONFIG_SOLR_CLIENT_URL: 'http://solr-octonius:8983/solr'
-    links:
-      - solr-octonius:solr-octonius
-    networks:
-      - production
-  
-  solr-octonius:
-    image: solr:7.7.1
-    container_name: solr-octonius
-    command: solr-precreate octonius
-    ports:
-      - 13000:8983
-    environment:
-      - SOLR_JAVA_MEM=-Xms256m -Xmx256m -XX:MaxRAM=1024m
-    volumes:
-      - ${PWD}/solr/configsets:/opt/solr/server/solr/configsets
-      - production_solr_data:/data/query-service-app
-    networks:
-      - production
       
   client:
     container_name: client
@@ -335,6 +334,7 @@ services:
       - notifications-server
       - utilities-server
       - folio-server
+      - search-server
     networks:
       - production
 
@@ -354,8 +354,7 @@ services:
       - notifications-server
       - utilities-server
       - folio-server
-      - query-server
-      - solr-octonius
+      - search-server
       - client
     networks:
       - production
@@ -401,13 +400,6 @@ volumes:
     driver_opts:
       type: none
       device: ${PWD}/data/uploads/utilities
-      o: bind
-
-  production_solr_data:
-    driver: local
-    driver_opts:
-      type: none
-      device: ${PWD}/data/solr
       o: bind
       
 networks:

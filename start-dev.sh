@@ -36,7 +36,7 @@ fi
     cd services
 
     # Define the service Directory array
-    serviceArray=( 'mailing/server' 'authentication/server' 'groups/server' 'workspaces/server' 'users/server' 'posts/server' 'notifications/server' 'utilities/server' 'folio/server' 'client' )
+    serviceArray=( 'mailing/server' 'authentication/server' 'groups/server' 'workspaces/server' 'search/server' 'users/server' 'posts/server' 'notifications/server' 'utilities/server' 'folio/server' 'client' )
 
     # Loop through all the directories and install the packages 
     for i in "${serviceArray[@]}"
@@ -79,8 +79,3 @@ fi
         # Go back to main working directory(i.e. - services/)
         cd -
     done
-
-    # cd services/query-service
-    # docker-compose up > /dev/null &
-
-    # echo -e "\n \t Query Service has been started successfully!"  

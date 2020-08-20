@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-search-results',
@@ -23,7 +24,7 @@ export class SearchResultsComponent implements OnInit {
     // Fetch the changed contents
     let changedContent = changes.data.currentValue.content
 
-    // Add the data content 
+    // Add the data content
     this.data.content = changedContent
 
     // Create an empyt cfg object
@@ -42,4 +43,16 @@ export class SearchResultsComponent implements OnInit {
     }
   }
 
+  generatePostURL(post) {
+    const group = (post._group._id) ? post._group._id : post._group;
+    if (post.type === 'task') {
+      return environment.clientUrl + '/#/dashboard/work/groups/tasks?group=' + group + '&myWorkplace=false&postId=' + post._id;
+    } else {
+      return environment.clientUrl + '/#/dashboard/work/groups/activity?group=' + group + '&myWorkplace=false&postId=' + post._id;
+    }
+  }
+
+  generateUserURL(userId) {
+    return environment.clientUrl + '/#/dashboard/user/profile?userId=' + userId;
+  }
 }

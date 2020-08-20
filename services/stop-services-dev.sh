@@ -3,7 +3,7 @@
 # Octonius development server
 
 # Define the service Directory array
-serviceArray=( 'mailing-server' 'auths-server' 'groups-server' 'workspaces-server' 'users-server' 'utilities-server' 'notifications-server' 'posts-server' )
+serviceArray=( 'mailing-server' 'auths-server' 'groups-server' 'workspaces-server' 'search-server' 'users-server' 'utilities-server' 'notifications-server' 'posts-server' )
 
 # Loop through all the directories and install the packages 
 for i in "${serviceArray[@]}"

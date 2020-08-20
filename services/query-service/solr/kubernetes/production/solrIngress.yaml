@@ -1,8 +1,0 @@
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: solr-production-v1-ingress
-spec:
-  backend:
-    serviceName: solr-production-v1
-    servicePort: 8983
