@@ -1,0 +1,14 @@
+<div class="board-section">
+    <button class="btn create-section"
+      *ngIf="!this.showCreateSection"
+      (click)="this.showCreateSection = !this.showCreateSection">
+        + ADD NEW SECTION
+    </button>
+
+    <div class="add-section" *ngIf="this.showCreateSection">
+        <input class="form-control" type="text" placeholder="Section name"
+          [(ngModel)]="newSection"
+          (keyup.enter)="this.showCreateSection = !this.showCreateSection; openCreateSection()"
+          (keyup.esc)="this.showCreateSection = !this.showCreateSection">
+    </div>
+</div>

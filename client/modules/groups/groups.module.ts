@@ -77,6 +77,7 @@ import { CustomFieldsDialogComponent } from './group/custom-fields-dialog/custom
 import { GroupSmartAdminComponent } from './group/group-admin/group-smart-admin/group-smart-admin.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { CreateSectionComponent } from './group/group-tasks-list-view/create-section/create-section.component';
 
 
 /**
@@ -147,6 +148,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
     GroupTasksListViewComponent,
 
     CreateColumnComponent,
+    CreateSectionComponent,
 
     BoardBarComponent,
 

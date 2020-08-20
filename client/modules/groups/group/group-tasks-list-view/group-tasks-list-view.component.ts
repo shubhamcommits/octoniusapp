@@ -8,6 +8,7 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { MatDialog, MatAccordion } from '@angular/material';
 import { GroupCreatePostDialogComponent } from 'src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component';
+import { ColumnService } from 'src/shared/services/column-service/column.service';
 
 @Component({
   selector: 'app-group-tasks-list-view',
@@ -282,6 +283,61 @@ export class GroupTasksListViewComponent implements OnInit {
       this.saveCustomFieldsToShow(this.newColumnSelected.name);
       this.newColumnSelected = null;
     }
+  }
+
+  /**
+   * This function recieves the output from the other component for creating column
+   * @param column
+   */
+  addSection(column: any) {
+
+    // Find the index of the column to check if the same named column exist or not
+    let index = this.columns.findIndex((col: any) => col.title.toLowerCase() === column.title.toLowerCase())
+
+    // If index is found, then throw error notification
+    if (index != -1) {
+      this.utilityService.warningNotification('Column with the same title aready exist, please try with different name!')
+    }
+
+    // If not found, then push the element
+    else {
+
+      // Create the Column asynchronously
+      this.createNewSection(this.groupId, column.title)
+
+      // Assign the tasks to be []
+      column.tasks = []
+
+      // Push the Column
+      this.columns.push(column)
+    }
+
+  }
+
+  /**
+   * This function creates a new column and add it to the current column array
+   * @param groupId = this.groupId
+   * @param columnName
+   * Makes a HTTP Post request
+   */
+  createNewSection(groupId: string, columnName: string) {
+
+    // Column Service Instance
+    let columnService = this.injector.get(ColumnService)
+
+    // Utility Service Instance
+    let utilityService = this.injector.get(UtilityService)
+
+    // Call the HTTP Service function
+    utilityService.asyncNotification('Please wait we are creating a new column...', new Promise((resolve, reject) => {
+      columnService.addColumn(groupId, columnName)
+        .then((res) => {
+          resolve(utilityService.resolveAsyncPromise('New Column Created!'));
+        })
+        .catch((err) => {
+          reject(utilityService.rejectAsyncPromise('Unable to create the column at the moment, please try again!'))
+        })
+    }))
   }
 
   saveCustomFieldsToShow(fieldName) {
