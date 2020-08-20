@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { NavbarComponent } from '../common/navbar/navbar.component';
 import { AdminGuard } from 'src/shared/guards/admin-guard/admin.guard';
-import { GroupGuard } from 'src/shared/guards/group-guard/group-guard';
 
 const routes: Routes = [
   {
@@ -22,8 +21,7 @@ const routes: Routes = [
           .then((module) => module.WorkModule),
           data: {
             preload: false
-          },
-        canActivate: [GroupGuard],
+          }
       },
       {
         path: 'myspace',
