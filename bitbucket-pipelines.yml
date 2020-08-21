@@ -6,6 +6,15 @@ options:
 pipelines:
   branches:
     "{master}":
+    - step:
+       name: Deploy to production
+       deployment: production
+       script:
+         - pipe: atlassian/ssh-run:0.2.2
+           variables:
+             SSH_USER: 'ubuntu'
+             SERVER: '86.120.164.146'
+             COMMAND: 'ls'    
     # - step:
     #     name: Deploy to dockerhub
     #     services:
@@ -65,19 +74,19 @@ pipelines:
     #       - docker push $SEARCH_IMAGE_NAME
     #       - docker push $NGINX_IMAGE_NAME
 
-    - step:
-        name: Deploy to Server
-        image: ubuntu:latest
-        deployment: staging
-        script:
-          - apt-get update && apt-get install -y sshpass
-          - echo $HOST_PASSWORD
-          # - sshpass -p $HOST_PASSWORD ssh -tt $HOST_ADDRESS "cd /home/ubuntu/octonius; echo $HOST_PASSWORD | sudo -S ./deploy-swarm.sh"
-          - sshpass -p $HOST_PASSWORD ssh -t -t $HOST_ADDRESS 'bash -s' <<< ls
-          # - sshpass -e ssh $HOST_ADDRESS < 'EOF'
-          # - su -
-          # - echo "test"
-          # - EOF
+    # - step:
+    #     name: Deploy to Server
+    #     image: ubuntu:latest
+    #     deployment: staging
+    #     script:
+    #       - apt-get update && apt-get install -y sshpass
+    #       - echo $HOST_PASSWORD
+    #       # - sshpass -p $HOST_PASSWORD ssh -tt $HOST_ADDRESS "cd /home/ubuntu/octonius; echo $HOST_PASSWORD | sudo -S ./deploy-swarm.sh"
+    #       - sshpass -p $HOST_PASSWORD ssh -t -t $HOST_ADDRESS 'bash -s' <<< ls
+    #       # - sshpass -e ssh $HOST_ADDRESS < 'EOF'
+    #       # - su -
+    #       # - echo "test"
+    #       # - EOF
     
     "{staging}":
     # - step:
