@@ -401,6 +401,13 @@ volumes:
       type: none
       device: ${PWD}/data/uploads/utilities
       o: bind
+
+  production_search_uploads_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/uploads/search
+      o: bind
       
 networks:
   production: 
