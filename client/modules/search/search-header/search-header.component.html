@@ -13,7 +13,7 @@
           (click)="selected=user; selectedType='user'" class="octo-search-results">{{ user.first_name }} {{ user.last_name }}</a>
       <p *ngIf="searchedFiles.length>0" class="octo-search-category">FILES</p>
       <a *ngFor="let file of searchedFiles" href="#" onclick="return false"
-          (click)="selected=file; selectedType='file'" class="octo-search-results">{{ file.originalFileName }}</a>
+          (click)="selected=file; selectedType='file'" class="octo-search-results">{{ file.original_name }}</a>
     </div>
     <div class="col-md-8">
         <app-search-results *ngIf="selected" [data]="selected" [type]='selectedType'></app-search-results>

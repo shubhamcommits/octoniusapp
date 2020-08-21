@@ -1,8 +1,8 @@
-import { Auth } from './auth.model';
-import { Group } from './group.model';
 import { Post } from './post.model';
 import { User } from './user.model';
-import { Comment } from './comment.model';
+import { File } from './file.model';
+
+import { Auth } from './auth.model';
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -10,18 +10,15 @@ import { Comment } from './comment.model';
  * */
 export {
 
-    // AUTH
-    Auth as Auth,
-
-    // GROUP
-    Group as Group,
-
     // POST
     Post as Post,
 
     // USER
     User as User,
 
-    // COMMENT
-    Comment as Comment
+    // File
+    File as File,
+
+    // AUTH
+    Auth as Auth
 };

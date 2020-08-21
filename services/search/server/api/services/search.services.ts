@@ -1,4 +1,4 @@
-import { Post, User } from '../models';
+import { Post, User, File } from '../models';
 import { sendErr } from '../utils/sendError';
 
 /*  ===============================
@@ -20,33 +20,11 @@ export class SearchService {
       switch (req.params.filter) {
         case 'posts':
           return this.createPostQuery(user['_groups'], req.params.query);
-          /*
-          postQuery = this.createPostQuery(user['_groups'], req.params.query);
-          let morePostsToLoad = false;
-          const posts = await postQuery.skip(parseInt(amountLoaded, 10) || 0).limit(11).exec();
-          if (posts.length === 11) {
-            posts.pop();
-            morePostsToLoad = true;
-          }
-
-          return { results: posts, moreToLoad: morePostsToLoad };
-          */
         case 'users':
           return this.createUserQuery(user, req.params.query);
-          /*
-          userQuery = this.createUserQuery(user, req.params.query);
-          let moreUsersToLoad = false;
-          let users = await userQuery.skip(parseInt(amountLoaded, 10) || 0).limit(11).exec();
-          if (users.length === 11) {
-            users.pop();
-            moreUsersToLoad = true;
-          }
-
-          // Filter out the current user from the results
-          users = users.filter(user => user._id.toString() !== req.userId.toString());
-
-          return { results: users, moreToLoad: moreUsersToLoad };
-          */
+        case 'files':
+          return this.createFilesQuery(user['_groups'], req.params.query);
+        /*
         case 'skills':
           skillsQuery = this.createSkillsQuery(user, req.params.query);
           let moreSkillsToLoad = false;
@@ -70,7 +48,6 @@ export class SearchService {
           }
 
           return { results: tags, moreToLoad: moreTagsToLoad };
-        /*
         case 'all':
           postQuery = this.createPostQuery(user['_groups'], req.params.query);
           skillsQuery = this.createSkillsQuery(user, req.params.query);
@@ -150,11 +127,25 @@ export class SearchService {
             { bio: { $regex: query, $options: 'i' } },
             { company_name: { $regex: query, $options: 'i' } },
             { phone_number: { $regex: query, $options: 'i' } },
-            { role: { $regex: query, $options: 'i' } },
+            { role: { $regex: query, $options: 'i' } }
           ]
         }
       ]
     });
+  }
+
+  async createFilesQuery(userGroups, query) {
+    return File.find({
+      $and: [
+        { _group: { $in: userGroups } },
+        {
+          $or: [
+            { original_name: { $regex: query, $options: 'i' } },
+            { modified_name: { $regex: query, $options: 'i' } }
+          ]
+        }
+      ]
+    }).sort({ created_date: -1 });
   }
 
   async createSkillsQuery(user, query) {

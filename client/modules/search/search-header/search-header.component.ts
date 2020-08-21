@@ -29,10 +29,11 @@ export class SearchHeaderComponent implements OnInit {
     private injector: Injector
   ) { }
 
-  publicFunction = new PublicFunctions(this.injector);
+  // Public Functions Object
+  public publicFunctions = new PublicFunctions(this.injector);
 
   async ngOnInit() {
-    await this.publicFunction.getCurrentUser().then((res)=>{
+    await this.publicFunctions.getCurrentUser().then((res)=>{
       this.workplaceId = res.workspace_name
     });
   }
@@ -55,7 +56,7 @@ export class SearchHeaderComponent implements OnInit {
 
     this.searchPosts(this.searchQuery);
     this.searchUsers(this.searchQuery);
-
+    this.searchFiles(this.searchQuery);
     // this.createPostQuery()
     // this.createUserQuery();
     // this.createFileQuery();
@@ -117,17 +118,25 @@ export class SearchHeaderComponent implements OnInit {
 
    /**
     * File Query Starts
-    *
+    */
    searchFiles(fileQuery){
     try {
       new Promise((resolve, reject)=>{
-        this.searchService.searchFileByQuery(fileQuery).then((res: any)=>{
-          if (res.content.length > 0){
-            for (let file of res.content){
-              var found = false;
-              for (let item of this.searchedFiles) if (item.id == file.id) {found = true; break;}
-              if (found == false)this.searchedFiles.push(file);
-            }
+        this.searchService.getSearchResults(fileQuery, 'files').then((res: any)=>{
+          if (res.results.length > 0){
+            const result = res.results.filter((restult) => this.searchedFiles.every((file) => file._id !== restult._id));
+            result.forEach(file => {
+
+              this.publicFunctions.getOtherUser(file._posted_by).then((user) => {
+                file['postedBy'] = user['first_name'] + ' ' + user['last_name'];
+              });
+
+              this.publicFunctions.getGroupDetails(file._group).then((group) => {
+                file['groupName'] = group['group_name'];
+              });
+
+              this.searchedFiles.push(file);
+            });
           }
           resolve();
         }).catch((err)=>{
