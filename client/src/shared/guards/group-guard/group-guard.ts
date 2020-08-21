@@ -32,9 +32,6 @@ export class GroupGuard implements CanActivate  {
 
   checkUserGroups(currentGroup, myWorkplace): Observable<boolean> {
     return this.userService.getUser().pipe(map((res) => {
-      if (myWorkplace === true) {
-        return true;
-      }
       if (res.user._groups.includes(currentGroup) || res.user._private_group.includes(currentGroup)) {
           return true;
       } else {
