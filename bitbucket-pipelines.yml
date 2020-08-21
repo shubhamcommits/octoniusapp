@@ -5,101 +5,76 @@ options:
 
 pipelines:
   branches:
-    "{master}":
+    "{master}":  
     - step:
-       name: Deploy to production
-       deployment: production
+        name: Deploy to dockerhub
+        services:
+          - docker
+
+        # can be test, staging or production.
+        deployment: production
+        script: 
+        
+          # Modify the commands below to build your repository.
+          
+          # Set $DOCKER_HUB_USERNAME and $DOCKER_HUB_PASSWORD as environment variables in repository settings
+          - export CLIENT_IMAGE_NAME=octoniusapp/octonius:client
+          - export MAILS_IMAGE_NAME=octoniusapp/octonius:mailing-server
+          - export AUTHS_IMAGE_NAME=octoniusapp/octonius:auths-server
+          - export GROUPS_IMAGE_NAME=octoniusapp/octonius:groups-server
+          - export WORKSPACES_IMAGE_NAME=octoniusapp/octonius:workspaces-server
+          - export USERS_IMAGE_NAME=octoniusapp/octonius:users-server
+          - export POSTS_IMAGE_NAME=octoniusapp/octonius:posts-server
+          - export NOTIFICATIONS_IMAGE_NAME=octoniusapp/octonius:notifications-server
+          - export UTILITIES_IMAGE_NAME=octoniusapp/octonius:utilities-server
+          - export FOLIO_IMAGE_NAME=octoniusapp/octonius:folio-server
+          - export SEARCH_IMAGE_NAME=octoniusapp/octonius:search-server
+          - export NGINX_IMAGE_NAME=octoniusapp/octonius:nginx
+
+          # build the Docker image (this will use the Dockerfile in the root of the repo)
+          - docker build -t $CLIENT_IMAGE_NAME --compress=true --force-rm=true ./client
+          - docker build -t $MAILS_IMAGE_NAME --compress=true --force-rm=true ./services/mailing/server
+          - docker build -t $AUTHS_IMAGE_NAME --compress=true --force-rm=true ./services/authentication/server
+          - docker build -t $GROUPS_IMAGE_NAME --compress=true --force-rm=true ./services/groups/server
+          - docker build -t $WORKSPACES_IMAGE_NAME --compress=true --force-rm=true ./services/workspaces/server
+          - docker build -t $USERS_IMAGE_NAME --compress=true --force-rm=true ./services/users/server
+          - docker build -t $POSTS_IMAGE_NAME --compress=true --force-rm=true ./services/posts/server
+          - docker build -t $NOTIFICATIONS_IMAGE_NAME --compress=true --force-rm=true ./services/notifications/server
+          - docker build -t $UTILITIES_IMAGE_NAME --compress=true --force-rm=true ./services/utilities/server
+          - docker build -t $FOLIO_IMAGE_NAME --compress=true --force-rm=true ./services/folio/server
+          - docker build -t $SEARCH_IMAGE_NAME --compress=true --force-rm=true ./services/search/server
+          - docker build -t $NGINX_IMAGE_NAME --compress=true --force-rm=true ./nginx
+
+          # Clear unnecessary Image build
+          - docker image prune -f 
+          
+          # authenticate with the Docker Hub registry
+          - docker login --username $DOCKER_ID --password $DOCKER_PASSWORD
+
+          # push the new Docker image to the Docker registry
+          - docker push $CLIENT_IMAGE_NAME
+          - docker push $MAILS_IMAGE_NAME
+          - docker push $AUTHS_IMAGE_NAME
+          - docker push $GROUPS_IMAGE_NAME
+          - docker push $WORKSPACES_IMAGE_NAME
+          - docker push $USERS_IMAGE_NAME
+          - docker push $POSTS_IMAGE_NAME
+          - docker push $NOTIFICATIONS_IMAGE_NAME
+          - docker push $UTILITIES_IMAGE_NAME
+          - docker push $FOLIO_IMAGE_NAME
+          - docker push $SEARCH_IMAGE_NAME
+          - docker push $NGINX_IMAGE_NAME
+
+    - step:
+       name: Deploy to production server
        script:
          - pipe: atlassian/ssh-run:0.2.2
            variables:
              SSH_USER: 'ubuntu'
-             SERVER: '86.120.164.146'
-             COMMAND: 'cd /home/ubuntu/octonius; echo $HOST_PASSWORD | sudo -S ./deploy-swarm.sh'    
-    # - step:
-    #     name: Deploy to dockerhub
-    #     services:
-    #       - docker
-
-    #     # can be test, staging or production.
-    #     deployment: production
-    #     script: 
-        
-    #       # Modify the commands below to build your repository.
-          
-    #       # Set $DOCKER_HUB_USERNAME and $DOCKER_HUB_PASSWORD as environment variables in repository settings
-    #       - export CLIENT_IMAGE_NAME=octoniusapp/octonius:client
-    #       - export MAILS_IMAGE_NAME=octoniusapp/octonius:mailing-server
-    #       - export AUTHS_IMAGE_NAME=octoniusapp/octonius:auths-server
-    #       - export GROUPS_IMAGE_NAME=octoniusapp/octonius:groups-server
-    #       - export WORKSPACES_IMAGE_NAME=octoniusapp/octonius:workspaces-server
-    #       - export USERS_IMAGE_NAME=octoniusapp/octonius:users-server
-    #       - export POSTS_IMAGE_NAME=octoniusapp/octonius:posts-server
-    #       - export NOTIFICATIONS_IMAGE_NAME=octoniusapp/octonius:notifications-server
-    #       - export UTILITIES_IMAGE_NAME=octoniusapp/octonius:utilities-server
-    #       - export FOLIO_IMAGE_NAME=octoniusapp/octonius:folio-server
-    #       - export SEARCH_IMAGE_NAME=octoniusapp/octonius:search-server
-    #       - export NGINX_IMAGE_NAME=octoniusapp/octonius:nginx
-
-    #       # build the Docker image (this will use the Dockerfile in the root of the repo)
-    #       - docker build -t $CLIENT_IMAGE_NAME --compress=true --force-rm=true ./client
-    #       - docker build -t $MAILS_IMAGE_NAME --compress=true --force-rm=true ./services/mailing/server
-    #       - docker build -t $AUTHS_IMAGE_NAME --compress=true --force-rm=true ./services/authentication/server
-    #       - docker build -t $GROUPS_IMAGE_NAME --compress=true --force-rm=true ./services/groups/server
-    #       - docker build -t $WORKSPACES_IMAGE_NAME --compress=true --force-rm=true ./services/workspaces/server
-    #       - docker build -t $USERS_IMAGE_NAME --compress=true --force-rm=true ./services/users/server
-    #       - docker build -t $POSTS_IMAGE_NAME --compress=true --force-rm=true ./services/posts/server
-    #       - docker build -t $NOTIFICATIONS_IMAGE_NAME --compress=true --force-rm=true ./services/notifications/server
-    #       - docker build -t $UTILITIES_IMAGE_NAME --compress=true --force-rm=true ./services/utilities/server
-    #       - docker build -t $FOLIO_IMAGE_NAME --compress=true --force-rm=true ./services/folio/server
-    #       - docker build -t $SEARCH_IMAGE_NAME --compress=true --force-rm=true ./services/search/server
-    #       - docker build -t $NGINX_IMAGE_NAME --compress=true --force-rm=true ./nginx
-
-    #       # Clear unnecessary Image build
-    #       - docker image prune -f 
-          
-    #       # authenticate with the Docker Hub registry
-    #       - docker login --username $DOCKER_ID --password $DOCKER_PASSWORD
-
-    #       # push the new Docker image to the Docker registry
-    #       - docker push $CLIENT_IMAGE_NAME
-    #       - docker push $MAILS_IMAGE_NAME
-    #       - docker push $AUTHS_IMAGE_NAME
-    #       - docker push $GROUPS_IMAGE_NAME
-    #       - docker push $WORKSPACES_IMAGE_NAME
-    #       - docker push $USERS_IMAGE_NAME
-    #       - docker push $POSTS_IMAGE_NAME
-    #       - docker push $NOTIFICATIONS_IMAGE_NAME
-    #       - docker push $UTILITIES_IMAGE_NAME
-    #       - docker push $FOLIO_IMAGE_NAME
-    #       - docker push $SEARCH_IMAGE_NAME
-    #       - docker push $NGINX_IMAGE_NAME
-
-    # - step:
-    #     name: Deploy to Server
-    #     image: ubuntu:latest
-    #     deployment: staging
-    #     script:
-    #       - apt-get update && apt-get install -y sshpass
-    #       - echo $HOST_PASSWORD
-    #       # - sshpass -p $HOST_PASSWORD ssh -tt $HOST_ADDRESS "cd /home/ubuntu/octonius; echo $HOST_PASSWORD | sudo -S ./deploy-swarm.sh"
-    #       - sshpass -p $HOST_PASSWORD ssh -t -t $HOST_ADDRESS 'bash -s' <<< ls
-    #       # - sshpass -e ssh $HOST_ADDRESS < 'EOF'
-    #       # - su -
-    #       # - echo "test"
-    #       # - EOF
+             SERVER: $HOST_ADDRESS
+             COMMAND: 'cd /home/ubuntu/octonius; echo $HOST_PASSWORD | sudo -S ./deploy-swarm.sh'  
     
     "{staging}":
-    # - step:
-    #     name: Deploy to Server
-    #     image: ubuntu:latest
-    #     deployment: staging
-    #     script:
-    #       - apt-get update && apt-get install -y sshpass
-    #       # - sshpass -p $HOST_PASSWORD ssh -tt $HOST_ADDRESS 'cd /home/ubuntu/flash; sudo -S -s /bin/bash -c "./deploy.sh"'
-    #       - sshpass -e ssh $HOST_ADDRESS < 'EOF'
-    #       - su -
-    #       - echo "test"
-    #       - EOF
     - step:
         name: Deploy to dockerhub
         services:
@@ -158,6 +133,15 @@ pipelines:
           - docker push $FOLIO_IMAGE_NAME
           - docker push $SEARCH_IMAGE_NAME
           - docker push $NGINX_IMAGE_NAME
+
+    - step:
+       name: Deploy to staging server
+       script:
+         - pipe: atlassian/ssh-run:0.2.2
+           variables:
+             SSH_USER: 'ubuntu'
+             SERVER: $HOST_ADDRESS
+             COMMAND: 'cd /home/ubuntu/flash; echo $HOST_PASSWORD | sudo -S ./deploy-swarm.sh'      
           
 definitions:
    services:
