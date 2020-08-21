@@ -49,7 +49,7 @@ export NGINX_IMAGE_NAME=octoniusapp/octonius:nginx
         docker build -t $NOTIFICATIONS_IMAGE_NAME --compress=true --force-rm=true ./services/notifications/server
         docker build -t $UTILITIES_IMAGE_NAME --compress=true --force-rm=true ./services/utilities/server
         docker build -t $FOLIO_IMAGE_NAME --compress=true --force-rm=true ./services/folio/server
-        docker build -t $SEARCH_IMAGE_NAME --compress=true --force-rm=true ./services/search-service
+        docker build -t $SEARCH_IMAGE_NAME --compress=true --force-rm=true ./services/search/server
         docker build -t $NGINX_IMAGE_NAME --compress=true --force-rm=true ./nginx
 
 # Clear unnecessary Image build
