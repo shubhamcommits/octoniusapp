@@ -111,16 +111,6 @@ export class UsersControllers {
                 return sendError(res, new Error('Unable to find the user, either userId is invalid or you have made an unauthorized request!'), 'Unable to find the user, either userId is invalid or you have made an unauthorized request!', 404);
             }
 
-            // Index
-            http.post(`${process.env.QUERY_SERVER_API}/indexing/user`, {
-                id: user._id,
-                fullName: user.full_name,
-                email: user.email,
-                active: user.active,
-                userSkills: user.skills,
-                workspace: user.workspace_name
-              });
-
             // Send status 200 response
             return res.status(200).json({
                 message: 'User Profile updated!',

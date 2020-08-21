@@ -245,16 +245,6 @@ export class AuthsController {
                         user: userUpdate
                     })
 
-                    // Index
-                    http.post(`${process.env.QUERY_SERVER_API}/indexing/user`, {
-                        id: user._id,
-                        fullName: user.full_name,
-                        email: user.email,
-                        active: user.active,
-                        userSkills: user.skills,
-                        workspace: user.workspace_name
-                    });
-
                     // Updating quantity += 1 in stripe module using workspace microservice
                     // await http.put(`${process.env.MAILING_SERVER_API}/billings/add-user?subscriptionId=${workspace.billing.subscription_id}&workspaceId=${workspace._id}`)
 

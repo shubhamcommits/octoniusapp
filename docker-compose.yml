@@ -432,13 +432,6 @@ volumes:
       type: none
       device: ${PWD}/data/uploads/utilities
       o: bind
-
-  production_solr_data:
-    driver: local
-    driver_opts:
-      type: none
-      device: ${PWD}/data/solr
-      o: bind
       
 networks:
   production: 
