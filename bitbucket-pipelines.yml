@@ -28,7 +28,7 @@ pipelines:
           - export NOTIFICATIONS_IMAGE_NAME=octoniusapp/octonius:notifications-server
           - export UTILITIES_IMAGE_NAME=octoniusapp/octonius:utilities-server
           - export FOLIO_IMAGE_NAME=octoniusapp/octonius:folio-server
-          - export QUERY_IMAGE_NAME=octoniusapp/octonius:query-server
+          - export SEARCH_IMAGE_NAME=octoniusapp/octonius:search-server
           - export NGINX_IMAGE_NAME=octoniusapp/octonius:nginx
 
           # build the Docker image (this will use the Dockerfile in the root of the repo)
@@ -42,7 +42,7 @@ pipelines:
           - docker build -t $NOTIFICATIONS_IMAGE_NAME --compress=true --force-rm=true ./services/notifications/server
           - docker build -t $UTILITIES_IMAGE_NAME --compress=true --force-rm=true ./services/utilities/server
           - docker build -t $FOLIO_IMAGE_NAME --compress=true --force-rm=true ./services/folio/server
-          - docker build -t $QUERY_IMAGE_NAME --compress=true --force-rm=true ./services/query-service
+          - docker build -t $SEARCH_IMAGE_NAME --compress=true --force-rm=true ./services/search-service
           - docker build -t $NGINX_IMAGE_NAME --compress=true --force-rm=true ./nginx
 
           # Clear unnecessary Image build
@@ -62,7 +62,7 @@ pipelines:
           - docker push $NOTIFICATIONS_IMAGE_NAME
           - docker push $UTILITIES_IMAGE_NAME
           - docker push $FOLIO_IMAGE_NAME
-          - docker push $QUERY_IMAGE_NAME
+          - docker push $SEARCH_IMAGE_NAME
           - docker push $NGINX_IMAGE_NAME
 
     "{staging}":
@@ -99,7 +99,7 @@ pipelines:
           - export NOTIFICATIONS_IMAGE_NAME=octoniusapp/octonius-alpha:notifications-server
           - export UTILITIES_IMAGE_NAME=octoniusapp/octonius-alpha:utilities-server
           - export FOLIO_IMAGE_NAME=octoniusapp/octonius-alpha:folio-server
-          - export QUERY_IMAGE_NAME=octoniusapp/octonius-alpha:query-server
+          - export SEARCH_IMAGE_NAME=octoniusapp/octonius-alpha:search-server
           - export NGINX_IMAGE_NAME=octoniusapp/octonius-alpha:nginx
 
           # build the Docker image (this will use the Dockerfile in the root of the repo)
@@ -113,7 +113,7 @@ pipelines:
           - docker build -t $NOTIFICATIONS_IMAGE_NAME --compress=true --force-rm=true ./services/notifications/server
           - docker build -t $UTILITIES_IMAGE_NAME --compress=true --force-rm=true ./services/utilities/server
           - docker build -t $FOLIO_IMAGE_NAME --compress=true --force-rm=true ./services/folio/server
-          - docker build -t $QUERY_IMAGE_NAME --compress=true --force-rm=true ./services/query-service
+          - docker build -t $SEARCH_IMAGE_NAME --compress=true --force-rm=true ./services/search-service
           - docker build -t $NGINX_IMAGE_NAME --compress=true --force-rm=true ./nginx
 
           # Clear unnecessary Image build
@@ -133,7 +133,7 @@ pipelines:
           - docker push $NOTIFICATIONS_IMAGE_NAME
           - docker push $UTILITIES_IMAGE_NAME
           - docker push $FOLIO_IMAGE_NAME
-          - docker push $QUERY_IMAGE_NAME
+          - docker push $SEARCH_IMAGE_NAME
           - docker push $NGINX_IMAGE_NAME
           
 definitions:

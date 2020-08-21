@@ -18,7 +18,7 @@ export const environment = {
   // Browser Storage Key
   storageKey: `storageKey@20xx`,
 
-  // Google developer console credentials 
+  // Google developer console credentials
   developerKey: `AIzaSyDGM66BZhGSmBApm3PKL-xCrri-3Adb06I`,
   clientId: `971238950983-aef7kjl23994hjj9e8m5tch4a22b5dut.apps.googleusercontent.com`,
   apiKey: `AIzaSyDGM66BZhGSmBApm3PKL-xCrri-3Adb06I`,
@@ -51,6 +51,10 @@ export const environment = {
   WORKSPACE_BASE_URL: `${url.protocol}://${url.domain}/workspaces`,
   WORKSPACE_BASE_API_URL: `${url.protocol}://${url.domain}/api/workspaces`,
 
+  // Search Service URLs
+  SEARCH_BASE_URL: `${url.protocol}://${url.domain}/search`,
+  SEARCH_BASE_API_URL: `${url.protocol}://${url.domain}/api/search`,
+
   // User URLs
   USER_BASE_URL: `${url.protocol}://${url.domain}/users`,
   USER_BASE_API_URL: `${url.protocol}://${url.domain}/api/users`,
@@ -62,11 +66,6 @@ export const environment = {
   // Notifications URLs
   NOTIFICATIONS_BASE_URL: `${url.websocket}://${url.domain}`,
   NOTIFICATIONS_BASE_API_URL: `${url.protocol}://${url.domain}/api/notifications`,
-
-  // Query Service URLs
-  QUERY_SERVICE_BASE_URL: `${url.protocol}://${url.domain}/query`,
-  QUERY_SERVICE_BASE_API_URL: `${url.protocol}://${url.domain}/api/query`,
-  QUERY_SERVICE_MONITOR_URL: `${url.protocol}://${url.domain}/monitor/solr`,
 
   // Utilities URLs
   UTILITIES_BASE_URL: `${url.protocol}://${url.domain}/utilities`,

@@ -60,6 +60,10 @@ export const environment = {
   WORKSPACE_BASE_URL: `${url.protocol}://${url.domain}:5000`,
   WORKSPACE_BASE_API_URL: `${url.protocol}://${url.domain}:5000/api`,
 
+  // Search Service URLs
+  SEARCH_BASE_URL: `${url.protocol}://${url.domain}:12000`,
+  SEARCH_BASE_API_URL: `${url.protocol}://${url.domain}:12000/api`,
+
   // User URLs
   USER_BASE_URL: `${url.protocol}://${url.domain}:7000`,
   USER_BASE_API_URL: `${url.protocol}://${url.domain}:7000/api`,
@@ -71,11 +75,6 @@ export const environment = {
   // Notifications URLs
   NOTIFICATIONS_BASE_URL: `ws://${url.domain}:9000`,
   NOTFICATIONS_BASE_API_URL: `${url.protocol}://${url.domain}:9000/api`,
-
-  // Query Service URLs
-  QUERY_SERVICE_BASE_URL: `${url.protocol}://${url.domain}:8080`,
-  QUERY_SERVICE_BASE_API_URL: `${url.protocol}://${url.domain}:8080/api/query-service`,
-  QUERY_SERVICE_MONITOR_URL: `${url.protocol}://${url.domain}:8983/solr/octonius`,
 
   // Utilities URLs
   UTILITIES_BASE_URL: `${url.protocol}://${url.domain}:10000`,

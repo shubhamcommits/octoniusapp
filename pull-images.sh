@@ -32,9 +32,6 @@ export UTILITIES_IMAGE_NAME=octoniusapp/octonius:utilities-server
 # Folio Microservice Image Name
 export FOLIO_IMAGE_NAME=octoniusapp/octonius:folio-server
 
-# Query Microservice Image Name
-export QUERY_IMAGE_NAME=octoniusapp/octonius:query-server
-
 # Nginx Image Name
 export NGINX_IMAGE_NAME=octoniusapp/octonius:nginx
 

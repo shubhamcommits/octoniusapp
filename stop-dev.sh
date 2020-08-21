@@ -28,6 +28,12 @@ pm2 stop workspaces-server
 pm2 delete workspaces-server
 
 
+# Stops and kills the search server
+pm2 stop search-server
+
+pm2 delete search-server
+
+
 # Stops and kills the users server
 pm2 stop users-server
 
@@ -63,5 +69,3 @@ pm2 stop client-server
 
 pm2 delete client-server
 
-# cd services/query-service
-# docker-compose down
