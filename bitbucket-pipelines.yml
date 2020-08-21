@@ -71,7 +71,7 @@ pipelines:
         deployment: staging
         script:
           - apt-get update && apt-get install -y sshpass
-          - sshpass -p $HOST_PASSWORD ssh -t $HOST_ADDRESS "cd /home/ubuntu/octonius; echo $HOST_PASSWORD | sudo -S ./deploy-swarm.sh"
+          - sshpass -p $HOST_PASSWORD ssh -tt $HOST_ADDRESS "cd /home/ubuntu/octonius; echo $HOST_PASSWORD | sudo -S ./deploy-swarm.sh"
     
     "{staging}":
     # - step:
