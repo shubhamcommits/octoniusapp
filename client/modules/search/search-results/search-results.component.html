@@ -6,7 +6,7 @@
     </a>
   </p>
   <p [innerHTML]="data?.html"></p>
-  <p>Tags:</p>
+  <p><strong>Tags: </strong></p>
   <ul>
     <li *ngFor="let tag of data.tags" class="label">{{ tag }}</li>
   </ul>
@@ -19,8 +19,8 @@
       {{ data.first_name }} {{ data.last_name }}
     </a>
   </p>
-  <p>mail:{{ data.email }}</p>
-  <p>Skills:&nbsp;</p>
+  <p><strong>mail: </strong>{{ data.email }}</p>
+  <p><strong>Skills: </strong></p>
   <ul>
       <li *ngFor="let skill of data.skills" class="label"> {{ skill }}</li>
   </ul>
