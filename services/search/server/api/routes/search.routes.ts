@@ -20,7 +20,7 @@ router.use(auth.verifyToken);
 router.use(auth.isLoggedIn);
 
 // -| Main search |-
-router.get('/getSearchResults/:query/:filter', search.getSearchResults);
+router.get('/getSearchResults/:filter/:query', search.getSearchResults);
 
 /************************/
 
