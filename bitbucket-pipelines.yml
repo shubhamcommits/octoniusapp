@@ -72,10 +72,11 @@ pipelines:
         script:
           - apt-get update && apt-get install -y sshpass
           # - sshpass -p $HOST_PASSWORD ssh -tt $HOST_ADDRESS "cd /home/ubuntu/octonius; echo $HOST_PASSWORD | sudo -S ./deploy-swarm.sh"
-          - sshpass -e ssh $HOST_ADDRESS < 'EOF'
-          - su -
-          - echo "test"
-          - EOF
+          - sshpass -p $HOST_PASSWORD ssh -t -t $HOST_ADDRESS 'bash -s' <<< ls
+          # - sshpass -e ssh $HOST_ADDRESS < 'EOF'
+          # - su -
+          # - echo "test"
+          # - EOF
     
     "{staging}":
     # - step:
