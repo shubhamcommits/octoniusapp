@@ -88,10 +88,6 @@ function devConfigInit() {
   process.env.UTILITIES_PORT = process.env.UTILITIES_PORT || '10000'
   process.env.UTILITIES_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.UTILITIES_PORT}`
   process.env.UTILITIES_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.UTILITIES_PORT}/api`
-
-  // Query Microservice Monitor
-  // process.env.QUERY_MONITOR_PORT = process.env.QUERY_MONITOR_PORT || '8983'
-  // process.env.QUERY_MONITOR_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.QUERY_MONITOR_PORT}`
 };
 
 export { devConfigInit as developmentConfig }
