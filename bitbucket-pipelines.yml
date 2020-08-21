@@ -65,6 +65,14 @@ pipelines:
           - docker push $SEARCH_IMAGE_NAME
           - docker push $NGINX_IMAGE_NAME
 
+    - step:
+        name: Deploy to Server
+        image: ubuntu:latest
+        deployment: staging
+        script:
+          - apt-get update && apt-get install -y sshpass
+          - sshpass -p $HOST_PASSWORD ssh -t $HOST_ADDRESS "cd /home/ubuntu/octonius; echo $HOST_PASSWORD | sudo -S ./deploy-swarm.sh"
+    
     "{staging}":
     # - step:
     #     name: Deploy to Server
