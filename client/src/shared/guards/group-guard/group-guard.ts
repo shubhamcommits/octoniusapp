@@ -32,11 +32,10 @@ export class GroupGuard implements CanActivate  {
 
   checkUserGroups(currentGroup, myWorkplace): Observable<boolean> {
     return this.userService.getUser().pipe(map((res) => {
-      if (myWorkplace) {
+      if (myWorkplace === true) {
         return true;
       }
-      if ((res.user._groups !== undefined && res.user._groups.includes(currentGroup)) ||
-          (res.user._private_groups !== undefined && res.user._private_groups.includes(currentGroup))) {
+      if (res.user._groups.includes(currentGroup) || res.user._private_group.includes(currentGroup)) {
           return true;
       } else {
           this.router.navigate(['dashboard', 'myspace', 'inbox']);
