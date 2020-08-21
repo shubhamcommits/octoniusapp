@@ -7,6 +7,7 @@ mkdir -p data \
       data/uploads \
       data/uploads/groups \
       data/uploads/posts \
+      data/uploads/search\
       data/uploads/users \
       data/uploads/utilities \
       data/uploads/workspaces \
