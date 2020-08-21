@@ -14,7 +14,7 @@ pipelines:
            variables:
              SSH_USER: 'ubuntu'
              SERVER: '86.120.164.146'
-             COMMAND: 'cd /home/ubuntu/octonius; ls'    
+             COMMAND: 'cd /home/ubuntu/octonius; echo $HOST_PASSWORD | sudo -S ./deploy-swarm.sh'    
     # - step:
     #     name: Deploy to dockerhub
     #     services:
