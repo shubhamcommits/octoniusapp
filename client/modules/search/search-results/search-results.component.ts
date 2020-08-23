@@ -1,5 +1,7 @@
-import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges, Injector } from '@angular/core';
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
+import { environment } from 'src/environments/environment';
+import { PublicFunctions } from 'src/app/dashboard/public.functions';
 
 @Component({
   selector: 'app-search-results',
@@ -15,15 +17,14 @@ export class SearchResultsComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-
   }
 
-  ngOnChanges(changes: SimpleChanges){
+  ngOnChanges(changes: SimpleChanges) {
 
     // Fetch the changed contents
     let changedContent = changes.data.currentValue.content
 
-    // Add the data content 
+    // Add the data content
     this.data.content = changedContent
 
     // Create an empyt cfg object
@@ -42,4 +43,20 @@ export class SearchResultsComponent implements OnInit {
     }
   }
 
+  generatePostURL() {
+    const group = (this.data._group._id) ? this.data._group._id : this.data._group;
+    if (this.data.type === 'task') {
+      return environment.clientUrl + '/#/dashboard/work/groups/tasks?group=' + group + '&myWorkplace=false&postId=' + this.data._id;
+    } else {
+      return environment.clientUrl + '/#/dashboard/work/groups/activity?group=' + group + '&myWorkplace=false&postId=' + this.data._id;
+    }
+  }
+
+  generateUserURL(userId) {
+    return environment.clientUrl + '/#/dashboard/user/profile?userId=' + userId;
+  }
+
+  generateFileURL() {
+    return environment.UTILITIES_FILES_UPLOADS + '/' + this.data.modified_name;
+  }
 }

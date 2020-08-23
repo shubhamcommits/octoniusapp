@@ -32,8 +32,8 @@ export UTILITIES_IMAGE_NAME=octoniusapp/octonius:utilities-server
 # Folio Microservice Image Name
 export FOLIO_IMAGE_NAME=octoniusapp/octonius:folio-server
 
-# Query Microservice Image Name
-export QUERY_IMAGE_NAME=octoniusapp/octonius:query-server
+# SEARCH Microservice Image Name
+export SEARCH_IMAGE_NAME=octoniusapp/octonius:search-server
 
 # Nginx Image Name
 export NGINX_IMAGE_NAME=octoniusapp/octonius:nginx
@@ -49,7 +49,7 @@ export NGINX_IMAGE_NAME=octoniusapp/octonius:nginx
         docker build -t $NOTIFICATIONS_IMAGE_NAME --compress=true --force-rm=true ./services/notifications/server
         docker build -t $UTILITIES_IMAGE_NAME --compress=true --force-rm=true ./services/utilities/server
         docker build -t $FOLIO_IMAGE_NAME --compress=true --force-rm=true ./services/folio/server
-        docker build -t $QUERY_IMAGE_NAME --compress=true --force-rm=true ./services/query-service
+        docker build -t $SEARCH_IMAGE_NAME --compress=true --force-rm=true ./services/search/server
         docker build -t $NGINX_IMAGE_NAME --compress=true --force-rm=true ./nginx
 
 # Clear unnecessary Image build
@@ -70,5 +70,5 @@ export NGINX_IMAGE_NAME=octoniusapp/octonius:nginx
         docker push $NOTIFICATIONS_IMAGE_NAME
         docker push $UTILITIES_IMAGE_NAME
         docker push $FOLIO_IMAGE_NAME
-        docker push $QUERY_IMAGE_NAME
+        docker push $SEARCH_IMAGE_NAME
         docker push $NGINX_IMAGE_NAME

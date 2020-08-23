@@ -154,6 +154,40 @@ services:
     networks:
       - production
       
+  search-server:
+    image: octoniusapp/octonius:search-server
+    ports:
+      - 12000:12000
+    volumes:
+      - /usr/app/node_modules
+      - production_search_uploads_data:/usr/app/uploads
+    environment:
+      - NODE_ENV=production
+      - PORT=12000
+      - HOST=0.0.0.0
+      - JWT_KEY=asfsaf12safas23fsafa12sf
+      - dbURL=mongodb://mongodb:27017/octonius
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - SENDGRID_KEY=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
+      - SK_STRIPE=sk_live_WupyMoQf93S59gwTqmYpmWel
+      - stripe_plan=plan_EK1rDLfKr9NRkU
+      - WEBHOOK_PS_SECRET=whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn
+      - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
+      - PROTOCOL=https
+      - DOMAIN=workplace.octonius.com
+    depends_on:
+      - mongodb
+    deploy:
+      replicas: 3
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+    networks:
+      - production
+      
   users-server:
     image: octoniusapp/octonius:users-server
     ports:
@@ -321,47 +355,6 @@ services:
         condition: on-failure
     networks:
       - production
-
-  query-server:
-    image: octoniusapp/octonius:query-server
-    ports: 
-      - 12000:8080
-    volumes:
-      - production_solr_data:/data/query-service-app
-    environment:
-      WAIT_HOST: solr-octonius
-      WAIT_PORT: '8983'
-      JAVA_OPTS: -Xmx512m
-      APPLICATION_CONFIG_SOLR_CLIENT_URL: 'http://solr-octonius:8983/solr'
-    deploy:
-      replicas: 3
-      update_config:
-        parallelism: 1
-        delay: 10s
-      restart_policy:
-        condition: on-failure
-    networks:
-      - production
-  
-  solr-octonius:
-    image: solr:7.7.1
-    command: solr-precreate octonius
-    ports:
-      - 13000:8983
-    environment:
-      - SOLR_JAVA_MEM=-Xms256m -Xmx256m -XX:MaxRAM=1024m
-    volumes:
-      - ${PWD}/solr/configsets:/opt/solr/server/solr/configsets
-      - production_solr_data:/data/query-service-app
-    deploy:
-      replicas: 3
-      update_config:
-        parallelism: 1
-        delay: 10s
-      restart_policy:
-        condition: on-failure
-    networks:
-      - production
       
   client:
     image: octoniusapp/octonius:client
@@ -377,6 +370,7 @@ services:
       - notifications-server
       - utilities-server
       - folio-server
+      - search-server
     deploy:
       replicas: 3
       update_config:
@@ -401,8 +395,7 @@ services:
       - notifications-server
       - utilities-server
       - folio-server
-      - query-server
-      - solr-octonius
+      - search-server
       - client
     deploy:
       replicas: 1
@@ -456,12 +449,12 @@ volumes:
       type: none
       device: ${PWD}/data/uploads/utilities
       o: bind
-
-  production_solr_data:
+  
+  production_search_uploads_data:
     driver: local
     driver_opts:
       type: none
-      device: ${PWD}/data/solr
+      device: ${PWD}/data/uploads/search
       o: bind
       
 networks:

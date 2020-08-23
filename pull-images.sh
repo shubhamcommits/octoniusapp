@@ -32,8 +32,8 @@ export UTILITIES_IMAGE_NAME=octoniusapp/octonius:utilities-server
 # Folio Microservice Image Name
 export FOLIO_IMAGE_NAME=octoniusapp/octonius:folio-server
 
-# Query Microservice Image Name
-export QUERY_IMAGE_NAME=octoniusapp/octonius:query-server
+# Search Microservice Image Name
+export SEARCH_IMAGE_NAME=octoniusapp/octonius:search-server
 
 # Nginx Image Name
 export NGINX_IMAGE_NAME=octoniusapp/octonius:nginx
@@ -52,5 +52,5 @@ export NGINX_IMAGE_NAME=octoniusapp/octonius:nginx
           docker pull $NOTIFICATIONS_IMAGE_NAME
           docker pull $UTILITIES_IMAGE_NAME
           docker pull $FOLIO_IMAGE_NAME
-          docker pull $QUERY_IMAGE_NAME
+          docker pull $SEARCH_IMAGE_NAME
           docker pull $NGINX_IMAGE_NAME
