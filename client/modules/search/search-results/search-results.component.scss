@@ -21,3 +21,13 @@
     display: inline;
     margin-right: 8px;
   }
+  .ql-image img{
+      width: 100% !important;
+  }
+  .search-content{
+    img .ql-image {
+       
+          width: 100% !important;
+      
+    }
+  }  
