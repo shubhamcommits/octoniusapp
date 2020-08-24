@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output, Inject, Injector, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Inject, Injector, forwardRef, AfterViewInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { environment } from 'src/environments/environment';
 import { PublicFunctions } from 'src/app/dashboard/public.functions';
@@ -6,13 +6,48 @@ import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { CommentService } from 'src/shared/services/comment-service/comment.service';
-import moment from 'moment/moment';
+import { MAT_DATE_FORMATS, DateAdapter, MAT_DATE_LOCALE } from '@angular/material';
+import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
+
 // ShareDB Client
 import * as ShareDB from 'sharedb/lib/client'
+import * as _moment from 'moment';
+// tslint:disable-next-line:no-duplicate-imports
+import {default as _rollupMoment} from 'moment';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
+
+const moment = _rollupMoment || _moment;
+
+const INLINE_EDIT_CONTROL_VALUE_ACCESSOR = {
+  provide: NG_VALUE_ACCESSOR,
+  useExisting: forwardRef(() => GroupCreatePostDialogComponent),
+  multi: true
+};
+
+export const MY_FORMATS = {
+  parse: {
+    dateInput: 'LL',
+  },
+  display: {
+    dateInput: 'LL',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
 
 @Component({
   selector: 'app-group-create-post-dialog-component',
   templateUrl: './group-create-post-dialog-component.component.html',
+  providers: [
+    INLINE_EDIT_CONTROL_VALUE_ACCESSOR,
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [ MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS ]
+    },
+    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
+  ],
   styleUrls: ['./group-create-post-dialog-component.component.scss']
 })
 export class GroupCreatePostDialogComponent implements OnInit {
@@ -87,6 +122,8 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
   eventAssignedToCount;
 
+  // dateStyleClass = '';
+
   constructor(
     private postService: PostService,
     private groupService: GroupService,
@@ -139,6 +176,8 @@ export class GroupCreatePostDialogComponent implements OnInit {
           }
         });
       });
+
+      // this.dateStyleClass = 'input-date ' +  (this.checkOverdue(this.postData.task) === true ? 'overdue' : 'due');
     }
 
     // If post type is event, set the dueTime
@@ -157,10 +196,11 @@ export class GroupCreatePostDialogComponent implements OnInit {
       }
       this.eventMembersMap = this.postData.event._assigned_to;
       this.eventAssignedToCount = (this.postData.event._assigned_to) ? this.postData.event._assigned_to.size : 0;
+
+      // this.dateStyleClass = 'input-date ' +  (this.checkOverdue(this.postData.event) === true ? 'overdue' : 'due');
     }
 
     this.tags = this.postData.tags;
-
 
     this.fetchComments();
   }
@@ -175,11 +215,17 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.updateDetails();
   }
 
-  /*
-  profilePicURL(filename: string) {
-    return environment.UTILITIES_USERS_UPLOADS + '/' + filename;
+  /**
+   * This function checks the task board if a particular task is overdue or not
+   * @param taskPost
+   * And applies the respective ng-class
+   *
+   * -----Tip:- Don't make the date functions asynchronous-----
+   *
+   */
+  checkOverdue(taskPost: any) {
+    return moment(taskPost.due_to).format('YYYY-MM-DD') < moment().local().startOf('day').format('YYYY-MM-DD');
   }
-  */
 
   /**
    * This function checks if the map consists of all team as the assignee for the event type selection
@@ -221,8 +267,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
    * @param dateObject
    */
   getDate(dateObject: any) {
-    this.dueDate = new Date(dateObject.year, dateObject.month - 1, dateObject.day)
-
+    this.dueDate = dateObject.value;
     this.updateDetails();
   }
 
@@ -294,8 +339,6 @@ export class GroupCreatePostDialogComponent implements OnInit {
    * @param files
    */
   onCloudFileAttach(cloudFiles: any) {
-
-console.log(cloudFiles);
     // Set the current files variable to the output of the module
     this.cloudFiles = cloudFiles;
 

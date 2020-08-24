@@ -28,7 +28,7 @@
             width: 100%;
 
             .post-title {
-                width: 95% !important; 
+                width: 95% !important;
                 box-shadow: none;
                 border:none;
 
@@ -50,6 +50,12 @@
             color: #000000;
             padding-bottom: 10px;
         }
+
+        input.input-date {
+          border: none;
+          background-color: white;
+          width: 100%;
+        }
     }
 
     .post-content {
@@ -58,7 +64,7 @@
         margin-top: -21px;
 
         .attach-files {
-            width: 100%; 
+            width: 100%;
             box-shadow: none;
             display: flex;
             justify-content: space-between;
@@ -90,7 +96,7 @@
         mat-select{
             background-color: rgba(0,0,0,0.04);
             border-radius: 4px 4px 0 0;
-            padding: 5px;   
+            padding: 5px;
             display: table-cell;
             vertical-align: middle;
         }
