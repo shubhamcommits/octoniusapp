@@ -4,7 +4,15 @@
 </button>
 
 <!-- Cloud Files Starts -->
+<!--
 <app-attach-cloud-files></app-attach-cloud-files>
+-->
+<button type="button" class="btn btn-link">
+  <i class="material-icons" placement="top"
+      ngbTooltip="Upload Google Drive files" (click)="loadCloudFiles()">
+      cloud_upload
+    </i>
+</button>
 <!-- Cloud Files Ends -->
 
 <!-- Attached Files Starts -->
@@ -26,4 +34,5 @@
         </span>
     </p>
 </div>
+<div class="ml-2 mt-2" id="google-drive-file" style="display:none;"></div>
 <!-- Selected Files Ends -->

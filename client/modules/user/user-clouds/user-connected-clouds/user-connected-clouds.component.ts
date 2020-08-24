@@ -39,7 +39,7 @@ export class UserConnectedCloudsComponent implements OnInit {
       this.googleService.refreshGoogleToken().then(() => {
         // refresh the token and initialism the google user-data if google-cloud is already stored
         if (localStorage.getItem('google-cloud') != null) {
-          this.googleAuthSuccessful = true;
+          this.changeGoogleAuth(true);
           this.googleUser = JSON.parse(localStorage.getItem('google-cloud'));
           this.googleDriveUsed = Math.round(
               (this.googleUser.user_data.storageQuota.usage / this.googleUser.user_data.storageQuota.limit) * 100
@@ -48,19 +48,25 @@ export class UserConnectedCloudsComponent implements OnInit {
           // we have set a time-interval of 30mins so as to refresh the access_token in the group
           setInterval(() => {
             this.googleService.refreshGoogleToken();
-            this.googleAuthSuccessful = true;
+            this.changeGoogleAuth(true);
             this.googleUser = JSON.parse(localStorage.getItem('google-cloud'));
             this.googleDriveUsed = Math.round(
                 (this.googleUser.user_data.storageQuota.usage / this.googleUser.user_data.storageQuota.limit) * 100
               );
           }, 1800000);
         } else {
-          this.googleAuthSuccessful = false;
+          this.changeGoogleAuth(false);
           this.isLoading$.next(false);
         }
       }).catch(() => {
         console.log('You haven\'t connected your google cloud yet');
       });
+
+      this.googleService.googleAuthSuccessful.subscribe(auth => this.googleAuthSuccessful = auth);
+  }
+
+  changeGoogleAuth(auth: boolean) {
+    this.googleService.changeGoogleAuth(auth);
   }
 
   loadGoogleDrive() {
@@ -71,7 +77,7 @@ export class UserConnectedCloudsComponent implements OnInit {
     this.googleService.disconnectGoogleCloud()
     .subscribe((res) => {
       console.log('Google Disconnected', res);
-      this.googleAuthSuccessful = false;
+      this.changeGoogleAuth(false);
       this.googleUser = new Object();
       this.googleDriveUsed = 0;
     }, (err) => {

@@ -4,13 +4,21 @@ import { Component,
   ViewChild,
   Renderer,
   forwardRef,
-  OnInit, 
+  OnInit,
   EventEmitter,
   Output} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { environment } from 'src/environments/environment';
+import { MAT_DATE_FORMATS, DateAdapter, MAT_DATE_LOCALE } from '@angular/material';
+import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
+
+import * as _moment from 'moment';
+// tslint:disable-next-line:no-duplicate-imports
+import {default as _rollupMoment} from 'moment';
+
+const moment = _rollupMoment || _moment;
 
 const INLINE_EDIT_CONTROL_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
@@ -18,10 +26,30 @@ const INLINE_EDIT_CONTROL_VALUE_ACCESSOR = {
   multi: true
 };
 
+export const MY_FORMATS = {
+  parse: {
+    dateInput: 'LL',
+  },
+  display: {
+    dateInput: 'LL',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
+
 @Component({
   selector: 'app-inline-input',
   templateUrl: './inline-input.component.html',
-  providers: [INLINE_EDIT_CONTROL_VALUE_ACCESSOR],
+  providers: [
+    INLINE_EDIT_CONTROL_VALUE_ACCESSOR,
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [ MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS ]
+    },
+    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
+  ],
   styleUrls: ['./inline-input.component.scss']
 })
 export class InlineInputComponent implements ControlValueAccessor, OnInit {
@@ -97,7 +125,7 @@ export class InlineInputComponent implements ControlValueAccessor, OnInit {
       }
     }
 
-    this.dateStyleClass = 'btn btn-link dropdown-toggle btn-sm ' +  this.styleClass;
+    this.dateStyleClass = 'input-date ' +  this.styleClass;
   }
 
   // Required for ControlValueAccessor interface
@@ -138,15 +166,15 @@ export class InlineInputComponent implements ControlValueAccessor, OnInit {
    * @param dateObject
    */
   onModelChange(dateObject: any) {
-    this.editing = false;
-    // Emit the date to the other components
-    this.value = new Date(dateObject.year, dateObject.month - 1, dateObject.day);
+    console.log(dateObject.value);
+    // this.value = new Date(dateObject.year, dateObject.month - 1, dateObject.day);
+    this.value = dateObject.value;
     this.saveData();
   }
 
   onCustomFieldChange($event: Event) {
     this.editing = false;
-    
+
     this.domainObject.task.custom_fields[this.customFieldName] = this.customFieldValue;
 
     // Save the data

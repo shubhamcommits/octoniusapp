@@ -71,8 +71,11 @@ export class GroupCreatePostDialogComponent implements OnInit {
     minute: 30
   };
 
-  // Files Variable 
+  // Files Variable
   files: any = [];
+
+  // Cloud files
+  cloudFiles: any = [];
 
   eventAssignees: any = [];
 
@@ -180,7 +183,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
   /**
    * This function checks if the map consists of all team as the assignee for the event type selection
-   * @param map 
+   * @param map
    */
   eventAssignedToAll() {
     return (this.eventMembersMap && this.eventMembersMap['all']) ? true : false;
@@ -215,7 +218,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
   /**
    * This function is responsible for receiving the date from @module <app-date-picker></app-date-picker>
-   * @param dateObject 
+   * @param dateObject
    */
   getDate(dateObject: any) {
     this.dueDate = new Date(dateObject.year, dateObject.month - 1, dateObject.day)
@@ -225,7 +228,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
   /**
    * This function is responsible for receiving the time from @module <app-time-picker></app-time-picker>
-   * @param timeObject 
+   * @param timeObject
    */
   getTime(timeObject: any) {
     this.dueTime = timeObject;
@@ -235,7 +238,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
   /**
    * This function receives the output from the tags components
-   * @param tags 
+   * @param tags
    */
   getTags(tags: any) {
 
@@ -276,12 +279,25 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
   /**
    * This function is responsible for receiving the files
-   * @param files 
+   * @param files
    */
   onAttach(files: any) {
 
     // Set the current files variable to the output of the module
     this.files = files;
+
+    this.updateDetails();
+  }
+
+  /**
+   * This function is responsible for receiving the files
+   * @param files
+   */
+  onCloudFileAttach(cloudFiles: any) {
+
+console.log(cloudFiles);
+    // Set the current files variable to the output of the module
+    this.cloudFiles = cloudFiles;
 
     this.updateDetails();
   }
@@ -415,7 +431,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
   /**
    * Call function to delete post
-   * @param postId 
+   * @param postId
    */
   deletePost() {
     this.utilityService.asyncNotification('Please wait we are deleting the post...', new Promise((resolve, reject) => {

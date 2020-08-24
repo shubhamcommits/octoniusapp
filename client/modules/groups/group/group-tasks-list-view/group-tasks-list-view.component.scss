@@ -5,6 +5,7 @@ $dark-sky-blue: #4a90e2;
 
 .list {
     overflow-x: auto;
+    overflow-y: auto;
 
     .list-wrapper {
         margin-top: 2rem;
@@ -13,11 +14,14 @@ $dark-sky-blue: #4a90e2;
         overflow-y: auto;
         overflow-x: auto;
 
-
         .taskStatus {
             width: 10%;
             text-align: center;
         }
+        .list-columns{
+            width: 100%;
+        }
+
     }
 }
 
@@ -30,7 +34,7 @@ $dark-sky-blue: #4a90e2;
 }
 
 .column-title{
-    margin: 32px 0 16px 0;
+    margin: 0 0 16px 0;
     border-bottom: 1px solid $border-color;
     p{
         font-size: 14px !important;
@@ -43,8 +47,12 @@ $dark-sky-blue: #4a90e2;
     padding: 20px;
 }
 
+.tasks-container{
+    width: 100%;
+}
+
 .task_row_header {
-    height: 70px;
+    height: 30px;
     padding: 0;
     background: none;
     // border: 1px solid $border-color;
@@ -56,15 +64,15 @@ $dark-sky-blue: #4a90e2;
     // height: 40px;
     // cursor: pointer;
     color: #9b9b9b !important;
-    p{
-        font-size: 14px !important;
-    }
+    font-size: 14px !important;
     .task_content {
         display: flex;
         // line-height: 60px;
         margin: 0;
         align-items: center;
         height: 100%;
+        padding: 0 24px;
+
         .task_title {
             flex: 0 0 320px;
             will-change: transform;
@@ -86,9 +94,9 @@ $dark-sky-blue: #4a90e2;
         }
 
         .task_cell_date {
-            flex-basis: 140px;
-            max-width: 140px;
-            min-width: 140px;
+            flex-basis: 160px;
+            max-width: 160px;
+            min-width: 160px;
             flex: 0 0;
             text-align: center;
         }
@@ -105,12 +113,11 @@ $dark-sky-blue: #4a90e2;
 
         .task_cell_cf {
             flex-basis: 140px;
-            max-width: 140px;
             min-width: 140px;
+            max-width: 140px;
             flex: 0 0;
             background-color:#fafafa ;
             height: 100%;
-            line-height: 70px;
             text-align: center;
         }
         .task_cell_more {
@@ -121,7 +128,7 @@ $dark-sky-blue: #4a90e2;
             text-align: center;
 
         }
-       
+
     }
 }
 
@@ -129,6 +136,7 @@ $dark-sky-blue: #4a90e2;
     height: 70px;
     padding: 0;
     background: white;
+    width: 100%;
     // border: 1px solid $border-color;
     border-radius: 2px;
     box-sizing: border-box;
@@ -164,11 +172,12 @@ $dark-sky-blue: #4a90e2;
         }
 
         .task_cell_date {
-            flex-basis: 140px;
-            max-width: 140px;
-            min-width: 140px;
+            flex-basis: 160px;
+            max-width: 160px;
+            min-width: 160px;
             flex: 0 0;
             text-align: center;
+           
         }
         .task_cell_tag {
             flex-basis: 160px;
@@ -194,13 +203,15 @@ $dark-sky-blue: #4a90e2;
             text-align: center;
         }
         .task_cell_more {
-            // flex-basis: 100px;
+            flex-basis: 100px;
             // max-width: 10px;
-            // min-width: 100px;
+            min-width: 100px;
             flex: 0 0;
             text-align: right;
             padding-right: 8px;
             flex: auto;
+            height: 70px;
+            line-height: 70px;
         }
     }
 }
@@ -249,4 +260,8 @@ $dark-sky-blue: #4a90e2;
 }
 .status-done {
     border-left: 3px solid $dark-sky-blue;
+}
+
+.input-date{
+    margin-top: 0 !important;
 }

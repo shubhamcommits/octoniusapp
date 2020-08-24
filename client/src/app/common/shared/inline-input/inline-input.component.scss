@@ -12,7 +12,13 @@ input {
     border: 1px solid #ccc;
     border-radius: 2px;
     padding: 4px 10px;
-    margin-top: -6px;
+    margin-top: 0px;
+}
+
+input.input-date {
+  border: none;
+  background-color: white;
+  width: 100%;
 }
 
 .dropdown-menu{

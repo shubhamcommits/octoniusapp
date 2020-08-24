@@ -1,15 +1,15 @@
 /**
  * !===== APP MODULE OF OCTONIUS CLIENT =====!
- * 
+ *
  * Please read the points below, before importing and injecting any dependencies:-
- * 1. Make sure that you document your import and if it's a part of exisiting module then import 
+ * 1. Make sure that you document your import and if it's a part of exisiting module then import
  * that under the particular section, otherwise make a new suitable one.
  * 2. Insert the entries under the section in lexographical order.
  */
 
 /**
  * !===== INDEX =====!
- * 
+ *
  * 1. COMPONENTS
  * 2. MODULES
  * 3. SERVICES
@@ -64,7 +64,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
  */
 
 
-
 /**
  * 6. !===== THIRD PARTY MODULES & SERVICES =====!
  */
@@ -95,7 +94,7 @@ import { ServerErrorInterceptor } from 'src/shared/error-handler/server-error.in
 @NgModule({
 
   declarations: [
-    // APP COMPONENT 
+    // APP COMPONENT
     AppComponent,
 
     // PAGE NOT FOUND COMPONENT
@@ -162,7 +161,6 @@ import { ServerErrorInterceptor } from 'src/shared/error-handler/server-error.in
       useClass: ServerErrorInterceptor,
       multi: true
     }],
-
   bootstrap: [AppComponent]
 })
 export class AppModule { }

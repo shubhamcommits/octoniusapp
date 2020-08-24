@@ -1,10 +1,10 @@
 <div *ngIf="type === 'text'">
     <div *ngIf="!editing">
-        <p class="list-card-title inline-edit" 
+        <p class="list-card-title inline-edit"
             (click)="edit(value)"
             (focus)="edit(value);"
             tabindex="0">
-            {{value}}
+            {{value | truncatetext:60}}
         </p>
     </div>
     <div *ngIf="editing">
@@ -20,23 +20,11 @@
 </div>
 
 <div *ngIf="type === 'date'" class="btn-group">
-    <!-- Date Picker Toggle starts -->
-    <button *ngIf="value !== null && value !== ''" [ngClass]="dateStyleClass" data-toggle="dropdown">
-        {{ value | date }}
-    </button>
-    <i *ngIf="value === null || value === ''" class="material-icons-outlined" data-toggle="dropdown" style="cursor: pointer;">calendar_today</i>
-    <!-- Date Picker Toggle ends -->
-
-    <!-- Input Placeholder for date picker starts -->
-    <div class="dropdown-menu">
-        <ngb-datepicker #inlineEditControl
-            [(ngModel)]="value" 
-            (ngModelChange)="onModelChange($event)"
-            #d="ngbDatepicker"
-            (click)="$event.stopPropagation()">
-        </ngb-datepicker>
-    </div>
-    <!-- Input Placeholder for date picker ends -->
+    <!-- Date Picker starts -->
+    <input matInput [matDatepicker]='d' (dateChange)="onModelChange($event)" [value]="value" [ngClass]="dateStyleClass" disabled>
+    <mat-datepicker-toggle matSuffix [for]="d"></mat-datepicker-toggle>
+    <mat-datepicker #d disabled="false"></mat-datepicker>
+    <!--Date Picker ends -->
 </div>
 
 <div *ngIf="type === 'assignee'" class="assignee">
@@ -67,10 +55,10 @@
         </p>
         <app-component-search-input-box
             *ngIf="editing" class="feed-avatar"
-            [placeholder]="'Assign...'" 
-            [groupId]="groupId" 
+            [placeholder]="'Assign...'"
+            [groupId]="groupId"
             [workspaceId]="workspaceId"
-            [userData]="userData" 
+            [userData]="userData"
             [type]="domainObject.type"
             (onFocusout)="focusout($event)"
             (member)="getMemberDetails($event)">
