@@ -159,13 +159,13 @@ $turquoise: #0bc6a0;
 $dark-sky-blue: #4a90e2;
 
 .status-todo{
-    border-top: 3px solid $pumpkin-orange;
+    border-left: 3px solid $pumpkin-orange;
 }
 .status-inprogress{
-    border-top: 3px solid $turquoise;
+    border-left: 3px solid $turquoise;
 }
 .status-done{
-    border-top: 3px solid $dark-sky-blue;
+    border-left: 3px solid $dark-sky-blue;
 }
 
 section{
