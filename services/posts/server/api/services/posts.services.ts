@@ -380,16 +380,6 @@ export class PostService {
       // Send all the required emails and notifications
       this.sendNotifications(post)
 
-      // Index Post
-      http.post(`${process.env.QUERY_SERVER_API}/indexing/post`, {
-        id: post._id,
-        title: post.title,
-        content: post.content,
-        type: post.type,
-        attachedTags: post.tags,
-        workspace: post._group.workspace_name
-      });
-
       // Return Post Object
       return post;
 
@@ -493,16 +483,6 @@ export class PostService {
 
       // Send all the required emails and notifications
       this.sendNotifications(post);
-
-      // Update index
-      http.post(`${process.env.QUERY_SERVER_API}/indexing/post`, {
-        id: post._id,
-        title: post.title,
-        content: post.content,
-        type: post.type,
-        attachedTags: post.tags,
-        workspace: post._group.workspace_name
-      });
 
       // Return the post
       return post;

@@ -60,6 +60,10 @@ function prodConfigInit() {
   process.env.WORKSPACES_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}/workspaces`
   process.env.WORKSPACES_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}/api/workspaces`
 
+  // Search Microservice
+  process.env.SEARCH_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}/search`
+  process.env.SEARCH_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}/api/search`
+
   // Users Microservice
   process.env.USERS_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}/users`
   process.env.USERS_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}/api/users`
@@ -75,13 +79,6 @@ function prodConfigInit() {
   // Utilities Microservice
   process.env.UTILITIES_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}/utilities`
   process.env.UTILITIES_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}/api/utilities`
-
-  // Query Service
-  process.env.QUERY_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}/query`
-  process.env.QUERY_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}/api/query`
-
-  // Query Microservice Monitor
-  process.env.QUERY_MONITOR = `${process.env.PROTOCOL}://${process.env.DOMAIN}/solr/monitor`
 };
 
 export { prodConfigInit as productionConfig } 

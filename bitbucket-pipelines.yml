@@ -5,7 +5,7 @@ options:
 
 pipelines:
   branches:
-    "{master}":
+    "{master}":  
     - step:
         name: Deploy to dockerhub
         services:
@@ -28,7 +28,7 @@ pipelines:
           - export NOTIFICATIONS_IMAGE_NAME=octoniusapp/octonius:notifications-server
           - export UTILITIES_IMAGE_NAME=octoniusapp/octonius:utilities-server
           - export FOLIO_IMAGE_NAME=octoniusapp/octonius:folio-server
-          - export QUERY_IMAGE_NAME=octoniusapp/octonius:query-server
+          - export SEARCH_IMAGE_NAME=octoniusapp/octonius:search-server
           - export NGINX_IMAGE_NAME=octoniusapp/octonius:nginx
 
           # build the Docker image (this will use the Dockerfile in the root of the repo)
@@ -42,7 +42,7 @@ pipelines:
           - docker build -t $NOTIFICATIONS_IMAGE_NAME --compress=true --force-rm=true ./services/notifications/server
           - docker build -t $UTILITIES_IMAGE_NAME --compress=true --force-rm=true ./services/utilities/server
           - docker build -t $FOLIO_IMAGE_NAME --compress=true --force-rm=true ./services/folio/server
-          - docker build -t $QUERY_IMAGE_NAME --compress=true --force-rm=true ./services/query-service
+          - docker build -t $SEARCH_IMAGE_NAME --compress=true --force-rm=true ./services/search/server
           - docker build -t $NGINX_IMAGE_NAME --compress=true --force-rm=true ./nginx
 
           # Clear unnecessary Image build
@@ -62,21 +62,19 @@ pipelines:
           - docker push $NOTIFICATIONS_IMAGE_NAME
           - docker push $UTILITIES_IMAGE_NAME
           - docker push $FOLIO_IMAGE_NAME
-          - docker push $QUERY_IMAGE_NAME
+          - docker push $SEARCH_IMAGE_NAME
           - docker push $NGINX_IMAGE_NAME
 
+    - step:
+       name: Deploy to production server
+       script:
+         - pipe: atlassian/ssh-run:0.2.2
+           variables:
+             SSH_USER: 'ubuntu'
+             SERVER: $HOST_ADDRESS
+             COMMAND: 'cd /home/ubuntu/octonius; echo $HOST_PASSWORD | sudo -S ./deploy-swarm.sh'  
+    
     "{staging}":
-    # - step:
-    #     name: Deploy to Server
-    #     image: ubuntu:latest
-    #     deployment: staging
-    #     script:
-    #       - apt-get update && apt-get install -y sshpass
-    #       # - sshpass -p $HOST_PASSWORD ssh -tt $HOST_ADDRESS 'cd /home/ubuntu/flash; sudo -S -s /bin/bash -c "./deploy.sh"'
-    #       - sshpass -e ssh $HOST_ADDRESS < 'EOF'
-    #       - su -
-    #       - echo "test"
-    #       - EOF
     - step:
         name: Deploy to dockerhub
         services:
@@ -99,7 +97,7 @@ pipelines:
           - export NOTIFICATIONS_IMAGE_NAME=octoniusapp/octonius-alpha:notifications-server
           - export UTILITIES_IMAGE_NAME=octoniusapp/octonius-alpha:utilities-server
           - export FOLIO_IMAGE_NAME=octoniusapp/octonius-alpha:folio-server
-          - export QUERY_IMAGE_NAME=octoniusapp/octonius-alpha:query-server
+          - export SEARCH_IMAGE_NAME=octoniusapp/octonius-alpha:search-server
           - export NGINX_IMAGE_NAME=octoniusapp/octonius-alpha:nginx
 
           # build the Docker image (this will use the Dockerfile in the root of the repo)
@@ -113,7 +111,7 @@ pipelines:
           - docker build -t $NOTIFICATIONS_IMAGE_NAME --compress=true --force-rm=true ./services/notifications/server
           - docker build -t $UTILITIES_IMAGE_NAME --compress=true --force-rm=true ./services/utilities/server
           - docker build -t $FOLIO_IMAGE_NAME --compress=true --force-rm=true ./services/folio/server
-          - docker build -t $QUERY_IMAGE_NAME --compress=true --force-rm=true ./services/query-service
+          - docker build -t $SEARCH_IMAGE_NAME --compress=true --force-rm=true ./services/search/server
           - docker build -t $NGINX_IMAGE_NAME --compress=true --force-rm=true ./nginx
 
           # Clear unnecessary Image build
@@ -133,8 +131,17 @@ pipelines:
           - docker push $NOTIFICATIONS_IMAGE_NAME
           - docker push $UTILITIES_IMAGE_NAME
           - docker push $FOLIO_IMAGE_NAME
-          - docker push $QUERY_IMAGE_NAME
+          - docker push $SEARCH_IMAGE_NAME
           - docker push $NGINX_IMAGE_NAME
+
+    - step:
+       name: Deploy to staging server
+       script:
+         - pipe: atlassian/ssh-run:0.2.2
+           variables:
+             SSH_USER: 'ubuntu'
+             SERVER: $HOST_ADDRESS
+             COMMAND: 'cd /home/ubuntu/flash; echo $HOST_PASSWORD | sudo -S ./deploy-swarm.sh'      
           
 definitions:
    services:
