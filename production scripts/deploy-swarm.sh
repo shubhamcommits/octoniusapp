@@ -19,6 +19,7 @@ sudo chmod u+x data
 docker login
 
 # Pull the images
+
 # Client Microservice Image Name
 export CLIENT_IMAGE_NAME=octoniusapp/octonius:client
 
