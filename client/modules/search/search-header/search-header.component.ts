@@ -57,9 +57,6 @@ export class SearchHeaderComponent implements OnInit {
     this.searchPosts(this.searchQuery);
     this.searchUsers(this.searchQuery);
     this.searchFiles(this.searchQuery);
-    // this.createPostQuery()
-    // this.createUserQuery();
-    // this.createFileQuery();
   }
 
   /**
@@ -67,8 +64,8 @@ export class SearchHeaderComponent implements OnInit {
    */
   searchPosts(postQuery){
     try {
-      new Promise((resolve, reject)=>{
-        this.searchService.getSearchResults(postQuery, 'posts').then((res: any) => {
+      new Promise(async (resolve, reject) => {
+        await this.searchService.getSearchResults(postQuery, 'posts').then((res: any) => {
           if (res.results.length > 0) {
             const result = res.results.filter((restult) => this.searchedPosts.every((post) => post._id !== restult._id));
             result.forEach(post => {
@@ -78,8 +75,28 @@ export class SearchHeaderComponent implements OnInit {
           resolve();
         }).catch((err) => {
           reject();
+        });
+
+        let user: any;
+        await this.publicFunctions.getCurrentUser().then(
+          userResult => {
+            user = userResult;
+          }
+        );
+        await this.searchService.getSearchResults(postQuery, 'comments').then((res: any) => {
+          if (res.results.length > 0) {
+            const result = res.results.filter((restult) => this.searchedPosts.every((post) => post._id !== restult._post));
+            result.forEach(comment => {
+              if (user._groups.includes(comment.post[0]._group)) {
+                this.searchedPosts.push(comment.post[0]);
+              }
+            });
+          }
+          resolve();
+        }).catch((err) => {
+          reject();
         })
-      })
+      });
     } catch (error) {
 
     }
@@ -109,12 +126,10 @@ export class SearchHeaderComponent implements OnInit {
     } catch (error) {
 
     }
-    }
+  }
     /**
    * User Query Ends
    */
-
-
 
    /**
     * File Query Starts
@@ -126,14 +141,8 @@ export class SearchHeaderComponent implements OnInit {
           if (res.results.length > 0){
             const result = res.results.filter((restult) => this.searchedFiles.every((file) => file._id !== restult._id));
             result.forEach(file => {
-
-              this.publicFunctions.getOtherUser(file._posted_by).then((user) => {
-                file['postedBy'] = user['first_name'] + ' ' + user['last_name'];
-              });
-
-              this.publicFunctions.getGroupDetails(file._group).then((group) => {
-                file['groupName'] = group['group_name'];
-              });
+              file['postedBy'] = file['postedBy'][0]['first_name'] + ' ' + file['postedBy'][0]['last_name'];
+              file['groupName'] = file['group'][0]['group_name'];
 
               this.searchedFiles.push(file);
             });
@@ -147,7 +156,6 @@ export class SearchHeaderComponent implements OnInit {
 
     }
    }
-
    /**
     * File Query Ends
     */
