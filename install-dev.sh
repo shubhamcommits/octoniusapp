@@ -1,10 +1,9 @@
 #!/bin/bash
 
-
-# Octonius development server
+# Octonius Development Services Installation Script
 
 echo -e "\n \t ============================ |- Welcome to Octonius Development Server -| ========================== \n"
-echo -e "\t Kindly choose the package manager below to start installing the app locally(type the option number)..."
+echo -e "\t Kindly choose the package manager below to start installing the services locally (type the option number)..."
 echo "  1) npm"
 echo "  2) yarn"
 
@@ -20,67 +19,128 @@ esac
 packageManager="npm"
 
 # Checking if Selected package manager is npm
-if [ "$n" == 1 ]
+if [ "$n" == 2 ]
 
 then
-    packageManager="npm"
-
-# Else package manager is yarn
-else
     packageManager="yarn"
+
+# Else package manager is npm
+else
+    packageManager="npm"
 
 fi
 
-    # Installing pm2 globally
+# Fetching the OS Details
+UNAME=$( command -v uname)
+
+case $( "${UNAME}" | tr '[:upper:]' '[:lower:]') in
+  
+  linux*)
+
+    printf 'Your OS is Linux\n'
+        
+    # Installing pm2 globally on Linux
     if [ "$packageManager" == "npm" ]
 
     then    
-        sudo $packageManager -g install pm2
+        sudo $packageManager -g install pm2 --force
 
     else
         sudo $packageManager global add pm2
 
     fi
-
-    # Assign Current workdir
-    mainDir=$PWD
-    
-    # Go to services directory
-    cd services
-
-    # Define the service Directory array
-    serviceArray=( 'mailing/server' 'authentication/server' 'groups/server' 'workspaces/server' 'search/server' 'users/server' 'posts/server' 'notifications/server' 'utilities/server' 'folio/server' 'client' )
-
-    # Loop through all the directories and install the packages 
-    for i in "${serviceArray[@]}"
-    do
-        if [ "$i" == 'client' ]
-            
-        then
-            cd $mainDir
+    ;;
+  
+  darwin*)
+    printf 'Your OS is Darwin\n'
         
-        fi
+    # Installing pm2 globally on MacOS
+    if [ "$packageManager" == "npm" ]
 
-        # Go to service directory
-        cd $i
+    then    
+        sudo $packageManager -g install pm2 --force
 
-        service="$(cut -d'/' -f1 <<<"$i")"
+    else
+        sudo $packageManager global add pm2
 
-        # Echo the Status
-        echo -e "\n \t Installing $service Service..."
+    fi
+    ;;
+  
+  msys*|cygwin*|mingw*)
+    printf 'Your OS is Windows\n'
 
-        # Create Uploads Folder
-        mkdir uploads
+    # Installing pm2 globally on Windows
+    if [ "$packageManager" == "npm" ]
 
-        # Start the process and push it to background
-        $packageManager install &
+    then    
+        $packageManager -g install pm2 --force
 
-        # Wait for process to get completed
-        wait
+    else
+        $packageManager global add pm2
 
-        # Echo the status
-        echo -e "\n \t $service Service installed successfully!"  
+    fi
+    ;;
+  
+  nt|win*)
+    printf 'Your OS is Windows\n'
 
-        # Go back to main working directory(i.e. - services/)
-        cd -
-    done
+    # Installing pm2 globally on Windows
+    if [ "$packageManager" == "npm" ]
+
+    then    
+        $packageManager -g install pm2 --force
+
+    else
+        $packageManager global add pm2
+
+    fi
+    ;;
+  
+  *)
+    printf 'Cannot proceed with the installation, please contact the octonius dev team!\n'
+    exit 1
+    ;;
+esac
+
+# Assign Current workdir
+mainDir=$PWD
+
+# Go to services directory
+cd services
+
+# Define the service Directory array
+serviceArray=( 'mailing/server' 'authentication/server' 'groups/server' 'workspaces/server' 'search/server' 'users/server' 'posts/server' 'notifications/server' 'utilities/server' 'folio/server' 'client' )
+
+# Loop through all the directories and install the packages 
+for i in "${serviceArray[@]}"
+do
+    if [ "$i" == 'client' ]
+        
+    then
+        cd $mainDir
+    
+    fi
+
+    # Go to service directory
+    cd $i
+
+    service="$(cut -d'/' -f1 <<<"$i")"
+
+    # Echo the Status
+    echo -e "\n \t Installing $service service..."
+
+    # Create Uploads Folder
+    mkdir uploads
+
+    # Start the process and push it to background
+    $packageManager install &
+
+    # Wait for process to get completed
+    wait
+
+    # Echo the status
+    echo -e "\n \t $service service installed successfully!"  
+
+    # Go back to main working directory(i.e. - services/)
+    cd -
+done
