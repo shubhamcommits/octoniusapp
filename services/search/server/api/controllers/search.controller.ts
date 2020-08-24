@@ -9,7 +9,7 @@ const searchService = new SearchService();
 export class SearchController {
 
   async getSearchResults(req: Request, res: Response, next: NextFunction) {
-    await searchService.getSearchResults(req, res, req.params.amountLoaded).then((results) => {
+    await searchService.getSearchResults(req, res).then((results) => {
       res.status(200).json({
         message: 'successfully retrieved results',
         results
