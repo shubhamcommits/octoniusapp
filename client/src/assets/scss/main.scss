@@ -92,9 +92,11 @@ body {
 .list-group-item {
   margin: 0px 0px 10px 0px !important;
   // background-color: transparent;
-  border: 1px solid $border-color !important;
+  // border: 1px solid $border-color !important;
+  border:none;
   padding: 0px;
   border-radius: $card-radius !important;
+  box-shadow: 0 3px 0 #005fd521;
 }
 
 h6,
@@ -407,6 +409,7 @@ p {
   z-index: 10;
   border-radius: 20px;
 }
+
 
 .editor {
   border: 1px solid $brand-primary;
