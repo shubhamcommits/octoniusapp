@@ -166,7 +166,6 @@ export class InlineInputComponent implements ControlValueAccessor, OnInit {
    * @param dateObject
    */
   onModelChange(dateObject: any) {
-    console.log(dateObject.value);
     // this.value = new Date(dateObject.year, dateObject.month - 1, dateObject.day);
     this.value = dateObject.value;
     this.saveData();

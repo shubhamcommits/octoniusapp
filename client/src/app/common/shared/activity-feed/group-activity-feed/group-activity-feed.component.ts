@@ -47,7 +47,7 @@ export class GroupActivityFeedComponent implements OnInit {
 
         this.moreToLoad = true
 
-        await this.ngOnInit();
+        // await this.ngOnInit();
       }
     }));
   }
@@ -150,7 +150,6 @@ export class GroupActivityFeedComponent implements OnInit {
 
     // Return the function via stopping the loader
     return this.isLoading$.next(false);
-
   }
 
   // Check if the data provided is not empty{}
