@@ -1,24 +1,29 @@
-version: "3.3"
+version: '3.6'
 
 services:
 
   mongodb:
-    container_name: mongodb
-    image: 'mongo:latest'
-    restart: always
+    image: mongo:latest
     volumes:
       - production_db_data:/data/db
     ports:
       - 27017:27017
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+      placement:
+        constraints: [node.role == manager]
+      restart_policy:
+        condition: on-failure
     networks:
-      - production
+      - production  
       
   mailing-server:
-    container_name: mailing-server
     image: octoniusapp/octonius:mailing-server
     ports:
       - 2000:2000
-    restart: always
     volumes:
       - /usr/app/node_modules
     environment:
@@ -38,17 +43,20 @@ services:
       - DOMAIN=workplace.octonius.com
     depends_on:
       - mongodb
-    links:
-      - mongodb
+    deploy:
+      replicas: 3
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
     networks:
       - production
       
   auths-server:
-    container_name: auths-server
     image: octoniusapp/octonius:auths-server
     ports:
       - 3000:3000
-    restart: always
     volumes:
       - /usr/app/node_modules
     environment:
@@ -68,17 +76,20 @@ services:
       - DOMAIN=workplace.octonius.com
     depends_on:
       - mongodb
-    links:
-      - mongodb
+    deploy:
+      replicas: 3
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
     networks:
       - production
          
   groups-server:
-    container_name: groups-server
     image: octoniusapp/octonius:groups-server
     ports:
       - 4000:4000
-    restart: always
     volumes:
       - /usr/app/node_modules
       - production_groups_uploads_data:/usr/app/uploads
@@ -99,17 +110,20 @@ services:
       - DOMAIN=workplace.octonius.com
     depends_on:
       - mongodb
-    links:
-      - mongodb
+    deploy:
+      replicas: 3
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
     networks:
       - production
       
   workspaces-server:
-    container_name: workspaces-server
     image: octoniusapp/octonius:workspaces-server
     ports:
       - 5000:5000
-    restart: always
     volumes:
       - /usr/app/node_modules
       - production_workspaces_uploads_data:/usr/app/uploads
@@ -130,17 +144,20 @@ services:
       - DOMAIN=workplace.octonius.com
     depends_on:
       - mongodb
-    links:
-      - mongodb
+    deploy:
+      replicas: 3
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
     networks:
       - production
       
   search-server:
-    container_name: search-server
     image: octoniusapp/octonius:search-server
     ports:
       - 12000:12000
-    restart: always
     volumes:
       - /usr/app/node_modules
       - production_search_uploads_data:/usr/app/uploads
@@ -161,17 +178,20 @@ services:
       - DOMAIN=workplace.octonius.com
     depends_on:
       - mongodb
-    links:
-      - mongodb
+    deploy:
+      replicas: 3
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
     networks:
       - production
       
   users-server:
-    container_name: users-server
     image: octoniusapp/octonius:users-server
     ports:
       - 7000:7000
-    restart: always
     volumes:
       - /usr/app/node_modules
       - production_users_uploads_data:/usr/app/uploads
@@ -192,17 +212,20 @@ services:
       - DOMAIN=workplace.octonius.com
     depends_on:
       - mongodb
-    links:
-      - mongodb
+    deploy:
+      replicas: 3
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
     networks:
       - production
       
   posts-server:
-    container_name: posts-server
     image: octoniusapp/octonius:posts-server
     ports:
       - 8000:8000
-    restart: always
     volumes:
       - /usr/app/node_modules
       - production_posts_uploads_data:/usr/app/uploads
@@ -223,17 +246,20 @@ services:
       - DOMAIN=workplace.octonius.com
     depends_on:
       - mongodb
-    links:
-      - mongodb
+    deploy:
+      replicas: 3
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
     networks:
       - production
       
   notifications-server:
-    container_name: notifications-server
     image: octoniusapp/octonius:notifications-server
     ports:
       - 9000:9000
-    restart: always
     volumes:
       - /usr/app/node_modules
     environment:
@@ -253,17 +279,20 @@ services:
       - DOMAIN=workplace.octonius.com
     depends_on:
       - mongodb
-    links:
-      - mongodb
+    deploy:
+      replicas: 3
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
     networks:
       - production
       
   utilities-server:
-    container_name: utilities-server
     image: octoniusapp/octonius:utilities-server
     ports:
       - 10000:10000
-    restart: always
     volumes:
       - /usr/app/node_modules
       - production_utilities_uploads_data:/usr/app/uploads
@@ -284,17 +313,20 @@ services:
       - DOMAIN=workplace.octonius.com
     depends_on:
       - mongodb
-    links:
-      - mongodb
+    deploy:
+      replicas: 3
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
     networks:
       - production
 
   folio-server:
-    container_name: folio-server
     image: octoniusapp/octonius:folio-server
     ports:
       - 11000:11000
-    restart: always
     volumes:
       - /usr/app/node_modules
     environment:
@@ -314,13 +346,17 @@ services:
       - DOMAIN=workplace.octonius.com
     depends_on:
       - mongodb
-    links:
-      - mongodb
+    deploy:
+      replicas: 3
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
     networks:
       - production
       
   client:
-    container_name: client
     image: octoniusapp/octonius:client
     volumes:
       - /usr/app/node_modules
@@ -335,13 +371,18 @@ services:
       - utilities-server
       - folio-server
       - search-server
+    deploy:
+      replicas: 3
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
     networks:
       - production
 
   nginx:
-    container_name: nginx
     image: octoniusapp/octonius:nginx
-    restart: always
     ports:
       - 8080:80
     depends_on:
@@ -356,6 +397,13 @@ services:
       - folio-server
       - search-server
       - client
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
     networks:
       - production
 
@@ -401,7 +449,7 @@ volumes:
       type: none
       device: ${PWD}/data/uploads/utilities
       o: bind
-
+  
   production_search_uploads_data:
     driver: local
     driver_opts:
@@ -411,4 +459,5 @@ volumes:
       
 networks:
   production: 
-    driver: bridge
+    driver: overlay
+# If any problem related to newtworks occured in future, use proxy of network to be true
