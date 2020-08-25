@@ -36,7 +36,7 @@
         <div class="task_cell_asignee">
           <img src="{{baseUrl}}/{{task?.task?._assigned_to?.profile_pic}}"
             onerror="this.src='assets/images/user.png'"
-            [ngClass]="(showAssigneeName) ? 'feed-avatar assignee-avatar' : 'feed-avatar'">
+            [ngClass]="'feed-avatar'">
         </div>
 
         <div class="task_cell_date">

@@ -12,7 +12,7 @@
           <h5 class="mt-0 mb-1 kanban-card-title">{{ task?.title | truncatetext:60 }}</h5>
           <span class="small"
           *ngIf="task?.task?.due_to != 'Invalid date' && task?.task?.status != 'done'"
-          [ngClass]="checkOverdue(task) === true ? 'overdue' : 'due'">
+          [ngClass]="'due'">
           {{task?.task?.due_to | date}}</span>
         </div>
 
