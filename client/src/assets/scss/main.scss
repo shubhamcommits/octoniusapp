@@ -16,7 +16,7 @@
 // Import Custom Scrollbar Scss
 @import "scrollbar.scss";
 
-$font-size-base: 16px;
+$font-size-base: 14px;
 // $body-bg: #f3f4f6;
 
 /* COMPONENT CSS */
@@ -410,6 +410,9 @@ p {
   border-radius: 20px;
 }
 
+// .postbox-editor{
+//   color: #31313190 !important;
+// }
 
 .editor {
   border: 1px solid $brand-primary;
