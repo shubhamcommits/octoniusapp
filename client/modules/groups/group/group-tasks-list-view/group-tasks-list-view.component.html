@@ -159,6 +159,17 @@
                   </div>
                 </div>
                 <!-- TASK DETAILS ENDS -->
+
+                <!-- DONE TASKS -->
+                <app-done-tasks-list-view *ngIf="column.tasks.done"
+                  [tasks]="column.tasks.done"
+                  [columns]="columns"
+                  [groupData]="groupData"
+                  [userData]="userData"
+                  [customFieldsToShow]="customFieldsToShow"
+                  (closeModalEvent)="onModalCloseEvent()"
+                  ></app-done-tasks-list-view>
+                <!-- DONE TASKS ENDS -->
               </div>
               <!-- TASK CONTAINER ENDS -->
 

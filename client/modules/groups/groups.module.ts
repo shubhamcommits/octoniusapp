@@ -19,11 +19,6 @@
  /**
   * 1. !===== COMPONENTS =====!
   */
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-
-import { GroupsRoutingModule } from './groups-routing.module';
 import { GroupsListComponent } from './groups-list/groups-list.component';
 import { CreateGroupComponent } from './groups-list/create-group/create-group.component';
 import { GroupComponent } from './group/group.component';
@@ -42,43 +37,47 @@ import { GroupComponent } from './group/group.component';
 import { GroupMembersComponent } from './group/group-members/group-members.component';
 // import { GroupPostComponent } from './group/group-post/group-post.component';
 // import { GroupImageDetailsComponent } from './group/group-header/group-image-details/group-image-details.component';
-
-
-
- /**
-  * 2. !===== MODULES =====!
-  */
-import { SharedModule } from 'src/app/common/shared/shared.module';
-// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DragDropModule } from '@angular/cdk/drag-drop';
-// import { MomentModule } from "ngx-moment";
-
- /**
-  * 3. !===== SERVICES =====!
-  */
-import { GroupsService } from 'src/shared/services/groups-service/groups.service';
-import { GroupService } from 'src/shared/services/group-service/group.service';
 import { GroupAdminComponent } from './group/group-admin/group-admin.component';
 import { GroupActivityComponent } from './group/group-activity/group-activity.component';
 import { DeleteGroupComponent } from './group/group-admin/delete-group/delete-group.component';
-import { PostService } from 'src/shared/services/post-service/post.service';
 import { GroupKanbanBoardsComponent } from './group/group-kanban-boards/group-kanban-boards.component';
 import { CreateColumnComponent } from './group/group-kanban-boards/create-column/create-column.component';
 import { BoardBarComponent } from './group/group-kanban-boards/board-bar/board-bar.component';
 import { NewTaskComponent } from './group/group-kanban-boards/new-task/new-task.component';
 import { EditColumnComponent } from './group/group-kanban-boards/edit-column/edit-column.component';
 import { GroupPostComponent } from './group/group-post/group-post.component';
-import { CommentService } from 'src/shared/services/comment-service/comment.service';
 import { InviteUserComponent } from './group/group-admin/invite-user/invite-user.component';
 import { GroupTasksViewsComponent } from './group/group-tasks-views/group-tasks-views.component';
 import { GroupTasksListViewComponent } from './group/group-tasks-list-view/group-tasks-list-view.component';
-import { MatButtonModule, MatMenuModule, MatChipsModule, MatDialogModule, MatSelectModule } from '@angular/material';
 import { CustomFieldsDialogComponent } from './group/custom-fields-dialog/custom-fields-dialog.component';
 import { GroupSmartAdminComponent } from './group/group-admin/group-smart-admin/group-smart-admin.component';
+import { CreateSectionComponent } from './group/group-tasks-list-view/create-section/create-section.component';
+import { DoneTasksListViewComponent } from './group/group-tasks-list-view/done-tasks-list-view/done-tasks-list-view.component';
+import { DoneTasksKanbanViewComponent } from './group/group-kanban-boards/done-tasks-kanban-view/done-tasks-kanban-view.component';
+
+ /**
+  * 2. !===== MODULES =====!
+  */
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
+import { GroupsRoutingModule } from './groups-routing.module';
+import { SharedModule } from 'src/app/common/shared/shared.module';
+// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+// import { MomentModule } from "ngx-moment";
+import { MatButtonModule, MatMenuModule, MatChipsModule, MatDialogModule, MatSelectModule } from '@angular/material';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { CreateSectionComponent } from './group/group-tasks-list-view/create-section/create-section.component';
 
+ /**
+  * 3. !===== SERVICES =====!
+  */
+import { GroupsService } from 'src/shared/services/groups-service/groups.service';
+import { GroupService } from 'src/shared/services/group-service/group.service';
+import { PostService } from 'src/shared/services/post-service/post.service';
+import { CommentService } from 'src/shared/services/comment-service/comment.service';
 
 /**
  * 4. !===== DECLARATIONS, IMPORTS, EXPORTS, & PROVIDERS =====!
@@ -163,7 +162,9 @@ import { CreateSectionComponent } from './group/group-tasks-list-view/create-sec
     // GroupImageDetailsComponent,
 
     GroupTasksViewsComponent,
-    CustomFieldsDialogComponent
+    CustomFieldsDialogComponent,
+    DoneTasksListViewComponent,
+    DoneTasksKanbanViewComponent
   ],
   imports: [
     CommonModule,

@@ -225,7 +225,8 @@ import { TruncateTextPipe } from 'src/shared/pipes/truncate-text.pipe';
 
     MatSidenavModule,
     InlineInputComponent,
-    GroupCreatePostDialogComponent
+    GroupCreatePostDialogComponent,
+    TruncateTextPipe,
   ],
   providers: [
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}

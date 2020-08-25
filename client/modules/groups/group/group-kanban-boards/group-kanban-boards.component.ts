@@ -51,7 +51,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
 
   /**
    * Standard Angular CDK Event which monitors the drop functionality between different columns
-   * @param event 
+   * @param event
    */
   drop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {
@@ -86,7 +86,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
 
   /**
    * This function recieves the output from the other component for creating column
-   * @param column 
+   * @param column
    */
   addColumn(column: any) {
 
@@ -104,10 +104,10 @@ export class GroupKanbanBoardsComponent implements OnInit {
       // Create the Column asynchronously
       this.createNewColumn(this.groupId, column.title)
 
-      // Assign the tasks to be [] 
+      // Assign the tasks to be []
       column.tasks = []
 
-      // Push the Column  
+      // Push the Column
       this.columns.push(column)
     }
 
@@ -141,8 +141,8 @@ export class GroupKanbanBoardsComponent implements OnInit {
 
   /**
    * This function is responsible for removing the column
-   * @param groupId 
-   * @param columnName 
+   * @param groupId
+   * @param columnName
    */
   removeColumn(groupId: string, columnName: string){
 
@@ -166,8 +166,8 @@ export class GroupKanbanBoardsComponent implements OnInit {
 
   /**
    * This function is responsible for renaming a column
-   * @param oldCol 
-   * @param newColTitle 
+   * @param oldCol
+   * @param newColTitle
    */
   editColumn(oldCol: any, newColTitle: any) {
 
@@ -201,7 +201,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
 
   /**
    * This function is responsible for deleting a column from the board
-   * @param column 
+   * @param column
    */
   deleteColumn(column: any) {
 
@@ -232,7 +232,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
                   oldColumn: this.columns[index]['title'],
                   newColumn: 'to do'
                 }
-  
+
                 // Call HTTP Put request to move the tasks
                 this.moveTaskToColumn(columnEvent)
               })
@@ -267,8 +267,8 @@ export class GroupKanbanBoardsComponent implements OnInit {
 
   /**
    * This function is responsible for fetching the post
-   * @param post 
-   * @param column 
+   * @param post
+   * @param column
    */
   getPost(post: any, column: any) {
 
@@ -278,9 +278,9 @@ export class GroupKanbanBoardsComponent implements OnInit {
 
   /**
    * This function handles the response of moving the task to another column
-   * @param task 
-   * @param oldColumn 
-   * @param newColumn 
+   * @param task
+   * @param oldColumn
+   * @param newColumn
    */
   moveTaskToNewColumn(task: any, oldColumn: string, newColumn: string) {
 
@@ -300,12 +300,16 @@ export class GroupKanbanBoardsComponent implements OnInit {
     return !(JSON.stringify(object) === JSON.stringify({}))
   }
 
+  async onModalCloseEvent() {
+    this.closeModalEvent.emit();
+  }
+
   /**
    * This function is responsible for opening a fullscreen dialog to edit a task
    */
   openFullscreenModal(postData: any): void {
     const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, this.groupId, this.columns);
-    
+
     const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
       this.closeModalEvent.emit();
     });
@@ -316,7 +320,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
 
   /**
    * This function handles the UI updation of the moving tasks into various columns
-   * @param $event 
+   * @param $event
    */
   moveTaskToColumn($event: any) {
 
@@ -339,8 +343,8 @@ export class GroupKanbanBoardsComponent implements OnInit {
 
   /**
    * This function updates the status on the UI
-   * @param task 
-   * @param status 
+   * @param task
+   * @param status
    */
   changeStatus(task: any, status: any) {
 
@@ -350,8 +354,8 @@ export class GroupKanbanBoardsComponent implements OnInit {
 
   /**
    * This function changes the assignee
-   * @param task 
-   * @param memberMap 
+   * @param task
+   * @param memberMap
    */
   changeAssignee(task: any, memberMap: any) {
 
@@ -367,8 +371,8 @@ export class GroupKanbanBoardsComponent implements OnInit {
 
   /**
    * This function is responsible for changing the due date
-   * @param task 
-   * @param dueDate 
+   * @param task
+   * @param dueDate
    */
   changeDueDate(task: any, dueDate: any) {
 
@@ -388,8 +392,8 @@ export class GroupKanbanBoardsComponent implements OnInit {
 
   /**
    * This function changes the details on the UI
-   * @param task 
-   * @param post 
+   * @param task
+   * @param post
    */
   changeDetails(task: any, post: any) {
 
@@ -418,11 +422,11 @@ export class GroupKanbanBoardsComponent implements OnInit {
 
   /**
    * This function checks the task board if a particular task is overdue or not
-   * @param taskPost 
+   * @param taskPost
    * And applies the respective ng-class
-   * 
+   *
    * -----Tip:- Don't make the date functions asynchronous-----
-   * 
+   *
    */
   checkOverdue(taskPost: any) {
     return moment(taskPost.task.due_to).format('YYYY-MM-DD') < this.today;
