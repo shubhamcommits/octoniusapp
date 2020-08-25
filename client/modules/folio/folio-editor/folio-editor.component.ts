@@ -17,7 +17,7 @@ ShareDB.types.register(require('rich-text').type);
 // Environment Variables
 import { environment } from 'src/environments/environment';
 
-// Highlight.js 
+// Highlight.js
 import * as hljs from 'highlight.js';
 
 // Highlight.js sublime css
@@ -70,7 +70,8 @@ export class FolioEditorComponent implements OnInit {
       },
       history: {
         userOnly: true
-      }
+      },
+      mention: {}
     }
   }
 
@@ -113,6 +114,9 @@ export class FolioEditorComponent implements OnInit {
   // Folio ID Variable
   folioId = this._ActivatedRoute.snapshot.paramMap.get('id')
 
+  // GroupId variable
+  groupId = this._ActivatedRoute.snapshot.queryParamMap.get('group');
+
   // Read Only State of the folio
   readOnly = true
 
@@ -121,6 +125,9 @@ export class FolioEditorComponent implements OnInit {
 
   // Create new Object of quillEditorComponent
   quillEditorComponent = new QuillEditorComponent(this._Injector)
+
+  // Uploads url for Files
+  filesBaseUrl = environment.UTILITIES_FILES_UPLOADS
 
   ngOnInit() {
 
@@ -154,6 +161,9 @@ export class FolioEditorComponent implements OnInit {
     // Set the Status of the toolbar
     this.modules.toolbar = (this.toolbar === false) ? false : this.quillEditorComponent.quillFullToolbar()
 
+    // Set the Mention Module
+    this.modules.mention = this.metionModule();
+
     // Initialise quill editor
     this.quill = this.quillEditor(this.modules)
 
@@ -161,7 +171,7 @@ export class FolioEditorComponent implements OnInit {
     if(!this.readOnly)
       var cursor = this.createCursor(this.quill, this.userData);
 
-    // 
+    //
     this.initializeFolio(this.folio, this.quill)
 
   }
@@ -174,7 +184,7 @@ export class FolioEditorComponent implements OnInit {
     // Connect with the Socket Backend
     this.shareDBSocket = new ReconnectingWebSocket(environment.FOLIO_BASE_URL + '/editor', [], this.webSocketOptions)
 
-    // Initialise the Realtime DB Connection 
+    // Initialise the Realtime DB Connection
     let shareDBConnection = new ShareDB.Connection(this.shareDBSocket)
 
     // Return the Document with the respective folioId
@@ -183,7 +193,7 @@ export class FolioEditorComponent implements OnInit {
 
   /**
    * This function is responsible for initialising the quill editor
-   * @param modules 
+   * @param modules
    */
   quillEditor(modules: Object) {
 
@@ -201,8 +211,8 @@ export class FolioEditorComponent implements OnInit {
 
   /**
    * This function is responsible for creating the cursor
-   * @param quill 
-   * @param user 
+   * @param quill
+   * @param user
    */
   createCursor(quill: Quill, user: any) {
 
@@ -216,7 +226,7 @@ export class FolioEditorComponent implements OnInit {
 
   /**
    * This function is responsible for fetching the folio
-   * @param folio 
+   * @param folio
    */
   initializeFolio(folio: any, quill: Quill) {
 
@@ -286,6 +296,95 @@ export class FolioEditorComponent implements OnInit {
     })
   }
 
+  /**
+   * This function returns the mention module
+   */
+  metionModule() {
+    return {
+      allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
+      mentionDenotationChars: ["@", "#"],
+      source: async (searchTerm, renderList, mentionChar) => {
+
+        // Value of the mention list
+        let values: any;
+
+        // If User types "@" then trigger the list for user mentioning
+        if (mentionChar === "@") {
+
+          // Initialise values with list of members
+          values = await this.suggestMembers(this.groupId, searchTerm)
+
+          // Adding All Object to mention all the members
+          values.unshift({
+            id: 'all',
+            value: 'all'
+          })
+
+          // If User types "#" then trigger the list for files mentioning
+        } else if (mentionChar === "#") {
+
+          // Initialise values with list of files
+          values = await this.suggestFiles(this.groupId, searchTerm)
+        }
+
+        // If searchTerm length is 0, then show the full list
+        if (searchTerm.length === 0) {
+          renderList(values, searchTerm);
+        } else {
+          const matches = [];
+          for (let i = 0; i < values.length; i++)
+            if (
+              ~values[i].value.toLowerCase().indexOf(searchTerm.toLowerCase())
+            )
+              matches.push(values[i]);
+          renderList(matches, searchTerm);
+        }
+      }
+    }
+  }
+
+  /**
+   * This function is responsible for fetching the group members list
+   * @param groupId
+   * @param searchTerm
+   */
+  async suggestMembers(groupId: string, searchTerm: string) {
+
+    // Fetch the users list from the server
+    let usersList: any = await this.publicFunctions.searchGroupMembers(groupId, searchTerm)
+
+    // Map the users list
+    usersList = usersList['users'].map((user) => ({
+      id: user._id,
+      value: user.first_name + " " + user.last_name
+    }))
+
+    // Return the Array without duplicates
+    return Array.from(new Set(usersList))
+  }
+
+  /**
+   * This function is responsible for fetching the files list
+   * @param groupId
+   * @param searchTerm
+   */
+  async suggestFiles(groupId: string, searchTerm: string) {
+
+    // Fetch the users list from the server
+    let filesList: any = await this.publicFunctions.searchFiles(groupId, searchTerm, 'true');
+
+    // Map the users list
+    filesList = filesList.map((file: any) => ({
+      id: file._id,
+      value:
+        (file.type == 'folio')
+          ? `<a href="/#/document/${file._id}?group=${file._group._id}&readOnly=true" style="color: inherit" target="_blank">${file.original_name}</a>`
+          : `<a href="${this.filesBaseUrl}/${file.modified_name}" style="color: inherit" target="_blank">${file.original_name}</a>`
+    }))
+
+    // Return the Array without duplicates
+    return Array.from(new Set(filesList))
+  }
 
   /**
    * This function is responsible for closing the socket on destroying the component
