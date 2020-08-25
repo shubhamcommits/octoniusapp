@@ -8,7 +8,7 @@
 
                 <!-- COLUMN TITLE AND EDIT/DELETE DETAILS STARTS -->
                 <div class="column-title">
-                    <p class="text-capitalize"> {{ column?.title }}</p>
+                    <p class="text-capitalize"> {{ column?.title | truncatetext:60 }}</p>
                     <div class="inline-block" *ngIf="!(column.title =='to do')">
                         <div class="dropdown">
                             <i class="material-icons action dropdown-toggle"
@@ -49,7 +49,7 @@
                     <div class="task"
                         [ngClass]="{'status-todo': task?.task?.status === 'to do', 'status-inprogress': task?.task?.status === 'in progress', 'status-done': task?.task?.status === 'done'}"
                         *ngFor="let task of column.tasks; let j = index;" cdkDrag>
-                        
+
                         <div class="media" (click)="openFullscreenModal(task)">
                             <div class="media-body">
                                 <h5 class="mt-0 mb-1 kanban-card-title">{{ task?.title }}</h5>
@@ -58,7 +58,7 @@
                                 [ngClass]="checkOverdue(task) === true ? 'overdue' : 'due'">
                                 {{task?.task?.due_to | date}}</span>
                             </div>
-                            
+
                             <img src="{{baseUrl}}/{{task?.task?._assigned_to?.profile_pic}}"
                                 onerror="this.src='assets/images/user.png'"
                                 class="feed-avatar">
@@ -67,9 +67,20 @@
                     </div>
                     <!-- TASK DETAILS ENDS -->
 
+                    <!-- DONE TASKS -->
+                    <app-done-tasks-kanban-view *ngIf="column.tasks.done"
+                      [tasks]="column.tasks.done"
+                      [columns]="columns"
+                      [groupData]="groupData"
+                      [userData]="userData"
+                      (closeModalEvent)="onModalCloseEvent()">
+                    </app-done-tasks-kanban-view>
+
+
+                    <!-- DONE TASKS ENDS -->
+
                 </div>
                 <!-- TASK CONTAINER ENDS -->
-
             </div>
 
             <!-- CREATE NEW COLUMN START -->

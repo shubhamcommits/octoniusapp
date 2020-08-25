@@ -53,6 +53,7 @@ import { CustomFieldsDialogComponent } from './group/custom-fields-dialog/custom
 import { GroupSmartAdminComponent } from './group/group-admin/group-smart-admin/group-smart-admin.component';
 import { CreateSectionComponent } from './group/group-tasks-list-view/create-section/create-section.component';
 import { DoneTasksListViewComponent } from './group/group-tasks-list-view/done-tasks-list-view/done-tasks-list-view.component';
+import { DoneTasksKanbanViewComponent } from './group/group-kanban-boards/done-tasks-kanban-view/done-tasks-kanban-view.component';
 
  /**
   * 2. !===== MODULES =====!
@@ -163,6 +164,7 @@ import { CommentService } from 'src/shared/services/comment-service/comment.serv
     GroupTasksViewsComponent,
     CustomFieldsDialogComponent,
     DoneTasksListViewComponent,
+    DoneTasksKanbanViewComponent
   ],
   imports: [
     CommonModule,
