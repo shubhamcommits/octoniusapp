@@ -44,7 +44,7 @@
         </div>
 
         <div class="task_cell_cf" *ngFor="let field of customFieldsToShow" >
-            {{ task.task.custom_fields[field.name] }}
+            {{ (task.task.custom_fields) ? task.task.custom_fields[field.name] : '' }}
         </div>
 
         <div class="task_cell_more">
