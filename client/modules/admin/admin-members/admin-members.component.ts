@@ -34,9 +34,11 @@ export class AdminMembersComponent implements OnInit {
 
     // Subscribe to the change in workspace data from the socket server
     this.subSink.add(this.utilityService.currentWorkplaceData.subscribe((res) => {
-      if (JSON.stringify(res) != JSON.stringify({})) {
+      if (JSON.stringify(res) !== JSON.stringify({})) {
         this.workspaceData = res;
-        this.members = this.workspaceData.members;
+        this.members = this.workspaceData.members.sort((x, y) => {
+          return (x.active === y.active) ? 0 : x.active ? -1 : 1;
+        });
       }
     }));
 

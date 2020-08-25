@@ -20,13 +20,12 @@ export class MembersControllers {
                     ]
                 },
                 { _workspace: workspaceId },
-                { _groups: { $nin: groupId } },
-                { active: true }
+                { _groups: { $nin: groupId } }
             ]
         })
             .sort('_id')
             .limit(10)
-            .select('first_name last_name email role profile_pic')
+            .select('first_name last_name email role profile_pic active')
             .lean() || []
     }
 
@@ -139,13 +138,12 @@ export class MembersControllers {
                         ]
                     },
                     { _id: { $gt: lastUserId } },
-                    { _workspace: workspaceId },
-                    { active: true },
+                    { _workspace: workspaceId }
                 ]
             })
                 .sort('_id')
                 .limit(5)
-                .select('first_name last_name email role profile_pic')
+                .select('first_name last_name email role profile_pic active')
                 .lean() || []
 
             // Send the status 200 response

@@ -65,12 +65,9 @@ export class WorkspaceController {
             })
                 .populate({
                     path: 'members',
-                    select: 'first_name last_name profile_pic role email',
+                    select: 'first_name last_name profile_pic role email active',
                     options: {
                         limit: 10
-                    },
-                    match: {
-                        active: true
                     }
                 })
                 .lean()
@@ -79,8 +76,7 @@ export class WorkspaceController {
             // Workspace Company Members Count
             const membersCount = await User.find({
                 $and: [
-                    { _workspace: workspaceId },
-                    { active: true }
+                    { _workspace: workspaceId }
                 ]
             }).countDocuments();
 
@@ -307,7 +303,7 @@ export class WorkspaceController {
             })
                 .populate({
                     path: 'members',
-                    select: 'first_name last_name profile_pic role email',
+                    select: 'first_name last_name profile_pic role email active',
                     options: {
                         limit: 10
                     },
