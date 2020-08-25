@@ -17,7 +17,7 @@ export class DoneTasksKanbanViewComponent implements OnInit {
 
   @Output() closeModalEvent = new EventEmitter();
 
-  collapse = true;
+  showDoneTasks = false;
 
   // BASE URL OF THE APPLICATION
   baseUrl = environment.UTILITIES_USERS_UPLOADS;
