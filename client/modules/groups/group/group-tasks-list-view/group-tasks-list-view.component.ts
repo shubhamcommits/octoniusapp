@@ -100,10 +100,10 @@ export class GroupTasksListViewComponent implements OnInit {
     column.tasks.unshift(post);
   }
 
-    // Check if the data provided is not empty{}
-    checkDataExist(object: Object) {
-      return !(JSON.stringify(object) === JSON.stringify({}));
-    }
+  // Check if the data provided is not empty{}
+  checkDataExist(object: Object) {
+    return !(JSON.stringify(object) === JSON.stringify({}));
+  }
 
   /**
    * This function checks the task board if a particular task is overdue or not
@@ -115,6 +115,10 @@ export class GroupTasksListViewComponent implements OnInit {
    */
   checkOverdue(taskPost: any) {
     return moment(taskPost.task.due_to).format('YYYY-MM-DD') < this.today;
+  }
+
+  async onModalCloseEvent() {
+    this.closeModalEvent.emit();
   }
 
   /**

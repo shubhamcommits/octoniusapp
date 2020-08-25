@@ -1,0 +1,63 @@
+<mat-accordion>
+  <mat-expansion-panel id="DONE" >
+    <mat-expansion-panel-header class="column-title">
+      <!-- COLUMN TITLE -->
+      <mat-panel-title>
+        <p class="done-title">+ {{tasks?.length}} DONE (archived)</p>
+      </mat-panel-title>
+      <!-- COLUMN TITLE -->
+      <mat-panel-description>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <div class="task_row"
+      [ngClass]="{'status-todo': task?.task?.status === 'to do', 'status-inprogress': task?.task?.status === 'in progress', 'status-done': task?.task?.status === 'done'}"
+      *ngFor="let task of tasks; let j = index;">
+
+      <div class="task_content">
+          <div class="task_title">
+              {{ task.title | truncatetext:60 }}
+          </div>
+          <div class="task_cell_tag">
+            <div class="tags" *ngIf="task?.tags.length <= 1">
+                <span class="badge" *ngFor="let tag of task?.tags">
+                    {{ tag }}
+                </span>
+            </div>
+            <div class="tags" *ngIf="task?.tags.length > 1">
+                <span class="badge">
+                    {{ task?.tags[0] }}
+                </span>
+                <span class="badge">
+                    +{{ task?.tags.length-1 }}
+                </span>
+            </div>
+        </div>
+        <div class="task_cell_asignee">
+          <img src="{{baseUrl}}/{{task?.task?._assigned_to?.profile_pic}}"
+            onerror="this.src='assets/images/user.png'"
+            [ngClass]="(showAssigneeName) ? 'feed-avatar assignee-avatar' : 'feed-avatar'">
+        </div>
+
+        <div class="task_cell_date">
+            {{ task.task.due_to | date }}
+        </div>
+
+        <div class="task_cell_cf" *ngFor="let field of customFieldsToShow" >
+            {{ task.task.custom_fields[field.name] }}
+        </div>
+
+        <div class="task_cell_more">
+            <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
+            <mat-menu #menu="matMenu">
+                <a mat-menu-item (click)="openFullscreenModal(task)">
+                    <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
+                    <span>View</span>
+                </a>
+            </mat-menu>
+        </div>
+      </div>
+    </div>
+
+  </mat-expansion-panel>
+</mat-accordion>
