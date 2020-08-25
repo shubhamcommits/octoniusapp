@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DoneTasksListViewComponentComponent } from './done-tasks-list-view-component.component';
+import { DoneTasksListViewComponent } from './done-tasks-list-view.component';
 
-describe('DoneTasksListViewComponentComponent', () => {
-  let component: DoneTasksListViewComponentComponent;
-  let fixture: ComponentFixture<DoneTasksListViewComponentComponent>;
+describe('DoneTasksListViewComponent', () => {
+  let component: DoneTasksListViewComponent;
+  let fixture: ComponentFixture<DoneTasksListViewComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DoneTasksListViewComponentComponent ]
+      declarations: [ DoneTasksListViewComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DoneTasksListViewComponentComponent);
+    fixture = TestBed.createComponent(DoneTasksListViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
