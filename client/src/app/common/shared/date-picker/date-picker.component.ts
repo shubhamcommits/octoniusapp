@@ -1,7 +1,5 @@
 import { Component, OnInit, Output, EventEmitter, Input, forwardRef } from '@angular/core';
-import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { NG_VALUE_ACCESSOR} from '@angular/forms';
-import { environment } from 'src/environments/environment';
 import { MAT_DATE_FORMATS, DateAdapter, MAT_DATE_LOCALE } from '@angular/material';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import * as _moment from 'moment';
@@ -46,10 +44,8 @@ export class DatePickerComponent implements OnInit {
 
   constructor() { }
 
-  // Date Model Variable
-  // model: NgbDateStruct;
-
-  @Input('dueDate') dueDate: Date;
+  @Input('dueDate') dueDate: any;
+  @Input() styleClass;
 
   // Output date event emitter
   @Output('date') date = new EventEmitter();
@@ -59,14 +55,8 @@ export class DatePickerComponent implements OnInit {
   public onChange: any = Function.prototype; // Trascend the onChange event
 
   ngOnInit() {
-    /*
-    if (this.dueDate){
-      this.selectedDate = this.dueDate;
-    }
-    else{
-      this.selectedDate = new Date();
-    }
-    */
+    this._value = this.dueDate;
+    this.styleClass = (this.styleClass) ? 'input-date' : this.styleClass;
   }
 
   // Control Value Accessors for ngModel
@@ -91,9 +81,7 @@ export class DatePickerComponent implements OnInit {
    * @param dateObject
    */
   emitDate(dateObject: any){
-
     // Emit the date to the other components
-    // this.selectedDate = new Date(dateObject.year, dateObject.month - 1, dateObject.day)
     this.date.emit(dateObject.value)
   }
 

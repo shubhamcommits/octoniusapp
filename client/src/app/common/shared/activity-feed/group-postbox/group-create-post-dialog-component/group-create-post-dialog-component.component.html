@@ -109,24 +109,20 @@
             <p class="box-title">Due date</p>
             <div *ngIf="postData.type === 'task'" class="btn-group">
               <!-- Date Picker starts -->
-              <input matInput
-                [matDatepicker]='taskDate'
-                (dateChange)="getDate($event)"
-                [value]="postData?.task.due_to"
-                [ngClass]="'input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')" disabled>
-              <mat-datepicker-toggle matSuffix [for]="taskDate"></mat-datepicker-toggle>
-              <mat-datepicker #taskDate disabled="false"></mat-datepicker>
+              <app-date-picker
+                (date)="getDate($event)"
+                [dueDate]="postData?.task.due_to"
+                [styleClass]="'input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')">
+              </app-date-picker>
               <!--Date Picker ends -->
             </div>
             <div *ngIf="postData.type === 'event'" class="btn-group">
               <!-- Date Picker starts -->
-              <input matInput
-                [matDatepicker]='eventDate'
-                (dateChange)="getDate($event)"
-                [value]="postData?.event.due_to"
-                [ngClass]="'input-date'" disabled>
-              <mat-datepicker-toggle matSuffix [for]="eventDate"></mat-datepicker-toggle>
-              <mat-datepicker #eventDate disabled="false"></mat-datepicker>
+            <app-date-picker
+              (date)="getDate($event)"
+              [dueDate]="postData?.event.due_to"
+              [styleClass]="'input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')">
+            </app-date-picker>
               <!--Date Picker ends -->
             </div>
 

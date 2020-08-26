@@ -1,6 +1,6 @@
 <div class="btn-group">
   <input matInput [matDatepicker]='dEvent' (dateChange)="emitDate($event)"
-    [value]="value" class="input-date due" disabled>
+    [value]="value" class="{{styleClass}}" disabled>
   <mat-datepicker-toggle matSuffix [for]="dEvent"></mat-datepicker-toggle>
   <mat-datepicker #dEvent disabled="false"></mat-datepicker>
 </div>
