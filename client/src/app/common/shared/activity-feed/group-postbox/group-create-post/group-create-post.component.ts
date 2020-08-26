@@ -1,49 +1,15 @@
-import { Component, OnInit, Input, Output, EventEmitter, Injector, forwardRef } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, Injector } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'src/app/dashboard/public.functions';
 import { HotkeysService, Hotkey, HotkeyModule } from 'angular2-hotkeys';
-import { NG_VALUE_ACCESSOR} from '@angular/forms';
-import { MAT_DATE_FORMATS, DateAdapter, MAT_DATE_LOCALE } from '@angular/material';
-import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
-import * as _moment from 'moment';
-// tslint:disable-next-line:no-duplicate-imports
-import {default as _rollupMoment} from 'moment';
-
-const moment = _rollupMoment || _moment;
-
-const INLINE_EDIT_CONTROL_VALUE_ACCESSOR = {
-  provide: NG_VALUE_ACCESSOR,
-  useExisting: forwardRef(() => GroupCreatePostComponent),
-  multi: true
-};
-
-export const MY_FORMATS = {
-  parse: {
-    dateInput: 'LL',
-  },
-  display: {
-    dateInput: 'LL',
-    monthYearLabel: 'MMM YYYY',
-    dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY',
-  },
-};
+import moment from 'moment';
 
 @Component({
   selector: 'app-group-create-post',
   templateUrl: './group-create-post.component.html',
-  styleUrls: ['./group-create-post.component.scss'],
-  providers: [
-    INLINE_EDIT_CONTROL_VALUE_ACCESSOR,
-    {
-      provide: DateAdapter,
-      useClass: MomentDateAdapter,
-      deps: [ MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS ]
-    },
-    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
-  ]
+  styleUrls: ['./group-create-post.component.scss']
 })
 export class GroupCreatePostComponent implements OnInit {
 
@@ -292,14 +258,10 @@ export class GroupCreatePostComponent implements OnInit {
    * @param dateObject
    */
   getDate(dateObject: any) {
-    /*
-    this.dueDate = new Date(dateObject.year, dateObject.month - 1, dateObject.day)
-
+    this.dueDate = dateObject;
     if (this.edit) {
       this.date.emit(this.dueDate);
     }
-    */
-    this.date.emit(dateObject);
   }
 
   /**

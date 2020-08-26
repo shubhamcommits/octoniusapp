@@ -1,17 +1,6 @@
 <div class="btn-group">
-    <!-- Date Picker Toggle starts -->
-    <button class="btn btn-link dropdown-toggle btn-sm" data-toggle="dropdown">
-        {{ selectedDate | date:'fullDate' }}
-    </button>
-    <!-- Date Picker Toggle ends -->
-
-    <!-- Input Placeholder for date picker starts -->
-    <div class="dropdown-menu">
-        <ngb-datepicker 
-            [(ngModel)]="model" 
-            (ngModelChange)="emitDate($event)" 
-            (click)="$event.stopPropagation()">
-        </ngb-datepicker>
-    </div>
-    <!-- Input Placeholder for date picker ends -->
+  <input matInput [matDatepicker]='dEvent' (dateChange)="emitDate($event)"
+    [value]="value" class="input-date due" disabled>
+  <mat-datepicker-toggle matSuffix [for]="dEvent"></mat-datepicker-toggle>
+  <mat-datepicker #dEvent disabled="false"></mat-datepicker>
 </div>

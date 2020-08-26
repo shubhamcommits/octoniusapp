@@ -89,30 +89,27 @@
   <!-- Event Post Header ends -->
 
   <!-- Top Right Section starts -->
-  <div class="w400 float-right" *ngIf="type === 'task'">
-    <!-- Date Picker starts -->
-    <input matInput [matDatepicker]='dTask' (date)="getDate($event)"
-      [value]="postData?.task.due_to" class="input-date" disabled>
-    <mat-datepicker-toggle matSuffix [for]="dTask"></mat-datepicker-toggle>
-    <mat-datepicker #dTask disabled="false"></mat-datepicker>
-    <!-- Date Picker ends -->
-  </div>
+  <div class="w400 float-right">
 
-  <div class="w400 float-right" *ngIf="type === 'event'">
-    <!-- Date Picker starts -->
-    <input matInput [matDatepicker]='dEvent' (date)="getDate($event)"
-      [value]="postData?.event.due_to" class="input-date due" disabled>
-    <mat-datepicker-toggle matSuffix [for]="dEvent"></mat-datepicker-toggle>
-    <mat-datepicker #dEvent disabled="false"></mat-datepicker>
-    <!-- Date Picker ends -->
+          <!-- Date Picker starts -->
+          <app-date-picker *ngIf="type === 'task'"
+            (date)="getDate($event)" [dueDate]="postData?.task.due_to">
+          </app-date-picker>
 
-    <!-- Time Picker starts -->
-    <app-time-picker
-      class="ml-3"
-      [time]="this.dueTime"
-      (time)="getTime($event)">
-    </app-time-picker>
-    <!-- Time Picker ends -->
+          <app-date-picker *ngIf="type === 'event'"
+            (date)="getDate($event)" [dueDate]="postData?.event.due_to">
+          </app-date-picker>
+          <!-- Date Picker ends -->
+
+          <!-- Time Picker starts -->
+          <app-time-picker
+          class="ml-3"
+          *ngIf="type === 'event'"
+          [time]="this.dueTime"
+          (time)="getTime($event)">
+          </app-time-picker>
+        <!-- Time Picker ends -->
+
   </div>
   <!-- Top Right Section ends -->
 
