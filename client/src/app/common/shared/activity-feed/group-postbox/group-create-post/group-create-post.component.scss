@@ -1,6 +1,6 @@
 .post-title{
-    padding: 12px 15px; 
-    width: 95% !important; 
+    padding: 12px 15px;
+    width: 95% !important;
     box-shadow: none;
     border:none;
 }
@@ -23,7 +23,7 @@ i{
 }
 
 .attach-files{
-    width: 100%; 
+    width: 100%;
     box-shadow: none;
     display: flex;
     justify-content: space-between;
@@ -44,9 +44,9 @@ i{
 app-component-search-input-box{
     margin: auto;
     position: absolute;
-    top: 0; 
-    left: 50% !important; 
-    bottom: 0; 
+    top: 0;
+    left: 50% !important;
+    bottom: 0;
     right: 0;
     z-index: 99;
 }
@@ -54,9 +54,9 @@ app-component-search-input-box{
 app-time-picker {
     margin: auto;
     // position: absolute;
-    // top: 0; 
-    // left: 30% !important; 
-    // bottom: 0; 
+    // top: 0;
+    // left: 30% !important;
+    // bottom: 0;
     // right: 0;
     // z-index: 99;
 }
@@ -76,10 +76,15 @@ h4{
 .modal-footer{
     display: block;
     flex-wrap: inherit;
-  
+
 }
 
-.w300{
-    width: 350px !important;
+.w400{
+    width: 400px !important;
     text-align: right;
+}
+
+input.input-date {
+  border: none;
+  background-color: white;
 }

@@ -3,8 +3,8 @@ import { environment } from 'src/environments/environment';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'src/app/dashboard/public.functions';
-import moment from 'moment/moment';
 import { HotkeysService, Hotkey, HotkeyModule } from 'angular2-hotkeys';
+import moment from 'moment';
 
 @Component({
   selector: 'app-group-create-post',
@@ -26,7 +26,7 @@ export class GroupCreatePostComponent implements OnInit {
   // Date Object to map the due dates
   dueDate: any;
 
-  // Files Variable 
+  // Files Variable
   files: any = []
 
   // Title of the Post
@@ -241,7 +241,7 @@ export class GroupCreatePostComponent implements OnInit {
 
   /**
    * This function is responsible for receiving the files
-   * @param files 
+   * @param files
    */
   onAttach(files: any) {
 
@@ -255,11 +255,10 @@ export class GroupCreatePostComponent implements OnInit {
 
   /**
    * This function is responsible for receiving the date from @module <app-date-picker></app-date-picker>
-   * @param dateObject 
+   * @param dateObject
    */
   getDate(dateObject: any) {
-    this.dueDate = new Date(dateObject.year, dateObject.month - 1, dateObject.day)
-
+    this.dueDate = dateObject;
     if (this.edit) {
       this.date.emit(this.dueDate);
     }
@@ -267,7 +266,7 @@ export class GroupCreatePostComponent implements OnInit {
 
   /**
    * This function is responsible for receiving the time from @module <app-time-picker></app-time-picker>
-   * @param timeObject 
+   * @param timeObject
    */
   getTime(timeObject: any) {
     this.dueTime = timeObject
@@ -275,7 +274,7 @@ export class GroupCreatePostComponent implements OnInit {
 
   /**
    * This function receives the output from the tags components
-   * @param tags 
+   * @param tags
    */
   getTags(tags: any) {
 
@@ -356,7 +355,7 @@ export class GroupCreatePostComponent implements OnInit {
 
   /**
    * This function is responsible for calling add post service functions
-   * @param postData 
+   * @param postData
    */
   onCreatePost(postData: FormData) {
     this.utilityService.asyncNotification('Please wait we are creating the post...', new Promise((resolve, reject) => {
@@ -400,10 +399,10 @@ export class GroupCreatePostComponent implements OnInit {
         new Date(this.dueDate).getDate(),
         this.dueTime.hour,
         this.dueTime.minute)
-      
+
       // Adding Due Date to event
       post.date_due_to = this.dueDate
-      
+
       // Adding assigned to for the events
       post.assigned_to = this.eventAssignees
     }
@@ -482,7 +481,7 @@ export class GroupCreatePostComponent implements OnInit {
 
   /**
    * Call function to delete post
-   * @param postId 
+   * @param postId
    */
   deletePost() {
     this.utilityService.asyncNotification('Please wait we are deleting the post...', new Promise((resolve, reject) => {

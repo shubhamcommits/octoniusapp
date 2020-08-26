@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewChild, Injector } f
 import { environment } from 'src/environments/environment';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { CommentService } from 'src/shared/services/comment-service/comment.service';
+import { PublicFunctions } from 'src/app/dashboard/public.functions';
 
 @Component({
   selector: 'post-comment',
@@ -46,17 +47,22 @@ export class PostCommentComponent implements OnInit {
   // Display Comment editor variable
   displayCommentEditor: boolean = false;
 
-  // Quill Data 
+  // Quill Data
   quillData: any;
 
   _content_mentions: any;
 
-  ngOnInit() {
+  likedByUsers = [];
+
+  async ngOnInit() {
+    await this.comment._liked_by.forEach(user => {
+      this.likedByUsers.push(user['first_name'] + ' ' + user['last_name']);
+    });
   }
 
   /**
    * This function is responsible for feeding the quill data from current instance
-   * @param quillData 
+   * @param quillData
    */
   getQuillData(quillData: any) {
     this.quillData = quillData;
