@@ -56,7 +56,6 @@ export class DatePickerComponent implements OnInit {
 
   ngOnInit() {
     this._value = this.dueDate;
-    this.styleClass = (this.styleClass) ? 'input-date' : this.styleClass;
   }
 
   // Control Value Accessors for ngModel
