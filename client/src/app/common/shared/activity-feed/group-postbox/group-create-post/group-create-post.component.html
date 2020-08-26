@@ -6,42 +6,42 @@
   <h4 class="modal-title" *ngIf="type === 'normal' && edit === false">
     <i *ngIf="type === 'normal'" class="material-icons-outlined">comment</i>
      <!-- Post Title starts -->
-     <input 
-     name="postTitle" 
-     type="text" 
-     [ngModel]="title" 
+     <input
+     name="postTitle"
+     type="text"
+     [ngModel]="title"
      (ngModelChange)="titleChange($event)"
-     class="post-title" 
+     class="post-title"
      placeholder="✍🏻 Title" />
    <!-- Post Title ends -->
   </h4>
-  
+
 
   <h4 class="modal-title" *ngIf="type === 'normal' && edit === true">
     <i *ngIf="type === 'normal'" class="material-icons-outlined">comment</i>
       <!-- Post Title starts -->
-      <input 
-      name="postTitle" 
-      type="text" 
-      [ngModel]="title" 
+      <input
+      name="postTitle"
+      type="text"
+      [ngModel]="title"
       (ngModelChange)="titleChange($event)"
-      class="post-title" 
+      class="post-title"
       placeholder="{{ title }}" />
     <!-- Post Title ends -->
-   
-  </h4> 
+
+  </h4>
   <!-- Normal Post Header ends -->
 
   <!-- Task Post Header starts -->
   <h4 class="modal-title" *ngIf="type === 'task' && edit === false">
     <i *ngIf="type === 'task'" class="material-icons-outlined">check_box</i>
      <!-- Post Title starts -->
-     <input 
-     name="postTitle" 
-     type="text" 
-     [ngModel]="title" 
+     <input
+     name="postTitle"
+     type="text"
+     [ngModel]="title"
      (ngModelChange)="titleChange($event)"
-     class="post-title" 
+     class="post-title"
      placeholder="✍🏻 Title" />
    <!-- Post Title ends -->
   </h4>
@@ -49,27 +49,27 @@
   <h4 class="modal-title" *ngIf="type === 'task' && edit === true">
     <i *ngIf="type === 'task'" class="material-icons-outlined">check_box</i>
      <!-- Post Title starts -->
-     <input 
-     name="postTitle" 
-     type="text" 
-     [ngModel]="title" 
+     <input
+     name="postTitle"
+     type="text"
+     [ngModel]="title"
      (ngModelChange)="titleChange($event)"
-     class="post-title" 
+     class="post-title"
      placeholder="{{ title }}" />
    <!-- Post Title ends -->
   </h4>
   <!-- Task Post Header ends -->
-  
+
   <!-- Event Post Header starts -->
   <h4 class="modal-title" *ngIf="type === 'event' && edit === false" >
     <i *ngIf="type === 'event'" class="material-icons-outlined">event</i>
     <!-- Post Title starts -->
-    <input 
-    name="postTitle" 
-    type="text" 
-    [ngModel]="title" 
+    <input
+    name="postTitle"
+    type="text"
+    [ngModel]="title"
     (ngModelChange)="titleChange($event)"
-    class="post-title" 
+    class="post-title"
     placeholder="✍🏻 Title" />
   <!-- Post Title ends -->
   </h4>
@@ -77,39 +77,42 @@
   <h4 class="modal-title" *ngIf="type === 'event' && edit === true">
     <i *ngIf="type === 'event'" class="material-icons-outlined">event</i>
     <!-- Post Title starts -->
-    <input 
-    name="postTitle" 
-    type="text" 
-    [ngModel]="title" 
+    <input
+    name="postTitle"
+    type="text"
+    [ngModel]="title"
     (ngModelChange)="titleChange($event)"
-    class="post-title" 
+    class="post-title"
     placeholder="{{ title }}" />
   <!-- Post Title ends -->
   </h4>
   <!-- Event Post Header ends -->
 
   <!-- Top Right Section starts -->
-  <div class="w300 float-right">
+  <div class="w400 float-right" *ngIf="type === 'task'">
+    <!-- Date Picker starts -->
+    <input matInput [matDatepicker]='dTask' (date)="getDate($event)"
+      [value]="postData?.task.due_to" class="input-date" disabled>
+    <mat-datepicker-toggle matSuffix [for]="dTask"></mat-datepicker-toggle>
+    <mat-datepicker #dTask disabled="false"></mat-datepicker>
+    <!-- Date Picker ends -->
+  </div>
 
-          <!-- Date Picker starts -->
-          <app-date-picker *ngIf="type === 'task'"
-            (date)="getDate($event)" [dueDate]="postData?.task.due_to">
-          </app-date-picker>
+  <div class="w400 float-right" *ngIf="type === 'event'">
+    <!-- Date Picker starts -->
+    <input matInput [matDatepicker]='dEvent' (date)="getDate($event)"
+      [value]="postData?.event.due_to" class="input-date due" disabled>
+    <mat-datepicker-toggle matSuffix [for]="dEvent"></mat-datepicker-toggle>
+    <mat-datepicker #dEvent disabled="false"></mat-datepicker>
+    <!-- Date Picker ends -->
 
-          <app-date-picker *ngIf="type === 'event'"
-            (date)="getDate($event)" [dueDate]="postData?.event.due_to">
-          </app-date-picker>
-          <!-- Date Picker ends -->
-
-          <!-- Time Picker starts -->
-          <app-time-picker  
-          class="ml-3"
-          *ngIf="type === 'event'" 
-          [time]="this.dueTime" 
-          (time)="getTime($event)">
-          </app-time-picker>
-        <!-- Time Picker ends -->
-        
+    <!-- Time Picker starts -->
+    <app-time-picker
+      class="ml-3"
+      [time]="this.dueTime"
+      (time)="getTime($event)">
+    </app-time-picker>
+    <!-- Time Picker ends -->
   </div>
   <!-- Top Right Section ends -->
 
@@ -134,32 +137,32 @@
         </app-inline-input>
         <app-select-assignee *ngIf="type ==='event'"
             class="top-margin"
-            [post]="postData" 
-            [userData]="userData" 
-            [groupId]="groupId" 
+            [post]="postData"
+            [userData]="userData"
+            [groupId]="groupId"
             [type]="type"
             (member)="getMemberDetails($event)">
         </app-select-assignee>
       </div>
       <!-- Assignee Modal ends -->
-      
+
       <div class="col-md-4 right-section">
 
           <!-- Change task status starts -->
-          <app-task-status 
-            class="ml-3" 
-            *ngIf="type === 'task' && edit === true" 
+          <app-task-status
+            class="ml-3"
+            *ngIf="type === 'task' && edit === true"
             [post]="postData"
             (status)="changeTaskStatus($event)">
           </app-task-status>
           <!-- Change task status ends -->
-          
+
           <!-- Change task column starts -->
-          <app-change-column 
-            class="ml-3" 
-            *ngIf="type === 'task' && columns" 
+          <app-change-column
+            class="ml-3"
+            *ngIf="type === 'task' && columns"
             [post]="postData"
-            [columns]="columns" 
+            [columns]="columns"
             (moveTask)="moveTaskToColumn($event)">
           </app-change-column>
           <!-- Change task column ends -->
@@ -169,10 +172,10 @@
     </div>
 
     <!-- Quill Editor with content of post if edit property is enabled -->
-    <app-quill-editor 
-      *ngIf="!edit" 
-      [editorId]="'postbox-editor'" 
-      [toolbar]="true" 
+    <app-quill-editor
+      *ngIf="!edit"
+      [editorId]="'postbox-editor'"
+      [toolbar]="true"
       [readOnly]="false"
       [groupId]="groupId"
       (content)="getQuillData($event)">
@@ -180,12 +183,12 @@
     <!-- Quill Editor with content of post if edit property is enabled -->
 
     <!-- Post Content starts -->
-    <app-quill-editor 
-      *ngIf="edit" 
-      [editorId]="'postbox-editor'" 
+    <app-quill-editor
+      *ngIf="edit"
+      [editorId]="'postbox-editor'"
       [toolbar]="true"
-      [readOnly]="false" 
-      [contents]="postData.content" 
+      [readOnly]="false"
+      [contents]="postData.content"
       [groupId]="groupId"
       (content)="getQuillData($event)">
     </app-quill-editor>
@@ -193,18 +196,18 @@
 
     <!-- Attach files starts -->
     <div class="attach-files">
-      <app-attach-files 
-        [post]="postData" 
+      <app-attach-files
+        [post]="postData"
         (files)="onAttach($event)">
       </app-attach-files>
     </div>
     <!-- Attach files ends -->
 
     <!-- Post Tags starts -->
-    <app-post-tags 
-      [post]="postData" 
-      [userData]="userData" 
-      [groupId]="groupId" 
+    <app-post-tags
+      [post]="postData"
+      [userData]="userData"
+      [groupId]="groupId"
       (tags)="getTags($event)">
     </app-post-tags>
     <!-- Post Tags ends -->
