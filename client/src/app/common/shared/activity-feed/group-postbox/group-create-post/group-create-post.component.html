@@ -92,11 +92,11 @@
   <div class="w400 float-right">
 
           <!-- Date Picker starts -->
-          <app-date-picker *ngIf="type === 'task'"
+          <app-date-picker *ngIf="type === 'task'" [styleClass]="'input-date due'"
             (date)="getDate($event)" [dueDate]="postData?.task.due_to">
           </app-date-picker>
 
-          <app-date-picker *ngIf="type === 'event'"
+          <app-date-picker *ngIf="type === 'event'" [styleClass]="'input-date due'"
             (date)="getDate($event)" [dueDate]="postData?.event.due_to">
           </app-date-picker>
           <!-- Date Picker ends -->
