@@ -90,11 +90,14 @@ export class GroupActivityFeedComponent implements OnInit {
   // IsLoading behaviou subject maintains the state for loading spinner
   public isLoading$ = new BehaviorSubject(false);
 
+  columns;
 
   async ngOnInit() {
 
     // Start the loading spinner
     this.isLoading$.next(true);
+
+    this.publicFunctions.getAllColumns(this.groupId).then(data => this.columns = data);
 
     // If my workplace is true, hence we don't have the group header therefore fetch the group details via calling HTTP Request
     if (this.myWorkplace === true)
@@ -135,7 +138,7 @@ export class GroupActivityFeedComponent implements OnInit {
       const post = await this.publicFunctions.getPost(postId);
       let dialogRef;
       if (post['type'] === 'task') {
-        dialogRef = this.utilityService.openCreatePostFullscreenModal(post, this.userData, this.groupId, await this.publicFunctions.getAllColumns(this.groupId));
+        dialogRef = this.utilityService.openCreatePostFullscreenModal(post, this.userData, this.groupId, this.columns);
       } else {
         dialogRef = this.utilityService.openCreatePostFullscreenModal(post, this.userData, this.groupId);
       }

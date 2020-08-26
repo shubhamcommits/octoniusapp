@@ -26,13 +26,17 @@ export class MyspaceTasksComponent implements OnInit {
 
   post: any;
 
-  // Modal Content 
+  // Modal Content
   @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>
 
   // Public Functions
   public publicFunctions = new PublicFunctions(this.injector)
 
+  columns;
+
   async ngOnInit() {
+
+    this.publicFunctions.getAllColumns(this.post._group._id).then(data => this.columns = data);
 
     // Fetch the current user
     this.userData = await this.publicFunctions.getCurrentUser();
@@ -104,7 +108,7 @@ export class MyspaceTasksComponent implements OnInit {
     // this.modal.open(this.modalContent, { size: 'xl' });
     let dialogRef;
     if (this.post.type === 'task') {
-      dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.post._group._id, this.publicFunctions.getAllColumns(this.post._group._id));
+      dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.post._group._id, this.columns);
     } else {
       dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.post._group._id);
     }
