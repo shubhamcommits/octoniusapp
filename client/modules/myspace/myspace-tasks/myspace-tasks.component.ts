@@ -36,17 +36,19 @@ export class MyspaceTasksComponent implements OnInit {
 
   async ngOnInit() {
 
-    this.publicFunctions.getAllColumns(this.post._group._id).then(data => this.columns = data);
-
     // Fetch the current user
     this.userData = await this.publicFunctions.getCurrentUser();
 
+    await this.loadTasks();
+    this.overdueAndTodayTasks = this.overdueTasks.concat(this.todayTasks);
+  }
+
+  async loadTasks() {
     this.todayTasks = await this.getUserTodayTasks();
     this.thisWeekTasks = await this.getUserThisWeekTasks();
     this.overdueTasks = await this.getUserOverdueTasks();
 
     this.markOverdueTasks();
-    this.overdueAndTodayTasks = this.overdueTasks.concat(this.todayTasks);
   }
 
   // Check if the data provided is not empty{}
@@ -100,7 +102,7 @@ export class MyspaceTasksComponent implements OnInit {
     });
   }
 
-  openModal(task) {
+  async openModal(task) {
 
     this.post = task;
 
@@ -108,13 +110,14 @@ export class MyspaceTasksComponent implements OnInit {
     // this.modal.open(this.modalContent, { size: 'xl' });
     let dialogRef;
     if (this.post.type === 'task') {
+      await this.publicFunctions.getAllColumns(this.post._group._id).then(data => this.columns = data);
       dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.post._group._id, this.columns);
     } else {
       dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.post._group._id);
     }
 
-    const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
-      // TODO Refresh content after dialog is closed
+    const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe(async (data) => {
+      await this.loadTasks();
     });
     dialogRef.afterClosed().subscribe(result => {
       closeEventSubs.unsubscribe();
