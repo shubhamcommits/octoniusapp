@@ -118,7 +118,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
         this.taskAssignee = this.postData.task._assigned_to;
       }
 
-      // Set the due date variable for both task and event type posts
+      // Set the due date variable for task
       if (this.postData.task.due_to && this.postData.task.due_to != null) {
 
         // Set the DueDate variable
@@ -228,7 +228,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
    * @param dateObject
    */
   getDate(dateObject: any) {
-    this.dueDate = dateObject.value;
+    this.dueDate = dateObject.toDate();
     this.updateDetails();
   }
 
@@ -260,7 +260,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
   }
 
   onCloseDialog() {
-    this.closeEvent.emit();
+    this.closeEvent.emit(this.postData);
   }
 
   /**
@@ -352,11 +352,11 @@ export class GroupCreatePostDialogComponent implements OnInit {
       } else {
         // Create the due_to date
         due_to = new Date(
-          new Date(this.dueDate).getFullYear(),
-          new Date(this.dueDate).getMonth(),
-          new Date(this.dueDate).getDate(),
+          this.dueDate.getFullYear(),
+          this.dueDate.getMonth(),
+          this.dueDate.getDate(),
           this.dueTime.hour,
-          this.dueTime.minute)
+          this.dueTime.minute);
       }
 
       // Add event.due_to property to the postData and assignees
@@ -419,10 +419,11 @@ export class GroupCreatePostDialogComponent implements OnInit {
   /**
    * Call the asynchronous function to change the column
    */
-  editPost(postId: any, formData: FormData) {
-    this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
+  async editPost(postId: any, formData: FormData) {
+    await this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
       this.postService.edit(postId, formData)
         .then((res) => {
+          this.postData = res['post'];
           this.contentChanged = false;
           // Resolve with success
           resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));

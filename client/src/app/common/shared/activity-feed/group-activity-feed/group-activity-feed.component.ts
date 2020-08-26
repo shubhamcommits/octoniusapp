@@ -141,7 +141,7 @@ export class GroupActivityFeedComponent implements OnInit {
       }
 
       const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
-        this.editedPost(post);
+        this.editedPost(data);
       });
       dialogRef.afterClosed().subscribe(result => {
         closeEventSubs.unsubscribe();
@@ -276,7 +276,6 @@ export class GroupActivityFeedComponent implements OnInit {
   }
 
   editedPost(event: any) {
-    // TODO when closing the fullscreen dialog, it is not updating the information in the screen
     this.posts.set(event._id, event);
   }
 
