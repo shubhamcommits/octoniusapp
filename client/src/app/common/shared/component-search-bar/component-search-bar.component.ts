@@ -191,6 +191,40 @@ export class ComponentSearchBarComponent implements OnInit {
 
   }
 
+  /**
+   * Function to remove member from workspace
+   * @param userId User to remove
+   * @param workspaceId Workspace to remove from
+   * @param index
+   */
+  reactivateUserInWorkplace(userId, workspaceId) {
+
+    // Create Service Instance
+    const workspaceService = this.injector.get(WorkspaceService);
+
+    // Ask User to remove this user from the group or not
+    this.utilityService.getConfirmDialogAlert()
+      .then((result) => {
+        if (result.value) {
+
+          // Remove the User
+          this.utilityService.asyncNotification('Please wait while we are removing the user ...',
+            new Promise((resolve, reject) => {
+              workspaceService.reactivateUserToWorkplace(userId, workspaceId)
+                .then(() => {
+                  this.workspaceData.members.sort((x, y) => {
+                    return (x.active === y.active) ? 0 : x.active ? -1 : 1;
+                  });
+                  this.members.sort((x, y) => {
+                    return (x.active === y.active) ? 0 : x.active ? -1 : 1;
+                  });
+                })
+                .catch(() => reject(this.utilityService
+                  .rejectAsyncPromise('Unable to reactivate the user from the workplace, please try again!')));
+            }));
+        }
+    });
+  }
 
   /**
    * Function to remove member from workspace
@@ -213,15 +247,9 @@ export class ComponentSearchBarComponent implements OnInit {
             new Promise((resolve, reject) => {
               workspaceService.removeUserFromWorkspace(userId, workspaceId)
                 .then(() => {
-
-                  // Member Details
-                  let member = this.members[index];
-
-                  // Update the Workspace Data
-                  this.workspaceData.members.splice(this.workspaceData.members.findIndex((user: any) => user._id === member._id), 1)
-
-                  // Update UI via removing from array
-                  this.members.splice(index, 1);
+                  this.members.sort((x, y) => {
+                    return (x.active === y.active) ? 0 : x.active ? -1 : 1;
+                  });
 
                   // Send updates to workspaceData via service
                   this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData)

@@ -74,7 +74,9 @@
                     <!-- Menu Drawer Starts -->
                     <ul class="dropdown-menu">
                         <li class="dropdown-item" *ngIf="member.role != 'admin'"
-                            (click)="changeRole(member._id, 'admin', index)">Add to workplace</li>
+                            (click)="reactivateUserInWorkplace(member._id, workplaceId, index)">
+                            Add to workplace
+                        </li>
                     </ul>
                     <!-- Menu Drawer Ends -->
 

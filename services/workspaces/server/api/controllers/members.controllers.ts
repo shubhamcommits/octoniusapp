@@ -157,6 +157,26 @@ export class MembersControllers {
         }
     }
 
+    async reactivateUserInWorkplace(req: Request, res: Response, next: NextFunction) {
+        const { userId, workspaceId } = req.body;
+        try {
+            const user = await User.findOneAndUpdate({
+                $and: [
+                    {_id: userId},
+                    {active: false},
+                    {workspace: workspaceId},
+                ]
+            }, {
+                active: true,
+                invited: true,
+                _groups: []
+            }, {
+                new: true
+            }).select('first_name last_name profile_pic active email role');
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
 
     /**
     * This function is responsible for removing the user from workspace

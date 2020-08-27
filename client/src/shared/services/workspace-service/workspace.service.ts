@@ -109,6 +109,18 @@ export class WorkspaceService {
    * @param userId
    * @param workspaceId
    */
+  reactivateUserToWorkplace(userId: string, workspaceId: string) {
+    return this._http.post(this.BASE_API_URL + '/members/activate', {
+      userId,
+      workspaceId
+    }).toPromise();
+  }
+
+  /**
+   *
+   * @param userId
+   * @param workspaceId
+   */
   removeUserFromWorkspace(userId: string, workspaceId: string){
     return this._http.post(this.BASE_API_URL + '/members/delete', {
       userId,
