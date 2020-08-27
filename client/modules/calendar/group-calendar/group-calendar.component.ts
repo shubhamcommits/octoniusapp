@@ -228,8 +228,7 @@ export class GroupCalendarComponent implements OnInit {
     }
 
     const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
-      // TODO reload data
-      // this.loadTimeline();
+      this.updateEvent(data);
     });
     dialogRef.afterClosed().subscribe(result => {
       closeEventSubs.unsubscribe();
@@ -258,6 +257,33 @@ export class GroupCalendarComponent implements OnInit {
 
   deleteEvent(eventToDelete: CalendarEvent) {
     this.events = this.events.filter(event => event !== eventToDelete);
+  }
+
+  updateEvent(event) {
+    this.events.forEach((ev, index) => {
+      if (ev.post._id === event._id) {
+        // Evaluate color for the event
+        let color = this.selectColor(event);
+
+        // Adding to calendar events
+        this.events.push({
+          start: new Date(moment(event.event.due_to || event.task.due_to).toDate()),
+          title: `${event.title}`,
+          color: color,
+          allDay: true,
+          resizable: {
+            beforeStart: true,
+            afterEnd: true
+          },
+          draggable: true,
+          post: event
+        });
+        this.events.splice(index, 1);
+        this.refresh.next();
+        return;
+      }
+    });
+
   }
 
   setView(view: CalendarView) {
