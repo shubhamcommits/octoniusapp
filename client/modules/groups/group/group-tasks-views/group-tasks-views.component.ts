@@ -7,6 +7,7 @@ import { PublicFunctions } from 'src/app/dashboard/public.functions';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { PostService } from 'src/shared/services/post-service/post.service';
+import { UserService } from 'src/shared/services/user-service/user.service';
 
 @Component({
   selector: 'app-group-tasks-views',
@@ -64,8 +65,14 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
   }
 
   async onChangeViewEmitter(view: string) {
-      this.viewType = view;
-      this.initView();
+
+    this.userData.lastTaskView = view;
+    // User service
+    const userService = this.injector.get(UserService);
+
+    userService.updateUser(this.userData);
+
+    this.initView(view);
   }
 
   async onCustomFieldEmitter() {
@@ -74,7 +81,17 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     }
   }
 
-  async initView() {
+  async initView(view?) {
+
+    // Fetch current user details
+    this.userData = await this.publicFunctions.getCurrentUser();
+
+    if (view) {
+      this.viewType = view;
+    } else if (this.userData && this.userData.lastTaskView) {
+      this.viewType = this.userData.lastTaskView;
+    }
+
     // Fetch current group from the service
     this.subSink.add(this.utilityService.currentGroupData.subscribe(async (res) => {
       if (JSON.stringify(res) !== JSON.stringify({})) {
@@ -83,9 +100,6 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
         this.groupData = res;
       }
     }));
-
-    // Fetch current user details
-    this.userData = await this.publicFunctions.getCurrentUser();
 
     /**
      * Here we fetch all the columns available in a group, and if null we initialise them with the default one
