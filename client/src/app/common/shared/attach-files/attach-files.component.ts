@@ -117,7 +117,7 @@ export class AttachFilesComponent implements OnInit {
             driveDivision.style.display = 'block';
             driveDivision.innerHTML = '<b>Drive File Upload: </b>' + '<a href=\''+ src + '\' target=\'_blank\'>' + this.googleDriveFiles[0]['name'] + '</a>';
 
-            // TODO this emit is giving an error saying cludFiles is undefined.
+            // TODO this emit is giving an error saying cloudFiles is undefined.
             // Emit the value to other components
             this.cloudFiles.emit(this.googleDriveFiles);
           }

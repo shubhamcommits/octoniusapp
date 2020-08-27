@@ -117,6 +117,7 @@ export class MyspaceTasksComponent implements OnInit {
     }
 
     const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe(async (data) => {
+      // TODO try not to reload the whole page
       await this.loadTasks();
     });
     dialogRef.afterClosed().subscribe(result => {
