@@ -34,7 +34,7 @@ export class DoneTasksKanbanViewComponent implements OnInit {
     const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, postData._group._id, this.columns);
 
     const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
-      this.closeModalEvent.emit();
+      this.closeModalEvent.emit(data);
     });
     dialogRef.afterClosed().subscribe(result => {
       closeEventSubs.unsubscribe();

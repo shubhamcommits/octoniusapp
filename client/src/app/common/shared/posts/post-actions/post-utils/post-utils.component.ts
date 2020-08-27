@@ -13,7 +13,7 @@ export class PostUtilsComponent implements OnInit {
     public utilityService: UtilityService,
   ) { }
 
-  // Post Object 
+  // Post Object
   @Input('post') post: any;
 
   // User Data Object
@@ -38,9 +38,9 @@ export class PostUtilsComponent implements OnInit {
   openFullscreenModal(): void {
     const group = (this.post._group._id) ? this.post._group._id : this.post._group;
     const dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, group);
-    
+
     const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
-      this.closeModalEvent.emit();
+      this.closeModalEvent.emit(data);
     });
     dialogRef.afterClosed().subscribe(result => {
       closeEventSubs.unsubscribe();
@@ -60,7 +60,7 @@ export class PostUtilsComponent implements OnInit {
     selBox.style.left = '0';
     selBox.style.top = '0';
     selBox.style.opacity = '0';
-    
+
     const group = (this.post._group._id) ? this.post._group._id : this.post._group;
 
     // Set the Value of element selection box to be the url of the post

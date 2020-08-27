@@ -1,18 +1,17 @@
 <div *ngIf="!(isLoading$ | async)" class="root">
-    
+
         <app-board-bar *ngIf="groupData"
             [groupData]="groupData"
             [isAdmin]="isAdminUser()"
             (changeViewEmitter)='onChangeViewEmitter($event)'
             (customFieldEmitter)="onCustomFieldEmitter()">
         </app-board-bar>
-        
+
         <app-group-kanban-boards *ngIf="viewType ==='kanban'"
             [groupData]="groupData"
             [userData]="userData"
             [columns]="columns"
-            [tasks]="tasks"
-            (closeModalEvent)="onModalCloseEvent()">
+            [tasks]="tasks">
         </app-group-kanban-boards>
 
         <app-group-tasks-list-view *ngIf="viewType ==='list'"
@@ -21,8 +20,7 @@
             [columns]="columns"
             [tasks]="tasks"
             [customFields]="customFields"
-            [isAdmin]="isAdminUser()"
-            (closeModalEvent)="onModalCloseEvent()">
+            [isAdmin]="isAdminUser()">
         </app-group-tasks-list-view>
 
 </div>

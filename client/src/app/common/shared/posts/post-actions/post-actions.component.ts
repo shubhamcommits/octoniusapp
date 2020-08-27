@@ -94,7 +94,7 @@ export class PostActionsComponent implements OnInit {
 
   /**
    * Show the comment Editor State
-   * @param emiterState 
+   * @param emiterState
    */
   showCommentEditor(emiterState: boolean) {
     this.showCommentQuillEditor = !this.showCommentQuillEditor
@@ -122,7 +122,7 @@ export class PostActionsComponent implements OnInit {
 
   /**
    * This function is responsible for showing the comments
-   * @param comments 
+   * @param comments
    */
   displayComments(commentsDisplayState: boolean) {
     this.showComments = commentsDisplayState
@@ -138,7 +138,8 @@ export class PostActionsComponent implements OnInit {
     this.comments.splice(index, 1);
   }
 
-  postModalCloseEvent() {
-    this.closeModalEvent.emit();
+  postModalCloseEvent(post) {
+    this.post = post;
+    this.closeModalEvent.emit(post);
   }
 }

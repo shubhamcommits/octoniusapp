@@ -79,7 +79,7 @@
                 <span class="time">{{post.event.due_to | date:'HH:mm'}}</span>
             </div>
             <div class="col-md-10">
-               
+
 
                     <!-- Events Post Title starts -->
                     <div class=" innercard font-weight-bold"
@@ -91,7 +91,7 @@
                     <app-quill-editor *ngIf="post.content" [editorId]="('editor_' + post._id) || 'editor'"
                         [toolbar]="false" [readOnly]="true" [contents]="post.content"></app-quill-editor>
                     <!-- Event Post Content Ends -->
-                
+
             </div>
         </div>
 
@@ -109,18 +109,18 @@
         <!-- Attached Files Ends -->
         <!-- Tags Display -->
         <div class="col-md-auto mt-3" *ngIf="post.tags?.length>0">
-           
+
             <span *ngFor="let tag of post.tags" class="tagslabel">{{ tag }}</span>
 
         </div>
         <!-- Tags Display ends -->
-       
+
         <!-- Post Actions starts -->
         <app-post-actions *ngIf="post && userData"
             [post]="post"
             [userData]="userData"
             (delete)="deletePost($event)"
-            (closeModalEvent)="postModalCloseEvent()">
+            (closeModalEvent)="postModalCloseEvent($event)">
         </app-post-actions>
         <!-- Post Actions ends -->
 

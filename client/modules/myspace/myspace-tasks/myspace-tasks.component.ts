@@ -26,23 +26,29 @@ export class MyspaceTasksComponent implements OnInit {
 
   post: any;
 
-  // Modal Content 
+  // Modal Content
   @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>
 
   // Public Functions
   public publicFunctions = new PublicFunctions(this.injector)
+
+  columns;
 
   async ngOnInit() {
 
     // Fetch the current user
     this.userData = await this.publicFunctions.getCurrentUser();
 
+    await this.loadTasks();
+    this.overdueAndTodayTasks = this.overdueTasks.concat(this.todayTasks);
+  }
+
+  async loadTasks() {
     this.todayTasks = await this.getUserTodayTasks();
     this.thisWeekTasks = await this.getUserThisWeekTasks();
     this.overdueTasks = await this.getUserOverdueTasks();
 
     this.markOverdueTasks();
-    this.overdueAndTodayTasks = this.overdueTasks.concat(this.todayTasks);
   }
 
   // Check if the data provided is not empty{}
@@ -96,21 +102,21 @@ export class MyspaceTasksComponent implements OnInit {
     });
   }
 
-  openModal(task) {
+  async openModal(task) {
 
     this.post = task;
 
     // Open the Modal
-    // this.modal.open(this.modalContent, { size: 'xl' });
     let dialogRef;
     if (this.post.type === 'task') {
-      dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.post._group._id, this.publicFunctions.getAllColumns(this.post._group._id));
+      await this.publicFunctions.getAllColumns(this.post._group._id).then(data => this.columns = data);
+      dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.post._group._id, this.columns);
     } else {
       dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.post._group._id);
     }
 
     const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
-      // TODO Refresh content after dialog is closed
+      this.updateTask(data);
     });
     dialogRef.afterClosed().subscribe(result => {
       closeEventSubs.unsubscribe();
@@ -119,6 +125,19 @@ export class MyspaceTasksComponent implements OnInit {
 
   ngOnDestroy() {
     this.utilityService.closeAllModals()
+  }
+
+  updateTask(task) {
+    let index = this.overdueAndTodayTasks.findIndex((t: any) => t._id === task._id);
+    if (index !== -1) {
+      this.overdueAndTodayTasks[index] = task;
+    }
+
+    index = this.thisWeekTasks.findIndex((t: any) => t._id === task._id);
+    if (index !== -1) {
+      this.thisWeekTasks[index] = task;
+    }
+    this.markOverdueTasks();
   }
 
 }

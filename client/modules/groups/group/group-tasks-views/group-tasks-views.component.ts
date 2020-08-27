@@ -74,10 +74,6 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     }
   }
 
-  async onModalCloseEvent() {
-    this.initView();
-  }
-
   async initView() {
     // Fetch current group from the service
     this.subSink.add(this.utilityService.currentGroupData.subscribe(async (res) => {

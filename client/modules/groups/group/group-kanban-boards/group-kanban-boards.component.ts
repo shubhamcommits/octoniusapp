@@ -39,8 +39,6 @@ export class GroupKanbanBoardsComponent implements OnInit {
   // Task Posts array variable
   @Input() tasks: any;
 
-  @Output() closeModalEvent = new EventEmitter();
-
   // PUBLIC FUNCTIONS
   public publicFunctions = new PublicFunctions(this.injector);
 
@@ -300,8 +298,8 @@ export class GroupKanbanBoardsComponent implements OnInit {
     return !(JSON.stringify(object) === JSON.stringify({}))
   }
 
-  async onModalCloseEvent() {
-    this.closeModalEvent.emit();
+  async onModalCloseEvent(data) {
+    this.updateTask(data);
   }
 
   /**
@@ -311,10 +309,73 @@ export class GroupKanbanBoardsComponent implements OnInit {
     const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, this.groupId, this.columns);
 
     const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
-      this.closeModalEvent.emit();
+      this.updateTask(data);
     });
     dialogRef.afterClosed().subscribe(result => {
       closeEventSubs.unsubscribe();
+    });
+  }
+
+  /**
+   * This function is responsible for updating the task in the UI
+   * @param post - post
+   */
+  updateTask(post: any) {
+
+    this.columns.forEach((col, indexColumn) => {
+      // Find the index of the tasks inside the column
+      const indexTask = col.tasks.findIndex((task: any) => task._id === post._id);
+      if (indexTask !== -1) {
+        if (col.title.toLowerCase() === post.task._column.title.toLowerCase()) {
+          if (post.task.status === 'done') {
+            this.columns[indexColumn].tasks.done.unshift(post);
+            this.columns[indexColumn].tasks.splice(indexTask, 1);
+            return;
+          } else {
+            // update the tasks from the array
+            this.columns[indexColumn].tasks[indexTask]= post;
+            return;
+          }
+        } else {
+          let indexNewColumn = this.columns.findIndex((column: any) => column.title.toLowerCase() === post.task._column.title.toLowerCase());
+          if (indexNewColumn !== -1) {
+            if (post.task.status === 'done') {
+              this.columns[indexNewColumn].tasks.done.unshift(post);
+            } else {
+              this.columns[indexNewColumn].tasks.unshift(post);
+            }
+            this.columns[indexColumn].tasks.splice(indexTask, 1);
+            return;
+          }
+        }
+      } else {
+        // if the task was not found in the column, check if it is in the done tasks array
+        const indexDoneTask = col.tasks.done.findIndex((task: any) => task._id === post._id);
+        if (indexDoneTask !== -1) {
+          if (col.title.toLowerCase() === post.task._column.title.toLowerCase()) {
+            if (post.task.status === 'done') {
+              // update the tasks from the array
+              this.columns[indexColumn].tasks.done[indexDoneTask]= post;
+              return;
+            } else {
+              this.columns[indexColumn].tasks.unshift(post);
+              this.columns[indexColumn].tasks.done.splice(indexDoneTask, 1);
+              return;
+            }
+          } else {
+            let indexNewColumn = this.columns.findIndex((column: any) => column.title.toLowerCase() === post.task._column.title.toLowerCase());
+            if (indexNewColumn !== -1) {
+              if (post.task.status === 'done') {
+                this.columns[indexNewColumn].tasks.done.unshift(post);
+              } else {
+                this.columns[indexNewColumn].tasks.unshift(post);
+              }
+              this.columns[indexColumn].tasks.done.splice(indexDoneTask, 1);
+              return;
+            }
+          }
+        }
+      }
     });
   }
 

@@ -14,7 +14,7 @@ export class MyspaceAgendaComponent implements OnInit {
 
 
   todayTimelineEvents: any = [];
-  
+
   thisWeekTimelineEvents: any = [];
 
   now: Date = new Date();
@@ -23,7 +23,7 @@ export class MyspaceAgendaComponent implements OnInit {
 
   post: any;
 
-  // Modal Content 
+  // Modal Content
   @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>
 
   // Public Functions
@@ -32,8 +32,7 @@ export class MyspaceAgendaComponent implements OnInit {
   constructor(
     private userService: UserService,
     private injector: Injector,
-    private utilityService: UtilityService,
-    private modal: NgbModal,) {
+    private utilityService: UtilityService) {
 
   }
 
@@ -52,10 +51,9 @@ export class MyspaceAgendaComponent implements OnInit {
   openModal(event) {
     this.post = event;
     const dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.post._group._id);
-    
+
     const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
-      // TODO try not to reload the whole data of the page
-      this.ngOnInit();
+      this.updateEvent(data);
     });
     dialogRef.afterClosed().subscribe(result => {
       closeEventSubs.unsubscribe();
@@ -74,7 +72,7 @@ export class MyspaceAgendaComponent implements OnInit {
           resolve(res['events'])
 
         }).catch(() => {
-          
+
           reject([])
 
         })
@@ -89,7 +87,7 @@ export class MyspaceAgendaComponent implements OnInit {
           resolve(res['events']);
 
         }).catch(() => {
-          
+
           reject([])
 
         })
@@ -108,4 +106,15 @@ export class MyspaceAgendaComponent implements OnInit {
     return moment(moment(eventDueTo)).isBetween(moment(this.now), moment(this.now).add(moment(eventDueTo).minute(), 'minutes'));
   }
 
+  updateEvent(post) {
+    let index = this.todayTimelineEvents.findIndex((event: any) => event._id === post._id);
+    if (index !== -1) {
+      this.todayTimelineEvents[index] = post;
+    }
+
+    index = this.thisWeekTimelineEvents.findIndex((event: any) => event._id === post._id);
+    if (index !== -1) {
+      this.thisWeekTimelineEvents[index] = post;
+    }
+  }
 }

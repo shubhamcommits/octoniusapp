@@ -51,13 +51,15 @@ export class GroupCalendarComponent implements OnInit {
   // Events arrays
   events: any = []
 
-  // Modal Content 
+  columns;
+
+  // Modal Content
   @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>
 
-  // Define the month view 
+  // Define the month view
   view: CalendarView = CalendarView.Month
 
-  // Calendar Views 
+  // Calendar Views
   CalendarView = CalendarView
 
   // View Date
@@ -88,13 +90,15 @@ export class GroupCalendarComponent implements OnInit {
     }
   ]
 
-  // Refresh Subject 
+  // Refresh Subject
   refresh: Subject<any> = new Subject()
 
   // Open the current active day automatically
   activeDayIsOpen: boolean = true
 
   async ngOnInit() {
+
+    this.publicFunctions.getAllColumns(this.groupId).then(data => this.columns = data);
 
     // Fetch the current user
     this.userData = await this.publicFunctions.getCurrentUser();
@@ -120,7 +124,7 @@ export class GroupCalendarComponent implements OnInit {
 
   /**
    * This Function selects the color on the basis of the post type and their current status
-   * @param post 
+   * @param post
    */
   selectColor(post: any) {
 
@@ -152,7 +156,7 @@ export class GroupCalendarComponent implements OnInit {
 
   /**
    * This function is responsible for preparing the calendar events
-   * @param timeline 
+   * @param timeline
    */
   prepareTimeline(timeline: Array<any>) {
     timeline.forEach((post: any) => {
@@ -218,14 +222,13 @@ export class GroupCalendarComponent implements OnInit {
     this.post = event.post
     let dialogRef;
     if (this.post.type === 'task') {
-      dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.groupId, this.publicFunctions.getAllColumns(this.groupId));
+      dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.groupId, this.columns);
     } else {
       dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.groupId);
     }
 
     const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
-      // TODO reload data
-      // this.loadTimeline();
+      this.updateEvent(data);
     });
     dialogRef.afterClosed().subscribe(result => {
       closeEventSubs.unsubscribe();
@@ -256,6 +259,33 @@ export class GroupCalendarComponent implements OnInit {
     this.events = this.events.filter(event => event !== eventToDelete);
   }
 
+  updateEvent(event) {
+    this.events.forEach((ev, index) => {
+      if (ev.post._id === event._id) {
+        // Evaluate color for the event
+        let color = this.selectColor(event);
+
+        // Adding to calendar events
+        this.events.push({
+          start: new Date(moment(event.event.due_to || event.task.due_to).toDate()),
+          title: `${event.title}`,
+          color: color,
+          allDay: true,
+          resizable: {
+            beforeStart: true,
+            afterEnd: true
+          },
+          draggable: true,
+          post: event
+        });
+        this.events.splice(index, 1);
+        this.refresh.next();
+        return;
+      }
+    });
+
+  }
+
   setView(view: CalendarView) {
     this.view = view;
   }
@@ -273,7 +303,7 @@ export class GroupCalendarComponent implements OnInit {
 
   /**
    * This function is responsible for changing the task status and updating the UI
-   * @param status 
+   * @param status
    */
   changeTaskStatus(status: any){
 

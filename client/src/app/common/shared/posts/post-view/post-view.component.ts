@@ -11,11 +11,11 @@ export class PostViewComponent implements OnInit {
   constructor() { }
 
   // Base Url for uploads
-  baseUrl = environment.UTILITIES_USERS_UPLOADS; 
+  baseUrl = environment.UTILITIES_USERS_UPLOADS;
 
   // Post Files baseURL
   fileBaseUrl = environment.UTILITIES_POSTS_UPLOADS;
-  
+
   // Date Object for undefined dates
   date = Date.now()
 
@@ -46,12 +46,14 @@ export class PostViewComponent implements OnInit {
     this.delete.emit(post);
   }
 
-  postModalCloseEvent() {
-    this.closeModalEvent.emit(this.post);
+  postModalCloseEvent(post: any) {
+console.log(post);
+    this.post = post;
+    this.closeModalEvent.emit(post);
   }
   /**
    * This function checks if an event is assigned to all the members of the group
-   * @param post 
+   * @param post
    */
   eventAssignedToAll(post: any){
     if (post.event._assigned_to!=null)
@@ -61,7 +63,7 @@ export class PostViewComponent implements OnInit {
 
   /**
    * This Function is responsible for changing the status on the UI
-   * @param status 
+   * @param status
    */
   changeTaskStatus(status: any){
 
