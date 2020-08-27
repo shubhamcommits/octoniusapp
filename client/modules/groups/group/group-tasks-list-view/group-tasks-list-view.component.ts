@@ -28,8 +28,6 @@ export class GroupTasksListViewComponent implements OnInit {
 
   @Input() isAdmin = false;
 
-  @Output() closeModalEvent = new EventEmitter();
-
   @ViewChild(MatAccordion, { static: true }) accordion: MatAccordion;
 
   customFieldsToShow: any[] = [];
