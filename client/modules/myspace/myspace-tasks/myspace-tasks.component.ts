@@ -107,7 +107,6 @@ export class MyspaceTasksComponent implements OnInit {
     this.post = task;
 
     // Open the Modal
-    // this.modal.open(this.modalContent, { size: 'xl' });
     let dialogRef;
     if (this.post.type === 'task') {
       await this.publicFunctions.getAllColumns(this.post._group._id).then(data => this.columns = data);
@@ -116,9 +115,8 @@ export class MyspaceTasksComponent implements OnInit {
       dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.post._group._id);
     }
 
-    const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe(async (data) => {
-      // TODO try not to reload the whole page
-      await this.loadTasks();
+    const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
+      this.updateTask(data);
     });
     dialogRef.afterClosed().subscribe(result => {
       closeEventSubs.unsubscribe();
@@ -127,6 +125,19 @@ export class MyspaceTasksComponent implements OnInit {
 
   ngOnDestroy() {
     this.utilityService.closeAllModals()
+  }
+
+  updateTask(task) {
+    let index = this.overdueAndTodayTasks.findIndex((t: any) => t._id === task._id);
+    if (index !== -1) {
+      this.overdueAndTodayTasks[index] = task;
+    }
+
+    index = this.thisWeekTasks.findIndex((t: any) => t._id === task._id);
+    if (index !== -1) {
+      this.thisWeekTasks[index] = task;
+    }
+    this.markOverdueTasks();
   }
 
 }
