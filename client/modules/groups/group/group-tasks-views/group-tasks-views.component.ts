@@ -15,7 +15,7 @@ import { PostService } from 'src/shared/services/post-service/post.service';
 })
 export class GroupTasksViewsComponent implements OnInit, OnDestroy {
 
-  viewType = 'kanban';
+  viewType = 'list';
 
   // GroupData
   groupData: any;
