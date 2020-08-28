@@ -153,10 +153,11 @@ export class ComponentSearchBarComponent implements OnInit {
   removeUserFromGroup(groupId: string, userId: string, index: number) {
 
     // Create Service Instance
-    let groupService = this.injector.get(GroupService)
+    let groupService = this.injector.get(GroupService);
 
     // Ask User to remove this user from the group or not
-    this.utilityService.getConfirmDialogAlert()
+    this.utilityService.getConfirmDialogAlert('Are you sure?',
+     'This will deactivate user!')
       .then((result) => {
         if (result.value) {
           // Remove the User
@@ -203,7 +204,8 @@ export class ComponentSearchBarComponent implements OnInit {
     const workspaceService = this.injector.get(WorkspaceService);
 
     // Ask User to remove this user from the group or not
-    this.utilityService.getConfirmDialogAlert()
+    this.utilityService.getConfirmDialogAlert('Are you sure?',
+    'This action will enable the user.')
       .then((result) => {
         if (result.value) {
 
@@ -244,7 +246,8 @@ export class ComponentSearchBarComponent implements OnInit {
     let workspaceService = this.injector.get(WorkspaceService);
 
     // Ask User to remove this user from the group or not
-    this.utilityService.getConfirmDialogAlert()
+    this.utilityService.getConfirmDialogAlert('Are you sure?',
+    'This action will disable the user.')
       .then((result) => {
         if (result.value) {
 
