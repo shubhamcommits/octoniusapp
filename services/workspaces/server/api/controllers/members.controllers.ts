@@ -158,21 +158,25 @@ export class MembersControllers {
     }
 
     async reactivateUserInWorkplace(req: Request, res: Response, next: NextFunction) {
-        const { userId, workspaceId } = req.body;
+        const { userId, workplaceId } = req.body;
         try {
-            const user = await User.findOneAndUpdate({
+            const user: any = await User.findOneAndUpdate({
                 $and: [
                     {_id: userId},
                     {active: false},
-                    {workspace: workspaceId},
+                    {workspace: workplaceId},
                 ]
             }, {
                 active: true,
-                invited: true,
-                _groups: []
+                invited: false,
             }, {
                 new: true
             }).select('first_name last_name profile_pic active email role');
+            // Send status 200 response
+            return res.status(200).json({
+                message: `Activated user ${user.first_name}`,
+                user
+            });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
