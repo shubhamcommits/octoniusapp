@@ -19,7 +19,7 @@ export class UtilityService {
     public dialog: MatDialog
     ) { }
 
-  // After Resolving Promise in case of async notification 
+  // After Resolving Promise in case of async notification
   snotifySucessConfig: SnotifyToastConfig = {
     timeout: 2000,
     type: 'success',
@@ -56,7 +56,7 @@ export class UtilityService {
   /**
    * Both of the variables listed down below are used to share the data through this common service among different components in the app
    * @constant otherUserDataSource
-   * @constant otherUserData 
+   * @constant otherUserData
    */
   private otherUserDataSource = new BehaviorSubject<any>({});
   otherUserData = this.otherUserDataSource.asObservable();
@@ -64,7 +64,7 @@ export class UtilityService {
   /**
    * Both of the variables listed down below are used to share the data through this common service among different components in the app
    * @constant groupDataSource
-   * @constant groupData 
+   * @constant groupData
    */
   private groupDataSource = new BehaviorSubject<any>({});
   currentGroupData = this.groupDataSource.asObservable();
@@ -77,9 +77,20 @@ export class UtilityService {
   private routerStateDataSource = new BehaviorSubject<any>({});
   routerStateData = this.routerStateDataSource.asObservable();
 
+  // IsLoading behaviou subject maintains the state for loading spinner
+  public isLoading = new BehaviorSubject(false);
+
+  public startLoading() {
+    this.isLoading.next(true);
+  }
+
+  public stopLoading() {
+    this.isLoading.next(false);
+  }
+
   /**
    * This function checks whether the input string is a vaild email or not
-   * @param email 
+   * @param email
    */
   validateEmail(email: String) {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -89,7 +100,7 @@ export class UtilityService {
   /**
    * This function generates a custom snotify notification for success event
    * @param text
-   * @param title - optional 
+   * @param title - optional
    * @param config - optional
    */
   successNotification(text: string, title?: string, config?: SnotifyToastConfig){
@@ -99,7 +110,7 @@ export class UtilityService {
   /**
    * This function generates a custom snotify notification for simple event
    * @param text
-   * @param title - optional 
+   * @param title - optional
    * @param config - optional
    */
   simpleNotification(text: string, title?: string, config?: SnotifyToastConfig){
@@ -109,7 +120,7 @@ export class UtilityService {
 
   /**
    * This function generates a custom snotify notification for warning event
-   * @param text 
+   * @param text
    * @param title - optional
    * @param config - optional
    */
@@ -119,7 +130,7 @@ export class UtilityService {
 
   /**
    * This function generates a custom snotify notification for error event
-   * @param text 
+   * @param text
    * @param title - optional
    * @param config - optional
    */
@@ -129,7 +140,7 @@ export class UtilityService {
 
   /**
    * This function generates a custom snotify notification for info event
-   * @param text 
+   * @param text
    * @param title - optional
    * @param config - optional
    */
@@ -140,7 +151,7 @@ export class UtilityService {
 
   /**
    * This function generates a custom snotify notification for asynchronous event
-   * @param text 
+   * @param text
    * @param promise - which resolves() or rejects() on the basis of response
    * @param config - optional
    */
@@ -150,7 +161,7 @@ export class UtilityService {
 
   /**
    * This function will be called when @function asyncNotification resolves the promise
-   * @param text 
+   * @param text
    */
   resolveAsyncPromise(text: string){
     return {
@@ -161,7 +172,7 @@ export class UtilityService {
 
   /**
    * This function will be called when @function asyncNotification rejects the promise
-   * @param text 
+   * @param text
    */
   rejectAsyncPromise(text: string){
     return {
@@ -191,7 +202,7 @@ export class UtilityService {
    */
   openCreatePostFullscreenModal(postData: any, userData: any, groupId: string, columns?: any) {
 
-    const data = (columns) ? 
+    const data = (columns) ?
       {
         postData: postData,
         userData: userData,
@@ -233,7 +244,7 @@ export class UtilityService {
   }
 
   /**
-   * This functions is responsible for maintaining track the index while iterating through *ngFor 
+   * This functions is responsible for maintaining track the index while iterating through *ngFor
    * @param index - index of the element
    * @param element - entire element which needs to be tracked
    */
@@ -243,7 +254,7 @@ export class UtilityService {
 
   /**
    * Used to emit the next value of observable so that where this is subscribed, will get the updated value
-   * @param userData 
+   * @param userData
    */
   public updateUserData(userData: any){
     this.userDataSource.next(userData);
@@ -251,7 +262,7 @@ export class UtilityService {
 
   /**
    * Used to emit the next value of observable so that where this is subscribed, will get the updated value
-   * @param userData 
+   * @param userData
    */
   public updateOtherUserData(userData: any){
     this.otherUserDataSource.next(userData);
@@ -308,12 +319,12 @@ export class UtilityService {
 
   /**
    * This function stops the background loader of master loader
-   * @param taskId 
+   * @param taskId
    */
   public stopBackgroundLoader(taskId?: string){
     this.ngxUiLoaderService.stopBackground(taskId);
   }
-  
+
   /**
    * This function stops all the foreground and background loader of master loader
    */
@@ -339,9 +350,9 @@ export class UtilityService {
 
   /**
    * This function return the SWAL modal
-   * @param title 
-   * @param text 
-   * @param icon 
+   * @param title
+   * @param text
+   * @param icon
    */
   public getSwalFire(title?: string, text?: string, icon?: SweetAlertIcon){
     return Swal.fire(title, text, icon);
@@ -367,7 +378,7 @@ export class UtilityService {
         toast.addEventListener('mouseleave', Swal.resumeTimer)
       }
     })
-    
+
     return Toast.fire({
       icon: icon,
       title: title,

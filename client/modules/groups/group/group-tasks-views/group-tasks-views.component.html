@@ -1,5 +1,4 @@
-<div *ngIf="!(isLoading$ | async)" class="root">
-
+<div class="root">
         <app-board-bar *ngIf="groupData"
             [groupData]="groupData"
             [isAdmin]="isAdminUser()"
@@ -26,7 +25,5 @@
 </div>
 
 <!-- Loading Spinner Starts -->
-<ng-container *ngIf="isLoading$ | async">
-    <app-loading-spinner class="media"></app-loading-spinner>
-</ng-container>
+<app-loading-spinner class="media"></app-loading-spinner>
 <!-- Loading Spinner Ends -->
