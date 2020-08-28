@@ -25,7 +25,7 @@ export class AdminMembersComponent implements OnInit {
   public publicFunctions = new PublicFunctions(this.injector);
 
   // PLACEHOLDER INPUT FOR SEARCH BAR
-  public searchBarPlaceholder = "Whom you are looking for?";
+  public searchBarPlaceholder = 'Whom you are looking for?';
 
   // WORKSPACE DATA
   public workspaceData: any;
