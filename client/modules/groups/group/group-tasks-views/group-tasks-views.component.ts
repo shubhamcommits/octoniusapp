@@ -28,6 +28,9 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
   // Fetch groupId from router snapshot
   groupId = this.router.snapshot.queryParamMap.get('group');
 
+  // IsLoading behaviou subject maintains the state for loading spinner
+  public isLoading$ = new BehaviorSubject(false);
+
   // Subsink Object
   subSink = new SubSink();
 
@@ -45,9 +48,12 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     // Start the loading spinner
-    this.utilityService.startLoading();
+    this.isLoading$.next(true);
 
     await this.initView();
+
+    // Return the function via stopping the loader
+    return this.isLoading$.next(false);
   }
 
   /**
@@ -55,8 +61,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
    */
   ngOnDestroy() {
     this.subSink.unsubscribe();
-    // Stopping the loader
-    this.utilityService.stopLoading();
+    this.isLoading$.complete();
   }
 
   async onChangeViewEmitter(view: string) {
@@ -68,9 +73,6 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     userService.updateUser(this.userData);
 
     this.viewType = view;
-
-    // Stopping the loader
-    this.utilityService.stopLoading();
   }
 
   async onCustomFieldEmitter() {
@@ -136,9 +138,6 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
       const post = await this.publicFunctions.getPost(postId);
       this.utilityService.openCreatePostFullscreenModal(post, this.userData, this.groupId);
     }
-
-    // Stopping the loader
-    this.utilityService.stopLoading();
   }
 
   /**
@@ -163,12 +162,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     });
   }
 
-  async isAdminUser() {
-    if (!this.groupData) {
-      await this.utilityService.currentGroupData.toPromise().then(group => {
-        this.groupData = group;
-      });
-    }
+  isAdminUser() {
     const index = this.groupData._admins.findIndex((admin: any) => admin._id === this.userData._id);
     return index >= 0;
   }

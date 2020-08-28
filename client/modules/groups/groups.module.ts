@@ -42,6 +42,7 @@ import { GroupActivityComponent } from './group/group-activity/group-activity.co
 import { DeleteGroupComponent } from './group/group-admin/delete-group/delete-group.component';
 import { GroupKanbanBoardsComponent } from './group/group-kanban-boards/group-kanban-boards.component';
 import { CreateColumnComponent } from './group/group-kanban-boards/create-column/create-column.component';
+import { BoardBarComponent } from './group/group-kanban-boards/board-bar/board-bar.component';
 import { NewTaskComponent } from './group/group-kanban-boards/new-task/new-task.component';
 import { EditColumnComponent } from './group/group-kanban-boards/edit-column/edit-column.component';
 import { GroupPostComponent } from './group/group-post/group-post.component';
@@ -53,7 +54,6 @@ import { GroupSmartAdminComponent } from './group/group-admin/group-smart-admin/
 import { CreateSectionComponent } from './group/group-tasks-list-view/create-section/create-section.component';
 import { DoneTasksListViewComponent } from './group/group-tasks-list-view/done-tasks-list-view/done-tasks-list-view.component';
 import { DoneTasksKanbanViewComponent } from './group/group-kanban-boards/done-tasks-kanban-view/done-tasks-kanban-view.component';
-import { BoardBarComponent } from './group/group-tasks-views/board-bar/board-bar.component';
 
  /**
   * 2. !===== MODULES =====!
