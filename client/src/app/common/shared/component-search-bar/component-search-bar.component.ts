@@ -104,18 +104,17 @@ export class ComponentSearchBarComponent implements OnInit {
           if (this.query == "") {
 
             // Intialise the members back to normal
-            if (this.type === 'workspace')
+            if (this.type === 'workspace') {
               this.members = this.workspaceData.members;
-
-            // Intialise the members back to normal  
+            }
+            // Intialise the members back to normal
             if (this.type === 'group') {
 
               // Merge the Admin and Members array
-              Array.prototype.push.apply(this.groupData._members, this.groupData._admins)
+              Array.prototype.push.apply(this.groupData._members, this.groupData._admins);
 
               // Set the value of members and remove the duplicates
               this.members = Array.from(new Set(this.groupData._members));
-
             }
 
 

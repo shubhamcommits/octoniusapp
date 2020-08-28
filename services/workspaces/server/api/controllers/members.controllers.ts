@@ -203,8 +203,7 @@ export class MembersControllers {
                 ]
             }, {
                 active: false,
-                invited: false,
-                _groups: []
+                invited: false
             }, {
                 new: true
             }).select('first_name last_name profile_pic email role');
@@ -216,16 +215,6 @@ export class MembersControllers {
                 const workspace = await Workspace.findByIdAndUpdate(workplaceId, {
                     $pull: { "invited_users._user": userId, "members": userId },
                 }, { new: true });
-
-                // Remove from all groups
-                const groups = await Group.updateMany({
-                    $or: [
-                        { "_members": userId },
-                        { "_admins": userId }
-                    ]
-                }, {
-                    $pull: { "_members": userId, "_admins": userId }
-                });
             }
 
             else {
