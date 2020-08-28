@@ -197,8 +197,9 @@ export class ComponentSearchBarComponent implements OnInit {
    * @param workspaceId Workspace to remove from
    * @param index
    */
-  reactivateUserInWorkplace(userId, workspaceId) {
-
+  reactivateUserInWorkplace(userId, workspaceId, index) {
+    console.log(userId);
+    console.log(workspaceId);
     // Create Service Instance
     const workspaceService = this.injector.get(WorkspaceService);
 
@@ -212,12 +213,18 @@ export class ComponentSearchBarComponent implements OnInit {
             new Promise((resolve, reject) => {
               workspaceService.reactivateUserToWorkplace(userId, workspaceId)
                 .then(() => {
-                  this.workspaceData.members.sort((x, y) => {
-                    return (x.active === y.active) ? 0 : x.active ? -1 : 1;
+                  const member = this.members.find((element) => {
+                    if (element._id === userId) {
+                    return element;
+                  }
                   });
+                  member.active = true;
+                  this.members[index] = member;
                   this.members.sort((x, y) => {
                     return (x.active === y.active) ? 0 : x.active ? -1 : 1;
                   });
+                  // Resolve with success
+                  resolve(this.utilityService.resolveAsyncPromise('User activated!'));
                 })
                 .catch(() => reject(this.utilityService
                   .rejectAsyncPromise('Unable to reactivate the user from the workplace, please try again!')));
@@ -247,6 +254,13 @@ export class ComponentSearchBarComponent implements OnInit {
             new Promise((resolve, reject) => {
               workspaceService.removeUserFromWorkspace(userId, workspaceId)
                 .then(() => {
+                  const member = this.members.find((element) => {
+                    if (element._id === userId) {
+                    return element;
+                  }
+                  });
+                  member.active = false;
+                  this.members[index] = member;
                   this.members.sort((x, y) => {
                     return (x.active === y.active) ? 0 : x.active ? -1 : 1;
                   });

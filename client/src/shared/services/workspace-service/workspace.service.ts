@@ -110,6 +110,7 @@ export class WorkspaceService {
    * @param workspaceId
    */
   reactivateUserToWorkplace(userId: string, workspaceId: string) {
+    console.log('here');
     return this._http.post(this.BASE_API_URL + '/members/activate', {
       userId,
       workspaceId
