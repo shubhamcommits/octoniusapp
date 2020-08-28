@@ -203,14 +203,14 @@ export class ComponentSearchBarComponent implements OnInit {
     // Create Service Instance
     const workspaceService = this.injector.get(WorkspaceService);
 
-    // Ask User to remove this user from the group or not
+    // Ask User to enable this user from the group or not
     this.utilityService.getConfirmDialogAlert('Are you sure?',
     'This action will enable the user.')
       .then((result) => {
         if (result.value) {
 
           // Remove the User
-          this.utilityService.asyncNotification('Please wait while we are removing the user ...',
+          this.utilityService.asyncNotification('Please wait while we are enabling the user ...',
             new Promise((resolve, reject) => {
               workspaceService.reactivateUserToWorkplace(userId, workspaceId)
                 .then(() => {
@@ -252,7 +252,7 @@ export class ComponentSearchBarComponent implements OnInit {
         if (result.value) {
 
           // Remove the User
-          this.utilityService.asyncNotification('Please wait while we are removing the user ...',
+          this.utilityService.asyncNotification('Please wait while we are disabling the user ...',
             new Promise((resolve, reject) => {
               workspaceService.removeUserFromWorkspace(userId, workspaceId)
                 .then(() => {
