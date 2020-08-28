@@ -72,7 +72,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
 
     userService.updateUser(this.userData);
 
-    this.initView(view);
+    this.viewType = view;
   }
 
   async onCustomFieldEmitter() {
@@ -81,21 +81,18 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     }
   }
 
-  async initView(view?) {
+  async initView() {
 
     // Fetch current user details
     this.userData = await this.publicFunctions.getCurrentUser();
 
-    if (view) {
-      this.viewType = view;
-    } else if (this.userData && this.userData.lastTaskView) {
+    if (this.userData && this.userData.lastTaskView) {
       this.viewType = this.userData.lastTaskView;
     }
 
     // Fetch current group from the service
     this.subSink.add(this.utilityService.currentGroupData.subscribe(async (res) => {
       if (JSON.stringify(res) !== JSON.stringify({})) {
-
         // Assign the GroupData
         this.groupData = res;
       }
