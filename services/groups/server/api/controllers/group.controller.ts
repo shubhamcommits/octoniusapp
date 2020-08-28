@@ -25,14 +25,14 @@ export class GroupController {
                 .sort('_id')
                 .populate({
                     path: '_members',
-                    select: 'first_name last_name profile_pic role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
                     options: {
                         limit: 10
                     }
                 })
                 .populate({
                     path: '_admins',
-                    select: 'first_name last_name profile_pic role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
                     options: {
                         limit: 10
                     }
@@ -86,7 +86,7 @@ export class GroupController {
                 .limit(5)
                 .populate({
                     path: '_members',
-                    select: 'first_name last_name profile_pic role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name active profile_pic role email created_date custom_fields_to_show share_files',
                     options: {
                         limit: 10
                     },
@@ -96,7 +96,7 @@ export class GroupController {
                 })
                 .populate({
                     path: '_admins',
-                    select: 'first_name last_name profile_pic role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name active profile_pic role email created_date custom_fields_to_show share_files',
                     options: {
                         limit: 10
                     },
@@ -253,7 +253,7 @@ export class GroupController {
             })
                 .populate({
                     path: '_members',
-                    select: 'first_name last_name profile_pic role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
                     options: {
                         limit: 10
                     },
@@ -263,7 +263,7 @@ export class GroupController {
                 })
                 .populate({
                     path: '_admins',
-                    select: 'first_name last_name profile_pic role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
                     options: {
                         limit: 10
                     },
@@ -366,7 +366,7 @@ export class GroupController {
             )
                 .populate({
                     path: '_members',
-                    select: 'first_name last_name profile_pic role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
                     options: {
                         limit: 10
                     },
@@ -376,7 +376,7 @@ export class GroupController {
                 })
                 .populate({
                     path: '_admins',
-                    select: 'first_name last_name profile_pic role email created_date custom_fields_to_show share_files',
+                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
                     options: {
                         limit: 10
                     },

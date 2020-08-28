@@ -20,13 +20,12 @@ export class MembersControllers {
                     ]
                 },
                 { _workspace: workspaceId },
-                { _groups: { $nin: groupId } },
-                { active: true }
+                { _groups: { $nin: groupId } }
             ]
         })
             .sort('_id')
             .limit(10)
-            .select('first_name last_name email role profile_pic')
+            .select('first_name last_name email role profile_pic active')
             .lean() || []
     }
 
@@ -139,13 +138,12 @@ export class MembersControllers {
                         ]
                     },
                     { _id: { $gt: lastUserId } },
-                    { _workspace: workspaceId },
-                    { active: true },
+                    { _workspace: workspaceId }
                 ]
             })
                 .sort('_id')
                 .limit(5)
-                .select('first_name last_name email role profile_pic')
+                .select('first_name last_name email role profile_pic active')
                 .lean() || []
 
             // Send the status 200 response
@@ -159,6 +157,30 @@ export class MembersControllers {
         }
     }
 
+    async reactivateUserInWorkplace(req: Request, res: Response, next: NextFunction) {
+        const { userId, workplaceId } = req.body;
+        try {
+            const user: any = await User.findOneAndUpdate({
+                $and: [
+                    {_id: userId},
+                    {active: false},
+                    {workspace: workplaceId},
+                ]
+            }, {
+                active: true,
+                invited: false,
+            }, {
+                new: true
+            }).select('first_name last_name profile_pic active email role');
+            // Send status 200 response
+            return res.status(200).json({
+                message: `Activated user ${user.first_name}`,
+                user
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
 
     /**
     * This function is responsible for removing the user from workspace
@@ -181,8 +203,7 @@ export class MembersControllers {
                 ]
             }, {
                 active: false,
-                invited: false,
-                _groups: []
+                invited: false
             }, {
                 new: true
             }).select('first_name last_name profile_pic email role');
@@ -194,16 +215,6 @@ export class MembersControllers {
                 const workspace = await Workspace.findByIdAndUpdate(workplaceId, {
                     $pull: { "invited_users._user": userId, "members": userId },
                 }, { new: true });
-
-                // Remove from all groups
-                const groups = await Group.updateMany({
-                    $or: [
-                        { "_members": userId },
-                        { "_admins": userId }
-                    ]
-                }, {
-                    $pull: { "_members": userId, "_admins": userId }
-                });
             }
 
             else {

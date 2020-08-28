@@ -104,18 +104,17 @@ export class ComponentSearchBarComponent implements OnInit {
           if (this.query == "") {
 
             // Intialise the members back to normal
-            if (this.type === 'workspace')
+            if (this.type === 'workspace') {
               this.members = this.workspaceData.members;
-
-            // Intialise the members back to normal  
+            }
+            // Intialise the members back to normal
             if (this.type === 'group') {
 
               // Merge the Admin and Members array
-              Array.prototype.push.apply(this.groupData._members, this.groupData._admins)
+              Array.prototype.push.apply(this.groupData._members, this.groupData._admins);
 
               // Set the value of members and remove the duplicates
               this.members = Array.from(new Set(this.groupData._members));
-
             }
 
 
@@ -154,10 +153,11 @@ export class ComponentSearchBarComponent implements OnInit {
   removeUserFromGroup(groupId: string, userId: string, index: number) {
 
     // Create Service Instance
-    let groupService = this.injector.get(GroupService)
+    let groupService = this.injector.get(GroupService);
 
     // Ask User to remove this user from the group or not
-    this.utilityService.getConfirmDialogAlert()
+    this.utilityService.getConfirmDialogAlert('Are you sure?',
+     'This will deactivate user!')
       .then((result) => {
         if (result.value) {
           // Remove the User
@@ -191,6 +191,48 @@ export class ComponentSearchBarComponent implements OnInit {
 
   }
 
+  /**
+   * Function to remove member from workspace
+   * @param userId User to remove
+   * @param workspaceId Workspace to remove from
+   * @param index
+   */
+  reactivateUserInWorkplace(userId, workspaceId, index) {
+    console.log(userId);
+    console.log(workspaceId);
+    // Create Service Instance
+    const workspaceService = this.injector.get(WorkspaceService);
+
+    // Ask User to enable this user from the group or not
+    this.utilityService.getConfirmDialogAlert('Are you sure?',
+    'This action will enable the user.')
+      .then((result) => {
+        if (result.value) {
+
+          // Remove the User
+          this.utilityService.asyncNotification('Please wait while we are enabling the user ...',
+            new Promise((resolve, reject) => {
+              workspaceService.reactivateUserToWorkplace(userId, workspaceId)
+                .then(() => {
+                  const member = this.members.find((element) => {
+                    if (element._id === userId) {
+                    return element;
+                  }
+                  });
+                  member.active = true;
+                  this.members[index] = member;
+                  this.members.sort((x, y) => {
+                    return (x.active === y.active) ? 0 : x.active ? -1 : 1;
+                  });
+                  // Resolve with success
+                  resolve(this.utilityService.resolveAsyncPromise('User activated!'));
+                })
+                .catch(() => reject(this.utilityService
+                  .rejectAsyncPromise('Unable to reactivate the user from the workplace, please try again!')));
+            }));
+        }
+    });
+  }
 
   /**
    * Function to remove member from workspace
@@ -204,24 +246,26 @@ export class ComponentSearchBarComponent implements OnInit {
     let workspaceService = this.injector.get(WorkspaceService);
 
     // Ask User to remove this user from the group or not
-    this.utilityService.getConfirmDialogAlert()
+    this.utilityService.getConfirmDialogAlert('Are you sure?',
+    'This action will disable the user.')
       .then((result) => {
         if (result.value) {
 
           // Remove the User
-          this.utilityService.asyncNotification('Please wait while we are removing the user ...',
+          this.utilityService.asyncNotification('Please wait while we are disabling the user ...',
             new Promise((resolve, reject) => {
               workspaceService.removeUserFromWorkspace(userId, workspaceId)
                 .then(() => {
-
-                  // Member Details
-                  let member = this.members[index];
-
-                  // Update the Workspace Data
-                  this.workspaceData.members.splice(this.workspaceData.members.findIndex((user: any) => user._id === member._id), 1)
-
-                  // Update UI via removing from array
-                  this.members.splice(index, 1);
+                  const member = this.members.find((element) => {
+                    if (element._id === userId) {
+                    return element;
+                  }
+                  });
+                  member.active = false;
+                  this.members[index] = member;
+                  this.members.sort((x, y) => {
+                    return (x.active === y.active) ? 0 : x.active ? -1 : 1;
+                  });
 
                   // Send updates to workspaceData via service
                   this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData)
