@@ -31,7 +31,9 @@ routes.get('/next', members.getNextWorkspaceMembers);
 routes.get('/groups', members.membersNotInGroup);
 
 // POST - Delete a user from workspace
-routes.post('/delete', members.removeUserFromWorkplace)
+routes.post('/delete', members.removeUserFromWorkplace);
+
+routes.post('/activate', members.reactivateUserInWorkplace);
 
 
 /*  ===================

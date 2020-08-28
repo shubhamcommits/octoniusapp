@@ -191,6 +191,47 @@ export class ComponentSearchBarComponent implements OnInit {
 
   }
 
+  /**
+   * Function to remove member from workspace
+   * @param userId User to remove
+   * @param workspaceId Workspace to remove from
+   * @param index
+   */
+  reactivateUserInWorkplace(userId, workspaceId, index) {
+    console.log(userId);
+    console.log(workspaceId);
+    // Create Service Instance
+    const workspaceService = this.injector.get(WorkspaceService);
+
+    // Ask User to remove this user from the group or not
+    this.utilityService.getConfirmDialogAlert()
+      .then((result) => {
+        if (result.value) {
+
+          // Remove the User
+          this.utilityService.asyncNotification('Please wait while we are removing the user ...',
+            new Promise((resolve, reject) => {
+              workspaceService.reactivateUserToWorkplace(userId, workspaceId)
+                .then(() => {
+                  const member = this.members.find((element) => {
+                    if (element._id === userId) {
+                    return element;
+                  }
+                  });
+                  member.active = true;
+                  this.members[index] = member;
+                  this.members.sort((x, y) => {
+                    return (x.active === y.active) ? 0 : x.active ? -1 : 1;
+                  });
+                  // Resolve with success
+                  resolve(this.utilityService.resolveAsyncPromise('User activated!'));
+                })
+                .catch(() => reject(this.utilityService
+                  .rejectAsyncPromise('Unable to reactivate the user from the workplace, please try again!')));
+            }));
+        }
+    });
+  }
 
   /**
    * Function to remove member from workspace
@@ -213,15 +254,16 @@ export class ComponentSearchBarComponent implements OnInit {
             new Promise((resolve, reject) => {
               workspaceService.removeUserFromWorkspace(userId, workspaceId)
                 .then(() => {
-
-                  // Member Details
-                  let member = this.members[index];
-
-                  // Update the Workspace Data
-                  this.workspaceData.members.splice(this.workspaceData.members.findIndex((user: any) => user._id === member._id), 1)
-
-                  // Update UI via removing from array
-                  this.members.splice(index, 1);
+                  const member = this.members.find((element) => {
+                    if (element._id === userId) {
+                    return element;
+                  }
+                  });
+                  member.active = false;
+                  this.members[index] = member;
+                  this.members.sort((x, y) => {
+                    return (x.active === y.active) ? 0 : x.active ? -1 : 1;
+                  });
 
                   // Send updates to workspaceData via service
                   this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData)
