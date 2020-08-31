@@ -422,7 +422,9 @@ export class PostService {
             status: post.status,
             unassigned: post.unassigned,
             _column: post._column,
-            custom_fields: post.task.custom_fields
+            custom_fields: post.task.custom_fields,
+            isNorthStar: post.task.isNorthStar,
+            northStar: post.task.northStar
           }
 
           break;

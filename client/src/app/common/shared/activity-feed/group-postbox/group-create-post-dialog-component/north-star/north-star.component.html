@@ -1,0 +1,65 @@
+<div class="content-box">
+  <!-- Is Not North Start starts -->
+  <div *ngIf="!isNorthStar">
+    <mat-slide-toggle color="primary" style="float:left; margin-right: 10px;"
+      [checked]="isNorthStar"
+      [name]="'north_star'"
+      (change)="transformToNorthStart()">
+    </mat-slide-toggle>
+    <p class="box-title">North Start</p>
+    <p>Convert this task into a North Star.<br/>North Stars are goals for you or your team.</p>
+  </div>
+  <!-- Is Not North Start ends -->
+
+  <!-- Is Not North Start starts -->
+  <div *ngIf="isNorthStar">
+    <p class="box-title">North Start</p>
+    <p>North Stars are goals for you or your team.</p>
+    <img src="assets/images/icon-north-star.svg" alt="North Star" style="float: right; margin-top: -75px;"/>
+    <br/>
+    <!-- Setting Initial Value starts -->
+    <div class="focus" *ngIf="northStar.target_value === 0">
+      <p class="title">Focus</p>
+      <br/>
+      <label for="target">Set target</label>
+      <mat-form-field style="width: 100px;">
+        <mat-select ngDefaultControl
+          (selectionChange)="changeType($event)"
+          (click)="$event.stopPropagation()"
+          [(ngModel)]="northStar.type"
+          name="new_type">
+            <mat-option *ngFor="let t of types" [value]="t">{{ t }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <input class="target" name="target" type="text" placeholder="Target" [(ngModel)]="northStar.target_value"/>
+
+      <br />
+
+      <label for="value">Initial Value:</label>
+      <input name="value" type="text" placeholder="Initial Value" [(ngModel)]="northStar.value"/>
+
+      <br /><br /><br />
+
+      <p class="save" (click)="saveInitial()">Save</p>
+    </div>
+    <!-- Setting Initial Value ends -->
+
+    <!-- Updating Initial Value starts -->
+    <div class="focus" *ngIf="northStar.target_value > 0">
+      <p class="title">Focus</p>
+      <br/>
+      <span class="target_value"> {{ northStar.target_value | currency }}</span>
+      <br /><br />
+      <span>Status: </span>
+      <span class="status">{{ northStar.status }}</span>
+      <span class="value"> {{ northStar.value | currency }}</span>
+
+      <br /><br /><br />
+
+      <p class="save" (click)="updateProgress()">Update progress</p>
+    </div>
+    <!-- Updating Initial Value ends -->
+  </div>
+  <!-- Is Not North Start ends -->
+</div>

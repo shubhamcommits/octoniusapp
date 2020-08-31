@@ -87,8 +87,6 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
   eventAssignedToCount;
 
-  // dateStyleClass = '';
-
   constructor(
     private postService: PostService,
     private groupService: GroupService,
@@ -333,7 +331,9 @@ export class GroupCreatePostDialogComponent implements OnInit {
       content: this.quillData ? JSON.stringify(this.quillData.contents) : this.postData.content,
       _content_mentions: this._content_mentions,
       tags: this.tags,
-      _read_by: this.postData._read_by
+      _read_by: this.postData._read_by,
+      isNorthStar: this.postData.task.isNorthStar,
+      northStar: this.postData.task.northStar
     };
 
     // If Post type is event, then add due_to property too
@@ -452,5 +452,23 @@ export class GroupCreatePostDialogComponent implements OnInit {
           reject(this.utilityService.rejectAsyncPromise('Unable to delete post, please try again!'));
         });
     }));
+  }
+
+  transformToNorthStart() {
+    this.postData.task.isNorthStar = true;
+    this.postData.task.northStar = {
+      target_value: 0,
+      value: 0,
+      type: 'Currency',
+      status: 'On Track'
+    };
+
+    this.updateDetails();
+  }
+
+  saveInitialNorthStar(newNorthStar) {
+    this.postData.task.northStar = newNorthStar;
+
+    this.updateDetails();
   }
 }

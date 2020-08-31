@@ -122,6 +122,30 @@ const PostSchema = new Schema({
         custom_fields: {
             type: Map,
             of: String
+        },
+
+        isNorthStar: {
+            type: Boolean,
+            default: false
+        },
+
+        northStar: {
+            target_value: {
+                type: Number,
+                default: 0
+            },
+            value: {
+                type: Number,
+                default: 0
+            },
+            type: {
+                type: String,
+                enum: ['Currency']
+            },
+            status: {
+                type: String,
+                enum: ['On Track', 'Delay', 'Conpleted']
+            }
         }
     },
 
