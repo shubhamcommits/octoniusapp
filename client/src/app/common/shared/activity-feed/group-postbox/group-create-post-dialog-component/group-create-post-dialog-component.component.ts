@@ -19,6 +19,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
   // Close Event Emitter - Emits when closing dialog
   @Output() closeEvent = new EventEmitter();
+  @Output() deleteEvent = new EventEmitter();
 
   // BASE URL OF THE APPLICATION
   baseUrl = environment.UTILITIES_BASE_URL;
@@ -436,14 +437,14 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
   /**
    * Call function to delete post
-   * @param postId
    */
   deletePost() {
+    const id = this.postData._id;
     this.utilityService.asyncNotification('Please wait we are deleting the post...', new Promise((resolve, reject) => {
       this.postService.deletePost(this.postData._id)
         .then((res) => {
           // Emit the Deleted post to all the compoents in order to update the UI
-          this.closeEvent.emit();
+          this.deleteEvent.emit(id);
           // Close the modal
           this.mdDialogRef.close();
 
