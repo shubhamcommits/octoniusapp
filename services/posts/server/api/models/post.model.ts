@@ -134,17 +134,23 @@ const PostSchema = new Schema({
                 type: Number,
                 default: 0
             },
-            value: {
-                type: Number,
-                default: 0
-            },
+            values: [{
+                date: {
+                    type: Date,
+                    default: Date.now
+                },
+                value: {
+                    type: Number,
+                    default: 0
+                },
+                status: {
+                    type: String,
+                    enum: ['NOT STARTED', 'ON TRACK', 'IN DANGER', 'ACHIEVED']
+                }
+            }],
             type: {
                 type: String,
-                enum: ['Currency']
-            },
-            status: {
-                type: String,
-                enum: ['On Track', 'Delay', 'Conpleted']
+                enum: ['Currency $', 'Currency €', 'Percent']
             }
         }
     },

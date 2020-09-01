@@ -87,7 +87,8 @@
           [isNorthStar]="(postData.task.isNorthStar) ? true : false"
           [northStar]="postData.task.northStar"
           (transformIntoNorthStarEmitter)="transformToNorthStart()"
-          (saveInitialNorthStarEmitter)="saveInitialNorthStar($event)">
+          (saveInitialNorthStarEmitter)="saveNorthStar($event)"
+          (addProgressNorthStarEmitter)="saveNorthStar($event)">
         </app-north-star>
         <!-- Is North Start ends -->
 

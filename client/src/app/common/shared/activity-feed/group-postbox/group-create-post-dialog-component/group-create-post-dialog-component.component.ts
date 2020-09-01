@@ -458,15 +458,18 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.postData.task.isNorthStar = true;
     this.postData.task.northStar = {
       target_value: 0,
-      value: 0,
-      type: 'Currency',
-      status: 'On Track'
+      values: {
+        date: Date.now(),
+        value: 0
+      },
+      type: 'Currency $',
+      status: 'ON TRACK'
     };
 
     this.updateDetails();
   }
 
-  saveInitialNorthStar(newNorthStar) {
+  saveNorthStar(newNorthStar) {
     this.postData.task.northStar = newNorthStar;
 
     this.updateDetails();

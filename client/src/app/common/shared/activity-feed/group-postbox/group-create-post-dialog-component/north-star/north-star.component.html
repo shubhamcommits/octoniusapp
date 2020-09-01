@@ -18,12 +18,12 @@
     <img src="assets/images/icon-north-star.svg" alt="North Star" style="float: right; margin-top: -75px;"/>
     <br/>
     <!-- Setting Initial Value starts -->
-    <div class="focus" *ngIf="northStar.target_value === 0">
+    <div class="focus" *ngIf="updatingInitialValues">
       <p class="title">Focus</p>
-      <br/>
       <label for="target">Set target</label>
       <mat-form-field style="width: 100px;">
         <mat-select ngDefaultControl
+          [disabled]="northStar.values.length > 1"
           (selectionChange)="changeType($event)"
           (click)="$event.stopPropagation()"
           [(ngModel)]="northStar.type"
@@ -32,32 +32,53 @@
         </mat-select>
       </mat-form-field>
 
-      <input class="target" name="target" type="text" placeholder="Target" [(ngModel)]="northStar.target_value"/>
+      <input class="target" name="target" type="text" [(ngModel)]="northStar.target_value">
 
-      <br />
-
-      <label for="value">Initial Value:</label>
-      <input name="value" type="text" placeholder="Initial Value" [(ngModel)]="northStar.value"/>
-
-      <br /><br /><br />
-
-      <p class="save" (click)="saveInitial()">Save</p>
+      <div class="value_input">
+        <label for="value">Initial Value:</label>
+        <input name="value" type="text" [(ngModel)]="initialValue">
+      </div>
+      <div class="save" (click)="saveInitial()">Save</div>
     </div>
     <!-- Setting Initial Value ends -->
 
     <!-- Updating Initial Value starts -->
-    <div class="focus" *ngIf="northStar.target_value > 0">
-      <p class="title">Focus</p>
-      <br/>
-      <span class="target_value"> {{ northStar.target_value | currency }}</span>
-      <br /><br />
-      <span>Status: </span>
-      <span class="status">{{ northStar.status }}</span>
-      <span class="value"> {{ northStar.value | currency }}</span>
+    <div class="focus" *ngIf="!updatingInitialValues">
+      <p class="title">Focus
+        <i class="material-icons update" (click)="updatingInitialValues = true; this.updateProgress = false;">settings</i>
+      </p>
+      <p class="target_value" *ngIf="northStar.type !== 'Percent'">
+        {{ northStar.target_value | currency: currency_symbol }}
+      </p>
+      <p class="target_value" *ngIf="northStar.type === 'Percent'">
+        {{ northStar.target_value/100 | percent: '.2-2' }}
+      </p>
+      <p class="value" *ngIf="northStar.type !== 'Percent'"> {{ northStar.values[northStar.values.length - 1].value | currency }}</p>
+      <p class="value" *ngIf="northStar.type === 'Percent'"> {{ northStar.values[northStar.values.length - 1].value/100 | percent: '.2-2' }}</p>
+      <div>
+        <span>Status: </span>
+        <span class="status">{{ northStar.values[northStar.values.length - 1].status }}</span>
+      </div>
 
-      <br /><br /><br />
+      <div class="open_update_progress" (click)="openUpdateProgress()">Update progress</div>
 
-      <p class="save" (click)="updateProgress()">Update progress</p>
+      <div class="update_progress" *ngIf="updateProgress">
+        <label for="newValue">Progress update:</label>
+        <input name="newValue" type="text" [(ngModel)]="newValue.value">
+
+        <label for="new_status">Status update:</label>
+        <mat-form-field>
+          <mat-select ngDefaultControl name="new_status"
+            [ngClass]="status_class"
+            [(ngModel)]="newValue.status"
+            (selectionChange)="changeStatus($event)"
+            (click)="$event.stopPropagation()">
+              <mat-option *ngFor="let s of status_types" [value]="s">{{ s }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <div class="save" (click)="addUpdateProgress()">Save</div>
+      </div>
     </div>
     <!-- Updating Initial Value ends -->
   </div>
