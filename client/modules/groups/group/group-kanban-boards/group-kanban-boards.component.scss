@@ -168,6 +168,22 @@ $dark-sky-blue: #4a90e2;
     border-left: 3px solid $dark-sky-blue;
 }
 
+.north-star {
+  background-color: #5E2FE5;
+
+  .kanban-card-title {
+    color: #FFFFFF;
+  }
+
+  .due {
+    color: #FFFFFF;
+  }
+
+  .overdue {
+    color: #FFFFFF;
+  }
+}
+
 section{
     margin-bottom: 10px;
     vertical-align: middle;

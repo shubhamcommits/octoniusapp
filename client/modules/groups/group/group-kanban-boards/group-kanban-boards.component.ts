@@ -47,6 +47,18 @@ export class GroupKanbanBoardsComponent implements OnInit {
 
   async ngOnInit() {}
 
+  getTaskClass(status, isNorthStar) {
+    let taskClass = '';
+    if (status === 'to do') {
+      taskClass = 'status-todo';
+    } else if (status === 'in progress') {
+      taskClass = 'status-inprogress';
+    } else if (status === 'done') {
+      taskClass = 'status-done';
+    }
+    return (isNorthStar) ? taskClass + ' north-star' : taskClass ;
+  }
+
   /**
    * Standard Angular CDK Event which monitors the drop functionality between different columns
    * @param event
