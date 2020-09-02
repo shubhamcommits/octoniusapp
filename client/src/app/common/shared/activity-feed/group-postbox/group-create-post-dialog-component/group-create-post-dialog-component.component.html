@@ -71,6 +71,11 @@
             </button>
         </div>
 
+        <app-north-star-stats *ngIf="postData?.task?.isNorthStar"
+          [isNorthStar]="(postData?.task?.isNorthStar) ? true : false"
+          [northStar]="postData?.task?.northStar">
+        </app-north-star-stats>
+
         <div class="content-box" *ngIf="comments.length > 0">
             <section *ngFor="let comment of comments; let index = index;">
                 <post-comment [comment]="comment" [index]="index" [userData]="userData"
@@ -83,7 +88,7 @@
     <div class="post-properties">
 
         <!-- Is North Start starts -->
-        <app-north-star  *ngIf="postData.type === 'task'"
+        <app-north-star *ngIf="postData.type === 'task'"
           [isNorthStar]="(postData.task.isNorthStar) ? true : false"
           [northStar]="postData.task.northStar"
           (transformIntoNorthStarEmitter)="transformToNorthStart()"

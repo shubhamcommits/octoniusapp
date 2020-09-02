@@ -52,6 +52,7 @@ import { CommentSectionComponent } from './comments/comment-section/comment-sect
 import { PostCommentComponent } from './comments/post-comment/post-comment.component';
 import { LikeCommentComponent } from './comments/post-comment/like-comment/like-comment.component';
 import { NorthStarComponent } from './activity-feed/group-postbox/group-create-post-dialog-component/north-star/north-star.component';
+import { NorthStarStatsComponent } from './activity-feed/group-postbox/group-create-post-dialog-component/north-star/stats/north-star-stats.component';
 
 import { MatSidenavModule, MatDialogModule, MatSlideToggleModule, MAT_DIALOG_DEFAULT_OPTIONS, MatSelectModule } from '@angular/material';
 import { PreviewFilesDialogComponent } from './preview-files-dialog/preview-files-dialog.component';
@@ -136,6 +137,7 @@ import { TruncateTextPipe } from 'src/shared/pipes/truncate-text.pipe';
     InlineInputComponent,
 
     NorthStarComponent,
+    NorthStarStatsComponent,
 
     GroupCreatePostDialogComponent
   ],
