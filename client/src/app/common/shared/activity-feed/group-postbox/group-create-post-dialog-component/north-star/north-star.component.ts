@@ -16,7 +16,7 @@ export class NorthStarComponent implements OnInit {
   @Output() saveInitialNorthStarEmitter = new EventEmitter();
   @Output() addProgressNorthStarEmitter = new EventEmitter();
 
-  types = ['Currency $', 'Currency €', 'Percent'];
+  types = ['Currency $', 'Currency €', 'Percent', 'Number'];
   status_types = ['NOT STARTED', 'ON TRACK', 'IN DANGER', 'ACHIEVED'];
   updatingInitialValues = false;
   updateProgress = false;
@@ -31,8 +31,6 @@ export class NorthStarComponent implements OnInit {
 
   status_class = '';
 
-  currency_symbol = '$';
-
   constructor(private currencyPipe : CurrencyPipe) { }
 
   ngOnInit() {
@@ -46,8 +44,6 @@ export class NorthStarComponent implements OnInit {
     this.initialValue = 0;
     this.setStatusClass('NOT STARTED');
    }
-
-   this.setCurrency(this.northStar.type);
   }
 
   transformToNorthStart() {
@@ -55,7 +51,6 @@ export class NorthStarComponent implements OnInit {
   }
 
   changeType(type) {
-    this.setCurrency(type.value);
   }
 
   changeStatus(status) {
@@ -71,16 +66,6 @@ export class NorthStarComponent implements OnInit {
       value: this.northStar.values[this.northStar.values.length - 1].value,
       status: this.northStar.values[this.northStar.values.length - 1].status
     };
-  }
-
-  setCurrency(type) {
-    if (type === 'Currency $') {
-      this.currency_symbol = '$';
-    } else if (type === 'Currency €') {
-      this.currency_symbol = '€';
-    } else if (type === 'Currency €') {
-      this.currency_symbol = '%';
-    }
   }
 
   setStatusClass(status) {

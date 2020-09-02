@@ -47,14 +47,17 @@
       <p class="title">Focus
         <i class="material-icons update" (click)="updatingInitialValues = true; this.updateProgress = false;">settings</i>
       </p>
-      <p class="target_value" *ngIf="northStar.type !== 'Percent'">
-        {{ northStar.target_value | currency: currency_symbol }}
-      </p>
-      <p class="target_value" *ngIf="northStar.type === 'Percent'">
-        {{ northStar.target_value/100 | percent: '.2-2' }}
-      </p>
-      <p class="value" *ngIf="northStar.type !== 'Percent'"> {{ northStar.values[northStar.values.length - 1].value | currency }}</p>
+
+      <p class="target_value" *ngIf="northStar.type === 'Currency $'">{{ northStar.target_value | currency: '$' }}</p>
+      <p class="target_value" *ngIf="northStar.type === 'Currency €'">{{ northStar.target_value | currency: '€' }}</p>
+      <p class="target_value" *ngIf="northStar.type === 'Number'">{{ northStar.target_value }}</p>
+      <p class="target_value" *ngIf="northStar.type === 'Percent'">{{ northStar.target_value/100 | percent: '.2-2' }}</p>
+
+      <p class="value" *ngIf="northStar.type === 'Currency $'"> {{ northStar.values[northStar.values.length - 1].value | currency: '$' }}</p>
+      <p class="value" *ngIf="northStar.type === 'Currency €'"> {{ northStar.values[northStar.values.length - 1].value | currency: '€' }}</p>
       <p class="value" *ngIf="northStar.type === 'Percent'"> {{ northStar.values[northStar.values.length - 1].value/100 | percent: '.2-2' }}</p>
+      <p class="value" *ngIf="northStar.type === 'Number'"> {{ northStar.values[northStar.values.length - 1].value }}</p>
+
       <div>
         <span>Status: </span>
         <span class="status">{{ northStar.values[northStar.values.length - 1].status }}</span>

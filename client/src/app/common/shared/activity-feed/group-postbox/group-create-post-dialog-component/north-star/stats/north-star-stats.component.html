@@ -23,6 +23,9 @@
           <div class="timeline-value" *ngIf="northStar.type === 'Currency €'">
             {{ value.value | currency: '€' }}
           </div>
+          <div class="timeline-value" *ngIf="northStar.type === 'Number'">
+            {{ value.value }}
+          </div>
           <div [ngClass]="getNSStatusClass(value.status)">
             {{ value.status }}
           </div>
