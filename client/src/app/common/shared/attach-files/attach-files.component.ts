@@ -47,6 +47,16 @@ export class AttachFilesComponent implements OnInit {
     return this.files.emit(this.filesArray)
   }
 
+  onCloudFileAttach(){
+    return this.cloudFiles.emit(this.googleDriveFiles);
+  }
+
+  save() {
+    console.log(this.googleDriveFiles);
+    if (this.googleDriveFiles) {
+      this.onCloudFileAttach();
+    }
+  }
   /**
    * This function is responsible for removing the specific file attached
    * @param index
@@ -69,9 +79,10 @@ export class AttachFilesComponent implements OnInit {
   loadCloudFiles() {
     // if token already exist it just opens the picker else, it authenticates then follow the usual flow
     // auth -> get access_token -> opens the picker to choose the files
-    if(localStorage.getItem('google-cloud-token')!= null){
+    if (localStorage.getItem('google-cloud-token') !== null) {
+      gapi.load('auth', { 'callback': this.onAuthApiLoad.bind(this) });
       gapi.load('picker', { 'callback': this.onPickerApiLoad.bind(this) });
-      this.handleAuthResult(JSON.parse(localStorage.getItem('google-cloud-token')).google_token_data)
+      this.handleAuthResult(localStorage.getItem('google-cloud-token'));
     } else {
       gapi.load('auth', { 'callback': this.onAuthApiLoad.bind(this) });
       gapi.load('picker', { 'callback': this.onPickerApiLoad.bind(this) });
@@ -94,7 +105,6 @@ export class AttachFilesComponent implements OnInit {
   }
 
   handleAuthResult(authResult) {
-    let src;
     if (authResult && !authResult.error) {
       if (authResult.access_token) {
         let view = new google.picker.View(google.picker.ViewId.DOCS);
@@ -108,18 +118,19 @@ export class AttachFilesComponent implements OnInit {
         addView(new google.picker.DocsUploadView()).
         setCallback(function (e) {
           if (e[google.picker.Response.ACTION] == google.picker.Action.PICKED) {
-            let doc = e[google.picker.Response.DOCUMENTS][0];
-            src = doc[google.picker.Document.URL];
+
+            const doc = e[google.picker.Response.DOCUMENTS][0];
+            const src = doc[google.picker.Document.URL];
 
             this.googleDriveFiles = e[google.picker.Response.DOCUMENTS];
-
+            console.log(this.googleDriveFiles);
             const driveDivision = document.getElementById('google-drive-file');
             driveDivision.style.display = 'block';
-            driveDivision.innerHTML = '<b>Drive File Upload: </b>' + '<a href=\''+ src + '\' target=\'_blank\'>' + this.googleDriveFiles[0]['name'] + '</a>';
-
+            driveDivision.innerHTML =
+            '<b>Drive File Upload: </b>' + '<a href=\'' + src + '\' target=\'_blank\'>' + this.googleDriveFiles[0]['name'] + '</a>';
             // TODO this emit is giving an error saying cloudFiles is undefined.
             // Emit the value to other components
-            this.cloudFiles.emit(this.googleDriveFiles);
+
           }
         }).
         build();
