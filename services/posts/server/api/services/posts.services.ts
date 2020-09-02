@@ -1226,4 +1226,18 @@ export class PostService {
       throw(error);
     }  
   }
+
+
+  async getNorthStarTasks(groups: any) {
+    try {
+      return await Post.find({
+        '_group': { $in: groups },
+        $and: [
+          { 'task.isNorthStar': true }
+        ]
+      }).sort('-created_date');
+    } catch (error) {
+      throw(error);
+    }
+  }
 }

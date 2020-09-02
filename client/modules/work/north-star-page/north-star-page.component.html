@@ -1,0 +1,49 @@
+<div class="container">
+
+  <!-- Empty State of tasks starts -->
+  <div *ngIf="northStarTasks.length === 0">
+    <img src='assets/images/today_empty_tasks.svg'>
+  </div>
+  <!-- Empty State of tasks ends -->
+
+  <h5 class="title-overview" *ngIf="northStarTasks.length > 0">ALL MISSIONS FROM YOUR COMPANY</h5>
+
+  <div *ngFor="let task of northStarTasks; let i = index;">
+    <a (click)="openFullscreenModal(task)">
+      <!-- My Space Today Tasks -->
+      <div>
+        <div class="media card-tile overview-task done-bar">
+          <div class="row media-body">
+            <div class="col-md-7">
+              <div class="overview-item title-nowrap pl-0" [innerHTML]="task?.title"></div>
+            </div>
+
+            <div class="col-md-1">
+              <div [ngClass]="getNSStatusClass(task?.task?.northStar)">
+                {{ getProgressPercent(task?.task?.northStar) | percent: '.2-2'}}
+              </div>
+            </div>
+
+            <div class="col-md-2">
+              <div class="grouplabel">
+                {{ task?._group.group_name | truncatetext: 20 }}
+              </div>
+            </div>
+
+            <div class="col-md-1">
+              <img src="{{ baseUrl }}/{{ task?.task?._assigned_to?.profile_pic }}"
+              onerror="this.src='assets/images/user.png'"
+              class="feed-avatar">
+            </div>
+
+            <div class="col-md-1">
+              <div class="overview-item small">
+                {{task.task.due_to | date:'MMM d' }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+</div>
