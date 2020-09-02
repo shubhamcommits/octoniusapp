@@ -1,11 +1,12 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, ChangeDetectionStrategy } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
 
 @Component({
   selector: 'app-north-star',
   templateUrl: './north-star.component.html',
   styleUrls: ['./north-star.component.scss'],
-  providers:[CurrencyPipe]
+  providers:[CurrencyPipe],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NorthStarComponent implements OnInit {
 
