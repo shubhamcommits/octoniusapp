@@ -1,11 +1,15 @@
-.content-box {
+.north-star-box {
   font-family: Nunito;
-  background: #5E2FE5;
+  background:linear-gradient(90.01deg, #5E2FE5 0.01%, #5A206B90 99.99%), url(/assets/images/bg-north-star.jpg);
+  background-size:cover;
+  box-shadow: 0px 8px 10px rgba(0, 0, 0, 0.25);
   color: #F3F4F6;
-  border: 1px solid #E4EDF8;
+  border: none;
   border-radius: 5px;
   margin-bottom: 10px;
   padding: 15px;
+
+ 
 
   .box-title {
     font-style: normal;
@@ -26,7 +30,7 @@
     font-style: normal;
 
     .title {
-      font-weight: bold;
+      font-weight: 700;
     }
 
     p {
@@ -57,8 +61,8 @@
       align-items: center;
       background-color: #e4edf8;
       color: #5E2FE5;
-      border-radius: 10px;
-      padding: 2px 10px;
+      border-radius: 20px;
+      padding: 3px 8px;
       width: fit-content;
       margin: 25px 0 !important;
     }
@@ -74,23 +78,22 @@
   }
 
   input {
-    // width: 115px;
-    background-color: #5E2FE5;
+    width: 100%;
     border-top: none;
     border-left: none;
     border-right: none;
     border-bottom: solid #F3F4F6 thin;
+    background: transparent;
     color: #F3F4F6;
-    margin-left: 10px;
+    margin-left: 0px;
   }
 
-  .value_input {
-    width: 120px;
-  }
+
 
   input.target {
     margin-bottom: 20px;
-    margin-left: 70px;
+    width:100%;
+    // margin-left: 70px;
   }
 
   .open_update_progress {
@@ -103,9 +106,10 @@
   .save {
     cursor: pointer;
     text-decoration: underline;
-    margin: auto !important;
+    margin: 30px auto !important;
     width: 35px;
     display: block;
+    font-weight: 700;
   }
 
   .update_progress {
@@ -132,3 +136,4 @@
 .achieved {
   background-color: #4A90E2 !important;
 }
+
