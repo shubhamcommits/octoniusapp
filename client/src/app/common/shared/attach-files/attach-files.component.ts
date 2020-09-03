@@ -52,7 +52,6 @@ export class AttachFilesComponent implements OnInit {
   }
 
   save() {
-    console.log(this.googleDriveFiles);
     if (this.googleDriveFiles) {
       this.onCloudFileAttach();
     }
@@ -80,7 +79,6 @@ export class AttachFilesComponent implements OnInit {
     // if token already exist it just opens the picker else, it authenticates then follow the usual flow
     // auth -> get access_token -> opens the picker to choose the files
     if (localStorage.getItem('google-cloud-token') !== null) {
-      gapi.load('auth', { 'callback': this.onAuthApiLoad.bind(this) });
       gapi.load('picker', { 'callback': this.onPickerApiLoad.bind(this) });
       this.handleAuthResult(localStorage.getItem('google-cloud-token'));
     } else {
@@ -123,7 +121,6 @@ export class AttachFilesComponent implements OnInit {
             const src = doc[google.picker.Document.URL];
 
             this.googleDriveFiles = e[google.picker.Response.DOCUMENTS];
-            console.log(this.googleDriveFiles);
             const driveDivision = document.getElementById('google-drive-file');
             driveDivision.style.display = 'block';
             driveDivision.innerHTML =
