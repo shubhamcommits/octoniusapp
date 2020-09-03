@@ -35,16 +35,18 @@ export class NorthStarComponent implements OnInit {
   constructor(private currencyPipe : CurrencyPipe) { }
 
   ngOnInit() {
-   if (this.northStar.target_value === 0) {
-     this.updatingInitialValues = true;
-   }
-   if (this.northStar.values[this.northStar.values.length - 1]) {
-    this.initialValue = this.northStar.values[this.northStar.values.length - 1].value;
-    this.setStatusClass(this.northStar.values[this.northStar.values.length - 1].status);
-   } else {
-    this.initialValue = 0;
-    this.setStatusClass('NOT STARTED');
-   }
+    if (this.isNorthStar) {
+      if (this.northStar.target_value === 0) {
+        this.updatingInitialValues = true;
+      }
+      if (this.northStar.values[this.northStar.values.length - 1]) {
+        this.initialValue = this.northStar.values[this.northStar.values.length - 1].value;
+        this.setStatusClass(this.northStar.values[this.northStar.values.length - 1].status);
+      } else {
+        this.initialValue = 0;
+        this.setStatusClass('NOT STARTED');
+      }
+    }
   }
 
   transformToNorthStart() {
