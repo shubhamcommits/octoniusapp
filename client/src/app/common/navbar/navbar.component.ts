@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector, ViewChild, ElementRef, AfterViewInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Injector, ViewChild, ElementRef, AfterViewInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { environment } from 'src/environments/environment';
 import { UserService } from 'src/shared/services/user-service/user.service';
@@ -19,7 +19,7 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class NavbarComponent implements OnInit, AfterViewInit{
+export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild('search', {static: false}) search: ElementRef;
 
@@ -55,7 +55,7 @@ export class NavbarComponent implements OnInit, AfterViewInit{
 
   // My Workplace variable check
   myWorkplace: boolean = this._ActivatedRoute.snapshot.queryParamMap.get('myWorkplace') ? true : false
- 
+
   isGroupNavbar$ = new BehaviorSubject(false);
   isCommonNavbar$ = new BehaviorSubject(false);
   isWorkNavbar$ = new BehaviorSubject(false);
@@ -87,7 +87,7 @@ export class NavbarComponent implements OnInit, AfterViewInit{
         }
         else if(this.routerState === 'group'){
           this.nextGroupNavbarState()
-          
+
           // Check for myWorkplace
           this.myWorkplace = this._ActivatedRoute.snapshot.queryParamMap.get('myWorkplace') ? true : false
         }
@@ -95,7 +95,7 @@ export class NavbarComponent implements OnInit, AfterViewInit{
           this.nextWorkNavbar()
         }
       }
-    }))
+    }));
   }
 
   async ngOnInit() {
@@ -129,14 +129,20 @@ export class NavbarComponent implements OnInit, AfterViewInit{
       this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData)
     }
 
-    console.log('User Data', this.userData)
-    console.log('Workspace Data', this.workspaceData)
-
+    console.log('User Data', this.userData);
+    console.log('Workspace Data', this.workspaceData);
   }
 
   ngAfterViewInit(){
     const searchRef = this.search;
     this.addHotKeys(searchRef)
+  }
+
+  /**
+   * This functions unsubscribes all the observables subscription to avoid memory leak
+   */
+  ngOnDestroy(): void {
+    this.subSink.unsubscribe()
   }
 
   /**
@@ -162,7 +168,7 @@ export class NavbarComponent implements OnInit, AfterViewInit{
    */
   async logout() {
       try {
-        this.utilityService.asyncNotification('Please wait, while we log you out securely...', 
+        this.utilityService.asyncNotification('Please wait, while we log you out securely...',
         new Promise((resolve, reject)=>{
           this.subSink.add(this.authService.signout()
           .subscribe((res) => {
@@ -174,7 +180,7 @@ export class NavbarComponent implements OnInit, AfterViewInit{
             this.socketService.disconnectSocket();
             this.router.navigate(['/home'])
             .then(()=> resolve(this.utilityService.resolveAsyncPromise('Succesfully Logged out!')))
-            
+
           }, (err) => {
             console.log('Error occured while logging out!', err);
             reject(this.utilityService.rejectAsyncPromise('Error occured while logging you out!, please try again!'));
@@ -206,13 +212,6 @@ export class NavbarComponent implements OnInit, AfterViewInit{
       size: 'l',
       windowClass: 'search'
     });
-  }
-
-  /**
-   * This functions unsubscribes all the observables subscription to avoid memory leak
-   */
-  ngOnDestroy(): void {
-    this.subSink.unsubscribe()
   }
 
 }

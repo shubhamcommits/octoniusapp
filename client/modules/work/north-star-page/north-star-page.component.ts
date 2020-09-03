@@ -26,6 +26,11 @@ export class NorthStarPageComponent implements OnInit {
   async ngOnInit() {
     this.userData = await this.publicFunctions.getCurrentUser();
     await this.getUserNorthStarTasks(this.userData);
+
+    // Send Updates to router state
+    this.publicFunctions.sendUpdatesToRouterState({
+      state: 'work'
+    });
   }
 
   getUserNorthStarTasks(userData) {
