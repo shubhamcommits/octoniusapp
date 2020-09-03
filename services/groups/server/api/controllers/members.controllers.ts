@@ -283,4 +283,118 @@ export class MembersControllers {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
     }
+
+    /**
+     * Adding users to Bar
+     * Users who can see some private tasks depening on bar
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async addUsersToBar(req: Request, res: Response, next: NextFunction) {
+        const { groupId, member, barTag } = req.body;
+        try {
+            const memberId = member._id;
+
+            const groupUpdate: any = await Group.findById(groupId);
+            let foundBar = false;
+
+            groupUpdate.bars.forEach(bar => {
+                if (bar.bar_tag === barTag) {
+                  foundBar = true;
+                }
+            });
+            // If group wasn't found invalid id error
+            if (groupUpdate === null || groupUpdate === undefined) {
+                let msg = '';
+                groupUpdate ? msg = 'Group' : msg = 'User';
+                return sendError(res, new Error(`${msg} not found, invalid Id!`), `${msg} not found, invalid Id!`, 404);
+            } else if (!foundBar) {
+                return sendError(res, new Error('Bar tag does not exist!'), 'Bar not found!', 404);
+            }
+            groupUpdate.bars.forEach( bar => {
+                if (bar.bar_tag === barTag) {
+                    bar.tag_members.push(memberId);
+                }
+            });
+            groupUpdate.save();
+
+             // Send status 200 response
+            return res.status(200).json({
+                message: 'New Member has been added to the bar!',
+                group: groupUpdate
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * Removing users from Bar
+     * @param req
+     * @param res
+     * @param next 
+     */
+    async removeUsersFromBar(req: Request, res: Response, next: NextFunction) {
+     // Get the groupId and userId
+     const { groupId, member, barTag } = req.body;
+
+     try {
+         const memberId = member._id;
+         const groupUpdate: any = await Group.findById(groupId);
+
+         // If group wasn't found invalid id error
+         if (groupUpdate === null || groupUpdate === undefined) {
+             let msg = '';
+             groupUpdate ? msg = 'Group' : msg = 'User';
+             return sendError(res, new Error(`${msg} not found, invalid Id!`), `${msg} not found, invalid Id!`, 404)
+         }
+         let usersList;
+         // tslint:disable-next-line: no-shadowed-variable
+         groupUpdate.bars.forEach( bar => {
+             if (bar.bar_tag === barTag) {
+                 usersList = bar.tag_members.filter( tagMember => String(tagMember) !== memberId);
+                 bar.tag_members = usersList;
+             }
+         });
+         groupUpdate.save();
+
+         // Send status 200 response
+         return res.status(200).json({
+             message: `User has been removed from ${barTag} Bar.`
+         });
+     } catch (err) {
+         return sendError(res, err, 'Internal Server Error!', 500);
+     }
+    }
+
+    async removeBar(req: Request, res: Response, next: NextFunction) {
+        // Get the groupId and userId
+     const { groupId, barTag } = req.body;
+
+     try {
+
+         const groupUpdate: any = await Group.findById(groupId);
+
+         // If group wasn't found invalid id error
+         if (groupUpdate === null || groupUpdate === undefined) {
+             let msg = '';
+             groupUpdate ? msg = 'Group' : msg = 'User';
+             return sendError(res, new Error(`${msg} not found, invalid Id!`), `${msg} not found, invalid Id!`, 404)
+         }
+
+         // tslint:disable-next-line: no-shadowed-variable
+         // remove bar from list
+         const bars = groupUpdate.bars.filter( bar => bar.bar_tag !== barTag);
+         groupUpdate.bars = bars;
+         groupUpdate.save();
+
+         // Send status 200 response
+         return res.status(200).json({
+             message: `Bar tag with users has been removed`
+         });
+     } catch (err) {
+         return sendError(res, err, 'Internal Server Error!', 500);
+     }
+    }
 }

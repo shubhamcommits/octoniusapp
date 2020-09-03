@@ -79,6 +79,9 @@ routes.put('/:groupId/settings/shareFiles', group.saveShareFilesSettings);
 // PUT - Remove custom field value
 routes.put('/:groupId/customFields/removeValue', group.removeCustomFieldValue);
 
+// PUT - Add bar to group
+routes.put('/:groupId/addBar', group.addBar);
+
 // Update a smart group with the given rules.
 routes.post('/smart/:groupId', group.updateSmartGroup);
 

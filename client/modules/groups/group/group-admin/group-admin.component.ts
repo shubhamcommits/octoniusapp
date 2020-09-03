@@ -17,7 +17,7 @@ export class GroupAdminComponent implements OnInit {
 
 
   // User Data Object
-  userData: any
+  userData: any;
 
   // PUBLIC FUNCTIONS
   private publicFunctions = new PublicFunctions(this.injector);
@@ -29,7 +29,9 @@ export class GroupAdminComponent implements OnInit {
   groupData: any = {}
 
   // Current Workspace Data
-  workspaceData: any = {}
+  workspaceData: any = {};
+
+  enableRights: boolean;
 
 
   async ngOnInit() {
@@ -99,5 +101,8 @@ export class GroupAdminComponent implements OnInit {
       .then(()=> resolve(utilityService.resolveAsyncPromise('Settings saved to your group!')))
       .catch(() => reject(utilityService.rejectAsyncPromise('Unable to save the settings to your group, please try again!')))
     }))
+  }
+  openBarModal(groupId){
+    console.log(groupId);
   }
 }

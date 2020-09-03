@@ -30,6 +30,19 @@ const GroupSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     }],
+    enabledRights: {
+        type: Schema.Types.Boolean,
+        default: false,
+    },
+    bars: [
+        {
+            bar_tag: Schema.Types.String,
+            tag_members: [{
+                type: Schema.Types.ObjectId,
+                ref: 'User'
+            }]
+        }
+    ],
     description: {
         type: String,
         default: null
