@@ -21,8 +21,7 @@ export class AttachCloudFilesComponent implements OnInit {
     // if token already exist it just opens the picker else, it authenticates then follow the usual flow
     // auth -> get access_token -> opens the picker to choose the files
     if(localStorage.getItem('google-cloud-token')!= null){
-      gapi.load('picker', { 'callback': this.onPickerApiLoad.bind(this) });
-      this.handleAuthResult(JSON.parse(localStorage.getItem('google-cloud-token')).google_token_data)
+      this.handleAuthResult(JSON.parse(localStorage.getItem('google-cloud-token')).google_token_data);
     } else {
       gapi.load('auth', { 'callback': this.onAuthApiLoad.bind(this) });
       gapi.load('picker', { 'callback': this.onPickerApiLoad.bind(this) });
