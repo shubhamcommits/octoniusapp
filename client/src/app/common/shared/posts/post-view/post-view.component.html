@@ -49,12 +49,13 @@
             <div *ngIf="post?.type === 'task'" class="col-md-4 text-right padding-topright">
 
                 <!-- Change task status starts -->
-                <app-task-status class="ml-5" [post]="post" (status)="changeTaskStatus($event)">
+                <app-task-status class="ml-5" *ngIf="post.task.isNorthStar === false"
+                  [post]="post" (status)="changeTaskStatus($event)">
                 </app-task-status>
                 <!-- Change task status ends -->
 
                 <!-- Due Date starts -->
-                <p class="small font-weight-bold mt-3" *ngIf="post.task?.due_to != 'Invalid date'">
+                <p class="small font-weight-bold mt-3" *ngIf="post.task?.due_to && post.task?.due_to != 'Invalid date'">
                     due {{post.task?.due_to | date}}
                 </p>
                 <!-- Due Date ends -->
@@ -99,6 +100,14 @@
         <app-quill-editor *ngIf="post.content && post.type != 'event'" [editorId]="('editor_' + post._id) || 'editor'"
             [toolbar]="false" [readOnly]="true" [contents]="post.content"></app-quill-editor>
         <!-- Normal Post Content ends -->
+
+        <!-- North Star Stats starts -->
+        <app-north-star-stats *ngIf="post?.task?.isNorthStar"
+          [isNorthStar]="(post?.task?.isNorthStar) ? true : false"
+          [northStar]="post?.task?.northStar">
+        </app-north-star-stats>
+        <!-- North Star Stats ends -->
+
         <!-- Attached Files Starts -->
         <div *ngIf="post" class="ml-2 mt-2">
             <a href="{{ fileBaseUrl }}/{{ file?.modified_name }}" target="_blank"
