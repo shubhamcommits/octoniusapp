@@ -3,7 +3,7 @@
   <div *ngIf="isNorthStar">
     <p class="box-title">The progress of the North Star metric gives you a better view on how the effort is done and sustained by the team.</p>
 
-    <ul class="timeline">
+    <ul class="timeline" *ngIf="northStar?.values">
       <li class="" *ngFor="let value of northStar.values.reverse()">
         <div class="timeline-badge">
           <i *ngIf="value.status === 'ACHIEVED'"

@@ -125,20 +125,22 @@ export class GroupCreatePostDialogComponent implements OnInit {
       }
 
       this.groupService.getGroupCustomFields(this.groupId).then((res) => {
-        res['group']['custom_fields'].forEach(field => {
-          this.customFields.push(field);
+        if (res['group']['custom_fields']) {
+          res['group']['custom_fields'].forEach(field => {
+            this.customFields.push(field);
 
-          if (!this.postData.task.custom_fields) {
-            this.postData.task.custom_fields = new Map<string, string>();
-          }
+            if (!this.postData.task.custom_fields) {
+              this.postData.task.custom_fields = new Map<string, string>();
+            }
 
-          if (!this.postData.task.custom_fields[field.name]) {
-            this.postData.task.custom_fields[field.name] = '';
-            this.selectedCFValues[field.name] = '';
-          } else {
-            this.selectedCFValues[field.name] = this.postData.task.custom_fields[field.name];
-          }
-        });
+            if (!this.postData.task.custom_fields[field.name]) {
+              this.postData.task.custom_fields[field.name] = '';
+              this.selectedCFValues[field.name] = '';
+            } else {
+              this.selectedCFValues[field.name] = this.postData.task.custom_fields[field.name];
+            }
+          });
+        }
       });
     }
 

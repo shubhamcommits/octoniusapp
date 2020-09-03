@@ -65,14 +65,14 @@ export class NorthStarPageComponent implements OnInit {
   getNSStatusClass(northStar) {
     let retClass = "percentlabel";
     const status = northStar.values[northStar.values.length - 1].status;
-    if (status === 'NOT STARTED') {
-      retClass += ' not_started';
-    } else if (status === 'ON TRACK') {
+    if (status === 'ON TRACK') {
       retClass += ' on_track';
     } else if (status === 'IN DANGER') {
       retClass += ' in_danger';
     } else if (status === 'ACHIEVED') {
       retClass += ' achieved';
+    } else {
+      retClass += ' not_started';
     }
     return retClass;
   }
