@@ -51,8 +51,10 @@ import { GroupUpdateInformationComponent } from './activity-feed/group-informati
 import { CommentSectionComponent } from './comments/comment-section/comment-section.component';
 import { PostCommentComponent } from './comments/post-comment/post-comment.component';
 import { LikeCommentComponent } from './comments/post-comment/like-comment/like-comment.component';
+import { NorthStarComponent } from './activity-feed/group-postbox/group-create-post-dialog-component/north-star/north-star.component';
+import { NorthStarStatsComponent } from './activity-feed/group-postbox/group-create-post-dialog-component/north-star/stats/north-star-stats.component';
 
-import { MatSidenavModule, MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS, MatSelectModule } from '@angular/material';
+import { MatSidenavModule, MatDialogModule, MatSlideToggleModule, MAT_DIALOG_DEFAULT_OPTIONS, MatSelectModule } from '@angular/material';
 import { PreviewFilesDialogComponent } from './preview-files-dialog/preview-files-dialog.component';
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
 import { InlineInputComponent } from './inline-input/inline-input.component';
@@ -134,6 +136,9 @@ import { TruncateTextPipe } from 'src/shared/pipes/truncate-text.pipe';
 
     InlineInputComponent,
 
+    NorthStarComponent,
+    NorthStarStatsComponent,
+
     GroupCreatePostDialogComponent
   ],
   imports: [
@@ -171,7 +176,8 @@ import { TruncateTextPipe } from 'src/shared/pipes/truncate-text.pipe';
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MomentDateModule
+    MomentDateModule,
+    MatSlideToggleModule
   ],
   exports: [
     AttachFilesComponent,

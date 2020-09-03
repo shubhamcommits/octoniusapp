@@ -40,6 +40,12 @@ routes.post('/', postFileHandler, postController.add);
  */
 routes.get('/', postController.getPosts);
 
+/**
+ * GET - This route fetches the list of posts present in a group
+ * @param { groups Ids } query
+ */
+routes.get('/northstar', postController.getNorthStarTasks);
+
 // This route is used to edit a post
 routes.put('/:postId', postFileHandler, postController.edit);
 

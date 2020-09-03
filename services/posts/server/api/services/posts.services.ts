@@ -422,7 +422,9 @@ export class PostService {
             status: post.status,
             unassigned: post.unassigned,
             _column: post._column,
-            custom_fields: post.task.custom_fields
+            custom_fields: post.task.custom_fields,
+            isNorthStar: post.task.isNorthStar,
+            northStar: post.task.northStar
           }
 
           break;
@@ -1223,5 +1225,19 @@ export class PostService {
     } catch (error) {
       throw(error);
     }  
+  }
+
+
+  async getNorthStarTasks(groups: any) {
+    try {
+      return await Post.find({
+        '_group': { $in: groups },
+        $and: [
+          { 'task.isNorthStar': true }
+        ]
+      }).sort('-created_date');
+    } catch (error) {
+      throw(error);
+    }
   }
 }

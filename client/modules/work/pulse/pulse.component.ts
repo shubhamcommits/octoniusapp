@@ -58,7 +58,7 @@ export class PulseComponent implements OnInit {
   public subSink = new SubSink();
 
   async ngOnInit() {
-    // Starts the spinner 
+    // Starts the spinner
     this.isLoading$.next(true);
 
     // Fetches the workspace data
@@ -78,6 +78,11 @@ export class PulseComponent implements OnInit {
     // Calculate the pulse tasks via calling the APIs
     await this.calculatePulseTasks(this.pulseGroups);
 
+    // Send Updates to router state
+    this.publicFunctions.sendUpdatesToRouterState({
+      state: 'work'
+    });
+
     // Stops the spinner and return the value with ngOnInit
     return this.isLoading$.next(false);
   }
@@ -85,7 +90,7 @@ export class PulseComponent implements OnInit {
 
   /**
    * This function is resposible for fetching first 10 groups present in the workplace
-   * @param workspaceId 
+   * @param workspaceId
    */
   public async getAllPulseGroups(workspaceId: string) {
     return new Promise((resolve, reject) => {
@@ -97,8 +102,8 @@ export class PulseComponent implements OnInit {
 
   /**
    * This function is resposible for fetching next 5 groups present based on the lastGroupId
-   * @param workspaceId 
-   * @param lastGroupId 
+   * @param workspaceId
+   * @param lastGroupId
    */
   public async getNextPulseGroups(workspaceId: string, lastGroupId: string) {
     return new Promise((resolve, reject) => {
@@ -110,7 +115,7 @@ export class PulseComponent implements OnInit {
 
   /**
    * This function returns the count of tasks of pulse for specific status
-   * @param groupId 
+   * @param groupId
    * @param status - optional
    */
   public async getTasksCount(groupId: string, status?: string) {
@@ -185,8 +190,8 @@ export class PulseComponent implements OnInit {
 
   /**
    * This function opens the sweet alert model for the pulse details
-   * @param title 
-   * @param imageUrl 
+   * @param title
+   * @param imageUrl
    */
   openModal(title: string, imageUrl: string, pulse: string, todo: number, inprogress: number, done: number) {
 
@@ -194,12 +199,12 @@ export class PulseComponent implements OnInit {
     return this.utilityService.getSwalModal({
       html:
         `<div class="form-group inline-elements">
-                <label class="group-name-label"><strong>Group Name</strong></label> 
+                <label class="group-name-label"><strong>Group Name</strong></label>
                 <p class="group-elements-content">${title}</p>
         </div>` +
 
         `<div class="form-group inline-elements">
-                <label class="group-pulse-label"><strong>This week's Pulse</strong></label> 
+                <label class="group-pulse-label"><strong>This week's Pulse</strong></label>
                 <p class="group-elements-content">${pulse}</p>
         </div>` +
 
@@ -216,8 +221,8 @@ export class PulseComponent implements OnInit {
         `<div class="form-group inline-elements">
                 <label class="group-done-tasks"><strong>Done Tasks this week</strong></label>
                 <p class="group-elements-content">${done}</p>
-        </div>` + 
-        
+        </div>` +
+
         `<div class="form-group inline-elements">
                 <label class="group-total-tasks"><strong>Total Tasks this week</strong></label>
                 <p class="group-elements-content">${todo + inprogress + done}</p>

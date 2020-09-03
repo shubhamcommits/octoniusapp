@@ -71,6 +71,11 @@
             </button>
         </div>
 
+        <app-north-star-stats *ngIf="postData?.task?.isNorthStar"
+          [isNorthStar]="(postData?.task?.isNorthStar) ? true : false"
+          [northStar]="postData?.task?.northStar">
+        </app-north-star-stats>
+
         <div class="content-box" *ngIf="comments.length > 0">
             <section *ngFor="let comment of comments; let index = index;">
                 <post-comment [comment]="comment" [index]="index" [userData]="userData"
@@ -79,8 +84,21 @@
         </div>
     </div>
 
+    <!-- Top Right Section starts -->
     <div class="post-properties">
-        <div class="content-box" *ngIf="postData.type === 'task'">
+
+        <!-- Is North Start starts -->
+        <app-north-star *ngIf="postData.type === 'task'"
+          [isNorthStar]="(postData.task.isNorthStar) ? true : false"
+          [northStar]="postData.task.northStar"
+          (transformIntoNorthStarEmitter)="transformToNorthStart()"
+          (saveInitialNorthStarEmitter)="saveNorthStar($event)"
+          (addProgressNorthStarEmitter)="saveNorthStar($event)">
+        </app-north-star>
+        <!-- Is North Start ends -->
+
+        <!-- Status starts -->
+        <div class="content-box" *ngIf="!postData.task.isNorthStar">
             <p class="box-title">Status</p>
             <!-- Change task status starts -->
             <app-task-status
@@ -103,8 +121,9 @@
             </app-change-column>
             <!-- Change task column ends -->
         </div>
+        <!-- Status ends -->
 
-        <!-- Top Right Section starts -->
+        <!-- Due date starts -->
         <div class="content-box" *ngIf="postData.type === 'task' || postData.type === 'event'">
             <p class="box-title">Due date</p>
             <div *ngIf="postData.type === 'task'" class="btn-group">
@@ -135,7 +154,7 @@
             </app-time-picker>
             <!-- Time Picker ends -->
         </div>
-        <!-- Top Right Section ends -->
+        <!-- Due date ends -->
 
         <!-- Assignee Modal starts -->
         <div class="content-box" *ngIf="postData.type === 'task' || postData.type === 'event'">
@@ -161,18 +180,6 @@
                 [type]="'event'"
                 (member)="getMemberDetails($event)">
             </app-component-search-input-box>
-            <!--
-            <div id="avatar-assignee" *ngIf="!eventAssignedToAll()">
-                <img  *ngFor="let assignee of eventAssignees"
-                    [src]="profilePicURL(assignee.profile_pic)"
-                    onerror="this.src='assets/images/user.png'"
-                    alt="{{ assignee.first_name }} {{ assignee.last_name }}"
-                    [ngClass]="'feed-avatar'">
-            </div>
-            <p *ngIf="!eventAssignees" style="padding-top: 20px;">
-                Unassigned
-            </p>
-            -->
         </div>
         <!-- Assignee Modal ends -->
 
@@ -204,4 +211,5 @@
             </div>
         </div>
     </div>
+    <!-- Top Right Section ends -->
 </div>

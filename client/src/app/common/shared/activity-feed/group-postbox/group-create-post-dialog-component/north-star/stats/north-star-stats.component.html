@@ -1,0 +1,36 @@
+<div class="content-box">
+  <!-- Is Not North Start starts -->
+  <div *ngIf="isNorthStar">
+    <p class="box-title">The progress of the North Star metric gives you a better view on how the effort is done and sustained by the team.</p>
+
+    <ul class="timeline" *ngIf="northStar?.values">
+      <li class="" *ngFor="let value of northStar.values.reverse()">
+        <div class="timeline-badge">
+          <i *ngIf="value.status === 'ACHIEVED'"
+            class="material-icons"
+            style="margin-top: -45px; margin-left: -1px; font-size: 15px;">done</i>
+        </div>
+        <div class="timeline-panel">
+          <div class="timeline-date">
+            {{ value.date | date: 'MMM, d' }}
+          </div>
+          <div class="timeline-value" *ngIf="northStar.type === 'Percent'">
+            {{ value.value / 100 | percent: '.2-2' }}
+          </div>
+          <div class="timeline-value" *ngIf="northStar.type === 'Currency $'">
+            {{ value.value | currency: '$' }}
+          </div>
+          <div class="timeline-value" *ngIf="northStar.type === 'Currency €'">
+            {{ value.value | currency: '€' }}
+          </div>
+          <div class="timeline-value" *ngIf="northStar.type === 'Number'">
+            {{ value.value }}
+          </div>
+          <div [ngClass]="getNSStatusClass(value.status)">
+            {{ value.status }}
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>

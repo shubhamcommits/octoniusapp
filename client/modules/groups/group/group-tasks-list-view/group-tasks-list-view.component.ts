@@ -98,6 +98,29 @@ export class GroupTasksListViewComponent implements OnInit {
     return moment(taskPost.task.due_to).format('YYYY-MM-DD') < this.today;
   }
 
+  getProgressPercent(northStar) {
+    if (northStar.type !== 'Percent') {
+      return (northStar.values[northStar.values.length - 1].value)/northStar.target_value;
+    }
+
+    return northStar.values[northStar.values.length - 1].value / 100;
+  }
+
+  getNSStatusClass(northStar) {
+    let retClass = "percentlabel";
+    const status = northStar.values[northStar.values.length - 1].status;
+    if (status === 'NOT STARTED') {
+      retClass += ' not_started';
+    } else if (status === 'ON TRACK') {
+      retClass += ' on_track';
+    } else if (status === 'IN DANGER') {
+      retClass += ' in_danger';
+    } else if (status === 'ACHIEVED') {
+      retClass += ' achieved';
+    }
+    return retClass;
+  }
+
   async onModalCloseEvent(data) {
     this.updateTask(data);
   }
@@ -108,11 +131,37 @@ export class GroupTasksListViewComponent implements OnInit {
   openFullscreenModal(postData: any): void {
     const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, this.groupId, this.columns);
 
+    const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe((data) => {
+      this.onDeleteEvent(data);
+    });
     const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
       this.updateTask(data);
     });
     dialogRef.afterClosed().subscribe(result => {
+      deleteEventSubs.unsubscribe();
       closeEventSubs.unsubscribe();
+    });
+  }
+
+  onDeleteDoneEvent(id) {
+    this.columns.forEach((col, indexColumn) => {
+      // Find the index of the tasks inside the column
+      const indexTask = col.tasks.done.findIndex((task: any) => task._id === id);
+      if (indexTask !== -1) {
+        this.columns[indexColumn].tasks.done.splice(indexTask, 1);
+        return;
+      }
+    });
+  }
+
+  onDeleteEvent(id) {
+    this.columns.forEach((col, indexColumn) => {
+      // Find the index of the tasks inside the column
+      const indexTask = col.tasks.findIndex((task: any) => task._id === id);
+      if (indexTask !== -1) {
+        this.columns[indexColumn].tasks.splice(indexTask, 1);
+        return;
+      }
     });
   }
 

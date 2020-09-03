@@ -14,7 +14,7 @@ export class PostService {
 
   /**
    * This function is responsible for creating a post
-   * @param { title, content, type, _posted_by, _group, _content_mentions } postData 
+   * @param { title, content, type, _posted_by, _group, _content_mentions } postData
    */
   create(formData: FormData) {
 
@@ -48,10 +48,10 @@ export class PostService {
 
   /**
    * This function is responsible for liking a post
-   * @param postId 
+   * @param postId
    */
   like(postId: string){
-    
+
     // Call the HTTP Request
     return this._http.post(this.baseURL + `/${postId}/like`, '').
     toPromise()
@@ -59,10 +59,10 @@ export class PostService {
 
   /**
    * This function is responsible for unliking a post
-   * @param postId 
+   * @param postId
    */
   unlike(postId: string){
-    
+
     // Call the HTTP Request
     return this._http.post(this.baseURL + `/${postId}/unlike`, '').
     toPromise()
@@ -70,10 +70,10 @@ export class PostService {
 
   /**
    * This function is responsible for liking a post
-   * @param postId 
+   * @param postId
    */
   follow(postId: string){
-    
+
     // Call the HTTP Request
     return this._http.post(this.baseURL + `/${postId}/follow`, '').
     toPromise()
@@ -81,10 +81,10 @@ export class PostService {
 
   /**
    * This function is responsible for unliking a post
-   * @param postId 
+   * @param postId
    */
   unfollow(postId: string){
-    
+
     // Call the HTTP Request
     return this._http.post(this.baseURL + `/${postId}/unfollow`, '').
     toPromise()
@@ -121,13 +121,31 @@ export class PostService {
     return request;
   }
 
+  /**
+   * This function fetches the list of North Star Tasks present in a user´s groups
+   * @param { groups } query
+   */
+  getNorthStarTasks(groups) {
+
+    // Create the request variable
+    let request: any;
+
+    request = this._http.get(this.baseURL + `/northstar`, {
+      params: {
+        groups: groups
+      }
+    }).toPromise()
+
+    return request;
+  }
+
 
   /**
    * This service function is responsible for fetching the tasks and events present in month
-   * @param year 
-   * @param month 
-   * @param groupId 
-   * @param userId 
+   * @param year
+   * @param month
+   * @param groupId
+   * @param userId
    */
   getCalendarPosts(year: any, month: any, groupId: string, userId?: string){
     if(userId){
@@ -153,11 +171,11 @@ export class PostService {
 
   /**
    * This function is resposible for changing the task status of a post
-   * @param postId 
-   * @param assigneeId 
+   * @param postId
+   * @param assigneeId
    */
   changeTaskAssignee(postId: string, assigneeId: string){
-    
+
     // Call the HTTP Request
     return this._http.put(this.baseURL + `/${postId}/task-assignee`, {
       assigneeId: assigneeId
@@ -167,11 +185,11 @@ export class PostService {
 
   /**
    * This function is resposible for changing the task status of a post
-   * @param postId 
+   * @param postId
    * @param dateDueTo
    */
   changeTaskDueDate(postId: string, dateDueTo: string){
-    
+
     // Call the HTTP Request
     return this._http.put(this.baseURL + `/${postId}/task-due-date`, {
       date_due_to: dateDueTo
@@ -181,11 +199,11 @@ export class PostService {
 
   /**
    * This function is resposible for changing the task status of a post
-   * @param postId 
+   * @param postId
    * @param status
    */
   changeTaskStatus(postId: string, status: string){
-    
+
     // Call the HTTP Request
     return this._http.put(this.baseURL + `/${postId}/task-status`, {
       status: status
@@ -195,11 +213,11 @@ export class PostService {
 
   /**
    * This function is resposible for changing the column of a task
-   * @param postId 
+   * @param postId
    * @param title
    */
   changeTaskColumn(postId: string, title: string){
-    
+
     // Call the HTTP Request
     return this._http.put(this.baseURL + `/${postId}/task-column`, {
       title: title
@@ -209,8 +227,8 @@ export class PostService {
 
   /**
    * This function is resposible for fetching tags from a group
-   * @param groupId 
-   * @param tag 
+   * @param groupId
+   * @param tag
    */
   getTags(groupId: string, tag: string) {
 
@@ -227,7 +245,7 @@ export class PostService {
 
   /**
    * This function is used to delete a post
-   * @param postId 
+   * @param postId
    */
   deletePost(postId: string){
     return this._http.delete(this.baseURL + `/${postId}`).toPromise();
@@ -235,7 +253,7 @@ export class PostService {
 
   /**
    * This function is used to save a custom field value
-   * @param postId 
+   * @param postId
    */
   saveCustomField(postId: string, customFieldName: string, customFieldValue: string) {
     // Call the HTTP Request

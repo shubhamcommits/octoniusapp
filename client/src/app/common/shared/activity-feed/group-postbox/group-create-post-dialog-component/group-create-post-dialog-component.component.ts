@@ -19,6 +19,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
   // Close Event Emitter - Emits when closing dialog
   @Output() closeEvent = new EventEmitter();
+  @Output() deleteEvent = new EventEmitter();
 
   // BASE URL OF THE APPLICATION
   baseUrl = environment.UTILITIES_BASE_URL;
@@ -87,8 +88,6 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
   eventAssignedToCount;
 
-  // dateStyleClass = '';
-
   constructor(
     private postService: PostService,
     private groupService: GroupService,
@@ -126,20 +125,22 @@ export class GroupCreatePostDialogComponent implements OnInit {
       }
 
       this.groupService.getGroupCustomFields(this.groupId).then((res) => {
-        res['group']['custom_fields'].forEach(field => {
-          this.customFields.push(field);
+        if (res['group']['custom_fields']) {
+          res['group']['custom_fields'].forEach(field => {
+            this.customFields.push(field);
 
-          if (!this.postData.task.custom_fields) {
-            this.postData.task.custom_fields = new Map<string, string>();
-          }
+            if (!this.postData.task.custom_fields) {
+              this.postData.task.custom_fields = new Map<string, string>();
+            }
 
-          if (!this.postData.task.custom_fields[field.name]) {
-            this.postData.task.custom_fields[field.name] = '';
-            this.selectedCFValues[field.name] = '';
-          } else {
-            this.selectedCFValues[field.name] = this.postData.task.custom_fields[field.name];
-          }
-        });
+            if (!this.postData.task.custom_fields[field.name]) {
+              this.postData.task.custom_fields[field.name] = '';
+              this.selectedCFValues[field.name] = '';
+            } else {
+              this.selectedCFValues[field.name] = this.postData.task.custom_fields[field.name];
+            }
+          });
+        }
       });
     }
 
@@ -333,7 +334,9 @@ export class GroupCreatePostDialogComponent implements OnInit {
       content: this.quillData ? JSON.stringify(this.quillData.contents) : this.postData.content,
       _content_mentions: this._content_mentions,
       tags: this.tags,
-      _read_by: this.postData._read_by
+      _read_by: this.postData._read_by,
+      isNorthStar: this.postData.task.isNorthStar,
+      northStar: this.postData.task.northStar
     };
 
     // If Post type is event, then add due_to property too
@@ -436,14 +439,14 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
   /**
    * Call function to delete post
-   * @param postId
    */
   deletePost() {
+    const id = this.postData._id;
     this.utilityService.asyncNotification('Please wait we are deleting the post...', new Promise((resolve, reject) => {
       this.postService.deletePost(this.postData._id)
         .then((res) => {
           // Emit the Deleted post to all the compoents in order to update the UI
-          this.closeEvent.emit();
+          this.deleteEvent.emit(id);
           // Close the modal
           this.mdDialogRef.close();
 
@@ -452,5 +455,26 @@ export class GroupCreatePostDialogComponent implements OnInit {
           reject(this.utilityService.rejectAsyncPromise('Unable to delete post, please try again!'));
         });
     }));
+  }
+
+  transformToNorthStart() {
+    this.postData.task.isNorthStar = true;
+    this.postData.task.northStar = {
+      target_value: 0,
+      values: {
+        date: Date.now(),
+        value: 0
+      },
+      type: 'Currency $',
+      status: 'ON TRACK'
+    };
+
+    this.updateDetails();
+  }
+
+  saveNorthStar(newNorthStar) {
+    this.postData.task.northStar = newNorthStar;
+
+    this.updateDetails();
   }
 }

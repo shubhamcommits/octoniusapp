@@ -5,6 +5,7 @@ import { WorkRoutingModule } from './work-routing.module';
 
 import { PulseComponent } from './pulse/pulse.component'
 import { SharedModule } from 'src/app/common/shared/shared.module';
+import { NorthStarPageComponent } from './north-star-page/north-star-page.component';
 
 
 @NgModule({
@@ -12,6 +13,7 @@ import { SharedModule } from 'src/app/common/shared/shared.module';
 
     // Pulse Component
     PulseComponent,
+    NorthStarPageComponent
   ],
   imports: [
     CommonModule,

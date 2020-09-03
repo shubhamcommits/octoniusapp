@@ -191,6 +191,41 @@ export class PostController {
         }
     }
 
+    /**
+     * This function fetches the North Star tasks present inside multiple groups
+     * @param { query: { groups } } req 
+     * @param res 
+     * @param next 
+     */
+    async getNorthStarTasks(req: Request, res: Response, next: NextFunction) {
+        // Fetch groupId and lastPostId from request
+        var { groups } = req.query;
+
+        try {
+
+            // If groupId is not present, then return error
+            if (!groups) {
+                return sendErr(res, new Error('Please provide the groups as the query parameter'), 'Please provide the groups as the query paramater!', 400);
+            }
+
+            await postService.getNorthStarTasks(groups)
+                .then((posts) => {
+                    // If lastPostId is there then, send status 200 response
+                    return res.status(200).json({
+                        message: `The North Star Tasks!`,
+                        posts: posts
+                    });
+                })
+                .catch((err) => {
+                    // If there's an error send bad request
+                    return sendErr(res, new Error(err), 'Unable to fetch the north star tasks, kindly check the stack trace for error', 400)
+                })
+
+        } catch (err) {
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
+
 
     /**
      * This function is used to like a post

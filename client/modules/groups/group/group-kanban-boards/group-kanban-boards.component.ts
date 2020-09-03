@@ -47,6 +47,18 @@ export class GroupKanbanBoardsComponent implements OnInit {
 
   async ngOnInit() {}
 
+  getTaskClass(status, isNorthStar) {
+    let taskClass = '';
+    if (status === 'to do') {
+      taskClass = 'status-todo';
+    } else if (status === 'in progress') {
+      taskClass = 'status-inprogress';
+    } else if (status === 'done') {
+      taskClass = 'status-done';
+    }
+    return (isNorthStar) ? taskClass + ' north-star' : taskClass ;
+  }
+
   /**
    * Standard Angular CDK Event which monitors the drop functionality between different columns
    * @param event
@@ -302,17 +314,42 @@ export class GroupKanbanBoardsComponent implements OnInit {
     this.updateTask(data);
   }
 
+  onDeleteDoneEvent(id) {
+    this.columns.forEach((col, indexColumn) => {
+      // Find the index of the tasks inside the column
+      const indexTask = col.tasks.done.findIndex((task: any) => task._id === id);
+      if (indexTask !== -1) {
+        this.columns[indexColumn].tasks.done.splice(indexTask, 1);
+        return;
+      }
+    });
+  }
+
+  onDeleteEvent(id) {
+    this.columns.forEach((col, indexColumn) => {
+      // Find the index of the tasks inside the column
+      const indexTask = col.tasks.findIndex((task: any) => task._id === id);
+      if (indexTask !== -1) {
+        this.columns[indexColumn].tasks.splice(indexTask, 1);
+        return;
+      }
+    });
+  }
+
   /**
    * This function is responsible for opening a fullscreen dialog to edit a task
    */
   openFullscreenModal(postData: any): void {
     const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, this.groupId, this.columns);
-
+    const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe((data) => {
+      this.onDeleteEvent(data);
+    });
     const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
       this.updateTask(data);
     });
     dialogRef.afterClosed().subscribe(result => {
       closeEventSubs.unsubscribe();
+      deleteEventSubs.unsubscribe();
     });
   }
 
