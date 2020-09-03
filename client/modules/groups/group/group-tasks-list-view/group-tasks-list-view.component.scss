@@ -177,7 +177,7 @@ $dark-sky-blue: #4a90e2;
             min-width: 160px;
             flex: 0 0;
             text-align: center;
-           
+
         }
         .task_cell_tag {
             flex-basis: 160px;
@@ -265,9 +265,131 @@ $dark-sky-blue: #4a90e2;
 .input-date{
     margin-top: 0 !important;
 }
+
 .north-star {
     // background: linear-gradient(90.01deg, rgba(94, 47, 229, 0.71) 0.01%, #5a206b 99.99%),
     //     url(/assets/images/bg-north-star.jpg);
     // background-size: cover;
-    background: #5E2FE5;
+    // background: #5E2FE5;
+    color: #ffffff;
+
+    height: 70px;
+    padding: 0;
+    width: 100%;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    box-sizing: border-box;
+    margin: 2px auto;
+    transition: box-shadow 0.3s ease-in-out;
+    background: linear-gradient(90.01deg, #5E2FE5 0.01%, #5A206B 99.99%);
+
+    .card-tile {
+      padding: 0;
+      align-items: center;
+      box-shadow: 0px 8px 10px rgba(0, 0, 0, 0.25);
+      border-radius: 5px;
+
+      .media-body {
+        padding: 10px;
+      }
+
+      &:hover {
+        cursor: pointer;
+      }
+
+      p {
+        font-size: 14px !important;
+      }
+    }
+
+    .title-overview {
+      font-size: 15px;
+      margin: 15px 0;
+      font-weight: bold;
+      line-height: 23px;
+      text-transform: uppercase;
+      color: #969A9E;
+    }
+
+    .feed-avatar {
+      //avatar image for in-feed display
+      width: 30px;
+      height: 30px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin: 5px 10px;
+    }
+
+    .overview-task {
+      padding-top: 17px;
+    }
+
+    .overview-item {
+      width: auto;
+      font-size: 16px;
+      padding-left: 15px;
+      font-family: "Nunito", sans-serif;
+      font-style: normal;
+      font-weight: 400;
+      align-items: center;
+    }
+
+    .small {
+      font-size: 12px;
+    }
+
+    .title-nowrap {
+      width: 55%;
+      display: inline-block;
+      white-space: nowrap;
+      overflow: hidden !important;
+      text-overflow: ellipsis;
+    }
+
+    .row {
+      margin-left: 0;
+      margin-right: 0;
+      align-items: center;
+    }
+
+    .percentlabel {
+      font-family: "Nunito", sans-serif;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 12px;
+      align-items: center;
+      color: #ffffff;
+      border-radius: 10px;
+      padding: 2px 10px;
+      width: fit-content;
+    }
+
+    .not_started {
+      background-color: #FFAB00 !important;
+    }
+
+    .on_track {
+      background-color: #26A69A !important;
+    }
+
+    .in_danger {
+      background-color: #EB5757 !important;
+    }
+
+    .achieved {
+      background-color: #4A90E2 !important;
+    }
+
+    .grouplabel{
+      font-family: "Nunito", sans-serif;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 12px;
+      align-items: center;
+      background-color: #26A69A;
+      color: #ffffff;
+      border-radius: 10px;
+      padding: 2px 10px;
+      width: fit-content;
+    }
 }

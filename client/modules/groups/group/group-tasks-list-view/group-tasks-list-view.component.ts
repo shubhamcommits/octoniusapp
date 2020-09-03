@@ -98,6 +98,29 @@ export class GroupTasksListViewComponent implements OnInit {
     return moment(taskPost.task.due_to).format('YYYY-MM-DD') < this.today;
   }
 
+  getProgressPercent(northStar) {
+    if (northStar.type !== 'Percent') {
+      return (northStar.values[northStar.values.length - 1].value)/northStar.target_value;
+    }
+
+    return northStar.values[northStar.values.length - 1].value / 100;
+  }
+
+  getNSStatusClass(northStar) {
+    let retClass = "percentlabel";
+    const status = northStar.values[northStar.values.length - 1].status;
+    if (status === 'NOT STARTED') {
+      retClass += ' not_started';
+    } else if (status === 'ON TRACK') {
+      retClass += ' on_track';
+    } else if (status === 'IN DANGER') {
+      retClass += ' in_danger';
+    } else if (status === 'ACHIEVED') {
+      retClass += ' achieved';
+    }
+    return retClass;
+  }
+
   async onModalCloseEvent(data) {
     this.updateTask(data);
   }

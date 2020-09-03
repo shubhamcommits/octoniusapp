@@ -81,11 +81,12 @@
                 <!-- CREATE TASK ENDS -->
 
                 <!-- TASK DETAILS STARTS -->
+                <!-- Normal Tasks Start -->
                 <div class="task_row"
-                    [ngClass]="{'status-todo': task?.task?.status === 'to do', 'status-inprogress': task?.task?.status === 'in progress', 'status-done': task?.task?.status === 'done'}"
+                    [ngClass]="{'status-todo': task?.task?.status === 'to do', 'status-inprogress': task?.task?.status === 'in progress', 'status-done': task?.task?.status === 'done' || task?.task?.isNorthStar }"
                     *ngFor="let task of column.tasks; let j = index;">
 
-                    <div class="task_content">
+                    <div class="task_content" *ngIf="!task?.task?.isNorthStar">
                         <div class="task_title">
                             <app-inline-input
                                 [(ngModel)]="task.title"
@@ -157,6 +158,47 @@
                           </mat-menu>
                       </div>
                   </div>
+                  <!-- Normal Tasks Ends -->
+
+                  <!-- North Star Tasks Start -->
+                  <div *ngIf="task?.task?.isNorthStar" class="north-star card-tile">
+                    <a (click)="openFullscreenModal(task)">
+                      <div>
+                        <div class="media overview-task">
+                          <div class="row media-body">
+                            <div class="col-md-7">
+                              <div class="overview-item title-nowrap pl-0" [innerHTML]="task?.title"></div>
+                            </div>
+
+                            <div class="col-md-1">
+                              <div [ngClass]="getNSStatusClass(task?.task?.northStar)">
+                                {{ getProgressPercent(task?.task?.northStar) | percent: '.2-2'}}
+                              </div>
+                            </div>
+
+                            <div class="col-md-2">
+                              <div class="grouplabel">
+                                {{ task?._group.group_name | truncatetext: 20 }}
+                              </div>
+                            </div>
+
+                            <div class="col-md-1">
+                              <img src="{{ baseUrl }}/{{ task?.task?._assigned_to?.profile_pic }}"
+                              onerror="this.src='assets/images/user.png'"
+                              class="feed-avatar">
+                            </div>
+
+                            <div class="col-md-1">
+                              <div class="overview-item small">
+                                {{task.task.due_to | date:'MMM d' }}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  <!-- North Star Tasks Ends -->
                 </div>
                 <!-- TASK DETAILS ENDS -->
 
