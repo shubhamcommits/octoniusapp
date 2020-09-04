@@ -61,15 +61,15 @@
         <i class="material-icons update" (click)="updatingInitialValues = true; this.updateProgress = false;">settings</i>
       </p>
 
-      <div class="target_value" *ngIf="northStar.type === 'Currency $'">{{ northStar.target_value | currency: '$' }}</div>
-      <div class="target_value" *ngIf="northStar.type === 'Currency €'">{{ northStar.target_value | currency: '€' }}</div>
-      <div class="target_value" *ngIf="northStar.type === 'Number'">{{ northStar.target_value }}</div>
-      <div class="target_value" *ngIf="northStar.type === 'Percent'">{{ northStar.target_value/100 | percent: '.2-2' }}</div>
+      <div class="target_value" *ngIf="northStar.type === 'Currency $'"><span>Target:</span> {{ northStar.target_value | currency: '$' }}</div>
+      <div class="target_value" *ngIf="northStar.type === 'Currency €'"><span>Target:</span> {{ northStar.target_value | currency: '€' }}</div>
+      <div class="target_value" *ngIf="northStar.type === 'Number'"><span>Target:</span> {{ northStar.target_value }}</div>
+      <div class="target_value" *ngIf="northStar.type === 'Percent'"><span>Target:</span> {{ northStar.target_value/100 | percent: '.2-2' }}</div>
 
-      <div class="value" *ngIf="northStar.type === 'Currency $'"> {{ northStar.values[0].value | currency: '$' }}</div>
-      <div class="value" *ngIf="northStar.type === 'Currency €'"> {{ northStar.values[0].value | currency: '€' }}</div>
-      <div class="value" *ngIf="northStar.type === 'Percent'"> {{ northStar.values[0].value/100 | percent: '.2-2' }}</div>
-      <div class="value" *ngIf="northStar.type === 'Number'"> {{ northStar.values[0].value }}</div>
+      <div class="value" *ngIf="northStar.type === 'Currency $'"> <span>Current:</span> {{ northStar.values[0].value | currency: '$' }}</div>
+      <div class="value" *ngIf="northStar.type === 'Currency €'"><span>Current:</span>  {{ northStar.values[0].value | currency: '€' }}</div>
+      <div class="value" *ngIf="northStar.type === 'Percent'"><span>Current:</span>  {{ northStar.values[0].value/100 | percent: '.2-2' }}</div>
+      <div class="value" *ngIf="northStar.type === 'Number'"> <span>Current:</span> {{ northStar.values[0].value }}</div>
 
       <div>
         <span>Status: </span>
