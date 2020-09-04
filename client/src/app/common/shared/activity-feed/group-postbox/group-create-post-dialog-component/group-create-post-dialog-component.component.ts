@@ -268,10 +268,8 @@ export class GroupCreatePostDialogComponent implements OnInit {
    * Fetch Comments
    */
   fetchComments() {
-    this.commentService.getComments(this.postData._id).then((res) => {
-      this.comments = res['comments'];
-    }).catch((err) => {
-      console.log(err);
+    this.commentService.getComments(this.postData._id).subscribe((res) => {
+      this.comments = res.comments;
     });
   }
 

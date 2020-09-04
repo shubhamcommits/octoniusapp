@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -46,14 +47,14 @@ export class CommentService {
    * @param contentMentions 
    * @param _highlighted_content_range 
    */
-  new(postId: any, content: any, contentMentions: any, _highlighted_content_range: any) {
+  new(postId: any, content: any, contentMentions: any, _highlighted_content_range: any): Observable<any> {
     return this._http.post(this.baseURL + '/comments/new-comment', {
       content, contentMentions, _highlighted_content_range
     }, {
       params: { 
         postId : postId
       }
-    }).toPromise()
+    });
   }
 
 
@@ -87,10 +88,10 @@ export class CommentService {
    * This function is responsible for fetching all comments
    * @param postId 
    */
-  getComments(postId: any){
+  getComments(postId: any): Observable<any>{
     return this._http.get(this.baseURL + '/comments/comments', {
       params: {postId}
-    }).toPromise();
+    });
   }
 
 
