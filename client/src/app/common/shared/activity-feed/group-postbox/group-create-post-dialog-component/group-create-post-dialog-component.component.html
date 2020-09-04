@@ -98,7 +98,7 @@
         <!-- Is North Start ends -->
 
         <!-- Status starts -->
-        <div class="content-box" *ngIf="!postData.task.isNorthStar">
+        <div class="content-box" *ngIf="!postData.task.isNorthStar && postData.type === 'task'">
             <p class="box-title">Status</p>
             <!-- Change task status starts -->
             <app-task-status
