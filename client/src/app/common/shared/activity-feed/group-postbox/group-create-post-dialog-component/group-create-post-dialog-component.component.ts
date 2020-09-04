@@ -274,11 +274,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
   }
 
   newCommentAdded(event) {
-    this.commentService.new(this.postData._id, event.content, this._content_mentions, [])
-      .subscribe(res =>{
-        // Output the Comment
-        this.comments.unshift(res.comment);
-      });
+    this.comments.unshift(event);
   }
 
   removeComment(index: number) {
