@@ -8,6 +8,7 @@ import { PageNotFoundComponent } from './common/page-not-found/page-not-found.co
 // GUARDS
 import { AuthenticationGuard } from 'src/shared/guards/authentication-guard/authentication.guard';
 import { RoutingGuard } from 'src/shared/guards/routing-guard/routing.guard';
+import { DenyNavigationGuard } from 'src/shared/guards/deny-navigation-guard/deny-navigation.guard';
 
 // Preloading Routes Strategy
 // import { QuicklinkStrategy, QuicklinkModule } from 'ngx-quicklink';
@@ -69,6 +70,6 @@ const routes: Routes = [
 
   ],
   exports: [RouterModule],
-  providers: [AuthenticationGuard]
+  providers: [AuthenticationGuard, DenyNavigationGuard]
 })
 export class AppRoutingModule { }

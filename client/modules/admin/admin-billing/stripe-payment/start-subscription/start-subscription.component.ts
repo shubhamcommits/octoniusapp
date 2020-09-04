@@ -42,7 +42,7 @@ export class StartSubscriptionComponent implements OnInit {
 
       // Socket Service Object
       let socketService = this.injector.get(SocketService)
-  
+
       // Utility Service Object
       let utilityService = this.injector.get(UtilityService)
 
@@ -81,12 +81,12 @@ export class StartSubscriptionComponent implements OnInit {
       token: (token: any) => {
 
         // On recieving the token, create a new subcription
-        utilityService.asyncNotification('Please wait we creating the subscription for you...', 
+        utilityService.asyncNotification('Please wait we creating the subscription for you...',
         new Promise((resolve, reject)=>{
           workspaceService.createSubscription(token, this.amount)
           .then(res => {
 
-            // Set the subscription object 
+            // Set the subscription object
             this.subscription = res['subscription'];
 
             // Update the subscription amount
@@ -98,7 +98,7 @@ export class StartSubscriptionComponent implements OnInit {
             // Send the workspace data to other parts of the application
             this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData);
 
-            // Update the localdata of all the connected users 
+            // Update the localdata of all the connected users
             this.publicFunctions.emitWorkspaceData(socketService, this.workspaceData)
 
             // Resolve the promise

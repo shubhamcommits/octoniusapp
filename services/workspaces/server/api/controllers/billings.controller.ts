@@ -147,32 +147,41 @@ export class BillingControllers {
             // Fetch the current_period_end value
             const workspace: any = await Workspace.findOne({ _id: workspaceId })
                 .select('billing.current_period_end');
+            
+            let message = '';
+            let status = true;
 
             // Check the state of the current_period_end value
             if (workspace.billing.current_period_end) {
                 if (workspace.billing.current_period_end < moment().unix()) {
-
-                    // Send the status 200 response 
-                    res.status(200).json({
-                        message: 'Your subscription is no longer valid',
-                        status: false
-                    });
+                    message = 'Your subscription is no longer valid';
+                    status = false;
                 } else {
-
-                    // Send the status 200 response 
-                    res.status(200).json({
-                        message: 'You have a valid subscription',
-                        status: true
-                    });
+                    message = 'You have a valid subscription';
+                    status = true;
                 }
             } else {
-
-                // Send the status 200 response 
-                res.status(200).json({
-                    message: 'No payment yet',
-                    status: moment().isBetween(workspace.created_date, moment(workspace.created_date).add(14, 'days'))
-                });
+                message = 'No payment yet';
+                status = moment().isBetween(workspace.created_date, moment(workspace.created_date).add(14, 'days'));
             }
+
+            // TODO Add a check to stripe if the payment was done in stripe
+            /*
+            // Create a new customer
+            const customer = await stripe.customers.create({
+                email,
+                source,
+                metadata: {
+                    workspace_id: workspaceId.toString()
+                }
+            });
+            */
+
+            // Send the status 200 response 
+            res.status(200).json({
+                message: message,
+                status: status
+            });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
         }

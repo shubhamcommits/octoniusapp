@@ -1,8 +1,8 @@
 <div class="container" style="margin-bottom: 30px">
    <div class="media user-sticky-card">
-      <img class="mr-3 feed-avatar" 
+      <img class="mr-3 feed-avatar"
          src="{{ baseUrl }}/{{ workspaceData?.workspace_avatar }}"
-         onerror="this.src='assets/images/organization.png'" 
+         onerror="this.src='assets/images/organization.png'"
          placement="bottom" ngbTooltip="Change this workspace's avatar"
          (click)="openWorkspaceDetails(content)">
       <div class="media-body">
@@ -19,7 +19,11 @@
                      <span class="sr-only">(current)</span>
                   </a>
                </li>
-              
+               <li class="nav-item">
+                  <a class="nav-link" routerLink="/dashboard/admin/billing" routerLinkActive="active">Billing
+                     <span class="sr-only">(current)</span>
+                  </a>
+               </li>
             </ul>
          </div>
       </div>
