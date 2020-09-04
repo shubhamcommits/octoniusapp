@@ -76,13 +76,13 @@ export class CommentSectionComponent implements OnInit {
     this._content_mentions = Array.from(new Set(this._content_mentions))
 
     this.newComment(comment);
+    this.comment.emit(comment);
   }
 
   newComment(comment){
       this.commentService.new(this.postId, comment.content, this._content_mentions, [])
       .subscribe((res)=>{
         // Output the Comment
-        this.comment.emit(res.comment);
       });
   }
 

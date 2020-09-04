@@ -61,6 +61,7 @@ export class PostActionsComponent implements OnInit {
     await this.post._followers.forEach(user => {
       this.followedByUsers.push(user['first_name'] + ' ' + user['last_name']);
     });
+    this.fetchComments();
   }
 
   onPostLikedEmitter(userId) {
@@ -97,7 +98,7 @@ export class PostActionsComponent implements OnInit {
    * @param emiterState
    */
   showCommentEditor(emiterState: boolean) {
-    this.showCommentQuillEditor = !this.showCommentQuillEditor
+    this.showCommentQuillEditor = !this.showCommentQuillEditor;
   }
 
   /**
@@ -107,6 +108,7 @@ export class PostActionsComponent implements OnInit {
     if (this.showComments==false){
       this.commentService.getComments(this.post._id).subscribe((res)=>{
         this.comments = res.comments;
+        this.post.comments = res.comments;
       });
     }
     if (this.post.comments.length > 0){
@@ -127,8 +129,9 @@ export class PostActionsComponent implements OnInit {
   }
 
   newComment(comment: any) {
-    this.comments.unshift(comment)
+    this.comments.unshift(comment);
     this.post.comments = this.comments;
+    console.log(this.post.comments.length);
     this.newCommentEmitter.emit(comment);
   }
 
