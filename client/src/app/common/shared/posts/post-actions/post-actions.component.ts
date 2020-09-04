@@ -62,6 +62,7 @@ export class PostActionsComponent implements OnInit {
       this.followedByUsers.push(user['first_name'] + ' ' + user['last_name']);
     });
     this.fetchComments();
+    this.showComments = false;
   }
 
   onPostLikedEmitter(userId) {
@@ -131,7 +132,6 @@ export class PostActionsComponent implements OnInit {
   newComment(comment: any) {
     this.comments.unshift(comment);
     this.post.comments = this.comments;
-    console.log(this.post.comments.length);
     this.newCommentEmitter.emit(comment);
   }
 

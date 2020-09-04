@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 import { CommentService } from 'src/shared/services/comment-service/comment.service';
 import { rejects } from 'assert';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'comment-section',

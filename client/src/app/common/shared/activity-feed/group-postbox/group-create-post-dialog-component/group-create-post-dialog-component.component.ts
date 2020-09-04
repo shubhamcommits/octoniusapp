@@ -8,7 +8,7 @@ import { GroupService } from 'src/shared/services/group-service/group.service';
 import { CommentService } from 'src/shared/services/comment-service/comment.service';
 import moment from 'moment';
 // ShareDB Client
-import * as ShareDB from 'sharedb/lib/client'
+import * as ShareDB from 'sharedb/lib/client';
 
 @Component({
   selector: 'app-group-create-post-dialog-component',
@@ -275,7 +275,6 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
   newCommentAdded(event) {
     this.comments.unshift(event);
-    this.fetchComments();
   }
 
   removeComment(index: number) {
