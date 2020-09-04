@@ -105,11 +105,9 @@ export class PostActionsComponent implements OnInit {
    */
   fetchComments() {
     if (this.showComments==false){
-      this.commentService.getComments(this.post._id).then((res)=>{
-        this.comments = res['comments'];
-      }).catch((err)=>{
-        console.log(err);
-      })
+      this.commentService.getComments(this.post._id).subscribe((res)=>{
+        this.comments = res.comments;
+      });
     }
     if (this.post.comments.length > 0){
       this.showComments = !this.showComments
