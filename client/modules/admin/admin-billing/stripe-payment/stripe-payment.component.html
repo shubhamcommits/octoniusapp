@@ -1,12 +1,10 @@
-<!-- *ngIf="!workspaceData?.billing?.current_period_end"  -->
 
-<!--here we add created property to use change detection.-->
-
-<!-- *ngIf="workspaceData?.billing?.current_period_end" -->
-
-
-<app-start-subscription *ngIf="!workspaceData?.billing?.current_period_end; else subscriptionTemp" [userData]="userData"
-  [workspaceData]="workspaceData" [publicFunctions]="publicFunctions" [subscription]="subscription">
+<app-start-subscription *ngIf="!subscription || subscription.ended_at; else subscriptionTemp"
+  [userData]="userData"
+  [workspaceData]="workspaceData"
+  [publicFunctions]="publicFunctions"
+  [subscription]="subscription"
+  (subscriptionCreated)="onSubscriptionCreated($event)">
 </app-start-subscription>
 
 <ng-container *ngIf="isLoading$ | async">
@@ -14,36 +12,23 @@
 </ng-container>
 
 <ng-template #subscriptionTemp>
-<app-subscription-details *ngIf="workspaceData && subscription" 
-  [workspaceData]="workspaceData" 
-  [publicFunctions]="publicFunctions"
-  [subscription]="subscription">
-</app-subscription-details>
+  <app-subscription-details *ngIf="subscription"
+    [publicFunctions]="publicFunctions"
+    [subscription]="subscription"
+    (subscriptionCanceled)="onSubscriptionCanceled()">
+  </app-subscription-details>
 </ng-template>
 
-<!-- *ngIf="subscription"  -->
-
-
-<div *ngIf="failedPayments.length > 0" class="card-tile">
-  <h3 class="f-payments-title">Failed payments:</h3>
+<div *ngIf="charges.length > 0" class="card-tile">
+  <h3 class="s-payments-title">Payments:</h3>
   <ul class="list-group">
-    <li *ngFor="let f_payment of failedPayments; let index = index ; trackBy: utilityService.trackByIndex"
-      class="list-group-item disabled">
-      <span>{{f_payment.data.object.period_start | amFromUnix | amDateFormat:'MMMM Do YYYY'}} -
-        {{f_payment.data.object.period_end | amFromUnix | amDateFormat:'MMMM Do YYYY'}}</span>
-      <span>{{f_payment.data.object.amount_due | currency:'EUR'}}</span>
-      <button (click)="renewSubscription()" class="btn btn-outline-danger">Renew subcription</button>
-    </li>
-  </ul>
-</div>
-
-<div *ngIf="workspaceData.billing.success_payments.length > 0" class="card-tile">
-  <h3 class="s-payments-title">Completed payments:</h3>
-  <ul class="list-group">
-    <li *ngFor="let s_payment of workspaceData.billing.success_payments" class="list-group-item disabled">
-      <span>{{s_payment.data.object.period_start | amFromUnix | amDateFormat:'MMMM Do YYYY'}} -
-        {{s_payment.data.object.period_end | amFromUnix | amDateFormat:'MMMM Do YYYY'}}</span>
-      <span>{{s_payment.data.object.amount_due | currency:'EUR'}}</span>
+    <li *ngFor="let payment of charges" class="list-group-item disabled">
+      <span>
+        {{ payment.created | amFromUnix | amDateFormat:'MMMM Do YYYY' }}
+        <!-- - {{ payment.period_end | amFromUnix | amDateFormat:'MMMM Do YYYY' }}-->
+      </span>
+      <span>{{ payment.amount | currency: '$': 'symbol': '.2-2' }}</span>
+      <span>{{ payment.outcome.seller_message }}</span>
     </li>
   </ul>
 </div>

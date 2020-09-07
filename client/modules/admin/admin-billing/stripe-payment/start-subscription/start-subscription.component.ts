@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, Injector, Input } from '@angular/core';
+import { Component, OnInit, HostListener, Injector, Input, Output, EventEmitter } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
@@ -29,31 +29,56 @@ export class StartSubscriptionComponent implements OnInit {
   // Subscription Data Object
   @Input('subscription') subscription: any;
 
+  @Output() subscriptionCreated = new EventEmitter();
+
   // Stripe Payment Handler
   handler: any;
 
-  // Amount per seat (1000 is equals to 10 Dollars/Euros) - Calculate the maths according to this
-  amount = 1000; // equals 10 dollars
+  // Workspace object
+  workspaceService = this.injector.get(WorkspaceService);
+
+  // Socket Service Object
+  socketService = this.injector.get(SocketService)
+
+  // Utility Service Object
+  utilityService = this.injector.get(UtilityService)
+
+  amount = 0;
+  priceId;
+
+  subscription_prices = [];
+
+  stripeSessionId;
 
   async ngOnInit() {
+    // Configure the payment handler
+    this.handler = await this.configureHandler(this.workspaceService, this.socketService, this.utilityService);
 
-      // Workspace object
-      let workspaceService = this.injector.get(WorkspaceService)
+    await this.getSubscriptionPrices();
+  }
 
-      // Socket Service Object
-      let socketService = this.injector.get(SocketService)
+  /**
+   * This function handles when component is destroyed
+   */
+  /*
+  ngOnDestroy(){
+    this.handler.close();
+  }
+  */
 
-      // Utility Service Object
-      let utilityService = this.injector.get(UtilityService)
-
-      // Configure the payment handler
-      this.handler = await this.configureHandler(workspaceService, socketService, utilityService);
+  async getSubscriptionPrices() {
+    // TODO remove hardcoded product id - prod_HxaOA05Qf9iwpV
+    // await this.workspaceService.getSubscriptionPrices(this.workspaceData.billing.product_id)
+    await this.workspaceService.getSubscriptionPrices(this.workspaceData.billing.product_id)
+      .then(res => this.subscription_prices = res['prices'].data);
   }
 
   /**
    * This is the helper function to initiate the payment
    */
-  handlePayment() {
+  handlePayment(priceId, amount) {
+    this.amount = amount;
+    this.priceId = priceId;
     this.handler.open({
       name: 'Octonius workspace',
       description: 'Start a monthly subscription',
@@ -76,46 +101,43 @@ export class StartSubscriptionComponent implements OnInit {
     return StripeCheckout.configure({
       key: environment.pk_stripe,
       image: '/favicon.256x256.png',
-      currency: 'EUR',
+      currency: '$',
       locale: 'auto',
       token: (token: any) => {
 
         // On recieving the token, create a new subcription
         utilityService.asyncNotification('Please wait we creating the subscription for you...',
         new Promise((resolve, reject)=>{
-          workspaceService.createSubscription(token, this.amount)
-          .then(res => {
+          // workspaceService.createSubscription(token, this.amount)
+          workspaceService.createSubscription(token, this.priceId, this.workspaceData.billing.product_id)
+            .then(res => {
+              console.log(res);
 
-            // Set the subscription object
-            this.subscription = res['subscription'];
+              // Set the subscription object
+              this.subscription = res['subscription'];
 
-            // Update the subscription amount
-            this.subscription.amount = (this.subscription.amount / 100);
+              // Update the subscription amount
+              // this.subscription.amount = (this.subscription.amount / 100);
 
-            // Set the Workspace Data
-            this.workspaceData.billing = res['workspace']['billing'];
+              // Set the Workspace Data
+              this.workspaceData.billing = res['workspace']['billing'];
 
-            // Send the workspace data to other parts of the application
-            this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData);
+              // Send the workspace data to other parts of the application
+              this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData);
 
-            // Update the localdata of all the connected users
-            this.publicFunctions.emitWorkspaceData(socketService, this.workspaceData)
+              // Update the localdata of all the connected users
+              this.publicFunctions.emitWorkspaceData(socketService, this.workspaceData)
 
-            // Resolve the promise
-            resolve(utilityService.resolveAsyncPromise('Subscription Created Successfully!'))
-          })
-          .catch(() => reject(utilityService.rejectAsyncPromise('Unable to create the Subscription, please try again!')))
+              this.subscriptionCreated.emit(this.subscription);
+
+              // Resolve the promise
+              resolve(utilityService.resolveAsyncPromise('Subscription Created Successfully!'))
+            })
+            .catch(() => reject(utilityService.rejectAsyncPromise('Unable to create the Subscription, please try again!')))
         }))
 
       }
     });
-  }
-
-  /**
-   * This function handles when component is destroyed
-   */
-  ngOnDestroy(){
-    this.handler.close();
   }
 
 }

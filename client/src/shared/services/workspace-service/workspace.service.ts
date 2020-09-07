@@ -136,10 +136,11 @@ export class WorkspaceService {
    * @param { id, email }token
    * @param amount
    */
-  createSubscription(token: any, amount) {
+  // createSubscription(token: any, amount) {
+    createSubscription(token: any, priceId, product_id) {
 
     // Preparing the token data
-    const data = { token };
+    const data = { token, priceId, product_id };
 
     return this._http.post(this.BASE_API_URL + `/billings/create-subscription`, data)
     .toPromise()
@@ -157,8 +158,24 @@ export class WorkspaceService {
   /**
    * This function fetches the subscription details for the currently loggedIn user
    */
-  getSubscription() {
-    return this._http.get(this.BASE_API_URL + `/billings/get-subscription`)
+  getSubscription(customerId: string) {
+    return this._http.get(this.BASE_API_URL + `/billings/get-subscription/${customerId}`)
+    .toPromise()
+  }
+
+  /**
+   * This function fetches the subscription details for the currently loggedIn user
+   */
+  getCharges(customerId: string) {
+    return this._http.get(this.BASE_API_URL + `/billings/get-charges/${customerId}`)
+    .toPromise()
+  }
+
+  /**
+   * This function fetches the prices for the subscription for the currently loggedIn user
+   */
+  getSubscriptionPrices(productId: string) {
+    return this._http.get(this.BASE_API_URL + `/billings/get-subscription-prices/${productId}`)
     .toPromise()
   }
 
@@ -184,6 +201,11 @@ export class WorkspaceService {
   resumeSubscription() {
     return this._http.get(this.BASE_API_URL + `/billings/resume-subscription`)
     .toPromise()
+  }
+
+  createCheckoutSession(priceId: any) {
+    return this._http.post(this.BASE_API_URL + `/billings/create-checkout-session`, priceId)
+    .toPromise();
   }
 
   /* | ======================================= BILLING ========================================== | */

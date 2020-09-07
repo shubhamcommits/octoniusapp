@@ -45,7 +45,7 @@ export class DenyNavigationGuard implements CanActivate, CanActivateChild, CanDe
     currentRoute: ActivatedRouteSnapshot,
     currentState: RouterStateSnapshot) {
 
-      if (localStorage.length > 0) {
+      if (localStorage.length > 0 && !currentState.url.match('/logout*')) {
         const userData = await this.publicFunctions.getCurrentUser();
         this.workspaceId = userData._workspace;
 

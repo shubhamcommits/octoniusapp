@@ -17,13 +17,6 @@ export class BillingControllers {
      */
     async createSubscription(req: Request, res: Response, next: NextFunction) {
         try {
-
-            // Source ID of the token
-            const source = req.body.token.id;
-
-            // Source Email of the token
-            const email = req.body.token.email;
-
             // Fetch current loggedIn User
             const user: any = await User.findOne({ _id: req['userId'] })
                 .select('_workspace');
@@ -35,26 +28,37 @@ export class BillingControllers {
             // Current loggedIn User's ID
             const workspaceId = user._workspace;
 
-            // Get the payment plan
-            const plan = await stripe.plans.retrieve(process.env.stripe_plan);
+            let customerId = req.body.customerId;
+            if (!customerId) {
+                // Source ID of the token
+                const source = req.body.token.id;
 
-            // Create a new customer
-            const customer = await stripe.customers.create({
-                email,
-                source,
-                metadata: {
-                    workspace_id: workspaceId.toString()
-                }
-            });
+                // Source Email of the token
+                const email = req.body.token.email;
+
+                // Create a new customer
+                const customer = await stripe.customers.create({
+                    email,
+                    source,
+                    metadata: {
+                        workspace_id: workspaceId.toString()
+                    }
+                });
+                
+                customerId = customer.id;
+            }
+            
 
             // Create a new subscription
             const subscription = await stripe.subscriptions.create({
-                customer: customer.id,
+                customer: customerId,
                 items: [{
-                    plan: plan.id,
+                    price: req.body.priceId,
                     quantity: usersCount
-                }]
-            });
+                }],
+              });
+
+            
 
             // If subscription is not created
             if (!subscription) {
@@ -68,10 +72,11 @@ export class BillingControllers {
                     $set: {
                         'billing.subscription_id': subscription.id,
                         'billing.current_period_end': subscription.current_period_end,
-                        'billing.quantity': subscription.quantity
+                        'billing.quantity': subscription.quantity,
+                        'billing.client_id': customerId,
+                        'billing.product_id': req.body.product_id
                     }
                 }, {
-                new: true
             }).select('billing');
 
             // Prepare adjustedSubscription Object
@@ -147,7 +152,7 @@ export class BillingControllers {
             // Fetch the current_period_end value
             const workspace: any = await Workspace.findOne({ _id: workspaceId })
                 .select('billing.current_period_end');
-            
+
             let message = '';
             let status = true;
 
@@ -189,42 +194,65 @@ export class BillingControllers {
 
     /**
      * This function is responsible for getting the subscription details
-     * @param { userId }req 
+     * @param { customerId }req 
      * @param res 
      */
     async getSubscription(req: Request, res: Response) {
         try {
+            const { customerId } = req.params;
 
-            // Fetch current loggedIn User
-            const user: any = await User.findOne({ _id: req['userId'] });
-
-            // Fetch the subscriptionId from the workspace
-            const workspace: any = await Workspace.findOne({ _id: user._workspace })
-                .select('billing.subscription_id')
-
-            // Retrieve the subcription details
-            const subscription = await stripe.subscriptions.retrieve(workspace.billing.subscription_id);
-
-            // If unable to fetch the subscription
-            if (!subscription) {
-                return sendError(res, new Error('Unable to fetch the subcription details!'), 'Unable to fetch the subcription details!', 403);
-            }
-
-            // Prepare adjustedSubscription Object
-            const adjustedSubscription = {
-                created: subscription.created,
-                current_period_end: subscription.current_period_end,
-                current_period_start: subscription.current_period_start,
-                object: subscription.object,
-                amount: subscription.plan.amount,
-                interval: subscription.plan.interval,
-                quantity: subscription.quantity
-            }
+            let subscriptions = await stripe.subscriptions.list({
+                customer: customerId,
+                status: 'all'
+            });
 
             // Send the status 200 response
             return res.status(200).json({
                 message: 'succesfully retrieved the subscription',
-                subscription: adjustedSubscription
+                subscriptions: subscriptions
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for getting the list of charges
+     * @param { customerId }req 
+     * @param res 
+     */
+    async getCharges(req: Request, res: Response) {
+
+        try {
+            const { customerId } = req.params;
+
+            let charges = await stripe.charges.list({
+                customer: customerId
+            });
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'succesfully retrieved the charges',
+                charges: charges
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async getSubscriptionPrices(req: Request, res: Response) {
+        try {
+            const { productId } = req.params;
+
+            const prices = await stripe.prices.list({
+                product: productId,
+                active: true
+              });
+            
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'succesfully retrieved the subscription',
+                prices: prices
             });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
@@ -245,14 +273,13 @@ export class BillingControllers {
             // Fetch the subscriptionId from the workspace
             const workspace: any = await Workspace.findOne({ _id: user._workspace }).select('billing.subscription_id')
 
-            // Update the status of subscription
-            const updatedSubscription = stripe.subscriptions.update(
-                workspace.billing.subscription_id,
-                { cancel_at_period_end: true }
-            )
+            // Cancel subscription
+            const deleted = await stripe.subscriptions.del(
+                workspace.billing.subscription_id
+            );
 
             // If unable to cancel the subscription
-            if (!updatedSubscription) {
+            if (!deleted) {
                 return sendError(res, new Error('Unable to cancel the subcription!'), 'Unable to cancel the subscription!', 403);
             }
 
@@ -542,6 +569,35 @@ export class BillingControllers {
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
+    }
+
+    async createCheckoutSession(req: Request, res: Response, next: NextFunction) {
+        // const domainURL = process.env.DOMAIN;
+        const { priceId } = req.body;
+        
+        // Create new Checkout Session for the order
+        // Other optional params include:
+        // [billing_address_collection] - to display billing address details on the page
+        // [customer] - if you have an existing Stripe Customer ID
+        // [customer_email] - lets you prefill the email input in the form
+        // For full details see https://stripe.com/docs/api/checkout/sessions/create
+        const session = await stripe.checkout.sessions.create({
+            mode: "subscription",
+            payment_method_types: ["card"],
+            line_items: [
+            {
+                price: req.body.priceId,
+                quantity: 1,
+            },
+            ],
+            // ?session_id={CHECKOUT_SESSION_ID} means the redirect will have the session ID set as a query param
+            success_url: `${process.env.PROTOCOL}://${process.env.DOMAIN}:4200/#/dashboard/admin/billing`,
+            cancel_url: `${process.env.PROTOCOL}://${process.env.DOMAIN}:4200/#/dashboard/admin/billing`,
+        });
+        
+        res.send({
+            sessionId: session.id,
+        });
     }
 }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Injector } from '@angular/core';
+import { Component, OnInit, Input, Injector, EventEmitter, Output } from '@angular/core';
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -14,14 +14,22 @@ export class SubscriptionDetailsComponent implements OnInit {
     private injector: Injector
   ) { }
 
-  // Workspace Data Object
-  @Input('workspaceData') workspaceData: any;
-
   // Subscription Data Object
   @Input('subscription') subscription: any;
 
   // Public Functions Object
   @Input('publicFunctions') publicFunctions: any;
+
+  @Output() subscriptionCanceled = new EventEmitter();
+
+  // Workspace object
+  workspaceService = this.injector.get(WorkspaceService);
+
+  // Socket Service Object
+  socketService = this.injector.get(SocketService);
+
+  // Utility Service Object
+  utilityService = this.injector.get(UtilityService);
 
   ngOnInit() {
   }
@@ -31,27 +39,18 @@ export class SubscriptionDetailsComponent implements OnInit {
    */
   async cancelSubscription() {
 
-    // Workspace object
-    let workspaceService = this.injector.get(WorkspaceService)
-
-    // Socket Service Object
-    let socketService = this.injector.get(SocketService)
-
-    // Utility Service Object
-    let utilityService = this.injector.get(UtilityService)
-
     // Call the helper function
-    await this.onCancelSubscription(workspaceService, socketService, utilityService)
+    await this.onCancelSubscription(this.workspaceService, this.socketService, this.utilityService);
   }
 
   /**
    * This function is the helper function for cancelling the sunscription
-   * @param workspaceService 
-   * @param socketService 
-   * @param utilityService 
+   * @param workspaceService
+   * @param socketService
+   * @param utilityService
    */
   async onCancelSubscription(workspaceService: WorkspaceService, socketService: SocketService, utilityService: UtilityService) {
-    
+
     // Cancel the subscription
     return utilityService.getConfirmDialogAlert()
       .then((result) => {
@@ -62,21 +61,13 @@ export class SubscriptionDetailsComponent implements OnInit {
               // Cancel Subscription
               workspaceService.cancelSubscription()
                 .then((res) => {
-
-                  // Update the workspace Data
-                  this.workspaceData.billing.scheduled_cancellation = true;
-
-                  // Send updates to the workspaceData
-                  this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData);
-
-                  // Update the localdata of all the connected users 
-                  this.publicFunctions.emitWorkspaceData(socketService, this.workspaceData);
+                  this.subscriptionCanceled.emit();
 
                   // Send notification to the user
                   resolve(utilityService.resolveAsyncPromise('Subscription Cancelled successfully!'));
                 })
-                .catch(() => reject(utilityService.rejectAsyncPromise('Unable to cancel the Subscription, please try again!')))
-            }))
+                .catch(() => reject(utilityService.rejectAsyncPromise('Unable to cancel the Subscription, please try again!')));
+            }));
         }
       })
   }
@@ -85,7 +76,7 @@ export class SubscriptionDetailsComponent implements OnInit {
    * This function is responsible for resuming the subscription
    */
   async resumeSubscription() {
-    
+
     // Workspace object
     let workspaceService = this.injector.get(WorkspaceService)
 
@@ -102,25 +93,16 @@ export class SubscriptionDetailsComponent implements OnInit {
 
   /**
    * This function is the helper function for resuming the subscription
-   * @param workspaceService 
-   * @param socketService 
-   * @param utilityService 
+   * @param workspaceService
+   * @param socketService
+   * @param utilityService
    */
   async onResumeSubscription(workspaceService: WorkspaceService, socketService: SocketService, utilityService: UtilityService) {
 
     // Resume the subscription
     return workspaceService.resumeSubscription()
       .then((res) => {
-
-        // Workspace Data Update
-        this.workspaceData.billing.scheduled_cancellation = false;
-
-        // Send updates to the workspaceData
-        this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData)
-
-        // Update the localdata of all the connected users 
-        this.publicFunctions.emitWorkspaceData(socketService, this.workspaceData);
-
+        // TODO upadate subscription. El metodo est devolviendo el workspace, hay que cambiarlo para que devuelva la subscripcion
         // Send notification to the user
         utilityService.successNotification('Subscription resumed successfully!');
       })

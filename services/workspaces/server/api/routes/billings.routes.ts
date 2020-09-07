@@ -20,7 +20,15 @@ routes.post('/create-subscription', authsHelper.verifyToken, authsHelper.isLogge
 routes.get('/get-billing-status/:workspaceId', authsHelper.verifyToken, authsHelper.isLoggedIn, billing.getBillingStatus);
 
 // GET - get subscription details
-routes.get('/get-subscription', authsHelper.verifyToken, authsHelper.isLoggedIn, billing.getSubscription);
+routes.get('/get-subscription/:customerId', authsHelper.verifyToken, authsHelper.isLoggedIn, billing.getSubscription);
+
+routes.post("/create-checkout-session", billing.createCheckoutSession);
+
+// GET - get chargegs
+routes.get('/get-charges/:customerId', authsHelper.verifyToken, authsHelper.isLoggedIn, billing.getCharges);
+
+// GET - get subscription prices
+routes.get('/get-subscription-prices/:workspaceId', authsHelper.verifyToken, authsHelper.isLoggedIn, billing.getSubscriptionPrices);
 
 // GET - Cancel subscription
 routes.get('/cancel-subscription', authsHelper.verifyToken, authsHelper.isLoggedIn, billing.cancelSubscription);

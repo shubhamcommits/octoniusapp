@@ -1,33 +1,27 @@
 <div class="card-tile">
-    
+
     <h6><strong>Your Subscription Details</strong></h6>
 
     <hr>
 
-    <h6><strong>Started on - </strong> 
+    <h6><strong>Started on - </strong>
       {{subscription.created | amFromUnix | amDateFormat:'LL'}}
     </h6>
 
-    <h6 *ngIf="!workspaceData.billing.cancelled"><strong>Current payment valid until - </strong>
+    <h6 *ngIf="subscription?.ended_at"><strong>Current payment valid until - </strong>
       {{subscription.current_period_end | amFromUnix | amDateFormat:'LL'}}
     </h6>
 
-    <h6><strong>Status - </strong> 
-      <span *ngIf="!workspaceData.billing.cancelled; else inactive">Active</span>
+    <h6><strong>Status - </strong>
+      <span *ngIf="!subscription?.ended_at; else inactive">Active</span>
       <ng-template #inactive><span>Inactive</span></ng-template>
     </h6>
 
-    <h6><strong>Cost - </strong> 
-      {{subscription.quantity * subscription.amount | currency:'EUR'}} / {{subscription.interval}}
+    <h6><strong>Cost - </strong>
+      {{subscription.quantity * subscription.plan.amount / 100 | currency: '$': 'symbol': '.2-2'}} / {{subscription.plan.interval}}
     </h6>
 
-    <h6><strong>Number of users on this subscription - </strong> 
-      {{subscription.quantity}}
-    </h6>
-
-    <ng-container>
-
-      <button *ngIf="!workspaceData.billing?.scheduled_cancellation; else resumeSubscriptionTemp"
+      <button *ngIf="!subscription?.ended_at; else resumeSubscriptionTemp"
         (click)="cancelSubscription()" class="btn btn-danger">
         Cancel subscription
       </button>
@@ -35,7 +29,5 @@
       <ng-template #resumeSubscriptionTemp>
         <button (click)="resumeSubscription()" class="btn btn-warning">Resume subscription</button>
       </ng-template>
-
-    </ng-container>
 
   </div>
