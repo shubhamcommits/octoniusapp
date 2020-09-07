@@ -113,12 +113,7 @@ export class StripePaymentComponent implements OnInit {
       .catch(() => this.utilityService.errorNotification('Unable to renew the Subscription, please try again!'))
   }
 
-  onSubscriptionCreated(subscription) {
+  onSubscriptionChanges(subscription) {
     this.subscription = subscription;
   }
-
-  onSubscriptionCanceled() {
-    this.subscription = null;
-  }
-
 }

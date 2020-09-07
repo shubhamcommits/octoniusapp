@@ -4,7 +4,7 @@
   [workspaceData]="workspaceData"
   [publicFunctions]="publicFunctions"
   [subscription]="subscription"
-  (subscriptionCreated)="onSubscriptionCreated($event)">
+  (subscriptionCreated)="onSubscriptionChanges($event)">
 </app-start-subscription>
 
 <ng-container *ngIf="isLoading$ | async">
@@ -15,7 +15,8 @@
   <app-subscription-details *ngIf="subscription"
     [publicFunctions]="publicFunctions"
     [subscription]="subscription"
-    (subscriptionCanceled)="onSubscriptionCanceled()">
+    (subscriptionCanceled)="onSubscriptionChanges($event)"
+    (subscriptionResume)="onSubscriptionChanges($event)">
   </app-subscription-details>
 </ng-template>
 
@@ -27,7 +28,7 @@
         {{ payment.created | amFromUnix | amDateFormat:'MMMM Do YYYY' }}
         <!-- - {{ payment.period_end | amFromUnix | amDateFormat:'MMMM Do YYYY' }}-->
       </span>
-      <span>{{ payment.amount | currency: '$': 'symbol': '.2-2' }}</span>
+      <span>{{ payment.amount/100 | currency: '$': 'symbol': '.2-2' }}</span>
       <span>{{ payment.outcome.seller_message }}</span>
     </li>
   </ul>

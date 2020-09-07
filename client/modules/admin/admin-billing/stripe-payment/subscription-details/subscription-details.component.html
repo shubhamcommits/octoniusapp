@@ -7,12 +7,12 @@
     {{subscription.created | amFromUnix | amDateFormat:'LL'}}
   </h6>
 
-  <h6 *ngIf="subscription?.ended_at"><strong>Current payment valid until - </strong>
+  <h6 *ngIf="subscription?.cancel_at_period_end"><strong>Current payment valid until - </strong>
     {{subscription.current_period_end | amFromUnix | amDateFormat:'LL'}}
   </h6>
 
   <h6><strong>Status - </strong>
-    <span *ngIf="!subscription?.ended_at; else inactive">Active</span>
+    <span *ngIf="!subscription?.cancel_at_period_end; else inactive">Active</span>
     <ng-template #inactive><span>Inactive</span></ng-template>
   </h6>
 
@@ -20,13 +20,13 @@
     {{subscription.quantity * subscription.plan.amount / 100 | currency: '$': 'symbol': '.2-2'}} / {{subscription.plan.interval}}
   </h6>
 
-
-  <button *ngIf="!subscription?.ended_at; else resumeSubscriptionTemp"
+  <button *ngIf="!subscription?.cancel_at_period_end"
     (click)="cancelSubscription()" class="btn btn-danger">
     Cancel subscription
   </button>
 
-  <ng-template #resumeSubscriptionTemp>
-    <button (click)="resumeSubscription()" class="btn btn-warning">Resume subscription</button>
-  </ng-template>
+  <button *ngIf="subscription?.cancel_at_period_end"
+    (click)="resumeSubscription()" class="btn btn-warning">
+    Resume subscription
+  </button>
 </div>

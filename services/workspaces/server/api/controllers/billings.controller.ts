@@ -280,7 +280,7 @@ export class BillingControllers {
             if (!updatedSubscription) {
                 return sendError(res, new Error('Unable to cancel the subcription!'), 'Unable to cancel the subscription!', 403);
             }
-            
+
             /*
             // Cancel subscription
             const deleted = await stripe.subscriptions.del(
@@ -307,7 +307,8 @@ export class BillingControllers {
             // Send the status 200 response
             return res.status(200).json({
                 message: 'Successfully canceled subscription',
-                workspace: updatedWorkspace
+                workspace: updatedWorkspace,
+                subscription: updatedSubscription
             })
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
@@ -353,7 +354,8 @@ export class BillingControllers {
             // Send the status 200 response
             return res.status(200).json({
                 message: 'Successfully resumed subscription',
-                workspace: updatedWorkspace
+                workspace: updatedWorkspace,
+                subscription: updatedSubscription
             });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);

@@ -22,6 +22,8 @@ export class SubscriptionDetailsComponent implements OnInit {
 
   @Output() subscriptionCanceled = new EventEmitter();
 
+  @Output() subscriptionResume = new EventEmitter();
+
   // Workspace object
   workspaceService = this.injector.get(WorkspaceService);
 
@@ -50,26 +52,26 @@ export class SubscriptionDetailsComponent implements OnInit {
    * @param utilityService
    */
   async onCancelSubscription(workspaceService: WorkspaceService, socketService: SocketService, utilityService: UtilityService) {
-
+    let confirmed = false;
     // Cancel the subscription
-    return utilityService.getConfirmDialogAlert()
+    await utilityService.getConfirmDialogAlert()
       .then((result) => {
         if (result.value) {
-
-          utilityService.asyncNotification('Please wait we are cancelling your subscription...',
-            new Promise((resolve, reject) => {
-              // Cancel Subscription
-              workspaceService.cancelSubscription()
-                .then((res) => {
-                  this.subscriptionCanceled.emit();
-
-                  // Send notification to the user
-                  resolve(utilityService.resolveAsyncPromise('Subscription Cancelled successfully!'));
-                })
-                .catch(() => reject(utilityService.rejectAsyncPromise('Unable to cancel the Subscription, please try again!')));
-            }));
+          confirmed = true;
         }
-      })
+      });
+      if (confirmed) {
+        // Cancel Subscription
+        return workspaceService.cancelSubscription()
+          .then((res) => {
+            this.subscription.cancel_at_period_end = res['subscription'].cancel_at_period_end;
+            this.subscriptionCanceled.emit(this.subscription);
+
+            // Send notification to the user
+            utilityService.resolveAsyncPromise('Subscription Cancelled successfully!');
+          })
+          .catch(() => utilityService.rejectAsyncPromise('Unable to cancel the Subscription, please try again!'));
+      }
   }
 
   /**
@@ -77,19 +79,9 @@ export class SubscriptionDetailsComponent implements OnInit {
    */
   async resumeSubscription() {
 
-    // Workspace object
-    let workspaceService = this.injector.get(WorkspaceService)
-
-    // Socket Service Object
-    let socketService = this.injector.get(SocketService)
-
-    // Utility Service Object
-    let utilityService = this.injector.get(UtilityService)
-
     // Call the helper function
-    await this.onResumeSubscription(workspaceService, socketService, utilityService)
+    await this.onResumeSubscription(this.workspaceService, this.socketService, this.utilityService);
   }
-
 
   /**
    * This function is the helper function for resuming the subscription
@@ -102,7 +94,9 @@ export class SubscriptionDetailsComponent implements OnInit {
     // Resume the subscription
     return workspaceService.resumeSubscription()
       .then((res) => {
-        // TODO upadate subscription. El metodo est devolviendo el workspace, hay que cambiarlo para que devuelva la subscripcion
+        this.subscription.cancel_at_period_end = res['subscription'].cancel_at_period_end;
+        this.subscriptionResume.emit(this.subscription);
+
         // Send notification to the user
         utilityService.successNotification('Subscription resumed successfully!');
       })
