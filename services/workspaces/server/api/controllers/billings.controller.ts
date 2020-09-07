@@ -56,9 +56,7 @@ export class BillingControllers {
                     price: req.body.priceId,
                     quantity: usersCount
                 }],
-              });
-
-            
+            });
 
             // If subscription is not created
             if (!subscription) {
