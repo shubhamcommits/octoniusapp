@@ -271,6 +271,17 @@ export class BillingControllers {
             // Fetch the subscriptionId from the workspace
             const workspace: any = await Workspace.findOne({ _id: user._workspace }).select('billing.subscription_id')
 
+            const updatedSubscription = stripe.subscriptions.update(
+                workspace.billing.subscription_id,
+                { cancel_at_period_end: true }
+            )
+
+            // If unable to cancel the subscription
+            if (!updatedSubscription) {
+                return sendError(res, new Error('Unable to cancel the subcription!'), 'Unable to cancel the subscription!', 403);
+            }
+            
+            /*
             // Cancel subscription
             const deleted = await stripe.subscriptions.del(
                 workspace.billing.subscription_id
@@ -280,6 +291,7 @@ export class BillingControllers {
             if (!deleted) {
                 return sendError(res, new Error('Unable to cancel the subcription!'), 'Unable to cancel the subscription!', 403);
             }
+            */
 
             // Update workspace scheduled cancellation property
             const updatedWorkspace = await Workspace.findOneAndUpdate(
