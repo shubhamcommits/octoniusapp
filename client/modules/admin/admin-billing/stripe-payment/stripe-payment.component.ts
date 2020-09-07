@@ -60,7 +60,6 @@ export class StripePaymentComponent implements OnInit {
    * @param workspaceData
    */
   async subscriptionExistCheck() {
-    // TODO remove hardcoded client id
     // this.workspaceService.getSubscription()--cus_HxVc4M2XSwAoV1--cus_GvQ3XcMhLqEGLT--
     this.workspaceService.getSubscription(this.workspaceData.billing.client_id)
       .then((res) => {
@@ -76,7 +75,6 @@ export class StripePaymentComponent implements OnInit {
    * @param workspaceData
    */
   async getCharges() {
-    // TODO remove hardcoded client id
     // this.workspaceService.getSubscription()--cus_HxVc4M2XSwAoV1--cus_GvQ3XcMhLqEGLT--
     if (this.workspaceData.billing.client_id) {
       this.workspaceService.getCharges(this.workspaceData.billing.client_id)

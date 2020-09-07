@@ -67,7 +67,6 @@ export class StartSubscriptionComponent implements OnInit {
   */
 
   async getSubscriptionPrices() {
-    // TODO remove hardcoded product id - prod_HxaOA05Qf9iwpV
     // await this.workspaceService.getSubscriptionPrices(this.workspaceData.billing.product_id)
     await this.workspaceService.getSubscriptionPrices(this.workspaceData.billing.product_id)
       .then(res => this.subscription_prices = res['prices'].data);
