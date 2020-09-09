@@ -22,8 +22,6 @@ routes.get('/get-billing-status/:workspaceId', authsHelper.verifyToken, authsHel
 // GET - get subscription details
 routes.get('/get-subscription/:customerId', authsHelper.verifyToken, authsHelper.isLoggedIn, billing.getSubscription);
 
-routes.post("/create-checkout-session", billing.createCheckoutSession);
-
 // GET - get chargegs
 routes.get('/get-charges/:customerId', authsHelper.verifyToken, authsHelper.isLoggedIn, billing.getCharges);
 

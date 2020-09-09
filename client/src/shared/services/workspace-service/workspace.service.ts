@@ -137,10 +137,10 @@ export class WorkspaceService {
    * @param amount
    */
   // createSubscription(token: any, amount) {
-    createSubscription(token: any, priceId, product_id) {
+    createSubscription(token: any, priceId, product_id, subscription_item_id) {
 
     // Preparing the token data
-    const data = { token, priceId, product_id };
+    const data = { token, priceId, product_id, subscription_item_id };
 
     return this._http.post(this.BASE_API_URL + `/billings/create-subscription`, data)
     .toPromise()
@@ -201,11 +201,6 @@ export class WorkspaceService {
   resumeSubscription() {
     return this._http.get(this.BASE_API_URL + `/billings/resume-subscription`)
     .toPromise()
-  }
-
-  createCheckoutSession(priceId: any) {
-    return this._http.post(this.BASE_API_URL + `/billings/create-checkout-session`, priceId)
-    .toPromise();
   }
 
   /* | ======================================= BILLING ========================================== | */

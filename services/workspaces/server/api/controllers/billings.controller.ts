@@ -22,8 +22,10 @@ export class BillingControllers {
                 .select('_workspace');
 
             // Count all the users present inside the workspace
-            const usersCount: number = await User.find({ _workspace: user['_workspace'] })
-                .countDocuments();
+            const usersCount: number = await User.find({ $and: [
+                { active: true },
+                { _workspace: user['_workspace'] }
+            ] }).countDocuments();
 
             // Current loggedIn User's ID
             const workspaceId = user._workspace;
@@ -69,10 +71,12 @@ export class BillingControllers {
                 {
                     $set: {
                         'billing.subscription_id': subscription.id,
+                        'billing.subscription_item_id': req.body.subscription_item_id,
                         'billing.current_period_end': subscription.current_period_end,
                         'billing.quantity': subscription.quantity,
                         'billing.client_id': customerId,
-                        'billing.product_id': req.body.product_id
+                        'billing.product_id': req.body.product_id,
+                        'billing.price_id':  req.body.priceId
                     }
                 }, {
             }).select('billing');
@@ -379,8 +383,10 @@ export class BillingControllers {
                 })
 
             // Count all the users present in the workspace
-            const usersCount: any = await User.find({ _workspace: user['_workspace']['_id'] })
-                .countDocuments();
+            const usersCount: number = await User.find({ $and: [
+                  { active: true },
+                  { _workspace: user['workspace']['_id'] }
+              ] }).countDocuments();
 
             // Retrieve the old subscription
             const oldSubscription = await stripe.subscriptions.retrieve(user._workspace.billing.subscription_id)
@@ -532,12 +538,20 @@ export class BillingControllers {
      */
     async addUserToSubscription(req: Request, res: Response) {
         try {
+            // Fetch current loggedIn User
+            const user: any = await User.findOne({ _id: req['userId'] }).select('_workspace');
 
-            // SubscriptionId of the subscription
-            const { subscriptionId, workspaceId } = req.query;
+            // Count all the users present inside the workspace
+            const usersCount: number = await User.find({ $and: [
+                { active: true },
+                { _workspace: user['_workspace'] }
+            ] }).countDocuments();
+            let priceId = req.body.priceId;
+            let workspaceId = req.body.workspaceId;
+            let subscriptionId = req.body.subscriptionId;
 
             // Adding user to the subscription
-            await addUserToSubscription(stripe, subscriptionId, workspaceId)
+            await addUserToSubscription(stripe, subscriptionId, priceId, workspaceId, usersCount)
                 .then(() => {
 
                     // Send the status 200 response
@@ -547,8 +561,12 @@ export class BillingControllers {
                 })
                 .catch(() => {
                     return sendError(res, new Error('Unable to add user to the subscription!'), 'Unable to add user to the subscription!', 403);
-                })
-
+                });
+            
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'User is added to the subscription!'
+            });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
@@ -561,12 +579,22 @@ export class BillingControllers {
      */
     async removeUserFromSubscription(req: Request, res: Response) {
         try {
+            // Fetch current loggedIn User
+            const user: any = await User.findOne({ _id: req['userId'] }).select('_workspace');
 
-            // SubscriptionId of the subscription
-            const { subscriptionId, workspaceId } = req.query;
+            // Count all the users present inside the workspace
+            const usersCount: number = await User.find({ $and: [
+                { active: true },
+                { _workspace: user['_workspace'] }
+            ] }).countDocuments();
+
+            // SubscriptionId of the subscription            
+            let priceId = req.body.priceId;
+            let workspaceId = req.body.workspaceId;
+            let subscriptionId = req.body.subscriptionId;
 
             // Adding user to the subscription
-            await removeUserFromSubscription(stripe, subscriptionId, workspaceId)
+            await removeUserFromSubscription(stripe, subscriptionId, priceId, workspaceId, usersCount)
                 .then(() => {
 
                     // Send the status 200 response
@@ -581,35 +609,6 @@ export class BillingControllers {
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
-    }
-
-    async createCheckoutSession(req: Request, res: Response, next: NextFunction) {
-        // const domainURL = process.env.DOMAIN;
-        const { priceId } = req.body;
-        
-        // Create new Checkout Session for the order
-        // Other optional params include:
-        // [billing_address_collection] - to display billing address details on the page
-        // [customer] - if you have an existing Stripe Customer ID
-        // [customer_email] - lets you prefill the email input in the form
-        // For full details see https://stripe.com/docs/api/checkout/sessions/create
-        const session = await stripe.checkout.sessions.create({
-            mode: "subscription",
-            payment_method_types: ["card"],
-            line_items: [
-            {
-                price: req.body.priceId,
-                quantity: 1,
-            },
-            ],
-            // ?session_id={CHECKOUT_SESSION_ID} means the redirect will have the session ID set as a query param
-            success_url: `${process.env.PROTOCOL}://${process.env.DOMAIN}:4200/#/dashboard/admin/billing`,
-            cancel_url: `${process.env.PROTOCOL}://${process.env.DOMAIN}:4200/#/dashboard/admin/billing`,
-        });
-        
-        res.send({
-            sessionId: session.id,
-        });
     }
 }
 
