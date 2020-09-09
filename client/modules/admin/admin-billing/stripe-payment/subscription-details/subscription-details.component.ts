@@ -34,7 +34,6 @@ export class SubscriptionDetailsComponent implements OnInit {
   utilityService = this.injector.get(UtilityService);
 
   ngOnInit() {
-    console.log(this.subscription);
   }
 
   /**
@@ -42,8 +41,27 @@ export class SubscriptionDetailsComponent implements OnInit {
    */
   async cancelSubscription() {
 
-    // Call the helper function
-    await this.onCancelSubscription(this.workspaceService, this.socketService, this.utilityService);
+    // Cancel the subscription
+    await this.utilityService.getConfirmDialogAlert()
+      .then(async (result) => {
+        if (result.value) {
+          // Cancel Subscription
+          this.utilityService.asyncNotification('Please wait while we are cancelling your subscription ...',
+            new Promise((resolve, reject) => {
+              this.workspaceService.cancelSubscription()
+                .then((res) => {
+                  this.subscription.cancel_at_period_end = res['subscription'].cancel_at_period_end;
+                  this.subscriptionCanceled.emit(this.subscription);
+
+                  // Send notification to the user
+                  resolve(this.utilityService.resolveAsyncPromise('Subscription Cancelled successfully!'));
+                })
+                .catch(() => reject(this.utilityService.rejectAsyncPromise('Unable to cancel the Subscription, please try again!')));
+          }).then(() => {
+            window.location.reload();
+          }));
+        }
+      });
   }
 
   /**
@@ -53,26 +71,25 @@ export class SubscriptionDetailsComponent implements OnInit {
    * @param utilityService
    */
   async onCancelSubscription(workspaceService: WorkspaceService, socketService: SocketService, utilityService: UtilityService) {
-    let confirmed = false;
     // Cancel the subscription
     await utilityService.getConfirmDialogAlert()
-      .then((result) => {
+      .then(async (result) => {
         if (result.value) {
-          confirmed = true;
+          // Cancel Subscription
+          this.utilityService.asyncNotification('Please wait while we are cancelling your subscription ...',
+            new Promise((resolve, reject) => {
+              workspaceService.cancelSubscription()
+            .then((res) => {
+              this.subscription.cancel_at_period_end = res['subscription'].cancel_at_period_end;
+              this.subscriptionCanceled.emit(this.subscription);
+
+              // Send notification to the user
+              resolve(utilityService.resolveAsyncPromise('Subscription Cancelled successfully!'));
+            })
+            .catch(() => reject(utilityService.rejectAsyncPromise('Unable to cancel the Subscription, please try again!')));
+          }));
         }
       });
-      if (confirmed) {
-        // Cancel Subscription
-        return workspaceService.cancelSubscription()
-          .then((res) => {
-            this.subscription.cancel_at_period_end = res['subscription'].cancel_at_period_end;
-            this.subscriptionCanceled.emit(this.subscription);
-
-            // Send notification to the user
-            utilityService.resolveAsyncPromise('Subscription Cancelled successfully!');
-          })
-          .catch(() => utilityService.rejectAsyncPromise('Unable to cancel the Subscription, please try again!'));
-      }
   }
 
   /**

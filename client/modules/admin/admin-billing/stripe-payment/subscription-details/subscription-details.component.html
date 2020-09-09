@@ -20,13 +20,14 @@
     {{subscription.quantity * subscription.plan.amount / 100 | currency: '$': 'symbol': '.2-2'}} / {{subscription.plan.interval}}
   </h6>
 
-  <button *ngIf="!subscription?.cancel_at_period_end"
-    (click)="cancelSubscription()" class="btn btn-danger">
-    Cancel subscription
-  </button>
-
-  <button *ngIf="subscription?.cancel_at_period_end"
+  <button *ngIf="subscription?.cancel_at_period_end; else cancelSubscriptionButton"
     (click)="resumeSubscription()" class="btn btn-warning">
     Resume subscription
   </button>
+
+  <ng-template #cancelSubscriptionButton>
+    <button (click)="cancelSubscription()" class="btn btn-danger">
+      Cancel subscription
+    </button>
+  </ng-template>
 </div>
