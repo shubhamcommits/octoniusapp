@@ -60,14 +60,16 @@ export class StripePaymentComponent implements OnInit {
    * @param workspaceData
    */
   async subscriptionExistCheck() {
-    // this.workspaceService.getSubscription()--cus_HxVc4M2XSwAoV1--cus_GvQ3XcMhLqEGLT--
-    this.workspaceService.getSubscription(this.workspaceData.billing.client_id)
-      .then((res) => {
-        // TODO select the last subscription
-        // Initialise the suncription
-        this.subscription = res['subscriptions'].data[0];
-      })
-      .catch(() => this.utilityService.errorNotification('Unable to fetch the Subscription details, please try again!'));
+    if (this.workspaceData.billing.client_id) {
+      // this.workspaceService.getSubscription()--cus_HxVc4M2XSwAoV1--cus_GvQ3XcMhLqEGLT--
+      this.workspaceService.getSubscription(this.workspaceData.billing.client_id)
+        .then((res) => {
+          // TODO select the last subscription
+          // Initialise the suncription
+          this.subscription = res['subscriptions'].data[0];
+        })
+        .catch(() => this.utilityService.errorNotification('Unable to fetch the Subscription details, please try again!'));
+    }
   }
 
   /**
