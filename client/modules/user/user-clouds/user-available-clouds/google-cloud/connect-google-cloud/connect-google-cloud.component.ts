@@ -25,12 +25,13 @@ export class ConnectGoogleCloudComponent implements OnInit {
       await gapi.auth.authorize({
         'client_id': environment.clientId,
         'scope': environment.scope,
-        'immediate': false,
-        'access_type': 'offline',
-        'approval_prompt': 'force',
+        // 'immediate': false,
+        // 'access_type': 'offline',
+        // 'approval_prompt': 'force',
         'response_type': 'token code',
         'grant_type': 'authorization_code'
       }, (authResult: any) => {
+        console.log(authResult)
         if (authResult && !authResult.error && authResult.access_token) {
           return this.googleService.refreshGoogleToken(authResult);
         } else {
