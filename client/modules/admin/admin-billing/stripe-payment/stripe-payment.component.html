@@ -1,5 +1,4 @@
-<!--<app-start-subscription *ngIf="!subscription || subscription.ended_at; else subscriptionTemp"-->
-<app-start-subscription *ngIf="!workspaceData?.billing?.current_period_end; else subscriptionTemp"
+<app-start-subscription *ngIf="!workspaceData?.billing?.current_period_end || !subscription; else subscriptionTemp"
   [userData]="userData"
   [workspaceData]="workspaceData"
   [publicFunctions]="publicFunctions"

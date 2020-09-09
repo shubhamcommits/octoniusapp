@@ -14,6 +14,7 @@ export const environment = {
 
   // Stripe key
   pk_stripe: `pk_live_C6kLYxOOeUXt0hzaK6PockGM`,
+  product_stripe: `prod_HxaOA05Qf9iwpV`,
 
   // Browser Storage Key
   storageKey: `storageKey@20xx`,
