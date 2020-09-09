@@ -34,6 +34,7 @@ export class SubscriptionDetailsComponent implements OnInit {
   utilityService = this.injector.get(UtilityService);
 
   ngOnInit() {
+    console.log(this.subscription);
   }
 
   /**

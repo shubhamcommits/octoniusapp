@@ -31,7 +31,7 @@ export class BillingControllers {
             const workspaceId = user._workspace;
 
             let customerId = req.body.customerId;
-            if (!customerId) {
+            if (!customerId || customerId === '' ) {
                 // Source ID of the token
                 const source = req.body.token.id;
 
@@ -71,7 +71,7 @@ export class BillingControllers {
                 {
                     $set: {
                         'billing.subscription_id': subscription.id,
-                        'billing.subscription_item_id': req.body.subscription_item_id,
+                        'billing.subscription_item_id': subscription.items.data[0].id,
                         'billing.current_period_end': subscription.current_period_end,
                         'billing.quantity': subscription.quantity,
                         'billing.client_id': customerId,

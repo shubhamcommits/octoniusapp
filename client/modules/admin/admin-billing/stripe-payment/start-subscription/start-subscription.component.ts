@@ -108,7 +108,7 @@ export class StartSubscriptionComponent implements OnInit {
         utilityService.asyncNotification('Please wait we creating the subscription for you...',
         new Promise((resolve, reject)=>{
           // workspaceService.createSubscription(token, this.amount)
-          workspaceService.createSubscription(token, this.priceId, this.workspaceData.billing.product_id, this.workspaceData.billing.subscription_item_id)
+          workspaceService.createSubscription(token, this.priceId, this.workspaceData.billing.product_id)
             .then(res => {
               console.log(res);
 
