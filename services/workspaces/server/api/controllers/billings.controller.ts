@@ -172,17 +172,7 @@ export class BillingControllers {
                 status = moment().isBetween(workspace.created_date, moment(workspace.created_date).add(14, 'days'));
             }
 
-            // TODO Add a check to stripe if the payment was done in stripe
-            /*
-            // Create a new customer
-            const customer = await stripe.customers.create({
-                email,
-                source,
-                metadata: {
-                    workspace_id: workspaceId.toString()
-                }
-            });
-            */
+            // TODO Add a check to stripe if the payment was done in stripe. Is it needed?
 
             // Send the status 200 response 
             res.status(200).json({
