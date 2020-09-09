@@ -61,7 +61,7 @@ export class StripePaymentComponent implements OnInit {
    */
   async subscriptionExistCheck() {
     if (this.workspaceData.billing.client_id) {
-      // this.workspaceService.getSubscription()--cus_HxVc4M2XSwAoV1--cus_GvQ3XcMhLqEGLT--
+      // this.workspaceService.getSubscription()--cus_HymWfNcFNsWBT3
       this.workspaceService.getSubscription(this.workspaceData.billing.client_id)
         .then((res) => {
           // TODO select the last subscription
@@ -69,6 +69,8 @@ export class StripePaymentComponent implements OnInit {
           this.subscription = res['subscriptions'].data[0];
         })
         .catch(() => this.utilityService.errorNotification('Unable to fetch the Subscription details, please try again!'));
+    } else {
+      this.subscription = null;
     }
   }
 
