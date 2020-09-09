@@ -1,36 +1,52 @@
 <div class="content-box">
   <!-- Is Not North Start starts -->
   <div *ngIf="isNorthStar">
-    <p class="box-title">The progress of the North Star metric gives you a better view on how the effort is done and sustained by the team.</p>
+    <h4 class="text-center">North Star TIMELINE</h4>
+    <p class="box-title">Showing how your team's day-to-day work connects to achieve the goal.</p>
+ 
 
-    <ul class="timeline" *ngIf="northStar?.values">
-      <li class="" *ngFor="let value of northStar.values.reverse()">
-        <div class="timeline-badge">
-          <i *ngIf="value.status === 'ACHIEVED'"
-            class="material-icons"
-            style="margin-top: -45px; margin-left: -1px; font-size: 15px;">done</i>
-        </div>
-        <div class="timeline-panel">
-          <div class="timeline-date">
-            {{ value.date | date: 'MMM, d' }}
+<div class="timeline" *ngIf="northStar?.values">
+  <div *ngFor="let value of northStar.values; let index = index">
+
+    <ul class="timeline">
+
+      <!-- Item 1 -->
+      <li>
+        <div class="" [ngClass]="{'direction-r': index%2===0, 'direction-l': index%2!==0}">
+          <div class="flag-wrapper">
+            <span class="flag">
+              <span *ngIf="northStar.type === 'Percent'">
+                {{ value.value / 100 | percent: '.2-2' }}
+              </span>
+              <span *ngIf="northStar.type === 'Currency $'">
+                {{ value.value | currency: '$' }}
+              </span>
+              <span  *ngIf="northStar.type === 'Currency €'">
+                {{ value.value | currency: '€' }}
+              </span>
+              <span  *ngIf="northStar.type === 'Number'">
+                {{ value.value }}
+              </span>
+              
+             </span>
+            <span class="time-wrapper"><span class="time">{{ value.date | date: 'MMM, d' }}</span></span>
           </div>
-          <div class="timeline-value" *ngIf="northStar.type === 'Percent'">
-            {{ value.value / 100 | percent: '.2-2' }}
-          </div>
-          <div class="timeline-value" *ngIf="northStar.type === 'Currency $'">
-            {{ value.value | currency: '$' }}
-          </div>
-          <div class="timeline-value" *ngIf="northStar.type === 'Currency €'">
-            {{ value.value | currency: '€' }}
-          </div>
-          <div class="timeline-value" *ngIf="northStar.type === 'Number'">
-            {{ value.value }}
-          </div>
-          <div [ngClass]="getNSStatusClass(value.status)">
+          <div class="desc"> <span [ngClass]="getNSStatusClass(value.status)">
             {{ value.status }}
+          </span>
+           
           </div>
         </div>
       </li>
+      
+      
     </ul>
-  </div>
+
+
+   
+  
+</div>
+  
+</div>
+</div>
 </div>
