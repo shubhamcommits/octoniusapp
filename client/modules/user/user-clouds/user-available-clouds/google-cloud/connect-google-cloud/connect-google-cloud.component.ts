@@ -92,6 +92,7 @@ export class ConnectGoogleCloudComponent implements OnInit {
         // 'approval_prompt': 'force',
         'response_type': 'token code',
         'grant_type': 'authorization_code'
+<<<<<<< HEAD
       })
         .then((res: any) => resolve(res))
         .catch(() => resolve(null))
@@ -135,6 +136,16 @@ export class ConnectGoogleCloudComponent implements OnInit {
 
   ngOnDestroy(){
     this.subSink.unsubscribe()
+=======
+      }, (authResult: any) => {
+        console.log(authResult)
+        if (authResult && !authResult.error && authResult.access_token) {
+          return this.googleService.refreshGoogleToken(authResult);
+        } else {
+          return new Promise((resolve, reject) => {reject()});
+        }
+      });
+>>>>>>> 9735d628... intermediate push for google drive
   }
 
 }

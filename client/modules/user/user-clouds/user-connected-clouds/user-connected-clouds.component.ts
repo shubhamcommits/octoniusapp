@@ -16,6 +16,7 @@ export class UserConnectedCloudsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+<<<<<<< HEAD
 
     console.log(this.googleUser)
     // this.googleService.refreshGoogleToken().then(() => {
@@ -26,6 +27,8 @@ export class UserConnectedCloudsComponent implements OnInit {
     //     this.googleDriveUsed = Math.round(
     //         (this.googleUser.user_data.storageQuota.usage / this.googleUser.user_data.storageQuota.limit) * 100
     //       );
+=======
+>>>>>>> 9735d628... intermediate push for google drive
 
     //     // we have set a time-interval of 30mins so as to refresh the access_token in the group
     //     setInterval(() => {
