@@ -6,7 +6,7 @@
 
 <!-- Menu Drawer Starts -->
 <ul class="dropdown-menu">
-    <li *ngIf="(userData?.role== 'admin' || userData?.role== 'owner')" 
+    <li *ngIf="(userData?.role== 'admin' || userData?.role== 'owner')"
         class="dropdown-item"
         (click)="openCreateGroupModal()">
         <span>Group</span>
@@ -16,10 +16,12 @@
         (click)="openCreateAgoraModal()">
         <span>Agora</span>
     </li>
-    <li *ngIf="(userData?.role== 'admin' || userData?.role== 'owner')" 
+    <!--
+    <li *ngIf="(userData?.role== 'admin' || userData?.role== 'owner')"
         class="dropdown-item"
         (click)="openCreateSmartGroupModal()">
         <span>Smart Group</span>
     </li>
+    -->
 </ul>
 <!-- Menu Drawer Ends -->
