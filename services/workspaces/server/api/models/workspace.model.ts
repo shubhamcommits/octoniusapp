@@ -81,7 +81,19 @@ const workspaceSchema = new Schema({
         default: moment().format()
     },
     billing: {
+        client_id: {
+            type: String
+        },
+        product_id: {
+            type: String
+        },
+        price_id: {
+            type: String
+        },
         subscription_id: {
+            type: String
+        },
+        subscription_item_id: {
             type: String
         },
         current_period_end: {

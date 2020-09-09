@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { NavbarComponent } from '../common/navbar/navbar.component';
 import { AdminGuard } from 'src/shared/guards/admin-guard/admin.guard';
+import { DenyNavigationGuard } from 'src/shared/guards/deny-navigation-guard/deny-navigation.guard';
 
 const routes: Routes = [
   {
@@ -21,7 +22,8 @@ const routes: Routes = [
           .then((module) => module.WorkModule),
           data: {
             preload: false
-          }
+          },
+        canActivateChild: [DenyNavigationGuard]
       },
       {
         path: 'myspace',
@@ -29,7 +31,8 @@ const routes: Routes = [
           .then((module) => module.MyspaceModule),
           data: {
             preload: false
-          }
+          },
+        canActivateChild: [DenyNavigationGuard]
       },
       {
         path: 'user',
@@ -37,7 +40,8 @@ const routes: Routes = [
           .then((module) => module.UserModule),
           data: {
             preload: false
-          }
+          },
+        canActivateChild: [DenyNavigationGuard]
       }
     ]
   },
@@ -48,6 +52,6 @@ const routes: Routes = [
     RouterModule.forChild(routes),
   ],
   exports: [RouterModule],
-  providers: [AdminGuard]
+  providers: [AdminGuard, DenyNavigationGuard]
 })
 export class DashboardRoutingModule { }

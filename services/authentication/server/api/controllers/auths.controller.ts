@@ -3,6 +3,9 @@ import { Auth, User, Workspace, Group } from '../models';
 import { sendError, Auths, PasswordHelper } from '../../utils';
 import http from 'axios';
 
+// Create Stripe Object
+const stripe = require('stripe')(process.env.SK_STRIPE);
+
 // Password Helper Class
 const passwordHelper = new PasswordHelper();
 
@@ -245,8 +248,24 @@ export class AuthsController {
                         user: userUpdate
                     })
 
-                    // Updating quantity += 1 in stripe module using workspace microservice
-                    // await http.put(`${process.env.MAILING_SERVER_API}/billings/add-user?subscriptionId=${workspace.billing.subscription_id}&workspaceId=${workspace._id}`)
+                    // Count all the users present inside the workspace
+                    const usersCount: number = await User.find({ $and: [
+                        { active: true },
+                        { _workspace: workspace._id }
+                    ] }).countDocuments();
+
+                    // Update the subscription details
+                    let subscription = await stripe.subscriptions.update(workspace.billing.subscription_id, {
+                        price: workspace.billing.price_id,
+                        quantity: usersCount
+                    });
+
+                    // Update the4 workspace details
+                    await Workspace.findOneAndUpdate({
+                        _id: workspace._id
+                    }, {
+                        'billing.quantity': usersCount
+                    });
 
                     // Signup user and return the token
                     return res.status(200).json({
@@ -301,12 +320,6 @@ export class AuthsController {
             }
 
             // Generate new token and logs the auth record
-            // let tokenResponse: any = await http.post(`${process.env.UTILITIES_SERVER_API}/auths/generate-token`, {
-            //     params: {
-            //         user: user,
-            //         workspace: workspace_name
-            //     }
-            // })
             let token = await auths.generateToken(user, workspace_name);
 
             // Send the status 200 response 
@@ -370,6 +383,27 @@ export class AuthsController {
             // Send the status 200 response 
             return res.status(200).json({
                 message: 'User logged out!'
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for adding the user to the subscription
+     * @param req 
+     * @param res 
+     */
+    async addUserToSubscription(req: Request, res: Response) {
+        try {
+            // Fetch current loggedIn User
+            const user: any = await User.findOne({ _id: req['userId'] }).select('_workspace');
+
+            
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'User is added to the subscription!'
             });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);

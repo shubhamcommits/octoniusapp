@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector } from '@angular/core';
+import { Component, OnInit, Injector, OnDestroy  } from '@angular/core';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'src/app/dashboard/public.functions';
 import { SubSink } from 'subsink';
@@ -8,7 +8,7 @@ import { SubSink } from 'subsink';
   templateUrl: './admin-billing.component.html',
   styleUrls: ['./admin-billing.component.scss']
 })
-export class AdminBillingComponent implements OnInit {
+export class AdminBillingComponent implements OnInit, OnDestroy  {
 
   constructor(
     private injector: Injector
@@ -29,7 +29,7 @@ export class AdminBillingComponent implements OnInit {
   async ngOnInit() {
 
     let utilityService = this.injector.get(UtilityService)
-    
+
     // Starts the foreground loader
     // utilityService.startForegroundLoader();
 

@@ -18,7 +18,7 @@ export class CreateGroupComponent implements OnInit {
   @Input('userData') userData: any;
 
   // Workspace Data Object
-  @Input('workspaceData') workspaceData: any = {}; 
+  @Input('workspaceData') workspaceData: any = {};
 
   // Group Emitter which emits the group object on creation
   @Output('group') groupEmitter = new EventEmitter();
@@ -28,8 +28,8 @@ export class CreateGroupComponent implements OnInit {
 
   /**
    * This function opens the Swal modal to create normal, agora and smart groups
-   * @param title 
-   * @param imageUrl 
+   * @param title
+   * @param imageUrl
    */
   openModal(title: string, imageUrl: string){
     return this.utilityService.getSwalModal({
@@ -59,7 +59,7 @@ export class CreateGroupComponent implements OnInit {
       this.utilityService.asyncNotification('Please wait, while we are creating group for you...', new Promise((resolve, reject) => {
         this.createGroup(value, this.workspaceData['workspace_name'], this.workspaceData['_id'], this.userData['_id'], 'normal')
           .then((group) => {
-            
+
             // Emit the group object to the other components
             this.groupEmitter.emit(group);
 
@@ -81,7 +81,7 @@ export class CreateGroupComponent implements OnInit {
       this.utilityService.asyncNotification('Please wait, while we are creating agora for you...', new Promise((resolve, reject) => {
         this.createGroup(value, this.workspaceData['workspace_name'], this.workspaceData['_id'], this.userData['_id'], 'agora')
           .then((group) => {
-            
+
             // Emit the group object to the other components
             this.groupEmitter.emit(group);
 
@@ -98,6 +98,7 @@ export class CreateGroupComponent implements OnInit {
   /**
    * This function creates the new smart group
    */
+  /*
   async openCreateSmartGroupModal(){
     const { value: value } = await this.openModal('Create Smart Group', 'assets/images/create-smartgroup.svg');
     if(value){
@@ -107,7 +108,7 @@ export class CreateGroupComponent implements OnInit {
 
             // Emit the group object to the other components
             this.groupEmitter.emit(group);
-            
+
             resolve(this.utilityService.resolveAsyncPromise('Smart Group created!'))
           })
           .catch(() => reject(this.utilityService.rejectAsyncPromise('An unexpected occured while creating the group, please try again!')))
@@ -116,14 +117,15 @@ export class CreateGroupComponent implements OnInit {
       this.utilityService.warningNotification('Smart Group name can\'t be empty!')
     }
   }
+  */
 
   /**
    * Create group helper function, which makes the HTTP request to create the group
-   * @param groupName 
-   * @param workspaceName 
-   * @param workspaceId 
-   * @param userId 
-   * @param type 
+   * @param groupName
+   * @param workspaceName
+   * @param workspaceId
+   * @param userId
+   * @param type
    */
   createGroup(groupName: any, workspaceName: any, workspaceId: any, userId: any, type: any){
     return new Promise((resolve, reject)=>{

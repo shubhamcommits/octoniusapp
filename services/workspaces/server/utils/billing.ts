@@ -1,28 +1,23 @@
-import { Workspace } from "../api/models";
+import { Workspace, User } from "../api/models";
 
 /**
  * This helper function adds the user to current subscription plan
  * @param stripe 
  * @param subscriptionId
  */
-const addUserToSubscription = async (stripe: any, subscriptionId: any, workspaceId: any) => {
-
-    // Get the subscription details
-    const subscription = await stripe.subscriptions.retrieve(subscriptionId);
-
+const addUserToSubscription = async (stripe: any, subscriptionId: any, priceId: any, workspaceId: any, usersCount: any) => {
+                    
     // Update the subscription details
-    await stripe.subscriptions.update(
-        subscriptionId,
-        { quantity: subscription.quantity + 1 }
-    );
+    let subscription = await stripe.subscriptions.update(subscriptionId, {
+        price: priceId,
+        quantity: usersCount
+    });
 
     // Update the workspace details
     await Workspace.findOneAndUpdate({
         _id: workspaceId
     }, {
-        $inc: {
-            'billing.quantity': 1
-        }
+        'billing.quantity': usersCount
     });
 }
 
@@ -31,24 +26,19 @@ const addUserToSubscription = async (stripe: any, subscriptionId: any, workspace
  * @param stripe 
  * @param subscriptionId
  */
-const removeUserFromSubscription = async (stripe: any, subscriptionId: any, workspaceId) => {
-
-    // Get the subscription details
-    const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+const removeUserFromSubscription = async (stripe: any, subscriptionId: any, priceId: any, workspaceId: any, usersCount: any) => {
 
     // Update the subscription details
-    await stripe.subscriptions.update(
-        subscriptionId,
-        { quantity: subscription.quantity - 1 }
-    );
+    let subscription = await stripe.subscriptions.update(subscriptionId, {
+        price: priceId,
+        quantity: usersCount
+    });
 
     // Update the workspace details
     await Workspace.findOneAndUpdate({
         _id: workspaceId
     }, {
-        $inc: {
-            'billing.quantity': -1
-        }
+        'billing.quantity': usersCount
     });
 }
 
