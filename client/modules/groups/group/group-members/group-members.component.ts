@@ -18,7 +18,7 @@ export class GroupMembersComponent implements OnInit {
   public members: any = [];
 
   // PLACEHOLDER INPUT FOR SEARCH BAR
-  public searchBarPlaceholder = "Whom you are looking for?";
+  public searchBarPlaceholder = "Search user...";
 
   // WORKSPACE DATA
   public groupData: any;

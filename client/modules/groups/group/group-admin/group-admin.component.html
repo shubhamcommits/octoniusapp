@@ -30,7 +30,7 @@
         <app-component-search-input-box *ngIf="userData && checkDataExist(userData)"
             [placeholder]="'Search member'"
             [groupId]="groupId" [workspaceId]="userData._workspace" [userData]="userData" [type]="'group'"
-            (member)="addNewUser($event)">
+            (member)="addNewUser($event)" class="search-member-admin">
         </app-component-search-input-box>
         <!-- Search member component ends -->
     </div>

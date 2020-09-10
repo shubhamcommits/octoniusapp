@@ -12,10 +12,12 @@ img{
 
 .smart-card {
   background: #FFFFFF;
-  border: 1px solid #E0E3E6;
+  border: none;
   box-sizing: border-box;
-  border-radius: 4px;
+  border-radius: 10px;
+  box-shadow: 0 3px 0 #005fd521;
 }
+
 
 .card-title{
   font-style: normal;
