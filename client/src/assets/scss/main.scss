@@ -217,6 +217,11 @@ h2 {
   padding: 20px;
   width: 100%;
   margin-bottom: 15px;
+    border: none;
+    box-sizing: border-box;
+    border-radius: 10px;
+    box-shadow: 0 3px 0 #005fd521;
+  
 }
 
 .post-card {
@@ -850,4 +855,14 @@ input {
 
 .mat-form-field-underline {
   height: 0 !important;
+}
+.ql-formats .ql-image{
+  width:28px !important;
+}
+
+.search-member-admin{
+  width:100%;
+  .input-search{
+      width:200px !important;
+  }
 }
