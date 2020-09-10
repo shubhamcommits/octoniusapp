@@ -5,6 +5,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { PublicFunctions } from 'src/app/dashboard/public.functions';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-stripe-payment',
@@ -14,7 +15,8 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 export class StripePaymentComponent implements OnInit {
 
   constructor(
-    private injector: Injector
+    private injector: Injector,
+    private router: Router
   ) { }
 
   // Workspace Data Object
@@ -117,5 +119,6 @@ export class StripePaymentComponent implements OnInit {
 
   onSubscriptionChanges(subscription) {
     this.subscription = subscription;
+    this.router.navigate(['/home']);
   }
 }
