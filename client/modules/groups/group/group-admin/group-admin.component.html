@@ -53,11 +53,14 @@
         <div class="mt-5 mb-5 pt-3">
           
           <mat-slide-toggle color="primary"
-            [(ngModel)]="enableRights"
+          [checked]="groupData.enabled_rights"
+          [name]="'enabled_rights'"
+          (change)="saveSettings($event)"
+          [(ngModel)]="enabledRights"
           >
           <h6 class="card-title"><b>Enable board access rights?</b></h6>
           <p class="card-text">BARs allow admins to chose who can see and work on specific tasks.<br> Sometimes this is necessary for transversal projects.</p>
-          <button button class="btn btn-primary btn-sm" (click)="openBarModal(groupId)" *ngIf="enableRights">Manage BAR</button>
+          <button button class="btn btn-primary btn-sm" (click)="openBarModal(groupId)" *ngIf="enabledRights">Manage BAR</button>
           </mat-slide-toggle><br>
           
         </div>

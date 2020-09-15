@@ -58,6 +58,16 @@ export class GroupTasksListViewComponent implements OnInit {
     ) {}
 
   async ngOnInit() {
+    // This works...
+    this.groupData._members.forEach(member => {
+      this.groupData.bars.forEach(bar => {
+          bar.tag_members.forEach(tagMember =>{
+            if(tagMember === member._id){
+              console.log(member);
+            }
+          })
+      });
+    });
     await this.groupService.getGroupCustomFieldsToShow(this.groupId).then((res) => {
       if (res['group']['custom_fields_to_show']) {
         res['group']['custom_fields_to_show'].forEach(field => {

@@ -113,6 +113,27 @@ export class GroupService {
     .toPromise()
   }
 
+  addBar(groupId: string, barTag: string){
+    let bodyData = {
+      barTag
+    };
+    return this._http.put(this.baseURL + `/${groupId}/bar`, bodyData).toPromise()
+  }
+
+  addMemberToBar(groupId: string, barTag: string, member): Observable<any>{
+    let bodyData = {
+      groupId,
+      barTag,
+      member
+    }
+    console.log(bodyData);
+    return this._http.post(this.baseURL + `/members/addToBar`, bodyData);
+  }
+
+  getBars(groupId: string){
+    return this._http.get(this.baseURL + `/${groupId}/getBars`).toPromise()
+  }
+
   saveCustomFieldsToShow(groupId: string, customFieldsToShow: any[]) {
     return this._http.put(this.baseURL + `/${groupId}/customFieldsToShow`, { customFieldsToShow }).toPromise();
   }
@@ -145,7 +166,12 @@ export class GroupService {
     if (propertyName === 'share_files') {
       return this._http.put(this.baseURL + `/${groupId}/settings/shareFiles`, { propertyName, value }).toPromise();
     }
+    if(propertyName === "enabled_rights"){
+      return this._http.put(this.baseURL + `/${groupId}/settings/enableRights`, { propertyName, value }).toPromise();
+      
+    }
   }
+ 
 
   /**
    * Makes an HTTP POST request to update a smart group's

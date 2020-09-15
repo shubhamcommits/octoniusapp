@@ -29,9 +29,10 @@ export class GroupCreatePostDialogComponent implements OnInit {
   columns: any;
   customFields = [];
   selectedCFValues = [];
-
+  groupData: any;
   // Title of the Post
   title: string = '';
+  barTags = [];
 
   // Quill Data Object
   quillData: any;
@@ -99,15 +100,14 @@ export class GroupCreatePostDialogComponent implements OnInit {
     private mdDialogRef: MatDialogRef<GroupCreatePostDialogComponent>
     ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     this.postData = this.data.postData;
     this.userData = this.data.userData;
     this.groupId = this.data.groupId;
     this.columns = this.data.columns;
-
     // Set the title of the post
     this.title = this.postData.title;
-
+    this.groupData = await this.publicFunctions.getGroupDetails(this.groupId);
     // Set the due date to be undefined
     this.dueDate = undefined;
 
@@ -252,6 +252,14 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.tags = tags;
 
     this.updateDetails();
+  }
+
+  addNewBarTag(event){
+    this.barTags.push(event);
+  }
+
+  removeBarTag(index){
+    this.barTags.splice(index, 1);
   }
 
   // Check if the data provided is not empty{}

@@ -30,7 +30,7 @@ const GroupSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     }],
-    enabledRights: {
+    enabled_rights: {
         type: Schema.Types.Boolean,
         default: false,
     },

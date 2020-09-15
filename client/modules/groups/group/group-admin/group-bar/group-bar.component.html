@@ -1,0 +1,27 @@
+<div *ngIf="membersLoaded" class="container">
+    <mat-dialog-actions align="end">
+        <i mat-dialog-close class="material-icons" (click)="onCloseDialog()" style="cursor: pointer">close</i>
+    </mat-dialog-actions>
+
+    <h1 class="text-center">Manage BAR</h1>
+    <p class="text-center">Create rules to manage board access rights and select which members can see certain tasks.
+        By default all tasks are visible to the team.</p>
+    <div *ngFor="let bar of barList">
+        <h2>{{bar.bar_tag}}</h2>
+         <div class="d-flex" *ngFor="let member of bar.members">
+            <img src="{{ userBaseUrl }}/{{member?.profile_pic}}"
+            onerror="this.src='assets/images/user.png'" class="feed-avatar">
+            <p>{{member.first_name}} {{member.last_name}}
+            </p>
+        </div> 
+        
+        <app-component-search-input-box *ngIf="groupData"
+            [placeholder]="'Search member'"
+            [groupId]="groupId" [groupData]="groupData" [type]="'barMembers'"
+            [barMemberList] = "bar.members"
+            [bar] = "bar.bar_tag"
+            (member)="addNewUserToBar($event, bar)">
+        </app-component-search-input-box>
+    </div>
+    <div>Add another rule</div>
+</div>

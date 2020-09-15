@@ -293,15 +293,19 @@ export class MembersControllers {
      */
     async addUsersToBar(req: Request, res: Response, next: NextFunction) {
         const { groupId, member, barTag } = req.body;
+
         try {
             const memberId = member._id;
 
             const groupUpdate: any = await Group.findById(groupId);
             let foundBar = false;
-
+            let userExists = false;
             groupUpdate.bars.forEach(bar => {
                 if (bar.bar_tag === barTag) {
                   foundBar = true;
+                }
+                if (bar.tag_members.includes(memberId)) {
+                    userExists = true;
                 }
             });
             // If group wasn't found invalid id error
@@ -311,7 +315,10 @@ export class MembersControllers {
                 return sendError(res, new Error(`${msg} not found, invalid Id!`), `${msg} not found, invalid Id!`, 404);
             } else if (!foundBar) {
                 return sendError(res, new Error('Bar tag does not exist!'), 'Bar not found!', 404);
+            } else if (userExists) {
+                return sendError(res, new Error('User already tag member!'), 'Already member!', 404);
             }
+            
             groupUpdate.bars.forEach( bar => {
                 if (bar.bar_tag === barTag) {
                     bar.tag_members.push(memberId);

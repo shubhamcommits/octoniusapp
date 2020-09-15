@@ -76,11 +76,17 @@ routes.put('/:groupId/customFields/addValue', group.addCustomFieldValue);
 // PUT - Add new value to a custom field
 routes.put('/:groupId/settings/shareFiles', group.saveShareFilesSettings);
 
+// PUT - Enable/Disable BAR
+routes.put('/:groupId/settings/enableRights', group.enableRights);
+
 // PUT - Remove custom field value
 routes.put('/:groupId/customFields/removeValue', group.removeCustomFieldValue);
 
 // PUT - Add bar to group
 routes.put('/:groupId/addBar', group.addBar);
+
+//
+routes.get('/:groupId/getBars', group.getBars);
 
 // Update a smart group with the given rules.
 routes.post('/smart/:groupId', group.updateSmartGroup);

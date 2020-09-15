@@ -45,7 +45,9 @@ export class GroupKanbanBoardsComponent implements OnInit {
   // Today's date object
   today = moment().local().startOf('day').format('YYYY-MM-DD');
 
-  async ngOnInit() {}
+  async ngOnInit() {
+
+  }
 
   /**
    * Standard Angular CDK Event which monitors the drop functionality between different columns

@@ -48,7 +48,9 @@ const PostSchema = new Schema({
         ref: 'User',
         required: true
     },
-
+    bars: [{
+        type: Schema.Types.String
+    }],
     created_date: {
         type: Date,
         default: Date.now
