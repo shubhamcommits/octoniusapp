@@ -1,3 +1,89 @@
 <!-- Group Activity feed starts (Shared Module) -->
-<app-group-activity-feed *ngIf="userData"></app-group-activity-feed>
+<!-- <app-group-activity-feed *ngIf="userData"></app-group-activity-feed> -->
 <!-- Group Activity feed ends (Shared Module) -->
+
+<div class="container">
+  <div class="row main-actvity">
+    <div class="col-md-12 scrolling-wrapper">
+      <div class="col-md-3 box">
+        <!-- Task Smart Card Starts -->
+        <app-task-smart-card></app-task-smart-card>
+        <!-- Task Smart Card Ends -->
+      </div>
+
+      <div class="col-md-3 box">
+        <!-- Agenda Smart Card Starts -->
+        <app-agenda-smart-card [routerLink]="'/dashboard/myspace/agenda'"></app-agenda-smart-card>
+        <!-- Agenda Smart Card Ends -->
+      </div>
+    </div>
+
+    <div class="col-md-12">
+      <!-- Empty State starts -->
+      <div *ngIf="notificationsData.unreadNotifications.length === 0 && !(isLoading$ | async)" style="text-align: center;">
+        <img src='assets/images/overview-emptystate.svg' style="width: 70%;">
+      </div>
+      <!-- Empty State ends -->
+
+      <div class="notifications" *ngIf="notificationsData.unreadNotifications.length > 0 && !(isLoading$ | async)" >
+
+        <h6>Recent activities</h6>
+
+        <!-- NOTIFICATION ITEM STARTS-->
+        <div class="notification-item" *ngFor="let notification of notificationsData?.unreadNotifications;">
+          <div class="notification_actor">
+            <img src="{{ baseUrl }}/{{notification?._actor?.profile_pic}}"
+              onerror="this.src='assets/images/user.png'" alt="" class="feed-avatar"
+              style="margin-right:15px">
+          </div>
+
+          <div class="notification_title">
+            {{notification?._actor?.first_name}} {{notification?.message}}
+          </div>
+
+          <div class="notification_date_time">
+            <span class="muted text-small float-right">{{ notification?.created_date | date: 'MMMM d, y HH:mm' }}</span>
+          </div>
+
+          <div class="notification_tag">
+            <div class="tags">
+              <span class="badge">Test</span>
+            </div>
+            <!--
+            <div class="tags" *ngIf="task?.tags.length <= 1">
+              <span class="badge" *ngFor="let tag of task?.tags">
+                  {{ tag }}
+              </span>
+            </div>
+            <div class="tags" *ngIf="task?.tags.length > 1">
+                <span class="badge">
+                    {{ task?.tags[0] }}
+                </span>
+                <span class="badge">
+                    +{{ task?.tags.length-1 }}
+                </span>
+            </div>
+            -->
+          </div>
+
+          <div class="notification_more">
+            <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
+            <mat-menu #menu="matMenu">
+                <a mat-menu-item (click)="openFullscreenModal()">
+                    <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
+                    <span>View</span>
+                </a>
+            </mat-menu>
+          </div>
+        </div>
+        <!-- NOTIFICATION ITEM ENDS-->
+      </div>
+
+      <!-- Loading Spinner Starts -->
+      <ng-container *ngIf="isLoading$ | async">
+        <app-loading-spinner class="media"></app-loading-spinner>
+      </ng-container>
+      <!-- Loading Spinner Ends -->
+    </div>
+  </div>
+</div>
