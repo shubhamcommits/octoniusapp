@@ -120,14 +120,14 @@ export class GroupService {
     return this._http.put(this.baseURL + `/${groupId}/bar`, bodyData).toPromise()
   }
 
-  addMemberToBar(groupId: string, barTag: string, member): Observable<any>{
+  addMemberToBar(groupId: string, barTag: string, member){
     let bodyData = {
       groupId,
       barTag,
       member
     }
     console.log(bodyData);
-    return this._http.post(this.baseURL + `/members/addToBar`, bodyData);
+    return this._http.post(this.baseURL + `/members/addToBar`, bodyData).toPromise();
   }
 
   getBars(groupId: string){

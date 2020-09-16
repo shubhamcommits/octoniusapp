@@ -117,7 +117,6 @@ export class GroupAdminComponent implements OnInit {
       data: { groupData: this.groupData }
     });
     const sub = dialogRef.componentInstance.closeEvent.subscribe((data) => {
-      console.log('haha');
     });
     dialogRef.afterClosed().subscribe(result => {
       sub.unsubscribe();

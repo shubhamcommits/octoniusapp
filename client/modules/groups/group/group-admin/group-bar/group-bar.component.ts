@@ -45,14 +45,21 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
     }
 
     addNewUserToBar(event, bar){
-        this.barList.forEach(barItem => {
-            if(barItem.bar_tag === bar.bar_tag){
-                barItem.members.push(event);
-            }
-        });
-        this.groupService.addMemberToBar(this.groupId, bar.bar_tag, event).subscribe(res => {},err => {
-            this.utilityService.errorNotification(err.message);
-        });
+            // Add a new member to bar
+        this.utilityService.asyncNotification('Please wait we are adding the new user to your group...',
+        new Promise((resolve, reject)=>{
+        this.groupService.addMemberToBar(this.groupId, bar.bar_tag, event)
+        .then(()=> {
+            resolve(this.utilityService.resolveAsyncPromise(`${event.first_name} added to your bar!`))
+            this.barList.forEach(barItem => {
+                if(barItem.bar_tag === bar.bar_tag){
+                    barItem.members.push(event);
+                }
+            });
+        })
+        .catch(() => reject(this.utilityService.rejectAsyncPromise(`Unable to add ${event.first_name} to your bar`)))
+        }))
+        
     }
 
   onCloseDialog() {

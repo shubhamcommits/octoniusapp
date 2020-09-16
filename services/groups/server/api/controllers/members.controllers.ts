@@ -296,16 +296,18 @@ export class MembersControllers {
 
         try {
             const memberId = member._id;
-
             const groupUpdate: any = await Group.findById(groupId);
             let foundBar = false;
             let userExists = false;
+            let barFromDB;
+            let users;
             groupUpdate.bars.forEach(bar => {
                 if (bar.bar_tag === barTag) {
                   foundBar = true;
                 }
-                if (bar.tag_members.includes(memberId)) {
+                if (bar.bar_tag === barTag && bar.tag_members.includes(memberId)) {
                     userExists = true;
+                    users = bar.tag_members;
                 }
             });
             // If group wasn't found invalid id error

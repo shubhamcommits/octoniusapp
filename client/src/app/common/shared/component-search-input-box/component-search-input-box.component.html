@@ -56,7 +56,7 @@
                     <!-- Tag section ends -->
 
                     <!-- Group section starts -->
-                    <section *ngIf="type == 'group' || type === 'barMembers'">
+                    <section *ngIf="type == 'group'">
                         <div>
                             <i *ngIf="item.showAddMem == false; else addMem"
                                 class="material-icons mr-1 dropdown-toggle-split btn-sm working">check_circle</i>
@@ -65,6 +65,18 @@
                                     class="btn btn-primary btn-sm">add
                                 </button>
                             </ng-template>
+                        </div>
+                    </section>
+
+                    <section *ngIf="type === 'barMembers'">
+                        <div>
+                            <i *ngIf="item.showAddMem"
+                                class="material-icons mr-1 dropdown-toggle-split btn-sm working">check_circle</i>
+                            <div *ngIf="!item.showAddMem">
+                                <button (click)="onAddNewMember(item)"
+                                    class="btn btn-primary btn-sm">add
+                                </button>
+                            </div>
                         </div>
                     </section>
                     <!-- Group section ends -->
