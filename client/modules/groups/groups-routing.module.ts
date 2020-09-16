@@ -18,6 +18,7 @@ import { GroupMembersComponent } from './group/group-members/group-members.compo
 import { GroupPostComponent } from './group/group-post/group-post.component';
 import { GroupTasksViewsComponent } from './group/group-tasks-views/group-tasks-views.component';
 import { GroupGuard } from 'src/shared/guards/group-guard/group-guard';
+import { PostGuard } from 'src/shared/guards/post-guard/post-guard';
 
 
 /**
@@ -36,7 +37,7 @@ const routes: Routes = [
       { path: 'activity', component: GroupActivityComponent },
 
       // Group Kanban/tasks
-      { path: 'tasks', component: GroupTasksViewsComponent },
+      { path: 'tasks', component: GroupTasksViewsComponent, canActivate: [PostGuard] },
 
       // Group Files
       {
@@ -65,7 +66,7 @@ const routes: Routes = [
       { path: 'admin', component: GroupAdminComponent },
 
       // Group Post View
-      { path: 'post/:postId', component: GroupPostComponent },
+      { path: 'post/:postId', component: GroupPostComponent, canActivate: [PostGuard] },
     ],
     runGuardsAndResolvers: `always`,
     canActivate: [GroupGuard]
