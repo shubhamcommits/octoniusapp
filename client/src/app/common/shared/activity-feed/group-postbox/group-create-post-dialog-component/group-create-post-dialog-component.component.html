@@ -93,7 +93,7 @@
             <br />
             <p class="box-title">BAR</p>
             <div class="ml-3">
-                <div (click)="removeBarTag(i)" *ngFor="let barTag of barTags; let i = index"> 
+                <div (click)="removeBarTag(i, barTag)" *ngFor="let barTag of barTags; let i = index"> 
                 <p> {{ barTag }}  <i class="material-icons" style="color: red;">clear</i></p> 
                 </div>
 

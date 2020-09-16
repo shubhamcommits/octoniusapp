@@ -279,6 +279,8 @@ export class GroupCreatePostDialogComponent implements OnInit {
   async removeBarTag(index, event){
     let bar;
     this.groupData.bars.forEach(element => {
+      console.log(element);
+      console.log(event);
       if(element.bar_tag === event){
         bar = element;
       }
@@ -289,7 +291,6 @@ export class GroupCreatePostDialogComponent implements OnInit {
           // Resolve with success
           this.barTags.splice(index, 1);
           this.postData.bars = this.postData.bars.filter(barTag => barTag.bar_tag !== event);
-          console.log(res);
           resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
         })
         .catch(() => {
