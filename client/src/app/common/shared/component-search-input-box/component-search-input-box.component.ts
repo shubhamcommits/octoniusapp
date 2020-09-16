@@ -101,7 +101,8 @@ export class ComponentSearchInputBoxComponent implements OnInit {
 
           else {
             if(this.type === 'barTag'){
-              this.itemList = this.groupData.bars.map( item => item.bar_tag.includes(this.itemValue));
+              this.itemList = this.groupData.bars.map( item => item.bar_tag);
+              this.itemList = this.itemList.filter( item => item.includes(this.itemValue));
             }
             if(this.type === 'barMembers'){
               this.itemList = this.groupData._members.filter( member => {

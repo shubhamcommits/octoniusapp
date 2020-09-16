@@ -1224,4 +1224,23 @@ export class PostService {
       throw(error);
     }  
   }
+
+  async addBar(postId: string, bar: any){
+    try {
+      const task: any = await Post.findById(postId);
+      const barExists = task.bars.includes(bar);
+      if(!barExists) {
+        task.bars.push(bar);
+      }
+      task.save();
+    } catch (error) {
+      throw(error);
+    }  
+  }
+
+  async removeBar(postId: string, bar: any){
+    const task: any = await Post.findById(postId);
+      task.bars = task.bars.filter( barDB => barDB !== bar);
+      task.save();
+  }
 }

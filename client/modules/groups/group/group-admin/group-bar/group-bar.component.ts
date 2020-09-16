@@ -67,7 +67,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
         new Promise((resolve, reject)=>{
         this.groupService.removeUserFromBar(this.groupId, bar.bar_tag, event)
         .then(()=> {
-            resolve(this.utilityService.resolveAsyncPromise(`${event.first_name} removed from ${bar.bar_tag}!`))
+            resolve(this.utilityService.warningNotification(`${event.first_name} removed from ${bar.bar_tag}!`))
             this.barList.forEach( barItem => {
                 if(barItem.bar_tag === bar.bar_tag){
                     barItem.members = barItem.members.filter(member => member._id !== event._id);

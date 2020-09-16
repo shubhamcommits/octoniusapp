@@ -683,4 +683,41 @@ export class PostController {
             return sendErr(res, err, 'Internal Server Error!', 500);
         }
     }
+
+    async addBarToPost(req: Request, res:Response, next: NextFunction){
+        const { postId } = req.params;
+        const { bar } = req.body;
+        try {
+            const post = await postService.addBar(postId, bar)
+                .catch((err) => {
+                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+                })
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Task bar updated!',
+                post: post
+            });
+        } catch (err) {
+            return sendErr(res, err, 'Internal Server Error!', 500);
+        }
+    }
+    async removeBarFromPost(req: Request, res:Response, next: NextFunction){
+        const { postId } = req.params;
+        const { bar } = req.body;
+        try {
+            const post = await postService.removeBar(postId, bar)
+                .catch((err) => {
+                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+                });
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Task bar updated!',
+                post: post
+            });
+        } catch (err) {
+            return sendErr(res, err, 'Internal Server Error!', 500);
+        }
+    }
 }

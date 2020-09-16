@@ -35,6 +35,18 @@ export class PostService {
     toPromise()
   }
 
+  addBar(postId: string, bar:any){
+        // Call the HTTP Request
+        return this._http.put(this.baseURL + `/${postId}/addBar`, bar).
+        toPromise();
+  }
+  
+  removeBar(postId: string, bar:any){
+    
+    // Call the HTTP Request
+    return this._http.put(this.baseURL + `/${postId}/removeBar`, bar).
+    toPromise();
+  }
   /**
    * This function is responsible for fetching a post details
    * @param postId

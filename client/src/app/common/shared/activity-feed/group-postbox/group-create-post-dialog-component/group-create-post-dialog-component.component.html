@@ -92,19 +92,20 @@
 
             <br />
             <p class="box-title">BAR</p>
-        
-            <div (click)="removeBarTag(i)" *ngFor="let barTag of barTags; let i = index"> 
-                {{ barTag }}  X
-            </div>
+            <div class="ml-3">
+                <div (click)="removeBarTag(i)" *ngFor="let barTag of barTags; let i = index"> 
+                <p> {{ barTag }}  <i class="material-icons" style="color: red;">clear</i></p> 
+                </div>
 
-            <app-component-search-input-box 
-                *ngIf="groupData && checkDataExist(groupData)"
-                [placeholder]="'Add bar tag'" 
-                [groupData] = "groupData"
-                [type]="'barTag'"
-                [groupId]="groupId"
-                (barTag)="addNewBarTag($event)">
-            </app-component-search-input-box>
+                <app-component-search-input-box
+                    *ngIf="groupData && checkDataExist(groupData)"
+                    [placeholder]="'Add bar tag'" 
+                    [groupData] = "groupData"
+                    [type]="'barTag'"
+                    [groupId]="groupId"
+                    (barTag)="addNewBarTag($event)">
+                </app-component-search-input-box>
+            </div>
             <br />
 
             <p class="box-title">Section</p>

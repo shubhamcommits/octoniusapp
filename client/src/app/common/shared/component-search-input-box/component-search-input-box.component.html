@@ -45,14 +45,13 @@
 
                     <!-- Tag section starts -->
                     <section *ngIf="type == 'tag' || type === 'barTag'">
-
                         <!-- Add tags starts -->
                         <button (click)="onAddTag(item)" class="btn btn-primary btn-sm">Add
                             tag
                         </button>
                         <!-- Add tags ends -->
-
                     </section>
+                    
                     <!-- Tag section ends -->
 
                     <!-- Group section starts -->
@@ -62,7 +61,7 @@
                                 class="material-icons mr-1 dropdown-toggle-split btn-sm working">check_circle</i>
                             <ng-template #addMem>
                                 <button (click)="onAddNewMember(item)"
-                                    class="btn btn-primary btn-sm">add
+                                    class="btn btn-primary btn-sm">Add
                                 </button>
                             </ng-template>
                         </div>
@@ -74,7 +73,7 @@
                                 class="material-icons mr-1 dropdown-toggle-split btn-sm working">check_circle</i>
                             <div *ngIf="!item.showAddMem">
                                 <button (click)="onAddNewMember(item)"
-                                    class="btn btn-primary btn-sm">add
+                                    class="btn btn-primary btn-sm">Add
                                 </button>
                             </div>
                         </div>

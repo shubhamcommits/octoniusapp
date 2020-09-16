@@ -110,7 +110,6 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.groupData = await this.publicFunctions.getGroupDetails(this.groupId);
     // Set the due date to be undefined
     this.dueDate = undefined;
-
     if (this.postData.type === 'task') {
       // If Post is not unassigned
       if (!this.postData.task.unassigned) {
@@ -254,8 +253,19 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.updateDetails();
   }
 
-  addNewBarTag(event){
+  async addNewBarTag(event){
     this.barTags.push(event);
+    const bar = this.groupData.bars.filter(element => element.bar_tag === event);
+    await this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
+      this.postService.addBar(this.postData._id, bar)
+        .then((res) => {
+          // Resolve with success
+          resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
+        })
+        .catch(() => {
+          reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
+        });
+    }));
   }
 
   removeBarTag(index){

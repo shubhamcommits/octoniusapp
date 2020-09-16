@@ -125,4 +125,8 @@ routes.get('/test/recents/groups', postController.getRecentGroups);
 // PUT - Change custom field value
 routes.put('/:postId/customField', postController.saveCustomField);
 
+//PUT - Adding removing BARS with user ids
+routes.put('/:postId/addBar', postController.addBarToPost);
+routes.put('/:postId/removeBar', postController.removeBarFromPost);
+
 export { routes as postRoutes };
