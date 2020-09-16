@@ -59,7 +59,24 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
         })
         .catch(() => reject(this.utilityService.rejectAsyncPromise(`Unable to add ${event.first_name} to your bar`)))
         }))
-        
+    }
+
+    removeUserFromBar(event,bar){
+        // Add a new member to bar
+        this.utilityService.asyncNotification('Please wait we are adding the new user to your group...',
+        new Promise((resolve, reject)=>{
+        this.groupService.removeUserFromBar(this.groupId, bar.bar_tag, event)
+        .then(()=> {
+            resolve(this.utilityService.resolveAsyncPromise(`${event.first_name} removed from ${bar.bar_tag}!`))
+            this.barList.forEach( barItem => {
+                if(barItem.bar_tag === bar.bar_tag){
+                    barItem.members = barItem.members.filter(member => member._id !== event._id);
+                    barItem.tag_members = barItem.tag_members.filter(memberId => memberId !== event._id);
+                }    
+            });
+        })
+        .catch(() => reject(this.utilityService.rejectAsyncPromise(`Unable to remove ${event.first_name} from ${bar.bar_tag}`)))
+        }))
     }
 
   onCloseDialog() {

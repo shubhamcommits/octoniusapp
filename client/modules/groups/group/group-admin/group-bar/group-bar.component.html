@@ -10,7 +10,8 @@
         <h2>{{bar.bar_tag}}</h2>
          <div class="d-flex" *ngFor="let member of bar.members">
             <img src="{{ userBaseUrl }}/{{member?.profile_pic}}"
-            onerror="this.src='assets/images/user.png'" class="feed-avatar">
+            onerror="this.src='assets/images/user.png'" class="feed-avatar"
+            (click)="removeUserFromBar(member,bar)">
             <p>{{member.first_name}} {{member.last_name}}
             </p>
         </div> 

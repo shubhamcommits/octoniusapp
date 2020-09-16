@@ -126,8 +126,16 @@ export class GroupService {
       barTag,
       member
     }
-    console.log(bodyData);
     return this._http.post(this.baseURL + `/members/addToBar`, bodyData).toPromise();
+  }
+
+  removeUserFromBar(groupId: string, barTag: string, member){
+    let bodyData = {
+      groupId,
+      barTag,
+      member
+    }
+    return this._http.post(this.baseURL + `/members/removeFromBar`, bodyData).toPromise();
   }
 
   getBars(groupId: string){

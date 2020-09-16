@@ -291,7 +291,7 @@ export class MembersControllers {
      * @param res 
      * @param next 
      */
-    async addUsersToBar(req: Request, res: Response, next: NextFunction) {
+    async addUserToBar(req: Request, res: Response, next: NextFunction) {
         const { groupId, member, barTag } = req.body;
 
         try {
@@ -344,10 +344,9 @@ export class MembersControllers {
      * @param res
      * @param next 
      */
-    async removeUsersFromBar(req: Request, res: Response, next: NextFunction) {
+    async removeUserFromBar(req: Request, res: Response, next: NextFunction) {
      // Get the groupId and userId
      const { groupId, member, barTag } = req.body;
-
      try {
          const memberId = member._id;
          const groupUpdate: any = await Group.findById(groupId);
