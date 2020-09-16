@@ -279,8 +279,6 @@ export class GroupCreatePostDialogComponent implements OnInit {
   async removeBarTag(index, event){
     let bar;
     this.groupData.bars.forEach(element => {
-      console.log(element);
-      console.log(event);
       if(element.bar_tag === event){
         bar = element;
       }
