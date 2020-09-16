@@ -37,14 +37,19 @@ export class PostService {
 
   addBar(postId: string, bar:any){
         // Call the HTTP Request
-        return this._http.put(this.baseURL + `/${postId}/addBar`, bar).
+        const body = {
+          bar
+        };
+        return this._http.put(this.baseURL + `/${postId}/addBar`, body).
         toPromise();
   }
-  
+
   removeBar(postId: string, bar:any){
-    
+    const body = {
+      bar
+    };
     // Call the HTTP Request
-    return this._http.put(this.baseURL + `/${postId}/removeBar`, bar).
+    return this._http.put(this.baseURL + `/${postId}/removeBar`, body).
     toPromise();
   }
   /**

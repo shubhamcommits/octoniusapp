@@ -705,6 +705,7 @@ export class PostController {
     async removeBarFromPost(req: Request, res:Response, next: NextFunction){
         const { postId } = req.params;
         const { bar } = req.body;
+        res.status(200).send({bar});
         try {
             const post = await postService.removeBar(postId, bar)
                 .catch((err) => {

@@ -1230,7 +1230,10 @@ export class PostService {
       const task: any = await Post.findById(postId);
       const barExists = task.bars.includes(bar);
       if(!barExists) {
-        task.bars.push(bar);
+        task.bars.push({
+          bar_tag: bar.bar_tag,
+          tag_members: bar.tag_members
+        });
       }
       task.save();
     } catch (error) {
@@ -1240,7 +1243,7 @@ export class PostService {
 
   async removeBar(postId: string, bar: any){
     const task: any = await Post.findById(postId);
-      task.bars = task.bars.filter( barDB => barDB !== bar);
+      task.bars = task.bars.filter( barDB => barDB.bar_tag !== bar.bar_tag);
       task.save();
   }
 }
