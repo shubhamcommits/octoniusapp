@@ -1,26 +1,116 @@
-import { Component, OnInit, Injector } from '@angular/core';
+import { Component, OnInit, Injector, OnDestroy } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
 import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { SubSink } from 'subsink';
+import { take } from 'rxjs/internal/operators/take';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-myspace-inbox',
   templateUrl: './myspace-inbox.component.html',
   styleUrls: ['./myspace-inbox.component.scss']
 })
-export class MyspaceInboxComponent implements OnInit {
+export class MyspaceInboxComponent implements OnInit, OnDestroy {
 
-  constructor(private injector: Injector, public utilityService: UtilityService) { }
+  // Subsink Object
+  subSink = new SubSink();
+
+  // Global Feed Variable check
+  // globalFeed: boolean = (this.router.snapshot.url.findIndex((segment) => segment.path == 'inbox') == -1) ? false : true;
 
   // Current User Data
   userData: any;
 
+  // NOTIFICATIONS DATA
+  public notificationsData: { readNotifications: [], unreadNotifications: [] } = {
+      readNotifications: [],
+      unreadNotifications: []
+  }
+
+  // BASE URL OF THE APPLICATION
+  baseUrl = environment.UTILITIES_USERS_UPLOADS
+
+  // IsLoading behaviou subject maintains the state for loading spinner
+  public isLoading$ = new BehaviorSubject(false);
+
   // Public Functions
   public publicFunctions = new PublicFunctions(this.injector);
 
+  constructor(
+    private router: ActivatedRoute,
+    private _router: Router,
+    private injector: Injector,
+    public utilityService: UtilityService,
+    private socketService: SocketService,
+    // private postService: PostService
+    ) {
+    this.subSink.add(this._router.events.subscribe(async (e: any) => {
+      // If it is a NavigationEnd event re-initalise the component
+      if (e instanceof NavigationEnd) {
+        // Global Feed Variable check
+        // this.globalFeed = (this._router.routerState.snapshot.root.url.findIndex((segment) => segment.path == 'inbox') == -1) ? false : true
+
+        // this.showNewNotifications = false
+
+        // this.moreToLoad = true
+      }
+    }));
+    // Subscribe to the change in notifications data from the server
+    this.subSink.add(this.socketService.currentData.subscribe((res) => {
+      if (JSON.stringify(res) != JSON.stringify({})) {
+        this.notificationsData = res;
+      }
+    }));
+  }
+
   async ngOnInit() {
+
+    // Start the loading spinner
+    this.isLoading$.next(true);
 
     // Fetch current user details
     this.userData = await this.publicFunctions.getCurrentUser();
 
+    // await this.fetchNotifications(this.userData._id);
+
+    // Return the function via stopping the loader
+    return this.isLoading$.next(false);
+  }
+
+  /**
+   * Unsubscribe all the observables to avoid memory leaks
+   */
+  ngOnDestroy() {
+    this.subSink.unsubscribe()
+    this.isLoading$.complete()
+  }
+
+  /**
+   * This function is responsible for marking the notification as read
+   * @param notificationId - notification object Id
+   * @param userId - userId of the current user
+   */
+  markNotificationAsRead(notificationId: string, userId: string) {
+      console.log('hitted')
+      this.subSink.add(this.socketService.onEmit('markRead', notificationId, userId)
+          .pipe(take(1))
+          .subscribe())
+  }
+
+  /**
+   * This function routes the user to the particular post where notification has occured
+   * @param notficationId - notification Object Id
+   * @param postId - userId of the current user
+   */
+  viewNotification(notficationId: string, postId: string) {
+      this._router.navigate([]);
+  }
+
+  openFullscreenModal() {
+    console.log("OPEN POST");
+    // TODO mark as read
   }
 }
