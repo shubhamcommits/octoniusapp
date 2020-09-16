@@ -268,6 +268,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
         .then((res) => {
           // Resolve with success
         this.postData.bars.push(bar);
+        this.barTags.push(event);
           resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
         })
         .catch(() => {

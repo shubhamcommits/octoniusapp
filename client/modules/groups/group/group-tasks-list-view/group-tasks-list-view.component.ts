@@ -58,16 +58,6 @@ export class GroupTasksListViewComponent implements OnInit {
     ) {}
 
   async ngOnInit() {
-    // This works...
-    this.groupData._members.forEach(member => {
-      this.groupData.bars.forEach(bar => {
-          bar.tag_members.forEach(tagMember =>{
-            if(tagMember === member._id){
-              console.log(member);
-            }
-          })
-      });
-    });
     await this.groupService.getGroupCustomFieldsToShow(this.groupId).then((res) => {
       if (res['group']['custom_fields_to_show']) {
         res['group']['custom_fields_to_show'].forEach(field => {
@@ -79,6 +69,21 @@ export class GroupTasksListViewComponent implements OnInit {
         });
       }
     });
+    this.columns.forEach( column => {
+      let tasks = [];
+      column.tasks = column.tasks.forEach( task => {
+        if(task.bars !== undefined){
+          task.bars.forEach(bar => {
+            if(bar.tag_members.includes(this.userData._id) || this.userData.role !== "member") {
+              tasks.push(task);
+            }
+          });
+        } else {
+          tasks.push(task);
+        }
+      });
+      column.tasks = tasks;
+    })
   }
 
   /**
