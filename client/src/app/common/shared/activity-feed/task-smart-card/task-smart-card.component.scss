@@ -40,21 +40,21 @@ img{
 }
 
 .to-do-task {
-  background: #fd7714;
+  background: #fd7714 !important;
 }
 
 
 .in-progress-task {
-  background: #0bc6a0;
+  background: #0bc6a0 !important;
 }
 
 
 .done-task {
-  background: #4a90e2;
+  background: #4a90e2 !important;
 }
 
 .overdue-task {
-  background: #FF6584;
+  background: #FF6584 !important;
 }
 
 .overdue-total-tasks {
@@ -105,8 +105,33 @@ img{
   margin-right: 10px;
 }
 
+.card-content {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+
+  .card-box {
+    display: inline-block;
+    width: 50%;
+  }
+}
+
+.card-content {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.tasks-list {
+  list-style-type: none;
+
+  li {
+    margin: 10px 0;
+  }
+}
+
 .badge {
-  background-color: #969A9E !important;
+  background-color: #969A9E;
   margin: 0 5px !important;
   display: inline;
   font-family: Nunito, sans-serif;
@@ -115,7 +140,6 @@ img{
   font-size: 12px;
   align-items: center;
   color: #ffffff;
-  background-color: #e4edf8;
-  border-radius: 10px;
-  padding: 3px 6px !important;
+  border-radius: 15px;
+  padding: 3px 8px !important;
 }
