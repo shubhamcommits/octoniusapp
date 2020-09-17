@@ -30,6 +30,7 @@ import { MyspaceWorkplaceComponent } from './myspace-workplace/myspace-workplace
 */
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+// import {MatGridListModule} from '@angular/material/grid-list';
 
 /**
 * 3. !===== CUSTOM MODULES =====!
@@ -73,6 +74,8 @@ import { MatMenuModule } from '@angular/material';
 
     // Shared Module
     SharedModule,
+
+    // MatGridListModule,
 
     MatMenuModule
   ]
