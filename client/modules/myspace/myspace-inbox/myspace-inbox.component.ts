@@ -44,20 +44,8 @@ export class MyspaceInboxComponent implements OnInit, OnDestroy {
     private _router: Router,
     private injector: Injector,
     public utilityService: UtilityService,
-    private socketService: SocketService,
-    // private postService: PostService
+    private socketService: SocketService
     ) {
-    this.subSink.add(this._router.events.subscribe(async (e: any) => {
-      // If it is a NavigationEnd event re-initalise the component
-      if (e instanceof NavigationEnd) {
-        // Global Feed Variable check
-        // this.globalFeed = (this._router.routerState.snapshot.root.url.findIndex((segment) => segment.path == 'inbox') == -1) ? false : true
-
-        // this.showNewNotifications = false
-
-        // this.moreToLoad = true
-      }
-    }));
     // Subscribe to the change in notifications data from the server
     this.subSink.add(this.socketService.currentData.subscribe((res) => {
       if (JSON.stringify(res) != JSON.stringify({})) {
@@ -67,14 +55,11 @@ export class MyspaceInboxComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-
     // Start the loading spinner
     this.isLoading$.next(true);
 
     // Fetch current user details
     this.userData = await this.publicFunctions.getCurrentUser();
-
-    // await this.fetchNotifications(this.userData._id);
 
     // Return the function via stopping the loader
     return this.isLoading$.next(false);
@@ -89,28 +74,36 @@ export class MyspaceInboxComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * This function is responsible for marking all the notification as read
+   */
+  markAllNotificationAsRead() {
+    this.notificationsData.unreadNotifications.forEach(notification => this.markNotificationAsRead(notification['_id'], this.userData._id));
+  }
+
+  /**
    * This function is responsible for marking the notification as read
    * @param notificationId - notification object Id
    * @param userId - userId of the current user
    */
   markNotificationAsRead(notificationId: string, userId: string) {
-      console.log('hitted')
-      this.subSink.add(this.socketService.onEmit('markRead', notificationId, userId)
-          .pipe(take(1))
-          .subscribe())
+    this.subSink.add(this.socketService.onEmit('markRead', notificationId, userId)
+        .pipe(take(1))
+        .subscribe());
   }
 
   /**
    * This function routes the user to the particular post where notification has occured
-   * @param notficationId - notification Object Id
    * @param postId - userId of the current user
+   * @param postType - post type
+   * @param group - group Id
    */
-  viewNotification(notficationId: string, postId: string) {
-      this._router.navigate([]);
-  }
-
-  openFullscreenModal() {
-    console.log("OPEN POST");
-    // TODO mark as read
+  viewNotification(postId: string, postType: string, group) {
+    const groupId = (group._id) ? group._id : group;
+    // Set the Value of element selection box to be the url of the post
+    if (postType === 'task') {
+      this._router.navigate(['/dashboard', 'work', 'groups', 'tasks'], {queryParams: { group: groupId, myWorkplace: false, postId: postId }});
+    } else {
+      this._router.navigate(['/dashboard', 'work', 'groups', 'activity'], {queryParams: { group: groupId, myWorkplace: false, postId: postId }});
+    }
   }
 }

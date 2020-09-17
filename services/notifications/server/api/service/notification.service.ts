@@ -20,7 +20,7 @@ export class NotificationsService {
                     _owner: user,
                     _origin_comment: comment._id,
                     _origin_post: comment._post,
-                    message: 'mentioned you in a comment.',
+                    message: 'mentioned you on',
                     type: 'mention'
                 });
             });
@@ -58,7 +58,7 @@ export class NotificationsService {
                     _actor: post._posted_by,
                     _owner: user,
                     _origin_post: post._id,
-                    message: 'assigned an event to you.',
+                    message: 'assigned you on',
                     type: 'assignment'
                 });
             });
@@ -94,7 +94,7 @@ export class NotificationsService {
                     _actor: post._posted_by,
                     _owner: user,
                     _origin_post: post._id,
-                    message: 'mentioned you in a post.',
+                    message: 'mentioned you on',
                     type: 'mention'
                 })
             })
@@ -113,7 +113,7 @@ export class NotificationsService {
                 _actor: post._posted_by,
                 _owner: post.task._assigned_to,
                 _origin_post: post._id,
-                message: 'assigned a task to you.',
+                message: 'assigned you',
                 type: 'assignment'
             });
         } catch (err) {
@@ -132,7 +132,7 @@ export class NotificationsService {
                 _actor: post._posted_by,
                 _owner: post.task._assigned_to,
                 _origin_post: post._id,
-                message: 'reassigned a task to you.',
+                message: 'reassigned you',
                 type: 'assignment'
             });
         } catch (err) {
@@ -153,8 +153,8 @@ export class NotificationsService {
                 .limit(5)
                 .sort('-created_date')
                 .populate('_actor', 'first_name last_name profile_pic')
-                .populate('_origin_post', '_group')
-                .populate('_origin_comment', '_post')
+                .populate('_origin_post')
+                .populate('_origin_comment')
                 .populate('_owner', 'first_name last_name profile_pic')
                 .lean();
 
@@ -176,8 +176,8 @@ export class NotificationsService {
             })
                 .sort('-created_date')
                 .populate('_actor', 'first_name last_name profile_pic')
-                .populate('_origin_post', '_group')
-                .populate('_origin_comment', '_post')
+                .populate('_origin_post')
+                .populate('_origin_comment')
                 .populate('_owner', 'first_name last_name profile_pic')
                 .lean();
 
