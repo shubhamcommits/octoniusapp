@@ -45,6 +45,7 @@
         </div>
       </div>
       -->
+      <!--
       <div class="row">
         <div class="col-md">
             <div class="media card-tile overview-task">
@@ -54,14 +55,21 @@
                 <div class="group-tasks overdue-task col-md">{{overdueTasks.length}}</div>
             </div>
         </div>
-
       </div>
+      -->
+      <div class="card-content">
+        <ul class="col-md tasks-list card-box">
+          <li><span class="badge overdue-task">{{ overdueTasks.length }}</span> overdue</li>
+          <li><span class="badge to-do-task">{{ to_do_task_count }}</span> to do</li>
+          <li><span class="badge in-progress-task">{{ in_progress_task_count }}</span> in progress</li>
+          <li><span class="badge to-do-task">{{ done_task_count }}</span> done</li>
+        </ul>
 
-      <div class="overdue-total-tasks"><i class="material-icons-outlined">alarm_on</i>{{overdueTasks.length}} overdue</div>
-      <div class="row">
-        <div class="col-md-6"></div>
-        <div class="col-md-6 hidden-xs-down">
-            <img src='assets/images/tasks-smart-card.svg'>
+        <!--
+          <div class="overdue-total-tasks"><i class="material-icons-outlined">alarm_on</i>{{overdueTasks.length}} overdue</div>
+        -->
+        <div class="card-box">
+          <img src='assets/images/tasks-smart-card.svg'>
         </div>
       </div>
     </a>
