@@ -43,57 +43,77 @@
     align-items: center;
     height: 100%;
 
-      .notification_title {
-          flex: 0 0 320px;
-          will-change: transform;
-          flex-basis: 320px;
-          padding: 0 10px
-      }
+    .notification_title {
+        flex: 0 0 320px;
+        will-change: transform;
+        flex-basis: 320px;
+        padding: 0 10px;
 
-      .notification_actor {
-          flex-basis: 80px;
-          max-width: 80px;
-          flex: 0 0;
-          text-align: center;
+        .assignment_notification {
+          color: #fd7714;
+        }
 
-          .feed-avatar {
-              width: 35px;
-              height: 35px;
-              margin: 0;
-          }
-      }
+        .mention_notification {
+          color: #5E2FE5;
+        }
 
-      .notification_date_time {
-          flex-basis: 160px;
-          max-width: 160px;
-          min-width: 160px;
-          flex: 0 0;
-          text-align: center;
+        .completed_notification {
+          color: #4a90e2;
+        }
 
-      }
+        .started_notification {
+          color: #0bc6a0;
+        }
 
-      .notification_tag {
-          flex-basis: 160px;
-          max-width: 160px;
-          min-width: 160px;
-          flex: 0 0;
-          .tags {
-              text-align: center;
-              border: none !important;
-          }
-      }
+        .notification_post_title {
+          color: #000000;
+        }
+    }
 
-      .notification_more {
-          flex-basis: 100px;
-          // max-width: 10px;
-          min-width: 100px;
-          flex: 0 0;
-          text-align: right;
-          padding-right: 8px;
-          flex: auto;
-          height: 70px;
-          line-height: 70px;
-      }
+    .notification_actor {
+        flex-basis: 80px;
+        max-width: 80px;
+        flex: 0 0;
+        text-align: center;
+
+        .feed-avatar {
+            width: 35px;
+            height: 35px;
+            margin: 0;
+        }
+    }
+
+    .notification_date_time {
+        flex-basis: 160px;
+        max-width: 160px;
+        min-width: 160px;
+        flex: 0 0;
+        text-align: center;
+
+    }
+
+    .notification_tag {
+        flex-basis: 160px;
+        max-width: 160px;
+        min-width: 160px;
+        flex: 0 0;
+        .tags {
+            text-align: center;
+            border: none !important;
+        }
+    }
+
+    .notification_more {
+        flex-basis: 100px;
+        // max-width: 10px;
+        min-width: 100px;
+        flex: 0 0;
+        text-align: right;
+        padding-right: 8px;
+        flex: auto;
+        height: 70px;
+        line-height: 70px;
+    }
   }
 }
 

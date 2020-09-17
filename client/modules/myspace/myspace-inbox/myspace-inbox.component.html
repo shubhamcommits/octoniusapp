@@ -27,8 +27,18 @@
 
       <div class="notifications" *ngIf="notificationsData.unreadNotifications.length > 0 && !(isLoading$ | async)" >
 
-        <h6>Recent activities</h6>
-
+        <div class="notification-item">
+          <h6>Recent activities</h6>
+          <div class="notification_more">
+            <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="general_menu" style="cursor: pointer;">more_horiz</i>
+            <mat-menu #general_menu="matMenu">
+              <a mat-menu-item (click)="markAllNotificationAsRead()">
+                <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">check_circle_outline</i>
+                <span>Mark All As Read</span>
+              </a>
+            </mat-menu>
+          </div>
+        </div>
         <!-- NOTIFICATION ITEM STARTS-->
         <div class="notification-item" *ngFor="let notification of notificationsData?.unreadNotifications;">
           <div class="notification_actor">
@@ -38,7 +48,17 @@
           </div>
 
           <div class="notification_title">
-            {{notification?._actor?.first_name}} {{notification?.message}}
+            {{ notification?._actor?.first_name }} {{ notification?._actor?.last_name }}
+            <span
+            [ngClass]="{
+              'assignment_notification': notification?.type === 'assignment',
+              'mention_notification': notification?.type === 'mention',
+              'completed_notification': notification?.type === 'completed',
+              'started_notification': notification?.type === 'started'
+            }">
+              {{ notification?.message }}
+            </span>
+            <span class="notification_post_title">{{ notification?._origin_post?.title | truncatetext: 20 }}</span>
           </div>
 
           <div class="notification_date_time">
@@ -46,18 +66,32 @@
           </div>
 
           <div class="notification_tag">
-            <div class="tags">
-              <span class="badge">Test</span>
+            <div class="tags" *ngIf="notification?._origin_post?.tags.length <= 1">
+              <span class="badge" *ngFor="let tag of notification?._origin_post?.tags">
+                {{ tag }}
+              </span>
+            </div>
+            <div class="tags" *ngIf="notification?._origin_post?.tags.length > 1">
+              <span class="badge">
+                {{ notification?._origin_post?.tags[0] }}
+              </span>
+              <span class="badge">
+                +{{ notification?._origin_post?.tags.length-1 }}
+              </span>
             </div>
           </div>
 
           <div class="notification_more">
             <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
             <mat-menu #menu="matMenu">
-                <a mat-menu-item (click)="openFullscreenModal()">
-                    <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
-                    <span>View</span>
-                </a>
+              <a mat-menu-item (click)="viewNotification(notification?._origin_post?._id, notification?._origin_post?.type, notification?._origin_post?._group)">
+                <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
+                <span>View</span>
+              </a>
+              <a mat-menu-item (click)="markNotificationAsRead(notification._id, userData._id)">
+                <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">check_circle_outline</i>
+                <span>Mark As Read</span>
+            </a>
             </mat-menu>
           </div>
         </div>
