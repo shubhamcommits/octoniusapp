@@ -1146,7 +1146,7 @@ export class GroupController {
             await group.save();
             return res.status(200).json({
                 message: 'Bar tag added successfully!',
-                group
+                group,
               });
         } catch (error) {
             return sendError(res, error, 'Internal Server Error!', 500);

@@ -117,7 +117,7 @@ export class GroupService {
     let bodyData = {
       barTag
     };
-    return this._http.put(this.baseURL + `/${groupId}/bar`, bodyData).toPromise()
+    return this._http.put(this.baseURL + `/${groupId}/addBar`, bodyData).toPromise()
   }
 
   addMemberToBar(groupId: string, barTag: string, member){

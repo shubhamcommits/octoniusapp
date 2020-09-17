@@ -94,7 +94,7 @@
             <p class="box-title">BAR</p>
             <div class="ml-3">
                 <div (click)="removeBarTag(i, barTag)" *ngFor="let barTag of barTags; let i = index"> 
-                <p> {{ barTag }}  <i class="material-icons" style="color: red;">clear</i></p> 
+                <div><span class="tag"> {{ barTag }}</span> <i class="material-icons" style="color: red;">clear</i></div>
                 </div>
 
                 <app-component-search-input-box

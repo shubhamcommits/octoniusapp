@@ -18,7 +18,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
         private mdDialogRef: MatDialogRef<GroupBarComponent>
         ) { }
     @Output() closeEvent = new EventEmitter();
-
+    
+    tag: string;
     barList: any = [];
     subSink = new SubSink();
     groupData: any;
@@ -26,6 +27,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
     members: unknown[];
     barTag: string;
     membersLoaded = false;
+    addNewBar = false;
     searchBarPlaceHolder= 'Add a member to tag';
     ngOnInit(): void {      
         this.members = this.data.groupData._members;
@@ -46,7 +48,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
     addNewUserToBar(event, bar){
             // Add a new member to bar
-        this.utilityService.asyncNotification('Please wait we are adding the new user to your group...',
+        this.utilityService.asyncNotification('Please wait we are adding the new user to bar...',
         new Promise((resolve, reject)=>{
         this.groupService.addMemberToBar(this.groupId, bar.bar_tag, event)
         .then(()=> {
@@ -63,7 +65,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
     removeUserFromBar(event,bar){
         // Add a new member to bar
-        this.utilityService.asyncNotification('Please wait we are adding the new user to your group...',
+        this.utilityService.asyncNotification('Please wait we are removing the user from bar...',
         new Promise((resolve, reject)=>{
         this.groupService.removeUserFromBar(this.groupId, bar.bar_tag, event)
         .then(()=> {
@@ -77,6 +79,27 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
         })
         .catch(() => reject(this.utilityService.rejectAsyncPromise(`Unable to remove ${event.first_name} from ${bar.bar_tag}`)))
         }))
+    }
+    showTagComponent(){
+        this.addNewBar = !this.addNewBar;
+    }
+
+    addTag(){
+        this.groupService.addBar(this.groupData._id, this.tag).then((res: any)=>{
+            this.data.groupData = res.group;
+            this.barList = res.group.bars;
+            this.barList.forEach(bar => {
+                bar.members = [];
+                bar.tag_members.forEach( tagMember =>{
+                    this.members.forEach(member => {
+                        if(member._id === tagMember)
+                            bar.members.push(member);
+                    });
+                });
+            });
+        }).catch(() => {});
+        this.tag = "";
+        this.addNewBar = false;
     }
 
   onCloseDialog() {
