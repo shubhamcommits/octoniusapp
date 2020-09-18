@@ -30,9 +30,10 @@ export class GroupCreatePostDialogComponent implements OnInit {
   columns: any;
   customFields = [];
   selectedCFValues = [];
-
+  groupData: any;
   // Title of the Post
   title: string = '';
+  barTags = [];
 
   // Quill Data Object
   quillData: any;
@@ -98,18 +99,19 @@ export class GroupCreatePostDialogComponent implements OnInit {
     private mdDialogRef: MatDialogRef<GroupCreatePostDialogComponent>
     ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     this.postData = this.data.postData;
     this.userData = this.data.userData;
     this.groupId = this.data.groupId;
     this.columns = this.data.columns;
-
     // Set the title of the post
     this.title = this.postData.title;
-
+    if(this.postData.bars !== undefined){
+      this.barTags = this.postData.bars.map( bar => bar.bar_tag);
+    }
+    this.groupData = await this.publicFunctions.getGroupDetails(this.groupId);
     // Set the due date to be undefined
     this.dueDate = undefined;
-
     if (this.postData.type === 'task') {
       // If Post is not unassigned
       if (!this.postData.task.unassigned) {
@@ -253,6 +255,48 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.tags = tags;
 
     this.updateDetails();
+  }
+
+  async addNewBarTag(event){
+    let bar;
+    this.groupData.bars.forEach(element => {
+      if(element.bar_tag === event){
+        bar = element;
+      }
+    });
+    await this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
+      this.postService.addBar(this.postData._id, bar)
+        .then((res) => {
+          // Resolve with success
+        this.postData.bars.push(bar);
+        this.barTags.push(event);
+          resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
+        })
+        .catch(() => {
+          reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
+        });
+    }));
+  }
+
+  async removeBarTag(index, event){
+    let bar;
+    this.groupData.bars.forEach(element => {
+      if(element.bar_tag === event){
+        bar = element;
+      }
+    });
+    await this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
+      this.postService.removeBar(this.postData._id, bar)
+        .then((res) => {
+          // Resolve with success
+          this.barTags.splice(index, 1);
+          this.postData.bars = this.postData.bars.filter(barTag => barTag.bar_tag !== event);
+          resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
+        })
+        .catch(() => {
+          reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
+        });
+    }));
   }
 
   // Check if the data provided is not empty{}

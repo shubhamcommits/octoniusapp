@@ -69,6 +69,21 @@ export class GroupTasksListViewComponent implements OnInit {
         });
       }
     });
+    this.columns.forEach( column => {
+      let tasks = [];
+      column.tasks = column.tasks.forEach( task => {
+        if(task.bars !== undefined){
+          task.bars.forEach(bar => {
+            if(bar.tag_members.includes(this.userData._id) || this.userData.role !== "member") {
+              tasks.push(task);
+            }
+          });
+        } else {
+          tasks.push(task);
+        }
+      });
+      column.tasks = tasks;
+    })
   }
 
   /**

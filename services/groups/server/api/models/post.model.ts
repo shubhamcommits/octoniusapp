@@ -26,6 +26,7 @@ const PostSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     }],
+    bars: [],
     comments_count: {
         type: Number,
         default: 0

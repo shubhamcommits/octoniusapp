@@ -23,7 +23,7 @@
     <div class="card-block">
 
         <!-- Template Heading starts -->
-        <h6 class="card-title"><b>Add users</b></h6>
+        <h4 class="card-title"><b>Add users</b></h4>
         <!-- Template Heading ends -->
 
         <!-- Search member component starts -->
@@ -39,15 +39,30 @@
   <!-- Settings -->
   <div class="card-tile" style="height: 350px;">
     <div class="card-block" style="float: left;">
-        <h6 class="card-title"><b>Settings</b></h6>
+        <h4 class="card-title bold"><b>Settings</b></h4>
 
-        <div>
-          <p>Shared files with the organization?</p>
+        <div class="mt-5 mb-5 pt-3">
           <mat-slide-toggle color="primary"
             [checked]="groupData.share_files"
             [name]="'share_files'"
             (change)="saveSettings($event)">
-          </mat-slide-toggle>
+            <h6 class="card-title"><b>Shared files with the organization?</b></h6>
+            <p class="card-text">This option makes all the files from this group accessible to the entire organization</p>
+          </mat-slide-toggle>   
+        </div>
+        <div class="mt-5 mb-5 pt-3">
+          
+          <mat-slide-toggle color="primary"
+          [checked]="groupData.enabled_rights"
+          [name]="'enabled_rights'"
+          (change)="saveSettings($event)"
+          [(ngModel)]="enabledRights"
+          >
+          <h6 class="card-title"><b>Enable board access rights?</b></h6>
+          <p class="card-text">BARs allow admins to chose who can see and work on specific tasks.<br> Sometimes this is necessary for transversal projects.</p>
+          <button button class="btn btn-primary btn-sm" (click)="openBarModal(groupId)" *ngIf="enabledRights">Manage BAR</button>
+          </mat-slide-toggle><br>
+          
         </div>
     </div>
 

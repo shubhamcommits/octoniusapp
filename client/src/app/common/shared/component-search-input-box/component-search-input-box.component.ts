@@ -35,6 +35,12 @@ export class ComponentSearchInputBoxComponent implements OnInit {
   // User Data Object
   @Input('userData') userData: any = {};
 
+  @Input('groupData') groupData: any = {};
+
+  @Input('bar') bar: string;
+
+  @Input('barMemberList') barMemberList: any = [];
+
   // Skill Emitter which emits the skill object on creation
   @Output('skill') skillEmitter = new EventEmitter();
 
@@ -43,6 +49,8 @@ export class ComponentSearchInputBoxComponent implements OnInit {
 
   // Tag Emitter which emits the tag object on creation
   @Output('tag') tagEmitter = new EventEmitter();
+
+  @Output('barTag') barTagEmitter = new EventEmitter();
 
   // Public Functions class
   private publicFunctions = new PublicFunctions(this.injector);
@@ -85,13 +93,30 @@ export class ComponentSearchInputBoxComponent implements OnInit {
     this.subSink.add(this.itemValueChanged
       .pipe(distinctUntilChanged(), debounceTime(500))
       .subscribe(async () => {
-        if (this.type == 'skill' || this.type == 'group' || this.type == 'task' || this.type == 'event' || this.type === 'tag') {
+        if (this.type == 'skill' || this.type == 'group' || this.type == 'task' || this.type == 'event' || this.type === 'tag' || this.type === 'barTag' || this.type === 'barMembers') {
 
           // If value is null then empty the array
           if (this.itemValue == "")
             this.itemList = []
 
           else {
+            if(this.type === 'barTag'){
+              this.itemList = this.groupData.bars.map( item => item.bar_tag);
+              this.itemList = this.itemList.filter( item => item.includes(this.itemValue));
+            }
+            if(this.type === 'barMembers'){
+              this.itemList = this.groupData._members.filter( member => {
+                let item = member.first_name + ' ' + member.last_name
+                return item.includes(this.itemValue);
+              });
+              this.itemList.forEach(item => {
+                if(this.barMemberList.includes(item)){
+                  item.showAddMem = true;
+                } else {
+                  item.showAddMem = false;
+                }
+              }); 
+            }
 
             // Update the itemList with the skill set
             if (this.type === 'skill')
@@ -146,6 +171,7 @@ export class ComponentSearchInputBoxComponent implements OnInit {
    * @param $event 
    */
   modelChange($event: any) {
+    this.itemValue = $event;
     if ($event == "" || $event === null || $event === undefined)
       this.itemList = []
   }
@@ -155,7 +181,6 @@ export class ComponentSearchInputBoxComponent implements OnInit {
    * @param $event - value of item
    */
   onSearch($event: Event) {
-
     // Set loading state to be true
     this.isLoading$.next(true);
 
@@ -165,7 +190,6 @@ export class ComponentSearchInputBoxComponent implements OnInit {
 
   async userSearchQuery(query: Event) {
     try {
-      console.log(query.target['value']);
       let results = await this.searchWorkspaceMembers(this.workspaceId, query.target['value']);
     } catch (err) {
       this.publicFunctions.catchError(err);
@@ -290,12 +314,19 @@ export class ComponentSearchInputBoxComponent implements OnInit {
   }
 
   onAddNewMember(item: any) {
-
+    if(item.bars === undefined){
+      item.bars = [];
+    }
+    item.bars.push(this.bar);
     // Set the Add Member state to false
     item.showAddMem = false
 
     // Emit the message to add the member
     this.memberEmitter.emit(item);
+    // Clear search input after assigning
+    this.itemValue = '';
+    // Close the list after assigning
+    this.itemList = [];
   }
 
   /**
@@ -358,7 +389,12 @@ export class ComponentSearchInputBoxComponent implements OnInit {
   async onAddTag(tag: any) {
 
     // Emit the message to add the tag
-    this.tagEmitter.emit(tag);
+    if (this.type === 'tag') {
+      this.tagEmitter.emit(tag);
+    }
+    else if (this.type === 'barTag') {
+      this.barTagEmitter.emit(tag);
+    }
 
     // Update the tags array
     this.tags.push(tag);

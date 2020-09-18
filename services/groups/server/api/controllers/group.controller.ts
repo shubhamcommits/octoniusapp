@@ -682,7 +682,7 @@ export class GroupController {
             // Send status 200 response
             return res.status(200).json({
                 message: 'Group custom fields to show updated!',
-                group: group
+                group
             });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
@@ -931,6 +931,35 @@ export class GroupController {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
     };
+    async enableRights(req: Request, res: Response, next: NextFunction) {
+        // Fetch the groupId
+        const { groupId } = req.params;
+
+        // Fetch the value from fileHandler middleware
+        const value = req.body['value'];
+
+        const property = {propertyName: value};
+
+        try {
+
+            // Find the group and update their respective group avatar
+            const group = await Group.findByIdAndUpdate({
+                _id: groupId
+            }, {
+                enabled_rights: value
+            }, {
+                new: true
+            }).select('settings');
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Group settings updated!',
+                group: group
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
 
     async updateSmartGroup(req: Request, res: Response, next: NextFunction) {
         const { groupId } = req.params;
@@ -1094,12 +1123,47 @@ export class GroupController {
               });
             });
           }
-      
+
           return res.status(200).json({
             message: 'Group members successfully updated!'
           });
         } catch (error) {
           return sendError(res, error, 'Internal Server Error!', 500);
         }
-    };
+    }
+
+    async addBar(req: Request, res: Response, next: NextFunction) {
+        try {
+            const groupId = req.params.groupId;
+            const barTag = req.body.barTag;
+
+            const group: any = await Group.findById(groupId);
+            const tagExists = group.bars.filter(tag => tag.bar_tag === barTag);
+            if (tagExists.length > 0) {
+                return sendError(res, new Error('Tag already exists'), 'Tag already exists', 404);
+            }
+            group.bars.push({bar_tag: barTag, tag_members : []});
+            await group.save();
+            return res.status(200).json({
+                message: 'Bar tag added successfully!',
+                group,
+              });
+        } catch (error) {
+            return sendError(res, error, 'Internal Server Error!', 500);
+        }
+    }
+
+    async getBars(req: Request, res: Response, next: NextFunction){
+        try{
+            const groupId = req.params.groupId;
+            const group: any = await Group.findById(groupId);
+            const bars = group.bars;
+            return res.status(200).json({
+                message: 'Fetched Bars!',
+                bars
+            });
+        } catch (error) {
+            return sendError(res, error, 'Internal Server Error!', 500);
+        }
+    }
 }
