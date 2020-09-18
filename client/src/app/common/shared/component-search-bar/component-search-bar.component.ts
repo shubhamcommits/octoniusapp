@@ -98,7 +98,7 @@ export class ComponentSearchBarComponent implements OnInit {
         // Results array which stores the members list
         let results: any = []
 
-        if (this.type === 'workspace' || this.type === 'group') {
+        if (this.type === 'workspace' || this.type === 'group' || this.type === 'bar') {
 
           // If value is null then update the array back to normal
           if (this.query == "") {
@@ -131,7 +131,7 @@ export class ComponentSearchBarComponent implements OnInit {
               results = await this.publicFunctions.searchWorkspaceMembers(this.workspaceId, this.query) || []
 
             // Fetch the results from the helper function
-            if (this.type === 'group')
+            if (this.type === 'group' || this.type === 'bar')
               results = await this.publicFunctions.searchGroupMembers(this.groupId, this.query) || []
 
             // Update the members array

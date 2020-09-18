@@ -78,12 +78,14 @@ import { GroupsService } from 'src/shared/services/groups-service/groups.service
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { CommentService } from 'src/shared/services/comment-service/comment.service';
+import { GroupBarComponent } from './group/group-admin/group-bar/group-bar.component';
 
 /**
  * 4. !===== DECLARATIONS, IMPORTS, EXPORTS, & PROVIDERS =====!
  */
 @NgModule({
   declarations: [
+    GroupBarComponent,
     // Groups List Component
     GroupsListComponent,
 
@@ -194,7 +196,8 @@ import { CommentService } from 'src/shared/services/comment-service/comment.serv
     CUSTOM_ELEMENTS_SCHEMA
   ],
   entryComponents: [
-    CustomFieldsDialogComponent
+    CustomFieldsDialogComponent,
+    GroupBarComponent
   ]
 })
 export class GroupsModule { }

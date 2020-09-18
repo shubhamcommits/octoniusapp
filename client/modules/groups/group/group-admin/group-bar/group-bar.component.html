@@ -1,0 +1,38 @@
+<div *ngIf="membersLoaded" class="container">
+        <mat-dialog-actions class="d-flex justify-content-end" align="end">
+            <i mat-dialog-close class="material-icons" (click)="onCloseDialog()" style="cursor: pointer">close</i>
+        </mat-dialog-actions>
+
+        <h1 class="d-flex justify-content-center"><span class="material-icons md-36 icon-border-blue">security</span>Manage BAR</h1>
+        <p class="d-flex justify-content-center">Create rules to manage board access rights and select which members can see certain tasks.
+            By default all tasks are visible to the team.</p>
+        <div class="bar row" *ngFor="let bar of barList">
+            <div class="col-12">
+                <p class="break">Task with tag <span class="tag">{{bar.bar_tag}}</span> are displayed for: </p>
+            </div>
+            <hr>
+            <div class="ml-2" *ngFor="let member of bar.members">
+                <img src="{{ userBaseUrl }}/{{member?.profile_pic}}"
+                onerror="this.src='assets/images/user.png'" class="feed-avatar"
+                (click)="removeUserFromBar(member,bar)">
+            </div> 
+            
+            <app-component-search-input-box class="ml-2" *ngIf="groupData"
+                [placeholder]="'add member'"
+                [groupId]="groupId" [groupData]="groupData" [type]="'barMembers'"
+                [barMemberList] = "bar.members"
+                [bar] = "bar.bar_tag"
+                (member)="addNewUserToBar($event, bar)">
+            </app-component-search-input-box>
+        </div>
+
+        <div class="ml-2 text-blue" (click)="showTagComponent()">
+            <span class="material-icons icon-border-blue">security</span>
+            Add another rule
+        </div>
+        <div *ngIf="addNewBar" class="form-group">
+            <label for="tag">Board Access Right tag:</label>
+            <input type="text" class="form-control mb-2" name="tag" [(ngModel)]="tag" placeholder="Please provide the tag name">
+            <button button class="btn btn-primary btn-sm" (click)="addTag()">Add tag</button>
+        </div>
+</div>

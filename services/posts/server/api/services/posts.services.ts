@@ -1240,4 +1240,25 @@ export class PostService {
       throw(error);
     }
   }
+  async addBar(postId: string, bar: any){
+    try {
+      const task: any = await Post.findById(postId);
+      const barExists = task.bars.includes(bar);
+      if(!barExists) {
+        task.bars.push({
+          bar_tag: bar.bar_tag,
+          tag_members: bar.tag_members
+        });
+      }
+      task.save();
+    } catch (error) {
+      throw(error);
+    }  
+  }
+
+  async removeBar(postId: string, bar: any){
+    const task: any = await Post.findById(postId);
+      task.bars = task.bars.filter( barDB => barDB.bar_tag !== bar.bar_tag);
+      task.save();
+  }
 }

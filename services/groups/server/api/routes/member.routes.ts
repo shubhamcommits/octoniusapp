@@ -33,6 +33,12 @@ routes.post('/add', members.addNewUserInGroup);
 // DELETE - Removes a user from the group
 routes.post('/remove', members.removeUserFromGroup);
 
+// POST - Add user to BAR
+routes.post('/addToBar', members.addUserToBar);
+
+// Remove - Remove user from BAR
+routes.post('/removeFromBar', members.removeUserFromBar);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================
