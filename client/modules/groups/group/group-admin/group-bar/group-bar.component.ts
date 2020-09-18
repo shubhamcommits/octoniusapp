@@ -3,6 +3,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { SubSink } from 'subsink';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { environment } from 'src/environments/environment';
 
 @Component({
     selector: 'app-group-bar',
@@ -18,7 +19,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
         private mdDialogRef: MatDialogRef<GroupBarComponent>
         ) { }
     @Output() closeEvent = new EventEmitter();
-    
+      // Base Url of the users uploads
+    userBaseUrl = environment.UTILITIES_USERS_UPLOADS;
     tag: string;
     barList: any = [];
     subSink = new SubSink();
@@ -64,12 +66,10 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
     }
 
     removeUserFromBar(event,bar){
-        // Add a new member to bar
-        this.utilityService.asyncNotification('Please wait we are removing the user from bar...',
-        new Promise((resolve, reject)=>{
+
         this.groupService.removeUserFromBar(this.groupId, bar.bar_tag, event)
         .then(()=> {
-            resolve(this.utilityService.warningNotification(`${event.first_name} removed from ${bar.bar_tag}!`))
+            this.utilityService.warningNotification(`${event.first_name} removed from ${bar.bar_tag}!`);
             this.barList.forEach( barItem => {
                 if(barItem.bar_tag === bar.bar_tag){
                     barItem.members = barItem.members.filter(member => member._id !== event._id);
@@ -77,8 +77,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
                 }    
             });
         })
-        .catch(() => reject(this.utilityService.rejectAsyncPromise(`Unable to remove ${event.first_name} from ${bar.bar_tag}`)))
-        }))
+        .catch(() => this.utilityService.rejectAsyncPromise(`Unable to remove ${event.first_name} from ${bar.bar_tag}`));
     }
     showTagComponent(){
         this.addNewBar = !this.addNewBar;
