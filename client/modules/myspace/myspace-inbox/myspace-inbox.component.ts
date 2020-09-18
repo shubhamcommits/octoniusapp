@@ -97,7 +97,12 @@ export class MyspaceInboxComponent implements OnInit, OnDestroy {
    * @param postType - post type
    * @param group - group Id
    */
-  viewNotification(postId: string, postType: string, group) {
+  viewNotification(notificationId: string, postId: string, postType: string, group: any) {
+
+    // mark notification as read
+    this.markNotificationAsRead(notificationId, this.userData._id);
+
+    // redirect the user to the post
     const groupId = (group._id) ? group._id : group;
     // Set the Value of element selection box to be the url of the post
     if (postType === 'task') {

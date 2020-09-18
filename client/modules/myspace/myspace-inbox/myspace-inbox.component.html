@@ -84,7 +84,7 @@
           <div class="notification_more">
             <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
             <mat-menu #menu="matMenu">
-              <a mat-menu-item (click)="viewNotification(notification?._origin_post?._id, notification?._origin_post?.type, notification?._origin_post?._group)">
+              <a mat-menu-item (click)="viewNotification(notification?._id, notification?._origin_post?._id, notification?._origin_post?.type, notification?._origin_post?._group)">
                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
                 <span>View</span>
               </a>
