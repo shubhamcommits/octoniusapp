@@ -827,9 +827,11 @@ export class PostService {
       // Populate the post properties
       post = await this.populatePostProperties(post);
       
-      await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/status-change`, {
-        post: post
-      });
+      if (status !== 'to do') {
+        await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/status-change`, {
+          post: post
+        });
+      }
 
       // Return the post
       return post;
