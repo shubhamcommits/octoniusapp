@@ -141,72 +141,165 @@ export class NotificationsService {
     };
 
     /**
-     * This function is responsible for fetching the latest first 5 read notifications
-     * @param userId 
+     * This function is responsible to notifying the creator of the post when the task changed the status
+     * @param { _id, task._assigned_to, _posted_by } post
+     * @param status
      */
-    async getRead(userId: string) {
+    async taskStatusChanged(post: any, status: string) {
         try {
-            const notifications = await Notification.find({
-                _owner: userId,
-                read: true
-            })
-                .limit(5)
-                .sort('-created_date')
-                .populate('_actor', 'first_name last_name profile_pic')
-                .populate('_origin_post')
-                .populate('_origin_comment')
-                .populate('_owner', 'first_name last_name profile_pic')
-                .lean();
-
-            return notifications;
-        } catch (err) {
-            return err;
-        }
-    };
-
-    /**
-     * This function is responsible for fetching the latest first 5 un-read notifications
-     * @param userId 
-     */
-    async getUnread(userId: string) {
-        try {
-            const notifications = await Notification.find({
-                _owner: userId,
-                read: false
-            })
-                .sort('-created_date')
-                .populate('_actor', 'first_name last_name profile_pic')
-                .populate('_origin_post')
-                .populate('_origin_comment')
-                .populate('_owner', 'first_name last_name profile_pic')
-                .lean();
-
-            return notifications;
-        } catch (err) {
-            return err;
-        }
-    };
-
-    /**
-     * This function is responsible for fetching the marking the notifications to read
-     * @param topListId 
-     */
-    async markRead(topListId: string) {
-        try {
-            const markRead = await Notification.updateOne({
-                $and: [
-                    { read: false },
-                    { _id: { $lte: topListId } }
-                ]
-            }, {
-                $set: {
-                    read: true
-                }
+            const notification = await Notification.create({
+                _actor: post._posted_by,
+                _owner: post.task._assigned_to,
+                _origin_post: post._id,
+                message: status,
+                type: status
             });
-
-            return true;
         } catch (err) {
             return err;
         }
     };
+    
+    /**
+    * This function is responsible for notifying the user getting a new comment
+    * @param { _id, _commented_by, _post, _posted_by } comment 
+    */
+   async newComment(comment: any) {
+      try {
+      const notification = await Notification.create({
+        _actor: comment._commented_by,
+        _owner: comment.post._posted_by,
+        _origin_comment: comment._id,
+        _origin_post: comment._post,
+        message: 'commented on',
+        type: 'comment'
+      });
+      } catch (err) {
+          // ab yaha se error catch ho jaega
+          return err
+      }
+   };
+    
+   /**
+   * This function is responsible for notifying the user´s comment is liked
+   * @param { _id, _commented_by, _post, _posted_by } comment 
+   */
+  async likeComment(comment: any) {
+     try {
+     const notification = await Notification.create({
+       _actor: comment._commented_by,
+       _owner: comment.post._posted_by,
+       _origin_comment: comment._id,
+       _origin_post: comment._post,
+       message: 'liked your comment on',
+       type: 'like_comment'
+     });
+     } catch (err) {
+         // ab yaha se error catch ho jaega
+         return err
+     }
+  };
+
+  /**
+   * This function is responsible to notifying all the user on a new like
+   */
+  async followPost(post: any) {
+      try {
+          const notification = await Notification.create({
+              _actor: post._posted_by,
+              _owner: post.task._assigned_to,
+              _origin_post: post._id,
+              message: 'follows',
+              type: 'follow'
+          });
+      } catch (err) {
+          return err;
+      }
+  };
+
+  /**
+   * This function is responsible to notifying all the user on a new like
+   */
+  async likePost(post: any) {
+      try {
+          const notification = await Notification.create({
+              _actor: post._posted_by,
+              _owner: post.task._assigned_to,
+              _origin_post: post._id,
+              message: 'likes',
+              type: 'likes'
+          });
+      } catch (err) {
+          return err;
+      }
+  };
+
+  /**
+   * This function is responsible for fetching the latest first 5 read notifications
+   * @param userId 
+   */
+  async getRead(userId: string) {
+      try {
+          const notifications = await Notification.find({
+              _owner: userId,
+              read: true
+          })
+              .limit(5)
+              .sort('-created_date')
+              .populate('_actor', 'first_name last_name profile_pic')
+              .populate('_origin_post')
+              .populate('_origin_comment')
+              .populate('_owner', 'first_name last_name profile_pic')
+              .lean();
+
+          return notifications;
+      } catch (err) {
+          return err;
+      }
+  };
+
+  /**
+   * This function is responsible for fetching the latest first 5 un-read notifications
+   * @param userId 
+   */
+  async getUnread(userId: string) {
+      try {
+          const notifications = await Notification.find({
+              _owner: userId,
+              read: false
+          })
+              .sort('-created_date')
+              .populate('_actor', 'first_name last_name profile_pic')
+              .populate('_origin_post')
+              .populate('_origin_comment')
+              .populate('_owner', 'first_name last_name profile_pic')
+              .lean();
+
+          return notifications;
+      } catch (err) {
+          return err;
+      }
+  };
+
+  /**
+   * This function is responsible for fetching the marking the notifications to read
+   * @param topListId 
+   */
+  async markRead(topListId: string) {
+      try {
+          const markRead = await Notification.updateOne({
+              $and: [
+                  { read: false },
+                  { _id: { $lte: topListId } }
+              ]
+          }, {
+              $set: {
+                  read: true
+              }
+          });
+
+          return true;
+      } catch (err) {
+          return err;
+      }
+  };
 }
