@@ -41,7 +41,7 @@ export class TaskSmartCardComponent implements OnInit {
     this.today_task_count = this.todayTasks.length;
 
     /* Chart Setup */
-    const percentageDone = ((this.done_task_count*100)/this.todayTasks.length);
+    const percentageDone = (this.todayTasks.length > 0) ? ((this.done_task_count*100)/this.todayTasks.length) : 0;
     this.doughnutChartLabels = ['To Do', 'In Progress', 'Done'];
     this.doughnutChartData = [this.to_do_task_count, this.in_progress_task_count, this.done_task_count];
     this.doughnutChartType = 'doughnut';
