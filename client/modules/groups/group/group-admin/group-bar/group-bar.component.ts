@@ -36,15 +36,19 @@ import { environment } from 'src/environments/environment';
         this.groupData = this.data.groupData;
         this.barList = this.groupData.bars;
         this.groupId = this.data.groupData._id;
-        this.barList.forEach(bar => {
-            bar.members = [];
-            bar.tag_members.forEach( tagMember =>{
-                this.members.forEach(member => {
-                    if(member._id === tagMember)
-                        bar.members.push(member);
-                });
+        if(this.barList !== undefined){
+            this.barList.forEach(bar => {
+                bar.members = [];
+                if (bar.tag_members !== undefined) {
+                    bar.tag_members.forEach( tagMember =>{
+                        this.members.forEach(member => {
+                            if(member._id === tagMember)
+                                bar.members.push(member);
+                        });
+                    });
+                }
             });
-        });
+        }
         this.membersLoaded = true;
     }
 
