@@ -300,7 +300,7 @@ export class PostService {
         // User Stream from the post contents
         userStream = Readable.from(post._content_mentions)
       }
-
+      /*
       userStream.on('data', async (user: any) => {
         user = await User.findOne({
           _id: user
@@ -311,6 +311,7 @@ export class PostService {
           user: user
         })
       })
+      */
     }
 
     // Send notification after post creation
@@ -323,7 +324,7 @@ export class PostService {
           await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-task`, {
             post: post
           })
-
+          /*
           // Email notification for the new task
           await http.post(`${process.env.MAILING_SERVER_API}/task-assigned`, {
             post: post
@@ -333,6 +334,7 @@ export class PostService {
           await http.post(`${process.env.MAILING_SERVER_API}/task-reminder`, {
             post: post
           })
+          */
         }
         break;
 
@@ -343,6 +345,7 @@ export class PostService {
           post: post
         })
 
+        /*
         // Email notification for the new email assignment
         http.post(`${process.env.MAILING_SERVER_API}/event-assigned`, {
           post: post
@@ -352,7 +355,7 @@ export class PostService {
         http.post(`${process.env.MAILING_SERVER_API}/event-reminder`, {
           post: post
         })
-
+        */
         break;
 
       default:
@@ -618,6 +621,10 @@ export class PostService {
         { new: true }
       )
       .lean();
+      
+    await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-like-post`, {
+      post: post
+    });
 
     // Find the User 
     const user = await User.findOne
@@ -677,6 +684,10 @@ export class PostService {
         { new: true }
       )
       .lean();
+      
+    await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-follow-post`, {
+      post: post
+    });
 
     // Find the User 
     const user = await User.findOne
@@ -751,10 +762,12 @@ export class PostService {
         post: post
       })
 
+      /*
       // Email notification for the new task reassignment
       http.post(`${process.env.MAILING_SERVER_API}/task-reassign`, {
         post: post
       })
+      */
 
       // Return the post
       return post;
@@ -812,7 +825,11 @@ export class PostService {
       })
 
       // Populate the post properties
-      post = await this.populatePostProperties(post)
+      post = await this.populatePostProperties(post);
+      
+      await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/status-change`, {
+        post: post
+      });
 
       // Return the post
       return post;
