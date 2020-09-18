@@ -58,7 +58,7 @@ import moment from 'moment';
           if (comment._content_mentions.length !== 0) {
             // Create Notification for mentions on comments
             // notifications.newCommentMentions(comment);
-            await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-comment`, {
+            await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-comment-mention`, {
                 comment: comment
             });
       
@@ -120,7 +120,7 @@ import moment from 'moment';
           // Create Notification for mentions on comments
           if (comment._content_mentions.length !== 0) {
             // notifications.newCommentMentions(comment);
-            await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-comment`, {
+            await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-comment-mention`, {
                 comment: updatedComment
             });
           }
