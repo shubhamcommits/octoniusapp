@@ -70,8 +70,28 @@ export class GroupTasksListViewComponent implements OnInit {
       }
     });
     this.columns.forEach( column => {
-      let tasks = [];
-      column.tasks = column.tasks.forEach( task => {
+      let tasks;
+      let doneTasks;
+
+      // Filtering done tasks
+      if(column.tasks.done !== undefined){
+        column.tasks.done.forEach(doneTask =>{
+          if(doneTask.bars !== undefined){
+            if(doneTask.bars !== undefined){
+              doneTask.bars.forEach(bar => {
+                if(bar.tag_members.includes(this.userData._id) || this.userData.role !== "member") {
+                  doneTasks.push(doneTask);
+                }
+              });
+            } else {
+              doneTasks.push(doneTask);
+            }
+          }
+        });
+      }
+
+      // Filtering other tasks
+      column.tasks.forEach( task => {
         if(task.bars !== undefined){
           task.bars.forEach(bar => {
             if(bar.tag_members.includes(this.userData._id) || this.userData.role !== "member") {
@@ -83,7 +103,8 @@ export class GroupTasksListViewComponent implements OnInit {
         }
       });
       column.tasks = tasks;
-    })
+      column.tasks.done = doneTasks;
+    });
   }
 
   /**
@@ -191,7 +212,7 @@ export class GroupTasksListViewComponent implements OnInit {
       const indexTask = col.tasks.findIndex((task: any) => task._id === post._id);
       if (indexTask !== -1) {
         if (col.title.toLowerCase() === post.task._column.title.toLowerCase()) {
-          if (post.task.status === 'done') {
+          if (post.task.status === 'gh') {
             this.columns[indexColumn].tasks.done.unshift(post);
             this.columns[indexColumn].tasks.splice(indexTask, 1);
             return;

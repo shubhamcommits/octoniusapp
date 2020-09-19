@@ -47,8 +47,24 @@ export class GroupKanbanBoardsComponent implements OnInit {
 
   async ngOnInit() {
     this.columns.forEach( column => {
-      let tasks = [];
-      column.tasks = column.tasks.forEach( task => {
+      let tasks;
+      let doneTasks;
+      if(column.tasks.done !== undefined){
+        column.tasks.done.forEach(doneTask =>{
+          if(doneTask.bars !== undefined){
+            if(doneTask.bars !== undefined){
+              doneTask.bars.forEach(bar => {
+                if(bar.tag_members.includes(this.userData._id) || this.userData.role !== "member") {
+                  doneTasks.push(doneTask);
+                }
+              });
+            } else {
+              doneTasks.push(doneTask);
+            }
+          }
+        });
+      }
+      column.tasks.forEach( task => {
         if(task.bars !== undefined){
           task.bars.forEach(bar => {
             if(bar.tag_members.includes(this.userData._id) || this.userData.role !== "member") {
@@ -60,8 +76,8 @@ export class GroupKanbanBoardsComponent implements OnInit {
         }
       });
       column.tasks = tasks;
+      column.tasks.done = doneTasks;
     });
-    
   }
 
   getTaskClass(status, isNorthStar) {
