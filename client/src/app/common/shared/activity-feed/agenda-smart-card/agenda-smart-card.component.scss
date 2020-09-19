@@ -16,7 +16,9 @@ img{
   box-sizing: border-box;
   border-radius: 10px;
   box-shadow: 0 3px 0 #005fd521;
-  height: 260px;
+  min-height: 260px;
+  // height: 100%;
+  background: #fff url('/assets/images/events-smart-card.svg') no-repeat bottom right;
 }
 
 
@@ -83,7 +85,7 @@ img{
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
-  line-height: 21px;
+  line-height: 28px;
   display: flex;
   align-items: center;
 

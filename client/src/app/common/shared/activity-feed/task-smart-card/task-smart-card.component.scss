@@ -16,7 +16,8 @@ img{
   box-sizing: border-box;
   border-radius: 10px;
   box-shadow: 0 3px 0 #005fd521;
-  height: 260px;
+  min-height: 260px;
+  height: 100%;
 }
 
 .card-title{
@@ -125,9 +126,10 @@ img{
 
 .tasks-list {
   list-style-type: none;
+  padding-left: 0;
 
   li {
-    margin: 10px 0;
+    margin: 15px 0;
   }
 }
 
