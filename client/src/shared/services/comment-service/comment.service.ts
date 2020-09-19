@@ -42,16 +42,16 @@ export class CommentService {
 
   /**
    * This function is responsible for adding a new comment
-   * @param postId 
-   * @param content 
-   * @param contentMentions 
-   * @param _highlighted_content_range 
+   * @param postId
+   * @param content
+   * @param contentMentions
+   * @param _highlighted_content_range
    */
   new(postId: any, content: any, contentMentions: any, _highlighted_content_range: any): Observable<any> {
     return this._http.post(this.baseURL + '/comments/new-comment', {
       content, contentMentions, _highlighted_content_range
     }, {
-      params: { 
+      params: {
         postId : postId
       }
     });
@@ -60,9 +60,9 @@ export class CommentService {
 
   /**
    * This function is responsible for editing a comment
-   * @param commentId 
-   * @param content 
-   * @param contentMentions 
+   * @param commentId
+   * @param content
+   * @param contentMentions
    */
   edit(commentId: any, content: any, contentMentions: any){
     return this._http.post(this.baseURL + '/comments/edit-comment', {
@@ -75,7 +75,7 @@ export class CommentService {
 
   /**
    * This function is responsible for fetching a comment
-   * @param commentId 
+   * @param commentId
    */
   getComment(commentId: any){
     return this._http.get(this.baseURL + '/comments/get-comment', {
@@ -86,7 +86,7 @@ export class CommentService {
 
   /**
    * This function is responsible for fetching all comments
-   * @param postId 
+   * @param postId
    */
   getComments(postId: any): Observable<any>{
     return this._http.get(this.baseURL + '/comments/comments', {
@@ -97,8 +97,8 @@ export class CommentService {
 
   /**
    * This function is responsible for fetching next 5 comments
-   * @param postId 
-   * @param commentId 
+   * @param postId
+   * @param commentId
    */
   getNextComments(postId: any, commentId: any){
     return this._http.get(this.baseURL + '/comments/next-comments', {
@@ -109,7 +109,7 @@ export class CommentService {
 
   /**
    * This function is responsible for removing a comment
-   * @param commentId 
+   * @param commentId
    */
   remove(commentId: any){
     return this._http.post(this.baseURL + '/comments/remove-comment', {} , {
@@ -120,7 +120,7 @@ export class CommentService {
 
   /**
    * This function is used to mark a comment as read
-   * @param commentId 
+   * @param commentId
    */
   markRead(commentId: any){
     this._http.post(this.baseURL + '/comments/mark-read', {}, {

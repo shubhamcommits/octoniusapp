@@ -1,53 +1,65 @@
-<div *ngIf="today_task_count == 0 && overdueTasks.length == 0" class="smart-card col mr-24" style="margin-bottom: 10px;">
-    <a routerLink="/dashboard/myspace/tasks">
-        <div class="card-title mt-1">Tasks</div>
-        <div class="row">
-            <div class="card-first-column col-md-12">You're all done.</div>
-        </div>
-        <div class="row">
-            <div class="card-first-column col-md-12">Get some fresh air.</div>
-        </div>
-        <div class="row">
-        </div>
+<div *ngIf="today_task_count == 0 && overdueTasks.length == 0" class="smart-card" style="padding: 10px;">
+  <a routerLink="/dashboard/myspace/tasks">
+    <div class="row" style="margin: 0 0 20px;">
+      <div class="card-title mt-1">
+        Tasks
+      </div>
+      <div class="card-icon">
+        <span class="badge">{{ today_task_count }}</span> for today
+      </div>
+    </div>
+    <div class="row">
+        <div class="card-first-column col-md-12">You're all done.</div>
+    </div>
+    <div class="row">
+        <div class="card-first-column col-md-12">Get some fresh air.</div>
+    </div>
+ 
 
-        <div class="row mt-4">
-            <div class="col-md-5"></div>
-            <div class="col-md-7">
-                <img src='assets/images/inbox-tasks-card-empty.svg'>
-            </div>
+    <div class="row mt-4 d-none d-sm-block">
+        <div class="col-7"></div>
+        <div class="col-5">
+            <img src='assets/images/inbox-tasks-card-empty.svg'>
         </div>
-    </a>
+    </div>
+  </a>
 </div>
 
 <div *ngIf="today_task_count != 0 || overdueTasks.length != 0">
-    <div class="smart-card mr-24 col" style="margin-bottom: 10px;">
-        <a routerLink="/dashboard/myspace/tasks">
-            <div class="card-title mt-1">Tasks</div>
-            <div class="row">
+  <div class="smart-card" style="padding: 10px;">
+    <a routerLink="/dashboard/myspace/tasks">
+      <div class="row" style="margin: 0 0 20px;">
+        <div class="card-title mt-1">
+          Tasks
+        </div>
+        <div class="card-icon">
+          <span class="badge">{{ today_task_count }}</span> for today
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-6">
+        <ul class="tasks-list">
+          <li><span class="badge overdue-task">{{ overdueTasks.length }}</span> overdue</li>
+          <li><span class="badge to-do-task">{{ to_do_task_count }}</span> to do</li>
+          <li><span class="badge in-progress-task">{{ in_progress_task_count }}</span> in progress</li>
+          <li><span class="badge done-task">{{ done_task_count }}</span> done</li>
+        </ul>
+      </div>
 
-                <div class="col-md">
-                    <div class="card-first-column mb-1">{{today_task_count}} for today</div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md">
-                    <div class="media card-tile overview-task">
-                        <div class="group-tasks to-do-task col-md">{{to_do_task_count}}</div>
-                        <div class="group-tasks in-progress-task col-md">{{in_progress_task_count}}</div>
-                        <div class="group-tasks done-task col-md">{{done_task_count}}</div>
-                        <div class="group-tasks overdue-task col-md">{{overdueTasks.length}}</div>
-                    </div>
-                </div>
+        <div class="col-6 d-none d-sm-block" style="padding-top: 15px;">
+            <canvas
+              baseChart
+              height="250"
+              [data]="doughnutChartData"
+              [labels]="doughnutChartLabels"
+              [chartType]="doughnutChartType"
+              [options]="doughnutChartOptions"
+              [colors]="doughnutChartColors"
+              [plugins]="doughnutChartPlugins"></canvas>
+        </div>
+      </div>
 
-            </div>
-
-            <div class="overdue-total-tasks"><i class="material-icons-outlined">alarm_on</i>{{overdueTasks.length}} overdue</div>
-            <div class="row">
-                <div class="col-md-6"></div>
-                <div class="col-md-6 hidden-xs-down">
-                    <img src='assets/images/tasks-smart-card.svg'>
-                </div>
-            </div>
-        </a>
-    </div>
+    </a>
+  </div>
 </div>

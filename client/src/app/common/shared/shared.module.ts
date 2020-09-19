@@ -63,6 +63,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material';
 import { MomentDateModule } from '@angular/material-moment-adapter';
 import { TruncateTextPipe } from 'src/shared/pipes/truncate-text.pipe';
+import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -177,7 +178,8 @@ import { TruncateTextPipe } from 'src/shared/pipes/truncate-text.pipe';
     MatDatepickerModule,
     MatNativeDateModule,
     MomentDateModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    ChartsModule
   ],
   exports: [
     AttachFilesComponent,
