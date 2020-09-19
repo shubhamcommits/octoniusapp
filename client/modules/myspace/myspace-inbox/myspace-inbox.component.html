@@ -16,6 +16,12 @@
         <app-agenda-smart-card [routerLink]="'/dashboard/myspace/agenda'"></app-agenda-smart-card>
         <!-- Agenda Smart Card Ends -->
       </div>
+      <div class="col-md-4 box">
+        <!-- placeholder -->
+        <img src='assets/images/empty-groups-card.svg' style="width: 100%; opacity: 0.7;">
+       
+      </div>
+      
       
       
   </div>
@@ -70,10 +76,10 @@
           </div>
 
           <div class="notification_date_time">
-            <span class="muted text-small float-right">{{ notification?.created_date | date: 'MMMM d, y HH:mm' }}</span>
+            <span class="muted small float-right">{{ notification?.created_date | date: 'MMMM d, y HH:mm' }}</span>
           </div>
 
-          <div class="notification_tag">
+          <div class="notification_tag d-none d-sm-block">
             <div class="tags" *ngIf="notification?._origin_post?.tags.length <= 1">
               <span class="badge" *ngFor="let tag of notification?._origin_post?.tags">
                 {{ tag }}

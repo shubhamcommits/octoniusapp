@@ -1,4 +1,4 @@
-<div *ngIf="today_task_count == 0 && overdueTasks.length == 0" class="smart-card col" style="padding: 10px;">
+<div *ngIf="today_task_count == 0 && overdueTasks.length == 0" class="smart-card" style="padding: 10px;">
   <a routerLink="/dashboard/myspace/tasks">
     <div class="row" style="margin: 0 0 20px;">
       <div class="card-title mt-1">
@@ -14,12 +14,11 @@
     <div class="row">
         <div class="card-first-column col-md-12">Get some fresh air.</div>
     </div>
-    <div class="row">
-    </div>
+ 
 
-    <div class="row mt-4">
-        <div class="col-md-5"></div>
-        <div class="col-md-7">
+    <div class="row mt-4 d-none d-sm-block">
+        <div class="col-7"></div>
+        <div class="col-5">
             <img src='assets/images/inbox-tasks-card-empty.svg'>
         </div>
     </div>
@@ -27,7 +26,7 @@
 </div>
 
 <div *ngIf="today_task_count != 0 || overdueTasks.length != 0">
-  <div class="smart-card mr-24 col" style="padding: 10px;">
+  <div class="smart-card" style="padding: 10px;">
     <a routerLink="/dashboard/myspace/tasks">
       <div class="row" style="margin: 0 0 20px;">
         <div class="card-title mt-1">
@@ -37,15 +36,18 @@
           <span class="badge">{{ today_task_count }}</span> for today
         </div>
       </div>
-      <div class="card-content">
-        <ul class="col-md tasks-list card-box">
+      
+      <div class="row">
+        <div class="col-6">
+        <ul class="tasks-list">
           <li><span class="badge overdue-task">{{ overdueTasks.length }}</span> overdue</li>
           <li><span class="badge to-do-task">{{ to_do_task_count }}</span> to do</li>
           <li><span class="badge in-progress-task">{{ in_progress_task_count }}</span> in progress</li>
           <li><span class="badge done-task">{{ done_task_count }}</span> done</li>
         </ul>
+      </div>
 
-        <div class="card-box">
+        <div class="col-6 d-none d-sm-block" style="padding-top: 15px;">
             <canvas
               baseChart
               height="250"
@@ -57,6 +59,7 @@
               [plugins]="doughnutChartPlugins"></canvas>
         </div>
       </div>
+
     </a>
   </div>
 </div>
