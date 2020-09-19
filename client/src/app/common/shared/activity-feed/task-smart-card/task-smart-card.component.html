@@ -1,4 +1,4 @@
-<div *ngIf="today_task_count == 0 && overdueTasks.length == 0" class="smart-card col mr-24" style="padding: 10px;">
+<div *ngIf="today_task_count == 0 && overdueTasks.length == 0" class="smart-card col" style="padding: 10px;">
   <a routerLink="/dashboard/myspace/tasks">
     <div class="row" style="margin: 0 0 20px;">
       <div class="card-title mt-1">
@@ -42,7 +42,7 @@
           <li><span class="badge overdue-task">{{ overdueTasks.length }}</span> overdue</li>
           <li><span class="badge to-do-task">{{ to_do_task_count }}</span> to do</li>
           <li><span class="badge in-progress-task">{{ in_progress_task_count }}</span> in progress</li>
-          <li><span class="badge to-do-task">{{ done_task_count }}</span> done</li>
+          <li><span class="badge done-task">{{ done_task_count }}</span> done</li>
         </ul>
 
         <div class="card-box">

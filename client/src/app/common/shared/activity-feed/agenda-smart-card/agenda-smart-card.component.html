@@ -1,10 +1,9 @@
 <div *ngIf="today_event_count == 0" class="smart-card col" style="padding: 10px;">
     <a style="text-decoration:none; color:inherit;" routerLink="/dashboard/myspace/agenda">
         <div class="row" style="margin: 0 0 20px;">
-            <div class="card-title">
+            <div class="card-title mt-1">
                 Agenda
-            </div>
-
+              </div>
             <div class="card-icon">
               <span class="badge">{{ today_event_count }}</span> for today
             </div>
@@ -18,7 +17,7 @@
         <div class="row">
         </div>
 
-        <div class="row mt-3">
+        <div class="row mt-4">
             <div class="col-md-5"></div>
             <div class="col-md-7">
                 <img src='assets/images/inbox-agenda-card-empty.svg' style="display:block; width: 72%">
@@ -29,15 +28,13 @@
 
 <div *ngIf="today_event_count > 0" class="smart-card col" style="padding: 10px;">
   <a style="text-decoration:none; color:inherit;" routerLink="/dashboard/myspace/agenda">
-    <div class="row">
-      <div class="card-title">
-        Agenda
-      </div>
-
-      <div class="card-icon">
-        <span class="badge">{{ today_event_count }}</span> for today
-      </div>
-
+    <div class="row" style="margin: 0 0 20px;">
+        <div class="card-title mt-1">
+            Agenda
+          </div>
+        <div class="card-icon">
+          <span class="badge">{{ today_event_count }}</span> for today
+        </div>
     </div>
 
 

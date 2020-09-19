@@ -4,24 +4,28 @@
 
 <div class="container">
   <div class="row main-actvity">
-    <div class="col-md-12 scrolling-wrapper">
-      <div class="col-md-3 box">
+   
+      <div class="col-md-4 box">
         <!-- Task Smart Card Starts -->
         <app-task-smart-card></app-task-smart-card>
         <!-- Task Smart Card Ends -->
       </div>
 
-      <div class="col-md-3 box">
+      <div class="col-md-4 box">
         <!-- Agenda Smart Card Starts -->
         <app-agenda-smart-card [routerLink]="'/dashboard/myspace/agenda'"></app-agenda-smart-card>
         <!-- Agenda Smart Card Ends -->
       </div>
-    </div>
+      
+      
+  </div>
+    
+  <div class="row">
 
     <div class="col-md-12">
       <!-- Empty State starts -->
-      <div *ngIf="notificationsData.unreadNotifications.length === 0 && !(isLoading$ | async)" style="text-align: center;">
-        <img src='assets/images/overview-emptystate.svg' style="width: 70%;">
+      <div *ngIf="notificationsData.unreadNotifications.length === 0 && !(isLoading$ | async)" style="text-align: center; margin-top: 30px;">
+        <img src='assets/images/overview-emptystate.svg' style="width: 50%;">
       </div>
       <!-- Empty State ends -->
 
@@ -109,7 +113,8 @@
       <!-- Loading Spinner Ends -->
     </div>
   </div>
-</div>
+  </div>
+
 
 <!--
 <mat-grid-list cols="2" rowHeight="100px">

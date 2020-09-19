@@ -1,22 +1,30 @@
 @import "src/assets/scss/variables";
 
-.scrolling-wrapper {
-  margin-bottom: 20px;
-  overflow-x: scroll;
-  overflow-y: hidden;
-  white-space: nowrap;
+// .scrolling-wrapper {
+//   margin-bottom: 20px;
+//   overflow-x: scroll;
+//   overflow-y: hidden;
+//   white-space: nowrap;
+//   padding-bottom: 20px;
 
-  .box {
-    margin: 0 10px 0 0;
-    display: inline-block;
-    padding: 0;
-  }
-}
+//   .box {
+//     margin: 0;
+//     display: inline-block;
+//     padding: 5px;
+//   }
+// }
 
-.scrolling-wrapper {
-  &::-webkit-scrollbar {
-    display: none;
-  }
+// .scrolling-wrapper {
+//   &::-webkit-scrollbar {
+//     display: none;
+//   }
+// }
+
+.box {
+  margin: 0;
+  display: inline-block;
+  padding: 5px;
+  margin-bottom: 10px;
 }
 
 .notifications {
