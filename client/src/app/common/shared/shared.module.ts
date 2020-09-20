@@ -63,7 +63,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material';
 import { MomentDateModule } from '@angular/material-moment-adapter';
 import { TruncateTextPipe } from 'src/shared/pipes/truncate-text.pipe';
-import { ChartsModule } from 'ng2-charts';
+import { ChartsModule, ThemeService } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -235,9 +235,11 @@ import { ChartsModule } from 'ng2-charts';
     InlineInputComponent,
     GroupCreatePostDialogComponent,
     TruncateTextPipe,
+    ChartsModule
   ],
   providers: [
-    {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}
+    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },
+    ThemeService
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
