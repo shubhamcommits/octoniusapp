@@ -1,7 +1,7 @@
 import {  Component, OnInit } from '@angular/core';
 import { UserService } from 'src/shared/services/user-service/user.service';
-import { ChartType } from 'chart.js';
-import { Label, MultiDataSet } from 'ng2-charts';
+// import { ChartType } from 'chart.js';
+// import { Label, MultiDataSet } from 'ng2-charts';
 
 @Component({
   selector: 'app-task-smart-card',
@@ -41,39 +41,39 @@ export class TaskSmartCardComponent implements OnInit {
     this.today_task_count = this.todayTasks.length;
 
     /* Chart Setup */
-    const percentageDone = (this.todayTasks.length > 0) ? ((this.done_task_count*100)/this.todayTasks.length) : 0;
-    this.doughnutChartLabels = ['To Do', 'In Progress', 'Done'];
-    this.doughnutChartData = [this.to_do_task_count, this.in_progress_task_count, this.done_task_count];
-    this.doughnutChartType = 'doughnut';
-    this.doughnutChartOptions = {
-      cutoutPercentage: 75,
-      responsive: true,
-      legend: {
-        display: false
-      }
-    };
-    this.doughnutChartColors = [{
-      backgroundColor: [
-        '#fd7714',
-        '#0bc6a0',
-        '#4a90e2'
-      ]
-    }];
-    this.doughnutChartPlugins = [{
-      beforeDraw(chart) {
-        const ctx = chart.ctx;
+    // const percentageDone = (this.todayTasks.length > 0) ? ((this.done_task_count*100)/this.todayTasks.length) : 0;
+    // this.doughnutChartLabels = ['To Do', 'In Progress', 'Done'];
+    // this.doughnutChartData = [this.to_do_task_count, this.in_progress_task_count, this.done_task_count];
+    // this.doughnutChartType = 'doughnut';
+    // this.doughnutChartOptions = {
+    //   cutoutPercentage: 75,
+    //   responsive: true,
+    //   legend: {
+    //     display: false
+    //   }
+    // };
+    // this.doughnutChartColors = [{
+    //   backgroundColor: [
+    //     '#fd7714',
+    //     '#0bc6a0',
+    //     '#4a90e2'
+    //   ]
+    // }];
+    // this.doughnutChartPlugins = [{
+    //   beforeDraw(chart) {
+    //     const ctx = chart.ctx;
 
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        const centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
-        const centerY = ((chart.chartArea.top + chart.chartArea.bottom) / 2);
+    //     ctx.textAlign = 'center';
+    //     ctx.textBaseline = 'middle';
+    //     const centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
+    //     const centerY = ((chart.chartArea.top + chart.chartArea.bottom) / 2);
 
-        ctx.font = '25px Nunito';
-        ctx.fillStyle = '#262628';
+    //     ctx.font = '25px Nunito';
+    //     ctx.fillStyle = '#262628';
 
-        ctx.fillText(Math.round(percentageDone) + '%', centerX, centerY);
-      }
-    }];
+    //     ctx.fillText(Math.round(percentageDone) + '%', centerX, centerY);
+    //   }
+    // }];
   }
 
   async getUserTodayTasks() {
