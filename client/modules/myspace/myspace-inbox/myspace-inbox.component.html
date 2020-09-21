@@ -4,7 +4,7 @@
 
 <div class="container">
   <div class="row main-actvity">
-   
+
       <div class="col-md-4 box">
         <!-- Task Smart Card Starts -->
         <app-task-smart-card></app-task-smart-card>
@@ -17,15 +17,14 @@
         <!-- Agenda Smart Card Ends -->
       </div>
       <div class="col-md-4 box">
+        <!-- Recent Groups Starts -->
         <!-- placeholder -->
         <img src='assets/images/empty-groups-card.svg' style="width: 100%; opacity: 0.7;">
-       
+        <!--<app-recent-groups></app-recent-groups>-->
+        <!-- Recent Groups Ends -->
       </div>
-      
-      
-      
   </div>
-    
+
   <div class="row">
 
     <div class="col-md-12">
@@ -79,17 +78,9 @@
           </div>
 
           <div class="notification_tag d-none d-sm-block">
-            <div class="tags" *ngIf="notification?._origin_post?.tags.length <= 1">
-              <span class="badge" *ngFor="let tag of notification?._origin_post?.tags">
-                {{ tag }}
-              </span>
-            </div>
-            <div class="tags" *ngIf="notification?._origin_post?.tags.length > 1">
-              <span class="badge">
-                {{ notification?._origin_post?.tags[0] }}
-              </span>
-              <span class="badge">
-                +{{ notification?._origin_post?.tags.length-1 }}
+            <div class="tags">
+              <span class="badge" *ngIf="notification?._origin_post?._group?.group_name">
+                {{ notification?._origin_post?._group?.group_name }}
               </span>
             </div>
           </div>
@@ -97,7 +88,7 @@
           <div class="notification_more">
             <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
             <mat-menu #menu="matMenu">
-              <a mat-menu-item (click)="viewNotification(notification?._id, notification?._origin_post?._id, notification?._origin_post?.type, notification?._origin_post?._group)">
+              <a mat-menu-item (click)="viewNotification(notification?._id, notification?._origin_post?._id, notification?._origin_post?.type, notification?._origin_post?._group?._id)">
                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
                 <span>View</span>
               </a>
@@ -118,62 +109,4 @@
       <!-- Loading Spinner Ends -->
     </div>
   </div>
-  </div>
-
-
-<!--
-<mat-grid-list cols="2" rowHeight="100px">
-  <mat-grid-tile [colspan]="1" [rowspan]="1">
-    <app-task-smart-card></app-task-smart-card>
-  </mat-grid-tile>
-  <mat-grid-tile [colspan]="1" [rowspan]="1">
-    <app-agenda-smart-card [routerLink]="'/dashboard/myspace/agenda'"></app-agenda-smart-card>
-  </mat-grid-tile>
-  <mat-grid-tile [colspan]="2" [rowspan]="1">
-    <div *ngIf="notificationsData.unreadNotifications.length === 0 && !(isLoading$ | async)" style="text-align: center;">
-      <img src='assets/images/overview-emptystate.svg' style="width: 70%;">
-    </div>
-
-    <div class="notifications" *ngIf="notificationsData.unreadNotifications.length > 0 && !(isLoading$ | async)" >
-
-      <h6>Recent activities</h6>
-
-      <div class="notification-item" *ngFor="let notification of notificationsData?.unreadNotifications;">
-        <div class="notification_actor">
-          <img src="{{ baseUrl }}/{{notification?._actor?.profile_pic}}"
-            onerror="this.src='assets/images/user.png'" alt="" class="feed-avatar"
-            style="margin-right:15px">
-        </div>
-
-        <div class="notification_title">
-          {{notification?._actor?.first_name}} {{notification?.message}}
-        </div>
-
-        <div class="notification_date_time">
-          <span class="muted text-small float-right">{{ notification?.created_date | date: 'MMMM d, y HH:mm' }}</span>
-        </div>
-
-        <div class="notification_tag">
-          <div class="tags">
-            <span class="badge">Test</span>
-          </div>
-        </div>
-
-        <div class="notification_more">
-          <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
-          <mat-menu #menu="matMenu">
-              <a mat-menu-item (click)="openFullscreenModal()">
-                  <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
-                  <span>View</span>
-              </a>
-          </mat-menu>
-        </div>
-      </div>
-    </div>
-  </mat-grid-tile>
-</mat-grid-list>
-
-<ng-container *ngIf="isLoading$ | async">
-  <app-loading-spinner class="media"></app-loading-spinner>
-</ng-container>
--->
+</div>

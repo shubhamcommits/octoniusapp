@@ -24,12 +24,13 @@ import { MyspaceHeaderComponent } from './myspace-header/myspace-header.componen
 import { MyspaceInboxComponent } from './myspace-inbox/myspace-inbox.component';
 import { MyspaceTasksComponent } from './myspace-tasks/myspace-tasks.component';
 import { MyspaceWorkplaceComponent } from './myspace-workplace/myspace-workplace.component';
+import { RecentGroupsComponent } from './myspace-inbox/recent-groups/recent-groups.component';
 
 /**
 * 2. !===== ANGULAR MODULES =====!
 */
 import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 // import {MatGridListModule} from '@angular/material/grid-list';
 
 /**
@@ -59,8 +60,9 @@ import { MatMenuModule } from '@angular/material';
     MyspaceAgendaComponent,
 
     // Myspace Workplace Component
-    MyspaceWorkplaceComponent
+    MyspaceWorkplaceComponent,
 
+    RecentGroupsComponent
   ],
   imports: [
 
@@ -78,6 +80,7 @@ import { MatMenuModule } from '@angular/material';
     // MatGridListModule,
 
     MatMenuModule
-  ]
+  ],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })
 export class MyspaceModule { }
