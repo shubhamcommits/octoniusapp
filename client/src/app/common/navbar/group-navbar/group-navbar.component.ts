@@ -26,6 +26,8 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
     }))
   }
 
+  isAdmin: boolean;
+
   // UNSUBSCRIBE THE DATA
   private subSink = new SubSink();
 
@@ -75,7 +77,7 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
     }
 
     console.log('Group Data', this.groupData)
-
+    this.isAdmin = this.isAdminUser();
 
   }
 
@@ -86,7 +88,10 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
     this.subSink.unsubscribe();
   }
 
-
+  isAdminUser() {
+    const index = this.groupData._admins.findIndex((admin: any) => admin._id === this.userData._id);
+    return index >= 0;
+  }
   /**
     * This function opens up the task content in a new modal, and takes #content in the ng-template inside HTML layout
     * @param content 
