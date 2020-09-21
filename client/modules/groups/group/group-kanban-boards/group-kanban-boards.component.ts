@@ -46,38 +46,38 @@ export class GroupKanbanBoardsComponent implements OnInit {
   today = moment().local().startOf('day').format('YYYY-MM-DD');
 
   async ngOnInit() {
-    // this.columns.forEach( column => {
-    //   let tasks;
-    //   let doneTasks;
-    //   if(column.tasks.done !== undefined){
-    //     column.tasks.done.forEach(doneTask =>{
-    //       if(doneTask.bars !== undefined){
-    //         if(doneTask.bars !== undefined){
-    //           doneTask.bars.forEach(bar => {
-    //             if(bar.tag_members.includes(this.userData._id) || this.userData.role !== "member") {
-    //               doneTasks.push(doneTask);
-    //             }
-    //           });
-    //         } else {
-    //           doneTasks.push(doneTask);
-    //         }
-    //       }
-    //     });
-    //   }
-    //   column.tasks.forEach( task => {
-    //     if(task.bars !== undefined){
-    //       task.bars.forEach(bar => {
-    //         if(bar.tag_members.includes(this.userData._id) || this.userData.role !== "member") {
-    //           tasks.push(task);
-    //         }
-    //       });
-    //     } else {
-    //       tasks.push(task);
-    //     }
-    //   });
-    //   column.tasks = tasks;
-    //   column.tasks.done = doneTasks;
-    // });
+    this.columns.forEach( column => {
+      let tasks = [];
+      let doneTasks = [];
+      if(column.tasks.done !== undefined){
+        column.tasks.done.forEach(doneTask =>{
+          if(doneTask.bars !== undefined){
+            if(doneTask.bars !== undefined && doneTask.bars.length > 0){
+              doneTask.bars.forEach(bar => {
+                if(bar.tag_members.includes(this.userData._id) || this.userData.role !== "member") {
+                  doneTasks.push(doneTask);
+                }
+              });
+            } else {
+              doneTasks.push(doneTask);
+            }
+          }
+        });
+      }
+      column.tasks.forEach( task => {
+        if(task.bars !== undefined && task.bars.length > 0){
+          task.bars.forEach(bar => {
+            if(bar.tag_members.includes(this.userData._id) || this.userData.role !== "member") {
+              tasks.push(task);
+            }
+          });
+        } else {
+          tasks.push(task);
+        }
+      });
+      column.tasks = tasks;
+      column.tasks.done = doneTasks;
+    });
   }
 
   getTaskClass(status, isNorthStar) {

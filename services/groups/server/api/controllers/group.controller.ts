@@ -1,4 +1,4 @@
-import { Group, User } from '../models';
+import { Group, Post, User } from '../models';
 import { Response, Request, NextFunction } from 'express';
 import { sendError, hasProperty } from '../../utils';
 import { Readable } from 'stream';
@@ -1138,8 +1138,13 @@ export class GroupController {
             const barTag = req.body.barTag;
 
             const group: any = await Group.findById(groupId);
-            const tagExists = group.bars.filter(tag => tag.bar_tag === barTag);
-            if (tagExists.length > 0) {
+            let tagExists = false;
+            group.bars.forEach(bar => {
+                if(bar.bar_tag === barTag){
+                    tagExists = true;
+                }
+            })
+            if (tagExists) {
                 return sendError(res, new Error('Tag already exists'), 'Tag already exists', 404);
             }
             group.bars.push({bar_tag: barTag, tag_members : []});
@@ -1149,6 +1154,35 @@ export class GroupController {
                 group,
               });
         } catch (error) {
+            return sendError(res, error, 'Internal Server Error!', 500);
+        }
+    }
+
+    async removeBar(req: Request, res: Response, next: NextFunction){
+        try{
+            const groupId = req.params.groupId;
+            const barTag = req.body.barTag;
+            const group: any = await Group.findById(groupId);
+            let tagExists = false;
+            group.bars.forEach(bar => {
+                if(bar.bar_tag === barTag){
+                    tagExists = true;
+                }
+            });
+            if(tagExists){
+                const filteredList = group.bars.filter( bar => bar.bar_tag !== barTag);
+                group.bars = filteredList;
+                let posts = await Post.updateMany({_group: group._id}, {
+                    $pull: {
+                        bars: {bar_tag: barTag}
+                    }}
+                );
+                group.save();    
+                res.status(200).json({
+                    group
+                });
+            }
+        } catch(error) {
             return sendError(res, error, 'Internal Server Error!', 500);
         }
     }

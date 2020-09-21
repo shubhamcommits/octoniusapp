@@ -120,6 +120,12 @@ export class GroupService {
     return this._http.put(this.baseURL + `/${groupId}/addBar`, bodyData).toPromise()
   }
 
+  removeBar(groupId: string, barTag: string){
+    let bodyData ={
+      barTag
+    };
+    return this._http.put(this.baseURL + `/${groupId}/removeBar`, bodyData).toPromise();
+  }
   addMemberToBar(groupId: string, barTag: string, member){
     let bodyData = {
       groupId,
