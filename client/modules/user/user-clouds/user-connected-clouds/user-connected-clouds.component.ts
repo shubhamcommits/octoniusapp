@@ -1,12 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { Component, Input, OnInit } from '@angular/core';
+import { SubSink } from 'subsink';
 import { GoogleCloudService } from '../user-available-clouds/google-cloud/services/google-cloud.service';
-import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-
-// Google API Variables
-declare var gapi: any;
-// Google API Variables
-
 
 @Component({
   selector: 'app-user-connected-clouds',
@@ -15,67 +9,61 @@ declare var gapi: any;
 })
 export class UserConnectedCloudsComponent implements OnInit {
 
-  googleAuthSuccessful: any;
-  googleDriveUsed = 0;
-  googleUser: any;
-
-  isLoading$ = new BehaviorSubject(false);
+  @Input('googleUser')googleUser: any;
 
   constructor(
-      private ngxService: NgxUiLoaderService,
-      private googleService: GoogleCloudService) {
-
-    this.loadGoogleDrive();
-  }
+    private googleService: GoogleCloudService
+  ) { }
 
   ngOnInit() {
 
-      this.googleService.refreshGoogleToken().then(() => {
-        // refresh the token and initialism the google user-data if google-cloud is already stored
-        if (localStorage.getItem('google-cloud') != null) {
-          this.changeGoogleAuth(true);
-          this.googleUser = JSON.parse(localStorage.getItem('google-cloud'));
-          this.googleDriveUsed = Math.round(
-              (this.googleUser.user_data.storageQuota.usage / this.googleUser.user_data.storageQuota.limit) * 100
-            );
+    console.log(this.googleUser)
+    // this.googleService.refreshGoogleToken().then(() => {
+    //   // refresh the token and initialism the google user-data if google-cloud is already stored
+    //   if (localStorage.getItem('google-cloud') != null) {
+    //     this.changeGoogleAuth(true);
+    //     this.googleUser = JSON.parse(localStorage.getItem('google-cloud'));
+    //     this.googleDriveUsed = Math.round(
+    //         (this.googleUser.user_data.storageQuota.usage / this.googleUser.user_data.storageQuota.limit) * 100
+    //       );
 
-          // we have set a time-interval of 30mins so as to refresh the access_token in the group
-          setInterval(() => {
-            this.googleService.refreshGoogleToken();
-            this.changeGoogleAuth(true);
-            this.googleUser = JSON.parse(localStorage.getItem('google-cloud'));
-            this.googleDriveUsed = Math.round(
-                (this.googleUser.user_data.storageQuota.usage / this.googleUser.user_data.storageQuota.limit) * 100
-              );
-          }, 1800000);
-        } else {
-          this.changeGoogleAuth(false);
-          this.isLoading$.next(false);
-        }
-      }).catch(() => {
-        console.log('You haven\'t connected your google cloud yet');
-      });
+    //     // we have set a time-interval of 30mins so as to refresh the access_token in the group
+    //     setInterval(() => {
+    //       this.googleService.refreshGoogleToken();
+    //       this.changeGoogleAuth(true);
+    //       this.googleUser = JSON.parse(localStorage.getItem('google-cloud'));
+    //       this.googleDriveUsed = Math.round(
+    //           (this.googleUser.user_data.storageQuota.usage / this.googleUser.user_data.storageQuota.limit) * 100
+    //         );
+    //     }, 1800000);
+    //   } else {
+    //     this.changeGoogleAuth(false);
+    //     this.isLoading$.next(false);
+    //   }
+    // }).catch(() => {
+    //   console.log('You haven\'t connected your google cloud yet');
+    // });
 
-      this.googleService.googleAuthSuccessful.subscribe(auth => this.googleAuthSuccessful = auth);
+    // Subscribe to google authentication state
   }
 
-  changeGoogleAuth(auth: boolean) {
-    this.googleService.changeGoogleAuth(auth);
-  }
+  // changeGoogleAuth(auth: boolean) {
+  //   this.googleService.changeGoogleAuth(auth);
+  // }
 
-  loadGoogleDrive() {
-    gapi.load('auth', { callback: console.log('Google Drive loaded') });
-  }
+  // loadGoogleDrive() {
+  //   gapi.load('auth', { callback: console.log('Google Drive loaded') });
+  // }
 
-  disconnectGoogle() {
-    this.googleService.disconnectGoogleCloud()
-    .subscribe((res) => {
-      console.log('Google Disconnected', res);
-      this.changeGoogleAuth(false);
-      this.googleUser = new Object();
-      this.googleDriveUsed = 0;
-    }, (err) => {
-      console.log('Error while disconnecting google', err);
-    });
-  }
+  // disconnectGoogle() {
+  //   this.googleService.disconnectGoogleCloud()
+  //   .subscribe((res) => {
+  //     console.log('Google Disconnected', res);
+  //     this.changeGoogleAuth(false);
+  //     this.googleUser = new Object();
+  //     this.googleDriveUsed = 0;
+  //   }, (err) => {
+  //     console.log('Error while disconnecting google', err);
+  //   });
+  // }
 }

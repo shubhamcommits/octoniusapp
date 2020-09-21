@@ -11,7 +11,7 @@ import { SocketService } from 'src/shared/services/socket-service/socket.service
 import { PublicFunctions } from 'src/app/dashboard/public.functions';
 import { HotkeysService, Hotkey } from 'angular2-hotkeys';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import { GoogleCloudService } from 'modules/user/user-clouds/user-available-clouds/google-cloud/services/google-cloud.service';
+// import { GoogleCloudService } from 'modules/user/user-clouds/user-available-clouds/google-cloud/services/google-cloud.service';
 
 @Component({
   selector: 'app-navbar',
@@ -34,7 +34,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     private socketService: SocketService,
     private injector: Injector,
     private hotKeysService: HotkeysService,
-    private googleService: GoogleCloudService
+    // private googleService: GoogleCloudService
   ) { }
 
   // CURRENT USER DATA
@@ -151,15 +151,15 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   async getGoogleRefreshToken() {
 
-    //it refreshes the access token as soon as we visit any group
-    if (localStorage.getItem('google-cloud') != null && localStorage.getItem('google-cloud-token') != null) {
-      await this.googleService.refreshGoogleToken();
-      //we have set a time interval of 30mins so as to refresh the access_token in the group
-      setInterval(async () => {
-        await this.googleService.refreshGoogleToken();
-        //this.refreshGoogleToken()
-      }, 1800000);
-    }
+    // //it refreshes the access token as soon as we visit any group
+    // if (localStorage.getItem('google-cloud') != null && localStorage.getItem('google-cloud-token') != null) {
+    //   await this.googleService.refreshGoogleToken();
+    //   //we have set a time interval of 30mins so as to refresh the access_token in the group
+    //   setInterval(async () => {
+    //     await this.googleService.refreshGoogleToken();
+    //     //this.refreshGoogleToken()
+    //   }, 1800000);
+    // }
   }
 
     /**
