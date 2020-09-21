@@ -29,12 +29,15 @@ export class UserConnectedCloudsComponent implements OnInit {
     //     this.googleDriveUsed = Math.round(
     //         (this.googleUser.user_data.storageQuota.usage / this.googleUser.user_data.storageQuota.limit) * 100
     //       );
+<<<<<<< HEAD
 =======
 >>>>>>> 9735d628... intermediate push for google drive
 =======
 >>>>>>> 1c17b755... intermediate push for google drive
 =======
 >>>>>>> 9b90643a... intermediate push for google drive
+=======
+>>>>>>> 4f7ae369... sprint 1 of google drive integration is completed
 
     //     // we have set a time-interval of 30mins so as to refresh the access_token in the group
     //     setInterval(() => {

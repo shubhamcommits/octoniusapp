@@ -35,6 +35,7 @@ export class ConnectGoogleCloudComponent implements OnInit {
 
     // Subscribe to google authentication state
     this.subSink.add(this.googleService.googleAuthSuccessful.subscribe(auth => this.googleAuthSuccessful = auth))
+<<<<<<< HEAD
   }
 
   async signInToGoogle() {
@@ -82,6 +83,55 @@ export class ConnectGoogleCloudComponent implements OnInit {
 
   }
 
+=======
+  }
+
+  async signInToGoogle() {
+
+    // Open up the SignIn Window in order to authorize the google user
+    let googleSignInResult: any = await this.authorizeGoogleSignIn()
+
+    // StorageService Instance
+    let storageService = this.injector.get(StorageService)
+
+    if (googleSignInResult != null) {
+
+      // Check for default state
+      if (googleSignInResult && !googleSignInResult.error && googleSignInResult.access_token) {
+
+        // Fetch the Google Drive Token Object
+        let googleDriveToken: any = await this.getGDriveTokenFromAuthResult(googleSignInResult)
+
+        // Retrive the access_token and save it to our server
+        let userDetails: any = await this.saveAccessTokenToUser(googleDriveToken.access_token)
+
+        // Update the user details with updated token
+        await this.publicFunctions.sendUpdatesToUserData(userDetails.user)
+
+        // Fetch the google user details
+        let googleUserDetails = await this.getGoogleUserDetails(googleDriveToken.access_token)
+
+        // Serialise object in order to store google data locally
+        let googleStorageDetails = {
+          'userData': googleUserDetails,
+          'refreshToken': googleDriveToken.access_token
+        }
+
+        // Store the Google User Locally
+        storageService.setLocalData('googleUser', JSON.stringify(googleStorageDetails))
+
+        // Emit Google User details to parent components
+        this.googleUser.emit(googleUserDetails)
+
+        // Change the observable state
+        this.googleService.googleAuthSuccessfulBehavior.next(true)
+
+      }
+    }
+
+  }
+
+>>>>>>> 4f7ae369... sprint 1 of google drive integration is completed
   async authorizeGoogleSignIn() {
     return new Promise(async (resolve) => {
       await gapi.auth.authorize({
@@ -93,6 +143,9 @@ export class ConnectGoogleCloudComponent implements OnInit {
         'response_type': 'token code',
         'grant_type': 'authorization_code'
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 4f7ae369... sprint 1 of google drive integration is completed
       })
         .then((res: any) => resolve(res))
         .catch(() => resolve(null))
@@ -136,6 +189,7 @@ export class ConnectGoogleCloudComponent implements OnInit {
 
   ngOnDestroy(){
     this.subSink.unsubscribe()
+<<<<<<< HEAD
 =======
       }, (authResult: any) => {
         console.log(authResult)
@@ -146,6 +200,8 @@ export class ConnectGoogleCloudComponent implements OnInit {
         }
       });
 >>>>>>> 9735d628... intermediate push for google drive
+=======
+>>>>>>> 4f7ae369... sprint 1 of google drive integration is completed
   }
 
 }
