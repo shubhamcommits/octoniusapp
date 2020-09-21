@@ -54,7 +54,7 @@
             <span class="sr-only">(current)</span>
         </a>
     </li>
-    <li class="nav-item" *ngIf="!myWorkplace">
+    <li class="nav-item" *ngIf="!myWorkplace && isAdmin">
         <a class="nav-link" routerLink="/dashboard/work/groups/admin" [queryParams]="{ group: groupData?._id }"
             routerLinkActive="active">Admin
             <span class="sr-only">(current)</span>
