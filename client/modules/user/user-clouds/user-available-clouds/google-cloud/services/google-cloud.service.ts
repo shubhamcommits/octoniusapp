@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpBackend } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
@@ -13,15 +13,21 @@ declare var gapi: any;
 
 export class GoogleCloudService {
 
-  private googleAuthSuccessfulBehavior = new BehaviorSubject(false);
+  public googleAuthSuccessfulBehavior = new BehaviorSubject(false);
   googleAuthSuccessful = this.googleAuthSuccessfulBehavior.asObservable();
 
   pickerApiLoaded = false;
   googleToken: any;
   BASE_API_URL = environment.USER_BASE_API_URL;
 
-  constructor(private _http: HttpClient) {
+  _httpBackend: HttpClient
+
+  constructor(
+    private _http: HttpClient,
+    private _handler: HttpBackend
+  ) {
     this.loadGoogleDrivePicker();
+    this._httpBackend = new HttpClient(_handler)
   }
 
   changeGoogleAuth(auth: boolean) {
@@ -89,6 +95,88 @@ export class GoogleCloudService {
         reject();
       }
     })
+  }
+
+  getAccessTokenFromUserData(){
+    return this._http.get(this.BASE_API_URL + '/integrations/gdrive/token')
+    .toPromise()
+  }
+
+  saveAccessTokenToUser(token: any){
+    return this._http.post(this.BASE_API_URL + '/integrations/gdrive/token', {
+      token: token
+    })
+    .toPromise()
+  }
+
+  getGDriveTokenFromUser(refreshToken: string){
+    return this._httpBackend.post('https://www.googleapis.com/oauth2/v4/token', {
+      client_id: environment.clientId,
+      client_secret: environment.clientSecret,
+      grant_type: 'refresh_token',
+      refresh_token: refreshToken
+    }, {
+      headers: {
+        'Authorization': `Bearer ${refreshToken}`
+      }
+    })
+    .toPromise()
+  }
+
+  getGDriveTokenFromAuthResult(authResult: any){
+    return this._httpBackend.post('https://www.googleapis.com/oauth2/v4/token', {
+      code: authResult.code,
+      client_id: environment.clientId,
+      client_secret: environment.clientSecret,
+      grant_type: 'authorization_code',
+      redirect_uri: environment.google_redirect_url
+    }, {
+      headers: {
+        'Authorization': `Bearer ${authResult.access_token}`
+      }
+    })
+    .toPromise()
+  }
+
+  getGoogleUserDetails(accessToken: string){
+    return this._httpBackend.get('https://www.googleapis.com/drive/v3/about?fields=user,storageQuota', {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+      }
+    })
+    .toPromise()
+  }
+
+  getGoogleFiles(searchTerm: string, accessToken: string){
+    // if(localStorage.getItem('google-cloud-token') != null) {
+    //   const getDriveFiles: any = new XMLHttpRequest();
+
+    //   getDriveFiles.open('GET', 'https://www.googleapis.com/drive/v2/files?q=fullText contains '+'"'+searchTerm+'"'+'&maxResults=10&access_token='+JSON.parse(localStorage.getItem('google-cloud-token')).google_token_data.access_token, true);
+    //   getDriveFiles.setRequestHeader('Authorization', 'Bearer ' + JSON.parse(localStorage.getItem('google-cloud-token')).google_token_data.access_token);
+
+    //   getDriveFiles.onload = () => {
+    //     if (getDriveFiles.status === 200) {
+    //       for(var i = 0; i < JSON.parse(getDriveFiles.responseText).items.length; i++ ){
+    //         if( JSON.parse(getDriveFiles.responseText).items.length>0){
+    //           hashValues.push({
+    //             //the id has been put manually, it is in no relation to the g-drive files, if you have any better solution to propose, then do make the changes
+    //             // it is accepting only ObjectId type data
+    //             // g-drive is giving a different ID type, please suggest the solution
+    //             id: '5b9649d1f5acc923a497d1da',
+    //             value: '<a style="color:inherit;" target="_blank" href="'+JSON.parse(getDriveFiles.responseText).items[i].embedLink + '"' + '>'+ JSON.parse(getDriveFiles.responseText).items[i].title + '</a>'
+    //           });
+    //         }
+    //       }
+    //     }
+    //   };
+    //   getDriveFiles.send();
+    // }
+    return this._httpBackend.get('https://www.googleapis.com/drive/v2/files?q=fullText contains ' + '"' + searchTerm + '"' + '&maxResults=10&access_token=' + accessToken, {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+      }
+    })
+      .toPromise()
   }
 
 

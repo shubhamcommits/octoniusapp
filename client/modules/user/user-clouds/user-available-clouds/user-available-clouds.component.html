@@ -4,7 +4,7 @@
         <div class="card-block">
             <h2>Available Clouds</h2>
             <hr>
-            <app-connect-google-cloud></app-connect-google-cloud>
+            <app-connect-google-cloud (googleUser)="emitGoogleUser($event)"></app-connect-google-cloud>
             <br />
             <div class="row">
                 <div class="col-md-6">
