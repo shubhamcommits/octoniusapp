@@ -105,6 +105,24 @@ import { environment } from 'src/environments/environment';
         this.addNewBar = false;
     }
 
+    removeTag(barTag) {
+        this.groupService.removeBar(this.groupData._id, barTag).then((res: any)=>{
+            this.data.groupData = res.group;
+            this.barList = res.group.bars;
+            this.barList.forEach(bar => {
+                bar.members = [];
+                bar.tag_members.forEach( tagMember =>{
+                    this.members.forEach(member => {
+                        if(member._id === tagMember)
+                            bar.members.push(member);
+                    });
+                });
+            });
+        }).catch(() => {});
+        this.tag = "";
+        this.addNewBar = false;
+    }
+
   onCloseDialog() {
     this.closeEvent.emit(this.barTag);
   }

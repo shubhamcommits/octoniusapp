@@ -9,6 +9,8 @@
         <div class="bar row" *ngFor="let bar of barList">
             <div class="col-12">
                 <p class="break">Task with tag <span class="tag">{{bar.bar_tag}}</span> are displayed for: </p>
+            <span class="material-icons d-flex justify-content-end blue-icon" (click)="removeTag(bar.bar_tag)">delete</span>
+
             </div>
             <hr>
             <div class="ml-2" *ngFor="let member of bar.members">
