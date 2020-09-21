@@ -20,6 +20,10 @@ const NotificationSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Post'
     },
+    _origin_group: {
+        type: Schema.Types.ObjectId,
+        ref: 'Group'
+    },
     created_date: {
         type: Date,
         default: Date.now
