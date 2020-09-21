@@ -88,6 +88,8 @@ routes.put('/:groupId/addBar', group.addBar);
 //
 routes.get('/:groupId/getBars', group.getBars);
 
+// PUT - Remove bar from group and posts that are related to that bar
+routes.put('/:groupId/removeBar', group.removeBar);
 // Update a smart group with the given rules.
 routes.post('/smart/:groupId', group.updateSmartGroup);
 
