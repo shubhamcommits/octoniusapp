@@ -212,4 +212,86 @@ export class NotificationsController {
             return sendErr(res, new Error(err), 'Internal Server Error!', 500);
         }
     };
+
+
+    async taskStatusChanged(req: Request, res: Response, next: NextFunction) {
+        const { post } = req.body;
+        try {
+            const status = (post.task.status === 'in progress') ? 'started' : 'completed';
+            // Call Service Function for taskStatusChanged
+            await notificationService.taskStatusChanged(post, status);
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'New Task Status Change Succeded!'
+            });
+        } catch (err) {
+            // Error Handling
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
+
+    async newComment(req: Request, res: Response, next: NextFunction) {
+        const { comment } = req.body;
+        try {
+            // Call Service Function for newComment
+            await notificationService.newComment(comment);
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'New Comment Succeded!'
+            });
+        } catch (err) {
+            // Error Handling
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
+
+    async followPost(req: Request, res: Response, next: NextFunction) {
+        const { post } = req.body;
+        try {
+            // Call Service Function for followPost
+            await notificationService.followPost(post);
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Post Followed Succeded!'
+            });
+        } catch (err) {
+            // Error Handling
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
+
+    async likePost(req: Request, res: Response, next: NextFunction) {
+        const { post } = req.body;
+        try {
+            // Call Service Function for likePost
+            await notificationService.likePost(post);
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Post Liked Succeded!'
+            });
+        } catch (err) {
+            // Error Handling
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
+
+    async likeComment(req: Request, res: Response, next: NextFunction) {
+        const { comment } = req.body;
+        try {
+            // Call Service Function for likeComment
+            await notificationService.likeComment(comment);
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Comment Liked Succeded!'
+            });
+        } catch (err) {
+            // Error Handling
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
 }

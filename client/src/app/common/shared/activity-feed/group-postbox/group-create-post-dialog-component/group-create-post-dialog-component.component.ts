@@ -199,8 +199,19 @@ export class GroupCreatePostDialogComponent implements OnInit {
     return (this.eventMembersMap && this.eventMembersMap['all']) ? true : false;
   }
 
-  moveTaskToColumn($event) {
-    this.updateDetails();
+  async moveTaskToColumn(event) {
+    await this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
+      this.postService.changeTaskColumn(this.postData._id, event.post.task._column.title)
+        .then((res) => {
+          this.postData = res['post'];
+          this.contentChanged = false;
+          // Resolve with success
+          resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
+        })
+        .catch(() => {
+          reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
+        });
+    }));
   }
 
   changeTaskStatus(event) {

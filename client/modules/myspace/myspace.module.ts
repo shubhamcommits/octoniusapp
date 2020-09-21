@@ -1,8 +1,8 @@
 /**
  * !===== MYSPACE MODULE OF OCTONIUS CLIENT =====!
- * 
+ *
  * Please read the points below, before importing and injecting any dependencies:-
- * 1. Make sure that you document your import and if it's a part of exisiting module then import 
+ * 1. Make sure that you document your import and if it's a part of exisiting module then import
  * that under the particular section, otherwise make a new suitable one.
  * 2. Insert the entries under the section in lexographical order.
  */
@@ -30,12 +30,14 @@ import { MyspaceWorkplaceComponent } from './myspace-workplace/myspace-workplace
 */
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+// import {MatGridListModule} from '@angular/material/grid-list';
 
 /**
 * 3. !===== CUSTOM MODULES =====!
 */
 import { MyspaceRoutingModule } from './myspace-routing.module';
 import { SharedModule } from 'src/app/common/shared/shared.module';
+import { MatMenuModule } from '@angular/material';
 // import { MomentModule } from "ngx-moment";
 
 /**
@@ -71,7 +73,11 @@ import { SharedModule } from 'src/app/common/shared/shared.module';
     // MomentModule,
 
     // Shared Module
-    SharedModule
+    SharedModule,
+
+    // MatGridListModule,
+
+    MatMenuModule
   ]
 })
 export class MyspaceModule { }

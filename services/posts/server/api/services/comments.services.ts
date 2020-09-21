@@ -58,10 +58,11 @@ import moment from 'moment';
           if (comment._content_mentions.length !== 0) {
             // Create Notification for mentions on comments
             // notifications.newCommentMentions(comment);
-            await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-comment`, {
+            await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-comment-mention`, {
                 comment: comment
             });
       
+            /*
             // for every user mentioned in the comment, we send an email
             await comment._content_mentions.forEach((user) => {
             //   sendMail.userMentionedComment(comment, post, user);
@@ -71,6 +72,7 @@ import moment from 'moment';
                     user: user
                 });
             });
+            */
           }
       
           return comment;
@@ -120,7 +122,7 @@ import moment from 'moment';
           // Create Notification for mentions on comments
           if (comment._content_mentions.length !== 0) {
             // notifications.newCommentMentions(comment);
-            await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-comment`, {
+            await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-comment-mention`, {
                 comment: updatedComment
             });
           }
@@ -307,6 +309,10 @@ import moment from 'moment';
             _id: userId
           }).select('first_name last_name');
       
+          await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-like-comment`, {
+            comment: comment
+          });
+
           return {
               comment: comment,
               user: user

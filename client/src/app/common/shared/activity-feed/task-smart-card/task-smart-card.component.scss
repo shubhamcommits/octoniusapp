@@ -1,12 +1,12 @@
 @import "src/assets/scss/variables";
 
 a{
-    text-decoration: none !important; 
+    text-decoration: none !important;
     color: inherit;
 }
 
 img{
-    display:block; 
+    display:block;
     width: 100%;
 }
 
@@ -16,6 +16,8 @@ img{
   box-sizing: border-box;
   border-radius: 10px;
   box-shadow: 0 3px 0 #005fd521;
+  min-height: 260px;
+  height: 100%;
 }
 
 .card-title{
@@ -40,21 +42,21 @@ img{
 }
 
 .to-do-task {
-  background: #fd7714;
+  background: #fd7714 !important;
 }
 
 
 .in-progress-task {
-  background: #0bc6a0;
+  background: #0bc6a0 !important;
 }
 
 
 .done-task {
-  background: #4a90e2;
+  background: #4a90e2 !important;
 }
 
 .overdue-task {
-  background: #FF6584;
+  background: #FF6584 !important;
 }
 
 .overdue-total-tasks {
@@ -94,13 +96,53 @@ img{
   text-overflow: ellipsis;
 }
 
-.card-icon {
-  font-size: 40px;
-  line-height: 40px;
-  display: flex;
-  align-items: center;
-}
-
 .card-tile{
   padding: 0 !important;
+}
+
+.card-icon {
+  display: flex;
+  align-items: flex-end;
+  margin-left: auto;
+  margin-right: 10px;
+}
+
+.card-content {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+
+  .card-box {
+    display: inline-block;
+    width: 50%;
+  }
+}
+
+.card-content {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.tasks-list {
+  list-style-type: none;
+  padding-left: 0;
+
+  li {
+    margin: 15px 0;
+  }
+}
+
+.badge {
+  background-color: #969A9E;
+  margin: 0 5px !important;
+  display: inline;
+  font-family: Nunito, sans-serif;
+  font-style: normal;
+  font-weight: 700 !important;
+  font-size: 12px;
+  align-items: center;
+  color: #ffffff;
+  border-radius: 15px;
+  padding: 3px 8px !important;
 }

@@ -71,7 +71,7 @@ import { SnotifyModule, SnotifyService, ToastDefaults } from 'ng-snotify';
 // import { NgbModalModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
 import { SocketIoModule } from 'ngx-socket-io';
-
+// import { ChartsModule, ThemeService } from 'ng2-charts';
 
 /**
  * 7. !===== ERROR HANDLERS =====!
@@ -120,6 +120,8 @@ import { ServerErrorInterceptor } from 'src/shared/error-handler/server-error.in
     // SNOTIFY MODULE
     SnotifyModule,
 
+    // ChartsModule,
+
     // ANGULAR BOOTSTRAP MODAL MODULE
     // NgbModalModule,
 
@@ -160,7 +162,9 @@ import { ServerErrorInterceptor } from 'src/shared/error-handler/server-error.in
       provide: HTTP_INTERCEPTORS,
       useClass: ServerErrorInterceptor,
       multi: true
-    }],
+    },
+    // ThemeService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
