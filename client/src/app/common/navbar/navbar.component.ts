@@ -10,7 +10,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { PublicFunctions } from 'src/app/dashboard/public.functions';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import { GoogleCloudService } from 'modules/user/user-clouds/user-available-clouds/google-cloud/services/google-cloud.service';
+// import { GoogleCloudService } from 'modules/user/user-clouds/user-available-clouds/google-cloud/services/google-cloud.service';
 
 @Component({
   selector: 'app-navbar',

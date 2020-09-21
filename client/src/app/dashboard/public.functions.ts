@@ -13,6 +13,7 @@ import { PostService } from 'src/shared/services/post-service/post.service';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
 import moment from 'moment/moment';
 import { FilesService } from 'src/shared/services/files-service/files.service';
+import { GoogleCloudService } from 'modules/user/user-clouds/user-available-clouds/google-cloud/services/google-cloud.service';
 
 export class PublicFunctions {
 
@@ -587,6 +588,20 @@ export class PublicFunctions {
             filesService.searchFiles(groupId, query, groupRef)
                 .then((res) => resolve(res['files']))
                 .catch(() => resolve([]))
+        })
+    }
+
+    /**
+     * This function is responsible for fetching the google drive files from connected google drive
+     * @param searchTerm 
+     * @param accessToken 
+     */
+    searchGoogleFiles(searchTerm: string, accessToken: string){
+        return new Promise((resolve)=>{
+            let googleService = this.injector.get(GoogleCloudService)
+            googleService.getGoogleFiles(searchTerm, accessToken)
+            .then((res)=> resolve(res['items']))
+            .catch(()=> resolve([]))
         })
     }
 
