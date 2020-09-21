@@ -30,7 +30,7 @@ import { RecentGroupsComponent } from './myspace-inbox/recent-groups/recent-grou
 * 2. !===== ANGULAR MODULES =====!
 */
 import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 // import {MatGridListModule} from '@angular/material/grid-list';
 
 /**
@@ -80,6 +80,7 @@ import { MatMenuModule } from '@angular/material';
     // MatGridListModule,
 
     MatMenuModule
-  ]
+  ],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })
 export class MyspaceModule { }

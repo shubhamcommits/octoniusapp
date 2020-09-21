@@ -20,7 +20,6 @@ export class NotificationsService {
                     _owner: user,
                     _origin_comment: comment._id,
                     _origin_post: comment._post,
-                    _origin_group: comment._post._group,
                     message: 'mentioned you on',
                     type: 'mention'
                 });
@@ -59,7 +58,6 @@ export class NotificationsService {
                     _actor: post._posted_by,
                     _owner: user,
                     _origin_post: post._id,
-                    _origin_group: post._group,
                     message: 'assigned you on',
                     type: 'assignment'
                 });
@@ -96,7 +94,6 @@ export class NotificationsService {
                     _actor: post._posted_by,
                     _owner: user,
                     _origin_post: post._id,
-                    _origin_group: post._group,
                     message: 'mentioned you on',
                     type: 'mention'
                 })
@@ -116,7 +113,6 @@ export class NotificationsService {
                 _actor: post._posted_by,
                 _owner: post.task._assigned_to,
                 _origin_post: post._id,
-                _origin_group: post._group,
                 message: 'assigned you',
                 type: 'assignment'
             });
@@ -136,7 +132,6 @@ export class NotificationsService {
                 _actor: post._posted_by,
                 _owner: post.task._assigned_to,
                 _origin_post: post._id,
-                _origin_group: post._group,
                 message: 'reassigned you',
                 type: 'assignment'
             });
@@ -156,7 +151,6 @@ export class NotificationsService {
                 _actor: post._posted_by,
                 _owner: post.task._assigned_to,
                 _origin_post: post._id,
-                _origin_group: post._group,
                 message: status,
                 type: status
             });
@@ -176,7 +170,6 @@ export class NotificationsService {
         _owner: comment.post._posted_by,
         _origin_comment: comment._id,
         _origin_post: comment._post,
-        _origin_group: comment._post._group,
         message: 'commented on',
         type: 'comment'
       });
@@ -197,7 +190,6 @@ export class NotificationsService {
        _owner: comment.post._posted_by,
        _origin_comment: comment._id,
        _origin_post: comment._post,
-       _origin_group: comment._post._group,
        message: 'liked your comment on',
        type: 'like_comment'
      });
@@ -216,7 +208,6 @@ export class NotificationsService {
               _actor: post._posted_by,
               _owner: post.task._assigned_to,
               _origin_post: post._id,
-              _origin_group: post._group,
               message: 'follows',
               type: 'follow'
           });
@@ -234,7 +225,6 @@ export class NotificationsService {
               _actor: post._posted_by,
               _owner: post.task._assigned_to,
               _origin_post: post._id,
-              _origin_group: post._group,
               message: 'likes',
               type: 'likes'
           });
@@ -256,8 +246,7 @@ export class NotificationsService {
               .limit(5)
               .sort('-created_date')
               .populate('_actor', 'first_name last_name profile_pic')
-              .populate('_origin_post', '_id type title')
-              .populate('_origin_group', '_id group_name')
+              .populate({ path: '_origin_post', populate: { path: '_group' } })
               .populate('_origin_comment')
               .populate('_owner', 'first_name last_name profile_pic')
               .lean();
@@ -280,8 +269,7 @@ export class NotificationsService {
           })
               .sort('-created_date')
               .populate('_actor', 'first_name last_name profile_pic')
-              .populate('_origin_post', '_id type title')
-              .populate('_origin_group', '_id group_name')
+              .populate({ path: '_origin_post', populate: { path: '_group' } })
               .populate('_origin_comment')
               .populate('_owner', 'first_name last_name profile_pic')
               .lean();
