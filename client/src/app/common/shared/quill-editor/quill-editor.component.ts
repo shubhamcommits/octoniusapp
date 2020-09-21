@@ -41,6 +41,7 @@ import { PublicFunctions } from 'src/app/dashboard/public.functions';
 
 // Environments
 import { environment } from 'src/environments/environment';
+import { StorageService } from 'src/shared/services/storage-service/storage.service.js';
 
 @Component({
   selector: 'app-quill-editor',
@@ -283,8 +284,23 @@ export class QuillEditorComponent implements OnInit {
    */
   async suggestFiles(groupId: string, searchTerm: string) {
 
+    // Storage Service Instance
+    let storageService = this.Injector.get(StorageService)
+
     // Fetch the users list from the server
-    let filesList: any = await this.publicFunctions.searchFiles(groupId, searchTerm, 'true');
+    let filesList: any = await this.publicFunctions.searchFiles(groupId, searchTerm, 'true')
+
+    // Fetch Access Token
+    let accessToken = storageService.getLocalData('googleUser')['refreshToken']
+
+    // Get Google file list
+    let googleFilesList: any = await this.publicFunctions.searchGoogleFiles(searchTerm, accessToken)
+  
+    // Google File List
+    googleFilesList = googleFilesList.map((file: any) => ({
+      id: '5b9649d1f5acc923a497d1da',
+      value: '<a style="color:inherit;" target="_blank" href="' + file.embedLink + '"' + '>' + file.title + '</a>'
+    }))
 
     // Map the users list
     filesList = filesList.map((file: any) => ({
@@ -296,7 +312,7 @@ export class QuillEditorComponent implements OnInit {
     }))
 
     // Return the Array without duplicates
-    return Array.from(new Set(filesList))
+    return Array.from(new Set([...filesList, ...googleFilesList]))
   }
 
   /**
