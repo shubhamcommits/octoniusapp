@@ -24,6 +24,7 @@ import { MyspaceHeaderComponent } from './myspace-header/myspace-header.componen
 import { MyspaceInboxComponent } from './myspace-inbox/myspace-inbox.component';
 import { MyspaceTasksComponent } from './myspace-tasks/myspace-tasks.component';
 import { MyspaceWorkplaceComponent } from './myspace-workplace/myspace-workplace.component';
+import { RecentGroupsComponent } from './myspace-inbox/recent-groups/recent-groups.component';
 
 /**
 * 2. !===== ANGULAR MODULES =====!
@@ -59,8 +60,9 @@ import { MatMenuModule } from '@angular/material';
     MyspaceAgendaComponent,
 
     // Myspace Workplace Component
-    MyspaceWorkplaceComponent
+    MyspaceWorkplaceComponent,
 
+    RecentGroupsComponent
   ],
   imports: [
 
