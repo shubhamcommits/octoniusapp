@@ -50,6 +50,7 @@ export class MyspaceInboxComponent implements OnInit, OnDestroy {
     this.subSink.add(this.socketService.currentData.subscribe((res) => {
       if (JSON.stringify(res) != JSON.stringify({})) {
         this.notificationsData = res;
+console.log(res);
       }
     }));
   }
