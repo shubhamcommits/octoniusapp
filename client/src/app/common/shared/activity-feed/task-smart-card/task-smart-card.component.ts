@@ -54,7 +54,7 @@ export class TaskSmartCardComponent implements OnInit {
     };
     this.doughnutChartColors = [{
       backgroundColor: [
-        '#fd7714',
+        '#FFAB00',
         '#0bc6a0',
         '#4a90e2'
       ]
