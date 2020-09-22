@@ -192,5 +192,10 @@ export class UserService {
       return this._http.get(this.BASE_API_URL + `/global/feed`).toPromise();
   }
 
-
+  /**
+   * GET MOST USED GROUPS
+   */
+  getRecentGroups(userId: string) {
+    return this._http.get(this.BASE_API_URL + `/recent-groups/${userId}`).toPromise();
+  }
 }

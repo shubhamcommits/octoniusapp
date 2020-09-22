@@ -1,4 +1,4 @@
-import { User } from '../models';
+import { Group, User } from '../models';
 import { Response, Request, NextFunction } from 'express';
 import { sendError } from '../../utils';
 import http from 'axios';
@@ -247,6 +247,41 @@ export class UsersControllers {
             });
         } catch (err) {
             return sendError(res, err);
+        }
+    }
+
+    /**
+     * This function is responsible for retreiving the user´s most frequent groups
+     * @param { userId }req 
+     * @param res 
+     */
+    async getRecentGroups(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { params: { userId } } = req;
+
+            if (!userId) {
+                return res.status(400).json({
+                    message: 'Please provide the userId!'
+                })
+            }
+
+            const user = await User.findById(userId)
+                .populate({
+                    path: '_groups',
+                    options: {
+                        sort: { 'created_date': -1 },
+                        limit: 3
+                    }
+                })
+                .lean();
+console.log(user);
+            // Send the status 200 response
+            return res.status(200).json({
+                message: `User found!`,
+                user: user
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
         }
     }
 }

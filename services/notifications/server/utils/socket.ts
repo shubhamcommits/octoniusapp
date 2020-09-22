@@ -98,7 +98,7 @@ function init(server: any){
 
             // join room
             socket.join(roomName, ()=>{
-                console.log('User joined Group: ', roomName)
+                // console.log('User joined Group: ', roomName)
             });
         });
 
