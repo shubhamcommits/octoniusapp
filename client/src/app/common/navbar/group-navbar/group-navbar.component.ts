@@ -4,6 +4,7 @@ import { PublicFunctions } from 'src/app/dashboard/public.functions';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
+import { UserService } from 'src/shared/services/user-service/user.service';
 
 @Component({
   selector: 'app-group-navbar',
@@ -54,6 +55,8 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
   // PUBLIC FUNCTIONS
   private publicFunctions = new PublicFunctions(this.injector);
 
+  private userService = this.injector.get(UserService);
+
   async ngOnInit() {
 
     // Fetch groupId from router snapshot
@@ -79,6 +82,9 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
     console.log('Group Data', this.groupData)
     this.isAdmin = this.isAdminUser();
 
+    if (this.groupId) {
+      this.userService.increaseGroupVisit(this.userData._id, this.groupId);
+    }
   }
 
   /**
@@ -94,7 +100,7 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
   }
   /**
     * This function opens up the task content in a new modal, and takes #content in the ng-template inside HTML layout
-    * @param content 
+    * @param content
     */
   async openDetails(content) {
 

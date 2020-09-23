@@ -8,10 +8,10 @@
   </div>
 
   <!-- groups list  -->
-  <div class="media" *ngFor="let group of recentGroups" (click)="goToGroup(group?._id)" style="cursor: pointer;">
-    <img src="{{ groupBaseUrl }}/{{ group?.group_avatar }}" onerror="this.src='assets/images/group.png'" class="mr-3 group-avatar">
+  <div class="media" *ngFor="let group of recentGroups" (click)="goToGroup(group?._group?._id)" style="cursor: pointer;">
+    <img src="{{ groupBaseUrl }}/{{ group?._group?.group_avatar }}" onerror="this.src='assets/images/group.png'" class="mr-3 group-avatar">
     <div class="media-body">
-      <h5 class="mt-0 post-title title-nowrap">{{ group?.group_name }}</h5>
+      <h5 class="mt-0 post-title title-nowrap">{{ group?._group?.group_name }}</h5>
     </div>
   </div>
 </div>

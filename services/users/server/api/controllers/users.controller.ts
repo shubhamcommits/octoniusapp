@@ -250,38 +250,83 @@ export class UsersControllers {
         }
     }
 
-    /**
-     * This function is responsible for retreiving the user´s most frequent groups
-     * @param { userId }req 
-     * @param res 
-     */
-    async getRecentGroups(req: Request, res: Response, next: NextFunction) {
-        try {
-            const { params: { userId } } = req;
+  /**
+   * This function is responsible for retreiving the user´s most frequent groups
+   * @param { userId }req 
+   * @param res 
+   */
+  async getRecentGroups(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { params: { userId } } = req;
 
-            if (!userId) {
-                return res.status(400).json({
-                    message: 'Please provide the userId!'
-                })
+      if (!userId) {
+        return res.status(400).json({
+          message: 'Please provide the userId!'
+        })
+      }
+
+      const user = await User.findOne({_id: userId})
+        .populate({
+            path: 'stats.groups._group',
+            options: {
+                sort: { 'stats.groups.count': -1 },
+                limit: 3
             }
+        })
+        .lean();
 
-            const user = await User.findById(userId)
-                .populate({
-                    path: '_groups',
-                    options: {
-                        sort: { 'created_date': -1 },
-                        limit: 3
-                    }
-                })
-                .lean();
-console.log(user);
-            // Send the status 200 response
-            return res.status(200).json({
-                message: `User found!`,
-                user: user
-            });
-        } catch (err) {
-            return sendError(res, err, 'Internal Server Error!', 500);
-        }
+      // Send the status 200 response
+      return res.status(200).json({
+        message: `User found!`,
+        user: user
+      });
+    } catch (err) {
+      return sendError(res, err, 'Internal Server Error!', 500);
     }
+  }
+
+  /**
+  * This function is responsible for changing the role of the other user
+  * @param req 
+  * @param res 
+  * @param next 
+  */
+  async incrementGroupVisit(req: Request, res: Response, next: NextFunction) {
+
+    const { userId, groupId } = req.body;
+
+    try {
+
+      let user: any = await User.findOne({
+        $and: [
+            { _id: userId },
+            { active: true },
+            {'stats.groups._group': groupId }
+        ]
+      }).select('_id');
+
+      // Find the user and update their respective role
+      if (!user) {
+        user = await User.findByIdAndUpdate({
+          _id: userId,
+          'stats.groups._group': {$ne: groupId }
+        }, { $push: { 'stats.groups': { _group: groupId, count: 1 }}});
+      } else {
+        user = await User.findByIdAndUpdate({
+          _id: userId,
+          'stats.groups._group': groupId
+        }, { $inc: { 'stats.groups.$.count': 1 }
+        }, { upsert: true, new: true, setDefaultsOnInsert: true });
+      }
+
+      // Send status 200 response
+      return res.status(200).json({
+          message: `Role updated for user ${user.first_name}`,
+          user: user
+      });
+
+    } catch (err) {
+        return sendError(res, err, 'Internal Server Error!', 500);
+    }
+  }
 }
