@@ -83,7 +83,7 @@
                 <!-- TASK DETAILS STARTS -->
                 <!-- Normal Tasks Start -->
                 <div class="task_row"
-                    [ngClass]="{'status-todo': task?.task?.status === 'to do', 'status-inprogress': task?.task?.status === 'in progress', 'status-done': task?.task?.status === 'done' || task?.task?.isNorthStar }"
+                    [ngClass]="{'status-todo': task?.task?.status === 'to do', 'status-inprogress': task?.task?.status === 'in progress', 'nsdone': task?.task?.status === 'nsdone' || task?.task?.isNorthStar }"
                     *ngFor="let task of column.tasks; let j = index;">
 
                     <div class="task_content" *ngIf="!task?.task?.isNorthStar">

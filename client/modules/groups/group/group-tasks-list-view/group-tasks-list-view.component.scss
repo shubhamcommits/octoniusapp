@@ -261,7 +261,9 @@ $dark-sky-blue: #4a90e2;
 .status-done {
     border-left: 3px solid $dark-sky-blue;
 }
-
+.nsdone{
+    border-left: none !important;
+}
 .input-date{
     margin-top: 0 !important;
 }
@@ -276,12 +278,12 @@ $dark-sky-blue: #4a90e2;
     height: 70px;
     padding: 0;
     width: 100%;
-    border-top-right-radius: 2px;
-    border-bottom-right-radius: 2px;
+    border-radius: 2px;
     box-sizing: border-box;
     margin: 2px auto;
     transition: box-shadow 0.3s ease-in-out;
-    background: linear-gradient(90.01deg, #5E2FE5 0.01%, #5A206B 99.99%);
+    background: linear-gradient(90.01deg, #5E2FE5 0.01%, #5E2FE5 99.99%);
+
 
     .card-tile {
       padding: 0;
