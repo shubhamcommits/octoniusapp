@@ -130,7 +130,6 @@ export class UsersControllers {
     async updateUserRole(req: Request, res: Response, next: NextFunction) {
 
         const { userId, role } = req.body;
-
         try {
 
             // Find the user and update their respective role
@@ -144,11 +143,35 @@ export class UsersControllers {
             }, {
                 new: true
             }).select('first_name last_name profile_pic email role');
-
+            let groupsUpdate;
+            if(role === 'member') {
+                groupsUpdate = await Group.updateMany({
+                    _admins: userId
+                }, {
+                $pull: {
+                    _admins: userId
+                },
+                $push: {
+                    _members: userId
+                },
+                });
+            } else {
+                groupsUpdate = await Group.updateMany({
+                    _members: userId
+                }, {
+                $pull: {
+                    _members: userId
+                },
+                $push: {
+                    _admins: userId
+                },
+                });
+            }
             // Send status 200 response
             return res.status(200).json({
                 message: `Role updated for user ${user.first_name}`,
-                user: user
+                user: user,
+                groupsUpdate
             });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
