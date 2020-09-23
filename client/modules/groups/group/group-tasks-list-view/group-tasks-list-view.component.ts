@@ -76,8 +76,7 @@ export class GroupTasksListViewComponent implements OnInit {
       // Filtering done tasks
       if(column.tasks.done !== undefined){
         column.tasks.done.forEach(doneTask =>{
-          if(doneTask.bars !== undefined){
-            if(doneTask.bars !== undefined && doneTask.bars.length > 0){
+          if(doneTask.bars !== undefined && doneTask.bars.length > 0){
               doneTask.bars.forEach(bar => {
                 if(bar.tag_members.includes(this.userData._id) || this.userData.role !== "member") {
                   doneTasks.push(doneTask);
@@ -86,7 +85,6 @@ export class GroupTasksListViewComponent implements OnInit {
             } else {
               doneTasks.push(doneTask);
             }
-          }
         });
       }
 
