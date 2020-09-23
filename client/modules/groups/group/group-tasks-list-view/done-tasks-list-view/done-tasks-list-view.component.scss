@@ -4,9 +4,10 @@ $turquoise: #0bc6a0;
 $dark-sky-blue: #4a90e2;
 
 .done-title {
-  text-decoration-line: line-through;
-  color: #4A90E2;
-}
+    //   text-decoration-line: line-through;
+      color: #4A90E2;
+        cursor: pointer;
+    }
 
 .list {
     overflow-x: auto;
