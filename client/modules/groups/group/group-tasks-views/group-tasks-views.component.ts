@@ -66,7 +66,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
 
   async onChangeViewEmitter(view: string) {
 
-    this.userData.lastTaskView = view;
+    this.userData.stats.lastTaskView = view;
     // User service
     const userService = this.injector.get(UserService);
 
@@ -87,8 +87,8 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     // Fetch current user details
     this.userData = await this.publicFunctions.getCurrentUser();
 
-    if (this.userData && this.userData.lastTaskView) {
-      this.viewType = this.userData.lastTaskView;
+    if (this.userData && this.userData.stats && this.userData.stats.lastTaskView) {
+      this.viewType = this.userData.stats.lastTaskView;
     }
 
     // Fetch current group from the service
