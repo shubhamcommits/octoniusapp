@@ -33,8 +33,6 @@ export class RecentGroupsComponent implements OnInit {
     await this.userService.getRecentGroups(this.userData._id).then(res => {
       this.recentGroups = res['user']['stats']['groups'];
     });
-
-console.log(this.recentGroups);
   }
 
   goToGroup(groupId: string) {
