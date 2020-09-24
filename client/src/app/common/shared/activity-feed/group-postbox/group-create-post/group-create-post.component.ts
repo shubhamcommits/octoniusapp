@@ -3,7 +3,6 @@ import { environment } from 'src/environments/environment';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'src/app/dashboard/public.functions';
-import { HotkeysService, Hotkey, HotkeyModule } from 'angular2-hotkeys';
 import moment from 'moment';
 
 @Component({
@@ -16,8 +15,7 @@ export class GroupCreatePostComponent implements OnInit {
   constructor(
     private postService: PostService,
     private utilityService: UtilityService,
-    private injector: Injector,
-    private hotKeyService: HotkeysService
+    private injector: Injector
   ) { }
 
   // BASE URL OF THE APPLICATION
@@ -122,11 +120,13 @@ export class GroupCreatePostComponent implements OnInit {
 
   ngOnInit() {
 
+    /*
     this.hotKeyService.add(new Hotkey(['meta+return', 'meta+enter'], (event: KeyboardEvent, combo: string): boolean => {
       console.log('hotkey');
       this.createPost();
       return false;
     }));
+    */
 
     if (this.edit) {
 
