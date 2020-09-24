@@ -291,11 +291,14 @@ export class UsersControllers {
       const user = await User.findOne({_id: userId})
         .select("_id stats")
         .populate({
-            path: 'stats.groups._group',
+            path: 'stats.groups._group'//,
+            /*
             options: {
                 sort: { 'stats.groups.count': -1 }
             }
+            */
         })
+        .sort({ 'stats.groups.count': -1 })
         .slice('stats.groups', 3)
         .lean();
 
@@ -341,16 +344,6 @@ export class UsersControllers {
           'stats.groups._group': groupId 
         }, { $inc: { 'stats.groups.$.count': 1 }
         });
-        /*
-        user = await User.update(
-          { _id: userId, },
-          { $set: { "stats.groups.$[elem].count" : 1 } },
-          {
-            multi: false,
-            arrayFilters: [ { "elem._group": { $eq: groupId } } ]
-          }
-        )
-        */
       }
       // Send status 200 response
       return res.status(200).json({
