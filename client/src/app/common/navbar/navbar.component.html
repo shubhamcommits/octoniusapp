@@ -12,11 +12,11 @@
       <div class="container">
 
         <button type="button" id="sidebarCollapse" class="btn btn-link" (click)="sidenav.toggle()" >
-          <i class="material-icons muted">menu</i>
+          <i class="material-icons">menu_open</i>
         </button>
         
         <!-- OCTONIUS BRANDING STARTS -->
-        <a *ngIf="isCommonNavbar$ | async" class="nav navbar-nav navbar-center navbar-brand" [routerLink]="['/dashboard', 'myspace', 'inbox']" routerLinkActive="router-link-active">
+        <a *ngIf="isCommonNavbar$ | async" class="nav navbar-nav navbar-center navbar-brand d-none d-sm-block" [routerLink]="['/dashboard', 'myspace', 'inbox']" routerLinkActive="router-link-active">
           <img src="assets/images/logo.svg" alt="" class="octonius-logo">
         </a>
         <!-- OCTONIUS BRANDING ENDS -->
@@ -27,7 +27,7 @@
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon">
-            <i class="material-icons">menu</i>
+            <i class="material-icons-round">more_horiz</i>
           </span>
         </button>
         <!-- TOGGLE MENU BUTTON ENDS -->
@@ -52,7 +52,7 @@
               <!-- SEARCH ends -->
     
             </li>
-            <li class="nav-item">
+            <li class="nav-item d-none d-sm-block">
               <!-- PUSH NOTIFICATIONS STARTS -->
               <push-notifications class="nav-link" *ngIf="userData && baseUrl" [userData]="userData" [baseUrl]="baseUrl">
               </push-notifications>
