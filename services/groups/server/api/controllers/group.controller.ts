@@ -415,33 +415,12 @@ export class GroupController {
             const group: any = await Group.findByIdAndDelete(groupId)
                 .select('group_name _workspace')
 
-            // Find list of users who were part of this group 
-            const users = await User.find({
-                _groups: groupId
-            })
+            await User.updateMany({_groups: groupId}, {
+                $pull: {_groups:groupId}
+            });
 
-            // Creating a readable stream from users list
-            const userStream = Readable.from(users);
-
-            // Updating the Users
-            userStream.on('data', async function (user) {
-                // Find the user and update the _groups array in the corresponding user document 
-                await User.findOneAndUpdate({
-                    $and: [
-                        { _id: user._id, },
-                        { _workspace: group._workspace }
-                    ]
-                }, {
-                    $pull: {
-                        _groups: group._id
-                    }
-                }, {
-                    new: true
-                })
-            })
-
-
-            // Delete Posts and Files too(create the API for this and serve as a microservice)
+            // Delete Posts and Files too
+            await Post.remove({_group: groupId});
 
             // Send the status 200 response
             return res.status(200).json({
