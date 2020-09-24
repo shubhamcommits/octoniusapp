@@ -86,9 +86,11 @@ routes.put('/image', userFileHandler, user.updateImage);
 // Add a new token for a specific integration
 routes.post('/integrations/gdrive/token', user.addGdriveToken);
 
-// -| RECENT GROUPS |-
+// -| STATS |-
 // Get user most frecuent groups
 routes.get('/recent-groups/:userId', user.getRecentGroups);
+
+routes.put('/increment-group-visit', user.incrementGroupVisit);
 
 /*  ===================
  *  -- EXPORT ROUTES --

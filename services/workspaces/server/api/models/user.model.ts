@@ -97,6 +97,22 @@ const UserSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Group'
     }],
+    stats: {
+        lastTaskView: {
+            type: String,
+            default: 'list'
+        },
+        groups: [{
+            _group: {
+                type: Schema.Types.ObjectId,
+                ref: 'Group'
+            },
+            count: {
+                type: Number,
+                default: 1
+            }
+        }]
+    },
     _private_group: {
         type: Schema.Types.ObjectId,
         ref: 'Group'

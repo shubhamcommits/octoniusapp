@@ -198,4 +198,25 @@ export class UserService {
   getRecentGroups(userId: string) {
     return this._http.get(this.BASE_API_URL + `/recent-groups/${userId}`).toPromise();
   }
+
+  /**
+   * Increase the visits to the group by the user
+   * @param { userId, groupId }
+   */
+  increaseGroupVisit(userId: string, groupId: string) {
+
+    // Preparing the request body data
+    let data = {
+      userId: userId.trim(),
+      groupId: groupId.trim()
+    }
+
+    // Call the API
+    return this._http.put(this.BASE_API_URL + '/increment-group-visit', data)
+    .toPromise();
+  }
+
+  // increase the stats of the visited group for the user
+  // const groupId = this._ActivatedRoute.snapshot.queryParamMap.get('group');
+  // this.userService.increaseGroupVisit(this.userData._id, groupId);
 }

@@ -31,7 +31,9 @@ export class RecentGroupsComponent implements OnInit {
     this.userData = await this.publicFunctions.getCurrentUser();
 
     await this.userService.getRecentGroups(this.userData._id).then(res => {
-      this.recentGroups = res['user']['_groups'];
+      if (res['user'] && res['user']['stats'] && res['user']['stats']['groups']) {
+        this.recentGroups = res['user']['stats']['groups'];
+      }
     });
   }
 
