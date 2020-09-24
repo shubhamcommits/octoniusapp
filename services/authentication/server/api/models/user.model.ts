@@ -97,7 +97,7 @@ const UserSchema = new Schema({
             type: String,
             default: 'list'
         },
-        groups: {
+        groups: [{
             _group: {
                 type: Schema.Types.ObjectId,
                 ref: 'Group'
@@ -106,7 +106,7 @@ const UserSchema = new Schema({
                 type: Number,
                 default: 1
             }
-        }
+        }]
     },
     _private_group: {
         type: Schema.Types.ObjectId,
