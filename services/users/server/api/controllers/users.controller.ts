@@ -266,13 +266,14 @@ export class UsersControllers {
       }
 
       const user = await User.findOne({_id: userId})
+        .select("_id stats")
         .populate({
             path: 'stats.groups._group',
             options: {
-                sort: { 'stats.groups.count': -1 },
-                limit: 3
+                sort: { 'stats.groups.count': -1 }
             }
         })
+        .slice('stats.groups', 3)
         .lean();
 
       // Send the status 200 response
