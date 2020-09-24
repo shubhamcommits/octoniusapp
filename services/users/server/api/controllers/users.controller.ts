@@ -315,14 +315,23 @@ export class UsersControllers {
       } else {
         user = await User.findByIdAndUpdate({
           _id: userId,
-          'stats.groups._group': groupId
+          'stats.groups._group': groupId 
         }, { $inc: { 'stats.groups.$.count': 1 }
-        }, { upsert: true, new: true, setDefaultsOnInsert: true });
+        });
+        /*
+        user = await User.update(
+          { _id: userId, },
+          { $set: { "stats.groups.$[elem].count" : 1 } },
+          {
+            multi: false,
+            arrayFilters: [ { "elem._group": { $eq: groupId } } ]
+          }
+        )
+        */
       }
-
       // Send status 200 response
       return res.status(200).json({
-          message: `Role updated for user ${user.first_name}`,
+          message: `User Stats has been updated`,
           user: user
       });
 
