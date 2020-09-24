@@ -338,13 +338,16 @@ export class UsersControllers {
         user = await User.findOneAndUpdate({
           _id: userId,
           'stats.groups._group': {$ne: groupId }
-        }, { $push: { 'stats.groups': { _group: groupId, count: 1 }}});
+        }, { $push: { 'stats.groups': { _group: groupId, count: 1 }}}
+        )
+        .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats');
       } else {
         user = await User.findOneAndUpdate({
           _id: userId,
           'stats.groups._group': groupId 
         }, { $inc: { 'stats.groups.$.count': 1 }
-        });
+        })
+        .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats');
       }
       // Send status 200 response
       return res.status(200).json({

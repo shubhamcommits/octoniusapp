@@ -83,7 +83,9 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
     this.isAdmin = this.isAdminUser();
 
     if (this.groupId) {
-      this.userService.increaseGroupVisit(this.userData._id, this.groupId);
+      this.userService.increaseGroupVisit(this.userData._id, this.groupId).then(res => {
+        this.publicFunctions.sendUpdatesToUserData(res['user']);
+      });
     }
   }
 
