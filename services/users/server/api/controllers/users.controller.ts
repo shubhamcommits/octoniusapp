@@ -291,16 +291,17 @@ export class UsersControllers {
       const user = await User.findOne({_id: userId})
         .select("_id stats")
         .populate({
-            path: 'stats.groups._group'//,
-            /*
-            options: {
-                sort: { 'stats.groups.count': -1 }
-            }
-            */
+            path: 'stats.groups._group'
         })
-        .sort({ 'stats.groups.count': -1 })
-        .slice('stats.groups', 3)
         .lean();
+
+      if (user['stats'] && user['stats']['groups']) {
+        user['stats']['groups'].sort(function(a, b) {
+          return b.count - a.count;
+        });
+
+        user['stats']['groups'] = user['stats']['groups'].slice(0, 3);
+      }
 
       // Send the status 200 response
       return res.status(200).json({
