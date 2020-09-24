@@ -9,7 +9,6 @@ import { AuthService } from 'src/shared/services/auth-service/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { PublicFunctions } from 'src/app/dashboard/public.functions';
-import { HotkeysService, Hotkey } from 'angular2-hotkeys';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 
 @Component({
@@ -32,7 +31,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     private _ActivatedRoute: ActivatedRoute,
     private socketService: SocketService,
     private injector: Injector,
-    private hotKeysService: HotkeysService,
     ) { }
 
   // CURRENT USER DATA
@@ -135,7 +133,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit(){
     const searchRef = this.search;
-    this.addHotKeys(searchRef)
+    //this.addHotKeys(searchRef)
   }
 
   /**
@@ -192,16 +190,17 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
       }
   }
 
-
   /**
    * Add Hot Keys
    */
+  /*
   addHotKeys(searchRef: any){
     this.hotKeysService.add(new Hotkey(['shift+space'], (event: KeyboardEvent, combo: string): boolean =>{
       this.openModal(searchRef);
       return false;
     }))
   }
+  */
 
   closeModal(){
     this.utilityService.closeAllModals();

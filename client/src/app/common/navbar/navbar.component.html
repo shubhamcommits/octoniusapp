@@ -1,6 +1,6 @@
 <mat-sidenav-container (backdropClick)="this.sidenav.toggle()" >
   <mat-sidenav #sidenav (keydown.escape)="this.sidenav.toggle()" disableClose autosize>
-    
+
     <!-- SIDE MENU ICON STARTS -->
     <app-sidebar class="nav navbar-nav navbar-left" [sideNav]="sidenav"></app-sidebar>
     <!-- SIDE MENU ICON ENDS -->
@@ -14,15 +14,15 @@
         <button type="button" id="sidebarCollapse" class="btn btn-link" (click)="sidenav.toggle()" >
           <i class="material-icons">menu_open</i>
         </button>
-        
+
         <!-- OCTONIUS BRANDING STARTS -->
         <a *ngIf="isCommonNavbar$ | async" class="nav navbar-nav navbar-center navbar-brand d-none d-sm-block" [routerLink]="['/dashboard', 'myspace', 'inbox']" routerLinkActive="router-link-active">
           <img src="assets/images/logo.svg" alt="" class="octonius-logo">
         </a>
         <!-- OCTONIUS BRANDING ENDS -->
-    
+
         <!-- COLLAPSABLE MENU STARTS -->
-    
+
         <!-- TOGGLE MENU BUTTON STARTS -->
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,18 +31,18 @@
           </span>
         </button>
         <!-- TOGGLE MENU BUTTON ENDS -->
-    
+
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <!-- MENU ITEMS STARTS -->
-    
+
           <!-- <app-common-navbar *ngIf="isCommonNavbar$ | async"></app-common-navbar> -->
           <app-group-navbar *ngIf="isGroupNavbar$ | async"></app-group-navbar>
           <app-work-navbar *ngIf="isWorkNavbar$ | async"></app-work-navbar>
           <!-- MENU ITEMS ENDS -->
-    
+
           <ul class="navbar-nav ml-auto navbar-right">
             <li class="nav-item">
-    
+
               <!-- SEARCH starts -->
               <a class="nav-link mt-3" (click)="openModal(search)">
                 <span class="material-icons">
@@ -50,16 +50,18 @@
                 </span>
               </a>
               <!-- SEARCH ends -->
-    
+
             </li>
+            <!-- PUSH NOTIFICATIONS STARTS -->
+            <!--
             <li class="nav-item d-none d-sm-block">
-              <!-- PUSH NOTIFICATIONS STARTS -->
               <push-notifications class="nav-link" *ngIf="userData && baseUrl" [userData]="userData" [baseUrl]="baseUrl">
               </push-notifications>
-              <!-- PUSH NOTIFICATIONS ENDS -->
             </li>
+            -->
+            <!-- PUSH NOTIFICATIONS ENDS -->
           </ul>
-    
+
         </div>
         <!-- COLLAPSABLE MENU ENDS -->
       </div>
