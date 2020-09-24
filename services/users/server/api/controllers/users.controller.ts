@@ -308,12 +308,12 @@ export class UsersControllers {
 
       // Find the user and update their respective role
       if (!user) {
-        user = await User.findByIdAndUpdate({
+        user = await User.findOneAndUpdate({
           _id: userId,
           'stats.groups._group': {$ne: groupId }
         }, { $push: { 'stats.groups': { _group: groupId, count: 1 }}});
       } else {
-        user = await User.findByIdAndUpdate({
+        user = await User.findOneAndUpdate({
           _id: userId,
           'stats.groups._group': groupId 
         }, { $inc: { 'stats.groups.$.count': 1 }
