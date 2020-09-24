@@ -353,6 +353,7 @@ services:
       - /usr/app/node_modules
       - ${PWD}/client:/usr/app
     depends_on:
+      - mongodb
       - mailing-server
       - auths-server
       - groups-server
@@ -376,6 +377,7 @@ services:
     ports:
       - 8080:80
     depends_on:
+      - mongodb
       - mailing-server
       - auths-server
       - groups-server
