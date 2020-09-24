@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined");
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Round|Material+Icons+Two+Tone");
 
 //font override
 
@@ -171,4 +171,10 @@ hr {
 .input-search {
   font-family: $font-family-base !important;
   border-bottom: $border-gray !important;
+}
+
+@media (max-width: 575.98px) { 
+  .nav{
+    display: block !important;
+  }
 }

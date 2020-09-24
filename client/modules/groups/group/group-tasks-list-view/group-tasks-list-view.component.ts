@@ -76,8 +76,7 @@ export class GroupTasksListViewComponent implements OnInit {
       // Filtering done tasks
       if(column.tasks.done !== undefined){
         column.tasks.done.forEach(doneTask =>{
-          if(doneTask.bars !== undefined){
-            if(doneTask.bars !== undefined && doneTask.bars.length > 0){
+          if(doneTask.bars !== undefined && doneTask.bars.length > 0){
               doneTask.bars.forEach(bar => {
                 if(bar.tag_members.includes(this.userData._id) || this.userData.role !== "member") {
                   doneTasks.push(doneTask);
@@ -86,7 +85,6 @@ export class GroupTasksListViewComponent implements OnInit {
             } else {
               doneTasks.push(doneTask);
             }
-          }
         });
       }
 
@@ -212,7 +210,7 @@ export class GroupTasksListViewComponent implements OnInit {
       const indexTask = col.tasks.findIndex((task: any) => task._id === post._id);
       if (indexTask !== -1) {
         if (col.title.toLowerCase() === post.task._column.title.toLowerCase()) {
-          if (post.task.status === 'gh') {
+          if (post.task.status === 'done') {
             this.columns[indexColumn].tasks.done.unshift(post);
             this.columns[indexColumn].tasks.splice(indexTask, 1);
             return;
