@@ -210,7 +210,7 @@ export class GroupTasksListViewComponent implements OnInit {
       const indexTask = col.tasks.findIndex((task: any) => task._id === post._id);
       if (indexTask !== -1) {
         if (col.title.toLowerCase() === post.task._column.title.toLowerCase()) {
-          if (post.task.status === 'gh') {
+          if (post.task.status === 'done') {
             this.columns[indexColumn].tasks.done.unshift(post);
             this.columns[indexColumn].tasks.splice(indexTask, 1);
             return;
