@@ -43,7 +43,7 @@ const NotificationSchema = new Schema({
     type: {
         type: String,
         required: true,
-        enum: ['assignment', 'mention']
+        enum: ['assignment', 'mention', 'started', 'completed', 'comment', 'like_comment', 'follow', 'likes']
     }
 });
 

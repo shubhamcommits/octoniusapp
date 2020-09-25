@@ -25,8 +25,7 @@ export class NotificationsService {
                 });
             });
         } catch (err) {
-            // ab yaha se error catch ho jaega
-            return err
+            throw err;
         }
     };
 
@@ -63,7 +62,7 @@ export class NotificationsService {
                 });
             });
         } catch (err) {
-            return err;
+            throw err;
         }
     };
 
@@ -99,7 +98,7 @@ export class NotificationsService {
                 })
             })
         } catch (err) {
-            return err;
+            throw err;
         }
     };
 
@@ -117,7 +116,7 @@ export class NotificationsService {
                 type: 'assignment'
             });
         } catch (err) {
-            return err;
+            throw err;
         }
     };
 
@@ -136,7 +135,7 @@ export class NotificationsService {
                 type: 'assignment'
             });
         } catch (err) {
-            return err;
+            throw err;
         }
     };
 
@@ -155,7 +154,7 @@ export class NotificationsService {
                 type: status
             });
         } catch (err) {
-            return err;
+            throw err;
         }
     };
     
@@ -167,15 +166,14 @@ export class NotificationsService {
       try {
       const notification = await Notification.create({
         _actor: comment._commented_by,
-        _owner: comment.post._posted_by,
+        _owner: comment._post._posted_by,
         _origin_comment: comment._id,
         _origin_post: comment._post,
         message: 'commented on',
         type: 'comment'
       });
       } catch (err) {
-          // ab yaha se error catch ho jaega
-          return err
+        throw err;
       }
    };
     
@@ -187,15 +185,14 @@ export class NotificationsService {
      try {
      const notification = await Notification.create({
        _actor: comment._commented_by,
-       _owner: comment.post._posted_by,
+       _owner: comment._post._posted_by,
        _origin_comment: comment._id,
        _origin_post: comment._post,
        message: 'liked your comment on',
        type: 'like_comment'
      });
      } catch (err) {
-         // ab yaha se error catch ho jaega
-         return err
+        throw err;
      }
   };
 
@@ -212,7 +209,7 @@ export class NotificationsService {
               type: 'follow'
           });
       } catch (err) {
-          return err;
+        throw err;
       }
   };
 
@@ -229,7 +226,7 @@ export class NotificationsService {
               type: 'likes'
           });
       } catch (err) {
-          return err;
+        throw err;
       }
   };
 
@@ -253,7 +250,7 @@ export class NotificationsService {
 
           return notifications;
       } catch (err) {
-          return err;
+        throw err;
       }
   };
 
@@ -276,7 +273,7 @@ export class NotificationsService {
 
           return notifications;
       } catch (err) {
-          return err;
+        throw err;
       }
   };
 
@@ -285,21 +282,21 @@ export class NotificationsService {
    * @param topListId 
    */
   async markRead(topListId: string) {
-      try {
-          const markRead = await Notification.updateOne({
-              $and: [
-                  { read: false },
-                  { _id: { $lte: topListId } }
-              ]
-          }, {
-              $set: {
-                  read: true
-              }
-          });
+    try {
+        const markRead = await Notification.updateOne({
+            $and: [
+                { read: false },
+                { _id: { $lte: topListId } }
+            ]
+        }, {
+            $set: {
+                read: true
+            }
+        });
 
-          return true;
-      } catch (err) {
-          return err;
-      }
+        return true;
+    } catch (err) {
+        throw err;
+    }
   };
 }

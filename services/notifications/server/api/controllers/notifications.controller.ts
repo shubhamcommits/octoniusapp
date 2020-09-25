@@ -200,14 +200,14 @@ export class NotificationsController {
 
         const { topListId } = req.body;
         try{
-        // Call service function for markRead
-        await notificationService.markRead(topListId).then(updated => {
-            return res.status(200).json({
-                message: updated
-            });
-        }).catch(err => {
-            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
-        })
+            // Call service function for markRead
+            await notificationService.markRead(topListId).then(updated => {
+                return res.status(200).json({
+                    message: updated
+                });
+            }).catch(err => {
+                return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+            })
         } catch (err) {
             return sendErr(res, new Error(err), 'Internal Server Error!', 500);
         }
@@ -282,6 +282,7 @@ export class NotificationsController {
     async likeComment(req: Request, res: Response, next: NextFunction) {
         const { comment } = req.body;
         try {
+console.log(comment);
             // Call Service Function for likeComment
             await notificationService.likeComment(comment);
 
