@@ -37,7 +37,7 @@ import ImageDrop from './quill-image-drop/quill.image-drop.js';
 Quill.register('modules/imageDrop', ImageDrop);
 
 // Public Functions
-import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { PublicFunctions } from 'modules/public.functions';
 
 // Environments
 import { environment } from 'src/environments/environment';

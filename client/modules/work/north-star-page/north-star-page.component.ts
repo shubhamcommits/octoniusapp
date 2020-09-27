@@ -1,6 +1,6 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { PostService } from 'src/shared/services/post-service/post.service';
-import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { environment } from 'src/environments/environment';

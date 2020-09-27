@@ -1,6 +1,6 @@
 import { Component, OnInit, Injector, HostListener } from '@angular/core';
 import { GroupsService } from 'src/shared/services/groups-service/groups.service';
-import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { SubSink } from 'subsink';

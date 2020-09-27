@@ -5,7 +5,7 @@ import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, CanDeactivate,
 import { Observable } from 'rxjs';
 import { AdminBillingComponent } from 'modules/admin/admin-billing/admin-billing.component';
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
-import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { PublicFunctions } from 'modules/public.functions';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { AuthService } from 'src/shared/services/auth-service/auth.service';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';

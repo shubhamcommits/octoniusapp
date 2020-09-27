@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Injector, EventEmitter, Output, ViewChild } from '@angular/core';
 import moment from 'moment/moment';
-import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';

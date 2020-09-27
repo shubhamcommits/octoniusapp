@@ -2,7 +2,7 @@ import { Component, OnInit, Injector, Input, EventEmitter, Output } from '@angul
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { SubSink } from 'subsink';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { PublicFunctions } from 'modules/public.functions';
 import { ActivatedRoute } from '@angular/router';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
 import { environment } from 'src/environments/environment';

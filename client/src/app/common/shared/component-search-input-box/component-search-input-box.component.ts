@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Injector, Output, EventEmitter } from '@angular/core';
-import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { PublicFunctions } from 'modules/public.functions';
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
 import { environment } from 'src/environments/environment';
 import { Subject } from 'rxjs/internal/Subject';

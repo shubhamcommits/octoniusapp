@@ -3,7 +3,7 @@ import { Component, OnInit, Input, Injector } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 // Public Functions
-import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { PublicFunctions } from 'modules/public.functions';
 
 // Reconnecting WebSockets
 import ReconnectingWebSocket from 'reconnecting-websocket'
