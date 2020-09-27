@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent, CalendarView } from 'angular-calendar';
 import { ActivatedRoute } from '@angular/router';
-import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment/moment';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 

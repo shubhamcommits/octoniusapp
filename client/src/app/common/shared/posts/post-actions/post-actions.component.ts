@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, Injector } from '@angular/core';
 import { CommentService } from 'src/shared/services/comment-service/comment.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { PublicFunctions } from 'modules/public.functions';
 
 @Component({
   selector: 'app-post-actions',

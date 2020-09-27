@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, SimpleChanges, Injector } from '@angular/core';
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
 import { environment } from 'src/environments/environment';
-import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { PublicFunctions } from 'modules/public.functions';
 
 @Component({
   selector: 'app-search-results',

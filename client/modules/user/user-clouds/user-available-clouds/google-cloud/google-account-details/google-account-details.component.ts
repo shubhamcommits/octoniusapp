@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
+import { GoogleCloudService } from '../services/google-cloud.service';
 
 @Component({
   selector: 'app-google-account-details',
@@ -9,7 +10,8 @@ import { StorageService } from 'src/shared/services/storage-service/storage.serv
 export class GoogleAccountDetailsComponent implements OnInit {
 
   constructor(
-    private storageService: StorageService
+    private storageService: StorageService,
+    private googleCloudService: GoogleCloudService
   ) { }
 
   @Input('googleUser') googleUser: any = this.getUserDataFromStorage()
@@ -25,6 +27,12 @@ export class GoogleAccountDetailsComponent implements OnInit {
 
   getUserDataFromStorage() {
     return (this.storageService.existData('googleUser') === null) ? {} : this.storageService.getLocalData('googleUser')['userData']
+  }
+
+  disconnectGoogleAccount() {
+    localStorage.removeItem('googleUser')
+    sessionStorage.clear()
+    this.googleCloudService.googleAuthSuccessfulBehavior.next(false)
   }
 
 }

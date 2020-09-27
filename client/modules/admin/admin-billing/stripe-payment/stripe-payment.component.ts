@@ -2,7 +2,7 @@ import moment from 'moment/moment';
 import { Component, OnInit, Input, Injector } from '@angular/core';
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { PublicFunctions } from 'modules/public.functions';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { Router } from '@angular/router';

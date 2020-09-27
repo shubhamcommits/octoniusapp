@@ -1,6 +1,6 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { PublicFunctions } from 'modules/public.functions';
 
 @Component({
   selector: 'app-welcome-page',

@@ -5,7 +5,7 @@ import { retry } from 'rxjs/internal/operators/retry';
 import { map } from 'rxjs/internal/operators/map';
 import { SubSink } from 'subsink';
 import { Observable, Observer, fromEvent, merge } from 'rxjs';
-import { PublicFunctions } from './dashboard/public.functions';
+import { PublicFunctions } from '../../modules/public.functions';
 
 // Google API Variable
 declare const gapi: any;

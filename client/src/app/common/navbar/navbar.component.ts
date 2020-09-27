@@ -8,7 +8,7 @@ import { SubSink } from 'subsink';
 import { AuthService } from 'src/shared/services/auth-service/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
-import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { PublicFunctions } from 'modules/public.functions';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 // import { GoogleCloudService } from 'modules/user/user-clouds/user-available-clouds/google-cloud/services/google-cloud.service';
 

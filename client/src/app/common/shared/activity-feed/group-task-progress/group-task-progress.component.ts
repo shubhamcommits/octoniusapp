@@ -1,5 +1,5 @@
 import { Component, OnInit, Injector, Input } from '@angular/core';
-import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { PublicFunctions } from 'modules/public.functions';
 
 @Component({
   selector: 'app-group-task-progress',
