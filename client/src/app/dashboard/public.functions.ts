@@ -740,18 +740,14 @@ export class PublicFunctions {
 
         utilityService.asyncNotification('Please wait we are updating the task status...',
           new Promise((resolve, reject) => {
-
-            const user = this.getCurrentUser();
-
             // Call HTTP Request to change the request
-            postService.changeTaskStatus(postId, status, user['_id'])
-                .then((res) => {
-                    resolve(utilityService.resolveAsyncPromise(`Task status marked as ${status}!`))
-                })
-                .catch(() => {
-                    reject(utilityService.rejectAsyncPromise(`Unable to change the status, please try again!`))
-                })
-
+            postService.changeTaskStatus(postId, status)
+            .then((res) => {
+                resolve(utilityService.resolveAsyncPromise(`Task status marked as ${status}!`))
+            })
+            .catch(() => {
+                reject(utilityService.rejectAsyncPromise(`Unable to change the status, please try again!`))
+            });
           }));
     }
 

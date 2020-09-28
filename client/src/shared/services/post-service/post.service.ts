@@ -219,12 +219,11 @@ export class PostService {
    * @param postId
    * @param status
    */
-  changeTaskStatus(postId: string, status: string, userId: string){
+  changeTaskStatus(postId: string, status: string){
 
     // Call the HTTP Request
     return this._http.put(this.baseURL + `/${postId}/task-status`, {
-      status: status,
-      user: userId
+      status: status
     }).
     toPromise()
   }

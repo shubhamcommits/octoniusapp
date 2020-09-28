@@ -53,13 +53,19 @@ import moment from 'moment';
             }, {
               new: true
             });
+
+          await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-comment`, {
+              comment: comment,
+              post: post
+          });
       
       
           if (comment._content_mentions.length !== 0) {
             // Create Notification for mentions on comments
             // notifications.newCommentMentions(comment);
             await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-comment-mention`, {
-                comment: comment
+                comment: comment,
+                post: post
             });
       
             /*

@@ -814,7 +814,7 @@ export class PostService {
    * @param postId
    * @param status
    */
-  async changeTaskStatus(postId: string, status: string, userId: string) {
+  async changeTaskStatus(postId: string, status: string) {
 
     try {
 
@@ -832,8 +832,7 @@ export class PostService {
       
       if (status !== 'to do') {
         await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/status-change`, {
-          post: post,
-          user: userId
+          post: post
         });
       }
 
