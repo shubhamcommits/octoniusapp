@@ -4,6 +4,7 @@ import moment from 'moment';
 const fs = require('fs');
 import { Readable } from 'stream';
 import { CommentsController } from '../controllers';
+import { sendErr } from '../utils/sendError';
 
 /*  ===============================
  *  -- POSTS Service --
@@ -684,10 +685,11 @@ export class PostService {
         { new: true }
       )
       .lean();
-      
-    await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-follow-post`, {
-      post: post
-    });
+
+      await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-follow-post`, {
+        post: post,
+        follower: userId
+      }).catch(err => sendErr(err, new Error(err), 'Internal Server Error!', 500));
 
     // Find the User 
     const user = await User.findOne

@@ -248,10 +248,10 @@ export class NotificationsController {
     }
 
     async followPost(req: Request, res: Response, next: NextFunction) {
-        const { post } = req.body;
+        const { post, follower } = req.body;
         try {
             // Call Service Function for followPost
-            await notificationService.followPost(post);
+            await notificationService.followPost(post, follower);
 
             // Send status 200 response
             return res.status(200).json({

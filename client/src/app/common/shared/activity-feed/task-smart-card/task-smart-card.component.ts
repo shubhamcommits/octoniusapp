@@ -75,7 +75,6 @@ export class TaskSmartCardComponent implements OnInit {
         ctx.fillText(Math.round(percentageDone) + '%', centerX, centerY);
       }
     }];
-console.log(this.doughnutChartData);
   }
 
   async getUserTodayTasks() {

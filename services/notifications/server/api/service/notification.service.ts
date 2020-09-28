@@ -197,13 +197,13 @@ export class NotificationsService {
   };
 
   /**
-   * This function is responsible to notifying all the user on a new like
+   * This function is responsible to notifying all the user on a new follower
    */
-  async followPost(post: any) {
+  async followPost(post: any, follower: string) {
       try {
           const notification = await Notification.create({
-              _actor: post._posted_by,
-              _owner: post.task._assigned_to,
+              _actor: follower,
+              _owner: post._posted_by,
               _origin_post: post._id,
               message: 'follows',
               type: 'follow'
