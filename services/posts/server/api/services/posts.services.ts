@@ -4,6 +4,7 @@ import moment from 'moment';
 const fs = require('fs');
 import { Readable } from 'stream';
 import { CommentsController } from '../controllers';
+import { sendErr } from '../utils/sendError';
 
 /*  ===============================
  *  -- POSTS Service --
@@ -623,7 +624,8 @@ export class PostService {
       .lean();
       
     await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-like-post`, {
-      post: post
+      post: post,
+      user: userId
     });
 
     // Find the User 
@@ -684,10 +686,11 @@ export class PostService {
         { new: true }
       )
       .lean();
-      
-    await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-follow-post`, {
-      post: post
-    });
+
+      await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-follow-post`, {
+        post: post,
+        follower: userId
+      }).catch(err => sendErr(err, new Error(err), 'Internal Server Error!', 500));
 
     // Find the User 
     const user = await User.findOne
@@ -811,7 +814,7 @@ export class PostService {
    * @param postId
    * @param status
    */
-  async changeTaskStatus(postId: string, status: string) {
+  async changeTaskStatus(postId: string, status: string, userId: string) {
 
     try {
 
@@ -829,7 +832,8 @@ export class PostService {
       
       if (status !== 'to do') {
         await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/status-change`, {
-          post: post
+          post: post,
+          user: userId
         });
       }
 

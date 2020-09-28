@@ -41,9 +41,9 @@ export class TaskSmartCardComponent implements OnInit {
     this.today_task_count = this.todayTasks.length;
 
     /* Chart Setup */
-    const percentageDone = (this.todayTasks.length > 0) ? ((this.done_task_count*100)/this.todayTasks.length) : 0;
-    this.doughnutChartLabels = ['To Do', 'In Progress', 'Done'];
-    this.doughnutChartData = [this.to_do_task_count, this.in_progress_task_count, this.done_task_count];
+    const percentageDone = (this.todayTasks.length + this.overdueTasks.length > 0) ? (((this.done_task_count)*100)/(this.todayTasks.length + this.overdueTasks.length)) : 0;
+    this.doughnutChartLabels = ['To Do', 'In Progress', 'Done', 'Overdue'];
+    this.doughnutChartData = [this.to_do_task_count, this.in_progress_task_count, this.done_task_count, this.overdueTasks.length];
     this.doughnutChartType = 'doughnut';
     this.doughnutChartOptions = {
       cutoutPercentage: 75,
@@ -56,7 +56,8 @@ export class TaskSmartCardComponent implements OnInit {
       backgroundColor: [
         '#FFAB00',
         '#0bc6a0',
-        '#4a90e2'
+        '#4a90e2',
+        '#FF6584'
       ]
     }];
     this.doughnutChartPlugins = [{

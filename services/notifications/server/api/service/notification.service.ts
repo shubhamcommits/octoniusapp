@@ -25,8 +25,7 @@ export class NotificationsService {
                 });
             });
         } catch (err) {
-            // ab yaha se error catch ho jaega
-            return err
+            throw err;
         }
     };
 
@@ -63,7 +62,7 @@ export class NotificationsService {
                 });
             });
         } catch (err) {
-            return err;
+            throw err;
         }
     };
 
@@ -99,7 +98,7 @@ export class NotificationsService {
                 })
             })
         } catch (err) {
-            return err;
+            throw err;
         }
     };
 
@@ -117,7 +116,7 @@ export class NotificationsService {
                 type: 'assignment'
             });
         } catch (err) {
-            return err;
+            throw err;
         }
     };
 
@@ -136,7 +135,7 @@ export class NotificationsService {
                 type: 'assignment'
             });
         } catch (err) {
-            return err;
+            throw err;
         }
     };
 
@@ -145,17 +144,17 @@ export class NotificationsService {
      * @param { _id, task._assigned_to, _posted_by } post
      * @param status
      */
-    async taskStatusChanged(post: any, status: string) {
+    async taskStatusChanged(post: any, status: string, actor: string, owner: string) {
         try {
             const notification = await Notification.create({
-                _actor: post._posted_by,
-                _owner: post.task._assigned_to,
+                _actor: actor,
+                _owner: owner,
                 _origin_post: post._id,
                 message: status,
                 type: status
             });
         } catch (err) {
-            return err;
+            throw err;
         }
     };
     
@@ -163,19 +162,18 @@ export class NotificationsService {
     * This function is responsible for notifying the user getting a new comment
     * @param { _id, _commented_by, _post, _posted_by } comment 
     */
-   async newComment(comment: any) {
+   async newComment(comment: any, owner: string) {
       try {
       const notification = await Notification.create({
         _actor: comment._commented_by,
-        _owner: comment.post._posted_by,
+        _owner: owner,
         _origin_comment: comment._id,
         _origin_post: comment._post,
         message: 'commented on',
         type: 'comment'
       });
       } catch (err) {
-          // ab yaha se error catch ho jaega
-          return err
+        throw err;
       }
    };
     
@@ -183,53 +181,52 @@ export class NotificationsService {
    * This function is responsible for notifying the user´s comment is liked
    * @param { _id, _commented_by, _post, _posted_by } comment 
    */
-  async likeComment(comment: any) {
+  async likeComment(comment: any, owner: string, actor: string) {
      try {
      const notification = await Notification.create({
-       _actor: comment._commented_by,
-       _owner: comment.post._posted_by,
+       _actor: actor,
+       _owner: owner,
        _origin_comment: comment._id,
        _origin_post: comment._post,
        message: 'liked your comment on',
        type: 'like_comment'
      });
      } catch (err) {
-         // ab yaha se error catch ho jaega
-         return err
+        throw err;
      }
   };
 
   /**
-   * This function is responsible to notifying all the user on a new like
+   * This function is responsible to notifying all the user on a new follower
    */
-  async followPost(post: any) {
+  async followPost(post: any, follower: string) {
       try {
           const notification = await Notification.create({
-              _actor: post._posted_by,
-              _owner: post.task._assigned_to,
+              _actor: follower,
+              _owner: post._posted_by,
               _origin_post: post._id,
               message: 'follows',
               type: 'follow'
           });
       } catch (err) {
-          return err;
+        throw err;
       }
   };
 
   /**
    * This function is responsible to notifying all the user on a new like
    */
-  async likePost(post: any) {
+  async likePost(post: any, owner: string, actor: string) {
       try {
           const notification = await Notification.create({
-              _actor: post._posted_by,
-              _owner: post.task._assigned_to,
+              _actor: actor,
+              _owner: owner,
               _origin_post: post._id,
               message: 'likes',
               type: 'likes'
           });
       } catch (err) {
-          return err;
+        throw err;
       }
   };
 
@@ -253,7 +250,7 @@ export class NotificationsService {
 
           return notifications;
       } catch (err) {
-          return err;
+        throw err;
       }
   };
 
@@ -276,7 +273,7 @@ export class NotificationsService {
 
           return notifications;
       } catch (err) {
-          return err;
+        throw err;
       }
   };
 
@@ -285,21 +282,21 @@ export class NotificationsService {
    * @param topListId 
    */
   async markRead(topListId: string) {
-      try {
-          const markRead = await Notification.updateOne({
-              $and: [
-                  { read: false },
-                  { _id: { $lte: topListId } }
-              ]
-          }, {
-              $set: {
-                  read: true
-              }
-          });
+    try {
+        const markRead = await Notification.updateOne({
+            $and: [
+                { read: false },
+                { _id: { $lte: topListId } }
+            ]
+        }, {
+            $set: {
+                read: true
+            }
+        });
 
-          return true;
-      } catch (err) {
-          return err;
-      }
+        return true;
+    } catch (err) {
+        throw err;
+    }
   };
 }

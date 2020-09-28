@@ -303,14 +303,16 @@ import moment from 'moment';
               new: true
             })
             .populate('_liked_by', 'first_name last_name')
+            .populate('_post', '_posted_by')
             .lean();
-      
+
           const user = await User.findOne({
             _id: userId
           }).select('first_name last_name');
       
           await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-like-comment`, {
-            comment: comment
+            comment: comment,
+            user: userId
           });
 
           return {
@@ -340,6 +342,7 @@ import moment from 'moment';
               new: true
             })
             .populate('_liked_by', 'first_name last_name')
+            .populate('post', '_posted_by')
             .lean();
       
           const user = await User.findOne({
