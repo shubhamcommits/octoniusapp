@@ -744,17 +744,16 @@ export class PublicFunctions {
             let userData;
             this.getCurrentUser().then(user => {
               userData = user;
-            });
 
-            // Call HTTP Request to change the request
-            postService.changeTaskStatus(postId, status, userData._id)
-                .then((res) => {
-                    resolve(utilityService.resolveAsyncPromise(`Task status marked as ${status}!`))
-                })
-                .catch(() => {
-                    reject(utilityService.rejectAsyncPromise(`Unable to change the status, please try again!`))
-                })
-
+              // Call HTTP Request to change the request
+              postService.changeTaskStatus(postId, status, userData._id)
+              .then((res) => {
+                  resolve(utilityService.resolveAsyncPromise(`Task status marked as ${status}!`))
+              })
+              .catch(() => {
+                  reject(utilityService.rejectAsyncPromise(`Unable to change the status, please try again!`))
+              })
+            })
           }));
     }
 
