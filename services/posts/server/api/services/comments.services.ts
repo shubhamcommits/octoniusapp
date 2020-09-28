@@ -53,6 +53,10 @@ import moment from 'moment';
             }, {
               new: true
             });
+
+          await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-comment`, {
+              comment: comment
+          });
       
       
           if (comment._content_mentions.length !== 0) {
