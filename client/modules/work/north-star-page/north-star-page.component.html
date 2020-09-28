@@ -2,13 +2,15 @@
 
   <!-- Empty State of tasks starts -->
   <div *ngIf="northStarTasks.length === 0">
-    <img src='assets/images/today_empty_tasks.svg'>
+  <h5 class="title-overview">  There are no missions here... Let's create one.</h5>
   </div>
   <!-- Empty State of tasks ends -->
 
   <h5 class="title-overview" *ngIf="northStarTasks.length > 0">ALL MISSIONS FROM YOUR COMPANY</h5>
+  <img src='assets/images/northstar-hero.svg' style="width: 200px;">
 
   <div *ngFor="let task of northStarTasks; let i = index;">
+    
     <a (click)="openFullscreenModal(task)">
       <!-- My Space Today Tasks -->
       <div>
