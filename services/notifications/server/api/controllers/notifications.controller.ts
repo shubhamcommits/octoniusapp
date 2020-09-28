@@ -223,8 +223,10 @@ export class NotificationsController {
                 await notificationService.taskStatusChanged(post, status, user, post.task._assigned_to);
             }
 
-            post._followers.array.forEach(async follower => {
-                await notificationService.taskStatusChanged(post, status, user, follower);
+            post._followers.forEach(async follower => {
+                if (post.task._assigned_to !== follower && follower !== post._posted_by) {
+                    await notificationService.taskStatusChanged(post, status, user, follower);
+                }
             });
 
             // Send status 200 response
@@ -246,8 +248,11 @@ export class NotificationsController {
             if (comment._post.task._assigned_to !== comment._post._posted_by) {
                 await notificationService.newComment(comment, comment._post.task._assigned_to);
             }
-            comment._post._followers.array.forEach(async follower => {
-                await notificationService.newComment(comment, follower);
+            comment._post._followers.forEach(async follower => {
+                if (follower !== comment._post._posted_by
+                    && comment._post.task._assigned_to !== follower) {
+                    await notificationService.newComment(comment, follower);
+                }
             });
 
             // Send status 200 response
@@ -282,8 +287,10 @@ export class NotificationsController {
             // Call Service Function for likePost
             await notificationService.likePost(post, post._posted_by, user);
 
-            post._followers.array.forEach(async follower => {
-                await notificationService.likePost(post, follower, user);
+            post._followers.forEach(async follower => {
+                if (post._posted_by !== follower) {
+                    await notificationService.likePost(post, follower, user);
+                }
             });
 
             // Send status 200 response
@@ -306,8 +313,10 @@ export class NotificationsController {
                 await notificationService.likeComment(comment, comment._post._posted_by, user);
             }
 
-            comment.post._followers.array.forEach(async follower => {
-                await notificationService.likeComment(comment, follower, user);
+            comment.post._followers.forEach(async follower => {
+                if (comment.post.task._assigned_to !== follower && follower !== comment._commented_by) {
+                    await notificationService.likeComment(comment, follower, user);
+                }
             });
 
             // Send status 200 response
