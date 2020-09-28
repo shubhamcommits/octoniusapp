@@ -218,7 +218,10 @@ export class NotificationsController {
             const status = (post.task.status === 'in progress') ? 'started' : 'completed';
             // Call Service Function for taskStatusChanged
             await notificationService.taskStatusChanged(post, status, user, post._posted_by);
-            await notificationService.taskStatusChanged(post, status, user, post.task._assigned_to);
+
+            if (post.task._assigned_to !== post._posted_by) {
+                await notificationService.taskStatusChanged(post, status, user, post.task._assigned_to);
+            }
 
             post._followers.array.forEach(async follower => {
                 await notificationService.taskStatusChanged(post, status, user, follower);
@@ -240,6 +243,9 @@ export class NotificationsController {
             // Call Service Function for newComment
             await notificationService.newComment(comment, comment._post._posted_by);
 
+            if (comment._post.task._assigned_to !== comment._post._posted_by) {
+                await notificationService.newComment(comment, comment._post.task._assigned_to);
+            }
             comment._post._followers.array.forEach(async follower => {
                 await notificationService.newComment(comment, follower);
             });
@@ -295,7 +301,10 @@ export class NotificationsController {
         try {
             // Call Service Function for likeComment
             await notificationService.likeComment(comment, comment._commented_by, user);
-            await notificationService.likeComment(comment, comment._post._posted_by, user);
+
+            if (comment._post.task._assigned_to !== comment._commented_by) {
+                await notificationService.likeComment(comment, comment._post._posted_by, user);
+            }
 
             comment.post._followers.array.forEach(async follower => {
                 await notificationService.likeComment(comment, follower, user);
