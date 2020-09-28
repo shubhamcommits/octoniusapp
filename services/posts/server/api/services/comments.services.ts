@@ -311,7 +311,8 @@ import moment from 'moment';
           }).select('first_name last_name');
       
           await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-like-comment`, {
-            comment: comment
+            comment: comment,
+            user: userId
           });
 
           return {

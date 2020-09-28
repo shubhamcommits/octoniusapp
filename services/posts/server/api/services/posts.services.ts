@@ -624,7 +624,8 @@ export class PostService {
       .lean();
       
     await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-like-post`, {
-      post: post
+      post: post,
+      user: userId
     });
 
     // Find the User 
@@ -813,7 +814,7 @@ export class PostService {
    * @param postId
    * @param status
    */
-  async changeTaskStatus(postId: string, status: string) {
+  async changeTaskStatus(postId: string, status: string, userId: string) {
 
     try {
 
@@ -831,7 +832,8 @@ export class PostService {
       
       if (status !== 'to do') {
         await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/status-change`, {
-          post: post
+          post: post,
+          user: userId
         });
       }
 
