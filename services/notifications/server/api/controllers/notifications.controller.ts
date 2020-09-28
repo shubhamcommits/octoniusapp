@@ -219,7 +219,7 @@ export class NotificationsController {
             // Call Service Function for taskStatusChanged
             await notificationService.taskStatusChanged(post, status, post.task._assigned_to, post._posted_by);
 
-            if (post.task._assigned_to !== post._posted_by) {
+            if (post.task._assigned_to && post.task._assigned_to !== post._posted_by) {
                 await notificationService.taskStatusChanged(post, status, post.task._assigned_to, post.task._assigned_to);
             }
 
@@ -240,17 +240,20 @@ export class NotificationsController {
     }
 
     async newComment(req: Request, res: Response, next: NextFunction) {
-        const { comment } = req.body;
+        const { comment, post } = req.body;
         try {
             // Call Service Function for newComment
-            await notificationService.newComment(comment, comment._post._posted_by);
+            await notificationService.newComment(comment, post._posted_by);
 
-            if (comment._post.task._assigned_to !== comment._post._posted_by) {
-                await notificationService.newComment(comment, comment._post.task._assigned_to);
+            if (post.task._assigned_to && post.task._assigned_to !== post._posted_by) {
+
+                await notificationService.newComment(comment, post.task._assigned_to);
             }
-            comment._post._followers.forEach(async follower => {
-                if (follower !== comment._post._posted_by
-                    && comment._post.task._assigned_to !== follower) {
+
+            post._followers.forEach(async follower => {
+
+                if (follower !== post._posted_by
+                    && post.task._assigned_to !== follower) {
                     await notificationService.newComment(comment, follower);
                 }
             });
@@ -309,7 +312,7 @@ export class NotificationsController {
             // Call Service Function for likeComment
             await notificationService.likeComment(comment, comment._commented_by, user);
 
-            if (comment._post.task._assigned_to !== comment._commented_by) {
+            if (comment._post._posted_by && comment._post.task._assigned_to !== comment._commented_by) {
                 await notificationService.likeComment(comment, comment._post._posted_by, user);
             }
 

@@ -55,7 +55,8 @@ import moment from 'moment';
             });
 
           await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-comment`, {
-              comment: comment
+              comment: comment,
+              post: post
           });
       
       
@@ -63,7 +64,8 @@ import moment from 'moment';
             // Create Notification for mentions on comments
             // notifications.newCommentMentions(comment);
             await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-comment-mention`, {
-                comment: comment
+                comment: comment,
+                post: post
             });
       
             /*
