@@ -305,7 +305,7 @@ import moment from 'moment';
             .populate('_liked_by', 'first_name last_name')
             .populate('_post', '_posted_by')
             .lean();
-console.log(comment);
+
           const user = await User.findOne({
             _id: userId
           }).select('first_name last_name');

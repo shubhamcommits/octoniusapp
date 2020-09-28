@@ -28,10 +28,10 @@ const INLINE_EDIT_CONTROL_VALUE_ACCESSOR = {
 
 export const MY_FORMATS = {
   parse: {
-    dateInput: 'LL',
+    dateInput: 'MMM d, y',
   },
   display: {
-    dateInput: 'LL',
+    dateInput: 'MMM d, y',
     monthYearLabel: 'MMM YYYY',
     dateA11yLabel: 'LL',
     monthYearA11yLabel: 'MMMM YYYY',
