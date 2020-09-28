@@ -28,7 +28,7 @@
     <div class="col-md-12">
       <!-- Empty State starts -->
       <div *ngIf="notificationsData.unreadNotifications.length === 0 && !(isLoading$ | async)" style="text-align: center; margin-top: 30px;">
-        <img src='assets/images/overview-emptystate.svg' style="width: 50%;">
+        <img src='assets/images/overview-empty-state.svg' style="width: 50%;">
       </div>
       <!-- Empty State ends -->
 
@@ -49,7 +49,7 @@
         <!-- NOTIFICATION ITEM STARTS-->
         <div class="notification-item" *ngFor="let notification of notificationsData?.unreadNotifications;">
           <div class="notification_actor">
-            <img src="{{ baseUrl }}/{{notification?._actor?.profile_pic}}"
+            <img src="{{baseUrl}}/{{notification?._actor?.profile_pic}}"
               onerror="this.src='assets/images/user.png'" alt="" class="feed-avatar"
               style="margin-right:15px">
           </div>
