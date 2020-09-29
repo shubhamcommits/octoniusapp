@@ -152,6 +152,15 @@ const PostSchema = new Schema({
                 type: String,
                 enum: ['Currency $', 'Currency €', 'Percent', 'Number']
             }
+        },
+        
+        start_date: {
+            type: Date,
+            default: null
+        },
+        end_date: {
+            type: Date,
+            default: null
         }
     },
 
