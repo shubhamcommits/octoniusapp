@@ -103,6 +103,24 @@ export class NotificationsService {
     };
 
     /**
+     * This function is responsible for notifying the user on mention on new Folio
+     * @param { _id, _posted_by, _content_mentions } post 
+     */
+    async newFolioMentions(fileId: string, actor: string, owner: string) {
+        try {
+            const notification = await Notification.create({
+                _actor: actor,
+                _owner: owner,
+                _origin_folio: fileId,
+                message: 'mentioned you on',
+                type: 'mention_folio'
+            });
+        } catch (err) {
+            throw err;
+        }
+    };
+
+    /**
      * This function is responsible to notifying all the user on assigning of a new task to them
      * @param { _id, task._assigned_to, _posted_by } post 
      */
@@ -246,6 +264,7 @@ export class NotificationsService {
               .populate({ path: '_origin_post', populate: { path: '_group' } })
               .populate('_origin_comment')
               .populate('_owner', 'first_name last_name profile_pic')
+              .populate('_origin_folio')
               .lean();
 
           return notifications;
@@ -269,6 +288,7 @@ export class NotificationsService {
               .populate({ path: '_origin_post', populate: { path: '_group' } })
               .populate('_origin_comment')
               .populate('_owner', 'first_name last_name profile_pic')
+              .populate('_origin_folio')
               .lean();
 
           return notifications;
