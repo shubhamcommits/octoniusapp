@@ -14,8 +14,8 @@ h5{
 
 
 .pulse_card{
-  height: 70px;
-  padding: 10px;
+  height: 60px;
+  padding: 0 5px;
   background: white;
   width: 100%;
   background: #FFFFFF;
@@ -25,17 +25,15 @@ h5{
   margin: 2px auto;
   display: flex;
   align-items: center;
-  height: 100%;
   cursor: pointer;
 }
 
 .pulse_avatar {
-  flex-basis: 80px;
-  max-width: 80px;
+  // flex-basis: 80px;
+  // max-width: 80px;
   flex: 0 0;
   text-align: center;
   margin-right: 16px;
-
   .feed-avatar {
       width: 50px;
       height: 50px;
@@ -44,25 +42,20 @@ h5{
 }
 
 .pulse_actor {
-  flex-basis: 160px;
-  max-width: 160px;
-  min-width: 160px;
-  flex: 1 1;
+  max-width: 140px;
+  flex: 0 1 140px;
   margin-right: 16px;
 }
 
 .pulse_tweet {
-  flex-basis: 160px;
-  // max-width: 160px;
-  // min-width: 160px;
-  flex: 1 1;
+  min-width: 160px;
+  flex: 1 1 160px;
   font-weight: 700;
 }
 
 .pulse_info {
   flex: 0 1 130px;
   line-height: 60px;
-
 }
 
 .pulse_data {
@@ -78,44 +71,44 @@ h5{
 .pulse-todo-tasks {
   color: #ffffff;
   background: #fd7714;
-  border-radius: 50%;
+  border-radius: 8px;
   font-style: normal;
   font-weight: bold;
   line-height: 18px;
   display: flex;
   align-items: center;
   text-align: center;
-  margin: 10px;
-  padding: 4px 10px;
+  margin: 10px 5px;
+  padding: 0px 10px;
 }
 
 // Group In Progress tasks banner
 .pulse-in-progress-tasks {
   color: #ffffff;
   background: #0bc6a0;
-  border-radius: 50%;
+  border-radius: 8px;
   font-style: normal;
   font-weight: bold;
   line-height: 18px;
   display: flex;
   align-items: center;
   text-align: center;
-  margin: 10px;
-  padding: 4px 10px;
+  margin: 10px 5px;
+  padding: 0px 10px;
 }
 
 // Group Done tasks banner
 .pulse-done-tasks {
   color: #ffffff;
   background: #4a90e2;
-  border-radius: 50%;
+  border-radius: 8px;
   font-style: normal;
   font-weight: bold;
   line-height: 18px;
   display: flex;
   align-items: center;
   text-align: center;
-  margin: 10px;
-  padding: 4px 10px;
+  margin: 10px 5px;
+  padding: 0px 10px;
 }
 
