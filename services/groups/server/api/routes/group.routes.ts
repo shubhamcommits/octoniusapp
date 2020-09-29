@@ -79,6 +79,9 @@ routes.put('/:groupId/settings/shareFiles', group.saveShareFilesSettings);
 // PUT - Enable/Disable BAR
 routes.put('/:groupId/settings/enableRights', group.enableRights);
 
+// PUT - Enable/Disable Group Project Type
+routes.put('/:groupId/settings/enabledProjectType', group.enabledProjectType);
+
 // PUT - Remove custom field value
 routes.put('/:groupId/customFields/removeValue', group.removeCustomFieldValue);
 

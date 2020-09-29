@@ -43,6 +43,10 @@ const GroupSchema = new Schema({
             }]
         }
     ],
+    project_type: {
+        type: Schema.Types.Boolean,
+        default: false,
+    },
     description: {
         type: String,
         default: null

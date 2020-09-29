@@ -182,10 +182,12 @@ export class GroupService {
     }
     if(propertyName === "enabled_rights"){
       return this._http.put(this.baseURL + `/${groupId}/settings/enableRights`, { propertyName, value }).toPromise();
-      
+    }
+    if(propertyName === "enabled_project_type"){
+      return this._http.put(this.baseURL + `/${groupId}/settings/enabledProjectType`, { propertyName, value }).toPromise();
     }
   }
- 
+
 
   /**
    * Makes an HTTP POST request to update a smart group's
