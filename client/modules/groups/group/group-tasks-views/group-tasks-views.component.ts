@@ -70,6 +70,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     // User service
     const userService = this.injector.get(UserService);
 
+    // Update user´s last view
     await userService.updateUser(this.userData);
     await this.publicFunctions.sendUpdatesToUserData(this.userData);
 
