@@ -3,43 +3,52 @@
 <!-- Work Navigation Bar ends -->
 
 <div class="container">
+  <div class="media" style="margin-top: 140px; margin-bottom: 30px;"> 
+    <img src="assets/images/hero-pulse.svg" class="mr-3" style="width: 200px">
+    <div class="media-body">
+      <h5 class="mt-0"> <i class="material-icons">whatshot</i> What is a pulse?</h5>
+     
+      A pulse is a micro announcement from a Group.
+      It’s like twitter for Enterprise. <br>Even if you don’t have access to a group, you can still see what’s happening there.
+      <br>Pulses create transparency and a sense of mission for your organization.
+    </div>
+  </div>
 
   <!-- PULSE GROUPS ITERATOR STARTS -->
   <app-infinite-scroll (scrolled)="onScroll()">
 
-    <div *ngFor="let group of pulseGroups; let i = index; trackBy: utilityService.trackByIndex" class="group-elem">
-      <div class="row"
-        (click)="openModal(group.group_name, this.baseUrl + '/' + group.group_avatar, group.pulse_description ? group.pulse_description: 'Waiting for a new Pulse...', pulseToDoTasks[group._id], pulseInProgressTasks[group._id], pulseDoneTasks[group._id])">
+    <div *ngFor="let group of pulseGroups; let i = index; trackBy: utilityService.trackByIndex" class="pulse_card" (click)="openModal(group.group_name, this.baseUrl + '/' + group.group_avatar, group.pulse_description ? group.pulse_description: 'Waiting for a new Pulse...', pulseToDoTasks[group._id], pulseInProgressTasks[group._id], pulseDoneTasks[group._id])">
+      
 
         <!-- GROUP DETAILS STARTS -->
-        <div class="col-md-1"><img class="feed-avatar" src="{{ this.baseUrl }}/{{group?.group_avatar}}"
+        <div class="pulse_avatar"><img class="feed-avatar" src="{{ this.baseUrl }}/{{group?.group_avatar}}"
             onerror="this.src='assets/images/group.png'" alt="group_avatar">
         </div>
-        <div class="group-name col-md-2"> {{ group.group_name }} </div>
-        <div class="pulse-desc col-md-4">
+        <div class="pulse_actor"> {{ group.group_name }} </div>
+        <div class="pulse_tweet">
           {{ group.pulse_description ? group.pulse_description : "Waiting for a new Pulse..." }}
         </div>
         <!-- GROUP DETAILS ENDS -->
 
-        <!-- SPACE INCREMENTOR STARTS -->
-        <div class="col-md-1"></div>
-        <!-- SPACE INCREMENTOR ENDS -->
+       
 
         <!-- TOTAL TASKS STARTS -->
-        <div class="col-md-2">
-          <div class="group-total-tasks float-left">{{ pulseTotalTasks[group?._id] || 0 }}</div>
-        </div>
+        <!-- <div class="col-md-2 pulse-desc">
+         
+          {{ pulseTotalTasks[group?._id] || 0 }}
+        </div> -->
         <!-- TOTAL TASKS ENDS -->
 
         <!-- TO DO, IN PROGRESS AND DONE TASKS STARTS -->
-        <div class="col-md-2">
-          <div class="group-todo-tasks float-left">{{ pulseToDoTasks[group?._id] || 0 }}</div>
-          <div class="group-in-progress-tasks float-left">{{ pulseInProgressTasks[group?._id] || 0 }}</div>
-          <div class="group-done-tasks float-left ">{{ pulseDoneTasks[group?._id] || 0 }}</div>
+        <div class="pulse_data">
+          <div class="pulse_info muted"> Current work:</div>
+          <span class="pulse-todo-tasks">{{ pulseToDoTasks[group?._id] || 0 }}</span>
+          <span class="pulse-in-progress-tasks">{{ pulseInProgressTasks[group?._id] || 0 }}</span>
+          <span class="pulse-done-tasks">{{ pulseDoneTasks[group?._id] || 0 }}</span>
         </div>
         <!-- TO DO, IN PROGRESS AND DONE TASKS ENDS -->
       </div>
-    </div>
+
 
   </app-infinite-scroll>
   <!-- PULSE GROUPS ITERATOR ENDS -->
