@@ -422,6 +422,8 @@ export class PostService {
           // Add task property details
           postData.task = {
             due_to: (post.date_due_to) ? moment(post.date_due_to).format() : null,
+            start_date: (post.start_date) ? moment(post.start_date).format() : null,
+            end_date: (post.end_date) ? moment(post.end_date).format() : null,
             _assigned_to: post.assigned_to,
             status: post.status,
             unassigned: post.unassigned,

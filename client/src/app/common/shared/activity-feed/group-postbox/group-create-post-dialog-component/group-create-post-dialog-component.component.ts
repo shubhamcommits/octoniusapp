@@ -66,6 +66,9 @@ export class GroupCreatePostDialogComponent implements OnInit {
   // Assigned State of Task
   assigned: boolean = false;
 
+  startDate: any;
+  endDate: any;
+
   // Date Object to map the due dates
   dueDate: any;
   dueTime: any = {
@@ -241,8 +244,18 @@ export class GroupCreatePostDialogComponent implements OnInit {
    * This function is responsible for receiving the date from @module <app-date-picker></app-date-picker>
    * @param dateObject
    */
-  getDate(dateObject: any) {
-    this.dueDate = dateObject.toDate();
+  getDate(dateObject: any, property: string) {
+
+    if (property === 'start_date') {
+      this.startDate = dateObject.toDate();
+    }
+    if (property === 'end_date') {
+      this.endDate = dateObject.toDate();
+    }
+    if (property === 'due_date') {
+      this.dueDate = dateObject.toDate();
+    }
+
     this.updateDetails();
   }
 
@@ -439,6 +452,12 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
       // Task due date
       post.date_due_to = this.dueDate;
+
+console.log(this.groupData);
+      if (this.groupData.project_type) {
+        post.start_date = this.startDate;
+        post.end_date = this.endDate;
+      }
 
       // Task Assigned to
       if (post.unassigned !== null && !post.unassigned) {
