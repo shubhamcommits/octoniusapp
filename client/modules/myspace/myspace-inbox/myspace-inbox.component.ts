@@ -111,4 +111,13 @@ export class MyspaceInboxComponent implements OnInit, OnDestroy {
       this._router.navigate(['/dashboard', 'work', 'groups', 'activity'], {queryParams: { group: groupId, myWorkplace: false, postId: postId }});
     }
   }
+
+  viewFolioNotification(notificationId: string, folioId: string, group: any) {
+
+    // mark notification as read
+    this.markNotificationAsRead(notificationId, this.userData._id);
+
+    const groupId = (group._id) ? group._id : group;
+    this._router.navigate(['/document', folioId], {queryParams: { group: groupId }});
+  }
 }

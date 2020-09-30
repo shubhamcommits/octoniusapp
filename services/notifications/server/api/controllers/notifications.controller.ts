@@ -94,8 +94,6 @@ export class NotificationsController {
 
         const { mention, file, user } = req.body;
 
-console.log(mention);
-
         try {
             // Call Service function for newPostMentions
             await notificationService.newFolioMentions(file, user, mention);

@@ -138,7 +138,7 @@ export class NotificationsService {
                 const notification = await Notification.create({
                     _actor: actor,
                     _owner: user,
-                    _origin_post: file,
+                    _origin_folio: file,
                     message: 'mentioned you on',
                     type: 'mention_folio'
                 });
@@ -317,6 +317,7 @@ export class NotificationsService {
               .populate('_origin_comment')
               .populate('_owner', 'first_name last_name profile_pic')
               .populate('_origin_folio')
+              .populate({ path: '_origin_folio', populate: { path: '_group' } })
               .lean();
 
           return notifications;

@@ -249,7 +249,8 @@ export class FolioEditorComponent implements OnInit {
           let mentionMap = JSON.parse(JSON.stringify(delta.ops[1].insert));
           if (mentionMap.mention && mentionMap.mention.denotationChar === '@') {
             let filesService = this._Injector.get(FilesService);
-            filesService.newFolioMention(mentionMap.mention, this.folioId, this.userData._id);
+            filesService.newFolioMention(mentionMap.mention, this.folioId, this.userData._id)
+              .then(res => res.subscribe(result => console.log(result)));
           }
         }
 
