@@ -90,11 +90,13 @@ export class NotificationsController {
      * @param user
      * @param mention
      */
-    async newFolioMentions(req: Request, res: Response, next: NextFunction) {
+    async newFolioMention(req: Request, res: Response, next: NextFunction) {
 
-        const { file, user, mention } = req.body;
+        const { mention, file, user } = req.body;
+
+console.log(mention);
+
         try {
-            
             // Call Service function for newPostMentions
             await notificationService.newFolioMentions(file, user, mention);
 

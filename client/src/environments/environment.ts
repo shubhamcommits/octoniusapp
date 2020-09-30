@@ -75,7 +75,7 @@ export const environment = {
 
   // Notifications URLs
   NOTIFICATIONS_BASE_URL: `ws://${url.domain}:9000`,
-  NOTFICATIONS_BASE_API_URL: `${url.protocol}://${url.domain}:9000/api`,
+  NOTIFICATIONS_BASE_API_URL: `${url.protocol}://${url.domain}:9000/api`,
 
   // Utilities URLs
   UTILITIES_BASE_URL: `${url.protocol}://${url.domain}:10000`,

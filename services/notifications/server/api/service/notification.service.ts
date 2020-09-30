@@ -1,4 +1,4 @@
-import { Notification, User } from "../models";
+import { Notification, User, File } from "../models";
 import { Readable } from 'stream';
 
 /*  ===============================
@@ -106,14 +106,42 @@ export class NotificationsService {
      * This function is responsible for notifying the user on mention on new Folio
      * @param { _id, _posted_by, _content_mentions } post 
      */
-    async newFolioMentions(fileId: string, actor: string, owner: string) {
+    async newFolioMentions(file: string, actor: string, owner: string) {
         try {
-            const notification = await Notification.create({
-                _actor: actor,
-                _owner: owner,
-                _origin_folio: fileId,
-                message: 'mentioned you on',
-                type: 'mention_folio'
+
+            let fileData: any = await File.findById(file).select('_group')
+            /*
+            .populate([
+                { path: '_group', select: 'group_name group_avatar workspace_name' },
+            ])*/
+            ;
+
+            // Let usersStream
+            let userStream: any;
+
+            // If all members are selected
+            if (owner.includes('all')) {
+
+                // Create Readble Stream from the Event Assignee
+                userStream = Readable.from(await User.find({
+                    _groups: fileData._group
+                }).select('first_name email'))
+            } else {
+
+                // Create Readble Stream from the Event Assignee
+                userStream = Readable.from(await User.find({
+                    _id: owner
+                }).select('first_name email'));
+            }
+
+            await userStream.on('data', async (user: any) => {
+                const notification = await Notification.create({
+                    _actor: actor,
+                    _owner: user,
+                    _origin_post: file,
+                    message: 'mentioned you on',
+                    type: 'mention_folio'
+                });
             });
         } catch (err) {
             throw err;

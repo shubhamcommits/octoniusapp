@@ -14,7 +14,7 @@ routes.post('/new-event', notificationFunctions.newEventAssignments);
 routes.post('/new-mention', notificationFunctions.newPostMentions);
 
 //This route is responsible for notifying the user on mention on new Folio
-routes.post('/new-folio-mention', notificationFunctions.newFolioMentions);
+routes.post('/new-folio-mention', notificationFunctions.newFolioMention);
 
 //This route is responsible to notifying all the user on assigning of a new task to them
 routes.post('/new-task', notificationFunctions.newTaskAssignment);
