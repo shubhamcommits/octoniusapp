@@ -1,4 +1,4 @@
-import { Notification, User } from "../models";
+import { Notification, User, File } from "../models";
 import { Readable } from 'stream';
 
 /*  ===============================
@@ -97,6 +97,52 @@ export class NotificationsService {
                     type: 'mention'
                 })
             })
+        } catch (err) {
+            throw err;
+        }
+    };
+
+    /**
+     * This function is responsible for notifying the user on mention on new Folio
+     * @param { _id, _posted_by, _content_mentions } post 
+     */
+    async newFolioMentions(file: string, actor: string, owner: string) {
+        try {
+
+            let fileData: any = await File.findById(file).select('_group')
+            /*
+            .populate([
+                { path: '_group', select: 'group_name group_avatar workspace_name' },
+            ])*/
+            ;
+
+            // Let usersStream
+            let userStream: any;
+
+            // If all members are selected
+            if (owner.includes('all')) {
+
+                // Create Readble Stream from the Event Assignee
+                userStream = Readable.from(await User.find({
+                    _groups: fileData._group
+                }).select('first_name email'))
+            } else {
+
+                // Create Readble Stream from the Event Assignee
+                userStream = Readable.from(await User.find({
+                    _id: owner
+                }).select('first_name email'));
+            }
+
+            await userStream.on('data', async (user: any) => {
+                const notification = await Notification.create({
+                    _actor: actor,
+                    _owner: user,
+                    _origin_folio: file,
+                    message: 'mentioned you on',
+                    type: 'mention_folio'
+                });
+            });
         } catch (err) {
             throw err;
         }
@@ -246,6 +292,7 @@ export class NotificationsService {
               .populate({ path: '_origin_post', populate: { path: '_group' } })
               .populate('_origin_comment')
               .populate('_owner', 'first_name last_name profile_pic')
+              .populate('_origin_folio')
               .lean();
 
           return notifications;
@@ -269,6 +316,8 @@ export class NotificationsService {
               .populate({ path: '_origin_post', populate: { path: '_group' } })
               .populate('_origin_comment')
               .populate('_owner', 'first_name last_name profile_pic')
+              .populate('_origin_folio')
+              .populate({ path: '_origin_folio', populate: { path: '_group' } })
               .lean();
 
           return notifications;
