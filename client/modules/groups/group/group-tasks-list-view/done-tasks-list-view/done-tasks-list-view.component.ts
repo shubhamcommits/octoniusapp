@@ -17,6 +17,7 @@ export class DoneTasksListViewComponent implements OnInit {
   @Input() customFieldsToShow = [];
 
   @Output() closeModalEvent = new EventEmitter();
+  @Output() deleteEvent = new EventEmitter();
 
   collapse = true;
 
@@ -34,11 +35,15 @@ export class DoneTasksListViewComponent implements OnInit {
   openFullscreenModal(postData: any): void {
     const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, postData._group._id, this.columns);
 
+    const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe((data) => {
+      this.deleteEvent.emit(data);
+    });
     const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
       this.closeModalEvent.emit(data);
     });
     dialogRef.afterClosed().subscribe(result => {
       closeEventSubs.unsubscribe();
+      deleteEventSubs.unsubscribe();
     });
   }
 

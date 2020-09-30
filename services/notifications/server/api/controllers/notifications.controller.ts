@@ -85,6 +85,30 @@ export class NotificationsController {
     };
 
     /**
+     * This function is responsible for notifying the user on mention on new Folio
+     * @param file
+     * @param user
+     * @param mention
+     */
+    async newFolioMention(req: Request, res: Response, next: NextFunction) {
+
+        const { mention, file, user } = req.body;
+
+        try {
+            // Call Service function for newPostMentions
+            await notificationService.newFolioMentions(file, user, mention);
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'New Folio Mention succeded!'
+            });
+        } catch (err) {
+            // Error Handling
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    };
+
+    /**
      * This function is responsible to notifying all the user on assigning of a new task to them
      * @param { _id, task._assigned_to, _posted_by } post 
      */

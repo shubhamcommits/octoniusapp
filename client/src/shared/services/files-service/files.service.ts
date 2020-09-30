@@ -10,6 +10,7 @@ export class FilesService {
   constructor(private _http: HttpClient) { }
 
   baseURL = environment.UTILITIES_BASE_API_URL;
+  baseNotificationURL = environment.NOTIFICATIONS_BASE_API_URL;
 
   /**
    * This function is responsible for uploding a file to the group
@@ -96,5 +97,20 @@ export class FilesService {
    */
   deleteFile(fileId: string) {
     return this._http.delete(this.baseURL + `/files/${fileId}`).toPromise();
+  }
+
+  /**
+   * This function is responsible for sending a notification to a user mentioned in a folio
+   * @param mention
+   * @param folioId
+   * @param userId
+   */
+  async newFolioMention(mention: any, fileId: string, userId: string) {
+
+    return this._http.post(this.baseNotificationURL + '/new-folio-mention', {
+      mention: mention.id,
+      file: fileId,
+      user: userId
+    });
   }
 }
