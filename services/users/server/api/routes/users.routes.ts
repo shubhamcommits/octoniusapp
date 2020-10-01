@@ -84,6 +84,7 @@ routes.put('/image', userFileHandler, user.updateImage);
 // - Integrations -
 
 // Add a new token for a specific integration
+routes.get('/integrations/gdrive/token', user.getGdriveToken);
 routes.post('/integrations/gdrive/token', user.addGdriveToken);
 
 // -| STATS |-

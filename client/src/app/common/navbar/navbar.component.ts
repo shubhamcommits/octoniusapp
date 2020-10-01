@@ -136,6 +136,11 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
     await this.initNotifications();
 
+    // This function is responsible for keep the cloud connected and refreshes the token in every 30mins
+    setInterval(async () => {
+      await this.publicFunctions.handleGoogleSignIn()
+    }, 1800000);
+
     console.log('User Data', this.userData);
     console.log('Workspace Data', this.workspaceData);
   }
@@ -182,19 +187,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.subSink.unsubscribe()
   }
-
-  // async getGoogleRefreshToken() {
-
-  //   //it refreshes the access token as soon as we visit any group
-  //   if (localStorage.getItem('google-cloud') != null && localStorage.getItem('google-cloud-token') != null) {
-  //     await this.googleService.refreshGoogleToken();
-  //     //we have set a time interval of 30mins so as to refresh the access_token in the group
-  //     setInterval(async () => {
-  //       await this.googleService.refreshGoogleToken();
-  //       //this.refreshGoogleToken()
-  //     }, 1800000);
-  //   }
-  // }
 
     /**
      * This function fetches the user details, makes a GET request to the server
