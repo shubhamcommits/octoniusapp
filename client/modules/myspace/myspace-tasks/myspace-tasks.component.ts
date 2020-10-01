@@ -1,7 +1,7 @@
 import { Component, OnInit, Injector, ViewChild, TemplateRef } from '@angular/core';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { PublicFunctions } from 'modules/public.functions';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({

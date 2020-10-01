@@ -8,8 +8,9 @@ import { SubSink } from 'subsink';
 import { AuthService } from 'src/shared/services/auth-service/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
-import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { PublicFunctions } from 'modules/public.functions';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+// import { GoogleCloudService } from 'modules/user/user-clouds/user-available-clouds/google-cloud/services/google-cloud.service';
 
 @Component({
   selector: 'app-navbar',
@@ -20,7 +21,7 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 
 export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  @ViewChild('search', {static: false}) search: ElementRef;
+  @ViewChild('search', { static: false }) search: ElementRef;
 
   constructor(
     private storageService: StorageService,
@@ -70,32 +71,32 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     this.isWorkNavbar$.next(false)
   }
 
-  nextCommonNavbarState(){
+  nextCommonNavbarState() {
     this.isCommonNavbar$.next(true);
     this.isGroupNavbar$.next(false)
     this.isWorkNavbar$.next(false)
   }
 
-  nextWorkNavbar(){
+  nextWorkNavbar() {
     this.isWorkNavbar$.next(true);
     this.isCommonNavbar$.next(false)
     this.isGroupNavbar$.next(false)
   }
 
-  ngAfterContentChecked(){
-    this.subSink.add(this.utilityService.routerStateData.subscribe((res)=>{
+  ngAfterContentChecked() {
+    this.subSink.add(this.utilityService.routerStateData.subscribe((res) => {
       if (JSON.stringify(res) != JSON.stringify({})) {
         this.routerState = res['state']
-        if( this.routerState === 'home'){
+        if (this.routerState === 'home') {
           this.nextCommonNavbarState()
         }
-        else if(this.routerState === 'group'){
+        else if (this.routerState === 'group') {
           this.nextGroupNavbarState()
 
           // Check for myWorkplace
           this.myWorkplace = this._ActivatedRoute.snapshot.queryParamMap.get('myWorkplace') ? true : false
         }
-        else if(this.routerState === 'work'){
+        else if (this.routerState === 'work') {
           this.nextWorkNavbar()
         }
       }
@@ -135,11 +136,16 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
     await this.initNotifications();
 
+    // This function is responsible for keep the cloud connected and refreshes the token in every 30mins
+    setInterval(async () => {
+      await this.publicFunctions.handleGoogleSignIn()
+    }, 1800000);
+
     console.log('User Data', this.userData);
     console.log('Workspace Data', this.workspaceData);
   }
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
     const searchRef = this.search;
     //this.addHotKeys(searchRef)
   }
@@ -182,52 +188,52 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subSink.unsubscribe()
   }
 
-  /**
-   * This function fetches the user details, makes a GET request to the server
-   */
-  async getCurrentUser() {
-    return new Promise((resolve, reject) => {
-      try {
-        this.subSink.add(this.userService.getUser()
-          .pipe(retry(3))
-          .subscribe(res => resolve(res['user']))
-        );
-      } catch (err) {
-        console.log('Error occured while fetching the user details', err);
-        this.utilityService.errorNotification('Error occured while fetching your profile details');
-        reject({});
-      }
-    })
-  }
+    /**
+     * This function fetches the user details, makes a GET request to the server
+     */
+    async getCurrentUser() {
+      return new Promise((resolve, reject) => {
+        try {
+          this.subSink.add(this.userService.getUser()
+            .pipe(retry(3))
+            .subscribe(res => resolve(res['user']))
+          );
+        } catch (err) {
+          console.log('Error occured while fetching the user details', err);
+          this.utilityService.errorNotification('Error occured while fetching your profile details');
+          reject({});
+        }
+      })
+    }
 
-  /**
-   * This function is responsible for logging the user out
-   */
-  async logout() {
+    /**
+     * This function is responsible for logging the user out
+     */
+    async logout() {
       try {
         this.utilityService.asyncNotification('Please wait, while we log you out securely...',
-        new Promise((resolve, reject)=>{
-          this.subSink.add(this.authService.signout()
-          .subscribe((res) => {
-            this.storageService.clear();
-            this.publicFunctions.sendUpdatesToGroupData({})
-            this.publicFunctions.sendUpdatesToRouterState({})
-            this.publicFunctions.sendUpdatesToUserData({})
-            this.publicFunctions.sendUpdatesToWorkspaceData({})
-            this.socketService.disconnectSocket();
-            this.router.navigate(['/home'])
-            .then(()=> resolve(this.utilityService.resolveAsyncPromise('Succesfully Logged out!')))
+          new Promise((resolve, reject) => {
+            this.subSink.add(this.authService.signout()
+              .subscribe((res) => {
+                this.storageService.clear();
+                this.publicFunctions.sendUpdatesToGroupData({})
+                this.publicFunctions.sendUpdatesToRouterState({})
+                this.publicFunctions.sendUpdatesToUserData({})
+                this.publicFunctions.sendUpdatesToWorkspaceData({})
+                this.socketService.disconnectSocket();
+                this.router.navigate(['/home'])
+                  .then(() => resolve(this.utilityService.resolveAsyncPromise('Succesfully Logged out!')))
 
-          }, (err) => {
-            console.log('Error occured while logging out!', err);
-            reject(this.utilityService.rejectAsyncPromise('Error occured while logging you out!, please try again!'));
+              }, (err) => {
+                console.log('Error occured while logging out!', err);
+                reject(this.utilityService.rejectAsyncPromise('Error occured while logging you out!, please try again!'));
+              }))
           }))
-        }))
       } catch (err) {
         console.log('Error occured while logging out!', err);
         this.utilityService.errorNotification('Error occured while logging you out!');
       }
-  }
+    }
 
   /**
    * Add Hot Keys
@@ -241,15 +247,15 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   */
 
-  closeModal(){
-    this.utilityService.closeAllModals();
-  }
+    closeModal(){
+      this.utilityService.closeAllModals();
+    }
 
-  openModal(content: any){
-    this.utilityService.openModal(content, {
-      size: 'l',
-      windowClass: 'search'
-    });
-  }
+    openModal(content: any){
+      this.utilityService.openModal(content, {
+        size: 'l',
+        windowClass: 'search'
+      });
+    }
 
-}
+  }

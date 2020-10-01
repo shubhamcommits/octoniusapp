@@ -3,7 +3,7 @@ import { Component, OnInit, Input, Injector} from '@angular/core';
 import { SnotifyService } from 'ng-snotify';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
-import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { PublicFunctions } from 'modules/public.functions';
 
 @Component({
   selector: 'app-group-smart-admin',

@@ -3,7 +3,7 @@ version: '3.6'
 services:
 
   mongodb:
-    image: 'mongo:latest'
+    image: mongo:latest
     volumes:
       - production_db_data:/data/db
     ports:
@@ -361,6 +361,7 @@ services:
     volumes:
       - /usr/app/node_modules
     depends_on:
+      - mongodb
       - mailing-server
       - auths-server
       - groups-server
@@ -386,6 +387,7 @@ services:
     ports:
       - 8080:80
     depends_on:
+      - mongodb
       - mailing-server
       - auths-server
       - groups-server
