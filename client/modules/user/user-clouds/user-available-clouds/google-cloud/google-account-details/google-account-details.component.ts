@@ -14,7 +14,7 @@ export class GoogleAccountDetailsComponent implements OnInit {
     private googleCloudService: GoogleCloudService
   ) { }
 
-  @Input('googleUser') googleUser: any = this.getUserDataFromStorage()
+  @Input('googleUser') googleUser: any = this.getUserDataFromStorage() || {}
 
   googleDriveUsed = 0;
 
@@ -30,9 +30,13 @@ export class GoogleAccountDetailsComponent implements OnInit {
   }
 
   disconnectGoogleAccount() {
-    localStorage.removeItem('googleUser')
-    sessionStorage.clear()
-    this.googleCloudService.googleAuthSuccessfulBehavior.next(false)
+    this.googleCloudService.disconnectGoogleCloud(this.storageService.getLocalData('googleUser')['refreshToken'])
+      .then(() => {
+        localStorage.removeItem('googleUser')
+        sessionStorage.clear()
+        this.googleUser = undefined
+        this.googleCloudService.googleAuthSuccessfulBehavior.next(false)
+      })
   }
 
 }

@@ -353,6 +353,10 @@ export class QuillEditorComponent implements OnInit {
         console.log("An API call triggered this change.");
       } else if (source == 'user') {
 
+        // let driveDivision = document.getElementById('google-drive-file')['innerHTML']
+
+        // let driveDivisionDelta = this.quill.clipboard.convert(driveDivision)
+
         // Get the quill cotents from the editor
         let quillData: any = this.getQuillContents(quill)
 
@@ -364,6 +368,8 @@ export class QuillEditorComponent implements OnInit {
 
         // Get Quill Text
         let quillText = quillData.text
+
+        // quillData.driveDivisionDelta = driveDivisionDelta 
 
         // Set the Mentioned list property
         quillData['mention'] = this.getMentionList(quillContents)

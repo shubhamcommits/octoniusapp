@@ -18,6 +18,7 @@ import { environment } from 'src/environments/environment';
 
 // Google API Variable
 declare const gapi: any;
+declare const google: any;
 
 export class PublicFunctions {
 
@@ -874,7 +875,7 @@ export class PublicFunctions {
                 'scope': environment.scope,
                 'immediate': false,
                 'access_type': 'offline',
-                // 'approval_prompt': 'force',
+                'approval_prompt': 'force',
                 'response_type': 'token code',
                 'grant_type': 'authorization_code'
             })
@@ -887,7 +888,7 @@ export class PublicFunctions {
      * This function handles the google signin result and connect the account to octonius server
      * @param googleSignInResult 
      */
-    async handleGoogleSignIn(googleSignInResult: any) {
+    async handleGoogleSignIn(googleSignInResult?: any) {
 
         // StorageService Instance
         let storageService = this.injector.get(StorageService)
@@ -895,25 +896,49 @@ export class PublicFunctions {
         // Google Service Instance
         let googleService = this.injector.get(GoogleCloudService)
 
+        // Access token variable
+        let access_token: any = null
+
+        // If its a default refresh in the background
+        if (!googleSignInResult) {
+
+            // Fetch the refresh token
+            let refresh_token: any = storageService.getLocalData('googleUser')['refreshToken'] || await this.getRefreshTokenFromUser()
+
+            // Assign the access_token from the refresh token
+            if (refresh_token != null && refresh_token != undefined)
+                this.getGoogleDriveFromUser(refresh_token)
+                    .then((res) => {
+                        access_token = res['access_token']
+                    })
+
+        }
+
         // Check for default state
         if (googleSignInResult && !googleSignInResult.error && googleSignInResult.access_token) {
 
             // Fetch the Google Drive Token Object
-            let googleDriveToken: any = await this.getGoogleDriveTokenFromAuthResult(googleSignInResult.code, googleSignInResult.access_token)
+            let tokenResults: any = await this.getGoogleDriveTokenFromAuthResult(googleSignInResult.code, googleSignInResult.access_token)
+
+            // Set the access_token
+            access_token = tokenResults.access_token
+        }
+
+        if (access_token != null && access_token != undefined) {
 
             // Retrive the access_token and save it to our server
-            let userDetails: any = await this.saveAccessTokenToUser(googleDriveToken.access_token)
+            let userDetails: any = await this.saveAccessTokenToUser(access_token)
 
             // Update the user details with updated token
             await this.sendUpdatesToUserData(userDetails.user)
 
             // Fetch the google user details
-            let googleUserDetails = await this.getGoogleUserDetails(googleDriveToken.access_token)
+            let googleUserDetails = await this.getGoogleUserDetails(access_token)
 
             // Store the google user locally and serialise object in order to store google data locally
             storageService.setLocalData('googleUser', JSON.stringify({
                 'userData': googleUserDetails,
-                'refreshToken': googleDriveToken.access_token
+                'refreshToken': access_token
             }))
 
             // Change the observable state
@@ -922,7 +947,9 @@ export class PublicFunctions {
             // Return google user details
             return googleUserDetails
         }
-            return {}
+
+        // Return google user details
+        return {}
     }
 
     /**
@@ -973,6 +1000,10 @@ export class PublicFunctions {
         })
     }
 
+    /**
+     * This function is responsible for fetching the google user details
+     * @param accessToken 
+     */
     async getGoogleUserDetails(accessToken: string) {
         let googleService = this.injector.get(GoogleCloudService)
         return new Promise(async (resolve) => {
