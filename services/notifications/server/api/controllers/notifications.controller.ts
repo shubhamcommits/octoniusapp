@@ -273,15 +273,15 @@ export class NotificationsController {
 
                 await notificationService.newComment(comment, post.task._assigned_to);
             }
+            if(post._followers) {
+                post._followers.forEach(async follower => {
 
-            post._followers.forEach(async follower => {
-
-                if (follower !== post._posted_by
-                    && post.task._assigned_to !== follower) {
-                    await notificationService.newComment(comment, follower);
-                }
-            });
-
+                    if (follower !== post._posted_by
+                        && post.task._assigned_to !== follower) {
+                        await notificationService.newComment(comment, follower);
+                    }
+                });
+            }
             // Send status 200 response
             return res.status(200).json({
                 message: 'New Comment Succeded!'
