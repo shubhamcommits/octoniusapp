@@ -7,12 +7,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class GanttViewComponent implements OnInit {
 
-  // Current Group Data
-  @Input() groupData: any;
-  // Current User Data
-  @Input() userData: any;
-  // Task Posts array variable
-  tasks = [];
+  @Input() tasks;
 
   constructor() { }
 

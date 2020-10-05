@@ -812,6 +812,42 @@ export class PostService {
   }
 
   /**
+   * This function is responsible for changing the task due date
+   * @param postId
+   * @param date_field
+   * @param newDate
+   */
+  async changeTaskDate(postId: string, date_field: string, newDate: Date) {
+
+    try {
+
+      let field = {};
+      if (date_field === 'start_date') {
+        field = { "task.start_date": newDate }
+      }
+      if (date_field === 'end_date') {
+        field = { "task.end_date": newDate }
+      }
+      
+      // Get post data
+      var post: any = await Post.findOneAndUpdate({
+        _id: postId
+      }, field, {
+        new: true
+      })
+
+      // Populate the post properties
+      post = await this.populatePostProperties(post)
+
+      // Return the post
+      return post;
+
+    } catch (err) {
+      return err
+    }
+  }
+
+  /**
    * This function is responsible for changing the task status
    * @param postId
    * @param status

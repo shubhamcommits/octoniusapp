@@ -280,4 +280,16 @@ export class PostService {
     }).toPromise();
   }
 
+
+  /**
+   * This function is used to save the start or end date of a task
+   * @param postId
+   */
+  saveTaskDates(postId: any, newDate: any, date_field: string) {
+    // Call the HTTP Request
+    return this._http.put(this.baseURL + `/${postId}/update-date`, {
+      newDate: newDate,
+      date_field: date_field
+    }).toPromise();
+  }
 }

@@ -550,6 +550,35 @@ export class PostController {
     }
 
     /**
+     * This function is responsible for changing the task due date
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async changeTaskDate(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch Data from request
+        const { params: { postId }, body: { newDate, date_field } } = req;
+
+        try {
+
+            // Call Service function to change the assignee
+            const post = await postService.changeTaskDate(postId, date_field, newDate)
+                .catch((err) => {
+                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+                })
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Task date updated!',
+                post: post
+            });
+        } catch (err) {
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
      * This function is responsible for changing the task status
      * @param req 
      * @param res 

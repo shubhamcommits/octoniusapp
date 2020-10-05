@@ -1,0 +1,75 @@
+<!-- <p>gantt works!</p> -->
+<div class="scheduler">
+  <header>
+    <!--
+    <div class="rightActions form-inline">
+      <button class="btn btn-sm btn-warning" title="Click to unlock all items" (click)="toggleLock()">
+        <span *ngIf="useLock">Unlock all</span><span *ngIf="!useLock">Use lock</span>
+      </button>
+      <input type="text" class="form-control input-sm" size="7" />
+      <div class="btn btn-default btn-sm" (click)="setEndView(2016, 8, 20)">Set End Date</div>
+    </div>
+    <div class="clearfix hidden-sm hidden-md hidden-lg"></div>
+    -->
+    <div class="centerActions">
+      <div class="Hsep">
+        <div class="btn btn-default btn-sm" (click)="prevCustom(3)"><<</div>
+        <div class="btn btn-default btn-sm" (click)="prevDay()"><</div>
+      </div>
+      <div class="Hsep">
+        <div class="btn btn-default btn-sm" (click)="zoomIn(1)">Zoom In</div>
+        <div class="btn btn-default btn-sm" (click)="centerView(0,2)">Center on today</div>
+        <div class="btn btn-default btn-sm" (click)="zoomOut(1)">Zoom Out</div>
+      </div>
+      <div class="Hsep">
+        <div class="btn btn-default btn-sm" (click)="nextDay()">></div>
+        <div class="btn btn-default btn-sm" (click)="nextCustom(3)">>></div>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+  </header>
+
+  <table>
+    <thead>
+      <tr class="monthLine">
+        <th *ngFor="let month of enumMonths" class="month">{{month.name}}</th><!-- colspan="{{month.numDays}}" -->
+      </tr>
+      <tr class="dayLine">
+        <th *ngFor="let day of enumDays"
+          [ngClass]="{'today': day.today, 'sunday': day.date.getDay() === 0, 'lastDmonth': day.isLastOfMonth}">
+          <!-- <span *ngIf="cellWidth > 18">{{day.num}}</span>-->
+          <span>{{day.num}}</span>
+        </th>
+      </tr>
+    </thead>
+  </table>
+  <div class="timelineContainer">
+    <!--
+    <table>
+      <tbody>
+        <tr>
+          <td *ngFor="let day of enumDays"
+            [ngClass]="{'today': day.today, 'sunday': day.date.getDay() === 0, 'lastDmonth': day.isLastOfMonth}" height="{{gridHeight}}">
+            <span>{{day.date | date:'shortDate'}}</span>
+            <span>{{day.nbEvents}}</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    -->
+    <div class="tasksContainer" tasks-canvas>
+      <task *ngFor="let task of renderedTasks" id="task_{{task._id}}"
+        [task]="task"
+        [ngStyle]="task.task.locScale"
+        [ngClass]="task.task.extraClasses"
+        mwlResizable
+        [enableGhostResize]="true"
+        [resizeEdges]="{ bottom: false, right: true, top: false, left: true }"
+        (resizeEnd)="onResizeEnd(task, $event)">
+      </task>
+
+      <!-- This component helps to create a new element by clicking & drag/drop in the board -->
+      <!-- <task-helper></task-helper> -->
+    </div>
+  </div>
+</div>

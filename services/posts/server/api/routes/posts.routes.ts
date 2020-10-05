@@ -115,6 +115,9 @@ routes.put('/:postId/task-status', postController.changeTaskStatus);
 // PUT - Change task column
 routes.put('/:postId/task-column', postController.changeTaskColumn);
 
+// PUT - Change task start or end date
+routes.put('/:postId/update-date', postController.changeTaskDate);
+
 
 // -| RECENT ACTIVITY |-
 

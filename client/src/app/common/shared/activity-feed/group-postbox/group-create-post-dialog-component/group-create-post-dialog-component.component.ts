@@ -453,7 +453,6 @@ export class GroupCreatePostDialogComponent implements OnInit {
       // Task due date
       post.date_due_to = this.dueDate;
 
-console.log(this.groupData);
       if (this.groupData.project_type) {
         post.start_date = this.startDate;
         post.end_date = this.endDate;
