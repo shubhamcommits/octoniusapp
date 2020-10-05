@@ -1,8 +1,9 @@
 <div class="post-dialog-content">
     <mat-dialog-actions align="end">
         <div class="action-box">
-            <i mat-dialog-close class="material-icons" style="cursor: pointer"
-                (click)="onCloseDialog()">close</i>
+            <a (click)="onCloseDialog()" mat-dialog-close>
+            <i  class="material-icons" style="cursor: pointer">close</i>
+            </a>
         </div>
     </mat-dialog-actions>
 
