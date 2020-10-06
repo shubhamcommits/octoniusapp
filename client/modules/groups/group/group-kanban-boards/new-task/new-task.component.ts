@@ -78,6 +78,7 @@ export class NewTaskComponent implements OnInit {
         _content_mentions: [],
         task: {
           unassigned: true,
+          _assigned_to: null,
           status: 'to do',
           _column: {
             title: this.column.title
