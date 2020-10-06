@@ -212,6 +212,7 @@ export class InlineInputComponent implements ControlValueAccessor, OnInit {
 
   unassignTask() {
     this.domainObject.task.unassigned = 'Yes';
+    this.domainObject.task._assigned_to = null;
     this.value = null;
     this.profilePicUrl = 'assets/images/user.png';
 
