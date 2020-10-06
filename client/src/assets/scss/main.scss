@@ -315,7 +315,7 @@ h2 {
 .cool {
   &:hover {
     background: rgb(245, 246, 247);
-    border-radius: 2rem;
+    // border-radius: 2rem;
   }
 }
 
@@ -866,4 +866,9 @@ input {
   .input-search{
       width:200px !important;
   }
+}
+
+.btn-link:hover{
+  background-color:#f5f6f7 !important;
+  color: #005df5 !important;
 }

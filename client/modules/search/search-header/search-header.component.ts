@@ -1,6 +1,6 @@
 import { Component, OnInit, ElementRef, Injector } from '@angular/core';
 import { SearchService } from 'src/shared/services/search-service/search.service';
-import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { PublicFunctions } from 'modules/public.functions';
 
 @Component({
   selector: 'app-search-header',

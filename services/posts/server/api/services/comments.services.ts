@@ -52,8 +52,7 @@ import moment from 'moment';
               }
             }, {
               new: true
-            });
-
+            }).select('title _posted_by task _content_mentions');
           await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-comment`, {
               comment: comment,
               post: post

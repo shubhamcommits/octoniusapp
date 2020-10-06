@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, Injector, Inject, Input, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { PublicFunctions } from 'modules/public.functions';
 import { environment } from 'src/environments/environment';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';

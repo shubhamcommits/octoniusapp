@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, Injector } from '@angul
 import { environment } from 'src/environments/environment';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
 
 @Component({

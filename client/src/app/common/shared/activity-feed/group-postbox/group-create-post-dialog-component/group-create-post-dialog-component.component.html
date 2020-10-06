@@ -1,8 +1,9 @@
 <div class="post-dialog-content">
     <mat-dialog-actions align="end">
         <div class="action-box">
-            <i mat-dialog-close class="material-icons" style="cursor: pointer"
-                (click)="onCloseDialog()">close</i>
+            <a (click)="onCloseDialog()" mat-dialog-close>
+            <i  class="material-icons" style="cursor: pointer">close</i>
+            </a>
         </div>
     </mat-dialog-actions>
 
@@ -109,8 +110,8 @@
             <!-- Change task status ends -->
 
             <br />
-            <p class="box-title">BAR</p>
-            <div class="ml-3">
+            <p *ngIf="groupData && groupData.enabled_rights" class="box-title">BAR</p>
+            <div *ngIf="groupData && groupData.enabled_rights" class="ml-3">
                 <div (click)="removeBarTag(i, barTag)" *ngFor="let barTag of barTags; let i = index">
                 <div><span class="tag"> {{ barTag }}</span> <i class="material-icons" style="color: red;">clear</i></div>
                 </div>
@@ -124,7 +125,7 @@
                     (barTag)="addNewBarTag($event)">
                 </app-component-search-input-box>
             </div>
-            <br />
+            <br *ngIf="groupData && groupData.enabled_rights" />
 
             <p class="box-title">Section</p>
             <!-- Change task column starts -->
@@ -191,7 +192,7 @@
 
         <!-- Assignee Modal starts -->
         <div class="content-box" *ngIf="postData.type === 'task' || postData.type === 'event'">
-            <p class="box-title">Assigned member</p>
+            <p class="box-title">Assignee</p>
             <app-inline-input *ngIf="postData.type === 'task'"
                 [(ngModel)]="postData.task._assigned_to"
                 [domainObject]="postData"
@@ -203,7 +204,7 @@
                 type="assignee">
             </app-inline-input>
 
-            <p *ngIf="postData.type === 'event'" style="padding-top: 20px;">Assigned to {{ eventAssignedToCount }} member(s)</p>
+            <p *ngIf="postData.type === 'event'" style="padding-top: 20px;">{{ eventAssignedToCount }} member(s)</p>
             <app-component-search-input-box
                 *ngIf="postData.type === 'event' && userData && checkDataExist(userData)"
                 [placeholder]="'Assign...'"

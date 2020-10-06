@@ -4,7 +4,7 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { environment } from 'src/environments/environment';
 import { ActivatedRoute } from '@angular/router';
-import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { PublicFunctions } from 'modules/public.functions';
 import { Subject } from 'rxjs/internal/Subject';
 import { SubSink } from 'subsink';
 import { debounceTime } from 'rxjs/internal/operators/debounceTime';
