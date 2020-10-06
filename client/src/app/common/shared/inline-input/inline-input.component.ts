@@ -229,7 +229,9 @@ export class InlineInputComponent implements ControlValueAccessor, OnInit {
       _content_mentions: this.domainObject._content_mentions,
       tags: this.domainObject.tags,
       _read_by: this.domainObject._read_by,
-      task: this.domainObject.task
+      task: this.domainObject.task,
+      start_date: this.domainObject.task.start_date,
+      end_date: this.domainObject.task.end_date
     };
 
     // If type is task, then add following properties too
