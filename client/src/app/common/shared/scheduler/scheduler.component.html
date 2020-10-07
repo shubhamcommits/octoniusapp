@@ -57,17 +57,14 @@
       </tbody>
     </table>
     -->
-    <div class="tasksContainer" tasks-canvas>
+    <div class="tasksContainer dropTarget" tasks-canvas>
       <task *ngFor="let task of renderedTasks" id="task_{{task._id}}"
         [task]="task"
+        [cellWidth]="cellWidth"
         [ngStyle]="task.task.locScale"
         [ngClass]="task.task.extraClasses"
-        mwlResizable
-        [enableGhostResize]="true"
-        [resizeEdges]="{ bottom: false, right: true, top: false, left: true }"
-        (resizeEnd)="onResizeEnd(task, $event)">
+        (taskSavedEmitter)="taskSaved()">
       </task>
-
       <!-- This component helps to create a new element by clicking & drag/drop in the board -->
       <!-- <task-helper></task-helper> -->
     </div>

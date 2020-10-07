@@ -5,6 +5,8 @@ import { ResizeEvent } from 'angular-resizable-element';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
+import interact from 'interactjs';
+
 @Component({
   selector: 'scheduler',
   templateUrl: './scheduler.component.html',
@@ -54,6 +56,8 @@ export class SchedulerComponent implements OnInit {
     this.viewEnd = this.addDaysToDate(this.currDate, 14);
 
     this.renderView();
+
+    this.initInteractjs();
   }
 
   /*
@@ -136,26 +140,29 @@ export class SchedulerComponent implements OnInit {
       var taskWidth	= taskLength * this.cellWidth;
       var offsetLeft	= Math.floor(offsetDays * this.cellWidth);
 
-      var daysExceed	= 0, extraClass	= task.type + ' ';
+      var daysExceed	= 0, extraClass	= task.type + ' current ';
       // If the task's START date is BEFORE the current displayed view
       if (offsetDays < 0) {
         offsetLeft = 0;				// to stick the element to extreme left
         daysExceed = -offsetDays;	// to trim the total element's width
-        extraClass += 'overLeft ';	// to decorate the element's left boundary
+        // extraClass += 'overLeft ';	// to decorate the element's left boundary
       }
       // If the task's END date is AFTER the current displayed view
       if (eEnd > vEnd) {
         daysExceed = this.daysInPeriod(this.viewEnd, new Date(task.task.end_date), false);
-        extraClass += 'overRight ';	// to decorate the element's right boundary
+        // extraClass += 'overRight ';	// to decorate the element's right boundary
       }
       // If the task's END date is BEFORE TODAY (to illustrate the fact it's in the past)
       if (eEnd < this.currDate)
-        extraClass += 'past ';
+        // extraClass += 'past ';
 
       // If the task is CURRENTLY active (over today)
+      /*
       if (eStart <= this.currDate && eEnd >= this.currDate) {
         extraClass += 'current ';	// to illustrate the fact it's currently active
       }
+      */
+
       // Add some classes to the element
       task.task.extraClasses = extraClass;
 
@@ -323,44 +330,23 @@ export class SchedulerComponent implements OnInit {
     this.renderView();
   };
 
-  async onResizeEnd(task: any, event: ResizeEvent): Promise<void> {
-
-    let taskElement = document.getElementById('task_' + task._id);
-    console.log(taskElement.style);
-    let oldStyle = taskElement.style;
-    taskElement.style.setProperty('position', 'fixed');
-    taskElement.style.setProperty('left', `${event.rectangle.left}px`);
-    taskElement.style.setProperty('top', `${event.rectangle.top}px`);
-    taskElement.style.setProperty('width', `${event.rectangle.width}px`);
-    taskElement.style.setProperty('height', `${event.rectangle.height}px`);
-
-    let offsetDay	= 0;
-    let date_field = '';
-    let newDate;
-    if (event.edges.left) {
-      const numDays = (event.edges.left as number)/this.cellWidth;
-      offsetDay	= (numDays < 1 && numDays >= 0) ? 0 : (numDays < 0) ? Math.round(numDays) - 1 : Math.round(numDays);
-      newDate = this.addDaysToDate(new Date(task.task.start_date), offsetDay);
-      date_field = 'start_date';
-    }
-
-    if (event.edges.right) {
-      const numDays = (event.edges.right as number)/this.cellWidth;
-      offsetDay	= (numDays < 1 && numDays >= 0) ? 1 : (numDays < 0) ? Math.round(numDays) : Math.round(numDays) + 1;
-      newDate = this.addDaysToDate(new Date(task.task.end_date), offsetDay);
-      date_field = 'end_date';
-    }
-
-    await this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
-      this.postService.saveTaskDates(task._id, newDate, date_field).then(res => {
-        resolve(this.utilityService.resolveAsyncPromise(`Task updated!`));
-      }).catch(err => {
-        taskElement.style.setProperty('left', oldStyle.left);
-        taskElement.style.setProperty('top', oldStyle.top);
-        taskElement.style.setProperty('width', oldStyle.width);
-        taskElement.style.setProperty('height', oldStyle.height);
-        reject(this.utilityService.rejectAsyncPromise(`Unable to update the task, please try again!`));
+  initInteractjs() {
+    interact('.dropTarget').dropzone({
+        ondrop: function (event) {
+          console.log(event.relatedTarget.id + ' was dropped into ' + event.target.id);
+        }
+      })
+      .on('dropactivate', function (event) {
+        event.target.classList.add('drop-activated');
       });
-    }));
+  }
+
+  taskSaved(task) {
+console.log(task);
+    const indexTask = this.tasks.findIndex((post: any) => task._id === post._id);
+    if (indexTask !== -1) {
+      this.tasks[indexTask]= task;
+    }
+    this.renderView();
   }
 }
