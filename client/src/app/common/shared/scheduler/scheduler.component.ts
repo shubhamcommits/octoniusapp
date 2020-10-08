@@ -342,7 +342,6 @@ export class SchedulerComponent implements OnInit {
   }
 
   taskSaved(task) {
-console.log(task);
     const indexTask = this.tasks.findIndex((post: any) => task._id === post._id);
     if (indexTask !== -1) {
       this.tasks[indexTask]= task;

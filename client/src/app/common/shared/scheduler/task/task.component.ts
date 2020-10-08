@@ -1,10 +1,9 @@
-import { AfterViewInit, Component, ElementRef, Input, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
 import interact from 'interactjs';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { EventEmitter } from 'protractor';
 
 @Component({
   selector: 'task',
@@ -49,38 +48,25 @@ export class TaskComponent implements OnInit, AfterViewInit {
         resizeRight = event.rect.right;
         initialX = (parseFloat(event.target.getAttribute('data-x')) || 0);
       },
-      listeners: {
-        move(event) {
-          var target = event.target;
-          var x = (parseFloat(target.getAttribute('data-x')) || 0);
-          var y = (parseFloat(target.getAttribute('data-y')) || 0);
+      onmove: (event) => {
+        var target = event.target;
+        var x = (parseFloat(target.getAttribute('data-x')) || 0);
+        var y = (parseFloat(target.getAttribute('data-y')) || 0);
 
-          // update the element's style
-          target.style.width = event.rect.width + 'px';
-          // target.style.height = event.rect.height + 'px'
+        // update the element's style
+        target.style.width = event.rect.width + 'px';
+        // target.style.height = event.rect.height + 'px'
 
-          // translate when resizing from top or left edges
-          x += event.deltaRect.left;
-          // y += event.deltaRect.top
+        // translate when resizing from top or left edges
+        x += event.deltaRect.left;
+        // y += event.deltaRect.top
 
-          target.style.webkitTransform = target.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+        target.style.webkitTransform = target.style.transform = 'translate(' + x + 'px,' + y + 'px)';
 
-          target.setAttribute('data-x', x);
-          // target.setAttribute('data-y', y)
-          // target.textContent = Math.round(event.rect.width) + '\u00D7' + Math.round(event.rect.height)
-        }
+        target.setAttribute('data-x', x);
+        // target.setAttribute('data-y', y)
+        // target.textContent = Math.round(event.rect.width) + '\u00D7' + Math.round(event.rect.height)
       },
-      modifiers: [
-        // keep the edges inside the parent
-        interact.modifiers.restrictEdges({
-          outer: 'parent'
-        }),
-
-        // minimum size
-        interact.modifiers.restrictSize({
-          min: { width: 100, height: 50 }
-        })
-      ],
       onend: (event) => {
         var target = event.target;
         var x = initialX;
@@ -151,6 +137,17 @@ export class TaskComponent implements OnInit, AfterViewInit {
           });
         }));
       },
+      modifiers: [
+        // keep the edges inside the parent
+        interact.modifiers.restrictEdges({
+          outer: 'parent'
+        }),
+
+        // minimum size
+        interact.modifiers.restrictSize({
+          min: { width: 100, height: 50 }
+        })
+      ],
       inertia: true
     })
     /*

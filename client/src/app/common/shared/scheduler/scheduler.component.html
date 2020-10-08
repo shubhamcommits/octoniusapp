@@ -63,7 +63,7 @@
         [cellWidth]="cellWidth"
         [ngStyle]="task.task.locScale"
         [ngClass]="task.task.extraClasses"
-        (taskSavedEmitter)="taskSaved()">
+        (taskSavedEmitter)="taskSaved($event)">
       </task>
       <!-- This component helps to create a new element by clicking & drag/drop in the board -->
       <!-- <task-helper></task-helper> -->
