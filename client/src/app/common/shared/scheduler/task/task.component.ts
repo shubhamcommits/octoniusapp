@@ -39,14 +39,12 @@ export class TaskComponent implements OnInit, AfterViewInit {
 
     let resizeRight = 0;
     let resizeLeft = 0;
-    let initialX = 0;
 
     interact('#task_' + this.task._id).resizable({
       edges: { left: true, right: true, bottom: false, top: false },
       onstart: (event) => {
         resizeLeft = event.rect.left;
         resizeRight = event.rect.right;
-        initialX = (parseFloat(event.target.getAttribute('data-x')) || 0);
       },
       onmove: (event) => {
         var target = event.target;
@@ -55,23 +53,15 @@ export class TaskComponent implements OnInit, AfterViewInit {
 
         // update the element's style
         target.style.width = event.rect.width + 'px';
-        // target.style.height = event.rect.height + 'px'
 
         // translate when resizing from top or left edges
         x += event.deltaRect.left;
-        // y += event.deltaRect.top
 
         target.style.webkitTransform = target.style.transform = 'translate(' + x + 'px,' + y + 'px)';
 
         target.setAttribute('data-x', x);
-        // target.setAttribute('data-y', y)
-        // target.textContent = Math.round(event.rect.width) + '\u00D7' + Math.round(event.rect.height)
       },
       onend: (event) => {
-        var target = event.target;
-        var x = initialX;
-        var y = (parseFloat(target.getAttribute('data-y')) || 0);
-
         let offsetDay	= 0;
         let date_field = '';
         let newDate;
@@ -86,14 +76,12 @@ export class TaskComponent implements OnInit, AfterViewInit {
             } else {
               offsetDay	= numDaysRound;
             }
-            x += (offsetDay * this.cellWidth);
           } else {
             if (decimals < 0.5) {
               offsetDay	= numDaysRound;
             } else {
               offsetDay	= numDaysRound - 1;
             }
-            x -= (offsetDay * this.cellWidth);
           }
 
           newDate = this.addDaysToDate(new Date(this.task.task.start_date), offsetDay);
@@ -111,22 +99,17 @@ export class TaskComponent implements OnInit, AfterViewInit {
             } else {
               offsetDay	= numDaysRound + 1;
             }
-            x += (offsetDay * this.cellWidth);
           } else {
             if (decimals < 0.5) {
               offsetDay	= numDaysRound + 1;
             } else {
               offsetDay	= numDaysRound;
             }
-            x -= (offsetDay * this.cellWidth);
           }
 
           newDate = this.addDaysToDate(new Date(this.task.task.end_date), offsetDay);
           date_field = 'end_date';
         }
-
-        initialX = 0;
-        target.style.webkitTransform = target.style.transform = 'translate(' + x + 'px,' + y + 'px)';
 
         this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
           this.postService.saveTaskDates(this.task._id, newDate, date_field).then(res => {
