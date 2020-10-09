@@ -133,23 +133,83 @@ export class TaskComponent implements OnInit, AfterViewInit {
       ],
       inertia: true
     })
-    /*
     .draggable({
-      startAxis: 'x',
-      lockAxis: 'x',
-      listeners: {
-        start (event) {
-          console.log(event);
-          console.log(event.type, event.target)
-        },
-        move (event) {
-          position.x += event.dx
-          position.y += event.dy
-          event.target.style.transform = `translate(${position.x}px, ${position.y}px)`;
-        },
+      startAxis: 'xy',
+      // lockAxis: 'x',
+      onstart: (event) => {
+        resizeLeft = event.rect.left;
+        resizeRight = event.rect.right;
+      },
+      onmove: (event) => {
+        var target = event.target
+        // keep the dragged position in the data-x/data-y attributes
+        var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx
+        var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy
+
+        // translate the element
+        target.style.webkitTransform =
+          target.style.transform =
+            'translate(' + x + 'px, ' + y + 'px)'
+
+        // update the posiion attributes
+        target.setAttribute('data-x', x)
+        target.setAttribute('data-y', y)
+      },
+      onend: (event) => {
+
+        let offsetDay	= 0;
+        const numDays = (event.rect.left - resizeLeft)/this.cellWidth;
+        const numDaysRound = Math.round(numDays);
+        const decimals = numDays % 1;
+
+        if (numDays < 0) {
+          if (decimals < 0 && decimals > -0.5) {
+            offsetDay	= numDaysRound - 1;
+          } else {
+            offsetDay	= numDaysRound;
+          }
+        } else {
+          if (decimals < 0.5) {
+            offsetDay	= numDaysRound;
+          } else {
+            offsetDay	= numDaysRound - 1;
+          }
+        }
+
+        const newStartDate = this.addDaysToDate(new Date(this.task.task.start_date), offsetDay);
+        const newEndDate = this.addDaysToDate(new Date(this.task.task.end_date), offsetDay);
+
+        this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise(async (resolve, reject) => {
+          await this.postService.saveTaskDates(this.task._id, newStartDate, 'start_date').then(res => {
+            this.task = res['post'];
+          }).catch(err => {
+            reject(this.utilityService.rejectAsyncPromise(`Unable to update the task, please try again!`));
+          });
+
+          this.postService.saveTaskDates(this.task._id, newEndDate, 'end_date').then(res => {
+            event.target.remove();
+            this.taskSavedEmitter.emit(res['post']);
+            resolve(this.utilityService.resolveAsyncPromise(`Task updated!`));
+          }).catch(err => {
+            reject(this.utilityService.rejectAsyncPromise(`Unable to update the task, please try again!`));
+          });
+        }));
       }
     });
-    */
+/*
+   .draggable({
+      inertia: true,
+      modifiers: [
+        interact.modifiers.restrictRect({
+          restriction: 'parent',
+          endOnly: true
+        })
+      ],
+      autoScroll: true,
+      // dragMoveListener from the dragging demo above
+      onmove: (event) => {this.dragMoveListener(event)}
+    })
+*/
   }
 
   /**

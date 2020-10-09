@@ -173,6 +173,7 @@
 	cursor: not-allowed;
 	padding: 15px 10%;
 }
+/*
 .scheduler task.current {
 	background: linear-gradient(45deg, transparent, transparent 40px, rgba(255,0,0,0.15) 40px, rgba(255,0,0,0.15) 80px, transparent 80px, transparent);
 	background-size: 120px;
@@ -183,6 +184,7 @@
 	-o-animation: animStripes 5s linear infinite;
 	animation: animStripes 5s linear infinite;
 }
+*/
 
 /***** Scheduler task helper (when drag & drop) *****/
 .scheduler taskhelper {

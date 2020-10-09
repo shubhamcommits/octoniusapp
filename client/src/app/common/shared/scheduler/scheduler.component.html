@@ -57,12 +57,12 @@
       </tbody>
     </table>
     -->
-    <div class="tasksContainer dropTarget" tasks-canvas>
-      <task *ngFor="let task of renderedTasks" id="task_{{task._id}}"
+    <div class="tasksContainer">
+      <task *ngFor="let task of renderedTasks"
+        id="task_{{task._id}}"
         [task]="task"
         [cellWidth]="cellWidth"
         [ngStyle]="task.task.locScale"
-        [ngClass]="task.task.extraClasses"
         (taskSavedEmitter)="taskSaved($event)">
       </task>
       <!-- This component helps to create a new element by clicking & drag/drop in the board -->

@@ -38,8 +38,8 @@ export class SchedulerComponent implements OnInit {
   taskMargin = 10; // Margin above events elements for spacing
   formatMonth = 'MMMM yyyy';		// The JS date format for the month display in header
   formatDayLong = 'EEEE MMMM dd';	// The JS date format for the long display of dates (see https://docs.angularjs.org/api/ng/filter/date)
-  dayStartHour = 8;				// The hour number at which the day begins (default 08:00)
-  dayEndHour = 20;				// The hour number at which the day ends (default 20:00)
+  // dayStartHour = 8;				// The hour number at which the day begins (default 08:00)
+  // dayEndHour = 20;				// The hour number at which the day ends (default 20:00)
 
   constructor(
     public datepipe: DatePipe,
@@ -57,7 +57,7 @@ export class SchedulerComponent implements OnInit {
 
     this.renderView();
 
-    this.initInteractjs();
+//    this.initInteractjs();
   }
 
   /*
@@ -97,7 +97,7 @@ export class SchedulerComponent implements OnInit {
         nbTasks: 0,
         today: today,
         isLastOfMonth: isLastOfMonth,
-        enumHours: this.listHoursInDay()
+        // enumHours: this.listHoursInDay()
       });
 
       // Populate the list of all months
@@ -140,7 +140,9 @@ export class SchedulerComponent implements OnInit {
       var taskWidth	= taskLength * this.cellWidth;
       var offsetLeft	= Math.floor(offsetDays * this.cellWidth);
 
-      var daysExceed	= 0, extraClass	= task.type + ' current ';
+      var daysExceed	= 0;
+      var extraClass	= task.type;// + ' current ';
+
       // If the task's START date is BEFORE the current displayed view
       if (offsetDays < 0) {
         offsetLeft = 0;				// to stick the element to extreme left
@@ -244,12 +246,14 @@ export class SchedulerComponent implements OnInit {
    *
    * @returns {ARRAY} The list of all hours within a working day
    */
+  /*
   listHoursInDay() {
     var enumHours = [];
     for (var h = this.dayStartHour; h < (this.dayEndHour +1); h++)
       enumHours.push({ num: h, title: ('00' + h).substr(-2) });
     return enumHours;
   }
+  */
 
   /*
   * Offset view to previous day
@@ -330,16 +334,15 @@ export class SchedulerComponent implements OnInit {
     this.renderView();
   };
 
+/*
   initInteractjs() {
     interact('.dropTarget').dropzone({
         ondrop: function (event) {
           console.log(event.relatedTarget.id + ' was dropped into ' + event.target.id);
         }
-      })
-      .on('dropactivate', function (event) {
-        event.target.classList.add('drop-activated');
       });
   }
+*/
 
   taskSaved(task) {
     const indexTask = this.tasks.findIndex((post: any) => task._id === post._id);
