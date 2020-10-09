@@ -1,0 +1,67 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-3 box">
+      <!-- Task Smart Card Starts -->
+      <app-work-statistics-card></app-work-statistics-card>
+      <!-- Task Smart Card Ends -->
+    </div>
+
+    <div class="col-md-3 box">
+      <!-- Task Smart Card Starts -->
+      <app-workload-card></app-workload-card>
+      <!-- Task Smart Card Ends -->
+    </div>
+
+    <div class="col-md-3 box">
+      <!-- Task Smart Card Starts -->
+      <app-velocity-card></app-velocity-card>
+      <!-- Task Smart Card Ends -->
+    </div>
+
+    <div class="col-md-3 box">
+      <!-- Task Smart Card Starts -->
+      <app-pulse-card></app-pulse-card>
+      <!-- Task Smart Card Ends -->
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3 box">
+      <!-- Task Smart Card Starts -->
+      <app-people-directory-card></app-people-directory-card>
+      <!-- Task Smart Card Ends -->
+    </div>
+
+    <div class="col-md-3 box">
+      <!-- Task Smart Card Starts -->
+      <app-organizational-structure-card></app-organizational-structure-card>
+      <!-- Task Smart Card Ends -->
+    </div>
+
+    <div class="col-md-3 box">
+      <!-- Task Smart Card Starts -->
+      <app-company-objectives-card></app-company-objectives-card>
+      <!-- Task Smart Card Ends -->
+    </div>
+
+    <div class="col-md-3 box">
+      <!-- Task Smart Card Starts -->
+      <app-engagement-card></app-engagement-card>
+      <!-- Task Smart Card Ends -->
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <!-- Task Smart Card Starts -->
+      <app-global-performance-card></app-global-performance-card>
+      <!-- Task Smart Card Ends -->
+    </div>
+  </div>
+
+  <!-- Loading Spinner Starts -->
+  <ng-container *ngIf="isLoading$ | async">
+    <app-loading-spinner class="media"></app-loading-spinner>
+  </ng-container>
+  <!-- Loading Spinner Ends -->
+</div>
