@@ -183,29 +183,22 @@ export class BillingControllers {
                     message = 'Your subscription is no longer valid';
                     status = false;
                 } else {
-                    try {
-                        // update the workspace data in the database
-                        await Workspace.findOneAndUpdate({
-                            _id: workspaceId
-                        }, {
-                            $set: {
-                                'billing.current_period_end': subscription.current_period_end,
-                                'billing.subscription_id': subscription.id,
-                                'billing.cancelled': false
-                            }
-                        }, {
-                            new: true
-                        }).select('billing')
-    
-                        message = 'You have a valid subscription';
-                        status = true;
-                    } catch(err) {
-                        message = 'No payment yet';
-                        status = false;
-                        
-                        sendError(res, err, 'Internal Server Error!', 500);
-                    }
+                    message = 'You have a valid subscription';
+                    status = true;
                 }
+
+                // update the workspace data in the database
+                await Workspace.findOneAndUpdate({
+                    _id: workspaceId
+                }, {
+                    $set: {
+                        'billing.current_period_end': subscription.current_period_end,
+                        'billing.subscription_id': subscription.id,
+                        'billing.cancelled': false
+                    }
+                }, {
+                    new: true
+                }).select('billing')
             }
 
             // Send the status 200 response 
