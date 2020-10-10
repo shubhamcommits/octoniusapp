@@ -28,7 +28,7 @@
         <!-- - {{ payment.period_end | amFromUnix | amDateFormat:'MMMM Do YYYY' }}-->
       </span>
       <span>{{ payment.amount/100 | currency: '$': 'symbol': '.2-2' }}</span>
-      <span>{{ payment.outcome.seller_message }}</span>
+      <span>{{ payment.status }}</span>
     </li>
   </ul>
 </div>

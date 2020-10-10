@@ -245,7 +245,7 @@ export class BillingControllers {
         try {
             const { customerId } = req.params;
 
-            let charges = await stripe.charges.list({
+            let charges = await stripe.paymentIntents.list({
                 customer: customerId
             });
 
