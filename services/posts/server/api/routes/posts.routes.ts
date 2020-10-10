@@ -101,6 +101,9 @@ routes.get('/week-events', postController.getThisMonthEvents);
 // This route is used to get next 5 events for this week
 routes.get('/next-events', postController.getNextEvents);
 
+// This route is used to get the workspace's posts
+routes.get('/workspace/posts', postController.getWorspacePosts);
+
 // -| TASKS |-
 
 // PUT - Change task assignee
