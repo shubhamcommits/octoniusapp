@@ -153,7 +153,7 @@ export class BillingControllers {
 
             // Fetch the current_period_end value
             const workspace: any = await Workspace.findOne({ _id: workspaceId })
-                .select('billing.current_period_end');
+                .select('billing');
 
             let message = '';
             let status = true;
@@ -172,7 +172,41 @@ export class BillingControllers {
                 status = moment().isBetween(workspace.created_date, moment(workspace.created_date).add(14, 'days'));
             }
 
-            // TODO Add a check to stripe if the payment was done in stripe. Is it needed?
+            // Check to stripe if the payment was done in stripe
+            if (!status) {
+
+                const subscription = await stripe.subscriptions.retrieve(
+                    workspace.billing.subscription_id
+                );
+
+                if (subscription.current_period_end < moment().unix()) {
+                    message = 'Your subscription is no longer valid';
+                    status = false;
+                } else {
+                    try {
+                        // update the workspace data in the database
+                        await Workspace.findOneAndUpdate({
+                            _id: workspaceId
+                        }, {
+                            $set: {
+                                'billing.current_period_end': subscription.current_period_end,
+                                'billing.subscription_id': subscription.id,
+                                'billing.cancelled': false
+                            }
+                        }, {
+                            new: true
+                        }).select('billing')
+    
+                        message = 'You have a valid subscription';
+                        status = true;
+                    } catch(err) {
+                        message = 'No payment yet';
+                        status = false;
+                        
+                        sendError(res, err, 'Internal Server Error!', 500);
+                    }
+                }
+            }
 
             // Send the status 200 response 
             res.status(200).json({
