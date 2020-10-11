@@ -1,15 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-pulse-card',
   templateUrl: './pulse-card.component.html',
   styleUrls: ['./pulse-card.component.scss']
 })
-export class PulseCardComponent implements OnInit {
+export class PulseCardComponent implements OnInit, OnChanges {
+
+  @Input() period;
 
   constructor() { }
 
   ngOnInit() {
+    this.initView();
+  }
+
+  ngOnChanges() {
+    console.log(this.period);
+    this.initView();
+  }
+
+  async initView() {
+    console.log(this.period);
   }
 
 }

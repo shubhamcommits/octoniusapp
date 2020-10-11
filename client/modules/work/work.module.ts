@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { WorkRoutingModule } from './work-routing.module';
@@ -16,6 +16,7 @@ import { OrganizationalStructureCardComponent } from './dashboard-page/organizat
 import { CompanyObjectivesCardComponent } from './dashboard-page/company-objectives-card/company-objectives-card.component';
 import { EngagementCardComponent } from './dashboard-page/engagement-card/engagement-card.component';
 import { GlobalPerformanceCardComponent } from './dashboard-page/global-performance-card/global-performance-card.component';
+import { MatSelectModule } from '@angular/material';
 
 
 @NgModule({
@@ -38,7 +39,11 @@ import { GlobalPerformanceCardComponent } from './dashboard-page/global-performa
   imports: [
     CommonModule,
     SharedModule,
-    WorkRoutingModule
+    WorkRoutingModule,
+    MatSelectModule
+  ],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA
   ]
 })
 export class WorkModule { }

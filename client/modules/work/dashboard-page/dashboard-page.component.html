@@ -1,67 +1,76 @@
 <div class="container">
   <div class="row">
-    <div class="col-md-3 box">
-      <!-- Task Smart Card Starts -->
-      <app-work-statistics-card></app-work-statistics-card>
-      <!-- Task Smart Card Ends -->
-    </div>
-
-    <div class="col-md-3 box">
-      <!-- Task Smart Card Starts -->
-      <app-workload-card></app-workload-card>
-      <!-- Task Smart Card Ends -->
-    </div>
-
-    <div class="col-md-3 box">
-      <!-- Task Smart Card Starts -->
-      <app-velocity-card></app-velocity-card>
-      <!-- Task Smart Card Ends -->
-    </div>
-
-    <div class="col-md-3 box">
-      <!-- Task Smart Card Starts -->
-      <app-pulse-card></app-pulse-card>
-      <!-- Task Smart Card Ends -->
+    <div><p>Everything happening in your organization</p></div>
+    <div>
+      <mat-form-field>
+        <mat-select ngDefaultControl
+                (selectionChange)="periodSelected($event)"
+                (click)="$event.stopPropagation()"
+                [(value)]="period"
+                name="period">
+            <mat-option *ngFor="let p of periods" [value]="p.key">{{ p.value }}</mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
   </div>
 
   <div class="row">
     <div class="col-md-3 box">
-      <!-- Task Smart Card Starts -->
-      <app-people-directory-card></app-people-directory-card>
-      <!-- Task Smart Card Ends -->
+      <!-- Work Statistics Card Starts -->
+      <app-work-statistics-card [period]="period"></app-work-statistics-card>
+      <!-- Work Statistics Card Ends -->
     </div>
 
     <div class="col-md-3 box">
-      <!-- Task Smart Card Starts -->
-      <app-organizational-structure-card></app-organizational-structure-card>
-      <!-- Task Smart Card Ends -->
+      <!-- Workload Card Starts -->
+      <app-workload-card [period]="period"></app-workload-card>
+      <!-- Workload Card Ends -->
     </div>
 
     <div class="col-md-3 box">
-      <!-- Task Smart Card Starts -->
-      <app-company-objectives-card></app-company-objectives-card>
-      <!-- Task Smart Card Ends -->
+      <!-- Velocity Card Starts -->
+      <app-velocity-card [period]="period"></app-velocity-card>
+      <!-- Velocity Card Ends -->
     </div>
 
     <div class="col-md-3 box">
-      <!-- Task Smart Card Starts -->
-      <app-engagement-card></app-engagement-card>
-      <!-- Task Smart Card Ends -->
+      <!-- Pulse Card Starts -->
+      <app-pulse-card [period]="period"></app-pulse-card>
+      <!-- Pulse Card Ends -->
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3 box">
+      <!-- People Directory Card Starts -->
+      <app-people-directory-card [period]="period"></app-people-directory-card>
+      <!-- People Directory Card Ends -->
+    </div>
+
+    <div class="col-md-3 box">
+      <!-- Organizational Structure Card Starts -->
+      <app-organizational-structure-card [period]="period"></app-organizational-structure-card>
+      <!-- Organizational Structure Card Ends -->
+    </div>
+
+    <div class="col-md-3 box">
+      <!-- Company Objectives Card Starts -->
+      <app-company-objectives-card [period]="period"></app-company-objectives-card>
+      <!-- Company Objectives Card Ends -->
+    </div>
+
+    <div class="col-md-3 box">
+      <!-- Engagement Card Card Starts -->
+      <app-engagement-card [period]="period"></app-engagement-card>
+      <!-- Engagement Card Card Ends -->
     </div>
   </div>
 
   <div class="row">
     <div class="col-md-12">
-      <!-- Task Smart Card Starts -->
-      <app-global-performance-card></app-global-performance-card>
-      <!-- Task Smart Card Ends -->
+      <!-- Global Performance Card Starts -->
+      <app-global-performance-card [period]="period"></app-global-performance-card>
+      <!-- Global Performance Card Ends -->
     </div>
   </div>
-
-  <!-- Loading Spinner Starts -->
-  <ng-container *ngIf="isLoading$ | async">
-    <app-loading-spinner class="media"></app-loading-spinner>
-  </ng-container>
-  <!-- Loading Spinner Ends -->
 </div>

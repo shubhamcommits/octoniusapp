@@ -1,4 +1,4 @@
-import { Component, Injector, OnInit } from '@angular/core';
+import { Component, Injector, Input, OnChanges, OnInit } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
@@ -8,7 +8,9 @@ import { UserService } from 'src/shared/services/user-service/user.service';
   templateUrl: './work-statistics-card.component.html',
   styleUrls: ['./work-statistics-card.component.scss']
 })
-export class WorkStatisticsCardComponent implements OnInit {
+export class WorkStatisticsCardComponent implements OnInit, OnChanges {
+
+  @Input() period;
 
   // Current Workspace Data
   workspaceData: any
@@ -38,7 +40,17 @@ export class WorkStatisticsCardComponent implements OnInit {
     private injector: Injector
   ) { }
 
-  async ngOnInit() {
+  ngOnInit() {
+    this.initView();
+  }
+
+  ngOnChanges() {
+    console.log(this.period);
+    this.initView();
+  }
+
+  async initView() {
+
     // Call the HTTP API to fetch the current workspace details
     this.workspaceData = await this.publicFunctions.getWorkspaceDetailsFromHTTP();
 
@@ -79,10 +91,9 @@ export class WorkStatisticsCardComponent implements OnInit {
       }
     }];
   }
-
   async getTodayTasks() {
     return new Promise((resolve, reject) => {
-      this.postService.getWorkspacePosts(this.workspaceData._id, 'task', 7, false)
+      this.postService.getWorkspacePosts(this.workspaceData._id, 'task', this.period, false)
         .then((res) => {
           resolve(res['posts'])
         })
@@ -94,7 +105,7 @@ export class WorkStatisticsCardComponent implements OnInit {
 
   async getOverdueTasks() {
     return new Promise((resolve, reject) => {
-      this.postService.getWorkspacePosts(this.workspaceData._id, 'task', 7, true)
+      this.postService.getWorkspacePosts(this.workspaceData._id, 'task', this.period, true)
         .then((res) => {
           resolve(res['posts'])
         })
