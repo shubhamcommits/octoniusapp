@@ -54,7 +54,7 @@ export class WorkStatisticsCardComponent implements OnInit, OnChanges {
     // Call the HTTP API to fetch the current workspace details
     this.workspaceData = await this.publicFunctions.getWorkspaceDetailsFromHTTP();
 
-    this.tasks = await this.getTodayTasks();
+    this.tasks = await this.getTasks();
     this.overdueTasks = await this.getOverdueTasks();
     this.markOverdueTasks();
 
@@ -91,7 +91,7 @@ export class WorkStatisticsCardComponent implements OnInit, OnChanges {
       }
     }];
   }
-  async getTodayTasks() {
+  async getTasks() {
     return new Promise((resolve, reject) => {
       this.postService.getWorkspacePosts(this.workspaceData._id, 'task', this.period, false)
         .then((res) => {
