@@ -102,6 +102,7 @@ routes.put('/smart/:groupId/:rule', group.deleteSmartGroupRule);
 // Update a smart group's members
 routes.put('/smart/:groupId', group.updateSmartGroupMembers);
 
+routes.get('/workspace/groups', group.getWorkspaceGroups);
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

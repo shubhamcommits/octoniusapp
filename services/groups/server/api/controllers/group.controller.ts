@@ -2,6 +2,7 @@ import { Group, Post, User } from '../models';
 import { Response, Request, NextFunction } from 'express';
 import { sendError, hasProperty } from '../../utils';
 import { Readable } from 'stream';
+import moment from 'moment';
 
 /*  ===================
  *  -- GROUP METHODS --
@@ -1179,4 +1180,70 @@ export class GroupController {
             return sendError(res, error, 'Internal Server Error!', 500);
         }
     }
+
+    /**
+     * This function fetches the groups which exist in the database based on the list of @workspaceId
+     * @param req 
+     * @param res 
+     */
+    async getWorkspaceGroups(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { workspaceId, period } = req.query;
+
+            const numDays = +period;
+
+            const comparingDate = moment().local().subtract(numDays, 'days').format('YYYY-MM-DD');
+            // Generate the actual time
+            // const today = moment().subtract(1, 'days').endOf('day').format();
+
+            // If workspaceId is null or not provided then we throw BAD REQUEST 
+            if (!workspaceId) {
+                return res.status(400).json({
+                    message: 'Please provide the workspaceId as the query parameter!'
+                })
+            }
+
+            // Fetch groups in the database based on the list of @workspaceId which are not private
+            const groups = await Group.find({
+                $and: [
+                    { group_name: { $ne: 'personal' } },
+                    { group_name: { $ne: 'private' } },
+                    { _workspace: workspaceId, },
+                    { created_date: { $gte: comparingDate } }
+                ]
+            })
+                .sort('_id')
+                /*
+                .populate({
+                    path: '_members',
+                    select: '_id',
+                    options: {
+                        count: true
+                    },
+                    match: {
+                        active: true
+                    }
+                })
+                .populate({
+                    path: '_admins',
+                    select: '_id',
+                    options: {
+                        count: true
+                    },
+                    match: {
+                        active: true
+                    }
+                })
+                */
+                .lean() || [];
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: `The next ${groups.length} groups!`,
+                groups: groups
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
 }
