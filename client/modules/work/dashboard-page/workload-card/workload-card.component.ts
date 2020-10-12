@@ -12,7 +12,9 @@ export class WorkloadCardComponent implements OnInit, OnChanges {
   @Input() period;
 
   // Current Workspace Data
-  workspaceData: any
+  workspaceData: any;
+
+  chartReady = false;
 
   task_count = 0;
   to_do_task_count = 0;
@@ -42,7 +44,6 @@ export class WorkloadCardComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    console.log(this.period);
     this.initView();
   }
 
@@ -96,6 +97,8 @@ export class WorkloadCardComponent implements OnInit, OnChanges {
         ctx.fillText(Math.round(percentageDone) + '%', centerX, centerY);
       }
     }];
+
+    this.chartReady = true;
   }
 
   async getTasks() {
