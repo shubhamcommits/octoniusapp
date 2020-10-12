@@ -9,6 +9,9 @@ export class OrganizationalStructureCardComponent implements OnInit, OnChanges {
 
   @Input() period;
 
+  num_groups = 0;
+  num_agoras = 0;
+
   constructor() { }
 
   ngOnInit() {
@@ -16,12 +19,11 @@ export class OrganizationalStructureCardComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    console.log(this.period);
     this.initView();
   }
 
   async initView() {
-    console.log(this.period);
+
   }
 
 }
