@@ -44,8 +44,6 @@ export class OrganizationalStructureCardComponent implements OnInit, OnChanges {
 
     this.groups = await this.getGroups();
 
-console.log(this.groups);
-
     for (let group of this.groups) {
       if (group.type === 'agora') this.num_agoras++;
       // if (group.type === 'normal') this.num_groups++;
