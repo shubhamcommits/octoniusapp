@@ -196,7 +196,7 @@ $dark-sky-blue: #4a90e2;
             max-width: 140px;
             min-width: 140px;
             flex: 0 0;
-            border: 1px solid #fafafa;
+            border-left: 1px solid #E4EDF8;
             border-top: 0;
             border-bottom: 0;
             height: 100%;
@@ -266,6 +266,7 @@ $dark-sky-blue: #4a90e2;
 }
 .input-date{
     margin-top: 0 !important;
+    width: 110px !important;
 }
 
 .north-star {
