@@ -15,6 +15,8 @@ export class WorkStatisticsCardComponent implements OnInit, OnChanges {
   // Current Workspace Data
   workspaceData: any
 
+  chartReady = false;
+
   task_count = 0;
   to_do_task_count = 0;
   in_progress_task_count = 0;
@@ -45,7 +47,6 @@ export class WorkStatisticsCardComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    console.log(this.period);
     this.initView();
   }
 
@@ -67,14 +68,30 @@ export class WorkStatisticsCardComponent implements OnInit, OnChanges {
     this.overdue_task_count = this.overdueTasks.length;
 
     /* Chart Setup */
-    this.barChartLabels = ['To Do', 'In Progress', 'Done', 'Overdue'];
+    this.barChartLabels = [this.to_do_task_count, this.in_progress_task_count, this.done_task_count, this.overdue_task_count];
     this.barChartData = [this.to_do_task_count, this.in_progress_task_count, this.done_task_count, this.overdue_task_count];
     this.barChartType = 'bar';
     this.barChartOptions = {
-      cutoutPercentage: 75,
-      responsive: true,
       legend: {
         display: false
+      },
+      scales: {
+          yAxes: [{
+              stacked: true,
+              display: false,
+              gridLines: {
+                  drawBorder: false,
+                  display: false,
+              },
+          }],
+          xAxes: [{
+              stacked: true,
+              display: true,
+              gridLines: {
+                  drawBorder: false,
+                  display: false,
+              },
+          }]
       }
     };
     this.barChartColors = [{
@@ -90,7 +107,10 @@ export class WorkStatisticsCardComponent implements OnInit, OnChanges {
 
       }
     }];
+
+    this.chartReady = true;
   }
+
   async getTasks() {
     return new Promise((resolve, reject) => {
       this.postService.getWorkspacePosts(this.workspaceData._id, 'task', this.period, false)
