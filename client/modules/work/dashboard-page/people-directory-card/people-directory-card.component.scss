@@ -44,6 +44,34 @@ img{
   line-height: 30px;
   display: flex;
   align-items: center;
+
+  .users_count {
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 30px;
+    color: #5E6268;
+  }
+
+  .global_managers_count {
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 30px;
+    color: #5E2FE5;
+  }
+
+  .group_managers_count {
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 30px;
+    color: #26A69A;
+  }
+
+  .guests_count {
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 30px;
+    color: #FFAB00;
+  }
 }
 
 .card-icon {

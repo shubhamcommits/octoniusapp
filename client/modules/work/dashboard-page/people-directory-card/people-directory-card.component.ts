@@ -1,4 +1,6 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Injector, Input, OnChanges, OnInit } from '@angular/core';
+import { PublicFunctions } from 'modules/public.functions';
+import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
 
 @Component({
   selector: 'app-people-directory-card',
@@ -9,19 +11,58 @@ export class PeopleDirectoryCardComponent implements OnInit, OnChanges {
 
   @Input() period;
 
-  constructor() { }
+  // Current Workspace Data
+  workspaceData: any
+
+  users: any = [];
+
+  num_users = 0;
+  num_global_managers = 0;
+  num_group_managers = 0;
+  num_guests = 0;
+
+  // Public Functions Object
+  public publicFunctions = new PublicFunctions(this.injector)
+
+  constructor(
+    private workspaceService: WorkspaceService,
+    private injector: Injector
+  ) { }
 
   ngOnInit() {
     this.initView();
   }
 
   ngOnChanges() {
-    console.log(this.period);
     this.initView();
   }
 
   async initView() {
-    console.log(this.period);
+    // Call the HTTP API to fetch the current workspace details
+    this.workspaceData = await this.publicFunctions.getWorkspaceDetailsFromHTTP();
+
+    this.num_users = 0;
+    this.num_global_managers = 0;
+    this.num_group_managers = 0;
+    this.num_guests = 0;
+
+    this.users = await this.getUsers();
+
+console.log(this.users);
+
+    this.num_users = this.users.length;
+  }
+
+  async getUsers() {
+    return new Promise((resolve, reject) => {
+      this.workspaceService.getWorkspaceUsers(this.workspaceData._id, this.period)
+        .then((res) => {
+          resolve(res['users'])
+        })
+        .catch(() => {
+          reject([])
+        });
+    });
   }
 
 }

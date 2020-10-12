@@ -8,17 +8,26 @@
       </div>
     </div>
     <div class="row">
-        <div class="card-first-column col-md-12">You're all done.</div>
+      <div class="card-first-column col-md-12">
+        <div class="users_count"> {{ num_users }} </div>
+        &nbsp;users
+      </div>
     </div>
     <div class="row">
-        <div class="card-first-column col-md-12">Get some fresh air.</div>
+      <div class="card-first-column col-md-12">
+        <div class="global_managers_count"> {{ num_global_managers }} </div>
+        &nbsp;global managers
+      </div>
+    </div><div class="row">
+      <div class="card-first-column col-md-12">
+        <div class="group_managers_count"> {{ num_group_managers }} </div>
+        &nbsp;group managers
+      </div>
     </div>
-
-
-    <div class="row mt-4 d-none d-sm-block">
-        <div class="col-7"></div>
-        <div class="col-5">
-            <img src='assets/images/inbox-tasks-card-empty.svg'>
-        </div>
+    <div class="row">
+      <div class="card-first-column col-md-12">
+        <div class="guests_count"> {{ num_guests }} </div>
+        &nbsp;guests
+      </div>
     </div>
 </div>

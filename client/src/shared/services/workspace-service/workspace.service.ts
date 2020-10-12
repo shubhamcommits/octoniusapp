@@ -237,4 +237,18 @@ export class WorkspaceService {
   getUniqueSkills(workspaceId: string, query: string): Observable<any> {
     return this._http.get<any>(`${this.BASE_API_URL}/skills/${workspaceId}/${query}`);
   }
+
+  /**
+   * This function is responsible for fetching first 10 workspace members
+   * @param workspaceId
+   */
+  getWorkspaceUsers(workspaceId: string, period: any) {
+    // TODO back-end -> return this._http.get(this.BASE_API_URL + `/users`, {
+    return this._http.get(this.BASE_API_URL + `/members`, {
+      params: {
+        workspaceId: workspaceId,
+        // period: period
+      }
+    }).toPromise()
+  }
 }
