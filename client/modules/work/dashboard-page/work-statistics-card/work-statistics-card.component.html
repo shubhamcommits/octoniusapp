@@ -4,6 +4,9 @@
         Work statistics
       </div>
     </div>
+    <div class="card-icon">
+      <span class="number">{{ task_count }}</span>&nbsp;total tasks
+    </div>
     <div class="col-12 d-none d-sm-block" style="padding-top: 15px;" *ngIf="chartReady">
       <canvas
         baseChart
