@@ -1249,19 +1249,20 @@ export class PostService {
     }  
   }
 
-
   async getNorthStarTasks(groups: any) {
     try {
-      return await Post.find({
-        '_group': { $in: groups },
-        $and: [
-          { 'task.isNorthStar': true }
-        ]
-      }).sort('-created_date');
+      return await this.filterGroupPosts(
+        Post.find({
+          '_group': { $in: groups },
+          $and: [
+            { 'task.isNorthStar': true }
+          ]
+        }).sort('-created_date'), 'task');
     } catch (error) {
       throw(error);
     }
   }
+  
   async addBar(postId: string, bar: any){
     try {
       const task: any = await Post.findById(postId);

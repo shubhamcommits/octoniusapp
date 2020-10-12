@@ -44,7 +44,9 @@ export class NorthStarPageComponent implements OnInit {
       await this.postService.getNorthStarTasks(groups)
         .then((res) => {
           res['posts'].forEach(async post => {
-            await this.groupService.getGroup(post._group).then((group) => {
+            const group = (post._group._id) ? post._group._id : post._group;
+
+            await this.groupService.getGroup(group).then((group) => {
               post._group = group['group'];
               this.northStarTasks.push(post);
             });
