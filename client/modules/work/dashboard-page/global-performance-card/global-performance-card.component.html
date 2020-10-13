@@ -3,12 +3,9 @@
       <div class="card-title mt-1">
         Global Performance
       </div>
-      <div class="card-icon">
-        <span class="badge"></span>
-      </div>
     </div>
 
-    <div class="row">
+    <div>
       <div *ngFor="let group of groups" class="pulse_card">
         <!-- GROUP DETAILS STARTS -->
         <div class="pulse_avatar"><img class="feed-avatar" src="{{ this.baseUrl }}/{{group?.group_avatar}}"
