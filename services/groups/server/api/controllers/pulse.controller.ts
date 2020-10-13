@@ -248,10 +248,11 @@ export class PulseController {
     }
 
 
-    /** This function fetches groups present in the workspace for pulse
-    * @param {* workspaceId } req 
-    * @param {*} res
-    */
+    /** 
+     * This function fetches groups present in the workspace for pulse
+     * @param {* workspaceId } req 
+     * @param {*} res
+     */
     async getGlobalPerformanceGroups(req: Request, res: Response) {
         try {
             const { workspaceId } = req.query;
@@ -260,11 +261,12 @@ export class PulseController {
                 $and: [
                     { group_name: { $ne: 'personal' } },
                     { group_name: { $ne: 'private' } },
+                    { project_type: true },
                     { _workspace: workspaceId }
                 ]
             })
                 .sort('_id')
-                .select('_id group_name group_avatar description pulse_description')
+                .select('_id group_name group_avatar description project_status')
                 .lean() || [];
 
             // Send the status 200 response

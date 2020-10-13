@@ -12,9 +12,8 @@
             onerror="this.src='assets/images/group.png'" alt="group_avatar">
         </div>
         <div class="pulse_actor"> {{ group.group_name }} </div>
-        <div class="pulse_tweet">
-          {{ group.pulse_description ? group.pulse_description : "Waiting for a new Pulse..." }}
-          <!-- TODO - instead of showing the pulse we will show the status of the project -->
+        <div [class]="group.projectStatusClass">
+          {{ group.project_status }}
 
           <!-- Percentage starts -->
           <div [class]="group.completitionPercentageClass">

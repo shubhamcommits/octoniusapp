@@ -182,34 +182,40 @@ img{
   align-items: center;
   color: #005fd5;
   background-color: #e4edf8;
-  border-radius: 10px;
-  padding: 2px 10px !important;
 }
 
-.badge-not-started {
-  background-color: $pumpkin-orange;
-  color: white;
-  border-radius: 10px;
-  padding: 2px 10px !important;
+.badge_not_started {
+  background-color: #FFAB00;
+  color: #F3F4F6;
 }
 
-.badge-on-track {
-  background-color: $turquoise;
-  color: white;
-  border-radius: 10px;
-  padding: 2px 10px !important;
+.badge_on_track {
+  background-color: #26A69A;
+  color: #F3F4F6;
 }
 
-.badge-in-danger {
-  background-color: $dark-sky-blue;
-  color: white;
-  border-radius: 10px;
-  padding: 2px 10px !important;
+.badge_in_danger {
+  background-color: #EB5757;
+  color: #F3F4F6;
 }
 
-.badge-achieved {
-  background-color: $dark-sky-blue;
-  color: white;
-  border-radius: 10px;
-  padding: 2px 10px !important;
+.badge_achieved {
+  background-color: #4A90E2;
+  color: #F3F4F6;
+}
+
+.not_started {
+  color: #FFAB00;
+}
+
+.on_track {
+  color: #26A69A;
+}
+
+.in_danger {
+  color: #EB5757;
+}
+
+.achieved {
+  color: #4A90E2;
 }

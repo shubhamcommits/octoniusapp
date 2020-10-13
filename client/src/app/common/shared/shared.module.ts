@@ -69,6 +69,7 @@ import { TaskComponent } from './scheduler/task/task.component';
 import { TaskHelperComponent } from './scheduler/task-helper/task-helper.component';
 
 import { ResizableModule } from 'angular-resizable-element';
+import { ProjectStatusComponent } from './activity-feed/project-status/project-status.component';
 
 @NgModule({
   declarations: [
@@ -111,6 +112,8 @@ import { ResizableModule } from 'angular-resizable-element';
     ActivityFeedComponent,
 
     SendPulseComponent,
+
+    ProjectStatusComponent,
 
     GroupInformationComponent,
 
@@ -213,6 +216,7 @@ import { ResizableModule } from 'angular-resizable-element';
     ProgressBarComponent,
     SelectMemberComponent,
     SendPulseComponent,
+    ProjectStatusComponent,
 
     GroupInformationComponent,
 

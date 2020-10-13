@@ -201,4 +201,16 @@ export class GroupsService {
       }
     }).toPromise()
   }
+
+  /**
+   * This function is responsible for sending the pulse information
+   * @param workspaceId
+   * @param lastGroupId
+   */
+  sendProjectStatus(groupId: string, status: string) {
+    return this._http.put(this.baseURL + `/project/status`, {
+      groupId: groupId,
+      status: status
+    }).toPromise()
+  }
 }

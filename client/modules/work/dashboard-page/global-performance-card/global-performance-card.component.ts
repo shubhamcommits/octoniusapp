@@ -114,7 +114,8 @@ export class GlobalPerformanceCardComponent implements OnChanges {
       const percentageDone = (this.totalTasks[this.groups[i]._id] + this.overdueTasks.length > 0) ? (((this.doneTasks[this.groups[i]._id])*100)/(this.totalTasks[this.groups[i]._id] + this.overdueTasks.length)) : 0;
       this.groups[i].completitionPercentage = Math.round(percentageDone);
 
-      this.groups[i].completitionPercentageClass = "badge"; // TODO change the class depending on the status of the project
+      this.groups[i].projectStatusClass = "pulse_tweet " + this.setStatusClass(this.groups[i].project_status, false);
+      this.groups[i].completitionPercentageClass = "badge " + this.setStatusClass(this.groups[i].project_status, true);
     }
   }
 
@@ -141,5 +142,29 @@ export class GlobalPerformanceCardComponent implements OnChanges {
           reject([])
         })
     })
+  }
+
+  setStatusClass(status, isBadge) {
+    if (isBadge) {
+      if (status === 'NOT STARTED') {
+        return 'badge_not_started';
+      } else if (status === 'ON TRACK') {
+        return 'badge_on_track';
+      } else if (status === 'IN DANGER') {
+        return 'badge_in_danger';
+      } else if (status === 'ACHIEVED') {
+        return 'badge_achieved';
+      }
+    } else {
+      if (status === 'NOT STARTED') {
+        return 'not_started';
+      } else if (status === 'ON TRACK') {
+        return 'on_track';
+      } else if (status === 'IN DANGER') {
+        return 'in_danger';
+      } else if (status === 'ACHIEVED') {
+        return 'achieved';
+      }
+    }
   }
 }

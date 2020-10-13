@@ -1276,4 +1276,28 @@ export class GroupController {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
     };
+
+    async updateStatus(req: Request, res: Response, next: NextFunction) {
+        
+        try {
+            const { groupId, status } = req.body;
+
+            // Find the group and update their respective group avatar
+            const group = await Group.findByIdAndUpdate({
+                _id: groupId
+            }, {
+                project_status: status
+            }, {
+                new: true
+            });
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Group settings updated!',
+                group: group
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
 }

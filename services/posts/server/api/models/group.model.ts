@@ -47,6 +47,10 @@ const GroupSchema = new Schema({
         type: Schema.Types.Boolean,
         default: false,
     },
+    project_status: {
+        type: String,
+        enum: ['ON TRACK', 'NOT STARTED', 'IN DANGER', 'ACHIEVED']
+    },
     description: {
         type: String,
         default: null
