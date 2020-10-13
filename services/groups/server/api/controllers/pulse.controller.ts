@@ -255,14 +255,17 @@ export class PulseController {
      */
     async getGlobalPerformanceGroups(req: Request, res: Response) {
         try {
-            const { workspaceId } = req.query;
+            const { workspaceId, period } = req.query;
+            
+            const comparingDate = moment().local().subtract(+period, 'days').format('YYYY-MM-DD');
 
             const groups = await Group.find({
                 $and: [
                     { group_name: { $ne: 'personal' } },
                     { group_name: { $ne: 'private' } },
                     { project_type: true },
-                    { _workspace: workspaceId }
+                    { _workspace: workspaceId },
+                    { created_date: { $gte: comparingDate } }
                 ]
             })
                 .sort('_id')

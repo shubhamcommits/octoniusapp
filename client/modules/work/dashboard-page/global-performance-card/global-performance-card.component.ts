@@ -83,7 +83,7 @@ export class GlobalPerformanceCardComponent implements OnChanges {
    */
   public async getGlobalPerformanceGroups(workspaceId: string) {
     return new Promise((resolve, reject) => {
-      this.groupService.getGlobalPerformanceGroups(workspaceId)
+      this.groupService.getGlobalPerformanceGroups(workspaceId, this.period)
         .then((res) => resolve(res['groups']))
         .catch(() => reject([]))
     })

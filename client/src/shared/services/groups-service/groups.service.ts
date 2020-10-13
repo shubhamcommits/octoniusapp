@@ -180,10 +180,11 @@ export class GroupsService {
    * This function is responsible for fetching groups present in a workspace
    * @param workspaceId
    */
-  getGlobalPerformanceGroups(workspaceId: string) {
+  getGlobalPerformanceGroups(workspaceId: string, period: number) {
     return this._http.get(this.baseURL + `/pulse/global-performance`, {
       params: {
-        workspaceId: workspaceId
+        workspaceId: workspaceId,
+        period: period.toString().trim()
       }
     }).toPromise()
   }
