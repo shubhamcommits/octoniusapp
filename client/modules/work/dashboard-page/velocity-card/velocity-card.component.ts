@@ -12,7 +12,6 @@ export class VelocityCardComponent implements OnChanges {
   constructor() { }
 
   ngOnChanges() {
-    console.log(this.period);
     this.initView();
   }
 

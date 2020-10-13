@@ -12,7 +12,6 @@ export class PulseCardComponent implements OnChanges {
   constructor() { }
 
   ngOnChanges() {
-    console.log(this.period);
     this.initView();
   }
 
