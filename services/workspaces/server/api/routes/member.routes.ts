@@ -35,6 +35,9 @@ routes.post('/delete', members.removeUserFromWorkplace);
 
 routes.post('/activate', members.reactivateUserInWorkplace);
 
+// GET - Get a list of workspace users
+routes.get('/users', members.getWorkspaceUsers);
+
 
 /*  ===================
  *  -- EXPORT ROUTES --

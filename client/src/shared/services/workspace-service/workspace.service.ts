@@ -239,15 +239,14 @@ export class WorkspaceService {
   }
 
   /**
-   * This function is responsible for fetching first 10 workspace members
+   * This function is responsible for fetching users of a workspace
    * @param workspaceId
    */
   getWorkspaceUsers(workspaceId: string, period: any) {
-    // TODO back-end -> return this._http.get(this.BASE_API_URL + `/users`, {
-    return this._http.get(this.BASE_API_URL + `/members`, {
+    return this._http.get(this.BASE_API_URL + `/members/users`, {
       params: {
         workspaceId: workspaceId,
-        // period: period
+        period: period
       }
     }).toPromise()
   }

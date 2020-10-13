@@ -1190,18 +1190,18 @@ export class GroupController {
         try {
             const { workspaceId, period } = req.query;
 
+            // If workspaceId is null or not provided then we throw BAD REQUEST 
+            if (!workspaceId || !period) {
+                return res.status(400).json({
+                    message: 'Please provide the workspaceId and period as the query parameter!'
+                })
+            }
+
             const numDays = +period;
 
             const comparingDate = moment().local().subtract(numDays, 'days').format('YYYY-MM-DD');
             // Generate the actual time
             // const today = moment().subtract(1, 'days').endOf('day').format();
-
-            // If workspaceId is null or not provided then we throw BAD REQUEST 
-            if (!workspaceId) {
-                return res.status(400).json({
-                    message: 'Please provide the workspaceId as the query parameter!'
-                })
-            }
 
             // Fetch groups in the database based on the list of @workspaceId which are not private
             const groups = await Group.find({

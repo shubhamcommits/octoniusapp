@@ -1,5 +1,6 @@
 import { Component, Injector, Input, OnChanges, OnInit } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
+import moment from 'moment';
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
 
 @Component({
@@ -15,6 +16,7 @@ export class PeopleDirectoryCardComponent implements OnInit, OnChanges {
   workspaceData: any
 
   users: any = [];
+  guests: any = [];
 
   num_users = 0;
   num_global_managers = 0;
@@ -47,10 +49,10 @@ export class PeopleDirectoryCardComponent implements OnInit, OnChanges {
     this.num_guests = 0;
 
     this.users = await this.getUsers();
-
-console.log(this.users);
+    this.guests = await this.getGuests();
 
     this.num_users = this.users.length;
+    this.num_guests = this.guests.length;
   }
 
   async getUsers() {
@@ -62,6 +64,13 @@ console.log(this.users);
         .catch(() => {
           reject([])
         });
+    });
+  }
+
+  async getGuests() {
+    const comparingDate = moment().local().subtract(this.period, 'days').format('YYYY-MM-DD');
+    return this.workspaceData.invited_users.filter((guest) => {
+      return ((guest.invited_date >= comparingDate) && (guest.accepted));
     });
   }
 
