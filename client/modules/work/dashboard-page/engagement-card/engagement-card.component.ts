@@ -5,15 +5,11 @@ import { Component, Input, OnChanges, OnInit } from '@angular/core';
   templateUrl: './engagement-card.component.html',
   styleUrls: ['./engagement-card.component.scss']
 })
-export class EngagementCardComponent implements OnInit, OnChanges {
+export class EngagementCardComponent implements OnChanges {
 
   @Input() period;
 
   constructor() { }
-
-  ngOnInit() {
-    this.initView();
-  }
 
   ngOnChanges() {
     console.log(this.period);

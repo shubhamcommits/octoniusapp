@@ -5,15 +5,11 @@ import { Component, Input, OnChanges, OnInit } from '@angular/core';
   templateUrl: './pulse-card.component.html',
   styleUrls: ['./pulse-card.component.scss']
 })
-export class PulseCardComponent implements OnInit, OnChanges {
+export class PulseCardComponent implements OnChanges {
 
   @Input() period;
 
   constructor() { }
-
-  ngOnInit() {
-    this.initView();
-  }
 
   ngOnChanges() {
     console.log(this.period);

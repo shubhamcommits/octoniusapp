@@ -5,15 +5,11 @@ import { Component, Input, OnChanges, OnInit } from '@angular/core';
   templateUrl: './velocity-card.component.html',
   styleUrls: ['./velocity-card.component.scss']
 })
-export class VelocityCardComponent implements OnInit, OnChanges {
+export class VelocityCardComponent implements OnChanges {
 
   @Input() period;
 
   constructor() { }
-
-  ngOnInit() {
-    this.initView();
-  }
 
   ngOnChanges() {
     console.log(this.period);

@@ -7,7 +7,7 @@ import { GroupsService } from 'src/shared/services/groups-service/groups.service
   templateUrl: './organizational-structure-card.component.html',
   styleUrls: ['./organizational-structure-card.component.scss']
 })
-export class OrganizationalStructureCardComponent implements OnInit, OnChanges {
+export class OrganizationalStructureCardComponent implements OnChanges {
 
   @Input() period;
 
@@ -26,10 +26,6 @@ export class OrganizationalStructureCardComponent implements OnInit, OnChanges {
     private groupsService: GroupsService,
     private injector: Injector
   ) { }
-
-  ngOnInit() {
-    this.initView();
-  }
 
   ngOnChanges() {
     this.initView();

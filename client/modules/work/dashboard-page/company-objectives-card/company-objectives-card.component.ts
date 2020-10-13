@@ -5,15 +5,11 @@ import { Component, Input, OnChanges, OnInit } from '@angular/core';
   templateUrl: './company-objectives-card.component.html',
   styleUrls: ['./company-objectives-card.component.scss']
 })
-export class CompanyObjectivesCardComponent implements OnInit, OnChanges {
+export class CompanyObjectivesCardComponent implements OnChanges {
 
   @Input() period;
 
   constructor() { }
-
-  ngOnInit() {
-    this.initView();
-  }
 
   ngOnChanges() {
     console.log(this.period);

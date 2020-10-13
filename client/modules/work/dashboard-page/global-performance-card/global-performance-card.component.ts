@@ -5,15 +5,11 @@ import { Component, Input, OnChanges, OnInit } from '@angular/core';
   templateUrl: './global-performance-card.component.html',
   styleUrls: ['./global-performance-card.component.scss']
 })
-export class GlobalPerformanceCardComponent implements OnInit, OnChanges {
+export class GlobalPerformanceCardComponent implements OnChanges {
 
   @Input() period;
 
   constructor() { }
-
-  ngOnInit() {
-    this.initView();
-  }
 
   ngOnChanges() {
     console.log(this.period);

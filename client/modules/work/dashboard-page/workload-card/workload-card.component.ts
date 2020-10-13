@@ -7,7 +7,7 @@ import { PostService } from 'src/shared/services/post-service/post.service';
   templateUrl: './workload-card.component.html',
   styleUrls: ['./workload-card.component.scss']
 })
-export class WorkloadCardComponent implements OnInit, OnChanges {
+export class WorkloadCardComponent implements OnChanges {
 
   @Input() period;
 
@@ -38,10 +38,6 @@ export class WorkloadCardComponent implements OnInit, OnChanges {
     private postService: PostService,
     private injector: Injector
     ) { }
-
-  ngOnInit() {
-    this.initView();
-  }
 
   ngOnChanges() {
     this.initView();

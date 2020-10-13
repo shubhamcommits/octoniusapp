@@ -8,7 +8,7 @@ import { WorkspaceService } from 'src/shared/services/workspace-service/workspac
   templateUrl: './people-directory-card.component.html',
   styleUrls: ['./people-directory-card.component.scss']
 })
-export class PeopleDirectoryCardComponent implements OnInit, OnChanges {
+export class PeopleDirectoryCardComponent implements OnChanges {
 
   @Input() period;
 
@@ -30,10 +30,6 @@ export class PeopleDirectoryCardComponent implements OnInit, OnChanges {
     private workspaceService: WorkspaceService,
     private injector: Injector
   ) { }
-
-  ngOnInit() {
-    this.initView();
-  }
 
   ngOnChanges() {
     this.initView();
