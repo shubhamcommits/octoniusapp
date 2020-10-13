@@ -17,7 +17,7 @@
   <div class="row">
     <div class="col-md-3 box">
       <!-- Work Statistics Card Starts -->
-      <app-work-statistics-card [period]="period"></app-work-statistics-card>
+      <app-work-statistics-card [period]="period" [northStar]="false"></app-work-statistics-card>
       <!-- Work Statistics Card Ends -->
     </div>
 
@@ -55,7 +55,8 @@
 
     <div class="col-md-3 box">
       <!-- Company Objectives Card Starts -->
-      <app-company-objectives-card [period]="period"></app-company-objectives-card>
+      <app-work-statistics-card [period]="period" [northStar]="true"></app-work-statistics-card>
+      <!--<app-company-objectives-card [period]="period"></app-company-objectives-card>-->
       <!-- Company Objectives Card Ends -->
     </div>
 

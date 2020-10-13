@@ -8,9 +8,10 @@ import { UserService } from 'src/shared/services/user-service/user.service';
   templateUrl: './work-statistics-card.component.html',
   styleUrls: ['./work-statistics-card.component.scss']
 })
-export class WorkStatisticsCardComponent implements OnInit, OnChanges {
+export class WorkStatisticsCardComponent implements OnChanges {
 
   @Input() period;
+  @Input() northStar: boolean;
 
   // Current Workspace Data
   workspaceData: any
@@ -41,10 +42,6 @@ export class WorkStatisticsCardComponent implements OnInit, OnChanges {
     private postService: PostService,
     private injector: Injector
   ) { }
-
-  ngOnInit() {
-    this.initView();
-  }
 
   ngOnChanges() {
     this.initView();
@@ -113,7 +110,7 @@ export class WorkStatisticsCardComponent implements OnInit, OnChanges {
 
   async getTasks() {
     return new Promise((resolve, reject) => {
-      this.postService.getWorkspacePosts(this.workspaceData._id, 'task', this.period, false)
+      this.postService.getWorkspacePosts(this.workspaceData._id, 'task', this.period, false, this.northStar)
         .then((res) => {
           resolve(res['posts'])
         })
@@ -125,7 +122,7 @@ export class WorkStatisticsCardComponent implements OnInit, OnChanges {
 
   async getOverdueTasks() {
     return new Promise((resolve, reject) => {
-      this.postService.getWorkspacePosts(this.workspaceData._id, 'task', this.period, true)
+      this.postService.getWorkspacePosts(this.workspaceData._id, 'task', this.period, true, this.northStar)
         .then((res) => {
           resolve(res['posts'])
         })

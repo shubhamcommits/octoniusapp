@@ -283,13 +283,14 @@ export class PostService {
   /**
    * Workspace's posts
    */
-  getWorkspacePosts(workspaceId: string, type: string, numDays: number, overdue: boolean) {
+  getWorkspacePosts(workspaceId: string, type: string, numDays: number, overdue: boolean, isNorthStar: boolean) {
     return this._http.get(this.baseURL + `/workspace/posts`, {
       params: {
         workspaceId: workspaceId.toString().trim(),
         type: type.toString().trim(),
         numDays: numDays.toString().trim(),
-        overdue: overdue.toString().trim()
+        overdue: overdue.toString().trim(),
+        isNorthStar: isNorthStar.toString().trim()
       }
     }).toPromise();
   }

@@ -103,7 +103,7 @@ export class WorkloadCardComponent implements OnInit, OnChanges {
 
   async getTasks() {
     return new Promise((resolve, reject) => {
-      this.postService.getWorkspacePosts(this.workspaceData._id, 'task', this.period, false)
+      this.postService.getWorkspacePosts(this.workspaceData._id, 'task', this.period, false, false)
         .then((res) => {
           resolve(res['posts'])
         })
@@ -115,7 +115,7 @@ export class WorkloadCardComponent implements OnInit, OnChanges {
 
   async getOverdueTasks() {
     return new Promise((resolve, reject) => {
-      this.postService.getWorkspacePosts(this.workspaceData._id, 'task', this.period, true)
+      this.postService.getWorkspacePosts(this.workspaceData._id, 'task', this.period, true, false)
         .then((res) => {
           resolve(res['posts'])
         })
