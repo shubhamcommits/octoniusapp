@@ -7,18 +7,40 @@
         <span class="badge"></span>
       </div>
     </div>
-    <div class="row">
-        <div class="card-first-column col-md-12">You're all done.</div>
-    </div>
-    <div class="row">
-        <div class="card-first-column col-md-12">Get some fresh air.</div>
-    </div>
 
-
-    <div class="row mt-4 d-none d-sm-block">
-        <div class="col-7"></div>
-        <div class="col-5">
-            <img src='assets/images/inbox-tasks-card-empty.svg'>
+    <div class="row">
+      <div *ngFor="let group of groups" class="pulse_card">
+        <!-- GROUP DETAILS STARTS -->
+        <div class="pulse_avatar"><img class="feed-avatar" src="{{ this.baseUrl }}/{{group?.group_avatar}}"
+            onerror="this.src='assets/images/group.png'" alt="group_avatar">
         </div>
+        <div class="pulse_actor"> {{ group.group_name }} </div>
+        <div class="pulse_tweet">
+          {{ group.pulse_description ? group.pulse_description : "Waiting for a new Pulse..." }}
+          <!-- TODO - instead of showing the pulse we will show the status of the project -->
+
+          <!-- Percentage starts -->
+          <div [class]="group.completitionPercentageClass">
+            {{ group.completitionPercentage }} %
+          </div>
+          <!-- Percentage ends -->
+        </div>
+        <!-- GROUP DETAILS ENDS -->
+
+        <!-- TO DO, IN PROGRESS AND DONE TASKS STARTS -->
+        <div class="pulse_data">
+          <span class="pulse-overdue-tasks">{{ overdueTasks[group?._id] || 0 }}</span>
+          <span class="pulse-todo-tasks">{{ toDoTasks[group?._id] || 0 }}</span>
+          <span class="pulse-in-progress-tasks">{{ inProgressTasks[group?._id] || 0 }}</span>
+          <span class="pulse-done-tasks">{{ doneTasks[group?._id] || 0 }}</span>
+        </div>
+        <!-- TO DO, IN PROGRESS AND DONE TASKS ENDS -->
+      </div>
     </div>
+
+    <!-- LOADING SPINNER STARTS -->
+    <ng-container *ngIf="isLoading$ | async">
+      <app-loading-spinner></app-loading-spinner>
+    </ng-container>
+    <!-- LOADING SPINNER ENDS -->
 </div>

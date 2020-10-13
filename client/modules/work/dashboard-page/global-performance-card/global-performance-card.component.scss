@@ -60,3 +60,156 @@ img{
     display: none;
   }
 }
+
+.pulse_card{
+  height: 60px;
+  padding: 0 5px;
+  background: white;
+  width: 100%;
+  background: #FFFFFF;
+  border-radius: 8px;
+  border: 1px solid #E4EDF8;
+  box-sizing: border-box;
+  margin: 2px auto;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.pulse_avatar {
+  flex: 0 0;
+  text-align: center;
+  margin-right: 16px;
+  .feed-avatar {
+      width: 50px;
+      height: 50px;
+      margin: 0;
+  }
+}
+
+.pulse_actor {
+  max-width: 140px;
+  flex: 0 1 140px;
+  margin-right: 16px;
+}
+
+.pulse_tweet {
+  min-width: 160px;
+  flex: 1 1 160px;
+  font-weight: 700;
+}
+
+.pulse_info {
+  flex: 0 1 130px;
+  line-height: 60px;
+}
+
+.pulse_data {
+  display: flex;
+}
+
+// Group todo tasks banner
+.pulse-todo-tasks {
+  color: #ffffff;
+  background: #FFAB00;
+  border-radius: 20px;
+  font-style: normal;
+  font-weight: bold;
+  width: 20px;
+  height: 23px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 15px 7px;
+  padding: 0px 6px;
+}
+
+// Group In Progress tasks banner
+.pulse-in-progress-tasks {
+  color: #ffffff;
+  background: #26A69A;
+  border-radius: 20px;
+  font-style: normal;
+  font-weight: bold;
+  width: 20px;
+  height: 23px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 15px 7px;
+  padding: 0px 6px;
+}
+
+// Group Done tasks banner
+.pulse-done-tasks {
+  color: #ffffff;
+  background: #4A90E2;
+  border-radius: 20px;
+  font-style: normal;
+  font-weight: bold;
+  width: 20px;
+  height: 23px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 15px 7px;
+  padding: 0px 6px;
+}
+
+.pulse-overdue-tasks {
+  color: #ffffff;
+  background: #FF6584;
+  border-radius: 20px;
+  font-style: normal;
+  font-weight: bold;
+  width: 20px;
+  height: 23px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 15px 7px;
+  padding: 0px 6px;
+}
+
+.badge {
+  background-color: $dark-sky-blue;
+  margin: 0 1px !important;
+  display: inline;
+  font-family: Nunito, sans-serif;
+  font-style: normal;
+  font-weight: 700 !important;
+  font-size: 12px;
+  align-items: center;
+  color: #005fd5;
+  background-color: #e4edf8;
+  border-radius: 10px;
+  padding: 2px 10px !important;
+}
+
+.badge-not-started {
+  background-color: $pumpkin-orange;
+  color: white;
+  border-radius: 10px;
+  padding: 2px 10px !important;
+}
+
+.badge-on-track {
+  background-color: $turquoise;
+  color: white;
+  border-radius: 10px;
+  padding: 2px 10px !important;
+}
+
+.badge-in-danger {
+  background-color: $dark-sky-blue;
+  color: white;
+  border-radius: 10px;
+  padding: 2px 10px !important;
+}
+
+.badge-achieved {
+  background-color: $dark-sky-blue;
+  color: white;
+  border-radius: 10px;
+  padding: 2px 10px !important;
+}

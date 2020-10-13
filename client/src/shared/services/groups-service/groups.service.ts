@@ -176,4 +176,29 @@ export class GroupsService {
     }).toPromise();
   }
 
+  /**
+   * This function is responsible for fetching groups present in a workspace
+   * @param workspaceId
+   */
+  getGlobalPerformanceGroups(workspaceId: string) {
+    return this._http.get(this.baseURL + `/pulse/global-performance`, {
+      params: {
+        workspaceId: workspaceId
+      }
+    }).toPromise()
+  }
+
+  /**
+   * This function is responsible for fetching groups present in a workspace
+   * @param workspaceId
+   */
+  getGlobalPerformanceTasks(workspaceId: string, period: number, status: string) {
+    return this._http.get(this.baseURL + `/pulse/global-performance-tasks`, {
+      params: {
+        workspaceId: workspaceId,
+        period: period.toString().trim(),
+        status: status
+      }
+    }).toPromise()
+  }
 }
