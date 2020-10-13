@@ -292,7 +292,7 @@ export class PostService {
         overdue: overdue.toString().trim(),
         isNorthStar: isNorthStar.toString().trim()
       }
-    });
+    }).toPromise();
   }
 
   /**
