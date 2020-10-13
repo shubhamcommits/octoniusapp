@@ -422,6 +422,8 @@ export class PostService {
           // Add task property details
           postData.task = {
             due_to: (post.date_due_to) ? moment(post.date_due_to).format() : null,
+            start_date: (post.start_date) ? moment(post.start_date).format() : null,
+            end_date: (post.end_date) ? moment(post.end_date).format() : null,
             _assigned_to: post.assigned_to,
             status: post.status,
             unassigned: post.unassigned,
@@ -795,6 +797,42 @@ export class PostService {
       }, {
         "task.due_to": date_due_to ? moment(date_due_to).format() : null,
       }, {
+        new: true
+      })
+
+      // Populate the post properties
+      post = await this.populatePostProperties(post)
+
+      // Return the post
+      return post;
+
+    } catch (err) {
+      return err
+    }
+  }
+
+  /**
+   * This function is responsible for changing the task due date
+   * @param postId
+   * @param date_field
+   * @param newDate
+   */
+  async changeTaskDate(postId: string, date_field: string, newDate: Date) {
+
+    try {
+
+      let field = {};
+      if (date_field === 'start_date') {
+        field = { "task.start_date": newDate }
+      }
+      if (date_field === 'end_date') {
+        field = { "task.end_date": newDate }
+      }
+      
+      // Get post data
+      var post: any = await Post.findOneAndUpdate({
+        _id: postId
+      }, field, {
         new: true
       })
 

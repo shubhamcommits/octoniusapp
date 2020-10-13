@@ -140,25 +140,42 @@
         </div>
         <!-- Status ends -->
 
-        <!-- Due date starts -->
+        <!-- Dates starts -->
         <div class="content-box" *ngIf="postData.type === 'task' || postData.type === 'event'">
             <p class="box-title">Due date</p>
-            <div *ngIf="postData.type === 'task'" class="btn-group">
+            <div *ngIf="postData.type === 'task'">
+              <!-- Date Picker Start-Date starts -->
+              <app-date-picker *ngIf="groupData?.project_type"
+                (date)="getDate($event, 'start_date')"
+                [dueDate]="postData?.task.start_date"
+                [styleClass]="'btn-group input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')">
+              </app-date-picker>
+              <!--Date Picker Start-Date ends -->
+
+              <!-- Date Picker End-Date starts -->
+              <app-date-picker *ngIf="groupData?.project_type"
+                (date)="getDate($event, 'end_date')"
+                [dueDate]="postData?.task.end_date"
+                [styleClass]="'btn-group input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')">
+              </app-date-picker>
+              <!--Date Picker End-Date ends -->
+
+
               <!-- Date Picker starts -->
               <app-date-picker
-                (date)="getDate($event)"
+                (date)="getDate($event, 'due_date')"
                 [dueDate]="postData?.task.due_to"
-                [styleClass]="'input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')">
+                [styleClass]="'btn-group input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')">
               </app-date-picker>
               <!--Date Picker ends -->
             </div>
             <div *ngIf="postData.type === 'event'" class="btn-group">
               <!-- Date Picker starts -->
-            <app-date-picker
-              (date)="getDate($event)"
-              [dueDate]="postData?.event.due_to"
-              [styleClass]="'input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')">
-            </app-date-picker>
+              <app-date-picker
+                (date)="getDate($event)"
+                [dueDate]="postData?.event.due_to"
+                [styleClass]="'input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')">
+              </app-date-picker>
               <!--Date Picker ends -->
             </div>
 
@@ -171,7 +188,7 @@
             </app-time-picker>
             <!-- Time Picker ends -->
         </div>
-        <!-- Due date ends -->
+        <!-- Dates ends -->
 
         <!-- Assignee Modal starts -->
         <div class="content-box" *ngIf="postData.type === 'task' || postData.type === 'event'">

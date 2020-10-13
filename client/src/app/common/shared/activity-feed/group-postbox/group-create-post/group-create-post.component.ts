@@ -24,6 +24,9 @@ export class GroupCreatePostComponent implements OnInit {
   // Date Object to map the due dates
   dueDate: any;
 
+  startDate: any;
+  endDate: any;
+
   // Files Variable
   files: any = []
 
@@ -118,7 +121,11 @@ export class GroupCreatePostComponent implements OnInit {
   // Delete Event Emitter - Emits delete event
   @Output('delete') delete = new EventEmitter();
 
-  ngOnInit() {
+  groupData: any;
+
+  async ngOnInit() {
+
+    this.groupData = await this.publicFunctions.getGroupDetails(this.groupId);
 
     /*
     this.hotKeyService.add(new Hotkey(['meta+return', 'meta+enter'], (event: KeyboardEvent, combo: string): boolean => {
@@ -257,10 +264,18 @@ export class GroupCreatePostComponent implements OnInit {
    * This function is responsible for receiving the date from @module <app-date-picker></app-date-picker>
    * @param dateObject
    */
-  getDate(dateObject: any) {
-    this.dueDate = dateObject;
+  getDate(dateObject: any, property: string) {
+    if (property === 'start_date') {
+      this.startDate = dateObject.toDate();
+    }
+    if (property === 'end_date') {
+      this.endDate = dateObject.toDate();
+    }
+    if (property === 'due_date') {
+      this.dueDate = dateObject.toDate();
+    }
     if (this.edit) {
-      this.date.emit(this.dueDate);
+      this.date.emit({startDate: this.startDate, endDate: this.endDate, dueDate: this.dueDate});
     }
   }
 

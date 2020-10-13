@@ -122,6 +122,45 @@ const PostSchema = new Schema({
         custom_fields: {
             type: Map,
             of: String
+        },
+
+        isNorthStar: {
+            type: Boolean,
+            default: false
+        },
+
+        northStar: {
+            target_value: {
+                type: Number,
+                default: 0
+            },
+            values: [{
+                date: {
+                    type: Date,
+                    default: Date.now
+                },
+                value: {
+                    type: Number,
+                    default: 0
+                },
+                status: {
+                    type: String,
+                    enum: ['NOT STARTED', 'ON TRACK', 'IN DANGER', 'ACHIEVED']
+                }
+            }],
+            type: {
+                type: String,
+                enum: ['Currency $', 'Currency €', 'Percent', 'Number']
+            }
+        },
+        
+        start_date: {
+            type: Date,
+            default: null
+        },
+        end_date: {
+            type: Date,
+            default: null
         }
     },
 
