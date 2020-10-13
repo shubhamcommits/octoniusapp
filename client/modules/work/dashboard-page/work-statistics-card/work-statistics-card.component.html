@@ -1,27 +1,33 @@
 <div class="smart-card" style="padding: 10px;">
-    <div class="row" style="margin: 0 0 20px; justify-content: space-between;">
-      <div class="card-title mt-1">
-        Work statistics
-      </div>
-      <div class="icon" *ngIf="northStar">
-        <i class="material-icons-outlined mr-2">explore</i>
-      </div>
+  <div *ngIf="!northStar" class="row" style="margin: 0 0 20px; justify-content: space-between;">
+    <div class="card-title mt-1">
+      Work statistics
     </div>
-    <div class="card-icon" *ngIf="!northStar">
-      <span class="number">{{ task_count }}</span>&nbsp;total tasks
+  </div>
+  <div *ngIf="northStar" class="row" style="margin: 0 0 20px; justify-content: space-between;">
+    <div class="card-title mt-1">
+      Company Objectives
     </div>
-    <div class="card-icon" *ngIf="northStar">
-      <span class="number">{{ task_count }}</span>&nbsp;North Stars
+    <div class="icon">
+      <i class="material-icons-outlined mr-2">explore</i>
     </div>
-    <div class="col-12 d-none d-sm-block" style="padding-top: 15px;" *ngIf="chartReady">
-      <canvas
-        baseChart
-        height="250"
-        [data]="barChartData"
-        [labels]="barChartLabels"
-        [chartType]="barChartType"
-        [options]="barChartOptions"
-        [colors]="barChartColors"
-        [plugins]="barChartPlugins"></canvas>
-    </div>
+  </div>
+
+  <div class="card-icon" *ngIf="!northStar">
+    <span class="number">{{ task_count }}</span>&nbsp;total tasks
+  </div>
+  <div class="card-icon" *ngIf="northStar">
+    <span class="north_star_number">{{ task_count }}</span>&nbsp;North Stars
+  </div>
+  <div class="col-12 d-none d-sm-block" style="padding-top: 15px;" *ngIf="chartReady">
+    <canvas
+      baseChart
+      height="250"
+      [data]="barChartData"
+      [labels]="barChartLabels"
+      [chartType]="barChartType"
+      [options]="barChartOptions"
+      [colors]="barChartColors"
+      [plugins]="barChartPlugins"></canvas>
+  </div>
 </div>

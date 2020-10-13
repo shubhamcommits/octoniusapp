@@ -52,8 +52,23 @@ img{
   margin-left: auto;
   margin-right: 10px;
 
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 30px;
+  color: #969A9E;
+
   .number {
-    size: 24px;
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 30px;
+    color: #5E6268;
+  }
+
+  .north_star_number {
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 30px;
+    color: #005FD5;
   }
 }
 
