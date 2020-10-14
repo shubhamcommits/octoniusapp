@@ -48,6 +48,12 @@ export class WorkStatisticsCardComponent implements OnChanges {
 
   async initView() {
 
+    this.task_count = 0;
+    this.to_do_task_count = 0;
+    this.in_progress_task_count = 0;
+    this.done_task_count = 0;
+    this.overdue_task_count = 0;
+
     // Call the HTTP API to fetch the current workspace details
     this.workspaceData = await this.publicFunctions.getWorkspaceDetailsFromHTTP();
 

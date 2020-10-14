@@ -106,7 +106,11 @@ const UserSchema = new Schema({
                 type: Number,
                 default: 1
             }
-        }]
+        }],
+        dashboard_period: {
+            type: Number,
+            default: 7
+        }
     },
     _private_group: {
         type: Schema.Types.ObjectId,
