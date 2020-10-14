@@ -111,15 +111,31 @@ const GroupSchema = new Schema({
         }]
     },
     custom_fields_to_show: {
-        type: [{
-            name: {
-                type: String
+        type: [String],
+        default: []
+    },
+    records: {
+        pulses: [{
+            date: {
+                type: Date,
+                required: true,
+                default: moment().format()
             },
-            title: {
-                type: String
+            description: {
+                type: String,
+                required: true,
+                default: ''
+            }
+        }],
+        status: [{
+            date: {
+                type: Date,
+                required: true,
+                default: moment().format()
             },
-            values: {
-                type: [String]
+            project_status: {
+                type: String,
+                enum: ['ON TRACK', 'NOT STARTED', 'IN DANGER', 'ACHIEVED']
             }
         }]
     }

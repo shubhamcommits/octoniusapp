@@ -1283,10 +1283,15 @@ export class GroupController {
             const { groupId, status } = req.body;
 
             // Find the group and update their respective group avatar
-            const group = await Group.findByIdAndUpdate({
-                _id: groupId
-            }, {
-                project_status: status
+            const group = await Group.findByIdAndUpdate(groupId, {
+                $set: {
+                    project_status: status
+                },
+                $push: { "records.status": {
+                        date: moment().format(),
+                        project_status: status
+                    }
+                }
             }, {
                 new: true
             });

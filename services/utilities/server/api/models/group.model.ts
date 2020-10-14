@@ -92,6 +92,52 @@ const GroupSchema = new Schema({
     members_count: {
         type: Number,
         default: 0
+    },
+    custom_fields: {
+        type: [{
+            name: {
+                type: String,
+                required: true
+            },
+            title: {
+                type: String,
+                required: true
+            },
+            values: {
+                type: [String],
+                required: true,
+                default: []
+            }
+        }]
+    },
+    custom_fields_to_show: {
+        type: [String],
+        default: []
+    },
+    records: {
+        pulses: [{
+            date: {
+                type: Date,
+                required: true,
+                default: moment().format()
+            },
+            description: {
+                type: String,
+                required: true,
+                default: ''
+            }
+        }],
+        status: [{
+            date: {
+                type: Date,
+                required: true,
+                default: moment().format()
+            },
+            project_status: {
+                type: String,
+                enum: ['ON TRACK', 'NOT STARTED', 'IN DANGER', 'ACHIEVED']
+            }
+        }]
     }
 });
 

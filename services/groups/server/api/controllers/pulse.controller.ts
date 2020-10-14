@@ -46,6 +46,11 @@ export class PulseController {
                 {
                     $set: {
                         pulse_description: pulse_description
+                    },
+                    $push: { "records.pulses": {
+                            date: moment().format(),
+                            description: pulse_description
+                        }
                     }
                 }
             ).select('group_name pulse_description');
