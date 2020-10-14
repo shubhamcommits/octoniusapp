@@ -62,7 +62,7 @@ export class PulseCardComponent implements OnChanges {
     return new Promise((resolve, reject) => {
       this.groupService.getPulseCount(this.workspaceData['_id'], this.period.toString())
         .then((res) => {
-          this.num_updates = res['numPulse'];
+          this.num_updates_period = res['numPulse'];
           resolve(res['numPulse'])
         })
         .catch(() => reject(0));

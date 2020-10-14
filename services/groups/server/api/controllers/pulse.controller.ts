@@ -363,15 +363,29 @@ export class PulseController {
        try {
             const { workspaceId, period } = req.query;
 
-            const comparingDate = moment().local().subtract(+period, 'days').format('YYYY-MM-DD');
+            const comparingDate = moment().local().subtract(+period, 'days').toDate();
 
             let numPulse = 0;
             
-            if (period) {
-                // TODO add the period to the query,
-                // need to completely refactor the pulse structure to save a record of pulses
-            } else {
+            if (period !== 'undefined') {
+                const groups = await Group.find({
+                    $and: [
+                        { group_name: { $ne: 'personal' } },
+                        { group_name: { $ne: 'private' } },
+                        { _workspace: workspaceId },
+                        { pulse_description: { $nin:[null,""] } }
+                    ]
+                }).select("_id pulse_description records");
 
+                for (let group of groups) {
+                    for (let pulse of group['records']['pulses']) {
+                        if (pulse['date'].getTime() >= comparingDate.getTime()) {
+                            numPulse++;
+                        }
+                    }
+                }
+
+            } else {
                 numPulse = await Group.find({
                     $and: [
                         { group_name: { $ne: 'personal' } },
@@ -379,8 +393,9 @@ export class PulseController {
                         { _workspace: workspaceId },
                         { pulse_description: { $nin:[null,""] } }
                     ]
-                }).countDocuments()
+                }).countDocuments();
             }
+
             // Send the status 200 response
             return res.status(200).json({
                 message: `Found ${numPulse} Pulses!`,
