@@ -167,11 +167,11 @@ export class GroupsService {
    * This function is responsible for fetching the list of all groups
    * @param workspaceId
    */
-  getWorkspaceGroups(workspaceId: string, period: any){
+  getWorkspaceGroups(workspaceId: string, period?: any){
     return this._http.get(this.baseURL + `/workspace/groups`, {
       params: {
-        workspaceId,
-        period
+        workspaceId: workspaceId,
+        period: period
       }
     }).toPromise();
   }

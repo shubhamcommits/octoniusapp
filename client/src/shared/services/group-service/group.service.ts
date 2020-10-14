@@ -231,4 +231,10 @@ export class GroupService {
   updateSmartGroupMembers(groupId: string, data: object): Observable<any> {
     return this._http.put<any>(`${this.baseURL}/smart/${groupId}`, data);
   }
+
+  getPostsCount(groupId: string, period: any) {
+    return this._http.get(this.baseURL + `/${groupId}/postsCount`, {params:{
+      period: period
+    }}).toPromise();
+  }
 }

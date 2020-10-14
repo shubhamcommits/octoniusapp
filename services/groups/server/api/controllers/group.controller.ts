@@ -1221,52 +1221,39 @@ export class GroupController {
             const { workspaceId, period } = req.query;
 
             // If workspaceId is null or not provided then we throw BAD REQUEST 
-            if (!workspaceId || !period) {
+            if (!workspaceId) {
                 return res.status(400).json({
                     message: 'Please provide the workspaceId and period as the query parameter!'
                 })
             }
 
-            const numDays = +period;
+            let groups = [];
+            
+            if (period !== 'undefined') {
+                const comparingDate = moment().local().subtract(+period, 'days').format('YYYY-MM-DD');
 
-            const comparingDate = moment().local().subtract(numDays, 'days').format('YYYY-MM-DD');
-            // Generate the actual time
-            // const today = moment().subtract(1, 'days').endOf('day').format();
-
-            // Fetch groups in the database based on the list of @workspaceId which are not private
-            const groups = await Group.find({
-                $and: [
-                    { group_name: { $ne: 'personal' } },
-                    { group_name: { $ne: 'private' } },
-                    { _workspace: workspaceId, },
-                    { created_date: { $gte: comparingDate } }
-                ]
-            })
+                // Fetch groups in the database based on the list of @workspaceId which are not private
+                groups = await Group.find({
+                    $and: [
+                        { group_name: { $ne: 'personal' } },
+                        { group_name: { $ne: 'private' } },
+                        { _workspace: workspaceId, },
+                        { created_date: { $gte: comparingDate } }
+                    ]
+                })
                 .sort('_id')
-                /*
-                .populate({
-                    path: '_members',
-                    select: '_id',
-                    options: {
-                        count: true
-                    },
-                    match: {
-                        active: true
-                    }
-                })
-                .populate({
-                    path: '_admins',
-                    select: '_id',
-                    options: {
-                        count: true
-                    },
-                    match: {
-                        active: true
-                    }
-                })
-                */
                 .lean() || [];
-
+            } else {
+                groups = await Group.find({
+                    $and: [
+                        { group_name: { $ne: 'personal' } },
+                        { group_name: { $ne: 'private' } },
+                        { _workspace: workspaceId, },
+                    ]
+                })
+                .sort('_id')
+                .lean() || [];
+            }
             // Send the status 200 response
             return res.status(200).json({
                 message: `The next ${groups.length} groups!`,
@@ -1303,6 +1290,36 @@ export class GroupController {
             });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
+
+    /**
+     * This function fetches the number of posts of the group corresponding to the @constant groupId 
+     * @param req - @constant groupId
+     */
+    async getPostsCount(req: Request, res: Response) {
+        try {
+
+            const { groupId } = req.params;
+            const { query: { period } } = req;
+
+            const comparingDate = moment().local().subtract(+period, 'days').format('YYYY-MM-DD');
+
+            // Find the Group based on the groupId
+            const numPosts = await Post.find({
+                $and: [
+                    { _group: groupId },
+                    { created_date: { $gte: comparingDate } }
+                ]
+            }).countDocuments();
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Posts found!',
+                numPosts: numPosts
+            });
+        } catch (err) {
+            return sendError(res, err);
         }
     };
 }

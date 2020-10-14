@@ -111,6 +111,9 @@ routes.get('/workspace/groups', group.getWorkspaceGroups);
 // PUT - Updates the project status
 routes.put('/project/status', group.updateStatus);
 
+// GET - Get number of posts
+routes.get('/:groupId/postsCount', group.getPostsCount);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================
