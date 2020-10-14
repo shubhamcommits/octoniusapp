@@ -348,4 +348,42 @@ export class PulseController {
             return sendError(res, err);
         }
     }
+
+    /**
+    * This function fetches the pulse count for a workspace on a period
+    * @param { workspaceId, period } req 
+    * @param res 
+    */
+   async getPulseCount(req: Request, res: Response) {
+       try {
+            const { workspaceId, period } = req.query;
+
+            const comparingDate = moment().local().subtract(+period, 'days').format('YYYY-MM-DD');
+
+            let numPulse = 0;
+            
+            if (period) {
+                // TODO add the period to the query,
+                // need to completely refactor the pulse structure to save a record of pulses
+            } else {
+
+                numPulse = await Group.find({
+                    $and: [
+                        { group_name: { $ne: 'personal' } },
+                        { group_name: { $ne: 'private' } },
+                        { _workspace: workspaceId },
+                        { pulse_description: { $nin:[null,""] } }
+                    ]
+                }).countDocuments()
+            }
+            // Send the status 200 response
+            return res.status(200).json({
+                message: `Found ${numPulse} Pulses!`,
+                numPulse: numPulse,
+            });
+           
+       } catch (err) {
+           return sendError(res, err);
+       }
+   }
 }

@@ -70,6 +70,10 @@ export class GlobalPerformanceCardComponent implements OnChanges {
         this.isLoading$.next(false);
       })
 
+    if (!this.groups) {
+      this.groups = [];
+    }
+
     // Calculate the pulse tasks via calling the APIs
     await this.calculateTasksNumbers();
 

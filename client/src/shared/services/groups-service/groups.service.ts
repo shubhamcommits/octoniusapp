@@ -214,4 +214,18 @@ export class GroupsService {
       status: status
     }).toPromise()
   }
+
+  /**
+   * This function is responsible for fetching the pulse count based on the workspaceId and period
+   * @param workspaceId
+   * @param period
+   */
+  getPulseCount(workspaceId: string, period?: string) {
+    return this._http.get(this.baseURL + `/pulse/count`, {
+        params: {
+          workspaceId,
+          period
+        }
+      }).toPromise()
+  }
 }
