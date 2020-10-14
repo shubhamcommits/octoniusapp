@@ -9,6 +9,10 @@ export class EngagementCardComponent implements OnChanges {
 
   @Input() period;
 
+  num_agoras = 0;
+  num_topics = 0;
+  num_highly_engaged = 0;
+
   constructor() { }
 
   ngOnChanges() {

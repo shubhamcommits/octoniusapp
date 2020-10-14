@@ -9,6 +9,8 @@ export class PulseCardComponent implements OnChanges {
 
   @Input() period;
 
+  num_updates = 0;
+
   constructor() { }
 
   ngOnChanges() {

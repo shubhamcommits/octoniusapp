@@ -38,7 +38,6 @@ export class WorkStatisticsCardComponent implements OnChanges {
   public publicFunctions = new PublicFunctions(this.injector)
 
   constructor(
-    private userService: UserService,
     private postService: PostService,
     private injector: Injector
   ) { }
