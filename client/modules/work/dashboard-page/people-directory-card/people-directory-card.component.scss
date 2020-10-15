@@ -29,7 +29,7 @@ img{
 }
 
 .row  {
-  margin-bottom: 20px;
+  margin-bottom: 5px;
 }
 
 .icon {
@@ -50,6 +50,13 @@ img{
     font-size: 24px;
     line-height: 30px;
     color: #5E6268;
+  }
+
+  .members_count {
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 30px;
+    color: #FF6584;
   }
 
   .global_managers_count {

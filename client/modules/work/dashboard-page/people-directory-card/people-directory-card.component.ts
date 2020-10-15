@@ -21,6 +21,7 @@ export class PeopleDirectoryCardComponent implements OnChanges {
   num_users = 0;
   num_global_managers = 0;
   num_group_managers = 0;
+  num_members =  0;
   num_guests = 0;
 
   // Public Functions Object
@@ -42,10 +43,17 @@ export class PeopleDirectoryCardComponent implements OnChanges {
     this.num_users = 0;
     this.num_global_managers = 0;
     this.num_group_managers = 0;
+    this.num_members = 0;
     this.num_guests = 0;
 
     this.users = await this.getUsers();
     this.guests = await this.getGuests();
+
+    for (let user of this.users) {
+      if (user.role === 'admin' || user.role === 'owner') this.num_global_managers++;
+      if (user.role === 'manager') this.num_group_managers++;
+      if (user.role === 'member') this.num_members++;
+    }
 
     this.num_users = this.users.length;
     this.num_guests = this.guests.length;
