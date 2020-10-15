@@ -750,7 +750,7 @@ export class PublicFunctions {
      * @param postId
      * @param status
      */
-    changeTaskStatus(postId: string, status: string) {
+    changeTaskStatus(postId: string, status: string, userId: string) {
 
         // Post Service Instance
         let postService = this.injector.get(PostService)
@@ -761,7 +761,7 @@ export class PublicFunctions {
         utilityService.asyncNotification('Please wait we are updating the task status...',
           new Promise((resolve, reject) => {
             // Call HTTP Request to change the request
-            postService.changeTaskStatus(postId, status)
+            postService.changeTaskStatus(postId, status, userId)
             .then((res) => {
                 resolve(utilityService.resolveAsyncPromise(`Task status marked as ${status}!`))
             })

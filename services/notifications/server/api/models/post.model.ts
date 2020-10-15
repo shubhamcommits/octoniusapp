@@ -1,3 +1,4 @@
+import moment from 'moment';
 import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
@@ -185,6 +186,23 @@ const PostSchema = new Schema({
         _assigned_to: [{
             type: Schema.Types.ObjectId,
             ref: 'User'
+        }]
+    },
+    records: {
+        status: [{
+            date: {
+                type: Date,
+                required: true,
+                default: moment().format()
+            },
+            status: {
+                type: String,
+                enum: ['to do', 'in progress', 'done']
+            },
+            _user: {
+                type: Schema.Types.ObjectId,
+                ref: 'User'
+            }
         }]
     }
 });

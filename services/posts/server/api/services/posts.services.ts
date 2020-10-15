@@ -710,7 +710,7 @@ export class PostService {
 
 
   /**
-   * This function is used to ununfollow a post
+   * This function is used to unfollow a post
    * @param { userId, postId }
    */
   async unfollow(userId: string, postId: string) {
@@ -812,7 +812,7 @@ export class PostService {
   }
 
   /**
-   * This function is responsible for changing the task due date
+   * This function is responsible for changing the task dates
    * @param postId
    * @param date_field
    * @param newDate
@@ -852,15 +852,22 @@ export class PostService {
    * @param postId
    * @param status
    */
-  async changeTaskStatus(postId: string, status: string) {
+  async changeTaskStatus(postId: string, status: string, userId: string) {
 
     try {
-
       // Get post data
       var post: any = await Post.findOneAndUpdate({
         _id: postId
       }, {
-        "task.status": status ? status : 'to do',
+        $set: {
+          "task.status": status ? status : 'to do'
+        },
+        $push: { "records.status": {
+            date: moment().format(),
+            status: status,
+            _user: userId
+          }
+        }
       }, {
         new: true
       })

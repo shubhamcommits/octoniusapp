@@ -18,10 +18,13 @@ export class TaskStatusComponent implements OnInit {
   // Move Task Output Emitter
   @Output('status') status = new EventEmitter();
 
+  userData: any;
+
   // Public Functions
   publicFunctions = new PublicFunctions(this.injector)
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.userData = await this.publicFunctions.getCurrentUser()
   }
 
   /**
@@ -31,7 +34,7 @@ export class TaskStatusComponent implements OnInit {
   changeStatus(status: string){
 
     // Change the task status
-    this.publicFunctions.changeTaskStatus(this.post._id, status)
+    this.publicFunctions.changeTaskStatus(this.post._id, status, this.userData._id);
 
     // Emit the status to other parent components
     this.status.emit(status)
