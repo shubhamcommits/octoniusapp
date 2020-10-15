@@ -41,7 +41,7 @@ export class GlobalPerformanceCardComponent implements OnChanges {
   // Public functions
   public publicFunctions = new PublicFunctions(this.injector);
 
-  // IsLoading behaviou subject maintains the state for loading spinner
+  // IsLoading behavior subject maintains the state for loading spinner
   public isLoading$ = new BehaviorSubject(false);
 
   constructor(

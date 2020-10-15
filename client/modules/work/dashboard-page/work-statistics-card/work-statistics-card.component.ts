@@ -70,7 +70,8 @@ export class WorkStatisticsCardComponent implements OnChanges {
     this.task_count = this.to_do_task_count + this.in_progress_task_count + this.done_task_count + this.overdue_task_count;
 
     /* Chart Setup */
-    this.barChartLabels = [this.to_do_task_count, this.in_progress_task_count, this.done_task_count, this.overdue_task_count];
+    // this.barChartLabels = [this.to_do_task_count, this.in_progress_task_count, this.done_task_count, this.overdue_task_count];
+    this.barChartLabels = ['To Do', 'In Progress', 'Done', 'Overdue'];
     this.barChartData = [this.to_do_task_count, this.in_progress_task_count, this.done_task_count, this.overdue_task_count];
     this.barChartType = 'bar';
     this.barChartOptions = {
@@ -88,13 +89,13 @@ export class WorkStatisticsCardComponent implements OnChanges {
           }],
           xAxes: [{
               stacked: true,
-              display: true,
+              display: false,
               gridLines: {
                   drawBorder: false,
                   display: false,
-              },
+              }
           }]
-      }
+      },
     };
     this.barChartColors = [{
       backgroundColor: [
@@ -105,7 +106,7 @@ export class WorkStatisticsCardComponent implements OnChanges {
       ]
     }];
     this.barChartPlugins = [{
-      beforeDraw(chart) {
+      beforeDraw(chart, options) {
 
       }
     }];
