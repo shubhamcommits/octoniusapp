@@ -616,12 +616,12 @@ export class PostController {
     async changeTaskColumn(req: Request, res: Response, next: NextFunction) {
 
         // Fetch Data from request
-        const { params: { postId }, body: { title } } = req;
+        const { params: { postId }, body: { title, userId } } = req;
 
         try {
 
             // Call Service function to change the assignee
-            const post = await postService.changeTaskColumn(postId, title)
+            const post = await postService.changeTaskColumn(postId, title, userId)
                 .catch((err) => {
                     return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
                 })

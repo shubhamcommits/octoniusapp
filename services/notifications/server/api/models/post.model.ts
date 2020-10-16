@@ -203,6 +203,23 @@ const PostSchema = new Schema({
                 type: Schema.Types.ObjectId,
                 ref: 'User'
             }
+        }],
+        column: [{
+            date: {
+                type: Date,
+                required: true,
+                default: moment().format()
+            },
+            title: {
+                type: String,
+                required: true,
+                default: 'to do'
+            },
+            _user: {
+                type: Schema.Types.ObjectId,
+                required: true,
+                ref: 'User'
+            }
         }]
     }
 });

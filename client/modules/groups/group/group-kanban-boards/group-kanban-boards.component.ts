@@ -326,7 +326,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
    */
   moveTaskToNewColumn(task: any, oldColumn: string, newColumn: string) {
 
-    this.publicFunctions.changeTaskColumn(task._id, newColumn);
+    this.publicFunctions.changeTaskColumn(task._id, newColumn, this.userData._id);
 
     // If new column is 'to do' then set the taskStatus as 'to do' too
     switch (newColumn) {

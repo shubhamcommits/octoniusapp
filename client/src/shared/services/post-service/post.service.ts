@@ -230,15 +230,17 @@ export class PostService {
   }
 
   /**
-   * This function is resposible for changing the column of a task
+   * This function is responsible for changing the column of a task
    * @param postId
    * @param title
+   * @param userId
    */
-  changeTaskColumn(postId: string, title: string){
+  changeTaskColumn(postId: string, title: string, userId: string){
 
     // Call the HTTP Request
     return this._http.put(this.baseURL + `/${postId}/task-column`, {
-      title: title
+      title: title,
+      userId: userId
     }).
     toPromise()
   }

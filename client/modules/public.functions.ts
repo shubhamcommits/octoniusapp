@@ -776,7 +776,7 @@ export class PublicFunctions {
      * @param postId
      * @param title
      */
-    changeTaskColumn(postId: string, title: string) {
+    changeTaskColumn(postId: string, title: string, userId: string) {
 
         // Post Service Instance
         let postService = this.injector.get(PostService)
@@ -788,7 +788,7 @@ export class PublicFunctions {
             new Promise((resolve, reject) => {
 
                 // Call HTTP Request to change the request
-                postService.changeTaskColumn(postId, title)
+                postService.changeTaskColumn(postId, title, userId)
                     .then((res) => {
                         resolve(utilityService.resolveAsyncPromise(`Task moved to - ${title}!`))
                     })

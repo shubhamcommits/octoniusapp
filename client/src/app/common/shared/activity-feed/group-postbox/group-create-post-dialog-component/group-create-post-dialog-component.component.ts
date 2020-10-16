@@ -216,8 +216,9 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
   async moveTaskToColumn(event) {
     await this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
-      this.postService.changeTaskColumn(this.postData._id, event.post.task._column.title)
+      this.postService.changeTaskColumn(this.postData._id, event.post.task._column.title, this.userData._id)
         .then((res) => {
+
           this.postData = res['post'];
           this.contentChanged = false;
           // Resolve with success

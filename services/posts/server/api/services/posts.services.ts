@@ -851,6 +851,7 @@ export class PostService {
    * This function is responsible for changing the task status
    * @param postId
    * @param status
+   * @param userId
    */
   async changeTaskStatus(postId: string, status: string, userId: string) {
 
@@ -893,8 +894,9 @@ export class PostService {
    * This function is responsible for changing the task column
    * @param postId
    * @param status
+   * @param userId
    */
-  async changeTaskColumn(postId: string, title: string) {
+  async changeTaskColumn(postId: string, title: string, userId: string) {
 
     try {
 
@@ -902,7 +904,15 @@ export class PostService {
       var post: any = await Post.findOneAndUpdate({
         _id: postId
       }, {
-        "task._column.title": title ? title : 'to do',
+        $set: {
+          "task._column.title": title ? title : 'to do',
+        },
+        $push: { "records.column": {
+            date: moment().format(),
+            title: title,
+            _user: userId
+          }
+        }
       }, {
         new: true
       })
