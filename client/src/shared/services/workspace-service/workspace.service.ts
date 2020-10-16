@@ -4,6 +4,7 @@ import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs/internal/Observable';
 import { GroupService } from '../group-service/group.service';
 import { GroupsService } from '../groups-service/groups.service';
+import moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
@@ -275,6 +276,11 @@ export class WorkspaceService {
 
   private getVelocityCounterPerDates(fromDate: any, toDate: any, groups: any[]) {
     let returnCounter = 0;
+
+    fromDate = fromDate.format('YYYY-MM-DD');
+    if (toDate) {
+      toDate = toDate.format('YYYY-MM-DD');
+    }
 
     groups.forEach(group => {
       if (group.records && group.records.done_tasks_count) {

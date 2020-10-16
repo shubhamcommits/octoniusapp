@@ -46,7 +46,7 @@ export class VelocityCardComponent implements OnChanges {
     const velocityData = await this.getData(dates);
 
     this.lineChartData = velocityData;
-    this.lineChartLabels = dates;
+    this.lineChartLabels = this.formatDates(dates);
     this.lineChartOptions = {
       responsive: true,
       legend: {
@@ -88,20 +88,32 @@ export class VelocityCardComponent implements OnChanges {
     let datesRet = [];
     if (this.period === 7) {
       for (let i = 6; i >= 0; i--) {
-        datesRet.push(moment().subtract(i, 'days').endOf('day').format('YYYY-MM-DD'));
+        datesRet.push(moment().subtract(i, 'days').startOf('day'));
       }
     } else if (this.period === 30) {
       for (let i = 11; i > 0; i--) {
-        datesRet.push(moment().subtract(i*(30/12), 'days').endOf('day').format('YYYY-MM-DD'));
+        datesRet.push(moment().subtract(i*(30/12), 'days').startOf('day'));
       }
-      datesRet.push(moment().subtract(0, 'days').endOf('day').format('YYYY-MM-DD'));
+      datesRet.push(moment().subtract(0, 'days').startOf('day'));
     } else if (this.period === 365) {
       for (let i = 11; i >= 0; i--) {
-        datesRet.push(moment().subtract(i, 'months').endOf('day').format('MMM/YYYY'));
+        datesRet.push(moment().subtract(i, 'months').startOf('day'));
       }
     }
 
     return datesRet;
+  }
+
+  formatDates(dates) {
+    let newDates = [];
+    dates.forEach(date => {
+      if (this.period === 365) {
+        newDates.push(date.format('MMM/YYYY'));
+      } else {
+        newDates.push(date.format('YYYY-MM-DD'));
+      }
+    });
+    return newDates;
   }
 
   getData(dates) {
