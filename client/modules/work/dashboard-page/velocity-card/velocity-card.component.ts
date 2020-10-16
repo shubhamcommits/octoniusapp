@@ -1,5 +1,7 @@
 import { Component, Injector, Input, OnChanges, OnInit } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
+import moment from 'moment';
+import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
 
 @Component({
   selector: 'app-velocity-card',
@@ -19,11 +21,17 @@ export class VelocityCardComponent implements OnChanges {
   lineChartType;
   lineChartLabels;
   lineChartOptions;
+  lineChartColors;
+  lineChartLegend;
+  lineChartPlugins;
 
   // Public Functions Object
   public publicFunctions = new PublicFunctions(this.injector)
 
-  constructor(private injector: Injector) { }
+  constructor(
+    private injector: Injector,
+    private workspaceService: WorkspaceService
+    ) { }
 
   ngOnChanges() {
     this.initView();
@@ -31,83 +39,72 @@ export class VelocityCardComponent implements OnChanges {
 
   async initView() {
 
-    this.lineChartType = 'bar';
-    this.lineChartData = [{
-      label: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-			datasets: [{
-				label: 'My First dataset',
-				borderColor: '#FFAB00',
-        backgroundColor: '#FFAB00',
-				fill: false,
-				data: [
-          10, 15, 5, 7, 10, 2
-				],
-				yAxisID: 'y',
-			}, {
-				label: 'My Second dataset',
-				borderColor: '#0bc6a0',
-				backgroundColor: '#0bc6a0',
-				fill: false,
-				data: [
-					1, 5, 15, 5, 5, 10
-				],
-				yAxisID: 'y1'
-      }]
-    }];
+    // Call the HTTP API to fetch the current workspace details
+    this.workspaceData = await this.publicFunctions.getWorkspaceDetailsFromHTTP();
 
+    const dates = this.getDates();
+
+    this.lineChartData = this.getData(dates);
+    this.lineChartLabels = dates;
     this.lineChartOptions = {
+      responsive: true,
       legend: {
         display: false
       },
-      responsive: true,
-      hoverMode: 'index',
-      stacked: false,
-      title: {
-        display: false
-      },
       scales: {
-        y: {
-          type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
-          display: true,
-          position: 'left',
-          gridLines: {
-            drawBorder: false,
-            display: false,
-            drawOnChartArea: false,
-          }
-        },
-        y1: {
-          type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
-          display: true,
-          position: 'right',
-
-          // grid line settings
-          gridLines: {
-            drawBorder: false,
-            display: false,
-            drawOnChartArea: false, // only want the grid lines for one axis to show up
-          },
-        },
-        yAxes: [{
-          stacked: true,
-          display: false,
-          gridLines: {
-              drawBorder: false,
+          yAxes: [{
+              stacked: true,
               display: false,
-          },
-        }],
-        xAxes: [{
-          stacked: true,
-          display: false,
-          gridLines: {
-              drawBorder: false,
+              gridLines: {
+                  drawBorder: false,
+                  display: false,
+              },
+          }],
+          xAxes: [{
+              stacked: true,
               display: false,
-          },
-        }]
+              gridLines: {
+                  drawBorder: false,
+                  display: false,
+              }
+          }]
       }
     };
+    this.lineChartColors = [
+      {
+        borderColor: '#005FD5',
+        backgroundColor: '#FFFFFF',
+      },
+    ];
+    this.lineChartLegend = true;
+    this.lineChartType = 'line';
+    this.lineChartPlugins = [];
 
     this.chartReady = true;
   }
 
+  getDates() {
+    let datesRet = [];
+    if (this.period === 7) {
+      for (let i = 6; i >= 0; i--) {
+        datesRet.push(moment().subtract(i, 'days').endOf('day').format('YYYY-MM-DD'));
+      }
+    } else if (this.period === 30) {
+      for (let i = 11; i > 0; i--) {
+        datesRet.push(moment().subtract(i*(30/12), 'days').endOf('day').format('YYYY-MM-DD'));
+      }
+      datesRet.push(moment().subtract(0, 'days').endOf('day').format('YYYY-MM-DD'));
+    } else if (this.period === 365) {
+      for (let i = 11; i >= 0; i--) {
+        datesRet.push(moment().subtract(i, 'months').endOf('day').format('MMM/YYYY'));
+      }
+    }
+
+    return datesRet;
+  }
+
+  getData(dates) {
+    //this.workspaceService.getVelocityGroups(this.workspaceData._id, dates, this.period);
+    return [65, 59, 80, 81, 56, 55, 40, 60, 32, 45, 55, 63];
+  }
 }

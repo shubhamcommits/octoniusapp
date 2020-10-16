@@ -101,25 +101,27 @@ export class GlobalPerformanceCardComponent implements OnChanges {
     // Iterating over the net array to calculate the tasks count
     for (let i = 0; i < this.groups.length; i++) {
 
-      // Get all tasks count for a group
-      this.totalTasks[this.groups[i]._id] = await this.getTasksCount(this.groups[i]._id);
+      if (this.groups[i]) {
+        // Get all tasks count for a group
+        this.totalTasks[this.groups[i]._id] = await this.getTasksCount(this.groups[i]._id);
 
-      // Get all tasks count having status as 'to do'
-      this.toDoTasks[this.groups[i]._id] = await this.getTasksCount(this.groups[i]._id, 'to do');
+        // Get all tasks count having status as 'to do'
+        this.toDoTasks[this.groups[i]._id] = await this.getTasksCount(this.groups[i]._id, 'to do');
 
-      // Get all tasks count having status as 'in progress'
-      this.inProgressTasks[this.groups[i]._id] = await this.getTasksCount(this.groups[i]._id, 'in progress');
+        // Get all tasks count having status as 'in progress'
+        this.inProgressTasks[this.groups[i]._id] = await this.getTasksCount(this.groups[i]._id, 'in progress');
 
-      // Get all tasks count having status as 'done'
-      this.doneTasks[this.groups[i]._id] = this.totalTasks[this.groups[i]._id] - (this.toDoTasks[this.groups[i]._id] + this.inProgressTasks[this.groups[i]._id]);
+        // Get all tasks count having status as 'done'
+        this.doneTasks[this.groups[i]._id] = this.totalTasks[this.groups[i]._id] - (this.toDoTasks[this.groups[i]._id] + this.inProgressTasks[this.groups[i]._id]);
 
-      this.overdueTasks[this.groups[i]._id] = await this.getOverdueTasksCount();
+        this.overdueTasks[this.groups[i]._id] = await this.getOverdueTasksCount();
 
-      const percentageDone = (this.totalTasks[this.groups[i]._id] + this.overdueTasks.length > 0) ? (((this.doneTasks[this.groups[i]._id])*100)/(this.totalTasks[this.groups[i]._id] + this.overdueTasks.length)) : 0;
-      this.groups[i].completitionPercentage = Math.round(percentageDone);
+        const percentageDone = (this.totalTasks[this.groups[i]._id] + this.overdueTasks.length > 0) ? (((this.doneTasks[this.groups[i]._id])*100)/(this.totalTasks[this.groups[i]._id] + this.overdueTasks.length)) : 0;
+        this.groups[i].completitionPercentage = Math.round(percentageDone);
 
-      this.groups[i].projectStatusClass = "pulse_tweet " + this.setStatusClass(this.groups[i].project_status, false);
-      this.groups[i].completitionPercentageClass = "badge " + this.setStatusClass(this.groups[i].project_status, true);
+        this.groups[i].projectStatusClass = "pulse_tweet " + this.setStatusClass(this.groups[i].project_status, false);
+        this.groups[i].completitionPercentageClass = "badge " + this.setStatusClass(this.groups[i].project_status, true);
+      }
     }
   }
 

@@ -1223,7 +1223,7 @@ export class GroupController {
             // If workspaceId is null or not provided then we throw BAD REQUEST 
             if (!workspaceId) {
                 return res.status(400).json({
-                    message: 'Please provide the workspaceId and period as the query parameter!'
+                    message: 'Please provide the workspaceId as the query parameter!'
                 })
             }
 

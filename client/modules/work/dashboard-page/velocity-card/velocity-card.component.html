@@ -9,13 +9,14 @@
     </div>
 
     <div class="row mt-12 d-none d-sm-block" *ngIf="chartReady">
-      <!--
-      <canvas
-      baseChart
-      height="250"
-      [datasets]="lineChartData"
-      [chartType]="lineChartType"
-      [options]="lineChartOptions"></canvas>
-      -->
+      <canvas baseChart width="400" height="400"
+        [data]="lineChartData"
+        [labels]="lineChartLabels"
+        [options]="lineChartOptions"
+        [colors]="lineChartColors"
+        [legend]="lineChartLegend"
+        [chartType]="lineChartType"
+        [plugins]="lineChartPlugins">
+      </canvas>
     </div>
 </div>
