@@ -257,7 +257,7 @@ export class WorkspaceService {
   /**
    * This function is responsible for retreiving and calculating the velocity of the workspace
    */
-  async getVelocityGroups(workspaceId: string, dates: any, period: any) {
+  async getVelocityGroups(workspaceId: string, dates: any) {
     let groupsVelocities = [];
     let groups = [];
 

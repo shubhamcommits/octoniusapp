@@ -105,6 +105,6 @@ export class VelocityCardComponent implements OnChanges {
   }
 
   getData(dates) {
-    return this.workspaceService.getVelocityGroups(this.workspaceData._id, dates, this.period);
+    return this.workspaceService.getVelocityGroups(this.workspaceData._id, dates);
   }
 }
