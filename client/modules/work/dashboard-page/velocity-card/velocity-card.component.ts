@@ -43,8 +43,9 @@ export class VelocityCardComponent implements OnChanges {
     this.workspaceData = await this.publicFunctions.getWorkspaceDetailsFromHTTP();
 
     const dates = this.getDates();
+    const velocityData = await this.getData(dates);
 
-    this.lineChartData = this.getData(dates);
+    this.lineChartData = velocityData;
     this.lineChartLabels = dates;
     this.lineChartOptions = {
       responsive: true,
@@ -104,7 +105,6 @@ export class VelocityCardComponent implements OnChanges {
   }
 
   getData(dates) {
-    //this.workspaceService.getVelocityGroups(this.workspaceData._id, dates, this.period);
-    return [65, 59, 80, 81, 56, 55, 40, 60, 32, 45, 55, 63];
+    return this.workspaceService.getVelocityGroups(this.workspaceData._id, dates, this.period);
   }
 }

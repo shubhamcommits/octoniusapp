@@ -2,6 +2,8 @@ import { Injectable, Injector } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs/internal/Observable';
+import { GroupService } from '../group-service/group.service';
+import { GroupsService } from '../groups-service/groups.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +15,8 @@ export class WorkspaceService {
 
   constructor(
     private _http: HttpClient,
-    private injector: Injector) { }
+    private injector: Injector,
+    private groupsService: GroupsService) { }
 
   /**
    * This function is responsible for fetching the workspace details
@@ -249,5 +252,44 @@ export class WorkspaceService {
         period: period
       }
     }).toPromise()
+  }
+
+  /**
+   * This function is responsible for retreiving and calculating the velocity of the workspace
+   */
+  async getVelocityGroups(workspaceId: string, dates: any, period: any) {
+    let groupsVelocities = [];
+    let groups = [];
+
+    await this.groupsService.getWorkspaceGroups(workspaceId).then((res) => {
+      groups = res['groups'];
+    });
+
+    for (let i = 0; i < (dates.length - 1); i++) {
+      groupsVelocities.push(this.getVelocityCounterPerDates(dates[i], dates[i+1], groups));
+    }
+    groupsVelocities.push(this.getVelocityCounterPerDates(dates[dates.length-1], null, groups));
+
+    return groupsVelocities;
+  }
+
+  private getVelocityCounterPerDates(fromDate: any, toDate: any, groups: any[]) {
+    let returnCounter = 0;
+
+    groups.forEach(group => {
+      if (group.records && group.records.done_tasks_count) {
+        let doneTasksCount = group.records.done_tasks_count;
+        if (toDate) {
+          doneTasksCount = doneTasksCount.filter(counter => counter.date >= fromDate && counter.date < toDate);
+        } else {
+          doneTasksCount = doneTasksCount.filter(counter => counter.date >= fromDate);
+        }
+
+        doneTasksCount.forEach(counter => {
+          returnCounter += counter.count;
+        });
+      }
+    });
+    return returnCounter;
   }
 }
