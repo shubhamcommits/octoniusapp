@@ -5,6 +5,7 @@ const fs = require('fs');
 import { Readable } from 'stream';
 import { CommentsController } from '../controllers';
 import { sendErr } from '../utils/sendError';
+import { GroupsService } from './groups.services';
 
 /*  ===============================
  *  -- POSTS Service --
@@ -19,6 +20,7 @@ export class PostService {
   // Select Group Fileds on population
   groupFields: any = 'group_name group_avatar workspace_name';
 
+  groupsService = new GroupsService();
 
   /**
    * This service is responsible for fetching recent 5 posts based on the @lastPostId and @groupId
@@ -856,6 +858,8 @@ export class PostService {
   async changeTaskStatus(postId: string, status: string, userId: string) {
 
     try {
+      var oldPost: any = await Post.findOne({_id: postId}).select('task');
+
       // Get post data
       var post: any = await Post.findOneAndUpdate({
         _id: postId
@@ -881,6 +885,19 @@ export class PostService {
           post: post
         });
       }
+
+      if (status === 'done' || oldPost.task.status === 'done') {
+        let counter = 0;
+
+        if (status === 'done' && oldPost.task.status !== 'done') {
+          counter++;
+        } else if (oldPost.task.status === 'done' && status !== 'done') {
+          counter--;
+        }
+
+        this.groupsService.increaseDoneTasks(post._group._id, counter, status);
+      }
+
 
       // Return the post
       return post;

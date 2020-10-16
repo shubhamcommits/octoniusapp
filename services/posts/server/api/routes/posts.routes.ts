@@ -12,7 +12,7 @@ const postController = new PostController();
 /**
  * Calendar Controller Class Object
  */
-let calendarController = new CalendarController()
+let calendarController = new CalendarController();
 
 // Define auths helper controllers
 const auths = new Auths();

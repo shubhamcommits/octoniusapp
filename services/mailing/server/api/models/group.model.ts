@@ -137,6 +137,18 @@ const GroupSchema = new Schema({
                 type: String,
                 enum: ['ON TRACK', 'NOT STARTED', 'IN DANGER', 'ACHIEVED']
             }
+        }],
+        done_tasks_count: [{
+            date: {
+                type: Date,
+                required: true,
+                default: moment().format('YYYY-MM-DD')
+            },
+            count: {
+                type: Number,
+                required: true,
+                default: 0
+            }
         }]
     }
 });
