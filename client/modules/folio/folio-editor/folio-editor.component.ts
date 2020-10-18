@@ -37,6 +37,18 @@ import QuillCursors from 'quill-cursors';
 // Register Quill Cursor Module
 Quill.register('modules/cursors', QuillCursors);
 
+// Import Autolink module
+import QuillAutoLink from 'src/app/common/shared/quill-modules/quill-auto-link';
+
+// Register autoLink module
+Quill.register('modules/autoLink', QuillAutoLink);
+
+// Import Quill Cliboard module
+import QuillClipboard from 'src/app/common/shared/quill-modules/quill-clipboard';
+
+// Register quill clipboard module
+Quill.register('modules/clipboard', QuillClipboard, true)
+
 // Subsink Class
 import { SubSink } from 'subsink';
 
@@ -245,7 +257,7 @@ export class FolioEditorComponent implements OnInit {
       // local -> server
       quill.on('text-change', (delta, oldDelta, source) => {
 
-        if(delta.ops[1].insert) {
+        if(delta.ops.length > 1 && delta.ops[1].insert) {
           let mentionMap = JSON.parse(JSON.stringify(delta.ops[1].insert));
           if (mentionMap.mention && mentionMap.mention.denotationChar === '@') {
             let filesService = this._Injector.get(FilesService);
