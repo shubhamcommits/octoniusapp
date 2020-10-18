@@ -35,12 +35,14 @@ import Autoformat from '../quill-modules/quill-auto-format';
 // Public Functions
 import { PublicFunctions } from 'modules/public.functions';
 
-// Register Quill Modules
+// Import Links
+var Link = Quill.import('formats/link');
+
 Quill.register({
   'modules/autoformat': Autoformat,
-  'modules/imageCompress': ImageCompress,
-  'modules/imageResize': ImageResize,
   'modules/imageDrop': ImageDrop,
+  'modules/imageResize': ImageResize,
+  'modules/imageCompress': ImageCompress
 });
 
 // Environments
@@ -64,8 +66,8 @@ export class QuillEditorComponent implements OnInit {
       toolbar: this.toolbar,
       mention: {},
       history: {
-        delay: 2500,
-        userOnly: true
+        'delay': 2500,
+        'userOnly': true
       },
       autoformat: true
     }
@@ -107,7 +109,10 @@ export class QuillEditorComponent implements OnInit {
     this.modules.toolbar = (this.toolbar === false) ? false : this.quillFullToolbar()
 
     // Set the Mention Module
-    this.modules.mention = this.metionModule()
+    this.modules.mention = this.metionModule();
+
+    // Enable Autolinking
+    this.sanitizeLink()
 
     // If the toolbar is supposed to be visible, then enable following modules
     if (this.toolbar) {
@@ -419,6 +424,18 @@ export class QuillEditorComponent implements OnInit {
     return {
       users: mention.filter((object) => object.insert.mention.denotationChar === "@"),
       files: mention.filter((object) => object.insert.mention.denotationChar === "#"),
+    }
+  }
+
+  /**
+   * This function is responsible for sanitising the links attached
+   */
+  sanitizeLink() {
+    Link.sanitize = (url) => {
+      if (url.indexOf("http") <= -1) {
+        url = "https://" + url;
+      }
+      return url;
     }
   }
 }
