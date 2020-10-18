@@ -34,20 +34,14 @@ import Quill from 'quill';
 // Import Quill Cursors
 import QuillCursors from 'quill-cursors';
 
-// Register Quill Cursor Module
-Quill.register('modules/cursors', QuillCursors);
+// Imporrt Quill Autoformat module
+import Autoformat from 'src/app/common/shared/quill-modules/quill-auto-format';
 
-// Import Autolink module
-import QuillAutoLink from 'src/app/common/shared/quill-modules/quill-auto-link';
-
-// Register autoLink module
-Quill.register('modules/autoLink', QuillAutoLink);
-
-// Import Quill Cliboard module
-import QuillClipboard from 'src/app/common/shared/quill-modules/quill-clipboard';
-
-// Register quill clipboard module
-Quill.register('modules/clipboard', QuillClipboard, true)
+// Register Quill Modules
+Quill.register({
+  'modules/cursors': QuillCursors,
+  'modules/autoformat': Autoformat
+});
 
 // Subsink Class
 import { SubSink } from 'subsink';
@@ -82,8 +76,10 @@ export class FolioEditorComponent implements OnInit {
         autoRegisterListener: false
       },
       history: {
+        delay: 2500,
         userOnly: true
       },
+      autoformat: true,
       mention: {}
     }
   }

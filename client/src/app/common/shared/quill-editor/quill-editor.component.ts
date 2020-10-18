@@ -23,38 +23,25 @@ import "quill-mention";
 // Quill Image Compress
 import ImageCompress from 'quill-image-compress';
 
-// Register Image compress module
-Quill.register('modules/imageCompress', ImageCompress);
-
 // Quill Image Resize
 import ImageResize from './quill-image-resize/quill.image-resize.js';
-
-// Register Quill Image resize module
-Quill.register('modules/imageResize', ImageResize);
 
 // Image Drop Module
 import ImageDrop from './quill-image-drop/quill.image-drop.js';
 
-// Register Image Drop Module
-Quill.register('modules/imageDrop', ImageDrop);
-
-// Import Autolink module
-import QuillAutoLink from '../quill-modules/quill-auto-link';
-
-// Import Quill Cliboard module
-import QuillClipboard from '../quill-modules/quill-clipboard';
+// Import Quill AutoFormat Module
+import Autoformat from '../quill-modules/quill-auto-format';
 
 // Public Functions
 import { PublicFunctions } from 'modules/public.functions';
 
-// Import Links
-var Link = Quill.import('formats/link');
-
-// Register autoLink module
-Quill.register('modules/autoLink', QuillAutoLink);
-
-// Register quill clipboard module
-Quill.register('modules/clipboard', QuillClipboard, true)
+// Register Quill Modules
+Quill.register({
+  'modules/autoformat': Autoformat,
+  'modules/imageCompress': ImageCompress,
+  'modules/imageResize': ImageResize,
+  'modules/imageDrop': ImageDrop,
+});
 
 // Environments
 import { environment } from 'src/environments/environment';
@@ -77,10 +64,10 @@ export class QuillEditorComponent implements OnInit {
       toolbar: this.toolbar,
       mention: {},
       history: {
-        'delay': 2500,
-        'userOnly': true
+        delay: 2500,
+        userOnly: true
       },
-      autoLink: true
+      autoformat: true
     }
   }
 
@@ -120,10 +107,7 @@ export class QuillEditorComponent implements OnInit {
     this.modules.toolbar = (this.toolbar === false) ? false : this.quillFullToolbar()
 
     // Set the Mention Module
-    this.modules.mention = this.metionModule();
-
-    // Enable Autolinking
-    this.sanitizeLink()
+    this.modules.mention = this.metionModule()
 
     // If the toolbar is supposed to be visible, then enable following modules
     if (this.toolbar) {
@@ -435,18 +419,6 @@ export class QuillEditorComponent implements OnInit {
     return {
       users: mention.filter((object) => object.insert.mention.denotationChar === "@"),
       files: mention.filter((object) => object.insert.mention.denotationChar === "#"),
-    }
-  }
-
-  /**
-   * This function is responsible for sanitising the links attached
-   */
-  sanitizeLink() {
-    Link.sanitize = (url) => {
-      if (url.indexOf("http") <= -1) {
-        url = "https://" + url;
-      }
-      return url;
     }
   }
 }
