@@ -32,12 +32,29 @@ import ImageResize from './quill-image-resize/quill.image-resize.js';
 // Register Quill Image resize module
 Quill.register('modules/imageResize', ImageResize);
 
+// Image Drop Module
 import ImageDrop from './quill-image-drop/quill.image-drop.js';
 
+// Register Image Drop Module
 Quill.register('modules/imageDrop', ImageDrop);
+
+// Import Autolink module
+import QuillAutoLink from '../quill-modules/quill-auto-link';
+
+// Import Quill Cliboard module
+import QuillClipboard from '../quill-modules/quill-clipboard';
 
 // Public Functions
 import { PublicFunctions } from 'modules/public.functions';
+
+// Import Links
+var Link = Quill.import('formats/link');
+
+// Register autoLink module
+Quill.register('modules/autoLink', QuillAutoLink);
+
+// Register quill clipboard module
+Quill.register('modules/clipboard', QuillClipboard, true)
 
 // Environments
 import { environment } from 'src/environments/environment';
@@ -58,7 +75,12 @@ export class QuillEditorComponent implements OnInit {
     this.modules = {
       syntax: true,
       toolbar: this.toolbar,
-      mention: {}
+      mention: {},
+      history: {
+        'delay': 2500,
+        'userOnly': true
+      },
+      autoLink: true
     }
   }
 
@@ -100,6 +122,9 @@ export class QuillEditorComponent implements OnInit {
     // Set the Mention Module
     this.modules.mention = this.metionModule();
 
+    // Enable Autolinking
+    this.sanitizeLink()
+
     // If the toolbar is supposed to be visible, then enable following modules
     if (this.toolbar) {
 
@@ -125,8 +150,8 @@ export class QuillEditorComponent implements OnInit {
 
       // Fetch the delta ops from the JSON string
       let delta = (this.isJSON(this.contents))
-      ? JSON.parse(this.contents)['ops']
-      : this.quill.clipboard.convert(this.contents);
+        ? JSON.parse(this.contents)['ops']
+        : this.quill.clipboard.convert(this.contents);
 
       // Set the content inside quill container
       this.setContents(this.quill, delta)
@@ -144,9 +169,9 @@ export class QuillEditorComponent implements OnInit {
    */
   isJSON(str: string) {
     try {
-        JSON.parse(str)
+      JSON.parse(str)
     } catch (e) {
-        return false
+      return false
     }
     return true
   }
@@ -211,7 +236,7 @@ export class QuillEditorComponent implements OnInit {
 
     // Check if groupId is object to take id... 
     // In some places in code it is sending object, in other it is sending _id... needs refactoring
-    if (typeof this.groupId === 'object' && this.groupId !== null){
+    if (typeof this.groupId === 'object' && this.groupId !== null) {
       this.groupId = this.groupId._id;
     }
     return {
@@ -290,17 +315,25 @@ export class QuillEditorComponent implements OnInit {
     // Fetch the users list from the server
     let filesList: any = await this.publicFunctions.searchFiles(groupId, searchTerm, 'true')
 
-    // Fetch Access Token
-    let accessToken = storageService.getLocalData('googleUser')['refreshToken']
+    let googleFilesList: any = []
 
-    // Get Google file list
-    let googleFilesList: any = await this.publicFunctions.searchGoogleFiles(searchTerm, accessToken)
-  
-    // Google File List
-    googleFilesList = googleFilesList.map((file: any) => ({
-      id: '5b9649d1f5acc923a497d1da',
-      value: '<a style="color:inherit;" target="_blank" href="' + file.embedLink + '"' + '>' + file.title + '</a>'
-    }))
+    // Fetch Access Token
+    if (storageService.existData('googleUser')) {
+
+      // Fetch the access token from the storage
+      let accessToken = storageService.getLocalData('googleUser')['refreshToken']
+
+      // Get Google file list
+      googleFilesList = await this.publicFunctions.searchGoogleFiles(searchTerm, accessToken) || []
+
+      // Google File List
+      if (googleFilesList.length > 0)
+        googleFilesList = googleFilesList.map((file: any) => ({
+          id: '5b9649d1f5acc923a497d1da',
+          value: '<a style="color:inherit;" target="_blank" href="' + file.embedLink + '"' + '>' + file.title + '</a>'
+        }))
+    }
+
 
     // Map the users list
     filesList = filesList.map((file: any) => ({
@@ -402,6 +435,18 @@ export class QuillEditorComponent implements OnInit {
     return {
       users: mention.filter((object) => object.insert.mention.denotationChar === "@"),
       files: mention.filter((object) => object.insert.mention.denotationChar === "#"),
+    }
+  }
+
+  /**
+   * This function is responsible for sanitising the links attached
+   */
+  sanitizeLink() {
+    Link.sanitize = (url) => {
+      if (url.indexOf("http") <= -1) {
+        url = "https://" + url;
+      }
+      return url;
     }
   }
 }

@@ -3,6 +3,10 @@ import { Readable } from 'stream';
 
 export class FilesService {
 
+    constructor(){
+        
+    }
+
     // Select User Fields on population
     userFields: any = 'first_name last_name profile_pic role email';
 
