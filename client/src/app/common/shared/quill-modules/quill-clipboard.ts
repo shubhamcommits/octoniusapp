@@ -22,8 +22,6 @@ export default class QuillClipboard extends Clipboard {
     const text = e.clipboardData.getData('text/plain')
     const html = e.clipboardData.getData('text/html')
 
-    console.log(text, html)
-
     // fetch the list of current formats
     const formats = this.quill.getFormat(range.index)
 

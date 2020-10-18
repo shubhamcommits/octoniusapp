@@ -5,6 +5,10 @@ const Delta = Quill.import('delta');
 
 // Binds autoformat transforms to typing and pasting
 class Autoformat extends Module {
+  transforms;
+  quill;
+  options;
+  currentHelper;
   constructor(quill, options) {
     super(quill, options);
     this.transforms = options;
@@ -139,8 +143,8 @@ class Autoformat extends Module {
   forwardKeyboardUp(range, context) {
     var e: any = new KeyboardEvent("keydown", {
       key: "ArrowUp", 
-      keyCode: 38,
-      which: 38,
+      // keyCode: 38,
+      // which: 38,
       bubbles: true,
       cancelable: true
     });
@@ -151,8 +155,8 @@ class Autoformat extends Module {
   forwardKeyboardDown(range, context) {
     var e: any = new KeyboardEvent("keydown", {
       key: "ArrowDown", 
-      keycode: 40,
-      which: 40,
+      // keycode: 40,
+      // which: 40,
       bubbles: true,
       cancelable: true
     });
