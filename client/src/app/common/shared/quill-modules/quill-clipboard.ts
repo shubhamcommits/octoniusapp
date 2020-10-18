@@ -8,20 +8,27 @@ const Clipboard = Quill.import('modules/clipboard')
 const Delta = Quill.import('delta')
 
 export default class QuillClipboard extends Clipboard {
+
   onPaste (e: any) {
+
+    console.log(e)
+
     e.preventDefault()
 
     // Get the range
     const range = this.quill.getSelection()
 
     // get the html
+    const text = e.clipboardData.getData('text/plain')
     const html = e.clipboardData.getData('text/html')
+
+    console.log(text, html)
 
     // fetch the list of current formats
     const formats = this.quill.getFormat(range.index)
 
     // convert the html and formats to the delta
-    const pastedDelta = this.quill.clipboard.convert(html, formats)
+    const pastedDelta = this.quill.clipboard.convert(text, formats)
 
     // form a new delta
     const delta = new Delta()
@@ -33,7 +40,7 @@ export default class QuillClipboard extends Clipboard {
     const index = html.length + range.index
     const length = 0
     this.quill.updateContents(delta, 'user')
-    this.quill.setSelection(index, length, 'user')
+    this.quill.setSelection(delta.length() - range.length, 'user')
     this.quill.scrollIntoView()
   }
 }
