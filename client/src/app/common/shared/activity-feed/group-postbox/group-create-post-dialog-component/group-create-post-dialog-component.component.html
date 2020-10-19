@@ -172,7 +172,7 @@
             <div *ngIf="postData.type === 'event'" class="btn-group">
               <!-- Date Picker starts -->
               <app-date-picker
-                (date)="getDate($event)"
+                (date)="getDate($event, 'due_date')"
                 [dueDate]="postData?.event.due_to"
                 [styleClass]="'input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')">
               </app-date-picker>
