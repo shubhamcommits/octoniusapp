@@ -34,8 +34,14 @@ import Quill from 'quill';
 // Import Quill Cursors
 import QuillCursors from 'quill-cursors';
 
-// Register Quill Cursor Module
-Quill.register('modules/cursors', QuillCursors);
+// Imporrt Quill Autoformat module
+import Autoformat from 'src/app/common/shared/quill-modules/quill-auto-format';
+
+// Register Quill Modules
+Quill.register({
+  'modules/cursors': QuillCursors,
+  'modules/autoformat': Autoformat
+});
 
 // Subsink Class
 import { SubSink } from 'subsink';
@@ -70,8 +76,10 @@ export class FolioEditorComponent implements OnInit {
         autoRegisterListener: false
       },
       history: {
+        delay: 2500,
         userOnly: true
       },
+      autoformat: true,
       mention: {}
     }
   }
@@ -245,7 +253,7 @@ export class FolioEditorComponent implements OnInit {
       // local -> server
       quill.on('text-change', (delta, oldDelta, source) => {
 
-        if(delta.ops[1].insert) {
+        if(delta.ops.length > 1 && delta.ops[1].insert) {
           let mentionMap = JSON.parse(JSON.stringify(delta.ops[1].insert));
           if (mentionMap.mention && mentionMap.mention.denotationChar === '@') {
             let filesService = this._Injector.get(FilesService);

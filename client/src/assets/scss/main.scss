@@ -278,6 +278,8 @@ h2 {
   background: $brand-primary;
   padding: 15px;
   text-align: center !important;
+  border-radius: 10px;
+  box-shadow: 0 4px 4px #005fd56e;
 }
 .bigdate {
   color: #fff !important;
@@ -871,4 +873,11 @@ input {
 .btn-link:hover{
   background-color:#f5f6f7 !important;
   color: #005df5 !important;
+}
+
+.ql-clipboard {
+  -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+  -ms-user-select: text !important;
+  user-select: text !important;    
 }

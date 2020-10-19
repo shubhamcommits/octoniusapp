@@ -3,11 +3,12 @@ $pumpkin-orange: #ffab00;
 $turquoise: #0bc6a0;
 $dark-sky-blue: #4a90e2;
 
+
 .done-title {
-    //   text-decoration-line: line-through;
-      color: #4A90E2;
-        cursor: pointer;
-    }
+    color: #4A90E2;
+    cursor: pointer;
+}
+        
 
 .list {
     overflow-x: auto;
@@ -271,4 +272,14 @@ $dark-sky-blue: #4a90e2;
 
 .input-date{
     margin-top: 0 !important;
+}
+
+
+.mat-expansion-panel:not([class*="mat-elevation-z"]){
+    box-shadow: none !important;
+    background: transparent !important;
+}
+
+.mat-expansion-panel-body, .mat-expansion-panel-content{
+    padding: 0 !important;
 }
