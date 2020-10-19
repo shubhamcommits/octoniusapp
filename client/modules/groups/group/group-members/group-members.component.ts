@@ -1,6 +1,7 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { SubSink } from 'subsink';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { PublicFunctions } from 'modules/public.functions';
 
 @Component({
   selector: 'app-group-members',
@@ -23,8 +24,13 @@ export class GroupMembersComponent implements OnInit {
   // WORKSPACE DATA
   public groupData: any;
 
+  public userData: any;
+
   // Subsink Object
   subSink = new SubSink()
+
+  // Public Functions class
+  private publicFunctions = new PublicFunctions(this.injector);
 
   async ngOnInit() {
 
@@ -44,7 +50,7 @@ export class GroupMembersComponent implements OnInit {
       }
     }))
 
-
+    await this.publicFunctions.getCurrentUser().then(user => this.userData = user);
   }
 
   ngOnDestroy(): void {

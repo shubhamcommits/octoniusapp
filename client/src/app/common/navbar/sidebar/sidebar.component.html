@@ -13,9 +13,9 @@
         <ul class="list-unstyled components">
             <li>
                 <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">
-                    
+
                     <i class="material-icons-outlined carret">person</i>
-                    MY SPACE 
+                    MY SPACE
                     <i class="material-icons-outlined carret">keyboard_arrow_down</i>
                 </a>
                 <ul class="collapse list-unstyled" id="homeSubmenu">
@@ -43,15 +43,15 @@
             </li>
             <li>
                 <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" style="float: left;">
-                   
+
                     <i class="material-icons-outlined carret">business_center</i>
-                    WORK 
+                    WORK
                     <i class="material-icons-outlined carret">keyboard_arrow_down</i>
                 </a>
                 <a routerLinkActive="active" routerLink="/dashboard/work/groups/all" style="margin-left: 250px;" (click)="this.sideNav.toggle()">
                     <span class="badge badge-primary">see all</span>
                 </a>
-               
+
                 <ul class="collapse list-unstyled" id="pageSubmenu">
                     <li *ngFor="let group of userGroups; trackBy: utilityService.trackByIndex">
                         <a [routerLink]="['/dashboard', 'work', 'groups', 'activity']"
@@ -64,7 +64,7 @@
                     </li>
                 </ul>
             </li>
-            <li>
+            <li *ngIf="this.userData?.role === 'admin' || this.userData?.role === 'owner'">
                 <a class="nav-link" [routerLink]="['/dashboard', 'admin', 'general']" routerLinkActive="active" (click)="this.sideNav.toggle()">
                     <i class="material-icons-outlined">settings</i>
                     SETTINGS & ADMINISTRATION<span class="sr-only">(current)</span>
@@ -80,7 +80,7 @@
                     <a class="nav-link" *ngIf="this.userData"
                         [routerLink]="['/dashboard', 'user', 'profile']"
                         [queryParams]="{ userId: userData?._id}" (click)="this.sideNav.toggle()" >
-                        <img src="{{userBaseUrl}}/{{userData?.profile_pic}}" 
+                        <img src="{{userBaseUrl}}/{{userData?.profile_pic}}"
                         onerror="this.src='assets/images/user.png'"
                         class="avatar">
                         MY ACCOUNT
