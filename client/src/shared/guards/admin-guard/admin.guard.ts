@@ -8,7 +8,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
   providedIn: 'root'
 })
 export class AdminGuard implements CanActivate, CanActivateChild, CanLoad {
-  
+
   constructor(
     private storageService: StorageService,
     private utilityService: UtilityService,
@@ -31,9 +31,9 @@ export class AdminGuard implements CanActivate, CanActivateChild, CanLoad {
         });
         if(state.url.match('/dashboard/admin/.*'))
           this.router.navigate(['dashboard', 'myspace', 'inbox']);
-        return true;
+        return false;
       }
-        
+
   }
   canActivateChild(
     next: ActivatedRouteSnapshot,
