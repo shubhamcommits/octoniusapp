@@ -498,11 +498,6 @@ export class GroupCreatePostDialogComponent implements OnInit {
         post.end_date = this.endDate;
       }
 
-console.log(this.startDate);
-console.log(this.endDate);
-console.log(post.start_date);
-console.log(post.end_date);
-
       // Task Assigned to
       if (post.unassigned !== null && !post.unassigned) {
         post.assigned_to = this.postData.task._assigned_to._id;

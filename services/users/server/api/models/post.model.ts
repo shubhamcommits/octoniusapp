@@ -147,6 +147,10 @@ const PostSchema = new Schema({
                 status: {
                     type: String,
                     enum: ['NOT STARTED', 'ON TRACK', 'IN DANGER', 'ACHIEVED']
+                },
+                _user: {
+                    type: Schema.Types.ObjectId,
+                    ref: 'User'
                 }
             }],
             type: {
