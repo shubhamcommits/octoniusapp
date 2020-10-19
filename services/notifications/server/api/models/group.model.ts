@@ -30,6 +30,27 @@ const GroupSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     }],
+    enabled_rights: {
+        type: Schema.Types.Boolean,
+        default: false,
+    },
+    bars: [
+        {
+            bar_tag: Schema.Types.String,
+            tag_members: [{
+                type: Schema.Types.ObjectId,
+                ref: 'User'
+            }]
+        }
+    ],
+    project_type: {
+        type: Schema.Types.Boolean,
+        default: false,
+    },
+    project_status: {
+        type: String,
+        enum: ['ON TRACK', 'NOT STARTED', 'IN DANGER', 'ACHIEVED']
+    },
     description: {
         type: String,
         default: null

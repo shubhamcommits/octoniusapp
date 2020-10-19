@@ -1,6 +1,7 @@
 import { sendError } from '../../utils';
 import { User, Workspace, Group } from '../models';
 import { Request, Response, NextFunction } from 'express';
+import moment from 'moment';
 
 // Create Stripe Object
 const stripe = require('stripe')(process.env.SK_STRIPE);
@@ -266,6 +267,48 @@ export class MembersControllers {
                 message: `Removed user ${user.first_name}`,
                 user: user
             });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for fetching the list of first 10 workspace members based on the workspace and query(optional parameter)
+     * @param { params: { workspaceId, period } }req 
+     * @param res 
+     * @param next 
+     */
+    async getWorkspaceUsers(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the variables from request
+        let {workspaceId, period} = req.query;
+        
+        try {
+
+            // If either workspaceId or period is null or not provided then we throw BAD REQUEST 
+            if (!workspaceId || !period) {
+                return res.status(400).json({
+                    message: 'Please provide workspaceId and a period as the query parameter!'
+                })
+            }
+
+            const numDays = +period;
+            const comparingDate = moment().local().subtract(numDays, 'days').format('YYYY-MM-DD');
+            
+            // Find the users based on the regex expression matched with either full_name or email property present in the current workspace
+            const users = await User.find({
+                $and: [
+                    { _workspace: workspaceId },
+                    { company_join_date: { $gte: comparingDate } }
+                ]
+            }).lean() || []
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: `The First ${users.length} workspace members found!`,
+                users: users
+            })
+
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
         }

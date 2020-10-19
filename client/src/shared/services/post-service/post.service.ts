@@ -219,25 +219,28 @@ export class PostService {
    * @param postId
    * @param status
    */
-  changeTaskStatus(postId: string, status: string){
+  changeTaskStatus(postId: string, status: string, userId: string){
 
     // Call the HTTP Request
     return this._http.put(this.baseURL + `/${postId}/task-status`, {
-      status: status
+      status: status,
+      userId: userId
     }).
     toPromise()
   }
 
   /**
-   * This function is resposible for changing the column of a task
+   * This function is responsible for changing the column of a task
    * @param postId
    * @param title
+   * @param userId
    */
-  changeTaskColumn(postId: string, title: string){
+  changeTaskColumn(postId: string, title: string, userId: string){
 
     // Call the HTTP Request
     return this._http.put(this.baseURL + `/${postId}/task-column`, {
-      title: title
+      title: title,
+      userId: userId
     }).
     toPromise()
   }
@@ -280,4 +283,30 @@ export class PostService {
     }).toPromise();
   }
 
+  /**
+   * Workspace's posts
+   */
+  getWorkspacePosts(workspaceId: string, type: string, numDays: number, overdue: boolean, isNorthStar: boolean) {
+    return this._http.get(this.baseURL + `/workspace/posts`, {
+      params: {
+        workspaceId: workspaceId.toString().trim(),
+        type: type.toString().trim(),
+        numDays: numDays.toString().trim(),
+        overdue: overdue.toString().trim(),
+        isNorthStar: isNorthStar.toString().trim()
+      }
+    }).toPromise();
+  }
+
+  /**
+   * This function is used to save the start or end date of a task
+   * @param postId
+   */
+  saveTaskDates(postId: any, newDate: any, date_field: string) {
+    // Call the HTTP Request
+    return this._http.put(this.baseURL + `/${postId}/update-date`, {
+      newDate: newDate,
+      date_field: date_field
+    }).toPromise();
+  }
 }

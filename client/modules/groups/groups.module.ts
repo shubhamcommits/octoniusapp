@@ -54,6 +54,8 @@ import { GroupSmartAdminComponent } from './group/group-admin/group-smart-admin/
 import { CreateSectionComponent } from './group/group-tasks-list-view/create-section/create-section.component';
 import { DoneTasksListViewComponent } from './group/group-tasks-list-view/done-tasks-list-view/done-tasks-list-view.component';
 import { DoneTasksKanbanViewComponent } from './group/group-kanban-boards/done-tasks-kanban-view/done-tasks-kanban-view.component';
+import { GroupBarComponent } from './group/group-admin/group-bar/group-bar.component';
+import { GanttViewComponent } from './group/gantt-view/gantt-view.component';
 
  /**
   * 2. !===== MODULES =====!
@@ -78,7 +80,6 @@ import { GroupsService } from 'src/shared/services/groups-service/groups.service
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { CommentService } from 'src/shared/services/comment-service/comment.service';
-import { GroupBarComponent } from './group/group-admin/group-bar/group-bar.component';
 
 /**
  * 4. !===== DECLARATIONS, IMPORTS, EXPORTS, & PROVIDERS =====!
@@ -166,7 +167,9 @@ import { GroupBarComponent } from './group/group-admin/group-bar/group-bar.compo
     GroupTasksViewsComponent,
     CustomFieldsDialogComponent,
     DoneTasksListViewComponent,
-    DoneTasksKanbanViewComponent
+    DoneTasksKanbanViewComponent,
+
+    GanttViewComponent
   ],
   imports: [
     CommonModule,

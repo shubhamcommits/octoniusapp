@@ -182,10 +182,12 @@ export class GroupService {
     }
     if(propertyName === "enabled_rights"){
       return this._http.put(this.baseURL + `/${groupId}/settings/enableRights`, { propertyName, value }).toPromise();
-      
+    }
+    if(propertyName === "enabled_project_type"){
+      return this._http.put(this.baseURL + `/${groupId}/settings/enabledProjectType`, { propertyName, value }).toPromise();
     }
   }
- 
+
 
   /**
    * Makes an HTTP POST request to update a smart group's
@@ -228,5 +230,11 @@ export class GroupService {
    */
   updateSmartGroupMembers(groupId: string, data: object): Observable<any> {
     return this._http.put<any>(`${this.baseURL}/smart/${groupId}`, data);
+  }
+
+  getPostsCount(groupId: string, period: any) {
+    return this._http.get(this.baseURL + `/${groupId}/postsCount`, {params:{
+      period: period
+    }}).toPromise();
   }
 }

@@ -5,6 +5,7 @@ const fs = require('fs');
 import { Readable } from 'stream';
 import { CommentsController } from '../controllers';
 import { sendErr } from '../utils/sendError';
+import { GroupsService } from './groups.services';
 
 /*  ===============================
  *  -- POSTS Service --
@@ -19,6 +20,7 @@ export class PostService {
   // Select Group Fileds on population
   groupFields: any = 'group_name group_avatar workspace_name';
 
+  groupsService = new GroupsService();
 
   /**
    * This service is responsible for fetching recent 5 posts based on the @lastPostId and @groupId
@@ -422,6 +424,8 @@ export class PostService {
           // Add task property details
           postData.task = {
             due_to: (post.date_due_to) ? moment(post.date_due_to).format() : null,
+            start_date: (post.start_date) ? moment(post.start_date).format() : null,
+            end_date: (post.end_date) ? moment(post.end_date).format() : null,
             _assigned_to: post.assigned_to,
             status: post.status,
             unassigned: post.unassigned,
@@ -708,7 +712,7 @@ export class PostService {
 
 
   /**
-   * This function is used to ununfollow a post
+   * This function is used to unfollow a post
    * @param { userId, postId }
    */
   async unfollow(userId: string, postId: string) {
@@ -810,19 +814,65 @@ export class PostService {
   }
 
   /**
+   * This function is responsible for changing the task dates
+   * @param postId
+   * @param date_field
+   * @param newDate
+   */
+  async changeTaskDate(postId: string, date_field: string, newDate: Date) {
+
+    try {
+
+      let field = {};
+      if (date_field === 'start_date') {
+        field = { "task.start_date": newDate }
+      }
+      if (date_field === 'end_date') {
+        field = { "task.end_date": newDate }
+      }
+      
+      // Get post data
+      var post: any = await Post.findOneAndUpdate({
+        _id: postId
+      }, field, {
+        new: true
+      })
+
+      // Populate the post properties
+      post = await this.populatePostProperties(post)
+
+      // Return the post
+      return post;
+
+    } catch (err) {
+      return err
+    }
+  }
+
+  /**
    * This function is responsible for changing the task status
    * @param postId
    * @param status
+   * @param userId
    */
-  async changeTaskStatus(postId: string, status: string) {
+  async changeTaskStatus(postId: string, status: string, userId: string) {
 
     try {
+      var oldPost: any = await Post.findOne({_id: postId}).select('task');
 
       // Get post data
       var post: any = await Post.findOneAndUpdate({
         _id: postId
       }, {
-        "task.status": status ? status : 'to do',
+        $set: {
+          "task.status": status ? status : 'to do'
+        },
+        $push: { "records.status": {
+            date: moment().format(),
+            status: status,
+            _user: userId
+          }
+        }
       }, {
         new: true
       })
@@ -836,6 +886,19 @@ export class PostService {
         });
       }
 
+      if (status === 'done' || oldPost.task.status === 'done') {
+        let counter = 0;
+
+        if (status === 'done' && oldPost.task.status !== 'done') {
+          counter++;
+        } else if (oldPost.task.status === 'done' && status !== 'done') {
+          counter--;
+        }
+
+        this.groupsService.increaseDoneTasks(post._group._id, counter, status);
+      }
+
+
       // Return the post
       return post;
 
@@ -848,8 +911,9 @@ export class PostService {
    * This function is responsible for changing the task column
    * @param postId
    * @param status
+   * @param userId
    */
-  async changeTaskColumn(postId: string, title: string) {
+  async changeTaskColumn(postId: string, title: string, userId: string) {
 
     try {
 
@@ -857,7 +921,15 @@ export class PostService {
       var post: any = await Post.findOneAndUpdate({
         _id: postId
       }, {
-        "task._column.title": title ? title : 'to do',
+        $set: {
+          "task._column.title": title ? title : 'to do',
+        },
+        $push: { "records.column": {
+            date: moment().format(),
+            title: title,
+            _user: userId
+          }
+        }
       }, {
         new: true
       })
@@ -1283,5 +1355,117 @@ export class PostService {
     const task: any = await Post.findById(postId);
       task.bars = task.bars.filter( barDB => barDB.bar_tag !== bar.bar_tag);
       task.save();
+  }
+
+  async getWorspacePostsResults(workspaceId: any, type: any, numDays: number, overdue: boolean, isNorthStar: boolean) {
+    
+    const comparingDate = moment().local().subtract(numDays, 'days').format('YYYY-MM-DD');
+
+    const groups = await Group.find({ _workspace: workspaceId }).select('_id').lean();
+    
+    let groupsIds = [];
+    
+    groups.forEach(group => {
+      groupsIds.push(group._id);
+    })
+    
+    let posts =[];
+
+    if (overdue) {
+
+      // Generate the actual time
+      const today = moment().subtract(1, 'days').endOf('day').format()
+
+      // Fetch the tasks posts
+      posts = await Post.find({
+        $and: [
+          { _group: { $in: groupsIds } },
+          { type: type },
+          {'task.due_to': { $gte: comparingDate, $lt: today }},
+          {
+            $or: [
+              { 'task.status': 'to do' },
+              { 'task.status': 'in progress' }
+            ]
+          }
+        ]
+      })
+      .sort('-task.due_to')
+      .populate('_group', this.groupFields)
+      .populate('_posted_by', this.userFields)
+      .populate('task._assigned_to', this.userFields)
+      .lean();
+      
+    } else {
+      posts = await Post.find({
+        $and: [
+          { _group: { $in: groupsIds } },
+          { type: type },
+          { 'task.due_to': { $gte: comparingDate } }
+        ]
+      })
+      .sort('-task.due_to')
+      .populate({ path: '_group', select: this.groupFields })
+      .populate({ path: '_posted_by', select: this.userFields })
+      .populate({ path: 'task._assigned_to', select: this.userFields })
+      .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
+      .lean();
+    }
+
+    return posts;
+  }
+
+  async getWorspaceNorthStars(workspaceId: any, type: any, numDays: number, overdue: boolean, isNorthStar: boolean) {
+    
+    const comparingDate = moment().local().subtract(numDays, 'days').format('YYYY-MM-DD');
+
+    const groups = await Group.find({ _workspace: workspaceId }).select('_id').lean();
+    
+    let groupsIds = [];
+    
+    groups.forEach(group => {
+      groupsIds.push(group._id);
+    })
+    
+    let posts =[];
+
+    if (overdue) {
+
+      // Generate the actual time
+      const today = moment().subtract(1, 'days').endOf('day').format()
+
+      // Fetch the tasks posts
+      posts = await Post.find({
+        $and: [
+          { _group: { $in: groupsIds } },
+          { type: type },
+          { 'task.isNorthStar': isNorthStar},
+          {'task.due_to': { $gte: comparingDate, $lt: today }}
+        ]
+      })
+      .sort('-task.due_to')
+      .populate('_group', this.groupFields)
+      .populate('_posted_by', this.userFields)
+      .populate('task._assigned_to', this.userFields)
+      .lean();
+      
+    } else {
+      posts = await Post.find({
+        $and: [
+          { _group: { $in: groupsIds } },
+          { type: type },
+          { 'task.isNorthStar': isNorthStar},
+          { 'task.due_to': { $gte: comparingDate } }
+        ]
+      })
+      .sort('-task.due_to')
+      .populate({ path: '_group', select: this.groupFields })
+      .populate({ path: '_posted_by', select: this.userFields })
+      .populate({ path: 'task._assigned_to', select: this.userFields })
+      .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
+      .lean();
+    }
+
+    return posts;
   }
 }

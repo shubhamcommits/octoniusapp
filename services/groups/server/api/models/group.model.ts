@@ -43,6 +43,14 @@ const GroupSchema = new Schema({
             }]
         }
     ],
+    project_type: {
+        type: Schema.Types.Boolean,
+        default: false,
+    },
+    project_status: {
+        type: String,
+        enum: ['ON TRACK', 'NOT STARTED', 'IN DANGER', 'ACHIEVED']
+    },
     description: {
         type: String,
         default: null
@@ -105,6 +113,43 @@ const GroupSchema = new Schema({
     custom_fields_to_show: {
         type: [String],
         default: []
+    },
+    records: {
+        pulses: [{
+            date: {
+                type: Date,
+                required: true,
+                default: moment().format()
+            },
+            description: {
+                type: String,
+                required: true,
+                default: ''
+            }
+        }],
+        status: [{
+            date: {
+                type: Date,
+                required: true,
+                default: moment().format()
+            },
+            project_status: {
+                type: String,
+                enum: ['ON TRACK', 'NOT STARTED', 'IN DANGER', 'ACHIEVED']
+            }
+        }],
+        done_tasks_count: [{
+            date: {
+                type: Date,
+                required: true,
+                default: moment().format('YYYY-MM-DD')
+            },
+            count: {
+                type: Number,
+                required: true,
+                default: 0
+            }
+        }]
     }
 });
 

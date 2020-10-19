@@ -1,5 +1,5 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { NgbTimepickerModule, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
@@ -64,6 +64,12 @@ import { MatNativeDateModule } from '@angular/material';
 import { MomentDateModule } from '@angular/material-moment-adapter';
 import { TruncateTextPipe } from 'src/shared/pipes/truncate-text.pipe';
 import { ChartsModule, ThemeService } from 'ng2-charts';
+import { SchedulerComponent } from './scheduler/scheduler.component';
+import { TaskComponent } from './scheduler/task/task.component';
+import { TaskHelperComponent } from './scheduler/task-helper/task-helper.component';
+
+import { ResizableModule } from 'angular-resizable-element';
+import { ProjectStatusComponent } from './activity-feed/project-status/project-status.component';
 
 @NgModule({
   declarations: [
@@ -107,6 +113,8 @@ import { ChartsModule, ThemeService } from 'ng2-charts';
 
     SendPulseComponent,
 
+    ProjectStatusComponent,
+
     GroupInformationComponent,
 
     GroupTaskProgressComponent,
@@ -140,7 +148,10 @@ import { ChartsModule, ThemeService } from 'ng2-charts';
     NorthStarComponent,
     NorthStarStatsComponent,
 
-    GroupCreatePostDialogComponent
+    GroupCreatePostDialogComponent,
+    SchedulerComponent,
+    TaskComponent,
+    TaskHelperComponent
   ],
   imports: [
     CommonModule,
@@ -179,7 +190,8 @@ import { ChartsModule, ThemeService } from 'ng2-charts';
     MatNativeDateModule,
     MomentDateModule,
     MatSlideToggleModule,
-    ChartsModule
+    ChartsModule,
+    ResizableModule
   ],
   exports: [
     AttachFilesComponent,
@@ -204,6 +216,7 @@ import { ChartsModule, ThemeService } from 'ng2-charts';
     ProgressBarComponent,
     SelectMemberComponent,
     SendPulseComponent,
+    ProjectStatusComponent,
 
     GroupInformationComponent,
 
@@ -235,11 +248,15 @@ import { ChartsModule, ThemeService } from 'ng2-charts';
     InlineInputComponent,
     GroupCreatePostDialogComponent,
     TruncateTextPipe,
-    ChartsModule
+    ChartsModule,
+    SchedulerComponent,
+    TaskComponent,
+    TaskHelperComponent
   ],
   providers: [
     { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },
-    ThemeService
+    ThemeService,
+    DatePipe
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

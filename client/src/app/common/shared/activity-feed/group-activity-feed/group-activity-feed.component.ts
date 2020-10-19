@@ -66,6 +66,8 @@ export class GroupActivityFeedComponent implements OnInit {
   // Current Group Data
   groupData: any;
 
+  isProjectType = false;
+
   // Current User Data
   userData: any;
 
@@ -124,6 +126,8 @@ export class GroupActivityFeedComponent implements OnInit {
 
         // Assign the GroupData
         this.groupData = res
+
+        this.isProjectType = this.groupData.project_type;
       }
     }))
 

@@ -12,7 +12,7 @@ const postController = new PostController();
 /**
  * Calendar Controller Class Object
  */
-let calendarController = new CalendarController()
+let calendarController = new CalendarController();
 
 // Define auths helper controllers
 const auths = new Auths();
@@ -101,6 +101,9 @@ routes.get('/week-events', postController.getThisMonthEvents);
 // This route is used to get next 5 events for this week
 routes.get('/next-events', postController.getNextEvents);
 
+// This route is used to get the workspace's posts
+routes.get('/workspace/posts', postController.getWorspacePosts);
+
 // -| TASKS |-
 
 // PUT - Change task assignee
@@ -114,6 +117,9 @@ routes.put('/:postId/task-status', postController.changeTaskStatus);
 
 // PUT - Change task column
 routes.put('/:postId/task-column', postController.changeTaskColumn);
+
+// PUT - Change task start or end date
+routes.put('/:postId/update-date', postController.changeTaskDate);
 
 
 // -| RECENT ACTIVITY |-

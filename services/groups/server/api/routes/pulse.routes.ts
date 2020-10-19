@@ -35,6 +35,15 @@ routes.get('/tasks', pulse.getPulseTasks);
 // GET - Get count of undone tasks which were due this week
 routes.get('/undone-tasks', pulse.getTasksUndoneLastWeek);
 
+// GET - Get list of groups present in the workspace
+routes.get('/global-performance', pulse.getGlobalPerformanceGroups);
+
+// GET - Get list of groups present in the workspace
+routes.get('/global-performance-tasks', pulse.getGlobalPerformanceTasks);
+
+// GET - Get count of pulse in a period
+routes.get('/count', pulse.getPulseCount);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

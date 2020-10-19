@@ -38,6 +38,8 @@ export class GroupAdminComponent implements OnInit {
 
   enabledRights: boolean;
 
+  enabledProjectType: boolean;
+
 
   async ngOnInit() {
 
@@ -99,8 +101,11 @@ export class GroupAdminComponent implements OnInit {
 
     // Group Service
     let groupService = this.injector.get(GroupService);
-    if(selected.source.name === 'enabled_rights'){
+    if(selected.source.name === 'enabled_rights') {
       this.enabledRights = selected.checked;
+    }
+    if(selected.source.name === 'enabled_project_type') {
+      this.enabledProjectType = selected.checked;
     }
     utilityService.asyncNotification('Please wait we are saving the new setting...',
     new Promise((resolve, reject)=>{

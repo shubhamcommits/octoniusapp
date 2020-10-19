@@ -42,8 +42,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     public utilityService: UtilityService,
     private groupService: GroupService,
     private _router: Router,
-    private injector: Injector,
-    private postService: PostService) { }
+    private injector: Injector) { }
 
 
   async ngOnInit() {
@@ -70,6 +69,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     // User service
     const userService = this.injector.get(UserService);
 
+    // Update user´s last view
     await userService.updateUser(this.userData);
     await this.publicFunctions.sendUpdatesToUserData(this.userData);
 
@@ -87,17 +87,22 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     // Fetch current user details
     this.userData = await this.publicFunctions.getCurrentUser();
 
-    if (this.userData && this.userData.stats && this.userData.stats.lastTaskView) {
-      this.viewType = this.userData.stats.lastTaskView;
-    }
-
     // Fetch current group from the service
-    this.subSink.add(this.utilityService.currentGroupData.subscribe(async (res) => {
+    await this.subSink.add(this.utilityService.currentGroupData.subscribe(async (res) => {
       if (JSON.stringify(res) !== JSON.stringify({})) {
         // Assign the GroupData
         this.groupData = res;
       }
     }));
+
+    // Set the initial view
+    if (this.userData && this.userData.stats && this.userData.stats.lastTaskView) {
+      this.viewType = this.userData.stats.lastTaskView;
+
+      if (this.viewType === 'gantt' && (this.groupData && !this.groupData.project_type)) {
+        this.viewType = 'kanban';
+      }
+    }
 
     /**
      * Here we fetch all the columns available in a group, and if null we initialise them with the default one

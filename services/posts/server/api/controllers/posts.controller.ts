@@ -550,6 +550,35 @@ export class PostController {
     }
 
     /**
+     * This function is responsible for changing the task due date
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async changeTaskDate(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch Data from request
+        const { params: { postId }, body: { newDate, date_field } } = req;
+
+        try {
+
+            // Call Service function to change the assignee
+            const post = await postService.changeTaskDate(postId, date_field, newDate)
+                .catch((err) => {
+                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+                })
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Task date updated!',
+                post: post
+            });
+        } catch (err) {
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
      * This function is responsible for changing the task status
      * @param req 
      * @param res 
@@ -558,12 +587,12 @@ export class PostController {
     async changeTaskStatus(req: Request, res: Response, next: NextFunction) {
 
         // Fetch Data from request
-        const { params: { postId }, body: { status } } = req;
+        const { params: { postId }, body: { status, userId } } = req;
 
         try {
 
             // Call Service function to change the assignee
-            const post = await postService.changeTaskStatus(postId, status)
+            const post = await postService.changeTaskStatus(postId, status, userId)
                 .catch((err) => {
                     return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
                 })
@@ -587,12 +616,12 @@ export class PostController {
     async changeTaskColumn(req: Request, res: Response, next: NextFunction) {
 
         // Fetch Data from request
-        const { params: { postId }, body: { title } } = req;
+        const { params: { postId }, body: { title, userId } } = req;
 
         try {
 
             // Call Service function to change the assignee
-            const post = await postService.changeTaskColumn(postId, title)
+            const post = await postService.changeTaskColumn(postId, title, userId)
                 .catch((err) => {
                     return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
                 })
@@ -753,6 +782,43 @@ export class PostController {
             });
         } catch (err) {
             return sendErr(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for fetching the posts of a workspace
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async getWorspacePosts(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch Data from request
+        const  { workspaceId, type, numDays, overdue, isNorthStar }  = req.query;
+
+        try {
+
+            // Call Service function to fetch the posts
+            let posts: any = [];
+
+            if (isNorthStar) {
+                posts = await postService.getWorspaceNorthStars(workspaceId, type, +numDays, (overdue == "true"), (isNorthStar == "true"))
+                .catch((err) => {
+                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+                })
+            } else {
+                posts = await postService.getWorspacePostsResults(workspaceId, type, +numDays, (overdue == "true"), (isNorthStar == "true"))
+                .catch((err) => {
+                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+                })
+            }
+            // // Send status 200 response
+            return res.status(200).json({
+                message: 'Posts fetched!',
+                posts: posts
+            });
+        } catch (err) {
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
         }
     }
 }

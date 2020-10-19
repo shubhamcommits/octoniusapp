@@ -79,6 +79,9 @@ routes.put('/:groupId/settings/shareFiles', group.saveShareFilesSettings);
 // PUT - Enable/Disable BAR
 routes.put('/:groupId/settings/enableRights', group.enableRights);
 
+// PUT - Enable/Disable Group Project Type
+routes.put('/:groupId/settings/enabledProjectType', group.enabledProjectType);
+
 // PUT - Remove custom field value
 routes.put('/:groupId/customFields/removeValue', group.removeCustomFieldValue);
 
@@ -90,6 +93,7 @@ routes.get('/:groupId/getBars', group.getBars);
 
 // PUT - Remove bar from group and posts that are related to that bar
 routes.put('/:groupId/removeBar', group.removeBar);
+
 // Update a smart group with the given rules.
 routes.post('/smart/:groupId', group.updateSmartGroup);
 
@@ -101,6 +105,14 @@ routes.put('/smart/:groupId/:rule', group.deleteSmartGroupRule);
 
 // Update a smart group's members
 routes.put('/smart/:groupId', group.updateSmartGroupMembers);
+
+routes.get('/workspace/groups', group.getWorkspaceGroups);
+
+// PUT - Updates the project status
+routes.put('/project/status', group.updateStatus);
+
+// GET - Get number of posts
+routes.get('/:groupId/postsCount', group.getPostsCount);
 
 /*  ===================
  *  -- EXPORT ROUTES --

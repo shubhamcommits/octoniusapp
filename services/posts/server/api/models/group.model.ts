@@ -30,6 +30,27 @@ const GroupSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     }],
+    enabled_rights: {
+        type: Schema.Types.Boolean,
+        default: false,
+    },
+    bars: [
+        {
+            bar_tag: Schema.Types.String,
+            tag_members: [{
+                type: Schema.Types.ObjectId,
+                ref: 'User'
+            }]
+        }
+    ],
+    project_type: {
+        type: Schema.Types.Boolean,
+        default: false,
+    },
+    project_status: {
+        type: String,
+        enum: ['ON TRACK', 'NOT STARTED', 'IN DANGER', 'ACHIEVED']
+    },
     description: {
         type: String,
         default: null
@@ -90,15 +111,43 @@ const GroupSchema = new Schema({
         }]
     },
     custom_fields_to_show: {
-        type: [{
-            name: {
-                type: String
+        type: [String],
+        default: []
+    },
+    records: {
+        pulses: [{
+            date: {
+                type: Date,
+                required: true,
+                default: moment().format()
             },
-            title: {
-                type: String
+            description: {
+                type: String,
+                required: true,
+                default: ''
+            }
+        }],
+        status: [{
+            date: {
+                type: Date,
+                required: true,
+                default: moment().format()
             },
-            values: {
-                type: [String]
+            project_status: {
+                type: String,
+                enum: ['ON TRACK', 'NOT STARTED', 'IN DANGER', 'ACHIEVED']
+            }
+        }],
+        done_tasks_count: [{
+            date: {
+                type: Date,
+                required: true,
+                default: moment().format('YYYY-MM-DD')
+            },
+            count: {
+                type: Number,
+                required: true,
+                default: 0
             }
         }]
     }

@@ -47,4 +47,8 @@ export class WorkNavbarComponent implements OnInit {
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
   }
 
+  canSeeDashboard() {
+    return (this.userData && (this.userData.role === 'owner' || this.userData.role === 'admin'));
+  }
+
 }

@@ -1,0 +1,9 @@
+<div class="task" id="{{task._id}}">
+  <div class="avatar">
+    <img *ngIf="showImg"
+      src="{{baseUrl}}/{{task?.task?._assigned_to?.profile_pic}}"
+      onerror="this.src='assets/images/user.png'"
+      class="feed-avatar">
+  </div>
+  <div class="title">{{ task?.title }}</div>
+</div>

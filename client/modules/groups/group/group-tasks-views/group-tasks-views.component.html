@@ -7,14 +7,14 @@
             (customFieldEmitter)="onCustomFieldEmitter()">
         </app-board-bar>
 
-        <app-group-kanban-boards *ngIf="viewType ==='kanban'"
+        <app-group-kanban-boards *ngIf="viewType === 'kanban'"
             [groupData]="groupData"
             [userData]="userData"
             [columns]="columns"
             [tasks]="tasks">
         </app-group-kanban-boards>
 
-        <app-group-tasks-list-view *ngIf="viewType ==='list'"
+        <app-group-tasks-list-view *ngIf="viewType === 'list'"
             [groupData]="groupData"
             [userData]="userData"
             [columns]="columns"
@@ -22,6 +22,10 @@
             [customFields]="customFields"
             [isAdmin]="isAdminUser()">
         </app-group-tasks-list-view>
+
+        <app-gantt-view *ngIf="viewType === 'gantt'"
+          [tasks]="tasks">
+        </app-gantt-view>
 
 </div>
 
