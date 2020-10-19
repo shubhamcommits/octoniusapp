@@ -1,4 +1,4 @@
-import { Component, Injector, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Injector, OnInit } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
@@ -8,9 +8,7 @@ import { WorkspaceService } from 'src/shared/services/workspace-service/workspac
   templateUrl: './people-directory-card.component.html',
   styleUrls: ['./people-directory-card.component.scss']
 })
-export class PeopleDirectoryCardComponent implements OnChanges {
-
-  @Input() period;
+export class PeopleDirectoryCardComponent implements OnInit {
 
   // Current Workspace Data
   workspaceData: any
@@ -32,7 +30,7 @@ export class PeopleDirectoryCardComponent implements OnChanges {
     private injector: Injector
   ) { }
 
-  ngOnChanges() {
+  ngOnInit() {
     this.initView();
   }
 
@@ -61,7 +59,7 @@ export class PeopleDirectoryCardComponent implements OnChanges {
 
   async getUsers() {
     return new Promise((resolve, reject) => {
-      this.workspaceService.getWorkspaceUsers(this.workspaceData._id, this.period)
+      this.workspaceService.getWorkspaceUsers(this.workspaceData._id)
         .then((res) => {
           resolve(res['users'])
         })
@@ -72,9 +70,8 @@ export class PeopleDirectoryCardComponent implements OnChanges {
   }
 
   async getGuests() {
-    const comparingDate = moment().local().subtract(this.period, 'days').format('YYYY-MM-DD');
     return this.workspaceData.invited_users.filter((guest) => {
-      return ((guest.invited_date >= comparingDate) && (guest.accepted));
+      return (guest.accepted);
     });
   }
 

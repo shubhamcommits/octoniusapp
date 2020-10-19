@@ -1218,7 +1218,7 @@ export class GroupController {
      */
     async getWorkspaceGroups(req: Request, res: Response, next: NextFunction) {
         try {
-            const { workspaceId, period } = req.query;
+            const { workspaceId } = req.query;
 
             // If workspaceId is null or not provided then we throw BAD REQUEST 
             if (!workspaceId) {
@@ -1227,33 +1227,16 @@ export class GroupController {
                 })
             }
 
-            let groups = [];
-            
-            if (period !== 'undefined') {
-                const comparingDate = moment().local().subtract(+period, 'days').format('YYYY-MM-DD');
+            const groups = await Group.find({
+                $and: [
+                    { group_name: { $ne: 'personal' } },
+                    { group_name: { $ne: 'private' } },
+                    { _workspace: workspaceId, },
+                ]
+            })
+            .sort('_id')
+            .lean() || [];
 
-                // Fetch groups in the database based on the list of @workspaceId which are not private
-                groups = await Group.find({
-                    $and: [
-                        { group_name: { $ne: 'personal' } },
-                        { group_name: { $ne: 'private' } },
-                        { _workspace: workspaceId, },
-                        { created_date: { $gte: comparingDate } }
-                    ]
-                })
-                .sort('_id')
-                .lean() || [];
-            } else {
-                groups = await Group.find({
-                    $and: [
-                        { group_name: { $ne: 'personal' } },
-                        { group_name: { $ne: 'private' } },
-                        { _workspace: workspaceId, },
-                    ]
-                })
-                .sort('_id')
-                .lean() || [];
-            }
             // Send the status 200 response
             return res.status(200).json({
                 message: `The next ${groups.length} groups!`,
