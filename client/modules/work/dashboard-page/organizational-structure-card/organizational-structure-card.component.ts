@@ -1,4 +1,4 @@
-import { Component, Injector, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Injector, OnInit } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { GroupsService } from 'src/shared/services/groups-service/groups.service';
 
@@ -7,9 +7,7 @@ import { GroupsService } from 'src/shared/services/groups-service/groups.service
   templateUrl: './organizational-structure-card.component.html',
   styleUrls: ['./organizational-structure-card.component.scss']
 })
-export class OrganizationalStructureCardComponent implements OnChanges {
-
-  @Input() period;
+export class OrganizationalStructureCardComponent implements OnInit {
 
   // Current Workspace Data
   workspaceData: any
@@ -27,7 +25,7 @@ export class OrganizationalStructureCardComponent implements OnChanges {
     private injector: Injector
   ) { }
 
-  ngOnChanges() {
+  ngOnInit() {
     this.initView();
   }
 
@@ -49,7 +47,7 @@ export class OrganizationalStructureCardComponent implements OnChanges {
 
   async getGroups() {
     return new Promise((resolve, reject) => {
-      this.groupsService.getWorkspaceGroups(this.workspaceData._id, this.period)
+      this.groupsService.getWorkspaceGroups(this.workspaceData._id)
         .then((res) => {
           resolve(res['groups'])
         })

@@ -281,27 +281,20 @@ export class MembersControllers {
     async getWorkspaceUsers(req: Request, res: Response, next: NextFunction) {
 
         // Fetch the variables from request
-        let {workspaceId, period} = req.query;
+        let {workspaceId} = req.query;
         
         try {
 
-            // If either workspaceId or period is null or not provided then we throw BAD REQUEST 
-            if (!workspaceId || !period) {
+            // If either workspaceId is null or not provided then we throw BAD REQUEST 
+            if (!workspaceId) {
                 return res.status(400).json({
-                    message: 'Please provide workspaceId and a period as the query parameter!'
+                    message: 'Please provide workspaceId as the query parameter!'
                 })
             }
 
-            const numDays = +period;
-            const comparingDate = moment().local().subtract(numDays, 'days').format('YYYY-MM-DD');
-            
-            // Find the users based on the regex expression matched with either full_name or email property present in the current workspace
-            const users = await User.find({
-                $and: [
-                    { _workspace: workspaceId },
-                    { company_join_date: { $gte: comparingDate } }
-                ]
-            }).lean() || []
+            // Find the users present in the current workspace
+            const users = await User.find(
+                { _workspace: workspaceId }).lean() || []
 
             // Send the status 200 response
             return res.status(200).json({
