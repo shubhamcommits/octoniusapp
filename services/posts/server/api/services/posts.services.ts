@@ -1440,13 +1440,7 @@ export class PostService {
           { _group: { $in: groupsIds } },
           { type: type },
           { 'task.isNorthStar': isNorthStar},
-          {'task.due_to': { $gte: comparingDate, $lt: today }},
-          {
-            $or: [
-              { 'task.status': 'to do' },
-              { 'task.status': 'in progress' }
-            ]
-          }
+          {'task.due_to': { $gte: comparingDate, $lt: today }}
         ]
       })
       .sort('-task.due_to')
