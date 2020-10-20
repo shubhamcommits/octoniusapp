@@ -133,7 +133,7 @@ $dark-sky-blue: #4a90e2;
 }
 
 .task_row {
-    height: 70px;
+    height: 40px;
     padding: 0;
     background: white;
     // width: 100%;
@@ -166,8 +166,8 @@ $dark-sky-blue: #4a90e2;
             text-align: center;
 
             .feed-avatar {
-                width: 35px;
-                height: 35px;
+                width: 30px !important;
+                height: 30px !important;
                 margin: 0;
             }
         }
@@ -200,7 +200,7 @@ $dark-sky-blue: #4a90e2;
             border-top: 0;
             border-bottom: 0;
             height: 100%;
-            line-height: 70px;
+            // line-height: 70px;
             text-align: center;
         }
         .task_cell_more {
@@ -210,7 +210,7 @@ $dark-sky-blue: #4a90e2;
             text-align: right;
             padding-right: 8px;
             flex: auto;
-            height: 70px;
+            // height: 70px;
             line-height: 70px;
         }
     }

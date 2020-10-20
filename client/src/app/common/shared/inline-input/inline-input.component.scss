@@ -39,8 +39,8 @@ input.input-date {
     cursor: pointer;
     color: red;
     position: absolute;
-    margin-top: -60px;
-    margin-left: 50px;
+    margin-top: -35px;
+    margin-left: 20px;
 }
 
 #avatar-assignee:hover + #unassing{
@@ -49,4 +49,10 @@ input.input-date {
 
 #unassing {
     display: none;
+}
+
+.feed-avatar {
+    width: 30px !important;
+    height: 30px !important;
+    margin: 0;
 }

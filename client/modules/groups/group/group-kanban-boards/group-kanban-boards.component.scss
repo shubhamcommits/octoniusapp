@@ -107,7 +107,7 @@ $border-color: #e4edf8;
     background: white;
     border: 1px solid $border-color;
     border-radius: 4px;
-    margin-bottom: 15px;
+    margin-bottom: 8px;
     // width: 320px;
     transition: box-shadow 0.3s ease-in-out;
 }
@@ -213,4 +213,10 @@ img:hover {
 .dropdown-menu {
     top: 20px !important;
     transform: none !important;
+}
+
+.feed-avatar {
+    width: 30px !important;
+    height: 30px !important;
+    margin: 0;
 }
