@@ -107,7 +107,7 @@ $border-color: #e4edf8;
     background: white;
     border: 1px solid $border-color;
     border-radius: 4px;
-    margin-bottom: 15px;
+    margin-bottom: 8px;
     // width: 320px;
     transition: box-shadow 0.3s ease-in-out;
 }
@@ -168,14 +168,10 @@ $dark-sky-blue: #4a90e2;
     // background: linear-gradient(90.01deg, rgba(94, 47, 229, 0.71) 0.01%, #5a206b 99.99%),
     //     url(/assets/images/bg-north-star.jpg);
     // background-size: cover;
-    background: linear-gradient(90.01deg, #5E2FE5 0.01%, #5E2FE5 99.99%);
+    background: #E5DEFB;
+    border-left: 3px solid #5E2FE5;
 
 
-    border: none;
-
-    .kanban-card-title {
-        color: #ffffff;
-    }
 
     .due {
         color: #ffffff;
@@ -213,4 +209,10 @@ img:hover {
 .dropdown-menu {
     top: 20px !important;
     transform: none !important;
+}
+
+.feed-avatar {
+    width: 30px !important;
+    height: 30px !important;
+    margin: 0;
 }
