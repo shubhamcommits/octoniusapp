@@ -11,6 +11,7 @@ import { WorkspaceService } from 'src/shared/services/workspace-service/workspac
 export class VelocityCardComponent implements OnChanges {
 
   @Input() period;
+  @Input() group: string;
 
   // Current Workspace Data
   workspaceData: any
@@ -117,6 +118,6 @@ export class VelocityCardComponent implements OnChanges {
   }
 
   getData(dates) {
-    return this.workspaceService.getVelocityGroups(this.workspaceData._id, dates);
+    return this.workspaceService.getVelocityGroups(this.workspaceData._id, dates, this.group);
   }
 }

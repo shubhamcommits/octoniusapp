@@ -226,4 +226,28 @@ export class CommentsController{
         }
     }
 
+
+    /**
+     * Function to get the count of comments on a post
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async getCommentsCount(req: Request, res: Response, next: NextFunction){
+        try {
+            const { postId, period } = req.query;
+
+            // Service function to get all comments
+            const numComments = await commentsService.getCommentsCount(postId, period);
+
+            // Status 200 response
+            return res.status(200).json({
+                message: 'Comments found!',
+                numComments: numComments
+            });
+        } catch (error) {
+            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
+        }
+    }
+
 }

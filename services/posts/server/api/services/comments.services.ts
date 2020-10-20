@@ -363,4 +363,26 @@ import moment from 'moment';
           throw(err);
         }
       };
+
+      /**
+       * Function to get next 5 comments on a post
+       * @param { postId, commentId }
+       */
+      getCommentsCount = async (postId, numDays) => {
+        try {
+          const comparingDate = moment().local().subtract(+numDays, 'days').format('YYYY-MM-DD');
+
+          const numComments = await Comment.find({
+            $and: [
+              { _post: postId },
+              { created_date: { $gte: comparingDate } }
+            ]
+          }).countDocuments();
+
+          return numComments;
+
+        } catch (err) {
+          throw(err);
+        }
+      };
  }

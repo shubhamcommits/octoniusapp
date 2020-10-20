@@ -12,6 +12,7 @@ export class WorkStatisticsCardComponent implements OnChanges {
 
   @Input() period;
   @Input() northStar: boolean;
+  @Input() group: string;
 
   // Current Workspace Data
   workspaceData: any
@@ -156,20 +157,34 @@ export class WorkStatisticsCardComponent implements OnChanges {
 
   async getTasks() {
     let tasks = [];
-    await this.postService.getWorkspacePosts(this.workspaceData._id, 'task', this.period, false, this.northStar)
+    if (this.group) {
+      await this.postService.getGroupPosts(this.group, 'task', this.period, false)
       .then((res) => {
         tasks = res['posts'];
-      })
+      });
+    } else {
+      await this.postService.getWorkspacePosts(this.workspaceData._id, 'task', this.period, false, this.northStar)
+        .then((res) => {
+          tasks = res['posts'];
+        });
+    }
     return tasks;
   }
 
   async getOverdueTasks() {
     let overdueTasks = [];
 
-    await this.postService.getWorkspacePosts(this.workspaceData._id, 'task', this.period, true, this.northStar)
+    if (this.group) {
+      await this.postService.getGroupPosts(this.group, 'task', this.period, true)
       .then((res) => {
         overdueTasks = res['posts'];
       });
+    } else {
+      await this.postService.getWorkspacePosts(this.workspaceData._id, 'task', this.period, true, this.northStar)
+      .then((res) => {
+        overdueTasks = res['posts'];
+      });
+    }
 
     return overdueTasks;
   }

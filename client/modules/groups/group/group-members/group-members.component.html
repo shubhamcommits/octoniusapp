@@ -7,12 +7,13 @@
       <!-- Heading of the component ends -->
 
       <!-- Fetch the current workspace members list starts -->
-      <app-component-search-bar *ngIf="groupData && members && searchBarPlaceholder && groupData" 
+      <app-component-search-bar *ngIf="groupData && members && searchBarPlaceholder && groupData"
           [type]="'group'"
-          [groupData]="groupData" 
+          [groupData]="groupData"
           [groupId]="groupData?._id"
-          [placeholder]="searchBarPlaceholder" 
-          [members]="members">
+          [placeholder]="searchBarPlaceholder"
+          [members]="members"
+          [userData]="userData">
       </app-component-search-bar>
       <!-- Fetch the current workspace members list ends -->
 

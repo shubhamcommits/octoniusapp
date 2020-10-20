@@ -80,6 +80,7 @@ import { GroupsService } from 'src/shared/services/groups-service/groups.service
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { CommentService } from 'src/shared/services/comment-service/comment.service';
+import { GroupDashboardComponent } from './group/group-dashboard/group-dashboard.component';
 
 /**
  * 4. !===== DECLARATIONS, IMPORTS, EXPORTS, & PROVIDERS =====!
@@ -168,6 +169,8 @@ import { CommentService } from 'src/shared/services/comment-service/comment.serv
     CustomFieldsDialogComponent,
     DoneTasksListViewComponent,
     DoneTasksKanbanViewComponent,
+
+    GroupDashboardComponent,
 
     GanttViewComponent
   ],

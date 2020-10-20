@@ -33,11 +33,11 @@
             <!-- Member Details Starts -->
             <div *ngIf="member.active" class="float-left">
                 <p class="mt-0">{{member?.first_name}} {{member?.last_name}}</p>
-                <p>Role: {{member?.role}} (<a href="mailto:{{member?.email}}">{{member?.email}}</a>)</p>
+                <p>Role: {{member?.role}}<span *ngIf="type === 'group' && isGroupManager(member._id)">, Group Manager</span> (<a href="mailto:{{member?.email}}">{{member?.email}}</a>)</p>
             </div>
             <div *ngIf="!member.active" class="float-left disabled-user">
                 <p class="mt-0">{{member?.first_name}} {{member?.last_name}}</p>
-                <p>Role: {{member?.role}} (<a href="mailto:{{member?.email}}">{{member?.email}}</a>)</p>
+                <p>Role: {{member?.role}}<span *ngIf="type === 'group' && isGroupManager(member._id)">, Group Manager</span> (<a href="mailto:{{member?.email}}">{{member?.email}}</a>)</p>
             </div>
             <!-- Member Details Ends -->
 
@@ -53,6 +53,8 @@
                     <ul class="dropdown-menu">
                         <li class="dropdown-item" *ngIf="member.role != 'admin'"
                             (click)="changeRole(member._id, 'admin', index)">Change to Admin</li>
+                        <li class="dropdown-item" *ngIf="member.role != 'manager'"
+                            (click)="changeRole(member._id, 'manager', index)">Change to Group Manager</li>
                         <li class="dropdown-item" *ngIf="member.role != 'member'"
                             (click)="changeRole(member._id, 'member', index)">Change to Member</li>
                         <li class="dropdown-divider"></li>
@@ -63,10 +65,29 @@
                 </div>
 
                 <!-- Remove from Group -->
+                <!--
                 <section *ngIf="type == 'group'">
                     <button class="btn btn-danger btn-sm" *ngIf="groupData.group_name != 'Global'"
                         (click)="removeUserFromGroup(groupId, member._id, index)">Remove Member</button>
                 </section>
+                -->
+                <div class="dropdown" *ngIf="(userData?.role === 'owner' || isGroupManager(userData?._id)) && type == 'group'">
+                  <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">Manage User
+                      <span class="caret"></span>
+                  </button>
+
+                  <!-- Menu Drawer Starts -->
+                  <ul class="dropdown-menu">
+                      <li class="dropdown-item" *ngIf="!isGroupManager(member._id)"
+                          (click)="changeGroupRole(member, 'manager', groupId)">Change to Group Manager</li>
+                      <li class="dropdown-item" *ngIf="isGroupManager(member._id)"
+                          (click)="changeGroupRole(member, 'member', groupId)">Change to Member</li>
+                      <li class="dropdown-divider"></li>
+                      <li class="dropdown-item btn btn-danger btn-sm dropdown-toggle" (click)="removeUserFromGroup(groupId, member._id, index)">Remove Member</li>
+                  </ul>
+                  <!-- Menu Drawer Ends -->
+
+              </div>
                 <!-- Remove from Group -->
             </div>
             <div *ngIf="!member.active" class="btn-group mr-3 float-right">

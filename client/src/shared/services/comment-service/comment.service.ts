@@ -127,4 +127,11 @@ export class CommentService {
       params: {commentId}
     }).toPromise();
   }
+
+  getCommentsCount(postId: string, period: any) {
+    return this._http.get(this.baseURL + `/comments/count`, {params:{
+      period: period,
+      postId: postId
+    }}).toPromise();
+  }
 }

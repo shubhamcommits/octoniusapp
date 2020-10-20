@@ -115,6 +115,10 @@ const UserSchema = new Schema({
         dashboard_period: {
             type: Number,
             default: 7
+        },
+        group_dashboard_period: {
+            type: Number,
+            default: 7
         }
     },
     _private_group: {

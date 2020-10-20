@@ -104,6 +104,9 @@ routes.get('/next-events', postController.getNextEvents);
 // This route is used to get the workspace's posts
 routes.get('/workspace/posts', postController.getWorspacePosts);
 
+// This route is used to get the group's posts
+routes.get('/group/posts', postController.getGroupPosts);
+
 // -| TASKS |-
 
 // PUT - Change task assignee
