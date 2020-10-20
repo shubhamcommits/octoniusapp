@@ -37,7 +37,6 @@ $dark-sky-blue: #4a90e2;
     margin: 0 0 16px 0;
     border-bottom: 1px solid $border-color;
     p{
-        font-size: 14px !important;
         text-transform: uppercase;
     }
 
@@ -64,7 +63,8 @@ $dark-sky-blue: #4a90e2;
     // height: 40px;
     // cursor: pointer;
     color: #9b9b9b !important;
-    font-size: 14px !important;
+    font-size: 12px !important;
+    font-family: "Nunito", sans-serif;
     .task_content {
         display: flex;
         // line-height: 60px;
@@ -145,6 +145,7 @@ $dark-sky-blue: #4a90e2;
     // line-height: 25px;
     // height: 40px;
     // cursor: pointer;
+    font-size: 12px !important;
     .task_content {
         display: flex;
         // line-height: 60px;
@@ -274,16 +275,15 @@ $dark-sky-blue: #4a90e2;
     //     url(/assets/images/bg-north-star.jpg);
     // background-size: cover;
     // background: #5E2FE5;
-    color: #ffffff;
-
-    height: 70px;
+    height: 40px;
     padding: 0;
     width: 100%;
     border-radius: 2px;
     box-sizing: border-box;
     margin: 2px auto;
     transition: box-shadow 0.3s ease-in-out;
-    background: linear-gradient(90.01deg, #5E2FE5 0.01%, #5E2FE5 99.99%);
+    background: #E5DEFB;
+    border-left: 3px solid #5E2FE5;
 
 
     .card-tile {
@@ -306,7 +306,7 @@ $dark-sky-blue: #4a90e2;
     }
 
     .title-overview {
-      font-size: 15px;
+    //   font-size: 15px;
       margin: 15px 0;
       font-weight: bold;
       line-height: 23px;
@@ -323,13 +323,13 @@ $dark-sky-blue: #4a90e2;
       margin: 5px 10px;
     }
 
-    .overview-task {
-      padding-top: 17px;
-    }
+    // .overview-task {
+    //   padding-top: 17px;
+    // }
 
     .overview-item {
       width: auto;
-      font-size: 16px;
+      font-size: 14px;
       padding-left: 15px;
       font-family: "Nunito", sans-serif;
       font-style: normal;

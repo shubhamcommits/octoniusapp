@@ -83,9 +83,13 @@ $dark-sky-blue: #4a90e2;
 
         .task_title {
             flex: 0 0 320px;
-            will-change: transform;
             flex-basis: 320px;
-            padding: 0 10px
+            padding: 0 10px;
+            font-size: 14px !important;
+            padding-left: 15px;
+            font-family: "Nunito", sans-serif;
+            font-style: normal;
+            font-weight: 400;
         }
 
         .task_cell_asignee {
@@ -95,8 +99,8 @@ $dark-sky-blue: #4a90e2;
             text-align: center;
 
             .feed-avatar {
-                width: 35px;
-                height: 35px;
+                width: 30px;
+                height: 30px;
                 margin: 0;
             }
         }
@@ -153,6 +157,8 @@ $dark-sky-blue: #4a90e2;
     // line-height: 25px;
     // height: 40px;
     // cursor: pointer;
+    font-size: 14px !important;
+    font-family: "Nunito", sans-serif;
     .task_content {
         display: flex;
         // line-height: 60px;
@@ -173,8 +179,8 @@ $dark-sky-blue: #4a90e2;
             text-align: center;
 
             .feed-avatar {
-                width: 35px;
-                height: 35px;
+                width: 30px;
+                height: 30px;
                 margin: 0;
             }
         }

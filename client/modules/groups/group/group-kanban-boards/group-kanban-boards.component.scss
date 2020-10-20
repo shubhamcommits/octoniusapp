@@ -168,14 +168,10 @@ $dark-sky-blue: #4a90e2;
     // background: linear-gradient(90.01deg, rgba(94, 47, 229, 0.71) 0.01%, #5a206b 99.99%),
     //     url(/assets/images/bg-north-star.jpg);
     // background-size: cover;
-    background: linear-gradient(90.01deg, #5E2FE5 0.01%, #5E2FE5 99.99%);
+    background: #E5DEFB;
+    border-left: 3px solid #5E2FE5;
 
 
-    border: none;
-
-    .kanban-card-title {
-        color: #ffffff;
-    }
 
     .due {
         color: #ffffff;
