@@ -10,6 +10,7 @@ import { PostService } from 'src/shared/services/post-service/post.service';
 export class WorkloadCardComponent implements OnChanges {
 
   @Input() period;
+  @Input() group: string;
 
   // Current Workspace Data
   workspaceData: any;
@@ -103,27 +104,37 @@ export class WorkloadCardComponent implements OnChanges {
   }
 
   async getTasks() {
-    return new Promise((resolve, reject) => {
-      this.postService.getWorkspacePosts(this.workspaceData._id, 'task', this.period, false, false)
+    let tasks = [];
+    if (this.group) {
+      await this.postService.getGroupPosts(this.group, 'task', this.period, false)
+      .then((res) => {
+        tasks = res['posts'];
+      });
+    } else {
+      await this.postService.getWorkspacePosts(this.workspaceData._id, 'task', this.period, false, false)
         .then((res) => {
-          resolve(res['posts'])
-        })
-        .catch(() => {
-          reject([])
+          tasks = res['posts'];
         });
-    })
+    }
+    return tasks;
   }
 
   async getOverdueTasks() {
-    return new Promise((resolve, reject) => {
-      this.postService.getWorkspacePosts(this.workspaceData._id, 'task', this.period, true, false)
-        .then((res) => {
-          resolve(res['posts'])
-        })
-        .catch(() => {
-          reject([])
-        })
-    })
+    let overdueTasks = [];
+
+    if (this.group) {
+      await this.postService.getGroupPosts(this.group, 'task', this.period, true)
+      .then((res) => {
+        overdueTasks = res['posts'];
+      });
+    } else {
+      await this.postService.getWorkspacePosts(this.workspaceData._id, 'task', this.period, true, false)
+      .then((res) => {
+        overdueTasks = res['posts'];
+      });
+    }
+
+    return overdueTasks;
   }
 
   private markOverdueTasks() {

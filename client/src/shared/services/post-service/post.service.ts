@@ -299,6 +299,31 @@ export class PostService {
   }
 
   /**
+   * Group's posts
+   */
+  getGroupPosts(groupId: string, type: string, numDays: number, overdue?: boolean) {
+    let params = {};
+
+    if (overdue !== undefined) {
+      params = {
+        groupId: groupId.toString().trim(),
+        type: type.toString().trim(),
+        numDays: numDays.toString().trim(),
+        overdue: overdue.toString().trim()
+      };
+    } else {
+      params = {
+        groupId: groupId.toString().trim(),
+        type: type.toString().trim(),
+        numDays: numDays.toString().trim()
+      };
+    }
+    return this._http.get(this.baseURL + `/group/posts`, {
+      params: params
+    }).toPromise();
+  }
+
+  /**
    * This function is used to save the start or end date of a task
    * @param postId
    */

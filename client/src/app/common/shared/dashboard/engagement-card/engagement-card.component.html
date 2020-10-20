@@ -8,17 +8,31 @@
     </div>
   </div>
 
-  <div class="row">
+  <div class="row" *ngIf="!group">
       <div class="card-first-column col-md-12">
         <div class="agoras_count"> {{ num_agoras }} </div>
         &nbsp;agoras
       </div>
   </div>
 
-  <div class="row">
+  <div class="row" *ngIf="!group">
       <div class="card-first-column col-md-12">
         <div class="agoras_count"> {{ num_topics }} </div>
         &nbsp;topics
+    </div>
+  </div>
+
+  <div class="row" *ngIf="group">
+    <div class="card-first-column col-md-12">
+      <div class="agoras_count"> {{ num_topics }} </div>
+      &nbsp;posts
+    </div>
+  </div>
+
+  <div class="row" *ngIf="group">
+    <div class="card-first-column col-md-12">
+      <div class="agoras_count"> {{ num_comments }} </div>
+      &nbsp;comments
     </div>
   </div>
 

@@ -17,7 +17,8 @@ export class WorkspaceService {
   constructor(
     private _http: HttpClient,
     private injector: Injector,
-    private groupsService: GroupsService) { }
+    private groupsService: GroupsService,
+    private groupService: GroupService) { }
 
   /**
    * This function is responsible for fetching the workspace details
@@ -257,13 +258,17 @@ export class WorkspaceService {
   /**
    * This function is responsible for retreiving and calculating the velocity of the workspace
    */
-  async getVelocityGroups(workspaceId: string, dates: any) {
+  async getVelocityGroups(workspaceId: string, dates: any, groupId?: string) {
     let groupsVelocities = [];
     let groups = [];
 
-    await this.groupsService.getWorkspaceGroups(workspaceId).then((res) => {
-      groups = res['groups'];
-    });
+    if (groupId) {
+      await this.groupService.getGroup(groupId).then(res => groups.push(res['group']));
+    } else {
+      await this.groupsService.getWorkspaceGroups(workspaceId).then((res) => {
+        groups = res['groups'];
+      });
+    }
 
     for (let i = 0; i < (dates.length - 1); i++) {
       groupsVelocities.push(this.getVelocityCounterPerDates(dates[i], dates[i+1], groups));

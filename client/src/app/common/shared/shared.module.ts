@@ -71,6 +71,15 @@ import { TaskHelperComponent } from './scheduler/task-helper/task-helper.compone
 import { ResizableModule } from 'angular-resizable-element';
 import { ProjectStatusComponent } from './activity-feed/project-status/project-status.component';
 
+import { WorkStatisticsCardComponent } from './dashboard/work-statistics-card/work-statistics-card.component';
+import { WorkloadCardComponent } from './dashboard/workload-card/workload-card.component';
+import { VelocityCardComponent } from './dashboard/velocity-card/velocity-card.component';
+import { PulseCardComponent } from './dashboard/pulse-card/pulse-card.component';
+import { PeopleDirectoryCardComponent } from './dashboard/people-directory-card/people-directory-card.component';
+import { OrganizationalStructureCardComponent } from './dashboard/organizational-structure-card/organizational-structure-card.component';
+import { EngagementCardComponent } from './dashboard/engagement-card/engagement-card.component';
+import { GlobalPerformanceCardComponent } from './dashboard/global-performance-card/global-performance-card.component';
+
 @NgModule({
   declarations: [
     AttachFilesComponent,
@@ -151,7 +160,16 @@ import { ProjectStatusComponent } from './activity-feed/project-status/project-s
     GroupCreatePostDialogComponent,
     SchedulerComponent,
     TaskComponent,
-    TaskHelperComponent
+    TaskHelperComponent,
+
+    WorkStatisticsCardComponent,
+    WorkloadCardComponent,
+    VelocityCardComponent,
+    PulseCardComponent,
+    PeopleDirectoryCardComponent,
+    OrganizationalStructureCardComponent,
+    EngagementCardComponent,
+    GlobalPerformanceCardComponent
   ],
   imports: [
     CommonModule,
@@ -251,7 +269,16 @@ import { ProjectStatusComponent } from './activity-feed/project-status/project-s
     ChartsModule,
     SchedulerComponent,
     TaskComponent,
-    TaskHelperComponent
+    TaskHelperComponent,
+
+    WorkStatisticsCardComponent,
+    WorkloadCardComponent,
+    VelocityCardComponent,
+    PulseCardComponent,
+    PeopleDirectoryCardComponent,
+    OrganizationalStructureCardComponent,
+    EngagementCardComponent,
+    GlobalPerformanceCardComponent
   ],
   providers: [
     { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },
