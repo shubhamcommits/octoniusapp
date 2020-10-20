@@ -838,7 +838,7 @@ export class PostController {
             // Call Service function to fetch the posts
             let posts: any = [];
 
-            if (type === 'tasks') {
+            if (type === 'task') {
                 posts = await postService.getGroupTasksResults(groupId, type, +numDays, (overdue == "true"))
                     .catch((err) => {
                         return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
@@ -849,6 +849,7 @@ export class PostController {
                         return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
                     });
             }
+
             // // Send status 200 response
             return res.status(200).json({
                 message: 'Posts fetched!',
