@@ -11,6 +11,8 @@ export default class QuillClipboard extends Clipboard {
 
   onCapturePaste(e) {
 
+    console.log(e.clipboardData)
+
       this.onPaste(e);
   }
 
@@ -23,13 +25,17 @@ export default class QuillClipboard extends Clipboard {
 
     // get the html
     const text = e.clipboardData.getData('text/plain')
-    const html = e.clipboardData.getData('text/html')
+    var html = e.clipboardData.getData('text/html')
+
+    // If HTML String is empty then add it to anchor tag
+    if(html == "")
+      html = `<a href="${text}">${text}</a>`
 
     // fetch the list of current formats
     const formats = this.quill.getFormat(range.index)
 
     // convert the html and formats to the delta
-    const pastedDelta = this.quill.clipboard.convert(text, formats)
+    const pastedDelta = this.quill.clipboard.convert(html, formats)
 
     // form a new delta
     const delta = new Delta()

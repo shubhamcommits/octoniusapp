@@ -51,6 +51,7 @@ Quill.register({
 });
 
 Quill.register('modules/clipboard', QuillClipboard, true)
+// Quill.register('modules/autoformat', Autoformat, true)
 
 // Environments
 import { environment } from 'src/environments/environment';
