@@ -144,13 +144,18 @@ const PostSchema = new Schema({
          },
          
          start_date: {
-             type: Date,
-             default: null
-         },
-         end_date: {
-             type: Date,
-             default: null
-         }
+            type: Date,
+            default: null
+        },
+        end_date: {
+            type: Date,
+            default: null
+        },
+
+        _parent_task: {
+            type: Schema.Types.ObjectId,
+            ref: 'Post'
+        }
     },
 
     // PERFORMANCE TASK

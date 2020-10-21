@@ -70,6 +70,19 @@
                     (click)="updateDetails()">
                 Save
             </button>
+
+            <button *ngIf="!showSubtasks && !postData?.task?._parent_task" class="btn float-left btn-warning btn-md" (click)="prepareToAddSubtasks()">
+              + Add Subtasks
+            </button>
+        </div>
+
+        <div class="content-box" *ngIf="showSubtasks">
+          <app-subtasks
+            [subtasks]="subtasks"
+            [groupData]="groupData"
+            [userData]="userData"
+            [parentId]="postData?._id"
+            (openSubtaskEmitter)="onOpenSubtask($event)"></app-subtasks>
         </div>
 
         <app-north-star-stats *ngIf="postData?.task?.isNorthStar"
@@ -80,13 +93,29 @@
         <div class="content-box" *ngIf="comments.length > 0">
             <section *ngFor="let comment of comments; let index = index;">
                 <post-comment [comment]="comment" [index]="index" [userData]="userData"
-                    [groupId]="postData._group || postData._group._id" (remove)="removeComment($event)"></post-comment>
+                    [groupId]="postData?._group || postData?._group?._id" (remove)="removeComment($event)"></post-comment>
             </section>
         </div>
     </div>
 
     <!-- Top Right Section starts -->
     <div class="post-properties">
+        <!-- Parent Task starts -->
+        <div *ngIf="postData?.task?._parent_task && postData.type === 'task'" class="content-box">
+          <p class="box-title">Parent task</p>
+
+          <div class="parent-task">
+            <div style="display: flex; flex-direction: row; justify-content: space-between; width: 100%;" (click)="openParentTask(postData?.task?._parent_task._id)">
+              <div style="padding-top: 20px;">
+                {{ postData?.task?._parent_task.title | truncatetext:40 }}
+              </div>
+
+              <img src="{{ parentTaskAssigneeProfilePicUrl }}"
+                onerror="this.src='assets/images/user.png'" class="feed-avatar">
+            </div>
+          </div>
+        </div>
+        <!-- Parent Task ends -->
 
         <!-- Is North Start starts -->
         <app-north-star *ngIf="postData.type === 'task'"
@@ -127,7 +156,7 @@
             </div>
             <br *ngIf="groupData && groupData.enabled_rights" />
 
-            <p class="box-title">Section</p>
+            <p class="box-title" *ngIf="columns">Section</p>
             <!-- Change task column starts -->
             <app-change-column
                 class="ml-3"
@@ -251,3 +280,9 @@
     </div>
     <!-- Top Right Section ends -->
 </div>
+
+<!-- Loading Spinner Starts -->
+<ng-container *ngIf="isLoading$ | async">
+  <app-loading-spinner class="media"></app-loading-spinner>
+</ng-container>
+<!-- Loading Spinner Ends -->

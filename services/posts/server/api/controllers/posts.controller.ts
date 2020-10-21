@@ -859,4 +859,35 @@ export class PostController {
             return sendErr(res, new Error(err), 'Internal Server Error!', 500);
         }
     }
+
+    /**
+     * This function is responsible for fetching the posts of a group
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async getSubtasks(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch Data from request
+        const  { parentId }  = req.query;
+
+        try {
+
+            // Call Service function to fetch the posts
+            let subtasks: any = [];
+
+            subtasks = await postService.getSubtasks(parentId.toString())
+                .catch((err) => {
+                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+                });
+
+            // // Send status 200 response
+            return res.status(200).json({
+                message: 'Subtasks fetched!',
+                subtasks: subtasks
+            });
+        } catch (err) {
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
 }

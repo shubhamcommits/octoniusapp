@@ -1,11 +1,10 @@
-import { Group, Post, User, Comment } from '../models';
 import http from 'axios';
 import moment from 'moment';
-const fs = require('fs');
 import { Readable } from 'stream';
-import { CommentsController } from '../controllers';
+import { Comment, Group, Post, User } from '../models';
 import { sendErr } from '../utils/sendError';
 import { GroupsService } from './groups.services';
+const fs = require('fs');
 
 /*  ===============================
  *  -- POSTS Service --
@@ -197,6 +196,7 @@ export class PostService {
         .limit(5)
         .populate({ path: '_posted_by', select: this.userFields })
         .populate({ path: 'task._assigned_to', select: this.userFields })
+        .populate({ path: 'task._parent_task', select: '_id title task._assigned_to' })
         // .populate({ path: 'event._assigned_to', select: this.userFields })
         // .populate({ path: '_liked_by', select: this.userFields, options: { limit: 10 } })
         .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
@@ -209,6 +209,7 @@ export class PostService {
         .populate({ path: '_group', select: this.groupFields })
         .populate({ path: '_posted_by', select: this.userFields })
         .populate({ path: 'task._assigned_to', select: this.userFields })
+        .populate({ path: 'task._parent_task', select: '_id title task._assigned_to' })
         // .populate({ path: '_liked_by', select: this.userFields, options: { limit: 10 } })
         .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
         .lean();
@@ -229,6 +230,7 @@ export class PostService {
         { path: 'task._assigned_to', select: this.userFields },
         { path: '_group', select: this.groupFields },
         { path: '_posted_by', select: this.userFields },
+        { path: 'task._parent_task', select: '_id title task._assigned_to' }
         // { path: '_liked_by', select: this.userFields, options: { limit: 10 } }
       ]);
 
@@ -432,7 +434,8 @@ export class PostService {
             _column: post._column,
             custom_fields: post.task.custom_fields,
             isNorthStar: post.task.isNorthStar,
-            northStar: post.task.northStar
+            northStar: post.task.northStar,
+            _parent_task: post.task._parent_task
           }
 
           break;
@@ -519,9 +522,9 @@ export class PostService {
       .populate('_group', this.groupFields)
       .populate('_posted_by', this.userFields)
       .populate('task._assigned_to', this.userFields)
+      .populate({ path: 'task._parent_task', select: '_id title task._assigned_to' })
       .populate('performance_task._assigned_to', this.userFields)
       .lean();
-
     // Return the post
     return post
   }
@@ -979,6 +982,7 @@ export class PostService {
         .populate('_group', 'group_name')
         .populate('_posted_by', 'first_name last_name profile_pic')
         .populate('task._assigned_to', 'first_name last_name profile_pic')
+        .populate({ path: 'task._parent_task', select: '_id title task._assigned_to' })
         .lean();
 
       return {
@@ -1022,6 +1026,7 @@ export class PostService {
         .populate('_group', 'group_name')
         .populate('_posted_by', 'first_name last_name profile_pic')
         .populate('task._assigned_to', 'first_name last_name profile_pic')
+        .populate({ path: 'task._parent_task', select: '_id title task._assigned_to' })
         .lean();
 
       return {
@@ -1067,6 +1072,7 @@ export class PostService {
         .populate('_group', 'group_name')
         .populate('_posted_by', 'first_name last_name profile_pic')
         .populate('task._assigned_to', 'first_name last_name profile_pic')
+        .populate({ path: 'task._parent_task', select: '_id title task._assigned_to' })
         .lean();
 
       return {
@@ -1394,6 +1400,7 @@ export class PostService {
       .populate('_group', this.groupFields)
       .populate('_posted_by', this.userFields)
       .populate('task._assigned_to', this.userFields)
+      .populate({ path: 'task._parent_task', select: '_id title task._assigned_to' })
       .lean();
       
     } else {
@@ -1408,6 +1415,7 @@ export class PostService {
       .populate({ path: '_group', select: this.groupFields })
       .populate({ path: '_posted_by', select: this.userFields })
       .populate({ path: 'task._assigned_to', select: this.userFields })
+      .populate({ path: 'task._parent_task', select: '_id title task._assigned_to' })
       .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
       .lean();
     }
@@ -1447,6 +1455,7 @@ export class PostService {
       .populate('_group', this.groupFields)
       .populate('_posted_by', this.userFields)
       .populate('task._assigned_to', this.userFields)
+      .populate({ path: 'task._parent_task', select: '_id title task._assigned_to' })
       .lean();
       
     } else {
@@ -1462,6 +1471,7 @@ export class PostService {
       .populate({ path: '_group', select: this.groupFields })
       .populate({ path: '_posted_by', select: this.userFields })
       .populate({ path: 'task._assigned_to', select: this.userFields })
+      .populate({ path: 'task._parent_task', select: '_id title task._assigned_to' })
       .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
       .lean();
     }
@@ -1498,6 +1508,7 @@ export class PostService {
       .populate('_group', this.groupFields)
       .populate('_posted_by', this.userFields)
       .populate('task._assigned_to', this.userFields)
+      .populate({ path: 'task._parent_task', select: '_id title task._assigned_to' })
       .lean();
       
     } else {
@@ -1512,6 +1523,7 @@ export class PostService {
       .populate({ path: '_group', select: this.groupFields })
       .populate({ path: '_posted_by', select: this.userFields })
       .populate({ path: 'task._assigned_to', select: this.userFields })
+      .populate({ path: 'task._parent_task', select: '_id title task._assigned_to' })
       .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
       .lean();
     }
@@ -1534,6 +1546,27 @@ export class PostService {
     })
     .lean();
 
+    return posts;
+  }
+
+  async getSubtasks(parentId: any) {
+    
+    let posts =[];
+
+    posts = await Post.find({
+      $and: [
+        { type: 'task' },
+        { 'task._parent_task': parentId }
+      ]
+    })
+    .sort('-task.due_to')
+    .populate({ path: '_group', select: this.groupFields })
+    .populate({ path: '_posted_by', select: this.userFields })
+    .populate({ path: 'task._assigned_to', select: this.userFields })
+    .populate({ path: 'task._parent_task', select: '_id title task._assigned_to' })
+    .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
+    .lean();
+    
     return posts;
   }
 }

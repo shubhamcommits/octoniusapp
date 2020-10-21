@@ -25,8 +25,13 @@ export class NewTaskComponent implements OnInit {
   // Group Data Object
   @Input('groupData') groupData: any;
 
+  @Input() subtask: boolean;
+  @Input() parentId: string;
+
   // Post Event Emitter
   @Output('post') post = new EventEmitter()
+
+  addSubTask = false;
 
   ngOnInit() {
   }
@@ -38,7 +43,11 @@ export class NewTaskComponent implements OnInit {
    */
   newTask(){
     this.createPost();
-    this.column.addTask = false;
+    if (this.subtask) {
+      this.addSubTask = false;
+    } else {
+      this.column.addTask = false;
+    }
   }
 
   /**
@@ -49,26 +58,7 @@ export class NewTaskComponent implements OnInit {
     var postData: any;
     // Prepare Post Data
 
-    // Check if private group
-    if (this.groupData._id == this.userData._private_group){
-      postData = {
-        title: this.postTitle,
-        content: '',
-        type: 'task',
-        _posted_by: this.userData._id,
-        _group: this.groupData._id,
-        _content_mentions: [],
-        task: {
-          _assigned_to: this.userData._id,
-          unassigned: false,
-          status: 'to do',
-          _column: {
-            title: this.column.title
-          }
-        }
-      }
-    }
-    else{
+    if (this.subtask) {
       postData = {
         title: this.postTitle,
         content: '',
@@ -80,8 +70,44 @@ export class NewTaskComponent implements OnInit {
           unassigned: true,
           _assigned_to: null,
           status: 'to do',
-          _column: {
-            title: this.column.title
+          _parent_task: this.parentId
+        }
+      }
+    } else {
+      // Check if private group
+      if (this.groupData._id == this.userData._private_group) {
+        postData = {
+          title: this.postTitle,
+          content: '',
+          type: 'task',
+          _posted_by: this.userData._id,
+          _group: this.groupData._id,
+          _content_mentions: [],
+          task: {
+            _assigned_to: this.userData._id,
+            unassigned: false,
+            status: 'to do',
+            _column: {
+              title: this.column.title
+            }
+          }
+        }
+      }
+      else{
+        postData = {
+          title: this.postTitle,
+          content: '',
+          type: 'task',
+          _posted_by: this.userData._id,
+          _group: this.groupData._id,
+          _content_mentions: [],
+          task: {
+            unassigned: true,
+            _assigned_to: null,
+            status: 'to do',
+            _column: {
+              title: this.column.title
+            }
           }
         }
       }

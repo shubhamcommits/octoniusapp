@@ -113,3 +113,11 @@
         }
     }
 }
+
+.parent-task {
+  cursor: pointer;
+
+  :hover {
+    background-color: #f1f1f3 !important;
+  }
+}

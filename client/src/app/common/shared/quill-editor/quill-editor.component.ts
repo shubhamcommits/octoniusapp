@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input, Injector } from '@angular/core';
+import { Component, OnInit, OnChanges, Output, EventEmitter, Input, Injector } from '@angular/core';
 
 // Highlight.js
 import * as hljs from 'highlight.js';
@@ -62,7 +62,7 @@ import { StorageService } from 'src/shared/services/storage-service/storage.serv
   templateUrl: './quill-editor.component.html',
   styleUrls: ['./quill-editor.component.scss']
 })
-export class QuillEditorComponent implements OnInit {
+export class QuillEditorComponent implements OnInit, OnChanges {
 
   constructor(
     private Injector: Injector
@@ -160,6 +160,19 @@ export class QuillEditorComponent implements OnInit {
     this.quillContentChanges(this.quill)
   }
 
+  ngOnChanges() {
+    if (this.contents && this.quill) {
+
+      // Fetch the delta ops from the JSON string
+      let delta = (this.isJSON(this.contents))
+        ? JSON.parse(this.contents)['ops']
+        : this.quill.clipboard.convert(this.contents);
+
+      // Set the content inside quill container
+      this.setContents(this.quill, delta)
+    }
+  }
+
   /**
    * This function is used to check if a function is already strigified
    * @param str
@@ -231,7 +244,7 @@ export class QuillEditorComponent implements OnInit {
    */
   metionModule() {
 
-    // Check if groupId is object to take id... 
+    // Check if groupId is object to take id...
     // In some places in code it is sending object, in other it is sending _id... needs refactoring
     if (typeof this.groupId === 'object' && this.groupId !== null) {
       this.groupId = this.groupId._id;
@@ -399,7 +412,7 @@ export class QuillEditorComponent implements OnInit {
         // Get Quill Text
         let quillText = quillData.text
 
-        // quillData.driveDivisionDelta = driveDivisionDelta 
+        // quillData.driveDivisionDelta = driveDivisionDelta
 
         // Set the Mentioned list property
         quillData['mention'] = this.getMentionList(quillContents)

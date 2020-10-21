@@ -124,6 +124,9 @@ routes.put('/:postId/task-column', postController.changeTaskColumn);
 // PUT - Change task start or end date
 routes.put('/:postId/update-date', postController.changeTaskDate);
 
+// This route is used to get the subtasks of a task
+routes.get('/post/subtasks', postController.getSubtasks);
+
 
 // -| RECENT ACTIVITY |-
 

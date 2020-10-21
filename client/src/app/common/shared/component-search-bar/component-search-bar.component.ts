@@ -410,7 +410,7 @@ export class ComponentSearchBarComponent implements OnInit {
   }
 
   isGroupManager(userId) {
-    return this.groupData._admins.find(admin => admin._id === userId);
+    return (this.groupData && this.groupData._admins) ? this.groupData._admins.find(admin => admin._id === userId) : false;
   }
 
   /**
@@ -428,13 +428,15 @@ export class ComponentSearchBarComponent implements OnInit {
     let utilityService = this.injector.get(UtilityService);
 
     if (role === 'manager') {
-      const index = this.groupData._members.indexOf(member => member._id === user._id);
+      const index = this.groupData._members.findIndex(member => member._id === user._id);
+
       if (index > -1) {
         this.groupData._members.splice(index, 1);
         this.groupData._admins.push(user);
       }
     } else if (role === 'member') {
-      const index = this.groupData._admins.indexOf(admin => admin._id === user._id);
+      const index = this.groupData._admins.findIndex(admin => admin._id === user._id);
+
       if (index > -1) {
         this.groupData._admins.splice(index, 1);
         this.groupData._members.push(user);
