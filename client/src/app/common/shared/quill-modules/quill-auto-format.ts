@@ -4,7 +4,7 @@ const Module = Quill.import('core/module');
 const Delta = Quill.import('delta');
 
 // Binds autoformat transforms to typing and pasting
-class Autoformat extends Module {
+export default class Autoformat extends Module {
   transforms;
   quill;
   options;
@@ -348,8 +348,4 @@ Autoformat.DEFAULTS = {
     },
     format: 'link'
   }
-};
-
-export {
-  Autoformat as default
 };
