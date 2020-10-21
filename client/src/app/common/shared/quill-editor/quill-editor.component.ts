@@ -39,10 +39,10 @@ import { PublicFunctions } from 'modules/public.functions';
 var Link = Quill.import('formats/link');
 
 Quill.register({
-  'modules/autoformat': Autoformat,
   'modules/imageDrop': ImageDrop,
   'modules/imageResize': ImageResize,
-  'modules/imageCompress': ImageCompress
+  'modules/imageCompress': ImageCompress,
+  'modules/autoformat': Autoformat
 });
 
 // Environments
@@ -112,7 +112,7 @@ export class QuillEditorComponent implements OnInit {
     this.modules.mention = this.metionModule();
 
     // Enable Autolinking
-    this.sanitizeLink()
+    // this.sanitizeLink()
 
     // If the toolbar is supposed to be visible, then enable following modules
     if (this.toolbar) {

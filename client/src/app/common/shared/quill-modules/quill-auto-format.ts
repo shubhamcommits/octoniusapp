@@ -101,7 +101,7 @@ class Autoformat extends Module {
         // Check helper trigger
         if(transform.helper && transform.helper.trigger) {
           if(lastOp.insert.match(transform.helper.trigger)) { // TODO: check leaf/atindex instead
-            this.quill.formatText(checkIndex, 1, 'autoformat-helper', name, 'api');
+            this.quill.formatText(checkIndex, 1, 'autoformat-helper', name, 'user');
             this.openHelper(transform, checkIndex);
             continue;
           }
@@ -118,7 +118,7 @@ class Autoformat extends Module {
             ops = ops.concat(transformOps);
           }
 
-          this.quill.updateContents(ops, 'api')
+          this.quill.updateContents(ops, 'user')
           transformed = true;
         }
       }
@@ -126,7 +126,7 @@ class Autoformat extends Module {
       // Restore cursor position
       if(transformed) {
         setTimeout(() => {
-          this.quill.setSelection(this.quill.getLength() - endSelIndex, 'api')
+          this.quill.setSelection(this.quill.getLength() - endSelIndex, 'user')
         }, 0);
       }
     });
