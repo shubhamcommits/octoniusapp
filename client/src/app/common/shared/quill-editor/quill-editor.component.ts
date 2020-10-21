@@ -38,12 +38,20 @@ import { PublicFunctions } from 'modules/public.functions';
 // Import Links
 var Link = Quill.import('formats/link');
 
+import QuillClipboard from '../quill-modules/quill-clipboard';
+
+QuillClipboard
+
 Quill.register({
-  'modules/autoformat': Autoformat,
   'modules/imageDrop': ImageDrop,
   'modules/imageResize': ImageResize,
-  'modules/imageCompress': ImageCompress
+  'modules/imageCompress': ImageCompress,
+  // 'modules/clipboard': QuillClipboard,
+  // 'modules/autoformat': Autoformat
 });
+
+Quill.register('modules/clipboard', QuillClipboard, true)
+// Quill.register('modules/autoformat', Autoformat, true)
 
 // Environments
 import { environment } from 'src/environments/environment';
@@ -69,7 +77,7 @@ export class QuillEditorComponent implements OnInit, OnChanges {
         'delay': 2500,
         'userOnly': true
       },
-      autoformat: true
+      // autoformat: true
     }
   }
 
@@ -112,7 +120,7 @@ export class QuillEditorComponent implements OnInit, OnChanges {
     this.modules.mention = this.metionModule();
 
     // Enable Autolinking
-    this.sanitizeLink()
+    // this.sanitizeLink()
 
     // If the toolbar is supposed to be visible, then enable following modules
     if (this.toolbar) {
