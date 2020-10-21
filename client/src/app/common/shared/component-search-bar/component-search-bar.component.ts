@@ -410,7 +410,7 @@ export class ComponentSearchBarComponent implements OnInit {
   }
 
   isGroupManager(userId) {
-    return this.groupData._admins.find(admin => admin._id === userId);
+    return (this.groupData && this.groupData._admins) ? this.groupData._admins.find(admin => admin._id === userId) : false;
   }
 
   /**
