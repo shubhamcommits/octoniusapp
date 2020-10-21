@@ -88,7 +88,7 @@ export class GoogleCloudService {
   /**
    * This function is responsible for fetching the access token from user's profile
    */
-  getAccessTokenFromUserData() {
+  getRefreshTokenFromUserData() {
     return this._http.get(this.BASE_API_URL + '/integrations/gdrive/token')
       .toPromise()
   }
@@ -97,7 +97,7 @@ export class GoogleCloudService {
    * This function is responsible for saving the access token to the user's profile
    * @param token 
    */
-  saveAccessTokenToUser(token: any) {
+  saveRefreshTokenToUser(token: any) {
     return this._http.post(this.BASE_API_URL + '/integrations/gdrive/token', {
       token: token
     })
@@ -105,10 +105,10 @@ export class GoogleCloudService {
   }
 
   /**
-   * This function fetches the refresh token from the google server
+   * This function fetches the access token from the google server
    * @param refreshToken 
    */
-  getGoogleDriveTokenFromUser(refreshToken: string) {
+  getAccessToken(refreshToken: string) {
     return this._httpBackend.post('https://www.googleapis.com/oauth2/v4/token', {
       client_id: environment.clientId,
       client_secret: environment.clientSecret,
