@@ -38,12 +38,19 @@ import { PublicFunctions } from 'modules/public.functions';
 // Import Links
 var Link = Quill.import('formats/link');
 
+import QuillClipboard from '../quill-modules/quill-clipboard';
+
+QuillClipboard
+
 Quill.register({
   'modules/imageDrop': ImageDrop,
   'modules/imageResize': ImageResize,
   'modules/imageCompress': ImageCompress,
-  'modules/autoformat': Autoformat
+  // 'modules/clipboard': QuillClipboard,
+  // 'modules/autoformat': Autoformat
 });
+
+Quill.register('modules/clipboard', QuillClipboard, true)
 
 // Environments
 import { environment } from 'src/environments/environment';
@@ -69,7 +76,7 @@ export class QuillEditorComponent implements OnInit {
         'delay': 2500,
         'userOnly': true
       },
-      autoformat: true
+      // autoformat: true
     }
   }
 
