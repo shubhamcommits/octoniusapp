@@ -331,7 +331,7 @@ export class QuillEditorComponent implements OnInit, OnChanges {
     if (storageService.existData('googleUser')) {
 
       // Fetch the access token from the storage
-      let accessToken = storageService.getLocalData('googleUser')['refreshToken']
+      let accessToken = storageService.getLocalData('googleUser')['accessToken']
 
       // Get Google file list
       googleFilesList = await this.publicFunctions.searchGoogleFiles(searchTerm, accessToken) || []
