@@ -9,9 +9,12 @@ const Delta = Quill.import('delta')
 
 export default class QuillClipboard extends Clipboard {
 
-  onPaste (e: any) {
+  onCapturePaste(e) {
 
-    console.log(e)
+      this.onPaste(e);
+  }
+
+  onPaste (e: any) {
 
     e.preventDefault()
 
