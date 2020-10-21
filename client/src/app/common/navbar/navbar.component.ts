@@ -136,10 +136,12 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
     await this.initNotifications();
 
+    await this.publicFunctions.handleGoogleSignIn()
+
     // This function is responsible for keep the cloud connected and refreshes the token in every 30mins
     setInterval(async () => {
       await this.publicFunctions.handleGoogleSignIn()
-    }, 1800000);
+    }, 1700000);
 
     console.log('User Data', this.userData);
     console.log('Workspace Data', this.workspaceData);
