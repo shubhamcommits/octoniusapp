@@ -375,7 +375,6 @@ export class PostService {
    */
   async addPost(postData: any) {
     try {
-
       // Parse the String to JSON Object
       postData = JSON.parse(postData);
 

@@ -102,8 +102,7 @@ const PostSchema = new Schema({
         },
         _column: {
             title: {
-                type: String,
-                default: 'to do'
+                type: String
             }
         },
 

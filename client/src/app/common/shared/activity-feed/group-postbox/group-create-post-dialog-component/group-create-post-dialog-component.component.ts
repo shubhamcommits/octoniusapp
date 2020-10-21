@@ -10,6 +10,7 @@ import moment from 'moment';
 // ShareDB Client
 import * as ShareDB from 'sharedb/lib/client';
 import { BehaviorSubject } from 'rxjs';
+import { ColumnService } from 'src/shared/services/column-service/column.service';
 
 @Component({
   selector: 'app-group-create-post-dialog-component',
@@ -642,6 +643,8 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
     this.comments = [];
 
+    this.columns = null;
+
     if (!this.postData.task._parent_task.task._assigned_to) {
       this.parentTaskAssigneeProfilePicUrl = 'assets/images/user.png';
     } else {
@@ -670,6 +673,36 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
     this.comments = [];
 
+    /**
+     * Here we fetch all the columns available in a group, and if null we initialise them with the default one
+     */
+    this.columns = await this.publicFunctions.getAllColumns(this.groupId);
+    if (this.columns == null) {
+      this.columns = await this.initialiseColumns(this.groupId);
+    }
+
     await this.initPostData();
+  }
+
+  /**
+   * This function initialises the default column - todo
+   * @param groupId
+   */
+  async initialiseColumns(groupId: string) {
+
+    // Column Service Instance
+    const columnService = this.injector.get(ColumnService);
+
+    // Call the HTTP Put request
+    return new Promise((resolve, reject) => {
+      columnService.initColumns(groupId)
+        .then((res) => {
+          resolve(res['columns']);
+        })
+        .catch((err) => {
+          this.utilityService.errorNotification('Unable to initialize the columns, please try again later!');
+          reject({});
+        });
+    });
   }
 }

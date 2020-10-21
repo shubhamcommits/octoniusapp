@@ -34,6 +34,9 @@ export class NewTaskComponent implements OnInit {
   addSubTask = false;
 
   ngOnInit() {
+    if (this.subtask) {
+      this.column = null;
+    }
   }
 
   /**
@@ -70,6 +73,7 @@ export class NewTaskComponent implements OnInit {
           unassigned: true,
           _assigned_to: null,
           status: 'to do',
+          _column: null,
           _parent_task: this.parentId
         }
       }
