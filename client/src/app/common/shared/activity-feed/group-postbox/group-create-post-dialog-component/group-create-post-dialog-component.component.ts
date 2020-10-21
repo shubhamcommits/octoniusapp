@@ -276,6 +276,12 @@ export class GroupCreatePostDialogComponent implements OnInit {
     if (newTitle !== this.title) {
       this.title = newTitle;
       this.updateDetails();
+
+      if (this.subtasks && this.subtasks.length > 0) {
+        this.subtasks.forEach(subtask => {
+          subtask.task._parent_task.title = this.title;
+        });
+      }
     }
   }
 
@@ -623,7 +629,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.showSubtasks = true;
   }
 
-  async onOpenSubtask(subtask: string) {
+  async onOpenSubtask(subtask: any) {
 
     // Start the loading spinner
     this.isLoading$.next(true);
@@ -644,6 +650,25 @@ export class GroupCreatePostDialogComponent implements OnInit {
         this.parentTaskAssigneeProfilePicUrl = environment.UTILITIES_USERS_UPLOADS + '/' + user['profile_pic'];
       });
     }
+
+    await this.initPostData();
+  }
+
+  async openParentTask(taskId: string) {
+
+    // Start the loading spinner
+    this.isLoading$.next(true);
+
+    await this.publicFunctions.getPost(taskId).then(post => {
+      this.postData = post;
+    });
+
+    this.showSubtasks = false;
+
+    this.customFields = [];
+    this.selectedCFValues = [];
+
+    this.comments = [];
 
     await this.initPostData();
   }

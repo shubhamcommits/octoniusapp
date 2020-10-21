@@ -101,18 +101,19 @@
     <!-- Top Right Section starts -->
     <div class="post-properties">
         <!-- Parent Task starts -->
-        <div class="content-box" *ngIf="postData?.task?._parent_task && postData.type === 'task'">
+        <div *ngIf="postData?.task?._parent_task && postData.type === 'task'" class="content-box">
           <p class="box-title">Parent task</p>
 
-          <div style="display: flex; flex-direction: row; justify-content: space-between;">
-            <div style="padding-top: 20px;">
-              {{ postData?.task?._parent_task.title }}
+          <div class="parent-task">
+            <div style="display: flex; flex-direction: row; justify-content: space-between; width: 100%;" (click)="openParentTask(postData?.task?._parent_task._id)">
+              <div style="padding-top: 20px;">
+                {{ postData?.task?._parent_task.title | truncatetext:40 }}
+              </div>
+
+              <img src="{{ parentTaskAssigneeProfilePicUrl }}"
+                onerror="this.src='assets/images/user.png'" class="feed-avatar">
             </div>
-
-            <img src="{{ parentTaskAssigneeProfilePicUrl }}"
-              onerror="this.src='assets/images/user.png'" class="feed-avatar">
           </div>
-
         </div>
         <!-- Parent Task ends -->
 
