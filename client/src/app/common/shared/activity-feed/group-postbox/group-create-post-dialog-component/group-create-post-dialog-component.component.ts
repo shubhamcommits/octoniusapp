@@ -21,9 +21,6 @@ export class GroupCreatePostDialogComponent implements OnInit {
   @Output() closeEvent = new EventEmitter();
   @Output() deleteEvent = new EventEmitter();
 
-  // BASE URL OF THE APPLICATION
-  baseUrl = environment.UTILITIES_BASE_URL;
-
   postData: any;
   userData: any;
   groupId: string;
@@ -92,6 +89,11 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
   eventAssignedToCount;
 
+  showSubtasks = false;
+  subtasks: any =  [];
+  percentageSubtasksCompleted = 0;
+  parentTaskAssigneeProfilePicUrl = ''
+
   constructor(
     private postService: PostService,
     private groupService: GroupService,
@@ -107,14 +109,22 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.userData = this.data.userData;
     this.groupId = this.data.groupId;
     this.columns = this.data.columns;
+
+    this.groupData = await this.publicFunctions.getGroupDetails(this.groupId);
+
+    await this.initPostData();
+  }
+
+  async initPostData() {
     // Set the title of the post
     this.title = this.postData.title;
-    if(this.postData.bars !== undefined){
+    if(this.postData.bars !== undefined) {
       this.barTags = this.postData.bars.map( bar => bar.bar_tag);
     }
-    this.groupData = await this.publicFunctions.getGroupDetails(this.groupId);
+
     // Set the due date to be undefined
     this.dueDate = undefined;
+    this.tags = [];
     if (this.postData.type === 'task') {
       // If Post is not unassigned
       if (!this.postData.task.unassigned) {
@@ -141,6 +151,9 @@ export class GroupCreatePostDialogComponent implements OnInit {
         this.endDate = new Date(this.postData.task.end_date);
       }
 
+
+      this.customFields = [];
+      this.selectedCFValues = [];
       this.groupService.getGroupCustomFields(this.groupId).then((res) => {
         if (res['group']['custom_fields']) {
           res['group']['custom_fields'].forEach(field => {
@@ -157,6 +170,14 @@ export class GroupCreatePostDialogComponent implements OnInit {
               this.selectedCFValues[field.name] = this.postData.task.custom_fields[field.name];
             }
           });
+        }
+      });
+
+      await this.postService.getSubTasks(this.postData._id).then((res) => {
+        this.subtasks = res['subtasks'];
+
+        if (this.subtasks.length > 0) {
+          this.showSubtasks = true;
         }
       });
     }
@@ -586,5 +607,31 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.postData.task.northStar = newNorthStar;
 
     this.updateDetails();
+  }
+
+  prepareToAddSubtasks() {
+    this.showSubtasks = true;
+  }
+
+  async onOpenSubtask(subtask: string) {
+
+    this.postData = subtask;
+    this.showSubtasks = false;
+
+    this.customFields = [];
+    this.selectedCFValues = [];
+
+    this.comments = [];
+
+    if (!this.postData.task._parent_task.task._assigned_to) {
+      this.parentTaskAssigneeProfilePicUrl = 'assets/images/user.png';
+    } else {
+      await this.publicFunctions.getOtherUser(this.postData.task._parent_task.task._assigned_to).then(user => {
+        this.postData.task._parent_task.task._assigned_to = user;
+        this.parentTaskAssigneeProfilePicUrl = environment.UTILITIES_USERS_UPLOADS + '/' + user['profile_pic'];
+      });
+    }
+
+    this.initPostData();
   }
 }

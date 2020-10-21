@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input, forwardRef } from '@angular/core';
+import { Component, OnChanges, Output, EventEmitter, Input, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR} from '@angular/forms';
 import { MAT_DATE_FORMATS, DateAdapter, MAT_DATE_LOCALE } from '@angular/material';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
@@ -40,7 +40,7 @@ export const MY_FORMATS = {
   ],
   styleUrls: ['./date-picker.component.scss']
 })
-export class DatePickerComponent implements OnInit {
+export class DatePickerComponent implements OnChanges {
 
   constructor() { }
 
@@ -54,7 +54,7 @@ export class DatePickerComponent implements OnInit {
 
   public onChange: any = Function.prototype; // Trascend the onChange event
 
-  ngOnInit() {
+  ngOnChanges() {
     this._value = this.dueDate;
   }
 

@@ -79,6 +79,10 @@ import { PeopleDirectoryCardComponent } from './dashboard/people-directory-card/
 import { OrganizationalStructureCardComponent } from './dashboard/organizational-structure-card/organizational-structure-card.component';
 import { EngagementCardComponent } from './dashboard/engagement-card/engagement-card.component';
 import { GlobalPerformanceCardComponent } from './dashboard/global-performance-card/global-performance-card.component';
+import { NewTaskComponent } from './posts/new-task/new-task.component';
+import { SubtasksComponent } from './activity-feed/group-postbox/group-create-post-dialog-component/subtasks/subtasks.component';
+
+
 
 @NgModule({
   declarations: [
@@ -169,7 +173,11 @@ import { GlobalPerformanceCardComponent } from './dashboard/global-performance-c
     PeopleDirectoryCardComponent,
     OrganizationalStructureCardComponent,
     EngagementCardComponent,
-    GlobalPerformanceCardComponent
+    GlobalPerformanceCardComponent,
+
+    NewTaskComponent,
+
+    SubtasksComponent
   ],
   imports: [
     CommonModule,
@@ -278,7 +286,11 @@ import { GlobalPerformanceCardComponent } from './dashboard/global-performance-c
     PeopleDirectoryCardComponent,
     OrganizationalStructureCardComponent,
     EngagementCardComponent,
-    GlobalPerformanceCardComponent
+    GlobalPerformanceCardComponent,
+
+    NewTaskComponent,
+
+    SubtasksComponent
   ],
   providers: [
     { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },

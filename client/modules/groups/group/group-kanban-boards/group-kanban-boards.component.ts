@@ -379,6 +379,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
     const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
       this.updateTask(data);
     });
+
     dialogRef.afterClosed().subscribe(result => {
       closeEventSubs.unsubscribe();
       deleteEventSubs.unsubscribe();

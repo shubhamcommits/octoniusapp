@@ -4,7 +4,7 @@ import { Component,
   ViewChild,
   Renderer,
   forwardRef,
-  OnInit,
+  OnChanges,
   EventEmitter,
   Output} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
@@ -52,7 +52,7 @@ export const MY_FORMATS = {
   ],
   styleUrls: ['./inline-input.component.scss']
 })
-export class InlineInputComponent implements ControlValueAccessor, OnInit {
+export class InlineInputComponent implements ControlValueAccessor, OnChanges {
 
   @ViewChild('inlineEditControl', {static: true}) inlineEditControl: ElementRef; // input DOM element
   @Input() label = '';  // Label value for input element
@@ -107,7 +107,7 @@ export class InlineInputComponent implements ControlValueAccessor, OnInit {
     ) {
   }
 
-  ngOnInit() {
+  ngOnChanges() {
     if (this.domainObject.task._assigned_to) {
       this.profilePicUrl = environment.UTILITIES_USERS_UPLOADS + '/' + this.domainObject.task._assigned_to.profile_pic;
     } else {

@@ -1,0 +1,23 @@
+<div *ngIf="!subtask">
+  <button class="btn btn-block task muted" (click)="column.addTask = true" *ngIf="!column.addTask">
+    <i class="material-icons-outlined">add</i> New Task
+  </button>
+  <div class="add-task" *ngIf="column.addTask">
+      <input class="form-control" type="text" placeholder="Enter task title"
+        [(ngModel)]="postTitle"
+        (keyup.enter)="newTask()"
+        (keyup.esc)="column.addTask = false">
+  </div>
+</div>
+
+<div *ngIf="subtask">
+  <button class="btn btn-block task muted" (click)="addSubTask = true" *ngIf="subtask && !addSubTask">
+    <i class="material-icons-outlined">add</i> New Task
+  </button>
+  <div class="add-task" *ngIf="subtask && addSubTask">
+      <input class="form-control" type="text" placeholder="Enter task title"
+        [(ngModel)]="postTitle"
+        (keyup.enter)="newTask()"
+        (keyup.esc)="column.addTask = false">
+  </div>
+</div>

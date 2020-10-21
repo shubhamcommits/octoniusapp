@@ -334,4 +334,16 @@ export class PostService {
       date_field: date_field
     }).toPromise();
   }
+
+  /**
+   * This function is used to obtain the subtasks of a task
+   * @param postId
+   */
+  getSubTasks(taskId: string) {
+    return this._http.get(this.baseURL + `/post/subtasks`, {
+      params: {
+        parentId: taskId.toString().trim()
+      }
+    }).toPromise();
+  }
 }

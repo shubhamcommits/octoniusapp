@@ -166,6 +166,11 @@ const PostSchema = new Schema({
         end_date: {
             type: Date,
             default: null
+        },
+
+        _parent_task: {
+            type: Schema.Types.ObjectId,
+            ref: 'Post'
         }
     },
 

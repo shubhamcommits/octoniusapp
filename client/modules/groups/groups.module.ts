@@ -43,7 +43,6 @@ import { DeleteGroupComponent } from './group/group-admin/delete-group/delete-gr
 import { GroupKanbanBoardsComponent } from './group/group-kanban-boards/group-kanban-boards.component';
 import { CreateColumnComponent } from './group/group-kanban-boards/create-column/create-column.component';
 import { BoardBarComponent } from './group/group-kanban-boards/board-bar/board-bar.component';
-import { NewTaskComponent } from './group/group-kanban-boards/new-task/new-task.component';
 import { EditColumnComponent } from './group/group-kanban-boards/edit-column/edit-column.component';
 import { GroupPostComponent } from './group/group-post/group-post.component';
 import { InviteUserComponent } from './group/group-admin/invite-user/invite-user.component';
@@ -154,8 +153,6 @@ import { GroupDashboardComponent } from './group/group-dashboard/group-dashboard
     CreateSectionComponent,
 
     BoardBarComponent,
-
-    NewTaskComponent,
 
     EditColumnComponent,
 

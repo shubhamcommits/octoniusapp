@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnChanges, Input, EventEmitter, Output } from '@angular/core';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 
@@ -7,7 +7,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
   templateUrl: './post-tags.component.html',
   styleUrls: ['./post-tags.component.scss']
 })
-export class PostTagsComponent implements OnInit {
+export class PostTagsComponent implements OnChanges {
 
   constructor(public utilityService: UtilityService) { }
 
@@ -26,7 +26,7 @@ export class PostTagsComponent implements OnInit {
   // Tags array
   tags: any = []
 
-  ngOnInit() {
+  ngOnChanges() {
 
     // If post variable exist then add it to existing tags array
     if(this.post){
@@ -41,7 +41,7 @@ export class PostTagsComponent implements OnInit {
 
   /**
    * This function adds the new tag into tags array
-   * @param tag 
+   * @param tag
    */
   addNewTag(tag: any) {
 
@@ -54,7 +54,7 @@ export class PostTagsComponent implements OnInit {
 
   /**
    * This function removes the tag from the tags list
-   * @param index 
+   * @param index
    */
   removeTag(index: any) {
 
