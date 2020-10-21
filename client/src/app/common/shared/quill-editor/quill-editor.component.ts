@@ -38,7 +38,7 @@ import { PublicFunctions } from 'modules/public.functions';
 // Import Links
 var Link = Quill.import('formats/link');
 
-import QuillClipboard from '../quill-modules/quill-clipboard.js';
+import QuillClipboard from '../quill-modules/quill-clipboard';
 
 QuillClipboard
 
