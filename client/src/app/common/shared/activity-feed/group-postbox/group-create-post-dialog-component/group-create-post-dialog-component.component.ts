@@ -9,6 +9,7 @@ import { CommentService } from 'src/shared/services/comment-service/comment.serv
 import moment from 'moment';
 // ShareDB Client
 import * as ShareDB from 'sharedb/lib/client';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-group-create-post-dialog-component',
@@ -45,6 +46,9 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
   // Public Functions class object
   publicFunctions = new PublicFunctions(this.injector);
+
+  // IsLoading behaviou subject maintains the state for loading spinner
+  public isLoading$ = new BehaviorSubject(false);
 
   // Variable to enable or disable save button
   contentChanged = false;
@@ -105,6 +109,9 @@ export class GroupCreatePostDialogComponent implements OnInit {
     ) {}
 
   async ngOnInit() {
+    // Start the loading spinner
+    this.isLoading$.next(true);
+
     this.postData = this.data.postData;
     this.userData = this.data.userData;
     this.groupId = this.data.groupId;
@@ -203,6 +210,9 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.tags = this.postData.tags;
 
     this.fetchComments();
+
+    // Return the function via stopping the loader
+    return this.isLoading$.next(false);
   }
 
   getMemberDetails(memberMap: any) {
@@ -615,6 +625,9 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
   async onOpenSubtask(subtask: string) {
 
+    // Start the loading spinner
+    this.isLoading$.next(true);
+
     this.postData = subtask;
     this.showSubtasks = false;
 
@@ -632,6 +645,6 @@ export class GroupCreatePostDialogComponent implements OnInit {
       });
     }
 
-    this.initPostData();
+    await this.initPostData();
   }
 }

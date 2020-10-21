@@ -32,10 +32,7 @@ export class SubtasksComponent implements OnInit {
 
     const percentageDone = ((doneTasksCount)*100)/(this.subtasks.length);
     this.percentageSubtasksCompleted = Math.round(percentageDone);
-console.log(this.subtasks.length);
-console.log(doneTasksCount);
-console.log(percentageDone);
-console.log(this.percentageSubtasksCompleted);
+
     if (this.percentageSubtasksCompleted === 0) {this.completitionPercentageClass += " badge_to_do"}
     else if (this.percentageSubtasksCompleted === 100) {this.completitionPercentageClass += " badge_done"}
     else {this.completitionPercentageClass += " badge_in_progress"}
