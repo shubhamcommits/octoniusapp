@@ -903,14 +903,19 @@ export class PublicFunctions {
         if (!googleSignInResult) {
 
             // Fetch the refresh token
-            let refresh_token: any = storageService.getLocalData('googleUser')['refreshToken'] || await this.getRefreshTokenFromUser()
+            let refresh_token: any = (storageService.existData('googleUser')) ? storageService.getLocalData('googleUser')['refreshToken'] : await this.getRefreshTokenFromUser()
+
+            // Token Results
+            let tokenResults: any = {
+                access_token: ''
+            }
 
             // Assign the access_token from the refresh token
             if (refresh_token != null && refresh_token != undefined)
-                this.getGoogleDriveFromUser(refresh_token)
-                    .then((res) => {
-                        access_token = res['access_token']
-                    })
+                tokenResults = await this.getGoogleDriveFromUser(refresh_token)
+
+            // Set the access_token
+            access_token = tokenResults.access_token
 
         }
 
@@ -924,13 +929,15 @@ export class PublicFunctions {
             access_token = tokenResults.access_token
         }
 
-        if (access_token != null && access_token != undefined) {
+        if (access_token) {
 
             // Retrive the access_token and save it to our server
             let userDetails: any = await this.saveAccessTokenToUser(access_token)
 
             // Update the user details with updated token
             await this.sendUpdatesToUserData(userDetails.user)
+
+            console.log("check")
 
             // Fetch the google user details
             let googleUserDetails = await this.getGoogleUserDetails(access_token)
