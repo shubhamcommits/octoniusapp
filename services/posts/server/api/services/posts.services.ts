@@ -375,7 +375,6 @@ export class PostService {
    */
   async addPost(postData: any) {
     try {
-
       // Parse the String to JSON Object
       postData = JSON.parse(postData);
 
@@ -1559,7 +1558,7 @@ export class PostService {
         { 'task._parent_task': parentId }
       ]
     })
-    .sort('-task.due_to')
+    .sort('created_date')
     .populate({ path: '_group', select: this.groupFields })
     .populate({ path: '_posted_by', select: this.userFields })
     .populate({ path: 'task._assigned_to', select: this.userFields })

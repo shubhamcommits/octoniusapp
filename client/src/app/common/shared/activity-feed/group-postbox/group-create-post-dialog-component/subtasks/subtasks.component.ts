@@ -46,7 +46,7 @@ export class SubtasksComponent implements OnInit {
   newSubtaskEvent(post: any) {
 
     // Adding the post to column
-    this.subtasks.unshift(post)
+    this.subtasks.push(post);
   }
 
   openSubtask(task: any) {

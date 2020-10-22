@@ -35,7 +35,6 @@ export class PostController {
         const { post } = req.body;
 
         try {
-
             // Call servide function for adding the post
             const postData = await postService.addPost(post)
                 .catch((err) => {
