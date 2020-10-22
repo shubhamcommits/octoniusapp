@@ -221,9 +221,14 @@ export class GroupCalendarComponent implements OnInit {
     // Set the Value of post to the event post propery
     this.post = event.post
     let dialogRef;
-    if (this.post.type === 'task') {
+    if (this.post.type === 'task' && !this.post.task._parent_task) {
       dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.groupId, this.columns);
     } else {
+      if (this.post.task._parent_task && !this.post.task._parent_task._id) {
+        this.publicFunctions.getPost(this.post.task._parent_task).then(post => {
+          this.post.task._parent_task = post;
+        });
+      }
       dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.groupId);
     }
 

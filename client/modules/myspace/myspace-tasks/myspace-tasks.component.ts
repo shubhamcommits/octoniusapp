@@ -3,6 +3,7 @@ import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { PostService } from 'src/shared/services/post-service/post.service';
 
 @Component({
   selector: 'app-myspace-tasks',
@@ -108,10 +109,16 @@ export class MyspaceTasksComponent implements OnInit {
 
     // Open the Modal
     let dialogRef;
-    if (this.post.type === 'task') {
+    if (this.post.type === 'task' && !this.post.task._parent_task) {
       await this.publicFunctions.getAllColumns(this.post._group._id).then(data => this.columns = data);
       dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.post._group._id, this.columns);
     } else {
+      // for subtasks it is not returning the parent information, so need to make a workaround
+      if (this.post.task._parent_task && !this.post.task._parent_task._id) {
+          await this.publicFunctions.getPost(this.post.task._parent_task).then(post => {
+            this.post.task._parent_task = post;
+          });
+      }
       dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.post._group._id);
     }
 
