@@ -541,10 +541,12 @@ export class GroupCreatePostDialogComponent implements OnInit {
         post.assigned_to = this.postData.task._assigned_to._id;
       }
 
-      // Task column
-      post._column = {
-        title: this.postData.task._column.title
-      };
+      if (!this.postData.task._parent_task) {
+        // Task column
+        post._column = {
+          title: this.postData.task._column.title
+        };
+      }
 
       // Task status
       post.status = this.postData.task.status;
