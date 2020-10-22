@@ -899,11 +899,14 @@ export class PublicFunctions {
         // Access token variable
         let access_token: any = null
 
+        // Refresh token variable
+        let refresh_token: any = null
+
         // If its a default refresh in the background
         if (!googleSignInResult) {
 
             // Fetch the refresh token
-            let refresh_token: any = (storageService.existData('googleUser')) ? storageService.getLocalData('googleUser')['refreshToken'] : await this.getRefreshTokenFromUser()
+            refresh_token = (storageService.existData('googleUser')) ? storageService.getLocalData('googleUser')['refreshToken'] : await this.getRefreshTokenFromUser()
 
             // Token Results
             let tokenResults: any = {
@@ -912,7 +915,7 @@ export class PublicFunctions {
 
             // Assign the access_token from the refresh token
             if (refresh_token != null && refresh_token != undefined)
-                tokenResults = await this.getGoogleDriveFromUser(refresh_token)
+                tokenResults = await this.getAccessToken(refresh_token)
 
             // Set the access_token
             access_token = tokenResults.access_token
@@ -927,17 +930,18 @@ export class PublicFunctions {
 
             // Set the access_token
             access_token = tokenResults.access_token
+
+            // Set the refresh token
+            refresh_token = tokenResults.refresh_token
         }
 
-        if (access_token) {
+        if (access_token != null && refresh_token != null) {
 
-            // Retrive the access_token and save it to our server
-            let userDetails: any = await this.saveAccessTokenToUser(access_token)
+            // Retrieve the refresh_token and save it to our server
+            let userDetails: any = await this.saveRefreshTokenToUser(refresh_token)
 
             // Update the user details with updated token
             await this.sendUpdatesToUserData(userDetails.user)
-
-            console.log("check")
 
             // Fetch the google user details
             let googleUserDetails = await this.getGoogleUserDetails(access_token)
@@ -945,7 +949,8 @@ export class PublicFunctions {
             // Store the google user locally and serialise object in order to store google data locally
             storageService.setLocalData('googleUser', JSON.stringify({
                 'userData': googleUserDetails,
-                'refreshToken': access_token
+                'refreshToken': refresh_token,
+                'accessToken': access_token
             }))
 
             // Change the observable state
@@ -965,19 +970,19 @@ export class PublicFunctions {
     async getRefreshTokenFromUser() {
         let googleService = this.injector.get(GoogleCloudService)
         return new Promise(async (resolve) => {
-            await googleService.getAccessTokenFromUserData()
+            await googleService.getRefreshTokenFromUserData()
                 .then((res) => resolve(res['gDriveToken']))
         })
     }
 
     /**
-     * This function saves the access token to user's profile
+     * This function saves the refresh token to user's profile
      * @param token 
      */
-    async saveAccessTokenToUser(token: string) {
+    async saveRefreshTokenToUser(token: string) {
         let googleService = this.injector.get(GoogleCloudService)
         return new Promise(async (resolve) => {
-            await googleService.saveAccessTokenToUser(token)
+            await googleService.saveRefreshTokenToUser(token)
                 .then((res) => resolve(res))
         })
     }
@@ -986,10 +991,10 @@ export class PublicFunctions {
      * This function fetches the access token stored in the user's profile
      * @param refreshToken 
      */
-    async getGoogleDriveFromUser(refreshToken: string) {
+    async getAccessToken(refreshToken: string) {
         let googleService = this.injector.get(GoogleCloudService)
         return new Promise(async (resolve) => {
-            await googleService.getGoogleDriveTokenFromUser(refreshToken)
+            await googleService.getAccessToken(refreshToken)
                 .then((res) => resolve(res))
         })
     }
