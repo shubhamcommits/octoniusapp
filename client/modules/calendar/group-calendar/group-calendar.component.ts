@@ -215,7 +215,7 @@ export class GroupCalendarComponent implements OnInit {
     this.handleEvent('Dropped or resized', event);
   }
 
-  async handleEvent(action: string, event: any): Promise<void> {
+  handleEvent(action: string, event: any): void {
     this.modalData = { event, action };
 
     // Set the Value of post to the event post propery
@@ -225,7 +225,7 @@ export class GroupCalendarComponent implements OnInit {
       dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.groupId, this.columns);
     } else {
       if (this.post.task._parent_task && !this.post.task._parent_task._id) {
-        await this.publicFunctions.getPost(this.post.task._parent_task).then(post => {
+        this.publicFunctions.getPost(this.post.task._parent_task).then(post => {
           this.post.task._parent_task = post;
         });
       }
