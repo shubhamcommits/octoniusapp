@@ -17,9 +17,12 @@ export class GroupService {
    * @param groupId
    */
   getGroup(groupId: string) {
-    return this._http.get(this.baseURL + `/${groupId}`).toPromise()
+    return this.getGroupObservale(groupId).toPromise();
   }
 
+  getGroupObservale(groupId: string) {
+    return this._http.get(this.baseURL + `/${groupId}`);
+  }
   /**
    * This function is responsible for deleting the group
    * @param groupId
