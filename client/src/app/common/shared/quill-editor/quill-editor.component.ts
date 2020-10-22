@@ -111,6 +111,19 @@ export class QuillEditorComponent implements OnInit, OnChanges {
   // Public Functions class
   public publicFunctions = new PublicFunctions(this.Injector);
 
+  ngOnChanges() {
+
+    if (this.quill) {
+      // Fetch the delta ops from the JSON string
+      let delta = (this.isJSON(this.contents))
+        ? JSON.parse(this.contents)['ops']
+        : this.quill.clipboard.convert(this.contents);
+
+      // Set the content inside quill container
+      this.setContents(this.quill, delta)
+    }
+  }
+
   ngOnInit() {
 
     // Set the Status of the toolbar
@@ -144,7 +157,6 @@ export class QuillEditorComponent implements OnInit, OnChanges {
 
     // Set contents to the quill
     if (this.contents) {
-
       // Fetch the delta ops from the JSON string
       let delta = (this.isJSON(this.contents))
         ? JSON.parse(this.contents)['ops']
@@ -158,19 +170,6 @@ export class QuillEditorComponent implements OnInit, OnChanges {
 
     // Turn on the quill text change event handler
     this.quillContentChanges(this.quill)
-  }
-
-  ngOnChanges() {
-    if (this.contents && this.quill) {
-
-      // Fetch the delta ops from the JSON string
-      let delta = (this.isJSON(this.contents))
-        ? JSON.parse(this.contents)['ops']
-        : this.quill.clipboard.convert(this.contents);
-
-      // Set the content inside quill container
-      this.setContents(this.quill, delta)
-    }
   }
 
   /**
