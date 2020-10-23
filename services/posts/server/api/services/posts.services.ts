@@ -555,7 +555,16 @@ export class PostService {
         // return sendErr(res, null, 'User not allowed to remove this post!', 403);
       }
 
-      if(post.comments.length > 0){
+      // remove subtasks
+      await Post.deleteMany({
+        $and: [
+          { type: 'task' },
+          { 'task._parent_task': postId }
+        ]
+      });
+
+      // remove comments
+      if(post.comments.length > 0) {
         await post.comments?.forEach(async (commentId) => {
           try {
             await Comment.findByIdAndRemove(commentId);

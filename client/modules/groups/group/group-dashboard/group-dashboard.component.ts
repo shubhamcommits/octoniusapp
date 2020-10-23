@@ -59,7 +59,7 @@ export class GroupDashboardComponent implements OnInit, OnDestroy {
     // Fetch current user details
     this.userData = await this.publicFunctions.getCurrentUser();
 
-    this.period = (this.userData.stats.dashboard_period) ? this.userData.stats.dashboard_period : 7;
+    this.period = (this.userData.stats.group_dashboard_period) ? this.userData.stats.group_dashboard_period : 7;
   }
 
   async periodSelected(event) {
