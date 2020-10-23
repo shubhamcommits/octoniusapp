@@ -132,15 +132,25 @@
             <p class="box-title">Status</p>
             <!-- Change task status starts -->
             <app-task-status
-                class="ml-3"
+                class="ml-1"
                 [post]="postData"
                 (status)="changeTaskStatus($event)">
             </app-task-status>
             <!-- Change task status ends -->
 
-            <br />
-            <p *ngIf="groupData && groupData.enabled_rights" class="box-title">BAR</p>
-            <div *ngIf="groupData && groupData.enabled_rights" class="ml-3">
+            <p class="box-title" *ngIf="columns" style="margin-top: 18px;">Section</p>
+            <!-- Change task column starts -->
+            <app-change-column
+                class="ml-1"
+                *ngIf="columns"
+                [post]="postData"
+                [columns]="columns"
+                (moveTask)="moveTaskToColumn($event)">
+            </app-change-column>
+            <!-- Change task column ends -->
+
+            <p *ngIf="groupData && groupData.enabled_rights" class="box-title" style="margin-top: 18px;">BAR</p>
+            <div *ngIf="groupData && groupData.enabled_rights" class="ml-1">
                 <div (click)="removeBarTag(i, barTag)" *ngFor="let barTag of barTags; let i = index">
                 <div><span class="tag"> {{ barTag }}</span> <i class="material-icons" style="color: red;">clear</i></div>
                 </div>
@@ -156,16 +166,7 @@
             </div>
             <br *ngIf="groupData && groupData.enabled_rights" />
 
-            <p class="box-title" *ngIf="columns">Section</p>
-            <!-- Change task column starts -->
-            <app-change-column
-                class="ml-3"
-                *ngIf="columns"
-                [post]="postData"
-                [columns]="columns"
-                (moveTask)="moveTaskToColumn($event)">
-            </app-change-column>
-            <!-- Change task column ends -->
+          
         </div>
         <!-- Status ends -->
 
@@ -173,25 +174,6 @@
         <div class="content-box" *ngIf="postData?.type === 'task' || postData.type === 'event'">
             <p class="box-title">Due date</p>
             <div *ngIf="postData?.type === 'task'">
-              <!-- Date Picker Start-Date starts -->
-              <!--
-              <app-date-picker *ngIf="groupData?.project_type"
-                (date)="getDate($event, 'start_date')"
-                [dueDate]="postData?.task.start_date"
-                [styleClass]="'btn-group input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')">
-              </app-date-picker>
-              -->
-              <!--Date Picker Start-Date ends -->
-
-              <!-- Date Picker End-Date starts -->
-              <!--
-              <app-date-picker *ngIf="groupData?.project_type"
-                (date)="getDate($event, 'end_date')"
-                [dueDate]="postData?.task.end_date"
-                [styleClass]="'btn-group input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')">
-              </app-date-picker>
-              -->
-              <!--Date Picker End-Date ends -->
 
 
               <!-- Date Picker starts -->
@@ -214,7 +196,7 @@
 
             <!-- Time Picker starts -->
             <app-time-picker
-                class="ml-3"
+                class="ml-1"
                 *ngIf="postData.type === 'event'"
                 [time]="this.dueTime"
                 (time)="getTime($event)">
@@ -265,12 +247,12 @@
         <div class="content-box" *ngIf="postData?.type === 'task'">
             <p class="box-title">Custom fields</p>
             <div *ngFor="let cf of customFields" class="d-flex custom-field justify-content-start mb-3 row">
-                <p class="ml-3 mt-2 mb-0">{{ cf.title }}</p>
+                <p class="col">{{ cf.title }}</p>
                 <mat-select ngDefaultControl
                     [(value)]="selectedCFValues[cf.name]"
                     (selectionChange)="onCustomFieldChange($event, cf.name)"
                     appearance="fill"
-                    class="ml-2 col-4"
+                    class="col mr-5"
                     >
                     <mat-select-trigger>{{ selectedCFValues[cf.name] }}</mat-select-trigger>
                     <mat-option *ngFor="let val of cf.values" [value]="val">{{ val }}</mat-option>

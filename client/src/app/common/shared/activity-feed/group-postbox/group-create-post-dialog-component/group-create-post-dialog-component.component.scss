@@ -22,7 +22,7 @@
         border: 1px solid #E4EDF8;
         border-radius: 10px;
         margin-bottom: 10px;
-        padding: 15px;
+        padding: 12px;
 
         .modal-title {
             width: 100%;
@@ -31,25 +31,24 @@
                 width: 95% !important;
                 box-shadow: none;
                 border:none;
-
                 font-family: Nunito;
                 font-style: normal;
                 font-weight: bold;
                 font-size: 16px;
                 line-height: 22px;
-                color: #000000;
             }
         }
 
         p.box-title {
             font-family: Nunito;
             font-style: normal;
-            font-weight: bold;
+            font-weight: 700;
             font-size: 16px;
             line-height: 22px;
-            color: #000000;
-            padding-bottom: 10px;
-            padding-top: 10px;
+            color: #242d3a;
+            // padding-bottom: 10px;
+            // padding-top: 10px;
+            margin-bottom: 12px !important;
         }
 
         input.input-date {
