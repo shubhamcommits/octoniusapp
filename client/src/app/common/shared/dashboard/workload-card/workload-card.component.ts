@@ -1,5 +1,6 @@
 import { Component, Injector, Input, OnChanges, OnInit } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
+import moment from 'moment';
 import { PostService } from 'src/shared/services/post-service/post.service';
 
 @Component({
@@ -18,12 +19,6 @@ export class WorkloadCardComponent implements OnChanges {
   chartReady = false;
 
   task_count = 0;
-  to_do_task_count = 0;
-  in_progress_task_count = 0;
-  done_task_count = 0
-
-  tasks: any = [];
-  overdueTasks: any = [];
 
   doughnutChartLabels;
   doughnutChartData;
@@ -46,28 +41,14 @@ export class WorkloadCardComponent implements OnChanges {
 
   async initView() {
 
-    this.task_count = 0;
-    this.to_do_task_count = 0;
-    this.in_progress_task_count = 0;
-    this.done_task_count = 0
-
     // Call the HTTP API to fetch the current workspace details
     this.workspaceData = await this.publicFunctions.getWorkspaceDetailsFromHTTP();
 
-    this.tasks = await this.getTasks();
-    this.overdueTasks = await this.getOverdueTasks();
-    this.markOverdueTasks();
-    for (let task of this.tasks){
-      if (task.task.status=='to do') this.to_do_task_count++;
-      else if (task.task.status=='in progress') this.in_progress_task_count++;
-      else if (task.task.status=='done') this.done_task_count++;
-    }
-    this.task_count = this.tasks.length;
-
     /* Chart Setup */
-    const percentageDone = (this.tasks.length + this.overdueTasks.length > 0) ? (((this.done_task_count)*100)/(this.tasks.length + this.overdueTasks.length)) : 0;
+    const tasksData = await this.getTasksData();
+    const percentageDone = await this.getPercentageDone(tasksData[2]);
     this.doughnutChartLabels = ['To Do', 'In Progress', 'Done', 'Overdue'];
-    this.doughnutChartData = [this.to_do_task_count, this.in_progress_task_count, this.done_task_count, this.overdueTasks.length];
+    this.doughnutChartData = tasksData;
     this.doughnutChartType = 'doughnut';
     this.doughnutChartOptions = {
       cutoutPercentage: 75,
@@ -103,15 +84,38 @@ export class WorkloadCardComponent implements OnChanges {
     this.chartReady = true;
   }
 
-  async getTasks() {
+  private async getTasksData() {
+
+    let to_do_task_count = 0;
+    let in_progress_task_count = 0;
+    let done_task_count = 0;
+    let overdue_task_count = 0;
+
+    const tasks = await this.getTasks(false);
+    let overdueTasks = await this.getTasks(true);
+    overdueTasks = this.markOverdueTasks(overdueTasks);
+
+    for (let task of tasks) {
+      if (task.task.status=='to do') to_do_task_count++;
+      else if (task.task.status=='in progress') in_progress_task_count++;
+      else if (task.task.status=='done') done_task_count++;
+    }
+
+    overdue_task_count = overdueTasks.length;
+    this.task_count = to_do_task_count + in_progress_task_count + done_task_count + overdue_task_count;
+
+    return [to_do_task_count, in_progress_task_count, done_task_count, overdue_task_count];
+  }
+
+  async getTasks(overdue: boolean) {
     let tasks = [];
     if (this.group) {
-      await this.postService.getGroupPosts(this.group, 'task', this.period, false)
+      await this.postService.getGroupPosts(this.group, 'task', this.period, overdue)
       .then((res) => {
         tasks = res['posts'];
       });
     } else {
-      await this.postService.getWorkspacePosts(this.workspaceData._id, 'task', this.period, false, false)
+      await this.postService.getWorkspacePosts(this.workspaceData._id, 'task', this.period, overdue, false)
         .then((res) => {
           tasks = res['posts'];
         });
@@ -119,28 +123,14 @@ export class WorkloadCardComponent implements OnChanges {
     return tasks;
   }
 
-  async getOverdueTasks() {
-    let overdueTasks = [];
-
-    if (this.group) {
-      await this.postService.getGroupPosts(this.group, 'task', this.period, true)
-      .then((res) => {
-        overdueTasks = res['posts'];
-      });
-    } else {
-      await this.postService.getWorkspacePosts(this.workspaceData._id, 'task', this.period, true, false)
-      .then((res) => {
-        overdueTasks = res['posts'];
-      });
-    }
-
-    return overdueTasks;
-  }
-
-  private markOverdueTasks() {
-    this.overdueTasks = this.overdueTasks.map(task => {
+  private markOverdueTasks(overdueTasks) {
+    return  overdueTasks.map(task => {
       task.overdue = true;
       return task;
     });
+  }
+
+  private getPercentageDone(doneTasksCount) {
+   return  (this.task_count > 0) ? (((doneTasksCount)*100)/(this.task_count)) : 0
   }
 }
