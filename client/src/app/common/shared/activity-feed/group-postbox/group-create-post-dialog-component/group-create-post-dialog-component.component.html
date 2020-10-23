@@ -102,11 +102,11 @@
     <div class="post-properties">
         <!-- Parent Task starts -->
         <div *ngIf="postData?.task?._parent_task && postData?.type === 'task'" class="content-box">
-          <p class="box-title">Parent task</p>
+          <p class="box-title"> Parent task</p>
 
           <div class="parent-task">
             <div style="display: flex; flex-direction: row; justify-content: space-between; width: 100%;" (click)="openParentTask(postData?.task?._parent_task._id)">
-              <div style="padding-top: 20px;">
+              <div class="parent-title">
                 {{ postData?.task?._parent_task.title | truncatetext:40 }}
               </div>
 
