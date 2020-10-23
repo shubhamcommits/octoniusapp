@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ChangeDetectionStrategy, Injector } from '@angular/core';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment/moment';
 
 @Component({

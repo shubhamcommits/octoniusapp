@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Injector } from '@angular/core';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
-import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { PublicFunctions } from 'modules/public.functions';
 import { SubSink } from 'subsink';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { retry } from 'rxjs/internal/operators/retry';

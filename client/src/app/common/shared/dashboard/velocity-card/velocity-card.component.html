@@ -1,0 +1,22 @@
+<div class="smart-card" style="padding: 10px;">
+    <div class="row" style="margin: 0 0 20px; justify-content: space-between;">
+      <div class="card-title mt-1">
+        Velocity over time
+      </div>
+      <div class="card-icon">
+        <span class="badge"></span>
+      </div>
+    </div>
+
+    <div class="row mt-12 d-none d-sm-block" *ngIf="chartReady">
+      <canvas baseChart width="400" height="400"
+        [data]="lineChartData"
+        [labels]="lineChartLabels"
+        [options]="lineChartOptions"
+        [colors]="lineChartColors"
+        [legend]="lineChartLegend"
+        [chartType]="lineChartType"
+        [plugins]="lineChartPlugins">
+      </canvas>
+    </div>
+</div>

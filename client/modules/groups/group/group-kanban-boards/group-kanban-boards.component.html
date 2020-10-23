@@ -47,7 +47,7 @@
                     <!-- TASK DETAILS STARTS -->
                     <!-- add class="status-todo" or status-inprogress or status-done for each status accordingly -->
                     <div class="task"
-                        [ngClass]="{'status-todo': task?.task?.status === 'to do', 'status-inprogress': task?.task?.status === 'in progress', 'status-done': task?.task?.status === 'done'}"
+                        [ngClass]="getTaskClass(task?.task?.status, task?.task?.isNorthStar)"
                         *ngFor="let task of column.tasks; let j = index;" cdkDrag>
 
                         <div class="media" (click)="openFullscreenModal(task)">
@@ -73,7 +73,8 @@
                       [columns]="columns"
                       [groupData]="groupData"
                       [userData]="userData"
-                      (closeModalEvent)="onModalCloseEvent($event)">
+                      (closeModalEvent)="onModalCloseEvent($event)"
+                      (deleteEvent)="onDeleteDoneEvent($event)">
                     </app-done-tasks-kanban-view>
 
 

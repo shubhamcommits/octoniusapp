@@ -4,8 +4,10 @@ $turquoise: #0bc6a0;
 $dark-sky-blue: #4a90e2;
 
 .done-title {
-  text-decoration-line: line-through;
+//   text-decoration-line: line-through;
   color: #4A90E2;
+    cursor: pointer;
+    border-bottom: 1px solid $border-color;
 }
 
 .task {
@@ -14,7 +16,7 @@ $dark-sky-blue: #4a90e2;
   background: white;
   border: 1px solid $border-color;
   border-radius: 4px;
-  margin-bottom: 15px;
+  margin-bottom: 8px;
   // width: 320px;
   transition: box-shadow 0.3s ease-in-out;
 }
@@ -43,4 +45,10 @@ $dark-sky-blue: #4a90e2;
 }
 .status-done {
     border-left: 3px solid $dark-sky-blue;
+}
+
+.feed-avatar {
+    width: 30px !important;
+    height: 30px !important;
+    margin: 0;
 }

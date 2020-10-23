@@ -91,22 +91,42 @@
   <!-- Top Right Section starts -->
   <div class="w400 float-right">
 
+          <!-- Date Picker Start-Date starts -->
+          <!--
+          <app-date-picker *ngIf="type === 'task' && groupData?.project_type"
+            (date)="getDate($event, 'start_date')"
+            [dueDate]="postData?.task.start_date"
+            [styleClass]="'btn-group input-date due'">
+          </app-date-picker>
+          -->
+          <!--Date Picker Start-Date ends -->
+
+          <!-- Date Picker End-Date starts -->
+          <!--
+          <app-date-picker *ngIf="type === 'task' && groupData?.project_type"
+            (date)="getDate($event, 'end_date')"
+            [dueDate]="postData?.task.end_date"
+            [styleClass]="'btn-group input-date due'">
+          </app-date-picker>
+          -->
+          <!--Date Picker End-Date ends -->
+
           <!-- Date Picker starts -->
           <app-date-picker *ngIf="type === 'task'" [styleClass]="'input-date due'"
-            (date)="getDate($event)" [dueDate]="postData?.task.due_to">
+            (date)="getDate($event, 'due_date')" [dueDate]="postData?.task.due_to">
           </app-date-picker>
 
           <app-date-picker *ngIf="type === 'event'" [styleClass]="'input-date due'"
-            (date)="getDate($event)" [dueDate]="postData?.event.due_to">
+            (date)="getDate($event, 'due_date')" [dueDate]="postData?.event.due_to">
           </app-date-picker>
           <!-- Date Picker ends -->
 
           <!-- Time Picker starts -->
           <app-time-picker
-          class="ml-3"
-          *ngIf="type === 'event'"
-          [time]="this.dueTime"
-          (time)="getTime($event)">
+            class="ml-3"
+            *ngIf="type === 'event'"
+            [time]="this.dueTime"
+            (time)="getTime($event)">
           </app-time-picker>
         <!-- Time Picker ends -->
 

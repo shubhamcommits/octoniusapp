@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, Injector } from '@angular/core';
 import { CommentService } from 'src/shared/services/comment-service/comment.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { PublicFunctions } from 'modules/public.functions';
 
 @Component({
   selector: 'app-post-actions',
@@ -61,6 +61,8 @@ export class PostActionsComponent implements OnInit {
     await this.post._followers.forEach(user => {
       this.followedByUsers.push(user['first_name'] + ' ' + user['last_name']);
     });
+    this.fetchComments();
+    this.showComments = false;
   }
 
   onPostLikedEmitter(userId) {
@@ -97,7 +99,7 @@ export class PostActionsComponent implements OnInit {
    * @param emiterState
    */
   showCommentEditor(emiterState: boolean) {
-    this.showCommentQuillEditor = !this.showCommentQuillEditor
+    this.showCommentQuillEditor = !this.showCommentQuillEditor;
   }
 
   /**
@@ -105,11 +107,10 @@ export class PostActionsComponent implements OnInit {
    */
   fetchComments() {
     if (this.showComments==false){
-      this.commentService.getComments(this.post._id).then((res)=>{
-        this.comments = res['comments'];
-      }).catch((err)=>{
-        console.log(err);
-      })
+      this.commentService.getComments(this.post._id).subscribe((res)=>{
+        this.comments = res.comments;
+        this.post.comments = res.comments;
+      });
     }
     if (this.post.comments.length > 0){
       this.showComments = !this.showComments
@@ -129,8 +130,8 @@ export class PostActionsComponent implements OnInit {
   }
 
   newComment(comment: any) {
-    this.comments.unshift(comment)
-    this.post.comments = this.comments
+    this.comments.unshift(comment);
+    this.post.comments = this.comments;
     this.newCommentEmitter.emit(comment);
   }
 

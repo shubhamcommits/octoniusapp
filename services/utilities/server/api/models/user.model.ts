@@ -50,7 +50,7 @@ const UserSchema = new Schema({
         type: String,
         required: true,
         default: 'member',
-        enum: ['owner', 'member', 'admin']
+        enum: ['owner', 'member', 'admin', 'manager']
     },
     phone_number: {
         type: String,
@@ -92,6 +92,30 @@ const UserSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Group'
     }],
+    stats: {
+        lastTaskView: {
+            type: String,
+            default: 'list'
+        },
+        groups: [{
+            _group: {
+                type: Schema.Types.ObjectId,
+                ref: 'Group'
+            },
+            count: {
+                type: Number,
+                default: 1
+            }
+        }],
+        dashboard_period: {
+            type: Number,
+            default: 7
+        },
+        group_dashboard_period: {
+            type: Number,
+            default: 7
+        }
+    },
     _private_group: {
         type: Schema.Types.ObjectId,
         ref: 'Group'

@@ -17,9 +17,12 @@ export class GroupService {
    * @param groupId
    */
   getGroup(groupId: string) {
-    return this._http.get(this.baseURL + `/${groupId}`).toPromise()
+    return this.getGroupObservale(groupId).toPromise();
   }
 
+  getGroupObservale(groupId: string) {
+    return this._http.get(this.baseURL + `/${groupId}`);
+  }
   /**
    * This function is responsible for deleting the group
    * @param groupId
@@ -113,6 +116,41 @@ export class GroupService {
     .toPromise()
   }
 
+  addBar(groupId: string, barTag: string){
+    let bodyData = {
+      barTag
+    };
+    return this._http.put(this.baseURL + `/${groupId}/addBar`, bodyData).toPromise()
+  }
+
+  removeBar(groupId: string, barTag: string){
+    let bodyData ={
+      barTag
+    };
+    return this._http.put(this.baseURL + `/${groupId}/removeBar`, bodyData).toPromise();
+  }
+  addMemberToBar(groupId: string, barTag: string, member){
+    let bodyData = {
+      groupId,
+      barTag,
+      member
+    }
+    return this._http.post(this.baseURL + `/members/addToBar`, bodyData).toPromise();
+  }
+
+  removeUserFromBar(groupId: string, barTag: string, member){
+    let bodyData = {
+      groupId,
+      barTag,
+      member
+    }
+    return this._http.post(this.baseURL + `/members/removeFromBar`, bodyData).toPromise();
+  }
+
+  getBars(groupId: string){
+    return this._http.get(this.baseURL + `/${groupId}/getBars`).toPromise()
+  }
+
   saveCustomFieldsToShow(groupId: string, customFieldsToShow: any[]) {
     return this._http.put(this.baseURL + `/${groupId}/customFieldsToShow`, { customFieldsToShow }).toPromise();
   }
@@ -145,7 +183,14 @@ export class GroupService {
     if (propertyName === 'share_files') {
       return this._http.put(this.baseURL + `/${groupId}/settings/shareFiles`, { propertyName, value }).toPromise();
     }
+    if(propertyName === "enabled_rights"){
+      return this._http.put(this.baseURL + `/${groupId}/settings/enableRights`, { propertyName, value }).toPromise();
+    }
+    if(propertyName === "enabled_project_type"){
+      return this._http.put(this.baseURL + `/${groupId}/settings/enabledProjectType`, { propertyName, value }).toPromise();
+    }
   }
+
 
   /**
    * Makes an HTTP POST request to update a smart group's
@@ -188,5 +233,11 @@ export class GroupService {
    */
   updateSmartGroupMembers(groupId: string, data: object): Observable<any> {
     return this._http.put<any>(`${this.baseURL}/smart/${groupId}`, data);
+  }
+
+  getPostsCount(groupId: string, period: any) {
+    return this._http.get(this.baseURL + `/${groupId}/postsCount`, {params:{
+      period: period
+    }}).toPromise();
   }
 }

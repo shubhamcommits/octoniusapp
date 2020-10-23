@@ -14,7 +14,7 @@ export class PostService {
 
   /**
    * This function is responsible for creating a post
-   * @param { title, content, type, _posted_by, _group, _content_mentions } postData 
+   * @param { title, content, type, _posted_by, _group, _content_mentions } postData
    */
   create(formData: FormData) {
 
@@ -35,6 +35,23 @@ export class PostService {
     toPromise()
   }
 
+  addBar(postId: string, bar:any){
+        // Call the HTTP Request
+        const body = {
+          bar
+        };
+        return this._http.put(this.baseURL + `/${postId}/addBar`, body).
+        toPromise();
+  }
+
+  removeBar(postId: string, bar:any){
+    const body = {
+      bar
+    };
+    // Call the HTTP Request
+    return this._http.put(this.baseURL + `/${postId}/removeBar`, body).
+    toPromise();
+  }
   /**
    * This function is responsible for fetching a post details
    * @param postId
@@ -48,10 +65,10 @@ export class PostService {
 
   /**
    * This function is responsible for liking a post
-   * @param postId 
+   * @param postId
    */
   like(postId: string){
-    
+
     // Call the HTTP Request
     return this._http.post(this.baseURL + `/${postId}/like`, '').
     toPromise()
@@ -59,10 +76,10 @@ export class PostService {
 
   /**
    * This function is responsible for unliking a post
-   * @param postId 
+   * @param postId
    */
   unlike(postId: string){
-    
+
     // Call the HTTP Request
     return this._http.post(this.baseURL + `/${postId}/unlike`, '').
     toPromise()
@@ -70,10 +87,10 @@ export class PostService {
 
   /**
    * This function is responsible for liking a post
-   * @param postId 
+   * @param postId
    */
   follow(postId: string){
-    
+
     // Call the HTTP Request
     return this._http.post(this.baseURL + `/${postId}/follow`, '').
     toPromise()
@@ -81,10 +98,10 @@ export class PostService {
 
   /**
    * This function is responsible for unliking a post
-   * @param postId 
+   * @param postId
    */
   unfollow(postId: string){
-    
+
     // Call the HTTP Request
     return this._http.post(this.baseURL + `/${postId}/unfollow`, '').
     toPromise()
@@ -121,13 +138,31 @@ export class PostService {
     return request;
   }
 
+  /**
+   * This function fetches the list of North Star Tasks present in a user´s groups
+   * @param { groups } query
+   */
+  getNorthStarTasks(groups) {
+
+    // Create the request variable
+    let request: any;
+
+    request = this._http.get(this.baseURL + `/northstar`, {
+      params: {
+        groups: groups
+      }
+    }).toPromise()
+
+    return request;
+  }
+
 
   /**
    * This service function is responsible for fetching the tasks and events present in month
-   * @param year 
-   * @param month 
-   * @param groupId 
-   * @param userId 
+   * @param year
+   * @param month
+   * @param groupId
+   * @param userId
    */
   getCalendarPosts(year: any, month: any, groupId: string, userId?: string){
     if(userId){
@@ -153,11 +188,11 @@ export class PostService {
 
   /**
    * This function is resposible for changing the task status of a post
-   * @param postId 
-   * @param assigneeId 
+   * @param postId
+   * @param assigneeId
    */
   changeTaskAssignee(postId: string, assigneeId: string){
-    
+
     // Call the HTTP Request
     return this._http.put(this.baseURL + `/${postId}/task-assignee`, {
       assigneeId: assigneeId
@@ -167,11 +202,11 @@ export class PostService {
 
   /**
    * This function is resposible for changing the task status of a post
-   * @param postId 
+   * @param postId
    * @param dateDueTo
    */
   changeTaskDueDate(postId: string, dateDueTo: string){
-    
+
     // Call the HTTP Request
     return this._http.put(this.baseURL + `/${postId}/task-due-date`, {
       date_due_to: dateDueTo
@@ -181,36 +216,39 @@ export class PostService {
 
   /**
    * This function is resposible for changing the task status of a post
-   * @param postId 
+   * @param postId
    * @param status
    */
-  changeTaskStatus(postId: string, status: string){
-    
+  changeTaskStatus(postId: string, status: string, userId: string){
+
     // Call the HTTP Request
     return this._http.put(this.baseURL + `/${postId}/task-status`, {
-      status: status
+      status: status,
+      userId: userId
     }).
     toPromise()
   }
 
   /**
-   * This function is resposible for changing the column of a task
-   * @param postId 
+   * This function is responsible for changing the column of a task
+   * @param postId
    * @param title
+   * @param userId
    */
-  changeTaskColumn(postId: string, title: string){
-    
+  changeTaskColumn(postId: string, title: string, userId: string){
+
     // Call the HTTP Request
     return this._http.put(this.baseURL + `/${postId}/task-column`, {
-      title: title
+      title: title,
+      userId: userId
     }).
     toPromise()
   }
 
   /**
    * This function is resposible for fetching tags from a group
-   * @param groupId 
-   * @param tag 
+   * @param groupId
+   * @param tag
    */
   getTags(groupId: string, tag: string) {
 
@@ -227,7 +265,7 @@ export class PostService {
 
   /**
    * This function is used to delete a post
-   * @param postId 
+   * @param postId
    */
   deletePost(postId: string){
     return this._http.delete(this.baseURL + `/${postId}`).toPromise();
@@ -235,7 +273,7 @@ export class PostService {
 
   /**
    * This function is used to save a custom field value
-   * @param postId 
+   * @param postId
    */
   saveCustomField(postId: string, customFieldName: string, customFieldValue: string) {
     // Call the HTTP Request
@@ -245,4 +283,67 @@ export class PostService {
     }).toPromise();
   }
 
+  /**
+   * Workspace's posts
+   */
+  getWorkspacePosts(workspaceId: string, type: string, numDays: number, overdue: boolean, isNorthStar: boolean) {
+    return this._http.get(this.baseURL + `/workspace/posts`, {
+      params: {
+        workspaceId: workspaceId.toString().trim(),
+        type: type.toString().trim(),
+        numDays: numDays.toString().trim(),
+        overdue: overdue.toString().trim(),
+        isNorthStar: isNorthStar.toString().trim()
+      }
+    }).toPromise();
+  }
+
+  /**
+   * Group's posts
+   */
+  getGroupPosts(groupId: string, type: string, numDays: number, overdue?: boolean) {
+    let params = {};
+
+    if (overdue !== undefined) {
+      params = {
+        groupId: groupId.toString().trim(),
+        type: type.toString().trim(),
+        numDays: numDays.toString().trim(),
+        overdue: overdue.toString().trim()
+      };
+    } else {
+      params = {
+        groupId: groupId.toString().trim(),
+        type: type.toString().trim(),
+        numDays: numDays.toString().trim()
+      };
+    }
+    return this._http.get(this.baseURL + `/group/posts`, {
+      params: params
+    }).toPromise();
+  }
+
+  /**
+   * This function is used to save the start or end date of a task
+   * @param postId
+   */
+  saveTaskDates(postId: any, newDate: any, date_field: string) {
+    // Call the HTTP Request
+    return this._http.put(this.baseURL + `/${postId}/update-date`, {
+      newDate: newDate,
+      date_field: date_field
+    }).toPromise();
+  }
+
+  /**
+   * This function is used to obtain the subtasks of a task
+   * @param postId
+   */
+  getSubTasks(taskId: string) {
+    return this._http.get(this.baseURL + `/post/subtasks`, {
+      params: {
+        parentId: taskId.toString().trim()
+      }
+    }).toPromise();
+  }
 }

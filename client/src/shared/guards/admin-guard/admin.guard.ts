@@ -8,7 +8,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
   providedIn: 'root'
 })
 export class AdminGuard implements CanActivate, CanActivateChild, CanLoad {
-  
+
   constructor(
     private storageService: StorageService,
     private utilityService: UtilityService,
@@ -18,7 +18,8 @@ export class AdminGuard implements CanActivate, CanActivateChild, CanLoad {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-      let userAdminState = (this.storageService.getLocalData('userData')['role'].trim() === 'member') ? false : true;
+      const role = this.storageService.getLocalData('userData')['role'].trim();
+      let userAdminState = (role === 'member' || role === 'manager') ? false : true;
       if(userAdminState === true)
         return true;
       else{
@@ -30,9 +31,9 @@ export class AdminGuard implements CanActivate, CanActivateChild, CanLoad {
         });
         if(state.url.match('/dashboard/admin/.*'))
           this.router.navigate(['dashboard', 'myspace', 'inbox']);
-        return true;
+        return false;
       }
-        
+
   }
   canActivateChild(
     next: ActivatedRouteSnapshot,

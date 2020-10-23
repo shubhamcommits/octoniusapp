@@ -1,4 +1,4 @@
-import { User } from '../models';
+import { Group, User } from '../models';
 import { Response, Request, NextFunction } from 'express';
 import { sendError } from '../../utils';
 import http from 'axios';
@@ -28,7 +28,7 @@ export class UsersControllers {
                     { active: true }
                 ]
             })
-                .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group lastTaskView');
+                .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats');
 
             // If user not found
             if (!user) {
@@ -64,7 +64,7 @@ export class UsersControllers {
                     { active: true }
                 ]
             })
-                .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group');
+                .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats');
 
             // If user not found
             if (!user) {
@@ -104,7 +104,7 @@ export class UsersControllers {
                 $set: body
             }, {
                 new: true
-            }).select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group lastTaskView');
+            }).select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats');
 
             // If user not found
             if (!user) {
@@ -130,7 +130,6 @@ export class UsersControllers {
     async updateUserRole(req: Request, res: Response, next: NextFunction) {
 
         const { userId, role } = req.body;
-
         try {
 
             // Find the user and update their respective role
@@ -144,11 +143,35 @@ export class UsersControllers {
             }, {
                 new: true
             }).select('first_name last_name profile_pic email role');
-
+            let groupsUpdate;
+            if(role === 'member') {
+                groupsUpdate = await Group.updateMany({
+                    _admins: userId
+                }, {
+                $pull: {
+                    _admins: userId
+                },
+                $push: {
+                    _members: userId
+                },
+                });
+            } else {
+                groupsUpdate = await Group.updateMany({
+                    _members: userId
+                }, {
+                $pull: {
+                    _members: userId
+                },
+                $push: {
+                    _admins: userId
+                },
+                });
+            }
             // Send status 200 response
             return res.status(200).json({
                 message: `Role updated for user ${user.first_name}`,
-                user: user
+                user: user,
+                groupsUpdate
             });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
@@ -249,4 +272,91 @@ export class UsersControllers {
             return sendError(res, err);
         }
     }
+
+  /**
+   * This function is responsible for retreiving the user´s most frequent groups
+   * @param { userId }req 
+   * @param res 
+   */
+  async getRecentGroups(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { params: { userId } } = req;
+
+      if (!userId) {
+        return res.status(400).json({
+          message: 'Please provide the userId!'
+        })
+      }
+
+      const user = await User.findOne({_id: userId})
+        .select("_id stats")
+        .populate({
+            path: 'stats.groups._group'
+        })
+        .lean();
+
+      if (user['stats'] && user['stats']['groups']) {
+        user['stats']['groups'].sort(function(a, b) {
+          return b.count - a.count;
+        });
+
+        user['stats']['groups'] = user['stats']['groups'].slice(0, 3);
+      }
+
+      // Send the status 200 response
+      return res.status(200).json({
+        message: `User found!`,
+        user: user
+      });
+    } catch (err) {
+      return sendError(res, err, 'Internal Server Error!', 500);
+    }
+  }
+
+  /**
+  * This function is responsible for changing the role of the other user
+  * @param req 
+  * @param res 
+  * @param next 
+  */
+  async incrementGroupVisit(req: Request, res: Response, next: NextFunction) {
+
+    const { userId, groupId } = req.body;
+
+    try {
+
+      let user: any = await User.findOne({
+        $and: [
+            { _id: userId },
+            { active: true },
+            {'stats.groups._group': groupId }
+        ]
+      }).select('_id');
+
+      // Find the user and update their respective role
+      if (!user) {
+        user = await User.findOneAndUpdate({
+          _id: userId,
+          'stats.groups._group': {$ne: groupId }
+        }, { $push: { 'stats.groups': { _group: groupId, count: 1 }}}
+        )
+        .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats');
+      } else {
+        user = await User.findOneAndUpdate({
+          _id: userId,
+          'stats.groups._group': groupId 
+        }, { $inc: { 'stats.groups.$.count': 1 }
+        })
+        .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats');
+      }
+      // Send status 200 response
+      return res.status(200).json({
+          message: `User Stats has been updated`,
+          user: user
+      });
+
+    } catch (err) {
+        return sendError(res, err, 'Internal Server Error!', 500);
+    }
+  }
 }

@@ -1,9 +1,0 @@
-<button class="btn btn-block task muted" (click)="column.addTask = true" *ngIf="!column.addTask">
-   <i class="material-icons-outlined">add</i> New Task
-</button>
-<div class="add-task" *ngIf="column.addTask">
-    <input class="form-control" type="text" placeholder="Enter task title"
-      [(ngModel)]="postTitle"
-      (keyup.enter)="newTask()"
-      (keyup.esc)="column.addTask = false">
-</div>

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Injector } from '@angular/core';
 import { SubSink } from 'subsink';
-import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { PublicFunctions } from 'modules/public.functions';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 

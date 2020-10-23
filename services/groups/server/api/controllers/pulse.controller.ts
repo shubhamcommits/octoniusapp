@@ -46,6 +46,11 @@ export class PulseController {
                 {
                     $set: {
                         pulse_description: pulse_description
+                    },
+                    $push: { "records.pulses": {
+                            date: moment().format(),
+                            description: pulse_description
+                        }
                     }
                 }
             ).select('group_name pulse_description');
@@ -247,4 +252,158 @@ export class PulseController {
         }
     }
 
+
+    /** 
+     * This function fetches groups present in the workspace for pulse
+     * @param {* workspaceId } req 
+     * @param {*} res
+     */
+    async getGlobalPerformanceGroups(req: Request, res: Response) {
+        try {
+            const { workspaceId, period } = req.query;
+            
+            const comparingDate = moment().local().subtract(+period, 'days').format('YYYY-MM-DD');
+
+            const groups = await Group.find({
+                $and: [
+                    { group_name: { $ne: 'personal' } },
+                    { group_name: { $ne: 'private' } },
+                    { project_type: true },
+                    { _workspace: workspaceId },
+                    { created_date: { $gte: comparingDate } }
+                ]
+            })
+                .sort('_id')
+                .select('_id group_name group_avatar description project_status')
+                .lean() || [];
+
+            // Send the status 200 response
+            if (groups.length == 1) {
+                return res.status(200).json({
+                    message: `Only ${groups.length} group exists!`,
+                    groups: groups
+                });
+            }
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: `The groups!`,
+                groups: groups
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
+
+    /**
+     * This function fetches the task count for a group on the basis of groupId and task status
+     * @param { groupId, status } req 
+     * @param res 
+     */
+    async getGlobalPerformanceTasks(req: Request, res: Response) {
+        try {
+            const { groupId, period, status } = req.query;
+
+            const comparingDate = moment().local().subtract(+period, 'days').format('YYYY-MM-DD');
+
+            // Posts array
+            let numTasks = 0;
+            
+            if (status) {
+                if (status === 'done') {
+                    numTasks = await Post.find({
+                        $and: [
+                            { type: 'task' },
+                            { _group: groupId },
+                            {
+                                $or: [
+                                    { 'task.status': 'done' },
+                                    { 'task.status': 'completed' },
+                                ]
+                            },
+                            { 'task.due_to': { $gte: comparingDate } }
+                        ]
+                    }).countDocuments()
+                } else {
+                    numTasks = await Post.find({
+                        $and: [
+                            { type: 'task' },
+                            { 'task.status': status },
+                            { _group: groupId },
+                            { 'task.due_to': { $gte: comparingDate } }
+                        ]
+                    }).countDocuments();
+                }
+            } else {
+                numTasks = await Post.find({
+                    $and: [
+                        { type: 'task' },
+                        { _group: groupId },
+                        { 'task.due_to': { $gte: comparingDate } }
+                    ]
+                }).countDocuments()
+            }
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: `Found ${numTasks} total tasks!`,
+                numTasks: numTasks,
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    }
+
+    /**
+    * This function fetches the pulse count for a workspace on a period
+    * @param { workspaceId, period } req 
+    * @param res 
+    */
+   async getPulseCount(req: Request, res: Response) {
+       try {
+            const { workspaceId, period } = req.query;
+
+            const comparingDate = moment().local().subtract(+period, 'days').toDate();
+
+            let numPulse = 0;
+            
+            if (period !== 'undefined') {
+                const groups = await Group.find({
+                    $and: [
+                        { group_name: { $ne: 'personal' } },
+                        { group_name: { $ne: 'private' } },
+                        { _workspace: workspaceId },
+                        { pulse_description: { $nin:[null,""] } }
+                    ]
+                }).select("_id pulse_description records");
+
+                for (let group of groups) {
+                    for (let pulse of group['records']['pulses']) {
+                        if (pulse['date'].getTime() >= comparingDate.getTime()) {
+                            numPulse++;
+                        }
+                    }
+                }
+
+            } else {
+                numPulse = await Group.find({
+                    $and: [
+                        { group_name: { $ne: 'personal' } },
+                        { group_name: { $ne: 'private' } },
+                        { _workspace: workspaceId },
+                        { pulse_description: { $nin:[null,""] } }
+                    ]
+                }).countDocuments();
+            }
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: `Found ${numPulse} Pulses!`,
+                numPulse: numPulse,
+            });
+           
+       } catch (err) {
+           return sendError(res, err);
+       }
+   }
 }

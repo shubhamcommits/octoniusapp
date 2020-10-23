@@ -1,9 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { environment } from 'src/environments/environment';
+import { Component, EventEmitter, Injector, OnInit, Output } from '@angular/core';
+import { PublicFunctions } from 'modules/public.functions';
+import { SubSink } from 'subsink';
 import { GoogleCloudService } from '../services/google-cloud.service';
-
-// Google API Variable
-declare const gapi: any;
 
 @Component({
   selector: 'app-connect-google-cloud',
@@ -14,29 +12,47 @@ export class ConnectGoogleCloudComponent implements OnInit {
 
   googleAuthSuccessful: any;
 
+  // Public Functions
+  private publicFunctions = new PublicFunctions(this.injector)
+
+  // Subsink 
+  private subSink = new SubSink()
+
+  // Google User Output Emitter
+  @Output('googleUser') googleUser = new EventEmitter()
+
   constructor(
-    private googleService: GoogleCloudService) { }
+    private googleService: GoogleCloudService,
+    private injector: Injector
+  ) { }
 
   ngOnInit(): void {
-    this.googleService.googleAuthSuccessful.subscribe(auth => this.googleAuthSuccessful = auth);
+
+    // Subscribe to google authentication state
+    this.subSink.add(this.googleService.googleAuthSuccessful.subscribe(auth => this.googleAuthSuccessful = auth))
   }
 
-  async onAuthApiLoad() {
-      await gapi.auth.authorize({
-        'client_id': environment.clientId,
-        'scope': environment.scope,
-        'immediate': false,
-        'access_type': 'offline',
-        'approval_prompt': 'force',
-        'response_type': 'token code',
-        'grant_type': 'authorization_code'
-      }, (authResult: any) => {
-        if (authResult && !authResult.error && authResult.access_token) {
-          return this.googleService.refreshGoogleToken(authResult);
-        } else {
-          return new Promise((resolve, reject) => {reject()});
-        }
-      });
+  /**
+   * This function is responsible for connecting the google acount to the main octonius server
+   */
+  async signInToGoogle() {
+
+    // Open up the SignIn Window in order to authorize the google user
+    let googleSignInResult: any = await this.publicFunctions.authorizeGoogleSignIn()
+
+    if (googleSignInResult != null) {
+
+      // Call the handle google signin function
+      let googleUserDetails = await this.publicFunctions.handleGoogleSignIn(googleSignInResult)
+
+      // Emit Google User details to parent components
+      this.googleUser.emit(googleUserDetails)
+    }
+
+  }
+
+  ngOnDestroy() {
+    this.subSink.unsubscribe()
   }
 
 }

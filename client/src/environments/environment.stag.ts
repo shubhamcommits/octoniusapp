@@ -6,11 +6,12 @@ export const environment = {
 
   // Stripe key
   pk_stripe: 'pk_live_C6kLYxOOeUXt0hzaK6PockGM',
+  product_stripe: `prod_HxaOA05Qf9iwpV`,
 
   // Browser Storage Key
   storageKey: 'storageKey@20xx',
 
-  // Google developer console credentials 
+  // Google developer console credentials
   developerKey: 'AIzaSyDGM66BZhGSmBApm3PKL-xCrri-3Adb06I',
   clientId: '971238950983-aef7kjl23994hjj9e8m5tch4a22b5dut.apps.googleusercontent.com',
   apiKey: 'AIzaSyDGM66BZhGSmBApm3PKL-xCrri-3Adb06I',

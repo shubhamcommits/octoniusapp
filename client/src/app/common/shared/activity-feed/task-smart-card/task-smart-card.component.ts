@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {  Component, OnInit } from '@angular/core';
 import { UserService } from 'src/shared/services/user-service/user.service';
+import { ChartType } from 'chart.js';
+import { Label, MultiDataSet } from 'ng2-charts';
 
 @Component({
   selector: 'app-task-smart-card',
@@ -20,6 +22,12 @@ export class TaskSmartCardComponent implements OnInit {
   todayTasks: any = [];
   overdueTasks: any = [];
 
+  doughnutChartLabels;
+  doughnutChartData;
+  doughnutChartType;
+  doughnutChartOptions;
+  doughnutChartColors;
+  doughnutChartPlugins;
 
   async ngOnInit() {
     this.todayTasks = await this.getUserTodayTasks();
@@ -31,6 +39,42 @@ export class TaskSmartCardComponent implements OnInit {
       else if (task.task.status=='done') this.done_task_count++;
     }
     this.today_task_count = this.todayTasks.length;
+
+    /* Chart Setup */
+    const percentageDone = (this.todayTasks.length + this.overdueTasks.length > 0) ? (((this.done_task_count)*100)/(this.todayTasks.length + this.overdueTasks.length)) : 0;
+    this.doughnutChartLabels = ['To Do', 'In Progress', 'Done', 'Overdue'];
+    this.doughnutChartData = [this.to_do_task_count, this.in_progress_task_count, this.done_task_count, this.overdueTasks.length];
+    this.doughnutChartType = 'doughnut';
+    this.doughnutChartOptions = {
+      cutoutPercentage: 75,
+      responsive: true,
+      legend: {
+        display: false
+      }
+    };
+    this.doughnutChartColors = [{
+      backgroundColor: [
+        '#FFAB00',
+        '#0bc6a0',
+        '#4a90e2',
+        '#FF6584'
+      ]
+    }];
+    this.doughnutChartPlugins = [{
+      beforeDraw(chart) {
+        const ctx = chart.ctx;
+
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        const centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
+        const centerY = ((chart.chartArea.top + chart.chartArea.bottom) / 2);
+
+        ctx.font = '25px Nunito';
+        ctx.fillStyle = '#262628';
+
+        ctx.fillText(Math.round(percentageDone) + '%', centerX, centerY);
+      }
+    }];
   }
 
   async getUserTodayTasks() {

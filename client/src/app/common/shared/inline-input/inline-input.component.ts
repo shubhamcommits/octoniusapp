@@ -4,7 +4,7 @@ import { Component,
   ViewChild,
   Renderer,
   forwardRef,
-  OnInit,
+  OnChanges,
   EventEmitter,
   Output} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
@@ -28,10 +28,10 @@ const INLINE_EDIT_CONTROL_VALUE_ACCESSOR = {
 
 export const MY_FORMATS = {
   parse: {
-    dateInput: 'LL',
+    dateInput: 'MMM DD, YYYY',
   },
   display: {
-    dateInput: 'LL',
+    dateInput: 'MMM DD, YYYY',
     monthYearLabel: 'MMM YYYY',
     dateA11yLabel: 'LL',
     monthYearA11yLabel: 'MMMM YYYY',
@@ -52,7 +52,7 @@ export const MY_FORMATS = {
   ],
   styleUrls: ['./inline-input.component.scss']
 })
-export class InlineInputComponent implements ControlValueAccessor, OnInit {
+export class InlineInputComponent implements ControlValueAccessor, OnChanges {
 
   @ViewChild('inlineEditControl', {static: true}) inlineEditControl: ElementRef; // input DOM element
   @Input() label = '';  // Label value for input element
@@ -107,7 +107,7 @@ export class InlineInputComponent implements ControlValueAccessor, OnInit {
     ) {
   }
 
-  ngOnInit() {
+  ngOnChanges() {
     if (this.domainObject.task._assigned_to) {
       this.profilePicUrl = environment.UTILITIES_USERS_UPLOADS + '/' + this.domainObject.task._assigned_to.profile_pic;
     } else {
@@ -212,6 +212,7 @@ export class InlineInputComponent implements ControlValueAccessor, OnInit {
 
   unassignTask() {
     this.domainObject.task.unassigned = 'Yes';
+    this.domainObject.task._assigned_to = null;
     this.value = null;
     this.profilePicUrl = 'assets/images/user.png';
 
@@ -228,7 +229,9 @@ export class InlineInputComponent implements ControlValueAccessor, OnInit {
       _content_mentions: this.domainObject._content_mentions,
       tags: this.domainObject.tags,
       _read_by: this.domainObject._read_by,
-      task: this.domainObject.task
+      task: this.domainObject.task,
+      start_date: this.domainObject.task.start_date,
+      end_date: this.domainObject.task.end_date
     };
 
     // If type is task, then add following properties too
@@ -262,10 +265,12 @@ export class InlineInputComponent implements ControlValueAccessor, OnInit {
         postToUpdate.date_due_to = this.domainObject.task.due_to;
       }
 
-      // Task column
-      postToUpdate._column = {
-        title: this.domainObject.task._column.title
-      },
+      if (this.domainObject.task && this.domainObject.task._column) {
+        // Task column
+        postToUpdate._column = {
+          title: this.domainObject.task._column.title
+        }
+      }
 
       // Task status
       postToUpdate.status = this.domainObject.task.status;

@@ -1,5 +1,8 @@
 import { Component, OnInit, Injector } from '@angular/core';
-import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { PublicFunctions } from 'modules/public.functions';
+import { StorageService } from 'src/shared/services/storage-service/storage.service';
+import { SubSink } from 'subsink';
+import { GoogleCloudService } from './user-available-clouds/google-cloud/services/google-cloud.service';
 
 @Component({
   selector: 'app-user-clouds',
@@ -9,19 +12,60 @@ import { PublicFunctions } from 'src/app/dashboard/public.functions';
 export class UserCloudsComponent implements OnInit {
 
   constructor(
-    public injector: Injector
+    public injector: Injector,
+    private googleService: GoogleCloudService,
+    private storageService: StorageService
   ) { }
+  
+  // Google Authentication Variable Check
+  googleAuthSuccessful = false
+
+  // Subsink 
+  private subSink = new SubSink()
 
   // User Data Variable
-  userData: Object;
+  userData: Object
 
   // Public functions class member
-  publicFunctions = new PublicFunctions(this.injector);
+  publicFunctions = new PublicFunctions(this.injector)
+
+  // Google User
+  googleUser: any
 
   async ngOnInit() {
+
+    // Subsribe to the google authsucessful behaviour subject and set the local googleauth value
+    this.subSink.add(this.googleService.googleAuthSuccessfulBehavior.subscribe(auth => this.googleAuthSuccessful = auth))
     
     // Intialise the userData variable
-    this.userData = await this.publicFunctions.getCurrentUser();
+    this.userData = await this.publicFunctions.getCurrentUser()
+
+    // Check if google user exist locally or not
+    this.googleUserExist() == true ? this.googleService.googleAuthSuccessfulBehavior.next(true): this.googleService.googleAuthSuccessfulBehavior.next(false)
+
+    // If googleauth was sucessful then set the googleuser data
+    if(this.googleAuthSuccessful == true){
+      this.googleUser = this.storageService.getLocalData('googleUser')['userData']
+    } 
+  }
+
+  /**
+   * This function receives the event change from <app-user-available-clouds></app-user-available-clouds>
+   * @param googleUser 
+   */
+  initiliazeGoogleUser(googleUser: any){
+    this.googleUser = googleUser
+  }
+
+  /**
+   * Check if googleUser exist in the storage service or not
+   */
+  googleUserExist() {
+    return (this.storageService.existData('googleUser') === null) ? false : true
+  }
+
+  ngOnDestroy(){
+    this.subSink.unsubscribe()
   }
 
 }

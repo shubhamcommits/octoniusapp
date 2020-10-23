@@ -1,6 +1,10 @@
 import { sendError } from '../../utils';
 import { User, Workspace, Group } from '../models';
 import { Request, Response, NextFunction } from 'express';
+import moment from 'moment';
+
+// Create Stripe Object
+const stripe = require('stripe')(process.env.SK_STRIPE);
 
 export class MembersControllers {
 
@@ -158,13 +162,13 @@ export class MembersControllers {
     }
 
     async reactivateUserInWorkplace(req: Request, res: Response, next: NextFunction) {
-        const { userId, workplaceId } = req.body;
+        const { userId, workspaceId } = req.body;
         try {
             const user: any = await User.findOneAndUpdate({
                 $and: [
-                    {_id: userId},
-                    {active: false},
-                    {workspace: workplaceId},
+                    { _id: userId },
+                    // { active: false },
+                    // { workspace: workspaceId },
                 ]
             }, {
                 active: true,
@@ -172,6 +176,27 @@ export class MembersControllers {
             }, {
                 new: true
             }).select('first_name last_name profile_pic active email role');
+
+            const workspace = await Workspace.findById(workspaceId);
+
+            // Count all the users present inside the workspace
+            const usersCount: number = await User.find({ $and: [
+                { active: true },
+                { _workspace: workspaceId }
+            ] }).countDocuments();
+            
+           // Update the subscription details
+           let subscription = await stripe.subscriptionItems.update(workspace['billing'].subscription_item_id, {
+                quantity: usersCount
+            });
+
+            // Update the workspace details
+            await Workspace.findOneAndUpdate({
+                _id: workspaceId
+            }, {
+                'billing.quantity': usersCount
+            });
+
             // Send status 200 response
             return res.status(200).json({
                 message: `Activated user ${user.first_name}`,
@@ -190,16 +215,15 @@ export class MembersControllers {
     */
     async removeUserFromWorkplace(req: Request, res: Response, next: NextFunction) {
 
-        const { userId, workplaceId } = req.body;
+        const { userId, workspaceId } = req.body;
 
         try {
-
             // Find the user and delete them
             const user: any = await User.findOneAndUpdate({
                 $and: [
                     { _id: userId },
                     { active: true },
-                    { workspace: workplaceId }
+                    { _workspace: workspaceId }
                 ]
             }, {
                 active: false,
@@ -210,14 +234,31 @@ export class MembersControllers {
 
             // User found
             if (user) {
-
+                // TODO Check if this part is needed
                 // Remove from workspace
-                const workspace = await Workspace.findByIdAndUpdate(workplaceId, {
-                    $pull: { "invited_users._user": userId, "members": userId },
-                }, { new: true });
-            }
+                // const workspace = await Workspace.findByIdAndUpdate(workspaceId, {
+                //     $pull: { "invited_users._user": userId, "members": userId },
+                // }, { new: true });
+                const workspace = await Workspace.findById(workspaceId);
 
-            else {
+                // Count all the users present inside the workspace
+                const usersCount: number = await User.find({ $and: [
+                    { active: true },
+                    { _workspace: workspaceId }
+                ] }).countDocuments();
+
+                // Update the subscription details
+                let subscription = await stripe.subscriptionItems.update(workspace['billing'].subscription_item_id, {
+                    quantity: usersCount
+                });
+
+                // Update the workspace details
+                await Workspace.findOneAndUpdate({
+                    _id: workspaceId
+                }, {
+                    'billing.quantity': usersCount
+                });
+            } else {
                 return sendError(res, new Error("No Such User"), 'No Such User!', 400);
             }
 
@@ -226,6 +267,41 @@ export class MembersControllers {
                 message: `Removed user ${user.first_name}`,
                 user: user
             });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for fetching the list of first 10 workspace members based on the workspace and query(optional parameter)
+     * @param { params: { workspaceId, period } }req 
+     * @param res 
+     * @param next 
+     */
+    async getWorkspaceUsers(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the variables from request
+        let {workspaceId} = req.query;
+        
+        try {
+
+            // If either workspaceId is null or not provided then we throw BAD REQUEST 
+            if (!workspaceId) {
+                return res.status(400).json({
+                    message: 'Please provide workspaceId as the query parameter!'
+                })
+            }
+
+            // Find the users present in the current workspace
+            const users = await User.find(
+                { _workspace: workspaceId }).lean() || []
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: `The First ${users.length} workspace members found!`,
+                users: users
+            })
+
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
         }

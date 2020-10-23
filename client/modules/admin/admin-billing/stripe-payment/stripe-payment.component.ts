@@ -2,9 +2,10 @@ import moment from 'moment/moment';
 import { Component, OnInit, Input, Injector } from '@angular/core';
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { PublicFunctions } from 'modules/public.functions';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-stripe-payment',
@@ -15,7 +16,7 @@ export class StripePaymentComponent implements OnInit {
 
   constructor(
     private injector: Injector,
-    public utilityService: UtilityService
+    private router: Router
   ) { }
 
   // Workspace Data Object
@@ -25,16 +26,22 @@ export class StripePaymentComponent implements OnInit {
   @Input('userData') userData: any;
 
   // Subscription Object
-  subscription = null;
+  subscription;
 
-  // Failed Payments Array linked with webhooks
-  failedPayments = [];
-
-  // Success Payments Array linked with webhooks
-  successPayments = [];
+  // Payments Array
+  charges = [];
 
   // Public Functions object
   publicFunctions = new PublicFunctions(this.injector);
+
+  // Workspace Service Object
+  workspaceService = this.injector.get(WorkspaceService);
+
+  // Utility Service Object
+  utilityService = this.injector.get(UtilityService);
+
+  // Socket Service Object
+  socketService = this.injector.get(SocketService);
 
   // isLoading BehaviourSubject
   isLoading$ = new BehaviorSubject(false);
@@ -42,8 +49,9 @@ export class StripePaymentComponent implements OnInit {
   async ngOnInit() {
 
     // Check and fetch the subscription details
-    await this.subscriptionExistCheck(this.workspaceData);
-
+    await this.subscriptionExistCheck();
+    // Obtain the client´s charges
+    await this.getCharges();
   }
   isWorkspaceOwner() {
     return this.workspaceData._owner == this.userData['_id'];
@@ -51,35 +59,37 @@ export class StripePaymentComponent implements OnInit {
 
   /**
    * This function is responsible for fetching the subcription details
-   * @param workspaceData 
+   * @param workspaceData
    */
-  async subscriptionExistCheck(workspaceData: any) {
-
-    // Workspace Service Object
-    let workspaceService = this.injector.get(WorkspaceService)
-
-    // Utility Service Object
-    let utilityService = this.injector.get(UtilityService)
-
-    if (!!workspaceData.billing && workspaceData.billing.current_period_end > moment().unix()) {
-      workspaceService.getSubscription()
+  async subscriptionExistCheck() {
+    if (this.workspaceData.billing.client_id) {
+      // this.workspaceService.getSubscription()--cus_HymWfNcFNsWBT3
+      this.workspaceService.getSubscription(this.workspaceData.billing.client_id)
         .then((res) => {
-
+          // TODO select the last subscription
           // Initialise the suncription
-          this.subscription = res['subscription'];
-
-          // Mend the Subscription Amount
-          this.subscription.amount = (this.subscription.amount / 100);
-
-          // Initialize the failed payments arrray from the current workspace data
-          this.failedPayments = workspaceData.billing.failed_payments;
-
-          // Initialize the success payments array from the current workspace data
-          this.successPayments = workspaceData.billing.success_payments;
+          this.subscription = res['subscriptions'].data[0];
         })
-        .catch(() => utilityService.errorNotification('Unable to fetch the Subscription details, please try again!'))
+        .catch(() => this.utilityService.errorNotification('Unable to fetch the Subscription details, please try again!'));
     } else {
       this.subscription = null;
+    }
+  }
+
+  /**
+   * This function is responsible for fetching the list of charges
+   * @param workspaceData
+   */
+  async getCharges() {
+    // this.workspaceService.getSubscription()--cus_HxVc4M2XSwAoV1--cus_GvQ3XcMhLqEGLT--
+    if (this.workspaceData.billing.client_id) {
+      this.workspaceService.getCharges(this.workspaceData.billing.client_id)
+        .then((res) => {
+          // Initialise the charges
+          this.charges = res['charges'].data;
+        })
+        .catch(() => this.utilityService.errorNotification('Unable to fetch the list os Charges, please try again!')
+      );
     }
   }
 
@@ -88,17 +98,8 @@ export class StripePaymentComponent implements OnInit {
    */
   async renewSubscription() {
 
-    // Workspace Service Object
-    let workspaceService = this.injector.get(WorkspaceService)
-
-    // Socket Service Object
-    let socketService = this.injector.get(SocketService)
-
-    // Utility Service Object
-    let utilityService = this.injector.get(UtilityService)
-
     // Renew the subscription
-    return workspaceService.renewSubscription()
+    return this.workspaceService.renewSubscription()
       .then((res) => {
 
         // display the new subscription information
@@ -110,21 +111,14 @@ export class StripePaymentComponent implements OnInit {
         // update the workspace data
         this.workspaceData = res['workspace'];
 
-        console.log(this.workspaceData);
-
-        // The failed payments should be empty after this
-        this.failedPayments = this.workspaceData.billing.failed_payments;
-
-        // Send updates to the workspaceData
-        // this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData)
-
-        // Update the localdata of all the connected users 
-        // this.publicFunctions.emitWorkspaceData(socketService, this.workspaceData);
-
         // Send notification to the user
-        utilityService.successNotification('Subscription renewed successfully!');
+        this.utilityService.successNotification('Subscription renewed successfully!');
       })
-      .catch(() => utilityService.errorNotification('Unable to renew the Subscription, please try again!'))
+      .catch(() => this.utilityService.errorNotification('Unable to renew the Subscription, please try again!'))
   }
 
+  onSubscriptionChanges(subscription) {
+    this.subscription = subscription;
+    this.router.navigate(['/home']);
+  }
 }

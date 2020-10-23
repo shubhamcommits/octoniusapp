@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input, Injector } from '@angular/core';
+import { Component, OnInit, OnChanges, Output, EventEmitter, Input, Injector } from '@angular/core';
 
 // Highlight.js
 import * as hljs from 'highlight.js';
@@ -23,31 +23,46 @@ import "quill-mention";
 // Quill Image Compress
 import ImageCompress from 'quill-image-compress';
 
-// Register Image compress module
-Quill.register('modules/imageCompress', ImageCompress);
-
 // Quill Image Resize
 import ImageResize from './quill-image-resize/quill.image-resize.js';
 
-// Register Quill Image resize module
-Quill.register('modules/imageResize', ImageResize);
-
+// Image Drop Module
 import ImageDrop from './quill-image-drop/quill.image-drop.js';
 
-Quill.register('modules/imageDrop', ImageDrop);
+// Import Quill AutoFormat Module
+import Autoformat from '../quill-modules/quill-auto-format';
 
 // Public Functions
-import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { PublicFunctions } from 'modules/public.functions';
+
+// Import Links
+var Link = Quill.import('formats/link');
+
+import QuillClipboard from '../quill-modules/quill-clipboard';
+
+QuillClipboard
+
+Quill.register({
+  'modules/imageDrop': ImageDrop,
+  'modules/imageResize': ImageResize,
+  'modules/imageCompress': ImageCompress,
+  // 'modules/clipboard': QuillClipboard,
+  // 'modules/autoformat': Autoformat
+});
+
+Quill.register('modules/clipboard', QuillClipboard, true)
+// Quill.register('modules/autoformat', Autoformat, true)
 
 // Environments
 import { environment } from 'src/environments/environment';
+import { StorageService } from 'src/shared/services/storage-service/storage.service.js';
 
 @Component({
   selector: 'app-quill-editor',
   templateUrl: './quill-editor.component.html',
   styleUrls: ['./quill-editor.component.scss']
 })
-export class QuillEditorComponent implements OnInit {
+export class QuillEditorComponent implements OnInit, OnChanges {
 
   constructor(
     private Injector: Injector
@@ -57,7 +72,12 @@ export class QuillEditorComponent implements OnInit {
     this.modules = {
       syntax: true,
       toolbar: this.toolbar,
-      mention: {}
+      mention: {},
+      history: {
+        'delay': 2500,
+        'userOnly': true
+      },
+      // autoformat: true
     }
   }
 
@@ -91,6 +111,19 @@ export class QuillEditorComponent implements OnInit {
   // Public Functions class
   public publicFunctions = new PublicFunctions(this.Injector);
 
+  ngOnChanges() {
+
+    if (this.quill) {
+      // Fetch the delta ops from the JSON string
+      let delta = (this.isJSON(this.contents))
+        ? JSON.parse(this.contents)['ops']
+        : this.quill.clipboard.convert(this.contents);
+
+      // Set the content inside quill container
+      this.setContents(this.quill, delta)
+    }
+  }
+
   ngOnInit() {
 
     // Set the Status of the toolbar
@@ -98,6 +131,9 @@ export class QuillEditorComponent implements OnInit {
 
     // Set the Mention Module
     this.modules.mention = this.metionModule();
+
+    // Enable Autolinking
+    // this.sanitizeLink()
 
     // If the toolbar is supposed to be visible, then enable following modules
     if (this.toolbar) {
@@ -121,11 +157,10 @@ export class QuillEditorComponent implements OnInit {
 
     // Set contents to the quill
     if (this.contents) {
-
       // Fetch the delta ops from the JSON string
       let delta = (this.isJSON(this.contents))
-      ? JSON.parse(this.contents)['ops']
-      : this.quill.clipboard.convert(this.contents);
+        ? JSON.parse(this.contents)['ops']
+        : this.quill.clipboard.convert(this.contents);
 
       // Set the content inside quill container
       this.setContents(this.quill, delta)
@@ -143,9 +178,9 @@ export class QuillEditorComponent implements OnInit {
    */
   isJSON(str: string) {
     try {
-        JSON.parse(str)
+      JSON.parse(str)
     } catch (e) {
-        return false
+      return false
     }
     return true
   }
@@ -208,9 +243,9 @@ export class QuillEditorComponent implements OnInit {
    */
   metionModule() {
 
-    // Check if groupId is object to take id... 
+    // Check if groupId is object to take id...
     // In some places in code it is sending object, in other it is sending _id... needs refactoring
-    if (typeof this.groupId === 'object' && this.groupId !== null){
+    if (typeof this.groupId === 'object' && this.groupId !== null) {
       this.groupId = this.groupId._id;
     }
     return {
@@ -283,8 +318,31 @@ export class QuillEditorComponent implements OnInit {
    */
   async suggestFiles(groupId: string, searchTerm: string) {
 
+    // Storage Service Instance
+    let storageService = this.Injector.get(StorageService)
+
     // Fetch the users list from the server
-    let filesList: any = await this.publicFunctions.searchFiles(groupId, searchTerm, 'true');
+    let filesList: any = await this.publicFunctions.searchFiles(groupId, searchTerm, 'true')
+
+    let googleFilesList: any = []
+
+    // Fetch Access Token
+    if (storageService.existData('googleUser')) {
+
+      // Fetch the access token from the storage
+      let accessToken = storageService.getLocalData('googleUser')['accessToken']
+
+      // Get Google file list
+      googleFilesList = await this.publicFunctions.searchGoogleFiles(searchTerm, accessToken) || []
+
+      // Google File List
+      if (googleFilesList.length > 0)
+        googleFilesList = googleFilesList.map((file: any) => ({
+          id: '5b9649d1f5acc923a497d1da',
+          value: '<a style="color:inherit;" target="_blank" href="' + file.embedLink + '"' + '>' + file.title + '</a>'
+        }))
+    }
+
 
     // Map the users list
     filesList = filesList.map((file: any) => ({
@@ -296,7 +354,7 @@ export class QuillEditorComponent implements OnInit {
     }))
 
     // Return the Array without duplicates
-    return Array.from(new Set(filesList))
+    return Array.from(new Set([...filesList, ...googleFilesList]))
   }
 
   /**
@@ -337,6 +395,10 @@ export class QuillEditorComponent implements OnInit {
         console.log("An API call triggered this change.");
       } else if (source == 'user') {
 
+        // let driveDivision = document.getElementById('google-drive-file')['innerHTML']
+
+        // let driveDivisionDelta = this.quill.clipboard.convert(driveDivision)
+
         // Get the quill cotents from the editor
         let quillData: any = this.getQuillContents(quill)
 
@@ -348,6 +410,8 @@ export class QuillEditorComponent implements OnInit {
 
         // Get Quill Text
         let quillText = quillData.text
+
+        // quillData.driveDivisionDelta = driveDivisionDelta
 
         // Set the Mentioned list property
         quillData['mention'] = this.getMentionList(quillContents)
@@ -380,6 +444,18 @@ export class QuillEditorComponent implements OnInit {
     return {
       users: mention.filter((object) => object.insert.mention.denotationChar === "@"),
       files: mention.filter((object) => object.insert.mention.denotationChar === "#"),
+    }
+  }
+
+  /**
+   * This function is responsible for sanitising the links attached
+   */
+  sanitizeLink() {
+    Link.sanitize = (url) => {
+      if (url.indexOf("http") <= -1) {
+        url = "https://" + url;
+      }
+      return url;
     }
   }
 }

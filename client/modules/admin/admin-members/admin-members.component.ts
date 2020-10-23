@@ -1,7 +1,7 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { SubSink } from 'subsink';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { PublicFunctions } from 'modules/public.functions';
 
 @Component({
   selector: 'app-admin-members',
@@ -25,7 +25,7 @@ export class AdminMembersComponent implements OnInit {
   public publicFunctions = new PublicFunctions(this.injector);
 
   // PLACEHOLDER INPUT FOR SEARCH BAR
-  public searchBarPlaceholder = 'Whom you are looking for?';
+  public searchBarPlaceholder = 'Search user...';
 
   // WORKSPACE DATA
   public workspaceData: any;

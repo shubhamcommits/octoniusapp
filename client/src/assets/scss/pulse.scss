@@ -12,25 +12,24 @@
   // Group element in the array
   .group-elem {
     background: #ffffff;
-    margin: 10px 0;
+    margin: 1px 0;
     padding: 5px 0;
     list-style-type: none;
     cursor: pointer;
-    transition: transform .3s ease;
+    // transition: transform .3s ease;
     overflow: hidden;
+    border: 1px solid $border-color;
+    border-radius: 5px;
   }
   
   // Create transition effect
-  .group-elem:hover {
-    transform: scale(1.1);
-  }
+  // .group-elem:hover {
+  //   transform: scale(1.1);
+  // }
   
   // Group Name style element
   .group-name {
-    font-family: Poppins;
     font-style: normal;
-    font-weight: bold;
-    font-size: 12px;
     line-height: 18px;
     display: flex;
     align-items: center;
@@ -42,10 +41,8 @@
     color: #ffffff;
     background: #242d3a;
     border-radius: 4px;
-    font-family: Poppins;
     font-style: normal;
     font-weight: bold;
-    font-size: 12px;
     line-height: 18px;
     display: flex;
     align-items: center;
@@ -59,10 +56,8 @@
     color: #ffffff;
     background: #fd7714;
     border-radius: 4px;
-    font-family: Poppins;
     font-style: normal;
     font-weight: bold;
-    font-size: 12px;
     line-height: 18px;
     display: flex;
     align-items: center;
@@ -76,10 +71,8 @@
     color: #ffffff;
     background: #0bc6a0;
     border-radius: 4px;
-    font-family: Poppins;
     font-style: normal;
     font-weight: bold;
-    font-size: 12px;
     line-height: 18px;
     display: flex;
     align-items: center;
@@ -93,10 +86,8 @@
     color: #ffffff;
     background: #4a90e2;
     border-radius: 4px;
-    font-family: Poppins;
     font-style: normal;
     font-weight: bold;
-    font-size: 12px;
     line-height: 18px;
     display: flex;
     align-items: center;
@@ -110,10 +101,8 @@
     color: #ffffff;
     background: #ffc107;
     border-radius: 4px;
-    font-family: Poppins;
     font-style: normal;
     font-weight: bold;
-    font-size: 12px;
     line-height: 18px;
     display: flex;
     align-items: center;
@@ -127,10 +116,8 @@
     color: #ffffff;
     background: #FF6584;
     border-radius: 4px;
-    font-family: Poppins;
     font-style: normal;
     font-weight: bold;
-    font-size: 12px;
     line-height: 18px;
     display: flex;
     align-items: center;
@@ -143,22 +130,16 @@
     text-align: center;
     margin: 10px;
     padding: 10px;
-    font-family: Poppins;
     font-style: normal;
     font-weight: bold;
-    font-size: 16px;
     line-height: 18px;
   }
   
   // Pulse description banner
   .pulse-desc {
-    color: #787878;
-    font-family: Poppins;
     font-style: normal;
-    font-weight: 500;
-    font-size: 12px;
+    font-weight: 700;
     line-height: 18px;
-    display: flex;
     align-items: center;
   }
   

@@ -1,28 +1,33 @@
 @import "src/assets/scss/variables";
 
 a{
-    text-decoration: none !important; 
+    text-decoration: none !important;
     color: inherit;
 }
 
 img{
-    display:block; 
+    display:block;
     width: 100%;
 }
 
 .smart-card {
   background: #FFFFFF;
-  border: 1px solid #E0E3E6;
+  border: none;
   box-sizing: border-box;
-  border-radius: 4px;
+  border-radius: 10px;
+  box-shadow: 0 3px 0 #005fd521;
+  min-height: 260px;
+  // height: 100%;
+  background: #fff url('/assets/images/events-smart-card.svg') no-repeat bottom right;
 }
+
 
 .card-title{
   font-style: normal;
-  font-weight: 700;
-  font-size: 16px;
-  line-height: 24px;
-  color: #242D3A;
+  font-weight: bold;
+  font-size: 15px;
+  line-height: 30px;
+  color: #969A9E;
 }
 
 .group-tasks {
@@ -80,10 +85,10 @@ img{
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
-  line-height: 21px;
+  line-height: 28px;
   display: flex;
   align-items: center;
-
+  margin-left: -5px;
 }
 
 .title-nowrap {
@@ -95,8 +100,22 @@ img{
 }
 
 .card-icon {
-  font-size: 40px;
-  line-height: 40px;
   display: flex;
+  align-items: flex-end;
+  margin-left: auto;
+  margin-right: 10px;
+}
+
+.badge {
+  background-color: #969A9E;
+  margin: 0 5px !important;
+  display: inline;
+  font-family: Nunito, sans-serif;
+  font-style: normal;
+  font-weight: 700 !important;
+  font-size: 12px;
   align-items: center;
+  color: #ffffff;
+  border-radius: 10px;
+  padding: 3px 6px !important;
 }

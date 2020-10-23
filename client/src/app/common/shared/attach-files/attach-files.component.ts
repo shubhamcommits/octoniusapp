@@ -1,7 +1,9 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { environment } from 'src/environments/environment';
-declare var gapi: any;
-declare var google: any;
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core'
+import { environment } from 'src/environments/environment'
+
+// Google API Variables
+declare var gapi: any
+declare var google: any
 
 @Component({
   selector: 'app-attach-files',
@@ -19,17 +21,18 @@ export class AttachFilesComponent implements OnInit {
   @Output('files') files = new EventEmitter();
 
   // Files Output Event Emitter
-  @Output() cloudFiles = new EventEmitter();
+  @Output('cloudFiles') cloudFiles = new EventEmitter();
 
   // Files Array
   filesArray = new Array<File>()
 
-  googleDriveFiles = [];
+  googleDriveFiles: any = [];
 
   // Base URL for the uploads
   baseUrl = environment.UTILITIES_POSTS_UPLOADS
 
-  pickerApiLoaded = false;
+  // Google picker state management
+  pickerApiLoaded = false
 
   ngOnInit() {
   }
@@ -38,7 +41,7 @@ export class AttachFilesComponent implements OnInit {
    * This function returns an array of files attached with the input
    * @param files
    */
-  onAttach(files: any){
+  onAttach(files: any) {
 
     // Set the files array to the incoming output
     this.filesArray = files.target.files;
@@ -60,7 +63,7 @@ export class AttachFilesComponent implements OnInit {
    * This function is responsible for removing the specific file attached
    * @param index
    */
-  removeFile(index: number){
+  removeFile(index: number) {
 
     // Remove element at the specific index
     let arr = Array.from(this.filesArray)
@@ -75,19 +78,21 @@ export class AttachFilesComponent implements OnInit {
     return this.files.emit(this.filesArray)
   }
 
-  loadCloudFiles() {
-    // if token already exist it just opens the picker else, it authenticates then follow the usual flow
-    // auth -> get access_token -> opens the picker to choose the files
-    if (localStorage.getItem('google-cloud-token') !== null) {
-      gapi.load('picker', { 'callback': this.onPickerApiLoad.bind(this) });
-      this.handleAuthResult(localStorage.getItem('google-cloud-token'));
-    } else {
-      gapi.load('auth', { 'callback': this.onAuthApiLoad.bind(this) });
-      gapi.load('picker', { 'callback': this.onPickerApiLoad.bind(this) });
-    }
+  loadGoogleCloudFiles() {
+
+    // Instantiate the Auth client
+    gapi.load('auth', { 'callback': this.onAuthApiLoad.bind(this) })
+
+    // Instantiate the Picker
+    gapi.load('picker', { 'callback': this.onPickerApiLoad.bind(this) })
   }
 
+  /**
+   * Authorize the google signin
+   */
   onAuthApiLoad() {
+
+    // Authorise the user and pass the results to the selection of picker
     gapi.auth.authorize(
       {
         'client_id': environment.clientId,
@@ -95,43 +100,61 @@ export class AttachFilesComponent implements OnInit {
         'immediate': false,
         'approval_prompt':'force',
       },
-      this.handleAuthResult);
+      this.handleAuthResult)
   }
 
+  /**
+   * Helper Function to set the state of the API
+   */
   onPickerApiLoad() {
-    this.pickerApiLoaded = true;
+    this.pickerApiLoaded = true
   }
 
-  handleAuthResult(authResult) {
+  /**
+   * Handle the auth results
+   * @param authResult
+   */
+  handleAuthResult(authResult: any) {
     if (authResult && !authResult.error) {
       if (authResult.access_token) {
-        let view = new google.picker.View(google.picker.ViewId.DOCS);
+
+        // Pick the new view
+        let view = new google.picker.View(google.picker.ViewId.DOCS)
+
         //view.setMimeTypes("image/png,image/jpeg,image/jpg,video/mp4, application/vnd.ms-excel ,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/pdf, text/plain, application/msword, text/js, application/zip, application/rar, application/tar, text/html");
-        let pickerBuilder = new google.picker.PickerBuilder();
-        let picker = pickerBuilder.
-        //enableFeature(google.picker.Feature.NAV_HIDDEN).
-        setOAuthToken(authResult.access_token).
-        //setOrigin(window.location.protocol + '//' + window.location.host).
-        addView(view).
-        addView(new google.picker.DocsUploadView()).
-        setCallback(function (e) {
-          if (e[google.picker.Response.ACTION] == google.picker.Action.PICKED) {
 
-            const doc = e[google.picker.Response.DOCUMENTS][0];
-            const src = doc[google.picker.Document.URL];
+        // Initiate the PickerBuilder
+        let pickerBuilder = new google.picker.PickerBuilder()
 
-            this.googleDriveFiles = e[google.picker.Response.DOCUMENTS];
-            const driveDivision = document.getElementById('google-drive-file');
-            driveDivision.style.display = 'block';
-            driveDivision.innerHTML =
-            '<b>Drive File Upload: </b>' + '<a href=\'' + src + '\' target=\'_blank\'>' + this.googleDriveFiles[0]['name'] + '</a>';
-            // TODO this emit is giving an error saying cloudFiles is undefined.
-            // Emit the value to other components
+        // Feed the values into picker
+        let picker = pickerBuilder
+          .setOAuthToken(authResult.access_token)
+          .addView(view)
+          .addView(new google.picker.DocsUploadView())
+          .setCallback((event: any) => {
+            if (event[google.picker.Response.ACTION] == google.picker.Action.PICKED) {
 
-          }
-        }).
-        build();
-        picker.setVisible(true);
+              // Capture the response
+              let doc = event[google.picker.Response.DOCUMENTS][0]
+
+              // Store the documents URL
+              let src = doc[google.picker.Document.URL]
+
+              // Push the files
+              let googleDriveFiles = event[google.picker.Response.DOCUMENTS]
+
+              // Create custom element to show the file on UI
+              const driveDivision = document.getElementById('google-drive-file')
+              driveDivision.style.display = 'block'
+              driveDivision.innerHTML =
+                `<b>Drive File Upload: </b>
+                  <a href='${src}' target='_blank'> ${googleDriveFiles[0]['name']}</a>`
+            }
+          }).build()
+
+        // Set the Picker state
+        picker.setVisible(true)
+
       }
     }
   }

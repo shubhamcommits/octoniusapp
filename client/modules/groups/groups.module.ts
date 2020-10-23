@@ -43,7 +43,6 @@ import { DeleteGroupComponent } from './group/group-admin/delete-group/delete-gr
 import { GroupKanbanBoardsComponent } from './group/group-kanban-boards/group-kanban-boards.component';
 import { CreateColumnComponent } from './group/group-kanban-boards/create-column/create-column.component';
 import { BoardBarComponent } from './group/group-kanban-boards/board-bar/board-bar.component';
-import { NewTaskComponent } from './group/group-kanban-boards/new-task/new-task.component';
 import { EditColumnComponent } from './group/group-kanban-boards/edit-column/edit-column.component';
 import { GroupPostComponent } from './group/group-post/group-post.component';
 import { InviteUserComponent } from './group/group-admin/invite-user/invite-user.component';
@@ -54,6 +53,8 @@ import { GroupSmartAdminComponent } from './group/group-admin/group-smart-admin/
 import { CreateSectionComponent } from './group/group-tasks-list-view/create-section/create-section.component';
 import { DoneTasksListViewComponent } from './group/group-tasks-list-view/done-tasks-list-view/done-tasks-list-view.component';
 import { DoneTasksKanbanViewComponent } from './group/group-kanban-boards/done-tasks-kanban-view/done-tasks-kanban-view.component';
+import { GroupBarComponent } from './group/group-admin/group-bar/group-bar.component';
+import { GanttViewComponent } from './group/gantt-view/gantt-view.component';
 
  /**
   * 2. !===== MODULES =====!
@@ -78,12 +79,14 @@ import { GroupsService } from 'src/shared/services/groups-service/groups.service
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { CommentService } from 'src/shared/services/comment-service/comment.service';
+import { GroupDashboardComponent } from './group/group-dashboard/group-dashboard.component';
 
 /**
  * 4. !===== DECLARATIONS, IMPORTS, EXPORTS, & PROVIDERS =====!
  */
 @NgModule({
   declarations: [
+    GroupBarComponent,
     // Groups List Component
     GroupsListComponent,
 
@@ -151,8 +154,6 @@ import { CommentService } from 'src/shared/services/comment-service/comment.serv
 
     BoardBarComponent,
 
-    NewTaskComponent,
-
     EditColumnComponent,
 
     GroupPostComponent,
@@ -164,7 +165,11 @@ import { CommentService } from 'src/shared/services/comment-service/comment.serv
     GroupTasksViewsComponent,
     CustomFieldsDialogComponent,
     DoneTasksListViewComponent,
-    DoneTasksKanbanViewComponent
+    DoneTasksKanbanViewComponent,
+
+    GroupDashboardComponent,
+
+    GanttViewComponent
   ],
   imports: [
     CommonModule,
@@ -194,7 +199,8 @@ import { CommentService } from 'src/shared/services/comment-service/comment.serv
     CUSTOM_ELEMENTS_SCHEMA
   ],
   entryComponents: [
-    CustomFieldsDialogComponent
+    CustomFieldsDialogComponent,
+    GroupBarComponent
   ]
 })
 export class GroupsModule { }

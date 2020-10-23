@@ -35,7 +35,6 @@ export class PostController {
         const { post } = req.body;
 
         try {
-
             // Call servide function for adding the post
             const postData = await postService.addPost(post)
                 .catch((err) => {
@@ -184,6 +183,41 @@ export class PostController {
 
                     // If there's an error send bad request
                     return sendErr(res, new Error(err), 'Unable to fetch the posts, kindly check the stack trace for error', 400)
+                })
+
+        } catch (err) {
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function fetches the North Star tasks present inside multiple groups
+     * @param { query: { groups } } req 
+     * @param res 
+     * @param next 
+     */
+    async getNorthStarTasks(req: Request, res: Response, next: NextFunction) {
+        // Fetch groupId and lastPostId from request
+        var { groups } = req.query;
+
+        try {
+
+            // If groupId is not present, then return error
+            if (!groups) {
+                return sendErr(res, new Error('Please provide the groups as the query parameter'), 'Please provide the groups as the query paramater!', 400);
+            }
+
+            await postService.getNorthStarTasks(groups)
+                .then((posts) => {
+                    // If lastPostId is there then, send status 200 response
+                    return res.status(200).json({
+                        message: `The North Star Tasks!`,
+                        posts: posts
+                    });
+                })
+                .catch((err) => {
+                    // If there's an error send bad request
+                    return sendErr(res, new Error(err), 'Unable to fetch the north star tasks, kindly check the stack trace for error', 400)
                 })
 
         } catch (err) {
@@ -515,6 +549,35 @@ export class PostController {
     }
 
     /**
+     * This function is responsible for changing the task due date
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async changeTaskDate(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch Data from request
+        const { params: { postId }, body: { newDate, date_field } } = req;
+
+        try {
+
+            // Call Service function to change the assignee
+            const post = await postService.changeTaskDate(postId, date_field, newDate)
+                .catch((err) => {
+                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+                })
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Task date updated!',
+                post: post
+            });
+        } catch (err) {
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
      * This function is responsible for changing the task status
      * @param req 
      * @param res 
@@ -523,12 +586,12 @@ export class PostController {
     async changeTaskStatus(req: Request, res: Response, next: NextFunction) {
 
         // Fetch Data from request
-        const { params: { postId }, body: { status } } = req;
+        const { params: { postId }, body: { status, userId } } = req;
 
         try {
 
             // Call Service function to change the assignee
-            const post = await postService.changeTaskStatus(postId, status)
+            const post = await postService.changeTaskStatus(postId, status, userId)
                 .catch((err) => {
                     return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
                 })
@@ -552,12 +615,12 @@ export class PostController {
     async changeTaskColumn(req: Request, res: Response, next: NextFunction) {
 
         // Fetch Data from request
-        const { params: { postId }, body: { title } } = req;
+        const { params: { postId }, body: { title, userId } } = req;
 
         try {
 
             // Call Service function to change the assignee
-            const post = await postService.changeTaskColumn(postId, title)
+            const post = await postService.changeTaskColumn(postId, title, userId)
                 .catch((err) => {
                     return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
                 })
@@ -681,6 +744,149 @@ export class PostController {
             });
         } catch (err) {
             return sendErr(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async addBarToPost(req: Request, res:Response, next: NextFunction){
+        const { postId } = req.params;
+        const { bar } = req.body;
+        try {
+            const post = await postService.addBar(postId, bar)
+                .catch((err) => {
+                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+                })
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Task bar updated!',
+                post: post
+            });
+        } catch (err) {
+            return sendErr(res, err, 'Internal Server Error!', 500);
+        }
+    }
+    async removeBarFromPost(req: Request, res:Response, next: NextFunction){
+        const { postId } = req.params;
+        const { bar } = req.body;
+        try {
+            const post = await postService.removeBar(postId, bar)
+                .catch((err) => {
+                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+                });
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Task bar updated!',
+                post: post
+            });
+        } catch (err) {
+            return sendErr(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for fetching the posts of a workspace
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async getWorspacePosts(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch Data from request
+        const  { workspaceId, type, numDays, overdue, isNorthStar }  = req.query;
+
+        try {
+
+            // Call Service function to fetch the posts
+            let posts: any = [];
+
+            if (isNorthStar) {
+                posts = await postService.getWorspaceNorthStars(workspaceId, type, +numDays, (overdue == "true"), (isNorthStar == "true"))
+                .catch((err) => {
+                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+                })
+            } else {
+                posts = await postService.getWorspacePostsResults(workspaceId, type, +numDays, (overdue == "true"), (isNorthStar == "true"))
+                .catch((err) => {
+                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+                })
+            }
+            // // Send status 200 response
+            return res.status(200).json({
+                message: 'Posts fetched!',
+                posts: posts
+            });
+        } catch (err) {
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for fetching the posts of a group
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async getGroupPosts(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch Data from request
+        const  { groupId, type, numDays, overdue }  = req.query;
+
+        try {
+
+            // Call Service function to fetch the posts
+            let posts: any = [];
+
+            if (type === 'task') {
+                posts = await postService.getGroupTasksResults(groupId, type, +numDays, (overdue == "true"))
+                    .catch((err) => {
+                        return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+                    });
+            } else {
+                posts = await postService.getGroupPostsResults(groupId, +numDays)
+                    .catch((err) => {
+                        return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+                    });
+            }
+
+            // // Send status 200 response
+            return res.status(200).json({
+                message: 'Posts fetched!',
+                posts: posts
+            });
+        } catch (err) {
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for fetching the posts of a group
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async getSubtasks(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch Data from request
+        const  { parentId }  = req.query;
+
+        try {
+
+            // Call Service function to fetch the posts
+            let subtasks: any = [];
+
+            subtasks = await postService.getSubtasks(parentId.toString())
+                .catch((err) => {
+                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+                });
+
+            // // Send status 200 response
+            return res.status(200).json({
+                message: 'Subtasks fetched!',
+                subtasks: subtasks
+            });
+        } catch (err) {
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
         }
     }
 }

@@ -83,11 +83,15 @@ routes.put('/image', userFileHandler, user.updateImage);
 
 // - Integrations -
 
-// Get user token for a specific integration
-routes.get('/integrations/gdrive/token', user.getGdriveToken);
-
 // Add a new token for a specific integration
+routes.get('/integrations/gdrive/token', user.getGdriveToken);
 routes.post('/integrations/gdrive/token', user.addGdriveToken);
+
+// -| STATS |-
+// Get user most frecuent groups
+routes.get('/recent-groups/:userId', user.getRecentGroups);
+
+routes.put('/increment-group-visit', user.incrementGroupVisit);
 
 /*  ===================
  *  -- EXPORT ROUTES --

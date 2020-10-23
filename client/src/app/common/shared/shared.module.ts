@@ -1,5 +1,5 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { NgbTimepickerModule, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
@@ -51,8 +51,10 @@ import { GroupUpdateInformationComponent } from './activity-feed/group-informati
 import { CommentSectionComponent } from './comments/comment-section/comment-section.component';
 import { PostCommentComponent } from './comments/post-comment/post-comment.component';
 import { LikeCommentComponent } from './comments/post-comment/like-comment/like-comment.component';
+import { NorthStarComponent } from './activity-feed/group-postbox/group-create-post-dialog-component/north-star/north-star.component';
+import { NorthStarStatsComponent } from './activity-feed/group-postbox/group-create-post-dialog-component/north-star/stats/north-star-stats.component';
 
-import { MatSidenavModule, MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS, MatSelectModule } from '@angular/material';
+import { MatSidenavModule, MatDialogModule, MatSlideToggleModule, MAT_DIALOG_DEFAULT_OPTIONS, MatSelectModule } from '@angular/material';
 import { PreviewFilesDialogComponent } from './preview-files-dialog/preview-files-dialog.component';
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
 import { InlineInputComponent } from './inline-input/inline-input.component';
@@ -61,6 +63,26 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material';
 import { MomentDateModule } from '@angular/material-moment-adapter';
 import { TruncateTextPipe } from 'src/shared/pipes/truncate-text.pipe';
+import { ChartsModule, ThemeService } from 'ng2-charts';
+import { SchedulerComponent } from './scheduler/scheduler.component';
+import { TaskComponent } from './scheduler/task/task.component';
+import { TaskHelperComponent } from './scheduler/task-helper/task-helper.component';
+
+import { ResizableModule } from 'angular-resizable-element';
+import { ProjectStatusComponent } from './activity-feed/project-status/project-status.component';
+
+import { WorkStatisticsCardComponent } from './dashboard/work-statistics-card/work-statistics-card.component';
+import { WorkloadCardComponent } from './dashboard/workload-card/workload-card.component';
+import { VelocityCardComponent } from './dashboard/velocity-card/velocity-card.component';
+import { PulseCardComponent } from './dashboard/pulse-card/pulse-card.component';
+import { PeopleDirectoryCardComponent } from './dashboard/people-directory-card/people-directory-card.component';
+import { OrganizationalStructureCardComponent } from './dashboard/organizational-structure-card/organizational-structure-card.component';
+import { EngagementCardComponent } from './dashboard/engagement-card/engagement-card.component';
+import { GlobalPerformanceCardComponent } from './dashboard/global-performance-card/global-performance-card.component';
+import { NewTaskComponent } from './posts/new-task/new-task.component';
+import { SubtasksComponent } from './activity-feed/group-postbox/group-create-post-dialog-component/subtasks/subtasks.component';
+
+
 
 @NgModule({
   declarations: [
@@ -104,6 +126,8 @@ import { TruncateTextPipe } from 'src/shared/pipes/truncate-text.pipe';
 
     SendPulseComponent,
 
+    ProjectStatusComponent,
+
     GroupInformationComponent,
 
     GroupTaskProgressComponent,
@@ -134,7 +158,26 @@ import { TruncateTextPipe } from 'src/shared/pipes/truncate-text.pipe';
 
     InlineInputComponent,
 
-    GroupCreatePostDialogComponent
+    NorthStarComponent,
+    NorthStarStatsComponent,
+
+    GroupCreatePostDialogComponent,
+    SchedulerComponent,
+    TaskComponent,
+    TaskHelperComponent,
+
+    WorkStatisticsCardComponent,
+    WorkloadCardComponent,
+    VelocityCardComponent,
+    PulseCardComponent,
+    PeopleDirectoryCardComponent,
+    OrganizationalStructureCardComponent,
+    EngagementCardComponent,
+    GlobalPerformanceCardComponent,
+
+    NewTaskComponent,
+
+    SubtasksComponent
   ],
   imports: [
     CommonModule,
@@ -171,7 +214,10 @@ import { TruncateTextPipe } from 'src/shared/pipes/truncate-text.pipe';
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MomentDateModule
+    MomentDateModule,
+    MatSlideToggleModule,
+    ChartsModule,
+    ResizableModule
   ],
   exports: [
     AttachFilesComponent,
@@ -196,6 +242,7 @@ import { TruncateTextPipe } from 'src/shared/pipes/truncate-text.pipe';
     ProgressBarComponent,
     SelectMemberComponent,
     SendPulseComponent,
+    ProjectStatusComponent,
 
     GroupInformationComponent,
 
@@ -227,9 +274,28 @@ import { TruncateTextPipe } from 'src/shared/pipes/truncate-text.pipe';
     InlineInputComponent,
     GroupCreatePostDialogComponent,
     TruncateTextPipe,
+    ChartsModule,
+    SchedulerComponent,
+    TaskComponent,
+    TaskHelperComponent,
+
+    WorkStatisticsCardComponent,
+    WorkloadCardComponent,
+    VelocityCardComponent,
+    PulseCardComponent,
+    PeopleDirectoryCardComponent,
+    OrganizationalStructureCardComponent,
+    EngagementCardComponent,
+    GlobalPerformanceCardComponent,
+
+    NewTaskComponent,
+
+    SubtasksComponent
   ],
   providers: [
-    {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}
+    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },
+    ThemeService,
+    DatePipe
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

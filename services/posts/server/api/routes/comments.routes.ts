@@ -43,4 +43,7 @@ router.post('/like', commentsController.like);
 // This route is used to unlike a comment
 router.post('/unlike', commentsController.unlike);
 
+// GET - Get number of posts
+router.get('/count', commentsController.getCommentsCount);
+
 export { router as commentRoutes};

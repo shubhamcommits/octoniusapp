@@ -2,7 +2,7 @@ import { Component, OnInit, Injector, OnDestroy } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { SubSink } from 'subsink';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({

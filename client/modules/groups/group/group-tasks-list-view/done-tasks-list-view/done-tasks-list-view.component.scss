@@ -3,10 +3,12 @@ $pumpkin-orange: #ffab00;
 $turquoise: #0bc6a0;
 $dark-sky-blue: #4a90e2;
 
+
 .done-title {
-  text-decoration-line: line-through;
-  color: #4A90E2;
+    color: #4A90E2;
+    cursor: pointer;
 }
+        
 
 .list {
     overflow-x: auto;
@@ -81,9 +83,13 @@ $dark-sky-blue: #4a90e2;
 
         .task_title {
             flex: 0 0 320px;
-            will-change: transform;
             flex-basis: 320px;
-            padding: 0 10px
+            padding: 0 10px;
+            font-size: 14px !important;
+            padding-left: 15px;
+            font-family: "Nunito", sans-serif;
+            font-style: normal;
+            font-weight: 400;
         }
 
         .task_cell_asignee {
@@ -93,8 +99,8 @@ $dark-sky-blue: #4a90e2;
             text-align: center;
 
             .feed-avatar {
-                width: 35px;
-                height: 35px;
+                width: 30px;
+                height: 30px;
                 margin: 0;
             }
         }
@@ -139,7 +145,7 @@ $dark-sky-blue: #4a90e2;
 }
 
 .task_row {
-    height: 70px;
+    height: 40px;
     padding: 0;
     background: white;
     width: 100%;
@@ -151,6 +157,8 @@ $dark-sky-blue: #4a90e2;
     // line-height: 25px;
     // height: 40px;
     // cursor: pointer;
+    font-size: 14px !important;
+    font-family: "Nunito", sans-serif;
     .task_content {
         display: flex;
         // line-height: 60px;
@@ -171,8 +179,8 @@ $dark-sky-blue: #4a90e2;
             text-align: center;
 
             .feed-avatar {
-                width: 35px;
-                height: 35px;
+                width: 30px;
+                height: 30px;
                 margin: 0;
             }
         }
@@ -205,7 +213,7 @@ $dark-sky-blue: #4a90e2;
             border-top: 0;
             border-bottom: 0;
             height: 100%;
-            line-height: 70px;
+            // line-height: 70px;
             text-align: center;
         }
         .task_cell_more {
@@ -216,8 +224,8 @@ $dark-sky-blue: #4a90e2;
             text-align: right;
             padding-right: 8px;
             flex: auto;
-            height: 70px;
-            line-height: 70px;
+            // height: 70px;
+            // line-height: 70px;
         }
     }
 }
@@ -270,4 +278,17 @@ $dark-sky-blue: #4a90e2;
 
 .input-date{
     margin-top: 0 !important;
+}
+
+
+.mat-expansion-panel:not([class*="mat-elevation-z"]){
+    box-shadow: none !important;
+    background: transparent !important;
+}
+
+.mat-expansion-panel-body, .mat-expansion-panel-content{
+    padding: 0 !important;
+}
+.mat-expansion-panel-body{
+    padding: 0 !important;
 }

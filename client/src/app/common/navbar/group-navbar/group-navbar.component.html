@@ -1,8 +1,10 @@
+<nav class="navbar navbar-expand-lg">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
 <ul class="nav">
+   <li class="nav-item d-block d-sm-none text-center"> <h6 class="card-title" *ngIf="!myWorkplace"><b>{{groupData?.group_name }}</b></h6>
+   </li>
+  <li class="nav-item mr-3 d-none d-sm-block">
 
-
-  <li class="nav-item mr-3">
-      
     <!-- Group Avatar starts -->
     <img class="mr-3 feed-avatar" *ngIf="groupData && !myWorkplace" (click)="openDetails(content)"
     src="{{ baseUrl }}/{{ groupData?.group_avatar }}" onerror="this.src='assets/images/icon-new-group.svg'"
@@ -10,7 +12,7 @@
     <!-- Group Avatar ends -->
 
     <!-- My workplace avatar starts -->
-    <img class="mr-3 feed-avatar" *ngIf="groupData && userData && myWorkplace" 
+    <img class="mr-3 feed-avatar" *ngIf="groupData && userData && myWorkplace"
     src="{{ userBaseUrl }}/{{ userData?.profile_pic }}" onerror="this.src='assets/images/icon-new-group.svg'"
     placement="bottom" ngbTooltip="This is your workplace">
     <!-- My Workplace avatar ends -->
@@ -27,37 +29,44 @@
     <li class="nav-item">
         <a class="nav-link" routerLink="/dashboard/work/groups/activity" [queryParams]="{ group: groupData?._id, myWorkplace: myWorkplace }"
             routerLinkActive="active">Activity
-            <span class="sr-only">(current)</span>
+
         </a>
     </li>
     <li class="nav-item">
         <a class="nav-link" routerLink="/dashboard/work/groups/tasks" [queryParams]="{ group: groupData?._id, myWorkplace: myWorkplace }"
             routerLinkActive="active">Tasks
-            <span class="sr-only">(current)</span>
+
         </a>
     </li>
     <li class="nav-item">
         <a class="nav-link" routerLink="/dashboard/work/groups/files" [queryParams]="{ group: groupData?._id, myWorkplace: myWorkplace }"
             routerLinkActive="active">Files
-            <span class="sr-only">(current)</span>
+
         </a>
     </li>
     <li class="nav-item">
         <a class="nav-link" routerLink="/dashboard/work/groups/calendar" [queryParams]="{ group: groupData?._id, myWorkplace: myWorkplace }"
             routerLinkActive="active">Calendar
-            <span class="sr-only">(current)</span>
+
         </a>
     </li>
     <li class="nav-item" *ngIf="!myWorkplace">
         <a class="nav-link" routerLink="/dashboard/work/groups/members" [queryParams]="{ group: groupData?._id }"
             routerLinkActive="active">Members
-            <span class="sr-only">(current)</span>
+
         </a>
     </li>
-    <li class="nav-item" *ngIf="!myWorkplace">
+    <li class="nav-item" *ngIf="!myWorkplace && isAdmin">
+        <a class="nav-link" routerLink="/dashboard/work/groups/dashboard" [queryParams]="{ group: groupData?._id }"
+            routerLinkActive="active">Dashboard
+        </a>
+    </li>
+    <li class="nav-item" *ngIf="!myWorkplace && isAdmin">
         <a class="nav-link" routerLink="/dashboard/work/groups/admin" [queryParams]="{ group: groupData?._id }"
             routerLinkActive="active">Admin
-            <span class="sr-only">(current)</span>
+
         </a>
     </li>
 </ul>
+</div>
+</nav>

@@ -4,8 +4,8 @@
         <div class="col-md-4">
 
             <!-- Group Information starts -->
-            <app-group-information 
-                *ngIf="groupData && userData && checkDataExist(groupData) && checkDataExist(userData) && !globalFeed" 
+            <app-group-information
+                *ngIf="groupData && userData && checkDataExist(groupData) && checkDataExist(userData) && !globalFeed"
                 [userData]="userData"
                 [groupData]="groupData"
                 [myWorkplace]="myWorkplace">
@@ -16,6 +16,11 @@
             <app-group-task-progress *ngIf="groupId && globalFeed == false" [groupId]="groupId"
                 [myWorkplace]="myWorkplace"></app-group-task-progress>
             <!-- Task Progress Count ends -->
+
+            <!-- Project status starts -->
+            <app-project-status *ngIf="groupId && myWorkplace === false && globalFeed == false && isProjectType" [groupId]="groupId">
+            </app-project-status>
+            <!-- Project status ends -->
 
             <!-- Send pulse starts -->
             <app-send-pulse *ngIf="groupId && myWorkplace === false && globalFeed == false" [groupId]="groupId">
@@ -63,7 +68,7 @@
             <!-- Empty State starts -->
             <div class="mt-3">
                 <ng-container *ngIf="posts.size === 0 && !(isLoading$ | async)">
-                    <img src='assets/images/overview-emptystate.svg' style="width: 70%;">
+                    <img src='assets/images/overview-empty-state.svg' style="width: 70%;">
                 </ng-container>
             </div>
             <!-- Empty State ends -->

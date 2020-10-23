@@ -85,6 +85,30 @@ export class NotificationsController {
     };
 
     /**
+     * This function is responsible for notifying the user on mention on new Folio
+     * @param file
+     * @param user
+     * @param mention
+     */
+    async newFolioMention(req: Request, res: Response, next: NextFunction) {
+
+        const { mention, file, user } = req.body;
+
+        try {
+            // Call Service function for newPostMentions
+            await notificationService.newFolioMentions(file, user, mention);
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'New Folio Mention succeded!'
+            });
+        } catch (err) {
+            // Error Handling
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    };
+
+    /**
      * This function is responsible to notifying all the user on assigning of a new task to them
      * @param { _id, task._assigned_to, _posted_by } post 
      */
@@ -113,14 +137,12 @@ export class NotificationsController {
     async newTaskReassignment(req: Request, res: Response, next: NextFunction) {
 
         // Fetch Data from request
-        // const { post } = req.body;
-
-        // console.log(post)
+        const { post } = req.body;
 
         try {
             
             // Call Service function for newTaskReassignment
-            // await notificationService.newTaskReassignment(post);
+            await notificationService.newTaskReassignment(post);
 
             // Send status 200 response
             return res.status(200).json({
@@ -200,16 +222,137 @@ export class NotificationsController {
 
         const { topListId } = req.body;
         try{
-        // Call service function for markRead
-        await notificationService.markRead(topListId).then(updated => {
-            return res.status(200).json({
-                message: updated
-            });
-        }).catch(err => {
-            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
-        })
+            // Call service function for markRead
+            await notificationService.markRead(topListId).then(updated => {
+                return res.status(200).json({
+                    message: updated
+                });
+            }).catch(err => {
+                return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+            })
         } catch (err) {
             return sendErr(res, new Error(err), 'Internal Server Error!', 500);
         }
     };
+
+
+    async taskStatusChanged(req: Request, res: Response, next: NextFunction) {
+        const { post } = req.body;
+        try {
+            const status = (post.task.status === 'in progress') ? 'started' : 'completed';
+            // Call Service Function for taskStatusChanged
+            await notificationService.taskStatusChanged(post, status, post.task._assigned_to, post._posted_by);
+
+            if (post.task._assigned_to && post.task._assigned_to !== post._posted_by) {
+                await notificationService.taskStatusChanged(post, status, post.task._assigned_to, post.task._assigned_to);
+            }
+
+            post._followers.forEach(async follower => {
+                if (post.task._assigned_to !== follower && follower !== post._posted_by) {
+                    await notificationService.taskStatusChanged(post, status, post.task._assigned_to, follower);
+                }
+            });
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'New Task Status Change Succeded!'
+            });
+        } catch (err) {
+            // Error Handling
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
+
+    async newComment(req: Request, res: Response, next: NextFunction) {
+        const { comment, post } = req.body;
+        try {
+            // Call Service Function for newComment
+            await notificationService.newComment(comment, post._posted_by);
+
+            if (post.task._assigned_to && post.task._assigned_to !== post._posted_by) {
+
+                await notificationService.newComment(comment, post.task._assigned_to);
+            }
+            if(post._followers) {
+                post._followers.forEach(async follower => {
+
+                    if (follower !== post._posted_by
+                        && post.task._assigned_to !== follower) {
+                        await notificationService.newComment(comment, follower);
+                    }
+                });
+            }
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'New Comment Succeded!'
+            });
+        } catch (err) {
+            // Error Handling
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
+
+    async followPost(req: Request, res: Response, next: NextFunction) {
+        const { post, follower } = req.body;
+        try {
+            // Call Service Function for followPost
+            await notificationService.followPost(post, follower);
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Post Followed Succeded!'
+            });
+        } catch (err) {
+            // Error Handling
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
+
+    async likePost(req: Request, res: Response, next: NextFunction) {
+        const { post, user } = req.body;
+        try {
+            // Call Service Function for likePost
+            await notificationService.likePost(post, post._posted_by, user);
+
+            post._followers.forEach(async follower => {
+                if (post._posted_by !== follower) {
+                    await notificationService.likePost(post, follower, user);
+                }
+            });
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Post Liked Succeded!'
+            });
+        } catch (err) {
+            // Error Handling
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
+
+    async likeComment(req: Request, res: Response, next: NextFunction) {
+        const { comment, user } = req.body;
+        try {
+            // Call Service Function for likeComment
+            await notificationService.likeComment(comment, comment._commented_by, user);
+
+            if (comment._post._posted_by && comment._post.task._assigned_to !== comment._commented_by) {
+                await notificationService.likeComment(comment, comment._post._posted_by, user);
+            }
+
+            comment.post._followers.forEach(async follower => {
+                if (comment.post.task._assigned_to !== follower && follower !== comment._commented_by) {
+                    await notificationService.likeComment(comment, follower, user);
+                }
+            });
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Comment Liked Succeded!'
+            });
+        } catch (err) {
+            // Error Handling
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
 }

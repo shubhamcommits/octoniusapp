@@ -2,7 +2,7 @@ import { Component, OnInit, Injector, Input, EventEmitter, Output } from '@angul
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { SubSink } from 'subsink';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { PublicFunctions } from 'modules/public.functions';
 import { ActivatedRoute } from '@angular/router';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
 import { environment } from 'src/environments/environment';
@@ -45,7 +45,51 @@ export class GroupKanbanBoardsComponent implements OnInit {
   // Today's date object
   today = moment().local().startOf('day').format('YYYY-MM-DD');
 
-  async ngOnInit() {}
+  async ngOnInit() {
+    this.columns.forEach( column => {
+      let tasks = [];
+      let doneTasks = [];
+      if(column.tasks.done !== undefined){
+        column.tasks.done.forEach(doneTask =>{
+          if(doneTask.bars !== undefined && doneTask.bars.length > 0){
+              doneTask.bars.forEach(bar => {
+                if(bar.tag_members.includes(this.userData._id) || this.userData.role !== "member") {
+                  doneTasks.push(doneTask);
+                }
+              });
+            } else {
+              doneTasks.push(doneTask);
+            }
+          }
+        );
+      }
+      column.tasks.forEach( task => {
+        if(task.bars !== undefined && task.bars.length > 0){
+          task.bars.forEach(bar => {
+            if(bar.tag_members.includes(this.userData._id) || this.userData.role !== "member") {
+              tasks.push(task);
+            }
+          });
+        } else {
+          tasks.push(task);
+        }
+      });
+      column.tasks = tasks;
+      column.tasks.done = doneTasks;
+    });
+  }
+
+  getTaskClass(status, isNorthStar) {
+    let taskClass = '';
+    if (status === 'to do') {
+      taskClass = 'status-todo';
+    } else if (status === 'in progress') {
+      taskClass = 'status-inprogress';
+    } else if (status === 'done') {
+      taskClass = 'status-done';
+    }
+    return (isNorthStar) ? taskClass + ' north-star' : taskClass ;
+  }
 
   /**
    * Standard Angular CDK Event which monitors the drop functionality between different columns
@@ -68,7 +112,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
         event.previousContainer.data[event.previousIndex]['task'].status = 'to do'
 
         // Change the task status
-        this.publicFunctions.changeTaskStatus(post._id, 'to do')
+        this.publicFunctions.changeTaskStatus(post._id, 'to do', this.userData._id)
       }
 
       // Call move task to a new column
@@ -282,7 +326,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
    */
   moveTaskToNewColumn(task: any, oldColumn: string, newColumn: string) {
 
-    this.publicFunctions.changeTaskColumn(task._id, newColumn);
+    this.publicFunctions.changeTaskColumn(task._id, newColumn, this.userData._id);
 
     // If new column is 'to do' then set the taskStatus as 'to do' too
     switch (newColumn) {
@@ -302,17 +346,43 @@ export class GroupKanbanBoardsComponent implements OnInit {
     this.updateTask(data);
   }
 
+  onDeleteDoneEvent(id) {
+    this.columns.forEach((col, indexColumn) => {
+      // Find the index of the tasks inside the column
+      const indexTask = col.tasks.done.findIndex((task: any) => task._id === id);
+      if (indexTask !== -1) {
+        this.columns[indexColumn].tasks.done.splice(indexTask, 1);
+        return;
+      }
+    });
+  }
+
+  onDeleteEvent(id) {
+    this.columns.forEach((col, indexColumn) => {
+      // Find the index of the tasks inside the column
+      const indexTask = col.tasks.findIndex((task: any) => task._id === id);
+      if (indexTask !== -1) {
+        this.columns[indexColumn].tasks.splice(indexTask, 1);
+        return;
+      }
+    });
+  }
+
   /**
    * This function is responsible for opening a fullscreen dialog to edit a task
    */
   openFullscreenModal(postData: any): void {
     const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, this.groupId, this.columns);
-
+    const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe((data) => {
+      this.onDeleteEvent(data);
+    });
     const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
       this.updateTask(data);
     });
+
     dialogRef.afterClosed().subscribe(result => {
       closeEventSubs.unsubscribe();
+      deleteEventSubs.unsubscribe();
     });
   }
 

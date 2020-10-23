@@ -1,10 +1,14 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { WorkRoutingModule } from './work-routing.module';
 
 import { PulseComponent } from './pulse/pulse.component'
 import { SharedModule } from 'src/app/common/shared/shared.module';
+import { NorthStarPageComponent } from './north-star-page/north-star-page.component';
+import { DashboardPageComponent } from './dashboard-page/dashboard-page.component';
+
+import { MatSelectModule } from '@angular/material';
 
 
 @NgModule({
@@ -12,11 +16,17 @@ import { SharedModule } from 'src/app/common/shared/shared.module';
 
     // Pulse Component
     PulseComponent,
+    NorthStarPageComponent,
+    DashboardPageComponent
   ],
   imports: [
     CommonModule,
     SharedModule,
-    WorkRoutingModule
+    WorkRoutingModule,
+    MatSelectModule
+  ],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA
   ]
 })
 export class WorkModule { }

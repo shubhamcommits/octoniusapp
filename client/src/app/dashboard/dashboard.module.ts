@@ -10,7 +10,7 @@ import { CommonNavbarComponent } from '../common/navbar/common-navbar/common-nav
 import { PushNotificationsComponent } from '../common/navbar/push-notifications/push-notifications.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthorizationInterceptorService } from 'src/shared/services/authorization-interceptor-service/authorization-interceptor.service';
-import { HotkeyModule } from 'angular2-hotkeys';
+// import { HotkeyModule } from 'angular2-hotkeys';
 import { SearchModule } from 'modules/search/search.module';
 import { FormsModule } from '@angular/forms';
 import { WorkNavbarComponent } from '../common/navbar/work-navbar/work-navbar.component';
@@ -32,7 +32,7 @@ import { SidebarComponent } from '../common/navbar/sidebar/sidebar.component';
   imports: [
     CommonModule,
     DashboardRoutingModule,
-    HotkeyModule.forRoot(),
+    // HotkeyModule.forRoot(),
     SharedModule,
     FormsModule,
     SearchModule

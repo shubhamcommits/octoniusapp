@@ -1,7 +1,8 @@
-import { Group, User } from '../models';
+import { Group, Post, User } from '../models';
 import { Response, Request, NextFunction } from 'express';
 import { sendError, hasProperty } from '../../utils';
 import { Readable } from 'stream';
+import moment from 'moment';
 
 /*  ===================
  *  -- GROUP METHODS --
@@ -415,33 +416,12 @@ export class GroupController {
             const group: any = await Group.findByIdAndDelete(groupId)
                 .select('group_name _workspace')
 
-            // Find list of users who were part of this group 
-            const users = await User.find({
-                _groups: groupId
-            })
+            await User.updateMany({_groups: groupId}, {
+                $pull: {_groups:groupId}
+            });
 
-            // Creating a readable stream from users list
-            const userStream = Readable.from(users);
-
-            // Updating the Users
-            userStream.on('data', async function (user) {
-                // Find the user and update the _groups array in the corresponding user document 
-                await User.findOneAndUpdate({
-                    $and: [
-                        { _id: user._id, },
-                        { _workspace: group._workspace }
-                    ]
-                }, {
-                    $pull: {
-                        _groups: group._id
-                    }
-                }, {
-                    new: true
-                })
-            })
-
-
-            // Delete Posts and Files too(create the API for this and serve as a microservice)
+            // Delete Posts and Files too
+            await Post.remove({_group: groupId});
 
             // Send the status 200 response
             return res.status(200).json({
@@ -682,7 +662,7 @@ export class GroupController {
             // Send status 200 response
             return res.status(200).json({
                 message: 'Group custom fields to show updated!',
-                group: group
+                group
             });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
@@ -931,6 +911,65 @@ export class GroupController {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
     };
+    
+    async enableRights(req: Request, res: Response, next: NextFunction) {
+        // Fetch the groupId
+        const { groupId } = req.params;
+
+        // Fetch the value from fileHandler middleware
+        const value = req.body['value'];
+
+        const property = {propertyName: value};
+
+        try {
+
+            // Find the group and update their respective group avatar
+            const group = await Group.findByIdAndUpdate({
+                _id: groupId
+            }, {
+                enabled_rights: value
+            }, {
+                new: true
+            }).select('settings');
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Group settings updated!',
+                group: group
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
+    
+    async enabledProjectType(req: Request, res: Response, next: NextFunction) {
+        // Fetch the groupId
+        const { groupId } = req.params;
+
+        // Fetch the value from fileHandler middleware
+        const value = req.body['value'];
+
+        const property = {propertyName: value};
+
+        try {
+            // Find the group and update their respective group avatar
+            const group = await Group.findByIdAndUpdate({
+                _id: groupId
+            }, {
+                project_type: value
+            }, {
+                new: true
+            }).select('settings');
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Group settings updated!',
+                group: group
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
 
     async updateSmartGroup(req: Request, res: Response, next: NextFunction) {
         const { groupId } = req.params;
@@ -1094,12 +1133,176 @@ export class GroupController {
               });
             });
           }
-      
+
           return res.status(200).json({
             message: 'Group members successfully updated!'
           });
         } catch (error) {
           return sendError(res, error, 'Internal Server Error!', 500);
+        }
+    }
+
+    async addBar(req: Request, res: Response, next: NextFunction) {
+        try {
+            const groupId = req.params.groupId;
+            const barTag = req.body.barTag;
+
+            const group: any = await Group.findById(groupId);
+            let tagExists = false;
+            group.bars.forEach(bar => {
+                if(bar.bar_tag === barTag){
+                    tagExists = true;
+                }
+            })
+            if (tagExists) {
+                return sendError(res, new Error('Tag already exists'), 'Tag already exists', 404);
+            }
+            group.bars.push({bar_tag: barTag, tag_members : []});
+            await group.save();
+            return res.status(200).json({
+                message: 'Bar tag added successfully!',
+                group,
+              });
+        } catch (error) {
+            return sendError(res, error, 'Internal Server Error!', 500);
+        }
+    }
+
+    async removeBar(req: Request, res: Response, next: NextFunction){
+        try{
+            const groupId = req.params.groupId;
+            const barTag = req.body.barTag;
+            const group: any = await Group.findById(groupId);
+            let tagExists = false;
+            group.bars.forEach(bar => {
+                if(bar.bar_tag === barTag){
+                    tagExists = true;
+                }
+            });
+            if(tagExists){
+                const filteredList = group.bars.filter( bar => bar.bar_tag !== barTag);
+                group.bars = filteredList;
+                let posts = await Post.updateMany({_group: group._id}, {
+                    $pull: {
+                        bars: {bar_tag: barTag}
+                    }}
+                );
+                group.save();    
+                res.status(200).json({
+                    group
+                });
+            }
+        } catch(error) {
+            return sendError(res, error, 'Internal Server Error!', 500);
+        }
+    }
+
+    async getBars(req: Request, res: Response, next: NextFunction){
+        try{
+            const groupId = req.params.groupId;
+            const group: any = await Group.findById(groupId);
+            const bars = group.bars;
+            return res.status(200).json({
+                message: 'Fetched Bars!',
+                bars
+            });
+        } catch (error) {
+            return sendError(res, error, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function fetches the groups which exist in the database based on the list of @workspaceId
+     * @param req 
+     * @param res 
+     */
+    async getWorkspaceGroups(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { workspaceId } = req.query;
+
+            // If workspaceId is null or not provided then we throw BAD REQUEST 
+            if (!workspaceId) {
+                return res.status(400).json({
+                    message: 'Please provide the workspaceId as the query parameter!'
+                })
+            }
+
+            const groups = await Group.find({
+                $and: [
+                    { group_name: { $ne: 'personal' } },
+                    { group_name: { $ne: 'private' } },
+                    { _workspace: workspaceId, },
+                ]
+            })
+            .sort('_id')
+            .lean() || [];
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: `The next ${groups.length} groups!`,
+                groups: groups
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
+
+    async updateStatus(req: Request, res: Response, next: NextFunction) {
+        
+        try {
+            const { groupId, status } = req.body;
+
+            // Find the group and update their respective group avatar
+            const group = await Group.findByIdAndUpdate(groupId, {
+                $set: {
+                    project_status: status
+                },
+                $push: { "records.status": {
+                        date: moment().format(),
+                        project_status: status
+                    }
+                }
+            }, {
+                new: true
+            });
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Group settings updated!',
+                group: group
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
+
+    /**
+     * This function fetches the number of posts of the group corresponding to the @constant groupId 
+     * @param req - @constant groupId
+     */
+    async getPostsCount(req: Request, res: Response) {
+        try {
+
+            const { groupId } = req.params;
+            const { query: { period } } = req;
+
+            const comparingDate = moment().local().subtract(+period, 'days').format('YYYY-MM-DD');
+
+            // Find the Group based on the groupId
+            const numPosts = await Post.find({
+                $and: [
+                    { _group: groupId },
+                    { created_date: { $gte: comparingDate } }
+                ]
+            }).countDocuments();
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Posts found!',
+                numPosts: numPosts
+            });
+        } catch (err) {
+            return sendError(res, err);
         }
     };
 }

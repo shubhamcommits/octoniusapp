@@ -3,7 +3,7 @@ import { Component, OnInit, Input, Injector } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 // Public Functions
-import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { PublicFunctions } from 'modules/public.functions';
 
 // Reconnecting WebSockets
 import ReconnectingWebSocket from 'reconnecting-websocket'
@@ -34,14 +34,21 @@ import Quill from 'quill';
 // Import Quill Cursors
 import QuillCursors from 'quill-cursors';
 
-// Register Quill Cursor Module
-Quill.register('modules/cursors', QuillCursors);
+// Imporrt Quill Autoformat module
+import Autoformat from 'src/app/common/shared/quill-modules/quill-auto-format';
+
+// Register Quill Modules
+Quill.register({
+  'modules/cursors': QuillCursors,
+  'modules/autoformat': Autoformat
+});
 
 // Subsink Class
 import { SubSink } from 'subsink';
 
 // Import Quill Editor Component
 import { QuillEditorComponent } from 'src/app/common/shared/quill-editor/quill-editor.component';
+import { FilesService } from 'src/shared/services/files-service/files.service';
 
 @Component({
   selector: 'app-folio-editor',
@@ -69,8 +76,10 @@ export class FolioEditorComponent implements OnInit {
         autoRegisterListener: false
       },
       history: {
+        delay: 2500,
         userOnly: true
       },
+      autoformat: true,
       mention: {}
     }
   }
@@ -243,6 +252,17 @@ export class FolioEditorComponent implements OnInit {
 
       // local -> server
       quill.on('text-change', (delta, oldDelta, source) => {
+
+        if(delta.ops.length > 1 && delta.ops[1].insert) {
+          let mentionMap = JSON.parse(JSON.stringify(delta.ops[1].insert));
+          if (mentionMap.mention && mentionMap.mention.denotationChar === '@') {
+            let filesService = this._Injector.get(FilesService);
+            filesService.newFolioMention(mentionMap.mention, this.folioId, this.userData._id)
+              .then(res => res.subscribe(result => console.log(result)));
+          }
+        }
+
+
         if (source == 'user') {
 
           folio.submitOp(delta, {

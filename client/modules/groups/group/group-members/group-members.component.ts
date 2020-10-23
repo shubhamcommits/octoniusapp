@@ -1,6 +1,7 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { SubSink } from 'subsink';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { PublicFunctions } from 'modules/public.functions';
 
 @Component({
   selector: 'app-group-members',
@@ -18,13 +19,18 @@ export class GroupMembersComponent implements OnInit {
   public members: any = [];
 
   // PLACEHOLDER INPUT FOR SEARCH BAR
-  public searchBarPlaceholder = "Whom you are looking for?";
+  public searchBarPlaceholder = "Search user...";
 
   // WORKSPACE DATA
   public groupData: any;
 
+  public userData: any;
+
   // Subsink Object
   subSink = new SubSink()
+
+  // Public Functions class
+  private publicFunctions = new PublicFunctions(this.injector);
 
   async ngOnInit() {
 
@@ -34,6 +40,8 @@ export class GroupMembersComponent implements OnInit {
         // Assign the GroupData
         this.groupData = res;
 
+        /*
+        // This version is only available from ES6
         // Merge the Admin and Members array
         Array.prototype.push.apply(this.groupData._members, this.groupData._admins)
 
@@ -41,10 +49,15 @@ export class GroupMembersComponent implements OnInit {
         this.members = Array.from(new Set(this.groupData._members.sort((a: any, b: any)=> {
           return new Date(a.created_date).valueOf() - new Date(b.created_date).valueOf()
         })))
+        */
+       this.members = this.groupData._members.concat(this.groupData._admins);
+       this.members = this.members.filter((member, index) => {
+          return (this.members.indexOf(member) == index)
+       });
       }
     }))
 
-
+    await this.publicFunctions.getCurrentUser().then(user => this.userData = user);
   }
 
   ngOnDestroy(): void {

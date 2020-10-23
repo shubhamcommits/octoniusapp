@@ -1,8 +1,11 @@
 import { Component, OnInit, Injector } from '@angular/core';
-import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { PublicFunctions } from 'modules/public.functions';
 import { ActivatedRoute } from '@angular/router';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { GroupService } from 'src/shared/services/group-service/group.service';
+import { CustomFieldsDialogComponent } from '../custom-fields-dialog/custom-fields-dialog.component';
+import { MatDialog } from '@angular/material';
+import { GroupBarComponent } from './group-bar/group-bar.component';
 
 @Component({
   selector: 'app-group-admin',
@@ -13,11 +16,13 @@ export class GroupAdminComponent implements OnInit {
 
   constructor(
     private injector: Injector,
+    private utilityService: UtilityService,
+    public dialog: MatDialog,
     private router: ActivatedRoute) { }
 
 
   // User Data Object
-  userData: any
+  userData: any;
 
   // PUBLIC FUNCTIONS
   private publicFunctions = new PublicFunctions(this.injector);
@@ -29,14 +34,18 @@ export class GroupAdminComponent implements OnInit {
   groupData: any = {}
 
   // Current Workspace Data
-  workspaceData: any = {}
+  workspaceData: any = {};
+
+  enabledRights: boolean;
+
+  enabledProjectType: boolean;
 
 
   async ngOnInit() {
 
     // Fetch current group from the service
     this.groupData = await this.publicFunctions.getCurrentGroup();
-
+    this.enabledRights = this.groupData.enabled_rights;
     // Fetch Current User
     this.userData = await this.publicFunctions.getCurrentUser();
 
@@ -92,12 +101,30 @@ export class GroupAdminComponent implements OnInit {
 
     // Group Service
     let groupService = this.injector.get(GroupService);
-
+    if(selected.source.name === 'enabled_rights') {
+      this.enabledRights = selected.checked;
+    }
+    if(selected.source.name === 'enabled_project_type') {
+      this.enabledProjectType = selected.checked;
+    }
     utilityService.asyncNotification('Please wait we are saving the new setting...',
     new Promise((resolve, reject)=>{
       groupService.saveSettings(this.groupId, selected.source.name, selected.checked)
       .then(()=> resolve(utilityService.resolveAsyncPromise('Settings saved to your group!')))
       .catch(() => reject(utilityService.rejectAsyncPromise('Unable to save the settings to your group, please try again!')))
     }))
+  }
+  openBarModal(groupId){
+    const dialogRef = this.dialog.open(GroupBarComponent, {
+      width: '100%',
+      height: '100%',
+      disableClose: true,
+      data: { groupData: this.groupData }
+    });
+    const sub = dialogRef.componentInstance.closeEvent.subscribe((data) => {
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      sub.unsubscribe();
+    });
   }
 }

@@ -1,14 +1,16 @@
 import { Component, OnInit, EventEmitter, Output, Inject, Injector } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { environment } from 'src/environments/environment';
-import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { PublicFunctions } from 'modules/public.functions';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { CommentService } from 'src/shared/services/comment-service/comment.service';
 import moment from 'moment';
 // ShareDB Client
-import * as ShareDB from 'sharedb/lib/client'
+import * as ShareDB from 'sharedb/lib/client';
+import { BehaviorSubject } from 'rxjs';
+import { ColumnService } from 'src/shared/services/column-service/column.service';
 
 @Component({
   selector: 'app-group-create-post-dialog-component',
@@ -19,9 +21,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
   // Close Event Emitter - Emits when closing dialog
   @Output() closeEvent = new EventEmitter();
-
-  // BASE URL OF THE APPLICATION
-  baseUrl = environment.UTILITIES_BASE_URL;
+  @Output() deleteEvent = new EventEmitter();
 
   postData: any;
   userData: any;
@@ -29,9 +29,10 @@ export class GroupCreatePostDialogComponent implements OnInit {
   columns: any;
   customFields = [];
   selectedCFValues = [];
-
+  groupData: any;
   // Title of the Post
   title: string = '';
+  barTags = [];
 
   // Quill Data Object
   quillData: any;
@@ -46,6 +47,9 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
   // Public Functions class object
   publicFunctions = new PublicFunctions(this.injector);
+
+  // IsLoading behaviou subject maintains the state for loading spinner
+  public isLoading$ = new BehaviorSubject(false);
 
   // Variable to enable or disable save button
   contentChanged = false;
@@ -63,6 +67,9 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
   // Assigned State of Task
   assigned: boolean = false;
+
+  startDate: any;
+  endDate: any;
 
   // Date Object to map the due dates
   dueDate: any;
@@ -87,7 +94,10 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
   eventAssignedToCount;
 
-  // dateStyleClass = '';
+  showSubtasks = false;
+  subtasks: any =  [];
+  percentageSubtasksCompleted = 0;
+  parentTaskAssigneeProfilePicUrl = ''
 
   constructor(
     private postService: PostService,
@@ -99,18 +109,30 @@ export class GroupCreatePostDialogComponent implements OnInit {
     private mdDialogRef: MatDialogRef<GroupCreatePostDialogComponent>
     ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
+    // Start the loading spinner
+    this.isLoading$.next(true);
+
     this.postData = this.data.postData;
     this.userData = this.data.userData;
     this.groupId = this.data.groupId;
     this.columns = this.data.columns;
 
+    this.groupData = await this.publicFunctions.getGroupDetails(this.groupId);
+
+    await this.initPostData();
+  }
+
+  async initPostData() {
     // Set the title of the post
     this.title = this.postData.title;
+    if(this.postData.bars !== undefined) {
+      this.barTags = this.postData.bars.map( bar => bar.bar_tag);
+    }
 
     // Set the due date to be undefined
     this.dueDate = undefined;
-
+    this.tags = [];
     if (this.postData.type === 'task') {
       // If Post is not unassigned
       if (!this.postData.task.unassigned) {
@@ -119,27 +141,52 @@ export class GroupCreatePostDialogComponent implements OnInit {
       }
 
       // Set the due date variable for task
-      if (this.postData.task.due_to && this.postData.task.due_to != null) {
-
+      if ((this.postData.task.due_to && this.postData.task.due_to != null)
+        || (this.postData.event.due_to && this.postData.event.due_to != null)) {
         // Set the DueDate variable
         this.dueDate = new Date(this.postData.task.due_to || this.postData.event.due_to);
       }
 
+      // Set the due date variable for task
+      if (this.postData.task.start_date && this.postData.task.start_date != null) {
+        // Set the DueDate variable
+        this.startDate = new Date(this.postData.task.start_date);
+      }
+
+      // Set the due date variable for task
+      if (this.postData.task.end_date && this.postData.task.end_date != null) {
+        // Set the DueDate variable
+        this.endDate = new Date(this.postData.task.end_date);
+      }
+
+
+      this.customFields = [];
+      this.selectedCFValues = [];
       this.groupService.getGroupCustomFields(this.groupId).then((res) => {
-        res['group']['custom_fields'].forEach(field => {
-          this.customFields.push(field);
+        if (res['group']['custom_fields']) {
+          res['group']['custom_fields'].forEach(field => {
+            this.customFields.push(field);
 
-          if (!this.postData.task.custom_fields) {
-            this.postData.task.custom_fields = new Map<string, string>();
-          }
+            if (!this.postData.task.custom_fields) {
+              this.postData.task.custom_fields = new Map<string, string>();
+            }
 
-          if (!this.postData.task.custom_fields[field.name]) {
-            this.postData.task.custom_fields[field.name] = '';
-            this.selectedCFValues[field.name] = '';
-          } else {
-            this.selectedCFValues[field.name] = this.postData.task.custom_fields[field.name];
-          }
-        });
+            if (!this.postData.task.custom_fields[field.name]) {
+              this.postData.task.custom_fields[field.name] = '';
+              this.selectedCFValues[field.name] = '';
+            } else {
+              this.selectedCFValues[field.name] = this.postData.task.custom_fields[field.name];
+            }
+          });
+        }
+      });
+
+      await this.postService.getSubTasks(this.postData._id).then((res) => {
+        this.subtasks = res['subtasks'];
+
+        if (this.subtasks.length > 0) {
+          this.showSubtasks = true;
+        }
       });
     }
 
@@ -164,6 +211,9 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.tags = this.postData.tags;
 
     this.fetchComments();
+
+    // Return the function via stopping the loader
+    return this.isLoading$.next(false);
   }
 
   getMemberDetails(memberMap: any) {
@@ -196,8 +246,20 @@ export class GroupCreatePostDialogComponent implements OnInit {
     return (this.eventMembersMap && this.eventMembersMap['all']) ? true : false;
   }
 
-  moveTaskToColumn($event) {
-    this.updateDetails();
+  async moveTaskToColumn(event) {
+    await this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
+      this.postService.changeTaskColumn(this.postData._id, event.post.task._column.title, this.userData._id)
+        .then((res) => {
+
+          this.postData = res['post'];
+          this.contentChanged = false;
+          // Resolve with success
+          resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
+        })
+        .catch(() => {
+          reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
+        });
+    }));
   }
 
   changeTaskStatus(event) {
@@ -215,6 +277,12 @@ export class GroupCreatePostDialogComponent implements OnInit {
     if (newTitle !== this.title) {
       this.title = newTitle;
       this.updateDetails();
+
+      if (this.subtasks && this.subtasks.length > 0) {
+        this.subtasks.forEach(subtask => {
+          subtask.task._parent_task.title = this.title;
+        });
+      }
     }
   }
 
@@ -227,9 +295,46 @@ export class GroupCreatePostDialogComponent implements OnInit {
    * This function is responsible for receiving the date from @module <app-date-picker></app-date-picker>
    * @param dateObject
    */
-  getDate(dateObject: any) {
-    this.dueDate = dateObject.toDate();
-    this.updateDetails();
+  getDate(dateObject: any, property: string) {
+
+    if (property === 'start_date') {
+      this.startDate = dateObject.toDate();
+      this.updateDate(dateObject.toDate(), property);
+    }
+    if (property === 'end_date') {
+      this.endDate = dateObject.toDate();
+      this.updateDate(dateObject.toDate(), property);
+    }
+    if (property === 'due_date') {
+      this.dueDate = dateObject.toDate();
+      this.updateDate(dateObject.toDate(), property);
+    }
+  }
+
+  async updateDate(date, property) {
+    await this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
+      if (property === 'due_date') {
+        this.postService.changeTaskDueDate(this.postData._id, date)
+          .then((res) => {
+            this.postData = res['post'];
+            // Resolve with success
+            resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
+          })
+          .catch(() => {
+            reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
+          });
+      } else if(property === 'start_date' || property === 'end_date') {
+        this.postService.saveTaskDates(this.postData._id, date, property)
+          .then((res) => {
+            this.postData = res['post'];
+            // Resolve with success
+            resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
+          })
+          .catch(() => {
+            reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
+          });
+      }
+    }));
   }
 
   /**
@@ -254,6 +359,48 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.updateDetails();
   }
 
+  async addNewBarTag(event){
+    let bar;
+    this.groupData.bars.forEach(element => {
+      if(element.bar_tag === event){
+        bar = element;
+      }
+    });
+    await this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
+      this.postService.addBar(this.postData._id, bar)
+        .then((res) => {
+          // Resolve with success
+        this.postData.bars.push(bar);
+        this.barTags.push(event);
+          resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
+        })
+        .catch(() => {
+          reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
+        });
+    }));
+  }
+
+  async removeBarTag(index, event){
+    let bar;
+    this.groupData.bars.forEach(element => {
+      if(element.bar_tag === event){
+        bar = element;
+      }
+    });
+    await this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
+      this.postService.removeBar(this.postData._id, bar)
+        .then((res) => {
+          // Resolve with success
+          this.barTags.splice(index, 1);
+          this.postData.bars = this.postData.bars.filter(barTag => barTag.bar_tag !== event);
+          resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
+        })
+        .catch(() => {
+          reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
+        });
+    }));
+  }
+
   // Check if the data provided is not empty{}
   checkDataExist(object: Object) {
     return !(JSON.stringify(object) === JSON.stringify({}))
@@ -267,16 +414,13 @@ export class GroupCreatePostDialogComponent implements OnInit {
    * Fetch Comments
    */
   fetchComments() {
-    this.commentService.getComments(this.postData._id).then((res) => {
-      this.comments = res['comments'];
-    }).catch((err) => {
-      console.log(err);
+    this.commentService.getComments(this.postData._id).subscribe((res) => {
+      this.comments = res.comments;
     });
   }
 
   newCommentAdded(event) {
     this.comments.unshift(event);
-    this.fetchComments();
   }
 
   removeComment(index: number) {
@@ -333,7 +477,9 @@ export class GroupCreatePostDialogComponent implements OnInit {
       content: this.quillData ? JSON.stringify(this.quillData.contents) : this.postData.content,
       _content_mentions: this._content_mentions,
       tags: this.tags,
-      _read_by: this.postData._read_by
+      _read_by: this.postData._read_by,
+      isNorthStar: this.postData.task.isNorthStar,
+      northStar: this.postData.task.northStar
     };
 
     // If Post type is event, then add due_to property too
@@ -385,15 +531,22 @@ export class GroupCreatePostDialogComponent implements OnInit {
       // Task due date
       post.date_due_to = this.dueDate;
 
+      if (this.groupData.project_type) {
+        post.start_date = this.startDate;
+        post.end_date = this.endDate;
+      }
+
       // Task Assigned to
       if (post.unassigned !== null && !post.unassigned) {
         post.assigned_to = this.postData.task._assigned_to._id;
       }
 
-      // Task column
-      post._column = {
-        title: this.postData.task._column.title
-      };
+      if (!this.postData.task._parent_task) {
+        // Task column
+        post._column = {
+          title: this.postData.task._column.title
+        };
+      }
 
       // Task status
       post.status = this.postData.task.status;
@@ -436,14 +589,14 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
   /**
    * Call function to delete post
-   * @param postId
    */
   deletePost() {
+    const id = this.postData._id;
     this.utilityService.asyncNotification('Please wait we are deleting the post...', new Promise((resolve, reject) => {
       this.postService.deletePost(this.postData._id)
         .then((res) => {
           // Emit the Deleted post to all the compoents in order to update the UI
-          this.closeEvent.emit();
+          this.deleteEvent.emit(id);
           // Close the modal
           this.mdDialogRef.close();
 
@@ -452,5 +605,106 @@ export class GroupCreatePostDialogComponent implements OnInit {
           reject(this.utilityService.rejectAsyncPromise('Unable to delete post, please try again!'));
         });
     }));
+  }
+
+  transformToNorthStart() {
+    this.postData.task.isNorthStar = true;
+    this.postData.task.northStar = {
+      target_value: 0,
+      values: {
+        date: Date.now(),
+        value: 0
+      },
+      type: 'Currency $',
+      status: 'ON TRACK'
+    };
+
+    this.updateDetails();
+  }
+
+  saveNorthStar(newNorthStar) {
+    this.postData.task.northStar = newNorthStar;
+
+    this.updateDetails();
+  }
+
+  prepareToAddSubtasks() {
+    this.showSubtasks = true;
+  }
+
+  async onOpenSubtask(subtask: any) {
+
+    // Start the loading spinner
+    this.isLoading$.next(true);
+
+    this.postData = subtask;
+    this.showSubtasks = false;
+
+    this.customFields = [];
+    this.selectedCFValues = [];
+
+    this.comments = [];
+
+    this.columns = null;
+
+    if (!this.postData.task._parent_task.task._assigned_to) {
+      this.parentTaskAssigneeProfilePicUrl = 'assets/images/user.png';
+    } else {
+      await this.publicFunctions.getOtherUser(this.postData.task._parent_task.task._assigned_to).then(user => {
+        this.postData.task._parent_task.task._assigned_to = user;
+        this.parentTaskAssigneeProfilePicUrl = environment.UTILITIES_USERS_UPLOADS + '/' + user['profile_pic'];
+      });
+    }
+
+    await this.initPostData();
+  }
+
+  async openParentTask(taskId: string) {
+
+    // Start the loading spinner
+    this.isLoading$.next(true);
+
+    await this.publicFunctions.getPost(taskId).then(post => {
+      this.postData = post;
+    });
+
+    this.showSubtasks = false;
+
+    this.customFields = [];
+    this.selectedCFValues = [];
+
+    this.comments = [];
+
+    /**
+     * Here we fetch all the columns available in a group, and if null we initialise them with the default one
+     */
+    this.columns = await this.publicFunctions.getAllColumns(this.groupId);
+    if (this.columns == null) {
+      this.columns = await this.initialiseColumns(this.groupId);
+    }
+
+    await this.initPostData();
+  }
+
+  /**
+   * This function initialises the default column - todo
+   * @param groupId
+   */
+  async initialiseColumns(groupId: string) {
+
+    // Column Service Instance
+    const columnService = this.injector.get(ColumnService);
+
+    // Call the HTTP Put request
+    return new Promise((resolve, reject) => {
+      columnService.initColumns(groupId)
+        .then((res) => {
+          resolve(res['columns']);
+        })
+        .catch((err) => {
+          this.utilityService.errorNotification('Unable to initialize the columns, please try again later!');
+          reject({});
+        });
+    });
   }
 }

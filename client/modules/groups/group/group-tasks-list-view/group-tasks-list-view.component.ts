@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Injector, EventEmitter, Output, ViewChild } from '@angular/core';
 import moment from 'moment/moment';
-import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
@@ -69,6 +69,40 @@ export class GroupTasksListViewComponent implements OnInit {
         });
       }
     });
+    this.columns.forEach( column => {
+      let tasks = [];
+      let doneTasks = [];
+
+      // Filtering done tasks
+      if(column.tasks.done !== undefined){
+        column.tasks.done.forEach(doneTask =>{
+          if(doneTask.bars !== undefined && doneTask.bars.length > 0){
+              doneTask.bars.forEach(bar => {
+                if(bar.tag_members.includes(this.userData._id) || this.userData.role !== "member") {
+                  doneTasks.push(doneTask);
+                }
+              });
+            } else {
+              doneTasks.push(doneTask);
+            }
+        });
+      }
+
+      // Filtering other tasks
+      column.tasks.forEach( task => {
+        if(task.bars !== undefined && task.bars.length > 0){
+          task.bars.forEach(bar => {
+            if(bar.tag_members.includes(this.userData._id) || this.userData.role !== "member") {
+              tasks.push(task);
+            }
+          });
+        } else {
+          tasks.push(task);
+        }
+      });
+      column.tasks = tasks;
+      column.tasks.done = doneTasks;
+    });
   }
 
   /**
@@ -98,6 +132,29 @@ export class GroupTasksListViewComponent implements OnInit {
     return moment(taskPost.task.due_to).format('YYYY-MM-DD') < this.today;
   }
 
+  getProgressPercent(northStar) {
+    if (northStar.type !== 'Percent') {
+      return (northStar.values[northStar.values.length - 1].value)/northStar.target_value;
+    }
+
+    return northStar.values[northStar.values.length - 1].value / 100;
+  }
+
+  getNSStatusClass(northStar) {
+    let retClass = "percentlabel";
+    const status = northStar.values[northStar.values.length - 1].status;
+    if (status === 'NOT STARTED') {
+      retClass += ' not_started';
+    } else if (status === 'ON TRACK') {
+      retClass += ' on_track';
+    } else if (status === 'IN DANGER') {
+      retClass += ' in_danger';
+    } else if (status === 'ACHIEVED') {
+      retClass += ' achieved';
+    }
+    return retClass;
+  }
+
   async onModalCloseEvent(data) {
     this.updateTask(data);
   }
@@ -108,11 +165,37 @@ export class GroupTasksListViewComponent implements OnInit {
   openFullscreenModal(postData: any): void {
     const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, this.groupId, this.columns);
 
+    const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe((data) => {
+      this.onDeleteEvent(data);
+    });
     const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
       this.updateTask(data);
     });
     dialogRef.afterClosed().subscribe(result => {
+      deleteEventSubs.unsubscribe();
       closeEventSubs.unsubscribe();
+    });
+  }
+
+  onDeleteDoneEvent(id) {
+    this.columns.forEach((col, indexColumn) => {
+      // Find the index of the tasks inside the column
+      const indexTask = col.tasks.done.findIndex((task: any) => task._id === id);
+      if (indexTask !== -1) {
+        this.columns[indexColumn].tasks.done.splice(indexTask, 1);
+        return;
+      }
+    });
+  }
+
+  onDeleteEvent(id) {
+    this.columns.forEach((col, indexColumn) => {
+      // Find the index of the tasks inside the column
+      const indexTask = col.tasks.findIndex((task: any) => task._id === id);
+      if (indexTask !== -1) {
+        this.columns[indexColumn].tasks.splice(indexTask, 1);
+        return;
+      }
     });
   }
 

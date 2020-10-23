@@ -24,7 +24,7 @@ export class UserService {
 
   /**
    * This function fetches the details of user based on the @userId
-   * @param userId 
+   * @param userId
    */
   getOtherUser(userId: string): Observable<any> {
     return this._http.get(this.BASE_API_URL + `/${userId}`);
@@ -34,17 +34,16 @@ export class UserService {
 
   /**
    * This function updates the details of currently loggedIn user
-   * @param userData 
+   * @param userData
    */
   updateUser(userData: Object) {
     return this._http.put(this.BASE_API_URL + `/`, userData)
       .toPromise();
-
   }
 
   /**
    * This function is responsible for updating the user data(only profile_pic)
-   * @param workspaceId 
+   * @param workspaceId
    * @param workspaceAvatar
    */
   updateUserProfileImage(fileToUpload: File): Observable<any> {
@@ -58,7 +57,7 @@ export class UserService {
 
 
   /**
-   * This function is responsible for updating users' role 
+   * This function is responsible for updating users' role
    * @param { userId, role }
    * @role - 'admin' or 'member'
    */
@@ -97,7 +96,7 @@ export class UserService {
 
   /**
    * This function is responsible for adding a new skill to users' current skill set
-   * @param skill 
+   * @param skill
    */
   addSkill(skill: string): Observable<any> {
     return this._http.post(this.BASE_API_URL + `/skills/${skill}`, '');
@@ -105,7 +104,7 @@ export class UserService {
 
   /**
    * This function is responsible for adding a new skill to users' current skill set
-   * @param skill 
+   * @param skill
    */
   removeSkill(skill: string): Observable<any> {
     return this._http.delete(this.BASE_API_URL + `/skills/${skill}`);
@@ -181,7 +180,7 @@ export class UserService {
    * USER GLOBAL FEED
    */
   getUserGlobalFeed(userId?: string){
-    
+
     if(userId != undefined)
       return this._http.get(this.BASE_API_URL + `/global/feed`, {
         params: {
@@ -193,5 +192,31 @@ export class UserService {
       return this._http.get(this.BASE_API_URL + `/global/feed`).toPromise();
   }
 
+  /**
+   * GET MOST USED GROUPS
+   */
+  getRecentGroups(userId: string) {
+    return this._http.get(this.BASE_API_URL + `/recent-groups/${userId}`).toPromise();
+  }
 
+  /**
+   * Increase the visits to the group by the user
+   * @param { userId, groupId }
+   */
+  increaseGroupVisit(userId: string, groupId: string) {
+
+    // Preparing the request body data
+    let data = {
+      userId: userId.trim(),
+      groupId: groupId.trim()
+    }
+
+    // Call the API
+    return this._http.put(this.BASE_API_URL + '/increment-group-visit', data)
+    .toPromise();
+  }
+
+  // increase the stats of the visited group for the user
+  // const groupId = this._ActivatedRoute.snapshot.queryParamMap.get('group');
+  // this.userService.increaseGroupVisit(this.userData._id, groupId);
 }

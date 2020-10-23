@@ -22,6 +22,7 @@ export const environment = {
 
   // Stripe key
   pk_stripe: `pk_test_rgLsr0HrrbMcqQr5G7Wz1zFK`,
+  product_stripe: `prod_HxEaLCU7oECgAf`,
 
   // Browser Storage Key
   storageKey: `storageKey@20xx`,
@@ -74,7 +75,7 @@ export const environment = {
 
   // Notifications URLs
   NOTIFICATIONS_BASE_URL: `ws://${url.domain}:9000`,
-  NOTFICATIONS_BASE_API_URL: `${url.protocol}://${url.domain}:9000/api`,
+  NOTIFICATIONS_BASE_API_URL: `${url.protocol}://${url.domain}:9000/api`,
 
   // Utilities URLs
   UTILITIES_BASE_URL: `${url.protocol}://${url.domain}:10000`,

@@ -52,16 +52,22 @@ import moment from 'moment';
               }
             }, {
               new: true
-            });
+            }).select('title _posted_by task _content_mentions');
+          await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-comment`, {
+              comment: comment,
+              post: post
+          });
       
       
           if (comment._content_mentions.length !== 0) {
             // Create Notification for mentions on comments
             // notifications.newCommentMentions(comment);
-            await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-comment`, {
-                comment: comment
+            await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-comment-mention`, {
+                comment: comment,
+                post: post
             });
       
+            /*
             // for every user mentioned in the comment, we send an email
             await comment._content_mentions.forEach((user) => {
             //   sendMail.userMentionedComment(comment, post, user);
@@ -71,6 +77,7 @@ import moment from 'moment';
                     user: user
                 });
             });
+            */
           }
       
           return comment;
@@ -120,7 +127,7 @@ import moment from 'moment';
           // Create Notification for mentions on comments
           if (comment._content_mentions.length !== 0) {
             // notifications.newCommentMentions(comment);
-            await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-comment`, {
+            await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-comment-mention`, {
                 comment: updatedComment
             });
           }
@@ -301,12 +308,18 @@ import moment from 'moment';
               new: true
             })
             .populate('_liked_by', 'first_name last_name')
+            .populate('_post', '_posted_by')
             .lean();
-      
+
           const user = await User.findOne({
             _id: userId
           }).select('first_name last_name');
       
+          await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-like-comment`, {
+            comment: comment,
+            user: userId
+          });
+
           return {
               comment: comment,
               user: user
@@ -334,6 +347,7 @@ import moment from 'moment';
               new: true
             })
             .populate('_liked_by', 'first_name last_name')
+            .populate('post', '_posted_by')
             .lean();
       
           const user = await User.findOne({
@@ -345,6 +359,28 @@ import moment from 'moment';
             comment,
             user
           };
+        } catch (err) {
+          throw(err);
+        }
+      };
+
+      /**
+       * Function to get next 5 comments on a post
+       * @param { postId, commentId }
+       */
+      getCommentsCount = async (postId, numDays) => {
+        try {
+          const comparingDate = moment().local().subtract(+numDays, 'days').format('YYYY-MM-DD');
+
+          const numComments = await Comment.find({
+            $and: [
+              { _post: postId },
+              { created_date: { $gte: comparingDate } }
+            ]
+          }).countDocuments();
+
+          return numComments;
+
         } catch (err) {
           throw(err);
         }

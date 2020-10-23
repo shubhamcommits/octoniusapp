@@ -1,6 +1,6 @@
 import { Component, OnInit, Injector, Input } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { PublicFunctions } from 'modules/public.functions';
 import { SubSink } from 'subsink';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
@@ -66,6 +66,8 @@ export class GroupActivityFeedComponent implements OnInit {
   // Current Group Data
   groupData: any;
 
+  isProjectType = false;
+
   // Current User Data
   userData: any;
 
@@ -124,6 +126,8 @@ export class GroupActivityFeedComponent implements OnInit {
 
         // Assign the GroupData
         this.groupData = res
+
+        this.isProjectType = this.groupData.project_type;
       }
     }))
 

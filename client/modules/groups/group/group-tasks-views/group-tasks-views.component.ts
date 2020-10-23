@@ -3,7 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
-import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { PublicFunctions } from 'modules/public.functions';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { PostService } from 'src/shared/services/post-service/post.service';
@@ -42,8 +42,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     public utilityService: UtilityService,
     private groupService: GroupService,
     private _router: Router,
-    private injector: Injector,
-    private postService: PostService) { }
+    private injector: Injector) { }
 
 
   async ngOnInit() {
@@ -66,11 +65,13 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
 
   async onChangeViewEmitter(view: string) {
 
-    this.userData.lastTaskView = view;
+    this.userData.stats.lastTaskView = view;
     // User service
     const userService = this.injector.get(UserService);
 
-    userService.updateUser(this.userData);
+    // Update user´s last view
+    await userService.updateUser(this.userData);
+    await this.publicFunctions.sendUpdatesToUserData(this.userData);
 
     this.viewType = view;
   }
@@ -86,17 +87,22 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     // Fetch current user details
     this.userData = await this.publicFunctions.getCurrentUser();
 
-    if (this.userData && this.userData.lastTaskView) {
-      this.viewType = this.userData.lastTaskView;
-    }
-
     // Fetch current group from the service
-    this.subSink.add(this.utilityService.currentGroupData.subscribe(async (res) => {
+    await this.subSink.add(this.utilityService.currentGroupData.subscribe(async (res) => {
       if (JSON.stringify(res) !== JSON.stringify({})) {
         // Assign the GroupData
         this.groupData = res;
       }
     }));
+
+    // Set the initial view
+    if (this.userData && this.userData.stats && this.userData.stats.lastTaskView) {
+      this.viewType = this.userData.stats.lastTaskView;
+
+      if (this.viewType === 'gantt' && (this.groupData && !this.groupData.project_type)) {
+        this.viewType = 'kanban';
+      }
+    }
 
     /**
      * Here we fetch all the columns available in a group, and if null we initialise them with the default one

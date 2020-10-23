@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined");
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Round|Material+Icons+Two+Tone");
 
 //font override
 
@@ -20,7 +20,7 @@ $pink: #9f55ff;
 $lightgray: #9b9b9b;
 $box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15), 0 6px 9px rgba(0, 0, 0, 0.2);
 $headings-color: #313131;
-$border-radius: 1rem;
+// $border-radius: 1rem;
 $body-bg: #f3f4f6;
 // $body-bg: #fff;
 
@@ -117,7 +117,6 @@ hr {
 
 .welcome {
   background: #005fd5;
-  // height: stretch;
   min-height: 100vh;
   background-image: url(https://picsum.photos/1920/1200/?random&gravity=south);
   // @include media-breakpoint-down(sm) {
@@ -172,4 +171,10 @@ hr {
 .input-search {
   font-family: $font-family-base !important;
   border-bottom: $border-gray !important;
+}
+
+@media (max-width: 575.98px) { 
+  .nav{
+    display: block !important;
+  }
 }

@@ -1,9 +1,10 @@
 import { Component, OnInit, Injector, OnDestroy } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { PublicFunctions } from 'modules/public.functions';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
+import { UserService } from 'src/shared/services/user-service/user.service';
 
 @Component({
   selector: 'app-group-navbar',
@@ -25,6 +26,8 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
       }
     }))
   }
+
+  isAdmin: boolean;
 
   // UNSUBSCRIBE THE DATA
   private subSink = new SubSink();
@@ -52,6 +55,8 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
   // PUBLIC FUNCTIONS
   private publicFunctions = new PublicFunctions(this.injector);
 
+  private userService = this.injector.get(UserService);
+
   async ngOnInit() {
 
     // Fetch groupId from router snapshot
@@ -75,8 +80,13 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
     }
 
     console.log('Group Data', this.groupData)
+    this.isAdmin = this.isAdminUser();
 
-
+    if (this.groupId) {
+      this.userService.increaseGroupVisit(this.userData._id, this.groupId).then(res => {
+        this.publicFunctions.sendUpdatesToUserData(res['user']);
+      });
+    }
   }
 
   /**
@@ -86,10 +96,13 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
     this.subSink.unsubscribe();
   }
 
-
+  isAdminUser() {
+    const index = this.groupData._admins.findIndex((admin: any) => admin._id === this.userData._id);
+    return index >= 0;
+  }
   /**
     * This function opens up the task content in a new modal, and takes #content in the ng-template inside HTML layout
-    * @param content 
+    * @param content
     */
   async openDetails(content) {
 

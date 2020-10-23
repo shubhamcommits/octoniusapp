@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector, ViewChild, ElementRef, AfterViewInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Injector, ViewChild, ElementRef, AfterViewInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { environment } from 'src/environments/environment';
 import { UserService } from 'src/shared/services/user-service/user.service';
@@ -8,9 +8,9 @@ import { SubSink } from 'subsink';
 import { AuthService } from 'src/shared/services/auth-service/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
-import { PublicFunctions } from 'src/app/dashboard/public.functions';
-import { HotkeysService, Hotkey } from 'angular2-hotkeys';
+import { PublicFunctions } from 'modules/public.functions';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+// import { GoogleCloudService } from 'modules/user/user-clouds/user-available-clouds/google-cloud/services/google-cloud.service';
 
 @Component({
   selector: 'app-navbar',
@@ -19,9 +19,9 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class NavbarComponent implements OnInit, AfterViewInit{
+export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  @ViewChild('search', {static: false}) search: ElementRef;
+  @ViewChild('search', { static: false }) search: ElementRef;
 
   constructor(
     private storageService: StorageService,
@@ -32,7 +32,6 @@ export class NavbarComponent implements OnInit, AfterViewInit{
     private _ActivatedRoute: ActivatedRoute,
     private socketService: SocketService,
     private injector: Injector,
-    private hotKeysService: HotkeysService,
     ) { }
 
   // CURRENT USER DATA
@@ -55,10 +54,16 @@ export class NavbarComponent implements OnInit, AfterViewInit{
 
   // My Workplace variable check
   myWorkplace: boolean = this._ActivatedRoute.snapshot.queryParamMap.get('myWorkplace') ? true : false
- 
+
   isGroupNavbar$ = new BehaviorSubject(false);
   isCommonNavbar$ = new BehaviorSubject(false);
   isWorkNavbar$ = new BehaviorSubject(false);
+
+  // NOTIFICATIONS DATA
+  public notificationsData: { readNotifications: [], unreadNotifications: [] } = {
+      readNotifications: [],
+      unreadNotifications: []
+  }
 
   nextGroupNavbarState(){
     this.isGroupNavbar$.next(true);
@@ -66,36 +71,36 @@ export class NavbarComponent implements OnInit, AfterViewInit{
     this.isWorkNavbar$.next(false)
   }
 
-  nextCommonNavbarState(){
+  nextCommonNavbarState() {
     this.isCommonNavbar$.next(true);
     this.isGroupNavbar$.next(false)
     this.isWorkNavbar$.next(false)
   }
 
-  nextWorkNavbar(){
+  nextWorkNavbar() {
     this.isWorkNavbar$.next(true);
     this.isCommonNavbar$.next(false)
     this.isGroupNavbar$.next(false)
   }
 
-  ngAfterContentChecked(){
-    this.subSink.add(this.utilityService.routerStateData.subscribe((res)=>{
+  ngAfterContentChecked() {
+    this.subSink.add(this.utilityService.routerStateData.subscribe((res) => {
       if (JSON.stringify(res) != JSON.stringify({})) {
         this.routerState = res['state']
-        if( this.routerState === 'home'){
+        if (this.routerState === 'home') {
           this.nextCommonNavbarState()
         }
-        else if(this.routerState === 'group'){
+        else if (this.routerState === 'group') {
           this.nextGroupNavbarState()
-          
+
           // Check for myWorkplace
           this.myWorkplace = this._ActivatedRoute.snapshot.queryParamMap.get('myWorkplace') ? true : false
         }
-        else if(this.routerState === 'work'){
+        else if (this.routerState === 'work') {
           this.nextWorkNavbar()
         }
       }
-    }))
+    }));
   }
 
   async ngOnInit() {
@@ -129,83 +134,53 @@ export class NavbarComponent implements OnInit, AfterViewInit{
       this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData)
     }
 
-    console.log('User Data', this.userData)
-    console.log('Workspace Data', this.workspaceData)
+    await this.initNotifications();
 
+    await this.publicFunctions.handleGoogleSignIn()
+
+    // This function is responsible for keep the cloud connected and refreshes the token in every 30mins(limit is 50 mins)
+    setInterval(async () => {
+      await this.publicFunctions.handleGoogleSignIn()
+    }, 1800000);
+
+    console.log('User Data', this.userData);
+    console.log('Workspace Data', this.workspaceData);
   }
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
     const searchRef = this.search;
-    this.addHotKeys(searchRef)
+    //this.addHotKeys(searchRef)
   }
 
-  /**
-   * This function fetches the user details, makes a GET request to the server
-   */
-  async getCurrentUser() {
-    return new Promise((resolve, reject) => {
-      try {
-        this.subSink.add(this.userService.getUser()
-          .pipe(retry(3))
-          .subscribe(res => resolve(res['user']))
-        );
-      } catch (err) {
-        console.log('Error occured while fetching the user details', err);
-        this.utilityService.errorNotification('Error occured while fetching your profile details');
-        reject({});
-      }
+  async initNotifications() {
+    // Subscribe to the change in notifications data from the server
+    this.subSink.add(this.socketService.currentData.subscribe((res) => {
+        if (JSON.stringify(res) != JSON.stringify({}))
+            this.notificationsData = res;
+    }));
+
+    /**
+     * emitting the @event joinUser to let the server know that user has joined
+     */
+    this.subSink.add(this.socketService.onEmit('joinUser', this.userData['_id'])
+        .pipe(retry(Infinity))
+        .subscribe());
+
+    /**
+     * emitting the @event joinWorkspace to let the server know that user has joined
+     */
+    this.subSink.add(this.socketService.onEmit('joinWorkspace', {
+        workspace_name: this.userData['workspace_name']
     })
-  }
+        .pipe(retry(Infinity))
+        .subscribe());
 
-  /**
-   * This function is responsible for logging the user out
-   */
-  async logout() {
-      try {
-        this.utilityService.asyncNotification('Please wait, while we log you out securely...', 
-        new Promise((resolve, reject)=>{
-          this.subSink.add(this.authService.signout()
-          .subscribe((res) => {
-            this.storageService.clear();
-            this.publicFunctions.sendUpdatesToGroupData({})
-            this.publicFunctions.sendUpdatesToRouterState({})
-            this.publicFunctions.sendUpdatesToUserData({})
-            this.publicFunctions.sendUpdatesToWorkspaceData({})
-            this.socketService.disconnectSocket();
-            this.router.navigate(['/home'])
-            .then(()=> resolve(this.utilityService.resolveAsyncPromise('Succesfully Logged out!')))
-            
-          }, (err) => {
-            console.log('Error occured while logging out!', err);
-            reject(this.utilityService.rejectAsyncPromise('Error occured while logging you out!, please try again!'));
-          }))
-        }))
-      } catch (err) {
-        console.log('Error occured while logging out!', err);
-        this.utilityService.errorNotification('Error occured while logging you out!');
-      }
-  }
-
-
-  /**
-   * Add Hot Keys
-   */
-  addHotKeys(searchRef: any){
-    this.hotKeysService.add(new Hotkey(['shift+space'], (event: KeyboardEvent, combo: string): boolean =>{
-      this.openModal(searchRef);
-      return false;
-    }))
-  }
-
-  closeModal(){
-    this.utilityService.closeAllModals();
-  }
-
-  openModal(content: any){
-    this.utilityService.openModal(content, {
-      size: 'l',
-      windowClass: 'search'
-    });
+    /**
+     * emitting the @event getNotifications to let the server know to give back the push notifications
+     */
+    this.subSink.add(this.socketService.onEmit('getNotifications', this.userData['_id'])
+        .pipe(retry(Infinity))
+        .subscribe());
   }
 
   /**
@@ -215,4 +190,74 @@ export class NavbarComponent implements OnInit, AfterViewInit{
     this.subSink.unsubscribe()
   }
 
-}
+    /**
+     * This function fetches the user details, makes a GET request to the server
+     */
+    async getCurrentUser() {
+      return new Promise((resolve, reject) => {
+        try {
+          this.subSink.add(this.userService.getUser()
+            .pipe(retry(3))
+            .subscribe(res => resolve(res['user']))
+          );
+        } catch (err) {
+          console.log('Error occured while fetching the user details', err);
+          this.utilityService.errorNotification('Error occured while fetching your profile details');
+          reject({});
+        }
+      })
+    }
+
+    /**
+     * This function is responsible for logging the user out
+     */
+    async logout() {
+      try {
+        this.utilityService.asyncNotification('Please wait, while we log you out securely...',
+          new Promise((resolve, reject) => {
+            this.subSink.add(this.authService.signout()
+              .subscribe((res) => {
+                this.storageService.clear();
+                this.publicFunctions.sendUpdatesToGroupData({})
+                this.publicFunctions.sendUpdatesToRouterState({})
+                this.publicFunctions.sendUpdatesToUserData({})
+                this.publicFunctions.sendUpdatesToWorkspaceData({})
+                this.socketService.disconnectSocket();
+                this.router.navigate(['/home'])
+                  .then(() => resolve(this.utilityService.resolveAsyncPromise('Succesfully Logged out!')))
+
+              }, (err) => {
+                console.log('Error occured while logging out!', err);
+                reject(this.utilityService.rejectAsyncPromise('Error occured while logging you out!, please try again!'));
+              }))
+          }))
+      } catch (err) {
+        console.log('Error occured while logging out!', err);
+        this.utilityService.errorNotification('Error occured while logging you out!');
+      }
+    }
+
+  /**
+   * Add Hot Keys
+   */
+  /*
+  addHotKeys(searchRef: any){
+    this.hotKeysService.add(new Hotkey(['shift+space'], (event: KeyboardEvent, combo: string): boolean =>{
+      this.openModal(searchRef);
+      return false;
+    }))
+  }
+  */
+
+    closeModal(){
+      this.utilityService.closeAllModals();
+    }
+
+    openModal(content: any){
+      this.utilityService.openModal(content, {
+        size: 'l',
+        windowClass: 'search'
+      });
+    }
+
+  }

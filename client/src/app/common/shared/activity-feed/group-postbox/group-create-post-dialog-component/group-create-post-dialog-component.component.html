@@ -1,8 +1,9 @@
 <div class="post-dialog-content">
     <mat-dialog-actions align="end">
         <div class="action-box">
-            <i mat-dialog-close class="material-icons" style="cursor: pointer"
-                (click)="onCloseDialog()">close</i>
+            <a (click)="onCloseDialog()" mat-dialog-close>
+            <i  class="material-icons" style="cursor: pointer">close</i>
+            </a>
         </div>
     </mat-dialog-actions>
 
@@ -69,18 +70,65 @@
                     (click)="updateDetails()">
                 Save
             </button>
+
+            <button *ngIf="!showSubtasks && !postData?.task?._parent_task && postData?.type === 'task'" class="btn float-left btn-warning btn-md" (click)="prepareToAddSubtasks()">
+              + Add Subtasks
+            </button>
         </div>
+
+        <div class="content-box" *ngIf="showSubtasks">
+          <app-subtasks
+            [subtasks]="subtasks"
+            [groupData]="groupData"
+            [userData]="userData"
+            [parentId]="postData?._id"
+            (openSubtaskEmitter)="onOpenSubtask($event)"></app-subtasks>
+        </div>
+
+        <app-north-star-stats *ngIf="postData?.task?.isNorthStar"
+          [isNorthStar]="(postData?.task?.isNorthStar) ? true : false"
+          [northStar]="postData?.task?.northStar">
+        </app-north-star-stats>
 
         <div class="content-box" *ngIf="comments.length > 0">
             <section *ngFor="let comment of comments; let index = index;">
                 <post-comment [comment]="comment" [index]="index" [userData]="userData"
-                    [groupId]="postData._group || postData._group._id" (remove)="removeComment($event)"></post-comment>
+                    [groupId]="postData?._group || postData?._group?._id" (remove)="removeComment($event)"></post-comment>
             </section>
         </div>
     </div>
 
+    <!-- Top Right Section starts -->
     <div class="post-properties">
-        <div class="content-box" *ngIf="postData.type === 'task'">
+        <!-- Parent Task starts -->
+        <div *ngIf="postData?.task?._parent_task && postData?.type === 'task'" class="content-box">
+          <p class="box-title"> Parent task</p>
+
+          <div class="parent-task">
+            <div style="display: flex; flex-direction: row; justify-content: space-between; width: 100%;" (click)="openParentTask(postData?.task?._parent_task._id)">
+              <div class="parent-title">
+                {{ postData?.task?._parent_task.title | truncatetext:40 }}
+              </div>
+
+              <img src="{{ parentTaskAssigneeProfilePicUrl }}"
+                onerror="this.src='assets/images/user.png'" class="feed-avatar">
+            </div>
+          </div>
+        </div>
+        <!-- Parent Task ends -->
+
+        <!-- Is North Start starts -->
+        <app-north-star *ngIf="postData?.type === 'task'"
+          [isNorthStar]="(postData?.task?.isNorthStar) ? true : false"
+          [northStar]="postData.task.northStar"
+          (transformIntoNorthStarEmitter)="transformToNorthStart()"
+          (saveInitialNorthStarEmitter)="saveNorthStar($event)"
+          (addProgressNorthStarEmitter)="saveNorthStar($event)">
+        </app-north-star>
+        <!-- Is North Start ends -->
+
+        <!-- Status starts -->
+        <div class="content-box" *ngIf="!postData?.task?.isNorthStar && postData?.type === 'task'">
             <p class="box-title">Status</p>
             <!-- Change task status starts -->
             <app-task-status
@@ -91,8 +139,24 @@
             <!-- Change task status ends -->
 
             <br />
+            <p *ngIf="groupData && groupData.enabled_rights" class="box-title">BAR</p>
+            <div *ngIf="groupData && groupData.enabled_rights" class="ml-3">
+                <div (click)="removeBarTag(i, barTag)" *ngFor="let barTag of barTags; let i = index">
+                <div><span class="tag"> {{ barTag }}</span> <i class="material-icons" style="color: red;">clear</i></div>
+                </div>
 
-            <p class="box-title">Section</p>
+                <app-component-search-input-box
+                    *ngIf="groupData && checkDataExist(groupData)"
+                    [placeholder]="'Add bar tag'"
+                    [groupData] = "groupData"
+                    [type]="'barTag'"
+                    [groupId]="groupId"
+                    (barTag)="addNewBarTag($event)">
+                </app-component-search-input-box>
+            </div>
+            <br *ngIf="groupData && groupData.enabled_rights" />
+
+            <p class="box-title" *ngIf="columns">Section</p>
             <!-- Change task column starts -->
             <app-change-column
                 class="ml-3"
@@ -103,26 +167,48 @@
             </app-change-column>
             <!-- Change task column ends -->
         </div>
+        <!-- Status ends -->
 
-        <!-- Top Right Section starts -->
-        <div class="content-box" *ngIf="postData.type === 'task' || postData.type === 'event'">
+        <!-- Dates starts -->
+        <div class="content-box" *ngIf="postData?.type === 'task' || postData.type === 'event'">
             <p class="box-title">Due date</p>
-            <div *ngIf="postData.type === 'task'" class="btn-group">
+            <div *ngIf="postData?.type === 'task'">
+              <!-- Date Picker Start-Date starts -->
+              <!--
+              <app-date-picker *ngIf="groupData?.project_type"
+                (date)="getDate($event, 'start_date')"
+                [dueDate]="postData?.task.start_date"
+                [styleClass]="'btn-group input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')">
+              </app-date-picker>
+              -->
+              <!--Date Picker Start-Date ends -->
+
+              <!-- Date Picker End-Date starts -->
+              <!--
+              <app-date-picker *ngIf="groupData?.project_type"
+                (date)="getDate($event, 'end_date')"
+                [dueDate]="postData?.task.end_date"
+                [styleClass]="'btn-group input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')">
+              </app-date-picker>
+              -->
+              <!--Date Picker End-Date ends -->
+
+
               <!-- Date Picker starts -->
               <app-date-picker
-                (date)="getDate($event)"
+                (date)="getDate($event, 'due_date')"
                 [dueDate]="postData?.task.due_to"
-                [styleClass]="'input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')">
+                [styleClass]="'btn-group input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')">
               </app-date-picker>
               <!--Date Picker ends -->
             </div>
             <div *ngIf="postData.type === 'event'" class="btn-group">
               <!-- Date Picker starts -->
-            <app-date-picker
-              (date)="getDate($event)"
-              [dueDate]="postData?.event.due_to"
-              [styleClass]="'input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')">
-            </app-date-picker>
+              <app-date-picker
+                (date)="getDate($event, 'due_date')"
+                [dueDate]="postData?.event.due_to"
+                [styleClass]="'input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')">
+              </app-date-picker>
               <!--Date Picker ends -->
             </div>
 
@@ -135,12 +221,12 @@
             </app-time-picker>
             <!-- Time Picker ends -->
         </div>
-        <!-- Top Right Section ends -->
+        <!-- Dates ends -->
 
         <!-- Assignee Modal starts -->
-        <div class="content-box" *ngIf="postData.type === 'task' || postData.type === 'event'">
-            <p class="box-title">Assigned member</p>
-            <app-inline-input *ngIf="postData.type === 'task'"
+        <div class="content-box" *ngIf="postData?.type === 'task' || postData.type === 'event'">
+            <p class="box-title">Assignee</p>
+            <app-inline-input *ngIf="postData?.type === 'task'"
                 [(ngModel)]="postData.task._assigned_to"
                 [domainObject]="postData"
                 [required]="true"
@@ -151,7 +237,7 @@
                 type="assignee">
             </app-inline-input>
 
-            <p *ngIf="postData.type === 'event'" style="padding-top: 20px;">Assigned to {{ eventAssignedToCount }} member(s)</p>
+            <p *ngIf="postData.type === 'event'" style="padding-top: 20px;">{{ eventAssignedToCount }} member(s)</p>
             <app-component-search-input-box
                 *ngIf="postData.type === 'event' && userData && checkDataExist(userData)"
                 [placeholder]="'Assign...'"
@@ -161,18 +247,6 @@
                 [type]="'event'"
                 (member)="getMemberDetails($event)">
             </app-component-search-input-box>
-            <!--
-            <div id="avatar-assignee" *ngIf="!eventAssignedToAll()">
-                <img  *ngFor="let assignee of eventAssignees"
-                    [src]="profilePicURL(assignee.profile_pic)"
-                    onerror="this.src='assets/images/user.png'"
-                    alt="{{ assignee.first_name }} {{ assignee.last_name }}"
-                    [ngClass]="'feed-avatar'">
-            </div>
-            <p *ngIf="!eventAssignees" style="padding-top: 20px;">
-                Unassigned
-            </p>
-            -->
         </div>
         <!-- Assignee Modal ends -->
 
@@ -188,7 +262,7 @@
             <!-- Post Tags ends -->
         </div>
 
-        <div class="content-box" *ngIf="postData.type === 'task'">
+        <div class="content-box" *ngIf="postData?.type === 'task'">
             <p class="box-title">Custom fields</p>
             <div *ngFor="let cf of customFields" class="d-flex custom-field justify-content-start mb-3 row">
                 <p class="ml-3 mt-2 mb-0">{{ cf.title }}</p>
@@ -204,4 +278,11 @@
             </div>
         </div>
     </div>
+    <!-- Top Right Section ends -->
 </div>
+
+<!-- Loading Spinner Starts -->
+<ng-container *ngIf="isLoading$ | async">
+  <app-loading-spinner class="media"></app-loading-spinner>
+</ng-container>
+<!-- Loading Spinner Ends -->

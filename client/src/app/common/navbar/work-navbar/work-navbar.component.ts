@@ -1,7 +1,7 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { environment } from 'src/environments/environment';
-import { PublicFunctions } from 'src/app/dashboard/public.functions';
+import { PublicFunctions } from 'modules/public.functions';
 import { SubSink } from 'subsink';
 
 @Component({
@@ -45,6 +45,10 @@ export class WorkNavbarComponent implements OnInit {
 
     // INITIALISE THE WORKSPACE DATA FROM SHARED SERVICE, STORED LOCAL DATA OR FROM SERVER USING PUBLIC FUNCTIONS
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+  }
+
+  canSeeDashboard() {
+    return (this.userData && (this.userData.role === 'owner' || this.userData.role === 'admin'));
   }
 
 }

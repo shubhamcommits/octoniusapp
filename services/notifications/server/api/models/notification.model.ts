@@ -20,6 +20,14 @@ const NotificationSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Post'
     },
+    _origin_group: {
+        type: Schema.Types.ObjectId,
+        ref: 'Group'
+    },
+    _origin_folio: {
+        type: Schema.Types.ObjectId,
+        ref: 'File'
+    },
     created_date: {
         type: Date,
         default: Date.now
@@ -39,7 +47,7 @@ const NotificationSchema = new Schema({
     type: {
         type: String,
         required: true,
-        enum: ['assignment', 'mention']
+        enum: ['assignment', 'mention', 'mention_folio', 'started', 'completed', 'comment', 'like_comment', 'follow', 'likes']
     }
 });
 

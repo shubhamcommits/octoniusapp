@@ -12,7 +12,7 @@ const postController = new PostController();
 /**
  * Calendar Controller Class Object
  */
-let calendarController = new CalendarController()
+let calendarController = new CalendarController();
 
 // Define auths helper controllers
 const auths = new Auths();
@@ -39,6 +39,12 @@ routes.post('/', postFileHandler, postController.add);
  * @param lastPostId - optional
  */
 routes.get('/', postController.getPosts);
+
+/**
+ * GET - This route fetches the list of posts present in a group
+ * @param { groups Ids } query
+ */
+routes.get('/northstar', postController.getNorthStarTasks);
 
 // This route is used to edit a post
 routes.put('/:postId', postFileHandler, postController.edit);
@@ -95,6 +101,12 @@ routes.get('/week-events', postController.getThisMonthEvents);
 // This route is used to get next 5 events for this week
 routes.get('/next-events', postController.getNextEvents);
 
+// This route is used to get the workspace's posts
+routes.get('/workspace/posts', postController.getWorspacePosts);
+
+// This route is used to get the group's posts
+routes.get('/group/posts', postController.getGroupPosts);
+
 // -| TASKS |-
 
 // PUT - Change task assignee
@@ -108,6 +120,12 @@ routes.put('/:postId/task-status', postController.changeTaskStatus);
 
 // PUT - Change task column
 routes.put('/:postId/task-column', postController.changeTaskColumn);
+
+// PUT - Change task start or end date
+routes.put('/:postId/update-date', postController.changeTaskDate);
+
+// This route is used to get the subtasks of a task
+routes.get('/post/subtasks', postController.getSubtasks);
 
 
 // -| RECENT ACTIVITY |-
@@ -124,5 +142,9 @@ routes.get('/test/recents/groups', postController.getRecentGroups);
 // -| CUSTOM FIELDS |-
 // PUT - Change custom field value
 routes.put('/:postId/customField', postController.saveCustomField);
+
+//PUT - Adding removing BARS with user ids
+routes.put('/:postId/addBar', postController.addBarToPost);
+routes.put('/:postId/removeBar', postController.removeBarFromPost);
 
 export { routes as postRoutes };
