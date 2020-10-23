@@ -115,9 +115,22 @@
 }
 
 .parent-task {
+  border-radius: 2px;
+  box-sizing: border-box;
+  transition: box-shadow 0.3s ease-in-out;
+  font-size: 12px !important;
+  border-left: 3px solid #e4edf8;
   cursor: pointer;
-
   :hover {
     background-color: #f1f1f3 !important;
   }
+  .parent-title{
+    padding: 10px; 
+    align-self: center;
+  }
+  .feed-avatar{
+      width:30px;
+      height:30px;
+  }
+  
 }
