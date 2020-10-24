@@ -8,8 +8,8 @@
       </div>
     </div>
 
-    <div class="row mt-12 d-none d-sm-block" *ngIf="chartReady">
-      <canvas baseChart width="400" height="400"
+    <div class="mt-12 d-none d-sm-block" *ngIf="chartReady">
+      <canvas baseChart
         [data]="lineChartData"
         [labels]="lineChartLabels"
         [options]="lineChartOptions"
