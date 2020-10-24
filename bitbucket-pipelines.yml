@@ -141,7 +141,7 @@ pipelines:
            variables:
              SSH_USER: 'ubuntu'
              SERVER: $HOST_ADDRESS
-             COMMAND: 'cd /home/ubuntu/flash; echo $HOST_PASSWORD | sudo -S ./stop-swarm.sh && ./deploy-swarm.sh'
+             COMMAND: 'cd /home/ubuntu/flash; echo $HOST_PASSWORD | sudo -S ./stop-compose.sh && ./deploy-compose.sh'
           
 definitions:
    services:
