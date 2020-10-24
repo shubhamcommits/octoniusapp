@@ -47,7 +47,7 @@
           </div>
         </div>
         <!-- NOTIFICATION ITEM STARTS-->
-        <div class="notification-item" *ngFor="let notification of notificationsData?.unreadNotifications;">
+        <div class="notification-item" *ngFor="let notification of notificationsData?.unreadNotifications; let index = index">
           <div class="notification_actor">
             <img src="{{baseUrl}}/{{notification?._actor?.profile_pic}}"
               onerror="this.src='assets/images/user.png'" alt="" class="feed-avatar"
@@ -97,7 +97,7 @@
                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
                 <span>View</span>
               </a>
-              <a mat-menu-item (click)="markNotificationAsRead(notification._id, userData._id)">
+              <a mat-menu-item (click)="markNotificationAsRead(notification._id, userData._id, index)">
                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">check_circle_outline</i>
                 <span>Mark As Read</span>
             </a>
