@@ -37,7 +37,6 @@ export class ColumnsController {
     };
 
     // get all existing columns
-
     async getAllColumns(req: Request, res: Response, next: NextFunction) {
         try {
 
@@ -287,4 +286,40 @@ export class ColumnsController {
         }
     }
 
+    /**
+     * This function is responsible for updating the custom fields to show in the list view for the particular group
+     * @param { column } req 
+     * @param res 
+     */
+    async updateCustomFieldsToShow(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the fileName from fileHandler middleware
+        const column = req.body;
+
+        try {
+            // Find the group and update their respective group avatar
+            const group = await Column.updateOne({
+                groupId: column.groupId,
+                columns: {
+                    "$elemMatch": {
+                        title: column.columnName
+                    }
+                }
+            }, {
+                "$set": {
+                    "columns.$.custom_fields_to_show": column.customFieldsToShow
+                }
+            }, {
+                new: true
+            }).select('custom_fields_to_show');
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Group custom fields to show updated!',
+                group
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
 }

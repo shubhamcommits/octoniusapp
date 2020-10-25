@@ -1,5 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import moment from 'moment/moment';
+import { Component, OnChanges, Input, EventEmitter, Output } from '@angular/core';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { environment } from 'src/environments/environment';
 
@@ -8,16 +7,17 @@ import { environment } from 'src/environments/environment';
   templateUrl: './done-tasks-list-view.component.html',
   styleUrls: ['./done-tasks-list-view.component.scss']
 })
-export class DoneTasksListViewComponent implements OnInit {
+export class DoneTasksListViewComponent implements OnChanges {
 
-  @Input() columns = [];
   @Input() tasks = [];
+  @Input() sections = [];
+  @Input() section;
   @Input() groupData;
   @Input() userData;
   @Input() customFieldsToShow = [];
+  @Input() displayedColumns = [];
 
-  @Output() closeModalEvent = new EventEmitter();
-  @Output() deleteEvent = new EventEmitter();
+  @Output() closeDoneTaskModalEvent = new EventEmitter();
 
   collapse = true;
 
@@ -26,20 +26,26 @@ export class DoneTasksListViewComponent implements OnInit {
 
   constructor(public utilityService: UtilityService) { }
 
-  ngOnInit() {
+  ngOnChanges() {
+    this.initTable();
+  }
+
+  initTable() {
+    this.tasks = [...this.tasks];
   }
 
   /**
    * This function is responsible for opening a fullscreen dialog to edit a task
    */
   openFullscreenModal(postData: any): void {
-    const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, postData._group._id, this.columns);
+    const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, postData._group._id, this.sections);
 
     const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe((data) => {
-      this.deleteEvent.emit(data);
+      this.onDeleteEvent(data);
     });
     const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
-      this.closeModalEvent.emit(data);
+      this.updateTask(data);
+      this.closeDoneTaskModalEvent.emit(data);
     });
     dialogRef.afterClosed().subscribe(result => {
       closeEventSubs.unsubscribe();
@@ -47,4 +53,31 @@ export class DoneTasksListViewComponent implements OnInit {
     });
   }
 
+  onDeleteEvent(id) {
+    // Find the index of the tasks inside the column
+    const indexTask = this.tasks.findIndex((task: any) => task._id === id);
+    if (indexTask !== -1) {
+      this.tasks.splice(indexTask, 1);
+      this.initTable();
+      return;
+    }
+  }
+
+  /**
+   * This function is responsible for updating the task in the UI
+   * @param post - post
+   */
+  updateTask(post: any) {
+    // Find the index of the tasks inside the column
+    const indexTask = this.tasks.findIndex((task: any) => task._id === post._id);
+    if (this.section.title.toLowerCase() !== post.task._column.title.toLowerCase()
+      || post.task.status !== 'done') {
+      this.tasks.splice(indexTask, 1);
+      this.closeDoneTaskModalEvent.emit(post);
+    } else {
+      // update the tasks from the array
+      this.tasks[indexTask]= post;
+    }
+    this.initTable();
+  }
 }

@@ -110,10 +110,6 @@ const GroupSchema = new Schema({
             }
         }]
     },
-    custom_fields_to_show: {
-        type: [String],
-        default: []
-    },
     records: {
         pulses: [{
             date: {

@@ -3,7 +3,8 @@ const { Schema } = mongoose;
 
 const Columns = new Schema({
     title: String,
-    taskCount: Number
+    taskCount: Number,
+    custom_fields_to_show: [String]
 });
 
 const ColumnSchema = new Schema({
@@ -15,7 +16,8 @@ const ColumnSchema = new Schema({
         type: [Columns],
         default: [{
             title: 'to do',
-            taskCount: 0
+            taskCount: 0,
+            custom_fields_to_show: []
         }]
     }
 });

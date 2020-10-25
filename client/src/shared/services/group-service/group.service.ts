@@ -151,14 +151,6 @@ export class GroupService {
     return this._http.get(this.baseURL + `/${groupId}/getBars`).toPromise()
   }
 
-  saveCustomFieldsToShow(groupId: string, customFieldsToShow: any[]) {
-    return this._http.put(this.baseURL + `/${groupId}/customFieldsToShow`, { customFieldsToShow }).toPromise();
-  }
-
-  getGroupCustomFieldsToShow(groupId: string) {
-    return this._http.get(this.baseURL + `/${groupId}/customFieldsToShow`).toPromise();
-  }
-
   saveNewCustomField(newCustomField: { name: string; title: string; values: any[]; }, groupId: any) {
     return this._http.put(this.baseURL + `/${groupId}/customFields`, { newCustomField }).toPromise();
   }

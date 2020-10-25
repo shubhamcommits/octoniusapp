@@ -68,7 +68,7 @@ import { SharedModule } from 'src/app/common/shared/shared.module';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 // import { MomentModule } from "ngx-moment";
-import { MatButtonModule, MatMenuModule, MatChipsModule, MatDialogModule, MatSelectModule } from '@angular/material';
+import { MatButtonModule, MatMenuModule, MatChipsModule, MatDialogModule, MatSelectModule, MatTableModule } from '@angular/material';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatExpansionModule } from '@angular/material/expansion';
 
@@ -80,6 +80,7 @@ import { GroupService } from 'src/shared/services/group-service/group.service';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { CommentService } from 'src/shared/services/comment-service/comment.service';
 import { GroupDashboardComponent } from './group/group-dashboard/group-dashboard.component';
+import { TasksTableComponent } from './group/group-tasks-list-view/tasks-table/tasks-table.component';
 
 /**
  * 4. !===== DECLARATIONS, IMPORTS, EXPORTS, & PROVIDERS =====!
@@ -169,6 +170,8 @@ import { GroupDashboardComponent } from './group/group-dashboard/group-dashboard
 
     GroupDashboardComponent,
 
+    TasksTableComponent,
+
     GanttViewComponent
   ],
   imports: [
@@ -187,7 +190,8 @@ import { GroupDashboardComponent } from './group/group-dashboard/group-dashboard
     MatDialogModule,
     MatSelectModule,
     MatSlideToggleModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatTableModule
   ],
   providers: [
     GroupsService,

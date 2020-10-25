@@ -1,71 +1,14 @@
 <div class="list">
     <div class="list-wrapper">
-        <!-- HEADER ROW -->
-        <div class="list-view-header">
-
-
-            <div class="task_row_header">
-                <div class="task_content">
-
-                        <div class="task_title">Title</div>
-
-
-                    <div class="task_cell_tag">
-                        Tags
-                    </div>
-
-                    <div class="task_cell_assignee">
-                        Assignee
-                    </div>
-
-                    <div class="task_cell_date">
-                        Due Date
-                    </div>
-
-                    <div class="task_cell_cf" *ngFor="let field of customFieldsToShow" >
-                        {{ field.title }}
-                            <i class="material-icons"
-                                *ngIf="isAdmin"
-                                (click)="removeColumn(field)"
-                                style="cursor: pointer;">highlight_off</i>
-
-                    </div>
-
-                    <div class="task_cell_more">
-                        <i class="material-icons-outlined" style="cursor: pointer;"
-                                *ngIf="isAdmin"
-                                [matMenuTriggerFor]="addColumn">
-                            add
-                        </i>
-                    </div>
-                    <mat-menu #addColumn="matMenu">
-                        <div class="newColumnMatMenu">
-                            Add custom field
-                            <mat-form-field>
-                                <mat-select ngDefaultControl
-                                        (selectionChange)="addNewColumn($event)"
-                                        (click)="$event.stopPropagation()"
-                                        [(ngModel)]="newColumnSelected"
-                                        name="new_column">
-                                    <mat-option *ngFor="let f of customFields" [value]="f">{{ f.title }}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                    </mat-menu>
-                </div>
-            </div>
-        </div>
-        <!-- HEADER ROW -->
-
         <!-- ALL COLUMN DETAILS STARTS -->
-        <div class="list-columns" *ngIf="this.columns">
+        <div class="list-columns" *ngIf="sections">
 
           <mat-accordion multi>
-            <mat-expansion-panel class="list-column" style="background-color: #fafafa; box-shadow: none;"  id="column.title" *ngFor="let column of columns; first as isFirst" [expanded]="isFirst" >
+            <mat-expansion-panel class="list-column" style="background-color: #fafafa; box-shadow: none;"  id="column.title" *ngFor="let section of sections; first as isFirst" [expanded]="isFirst" >
               <mat-expansion-panel-header class="column-title">
                 <!-- COLUMN TITLE -->
                 <mat-panel-title>
-                  <p class="muted"> {{ column?.title }}</p>
+                  <p class="muted"> {{ section?.title }}</p>
                 </mat-panel-title>
                 <!-- COLUMN TITLE -->
                 <mat-panel-description>
@@ -73,15 +16,27 @@
               </mat-expansion-panel-header>
 
               <!-- TASK CONTAINER STARTS -->
-              <div class="tasks-container" [id]="column.title">
+              <div [id]="section.title">
 
                 <!-- CREATE TASK STARTS -->
-                <app-new-task [groupData]="groupData" [userData]="userData" [column]="column"
-                    (post)="getPost($event, column)"></app-new-task>
+                <app-new-task [groupData]="groupData" [userData]="userData" [column]="section" (post)="getPost($event, section)"></app-new-task>
                 <!-- CREATE TASK ENDS -->
+
+                <!-- TASKS TABLE STARTS -->
+                <app-tasks-table
+                  [tasks]="section.tasks"
+                  [groupData]="groupData"
+                  [userData]="userData"
+                  [sections]="sections"
+                  [section]="section"
+                  [isAdmin]="isAdmin"
+                  [customFields]="customFields"
+                  (taskChangeSectionEmitter)="onTaskChangeSection($event)"></app-tasks-table>
+                <!-- TASKS TABLE ENDS -->
 
                 <!-- TASK DETAILS STARTS -->
                 <!-- Normal Tasks Start -->
+                <!--
                 <div class="task_row"
                     [ngClass]="{'status-todo': task?.task?.status === 'to do', 'status-inprogress': task?.task?.status === 'in progress', 'nsdone': task?.task?.status === 'nsdone' || task?.task?.isNorthStar }"
                     *ngFor="let task of column.tasks; let j = index;">
@@ -158,9 +113,9 @@
                           </mat-menu>
                       </div>
                   </div>
-                  <!-- Normal Tasks Ends -->
+                  <!-- Normal Tasks Ends
 
-                  <!-- North Star Tasks Start -->
+                  <!-- North Star Tasks Start
                   <div *ngIf="task?.task?.isNorthStar" class="north-star card-tile">
                     <a (click)="openFullscreenModal(task)">
                       <div>
@@ -198,11 +153,11 @@
                       </div>
                     </a>
                   </div>
-                  <!-- North Star Tasks Ends -->
+                  <!-- North Star Tasks Ends
                 </div>
-                <!-- TASK DETAILS ENDS -->
+                <!-- TASK DETAILS ENDS
 
-                <!-- DONE TASKS -->
+                <!-- DONE TASKS
                 <app-done-tasks-list-view *ngIf="column.tasks.done"
                   [tasks]="column.tasks.done"
                   [columns]="columns"
@@ -212,7 +167,8 @@
                   (closeModalEvent)="onModalCloseEvent($event)"
                   (deleteEvent)="onDeleteDoneEvent($event)">
                 </app-done-tasks-list-view>
-                <!-- DONE TASKS ENDS -->
+                <!-- DONE TASKS ENDS
+              -->
               </div>
               <!-- TASK CONTAINER ENDS -->
 
