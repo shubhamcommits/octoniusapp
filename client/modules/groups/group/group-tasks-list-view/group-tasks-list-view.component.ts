@@ -1,13 +1,11 @@
-import { Component, OnInit, Input, Injector, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Injector, ViewChild } from '@angular/core';
 import moment from 'moment/moment';
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { MatDialog, MatAccordion } from '@angular/material';
-import { GroupCreatePostDialogComponent } from 'src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
 
 @Component({
@@ -53,7 +51,6 @@ export class GroupTasksListViewComponent implements OnInit {
 
   constructor(
       public utilityService: UtilityService,
-      private groupService: GroupService,
       private injector: Injector,
       private router: ActivatedRoute,
       public dialog: MatDialog
