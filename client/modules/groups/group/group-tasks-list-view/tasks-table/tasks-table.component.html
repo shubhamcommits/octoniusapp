@@ -1,7 +1,7 @@
 <div class="table-container">
 <table mat-table [dataSource]="dataSource" matSort>
   <!-- title Column -->
-  <ng-container matColumnDef="title">
+  <ng-container matColumnDef="title" sticky>
     <th mat-header-cell *matHeaderCellDef mat-sort-header> Title </th>
     <td mat-cell *matCellDef="let task">
       <div>
@@ -21,7 +21,7 @@
   <ng-container matColumnDef="nsPercent">
     <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
     <td mat-cell *matCellDef="let task">
-      <div class="col-md-1" *ngIf="task?.task?.isNorthStar">
+      <div class="ns_cell" *ngIf="task?.task?.isNorthStar">
         <div [ngClass]="getNSStatusClass(task?.task?.northStar)">
           {{ getProgressPercent(task?.task?.northStar) | percent: '.2-2'}}
         </div>
@@ -101,8 +101,8 @@
     <th mat-header-cell *matHeaderCellDef mat-sort-header>
       <div class="cf_cell" >
         {{ cf.title }}
-        <i class="material-icons" *ngIf="isAdmin" (click)="removeColumn(cf)"
-          style="cursor: pointer;">highlight_off</i>
+        <i class="material-icons small" *ngIf="isAdmin" (click)="removeColumn(cf)"
+          style="cursor: pointer;">close</i>
       </div>
     </th>
     <td mat-cell *matCellDef="let task">
