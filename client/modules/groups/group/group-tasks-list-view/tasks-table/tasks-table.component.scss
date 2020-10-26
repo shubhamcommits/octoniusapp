@@ -9,6 +9,13 @@ $dark-sky-blue: #4a90e2;
   padding-left: 0px;
 }
 
+.table-container::-webkit-scrollbar {
+  width: 0px;
+  background: transparent; /* make scrollbar transparent */
+  display: none;
+}
+
+
 .small{
   font-size: 14px;
 }
