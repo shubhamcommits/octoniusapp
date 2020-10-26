@@ -4,7 +4,7 @@ $turquoise: #0bc6a0;
 $dark-sky-blue: #4a90e2;
 
 .table-container{
-  width: auto;
+  width: 99%;
   max-width: 100%;
   overflow: auto;
 }
@@ -15,7 +15,7 @@ $dark-sky-blue: #4a90e2;
 }
 
 td.mat-column-title {
-  width: 400px;
+  // width: 400px;
 }
 
 td.mat-column-star {
@@ -110,9 +110,6 @@ td.mat-column-star {
   border-left: 3px solid #5E2FE5;
 }
 
-.newColumnMatMenu {
-  // padding: 20px;
-}
 
 .cf_cell{
   width: 120px;

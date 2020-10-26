@@ -1,8 +1,7 @@
-<div class="table-container">
-<table mat-table [dataSource]="tasks">
+<table mat-table [dataSource]="dataSource" matSort class="tasks-container">
   <!-- title Column -->
-  <ng-container matColumnDef="title">
-    <th mat-header-cell *matHeaderCellDef> Title </th>
+  <ng-container matColumnDef="title" sticky>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Title </th>
     <td mat-cell *matCellDef="let task">
       <div>
         <app-inline-input
@@ -19,9 +18,9 @@
 
   <!-- percentage Column -->
   <ng-container matColumnDef="nsPercent">
-    <th mat-header-cell *matHeaderCellDef></th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
     <td mat-cell *matCellDef="let task">
-      <div class="" *ngIf="task?.task?.isNorthStar">
+      <div class="col-md-1" *ngIf="task?.task?.isNorthStar">
         <div [ngClass]="getNSStatusClass(task?.task?.northStar)">
           {{ getProgressPercent(task?.task?.northStar) | percent: '.2-2'}}
         </div>
@@ -31,7 +30,7 @@
 
   <!-- tags Column -->
   <ng-container matColumnDef="tags">
-    <th mat-header-cell *matHeaderCellDef> Tags </th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Tags </th>
     <td mat-cell *matCellDef="let task">
       <div>
         <div class="tags" *ngIf="task?.tags.length <= 1">
@@ -53,7 +52,7 @@
 
   <!-- Assignee Column -->
   <ng-container matColumnDef="asignee">
-    <th mat-header-cell *matHeaderCellDef> Assignee </th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Assignee </th>
     <td mat-cell *matCellDef="let task">
       <div *ngIf="!task?.task?.isNorthStar" class="feed-avatar">
         <app-inline-input
@@ -77,7 +76,7 @@
 
   <!-- Due date Column -->
   <ng-container matColumnDef="due_to">
-    <th mat-header-cell *matHeaderCellDef> Due Date </th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Due Date </th>
     <td mat-cell *matCellDef="let task">
       <div *ngIf="!task?.task?.isNorthStar">
         <app-inline-input
@@ -98,15 +97,15 @@
 
   <!-- CUSTOM FIELDS START -->
   <ng-container [matColumnDef]="cf.name" *ngFor="let cf of customFieldsToShow">
-    <th mat-header-cell *matHeaderCellDef>
-      <div class="cf_cell" >
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+      <div class="task_cell_cf" >
         {{ cf.title }}
         <i class="material-icons" *ngIf="isAdmin" (click)="removeColumn(cf)"
           style="cursor: pointer;">highlight_off</i>
       </div>
     </th>
     <td mat-cell *matCellDef="let task">
-      <div class="">
+      <div class="task_cell_cf">
         <app-inline-input
             [customFieldName]="cf.name"
             [domainObject]="task"
@@ -121,7 +120,7 @@
   <!-- CUSTOM FIELDS ENDS -->
 
   <!-- Star Column -->
-  <ng-container matColumnDef="star">
+  <ng-container matColumnDef="star" stickyEnd>
     <th mat-header-cell *matHeaderCellDef>
       <div class="task_cell_more">
         <i class="material-icons-outlined" style="cursor: pointer;"
@@ -143,7 +142,7 @@
       </mat-menu>
     </th>
     <td mat-cell *matCellDef="let task">
-      <i class="material-icons-outlined muted" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
+      <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
       <mat-menu #menu="matMenu">
         <a mat-menu-item (click)="openFullscreenModal(task)">
             <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
@@ -158,7 +157,6 @@
     [ngClass]="{'status-todo': task?.task?.status === 'to do', 'status-inprogress': task?.task?.status === 'in progress', 'north-star': task?.task?.isNorthStar }">
   </tr>
 </table>
-</div>
 
 <!-- DONE TASKS -->
 <app-done-tasks-list-view *ngIf="tasks['done']"
