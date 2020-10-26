@@ -21,7 +21,7 @@
         <th mat-header-cell *matHeaderCellDef> Title </th>
         <td mat-cell *matCellDef="let task">
           <div class="">
-            {{ task.title | truncatetext:60 }}
+            {{ task?.title | truncatetext:60 }}
           </div>
         </td>
       </ng-container>
@@ -72,9 +72,20 @@
         <th mat-header-cell *matHeaderCellDef> Due Date </th>
         <td mat-cell *matCellDef="let task">
           <div class="">
-            {{ task.task.due_to | date:'MMM dd, yyyy' }}
+            {{ task?.task?.due_to | date:'MMM dd, yyyy' }}
         </div>
       </ng-container>
+
+      <!-- CUSTOM FIELDS START -->
+      <ng-container [matColumnDef]="cf.name" *ngFor="let cf of customFieldsToShow">
+        <th mat-header-cell *matHeaderCellDef> {{ cf.title }} </th>
+        <td mat-cell *matCellDef="let task">
+          <div class="task_cell_cf">
+            {{ (task?.task?.custom_fields) ? task?.task?.custom_fields[cf.name] : '' }}
+          </div>
+        </td>
+      </ng-container>
+      <!-- CUSTOM FIELDS ENDS -->
 
       <!-- Star Column -->
       <ng-container matColumnDef="star" stickyEnd>

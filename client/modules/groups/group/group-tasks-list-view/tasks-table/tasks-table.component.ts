@@ -1,4 +1,5 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, ViewChild } from '@angular/core';
+import { MatSort, MatTableDataSource } from '@angular/material';
 import moment from 'moment';
 import { environment } from 'src/environments/environment';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
@@ -31,6 +32,9 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
 
   displayedColumns = ['title', 'tags', 'asignee', 'due_to', 'nsPercent', 'star'];
 
+  dataSource: MatTableDataSource<any>;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
+
   constructor(
     public utilityService: UtilityService,
     private columnService: ColumnService
@@ -55,6 +59,19 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
     const doneTasks = [...this.tasks['done']];
     this.tasks = [...this.tasks];
     this.tasks['done'] = doneTasks;
+
+    this.dataSource = new MatTableDataSource(this.tasks);
+    this.dataSource.sort = this.sort;
+  }
+
+  loadCustomFieldsToShow() {
+    this.section.custom_fields_to_show.forEach(field => {
+      const cf = this.getCustomField(field);
+      // Push the Column
+      if (cf) {
+        this.customFieldsToShow.push(cf);
+      }
+    });
   }
 
   fieldUpdated(post, task) {
@@ -164,16 +181,6 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
 
   async onCloseDoneTaskModalEvent(data) {
     this.updateTask(data);
-  }
-
-  loadCustomFieldsToShow() {
-    this.section.custom_fields_to_show.forEach(field => {
-      const cf = this.getCustomField(field);
-      // Push the Column
-      if (cf) {
-        this.customFieldsToShow.push(cf);
-      }
-    });
   }
 
   getCustomField(fieldName: string) {
