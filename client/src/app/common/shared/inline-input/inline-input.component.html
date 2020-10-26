@@ -35,7 +35,7 @@
                 onerror="this.src='assets/images/user.png'"
                 [ngClass]="(showAssigneeName) ? 'feed-avatar assignee-avatar' : 'feed-avatar'">
             <div *ngIf="showAssigneeName && domainObject.task._assigned_to !== null"
-                    style="padding-top: 5px;">
+                    style="padding-top: 5px;" class="ml-1">
                 {{domainObject?.task?._assigned_to?.first_name}} 
                 {{ domainObject?.task?._assigned_to?.last_name }}
         </div>
@@ -48,8 +48,8 @@
             *ngIf="!editing && !showAssigneeName && domainObject.task._assigned_to !== null"
             (click)="unassignTask()">highlight_off</i>
         <div *ngIf="!editing && showAssigneeName && domainObject.task._assigned_to !== null">
-            <button (click)="unassignTask()" class="btn btn-sm btn-secondary">
-                Unassign
+            <button (click)="unassignTask()" class="btn btn-sm btn-link muted">
+                <i class="material-icons">close</i>
             </button>
         </div>
         <app-component-search-input-box

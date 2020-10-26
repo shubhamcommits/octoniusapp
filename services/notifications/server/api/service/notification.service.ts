@@ -332,11 +332,8 @@ export class NotificationsService {
    */
   async markRead(topListId: string) {
     try {
-        const markRead = await Notification.updateOne({
-            $and: [
-                { read: false },
-                { _id: { $lte: topListId } }
-            ]
+        const markRead = await Notification.findOneAndUpdate({
+                _id: topListId
         }, {
             $set: {
                 read: true

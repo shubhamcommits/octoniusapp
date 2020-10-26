@@ -55,10 +55,11 @@ function init(server: any){
         socket.on('markRead', async (topListId: string, userId: string) => {
             
             // Mark the notification as read
-            await notifications.markRead(topListId);
+            await notifications.markRead(topListId)
+            .then(()=>console.log('Notification marked as read!'))
 
             // And immediately respond to the user about markRead
-            await helperFunctions.sendNotificationsFeed(socket, userId, io);
+            // await helperFunctions.sendNotificationsFeed(socket, userId, io);
         });
 
         /* =================
