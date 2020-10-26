@@ -25,9 +25,9 @@ export class MyspaceInboxComponent implements OnInit, OnDestroy {
   userData: any;
 
   // NOTIFICATIONS DATA
-  public notificationsData: { readNotifications: [], unreadNotifications: [] } = {
-      readNotifications: [],
-      unreadNotifications: []
+  public notificationsData: any = {
+    readNotifications: [],
+    unreadNotifications: []
   }
 
   // BASE URL OF THE APPLICATION
@@ -45,7 +45,7 @@ export class MyspaceInboxComponent implements OnInit, OnDestroy {
     private injector: Injector,
     public utilityService: UtilityService,
     private socketService: SocketService
-    ) {
+  ) {
     // Subscribe to the change in notifications data from the server
     this.subSink.add(this.socketService.currentData.subscribe((res) => {
       if (JSON.stringify(res) != JSON.stringify({})) {
@@ -77,7 +77,12 @@ export class MyspaceInboxComponent implements OnInit, OnDestroy {
    * This function is responsible for marking all the notification as read
    */
   markAllNotificationAsRead() {
-    this.notificationsData.unreadNotifications.forEach(notification => this.markNotificationAsRead(notification['_id'], this.userData._id));
+    this.notificationsData.unreadNotifications.forEach((notification, index) => {
+      this.subSink.add(this.socketService.onEmit('markRead', notification['_id'], this.userData._id).subscribe())
+      notification['read'] = true
+    })
+
+    this.notificationsData.unreadNotifications = []
   }
 
   /**
@@ -85,10 +90,12 @@ export class MyspaceInboxComponent implements OnInit, OnDestroy {
    * @param notificationId - notification object Id
    * @param userId - userId of the current user
    */
-  markNotificationAsRead(notificationId: string, userId: string) {
+  markNotificationAsRead(notificationId: string, userId: string, index: any) {
     this.subSink.add(this.socketService.onEmit('markRead', notificationId, userId)
-        .pipe(take(1))
-        .subscribe());
+      .pipe(take(1))
+      .subscribe());
+      this.notificationsData.unreadNotifications[index]['read'] = true
+      this.notificationsData.unreadNotifications.splice(index, 1)
   }
 
   /**
@@ -100,24 +107,24 @@ export class MyspaceInboxComponent implements OnInit, OnDestroy {
   viewNotification(notificationId: string, postId: string, postType: string, group: any) {
 
     // mark notification as read
-    this.markNotificationAsRead(notificationId, this.userData._id);
+    // this.markNotificationAsRead(notificationId, this.userData._id);
 
     // redirect the user to the post
     const groupId = (group._id) ? group._id : group;
     // Set the Value of element selection box to be the url of the post
     if (postType === 'task') {
-      this._router.navigate(['/dashboard', 'work', 'groups', 'tasks'], {queryParams: { group: groupId, myWorkplace: false, postId: postId }});
+      this._router.navigate(['/dashboard', 'work', 'groups', 'tasks'], { queryParams: { group: groupId, myWorkplace: false, postId: postId } });
     } else {
-      this._router.navigate(['/dashboard', 'work', 'groups', 'activity'], {queryParams: { group: groupId, myWorkplace: false, postId: postId }});
+      this._router.navigate(['/dashboard', 'work', 'groups', 'activity'], { queryParams: { group: groupId, myWorkplace: false, postId: postId } });
     }
   }
 
   viewFolioNotification(notificationId: string, folioId: string, group: any) {
 
     // mark notification as read
-    this.markNotificationAsRead(notificationId, this.userData._id);
+    // this.markNotificationAsRead(notificationId, this.userData._id);
 
     const groupId = (group._id) ? group._id : group;
-    this._router.navigate(['/document', folioId], {queryParams: { group: groupId }});
+    this._router.navigate(['/document', folioId], { queryParams: { group: groupId } });
   }
 }
