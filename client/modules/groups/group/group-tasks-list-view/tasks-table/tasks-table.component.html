@@ -1,6 +1,7 @@
-<table mat-table [dataSource]="dataSource" matSort class="tasks-container">
+<div class="table-container">
+<table mat-table [dataSource]="dataSource" matSort>
   <!-- title Column -->
-  <ng-container matColumnDef="title" sticky>
+  <ng-container matColumnDef="title">
     <th mat-header-cell *matHeaderCellDef mat-sort-header> Title </th>
     <td mat-cell *matCellDef="let task">
       <div>
@@ -98,14 +99,14 @@
   <!-- CUSTOM FIELDS START -->
   <ng-container [matColumnDef]="cf.name" *ngFor="let cf of customFieldsToShow">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>
-      <div class="task_cell_cf" >
+      <div class="cf_cell" >
         {{ cf.title }}
         <i class="material-icons" *ngIf="isAdmin" (click)="removeColumn(cf)"
           style="cursor: pointer;">highlight_off</i>
       </div>
     </th>
     <td mat-cell *matCellDef="let task">
-      <div class="task_cell_cf">
+      <div class="cf_cell">
         <app-inline-input
             [customFieldName]="cf.name"
             [domainObject]="task"
@@ -120,9 +121,9 @@
   <!-- CUSTOM FIELDS ENDS -->
 
   <!-- Star Column -->
-  <ng-container matColumnDef="star" stickyEnd>
+  <ng-container matColumnDef="star">
     <th mat-header-cell *matHeaderCellDef>
-      <div class="task_cell_more">
+      <div class="">
         <i class="material-icons-outlined" style="cursor: pointer;"
           *ngIf="isAdmin" [matMenuTriggerFor]="addColumn">add</i>
       </div>
@@ -142,7 +143,7 @@
       </mat-menu>
     </th>
     <td mat-cell *matCellDef="let task">
-      <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
+      <i class="material-icons-outlined muted" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
       <mat-menu #menu="matMenu">
         <a mat-menu-item (click)="openFullscreenModal(task)">
             <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
@@ -157,7 +158,7 @@
     [ngClass]="{'status-todo': task?.task?.status === 'to do', 'status-inprogress': task?.task?.status === 'in progress', 'north-star': task?.task?.isNorthStar }">
   </tr>
 </table>
-
+</div>
 <!-- DONE TASKS -->
 <app-done-tasks-list-view *ngIf="tasks['done']"
   [tasks]="tasks['done']"
