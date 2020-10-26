@@ -48,7 +48,10 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
   ngAfterViewInit() {
     this.section.custom_fields_to_show.forEach(field => {
       if (this.displayedColumns.length - 1 >= 0) {
-        this.displayedColumns.splice(this.displayedColumns.length - 1, 0, field);
+        const index = this.displayedColumns.indexOf(field.name);
+        if (index < 0) {
+          this.displayedColumns.splice(this.displayedColumns.length - 1, 0, field);
+        }
       }
     });
   }
@@ -65,13 +68,15 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
   }
 
   loadCustomFieldsToShow() {
-    this.section.custom_fields_to_show.forEach(field => {
-      const cf = this.getCustomField(field);
-      // Push the Column
-      if (cf) {
-        this.customFieldsToShow.push(cf);
-      }
-    });
+    if (this.customFieldsToShow.length === 0){
+      this.section.custom_fields_to_show.forEach(field => {
+        const cf = this.getCustomField(field);
+        // Push the Column
+        if (cf) {
+          this.customFieldsToShow.push(cf);
+        }
+      });
+    }
   }
 
   fieldUpdated(post, task) {
