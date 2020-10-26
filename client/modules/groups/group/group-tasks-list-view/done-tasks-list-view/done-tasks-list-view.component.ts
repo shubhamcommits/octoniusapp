@@ -70,13 +70,17 @@ export class DoneTasksListViewComponent implements OnChanges {
   updateTask(post: any) {
     // Find the index of the tasks inside the column
     const indexTask = this.tasks.findIndex((task: any) => task._id === post._id);
-    if (this.section.title.toLowerCase() !== post.task._column.title.toLowerCase()
-      || post.task.status !== 'done') {
-      this.tasks.splice(indexTask, 1);
+    if (this.section.title.toLowerCase() !== post.task._column.title.toLowerCase()) {
+      // this.tasks.splice(indexTask, 1);
       this.closeDoneTaskModalEvent.emit(post);
     } else {
-      // update the tasks from the array
-      this.tasks[indexTask]= post;
+      if (post.task.status !== 'done') {
+        // this.tasks.splice(indexTask, 1);
+        this.closeDoneTaskModalEvent.emit(post);
+      } else {
+        // update the tasks from the array
+        this.tasks[indexTask]= post;
+      }
     }
     this.initTable();
   }

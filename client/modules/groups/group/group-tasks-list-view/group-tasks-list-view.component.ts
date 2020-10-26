@@ -56,7 +56,10 @@ export class GroupTasksListViewComponent implements OnInit {
     ) {}
 
   async ngOnInit() {
+    this.initSections();
+  }
 
+  initSections() {
     this.sections.forEach( section => {
       let tasks = [];
       let doneTasks = [];
@@ -164,22 +167,43 @@ export class GroupTasksListViewComponent implements OnInit {
 
   /**
    * This function is responsible for updating the task in the UI when it changes the section
-   * @param post - post
+   * @param { data.post, data.oldSection} - data
    */
-  onTaskChangeSection(post) {
-    const sectionIndex = this.sections.findIndex((section) => section.title.toLowerCase() === post.task._column.title.toLowerCase());
-    if (sectionIndex !== -1) {
-      if (post.task.status === 'done') {
-        this.sections[sectionIndex].tasks.done.unshift(post);
-        this.sections[sectionIndex].tasks.done = [...this.sections[sectionIndex].tasks.done];
-        return;
-      } else {
-        this.sections[sectionIndex].tasks.unshift(post);
-        const doneTasks = this.sections[sectionIndex].tasks.done;
-        this.sections[sectionIndex].tasks = [...this.sections[sectionIndex].tasks];
-        this.sections[sectionIndex].tasks.done = doneTasks;
-        return;
+  onTaskChangeSection(data) {
+    const post = data.post;
+    if (post) {
+      const oldSectionIndex = this.sections.findIndex((section) => section.title.toLowerCase() === data.oldSection.toLowerCase());
+      const sectionIndex = this.sections.findIndex((section) => section.title.toLowerCase() === post.task._column.title.toLowerCase());
+      if (sectionIndex !== -1) {
+        let indexTask = this.sections[oldSectionIndex].tasks.findIndex((task: any) => task._id === post._id);
+        if (oldSectionIndex !== -1) {
+          if (indexTask !== -1) {
+            this.sections[oldSectionIndex].tasks.splice(indexTask, 1);
+          } else {
+            indexTask = this.sections[oldSectionIndex].tasks.done.findIndex((task: any) => task._id === post._id);
+            if (indexTask !== -1) {
+              this.sections[oldSectionIndex].tasks.done.splice(indexTask, 1);
+            }
+          }
+        }
+
+        if (post.task.status === 'done') {
+          indexTask = this.sections[sectionIndex].tasks.done.findIndex((task: any) => task._id === post._id);
+          if (indexTask < 0) {
+            this.sections[sectionIndex].tasks.done.unshift(post);
+            this.sections[sectionIndex].tasks.done = [...this.sections[sectionIndex].tasks.done];
+          }
+        } else {
+          indexTask = this.sections[sectionIndex].tasks.findIndex((task: any) => task._id === post._id);
+          if (indexTask < 0) {
+            this.sections[sectionIndex].tasks.unshift(post);
+            const doneTasks = this.sections[sectionIndex].tasks.done;
+            this.sections[sectionIndex].tasks = [...this.sections[sectionIndex].tasks];
+            this.sections[sectionIndex].tasks.done = doneTasks;
+          }
+        }
       }
+      this.initSections()
     }
   }
 }
