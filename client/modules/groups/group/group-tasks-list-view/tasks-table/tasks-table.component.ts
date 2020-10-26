@@ -171,9 +171,10 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
       }
     } else {
       // if is coming from the done tasks
+      const indexDoneTask = this.tasks['done'].findIndex((task: any) => task._id === post._id);
       if (this.section.title.toLowerCase() === post.task._column.title.toLowerCase()) {
         if (post.task.status !== 'done') {
-          this.tasks['done'].splice(indexTask, 1);
+          this.tasks['done'].splice(indexDoneTask, 1);
           this.tasks.unshift(post);
         }
       } else {
