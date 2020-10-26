@@ -153,40 +153,39 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
    * @param post - post
    */
   updateTask(post: any) {
-
-    // Find the index of the task
-    const indexTask = this.tasks.findIndex((task: any) => task._id === post._id);
-    if (indexTask !== -1) {
-      if (this.section.title.toLowerCase() === post.task._column.title.toLowerCase()) {
-        if (post.task.status === 'done') {
-          this.tasks['done'].unshift(post);
-          this.tasks.splice(indexTask, 1);
+    if (post) {
+      // Find the index of the task
+      const indexTask = this.tasks.findIndex((task: any) => task._id === post._id);
+      if (indexTask !== -1) {
+        if (this.section.title.toLowerCase() === post.task._column.title.toLowerCase()) {
+          if (post.task.status === 'done') {
+            this.tasks['done'].unshift(post);
+            this.tasks.splice(indexTask, 1);
+          } else {
+            // update the tasks from the array
+            this.tasks[indexTask]= post;
+          }
         } else {
-          // update the tasks from the array
-          this.tasks[indexTask]= post;
+          this.tasks.splice(indexTask, 1);
+          this.taskChangeSectionEmitter.emit({post: post, oldSection: this.section.title});
         }
       } else {
-        this.tasks.splice(indexTask, 1);
-        this.taskChangeSectionEmitter.emit(post);
-      }
-    } else {
-      // if is coming from the done tasks
-      const indexDoneTask = this.tasks['done'].findIndex((task: any) => task._id === post._id);
-      if (this.section.title.toLowerCase() === post.task._column.title.toLowerCase()) {
-        if (post.task.status !== 'done') {
-          this.tasks['done'].splice(indexDoneTask, 1);
-          this.tasks.unshift(post);
+        // if is coming from the done tasks
+        if (this.section.title.toLowerCase() === post.task._column.title.toLowerCase()) {
+          if (post.task.status !== 'done') {
+            this.tasks.unshift(post);
+          }
+        } else {
+          this.taskChangeSectionEmitter.emit({post: post, oldSection: this.section.title});
         }
-      } else {
-        this.taskChangeSectionEmitter.emit(post);
       }
-    }
 
-    this.initTable();
+      this.initTable();
+    }
   }
 
-  async onCloseDoneTaskModalEvent(data) {
-    this.updateTask(data);
+  async onCloseDoneTaskModalEvent(post) {
+    this.updateTask(post);
   }
 
   getCustomField(fieldName: string) {
