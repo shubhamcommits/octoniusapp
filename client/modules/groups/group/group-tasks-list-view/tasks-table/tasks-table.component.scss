@@ -4,7 +4,7 @@ $turquoise: #0bc6a0;
 $dark-sky-blue: #4a90e2;
 
 .table-container{
-  
+
   max-width: 100%;
   overflow: auto;
   padding-left: 3px;
@@ -39,6 +39,10 @@ td.mat-column-star {
 
 .status-inprogress {
   border-left: 3px solid $turquoise;
+}
+
+.status-north-star {
+  border-left: 3px solid #5E2FE5;
 }
 
 .tags {
@@ -108,7 +112,6 @@ td.mat-column-star {
   margin: 2px auto;
   transition: box-shadow 0.3s ease-in-out;
   background: #E5DEFB;
-  border-left: 3px solid #5E2FE5;
 }
 
 
