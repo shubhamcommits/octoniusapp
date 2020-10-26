@@ -4,7 +4,7 @@
   <ng-container matColumnDef="title" sticky>
     <th mat-header-cell *matHeaderCellDef mat-sort-header> Title </th>
     <td mat-cell *matCellDef="let task">
-      <div [ngClass]="{'status-todo': task?.task?.status === 'to do', 'status-inprogress': task?.task?.status === 'in progress', 'status-north-star': task?.task?.isNorthStar }">
+      <div class="statusbar" [ngClass]="{'status-todo': task?.task?.status === 'to do', 'status-inprogress': task?.task?.status === 'in progress', 'status-north-star': task?.task?.isNorthStar }">
         <app-inline-input
             [(ngModel)]="task.title"
             label="Name"

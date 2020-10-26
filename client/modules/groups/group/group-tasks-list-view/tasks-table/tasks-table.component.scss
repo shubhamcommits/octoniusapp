@@ -4,10 +4,9 @@ $turquoise: #0bc6a0;
 $dark-sky-blue: #4a90e2;
 
 .table-container{
-
   max-width: 100%;
   overflow: auto;
-  padding-left: 3px;
+  padding-left: 0px;
 }
 
 .small{
@@ -20,12 +19,16 @@ table{
 
 .mat-column-title{
   min-width: 300px;
-  left: 3px;
+  left:0;
   background: transparent;
 }
 
 .mat-column-asignee{
   width: 80px;
+}
+
+td.mat-cell:first-of-type{
+  padding-left: 0;
 }
 
 td.mat-column-star {
@@ -43,6 +46,17 @@ td.mat-column-star {
 
 .status-north-star {
   border-left: 3px solid #5E2FE5;
+}
+
+.statusbar{
+  height: 47px;
+  line-height: 47px;
+  padding-left: 5px;
+}
+
+
+.list-card-title{
+  align-self: center;
 }
 
 .tags {
