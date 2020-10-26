@@ -68,7 +68,7 @@ import { SharedModule } from 'src/app/common/shared/shared.module';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 // import { MomentModule } from "ngx-moment";
-import { MatButtonModule, MatMenuModule, MatChipsModule, MatDialogModule, MatSelectModule, MatTableModule } from '@angular/material';
+import { MatButtonModule, MatMenuModule, MatChipsModule, MatDialogModule, MatSelectModule, MatTableModule, MatSortModule } from '@angular/material';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatExpansionModule } from '@angular/material/expansion';
 
@@ -191,7 +191,8 @@ import { TasksTableComponent } from './group/group-tasks-list-view/tasks-table/t
     MatSelectModule,
     MatSlideToggleModule,
     MatExpansionModule,
-    MatTableModule
+    MatTableModule,
+    MatSortModule
   ],
   providers: [
     GroupsService,
