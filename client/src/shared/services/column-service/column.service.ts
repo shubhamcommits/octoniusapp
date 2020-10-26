@@ -13,7 +13,7 @@ export class ColumnService {
 
   /**
    * This function is responsible for initializing the columns
-   * @param groupId 
+   * @param groupId
    */
   initColumns(groupId: string) {
     const group = {
@@ -25,7 +25,7 @@ export class ColumnService {
 
   /**
    * This function is responsible for fetching all the columns present in a board
-   * @param groupId 
+   * @param groupId
    */
   getAllColumns(groupId: string) {
     return this._http.get(this.baseUrl + `/columns/all`, {
@@ -37,8 +37,8 @@ export class ColumnService {
 
   /**
    * This function is responsible for adding a column to the board
-   * @param groupId 
-   * @param columnName 
+   * @param groupId
+   * @param columnName
    */
   addColumn(groupId: string, columnName: string) {
     const group = {
@@ -51,9 +51,9 @@ export class ColumnService {
 
   /**
    * This function is responsible to renaming a column
-   * @param groupId 
-   * @param oldColumnName 
-   * @param newColumnName 
+   * @param groupId
+   * @param oldColumnName
+   * @param newColumnName
    */
   editColumnName(groupId: string, oldColumnName: string, newColumnName: string) {
     const group = {
@@ -67,8 +67,8 @@ export class ColumnService {
 
   /**
    * This function is responsible for deleting a column
-   * @param groupId 
-   * @param columnName 
+   * @param groupId
+   * @param columnName
    */
   deleteColumn(groupId: string, columnName: string) {
     const group = {
@@ -106,6 +106,16 @@ export class ColumnService {
       columnName: columnName
     };
     return this._http.put(this.baseUrl + `/columns/edit/dec`, group);
+  }
+
+  saveCustomFieldsToShow(groupId: string, columnName: string, customFieldsToShow: any[]) {
+    const column = {
+      groupId: groupId,
+      columnName: columnName,
+      customFieldsToShow: customFieldsToShow
+    };
+
+    return this._http.put(this.baseUrl + `/columns/customFieldsToShow`, column).toPromise();
   }
 
 }

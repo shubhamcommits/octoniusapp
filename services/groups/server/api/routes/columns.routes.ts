@@ -46,4 +46,7 @@ router.put('/edit/dec', columns.columnTaskDec);
 // delete column 
 router.put('/delete', columns.deleteColumn);
 
+// PUT - Save custom field to show
+router.put('/customFieldsToShow', columns.updateCustomFieldsToShow);
+
 export { router as columnRoutes };

@@ -199,8 +199,6 @@ export class ComponentSearchBarComponent implements OnInit {
    * @param index
    */
   reactivateUserInWorkplace(userId, workspaceId, index) {
-    console.log(userId);
-    console.log(workspaceId);
     // Create Service Instance
     const workspaceService = this.injector.get(WorkspaceService);
 

@@ -50,6 +50,15 @@ export class AttachFilesComponent implements OnInit {
     return this.files.emit(this.filesArray)
   }
 
+  onCloudFileAttach(){
+    return this.cloudFiles.emit(this.googleDriveFiles);
+  }
+
+  save() {
+    if (this.googleDriveFiles) {
+      this.onCloudFileAttach();
+    }
+  }
   /**
    * This function is responsible for removing the specific file attached
    * @param index
@@ -70,7 +79,7 @@ export class AttachFilesComponent implements OnInit {
   }
 
   loadGoogleCloudFiles() {
-    
+
     // Instantiate the Auth client
     gapi.load('auth', { 'callback': this.onAuthApiLoad.bind(this) })
 
@@ -103,7 +112,7 @@ export class AttachFilesComponent implements OnInit {
 
   /**
    * Handle the auth results
-   * @param authResult 
+   * @param authResult
    */
   handleAuthResult(authResult: any) {
     if (authResult && !authResult.error) {
@@ -138,7 +147,7 @@ export class AttachFilesComponent implements OnInit {
               const driveDivision = document.getElementById('google-drive-file')
               driveDivision.style.display = 'block'
               driveDivision.innerHTML =
-                `<b>Drive File Upload: </b> 
+                `<b>Drive File Upload: </b>
                   <a href='${src}' target='_blank'> ${googleDriveFiles[0]['name']}</a>`
             }
           }).build()
