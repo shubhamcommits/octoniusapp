@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import moment from 'moment';
 import { environment } from 'src/environments/environment';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
@@ -9,7 +9,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
   templateUrl: './tasks-table.component.html',
   styleUrls: ['./tasks-table.component.scss']
 })
-export class TasksTableComponent implements OnChanges {
+export class TasksTableComponent implements OnChanges, AfterViewInit {
 
   @Input() tasks = [];
   @Input() groupData;
@@ -39,8 +39,14 @@ export class TasksTableComponent implements OnChanges {
   ngOnChanges() {
     this.customFields = [...this.customFields];
     this.initTable();
+  }
 
-console.log(this.customFieldsToShow);
+  ngAfterViewInit() {
+    this.section.custom_fields_to_show.forEach(field => {
+      if (this.displayedColumns.length - 1 >= 0) {
+        this.displayedColumns.splice(this.displayedColumns.length - 1, 0, field);
+      }
+    });
   }
 
   async initTable() {
@@ -187,8 +193,10 @@ console.log(this.customFieldsToShow);
       // Create the Column
 
       this.section.custom_fields_to_show.push(this.newColumnSelected.name);
-      this.displayedColumns.push(this.newColumnSelected.name);
       this.customFieldsToShow.push(this.getCustomField(this.newColumnSelected.name));
+      if (this.displayedColumns.length - 1 >= 0) {
+        this.displayedColumns.splice(this.displayedColumns.length - 1, 0, this.newColumnSelected.name);
+      }
 
       this.newColumnSelected = null;
 
