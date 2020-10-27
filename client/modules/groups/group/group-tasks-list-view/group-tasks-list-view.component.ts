@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Injector, ViewChild } from '@angular/core';
+import { Component, OnChanges, Input, Injector, ViewChild } from '@angular/core';
 import moment from 'moment/moment';
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -12,7 +12,7 @@ import { ColumnService } from 'src/shared/services/column-service/column.service
   templateUrl: './group-tasks-list-view.component.html',
   styleUrls: ['./group-tasks-list-view.component.scss']
 })
-export class GroupTasksListViewComponent implements OnInit {
+export class GroupTasksListViewComponent implements OnChanges {
 
   // Current Group Data
   @Input() groupData: any;
@@ -55,7 +55,7 @@ export class GroupTasksListViewComponent implements OnInit {
       public dialog: MatDialog
     ) {}
 
-  async ngOnInit() {
+  async ngOnChanges() {
     this.initSections();
   }
 
