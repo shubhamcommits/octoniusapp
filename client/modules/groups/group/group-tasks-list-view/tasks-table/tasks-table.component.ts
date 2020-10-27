@@ -234,7 +234,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
   }
 
   customFieldValues(fieldName: string) {
-    const index = this.groupData.custom_fields.findIndex((field: any) => field.name === fieldName);
-    return (this.groupData.custom_fields[index]) ? this.groupData.custom_fields[index].values : '';
+    const cf = this.getCustomField(fieldName);
+    return (cf) ? cf.values.sort((v1, v2) => (v1 > v2) ? 1 : -1) : '';
   }
 }

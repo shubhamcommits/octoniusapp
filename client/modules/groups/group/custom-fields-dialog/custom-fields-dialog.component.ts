@@ -25,21 +25,23 @@ export class CustomFieldsDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.groupData = this.data.groupData;
 
-    this.groupService.getGroupCustomFields(this.groupData._id).then((res) => {
+    await this.groupService.getGroupCustomFields(this.groupData._id).then((res) => {
       res['group']['custom_fields'].forEach(field => {
         this.customFields.push(field);
       });
     });
+
+    this.customFields.sort((cf1, cf2) => (cf1.title > cf2.title) ? 1 : -1);
   }
 
   onCloseDialog() {
     this.customFieldsEvent.emit(this.customFields);
   }
 
-  createCustomField() {
+  async createCustomField() {
     if (this.newCustomFieldTitle !== '') {
       // Find the index of the field to check if the same named field exist or not
       const index = this.customFields.findIndex((f: any) => f.name.toLowerCase() === this.newCustomFieldTitle.toLowerCase());
@@ -53,10 +55,18 @@ export class CustomFieldsDialogComponent implements OnInit {
           title: this.titleCase(this.newCustomFieldTitle),
           values: []
         };
-        this.customFields.push(newCF);
+
 
         // Save the new field
-        this.groupService.saveNewCustomField(newCF, this.groupData._id);
+        await this.groupService.saveNewCustomField(newCF, this.groupData._id).then((res) => {
+          const dbCustomFields = res['group']['custom_fields']
+          const index = dbCustomFields.findIndex((f: any) => f.name.toLowerCase() === newCF.name);
+          if (index >= 0) {
+            newCF['_id'] = dbCustomFields[index]._id;
+          }
+        });
+
+        this.customFields.push(newCF);
 
         this.showNewCustomField = false;
         this.newCustomFieldTitle = '';

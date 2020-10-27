@@ -77,9 +77,6 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
   }
 
   async onCustomFieldEmitter(customFields) {
-
-    console.log(customFields)
-
     this.customFields = [...customFields];
   }
 
