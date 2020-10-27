@@ -4,7 +4,7 @@
             [groupData]="groupData"
             [isAdmin]="isAdminUser()"
             (changeViewEmitter)='onChangeViewEmitter($event)'
-            (customFieldEmitter)="onCustomFieldEmitter()">
+            (customFieldEmitter)="onCustomFieldEmitter($event)">
         </app-board-bar>
 
         <app-group-kanban-boards *ngIf="viewType === 'kanban'"

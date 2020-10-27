@@ -76,10 +76,8 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     this.viewType = view;
   }
 
-  async onCustomFieldEmitter() {
-    if (this.viewType === 'list') {
-      this.initView();
-    }
+  async onCustomFieldEmitter(customFields) {
+    this.customFields = [...customFields];
   }
 
   async initView() {

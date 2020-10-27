@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, ViewChild } from '@angular/core';
-import { MatSort, MatTableDataSource } from '@angular/material';
+import { MatSort, MatTableDataSource, Sort } from '@angular/material';
 import moment from 'moment';
 import { environment } from 'src/environments/environment';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
@@ -40,9 +40,9 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
     private columnService: ColumnService
   ) { }
 
-  ngOnChanges() {
+  async ngOnChanges() {
     this.customFields = [...this.customFields];
-    this.initTable();
+    await this.initTable();
   }
 
   ngAfterViewInit() {
@@ -234,7 +234,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
   }
 
   customFieldValues(fieldName: string) {
-    const index = this.groupData.custom_fields.findIndex((field: any) => field.name === fieldName);
-    return (this.groupData.custom_fields[index]) ? this.groupData.custom_fields[index].values : '';
+    const cf = this.getCustomField(fieldName);
+    return (cf) ? cf.values.sort((v1, v2) => (v1 > v2) ? 1 : -1) : '';
   }
 }
