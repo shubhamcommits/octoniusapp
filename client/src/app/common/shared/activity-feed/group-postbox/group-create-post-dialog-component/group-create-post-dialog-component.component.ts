@@ -748,20 +748,22 @@ export class GroupCreatePostDialogComponent implements OnInit {
   async copyToGroup(group: string, section: any) {
     // Open the Confirm Dialog to ask for permission
     this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the task will be copied to the selected group!')
-      .then((res) => {
+      .then(async (res) => {
         if (res.value) {
-          let post = this.postData;
-          delete post.bars;
-          delete post.records;
-          delete post.comments;
-          delete post.comments_count;
-          post._group = group;
-          post.task._column.title = section.title;
-          post.created_date = moment().local().startOf('day').format('YYYY-MM-DD');
+          await this.utilityService.asyncNotification('Please wait we are copy the task...', new Promise((resolve, reject) => {
+            let post = this.postData;
+            delete post.bars;
+            delete post.records;
+            delete post.comments;
+            delete post.comments_count;
+            post._group = group;
+            post.task._column.title = section.title;
+            post.created_date = moment().local().startOf('day').format('YYYY-MM-DD');
 
-          this.postService.transferToGroup(post, true).then((res) => {
-            this.onTransferPostEvent({post: res[post], isCopy: true});
-          });
+            this.postService.transferToGroup(post, true).then((res) => {
+              this.onTransferPostEvent({post: res[post], isCopy: true});
+            });
+          }));
         }
       });
   }
@@ -769,18 +771,20 @@ export class GroupCreatePostDialogComponent implements OnInit {
   async moveToGroup(group: string, section: any) {
     // Open the Confirm Dialog to ask for permission
     this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the task will be moved to the selected group!')
-      .then((res) => {
+      .then(async (res) => {
         if (res.value) {
-          let post = this.postData;
-          delete post.bars;
-          delete post.comments;
-          delete post.comments_count;
-          post._group = group;
-          post.task._column.title = section.title;
+          await this.utilityService.asyncNotification('Please wait we are move the task...', new Promise((resolve, reject) => {
+            let post = this.postData;
+            delete post.bars;
+            delete post.comments;
+            delete post.comments_count;
+            post._group = group;
+            post.task._column.title = section.title;
 
-          this.postService.transferToGroup(post, false).then((res) => {
-            this.onTransferPostEvent({post: res['post'], isCopy: false, groupId: group});
-          });
+            this.postService.transferToGroup(post, false).then((res) => {
+              this.onTransferPostEvent({post: res['post'], isCopy: false, groupId: group});
+            });
+          }));
         }
       });
   }

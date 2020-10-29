@@ -140,17 +140,19 @@ export class PostUtilsComponent implements OnInit {
   async copyToGroup(group: any) {
     // Open the Confirm Dialog to ask for permission
     this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the task will be transfered to the selected group!')
-      .then((res) => {
+      .then(async (res) => {
         if (res.value) {
-          let post = this.post;
-          delete post.bars;
-          delete post.records;
-          post._group = group._id;
-          post.created_date = moment().local().startOf('day').format('YYYY-MM-DD');
+          await this.utilityService.asyncNotification('Please wait we are copy the task...', new Promise((resolve, reject) => {
+            let post = this.post;
+            delete post.bars;
+            delete post.records;
+            post._group = group._id;
+            post.created_date = moment().local().startOf('day').format('YYYY-MM-DD');
 
-          this.postService.transferToGroup(post, true).then((res) => {
-            this.transferPostEvent.emit({post: res[post], isCopy: true});
-          });
+            this.postService.transferToGroup(post, true).then((res) => {
+              this.transferPostEvent.emit({post: res[post], isCopy: true});
+            });
+          }));
         }
       });
   }
@@ -158,15 +160,17 @@ export class PostUtilsComponent implements OnInit {
   async moveToGroup(group: any) {
     // Open the Confirm Dialog to ask for permission
     this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the task will be transfered to the selected group!')
-      .then((res) => {
+      .then(async (res) => {
         if (res.value) {
-          let post = this.post;
-          delete post.bars;
-          post._group = group._id;
+          await this.utilityService.asyncNotification('Please wait we are move the task...', new Promise((resolve, reject) => {
+            let post = this.post;
+            delete post.bars;
+            post._group = group._id;
 
-          this.postService.transferToGroup(post, false).then((res) => {
-            this.transferPostEvent.emit({post: res[post], isCopy: false});
-          });
+            this.postService.transferToGroup(post, false).then((res) => {
+              this.transferPostEvent.emit({post: res[post], isCopy: false});
+            });
+          }));
         }
       });
   }
