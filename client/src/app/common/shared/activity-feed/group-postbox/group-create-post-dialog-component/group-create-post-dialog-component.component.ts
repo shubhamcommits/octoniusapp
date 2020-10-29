@@ -23,7 +23,6 @@ export class GroupCreatePostDialogComponent implements OnInit {
   // Close Event Emitter - Emits when closing dialog
   @Output() closeEvent = new EventEmitter();
   @Output() deleteEvent = new EventEmitter();
-  @Output() transferPostEvent = new EventEmitter();
 
   postData: any;
   userData: any;
@@ -761,7 +760,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
             post.created_date = moment().local().startOf('day').format('YYYY-MM-DD');
 
             this.postService.transferToGroup(post, true).then((res) => {
-              this.onTransferPostEvent({post: res[post], isCopy: true});
+              this.onTransferPost({post: res[post], isCopy: true});
               resolve(this.utilityService.resolveAsyncPromise(`Task Copied!`));
             });
           }));
@@ -783,7 +782,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
             post.task._column.title = section.title;
 
             this.postService.transferToGroup(post, false).then((res) => {
-              this.onTransferPostEvent({post: res['post'], isCopy: false, groupId: group});
+              this.onTransferPost({post: res['post'], isCopy: false, groupId: group});
               resolve(this.utilityService.resolveAsyncPromise(`Task moved!`));
             });
           }));
@@ -791,10 +790,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
       });
   }
 
-  onTransferPostEvent(data) {
-    // Emit the Transfer post to all the compoents in order to update the UI
-    this.transferPostEvent.emit(data);
-
+  onTransferPost(data) {
     const post = data.post;
     const isCopy = data.isCopy;
 

@@ -27,8 +27,7 @@
                     [post]="postData"
                     [userData]="userData"
                     mode="fullscreen"
-                    (delete)="deletePost()"
-                    (transferPostEvent)="onTransferPostEvent($event)">
+                    (delete)="deletePost()">
                 </app-post-utils>
             </div>
             <!-- Post Header Title ends -->
@@ -60,8 +59,7 @@
                 [post]="postData"
                 [userData]="userData"
                 [fullscreen]="true"
-                (newCommentEmitter)="newCommentAdded($event)"
-                (transferPostEvent)="onTransferPostEvent($event)">
+                (newCommentEmitter)="newCommentAdded($event)">
             </app-post-actions>
 
         </div>

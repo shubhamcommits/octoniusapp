@@ -28,8 +28,6 @@ export class GroupPostSelectionComponent implements OnInit {
   // Output edited post
   @Output('edited') edited = new EventEmitter();
 
-  @Output() transferPostEvent = new EventEmitter();
-
   ngOnInit() {
 
   }
@@ -65,9 +63,4 @@ export class GroupPostSelectionComponent implements OnInit {
   editedPost(post: any){
     this.edited.emit(post);
   }
-
-  onTransferPostEvent(data: any) {
-    this.transferPostEvent.emit(data);
-  }
-
 }

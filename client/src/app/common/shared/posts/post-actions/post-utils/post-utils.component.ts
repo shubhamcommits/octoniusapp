@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { PublicFunctions } from 'modules/public.functions';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import moment from 'moment';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-post-utils',
@@ -15,6 +16,7 @@ export class PostUtilsComponent implements OnInit {
   constructor(
     public utilityService: UtilityService,
     private injector: Injector,
+    private _router: Router,
     private postService: PostService
   ) { }
 
@@ -31,8 +33,6 @@ export class PostUtilsComponent implements OnInit {
 
   @Output() closeModalEvent = new EventEmitter();
 
-  @Output() transferPostEvent = new EventEmitter();
-
   // Array of user groups
   public userGroups: any = [];
 
@@ -44,15 +44,21 @@ export class PostUtilsComponent implements OnInit {
     // Fetch the current workspace data
     const workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
+    const group = (this.post._group._id) ? this.post._group._id : this.post._group;
+
     // Fetches the user groups from the server
-    this.userGroups = await this.publicFunctions.getUserGroups(workspaceData['_id'], this.userData._id)
+    await this.publicFunctions.getUserGroups(workspaceData['_id'], this.userData._id)
+      .then(async (groups: any) => {
+        await groups.forEach(group => {
+          if (group._id != group) {
+            this.userGroups.push(group);
+          }
+        });
+      })
       .catch(() => {
         // If the function breaks, then catch the error and console to the application
         this.publicFunctions.sendError(new Error('Unable to connect to the server, please try again later!'));
       });
-
-    const group = (this.post._group._id) ? this.post._group._id : this.post._group;
-    this.userGroups = this.userGroups.filter(group => group._id != group)
   }
 
   ngAfterViewInit() {
@@ -146,11 +152,13 @@ export class PostUtilsComponent implements OnInit {
             let post = this.post;
             delete post.bars;
             delete post.records;
+            delete post.comments;
+            delete post.comments_count;
             post._group = group._id;
             post.created_date = moment().local().startOf('day').format('YYYY-MM-DD');
 
             this.postService.transferToGroup(post, true).then((res) => {
-              this.transferPostEvent.emit({post: res[post], isCopy: true});
+              this.onTransferPost({post: res['post'], isCopy: true, groupId: group._id});
               resolve(this.utilityService.resolveAsyncPromise(`👍 Card copied!`));
             });
           }));
@@ -166,14 +174,33 @@ export class PostUtilsComponent implements OnInit {
           await this.utilityService.asyncNotification('Please wait while we move the card...', new Promise((resolve, reject) => {
             let post = this.post;
             delete post.bars;
+            delete post.comments;
+            delete post.comments_count;
             post._group = group._id;
 
             this.postService.transferToGroup(post, false).then((res) => {
-              this.transferPostEvent.emit({post: res[post], isCopy: false});
+              this.onTransferPost({post: res['post'], isCopy: false, groupId: group._id});
               resolve(this.utilityService.resolveAsyncPromise(`👍 Card moved!`));
             });
           }));
         }
       });
+  }
+
+  onTransferPost(data) {
+
+    const post = data.post;
+    const isCopy = data.isCopy;
+
+    if (!isCopy) {
+      // redirect the user to the post
+      const groupId = data.groupId;
+      // Set the Value of element selection box to be the url of the post
+      if (post.type === 'task') {
+        this._router.navigate(['/dashboard', 'work', 'groups', 'tasks'], { queryParams: { group: groupId, myWorkplace: false, postId: post._id } });
+      } else {
+        this._router.navigate(['/dashboard', 'work', 'groups', 'activity'], { queryParams: { group: groupId, myWorkplace: false, postId: post._id } });
+      }
+    }
   }
 }

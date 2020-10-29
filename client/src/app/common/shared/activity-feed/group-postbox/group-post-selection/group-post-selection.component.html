@@ -34,7 +34,7 @@
 
   <!-- Create post starts -->
   <app-group-create-post *ngIf="userData && checkDataExist(userData)" [userData]="userData" [groupId]="groupId"
-    [type]="type" (post)="getPost($event)" (edited)="editedPost($event)" (close)="closeModal()" (transferPostEvent)="onTransferPostEvent($event)">
+    [type]="type" (post)="getPost($event)" (edited)="editedPost($event)" (close)="closeModal()">
   </app-group-create-post>
   <!-- Create post ends -->
 
