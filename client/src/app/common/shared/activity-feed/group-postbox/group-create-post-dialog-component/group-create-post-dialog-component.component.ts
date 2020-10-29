@@ -762,6 +762,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
             this.postService.transferToGroup(post, true).then((res) => {
               this.onTransferPostEvent({post: res[post], isCopy: true});
+              resolve(this.utilityService.resolveAsyncPromise(`Task Copied!`));
             });
           }));
         }
@@ -783,6 +784,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
             this.postService.transferToGroup(post, false).then((res) => {
               this.onTransferPostEvent({post: res['post'], isCopy: false, groupId: group});
+              resolve(this.utilityService.resolveAsyncPromise(`Task moved!`));
             });
           }));
         }

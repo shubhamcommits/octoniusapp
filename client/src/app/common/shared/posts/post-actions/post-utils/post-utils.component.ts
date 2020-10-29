@@ -151,6 +151,7 @@ export class PostUtilsComponent implements OnInit {
 
             this.postService.transferToGroup(post, true).then((res) => {
               this.transferPostEvent.emit({post: res[post], isCopy: true});
+              resolve(this.utilityService.resolveAsyncPromise(`Task copied!`));
             });
           }));
         }
@@ -169,6 +170,7 @@ export class PostUtilsComponent implements OnInit {
 
             this.postService.transferToGroup(post, false).then((res) => {
               this.transferPostEvent.emit({post: res[post], isCopy: false});
+              resolve(this.utilityService.resolveAsyncPromise(`Task moved!`));
             });
           }));
         }
