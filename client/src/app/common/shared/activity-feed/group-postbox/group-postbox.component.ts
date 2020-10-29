@@ -25,6 +25,8 @@ export class GroupPostboxComponent implements OnInit {
   // Output the edited post
   @Output('edited') edited = new EventEmitter()
 
+  @Output() transferPostEvent = new EventEmitter();
+
   // Variable to showpostbox or not
   showPostBox: boolean = false;
 
@@ -38,7 +40,7 @@ export class GroupPostboxComponent implements OnInit {
 
   /**
    * This function is responsible for emitting the post object to other components
-   * @param post 
+   * @param post
    */
   getPost(post: any) {
     // Emit the post to other connected components
@@ -47,6 +49,10 @@ export class GroupPostboxComponent implements OnInit {
 
   editedPost(post: any){
     this.edited.emit(post);
+  }
+
+  onTransferPostEvent(data: any) {
+    this.transferPostEvent.emit(data);
   }
 
 }

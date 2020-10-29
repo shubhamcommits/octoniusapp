@@ -243,7 +243,8 @@
 <app-post-actions *ngIf="edit"
   [post]="postData"
   [userData]="userData"
-  (closeModalEvent)="postModalCloseEvent()"></app-post-actions>
+  (closeModalEvent)="postModalCloseEvent()"
+  (transferPostEvent)="onTransferPostEvent($event)"></app-post-actions>
 
 </div>
 

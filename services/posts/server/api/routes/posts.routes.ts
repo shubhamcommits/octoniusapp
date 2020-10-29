@@ -147,4 +147,10 @@ routes.put('/:postId/customField', postController.saveCustomField);
 routes.put('/:postId/addBar', postController.addBarToPost);
 routes.put('/:postId/removeBar', postController.removeBarFromPost);
 
+// POST - Used to copy the post to another group
+routes.post('/copy-to-group', postController.copyToGroup);
+
+// PUT - Used to move the post to another group
+routes.put('/:postId/move-to-group', postController.moveToGroup);
+
 export { routes as postRoutes };

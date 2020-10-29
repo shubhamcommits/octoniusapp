@@ -36,6 +36,8 @@ export class PostViewComponent implements OnInit {
   // Fullscreen modal closed
   @Output() closeModalEvent = new EventEmitter();
 
+  @Output() transferPostEvent = new EventEmitter();
+
   ngOnInit() {
   }
 
@@ -47,10 +49,15 @@ export class PostViewComponent implements OnInit {
   }
 
   postModalCloseEvent(post: any) {
-console.log(post);
     this.post = post;
     this.closeModalEvent.emit(post);
   }
+
+  onTransferPostEvent(data) {
+    // Emit the Transfer post to all the compoents in order to update the UI
+    this.transferPostEvent.emit(data);
+  }
+
   /**
    * This function checks if an event is assigned to all the members of the group
    * @param post

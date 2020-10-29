@@ -3,6 +3,7 @@ import moment from 'moment';
 import { Readable } from 'stream';
 import { Comment, Group, Post, User } from '../models';
 import { sendErr } from '../utils/sendError';
+import { CommentsService } from './comments.services';
 import { GroupsService } from './groups.services';
 const fs = require('fs');
 
@@ -20,6 +21,8 @@ export class PostService {
   groupFields: any = 'group_name group_avatar workspace_name';
 
   groupsService = new GroupsService();
+
+  commentsService = new CommentsService();
 
   /**
    * This service is responsible for fetching recent 5 posts based on the @lastPostId and @groupId
@@ -1576,5 +1579,89 @@ export class PostService {
     .lean();
     
     return posts;
+  }
+
+  async moveToGroup(postId: string, groupId: string) {
+    
+    try {
+      // Update the post
+      let post = await Post.findOneAndUpdate({
+        _id: postId
+      }, {
+        _group: groupId
+      }, {
+        new: true
+      })
+
+      // populate the assigned_to property of this document
+      post = await this.populatePostProperties(post);
+
+      // Update subtasks
+      const subtasks = await Post.updateMany({
+        $and: [
+          { type: 'task' },
+          { 'task._parent_task': post._id }
+        ]
+      }, {
+        _group: groupId
+      }).select('_id');
+
+      // delete the comments
+      await Comment.deleteMany({_post: postId});
+
+      // delete the comments of the subtasks
+      subtasks.forEach(async subtask => {
+        await Comment.deleteMany({_post: subtask._id});
+      });
+
+      // Return the post
+      return post;
+
+    } catch (err) {
+      console.log(`\n⛔️ Error:\n ${err}`);
+      // Return with error
+      return err;
+    }
+  }
+
+  async copyToGroup(post: any) {
+
+    try {
+      const groupId = post._group;
+      const postId = post._id;
+
+      delete post._id;
+
+      // Create new post
+      post = await Post.create(post);
+
+      // populate the assigned_to property of this document
+      post = await this.populatePostProperties(post);
+
+      // copy the subtasks
+      if(!post.task._parent_task) {
+        (await this.getSubtasks(postId)).forEach(task => {
+          delete task.bars;
+          delete task.records;
+          delete task.comments;
+          delete task.task.custom_fields;
+          task._group = groupId;
+          task.task._parent_task = post._id;
+          task.created_date = moment().local().startOf('day').format('YYYY-MM-DD');
+          this.copyToGroup(task);
+        });
+      }
+
+      // delete the comments
+      await Comment.deleteMany({_post: postId});
+
+      // Return Post Object
+      return post;
+
+    } catch (err) {
+      console.log(`\n⛔️ Error:\n ${err}`);
+      // Return with error
+      return err;
+    }
   }
 }

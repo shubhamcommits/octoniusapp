@@ -54,7 +54,8 @@ import { LikeCommentComponent } from './comments/post-comment/like-comment/like-
 import { NorthStarComponent } from './activity-feed/group-postbox/group-create-post-dialog-component/north-star/north-star.component';
 import { NorthStarStatsComponent } from './activity-feed/group-postbox/group-create-post-dialog-component/north-star/stats/north-star-stats.component';
 
-import { MatSidenavModule, MatDialogModule, MatSlideToggleModule, MAT_DIALOG_DEFAULT_OPTIONS, MatSelectModule } from '@angular/material';
+import { MatSidenavModule, MatDialogModule, MatSlideToggleModule, MAT_DIALOG_DEFAULT_OPTIONS, MatSelectModule, MatMenuModule } from '@angular/material';
+
 import { PreviewFilesDialogComponent } from './preview-files-dialog/preview-files-dialog.component';
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
 import { InlineInputComponent } from './inline-input/inline-input.component';
@@ -217,7 +218,8 @@ import { SubtasksComponent } from './activity-feed/group-postbox/group-create-po
     MomentDateModule,
     MatSlideToggleModule,
     ChartsModule,
-    ResizableModule
+    ResizableModule,
+    MatMenuModule
   ],
   exports: [
     AttachFilesComponent,

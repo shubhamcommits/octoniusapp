@@ -392,4 +392,13 @@ export class GroupActivityFeedComponent implements OnInit {
     this.subSink.unsubscribe()
     this.isLoading$.complete()
   }
+
+  onTransferPostEvent(data: any) {
+    const post = data.post;
+    const isCopy = data.isCopy;
+
+    if (!isCopy) {
+      this.posts.delete(post._id);
+    }
+  }
 }

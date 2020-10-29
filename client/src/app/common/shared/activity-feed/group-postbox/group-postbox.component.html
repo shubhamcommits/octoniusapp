@@ -11,15 +11,16 @@
                     placeholder="What are you working on?">What are you working on, <strong>{{ userData?.first_name }}</strong>?</button>
             </div>
             <section  [ngClass]="(showPostBox) ? 'show-container' : 'hide-container'">
-                <app-group-post-selection  *ngIf="userData && checkDataExist(userData)" 
-                    [userData]="userData" 
+                <app-group-post-selection  *ngIf="userData && checkDataExist(userData)"
+                    [userData]="userData"
                     [groupId]="groupId"
                     (post)="getPost($event)"
-                    (edited)="editedPost($event)">
+                    (edited)="editedPost($event)"
+                    (transferPostEvent)="onTransferPostEvent($event)">
                 </app-group-post-selection>
             </section>
         </div>
 
-        
+
     </div>
 </div>

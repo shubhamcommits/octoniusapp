@@ -1,38 +1,28 @@
 <span>
-    <button class="btn btn-link btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
-        <i class="material-icons-outlined action">more_horiz</i>
-        <span class="caret"></span>
-    </button>
-
-    <!-- Menu Drawer Starts -->
-    <ul class="dropdown-menu">
-        <!--
-        <li class="dropdown-item"
-                *ngIf="mode !== 'fullscreen'"
-                [routerLink]="['/dashboard', 'work', 'groups', 'post', post?._id]"
-                [queryParams]="{ group: post?._group?._id || post?._group }">
-            <span>View</span>
-        </li>
-        -->
-        <li class="dropdown-item"
-                *ngIf="mode !== 'fullscreen'"
-                (click)="openFullscreenModal()">
-            <span>View</span>
-        </li>
-        <li class="dropdown-item" (click)="copyToClipboard()">
-            <span>Copy Link</span>
-        </li>
-        <li class="dropdown-divider"></li>
-
-        <li class="dropdown-item" (click)="deletePost()">
-            <span>Delete</span>
-        </li>
-        
-    </ul>
-    <!-- Menu Drawer Ends -->
-
+  <button class="btn btn-link btn-sm dropdown-toggle" mat-button [matMenuTriggerFor]="postOptions">
+    <i class="material-icons-outlined action">more_horiz</i>
+    <span class="caret"></span>
+  </button>
 </span>
 
-<ng-template #content let-modal>
-    <app-group-create-post [post]="post" [edit]="true" [userData]="userData" [type]="post.type" [groupId]="post._group._id" (close)="closeModal()"></app-group-create-post>
-</ng-template>
+<mat-menu #postOptions="matMenu">
+  <button mat-menu-item *ngIf="mode !== 'fullscreen'" (click)="openFullscreenModal()">View</button>
+  <button mat-menu-item (click)="copyToClipboard()">Copy Link</button>
+
+  <li class="dropdown-divider"></li>
+
+  <button mat-menu-item [matMenuTriggerFor]="copyMenu" *ngIf="post?.type !== 'task'">Copy to Group</button>
+  <button mat-menu-item [matMenuTriggerFor]="moveMenu" *ngIf="post?.type !== 'task'">Move to Group</button>
+
+  <li class="dropdown-divider" *ngIf="post?.type !== 'task'"></li>
+
+  <button mat-menu-item (click)="deletePost()">Delete</button>
+</mat-menu>
+
+<mat-menu #copyMenu="matMenu">
+  <button mat-menu-item *ngFor="let group of userGroups" (click)="copyToGroup(group)">{{ group.group_name }}</button>
+</mat-menu>
+
+<mat-menu #moveMenu="matMenu">
+  <button mat-menu-item *ngFor="let group of userGroups" (click)="moveToGroup(group)">{{ group.group_name }}</button>
+</mat-menu>

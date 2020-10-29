@@ -74,6 +74,8 @@ export class GroupCreatePostComponent implements OnInit {
   // Output the task due date
   @Output('date') date = new EventEmitter()
 
+  @Output() transferPostEvent = new EventEmitter();
+
   /* Task Variables */
 
   /* Event Variables */
@@ -231,6 +233,11 @@ export class GroupCreatePostComponent implements OnInit {
 
   postModalCloseEvent() {
     this.closeModal();
+  }
+
+  onTransferPostEvent(data) {
+    // Emit the Transfer post to all the compoents in order to update the UI
+    this.transferPostEvent.emit(data);
   }
 
   getMemberDetails(memberMap: any) {

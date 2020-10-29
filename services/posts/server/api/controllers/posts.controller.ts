@@ -889,4 +889,64 @@ export class PostController {
             return sendErr(res, new Error(err), 'Internal Server Error!', 500);
         }
     }
+
+    /**
+     * This function is responsible for fetching the posts of a group
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async moveToGroup(req: Request, res: Response, next: NextFunction) {
+
+        // Post Object From request
+        const { body: { groupId }, params: { postId } } = req;
+
+        try {
+
+            // Call service function to edit
+            const updatedPost = await postService.moveToGroup(postId, groupId)
+                .catch((err) => {
+                    return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
+                })
+
+            // Send Status 200 response
+            return res.status(200).json({
+                message: 'Post Moved Successfully!',
+                post: updatedPost
+            });
+        } catch (error) {
+            if (error == null) {
+                sendErr(res, null, 'User not allowed to edit this post!', 403);
+            }
+            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for fetching the posts of a group
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async copyToGroup(req: Request, res: Response, next: NextFunction) {
+
+        // Post Object From request
+        const { post } = req.body;
+
+        try {
+            // Call servide function for adding the post
+            const postData = await postService.copyToGroup(post)
+                .catch((err) => {
+                    return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
+                })
+
+            // Send Status 200 response
+            return res.status(200).json({
+                message: 'Post Copied Successfully!',
+                post: postData
+            });
+        } catch (error) {
+            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
+        }
+    }
 }

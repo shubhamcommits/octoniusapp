@@ -346,4 +346,11 @@ export class PostService {
       }
     }).toPromise();
   }
+
+  transferToGroup(post: any, isCopy: boolean) {
+    if (isCopy) {
+      return this._http.post(this.baseURL + '/copy-to-group', { post: post }).toPromise();
+    }
+    return this._http.put(this.baseURL + `/${post._id}/move-to-group`, { groupId: post._group }).toPromise();
+  }
 }

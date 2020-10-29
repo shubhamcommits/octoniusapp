@@ -27,7 +27,8 @@
                     [post]="postData"
                     [userData]="userData"
                     mode="fullscreen"
-                    (delete)="deletePost()">
+                    (delete)="deletePost()"
+                    (transferPostEvent)="onTransferPostEvent($event)">
                 </app-post-utils>
             </div>
             <!-- Post Header Title ends -->
@@ -59,7 +60,8 @@
                 [post]="postData"
                 [userData]="userData"
                 [fullscreen]="true"
-                (newCommentEmitter)="newCommentAdded($event)">
+                (newCommentEmitter)="newCommentAdded($event)"
+                (transferPostEvent)="onTransferPostEvent($event)">
             </app-post-actions>
 
         </div>
@@ -166,7 +168,7 @@
             </div>
             <br *ngIf="groupData && groupData.enabled_rights" />
 
-          
+
         </div>
         <!-- Status ends -->
 
@@ -258,6 +260,29 @@
                     <mat-option *ngFor="let val of cf.values" [value]="val">{{ val }}</mat-option>
                 </mat-select>
             </div>
+        </div>
+
+        <div class="content-box" *ngIf="postData?.type === 'task'">
+          <p class="box-title">Actions</p>
+          <div>
+            <button mat-menu-item [matMenuTriggerFor]="transferMenu" (click)="saveTransferAction('copy')">
+              <i  class="material-icons">content_copy</i>
+              Copy to Group
+            </button>
+            <button mat-menu-item [matMenuTriggerFor]="transferMenu" (click)="saveTransferAction('move')">
+              <i class="material-icons">arrow_forward</i>
+              Move to Group
+            </button>
+
+            <mat-menu #transferMenu="matMenu">
+              <ng-container *ngFor="let group of userGroups; let index = index">
+                <button mat-menu-item [matMenuTriggerFor]="columnsMenu">{{ group.group_name }}</button>
+                <mat-menu #columnsMenu="matMenu">
+                  <button *ngFor="let section of userGroups[index]?.sections" mat-menu-item (click)="transferToGroup(userGroups[index]?._id, section)">{{ section.title }}</button>
+                </mat-menu>
+              </ng-container>
+            </mat-menu>
+          </div>
         </div>
     </div>
     <!-- Top Right Section ends -->

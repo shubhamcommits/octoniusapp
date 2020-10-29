@@ -1,6 +1,9 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, Injector } from '@angular/core';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { environment } from 'src/environments/environment';
+import { PublicFunctions } from 'modules/public.functions';
+import { PostService } from 'src/shared/services/post-service/post.service';
+import moment from 'moment';
 
 @Component({
   selector: 'app-post-utils',
@@ -11,6 +14,8 @@ export class PostUtilsComponent implements OnInit {
 
   constructor(
     public utilityService: UtilityService,
+    private injector: Injector,
+    private postService: PostService
   ) { }
 
   // Post Object
@@ -26,7 +31,28 @@ export class PostUtilsComponent implements OnInit {
 
   @Output() closeModalEvent = new EventEmitter();
 
-  ngOnInit() {
+  @Output() transferPostEvent = new EventEmitter();
+
+  // Array of user groups
+  public userGroups: any = [];
+
+  // Public Functions Object
+  public publicFunctions = new PublicFunctions(this.injector);
+
+  async ngOnInit() {
+
+    // Fetch the current workspace data
+    const workspaceData = await this.publicFunctions.getCurrentWorkspace();
+
+    // Fetches the user groups from the server
+    this.userGroups = await this.publicFunctions.getUserGroups(workspaceData['_id'], this.userData._id)
+      .catch(() => {
+        // If the function breaks, then catch the error and console to the application
+        this.publicFunctions.sendError(new Error('Unable to connect to the server, please try again later!'));
+      });
+
+    const group = (this.post._group._id) ? this.post._group._id : this.post._group;
+    this.userGroups = this.userGroups.filter(group => group._id != group)
   }
 
   ngAfterViewInit() {
@@ -95,7 +121,13 @@ export class PostUtilsComponent implements OnInit {
    * This function emits the delete post to the parent components
    */
   deletePost() {
-    this.delete.emit(this.post);
+    // Open the Confirm Dialog to ask for permission
+    this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the task will be deleted!')
+      .then((res) => {
+        if (res.value) {
+          this.delete.emit(this.post);
+        }
+      });
   }
 
   /**
@@ -105,4 +137,37 @@ export class PostUtilsComponent implements OnInit {
     this.utilityService.closeAllModals()
   }
 
+  async copyToGroup(group: any) {
+    // Open the Confirm Dialog to ask for permission
+    this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the task will be transfered to the selected group!')
+      .then((res) => {
+        if (res.value) {
+          let post = this.post;
+          delete post.bars;
+          delete post.records;
+          post._group = group._id;
+          post.created_date = moment().local().startOf('day').format('YYYY-MM-DD');
+
+          this.postService.transferToGroup(post, true).then((res) => {
+            this.transferPostEvent.emit({post: res[post], isCopy: true});
+          });
+        }
+      });
+  }
+
+  async moveToGroup(group: any) {
+    // Open the Confirm Dialog to ask for permission
+    this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the task will be transfered to the selected group!')
+      .then((res) => {
+        if (res.value) {
+          let post = this.post;
+          delete post.bars;
+          post._group = group._id;
+
+          this.postService.transferToGroup(post, false).then((res) => {
+            this.transferPostEvent.emit({post: res[post], isCopy: false});
+          });
+        }
+      });
+  }
 }
