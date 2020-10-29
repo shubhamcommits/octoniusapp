@@ -13,6 +13,7 @@
 
     <mat-dialog-content>
         <div class="description">
+            <img src="assets/images/placeholder_cf.svg" alt="" style="width: 300px; margin-bottom: 24px">
             <p>Create custom fields to improve how you organize your workflows in task boards.</p>
         </div>
 
@@ -55,7 +56,7 @@
         </div>
         <div class="newCustomFieldForm">
             <button class="btn btn-block" (click)="showNewCustomField = !showNewCustomField">
-                <i class="material-icons" style="color: #005FD5">label</i> ADD ANOTHER CUSTOM FIELD
+                <i class="material-icons" style="color: #005FD5">label</i> ADD CUSTOM FIELD
              </button>
              <div class="add-field" *ngIf="showNewCustomField">
                  <input class="form-control" type="text" placeholder="Enter field name" [(ngModel)]="newCustomFieldTitle" (keyup.enter)="createCustomField()">
