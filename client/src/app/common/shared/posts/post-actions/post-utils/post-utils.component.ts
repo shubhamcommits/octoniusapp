@@ -139,10 +139,10 @@ export class PostUtilsComponent implements OnInit {
 
   async copyToGroup(group: any) {
     // Open the Confirm Dialog to ask for permission
-    this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the task will be transfered to the selected group!')
+    this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the card will be copied to the selected group!')
       .then(async (res) => {
         if (res.value) {
-          await this.utilityService.asyncNotification('Please wait we are copy the task...', new Promise((resolve, reject) => {
+          await this.utilityService.asyncNotification('Please wait while we copy the card...', new Promise((resolve, reject) => {
             let post = this.post;
             delete post.bars;
             delete post.records;
@@ -151,7 +151,7 @@ export class PostUtilsComponent implements OnInit {
 
             this.postService.transferToGroup(post, true).then((res) => {
               this.transferPostEvent.emit({post: res[post], isCopy: true});
-              resolve(this.utilityService.resolveAsyncPromise(`Task copied!`));
+              resolve(this.utilityService.resolveAsyncPromise(`👍 Card copied!`));
             });
           }));
         }
@@ -160,17 +160,17 @@ export class PostUtilsComponent implements OnInit {
 
   async moveToGroup(group: any) {
     // Open the Confirm Dialog to ask for permission
-    this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the task will be transfered to the selected group!')
+    this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the card will be moved to the selected group!')
       .then(async (res) => {
         if (res.value) {
-          await this.utilityService.asyncNotification('Please wait we are move the task...', new Promise((resolve, reject) => {
+          await this.utilityService.asyncNotification('Please wait while we move the card...', new Promise((resolve, reject) => {
             let post = this.post;
             delete post.bars;
             post._group = group._id;
 
             this.postService.transferToGroup(post, false).then((res) => {
               this.transferPostEvent.emit({post: res[post], isCopy: false});
-              resolve(this.utilityService.resolveAsyncPromise(`Task moved!`));
+              resolve(this.utilityService.resolveAsyncPromise(`👍 Card moved!`));
             });
           }));
         }
