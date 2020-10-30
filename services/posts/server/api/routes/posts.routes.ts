@@ -1,5 +1,5 @@
 import express from 'express';
-import { CalendarController, PostController } from '../controllers';
+import { CalendarController, FilesControllers, PostController } from '../controllers';
 import { Auths, postFileHandler } from '../utils';
 
 const routes = express.Router();
@@ -8,6 +8,11 @@ const routes = express.Router();
  * Posts Controller Class Object
  */
 const postController = new PostController();
+
+/**
+ * File Controller Class Object
+ */
+const filesControllers = new FilesControllers();
 
 /**
  * Calendar Controller Class Object
@@ -152,5 +157,8 @@ routes.post('/copy-to-group', postController.copyToGroup);
 
 // PUT - Used to move the post to another group
 routes.put('/:postId/move-to-group', postController.moveToGroup);
+
+// POST - Delete the attached file
+routes.post('/delete-attached', filesControllers.deleteAttached);
 
 export { routes as postRoutes };

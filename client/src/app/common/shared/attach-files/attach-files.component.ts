@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core'
 import { environment } from 'src/environments/environment'
+import { PostService } from 'src/shared/services/post-service/post.service';
 
 // Google API Variables
 declare var gapi: any
@@ -12,7 +13,7 @@ declare var google: any
 })
 export class AttachFilesComponent implements OnInit {
 
-  constructor() { }
+  constructor(private postService: PostService) { }
 
   // Post Object Input
   @Input('post') post: any;
@@ -66,13 +67,32 @@ export class AttachFilesComponent implements OnInit {
   removeFile(index: number) {
 
     // Remove element at the specific index
-    let arr = Array.from(this.filesArray)
+    let arr = Array.from(this.post.files)
+
+    const file = arr[index];
+
+    this.postService.removeAttachedFile(file['modified_name']);
 
     // Remove the element
     arr.splice(index, 1)
 
     // Updated array
-    this.filesArray = arr
+    this.post.files = arr
+
+
+    return this.removeFileInArray(file['modified_name']);
+  }
+
+  removeFileInArray(fileName: string) {
+    // Remove element at the specific index
+    let arr = Array.from(this.filesArray)
+
+    const index = arr.findIndex(file => file['modified_name'] == fileName);
+    // Remove the element
+    arr.splice(index, 1);
+
+    // Updated array
+    this.filesArray = arr;
 
     // Emit the value to other components
     return this.files.emit(this.filesArray)

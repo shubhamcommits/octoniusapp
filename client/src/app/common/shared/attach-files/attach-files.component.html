@@ -17,22 +17,28 @@
 <!-- Attached Files Starts -->
 <div *ngIf="post" class="ml-2 mt-2">
     <p><strong *ngIf="post.files">Attached Files </strong></p>
-    <a href="{{ baseUrl }}/{{ file?.modified_name }}" target="_blank" *ngFor="let file of post.files; let index = index">
-        {{ file?.original_name }}
-    </a>
+    <div *ngFor="let file of post.files; let index = index">
+      <a href="{{ baseUrl }}/{{ file?.modified_name }}" target="_blank">
+          {{ file?.original_name }}
+      </a>
+      <span class="material-icons" (click)="removeFile(index)">
+        highlight_off
+      </span>
+    </div>
 </div>
 <!-- Attached Files Ends -->
 
-<!-- Selected Files Starts -->
+<!-- Selected Files Starts
 <div class="ml-2 mt-2" *ngFor="let file of filesArray; let index = index">
     <p>
-        <strong>Selected File: </strong>
-        {{ file?.name }}
-        <span class="material-icons" (click)="removeFile(index)">
-            highlight_off
-        </span>
+      <strong>Selected File: </strong>
+      {{ file?.name }}
+      <span class="material-icons" (click)="removeFile(index)">
+          highlight_off
+      </span>
     </p>
 </div>
+-->
 
 <!-- Google Drive Attached File Starts -->
 <div class="ml-2 mt-2" id="google-drive-file" style="display:none;"></div>
