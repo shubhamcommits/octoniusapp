@@ -3,6 +3,7 @@ $dark-sky-blue: #4a90e2;
 .customFieldsDialog {
     text-align: center;
     width: 90%;
+    margin: 0 auto;
 
     .createCustomFieldsLink {
         margin-right: .7rem;
@@ -18,7 +19,8 @@ $dark-sky-blue: #4a90e2;
     }
 
     .customFieldsList {
-        margin: 0 120px;
+        margin: 0 auto;
+        width: 80%;
 
         h3 {
             text-align: left;
@@ -89,8 +91,9 @@ $dark-sky-blue: #4a90e2;
     }
 
     .newCustomFieldForm {
-        margin: 30px 120px;
-        float: left;
+        margin: 0 auto;
+        width: 80%;
+
 
         button {
             padding-left: 0px;
