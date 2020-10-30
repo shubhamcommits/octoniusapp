@@ -1,6 +1,14 @@
+.customFieldsDialog {
+    text-align: center;
+    width: 90%;
+    margin: 0 auto;
+}
+
 .bar{
     padding-top: 25px;
     border-bottom: 1px solid #E4EDF8;
+    width: 70%;
+    margin: 0 auto;
 }
 .md-36{
     font-size: 36px;
@@ -31,4 +39,8 @@
 .blue-icon{
     cursor: pointer;
     color: #005FD5;
+}
+.barnew{
+    margin: 10px auto;
+    width: 300px;
 }

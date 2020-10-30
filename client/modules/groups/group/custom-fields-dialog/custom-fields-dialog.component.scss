@@ -80,6 +80,8 @@ $dark-sky-blue: #4a90e2;
         }
 
         .customFieldsBody {
+                width: 70%;
+                margin: 0  auto;
 
             .field {
                 height: 40px;
@@ -94,13 +96,18 @@ $dark-sky-blue: #4a90e2;
         margin: 0 auto;
         width: 80%;
 
-
-        button {
-            padding-left: 0px;
+        button{
+            i{
+                margin-top: -4px;
+            }
         }
 
+
+
         .add-field {
-            margin: 10px;
+            margin: 10px auto;
+            width: 300px;
+
 
             .actions {
                 margin: 5px;

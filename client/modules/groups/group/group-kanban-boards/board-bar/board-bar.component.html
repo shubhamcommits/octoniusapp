@@ -1,12 +1,14 @@
 <div class="board-bar">
     <div class="row">
         <div class="actions">
-            <a class="createCustomFieldsLink"
+            <button class="btn badge-cf"
                 *ngIf="isAdmin"
                 (click)="openCustomFieldsDialog()">
-                <i class="material-icons" style="color: #005FD5">label</i>
-            </a>
-            <button mat-raised-button color="accent" [matMenuTriggerFor]="menu">Views</button>
+                
+                    <i class="material-icons">label</i>
+                
+        </button>
+            <button [matMenuTriggerFor]="menu" class="btn badge-boardviews">Views</button>
             <mat-menu #menu="matMenu">
                 <a mat-menu-item (click)="changeView('kanban')">
                     <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">dashboard</i>
