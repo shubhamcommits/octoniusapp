@@ -1604,14 +1604,14 @@ export class PostService {
         ]
       }, {
         _group: groupId
-      }).select('_id');
+      }).select('_id').lean();
 
       // delete the comments
       await Comment.deleteMany({_post: postId});
 
       // delete the comments of the subtasks
-      subtasks.forEach(async subtask => {
-        await Comment.deleteMany({_post: subtask._id});
+      (await this.getSubtasks(postId)).forEach(async task => {
+        await Comment.deleteMany({_post: task._id});
       });
 
       // Return the post
