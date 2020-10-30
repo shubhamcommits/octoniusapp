@@ -5,10 +5,12 @@
 }
 
 .bar{
-    padding-top: 25px;
+    padding: 14px 0;
     border-bottom: 1px solid #E4EDF8;
     width: 70%;
     margin: 0 auto;
+    text-align: left;
+    border-radius: 0 !important;
 }
 .md-36{
     font-size: 36px;
@@ -43,4 +45,13 @@
 .barnew{
     margin: 10px auto;
     width: 300px;
+}
+.useravatar{
+    width: 50px;
+    text-align: center;
+    .feed-avatar{
+        width: 30px;
+        height: 30px;
+        margin: 0 auto;
+    }
 }

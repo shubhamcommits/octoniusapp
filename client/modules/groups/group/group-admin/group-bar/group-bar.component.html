@@ -13,6 +13,9 @@
             <p>Create rules to manage board access rights and select which members can see certain tasks.
                <br> By default all tasks are visible to the team, but with BAR tags you can control the access.</p>
         </div>
+        <div class="customFieldsList" *ngIf="barList.length <= 0">
+            <h3 class="text-center muted mt-3">🎉 Always strive for transparency...</h3>
+        </div>
       
         <div class="bar" *ngFor="let bar of barList">
             <div class="d-flex">
@@ -20,12 +23,15 @@
             <button class="btn overdue text-right" (click)="removeTag(bar.bar_tag)" style="flex:auto"> <i class="material-icons">delete</i> </button>
 
             </div>
-            <hr>
-            <div class="ml-2" *ngFor="let member of bar.members">
+            <div class="d-flex">
+
+           
+            <div class="useravatar" *ngFor="let member of bar.members">
                 <img src="{{ userBaseUrl }}/{{member?.profile_pic}}"
                 onerror="this.src='assets/images/user.png'" class="feed-avatar"
                 (click)="removeUserFromBar(member,bar)">
             </div> 
+           
             
             <app-component-search-input-box class="ml-2" *ngIf="groupData"
                 [placeholder]="'add member'"
@@ -35,9 +41,10 @@
                 (member)="addNewUserToBar($event, bar)">
             </app-component-search-input-box>
         </div>
+        </div>
 
         <button class="mt-3 btn badge-cf" (click)="showTagComponent()">
-            <span class="material-icons">security</span>
+            <span class="material-icons">lock</span>
             ADD RULE
         </button>
         <div *ngIf="addNewBar" class="barnew">
