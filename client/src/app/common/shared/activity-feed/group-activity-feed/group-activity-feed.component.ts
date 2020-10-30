@@ -95,6 +95,7 @@ export class GroupActivityFeedComponent implements OnInit {
   columns;
 
   async ngOnInit() {
+    this._router.routeReuseStrategy.shouldReuseRoute = () => false;
 
     // Start the loading spinner
     this.isLoading$.next(true);

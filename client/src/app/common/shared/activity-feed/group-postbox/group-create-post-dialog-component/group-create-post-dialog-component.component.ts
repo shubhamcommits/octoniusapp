@@ -137,6 +137,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
               this.userGroups.push(group);
             }
           });
+          this.userGroups.sort((g1, g2) => (g1.group_name > g2.group_name) ? 1 : -1);
         })
         .catch(() => {
           // If the function breaks, then catch the error and console to the application
