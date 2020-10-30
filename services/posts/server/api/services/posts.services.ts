@@ -1581,14 +1581,22 @@ export class PostService {
     return posts;
   }
 
-  async moveToGroup(postId: string, groupId: string) {
+  async moveToGroup(postId: string, groupId: string, oldGroupId: string, userId: string) {
     
     try {
       // Update the post
       let post = await Post.findOneAndUpdate({
         _id: postId
       }, {
-        _group: groupId
+        _group: groupId,
+        $push: { "records.group_change": {
+            date: moment().format(),
+            _fromGroup: oldGroupId,
+            _toGroup: groupId,
+            type: 'move',
+            _user: userId
+          }
+        }
       }, {
         new: true
       })
@@ -1603,7 +1611,15 @@ export class PostService {
           { 'task._parent_task': post._id }
         ]
       }, {
-        _group: groupId
+        _group: groupId,
+        $push: { "records.group_change": {
+            date: moment().format(),
+            _fromGroup: oldGroupId,
+            _toGroup: groupId,
+            type: 'move',
+            _user: userId
+          }
+        }
       }).select('_id').lean();
 
       // delete the comments
@@ -1624,7 +1640,7 @@ export class PostService {
     }
   }
 
-  async copyToGroup(post: any) {
+  async copyToGroup(post: any, oldGroupId: string, userId: string) {
 
     try {
       const groupId = post._group;
@@ -1632,8 +1648,56 @@ export class PostService {
 
       delete post._id;
 
+      if (post.files) {
+        let files = post.files;
+        post.files = [];
+
+        // Fetch the files from the current request
+        await files.forEach(async (currentFile: any, index: Number) => {
+
+          // Instantiate the fileName variable and add the date object in the name
+          let fileName = Date.now().toString() + currentFile.original_name;
+
+          // Get the folder link from the environment
+          const folder = process.env.FILE_UPLOAD_FOLDER;
+
+          // Modify the file accordingly and handle request
+          await fs.copyFile(folder + currentFile.modified_name, folder + fileName,  (error: Error) => {
+            if (error) {
+              fileName = null;
+              console.log(`\n⛔️ Error:\n ${error}`);
+              return error;
+            }
+          });
+
+          // Modify the file and serialise the object
+          const file = {
+            original_name: currentFile.original_name,
+            modified_name: fileName
+          };
+
+          // Push the file object
+          post.files.push(file);
+        });
+      }
       // Create new post
       post = await Post.create(post);
+
+      // set the record in the new post
+      post = Post.findOneAndUpdate({
+          _id: post._id
+        }, {
+          $push: { "records.group_change": {
+              date: moment().format(),
+              _fromGroup: oldGroupId,
+              _toGroup: groupId,
+              type: 'copy',
+              _user: userId
+            }
+          }
+        }, {
+          new: true
+        })
 
       // populate the assigned_to property of this document
       post = await this.populatePostProperties(post);
@@ -1648,7 +1712,7 @@ export class PostService {
           task._group = groupId;
           task.task._parent_task = post._id;
           task.created_date = moment().local().startOf('day').format('YYYY-MM-DD');
-          this.copyToGroup(task);
+          this.copyToGroup(task, oldGroupId, userId);
         });
       }
 
