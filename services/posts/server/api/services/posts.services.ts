@@ -1646,12 +1646,28 @@ export class PostService {
       const groupId = post._group;
       const postId = post._id;
 
+      // set the record in the old post
+      post = Post.findOneAndUpdate({
+        _id: post._id
+      }, {
+        $push: { "records.group_change": {
+            date: moment().format(),
+            _fromGroup: oldGroupId,
+            _toGroup: groupId,
+            type: 'copy',
+            _user: userId
+          }
+        }
+      }, {
+        new: true
+      })
+
       delete post._id;
 
       // Create new post
       post = await Post.create(post);
 
-      // set the record
+      // set the record in the new post
       post = Post.findOneAndUpdate({
           _id: post._id
         }, {
