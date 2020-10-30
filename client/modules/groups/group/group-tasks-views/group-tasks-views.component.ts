@@ -140,7 +140,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     if (this._router.routerState.snapshot.root.queryParamMap.has('postId')) {
       const postId = this._router.routerState.snapshot.root.queryParamMap.get('postId');
       const post = await this.publicFunctions.getPost(postId);
-      this.utilityService.openCreatePostFullscreenModal(post, this.userData, this.groupId);
+      this.utilityService.openCreatePostFullscreenModal(post, this.userData, this.groupId, this.columns);
     }
   }
 

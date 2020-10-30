@@ -11,6 +11,7 @@ import moment from 'moment';
 import * as ShareDB from 'sharedb/lib/client';
 import { BehaviorSubject } from 'rxjs';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-group-create-post-dialog-component',
@@ -99,12 +100,16 @@ export class GroupCreatePostDialogComponent implements OnInit {
   percentageSubtasksCompleted = 0;
   parentTaskAssigneeProfilePicUrl = ''
 
+  userGroups = [];
+  transferAction = '';
+
   constructor(
     private postService: PostService,
     private groupService: GroupService,
     private utilityService: UtilityService,
     private injector: Injector,
     private commentService: CommentService,
+    private _router: Router,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private mdDialogRef: MatDialogRef<GroupCreatePostDialogComponent>
     ) {}
@@ -121,12 +126,33 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.groupData = await this.publicFunctions.getGroupDetails(this.groupId);
 
     await this.initPostData();
+
+    if (this.postData.type === 'task') {
+      // Fetches the user groups from the server
+      await this.publicFunctions.getUserGroups(this.groupData._workspace, this.userData._id)
+        .then((groups: any) => {
+          groups.forEach(async group => {
+            group.sections = await this.publicFunctions.getAllColumns(group._id);
+            if (group.sections) {
+              group.sections.sort((s1, s2) => (s1.title > s2.title) ? 1 : -1);
+            }
+            if (group._id != this.groupId && group.sections) {
+              this.userGroups.push(group);
+            }
+          });
+          this.userGroups.sort((g1, g2) => (g1.group_name > g2.group_name) ? 1 : -1);
+        })
+        .catch(() => {
+          // If the function breaks, then catch the error and console to the application
+          this.publicFunctions.sendError(new Error('Unable to connect to the server, please try again later!'));
+        });
+    }
   }
 
   async initPostData() {
     // Set the title of the post
     this.title = this.postData.title;
-    if(this.postData.bars !== undefined) {
+    if(this.postData.bars && this.postData.bars !== undefined) {
       this.barTags = this.postData.bars.map( bar => bar.bar_tag);
     }
 
@@ -706,5 +732,87 @@ export class GroupCreatePostDialogComponent implements OnInit {
           reject({});
         });
     });
+  }
+
+  saveTransferAction(action: string) {
+    this.transferAction = action;
+  }
+
+  transferToGroup(group: string, section: any) {
+    if (this.transferAction === 'copy') {
+      this.copyToGroup(group, section);
+    }
+    if (this.transferAction === 'move') {
+      this.moveToGroup(group, section);
+    }
+    this.transferAction = '';
+  }
+
+  async copyToGroup(group: string, section: any) {
+    // Open the Confirm Dialog to ask for permission
+    this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the task will be copied to the selected group!')
+      .then(async (res) => {
+        if (res.value) {
+          await this.utilityService.asyncNotification('Please wait we are copy the task...', new Promise((resolve, reject) => {
+            let post = this.postData;
+            delete post.bars;
+            delete post.records;
+            delete post.comments;
+            delete post.comments_count;
+            delete post.task._assigned_to;
+            delete post.task.custom_fields;
+            post.task.unassigned = false;
+            post._group = group;
+            post.task._column.title = section.title;
+            post.created_date = moment().local().startOf('day').format('YYYY-MM-DD');
+
+            this.postService.transferToGroup(post, true).then((res) => {
+              this.onTransferPost({post: res[post], isCopy: true});
+              resolve(this.utilityService.resolveAsyncPromise(`Task Copied!`));
+            });
+          }));
+        }
+      });
+  }
+
+  async moveToGroup(group: string, section: any) {
+    // Open the Confirm Dialog to ask for permission
+    this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the task will be moved to the selected group!')
+      .then(async (res) => {
+        if (res.value) {
+          await this.utilityService.asyncNotification('Please wait we are move the task...', new Promise((resolve, reject) => {
+            let post = this.postData;
+            delete post.bars;
+            delete post.comments;
+            delete post.comments_count;
+            delete post.task._assigned_to;
+            delete post.task.custom_fields;
+            post.task.unassigned = false;
+            post._group = group;
+            post.task._column.title = section.title;
+
+            this.postService.transferToGroup(post, false).then((res) => {
+              this.onTransferPost({post: res['post'], isCopy: false, groupId: group});
+              resolve(this.utilityService.resolveAsyncPromise(`Task moved!`));
+            });
+          }));
+        }
+      });
+  }
+
+  onTransferPost(data) {
+    const post = data.post;
+    const isCopy = data.isCopy;
+
+    if (!isCopy) {
+      // redirect the user to the post
+      const groupId = data.groupId;
+      // Set the Value of element selection box to be the url of the post
+      if (post.type === 'task') {
+        this._router.navigate(['/dashboard', 'work', 'groups', 'tasks'], { queryParams: { group: groupId, myWorkplace: false, postId: post._id } });
+      } else {
+        this._router.navigate(['/dashboard', 'work', 'groups', 'activity'], { queryParams: { group: groupId, myWorkplace: false, postId: post._id } });
+      }
+    }
   }
 }

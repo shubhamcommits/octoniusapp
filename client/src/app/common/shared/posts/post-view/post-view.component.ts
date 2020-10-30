@@ -47,10 +47,10 @@ export class PostViewComponent implements OnInit {
   }
 
   postModalCloseEvent(post: any) {
-console.log(post);
     this.post = post;
     this.closeModalEvent.emit(post);
   }
+
   /**
    * This function checks if an event is assigned to all the members of the group
    * @param post

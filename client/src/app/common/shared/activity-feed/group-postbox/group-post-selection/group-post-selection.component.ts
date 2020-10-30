@@ -40,7 +40,7 @@ export class GroupPostSelectionComponent implements OnInit {
 
   /**
    * This function is responsible for emitting the post object to other components
-   * @param post 
+   * @param post
    */
   getPost(post: any){
 
@@ -63,5 +63,4 @@ export class GroupPostSelectionComponent implements OnInit {
   editedPost(post: any){
     this.edited.emit(post);
   }
-
 }

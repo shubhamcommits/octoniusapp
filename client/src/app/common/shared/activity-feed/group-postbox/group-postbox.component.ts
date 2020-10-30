@@ -38,7 +38,7 @@ export class GroupPostboxComponent implements OnInit {
 
   /**
    * This function is responsible for emitting the post object to other components
-   * @param post 
+   * @param post
    */
   getPost(post: any) {
     // Emit the post to other connected components
@@ -48,5 +48,4 @@ export class GroupPostboxComponent implements OnInit {
   editedPost(post: any){
     this.edited.emit(post);
   }
-
 }
