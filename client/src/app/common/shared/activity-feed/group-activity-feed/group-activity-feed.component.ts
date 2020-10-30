@@ -265,22 +265,16 @@ export class GroupActivityFeedComponent implements OnInit {
    * @param post
    */
   deletePost(post: any) {
-
-    this.utilityService.getConfirmDialogAlert()
-      .then((result) => {
-        if (result.value) {
-          new Promise((resolve, reject)=>{
-            this.postService.deletePost(post._id).then((res)=>{
-               // Find the key(postId) and remove the post
-              this.posts.delete(post._id);
-              resolve();
-            }).catch((err)=>{
-              console.log(err);
-              reject();
-            })
-          })
-        }
+    new Promise((resolve, reject)=>{
+      this.postService.deletePost(post._id).then((res)=>{
+         // Find the key(postId) and remove the post
+        this.posts.delete(post._id);
+        resolve();
+      }).catch((err)=>{
+        console.log(err);
+        reject();
       })
+    });
   }
 
   editedPost(event: any) {
