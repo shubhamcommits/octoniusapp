@@ -766,7 +766,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
             post.task._column.title = section.title;
             post.created_date = moment().local().startOf('day').format('YYYY-MM-DD');
 
-            this.postService.transferToGroup(post, true).then((res) => {
+            this.postService.transferToGroup(post, this.groupId, this.userData._id, true).then((res) => {
               this.onTransferPost({post: res[post], isCopy: true});
               resolve(this.utilityService.resolveAsyncPromise(`Task Copied!`));
             });
@@ -791,7 +791,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
             post._group = group;
             post.task._column.title = section.title;
 
-            this.postService.transferToGroup(post, false).then((res) => {
+            this.postService.transferToGroup(post, this.groupId, this.userData._id, false).then((res) => {
               this.onTransferPost({post: res['post'], isCopy: false, groupId: group});
               resolve(this.utilityService.resolveAsyncPromise(`Task moved!`));
             });

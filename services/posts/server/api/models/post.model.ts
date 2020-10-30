@@ -240,6 +240,33 @@ const PostSchema = new Schema({
                 required: true,
                 ref: 'User'
             }
+        }],
+        group_change: [{
+            date: {
+                type: Date,
+                required: true,
+                default: moment().format()
+            },
+            _fromGroup: {
+                type: Schema.Types.ObjectId,
+                required: true,
+                ref: 'Group'
+            },
+            _toGroup: {
+                type: Schema.Types.ObjectId,
+                required: true,
+                ref: 'Group'
+            },
+            type: {
+                type: String,
+                required: true,
+                default: 'copy'
+            },
+            _user: {
+                type: Schema.Types.ObjectId,
+                required: true,
+                ref: 'User'
+            }
         }]
     }
 });

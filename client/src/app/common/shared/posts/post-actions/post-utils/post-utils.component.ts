@@ -39,18 +39,19 @@ export class PostUtilsComponent implements OnInit {
   // Public Functions Object
   public publicFunctions = new PublicFunctions(this.injector);
 
+  groupId = '';
   async ngOnInit() {
 
     // Fetch the current workspace data
     const workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
-    const groupId = (this.post._group._id) ? this.post._group._id : this.post._group;
+    this.groupId = (this.post._group._id) ? this.post._group._id : this.post._group;
 
     // Fetches the user groups from the server
     await this.publicFunctions.getUserGroups(workspaceData['_id'], this.userData._id)
       .then(async (groups: any) => {
         await groups.forEach(group => {
-          if (group._id != groupId) {
+          if (group._id != this.groupId) {
             this.userGroups.push(group);
           }
         });
@@ -158,7 +159,7 @@ export class PostUtilsComponent implements OnInit {
             post._group = group._id;
             post.created_date = moment().local().startOf('day').format('YYYY-MM-DD');
 
-            this.postService.transferToGroup(post, true).then((res) => {
+            this.postService.transferToGroup(post, this.groupId, this.userData._id, true).then((res) => {
               this.onTransferPost({post: res['post'], isCopy: true, groupId: group._id});
               resolve(this.utilityService.resolveAsyncPromise(`👍 Card copied!`));
             });
@@ -179,7 +180,7 @@ export class PostUtilsComponent implements OnInit {
             delete post.comments_count;
             post._group = group._id;
 
-            this.postService.transferToGroup(post, false).then((res) => {
+            this.postService.transferToGroup(post, this.groupId, this.userData._id, false).then((res) => {
               this.onTransferPost({post: res['post'], isCopy: false, groupId: group._id});
               resolve(this.utilityService.resolveAsyncPromise(`👍 Card moved!`));
             });

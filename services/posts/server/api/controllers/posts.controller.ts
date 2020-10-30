@@ -899,12 +899,12 @@ export class PostController {
     async moveToGroup(req: Request, res: Response, next: NextFunction) {
 
         // Post Object From request
-        const { body: { groupId }, params: { postId } } = req;
+        const { body: { groupId, oldGroupId, userId }, params: { postId } } = req;
 
         try {
 
             // Call service function to edit
-            const updatedPost = await postService.moveToGroup(postId, groupId)
+            const updatedPost = await postService.moveToGroup(postId, groupId, oldGroupId, userId)
                 .catch((err) => {
                     return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
                 })
@@ -931,11 +931,11 @@ export class PostController {
     async copyToGroup(req: Request, res: Response, next: NextFunction) {
 
         // Post Object From request
-        const { post } = req.body;
+        const { post, oldGroupId, userId } = req.body;
 
         try {
             // Call servide function for adding the post
-            const postData = await postService.copyToGroup(post)
+            const postData = await postService.copyToGroup(post, oldGroupId, userId)
                 .catch((err) => {
                     return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
                 })

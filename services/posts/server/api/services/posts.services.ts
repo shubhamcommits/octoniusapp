@@ -1581,14 +1581,22 @@ export class PostService {
     return posts;
   }
 
-  async moveToGroup(postId: string, groupId: string) {
+  async moveToGroup(postId: string, groupId: string, oldGroupId: string, userId: string) {
     
     try {
       // Update the post
       let post = await Post.findOneAndUpdate({
         _id: postId
       }, {
-        _group: groupId
+        _group: groupId,
+        $push: { "records.group_change": {
+            date: moment().format(),
+            _fromGroup: oldGroupId,
+            _toGroup: groupId,
+            type: 'move',
+            _user: userId
+          }
+        }
       }, {
         new: true
       })
@@ -1603,7 +1611,15 @@ export class PostService {
           { 'task._parent_task': post._id }
         ]
       }, {
-        _group: groupId
+        _group: groupId,
+        $push: { "records.group_change": {
+            date: moment().format(),
+            _fromGroup: oldGroupId,
+            _toGroup: groupId,
+            type: 'move',
+            _user: userId
+          }
+        }
       }).select('_id').lean();
 
       // delete the comments
@@ -1624,7 +1640,7 @@ export class PostService {
     }
   }
 
-  async copyToGroup(post: any) {
+  async copyToGroup(post: any, oldGroupId: string, userId: string) {
 
     try {
       const groupId = post._group;
@@ -1634,6 +1650,22 @@ export class PostService {
 
       // Create new post
       post = await Post.create(post);
+
+      // set the record
+      post = Post.findOneAndUpdate({
+          _id: post._id
+        }, {
+          $push: { "records.group_change": {
+              date: moment().format(),
+              _fromGroup: oldGroupId,
+              _toGroup: groupId,
+              type: 'copy',
+              _user: userId
+            }
+          }
+        }, {
+          new: true
+        })
 
       // populate the assigned_to property of this document
       post = await this.populatePostProperties(post);
@@ -1648,7 +1680,7 @@ export class PostService {
           task._group = groupId;
           task.task._parent_task = post._id;
           task.created_date = moment().local().startOf('day').format('YYYY-MM-DD');
-          this.copyToGroup(task);
+          this.copyToGroup(task, oldGroupId, userId);
         });
       }
 
