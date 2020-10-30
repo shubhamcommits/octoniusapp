@@ -133,6 +133,9 @@ export class GroupCreatePostDialogComponent implements OnInit {
         .then((groups: any) => {
           groups.forEach(async group => {
             group.sections = await this.publicFunctions.getAllColumns(group._id);
+            if (group.sections) {
+              group.sections.sort((s1, s2) => (s1.title > s2.title) ? 1 : -1);
+            }
             if (group._id != this.groupId && group.sections) {
               this.userGroups.push(group);
             }
