@@ -101,6 +101,67 @@ export class PostsControllers {
         }
     }
 
+
+    async getNextWeekTasks(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            // Fetch the userId from the request query
+            let userId: any = req.query.userId
+
+            // If userId is not there in query, then use the current loggedIn userId
+            if(!userId || userId == "undefined"){
+                userId = req['userId']
+            }
+
+            // If userId is not found
+            if(!userId){
+                return sendError(res, new Error('Unable to find the user, either userId is invalid or you have made an unauthorized request!'), 'Unable to find the user, either userId is invalid or you have made an unauthorized request!', 404);
+            }
+
+            // Fetch this week's task
+            const tasks: any = await postsService.getNextWeekTasks(userId);
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Next weeks\' tasks found!',
+                tasks: tasks
+            });
+
+        } catch (err) {
+            return sendError(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
+
+    async getFutureTasks(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            // Fetch the userId from the request query
+            let userId: any = req.query.userId
+
+            // If userId is not there in query, then use the current loggedIn userId
+            if(!userId || userId == "undefined"){
+                userId = req['userId']
+            }
+
+            // If userId is not found
+            if(!userId){
+                return sendError(res, new Error('Unable to find the user, either userId is invalid or you have made an unauthorized request!'), 'Unable to find the user, either userId is invalid or you have made an unauthorized request!', 404);
+            }
+
+            // Fetch this week's task
+            const tasks: any = await postsService.getFutureTasks(userId);
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Future tasks found!',
+                tasks: tasks
+            });
+
+        } catch (err) {
+            return sendError(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
+
     async getTodayEvents(req: Request, res: Response, next: NextFunction) {
         try {
 

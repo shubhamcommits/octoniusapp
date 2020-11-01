@@ -54,6 +54,12 @@ routes.get('/tasks/overdue', post.getOverdueTasks);
 // GET - Fetches this week's tasks
 routes.get('/tasks/week', post.getThisWeekTasks)
 
+// GET - Fetches next week's tasks
+routes.get('/tasks/next-week', post.getNextWeekTasks)
+
+// GET - Fetches future tasks
+routes.get('/tasks/future', post.getFutureTasks)
+
 // GET - Fetches today's events
 routes.get('/events/today', post.getTodayEvents)
 

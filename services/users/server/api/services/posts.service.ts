@@ -102,6 +102,64 @@ export class PostsService {
     }
 
     /**
+     * This function is responsible for fetching tasks due in the next week
+     * @param userId 
+     */
+    async getNextWeekTasks(userId: string) {
+
+        // Generate the +7days
+        const todayPlus7Days = moment().add(7, 'days').startOf('day').format();
+
+        // Generate the +14days from today time
+        const todayPlus14Days = moment().add(14, 'days').endOf('day').format();
+
+        // Fetch the tasks posts
+        const tasks = await Post.find({
+            'task._assigned_to': userId,
+            'task.due_to': { $gte: todayPlus7Days, $lte: todayPlus14Days },
+            $or: [
+                { 'task.status': 'to do' },
+                { 'task.status': 'in progress' },
+                { 'task.status': 'done' }
+            ]
+        })
+            .sort('-task.due_to')
+            .populate('_group', this.groupFields)
+            .populate('_posted_by', this.userFields)
+            .populate('task._assigned_to', this.userFields)
+            .lean();
+
+        // Return tasks
+        return tasks
+    }
+
+    /**
+     * This function is responsible for fetching tasks without due date
+     * @param userId 
+     */
+    async getFutureTasks(userId: string) {
+
+        // Fetch the tasks posts
+        const tasks = await Post.find({
+            'task._assigned_to': userId,
+            'task.due_to': null,
+            $or: [
+                { 'task.status': 'to do' },
+                { 'task.status': 'in progress' },
+                { 'task.status': 'done' }
+            ]
+        })
+            .sort('-task.due_to')
+            .populate('_group', this.groupFields)
+            .populate('_posted_by', this.userFields)
+            .populate('task._assigned_to', this.userFields)
+            .lean();
+
+        // Return tasks
+        return tasks
+    }
+
+    /**
      * This function is responsible for fetching todays event for the user
      * @param userId 
      */

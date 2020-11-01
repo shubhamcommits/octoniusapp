@@ -20,6 +20,8 @@ export class MyspaceTasksComponent implements OnInit {
 
   todayTasks: any = [];
   thisWeekTasks: any = [];
+  nextWeekTasks: any = [];
+  futureTasks: any = [];
   overdueTasks: any = [];
   overdueAndTodayTasks = [];
 
@@ -48,6 +50,8 @@ export class MyspaceTasksComponent implements OnInit {
     this.todayTasks = await this.getUserTodayTasks();
     this.thisWeekTasks = await this.getUserThisWeekTasks();
     this.overdueTasks = await this.getUserOverdueTasks();
+    this.nextWeekTasks = await this.getUserNextWeekTasks();
+    this.futureTasks = await this.getUserFutureTasks();
 
     this.markOverdueTasks();
   }
@@ -74,6 +78,32 @@ export class MyspaceTasksComponent implements OnInit {
     return new Promise((resolve, reject) => {
       let userService = this.injector.get(UserService);
       userService.getUserThisWeekTasks()
+        .then((res) => {
+          resolve(res['tasks'])
+        })
+        .catch(() => {
+          reject([])
+        })
+    })
+  }
+
+  async getUserNextWeekTasks() {
+    return new Promise((resolve, reject) => {
+      let userService = this.injector.get(UserService);
+      userService.getUserNextWeekTasks()
+        .then((res) => {
+          resolve(res['tasks'])
+        })
+        .catch(() => {
+          reject([])
+        })
+    })
+  }
+
+  async getUserFutureTasks() {
+    return new Promise((resolve, reject) => {
+      let userService = this.injector.get(UserService);
+      userService.getUserFutureTasks()
         .then((res) => {
           resolve(res['tasks'])
         })
