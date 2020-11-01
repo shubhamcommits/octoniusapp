@@ -142,17 +142,31 @@ export class UserService {
   }
 
   /**
-   * USER TODAY'S TASK
+   * USER TODAY'S TASKS
    */
   getUserTodayTasks() {
     return this._http.get(this.BASE_API_URL + `/tasks/today`).toPromise();
   }
 
   /**
-   * USER THIS WEEK'S TASK
+   * USER THIS WEEK'S TASKS
    */
   getUserThisWeekTasks() {
     return this._http.get(this.BASE_API_URL + `/tasks/week`).toPromise();
+  }
+
+  /**
+   * USER NEXT WEEK'S TASKS
+   */
+  getUserNextWeekTasks() {
+    return this._http.get(this.BASE_API_URL + `/tasks/next-week`).toPromise();
+  }
+
+  /**
+   * USER FUTURE TASKS
+   */
+  getUserFutureTasks() {
+    return this._http.get(this.BASE_API_URL + `/tasks/future`).toPromise();
   }
 
   /**
