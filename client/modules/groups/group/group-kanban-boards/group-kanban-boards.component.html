@@ -9,7 +9,7 @@
                 <!-- COLUMN TITLE AND EDIT/DELETE DETAILS STARTS -->
                 <div class="column-title">
                     <p class="text-capitalize"> {{ column?.title | truncatetext:60 }}</p>
-                    <div class="inline-block" *ngIf="!(column.title =='to do')">
+                    <div class="inline-block">
                         <div class="dropdown">
                             <i class="material-icons action dropdown-toggle"
                                 data-toggle="dropdown">more_horiz</i>
@@ -17,14 +17,15 @@
                             <!-- Menu Drawer Starts -->
                             <ul class="dropdown-menu">
                                 <li class="dropdown-item" (click)="column.editColumn = !column.editColumn">
-                                    <span class="material-icons-outlined">create</span>
-                                    Edit</li>
-                                <li class="dropdown-item" (click)="deleteColumn(column)">
-                                    <span class="material-icons-outlined">delete</span>
-                                    Delete</li>
+                                  <span class="material-icons-outlined">create</span>
+                                  Edit
+                                </li>
+                                <li class="dropdown-item" *ngIf="columns.length > 1" (click)="deleteColumn(column)">
+                                  <span class="material-icons-outlined">delete</span>
+                                  Delete
+                                </li>
                             </ul>
                             <!-- Menu Drawer Ends -->
-
                         </div>
                     </div>
                 </div>
