@@ -66,9 +66,11 @@ export class WorkspaceController {
                 .populate({
                     path: 'members',
                     select: 'first_name last_name profile_pic role email active',
+                    /*
                     options: {
                         limit: 10
                     }
+                    */
                 })
                 .lean()
                 .exec();

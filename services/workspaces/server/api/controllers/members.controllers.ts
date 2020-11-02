@@ -28,7 +28,7 @@ export class MembersControllers {
             ]
         })
             .sort('_id')
-            .limit(10)
+            //.limit(10)
             .select('first_name last_name email role profile_pic active')
             .lean() || []
     }

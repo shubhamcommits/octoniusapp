@@ -151,7 +151,7 @@ export class PublicFunctions {
             const utilityService = this.injector.get(UtilityService);
             workspaceService.getWorkspaceMembers(workspaceId || userData['_workspace'])
                 .then((res) => {
-                    resolve(res['results']);
+                    resolve(res['users']);
                 })
                 .catch((err) => {
                     console.log('Error occured while fetching the workspace members!', err);
@@ -598,8 +598,8 @@ export class PublicFunctions {
 
     /**
      * This function is responsible for fetching the google drive files from connected google drive
-     * @param searchTerm 
-     * @param accessToken 
+     * @param searchTerm
+     * @param accessToken
      */
     searchGoogleFiles(searchTerm: string, accessToken: string) {
         return new Promise((resolve) => {
@@ -886,7 +886,7 @@ export class PublicFunctions {
 
     /**
      * This function handles the google signin result and connect the account to octonius server
-     * @param googleSignInResult 
+     * @param googleSignInResult
      */
     async handleGoogleSignIn(googleSignInResult?: any) {
 
@@ -977,7 +977,7 @@ export class PublicFunctions {
 
     /**
      * This function saves the refresh token to user's profile
-     * @param token 
+     * @param token
      */
     async saveRefreshTokenToUser(token: string) {
         let googleService = this.injector.get(GoogleCloudService)
@@ -989,7 +989,7 @@ export class PublicFunctions {
 
     /**
      * This function fetches the access token stored in the user's profile
-     * @param refreshToken 
+     * @param refreshToken
      */
     async getAccessToken(refreshToken: string) {
         let googleService = this.injector.get(GoogleCloudService)
@@ -1001,8 +1001,8 @@ export class PublicFunctions {
 
     /**
      * This function is responsible for fetching the authorization code from google auth results
-     * @param code 
-     * @param access_token 
+     * @param code
+     * @param access_token
      */
     async getGoogleDriveTokenFromAuthResult(code: string, access_token: string) {
         let googleService = this.injector.get(GoogleCloudService)
@@ -1014,7 +1014,7 @@ export class PublicFunctions {
 
     /**
      * This function is responsible for fetching the google user details
-     * @param accessToken 
+     * @param accessToken
      */
     async getGoogleUserDetails(accessToken: string) {
         let googleService = this.injector.get(GoogleCloudService)
