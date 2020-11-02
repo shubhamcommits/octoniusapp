@@ -272,7 +272,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
 
               // Call for each task present in the board
               this.columns[index]['tasks'].forEach((task)=>{
-                let newColumnTitle = 'todo';
+                let newColumnTitle = 'to do';
                 if (index - 1 >= 0) {
                   newColumnTitle = this.columns[index - 1]['title'];
                 } else if (index + 1 < this.columns.length) {
