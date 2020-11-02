@@ -936,7 +936,7 @@ export class PostService {
         _id: postId
       }, {
         $set: {
-          "task._column.title": title ? title : 'to do',
+          "task._column.title": title,
         },
         $push: { "records.column": {
             date: moment().format(),

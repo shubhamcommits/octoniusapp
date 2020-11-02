@@ -104,6 +104,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
       // Update the task column when changed with dropping events to reflect back in the task view modal
       event.previousContainer.data[event.previousIndex]['task']._column.title = event.container.id
 
+      /*
       // If new column is 'to do' then, set the status of the task to 'to do' as well
       if (event.container.id === 'to do') {
         event.previousContainer.data[event.previousIndex]['task'].status = 'to do'
@@ -111,6 +112,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
         // Change the task status
         this.publicFunctions.changeTaskStatus(post._id, 'to do', this.userData._id)
       }
+      */
 
       // Call move task to a new column
       this.moveTaskToNewColumn(post, event.previousContainer.id, event.container.id);
@@ -229,12 +231,18 @@ export class GroupKanbanBoardsComponent implements OnInit {
       this.utilityService.asyncNotification('Please wait we are renaming your column...', new Promise((resolve, reject) => {
         columnService.editColumnName(this.groupId, oldTitle, newColTitle)
         .then((res) => {
+
+          // rename the column in the tasks
+          oldCol['tasks'].forEach(task => {
+            task.task._column.title = newColTitle;
+          });
+
           resolve(this.utilityService.resolveAsyncPromise('Column Renamed!'));
         })
         .catch((err) => {
           reject(this.utilityService.rejectAsyncPromise('Unable to rename the column at the moment, please try again!'))
         })
-    }))
+      }))
     }
   }
 
@@ -251,25 +259,30 @@ export class GroupKanbanBoardsComponent implements OnInit {
           // Find the index of the column to check if the same named column exist or not
           let index = this.columns.findIndex((col: any) => col.title.toLowerCase() === column.title.toLowerCase())
 
-          // If index is found, then throw error notification
-          if (index === -1) {
+          // If index is found or it is the last column, then throw error notification
+          if (index === -1 || this.columns.length === 1) {
             this.utilityService.warningNotification('Unable to delete the column, please try again!')
           }
 
           // If not found, then remove the element
-          else if (index != -1) {
+          else if (index != -1 && this.columns.length > 1) {
 
-            // Move All the columns' task to 'to do' column
+            // Move All the columns' task to other column
             if(this.columns[index]['tasks'].length > 0){
 
               // Call for each task present in the board
               this.columns[index]['tasks'].forEach((task)=>{
-
+                let newColumnTitle = 'to do';
+                if (index - 1 >= 0) {
+                  newColumnTitle = this.columns[index - 1]['title'];
+                } else if (index + 1 < this.columns.length) {
+                  newColumnTitle = this.columns[index + 1]['title'];
+                }
                 // Prepare Event
                 let columnEvent = {
                   post: task,
                   oldColumn: this.columns[index]['title'],
-                  newColumn: 'to do'
+                  newColumn: newColumnTitle
                 }
 
                 // Call HTTP Put request to move the tasks
@@ -326,11 +339,13 @@ export class GroupKanbanBoardsComponent implements OnInit {
     this.publicFunctions.changeTaskColumn(task._id, newColumn, this.userData._id);
 
     // If new column is 'to do' then set the taskStatus as 'to do' too
+    /*
     switch (newColumn) {
       case 'to do':
         this.changeStatus(task, newColumn)
         break;
     }
+    */
 
   }
 
