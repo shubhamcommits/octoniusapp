@@ -28,8 +28,9 @@
 </div>
 <!-- Attached Files Ends -->
 
-<!-- Selected Files Starts
-<div class="ml-2 mt-2" *ngFor="let file of filesArray; let index = index">
+<!-- Selected Files Starts -->
+<div *ngIf="!post"  class="ml-2 mt-2">
+  <div *ngFor="let file of filesArray; let index = index">
     <p>
       <strong>Selected File: </strong>
       {{ file?.name }}
@@ -37,8 +38,9 @@
           highlight_off
       </span>
     </p>
+  </div>
 </div>
--->
+
 
 <!-- Google Drive Attached File Starts -->
 <div class="ml-2 mt-2" id="google-drive-file" style="display:none;"></div>
