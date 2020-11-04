@@ -49,6 +49,16 @@ const CommentSchema = new Schema({
     _read_by: [{
         type: Schema.Types.ObjectId,
         ref: 'User'
+    }],
+    files: [{
+        original_name: {
+            type: String,
+            default: null
+        },
+        modified_name: {
+            type: String,
+            default: null
+        }
     }]
 });
 

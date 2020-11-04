@@ -4,8 +4,8 @@
       <div class="form-group mt-3">
         <h6 class="font-weight-bold">Add a comment</h6>
         <div class="quill-container">
-          <app-quill-editor 
-            [editorId]="'commentbox-editor' + editorId" 
+          <app-quill-editor
+            [editorId]="'commentbox-editor' + editorId"
             [readOnly]="false"
             [groupId]="groupId"
             (content)="getQuillData($event)">
@@ -16,7 +16,16 @@
   </div>
 
   <div class="row">
-    <div class="col-md-8"></div>
+    <div class="col-md-8">
+      <!-- Attach files starts -->
+      <div class="attach-files">
+          <app-attach-files
+            (files)="onAttach($event)"
+            (cloudFiles)="onCloudFileAttach($event)">
+          </app-attach-files>
+      </div>
+      <!-- Attach files ends -->
+    </div>
     <div class="col-md-4 text-right" style="padding-right:30px; padding-bottom: 14px;">
       <button type="button " name="button " class="btn btn-default"(click)="this.close.emit('close')">Cancel</button>
       <button type="button " name="button" class="btn btn-primary" (click)="create(this.userData._id); this.close.emit('close')">Comment</button>

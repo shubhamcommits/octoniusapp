@@ -3,8 +3,8 @@
         <div class="row card-title ">
             <div class="col-md-1">
 
-                <img src="{{baseUrl}}/{{comment._commented_by?.profile_pic}}"
-                    onerror="this.src='assets/images/user.png'" class="feed-avatar">
+              <img src="{{baseUrl}}/{{comment._commented_by?.profile_pic}}"
+                  onerror="this.src='assets/images/user.png'" class="feed-avatar">
 
             </div>
             <div class="col-md-11 ">
@@ -45,9 +45,21 @@
         </div>
         <!-- Comment Content ends -->
 
+        <div class="col-md-12 innercard">
+          <!-- Attach files starts -->
+          <div class="attach-files">
+              <app-attach-files
+                  [comment]="comment"
+                  [showIcons]="displayCommentEditor"
+                  (files)="onAttach($event)"
+                  (cloudFiles)="onCloudFileAttach($event)">
+              </app-attach-files>
+          </div>
+          <!-- Attach files ends -->
+        </div>
+
         <!-- Comment Action Starts -->
         <div class="row card-footer innercard action-post clearfix ml-0 mr-0">
-
             <!-- Likes Placeholder starts -->
             <ng-template #likedContent>
               <p *ngFor="let liked_by of likedByUsers">{{ liked_by }}</p>

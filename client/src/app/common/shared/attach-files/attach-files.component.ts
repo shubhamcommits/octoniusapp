@@ -18,6 +18,12 @@ export class AttachFilesComponent implements OnInit {
   // Post Object Input
   @Input('post') post: any;
 
+  // Comment Object Input
+  @Input() comment: any;
+
+  // show icons
+  @Input() showIcons: boolean = true;
+
   // Files Output Event Emitter
   @Output('files') files = new EventEmitter();
 
