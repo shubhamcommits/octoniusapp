@@ -59,7 +59,8 @@
         </div>
 
         <!-- Comment Action Starts -->
-        <div class="row card-footer innercard action-post clearfix ml-0 mr-0">
+        <!-- TODO -> this 'if' will be removed when we fix that new comments are added with the ID to the array -->
+        <div *ngIf="comment._id" class="row card-footer innercard action-post clearfix ml-0 mr-0">
             <!-- Likes Placeholder starts -->
             <ng-template #likedContent>
               <p *ngFor="let liked_by of likedByUsers">{{ liked_by }}</p>

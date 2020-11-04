@@ -66,6 +66,7 @@ export class AttachFilesComponent implements OnInit {
       this.onCloudFileAttach();
     }
   }
+
   /**
    * This function is responsible for removing the specific file attached
    * @param index
@@ -87,6 +88,24 @@ export class AttachFilesComponent implements OnInit {
 
 
     return this.removeFileInArray(file['modified_name']);
+  }
+
+  /**
+   * This function is responsible for removing the specific file attached which has not been uploaded yet
+   * @param index
+   */
+  removeTmpFile(index: number) {
+
+    // Remove element at the specific index
+    let arr = Array.from(this.filesArray)
+
+    const file = arr[index];
+
+    // Remove the element
+    arr.splice(index, 1)
+
+    // Updated array
+    this.filesArray = arr
   }
 
   removeFileInArray(fileName: string) {

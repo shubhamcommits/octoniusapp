@@ -37,15 +37,15 @@ const commentFileHandler = async (req: Request, res: Response, next: NextFunctio
     files.attachments.forEach((currentFile: any, index: Number) => {
 
       // Instantiate the fileName variable and add the date object in the name
-      let fileName = Date.now().toString() + currentFile.name;
+      // let fileName = Date.now().toString() + currentFile.name;
 
       // Get the folder link from the environment
       const folder = process.env.FILE_UPLOAD_FOLDER;
 
       // Modify the file accordingly and handle request
-      currentFile.mv(folder + fileName, (error: Error) => {
+      currentFile.mv(folder + currentFile.modified_name, (error: Error) => {
         if (error) {
-          fileName = null;
+          // fileName = null;
           return res.status(500).json({
             status: '500',
             message: 'file upload error',
@@ -57,7 +57,7 @@ const commentFileHandler = async (req: Request, res: Response, next: NextFunctio
       // Modify the file and serialise the object
       const file = {
         original_name: currentFile.name,
-        modified_name: fileName
+        modified_name: currentFile.modified_name
       };
 
       // Push the file object
@@ -77,7 +77,7 @@ const commentFileHandler = async (req: Request, res: Response, next: NextFunctio
     req.body.comment.files = [];
 
     // Instantiate the fileName variable and add the date object in the name
-    let fileName = Date.now().toString() + req['files'].attachments['name'];
+    //let fileName = Date.now().toString() + req['files'].attachments['name'];
 
     // Fetch the file from the current request
     const currentFile: any = req['files'].attachments;
@@ -86,9 +86,9 @@ const commentFileHandler = async (req: Request, res: Response, next: NextFunctio
     const folder = process.env.FILE_UPLOAD_FOLDER;
 
     // Modify the file accordingly and handle request
-    currentFile.mv(folder + fileName, (error: Error) => {
+    currentFile.mv(folder + currentFile.modified_name, (error: Error) => {
       if (error) {
-        fileName = null;
+        //fileName = null;
         return res.status(500).json({
           status: '500',
           message: 'file upload error',
@@ -100,7 +100,7 @@ const commentFileHandler = async (req: Request, res: Response, next: NextFunctio
     // Modify the file and serialise the object
     const file = {
       original_name: req['files'].attachments['name'],
-      modified_name: fileName
+      modified_name: req['files'].attachments['modified_name']
     };
 
     // Push the file object
