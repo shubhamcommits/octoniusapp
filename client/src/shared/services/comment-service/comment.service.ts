@@ -42,32 +42,24 @@ export class CommentService {
 
   /**
    * This function is responsible for adding a new comment
-   * @param postId
-   * @param content
-   * @param contentMentions
-   * @param _highlighted_content_range
+   * @param formData
    */
-  new(postId: any, content: any, contentMentions: any, _highlighted_content_range: any): Observable<any> {
-    return this._http.post(this.baseURL + '/comments/new-comment', {
-      content, contentMentions, _highlighted_content_range
-    }, {
+  new(formData: FormData, postId: string) {
+    return this._http.post(this.baseURL + '/comments/new-comment', formData, {
       params: {
         postId : postId
       }
-    });
+    }).toPromise();
   }
 
 
   /**
    * This function is responsible for editing a comment
    * @param commentId
-   * @param content
-   * @param contentMentions
+   * @param formData
    */
-  edit(commentId: any, content: any, contentMentions: any){
-    return this._http.post(this.baseURL + '/comments/edit-comment', {
-      content, contentMentions
-    }, {
+  edit(formData: FormData, commentId: string) {
+    return this._http.post(this.baseURL + '/comments/edit-comment', formData, {
       params: {commentId}
     }).toPromise();
   }

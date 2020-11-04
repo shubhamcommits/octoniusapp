@@ -1,6 +1,6 @@
 import express from 'express';
 import { CommentsController } from '../controllers';
-import { Auths, postFileHandler } from '../utils';
+import { Auths, commentFileHandler } from '../utils';
 
 const router = express.Router();
 const commentsController = new CommentsController();
@@ -17,10 +17,10 @@ router.use(auths.verifyToken);
 router.use(auths.isLoggedIn);
 
 // This route is used to add a new comment
-router.post('/new-comment', commentsController.addComment);
+router.post('/new-comment', commentFileHandler, commentsController.addComment);
 
 // This route is used to edit a comment
-router.post('/edit-comment', commentsController.editComment);
+router.post('/edit-comment', commentFileHandler, commentsController.editComment);
 
 // This route is used to retrieve a comment
 router.get('/get-comment', commentsController.getComment);

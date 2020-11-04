@@ -38,6 +38,8 @@ export class PostCommentComponent implements OnInit {
       first_name: '',
       last_name: ''
     },
+    files: [],
+    _content_mentions: [],
     created_date: new Date(Date.now())
   }
 
@@ -53,6 +55,12 @@ export class PostCommentComponent implements OnInit {
   _content_mentions: any;
 
   likedByUsers = [];
+
+  // Files Variable
+  files: any = []
+
+  // Cloud files
+  cloudFiles: any = [];
 
   async ngOnInit() {
     await this.comment._liked_by.forEach(user => {
@@ -80,7 +88,24 @@ export class PostCommentComponent implements OnInit {
 
     // Set the values of the array
     this._content_mentions = Array.from(new Set(this._content_mentions))
-    commentService.edit(this.comment._id, this.comment.content, this._content_mentions).then((res)=>{
+
+    this.comment._content_mentions = this._content_mentions;
+
+    // Create FormData Object
+    let formData = new FormData();
+
+    // Append Comment Data
+    formData.append('comment', JSON.stringify(this.comment))
+
+    // Append all the file attachments
+    if (this.files.length != 0) {
+      for (let index = 0; index < this.files.length; index++) {
+        formData.append('attachments', this.files[index], this.files[index]['name']);
+      }
+    }
+
+
+    commentService.edit(formData, this.comment._id).then((res)=>{
       console.log(res);
     }).catch((err)=>{
       console.log(err);
@@ -104,6 +129,26 @@ export class PostCommentComponent implements OnInit {
           })
         }
       })
+  }
+
+  /**
+   * This function is responsible for receiving the files
+   * @param files
+   */
+  onAttach(files: any) {
+    // Set the current files variable to the output of the module
+    this.files = files;
+  }
+
+  /**
+   * This function is responsible for receiving the files
+   * @param files
+   */
+  onCloudFileAttach(cloudFiles: any) {
+    // Set the current files variable to the output of the module
+    this.cloudFiles = cloudFiles;
+
+    // this.updateDetails();
   }
 
 }

@@ -1,7 +1,6 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { CommentService } from 'src/shared/services/comment-service/comment.service';
-import { rejects } from 'assert';
-import { map } from 'rxjs/operators';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'comment-section',
@@ -11,6 +10,7 @@ import { map } from 'rxjs/operators';
 export class CommentSectionComponent implements OnInit {
 
   constructor(
+    private utilityService: UtilityService,
     private commentService: CommentService
   ) { }
 
@@ -36,12 +36,18 @@ export class CommentSectionComponent implements OnInit {
 
   _content_mentions: any;
 
+  // Files Variable
+  files: any = []
+
+  // Cloud files
+  cloudFiles: any = [];
+
   ngOnInit() {
   }
 
   /**
    * This function is responsible for feeding the quill data from current instance
-   * @param quillData 
+   * @param quillData
    */
   getQuillData(quillData: any){
     this.quillData = quillData
@@ -49,11 +55,11 @@ export class CommentSectionComponent implements OnInit {
 
   /**
    * This function is resposible for creating the comment
-   * @param userId 
+   * @param userId
    */
-  create(userId: string){
+  async create(userId: string){
 
-    let comment = {
+    let commentData = {
       content: JSON.stringify(this.quillData.contents),
       created_date: new Date(Date.now()),
       likes_count: 0,
@@ -63,7 +69,11 @@ export class CommentSectionComponent implements OnInit {
         profile_pic: this.userData.profile_pic,
         first_name: this.userData.first_name,
         last_name: this.userData.last_name
-      }
+      },
+      files: [],
+      _content_mentions: [],
+      _postId: this.postId,
+      _highlighted_content_range: []
     }
 
     // Filter the Mention users content and map them into arrays of Ids
@@ -76,15 +86,63 @@ export class CommentSectionComponent implements OnInit {
     // Set the values of the array
     this._content_mentions = Array.from(new Set(this._content_mentions))
 
-    this.newComment(comment);
-    this.comment.emit(comment);
+    commentData._content_mentions = this._content_mentions;
+
+    // Create FormData Object
+    let formData = new FormData();
+
+    // Append Comment Data
+    formData.append('comment', JSON.stringify(commentData))
+
+    // Append all the file attachments
+    if (this.files.length != 0) {
+      for (let index = 0; index < this.files.length; index++) {
+        formData.append('attachments', this.files[index], this.files[index]['name']);
+
+        commentData.files.push({original_name: this.files[index]['name']});
+      }
+    } else {
+      delete commentData.files;
+    }
+
+    this.newComment(formData).then((res) => {
+      // Emit the Comment to the other compoentns
+      this.comment.emit(commentData);
+    });
   }
 
-  newComment(comment){
-      this.commentService.new(this.postId, comment.content, this._content_mentions, [])
-      .subscribe((res)=>{
-        // Output the Comment
-      });
+  async newComment(commentData: FormData) {
+    await this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
+      this.commentService.new(commentData, this.postId)
+        .then((res) => {
+          // Resolve with success
+          resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
+        })
+        .catch(() => {
+          reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
+        });
+    }));
+
+  }
+
+  /**
+   * This function is responsible for receiving the files
+   * @param files
+   */
+  onAttach(files: any) {
+    // Set the current files variable to the output of the module
+    this.files = files;
+  }
+
+  /**
+   * This function is responsible for receiving the files
+   * @param files
+   */
+  onCloudFileAttach(cloudFiles: any) {
+    // Set the current files variable to the output of the module
+    this.cloudFiles = cloudFiles;
+
+    // this.updateDetails();
   }
 
 }

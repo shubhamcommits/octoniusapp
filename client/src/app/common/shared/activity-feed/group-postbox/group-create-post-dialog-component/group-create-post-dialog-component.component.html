@@ -260,7 +260,7 @@
             </div>
         </div>
 
-        <div class="content-box" *ngIf="postData?.type === 'task'">
+        <div class="content-box" *ngIf="postData?.type === 'task' && !postData?.task?._parent_task">
           <p class="box-title">Actions</p>
           <div>
             <button mat-menu-item [matMenuTriggerFor]="transferMenu" (click)="saveTransferAction('copy')">

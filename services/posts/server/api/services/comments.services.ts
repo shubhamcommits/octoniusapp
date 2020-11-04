@@ -2,6 +2,7 @@ import { Comment, Post, User } from '../models';
 import http from 'axios';
 import { sendErr } from '../utils/sendError';
 import moment from 'moment';
+const fs = require('fs');
 
 /*  ===============================
  *  -- COMMENTS Service --
@@ -16,36 +17,37 @@ import moment from 'moment';
      */
     addComment = async (req) => {
         try {
-          const {
+          let {
             userId,
             query: { postId },
-            body: { content, contentMentions,  _highlighted_content_range}
+            body: { comment }
           } = req;
-          console.log(postId);
+
+          comment = JSON.parse(comment)
+          
           // Generate comment data
           const commentData = {
-            content,
-            _content_mentions: contentMentions,
-            _highlighted_content_range: _highlighted_content_range,
+            content: comment['content'],
+            _content_mentions: comment['_content_mentions'],
+            _highlighted_content_range: comment['_highlighted_content_range'],
             _commented_by: userId,
-            _post: postId
+            _post: postId,
+            files: comment.files
           };
-      
+
           // Create comment
-          let comment:any = await Comment.create(commentData);
-      
+          let newComment:any = await Comment.create(commentData);
+
           // populate comment
-          comment = await Comment.populate(comment, {
-            path: '_commented_by'
-          });
-      
-      
+          newComment = await this.getComment(newComment._id);
+          newComment.files = comment.files;
+
           // Update post: add new comment id, increase post count
           const post = await Post.findOneAndUpdate({
             _id: postId
           }, {
               $push: {
-                comments: comment._id
+                comments: newComment._id
               },
               $inc: {
                 comments_count: 1
@@ -54,33 +56,21 @@ import moment from 'moment';
               new: true
             }).select('title _posted_by task _content_mentions');
           await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-comment`, {
-              comment: comment,
+              comment: newComment,
               post: post
           });
       
       
-          if (comment._content_mentions.length !== 0) {
+          if (newComment._content_mentions.length !== 0) {
             // Create Notification for mentions on comments
             // notifications.newCommentMentions(comment);
             await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-comment-mention`, {
-                comment: comment,
+                comment: newComment,
                 post: post
             });
-      
-            /*
-            // for every user mentioned in the comment, we send an email
-            await comment._content_mentions.forEach((user) => {
-            //   sendMail.userMentionedComment(comment, post, user);
-                http.post(`${process.env.MAILING_SERVER_API}/user-comment-mention`,{
-                    comment: comment,
-                    post: post,
-                    user: user
-                });
-            });
-            */
           }
       
-          return comment;
+          return newComment;
         } catch (err) {
           throw(err);
         }
@@ -93,29 +83,32 @@ import moment from 'moment';
        */
     editComment = async (req) => {
         try {
-          const {
+          let {
             userId,
             query: { commentId },
-            body: { content, contentMentions }
+            body: { comment }
           } = req;
       
           const user:any = await User.findOne({ _id: userId });
       
-          const comment:any = await Comment.findOne({ _id: commentId });
+          const commentFound:any = await Comment.findOne({ _id: commentId });
       
           // Only let admins, owners or the people who posted this comment edit it
-          if (!(user.role === 'admin' || user.role === 'owner') && !comment._commented_by == userId) {
+          if (!(user.role === 'admin' || user.role === 'owner') && !commentFound._commented_by == userId) {
               throw(null);
             // return sendErr(res, null, 'User not allowed to edit this comment!', 403);
           }
+
+          comment = JSON.parse(comment)
       
           // Update comment
           const updatedComment = await Comment.findOneAndUpdate({
             _id: commentId
           }, {
               $set: {
-                content,
-                _content_mentions: contentMentions,
+                content: comment.content,
+                _content_mentions: comment._content_mentions,
+                files: comment.files,
                 created_date: moment.utc().format()
               }
             }, {
@@ -125,7 +118,7 @@ import moment from 'moment';
             .lean();
       
           // Create Notification for mentions on comments
-          if (comment._content_mentions.length !== 0) {
+          if (comment._content_mentions && comment._content_mentions.length !== 0) {
             // notifications.newCommentMentions(comment);
             await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-comment-mention`, {
                 comment: updatedComment
@@ -241,6 +234,44 @@ import moment from 'moment';
             // return sendErr(res, null, 'User not allowed to delete this comment!', 403);
             throw(null);
           }
+
+          //delete files, this catches both document insertion as well as multiple file attachment deletes
+          if (comment.files?.length > 0) {
+            //gather source file
+            function deleteFiles(files, callback) {
+              var i = files.length;
+              files.forEach(function (filepath) {
+                const finalpath = `${process.env.FILE_UPLOAD_FOLDER}${filepath.modified_name}`
+                fs.unlink(finalpath, function (err) {
+                  i--;
+                  if (err) {
+                    callback(err);
+                    return;
+                  } else if (i <= 0) {
+                    callback(null);
+                  }
+                });
+              });
+            }
+            deleteFiles(comment.files, function (err) {
+              if (err) { throw (err); }
+              //all files removed);
+            });
+          }
+          //chec/delete document files that were exported
+          const filepath = `${process.env.FILE_UPLOAD_FOLDER}${post._id + post._group + 'export' + '.docx'}`;
+          //check if file exists
+          fs.access(filepath, fs.F_OK, error => {
+            //if error there was no file
+            if (!error) {
+              //the file was there now unlink it
+              fs.unlink(filepath, (err) => {
+                //handle error when file was not deleted properly
+                if (err) { throw (err); }
+                //deleted document
+              })
+            }
+          })
       
           const commentRemoved = await Comment.findByIdAndRemove(commentId);
       
