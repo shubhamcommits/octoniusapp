@@ -4,13 +4,14 @@
 </button>
 
 <!-- Cloud Files Starts -->
-<!-- <app-attach-cloud-files (cloudFiles)="attachGoogleFile($event)"></app-attach-cloud-files> -->
+<!-- TODO -> this part is commented until we fix the save of the cloud files
 <button type="button" class="btn btn-link" *ngIf="showIcons">
   <i class="material-icons" placement="top"
       ngbTooltip="Upload Google Drive files" (click)="loadGoogleCloudFiles()">
       cloud_upload
     </i>
 </button>
+-->
 <!-- Cloud Files Ends -->
 
 
@@ -33,11 +34,10 @@
 <div *ngIf="comment" class="ml-2 mt-2">
   <p><strong *ngIf="comment.files">Attached Files </strong></p>
   <div *ngFor="let file of comment.files; let index = index">
-    <a *ngIf="file?.modified_name" href="{{ baseUrl }}/{{ file?.modified_name }}" target="_blank">
+    <a href="{{ baseUrl }}/{{ file?.modified_name }}" target="_blank">
         {{ file?.original_name }}
     </a>
-    <span *ngIf="!file?.modified_name">{{ file?.original_name }}</span>
-    <span class="material-icons" (click)="removeFile(index)">
+    <span *ngIf="showIcons" class="material-icons" (click)="removeFile(index)">
       highlight_off
     </span>
   </div>
@@ -50,7 +50,7 @@
     <p>
       <strong>Selected File: </strong>
       {{ file?.name }}
-      <span class="material-icons" (click)="removeFile(index)">
+      <span class="material-icons" (click)="removeTmpFile(index)">
           highlight_off
       </span>
     </p>

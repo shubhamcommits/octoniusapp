@@ -58,9 +58,24 @@ export class CommentSectionComponent implements OnInit {
    * @param userId
    */
   async create(userId: string){
+    let content = '';
+    if (this.quillData) {
+      content = JSON.stringify(this.quillData.contents);
+
+      // Filter the Mention users content and map them into arrays of Ids
+      this._content_mentions = this.quillData.mention.users.map((user)=> user.insert.mention.id)
+
+      // If content mentions has 'all' then only pass 'all' inside the array
+      if(this._content_mentions.includes('all'))
+        this._content_mentions = ['all']
+
+      // Set the values of the array
+      this._content_mentions = Array.from(new Set(this._content_mentions))
+    }
 
     let commentData = {
-      content: JSON.stringify(this.quillData.contents),
+      _id: null,
+      content: content,
       created_date: new Date(Date.now()),
       likes_count: 0,
       _liked_by: [],
@@ -71,22 +86,10 @@ export class CommentSectionComponent implements OnInit {
         last_name: this.userData.last_name
       },
       files: [],
-      _content_mentions: [],
+      _content_mentions: this._content_mentions,
       _postId: this.postId,
       _highlighted_content_range: []
     }
-
-    // Filter the Mention users content and map them into arrays of Ids
-    this._content_mentions = this.quillData.mention.users.map((user)=> user.insert.mention.id)
-
-    // If content mentions has 'all' then only pass 'all' inside the array
-    if(this._content_mentions.includes('all'))
-      this._content_mentions = ['all']
-
-    // Set the values of the array
-    this._content_mentions = Array.from(new Set(this._content_mentions))
-
-    commentData._content_mentions = this._content_mentions;
 
     // Create FormData Object
     let formData = new FormData();
@@ -97,18 +100,23 @@ export class CommentSectionComponent implements OnInit {
     // Append all the file attachments
     if (this.files.length != 0) {
       for (let index = 0; index < this.files.length; index++) {
-        formData.append('attachments', this.files[index], this.files[index]['name']);
+        let file  = this.files[index];
+        let modified_name = Date.now().toString() + file.name;
+        file.modified_name = modified_name;
+        formData.append('attachments', file, file.name);
 
-        commentData.files.push({original_name: this.files[index]['name']});
+        commentData.files.push({modified_name: file.modified_name, original_name: file.name});
       }
     } else {
       delete commentData.files;
     }
 
-    this.newComment(formData).then((res) => {
-      // Emit the Comment to the other compoentns
-      this.comment.emit(commentData);
-    });
+    if ((content && content !== '') || this.files.length > 0) {
+      this.newComment(formData).then((res) => {
+        // Emit the Comment to the other compoentns
+        this.comment.emit(commentData);
+      });
+    }
   }
 
   async newComment(commentData: FormData) {
