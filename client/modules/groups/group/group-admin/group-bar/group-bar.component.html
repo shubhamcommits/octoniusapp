@@ -1,23 +1,37 @@
-<div *ngIf="membersLoaded" class="container">
+<div *ngIf="membersLoaded" class="customFieldsDialog">
         <mat-dialog-actions class="d-flex justify-content-end" align="end">
             <i mat-dialog-close class="material-icons" (click)="onCloseDialog()" style="cursor: pointer">close</i>
         </mat-dialog-actions>
 
-        <h1 class="d-flex justify-content-center"><span class="material-icons md-36 icon-border-blue">security</span>Manage BAR</h1>
-        <p class="d-flex justify-content-center">Create rules to manage board access rights and select which members can see certain tasks.
-            By default all tasks are visible to the team.</p>
-        <div class="bar row" *ngFor="let bar of barList">
-            <div class="col-12">
-                <p class="break">Task with tag <span class="tag">{{bar.bar_tag}}</span> are displayed for: </p>
-            <span class="material-icons d-flex justify-content-end blue-icon" (click)="removeTag(bar.bar_tag)">delete</span>
+        <h2 mat-dialog-title>
+            <span class="badge badge-cf">
+                <i class="material-icons-round">lock</i>
+            </span>
+            Board Access Rights [BAR]</h2>
+        <div class="description">
+            <img src="assets/images/placeholder_bars.svg" alt="" style="width: 300px; margin-bottom: 24px">
+            <p>Create rules to manage board access rights and select which members can see certain tasks.
+               <br> By default all tasks are visible to the team, but with BAR tags you can control the access.</p>
+        </div>
+        <div class="customFieldsList" *ngIf="barList.length <= 0">
+            <h3 class="text-center muted mt-3">🎉 Always strive for transparency...</h3>
+        </div>
+      
+        <div class="bar" *ngFor="let bar of barList">
+            <div class="d-flex">
+                <p class=""><span class="tag">{{bar.bar_tag}}</span> tasks are visible for: </p>
+            <button class="btn overdue text-right" (click)="removeTag(bar.bar_tag)" style="flex:auto"> <i class="material-icons">delete</i> </button>
 
             </div>
-            <hr>
-            <div class="ml-2" *ngFor="let member of bar.members">
+            <div class="d-flex">
+
+           
+            <div class="useravatar" *ngFor="let member of bar.members">
                 <img src="{{ userBaseUrl }}/{{member?.profile_pic}}"
                 onerror="this.src='assets/images/user.png'" class="feed-avatar"
                 (click)="removeUserFromBar(member,bar)">
             </div> 
+           
             
             <app-component-search-input-box class="ml-2" *ngIf="groupData"
                 [placeholder]="'add member'"
@@ -27,14 +41,14 @@
                 (member)="addNewUserToBar($event, bar)">
             </app-component-search-input-box>
         </div>
-
-        <div class="ml-2 text-blue" (click)="showTagComponent()">
-            <span class="material-icons icon-border-blue">security</span>
-            Add another rule
         </div>
-        <div *ngIf="addNewBar" class="form-group">
-            <label for="tag">Board Access Right tag:</label>
-            <input type="text" class="form-control mb-2" name="tag" [(ngModel)]="tag" placeholder="Please provide the tag name">
+
+        <button class="mt-3 btn badge-cf" (click)="showTagComponent()">
+            <span class="material-icons">lock</span>
+            ADD RULE
+        </button>
+        <div *ngIf="addNewBar" class="barnew">
+            <input type="text" class="form-control mb-2" name="tag" [(ngModel)]="tag" placeholder="Enter BAR tag name">
             <button button class="btn btn-primary btn-sm" (click)="addTag()">Add tag</button>
         </div>
 </div>

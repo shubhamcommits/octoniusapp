@@ -13,10 +13,7 @@
       <!-- My Space Today Tasks -->
       <div *ngIf="task.type== 'task'">
         <div class="media card-tile overview-task todo-bar" *ngIf="task.task.status === 'to do'" role="progressbar">
-
-
           <div class="row media-body">
-
             <div class="col-md-7">
               <div class="overview-item title-nowrap pl-0" [innerHTML]="task?.title"></div>
             </div>
@@ -31,9 +28,6 @@
               <div *ngIf="!task.overdue" class="overview-item small text-muted text-right">
                 {{task.task.due_to | date:'MMM d, y' }}
               </div>
-
-
-
             </div>
 
           </div>
@@ -43,11 +37,7 @@
 
         <div class="media card-tile overview-task working-bar" *ngIf="task.task.status === 'in progress'"
           role="progressbar">
-
-
           <div class="row media-body">
-
-
             <div class="col-md-1"
               *ngIf="task.task.status.trim() === 'completed' || task.task.status.trim() === 'done' ">
               <div class="progress small-bar">
@@ -69,9 +59,6 @@
               <div *ngIf="!task.overdue" class="overview-item small text-muted text-right">
                 {{task.task.due_to | date:'MMM d, y' }}
               </div>
-
-
-
             </div>
 
           </div>
@@ -81,11 +68,7 @@
 
         <div class="media card-tile overview-task done-bar"
           *ngIf="task.task.status.trim() === 'completed' || task.task.status.trim() === 'done' " role="progressbar">
-
-
           <div class="row media-body">
-
-
             <div class="col-md-7">
               <div class="overview-item title-nowrap pl-0" [innerHTML]="task?.title"></div>
             </div>
@@ -100,17 +83,10 @@
               <div *ngIf="!task.overdue" class="overview-item small text-muted text-right">
                 {{task.task.due_to | date:'MMM d, y' }}
               </div>
-
-
-
             </div>
 
           </div>
         </div>
-
-
-
-
 
       </div>
     </a>
@@ -125,10 +101,7 @@
 
       <div *ngIf="task.type== 'task'">
         <div class="media card-tile overview-task todo-bar" *ngIf="task.task.status === 'to do'" role="progressbar">
-
-
           <div class="row media-body">
-
             <div class="col-md-7">
               <div class="overview-item title-nowrap pl-0" [innerHTML]="task?.title"></div>
             </div>
@@ -143,9 +116,6 @@
               <div *ngIf="!task.overdue" class="overview-item small text-muted text-right">
                 {{task.task.due_to | date:'MMM d, y' }}
               </div>
-
-
-
             </div>
 
           </div>
@@ -155,11 +125,7 @@
 
         <div class="media card-tile overview-task working-bar" *ngIf="task.task.status === 'in progress'"
           role="progressbar">
-
-
           <div class="row media-body">
-
-
             <div class="col-md-1"
               *ngIf="task.task.status.trim() === 'completed' || task.task.status.trim() === 'done' ">
               <div class="progress small-bar">
@@ -181,9 +147,6 @@
               <div *ngIf="!task.overdue" class="overview-item small text-muted text-right">
                 {{task.task.due_to | date:'MMM d, y' }}
               </div>
-
-
-
             </div>
 
           </div>
@@ -193,10 +156,38 @@
 
         <div class="media card-tile overview-task done-bar"
           *ngIf="task.task.status.trim() === 'completed' || task.task.status.trim() === 'done' " role="progressbar">
-
-
           <div class="row media-body">
+            <div class="col-md-7">
+              <div class="overview-item title-nowrap pl-0" [innerHTML]="task?.title"></div>
+            </div>
+            <div class="col-md-3">
+              <div class="overview-item grouplabel" [innerHTML]="task?._group?.group_name"></div>
+            </div>
 
+            <div class="col-md-2">
+              <div *ngIf="task.overdue" class="overview-item small text-right overdue">
+                OVERDUE
+              </div>
+              <div *ngIf="!task.overdue" class="overview-item small text-muted text-right">
+                {{task.task.due_to | date:'MMM d, y' }}
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </a>
+  </div>
+
+  <h5 class="title-overview" *ngIf="this.nextWeekTasks.length !=  0">Next week</h5>
+
+  <div *ngFor="let task of nextWeekTasks; let i = index;">
+    <a (click)="openModal(task)">
+      <!-- My Space This week Tasks -->
+      <div *ngIf="task.type== 'task'">
+        <div class="media card-tile overview-task todo-bar" *ngIf="task.task.status === 'to do'" role="progressbar">
+          <div class="row media-body">
 
             <div class="col-md-7">
               <div class="overview-item title-nowrap pl-0" [innerHTML]="task?.title"></div>
@@ -212,17 +203,126 @@
               <div *ngIf="!task.overdue" class="overview-item small text-muted text-right">
                 {{task.task.due_to | date:'MMM d, y' }}
               </div>
-
-
-
             </div>
 
           </div>
         </div>
 
+        <!-- task in progress -->
+
+        <div class="media card-tile overview-task working-bar" *ngIf="task.task.status === 'in progress'"
+          role="progressbar">
+          <div class="row media-body">
+            <div class="col-md-1"
+              *ngIf="task.task.status.trim() === 'completed' || task.task.status.trim() === 'done' ">
+              <div class="progress small-bar">
+                <div class="progress-bar done-bar" role="progressbar"></div>
+              </div>
+            </div>
+
+            <div class="col-md-7">
+              <div class="overview-item title-nowrap pl-0" [innerHTML]="task?.title"></div>
+            </div>
+            <div class="col-md-3">
+              <div class="overview-item grouplabel" [innerHTML]="task?._group?.group_name"></div>
+            </div>
+
+            <div class="col-md-2">
+              <div *ngIf="task.overdue" class="overview-item small text-right overdue">
+                OVERDUE
+              </div>
+              <div *ngIf="!task.overdue" class="overview-item small text-muted text-right">
+                {{task.task.due_to | date:'MMM d, y' }}
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- done tasks -->
+
+        <div class="media card-tile overview-task done-bar"
+          *ngIf="task.task.status.trim() === 'completed' || task.task.status.trim() === 'done' " role="progressbar">
+          <div class="row media-body">
+            <div class="col-md-7">
+              <div class="overview-item title-nowrap pl-0" [innerHTML]="task?.title"></div>
+            </div>
+            <div class="col-md-3">
+              <div class="overview-item grouplabel" [innerHTML]="task?._group?.group_name"></div>
+            </div>
+
+            <div class="col-md-2">
+              <div *ngIf="task.overdue" class="overview-item small text-right overdue">
+                OVERDUE
+              </div>
+              <div *ngIf="!task.overdue" class="overview-item small text-muted text-right">
+                {{task.task.due_to | date:'MMM d, y' }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
 
 
 
+  <h5 class="title-overview" *ngIf="this.futureTasks.length !=  0">Future Tasks</h5>
+
+  <div *ngFor="let task of futureTasks; let i = index;">
+    <a (click)="openModal(task)">
+      <!-- My Space This week Tasks -->
+
+
+      <div *ngIf="task.type== 'task'">
+        <div class="media card-tile overview-task todo-bar" *ngIf="task.task.status === 'to do'" role="progressbar">
+          <div class="row media-body">
+            <div class="col-md-7">
+              <div class="overview-item title-nowrap pl-0" [innerHTML]="task?.title"></div>
+            </div>
+            <div class="col-md-3">
+              <div class="overview-item grouplabel" [innerHTML]="task?._group?.group_name"></div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- task in progress -->
+
+        <div class="media card-tile overview-task working-bar" *ngIf="task.task.status === 'in progress'"
+          role="progressbar">
+          <div class="row media-body">
+            <div class="col-md-1"
+              *ngIf="task.task.status.trim() === 'completed' || task.task.status.trim() === 'done' ">
+              <div class="progress small-bar">
+                <div class="progress-bar done-bar" role="progressbar"></div>
+              </div>
+            </div>
+
+            <div class="col-md-7">
+              <div class="overview-item title-nowrap pl-0" [innerHTML]="task?.title"></div>
+            </div>
+            <div class="col-md-3">
+              <div class="overview-item grouplabel" [innerHTML]="task?._group?.group_name"></div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- done tasks -->
+
+        <div class="media card-tile overview-task done-bar"
+          *ngIf="task.task.status.trim() === 'completed' || task.task.status.trim() === 'done' " role="progressbar">
+
+          <div class="row media-body">
+            <div class="col-md-7">
+              <div class="overview-item title-nowrap pl-0" [innerHTML]="task?.title"></div>
+            </div>
+            <div class="col-md-3">
+              <div class="overview-item grouplabel" [innerHTML]="task?._group?.group_name"></div>
+            </div>
+          </div>
+        </div>
 
       </div>
 

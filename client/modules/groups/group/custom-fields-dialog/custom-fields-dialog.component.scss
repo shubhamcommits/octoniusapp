@@ -20,7 +20,7 @@ $dark-sky-blue: #4a90e2;
 
     .customFieldsList {
         margin: 0 auto;
-        width: 80%;
+        width: 100%;
 
         h3 {
             text-align: left;
@@ -35,13 +35,14 @@ $dark-sky-blue: #4a90e2;
         }
 
         .title {
-            width: 20%;
+            width: 30%;
             text-align: left;
-            float: left;
+            
         }
 
         .values {
             text-align: left;
+            width: 70%;
 
             .badge {
                 background-color: $dark-sky-blue;
@@ -60,7 +61,7 @@ $dark-sky-blue: #4a90e2;
             }
 
             .newValue {
-                line-height: 17px;
+
 
                 .newValueInput {
                     margin-left: 20px;
@@ -68,7 +69,7 @@ $dark-sky-blue: #4a90e2;
                     border-left: none;
                     border-right: none;
                     border-bottom: 1px solid #e4edf8 !important;
-                    width: 110px;
+                    width: 180px;
                 }
 
                 button {
@@ -80,11 +81,14 @@ $dark-sky-blue: #4a90e2;
         }
 
         .customFieldsBody {
+                width: 70%;
+                margin: 0  auto;
+                
 
             .field {
-                height: 40px;
                 border-bottom: 1px solid #e4edf8 !important;
-                padding-top: 10px;
+                padding: 15px;
+                display: flex;
             }
 
         }
@@ -94,13 +98,18 @@ $dark-sky-blue: #4a90e2;
         margin: 0 auto;
         width: 80%;
 
-
-        button {
-            padding-left: 0px;
+        button{
+            i{
+                margin-top: -4px;
+            }
         }
 
+
+
         .add-field {
-            margin: 10px;
+            margin: 10px auto;
+            width: 300px;
+
 
             .actions {
                 margin: 5px;
