@@ -619,6 +619,10 @@ export class PostController {
 
         try {
 
+            if (!postId || !title || !userId) {
+                return sendErr(res, new Error('Please provide the post, title and user as parameters'), 'Please provide the post, title and user as paramaters!', 400);
+            }
+
             // Call Service function to change the assignee
             const post = await postService.changeTaskColumn(postId, title, userId)
                 .catch((err) => {
