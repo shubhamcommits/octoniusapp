@@ -435,7 +435,6 @@ export class GroupCreatePostDialogComponent implements OnInit {
   }
 
   newCommentAdded(event) {
-console.log(event);
     this.comments.unshift(event);
   }
 

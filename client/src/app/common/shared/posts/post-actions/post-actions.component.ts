@@ -129,7 +129,6 @@ export class PostActionsComponent implements OnInit {
   }
 
   newComment(comment: any) {
-console.log(comment);
     this.comments.unshift(comment);
     this.post.comments = this.comments;
     this.newCommentEmitter.emit(comment);

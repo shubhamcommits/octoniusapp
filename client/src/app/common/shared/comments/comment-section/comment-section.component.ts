@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { CommentService } from 'src/shared/services/comment-service/comment.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
@@ -57,7 +57,7 @@ export class CommentSectionComponent implements OnInit {
    * This function is resposible for creating the comment
    * @param userId
    */
-  create(userId: string){
+  async create(userId: string){
 
     let commentData = {
       content: JSON.stringify(this.quillData.contents),
@@ -98,28 +98,31 @@ export class CommentSectionComponent implements OnInit {
     if (this.files.length != 0) {
       for (let index = 0; index < this.files.length; index++) {
         formData.append('attachments', this.files[index], this.files[index]['name']);
+
+        commentData.files.push({original_name: this.files[index]['name']});
       }
+    } else {
+      delete commentData.files;
     }
 
-    this.newComment(formData);
+    this.newComment(formData).then((res) => {
+      // Emit the Comment to the other compoentns
+      this.comment.emit(commentData);
+    });
   }
 
-  newComment(comment: FormData) {
-    this.utilityService.asyncNotification('Please wait we are creating the comment...', new Promise((resolve, reject) => {
-      this.commentService.new(comment, this.postId)
+  async newComment(commentData: FormData) {
+    await this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
+      this.commentService.new(commentData, this.postId)
         .then((res) => {
-          // Emit the Comment to the other compoentns
-          this.comment.emit(res['comment'])
-
           // Resolve with success
-          resolve(this.utilityService.resolveAsyncPromise('Comment Created!'))
+          resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
         })
-        .catch((err) => {
-
-          // Catch the error and reject the promise
-          reject(this.utilityService.rejectAsyncPromise('Unable to create comment, please try again!'))
-        })
+        .catch(() => {
+          reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
+        });
     }));
+
   }
 
   /**
