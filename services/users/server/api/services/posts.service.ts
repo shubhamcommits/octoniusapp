@@ -145,8 +145,7 @@ export class PostsService {
             'task.due_to': null,
             $or: [
                 { 'task.status': 'to do' },
-                { 'task.status': 'in progress' },
-                { 'task.status': 'done' }
+                { 'task.status': 'in progress' }
             ]
         })
             .sort('-task.due_to')
@@ -154,6 +153,11 @@ export class PostsService {
             .populate('_posted_by', this.userFields)
             .populate('task._assigned_to', this.userFields)
             .lean();
+
+        // Filter the tasks array
+        tasks.filter((task)=> {
+            return task['_group'] != null
+        })
 
         // Return tasks
         return tasks
