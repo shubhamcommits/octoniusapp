@@ -150,8 +150,11 @@ export class ColumnsController {
                             return res.status(200).json({ "err": "Error in updating columns" });
                         } else {
                             var tasks = Post.updateMany({
-                                "task._column.title": oldColumnName
-                            }, {
+                                $and: [
+                                  { _group: groupId },
+                                  { "task._column.title": oldColumnName }
+                                ]
+                              }, {
                                 "$set" : { "task._column.title": newColumnName }
                             }, {
                                 new: true
