@@ -359,4 +359,8 @@ export class PostService {
       fileName: fileName
     }).toPromise();
   }
+
+  updateTaskOrderInColumn(taskId: string, order: number) {
+    return this._http.put(this.baseURL + `/${taskId}/update-task-order`, { order: order }).toPromise();
+  }
 }

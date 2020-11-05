@@ -94,15 +94,13 @@ export class CommentSectionComponent implements OnInit {
     // Create FormData Object
     let formData = new FormData();
 
-    // Append Comment Data
-    formData.append('comment', JSON.stringify(commentData))
-
     // Append all the file attachments
     if (this.files.length != 0) {
       for (let index = 0; index < this.files.length; index++) {
         let file  = this.files[index];
         let modified_name = Date.now().toString() + file.name;
         file.modified_name = modified_name;
+
         formData.append('attachments', file, file.name);
 
         commentData.files.push({modified_name: file.modified_name, original_name: file.name});
@@ -110,6 +108,9 @@ export class CommentSectionComponent implements OnInit {
     } else {
       delete commentData.files;
     }
+
+    // Append Comment Data
+    formData.append('comment', JSON.stringify(commentData))
 
     if ((content && content !== '') || this.files.length > 0) {
       this.newComment(formData).then((res) => {

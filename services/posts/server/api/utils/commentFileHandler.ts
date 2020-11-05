@@ -30,20 +30,18 @@ const commentFileHandler = async (req: Request, res: Response, next: NextFunctio
     // If multiple files are attached with comment
   } else if (files.attachments.length > 1) {
 
-    // Set the files property to an array
-    req.body.comment.files = [];
-
     // Fetch the files from the current request
     files.attachments.forEach((currentFile: any, index: Number) => {
-
-      // Instantiate the fileName variable and add the date object in the name
-      // let fileName = Date.now().toString() + currentFile.name;
 
       // Get the folder link from the environment
       const folder = process.env.FILE_UPLOAD_FOLDER;
 
+      // Get the modified name from the comment files
+      const indexFile = req.body.comment.files.findIndex(file => file.original_name === currentFile.name);
+      const modified_name = req.body.comment.files[indexFile].modified_name;
+
       // Modify the file accordingly and handle request
-      currentFile.mv(folder + currentFile.modified_name, (error: Error) => {
+      currentFile.mv(folder + modified_name, (error: Error) => {
         if (error) {
           // fileName = null;
           return res.status(500).json({
@@ -55,13 +53,13 @@ const commentFileHandler = async (req: Request, res: Response, next: NextFunctio
       });
 
       // Modify the file and serialise the object
-      const file = {
-        original_name: currentFile.name,
-        modified_name: currentFile.modified_name
-      };
+      // const file = {
+      //   original_name: req['files'].attachments['name'],
+      //   modified_name: modified_name
+      // };
 
       // Push the file object
-      req.body.comment.files.push(file);
+      // req.body.comment.files.push(file);
     });
 
     // Convert the Object Back to string
@@ -72,12 +70,7 @@ const commentFileHandler = async (req: Request, res: Response, next: NextFunctio
 
     // If only single file is attached with comment
   } else {
-
-    // Set the files property to an array
-    req.body.comment.files = [];
-
-    // Instantiate the fileName variable and add the date object in the name
-    //let fileName = Date.now().toString() + req['files'].attachments['name'];
+    const comment = req.body.comment;
 
     // Fetch the file from the current request
     const currentFile: any = req['files'].attachments;
@@ -85,8 +78,12 @@ const commentFileHandler = async (req: Request, res: Response, next: NextFunctio
     // Get the folder link from the environment
     const folder = process.env.FILE_UPLOAD_FOLDER;
 
+    // Get the modified name from the comment files
+    const index = comment['files'].findIndex(file => file.original_name === currentFile.name);
+    const modified_name = comment['files'][index].modified_name;
+
     // Modify the file accordingly and handle request
-    currentFile.mv(folder + currentFile.modified_name, (error: Error) => {
+    currentFile.mv(folder + modified_name, (error: Error) => {
       if (error) {
         //fileName = null;
         return res.status(500).json({
@@ -98,13 +95,13 @@ const commentFileHandler = async (req: Request, res: Response, next: NextFunctio
     })
 
     // Modify the file and serialise the object
-    const file = {
-      original_name: req['files'].attachments['name'],
-      modified_name: req['files'].attachments['modified_name']
-    };
+    // const file = {
+    //   original_name: req['files'].attachments['name'],
+    //   modified_name: modified_name
+    // };
 
     // Push the file object
-    req.body.comment.files.push(file);
+    // req.body.comment.files.push(file);
 
     // Convert the Object Back to string
     req.body.comment = JSON.stringify(req.body.comment)

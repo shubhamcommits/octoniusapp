@@ -114,16 +114,21 @@ export class ColumnsController {
 
     async editColumnName(req: Request, res: Response, next: NextFunction) {
         try {
-            const id = req.body.groupId;
+            const groupId = req.body.groupId;
             const oldColumnName = req.body.oldColumnName;
             const newColumnName = req.body.newColumnName;
+
+            if (!groupId || !oldColumnName || !newColumnName) {
+                return sendError(res, new Error('Please provide the group, old name and new name as parameters'), 'Please provide the group, old name and new name as paramaters!', 400);
+            }
+
             const update = {
                 "$set": {
                     "columns.$.title": newColumnName
                 }
             };
             await Column.findOne({
-                groupId: id,
+                groupId: groupId,
                 columns: {
                     "$elemMatch": {
                         title: newColumnName
@@ -134,7 +139,7 @@ export class ColumnsController {
                     return res.status(200).json({ "err": "Error in updating columns" });
                 } else if (!col) {
                     Column.update({
-                        groupId: id,
+                        groupId: groupId,
                         columns: {
                             "$elemMatch": {
                                 title: oldColumnName
@@ -145,8 +150,11 @@ export class ColumnsController {
                             return res.status(200).json({ "err": "Error in updating columns" });
                         } else {
                             var tasks = Post.updateMany({
-                                "task._column.title": oldColumnName
-                            }, {
+                                $and: [
+                                  { _group: groupId },
+                                  { "task._column.title": oldColumnName }
+                                ]
+                              }, {
                                 "$set" : { "task._column.title": newColumnName }
                             }, {
                                 new: true
