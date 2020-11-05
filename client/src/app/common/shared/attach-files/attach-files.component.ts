@@ -73,8 +73,15 @@ export class AttachFilesComponent implements OnInit {
    */
   removeFile(index: number) {
 
-    // Remove element at the specific index
-    let arr = Array.from(this.post.files)
+    let arr = [];
+
+    if (this.post && this.post.files) {
+      // Remove element at the specific index
+      arr = Array.from(this.post.files)
+    } else if (this.comment && this.comment.files) {
+      // Remove element at the specific index
+      arr = Array.from(this.comment.files)
+    }
 
     const file = arr[index];
 
@@ -83,9 +90,13 @@ export class AttachFilesComponent implements OnInit {
     // Remove the element
     arr.splice(index, 1)
 
-    // Updated array
-    this.post.files = arr
-
+    if (this.post && this.post.files) {
+      // Updated array
+      this.post.files = arr
+    } else if (this.comment && this.comment.files) {
+      // Updated array
+      this.comment.files = arr
+    }
 
     return this.removeFileInArray(file['modified_name']);
   }
