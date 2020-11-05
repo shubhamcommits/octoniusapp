@@ -184,7 +184,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
         .filter((post: any) => post.task.hasOwnProperty(
           '_column') === true &&
           post.task._column != null && post.task._column.title === column['title'] && post.task.status !== 'done'
-        );
+        ).sort((t1, t2) => (t1.task._column.order > t2.task._column.order) ? 1 : -1);
 
       column.tasks.done = tasks
         .filter((post: any) => post.task.hasOwnProperty(

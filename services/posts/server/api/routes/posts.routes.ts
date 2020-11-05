@@ -161,4 +161,7 @@ routes.put('/:postId/move-to-group', postController.moveToGroup);
 // POST - Delete the attached file
 routes.post('/delete-attached', filesControllers.deleteAttached);
 
+// PUT - Used to move the post to another group
+routes.put('/:postId/update-task-order', postController.updateTaskOrderInColumn);
+
 export { routes as postRoutes };

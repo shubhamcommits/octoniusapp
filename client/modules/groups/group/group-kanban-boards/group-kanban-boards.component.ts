@@ -7,6 +7,7 @@ import { ColumnService } from 'src/shared/services/column-service/column.service
 import { environment } from 'src/environments/environment';
 import moment from 'moment/moment';
 import { MatDialog } from '@angular/material';
+import { PostService } from 'src/shared/services/post-service/post.service';
 
 @Component({
   selector: 'app-group-kanban-boards',
@@ -122,6 +123,16 @@ export class GroupKanbanBoardsComponent implements OnInit {
         event.container.data,
         event.previousIndex,
         event.currentIndex);
+    }
+
+    if (event.previousContainer !== event.container || event.previousIndex !== event.currentIndex) {
+      // Post Service Instance
+      let postService = this.injector.get(PostService);
+      //always, recalculate the order of the container (the list to drag)
+      event.container.data.forEach((task,index)=>{
+        task['task']._column.order=index;
+        postService.updateTaskOrderInColumn(task['_id'], index);
+      });
     }
   }
 
