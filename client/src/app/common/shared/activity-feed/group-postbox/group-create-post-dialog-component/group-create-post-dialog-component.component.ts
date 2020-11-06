@@ -103,6 +103,10 @@ export class GroupCreatePostDialogComponent implements OnInit {
   userGroups = [];
   transferAction = '';
 
+  lastAssignedBy: any;
+
+  baseUrl = environment.UTILITIES_USERS_UPLOADS;
+
   constructor(
     private postService: PostService,
     private groupService: GroupService,
@@ -185,6 +189,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
         this.endDate = new Date(this.postData.task.end_date);
       }
 
+      this.setAssignedBy(this.postData);
 
       this.customFields = [];
       this.selectedCFValues = [];
@@ -484,7 +489,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
     }));
   }
 
-  updateDetails() {
+  async updateDetails() {
     // Prepare the normal  object
     const post: any = {
       title: this.title,
@@ -581,7 +586,13 @@ export class GroupCreatePostDialogComponent implements OnInit {
     }
 
     // Call the edit post function
-    this.editPost(this.postData._id, formData);
+    await this.editPost(this.postData._id, formData);
+  }
+
+  async setAssignedBy(post) {
+    this.postData = post;
+    this.postData.records.assignments = this.postData.records.assignments.sort((a1, a2) => (new Date(a1.date).getTime() < new Date(a2.date).getTime()) ? 1 : -1);
+    this.lastAssignedBy = await this.publicFunctions.getOtherUser(this.postData.records.assignments[0]._assigned_from);
   }
 
   /**
@@ -667,7 +678,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
     } else {
       await this.publicFunctions.getOtherUser(this.postData.task._parent_task.task._assigned_to).then(user => {
         this.postData.task._parent_task.task._assigned_to = user;
-        this.parentTaskAssigneeProfilePicUrl = environment.UTILITIES_USERS_UPLOADS + '/' + user['profile_pic'];
+        this.parentTaskAssigneeProfilePicUrl = this.baseUrl + '/' + user['profile_pic'];
       });
     }
 

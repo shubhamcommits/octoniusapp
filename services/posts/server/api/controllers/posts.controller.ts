@@ -34,9 +34,12 @@ export class PostController {
         // Post Object From request
         const { post } = req.body;
 
+        // Fetch userId from the request
+        const userId = req['userId'];
+
         try {
             // Call servide function for adding the post
-            const postData = await postService.addPost(post)
+            const postData = await postService.addPost(post, userId)
                 .catch((err) => {
                     return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
                 })
@@ -501,10 +504,13 @@ export class PostController {
         // Fetch Data from request
         const { params: { postId }, body: { assigneeId } } = req;
 
+        // Fetch userId from the request
+        const userId = req['userId'];
+
         try {
 
             // Call Service function to change the assignee
-            const post = await postService.changeTaskAssignee(postId, assigneeId)
+            const post = await postService.changeTaskAssignee(postId, assigneeId, userId)
                 .catch((err) => {
                     return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
                 })

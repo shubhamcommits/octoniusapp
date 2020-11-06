@@ -216,7 +216,8 @@
                 [userData]="userData"
                 [groupId]="groupId"
                 [showAssigneeName]="true"
-                type="assignee">
+                type="assignee"
+                (post)="setAssignedBy($event)">
             </app-inline-input>
 
             <p *ngIf="postData.type === 'event'" style="padding-top: 20px;">{{ eventAssignedToCount }} member(s)</p>
@@ -229,6 +230,17 @@
                 [type]="'event'"
                 (member)="getMemberDetails($event)">
             </app-component-search-input-box>
+
+            <div *ngIf="lastAssignedBy" id="avatar-assignee" style="margin-bottom: 30px;">
+              <p class="box-title" style="padding-top: 20px;">Assigned by</p>
+              <img src="{{ baseUrl + '/' + lastAssignedBy.profile_pic }}" style="float: left; cursor: auto;"
+                onerror="this.src='assets/images/user.png'" class="feed-avatar">
+              <div style="padding-top: 10px;" class="ml-1">
+                {{lastAssignedBy?.first_name}}
+                {{ lastAssignedBy?.last_name }}
+              </div>
+            </div>
+
         </div>
         <!-- Assignee Modal ends -->
 

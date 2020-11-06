@@ -376,13 +376,31 @@ export class PostService {
    * This function is responsible for adding a new post
    * @param { title, content, type, _posted_by, _group, _content_mentions } postData 
    */
-  async addPost(postData: any) {
+  async addPost(postData: any, userId: string) {
     try {
       // Parse the String to JSON Object
       postData = JSON.parse(postData);
 
       // Create new post
       let post: any = await Post.create(postData);
+
+      // save record of ussignment
+      if (post.type === 'task') {
+        if (!post.task.unassigned) {
+          post = await Post.findOneAndUpdate({
+            _id: post._id
+          }, {
+            $push: { "records.assignments": {
+                date: moment().format(),
+                _assigned_to: post.task._assigned_to,
+                _assigned_from: userId
+              }
+            }
+          }, {
+            new: true
+          })
+        }
+      }
 
       // populate the assigned_to property of this document
       post = await this.populatePostProperties(post);
@@ -761,7 +779,7 @@ export class PostService {
    * @param postId 
    * @param assigneeId 
    */
-  async changeTaskAssignee(postId: string, assigneeId: string) {
+  async changeTaskAssignee(postId: string, assigneeId: string, userId: string) {
 
     try {
 
@@ -771,6 +789,20 @@ export class PostService {
       }, {
         'task._assigned_to': assigneeId,
         'task.unassigned': false
+      }, {
+        new: true
+      })
+
+      // save record of assignment
+      post = await Post.findOneAndUpdate({
+        _id: postId
+      }, {
+        $push: { "records.assignments": {
+            date: moment().format(),
+            _assigned_to: post.task._assigned_to,
+            _assigned_from: userId
+          }
+        }
       }, {
         new: true
       })
