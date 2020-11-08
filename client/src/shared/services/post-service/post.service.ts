@@ -347,6 +347,18 @@ export class PostService {
     }).toPromise();
   }
 
+  /**
+   * This function is used to obtain the subtasks of a task
+   * @param postId
+   */
+  getSubTasksCount(taskId: string) {
+    return this._http.get(this.baseURL + `/post/subtasks-count`, {
+      params: {
+        parentId: taskId.toString().trim()
+      }
+    }).toPromise();
+  }
+
   transferToGroup(post: any, oldGroupId: string, userId: string, isCopy: boolean) {
     if (isCopy) {
       return this._http.post(this.baseURL + '/copy-to-group', { post: post, oldGroupId: oldGroupId, userId: userId }).toPromise();
@@ -362,5 +374,25 @@ export class PostService {
 
   updateTaskOrderInColumn(taskId: string, order: number) {
     return this._http.put(this.baseURL + `/${taskId}/update-task-order`, { order: order }).toPromise();
+  }
+
+  /**
+   * This function is responsible for fetching first 10 tasks
+   * @param groupId
+   * @param currentPostId
+   * @param queryText
+   */
+  searchPosibleParents(groupId: string, currentPostId: string, queryText: string) {
+    // Call the HTTP Request
+    return this._http.get(this.baseURL + `/${currentPostId}/searchParent`, {
+      params: {
+        groupId: groupId,
+        query: queryText
+      }
+    }).toPromise()
+  }
+
+  setParentTask(taskId: string, parentTaskId: string) {
+    return this._http.put(this.baseURL + `/${taskId}/set-parent`, { parentTaskId: parentTaskId }).toPromise();
   }
 }

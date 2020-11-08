@@ -216,7 +216,8 @@
                 [userData]="userData"
                 [groupId]="groupId"
                 [showAssigneeName]="true"
-                type="assignee">
+                type="assignee"
+                (post)="setAssignedBy($event)">
             </app-inline-input>
 
             <p *ngIf="postData.type === 'event'" style="padding-top: 20px;">{{ eventAssignedToCount }} member(s)</p>
@@ -229,6 +230,17 @@
                 [type]="'event'"
                 (member)="getMemberDetails($event)">
             </app-component-search-input-box>
+
+            <div *ngIf="lastAssignedBy" id="avatar-assignee" style="margin-bottom: 30px;">
+              <p class="box-title" style="padding-top: 20px;">Assigned by</p>
+              <img src="{{ baseUrl + '/' + lastAssignedBy.profile_pic }}" style="float: left; cursor: auto;"
+                onerror="this.src='assets/images/user.png'" class="feed-avatar">
+              <div style="padding-top: 10px;" class="ml-1">
+                {{lastAssignedBy?.first_name}}
+                {{ lastAssignedBy?.last_name }}
+              </div>
+            </div>
+
         </div>
         <!-- Assignee Modal ends -->
 
@@ -260,28 +272,11 @@
             </div>
         </div>
 
-        <div class="content-box" *ngIf="postData?.type === 'task' && !postData?.task?._parent_task">
-          <p class="box-title">Actions</p>
-          <div>
-            <button mat-menu-item [matMenuTriggerFor]="transferMenu" (click)="saveTransferAction('copy')">
-              <i  class="material-icons">content_copy</i>
-              Copy to Group
-            </button>
-            <button mat-menu-item [matMenuTriggerFor]="transferMenu" (click)="saveTransferAction('move')">
-              <i class="material-icons">arrow_forward</i>
-              Move to Group
-            </button>
-
-            <mat-menu #transferMenu="matMenu">
-              <ng-container *ngFor="let group of userGroups; let index = index">
-                <button mat-menu-item [matMenuTriggerFor]="columnsMenu">{{ group.group_name }}</button>
-                <mat-menu #columnsMenu="matMenu">
-                  <button *ngFor="let section of userGroups[index]?.sections" mat-menu-item (click)="transferToGroup(userGroups[index]?._id, section)">{{ section.title }}</button>
-                </mat-menu>
-              </ng-container>
-            </mat-menu>
-          </div>
-        </div>
+        <app-task-actions *ngIf="postData?.type === 'task'"
+          [postData]="postData"
+          [groupData]="groupData"
+          [userData]="userData"
+          (parentTaskSelectedEmitter)="onParentTaskSelected($event)"></app-task-actions>
     </div>
     <!-- Top Right Section ends -->
 </div>

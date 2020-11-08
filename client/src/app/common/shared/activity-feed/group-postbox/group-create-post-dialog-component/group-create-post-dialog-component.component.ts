@@ -100,8 +100,9 @@ export class GroupCreatePostDialogComponent implements OnInit {
   percentageSubtasksCompleted = 0;
   parentTaskAssigneeProfilePicUrl = ''
 
-  userGroups = [];
-  transferAction = '';
+  lastAssignedBy: any;
+
+  baseUrl = environment.UTILITIES_USERS_UPLOADS;
 
   constructor(
     private postService: PostService,
@@ -109,7 +110,6 @@ export class GroupCreatePostDialogComponent implements OnInit {
     private utilityService: UtilityService,
     private injector: Injector,
     private commentService: CommentService,
-    private _router: Router,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private mdDialogRef: MatDialogRef<GroupCreatePostDialogComponent>
     ) {}
@@ -126,27 +126,6 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.groupData = await this.publicFunctions.getGroupDetails(this.groupId);
 
     await this.initPostData();
-
-    if (this.postData.type === 'task') {
-      // Fetches the user groups from the server
-      await this.publicFunctions.getUserGroups(this.groupData._workspace, this.userData._id)
-        .then((groups: any) => {
-          groups.forEach(async group => {
-            group.sections = await this.publicFunctions.getAllColumns(group._id);
-            if (group.sections) {
-              group.sections.sort((s1, s2) => (s1.title > s2.title) ? 1 : -1);
-            }
-            if (group._id != this.groupId && group.sections) {
-              this.userGroups.push(group);
-            }
-          });
-          this.userGroups.sort((g1, g2) => (g1.group_name > g2.group_name) ? 1 : -1);
-        })
-        .catch(() => {
-          // If the function breaks, then catch the error and console to the application
-          this.publicFunctions.sendError(new Error('Unable to connect to the server, please try again later!'));
-        });
-    }
   }
 
   async initPostData() {
@@ -185,6 +164,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
         this.endDate = new Date(this.postData.task.end_date);
       }
 
+      this.setAssignedBy(this.postData);
 
       this.customFields = [];
       this.selectedCFValues = [];
@@ -484,7 +464,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
     }));
   }
 
-  updateDetails() {
+  async updateDetails() {
     // Prepare the normal  object
     const post: any = {
       title: this.title,
@@ -581,7 +561,15 @@ export class GroupCreatePostDialogComponent implements OnInit {
     }
 
     // Call the edit post function
-    this.editPost(this.postData._id, formData);
+    await this.editPost(this.postData._id, formData);
+  }
+
+  async setAssignedBy(post) {
+    this.postData = post;
+    if (this.postData.records.assignments) {
+      this.postData.records.assignments = this.postData.records.assignments.sort((a1, a2) => (new Date(a1.date).getTime() < new Date(a2.date).getTime()) ? 1 : -1);
+      this.lastAssignedBy = await this.publicFunctions.getOtherUser(this.postData.records.assignments[0]._assigned_from);
+    }
   }
 
   /**
@@ -667,7 +655,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
     } else {
       await this.publicFunctions.getOtherUser(this.postData.task._parent_task.task._assigned_to).then(user => {
         this.postData.task._parent_task.task._assigned_to = user;
-        this.parentTaskAssigneeProfilePicUrl = environment.UTILITIES_USERS_UPLOADS + '/' + user['profile_pic'];
+        this.parentTaskAssigneeProfilePicUrl = this.baseUrl + '/' + user['profile_pic'];
       });
     }
 
@@ -723,85 +711,12 @@ export class GroupCreatePostDialogComponent implements OnInit {
     });
   }
 
-  saveTransferAction(action: string) {
-    this.transferAction = action;
-  }
+  async onParentTaskSelected(post) {
+    // Set loading state to be true
+    this.isLoading$.next(true);
 
-  transferToGroup(group: string, section: any) {
-    if (this.transferAction === 'copy') {
-      this.copyToGroup(group, section);
-    }
-    if (this.transferAction === 'move') {
-      this.moveToGroup(group, section);
-    }
-    this.transferAction = '';
-  }
+    this.postData = post;
 
-  async copyToGroup(group: string, section: any) {
-    // Open the Confirm Dialog to ask for permission
-    this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the task will be copied to the selected group!')
-      .then(async (res) => {
-        if (res.value) {
-          await this.utilityService.asyncNotification('Please wait we are copy the task...', new Promise((resolve, reject) => {
-            let post = this.postData;
-            delete post.bars;
-            delete post.records;
-            delete post.comments;
-            delete post.comments_count;
-            delete post.task._assigned_to;
-            delete post.task.custom_fields;
-            post.task.unassigned = false;
-            post._group = group;
-            post.task._column.title = section.title;
-            post.created_date = moment().local().startOf('day').format('YYYY-MM-DD');
-
-            this.postService.transferToGroup(post, this.groupId, this.userData._id, true).then((res) => {
-              this.onTransferPost({post: res[post], isCopy: true});
-              resolve(this.utilityService.resolveAsyncPromise(`Task Copied!`));
-            });
-          }));
-        }
-      });
-  }
-
-  async moveToGroup(group: string, section: any) {
-    // Open the Confirm Dialog to ask for permission
-    this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the task will be moved to the selected group!')
-      .then(async (res) => {
-        if (res.value) {
-          await this.utilityService.asyncNotification('Please wait we are move the task...', new Promise((resolve, reject) => {
-            let post = this.postData;
-            delete post.bars;
-            delete post.comments;
-            delete post.comments_count;
-            delete post.task._assigned_to;
-            delete post.task.custom_fields;
-            post.task.unassigned = false;
-            post._group = group;
-            post.task._column.title = section.title;
-
-            this.postService.transferToGroup(post, this.groupId, this.userData._id, false).then((res) => {
-              this.onTransferPost({post: res['post'], isCopy: false, groupId: group});
-              resolve(this.utilityService.resolveAsyncPromise(`Task moved!`));
-            });
-          }));
-        }
-      });
-  }
-
-  onTransferPost(data) {
-    const post = data.post;
-    const isCopy = data.isCopy;
-
-    if (!isCopy) {
-      // redirect the user to the post
-      const groupId = data.groupId;
-      // Set the Value of element selection box to be the url of the post
-      if (post.type === 'task') {
-        this._router.navigate(['/dashboard', 'work', 'groups', 'tasks'], { queryParams: { group: groupId, myWorkplace: false, postId: post._id } });
-      } else {
-        this._router.navigate(['/dashboard', 'work', 'groups', 'activity'], { queryParams: { group: groupId, myWorkplace: false, postId: post._id } });
-      }
-    }
+    await this.initPostData();
   }
 }

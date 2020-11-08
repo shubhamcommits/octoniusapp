@@ -260,6 +260,21 @@ const PostSchema = new Schema({
                 required: true,
                 ref: 'User'
             }
+        }],
+        assignments: [{
+            date: {
+                type: Date,
+                required: true,
+                default: moment().format()
+            },
+            _assigned_to: {
+                type: Schema.Types.ObjectId,
+                ref: 'User'
+            },
+            _assigned_from: {
+                type: Schema.Types.ObjectId,
+                ref: 'User'
+            }
         }]
     }
 });

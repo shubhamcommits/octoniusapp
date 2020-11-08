@@ -376,13 +376,31 @@ export class PostService {
    * This function is responsible for adding a new post
    * @param { title, content, type, _posted_by, _group, _content_mentions } postData 
    */
-  async addPost(postData: any) {
+  async addPost(postData: any, userId: string) {
     try {
       // Parse the String to JSON Object
       postData = JSON.parse(postData);
 
       // Create new post
       let post: any = await Post.create(postData);
+
+      // save record of ussignment
+      if (post.type === 'task') {
+        if (!post.task.unassigned) {
+          post = await Post.findOneAndUpdate({
+            _id: post._id
+          }, {
+            $push: { "records.assignments": {
+                date: moment().format(),
+                _assigned_to: post.task._assigned_to,
+                _assigned_from: userId
+              }
+            }
+          }, {
+            new: true
+          })
+        }
+      }
 
       // populate the assigned_to property of this document
       post = await this.populatePostProperties(post);
@@ -761,7 +779,7 @@ export class PostService {
    * @param postId 
    * @param assigneeId 
    */
-  async changeTaskAssignee(postId: string, assigneeId: string) {
+  async changeTaskAssignee(postId: string, assigneeId: string, userId: string) {
 
     try {
 
@@ -771,6 +789,20 @@ export class PostService {
       }, {
         'task._assigned_to': assigneeId,
         'task.unassigned': false
+      }, {
+        new: true
+      })
+
+      // save record of assignment
+      post = await Post.findOneAndUpdate({
+        _id: postId
+      }, {
+        $push: { "records.assignments": {
+            date: moment().format(),
+            _assigned_to: post.task._assigned_to,
+            _assigned_from: userId
+          }
+        }
       }, {
         new: true
       })
@@ -1581,6 +1613,16 @@ export class PostService {
     return posts;
   }
 
+  async getSubtasksCount(parentId: any) {
+    
+    return await Post.find({
+      $and: [
+        { type: 'task' },
+        { 'task._parent_task': parentId }
+      ]
+    }).countDocuments();
+  }
+
   async moveToGroup(postId: string, groupId: string, oldGroupId: string, userId: string) {
     
     try {
@@ -1742,6 +1784,60 @@ export class PostService {
       });
 
       // populate the assigned_to property of this document
+      post = await this.populatePostProperties(post);
+
+      // Return the post
+      return post;
+
+    } catch (err) {
+      console.log(`\n⛔️ Error:\n ${err}`);
+      // Return with error
+      return err;
+    }
+  }
+
+  /**
+   * This function fetches the 10 possible parent tasks
+   * @param query
+   * @param groupId 
+   * @param currentPostId 
+   */
+  async searchPossibleParents(groupId, currentPostId, query) {
+
+    try {
+      let posts = Post.find({
+        $and: [
+          { _group: groupId },
+          { _id: { $ne: currentPostId }},
+          { title: { $regex: query, $options: 'i' } },
+        ]
+      })
+      .sort({ title: -1 })
+      .limit(5)
+      .select('_id title');
+
+      // Return set of posts 
+      return posts;
+
+    } catch (err) {
+      // Return With error
+      return err;
+    }
+  }
+
+  async setParentTask(postId: string, parentTaskId: string) {
+    
+    try {
+      // Update the post
+      let post = await Post.findOneAndUpdate({
+        _id: postId
+      }, {
+        'task._parent_task': parentTaskId
+      }, {
+        new: true
+      })
+
+      // populate the properties of this document
       post = await this.populatePostProperties(post);
 
       // Return the post

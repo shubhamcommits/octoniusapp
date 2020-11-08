@@ -206,7 +206,21 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges {
 
       this.profilePicUrl = environment.UTILITIES_USERS_UPLOADS + '/' + this.value.profile_pic;
 
-      this.saveData();
+      // this.saveData();
+
+      this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
+        this.postService.changeTaskAssignee(this.domainObject._id, this.value._id)
+          .then((res) => {
+            // Emit the post to other components
+            this.post.emit(res['post']);
+
+            // Resolve with success
+            resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
+          })
+          .catch(() => {
+            reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
+          });
+      }));
     }
   }
 
@@ -216,7 +230,21 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges {
     this.value = null;
     this.profilePicUrl = 'assets/images/user.png';
 
-    this.saveData();
+    // this.saveData();
+
+    this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
+      this.postService.changeTaskAssignee(this.domainObject._id, null)
+        .then((res) => {
+          // Emit the post to other components
+          this.post.emit(res['post']);
+
+          // Resolve with success
+          resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
+        })
+        .catch(() => {
+          reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
+        });
+    }));
   }
 
   saveData() {

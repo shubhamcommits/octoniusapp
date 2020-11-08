@@ -82,6 +82,7 @@ import { EngagementCardComponent } from './dashboard/engagement-card/engagement-
 import { GlobalPerformanceCardComponent } from './dashboard/global-performance-card/global-performance-card.component';
 import { NewTaskComponent } from './posts/new-task/new-task.component';
 import { SubtasksComponent } from './activity-feed/group-postbox/group-create-post-dialog-component/subtasks/subtasks.component';
+import { TaskActionsComponent } from './activity-feed/group-postbox/group-create-post-dialog-component/task-actions/task-actions.component';
 
 
 
@@ -178,7 +179,9 @@ import { SubtasksComponent } from './activity-feed/group-postbox/group-create-po
 
     NewTaskComponent,
 
-    SubtasksComponent
+    SubtasksComponent,
+
+    TaskActionsComponent
   ],
   imports: [
     CommonModule,
@@ -292,7 +295,9 @@ import { SubtasksComponent } from './activity-feed/group-postbox/group-create-po
 
     NewTaskComponent,
 
-    SubtasksComponent
+    SubtasksComponent,
+
+    TaskActionsComponent
   ],
   providers: [
     { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },
