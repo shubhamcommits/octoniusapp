@@ -40,9 +40,13 @@ export class DoneTasksKanbanViewComponent implements OnInit {
     const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
       this.closeModalEvent.emit(data);
     });
+    const parentAssignEventSubs = dialogRef.componentInstance.parentAssignEvent.subscribe((data) => {
+      this.deleteEvent.emit(data._id);
+    });
     dialogRef.afterClosed().subscribe(result => {
       closeEventSubs.unsubscribe();
       deleteEventSubs.unsubscribe();
+      parentAssignEventSubs.unsubscribe();
     });
   }
 

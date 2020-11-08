@@ -1832,7 +1832,8 @@ export class PostService {
       let post = await Post.findOneAndUpdate({
         _id: postId
       }, {
-        'task._parent_task': parentTaskId
+        'task._parent_task': parentTaskId,
+        'task._column.title': ''
       }, {
         new: true
       })

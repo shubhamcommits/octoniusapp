@@ -47,9 +47,13 @@ export class DoneTasksListViewComponent implements OnChanges {
       this.updateTask(data);
       this.closeDoneTaskModalEvent.emit(data);
     });
+    const parentAssignEventSubs = dialogRef.componentInstance.parentAssignEvent.subscribe((data) => {
+      this.onDeleteEvent(data._id);
+    });
     dialogRef.afterClosed().subscribe(result => {
       closeEventSubs.unsubscribe();
       deleteEventSubs.unsubscribe();
+      parentAssignEventSubs.unsubscribe();
     });
   }
 

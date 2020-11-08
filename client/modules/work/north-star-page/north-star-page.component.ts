@@ -93,9 +93,13 @@ export class NorthStarPageComponent implements OnInit {
     const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
       this.updateTask(data);
     });
+    const parentAssignEventSubs = dialogRef.componentInstance.parentAssignEvent.subscribe((data) => {
+      this.onDeleteEvent(data._id);
+    });
     dialogRef.afterClosed().subscribe(result => {
       closeEventSubs.unsubscribe();
       deleteEventSubs.unsubscribe();
+      parentAssignEventSubs.unsubscribe();
     });
   }
 

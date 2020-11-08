@@ -23,6 +23,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
   // Close Event Emitter - Emits when closing dialog
   @Output() closeEvent = new EventEmitter();
   @Output() deleteEvent = new EventEmitter();
+  @Output() parentAssignEvent = new EventEmitter();
 
   postData: any;
   userData: any;
@@ -566,7 +567,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
   async setAssignedBy(post) {
     this.postData = post;
-    if (this.postData.records.assignments) {
+    if (this.postData.records && this.postData.records.assignments && this.postData.records.assignments.length > 0) {
       this.postData.records.assignments = this.postData.records.assignments.sort((a1, a2) => (new Date(a1.date).getTime() < new Date(a2.date).getTime()) ? 1 : -1);
       this.lastAssignedBy = await this.publicFunctions.getOtherUser(this.postData.records.assignments[0]._assigned_from);
     }
@@ -718,5 +719,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.postData = post;
 
     await this.initPostData();
+
+    this.parentAssignEvent.emit(post);
   }
 }
