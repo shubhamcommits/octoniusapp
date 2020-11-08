@@ -1613,6 +1613,16 @@ export class PostService {
     return posts;
   }
 
+  async getSubtasksCount(parentId: any) {
+    
+    return await Post.find({
+      $and: [
+        { type: 'task' },
+        { 'task._parent_task': parentId }
+      ]
+    }).countDocuments();
+  }
+
   async moveToGroup(postId: string, groupId: string, oldGroupId: string, userId: string) {
     
     try {
@@ -1774,6 +1784,60 @@ export class PostService {
       });
 
       // populate the assigned_to property of this document
+      post = await this.populatePostProperties(post);
+
+      // Return the post
+      return post;
+
+    } catch (err) {
+      console.log(`\n⛔️ Error:\n ${err}`);
+      // Return with error
+      return err;
+    }
+  }
+
+  /**
+   * This function fetches the 10 possible parent tasks
+   * @param query
+   * @param groupId 
+   * @param currentPostId 
+   */
+  async searchPossibleParents(groupId, currentPostId, query) {
+
+    try {
+      let posts = Post.find({
+        $and: [
+          { _group: groupId },
+          { _id: { $ne: currentPostId }},
+          { title: { $regex: query, $options: 'i' } },
+        ]
+      })
+      .sort({ title: -1 })
+      .limit(5)
+      .select('_id title');
+
+      // Return set of posts 
+      return posts;
+
+    } catch (err) {
+      // Return With error
+      return err;
+    }
+  }
+
+  async setParentTask(postId: string, parentTaskId: string) {
+    
+    try {
+      // Update the post
+      let post = await Post.findOneAndUpdate({
+        _id: postId
+      }, {
+        'task._parent_task': parentTaskId
+      }, {
+        new: true
+      })
+
+      // populate the properties of this document
       post = await this.populatePostProperties(post);
 
       // Return the post

@@ -132,6 +132,9 @@ routes.put('/:postId/update-date', postController.changeTaskDate);
 // This route is used to get the subtasks of a task
 routes.get('/post/subtasks', postController.getSubtasks);
 
+// This route is used to get the subtasks of a task
+routes.get('/post/subtasks-count', postController.getSubtasksCount);
+
 
 // -| RECENT ACTIVITY |-
 
@@ -163,5 +166,11 @@ routes.post('/delete-attached', filesControllers.deleteAttached);
 
 // PUT - Used to move the post to another group
 routes.put('/:postId/update-task-order', postController.updateTaskOrderInColumn);
+
+// GET - This route is used to get 10 tasks which could be a parent of the caller task
+routes.get('/:currentPostId/searchParent', postController.searchPossibleParents);
+
+// PUT - Used to set a parent task to a task
+routes.put('/:postId/set-parent', postController.setParentTask);
 
 export { routes as postRoutes };

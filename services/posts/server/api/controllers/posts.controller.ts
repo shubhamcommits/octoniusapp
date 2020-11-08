@@ -870,7 +870,7 @@ export class PostController {
     }
 
     /**
-     * This function is responsible for fetching the posts of a group
+     * This function is responsible for fetching the subtasks of a task
      * @param req 
      * @param res 
      * @param next 
@@ -894,6 +894,34 @@ export class PostController {
             return res.status(200).json({
                 message: 'Subtasks fetched!',
                 subtasks: subtasks
+            });
+        } catch (err) {
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for fetching the number of subtasks of a task
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async getSubtasksCount(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch Data from request
+        const  { parentId }  = req.query;
+
+        try {
+
+            // Call Service function to fetch the posts
+            let subtasksCount: number = 0;
+
+            subtasksCount = await postService.getSubtasksCount(parentId.toString());
+
+            // // Send status 200 response
+            return res.status(200).json({
+                message: 'Subtasks fetched!',
+                subtasksCount: subtasksCount
             });
         } catch (err) {
             return sendErr(res, new Error(err), 'Internal Server Error!', 500);
@@ -985,6 +1013,73 @@ export class PostController {
                 post: updatedPost
             });
         } catch (error) {
+            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function fetches the 10 possible parent tasks
+     * @param { query: { groupId, currentPostId, query } } req 
+     * @param res 
+     * @param next 
+     */
+    async searchPossibleParents(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch groupId and lastPostId from request
+        var { groupId, query } = req.query;
+        var { currentPostId } = req.params
+        try {
+            // If groupId or currentPostId are not present, then return error
+            if (!groupId || !currentPostId) {
+                return sendErr(res, new Error('Please provide the group and the current post as the query parameter'), 'Please provide the groupId as the query paramater!', 400);
+            }
+
+            // Fetch the 10 possible posts
+            await postService.searchPossibleParents(groupId, currentPostId, query)
+                .then((posts) => {
+                    return res.status(200).json({
+                        message: `The ${posts.length} possible parent tasks!`,
+                        posts: posts
+                    });
+                })
+                .catch((err) => {
+                    // If there's an error send bad request
+                    return sendErr(res, new Error(err), 'Unable to fetch the tasks, kindly check the stack trace for error', 400)
+                })
+
+        } catch (err) {
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for setting the parent task of a task
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async setParentTask(req: Request, res: Response, next: NextFunction) {
+
+        // Post Object From request
+        const { body: { parentTaskId }, params: { postId } } = req;
+
+        try {
+
+            // Call service function to edit
+            const updatedPost = await postService.setParentTask(postId, parentTaskId)
+                .catch((err) => {
+                    return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
+                })
+
+            // Send Status 200 response
+            return res.status(200).json({
+                message: 'Post assigned to a parent Successfully!',
+                post: updatedPost
+            });
+        } catch (error) {
+            if (error == null) {
+                sendErr(res, null, 'User not allowed to edit this post!', 403);
+            }
             return sendErr(res, new Error(error), 'Internal Server Error!', 500);
         }
     }
