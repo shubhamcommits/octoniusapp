@@ -23,6 +23,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
   // Close Event Emitter - Emits when closing dialog
   @Output() closeEvent = new EventEmitter();
   @Output() deleteEvent = new EventEmitter();
+  @Output() parentAssignEvent = new EventEmitter();
 
   postData: any;
   userData: any;
@@ -718,5 +719,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.postData = post;
 
     await this.initPostData();
+
+    this.parentAssignEvent.emit(post);
   }
 }
