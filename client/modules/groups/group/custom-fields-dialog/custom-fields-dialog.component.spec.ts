@@ -14,7 +14,7 @@ describe('CustomFieldsDialogComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(v);
+    fixture = TestBed.createComponent(CustomFieldsDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
