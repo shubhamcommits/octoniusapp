@@ -7,6 +7,8 @@ import { ActivatedRoute } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment/moment';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { MatDialog } from '@angular/material';
+import { GroupCreatePostComponent } from 'src/app/common/shared/activity-feed/group-postbox/group-create-post/group-create-post.component';
 
 // Define Set of hexcodes of colors
 const colors: any = {
@@ -28,7 +30,8 @@ export class GroupCalendarComponent implements OnInit {
     private router: ActivatedRoute,
     private modal: NgbModal,
     private injector: Injector,
-    private utilityService: UtilityService) { }
+    private utilityService: UtilityService,
+    public dialog: MatDialog) { }
 
   // Fetch groupId from router snapshot
   groupId = this.router.snapshot.queryParamMap.get('group')
@@ -174,7 +177,7 @@ export class GroupCalendarComponent implements OnInit {
           beforeStart: true,
           afterEnd: true
         },
-        draggable: true,
+        draggable: false,
         post: post
       })
     })
@@ -221,15 +224,17 @@ export class GroupCalendarComponent implements OnInit {
     // Set the Value of post to the event post propery
     this.post = event.post
     let dialogRef;
-    if (this.post.type === 'task' && !this.post.task._parent_task) {
-      dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.groupId, this.columns);
-    } else {
-      if (this.post.task._parent_task && !this.post.task._parent_task._id) {
-        this.publicFunctions.getPost(this.post.task._parent_task).then(post => {
-          this.post.task._parent_task = post;
-        });
+    if (this.post) {
+      if (this.post.type === 'task' && !this.post.task._parent_task) {
+        dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.groupId, this.columns);
+      } else {
+        if (this.post.task._parent_task && !this.post.task._parent_task._id) {
+          this.publicFunctions.getPost(this.post.task._parent_task).then(post => {
+            this.post.task._parent_task = post;
+          });
+        }
+        dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.groupId);
       }
-      dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.groupId);
     }
 
     const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
@@ -251,7 +256,7 @@ export class GroupCalendarComponent implements OnInit {
         start: startOfDay(new Date()),
         end: endOfDay(new Date()),
         color: colors.red,
-        draggable: true,
+        draggable: false,
         resizable: {
           beforeStart: true,
           afterEnd: true
@@ -280,7 +285,7 @@ export class GroupCalendarComponent implements OnInit {
             beforeStart: true,
             afterEnd: true
           },
-          draggable: true,
+          draggable: false,
           post: event
         });
         this.events.splice(index, 1);
@@ -330,4 +335,30 @@ export class GroupCalendarComponent implements OnInit {
     this.refresh.complete()
   }
 
+  openCreateEventDialog(content) {
+    this.utilityService.openModal(content, {
+      size: 'xl',
+    });
+  }
+
+  /**
+   * This function is responsible for emitting the post object to other components
+   * @param post
+   */
+  getPost(post: any) {
+    this.events = [
+      ...this.events,
+      {
+        title: post.title,
+        start: startOfDay(new Date(post.event.due_to)),
+        end: endOfDay(new Date(post.event.due_to)),
+        color: colors.red,
+        draggable: false,
+        resizable: {
+          beforeStart: true,
+          afterEnd: true
+        }
+      }
+    ];
+  }
 }

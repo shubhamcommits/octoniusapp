@@ -16,7 +16,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
             </div>
             <div class="col-md-4">
@@ -34,6 +34,11 @@
                         Day
                     </div>
                 </div>
+            </div>
+            <div class="col-md-1">
+              <button class="btn badge-cf" (click)="openCreateEventDialog(content)">
+                <i class="material-icons">add</i>
+              </button>
             </div>
         </div>
         <br />
@@ -55,3 +60,13 @@
         <br />
     </div>
 </div>
+
+<!-- Modal Template for post creation starts -->
+<ng-template #content let-modal>
+  <!-- Create post starts -->
+  <app-group-create-post *ngIf="userData && checkDataExist(userData)" [userData]="userData" [groupId]="groupId"
+    [type]="'event'" (post)="getPost($event)" (close)="closeModal()">
+  </app-group-create-post>
+  <!-- Create post ends -->
+</ng-template>
+<!-- Modal Template for post creation ends -->
