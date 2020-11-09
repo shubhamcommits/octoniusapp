@@ -214,9 +214,11 @@ export class UtilityService {
       data: data
     });
   }
+
+  /*
   openCreateBARModal(groupData: any, groupId: string) {
 
-    const data = 
+    const data =
       {
         groupData: groupData,
         groupId: groupId
@@ -230,7 +232,7 @@ export class UtilityService {
       data: data
     });
   }
-
+  */
 
   /**
    * This function removes/dismiss all the modals that are opened
