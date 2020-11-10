@@ -3,6 +3,7 @@ import { Group } from './group.model';
 import { Post } from './post.model';
 import { User } from './user.model';
 import { Comment } from './comment.model';
+import { Flow } from './flow.model';
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -23,5 +24,8 @@ export {
     User as User,
 
     // COMMENT
-    Comment as Comment
+    Comment as Comment,
+
+    // FLOW
+    Flow as Flow
 };

@@ -52,7 +52,7 @@
               {{ step.trigger.name }}
             </span>
 
-            <div *ngIf="step.trigger.name === 'Assigned to' || step.trigger.name === 'Assignee is'">
+            <div *ngIf="step.trigger.name === 'Assigned to'">
               <div *ngIf="step.trigger._user">
                 <img src="{{ baseUrl }}/{{ step.trigger._user.profile_pic }}"
                   onerror="this.src='assets/images/user.png'" class="feed-avatar">

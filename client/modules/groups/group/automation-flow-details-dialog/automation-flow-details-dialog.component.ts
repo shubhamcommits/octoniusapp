@@ -21,7 +21,7 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
 
   flowName = '';
 
-  triggerOptions = ['Assigned to', 'Status is', 'Section is', 'Assignee is'];
+  triggerOptions = ['Assigned to', 'Status is', 'Section is'];
   actionOptions = ['Move to', 'Assign to'];
 
   statusOptions = ['TO DO', 'IN PROGRESS', 'DONE'];
