@@ -1,11 +1,13 @@
 import { Response, Request, NextFunction } from "express";
-import { PostService, TagsService } from '../services';
+import { FlowService, PostService, TagsService } from '../services';
 import { sendErr } from '../utils/sendError';
 const ObjectId = require('mongoose').Types.ObjectId;
 
 const postService = new PostService();
 
-const tagsService = new TagsService()
+const tagsService = new TagsService();
+
+const flowService = new FlowService();
 
 export class PostController {
 
@@ -508,9 +510,7 @@ export class PostController {
         const userId = req['userId'];
 
         try {
-
-            // Call Service function to change the assignee
-            const post = await postService.changeTaskAssignee(postId, assigneeId, userId)
+            const post = await this.callTaskAssigneeService(postId, assigneeId, userId)
                 .catch((err) => {
                     return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
                 })
@@ -523,6 +523,41 @@ export class PostController {
         } catch (err) {
             return sendErr(res, new Error(err), 'Internal Server Error!', 500);
         }
+    }
+
+    async callTaskAssigneeService(postId: string, assigneeId: string, userId: string) {
+        // Call Service function to change the assignee
+        let post = await postService.changeTaskAssignee(postId, assigneeId, userId);
+
+        // Execute Automation Flows
+        const flows = await flowService.getAtomationFlows(post._group._id);
+        if (flows && flows.length > 0) {
+            flows.forEach(flow => {
+                const steps = flow['steps'];
+
+                steps.forEach(async step => {
+                    if (step.trigger.name === 'Assigned to'
+                        && (step.trigger._user._id === assigneeId || step.trigger._user === assigneeId)) {
+                        
+                        if (step.action.name === 'Move to') {
+                            post = await this.changeTaskSection(postId, step.action.section, userId)
+                                .catch((err) => {
+                                    throw err;
+                                });
+                        }
+
+                        if (step.action.name === 'Assign to') {
+                            post = await this.callTaskAssigneeService(postId, step.action._user, userId)
+                                .catch((err) => {
+                                    throw err;
+                                })
+                        }
+                    }
+                });
+            });
+        }
+
+        return post;
     }
 
     /**
@@ -597,10 +632,10 @@ export class PostController {
         try {
 
             // Call Service function to change the assignee
-            const post = await postService.changeTaskStatus(postId, status, userId)
+            let post = await this.callChangeTaskStatusService(postId, status, userId)
                 .catch((err) => {
                     return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-                })
+                });
 
             // Send status 200 response
             return res.status(200).json({
@@ -609,6 +644,42 @@ export class PostController {
             });
         } catch (err) {
             return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
+
+    async callChangeTaskStatusService(postId: string, status: string, userId: string) {
+        // Call Service function to change the assignee
+        let post = await postService.changeTaskStatus(postId, status, userId)
+            .catch((err) => {
+                throw err;
+            });
+
+        // Execute Automation Flows
+        const flows = await flowService.getAtomationFlows(post._group._id);
+        if (flows && flows.length > 0) {
+            flows.forEach(flow => {
+                const steps = flow['steps'];
+
+                steps.forEach(async step => {
+                    if (step.trigger.name === 'Status is'
+                        && step.trigger.status.toUpperCase() === status.toUpperCase()) {
+
+                        if (step.action.name === 'Move to') {
+                            post = await this.changeTaskSection(postId, step.action.section, userId)
+                                .catch((err) => {
+                                    throw err;
+                                });
+                        }
+
+                        if (step.action.name === 'Assign to') {
+                            post = await this.callTaskAssigneeService(postId, step.action._user, userId)
+                                .catch((err) => {
+                                    throw err;
+                                })
+                        }
+                    }
+                });
+            });
         }
     }
 
@@ -629,11 +700,10 @@ export class PostController {
                 return sendErr(res, new Error('Please provide the post, title and user as parameters'), 'Please provide the post, title and user as paramaters!', 400);
             }
 
-            // Call Service function to change the assignee
-            const post = await postService.changeTaskColumn(postId, title, userId)
+            const post = this.changeTaskSection(postId, title, userId)
                 .catch((err) => {
                     return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-                })
+                });
 
             // Send status 200 response
             return res.status(200).json({
@@ -643,6 +713,41 @@ export class PostController {
         } catch (err) {
             return sendErr(res, new Error(err), 'Internal Server Error!', 500);
         }
+    }
+
+    async changeTaskSection(postId: string, sectionTitle: string, userId: string) {
+        // Call Service function to change the assignee
+        let post = await postService.changeTaskColumn(postId, sectionTitle, userId);
+
+        // Execute Automation Flows
+        const flows = await flowService.getAtomationFlows(post._group._id);
+        if (flows && flows.length > 0) {
+            flows.forEach(flow => {
+                const steps = flow['steps'];
+
+                steps.forEach(async step => {
+                    if (step.trigger.name === 'Section is'
+                        && step.trigger.section.toUpperCase() === sectionTitle.toUpperCase()) {
+                        
+                        if (step.action.name === 'Move to') {
+                            post = await this.changeTaskSection(postId, step.action.section, userId)
+                                .catch((err) => {
+                                    throw err;
+                                });
+                        }
+
+                        if (step.action.name === 'Assign to') {
+                            post = await this.callTaskAssigneeService(postId, step.action._user, userId)
+                                .catch((err) => {
+                                    throw err;
+                                })
+                        }
+                    }
+                });
+            });
+        }
+
+        return post;
     }
 
     /**
