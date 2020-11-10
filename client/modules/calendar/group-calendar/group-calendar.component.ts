@@ -243,9 +243,6 @@ export class GroupCalendarComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       closeEventSubs.unsubscribe();
     });
-
-    // Open the Modal
-    // this.modal.open(this.modalContent, { size: 'xl' });
   }
 
   addEvent(): void {

@@ -1,0 +1,174 @@
+<div class="flowStepsDialog">
+
+  <mat-dialog-actions align="end">
+    <i mat-dialog-close class="material-icons" (click)="onCloseDialog()" style="cursor: pointer">close</i>
+  </mat-dialog-actions>
+
+  <h2 mat-dialog-title>
+    <span class="badge badge-automator">
+      <i class="material-icons">offline_bolt</i>
+    </span>
+
+    <!-- Flow Name starts -->
+    <input
+      name="flowName"
+      type="text"
+      [ngModel]="flowName"
+      (blur)="flowNameChange($event)"
+      class="flow-name" />
+    <!-- Flow Name ends -->
+  </h2>
+
+  <mat-dialog-content>
+    <div class="flowStepsList" *ngIf="flowSteps.length <= 0">
+      <h3 class="text-center muted">There are no actions...</h3>
+    </div>
+
+    <div class="flowStepsList" *ngIf="flowSteps.length > 0">
+      <div class="flowStepsBody">
+        <div class="step" *ngFor="let step of flowSteps; let index = index">
+          <div class="col-md-1">
+            <div class="index">{{ index + 1 }}</div>
+          </div>
+
+          <!-- TRIGGER SECTION -->
+          <div class="values col-md-4" *ngIf="!step.trigger">
+            WHEN
+            <!-- TRIGGER OPTIONS SECTION -->
+            <button mat-menu-item [matMenuTriggerFor]="triggerMenu">
+              Select trigger
+            </button>
+            <mat-menu #triggerMenu="matMenu">
+              <ng-container>
+                <button mat-menu-item *ngFor="let trigger of triggerOptions" (click)="selectTrigger(trigger, index)">{{ trigger }}</button>
+              </ng-container>
+            </mat-menu>
+          </div>
+
+          <div class="values col-md-4" *ngIf="step.trigger">
+            <span style="margin-right: 10px;">
+              {{ step.trigger.name }}
+            </span>
+
+            <div *ngIf="step.trigger.name === 'Assigned to' || step.trigger.name === 'Assignee is'">
+              <div *ngIf="step.trigger._user">
+                <img src="{{ baseUrl }}/{{ step.trigger._user.profile_pic }}"
+                  onerror="this.src='assets/images/user.png'" class="feed-avatar">
+              </div>
+
+              <app-component-search-input-box
+                *ngIf="!step.trigger._user" class="feed-avatar"
+                [placeholder]="'User...'"
+                [groupId]="groupId"
+                [workspaceId]="workspaceId"
+                [userData]="userData"
+                [type]="'task'"
+                (member)="getMemberDetails($event, 'trigger', index)">
+              </app-component-search-input-box>
+            </div>
+
+            <div *ngIf="step.trigger.name === 'Status is'">
+              <div *ngIf="step.trigger.status" [ngClass]="getStatusClass(step.trigger.status)">
+                {{ step.trigger.status }}
+              </div>
+
+              <button *ngIf="!step.trigger.status" mat-menu-item [matMenuTriggerFor]="statusMenu">
+                Select Status
+              </button>
+              <mat-menu #statusMenu="matMenu">
+                <ng-container>
+                  <button mat-menu-item *ngFor="let status of statusOptions" (click)="statusTriggerSelected(status, index)">{{ status }}</button>
+                </ng-container>
+              </mat-menu>
+            </div>
+
+            <div *ngIf="step.trigger.name === 'Section is'">
+              <div *ngIf="step.trigger.section" class="badge-section">
+                {{ step.trigger.section }}
+              </div>
+
+              <button *ngIf="!step.trigger.section" mat-menu-item [matMenuTriggerFor]="sectionTriggerMenu">
+                Select Section
+              </button>
+              <mat-menu #sectionTriggerMenu="matMenu">
+                <ng-container>
+                  <button mat-menu-item *ngFor="let section of groupSections" (click)="sectionTriggerSelected(section.title, index)">{{ section.title }}</button>
+                </ng-container>
+              </mat-menu>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <i class="material-icons" style="color: #005FD5">offline_bolt</i>
+          </div>
+
+          <!-- ACTION SECTION -->
+          <div class="values col-md-3" *ngIf="!step.action">
+            THEN
+            <!-- ACTION OPTIONS SECTION -->
+            <button mat-menu-item [matMenuTriggerFor]="actionMenu">
+              Select action
+            </button>
+            <mat-menu #actionMenu="matMenu">
+              <ng-container>
+                <button mat-menu-item *ngFor="let action of actionOptions" (click)="selectAction(action, index)">{{ action }}</button>
+              </ng-container>
+            </mat-menu>
+          </div>
+
+          <div class="values col-md-3" *ngIf="step.action">
+            <span style="margin-right: 10px;">
+              {{ step.action.name }}
+            </span>
+
+            <div *ngIf="step.action.name === 'Assign to'">
+              <div *ngIf="step.action._user">
+                <img src="{{ baseUrl }}/{{ step.action._user.profile_pic }}"
+                  onerror="this.src='assets/images/user.png'" class="feed-avatar">
+              </div>
+
+              <app-component-search-input-box
+                *ngIf="!step.action._user" class="feed-avatar"
+                [placeholder]="'User...'"
+                [groupId]="groupId"
+                [workspaceId]="workspaceId"
+                [userData]="userData"
+                [type]="'task'"
+                (member)="getMemberDetails($event, 'action', index)">
+              </app-component-search-input-box>
+            </div>
+
+            <div *ngIf="step.action.name === 'Move to'">
+              <div *ngIf="step.action.section" class="badge-section">
+                {{ step.action.section }}
+              </div>
+
+              <button *ngIf="!step.action.section" mat-menu-item [matMenuTriggerFor]="sectionActionMenu">
+                Select Section
+              </button>
+              <mat-menu #sectionActionMenu="matMenu">
+                <ng-container>
+                  <button mat-menu-item *ngFor="let section of groupSections" (click)="sectionActionSelected(section.title, index)">{{ section.title }}</button>
+                </ng-container>
+              </mat-menu>
+            </div>
+          </div>
+
+          <!-- DELETE STEP -->
+          <div class="values col-md-1">
+            <i class="material-icons" (click)="removeStep(step._id)"
+              style="color: red; cursor: pointer; margin-left: 20px;">highlight_off</i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADD STEP -->
+    <div class="newFlowStepForm" style="padding: 10px; margin-top: 30px; width: 70%;">
+      <button class="btn" style="float: left;" (click)="createStep()">
+        <i class="material-icons" style="color: #FFAB00">offline_bolt</i>
+         ADD ANOTHER STEP
+      </button>
+    </div>
+  </mat-dialog-content>
+</div>

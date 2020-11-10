@@ -1,30 +1,33 @@
 <div class="board-bar">
     <div class="row">
         <div class="actions">
-            <button class="btn badge-cf"
-                *ngIf="isAdmin"
-                (click)="openCustomFieldsDialog()">
-                
-                    <i class="material-icons">label</i>
-                
-        </button>
-            <button [matMenuTriggerFor]="menu" class="btn badge-boardviews">Views</button>
-            <mat-menu #menu="matMenu">
-                <a mat-menu-item (click)="changeView('kanban')">
-                    <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">dashboard</i>
-                    <span>Kanban Board</span>
-                </a>
-                <a mat-menu-item (click)="changeView('list')">
-                    <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">list</i>
-                    <span>List</span>
-                </a>
-                <!--
-                <a *ngIf="groupData.project_type" mat-menu-item (click)="changeView('gantt')">
-                    <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">align_horizontal_left</i>
-                    <span>Gantt</span>
-                </a>
-                -->
-            </mat-menu>
+          <button class="btn badge-cf"
+              *ngIf="isAdmin" (click)="openCustomFieldsDialog()">
+            <i class="material-icons">label</i>
+          </button>
+
+          <button class="btn badge-automator"
+              *ngIf="isAdmin" (click)="openAutomatorDialog()">
+            <i class="material-icons">offline_bolt</i>
+          </button>
+
+          <button [matMenuTriggerFor]="menu" class="btn badge-boardviews">Views</button>
+          <mat-menu #menu="matMenu">
+              <a mat-menu-item (click)="changeView('kanban')">
+                  <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">dashboard</i>
+                  <span>Kanban Board</span>
+              </a>
+              <a mat-menu-item (click)="changeView('list')">
+                  <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">list</i>
+                  <span>List</span>
+              </a>
+              <!--
+              <a *ngIf="groupData.project_type" mat-menu-item (click)="changeView('gantt')">
+                  <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">align_horizontal_left</i>
+                  <span>Gantt</span>
+              </a>
+              -->
+          </mat-menu>
         </div>
     </div>
 </div>

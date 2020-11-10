@@ -3,6 +3,7 @@ import { MembersControllers } from "./members.controllers";
 import { PulseController } from './pulse.controller';
 import { SmartGroupControllers } from './smart-group.controllers'
 import { ColumnsController } from './columns.controller';
+import { FlowController } from './flow.controller';
 
 /*  =======================
  *  -- FUNCTION EXPORTS --
@@ -15,6 +16,9 @@ export {
 
     // GROUP
     GroupController as GroupFunctions,
+
+    // FLOW
+    FlowController as FlowFunctions,
 
     // MEMBERS
     MembersControllers as MemberControllers,

@@ -2,6 +2,7 @@
 
         <app-board-bar *ngIf="groupData"
             [groupData]="groupData"
+            [sections]="columns"
             [isAdmin]="isAdminUser()"
             (changeViewEmitter)='onChangeViewEmitter($event)'
             (customFieldEmitter)="onCustomFieldEmitter($event)">

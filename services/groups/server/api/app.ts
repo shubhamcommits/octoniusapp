@@ -9,6 +9,7 @@ import {
     memberRoutes,
     pulseRoutes,
     columnRoutes,
+    flowRoutes,
 } from './routes';
 import fileUpload from 'express-fileupload';
 
@@ -84,6 +85,7 @@ app.all('/', (req: Request, res: Response, next: NextFunction) => {
 // Correct REST naming
 app.use('/api/columns', columnRoutes);
 app.use('/api/members', memberRoutes);
+app.use('/api/flows', flowRoutes);
 app.use('/api/pulse', pulseRoutes);
 app.use('/api', groupsRoutes);
 
