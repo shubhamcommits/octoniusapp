@@ -64,6 +64,7 @@ export class AutomationFlowsDialogComponent implements OnInit {
     const subFlowNameChangeEmitter = dialogRef.componentInstance.flowNameChangeEmitter.subscribe((data) => {
       const flowIndex = this.automationFlows.findIndex(flow => flow._id === data['flowId']);
       this.automationFlows[flowIndex].name = data['flowName'];
+      this.automationFlows.sort((f1, f2) => (f1.name > f2.name) ? 1 : -1);
     });
     dialogRef.afterClosed().subscribe(result => {
       subFlowNameChangeEmitter.unsubscribe();

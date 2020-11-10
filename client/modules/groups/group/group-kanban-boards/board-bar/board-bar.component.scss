@@ -18,24 +18,22 @@ a {
     cursor: pointer;
 }
 
-.badge-cf{
-    // background: $border-color;
-    // color: $brand-primary;
-    // box-shadow: 0 6px 10px #005fd521;
-    font-size: 12px;
-    color: #9D9FA1;
-  
-  }
-.separator{
+.badge-cf {
+  font-size: 12px;
+  color: #9D9FA1;
+}
+
+.badge-boardviews {
+  font-size: 12px;
+  color: #9D9FA1;
+}
+
+.badge-automator {
+  font-size: 12px;
+  color: #9D9FA1;
+}
+
+.separator {
   width: 5px;
   border-left: 1px solid #E4EDF8;
 }
-
-  .badge-boardviews{
-    // background: #ff6584;
-    // color: #fff;
-    // box-shadow: 0 6px 10px #005fd521;
-    // margin: 5px;
-    font-size: 12px;
-    color: #9D9FA1;
-  }
