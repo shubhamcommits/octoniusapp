@@ -20,8 +20,11 @@ routes.use(authsHelper.isLoggedIn);
 // POST - Logout from the server
 routes.post('/auths/sign-out', authsHelper.signOut);
 
-// POST - Add new automation flow to the group
+// POST - Add new automation flow
 routes.post('/addAutomationFlow', flow.addAutomationFlow);
+
+// DELETE - Delete an automation flow
+routes.delete('/:flowId', flow.deleteFlow);
 
 // GET - Get group automation flows
 routes.get('/:groupId/getAutomationFlows', flow.getAtomationFlows);

@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
 import { environment } from 'src/environments/environment';
 import { SubSink } from 'subsink';
@@ -34,11 +34,13 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
   private subSink = new SubSink();
 
   @Output() flowNameChangeEmitter = new EventEmitter();
+  @Output() deleteFlowEvent = new EventEmitter();
 
   constructor(
     public utilityService: UtilityService,
     private flowService: FlowService,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private mdDialogRef: MatDialogRef<AutomationFlowDetailsDialogComponent>
   ) { }
 
   async ngOnInit() {
@@ -129,7 +131,6 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
     if (!stepId) {
       this.flowSteps.splice((this.flowSteps.length - 1), 1);
     } else {
-      // Ask User to remove this field or not
       this.utilityService.getConfirmDialogAlert()
         .then((result) => {
           if (result.value) {
@@ -201,5 +202,30 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
         reject(this.utilityService.rejectAsyncPromise(`Unable to savee the step, please try again!`));
       });
     }));
+  }
+
+  /**
+   * Call function to delete flow
+   */
+  deleteFlow() {
+    this.utilityService.getConfirmDialogAlert()
+      .then((result) => {
+        if (result.value) {
+          // Remove the file
+          this.utilityService.asyncNotification('Please wait we are deleting the flow...', new Promise((resolve, reject) => {
+            this.flowService.deleteFlow(this.flowId)
+              .then((res) => {
+                // Emit the Deleted post to all the compoents in order to update the UI
+                this.deleteFlowEvent.emit(this.flowId);
+                // Close the modal
+                this.mdDialogRef.close();
+
+                resolve(this.utilityService.resolveAsyncPromise('Flow deleted!'));
+              }).catch((err) => {
+                reject(this.utilityService.rejectAsyncPromise('Unable to delete flow, please try again!'));
+              });
+          }));
+        }
+      });
   }
 }

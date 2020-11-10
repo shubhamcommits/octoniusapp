@@ -25,6 +25,21 @@ export class FlowController {
             return sendError(res, error, 'Internal Server Error!', 500);
         }
     }
+    
+    async deleteFlow(req: Request, res: Response, next: NextFunction) {
+        try {
+            const flowId = req.params.flowId
+
+            const flow = await Flow.findOneAndDelete({_id: flowId});
+
+            return res.status(200).json({
+                message: 'Automation Flow deleted successfully!',
+                flow: flow
+              });
+        } catch (error) {
+            return sendError(res, error, 'Internal Server Error!', 500);
+        }
+    }
 
     /**
      * This function fetches the automation flows of the group corresponding to the @constant groupId 

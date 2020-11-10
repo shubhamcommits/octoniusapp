@@ -66,8 +66,13 @@ export class AutomationFlowsDialogComponent implements OnInit {
       this.automationFlows[flowIndex].name = data['flowName'];
       this.automationFlows.sort((f1, f2) => (f1.name > f2.name) ? 1 : -1);
     });
+    const subDeleteFlowEmitter = dialogRef.componentInstance.deleteFlowEvent.subscribe((data) => {
+      const flowIndex = this.automationFlows.findIndex(flow => flow._id === data);
+      this.automationFlows.splice(flowIndex, 1);
+    });
     dialogRef.afterClosed().subscribe(result => {
       subFlowNameChangeEmitter.unsubscribe();
+      subDeleteFlowEmitter.unsubscribe();
     });
   }
 }

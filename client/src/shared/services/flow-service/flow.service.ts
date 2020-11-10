@@ -15,6 +15,10 @@ export class FlowService {
     return this._http.post(this.baseURL + `/flows/addAutomationFlow`, { groupId: groupId }).toPromise()
   }
 
+  deleteFlow(flowId) {
+    return this._http.delete(this.baseURL + `/flows/${flowId}`).toPromise()
+  }
+
   getGroupAutomationFlows(groupId: string) {
     return this._http.get(this.baseURL + `/flows/${groupId}/getAutomationFlows`).toPromise()
   }
