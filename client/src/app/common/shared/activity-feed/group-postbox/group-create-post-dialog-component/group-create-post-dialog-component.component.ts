@@ -452,8 +452,18 @@ export class GroupCreatePostDialogComponent implements OnInit {
   saveCustomField(customFieldName: string, customFieldValue: string) {
     this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
       this.postService.saveCustomField(this.postData._id, customFieldName, customFieldValue, this.groupId)
-        .then((res) => {
+        .then(async (res) => {
           this.postData.task.custom_fields[customFieldName] = customFieldValue;
+
+          let dataFlows = {
+            moveTo: '',
+            statusTo: '',
+            assignTo: ''
+          };
+
+          dataFlows = await this.publicFunctions.getExecutedAutomationFlowsProperties(this.postData, '', this.flows, dataFlows, {name: customFieldName, value: customFieldValue});
+          await this.setFlowsProperties(this.postData, dataFlows);
+
           // Resolve with success
           resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
         })
@@ -569,6 +579,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
     let dataFlows = {
       moveTo: '',
+      statusTo: '',
       assignTo: ''
     };
 
@@ -582,6 +593,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
     let dataFlows = {
       moveTo: '',
+      statusTo: '',
       assignTo: ''
     };
 
@@ -595,6 +607,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
     let dataFlows = {
       moveTo: '',
+      statusTo: '',
       assignTo: ''
     };
 
@@ -775,6 +788,10 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
     if (dataFlows.moveTo) {
       post.task._column.title = dataFlows.moveTo;
+    }
+
+    if (dataFlows.statusTo) {
+      post.task.status = dataFlows.statusTo;
     }
 
     if (dataFlows.assignTo) {
