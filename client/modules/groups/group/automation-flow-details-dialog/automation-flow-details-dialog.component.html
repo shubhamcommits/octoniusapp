@@ -214,8 +214,8 @@
                 </ng-container>
               </mat-menu>
 
-              <div *ngIf="step?.action?.custom_field?.name">
-                <div class="badge-section">
+              <div *ngIf="step?.action?.custom_field?.name" style="display: flex;">
+                <div style="margin-right: 10px;">
                   {{ step.action.custom_field.name }}
                 </div>
 
