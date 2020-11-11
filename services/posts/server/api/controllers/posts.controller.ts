@@ -1156,7 +1156,11 @@ export class PostController {
         let dataFlows = {
             moveTo: '',
             statusTo: '',
-            assignTo: ''
+            assignTo: '',
+            cfTo: {
+                name: '',
+                value: ''
+            }
         };
 
         const flows = await flowService.getAtomationFlows(groupId);
@@ -1185,6 +1189,14 @@ export class PostController {
                         if (step.action.name === 'Move to') {
                             await this.changeTaskSection(postId, step.action.section, userId);
                             dataFlows.moveTo = step.action.section;
+                        }
+
+                        if (step.action.name === 'Custom Field') {
+                            await this.callChangeCustomFieldValueService(groupId, postId, step.action.custom_field.name, step.action.custom_field.value, userId)
+                            dataFlows.cfTo = {
+                                name: step.action.custom_field.name,
+                                value: step.action.custom_field.value
+                            }
                         }
                     }
                 });

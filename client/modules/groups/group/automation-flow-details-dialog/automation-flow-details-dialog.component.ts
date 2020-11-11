@@ -22,7 +22,7 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
   flowName = '';
 
   triggerOptions = ['Assigned to', 'Custom Field', 'Section is', 'Status is', 'Task is CREATED'];
-  actionOptions = ['Assign to', 'Change Status to', 'Move to'];
+  actionOptions = ['Assign to', 'Change Status to', 'Custom Field', 'Move to'];
   statusOptions = ['TO DO', 'IN PROGRESS', 'DONE'];
   customFields = [];
   customFieldOptions = [];
@@ -201,13 +201,31 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
     this.flowSteps[index].trigger.custom_field.value = cf;
   }
 
-  sectionActionSelected(section: string, index: number) {
-    this.flowSteps[index].action.section = section;
-    this.saveStep(this.flowSteps[index]);
+  customFieldNameActionSelected(cf: string, index: number) {
+    const custom_field = {
+      name: cf
+    }
+    this.flowSteps[index].action.custom_field = custom_field;
   }
 
-  statusActionSelected(status: string, index: number) {
-    this.flowSteps[index].action.status = status;
+  actionSelected(type: string, value: string, index: number) {
+    switch (type) {
+      case 'cf':
+        this.flowSteps[index].action.custom_field.value = value;
+        break;
+
+      case 'status':
+        this.flowSteps[index].action.status = value;
+        break;
+
+      case 'section':
+        this.flowSteps[index].action.section = value;
+        break;
+
+      default:
+        break;
+    }
+
     this.saveStep(this.flowSteps[index]);
   }
 

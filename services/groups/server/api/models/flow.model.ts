@@ -49,7 +49,7 @@ const FlowSchema = new Schema({
         action: {
             name: {
                 type: String,
-                enum: ['Assign to', 'Move to', 'Change Status to']
+                enum: ['Assign to', 'Change Status to', 'Custom Field', 'Move to']
             },
             _user: {
                 type: Schema.Types.ObjectId,
@@ -62,6 +62,16 @@ const FlowSchema = new Schema({
             status: {
                 type: String,
                 default: ''
+            },
+            custom_field: {
+                name:{
+                    type: String,
+                    default: ''
+                },
+                value:{
+                    type: String,
+                    default: ''
+                }
             }
         }
     }]

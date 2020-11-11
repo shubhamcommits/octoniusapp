@@ -184,7 +184,7 @@
               </button>
               <mat-menu #sectionActionMenu="matMenu">
                 <ng-container>
-                  <button mat-menu-item *ngFor="let section of groupSections" (click)="sectionActionSelected(section.title, index)">{{ section.title }}</button>
+                  <button mat-menu-item *ngFor="let section of groupSections" (click)="actionSelected('section', section.title, index)">{{ section.title }}</button>
                 </ng-container>
               </mat-menu>
             </div>
@@ -199,9 +199,44 @@
               </button>
               <mat-menu #statusActionMenu="matMenu">
                 <ng-container>
-                  <button mat-menu-item *ngFor="let status of statusOptions" (click)="statusActionSelected(status, index)">{{ status }}</button>
+                  <button mat-menu-item *ngFor="let status of statusOptions" (click)="actionSelected('status', status, index)">{{ status }}</button>
                 </ng-container>
               </mat-menu>
+            </div>
+
+            <div *ngIf="step.action.name === 'Custom Field'">
+              <button *ngIf="!step?.action?.custom_field?.name" mat-menu-item [matMenuTriggerFor]="customFieldNameActionMenu">
+                Select CF
+              </button>
+              <mat-menu #customFieldNameActionMenu="matMenu">
+                <ng-container>
+                  <button mat-menu-item *ngFor="let cf of customFieldOptions" (click)="customFieldNameActionSelected(cf, index)">{{ cf }}</button>
+                </ng-container>
+              </mat-menu>
+
+              <div *ngIf="step?.action?.custom_field?.name">
+                <div class="badge-section">
+                  {{ step.action.custom_field.name }}
+                </div>
+
+                <div *ngIf="!step.action.custom_field.value">
+                  <button *ngIf="!step?.action?.custom_field?.value" mat-menu-item [matMenuTriggerFor]="customFieldValueActionMenu">
+                    Select Value
+                  </button>
+                  <mat-menu #customFieldValueActionMenu="matMenu">
+                    <ng-container>
+                      <button mat-menu-item *ngFor="let cfv of getCustomFieldsValues(step?.action?.custom_field?.name)" (click)="actionSelected('cf', cfv, index)">{{ cfv }}</button>
+                    </ng-container>
+                  </mat-menu>
+                </div>
+
+                <div *ngIf="step?.action?.custom_field?.value" style="float: left;">
+                  is
+                  <div class="badge-section">
+                    {{ step.action.custom_field.value }}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
