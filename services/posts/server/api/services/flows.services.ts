@@ -26,11 +26,11 @@ export class FlowService {
         _group: groupId
     })
     .populate({
-        path: 'triger._user',
+        path: 'steps.trigger._user',
         select: 'first_name last_name profile_pic created_date'
     })
     .populate({
-        path: 'action._user',
+        path: 'steps.action._user',
         select: 'first_name last_name profile_pic created_date'
     })
     .lean();
