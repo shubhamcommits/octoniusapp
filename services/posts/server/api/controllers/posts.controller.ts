@@ -540,24 +540,18 @@ export class PostController {
                         && (step.trigger._user._id === assigneeId || step.trigger._user === assigneeId)) {
                         
                         if (step.action.name === 'Move to') {
-                            post = await this.changeTaskSection(postId, step.action.section, userId)
-                                .catch((err) => {
-                                    throw err;
-                                });
+                            post = await this.changeTaskSection(postId, step.action.section, userId);
                         }
 
                         if (step.action.name === 'Assign to') {
-                            post = await this.callTaskAssigneeService(postId, step.action._user, userId)
-                                .catch((err) => {
-                                    throw err;
-                                })
+                            post = await this.callTaskAssigneeService(postId, step.action._user, userId);
                         }
                     }
                 });
             });
         }
 
-        return post;
+        return await postService.populatePostProperties(post);
     }
 
     /**
@@ -630,7 +624,6 @@ export class PostController {
         const { params: { postId }, body: { status, userId } } = req;
 
         try {
-
             // Call Service function to change the assignee
             let post = await this.callChangeTaskStatusService(postId, status, userId)
                 .catch((err) => {
@@ -665,22 +658,18 @@ export class PostController {
                         && step.trigger.status.toUpperCase() === status.toUpperCase()) {
 
                         if (step.action.name === 'Move to') {
-                            post = await this.changeTaskSection(postId, step.action.section, userId)
-                                .catch((err) => {
-                                    throw err;
-                                });
+                            post = await this.changeTaskSection(postId, step.action.section, userId);
                         }
 
                         if (step.action.name === 'Assign to') {
-                            post = await this.callTaskAssigneeService(postId, step.action._user, userId)
-                                .catch((err) => {
-                                    throw err;
-                                })
+                            post = await this.callTaskAssigneeService(postId, step.action._user, userId);
                         }
                     }
                 });
             });
         }
+
+        return await postService.populatePostProperties(post);
     }
 
     /**
@@ -730,24 +719,18 @@ export class PostController {
                         && step.trigger.section.toUpperCase() === sectionTitle.toUpperCase()) {
                         
                         if (step.action.name === 'Move to') {
-                            post = await this.changeTaskSection(postId, step.action.section, userId)
-                                .catch((err) => {
-                                    throw err;
-                                });
+                            post = await this.changeTaskSection(postId, step.action.section, userId);
                         }
 
                         if (step.action.name === 'Assign to') {
-                            post = await this.callTaskAssigneeService(postId, step.action._user, userId)
-                                .catch((err) => {
-                                    throw err;
-                                })
+                            post = await this.callTaskAssigneeService(postId, step.action._user, userId);
                         }
                     }
                 });
             });
         }
 
-        return post;
+        return await postService.populatePostProperties(post);
     }
 
     /**
