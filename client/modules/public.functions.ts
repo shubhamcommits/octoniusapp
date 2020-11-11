@@ -15,6 +15,7 @@ import { ColumnService } from 'src/shared/services/column-service/column.service
 import { FilesService } from 'src/shared/services/files-service/files.service';
 import { GoogleCloudService } from 'modules/user/user-clouds/user-available-clouds/google-cloud/services/google-cloud.service';
 import { environment } from 'src/environments/environment';
+import { FlowService } from 'src/shared/services/flow-service/flow.service';
 
 // Google API Variable
 declare const gapi: any;
@@ -1029,5 +1030,40 @@ export class PublicFunctions {
      */
     ngOnDestroy(): void {
         this.subSink.unsubscribe();
+    }
+
+    getExecutedAutomationFlowsProperties(post: any, triggerText: string, flows, dataFlows) {
+
+      if (flows && flows.length > 0) {
+        flows.forEach(flow => {
+          const steps = flow['steps'];
+
+          if (steps && steps.length > 0) {
+            steps.forEach(async step => {
+                if ((step.trigger.name === 'Assigned to' && (step.trigger._user._id === triggerText || step.trigger._user === triggerText))
+                    || (step.trigger.name === 'Section is' && step.trigger.section.toUpperCase() === triggerText.toUpperCase())
+                    || (step.trigger.name === 'Status is' && step.trigger.status.toUpperCase() === triggerText.toUpperCase())) {
+
+                  if (step.action.name === 'Move to') {
+                    post.task._column.title = step.action.section
+                    dataFlows.moveTo = step.action.section;
+                    triggerText = step.action.section;
+                  }
+
+                  if (step.action.name === 'Assign to') {
+                    post.task.unassigned = false;
+                    post.task._assigned_to = step.action._user;
+                    dataFlows.assignTo = step.action._user;
+                    triggerText = step.action._user;
+                  }
+
+                  dataFlows = this.getExecutedAutomationFlowsProperties(post, triggerText, flows, dataFlows);
+                }
+            });
+          }
+        });
+      }
+
+      return dataFlows;
     }
 }

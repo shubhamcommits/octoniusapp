@@ -50,7 +50,7 @@ export class FlowController {
             // Find the Group based on the groupId
             const flows = await Flow.find({
                 _group: req.params.groupId
-            }).select('name').sort('name')
+            }).sort('name')
             .lean();
 
             // Check if group already exist with the same groupId

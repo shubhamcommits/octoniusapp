@@ -530,7 +530,7 @@ export class PostController {
         let post = await postService.changeTaskAssignee(postId, assigneeId, userId);
 
         // Execute Automation Flows
-        const dataFlows = await this.executeAutomationFlows(post._group._id, postId, userId, assigneeId);
+        const dataFlows = await this.executeAutomationFlows(post._group._id, postId, assigneeId, userId);
 
         post = await this.setFlowsProperties(post, dataFlows);
         
@@ -631,7 +631,7 @@ export class PostController {
             });
 
         // Execute Automation Flows
-        const dataFlows = await this.executeAutomationFlows(post._group._id, postId, userId, status);
+        const dataFlows = await this.executeAutomationFlows(post._group._id, postId, status, userId);
 
         post = await this.setFlowsProperties(post, dataFlows);
         
@@ -675,7 +675,7 @@ export class PostController {
         let post = await postService.changeTaskColumn(postId, sectionTitle, userId);
 
         // Execute Automation Flows
-        const dataFlows = await this.executeAutomationFlows(post._group._id, postId, userId, sectionTitle);
+        const dataFlows = await this.executeAutomationFlows(post._group._id, postId, sectionTitle, userId);
 
         post = await this.setFlowsProperties(post, dataFlows);
         
@@ -1121,7 +1121,7 @@ export class PostController {
         }
     }
 
-    async executeAutomationFlows(groupId: string, postId: string, userId: string, triggerText: string) {
+    async executeAutomationFlows(groupId: string, postId: string, triggerText: string, userId: string) {
         let dataFlows = {
             moveTo: '',
             assignTo: ''

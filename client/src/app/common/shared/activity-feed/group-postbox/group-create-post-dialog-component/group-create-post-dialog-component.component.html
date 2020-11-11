@@ -217,7 +217,7 @@
                 [groupId]="groupId"
                 [showAssigneeName]="true"
                 type="assignee"
-                (post)="setAssignedBy($event)">
+                (post)="onAssigned($event)">
             </app-inline-input>
 
             <p *ngIf="postData.type === 'event'" style="padding-top: 20px;">{{ eventAssignedToCount }} member(s)</p>
