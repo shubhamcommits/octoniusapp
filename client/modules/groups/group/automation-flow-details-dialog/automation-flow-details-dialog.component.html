@@ -17,18 +17,17 @@
       (blur)="flowNameChange($event)"
       class="flow-name" />
     <!-- Flow Name ends -->
-
-    <i (click)="deleteFlow()" class="material-icons muted" style="cursor: pointer;">delete</i>
+    <i (click)="deleteFlow()" class="material-icons text-danger" style="cursor: pointer">delete</i>
   </h2>
 
   <mat-dialog-content>
     <div class="flowStepsList" *ngIf="flowSteps.length <= 0">
-      <h3 class="text-center muted">There are no actions...</h3>
+      <h3 class="text-center muted">💪 Let's add some steps...</h3>
     </div>
 
     <div class="flowStepsList" *ngIf="flowSteps.length > 0">
       <div class="flowStepsBody">
-        <div class="step" *ngFor="let step of flowSteps; let index = index">
+        <div class="step row" *ngFor="let step of flowSteps; let index = index">
           <div class="col-md-1">
             <div class="index">{{ index + 1 }}</div>
           </div>
@@ -101,7 +100,7 @@
           </div>
 
           <div class="col-md-3">
-            <i class="material-icons" style="color: #005FD5">offline_bolt</i>
+            <i class="material-icons" style="color: #005FD5; line-height: 48px;">offline_bolt</i>
           </div>
 
           <!-- ACTION SECTION -->
@@ -158,8 +157,8 @@
 
           <!-- DELETE STEP -->
           <div class="values col-md-1">
-            <i class="material-icons" (click)="removeStep(step._id)"
-              style="color: red; cursor: pointer; margin-left: 20px;">highlight_off</i>
+            <i class="material-icons text-danger" (click)="removeStep(step._id)"
+              style=" cursor: pointer; margin-left: 20px;">delete</i>
           </div>
         </div>
       </div>
@@ -167,9 +166,9 @@
 
     <!-- ADD STEP -->
     <div class="newFlowStepForm" style="padding: 10px; margin-top: 30px; width: 70%;">
-      <button class="btn" style="float: left;" (click)="createStep()">
+      <button class="btn btn-link" style="margin: 10px 0;" (click)="createStep()">
         <i class="material-icons" style="color: #FFAB00">offline_bolt</i>
-         ADD ANOTHER STEP
+         ADD STEP
       </button>
     </div>
   </mat-dialog-content>

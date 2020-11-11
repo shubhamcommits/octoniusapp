@@ -10,9 +10,11 @@ $dark-sky-blue: #4a90e2;
       border:none;
       font-family: Nunito;
       font-style: normal;
-      font-weight: 600;
+      font-weight: 400;
       font-size: 24px;
       line-height: 33px;
+      vertical-align: middle;
+      padding-top: 4px;
     }
 
     .flowStepsList {
@@ -36,27 +38,30 @@ $dark-sky-blue: #4a90e2;
               text-align: left;
               width: 70%;
               display: inherit;
-              line-height: 30px;
+              line-height: 48px;
 
               .feed-avatar {
                 width: 25px !important;
                 height: 25px !important;
               }
+              button{
+                margin-left: 8px;
+              }
             }
 
             .index {
-              background-color: #E4EDF8;
-              margin: 0 1px !important;
+              margin:  0 1px !important;
               display: inline;
-              font-family: Nunito,sans-serif;
+              font-family: Nunito, sans-serif;
               font-style: normal;
               font-weight: 700!important;
               font-size: 12px;
               align-items: center;
               color: #005FD5;
-              border-radius: 10px;
-              padding: 2px 10px !important;
+              padding: 0px 15px !important;
               float: left;
+              line-height: 48px;
+              border-right: 2px solid #E4EDF8;
             }
           }
 
@@ -70,6 +75,10 @@ $dark-sky-blue: #4a90e2;
       button{
         i{
           margin-top: -4px;
+        }
+        &:hover{
+          text-decoration: none !important;
+          color: initial;
         }
       }
     }
@@ -118,6 +127,5 @@ $dark-sky-blue: #4a90e2;
 .badge-automator {
   background: #FFAB00;
   color: #fff;
-  box-shadow: 0 6px 10px #005fd521;
   margin: 5px;
 }
