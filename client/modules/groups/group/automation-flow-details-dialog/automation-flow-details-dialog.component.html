@@ -99,18 +99,18 @@
             </div>
 
             <div *ngIf="step.trigger.name === 'Custom Field'">
-              <button *ngIf="!step?.trigger?.custom_field?.name" mat-menu-item [matMenuTriggerFor]="customFieldNameMenu">
+              <button *ngIf="!step?.trigger?.custom_field?.title" mat-menu-item [matMenuTriggerFor]="customFieldTitleMenu">
                 Select CF
               </button>
-              <mat-menu #customFieldNameMenu="matMenu">
+              <mat-menu #customFieldTitleMenu="matMenu">
                 <ng-container>
-                  <button mat-menu-item *ngFor="let cf of customFieldOptions" (click)="customFieldNameTriggerSelected(cf, index)">{{ cf }}</button>
+                  <button mat-menu-item *ngFor="let cf of customFieldOptions" (click)="customFieldTitleTriggerSelected(cf, index)">{{ cf }}</button>
                 </ng-container>
               </mat-menu>
 
-              <div *ngIf="step?.trigger?.custom_field?.name">
-                <div class="badge-section">
-                  {{ step.trigger.custom_field.name }}
+              <div *ngIf="step?.trigger?.custom_field?.title" style="display: flex;">
+                <div style="margin-right: 10px;">
+                  {{ step.trigger.custom_field.title }}
                 </div>
 
                 <div *ngIf="!step.trigger.custom_field.value">
@@ -119,12 +119,12 @@
                   </button>
                   <mat-menu #customFieldValueMenu="matMenu">
                     <ng-container>
-                      <button mat-menu-item *ngFor="let cfv of getCustomFieldsValues(step?.trigger?.custom_field?.name)" (click)="customFieldValueTriggerSelected(cfv, index)">{{ cfv }}</button>
+                      <button mat-menu-item *ngFor="let cfv of getCustomFieldsValues(step?.trigger?.custom_field?.title)" (click)="customFieldValueTriggerSelected(cfv, index)">{{ cfv }}</button>
                     </ng-container>
                   </mat-menu>
                 </div>
 
-                <div *ngIf="step?.trigger?.custom_field?.value" style="float: left;">
+                <div *ngIf="step?.trigger?.custom_field?.value">
                   is
                   <div class="badge-section">
                     {{ step.trigger.custom_field.value }}
