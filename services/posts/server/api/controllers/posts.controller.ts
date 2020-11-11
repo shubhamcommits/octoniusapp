@@ -41,7 +41,7 @@ export class PostController {
 
         try {
             // Call servide function for adding the post
-            const postData = await postService.addPost(post, userId)
+            const postData = await this.callAddTaskService(post, userId)
                 .catch((err) => {
                     return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
                 })
@@ -54,6 +54,21 @@ export class PostController {
         } catch (error) {
             return sendErr(res, new Error(error), 'Internal Server Error!', 500);
         }
+    }
+
+    async callAddTaskService(post: any, userId: string) {
+        
+        // Call Service function to change the assignee
+        post = await postService.addPost(post, userId);
+
+        if (post.type === 'task') {
+            // Execute Automation Flows
+            const dataFlows = await this.executeAutomationFlows(post._group._id, post._id, '', userId);
+
+            post = await this.setFlowsProperties(post, dataFlows);
+        }
+
+        return post;
     }
 
 
@@ -771,18 +786,23 @@ export class PostController {
     }
     
     async saveCustomField(req: Request, res: Response, next: NextFunction) {
+        
+        const userId = req['userId'];
+
         // Fetch the groupId
         const { postId } = req.params;
 
         // Fetch the newCustomField from fileHandler middleware
         const customFieldValue = req.body['customFieldValue'];
         const customFieldName = req.body['customFieldName'];
+        const groupId = req.body['groupId'];
 
         try {
-            const post = await postService.changeCustomFieldValue(postId, customFieldName, customFieldValue)
+
+            const post = this.callChangeCustomFieldValueService(groupId, postId, customFieldName, customFieldValue, userId)
                 .catch((err) => {
                     return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-                })
+                });
 
             // Send status 200 response
             return res.status(200).json({
@@ -792,6 +812,17 @@ export class PostController {
         } catch (err) {
             return sendErr(res, err, 'Internal Server Error!', 500);
         }
+    }
+
+    async callChangeCustomFieldValueService(groupId: string, postId: string, cfName: string, cfValue: string, userId: string) {
+        let post = await postService.changeCustomFieldValue(postId, cfName, cfValue);
+        
+        // Execute Automation Flows
+        const dataFlows = await this.executeAutomationFlows(groupId, postId, '', userId, {name: cfName, value: cfValue});
+
+        post = await this.setFlowsProperties(post, dataFlows);
+        
+        return post;
     }
 
     async addBarToPost(req: Request, res:Response, next: NextFunction){
@@ -1121,10 +1152,15 @@ export class PostController {
         }
     }
 
-    async executeAutomationFlows(groupId: string, postId: string, triggerText: string, userId: string) {
+    async executeAutomationFlows(groupId: string, postId: string, triggerText: string, userId: string, cfTrigger?: any) {
         let dataFlows = {
             moveTo: '',
-            assignTo: ''
+            statusTo: '',
+            assignTo: '',
+            cfTo: {
+                name: '',
+                value: ''
+            }
         };
 
         const flows = await flowService.getAtomationFlows(groupId);
@@ -1134,16 +1170,33 @@ export class PostController {
                 flow['steps'].forEach(async step => {
                     if ((step.trigger.name === 'Assigned to' && (step.trigger._user._id === triggerText || step.trigger._user === triggerText))
                         || (step.trigger.name === 'Section is' && step.trigger.section.toUpperCase() === triggerText.toUpperCase())
-                        || (step.trigger.name === 'Status is' && step.trigger.status.toUpperCase() === triggerText.toUpperCase())) {
+                        || (step.trigger.name === 'Status is' && step.trigger.status.toUpperCase() === triggerText.toUpperCase())
+                        || (step.trigger.name === 'Custom Field'
+                            && step.trigger.custom_field.name.toUpperCase() === cfTrigger.name.toUpperCase()
+                            && step.trigger.custom_field.value.toUpperCase() === cfTrigger.value.toUpperCase())
+                        || (step.trigger.name === 'Task is CREATED')) {
+
+                        if (step.action.name === 'Assign to') {
+                            await this.callTaskAssigneeService(postId, step.action._user, userId);
+                            dataFlows.assignTo = step.action._user;
+                        }
                         
+                        if (step.action.name === 'Change Status to') {
+                            await this.callChangeTaskStatusService(postId, step.action.status, userId);
+                            dataFlows.statusTo = step.action.status;
+                        }
+
                         if (step.action.name === 'Move to') {
                             await this.changeTaskSection(postId, step.action.section, userId);
                             dataFlows.moveTo = step.action.section;
                         }
 
-                        if (step.action.name === 'Assign to') {
-                            await this.callTaskAssigneeService(postId, step.action._user, userId);
-                            dataFlows.assignTo = step.action._user;
+                        if (step.action.name === 'Custom Field') {
+                            await this.callChangeCustomFieldValueService(groupId, postId, step.action.custom_field.name, step.action.custom_field.value, userId)
+                            dataFlows.cfTo = {
+                                name: step.action.custom_field.name,
+                                value: step.action.custom_field.value
+                            }
                         }
                     }
                 });
@@ -1156,6 +1209,10 @@ export class PostController {
     setFlowsProperties(post: any, dataFlows: any) {
         if (dataFlows.moveTo !== '') {
             post.task._column.title = dataFlows.moveTo;
+        }
+
+        if (dataFlows.statusTo !== '') {
+            post.task.status = dataFlows.statusTo;
         }
 
         if (dataFlows.assignTo !== '') {

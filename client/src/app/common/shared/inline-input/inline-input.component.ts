@@ -177,7 +177,21 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges {
     this.domainObject.task.custom_fields[this.customFieldName] = this.customFieldValue;
 
     // Save the data
-    this.saveData();
+    // this.saveData();
+
+    this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
+      this.postService.saveCustomField(this.domainObject._id, this.customFieldName, this.customFieldValue, this.groupId)
+        .then((res) => {
+          // Emit the post to other components
+          this.post.emit(res['post']);
+
+          // Resolve with success
+          resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
+        })
+        .catch(() => {
+          reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
+        });
+    }));
   }
 
   // Start the editting process for the input element

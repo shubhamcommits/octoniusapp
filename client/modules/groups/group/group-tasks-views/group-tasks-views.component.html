@@ -4,6 +4,7 @@
             [groupData]="groupData"
             [sections]="columns"
             [isAdmin]="isAdminUser()"
+            [customFields]="customFields"
             (changeViewEmitter)='onChangeViewEmitter($event)'
             (customFieldEmitter)="onCustomFieldEmitter($event)">
         </app-board-bar>

@@ -21,7 +21,7 @@ const FlowSchema = new Schema({
         trigger: {
             name: {
                 type: String,
-                enum: ['Assigned to', 'Status is', 'Section is'],
+                enum: ['Assigned to', 'Custom Field', 'Section is', 'Status is', 'Task is CREATED']
             },
             _user: {
                 type: Schema.Types.ObjectId,
@@ -34,12 +34,22 @@ const FlowSchema = new Schema({
             status: {
                 type: String,
                 default: ''
+            },
+            custom_field: {
+                name:{
+                    type: String,
+                    default: ''
+                },
+                value:{
+                    type: String,
+                    default: ''
+                }
             }
         },
         action: {
             name: {
                 type: String,
-                enum: ['Move to', 'Assign to'],
+                enum: ['Assign to', 'Change Status to', 'Custom Field', 'Move to']
             },
             _user: {
                 type: Schema.Types.ObjectId,
@@ -48,6 +58,20 @@ const FlowSchema = new Schema({
             section: {
                 type: String,
                 default: ''
+            },
+            status: {
+                type: String,
+                default: ''
+            },
+            custom_field: {
+                name:{
+                    type: String,
+                    default: ''
+                },
+                value:{
+                    type: String,
+                    default: ''
+                }
             }
         }
     }]

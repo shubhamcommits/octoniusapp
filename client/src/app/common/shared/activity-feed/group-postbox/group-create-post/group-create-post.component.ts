@@ -232,6 +232,7 @@ export class GroupCreatePostComponent implements OnInit {
 
     let dataFlows = {
       moveTo: '',
+      statusTo: '',
       assignTo: ''
     };
 
@@ -247,6 +248,7 @@ export class GroupCreatePostComponent implements OnInit {
 
     let dataFlows = {
       moveTo: '',
+      statusTo: '',
       assignTo: ''
     };
 
@@ -270,6 +272,7 @@ export class GroupCreatePostComponent implements OnInit {
     if (this.type === 'task') {
       let dataFlows = {
         moveTo: '',
+        statusTo: '',
         assignTo: ''
       };
 
@@ -415,10 +418,19 @@ export class GroupCreatePostComponent implements OnInit {
   onCreatePost(postData: FormData) {
     this.utilityService.asyncNotification('Please wait we are creating the post...', new Promise((resolve, reject) => {
       this.postService.create(postData)
-        .then((res) => {
+        .then(async (res) => {
 
           // Emit the Post to the other compoentns
           this.post.emit(res['post'])
+
+          let dataFlows = {
+            moveTo: '',
+            statusTo: '',
+            assignTo: ''
+          };
+
+          dataFlows = await this.publicFunctions.getExecutedAutomationFlowsProperties(this.postData, '', this.flows, dataFlows);
+          await this.setFlowsProperties(this.postData, dataFlows);
 
           // Resolve with success
           resolve(this.utilityService.resolveAsyncPromise('Post Created!'))
@@ -560,6 +572,10 @@ export class GroupCreatePostComponent implements OnInit {
 
     if (dataFlows.moveTo) {
       post.task._column.title = dataFlows.moveTo;
+    }
+
+    if (dataFlows.statusTo) {
+      post.task.status = dataFlows.statusTo;
     }
 
     if (dataFlows.assignTo) {

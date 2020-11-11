@@ -16,6 +16,7 @@ export class AutomationFlowsDialogComponent implements OnInit {
   groupId;
   groupSections = [];
   workspaceId;
+  customFields = [];
 
   constructor(
     public utilityService: UtilityService,
@@ -28,6 +29,7 @@ export class AutomationFlowsDialogComponent implements OnInit {
     this.groupId = this.data.groupId;
     this.groupSections = this.data.groupSections;
     this.workspaceId = this.data.workspaceId;
+    this.customFields = this.data.customFields;
 
     await this.flowService.getGroupAutomationFlows(this.groupId).then((res) => {
       res['flows'].forEach(flow => {
@@ -58,7 +60,8 @@ export class AutomationFlowsDialogComponent implements OnInit {
         groupId: this.groupId,
         flowId: flowId,
         groupSections: this.groupSections,
-        workspaceId: this.workspaceId
+        workspaceId: this.workspaceId,
+        customFields: this.customFields
       }
     });
     const subFlowNameChangeEmitter = dialogRef.componentInstance.flowNameChangeEmitter.subscribe((data) => {

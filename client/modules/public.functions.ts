@@ -1032,7 +1032,9 @@ export class PublicFunctions {
         this.subSink.unsubscribe();
     }
 
-    getExecutedAutomationFlowsProperties(post: any, triggerText: string, flows, dataFlows) {
+    //executeAutomationFlows(groupId: string, postId: string, triggerText: string, userId: string, cfTrigger?: any)
+    getExecutedAutomationFlowsProperties(post: any, triggerText: string, flows, dataFlows, cfTrigger?: any) {
+
 
       if (flows && flows.length > 0) {
         flows.forEach(flow => {
@@ -1041,13 +1043,23 @@ export class PublicFunctions {
           if (steps && steps.length > 0) {
             steps.forEach(async step => {
                 if ((step.trigger.name === 'Assigned to' && (step.trigger._user._id === triggerText || step.trigger._user === triggerText))
-                    || (step.trigger.name === 'Section is' && step.trigger.section.toUpperCase() === triggerText.toUpperCase())
-                    || (step.trigger.name === 'Status is' && step.trigger.status.toUpperCase() === triggerText.toUpperCase())) {
+                || (step.trigger.name === 'Section is' && step.trigger.section.toUpperCase() === triggerText.toUpperCase())
+                || (step.trigger.name === 'Status is' && step.trigger.status.toUpperCase() === triggerText.toUpperCase())
+                || (step.trigger.name === 'Custom Field'
+                    && step.trigger.custom_field.name.toUpperCase() === cfTrigger.name.toUpperCase()
+                    && step.trigger.custom_field.value.toUpperCase() === cfTrigger.value.toUpperCase())
+                || (step.trigger.name === 'Task is CREATED')) {
 
                   if (step.action.name === 'Move to') {
                     post.task._column.title = step.action.section
                     dataFlows.moveTo = step.action.section;
                     triggerText = step.action.section;
+                  }
+
+                  if (step.action.name === 'Change Status to') {
+                    post.task.status = step.action.status
+                    dataFlows.statusTo = step.action.status;
+                    triggerText = step.action.status;
                   }
 
                   if (step.action.name === 'Assign to') {
@@ -1057,7 +1069,7 @@ export class PublicFunctions {
                     triggerText = step.action._user;
                   }
 
-                  dataFlows = this.getExecutedAutomationFlowsProperties(post, triggerText, flows, dataFlows);
+                  dataFlows = this.getExecutedAutomationFlowsProperties(post, triggerText, flows, dataFlows, cfTrigger);
                 }
             });
           }

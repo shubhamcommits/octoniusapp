@@ -21,11 +21,11 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
 
   flowName = '';
 
-  triggerOptions = ['Assigned to', 'Status is', 'Section is'];
-  actionOptions = ['Move to', 'Assign to'];
-
+  triggerOptions = ['Assigned to', 'Custom Field', 'Section is', 'Status is', 'Task is CREATED'];
+  actionOptions = ['Assign to', 'Change Status to', 'Custom Field', 'Move to'];
   statusOptions = ['TO DO', 'IN PROGRESS', 'DONE'];
-
+  customFields = [];
+  customFieldOptions = [];
   baseUrl = environment.UTILITIES_USERS_UPLOADS;
 
   userData: any;
@@ -48,6 +48,11 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
     this.flowId = this.data.flowId;
     this.groupSections = this.data.groupSections;
     this.workspaceId = this.data.workspaceId;
+    this.customFields = this.data.customFields;
+
+    this.customFields.forEach(cf => {
+      this.customFieldOptions.push(cf.name);
+    });
 
     // GETTING USER DATA FROM THE SHARED SERVICE
     this.subSink.add(
@@ -71,15 +76,13 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
     this.subSink.unsubscribe();
   }
 
-  onCloseDialog() {
+  onCloseDialog() {}
 
+  getCustomFieldsValues(customFieldName) {
+    const index = this.customFields.findIndex(cf => cf.name === customFieldName);
+    return (index >= 0) ? this.customFields[index].values : [];
   }
 
-  /**
-   * This function is mapped with the event change of @variable - title
-   * Show update detail option if title has been changed
-   * @param event - new flow name value
-   */
   flowNameChange(event: any) {
     const newFlowName = event.target.value;
     if (newFlowName !== this.flowName) {
@@ -187,8 +190,42 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
     this.flowSteps[index].trigger.section = section;
   }
 
-  sectionActionSelected(section: string, index: number) {
-    this.flowSteps[index].action.section = section;
+  customFieldNameTriggerSelected(cf: string, index: number) {
+    const custom_field = {
+      name: cf
+    }
+    this.flowSteps[index].trigger.custom_field = custom_field;
+  }
+
+  customFieldValueTriggerSelected(cf: string, index: number) {
+    this.flowSteps[index].trigger.custom_field.value = cf;
+  }
+
+  customFieldNameActionSelected(cf: string, index: number) {
+    const custom_field = {
+      name: cf
+    }
+    this.flowSteps[index].action.custom_field = custom_field;
+  }
+
+  actionSelected(type: string, value: string, index: number) {
+    switch (type) {
+      case 'cf':
+        this.flowSteps[index].action.custom_field.value = value;
+        break;
+
+      case 'status':
+        this.flowSteps[index].action.status = value;
+        break;
+
+      case 'section':
+        this.flowSteps[index].action.section = value;
+        break;
+
+      default:
+        break;
+    }
+
     this.saveStep(this.flowSteps[index]);
   }
 

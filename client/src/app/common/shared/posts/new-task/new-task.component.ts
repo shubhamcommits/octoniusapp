@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, Injector, EventEmitter, Output } from '@angular/core';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PostService } from 'src/shared/services/post-service/post.service';
+import { PublicFunctions } from 'modules/public.functions';
+import { FlowService } from 'src/shared/services/flow-service/flow.service';
 
 @Component({
   selector: 'app-new-task',
@@ -10,6 +12,7 @@ import { PostService } from 'src/shared/services/post-service/post.service';
 export class NewTaskComponent implements OnInit {
 
   constructor(
+    private flowService: FlowService,
     public injector: Injector
   ) { }
 
@@ -33,10 +36,19 @@ export class NewTaskComponent implements OnInit {
 
   addSubTask = false;
 
+  // Public Functions class object
+  publicFunctions = new PublicFunctions(this.injector)
+
+  flows = [];
+
   ngOnInit() {
     if (this.subtask) {
       this.column = null;
     }
+
+    this.flowService.getGroupAutomationFlows(this.groupData._id).then(res => {
+      this.flows = res['flows'];
+    });
   }
 
   /**
@@ -144,10 +156,21 @@ export class NewTaskComponent implements OnInit {
     // Asynchronously call the utility service
     utilityService.asyncNotification('Please wait we are creating the post...', new Promise((resolve, reject) => {
       postService.create(postData)
-        .then((res) => {
+        .then(async (res) => {
 
           // Emit the Post to the other compoentns
           post.emit(res['post'])
+
+          if (res['post'].type === 'task') {
+            let dataFlows = {
+              moveTo: '',
+              statusTo: '',
+              assignTo: ''
+            };
+
+            dataFlows = await this.publicFunctions.getExecutedAutomationFlowsProperties(res['post'], '', this.flows, dataFlows);
+            await this.setFlowsProperties(res['post'], dataFlows);
+          }
 
           // Resolve with success
           resolve(utilityService.resolveAsyncPromise('Task Created!'))
@@ -158,6 +181,31 @@ export class NewTaskComponent implements OnInit {
           reject(utilityService.rejectAsyncPromise('Unable to create new task, please try again!'))
         })
     }))
+  }
+
+  async setFlowsProperties(post: any, dataFlows: any) {
+
+    if (dataFlows.moveTo) {
+      post.task._column.title = dataFlows.moveTo;
+    }
+
+    if (dataFlows.statusTo) {
+      post.task.status = dataFlows.statusTo;
+    }
+
+    if (dataFlows.assignTo) {
+        post.task.unassigned = false;
+        post.task._assigned_to = await this.publicFunctions.getOtherUser(dataFlows.assignTo);
+        /*
+        this.lastAssignedBy = {
+          first_name: 'Automation',
+          last_name: 'Flow',
+          profile_pic: ''
+        }
+        */
+    }
+
+    return post;
   }
 
 }
