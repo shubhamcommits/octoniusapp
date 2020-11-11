@@ -530,9 +530,11 @@ export class PostController {
         let post = await postService.changeTaskAssignee(postId, assigneeId, userId);
 
         // Execute Automation Flows
-        post = await this.executeAutomationFlows(post._group._id, postId, userId, assigneeId);
+        const dataFlows = await this.executeAutomationFlows(post._group._id, postId, userId, assigneeId);
 
-        return await postService.populatePostProperties(post);
+        post = await this.setFlowsProperties(post, dataFlows);
+        
+        return post;
     }
 
     /**
@@ -629,9 +631,11 @@ export class PostController {
             });
 
         // Execute Automation Flows
-        post = await this.executeAutomationFlows(post._group._id, postId, userId, status)
+        const dataFlows = await this.executeAutomationFlows(post._group._id, postId, userId, status);
+
+        post = await this.setFlowsProperties(post, dataFlows);
         
-        return await postService.populatePostProperties(post);
+        return post;
     }
 
     /**
@@ -671,9 +675,11 @@ export class PostController {
         let post = await postService.changeTaskColumn(postId, sectionTitle, userId);
 
         // Execute Automation Flows
-        post = await this.executeAutomationFlows(post._group._id, postId, userId, sectionTitle);
+        const dataFlows = await this.executeAutomationFlows(post._group._id, postId, userId, sectionTitle);
 
-        return await postService.populatePostProperties(post);
+        post = await this.setFlowsProperties(post, dataFlows);
+        
+        return post;
     }
 
     /**
@@ -1116,54 +1122,47 @@ export class PostController {
     }
 
     async executeAutomationFlows(groupId: string, postId: string, userId: string, triggerText: string) {
-        let post;
+        let dataFlows = {
+            moveTo: '',
+            assignTo: ''
+        };
 
         const flows = await flowService.getAtomationFlows(groupId);
         if (flows && flows.length > 0) {
             await flows.forEach(flow => {
-                const steps = flow['steps'];
 
-                steps.forEach(async step => {
-                    if (step.trigger.name === 'Assigned to'
-                        && (step.trigger._user._id === triggerText || step.trigger._user === triggerText)) {
+                flow['steps'].forEach(async step => {
+                    if ((step.trigger.name === 'Assigned to' && (step.trigger._user._id === triggerText || step.trigger._user === triggerText))
+                        || (step.trigger.name === 'Section is' && step.trigger.section.toUpperCase() === triggerText.toUpperCase())
+                        || (step.trigger.name === 'Status is' && step.trigger.status.toUpperCase() === triggerText.toUpperCase())) {
                         
                         if (step.action.name === 'Move to') {
-                            post = await this.changeTaskSection(postId, step.action.section, userId);
+                            await this.changeTaskSection(postId, step.action.section, userId);
+                            dataFlows.moveTo = step.action.section;
                         }
 
                         if (step.action.name === 'Assign to') {
-                            post = await this.callTaskAssigneeService(postId, step.action._user, userId);
-                        }
-                    }
-
-                    if (step.trigger.name === 'Section is'
-                        && step.trigger.section.toUpperCase() === triggerText.toUpperCase()) {
-                        
-                        if (step.action.name === 'Move to') {
-                            post = await this.changeTaskSection(postId, step.action.section, userId);
-                        }
-
-                        if (step.action.name === 'Assign to') {
-                            post = await this.callTaskAssigneeService(postId, step.action._user, userId);
-                        }
-                    }
-
-                    if (step.trigger.name === 'Status is'
-                        && step.trigger.status.toUpperCase() === triggerText.toUpperCase()) {
-
-                        if (step.action.name === 'Move to') {
-                            post = await this.changeTaskSection(postId, step.action.section, userId);
-                        }
-
-                        if (step.action.name === 'Assign to') {
-                            post = await this.callTaskAssigneeService(postId, step.action._user, userId);
+                            await this.callTaskAssigneeService(postId, step.action._user, userId);
+                            dataFlows.assignTo = step.action._user;
                         }
                     }
                 });
             });
         }
 
-        return post;
+        return dataFlows;
     }
 
+    setFlowsProperties(post: any, dataFlows: any) {
+        if (dataFlows.moveTo !== '') {
+            post.task._column.title = dataFlows.moveTo;
+        }
+
+        if (dataFlows.assignTo !== '') {
+            post.task.unassigned = false;
+            post.task._assigned_to = dataFlows.assignTo;
+        }
+
+        return post;
+    }
 }
