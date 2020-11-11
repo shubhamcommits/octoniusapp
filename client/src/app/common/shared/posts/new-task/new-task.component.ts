@@ -165,7 +165,11 @@ export class NewTaskComponent implements OnInit {
             let dataFlows = {
               moveTo: '',
               statusTo: '',
-              assignTo: ''
+              assignTo: '',
+              cfTo: {
+                  name: '',
+                  value: ''
+              }
             };
 
             dataFlows = await this.publicFunctions.getExecutedAutomationFlowsProperties(res['post'], '', this.flows, dataFlows);
@@ -203,6 +207,10 @@ export class NewTaskComponent implements OnInit {
           profile_pic: ''
         }
         */
+    }
+
+    if (dataFlows.cfTo.name !== '' && dataFlows.cfTo.value !== '') {
+        post.task.custom_fields[dataFlows.cfTo.name] = dataFlows.cfTo.value;
     }
 
     return post;
