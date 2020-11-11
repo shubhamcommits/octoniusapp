@@ -36,7 +36,7 @@ routes.post('/auths/sign-out', auths.signOut);
 // -| MAIN |-
 
 // This route is used to add a post
-routes.post('/', postFileHandler, postController.add);
+routes.post('/', postFileHandler, postController.add.bind(postController));
 
 /**
  * GET - This route fetches the list of posts present in a group
