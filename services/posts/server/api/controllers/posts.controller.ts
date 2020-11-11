@@ -530,26 +530,7 @@ export class PostController {
         let post = await postService.changeTaskAssignee(postId, assigneeId, userId);
 
         // Execute Automation Flows
-        const flows = await flowService.getAtomationFlows(post._group._id);
-        if (flows && flows.length > 0) {
-            flows.forEach(flow => {
-                const steps = flow['steps'];
-
-                steps.forEach(async step => {
-                    if (step.trigger.name === 'Assigned to'
-                        && (step.trigger._user._id === assigneeId || step.trigger._user === assigneeId)) {
-                        
-                        if (step.action.name === 'Move to') {
-                            post = await this.changeTaskSection(postId, step.action.section, userId);
-                        }
-
-                        if (step.action.name === 'Assign to') {
-                            post = await this.callTaskAssigneeService(postId, step.action._user, userId);
-                        }
-                    }
-                });
-            });
-        }
+        post = await this.executeAutomationFlows(post._group._id, postId, userId, assigneeId);
 
         return await postService.populatePostProperties(post);
     }
@@ -648,27 +629,8 @@ export class PostController {
             });
 
         // Execute Automation Flows
-        const flows = await flowService.getAtomationFlows(post._group._id);
-        if (flows && flows.length > 0) {
-            flows.forEach(flow => {
-                const steps = flow['steps'];
-
-                steps.forEach(async step => {
-                    if (step.trigger.name === 'Status is'
-                        && step.trigger.status.toUpperCase() === status.toUpperCase()) {
-
-                        if (step.action.name === 'Move to') {
-                            post = await this.changeTaskSection(postId, step.action.section, userId);
-                        }
-
-                        if (step.action.name === 'Assign to') {
-                            post = await this.callTaskAssigneeService(postId, step.action._user, userId);
-                        }
-                    }
-                });
-            });
-        }
-
+        post = await this.executeAutomationFlows(post._group._id, postId, userId, status)
+        
         return await postService.populatePostProperties(post);
     }
 
@@ -709,26 +671,7 @@ export class PostController {
         let post = await postService.changeTaskColumn(postId, sectionTitle, userId);
 
         // Execute Automation Flows
-        const flows = await flowService.getAtomationFlows(post._group._id);
-        if (flows && flows.length > 0) {
-            flows.forEach(flow => {
-                const steps = flow['steps'];
-
-                steps.forEach(async step => {
-                    if (step.trigger.name === 'Section is'
-                        && step.trigger.section.toUpperCase() === sectionTitle.toUpperCase()) {
-                        
-                        if (step.action.name === 'Move to') {
-                            post = await this.changeTaskSection(postId, step.action.section, userId);
-                        }
-
-                        if (step.action.name === 'Assign to') {
-                            post = await this.callTaskAssigneeService(postId, step.action._user, userId);
-                        }
-                    }
-                });
-            });
-        }
+        post = await this.executeAutomationFlows(post._group._id, postId, userId, sectionTitle);
 
         return await postService.populatePostProperties(post);
     }
@@ -1171,4 +1114,56 @@ export class PostController {
             return sendErr(res, new Error(error), 'Internal Server Error!', 500);
         }
     }
+
+    async executeAutomationFlows(groupId: string, postId: string, userId: string, triggerText: string) {
+        let post;
+
+        const flows = await flowService.getAtomationFlows(groupId);
+        if (flows && flows.length > 0) {
+            await flows.forEach(flow => {
+                const steps = flow['steps'];
+
+                steps.forEach(async step => {
+                    if (step.trigger.name === 'Assigned to'
+                        && (step.trigger._user._id === triggerText || step.trigger._user === triggerText)) {
+                        
+                        if (step.action.name === 'Move to') {
+                            post = await this.changeTaskSection(postId, step.action.section, userId);
+                        }
+
+                        if (step.action.name === 'Assign to') {
+                            post = await this.callTaskAssigneeService(postId, step.action._user, userId);
+                        }
+                    }
+
+                    if (step.trigger.name === 'Section is'
+                        && step.trigger.section.toUpperCase() === triggerText.toUpperCase()) {
+                        
+                        if (step.action.name === 'Move to') {
+                            post = await this.changeTaskSection(postId, step.action.section, userId);
+                        }
+
+                        if (step.action.name === 'Assign to') {
+                            post = await this.callTaskAssigneeService(postId, step.action._user, userId);
+                        }
+                    }
+
+                    if (step.trigger.name === 'Status is'
+                        && step.trigger.status.toUpperCase() === triggerText.toUpperCase()) {
+
+                        if (step.action.name === 'Move to') {
+                            post = await this.changeTaskSection(postId, step.action.section, userId);
+                        }
+
+                        if (step.action.name === 'Assign to') {
+                            post = await this.callTaskAssigneeService(postId, step.action._user, userId);
+                        }
+                    }
+                });
+            });
+        }
+
+        return post;
+    }
+
 }
