@@ -1,5 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, Injector } from '@angular/core';
+import { PublicFunctions } from 'modules/public.functions';
 import { environment } from 'src/environments/environment';
+import { FlowService } from 'src/shared/services/flow-service/flow.service';
 
 @Component({
   selector: 'app-post-view',
@@ -8,7 +10,9 @@ import { environment } from 'src/environments/environment';
 })
 export class PostViewComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private injector: Injector,
+    private flowService: FlowService) { }
 
   // Base Url for uploads
   baseUrl = environment.UTILITIES_USERS_UPLOADS;
@@ -36,7 +40,15 @@ export class PostViewComponent implements OnInit {
   // Fullscreen modal closed
   @Output() closeModalEvent = new EventEmitter();
 
+  // Public Functions class object
+  publicFunctions = new PublicFunctions(this.injector);
+
+  flows = [];
+
   ngOnInit() {
+    this.flowService.getGroupAutomationFlows((this.post._group._id || this.post._group)).then(res => {
+      this.flows = res['flows'];
+    });
   }
 
   /**
@@ -65,10 +77,26 @@ export class PostViewComponent implements OnInit {
    * This Function is responsible for changing the status on the UI
    * @param status
    */
-  changeTaskStatus(status: any){
+  async changeTaskStatus(status: any){
 
     // Update the UI for the task status change
     this.post.task.status = status;
+
+    let dataFlows = {
+      moveTo: '',
+      assignTo: ''
+    };
+
+    dataFlows = await this.publicFunctions.getExecutedAutomationFlowsProperties(this.post, status, this.flows, dataFlows);
+
+    if (dataFlows.moveTo) {
+      this.post.task._column.title = dataFlows.moveTo;
+    }
+
+    if (dataFlows.assignTo) {
+      this.post.task.unassigned = false;
+      this.post.task._assigned_to = await this.publicFunctions.getOtherUser(dataFlows.assignTo);
+    }
 
     // Emit the taskStatus to other components
     this.taskStatus.emit(status);

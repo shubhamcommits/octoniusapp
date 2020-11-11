@@ -1,0 +1,231 @@
+import { Component, OnInit, Inject, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { FlowService } from 'src/shared/services/flow-service/flow.service';
+import { environment } from 'src/environments/environment';
+import { SubSink } from 'subsink';
+
+@Component({
+  selector: 'app-automation-flow-details-dialog',
+  templateUrl: './automation-flow-details-dialog.component.html',
+  styleUrls: ['./automation-flow-details-dialog.component.scss']
+})
+export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
+
+  flowSteps = [];
+
+  groupId;
+  flowId;
+  groupSections = [];
+  workspaceId;
+
+  flowName = '';
+
+  triggerOptions = ['Assigned to', 'Status is', 'Section is'];
+  actionOptions = ['Move to', 'Assign to'];
+
+  statusOptions = ['TO DO', 'IN PROGRESS', 'DONE'];
+
+  baseUrl = environment.UTILITIES_USERS_UPLOADS;
+
+  userData: any;
+
+  // UNSUBSCRIBE THE DATA
+  private subSink = new SubSink();
+
+  @Output() flowNameChangeEmitter = new EventEmitter();
+  @Output() deleteFlowEvent = new EventEmitter();
+
+  constructor(
+    public utilityService: UtilityService,
+    private flowService: FlowService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private mdDialogRef: MatDialogRef<AutomationFlowDetailsDialogComponent>
+  ) { }
+
+  async ngOnInit() {
+    this.groupId = this.data.groupId;
+    this.flowId = this.data.flowId;
+    this.groupSections = this.data.groupSections;
+    this.workspaceId = this.data.workspaceId;
+
+    // GETTING USER DATA FROM THE SHARED SERVICE
+    this.subSink.add(
+      this.utilityService.currentUserData
+        .subscribe(res => this.userData = res)
+    );
+
+    await this.flowService.getFlow(this.flowId).then((res) => {
+      const flow = res['flow'];
+      if (flow) {
+        this.initFlowsSteps(flow.steps);
+        this.flowName = flow.name;
+      }
+    });
+  }
+
+  /**
+   * This functions unsubscribes all the observables subscription to avoid memory leak
+   */
+  ngOnDestroy(): void {
+    this.subSink.unsubscribe();
+  }
+
+  onCloseDialog() {
+
+  }
+
+  /**
+   * This function is mapped with the event change of @variable - title
+   * Show update detail option if title has been changed
+   * @param event - new flow name value
+   */
+  flowNameChange(event: any) {
+    const newFlowName = event.target.value;
+    if (newFlowName !== this.flowName) {
+      this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise(async (resolve, reject) => {
+        await this.flowService.updateFlowName(this.flowId, newFlowName).then((res) => {
+          this.flowName = newFlowName;
+
+          this.flowNameChangeEmitter.emit({ flowId: this.flowId, flowName: this.flowName });
+
+          resolve(this.utilityService.resolveAsyncPromise('Flow Name updated!'));
+        }).catch(err => {
+          reject(this.utilityService.rejectAsyncPromise(`Unable to update the Flow Name, please try again!`));
+        });
+      }));
+    }
+  }
+
+  createStep() {
+    this.flowSteps.push({});
+  }
+
+  initFlowsSteps(steps: any) {
+    this.flowSteps = [];
+    if (steps) {
+      steps.forEach(step => {
+        this.flowSteps.push(step);
+      });
+      this.flowSteps.sort((s1, s2) => (s1.created_date > s2.created_date) ? 1 : -1);
+    }
+  }
+
+  getStatusClass(status: string) {
+    let retClass = '';
+    if (status === 'TO DO') {
+      retClass = 'status-todo';
+    } else if (status === 'IN PROGRESS') {
+      retClass = 'status-inprogress';
+    } else if (status === 'DONE') {
+      retClass = 'status-done';
+    }
+    return retClass + ' badge-status' ;
+  }
+
+  /**
+   * Call function to delete a step from the flow
+   * @param stepId
+   */
+  removeStep(stepId) {
+    if (!stepId) {
+      this.flowSteps.splice((this.flowSteps.length - 1), 1);
+    } else {
+      this.utilityService.getConfirmDialogAlert()
+        .then((result) => {
+          if (result.value) {
+            // Remove the file
+            this.utilityService.asyncNotification('Please wait we are deleting the flow step...', new Promise((resolve, reject) => {
+              const index = this.flowSteps.findIndex((s: any) => s._id === stepId);
+              if (index !== -1) {
+                // Remove the step
+                this.flowService.removeFlowStep(stepId, this.flowId)
+                  .then((res) => {
+                    // Remove the field from the list
+                    this.flowSteps.splice(index, 1);
+
+                    resolve(this.utilityService.resolveAsyncPromise('Step deleted!'));
+                  }).catch((err) => {
+                    reject(this.utilityService.rejectAsyncPromise('Unable to delete step, please try again!'));
+                  });
+              }
+            }));
+          }
+        });
+    }
+  }
+
+  getMemberDetails(memberMap: any, type: string, index: number) {
+    if (type === 'trigger') {
+      for (const member of memberMap.values()) {
+        this.flowSteps[index].trigger._user = member;
+      }
+    }
+
+    if (type === 'action') {
+      for (const member of memberMap.values()) {
+        this.flowSteps[index].action._user = member;
+      }
+      this.saveStep(this.flowSteps[index]);
+    }
+
+  }
+
+  selectTrigger(trigger: string, index: number) {
+    this.flowSteps[index].trigger = { name: trigger };
+  }
+
+  selectAction(action: string, index: number) {
+    this.flowSteps[index].action = { name: action };
+  }
+
+  statusTriggerSelected(status: string, index: number) {
+    this.flowSteps[index].trigger.status = status;
+  }
+
+  sectionTriggerSelected(section: string, index: number) {
+    this.flowSteps[index].trigger.section = section;
+  }
+
+  sectionActionSelected(section: string, index: number) {
+    this.flowSteps[index].action.section = section;
+    this.saveStep(this.flowSteps[index]);
+  }
+
+  saveStep(step: any) {
+    this.utilityService.asyncNotification('Please wait we are updating the step...', new Promise(async (resolve, reject) => {
+      await this.flowService.saveStep(this.flowId, step).then((res) => {
+        this.initFlowsSteps(res['flow']['steps']);
+
+        resolve(this.utilityService.resolveAsyncPromise('Step saved!'));
+      }).catch(err => {
+        reject(this.utilityService.rejectAsyncPromise(`Unable to savee the step, please try again!`));
+      });
+    }));
+  }
+
+  /**
+   * Call function to delete flow
+   */
+  deleteFlow() {
+    this.utilityService.getConfirmDialogAlert()
+      .then((result) => {
+        if (result.value) {
+          // Remove the file
+          this.utilityService.asyncNotification('Please wait we are deleting the flow...', new Promise((resolve, reject) => {
+            this.flowService.deleteFlow(this.flowId)
+              .then((res) => {
+                // Emit the Deleted post to all the compoents in order to update the UI
+                this.deleteFlowEvent.emit(this.flowId);
+                // Close the modal
+                this.mdDialogRef.close();
+
+                resolve(this.utilityService.resolveAsyncPromise('Flow deleted!'));
+              }).catch((err) => {
+                reject(this.utilityService.rejectAsyncPromise('Unable to delete flow, please try again!'));
+              });
+          }));
+        }
+      });
+  }
+}

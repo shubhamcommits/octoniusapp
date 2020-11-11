@@ -81,6 +81,9 @@ import { PostService } from 'src/shared/services/post-service/post.service';
 import { CommentService } from 'src/shared/services/comment-service/comment.service';
 import { GroupDashboardComponent } from './group/group-dashboard/group-dashboard.component';
 import { TasksTableComponent } from './group/group-tasks-list-view/tasks-table/tasks-table.component';
+import { AutomationFlowsDialogComponent } from './group/automation-flows-dialog/automation-flows-dialog.component';
+import { AutomationFlowDetailsDialogComponent } from './group/automation-flow-details-dialog/automation-flow-details-dialog.component';
+import { FlowService } from 'src/shared/services/flow-service/flow.service';
 
 /**
  * 4. !===== DECLARATIONS, IMPORTS, EXPORTS, & PROVIDERS =====!
@@ -172,6 +175,9 @@ import { TasksTableComponent } from './group/group-tasks-list-view/tasks-table/t
 
     TasksTableComponent,
 
+    AutomationFlowsDialogComponent,
+    AutomationFlowDetailsDialogComponent,
+
     GanttViewComponent
   ],
   imports: [
@@ -198,13 +204,16 @@ import { TasksTableComponent } from './group/group-tasks-list-view/tasks-table/t
     GroupsService,
     GroupService,
     PostService,
-    CommentService
+    CommentService,
+    FlowService
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
   ],
   entryComponents: [
     CustomFieldsDialogComponent,
+    AutomationFlowsDialogComponent,
+    AutomationFlowDetailsDialogComponent,
     GroupBarComponent
   ]
 })

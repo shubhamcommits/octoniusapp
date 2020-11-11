@@ -4,6 +4,7 @@ import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
+import { FlowService } from 'src/shared/services/flow-service/flow.service';
 
 @Component({
   selector: 'app-group-create-post',
@@ -15,6 +16,7 @@ export class GroupCreatePostComponent implements OnInit {
   constructor(
     private postService: PostService,
     private utilityService: UtilityService,
+    private flowService: FlowService,
     private injector: Injector
   ) { }
 
@@ -123,6 +125,8 @@ export class GroupCreatePostComponent implements OnInit {
 
   groupData: any;
 
+  flows = [];
+
   async ngOnInit() {
 
     this.groupData = await this.publicFunctions.getGroupDetails(this.groupId);
@@ -168,6 +172,10 @@ export class GroupCreatePostComponent implements OnInit {
       this.tags = this.postData.tags;
 
     }
+
+    this.flowService.getGroupAutomationFlows(this.groupId).then(res => {
+      this.flows = res['flows'];
+    });
   }
 
   /**
@@ -217,23 +225,38 @@ export class GroupCreatePostComponent implements OnInit {
     }
   }
 
-  moveTaskToColumn($event) {
-    this.moveTask.emit($event)
+
+  async changeTaskStatus(event) {
+    // Set the status
+    this.postData.task.status = event;
+
+    let dataFlows = {
+      moveTo: '',
+      assignTo: ''
+    };
+
+    dataFlows = await this.publicFunctions.getExecutedAutomationFlowsProperties(this.postData, event, this.flows, dataFlows);
+    await this.setFlowsProperties(this.postData, dataFlows);
+
+    this.taskStatus.emit(event);
   }
 
-  changeTaskStatus($event) {
-    this.taskStatus.emit($event)
+  async moveTaskToColumn(event) {
+    await this.publicFunctions.changeTaskColumn(this.postData._id, event.post.task._column.title, this.userData._id);
+    this.postData.task._column.title = event.post.task._column.title;
+
+    let dataFlows = {
+      moveTo: '',
+      assignTo: ''
+    };
+
+    dataFlows = await this.publicFunctions.getExecutedAutomationFlowsProperties(this.postData, event.post.task._column.title, this.flows, dataFlows);
+    await this.setFlowsProperties(this.postData, dataFlows);
+
+    this.moveTask.emit(event);
   }
 
-  closeModal() {
-    this.close.emit()
-  }
-
-  postModalCloseEvent() {
-    this.closeModal();
-  }
-
-  getMemberDetails(memberMap: any) {
+  async getMemberDetails(memberMap: any) {
 
     this.member.emit(memberMap)
 
@@ -244,6 +267,23 @@ export class GroupCreatePostComponent implements OnInit {
       this.showUpdateDetails = true;
     }
 
+    if (this.type === 'task') {
+      let dataFlows = {
+        moveTo: '',
+        assignTo: ''
+      };
+
+      dataFlows = await this.publicFunctions.getExecutedAutomationFlowsProperties(this.postData, this.postData.task._assigned_to, this.flows, dataFlows);
+      await this.setFlowsProperties(this.postData, dataFlows);
+    }
+  }
+
+  closeModal() {
+    this.close.emit()
+  }
+
+  postModalCloseEvent() {
+    this.closeModal();
   }
 
   /**
@@ -514,5 +554,26 @@ export class GroupCreatePostComponent implements OnInit {
           reject(this.utilityService.rejectAsyncPromise('Unable to delete post, please try again!'));
         })
     }))
+  }
+
+  async setFlowsProperties(post: any, dataFlows: any) {
+
+    if (dataFlows.moveTo) {
+      post.task._column.title = dataFlows.moveTo;
+    }
+
+    if (dataFlows.assignTo) {
+        post.task.unassigned = false;
+        post.task._assigned_to = await this.publicFunctions.getOtherUser(dataFlows.assignTo);
+        /*
+        this.lastAssignedBy = {
+          first_name: 'Automation',
+          last_name: 'Flow',
+          profile_pic: ''
+        }
+        */
+    }
+
+    return post;
   }
 }

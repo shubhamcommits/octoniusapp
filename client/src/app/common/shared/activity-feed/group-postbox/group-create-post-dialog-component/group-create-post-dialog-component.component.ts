@@ -12,6 +12,7 @@ import * as ShareDB from 'sharedb/lib/client';
 import { BehaviorSubject } from 'rxjs';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
 import { Router } from '@angular/router';
+import { FlowService } from 'src/shared/services/flow-service/flow.service';
 
 @Component({
   selector: 'app-group-create-post-dialog-component',
@@ -105,10 +106,13 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
   baseUrl = environment.UTILITIES_USERS_UPLOADS;
 
+  flows = [];
+
   constructor(
     private postService: PostService,
     private groupService: GroupService,
     private utilityService: UtilityService,
+    private flowService: FlowService,
     private injector: Injector,
     private commentService: CommentService,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -125,6 +129,10 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.columns = this.data.columns;
 
     this.groupData = await this.publicFunctions.getGroupDetails(this.groupId);
+
+    this.flowService.getGroupAutomationFlows(this.groupId).then(res => {
+      this.flows = res['flows'];
+    });
 
     await this.initPostData();
   }
@@ -251,16 +259,6 @@ export class GroupCreatePostDialogComponent implements OnInit {
    */
   eventAssignedToAll() {
     return (this.eventMembersMap && this.eventMembersMap['all']) ? true : false;
-  }
-
-  async moveTaskToColumn(event) {
-    await this.publicFunctions.changeTaskColumn(this.postData._id, event.post.task._column.title, this.userData._id);
-    this.postData.task._column.title = event.post.task._column.title;
-  }
-
-  changeTaskStatus(event) {
-    // Set the status
-    this.postData.task.status = event;
   }
 
   /**
@@ -565,11 +563,61 @@ export class GroupCreatePostDialogComponent implements OnInit {
     await this.editPost(this.postData._id, formData);
   }
 
+  async changeTaskStatus(event) {
+    // Set the status
+    this.postData.task.status = event;
+
+    let dataFlows = {
+      moveTo: '',
+      assignTo: ''
+    };
+
+    dataFlows = await this.publicFunctions.getExecutedAutomationFlowsProperties(this.postData, event, this.flows, dataFlows);
+    await this.setFlowsProperties(this.postData, dataFlows);
+  }
+
+  async moveTaskToColumn(event) {
+    await this.publicFunctions.changeTaskColumn(this.postData._id, event.post.task._column.title, this.userData._id);
+    this.postData.task._column.title = event.post.task._column.title;
+
+    let dataFlows = {
+      moveTo: '',
+      assignTo: ''
+    };
+
+    dataFlows = await this.publicFunctions.getExecutedAutomationFlowsProperties(this.postData, event.post.task._column.title, this.flows, dataFlows);
+    await this.setFlowsProperties(this.postData, dataFlows);
+  }
+
+  async onAssigned(post) {
+
+    this.setAssignedBy(post);
+
+    let dataFlows = {
+      moveTo: '',
+      assignTo: ''
+    };
+
+    dataFlows = await this.publicFunctions.getExecutedAutomationFlowsProperties(this.postData, this.postData.task._assigned_to, this.flows, dataFlows);
+    await this.setFlowsProperties(this.postData, dataFlows);
+  }
+
   async setAssignedBy(post) {
     this.postData = post;
     if (this.postData.records && this.postData.records.assignments && this.postData.records.assignments.length > 0) {
       this.postData.records.assignments = this.postData.records.assignments.sort((a1, a2) => (new Date(a1.date).getTime() < new Date(a2.date).getTime()) ? 1 : -1);
       this.lastAssignedBy = await this.publicFunctions.getOtherUser(this.postData.records.assignments[0]._assigned_from);
+      /*
+      if (this.postData.records.assignments[0]._assigned_from === '') {
+        this.lastAssignedBy = {
+          first_name: 'Automation',
+          last_name: 'Flow',
+          profile_pic: ''
+        }
+      } else {
+        this.lastAssignedBy = await this.publicFunctions.getOtherUser(this.postData.records.assignments[0]._assigned_from);
+      }
+      */
     }
   }
 
@@ -721,5 +769,26 @@ export class GroupCreatePostDialogComponent implements OnInit {
     await this.initPostData();
 
     this.parentAssignEvent.emit(post);
+  }
+
+  async setFlowsProperties(post: any, dataFlows: any) {
+
+    if (dataFlows.moveTo) {
+      post.task._column.title = dataFlows.moveTo;
+    }
+
+    if (dataFlows.assignTo) {
+        post.task.unassigned = false;
+        post.task._assigned_to = await this.publicFunctions.getOtherUser(dataFlows.assignTo);
+        /*
+        this.lastAssignedBy = {
+          first_name: 'Automation',
+          last_name: 'Flow',
+          profile_pic: ''
+        }
+        */
+    }
+
+    return post;
   }
 }

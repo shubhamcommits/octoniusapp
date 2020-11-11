@@ -1,0 +1,72 @@
+$dark-sky-blue: #4a90e2;
+
+.flowsDialog {
+  text-align: center;
+  width: 90%;
+  margin: 0 auto;
+
+  .createFlowsLink {
+    margin-right: 0.7rem;
+    background-color: #e4edf8;
+    padding: 7px;
+    line-height: 36px;
+    min-width: 36px;
+    border-radius: 4px;
+  }
+
+  .description {
+    margin: 30px 0;
+  }
+
+  .flowsList {
+    margin: 0 auto;
+    width: 100%;
+
+    p {
+      font-size: 15px;
+      font-weight: 700;
+      text-transform: uppercase !important;
+    }
+
+    h3 {
+      text-align: left;
+    }
+
+    .title {
+      width: 30%;
+      text-align: left;
+    }
+
+    .flowsBody {
+      width: 70%;
+      margin: 0 auto;
+
+      .field {
+        width: 30%;
+        border: 1px solid #e4edf8 !important;
+        padding: 5px 10px 10px 10px;
+        margin: 10px 5px;
+        display: inline-table;
+        /* pure white */
+        background: #ffffff;
+        /* border color */
+        box-sizing: border-box;
+        box-shadow: 0px 6px 8px rgba(0, 95, 213, 0.17);
+        border-radius: 8px;
+
+        .title {
+          font-size: 12px;
+          line-height: 16px;
+          text-transform: uppercase !important;
+        }
+      }
+    }
+  }
+}
+
+.badge-automator {
+  background: #ffab00;
+  color: #fff;
+  box-shadow: 0 6px 10px #005fd521;
+  margin: 5px;
+}

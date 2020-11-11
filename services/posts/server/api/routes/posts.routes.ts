@@ -115,16 +115,16 @@ routes.get('/group/posts', postController.getGroupPosts);
 // -| TASKS |-
 
 // PUT - Change task assignee
-routes.put('/:postId/task-assignee', postController.changeTaskAssignee);
+routes.put('/:postId/task-assignee', postController.changeTaskAssignee.bind(postController));
 
 // PUT - Change task due-date
 routes.put('/:postId/task-due-date', postController.changeTaskDueDate);
 
 // PUT - Change task status
-routes.put('/:postId/task-status', postController.changeTaskStatus);
+routes.put('/:postId/task-status', postController.changeTaskStatus.bind(postController));
 
 // PUT - Change task column
-routes.put('/:postId/task-column', postController.changeTaskColumn);
+routes.put('/:postId/task-column', postController.changeTaskColumn.bind(postController));
 
 // PUT - Change task start or end date
 routes.put('/:postId/update-date', postController.changeTaskDate);

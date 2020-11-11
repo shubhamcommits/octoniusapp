@@ -1,0 +1,40 @@
+import http from 'axios';
+import moment from 'moment';
+import { Readable } from 'stream';
+import { Comment, Flow, Group, Post, User } from '../models';
+import { sendError } from '../utils';
+import { sendErr } from '../utils/sendError';
+import { CommentsService } from './comments.services';
+import { GroupsService } from './groups.services';
+const fs = require('fs');
+
+/*  ===============================
+ *  -- POSTS Service --
+ *  ===============================
+ */
+
+export class FlowService {
+
+  groupsService = new GroupsService();
+  
+  /**
+   * This function fetches the automation flows of a group
+   * @param groupId
+   */
+  async getAtomationFlows(groupId: string) {
+    const flows = await Flow.find({
+        _group: groupId
+    })
+    .populate({
+        path: 'triger._user',
+        select: 'first_name last_name profile_pic created_date'
+    })
+    .populate({
+        path: 'action._user',
+        select: 'first_name last_name profile_pic created_date'
+    })
+    .lean();
+
+    return flows;
+  };
+}

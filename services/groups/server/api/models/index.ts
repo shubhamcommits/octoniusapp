@@ -1,5 +1,6 @@
 import { Auth } from './auth.model';
 import { Column } from './column.model';
+import { Flow } from './flow.model';
 import { Group } from './group.model';
 import { Post } from './post.model';
 import { User } from './user.model';
@@ -27,5 +28,8 @@ export {
     User as User,
 
     // WORKSPACE
-    Workspace as Workspace
+    Workspace as Workspace,
+
+    // FLOW
+    Flow as Flow
 };

@@ -1,0 +1,78 @@
+import { Component, OnInit, Inject, Output, EventEmitter } from '@angular/core';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material';
+import { AutomationFlowDetailsDialogComponent } from '../automation-flow-details-dialog/automation-flow-details-dialog.component';
+import { FlowService } from 'src/shared/services/flow-service/flow.service';
+
+@Component({
+  selector: 'app-automation-flows-dialog',
+  templateUrl: './automation-flows-dialog.component.html',
+  styleUrls: ['./automation-flows-dialog.component.scss']
+})
+export class AutomationFlowsDialogComponent implements OnInit {
+
+  automationFlows = [];
+
+  groupId;
+  groupSections = [];
+  workspaceId;
+
+  constructor(
+    public utilityService: UtilityService,
+    private flowService: FlowService,
+    public dialog: MatDialog,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) { }
+
+  async ngOnInit() {
+    this.groupId = this.data.groupId;
+    this.groupSections = this.data.groupSections;
+    this.workspaceId = this.data.workspaceId;
+
+    await this.flowService.getGroupAutomationFlows(this.groupId).then((res) => {
+      res['flows'].forEach(flow => {
+        this.automationFlows.push(flow);
+      });
+    });
+  }
+
+  createFlow() {
+    this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise(async (resolve, reject) => {
+      await this.flowService.createNewAutomationFlow(this.groupId).then((res) => {
+        this.automationFlows.push(res['flow']);
+        this.automationFlows.sort((f1, f2) => (f1.name > f2.name) ? 1 : -1);
+
+        resolve(this.utilityService.resolveAsyncPromise('Automation Flow created!'));
+      }).catch(err => {
+        reject(this.utilityService.rejectAsyncPromise(`Unable to create the new Automation Flow, please try again!`));
+      });
+    }));
+  }
+
+  openFlowDetailsDialog(flowId: string) {
+    const dialogRef = this.dialog.open(AutomationFlowDetailsDialogComponent, {
+      width: '100%',
+      height: '100%',
+      disableClose: true,
+      data: {
+        groupId: this.groupId,
+        flowId: flowId,
+        groupSections: this.groupSections,
+        workspaceId: this.workspaceId
+      }
+    });
+    const subFlowNameChangeEmitter = dialogRef.componentInstance.flowNameChangeEmitter.subscribe((data) => {
+      const flowIndex = this.automationFlows.findIndex(flow => flow._id === data['flowId']);
+      this.automationFlows[flowIndex].name = data['flowName'];
+      this.automationFlows.sort((f1, f2) => (f1.name > f2.name) ? 1 : -1);
+    });
+    const subDeleteFlowEmitter = dialogRef.componentInstance.deleteFlowEvent.subscribe((data) => {
+      const flowIndex = this.automationFlows.findIndex(flow => flow._id === data);
+      this.automationFlows.splice(flowIndex, 1);
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      subFlowNameChangeEmitter.unsubscribe();
+      subDeleteFlowEmitter.unsubscribe();
+    });
+  }
+}

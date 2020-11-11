@@ -1,4 +1,5 @@
 import { columnRoutes } from './columns.routes';
+import { flowRoutes } from './flows.routes';
 import { groupRoutes } from './group.routes';
 import { memberRoutes } from './member.routes';
 import { pulseRoutes } from './pulse.routes';
@@ -12,4 +13,5 @@ export {
     memberRoutes as memberRoutes,
     pulseRoutes as pulseRoutes,
     columnRoutes as columnRoutes,
+    flowRoutes as flowRoutes
 }

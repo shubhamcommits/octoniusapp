@@ -194,7 +194,7 @@ h2 {
     font-style: normal;
     font-size: 15px;
     font-weight: 700;
-  
+
 
   .small {
     font-size: 12px;
@@ -226,7 +226,7 @@ h2 {
     box-sizing: border-box;
     border-radius: 10px;
     box-shadow: 0 3px 0 #005fd521;
-  
+
 }
 
 .post-card {
@@ -831,7 +831,7 @@ input {
   // margin-top: 14px;
 }
 
-@media (max-width: 575.98px) { 
+@media (max-width: 575.98px) {
   .hidden-xs-down{
     display: none;
   }
@@ -857,8 +857,8 @@ input {
 
 
 .modal-dialog .ql-image {
-        width: 100% !important; 
-}  
+        width: 100% !important;
+}
 
 .mat-form-field-underline {
   height: 0 !important;
@@ -883,10 +883,9 @@ input {
   -webkit-user-select: text !important;
   -moz-user-select: text !important;
   -ms-user-select: text !important;
-  user-select: text !important;    
+  user-select: text !important;
 }
 
 .mat-expansion-panel-body{
   padding: 0 !important;
 }
-

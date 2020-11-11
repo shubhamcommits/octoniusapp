@@ -944,7 +944,6 @@ export class PostService {
         this.groupsService.increaseDoneTasks(post._group._id, counter, status);
       }
 
-
       // Return the post
       return post;
 
