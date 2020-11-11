@@ -97,6 +97,41 @@
                 </ng-container>
               </mat-menu>
             </div>
+
+            <div *ngIf="step.trigger.name === 'Custom Field is'">
+              <button *ngIf="!step?.trigger?.custom_field?.title" mat-menu-item [matMenuTriggerFor]="customFieldTitleMenu">
+                Select Custom Field
+              </button>
+              <mat-menu #customFieldTitleMenu="matMenu">
+                <ng-container>
+                  <button mat-menu-item *ngFor="let cf of customFieldOptions" (click)="customFieldTitleTriggerSelected(cf, index)">{{ cf }}</button>
+                </ng-container>
+              </mat-menu>
+
+              <div *ngIf="step?.trigger?.custom_field?.title">
+                <div class="badge-section">
+                  {{ step.trigger.custom_field.title }}
+                </div>
+
+                <div *ngIf="!step.trigger.custom_field.value">
+                  <button *ngIf="!step?.trigger?.custom_field?.value" mat-menu-item [matMenuTriggerFor]="customFieldValueMenu">
+                    Select Value
+                  </button>
+                  <mat-menu #customFieldValueMenu="matMenu">
+                    <ng-container>
+                      <button mat-menu-item *ngFor="let cfv of getCustomFieldsValues(step?.trigger?.custom_field?.title)" (click)="customFieldValueTriggerSelected(cfv, index)">{{ cfv }}</button>
+                    </ng-container>
+                  </mat-menu>
+                </div>
+
+                <div *ngIf="step?.trigger?.custom_field?.value">
+                  with value
+                  <div class="badge-section">
+                    {{ step.trigger.custom_field.value }}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div class="col-md-3">
@@ -150,6 +185,21 @@
               <mat-menu #sectionActionMenu="matMenu">
                 <ng-container>
                   <button mat-menu-item *ngFor="let section of groupSections" (click)="sectionActionSelected(section.title, index)">{{ section.title }}</button>
+                </ng-container>
+              </mat-menu>
+            </div>
+
+            <div *ngIf="step.action.name === 'Change Status to'">
+              <div *ngIf="step.action.status" [ngClass]="getStatusClass(step.action.status)">
+                {{ step.action.status }}
+              </div>
+
+              <button *ngIf="!step.action.status" mat-menu-item [matMenuTriggerFor]="statusActionMenu">
+                Select Status
+              </button>
+              <mat-menu #statusActionMenu="matMenu">
+                <ng-container>
+                  <button mat-menu-item *ngFor="let status of statusOptions" (click)="statusActionSelected(status, index)">{{ status }}</button>
                 </ng-container>
               </mat-menu>
             </div>

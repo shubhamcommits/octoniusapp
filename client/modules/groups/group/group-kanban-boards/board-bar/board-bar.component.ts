@@ -18,6 +18,7 @@ export class BoardBarComponent implements OnInit {
   @Input() groupData: any;
   @Input() sections = [];
   @Input() isAdmin = false;
+  @Input() customFields = [];
 
   // Emitter to notify that the view is changing
   @Output() changeViewEmitter: EventEmitter<string> = new EventEmitter<string>();
@@ -52,13 +53,7 @@ export class BoardBarComponent implements OnInit {
       width: '100%',
       height: '100%',
       disableClose: true,
-      data: { groupId: this.groupData._id, groupSections: this.sections }
+      data: { groupId: this.groupData._id, groupSections: this.sections, customFields: this.customFields }
     });
-    // const sub = dialogRef.componentInstance.customFieldsEvent.subscribe((data) => {
-    //   this.customFieldEmitter.emit(data);
-    // });
-    // dialogRef.afterClosed().subscribe(result => {
-    //   sub.unsubscribe();
-    // });
   }
 }

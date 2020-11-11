@@ -21,11 +21,11 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
 
   flowName = '';
 
-  triggerOptions = ['Assigned to', 'Status is', 'Section is'];
-  actionOptions = ['Move to', 'Assign to'];
-
+  triggerOptions = ['Assigned to', 'Custom Field is', 'Section is', 'Status is', 'Status is CHANGED', 'Task is CREATED'];
+  actionOptions = ['Assign to', 'Change Status to', 'Move to'];
   statusOptions = ['TO DO', 'IN PROGRESS', 'DONE'];
-
+  customFields = [];
+  customFieldOptions = [];
   baseUrl = environment.UTILITIES_USERS_UPLOADS;
 
   userData: any;
@@ -48,6 +48,11 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
     this.flowId = this.data.flowId;
     this.groupSections = this.data.groupSections;
     this.workspaceId = this.data.workspaceId;
+    this.customFields = this.data.customFields;
+
+    this.customFields.forEach(cf => {
+      this.customFieldOptions.push(cf.title);
+    });
 
     // GETTING USER DATA FROM THE SHARED SERVICE
     this.subSink.add(
@@ -71,8 +76,11 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
     this.subSink.unsubscribe();
   }
 
-  onCloseDialog() {
+  onCloseDialog() {}
 
+  getCustomFieldsValues(customFieldTitle) {
+    const index = this.customFields.findIndex(cf => cf.title === customFieldTitle);
+    return (index >= 0) ? this.customFields[index].values : [];
   }
 
   /**
@@ -187,8 +195,24 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
     this.flowSteps[index].trigger.section = section;
   }
 
+  customFieldTitleTriggerSelected(cf: string, index: number) {
+    const custom_field = {
+      title: cf
+    }
+    this.flowSteps[index].trigger.custom_field = custom_field;
+  }
+
+  customFieldValueTriggerSelected(cf: string, index: number) {
+    this.flowSteps[index].trigger.custom_field.value = cf;
+  }
+
   sectionActionSelected(section: string, index: number) {
     this.flowSteps[index].action.section = section;
+    this.saveStep(this.flowSteps[index]);
+  }
+
+  statusActionSelected(status: string, index: number) {
+    this.flowSteps[index].action.status = status;
     this.saveStep(this.flowSteps[index]);
   }
 
