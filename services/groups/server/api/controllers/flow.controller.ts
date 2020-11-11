@@ -113,11 +113,11 @@ export class FlowController {
                 _id: flowId
             })
             .populate({
-                path: 'triger._user',
+                path: 'steps.trigger._user',
                 select: 'first_name last_name profile_pic created_date'
             })
             .populate({
-                path: 'action._user',
+                path: 'steps.action._user',
                 select: 'first_name last_name profile_pic created_date'
             })
             .lean();
@@ -170,11 +170,20 @@ export class FlowController {
             // Find the Group based on the groupId
             const flow = await Flow.findOneAndUpdate({
                 _id: flowId
-            }, {
-                $push: { "steps": step }
-            }, {
-                new: true
-            }).lean();
+              }, {
+                  $push: { "steps": step }
+              }, {
+                  new: true
+              })
+              .populate({
+                  path: 'steps.trigger._user',
+                  select: 'first_name last_name profile_pic created_date'
+              })
+              .populate({
+                  path: 'steps.action._user',
+                  select: 'first_name last_name profile_pic created_date'
+              })
+              .lean();
 
             // Check if group already exist with the same groupId
             if (!flow) {
