@@ -275,11 +275,12 @@ export class PostService {
    * This function is used to save a custom field value
    * @param postId
    */
-  saveCustomField(postId: string, customFieldName: string, customFieldValue: string) {
+  saveCustomField(postId: string, customFieldName: string, customFieldValue: string, groupId: string) {
     // Call the HTTP Request
     return this._http.put(this.baseURL + `/${postId}/customField`, {
       customFieldName: customFieldName,
-      customFieldValue: customFieldValue
+      customFieldValue: customFieldValue,
+      groupId: groupId
     }).toPromise();
   }
 

@@ -451,7 +451,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
   saveCustomField(customFieldName: string, customFieldValue: string) {
     this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
-      this.postService.saveCustomField(this.postData._id, customFieldName, customFieldValue)
+      this.postService.saveCustomField(this.postData._id, customFieldName, customFieldValue, this.groupId)
         .then((res) => {
           this.postData.task.custom_fields[customFieldName] = customFieldValue;
           // Resolve with success

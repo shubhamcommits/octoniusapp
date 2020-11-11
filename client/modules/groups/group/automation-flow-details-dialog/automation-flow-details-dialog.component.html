@@ -99,18 +99,18 @@
             </div>
 
             <div *ngIf="step.trigger.name === 'Custom Field is'">
-              <button *ngIf="!step?.trigger?.custom_field?.title" mat-menu-item [matMenuTriggerFor]="customFieldTitleMenu">
+              <button *ngIf="!step?.trigger?.custom_field?.name" mat-menu-item [matMenuTriggerFor]="customFieldNameMenu">
                 Select Custom Field
               </button>
-              <mat-menu #customFieldTitleMenu="matMenu">
+              <mat-menu #customFieldNameMenu="matMenu">
                 <ng-container>
-                  <button mat-menu-item *ngFor="let cf of customFieldOptions" (click)="customFieldTitleTriggerSelected(cf, index)">{{ cf }}</button>
+                  <button mat-menu-item *ngFor="let cf of customFieldOptions" (click)="customFieldNameTriggerSelected(cf, index)">{{ cf }}</button>
                 </ng-container>
               </mat-menu>
 
-              <div *ngIf="step?.trigger?.custom_field?.title">
+              <div *ngIf="step?.trigger?.custom_field?.name">
                 <div class="badge-section">
-                  {{ step.trigger.custom_field.title }}
+                  {{ step.trigger.custom_field.name }}
                 </div>
 
                 <div *ngIf="!step.trigger.custom_field.value">
@@ -119,7 +119,7 @@
                   </button>
                   <mat-menu #customFieldValueMenu="matMenu">
                     <ng-container>
-                      <button mat-menu-item *ngFor="let cfv of getCustomFieldsValues(step?.trigger?.custom_field?.title)" (click)="customFieldValueTriggerSelected(cfv, index)">{{ cfv }}</button>
+                      <button mat-menu-item *ngFor="let cfv of getCustomFieldsValues(step?.trigger?.custom_field?.name)" (click)="customFieldValueTriggerSelected(cfv, index)">{{ cfv }}</button>
                     </ng-container>
                   </mat-menu>
                 </div>

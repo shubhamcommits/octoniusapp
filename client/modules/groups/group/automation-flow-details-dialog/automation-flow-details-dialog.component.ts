@@ -21,7 +21,7 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
 
   flowName = '';
 
-  triggerOptions = ['Assigned to', 'Custom Field is', 'Section is', 'Status is', 'Status is CHANGED', 'Task is CREATED'];
+  triggerOptions = ['Assigned to', 'Custom Field is', 'Section is', 'Status is', 'Task is CREATED'];
   actionOptions = ['Assign to', 'Change Status to', 'Move to'];
   statusOptions = ['TO DO', 'IN PROGRESS', 'DONE'];
   customFields = [];
@@ -51,7 +51,7 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
     this.customFields = this.data.customFields;
 
     this.customFields.forEach(cf => {
-      this.customFieldOptions.push(cf.title);
+      this.customFieldOptions.push(cf.name);
     });
 
     // GETTING USER DATA FROM THE SHARED SERVICE
@@ -78,16 +78,11 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
 
   onCloseDialog() {}
 
-  getCustomFieldsValues(customFieldTitle) {
-    const index = this.customFields.findIndex(cf => cf.title === customFieldTitle);
+  getCustomFieldsValues(customFieldName) {
+    const index = this.customFields.findIndex(cf => cf.name === customFieldName);
     return (index >= 0) ? this.customFields[index].values : [];
   }
 
-  /**
-   * This function is mapped with the event change of @variable - title
-   * Show update detail option if title has been changed
-   * @param event - new flow name value
-   */
   flowNameChange(event: any) {
     const newFlowName = event.target.value;
     if (newFlowName !== this.flowName) {
@@ -195,9 +190,9 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
     this.flowSteps[index].trigger.section = section;
   }
 
-  customFieldTitleTriggerSelected(cf: string, index: number) {
+  customFieldNameTriggerSelected(cf: string, index: number) {
     const custom_field = {
-      title: cf
+      name: cf
     }
     this.flowSteps[index].trigger.custom_field = custom_field;
   }
