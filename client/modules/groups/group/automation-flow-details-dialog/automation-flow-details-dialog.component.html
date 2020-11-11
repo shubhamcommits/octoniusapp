@@ -104,7 +104,7 @@
               </button>
               <mat-menu #customFieldTitleMenu="matMenu">
                 <ng-container>
-                  <button mat-menu-item *ngFor="let cf of customFieldOptions" (click)="customFieldTitleTriggerSelected(cf, index)">{{ cf }}</button>
+                  <button mat-menu-item *ngFor="let cf of customFieldOptions" (click)="customFieldNameTriggerSelected(cf, index)">{{ cf }}</button>
                 </ng-container>
               </mat-menu>
 
