@@ -458,7 +458,11 @@ export class GroupCreatePostDialogComponent implements OnInit {
           let dataFlows = {
             moveTo: '',
             statusTo: '',
-            assignTo: ''
+            assignTo: '',
+            cfTo: {
+                name: '',
+                value: ''
+            }
           };
 
           dataFlows = await this.publicFunctions.getExecutedAutomationFlowsProperties(this.postData, '', this.flows, dataFlows, {name: customFieldName, value: customFieldValue});
@@ -580,7 +584,11 @@ export class GroupCreatePostDialogComponent implements OnInit {
     let dataFlows = {
       moveTo: '',
       statusTo: '',
-      assignTo: ''
+      assignTo: '',
+      cfTo: {
+          name: '',
+          value: ''
+      }
     };
 
     dataFlows = await this.publicFunctions.getExecutedAutomationFlowsProperties(this.postData, event, this.flows, dataFlows);
@@ -594,7 +602,11 @@ export class GroupCreatePostDialogComponent implements OnInit {
     let dataFlows = {
       moveTo: '',
       statusTo: '',
-      assignTo: ''
+      assignTo: '',
+      cfTo: {
+          name: '',
+          value: ''
+      }
     };
 
     dataFlows = await this.publicFunctions.getExecutedAutomationFlowsProperties(this.postData, event.post.task._column.title, this.flows, dataFlows);
@@ -608,7 +620,11 @@ export class GroupCreatePostDialogComponent implements OnInit {
     let dataFlows = {
       moveTo: '',
       statusTo: '',
-      assignTo: ''
+      assignTo: '',
+      cfTo: {
+          name: '',
+          value: ''
+      }
     };
 
     dataFlows = await this.publicFunctions.getExecutedAutomationFlowsProperties(this.postData, this.postData.task._assigned_to, this.flows, dataFlows);
@@ -804,6 +820,10 @@ export class GroupCreatePostDialogComponent implements OnInit {
           profile_pic: ''
         }
         */
+    }
+
+    if (dataFlows.cfTo.name !== '' && dataFlows.cfTo.value !== '') {
+        post.task.custom_fields[dataFlows.cfTo.name] = dataFlows.cfTo.value;
     }
 
     return post;

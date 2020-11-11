@@ -1220,6 +1220,10 @@ export class PostController {
             post.task._assigned_to = dataFlows.assignTo;
         }
 
+        if (dataFlows.cfTo.name !== '' && dataFlows.cfTo.value !== '') {
+            post.task.custom_fields[dataFlows.cfTo.name] = dataFlows.cfTo.value;
+        }
+
         return post;
     }
 }
