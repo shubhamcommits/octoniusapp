@@ -280,12 +280,12 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges {
     if (this.domainObject.type === 'task') {
 
       // Adding unassigned property for previous tasks model
-      if (this.domainObject.task.unassigned === 'No') {
+      if (this.domainObject.task.unassigned || this.domainObject.task.unassigned === 'No') {
         this.domainObject.task.unassigned = false;
       }
 
       // Adding unassigned property for previous tasks model
-      if (this.domainObject.task.unassigned === 'Yes') {
+      if (!this.domainObject.task.unassigned || this.domainObject.task.unassigned === 'Yes') {
         this.domainObject.task.unassigned = true;
       }
 

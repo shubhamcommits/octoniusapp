@@ -513,17 +513,22 @@ export class GroupCreatePostDialogComponent implements OnInit {
       post.task = this.postData.task;
 
       // Adding unassigned property for previous tasks model
-      if (this.postData.task.unassigned == 'No') {
+      if (this.postData.task.unassigned || this.postData.task.unassigned == 'No') {
         this.postData.task.unassigned = false;
       }
 
       // Adding unassigned property for previous tasks model
-      if (this.postData.task.unassigned == 'Yes') {
+      if (!this.postData.task.unassigned || this.postData.task.unassigned == 'Yes') {
         this.postData.task.unassigned = true;
       }
 
       // Unassigned property
       post.unassigned = this.postData.task.unassigned;
+
+      // Task Assigned to
+      if (post.unassigned !== null && !post.unassigned) {
+        post.assigned_to = this.postData.task._assigned_to._id;
+      }
 
       // Task due date
       post.date_due_to = this.dueDate;
@@ -531,11 +536,6 @@ export class GroupCreatePostDialogComponent implements OnInit {
       if (this.groupData.project_type) {
         post.start_date = this.startDate;
         post.end_date = this.endDate;
-      }
-
-      // Task Assigned to
-      if (post.unassigned !== null && !post.unassigned) {
-        post.assigned_to = this.postData.task._assigned_to._id;
       }
 
       if (!this.postData.task._parent_task) {
