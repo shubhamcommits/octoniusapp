@@ -116,11 +116,11 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
 
   getStatusClass(status: string) {
     let retClass = '';
-    if (status === 'To Do') {
+    if (status === 'to do') {
       retClass = 'status-todo';
-    } else if (status === 'In Progress') {
+    } else if (status === 'in progress') {
       retClass = 'status-inprogress';
-    } else if (status === 'Done') {
+    } else if (status === 'done') {
       retClass = 'status-done';
     }
     return retClass + ' badge-status' ;
