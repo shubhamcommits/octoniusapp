@@ -11,7 +11,7 @@
             [domainObject]="task"
             [required]="true"
             type="text"
-            (post)="fieldUpdated($event, task)">
+            (post)="fieldUpdated($event)">
         </app-inline-input>
       </div>
     </td>
@@ -64,7 +64,7 @@
             [userData]="userData"
             [groupId]="groupData._id"
             type="assignee"
-            (post)="fieldUpdated($event, task)">
+            (post)="fieldUpdated($event)">
         </app-inline-input>
       </div>
       <div *ngIf="task?.task?.isNorthStar">
@@ -87,7 +87,7 @@
             [domainObject]="task"
             [required]="true"
             type="date"
-            (post)="fieldUpdated($event, task)">
+            (post)="fieldUpdated($event)">
         </app-inline-input>
       </div>
       <div *ngIf="task?.task?.isNorthStar">
@@ -112,8 +112,9 @@
             [domainObject]="task"
             [required]="true"
             [options]="customFieldValues(cf.name)"
+            [groupId]="groupData._id"
             type="customField"
-            (post)="fieldUpdated($event, task)">
+            (post)="fieldUpdated($event)">
         </app-inline-input>
       </div>
     </td>

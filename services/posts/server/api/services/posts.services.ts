@@ -1358,15 +1358,17 @@ export class PostService {
       task['task']['custom_fields'].set(customFieldName, customFieldValue);
 
       // Find the post and update the custom field
-      const post = await Post.findByIdAndUpdate({
+      let post = await Post.findByIdAndUpdate({
         _id: postId
       }, {
         $set: { "task.custom_fields": task['task']['custom_fields'] }
       });
 
+      return await this.populatePostProperties(post);
+
     } catch (error) {
       throw(error);
-    }  
+    }
   }
 
   async getNorthStarTasks(groups: any) {

@@ -63,9 +63,9 @@ export class PostController {
 
         if (post.type === 'task') {
             // Execute Automation Flows
-            const dataFlows = await this.executeAutomationFlows(post._group._id, post._id, '', userId);
+            post = await this.executeAutomationFlows(post._group._id, post, '', userId);
 
-            post = await this.setFlowsProperties(post, dataFlows);
+            //post = await this.setFlowsProperties(post, dataFlows);
         }
 
         return post;
@@ -545,9 +545,10 @@ export class PostController {
         let post = await postService.changeTaskAssignee(postId, assigneeId, userId);
 
         // Execute Automation Flows
-        const dataFlows = await this.executeAutomationFlows(post._group._id, postId, assigneeId, userId);
-
-        post = await this.setFlowsProperties(post, dataFlows);
+        post = await this.executeAutomationFlows(post._group._id, post, assigneeId, userId);
+        
+        post.task.unassigned = false;
+        post.task._assigned_to = assigneeId;
         
         return post;
     }
@@ -646,9 +647,9 @@ export class PostController {
             });
 
         // Execute Automation Flows
-        const dataFlows = await this.executeAutomationFlows(post._group._id, postId, status, userId);
+        post = await this.executeAutomationFlows(post._group._id, post, status, userId);
 
-        post = await this.setFlowsProperties(post, dataFlows);
+        post.task.status = status;
         
         return post;
     }
@@ -690,10 +691,10 @@ export class PostController {
         let post = await postService.changeTaskColumn(postId, sectionTitle, userId);
 
         // Execute Automation Flows
-        const dataFlows = await this.executeAutomationFlows(post._group._id, postId, sectionTitle, userId);
+        post = await this.executeAutomationFlows(post._group._id, post, sectionTitle, userId);
 
-        post = await this.setFlowsProperties(post, dataFlows);
-        
+        post.task._column.title = sectionTitle;
+
         return post;
     }
 
@@ -799,14 +800,14 @@ export class PostController {
 
         try {
 
-            const post = this.callChangeCustomFieldValueService(groupId, postId, customFieldName, customFieldValue, userId)
+            const post = await this.callChangeCustomFieldValueService(groupId, postId, customFieldName, customFieldValue, userId)
                 .catch((err) => {
                     return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
                 });
 
             // Send status 200 response
             return res.status(200).json({
-                message: 'Task column updated!',
+                message: 'Custom Field updated!',
                 post: post
             });
         } catch (err) {
@@ -816,12 +817,12 @@ export class PostController {
 
     async callChangeCustomFieldValueService(groupId: string, postId: string, cfName: string, cfValue: string, userId: string) {
         let post = await postService.changeCustomFieldValue(postId, cfName, cfValue);
-        
-        // Execute Automation Flows
-        const dataFlows = await this.executeAutomationFlows(groupId, postId, '', userId, {name: cfName, value: cfValue});
 
-        post = await this.setFlowsProperties(post, dataFlows);
-        
+        // Execute Automation Flows
+        post = await this.executeAutomationFlows(groupId, post, '', userId, {name: cfName, value: cfValue});
+
+        post.task.custom_fields[cfName] = cfValue;
+
         return post;
     }
 
@@ -1152,78 +1153,43 @@ export class PostController {
         }
     }
 
-    async executeAutomationFlows(groupId: string, postId: string, triggerText: string, userId: string, cfTrigger?: any) {
-        let dataFlows = {
-            moveTo: '',
-            statusTo: '',
-            assignTo: '',
-            cfTo: {
-                name: '',
-                value: ''
-            }
-        };
+    async executeAutomationFlows(groupId: string, post: any, triggerText: string, userId: string, cfTrigger?: any) {
 
         const flows = await flowService.getAtomationFlows(groupId);
         if (flows && flows.length > 0) {
             await flows.forEach(flow => {
+                const steps = flow['steps'];
 
-                flow['steps'].forEach(async step => {
-                    if ((step.trigger.name === 'Assigned to' && (step.trigger._user._id === triggerText || step.trigger._user === triggerText))
-                        || (step.trigger.name === 'Section is' && step.trigger.section.toUpperCase() === triggerText.toUpperCase())
-                        || (step.trigger.name === 'Status is' && step.trigger.status.toUpperCase() === triggerText.toUpperCase())
-                        || (step.trigger.name === 'Custom Field' && cfTrigger
-                            && step.trigger.custom_field.name.toUpperCase() === cfTrigger.name.toUpperCase()
-                            && step.trigger.custom_field.value.toUpperCase() === cfTrigger.value.toUpperCase())
-                        || (step.trigger.name === 'Task is CREATED')) {
+                if (steps && steps.length > 0) {
+                    steps.forEach(async step => {
+                        if ((step.trigger.name === 'Assigned to' && (step.trigger._user._id === triggerText || step.trigger._user === triggerText))
+                            || (step.trigger.name === 'Section is' && step.trigger.section.toUpperCase() === triggerText.toUpperCase())
+                            || (step.trigger.name === 'Status is' && step.trigger.status.toUpperCase() === triggerText.toUpperCase())
+                            || (step.trigger.name === 'Custom Field' && cfTrigger
+                                && step.trigger.custom_field.name.toUpperCase() === cfTrigger.name.toUpperCase()
+                                && step.trigger.custom_field.value.toUpperCase() === cfTrigger.value.toUpperCase())
+                            || (step.trigger.name === 'Task is CREATED')) {
 
-                        if (step.action.name === 'Assign to') {
-                            await this.callTaskAssigneeService(postId, step.action._user, userId);
-                            dataFlows.assignTo = step.action._user;
-                        }
-                        
-                        if (step.action.name === 'Change Status to') {
-                            await this.callChangeTaskStatusService(postId, step.action.status, userId);
-                            dataFlows.statusTo = step.action.status;
-                        }
+                            if (step.action.name === 'Assign to') {
+                                return await this.callTaskAssigneeService(post._id, step.action._user, userId);
+                            }
+                            
+                            if (step.action.name === 'Change Status to') {
+                                return await this.callChangeTaskStatusService(post._id, step.action.status, userId);
+                            }
 
-                        if (step.action.name === 'Move to') {
-                            await this.changeTaskSection(postId, step.action.section, userId);
-                            dataFlows.moveTo = step.action.section;
-                        }
+                            if (step.action.name === 'Custom Field') {
+                                return await this.callChangeCustomFieldValueService(groupId, post._id, step.action.custom_field.name, step.action.custom_field.value, userId);
+                            }
 
-                        if (step.action.name === 'Custom Field') {
-                            await this.callChangeCustomFieldValueService(groupId, postId, step.action.custom_field.name, step.action.custom_field.value, userId)
-                            dataFlows.cfTo = {
-                                name: step.action.custom_field.name,
-                                value: step.action.custom_field.value
+                            if (step.action.name === 'Move to') {
+                                return await this.changeTaskSection(post._id, step.action.section, userId);
                             }
                         }
-                    }
-                });
+                    });
+                }
             });
         }
-
-        return dataFlows;
-    }
-
-    setFlowsProperties(post: any, dataFlows: any) {
-        if (dataFlows.moveTo !== '') {
-            post.task._column.title = dataFlows.moveTo;
-        }
-
-        if (dataFlows.statusTo !== '') {
-            post.task.status = dataFlows.statusTo;
-        }
-
-        if (dataFlows.assignTo !== '') {
-            post.task.unassigned = false;
-            post.task._assigned_to = dataFlows.assignTo;
-        }
-
-        if (dataFlows.cfTo.name !== '' && dataFlows.cfTo.value !== '') {
-            post.task.custom_fields[dataFlows.cfTo.name] = dataFlows.cfTo.value;
-        }
-
         return post;
     }
 }

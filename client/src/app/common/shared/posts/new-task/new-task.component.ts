@@ -158,23 +158,14 @@ export class NewTaskComponent implements OnInit {
       postService.create(postData)
         .then(async (res) => {
 
-          // Emit the Post to the other compoentns
-          post.emit(res['post'])
+          let postData = res['post'];
 
-          if (res['post'].type === 'task') {
-            let dataFlows = {
-              moveTo: '',
-              statusTo: '',
-              assignTo: '',
-              cfTo: {
-                  name: '',
-                  value: ''
-              }
-            };
-
-            dataFlows = await this.publicFunctions.getExecutedAutomationFlowsProperties(res['post'], '', this.flows, dataFlows);
-            await this.setFlowsProperties(res['post'], dataFlows);
+          if (postData.type === 'task') {
+            postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(postData, '', this.flows);
           }
+
+          // Emit the Post to the other compoentns
+          post.emit(postData);
 
           // Resolve with success
           resolve(utilityService.resolveAsyncPromise('Task Created!'))
@@ -186,34 +177,4 @@ export class NewTaskComponent implements OnInit {
         })
     }))
   }
-
-  async setFlowsProperties(post: any, dataFlows: any) {
-
-    if (dataFlows.moveTo) {
-      post.task._column.title = dataFlows.moveTo;
-    }
-
-    if (dataFlows.statusTo) {
-      post.task.status = dataFlows.statusTo;
-    }
-
-    if (dataFlows.assignTo) {
-        post.task.unassigned = false;
-        post.task._assigned_to = await this.publicFunctions.getOtherUser(dataFlows.assignTo);
-        /*
-        this.lastAssignedBy = {
-          first_name: 'Automation',
-          last_name: 'Flow',
-          profile_pic: ''
-        }
-        */
-    }
-
-    if (dataFlows.cfTo.name !== '' && dataFlows.cfTo.value !== '') {
-        post.task.custom_fields[dataFlows.cfTo.name] = dataFlows.cfTo.value;
-    }
-
-    return post;
-  }
-
 }

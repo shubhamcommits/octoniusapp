@@ -183,7 +183,7 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges {
       this.postService.saveCustomField(this.domainObject._id, this.customFieldName, this.customFieldValue, this.groupId)
         .then((res) => {
           // Emit the post to other components
-          this.post.emit(res['post']);
+          this.post.emit({post: res['post'], cfTrigger: {name: this.customFieldName, value: this.customFieldValue}});
 
           // Resolve with success
           resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
@@ -226,7 +226,7 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges {
         this.postService.changeTaskAssignee(this.domainObject._id, this.value._id)
           .then((res) => {
             // Emit the post to other components
-            this.post.emit(res['post']);
+            this.post.emit({post: res['post']});
 
             // Resolve with success
             resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
@@ -250,7 +250,7 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges {
       this.postService.changeTaskAssignee(this.domainObject._id, null)
         .then((res) => {
           // Emit the post to other components
-          this.post.emit(res['post']);
+          this.post.emit({post: res['post']});
 
           // Resolve with success
           resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
@@ -334,7 +334,7 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges {
         this.postService.edit(this.domainObject._id, formData)
           .then((res) => {
             // Emit the post to other components
-            this.post.emit(res['post']);
+            this.post.emit({post: res['post']});
 
             // Resolve with success
             resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));

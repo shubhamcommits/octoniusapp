@@ -455,18 +455,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
         .then(async (res) => {
           this.postData.task.custom_fields[customFieldName] = customFieldValue;
 
-          let dataFlows = {
-            moveTo: '',
-            statusTo: '',
-            assignTo: '',
-            cfTo: {
-                name: '',
-                value: ''
-            }
-          };
-
-          dataFlows = await this.publicFunctions.getExecutedAutomationFlowsProperties(this.postData, '', this.flows, dataFlows, {name: customFieldName, value: customFieldValue});
-          await this.setFlowsProperties(this.postData, dataFlows);
+          this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.postData, '', this.flows, {name: customFieldName, value: customFieldValue});
 
           // Resolve with success
           resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
@@ -581,54 +570,21 @@ export class GroupCreatePostDialogComponent implements OnInit {
     // Set the status
     this.postData.task.status = event;
 
-    let dataFlows = {
-      moveTo: '',
-      statusTo: '',
-      assignTo: '',
-      cfTo: {
-          name: '',
-          value: ''
-      }
-    };
-
-    dataFlows = await this.publicFunctions.getExecutedAutomationFlowsProperties(this.postData, event, this.flows, dataFlows);
-    await this.setFlowsProperties(this.postData, dataFlows);
+    this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.postData, event, this.flows);
   }
 
   async moveTaskToColumn(event) {
     await this.publicFunctions.changeTaskColumn(this.postData._id, event.post.task._column.title, this.userData._id);
     this.postData.task._column.title = event.post.task._column.title;
 
-    let dataFlows = {
-      moveTo: '',
-      statusTo: '',
-      assignTo: '',
-      cfTo: {
-          name: '',
-          value: ''
-      }
-    };
-
-    dataFlows = await this.publicFunctions.getExecutedAutomationFlowsProperties(this.postData, event.post.task._column.title, this.flows, dataFlows);
-    await this.setFlowsProperties(this.postData, dataFlows);
+    this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.postData, event.post.task._column.title, this.flows);
   }
 
-  async onAssigned(post) {
+  async onAssigned(res) {
 
-    this.setAssignedBy(post);
+    this.setAssignedBy(res['post']);
 
-    let dataFlows = {
-      moveTo: '',
-      statusTo: '',
-      assignTo: '',
-      cfTo: {
-          name: '',
-          value: ''
-      }
-    };
-
-    dataFlows = await this.publicFunctions.getExecutedAutomationFlowsProperties(this.postData, this.postData.task._assigned_to, this.flows, dataFlows);
-    await this.setFlowsProperties(this.postData, dataFlows);
+    this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.postData, this.postData.task._assigned_to, this.flows);
   }
 
   async setAssignedBy(post) {
@@ -798,34 +754,5 @@ export class GroupCreatePostDialogComponent implements OnInit {
     await this.initPostData();
 
     this.parentAssignEvent.emit(post);
-  }
-
-  async setFlowsProperties(post: any, dataFlows: any) {
-
-    if (dataFlows.moveTo) {
-      post.task._column.title = dataFlows.moveTo;
-    }
-
-    if (dataFlows.statusTo) {
-      post.task.status = dataFlows.statusTo;
-    }
-
-    if (dataFlows.assignTo) {
-        post.task.unassigned = false;
-        post.task._assigned_to = await this.publicFunctions.getOtherUser(dataFlows.assignTo);
-        /*
-        this.lastAssignedBy = {
-          first_name: 'Automation',
-          last_name: 'Flow',
-          profile_pic: ''
-        }
-        */
-    }
-
-    if (dataFlows.cfTo.name !== '' && dataFlows.cfTo.value !== '') {
-        post.task.custom_fields[dataFlows.cfTo.name] = dataFlows.cfTo.value;
-    }
-
-    return post;
   }
 }
