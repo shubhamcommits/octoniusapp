@@ -220,7 +220,6 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges {
         this.postService.changeTaskAssignee(this.domainObject._id, this.value._id)
           .then((res) => {
             const post = res['post'];
-console.log(post);
             // Emit the post to other components
             this.post.emit({post: post});
 
