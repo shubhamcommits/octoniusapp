@@ -166,7 +166,6 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges {
    * @param dateObject
    */
   onModelChange(dateObject: any) {
-    // this.value = new Date(dateObject.year, dateObject.month - 1, dateObject.day);
     this.value = dateObject.value;
     this.saveData();
   }
@@ -175,9 +174,6 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges {
     this.editing = false;
 
     this.domainObject.task.custom_fields[this.customFieldName] = this.customFieldValue;
-
-    // Save the data
-    // this.saveData();
 
     this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
       this.postService.saveCustomField(this.domainObject._id, this.customFieldName, this.customFieldValue, this.groupId)
@@ -210,8 +206,6 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges {
     this.editing = false;
 
     if (this.domainObject.type === 'task') {
-      // Set the unassigned state of task to be false
-      this.domainObject.task.unassigned = false;
 
       // Assign the value of member map to the taskAssignee variable
       for (const member of memberMap.values()) {
@@ -225,8 +219,10 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges {
       this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
         this.postService.changeTaskAssignee(this.domainObject._id, this.value._id)
           .then((res) => {
+            const post = res['post'];
+console.log(post);
             // Emit the post to other components
-            this.post.emit({post: res['post']});
+            this.post.emit({post: post});
 
             // Resolve with success
             resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
@@ -239,7 +235,6 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges {
   }
 
   unassignTask() {
-    this.domainObject.task.unassigned = 'Yes';
     this.domainObject.task._assigned_to = null;
     this.value = null;
     this.profilePicUrl = 'assets/images/user.png';
@@ -272,33 +267,13 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges {
       tags: this.domainObject.tags,
       _read_by: this.domainObject._read_by,
       task: this.domainObject.task,
+      assigned_to: (this.domainObject.task._assigned_to) ? this.domainObject.task._assigned_to._id : '',
       start_date: this.domainObject.task.start_date,
       end_date: this.domainObject.task.end_date
     };
 
     // If type is task, then add following properties too
     if (this.domainObject.type === 'task') {
-
-      // Adding unassigned property for previous tasks model
-      if (this.domainObject.task.unassigned || this.domainObject.task.unassigned === 'No') {
-        this.domainObject.task.unassigned = false;
-      }
-
-      // Adding unassigned property for previous tasks model
-      if (!this.domainObject.task.unassigned || this.domainObject.task.unassigned === 'Yes') {
-        this.domainObject.task.unassigned = true;
-      }
-
-      // Unassigned property
-      postToUpdate.unassigned = this.domainObject.task.unassigned;
-      if (!postToUpdate.unassigned && this.type === 'assignee') {
-        postToUpdate.assigned_to = this.value;
-      }
-
-      // Task Assigned to
-      if (!postToUpdate.unassigned && this.domainObject.task._assigned_to !== null) {
-        postToUpdate.assigned_to = this.domainObject.task._assigned_to._id;
-      }
 
       // Task due date
       if (this.type === 'date') {

@@ -82,7 +82,6 @@ export class NewTaskComponent implements OnInit {
         _group: this.groupData._id,
         _content_mentions: [],
         task: {
-          unassigned: true,
           _assigned_to: null,
           status: 'to do',
           _column: null,
@@ -101,7 +100,6 @@ export class NewTaskComponent implements OnInit {
           _content_mentions: [],
           task: {
             _assigned_to: this.userData._id,
-            unassigned: false,
             status: 'to do',
             _column: {
               title: this.column.title
@@ -118,7 +116,6 @@ export class NewTaskComponent implements OnInit {
           _group: this.groupData._id,
           _content_mentions: [],
           task: {
-            unassigned: true,
             _assigned_to: null,
             status: 'to do',
             _column: {

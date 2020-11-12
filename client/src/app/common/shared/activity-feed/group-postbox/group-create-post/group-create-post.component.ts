@@ -144,8 +144,8 @@ export class GroupCreatePostComponent implements OnInit {
       // Set the title of the post
       this.title = this.postData.title
 
-      // If Post is task and is not unassigned
-      if (!this.postData.task.unassigned && this.type == 'task') {
+      // If Post is task and is assigned
+      if (this.postData.task._assigned_to && this.type == 'task') {
 
         // Set the taskAssignee
         this.taskAssignee = this.postData.task._assigned_to
@@ -451,22 +451,11 @@ export class GroupCreatePostComponent implements OnInit {
     // If type is task, then add following properties too
     if(this.type == 'task'){
 
-      // Adding unassigned property for previous tasks model
-      if(this.postData.task.unassigned || this.postData.task.unassigned == 'No')
-        this.postData.task.unassigned = false
-
-      // Adding unassigned property for previous tasks model
-      if(!this.postData.task.unassigned || this.postData.task.unassigned == 'Yes')
-      this.postData.task.unassigned = true
-
-      // Unassigned property
-      post.unassigned = this.postData.task.unassigned
-
       // Task due date
       post.date_due_to = this.dueDate
 
       // Task Assigned to
-      if(!post.unassigned)
+      if(this.postData.task._assigned_to)
         post.assigned_to = this.postData.task._assigned_to._id
 
       // Task column

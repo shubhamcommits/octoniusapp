@@ -108,10 +108,6 @@ const PostSchema = new Schema({
             type: Date,
             default: null
         },
-        unassigned: {
-            type: Schema.Types.Mixed,
-            default: true 
-        },
         _column: {
             title: {
                 type: String

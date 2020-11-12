@@ -326,7 +326,7 @@ export class PostService {
     switch (post.type) {
 
       case 'task':
-        if (!post.task.unassigned) {
+        if (post.task._assigned_to) {
 
           // Real time notification for new task assignment
           await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-task`, {
@@ -386,7 +386,7 @@ export class PostService {
 
       // save record of ussignment
       if (post.type === 'task') {
-        if (!post.task.unassigned) {
+        if (post.task._assigned_to) {
           post = await Post.findOneAndUpdate({
             _id: post._id
           }, {
@@ -450,7 +450,6 @@ export class PostService {
             end_date: (post.end_date) ? moment(post.end_date).format() : null,
             _assigned_to: post.assigned_to,
             status: post.status,
-            unassigned: post.unassigned,
             _column: post._column,
             custom_fields: post.task.custom_fields,
             isNorthStar: post.task.isNorthStar,
@@ -787,8 +786,7 @@ export class PostService {
       var post: any = await Post.findOneAndUpdate({
         _id: postId
       }, {
-        'task._assigned_to': assigneeId,
-        'task.unassigned': false
+        'task._assigned_to': assigneeId
       }, {
         new: true
       })

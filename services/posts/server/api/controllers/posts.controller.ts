@@ -64,8 +64,6 @@ export class PostController {
         if (post.type === 'task') {
             // Execute Automation Flows
             post = await this.executeAutomationFlows(post._group._id, post, '', userId);
-
-            //post = await this.setFlowsProperties(post, dataFlows);
         }
 
         return post;
@@ -547,8 +545,9 @@ export class PostController {
         // Execute Automation Flows
         post = await this.executeAutomationFlows(post._group._id, post, assigneeId, userId);
         
-        post.task.unassigned = false;
         post.task._assigned_to = assigneeId;
+
+        post = await postService.populatePostProperties(post);
         
         return post;
     }
