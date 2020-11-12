@@ -1045,7 +1045,7 @@ export class PublicFunctions {
                 if ((step.trigger.name === 'Assigned to' && (step.trigger._user._id === triggerText || step.trigger._user === triggerText))
                 || (step.trigger.name === 'Section is' && step.trigger.section.toUpperCase() === triggerText.toUpperCase())
                 || (step.trigger.name === 'Status is' && step.trigger.status.toUpperCase() === triggerText.toUpperCase())
-                || (step.trigger.name === 'Custom Field'
+                || (step.trigger.name === 'Custom Field' && cfTrigger
                     && step.trigger.custom_field.name.toUpperCase() === cfTrigger.name.toUpperCase()
                     && step.trigger.custom_field.value.toUpperCase() === cfTrigger.value.toUpperCase())
                 || (step.trigger.name === 'Task is CREATED')) {
