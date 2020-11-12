@@ -70,7 +70,7 @@
 
             <div *ngIf="step.trigger.name === 'Status is'">
               <div *ngIf="step.trigger.status" [ngClass]="getStatusClass(step.trigger.status)">
-                {{ step.trigger.status }}
+                {{ step.trigger.status.toUpperCase() }}
               </div>
 
               <button *ngIf="!step.trigger.status" mat-menu-item [matMenuTriggerFor]="statusMenu">
@@ -78,7 +78,7 @@
               </button>
               <mat-menu #statusMenu="matMenu">
                 <ng-container>
-                  <button mat-menu-item *ngFor="let status of statusOptions" (click)="statusTriggerSelected(status, index)">{{ status }}</button>
+                  <button mat-menu-item *ngFor="let status of statusOptions" (click)="statusTriggerSelected(status, index)">{{ status.toUpperCase() }}</button>
                 </ng-container>
               </mat-menu>
             </div>
@@ -191,7 +191,7 @@
 
             <div *ngIf="step.action.name === 'Change Status to'">
               <div *ngIf="step.action.status" [ngClass]="getStatusClass(step.action.status)">
-                {{ step.action.status }}
+                {{ step.action.status.toUpperCase() }}
               </div>
 
               <button *ngIf="!step.action.status" mat-menu-item [matMenuTriggerFor]="statusActionMenu">
@@ -199,7 +199,7 @@
               </button>
               <mat-menu #statusActionMenu="matMenu">
                 <ng-container>
-                  <button mat-menu-item *ngFor="let status of statusOptions" (click)="actionSelected('status', status, index)">{{ status }}</button>
+                  <button mat-menu-item *ngFor="let status of statusOptions" (click)="actionSelected('status', status, index)">{{ status.toUpperCase() }}</button>
                 </ng-container>
               </mat-menu>
             </div>
