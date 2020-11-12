@@ -504,9 +504,6 @@ export class GroupKanbanBoardsComponent implements OnInit {
     // Call the HTTP Request to change the assignee
     this.publicFunctions.changeTaskAssignee(task._id, memberMap['_id'])
 
-    // Set the unassigned to be false on the UI
-    task.task.unassigned = false
-
     // Set the assigned_to variable
     task.task._assigned_to = memberMap
   }

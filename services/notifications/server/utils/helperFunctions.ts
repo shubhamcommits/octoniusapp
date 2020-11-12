@@ -104,7 +104,7 @@ async function notifyRelatedUsers(io: any, socket: any, data: any) {
         switch (post.type) {
             //  task posts have only one assigned member so generatefeed needs to only be called once
             case 'task':
-                if (post.task.unassigned === false) {
+                if (post.task._assigned_to) {
                     generateFeed(post.task._assigned_to, io);
                 }
                 break;

@@ -141,7 +141,6 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
             delete post.comments_count;
             delete post.task._assigned_to;
             delete post.task.custom_fields;
-            post.task.unassigned = false;
             post._group = group;
             post.task._column.title = section.title;
             post.created_date = moment().local().startOf('day').format('YYYY-MM-DD');
@@ -167,7 +166,6 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
             delete post.comments_count;
             delete post.task._assigned_to;
             delete post.task.custom_fields;
-            post.task.unassigned = false;
             post._group = group;
             post.task._column.title = section.title;
 

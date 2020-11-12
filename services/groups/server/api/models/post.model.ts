@@ -97,10 +97,6 @@ const PostSchema = new Schema({
             type: Date,
             default: null
         },
-        unassigned: {
-            type: String,
-            default: "No"
-        },
         _column: {
             title: {
                 type: String

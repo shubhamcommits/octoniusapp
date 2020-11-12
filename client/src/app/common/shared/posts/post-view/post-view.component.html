@@ -33,11 +33,11 @@
 
                 <!-- Task Assignee detail starts -->
                 <section *ngIf="post?.type === 'task'">
-                    <span class="assigned" *ngIf="post.task.unassigned == false">
+                    <span class="assigned" *ngIf="post.task._assigned_to">
                         Assigned to {{post.task._assigned_to?.first_name}}
                         {{post.task._assigned_to?.last_name}}
                     </span>
-                    <span class="assigned" *ngIf="post.task.unassigned == true"> Unassigned
+                    <span class="assigned" *ngIf="!post.task._assigned_to"> Unassigned
                     </span>
                 </section>
                 <!-- Task Assignee detail ends -->

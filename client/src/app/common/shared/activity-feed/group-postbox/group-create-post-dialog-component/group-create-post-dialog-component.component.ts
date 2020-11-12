@@ -148,8 +148,8 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.dueDate = undefined;
     this.tags = [];
     if (this.postData.type === 'task') {
-      // If Post is not unassigned
-      if (!this.postData.task.unassigned) {
+      // If Post is assigned
+      if (this.postData.task._assigned_to) {
         // Set the taskAssignee
         this.taskAssignee = this.postData.task._assigned_to;
       }
@@ -512,21 +512,8 @@ export class GroupCreatePostDialogComponent implements OnInit {
     if (this.postData.type === 'task') {
       post.task = this.postData.task;
 
-      // Adding unassigned property for previous tasks model
-      if (this.postData.task.unassigned || this.postData.task.unassigned == 'No') {
-        this.postData.task.unassigned = false;
-      }
-
-      // Adding unassigned property for previous tasks model
-      if (!this.postData.task.unassigned || this.postData.task.unassigned == 'Yes') {
-        this.postData.task.unassigned = true;
-      }
-
-      // Unassigned property
-      post.unassigned = this.postData.task.unassigned;
-
       // Task Assigned to
-      if (post.unassigned !== null && !post.unassigned) {
+      if (this.postData.task._assigned_to) {
         post.assigned_to = this.postData.task._assigned_to._id;
       }
 

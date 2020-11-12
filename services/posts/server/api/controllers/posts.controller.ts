@@ -547,7 +547,6 @@ export class PostController {
         // Execute Automation Flows
         post = await this.executeAutomationFlows(post._group._id, post, assigneeId, userId);
         
-        post.task.unassigned = false;
         post.task._assigned_to = assigneeId;
         
         return post;
