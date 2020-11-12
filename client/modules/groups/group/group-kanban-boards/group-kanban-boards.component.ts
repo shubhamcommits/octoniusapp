@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment';
 import moment from 'moment/moment';
 import { MatDialog } from '@angular/material';
 import { PostService } from 'src/shared/services/post-service/post.service';
+import { FlowService } from 'src/shared/services/flow-service/flow.service';
 
 @Component({
   selector: 'app-group-kanban-boards',
@@ -21,6 +22,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
     public utilityService: UtilityService,
     private injector: Injector,
     public dialog: MatDialog,
+    private flowService: FlowService
   ) { }
 
   // Base URL of the uploads
@@ -43,7 +45,14 @@ export class GroupKanbanBoardsComponent implements OnInit {
   // Today's date object
   today = moment().local().startOf('day').format('YYYY-MM-DD');
 
+  flows = [];
+
   async ngOnInit() {
+
+    this.flowService.getGroupAutomationFlows(this.groupId).then(res => {
+      this.flows = res['flows'];
+    });
+
     this.columns.forEach( column => {
       let tasks = [];
       let doneTasks = [];
@@ -105,24 +114,8 @@ export class GroupKanbanBoardsComponent implements OnInit {
       // Update the task column when changed with dropping events to reflect back in the task view modal
       event.previousContainer.data[event.previousIndex]['task']._column.title = event.container.id
 
-      /*
-      // If new column is 'to do' then, set the status of the task to 'to do' as well
-      if (event.container.id === 'to do') {
-        event.previousContainer.data[event.previousIndex]['task'].status = 'to do'
-
-        // Change the task status
-        this.publicFunctions.changeTaskStatus(post._id, 'to do', this.userData._id)
-      }
-      */
-
       // Call move task to a new column
       this.moveTaskToNewColumn(post, event.previousContainer.id, event.container.id);
-
-      // Trasnfer Items into another array list
-      transferArrayItem(event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex);
     }
 
     if (event.previousContainer !== event.container || event.previousIndex !== event.currentIndex) {
@@ -289,15 +282,9 @@ export class GroupKanbanBoardsComponent implements OnInit {
                 } else if (index + 1 < this.columns.length) {
                   newColumnTitle = this.columns[index + 1]['title'];
                 }
-                // Prepare Event
-                let columnEvent = {
-                  post: task,
-                  oldColumn: this.columns[index]['title'],
-                  newColumn: newColumnTitle
-                }
 
-                // Call HTTP Put request to move the tasks
-                this.moveTaskToColumn(columnEvent)
+                // Call the HTTP Request to move the task
+                this.moveTaskToNewColumn(task, this.columns[index]['title'], newColumnTitle);
               })
             }
             // Remove the column from the array
@@ -345,19 +332,19 @@ export class GroupKanbanBoardsComponent implements OnInit {
    * @param oldColumn
    * @param newColumn
    */
-  moveTaskToNewColumn(task: any, oldColumn: string, newColumn: string) {
-
+  async moveTaskToNewColumn(task: any, oldColumn: string, newColumn: string) {
     this.publicFunctions.changeTaskColumn(task._id, newColumn, this.userData._id);
 
-    // If new column is 'to do' then set the taskStatus as 'to do' too
-    /*
-    switch (newColumn) {
-      case 'to do':
-        this.changeStatus(task, newColumn)
-        break;
-    }
-    */
+    task = await this.publicFunctions.executedAutomationFlowsPropertiesFront(task, newColumn, this.flows);
 
+    // Prepare Event
+    let columnEvent = {
+      post: task,
+      oldColumn: oldColumn,
+      newColumn: task.task._column.title
+    }
+
+    this.moveTaskToColumnFront(columnEvent)
   }
 
   // Check if the data provided is not empty{}
@@ -481,23 +468,19 @@ export class GroupKanbanBoardsComponent implements OnInit {
    * This function handles the UI updation of the moving tasks into various columns
    * @param $event
    */
-  moveTaskToColumn($event: any) {
-
-    // Call the HTTP Request to move the task
-    this.moveTaskToNewColumn($event.post, $event.oldColumn, $event.newColumn)
+  moveTaskToColumnFront(columnEvent: any) {
 
     // Find the oldColumnIndex in which task existed
-    let oldColumnIndex = this.columns.findIndex((column: any) => column.title.toLowerCase() === $event.oldColumn.toLowerCase());
+    let oldColumnIndex = this.columns.findIndex((column: any) => column.title.toLowerCase() === columnEvent.oldColumn.toLowerCase());
 
     // Find the newColumnIndex in which task is to be shifted
-    let newColumnIndex = this.columns.findIndex((column: any) => column.title.toLowerCase() === $event.newColumn.toLowerCase());
+    let newColumnIndex = this.columns.findIndex((column: any) => column.title.toLowerCase() === columnEvent.newColumn.toLowerCase());
 
     // Remove the task from the old Column
-    this.columns[oldColumnIndex]['tasks'].splice(this.columns[oldColumnIndex]['tasks'].findIndex((post: any) => post._id === $event.post._id), 1);
+    this.columns[oldColumnIndex]['tasks'].splice(this.columns[oldColumnIndex]['tasks'].findIndex((post: any) => post._id === columnEvent.post._id), 1);
 
     // Add the task into the new column
-    this.columns[newColumnIndex]['tasks'].unshift($event.post);
-
+    this.columns[newColumnIndex]['tasks'].unshift(columnEvent.post);
   }
 
   /**
