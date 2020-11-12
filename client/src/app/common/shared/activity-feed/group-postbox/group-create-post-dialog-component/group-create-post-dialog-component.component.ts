@@ -513,12 +513,12 @@ export class GroupCreatePostDialogComponent implements OnInit {
       post.task = this.postData.task;
 
       // Adding unassigned property for previous tasks model
-      if (this.postData.task.unassigned == 'No') {
+      if (this.postData.task.unassigned || this.postData.task.unassigned == 'No') {
         this.postData.task.unassigned = false;
       }
 
       // Adding unassigned property for previous tasks model
-      if (this.postData.task.unassigned == 'Yes') {
+      if (!this.postData.task.unassigned || this.postData.task.unassigned == 'Yes') {
         this.postData.task.unassigned = true;
       }
 
