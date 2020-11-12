@@ -1032,9 +1032,7 @@ export class PublicFunctions {
         this.subSink.unsubscribe();
     }
 
-    //executeAutomationFlows(groupId: string, postId: string, triggerText: string, userId: string, cfTrigger?: any)
-    getExecutedAutomationFlowsProperties(post: any, triggerText: string, flows, dataFlows, cfTrigger?: any) {
-
+    executedAutomationFlowsPropertiesFront(post: any, triggerText: string, flows, cfTrigger?: any) {
 
       if (flows && flows.length > 0) {
         flows.forEach(flow => {
@@ -1050,32 +1048,36 @@ export class PublicFunctions {
                     && step.trigger.custom_field.value.toUpperCase() === cfTrigger.value.toUpperCase())
                 || (step.trigger.name === 'Task is CREATED')) {
 
-                  if (step.action.name === 'Move to') {
-                    post.task._column.title = step.action.section
-                    dataFlows.moveTo = step.action.section;
-                    triggerText = step.action.section;
+                  if (step.action.name === 'Assign to') {
+                    post.task.unassigned = false;
+                    post.task._assigned_to = step.action._user;
+                    triggerText = step.action._user;
+                    return await this.executedAutomationFlowsPropertiesFront(post, triggerText, flows);
                   }
 
                   if (step.action.name === 'Change Status to') {
                     post.task.status = step.action.status
-                    dataFlows.statusTo = step.action.status;
                     triggerText = step.action.status;
+                    return await this.executedAutomationFlowsPropertiesFront(post, triggerText, flows);
                   }
 
-                  if (step.action.name === 'Assign to') {
-                    post.task.unassigned = false;
-                    post.task._assigned_to = step.action._user;
-                    dataFlows.assignTo = step.action._user;
-                    triggerText = step.action._user;
+                  if (step.action.name === 'Custom Field') {
+                    post.task.custom_fields[step.action.custom_field.name] = step.action.custom_field.value;
+                    cfTrigger = step.action.custom_field;
+                    return await this.executedAutomationFlowsPropertiesFront(post, triggerText, flows, cfTrigger);
                   }
 
-                  dataFlows = this.getExecutedAutomationFlowsProperties(post, triggerText, flows, dataFlows, cfTrigger);
+                  if (step.action.name === 'Move to') {
+                    post.task._column.title = step.action.section
+                    triggerText = step.action.section;
+                    return await this.executedAutomationFlowsPropertiesFront(post, triggerText, flows);
+                  }
                 }
             });
           }
         });
       }
 
-      return dataFlows;
+      return post;
     }
 }

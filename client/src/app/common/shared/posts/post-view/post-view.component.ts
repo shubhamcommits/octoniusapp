@@ -82,34 +82,7 @@ export class PostViewComponent implements OnInit {
     // Update the UI for the task status change
     this.post.task.status = status;
 
-    let dataFlows = {
-      moveTo: '',
-      statusTo: '',
-      assignTo: '',
-      cfTo: {
-          name: '',
-          value: ''
-      }
-    };
-
-    dataFlows = await this.publicFunctions.getExecutedAutomationFlowsProperties(this.post, status, this.flows, dataFlows);
-
-    if (dataFlows.moveTo) {
-      this.post.task._column.title = dataFlows.moveTo;
-    }
-
-    if (dataFlows.statusTo) {
-      this.post.task.status = dataFlows.statusTo;
-    }
-
-    if (dataFlows.assignTo) {
-      this.post.task.unassigned = false;
-      this.post.task._assigned_to = await this.publicFunctions.getOtherUser(dataFlows.assignTo);
-    }
-
-    if (dataFlows.cfTo.name !== '' && dataFlows.cfTo.value !== '') {
-      this.post.task.custom_fields[dataFlows.cfTo.name] = dataFlows.cfTo.value;
-    }
+    this.post = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.post, status, this.flows);
 
     // Emit the taskStatus to other components
     this.taskStatus.emit(status);

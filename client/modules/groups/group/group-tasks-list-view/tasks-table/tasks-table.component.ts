@@ -1,8 +1,10 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Injector, Input, OnChanges, Output, ViewChild } from '@angular/core';
 import { MatSort, MatTableDataSource, Sort } from '@angular/material';
+import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
 import { environment } from 'src/environments/environment';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
+import { FlowService } from 'src/shared/services/flow-service/flow.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
@@ -32,17 +34,28 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
 
   displayedColumns = ['title', 'tags', 'asignee', 'due_to', 'nsPercent', 'star'];
 
+  // Public Functions class object
+  publicFunctions = new PublicFunctions(this.injector)
+
+  flows = [];
+
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
   constructor(
     public utilityService: UtilityService,
-    private columnService: ColumnService
+    private columnService: ColumnService,
+    private flowService: FlowService,
+    private injector: Injector
   ) { }
 
   async ngOnChanges() {
     this.customFields = [...this.customFields];
     await this.initTable();
+
+    this.flowService.getGroupAutomationFlows(this.groupData._id).then(res => {
+      this.flows = res['flows'];
+    });
   }
 
   ngAfterViewInit() {
@@ -79,8 +92,8 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
     }
   }
 
-  fieldUpdated(post, task) {
-    task = post;
+  async fieldUpdated(res: any) {
+    this.updateTask(res['post'], res['cfTrigger']);
   }
 
   getProgressPercent(northStar) {
@@ -156,8 +169,14 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
    * This function is responsible for updating the task in the UI
    * @param post - post
    */
-  updateTask(post: any) {
+  async updateTask(post: any, cfTrigger?: any) {
     if (post) {
+      if (cfTrigger) {
+        post.task.custom_fields[cfTrigger.name] = cfTrigger.value;
+      }
+
+      post = await this.publicFunctions.executedAutomationFlowsPropertiesFront(post, '', this.flows, cfTrigger);
+
       // Find the index of the task
       const indexTask = this.tasks.findIndex((task: any) => task._id === post._id);
       if (indexTask !== -1) {

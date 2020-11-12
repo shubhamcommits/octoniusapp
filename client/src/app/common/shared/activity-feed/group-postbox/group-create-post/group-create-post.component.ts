@@ -230,18 +230,7 @@ export class GroupCreatePostComponent implements OnInit {
     // Set the status
     this.postData.task.status = event;
 
-    let dataFlows = {
-      moveTo: '',
-      statusTo: '',
-      assignTo: '',
-      cfTo: {
-          name: '',
-          value: ''
-      }
-    };
-
-    dataFlows = await this.publicFunctions.getExecutedAutomationFlowsProperties(this.postData, event, this.flows, dataFlows);
-    await this.setFlowsProperties(this.postData, dataFlows);
+    this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.postData, event, this.flows);
 
     this.taskStatus.emit(event);
   }
@@ -250,18 +239,7 @@ export class GroupCreatePostComponent implements OnInit {
     await this.publicFunctions.changeTaskColumn(this.postData._id, event.post.task._column.title, this.userData._id);
     this.postData.task._column.title = event.post.task._column.title;
 
-    let dataFlows = {
-      moveTo: '',
-      statusTo: '',
-      assignTo: '',
-      cfTo: {
-          name: '',
-          value: ''
-      }
-    };
-
-    dataFlows = await this.publicFunctions.getExecutedAutomationFlowsProperties(this.postData, event.post.task._column.title, this.flows, dataFlows);
-    await this.setFlowsProperties(this.postData, dataFlows);
+    this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.postData, event.post.task._column.title, this.flows);
 
     this.moveTask.emit(event);
   }
@@ -278,18 +256,7 @@ export class GroupCreatePostComponent implements OnInit {
     }
 
     if (this.type === 'task') {
-      let dataFlows = {
-        moveTo: '',
-        statusTo: '',
-        assignTo: '',
-        cfTo: {
-            name: '',
-            value: ''
-        }
-      };
-
-      dataFlows = await this.publicFunctions.getExecutedAutomationFlowsProperties(this.postData, this.postData.task._assigned_to, this.flows, dataFlows);
-      await this.setFlowsProperties(this.postData, dataFlows);
+      this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.postData, this.postData.task._assigned_to, this.flows);
     }
   }
 
@@ -432,21 +399,12 @@ export class GroupCreatePostComponent implements OnInit {
       this.postService.create(postData)
         .then(async (res) => {
 
-          // Emit the Post to the other compoentns
-          this.post.emit(res['post'])
+          this.postData = res['post'];
 
-          let dataFlows = {
-            moveTo: '',
-            statusTo: '',
-            assignTo: '',
-            cfTo: {
-                name: '',
-                value: ''
-            }
-          };
+          this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.postData, '', this.flows);
 
-          dataFlows = await this.publicFunctions.getExecutedAutomationFlowsProperties(this.postData, '', this.flows, dataFlows);
-          await this.setFlowsProperties(this.postData, dataFlows);
+          // Emit the Post to the other components
+          this.post.emit(this.postData)
 
           // Resolve with success
           resolve(this.utilityService.resolveAsyncPromise('Post Created!'))
@@ -582,34 +540,5 @@ export class GroupCreatePostComponent implements OnInit {
           reject(this.utilityService.rejectAsyncPromise('Unable to delete post, please try again!'));
         })
     }))
-  }
-
-  async setFlowsProperties(post: any, dataFlows: any) {
-
-    if (dataFlows.moveTo) {
-      post.task._column.title = dataFlows.moveTo;
-    }
-
-    if (dataFlows.statusTo) {
-      post.task.status = dataFlows.statusTo;
-    }
-
-    if (dataFlows.assignTo) {
-        post.task.unassigned = false;
-        post.task._assigned_to = await this.publicFunctions.getOtherUser(dataFlows.assignTo);
-        /*
-        this.lastAssignedBy = {
-          first_name: 'Automation',
-          last_name: 'Flow',
-          profile_pic: ''
-        }
-        */
-    }
-
-    if (dataFlows.cfTo.name !== '' && dataFlows.cfTo.value !== '') {
-        post.task.custom_fields[dataFlows.cfTo.name] = dataFlows.cfTo.value;
-    }
-
-    return post;
   }
 }
