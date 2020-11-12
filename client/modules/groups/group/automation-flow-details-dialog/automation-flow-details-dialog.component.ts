@@ -23,7 +23,7 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
 
   triggerOptions = ['Assigned to', 'Custom Field', 'Section is', 'Status is', 'Task is CREATED'];
   actionOptions = ['Assign to', 'Change Status to', 'Custom Field', 'Move to'];
-  statusOptions = ['TO DO', 'IN PROGRESS', 'DONE'];
+  statusOptions = ['To Do', 'In Progress', 'Done'];
   customFields = [];
   customFieldOptions = [];
   baseUrl = environment.UTILITIES_USERS_UPLOADS;
@@ -116,11 +116,11 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
 
   getStatusClass(status: string) {
     let retClass = '';
-    if (status === 'TO DO') {
+    if (status === 'To Do') {
       retClass = 'status-todo';
-    } else if (status === 'IN PROGRESS') {
+    } else if (status === 'In Progress') {
       retClass = 'status-inprogress';
-    } else if (status === 'DONE') {
+    } else if (status === 'Done') {
       retClass = 'status-done';
     }
     return retClass + ' badge-status' ;

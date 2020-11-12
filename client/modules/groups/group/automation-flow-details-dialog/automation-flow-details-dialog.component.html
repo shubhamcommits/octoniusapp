@@ -1,7 +1,7 @@
 <div class="flowStepsDialog">
 
-  <mat-dialog-actions align="end">
-    <i mat-dialog-close class="material-icons" (click)="onCloseDialog()" style="cursor: pointer">close</i>
+  <mat-dialog-actions align="start">
+    <i mat-dialog-close class="material-icons" (click)="onCloseDialog()" style="cursor: pointer">arrow_back</i>
   </mat-dialog-actions>
 
   <h2 mat-dialog-title style="margin-bottom: 30px">
@@ -108,8 +108,8 @@
                 </ng-container>
               </mat-menu>
 
-              <div *ngIf="step?.trigger?.custom_field?.name" style="display: flex;">
-                <div style="margin-right: 10px;">
+              <div *ngIf="step?.trigger?.custom_field?.name" style="display: flex; align-items: baseline;">
+                <div class="badge-cf" style="margin-right: 10px;">
                   {{ step.trigger.custom_field.name }}
                 </div>
 
@@ -214,8 +214,8 @@
                 </ng-container>
               </mat-menu>
 
-              <div *ngIf="step?.action?.custom_field?.name" style="display: flex;">
-                <div style="margin-right: 10px;">
+              <div *ngIf="step?.action?.custom_field?.name" style="display: flex; align-items: baseline;">
+                <div style="margin-right: 10px;" class="badge-cf">
                   {{ step.action.custom_field.name }}
                 </div>
 
@@ -230,7 +230,7 @@
                   </mat-menu>
                 </div>
 
-                <div *ngIf="step?.action?.custom_field?.value" style="float: left;">
+                <div *ngIf="step?.action?.custom_field?.value">
                   is
                   <div class="badge-section">
                     {{ step.action.custom_field.value }}
