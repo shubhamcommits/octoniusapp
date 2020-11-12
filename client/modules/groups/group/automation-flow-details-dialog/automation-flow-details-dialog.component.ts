@@ -23,7 +23,7 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
 
   triggerOptions = ['Assigned to', 'Custom Field', 'Section is', 'Status is', 'Task is CREATED'];
   actionOptions = ['Assign to', 'Change Status to', 'Custom Field', 'Move to'];
-  statusOptions = ['To Do', 'In Progress', 'Done'];
+  statusOptions = ['to do', 'in progress', 'done'];
   customFields = [];
   customFieldOptions = [];
   baseUrl = environment.UTILITIES_USERS_UPLOADS;
