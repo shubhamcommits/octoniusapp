@@ -74,6 +74,10 @@ const PostSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     }],
+    _assigned_to: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }],
 
     // TASK
     task: {

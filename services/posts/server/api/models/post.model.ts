@@ -85,6 +85,10 @@ const PostSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     }],
+    _assigned_to: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }],
 
     // TASK
     task: {
@@ -92,10 +96,10 @@ const PostSchema = new Schema({
             type: Date,
             default: null
         },
-        _assigned_to: [{
+        _assigned_to: {
             type: Schema.Types.ObjectId,
             ref: 'User'
-        }],
+        },
         status: {
             type: String,
             default: 'to do'

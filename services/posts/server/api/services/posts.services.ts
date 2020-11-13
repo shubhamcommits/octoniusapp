@@ -198,9 +198,8 @@ export class PostService {
         .sort('-_id')
         .limit(5)
         .populate({ path: '_posted_by', select: this.userFields })
-        .populate({ path: 'task._assigned_to', select: this.userFields })
-        .populate({ path: 'task._parent_task', select: '_id title task._assigned_to' })
-        // .populate({ path: 'event._assigned_to', select: this.userFields })
+        .populate({ path: '_assigned_to', select: this.userFields })
+        .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
         // .populate({ path: '_liked_by', select: this.userFields, options: { limit: 10 } })
         .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
         .lean();
@@ -211,8 +210,8 @@ export class PostService {
         .sort('-task.due_to')
         .populate({ path: '_group', select: this.groupFields })
         .populate({ path: '_posted_by', select: this.userFields })
-        .populate({ path: 'task._assigned_to', select: this.userFields })
-        .populate({ path: 'task._parent_task', select: '_id title task._assigned_to' })
+        .populate({ path: '_assigned_to', select: this.userFields })
+        .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
         // .populate({ path: '_liked_by', select: this.userFields, options: { limit: 10 } })
         .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
         .lean();
@@ -230,10 +229,10 @@ export class PostService {
 
       // Populate task properties
       post = await Post.populate(post, [
-        { path: 'task._assigned_to', select: this.userFields },
+        { path: '_assigned_to', select: this.userFields },
         { path: '_group', select: this.groupFields },
         { path: '_posted_by', select: this.userFields },
-        { path: 'task._parent_task', select: '_id title task._assigned_to' }
+        { path: 'task._parent_task', select: '_id title _assigned_to' }
         // { path: '_liked_by', select: this.userFields, options: { limit: 10 } }
       ]);
 
@@ -250,7 +249,7 @@ export class PostService {
     } else if (post.type === 'event') {
 
       // Populate event properties
-      if (post.event._assigned_to.includes('all')) {
+      if (post._assigned_to.includes('all')) {
         post = await Post.populate(post, [
           { path: '_group', select: this.groupFields },
           { path: '_posted_by', select: this.userFields },
@@ -258,7 +257,7 @@ export class PostService {
         ])
       } else {
         post = await Post.populate(post, [
-          { path: 'event._assigned_to', select: this.userFields },
+          { path: '_assigned_to', select: this.userFields },
           { path: '_group', select: this.groupFields },
           { path: '_posted_by', select: this.userFields },
           // { path: '_liked_by', select: this.userFields, options: { limit: 10 } }
@@ -326,7 +325,7 @@ export class PostService {
     switch (post.type) {
 
       case 'task':
-        if (post.task._assigned_to) {
+        if (post._assigned_to) {
 
           // Real time notification for new task assignment
           await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-task`, {
@@ -386,13 +385,13 @@ export class PostService {
 
       // save record of ussignment
       if (post.type === 'task') {
-        if (post.task._assigned_to) {
+        if (post._assigned_to) {
           post = await Post.findOneAndUpdate({
             _id: post._id
           }, {
             $push: { "records.assignments": {
                 date: moment().format(),
-                _assigned_to: post.task._assigned_to,
+                _assigned_to: post._assigned_to,
                 _assigned_from: userId
               }
             }
@@ -437,7 +436,8 @@ export class PostService {
         _content_mentions: post._content_mentions,
         tags: post.tags,
         _read_by: [],
-        files: post.files
+        files: post.files,
+        _assigned_to: post.assigned_to
       }
 
       switch (post.type) {
@@ -448,7 +448,7 @@ export class PostService {
             due_to: (post.date_due_to) ? moment(post.date_due_to).format() : null,
             start_date: (post.start_date) ? moment(post.start_date).format() : null,
             end_date: (post.end_date) ? moment(post.end_date).format() : null,
-            _assigned_to: post.assigned_to,
+            //_assigned_to: post.assigned_to,
             status: post.status,
             _column: post._column,
             custom_fields: post.task.custom_fields,
@@ -476,12 +476,12 @@ export class PostService {
           // transform due_to time to UTC
           post.date_due_to = moment.utc(post.date_due_to).format();
 
-          let assignedUsers: any = post.event._assigned_to
+          //let assignedUsers: any = post._assigned_to
 
           // Add Event property details
           postData.event = {
             due_to: post.event.due_to,
-            _assigned_to: assignedUsers
+            //_assigned_to: assignedUsers
           }
 
           break;
@@ -540,8 +540,8 @@ export class PostService {
     post = await Post.findOne({ _id: postId })
       .populate('_group', this.groupFields)
       .populate('_posted_by', this.userFields)
-      .populate('task._assigned_to', this.userFields)
-      .populate({ path: 'task._parent_task', select: '_id title task._assigned_to' })
+      .populate('_assigned_to', this.userFields)
+      .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
       .populate('performance_task._assigned_to', this.userFields)
       .lean();
     // Return the post
@@ -778,25 +778,15 @@ export class PostService {
    * @param postId 
    * @param assigneeId 
    */
-  async removeAssignee(postId: string, assigneeId: string, postType: string, userId: string) {
+  async removeAssignee(postId: string, assigneeId: string, userId: string) {
 
     try {
-      let updateAction = {};
-      if (postType === 'task') {
-        updateAction = {
-          $pull: { "task._assigned_to": assigneeId }
-        }
-      }
-
-      if (postType === 'event') {
-        updateAction = {
-          $pull: { "event._assigned_to": assigneeId }
-        }
-      }
       // Update post
       var post: any = await Post.findOneAndUpdate({
         _id: postId
-      }, updateAction, {
+      }, {
+        $pull: { _assigned_to: assigneeId }
+      }, {
         new: true
       })
 
@@ -831,25 +821,16 @@ export class PostService {
    * @param postId 
    * @param assigneeId 
    */
-  async addAssignee(postId: string, assigneeId: string, postType: string, userId: string) {
+  async addAssignee(postId: string, assigneeId: string, userId: string) {
 
     try {
-      let updateAction = {};
-      if (postType === 'task') {
-        updateAction = {
-          $push: { "task._assigned_to": assigneeId }
-        }
-      }
-
-      if (postType === 'event') {
-        updateAction = {
-          $push: { "event._assigned_to": assigneeId }
-        }
-      }
+      
       // Get post data
       var post: any = await Post.findOneAndUpdate({
         _id: postId
-      }, updateAction, {
+      }, {
+        $push: { _assigned_to: assigneeId }
+      }, {
         new: true
       })
 
@@ -1123,7 +1104,7 @@ export class PostService {
       const todayPlus30DaysForTask = moment().local().add(30, 'days').endOf('day').format();
 
       const tasks = await Post.find({
-        'task._assigned_to': userId,
+        '_assigned_to': userId,
         'task.due_to': { $gte: todayForTask, $lte: todayPlus30DaysForTask },
         $or: [
           { 'task.status': 'to do' },
@@ -1134,8 +1115,8 @@ export class PostService {
         .sort('-task.due_to')
         .populate('_group', 'group_name')
         .populate('_posted_by', 'first_name last_name profile_pic')
-        .populate('task._assigned_to', 'first_name last_name profile_pic')
-        .populate({ path: 'task._parent_task', select: '_id title task._assigned_to' })
+        .populate('_assigned_to', 'first_name last_name profile_pic')
+        .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
         .lean();
 
       return {
@@ -1166,7 +1147,7 @@ export class PostService {
       const todayPlus7DaysForTask = moment().local().add(7, 'days').endOf('day').format();
 
       const tasks = await Post.find({
-        'task._assigned_to': userId,
+        '_assigned_to': userId,
         'task.due_to': { $gte: todayForTask, $lte: todayPlus7DaysForTask },
         $or: [
           { 'task.status': 'to do' },
@@ -1178,8 +1159,8 @@ export class PostService {
         .limit(10)
         .populate('_group', 'group_name')
         .populate('_posted_by', 'first_name last_name profile_pic')
-        .populate('task._assigned_to', 'first_name last_name profile_pic')
-        .populate({ path: 'task._parent_task', select: '_id title task._assigned_to' })
+        .populate('_assigned_to', 'first_name last_name profile_pic')
+        .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
         .lean();
 
       return {
@@ -1211,7 +1192,7 @@ export class PostService {
       const todayPlus7DaysForTask = moment().local().add(7, 'days').endOf('day').format();
 
       const tasks = await Post.find({
-        'task._assigned_to': userId,
+        '_assigned_to': userId,
         'task.due_to': { $gte: todayForTask, $lte: todayPlus7DaysForTask },
         '_id': { $gte: lastTaskId },
         $or: [
@@ -1224,8 +1205,8 @@ export class PostService {
         .limit(5)
         .populate('_group', 'group_name')
         .populate('_posted_by', 'first_name last_name profile_pic')
-        .populate('task._assigned_to', 'first_name last_name profile_pic')
-        .populate({ path: 'task._parent_task', select: '_id title task._assigned_to' })
+        .populate('_assigned_to', 'first_name last_name profile_pic')
+        .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
         .lean();
 
       return {
@@ -1263,11 +1244,11 @@ export class PostService {
         $or: [{
           $and: [
             // Find events due to today
-            { 'event._assigned_to': userId },
+            { '_assigned_to': userId },
             { 'event.due_to': { $gte: todayForEvent, $lte: todayPlus7DaysForEvent } }
           ]
         }]
-      }).sort('event.due_to').populate('event._assigned_to', 'first_name last_name').populate('_group', 'group_name');
+      }).sort('event.due_to').populate('_assigned_to', 'first_name last_name').populate('_group', 'group_name');
 
       return {
         today: today,
@@ -1305,11 +1286,11 @@ export class PostService {
         $or: [{
           $and: [
             // Find events due to today
-            { 'event._assigned_to': userId },
+            { '_assigned_to': userId },
             { 'event.due_to': { $gte: todayForEvent, $lte: todayPlus7DaysForEvent } }
           ]
         }]
-      }).sort('event.due_to').limit(10).populate('event._assigned_to', 'first_name last_name').populate('_group', 'group_name');
+      }).sort('event.due_to').limit(10).populate('_assigned_to', 'first_name last_name').populate('_group', 'group_name');
 
       return {
         today: today,
@@ -1349,11 +1330,11 @@ export class PostService {
         $or: [{
           $and: [
             // Find events due to today
-            { 'event._assigned_to': userId },
+            { '_assigned_to': userId },
             { 'event.due_to': { $gte: todayForEvent, $lte: todayPlus7DaysForEvent } }
           ]
         }]
-      }).sort('event.due_to').limit(5).populate('event._assigned_to', 'first_name last_name').populate('_group', 'group_name');
+      }).sort('event.due_to').limit(5).populate('_assigned_to', 'first_name last_name').populate('_group', 'group_name');
 
       return {
         today: today,
@@ -1554,8 +1535,8 @@ export class PostService {
       .sort('-task.due_to')
       .populate('_group', this.groupFields)
       .populate('_posted_by', this.userFields)
-      .populate('task._assigned_to', this.userFields)
-      .populate({ path: 'task._parent_task', select: '_id title task._assigned_to' })
+      .populate('_assigned_to', this.userFields)
+      .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
       .lean();
       
     } else {
@@ -1569,8 +1550,8 @@ export class PostService {
       .sort('-task.due_to')
       .populate({ path: '_group', select: this.groupFields })
       .populate({ path: '_posted_by', select: this.userFields })
-      .populate({ path: 'task._assigned_to', select: this.userFields })
-      .populate({ path: 'task._parent_task', select: '_id title task._assigned_to' })
+      .populate({ path: '_assigned_to', select: this.userFields })
+      .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
       .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
       .lean();
     }
@@ -1609,8 +1590,8 @@ export class PostService {
       .sort('-task.due_to')
       .populate('_group', this.groupFields)
       .populate('_posted_by', this.userFields)
-      .populate('task._assigned_to', this.userFields)
-      .populate({ path: 'task._parent_task', select: '_id title task._assigned_to' })
+      .populate('_assigned_to', this.userFields)
+      .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
       .lean();
       
     } else {
@@ -1625,8 +1606,8 @@ export class PostService {
       .sort('-task.due_to')
       .populate({ path: '_group', select: this.groupFields })
       .populate({ path: '_posted_by', select: this.userFields })
-      .populate({ path: 'task._assigned_to', select: this.userFields })
-      .populate({ path: 'task._parent_task', select: '_id title task._assigned_to' })
+      .populate({ path: '_assigned_to', select: this.userFields })
+      .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
       .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
       .lean();
     }
@@ -1662,8 +1643,8 @@ export class PostService {
       .sort('-task.due_to')
       .populate('_group', this.groupFields)
       .populate('_posted_by', this.userFields)
-      .populate('task._assigned_to', this.userFields)
-      .populate({ path: 'task._parent_task', select: '_id title task._assigned_to' })
+      .populate('_assigned_to', this.userFields)
+      .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
       .lean();
       
     } else {
@@ -1677,8 +1658,8 @@ export class PostService {
       .sort('-task.due_to')
       .populate({ path: '_group', select: this.groupFields })
       .populate({ path: '_posted_by', select: this.userFields })
-      .populate({ path: 'task._assigned_to', select: this.userFields })
-      .populate({ path: 'task._parent_task', select: '_id title task._assigned_to' })
+      .populate({ path: '_assigned_to', select: this.userFields })
+      .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
       .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
       .lean();
     }
@@ -1717,8 +1698,8 @@ export class PostService {
     .sort('created_date')
     .populate({ path: '_group', select: this.groupFields })
     .populate({ path: '_posted_by', select: this.userFields })
-    .populate({ path: 'task._assigned_to', select: this.userFields })
-    .populate({ path: 'task._parent_task', select: '_id title task._assigned_to' })
+    .populate({ path: '_assigned_to', select: this.userFields })
+    .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
     .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
     .lean();
     

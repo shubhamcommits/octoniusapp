@@ -517,14 +517,14 @@ export class PostController {
     async removeAssignee(req: Request, res: Response, next: NextFunction) {
 
         // Fetch Data from request
-        const { params: { postId }, body: { assigneeId, postType } } = req;
+        const { params: { postId }, body: { assigneeId } } = req;
 
         // Fetch userId from the request
         const userId = req['userId'];
 
         try {
             // Call Service function to remove the assignee
-            const post = await postService.removeAssignee(postId, assigneeId, postType, userId)
+            const post = await postService.removeAssignee(postId, assigneeId, userId)
                 .catch((err) => {
                     return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
                 })
@@ -548,13 +548,13 @@ export class PostController {
     async addAssignee(req: Request, res: Response, next: NextFunction) {
 
         // Fetch Data from request
-        const { params: { postId }, body: { assigneeId, postType, groupId } } = req;
+        const { params: { postId }, body: { assigneeId, groupId } } = req;
 
         // Fetch userId from the request
         const userId = req['userId'];
 
         try {
-            const post = await this.callAddAssigneeService(postId, assigneeId, postType, userId, groupId)
+            const post = await this.callAddAssigneeService(postId, assigneeId, userId, groupId)
                 .catch((err) => {
                     return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
                 })
@@ -569,30 +569,21 @@ export class PostController {
         }
     }
 
-    async callAddAssigneeService(postId: string, assigneeId: string, postType: string, userId: string, groupId: string) {
+    async callAddAssigneeService(postId: string, assigneeId: string, userId: string, groupId: string) {
         // Call Service function to change the assignee
-        let post = await postService.addAssignee(postId, assigneeId, postType, userId);
+        let post = await postService.addAssignee(postId, assigneeId, userId);
 
         // Execute Automation Flows
         post = await this.executeAutomationFlows(groupId, post, assigneeId, userId);
 
-        if (postType === 'task') {
-            if (post.task && post.task._assigned_to) {
-                post.task._assigned_to.push(assigneeId);
-            } else {
-                post.task._assigned_to = [assigneeId];
-            }
-        }
-        if (postType === 'event') {
-            if (post.event && post.event._assigned_to) {
-                post.event._assigned_to.push(assigneeId);
-            } else {
-                post.event._assigned_to = [assigneeId];
-            }
+        const index = post._assigned_to.findIndex(assignee => assignee._id == assigneeId);
+
+        if (index < 0) {
+            post._assigned_to.push(assigneeId);
         }
 
         post = await postService.populatePostProperties(post);
-        
+
         return post;
     }
 
@@ -1258,7 +1249,10 @@ export class PostController {
                             || (step.trigger.name === 'Task is CREATED')) {
 
                             if (step.action.name === 'Assign to') {
-                                return await this.callAddAssigneeService(post._id, step.action._user, 'task', userId, groupId);
+                                const index = post._assigned_to.findIndex(assignee => assignee._id == step.action._user);
+                                if (index < 0) {
+                                    return await this.callAddAssigneeService(post._id, step.action._user, userId, groupId);
+                                }
                             }
                             
                             if (step.action.name === 'Change Status to') {

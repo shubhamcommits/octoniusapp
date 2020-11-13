@@ -1049,9 +1049,12 @@ export class PublicFunctions {
                 || (step.trigger.name === 'Task is CREATED')) {
 
                   if (step.action.name === 'Assign to') {
-                    post.task._assigned_to = step.action._user;
-                    triggerText = step.action._user;
-                    return await this.executedAutomationFlowsPropertiesFront(post, triggerText, flows);
+                    const index = post._assigned_to.findIndex(assignee => assignee._id == step.action._user);
+                    if (index > 0) {
+                      post._assigned_to.push(step.action._user);
+                      triggerText = step.action._user;
+                      return await this.executedAutomationFlowsPropertiesFront(post, triggerText, flows);
+                    }
                   }
 
                   if (step.action.name === 'Change Status to') {

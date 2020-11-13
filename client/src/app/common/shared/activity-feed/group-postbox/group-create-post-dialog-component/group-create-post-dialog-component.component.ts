@@ -568,14 +568,14 @@ export class GroupCreatePostDialogComponent implements OnInit {
   }
 
   async onAssigned(res) {
-
-    this.setAssignedBy(res['post']);
+    this.postData = res['post'];
+    this.setAssignedBy(this.postData);
 
     this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.postData, res['assigneeId'], this.flows);
   }
 
   async setAssignedBy(post) {
-    this.postData = post;
+
     if (this.postData.records && this.postData.records.assignments && this.postData.records.assignments.length > 0) {
       this.postData.records.assignments = this.postData.records.assignments.sort((a1, a2) => (new Date(a1.date).getTime() < new Date(a2.date).getTime()) ? 1 : -1);
       this.lastAssignedBy = await this.publicFunctions.getOtherUser(this.postData.records.assignments[0]._assigned_from);

@@ -42,13 +42,13 @@ export class CalendarService {
                 .sort('-task.due_to')
                 .populate('_group', this.groupFields)
                 .populate('_posted_by', this.userFields)
-                .populate('task._assigned_to', this.userFields)
+                .populate('_assigned_to', this.userFields)
                 .lean();
 
         // Find user's month tasks
         else
             tasks = await Post.find({
-                'task._assigned_to': userId,
+                '_assigned_to': userId,
                 'task.due_to': { $gte: startOfMonth, $lte: endOfMonth },
                 $or: [
                     { 'task.status': 'to do' },
@@ -59,7 +59,7 @@ export class CalendarService {
                 .sort('-task.due_to')
                 .populate('_group', this.groupFields)
                 .populate('_posted_by', this.userFields)
-                .populate('task._assigned_to', this.userFields)
+                .populate('_assigned_to', this.userFields)
                 .lean();
 
         // Return tasks
@@ -104,8 +104,8 @@ export class CalendarService {
                 // Find events due to this week
                 'type': 'event',
                 $or: [
-                    { 'event._assigned_to': userId },
-                    { 'event._assigned_to': 'all' }
+                    { '_assigned_to': userId },
+                    { '_assigned_to': 'all' }
                 ],
                 'event.due_to': { $gte: startOfMonth, $lte: endOfMonth }
             })  

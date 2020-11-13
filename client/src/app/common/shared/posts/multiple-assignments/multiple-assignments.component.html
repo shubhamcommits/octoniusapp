@@ -1,9 +1,9 @@
 <!-- Assignee section for tasks starts -->
 <section style="display: flex;">
-  <img *ngFor="let assignee of postAssignments" (click)="unassign(assignee._id)"
+  <img *ngFor="let assignee of post._assigned_to" (click)="unassign(assignee._id)"
     src="{{ baseUrl }}/{{ assignee.profile_pic }}"
     onerror="this.src='assets/images/user.png'" class="feed-avatar">
-  <p *ngIf="postAssignments.length === 0" style="padding-top: 5px;">
+  <p *ngIf="post._assigned_to && post._assigned_to.length === 0" style="padding-top: 5px;">
     Unassigned
   </p>
 
