@@ -509,21 +509,22 @@ export class PostController {
     }
 
     /**
-     * This function is responsible for changing the task assignee
+     * This function is responsible for removing an assignee from the post
      * @param req 
      * @param res 
      * @param next 
      */
-    async changeTaskAssignee(req: Request, res: Response, next: NextFunction) {
+    async removeAssignee(req: Request, res: Response, next: NextFunction) {
 
         // Fetch Data from request
-        const { params: { postId }, body: { assigneeId } } = req;
+        const { params: { postId }, body: { assigneeId, postType } } = req;
 
         // Fetch userId from the request
         const userId = req['userId'];
 
         try {
-            const post = await this.callTaskAssigneeService(postId, assigneeId, userId)
+            // Call Service function to remove the assignee
+            const post = await postService.removeAssignee(postId, assigneeId, postType, userId)
                 .catch((err) => {
                     return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
                 })
@@ -538,7 +539,94 @@ export class PostController {
         }
     }
 
-    async callTaskAssigneeService(postId: string, assigneeId: string, userId: string) {
+    /**
+     * This function is responsible for changing the task assignee
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async addAssignee(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch Data from request
+        const { params: { postId }, body: { assigneeId, postType, groupId } } = req;
+
+        // Fetch userId from the request
+        const userId = req['userId'];
+
+        try {
+            const post = await this.callAddAssigneeService(postId, assigneeId, postType, userId, groupId)
+                .catch((err) => {
+                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+                })
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Task assignee updated!',
+                post: post
+            });
+        } catch (err) {
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
+
+    async callAddAssigneeService(postId: string, assigneeId: string, postType: string, userId: string, groupId: string) {
+        // Call Service function to change the assignee
+        let post = await postService.addAssignee(postId, assigneeId, postType, userId);
+
+        // Execute Automation Flows
+        post = await this.executeAutomationFlows(groupId, post, assigneeId, userId);
+
+        if (postType === 'task') {
+            if (post.task && post.task._assigned_to) {
+                post.task._assigned_to.push(assigneeId);
+            } else {
+                post.task._assigned_to = [assigneeId];
+            }
+        }
+        if (postType === 'event') {
+            if (post.event && post.event._assigned_to) {
+                post.event._assigned_to.push(assigneeId);
+            } else {
+                post.event._assigned_to = [assigneeId];
+            }
+        }
+
+        post = await postService.populatePostProperties(post);
+        
+        return post;
+    }
+
+    /**
+     * This function is responsible for changing the task assignee
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async changeTaskAssignee(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch Data from request
+        const { params: { postId }, body: { assigneeId } } = req;
+
+        // Fetch userId from the request
+        const userId = req['userId'];
+
+        try {
+            const post = await this.callChangeTaskAssigneeService(postId, assigneeId, userId)
+                .catch((err) => {
+                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+                })
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Task assignee updated!',
+                post: post
+            });
+        } catch (err) {
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
+
+    async callChangeTaskAssigneeService(postId: string, assigneeId: string, userId: string) {
         // Call Service function to change the assignee
         let post = await postService.changeTaskAssignee(postId, assigneeId, userId);
 
@@ -1170,7 +1258,7 @@ export class PostController {
                             || (step.trigger.name === 'Task is CREATED')) {
 
                             if (step.action.name === 'Assign to') {
-                                return await this.callTaskAssigneeService(post._id, step.action._user, userId);
+                                return await this.callAddAssigneeService(post._id, step.action._user, 'task', userId, groupId);
                             }
                             
                             if (step.action.name === 'Change Status to') {

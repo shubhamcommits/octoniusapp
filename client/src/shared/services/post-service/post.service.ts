@@ -186,6 +186,23 @@ export class PostService {
     }
   }
 
+  removeAssigneeFromPost(postId: string, assigneeId: string, postType: string) {
+    // Call the HTTP Request
+    return this._http.put(this.baseURL + `/${postId}/remove-assignee`, {
+      assigneeId: assigneeId,
+      postType: postType
+    }).
+    toPromise()}
+
+  addAssigneeToPost(postId: string, assigneeId: string, postType: string, groupId: string) {
+    // Call the HTTP Request
+    return this._http.put(this.baseURL + `/${postId}/add-assignee`, {
+      assigneeId: assigneeId,
+      postType: postType,
+      groupId: groupId
+    }).
+    toPromise()}
+
   /**
    * This function is resposible for changing the task status of a post
    * @param postId

@@ -83,6 +83,7 @@ import { GlobalPerformanceCardComponent } from './dashboard/global-performance-c
 import { NewTaskComponent } from './posts/new-task/new-task.component';
 import { SubtasksComponent } from './activity-feed/group-postbox/group-create-post-dialog-component/subtasks/subtasks.component';
 import { TaskActionsComponent } from './activity-feed/group-postbox/group-create-post-dialog-component/task-actions/task-actions.component';
+import { MultipleAssignmentsComponent } from './posts/multiple-assignments/multiple-assignments.component';
 
 
 
@@ -181,7 +182,9 @@ import { TaskActionsComponent } from './activity-feed/group-postbox/group-create
 
     SubtasksComponent,
 
-    TaskActionsComponent
+    TaskActionsComponent,
+
+    MultipleAssignmentsComponent
   ],
   imports: [
     CommonModule,
@@ -297,7 +300,9 @@ import { TaskActionsComponent } from './activity-feed/group-postbox/group-create
 
     SubtasksComponent,
 
-    TaskActionsComponent
+    TaskActionsComponent,
+
+    MultipleAssignmentsComponent
   ],
   providers: [
     { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },

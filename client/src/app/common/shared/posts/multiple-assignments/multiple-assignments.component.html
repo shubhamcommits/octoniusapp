@@ -1,0 +1,19 @@
+<!-- Assignee section for tasks starts -->
+<section style="display: flex;">
+  <img *ngFor="let assignee of postAssignments" (click)="unassign(assignee._id)"
+    src="{{ baseUrl }}/{{ assignee.profile_pic }}"
+    onerror="this.src='assets/images/user.png'" class="feed-avatar">
+  <p *ngIf="postAssignments.length === 0" style="padding-top: 5px;">
+    Unassigned
+  </p>
+
+  <app-component-search-input-box class="feed-avatar"
+    [placeholder]="'Assign...'"
+    [groupId]="groupId"
+    [workspaceId]="userData._workspace"
+    [userData]="userData"
+    [type]="post.type"
+    (member)="getMemberDetails($event)">
+  </app-component-search-input-box>
+</section>
+<!-- Assignee section for tasks ends -->

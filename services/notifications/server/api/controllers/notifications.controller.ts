@@ -137,12 +137,12 @@ export class NotificationsController {
     async newTaskReassignment(req: Request, res: Response, next: NextFunction) {
 
         // Fetch Data from request
-        const { post } = req.body;
+        const { post, assigneeId } = req.body;
 
         try {
             
             // Call Service function for newTaskReassignment
-            await notificationService.newTaskReassignment(post);
+            await notificationService.newTaskReassignment(post, assigneeId);
 
             // Send status 200 response
             return res.status(200).json({

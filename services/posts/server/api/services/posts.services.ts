@@ -778,6 +778,118 @@ export class PostService {
    * @param postId 
    * @param assigneeId 
    */
+  async removeAssignee(postId: string, assigneeId: string, postType: string, userId: string) {
+
+    try {
+      let updateAction = {};
+      if (postType === 'task') {
+        updateAction = {
+          $pull: { "task._assigned_to": assigneeId }
+        }
+      }
+
+      if (postType === 'event') {
+        updateAction = {
+          $pull: { "event._assigned_to": assigneeId }
+        }
+      }
+      // Update post
+      var post: any = await Post.findOneAndUpdate({
+        _id: postId
+      }, updateAction, {
+        new: true
+      })
+
+      // save record of assignment
+      post = await Post.findOneAndUpdate({
+        _id: postId
+      }, {
+        $push: { "records.assignments": {
+            date: moment().format(),
+            type: 'unassign',
+            _assigned_to: assigneeId,
+            _assigned_from: userId
+          }
+        }
+      }, {
+        new: true
+      })
+
+      // Populate the post properties
+      post = await this.populatePostProperties(post);
+
+      // Return the post
+      return post;
+
+    } catch (err) {
+      return err
+    }
+  }
+
+  /**
+   * This function is responsible for changing the task assignee
+   * @param postId 
+   * @param assigneeId 
+   */
+  async addAssignee(postId: string, assigneeId: string, postType: string, userId: string) {
+
+    try {
+      let updateAction = {};
+      if (postType === 'task') {
+        updateAction = {
+          $push: { "task._assigned_to": assigneeId }
+        }
+      }
+
+      if (postType === 'event') {
+        updateAction = {
+          $push: { "event._assigned_to": assigneeId }
+        }
+      }
+      // Get post data
+      var post: any = await Post.findOneAndUpdate({
+        _id: postId
+      }, updateAction, {
+        new: true
+      })
+
+      // save record of assignment
+      post = await Post.findOneAndUpdate({
+        _id: postId
+      }, {
+        $push: { "records.assignments": {
+            date: moment().format(),
+            type: 'assign',
+            _assigned_to: assigneeId,
+            _assigned_from: userId
+          }
+        }
+      }, {
+        new: true
+      })
+
+      // Populate the post properties
+      post = await this.populatePostProperties(post);
+
+      // Create Real time Notification to notify user about the task reassignment
+      http.post(`${process.env.NOTIFICATIONS_SERVER_API}/task-reassign`, {
+        post: post,
+        assigneeId: assigneeId
+      })
+
+      // Return the post
+      return post;
+
+    } catch (err) {
+      return err
+    }
+  }
+
+  /**
+   * This function is responsible for changing the task assignee
+   * @param postId 
+   * @param assigneeId 
+   */
   async changeTaskAssignee(postId: string, assigneeId: string, userId: string) {
 
     try {
@@ -797,7 +909,8 @@ export class PostService {
       }, {
         $push: { "records.assignments": {
             date: moment().format(),
-            _assigned_to: post.task._assigned_to,
+            type: 'assign',
+            _assigned_to: assigneeId,
             _assigned_from: userId
           }
         }

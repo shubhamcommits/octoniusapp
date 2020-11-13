@@ -81,10 +81,10 @@ const PostSchema = new Schema({
             type: Date,
             default: null
         },
-        _assigned_to: {
+        _assigned_to: [{
             type: Schema.Types.ObjectId,
             ref: 'User'
-        },
+        }],
         status: {
             type: String,
             default: 'to do'
@@ -262,6 +262,10 @@ const PostSchema = new Schema({
                 type: Date,
                 required: true,
                 default: moment().format()
+            },
+            type: {
+                type: String,
+                enum: ['assign', 'unassign']
             },
             _assigned_to: {
                 type: Schema.Types.ObjectId,

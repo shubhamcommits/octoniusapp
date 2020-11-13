@@ -113,6 +113,11 @@ routes.get('/workspace/posts', postController.getWorspacePosts);
 routes.get('/group/posts', postController.getGroupPosts);
 
 // -| TASKS |-
+// PUT - Add a new assignee to the task
+routes.put('/:postId/add-assignee', postController.addAssignee.bind(postController));
+
+// PUT - Remove a new assignee from the task
+routes.put('/:postId/remove-assignee', postController.removeAssignee.bind(postController));
 
 // PUT - Change task assignee
 routes.put('/:postId/task-assignee', postController.changeTaskAssignee.bind(postController));

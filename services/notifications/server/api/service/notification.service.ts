@@ -153,6 +153,7 @@ export class NotificationsService {
      * @param { _id, task._assigned_to, _posted_by } post 
      */
     async newTaskAssignment(post: any) {
+        /*
         try {
             const notification = await Notification.create({
                 _actor: post._posted_by,
@@ -164,18 +165,49 @@ export class NotificationsService {
         } catch (err) {
             throw err;
         }
+        */
+        try {
+
+            // Let usersStream
+            let userStream: any;
+
+            // If all members are selected
+            if (post.event._assigned_to.includes('all')) {
+
+                // Create Readble Stream from the Event Assignee
+                userStream = Readable.from(await User.find({
+                    _groups: post._group
+                }).select('first_name email'))
+            } else {
+
+                // Create Readble Stream from the Event Assignee
+                userStream = Readable.from(post.task._assigned_to);
+            }
+
+            await userStream.on('data', async (user: any) => {
+                const notification = await Notification.create({
+                    _actor: post._posted_by,
+                    _owner: user,
+                    _origin_post: post._id,
+                    message: 'assigned you on',
+                    type: 'assignment'
+                });
+            });
+        } catch (err) {
+            throw err;
+        }
     };
 
     /**
      * This function is responsible to notifying all the user on re-assigning of a new task to them
      * @param { _id, task._assigned_to, _posted_by } post
      */
-    async newTaskReassignment(post: any) {
+    async newTaskReassignment(post: any, assigneeId: string) {
 
         try {
             const notification = await Notification.create({
                 _actor: post._posted_by,
-                _owner: post.task._assigned_to,
+                _owner: assigneeId,
                 _origin_post: post._id,
                 message: 'reassigned you',
                 type: 'assignment'
