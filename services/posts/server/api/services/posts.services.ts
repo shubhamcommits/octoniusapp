@@ -233,7 +233,6 @@ export class PostService {
         { path: '_group', select: this.groupFields },
         { path: '_posted_by', select: this.userFields },
         { path: 'task._parent_task', select: '_id title _assigned_to' }
-        // { path: '_liked_by', select: this.userFields, options: { limit: 10 } }
       ]);
 
     } else if (post.type === 'performance_task') {
@@ -243,7 +242,6 @@ export class PostService {
         { path: 'performance_task._assigned_to', select: this.userFields },
         { path: '_group', select: this.groupFields },
         { path: '_posted_by', select: this.userFields },
-        // { path: '_liked_by', select: this.userFields, options: { limit: 10 } }
       ]);
 
     } else if (post.type === 'event') {

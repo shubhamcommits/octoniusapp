@@ -1,4 +1,5 @@
-import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
+import { Component, Input, Output, OnInit, EventEmitter, ViewChild } from '@angular/core';
+import { MatMenuTrigger } from '@angular/material';
 import { environment } from 'src/environments/environment';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -16,6 +17,8 @@ export class MultipleAssignmentsComponent implements OnInit {
   @Input() post;
 
   @Output() assigneeAddedEmiter = new EventEmitter();
+
+  @ViewChild(MatMenuTrigger, {static: true}) trigger: MatMenuTrigger;
 
   searchText = '';
   groupMembers = [];
@@ -42,7 +45,7 @@ export class MultipleAssignmentsComponent implements OnInit {
 
         this.groupMembers = this.groupData._members.concat(this.groupData._admins);
         this.groupMembers = this.groupMembers.filter((member, index) => {
-            return (this.groupMembers.indexOf(member) == index)
+            return (this.groupMembers.findIndex(m => m._id == member._id) == index)
         });
       }
     }));
@@ -77,6 +80,9 @@ export class MultipleAssignmentsComponent implements OnInit {
       this.postService.addAssigneeToPost(this.post._id, member._id, this.post.type, this.post._group._id)
         .then((res) => {
           this.post = res['post'];
+
+          this.trigger.closeMenu();
+
           // Emit the post to other components
           this.assigneeAddedEmiter.emit({post: this.post, assigneeId: member._id});
 

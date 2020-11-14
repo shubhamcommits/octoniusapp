@@ -1,4 +1,5 @@
 import { Directive, Input, SimpleChanges, Renderer2, ElementRef, OnChanges } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 @Directive({
   selector: '[appHighlight]'
@@ -6,7 +7,8 @@ import { Directive, Input, SimpleChanges, Renderer2, ElementRef, OnChanges } fro
 export class HighlightDirective implements OnChanges {
   @Input() searchedWord: string;
   @Input() content: any;
-  @Input() classToApply: string;
+
+  baseUrl = environment.UTILITIES_USERS_UPLOADS;
 
   constructor(private el: ElementRef, private renderer: Renderer2) { }
 
@@ -15,21 +17,18 @@ export class HighlightDirective implements OnChanges {
       return;
     }
 
-    if (!this.searchedWord || !this.searchedWord.length || !this.classToApply) {
-      const memberHTML = this.content.first_name + ' ' + this.content.last_name;
+    if (!this.searchedWord || !this.searchedWord.length) {
+      const memberHTML = `<img src="${this.baseUrl}/${this.content.profile_pic}" onerror="this.src='assets/images/user.png'" style="width:30px !important;height:30px !important;" class="feed-avatar">`
+        + this.content.first_name + ' ' + this.content.last_name + ' ' + this.content.email;
       this.renderer.setProperty(this.el.nativeElement, 'innerHTML', memberHTML);
       return;
     }
 
-    this.renderer.setProperty(
-      this.el.nativeElement,
-      'innerHTML',
-      this.getFormattedText()
-    );
+
   }
 
   getFormattedText() {
     const re = new RegExp(`(${this.searchedWord})`, 'gi');
-    return this.content.replace(re, `<span class="${this.classToApply}">$1</span>`);
+    return this.content.replace(re, `<span>$1</span>`);
   }
 }
