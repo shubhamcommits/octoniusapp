@@ -244,19 +244,12 @@ export class GroupCreatePostComponent implements OnInit {
     this.moveTask.emit(event);
   }
 
-  async getMemberDetails(memberMap: any) {
+  async onAssigned(res) {
 
-    this.member.emit(memberMap)
-
-    if (this.type == 'event') {
-      this.eventMembersMap = memberMap;
-      this.eventAssignees = (this.eventMembersMap.has('all')) ? 'all' : Array.from(this.eventMembersMap.keys());
-      console.log(this.eventAssignees);
-      this.showUpdateDetails = true;
-    }
+    this.postData = res['post'];
 
     if (this.type === 'task') {
-      this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.postData, this.postData.task._assigned_to, this.flows);
+      this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.postData, res['assigneeId'], this.flows);
     }
   }
 

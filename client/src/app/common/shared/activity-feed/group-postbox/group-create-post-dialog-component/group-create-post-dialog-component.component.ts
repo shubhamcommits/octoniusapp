@@ -571,7 +571,9 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.postData = res['post'];
     this.setAssignedBy(this.postData);
 
-    this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.postData, res['assigneeId'], this.flows);
+    if (this.postData.type === 'task') {
+      this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.postData, res['assigneeId'], this.flows);
+    }
   }
 
   async setAssignedBy(post) {

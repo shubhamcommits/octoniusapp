@@ -10,7 +10,6 @@ import { Component,
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { environment } from 'src/environments/environment';
 import { MAT_DATE_FORMATS, DateAdapter, MAT_DATE_LOCALE } from '@angular/material';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 
@@ -55,28 +54,23 @@ export const MY_FORMATS = {
 export class InlineInputComponent implements ControlValueAccessor, OnChanges {
 
   @ViewChild('inlineEditControl', {static: true}) inlineEditControl: ElementRef; // input DOM element
+
   @Input() label = '';  // Label value for input element
   @Input() type = 'text'; // The type of input element
   @Input() required = false; // Is input requried?
   @Input() disabled = false; // Is input disabled?
   @Input() domainObject: any; // Complete object to be updated
   @Input() styleClass = '';
-
-  @Input() workspaceId: string;
-  @Input() userData;
   @Input() groupId: string;
-  @Input() showAssigneeName: boolean = false;
-
   @Input() options: [string];
   @Input() customFieldName='';
+
   customFieldValue = '';
 
   private _value = ''; // Private variable for input value
   private preValue = ''; // The value before clicking to edit
 
   editing = false; // Is Component in edit mode?
-
-  profilePicUrl = '';
 
   dateStyleClass = '';
 
@@ -108,12 +102,6 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges {
   }
 
   ngOnChanges() {
-    if (this.domainObject.task._assigned_to) {
-      this.profilePicUrl = environment.UTILITIES_USERS_UPLOADS + '/' + this.domainObject.task._assigned_to.profile_pic;
-    } else {
-      this.profilePicUrl = 'assets/images/user.png';
-    }
-
     if (this.type === 'customField') {
       if (!this.domainObject.task.custom_fields) {
         this.domainObject.task.custom_fields = new Map<string, string>()
@@ -200,59 +188,6 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges {
     this.editing = true;
     // Focus on the input element just as the editing begins
     // setTimeout(_ => this.renderer.invokeElementMethod(this.inlineEditControl, 'focus', []));
-  }
-
-  getMemberDetails(memberMap: any) {
-    this.editing = false;
-
-    if (this.domainObject.type === 'task') {
-
-      // Assign the value of member map to the taskAssignee variable
-      for (const member of memberMap.values()) {
-        this.value = member;
-      }
-
-      this.profilePicUrl = environment.UTILITIES_USERS_UPLOADS + '/' + this.value.profile_pic;
-
-      // this.saveData();
-
-      this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
-        this.postService.changeTaskAssignee(this.domainObject._id, this.value._id)
-          .then((res) => {
-            const post = res['post'];
-            // Emit the post to other components
-            this.post.emit({post: post});
-
-            // Resolve with success
-            resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
-          })
-          .catch(() => {
-            reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
-          });
-      }));
-    }
-  }
-
-  unassignTask() {
-    this.domainObject.task._assigned_to = null;
-    this.value = null;
-    this.profilePicUrl = 'assets/images/user.png';
-
-    // this.saveData();
-
-    this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
-      this.postService.changeTaskAssignee(this.domainObject._id, null)
-        .then((res) => {
-          // Emit the post to other components
-          this.post.emit({post: res['post']});
-
-          // Resolve with success
-          resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
-        })
-        .catch(() => {
-          reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
-        });
-    }));
   }
 
   saveData() {
