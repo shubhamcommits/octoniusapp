@@ -84,6 +84,8 @@ import { NewTaskComponent } from './posts/new-task/new-task.component';
 import { SubtasksComponent } from './activity-feed/group-postbox/group-create-post-dialog-component/subtasks/subtasks.component';
 import { TaskActionsComponent } from './activity-feed/group-postbox/group-create-post-dialog-component/task-actions/task-actions.component';
 import { MultipleAssignmentsComponent } from './posts/multiple-assignments/multiple-assignments.component';
+import { HighlightDirective } from './posts/multiple-assignments/highlight.directive';
+import { FilterPipe } from './posts/multiple-assignments/filter.pipe';
 
 
 
@@ -184,7 +186,10 @@ import { MultipleAssignmentsComponent } from './posts/multiple-assignments/multi
 
     TaskActionsComponent,
 
-    MultipleAssignmentsComponent
+    MultipleAssignmentsComponent,
+
+    HighlightDirective,
+    FilterPipe
   ],
   imports: [
     CommonModule,

@@ -2,6 +2,7 @@ import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { SubSink } from 'subsink';
 
 @Component({
   selector: 'app-multiple-assignments',
@@ -16,7 +17,15 @@ export class MultipleAssignmentsComponent implements OnInit {
 
   @Output() assigneeAddedEmiter = new EventEmitter();
 
+  searchText = '';
+  groupMembers = [];
+
+  groupData;
+
   baseUrl = environment.UTILITIES_USERS_UPLOADS;
+
+  // Subsink Object
+  subSink = new SubSink();
 
   constructor(
     public utilityService: UtilityService,
@@ -24,6 +33,26 @@ export class MultipleAssignmentsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+
+    this.subSink.add(this.utilityService.currentGroupData.subscribe((res) => {
+      if (JSON.stringify(res) != JSON.stringify({})) {
+
+        // Assign the GroupData
+        this.groupData = res;
+
+        this.groupMembers = this.groupData._members.concat(this.groupData._admins);
+        this.groupMembers = this.groupMembers.filter((member, index) => {
+            return (this.groupMembers.indexOf(member) == index)
+        });
+      }
+    }));
+
+  }
+
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    this.subSink.unsubscribe();
   }
 
   unassign(assigneeId: string) {
@@ -42,19 +71,14 @@ export class MultipleAssignmentsComponent implements OnInit {
     }));
   }
 
-  getMemberDetails(memberMap: any) {
-    let assignee;
-    // Assign the value of member map to the taskAssignee variable
-    for (const member of memberMap.values()) {
-      assignee = member;
-    }
+  getMemberDetails(member: any) {
 
     this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
-      this.postService.addAssigneeToPost(this.post._id, assignee._id, this.post.type, this.post._group._id)
+      this.postService.addAssigneeToPost(this.post._id, member._id, this.post.type, this.post._group._id)
         .then((res) => {
           this.post = res['post'];
           // Emit the post to other components
-          this.assigneeAddedEmiter.emit({post: this.post, assigneeId: assignee._id});
+          this.assigneeAddedEmiter.emit({post: this.post, assigneeId: member._id});
 
           // Resolve with success
           resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));

@@ -7,13 +7,24 @@
     Unassigned
   </p>
 
-  <app-component-search-input-box class="feed-avatar"
-    [placeholder]="'Assign...'"
-    [groupId]="groupId"
-    [workspaceId]="userData._workspace"
-    [userData]="userData"
-    [type]="post.type"
-    (member)="getMemberDetails($event)">
-  </app-component-search-input-box>
+  <button mat-button [matMenuTriggerFor]="assigneeSearch" #trigger="matMenuTrigger" class="btn tagslabel">add assignee</button>
+  <mat-menu #assigneeSearch="matMenu" class="menu-form-wrapper">
+    <div class="card">
+      <div class="form-group">
+        <label for="search-text">Search Text</label>
+        <input type="email" class="form-control" id="search-text" aria-describedby="search-text" [(ngModel)]="searchText"
+          placeholder="Enter text to search" autofocus>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li appHighlight class="list-group-item" *ngFor="let member of groupMembers | appFilter: searchText"
+            (click)="getMemberDetails(member)"
+            [searchedWord]="searchText"
+            [content]="member"
+            [classToApply]="'font-weight-bold'">
+          {{ member.first_name }} {{ member.last_name }}
+        </li>
+      </ul>
+    </div>
+  </mat-menu>
 </section>
 <!-- Assignee section for tasks ends -->
