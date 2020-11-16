@@ -73,16 +73,18 @@ const PostSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     }],
+    _assigned_to: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+        default: []
+    }],
 
     // TASK
     task: {
         due_to: {
             type: Date,
             default: null
-        },
-        _assigned_to: {
-            type: Schema.Types.ObjectId,
-            ref: 'User'
         },
         status: {
             type: String,
@@ -186,11 +188,7 @@ const PostSchema = new Schema({
         due_to: {
             type: String,
             default: null
-        },
-        _assigned_to: [{
-            type: Schema.Types.ObjectId,
-            ref: 'User'
-        }]
+        }
     },
     records: {
         status: [{
@@ -257,6 +255,10 @@ const PostSchema = new Schema({
                 type: Date,
                 required: true,
                 default: moment().format()
+            },
+            type: {
+                type: String,
+                enum: ['assign', 'unassign']
             },
             _assigned_to: {
                 type: Schema.Types.ObjectId,

@@ -27,45 +27,6 @@
     <!--Date Picker ends -->
 </div>
 
-<div *ngIf="type === 'assignee'" class="assignee">
-    <!-- Assignee section for tasks starts -->
-    <section style="display: flex;">
-        <div *ngIf="!editing" (click)="edit(value)" id="avatar-assignee" style="display: flex; flex-basis: 50%;">
-            <img src="{{ profilePicUrl }}"
-                onerror="this.src='assets/images/user.png'"
-                [ngClass]="(showAssigneeName) ? 'feed-avatar assignee-avatar' : 'feed-avatar'">
-            <div *ngIf="showAssigneeName && domainObject.task._assigned_to !== null"
-                    style="padding-top: 5px;" class="ml-1">
-                {{domainObject?.task?._assigned_to?.first_name}} 
-                {{ domainObject?.task?._assigned_to?.last_name }}
-        </div>
-            <p *ngIf="showAssigneeName && domainObject.task._assigned_to === null"
-                    style="padding-top: 5px;">
-                Unassigned
-            </p>
-        </div>
-        <i class="material-icons unassing-btn" id="unassing"
-            *ngIf="!editing && !showAssigneeName && domainObject.task._assigned_to !== null"
-            (click)="unassignTask()">highlight_off</i>
-        <div *ngIf="!editing && showAssigneeName && domainObject.task._assigned_to !== null">
-            <button (click)="unassignTask()" class="btn btn-sm btn-link muted">
-                <i class="material-icons">close</i>
-            </button>
-        </div>
-        <app-component-search-input-box
-            *ngIf="editing" class="feed-avatar"
-            [placeholder]="'Assign...'"
-            [groupId]="groupId"
-            [workspaceId]="workspaceId"
-            [userData]="userData"
-            [type]="domainObject.type"
-            (onFocusout)="focusout($event)"
-            (member)="getMemberDetails($event)">
-        </app-component-search-input-box>
-    </section>
-    <!-- Assignee section for tasks ends -->
-</div>
-
 <div *ngIf="type === 'customField'">
     <div *ngIf="!editing">
         <p class="list-card-title inline-edit" *ngIf="customFieldValue !== ''"

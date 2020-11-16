@@ -87,11 +87,6 @@ export class GroupCreatePostDialogComponent implements OnInit {
   // Cloud files
   cloudFiles: any = [];
 
-  eventAssignees: any = [];
-
-  // Members Map of Event Asignee
-  eventMembersMap: any = new Map();
-
   // Comments Array
   comments: any = [];
 
@@ -149,9 +144,9 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.tags = [];
     if (this.postData.type === 'task') {
       // If Post is assigned
-      if (this.postData.task._assigned_to) {
+      if (this.postData._assigned_to) {
         // Set the taskAssignee
-        this.taskAssignee = this.postData.task._assigned_to;
+        this.taskAssignee = this.postData._assigned_to;
       }
 
       // Set the due date variable for task
@@ -219,8 +214,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
         this.dueTime.hour = this.dueDate.getHours();
         this.dueTime.minute = this.dueDate.getMinutes();
       }
-      this.eventMembersMap = this.postData.event._assigned_to;
-      this.eventAssignedToCount = (this.postData.event._assigned_to) ? this.postData.event._assigned_to.size : 0;
+      this.eventAssignedToCount = (this.postData._assigned_to) ? this.postData._assigned_to.size : 0;
     }
 
     this.tags = this.postData.tags;
@@ -229,16 +223,6 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
     // Return the function via stopping the loader
     return this.isLoading$.next(false);
-  }
-
-  getMemberDetails(memberMap: any) {
-    if (this.postData.type == 'event') {
-      this.eventMembersMap = memberMap;
-      this.eventAssignees = (this.eventMembersMap.has('all')) ? 'all' : Array.from(this.eventMembersMap.keys());
-
-      this.eventAssignedToCount = (this.eventMembersMap) ? ((this.eventMembersMap.has('all')) ? 'all' : this.eventMembersMap.size) : 0;
-    }
-    this.updateDetails();
   }
 
   /**
@@ -251,14 +235,6 @@ export class GroupCreatePostDialogComponent implements OnInit {
    */
   checkOverdue(taskPost: any) {
     return moment(taskPost.due_to).format('YYYY-MM-DD') < moment().local().startOf('day').format('YYYY-MM-DD');
-  }
-
-  /**
-   * This function checks if the map consists of all team as the assignee for the event type selection
-   * @param map
-   */
-  eventAssignedToAll() {
-    return (this.eventMembersMap && this.eventMembersMap['all']) ? true : false;
   }
 
   /**
@@ -476,7 +452,8 @@ export class GroupCreatePostDialogComponent implements OnInit {
       tags: this.tags,
       _read_by: this.postData._read_by,
       isNorthStar: this.postData.task.isNorthStar,
-      northStar: this.postData.task.northStar
+      northStar: this.postData.task.northStar,
+      assigned_to: this.postData._assigned_to
     };
 
     // If Post type is event, then add due_to property too
@@ -504,18 +481,12 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
       // Add event.due_to property to the postData and assignees
       post.event = {
-        due_to: moment(due_to).format(),
-        _assigned_to: this.eventAssignees
+        due_to: moment(due_to).format()
       }
     }
 
     if (this.postData.type === 'task') {
       post.task = this.postData.task;
-
-      // Task Assigned to
-      if (this.postData.task._assigned_to) {
-        post.assigned_to = this.postData.task._assigned_to._id;
-      }
 
       // Task due date
       post.date_due_to = this.dueDate;
@@ -568,14 +539,16 @@ export class GroupCreatePostDialogComponent implements OnInit {
   }
 
   async onAssigned(res) {
+    this.postData = res['post'];
+    this.setAssignedBy(this.postData);
 
-    this.setAssignedBy(res['post']);
-
-    this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.postData, this.postData.task._assigned_to, this.flows);
+    if (this.postData.type === 'task') {
+      this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.postData, res['assigneeId'], this.flows);
+    }
   }
 
   async setAssignedBy(post) {
-    this.postData = post;
+
     if (this.postData.records && this.postData.records.assignments && this.postData.records.assignments.length > 0) {
       this.postData.records.assignments = this.postData.records.assignments.sort((a1, a2) => (new Date(a1.date).getTime() < new Date(a2.date).getTime()) ? 1 : -1);
       this.lastAssignedBy = await this.publicFunctions.getOtherUser(this.postData.records.assignments[0]._assigned_from);
@@ -671,11 +644,11 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
     this.columns = null;
 
-    if (!this.postData.task._parent_task.task._assigned_to) {
+    if (!this.postData.task._parent_task._assigned_to) {
       this.parentTaskAssigneeProfilePicUrl = 'assets/images/user.png';
     } else {
-      await this.publicFunctions.getOtherUser(this.postData.task._parent_task.task._assigned_to).then(user => {
-        this.postData.task._parent_task.task._assigned_to = user;
+      await this.publicFunctions.getOtherUser(this.postData.task._parent_task._assigned_to[0]).then(user => {
+        this.postData.task._parent_task._assigned_to[0] = user;
         this.parentTaskAssigneeProfilePicUrl = this.baseUrl + '/' + user['profile_pic'];
       });
     }

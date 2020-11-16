@@ -54,7 +54,7 @@ import { LikeCommentComponent } from './comments/post-comment/like-comment/like-
 import { NorthStarComponent } from './activity-feed/group-postbox/group-create-post-dialog-component/north-star/north-star.component';
 import { NorthStarStatsComponent } from './activity-feed/group-postbox/group-create-post-dialog-component/north-star/stats/north-star-stats.component';
 
-import { MatSidenavModule, MatDialogModule, MatSlideToggleModule, MAT_DIALOG_DEFAULT_OPTIONS, MatSelectModule, MatMenuModule } from '@angular/material';
+import { MatSidenavModule, MatDialogModule, MatSlideToggleModule, MAT_DIALOG_DEFAULT_OPTIONS, MatSelectModule, MatMenuModule, MatBadgeModule } from '@angular/material';
 
 import { PreviewFilesDialogComponent } from './preview-files-dialog/preview-files-dialog.component';
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
@@ -83,6 +83,10 @@ import { GlobalPerformanceCardComponent } from './dashboard/global-performance-c
 import { NewTaskComponent } from './posts/new-task/new-task.component';
 import { SubtasksComponent } from './activity-feed/group-postbox/group-create-post-dialog-component/subtasks/subtasks.component';
 import { TaskActionsComponent } from './activity-feed/group-postbox/group-create-post-dialog-component/task-actions/task-actions.component';
+import { MultipleAssignmentsComponent } from './posts/multiple-assignments/multiple-assignments.component';
+import { HighlightDirective } from './posts/multiple-assignments/highlight.directive';
+import { FilterPipe } from './posts/multiple-assignments/filter.pipe';
+import { AssigneeAvatarComponent } from './assignee-avatar/assignee-avatar.component';
 
 
 
@@ -181,7 +185,14 @@ import { TaskActionsComponent } from './activity-feed/group-postbox/group-create
 
     SubtasksComponent,
 
-    TaskActionsComponent
+    TaskActionsComponent,
+
+    MultipleAssignmentsComponent,
+
+    HighlightDirective,
+    FilterPipe,
+
+    AssigneeAvatarComponent
   ],
   imports: [
     CommonModule,
@@ -222,7 +233,8 @@ import { TaskActionsComponent } from './activity-feed/group-postbox/group-create
     MatSlideToggleModule,
     ChartsModule,
     ResizableModule,
-    MatMenuModule
+    MatMenuModule,
+    MatBadgeModule
   ],
   exports: [
     AttachFilesComponent,
@@ -297,7 +309,10 @@ import { TaskActionsComponent } from './activity-feed/group-postbox/group-create
 
     SubtasksComponent,
 
-    TaskActionsComponent
+    TaskActionsComponent,
+
+    MultipleAssignmentsComponent,
+    AssigneeAvatarComponent
   ],
   providers: [
     { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },

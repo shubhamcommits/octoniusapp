@@ -42,7 +42,7 @@ export class NotificationsController {
 
     /**
      * This function is responsible to notifying all the user on assigning of a new event to them
-     * @param { _id, event._assigned_to, _posted_by } post 
+     * @param { _id, _assigned_to, _posted_by } post 
      */
     async newEventAssignments(req: Request, res: Response, next: NextFunction) {
 
@@ -110,7 +110,7 @@ export class NotificationsController {
 
     /**
      * This function is responsible to notifying all the user on assigning of a new task to them
-     * @param { _id, task._assigned_to, _posted_by } post 
+     * @param { _id, _assigned_to, _posted_by } post 
      */
     async newTaskAssignment(req: Request, res: Response, next: NextFunction) {
 
@@ -132,17 +132,17 @@ export class NotificationsController {
 
     /**
      * This function is responsible to notifying all the user on re-assigning of a new task to them
-     * @param { _id, task._assigned_to, _posted_by } post
+     * @param { _id, _assigned_to, _posted_by } post
      */
     async newTaskReassignment(req: Request, res: Response, next: NextFunction) {
 
         // Fetch Data from request
-        const { post } = req.body;
+        const { post, assigneeId } = req.body;
 
         try {
             
             // Call Service function for newTaskReassignment
-            await notificationService.newTaskReassignment(post);
+            await notificationService.newTaskReassignment(post, assigneeId);
 
             // Send status 200 response
             return res.status(200).json({
@@ -237,19 +237,24 @@ export class NotificationsController {
 
 
     async taskStatusChanged(req: Request, res: Response, next: NextFunction) {
-        const { post } = req.body;
+        const { post, userId } = req.body;
+        
         try {
             const status = (post.task.status === 'in progress') ? 'started' : 'completed';
             // Call Service Function for taskStatusChanged
-            await notificationService.taskStatusChanged(post, status, post.task._assigned_to, post._posted_by);
+            const index = post._assigned_to.findIndex(assignee => assignee._id == post._posted_by);
+            if (index < 0) {
+                await notificationService.taskStatusChanged(post, status, userId, post._posted_by);
+            }
 
-            if (post.task._assigned_to && post.task._assigned_to !== post._posted_by) {
-                await notificationService.taskStatusChanged(post, status, post.task._assigned_to, post.task._assigned_to);
+            if (post._assigned_to) {
+                await notificationService.taskStatusChanged(post, status, userId);
             }
 
             post._followers.forEach(async follower => {
-                if (post.task._assigned_to !== follower && follower !== post._posted_by) {
-                    await notificationService.taskStatusChanged(post, status, post.task._assigned_to, follower);
+                const index = post._assigned_to.findIndex(assignee => assignee._id == follower);
+                if (index < 0 && follower !== post._posted_by) {
+                    await notificationService.taskStatusChanged(post, status, userId, follower);
                 }
             });
 
@@ -269,15 +274,15 @@ export class NotificationsController {
             // Call Service Function for newComment
             await notificationService.newComment(comment, post._posted_by);
 
-            if (post.task._assigned_to && post.task._assigned_to !== post._posted_by) {
-
-                await notificationService.newComment(comment, post.task._assigned_to);
+            if (post._assigned_to) {
+                post._assigned_to.forEach(async assignee => {
+                    await notificationService.newComment(comment, assignee); 
+                });
             }
             if(post._followers) {
                 post._followers.forEach(async follower => {
-
-                    if (follower !== post._posted_by
-                        && post.task._assigned_to !== follower) {
+                    const index = post._assigned_to.findIndex(assignee => assignee === follower);
+                    if (follower !== post._posted_by && index < 0) {
                         await notificationService.newComment(comment, follower);
                     }
                 });
@@ -336,12 +341,14 @@ export class NotificationsController {
             // Call Service Function for likeComment
             await notificationService.likeComment(comment, comment._commented_by, user);
 
-            if (comment._post._posted_by && comment._post.task._assigned_to !== comment._commented_by) {
+            let index = comment._post._assigned_to.findIndex(assignee => assignee === comment._commented_by);
+            if (comment._post._posted_by && index < 0) {
                 await notificationService.likeComment(comment, comment._post._posted_by, user);
             }
 
             comment.post._followers.forEach(async follower => {
-                if (comment.post.task._assigned_to !== follower && follower !== comment._commented_by) {
+                index = comment._post._assigned_to.findIndex(assignee => assignee === follower);
+                if (index < 0 && follower !== comment._commented_by) {
                     await notificationService.likeComment(comment, follower, user);
                 }
             });

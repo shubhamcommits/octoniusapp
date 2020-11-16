@@ -100,7 +100,7 @@ const eventMailHelper = async (post: any, emailType: any) => {
   let userStream: any;
 
   // If all members are selected
-  if (post.event._assigned_to.includes('all')) {
+  if (post.assigned_to.includes('all')) {
 
     // Create Readble Stream from the Event Assignee
     userStream = Readable.from(await User.find({
@@ -109,7 +109,7 @@ const eventMailHelper = async (post: any, emailType: any) => {
   } else {
 
     // Create Readble Stream from the Event Assignee
-    userStream = Readable.from(post.event._assigned_to);
+    userStream = Readable.from(post._assigned_to);
   }
 
   // Send Mails to each assigned user

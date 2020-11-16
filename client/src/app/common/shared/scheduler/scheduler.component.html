@@ -61,6 +61,7 @@
       <task *ngFor="let task of renderedTasks"
         id="task_{{task._id}}"
         [task]="task"
+        [userData]="userData"
         [cellWidth]="cellWidth"
         [ngStyle]="task.task.locScale"
         (taskSavedEmitter)="taskSaved($event)">

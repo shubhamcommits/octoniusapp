@@ -23,7 +23,7 @@ export class PostsService {
 
         // Fetch users task for today
         const tasks = await Post.find({
-            'task._assigned_to': userId,
+            '_assigned_to': userId,
             'task.due_to': { $gte: startOfDay, $lte: endOfDay },
             $or: [
                 { 'task.status': 'to do' },
@@ -34,7 +34,7 @@ export class PostsService {
             .sort('-task.due_to')
             .populate('_group', this.groupFields)
             .populate('_posted_by', this.userFields)
-            .populate('task._assigned_to', this.userFields)
+            .populate('_assigned_to', this.userFields)
             .lean();
 
         // Return Tasks
@@ -52,7 +52,7 @@ export class PostsService {
 
         // Fetch the tasks posts
         const tasks = await Post.find({
-            'task._assigned_to': userId,
+            '_assigned_to': userId,
             'task.due_to': { $lt: today },
             $or: [
                 { 'task.status': 'to do' },
@@ -62,7 +62,7 @@ export class PostsService {
             .sort('-task.due_to')
             .populate('_group', this.groupFields)
             .populate('_posted_by', this.userFields)
-            .populate('task._assigned_to', this.userFields)
+            .populate('_assigned_to', this.userFields)
             .lean();
 
         // Return tasks
@@ -83,7 +83,7 @@ export class PostsService {
 
         // Fetch the tasks posts
         const tasks = await Post.find({
-            'task._assigned_to': userId,
+            '_assigned_to': userId,
             'task.due_to': { $gte: today, $lte: todayPlus7Days },
             $or: [
                 { 'task.status': 'to do' },
@@ -94,7 +94,7 @@ export class PostsService {
             .sort('-task.due_to')
             .populate('_group', this.groupFields)
             .populate('_posted_by', this.userFields)
-            .populate('task._assigned_to', this.userFields)
+            .populate('_assigned_to', this.userFields)
             .lean();
 
         // Return tasks
@@ -115,7 +115,7 @@ export class PostsService {
 
         // Fetch the tasks posts
         const tasks = await Post.find({
-            'task._assigned_to': userId,
+            '_assigned_to': userId,
             'task.due_to': { $gte: todayPlus7Days, $lte: todayPlus14Days },
             $or: [
                 { 'task.status': 'to do' },
@@ -126,7 +126,7 @@ export class PostsService {
             .sort('-task.due_to')
             .populate('_group', this.groupFields)
             .populate('_posted_by', this.userFields)
-            .populate('task._assigned_to', this.userFields)
+            .populate('_assigned_to', this.userFields)
             .lean();
 
         // Return tasks
@@ -141,7 +141,7 @@ export class PostsService {
 
         // Fetch the tasks posts
         const tasks = await Post.find({
-            'task._assigned_to': userId,
+            '_assigned_to': userId,
             'task.due_to': null,
             $or: [
                 { 'task.status': 'to do' },
@@ -151,7 +151,7 @@ export class PostsService {
             .sort('-task.due_to')
             .populate('_group', this.groupFields)
             .populate('_posted_by', this.userFields)
-            .populate('task._assigned_to', this.userFields)
+            .populate('_assigned_to', this.userFields)
             .lean();
 
         // Filter the tasks array
@@ -181,8 +181,8 @@ export class PostsService {
             // Find events due to today
             'type': 'event',
             $or: [
-                { 'event._assigned_to': userId },
-                { 'event._assigned_to': 'all' }
+                { '_assigned_to': userId },
+                // { '_assigned_to': 'all' }
             ],
             'event.due_to': { $gte: startOfDay, $lte: endOfDay }
 
@@ -213,8 +213,8 @@ export class PostsService {
             // Find events due to this week
             'type': 'event',
             $or: [
-                { 'event._assigned_to': userId },
-                { 'event._assigned_to': 'all' }
+                { '_assigned_to': userId },
+                // { '_assigned_to': 'all' }
             ],
             'event.due_to': { $gte: todayForEvent, $lte: todayPlus7Days }
         })
@@ -246,7 +246,7 @@ export class PostsService {
             .sort('-created_date')
             .populate('_group', this.groupFields)
             .populate('_posted_by', this.userFields)
-            .populate('task._assigned_to', this.userFields)
+            .populate('_assigned_to', this.userFields)
             .lean() || []
 
         // Filter out the posts belonging to the current user

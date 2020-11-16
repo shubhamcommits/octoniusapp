@@ -40,7 +40,7 @@ export class NotificationsService {
             let userStream: any;
 
             // If all members are selected
-            if (post.event._assigned_to.includes('all')) {
+            if (post._assigned_to.includes('all')) {
 
                 // Create Readble Stream from the Event Assignee
                 userStream = Readable.from(await User.find({
@@ -49,7 +49,7 @@ export class NotificationsService {
             } else {
 
                 // Create Readble Stream from the Event Assignee
-                userStream = Readable.from(post.event._assigned_to);
+                userStream = Readable.from(post._assigned_to);
             }
 
             await userStream.on('data', async (user: any) => {
@@ -150,16 +150,34 @@ export class NotificationsService {
 
     /**
      * This function is responsible to notifying all the user on assigning of a new task to them
-     * @param { _id, task._assigned_to, _posted_by } post 
+     * @param { _id, _assigned_to, _posted_by } post 
      */
     async newTaskAssignment(post: any) {
+        
         try {
-            const notification = await Notification.create({
-                _actor: post._posted_by,
-                _owner: post.task._assigned_to,
-                _origin_post: post._id,
-                message: 'assigned you',
-                type: 'assignment'
+            // Let usersStream
+            let userStream: any;
+
+            // If all members are selected
+            if (post._assigned_to.includes('all')) {
+
+                // Create Readble Stream from the Event Assignee
+                userStream = Readable.from(await User.find({
+                    _groups: post._group
+                }).select('first_name email'))
+            } else {
+                // Create Readble Stream from the Event Assignee
+                userStream = Readable.from(post._assigned_to);
+            }
+
+            await userStream.on('data', async (user: any) => {
+                const notification = await Notification.create({
+                    _actor: post._posted_by,
+                    _owner: user,
+                    _origin_post: post._id,
+                    message: 'assigned you on',
+                    type: 'assignment'
+                });
             });
         } catch (err) {
             throw err;
@@ -168,14 +186,14 @@ export class NotificationsService {
 
     /**
      * This function is responsible to notifying all the user on re-assigning of a new task to them
-     * @param { _id, task._assigned_to, _posted_by } post
+     * @param { _id, _assigned_to, _posted_by } post
      */
-    async newTaskReassignment(post: any) {
+    async newTaskReassignment(post: any, assigneeId: string) {
 
         try {
             const notification = await Notification.create({
                 _actor: post._posted_by,
-                _owner: post.task._assigned_to,
+                _owner: assigneeId,
                 _origin_post: post._id,
                 message: 'reassigned you',
                 type: 'assignment'
@@ -187,18 +205,34 @@ export class NotificationsService {
 
     /**
      * This function is responsible to notifying the creator of the post when the task changed the status
-     * @param { _id, task._assigned_to, _posted_by } post
+     * @param { _id, _assigned_to, _posted_by } post
      * @param status
      */
-    async taskStatusChanged(post: any, status: string, actor: string, owner: string) {
+    async taskStatusChanged(post: any, status: string, actor: string, owner?: string) {
         try {
-            const notification = await Notification.create({
-                _actor: actor,
-                _owner: owner,
-                _origin_post: post._id,
-                message: status,
-                type: status
-            });
+            if (owner) {
+                const notification = await Notification.create({
+                    _actor: actor,
+                    _owner: owner,
+                    _origin_post: post._id,
+                    message: status,
+                    type: status
+                });
+            } else {
+
+                // Create Readble Stream from the Event Assignee
+                const userStream = Readable.from(post._assigned_to);
+                
+                await userStream.on('data', async (user: any) => {
+                    const notification = await Notification.create({
+                        _actor: actor,
+                        _owner: user,
+                        _origin_post: post._id,
+                        message: status,
+                        type: status
+                    });
+                });
+            }
         } catch (err) {
             throw err;
         }

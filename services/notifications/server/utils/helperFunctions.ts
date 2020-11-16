@@ -101,39 +101,24 @@ async function notifyRelatedUsers(io: any, socket: any, data: any) {
             }
         }
 
-        switch (post.type) {
-            //  task posts have only one assigned member so generatefeed needs to only be called once
-            case 'task':
-                if (post.task._assigned_to) {
-                    generateFeed(post.task._assigned_to, io);
-                }
-                break;
-            case 'event':
-                let userStream: any;
+        let userStream: any;
 
-                if (post.event._assigned_to.includes('all')) {
-
-                    // Create Readble Stream from the Event Assignee
-                    userStream = Readable.from(await User.find({
-                        _groups: post._group
-                    }).select('id'))
-
-                } else {
-
-                    // Create Readble Stream from the Event Assignee
-                    userStream = Readable.from(post.event._assigned_to);
-                }
-
-                await userStream.on('data', async (user: any) => {
-                    generateFeed(user._id, io);
-                })
-
-                break;
-            default:
-            // do nothing!
+        if (post._assigned_to.includes('all')) {
+            // Create Readble Stream from the Assignee
+            userStream = Readable.from(await User.find({
+                _groups: post._group
+            }).select('id'));
+        } else {
+            // Create Readble Stream from the Assignee
+            userStream = Readable.from(post._assigned_to);
         }
+
+        await userStream.on('data', async (user: any) => {
+            generateFeed(user._id, io);
+        });
+
         //  if we mentioned someone in a comment we trigger this part
-        //    same process, we generate the feed and emit it to the mentioned user, tiggering a notification in real-time
+        //  same process, we generate the feed and emit it to the mentioned user, tiggering a notification in real-time
     } catch (err) {
         console.log('err', err);
     }
