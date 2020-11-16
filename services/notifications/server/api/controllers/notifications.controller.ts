@@ -237,8 +237,8 @@ export class NotificationsController {
 
 
     async taskStatusChanged(req: Request, res: Response, next: NextFunction) {
-        const { post } = req.body;
-        const userId = req['userId'];
+        const { post, userId } = req.body;
+        
         try {
             const status = (post.task.status === 'in progress') ? 'started' : 'completed';
             // Call Service Function for taskStatusChanged
