@@ -723,7 +723,7 @@ export class PostController {
             .catch((err) => {
                 throw err;
             });
-
+console.log(post);
         // Execute Automation Flows
         post = await this.executeAutomationFlows(groupId, post, status, userId);
 
