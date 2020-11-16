@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { Column, Post } from '../models';
+import { Column, Flow, Post } from '../models';
 import { sendError } from '../../utils';
 
 export class ColumnsController {
@@ -96,7 +96,7 @@ export class ColumnsController {
                     }
                 }
             };
-            await Column.update({
+            await Column.updateOne({
                 groupId: id
             }, update, (err, col) => {
                 if (err) {
@@ -138,7 +138,7 @@ export class ColumnsController {
                 if (err) {
                     return res.status(200).json({ "err": "Error in updating columns" });
                 } else if (!col) {
-                    Column.update({
+                    Column.updateOne({
                         groupId: groupId,
                         columns: {
                             "$elemMatch": {
@@ -162,6 +162,33 @@ export class ColumnsController {
                                 if (err)console.log(err);
                                 else console.log(result);
                             });
+
+                            var triggers = Flow.updateMany({
+                                $and: [
+                                        { _group: groupId }
+                                    ]
+                                }, {
+                                    "$set" : { "steps.$[trigger].section": newColumnName }
+                                }, {
+                                    arrayFilters: [{ "trigger.section": oldColumnName }]
+                                }, function(err, result){
+                                    if (err)console.log(err);
+                                    else console.log(result);
+                                });
+
+                            var actions = Flow.updateMany({
+                                $and: [
+                                        { _group: groupId }
+                                    ]
+                                }, {
+                                    "$set" : { "steps.$[action].section": newColumnName }
+                                }, {
+                                    arrayFilters: [{ "action.section": oldColumnName }]
+                                }, function(err, result){
+                                    if (err)console.log(err);
+                                    else console.log(result);
+                                });
+
                             return res.status(200).json(col);
                         }
                     });
@@ -188,7 +215,7 @@ export class ColumnsController {
                     "columns.$.taskCount": numberOfTasks
                 }
             };
-            await Column.update({
+            await Column.updateOne({
                 groupId: id,
                 columns: {
                     "$elemMatch": {
@@ -218,7 +245,7 @@ export class ColumnsController {
                     "columns.$.taskCount": 0.5
                 }
             };
-            await Column.update({
+            await Column.updateOne({
                 groupId: id,
                 columns: {
                     "$elemMatch": {
