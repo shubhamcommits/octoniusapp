@@ -570,14 +570,14 @@ export class PostController {
     }
 
     async callAddAssigneeService(postId: string, assigneeId: string, userId: string, groupId: string) {
+
         // Call Service function to change the assignee
         let post = await postService.addAssignee(postId, assigneeId, userId);
-
+console.log(post);
         // Execute Automation Flows
         post = await this.executeAutomationFlows(groupId, post, assigneeId, userId);
 
         const index = post._assigned_to.findIndex(assignee => assignee._id == assigneeId);
-
         if (index < 0) {
             post._assigned_to.push(assigneeId);
         }

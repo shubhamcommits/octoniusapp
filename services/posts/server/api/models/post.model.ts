@@ -87,7 +87,9 @@ const PostSchema = new Schema({
     }],
     _assigned_to: [{
         type: Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        required: true,
+        default: []
     }],
 
     // TASK
@@ -95,10 +97,6 @@ const PostSchema = new Schema({
         due_to: {
             type: Date,
             default: null
-        },
-        _assigned_to: {
-            type: Schema.Types.ObjectId,
-            ref: 'User'
         },
         status: {
             type: String,
@@ -206,11 +204,7 @@ const PostSchema = new Schema({
         due_to: {
             type: String,
             default: null
-        },
-        _assigned_to: [{
-            type: Schema.Types.Mixed,
-            ref: 'User'
-        }]
+        }
     },
     records: {
         status: [{

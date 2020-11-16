@@ -87,11 +87,6 @@ export class GroupCreatePostDialogComponent implements OnInit {
   // Cloud files
   cloudFiles: any = [];
 
-  eventAssignees: any = [];
-
-  // Members Map of Event Asignee
-  eventMembersMap: any = new Map();
-
   // Comments Array
   comments: any = [];
 
@@ -219,7 +214,6 @@ export class GroupCreatePostDialogComponent implements OnInit {
         this.dueTime.hour = this.dueDate.getHours();
         this.dueTime.minute = this.dueDate.getMinutes();
       }
-      this.eventMembersMap = this.postData._assigned_to;
       this.eventAssignedToCount = (this.postData._assigned_to) ? this.postData._assigned_to.size : 0;
     }
 
@@ -229,16 +223,6 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
     // Return the function via stopping the loader
     return this.isLoading$.next(false);
-  }
-
-  getMemberDetails(memberMap: any) {
-    if (this.postData.type == 'event') {
-      this.eventMembersMap = memberMap;
-      this.eventAssignees = (this.eventMembersMap.has('all')) ? 'all' : Array.from(this.eventMembersMap.keys());
-
-      this.eventAssignedToCount = (this.eventMembersMap) ? ((this.eventMembersMap.has('all')) ? 'all' : this.eventMembersMap.size) : 0;
-    }
-    this.updateDetails();
   }
 
   /**
@@ -251,14 +235,6 @@ export class GroupCreatePostDialogComponent implements OnInit {
    */
   checkOverdue(taskPost: any) {
     return moment(taskPost.due_to).format('YYYY-MM-DD') < moment().local().startOf('day').format('YYYY-MM-DD');
-  }
-
-  /**
-   * This function checks if the map consists of all team as the assignee for the event type selection
-   * @param map
-   */
-  eventAssignedToAll() {
-    return (this.eventMembersMap && this.eventMembersMap['all']) ? true : false;
   }
 
   /**
@@ -476,7 +452,8 @@ export class GroupCreatePostDialogComponent implements OnInit {
       tags: this.tags,
       _read_by: this.postData._read_by,
       isNorthStar: this.postData.task.isNorthStar,
-      northStar: this.postData.task.northStar
+      northStar: this.postData.task.northStar,
+      assigned_to: this.postData._assigned_to
     };
 
     // If Post type is event, then add due_to property too
@@ -504,18 +481,12 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
       // Add event.due_to property to the postData and assignees
       post.event = {
-        due_to: moment(due_to).format(),
-        _assigned_to: this.eventAssignees
+        due_to: moment(due_to).format()
       }
     }
 
     if (this.postData.type === 'task') {
       post.task = this.postData.task;
-
-      // Task Assigned to
-      if (this.postData._assigned_to) {
-        post.assigned_to = this.postData._assigned_to._id;
-      }
 
       // Task due date
       post.date_due_to = this.dueDate;

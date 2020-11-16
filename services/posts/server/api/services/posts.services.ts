@@ -450,7 +450,6 @@ export class PostService {
             due_to: (post.date_due_to) ? moment(post.date_due_to).format() : null,
             start_date: (post.start_date) ? moment(post.start_date).format() : null,
             end_date: (post.end_date) ? moment(post.end_date).format() : null,
-            //_assigned_to: post.assigned_to,
             status: post.status,
             _column: post._column,
             custom_fields: post.task.custom_fields,
@@ -478,12 +477,9 @@ export class PostService {
           // transform due_to time to UTC
           post.date_due_to = moment.utc(post.date_due_to).format();
 
-          //let assignedUsers: any = post._assigned_to
-
           // Add Event property details
           postData.event = {
             due_to: post.event.due_to,
-            //_assigned_to: assignedUsers
           }
 
           break;
