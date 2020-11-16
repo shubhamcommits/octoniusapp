@@ -76,15 +76,12 @@ export class GroupCreatePostComponent implements OnInit {
   // Output the task due date
   @Output('date') date = new EventEmitter()
 
+  // Asignees
+  eventAssignees: any = [];
+
   /* Task Variables */
 
   /* Event Variables */
-
-  // Members Map of Event Asignee
-  eventMembersMap: any = new Map()
-
-  eventAssignees: any = [];
-
   // Due Time Object to map the due dates
   dueTime: any = {
     hour: 1,
@@ -166,8 +163,9 @@ export class GroupCreatePostComponent implements OnInit {
       if (this.type == 'event') {
         this.dueTime.hour = this.dueDate.getHours();
         this.dueTime.minute = this.dueDate.getMinutes();
-        this.eventMembersMap = this.postData._assigned_to;
       }
+
+      this.eventAssignees = this.postData._assigned_to;
 
       this.tags = this.postData.tags;
 
@@ -246,10 +244,13 @@ export class GroupCreatePostComponent implements OnInit {
 
   async onAssigned(res) {
 
-    this.postData = res['post'];
-
-    if (this.type === 'task') {
-      this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.postData, res['assigneeId'], this.flows);
+    if (this.postData) {
+      this.postData = res['post'];
+      if (this.type === 'task') {
+        this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.postData, res['assigneeId'], this.flows);
+      }
+    } else {
+      this.eventAssignees.push(res['assigneeId']);
     }
   }
 
@@ -330,7 +331,8 @@ export class GroupCreatePostComponent implements OnInit {
       _posted_by: this.userData._id,
       _group: this.groupId,
       _content_mentions: this._content_mentions,
-      tags: this.tags
+      tags: this.tags,
+      _assigned_to: this.eventAssignees
     }
 
     // If Post type is event, then add due_to property too
@@ -360,8 +362,7 @@ export class GroupCreatePostComponent implements OnInit {
 
       // Add event.due_to property to the postData
       postData.event = {
-        due_to: moment(due_to).format(),
-        _assigned_to: (this.eventMembersMap.has('all')) ? 'all' : Array.from(this.eventMembersMap.keys())
+        due_to: moment(due_to).format()
       }
     }
 

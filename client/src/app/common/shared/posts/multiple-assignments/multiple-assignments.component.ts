@@ -24,6 +24,8 @@ export class MultipleAssignmentsComponent implements OnInit {
   searchText = '';
   groupMembers = [];
 
+  isNewEvent = false;
+
   groupData;
 
   baseUrl = environment.UTILITIES_USERS_UPLOADS;
@@ -51,6 +53,12 @@ export class MultipleAssignmentsComponent implements OnInit {
       }
     }));
 
+    if (!this.post) {
+      this.isNewEvent = true;
+      this.post = {
+        _assigned_to: []
+      };
+    }
   }
 
   ngOnDestroy(): void {
@@ -61,7 +69,7 @@ export class MultipleAssignmentsComponent implements OnInit {
 
   unassign(assigneeId: string) {
     this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
-      this.postService.removeAssigneeFromPost(this.post._id, assigneeId, this.post.type)
+      this.postService.removeAssigneeFromPost(this.post._id, assigneeId)
         .then((res) => {
           const index = this.post._assigned_to.findIndex((assignee) => { assignee._id === assigneeId });
           this.post._assigned_to.splice(index, 1);
@@ -76,23 +84,30 @@ export class MultipleAssignmentsComponent implements OnInit {
   }
 
   getMemberDetails(member: any) {
+    if (!this.isNewEvent) {
+      this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
+        this.postService.addAssigneeToPost(this.post._id, member._id, (this.post._group || this.post._group._id))
+          .then((res) => {
+            this.post = res['post'];
 
-    this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
-      this.postService.addAssigneeToPost(this.post._id, member._id, this.post.type, this.post._group._id)
-        .then((res) => {
-          this.post = res['post'];
+            this.trigger.closeMenu();
 
-          this.trigger.closeMenu();
+            // Emit the post to other components
+            this.assigneeAddedEmiter.emit({post: this.post, assigneeId: member._id});
 
-          // Emit the post to other components
-          this.assigneeAddedEmiter.emit({post: this.post, assigneeId: member._id});
+            // Resolve with success
+            resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
+          })
+          .catch((err) => {
+            reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
+          });
+      }));
+    } else {
+      this.post._assigned_to.push(member);
+      this.trigger.closeMenu();
 
-          // Resolve with success
-          resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
-        })
-        .catch((err) => {
-          reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
-        });
-    }));
+      // Emit the post to other components
+      this.assigneeAddedEmiter.emit({post: this.post, assigneeId: member._id});
+    }
   }
 }

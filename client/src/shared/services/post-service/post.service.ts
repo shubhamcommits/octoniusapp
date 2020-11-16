@@ -186,14 +186,14 @@ export class PostService {
     }
   }
 
-  removeAssigneeFromPost(postId: string, assigneeId: string, postType: string) {
+  removeAssigneeFromPost(postId: string, assigneeId: string) {
     // Call the HTTP Request
     return this._http.put(this.baseURL + `/${postId}/remove-assignee`, {
       assigneeId: assigneeId
     }).
     toPromise()}
 
-  addAssigneeToPost(postId: string, assigneeId: string, postType: string, groupId: string) {
+  addAssigneeToPost(postId: string, assigneeId: string, groupId: string) {
     // Call the HTTP Request
     return this._http.put(this.baseURL + `/${postId}/add-assignee`, {
       assigneeId: assigneeId,
