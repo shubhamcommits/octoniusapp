@@ -573,7 +573,7 @@ export class PostController {
 
         // Call Service function to change the assignee
         let post = await postService.addAssignee(postId, assigneeId, userId);
-console.log(post);
+
         // Execute Automation Flows
         post = await this.executeAutomationFlows(groupId, post, assigneeId, userId);
 
@@ -698,11 +698,11 @@ console.log(post);
     async changeTaskStatus(req: Request, res: Response, next: NextFunction) {
 
         // Fetch Data from request
-        const { params: { postId }, body: { status, userId } } = req;
+        const { params: { postId }, body: { status, userId, groupId } } = req;
 
         try {
             // Call Service function to change the assignee
-            let post = await this.callChangeTaskStatusService(postId, status, userId)
+            let post = await this.callChangeTaskStatusService(postId, status, userId, groupId)
                 .catch((err) => {
                     return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
                 });
@@ -717,7 +717,7 @@ console.log(post);
         }
     }
 
-    async callChangeTaskStatusService(postId: string, status: string, userId: string) {
+    async callChangeTaskStatusService(postId: string, status: string, userId: string, groupId: string) {
         // Call Service function to change the assignee
         let post = await postService.changeTaskStatus(postId, status, userId)
             .catch((err) => {
@@ -725,7 +725,7 @@ console.log(post);
             });
 
         // Execute Automation Flows
-        post = await this.executeAutomationFlows((post._group || post._group._id), post, status, userId);
+        post = await this.executeAutomationFlows(groupId, post, status, userId);
 
         post.task.status = status;
         
@@ -741,7 +741,7 @@ console.log(post);
     async changeTaskColumn(req: Request, res: Response, next: NextFunction) {
 
         // Fetch Data from request
-        const { params: { postId }, body: { title, userId } } = req;
+        const { params: { postId }, body: { title, userId, groupId } } = req;
 
         try {
 
@@ -749,7 +749,7 @@ console.log(post);
                 return sendErr(res, new Error('Please provide the post, title and user as parameters'), 'Please provide the post, title and user as paramaters!', 400);
             }
 
-            const post = this.changeTaskSection(postId, title, userId)
+            const post = this.changeTaskSection(postId, title, userId, groupId)
                 .catch((err) => {
                     return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
                 });
@@ -764,12 +764,12 @@ console.log(post);
         }
     }
 
-    async changeTaskSection(postId: string, sectionTitle: string, userId: string) {
+    async changeTaskSection(postId: string, sectionTitle: string, userId: string, groupId: string) {
         // Call Service function to change the assignee
         let post = await postService.changeTaskColumn(postId, sectionTitle, userId);
 
         // Execute Automation Flows
-        post = await this.executeAutomationFlows((post._group || post._group._id), post, sectionTitle, userId);
+        post = await this.executeAutomationFlows(groupId, post, sectionTitle, userId);
 
         post.task._column.title = sectionTitle;
 
@@ -1256,7 +1256,7 @@ console.log(post);
                             }
                             
                             if (step.action.name === 'Change Status to') {
-                                return await this.callChangeTaskStatusService(post._id, step.action.status, userId);
+                                return await this.callChangeTaskStatusService(post._id, step.action.status, userId, groupId);
                             }
 
                             if (step.action.name === 'Custom Field') {
@@ -1264,7 +1264,7 @@ console.log(post);
                             }
 
                             if (step.action.name === 'Move to') {
-                                return await this.changeTaskSection(post._id, step.action.section, userId);
+                                return await this.changeTaskSection(post._id, step.action.section, userId, groupId);
                             }
                         }
                     });

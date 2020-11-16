@@ -234,12 +234,13 @@ export class PostService {
    * @param postId
    * @param status
    */
-  changeTaskStatus(postId: string, status: string, userId: string){
+  changeTaskStatus(postId: string, status: string, userId: string, groupId: string){
 
     // Call the HTTP Request
     return this._http.put(this.baseURL + `/${postId}/task-status`, {
       status: status,
-      userId: userId
+      userId: userId,
+      groupId: groupId
     }).
     toPromise()
   }
@@ -250,12 +251,13 @@ export class PostService {
    * @param title
    * @param userId
    */
-  changeTaskColumn(postId: string, title: string, userId: string){
+  changeTaskColumn(postId: string, title: string, userId: string, groupId: string){
 
     // Call the HTTP Request
     return this._http.put(this.baseURL + `/${postId}/task-column`, {
       title: title,
-      userId: userId
+      userId: userId,
+      groupId: groupId
     }).
     toPromise()
   }

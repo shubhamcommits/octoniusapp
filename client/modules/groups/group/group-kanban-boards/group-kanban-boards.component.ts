@@ -333,7 +333,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
    * @param newColumn
    */
   async moveTaskToNewColumn(task: any, oldColumn: string, newColumn: string) {
-    this.publicFunctions.changeTaskColumn(task._id, newColumn, this.userData._id);
+    this.publicFunctions.changeTaskColumn(task._id, newColumn, this.userData._id, this.groupId);
 
     task = await this.publicFunctions.executedAutomationFlowsPropertiesFront(task, newColumn, this.flows);
 

@@ -751,7 +751,7 @@ export class PublicFunctions {
      * @param postId
      * @param status
      */
-    changeTaskStatus(postId: string, status: string, userId: string) {
+    changeTaskStatus(postId: string, status: string, userId: string, groupId: string) {
 
         // Post Service Instance
         let postService = this.injector.get(PostService)
@@ -762,7 +762,7 @@ export class PublicFunctions {
         utilityService.asyncNotification('Please wait we are updating the task status...',
           new Promise((resolve, reject) => {
             // Call HTTP Request to change the request
-            postService.changeTaskStatus(postId, status, userId)
+            postService.changeTaskStatus(postId, status, userId, groupId)
             .then((res) => {
                 resolve(utilityService.resolveAsyncPromise(`Task status marked as ${status}!`))
             })
@@ -777,7 +777,7 @@ export class PublicFunctions {
      * @param postId
      * @param title
      */
-    changeTaskColumn(postId: string, title: string, userId: string) {
+    changeTaskColumn(postId: string, title: string, userId: string, groupId: string) {
 
         // Post Service Instance
         let postService = this.injector.get(PostService)
@@ -789,7 +789,7 @@ export class PublicFunctions {
             new Promise((resolve, reject) => {
 
                 // Call HTTP Request to change the request
-                postService.changeTaskColumn(postId, title, userId)
+                postService.changeTaskColumn(postId, title, userId, groupId)
                     .then((res) => {
                         resolve(utilityService.resolveAsyncPromise(`Task moved to - ${title}!`))
                     })
