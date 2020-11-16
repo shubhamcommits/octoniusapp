@@ -41,7 +41,7 @@ export class PostController {
 
         try {
             // Call servide function for adding the post
-            const postData = await this.callAddTaskService(post, userId)
+            const postData = await this.callAddPostService(post, userId)
                 .catch((err) => {
                     return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
                 })
@@ -56,7 +56,7 @@ export class PostController {
         }
     }
 
-    async callAddTaskService(post: any, userId: string) {
+    async callAddPostService(post: any, userId: string) {
         
         // Call Service function to change the assignee
         post = await postService.addPost(post, userId);

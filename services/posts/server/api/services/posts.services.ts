@@ -382,21 +382,25 @@ export class PostService {
       let post: any = await Post.create(postData);
 
       // save record of ussignment
-      if (post.type === 'task') {
-        if (post._assigned_to) {
+      if (post.type == 'event' && post._assigned_to && post._assigned_to.length > 0) {
+
+        // Create Readble Stream from the Event Assignee
+        const userStream = Readable.from(post._assigned_to);
+
+        await userStream.on('data', async (user: any) => {
           post = await Post.findOneAndUpdate({
             _id: post._id
           }, {
             $push: { "records.assignments": {
                 date: moment().format(),
-                _assigned_to: post._assigned_to,
+                _assigned_to: user,
                 _assigned_from: userId
               }
             }
           }, {
             new: true
           })
-        }
+        });
       }
 
       // populate the assigned_to property of this document
