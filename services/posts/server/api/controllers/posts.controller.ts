@@ -63,7 +63,7 @@ export class PostController {
 
         if (post.type === 'task') {
             // Execute Automation Flows
-            post = await this.executeAutomationFlows(post._group._id, post, '', userId);
+            post = await this.executeAutomationFlows((post._group || post._group._id), post, '', userId);
         }
 
         return post;
@@ -622,7 +622,7 @@ export class PostController {
         let post = await postService.changeTaskAssignee(postId, assigneeId, userId);
 
         // Execute Automation Flows
-        post = await this.executeAutomationFlows(post._group._id, post, assigneeId, userId);
+        post = await this.executeAutomationFlows((post._group || post._group._id), post, assigneeId, userId);
         
         post.task._assigned_to = assigneeId;
 
@@ -725,7 +725,7 @@ export class PostController {
             });
 
         // Execute Automation Flows
-        post = await this.executeAutomationFlows(post._group._id, post, status, userId);
+        post = await this.executeAutomationFlows((post._group || post._group._id), post, status, userId);
 
         post.task.status = status;
         
@@ -769,7 +769,7 @@ export class PostController {
         let post = await postService.changeTaskColumn(postId, sectionTitle, userId);
 
         // Execute Automation Flows
-        post = await this.executeAutomationFlows(post._group._id, post, sectionTitle, userId);
+        post = await this.executeAutomationFlows((post._group || post._group._id), post, sectionTitle, userId);
 
         post.task._column.title = sectionTitle;
 
