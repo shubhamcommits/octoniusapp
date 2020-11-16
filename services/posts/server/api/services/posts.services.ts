@@ -1018,8 +1018,12 @@ export class PostService {
       
       if (status !== 'to do') {
         await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/status-change`, {
-          post: post,
-          userId: userId
+          postId: post._id,
+          userId: userId,
+          assigned_to: post._assigned_to,
+          status: status ? status : 'to do',
+          followers: post._followers,
+          posted_by: post._posted_by
         });
       }
 

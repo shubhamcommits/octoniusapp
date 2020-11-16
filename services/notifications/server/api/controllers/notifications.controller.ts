@@ -237,24 +237,23 @@ export class NotificationsController {
 
 
     async taskStatusChanged(req: Request, res: Response, next: NextFunction) {
-        const { post, userId } = req.body;
+        let { postId, assigned_to, userId, status, followers, posted_by } = req.body;
         
         try {
-            const status = (post.task.status === 'in progress') ? 'started' : 'completed';
-            // Call Service Function for taskStatusChanged
-            const index = post._assigned_to.findIndex(assignee => assignee._id == post._posted_by);
-            if (index < 0) {
-                await notificationService.taskStatusChanged(post, status, userId, post._posted_by);
+            status = (status == 'in progress') ? 'started' : 'completed';
+            
+            if (assigned_to) {
+                const index = assigned_to.findIndex(assignee => assignee._id == posted_by);
+                if (index < 0) {
+                    await notificationService.taskStatusChanged(postId, status, userId, assigned_to, posted_by);
+                }
+                await notificationService.taskStatusChanged(postId, status, userId, assigned_to);
             }
 
-            if (post._assigned_to) {
-                await notificationService.taskStatusChanged(post, status, userId);
-            }
-
-            post._followers.forEach(async follower => {
-                const index = post._assigned_to.findIndex(assignee => assignee._id == follower);
-                if (index < 0 && follower !== post._posted_by) {
-                    await notificationService.taskStatusChanged(post, status, userId, follower);
+            followers.forEach(async follower => {
+                const index = assigned_to.findIndex(assignee => assignee._id == follower);
+                if (index < 0 && follower !== posted_by) {
+                    await notificationService.taskStatusChanged(postId, status, userId, null, followers);
                 }
             });
 

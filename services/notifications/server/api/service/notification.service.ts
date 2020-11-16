@@ -208,26 +208,26 @@ export class NotificationsService {
      * @param { _id, _assigned_to, _posted_by } post
      * @param status
      */
-    async taskStatusChanged(post: any, status: string, actor: string, owner?: string) {
+    async taskStatusChanged(postId: String, status: string, actor: string, assigned_to, owner?: string) {
         try {
             if (owner) {
                 const notification = await Notification.create({
                     _actor: actor,
                     _owner: owner,
-                    _origin_post: post._id,
+                    _origin_post: postId,
                     message: status,
                     type: status
                 });
             } else {
 
                 // Create Readble Stream from the Event Assignee
-                const userStream = Readable.from(post._assigned_to);
+                const userStream = Readable.from(assigned_to);
                 
                 await userStream.on('data', async (user: any) => {
                     const notification = await Notification.create({
                         _actor: actor,
                         _owner: user,
-                        _origin_post: post._id,
+                        _origin_post: postId,
                         message: status,
                         type: status
                     });
