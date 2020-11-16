@@ -182,7 +182,7 @@ export class PostsService {
             'type': 'event',
             $or: [
                 { '_assigned_to': userId },
-                { '_assigned_to': 'all' }
+                // { '_assigned_to': 'all' }
             ],
             'event.due_to': { $gte: startOfDay, $lte: endOfDay }
 
@@ -214,7 +214,7 @@ export class PostsService {
             'type': 'event',
             $or: [
                 { '_assigned_to': userId },
-                { '_assigned_to': 'all' }
+                // { '_assigned_to': 'all' }
             ],
             'event.due_to': { $gte: todayForEvent, $lte: todayPlus7Days }
         })

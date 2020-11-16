@@ -105,7 +105,7 @@ export class CalendarService {
                 'type': 'event',
                 $or: [
                     { '_assigned_to': userId },
-                    { '_assigned_to': 'all' }
+                    // { '_assigned_to': 'all' }
                 ],
                 'event.due_to': { $gte: startOfMonth, $lte: endOfMonth }
             })  
