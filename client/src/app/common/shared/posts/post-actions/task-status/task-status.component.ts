@@ -29,12 +29,12 @@ export class TaskStatusComponent implements OnInit {
 
   /**
    * This function is used to change the status of a task post
-   * @param status 
+   * @param status
    */
   changeStatus(status: string){
 
     // Change the task status
-    this.publicFunctions.changeTaskStatus(this.post._id, status, this.userData._id);
+    this.publicFunctions.changeTaskStatus(this.post._id, status, this.userData._id, (this.post._group._id || this.post._group));
 
     // Emit the status to other parent components
     this.status.emit(status)
