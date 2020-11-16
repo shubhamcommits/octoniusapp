@@ -68,7 +68,7 @@ import { SharedModule } from 'src/app/common/shared/shared.module';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 // import { MomentModule } from "ngx-moment";
-import { MatButtonModule, MatMenuModule, MatChipsModule, MatDialogModule, MatSelectModule, MatTableModule, MatSortModule, MatBadgeModule } from '@angular/material';
+import { MatButtonModule, MatMenuModule, MatChipsModule, MatDialogModule, MatSelectModule, MatTableModule, MatSortModule } from '@angular/material';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatExpansionModule } from '@angular/material/expansion';
 
@@ -198,8 +198,7 @@ import { FlowService } from 'src/shared/services/flow-service/flow.service';
     MatSlideToggleModule,
     MatExpansionModule,
     MatTableModule,
-    MatSortModule,
-    MatBadgeModule
+    MatSortModule
   ],
   providers: [
     GroupsService,

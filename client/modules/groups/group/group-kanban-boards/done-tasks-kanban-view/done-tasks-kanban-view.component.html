@@ -16,9 +16,7 @@
           {{task?.task?.due_to | date}}</span>
         </div>
 
-        <img src="{{baseUrl}}/{{task?.task?._assigned_to?.profile_pic}}"
-          onerror="this.src='assets/images/user.png'"
-          class="feed-avatar">
+        <app-assignee-avatar [task]="task" [userData]="userData" style="margin-right: 10px;"></app-assignee-avatar>
       </div>
     </div>
   </div>

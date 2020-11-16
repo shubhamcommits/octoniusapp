@@ -242,14 +242,18 @@ export class NotificationsController {
         try {
             const status = (post.task.status === 'in progress') ? 'started' : 'completed';
             // Call Service Function for taskStatusChanged
-            await notificationService.taskStatusChanged(post, status, userId, post._posted_by);
+            const index = post._assigned_to.findIndex(assignee => assignee._id == post._posted_by);
+            if (index < 0) {
+                await notificationService.taskStatusChanged(post, status, userId, post._posted_by);
+            }
 
             if (post._assigned_to) {
                 await notificationService.taskStatusChanged(post, status, userId);
             }
 
             post._followers.forEach(async follower => {
-                if (post._assigned_to !== follower && follower !== post._posted_by) {
+                const index = post._assigned_to.findIndex(assignee => assignee._id == follower);
+                if (index < 0 && follower !== post._posted_by) {
                     await notificationService.taskStatusChanged(post, status, userId, follower);
                 }
             });

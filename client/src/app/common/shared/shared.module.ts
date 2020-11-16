@@ -54,7 +54,7 @@ import { LikeCommentComponent } from './comments/post-comment/like-comment/like-
 import { NorthStarComponent } from './activity-feed/group-postbox/group-create-post-dialog-component/north-star/north-star.component';
 import { NorthStarStatsComponent } from './activity-feed/group-postbox/group-create-post-dialog-component/north-star/stats/north-star-stats.component';
 
-import { MatSidenavModule, MatDialogModule, MatSlideToggleModule, MAT_DIALOG_DEFAULT_OPTIONS, MatSelectModule, MatMenuModule } from '@angular/material';
+import { MatSidenavModule, MatDialogModule, MatSlideToggleModule, MAT_DIALOG_DEFAULT_OPTIONS, MatSelectModule, MatMenuModule, MatBadgeModule } from '@angular/material';
 
 import { PreviewFilesDialogComponent } from './preview-files-dialog/preview-files-dialog.component';
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
@@ -86,6 +86,7 @@ import { TaskActionsComponent } from './activity-feed/group-postbox/group-create
 import { MultipleAssignmentsComponent } from './posts/multiple-assignments/multiple-assignments.component';
 import { HighlightDirective } from './posts/multiple-assignments/highlight.directive';
 import { FilterPipe } from './posts/multiple-assignments/filter.pipe';
+import { AssigneeAvatarComponent } from './assignee-avatar/assignee-avatar.component';
 
 
 
@@ -189,7 +190,9 @@ import { FilterPipe } from './posts/multiple-assignments/filter.pipe';
     MultipleAssignmentsComponent,
 
     HighlightDirective,
-    FilterPipe
+    FilterPipe,
+
+    AssigneeAvatarComponent
   ],
   imports: [
     CommonModule,
@@ -230,7 +233,8 @@ import { FilterPipe } from './posts/multiple-assignments/filter.pipe';
     MatSlideToggleModule,
     ChartsModule,
     ResizableModule,
-    MatMenuModule
+    MatMenuModule,
+    MatBadgeModule
   ],
   exports: [
     AttachFilesComponent,
@@ -307,7 +311,8 @@ import { FilterPipe } from './posts/multiple-assignments/filter.pipe';
 
     TaskActionsComponent,
 
-    MultipleAssignmentsComponent
+    MultipleAssignmentsComponent,
+    AssigneeAvatarComponent
   ],
   providers: [
     { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },

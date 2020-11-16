@@ -92,21 +92,6 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
     }
   }
 
-  getAssigneePic(task) {
-    let profilePic = '';
-    if (task._assigned_to && task._assigned_to.length > 0) {
-      const index = task._assigned_to.findIndex(assignee => assignee._id == this.userData._id);
-      if (index < 0) {
-        profilePic = this.baseUrl + '/' + task._assigned_to[0].profile_pic;
-      } else {
-        profilePic = this.baseUrl + '/' + task._assigned_to[index].profile_pic;
-      }
-    } else {
-      profilePic = 'assets/images/user.png';
-    }
-    return profilePic;
-  }
-
   async fieldUpdated(res: any) {
     this.updateTask(res['post'], res['cfTrigger']);
   }
