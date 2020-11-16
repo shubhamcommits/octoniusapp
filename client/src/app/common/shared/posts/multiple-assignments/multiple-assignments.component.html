@@ -3,21 +3,21 @@
   <img *ngFor="let assignee of post?._assigned_to" (click)="unassign(assignee._id)"
     src="{{ baseUrl }}/{{ assignee.profile_pic }}"
     onerror="this.src='assets/images/user.png'" class="feed-avatar">
-  <p *ngIf="!post?._assigned_to || post?._assigned_to.length === 0" style="padding-top: 5px;">
+  <span *ngIf="!post?._assigned_to || post?._assigned_to.length === 0">
     Unassigned
-  </p>
+  </span>
 
   <button mat-button [matMenuTriggerFor]="assigneeSearch" #trigger="matMenuTrigger" class="btn tagslabel">add assignee</button>
   <mat-menu #assigneeSearch="matMenu">
     <div (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
       <div class="card">
         <div class="form-group">
-          <label for="search-text">Search Text</label>
+          <label for="search-text">Assignee</label>
           <input type="email" class="form-control" id="search-text" aria-describedby="search-text" [(ngModel)]="searchText"
-            placeholder="Enter text to search" autofocus>
+            placeholder="Search group member" autofocus>
         </div>
-        <ul class="list-group list-group-flush">
-          <li appHighlight class="list-group-item" *ngFor="let member of groupMembers | appFilter: searchText"
+        <ul class="assignee-list">
+          <li appHighlight class="assignee-list-item" *ngFor="let member of groupMembers | appFilter: searchText"
               (click)="getMemberDetails(member)"
               [searchedWord]="searchText"
               [content]="member">

@@ -17,8 +17,13 @@
   margin:0 5px !important;
 }
 
+.mat-menu-panel {
+  max-width: none !important;
+}
+
 .card {
-  padding: 10px;
+  padding: 10px 10px 0px 10px;
+  border: none;
   // border-width: 0.2rem;
   // border: solid #f8f9fa;
   // position: relative;
@@ -63,19 +68,19 @@
   }
 }
 
-.list-group {
+.assignee-list {
   display: flex;
   -ms-flex-direction: column;
   flex-direction: column;
   padding-left: 0;
   margin-bottom: 0;
 
-  .list-group-item {
+  .assignee-list-item {
     position: relative;
     display: block;
-    padding: 0.75rem 1.25rem;
+    padding: 2px 15px 3px 0px;
     background-color: #fff;
-    border: 1px solid rgba(0, 0, 0, 0.125);
+    // border: 1px solid rgba(0, 0, 0, 0.125);
     cursor: pointer;
   }
 }

@@ -1,4 +1,4 @@
-import { Component, Input, Output, OnInit, EventEmitter, ViewChild } from '@angular/core';
+import { Component, Input, Output, OnInit, EventEmitter, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material';
 import { environment } from 'src/environments/environment';
 import { PostService } from 'src/shared/services/post-service/post.service';
@@ -8,7 +8,8 @@ import { SubSink } from 'subsink';
 @Component({
   selector: 'app-multiple-assignments',
   templateUrl: './multiple-assignments.component.html',
-  styleUrls: ['./multiple-assignments.component.scss']
+  styleUrls: ['./multiple-assignments.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class MultipleAssignmentsComponent implements OnInit {
 
