@@ -20,28 +20,16 @@
 
                 <div *ngIf="isGlobal==true" class="grouplabel">{{ post?._group.group_name }}</div>
 
-                <!-- Event Assignee detail starts -->
-                <section *ngIf="post?.type === 'event'">
+                <!-- Assignee detail starts -->
+                <section>
                     <span class="assigned" *ngIf="!eventAssignedToAll(post)">Assigned
-                        to {{post.event._assigned_to?.length || 0}} Member(s)
+                        to {{post._assigned_to?.length || 0}} Member(s)
                     </span>
                     <span class="assigned" *ngIf="eventAssignedToAll(post)">Assigned
                         to all Members
                     </span>
                 </section>
-                <!-- Event Assignee detail ends -->
-
-                <!-- Task Assignee detail starts -->
-                <section *ngIf="post?.type === 'task'">
-                    <span class="assigned" *ngIf="post.task._assigned_to">
-                        Assigned to {{post.task._assigned_to?.first_name}}
-                        {{post.task._assigned_to?.last_name}}
-                    </span>
-                    <span class="assigned" *ngIf="!post.task._assigned_to"> Unassigned
-                    </span>
-                </section>
-                <!-- Task Assignee detail ends -->
-
+                <!-- Assignee detail ends -->
             </div>
             <!-- Details of the Post Creator Ends -->
 

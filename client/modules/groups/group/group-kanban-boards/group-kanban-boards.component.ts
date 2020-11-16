@@ -505,7 +505,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
     this.publicFunctions.changeTaskAssignee(task._id, memberMap['_id'])
 
     // Set the assigned_to variable
-    task.task._assigned_to = memberMap
+    task._assigned_to = memberMap
   }
 
   /**

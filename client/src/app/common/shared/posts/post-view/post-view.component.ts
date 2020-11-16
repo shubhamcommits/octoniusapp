@@ -68,8 +68,8 @@ export class PostViewComponent implements OnInit {
    * @param post
    */
   eventAssignedToAll(post: any){
-    if (post.event._assigned_to!=null)
-      return post.event._assigned_to.includes('all')
+    if (post._assigned_to!=null)
+      return post._assigned_to.includes('all')
     else return false;
   }
 

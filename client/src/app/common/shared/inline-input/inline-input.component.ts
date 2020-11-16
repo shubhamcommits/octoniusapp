@@ -201,7 +201,7 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges {
       tags: this.domainObject.tags,
       _read_by: this.domainObject._read_by,
       task: this.domainObject.task,
-      assigned_to: (this.domainObject.task._assigned_to) ? this.domainObject.task._assigned_to._id : '',
+      assigned_to: (this.domainObject._assigned_to) ? this.domainObject._assigned_to._id : '',
       start_date: this.domainObject.task.start_date,
       end_date: this.domainObject.task.end_date
     };

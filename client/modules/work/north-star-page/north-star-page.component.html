@@ -5,7 +5,7 @@
   <h5 class="title-overview">  There are no missions here... Let's create one.</h5>
   </div>
   <!-- Empty State of tasks ends -->
-  <div class="media" style="margin-top: 140px; margin-bottom: 30px;"> 
+  <div class="media" style="margin-top: 140px; margin-bottom: 30px;">
     <img src="assets/images/northstar-hero.svg" class="mr-3" style="width: 200px">
     <div class="media-body" style="color: #242d3a;">
       <h5 class="mt-0" style="font-weight: 700 !important;"><i class="material-icons-round" style="vertical-align: bottom;">
@@ -17,7 +17,7 @@
   </div>
 
   <div *ngFor="let task of northStarTasks; let i = index;">
-    
+
     <a (click)="openFullscreenModal(task)">
       <!-- My Space Today Tasks -->
       <div>
@@ -40,9 +40,7 @@
             </div>
 
             <div class="col-md-1">
-              <img src="{{ baseUrl }}/{{ task?.task?._assigned_to?.profile_pic }}"
-              onerror="this.src='assets/images/user.png'"
-              class="feed-avatar">
+              <app-assignee-avatar [post]="task" [userData]="userData"></app-assignee-avatar>
             </div>
 
             <div class="col-md-1">

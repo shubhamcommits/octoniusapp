@@ -13,6 +13,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 export class TaskComponent implements OnInit, AfterViewInit {
 
   @Input() task;
+  @Input() userData;
   @Input() cellWidth;
 
   @Output() taskSavedEmitter = new EventEmitter();

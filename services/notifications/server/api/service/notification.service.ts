@@ -40,7 +40,7 @@ export class NotificationsService {
             let userStream: any;
 
             // If all members are selected
-            if (post.event._assigned_to.includes('all')) {
+            if (post._assigned_to.includes('all')) {
 
                 // Create Readble Stream from the Event Assignee
                 userStream = Readable.from(await User.find({
@@ -49,7 +49,7 @@ export class NotificationsService {
             } else {
 
                 // Create Readble Stream from the Event Assignee
-                userStream = Readable.from(post.event._assigned_to);
+                userStream = Readable.from(post._assigned_to);
             }
 
             await userStream.on('data', async (user: any) => {

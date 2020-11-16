@@ -56,15 +56,13 @@ export class SelectAssigneeComponent implements OnInit {
 
   ngOnInit() {
     if(this.post){
-      if(this.post.task._assigned_to){
+      if(this.post._assigned_to){
         this.assigned = true
-        this.taskAssignee = this.post.task._assigned_to
-      } else if(this.post.event._assigned_to){
-        this.post.event._assigned_to
-        .forEach((member) => {
+        this.taskAssignee = this.post._assigned_to
+      } else if(this.post._assigned_to) {
+        this.post._assigned_to.forEach((member) => {
           this.eventMembersMap.set(member, member)
-        })
-       
+        });
       }
     }
   }
@@ -76,7 +74,7 @@ export class SelectAssigneeComponent implements OnInit {
 
   /**
    * This function is responsible for assigning the assignee
-   * @param memberMap 
+   * @param memberMap
    */
   getMemberDetails(memberMap: any) {
 
@@ -106,7 +104,7 @@ export class SelectAssigneeComponent implements OnInit {
 
   /**
    * This function checks if the map consists of all team as the assignee for the event type selection
-   * @param map 
+   * @param map
    */
   eventAssignedToAll(map: Map<any, any>){
     return map.has('all');

@@ -139,7 +139,7 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
             delete post.records;
             delete post.comments;
             delete post.comments_count;
-            delete post.task._assigned_to;
+            delete post._assigned_to;
             delete post.task.custom_fields;
             post._group = group;
             post.task._column.title = section.title;
@@ -164,7 +164,7 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
             delete post.bars;
             delete post.comments;
             delete post.comments_count;
-            delete post.task._assigned_to;
+            delete post._assigned_to;
             delete post.task.custom_fields;
             post._group = group;
             post.task._column.title = section.title;

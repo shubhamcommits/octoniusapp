@@ -149,9 +149,9 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.tags = [];
     if (this.postData.type === 'task') {
       // If Post is assigned
-      if (this.postData.task._assigned_to) {
+      if (this.postData._assigned_to) {
         // Set the taskAssignee
-        this.taskAssignee = this.postData.task._assigned_to;
+        this.taskAssignee = this.postData._assigned_to;
       }
 
       // Set the due date variable for task
@@ -219,8 +219,8 @@ export class GroupCreatePostDialogComponent implements OnInit {
         this.dueTime.hour = this.dueDate.getHours();
         this.dueTime.minute = this.dueDate.getMinutes();
       }
-      this.eventMembersMap = this.postData.event._assigned_to;
-      this.eventAssignedToCount = (this.postData.event._assigned_to) ? this.postData.event._assigned_to.size : 0;
+      this.eventMembersMap = this.postData._assigned_to;
+      this.eventAssignedToCount = (this.postData._assigned_to) ? this.postData._assigned_to.size : 0;
     }
 
     this.tags = this.postData.tags;
@@ -513,8 +513,8 @@ export class GroupCreatePostDialogComponent implements OnInit {
       post.task = this.postData.task;
 
       // Task Assigned to
-      if (this.postData.task._assigned_to) {
-        post.assigned_to = this.postData.task._assigned_to._id;
+      if (this.postData._assigned_to) {
+        post.assigned_to = this.postData._assigned_to._id;
       }
 
       // Task due date
@@ -673,11 +673,11 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
     this.columns = null;
 
-    if (!this.postData.task._parent_task.task._assigned_to) {
+    if (!this.postData.task._parent_task._assigned_to) {
       this.parentTaskAssigneeProfilePicUrl = 'assets/images/user.png';
     } else {
-      await this.publicFunctions.getOtherUser(this.postData.task._parent_task.task._assigned_to).then(user => {
-        this.postData.task._parent_task.task._assigned_to = user;
+      await this.publicFunctions.getOtherUser(this.postData.task._parent_task._assigned_to[0]).then(user => {
+        this.postData.task._parent_task._assigned_to[0] = user;
         this.parentTaskAssigneeProfilePicUrl = this.baseUrl + '/' + user['profile_pic'];
       });
     }

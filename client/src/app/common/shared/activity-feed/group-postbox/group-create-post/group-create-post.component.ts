@@ -145,10 +145,10 @@ export class GroupCreatePostComponent implements OnInit {
       this.title = this.postData.title
 
       // If Post is task and is assigned
-      if (this.postData.task._assigned_to && this.type == 'task') {
+      if (this.postData._assigned_to && this.type == 'task') {
 
         // Set the taskAssignee
-        this.taskAssignee = this.postData.task._assigned_to
+        this.taskAssignee = this.postData._assigned_to
 
         // Set the due date to be undefined
         this.dueDate = undefined
@@ -166,7 +166,7 @@ export class GroupCreatePostComponent implements OnInit {
       if (this.type == 'event') {
         this.dueTime.hour = this.dueDate.getHours();
         this.dueTime.minute = this.dueDate.getMinutes();
-        this.eventMembersMap = this.postData.event._assigned_to;
+        this.eventMembersMap = this.postData._assigned_to;
       }
 
       this.tags = this.postData.tags;
@@ -448,8 +448,8 @@ export class GroupCreatePostComponent implements OnInit {
       post.date_due_to = this.dueDate
 
       // Task Assigned to
-      if(this.postData.task._assigned_to)
-        post.assigned_to = this.postData.task._assigned_to._id
+      if(this.postData._assigned_to)
+        post.assigned_to = this.postData._assigned_to._id
 
       // Task column
       post._column = {
