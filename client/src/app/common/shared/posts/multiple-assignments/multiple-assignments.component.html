@@ -2,7 +2,7 @@
 <section>
   <img *ngFor="let assignee of post?._assigned_to" (click)="unassign(assignee._id)"
     src="{{ baseUrl }}/{{ assignee.profile_pic }}"
-    onerror="this.src='assets/images/user.png'" class="feed-avatar">
+    onerror="this.src='assets/images/user.png'" class="feed-avatar-small">
   <span *ngIf="!post?._assigned_to || post?._assigned_to.length === 0">
     Unassigned
   </span>
