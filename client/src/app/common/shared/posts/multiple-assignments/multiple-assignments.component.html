@@ -1,5 +1,5 @@
 <!-- Assignee section for tasks starts -->
-<section style="display: flex;">
+<section>
   <img *ngFor="let assignee of post?._assigned_to" (click)="unassign(assignee._id)"
     src="{{ baseUrl }}/{{ assignee.profile_pic }}"
     onerror="this.src='assets/images/user.png'" class="feed-avatar">
