@@ -66,6 +66,9 @@ export class MyspaceTasksComponent implements OnInit {
       let userService = this.injector.get(UserService);
       userService.getUserTodayTasks()
         .then((res) => {
+          res['tasks'] = res['tasks'].filter((task)=> {
+            return task._group != null
+          })
           resolve(res['tasks'])
         })
         .catch(() => {
@@ -79,6 +82,9 @@ export class MyspaceTasksComponent implements OnInit {
       let userService = this.injector.get(UserService);
       userService.getUserThisWeekTasks()
         .then((res) => {
+          res['tasks'] = res['tasks'].filter((task)=> {
+            return task._group != null
+          })
           resolve(res['tasks'])
         })
         .catch(() => {
@@ -92,6 +98,9 @@ export class MyspaceTasksComponent implements OnInit {
       let userService = this.injector.get(UserService);
       userService.getUserNextWeekTasks()
         .then((res) => {
+          res['tasks'] = res['tasks'].filter((task)=> {
+            return task._group != null
+          })
           resolve(res['tasks'])
         })
         .catch(() => {
@@ -105,6 +114,9 @@ export class MyspaceTasksComponent implements OnInit {
       let userService = this.injector.get(UserService);
       userService.getUserFutureTasks()
         .then((res) => {
+          res['tasks'] = res['tasks'].filter((task)=> {
+            return task._group != null
+          })
           resolve(res['tasks'])
         })
         .catch(() => {
@@ -118,6 +130,9 @@ export class MyspaceTasksComponent implements OnInit {
       let userService = this.injector.get(UserService);
       userService.getUserOverdueTasks()
         .then((res) => {
+          res['tasks'] = res['tasks'].filter((task)=> {
+            return task._group != null
+          })
           resolve(res['tasks'])
         })
         .catch(() => {
