@@ -131,7 +131,7 @@ export class PostService {
                   { _group: groupId },
                   { type: { $ne: 'task' } }
                 ]
-              }), type)
+              }), 'all')
 
             break;
 
