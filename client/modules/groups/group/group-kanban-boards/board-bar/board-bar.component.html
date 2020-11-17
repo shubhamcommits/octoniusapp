@@ -26,6 +26,10 @@
           <i class="material-icons-outlined ml-2"  style="margin-right: .7rem;">list</i>
           <span>Table</span>
         </a>
+        <a mat-menu-item (click)="changeView('calendar')">
+          <i class="material-icons-outlined ml-2"  style="margin-right: .7rem;">calendar_today</i>
+          <span>Calendar</span>
+        </a>
 
         <!--
             <a *ngIf="groupData.project_type" mat-menu-item (click)="changeView('gantt')">
