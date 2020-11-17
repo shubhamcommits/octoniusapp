@@ -1,4 +1,4 @@
-import { Component, Input, Output, OnInit, EventEmitter, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Input, Output, OnChanges, EventEmitter, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material';
 import { environment } from 'src/environments/environment';
 import { PostService } from 'src/shared/services/post-service/post.service';
@@ -11,7 +11,7 @@ import { SubSink } from 'subsink';
   styleUrls: ['./multiple-assignments.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class MultipleAssignmentsComponent implements OnInit {
+export class MultipleAssignmentsComponent implements OnChanges {
 
   @Input() groupId;
   @Input() userData;
@@ -41,7 +41,7 @@ export class MultipleAssignmentsComponent implements OnInit {
     private postService: PostService
   ) { }
 
-  ngOnInit() {
+  ngOnChanges() {
 
     this.subSink.add(this.utilityService.currentGroupData.subscribe((res) => {
       if (JSON.stringify(res) != JSON.stringify({})) {
@@ -83,8 +83,8 @@ export class MultipleAssignmentsComponent implements OnInit {
       this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
         this.postService.removeAssigneeFromPost(this.post._id, assigneeId)
           .then((res) => {
-            const index = this.post._assigned_to.findIndex((assignee) => { assignee._id === assigneeId });
-            this.post._assigned_to.splice(index, 1);
+            const index = this.assigned_to.findIndex((assignee) => { assignee._id === assigneeId });
+            this.assigned_to.splice(index, 1);
 
             // Resolve with success
             resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
@@ -101,14 +101,13 @@ export class MultipleAssignmentsComponent implements OnInit {
   getMemberDetails(member: any) {
     const index = this.assigned_to.findIndex((assignee) => { assignee._id === member._id });
     if (index < 0) {
-      this.assigned_to.push(member);
       if (this.type == 'post') {
         if (!this.isNewEvent) {
           this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
             this.postService.addAssigneeToPost(this.post._id, member._id, (this.post._group || this.post._group._id))
               .then((res) => {
                 this.post = res['post'];
-
+                this.assigned_to.push(member);
                 this.trigger.closeMenu();
 
                 // Emit the post to other components
@@ -128,7 +127,8 @@ export class MultipleAssignmentsComponent implements OnInit {
           this.assigneeAddedEmiter.emit({post: this.post, assigneeId: member._id});
         }
       } else if (this.type == 'flow') {
-        this.assigneeAddedEmiter.emit({assigneeId: member._id});
+        this.trigger.closeMenu();
+        this.assigneeAddedEmiter.emit({assignee: member});
       }
     }
   }

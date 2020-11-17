@@ -163,14 +163,14 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
       if (!this.flowSteps[index].trigger._user) {
         this.flowSteps[index].trigger._user = [];
       }
-      this.flowSteps[index].trigger._user.push(event['assigneeId']);
+      this.flowSteps[index].trigger._user.push(event['assignee']);
     }
 
     if (type === 'action') {
       if (!this.flowSteps[index].action._user) {
         this.flowSteps[index].action._user = [];
       }
-      this.flowSteps[index].action._user.push(event['assigneeId']);
+      this.flowSteps[index].action._user.push(event['assignee']);
       this.saveStep(this.flowSteps[index]);
     }
   }
