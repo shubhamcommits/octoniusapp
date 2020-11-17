@@ -44,12 +44,14 @@
 
         </a>
     </li>
+    <!--
     <li class="nav-item">
         <a class="nav-link" routerLink="/dashboard/work/groups/calendar" [queryParams]="{ group: groupData?._id, myWorkplace: myWorkplace }"
             routerLinkActive="active">Calendar
 
         </a>
     </li>
+    -->
     <li class="nav-item" *ngIf="!myWorkplace">
         <a class="nav-link" routerLink="/dashboard/work/groups/members" [queryParams]="{ group: groupData?._id }"
             routerLinkActive="active">Members

@@ -153,7 +153,7 @@ export class BillingControllers {
 
             // Fetch the current_period_end value
             const workspace: any = await Workspace.findOne({ _id: workspaceId })
-                .select('billing');
+                .populate('billing');
 
             let message = '';
             let status = true;

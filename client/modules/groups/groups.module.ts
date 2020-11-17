@@ -84,6 +84,10 @@ import { TasksTableComponent } from './group/group-tasks-list-view/tasks-table/t
 import { AutomationFlowsDialogComponent } from './group/automation-flows-dialog/automation-flows-dialog.component';
 import { AutomationFlowDetailsDialogComponent } from './group/automation-flow-details-dialog/automation-flow-details-dialog.component';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
+import { GroupCalendarViewComponent } from './group/group-calendar-view/group-calendar-view.component';
+
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { CalendarModule as Calendar, DateAdapter } from 'angular-calendar';
 
 /**
  * 4. !===== DECLARATIONS, IMPORTS, EXPORTS, & PROVIDERS =====!
@@ -178,6 +182,8 @@ import { FlowService } from 'src/shared/services/flow-service/flow.service';
     AutomationFlowsDialogComponent,
     AutomationFlowDetailsDialogComponent,
 
+    GroupCalendarViewComponent,
+
     GanttViewComponent
   ],
   imports: [
@@ -198,7 +204,12 @@ import { FlowService } from 'src/shared/services/flow-service/flow.service';
     MatSlideToggleModule,
     MatExpansionModule,
     MatTableModule,
-    MatSortModule
+    MatSortModule,
+
+    Calendar.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory
+    })
   ],
   providers: [
     GroupsService,
