@@ -10,7 +10,7 @@
     </button>
     <!-- Normal Post Ends -->
 
-    <!-- Event Post Starts
+    <!-- Event Post Starts -->
     <button class="btn btn-md cool"  ngbTooltip="Create event"
       (click)="openModal(content); ; type = 'event'">
       <i [style.color]="type === 'event'" class="material-icons-outlined" id="icon_event">event
@@ -19,11 +19,11 @@
     <!-- Event Post Ends -->
 
     <!-- Task Post Starts -->
-    <!-- <button class="btn btn-lg btn-link cool" placement="top" ngbTooltip="Create task" (click)="openModal(content); ; type = 'task'">
-          <i [style.color]="type === 'task' ? '#005fd5' : '#9b9b9b'" class="material-icons muted"
-            id="icon_check_box">check_box
-          </i>
-        </button> -->
+    <button class="btn btn-lg btn-link cool" placement="top" ngbTooltip="Create task" (click)="openModal(content); ; type = 'task'">
+      <i [style.color]="type === 'task' ? '#005fd5' : '#9b9b9b'" class="material-icons muted"
+        id="icon_check_box">check_box
+      </i>
+    </button>
     <!-- Task Post Ends -->
 
   </div>
@@ -31,12 +31,10 @@
 
 <!-- Modal Template for post creation starts -->
 <ng-template #content let-modal>
-
   <!-- Create post starts -->
   <app-group-create-post *ngIf="userData && checkDataExist(userData)" [userData]="userData" [groupId]="groupId"
     [type]="type" (post)="getPost($event)" (edited)="editedPost($event)" (close)="closeModal()">
   </app-group-create-post>
   <!-- Create post ends -->
-
 </ng-template>
 <!-- Modal Template for post creation ends -->
