@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-group-postbox',
@@ -8,7 +9,9 @@ import { environment } from 'src/environments/environment';
 })
 export class GroupPostboxComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private utilityService: UtilityService
+    ) { }
 
   // BASE URL OF THE APPLICATION
   baseUrl = environment.UTILITIES_USERS_UPLOADS;
@@ -47,5 +50,18 @@ export class GroupPostboxComponent implements OnInit {
 
   editedPost(post: any){
     this.edited.emit(post);
+  }
+
+  openModal(content: any){
+    this.utilityService.openModal(content, {
+      size: 'xl',
+    });
+  }
+
+  /**
+   * This function closes all the modals
+   */
+  closeModal(){
+    this.utilityService.closeAllModals();
   }
 }

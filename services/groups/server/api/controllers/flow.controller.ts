@@ -166,24 +166,36 @@ export class FlowController {
         try {
             const { flowId } = req.params;
             const { step } = req.body;
+            let flow;
 
+            if (step._id) {
+                await Flow.findByIdAndUpdate({
+                    _id: flowId
+                }, {
+                    $pull: {
+                        steps: {_id: step._id}
+                    }
+                });
+                delete step._id;
+            }
+            
             // Find the Group based on the groupId
-            const flow = await Flow.findOneAndUpdate({
+            flow = await Flow.findOneAndUpdate({
                 _id: flowId
-              }, {
-                  $push: { "steps": step }
-              }, {
-                  new: true
-              })
-              .populate({
-                  path: 'steps.trigger._user',
-                  select: 'first_name last_name profile_pic created_date'
-              })
-              .populate({
-                  path: 'steps.action._user',
-                  select: 'first_name last_name profile_pic created_date'
-              })
-              .lean();
+            }, {
+                $push: { "steps": step }
+            }, {
+                new: true
+            })
+            .populate({
+                path: 'steps.trigger._user',
+                select: 'first_name last_name profile_pic created_date'
+            })
+            .populate({
+                path: 'steps.action._user',
+                select: 'first_name last_name profile_pic created_date'
+            })
+            .lean();
 
             // Check if group already exist with the same groupId
             if (!flow) {

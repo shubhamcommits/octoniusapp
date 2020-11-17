@@ -158,20 +158,37 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
     }
   }
 
-  getMemberDetails(memberMap: any, type: string, index: number) {
+  getMember(event: any, type: string, index: number) {
     if (type === 'trigger') {
-      for (const member of memberMap.values()) {
-        this.flowSteps[index].trigger._user = member;
+      if (!this.flowSteps[index].trigger._user) {
+        this.flowSteps[index].trigger._user = [];
+      }
+      this.flowSteps[index].trigger._user.push(event['assigneeId']);
+    }
+
+    if (type === 'action') {
+      if (!this.flowSteps[index].action._user) {
+        this.flowSteps[index].action._user = [];
+      }
+      this.flowSteps[index].action._user.push(event['assigneeId']);
+      this.saveStep(this.flowSteps[index]);
+    }
+  }
+
+  removeMember(event: any, type: string, index: number) {
+    if (type === 'trigger') {
+      const assigneeIndex = this.flowSteps[index].trigger._user.findIndex(user => user._id == event['assigneeId']);
+      this.flowSteps[index].trigger._user.splice(assigneeIndex, 1);
+      if (this.flowSteps[index]._id) {
+        this.saveStep(this.flowSteps[index]);
       }
     }
 
     if (type === 'action') {
-      for (const member of memberMap.values()) {
-        this.flowSteps[index].action._user = member;
-      }
+      const assigneeIndex = this.flowSteps[index].action._user.findIndex(user => user._id == event['assigneeId']);
+      this.flowSteps[index].action._user.splice(assigneeIndex, 1);
       this.saveStep(this.flowSteps[index]);
     }
-
   }
 
   selectTrigger(trigger: string, index: number) {

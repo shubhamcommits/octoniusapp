@@ -65,7 +65,7 @@
 <ng-template #content let-modal>
   <!-- Create post starts -->
   <app-group-create-post *ngIf="userData && checkDataExist(userData)" [userData]="userData" [groupId]="groupId"
-    [type]="'event'" (post)="getPost($event)" (close)="closeModal()">
+    [type]="'task'" (post)="getPost($event)" (close)="closeModal()">
   </app-group-create-post>
   <!-- Create post ends -->
 </ng-template>

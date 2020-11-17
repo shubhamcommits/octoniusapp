@@ -21,12 +21,12 @@
                 <div *ngIf="isGlobal==true" class="grouplabel">{{ post?._group.group_name }}</div>
 
                 <!-- Assignee detail starts -->
-                <section>
-                    <span class="assigned" *ngIf="!eventAssignedToAll(post)">Assigned
-                        to {{post._assigned_to?.length || 0}} Member(s)
+                <section *ngIf="post.type == 'task' || post.type == 'event'">
+                    <span class="assigned" *ngIf="!eventAssignedToAll(post)">
+                      Assigned to {{post._assigned_to?.length || 0}} Member(s)
                     </span>
-                    <span class="assigned" *ngIf="eventAssignedToAll(post)">Assigned
-                        to all Members
+                    <span class="assigned" *ngIf="eventAssignedToAll(post)">
+                      Assigned to all Members
                     </span>
                 </section>
                 <!-- Assignee detail ends -->
