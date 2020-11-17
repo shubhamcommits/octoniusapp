@@ -66,6 +66,10 @@ export class MultipleAssignmentsComponent implements OnInit {
     if (this.type == 'post' && !this.assigned_to) {
       this.assigned_to = this.post._assigned_to;
     }
+
+    if (!this.assigned_to) {
+      this.assigned_to = [];
+    }
   }
 
   ngOnDestroy(): void {
