@@ -316,7 +316,7 @@ export class GroupActivityFeedComponent implements OnInit {
 
     // If the activity feed is not the global feed
     if (!this.globalFeed)
-      posts = await this.publicFunctions.getPosts(groupId, 'group', lastPostId)
+      posts = await this.publicFunctions.getPosts(groupId, 'normal', lastPostId)
 
     // If the acitvity feed is the global feed
     else if (this.globalFeed) {

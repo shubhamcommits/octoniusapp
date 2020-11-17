@@ -204,6 +204,19 @@ export class PostService {
         .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
         .lean();
 
+    // If normal posts are selected
+    else if (type === 'normal')
+      filteredPosts = posts
+        .sort('-_id')
+        .limit(5)
+        .populate({ path: '_group', select: this.groupFields })
+        .populate({ path: '_posted_by', select: this.userFields })
+        .populate({ path: '_assigned_to', select: this.userFields })
+        .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
+        // .populate({ path: '_liked_by', select: this.userFields, options: { limit: 10 } })
+        .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
+        .lean();
+
     // If all tasks are selected
     else if (type === 'task')
       filteredPosts = posts
