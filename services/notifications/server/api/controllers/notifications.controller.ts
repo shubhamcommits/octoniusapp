@@ -46,11 +46,10 @@ export class NotificationsController {
      */
     async newEventAssignments(req: Request, res: Response, next: NextFunction) {
 
-        const { post } = req.body;
+        const { postId, assigned_to, groupId, posted_by } = req.body;
         try {
-
             // Call Service Function for newEventAssignments
-            await notificationService.newEventAssignments(post);
+            await notificationService.newEventAssignments(postId, assigned_to, groupId, posted_by);
 
             // Send status 200 response
             return res.status(200).json({
@@ -68,11 +67,11 @@ export class NotificationsController {
      */
     async newPostMentions(req: Request, res: Response, next: NextFunction) {
 
-        const { post } = req.body;
+        const { postId, content_mentions, groupId, posted_by } = req.body;
         try {
             
             // Call Service function for newPostMentions
-            await notificationService.newPostMentions(post);
+            await notificationService.newPostMentions(postId, content_mentions, groupId, posted_by);
 
             // Send status 200 response
             return res.status(200).json({
@@ -114,11 +113,11 @@ export class NotificationsController {
      */
     async newTaskAssignment(req: Request, res: Response, next: NextFunction) {
 
-        const { post } = req.body;
+        const { postId, assigned_to, groupId, posted_by } = req.body;
         try {
             
             // Call Service Function for newTaskAssignments
-            await notificationService.newTaskAssignment(post);
+            await notificationService.newTaskAssignment(postId, assigned_to, groupId, posted_by);
 
             // Send status 200 response
             return res.status(200).json({
@@ -137,12 +136,12 @@ export class NotificationsController {
     async newTaskReassignment(req: Request, res: Response, next: NextFunction) {
 
         // Fetch Data from request
-        const { post, assigneeId } = req.body;
+        const { postId, assigneeId, posted_by } = req.body;
 
         try {
             
             // Call Service function for newTaskReassignment
-            await notificationService.newTaskReassignment(post, assigneeId);
+            await notificationService.newTaskReassignment(postId, assigneeId, posted_by);
 
             // Send status 200 response
             return res.status(200).json({
@@ -268,20 +267,20 @@ export class NotificationsController {
     }
 
     async newComment(req: Request, res: Response, next: NextFunction) {
-        const { comment, post } = req.body;
+        const { comment, posted_by, assigned_to, followers } = req.body;
         try {
             // Call Service Function for newComment
-            await notificationService.newComment(comment, post._posted_by);
+            await notificationService.newComment(comment, posted_by);
 
-            if (post._assigned_to) {
-                post._assigned_to.forEach(async assignee => {
+            if (assigned_to) {
+                assigned_to.forEach(async assignee => {
                     await notificationService.newComment(comment, assignee); 
                 });
             }
-            if(post._followers) {
-                post._followers.forEach(async follower => {
-                    const index = post._assigned_to.findIndex(assignee => assignee === follower);
-                    if (follower !== post._posted_by && index < 0) {
+            if(followers) {
+                followers.forEach(async follower => {
+                    const index = assigned_to.findIndex(assignee => assignee === follower);
+                    if (follower !== posted_by && index < 0) {
                         await notificationService.newComment(comment, follower);
                     }
                 });
@@ -297,10 +296,10 @@ export class NotificationsController {
     }
 
     async followPost(req: Request, res: Response, next: NextFunction) {
-        const { post, follower } = req.body;
+        const { postId, posted_by, follower } = req.body;
         try {
             // Call Service Function for followPost
-            await notificationService.followPost(post, follower);
+            await notificationService.followPost(postId, posted_by, follower);
 
             // Send status 200 response
             return res.status(200).json({
@@ -313,14 +312,14 @@ export class NotificationsController {
     }
 
     async likePost(req: Request, res: Response, next: NextFunction) {
-        const { post, user } = req.body;
+        const { postId, posted_by, followers, user } = req.body;
         try {
             // Call Service Function for likePost
-            await notificationService.likePost(post, post._posted_by, user);
+            await notificationService.likePost(postId, posted_by, user);
 
-            post._followers.forEach(async follower => {
-                if (post._posted_by !== follower) {
-                    await notificationService.likePost(post, follower, user);
+            followers.forEach(async follower => {
+                if (posted_by !== follower) {
+                    await notificationService.likePost(postId, follower, user);
                 }
             });
 

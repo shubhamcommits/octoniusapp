@@ -57,7 +57,9 @@ const fs = require('fs');
             }).select('title _posted_by task _content_mentions');
           await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-comment`, {
               comment: newComment,
-              post: post
+              posted_by: post['_posted_by'],
+              assigned_to: post['_assigned_to'],
+              followers: post['_followers']
           });
       
       
@@ -65,8 +67,8 @@ const fs = require('fs');
             // Create Notification for mentions on comments
             // notifications.newCommentMentions(comment);
             await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-comment-mention`, {
-                comment: newComment,
-                post: post
+                comment: newComment
+                // post: post
             });
           }
       

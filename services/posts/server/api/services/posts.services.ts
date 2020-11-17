@@ -287,7 +287,10 @@ export class PostService {
 
       // Create Real time Notification for all the mentions on post content
       await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-mention`, {
-        post: post
+        postId: post._id,
+        content_mentions: post._content_mentions,
+        groupId: post._group._id || post._group,
+        posted_by: post._posted_by
       })
 
       // // Create User Stream
@@ -327,7 +330,10 @@ export class PostService {
 
           // Real time notification for new task assignment
           await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-task`, {
-            post: post
+            postId: post._id,
+            assigned_to: post._assigned_to,
+            groupId: post._group._id || post._group,
+            posted_by: post._posted_by
           })
           /*
           // Email notification for the new task
@@ -347,7 +353,10 @@ export class PostService {
 
         // Real time notification for new event assignment
         http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-event`, {
-          post: post
+          postId: post._id,
+          assigned_to: post._assigned_to,
+          grouId: (post._group._id || post._group),
+          posted_by: post._posted_by
         })
 
         /*
@@ -657,7 +666,9 @@ export class PostService {
       .lean();
       
     await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-like-post`, {
-      post: post,
+      postId: post._id,
+      posted_by: post['_posted_by'],
+      followers: post['_followers'],
       user: userId
     });
 
@@ -721,7 +732,8 @@ export class PostService {
       .lean();
 
       await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-follow-post`, {
-        post: post,
+        postId: post._id,
+        posted_by: post['_posted_by'],
         follower: userId
       }).catch(err => sendErr(err, new Error(err), 'Internal Server Error!', 500));
 
@@ -852,8 +864,9 @@ export class PostService {
 
       // Create Real time Notification to notify user about the task reassignment
       http.post(`${process.env.NOTIFICATIONS_SERVER_API}/task-reassign`, {
-        post: post,
-        assigneeId: assigneeId
+        postId: post._id,
+        assigneeId: assigneeId,
+        posted_by: post._posted_by
       })
 
       // Return the post
@@ -902,7 +915,9 @@ export class PostService {
 
       // Create Real time Notification to notify user about the task reassignment
       http.post(`${process.env.NOTIFICATIONS_SERVER_API}/task-reassign`, {
-        post: post
+        postId: post._id,
+        assigneeId: assigneeId,
+        posted_by: post._posted_by
       })
 
       /*
