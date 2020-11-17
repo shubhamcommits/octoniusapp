@@ -1240,7 +1240,13 @@ export class PostController {
 
                 if (steps && steps.length > 0) {
                     steps.forEach(async step => {
-                        if ((step.trigger.name === 'Assigned to' && (step.trigger._user._id === triggerText || step.trigger._user === triggerText))
+
+                        let triggerIndex = -1;
+                        if (step.trigger.name === 'Assigned to') {
+                            triggerIndex = step.trigger._user.findIndex(userTrigger => (userTrigger._id === triggerText || userTrigger === triggerText));
+                        }
+                        
+                        if ((step.trigger.name === 'Assigned to' && (triggerIndex >= 0))
                             || (step.trigger.name === 'Section is' && step.trigger.section.toUpperCase() === triggerText.toUpperCase())
                             || (step.trigger.name === 'Status is' && step.trigger.status.toUpperCase() === triggerText.toUpperCase())
                             || (step.trigger.name === 'Custom Field' && cfTrigger
@@ -1249,10 +1255,12 @@ export class PostController {
                             || (step.trigger.name === 'Task is CREATED')) {
 
                             if (step.action.name === 'Assign to') {
-                                const index = post._assigned_to.findIndex(assignee => assignee._id == step.action._user);
-                                if (index < 0) {
-                                    return await this.callAddAssigneeService(post._id, step.action._user, userId, groupId);
-                                }
+                                step.action._user.forEach(async userAction => {
+                                    const index = post._assigned_to.findIndex(assignee => assignee._id == userAction._id || assignee._id == userAction);
+                                    if (index >= 0) {
+                                        return await this.callAddAssigneeService(post._id, userAction, userId, groupId);
+                                    }
+                                });
                             }
                             
                             if (step.action.name === 'Change Status to') {

@@ -52,6 +52,7 @@
             </span>
 
             <div *ngIf="step.trigger.name === 'Assigned to'">
+              <!--
               <div *ngIf="step.trigger._user">
                 <img src="{{ baseUrl }}/{{ step.trigger._user.profile_pic }}"
                   onerror="this.src='assets/images/user.png'" class="feed-avatar">
@@ -64,8 +65,17 @@
                 [workspaceId]="workspaceId"
                 [userData]="userData"
                 [type]="'task'"
-                (member)="getMemberDetails($event, 'trigger', index)">
+                (member)="getMember($event, 'trigger', index)">
               </app-component-search-input-box>
+              -->
+              <app-multiple-assignments
+                [groupId]="groupId"
+                [userData]="userData"
+                [assigned_to]="step.trigger._user"
+                [type]="'flow'"
+                (assigneeAddedEmiter)="getMember($event, 'trigger', index)"
+                (assigneeRemovedEmiter)="removeMember($event, 'trigger', index)">
+              </app-multiple-assignments>
             </div>
 
             <div *ngIf="step.trigger.name === 'Status is'">
@@ -158,6 +168,7 @@
             </span>
 
             <div *ngIf="step.action.name === 'Assign to'">
+              <!--
               <div *ngIf="step.action._user">
                 <img src="{{ baseUrl }}/{{ step.action._user.profile_pic }}"
                   onerror="this.src='assets/images/user.png'" class="feed-avatar">
@@ -170,8 +181,17 @@
                 [workspaceId]="workspaceId"
                 [userData]="userData"
                 [type]="'task'"
-                (member)="getMemberDetails($event, 'action', index)">
+                (member)="getMember($event, 'action', index)">
               </app-component-search-input-box>
+              -->
+              <app-multiple-assignments
+                [groupId]="groupId"
+                [userData]="userData"
+                [assigned_to]="step.action._user"
+                [type]="'flow'"
+                (assigneeAddedEmiter)="getMember($event, 'action', index)"
+                (assigneeRemovedEmiter)="removeMember($event, 'action', index)">
+              </app-multiple-assignments>
             </div>
 
             <div *ngIf="step.action.name === 'Move to'">

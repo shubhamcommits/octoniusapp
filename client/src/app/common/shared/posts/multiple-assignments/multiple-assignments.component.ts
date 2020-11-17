@@ -16,8 +16,11 @@ export class MultipleAssignmentsComponent implements OnInit {
   @Input() groupId;
   @Input() userData;
   @Input() post;
+  @Input() assigned_to = [];
+  @Input() type; // post/flow
 
   @Output() assigneeAddedEmiter = new EventEmitter();
+  @Output() assigneeRemovedEmiter = new EventEmitter();
 
   @ViewChild(MatMenuTrigger, {static: true}) trigger: MatMenuTrigger;
 
@@ -53,11 +56,15 @@ export class MultipleAssignmentsComponent implements OnInit {
       }
     }));
 
-    if (!this.post) {
+    if (!this.post && this.type == 'post') {
       this.isNewEvent = true;
       this.post = {
         _assigned_to: []
       };
+    }
+
+    if (this.type == 'post' && !this.assigned_to) {
+      this.assigned_to = this.post._assigned_to;
     }
   }
 
@@ -68,32 +75,12 @@ export class MultipleAssignmentsComponent implements OnInit {
   }
 
   unassign(assigneeId: string) {
-    this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
-      this.postService.removeAssigneeFromPost(this.post._id, assigneeId)
-        .then((res) => {
-          const index = this.post._assigned_to.findIndex((assignee) => { assignee._id === assigneeId });
-          this.post._assigned_to.splice(index, 1);
-
-          // Resolve with success
-          resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
-        })
-        .catch((err) => {
-          reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
-        });
-    }));
-  }
-
-  getMemberDetails(member: any) {
-    if (!this.isNewEvent) {
+    if (this.type == 'post') {
       this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
-        this.postService.addAssigneeToPost(this.post._id, member._id, (this.post._group || this.post._group._id))
+        this.postService.removeAssigneeFromPost(this.post._id, assigneeId)
           .then((res) => {
-            this.post = res['post'];
-
-            this.trigger.closeMenu();
-
-            // Emit the post to other components
-            this.assigneeAddedEmiter.emit({post: this.post, assigneeId: member._id});
+            const index = this.post._assigned_to.findIndex((assignee) => { assignee._id === assigneeId });
+            this.post._assigned_to.splice(index, 1);
 
             // Resolve with success
             resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
@@ -102,12 +89,43 @@ export class MultipleAssignmentsComponent implements OnInit {
             reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
           });
       }));
-    } else {
-      this.post._assigned_to.push(member);
-      this.trigger.closeMenu();
+    } else if (this.type == 'flow') {
+      this.assigneeRemovedEmiter.emit({assigneeId: assigneeId});
+    }
+  }
 
-      // Emit the post to other components
-      this.assigneeAddedEmiter.emit({post: this.post, assigneeId: member._id});
+  getMemberDetails(member: any) {
+    const index = this.assigned_to.findIndex((assignee) => { assignee._id === member._id });
+    if (index < 0) {
+      if (this.type == 'post') {
+        if (!this.isNewEvent) {
+          this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
+            this.postService.addAssigneeToPost(this.post._id, member._id, (this.post._group || this.post._group._id))
+              .then((res) => {
+                this.post = res['post'];
+
+                this.trigger.closeMenu();
+
+                // Emit the post to other components
+                this.assigneeAddedEmiter.emit({post: this.post, assigneeId: member._id});
+
+                // Resolve with success
+                resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
+              })
+              .catch((err) => {
+                reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
+              });
+          }));
+        } else {
+          this.post._assigned_to.push(member);
+          this.trigger.closeMenu();
+
+          // Emit the post to other components
+          this.assigneeAddedEmiter.emit({post: this.post, assigneeId: member._id});
+        }
+      } else if (this.type == 'flow') {
+        this.assigneeAddedEmiter.emit({assigneeId: member._id});
+      }
     }
   }
 }

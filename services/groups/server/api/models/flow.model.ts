@@ -23,10 +23,10 @@ const FlowSchema = new Schema({
                 type: String,
                 enum: ['Assigned to', 'Custom Field', 'Section is', 'Status is', 'Task is CREATED']
             },
-            _user: {
+            _user: [{
                 type: Schema.Types.ObjectId,
                 ref: 'User'
-            },
+            }],
             section: {
                 type: String,
                 default: ''
@@ -51,10 +51,10 @@ const FlowSchema = new Schema({
                 type: String,
                 enum: ['Assign to', 'Change Status to', 'Custom Field', 'Move to']
             },
-            _user: {
+            _user: [{
                 type: Schema.Types.ObjectId,
                 ref: 'User'
-            },
+            }],
             section: {
                 type: String,
                 default: ''
@@ -75,7 +75,6 @@ const FlowSchema = new Schema({
             }
         }
     }]
-
 });
 
 const Flow = mongoose.model('Flow', FlowSchema);
