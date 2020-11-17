@@ -63,7 +63,7 @@ export class MultipleAssignmentsComponent implements OnInit {
       };
     }
 
-    if (this.type == 'post' && !this.assigned_to) {
+    if (this.type == 'post') {
       this.assigned_to = this.post._assigned_to;
     }
 
@@ -101,6 +101,7 @@ export class MultipleAssignmentsComponent implements OnInit {
   getMemberDetails(member: any) {
     const index = this.assigned_to.findIndex((assignee) => { assignee._id === member._id });
     if (index < 0) {
+      this.assigned_to.push(member);
       if (this.type == 'post') {
         if (!this.isNewEvent) {
           this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
@@ -121,7 +122,6 @@ export class MultipleAssignmentsComponent implements OnInit {
               });
           }));
         } else {
-          this.post._assigned_to.push(member);
           this.trigger.closeMenu();
 
           // Emit the post to other components
