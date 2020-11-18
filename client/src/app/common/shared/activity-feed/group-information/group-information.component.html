@@ -20,7 +20,7 @@
 
             <!-- Group Information details starts -->
             <!-- <p class="card-text" *ngIf="!myWorkplace"><strong>Name: </strong>{{groupData?.group_name }}</p> -->
-            <p class="card-text" *ngIf="!myWorkplace"><strong>Members: </strong>{{groupData?.members_count || 0 }}</p>
+            <p class="card-text" *ngIf="!myWorkplace"><strong>Members: </strong>{{groupData?._members.length + groupData?._admins.length || 0 }}</p>
             <p class="card-text" *ngIf="!myWorkplace"><strong>Description: </strong>{{groupData?.description}}</p>
             <p class="card-text" *ngIf="myWorkplace">This is your personal space. Everything you create here is private.
             </p>
