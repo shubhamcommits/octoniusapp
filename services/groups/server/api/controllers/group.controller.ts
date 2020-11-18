@@ -249,15 +249,15 @@ export class GroupController {
             const { groupId } = req.params;
 
             // Find the Group based on the groupId
-            const group = await Group.findOne({
+            var group = await Group.findOne({
                 _id: groupId
             })
                 .populate({
                     path: '_members',
                     select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
-                    options: {
-                        limit: 10
-                    },
+                    // options: {
+                    //     limit: 10
+                    // },
                     match: {
                         active: true
                     }
@@ -265,9 +265,9 @@ export class GroupController {
                 .populate({
                     path: '_admins',
                     select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
-                    options: {
-                        limit: 10
-                    },
+                    // options: {
+                    //     limit: 10
+                    // },
                     match: {
                         active: true
                     }
@@ -416,12 +416,12 @@ export class GroupController {
             const group: any = await Group.findByIdAndDelete(groupId)
                 .select('group_name _workspace')
 
-            await User.updateMany({_groups: groupId}, {
-                $pull: {_groups:groupId}
+            await User.updateMany({ _groups: groupId }, {
+                $pull: { _groups: groupId }
             });
 
             // Delete Posts and Files too
-            await Post.remove({_group: groupId});
+            await Post.remove({ _group: groupId });
 
             // Send the status 200 response
             return res.status(200).json({
@@ -474,7 +474,7 @@ export class GroupController {
      * @param res 
      * @param next 
      */
-    async getAgoraGroupsNotJoined(req: Request, res: Response, next: NextFunction){
+    async getAgoraGroupsNotJoined(req: Request, res: Response, next: NextFunction) {
         try {
             const { workspaceId, userId } = req.query;
 
@@ -486,13 +486,13 @@ export class GroupController {
 
             const agoraGroups = await Group.find({
                 $and: [
-                    { _members: { $ne: userId} },
-                    { _admins: { $ne: userId} },
+                    { _members: { $ne: userId } },
+                    { _admins: { $ne: userId } },
                     { _workspace: workspaceId },
                     { type: "agora" },
                 ]
             })
-            .sort('_id')
+                .sort('_id')
                 // .limit(10)
                 .populate({
                     path: '_members',
@@ -516,11 +516,11 @@ export class GroupController {
                 })
                 .lean() || []
 
-                return res.status(200).json({
-                    message: `Agora groups retrieved successfully!`,
-                    group: agoraGroups
-                });
-    
+            return res.status(200).json({
+                message: `Agora groups retrieved successfully!`,
+                group: agoraGroups
+            });
+
         } catch (error) {
             return sendError(res, error, 'Internal Server Error!', 500);
         }
@@ -533,7 +533,7 @@ export class GroupController {
      * @param res 
      * @param next 
      */
-    async joinAgoraGroup(req: Request, res: Response, next: NextFunction){
+    async joinAgoraGroup(req: Request, res: Response, next: NextFunction) {
         try {
             const { groupId, userId } = req.body;
 
@@ -548,10 +548,10 @@ export class GroupController {
                 _id: groupId
             }, {
                 $addToSet: {
-                     _members: userId
+                    _members: userId
                 },
                 $inc: { members_count: 1 }
-            },{
+            }, {
                 new: true
             });
 
@@ -582,7 +582,7 @@ export class GroupController {
      * @param res 
      * @param next 
      */
-    async getNextAgoraGroupsNotJoined(req: Request, res: Response, next: NextFunction){
+    async getNextAgoraGroupsNotJoined(req: Request, res: Response, next: NextFunction) {
         try {
             const { workspaceId, userId, lastGroupId } = req.query;
 
@@ -594,14 +594,14 @@ export class GroupController {
 
             const agoraGroups = await Group.find({
                 $and: [
-                    { _members: { $ne: userId} },
-                    { _admins: { $ne: userId} },
+                    { _members: { $ne: userId } },
+                    { _admins: { $ne: userId } },
                     { _workspace: workspaceId },
                     { type: "agora" },
                     { _id: { $gt: lastGroupId } }
                 ]
             })
-            .sort('_id')
+                .sort('_id')
                 .limit(5)
                 .populate({
                     path: '_members',
@@ -625,11 +625,11 @@ export class GroupController {
                 })
                 .lean() || []
 
-                return res.status(200).json({
-                    message: `Agora groups retrieved successfully!`,
-                    group: agoraGroups
-                });
-    
+            return res.status(200).json({
+                message: `Agora groups retrieved successfully!`,
+                group: agoraGroups
+            });
+
         } catch (error) {
             return sendError(res, error, 'Internal Server Error!', 500);
         }
@@ -722,14 +722,15 @@ export class GroupController {
             // Find the group and update their respective group avatar
             const group = await Group.findByIdAndUpdate({
                 _id: groupId
-            }, 
-            { $pull:
+            },
                 {
-                    custom_fields: {
-                        _id: fieldId
+                    $pull:
+                    {
+                        custom_fields: {
+                            _id: fieldId
+                        }
                     }
-                }
-            });
+                });
 
             // Send status 200 response
             return res.status(200).json({
@@ -811,7 +812,7 @@ export class GroupController {
         // Fetch the value from fileHandler middleware
         const value = req.body['value'];
 
-        const property = {propertyName: value};
+        const property = { propertyName: value };
 
         try {
 
@@ -833,7 +834,7 @@ export class GroupController {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
     };
-    
+
     async enableRights(req: Request, res: Response, next: NextFunction) {
         // Fetch the groupId
         const { groupId } = req.params;
@@ -841,7 +842,7 @@ export class GroupController {
         // Fetch the value from fileHandler middleware
         const value = req.body['value'];
 
-        const property = {propertyName: value};
+        const property = { propertyName: value };
 
         try {
 
@@ -863,7 +864,7 @@ export class GroupController {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
     };
-    
+
     async enabledProjectType(req: Request, res: Response, next: NextFunction) {
         // Fetch the groupId
         const { groupId } = req.params;
@@ -871,7 +872,7 @@ export class GroupController {
         // Fetch the value from fileHandler middleware
         const value = req.body['value'];
 
-        const property = {propertyName: value};
+        const property = { propertyName: value };
 
         try {
             // Find the group and update their respective group avatar
@@ -896,171 +897,171 @@ export class GroupController {
     async updateSmartGroup(req: Request, res: Response, next: NextFunction) {
         const { groupId } = req.params;
         const { type, payload } = req.body;
-      
+
         try {
-          if (type === 'email_domain') {
-            await Group.findByIdAndUpdate(groupId, {
-              $addToSet: { 'conditions.email_domains': payload }
+            if (type === 'email_domain') {
+                await Group.findByIdAndUpdate(groupId, {
+                    $addToSet: { 'conditions.email_domains': payload }
+                });
+            } else if (type === 'job_position') {
+                await Group.findByIdAndUpdate(groupId, {
+                    $addToSet: { 'conditions.job_positions': payload }
+                });
+            } else if (type === 'skills') {
+                await Group.findByIdAndUpdate(groupId, {
+                    $addToSet: { 'conditions.skills': payload }
+                });
+            }
+
+            return res.status(200).json({
+                message: 'Rule added successfully!'
             });
-          } else if (type === 'job_position') {
-            await Group.findByIdAndUpdate(groupId, {
-              $addToSet: { 'conditions.job_positions': payload }
-            });
-          } else if (type === 'skills') {
-            await Group.findByIdAndUpdate(groupId, {
-              $addToSet: { 'conditions.skills': payload }
-            });
-          }
-      
-          return res.status(200).json({
-            message: 'Rule added successfully!'
-          });
         } catch (error) {
-          return sendError(res, error, 'Internal Server Error!', 500);
+            return sendError(res, error, 'Internal Server Error!', 500);
         }
-      };
-      
-      /**
-       * Gets a smart group's settings.
-       */
-      async getSmartGroupSettings(req: Request, res: Response, next: NextFunction) {
+    };
+
+    /**
+     * Gets a smart group's settings.
+     */
+    async getSmartGroupSettings(req: Request, res: Response, next: NextFunction) {
         const { groupId } = req.params;
 
         try {
-          const groupDoc = await Group
-            .findById(groupId)
-            .select('conditions');
-      
-          return res.status(200).json({
-            message: 'Rules successfully found!',
-            domains: groupDoc['conditions'].email_domains ? groupDoc['conditions'].email_domains : [],
-            positions: groupDoc['conditions'].job_positions ? groupDoc['conditions'].job_positions : [],
-            skills: groupDoc['conditions'].skills ? groupDoc['conditions'].skills : []
-          });
+            const groupDoc = await Group
+                .findById(groupId)
+                .select('conditions');
+
+            return res.status(200).json({
+                message: 'Rules successfully found!',
+                domains: groupDoc['conditions'].email_domains ? groupDoc['conditions'].email_domains : [],
+                positions: groupDoc['conditions'].job_positions ? groupDoc['conditions'].job_positions : [],
+                skills: groupDoc['conditions'].skills ? groupDoc['conditions'].skills : []
+            });
         } catch (error) {
-          return sendError(res, error, 'Internal Server Error!', 500);
+            return sendError(res, error, 'Internal Server Error!', 500);
         }
-      };
-      
-      /**
-       * Deletes a smart group's rule.
-       */
-      async deleteSmartGroupRule(req: Request, res: Response, next: NextFunction) {
+    };
+
+    /**
+     * Deletes a smart group's rule.
+     */
+    async deleteSmartGroupRule(req: Request, res: Response, next: NextFunction) {
         const { groupId, rule } = req.params;
-      
+
         try {
-          if (rule === 'email_domains') {
-            await Group.findByIdAndUpdate(groupId, {
-              $unset: { 'conditions.email_domains': '' }
+            if (rule === 'email_domains') {
+                await Group.findByIdAndUpdate(groupId, {
+                    $unset: { 'conditions.email_domains': '' }
+                });
+            } else if (rule === 'job_positions') {
+                await Group.findByIdAndUpdate(groupId, {
+                    $unset: { 'conditions.job_positions': '' }
+                });
+            } else if (rule === 'skills') {
+                await Group.findByIdAndUpdate(groupId, {
+                    $unset: { 'conditions.skills': '' }
+                });
+            }
+
+            return res.status(200).json({
+                message: 'Rule successfully deleted!'
             });
-          } else if (rule === 'job_positions') {
-            await Group.findByIdAndUpdate(groupId, {
-              $unset: { 'conditions.job_positions': '' }
-            });
-          } else if (rule === 'skills') {
-            await Group.findByIdAndUpdate(groupId, {
-              $unset: { 'conditions.skills': '' }
-            });
-          }
-      
-          return res.status(200).json({
-            message: 'Rule successfully deleted!'
-          });
         } catch (error) {
-          return sendError(res, error, 'Internal Server Error!', 500);
+            return sendError(res, error, 'Internal Server Error!', 500);
         }
-      };
-      
-      /**
-       * This method is responsible for the automatic
-       * addition and deletion of smart group members
-       * based on the provided rules.
-       */
-      async updateSmartGroupMembers(req: Request, res: Response, next: NextFunction) {
+    };
+
+    /**
+     * This method is responsible for the automatic
+     * addition and deletion of smart group members
+     * based on the provided rules.
+     */
+    async updateSmartGroupMembers(req: Request, res: Response, next: NextFunction) {
         const { groupId } = req.params;
         const { workspaceId } = req.body;
         const { emailDomains, jobPositions, skills } = req.body.currentSettings;
-      
-        try {
-          // Get users in the group's workspace
-          const users = await User.find({
-            _workspace: workspaceId,
-            active: true
-          });
-      
-          const validUsers = new Set();
-          if (emailDomains.length > 0) {
-            // Filter users by email domain
-            users.map((user) => {
-              const email = user['email'];
-              const index = email.indexOf('@');
-              const emailDomain = email.substring(index + 1);
-      
-              if (emailDomains.includes(emailDomain) && !validUsers.has(user._id.toString())) {
-                validUsers.add(user._id.toString());
-              }
-            });
-          }
-      
-          if (jobPositions.length > 0) {
-            // Filter users by job positions
-            users.map((user) => {
-              if (jobPositions.includes(user['current_position']) && !validUsers.has(user._id.toString())) {
-                validUsers.add(user._id.toString());
-              }
-            });
-          }
-      
-          if (skills.length > 0) {
-            // Filter users by skills
-            users.map((user) => {
-              if (user['skills'].some(skill => skills.includes(skill)) && !validUsers.has(user._id.toString())) {
-                validUsers.add(user._id.toString());
-              }
-            });
-          }
-      
-          const group = await Group.findById(groupId);
-          
-          // Remove owner/admin from prospective members
-          group['_admins'].map((adminId) => {
-            if (validUsers.has(adminId.toString())) {
-              validUsers.delete(adminId.toString());
-            }
-          });
-      
-          // Remove the group from the current members' _groups set
-          group['_members'].map(async (userId) => {
-            await User.findByIdAndUpdate(userId, {
-              $pull: { _groups: groupId }
-            });
-          });
-      
-          // Remove the current members from the group
-          await Group.findByIdAndUpdate(groupId, {
-            $set: { _members: [] }
-          });
-      
-          if (emailDomains.length > 0 || jobPositions.length > 0 || skills.length > 0) {
-            // Add new members
-            Array.from(validUsers).map(async (userId) => {
-              // Add the user to the group
-              await Group.findByIdAndUpdate(groupId, {
-                $addToSet: { _members: userId }
-              });
-      
-              // Add the group to the user document
-              await User.findByIdAndUpdate(userId, {
-                $addToSet: { _groups: groupId }
-              });
-            });
-          }
 
-          return res.status(200).json({
-            message: 'Group members successfully updated!'
-          });
+        try {
+            // Get users in the group's workspace
+            const users = await User.find({
+                _workspace: workspaceId,
+                active: true
+            });
+
+            const validUsers = new Set();
+            if (emailDomains.length > 0) {
+                // Filter users by email domain
+                users.map((user) => {
+                    const email = user['email'];
+                    const index = email.indexOf('@');
+                    const emailDomain = email.substring(index + 1);
+
+                    if (emailDomains.includes(emailDomain) && !validUsers.has(user._id.toString())) {
+                        validUsers.add(user._id.toString());
+                    }
+                });
+            }
+
+            if (jobPositions.length > 0) {
+                // Filter users by job positions
+                users.map((user) => {
+                    if (jobPositions.includes(user['current_position']) && !validUsers.has(user._id.toString())) {
+                        validUsers.add(user._id.toString());
+                    }
+                });
+            }
+
+            if (skills.length > 0) {
+                // Filter users by skills
+                users.map((user) => {
+                    if (user['skills'].some(skill => skills.includes(skill)) && !validUsers.has(user._id.toString())) {
+                        validUsers.add(user._id.toString());
+                    }
+                });
+            }
+
+            const group = await Group.findById(groupId);
+
+            // Remove owner/admin from prospective members
+            group['_admins'].map((adminId) => {
+                if (validUsers.has(adminId.toString())) {
+                    validUsers.delete(adminId.toString());
+                }
+            });
+
+            // Remove the group from the current members' _groups set
+            group['_members'].map(async (userId) => {
+                await User.findByIdAndUpdate(userId, {
+                    $pull: { _groups: groupId }
+                });
+            });
+
+            // Remove the current members from the group
+            await Group.findByIdAndUpdate(groupId, {
+                $set: { _members: [] }
+            });
+
+            if (emailDomains.length > 0 || jobPositions.length > 0 || skills.length > 0) {
+                // Add new members
+                Array.from(validUsers).map(async (userId) => {
+                    // Add the user to the group
+                    await Group.findByIdAndUpdate(groupId, {
+                        $addToSet: { _members: userId }
+                    });
+
+                    // Add the group to the user document
+                    await User.findByIdAndUpdate(userId, {
+                        $addToSet: { _groups: groupId }
+                    });
+                });
+            }
+
+            return res.status(200).json({
+                message: 'Group members successfully updated!'
+            });
         } catch (error) {
-          return sendError(res, error, 'Internal Server Error!', 500);
+            return sendError(res, error, 'Internal Server Error!', 500);
         }
     }
 
@@ -1072,55 +1073,56 @@ export class GroupController {
             const group: any = await Group.findById(groupId);
             let tagExists = false;
             group.bars.forEach(bar => {
-                if(bar.bar_tag === barTag){
+                if (bar.bar_tag === barTag) {
                     tagExists = true;
                 }
             })
             if (tagExists) {
                 return sendError(res, new Error('Tag already exists'), 'Tag already exists', 404);
             }
-            group.bars.push({bar_tag: barTag, tag_members : []});
+            group.bars.push({ bar_tag: barTag, tag_members: [] });
             await group.save();
             return res.status(200).json({
                 message: 'Bar tag added successfully!',
                 group,
-              });
+            });
         } catch (error) {
             return sendError(res, error, 'Internal Server Error!', 500);
         }
     }
 
-    async removeBar(req: Request, res: Response, next: NextFunction){
-        try{
+    async removeBar(req: Request, res: Response, next: NextFunction) {
+        try {
             const groupId = req.params.groupId;
             const barTag = req.body.barTag;
             const group: any = await Group.findById(groupId);
             let tagExists = false;
             group.bars.forEach(bar => {
-                if(bar.bar_tag === barTag){
+                if (bar.bar_tag === barTag) {
                     tagExists = true;
                 }
             });
-            if(tagExists){
-                const filteredList = group.bars.filter( bar => bar.bar_tag !== barTag);
+            if (tagExists) {
+                const filteredList = group.bars.filter(bar => bar.bar_tag !== barTag);
                 group.bars = filteredList;
-                let posts = await Post.updateMany({_group: group._id}, {
+                let posts = await Post.updateMany({ _group: group._id }, {
                     $pull: {
-                        bars: {bar_tag: barTag}
-                    }}
+                        bars: { bar_tag: barTag }
+                    }
+                }
                 );
-                group.save();    
+                group.save();
                 res.status(200).json({
                     group
                 });
             }
-        } catch(error) {
+        } catch (error) {
             return sendError(res, error, 'Internal Server Error!', 500);
         }
     }
 
-    async getBars(req: Request, res: Response, next: NextFunction){
-        try{
+    async getBars(req: Request, res: Response, next: NextFunction) {
+        try {
             const groupId = req.params.groupId;
             const group: any = await Group.findById(groupId);
             const bars = group.bars;
@@ -1156,8 +1158,8 @@ export class GroupController {
                     { _workspace: workspaceId, },
                 ]
             })
-            .sort('_id')
-            .lean() || [];
+                .sort('_id')
+                .lean() || [];
 
             // Send the status 200 response
             return res.status(200).json({
@@ -1170,7 +1172,7 @@ export class GroupController {
     };
 
     async updateStatus(req: Request, res: Response, next: NextFunction) {
-        
+
         try {
             const { groupId, status } = req.body;
 
@@ -1179,7 +1181,8 @@ export class GroupController {
                 $set: {
                     project_status: status
                 },
-                $push: { "records.status": {
+                $push: {
+                    "records.status": {
                         date: moment().format(),
                         project_status: status
                     }
