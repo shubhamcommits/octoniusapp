@@ -208,7 +208,14 @@ export class WorkspaceService {
     .toPromise()
   }
 
-  /* | ======================================= BILLING ========================================== | */
+  createClientPortalSession(stripeCustomerId: string, returnUrl: string) {
+    return this._http.post(this.BASE_API_URL + `/billings/create-client-portal-session`, {
+      customer: stripeCustomerId,
+      return_url: returnUrl
+    }).toPromise();
+  }
+
+  /* | ======================================= BILLING ENDS ========================================== | */
 
   /**
    * Fetches unique email domains that exist within the given workspace

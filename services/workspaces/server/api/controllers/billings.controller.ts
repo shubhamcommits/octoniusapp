@@ -627,5 +627,37 @@ export class BillingControllers {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
     }
+
+    /**
+     * This function creates a customer client portal session
+     * @param { body.data.object.customer, body.data.object.subscription }req 
+     * @param res 
+     */
+    async createClientPortalSession(req: Request, res: Response) {
+        try {
+
+            let customer = req.body.customer;
+            let return_url = req.body.return_url;
+
+            // Retrieve the customer linked to this payment
+            // const customer = await stripe.customers.retrieve(req.body.data.object.customer);
+
+            //const stripe = require('stripe')('sk_test_dvebbZQPA4Vk8kKZaEuN32sD');
+
+            var session = await stripe.billingPortal.sessions.create({
+                customer: customer,
+                return_url: return_url,
+            });
+            
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Session created!',
+                session: session
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
 }
 
