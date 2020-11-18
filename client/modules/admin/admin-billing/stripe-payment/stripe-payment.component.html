@@ -1,4 +1,5 @@
-<app-start-subscription *ngIf="!workspaceData?.billing?.current_period_end || !subscription; else subscriptionTemp"
+<!-- <app-start-subscription *ngIf="!workspaceData?.billing?.current_period_end || !subscription; else subscriptionTemp" -->
+<app-start-subscription *ngIf="!workspaceData?.billing?.current_period_end || !subscription; else createCustomerPortalSession()"
   [userData]="userData"
   [workspaceData]="workspaceData"
   [publicFunctions]="publicFunctions"
@@ -10,10 +11,12 @@
   <app-loading-spinner></app-loading-spinner>
 </ng-container>
 
+<!--
 <ng-template #subscriptionTemp>
   <app-subscription-details *ngIf="subscription"
     [publicFunctions]="publicFunctions"
     [subscription]="subscription"
+    [workspaceData]="workspaceData"
     (subscriptionCanceled)="onSubscriptionChanges($event)"
     (subscriptionResume)="onSubscriptionChanges($event)">
   </app-subscription-details>
@@ -25,10 +28,10 @@
     <li *ngFor="let payment of charges" class="list-group-item disabled">
       <span>
         {{ payment.created | amFromUnix | amDateFormat:'MMMM Do YYYY' }}
-        <!-- - {{ payment.period_end | amFromUnix | amDateFormat:'MMMM Do YYYY' }}-->
       </span>
       <span>{{ payment.amount/100 | currency: '$': 'symbol': '.2-2' }}</span>
       <span>{{ payment.status }}</span>
     </li>
   </ul>
 </div>
+-->

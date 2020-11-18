@@ -65,13 +65,5 @@ export class AdminHeaderComponent implements OnInit {
       centered: true
     });
   }
-
-  createCustomerPortalSession() {
-    const returnUrl = window.location.href;
-    this.workspaceService.createClientPortalSession(this.workspaceData.billing.client_id, returnUrl).then(res => {
-console.log(res['session']);
-      window.location.href = res['session']['url'];
-    });
-  }
 }
 

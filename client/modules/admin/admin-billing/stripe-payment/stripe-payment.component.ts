@@ -51,7 +51,7 @@ export class StripePaymentComponent implements OnInit {
     // Check and fetch the subscription details
     await this.subscriptionExistCheck();
     // Obtain the client´s charges
-    await this.getCharges();
+    // await this.getCharges();
   }
   isWorkspaceOwner() {
     return this.workspaceData._owner == this.userData['_id'];
@@ -63,12 +63,13 @@ export class StripePaymentComponent implements OnInit {
    */
   async subscriptionExistCheck() {
     if (this.workspaceData.billing.client_id) {
-      // this.workspaceService.getSubscription()--cus_HymWfNcFNsWBT3
       this.workspaceService.getSubscription(this.workspaceData.billing.client_id)
         .then((res) => {
-          // TODO select the last subscription
+          let subscriptions = res['subscriptions']['data'];
+          subscriptions.sort((s1, s2) => (s1.current_period_end > s2.current_period_end) ? 1 : -1);
+
           // Initialise the suncription
-          this.subscription = res['subscriptions'].data[0];
+          this.subscription = subscriptions[subscriptions.length-1];
         })
         .catch(() => this.utilityService.errorNotification('Unable to fetch the Subscription details, please try again!'));
     } else {
@@ -120,5 +121,15 @@ export class StripePaymentComponent implements OnInit {
   onSubscriptionChanges(subscription) {
     this.subscription = subscription;
     this.router.navigate(['/home']);
+  }
+
+  createCustomerPortalSession() {
+    const parsedUrl = new URL(window.location.href);
+    const baseUrl = parsedUrl.origin;
+    let redirectUrl = baseUrl + '/#/dashboard/admin/general';
+
+    this.workspaceService.createClientPortalSession(this.workspaceData.billing.client_id, redirectUrl).then(res => {
+      window.location.href = res['session']['url'];
+    });
   }
 }
