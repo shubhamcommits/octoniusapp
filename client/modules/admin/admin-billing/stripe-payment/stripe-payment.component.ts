@@ -123,6 +123,21 @@ export class StripePaymentComponent implements OnInit {
     this.router.navigate(['/home']);
   }
 
+  isSubscriptionActive() {
+    if (!this.workspaceData?.billing?.current_period_end || !this.subscription) {
+      return false;
+    }
+
+    const workspaceCurrentPeriodEnd = new Date(this.workspaceData.billing.current_period_end);
+    const subscriptionCurrentPeriodEnd = new Date(this.subscription.current_period_end);
+
+    if (moment().isAfter(workspaceCurrentPeriodEnd) || moment().isAfter(subscriptionCurrentPeriodEnd)) {
+      return false;
+    }
+
+    return true;
+  }
+
   createCustomerPortalSession() {
     const parsedUrl = new URL(window.location.href);
     const baseUrl = parsedUrl.origin;

@@ -1,5 +1,5 @@
 <!-- <app-start-subscription *ngIf="!workspaceData?.billing?.current_period_end || !subscription; else subscriptionTemp" -->
-<app-start-subscription *ngIf="!workspaceData?.billing?.current_period_end || !subscription; else createCustomerPortalSession()"
+<app-start-subscription *ngIf="!isSubscriptionActive(); else createCustomerPortalSession()"
   [userData]="userData"
   [workspaceData]="workspaceData"
   [publicFunctions]="publicFunctions"
