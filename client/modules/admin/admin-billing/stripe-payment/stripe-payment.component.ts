@@ -124,7 +124,7 @@ export class StripePaymentComponent implements OnInit {
   }
 
   isSubscriptionActive() {
-    if (!this.workspaceData?.billing?.current_period_end || !this.subscription) {
+    if (!this.workspaceData.billing.current_period_end || !this.subscription) {
       return false;
     }
 
