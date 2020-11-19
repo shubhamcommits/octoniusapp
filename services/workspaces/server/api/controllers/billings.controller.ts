@@ -48,6 +48,27 @@ export class BillingControllers {
                 });
                 
                 customerId = customer.id;
+            } else {
+                // check if the customer exists in the DB, maybe it was deleted in the console
+                let customer = await stripe.customers.retrieve(req.body.data.object.customer);
+
+                if (!customer) {
+                    // Source ID of the token
+                    const source = req.body.token.id;
+
+                    // Source Email of the token
+                    const email = req.body.token.email;
+
+                    customer = await stripe.customers.create({
+                        email,
+                        source,
+                        metadata: {
+                            workspace_id: workspaceId.toString()
+                        }
+                    });
+                }
+                
+                customerId = customer.id;
             }
             
 
@@ -692,11 +713,21 @@ export class BillingControllers {
      */
     async createClientPortalSession(req: Request, res: Response) {
         try {
-            let customer = req.body.customer;
+            let customerId = req.body.customer;
             let return_url = req.body.return_url;
 
+            if (!customerId || !return_url) {
+                return sendError(res, new Error('You need to provide a stripe customerId and a return url!'), 'You need to provide a stripe customerId and a return url!', 403);
+            }
+
+            const customer = await stripe.customers.retrieve(customerId);
+            
+            if (!customer) {
+                return sendError(res, new Error('The customer you provided does not exists!'), 'The customer you provided does not exists!', 403);
+            }
+
             var session = await stripe.billingPortal.sessions.create({
-                customer: customer,
+                customer: customerId,
                 return_url: return_url,
             });
 

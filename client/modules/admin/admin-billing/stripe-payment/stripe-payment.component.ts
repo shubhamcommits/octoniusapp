@@ -128,10 +128,8 @@ export class StripePaymentComponent implements OnInit {
       return false;
     }
 
-    const workspaceCurrentPeriodEnd = new Date(this.workspaceData.billing.current_period_end);
-    const subscriptionCurrentPeriodEnd = new Date(this.subscription.current_period_end);
-
-    if (moment().isAfter(workspaceCurrentPeriodEnd) || moment().isAfter(subscriptionCurrentPeriodEnd)) {
+    if (this.subscription.current_period_end < moment().unix()
+      || this.workspaceData.billing.current_period_end < moment().unix()) {
       return false;
     }
 
