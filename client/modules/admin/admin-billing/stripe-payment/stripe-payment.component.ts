@@ -140,7 +140,8 @@ export class StripePaymentComponent implements OnInit {
   createCustomerPortalSession() {
     const parsedUrl = new URL(window.location.href);
     const baseUrl = parsedUrl.origin;
-    let redirectUrl = baseUrl + '/#/dashboard/admin/general';
+    // let redirectUrl = baseUrl + '/#/dashboard/admin/general';
+    let redirectUrl = window.location.href;
 
     this.workspaceService.createClientPortalSession(this.workspaceData.billing.client_id, redirectUrl).then(res => {
       window.location.href = res['session']['url'];
