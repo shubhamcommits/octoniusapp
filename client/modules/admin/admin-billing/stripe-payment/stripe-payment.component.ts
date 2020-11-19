@@ -144,6 +144,6 @@ export class StripePaymentComponent implements OnInit {
 
     this.workspaceService.createClientPortalSession(this.workspaceData.billing.client_id, redirectUrl).then(res => {
       window.location.href = res['session']['url'];
-    }).then(res => console.log(res));
+    });
   }
 }
