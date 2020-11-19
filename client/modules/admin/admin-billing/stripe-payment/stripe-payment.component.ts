@@ -50,8 +50,9 @@ export class StripePaymentComponent implements OnInit {
 
     // Check and fetch the subscription details
     await this.subscriptionExistCheck();
+
     // Obtain the client´s charges
-    // await this.getCharges();
+    await this.getCharges();
   }
   isWorkspaceOwner() {
     return this.workspaceData._owner == this.userData['_id'];
@@ -139,7 +140,8 @@ export class StripePaymentComponent implements OnInit {
   createCustomerPortalSession() {
     const parsedUrl = new URL(window.location.href);
     const baseUrl = parsedUrl.origin;
-    let redirectUrl = baseUrl + '/#/dashboard/admin/general';
+    // let redirectUrl = baseUrl + '/#/dashboard/admin/general';
+    let redirectUrl = window.location.href;
 
     this.workspaceService.createClientPortalSession(this.workspaceData.billing.client_id, redirectUrl).then(res => {
       window.location.href = res['session']['url'];
