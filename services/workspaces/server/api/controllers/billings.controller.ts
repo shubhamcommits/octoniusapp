@@ -262,6 +262,27 @@ export class BillingControllers {
     }
 
     /**
+     * This function is responsible for getting the customer details
+     * @param { customerId }req 
+     * @param res 
+     */
+    async getCustomer(req: Request, res: Response) {
+        try {
+            const { customerId } = req.params;
+
+            const customer = await stripe.customers.retrieve(customerId);
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'succesfully retrieved the subscription',
+                customer: customer
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
      * This function is responsible for getting the list of charges
      * @param { customerId }req 
      * @param res 

@@ -169,6 +169,14 @@ export class WorkspaceService {
   }
 
   /**
+   * This function fetches the stripe customer details for the currently loggedIn user
+   */
+  getStripeCustomer(customerId: string) {
+    return this._http.get(this.BASE_API_URL + `/billings/get-customer/${customerId}`)
+    .toPromise()
+  }
+
+  /**
    * This function fetches the subscription details for the currently loggedIn user
    */
   getCharges(customerId: string) {

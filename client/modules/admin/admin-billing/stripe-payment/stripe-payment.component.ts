@@ -25,8 +25,11 @@ export class StripePaymentComponent implements OnInit {
   // User Data Object
   @Input('userData') userData: any;
 
-  // Subscription Object
+  // Stripe Subscription Object
   subscription;
+
+  // Stripe Customer object
+  customer;
 
   // Payments Array
   charges = [];
@@ -51,6 +54,9 @@ export class StripePaymentComponent implements OnInit {
     // Check and fetch the subscription details
     await this.subscriptionExistCheck();
 
+    // Check if the client exists in Stripe
+    await this.stripeCustomerExists();
+
     // Obtain the client´s charges
     await this.getCharges();
   }
@@ -71,6 +77,22 @@ export class StripePaymentComponent implements OnInit {
 
           // Initialise the suncription
           this.subscription = subscriptions[subscriptions.length-1];
+        })
+        .catch(() => this.utilityService.errorNotification('Unable to fetch the Subscription details, please try again!'));
+    } else {
+      this.subscription = null;
+    }
+  }
+
+  /**
+   * This function is responsible for fetching the stripe client details
+   * @param workspaceData
+   */
+  async stripeCustomerExists() {
+    if (this.workspaceData.billing.client_id) {
+      this.workspaceService.getStripeCustomer(this.workspaceData.billing.client_id)
+        .then((res) => {
+          this.customer = res['customer'];
         })
         .catch(() => this.utilityService.errorNotification('Unable to fetch the Subscription details, please try again!'));
     } else {
@@ -125,7 +147,8 @@ export class StripePaymentComponent implements OnInit {
   }
 
   isSubscriptionActive() {
-    if (!this.workspaceData.billing.current_period_end || !this.subscription) {
+    if (!this.workspaceData.billing.current_period_end
+      || !this.subscription || (!this.customer || this.customer.deleted)) {
       return false;
     }
 
@@ -145,6 +168,8 @@ export class StripePaymentComponent implements OnInit {
 
     this.workspaceService.createClientPortalSession(this.workspaceData.billing.client_id, redirectUrl).then(res => {
       window.location.href = res['session']['url'];
+    }).catch((err)=> {
+      this.utilityService.errorNotification('There is an error with your Subscription, please contact support!');
     });
   }
 }

@@ -22,6 +22,9 @@ routes.get('/get-billing-status/:workspaceId', authsHelper.verifyToken, authsHel
 // GET - get subscription details
 routes.get('/get-subscription/:customerId', authsHelper.verifyToken, authsHelper.isLoggedIn, billing.getSubscription);
 
+// GET - get customer details
+routes.get('/get-customer/:customerId', authsHelper.verifyToken, authsHelper.isLoggedIn, billing.getCustomer);
+
 // GET - get chargegs
 routes.get('/get-charges/:customerId', authsHelper.verifyToken, authsHelper.isLoggedIn, billing.getCharges);
 
