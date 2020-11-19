@@ -52,6 +52,9 @@ routes.post('/webhooks/payment-successful', billing.paymentSuccessful);
 // POST - Webhook event which triggers the event to creates a log of failed payment and update the workspace data
 routes.post('/webhooks/payment-failed', billing.paymentFailed);
 
+// POST - Webhook event which is receiving the updates from Stripe
+routes.post('/webhooks/subscription-updates', billing.subscriptionUpdates);
+
 // POST - Create a customer client portal session
 routes.post('/create-client-portal-session', billing.createClientPortalSession);
 
