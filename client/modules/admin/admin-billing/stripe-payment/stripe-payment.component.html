@@ -1,5 +1,5 @@
 <!-- <app-start-subscription *ngIf="!workspaceData?.billing?.current_period_end || !subscription; else subscriptionTemp" -->
-<app-start-subscription *ngIf="!isSubscriptionActive(); else createCustomerPortalSession()"
+<app-start-subscription *ngIf="!isSubscriptionActive(); else subscriptionTemp"
   [userData]="userData"
   [workspaceData]="workspaceData"
   [publicFunctions]="publicFunctions"
@@ -11,8 +11,9 @@
   <app-loading-spinner></app-loading-spinner>
 </ng-container>
 
-<!--
 <ng-template #subscriptionTemp>
+  <button (click)="createCustomerPortalSession()" class="btn btn-md btn-primary">Manage subscription</button>
+  <!--
   <app-subscription-details *ngIf="subscription"
     [publicFunctions]="publicFunctions"
     [subscription]="subscription"
@@ -20,9 +21,10 @@
     (subscriptionCanceled)="onSubscriptionChanges($event)"
     (subscriptionResume)="onSubscriptionChanges($event)">
   </app-subscription-details>
+  -->
 </ng-template>
 
-<div *ngIf="charges.length > 0" class="card-tile">
+<div *ngIf="charges.length > 0" class="card-tile" style="margin-top: 20px;">
   <h3 class="s-payments-title">Payments:</h3>
   <ul class="list-group">
     <li *ngFor="let payment of charges" class="list-group-item disabled">
@@ -34,4 +36,3 @@
     </li>
   </ul>
 </div>
--->
