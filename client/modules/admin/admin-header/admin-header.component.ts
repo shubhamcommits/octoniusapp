@@ -3,6 +3,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { environment } from 'src/environments/environment';
 import { PublicFunctions } from 'modules/public.functions';
 import { SubSink } from 'subsink';
+import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
 
 @Component({
   selector: 'app-admin-header',
@@ -13,6 +14,7 @@ export class AdminHeaderComponent implements OnInit {
 
   constructor(
     private utilityService: UtilityService,
+    private workspaceService: WorkspaceService,
     private injector: Injector) {
   }
 
@@ -55,7 +57,7 @@ export class AdminHeaderComponent implements OnInit {
 
   /**
     * This function opens up the task content in a new modal, and takes #content in the ng-template inside HTML layout
-    * @param content 
+    * @param content
     */
   async openWorkspaceDetails(content) {
     this.utilityService.openModal(content, {
@@ -63,6 +65,5 @@ export class AdminHeaderComponent implements OnInit {
       centered: true
     });
   }
-
 }
 

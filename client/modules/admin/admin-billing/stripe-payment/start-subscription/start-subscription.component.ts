@@ -110,8 +110,6 @@ export class StartSubscriptionComponent implements OnInit {
           // workspaceService.createSubscription(token, this.amount)
           workspaceService.createSubscription(token, this.priceId, this.workspaceData.billing.product_id)
             .then(res => {
-              console.log(res);
-
               // Set the subscription object
               this.subscription = res['subscription'];
 

@@ -158,47 +158,52 @@ export class BillingControllers {
             let message = '';
             let status = true;
 
-            // Check the state of the current_period_end value
-            if (workspace.billing.current_period_end) {
-                if (workspace.billing.current_period_end < moment().unix()) {
-                    message = 'Your subscription is no longer valid';
-                    status = false;
-                } else {
-                    message = 'You have a valid subscription';
-                    status = true;
-                }
+            if (!workspace) {
+                message = 'Workspace does not exist',
+                status = false
             } else {
-                message = 'No payment yet';
-                status = moment().isBetween(workspace.created_date, moment(workspace.created_date).add(14, 'days'));
-            }
-
-            // Check to stripe if the payment was done in stripe
-            if (!status) {
-
-                const subscription = await stripe.subscriptions.retrieve(
-                    workspace.billing.subscription_id
-                );
-
-                if (subscription.current_period_end < moment().unix()) {
-                    message = 'Your subscription is no longer valid';
-                    status = false;
+                // Check the state of the current_period_end value
+                if (workspace.billing.current_period_end) {
+                    if (workspace.billing.current_period_end < moment().unix()) {
+                        message = 'Your subscription is no longer valid';
+                        status = false;
+                    } else {
+                        message = 'You have a valid subscription';
+                        status = true;
+                    }
                 } else {
-                    message = 'You have a valid subscription';
-                    status = true;
+                    message = 'No payment yet';
+                    status = moment().isBetween(workspace.created_date, moment(workspace.created_date).add(14, 'days'));
                 }
 
-                // update the workspace data in the database
-                await Workspace.findOneAndUpdate({
-                    _id: workspaceId
-                }, {
-                    $set: {
-                        'billing.current_period_end': subscription.current_period_end,
-                        'billing.subscription_id': subscription.id,
-                        'billing.cancelled': false
+                // Check to stripe if the payment was done in stripe
+                if (!status) {
+
+                    const subscription = await stripe.subscriptions.retrieve(
+                        workspace.billing.subscription_id
+                    );
+
+                    if (subscription.current_period_end < moment().unix()) {
+                        message = 'Your subscription is no longer valid';
+                        status = false;
+                    } else {
+                        message = 'You have a valid subscription';
+                        status = true;
                     }
-                }, {
-                    new: true
-                }).select('billing')
+
+                    // update the workspace data in the database
+                    await Workspace.findOneAndUpdate({
+                        _id: workspaceId
+                    }, {
+                        $set: {
+                            'billing.current_period_end': subscription.current_period_end,
+                            'billing.subscription_id': subscription.id,
+                            'billing.cancelled': false
+                        }
+                    }, {
+                        new: true
+                    }).select('billing')
+                }
             }
 
             // Send the status 200 response 
@@ -530,7 +535,7 @@ export class BillingControllers {
                     },
                     $set: {
                         'billing.current_period_end': subscription.current_period_end,
-                        'billing.failed_payments': []
+                        // 'billing.failed_payments': []
                     }
                 }, {
                 new: true
@@ -623,6 +628,83 @@ export class BillingControllers {
                     return sendError(res, new Error('Unable to remove the user from the subscription!'), 'Unable to remove user the from the subscription!', 403);
                 })
 
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async subscriptionUpdates(req: Request, res: Response) {
+        let event;
+
+        try {
+            event = JSON.parse(req.body);
+        } catch (err) {
+            return sendError(res, err, `Webhook Error: ${err.message}`, 400);
+        }
+
+        try {
+            const subscription = event.data.object;
+            const customer = await stripe.customers.retrieve(subscription.customer);
+
+            // Handle the event
+            switch (event.type) {
+                case 'customer.subscription.updated':
+                    await Workspace.findOneAndUpdate(
+                        { _id: customer.metadata.workspace_id },
+                        {
+                            $set: {
+                                'billing.price_id': subscription.items.data[0].price.id,
+                                //'billing.quantity': subscription.items.data[0].quantity
+                            }
+                        }, {
+                            new: true
+                        }
+                    ).lean();
+                    break;
+                case 'customer.subscription.deleted':
+                    await Workspace.findOneAndUpdate(
+                        { _id: customer.metadata.workspace_id },
+                        {
+                            $set: {
+                                'billing.current_period_end': subscription.current_period_end,
+                                'billing.cancel_at_period_end': subscription.cancel_at_period_end
+                            }
+                        }, {
+                            new: true
+                        }
+                    ).lean();
+                    break;
+                default:
+                    console.log(`Unhandled event type ${event.type}`);
+            }
+
+            // Return a response to acknowledge receipt of the event
+            return res.json({received: true});
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function creates a customer client portal session
+     * @param { body.data.object.customer, body.data.object.subscription }req 
+     * @param res 
+     */
+    async createClientPortalSession(req: Request, res: Response) {
+        try {
+            let customer = req.body.customer;
+            let return_url = req.body.return_url;
+
+            var session = await stripe.billingPortal.sessions.create({
+                customer: customer,
+                return_url: return_url,
+            });
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Session created!',
+                session: session
+            });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
         }

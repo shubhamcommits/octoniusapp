@@ -77,9 +77,7 @@ export class DenyNavigationGuard implements CanActivate, CanActivateChild, CanDe
       return this.workspaceService.getBillingStatus(this.workspaceId).then(
         (res) => {
           if ( !res['status'] ) {
-            if (adminUser) {
-              this.router.navigate(['dashboard', 'admin', 'billing']);
-            } else {
+            if (!adminUser || res['message'] == 'Workspace does not exist') {
               this.authService.signout().subscribe((res) => {
                 this.storageService.clear();
                 this.publicFunctions.sendUpdatesToGroupData({});
@@ -89,6 +87,8 @@ export class DenyNavigationGuard implements CanActivate, CanActivateChild, CanDe
                 this.socketService.disconnectSocket();
                 this.router.navigate(['/home']);
               });
+            } else {
+              this.router.navigate(['dashboard', 'admin', 'billing']);
             }
             return false;
           }

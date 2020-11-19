@@ -20,6 +20,9 @@ export class SubscriptionDetailsComponent implements OnInit {
   // Public Functions Object
   @Input('publicFunctions') publicFunctions: any;
 
+  // Workspace Data Object
+  @Input('workspaceData') workspaceData: any;
+
   @Output() subscriptionCanceled = new EventEmitter();
 
   @Output() subscriptionResume = new EventEmitter();
