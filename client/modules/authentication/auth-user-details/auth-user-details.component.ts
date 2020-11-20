@@ -124,14 +124,16 @@ export class AuthUserDetailsComponent implements OnInit {
         .subscribe(async model => {
           this.utilityService.clearAllNotifications();
 
-          let userExists = false;
-          await this.authenticationService.getUserByEmail(this.user.email).then(res => {
-            if (res['user']) {
-              userExists = true;
-            }
-          });
+          let checkDuplicatedEmail = false;
+          if (this.routerState != 'sign-in') {
+            await this.authenticationService.getUserByEmail(this.user.email).then(res => {
+              if (res['user']) {
+                checkDuplicatedEmail = true;
+              }
+            });
+          }
 
-          if (userExists) {
+          if (checkDuplicatedEmail) {
             this.utilityService.warningNotification(
               "There is already a user by this email",
               "Wrong email!"
