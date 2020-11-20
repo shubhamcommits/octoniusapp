@@ -48,10 +48,10 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
-    _workspace: [{
+    _workspace: {
         type: Schema.Types.ObjectId,
         ref: 'Workspace'
-    }],
+    },
     role: {
         type: String,
         required: true,

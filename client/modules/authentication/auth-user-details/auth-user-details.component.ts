@@ -7,6 +7,7 @@ import { StorageService } from "src/shared/services/storage-service/storage.serv
 import { Router, ActivatedRoute } from "@angular/router";
 import { SubSink } from "subsink";
 import { Subject } from 'rxjs/internal/Subject';
+import { UserService } from 'src/shared/services/user-service/user.service';
 
 
 @Component({
@@ -120,16 +121,31 @@ export class AuthUserDetailsComponent implements OnInit {
     this.subSink.add(
       this.emailState
         .pipe(debounceTime(750), distinctUntilChanged())
-        .subscribe(model => {
+        .subscribe(async model => {
           this.utilityService.clearAllNotifications();
-          let validatedEmailState = this.utilityService.validateEmail(
-            this.user.email
-          )
-            ? this.utilityService.successNotification("Correct Email Format!")
-            : this.utilityService.warningNotification(
-              "Follow the standard format, e.g. - user@example.com",
-              "Wrong Format!"
+
+          let userExists = false;
+          await this.authenticationService.getUserByEmail(this.user.email).then(res => {
+            if (res['user']) {
+              userExists = true;
+            }
+          });
+
+          if (userExists) {
+            this.utilityService.warningNotification(
+              "There is already a user by this email",
+              "Wrong email!"
             );
+          } else {
+            let validatedEmailState = this.utilityService.validateEmail(
+              this.user.email
+            )
+              ? this.utilityService.successNotification("Correct Email Format!")
+              : this.utilityService.warningNotification(
+                "Follow the standard format, e.g. - user@example.com",
+                "Wrong Format!"
+              );
+          }
         })
     );
 

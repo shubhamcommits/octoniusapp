@@ -409,4 +409,22 @@ export class AuthsController {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
     }
+
+    async getOtherUserByEmail(req: Request, res: Response, next: NextFunction) {
+
+        try {
+
+            let email: any  = req.query.email;
+
+            const user = await User.findOne({email: email});
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'User profile picture updated!',
+                user: user
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
 }

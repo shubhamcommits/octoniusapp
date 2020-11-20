@@ -70,13 +70,6 @@
         </div>
         <!-- FORM FIELD FOR NEW WORKPLACE & SIGNUP COMPONENT -->
 
-        <!-- FORM FIELD FOR THE USER TO SELECT BETWEEN WORKPLACES -->
-        <div class="form-group" *ngIf="routerState === 'sign-in' && this.userData && this.userData._workspace.length > 1">
-          <label for="workplace">Workplace</label>
-          <input type="text" class="form-control" name="workplace">
-        </div>
-        <!-- FORM FIELD FOR THE USER TO SELECT BETWEEN WORKPLACES -->
-
         <!-- FORGOT PASSWORD MODULE STARTS -->
         <p (click)="openForgotPassword(content)" class="forgot-password" *ngIf="routerState === 'sign-in'">Forgot
                 password?</p>
