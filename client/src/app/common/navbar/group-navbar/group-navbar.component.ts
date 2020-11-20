@@ -27,7 +27,7 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
     }))
   }
 
-  isAdmin: boolean;
+  isAdmin: boolean = false;
 
   // UNSUBSCRIBE THE DATA
   private subSink = new SubSink();
@@ -80,12 +80,14 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
     }
 
     console.log('Group Data', this.groupData)
-    this.isAdmin = this.isAdminUser();
+    if (this.groupData) {
+      this.isAdmin = this.isAdminUser();
 
-    if (this.groupId) {
-      this.userService.increaseGroupVisit(this.userData._id, this.groupId).then(res => {
-        this.publicFunctions.sendUpdatesToUserData(res['user']);
-      });
+      if (this.groupId) {
+        this.userService.increaseGroupVisit(this.userData._id, this.groupId).then(res => {
+          this.publicFunctions.sendUpdatesToUserData(res['user']);
+        });
+      }
     }
   }
 

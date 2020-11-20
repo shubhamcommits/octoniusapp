@@ -211,6 +211,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     /**
      * This function is responsible for logging the user out
      */
+    /*
     async logout() {
       try {
         this.utilityService.asyncNotification('Please wait, while we log you out securely...',
@@ -236,6 +237,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
         this.utilityService.errorNotification('Error occured while logging you out!');
       }
     }
+    */
 
   /**
    * Add Hot Keys

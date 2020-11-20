@@ -80,23 +80,22 @@ export class SidebarComponent implements OnInit, OnDestroy {
   async logout() {
     try {
       this.utilityService.asyncNotification('Please wait, while we log you out securely...',
-      new Promise((resolve, reject) => {
-        this.subSink.add(this.authService.signout()
-        .subscribe((res) => {
-          this.storageService.clear();
-          this.publicFunctions.sendUpdatesToGroupData({})
-          this.publicFunctions.sendUpdatesToRouterState({})
-          this.publicFunctions.sendUpdatesToUserData({})
-          this.publicFunctions.sendUpdatesToWorkspaceData({})
-          this.socketService.disconnectSocket();
-          this.router.navigate(['/home'])
-          .then(() => resolve(this.utilityService.resolveAsyncPromise('Successfully Logged out!')));
-
-        }, (err) => {
-          console.log('Error occurred while logging out!', err);
-          reject(this.utilityService.rejectAsyncPromise('Error occurred while logging you out!, please try again!'));
+        new Promise((resolve, reject) => {
+          this.authService.signout().toPromise()
+            .then((res) => {
+              this.storageService.clear();
+              this.publicFunctions.sendUpdatesToGroupData({})
+              this.publicFunctions.sendUpdatesToRouterState({})
+              this.publicFunctions.sendUpdatesToUserData({})
+              this.publicFunctions.sendUpdatesToWorkspaceData({})
+              this.socketService.disconnectSocket();
+              this.router.navigate(['/home'])
+              resolve(this.utilityService.resolveAsyncPromise('Successfully Logged out!'));
+            }).catch((err) => {
+              console.log('Error occurred while logging out!', err);
+              reject(this.utilityService.rejectAsyncPromise('Error occurred while logging you out!, please try again!'));
+            });
         }));
-      }));
     } catch (err) {
       console.log('Error occurred while logging out!', err);
       this.utilityService.errorNotification('Error occurred while logging you out!');
