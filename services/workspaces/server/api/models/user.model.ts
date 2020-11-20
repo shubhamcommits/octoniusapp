@@ -29,7 +29,8 @@ const UserSchema = new Schema({
     },
     email: {
         type: String,
-        required: true
+        required: true,
+        unique : true
     },
     password: {
         type: String,
@@ -47,10 +48,10 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
-    _workspace: {
+    _workspace: [{
         type: Schema.Types.ObjectId,
         ref: 'Workspace'
-    },
+    }],
     role: {
         type: String,
         required: true,
