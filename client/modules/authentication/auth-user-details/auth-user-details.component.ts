@@ -214,21 +214,17 @@ export class AuthUserDetailsComponent implements OnInit {
           this.storeUserData(res);
           this.userData = res['user'];
 
-          if (this.userData._workspace && this.userData._workspace.length > 1) {
-
-          } else {
-            this.router.navigate(['dashboard', 'myspace', 'inbox'])
-              .then(() => {
-                this.utilityService.successNotification(`Hi ${res['user']['first_name']}, welcome back to your workplace!`);
-                resolve(this.utilityService.resolveAsyncPromise(`Hi ${res['user']['first_name']}, welcome back to your workplace!`));
-              })
-              .catch((err) => {
-                console.error('Error occured while signing in the user', err);
-                this.utilityService.errorNotification('Oops some error occured while signing you in, please try again!');
-                this.storageService.clear();
-                reject(this.utilityService.rejectAsyncPromise('Oops some error occured while signing you in, please try again!'))
-              })
-          }
+          this.router.navigate(['dashboard', 'myspace', 'inbox'])
+            .then(() => {
+              this.utilityService.successNotification(`Hi ${res['user']['first_name']}, welcome back to your workplace!`);
+              resolve(this.utilityService.resolveAsyncPromise(`Hi ${res['user']['first_name']}, welcome back to your workplace!`));
+            })
+            .catch((err) => {
+              console.error('Error occured while signing in the user', err);
+              this.utilityService.errorNotification('Oops some error occured while signing you in, please try again!');
+              this.storageService.clear();
+              reject(this.utilityService.rejectAsyncPromise('Oops some error occured while signing you in, please try again!'))
+            })
         }, (err) => {
           console.error('Error occured while signing in the user', err);
           reject(this.utilityService.rejectAsyncPromise('Oops some error occured while signing you in, please try again!'))
