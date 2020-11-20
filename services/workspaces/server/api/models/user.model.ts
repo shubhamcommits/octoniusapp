@@ -96,7 +96,8 @@ const UserSchema = new Schema({
     }],
     _groups: [{
         type: Schema.Types.ObjectId,
-        ref: 'Group'
+        ref: 'Group',
+        unique : true
     }],
     stats: {
         lastTaskView: {
