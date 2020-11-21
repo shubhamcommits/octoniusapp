@@ -7,6 +7,7 @@ import { StorageService } from "src/shared/services/storage-service/storage.serv
 import { Router, ActivatedRoute } from "@angular/router";
 import { SubSink } from "subsink";
 import { Subject } from 'rxjs/internal/Subject';
+import { UserService } from 'src/shared/services/user-service/user.service';
 
 
 @Component({
@@ -68,6 +69,8 @@ export class AuthUserDetailsComponent implements OnInit {
   // Email
   email = this._ActivatedRoute.snapshot.queryParamMap.get('email');
 
+  userData;
+
   ngOnInit() {
     if(this.workspace_name)
       this.user.workspace = this.workspace_name
@@ -118,16 +121,33 @@ export class AuthUserDetailsComponent implements OnInit {
     this.subSink.add(
       this.emailState
         .pipe(debounceTime(750), distinctUntilChanged())
-        .subscribe(model => {
+        .subscribe(async model => {
           this.utilityService.clearAllNotifications();
-          let validatedEmailState = this.utilityService.validateEmail(
-            this.user.email
-          )
-            ? this.utilityService.successNotification("Correct Email Format!")
-            : this.utilityService.warningNotification(
-              "Follow the standard format, e.g. - user@example.com",
-              "Wrong Format!"
+
+          let checkDuplicatedEmail = false;
+          if (this.routerState != 'sign-in') {
+            await this.authenticationService.getUserByEmail(this.user.email).then(res => {
+              if (res['user']) {
+                checkDuplicatedEmail = true;
+              }
+            });
+          }
+
+          if (checkDuplicatedEmail) {
+            this.utilityService.warningNotification(
+              "There is already a user by this email",
+              "Wrong email!"
             );
+          } else {
+            let validatedEmailState = this.utilityService.validateEmail(
+              this.user.email
+            )
+              ? this.utilityService.successNotification("Correct Email Format!")
+              : this.utilityService.warningNotification(
+                "Follow the standard format, e.g. - user@example.com",
+                "Wrong Format!"
+              );
+          }
         })
     );
 
@@ -152,19 +172,17 @@ export class AuthUserDetailsComponent implements OnInit {
 
   /**
    * This function is responsible for signing a user in to the workspace
-   * @param workspace 
-   * @param email 
-   * @param password 
+   * @param email
+   * @param password
    * Makes a HTTP Post request to verify and return with a token which we can store on client side
    */
-  async signIn(workspace: string, email: string, password: string) {
+  async signIn(email: string, password: string) {
     try {
-      if (workspace == null || email == null || password == null || workspace == '' || email == '' || password == '') {
+      if (email == null || password == null || email == '' || password == '') {
         this.utilityService.warningNotification('Insufficient data, kindly fill up all the fields correctly!');
       } else {
         // Preparing the user data
         let userData: Object = {
-          workspace_name: workspace.trim(),
           email: email.trim(),
           password: password.trim()
         }
@@ -178,9 +196,15 @@ export class AuthUserDetailsComponent implements OnInit {
 
   }
 
+  executeSignIn() {
+    if (this.routerState == 'sign-in') {
+      this.signIn(this.user.email, this.user.password);
+    }
+  }
+
   /**
    * This implements the service function for @function signIn(userData)
-   * @param userData 
+   * @param userData
    */
   signInServiceFunction(userData: Object) {
     return new Promise((resolve, reject) => {
@@ -188,6 +212,8 @@ export class AuthUserDetailsComponent implements OnInit {
         .subscribe((res) => {
           this.clearUserData();
           this.storeUserData(res);
+          this.userData = res['user'];
+
           this.router.navigate(['dashboard', 'myspace', 'inbox'])
             .then(() => {
               this.utilityService.successNotification(`Hi ${res['user']['first_name']}, welcome back to your workplace!`);
@@ -199,7 +225,6 @@ export class AuthUserDetailsComponent implements OnInit {
               this.storageService.clear();
               reject(this.utilityService.rejectAsyncPromise('Oops some error occured while signing you in, please try again!'))
             })
-
         }, (err) => {
           console.error('Error occured while signing in the user', err);
           reject(this.utilityService.rejectAsyncPromise('Oops some error occured while signing you in, please try again!'))
@@ -226,11 +251,11 @@ export class AuthUserDetailsComponent implements OnInit {
 
   /**
    * This function is responsible for signing up a user in to the workspace
-   * @param workspace 
-   * @param email 
-   * @param password 
-   * @param firstName 
-   * @param lastName 
+   * @param workspace
+   * @param email
+   * @param password
+   * @param firstName
+   * @param lastName
    * Makes a HTTP Post request to verify and return with a token which we can store on client side
    */
   async signUp(workspace: string, email: string, password: string, firstName: string, lastName: string) {
@@ -263,7 +288,7 @@ export class AuthUserDetailsComponent implements OnInit {
 
   /**
    * This implements the service function for @function signUp(userData)
-   * @param userData 
+   * @param userData
    */
   signUpServiceFunction(userData: Object) {
     return new Promise((resolve, reject) => {
@@ -311,8 +336,8 @@ export class AuthUserDetailsComponent implements OnInit {
 
   /**
    * This function checks if the the company and workspace names are in the valid states
-   * @param company 
-   * @param workspace 
+   * @param company
+   * @param workspace
    */
   continueToCreateWorkspace(company: string, workspace: string){
     if(workspace == null|| company == null || workspace == '' || company == ''){
@@ -327,12 +352,12 @@ export class AuthUserDetailsComponent implements OnInit {
 
   /**
    * This function is responsible for creating a new workplace and signing up the owner in to the workspace
-   * @param workplace 
-   * @param company 
-   * @param email 
-   * @param password 
-   * @param firstName 
-   * @param lastName 
+   * @param workplace
+   * @param company
+   * @param email
+   * @param password
+   * @param firstName
+   * @param lastName
    * Makes a HTTP Post request to verify and return with a token which we can store on client side
    */
   async createNewWorkplace(workplace: string, company: string, email: string, password: string, firstName: string, lastName: string){
@@ -360,7 +385,7 @@ export class AuthUserDetailsComponent implements OnInit {
 
   /**
    * This implements the service function for @function createNewWorkplace(workplaceData)
-   * @param workspaceData 
+   * @param workspaceData
    */
   newWorkplaceServiceFunction(workspaceData: Object){
     return new Promise((resolve, reject)=>{
@@ -377,7 +402,7 @@ export class AuthUserDetailsComponent implements OnInit {
           this.utilityService.errorNotification('Oops some error occured while setting you up, please try again!');
           reject(this.utilityService.rejectAsyncPromise('Oops some error occured while setting you up, please try again!'))
         })
-        
+
       }, (err)=>{
         console.error('Error occured while creating new workplace', err);
         this.utilityService.errorNotification('Oops some error occured while setting you up, please try again!');
@@ -408,8 +433,8 @@ export class AuthUserDetailsComponent implements OnInit {
 
   /**
    * This method is binded to keyup event of workspace input field
-   * @param company 
-   * @param workspace 
+   * @param company
+   * @param workspace
    */
   checkWorkspaceAvailability(company: string, workspace: string) {
     this.validateWorkplace.next(workspace);
@@ -418,7 +443,7 @@ export class AuthUserDetailsComponent implements OnInit {
 
   /**
    * This method is binded to keyup event of email input field
-   * @param $event 
+   * @param $event
    */
   validateEmail($event: Event) {
     this.emailState.next($event);
@@ -426,7 +451,7 @@ export class AuthUserDetailsComponent implements OnInit {
 
   /**
    * This method is binded to keyup event of repeat password input field
-   * @param $event 
+   * @param $event
    */
   matchUserPassword($event: Event) {
     this.matchPassword.next($event);
@@ -434,7 +459,7 @@ export class AuthUserDetailsComponent implements OnInit {
 
   /**
     * This function opens up the task content in a new modal, and takes #content in the ng-template inside HTML layout
-    * @param content 
+    * @param content
     */
   async openForgotPassword(content) {
     this.utilityService.openModal(content, {
@@ -458,7 +483,7 @@ export class AuthUserDetailsComponent implements OnInit {
 
   /**
    * This function stores the user related data and token for future reference in the browser
-   * @param res 
+   * @param res
    */
   storeUserData(res: Object) {
     this.storageService.setLocalData('userData', JSON.stringify(res['user']));
@@ -466,7 +491,7 @@ export class AuthUserDetailsComponent implements OnInit {
   }
 
 /*=====================================================================================================================================================================================================*/
-  
+
 /** ===================================
  *  -- HELPER FUNCTION METHODS ENDS --
  *  ===================================

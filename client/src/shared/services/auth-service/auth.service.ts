@@ -86,7 +86,7 @@ export class AuthService {
 
   /**
    * This function is responsible to request the reset password details API from the server
-   * @param userId - userId of the current user needs to be passed as the functional parameter to be used in the request params 
+   * @param userId - userId of the current user needs to be passed as the functional parameter to be used in the request params
    */
   getResetPwdDetails(userId: string) {
     return this.httpClient.get(this.AUTH_BASE_API_URL + `/passwords/reset-details/${userId}`);
@@ -112,6 +112,11 @@ export class AuthService {
    */
   sendResetPasswordMail(mailData: Object) {
     return this.httpClient.post(this.AUTH_BASE_API_URL + '/passwords/send-mail', mailData);
+  }
+
+  getUserByEmail(email: string) {
+    // Call the API
+    return this.httpClient.get(this.AUTH_BASE_API_URL + '/email-exists', { params:{email: email}}).toPromise();
   }
 
 }

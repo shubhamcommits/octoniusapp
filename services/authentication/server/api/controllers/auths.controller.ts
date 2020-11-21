@@ -294,11 +294,11 @@ export class AuthsController {
         try {
 
             // Request Body data
-            const { email, password, workspace_name } = req.body;
+            const { email, password /*, workspace_name*/ } = req.body;
 
             // Find the active user with having the same workspace_name and email as in req.body
             const user: any = await User.findOne({
-                workspace_name: workspace_name,
+                // workspace_name: workspace_name,
                 email: email,
                 active: true
             });
@@ -320,11 +320,11 @@ export class AuthsController {
             }
 
             // Generate new token and logs the auth record
-            let token = await auths.generateToken(user, workspace_name);
+            let token = await auths.generateToken(user/*, workspace_name*/);
 
             // Send the status 200 response 
             return res.status(200).json({
-                message: `User signed in ${user.workspace_name} Workspace!`,
+                message: `User signed in!`,
                 token: token,
                 user: user
             });
@@ -404,6 +404,24 @@ export class AuthsController {
             // Send the status 200 response
             return res.status(200).json({
                 message: 'User is added to the subscription!'
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async getOtherUserByEmail(req: Request, res: Response, next: NextFunction) {
+
+        try {
+
+            let email: any  = req.query.email;
+
+            const user = await User.findOne({email: email});
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'User profile picture updated!',
+                user: user
             });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);

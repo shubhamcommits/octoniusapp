@@ -20,6 +20,9 @@ routes.post('/sign-up', auth.signUp);
 // POST - Signs Out the current loggedIn User
 routes.post('/sign-out', authsHelper.verifyToken, authsHelper.isLoggedIn, auth.signOut);
 
+// GET - Get other user details on the basis of email
+routes.get('/email-exists', auth.getOtherUserByEmail);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================
