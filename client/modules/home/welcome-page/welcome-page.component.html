@@ -10,18 +10,17 @@
          <div style="padding:100px 30px;">
 
            <div style="width: 100%; margin:0 auto; align-items: center; text-align: center; border-bottom: 1px solid #005fd521; height: 30vh;">
-            <button type="submit" class="btn btn-primary btn-block" [routerLink]="['/authentication', 'sign-in']" 
-            routerLinkActive="router-link-active">Sign
-            in</button>
-            
-            
+            <button type="submit" class="btn btn-primary btn-block" [routerLink]="['/authentication', 'sign-in']"
+              routerLinkActive="router-link-active">
+              Sign in
+            </button>
            </div>
 
            <div style="width: 100%; margin:50px auto; align-items: center; text-align: center;">
 
 
             <h4 class="text-center">
-               First time here? Join your organization. 
+               First time here? Join your organization.
             </h4>
             <div class="text-center">
                <button type="button" [disabled]="isLoadingJoinWorkspace$ | async" class="btn btn-primary btn-block"
@@ -33,7 +32,7 @@
                   <ng-container *ngIf="!(isLoadingJoinWorkspace$ | async)">Join your workplace</ng-container>
                </button>
                <h4 class="text-center" style="margin-top: 50px;">
-                  Starting up? Add your organization. 
+                  Starting up? Add your organization.
                </h4>
                <button type="button" class="btn btn-block" [ngClass]="{'btn-primary': (isLoadingCreateWorkspace$ | async) === true,
                'btn-outline-primary': !(isLoadingCreateWorkspace$ | async)}"
@@ -45,7 +44,7 @@
                   <ng-container *ngIf="!(isLoadingCreateWorkspace$ | async)">Create new workplace</ng-container>
                </button>
 
-              
+
             </div>
             </div>
          </div>

@@ -77,7 +77,7 @@ export class Auths {
      * @param user 
      * @param workspace_name 
      */
-    async generateToken(user: any, workspace_name?: string) {
+    async generateToken(user: any, workspace_name: string) {
 
         return new Promise(async (resolve, reject) => {
 

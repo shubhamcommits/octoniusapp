@@ -119,4 +119,11 @@ export class AuthService {
     return this.httpClient.get(this.AUTH_BASE_API_URL + '/email-exists', { params:{email: email}}).toPromise();
   }
 
+  getNumberUsersByEmail(email: string) {
+    return this.httpClient.get(this.AUTH_BASE_API_URL + '/num-user-by-email', { params: { email: email}}).toPromise();
+  }
+
+  getUserWorkspaces(email: string) {
+    return this.httpClient.get(this.AUTH_BASE_API_URL + '/user-workspaces', {params: {email: email}}).toPromise();
+  }
 }

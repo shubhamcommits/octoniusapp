@@ -30,7 +30,7 @@ const UserSchema = new Schema({
     email: {
         type: String,
         required: true,
-        unique : true
+        // unique : true
     },
     password: {
         type: String,
@@ -97,7 +97,7 @@ const UserSchema = new Schema({
     _groups: [{
         type: Schema.Types.ObjectId,
         ref: 'Group',
-        unique : true
+        // unique : true
     }],
     stats: {
         lastTaskView: {

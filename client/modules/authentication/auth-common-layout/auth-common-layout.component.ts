@@ -12,6 +12,7 @@ export class AuthCommonLayoutComponent implements OnInit {
 
   // ROUTER NAME STATE OF THE COMPONENT - 'new-workplace', 'signup', 'signin', or 'home'
   @Input('routerState') routerState: string;
+  @Input() userWorkspaces = [];
 
   ngOnInit() {
   }

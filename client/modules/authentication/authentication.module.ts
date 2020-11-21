@@ -1,15 +1,15 @@
 /**
  * !===== AUTHENTICATION MODULE OF OCTONIUS CLIENT =====!
- * 
+ *
  * Please read the points below, before importing and injecting any dependencies:-
- * 1. Make sure that you document your import and if it's a part of exisiting module then import 
+ * 1. Make sure that you document your import and if it's a part of exisiting module then import
  * that under the particular section, otherwise make a new suitable one.
  * 2. Insert the entries under the section in lexographical order.
  */
 
 /**
  * !===== INDEX =====!
- * 
+ *
  * 1. COMPONENTS
  * 2. MODULES
  * 3. SERVICES
@@ -50,6 +50,7 @@ import { SharedModule } from 'src/app/common/shared/shared.module';
 import { AuthService } from 'src/shared/services/auth-service/auth.service';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { SelectWorkspaceComponent } from './select-workspace/select-workspace.component';
 
 
 
@@ -75,6 +76,8 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 
     // FORGOT PASSWORD COMPONENT
     ForgotPasswordComponent,
+
+    SelectWorkspaceComponent
   ],
   imports: [
     // AUTHENTICATION ROUTING MODULE
@@ -94,10 +97,10 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
   ],
   providers:[
     // AUTHENTICATION SERVICE
-    AuthService, 
+    AuthService,
 
     // UTILITY SERVICE
-    UtilityService, 
+    UtilityService,
 
     // STORAGE SERVICE
     StorageService

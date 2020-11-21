@@ -7,7 +7,7 @@ import { StorageService } from "src/shared/services/storage-service/storage.serv
 import { Router, ActivatedRoute } from "@angular/router";
 import { SubSink } from "subsink";
 import { Subject } from 'rxjs/internal/Subject';
-import { UserService } from 'src/shared/services/user-service/user.service';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -68,8 +68,11 @@ export class AuthUserDetailsComponent implements OnInit {
 
   // Email
   email = this._ActivatedRoute.snapshot.queryParamMap.get('email');
+  password;
 
-  userData;
+  @Input() userWorkspaces = [];
+
+  baseUrl = environment.UTILITIES_WORKSPACES_UPLOADS;
 
   ngOnInit() {
     if(this.workspace_name)
@@ -170,6 +173,13 @@ export class AuthUserDetailsComponent implements OnInit {
 
 /*=====================================================================================================================================================================================================*/
 
+
+  executeSignIn() {
+    if (this.routerState == 'sign-in') {
+      this.signIn(this.user.email, this.user.password);
+    }
+  }
+
   /**
    * This function is responsible for signing a user in to the workspace
    * @param email
@@ -181,24 +191,51 @@ export class AuthUserDetailsComponent implements OnInit {
       if (email == null || password == null || email == '' || password == '') {
         this.utilityService.warningNotification('Insufficient data, kindly fill up all the fields correctly!');
       } else {
-        // Preparing the user data
-        let userData: Object = {
-          email: email.trim(),
-          password: password.trim()
-        }
-        this.utilityService.asyncNotification('Please wait while we sign you in...',
-          this.signInServiceFunction(userData))
+        this.authenticationService.getNumberUsersByEmail(email.trim()).then(res => {
+          const numUsers = res['numUsers'] || 0;
+          if (numUsers > 1) {
+            this.email = email;
+            this.storageService.setLocalData('password', JSON.stringify({'password': password}));
+            this.router.navigate(['/authentication', 'select-workspace'], {queryParams: {email: email}});
+          } else {
+            // Preparing the user data
+            let userData: Object = {
+              email: email.trim(),
+              password: password.trim()
+            }
+            this.utilityService.asyncNotification('Please wait while we sign you in...',
+              this.signInServiceFunction(userData));
+          }
+        });
       }
     } catch (err) {
       console.log('There\'s some unexpected error occurred, please try again later!', err);
       this.utilityService.errorNotification('There\'s some unexpected error occurred, please try again later!');
     }
-
   }
 
-  executeSignIn() {
-    if (this.routerState == 'sign-in') {
-      this.signIn(this.user.email, this.user.password);
+  selectWorkspace(workspace_name) {
+    try {
+      this.password = this.storageService.getLocalData('password').password;
+
+      if (this.email == null || this.password == null || this.email == '' || this.password == '') {
+        this.utilityService.warningNotification('Insufficient data, kindly fill up all the fields correctly!');
+      } else {
+
+        this.storageService.removeLocalData('password');
+
+        // Preparing the user data
+        let userData: Object = {
+          email: this.email,
+          password: this.password,
+          workspace_name: workspace_name
+        }
+        this.utilityService.asyncNotification('Please wait while we sign you in...',
+          this.signInServiceFunction(userData));
+      }
+    } catch (err) {
+      console.log('There\'s some unexpected error occurred, please try again later!', err);
+      this.utilityService.errorNotification('There\'s some unexpected error occurred, please try again later!');
     }
   }
 
@@ -212,7 +249,6 @@ export class AuthUserDetailsComponent implements OnInit {
         .subscribe((res) => {
           this.clearUserData();
           this.storeUserData(res);
-          this.userData = res['user'];
 
           this.router.navigate(['dashboard', 'myspace', 'inbox'])
             .then(() => {

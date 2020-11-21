@@ -14,7 +14,7 @@ export class StorageService {
   /**
    * This function encrypts the key value which is supposed to be stored
    * So that key value is not visible/exposed to the client side
-   * @param key 
+   * @param key
    */
   encryptKey(key: any){
     return CryptoJS.AES.encrypt(key, this.storageKey.trim()).toString();
@@ -23,7 +23,7 @@ export class StorageService {
   /**
    * This function encrypts the data which is associated with storageKey
    * Following CryptoJS Standard functions
-   * @param data 
+   * @param data
    */
   encryptData(key, data: string){
     return CryptoJS.AES.encrypt(data, key).toString();
@@ -33,7 +33,7 @@ export class StorageService {
    * This function decrypts the data which is associated with storageKey
    * Following CryptoJS Standard functions
    * Returns JSON Data
-   * @param data 
+   * @param data
    */
   decryptData(key, data : string){
     return JSON.parse(CryptoJS.AES.decrypt(data, key).toString(CryptoJS.enc.Utf8));
@@ -65,7 +65,7 @@ export class StorageService {
 
   /**
    * This function checks if a particular @key exists in the @localStorage or not
-   * @param key 
+   * @param key
    */
   existData(key: any){
     return localStorage.getItem(key);
