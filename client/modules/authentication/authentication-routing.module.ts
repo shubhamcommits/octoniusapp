@@ -6,12 +6,19 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthNewWorkplaceComponent } from './auth-new-workplace/auth-new-workplace.component';
 import { AuthSignInComponent } from './auth-sign-in/auth-sign-in.component';
 import { AuthSignUpComponent } from './auth-sign-up/auth-sign-up.component';
+import { SelectWorkspaceComponent } from './select-workspace/select-workspace.component';
 
 const routes: Routes = [
   // 'sign-in' ROUTE
   {
     path: 'sign-in',
     component: AuthSignInComponent
+  },
+
+  // 'select-workspace' ROUTE
+  {
+    path: 'select-workspace',
+    component: SelectWorkspaceComponent
   },
 
   // 'sign-up' ROUTE

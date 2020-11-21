@@ -14,6 +14,12 @@ const routes = express.Router();
 // POST - Signs In the user and generate a new token
 routes.post('/sign-in', auth.signIn);
 
+// GET - get number of users by an email
+routes.get('/num-user-by-email', auth.getNumUsers);
+
+// GET - get user workspaces
+routes.get('/user-workspaces', auth.getUserWorkspaces);
+
 // POST - Signs Up the user and creates a new account
 routes.post('/sign-up', auth.signUp);
 

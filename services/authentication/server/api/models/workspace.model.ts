@@ -20,7 +20,7 @@ const workspaceSchema = new Schema({
     owner_email: {
         type: String,
         required: true,
-        unique : true
+        // unique : true
     },
     owner_password: {
         type: String,

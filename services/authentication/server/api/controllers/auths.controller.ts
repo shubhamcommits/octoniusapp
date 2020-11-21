@@ -294,14 +294,23 @@ export class AuthsController {
         try {
 
             // Request Body data
-            const { email, password /*, workspace_name*/ } = req.body;
+            const { email, password, workspace_name } = req.body;
 
-            // Find the active user with having the same workspace_name and email as in req.body
-            const user: any = await User.findOne({
-                // workspace_name: workspace_name,
+            let user;
+            if (workspace_name) {
+              // Find the active user with having the same workspace_name and email as in req.body
+              user = await User.findOne({
+                  workspace_name: workspace_name,
+                  email: email,
+                  active: true
+              });
+            } else {
+              // Find the active user with having the same workspace_name and email as in req.body
+              user = await User.findOne({
                 email: email,
                 active: true
-            });
+              });
+            }
 
             // If user wasn't found or user was previsously removed/disabled, return error
             if (!user) {
@@ -320,13 +329,61 @@ export class AuthsController {
             }
 
             // Generate new token and logs the auth record
-            let token = await auths.generateToken(user/*, workspace_name*/);
+            let token = await auths.generateToken(user, workspace_name);
 
             // Send the status 200 response 
             return res.status(200).json({
                 message: `User signed in!`,
                 token: token,
                 user: user
+            });
+
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async getNumUsers(req: Request, res: Response, next: NextFunction) {
+        try {
+            // Find the active user with having the same workspace_name and email as in req.body
+            let usersCount: any = await User.find({
+                email: req.query.email,
+                active: true
+            }).countDocuments();
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: `There are ${usersCount} users with the email ${req.query.email}!`,
+                numUsers: usersCount
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async getUserWorkspaces(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            // Request query data
+            let email: any  = req.query.email;
+
+            // Find the active user with having the same workspace_name and email as in req.body
+            let users: any = await User.find({
+                email: email,
+                active: true
+            }).populate('_workspace', '_id workspace_name workspace_avatar');
+
+            // If user wasn't found or user was previsously removed/disabled, return error
+            if (!users) {
+                return sendError(res, new Error('Please enter a valid combination or user email or user might be disabled!'), 'Please enter a valid combination or workspace name and user email!', 401);
+            }
+
+            const workspaces = users.map(u => { return u['_workspace'] });
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: `User is only in 1 or none workspace!`,
+                workspaces: workspaces
             });
 
         } catch (err) {
