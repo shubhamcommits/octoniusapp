@@ -75,9 +75,9 @@
   <!-- FORM FIELD FOR NEW WORKPLACE & SIGNUP COMPONENT -->
 
   <!-- SELECT A WORKPLACE -->
-  <div class="form-group" *ngIf="routerState == 'select-workspace'" style="display: flex;">
+  <div class="form-group" *ngIf="routerState == 'select-workspace'">
     <div *ngFor="let workspace of userWorkspaces" (click)="selectWorkspace(workspace.workspace_name)" class="card">
-      <img src="{{ this.baseUrl }}/{{workspace.workspace_avatar}}"
+      <img src="{{ this.baseUrl }}/{{workspace.workspace_avatar}}" style="height: 130px;"
           onerror="this.src='assets/images/icon-new-group.svg'">
       <div class="card-body">
         <h2 class="card-title">{{workspace?.workspace_name}}</h2>
