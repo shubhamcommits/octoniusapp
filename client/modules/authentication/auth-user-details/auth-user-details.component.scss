@@ -1,6 +1,7 @@
 .user-form {
     padding: 90px 30px;
-    max-height: 100vh;
+    max-height: 90vh;
+    overflow: auto;
 }
 
 .forgot-password {
@@ -12,17 +13,10 @@
 }
 
 .card {
-  width: 45%;
-  padding: 0;
+  padding: 10px;
   margin: 0 10px 10px 0;
   cursor: pointer;
   border: none;
   border-radius: 10px;
   box-shadow: 0 3px 0 #005fd521;
-  float: left;
-
-  .card-body {
-    padding: 10px;
-    object-fit: cover;
-  }
 }

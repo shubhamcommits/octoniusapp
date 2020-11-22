@@ -2,7 +2,11 @@
 
   <!-- Header Starts -->
   <h6><b>Welcome to your workspace!</b></h6>
-  <h6>To start using your workspace, please complete your subscription below</h6>
+  <h6>To start using your workspace, please start a subscription.</h6>
+<h6>Octonius partners with Stripe to manage your payments. <br>
+  <img src="assets/images/stripe_pay.svg" alt="" style="width: 240px; margin-top: 30px;">
+</h6>
+
   <!-- Header Ends -->
 
   <hr>
@@ -21,14 +25,13 @@
   <!-- Start the Subscription -->
   <div *ngFor="let price of subscription_prices">
     <h6>
-      <b>{{ price.nickname }}</b>
-      <br />
-      {{ price.unit_amount/100 | currency: '$': 'symbol': '.2-2' }}/user.&nbsp;
-      Billed Every {{ price.recurring.interval_count }} Month(s).
-
-      <button (click)="handlePayment(price.id, price.amount)" class="btn btn-md btn-primary">Start a subscription</button>
+      <button (click)="handlePayment(price.id, price.amount)" class="ml-3 btn btn-md btn-primary">Purchase</button>
+      {{price.unit_amount/100 | currency: '$': 'symbol': '.2-2'}}/seat monthly
+      
     </h6>
   </div>
+
+  
   <!-- Start the subscription -->
 
 </div>

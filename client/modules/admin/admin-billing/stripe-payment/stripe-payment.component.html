@@ -12,7 +12,13 @@
 </ng-container>
 
 <ng-template #subscriptionTemp>
-  <button (click)="createCustomerPortalSession()" class="btn btn-md btn-primary">Manage subscription</button>
+  <div *ngIf="charges.length > 0" class="card-tile" style="margin-top: 20px;">
+    <h4>Octonius partners with Stripe to manage your payments. <br>
+      <img src="assets/images/stripe_pay.svg" alt="" style="width: 240px; margin-top: 30px;">
+    </h4>
+    <button (click)="createCustomerPortalSession()" class="btn btn-md btn-primary mt-4">Manage subscription</button>
+  </div>
+  
   <!--
   <app-subscription-details *ngIf="subscription"
     [publicFunctions]="publicFunctions"
@@ -24,15 +30,4 @@
   -->
 </ng-template>
 
-<div *ngIf="charges.length > 0" class="card-tile" style="margin-top: 20px;">
-  <h3 class="s-payments-title">Payments:</h3>
-  <ul class="list-group">
-    <li *ngFor="let payment of charges" class="list-group-item disabled">
-      <span>
-        {{ payment.created | amFromUnix | amDateFormat:'MMMM Do YYYY' }}
-      </span>
-      <span>{{ payment.amount/100 | currency: '$': 'symbol': '.2-2' }}</span>
-      <span>{{ payment.status }}</span>
-    </li>
-  </ul>
-</div>
+

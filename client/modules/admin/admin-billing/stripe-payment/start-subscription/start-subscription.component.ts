@@ -79,8 +79,8 @@ export class StartSubscriptionComponent implements OnInit {
     this.amount = amount;
     this.priceId = priceId;
     this.handler.open({
-      name: 'Octonius workspace',
-      description: 'Start a monthly subscription',
+      name: 'Octonius',
+      description: 'Start a subscription',
       amount: this.amount
     });
   }
@@ -105,7 +105,7 @@ export class StartSubscriptionComponent implements OnInit {
       token: (token: any) => {
 
         // On recieving the token, create a new subcription
-        utilityService.asyncNotification('Please wait we creating the subscription for you...',
+        utilityService.asyncNotification('Please wait, we are creating the subscription...',
         new Promise((resolve, reject)=>{
           // workspaceService.createSubscription(token, this.amount)
           workspaceService.createSubscription(token, this.priceId, this.workspaceData.billing.product_id)

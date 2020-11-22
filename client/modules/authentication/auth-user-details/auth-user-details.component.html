@@ -8,7 +8,7 @@
   <!-- HEADING FOR NEW SIGNIN FORM COMPONENT -->
 
   <!-- HEADING FOR SIGNIN FORM COMPONENT -->
-  <h3 *ngIf="routerState === 'select-workspace'">Select workspace</h3>
+  <h3 *ngIf="routerState === 'select-workspace'">Select workplace</h3>
   <!-- HEADING FOR NEW SIGNIN FORM COMPONENT -->
 
   <!-- HEADING FOR NEW SIGNUP FORM COMPONENT -->
@@ -77,11 +77,11 @@
   <!-- SELECT A WORKPLACE -->
   <div class="form-group" *ngIf="routerState == 'select-workspace'">
     <div *ngFor="let workspace of userWorkspaces" (click)="selectWorkspace(workspace.workspace_name)" class="card">
-      <img src="{{ this.baseUrl }}/{{workspace.workspace_avatar}}" style="height: 130px;"
+        <h3 class="card-title"> <img src="{{ this.baseUrl }}/{{workspace.workspace_avatar}}" style="height: 30px; width:30px" class="feed-avatar"
           onerror="this.src='assets/images/icon-new-group.svg'">
-      <div class="card-body">
-        <h2 class="card-title">{{workspace?.workspace_name}}</h2>
-      </div>
+
+       {{workspace?.workspace_name}}</h3>
+
     </div>
   </div>
   <!-- SELECT A WORKPLACE -->
