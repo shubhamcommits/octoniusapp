@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 import { AuthenticationGuard } from './shared/guards/authentication-guard/authentication.guard';
 import { RoutingGuard } from './shared/guards/routing-guard/routing.guard';
-import { PageNotFoundComponent } from './shared/Components/page-not-found/page-not-found.component';
+import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
 
 
 const routes: Routes = [

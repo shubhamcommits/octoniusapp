@@ -14,7 +14,6 @@ export class Auths {
      */
     async verifyToken(req: Request, res: Response, next: NextFunction) {
         try {
-
             // Authorization header is not present on request
             if (!req.headers.authorization) {
                 return res.status(401).json({
