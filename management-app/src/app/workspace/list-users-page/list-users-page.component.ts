@@ -60,6 +60,10 @@ export class ListUsersPageComponent implements OnInit, OnDestroy {
         .subscribe(res => this.currentUser = res)
     );
 
+    this.initUsersTable();
+  }
+
+  initUsersTable() {
     this.userService.getAllUsers().subscribe(async res => {
       this.users = res['users'];
 
@@ -99,17 +103,9 @@ export class ListUsersPageComponent implements OnInit, OnDestroy {
             // Remove the step
             this.userService.makeUserPortalManager(userId, !isPortalManager)
               .then((res) => {
-                if (res['user']) {
-                  const userRes = res['user'];
-                  // Find the index of the column to check if the same named column exist or not
-                  let index = this.users.findIndex((user: any) => user._id === userRes._id)
-
-                  if (index >=0) {
-                    this.users[index] = userRes;
-                  }
+                  this.initUsersTable();
 
                   resolve(this.utilityService.resolveAsyncPromise('User updated!'));
-                }
               }).catch((err) => {
                 reject(this.utilityService.rejectAsyncPromise('Unable to update user, please try again!'));
               });
