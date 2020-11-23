@@ -22,4 +22,20 @@ export class WorkspaceService {
   getWorkspaces() {
     return this._http.get<any>(this.BASE_API_URL + '/');
   }
+
+  /**
+   * This function is responsible for fetching the number of groups in a workspace
+   * @param workspaceId
+   */
+  getNumberGroupsByWorkspace(workspaceId: string) {
+    return this._http.get<any>(`${this.BASE_API_URL}/${workspaceId}/numGroups`).toPromise();
+  }
+
+  /**
+   * This function is responsible for deleting the workspace
+   * @param workspaceId
+   */
+  removeWorkspace(workspaceId: string) {
+    return this._http.delete<any>(`${this.BASE_API_URL}/${workspaceId}`).toPromise();
+  }
 }

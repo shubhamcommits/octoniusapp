@@ -247,6 +247,10 @@ export class UtilityService {
     })
   }
 
+  public getSwalModal(swalOptions: any){
+    return Swal.fire(swalOptions);
+  }
+
   /**
    * This function opens up the bootstrap modal from the library
    * @param content - content to be displayed in the modal

@@ -481,4 +481,65 @@ export class WorkspaceController {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
     }
+
+    async getNumberGroupsByWorkspace(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            const { workspaceId } = req.params;
+
+            if (!workspaceId) {
+                return sendError(res, new Error('Please provide the workspaceId property!'), 'Please provide the workspaceId property!', 500);
+            }
+
+            // Find the workspaces on the DB
+            const num_groups = await Group.find({
+                _workspace: workspaceId
+            }).countDocuments();
+
+            // Error creating global group
+            if (!num_groups) {
+                return sendError(res, new Error('There is no workspace by the ID provided!'), 'There is no workspace by the ID provided!', 500);
+            }
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                num_groups: num_groups
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async remove(req: Request, res: Response, next: NextFunction) {
+
+        try {
+            const { workspaceId } = req.params;
+    
+            if (!workspaceId) {
+                return sendError(res, new Error('Please provide the workspaceId property!'), 'Please provide the workspaceId property!', 500);
+            }
+    
+            let message = 'TODO - the remove function needs to be implemented:\n'
+                + '\t1.- Remove users.\n'
+                + '\t2.- Remove notifications\n'
+                + '\t3.- Remove comments\n'
+                + '\t4.- Remove posts\n'
+                + '\t5.- Remove flows\n'
+                + '\t6.- Remove columns\n'
+                + '\t7.- Remove files\n'
+                + '\t8.- Remove documents\n'
+                + '\t9.- Remove items\n'
+                + '\t10.- Remove groups\n'
+                + '\t11.- Remove users\n'
+                + '\t12.- Remove workspace\n';
+            console.log(message);
+    
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: message
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
 }

@@ -10,43 +10,13 @@
     </div>
 
     <div class="menu-options">
-        <ul class="list-unstyled components">
+        <ul class="components">
             <li>
-                <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">
-
-                    <i class="material-icons-outlined carret">person</i>
-                    MY SPACE
-                    <i class="material-icons-outlined carret">keyboard_arrow_down</i>
-                </a>
-                <ul class="collapse list-unstyled" id="homeSubmenu">
-                    <li>
-                        <a [routerLink]="['/dashboard', 'workspace', 'list']" routerLinkActive="router-link-active" (click)="this.sideNav.toggle()">
-                            Inbox
-                        </a>
-                    </li>
-                </ul>
+              <a [routerLink]="['/dashboard', 'workspace', 'list']" routerLinkActive="router-link-active" (click)="this.sideNav.toggle()">
+                <i class="material-icons-outlined carret">important_devices</i>
+                List Workspaces
+              </a>
             </li>
-            <!--
-            <li>
-                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" style="float: left;">
-                    <i class="material-icons-outlined carret">business_center</i>
-                    WORK
-                    <i class="material-icons-outlined carret">keyboard_arrow_down</i>
-                </a>
-
-                <ul class="collapse list-unstyled" id="pageSubmenu">
-                    <li>
-                        <a [routerLink]="['/dashboard', 'work', 'groups', 'activity']"
-                            [queryParams]="{ group: group?._id, myWorkplace: false  }" (click)="this.sideNav.toggle()">
-
-                            <img class="avatar" src="{{ this.groupBaseUrl }}/{{group.group_avatar}}"
-                                onerror="this.src='assets/images/icon-new-group.svg'">
-                            {{group?.group_name}}
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            -->
         </ul>
 
         <div>

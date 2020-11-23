@@ -2,11 +2,11 @@
 
   <mat-form-field>
     <mat-label>Filter</mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
+    <input matInput (keyup)="applyFilter($event)" placeholder="" #input>
   </mat-form-field>
 
   <div class="mat-elevation-z8">
-    <table mat-table [dataSource]="dataSource" matSort>
+    <table mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
 
       <!-- ID Column -->
       <ng-container matColumnDef="id">
@@ -35,13 +35,46 @@
       <!-- Star Column -->
       <ng-container matColumnDef="star" stickyEnd>
         <th mat-header-cell *matHeaderCellDef></th>
-        <td mat-cell *matCellDef="let element">
-          <i class="material-icons-outlined carret">more_vert</i>
+        <td mat-cell *matCellDef="let workspace">
+          <i class="material-icons-outlined muted" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
+          <mat-menu #menu="matMenu">
+            <a mat-menu-item (click)="deleteWorkspace(workspace._id)">
+                <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
+                <span>Delete</span>
+            </a>
+          </mat-menu>
+        </td>
+      </ng-container>
+
+      <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+      <ng-container matColumnDef="expandedDetail">
+        <td mat-cell *matCellDef="let workspace" [attr.colspan]="displayedColumns.length">
+          <div class="workspace-detail"
+              [@detailExpand]="workspace == expandedElement ? 'expanded' : 'collapsed'">
+            <div class="workspace-billing">
+              <div class=""><span>Schedule Cancelation:</span> {{ (workspace?.billing?.scheduled_cancelation) ? 'Yes' : 'No' }} </div>
+              <div class=""><span>Subscription Quantity:</span> {{ workspace?.billing?.quantity }} </div>
+              <div class=""><span>Subscription Ends:</span> {{ workspace?.billing?.current_period_end | date }} </div>
+              <div class=""><span>Stripe Client_id:</span> {{ workspace?.billing?.client_id }} </div>
+            </div>
+            <div class="workspace-description">
+              <div class=""><span>Number members:</span> {{ workspace?.members?.length }} </div>
+              <div class=""><span>Number Guests:</span> {{ workspace?.invited_users?.length }} </div>
+            </div>
+            <div class="workspace-description">
+              <div class=""><span>Number Groups:</span> {{ workspace?.num_groups }} </div>
+              <div class=""><span>Creation date:</span> {{ workspace?.created_date | date }} </div>
+            </div>
+          </div>
         </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let workspace; columns: displayedColumns;"></tr>
+      <tr mat-row *matRowDef="let workspace; columns: displayedColumns;"
+        [class.example-expanded-row]="expandedElement === workspace"
+        (click)="expandDetails(workspace)">
+      </tr>
+      <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
 
       <!-- Row shown when there is no matching data. -->
       <tr class="mat-row" *matNoDataRow>

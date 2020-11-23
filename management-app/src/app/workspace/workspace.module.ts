@@ -1,6 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatIconModule } from '@angular/material/icon';
@@ -17,7 +18,8 @@ import { ListWorkspacesPageComponent } from './list-workspaces-page/list-workspa
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatIconModule
+    MatIconModule,
+    MatMenuModule
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
