@@ -40,4 +40,19 @@ export class UserService {
     return this._http.put(this.BASE_API_URL + `/`, userData)
       .toPromise();
   }
+
+  /**
+   * This function fetches all the users in the DB
+   */
+  getAllUsers(): Observable<any> {
+    return this._http.get(this.BASE_API_URL + '/user/all')
+  }
+
+  makeUserPortalManager(userId: string, makePortalManager: boolean) {
+    return this._http.put(this.BASE_API_URL + `/${userId}/make-portal-manager`, { makePortalManager: makePortalManager }).toPromise();
+  }
+
+  removeUser(userId: string) {
+    return this._http.delete(this.BASE_API_URL + `/${userId}`).toPromise();
+  }
 }

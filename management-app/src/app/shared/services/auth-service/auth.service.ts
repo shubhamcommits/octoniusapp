@@ -23,7 +23,7 @@ export class AuthService {
    * @param user : { email: string, workspace_name: string, password: string }
    */
   signIn(userData: Object) {
-    return this.httpClient.post(this.AUTH_BASE_API_URL + '/sign-in', userData);
+    return this.httpClient.post(this.AUTH_BASE_API_URL + '/sign-in-mgmt-portal', userData);
   }
 
   /**

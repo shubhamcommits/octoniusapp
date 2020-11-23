@@ -11,12 +11,18 @@
 
     <div class="menu-options">
         <ul class="components">
-            <li>
-              <a [routerLink]="['/dashboard', 'workspace', 'list']" routerLinkActive="router-link-active" (click)="this.sideNav.toggle()">
-                <i class="material-icons-outlined carret">important_devices</i>
-                List Workspaces
-              </a>
-            </li>
+          <li>
+            <a [routerLink]="['/dashboard', 'workspace', 'list']" routerLinkActive="router-link-active" (click)="this.sideNav.toggle()">
+              <i class="material-icons-outlined carret">important_devices</i>
+              List Workspaces
+            </a>
+          </li>
+          <li>
+            <a [routerLink]="['/dashboard', 'workspace', 'users']" routerLinkActive="router-link-active" (click)="this.sideNav.toggle()">
+              <i class="material-icons-outlined carret">supervisor_account</i>
+              Manage Users
+            </a>
+          </li>
         </ul>
 
         <div>

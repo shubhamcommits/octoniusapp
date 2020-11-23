@@ -1,0 +1,109 @@
+<div class="container">
+
+  <mat-form-field>
+    <mat-label>Filter</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="" #input>
+  </mat-form-field>
+
+  <div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
+
+      <!-- ID Column -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+        <td mat-cell *matCellDef="let user"> {{user._id}} </td>
+      </ng-container>
+
+      <!-- Progress Column -->
+      <ng-container matColumnDef="first_name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> FIRST NAME </th>
+        <td mat-cell *matCellDef="let user"> {{user.first_name}} </td>
+      </ng-container>
+
+      <!-- Color Column -->
+      <ng-container matColumnDef="last_name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> LAST NAME </th>
+        <td mat-cell *matCellDef="let user"> {{ user.last_name }} </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> EMAIL </th>
+        <td mat-cell *matCellDef="let user"> {{user.email}} </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="workspace_name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> WORKSPACE </th>
+        <td mat-cell *matCellDef="let user"> {{user.workspace_name}} </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="portal_manager">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> PORTAL MANAGER </th>
+        <td mat-cell *matCellDef="let user"> {{user.portal_manager}} </td>
+      </ng-container>
+
+      <!-- Star Column -->
+      <ng-container matColumnDef="star" stickyEnd>
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let user">
+          <i *ngIf="user._id != currentUser._id" class="material-icons-outlined muted" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
+          <mat-menu #menu="matMenu">
+            <a mat-menu-item (click)="makeUserPortalManager(user._id, user.portal_manager)">
+                <i *ngIf="!user.portal_manager" class="material-icons-outlined ml-2" style="margin-right: .7rem;">how_to_reg</i>
+                <i *ngIf="user.portal_manager" class="material-icons-outlined ml-2" style="margin-right: .7rem;">report_off</i>
+                <span *ngIf="!user.portal_manager">Make Manager</span>
+                <span *ngIf="user.portal_manager">Revoke Managment Rights</span>
+            </a>
+            <a mat-menu-item (click)="deleteUser(user._id)">
+                <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">delete</i>
+                <span>Delete</span>
+            </a>
+          </mat-menu>
+        </td>
+      </ng-container>
+
+      <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+      <ng-container matColumnDef="expandedDetail">
+        <td mat-cell *matCellDef="let user" [attr.colspan]="displayedColumns.length">
+          <div class="user-detail"
+              [@detailExpand]="user == expandedElement ? 'expanded' : 'collapsed'">
+            <!--
+            <div class="user-billing">
+              <div class=""><span>Schedule Cancelation:</span> {{ (user?.billing?.scheduled_cancelation) ? 'Yes' : 'No' }} </div>
+              <div class=""><span>Subscription Quantity:</span> {{ user?.billing?.quantity }} </div>
+              <div class=""><span>Subscription Ends:</span> {{ user?.billing?.current_period_end | date }} </div>
+              <div class=""><span>Stripe Client_id:</span> {{ user?.billing?.client_id }} </div>
+            </div>
+            <div class="user-description">
+              <div class=""><span>Number members:</span> {{ user?.members?.length }} </div>
+              <div class=""><span>Number Guests:</span> {{ user?.invited_users?.length }} </div>
+            </div>
+            <div class="user-description">
+              <div class=""><span>Number Groups:</span> {{ user?.num_groups }} </div>
+              <div class=""><span>Creation date:</span> {{ user?.created_date | date }} </div>
+            </div>
+            -->
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let user; columns: displayedColumns;"
+        [class.example-expanded-row]="expandedElement === user"
+        (click)="expandDetails(user)">
+      </tr>
+      <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+
+      <!-- Row shown when there is no matching data. -->
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+      </tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+  </div>
+
+
+</div>

@@ -484,4 +484,54 @@ export class AuthsController {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
     }
+
+    /**
+     * This function is responsible for signing in a user
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async signInMgmtPortal(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            // Request Body data
+            const { email, password } = req.body;
+
+            // Find the active user with having the same workspace_name and email as in req.body
+            const user = await User.findOne({
+                email: email,
+                active: true,
+                portal_manager: true
+            });
+
+            // If user wasn't found or user was previsously removed/disabled, return error
+            if (!user) {
+                return sendError(res, new Error('Please enter a valid user email or user might be disabled!'), 'Please enter a valid user email!', 401);
+            }
+
+            // Plain password received from the req.body
+            const plainPassword = password;
+
+            // Decrypting Password
+            const passDecrypted: any = await passwordHelper.decryptPassword(plainPassword, user['password']);
+
+            // If we are unable to decrypt the password from the server
+            if (!passDecrypted.password) {
+                return sendError(res, new Error('Unable to decrypt the password from the server'), 'Please enter a valid email or password!', 401);
+            }
+
+            // Generate new token and logs the auth record
+            let token = await auths.generateToken(user);
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: `User signed in!`,
+                token: token,
+                user: user
+            });
+
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
 }

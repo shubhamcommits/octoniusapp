@@ -7,10 +7,12 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatIconModule } from '@angular/material/icon';
 import { WorkspaceRoutingModule } from './workspace-routing.module';
 import { ListWorkspacesPageComponent } from './list-workspaces-page/list-workspaces-page.component';
+import { ListUsersPageComponent } from './list-users-page/list-users-page.component';
 
 @NgModule({
   declarations: [
-    ListWorkspacesPageComponent
+    ListWorkspacesPageComponent,
+    ListUsersPageComponent
   ],
   imports: [
     CommonModule,
