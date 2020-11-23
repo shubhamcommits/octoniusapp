@@ -1,0 +1,53 @@
+import { CUSTOM_ELEMENTS_SCHEMA, ErrorHandler, NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { SnotifyModule, SnotifyService, ToastDefaults } from 'ng-snotify';
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { PageNotFoundComponent } from './shared/Components/page-not-found/page-not-found.component';
+import { GlobalErrorHandler } from './shared/error-handler/global-error-handler';
+import { ServerErrorInterceptor } from './shared/error-handler/server-error.interceptor';
+
+@NgModule({
+
+  declarations: [
+    AppComponent,
+    PageNotFoundComponent
+  ],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    AppRoutingModule,
+    HttpClientModule,
+    SnotifyModule
+  ],
+  providers: [
+    // HASH LOCATION STRATEGY
+    {
+      provide: LocationStrategy,
+      useClass: HashLocationStrategy
+    },
+    // ERROR HANDLERS
+    {
+      provide: ErrorHandler,
+      useClass: GlobalErrorHandler
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ServerErrorInterceptor,
+      multi: true
+    },
+    // SNOTIFY SERVICE AND CONFIG
+    SnotifyService,
+    {
+      provide: 'SnotifyToastConfig',
+      useValue: ToastDefaults
+    },
+  ],
+  bootstrap: [AppComponent],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
+})
+export class AppModule { }

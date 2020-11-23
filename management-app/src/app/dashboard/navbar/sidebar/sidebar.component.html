@@ -1,0 +1,67 @@
+<nav id="sidebar">
+    <div class="sidebar-header">
+        <a [routerLink]="['/dashboard', 'workspace', 'list']" routerLinkActive="router-link-active" (click)="this.sideNav.toggle()">
+            <img src="assets/images/logo.svg" alt="" class="octonius-logo">
+        </a>
+
+        <div id="dismiss">
+            <i class="material-icons" (click)="this.sideNav.toggle()">close</i>
+        </div>
+    </div>
+
+    <div class="menu-options">
+        <ul class="list-unstyled components">
+            <li>
+                <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">
+
+                    <i class="material-icons-outlined carret">person</i>
+                    MY SPACE
+                    <i class="material-icons-outlined carret">keyboard_arrow_down</i>
+                </a>
+                <ul class="collapse list-unstyled" id="homeSubmenu">
+                    <li>
+                        <a [routerLink]="['/dashboard', 'workspace', 'list']" routerLinkActive="router-link-active" (click)="this.sideNav.toggle()">
+                            Inbox
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <!--
+            <li>
+                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" style="float: left;">
+                    <i class="material-icons-outlined carret">business_center</i>
+                    WORK
+                    <i class="material-icons-outlined carret">keyboard_arrow_down</i>
+                </a>
+
+                <ul class="collapse list-unstyled" id="pageSubmenu">
+                    <li>
+                        <a [routerLink]="['/dashboard', 'work', 'groups', 'activity']"
+                            [queryParams]="{ group: group?._id, myWorkplace: false  }" (click)="this.sideNav.toggle()">
+
+                            <img class="avatar" src="{{ this.groupBaseUrl }}/{{group.group_avatar}}"
+                                onerror="this.src='assets/images/icon-new-group.svg'">
+                            {{group?.group_name}}
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            -->
+        </ul>
+
+        <div>
+            <hr>
+            <ul class="list-unstyled">
+                <li>
+                    <!-- LOGOUT FUNCTION STARTS-->
+                    <a class="nav-link" [routerLink]="['/home']" routerLinkActive="router-link-active" (click)="logout()">
+                        <i class="material-icons-outlined carret">power_settings_new</i>
+                        LOGOUT
+                        <span class="sr-only">(current)</span>
+                    </a>
+                    <!-- LOGOUT FUNCTION ENDS-->
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

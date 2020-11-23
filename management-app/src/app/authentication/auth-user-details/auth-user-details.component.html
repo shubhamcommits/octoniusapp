@@ -1,0 +1,34 @@
+<div class="user-form">
+  <!-- HEADING FOR SIGNIN FORM COMPONENT -->
+  <h3 *ngIf="routerState === 'sign-in'">Sign in</h3>
+  <!-- HEADING FOR NEW SIGNIN FORM COMPONENT -->
+
+  <!-- FORM FIELD FOR NEW WORKPLACE, SIGNIN, & SIGNUP COMPONENT -->
+  <div class="form-group" *ngIf="routerState === 'sign-in'">
+    <label for="workEmail">Work Email</label>
+    <input type="email" [(ngModel)]="user.email" (focusout)="validateEmail($event)" class="form-control"
+      name="workEmail" (keyup.enter)="executeSignIn()">
+  </div>
+  <!-- FORM FIELD FOR NEW WORKPLACE, SIGNIN, & SIGNUP COMPONENT -->
+
+  <!-- FORM FIELD FOR NEW WORKPLACE, SIGNIN & SIGNUP COMPONENT -->
+  <div class="form-group" *ngIf="routerState === 'sign-in'">
+    <label for="password">Password</label>
+    <input type="password" [(ngModel)]="user.password" class="form-control" name="password" (keyup.enter)="executeSignIn()">
+  </div>
+  <!-- FORM FIELD FOR NEW WORKPLACE, SIGNIN & SIGNUP COMPONENT -->
+
+  <!-- FORGOT PASSWORD MODULE STARTS -->
+  <p (click)="openForgotPassword(content)" class="forgot-password" *ngIf="routerState === 'sign-in'">
+    Forgot password?
+  </p>
+  <ng-template #content let-modal>
+    <forgot-password></forgot-password>
+  </ng-template>
+  <!-- FORGOT PASSWORD MODULE ENDS -->
+
+  <!-- SUBMIT BUTTON FOR SIGN IN COMPONENT-->
+  <button type="submit" class="btn btn-primary" *ngIf="routerState === 'sign-in'"
+    (click)="signIn(user?.email, user?.password)">Sign In</button>
+  <!-- SUBMIT BUTTON SIGN IN COMPONENT -->
+</div>
