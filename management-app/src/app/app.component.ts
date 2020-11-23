@@ -69,15 +69,6 @@ export class AppComponent {
   }
 
   /**
-   * This function enables the google api connection to the client
-   */
-  async loadGoogleAPI() {
-    await gapi.load('auth', (() => {
-      console.log('Google API is connected!')
-    }));
-  }
-
-  /**
    * This function unsubscribes all the observables as soon as the component is destroyed
    */
   ngOnDestroy(): void {

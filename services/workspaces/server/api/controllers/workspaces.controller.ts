@@ -460,4 +460,25 @@ export class WorkspaceController {
             return sendError(res, new Error(error), 'Internal Server Error!', 500);
         }
     }
+
+    /**
+     * This function retreives all the workspaces in the DB
+     * @param req
+     * @param res
+     * @param next
+     */
+    async getWorkspacesList(req: Request, res: Response, next: NextFunction) {
+        try {
+            // Find the workspaces on the DB
+            const workspaces = await Workspace.find();
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: 'This Workspace name is available!',
+                workspaces: workspaces
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
 }

@@ -55,8 +55,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     // IF WE FIND THAT THE GET REQUEST HAS FAILED, THEN WE USE LOCAL DATA TO INTIALISE THE userData
     if (JSON.stringify(this.userData) === JSON.stringify({}))
       this.userData = this.publicFunctions.getUserDetailsFromStorage();
-
-    console.log('User Data', this.userData);
   }
 
   /**
