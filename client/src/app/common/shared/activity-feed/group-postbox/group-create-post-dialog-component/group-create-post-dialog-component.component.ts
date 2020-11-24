@@ -95,7 +95,6 @@ export class GroupCreatePostDialogComponent implements OnInit {
   showSubtasks = false;
   subtasks: any =  [];
   percentageSubtasksCompleted = 0;
-  parentTaskAssigneeProfilePicUrl = ''
 
   lastAssignedBy: any;
 
@@ -643,15 +642,6 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.comments = [];
 
     this.columns = null;
-
-    if (!this.postData.task._parent_task._assigned_to) {
-      this.parentTaskAssigneeProfilePicUrl = 'assets/images/user.png';
-    } else {
-      await this.publicFunctions.getOtherUser(this.postData.task._parent_task._assigned_to[0]).then(user => {
-        this.postData.task._parent_task._assigned_to[0] = user;
-        this.parentTaskAssigneeProfilePicUrl = this.baseUrl + '/' + user['profile_pic'];
-      });
-    }
 
     await this.initPostData();
   }
