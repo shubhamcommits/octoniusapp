@@ -66,12 +66,7 @@ export class GroupGuard implements CanActivate  {
     return this.groupService.getGroupObservale(currentGroup).pipe(map((res) => {
 
       if (res['group']['_admins'].findIndex((admin: any) => admin._id === userId) < 0 && this.isGroupManagerURL(state)) {
-        this.utilityService.warningNotification('Oops seems like you don\'t have the permission to access the section, kindly contact your superior to provide you the proper admin rights!', '', {
-          showProgressBar: true,
-          closeOnClick: true,
-          backdrop: 0.8,
-          timeout: 3000
-        });
+        this.utilityService.warningNotification('Oops seems like you don\'t have the permission to access the section, kindly contact your superior to provide you the proper admin rights!');
 
         this.router.navigate(['dashboard', 'myspace', 'inbox']);
 

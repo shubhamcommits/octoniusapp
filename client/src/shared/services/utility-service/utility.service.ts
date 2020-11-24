@@ -14,7 +14,7 @@ import { GroupBarComponent } from 'modules/groups/group/group-admin/group-bar/gr
 export class UtilityService {
 
   constructor(
-    private snotifyService: SnotifyService,
+    //private snotifyService: SnotifyService,
     private modalService: NgbModal,
     private ngxUiLoaderService: NgxUiLoaderService,
     public dialog: MatDialog
@@ -93,8 +93,21 @@ export class UtilityService {
    * @param title - optional
    * @param config - optional
    */
-  successNotification(text: string, title?: string, config?: SnotifyToastConfig){
-    return this.snotifyService.success(text, title, config);
+  successNotification(text: string, title?: string) {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true
+    })
+
+    return Toast.fire({
+      icon: 'success',
+      title: title,
+      text: text
+    })
+    // return this.snotifyService.success(text, title, config);
   }
 
   /**
@@ -103,8 +116,20 @@ export class UtilityService {
    * @param title - optional
    * @param config - optional
    */
-  simpleNotification(text: string, title?: string, config?: SnotifyToastConfig){
-    return this.snotifyService.simple(text, title, config);
+  simpleNotification(text: string, title?: string){
+    // return this.snotifyService.simple(text, title, config);
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true
+    })
+
+    return Toast.fire({
+      title: title,
+      text: text
+    })
   }
 
 
@@ -114,8 +139,21 @@ export class UtilityService {
    * @param title - optional
    * @param config - optional
    */
-  warningNotification(text: string, title?: string, config?: SnotifyToastConfig){
-    return this.snotifyService.warning(text, title, config);
+  warningNotification(text: string, title?: string){
+    // return this.snotifyService.warning(text, title, config);
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true
+    })
+
+    return Toast.fire({
+      icon: 'warning',
+      title: title,
+      text: text
+    })
   }
 
   /**
@@ -124,8 +162,21 @@ export class UtilityService {
    * @param title - optional
    * @param config - optional
    */
-  errorNotification(text: string, title?: string, config?: SnotifyToastConfig){
-    return this.snotifyService.error(text, title, config);
+  errorNotification(text: string, title?: string){
+    // return this.snotifyService.error(text, title, config);
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true
+    })
+
+    return Toast.fire({
+      icon: 'error',
+      title: title,
+      text: text
+    })
   }
 
   /**
@@ -134,8 +185,21 @@ export class UtilityService {
    * @param title - optional
    * @param config - optional
    */
-  infoNotification(text: string, title?: string, config?: SnotifyToastConfig){
-    return this.snotifyService.info(text, title, config);
+  infoNotification(text: string, title?: string){
+    // return this.snotifyService.info(text, title, config);
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true
+    })
+
+    return Toast.fire({
+      icon: 'info',
+      title: title,
+      text: text
+    })
   }
 
 
@@ -145,8 +209,30 @@ export class UtilityService {
    * @param promise - which resolves() or rejects() on the basis of response
    * @param config - optional
    */
-  asyncNotification(text: string, promise: Promise<any>, config?: SnotifyToastConfig){
-    return this.snotifyService.async(text, promise, config);
+  asyncNotification(text: string, promise: Promise<any>){
+    //return this.snotifyService.async(text, promise, config);
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true
+    })
+    Toast.fire({
+      icon: 'info',
+      text: text
+    })
+
+    promise
+      .then(res => {
+          Toast.close();
+          this.successNotification(res['body']);
+        })
+      .catch(err => {
+          Toast.close();
+          this.errorNotification(err['body']);
+        }
+      );
   }
 
   /**
@@ -175,7 +261,8 @@ export class UtilityService {
    * This function clears all the snotify toasts present in the DOM
    */
   clearAllNotifications(){
-    return this.snotifyService.clear();
+    // return this.snotifyService.clear();
+    return Swal.close();
   }
 
   /**
