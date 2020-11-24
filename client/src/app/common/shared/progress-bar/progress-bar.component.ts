@@ -22,7 +22,7 @@ export class ProgressBarComponent implements OnInit, AfterViewInit {
   @Input('stroke') stroke: any;
 
   // DOM element div
-  @ViewChild('progressbar', { static: false }) progressBar: ElementRef;
+  @ViewChild('progressbar') progressBar: ElementRef;
 
   ngOnInit() {
   }
