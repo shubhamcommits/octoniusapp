@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { AgendaSmartCardComponent } from './agenda-smart-card.component';
 
@@ -6,7 +6,7 @@ describe('AgendaSmartCardComponent', () => {
   let component: AgendaSmartCardComponent;
   let fixture: ComponentFixture<AgendaSmartCardComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ AgendaSmartCardComponent ]
     })

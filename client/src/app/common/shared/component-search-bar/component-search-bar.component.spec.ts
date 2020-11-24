@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ComponentSearchBarComponent } from './component-search-bar.component';
 
@@ -6,7 +6,7 @@ describe('ComponentSearchBarComponent', () => {
   let component: ComponentSearchBarComponent;
   let fixture: ComponentFixture<ComponentSearchBarComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ComponentSearchBarComponent ]
     })

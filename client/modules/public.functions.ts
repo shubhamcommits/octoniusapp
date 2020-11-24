@@ -21,6 +21,7 @@ import { FlowService } from 'src/shared/services/flow-service/flow.service';
 declare const gapi: any;
 declare const google: any;
 
+// TODO: Add Angular decorator.
 export class PublicFunctions {
 
     constructor(
