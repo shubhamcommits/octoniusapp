@@ -70,5 +70,3 @@ window['process'] = process;
  * APPLICATION IMPORTS
  */
 
-import '@angular/localize/init';
-
