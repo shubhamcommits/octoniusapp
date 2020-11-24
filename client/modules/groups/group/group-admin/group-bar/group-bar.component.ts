@@ -2,7 +2,7 @@ import { Component, OnInit, Inject, Injector, Output, EventEmitter } from '@angu
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
 import { GroupService } from 'src/shared/services/group-service/group.service';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { environment } from 'src/environments/environment';
 
 @Component({

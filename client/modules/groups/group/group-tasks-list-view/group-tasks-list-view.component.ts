@@ -4,7 +4,8 @@ import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
-import { MatDialog, MatAccordion } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatAccordion } from '@angular/material/expansion';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
 
 @Component({

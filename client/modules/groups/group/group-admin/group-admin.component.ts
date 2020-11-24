@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { CustomFieldsDialogComponent } from '../custom-fields-dialog/custom-fields-dialog.component';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { GroupBarComponent } from './group-bar/group-bar.component';
 
 @Component({

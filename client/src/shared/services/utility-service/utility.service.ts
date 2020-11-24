@@ -4,7 +4,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import Swal, { SweetAlertIcon } from 'sweetalert2';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { GroupCreatePostDialogComponent } from 'src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component';
 import { GroupBarComponent } from 'modules/groups/group/group-admin/group-bar/group-bar.component';
 
