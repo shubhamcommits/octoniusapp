@@ -1,5 +1,7 @@
 <div class="container">
 
+  <h3>Users Management</h3>
+
   <mat-form-field>
     <mat-label>Filter</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="" #input>
@@ -41,18 +43,21 @@
       <!-- Name Column -->
       <ng-container matColumnDef="portal_manager">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> PORTAL MANAGER </th>
-        <td mat-cell *matCellDef="let user"> {{user.portal_manager}} </td>
+        <td mat-cell *matCellDef="let user" style="text-align: center;">
+          <i *ngIf="user.portal_manager" class="material-icons-outlined ml-2" style="color: green;">check_box</i>
+          <i *ngIf="!user.portal_manager" class="material-icons-outlined ml-2" style="color: red;">cancel_presentation</i>
+        </td>
       </ng-container>
 
       <!-- Star Column -->
       <ng-container matColumnDef="star" stickyEnd>
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let user">
-          <i *ngIf="user._id != currentUser._id" class="material-icons-outlined muted" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
+          <i *ngIf="user._id != currentUser._id" class="material-icons-outlined muted" [matMenuTriggerFor]="menu" style="text-align: center; cursor: pointer;">more_horiz</i>
           <mat-menu #menu="matMenu">
             <a mat-menu-item (click)="makeUserPortalManager(user._id, user.portal_manager)">
-                <i *ngIf="!user.portal_manager" class="material-icons-outlined ml-2" style="margin-right: .7rem;">how_to_reg</i>
-                <i *ngIf="user.portal_manager" class="material-icons-outlined ml-2" style="margin-right: .7rem;">report_off</i>
+                <i *ngIf="!user.portal_manager" class="material-icons-outlined ml-2">how_to_reg</i>
+                <i *ngIf="user.portal_manager" class="material-icons-outlined ml-2">report_off</i>
                 <span *ngIf="!user.portal_manager">Make Manager</span>
                 <span *ngIf="user.portal_manager">Revoke Managment Rights</span>
             </a>
