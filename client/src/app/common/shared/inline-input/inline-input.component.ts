@@ -2,7 +2,7 @@ import { Component,
   Input,
   ElementRef,
   ViewChild,
-  Renderer,
+  Renderer2,
   forwardRef,
   OnChanges,
   EventEmitter,
@@ -95,7 +95,7 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges {
 
   constructor(
     element: ElementRef,
-    private renderer: Renderer,
+    private renderer: Renderer2,
     public utilityService: UtilityService,
     private postService: PostService
     ) {
