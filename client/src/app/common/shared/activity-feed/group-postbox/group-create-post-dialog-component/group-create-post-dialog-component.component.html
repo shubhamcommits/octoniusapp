@@ -110,8 +110,7 @@
                 {{ postData?.task?._parent_task.title | truncatetext:40 }}
               </div>
 
-              <img src="{{ parentTaskAssigneeProfilePicUrl }}"
-                onerror="this.src='assets/images/user.png'" class="feed-avatar">
+              <app-assignee-avatar [post]="postData?.task?._parent_task" [userData]="userData" style="margin-right: 10px;"></app-assignee-avatar>
             </div>
           </div>
         </div>
