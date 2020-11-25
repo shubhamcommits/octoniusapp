@@ -170,10 +170,10 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges {
           this.post.emit({post: res['post'], cfTrigger: {name: this.customFieldName, value: this.customFieldValue}});
 
           // Resolve with success
-          resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
+          resolve(this.utilityService.resolveAsyncPromise(`${this.customFieldName} updated!`));
         })
         .catch(() => {
-          reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
+          reject(this.utilityService.rejectAsyncPromise(`Unable to update ${this.customFieldName}, please try again!`));
         });
     }));
   }

@@ -155,13 +155,13 @@ export class GroupTasksListViewComponent implements OnChanges {
     let utilityService = this.injector.get(UtilityService)
 
     // Call the HTTP Service function
-    utilityService.asyncNotification('Please wait we are creating a new column...', new Promise((resolve, reject) => {
+    utilityService.asyncNotification('Please wait we are creating a new section...', new Promise((resolve, reject) => {
       columnService.addColumn(groupId, columnName)
         .then((res) => {
-          resolve(utilityService.resolveAsyncPromise('New Column Created!'));
+          resolve(utilityService.resolveAsyncPromise('New Section Created!'));
         })
         .catch((err) => {
-          reject(utilityService.rejectAsyncPromise('Unable to create the column at the moment, please try again!'))
+          reject(utilityService.rejectAsyncPromise('Unable to create the section at the moment, please try again!'))
         })
     }))
   }
