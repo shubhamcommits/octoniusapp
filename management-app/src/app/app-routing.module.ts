@@ -49,9 +49,10 @@ const routes: Routes = [
 
     // ROUTER MODULE
     RouterModule.forRoot(routes, {
-      onSameUrlNavigation: 'reload',
-      preloadingStrategy: PreloadAllModules
-    }),
+    onSameUrlNavigation: 'reload',
+    preloadingStrategy: PreloadAllModules,
+    relativeLinkResolution: 'legacy'
+}),
 
   ],
   exports: [RouterModule],

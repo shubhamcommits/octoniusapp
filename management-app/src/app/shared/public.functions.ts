@@ -6,6 +6,7 @@ import { UtilityService } from './services/utility-service/utility.service';
 import { StorageService } from './services/storage-service/storage.service';
 import { UserService } from './services/user-service/user.service';
 
+// TODO: Add Angular decorator.
 export class PublicFunctions {
 
     constructor(

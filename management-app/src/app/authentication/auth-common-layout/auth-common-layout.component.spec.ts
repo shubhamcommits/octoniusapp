@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { AuthCommonLayoutComponent } from './auth-common-layout.component';
 
@@ -6,7 +6,7 @@ describe('AuthCommonLayoutComponent', () => {
   let component: AuthCommonLayoutComponent;
   let fixture: ComponentFixture<AuthCommonLayoutComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ AuthCommonLayoutComponent ]
     })
