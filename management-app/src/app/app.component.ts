@@ -43,12 +43,7 @@ export class AppComponent {
     return this.createOnline$()
       .subscribe((isOnline) => {
         if (!isOnline) {
-          utilityService.warningNotification('Oops, seems like you lost your internet connection', '', {
-            showProgressBar: true,
-            closeOnClick: false,
-            backdrop: 0.8,
-            timeout: 3000
-          })
+          utilityService.warningNotification('Oops, seems like you lost your internet connection');
         }
         else
           utilityService.clearAllNotifications();

@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
-import { SnotifyModule, SnotifyService, ToastDefaults } from 'ng-snotify';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -22,8 +21,7 @@ import { AuthorizationInterceptorService } from './shared/services/authorization
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    HttpClientModule,
-    SnotifyModule
+    HttpClientModule
   ],
   providers: [
     // HASH LOCATION STRATEGY
@@ -45,13 +43,7 @@ import { AuthorizationInterceptorService } from './shared/services/authorization
       provide: HTTP_INTERCEPTORS,
       useClass: AuthorizationInterceptorService,
       multi: true
-    },
-    // SNOTIFY SERVICE AND CONFIG
-    SnotifyService,
-    {
-      provide: 'SnotifyToastConfig',
-      useValue: ToastDefaults
-    },
+    }
   ],
   bootstrap: [AppComponent],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
