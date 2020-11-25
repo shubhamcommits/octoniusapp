@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { SectionSeparatorComponent } from './section-separator.component';
 
@@ -6,7 +6,7 @@ describe('SectionSeparatorComponent', () => {
   let component: SectionSeparatorComponent;
   let fixture: ComponentFixture<SectionSeparatorComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ SectionSeparatorComponent ]
     })

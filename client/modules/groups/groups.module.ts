@@ -68,7 +68,13 @@ import { SharedModule } from 'src/app/common/shared/shared.module';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 // import { MomentModule } from "ngx-moment";
-import { MatButtonModule, MatMenuModule, MatChipsModule, MatDialogModule, MatSelectModule, MatTableModule, MatSortModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatExpansionModule } from '@angular/material/expansion';
 

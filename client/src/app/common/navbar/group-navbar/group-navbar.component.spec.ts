@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { GroupNavbarComponent } from './group-navbar.component';
 
@@ -6,7 +6,7 @@ describe('GroupNavbarComponent', () => {
   let component: GroupNavbarComponent;
   let fixture: ComponentFixture<GroupNavbarComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ GroupNavbarComponent ]
     })

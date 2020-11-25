@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, EventEmitter, Injector, Input, OnChanges, Output, ViewChild } from '@angular/core';
-import { MatSort, MatTableDataSource, Sort } from '@angular/material';
+import { MatSort, Sort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
 import { environment } from 'src/environments/environment';

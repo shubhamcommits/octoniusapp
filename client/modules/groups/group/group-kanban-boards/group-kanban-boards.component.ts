@@ -6,7 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
 import { environment } from 'src/environments/environment';
 import moment from 'moment/moment';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
 

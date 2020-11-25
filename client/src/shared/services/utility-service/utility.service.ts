@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
-import { SnotifyService, SnotifyToastConfig } from 'ng-snotify';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import Swal, { SweetAlertIcon } from 'sweetalert2';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { GroupCreatePostDialogComponent } from 'src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component';
-import { GroupBarComponent } from 'modules/groups/group/group-admin/group-bar/group-bar.component';
 
 @Injectable({
   providedIn: 'root'
@@ -14,29 +12,10 @@ import { GroupBarComponent } from 'modules/groups/group/group-admin/group-bar/gr
 export class UtilityService {
 
   constructor(
-    private snotifyService: SnotifyService,
     private modalService: NgbModal,
     private ngxUiLoaderService: NgxUiLoaderService,
     public dialog: MatDialog
     ) { }
-
-  // After Resolving Promise in case of async notification
-  snotifySucessConfig: SnotifyToastConfig = {
-    timeout: 2000,
-    type: 'success',
-    closeOnClick: true,
-    pauseOnHover: true,
-    showProgressBar: true
-  }
-
-  // After Rejecting the Promise in case of async notification
-  snotifyErrorConfig: SnotifyToastConfig = {
-    timeout: 2000,
-    type: 'error',
-    closeOnClick: true,
-    pauseOnHover: true,
-    showProgressBar: true
-  }
 
   /**
    * Both of the variables listed down below are used to share the data through this common service among different components in the app
@@ -88,65 +67,139 @@ export class UtilityService {
   }
 
   /**
-   * This function generates a custom snotify notification for success event
+   * This function generates a custom notification for success event
    * @param text
    * @param title - optional
-   * @param config - optional
    */
-  successNotification(text: string, title?: string, config?: SnotifyToastConfig){
-    return this.snotifyService.success(text, title, config);
+  successNotification(text: string, title?: string) {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true
+    })
+
+    return Toast.fire({
+      icon: 'success',
+      title: title,
+      text: text
+    })
   }
 
   /**
-   * This function generates a custom snotify notification for simple event
+   * This function generates a custom notification for simple event
    * @param text
    * @param title - optional
-   * @param config - optional
    */
-  simpleNotification(text: string, title?: string, config?: SnotifyToastConfig){
-    return this.snotifyService.simple(text, title, config);
-  }
+  simpleNotification(text: string, title?: string){
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true
+    })
 
-
-  /**
-   * This function generates a custom snotify notification for warning event
-   * @param text
-   * @param title - optional
-   * @param config - optional
-   */
-  warningNotification(text: string, title?: string, config?: SnotifyToastConfig){
-    return this.snotifyService.warning(text, title, config);
-  }
-
-  /**
-   * This function generates a custom snotify notification for error event
-   * @param text
-   * @param title - optional
-   * @param config - optional
-   */
-  errorNotification(text: string, title?: string, config?: SnotifyToastConfig){
-    return this.snotifyService.error(text, title, config);
-  }
-
-  /**
-   * This function generates a custom snotify notification for info event
-   * @param text
-   * @param title - optional
-   * @param config - optional
-   */
-  infoNotification(text: string, title?: string, config?: SnotifyToastConfig){
-    return this.snotifyService.info(text, title, config);
+    return Toast.fire({
+      title: title,
+      text: text
+    })
   }
 
 
   /**
-   * This function generates a custom snotify notification for asynchronous event
+   * This function generates a custom notification for warning event
+   * @param text
+   * @param title - optional
+   */
+  warningNotification(text: string, title?: string){
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true
+    })
+
+    return Toast.fire({
+      icon: 'warning',
+      title: title,
+      text: text
+    })
+  }
+
+  /**
+   * This function generates a custom notification for error event
+   * @param text
+   * @param title - optional
+   */
+  errorNotification(text: string, title?: string){
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true
+    })
+
+    return Toast.fire({
+      icon: 'error',
+      title: title,
+      text: text
+    })
+  }
+
+  /**
+   * This function generates a custom notification for info event
+   * @param text
+   * @param title - optional
+   */
+  infoNotification(text: string, title?: string){
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true
+    })
+
+    return Toast.fire({
+      icon: 'info',
+      title: title,
+      text: text
+    })
+  }
+
+
+  /**
+   * This function generates a custom  notification for asynchronous event
    * @param text
    * @param promise - which resolves() or rejects() on the basis of response
-   * @param config - optional
    */
-  asyncNotification(text: string, promise: Promise<any>, config?: SnotifyToastConfig){
-    return this.snotifyService.async(text, promise, config);
+  asyncNotification(text: string, promise: Promise<any>){
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true
+    })
+    Toast.fire({
+      icon: 'info',
+      text: text
+    })
+
+    promise
+      .then(res => {
+          Toast.close();
+          this.successNotification(res['body']);
+        })
+      .catch(err => {
+          Toast.close();
+          this.errorNotification(err['body']);
+        }
+      );
   }
 
   /**
@@ -155,9 +208,7 @@ export class UtilityService {
    */
   resolveAsyncPromise(text: string){
     return {
-      body: text,
-      config: this.snotifySucessConfig
-    }
+      body: text    }
   }
 
   /**
@@ -166,16 +217,15 @@ export class UtilityService {
    */
   rejectAsyncPromise(text: string){
     return {
-      body: text,
-      config: this.snotifyErrorConfig
+      body: text
     }
   }
 
   /**
-   * This function clears all the snotify toasts present in the DOM
+   * This function clears all the toasts present in the DOM
    */
   clearAllNotifications(){
-    return this.snotifyService.clear();
+    return Swal.close();
   }
 
   /**

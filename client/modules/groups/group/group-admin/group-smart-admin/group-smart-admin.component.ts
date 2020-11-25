@@ -1,9 +1,8 @@
-import { Component, OnInit, Input, Injector} from '@angular/core';
-// import { GroupDataService } from '../../../../shared/services/group-data.service';
-import { SnotifyService } from 'ng-snotify';
+import { Component, OnInit, Injector} from '@angular/core';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
 import { PublicFunctions } from 'modules/public.functions';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-group-smart-admin',
@@ -31,8 +30,8 @@ export class GroupSmartAdminComponent implements OnInit {
   constructor(
     private injector: Injector,
     private workspaceService: WorkspaceService,
-    private snotifyService: SnotifyService,
-    private groupService: GroupService) {}
+    private groupService: GroupService,
+    private utilityService: UtilityService) {}
 
   async ngOnInit() {
     this.rule = '';
@@ -88,7 +87,6 @@ export class GroupSmartAdminComponent implements OnInit {
               this.conditions = domains;
             },
             error => {
-              //this.snotifyService.error('An error occurred whilst fetching email domains.');
               console.error('Could not fetch email domains!');
               console.error(error);
             }
@@ -100,7 +98,6 @@ export class GroupSmartAdminComponent implements OnInit {
           .subscribe(
             ({ positions }) => this.conditions = positions,
             error => {
-              //this.snotifyService.error('An error occurred whilst fetching job positions.');
               console.error('Could not fetch job positions!');
               console.error(error);
             }
@@ -112,7 +109,6 @@ export class GroupSmartAdminComponent implements OnInit {
           .subscribe(
             ({ skills }) => this.conditions = skills,
             error => {
-              //this.snotifyService.error('An error occurred whilst fetching skills.');
               console.error('Could not fetch skills!');
               console.error(error);
             }
@@ -127,14 +123,14 @@ export class GroupSmartAdminComponent implements OnInit {
    */
   onAddNewRule(): void {
     if (this.rule === '' || this.condition === '') {
-      this.snotifyService.info('Conditions must be selected.');
+      this.utilityService.infoNotification('Conditions must be selected.');
       return;
     }
 
     if (this.rule === 'Email domain') {
       // @ts-ignore
       if (this.currentSettings.emailDomains.includes(this.condition)) {
-        this.snotifyService.info('That domain has already been added.');
+        this.utilityService.infoNotification('That domain has already been added.');
         return;
       };
 
@@ -147,7 +143,7 @@ export class GroupSmartAdminComponent implements OnInit {
     } else if (this.rule === 'Job position') {
       // @ts-ignore
       if (this.currentSettings.jobPositions.includes(this.condition)) {
-        this.snotifyService.info('That position has already been added.');
+        this.utilityService.infoNotification('That position has already been added.');
         return;
       };
 
@@ -160,7 +156,7 @@ export class GroupSmartAdminComponent implements OnInit {
     } else if (this.rule === 'Skills') {
       // @ts-ignore
       if (this.currentSettings.skills.includes(this.condition)) {
-        this.snotifyService.info('That skill has already been added.');
+        this.utilityService.infoNotification('That skill has already been added.');
         return;
       };
 
@@ -175,14 +171,14 @@ export class GroupSmartAdminComponent implements OnInit {
     // Update DB
     this.groupService.updateSmartGroupRules(data, this.group._id).subscribe(
       res => {
-        this.snotifyService.success('The rule has been successfully added!');
+        this.utilityService.successNotification('The rule has been successfully added!');
         this.rule = '';
         this.condition = '';
         this.conditions = [];
         this.autoAdd();
       },
       error => {
-        this.snotifyService.error('An error occurred whilst adding the rule.');
+        this.utilityService.errorNotification('An error occurred whilst adding the rule.');
         console.error('Could not add new rule!');
         console.error(error);
       }
@@ -204,7 +200,7 @@ export class GroupSmartAdminComponent implements OnInit {
         this.currentSettings.skills = res.skills;
       },
       error => {
-        this.snotifyService.error('An error occurred whilst fetching existing smart group settings.');
+        this.utilityService.errorNotification('An error occurred whilst fetching existing smart group settings.');
         console.error('Could not fetch existing rules!');
         console.error(error);
       }
@@ -219,7 +215,7 @@ export class GroupSmartAdminComponent implements OnInit {
   onDeleteRule(rule: string): void {
     this.groupService.deleteSmartGroupRule(this.group._id, rule).subscribe(
       res => {
-        this.snotifyService.success('The rule has been successfully deleted!');
+        this.utilityService.successNotification('The rule has been successfully deleted!');
 
         // Update UI
         if (rule === 'email_domains') {
@@ -236,7 +232,7 @@ export class GroupSmartAdminComponent implements OnInit {
         this.autoAdd();
       },
       error => {
-        this.snotifyService.error('An error occurred whilst deleting the rule.');
+        this.utilityService.errorNotification('An error occurred whilst deleting the rule.');
         console.error('Could not delete rule!');
         console.error(error);
       }
@@ -257,9 +253,9 @@ export class GroupSmartAdminComponent implements OnInit {
       this.group._id,
       data
     ).subscribe(
-      res => //this.snotifyService.info('The members of the group have been successfully modified!'),
+      res => //this.utilityService.infoNotification('The members of the group have been successfully modified!'),
       error => {
-        this.snotifyService.error('An error occurred whilst modifying the members of the group.');
+        this.utilityService.errorNotification('An error occurred whilst modifying the members of the group.');
         console.error('Could not auto add members!');
         console.error(error);
       }

@@ -23,7 +23,7 @@ export class CropImageComponent implements OnInit {
   croppedImage: any = '';
 
   // IMAGE CROPPER COMPONENT
-  @ViewChild(ImageCropperComponent, { static: false }) imageCropper: ImageCropperComponent;
+  @ViewChild(ImageCropperComponent) imageCropper: ImageCropperComponent;
 
   ngOnInit() {
   }

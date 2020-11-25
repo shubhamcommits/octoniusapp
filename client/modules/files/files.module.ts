@@ -13,7 +13,7 @@ import { GroupNewFileComponent } from './group-files/group-new-file/group-new-fi
  */
 import { FilesService } from 'src/shared/services/files-service/files.service';
 
-import { MatMenuModule } from '@angular/material';
+import { MatMenuModule } from '@angular/material/menu';
 import { FolioModule } from 'modules/folio/folio.module';
 
 @NgModule({

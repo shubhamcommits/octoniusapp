@@ -51,7 +51,7 @@ export class GroupNewFileComponent implements OnInit {
 
   /**
    * This function is responsible for uploading the files to the server
-   * @param files 
+   * @param files
    */
   fileInput(files: FileList) {
 
@@ -69,8 +69,8 @@ export class GroupNewFileComponent implements OnInit {
 
   /**
    * This function is responsible for uploading a file to the server
-   * @param fileData 
-   * @param file 
+   * @param fileData
+   * @param file
    */
   uploadFile(fileData: any, file?: File) {
 
@@ -91,7 +91,7 @@ export class GroupNewFileComponent implements OnInit {
             this.fileEmitter.emit(res['file']);
 
             resolve((file) ? utilityService.resolveAsyncPromise('File has been uploaded!') :
-              utilityService.resolveAsyncPromise('New folio has been created!'))
+              utilityService.resolveAsyncPromise('New file has been uploaded!'))
 
           })
           .catch(() => {

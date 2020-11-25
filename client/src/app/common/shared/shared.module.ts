@@ -54,14 +54,19 @@ import { LikeCommentComponent } from './comments/post-comment/like-comment/like-
 import { NorthStarComponent } from './activity-feed/group-postbox/group-create-post-dialog-component/north-star/north-star.component';
 import { NorthStarStatsComponent } from './activity-feed/group-postbox/group-create-post-dialog-component/north-star/stats/north-star-stats.component';
 
-import { MatSidenavModule, MatDialogModule, MatSlideToggleModule, MAT_DIALOG_DEFAULT_OPTIONS, MatSelectModule, MatMenuModule, MatBadgeModule } from '@angular/material';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 import { PreviewFilesDialogComponent } from './preview-files-dialog/preview-files-dialog.component';
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
 import { InlineInputComponent } from './inline-input/inline-input.component';
 import { GroupCreatePostDialogComponent } from './activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material';
+import { MatNativeDateModule } from '@angular/material/core';
 import { MomentDateModule } from '@angular/material-moment-adapter';
 import { TruncateTextPipe } from 'src/shared/pipes/truncate-text.pipe';
 import { ChartsModule, ThemeService } from 'ng2-charts';
