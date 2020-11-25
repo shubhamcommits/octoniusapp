@@ -118,11 +118,7 @@ export class PostUtilsComponent implements OnInit {
     document.body.removeChild(selBox);
 
     // Show Confirmed notification
-    this.utilityService.simpleNotification(`Copied to Clipboard!`, '', {
-      timeout: 500,
-      showProgressBar: false,
-      backdrop: 0.5
-    })
+    this.utilityService.simpleNotification(`Copied to Clipboard!`);
   }
 
   /**

@@ -25,7 +25,7 @@ export class AppComponent {
 
   /**
    * This function checks the following things in the application
-   * @param connectionService - connection service 
+   * @param connectionService - connection service
    * @param utilityService - utility service for notifications
    * 1. Connects with Socket server
    * 2. Checks if the internet connection is valid of not
@@ -55,18 +55,13 @@ export class AppComponent {
 
   /**
    * This function checks for the active internet connection
-   * @param utilityService 
+   * @param utilityService
    */
   checkInternetConnectivity(utilityService: UtilityService) {
     return this.createOnline$()
       .subscribe((isOnline) => {
         if (!isOnline) {
-          utilityService.warningNotification('Oops, seems like you lost your internet connection', '', {
-            showProgressBar: true,
-            closeOnClick: false,
-            backdrop: 0.8,
-            timeout: 3000
-          })
+          utilityService.warningNotification('Oops, seems like you lost your internet connection');
         }
         else
           utilityService.clearAllNotifications();
@@ -75,7 +70,7 @@ export class AppComponent {
 
   /**
    * This function makes the HTTP initial request to the socket server in order to initiate the connection
-   * @param socketService 
+   * @param socketService
    */
   initSockerServer(socketService: SocketService) {
     socketService.serverInit()
@@ -84,7 +79,7 @@ export class AppComponent {
 
   /**
    * This function enables the socket connection in the application
-   * @param socketService 
+   * @param socketService
    */
   enableSocketConnection(socketService: SocketService, utilityService: UtilityService) {
     return socketService.onEvent('connect')
@@ -105,9 +100,9 @@ export class AppComponent {
   }
 
   /**
-   * Observable which return the value from the shared service, 
+   * Observable which return the value from the shared service,
    * now we can use this as the data transmitter across the entire application
-   * @param socketService 
+   * @param socketService
    */
   enableNotificationDataTransmitter(socketService: SocketService) {
     return socketService.currentData.pipe(map((res) => res)).subscribe();
@@ -175,7 +170,7 @@ export class AppComponent {
 
   /**
    * This function enables the reconnect_attempt socket, to check how many times the socket has been connecting
-   * @param socketService 
+   * @param socketService
    */
   enableReconnectSocket(socketService: SocketService) {
     return socketService.onEvent('reconnect_attempt')
@@ -184,7 +179,7 @@ export class AppComponent {
   }
 
   /**
-   * This function checks for the active internet connection 
+   * This function checks for the active internet connection
    */
   createOnline$() {
     return merge<boolean>(

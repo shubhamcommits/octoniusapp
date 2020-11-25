@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { TaskSmartCardComponent } from './task-smart-card.component';
 
@@ -6,7 +6,7 @@ describe('TaskSmartCardComponent', () => {
   let component: TaskSmartCardComponent;
   let fixture: ComponentFixture<TaskSmartCardComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ TaskSmartCardComponent ]
     })

@@ -2,7 +2,7 @@ import { Component,
   Input,
   ElementRef,
   ViewChild,
-  Renderer,
+  Renderer2,
   forwardRef,
   OnChanges,
   EventEmitter,
@@ -10,7 +10,7 @@ import { Component,
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { MAT_DATE_FORMATS, DateAdapter, MAT_DATE_LOCALE } from '@angular/material';
+import { MAT_DATE_FORMATS, DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 
 import * as _moment from 'moment';
@@ -95,7 +95,7 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges {
 
   constructor(
     element: ElementRef,
-    private renderer: Renderer,
+    private renderer: Renderer2,
     public utilityService: UtilityService,
     private postService: PostService
     ) {
@@ -170,10 +170,10 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges {
           this.post.emit({post: res['post'], cfTrigger: {name: this.customFieldName, value: this.customFieldValue}});
 
           // Resolve with success
-          resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
+          resolve(this.utilityService.resolveAsyncPromise(`${this.customFieldName} updated!`));
         })
         .catch(() => {
-          reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
+          reject(this.utilityService.rejectAsyncPromise(`Unable to update ${this.customFieldName}, please try again!`));
         });
     }));
   }

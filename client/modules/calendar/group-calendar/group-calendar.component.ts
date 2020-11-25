@@ -7,7 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment/moment';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { GroupCreatePostComponent } from 'src/app/common/shared/activity-feed/group-postbox/group-create-post/group-create-post.component';
 
 // Define Set of hexcodes of colors

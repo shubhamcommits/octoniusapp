@@ -67,7 +67,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 /**
  * 6. !===== THIRD PARTY MODULES & SERVICES =====!
  */
-import { SnotifyModule, SnotifyService, ToastDefaults } from 'ng-snotify';
 // import { NgbModalModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
 import { SocketIoModule } from 'ngx-socket-io';
@@ -117,9 +116,6 @@ import { ServerErrorInterceptor } from 'src/shared/error-handler/server-error.in
     // HTTP CLIENT MODULE
     HttpClientModule,
 
-    // SNOTIFY MODULE
-    SnotifyModule,
-
     // ChartsModule,
 
     // ANGULAR BOOTSTRAP MODAL MODULE
@@ -139,14 +135,6 @@ import { ServerErrorInterceptor } from 'src/shared/error-handler/server-error.in
   ],
 
   providers: [
-
-    // SNOTIFY SERVICE AND CONFIG
-    SnotifyService,
-    {
-      provide: 'SnotifyToastConfig',
-      useValue: ToastDefaults
-    },
-
     // HASH LOCATION STRATEGY
     {
       provide: LocationStrategy,

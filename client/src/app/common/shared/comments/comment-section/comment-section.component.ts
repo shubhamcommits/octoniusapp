@@ -125,10 +125,10 @@ export class CommentSectionComponent implements OnInit {
       this.commentService.new(commentData, this.postId)
         .then((res) => {
           // Resolve with success
-          resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
+          resolve(this.utilityService.resolveAsyncPromise(`Comment added!`));
         })
         .catch(() => {
-          reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
+          reject(this.utilityService.rejectAsyncPromise(`Unable to submit the comment, please try again!`));
         });
     }));
 

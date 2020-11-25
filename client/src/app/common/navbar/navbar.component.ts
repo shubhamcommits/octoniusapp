@@ -21,7 +21,7 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 
 export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  @ViewChild('search', { static: false }) search: ElementRef;
+  @ViewChild('search') search: ElementRef;
 
   constructor(
     private storageService: StorageService,

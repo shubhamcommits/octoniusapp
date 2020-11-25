@@ -8,7 +8,7 @@ import { SharedModule } from 'src/app/common/shared/shared.module';
 import { NorthStarPageComponent } from './north-star-page/north-star-page.component';
 import { DashboardPageComponent } from './dashboard-page/dashboard-page.component';
 
-import { MatSelectModule } from '@angular/material';
+import { MatSelectModule } from '@angular/material/select';
 
 
 @NgModule({

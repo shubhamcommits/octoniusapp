@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject, Output, EventEmitter } from '@angular/core';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { GroupService } from 'src/shared/services/group-service/group.service';
-import { MAT_DIALOG_DATA } from '@angular/material';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-custom-fields-dialog',

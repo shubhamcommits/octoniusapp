@@ -22,7 +22,7 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
-            "aot": false,
+            "aot": true,
             "assets": [
               "src/favicon.ico",
               "src/favicon.png",
@@ -45,7 +45,16 @@
               "node_modules/quill/dist/quill.js",
               "src/shared/utilities/highlight.js/highlight.min.js",
               "src/shared/utilities/loading-bar/loading-bar.min.js"
-            ]
+            ],
+            "allowedCommonJsDependencies": [
+              "lodash",
+              "subsink",
+              "rxjs",
+              "crypto-js",
+              "chart.js",
+              "socket.io-client",
+              "quill-delta-to-html"
+           ]
           },
           "configurations": {
             "production": {
@@ -58,9 +67,7 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -72,8 +79,8 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "6kb",
-                  "maximumError": "10kb"
+                  "maximumWarning": "27kb",
+                  "maximumError": "30kb"
                 }
               ]
             }

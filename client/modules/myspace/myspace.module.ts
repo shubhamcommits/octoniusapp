@@ -38,7 +38,7 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 */
 import { MyspaceRoutingModule } from './myspace-routing.module';
 import { SharedModule } from 'src/app/common/shared/shared.module';
-import { MatMenuModule } from '@angular/material';
+import { MatMenuModule } from '@angular/material/menu';
 // import { MomentModule } from "ngx-moment";
 
 /**

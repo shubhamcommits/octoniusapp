@@ -1,6 +1,6 @@
 import { Component, OnChanges, Output, EventEmitter, Input, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR} from '@angular/forms';
-import { MAT_DATE_FORMATS, DateAdapter, MAT_DATE_LOCALE } from '@angular/material';
+import { MAT_DATE_FORMATS, DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import * as _moment from 'moment';
 // tslint:disable-next-line:no-duplicate-imports

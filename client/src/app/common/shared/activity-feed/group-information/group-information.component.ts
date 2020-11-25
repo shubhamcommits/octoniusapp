@@ -44,7 +44,7 @@ export class GroupInformationComponent implements OnInit {
           this.groupService.updateGroup(this.groupData._id, value)
             .then((res) => {
 
-                // Update the Data 
+                // Update the Data
                 this.groupData.description = value.description;
                 this.groupData.group_name = value.group_name
 
@@ -52,10 +52,10 @@ export class GroupInformationComponent implements OnInit {
                 this.publicFunctions.sendUpdatesToGroupData(this.groupData);
 
                 // Resolve with success
-                resolve(this.utilityService.resolveAsyncPromise('Details updated sucessfully!'))
+                resolve(this.utilityService.resolveAsyncPromise('Group updated sucessfully!'))
             })
             .catch(() =>
-              reject(this.utilityService.rejectAsyncPromise('An unexpected occured while updating the details, please try again!')))
+              reject(this.utilityService.rejectAsyncPromise('An unexpected occured while updating the group, please try again!')))
         }))
     } else if (JSON.stringify(value) == '') {
       this.utilityService.warningNotification('Kindly fill up all the details properly!');
@@ -64,8 +64,8 @@ export class GroupInformationComponent implements OnInit {
 
   /**
    * This function opens the Swal modal to edit the group details
-   * @param title 
-   *  @param imageUrl 
+   * @param title
+   *  @param imageUrl
    */
   openModal(title: string, imageUrl: string) {
 
@@ -73,10 +73,10 @@ export class GroupInformationComponent implements OnInit {
     return this.utilityService.getSwalModal({
       title: title,
       html:
-        `<input id="phone-number" type="text" placeholder="Group Name" 
+        `<input id="phone-number" type="text" placeholder="Group Name"
     value="${this.groupData.group_name || 'Your Group Name here...'}" class="swal2-input">` +
 
-        `<input id="mobile-number" type="text" placeholder="Group Description" 
+        `<input id="mobile-number" type="text" placeholder="Group Description"
     value="${this.groupData.description || ''}" class="swal2-input">`,
 
       focusConfirm: false,

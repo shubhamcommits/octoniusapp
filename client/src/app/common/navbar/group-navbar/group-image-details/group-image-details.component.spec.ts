@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { GroupImageDetailsComponent } from './group-image-details.component';
 
@@ -6,7 +6,7 @@ describe('GroupImageDetailsComponent', () => {
   let component: GroupImageDetailsComponent;
   let fixture: ComponentFixture<GroupImageDetailsComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ GroupImageDetailsComponent ]
     })

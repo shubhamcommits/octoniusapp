@@ -7,7 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment/moment';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 
 // Define Set of hexcodes of colors
 const colors: any = {

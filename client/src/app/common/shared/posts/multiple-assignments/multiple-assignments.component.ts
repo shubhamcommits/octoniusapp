@@ -1,5 +1,5 @@
 import { Component, Input, Output, OnChanges, EventEmitter, ViewChild, ViewEncapsulation } from '@angular/core';
-import { MatMenuTrigger } from '@angular/material';
+import { MatMenuTrigger } from '@angular/material/menu';
 import { environment } from 'src/environments/environment';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -87,7 +87,7 @@ export class MultipleAssignmentsComponent implements OnChanges {
             this.assigned_to.splice(index, 1);
 
             // Resolve with success
-            resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
+            resolve(this.utilityService.resolveAsyncPromise(`Assignee removed!`));
           })
           .catch((err) => {
             reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
@@ -114,7 +114,7 @@ export class MultipleAssignmentsComponent implements OnChanges {
                 this.assigneeAddedEmiter.emit({post: this.post, assigneeId: member._id});
 
                 // Resolve with success
-                resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
+                resolve(this.utilityService.resolveAsyncPromise(`Assignee added!`));
               })
               .catch((err) => {
                 reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));

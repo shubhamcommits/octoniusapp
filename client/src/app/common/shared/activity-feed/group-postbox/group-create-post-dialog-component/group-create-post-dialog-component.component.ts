@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Output, Inject, Injector } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { environment } from 'src/environments/environment';
 import { PublicFunctions } from 'modules/public.functions';
 import { PostService } from 'src/shared/services/post-service/post.service';
@@ -287,10 +287,10 @@ export class GroupCreatePostDialogComponent implements OnInit {
           .then((res) => {
             this.postData = res['post'];
             // Resolve with success
-            resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
+            resolve(this.utilityService.resolveAsyncPromise(`Date updated!`));
           })
           .catch(() => {
-            reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
+            reject(this.utilityService.rejectAsyncPromise(`Unable to update the date, please try again!`));
           });
       } else if(property === 'start_date' || property === 'end_date') {
         this.postService.saveTaskDates(this.postData._id, date, property)
@@ -433,10 +433,10 @@ export class GroupCreatePostDialogComponent implements OnInit {
           this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.postData, '', this.flows, {name: customFieldName, value: customFieldValue});
 
           // Resolve with success
-          resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
+          resolve(this.utilityService.resolveAsyncPromise(`${customFieldName} updated!`));
         })
         .catch(() => {
-          reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
+          reject(this.utilityService.rejectAsyncPromise(`Unable to update ${customFieldName}, please try again!`));
         });
     }));
   }

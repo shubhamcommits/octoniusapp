@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
 import { environment } from 'src/environments/environment';
 import { SubSink } from 'subsink';
