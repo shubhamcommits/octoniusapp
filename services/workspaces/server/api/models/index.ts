@@ -1,7 +1,12 @@
 import { Auth } from './auth.model';
+import { Column } from './column.model';
+import { Flow } from './flow.model';
 import { Group } from './group.model';
+import { Post } from './post.model';
 import { User } from './user.model';
+import { Notification } from './notification.model';
 import { Workspace } from './workspace.model';
+import { Comment } from './comment.model';
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -19,5 +24,20 @@ export {
     User as User,
 
     // WORKSPACE
-    Workspace as Workspace
+    Workspace as Workspace,
+
+    // COLUMN
+    Column as Column,
+
+    // Comment
+    Comment as Comment,
+
+    // FLOW
+    Flow as Flow,
+
+    // NOTIFICATION
+    Notification as Notification,
+
+    // POST
+    Post as Post
 };

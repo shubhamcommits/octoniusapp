@@ -1,7 +1,7 @@
 import { sendError, PasswordHelper, Auths } from '../../utils';
 import { Group, Workspace, User } from '../models';
 import { Request, Response, NextFunction } from 'express';
-import { UsersService } from '../services';
+import { CommonService, UsersService } from '../services';
 import http from 'axios';
 import moment from 'moment';
 
@@ -10,6 +10,8 @@ const passwordHelper = new PasswordHelper();
 
 // User Service Instance
 const usersService = new UsersService();
+
+const commonService = new CommonService();
 
 const auths = new Auths();
 
@@ -492,13 +494,13 @@ export class WorkspaceController {
             }
 
             // Find the workspaces on the DB
-            const num_groups = await Group.find({
+            let num_groups = await Group.find({
                 _workspace: workspaceId
             }).countDocuments();
 
             // Error creating global group
             if (!num_groups) {
-                return sendError(res, new Error('There is no workspace by the ID provided!'), 'There is no workspace by the ID provided!', 500);
+                num_groups = 0;
             }
 
             // Send the status 200 response 
@@ -518,25 +520,22 @@ export class WorkspaceController {
             if (!workspaceId) {
                 return sendError(res, new Error('Please provide the workspaceId property!'), 'Please provide the workspaceId property!', 500);
             }
-    
-            let message = 'TODO - the remove function needs to be implemented:\n'
-                + '\t1.- Remove users.\n'
-                + '\t2.- Remove notifications\n'
-                + '\t3.- Remove comments\n'
-                + '\t4.- Remove posts\n'
-                + '\t5.- Remove flows\n'
-                + '\t6.- Remove columns\n'
-                + '\t7.- Remove files\n'
-                + '\t8.- Remove documents\n'
-                + '\t9.- Remove items\n'
-                + '\t10.- Remove groups\n'
-                + '\t11.- Remove users\n'
-                + '\t12.- Remove workspace\n';
-            console.log(message);
-    
+
+            // Delete the users related
+            User.deleteMany({_workspace: workspaceId});
+
+            // Delete the groups
+            const groups = await Group.find({ _workspace: workspaceId });
+            groups.forEach(async group => {
+                await commonService.remove(group._id);
+            });
+
+            // Delete the workspace
+            Workspace.findByIdAndDelete(workspaceId);
+
             // Send the status 200 response 
             return res.status(200).json({
-                message: message
+                message: 'Workspace Deleted.'
             });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);

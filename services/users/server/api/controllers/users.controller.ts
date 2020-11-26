@@ -1,7 +1,6 @@
-import { Group, User } from '../models';
+import { Group, User, Workspace } from '../models';
 import { Response, Request, NextFunction } from 'express';
 import { sendError } from '../../utils';
-import http from 'axios';
 
 /*  ===================
  *  -- USER METHODS --
@@ -424,13 +423,19 @@ export class UsersControllers {
             return sendError(res, new Error('Please provide the userId property!'), 'Please provide the userId property!', 500);
         }
 
-        let message = 'TODO - the remove function needs to be implemented:\n';
-            // + '\t1.- Remove user.\n'
-console.log(message);
+        // TODO - find if the user is owner of a workspace, in this case we will not delete him unless we remove the workspace
+        const workspace = Workspace.find({ _owner: userId });
+
+        if (workspace) {
+            return sendError(res, new Error('Could not delete the user. User is owner of a workspace!'), 'Could not delete the user. User is owner of a workspace!', 404);
+        }
+
+        // remove user
+        User.remove({_id: userId});
 
         // Send the status 200 response 
         return res.status(200).json({
-            message: message
+            message: 'User deleted.'
         });
     } catch (err) {
         return sendError(res, err, 'Internal Server Error!', 500);
