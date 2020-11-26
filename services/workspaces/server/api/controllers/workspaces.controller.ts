@@ -522,16 +522,16 @@ export class WorkspaceController {
             }
 
             // Delete the users related
-            User.deleteMany({_workspace: workspaceId});
+            await User.deleteMany({_workspace: workspaceId});
 
             // Delete the groups
             const groups = await Group.find({ _workspace: workspaceId });
             groups.forEach(async group => {
-                await commonService.remove(group._id);
+                await commonService.removeGroup(group._id);
             });
 
             // Delete the workspace
-            Workspace.findByIdAndDelete(workspaceId);
+            await Workspace.findByIdAndDelete(workspaceId).select('_id');
 
             // Send the status 200 response 
             return res.status(200).json({

@@ -8,10 +8,10 @@ const fs = require('fs');
 export class CommonService {
 
   /**
-   * This function is used to remove a post
+   * This function is used to remove a group
    * @param { groupId }
    */
-  async remove(groupId: string ) {
+  async removeGroup(groupId: string ) {
     try {
 
       // Find the group and remove it from the database
@@ -24,13 +24,13 @@ export class CommonService {
           await this.removePost(post._id);
       });
 
-      Notification.deleteMany({ _origin_group: groupId });
+      await Notification.deleteMany({ _origin_group: groupId });
 
       // Delete the columns of the group
-      Column.deleteMany({ groupId: groupId });
+      await Column.deleteMany({ groupId: groupId });
 
       // Delete the flows
-      Flow.deleteMany({ _group: groupId});
+      await Flow.deleteMany({ _group: groupId});
 
     } catch (err) {
       throw (err);
