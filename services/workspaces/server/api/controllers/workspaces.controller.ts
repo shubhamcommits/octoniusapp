@@ -531,7 +531,13 @@ export class WorkspaceController {
             });
 
             // Delete the workspace
-            await Workspace.findByIdAndDelete(workspaceId).select('_id');
+            const workspace = await Workspace.findByIdAndDelete(workspaceId).populate('billing');
+
+            if (workspace['billing']) {
+                // Remove stripe client
+                // const stripe = require('stripe')(process.env.SK_STRIPE);
+                // await stripe.customers.del(workspace['billing']['client_id']);
+            }
 
             // Send the status 200 response 
             return res.status(200).json({
