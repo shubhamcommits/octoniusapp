@@ -49,6 +49,10 @@ export class ListWorkspacesPageComponent implements OnInit {
   }
 
   async ngOnInit() {
+    this.initWorkspaceTable();
+  }
+
+  initWorkspaceTable() {
     this.workspaceService.getWorkspaces().subscribe(async res => {
       this.workspaces = res['workspaces'];
 
@@ -81,22 +85,17 @@ export class ListWorkspacesPageComponent implements OnInit {
     this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this, the workspace be completely removed!')
       .then((res) => {
         if (res.value) {
-          this.workspaceService.removeWorkspace(workspaceId).then(res => {
-            if (res['message']) {
-              let message = res['message'];
-              console.log(message);
-              this.utilityService.getSwalModal({
-                title: "Delete Workspace",
-                text: message,
-                inputAttributes: {
-                  maxlength: 20,
-                  autocapitalize: 'off',
-                  autocorrect: 'off'
-                },
-                showCancelButton: false
+          this.utilityService.asyncNotification('Please wait we are deleting the workspace...', new Promise((resolve, reject) => {
+            // Remove the step
+            this.workspaceService.removeWorkspace(workspaceId)
+              .then((res) => {
+                  this.initWorkspaceTable();
+
+                  resolve(this.utilityService.resolveAsyncPromise('Workspace deleted!'));
+              }).catch((err) => {
+                reject(this.utilityService.rejectAsyncPromise('Unable to delete the workspace, please try again!'));
               });
-            }
-          });
+          }));
         }
       });
   }

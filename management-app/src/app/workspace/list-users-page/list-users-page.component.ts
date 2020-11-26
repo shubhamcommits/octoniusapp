@@ -99,7 +99,7 @@ export class ListUsersPageComponent implements OnInit, OnDestroy {
     this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this, the user be able to access the Portal Manager Application!')
       .then((res) => {
         if (res.value) {
-          this.utilityService.asyncNotification('Please wait we are deleting the flow step...', new Promise((resolve, reject) => {
+          this.utilityService.asyncNotification('Please wait we are updating the user´s role...', new Promise((resolve, reject) => {
             // Remove the step
             this.userService.makeUserPortalManager(userId, !isPortalManager)
               .then((res) => {
@@ -118,22 +118,17 @@ export class ListUsersPageComponent implements OnInit, OnDestroy {
     this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this, the user be completely removed!')
       .then((res) => {
         if (res.value) {
-          this.userService.removeUser(userId).then(res => {
-            if (res['message']) {
-              let message = res['message'];
-              console.log(message);
-              this.utilityService.getSwalModal({
-                title: "Delete Workspace",
-                text: message,
-                inputAttributes: {
-                  maxlength: 20,
-                  autocapitalize: 'off',
-                  autocorrect: 'off'
-                },
-                showCancelButton: false
+          this.utilityService.asyncNotification('Please wait we are deleting the user...', new Promise((resolve, reject) => {
+            // Remove the step
+            this.userService.removeUser(userId)
+              .then((res) => {
+                  this.initUsersTable();
+
+                  resolve(this.utilityService.resolveAsyncPromise('User deleted!'));
+              }).catch((err) => {
+                reject(this.utilityService.rejectAsyncPromise('Unable to delete user, please try again!'));
               });
-            }
-          });
+          }));
         }
       });
   }

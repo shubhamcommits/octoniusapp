@@ -16,7 +16,6 @@ export class AuthorizationInterceptorService implements HttpInterceptor {
    */
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>{
     const storageService = this.injector.get(StorageService);
-storageService.existData('authToken')
     if(storageService.existData('authToken')){
       const tokenizedRequest = request.clone({
         setHeaders: {
