@@ -68,6 +68,20 @@ export class GroupNewFileComponent implements OnInit {
   }
 
   /**
+   * This function is responsible for creating a folio
+   */
+  createFolio() {
+    const folio: any = {
+      _group: this.groupId,
+      _posted_by: this.userData._id,
+      type: 'folio',
+      mime_type: 'folio'
+    }
+
+    this.uploadFile(folio);
+  }
+
+  /**
    * This function is responsible for uploading a file to the server
    * @param fileData
    * @param file
