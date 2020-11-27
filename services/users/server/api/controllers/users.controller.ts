@@ -423,15 +423,52 @@ export class UsersControllers {
             return sendError(res, new Error('Please provide the userId property!'), 'Please provide the userId property!', 500);
         }
 
-        // TODO - find if the user is owner of a workspace, in this case we will not delete him unless we remove the workspace
-        const workspace = Workspace.find({ _owner: userId });
+        // Find if the user is owner of a workspace, in this case we will not delete him unless we remove the workspace
+        const workspace = await Workspace.find({ _owner: userId });
 
-        if (workspace) {
+        if (workspace['_id']) {
             return sendError(res, new Error('Could not delete the user. User is owner of a workspace!'), 'Could not delete the user. User is owner of a workspace!', 404);
         }
 
         // remove user
-        User.remove({_id: userId});
+        const user = await User.findByIdAndDelete(userId).select('_workspace');
+
+        const usersCount: number = await User.find({ $and: [
+            { active: true },
+            { _workspace: user['_workspace'] }
+        ] }).countDocuments();
+
+        // Remove user from groups
+        await Group.updateMany({
+                _members: userId
+            }, {
+                $pull: {
+                    _members: userId
+                }
+            });
+        await Group.updateMany({
+                _admins: userId
+            }, {
+                $pull: {
+                    _admins: userId
+                }
+            });
+
+        // Remove user from workspaces
+        const workspaceUpdated = await Workspace.findByIdAndUpdate(
+                user['_workspace']
+            , {
+                $pull: {
+                    _members: userId
+                },
+                'billing.quantity': usersCount
+            });
+
+        // Update stripe subscription
+        const stripe = require('stripe')(process.env.SK_STRIPE);
+        await stripe.subscriptionItems.update(workspaceUpdated['billing'].subscription_item_id, {
+            quantity: usersCount
+        });
 
         // Send the status 200 response 
         return res.status(200).json({

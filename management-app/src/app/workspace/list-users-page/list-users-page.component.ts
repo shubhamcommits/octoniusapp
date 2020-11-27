@@ -126,7 +126,7 @@ export class ListUsersPageComponent implements OnInit, OnDestroy {
 
                   resolve(this.utilityService.resolveAsyncPromise('User deleted!'));
               }).catch((err) => {
-                reject(this.utilityService.rejectAsyncPromise('Unable to delete user, please try again!'));
+                reject(this.utilityService.rejectAsyncPromise(err.error.message));
               });
           }));
         }
