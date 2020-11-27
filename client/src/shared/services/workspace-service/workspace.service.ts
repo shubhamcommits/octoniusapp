@@ -317,4 +317,12 @@ export class WorkspaceService {
     });
     return returnCounter;
   }
+
+  /**
+   * This function is responsible for deleting the workspace
+   * @param workspaceId
+   */
+  removeWorkspace(workspaceId: string) {
+    return this._http.delete<any>(`${this.BASE_API_URL}/${workspaceId}`).toPromise();
+  }
 }

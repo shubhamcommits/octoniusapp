@@ -190,54 +190,23 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subSink.unsubscribe()
   }
 
-    /**
-     * This function fetches the user details, makes a GET request to the server
-     */
-    async getCurrentUser() {
-      return new Promise((resolve, reject) => {
-        try {
-          this.subSink.add(this.userService.getUser()
-            .pipe(retry(3))
-            .subscribe(res => resolve(res['user']))
-          );
-        } catch (err) {
-          console.log('Error occured while fetching the user details', err);
-          this.utilityService.errorNotification('Error occured while fetching your profile details');
-          reject({});
-        }
-      })
-    }
-
-    /**
-     * This function is responsible for logging the user out
-     */
-    /*
-    async logout() {
+  /**
+   * This function fetches the user details, makes a GET request to the server
+   */
+  async getCurrentUser() {
+    return new Promise((resolve, reject) => {
       try {
-        this.utilityService.asyncNotification('Please wait, while we log you out securely...',
-          new Promise((resolve, reject) => {
-            this.subSink.add(this.authService.signout()
-              .subscribe((res) => {
-                this.storageService.clear();
-                this.publicFunctions.sendUpdatesToGroupData({})
-                this.publicFunctions.sendUpdatesToRouterState({})
-                this.publicFunctions.sendUpdatesToUserData({})
-                this.publicFunctions.sendUpdatesToWorkspaceData({})
-                this.socketService.disconnectSocket();
-                this.router.navigate(['/home'])
-                  .then(() => resolve(this.utilityService.resolveAsyncPromise('Succesfully Logged out!')))
-
-              }, (err) => {
-                console.log('Error occured while logging out!', err);
-                reject(this.utilityService.rejectAsyncPromise('Error occured while logging you out!, please try again!'));
-              }))
-          }))
+        this.subSink.add(this.userService.getUser()
+          .pipe(retry(3))
+          .subscribe(res => resolve(res['user']))
+        );
       } catch (err) {
-        console.log('Error occured while logging out!', err);
-        this.utilityService.errorNotification('Error occured while logging you out!');
+        console.log('Error occured while fetching the user details', err);
+        this.utilityService.errorNotification('Error occured while fetching your profile details');
+        reject({});
       }
-    }
-    */
+    })
+  }
 
   /**
    * Add Hot Keys
@@ -251,15 +220,15 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   */
 
-    closeModal(){
-      this.utilityService.closeAllModals();
-    }
-
-    openModal(content: any){
-      this.utilityService.openModal(content, {
-        size: 'l',
-        windowClass: 'search'
-      });
-    }
-
+  closeModal(){
+    this.utilityService.closeAllModals();
   }
+
+  openModal(content: any){
+    this.utilityService.openModal(content, {
+      size: 'l',
+      windowClass: 'search'
+    });
+  }
+
+}
