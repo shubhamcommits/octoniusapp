@@ -5,7 +5,7 @@ const routes = express.Router();
 const slackFunctions = new SlackController();
 
 
-routes.get('/slack-notify',slackFunctions.slackNotify);
+routes.post('/slack-notify',slackFunctions.slackNotify);
 
 routes.post('/slack-webhook',slackFunctions.slackWebhook);
 

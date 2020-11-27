@@ -14,15 +14,23 @@ const slackService = new SlackService()
 export class SlackController {
 
     async slackNotify (req: Request ,res:Response ,next: NextFunction) {
-        var MY_SLACK_WEBHOOK_URL = 'https://hooks.slack.com/services/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';
+        console.log('slackNotify Function');
+        var MY_SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL;
         var slack = require('slack-notify')(MY_SLACK_WEBHOOK_URL);
 
+        console.log('req.body ==>', req.body);
+        const body = req.body.data;
         slack.alert({
-            text: 'Current server stats',
-            fields: {
-              'CPU usage': '7.51%',
-              'Memory usage': '254mb'
-            }
+            text: body.text,
+            attachments: [
+                {
+                  fallback: 'Required Fallback String',
+                  fields: [
+                    { value: body.image + " " + body.name, short: true },
+                    { value: body.content}
+                  ]
+                }
+              ]
         });
 
         return  res.status(200).json({

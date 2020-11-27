@@ -9,7 +9,7 @@ function devConfigInit() {
   process.env.NODE_ENV = process.env.NODE_ENV || 'development'
 
   // Application Port
-  process.env.PORT = process.env.PORT || '1300'
+  process.env.PORT = process.env.PORT || '13000'
 
   // Application Host
   process.env.HOST = process.env.HOST || '0.0.0.0'
@@ -31,7 +31,7 @@ function devConfigInit() {
   process.env.SENDGRID_KEY = process.env.SENDGRID_KEY || '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'
 
   // Slack WebHook URL
-  process.env.SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL || "https://hooks.slack.com/services/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"
+  process.env.SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL || 'https://hooks.slack.com/services/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'
 
   // Stripe Keys
   process.env.SK_STRIPE = process.env.SK_STRIPE || 'sk_test_dvebbZQPA4Vk8kKZaEuN32sD';
@@ -90,7 +90,8 @@ function devConfigInit() {
   // Utilities Microservice
   process.env.UTILITIES_PORT = process.env.UTILITIES_PORT || '10000'
   process.env.UTILITIES_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.UTILITIES_PORT}`
-  process.env.UTILITIES_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.UTILITIES_PORT}/api`  
+  process.env.UTILITIES_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.UTILITIES_PORT}/api`
+  
 };
 
 export { devConfigInit as developmentConfig }

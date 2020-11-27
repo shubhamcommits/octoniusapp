@@ -4,6 +4,7 @@ import { sendError } from "../../utils";
 import { NotificationsService } from "../service";
 import { sendErr } from "../../utils/sendError";
 import { validateId } from "../../utils/helperFunctions";
+import axios from 'axios';
 
 // Creating Service class in order to build wrapper class
 const notificationService = new NotificationsService()
@@ -34,6 +35,24 @@ export class NotificationsController {
                 return sendError(res, new Error(err), 'Internal Server Error!', 500);
             });
 
+            const commented_by = comment._commented_by.first_name + ' ' + comment._commented_by.last_name;
+            console.log('Commented By ==>', commented_by);
+            const comment_content = JSON.parse(comment.content);
+            console.log('comment_content ==>', comment_content.ops[0].insert);
+            const comment_object = {
+                name: commented_by,
+                text: commented_by + ' commented on ' + comment._post.title,
+                image: comment._commented_by.profile_pic,
+                content: '\n' + comment_content.ops[1].insert
+            }
+            console.log('comment_object ==>', comment_object);
+
+            const slackNotification = await axios.post(`${process.env.INTEGRATION_SERVER_API}/slack-notify`, {
+                data: comment_object,
+              });
+            if(slackNotification){
+                console.log('slack notification sent');
+            }
         } catch (err) {
             // Error Handling
             return sendError(res, new Error(err), 'Internal Server Error!', 500);
@@ -46,6 +65,7 @@ export class NotificationsController {
      */
     async newEventAssignments(req: Request, res: Response, next: NextFunction) {
 
+        console.log('newEventAssignments function');
         const { postId, assigned_to, groupId, posted_by } = req.body;
         try {
             // Call Service Function for newEventAssignments
@@ -69,7 +89,7 @@ export class NotificationsController {
 
         const { postId, content_mentions, groupId, posted_by } = req.body;
         try {
-            
+            console.log('newPostMentions');
             // Call Service function for newPostMentions
             await notificationService.newPostMentions(postId, content_mentions, groupId, posted_by);
 
@@ -91,6 +111,7 @@ export class NotificationsController {
      */
     async newFolioMention(req: Request, res: Response, next: NextFunction) {
 
+        console.log('newFolioMentionFunction');
         const { mention, file, user } = req.body;
 
         try {
@@ -115,10 +136,30 @@ export class NotificationsController {
 
         const { postId, assigned_to, groupId, posted_by } = req.body;
         try {
-            
+            console.log('newTaskAssignment function');
+            console.log(
+                'req.body ==>', req.body,
+                '\nassigned_by ==>', assigned_to,
+                '\npostId ==>', postId,
+                '\nposted_by ==>', posted_by
+            )
             // Call Service Function for newTaskAssignments
             await notificationService.newTaskAssignment(postId, assigned_to, groupId, posted_by);
-
+            const postedBy = posted_by.first_name + ' ' + posted_by.last_name;
+            console.log('Posted By ==>', postedBy);
+            const comment_object = {
+                name: postedBy,
+                text: 'Your task is now updated by' + postedBy,
+                image: posted_by.profile_pic,
+                content: '\n '
+            }
+            console.log('comment_object ==>', comment_object);
+            const slackNotification = await axios.post(`${process.env.INTEGRATION_SERVER_API}/slack-notify`, {
+                data: comment_object,
+              });
+            if(slackNotification){
+                console.log('slack notification sent');
+            }
             // Send status 200 response
             return res.status(200).json({
                 message: 'New Task Assignment Succeded!'
@@ -137,12 +178,33 @@ export class NotificationsController {
 
         // Fetch Data from request
         const { postId, assigneeId, posted_by } = req.body;
-
+        console.log('newTaskReassignment function');
+        console.log(
+            'req.body ==>', req.body,
+            '\nassigned_by ==>', assigneeId,
+            '\npostId ==>', postId,
+            '\nposted_by ==>', posted_by
+        )
         try {
             
             // Call Service function for newTaskReassignment
             await notificationService.newTaskReassignment(postId, assigneeId, posted_by);
 
+            const postedBy = posted_by.first_name + ' ' + posted_by.last_name;
+            console.log('Posted By ==>', postedBy);
+            const comment_object = {
+                name: postedBy,
+                text: 'You have a new Task Assignment Posted By' + postedBy,
+                image: posted_by.profile_pic,
+                content: '\n '
+            }
+            console.log('comment_object ==>', comment_object);
+            const slackNotification = await axios.post(`${process.env.INTEGRATION_SERVER_API}/slack-notify`, {
+                data: comment_object,
+              });
+            if(slackNotification){
+                console.log('slack notification sent');
+            }
             // Send status 200 response
             return res.status(200).json({
                 message: 'New Task Reassignment Succeded!'
@@ -236,6 +298,8 @@ export class NotificationsController {
 
 
     async taskStatusChanged(req: Request, res: Response, next: NextFunction) {
+        console.log('taskStatusChanged function');
+        console.log('req.body ==>', req.body);
         let { postId, assigned_to, userId, status, followers, posted_by } = req.body;
         
         try {
@@ -256,6 +320,22 @@ export class NotificationsController {
                 }
             });
 
+            const postedBy = posted_by.first_name + ' ' + posted_by.last_name;
+            console.log('Posted By ==>', postedBy);
+            const comment_object = {
+                name: postedBy,
+                text: 'Your task assignment status changed by ' + postedBy,
+                image: posted_by.profile_pic,
+                content: '\n '
+            }
+            console.log('comment_object ==>', comment_object);
+            const slackNotification = await axios.post(`${process.env.INTEGRATION_SERVER_API}/slack-notify`, {
+                data: comment_object,
+              });
+            // const slackNotification = await notificationService.slackNotification(comment_object);
+            if(slackNotification){
+                console.log('slack notification sent');
+            }
             // Send status 200 response
             return res.status(200).json({
                 message: 'New Task Status Change Succeded!'
@@ -267,11 +347,32 @@ export class NotificationsController {
     }
 
     async newComment(req: Request, res: Response, next: NextFunction) {
+        console.log('newComment Function');
+        console.log('re.body of newComment ==>', req.body);
         const { comment, posted_by, assigned_to, followers } = req.body;
         try {
             // Call Service Function for newComment
+            const commented_by = comment._commented_by.first_name + ' ' + comment._commented_by.last_name;
+            console.log('Commented By ==>', commented_by)
             await notificationService.newComment(comment, posted_by);
 
+            const comment_content = JSON.parse(comment.content);
+            console.log('comment_content ==>', comment_content.ops[0].insert);
+            const comment_object = {
+                name: commented_by,
+                text: commented_by + ' commented on ' + comment._post.title,
+                image: comment._commented_by.profile_pic,
+                content: '\n' + comment_content.ops[0].insert
+            }
+            console.log('comment_object ==>', comment_object);
+            console.log('${process.env.INTEGRATION_SERVER_API}/slack-notify', `${process.env.INTEGRATION_SERVER_API}/slack-notify`);
+            const slackNotification = await axios.post(`${process.env.INTEGRATION_SERVER_API}/slack-notify`, {
+                data: comment_object,
+              });
+            // const slackNotification = await notificationService.slackNotification(comment_object);
+            if(slackNotification){
+                console.log('slack notification sent');
+            }
             if (assigned_to) {
                 assigned_to.forEach(async assignee => {
                     await notificationService.newComment(comment, assignee); 
@@ -297,10 +398,28 @@ export class NotificationsController {
 
     async followPost(req: Request, res: Response, next: NextFunction) {
         const { postId, posted_by, follower } = req.body;
+
+        console.log('followPost function');
         try {
             // Call Service Function for followPost
             await notificationService.followPost(postId, posted_by, follower);
 
+            console.log('req.body ==>', req.body);
+            const postedBy = posted_by.first_name + ' ' + posted_by.last_name;
+            console.log('Posted By ==>', postedBy);
+            const comment_object = {
+                name: '',
+                text: `Your post with postId ${postId} is followed by ${follower} `,
+                image: '\n',
+                content: '\n '
+            }
+            console.log('comment_object ==>', comment_object);
+            const slackNotification = await axios.post(`${process.env.INTEGRATION_SERVER_API}/slack-notify`, {
+                data: comment_object,
+              });
+            if(slackNotification){
+                console.log('slack notification sent');
+            }
             // Send status 200 response
             return res.status(200).json({
                 message: 'Post Followed Succeded!'
@@ -312,6 +431,8 @@ export class NotificationsController {
     }
 
     async likePost(req: Request, res: Response, next: NextFunction) {
+        console.log('followPost function');
+        console.log('req.body ==>', req.body);
         const { postId, posted_by, followers, user } = req.body;
         try {
             // Call Service Function for likePost
@@ -323,6 +444,20 @@ export class NotificationsController {
                 }
             });
 
+            const comment_object = {
+                name: '',
+                text: `your post with postId ${postId} is liked by user ${user}`,
+                image: '\n',
+                content: '\n '
+            }
+            console.log('comment_object ==>', comment_object);
+            const slackNotification = await axios.post(`${process.env.INTEGRATION_SERVER_API}/slack-notify`, {
+                data: comment_object,
+              });
+            // const slackNotification = await notificationService.slackNotification(comment_object);
+            if(slackNotification){
+                console.log('slack notification sent');
+            }
             // Send status 200 response
             return res.status(200).json({
                 message: 'Post Liked Succeded!'

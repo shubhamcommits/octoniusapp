@@ -9,7 +9,7 @@ function prodConfigInit() {
   process.env.NODE_ENV = process.env.NODE_ENV || 'production'
 
   // Application Port
-  process.env.PORT = process.env.PORT ||'1300'
+  process.env.PORT = process.env.PORT ||'13000'
 
   // Application Host
   process.env.HOST = process.env.HOST ||'0.0.0.0'
@@ -29,6 +29,9 @@ function prodConfigInit() {
 
   // Sendgrid Key
   process.env.SENDGRID_KEY = process.env.SENDGRID_KEY || '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'
+
+  // Slack WebHook URL
+  process.env.SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL || 'https://hooks.slack.com/services/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'
 
   // Stripe Keys
   process.env.SK_STRIPE = process.env.SK_STRIPE || 'sk_live_WupyMoQf93S59gwTqmYpmWel'
