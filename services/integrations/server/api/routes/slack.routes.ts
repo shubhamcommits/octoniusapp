@@ -9,4 +9,6 @@ routes.post('/slack-notify',slackFunctions.slackNotify);
 
 routes.post('/slack-webhook',slackFunctions.slackWebhook);
 
+routes.post('/slack-auth',slackFunctions.authSlack);
+
 export { routes as slackRoutes };

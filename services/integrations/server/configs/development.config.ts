@@ -33,6 +33,12 @@ function devConfigInit() {
   // Slack WebHook URL
   process.env.SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL || 'https://hooks.slack.com/services/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'
 
+  process.env.SLACK_CLINET_ID = process.env.SLACK_CLINET_ID || "2561616476.1145669381443"
+  process.env.SLACK_CLIENT_SECRET = process.env.SLACK_CLIENT_SECRET || "acaf1f9b8e2c2607124c74ea9273a2ed"
+  process.env.SLACK_BOT_ACCESS_TOKEN = process.env.SLACK_BOT_ACCESS_TOKEN || "xoxb-2561616476-1145480914898-ZsfVHdAWEP9Xkq9lhjJdXbSa"
+
+  
+
   // Stripe Keys
   process.env.SK_STRIPE = process.env.SK_STRIPE || 'sk_test_dvebbZQPA4Vk8kKZaEuN32sD';
   process.env.stripe_plan = process.env.stripe_plan || 'plan_EK1uRUJLJcDS6e';
