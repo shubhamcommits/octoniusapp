@@ -134,6 +134,12 @@ const UserSchema = new Schema({
                 default: null
             }
         }
+    },
+    portal_manager: {
+        // This property is used to authenticate into the portal managment app
+        type: Boolean,
+        required: true,
+        default: false
     }
 });
 

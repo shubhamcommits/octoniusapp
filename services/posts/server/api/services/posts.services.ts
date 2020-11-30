@@ -1,7 +1,7 @@
 import http from 'axios';
 import moment from 'moment';
 import { Readable } from 'stream';
-import { Comment, Group, Post, User } from '../models';
+import { Comment, Group, Post, User, Notification } from '../models';
 import { sendErr } from '../utils/sendError';
 import { CommentsService } from './comments.services';
 import { GroupsService } from './groups.services';
@@ -573,7 +573,7 @@ export class PostService {
    * This function is used to remove a post
    * @param { userId, postId }
    */
-  async remove (userId: string, postId: string ){
+  async remove(userId: string, postId: string ){
     try {
 
       // Get post data
@@ -609,6 +609,7 @@ export class PostService {
           try {
             await Comment.findByIdAndRemove(commentId);
   
+            await Notification.deleteMany({ _origin_comment: commentId });
             return true;
           } catch (err) {
             throw (err);
@@ -653,7 +654,11 @@ export class PostService {
           })
         }
       })
-      //
+
+      // Delete the notifications
+      await Notification.deleteMany({ _origin_post: postId });
+
+      // Delete post
       const postRemoved = await Post.findByIdAndRemove(postId);
 
       return postRemoved

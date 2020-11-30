@@ -1,3 +1,4 @@
+import { CommonService } from "./common.services";
 import { UsersService } from "./users.service";
 
 /*  =======================
@@ -7,5 +8,8 @@ import { UsersService } from "./users.service";
 export {
 
     // Users Service
-    UsersService as UsersService
+    UsersService as UsersService,
+
+    // Groups Service
+    CommonService as CommonService
 }

@@ -48,6 +48,15 @@ routes.get('/jobPositions/:workspaceId/:query', workspaces.getUniqueJobPositions
 // Get all unique skills that belong within the given workspace that match the query.
 routes.get('/skills/:workspaceId/:query', workspaces.getUniqueSkills);
 
+// GET - Get workspace details
+routes.get('/', workspaces.getWorkspacesList);
+
+// GET - Get workspace details
+routes.get('/:workspaceId/numGroups', workspaces.getNumberGroupsByWorkspace);
+
+// DELETE - Removes the workspace from the database
+routes.delete('/:workspaceId', workspaces.remove);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

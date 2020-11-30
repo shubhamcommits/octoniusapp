@@ -29,6 +29,9 @@ routes.post('/sign-out', authsHelper.verifyToken, authsHelper.isLoggedIn, auth.s
 // GET - Get other user details on the basis of email
 routes.get('/email-exists', auth.getOtherUserByEmail);
 
+// POST - Signs In the user into the management portal and generate a new token
+routes.post('/sign-in-mgmt-portal', auth.signInMgmtPortal);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

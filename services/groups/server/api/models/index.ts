@@ -4,6 +4,7 @@ import { Flow } from './flow.model';
 import { Group } from './group.model';
 import { Post } from './post.model';
 import { User } from './user.model';
+import { Notification } from './notification.model';
 import { Workspace } from './workspace.model';
 
 /*  =====================
@@ -31,5 +32,8 @@ export {
     Workspace as Workspace,
 
     // FLOW
-    Flow as Flow
+    Flow as Flow,
+
+    // NOTIFICATION
+    Notification as Notification
 };

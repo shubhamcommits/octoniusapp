@@ -1,7 +1,7 @@
 import { sendError, PasswordHelper, Auths } from '../../utils';
 import { Group, Workspace, User } from '../models';
 import { Request, Response, NextFunction } from 'express';
-import { UsersService } from '../services';
+import { CommonService, UsersService } from '../services';
 import http from 'axios';
 import moment from 'moment';
 
@@ -10,6 +10,8 @@ const passwordHelper = new PasswordHelper();
 
 // User Service Instance
 const usersService = new UsersService();
+
+const commonService = new CommonService();
 
 const auths = new Auths();
 
@@ -458,6 +460,91 @@ export class WorkspaceController {
 
         } catch (error) {
             return sendError(res, new Error(error), 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function retreives all the workspaces in the DB
+     * @param req
+     * @param res
+     * @param next
+     */
+    async getWorkspacesList(req: Request, res: Response, next: NextFunction) {
+        try {
+            // Find the workspaces on the DB
+            const workspaces = await Workspace.find();
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: 'This Workspace name is available!',
+                workspaces: workspaces
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async getNumberGroupsByWorkspace(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            const { workspaceId } = req.params;
+
+            if (!workspaceId) {
+                return sendError(res, new Error('Please provide the workspaceId property!'), 'Please provide the workspaceId property!', 500);
+            }
+
+            // Find the workspaces on the DB
+            let num_groups = await Group.find({
+                _workspace: workspaceId
+            }).countDocuments();
+
+            // Error creating global group
+            if (!num_groups) {
+                num_groups = 0;
+            }
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                num_groups: num_groups
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async remove(req: Request, res: Response, next: NextFunction) {
+
+        try {
+            const { workspaceId } = req.params;
+    
+            if (!workspaceId) {
+                return sendError(res, new Error('Please provide the workspaceId property!'), 'Please provide the workspaceId property!', 500);
+            }
+
+            // Delete the users related
+            await User.deleteMany({_workspace: workspaceId});
+
+            // Delete the groups
+            const groups = await Group.find({ _workspace: workspaceId });
+            groups.forEach(async group => {
+                await commonService.removeGroup(group._id);
+            });
+
+            // Delete the workspace
+            const workspace = await Workspace.findByIdAndDelete(workspaceId).populate('billing');
+
+            if (workspace['billing']) {
+                // Remove stripe client
+                const stripe = require('stripe')(process.env.SK_STRIPE);
+                await stripe.customers.del(workspace['billing']['client_id']);
+            }
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: 'Workspace Deleted.'
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
         }
     }
 }
