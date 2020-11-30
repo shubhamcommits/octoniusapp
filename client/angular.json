@@ -54,7 +54,7 @@
               "chart.js",
               "socket.io-client",
               "quill-delta-to-html"
-           ]
+            ]
           },
           "configurations": {
             "production": {
@@ -147,6 +147,9 @@
         }
       }
     }
-},
-  "defaultProject": "client"
+  },
+  "defaultProject": "client",
+  "cli": {
+    "analytics": "f5616389-bb39-4515-b921-eb724c597351"
+  }
 }

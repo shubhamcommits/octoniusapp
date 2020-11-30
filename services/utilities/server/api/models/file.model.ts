@@ -13,7 +13,7 @@ const FileSchema = new Schema({
     },
     type: {
         type: String,
-        default: 'file',
+        default: 'folio',
         required: false,
         enum: ['file', 'folio']
     },

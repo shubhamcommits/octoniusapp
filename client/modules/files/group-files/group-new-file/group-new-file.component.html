@@ -10,7 +10,7 @@
         <i class="material-icons-outlined mr-2">folder</i><span>Folder</span>
     </li>
     <li class="dropdown-item" (click)="file.click()">
-        <i class="material-icons-outlined mr-2">cloud_upload</i> <span>File upload</span> 
+        <i class="material-icons-outlined mr-2">cloud_upload</i> <span>File upload</span>
         <input #file type="file" placeholder="File" multiple (change)="fileInput(file.files)"/>
     </li>
     <li class="dropdown-item" (click)="folderInput.click()">
@@ -18,7 +18,7 @@
         <input #folderInput type="file" placeholder="File" webkitDirectory />
     </li>
     <li class="dropdown-divider"></li>
-    <li class="dropdown-item" (click)="this.fileData.type = 'folio'; this.fileData.mime_type = 'folio'; uploadFile(this.fileData)">
+    <li class="dropdown-item" (click)="createFolio()">
         <img src="assets/images/icon_folio.svg" alt="" class="mr-2"> <span>Folio</span>
     </li>
 </ul>
