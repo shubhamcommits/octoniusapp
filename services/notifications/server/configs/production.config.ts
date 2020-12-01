@@ -78,8 +78,8 @@ function prodConfigInit() {
 
   // Integrations Microservice
   process.env.INTEGRATION_PORT = process.env.INTEGRATION_PORT || '13000'
-  process.env.INTEGRATION_SERVER =  `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.INTEGRATION_PORT}`
-  process.env.INTEGRATION_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.INTEGRATION_PORT}/api`
+  process.env.INTEGRATION_SERVER =  `${process.env.PROTOCOL}://${process.env.DOMAIN}/integrations`
+  process.env.INTEGRATION_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}/api/integrations`
 };
 
 export { prodConfigInit as productionConfig }

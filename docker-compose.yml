@@ -342,7 +342,40 @@ services:
       - mongodb
     networks:
       - production
-      
+
+  integrations-server:
+    container_name: integrations-server
+    image: integrations-server
+    ports:
+      - 13000:13000
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./services/integrations/server
+    volumes:
+      - /usr/app/node_modules
+    environment:
+      - NODE_ENV=production
+      - PORT=13000
+      - HOST=0.0.0.0
+      - JWT_KEY=asfsaf12safas23fsafa12sf
+      - dbURL=mongodb://mongodb:27017/octonius
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - SENDGRID_KEY=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
+      - SK_STRIPE=sk_live_WupyMoQf93S59gwTqmYpmWel
+      - stripe_plan=plan_EK1rDLfKr9NRkU
+      - WEBHOOK_PS_SECRET=whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn
+      - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
+      - PROTOCOL=http
+      - DOMAIN=localhost
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
+    networks:
+      - production
+
   client:
     container_name: client
     image: client
@@ -364,6 +397,7 @@ services:
       - utilities-server
       - folio-server
       - search-server
+      - integrations-server
     networks:
       - production
 
@@ -388,6 +422,7 @@ services:
       - utilities-server
       - folio-server
       - search-server
+      - integrations-server
       - client
     networks:
       - production

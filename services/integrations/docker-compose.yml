@@ -3,8 +3,8 @@ version: "3.3"
 services:
 
   server:
-    container_name: slack-server
-    image: slack:server
+    container_name: integrations-server
+    image: integrations:server
     restart: always
     build:
       dockerfile: Dockerfile

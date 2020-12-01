@@ -30,8 +30,13 @@ function prodConfigInit() {
   // Sendgrid Key
   process.env.SENDGRID_KEY = process.env.SENDGRID_KEY || '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'
 
-  // Slack WebHook URL
-  process.env.SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL || 'https://hooks.slack.com/services/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'
+
+   // Slack WebHook URL
+   process.env.SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL || 'https://hooks.slack.com/services/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'
+
+   process.env.SLACK_CLINET_ID = process.env.SLACK_CLINET_ID || "2561616476.1145669381443"
+   process.env.SLACK_CLIENT_SECRET = process.env.SLACK_CLIENT_SECRET || "acaf1f9b8e2c2607124c74ea9273a2ed"
+   process.env.SLACK_BOT_ACCESS_TOKEN = process.env.SLACK_BOT_ACCESS_TOKEN || "xoxb-2561616476-1145480914898-ZsfVHdAWEP9Xkq9lhjJdXbSa"
 
   // Stripe Keys
   process.env.SK_STRIPE = process.env.SK_STRIPE || 'sk_live_WupyMoQf93S59gwTqmYpmWel'

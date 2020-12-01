@@ -1,6 +1,9 @@
 import { Response, Request, NextFunction } from "express";
+import jwt, { JsonWebTokenError } from "jsonwebtoken";
 import { SlackService } from "../service";
-import { Group, Column, User, SlackAuth } from '../models';
+import { Group, Column, Auth, SlackAuth } from '../models';
+import { Auths } from '../../utils';
+import FormData from 'form-data';
 // import { validateId } from "../../utils/helperFunctions";
 import axios from "axios";
 
@@ -11,6 +14,8 @@ const slackService = new SlackService()
  *  -- Slack CONTROLLERS --
  *  ===============================
  */
+// Authentication Utilities Class
+const auths = new Auths();
 
 export class SlackController {
 
@@ -49,40 +54,62 @@ export class SlackController {
             res.status(200).json(req.body.challenge);
         }
 
-        console.log();
         const bosy = req.body.payload;
-        // console.log(bosy);
         const bodypay = JSON.parse(bosy);
-        // 
-        // console.log(bodypay);
-        
 
         res.status(200).json({});
 
         const user_octonius = await SlackAuth.findOne({slack_user_id:bodypay.user.id}).populate('_user');
-        console.log("user_octonius",user_octonius);
+
+        const _id = user_octonius['_user']._id;
+
+        var BearerToken = "Bearer ";
+        const user_auth = await Auth.findOne({_user:_id}).sort({created_date:-1});
+        const token = user_auth['token'];
+        var isvalidToken = true;
+
+        await jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
+            if (err || !decoded) {
+                isvalidToken = false;
+                console.log({
+                    message: 'Unauthorized request, it must have a valid authorization token!'
+                });
+            } else {
+                // Assigning and feeding the userId into the req object
+                BearerToken = BearerToken+token;
+                console.log("token is valid can be used");
+            }
+        });
+
+        if(!isvalidToken){
+            console.log("Token is not valid creating one");
+            const user = user_octonius['_user']._id;
+            const workspace_name = user_octonius['_user'].workspace_name;
+            
+            let tokens = await auths.generateToken(user, workspace_name);
+
+            console.log("token generated",tokens);
+            BearerToken = BearerToken+tokens['token'];
+
+        }
+       
         const url_responceback = bodypay.response_url;
-        console.log(url_responceback,"url_responceback");
+
         if(user_octonius && user_octonius!=null){
 
             if(bodypay.type == "message_action"){
                 
                 let groupsOption=[];
 
-                
-
                 try{   
                     
-                    
-                    //  console.log("user_octonius",user_octonius);
-
                     const user = user_octonius['_user'];
 
                     console.log("user_octonius",user);
 
                     if(user){
                         const groups = await Group.find({_admins:user._id});
-                        console.log("groups",groups);''
+
                         for(var i=0;i<groups.length;i++){
                             const grup =  groups[i];
                             groupsOption[i]={
@@ -99,17 +126,15 @@ export class SlackController {
                     console.log("Am here in error");
                     console.log(err);
                 }
-                
-                console.log("Group option",groupsOption)
-
+            
                 const triggered = bodypay.trigger_id;
-                const message =bodypay.message.text;
-                console.log("message",message);
-                console.log(triggered);
+                const message = bodypay.message.text;
+
                 const respo = await axios.post('https://slack.com/api/views.open', {
                     trigger_id : triggered,
                     view : {
                     "type": "modal",
+                    "callback_id": "step_1",
                     "title": {
                         "type": "plain_text",
                         "text": "Octonius",
@@ -117,7 +142,7 @@ export class SlackController {
                     },
                     "submit": {
                         "type": "plain_text",
-                        "text": "Submit",
+                        "text": "Continue",
                         "emoji": true
                     },
                     "close": {
@@ -130,7 +155,7 @@ export class SlackController {
                             "type": "input",
                             "element": {
                                 "type": "plain_text_input",
-                                "action_id": "plain_text_input-action"
+                                "action_id": "title_action"
                             },
                             "label": {
                                 "type": "plain_text",
@@ -143,7 +168,7 @@ export class SlackController {
                             "element": {
                                 "type": "plain_text_input",
                                 "multiline": true,
-                                "action_id": "plain_text_input-action",
+                                "action_id": "message_action",
                                 "initial_value":message
                             },
                             "label": {
@@ -162,7 +187,7 @@ export class SlackController {
                                     "emoji": true
                                 },
                                 "options": groupsOption,
-                                "action_id": "static_select-action"
+                                "action_id": "group_selected"
                             },
                             "label": {
                                 "type": "plain_text",
@@ -170,84 +195,6 @@ export class SlackController {
                                 "emoji": true
                             }
                         },
-                        {
-                            "type": "input",
-                            "element": {
-                                "type": "static_select",
-                                "placeholder": {
-                                    "type": "plain_text",
-                                    "text": "Select an item",
-                                    "emoji": true
-                                },
-                                "options": [
-                                    {
-                                        "text": {
-                                            "type": "plain_text",
-                                            "text": "Column 1",
-                                            "emoji": true
-                                        },
-                                        "value": "value-0"
-                                    },
-                                    {
-                                        "text": {
-                                            "type": "plain_text",
-                                            "text": "Column 2",
-                                            "emoji": true
-                                        },
-                                        "value": "value-1"
-                                    },
-                                    {
-                                        "text": {
-                                            "type": "plain_text",
-                                            "text": "Column 3",
-                                            "emoji": true
-                                        },
-                                        "value": "value-2"
-                                    }
-                                ],
-                                "action_id": "static_select-action"
-                            },
-                            "label": {
-                                "type": "plain_text",
-                                "text": "Column",
-                                "emoji": true
-                            }
-                        },
-                        {
-                            "type": "input",
-                            "element": {
-                                "type": "datepicker",
-                                "initial_date": "1990-04-28",
-                                "placeholder": {
-                                    "type": "plain_text",
-                                    "text": "Select a date",
-                                    "emoji": true
-                                },
-                                "action_id": "datepicker-action"
-                            },
-                            "label": {
-                                "type": "plain_text",
-                                "text": "Due date",
-                                "emoji": true
-                            }
-                        },
-                        {
-                            "type": "input",
-                            "element": {
-                                "type": "multi_users_select",
-                                "placeholder": {
-                                    "type": "plain_text",
-                                    "text": "Select users",
-                                    "emoji": true
-                                },
-                                "action_id": "multi_users_select-action"
-                            },
-                            "label": {
-                                "type": "plain_text",
-                                "text": "Assignmed to",
-                                "emoji": true
-                            }
-                        }
                     ]
                 }},{ headers: { authorization: `Bearer `+process.env.SLACK_BOT_ACCESS_TOKEN } });
                 
@@ -257,36 +204,357 @@ export class SlackController {
 
             } else if (bodypay.type == "view_submission"){
                 
-
+                const view = bodypay.view;
+                const callback = view.callback_id;
                 const triggered_id_2 = bodypay.trigger_id;
-                const respo = await axios.post('https://slack.com/api/views.open', {
-                trigger_id : triggered_id_2,
-                view : {
-                    "type": "modal",
-                    "title": {
-                        "type": "plain_text",
-                        "text": "Notification",
-                        "emoji": true
-                    },
-                    "close": {
-                        "type": "plain_text",
-                        "text": "Cancel",
-                        "emoji": true
-                    },
-                    "blocks": [
-                        {
-                            "type": "section",
-                            "text": {
-                                "type": "mrkdwn",
-                                "text": "*Thanks for your request, we'll process it and get back to you.* :smile:"
-                            }
-                        }
-                    ]
-                }
-                },{ headers: { authorization: `Bearer `+process.env.SLACK_BOT_ACCESS_TOKEN } });
+                console.log("call cabk hshdhhs",callback);
 
-                console.log("responce",respo.data);
-            
+                if(callback == 'step_1') {
+
+                    let date_ob = new Date();
+                    let date = ("0" + date_ob.getDate()).slice(-2);
+                    let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+                    let year = date_ob.getFullYear();
+                    console.log(year + "-" + month + "-" + date);
+                    const current_date = year + "-" + month + "-" + date;
+               
+                    const values = view.state.values;
+                    console.log("call values",values);
+                    var title,description,group,groupid;
+                    
+                    Object.keys(values).forEach(function(key) {
+                        var val = values[key];
+                        console.log(val);
+                        if(val && val.title_action)
+                        {
+                            title=val.title_action.value;
+
+                        }else if(val && val.message_action)
+                        {
+                            description=val.message_action.value;
+                        }
+                        else if(val && val.group_selected.selected_option){
+
+                            group=val.group_selected.selected_option.text;
+                            groupid=val.group_selected.selected_option.value;
+
+                        }
+                    });
+
+
+                    const callbackdata = {
+                        title,description,group,groupid
+                    }
+
+                    
+                    const resp = await Column.findOne({groupId:groupid});
+
+                    const grpresp = await Group.findOne({_id:groupid}).populate('_members').populate('_admins');
+
+                    const columns = resp['columns'];
+                    var columnoption = [];
+                    var useroption = [] ;
+                    for (var i=0;i < columns.length;i++){
+                        
+                        const onecolum = columns[i];
+                        console.log(onecolum,"Fetched columns");
+                        const columndata = onecolum;
+                        console.log(columndata,"show columns");
+                        columnoption.push(
+                            {
+                                "text": {
+                                    "type": "plain_text",
+                                    "text": columndata['title'],
+                                    "emoji": true
+                                },
+                                "value":''+columndata['_id']
+                            }
+                        );
+                    }
+
+                    var userdata = grpresp['_members'];
+                    for (var i=0;i < userdata.length;i++){
+                        console.log(userdata[i].full_name);
+                        useroption.push(
+                            {
+                                "text": {
+                                    "type": "plain_text",
+                                    "text": userdata[i].full_name,
+                                    "emoji": true
+                                },
+                                "value":''+userdata[i]._id
+                            }
+                        );
+                    }
+                   
+
+                    var useradmin = grpresp['_admins'];
+                    for (var i=0;i < useradmin.length;i++){
+                        console.log(useradmin[i].full_name);
+                        useroption.push(
+                            {
+                                "text": {
+                                    "type": "plain_text",
+                                    "text": useradmin[i].full_name,
+                                    "emoji": true
+                                },
+                                "value":''+useradmin[i]._id
+                            }
+                        );
+                    }
+                    
+                    const respo = await axios.post('https://slack.com/api/views.open', {
+                    trigger_id : triggered_id_2,
+                    view : {
+                        "type": "modal",
+                        "callback_id": groupid,
+                        "title": {
+                            "type": "plain_text",
+                            "text": "Add Task",
+                            "emoji": true
+                        },
+                        "submit": {
+                            "type": "plain_text",
+                            "text": "Submit",
+                            "emoji": true
+                        },
+                        "close": {
+                            "type": "plain_text",
+                            "text": "Cancel",
+                            "emoji": true
+                        },
+                        "blocks": [
+                            {
+                                "type": "header",
+                                "text": {
+                                    "type": "plain_text",
+                                    "text": "Title:",
+                                    "emoji": true
+                                }
+                            },
+                            {
+                                "type": "section",
+                                "text": {
+                                    "type": "mrkdwn",
+                                    "text": title
+                                }
+                            },
+                            {
+                                "type": "header",
+                                "text": {
+                                    "type": "plain_text",
+                                    "text": "Description:",
+                                    "emoji": true
+                                }
+                            },
+                            {
+                                "type": "section",
+                                "text": {
+                                    "type": "mrkdwn",
+                                    "text": description
+                                }
+                            },
+                            {
+                                "type": "header",
+                                "text": {
+                                    "type": "plain_text",
+                                    "text": "Group:",
+                                    "emoji": true
+                                }
+                            },
+                            {
+                                "type": "section",
+                                "text": {
+                                    "type": "mrkdwn",
+                                    "text": group.text
+                                }
+                            },
+                            {
+                                "type": "input",
+                                "element": {
+                                    "type": "static_select",
+                                    "placeholder": {
+                                        "type": "plain_text",
+                                        "text": "Select an item",
+                                        "emoji": true
+                                    },
+                                    "options": columnoption,
+                                    "action_id": "column_select_action"
+                                },
+                                "label": {
+                                    "type": "plain_text",
+                                    "text": "Columns",
+                                    "emoji": true
+                                }
+                            },
+                            {
+                                "type": "input",
+                                "element": {
+                                    "type": "datepicker",
+                                    "initial_date": current_date,
+                                    "placeholder": {
+                                        "type": "plain_text",
+                                        "text": "Select a date",
+                                        "emoji": true
+                                    },
+                                    "action_id": "datepicker_action"
+                                },
+                                "label": {
+                                    "type": "plain_text",
+                                    "text": "Deadline",
+                                    "emoji": true
+                                }
+                            },
+                            {
+                                "type": "input",
+                                "element": {
+                                    "type": "static_select",
+                                    "placeholder": {
+                                        "type": "plain_text",
+                                        "text": "Select an item",
+                                        "emoji": true
+                                    },
+                                    "options": useroption,
+                                    "action_id": "user_select_action"
+                                },
+                                "label": {
+                                    "type": "plain_text",
+                                    "text": "Assigned To",
+                                    "emoji": true
+                                }
+                            }
+                        ]
+                    }
+                    },{ headers: { authorization: `Bearer `+process.env.SLACK_BOT_ACCESS_TOKEN } });
+
+                    console.log("responce",respo.data);
+                
+                } else if(callback != 'step_1'){
+                    
+                    const view = bodypay.view;
+                    const blocks = view.blocks;
+                    const callback = view.callback_id;
+                    const values = view.state.values;
+                    console.log("call values",values);
+                    var column,date,user;
+                    
+                    Object.keys(values).forEach(function(key) {
+                        var val = values[key];
+                        console.log(val);
+                        if(val && val.column_select_action)
+                        {
+                            column = val.column_select_action.selected_option.text;
+
+                        }else if(val && val.datepicker_action)
+                        {
+                            date = val.datepicker_action.selected_date;
+                        }
+                        else if(val && val.user_select_action){
+
+                            user = val.user_select_action.selected_option.value;
+                        }
+                    });
+
+
+                    const title = blocks[1].text.text;
+                    const description = blocks[3].text.text;
+                    const group = blocks[5].text.text;
+
+                    const taskdata = {
+                        title,description,groupid:callback
+                    }
+                   
+
+                    //Creating task 
+
+                    //form data
+                    var formData = new FormData();
+
+                    //Postdata
+                    const postdata = {"title": taskdata.title,"content": taskdata.description,"type":"task","_posted_by":_id,"_group": taskdata.groupid,"_content_mentions":[],"_assigned_to": user,"task":{"status":"to do","_column": {"title":column.text},"due_to": new Date(date)}};
+
+                    formData.append('post',JSON.stringify(postdata));
+
+                    //axios call to create task
+
+                    try {
+                       
+                        const responaxois = await axios({
+                            url : process.env.POSTS_SERVER_API,
+                            method:'POST',
+                            headers:{
+                                'Content-Type': formData.getHeaders()['content-type'],
+                                'Authorization': BearerToken,
+                            },
+                            data:formData
+                        });
+
+
+                        const respo = await axios.post('https://slack.com/api/views.open', {
+                            trigger_id : triggered_id_2,
+                            view : 
+                            {
+                                "type": "modal",
+                                "title": {
+                                    "type": "plain_text",
+                                    "text": "Notification",
+                                    "emoji": true
+                                },
+                                "close": {
+                                    "type": "plain_text",
+                                    "text": "OK",
+                                    "emoji": true
+                                },
+                                "blocks": [
+                                    {
+                                        "type": "section",
+                                        "text": {
+                                            "type": "mrkdwn",
+                                            "text": "*Task Created Success...* :smile:"
+                                        }
+                                    }
+                                ]
+                            }
+                            },{ headers: { authorization: `Bearer `+process.env.SLACK_BOT_ACCESS_TOKEN } });
+
+                            console.log("responce",respo.data);
+
+                    } catch(err){
+
+                        console.log(err,"ERROR occured");
+                        const respo = await axios.post('https://slack.com/api/views.open', {
+                        trigger_id : triggered_id_2,
+                        view : 
+                        {
+                            "type": "modal",
+                            "title": {
+                                "type": "plain_text",
+                                "text": "Notification",
+                                "emoji": true
+                            },
+                            "close": {
+                                "type": "plain_text",
+                                "text": "OK",
+                                "emoji": true
+                            },
+                            "blocks": [
+                                {
+                                    "type": "section",
+                                    "text": {
+                                        "type": "mrkdwn",
+                                        "text": "*There happen Error while creating task...!!!* :smile:"
+                                    }
+                                }
+                            ]
+                        }
+                        },{ headers: { authorization: `Bearer `+process.env.SLACK_BOT_ACCESS_TOKEN } });
+
+                        console.log("responce",respo.data);
+
+                    }
+
+                    
+                }
             }
         } else {
             const respo = await axios.post(url_responceback,{

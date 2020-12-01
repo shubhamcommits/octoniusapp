@@ -6,6 +6,8 @@ import compression from 'compression';
 import { developmentConfig, productionConfig } from '../configs';
 import fileUpload from 'express-fileupload';
 import { postRoutes, commentRoutes } from './routes';
+import body from 'body-parser';
+
 
 // Defining new Express application
 const app = express();
@@ -26,6 +28,10 @@ app.use(express.json())
 
 // cors middleware for orign and Headers
 app.use(cors());
+
+//body parsers
+app.use(body.json());
+app.use(body.urlencoded({extended:false}));
 
 // Use Morgan middleware for logging every request status on console
 app.use(morgan('dev'));
