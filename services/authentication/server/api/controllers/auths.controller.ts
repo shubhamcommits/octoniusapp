@@ -493,43 +493,59 @@ export class AuthsController {
      */
     async signInMgmtPortal(req: Request, res: Response, next: NextFunction) {
         try {
-
             // Request Body data
-            const { email, password } = req.body;
+            const { token, userId } = req.body;
 
-            // Find the active user with having the same workspace_name and email as in req.body
-            const user = await User.findOne({
-                email: email,
-                active: true,
-                portal_manager: true
-            });
+            const newAuth = {
+                workspace_name: 'mgmt-portal',
+                _user: userId,
+                token: token
+            };
 
-            // If user wasn't found or user was previsously removed/disabled, return error
-            if (!user) {
-                return sendError(res, new Error('Please enter a valid user email or user might be disabled!'), 'Please enter a valid user email!', 401);
-            }
-
-            // Plain password received from the req.body
-            const plainPassword = password;
-
-            // Decrypting Password
-            const passDecrypted: any = await passwordHelper.decryptPassword(plainPassword, user['password']);
-
-            // If we are unable to decrypt the password from the server
-            if (!passDecrypted.password) {
-                return sendError(res, new Error('Unable to decrypt the password from the server'), 'Please enter a valid email or password!', 401);
-            }
-
-            // Generate new token and logs the auth record
-            let token = await auths.generateToken(user);
+            // Create new auth record
+            await Auth.create(newAuth)
+                .catch(() => {
+                    return sendError(res, new Error('Unable to log the auth record creation, some unexpected error occured!'), 'Unable to log the auth record creation, some unexpected error occured!', 500);
+                })
 
             // Send the status 200 response 
             return res.status(200).json({
-                message: `User signed in!`,
-                token: token,
-                user: user
+                message: `User signed in!`
             });
 
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for signing in a user
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async signOutMgmtPortal(req: Request, res: Response, next: NextFunction) {
+        try {
+            // Updating the Auth model and set the signout state
+            await Auth.findOneAndUpdate({
+                _user: req['userId'],
+                token: req.headers.authorization.split(' ')[1]
+            }, {
+                $set: {
+                    token: null,
+                    isLoggedIn: false
+                }
+            }, {
+                new: true
+            })
+
+            req['userId'] = '';
+            req.headers.authorization = undefined
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: 'User logged out!'
+            });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
