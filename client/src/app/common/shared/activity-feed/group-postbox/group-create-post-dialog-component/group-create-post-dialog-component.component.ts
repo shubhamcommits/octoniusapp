@@ -193,7 +193,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
       await this.postService.getSubTasks(this.postData._id).then((res) => {
         this.subtasks = res['subtasks'];
 
-        if (this.subtasks.length > 0) {
+        if (this.subtasks && this.subtasks.length > 0) {
           this.showSubtasks = true;
         }
       });
@@ -513,7 +513,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
     formData.append('post', JSON.stringify(post));
 
     // Append all the file attachments
-    if (this.files.length != 0) {
+    if (this.files && this.files.length != 0) {
       for (let index = 0; index < this.files.length; index++) {
         formData.append('attachments', this.files[index], this.files[index]['name']);
       }
