@@ -182,7 +182,6 @@ export class UtilityService {
       toast: true,
       position: 'bottom-end',
       showConfirmButton: false,
-      timer: 3000,
       timerProgressBar: true
     })
     Toast.fire({

@@ -32,6 +32,9 @@ routes.get('/email-exists', auth.getOtherUserByEmail);
 // POST - Signs In the user into the management portal and generate a new token
 routes.post('/sign-in-mgmt-portal', auth.signInMgmtPortal);
 
+// POST - Signs In the user into the management portal and generate a new token
+routes.post('/sign-out-mgmt-portal', authsHelper.verifyToken, authsHelper.isLoggedIn, auth.signOutMgmtPortal);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================
