@@ -4,10 +4,9 @@ import cors from 'cors';
 import morgan from 'morgan';
 import compression from 'compression';
 import { developmentConfig, productionConfig } from '../configs';
-import fileUpload from 'express-fileupload';
-import { postRoutes, commentRoutes } from './routes';
-import body from 'body-parser';
-
+// import { billingRoutes, workspaceRoutes } from './routes';
+import { slackRoutes } from './routes/slack.routes';
+import  bodyParser from 'body-parser';
 
 // Defining new Express application
 const app = express();
@@ -29,10 +28,6 @@ app.use(express.json())
 // cors middleware for orign and Headers
 app.use(cors());
 
-//body parsers
-app.use(body.json());
-app.use(body.urlencoded({extended:false}));
-
 // Use Morgan middleware for logging every request status on console
 app.use(morgan('dev'));
 
@@ -48,6 +43,12 @@ app.use((req: Request, res: Response, next: NextFunction) => {
         next();
     }
 });
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
 
 // Handle POST requests that come in formatted as JSON
 app.use(express.json());
@@ -66,28 +67,20 @@ const encodeResToGzip = (contentType: any) => {
 app.get("*.js", encodeResToGzip('text/javascript'));
 app.get("*.css", encodeResToGzip('text/css'));
 
-// Set file upload middleware
-app.use(fileUpload({
-    limits: {
-        fileSize: 1024 * 1024 * 1024
-    },
-    abortOnLimit: true
-}));
-
-// Availing the static uploads folder to access from server
-app.use('/uploads', express.static(process.env.FILE_UPLOAD_FOLDER));
+// static assets folder
+// app.use(express.static(path.join(__dirname, '../../client/dist')));
 
 // Routes which should handle request
 app.all('/', (req: Request, res: Response, next: NextFunction) => {
     res.sendFile(path.join(__dirname, './views/index.html'));
 });
 
-// Post Routes
-app.use('/api/comments', commentRoutes);
-app.use('/api', postRoutes);
+// Routes to handle notifications
+app.use('/api', slackRoutes);
 
-// Correct REST naming
-// app.use('/api/users', userRoutes);
+// // Correct REST naming
+// app.use('/api/billings', billingRoutes);
+// app.use('/api/workspaces', workspaceRoutes);
 
 // Invalid routes handling middleware
 app.use((req: Request, res: Response, next: NextFunction) => {

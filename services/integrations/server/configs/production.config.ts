@@ -9,7 +9,7 @@ function prodConfigInit() {
   process.env.NODE_ENV = process.env.NODE_ENV || 'production'
 
   // Application Port
-  process.env.PORT = process.env.PORT ||'9000'
+  process.env.PORT = process.env.PORT ||'13000'
 
   // Application Host
   process.env.HOST = process.env.HOST ||'0.0.0.0'
@@ -29,6 +29,14 @@ function prodConfigInit() {
 
   // Sendgrid Key
   process.env.SENDGRID_KEY = process.env.SENDGRID_KEY || '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'
+
+
+   // Slack WebHook URL
+   process.env.SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL || 'https://hooks.slack.com/services/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'
+
+   process.env.SLACK_CLINET_ID = process.env.SLACK_CLINET_ID || "2561616476.1145669381443"
+   process.env.SLACK_CLIENT_SECRET = process.env.SLACK_CLIENT_SECRET || "acaf1f9b8e2c2607124c74ea9273a2ed"
+   process.env.SLACK_BOT_ACCESS_TOKEN = process.env.SLACK_BOT_ACCESS_TOKEN || "xoxb-2561616476-1145480914898-ZsfVHdAWEP9Xkq9lhjJdXbSa"
 
   // Stripe Keys
   process.env.SK_STRIPE = process.env.SK_STRIPE || 'sk_live_WupyMoQf93S59gwTqmYpmWel'
@@ -75,11 +83,6 @@ function prodConfigInit() {
   // Utilities Microservice
   process.env.UTILITIES_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}/utilities`
   process.env.UTILITIES_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}/api/utilities`
-
-  // Integrations Microservice
-  process.env.INTEGRATION_PORT = process.env.INTEGRATION_PORT || '13000'
-  process.env.INTEGRATION_SERVER =  `${process.env.PROTOCOL}://${process.env.DOMAIN}/integrations`
-  process.env.INTEGRATION_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}/api/integrations`
 };
 
-export { prodConfigInit as productionConfig }
+export { prodConfigInit as productionConfig } 

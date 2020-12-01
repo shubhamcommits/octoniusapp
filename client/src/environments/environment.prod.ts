@@ -56,6 +56,9 @@ export const environment = {
   SEARCH_BASE_URL: `${url.protocol}://${url.domain}/search`,
   SEARCH_BASE_API_URL: `${url.protocol}://${url.domain}/api/search`,
 
+  // Slack Auth URLs
+  SLACK_BASE_API_URL: `${url.protocol}://${url.domain}/api/integrations`,
+
   // User URLs
   USER_BASE_URL: `${url.protocol}://${url.domain}/users`,
   USER_BASE_API_URL: `${url.protocol}://${url.domain}/api/users`,

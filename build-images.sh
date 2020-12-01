@@ -35,6 +35,9 @@ export FOLIO_IMAGE_NAME=octoniusapp/octonius:folio-server
 # SEARCH Microservice Image Name
 export SEARCH_IMAGE_NAME=octoniusapp/octonius:search-server
 
+# Integrations Microservice Image Name
+export INTEGRATIONS_IMAGE_NAME=octoniusapp/octonius:integrations-server
+
 # Nginx Image Name
 export NGINX_IMAGE_NAME=octoniusapp/octonius:nginx
 
@@ -50,6 +53,7 @@ export NGINX_IMAGE_NAME=octoniusapp/octonius:nginx
         docker build -t $UTILITIES_IMAGE_NAME --compress=true --force-rm=true ./services/utilities/server
         docker build -t $FOLIO_IMAGE_NAME --compress=true --force-rm=true ./services/folio/server
         docker build -t $SEARCH_IMAGE_NAME --compress=true --force-rm=true ./services/search/server
+        docker build -t $INTEGRATIONS_IMAGE_NAME --compress=true --force-rm=true ./services/integrations/server
         docker build -t $NGINX_IMAGE_NAME --compress=true --force-rm=true ./nginx
 
 # Clear unnecessary Image build
@@ -71,4 +75,5 @@ export NGINX_IMAGE_NAME=octoniusapp/octonius:nginx
         docker push $UTILITIES_IMAGE_NAME
         docker push $FOLIO_IMAGE_NAME
         docker push $SEARCH_IMAGE_NAME
+        docker push $INTEGRATIONS_IMAGE_NAME
         docker push $NGINX_IMAGE_NAME
