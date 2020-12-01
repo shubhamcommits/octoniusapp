@@ -577,9 +577,13 @@ export class PostController {
         // Execute Automation Flows
         post = await this.executeAutomationFlows(groupId, post, assigneeId, userId);
 
-        const index = post._assigned_to.findIndex(assignee => assignee._id == assigneeId);
-        if (index < 0) {
-            post._assigned_to.push(assigneeId);
+        if (post._assigned_to) {
+            const index = post._assigned_to.findIndex(assignee => assignee._id == assigneeId);
+            if (index < 0) {
+                post._assigned_to.push(assigneeId);
+            }
+        } else {
+            post._assigned_to = [assigneeId];
         }
 
         post = await postService.populatePostProperties(post);
@@ -1242,7 +1246,7 @@ export class PostController {
                     steps.forEach(async step => {
 
                         let triggerIndex = -1;
-                        if (step.trigger.name === 'Assigned to') {
+                        if (step.trigger.name === 'Assigned to' && step.trigger._user) {
                             triggerIndex = step.trigger._user.findIndex(userTrigger => (userTrigger._id === triggerText || userTrigger === triggerText));
                         }
                         
@@ -1256,8 +1260,11 @@ export class PostController {
 
                             if (step.action.name === 'Assign to') {
                                 step.action._user.forEach(async userAction => {
-                                    const index = post._assigned_to.findIndex(assignee => assignee._id == userAction._id || assignee._id == userAction);
-                                    if (index >= 0) {
+                                    let index = -1;
+                                    if (post._assigned_to) {
+                                        index = post._assigned_to.findIndex(assignee => assignee._id == userAction._id || assignee._id == userAction);
+                                    }
+                                    if (index < 0) {
                                         return await this.callAddAssigneeService(post._id, userAction, userId, groupId);
                                     }
                                 });

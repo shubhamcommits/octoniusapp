@@ -99,6 +99,16 @@ routes.get('/recent-groups/:userId', user.getRecentGroups);
 
 routes.put('/increment-group-visit', user.incrementGroupVisit);
 
+// -| PORTAL MANAGEMENT APP |-
+// GET - Get current loggedIn user on the basis of userId
+routes.get('/user/all', user.getAllUsers);
+
+// PUT - Transform the user on the basis of userId on a portal app manager
+routes.put('/:userId/make-portal-manager', user.makeUserPortalManager);
+
+// DELETE - Remove the user on the basis of userId
+routes.delete('/:userId', user.removeUser);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

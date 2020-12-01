@@ -401,6 +401,26 @@ services:
     networks:
       - production
 
+  management:
+    container_name: management
+    image: management
+    build:
+      dockerfile: Dockerfile
+      context: ./management
+    volumes:
+      - /usr/app/node_modules
+      - ${PWD}/management:/usr/app
+    depends_on:
+      - mongodb
+      - auths-server
+      - groups-server
+      - workspaces-server
+      - users-server
+      - posts-server
+      - utilities-server
+    networks:
+      - production
+
   nginx:
     container_name: nginx
     image: nginx

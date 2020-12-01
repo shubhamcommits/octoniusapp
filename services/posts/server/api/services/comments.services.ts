@@ -1,4 +1,4 @@
-import { Comment, Post, User } from '../models';
+import { Comment, Post, User, Notification } from '../models';
 import http from 'axios';
 import { sendErr } from '../utils/sendError';
 import moment from 'moment';
@@ -274,7 +274,9 @@ const fs = require('fs');
               })
             }
           })
-      
+          
+          await Notification.deleteMany({ _origin_comment: commentId });
+
           const commentRemoved = await Comment.findByIdAndRemove(commentId);
       
           // Update post: remove new comment id, decrease post count

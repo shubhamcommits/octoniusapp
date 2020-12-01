@@ -116,6 +116,8 @@ export class FilesControllers {
             // Fetch the File Name From the request
             let { body: { fileData } } = req;
 
+            console.log(fileData)
+
             // Create the file
             fileData = await filesService.add(fileData);
 

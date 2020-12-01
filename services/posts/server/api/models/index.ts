@@ -4,6 +4,7 @@ import { Post } from './post.model';
 import { User } from './user.model';
 import { Comment } from './comment.model';
 import { Flow } from './flow.model';
+import { Notification } from './notification.model';
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -27,5 +28,8 @@ export {
     Comment as Comment,
 
     // FLOW
-    Flow as Flow
+    Flow as Flow,
+
+    // NOTIFICATION
+    Notification as Notification
 };

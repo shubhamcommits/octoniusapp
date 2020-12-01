@@ -1,6 +1,10 @@
 import { Component, OnInit, Injector } from '@angular/core';
-import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
+import { AuthService } from 'src/shared/services/auth-service/auth.service';
+import { StorageService } from 'src/shared/services/storage-service/storage.service';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
 
 @Component({
   selector: 'app-admin-general',
@@ -10,14 +14,18 @@ import { PublicFunctions } from 'modules/public.functions';
 export class AdminGeneralComponent implements OnInit {
 
   constructor(
+    private workspaceService: WorkspaceService,
     private utilityService: UtilityService,
+    private storageService: StorageService,
+    private authService: AuthService,
+    private router: Router,
     private injector: Injector
   ) { }
-  
+
   workspaceData: Object;
 
   userData: Object;
-  
+
   publicFunctions = new PublicFunctions(this.injector);
 
   async ngOnInit() {
@@ -28,6 +36,30 @@ export class AdminGeneralComponent implements OnInit {
 
   ngAfterViewChecked(): void {
    // this.utilityService.stopForegroundLoader();
+  }
+
+  removeWorkspace(workspaceId) {
+    this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this, the workspace be completely removed!')
+      .then((res) => {
+        if (res.value) {
+          this.utilityService.asyncNotification('Please wait we are deleting the workspace...', new Promise((resolve, reject) => {
+            // Remove the step
+            this.workspaceService.removeWorkspace(workspaceId)
+              .then((res) => {
+                this.authService.signout();
+
+                this.storageService.clear();
+                this.publicFunctions.sendUpdatesToRouterState({});
+                this.publicFunctions.sendUpdatesToUserData({});
+                this.router.navigate(['/home']);
+
+                resolve(this.utilityService.resolveAsyncPromise('Workspace deleted!'));
+              }).catch((err) => {
+                reject(this.utilityService.rejectAsyncPromise('Unable to delete the workspace, please try again!'));
+              });
+          }));
+        }
+      });
   }
 
 }
