@@ -36,7 +36,7 @@ const GroupSchema = new Schema({
     },
     bars: [
         {
-            bar_tag: Schema.Types.String,
+            bar_tag: String,
             tag_members: [{
                 type: Schema.Types.ObjectId,
                 ref: 'User'
