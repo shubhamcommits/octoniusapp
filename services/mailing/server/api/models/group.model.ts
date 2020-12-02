@@ -34,7 +34,7 @@ const GroupSchema = new Schema({
         type: Schema.Types.Boolean,
         default: false,
     },
-    bars:{
+    bars: {
         type:[{
             bar_tag: String,
             tag_members: [{
@@ -113,46 +113,48 @@ const GroupSchema = new Schema({
         }]
     },
     records: {
-        pulses: {
-            type: [{
-                date: {
-                    type: Date,
-                    required: true,
-                    default: moment().format()
-                },
-                description: {
-                    type: String,
-                    required: true,
-                    default: ''
-                }
-            }]
-        },
-        status: {
-            type: [{
-                date: {
-                    type: Date,
-                    required: true,
-                    default: moment().format()
-                },
-                project_status: {
-                    type: String,
-                    enum: ['ON TRACK', 'NOT STARTED', 'IN DANGER', 'ACHIEVED']
-                }
-            }]
-        },
-        done_tasks_count: {
-            type: [{
-                date: {
-                    type: Date,
-                    required: true,
-                    default: moment().format('YYYY-MM-DD')
-                },
-                count: {
-                    type: Number,
-                    required: true,
-                    default: 0
-                }
-            }]
+        type: {
+            pulses: {
+                type: [{
+                    date: {
+                        type: Date,
+                        required: true,
+                        default: moment().format()
+                    },
+                    description: {
+                        type: String,
+                        required: true,
+                        default: ''
+                    }
+                }]
+            },
+            status: {
+                type: [{
+                    date: {
+                        type: Date,
+                        required: true,
+                        default: moment().format()
+                    },
+                    project_status: {
+                        type: String,
+                        enum: ['ON TRACK', 'NOT STARTED', 'IN DANGER', 'ACHIEVED']
+                    }
+                }]
+            },
+            done_tasks_count: {
+                type: [{
+                    date: {
+                        type: Date,
+                        required: true,
+                        default: moment().format('YYYY-MM-DD')
+                    },
+                    count: {
+                        type: Number,
+                        required: true,
+                        default: 0
+                    }
+                }]
+            }
         }
     }
 });
