@@ -57,33 +57,31 @@ const workspaceSchema = new Schema({
         default: moment().format()
     },
     billing: {
-        type: {
-            subscription_id: {
-                type: String
-            },
-            current_period_end: {
-                type: Number
-            },
-            scheduled_cancellation: {
-                type: Boolean,
-                default: false
-            },
-            failed_payments: {
-                type: Array,
-                default: []
-            },
-            success_payments: {
-                type: Array,
-                default: []
-            },
-            quantity: {
-                type: Number,
-                default: 1
-            },
-            cancelled: {
-                type: Boolean,
-                default: false
-            }
+        subscription_id: {
+            type: String
+        },
+        current_period_end: {
+            type: Number
+        },
+        scheduled_cancellation: {
+            type: Boolean,
+            default: false
+        },
+        failed_payments: {
+            type: Array,
+            default: []
+        },
+        success_payments: {
+            type: Array,
+            default: []
+        },
+        quantity: {
+            type: Number,
+            default: 1
+        },
+        cancelled: {
+            type: Boolean,
+            default: false
         }
     }
 });
