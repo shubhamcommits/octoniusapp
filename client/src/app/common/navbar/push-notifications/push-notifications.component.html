@@ -36,7 +36,8 @@
                     data-placement="right" title="View this notification">
                         <i class="material-icons">remove_red_eye</i>
                     </span>
-                    <span class="muted text-small float-right">{{notifications?.created_date | timeAgo}}</span>
+                    <!-- <span class="muted text-small float-right">{{notifications?.created_date | timeAgo}}</span> -->
+                    <span class="muted text-small float-right">{{notifications?.created_date | date:'MMM dd, yyyy' }}</span>
                 </button>
         </div>
         <!-- NOTIFICATION ITEM ENDS-->
@@ -61,7 +62,8 @@
                             style="margin-right:15px">
                         {{notifications?._actor?.first_name}} {{notifications?.message}}
                     <br />
-                    <span class="muted text-small float-right">{{notifications?.created_date | timeAgo}}</span>
+                    <!-- <span class="muted text-small float-right">{{notifications?.created_date | timeAgo}}</span> -->
+                    <span class="muted text-small float-right">{{notifications?.created_date | date:'MMM dd, yyyy'}}</span>
                 </button>
         </div>
         <!-- NOTIFICATION ITEM ENDS-->

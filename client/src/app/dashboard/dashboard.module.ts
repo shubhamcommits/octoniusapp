@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { TimeAgoPipe } from 'time-ago-pipe';
+// import { TimeAgoPipe } from 'time-ago-pipe';
 
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { NavbarComponent } from '../common/navbar/navbar.component';
@@ -22,7 +22,7 @@ import { SidebarComponent } from '../common/navbar/sidebar/sidebar.component';
   declarations: [
     NavbarComponent,
     PushNotificationsComponent,
-    TimeAgoPipe,
+    // TimeAgoPipe,
     GroupNavbarComponent,
     CommonNavbarComponent,
     WorkNavbarComponent,
