@@ -29,6 +29,7 @@ pipelines:
           - export UTILITIES_IMAGE_NAME=octoniusapp/octonius:utilities-server
           - export FOLIO_IMAGE_NAME=octoniusapp/octonius:folio-server
           - export SEARCH_IMAGE_NAME=octoniusapp/octonius:search-server
+          - export INTEGRATIONS_IMAGE_NAME=octoniusapp/octonius:integrations-server
           - export NGINX_IMAGE_NAME=octoniusapp/octonius:nginx
 
           # build the Docker image (this will use the Dockerfile in the root of the repo)
@@ -43,6 +44,7 @@ pipelines:
           - docker build -t $UTILITIES_IMAGE_NAME --compress=true --force-rm=true ./services/utilities/server
           - docker build -t $FOLIO_IMAGE_NAME --compress=true --force-rm=true ./services/folio/server
           - docker build -t $SEARCH_IMAGE_NAME --compress=true --force-rm=true ./services/search/server
+          - docker build -t $INTEGRATIONS_IMAGE_NAME --compress=true --force-rm=true ./services/integrations/server
           - docker build -t $NGINX_IMAGE_NAME --compress=true --force-rm=true ./nginx
 
           # Clear unnecessary Image build
@@ -63,6 +65,7 @@ pipelines:
           - docker push $UTILITIES_IMAGE_NAME
           - docker push $FOLIO_IMAGE_NAME
           - docker push $SEARCH_IMAGE_NAME
+          - docker push $INTEGRATIONS_IMAGE_NAME
           - docker push $NGINX_IMAGE_NAME
 
     - step:
@@ -98,6 +101,7 @@ pipelines:
           - export UTILITIES_IMAGE_NAME=octoniusapp/octonius-alpha:utilities-server
           - export FOLIO_IMAGE_NAME=octoniusapp/octonius-alpha:folio-server
           - export SEARCH_IMAGE_NAME=octoniusapp/octonius-alpha:search-server
+          - export INTEGRATIONS_IMAGE_NAME=octoniusapp/octonius-alpha:integrations-server
           - export NGINX_IMAGE_NAME=octoniusapp/octonius-alpha:nginx
 
           # build the Docker image (this will use the Dockerfile in the root of the repo)
@@ -112,6 +116,7 @@ pipelines:
           - docker build -t $UTILITIES_IMAGE_NAME --compress=true --force-rm=true ./services/utilities/server
           - docker build -t $FOLIO_IMAGE_NAME --compress=true --force-rm=true ./services/folio/server
           - docker build -t $SEARCH_IMAGE_NAME --compress=true --force-rm=true ./services/search/server
+          - docker build -t $INTEGRATIONS_IMAGE_NAME --compress=true --force-rm=true ./services/integrations/server
           - docker build -t $NGINX_IMAGE_NAME --compress=true --force-rm=true ./nginx
 
           # Clear unnecessary Image build
@@ -132,6 +137,7 @@ pipelines:
           - docker push $UTILITIES_IMAGE_NAME
           - docker push $FOLIO_IMAGE_NAME
           - docker push $SEARCH_IMAGE_NAME
+          - docker push $INTEGRATIONS_IMAGE_NAME
           - docker push $NGINX_IMAGE_NAME
 
     - step:

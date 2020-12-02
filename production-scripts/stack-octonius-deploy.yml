@@ -355,6 +355,40 @@ services:
         condition: on-failure
     networks:
       - production
+
+  integrations-server:
+    container_name: integrations-server
+    image: octoniusapp/octonius:integrations-server
+    ports:
+      - 13000:13000
+    restart: always
+    volumes:
+      - /usr/app/node_modules
+    environment:
+      - NODE_ENV=production
+      - PORT=13000
+      - HOST=0.0.0.0
+      - JWT_KEY=asfsaf12safas23fsafa12sf
+      - dbURL=mongodb://mongodb:27017/octonius
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - SENDGRID_KEY=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
+      - SK_STRIPE=sk_live_WupyMoQf93S59gwTqmYpmWel
+      - stripe_plan=plan_EK1rDLfKr9NRkU
+      - WEBHOOK_PS_SECRET=whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn
+      - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
+      - PROTOCOL=https
+      - DOMAIN=workplace.octonius.com
+    depends_on:
+    deploy:
+      replicas: 3
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+    networks:
+      - production
       
   client:
     image: octoniusapp/octonius:client
