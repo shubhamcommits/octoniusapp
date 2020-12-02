@@ -42,7 +42,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler } from '@angular/core';
-import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { PathLocationStrategy, LocationStrategy } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -138,7 +138,7 @@ import { ServerErrorInterceptor } from 'src/shared/error-handler/server-error.in
     // HASH LOCATION STRATEGY
     {
       provide: LocationStrategy,
-      useClass: HashLocationStrategy
+      useClass: PathLocationStrategy
     },
 
     // ERROR HANDLERS

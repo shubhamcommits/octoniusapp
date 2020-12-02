@@ -45,6 +45,10 @@ pm2 stop notifications-server
 
 pm2 delete notifications-server
 
+# Stops and kills the notifications server from port 9000
+pm2 stop integrations-server
+
+pm2 delete integrations-server
 
 # Stops and kills the utilities server from port 10000
 pm2 stop utilities-server

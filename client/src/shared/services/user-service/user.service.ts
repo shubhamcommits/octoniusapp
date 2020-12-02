@@ -10,6 +10,7 @@ import { Observable } from 'rxjs/internal/Observable';
 export class UserService {
 
   BASE_API_URL = environment.USER_BASE_API_URL;
+  SLACK_API_URL = environment.SLACK_BASE_API_URL;
 
   constructor(private _http: HttpClient) { }
 
@@ -100,6 +101,13 @@ export class UserService {
    */
   addSkill(skill: string): Observable<any> {
     return this._http.post(this.BASE_API_URL + `/skills/${skill}`, '');
+  }
+
+  /**
+   * This function is responsible for verifying the slack oA
+   */
+  slackAuth(code: string, user: Object): Observable<any> {
+    return this._http.post(this.SLACK_API_URL + `/slack-auth`, { code, user });
   }
 
   /**
