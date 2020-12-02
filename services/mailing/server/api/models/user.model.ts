@@ -95,29 +95,27 @@ const UserSchema = new Schema({
         // unique : true
     }],
     stats: {
-        type: {
-            lastTaskView: {
-                type: String,
-                default: 'list'
+        lastTaskView: {
+            type: String,
+            default: 'list'
+        },
+        groups: [{
+            _group: {
+                type: Schema.Types.ObjectId,
+                ref: 'Group'
             },
-            groups: [{
-                _group: {
-                    type: Schema.Types.ObjectId,
-                    ref: 'Group'
-                },
-                count: {
-                    type: Number,
-                    default: 1
-                }
-            }],
-            dashboard_period: {
+            count: {
                 type: Number,
-                default: 7
-            },
-            group_dashboard_period: {
-                type: Number,
-                default: 7
+                default: 1
             }
+        }],
+        dashboard_period: {
+            type: Number,
+            default: 7
+        },
+        group_dashboard_period: {
+            type: Number,
+            default: 7
         }
     },
     _private_group: {
@@ -125,12 +123,10 @@ const UserSchema = new Schema({
         ref: 'Group'
     },
     integrations: {
-        type: {
-            gdrive: {
-                token: {
-                    type: String,
-                    default: null
-                }
+        gdrive: {
+            token: {
+                type: String,
+                default: null
             }
         }
     },

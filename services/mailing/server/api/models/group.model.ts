@@ -34,15 +34,15 @@ const GroupSchema = new Schema({
         type: Schema.Types.Boolean,
         default: false,
     },
-    bars: {
-        type:[{
+    bars: [
+        {
             bar_tag: String,
             tag_members: [{
                 type: Schema.Types.ObjectId,
                 ref: 'User'
             }]
-        }]
-    },
+        }
+    ],
     project_type: {
         type: Schema.Types.Boolean,
         default: false,
@@ -72,19 +72,17 @@ const GroupSchema = new Schema({
         default: 'normal'
     },
     conditions: {
-        type: {
-            email_domains: {
-                type: [String],
-                default: []
-            },
-            job_positions: {
-                type: [String],
-                default: []
-            },
-            skills: {
-                type: [String],
-                default: []
-            }
+        email_domains: {
+            type: [String],
+            default: []
+        },
+        job_positions: {
+            type: [String],
+            default: []
+        },
+        skills: {
+            type: [String],
+            default: []
         }
     },
     share_files: {
@@ -113,49 +111,41 @@ const GroupSchema = new Schema({
         }]
     },
     records: {
-        type: {
-            pulses: {
-                type: [{
-                    date: {
-                        type: Date,
-                        required: true,
-                        default: moment().format()
-                    },
-                    description: {
-                        type: String,
-                        required: true,
-                        default: ''
-                    }
-                }]
+        pulses: [{
+            date: {
+                type: Date,
+                required: true,
+                default: moment().format()
             },
-            status: {
-                type: [{
-                    date: {
-                        type: Date,
-                        required: true,
-                        default: moment().format()
-                    },
-                    project_status: {
-                        type: String,
-                        enum: ['ON TRACK', 'NOT STARTED', 'IN DANGER', 'ACHIEVED']
-                    }
-                }]
-            },
-            done_tasks_count: {
-                type: [{
-                    date: {
-                        type: Date,
-                        required: true,
-                        default: moment().format('YYYY-MM-DD')
-                    },
-                    count: {
-                        type: Number,
-                        required: true,
-                        default: 0
-                    }
-                }]
+            description: {
+                type: String,
+                required: true,
+                default: ''
             }
-        }
+        }],
+        status: [{
+            date: {
+                type: Date,
+                required: true,
+                default: moment().format()
+            },
+            project_status: {
+                type: String,
+                enum: ['ON TRACK', 'NOT STARTED', 'IN DANGER', 'ACHIEVED']
+            }
+        }],
+        done_tasks_count: [{
+            date: {
+                type: Date,
+                required: true,
+                default: moment().format('YYYY-MM-DD')
+            },
+            count: {
+                type: Number,
+                required: true,
+                default: 0
+            }
+        }]
     }
 });
 

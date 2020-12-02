@@ -313,7 +313,7 @@ const resetPassword = async (req: Request, res: Response, next: NextFunction) =>
 
     // this is the link in the email that users can click that will lead them to the page where they can
     // reset their password
-    const resetPwdlink = `${defaults.resetPwdLink}/${newResetPwdDoc['_id']}`;
+    const resetPwdlink = `${defaults.resetPwdLink}/${newResetPwdDoc._id}`;
 
     const emailType = 'resetPassword';
 
