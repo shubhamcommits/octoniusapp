@@ -323,7 +323,7 @@ services:
       - /usr/app/node_modules
     environment:
       - NODE_ENV=production
-      - PORT=9000
+      - PORT=13000
       - HOST=0.0.0.0
       - JWT_KEY=asfsaf12safas23fsafa12sf
       - dbURL=mongodb://mongodb:27017/octonius
