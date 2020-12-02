@@ -21,20 +21,53 @@ export class SlackController {
 
     async slackNotify (req: Request ,res:Response ,next: NextFunction) {
         console.log('slackNotify Function');
+
+        const user_octonius = await SlackAuth.findOne({_user:req.body.userid}).populate('_user');
         var MY_SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL;
-        var slack = require('slack-notify')(MY_SLACK_WEBHOOK_URL);
+
+        if(user_octonius && user_octonius!=null){
+            MY_SLACK_WEBHOOK_URL = user_octonius['incoming_webhook'];
+            console.log('inside if ==>', MY_SLACK_WEBHOOK_URL);
+        }
+        var slack = require('slack-notify')(MY_SLACK_WEBHOOK_URL);  
 
         console.log('req.body ==>', req.body);
         const body = req.body.data;
+
         slack.alert({
             text: body.text,
             attachments: [
                 {
-                  fallback: 'Required Fallback String',
-                  fields: [
-                    { value: body.image + " " + body.name, short: true },
-                    { value: body.content}
-                  ]
+                    blocks: [
+                        {
+                            type: "context",
+                            elements: [
+                                {
+                                    type: "image",
+                                    image_url: `${process.env.IMAGE_PROCESS_URL}/${body.image}`,
+                                    alt_text: "avatar_img"
+                                },
+                                {
+                                    type: "mrkdwn",
+                                    text: body.name
+                                }
+                            ]
+                        },
+                        {
+                            "type": "actions",
+                            "elements": [
+                                {
+                                    "type": "button",
+                                    "text": {
+                                        "type": "plain_text",
+                                        "text": body.btn_title,
+                                        "emoji": true
+                                    },
+                                    url: `${process.env.CLIENT_SERVER}/dashboard/myspace/inbox`
+                                }
+                            ]
+                        }
+                    ]
                 }
               ]
         });
@@ -56,11 +89,13 @@ export class SlackController {
 
         const bosy = req.body.payload;
         const bodypay = JSON.parse(bosy);
-
+        const url_responceback = bodypay.response_url;
         res.status(200).json({});
 
         const user_octonius = await SlackAuth.findOne({slack_user_id:bodypay.user.id}).populate('_user');
-
+        
+        if(user_octonius && user_octonius!=null){
+        
         const _id = user_octonius['_user']._id;
 
         var BearerToken = "Bearer ";
@@ -93,9 +128,9 @@ export class SlackController {
 
         }
        
-        const url_responceback = bodypay.response_url;
+       
 
-        if(user_octonius && user_octonius!=null){
+        
 
             if(bodypay.type == "message_action"){
                 
@@ -558,7 +593,7 @@ export class SlackController {
             }
         } else {
             const respo = await axios.post(url_responceback,{
-                    text: "UnAuthorized User please connect you with us from your Octonius workspace"
+                    text: "UnAuthorized User! Please connect your Octonius workspace to slack"
                 },{ headers: { authorization: `Bearer `+process.env.SLACK_BOT_ACCESS_TOKEN } })
                 console.log("responce",respo.data);
         }

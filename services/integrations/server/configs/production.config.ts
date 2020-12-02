@@ -32,7 +32,7 @@ function prodConfigInit() {
 
 
    // Slack WebHook URL
-   process.env.SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL || 'https://hooks.slack.com/services/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'
+   process.env.SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL || 'https://hooks.slack.com/services/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'
 
    process.env.SLACK_CLINET_ID = process.env.SLACK_CLINET_ID || "2561616476.1145669381443"
    process.env.SLACK_CLIENT_SECRET = process.env.SLACK_CLIENT_SECRET || "acaf1f9b8e2c2607124c74ea9273a2ed"
@@ -83,6 +83,12 @@ function prodConfigInit() {
   // Utilities Microservice
   process.env.UTILITIES_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}/utilities`
   process.env.UTILITIES_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}/api/utilities`
+
+  // Client Server
+  process.env.CLIENT_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}/client`
+
+  // Image Process URL for Notification
+  process.env.IMAGE_PROCESS_URL = process.env.IMAGE_PROCESS_URL || `${process.env.PROTOCOL}://${process.env.DOMAIN}/users/uploads`
 };
 
 export { prodConfigInit as productionConfig } 

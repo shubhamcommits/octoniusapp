@@ -394,7 +394,7 @@ export class UtilityService {
    * This function is resposible for showing a confirm dialog, with a function attached to the "Confirm"-button
    * and by passing a parameter, we can execute something else for "Cancel
    */
-  public getConfirmDialogAlert(title?: string, text?: string){
+  public getConfirmDialogAlert(title?: string, text?: string, confirmButtonText?: string){
     return Swal.fire({
       title: title || 'Are you sure?',
       text: text || "You won't be able to revert this!",
@@ -402,7 +402,7 @@ export class UtilityService {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, I am sure!'
+      confirmButtonText: confirmButtonText || 'Yes, I am sure!'
     })
   }
 

@@ -7,6 +7,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { SubSink } from 'subsink';
 import { take } from 'rxjs/internal/operators/take';
 import { environment } from 'src/environments/environment';
+import { UserService } from 'src/shared/services/user-service/user.service';
 
 @Component({
   selector: 'app-myspace-inbox',
@@ -44,6 +45,7 @@ export class MyspaceInboxComponent implements OnInit, OnDestroy {
     private _router: Router,
     private injector: Injector,
     public utilityService: UtilityService,
+    public userService: UserService,
     private socketService: SocketService
   ) {
     // Subscribe to the change in notifications data from the server
@@ -62,7 +64,23 @@ export class MyspaceInboxComponent implements OnInit, OnDestroy {
     this.userData = await this.publicFunctions.getCurrentUser();
 
     // Return the function via stopping the loader
-    return this.isLoading$.next(false);
+    this.isLoading$.next(false);
+    this.userData = await this.publicFunctions.getCurrentUser();
+    this.router.queryParams.subscribe(params => {
+      if (params['code']) {
+        return new Promise((resolve, reject) => {
+          this.userService.slackAuth(params['code'], this.userData)
+            .toPromise()
+            .then((res) => {
+              // Resolve the promise
+              resolve(this.utilityService.successNotification('Authenticated Successfully!'))
+              this._router.navigate(['/']);
+            })
+            .catch(() => reject(this.utilityService.errorNotification('Unable to authenticate, please try again!')));
+              this._router.navigate(['/']);
+        })
+      }
+    });
   }
 
   /**

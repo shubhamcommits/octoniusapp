@@ -11,7 +11,6 @@ import { UserProfessionalInformationComponent } from './user-profile/user-profes
 import { UserSkillsComponent } from './user-profile/user-skills/user-skills.component';
 import { UserAvailableCloudsComponent } from './user-clouds/user-available-clouds/user-available-clouds.component';
 import { UserConnectedCloudsComponent } from './user-clouds/user-connected-clouds/user-connected-clouds.component';
-import { AuthSlackComponent } from './auth-slack/auth-slack.component';
 
 import { GoogleCloudModule } from './user-clouds/user-available-clouds/google-cloud/google-cloud.module';
 import { UserImageDetailsComponent } from './user-header/user-image-details/user-image-details.component';
@@ -25,7 +24,6 @@ import { UserService } from 'src/shared/services/user-service/user.service';
     UserInformationComponent,
     UserProfessionalInformationComponent,
     UserSkillsComponent,
-    AuthSlackComponent,
     UserAvailableCloudsComponent,
     UserConnectedCloudsComponent,
     UserImageDetailsComponent
