@@ -31,7 +31,7 @@ function devConfigInit() {
   process.env.SENDGRID_KEY = process.env.SENDGRID_KEY || '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'
 
   // Slack WebHook URL
-  process.env.SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL || 'https://hooks.slack.com/services/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'
+  process.env.SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL || 'https://hooks.slack.com/services/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'
 
   process.env.SLACK_CLINET_ID = process.env.SLACK_CLINET_ID || "2561616476.1145669381443"
   process.env.SLACK_CLIENT_SECRET = process.env.SLACK_CLIENT_SECRET || "acaf1f9b8e2c2607124c74ea9273a2ed"
@@ -98,6 +98,9 @@ function devConfigInit() {
   process.env.UTILITIES_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.UTILITIES_PORT}`
   process.env.UTILITIES_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.UTILITIES_PORT}/api`
   
+  // Client Server
+  process.env.CLIENT_PORT = process.env.CLIENT_PORT || '4200';
+  process.env.CLIENT_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.CLIENT_PORT}`
 };
 
 export { devConfigInit as developmentConfig }
