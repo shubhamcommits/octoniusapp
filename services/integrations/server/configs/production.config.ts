@@ -86,6 +86,9 @@ function prodConfigInit() {
 
   // Client Server
   process.env.CLIENT_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}/client`
+
+  // Image Process URL for Notification
+  process.env.IMAGE_PROCESS_URL = process.env.IMAGE_PROCESS_URL || `${process.env.PROTOCOL}://${process.env.DOMAIN}/users/uploads`
 };
 
 export { prodConfigInit as productionConfig } 

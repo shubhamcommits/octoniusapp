@@ -450,11 +450,12 @@ export class NotificationsController {
 
             const postTitle = postData['title'];
             const followerName = userData['full_name'];
+            const profile_img = userData['profile_pic'];
 
             const comment_object = {
                 name: followerName,
                 text: `${followerName} follows ${postTitle} `,
-                image: '\n',
+                image: profile_img,
                 content: '\n ',
                 btn_title:'view post'
             }
@@ -511,7 +512,7 @@ export class NotificationsController {
             const comment_object = {
                 name: userObject.full_name,
                 text: `${userObject.full_name} likes ${postObject.title}`,
-                image: '\n',
+                image: userObject.profile_pic,
                 content: '\n ',
                 btn_title:'view post'
             }
@@ -557,11 +558,11 @@ export class NotificationsController {
             });
             const postTitle = postData['title'];
             const userFullName = userData['full_name'];
-
+            const profile_pic = userData['profile_pic'];
             const comment_object = {
                 name: userFullName,
                 text: `${userFullName} liked your comment ${postTitle}`,
-                image: '\n',
+                image: profile_pic,
                 content: '\n ',
                 btn_title:'view post'
             }

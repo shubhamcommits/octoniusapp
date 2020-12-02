@@ -44,8 +44,8 @@ export class SlackController {
                             elements: [
                                 {
                                     type: "image",
-                                    image_url: "https://workplace.octonius.com/uploads/users/1606119053071_Screenshot%202020-11-23%20at%2013.09.57.png",
-                                    alt_text: "Angela"
+                                    image_url: `${process.env.IMAGE_PROCESS_URL}/${body.image}`,
+                                    alt_text: "avatar_img"
                                 },
                                 {
                                     type: "mrkdwn",

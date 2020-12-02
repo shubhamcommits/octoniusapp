@@ -101,6 +101,9 @@ function devConfigInit() {
   // Client Server
   process.env.CLIENT_PORT = process.env.CLIENT_PORT || '4200';
   process.env.CLIENT_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.CLIENT_PORT}`
+
+  // Image Process URL for Notification
+  process.env.IMAGE_PROCESS_URL = process.env.IMAGE_PROCESS_URL || 'https://db0f72effff7.ngrok.io/uploads'
 };
 
 export { devConfigInit as developmentConfig }
