@@ -356,6 +356,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
         bar = element;
       }
     });
+
     await this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
       this.postService.removeBar(this.postData._id, bar)
         .then((res) => {

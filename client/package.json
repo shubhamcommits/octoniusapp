@@ -73,7 +73,6 @@
     "sharedb": "^1.3.4",
     "subsink": "^1.0.0",
     "sweetalert2": "^9.4.0",
-    "time-ago-pipe": "^1.3.2",
     "tslib": "^2.0.0",
     "websocket-json-stream": "0.0.3",
     "ws": "^7.3.0",
