@@ -26,9 +26,9 @@ export class SlackController {
         
         console.log('Slack auth data ==>', user_octonius);
 
-        var MY_SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL;
+        var MY_SLACK_WEBHOOK_URL;
 
-        if(user_octonius && user_octonius!=null){
+        if(user_octonius && user_octonius != null){
             MY_SLACK_WEBHOOK_URL = user_octonius['incoming_webhook'];
             console.log('inside if ==>', MY_SLACK_WEBHOOK_URL);
         }
@@ -67,7 +67,7 @@ export class SlackController {
                                         "text": body.btn_title,
                                         "emoji": true
                                     },
-                                    url: `${process.env.CLIENT_SERVER}/dashboard/myspace/inbox`
+                                    url: `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${body.group_id}&myWorkplace=false&postId=${body.post_id}`
                                 }
                             ]
                         }
