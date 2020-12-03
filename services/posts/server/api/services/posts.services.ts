@@ -179,7 +179,7 @@ export class PostService {
     } catch (err) {
 
       // Return With error
-      return err;
+      throw (err);
     }
   }
 
@@ -437,7 +437,7 @@ export class PostService {
     } catch (err) {
 
       // Return with error
-      return err;
+      throw (err);
     }
   }
 
@@ -542,7 +542,7 @@ export class PostService {
     } catch (err) {
 
       // Return with error
-      return err;
+      throw (err);
     }
   };
 
@@ -840,7 +840,7 @@ export class PostService {
       return post;
 
     } catch (err) {
-      return err
+      throw (err);
     }
   }
 
@@ -891,7 +891,7 @@ export class PostService {
       return post;
 
     } catch (err) {
-      return err
+      throw (err);
     }
   }
 
@@ -949,7 +949,7 @@ export class PostService {
       return post;
 
     } catch (err) {
-      return err
+      throw (err);
     }
   }
 
@@ -978,7 +978,7 @@ export class PostService {
       return post;
 
     } catch (err) {
-      return err
+      throw (err);
     }
   }
 
@@ -1014,7 +1014,7 @@ export class PostService {
       return post;
 
     } catch (err) {
-      return err
+      throw (err);
     }
   }
 
@@ -1076,7 +1076,7 @@ export class PostService {
       return post;
 
     } catch (err) {
-      return err
+      throw (err);
     }
   }
 
@@ -1114,7 +1114,7 @@ export class PostService {
       return post;
 
     } catch (err) {
-      return err
+      throw (err);
     }
   }
 
@@ -1826,7 +1826,7 @@ export class PostService {
     } catch (err) {
       console.log(`\n⛔️ Error:\n ${err}`);
       // Return with error
-      return err;
+      throw (err);
     }
   }
 
@@ -1856,7 +1856,7 @@ export class PostService {
             if (error) {
               fileName = null;
               console.log(`\n⛔️ Error:\n ${error}`);
-              return error;
+              throw (error);
             }
           });
 
@@ -1915,7 +1915,7 @@ export class PostService {
     } catch (err) {
       console.log(`\n⛔️ Error:\n ${err}`);
       // Return with error
-      return err;
+      throw (err);
     }
   }
 
@@ -1940,7 +1940,7 @@ export class PostService {
     } catch (err) {
       console.log(`\n⛔️ Error:\n ${err}`);
       // Return with error
-      return err;
+      throw (err);
     }
   }
 
@@ -1969,7 +1969,7 @@ export class PostService {
 
     } catch (err) {
       // Return With error
-      return err;
+      throw (err);
     }
   }
 
@@ -1995,7 +1995,7 @@ export class PostService {
     } catch (err) {
       console.log(`\n⛔️ Error:\n ${err}`);
       // Return with error
-      return err;
+      throw (err);
     }
   }
 }

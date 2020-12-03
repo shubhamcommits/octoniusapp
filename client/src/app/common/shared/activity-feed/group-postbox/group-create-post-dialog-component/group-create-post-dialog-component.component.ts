@@ -142,11 +142,8 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.dueDate = undefined;
     this.tags = [];
     if (this.postData.type === 'task') {
-      // If Post is assigned
-      if (this.postData._assigned_to) {
-        // Set the taskAssignee
-        this.taskAssignee = this.postData._assigned_to;
-      }
+      // Set the taskAssignee
+      this.taskAssignee = this.postData._assigned_to || [];
 
       // Set the due date variable for task
       if ((this.postData.task.due_to && this.postData.task.due_to != null)
