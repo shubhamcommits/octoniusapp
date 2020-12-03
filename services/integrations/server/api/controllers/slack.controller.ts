@@ -560,7 +560,7 @@ export class SlackController {
                                         "type": "section",
                                         "text": {
                                             "type": "mrkdwn",
-                                            "text": "*Task Created Success...* :smile:"
+                                            "text": "*Task Created ...* :smile:"
                                         }
                                     }
                                 ]
@@ -592,7 +592,7 @@ export class SlackController {
                                     "type": "section",
                                     "text": {
                                         "type": "mrkdwn",
-                                        "text": "*There happen Error while creating task...!!!* :smile:"
+                                        "text": "*There was an error while creating task...!!!* :smile:"
                                     }
                                 }
                             ]
