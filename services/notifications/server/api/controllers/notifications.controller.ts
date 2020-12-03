@@ -229,12 +229,14 @@ export class NotificationsController {
             const postTitle = postData['title'];
             const groupId = postData['_group'];
             console.log('postTitle ==>', postTitle);
-            const postedBy = _assigned_from.first_name + ' ' + _assigned_from.last_name;
+            // const postedBy = _assigned_from.first_name + ' ' + _assigned_from.last_name;
+            const postedBy = posted_by.first_name + ' ' + posted_by.last_name;
             console.log('Posted By ==>', postedBy);
             const comment_object = {
                 name: postedBy,
                 text: `${postedBy} reassigned ${assignedToFullName} on ${postTitle}`,
-                image: _assigned_from.profile_pic,
+                // image: _assigned_from.profile_pic,
+                image: posted_by.profile_pic,
                 group_id:groupId,
                 post_id: postId,
                 content: '\n ',
