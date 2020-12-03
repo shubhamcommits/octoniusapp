@@ -597,7 +597,7 @@ export class NotificationsController {
 
             const comment_object = {
                 name: userObject.full_name,
-                text: `${userObject.full_name} like ${postUserFullName}'s ${postObject.title}`,
+                text: `${userObject.full_name} likes ${postUserFullName}'s ${postObject.title}`,
                 image: userObject.profile_pic,
                 content: '\n ',
                 group_id: postObject._group,
@@ -659,7 +659,7 @@ export class NotificationsController {
             const profile_pic = userData['profile_pic'];
             const comment_object = {
                 name: userFullName,
-                text: `${userFullName} like ${commentedByUserFullName}'s comment on ${postTitle}`,
+                text: `${userFullName} likes ${commentedByUserFullName}'s comment on ${postTitle}`,
                 image: profile_pic,
                 content: '\n ',
                 groupId: groupId,
