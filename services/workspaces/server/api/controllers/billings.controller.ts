@@ -676,10 +676,12 @@ export class BillingControllers {
     }
 
     async subscriptionUpdates(req: Request, res: Response) {
-        let event;
+        
+        // Let the stripe event
+        let event: any = {};
 
         try {
-            event = JSON.parse(req.body);
+            event = req.body;
         } catch (err) {
             return sendError(res, err, `Webhook Error: ${err.message}`, 400);
         }
