@@ -380,6 +380,7 @@ services:
       - PROTOCOL=https
       - DOMAIN=workplace.octonius.com
     depends_on:
+      - mongodb
     deploy:
       replicas: 3
       update_config:
