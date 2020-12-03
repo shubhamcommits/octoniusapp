@@ -647,4 +647,38 @@ export class SlackController {
         }
 
     }
+
+    async isSlackAuth(req: Request , res: Response, next: NextFunction){
+        
+        console.log("req.body",req.params.userID);
+        const slack_auth = await SlackAuth.findOne({_user:req.params.userID}).sort({created_date:-1});
+
+
+        if(slack_auth && slack_auth!=null){
+            res.status(200).json({message:"Connected to slack",connect:true});
+        } else {
+            res.status(200).json({message:"Not Connected to slack",connect:false});
+        }
+
+    };
+
+    async disconnectSlack(req: Request , res: Response, next: NextFunction){
+        
+        console.log("req.body",req.params.userID);
+
+        try {
+
+            await SlackAuth.deleteMany({_user:req.params.userID})
+
+            res.status(200).json({message:"Diconnected Successfully"});
+
+        } catch (err){
+
+            res.status(400).json({message:"Can not disconnet",error:err});
+        }
+
+    };
+
+
+
 }
