@@ -85,7 +85,7 @@ function prodConfigInit() {
   process.env.UTILITIES_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}/api/utilities`
 
   // Client Server
-  process.env.CLIENT_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}/client`
+  process.env.CLIENT_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}/`
 
   // Image Process URL for Notification
   process.env.IMAGE_PROCESS_URL = process.env.IMAGE_PROCESS_URL || `${process.env.PROTOCOL}://${process.env.DOMAIN}/users/uploads`
