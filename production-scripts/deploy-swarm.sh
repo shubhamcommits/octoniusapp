@@ -63,6 +63,7 @@ export NGINX_IMAGE_NAME=octoniusapp/octonius:nginx
 export MONGO_IMAGE_NAME=mongo:latest
 
 # pull the new Docker image to the Docker registry
+          docker pull $MONGO_IMAGE_NAME
           docker pull $CLIENT_IMAGE_NAME
           docker pull $MAILS_IMAGE_NAME
           docker pull $AUTHS_IMAGE_NAME
@@ -76,7 +77,6 @@ export MONGO_IMAGE_NAME=mongo:latest
           docker pull $SEARCH_IMAGE_NAME
           docker pull $INTEGRATIONS_IMAGE_NAME
           docker pull $NGINX_IMAGE_NAME
-          docker pull $MONGO_IMAGE_NAME
 
 # Deploy the Stack
 docker stack deploy -c stack-octonius-deploy.yml octonius --with-registry-auth
