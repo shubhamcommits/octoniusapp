@@ -20,17 +20,35 @@ a {
 
 .badge-cf {
   font-size: 12px;
-  color: #9D9FA1;
+  color: #005fd5;
+  span{
+    color: #9D9FA1;
+    &:hover{
+      color: #005fd5;
+    }
+  }
 }
 
 .badge-boardviews {
   font-size: 12px;
-  color: #9D9FA1;
+  color: #ff6584;
+  span{
+    color: #9D9FA1;
+    &:hover{
+      color: #ff6584;
+    }
+  }
 }
 
 .badge-automator {
   font-size: 12px;
-  color: #9D9FA1;
+  color: #FFAB00;
+  span{
+    color: #9D9FA1;
+    &:hover{
+      color: #FFAB00;
+    }
+  }
 }
 
 .separator {
