@@ -194,7 +194,7 @@ export class BillingControllers {
                     }
                 } else {
                     message = 'No payment yet';
-                    status = moment().isBetween(workspace.created_date, moment(workspace.created_date).add(14, 'days'));
+                    status = moment().isBetween(moment(workspace.created_date).add(-1, 'days'), moment(workspace.created_date).add(13, 'days'));
                 }
 
                 // Check to stripe if the payment was done in stripe
