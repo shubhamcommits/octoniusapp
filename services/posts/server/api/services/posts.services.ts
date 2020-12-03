@@ -1752,13 +1752,25 @@ export class PostService {
     }).countDocuments();
   }
 
-  async moveToGroup(postId: string, groupId: string, oldGroupId: string, userId: string) {
+  async moveToGroup(postId: string, groupId: string, columnTitle: string, oldGroupId: string, userId: string) {
     
-    try {
-      // Update the post
-      let post = await Post.findOneAndUpdate({
-        _id: postId
-      }, {
+    let update = {};
+
+    if (columnTitle != '') {
+      update = {
+        _group: groupId,
+        'task._column.title': columnTitle,
+        $push: { "records.group_change": {
+            date: moment().format(),
+            _fromGroup: oldGroupId,
+            _toGroup: groupId,
+            type: 'move',
+            _user: userId
+          }
+        }
+      }
+    } else {
+      update = {
         _group: groupId,
         $push: { "records.group_change": {
             date: moment().format(),
@@ -1768,7 +1780,14 @@ export class PostService {
             _user: userId
           }
         }
-      }, {
+      }
+    }
+
+    try {
+      // Update the post
+      let post = await Post.findOneAndUpdate({
+        _id: postId
+      }, update, {
         new: true
       })
 

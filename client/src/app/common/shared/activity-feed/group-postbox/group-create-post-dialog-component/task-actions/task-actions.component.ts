@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, EventEmitter, Injector, Input, OnDestroy, OnChanges, Output } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
@@ -8,6 +9,7 @@ import { distinctUntilChanged } from 'rxjs/internal/operators/distinctUntilChang
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
+import { GroupCreatePostDialogComponent } from '../group-create-post-dialog-component.component';
 
 @Component({
   selector: 'app-task-actions',
@@ -48,7 +50,8 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
     private _router: Router,
     private utilityService: UtilityService,
     private postService: PostService,
-    private injector: Injector
+    private injector: Injector,
+    private mdDialogRef: MatDialogRef<GroupCreatePostDialogComponent>
   ) { }
 
   async ngOnChanges() {
@@ -60,12 +63,18 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
             group.sections = await this.publicFunctions.getAllColumns(group._id);
             if (group.sections) {
               group.sections.sort((s1, s2) => (s1.title > s2.title) ? 1 : -1);
+              this.utilityService.removeDuplicates(group.sections, 'title').then((sections)=>{
+                group.sections = sections;
+              });
             }
             if (group._id != this.groupData._id && group.sections) {
               this.userGroups.push(group);
             }
           });
           this.userGroups.sort((g1, g2) => (g1.group_name > g2.group_name) ? 1 : -1);
+          this.utilityService.removeDuplicates(this.userGroups, '_id').then((groups)=>{
+            this.userGroups = groups;
+          });
         })
         .catch(() => {
           // If the function breaks, then catch the error and console to the application
@@ -185,6 +194,10 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
     if (!isCopy) {
       // redirect the user to the post
       const groupId = data.groupId;
+
+      // Close the modal
+      this.mdDialogRef.close();
+
       // Set the Value of element selection box to be the url of the post
       if (post.type === 'task') {
         this._router.navigate(['/dashboard', 'work', 'groups', 'tasks'], { queryParams: { group: groupId, myWorkplace: false, postId: post._id } });
