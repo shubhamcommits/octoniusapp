@@ -53,6 +53,9 @@ export FOLIO_IMAGE_NAME=octoniusapp/octonius:folio-server
 # Search Microservice Image Name
 export SEARCH_IMAGE_NAME=octoniusapp/octonius:search-server
 
+# Integrations Microservice Image Name
+export INTEGRATIONS_IMAGE_NAME=octoniusapp/octonius:integrations-server
+
 # Nginx Image Name
 export NGINX_IMAGE_NAME=octoniusapp/octonius:nginx
 
@@ -71,6 +74,7 @@ export MONGO_IMAGE_NAME=mongo:latest
           docker pull $UTILITIES_IMAGE_NAME
           docker pull $FOLIO_IMAGE_NAME
           docker pull $SEARCH_IMAGE_NAME
+          docker pull $INTEGRATIONS_IMAGE_NAME
           docker pull $NGINX_IMAGE_NAME
           docker pull $MONGO_IMAGE_NAME
 

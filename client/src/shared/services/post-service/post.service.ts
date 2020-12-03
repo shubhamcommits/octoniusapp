@@ -381,7 +381,7 @@ export class PostService {
     if (isCopy) {
       return this._http.post(this.baseURL + '/copy-to-group', { post: post, oldGroupId: oldGroupId, userId: userId }).toPromise();
     }
-    return this._http.put(this.baseURL + `/${post._id}/move-to-group`, { groupId: post._group, oldGroupId: oldGroupId, userId: userId }).toPromise();
+    return this._http.put(this.baseURL + `/${post._id}/move-to-group`, { groupId: post._group, columnTitle: post.task._column.title || '', oldGroupId: oldGroupId, userId: userId }).toPromise();
   }
 
   removeAttachedFile(fileName: string) {

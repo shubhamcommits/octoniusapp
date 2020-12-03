@@ -2,19 +2,19 @@
   <div class="container">
     <div class="rightside">
       <button class="btn badge-cf" *ngIf="isAdmin" (click)="openCustomFieldsDialog()">
-        <i class="material-icons">label</i> Custom Fields
+        <i class="material-icons-outlined">label</i> <span>Custom Fields</span>
       </button>
 
       <span class="separator"></span>
 
       <button class="btn badge-automator" *ngIf="isAdmin" (click)="openAutomatorDialog()">
-        <i class="material-icons">offline_bolt</i> Automator
+        <i class="material-icons-outlined">offline_bolt</i> <span>Automator</span>
       </button>
 
       <span class="separator"></span>
 
       <button [matMenuTriggerFor]="menu" class="btn badge-boardviews">
-        <i class="material-icons">dashboard</i> Board Views
+        <i class="material-icons-outlined">dashboard</i> <span>Board Views</span>
       </button>
 
       <mat-menu #menu="matMenu">

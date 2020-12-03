@@ -202,13 +202,13 @@ export class NotificationsController {
     async newTaskReassignment(req: Request, res: Response, next: NextFunction) {
 
         // Fetch Data from request
-        const { postId, assigneeId, posted_by } = req.body;
+        const { postId, assigneeId, _assigned_from } = req.body;
         console.log('newTaskReassignment function');
         console.log('req.body ==>', req.body)
         try {
             
             // Call Service function for newTaskReassignment
-            await notificationService.newTaskReassignment(postId, assigneeId, posted_by);
+            await notificationService.newTaskReassignment(postId, assigneeId, _assigned_from);
 
             const postData = await Post.findById(postId, (err, data) => {
                 if(err){
@@ -229,12 +229,12 @@ export class NotificationsController {
             const postTitle = postData['title'];
             const groupId = postData['_group'];
             console.log('postTitle ==>', postTitle);
-            const postedBy = posted_by.first_name + ' ' + posted_by.last_name;
+            const postedBy = _assigned_from.first_name + ' ' + _assigned_from.last_name;
             console.log('Posted By ==>', postedBy);
             const comment_object = {
                 name: postedBy,
                 text: `${postedBy} reassigned ${assignedToFullName} on ${postTitle}`,
-                image: posted_by.profile_pic,
+                image: _assigned_from.profile_pic,
                 group_id:groupId,
                 post_id: postId,
                 content: '\n ',

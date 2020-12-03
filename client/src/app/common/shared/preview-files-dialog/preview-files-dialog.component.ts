@@ -18,7 +18,7 @@ export class PreviewFilesDialogComponent implements OnInit {
   ngOnInit() {
     if (this.data.id !== undefined && this.data.group !== undefined) {
       this.fileUrl = environment.clientUrl
-          + '/#/document/' + this.data.id
+          + '/document/' + this.data.id
           + '?group=' + this.data.group
           + '&readOnly=true';
     } else if (this.data.url !== undefined) {
