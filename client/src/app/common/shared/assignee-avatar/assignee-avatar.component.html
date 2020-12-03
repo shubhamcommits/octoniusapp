@@ -1,3 +1,3 @@
 <img [src]="getAssigneePic(post)" onerror="this.src='assets/images/user.png'" class="feed-avatar">
-<span *ngIf="(post?._assigned_to?.length - 1) > 0" style="margin-left: -5px;"
+<span *ngIf="post?._assigned_to && (post?._assigned_to?.length - 1) > 0" style="margin-left: -5px;"
   [matBadge]="numberAssignees" matBadgePosition="before" matBadgeColor="warn"></span>

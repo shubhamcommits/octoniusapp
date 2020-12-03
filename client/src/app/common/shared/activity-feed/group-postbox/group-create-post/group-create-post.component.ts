@@ -165,7 +165,7 @@ export class GroupCreatePostComponent implements OnInit {
         this.dueTime.minute = this.dueDate.getMinutes();
       }
 
-      this.eventAssignees = this.postData._assigned_to;
+      this.eventAssignees = this.postData._assigned_to || [];
 
       this.tags = this.postData.tags;
 
@@ -332,7 +332,7 @@ export class GroupCreatePostComponent implements OnInit {
       _group: this.groupId,
       _content_mentions: this._content_mentions,
       tags: this.tags,
-      _assigned_to: this.eventAssignees
+      _assigned_to: this.eventAssignees || []
     }
 
     // If Post type is event, then add due_to property too

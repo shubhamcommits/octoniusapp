@@ -602,8 +602,8 @@ export class BillingControllers {
         }
 
         try {
-            const subscription = event.data.object;
-            const customer = await stripe.customers.retrieve(subscription.customer);
+            const stripeObject = event.data.object;
+            const customer = await stripe.customers.retrieve(stripeObject.customer);
 
             // Handle the event
             switch (event.type) {
@@ -612,7 +612,7 @@ export class BillingControllers {
                         { _id: customer.metadata.workspace_id },
                         {
                             $set: {
-                                'billing.price_id': subscription.items.data[0].price.id,
+                                'billing.price_id': stripeObject.items.data[0].price.id,
                             }
                         }, {
                             new: true
@@ -625,8 +625,8 @@ export class BillingControllers {
                         { _id: customer.metadata.workspace_id },
                         {
                             $set: {
-                                'billing.current_period_end': subscription.current_period_end,
-                                'billing.scheduled_cancellation': subscription.cancel_at_period_end
+                                'billing.current_period_end': stripeObject.current_period_end,
+                                'billing.scheduled_cancellation': stripeObject.cancel_at_period_end
                             }
                         }, {
                             new: true
@@ -642,7 +642,7 @@ export class BillingControllers {
                                 'billing.success_payments': req.body
                             },
                             $set: {
-                                'billing.current_period_end': subscription.current_period_end,
+                                'billing.current_period_end': stripeObject.period_end,
                                 'billing.scheduled_cancellation': false
                             }
                         }, {
@@ -660,7 +660,7 @@ export class BillingControllers {
                             },
                             $set: {
                                 'billing.scheduled_cancellation': true,
-                                'billing.current_period_end': subscription.period_end,
+                                'billing.current_period_end': stripeObject.period_end,
                             }
                         }, {
                             new: true
