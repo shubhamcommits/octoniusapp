@@ -93,10 +93,14 @@ export class SlackController {
         res.status(200).json({});
 
         const user_octonius = await SlackAuth.findOne({slack_user_id:bodypay.user.id}).populate('_user');
-        
+        console.log("Slack auth data",user_octonius);
+        const botAccessToken = user_octonius['bot_access_token'];
+
         if(user_octonius && user_octonius!=null){
         
         const _id = user_octonius['_user']._id;
+        
+        
 
         var BearerToken = "Bearer ";
         const user_auth = await Auth.findOne({_user:_id}).sort({created_date:-1});
@@ -231,7 +235,7 @@ export class SlackController {
                             }
                         },
                     ]
-                }},{ headers: { authorization: `Bearer `+process.env.SLACK_BOT_ACCESS_TOKEN } });
+                }},{ headers: { authorization: `Bearer `+botAccessToken } });
                 
                 console.log("responce",respo.data);
 
@@ -460,7 +464,7 @@ export class SlackController {
                             }
                         ]
                     }
-                    },{ headers: { authorization: `Bearer `+process.env.SLACK_BOT_ACCESS_TOKEN } });
+                    },{ headers: { authorization: `Bearer `+botAccessToken } });
 
                     console.log("responce",respo.data);
                 
@@ -550,7 +554,7 @@ export class SlackController {
                                     }
                                 ]
                             }
-                            },{ headers: { authorization: `Bearer `+process.env.SLACK_BOT_ACCESS_TOKEN } });
+                            },{ headers: { authorization: `Bearer `+botAccessToken } });
 
                             console.log("responce",respo.data);
 
@@ -582,7 +586,7 @@ export class SlackController {
                                 }
                             ]
                         }
-                        },{ headers: { authorization: `Bearer `+process.env.SLACK_BOT_ACCESS_TOKEN } });
+                        },{ headers: { authorization: `Bearer `+botAccessToken } });
 
                         console.log("responce",respo.data);
 
@@ -594,7 +598,7 @@ export class SlackController {
         } else {
             const respo = await axios.post(url_responceback,{
                     text: "UnAuthorized User! Please connect your Octonius workspace to slack"
-                },{ headers: { authorization: `Bearer `+process.env.SLACK_BOT_ACCESS_TOKEN } })
+                },{ headers: { authorization: `Bearer `+botAccessToken } })
                 console.log("responce",respo.data);
         }
        
@@ -620,7 +624,8 @@ export class SlackController {
                 _user:req.body.user._id,
                 team_name:team.name,
                 team_id:team.id,
-                incoming_webhook:incoming_webhook.url
+                incoming_webhook:incoming_webhook.url,
+                bot_access_token:resp['access_token']
             });
             await slack_auth.save();
             console.log(slack_auth);
