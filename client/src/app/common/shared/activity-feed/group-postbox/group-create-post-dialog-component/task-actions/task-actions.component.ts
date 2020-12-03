@@ -178,10 +178,14 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
             post._group = group;
             post.task._column.title = section.title;
 
-            this.postService.transferToGroup(post, this.groupData._id, this.userData._id, false).then((res) => {
-              this.onTransferPost({post: res['post'], isCopy: false, groupId: group});
-              resolve(this.utilityService.resolveAsyncPromise(`Task moved!`));
-            });
+            this.postService.transferToGroup(post, this.groupData._id, this.userData._id, false)
+              .then((res) => {
+                this.onTransferPost({post: res['post'], isCopy: false, groupId: group});
+                resolve(this.utilityService.resolveAsyncPromise(`Task moved!`));
+              })
+              .catch((error) => {
+                reject(this.utilityService.rejectAsyncPromise(`Error while moving the task!`));
+              });
           }));
         }
       });
