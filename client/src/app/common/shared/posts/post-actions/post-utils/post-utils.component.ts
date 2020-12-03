@@ -99,10 +99,9 @@ export class PostUtilsComponent implements OnInit {
 
     // Set the Value of element selection box to be the url of the post
     if (this.post.type === 'task') {
-      //selBox.value = environment.clientUrl + '/#/dashboard/work/groups/post/' + this.post._id + '?group=' + group;
-      selBox.value = environment.clientUrl + '/#/dashboard/work/groups/tasks?group=' + group + '&myWorkplace=false&postId=' + this.post._id;
+      selBox.value = environment.clientUrl + '/dashboard/work/groups/tasks?group=' + group + '&myWorkplace=false&postId=' + this.post._id;
     } else {
-      selBox.value = environment.clientUrl + '/#/dashboard/work/groups/activity?group=' + group + '&myWorkplace=false&postId=' + this.post._id;
+      selBox.value = environment.clientUrl + '/dashboard/work/groups/activity?group=' + group + '&myWorkplace=false&postId=' + this.post._id;
     }
     // Append the element to the DOM
     document.body.appendChild(selBox);

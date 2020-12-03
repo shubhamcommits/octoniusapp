@@ -46,14 +46,14 @@ export class SearchResultsComponent implements OnInit {
   generatePostURL() {
     const group = (this.data._group._id) ? this.data._group._id : this.data._group;
     if (this.data.type === 'task') {
-      return environment.clientUrl + '/#/dashboard/work/groups/tasks?group=' + group + '&myWorkplace=false&postId=' + this.data._id;
+      return environment.clientUrl + '/dashboard/work/groups/tasks?group=' + group + '&myWorkplace=false&postId=' + this.data._id;
     } else {
-      return environment.clientUrl + '/#/dashboard/work/groups/activity?group=' + group + '&myWorkplace=false&postId=' + this.data._id;
+      return environment.clientUrl + '/dashboard/work/groups/activity?group=' + group + '&myWorkplace=false&postId=' + this.data._id;
     }
   }
 
   generateUserURL(userId) {
-    return environment.clientUrl + '/#/dashboard/user/profile?userId=' + userId;
+    return environment.clientUrl + '/dashboard/user/profile?userId=' + userId;
   }
 
   generateFileURL() {
