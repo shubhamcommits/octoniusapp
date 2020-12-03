@@ -49,12 +49,6 @@ routes.put('/add-user', billing.addUserToSubscription);
 // PUT - Removes the user from the subscription (quantity = quatity--)
 routes.put('/remove-user', billing.removeUserFromSubscription);
 
-// POST - Webhook event which triggers the event to creates a log of successful payment and update the workspace data
-routes.post('/webhooks/payment-successful', billing.paymentSuccessful);
-
-// POST - Webhook event which triggers the event to creates a log of failed payment and update the workspace data
-routes.post('/webhooks/payment-failed', billing.paymentFailed);
-
 // POST - Webhook event which is receiving the updates from Stripe
 routes.post('/webhooks/subscription-updates', billing.subscriptionUpdates);
 

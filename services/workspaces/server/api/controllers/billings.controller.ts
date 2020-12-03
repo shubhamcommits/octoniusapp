@@ -218,8 +218,7 @@ export class BillingControllers {
                     }, {
                         $set: {
                             'billing.current_period_end': subscription.current_period_end,
-                            'billing.subscription_id': subscription.id,
-                            'billing.cancelled': false
+                            'billing.subscription_id': subscription.id
                         }
                     }, {
                         new: true
@@ -483,8 +482,7 @@ export class BillingControllers {
                     'billing.current_period_end': subscription.current_period_end,
                     'billing.failed_payments': [],
                     'billing.quantity': usersCount,
-                    'billing.subscription_id': subscription.id,
-                    'billing.cancelled': false
+                    'billing.subscription_id': subscription.id
                 }
             }, {
                 new: true
@@ -507,89 +505,6 @@ export class BillingControllers {
                 subscription: adjustedSubscription,
                 workspace: updatedWorkspace
             })
-        } catch (err) {
-            return sendError(res, err, 'Internal Server Error!', 500);
-        }
-    }
-
-    /**
-     * This function handles the failed payments
-     * @param { body.data.object.customer, body.data.object.subscription }req 
-     * @param res 
-     */
-    async paymentFailed(req: Request, res: Response) {
-        try {
-
-            // Retrieve the customer linked to this payment
-            const customer = await stripe.customers.retrieve(req.body.data.object.customer);
-
-            // We need to cancel the current subscription
-            await stripe.subscriptions.del(req.body.data.object.subscription);
-
-            // Update the workspace to notify the user of the failed payment
-            await Workspace.findOneAndUpdate(
-                { _id: customer.metadata.workspace_id },
-                {
-                    $addToSet: {
-                        'billing.failed_payments': req.body
-                    },
-                    $set: {
-                        'billing.cancelled': true
-                    }
-                }, {
-                new: true
-            }
-            ).lean();
-
-            // send mail to user (still to be added)
-
-            // Send the status 200 response
-            return res.status(200).json({
-                message: 'Payment has been failed!'
-            });
-        } catch (err) {
-            return sendError(res, err, 'Internal Server Error!', 500);
-        }
-    }
-
-    /**
-     * This function handles the payments which are succesful
-     * @param req 
-     * @param res 
-     */
-    async paymentSuccessful(req: Request, res: Response) {
-        try {
-
-            // Get the Stripe customer linked to this payment
-            const customer = await stripe.customers.retrieve(req.body.data.object.customer);
-
-            // get the subscription of the customer
-            // review this, there is probably a subscription mentioned in req.body
-            const subscription = await stripe.subscriptions.retrieve(req.body.data.object.subscription);
-
-            // add it to the billing.success_payments property of the workspace
-            // I am not sure if billing.current_period_end is already updated at this point
-            await Workspace.findOneAndUpdate(
-                { _id: customer.metadata.workspace_id },
-                {
-                    $addToSet: {
-                        'billing.success_payments': req.body
-                    },
-                    $set: {
-                        'billing.current_period_end': subscription.current_period_end,
-                        // 'billing.failed_payments': []
-                    }
-                }, {
-                new: true
-            }
-            ).lean();
-
-            // send mail to user (still to be added)
-
-            // Send the status 200 response
-            return res.status(200).json({
-                message: 'Payment is successful!'
-            });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
@@ -696,26 +611,61 @@ export class BillingControllers {
                         {
                             $set: {
                                 'billing.price_id': subscription.items.data[0].price.id,
-                                //'billing.quantity': subscription.items.data[0].quantity
                             }
                         }, {
                             new: true
                         }
                     ).lean();
                     break;
+
                 case 'customer.subscription.deleted':
                     await Workspace.findOneAndUpdate(
                         { _id: customer.metadata.workspace_id },
                         {
                             $set: {
                                 'billing.current_period_end': subscription.current_period_end,
-                                'billing.cancel_at_period_end': subscription.cancel_at_period_end
+                                'billing.scheduled_cancellation': subscription.cancel_at_period_end
                             }
                         }, {
                             new: true
                         }
                     ).lean();
                     break;
+
+                case 'invoice.payment_succeeded':
+                    await Workspace.findOneAndUpdate(
+                        { _id: customer.metadata.workspace_id },
+                        {
+                            $addToSet: {
+                                'billing.success_payments': req.body
+                            },
+                            $set: {
+                                'billing.current_period_end': subscription.current_period_end,
+                                'billing.scheduled_cancellation': false
+                            }
+                        }, {
+                            new: true
+                        }
+                    ).lean();
+                    break;
+
+                case 'invoice.payment_failed':
+                    await Workspace.findOneAndUpdate(
+                        { _id: customer.metadata.workspace_id },
+                        {
+                            $addToSet: {
+                                'billing.failed_payments': req.body
+                            },
+                            $set: {
+                                'billing.scheduled_cancellation': true,
+                                'billing.current_period_end': subscription.period_end,
+                            }
+                        }, {
+                            new: true
+                        }
+                    ).lean();
+                    break;
+
                 default:
                     console.log(`Unhandled event type ${event.type}`);
             }
