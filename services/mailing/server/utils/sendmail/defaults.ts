@@ -4,7 +4,7 @@
  * @param urlParam 
  */
 const generateLink = (linkType: any, urlParam = null) => {
-    return `${process.env.PROTOCOL}://${process.env.DOMAIN}/#/${linkType}${urlParam ? `?workplace=${urlParam}` : ''}`;
+    return `${process.env.PROTOCOL}://${process.env.DOMAIN}/${linkType}${urlParam ? `?workplace=${urlParam}` : ''}`;
 };
 
 /**
@@ -12,7 +12,7 @@ const generateLink = (linkType: any, urlParam = null) => {
  * @param groupId 
  * @param postId 
  */
-const postLink = (groupId: string, postId: string) => (`${process.env.PROTOCOL}://${process.env.DOMAIN}/#/dashboard/work/group/${groupId}/post/${postId}`);
+const postLink = (groupId: string, postId: string) => (`${process.env.PROTOCOL}://${process.env.DOMAIN}/dashboard/work/group/${groupId}/post/${postId}`);
 
 
 export = {
@@ -21,7 +21,7 @@ export = {
     replyToEmail: 'support@octonius.com',
     replyToName: 'Support',
     signupLink(workplace, email?, type?, group?) {
-        return `${process.env.PROTOCOL}://${process.env.DOMAIN}/#/authentication/sign-up${workplace ? `?workspace=${workplace}` : ''}${email ? `&email=${email}` : ''}${type ? `&type=${type}` : ''}${group ? `&group=${group}` : ''}`;
+        return `${process.env.PROTOCOL}://${process.env.DOMAIN}/authentication/sign-up${workplace ? `?workspace=${workplace}` : ''}${email ? `&email=${email}` : ''}${type ? `&type=${type}` : ''}${group ? `&group=${group}` : ''}`;
     },
     signinLink: generateLink('signin'),
     resetPwdLink: generateLink('resetPassword'),
