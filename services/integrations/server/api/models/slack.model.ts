@@ -8,6 +8,10 @@ const SlackAuthSchema = new Schema({
         type: String,
         default: null
     },
+    bot_access_token: {
+        type: String,
+        default: null
+    },
     slack_user_id: {
         type: String,
         default: null

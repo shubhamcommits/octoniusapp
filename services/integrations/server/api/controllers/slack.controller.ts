@@ -22,15 +22,19 @@ export class SlackController {
     async slackNotify (req: Request ,res:Response ,next: NextFunction) {
         console.log('slackNotify Function');
 
-        const user_octonius = await SlackAuth.findOne({_user:req.body.userid}).populate('_user');
+        const user_octonius = await SlackAuth.findOne({_user:req.body.userid}).sort({created_date:-1}).populate('_user');
+        
+        console.log('Slack auth data ==>', user_octonius);
+
         var MY_SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL;
 
         if(user_octonius && user_octonius!=null){
             MY_SLACK_WEBHOOK_URL = user_octonius['incoming_webhook'];
             console.log('inside if ==>', MY_SLACK_WEBHOOK_URL);
         }
-        var slack = require('slack-notify')(MY_SLACK_WEBHOOK_URL);  
+        var slack = require('slack-notify')(MY_SLACK_WEBHOOK_URL); 
 
+        console.log('This webhook used ==>', MY_SLACK_WEBHOOK_URL);
         console.log('req.body ==>', req.body);
         const body = req.body.data;
 
@@ -88,15 +92,26 @@ export class SlackController {
         }
 
         const bosy = req.body.payload;
+
         const bodypay = JSON.parse(bosy);
+
         const url_responceback = bodypay.response_url;
+
         res.status(200).json({});
 
-        const user_octonius = await SlackAuth.findOne({slack_user_id:bodypay.user.id}).populate('_user');
+        const user_octonius = await SlackAuth.findOne({slack_user_id:bodypay.user.id}).sort({created_date:-1}).populate('_user');
         
+        console.log("Slack auth data",user_octonius);
+        
+        var botAccessToken ;
+
         if(user_octonius && user_octonius!=null){
         
         const _id = user_octonius['_user']._id;
+        
+        botAccessToken = user_octonius['bot_access_token'];
+
+        console.log("botAccessToken",botAccessToken);
 
         var BearerToken = "Bearer ";
         const user_auth = await Auth.findOne({_user:_id}).sort({created_date:-1});
@@ -231,7 +246,7 @@ export class SlackController {
                             }
                         },
                     ]
-                }},{ headers: { authorization: `Bearer `+process.env.SLACK_BOT_ACCESS_TOKEN } });
+                }},{ headers: { authorization: `Bearer `+botAccessToken } });
                 
                 console.log("responce",respo.data);
 
@@ -460,7 +475,7 @@ export class SlackController {
                             }
                         ]
                     }
-                    },{ headers: { authorization: `Bearer `+process.env.SLACK_BOT_ACCESS_TOKEN } });
+                    },{ headers: { authorization: `Bearer `+botAccessToken } });
 
                     console.log("responce",respo.data);
                 
@@ -550,7 +565,7 @@ export class SlackController {
                                     }
                                 ]
                             }
-                            },{ headers: { authorization: `Bearer `+process.env.SLACK_BOT_ACCESS_TOKEN } });
+                            },{ headers: { authorization: `Bearer `+botAccessToken } });
 
                             console.log("responce",respo.data);
 
@@ -582,7 +597,7 @@ export class SlackController {
                                 }
                             ]
                         }
-                        },{ headers: { authorization: `Bearer `+process.env.SLACK_BOT_ACCESS_TOKEN } });
+                        },{ headers: { authorization: `Bearer `+botAccessToken } });
 
                         console.log("responce",respo.data);
 
@@ -594,7 +609,7 @@ export class SlackController {
         } else {
             const respo = await axios.post(url_responceback,{
                     text: "UnAuthorized User! Please connect your Octonius workspace to slack"
-                },{ headers: { authorization: `Bearer `+process.env.SLACK_BOT_ACCESS_TOKEN } })
+                },{ headers: { authorization: `Bearer `+botAccessToken } })
                 console.log("responce",respo.data);
         }
        
@@ -620,8 +635,10 @@ export class SlackController {
                 _user:req.body.user._id,
                 team_name:team.name,
                 team_id:team.id,
-                incoming_webhook:incoming_webhook.url
+                incoming_webhook:incoming_webhook.url,
+                bot_access_token:resp['access_token']
             });
+            console.log(slack_auth);
             await slack_auth.save();
             console.log(slack_auth);
             res.status(200).json(resp);
