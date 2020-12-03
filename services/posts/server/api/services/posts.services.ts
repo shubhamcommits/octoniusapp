@@ -884,7 +884,7 @@ export class PostService {
       http.post(`${process.env.NOTIFICATIONS_SERVER_API}/task-reassign`, {
         postId: post._id,
         assigneeId: assigneeId,
-        posted_by: post._posted_by
+        _assigned_from: userId
       })
 
       // Return the post
@@ -935,7 +935,7 @@ export class PostService {
       http.post(`${process.env.NOTIFICATIONS_SERVER_API}/task-reassign`, {
         postId: post._id,
         assigneeId: assigneeId,
-        posted_by: post._posted_by
+        _assigned_from: userId
       })
 
       /*
