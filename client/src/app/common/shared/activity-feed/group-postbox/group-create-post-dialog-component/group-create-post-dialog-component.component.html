@@ -90,7 +90,7 @@
           [northStar]="postData?.task?.northStar">
         </app-north-star-stats>
 
-        <div class="content-box" *ngIf="comments.length > 0">
+        <div class="content-box" *ngIf="comments && comments.length > 0">
             <section *ngFor="let comment of comments; let index = index;">
                 <post-comment [comment]="comment" [index]="index" [userData]="userData"
                     [groupId]="postData?._group || postData?._group?._id" (remove)="removeComment($event)"></post-comment>
