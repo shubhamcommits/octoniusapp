@@ -88,13 +88,20 @@ export class SlackController {
         }
 
         const bosy = req.body.payload;
+
         const bodypay = JSON.parse(bosy);
+
         const url_responceback = bodypay.response_url;
+
         res.status(200).json({});
 
-        const user_octonius = await SlackAuth.findOne({slack_user_id:bodypay.user.id}).populate('_user');
+        const user_octonius = await SlackAuth.findOne({slack_user_id:bodypay.user.id}).sort({created_date:-1}).populate('_user');
+        
         console.log("Slack auth data",user_octonius);
+        
         const botAccessToken = user_octonius['bot_access_token'];
+
+        console.log("botAccessToken",botAccessToken);
 
         if(user_octonius && user_octonius!=null){
         
@@ -627,6 +634,7 @@ export class SlackController {
                 incoming_webhook:incoming_webhook.url,
                 bot_access_token:resp['access_token']
             });
+            console.log(slack_auth);
             await slack_auth.save();
             console.log(slack_auth);
             res.status(200).json(resp);
