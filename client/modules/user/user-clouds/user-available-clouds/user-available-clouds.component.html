@@ -6,6 +6,8 @@
             <hr>
             <app-connect-google-cloud (googleUser)="emitGoogleUser($event)"></app-connect-google-cloud>
             <br />
+            <app-connect-slack></app-connect-slack>
+            <br />
             <div class="row">
                 <div class="col-md-6">
                     <p class="card-text">
@@ -14,17 +16,6 @@
                 </div>
                 <div class="col-md-6 push-right">
                     <button class="btn btn-primary btn-sm">Connect</button>
-                </div>
-            </div>
-            <br />
-            <div class="row">
-                <div class="col-md-6">
-                    <p class="card-text">
-                        <strong class="float-left"> Slack</strong>
-                    </p>
-                </div>
-                <div class="col-md-6 push-right">
-                    <button (click)="slackAuth()" class="btn btn-primary btn-sm">Connect</button>
                 </div>
             </div>
             <br />

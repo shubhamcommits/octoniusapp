@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Injector, Input, OnInit } from '@angular/core';
+import { PublicFunctions } from 'modules/public.functions';
 
 @Component({
   selector: 'app-user-connected-clouds',
@@ -8,9 +9,17 @@ import { Component, Input, OnInit } from '@angular/core';
 export class UserConnectedCloudsComponent implements OnInit {
 
   @Input('googleUser') googleUser: any;
+  slackUser: Boolean
+  userData: any
 
-  constructor() { }
+  public publicFunctions = new PublicFunctions(this.injector);
 
-  ngOnInit() {
+  constructor(
+    private injector: Injector
+  ) { }
+
+  async ngOnInit() {
+    this.userData = await this.publicFunctions.getCurrentUser();
+    this.slackUser = this.userData.integrations.is_slack_connected ? true : false
   }
 }

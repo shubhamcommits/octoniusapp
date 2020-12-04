@@ -1,6 +1,7 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
+import { UserService } from 'src/shared/services/user-service/user.service';
 import { SubSink } from 'subsink';
 import { GoogleCloudService } from './user-available-clouds/google-cloud/services/google-cloud.service';
 
@@ -14,17 +15,19 @@ export class UserCloudsComponent implements OnInit {
   constructor(
     public injector: Injector,
     private googleService: GoogleCloudService,
+    public userService: UserService,
     private storageService: StorageService
   ) { }
   
   // Google Authentication Variable Check
   googleAuthSuccessful = false
+  slackAuthSuccessful = false
 
   // Subsink 
   private subSink = new SubSink()
 
   // User Data Variable
-  userData: Object
+  userData: any
 
   // Public functions class member
   publicFunctions = new PublicFunctions(this.injector)
@@ -33,6 +36,9 @@ export class UserCloudsComponent implements OnInit {
   googleUser: any
 
   async ngOnInit() {
+    this.userData = await this.publicFunctions.getCurrentUser();
+
+    this.slackAuthSuccessful = this.userData.integrations.is_slack_connected ? true : false
 
     // Subsribe to the google authsucessful behaviour subject and set the local googleauth value
     this.subSink.add(this.googleService.googleAuthSuccessfulBehavior.subscribe(auth => this.googleAuthSuccessful = auth))
