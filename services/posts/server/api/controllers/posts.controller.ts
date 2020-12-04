@@ -1120,11 +1120,11 @@ export class PostController {
     async copyToGroup(req: Request, res: Response, next: NextFunction) {
 
         // Post Object From request
-        const { post, oldGroupId, userId } = req.body;
+        const { postId, groupId, columnTitle, oldGroupId, userId } = req.body;
 
         try {
             // Call servide function for adding the post
-            const postData = await postService.copyToGroup(post, oldGroupId, userId)
+            const postData = await postService.copyToGroup(postId, groupId, columnTitle, oldGroupId, userId)
                 .catch((err) => {
                     return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
                 })

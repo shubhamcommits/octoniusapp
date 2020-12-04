@@ -1830,17 +1830,37 @@ export class PostService {
     }
   }
 
-  async copyToGroup(post: any, oldGroupId: string, userId: string) {
+  async copyToGroup(postId: string, groupId: string, columnTitle: string, oldGroupId: string, userId: string, parentId?: string) {
 
     try {
-      const groupId = post._group;
-      const postId = post._id;
+      const oldPost = await Post.findById(postId).lean();
 
-      delete post._id;
+      let newPost = oldPost;
 
-      if (post.files) {
-        let files = post.files;
-        post.files = [];
+      delete newPost._id;
+      delete newPost.bars;
+      delete newPost.records;
+      delete newPost.comments;
+      if (newPost.task && newPost.task.custom_fields) {
+        delete newPost.task.custom_fields;
+      }
+      if (newPost.records && newPost.records.assignments) {
+        delete newPost.records.assignments;
+      }
+
+      newPost._group = groupId;
+      newPost._assigned_to = [];
+      newPost.comments_count = 0;
+      newPost.created_date = moment().format();
+      if (parentId) {
+        newPost.task._parent_task = parentId;
+      } else {
+        newPost.task._column.title = columnTitle;
+      }
+
+      if (newPost.files) {
+        let files = newPost.files;
+        newPost.files = [];
 
         // Fetch the files from the current request
         await files.forEach(async (currentFile: any, index: Number) => {
@@ -1867,15 +1887,16 @@ export class PostService {
           };
 
           // Push the file object
-          post.files.push(file);
+          newPost.files.push(file);
         });
       }
+
       // Create new post
-      post = await Post.create(post);
+      newPost = await Post.create(newPost);
 
       // set the record in the new post
-      post = Post.findOneAndUpdate({
-          _id: post._id
+      newPost = Post.findOneAndUpdate({
+          _id: newPost._id
         }, {
           $push: { "records.group_change": {
               date: moment().format(),
@@ -1887,30 +1908,23 @@ export class PostService {
           }
         }, {
           new: true
-        })
+        });
 
       // populate the assigned_to property of this document
-      post = await this.populatePostProperties(post);
+      newPost = await this.populatePostProperties(newPost);
 
       // copy the subtasks
-      if(!post.task._parent_task) {
+      if(!oldPost.task._parent_task) {
         (await this.getSubtasks(postId)).forEach(task => {
-          delete task.bars;
-          delete task.records;
-          delete task.comments;
-          delete task.task.custom_fields;
-          task._group = groupId;
-          task.task._parent_task = post._id;
-          task.created_date = moment().local().startOf('day').format('YYYY-MM-DD');
-          this.copyToGroup(task, oldGroupId, userId);
+          this.copyToGroup(task._id, groupId, '', oldGroupId, userId, newPost._id);
         });
       }
-
+      /*
       // delete the comments
       await Comment.deleteMany({_post: postId});
-
+      */
       // Return Post Object
-      return post;
+      return newPost;
 
     } catch (err) {
       console.log(`\n⛔️ Error:\n ${err}`);

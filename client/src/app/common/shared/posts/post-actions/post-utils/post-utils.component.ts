@@ -145,18 +145,13 @@ export class PostUtilsComponent implements OnInit {
     this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the card will be copied to the selected group!')
       .then(async (res) => {
         if (res.value) {
-          await this.utilityService.asyncNotification('Please wait while we copy the card...', new Promise((resolve, reject) => {
-            let post = this.post;
-            delete post.bars;
-            delete post.records;
-            delete post.comments;
-            delete post.comments_count;
-            post._group = group._id;
-            post.created_date = moment().local().startOf('day').format('YYYY-MM-DD');
-
-            this.postService.transferToGroup(post, this.groupId, this.userData._id, true).then((res) => {
-              this.onTransferPost({post: res['post'], isCopy: true, groupId: group._id});
+          await this.utilityService.asyncNotification('Please wait we are copy the task...', new Promise((resolve, reject) => {
+            this.postService.transferToGroup(this.post._id, group, '', this.groupId, this.userData._id, true).then((res) => {
+              this.onTransferPost({post: res['post'], isCopy: true});
               resolve(this.utilityService.resolveAsyncPromise(`👍 Card copied!`));
+            })
+            .catch((error) => {
+              reject(this.utilityService.rejectAsyncPromise(`Error while copying the post!`));
             });
           }));
         }
@@ -169,16 +164,14 @@ export class PostUtilsComponent implements OnInit {
       .then(async (res) => {
         if (res.value) {
           await this.utilityService.asyncNotification('Please wait while we move the card...', new Promise((resolve, reject) => {
-            let post = this.post;
-            delete post.bars;
-            delete post.comments;
-            delete post.comments_count;
-            post._group = group._id;
-
-            this.postService.transferToGroup(post, this.groupId, this.userData._id, false).then((res) => {
-              this.onTransferPost({post: res['post'], isCopy: false, groupId: group._id});
-              resolve(this.utilityService.resolveAsyncPromise(`👍 Card moved!`));
-            });
+            this.postService.transferToGroup(this.post._id, group._id, '', this.groupId, this.userData._id, false)
+              .then((res) => {
+                this.onTransferPost({post: res['post'], isCopy: false, groupId: group});
+                resolve(this.utilityService.resolveAsyncPromise(`👍 Card moved!`));
+              })
+              .catch((error) => {
+                reject(this.utilityService.rejectAsyncPromise(`Error while moving the post!`));
+              });
           }));
         }
       });
