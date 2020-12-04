@@ -24,7 +24,7 @@
         <!-- Avatar Image of the member -->
         <img *ngIf="member.active" src="{{ baseUrl }}/{{member?.profile_pic}}" routerLink="/dashboard/user/profile"
             [queryParams]="{ userId: member._id }" onerror="this.src='assets/images/user.png'" class="feed-avatar">
-        <img *ngIf="!member.active" class="disabled-person" src="{{ baseUrl }}/{{member?.profile_pic}}" routerLink="/dashboard/user/profile"
+        <img *ngIf="!member.active" class="inactive-person" src="{{ baseUrl }}/{{member?.profile_pic}}" routerLink="/dashboard/user/profile"
             [queryParams]="{ userId: member._id }" onerror="this.src='assets/images/user.png'" class="feed-avatar">
         <!-- Avatar Image of the member -->
 
@@ -35,7 +35,7 @@
                 <p class="mt-0">{{member?.first_name}} {{member?.last_name}}</p>
                 <p>Role: {{member?.role}}<span *ngIf="type === 'group' && isGroupManager(member._id)">, Group Manager</span> (<a href="mailto:{{member?.email}}">{{member?.email}}</a>)</p>
             </div>
-            <div *ngIf="!member.active" class="float-left disabled-person">
+            <div *ngIf="!member.active" class="float-left inactive-person">
                 <p class="mt-0">{{member?.first_name}} {{member?.last_name}}</p>
                 <p>Role: {{member?.role}}<span *ngIf="type === 'group' && isGroupManager(member._id)">, Group Manager</span> (<a href="mailto:{{member?.email}}">{{member?.email}}</a>)</p>
             </div>
