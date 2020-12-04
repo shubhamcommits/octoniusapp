@@ -36,6 +36,20 @@ export class NotificationsController {
                 return sendError(res, new Error(err), 'Internal Server Error!', 500);
             });
             
+            const comment_mentions_ids = req.body.comment._content_mentions;
+            console.log('comment_mentions ==>', comment_mentions_ids);
+            let comment_mentions_name_array = [];
+            for(let i = 0; i < comment_mentions_ids.length; i++){
+                const comment_mentions_data = await User.findById(comment_mentions_ids[i], (err, data) => {
+                    if(err){
+                        console.log('db error ==>', err);
+                    } else {
+                        return data;
+                    }
+                });
+                comment_mentions_name_array.push(comment_mentions_data['full_name']);
+            }
+            console.log('comment_mentions_name_array ==> ', comment_mentions_name_array);
             const commented_by_id = req.body.comment._commented_by;
             const groupId = comment._post._group._id;
             const userData = await User.findById(commented_by_id, (err, data) => {
@@ -46,13 +60,14 @@ export class NotificationsController {
                 }
             });
             const commented_by = userData['full_name'];
+            const commented_by_profile_pic = userData['profile_pic'];
             console.log('Commented By ==>', commented_by);
             const comment_content = JSON.parse(comment.content);
             console.log('comment_content ==>', comment_content.ops[0].insert);
             const comment_object = {
                 name: commented_by,
-                text: `${commented_by} mentions on ${comment._post.title}`,
-                image: comment._commented_by.profile_pic,
+                text: `${commented_by} mentions ${comment_mentions_name_array} in his comment on post ${comment._post.title}`,
+                image: commented_by_profile_pic,
                 content: '\n',
                 group_id: groupId,
                 post_id: comment._post._id,
@@ -60,10 +75,13 @@ export class NotificationsController {
             }
             console.log('comment_object ==>', comment_object);
 
-            await axios.post(`${process.env.INTEGRATION_SERVER_API}/slack-notify`, {
-                data: comment_object,
-                userid:commented_by_id
-              });
+            for(let i = 0; i < comment_mentions_ids.length; i++){
+                await axios.post(`${process.env.INTEGRATION_SERVER_API}/slack-notify`, {
+                    data: comment_object,
+                    userid:comment_mentions_ids[i]
+                  });
+            }
+
         } catch (err) {
             // Error Handling
             return sendError(res, new Error(err), 'Internal Server Error!', 500);
@@ -166,15 +184,21 @@ export class NotificationsController {
                     return data;
                 }
             });
+            const postedByData = await User.findById(posted_by, (err, data) => {
+                if(err){
+                    console.log('db error ==>', err);
+                } else {
+                    return data;
+                }
+            });
             const postTitle = postData['title'];
             const assignedToFullName = userData['full_name'];
-            console.log('postTitle ==>', postTitle);
-            const postedBy = posted_by.first_name + ' ' + posted_by.last_name;
-            console.log('Posted By ==>', postedBy);
+            const postedByFullName = postedByData['full_name'];
+            const postedByProfilePic = postedByData['profile_pic'];
             const comment_object = {
-                name: postedBy,
-                text: `${postedBy} assigned ${assignedToFullName} on ${postTitle}`,
-                image: posted_by.profile_pic,
+                name: postedByFullName,
+                text: `${postedByFullName} assigned ${assignedToFullName} on ${postTitle}`,
+                image: postedByProfilePic,
                 content: '\n ',
                 group_id: groupId,
                 post_id: postId,
@@ -225,16 +249,23 @@ export class NotificationsController {
                     return data;
                 }
             });
+            const assigneeFromData = await User.findById(_assigned_from, (err, data) => {
+                if(err){
+                    console.log('db error ==>', err);
+                } else {
+                    return data;
+                }
+            });
+            const assigneFromFullName = assigneeFromData['full_name'];
+            const assigneFromProfilePic = assigneeFromData['profile_pic'];
             const assignedToFullName = userData['full_name'];
             const postTitle = postData['title'];
             const groupId = postData['_group'];
             console.log('postTitle ==>', postTitle);
-            const postedBy = _assigned_from.first_name + ' ' + _assigned_from.last_name;
-            console.log('Posted By ==>', postedBy);
             const comment_object = {
-                name: postedBy,
-                text: `${postedBy} reassigned ${assignedToFullName} on ${postTitle}`,
-                image: _assigned_from.profile_pic,
+                name: assigneFromFullName,
+                text: `${assigneFromFullName} reassigned ${assignedToFullName} on post ${postTitle}`,
+                image: assigneFromProfilePic,
                 group_id:groupId,
                 post_id: postId,
                 content: '\n ',
@@ -392,7 +423,7 @@ export class NotificationsController {
             console.log('Posted By ==>', );
             const comment_object = {
                 name: userFullName,
-                text: `${userAssignedFullName}'s assignment status changed by ${userFullName} on ${postTitle} `,
+                text: `${userAssignedFullName}'s assignment status changed by ${userFullName} on post ${postTitle} `,
                 image: posted_by.profile_pic,
                 content: '\n ',
                 group_id: groupId,
@@ -450,12 +481,13 @@ export class NotificationsController {
             const groupId = postData['_group'];
             const postUserFullName = postUserData['full_name'];
             const userFullName = userData['full_name'];
+            const userProfilePic = userData['profile_pic'];
             const comment_content = JSON.parse(comment.content);
             console.log('comment_content ==>', comment_content.ops[0].insert);
             const comment_object = {
                 name: userFullName,
                 text: `${userFullName} commented on ${postUserFullName}s ${comment._post.title}`,
-                image: comment._commented_by.profile_pic,
+                image: userProfilePic,
                 content: '\n ',
                 group_id: groupId,
                 post_id: postId,
@@ -530,7 +562,7 @@ export class NotificationsController {
 
             const comment_object = {
                 name: followerName,
-                text: `${followerName} follows ${postUserFullName}'s ${postTitle} `,
+                text: `${followerName} follows ${postUserFullName}'s post ${postTitle} `,
                 image: profile_img,
                 content: '\n ',
                 group_id: groupId,
@@ -597,7 +629,7 @@ export class NotificationsController {
 
             const comment_object = {
                 name: userObject.full_name,
-                text: `${userObject.full_name} likes ${postUserFullName}'s ${postObject.title}`,
+                text: `${userObject.full_name} likes ${postUserFullName}'s post ${postObject.title}`,
                 image: userObject.profile_pic,
                 content: '\n ',
                 group_id: postObject._group,

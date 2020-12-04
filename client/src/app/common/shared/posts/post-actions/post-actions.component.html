@@ -6,7 +6,7 @@
             <ng-template #likedContent>
                 <p *ngFor="let liked_by of likedByUsers">{{ liked_by }}</p>
             </ng-template>
-            <span class="stats" placement="right" [ngbTooltip]="likedContent"><b>{{post?._liked_by.length || 0 }}</b>Likes </span>
+            <span class="stats" placement="right" [ngbTooltip]="likedContent"><b>{{post?._liked_by.length || 0 }}</b> Likes </span>
             <span class="stats" *ngIf="!fullscreen" (click)="fetchComments()"><b>{{ comments.length || 0 }}</b> Comments</span>
 
             <ng-template #followContent>
