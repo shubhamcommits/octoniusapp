@@ -104,10 +104,17 @@ export class UserService {
   }
 
   /**
-   * This function is responsible for verifying the slack oA
+   * This function is responsible for verifying the slack oAuth
    */
   slackAuth(code: string, user: Object): Observable<any> {
     return this._http.post(this.SLACK_API_URL + `/slack-auth`, { code, user });
+  }
+
+  /**
+   * This function is responsible for diconnecting the slack oA
+   */
+  disconnectSlack(user: Object): Observable<any> {
+    return this._http.delete(this.SLACK_API_URL + `/disconnect-slack/${user}`);
   }
 
   /**

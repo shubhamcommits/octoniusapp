@@ -1,11 +1,12 @@
 import { Response, Request, NextFunction } from "express";
 import jwt, { JsonWebTokenError } from "jsonwebtoken";
 import { SlackService } from "../service";
-import { Group, Column, Auth, SlackAuth } from '../models';
+import { Group, Column, Auth, SlackAuth, User } from '../models';
 import { Auths } from '../../utils';
 import FormData from 'form-data';
 // import { validateId } from "../../utils/helperFunctions";
 import axios from "axios";
+import { connect } from "mongoose";
 
 // Creating Service class in order to build wrapper class
 const slackService = new SlackService()
@@ -639,6 +640,19 @@ export class SlackController {
                 bot_access_token:resp['access_token']
             });
             console.log(slack_auth);
+
+            var user = await User.findById(req.body.user._id);
+
+            var integration = user['integrations'];
+            
+            integration['is_slack_connected']=true;
+
+            console.log(integration);
+
+            const update_user = await User.findOneAndUpdate({_id:req.body.user._id},{$set:{integrations:integration}},{new:true});
+            
+            console.log("update_user",update_user);
+            
             await slack_auth.save();
             console.log(slack_auth);
             res.status(200).json(resp);
@@ -668,7 +682,19 @@ export class SlackController {
 
         try {
 
-            await SlackAuth.deleteMany({_user:req.params.userID})
+            await SlackAuth.deleteMany({_user:req.params.userID});
+
+            var user = await User.findById(req.params.userID);
+
+            var integration = user['integrations'];
+            
+            integration['is_slack_connected']=false;
+
+            console.log(integration);
+
+            const update_user = await User.findOneAndUpdate({_id:req.params.userID},{$set:{integrations:integration}},{new:true});
+            
+            console.log("update_user" , update_user);
 
             res.status(200).json({message:"Diconnected Successfully"});
 

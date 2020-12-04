@@ -68,17 +68,28 @@ export class MyspaceInboxComponent implements OnInit, OnDestroy {
     this.userData = await this.publicFunctions.getCurrentUser();
     this.router.queryParams.subscribe(params => {
       if (params['code']) {
-        return new Promise((resolve, reject) => {
-          this.userService.slackAuth(params['code'], this.userData)
-            .toPromise()
-            .then((res) => {
-              // Resolve the promise
-              resolve(this.utilityService.successNotification('Authenticated Successfully!'))
-              this._router.navigate(['/']);
-            })
-            .catch(() => reject(this.utilityService.errorNotification('Unable to authenticate, please try again!')));
-              this._router.navigate(['/']);
-        })
+        try {
+          this.utilityService.asyncNotification('Please wait, while we are authenticating the slack...', new Promise((resolve, reject) => {
+            this.userService.slackAuth(params['code'], this.userData)
+              .subscribe(() => {
+                // Resolve the promise
+                resolve(this.utilityService.resolveAsyncPromise('Authenticated Successfully!'))
+                this.userData.integrations.is_slack_connected = true
+                this.userService.updateUser(this.userData);
+                this.publicFunctions.sendUpdatesToUserData(this.userData);
+              }),
+              ((err) => {
+                console.log('Error occured, while authenticating for Slack', err);
+                reject(this.utilityService.rejectAsyncPromise('Oops, an error occured while authenticating for Slack, please try again!'))
+              });
+            this._router.navigate(['/']);
+          }));
+        }
+        catch (err) {
+          console.log('There\'s some unexpected error occured, please try again!', err);
+          this.utilityService.errorNotification('There\'s some unexpected error occured, please try again!');
+          this._router.navigate(['/']);
+        }
       }
     });
   }
@@ -112,8 +123,8 @@ export class MyspaceInboxComponent implements OnInit, OnDestroy {
     this.subSink.add(this.socketService.onEmit('markRead', notificationId, userId)
       .pipe(take(1))
       .subscribe());
-      this.notificationsData.unreadNotifications[index]['read'] = true
-      this.notificationsData.unreadNotifications.splice(index, 1)
+    this.notificationsData.unreadNotifications[index]['read'] = true
+    this.notificationsData.unreadNotifications.splice(index, 1)
   }
 
   /**
