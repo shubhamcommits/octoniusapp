@@ -73,9 +73,19 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
   async initTable() {
     await this.loadCustomFieldsToShow();
 
-    const doneTasks = [...this.tasks['done']];
+    //const doneTasks = [...this.tasks['done']];
     this.tasks = [...this.tasks];
-    this.tasks['done'] = doneTasks;
+    //this.tasks['done'] = doneTasks;
+
+    this.tasks.sort(function(t1, t2) {
+      if (t1.task.status != t2.task.status) {
+        return t1.task.status == 'done' ? 1 : -1;
+      }
+      if (t1.task._column.order != t2.task._column.order) {
+        return t2.task._column.order - t1.task._column.order;
+      }
+      return t2.title - t1.title;
+    });
 
     this.dataSource = new MatTableDataSource(this.tasks);
     this.dataSource.sort = this.sort;
@@ -180,26 +190,12 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
 
       // Find the index of the task
       const indexTask = this.tasks.findIndex((task: any) => task._id === post._id);
-      if (indexTask !== -1) {
-        if (this.section.title.toLowerCase() === post.task._column.title.toLowerCase()) {
-          if (post.task.status === 'done') {
-            this.tasks['done'].unshift(post);
-            this.tasks.splice(indexTask, 1);
-          } else {
-            // update the tasks from the array
-            this.tasks[indexTask]= post;
-          }
+      if (indexTask != -1) {
+        if (this.section.title.toLowerCase() == post.task._column.title.toLowerCase()) {
+          // update the tasks from the array
+          this.tasks[indexTask] = post;
         } else {
           this.tasks.splice(indexTask, 1);
-          this.taskChangeSectionEmitter.emit({post: post, oldSection: this.section.title});
-        }
-      } else {
-        // if is coming from the done tasks
-        if (this.section.title.toLowerCase() === post.task._column.title.toLowerCase()) {
-          if (post.task.status !== 'done') {
-            this.tasks.unshift(post);
-          }
-        } else {
           this.taskChangeSectionEmitter.emit({post: post, oldSection: this.section.title});
         }
       }
@@ -208,9 +204,11 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
     }
   }
 
+  /*
   async onCloseDoneTaskModalEvent(post) {
     this.updateTask(post);
   }
+  */
 
   getCustomField(fieldName: string) {
     const index = this.customFields.findIndex((f: any) => f.name === fieldName);

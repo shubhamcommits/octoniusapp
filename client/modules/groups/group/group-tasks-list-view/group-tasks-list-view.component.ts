@@ -63,8 +63,9 @@ export class GroupTasksListViewComponent implements OnChanges {
   initSections() {
     this.sections.forEach( section => {
       let tasks = [];
-      let doneTasks = [];
+      // let doneTasks = [];
 
+      /*
       // Filtering done tasks
       if(section.tasks.done !== undefined){
         section.tasks.done.forEach(doneTask =>{
@@ -79,6 +80,7 @@ export class GroupTasksListViewComponent implements OnChanges {
             }
         });
       }
+      */
 
       // Filtering other tasks
       section.tasks.forEach( task => {
@@ -93,7 +95,7 @@ export class GroupTasksListViewComponent implements OnChanges {
         }
       });
       section.tasks = tasks;
-      section.tasks.done = doneTasks;
+      // section.tasks.done = doneTasks;
     });
   }
 
@@ -106,9 +108,9 @@ export class GroupTasksListViewComponent implements OnChanges {
     // Adding the post to column
     section.tasks.unshift(post);
 
-    const doneTasks = [...section.tasks['done']];
+    // const doneTasks = [...section.tasks['done']];
     section.tasks = [...section.tasks];
-    section.tasks['done'] = doneTasks;
+    // section.tasks['done'] = doneTasks;
   }
 
   /**
@@ -173,37 +175,20 @@ export class GroupTasksListViewComponent implements OnChanges {
   onTaskChangeSection(data) {
     const post = data.post;
     if (post) {
-      const oldSectionIndex = this.sections.findIndex((section) => section.title.toLowerCase() === data.oldSection.toLowerCase());
-      const sectionIndex = this.sections.findIndex((section) => section.title.toLowerCase() === post.task._column.title.toLowerCase());
-      if (sectionIndex !== -1) {
-        let indexTask = this.sections[oldSectionIndex].tasks.findIndex((task: any) => task._id === post._id);
-        if (oldSectionIndex !== -1) {
-          if (indexTask !== -1) {
-            this.sections[oldSectionIndex].tasks.splice(indexTask, 1);
-          } else {
-            indexTask = this.sections[oldSectionIndex].tasks.done.findIndex((task: any) => task._id === post._id);
-            if (indexTask !== -1) {
-              this.sections[oldSectionIndex].tasks.done.splice(indexTask, 1);
-            }
-          }
+      const oldSectionIndex = this.sections.findIndex((section) => section.title.toLowerCase() == data.oldSection.toLowerCase());
+      const sectionIndex = this.sections.findIndex((section) => section.title.toLowerCase() == post.task._column.title.toLowerCase());
+      if (oldSectionIndex != -1 && sectionIndex != -1) {
+        const oldIndexTask = this.sections[oldSectionIndex].tasks.findIndex((task: any) => task._id == post._id);
+        const indexTask = this.sections[sectionIndex].tasks.findIndex((task: any) => task._id == post._id);
+        if (oldIndexTask != -1) {
+          this.sections[oldSectionIndex].tasks.splice(oldIndexTask, 1);
         }
-
-        if (post.task.status === 'done') {
-          indexTask = this.sections[sectionIndex].tasks.done.findIndex((task: any) => task._id === post._id);
-          if (indexTask < 0) {
-            this.sections[sectionIndex].tasks.done.unshift(post);
-            this.sections[sectionIndex].tasks.done = [...this.sections[sectionIndex].tasks.done];
-          }
-        } else {
-          indexTask = this.sections[sectionIndex].tasks.findIndex((task: any) => task._id === post._id);
-          if (indexTask < 0) {
-            this.sections[sectionIndex].tasks.unshift(post);
-            const doneTasks = this.sections[sectionIndex].tasks.done;
-            this.sections[sectionIndex].tasks = [...this.sections[sectionIndex].tasks];
-            this.sections[sectionIndex].tasks.done = doneTasks;
-          }
+        if (indexTask != -1) {
+          this.sections[sectionIndex].tasks.unshift(post);
+          this.sections[sectionIndex].tasks = [...this.sections[sectionIndex].tasks];
         }
       }
+
       this.initSections()
     }
   }
