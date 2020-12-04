@@ -55,6 +55,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
 
     this.columns.forEach( column => {
       let tasks = [];
+      /*
       let doneTasks = [];
       if(column.tasks.done !== undefined){
         column.tasks.done.forEach(doneTask =>{
@@ -70,6 +71,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
           }
         );
       }
+      */
       column.tasks.forEach( task => {
         if(task.bars && task.bars !== undefined && task.bars.length > 0){
           task.bars.forEach(bar => {
@@ -81,8 +83,19 @@ export class GroupKanbanBoardsComponent implements OnInit {
           tasks.push(task);
         }
       });
+
+      tasks.sort(function(t1, t2) {
+        if (t1.task.status != t2.task.status) {
+          return t1.task.status == 'done' ? 1 : -1;
+        }
+        if (t1.task._column.order != t2.task._column.order) {
+          return t2.task._column.order - t1.task._column.order;
+        }
+        return t2.title - t1.title;
+      });
+
       column.tasks = tasks;
-      column.tasks.done = doneTasks;
+      // column.tasks.done = doneTasks;
     });
   }
 
@@ -356,6 +369,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
     this.updateTask(data);
   }
 
+  /*
   onDeleteDoneEvent(id) {
     this.columns.forEach((col, indexColumn) => {
       // Find the index of the tasks inside the column
@@ -366,6 +380,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
       }
     });
   }
+  */
 
   onDeleteEvent(id) {
     this.columns.forEach((col, indexColumn) => {
@@ -406,60 +421,31 @@ export class GroupKanbanBoardsComponent implements OnInit {
    * @param post - post
    */
   updateTask(post: any) {
-
     this.columns.forEach((col, indexColumn) => {
       // Find the index of the tasks inside the column
       const indexTask = col.tasks.findIndex((task: any) => task._id === post._id);
-      if (indexTask !== -1) {
-        if (col.title.toLowerCase() === post.task._column.title.toLowerCase()) {
-          if (post.task.status === 'done') {
-            this.columns[indexColumn].tasks.done.unshift(post);
-            this.columns[indexColumn].tasks.splice(indexTask, 1);
-            return;
-          } else {
+      if (indexTask != -1) {
+        if (col.title.toLowerCase() == post.task._column.title.toLowerCase()) {
             // update the tasks from the array
             this.columns[indexColumn].tasks[indexTask]= post;
-            return;
-          }
         } else {
-          let indexNewColumn = this.columns.findIndex((column: any) => column.title.toLowerCase() === post.task._column.title.toLowerCase());
-          if (indexNewColumn !== -1) {
-            if (post.task.status === 'done') {
-              this.columns[indexNewColumn].tasks.done.unshift(post);
-            } else {
-              this.columns[indexNewColumn].tasks.unshift(post);
-            }
+          let indexNewColumn = this.columns.findIndex((column: any) => column.title.toLowerCase() == post.task._column.title.toLowerCase());
+          if (indexNewColumn != -1) {
+            this.columns[indexNewColumn].tasks.unshift(post);
             this.columns[indexColumn].tasks.splice(indexTask, 1);
-            return;
           }
         }
-      } else {
-        // if the task was not found in the column, check if it is in the done tasks array
-        const indexDoneTask = col.tasks.done.findIndex((task: any) => task._id === post._id);
-        if (indexDoneTask !== -1) {
-          if (col.title.toLowerCase() === post.task._column.title.toLowerCase()) {
-            if (post.task.status === 'done') {
-              // update the tasks from the array
-              this.columns[indexColumn].tasks.done[indexDoneTask]= post;
-              return;
-            } else {
-              this.columns[indexColumn].tasks.unshift(post);
-              this.columns[indexColumn].tasks.done.splice(indexDoneTask, 1);
-              return;
-            }
-          } else {
-            let indexNewColumn = this.columns.findIndex((column: any) => column.title.toLowerCase() === post.task._column.title.toLowerCase());
-            if (indexNewColumn !== -1) {
-              if (post.task.status === 'done') {
-                this.columns[indexNewColumn].tasks.done.unshift(post);
-              } else {
-                this.columns[indexNewColumn].tasks.unshift(post);
-              }
-              this.columns[indexColumn].tasks.done.splice(indexDoneTask, 1);
-              return;
-            }
+
+        this.columns[indexColumn].tasks.sort(function(t1, t2) {
+          if (t1.task.status != t2.task.status) {
+            return t1.task.status == 'done' ? 1 : -1;
           }
-        }
+          if (t1.task._column.order != t2.task._column.order) {
+            return t2.task._column.order - t1.task._column.order;
+          }
+          return t2.title - t1.title;
+        });
+        return;
       }
     });
   }
