@@ -143,20 +143,12 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
       .then(async (res) => {
         if (res.value) {
           await this.utilityService.asyncNotification('Please wait we are copy the task...', new Promise((resolve, reject) => {
-            let post = this.postData;
-            delete post.bars;
-            delete post.records;
-            delete post.comments;
-            delete post.comments_count;
-            delete post._assigned_to;
-            delete post.task.custom_fields;
-            post._group = group;
-            post.task._column.title = section.title;
-            post.created_date = moment().local().startOf('day').format('YYYY-MM-DD');
-
-            this.postService.transferToGroup(post, this.groupData._id, this.userData._id, true).then((res) => {
-              this.onTransferPost({post: res[post], isCopy: true});
-              resolve(this.utilityService.resolveAsyncPromise(`Task Copied!`));
+            this.postService.transferToGroup(this.postData._id, group, section.title, this.groupData._id, this.userData._id, true).then((res) => {
+              this.onTransferPost({post: res['post'], isCopy: true});
+              resolve(this.utilityService.resolveAsyncPromise(`👍 Task Copied!`));
+            })
+            .catch((error) => {
+              reject(this.utilityService.rejectAsyncPromise(`Error while copying the task!`));
             });
           }));
         }
@@ -169,19 +161,10 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
       .then(async (res) => {
         if (res.value) {
           await this.utilityService.asyncNotification('Please wait we are move the task...', new Promise((resolve, reject) => {
-            let post = this.postData;
-            delete post.bars;
-            delete post.comments;
-            delete post.comments_count;
-            delete post._assigned_to;
-            delete post.task.custom_fields;
-            post._group = group;
-            post.task._column.title = section.title;
-
-            this.postService.transferToGroup(post, this.groupData._id, this.userData._id, false)
+            this.postService.transferToGroup(this.postData._id, group, section.title, this.groupData._id, this.userData._id, false)
               .then((res) => {
                 this.onTransferPost({post: res['post'], isCopy: false, groupId: group});
-                resolve(this.utilityService.resolveAsyncPromise(`Task moved!`));
+                resolve(this.utilityService.resolveAsyncPromise(`👍 Task moved!`));
               })
               .catch((error) => {
                 reject(this.utilityService.rejectAsyncPromise(`Error while moving the task!`));
