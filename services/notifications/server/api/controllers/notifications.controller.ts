@@ -418,13 +418,14 @@ export class NotificationsController {
             });
             const userFullName = userData['full_name'];
             const userAssignedFullName = userAssignedData['full_name'];
+            const userAssignedProfilePic = userAssignedData['profile_pic'];
             const groupId = postData['_group'];
             const postTitle = postData['title'];
             console.log('Posted By ==>', );
             const comment_object = {
                 name: userFullName,
                 text: `${userAssignedFullName}'s assignment status changed by ${userFullName} on post ${postTitle} `,
-                image: posted_by.profile_pic,
+                image: userAssignedProfilePic,
                 content: '\n ',
                 group_id: groupId,
                 post_id: postId,
