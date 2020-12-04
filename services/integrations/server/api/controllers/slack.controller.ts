@@ -641,7 +641,15 @@ export class SlackController {
             });
             console.log(slack_auth);
 
-            const update_user = await User.findOneAndUpdate({_id:req.body.user._id},{$set:{is_slack_connected:true}},{new:true});
+            var user = await User.findById(req.body.user._id);
+
+            var integration = user['integrations'];
+            
+            integration['is_slack_connected']=true;
+
+            console.log(integration);
+
+            const update_user = await User.findOneAndUpdate({_id:req.body.user._id},{$set:{integrations:integration}},{new:true});
             
             console.log("update_user",update_user);
             
@@ -676,7 +684,15 @@ export class SlackController {
 
             await SlackAuth.deleteMany({_user:req.params.userID});
 
-            const update_user = await User.findOneAndUpdate({_id:req.params.userID},{$set:{is_slack_connected:false}},{new:true});
+            var user = await User.findById(req.params.userID);
+
+            var integration = user['integrations'];
+            
+            integration['is_slack_connected']=false;
+
+            console.log(integration);
+
+            const update_user = await User.findOneAndUpdate({_id:req.params.userID},{$set:{integrations:integration}},{new:true});
             
             console.log("update_user" , update_user);
 
