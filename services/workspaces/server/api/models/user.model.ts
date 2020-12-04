@@ -133,6 +133,10 @@ const UserSchema = new Schema({
                 type: String,
                 default: null
             }
+        },
+        is_slack_connected: {
+            type: Boolean,
+            default: null
         }
     },
     portal_manager: {
