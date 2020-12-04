@@ -40,20 +40,10 @@ export class GroupMembersComponent implements OnInit {
         // Assign the GroupData
         this.groupData = res;
 
-        /*
-        // This version is only available from ES6
-        // Merge the Admin and Members array
-        Array.prototype.push.apply(this.groupData._members, this.groupData._admins)
-
-        // Assign the members array to this new array
-        this.members = Array.from(new Set(this.groupData._members.sort((a: any, b: any)=> {
-          return new Date(a.created_date).valueOf() - new Date(b.created_date).valueOf()
-        })))
-        */
-       this.members = this.groupData._members.concat(this.groupData._admins);
-       this.members = this.members.filter((member, index) => {
-          return (this.members.indexOf(member) == index)
-       });
+        this.members = this.groupData._members.concat(this.groupData._admins);
+        this.members = this.members.filter((member, index) => {
+          return (this.members.findIndex(m => m._id == member._id) == index)
+        });
       }
     }))
 
