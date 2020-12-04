@@ -4,7 +4,7 @@
   <ng-container matColumnDef="title" sticky>
     <th mat-header-cell *matHeaderCellDef mat-sort-header> Title </th>
     <td mat-cell *matCellDef="let task">
-      <div class="statusbar" [ngClass]="{'status-todo': task?.task?.status === 'to do', 'status-inprogress': task?.task?.status === 'in progress', 'status-north-star': task?.task?.isNorthStar }">
+      <div class="statusbar" [ngClass]="{'status-todo': task?.task?.status === 'to do', 'status-inprogress': task?.task?.status === 'in progress', 'status-done': task?.task?.status === 'done', 'status-north-star': task?.task?.isNorthStar }">
         <app-inline-input
             [(ngModel)]="task.title"
             label="Name"
@@ -145,6 +145,7 @@
 </table>
 </div>
 <!-- DONE TASKS -->
+<!--
 <app-done-tasks-list-view *ngIf="tasks['done']"
   [tasks]="tasks['done']"
   [sections]="sections"
@@ -155,4 +156,5 @@
   [customFieldsToShow]="customFieldsToShow"
   (closeDoneTaskModalEvent)="onCloseDoneTaskModalEvent($event)">
 </app-done-tasks-list-view>
+-->
 <!-- DONE TASKS ENDS-->
