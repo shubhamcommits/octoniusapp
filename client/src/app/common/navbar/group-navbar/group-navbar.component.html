@@ -1,74 +1,95 @@
 <nav class="navbar navbar-expand-lg">
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-<ul class="nav">
-   <li class="nav-item d-block d-sm-none text-center"> <h6 class="card-title" *ngIf="!myWorkplace"><b>{{groupData?.group_name }}</b></h6>
-   </li>
-  <li class="nav-item mr-3 d-none d-sm-block">
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="nav">
+      <li class="nav-item d-block d-sm-none text-center"> <h6 class="card-title" *ngIf="!myWorkplace"><b>{{groupData?.group_name }}</b></h6>
+      </li>
+      <li class="nav-item mr-3 d-none d-sm-block">
 
-    <!-- Group Avatar starts -->
-    <img class="mr-3 feed-avatar" *ngIf="groupData && !myWorkplace" (click)="openDetails(content)"
-    src="{{ baseUrl }}/{{ groupData?.group_avatar }}" onerror="this.src='assets/images/icon-new-group.svg'"
-    placement="bottom" ngbTooltip="Change this group's avatar">
-    <!-- Group Avatar ends -->
+        <!-- Group Avatar starts -->
+        <img class="mr-3 feed-avatar" *ngIf="groupData && !myWorkplace" (click)="openDetails(content)"
+        src="{{ baseUrl }}/{{ groupData?.group_avatar }}" onerror="this.src='assets/images/icon-new-group.svg'"
+        placement="bottom" ngbTooltip="Change this group's avatar">
+        <!-- Group Avatar ends -->
 
-    <!-- My workplace avatar starts -->
-    <img class="mr-3 feed-avatar" *ngIf="groupData && userData && myWorkplace"
-    src="{{ userBaseUrl }}/{{ userData?.profile_pic }}" onerror="this.src='assets/images/icon-new-group.svg'"
-    placement="bottom" ngbTooltip="This is your workplace">
-    <!-- My Workplace avatar ends -->
+        <!-- My workplace avatar starts -->
+        <img class="mr-3 feed-avatar" *ngIf="userData && myWorkplace"
+        src="{{ userBaseUrl }}/{{ userData?.profile_pic }}" onerror="this.src='assets/images/icon-new-group.svg'"
+        placement="bottom" ngbTooltip="This is your workplace">
+        <!-- My Workplace avatar ends -->
 
-<ng-template #content let-modal>
-    <app-group-image-details [groupData]="groupData" [baseUrl]="baseUrl">
-    </app-group-image-details>
-</ng-template>
+        <ng-template #content let-modal>
+            <app-group-image-details [groupData]="groupData" [baseUrl]="baseUrl">
+            </app-group-image-details>
+        </ng-template>
 
-<h2> <i class="material-icons">arrow_forward_ios
-</i></h2>
-  </li>
+        <h2> <i class="material-icons">arrow_forward_ios
+        </i></h2>
+      </li>
 
-    <li class="nav-item">
-        <a class="nav-link" routerLink="/dashboard/work/groups/activity" [queryParams]="{ group: groupData?._id, myWorkplace: myWorkplace }"
-            routerLinkActive="active">Activity
-
+      <li class="nav-item" *ngIf="myWorkplace">
+        <a class="nav-link" routerLink="/dashboard/myspace/inbox" routerLinkActive="active">Inbox</a>
+      </li>
+      <li class="nav-item" *ngIf="myWorkplace">
+        <a class="nav-link" routerLink="/dashboard/myspace/tasks" routerLinkActive="active">Tasks</a>
+      </li>
+      <li class="nav-item" *ngIf="myWorkplace">
+        <a class="nav-link" routerLink="" [queryParams]="{ group: userData?._private_group, myWorkplace: true }"
+          routerLinkActive="active">Personal notes
         </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" routerLink="/dashboard/work/groups/tasks" [queryParams]="{ group: groupData?._id, myWorkplace: myWorkplace }"
-            routerLinkActive="active">Tasks
+      </li>
+      <li class="nav-item" *ngIf="myWorkplace">
+        <a class="nav-link" routerLink="/dashboard/work/groups/tasks" [queryParams]="{ group: userData?._private_group, myWorkplace: true }"
+          routerLinkActive="active">Personal Tasks
+        </a>
+      </li>
+      <li class="nav-item" *ngIf="myWorkplace">
+        <a class="nav-link" routerLink="/dashboard/work/groups/files" [queryParams]="{ group: userData?._private_group, myWorkplace: true }"
+          routerLinkActive="active">Personal Files
+        </a>
+      </li>
 
+      <li class="nav-item">
+        <a class="nav-link" *ngIf="!myWorkplace" routerLink="/dashboard/work/groups/activity" [queryParams]="{ group: groupData?._id, myWorkplace: myWorkplace }"
+          routerLinkActive="active">Activity
         </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" routerLink="/dashboard/work/groups/files" [queryParams]="{ group: groupData?._id, myWorkplace: myWorkplace }"
-            routerLinkActive="active">Files
+      </li>
+      <li class="nav-item">
+          <a class="nav-link" *ngIf="!myWorkplace" routerLink="/dashboard/work/groups/tasks" [queryParams]="{ group: groupData?._id, myWorkplace: myWorkplace }"
+              routerLinkActive="active">Tasks
 
-        </a>
-    </li>
-    <!--
-    <li class="nav-item">
-        <a class="nav-link" routerLink="/dashboard/work/groups/calendar" [queryParams]="{ group: groupData?._id, myWorkplace: myWorkplace }"
-            routerLinkActive="active">Calendar
+          </a>
+      </li>
+      <li class="nav-item">
+          <a class="nav-link" *ngIf="!myWorkplace" routerLink="/dashboard/work/groups/files" [queryParams]="{ group: groupData?._id, myWorkplace: myWorkplace }"
+              routerLinkActive="active">Files
 
-        </a>
-    </li>
-    -->
-    <li class="nav-item" *ngIf="!myWorkplace">
-        <a class="nav-link" routerLink="/dashboard/work/groups/members" [queryParams]="{ group: groupData?._id }"
-            routerLinkActive="active">Members
+          </a>
+      </li>
+      <!--
+      <li class="nav-item">
+          <a class="nav-link" routerLink="/dashboard/work/groups/calendar" [queryParams]="{ group: groupData?._id, myWorkplace: myWorkplace }"
+              routerLinkActive="active">Calendar
 
-        </a>
-    </li>
-    <li class="nav-item" *ngIf="!myWorkplace && isAdmin">
-        <a class="nav-link" routerLink="/dashboard/work/groups/dashboard" [queryParams]="{ group: groupData?._id }"
-            routerLinkActive="active">Dashboard
-        </a>
-    </li>
-    <li class="nav-item" *ngIf="!myWorkplace && isAdmin">
-        <a class="nav-link" routerLink="/dashboard/work/groups/admin" [queryParams]="{ group: groupData?._id }"
-            routerLinkActive="active">Admin
+          </a>
+      </li>
+      -->
+      <li class="nav-item" *ngIf="!myWorkplace">
+          <a class="nav-link" routerLink="/dashboard/work/groups/members" [queryParams]="{ group: groupData?._id }"
+              routerLinkActive="active">Members
 
-        </a>
-    </li>
-</ul>
-</div>
+          </a>
+      </li>
+      <li class="nav-item" *ngIf="!myWorkplace && isAdmin">
+          <a class="nav-link" routerLink="/dashboard/work/groups/dashboard" [queryParams]="{ group: groupData?._id }"
+              routerLinkActive="active">Dashboard
+          </a>
+      </li>
+      <li class="nav-item" *ngIf="!myWorkplace && isAdmin">
+          <a class="nav-link" routerLink="/dashboard/work/groups/admin" [queryParams]="{ group: groupData?._id }"
+              routerLinkActive="active">Admin
+
+          </a>
+      </li>
+    </ul>
+  </div>
 </nav>

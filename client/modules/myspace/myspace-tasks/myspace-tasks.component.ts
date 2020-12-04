@@ -44,6 +44,11 @@ export class MyspaceTasksComponent implements OnInit {
 
     await this.loadTasks();
     this.overdueAndTodayTasks = this.overdueTasks.concat(this.todayTasks);
+
+    // Send Updates to router state
+    this.publicFunctions.sendUpdatesToRouterState({
+      state: 'home'
+    })
   }
 
   async loadTasks() {

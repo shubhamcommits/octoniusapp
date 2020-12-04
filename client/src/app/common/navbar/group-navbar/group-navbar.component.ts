@@ -50,7 +50,9 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
   // My Workplace variable check
   myWorkplace: boolean = this.router.snapshot.queryParamMap.has('myWorkplace')
     ? (this.router.snapshot.queryParamMap.get('myWorkplace') == ('false') ? (false) : (true))
-    : false
+    : (this.router.snapshot['_routerState'].url.toLowerCase().includes('myspace')
+        ? true
+        :false)
 
   // PUBLIC FUNCTIONS
   private publicFunctions = new PublicFunctions(this.injector);
@@ -65,7 +67,9 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
     // My Workplace variable check
     this.myWorkplace = this.router.snapshot.queryParamMap.has('myWorkplace')
       ? (this.router.snapshot.queryParamMap.get('myWorkplace') == ('false') ? (false) : (true))
-      : false
+      : (this.router.snapshot['_routerState'].url.toLowerCase().includes('myspace')
+        ? true
+        :false)
 
     // Fetch the group data from HTTP Request
     if(this.groupId)
