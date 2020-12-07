@@ -37,7 +37,7 @@
         <app-infinite-scroll (scrolled)="onScroll()">
             <div class="media card-tile user-list" style="border-bottom: 1px solid #e4edf8;"
                 *ngFor="let file of files; let index = index; trackBy: utilityService.trackByIndex;">
-             
+
 
                 <a *ngIf="file?.type === 'file' || file?.type === undefined" class="mt-0" target="_blank"
                     href="{{filesBaseUrl}}/{{file?.modified_name}}">
@@ -47,7 +47,7 @@
 
 
                 <a *ngIf="file?.type === 'folio'" class="mt-0"
-                    routerLink="/document/{{file?._id}}" [queryParams]="{ group: file?._group?._id }">  
+                    routerLink="/document/{{file?._id}}" [queryParams]="{ group: file?._group?._id, myWorkplace: myWorkplace }">
                     <img src="assets/images/icon_folio.svg"
                     onerror="this.src='assets/images/icon_file.svg'" class="file-type mt-3 mr-1" style="vertical-align: bottom;">{{file?.original_name}}</a>
 
@@ -57,7 +57,7 @@
                     <div class="float-right">
 
                         <img src="{{ userBaseUrl }}/{{file._posted_by?.profile_pic}}"
-                            routerLink="/dashboard/user/profile" [queryParams]="{ userId: file._posted_by._id }"
+                            routerLink="/dashboard/user/profile" [queryParams]="{ userId: file._posted_by._id, myWorkplace: myWorkplace }"
                             onerror="this.src='assets/images/user.png'" class="feed-avatar">
                         <i class="material-icons-outlined ml-2" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
                         <mat-menu #menu="matMenu">

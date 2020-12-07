@@ -29,7 +29,7 @@ export class FolioHeaderComponent implements OnInit {
   // File Data Variable
   file: any
 
-  // Edit Title 
+  // Edit Title
   editTitle = false
 
   // Global File Original Name Varibale
@@ -63,7 +63,8 @@ export class FolioHeaderComponent implements OnInit {
    * This function is responsible for taking the user back to their previous locations
    */
   goBackToFiles() {
-    this.router.navigate(['/dashboard', 'work', 'groups', 'files'], {queryParams: {group: this.groupId}})
+    const myWorkplace = this._ActivatedRoute.snapshot.queryParamMap.get('myWorkplace') ? true : false
+    this.router.navigate(['/dashboard', 'work', 'groups', 'files'], {queryParams: { group: this.groupId, myWorkplace: myWorkplace }})
 
     // Change the title of the tab
     this.titleService.setTitle('Octonius');
@@ -71,7 +72,7 @@ export class FolioHeaderComponent implements OnInit {
 
   /**
    * This function is responsible for fetching a file's details
-   * @param fileId 
+   * @param fileId
    */
   public async getFile(fileId: any) {
     return new Promise((resolve) => {
@@ -92,7 +93,7 @@ export class FolioHeaderComponent implements OnInit {
 
   /**
    * This function is responsible for editing a file's details
-   * @param fileId 
+   * @param fileId
    * @param file
    */
   public async edit(fileId: any, file: any) {
@@ -114,7 +115,7 @@ export class FolioHeaderComponent implements OnInit {
 
   /**
    * This function is responsible for handling the changeTitle functionlaity
-   * @param event 
+   * @param event
    */
   async changeTitle(event: any) {
 

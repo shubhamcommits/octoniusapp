@@ -63,6 +63,8 @@ export class GroupFilesComponent implements OnInit {
   // Create subsink class to unsubscribe the observables
   public subSink = new SubSink();
 
+  myWorkplace = this.router.snapshot.queryParamMap.get('myWorkplace') ? true : false
+
   // Delete Event Emitter - Emits delete event
   @Output('delete') delete = new EventEmitter();
 
