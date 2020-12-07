@@ -29,6 +29,12 @@ export class AdminGeneralComponent implements OnInit {
   publicFunctions = new PublicFunctions(this.injector);
 
   async ngOnInit() {
+
+    // Setting Home State
+    this.publicFunctions.sendUpdatesToRouterState({
+      state: 'admin'
+    })
+
     //this.utilityService.startForegroundLoader();
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
     this.userData = await this.publicFunctions.getCurrentUser();

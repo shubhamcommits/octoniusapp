@@ -17,6 +17,8 @@ import { WorkNavbarComponent } from '../common/navbar/work-navbar/work-navbar.co
 import { GroupImageDetailsComponent } from '../common/navbar/group-navbar/group-image-details/group-image-details.component';
 import { SharedModule } from '../common/shared/shared.module';
 import { SidebarComponent } from '../common/navbar/sidebar/sidebar.component';
+import { WorkspaceDetailsComponent } from '../common/navbar/common-navbar/workspace-details/workspace-details.component';
+import { UserImageDetailsComponent } from '../common/navbar/common-navbar/user-image-details/user-image-details.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import { SidebarComponent } from '../common/navbar/sidebar/sidebar.component';
     CommonNavbarComponent,
     WorkNavbarComponent,
     GroupImageDetailsComponent,
-    SidebarComponent
+    SidebarComponent,
+    WorkspaceDetailsComponent,
+    UserImageDetailsComponent
   ],
   imports: [
     CommonModule,

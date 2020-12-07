@@ -120,9 +120,6 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
       ? (this.router.snapshot.queryParamMap.get('myWorkplace') == ('false') ? (false) : (true))
       : (this.router.snapshot['_routerState'].url.toLowerCase().includes('myspace')
           ? true
-          : ((this.router.snapshot['_routerState'].url.toLowerCase().includes('user')
-              && this.userData && this.userData._id == this.router.snapshot.queryParamMap.get('userId'))
-            ? true
-            :false))
+          : false)
   }
 }

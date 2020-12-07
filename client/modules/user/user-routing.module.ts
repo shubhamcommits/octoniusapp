@@ -5,13 +5,8 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserCloudsComponent } from './user-clouds/user-clouds.component';
 
 const routes: Routes = [
-  {
-    path: '', component: UserHeaderComponent, children: [
-      { path: 'profile', component: UserProfileComponent },
-      { path: 'clouds', component: UserCloudsComponent },
-    ],
-    runGuardsAndResolvers: `always`
-  }
+  { path: 'profile', component: UserProfileComponent, runGuardsAndResolvers: `always` },
+  { path: 'clouds', component: UserCloudsComponent, runGuardsAndResolvers: `always` }
 ];
 
 @NgModule({

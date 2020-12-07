@@ -16,9 +16,11 @@
         </button>
 
         <!-- OCTONIUS BRANDING STARTS -->
+        <!--
         <a *ngIf="isCommonNavbar$ | async" class="nav navbar-nav navbar-center navbar-brand d-none d-sm-block" [routerLink]="['/dashboard', 'myspace', 'inbox']" routerLinkActive="router-link-active">
           <img src="assets/images/logo.svg" alt="" class="octonius-logo">
         </a>
+        -->
         <!-- OCTONIUS BRANDING ENDS -->
 
         <!-- COLLAPSABLE MENU STARTS -->
@@ -35,7 +37,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <!-- MENU ITEMS STARTS -->
 
-          <!-- <app-common-navbar *ngIf="isCommonNavbar$ | async"></app-common-navbar> -->
+          <app-common-navbar *ngIf="isCommonNavbar$ | async"></app-common-navbar>
           <app-group-navbar *ngIf="isGroupNavbar$ | async"></app-group-navbar>
           <app-work-navbar *ngIf="isWorkNavbar$ | async"></app-work-navbar>
           <!-- MENU ITEMS ENDS -->

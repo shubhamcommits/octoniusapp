@@ -32,6 +32,11 @@ export class AdminMembersComponent implements OnInit {
 
   async ngOnInit() {
 
+    // Setting Home State
+    this.publicFunctions.sendUpdatesToRouterState({
+      state: 'admin'
+    })
+
     // Subscribe to the change in workspace data from the socket server
     this.subSink.add(this.utilityService.currentWorkplaceData.subscribe((res) => {
       if (JSON.stringify(res) !== JSON.stringify({})) {

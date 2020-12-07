@@ -3,8 +3,8 @@
       <img class="mr-3 feed-avatar"
          src="{{ baseUrl }}/{{ workspaceData?.workspace_avatar }}"
          onerror="this.src='assets/images/organization.png'"
-         placement="bottom" ngbTooltip="Change this workspace's avatar"
-         (click)="openWorkspaceDetails(content)">
+         placement="bottom" ngbTooltip="Change this workspace's avatar">
+         <!-- (click)="openWorkspaceDetails(content)" -->
       <div class="media-body">
          <div>
             <h2>Workplace settings</h2>
@@ -34,11 +34,12 @@
             <i class="material-icons">create</i>
          </button>
       </div> -->
-
+      <!--
       <ng-template #content let-modal>
          <app-workspace-details [userData]="userData" [workspaceData]="workspaceData" [baseUrl]="baseUrl">
          </app-workspace-details>
       </ng-template>
+      -->
 
    </div>
 

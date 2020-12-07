@@ -13,7 +13,6 @@ import { UserAvailableCloudsComponent } from './user-clouds/user-available-cloud
 import { UserConnectedCloudsComponent } from './user-clouds/user-connected-clouds/user-connected-clouds.component';
 
 import { GoogleCloudModule } from './user-clouds/user-available-clouds/google-cloud/google-cloud.module';
-import { UserImageDetailsComponent } from './user-header/user-image-details/user-image-details.component';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { SlackCloudModule } from './user-clouds/user-available-clouds/slack/slack.module';
 
@@ -26,8 +25,7 @@ import { SlackCloudModule } from './user-clouds/user-available-clouds/slack/slac
     UserProfessionalInformationComponent,
     UserSkillsComponent,
     UserAvailableCloudsComponent,
-    UserConnectedCloudsComponent,
-    UserImageDetailsComponent
+    UserConnectedCloudsComponent
   ],
   imports: [
     CommonModule,

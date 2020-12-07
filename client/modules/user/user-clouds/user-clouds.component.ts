@@ -36,6 +36,12 @@ export class UserCloudsComponent implements OnInit {
   googleUser: any
 
   async ngOnInit() {
+
+    // Setting Home State
+    this.publicFunctions.sendUpdatesToRouterState({
+      state: 'admin'
+    })
+
     this.userData = await this.publicFunctions.getCurrentUser();
 
     this.slackAuthSuccessful = (this.userData && this.userData.integrations && this.userData.integrations.is_slack_connected) ? true : false;
