@@ -211,7 +211,8 @@ export class WorkspaceController {
                 _id: user._id
             }, {
                 $push: {
-                    _groups: group
+                    _groups: group,
+                    'stats.favorite_groups': group._id
                 }
             }, {
                 new: true
