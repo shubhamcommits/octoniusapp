@@ -1,5 +1,5 @@
-<mat-sidenav-container style="height: 100vh;">
-  <mat-sidenav opened="true" mode="side" #sidenav disableClose autosize>
+<mat-drawer-container style="height: 100vh;" autosize>
+  <mat-drawer opened="true" mode="side" disableClose autosize >
 
     <!-- SIDE MENU ICON STARTS -->
     <app-sidebar *ngIf="!iconsSidebar" class="nav navbar-nav navbar-left" [sideNav]="sidenav" [iconsSidebar]="iconsSidebar" (sidebarChange)="switchSideBar()"></app-sidebar>
@@ -9,61 +9,60 @@
     <app-icons-sidebar *ngIf="iconsSidebar" class="nav navbar-nav navbar-left" [sideNav]="sidenav" [iconsSidebar]="iconsSidebar" (sidebarChange)="switchSideBar()"></app-icons-sidebar>
     <!-- ICONS SIDE MENU ICON ENDS -->
 
-  </mat-sidenav>
-
-  <mat-sidenav-content>
-    <nav class="navbar navbar-expand-md fixed-top">
-      <div class="container">
-
-        <!-- COLLAPSABLE MENU STARTS -->
-
-        <!-- MENU BUTTON STARTS -->
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon">
-            <i class="material-icons-round">more_horiz</i>
-          </span>
-        </button>
-        <!-- MENU BUTTON ENDS -->
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <!-- MENU ITEMS STARTS -->
-
-          <app-common-navbar *ngIf="isAdminNavbar$ | async"></app-common-navbar>
-          <app-group-navbar *ngIf="isGroupNavbar$ | async"></app-group-navbar>
-          <app-work-navbar *ngIf="isWorkNavbar$ | async"></app-work-navbar>
-          <!-- MENU ITEMS ENDS -->
-
-          <ul class="navbar-nav ml-auto navbar-right">
-            <li class="nav-item">
-
-              <!-- SEARCH starts -->
-              <a class="nav-link" (click)="openModal(search)">
-                <span class="material-icons">
-                  search
-                </span>
-              </a>
-              <!-- SEARCH ends -->
-
-            </li>
-            <!-- PUSH NOTIFICATIONS STARTS -->
-            <!--
-            <li class="nav-item d-none d-sm-block">
-              <push-notifications class="nav-link" *ngIf="userData && baseUrl" [userData]="userData" [baseUrl]="baseUrl">
-              </push-notifications>
-            </li>
-            -->
-            <!-- PUSH NOTIFICATIONS ENDS -->
-          </ul>
-
-        </div>
-        <!-- COLLAPSABLE MENU ENDS -->
+  </mat-drawer>
+  <nav class="navbar navbar-expand-md supersticky">
+    <div class="container">
+  
+      <!-- COLLAPSABLE MENU STARTS -->
+  
+      <!-- MENU BUTTON STARTS -->
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon">
+          <i class="material-icons-round">more_horiz</i>
+        </span>
+      </button>
+      <!-- MENU BUTTON ENDS -->
+  
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <!-- MENU ITEMS STARTS -->
+  
+        <app-common-navbar *ngIf="isAdminNavbar$ | async"></app-common-navbar>
+        <app-group-navbar *ngIf="isGroupNavbar$ | async"></app-group-navbar>
+        <app-work-navbar *ngIf="isWorkNavbar$ | async"></app-work-navbar>
+        <!-- MENU ITEMS ENDS -->
+  
+        <ul class="navbar-nav ml-auto navbar-right">
+          <li class="nav-item">
+  
+            <!-- SEARCH starts -->
+            <a class="nav-link" (click)="openModal(search)">
+              <span class="material-icons">
+                search
+              </span>
+            </a>
+            <!-- SEARCH ends -->
+  
+          </li>
+          <!-- PUSH NOTIFICATIONS STARTS -->
+          <!--
+          <li class="nav-item d-none d-sm-block">
+            <push-notifications class="nav-link" *ngIf="userData && baseUrl" [userData]="userData" [baseUrl]="baseUrl">
+            </push-notifications>
+          </li>
+          -->
+          <!-- PUSH NOTIFICATIONS ENDS -->
+        </ul>
+  
       </div>
-    </nav>
+      <!-- COLLAPSABLE MENU ENDS -->
+    </div>
+  </nav>
+   
     <router-outlet></router-outlet>
     <!-- Search Modal -->
     <ng-template #search let-modal>
       <app-search-header (close)="closeModal()"></app-search-header>
     </ng-template>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+    
+</mat-drawer-container>
