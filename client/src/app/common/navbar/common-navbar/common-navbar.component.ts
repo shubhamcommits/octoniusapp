@@ -14,6 +14,7 @@ export class CommonNavbarComponent implements OnInit, AfterContentChecked {
 
   // BASE URL OF THE APPLICATION
   baseUrl = environment.UTILITIES_WORKSPACES_UPLOADS;
+  userBaseUrl = environment.UTILITIES_USERS_UPLOADS;
 
   // SUBSINK
   private subSink = new SubSink();
