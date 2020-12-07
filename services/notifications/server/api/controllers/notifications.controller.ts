@@ -77,7 +77,7 @@ export class NotificationsController {
 
             for(let i = 0; i < comment_mentions_ids.length; i++){
                 await axios.post(`${process.env.INTEGRATION_SERVER_API}/slack-notify`, {
-                    data: comment_object,
+                    data: JSON.stringify(comment_object),
                     userid:comment_mentions_ids[i]
                   });
             }
@@ -206,7 +206,7 @@ export class NotificationsController {
             }
             console.log('comment_object ==>', comment_object);
             await axios.post(`${process.env.INTEGRATION_SERVER_API}/slack-notify`, {
-                data: comment_object,
+                data: JSON.stringify(comment_object),
                 userid:assigned_to
               });
             // Send status 200 response
@@ -273,7 +273,7 @@ export class NotificationsController {
             }
             console.log('comment_object ==>', comment_object);
             await axios.post(`${process.env.INTEGRATION_SERVER_API}/slack-notify`, {
-                data: comment_object,
+                data: JSON.stringify(comment_object),
                 userid: assigneeId
               });
 
@@ -433,7 +433,7 @@ export class NotificationsController {
             }
             console.log('comment_object ==>', comment_object);
             await axios.post(`${process.env.INTEGRATION_SERVER_API}/slack-notify`, {
-                data: comment_object,
+                data: JSON.stringify(comment_object),
                 userid: userId
               });
             // Send status 200 response
@@ -496,7 +496,7 @@ export class NotificationsController {
             }
             console.log('comment_object ==>', comment_object);
             await axios.post(`${process.env.INTEGRATION_SERVER_API}/slack-notify`, {
-                data: comment_object,
+                data: JSON.stringify(comment_object),
                 userid: posted_by
               });
             if (assigned_to) {
@@ -572,7 +572,7 @@ export class NotificationsController {
             }
             console.log('comment_object ==>', comment_object);
             await axios.post(`${process.env.INTEGRATION_SERVER_API}/slack-notify`, {
-                data: comment_object,
+                data: JSON.stringify(comment_object),
                 userid:follower
               });
 
@@ -639,7 +639,7 @@ export class NotificationsController {
             }
             console.log('comment_object ==>', comment_object);
             await axios.post(`${process.env.INTEGRATION_SERVER_API}/slack-notify`, {
-                data: comment_object,
+                data: JSON.stringify(comment_object),
                 userid: user
               });
             // Send status 200 response
@@ -701,7 +701,7 @@ export class NotificationsController {
             }
             console.log('comment_object ==>', comment_object);
             await axios.post(`${process.env.INTEGRATION_SERVER_API}/slack-notify`, {
-                data: comment_object,
+                data: JSON.stringify(comment_object),
                 userid: comment._commented_by
               });
 
