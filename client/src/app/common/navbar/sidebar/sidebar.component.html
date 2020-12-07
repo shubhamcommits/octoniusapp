@@ -16,44 +16,20 @@
     <div class="menu-options">
         <ul class="list-unstyled components">
             <li>
-                <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">
-
-                    <i class="material-icons-outlined carret">person</i>
-                    MY SPACE
-                    <i class="material-icons-outlined carret">keyboard_arrow_down</i>
-                </a>
-                <ul class="collapse list-unstyled" id="homeSubmenu">
-                    <li>
-                        <a [routerLink]="['/dashboard', 'myspace', 'inbox']" routerLinkActive="router-link-active">
-                            Inbox
-                        </a>
-                    </li>
-                    <li>
-                        <a [routerLink]="['/dashboard', 'myspace', 'tasks']">
-                            My tasks
-                        </a>
-                    </li>
-                    <!-- <li>
-                        <a [routerLink]="['/dashboard', 'myspace', 'agenda']">
-                            Agenda
-                        </a>
-                    </li> -->
-                    <li>
-                        <a routerLink="/dashboard/work/groups/activity" [queryParams]="{ group: userData?._private_group, myWorkplace: true }">
-                            Personal workplace
-                        </a>
-                    </li>
-                </ul>
+              <a [routerLink]="['/dashboard', 'myspace', 'inbox']" routerLinkActive="router-link-active">
+                  <i class="material-icons-outlined carret">person</i>
+                  MY SPACE
+              </a>
             </li>
             <li>
-                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">
+                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="true">
 
                     <i class="material-icons-outlined carret">business_center</i>
                     WORK
                     <i class="material-icons-outlined carret">keyboard_arrow_down</i>
                 </a>
 
-                <ul class="collapse list-unstyled" id="pageSubmenu">
+                <ul class="collapse list-unstyled show" id="pageSubmenu">
                     <li *ngFor="let group of userGroups; trackBy: utilityService.trackByIndex">
                         <a [routerLink]="['/dashboard', 'work', 'groups', 'activity']"
                             [queryParams]="{ group: group?._id, myWorkplace: false  }">
