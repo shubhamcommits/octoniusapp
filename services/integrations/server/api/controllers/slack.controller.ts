@@ -37,7 +37,7 @@ export class SlackController {
 
         console.log('This webhook used ==>', MY_SLACK_WEBHOOK_URL);
         console.log('req.body ==>', req.body);
-        const body = req.body.data;
+        const body = JSON.parse(req.body.data);
 
         slack.alert({
             text: body.text,
