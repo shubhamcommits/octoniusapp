@@ -99,6 +99,9 @@ routes.get('/recent-groups/:userId', user.getRecentGroups);
 
 routes.put('/increment-group-visit', user.incrementGroupVisit);
 
+// Get user favorite groups
+routes.get('/favorite-groups/:userId', user.getFavoriteGroups);
+
 // -| PORTAL MANAGEMENT APP |-
 // GET - Get current loggedIn user on the basis of userId
 routes.get('/user/all', user.getAllUsers);
@@ -108,6 +111,8 @@ routes.put('/:userId/make-portal-manager', user.makeUserPortalManager);
 
 // DELETE - Remove the user on the basis of userId
 routes.delete('/:userId', user.removeUser);
+
+routes.put('/add-favorite-group', user.addFavoriteGroup);
 
 /*  ===================
  *  -- EXPORT ROUTES --

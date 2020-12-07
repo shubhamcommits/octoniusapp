@@ -114,6 +114,10 @@ const UserSchema = new Schema({
                 default: 1
             }
         }],
+        favorite_groups: [{
+            type: Schema.Types.ObjectId,
+            ref: 'Group'
+        }],
         dashboard_period: {
             type: Number,
             default: 7

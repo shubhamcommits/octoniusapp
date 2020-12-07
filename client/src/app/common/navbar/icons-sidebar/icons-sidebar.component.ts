@@ -61,7 +61,7 @@ export class IconsSidebarComponent implements OnInit, OnDestroy {
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
     // Fetches the user groups from the server
-    this.userGroups = await this.publicFunctions.getUserGroups(this.workspaceData._id, this.userData._id)
+    this.userGroups = await this.publicFunctions.getUserFavoriteGroups(this.userData._id)
       .catch(() => {
         // If the function breaks, then catch the error and console to the application
         this.publicFunctions.sendError(new Error('Unable to connect to the server, please try again later!'));
