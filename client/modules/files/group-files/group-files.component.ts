@@ -63,7 +63,7 @@ export class GroupFilesComponent implements OnInit {
   // Create subsink class to unsubscribe the observables
   public subSink = new SubSink();
 
-  myWorkplace = this.router.snapshot.queryParamMap.get('myWorkplace') ? true : false
+  myWorkplace = this.router.snapshot.queryParamMap.has('myWorkplace') ? this.router.snapshot.queryParamMap.get('myWorkplace') : false
 
   // Delete Event Emitter - Emits delete event
   @Output('delete') delete = new EventEmitter();
@@ -74,10 +74,10 @@ export class GroupFilesComponent implements OnInit {
     this.userData = await this.publicFunctions.getCurrentUser();
 
     // Fetch the uploaded files from the server
-    this.files = await this.publicFunctions.getFiles(this.groupId)
+    this.files = await this.publicFunctions.getFiles(this.groupId);
 
     // Concat the files
-    this.files = [...this.files, ...this.folders]
+    this.files = [...this.files, ...this.folders];
   }
 
   getFile(file: any){
