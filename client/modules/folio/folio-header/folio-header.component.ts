@@ -63,7 +63,7 @@ export class FolioHeaderComponent implements OnInit {
    * This function is responsible for taking the user back to their previous locations
    */
   goBackToFiles() {
-    const myWorkplace = this._ActivatedRoute.snapshot.queryParamMap.get('myWorkplace') ? true : false
+    const myWorkplace = this._ActivatedRoute.snapshot.queryParamMap.has('myWorkplace') ? this._ActivatedRoute.snapshot.queryParamMap.get('myWorkplace') : false
     this.router.navigate(['/dashboard', 'work', 'groups', 'files'], {queryParams: { group: this.groupId, myWorkplace: myWorkplace }})
 
     // Change the title of the tab
