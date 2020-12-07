@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Injector, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, OnDestroy, Injector, Input, EventEmitter, Output, OnChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { environment } from 'src/environments/environment';
@@ -8,6 +8,7 @@ import { AuthService } from 'src/shared/services/auth-service/auth.service';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { SubSink } from 'subsink';
 import { MatSidenav } from '@angular/material/sidenav';
+import { GroupService } from 'src/shared/services/group-service/group.service';
 // import * as $ from 'jquery';
 
 @Component({
@@ -15,13 +16,14 @@ import { MatSidenav } from '@angular/material/sidenav';
   templateUrl: './icons-sidebar.component.html',
   styleUrls: ['./icons-sidebar.component.scss']
 })
-export class IconsSidebarComponent implements OnInit, OnDestroy {
+export class IconsSidebarComponent implements OnInit, OnDestroy, OnChanges {
 
   constructor(
     private injector: Injector,
     private storageService: StorageService,
     private authService: AuthService,
     private socketService: SocketService,
+    private groupService: GroupService,
     private router: Router
   ) { }
 
@@ -92,6 +94,14 @@ export class IconsSidebarComponent implements OnInit, OnDestroy {
       console.log('Error occurred while logging out!', err);
       this.utilityService.errorNotification('Error occurred while logging you out!');
     }
+  }
+
+  ngOnChanges() {
+    let groups = this.userGroups;
+    this.userGroups = [];
+    groups.forEach(group => {
+      this.groupService.getGroup(group).then(res => this.userGroups.push(res['group']))
+    });
   }
 
   switchSideBar() {

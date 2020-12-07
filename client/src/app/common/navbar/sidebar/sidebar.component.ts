@@ -23,7 +23,7 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
     private storageService: StorageService,
     private authService: AuthService,
     private socketService: SocketService,
-    private groupSerice: GroupService,
+    private groupService: GroupService,
     private router: Router
   ) { }
 
@@ -65,7 +65,7 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
     let groups = this.userGroups;
     this.userGroups = [];
     groups.forEach(group => {
-      this.groupSerice.getGroup(group).then(res => this.userGroups.push(res['group']))
+      this.groupService.getGroup(group).then(res => this.userGroups.push(res['group']))
     });
   }
 
