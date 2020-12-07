@@ -1,11 +1,15 @@
 <nav id="sidebar">
     <div class="sidebar-header">
-        <a [routerLink]="['/dashboard', 'myspace', 'inbox']" routerLinkActive="router-link-active" (click)="this.sideNav.toggle()">
-            <img src="assets/images/logo.svg" alt="" class="octonius-logo">
+        <a [routerLink]="['/dashboard', 'myspace', 'inbox']" routerLinkActive="router-link-active">
+            <img src="assets/images/white_logo.svg" alt="" class="octonius-logo">
         </a>
 
         <div id="dismiss">
-            <i class="material-icons" (click)="this.sideNav.toggle()">close</i>
+            <!-- MENU BUTTON STARTS -->
+            <button type="button" id="sidebarCollapse" class="btn btn-link" (click)="switchSideBar()" >
+              <i class="material-icons">menu_open</i>
+            </button>
+            <!-- MENU BUTTON ENDS -->
         </div>
     </div>
 
@@ -20,52 +24,55 @@
                 </a>
                 <ul class="collapse list-unstyled" id="homeSubmenu">
                     <li>
-                        <a [routerLink]="['/dashboard', 'myspace', 'inbox']" routerLinkActive="router-link-active" (click)="this.sideNav.toggle()">
+                        <a [routerLink]="['/dashboard', 'myspace', 'inbox']" routerLinkActive="router-link-active">
                             Inbox
                         </a>
                     </li>
                     <li>
-                        <a [routerLink]="['/dashboard', 'myspace', 'tasks']" (click)="this.sideNav.toggle()">
+                        <a [routerLink]="['/dashboard', 'myspace', 'tasks']">
                             My tasks
                         </a>
                     </li>
                     <!-- <li>
-                        <a [routerLink]="['/dashboard', 'myspace', 'agenda']" (click)="this.sideNav.toggle()">
+                        <a [routerLink]="['/dashboard', 'myspace', 'agenda']">
                             Agenda
                         </a>
                     </li> -->
                     <li>
-                        <a routerLink="/dashboard/work/groups/activity" [queryParams]="{ group: userData?._private_group, myWorkplace: true }" (click)="this.sideNav.toggle()">
+                        <a routerLink="/dashboard/work/groups/activity" [queryParams]="{ group: userData?._private_group, myWorkplace: true }">
                             Personal workplace
                         </a>
                     </li>
                 </ul>
             </li>
             <li>
-                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" style="float: left;">
+                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">
 
                     <i class="material-icons-outlined carret">business_center</i>
                     WORK
                     <i class="material-icons-outlined carret">keyboard_arrow_down</i>
                 </a>
-                <a routerLinkActive="active" routerLink="/dashboard/work/groups/all" style="margin-left: 250px;" (click)="this.sideNav.toggle()">
-                    <span class="badge badge-primary">see all</span>
-                </a>
 
                 <ul class="collapse list-unstyled" id="pageSubmenu">
                     <li *ngFor="let group of userGroups; trackBy: utilityService.trackByIndex">
                         <a [routerLink]="['/dashboard', 'work', 'groups', 'activity']"
-                            [queryParams]="{ group: group?._id, myWorkplace: false  }" (click)="this.sideNav.toggle()">
+                            [queryParams]="{ group: group?._id, myWorkplace: false  }">
 
                             <img class="avatar" src="{{ this.groupBaseUrl }}/{{group.group_avatar}}"
                                 onerror="this.src='assets/images/icon-new-group.svg'">
                             {{group?.group_name}}
                         </a>
                     </li>
+
+                    <li>
+                      <a routerLinkActive="active" routerLink="/dashboard/work/groups/all">
+                        <span class="badge badge-primary">see all groups</span>
+                      </a>
+                    </li>
                 </ul>
             </li>
             <li *ngIf="this.userData?.role === 'admin' || this.userData?.role === 'owner'">
-                <a class="nav-link" [routerLink]="['/dashboard', 'admin', 'general']" routerLinkActive="active" (click)="this.sideNav.toggle()">
+                <a class="nav-link" [routerLink]="['/dashboard', 'admin', 'general']" routerLinkActive="active">
                     <i class="material-icons-outlined">settings</i>
                     SETTINGS & ADMINISTRATION<span class="sr-only">(current)</span>
                 </a>
@@ -79,7 +86,7 @@
                     <!-- USER PROFILE BADGE STARTS -->
                     <a class="nav-link" *ngIf="this.userData"
                         [routerLink]="['/dashboard', 'user', 'profile']"
-                        [queryParams]="{ userId: userData?._id}" (click)="this.sideNav.toggle()" >
+                        [queryParams]="{ userId: userData?._id}" >
                         <img src="{{userBaseUrl}}/{{userData?.profile_pic}}"
                         onerror="this.src='assets/images/user.png'"
                         class="avatar">

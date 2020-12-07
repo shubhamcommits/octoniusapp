@@ -59,6 +59,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   isAdminNavbar$ = new BehaviorSubject(false);
   isWorkNavbar$ = new BehaviorSubject(false);
 
+  iconsSidebar = true;
+
   // NOTIFICATIONS DATA
   public notificationsData: { readNotifications: [], unreadNotifications: [] } = {
       readNotifications: [],
@@ -231,4 +233,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
+  switchSideBar() {
+    this.iconsSidebar = !this.iconsSidebar;
+  }
 }

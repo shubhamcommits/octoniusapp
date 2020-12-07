@@ -19,6 +19,7 @@ import { SharedModule } from '../common/shared/shared.module';
 import { SidebarComponent } from '../common/navbar/sidebar/sidebar.component';
 import { WorkspaceDetailsComponent } from '../common/navbar/common-navbar/workspace-details/workspace-details.component';
 import { UserImageDetailsComponent } from '../common/navbar/common-navbar/user-image-details/user-image-details.component';
+import { IconsSidebarComponent } from '../common/navbar/icons-sidebar/icons-sidebar.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { UserImageDetailsComponent } from '../common/navbar/common-navbar/user-i
     WorkNavbarComponent,
     GroupImageDetailsComponent,
     SidebarComponent,
+    IconsSidebarComponent,
     WorkspaceDetailsComponent,
     UserImageDetailsComponent
   ],

@@ -11,11 +11,11 @@ import { MatSidenav } from '@angular/material/sidenav';
 // import * as $ from 'jquery';
 
 @Component({
-  selector: 'app-sidebar',
-  templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.scss']
+  selector: 'app-icons-sidebar',
+  templateUrl: './icons-sidebar.component.html',
+  styleUrls: ['./icons-sidebar.component.scss']
 })
-export class SidebarComponent implements OnInit, OnDestroy {
+export class IconsSidebarComponent implements OnInit, OnDestroy {
 
   constructor(
     private injector: Injector,
