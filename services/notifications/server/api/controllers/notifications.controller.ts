@@ -22,7 +22,7 @@ export class NotificationsController {
      */
     async newCommentMentions(req: Request, res: Response, next: NextFunction) {
 
-        const { comment } = req.body;
+        const comment = JSON.parse(req.body.comment);
 
         console.log('req.body newCommentMentions', req.body);
         try {
@@ -449,7 +449,8 @@ export class NotificationsController {
     async newComment(req: Request, res: Response, next: NextFunction) {
         console.log('newComment Function');
         console.log('req.body of newComment ==>', req.body);
-        const { comment, posted_by, assigned_to, followers } = req.body;
+        const { posted_by, assigned_to, followers } = req.body;
+        const comment = JSON.parse(req.body.comment);
         try {
             // Call Service Function for newComment
             const commented_by = req.body.comment._commented_by._id;
