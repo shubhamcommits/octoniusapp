@@ -59,6 +59,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   isAdminNavbar$ = new BehaviorSubject(false);
   isWorkNavbar$ = new BehaviorSubject(false);
 
+  userGroups: any = [];
+
   iconsSidebar = true;
 
   // NOTIFICATIONS DATA
@@ -109,6 +111,13 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // FETCH THE USER DETAILS FROM THE SERVER
     this.userData = await this.getCurrentUser();
+
+    // Fetches the user groups from the server
+    this.userGroups = await this.publicFunctions.getUserFavoriteGroups(this.userData._id)
+      .catch(() => {
+        // If the function breaks, then catch the error and console to the application
+        this.publicFunctions.sendError(new Error('Unable to connect to the server, please try again later!'));
+      });
 
     // Fetch current user from the service
     this.subSink.add(this.utilityService.currentUserData.subscribe(async (res) => {
@@ -235,5 +244,10 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   switchSideBar() {
     this.iconsSidebar = !this.iconsSidebar;
+  }
+
+  async onFavoriteGroupSaved() {
+    this.userData = await this.getCurrentUser();
+    this.userGroups = this.userData['stats']['favorite_groups'];
   }
 }

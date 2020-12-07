@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector, OnDestroy } from '@angular/core';
+import { Component, OnInit, Injector, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { PublicFunctions } from 'modules/public.functions';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
@@ -13,7 +13,6 @@ import { UserService } from 'src/shared/services/user-service/user.service';
 })
 export class GroupNavbarComponent implements OnInit, OnDestroy {
 
-
   constructor(
     private injector: Injector,
     private router: ActivatedRoute,
@@ -26,6 +25,8 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
       }
     }))
   }
+
+  @Output() favoriteGroupSaved = new EventEmitter();
 
   isAdmin: boolean = false;
 
@@ -144,6 +145,9 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
             this.userService.saveFavoriteGroup(this.userData._id, this.groupId, !this.isFavoriteGroup)
               .then((res) => {
                 this.isFavoriteGroup = !this.isFavoriteGroup;
+                this.userData = res['user'];
+                this.publicFunctions.sendUpdatesToUserData(this.userData);
+                this.favoriteGroupSaved.emit(this.userData);
                 resolve(utilityService.resolveAsyncPromise(`Group saved as favorite!`))
               })
               .catch(() => {

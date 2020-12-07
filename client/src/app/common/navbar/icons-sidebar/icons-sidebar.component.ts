@@ -27,6 +27,7 @@ export class IconsSidebarComponent implements OnInit, OnDestroy {
 
   @Input() sideNav: MatSidenav;
   @Input() iconsSidebar = false;
+  @Input() userGroups = [];
   @Output() sidebarChange = new EventEmitter();
 
   // CURRENT USER DATA
@@ -47,9 +48,6 @@ export class IconsSidebarComponent implements OnInit, OnDestroy {
   // UNSUBSCRIBE THE DATA
   private subSink = new SubSink();
 
-  // Array of user groups
-  public userGroups: any = [];
-
   // Utility Service
   public utilityService = this.injector.get(UtilityService);
 
@@ -59,13 +57,6 @@ export class IconsSidebarComponent implements OnInit, OnDestroy {
 
     // Fetch the current workspace data
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
-
-    // Fetches the user groups from the server
-    this.userGroups = await this.publicFunctions.getUserFavoriteGroups(this.userData._id)
-      .catch(() => {
-        // If the function breaks, then catch the error and console to the application
-        this.publicFunctions.sendError(new Error('Unable to connect to the server, please try again later!'));
-      });
   }
 
   /**
