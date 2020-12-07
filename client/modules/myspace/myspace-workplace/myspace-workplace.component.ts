@@ -20,6 +20,11 @@ export class MyspaceWorkplaceComponent implements OnInit {
 
     // Fetch current user details
     this.userData = await this.publicFunctions.getCurrentUser();
+
+    // Send Updates to router state
+    this.publicFunctions.sendUpdatesToRouterState({
+      state: 'home'
+    })
   }
 
 }

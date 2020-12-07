@@ -20,7 +20,7 @@ export class UserProfileComponent implements OnInit {
 
   // User Data Variable
   userData: Object;
-  
+
   // Public functions class member
   publicFunctions = new PublicFunctions(this.injector);
 
@@ -32,6 +32,11 @@ export class UserProfileComponent implements OnInit {
 
   async ngOnInit() {
 
+    // Setting Home State
+    this.publicFunctions.sendUpdatesToRouterState({
+      state: 'admin'
+    })
+
     // Subscribe to the change in userData
     this.utilityService.currentUserData.subscribe((res) => {
       if(JSON.stringify(res) != JSON.stringify({})){
@@ -41,7 +46,7 @@ export class UserProfileComponent implements OnInit {
 
     // Start the Foreground Loader
     // this.utilityService.startForegroundLoader();
-    
+
     // Intialise the userData variable
     this.userData = await this.publicFunctions.getCurrentUser();
 
@@ -63,6 +68,6 @@ export class UserProfileComponent implements OnInit {
     // Stop the Foreground Loader
     // this.utilityService.stopForegroundLoader();
   }
-  
+
 
 }

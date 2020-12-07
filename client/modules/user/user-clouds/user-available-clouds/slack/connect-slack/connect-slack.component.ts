@@ -23,7 +23,7 @@ export class ConnectSlackComponent implements OnInit {
 
   async ngOnInit() {
     this.userData = await this.publicFunctions.getCurrentUser();
-    this.slackAuthSuccessful = this.userData.integrations.is_slack_connected ? true : false
+    this.slackAuthSuccessful = (this.userData && this.userData.integrations && this.userData.integrations.is_slack_connected) ? true : false
   }
 
   /**

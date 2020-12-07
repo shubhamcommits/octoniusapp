@@ -56,7 +56,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   myWorkplace: boolean = this._ActivatedRoute.snapshot.queryParamMap.get('myWorkplace') ? true : false
 
   isGroupNavbar$ = new BehaviorSubject(false);
-  isCommonNavbar$ = new BehaviorSubject(false);
+  isAdminNavbar$ = new BehaviorSubject(false);
   isWorkNavbar$ = new BehaviorSubject(false);
 
   // NOTIFICATIONS DATA
@@ -67,19 +67,19 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   nextGroupNavbarState(){
     this.isGroupNavbar$.next(true);
-    this.isCommonNavbar$.next(false)
+    this.isAdminNavbar$.next(false)
     this.isWorkNavbar$.next(false)
   }
 
   nextCommonNavbarState() {
-    this.isCommonNavbar$.next(true);
+    this.isAdminNavbar$.next(true);
     this.isGroupNavbar$.next(false)
     this.isWorkNavbar$.next(false)
   }
 
   nextWorkNavbar() {
     this.isWorkNavbar$.next(true);
-    this.isCommonNavbar$.next(false)
+    this.isAdminNavbar$.next(false)
     this.isGroupNavbar$.next(false)
   }
 
@@ -87,10 +87,10 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subSink.add(this.utilityService.routerStateData.subscribe((res) => {
       if (JSON.stringify(res) != JSON.stringify({})) {
         this.routerState = res['state']
-        if (this.routerState === 'home') {
+        if (this.routerState === 'admin') {
           this.nextCommonNavbarState()
-        }
-        else if (this.routerState === 'group') {
+        } else
+        if (this.routerState === 'group' || this.routerState === 'home') {
           this.nextGroupNavbarState()
 
           // Check for myWorkplace

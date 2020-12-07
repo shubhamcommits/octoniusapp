@@ -41,6 +41,11 @@ export class MyspaceAgendaComponent implements OnInit {
     this.userData = await this.publicFunctions.getCurrentUser();
     this.todayTimelineEvents = await this.getTodayTimelineEvents();
     this.thisWeekTimelineEvents = await this.getThisWeekTimelineEvents();
+
+    // Send Updates to router state
+    this.publicFunctions.sendUpdatesToRouterState({
+      state: 'home'
+    })
   }
 
   // Check if the data provided is not empty{}

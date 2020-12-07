@@ -9,11 +9,9 @@ import { DenyNavigationGuard } from 'src/shared/guards/deny-navigation-guard/den
 
 
 const routes: Routes = [
-  { path:'', component: AdminHeaderComponent, children:[
-    { path: 'general', component: AdminGeneralComponent, canActivate: [DenyNavigationGuard] },
-    { path: 'members', component: AdminMembersComponent, canActivate: [DenyNavigationGuard] },
-    { path: 'billing', component: AdminBillingComponent, canDeactivate: [DenyNavigationGuard] }
-  ]}
+  { path: 'general', component: AdminGeneralComponent, canActivate: [DenyNavigationGuard] },
+  { path: 'members', component: AdminMembersComponent, canActivate: [DenyNavigationGuard] },
+  { path: 'billing', component: AdminBillingComponent, canDeactivate: [DenyNavigationGuard] }
 ];
 
 @NgModule({

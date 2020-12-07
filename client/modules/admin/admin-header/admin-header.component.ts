@@ -50,7 +50,7 @@ export class AdminHeaderComponent implements OnInit {
 
     // Setting Home State
     this.publicFunctions.sendUpdatesToRouterState({
-      state: 'home'
+      state: 'admin'
     })
 
   }

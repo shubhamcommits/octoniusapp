@@ -64,7 +64,7 @@ export class UserHeaderComponent implements OnInit, OnDestroy {
 
     // If this not the current user
     if(!this.isCurrentUser){
-      
+
       // Fetch the userData from the server
       this.userData = await this.publicFunctions.getOtherUser(this.router.snapshot.queryParams['userId']);
 
@@ -74,9 +74,9 @@ export class UserHeaderComponent implements OnInit, OnDestroy {
 
     // Setting Home State
     this.publicFunctions.sendUpdatesToRouterState({
-      state: 'home'
+      state: 'admin'
     })
-          
+
   }
 
   /**
@@ -88,7 +88,7 @@ export class UserHeaderComponent implements OnInit, OnDestroy {
 
   /**
    * This function checks if this is currently loggedIn user
-   * @param userData 
+   * @param userData
    */
   checkIsCurrentUser(userData: any) {
     // If this is current loggedIn user
@@ -100,7 +100,7 @@ export class UserHeaderComponent implements OnInit, OnDestroy {
 
   /**
     * This function opens up the task content in a new modal, and takes #content in the ng-template inside HTML layout
-    * @param content 
+    * @param content
     */
    async openUserDetails(content) {
     this.utilityService.openModal(content, {

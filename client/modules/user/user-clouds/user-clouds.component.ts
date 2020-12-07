@@ -18,12 +18,12 @@ export class UserCloudsComponent implements OnInit {
     public userService: UserService,
     private storageService: StorageService
   ) { }
-  
+
   // Google Authentication Variable Check
   googleAuthSuccessful = false
   slackAuthSuccessful = false
 
-  // Subsink 
+  // Subsink
   private subSink = new SubSink()
 
   // User Data Variable
@@ -36,13 +36,19 @@ export class UserCloudsComponent implements OnInit {
   googleUser: any
 
   async ngOnInit() {
+
+    // Setting Home State
+    this.publicFunctions.sendUpdatesToRouterState({
+      state: 'admin'
+    })
+
     this.userData = await this.publicFunctions.getCurrentUser();
 
-    this.slackAuthSuccessful = this.userData.integrations.is_slack_connected ? true : false
+    this.slackAuthSuccessful = (this.userData && this.userData.integrations && this.userData.integrations.is_slack_connected) ? true : false;
 
     // Subsribe to the google authsucessful behaviour subject and set the local googleauth value
     this.subSink.add(this.googleService.googleAuthSuccessfulBehavior.subscribe(auth => this.googleAuthSuccessful = auth))
-    
+
     // Intialise the userData variable
     this.userData = await this.publicFunctions.getCurrentUser()
 
@@ -52,12 +58,12 @@ export class UserCloudsComponent implements OnInit {
     // If googleauth was sucessful then set the googleuser data
     if(this.googleAuthSuccessful == true){
       this.googleUser = this.storageService.getLocalData('googleUser')['userData']
-    } 
+    }
   }
 
   /**
    * This function receives the event change from <app-user-available-clouds></app-user-available-clouds>
-   * @param googleUser 
+   * @param googleUser
    */
   initiliazeGoogleUser(googleUser: any){
     this.googleUser = googleUser

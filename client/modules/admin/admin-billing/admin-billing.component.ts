@@ -28,6 +28,11 @@ export class AdminBillingComponent implements OnInit, OnDestroy  {
 
   async ngOnInit() {
 
+    // Setting Home State
+    this.publicFunctions.sendUpdatesToRouterState({
+      state: 'admin'
+    })
+
     let utilityService = this.injector.get(UtilityService)
 
     // Starts the foreground loader

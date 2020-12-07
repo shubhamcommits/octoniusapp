@@ -60,6 +60,11 @@ export class MyspaceInboxComponent implements OnInit, OnDestroy {
     // Start the loading spinner
     this.isLoading$.next(true);
 
+    // Send Updates to router state
+    this.publicFunctions.sendUpdatesToRouterState({
+      state: 'home'
+    })
+
     // Fetch current user details
     this.userData = await this.publicFunctions.getCurrentUser();
 
