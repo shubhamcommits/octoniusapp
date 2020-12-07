@@ -57,7 +57,7 @@
                     <div class="float-right">
 
                         <img src="{{ userBaseUrl }}/{{file._posted_by?.profile_pic}}"
-                            routerLink="/dashboard/user/profile" [queryParams]="{ userId: file._posted_by._id, myWorkplace: myWorkplace }"
+                            routerLink="/dashboard/user/profile" [queryParams]="{ userId: file._posted_by._id }"
                             onerror="this.src='assets/images/user.png'" class="feed-avatar">
                         <i class="material-icons-outlined ml-2" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
                         <mat-menu #menu="matMenu">
