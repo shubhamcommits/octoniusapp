@@ -139,7 +139,8 @@ export class AuthsController {
                         _id: user._id
                     }, {
                         $push: {
-                            _groups: groupUpdate._id
+                            _groups: groupUpdate._id,
+                            'stats.favorite_groups': groupUpdate._id
                         }
                     }, {
                         new: true
