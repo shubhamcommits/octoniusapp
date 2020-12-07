@@ -48,11 +48,7 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
   groupId = this.router.snapshot.queryParamMap.get('group');
 
   // My Workplace variable check
-  myWorkplace: boolean = this.router.snapshot.queryParamMap.has('myWorkplace')
-    ? (this.router.snapshot.queryParamMap.get('myWorkplace') == ('false') ? (false) : (true))
-    : (this.router.snapshot['_routerState'].url.toLowerCase().includes('myspace')
-        ? true
-        :false)
+  myWorkplace: boolean = this.isPersonalNavigation();
 
   // PUBLIC FUNCTIONS
   private publicFunctions = new PublicFunctions(this.injector);
@@ -63,13 +59,6 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
 
     // Fetch groupId from router snapshot
     this.groupId = this.router.snapshot.queryParamMap.get('group');
-
-    // My Workplace variable check
-    this.myWorkplace = this.router.snapshot.queryParamMap.has('myWorkplace')
-      ? (this.router.snapshot.queryParamMap.get('myWorkplace') == ('false') ? (false) : (true))
-      : (this.router.snapshot['_routerState'].url.toLowerCase().includes('myspace')
-        ? true
-        :false)
 
     // Fetch the group data from HTTP Request
     if(this.groupId)
@@ -93,6 +82,9 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
         });
       }
     }
+
+    // My Workplace variable check
+    this.myWorkplace = this.isPersonalNavigation();
   }
 
   /**
@@ -106,6 +98,7 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
     const index = this.groupData._admins.findIndex((admin: any) => admin._id === this.userData._id);
     return index >= 0;
   }
+
   /**
     * This function opens up the task content in a new modal, and takes #content in the ng-template inside HTML layout
     * @param content
@@ -122,4 +115,14 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
     });
   }
 
+  isPersonalNavigation() {
+    return this.router.snapshot.queryParamMap.has('myWorkplace')
+      ? (this.router.snapshot.queryParamMap.get('myWorkplace') == ('false') ? (false) : (true))
+      : (this.router.snapshot['_routerState'].url.toLowerCase().includes('myspace')
+          ? true
+          : ((this.router.snapshot['_routerState'].url.toLowerCase().includes('user')
+              && this.userData && this.userData._id == this.router.snapshot.queryParamMap.get('userId'))
+            ? true
+            :false))
+  }
 }
