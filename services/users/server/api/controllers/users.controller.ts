@@ -27,7 +27,10 @@ export class UsersControllers {
                     { active: true }
                 ]
             })
-                .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats');
+                .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats')
+                .populate({
+                    path: 'stats.favorite_groups._group'
+                });
 
             // If user not found
             if (!user) {
@@ -420,7 +423,10 @@ export class UsersControllers {
         let user = await User.findOneAndUpdate({
                 _id: userId
             }, update)
-            .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats');
+            .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats')
+            .populate({
+                path: 'stats.favorite_groups._group'
+            });
 
         // Send status 200 response
         return res.status(200).json({

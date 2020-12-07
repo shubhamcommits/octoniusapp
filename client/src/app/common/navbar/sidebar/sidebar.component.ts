@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Injector, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, OnDestroy, Injector, Input, EventEmitter, Output, OnChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { environment } from 'src/environments/environment';
@@ -8,6 +8,7 @@ import { AuthService } from 'src/shared/services/auth-service/auth.service';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { SubSink } from 'subsink';
 import { MatSidenav } from '@angular/material/sidenav';
+import { GroupService } from 'src/shared/services/group-service/group.service';
 // import * as $ from 'jquery';
 
 @Component({
@@ -15,13 +16,14 @@ import { MatSidenav } from '@angular/material/sidenav';
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss']
 })
-export class SidebarComponent implements OnInit, OnDestroy {
+export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
 
   constructor(
     private injector: Injector,
     private storageService: StorageService,
     private authService: AuthService,
     private socketService: SocketService,
+    private groupSerice: GroupService,
     private router: Router
   ) { }
 
@@ -57,6 +59,14 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
     // Fetch the current workspace data
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+  }
+
+  ngOnChanges() {
+    let groups = this.userGroups;
+    this.userGroups = [];
+    groups.forEach(group => {
+      this.groupSerice.getGroup(group).then(res => this.userGroups.push(res['group']))
+    });
   }
 
   /**
