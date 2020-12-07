@@ -4,20 +4,20 @@
           <img src="assets/images/white_logo.svg" alt="" class="octonius-logo">
       </a>
 
-      <div id="dismiss">
+     
           <!-- MENU BUTTON STARTS -->
-          <button type="button" id="sidebarCollapse" class="btn btn-link" (click)="switchSideBar()" >
-            <i class="material-icons">menu_open</i>
+          <button type="button" id="sidebarCollapse" class="btn dismiss" (click)="switchSideBar()" >
+            <i class="material-icons">arrow_right</i>
           </button>
           <!-- MENU BUTTON ENDS -->
-      </div>
+     
   </div>
 
   <div class="menu-options">
       <ul class="list-unstyled components">
           <li>
               <a [routerLink]="['/dashboard', 'myspace', 'inbox']" data-toggle="collapse">
-                  <i class="material-icons-outlined carret">person</i>
+                  <i class="material-icons-outlined carret">self_improvement</i>
               </a>
           </li>
 

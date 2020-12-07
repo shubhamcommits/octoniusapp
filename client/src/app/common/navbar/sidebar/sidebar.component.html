@@ -4,20 +4,20 @@
             <img src="assets/images/white_logo.svg" alt="" class="octonius-logo">
         </a>
 
-        <div id="dismiss">
+        
             <!-- MENU BUTTON STARTS -->
-            <button type="button" id="sidebarCollapse" class="btn btn-link" (click)="switchSideBar()" >
-              <i class="material-icons">menu_open</i>
+            <button type="button" id="sidebarCollapse" class="btn dismiss" (click)="switchSideBar()" >
+              <i class="material-icons">arrow_left</i>
             </button>
             <!-- MENU BUTTON ENDS -->
-        </div>
+        
     </div>
 
     <div class="menu-options">
         <ul class="list-unstyled components">
             <li>
               <a [routerLink]="['/dashboard', 'myspace', 'inbox']" routerLinkActive="router-link-active">
-                  <i class="material-icons-outlined carret">person</i>
+                  <i class="material-icons-outlined carret">self_improvement</i>
                   MY SPACE
               </a>
             </li>
@@ -50,7 +50,7 @@
             <li *ngIf="this.userData?.role === 'admin' || this.userData?.role === 'owner'">
                 <a class="nav-link" [routerLink]="['/dashboard', 'admin', 'general']" routerLinkActive="active">
                     <i class="material-icons-outlined">settings</i>
-                    SETTINGS & ADMINISTRATION<span class="sr-only">(current)</span>
+                    ADMINISTRATION<span class="sr-only">(current)</span>
                 </a>
             </li>
         </ul>
