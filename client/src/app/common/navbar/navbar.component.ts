@@ -87,11 +87,9 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subSink.add(this.utilityService.routerStateData.subscribe((res) => {
       if (JSON.stringify(res) != JSON.stringify({})) {
         this.routerState = res['state']
-        /*
-        if (this.routerState === 'home') {
+        if (this.routerState === 'admin') {
           this.nextCommonNavbarState()
         } else
-        */
         if (this.routerState === 'group' || this.routerState === 'home') {
           this.nextGroupNavbarState()
 
