@@ -13,7 +13,7 @@
 
 
     <nav class="navbar navbar-expand-md supersticky">
-      <div class="container">
+      <div class="container-fluid">
 
         <!-- COLLAPSABLE MENU STARTS -->
 
@@ -34,7 +34,7 @@
           <app-work-navbar *ngIf="isWorkNavbar$ | async"></app-work-navbar>
           <!-- MENU ITEMS ENDS -->
 
-          <ul class="navbar-nav ml-auto navbar-right">
+          <ul class="navbar-nav navbar-right">
             <li class="nav-item">
 
               <!-- SEARCH starts -->
@@ -46,14 +46,7 @@
               <!-- SEARCH ends -->
 
             </li>
-            <!-- PUSH NOTIFICATIONS STARTS -->
-            <!--
-            <li class="nav-item d-none d-sm-block">
-              <push-notifications class="nav-link" *ngIf="userData && baseUrl" [userData]="userData" [baseUrl]="baseUrl">
-              </push-notifications>
-            </li>
-            -->
-            <!-- PUSH NOTIFICATIONS ENDS -->
+           
           </ul>
 
         </div>
