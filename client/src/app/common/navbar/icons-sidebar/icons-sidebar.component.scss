@@ -34,6 +34,7 @@
     a {
       font-size: 15px !important;
       color: #FFFFFF !important;
+      font-weight: 700;
     }
   }
 }
@@ -77,3 +78,9 @@ ul ul{
   width: 100%;
 }
 
+.badge-primary{
+  padding: 8px;
+  border-radius: 50%;
+  background: #E4EDF8;
+  color: #005FD5;
+}

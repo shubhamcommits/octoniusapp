@@ -21,6 +21,7 @@
                   MY SPACE
               </a>
             </li>
+            <li> <hr style="opacity: 0.2;"></li>
             <li>
                 <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="true">
 
@@ -47,17 +48,14 @@
                     </li>
                 </ul>
             </li>
+            <li> <hr style="opacity: 0.2;"></li>
             <li *ngIf="this.userData?.role === 'admin' || this.userData?.role === 'owner'">
                 <a class="nav-link" [routerLink]="['/dashboard', 'admin', 'general']" routerLinkActive="active">
                     <i class="material-icons-outlined">settings</i>
                     ADMINISTRATION<span class="sr-only">(current)</span>
                 </a>
             </li>
-        </ul>
-
-        <div>
-            <hr>
-            <ul class="list-unstyled components">
+       
                 <li>
                     <!-- USER PROFILE BADGE STARTS -->
                     <a class="nav-link" *ngIf="this.userData"
@@ -81,6 +79,6 @@
                     <!-- LOGOUT FUNCTION ENDS-->
                 </li>
             </ul>
-        </div>
+        
     </div>
 </nav>

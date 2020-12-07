@@ -27,32 +27,26 @@
     padding: 20px 0;
     li a{
         padding: 10px;
-        font-size: 15px;
+        font-size: 14px;
         display: block;
         color: #FFFFFF;
         &:hover{
             color: #E4EDF8 !important;
             text-decoration: none !important;
-            border-radius: 4px;
         }
     }
 }
 
-#sidebar ul li.active>a,
-a[aria-expanded="true"] {
-    color: #FFFFFF;
-
-}
 
 a[data-toggle="collapse"] {
     position: relative;
 }
 
 ul ul a {
-    font-size: 15px !important;
-    padding-left: 12px !important;
+    font-size: 13px !important;
     /* background: #6d7fcc; */
     color: #FFFFFF !important;
+    font-weight: 400;
 }
 
 .avatar{
@@ -91,4 +85,10 @@ ul ul a {
 }
 ul ul{
     width: 100%;
+}
+
+.badge-primary{
+    padding: 5px 15px;
+    background: #E4EDF8;
+    color: #005FD5;
 }
