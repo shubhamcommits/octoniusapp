@@ -23,26 +23,19 @@
     background: inherit;
 }
 
-#sidebar ul.components {
+.components {
     padding: 20px 0;
-}
-
-#sidebar ul p {
-    color: #FFFFFF;
-    padding: 10px;
-}
-
-#sidebar ul li a {
-    padding: 10px;
-    font-size: 15px;
-    display: block;
-    color: #FFFFFF;
-}
-
-#sidebar ul li a:hover {
-    color: #FFFFFF !important;
-    background: #fff;
-    text-decoration: none !important;
+    li a{
+        padding: 10px;
+        font-size: 15px;
+        display: block;
+        color: #FFFFFF;
+        &:hover{
+            color: #E4EDF8 !important;
+            text-decoration: none !important;
+            border-radius: 4px;
+        }
+    }
 }
 
 #sidebar ul li.active>a,
