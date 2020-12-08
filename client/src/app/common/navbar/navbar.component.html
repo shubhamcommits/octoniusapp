@@ -30,7 +30,7 @@
           <!-- MENU ITEMS STARTS -->
 
           <app-common-navbar *ngIf="isAdminNavbar$ | async"></app-common-navbar>
-          <app-group-navbar *ngIf="isGroupNavbar$ | async" (favoriteGroupSaved)="onFavoriteGroupSaved($event)"></app-group-navbar>
+          <app-group-navbar *ngIf="isGroupNavbar$ | async" (favoriteGroupSaved)="onFavoriteGroupSaved()"></app-group-navbar>
           <app-work-navbar *ngIf="isWorkNavbar$ | async"></app-work-navbar>
           <!-- MENU ITEMS ENDS -->
 
@@ -46,7 +46,6 @@
               <!-- SEARCH ends -->
 
             </li>
-           
           </ul>
 
         </div>
