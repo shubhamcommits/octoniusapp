@@ -1,15 +1,14 @@
 import { Component, OnInit, Injector, ViewChild, ElementRef, AfterViewInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
-import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { environment } from 'src/environments/environment';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { retry } from 'rxjs/internal/operators/retry';
 import { SubSink } from 'subsink';
-import { AuthService } from 'src/shared/services/auth-service/auth.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { PublicFunctions } from 'modules/public.functions';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { GroupService } from 'src/shared/services/group-service/group.service';
 // import { GoogleCloudService } from 'modules/user/user-clouds/user-available-clouds/google-cloud/services/google-cloud.service';
 
 @Component({
@@ -24,11 +23,9 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('search') search: ElementRef;
 
   constructor(
-    private storageService: StorageService,
+    private groupService: GroupService,
     private userService: UserService,
     private utilityService: UtilityService,
-    private authService: AuthService,
-    private router: Router,
     private _ActivatedRoute: ActivatedRoute,
     private socketService: SocketService,
     private injector: Injector,
@@ -250,6 +247,12 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   async onFavoriteGroupSaved() {
     this.userData = await this.getCurrentUser();
-    this.userGroups = this.userData['stats']['favorite_groups'];
+    this.userGroups = [];
+    this.userData['stats']['favorite_groups'].forEach(group => {
+      this.groupService.getGroup(group).then(res => {
+        this.userGroups.push(res['group']);
+        this.userGroups.sort((g1, g2) => (g1.group_name > g2.group_name) ? 1 : -1);
+      });
+    });
   }
 }
