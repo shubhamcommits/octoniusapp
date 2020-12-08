@@ -27,10 +27,7 @@ export class UsersControllers {
                     { active: true }
                 ]
             })
-                .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats')
-                .populate({
-                    path: 'stats.favorite_groups._group'
-                });
+                .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats');
 
             // If user not found
             if (!user) {
@@ -423,10 +420,7 @@ export class UsersControllers {
         let user = await User.findOneAndUpdate({
                 _id: userId
             }, update)
-            .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats')
-            .populate({
-                path: 'stats.favorite_groups._group'
-            });
+            .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats');
 
         // Send status 200 response
         return res.status(200).json({
@@ -554,6 +548,27 @@ export class UsersControllers {
         return res.status(200).json({
             message: 'User deleted.'
         });
+    } catch (err) {
+        return sendError(res, err, 'Internal Server Error!', 500);
+    }
+  }
+
+  async saveIconSidebarByDefault(req: Request, res: Response, next: NextFunction) {
+
+    const { iconsSidebar, userId } = req.body;
+    try {
+
+      let user: any = await User.findOneAndUpdate({
+          _id: userId
+        }, { $set: { 'stats.default_icons_sidebar': iconsSidebar }})
+        .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats');
+
+      // Send status 200 response
+      return res.status(200).json({
+          message: `User Stats has been updated`,
+          user: user
+      });
+
     } catch (err) {
         return sendError(res, err, 'Internal Server Error!', 500);
     }

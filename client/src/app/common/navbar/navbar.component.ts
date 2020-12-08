@@ -119,6 +119,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
         this.publicFunctions.sendError(new Error('Unable to connect to the server, please try again later!'));
       });
 
+    this.iconsSidebar = this.userData['stats']['default_icons_sidebar'];
+
     // Fetch current user from the service
     this.subSink.add(this.utilityService.currentUserData.subscribe(async (res) => {
       if (JSON.stringify(res) != JSON.stringify({})) {

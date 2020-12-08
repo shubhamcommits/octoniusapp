@@ -263,4 +263,12 @@ export class UserService {
     })
     .toPromise();
   }
+
+  saveIconSidebarByDefault(userId: string, iconsSidebar: boolean) {
+    return this._http.put(this.BASE_API_URL + '/default-icons-sidebar', {
+      iconsSidebar: iconsSidebar,
+      userId: userId
+    })
+    .toPromise();
+  }
 }

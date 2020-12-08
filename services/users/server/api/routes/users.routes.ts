@@ -114,6 +114,8 @@ routes.delete('/:userId', user.removeUser);
 
 routes.put('/add-favorite-group', user.addFavoriteGroup);
 
+routes.put('/default-icons-sidebar', user.saveIconSidebarByDefault);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

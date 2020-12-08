@@ -9,6 +9,7 @@ import { SocketService } from 'src/shared/services/socket-service/socket.service
 import { SubSink } from 'subsink';
 import { MatSidenav } from '@angular/material/sidenav';
 import { GroupService } from 'src/shared/services/group-service/group.service';
+import { UserService } from 'src/shared/services/user-service/user.service';
 // import * as $ from 'jquery';
 
 @Component({
@@ -24,6 +25,7 @@ export class IconsSidebarComponent implements OnInit, OnDestroy, OnChanges {
     private authService: AuthService,
     private socketService: SocketService,
     private groupService: GroupService,
+    private userService: UserService,
     private router: Router
   ) { }
 
@@ -105,6 +107,11 @@ export class IconsSidebarComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   switchSideBar() {
+    this.userService.saveIconSidebarByDefault(this.userData._id, !this.iconsSidebar)
+        .then((res) => {
+          this.userData = res['user'];
+          this.publicFunctions.sendUpdatesToUserData(this.userData);
+        });
     this.iconsSidebar = !this.iconsSidebar;
     this.sidebarChange.emit();
   }
