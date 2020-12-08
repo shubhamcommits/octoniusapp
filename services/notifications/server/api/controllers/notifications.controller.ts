@@ -453,8 +453,8 @@ export class NotificationsController {
         const comment = JSON.parse(req.body.comment);
         try {
             // Call Service Function for newComment
-            const commented_by = req.body.comment._commented_by._id;
-            const postId = req.body.comment._post._id;
+            const commented_by = comment._commented_by._id;
+            const postId = comment._post._id;
             console.log('Commented By ==>', commented_by)
             await notificationService.newComment(comment, posted_by);
 
