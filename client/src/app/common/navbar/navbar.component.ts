@@ -8,6 +8,8 @@ import { ActivatedRoute } from '@angular/router';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { PublicFunctions } from 'modules/public.functions';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { GroupService } from 'src/shared/services/group-service/group.service';
+// import { GoogleCloudService } from 'modules/user/user-clouds/user-available-clouds/google-cloud/services/google-cloud.service';
 
 @Component({
   selector: 'app-navbar',
@@ -21,6 +23,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('search') search: ElementRef;
 
   constructor(
+    private groupService: GroupService,
     private userService: UserService,
     private utilityService: UtilityService,
     private _ActivatedRoute: ActivatedRoute,
@@ -244,6 +247,12 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   async onFavoriteGroupSaved() {
     this.userData = await this.getCurrentUser();
-    this.userGroups = this.publicFunctions.getUserFavoriteGroups(this.userData._id);
+    this.userGroups = [];
+    this.userData['stats']['favorite_groups'].forEach(group => {
+      this.groupService.getGroup(group).then(res => {
+        this.userGroups.push(res['group']);
+        this.userGroups.sort((g1, g2) => (g1.group_name > g2.group_name) ? 1 : -1);
+      });
+    });
   }
 }
