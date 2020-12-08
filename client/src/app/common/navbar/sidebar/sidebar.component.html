@@ -4,13 +4,13 @@
             <img src="assets/images/white_logo.svg" alt="" class="octonius-logo">
         </a>
 
-        
+
             <!-- MENU BUTTON STARTS -->
             <button type="button" id="sidebarCollapse" class="btn dismiss" (click)="switchSideBar()" >
               <i class="material-icons">arrow_left</i>
             </button>
             <!-- MENU BUTTON ENDS -->
-        
+
     </div>
 
     <div class="menu-options">
@@ -33,11 +33,11 @@
                 <ul class="collapse list-unstyled show" id="pageSubmenu">
                     <li *ngFor="let group of userGroups; trackBy: utilityService.trackByIndex">
                         <a [routerLink]="['/dashboard', 'work', 'groups', 'activity']"
-                            [queryParams]="{ group: group?._id, myWorkplace: false  }" routerLinkActive="active"> 
+                            [queryParams]="{ group: group?._id, myWorkplace: false  }" routerLinkActive="active">
 
                             <img class="avatar" src="{{ this.groupBaseUrl }}/{{group.group_avatar}}"
                                 onerror="this.src='assets/images/icon-new-group.svg'">
-                            {{group?.group_name}}
+                            {{ group?.group_name | truncatetext: 16 }}
                         </a>
                     </li>
 
@@ -55,7 +55,7 @@
                     ADMINISTRATION<span class="sr-only">(current)</span>
                 </a>
             </li>
-       
+
                 <li>
                     <!-- USER PROFILE BADGE STARTS -->
                     <a class="nav-link" *ngIf="this.userData"
@@ -79,6 +79,6 @@
                     <!-- LOGOUT FUNCTION ENDS-->
                 </li>
             </ul>
-        
+
     </div>
 </nav>
