@@ -8,23 +8,20 @@ import { AuthService } from 'src/shared/services/auth-service/auth.service';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { SubSink } from 'subsink';
 import { MatSidenav } from '@angular/material/sidenav';
-import { GroupService } from 'src/shared/services/group-service/group.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
-// import * as $ from 'jquery';
 
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss']
 })
-export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
+export class SidebarComponent implements OnInit, OnDestroy {
 
   constructor(
     private injector: Injector,
     private storageService: StorageService,
     private authService: AuthService,
     private socketService: SocketService,
-    private groupService: GroupService,
     private userService: UserService,
     private router: Router
   ) { }
@@ -61,14 +58,6 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
 
     // Fetch the current workspace data
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
-  }
-
-  ngOnChanges() {
-    let groups = this.userGroups;
-    this.userGroups = [];
-    groups.forEach(group => {
-      this.groupService.getGroup(group).then(res => this.userGroups.push(res['group']))
-    });
   }
 
   /**
@@ -116,5 +105,4 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
     this.iconsSidebar = !this.iconsSidebar;
     this.sidebarChange.emit();
   }
-
 }
