@@ -360,6 +360,80 @@ export class UsersControllers {
   }
 
   /**
+   * This function is responsible for retreiving the user´s favorite groups
+   * @param { userId }req 
+   * @param res 
+   */
+  async getFavoriteGroups(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { params: { userId } } = req;
+
+      if (!userId) {
+        return res.status(400).json({
+          message: 'Please provide the userId!'
+        })
+      }
+
+      const user = await User.findOne({_id: userId})
+        .select("_id stats")
+        .populate({
+            path: 'stats.favorite_groups._group'
+        })
+        .lean();
+
+      if (user['stats'] && user['stats']['favorite_groups']) {
+        user['stats']['favorite_groups'].sort(function(a, b) {
+          return b.group_name - a.group_name;
+        });
+      }
+
+      // Send the status 200 response
+      return res.status(200).json({
+        message: `User found!`,
+        user: user
+      });
+    } catch (err) {
+      return sendError(res, err, 'Internal Server Error!', 500);
+    }
+  }
+
+  /**
+  * This function is responsible for adding/removing a group from user´s favorites
+  * @param req 
+  * @param res 
+  * @param next 
+  */
+  async addFavoriteGroup(req: Request, res: Response, next: NextFunction) {
+
+    const { userId, groupId, isFavoriteGroup } = req.body;
+
+    try {
+
+        let update = {};
+        if (isFavoriteGroup) {
+            update = { $push: { 'stats.favorite_groups': groupId}};
+        } else {
+            update = { $pull: { 'stats.favorite_groups': groupId}};
+        }
+
+        // Find the user and update their respective role
+        let user = await User.findOneAndUpdate({
+                _id: userId
+            }, update)
+            .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats');
+
+        // Send status 200 response
+        return res.status(200).json({
+            message: `User Stats has been updated`,
+            user: user
+        });
+
+    } catch (err) {
+        return sendError(res, err, 'Internal Server Error!', 500);
+    }
+  }
+
+  /**
    * This function is responsible for fetching the current loggedIn user details
    * @param { userId }req 
    * @param res 
@@ -474,6 +548,27 @@ export class UsersControllers {
         return res.status(200).json({
             message: 'User deleted.'
         });
+    } catch (err) {
+        return sendError(res, err, 'Internal Server Error!', 500);
+    }
+  }
+
+  async saveIconSidebarByDefault(req: Request, res: Response, next: NextFunction) {
+
+    const { iconsSidebar, userId } = req.body;
+    try {
+
+      let user: any = await User.findOneAndUpdate({
+          _id: userId
+        }, { $set: { 'stats.default_icons_sidebar': iconsSidebar }})
+        .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats');
+
+      // Send status 200 response
+      return res.status(200).json({
+          message: `User Stats has been updated`,
+          user: user
+      });
+
     } catch (err) {
         return sendError(res, err, 'Internal Server Error!', 500);
     }

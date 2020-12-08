@@ -13,11 +13,11 @@ import { UserService } from 'src/shared/services/user-service/user.service';
 // import * as $ from 'jquery';
 
 @Component({
-  selector: 'app-sidebar',
-  templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.scss']
+  selector: 'app-icons-sidebar',
+  templateUrl: './icons-sidebar.component.html',
+  styleUrls: ['./icons-sidebar.component.scss']
 })
-export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
+export class IconsSidebarComponent implements OnInit, OnDestroy, OnChanges {
 
   constructor(
     private injector: Injector,
@@ -31,7 +31,7 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
 
   @Input() sideNav: MatSidenav;
   @Input() iconsSidebar = false;
-  @Input() userGroups: any = [];
+  @Input() userGroups = [];
   @Output() sidebarChange = new EventEmitter();
 
   // CURRENT USER DATA
@@ -61,14 +61,6 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
 
     // Fetch the current workspace data
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
-  }
-
-  ngOnChanges() {
-    let groups = this.userGroups;
-    this.userGroups = [];
-    groups.forEach(group => {
-      this.groupService.getGroup(group).then(res => this.userGroups.push(res['group']))
-    });
   }
 
   /**
@@ -106,13 +98,20 @@ export class SidebarComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
+  ngOnChanges() {
+    let groups = this.userGroups;
+    this.userGroups = [];
+    groups.forEach(group => {
+      this.groupService.getGroup(group).then(res => this.userGroups.push(res['group']))
+    });
+  }
+
   switchSideBar() {
     this.userService.saveIconSidebarByDefault(this.userData._id, !this.iconsSidebar)
-      .then((res) => {
-        this.userData = res['user'];
-        this.publicFunctions.sendUpdatesToUserData(this.userData);
-      });
-
+        .then((res) => {
+          this.userData = res['user'];
+          this.publicFunctions.sendUpdatesToUserData(this.userData);
+        });
     this.iconsSidebar = !this.iconsSidebar;
     this.sidebarChange.emit();
   }

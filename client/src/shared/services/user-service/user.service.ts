@@ -222,6 +222,13 @@ export class UserService {
   }
 
   /**
+   * GET USER FAVORITE GROUPS
+   */
+  getUserFavoriteGroups(userId: string){
+    return this._http.get(this.BASE_API_URL + `/favorite-groups/${userId}`).toPromise();
+  }
+
+  /**
    * GET MOST USED GROUPS
    */
   getRecentGroups(userId: string) {
@@ -245,7 +252,23 @@ export class UserService {
     .toPromise();
   }
 
-  // increase the stats of the visited group for the user
-  // const groupId = this._ActivatedRoute.snapshot.queryParamMap.get('group');
-  // this.userService.increaseGroupVisit(this.userData._id, groupId);
+  /**
+   * Save a group as favorite for teh user
+   */
+  saveFavoriteGroup(userId: string, groupId: string, isFavoriteGroup: boolean) {
+    return this._http.put(this.BASE_API_URL + '/add-favorite-group', {
+      userId: userId,
+      groupId: groupId,
+      isFavoriteGroup: isFavoriteGroup
+    })
+    .toPromise();
+  }
+
+  saveIconSidebarByDefault(userId: string, iconsSidebar: boolean) {
+    return this._http.put(this.BASE_API_URL + '/default-icons-sidebar', {
+      iconsSidebar: iconsSidebar,
+      userId: userId
+    })
+    .toPromise();
+  }
 }

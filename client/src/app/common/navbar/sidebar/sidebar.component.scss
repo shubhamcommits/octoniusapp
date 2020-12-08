@@ -4,62 +4,50 @@
 
 #sidebar {
     height: 100vh;
-    background: #fff;
-    color: #969A9E;
-    padding: 0 24px;
+    background: #005FD5;
+    color: #FFFFFF;
+    padding: 0;
 }
 
-#sidebar.active {
-    left: 0;
-}
 
-#sidebar .sidebar-header {
-    padding: 20px;
+.sidebar-header {
+    padding: 20px 0 0 10px;
     background: #fff;
-    width: 90%;
+    width: 100%;
     height: 70px;
     position: absolute;
     z-index: 10;
     background: inherit;
 }
 
-#sidebar ul.components {
-    padding: 20px 0;
+.octonius-logo{
+    margin-left: 10px;
 }
 
-#sidebar ul p {
-    color: #5E6268;
-    padding: 10px;
+.components {
+    padding: 20px 10px;
+    li a{
+        padding: 10px;
+        font-size: 14px;
+        display: block;
+        color: #FFFFFF;
+        &:hover{
+            color: #E4EDF8 !important;
+            text-decoration: none !important;
+        }
+    }
 }
 
-#sidebar ul li a {
-    padding: 10px;
-    font-size: 15px;
-    display: block;
-    color: #969A9E;
-}
 
-#sidebar ul li a:hover {
-    color: #005fd5 !important;
-    background: #fff;
-    text-decoration: none !important;
-}
-
-#sidebar ul li.active>a,
-a[aria-expanded="true"] {
-    color: #005fd5;
-    
-}
-  
 a[data-toggle="collapse"] {
     position: relative;
 }
 
 ul ul a {
-    font-size: 15px !important;
-    padding-left: 12px !important;
+    font-size: 13px !important;
     /* background: #6d7fcc; */
-    color: #5E6268 !important;
+    color: #FFFFFF !important;
+    font-weight: 400;
 }
 
 .avatar{
@@ -70,27 +58,26 @@ ul ul a {
 }
 
 .carret{
-   vertical-align: text-bottom;     
+   vertical-align: text-bottom;
 }
 
 
-#dismiss {
-    width: 35px;
-    height: 35px;
-    line-height: 35px;
+.dismiss {
+    line-height: 24px;
     text-align: center;
     position: absolute;
-    top: 15px;
-    right: 20px;
+    left: 156px;
     cursor: pointer;
-    -webkit-transition: all 0.3s;
-    -o-transition: all 0.3s;
-    transition: all 0.3s;
-}
+      color: #FFFFFF;
+    text-decoration: none;
+
+    &:hover{
+        color: #005FD5;
+        background:#fff;
+        box-shadow: 4px 4px 24px 0 rgba(37, 38, 94, 0.8);
+    }
+  }
   
-#dismiss:hover {
-    color: #005fd5;
-}
 
 .menu-options {
     margin-top: 50px;
@@ -99,4 +86,10 @@ ul ul a {
 }
 ul ul{
     width: 100%;
+}
+
+.badge-primary{
+    padding: 5px 15px;
+    background: #E4EDF8;
+    color: #005FD5;
 }

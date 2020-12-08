@@ -15,7 +15,6 @@ import { ColumnService } from 'src/shared/services/column-service/column.service
 import { FilesService } from 'src/shared/services/files-service/files.service';
 import { GoogleCloudService } from 'modules/user/user-clouds/user-available-clouds/google-cloud/services/google-cloud.service';
 import { environment } from 'src/environments/environment';
-import { FlowService } from 'src/shared/services/flow-service/flow.service';
 
 // Google API Variable
 declare const gapi: any;
@@ -394,6 +393,19 @@ export class PublicFunctions {
             let groupsService = this.injector.get(GroupsService);
             groupsService.getUserGroups(workspaceId, userId)
                 .then((res) => resolve(res['groups']))
+                .catch(() => reject([]))
+        })
+    }
+
+    /**
+     * Fetch list of user´s favorite groups
+     * @param userId
+     */
+    public async getUserFavoriteGroups(userId: string) {
+        return new Promise((resolve, reject) => {
+            let usersService = this.injector.get(UserService);
+            usersService.getUserFavoriteGroups(userId)
+                .then((res) => resolve(res['user']['stats']['favorite_groups']))
                 .catch(() => reject([]))
         })
     }

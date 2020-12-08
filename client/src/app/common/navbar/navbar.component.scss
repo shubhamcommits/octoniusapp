@@ -127,3 +127,14 @@ img:hover{
 .mat-drawer {
   overflow-y: hidden;
 }
+
+.supersticky{
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+}
+
+mat-drawer{
+  overflow: hidden;
+}

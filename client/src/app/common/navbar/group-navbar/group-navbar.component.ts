@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector, OnDestroy } from '@angular/core';
+import { Component, OnInit, Injector, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { PublicFunctions } from 'modules/public.functions';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
@@ -13,7 +13,6 @@ import { UserService } from 'src/shared/services/user-service/user.service';
 })
 export class GroupNavbarComponent implements OnInit, OnDestroy {
 
-
   constructor(
     private injector: Injector,
     private router: ActivatedRoute,
@@ -26,6 +25,8 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
       }
     }))
   }
+
+  @Output() favoriteGroupSaved = new EventEmitter();
 
   isAdmin: boolean = false;
 
@@ -48,7 +49,9 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
   groupId = this.router.snapshot.queryParamMap.get('group');
 
   // My Workplace variable check
-  myWorkplace: boolean = this.isPersonalNavigation();
+  myWorkplace: boolean;
+
+  isFavoriteGroup: boolean;
 
   // PUBLIC FUNCTIONS
   private publicFunctions = new PublicFunctions(this.injector);
@@ -67,13 +70,12 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
     // Fetch the current user
     this.userData = await this.publicFunctions.getCurrentUser();
 
+    console.log('Group Data', this.groupData);
+
     if (this.groupData) {
       // Send the updates of the groupdata through shared service
-      this.publicFunctions.sendUpdatesToGroupData(this.groupData)
-    }
+      this.publicFunctions.sendUpdatesToGroupData(this.groupData);
 
-    console.log('Group Data', this.groupData)
-    if (this.groupData) {
       this.isAdmin = this.isAdminUser();
 
       if (this.groupId) {
@@ -85,6 +87,8 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
 
     // My Workplace variable check
     this.myWorkplace = this.isPersonalNavigation();
+
+    this.isFavoriteGroup = this.checkIsFavoriteGroup();
   }
 
   /**
@@ -121,5 +125,34 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
       : (this.router.snapshot['_routerState'].url.toLowerCase().includes('myspace')
           ? true
           : false)
+  }
+
+  checkIsFavoriteGroup() {
+    let groupIndex = -1;
+    if (this.userData && this.userData.stats && this.userData.stats.favorite_groups) {
+      groupIndex = this.userData.stats.favorite_groups.findIndex(g => g == this.groupId);
+    }
+    return groupIndex >= 0;
+  }
+
+  saveFavoriteGroup() {
+    // Utility Service
+    let utilityService = this.injector.get(UtilityService);
+
+    utilityService.asyncNotification('Please wait we are saving the information...',
+          new Promise((resolve, reject) => {
+            // Call HTTP Request to change the request
+            this.userService.saveFavoriteGroup(this.userData._id, this.groupId, !this.isFavoriteGroup)
+              .then((res) => {
+                this.isFavoriteGroup = !this.isFavoriteGroup;
+                this.userData = res['user'];
+                this.publicFunctions.sendUpdatesToUserData(this.userData);
+                this.favoriteGroupSaved.emit(this.userData);
+                resolve(utilityService.resolveAsyncPromise(`Group saved as favorite!`))
+              })
+              .catch(() => {
+                reject(utilityService.rejectAsyncPromise(`Unable to save the group as favorite, please try again!`))
+              });
+          }));
   }
 }

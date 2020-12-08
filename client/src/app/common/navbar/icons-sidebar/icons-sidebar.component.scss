@@ -1,0 +1,86 @@
+/* ---------------------------------------------------
+    SIDEBAR STYLE
+----------------------------------------------------- */
+
+#sidebar {
+  height: 100vh;
+  background: #005FD5;
+  color: #FFFFFF;
+  padding: 0;
+}
+
+.sidebar-header {
+  padding: 20px 0 0 10px;
+  background: #fff;
+  //width: 90%;
+  height: 70px;
+  position: absolute;
+  z-index: 10;
+  background: inherit;
+
+}
+
+.octonius-logo{
+  margin-left: 10px;
+}
+
+.components {
+  padding:10px;
+  li {
+    padding: 10px;
+    font-size: 15px;
+    display: block;
+    color: #FFFFFF;
+    a {
+      font-size: 15px !important;
+      color: #FFFFFF !important;
+      font-weight: 700;
+    }
+  }
+}
+
+
+.avatar{
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  //margin-right: 8px;
+}
+
+.carret{
+ vertical-align: text-bottom;
+}
+
+
+.dismiss {
+  line-height: 24px;
+  text-align: center;
+  position: absolute;
+  left: 43px;
+  cursor: pointer;
+    color: #FFFFFF;
+  text-decoration: none;
+
+  &:hover{
+      color: #005FD5;
+      background:#fff;
+      box-shadow: 4px 4px 24px 0 rgba(37, 38, 94, 0.8);
+  }
+}
+
+
+.menu-options {
+  margin-top: 50px;
+  z-index: 5;
+  overflow: auto;
+}
+ul ul{
+  width: 100%;
+}
+
+.badge-primary{
+  padding: 8px;
+  border-radius: 50%;
+  background: #E4EDF8;
+  color: #005FD5;
+}

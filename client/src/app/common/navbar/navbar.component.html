@@ -1,48 +1,40 @@
-<mat-sidenav-container (backdropClick)="this.sidenav.toggle()" >
-  <mat-sidenav #sidenav (keydown.escape)="this.sidenav.toggle()" disableClose autosize>
+<mat-drawer-container style="height: 100vh;" autosize>
+  <mat-drawer opened="true" mode="side" #sidenav disableClose autosize >
 
     <!-- SIDE MENU ICON STARTS -->
-    <app-sidebar class="nav navbar-nav navbar-left" [sideNav]="sidenav"></app-sidebar>
+    <app-sidebar *ngIf="!iconsSidebar" class="nav navbar-nav navbar-left" [userGroups]="userGroups" [sideNav]="sidenav" [iconsSidebar]="iconsSidebar" (sidebarChange)="switchSideBar()"></app-sidebar>
     <!-- SIDE MENU ICON ENDS -->
 
-  </mat-sidenav>
+    <!-- ICONS SIDE MENU ICON STARTS -->
+    <app-icons-sidebar *ngIf="iconsSidebar" class="nav navbar-nav navbar-left" [userGroups]="userGroups" [sideNav]="sidenav" [iconsSidebar]="iconsSidebar" (sidebarChange)="switchSideBar()"></app-icons-sidebar>
+    <!-- ICONS SIDE MENU ICON ENDS -->
 
-  <mat-sidenav-content style="height: 100vh;">
-    <nav class="navbar navbar-expand-lg fixed-top">
-      <div class="container">
+  </mat-drawer>
 
-        <button type="button" id="sidebarCollapse" class="btn btn-link" (click)="sidenav.toggle()" >
-          <i class="material-icons">menu_open</i>
-        </button>
 
-        <!-- OCTONIUS BRANDING STARTS -->
-        <!--
-        <a *ngIf="isAdminNavbar$ | async" class="nav navbar-nav navbar-center navbar-brand d-none d-sm-block" [routerLink]="['/dashboard', 'myspace', 'inbox']" routerLinkActive="router-link-active">
-          <img src="assets/images/logo.svg" alt="" class="octonius-logo">
-        </a>
-        -->
-        <!-- OCTONIUS BRANDING ENDS -->
+    <nav class="navbar navbar-expand-md supersticky">
+      <div class="container-fluid">
 
         <!-- COLLAPSABLE MENU STARTS -->
 
-        <!-- TOGGLE MENU BUTTON STARTS -->
+        <!-- MENU BUTTON STARTS -->
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon">
             <i class="material-icons-round">more_horiz</i>
           </span>
         </button>
-        <!-- TOGGLE MENU BUTTON ENDS -->
+        <!-- MENU BUTTON ENDS -->
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <!-- MENU ITEMS STARTS -->
 
           <app-common-navbar *ngIf="isAdminNavbar$ | async"></app-common-navbar>
-          <app-group-navbar *ngIf="isGroupNavbar$ | async"></app-group-navbar>
+          <app-group-navbar *ngIf="isGroupNavbar$ | async" (favoriteGroupSaved)="onFavoriteGroupSaved()"></app-group-navbar>
           <app-work-navbar *ngIf="isWorkNavbar$ | async"></app-work-navbar>
           <!-- MENU ITEMS ENDS -->
 
-          <ul class="navbar-nav ml-auto navbar-right">
+          <ul class="navbar-nav navbar-right">
             <li class="nav-item">
 
               <!-- SEARCH starts -->
@@ -54,24 +46,17 @@
               <!-- SEARCH ends -->
 
             </li>
-            <!-- PUSH NOTIFICATIONS STARTS -->
-            <!--
-            <li class="nav-item d-none d-sm-block">
-              <push-notifications class="nav-link" *ngIf="userData && baseUrl" [userData]="userData" [baseUrl]="baseUrl">
-              </push-notifications>
-            </li>
-            -->
-            <!-- PUSH NOTIFICATIONS ENDS -->
           </ul>
 
         </div>
         <!-- COLLAPSABLE MENU ENDS -->
       </div>
-    </nav>
+  </nav>
+
     <router-outlet></router-outlet>
     <!-- Search Modal -->
     <ng-template #search let-modal>
       <app-search-header (close)="closeModal()"></app-search-header>
     </ng-template>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+
+</mat-drawer-container>
