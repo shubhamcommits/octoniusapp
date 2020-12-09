@@ -55,12 +55,19 @@ const fs = require('fs');
             }, {
               new: true
             }).select('title _posted_by task _content_mentions');
+          const headers = {
+            maxContentLength: Infinity,
+            maxBodyLength: Infinity
+          }
+
+          console.log('headers ==>', headers);
           await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-comment`, {
               comment: JSON.stringify(newComment),
               posted_by: post['_posted_by'],
               assigned_to: post['_assigned_to'],
               followers: post['_followers']
-          });
+          }, { headers: headers }
+          );
       
       
           if (newComment._content_mentions.length !== 0) {
