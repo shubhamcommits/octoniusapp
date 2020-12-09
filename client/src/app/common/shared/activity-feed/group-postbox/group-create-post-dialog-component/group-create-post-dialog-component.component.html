@@ -132,7 +132,10 @@
             <!-- Change task status starts -->
             <app-task-status
                 class="ml-1"
-                [post]="postData"
+                [postId]="postData?._id"
+                [groupId]="postData?._group?._id || postData?._group"
+                [userId]="userData?._id"
+                [status]="postData?.task?.status"
                 (status)="changeTaskStatus($event)">
             </app-task-status>
             <!-- Change task status ends -->

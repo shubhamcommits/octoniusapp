@@ -714,7 +714,7 @@ export class PostController {
             // Send status 200 response
             return res.status(200).json({
                 message: 'Task status updated!',
-                post: post
+                //post: post
             });
         } catch (err) {
             return sendErr(res, new Error(err), 'Internal Server Error!', 500);
