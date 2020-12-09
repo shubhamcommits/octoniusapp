@@ -55,7 +55,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   userGroups: any = [];
 
-  iconsSidebar = true;
+  iconsSidebar = false;
 
   // NOTIFICATIONS DATA
   public notificationsData: { readNotifications: [], unreadNotifications: [] } = {
@@ -105,15 +105,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // FETCH THE USER DETAILS FROM THE SERVER
     this.userData = await this.getCurrentUser();
-
-    // Fetches the user groups from the server
-    this.userGroups = await this.publicFunctions.getUserFavoriteGroups(this.userData._id)
-      .catch(() => {
-        // If the function breaks, then catch the error and console to the application
-        this.publicFunctions.sendError(new Error('Unable to connect to the server, please try again later!'));
-      });
-
-    this.iconsSidebar = this.userData['stats']['default_icons_sidebar'];
+    this.userGroups = this.userData['stats']['favorite_groups'];
+    this.iconsSidebar = this.userData['stats']['default_icons_sidebar'] || false;
 
     // Fetch current user from the service
     this.subSink.add(this.utilityService.currentUserData.subscribe(async (res) => {
@@ -244,11 +237,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   async onFavoriteGroupSaved() {
     this.userData = await this.getCurrentUser();
-
-    this.userGroups = await this.publicFunctions.getUserFavoriteGroups(this.userData._id)
-      .catch(() => {
-        // If the function breaks, then catch the error and console to the application
-        this.publicFunctions.sendError(new Error('Unable to connect to the server, please try again later!'));
-      });
+    this.userGroups = this.userData['stats']['favorite_groups'];
   }
 }
