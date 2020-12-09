@@ -36,7 +36,7 @@ export class NotificationsController {
                 return sendError(res, new Error(err), 'Internal Server Error!', 500);
             });
             
-            const comment_mentions_ids = req.body.comment._content_mentions;
+            const comment_mentions_ids = comment._content_mentions;
             console.log('comment_mentions ==>', comment_mentions_ids);
             let comment_mentions_name_array = [];
             for(let i = 0; i < comment_mentions_ids.length; i++){
@@ -50,7 +50,7 @@ export class NotificationsController {
                 comment_mentions_name_array.push(comment_mentions_data['full_name']);
             }
             console.log('comment_mentions_name_array ==> ', comment_mentions_name_array);
-            const commented_by_id = req.body.comment._commented_by;
+            const commented_by_id = comment._commented_by;
             const groupId = comment._post._group._id;
             const userData = await User.findById(commented_by_id, (err, data) => {
                 if(err){
