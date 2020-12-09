@@ -38,7 +38,11 @@
 
                 <!-- Change task status starts -->
                 <app-task-status class="ml-5" *ngIf="post.task.isNorthStar === false"
-                  [post]="post" (status)="changeTaskStatus($event)">
+                  [postId]="post?._id"
+                  [groupId]="post?._group?._id || post?._group"
+                  [userId]="userData?._id"
+                  [status]="post?.task?.status"
+                  (status)="changeTaskStatus($event)">
                 </app-task-status>
                 <!-- Change task status ends -->
 

@@ -404,19 +404,8 @@ export class PublicFunctions {
     public async getUserFavoriteGroups(userId: string) {
         return new Promise((resolve, reject) => {
             let usersService = this.injector.get(UserService);
-            let groupService = this.injector.get(GroupService);
             usersService.getUserFavoriteGroups(userId)
-                .then((res) => {
-                  let returnGroups = [];
-                  const userGroups = res['user']['stats']['favorite_groups']
-                  userGroups.forEach(group => {
-                    groupService.getGroup(group).then(res => {
-                      returnGroups.push(res['group']);
-                      returnGroups.sort((g1, g2) => (g1.group_name > g2.group_name) ? 1 : -1);
-                    });
-                  });
-                  resolve(returnGroups);
-                })
+                .then((res) => resolve(res['user']['stats']['favorite_groups']))
                 .catch(() => reject([]))
         })
     }
@@ -780,20 +769,8 @@ export class PublicFunctions {
         // Post Service Instance
         let postService = this.injector.get(PostService)
 
-        // Utility Service Instance
-        let utilityService = this.injector.get(UtilityService)
-
-        utilityService.asyncNotification('Please wait we are updating the task status...',
-          new Promise((resolve, reject) => {
-            // Call HTTP Request to change the request
-            postService.changeTaskStatus(postId, status, userId, groupId)
-            .then((res) => {
-                resolve(utilityService.resolveAsyncPromise(`Task status marked as ${status}!`))
-            })
-            .catch(() => {
-                reject(utilityService.rejectAsyncPromise(`Unable to change the status, please try again!`))
-            });
-          }));
+        // Call HTTP Request to change the request
+        return postService.changeTaskStatus(postId, status, userId, groupId);
     }
 
     /**

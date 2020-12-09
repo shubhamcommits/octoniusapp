@@ -377,7 +377,7 @@ export class UsersControllers {
       const user = await User.findOne({_id: userId})
         .select("_id stats")
         .populate({
-            path: 'stats.favorite_groups._group'
+            path: 'stats.favorite_groups'
         })
         .lean();
 

@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, Injector } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-task-status',
@@ -9,22 +10,23 @@ import { PublicFunctions } from 'modules/public.functions';
 export class TaskStatusComponent implements OnInit {
 
   constructor(
+    private utilityService: UtilityService,
     private injector: Injector
   ) { }
 
   // Post Variable as the input object
-  @Input('post') post: any;
+  @Input() postId: string;
+  @Input() groupId: string;
+  @Input() userId: string;
+  @Input() status: string;
 
   // Move Task Output Emitter
-  @Output('status') status = new EventEmitter();
-
-  userData: any;
+  @Output('status') statusEmitter = new EventEmitter();
 
   // Public Functions
   publicFunctions = new PublicFunctions(this.injector)
 
   async ngOnInit() {
-    this.userData = await this.publicFunctions.getCurrentUser()
   }
 
   /**
@@ -33,15 +35,21 @@ export class TaskStatusComponent implements OnInit {
    */
   changeStatus(status: string){
 
-    // Change the task status
-    this.publicFunctions.changeTaskStatus(this.post._id, status, this.userData._id, (this.post._group._id || this.post._group));
-
-    // Emit the status to other parent components
-    this.status.emit(status)
-  }
-
-  changeTaskStatus(postId: string){
-
+    this.utilityService.asyncNotification('Please wait we are updating the status of the task...',
+      new Promise((resolve, reject) => {
+        // Call HTTP Request to change the request
+        this.publicFunctions.changeTaskStatus(this.postId, status, this.userId, this.groupId)
+          .then((res) => {
+            this.status = status;
+            // Emit the status to other parent components
+            this.statusEmitter.emit(status)
+            resolve(this.utilityService.resolveAsyncPromise(`Task status marked as ${status}!`))
+          })
+          .catch(() => {
+            this.statusEmitter.emit(this.status)
+            reject(this.utilityService.rejectAsyncPromise(`Unable to change the status, please try again!`))
+          });
+      }));
   }
 
 }
