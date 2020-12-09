@@ -418,14 +418,14 @@ export class NotificationsController {
             });
             const userFullName = userData['full_name'];
             const userAssignedFullName = userAssignedData['full_name'];
-            const userAssignedProfilePic = userAssignedData['profile_pic'];
+            const userProfilePic = userData['profile_pic'];
             const groupId = postData['_group'];
             const postTitle = postData['title'];
             console.log('Posted By ==>', );
             const comment_object = {
                 name: userFullName,
                 text: `${userAssignedFullName}'s assignment status changed by ${userFullName} on post ${postTitle} `,
-                image: userAssignedProfilePic,
+                image: userProfilePic,
                 content: '\n ',
                 group_id: groupId,
                 post_id: postId,
@@ -453,8 +453,8 @@ export class NotificationsController {
         const comment = JSON.parse(req.body.comment);
         try {
             // Call Service Function for newComment
-            const commented_by = req.body.comment._commented_by._id;
-            const postId = req.body.comment._post._id;
+            const commented_by = comment._commented_by._id;
+            const postId = comment._post._id;
             console.log('Commented By ==>', commented_by)
             await notificationService.newComment(comment, posted_by);
 
