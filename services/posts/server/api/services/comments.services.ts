@@ -2,6 +2,7 @@ import { Comment, Post, User, Notification } from '../models';
 import http from 'axios';
 import { sendErr } from '../utils/sendError';
 import moment from 'moment';
+import followRedirects from 'axios/node_modules/follow-redirects';
 const fs = require('fs');
 
 /*  ===============================
@@ -55,18 +56,16 @@ const fs = require('fs');
             }, {
               new: true
             }).select('title _posted_by task _content_mentions');
-          const headers = {
-            maxContentLength: Infinity,
-            maxBodyLength: Infinity
-          }
 
-          console.log('headers ==>', headers);
+          console.log('default followRedirects maxbodylength ==>', followRedirects.maxBodyLength);
+          followRedirects.maxBodyLength = 60 * 1024 * 1024;
+          console.log('updated followRedirects maxbodylength ==>', followRedirects.maxBodyLength);
           await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-comment`, {
               comment: JSON.stringify(newComment),
               posted_by: post['_posted_by'],
               assigned_to: post['_assigned_to'],
               followers: post['_followers']
-          }, { headers: headers }
+          }, { maxContentLength: 60 * 1024 * 1024 }
           );
       
       
