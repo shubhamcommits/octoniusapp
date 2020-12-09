@@ -27,10 +27,17 @@ export class UsersControllers {
                     { active: true }
                 ]
             })
-                .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats')
-                .populate({
-                    path: 'stats.favorite_groups'
+            .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats')
+            .populate({
+                path: 'stats.favorite_groups',
+                select: '_id group_name group_avatar'
+            });
+
+            if (user['stats'] && user['stats']['favorite_groups']) {
+                user['stats']['favorite_groups'].sort(function(a, b) {
+                  return b.group_name - a.group_name;
                 });
+            }
 
             // If user not found
             if (!user) {
@@ -66,7 +73,17 @@ export class UsersControllers {
                     { active: true }
                 ]
             })
-                .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats');
+            .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats')
+            .populate({
+                path: 'stats.favorite_groups',
+                select: '_id group_name group_avatar'
+            });
+
+            if (user['stats'] && user['stats']['favorite_groups']) {
+                user['stats']['favorite_groups'].sort(function(a, b) {
+                  return b.group_name - a.group_name;
+                });
+            }
 
             // If user not found
             if (!user) {
@@ -106,8 +123,18 @@ export class UsersControllers {
                 $set: body
             }, {
                 new: true
-            }).select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats');
+            })
+            .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats')
+            .populate({
+                path: 'stats.favorite_groups',
+                select: '_id group_name group_avatar'
+            });
 
+            if (user['stats'] && user['stats']['favorite_groups']) {
+                user['stats']['favorite_groups'].sort(function(a, b) {
+                  return b.group_name - a.group_name;
+                });
+            }
             // If user not found
             if (!user) {
                 return sendError(res, new Error('Unable to find the user, either userId is invalid or you have made an unauthorized request!'), 'Unable to find the user, either userId is invalid or you have made an unauthorized request!', 404);
@@ -380,7 +407,8 @@ export class UsersControllers {
       const user = await User.findOne({_id: userId})
         .select("_id stats")
         .populate({
-            path: 'stats.favorite_groups'
+            path: 'stats.favorite_groups',
+            select: '_id group_name group_avatar'
         })
         .lean();
 
@@ -423,7 +451,17 @@ export class UsersControllers {
         let user = await User.findOneAndUpdate({
                 _id: userId
             }, update)
-            .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats');
+            .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats')
+            .populate({
+                path: 'stats.favorite_groups',
+                select: '_id group_name group_avatar'
+            });
+
+        if (user['stats'] && user['stats']['favorite_groups']) {
+            user['stats']['favorite_groups'].sort(function(a, b) {
+                return b.group_name - a.group_name;
+            });
+        }
 
         // Send status 200 response
         return res.status(200).json({
@@ -564,7 +602,17 @@ export class UsersControllers {
       let user: any = await User.findOneAndUpdate({
           _id: userId
         }, { $set: { 'stats.default_icons_sidebar': iconsSidebar }})
-        .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats');
+        .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats')
+        .populate({
+            path: 'stats.favorite_groups',
+            select: '_id group_name group_avatar'
+        });
+
+        if (user['stats'] && user['stats']['favorite_groups']) {
+            user['stats']['favorite_groups'].sort(function(a, b) {
+              return b.group_name - a.group_name;
+            });
+        }
 
       // Send status 200 response
       return res.status(200).json({
