@@ -2,7 +2,7 @@ import { Comment, Post, User, Notification } from '../models';
 import http from 'axios';
 import { sendErr } from '../utils/sendError';
 import moment from 'moment';
-import followRedirects from 'axios/node_modules/follow-redirects';
+import followRedirects from 'follow-redirects';
 const fs = require('fs');
 
 /*  ===============================
