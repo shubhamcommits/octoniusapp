@@ -83,7 +83,7 @@ const fs = require('fs');
               posted_by: post['_posted_by'],
               assigned_to: post['_assigned_to'],
               followers: post['_followers']
-          }
+          },{maxContentLength: 60 * 1024 * 1024 }
           );
       
       
