@@ -67,12 +67,23 @@ const fs = require('fs');
           console.log('default followRedirects maxbodylength ==>', followRedirects.maxBodyLength);
           followRedirects.maxBodyLength = 60 * 1024 * 1024;
           console.log('updated followRedirects maxbodylength ==>', followRedirects.maxBodyLength);
+          // const parsed_newComment = JSON.stringify(newComment);
+          var forward_data_object = {
+            _id: null,
+            _commented_by: '',
+            _post: ''
+          };
+
+          forward_data_object._id = newComment._id;
+          forward_data_object._commented_by = newComment._commented_by;
+          forward_data_object._post = newComment._post;
+          console.log('forward_data_object ==>', forward_data_object);
           await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-comment`, {
-              comment: JSON.stringify(newComment),
+              comment: JSON.stringify(forward_data_object),
               posted_by: post['_posted_by'],
               assigned_to: post['_assigned_to'],
               followers: post['_followers']
-          }, { maxContentLength: 60 * 1024 * 1024 }
+          }
           );
       
       
