@@ -17,9 +17,10 @@ export class CommentsController{
     async addComment(req: Request, res: Response, next: NextFunction){
         
         try {
+            console.log('addComment inside CommentsController');
             // Calling service function to add comment
             const comment = await commentsService.addComment(req);
-
+            console.log('comment resp from addComment ==>', comment);
             // Status 200 response
             return res.status(200).json({
                 message: 'Comment Added',

@@ -17,6 +17,7 @@ const fs = require('fs');
      * Function responsible for adding a new comment
      */
     addComment = async (req) => {
+      console.log('addComment inside post-service');
         try {
           let {
             userId,
@@ -24,7 +25,8 @@ const fs = require('fs');
             body: { comment }
           } = req;
 
-          comment = JSON.parse(comment)
+          comment = JSON.parse(comment);
+          console.log('comment ==>', comment);
           
           // Generate comment data
           const commentData = {
@@ -36,11 +38,15 @@ const fs = require('fs');
             files: comment.files
           };
 
+          console.log('commentData ==>', commentData);
           // Create comment
           let newComment:any = await Comment.create(commentData);
 
+          console.log('newComment ==>', newComment);
           // populate comment
           newComment = await this.getComment(newComment._id);
+          console.log('newComment ==>', newComment);
+          console.log('postId ==>', postId);
           newComment.files = comment.files;
 
           // Update post: add new comment id, increase post count
@@ -57,6 +63,7 @@ const fs = require('fs');
               new: true
             }).select('title _posted_by task _content_mentions');
 
+          console.log('post ==>', post);
           console.log('default followRedirects maxbodylength ==>', followRedirects.maxBodyLength);
           followRedirects.maxBodyLength = 60 * 1024 * 1024;
           console.log('updated followRedirects maxbodylength ==>', followRedirects.maxBodyLength);
