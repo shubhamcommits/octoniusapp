@@ -448,7 +448,7 @@ export class NotificationsController {
 
     async newComment(req: Request, res: Response, next: NextFunction) {
         console.log('newComment Function');
-        console.log('req.body of newComment ==>', req.body);
+        console.log('req.body of newComment inside notifications-server ==>', req.body);
         const { posted_by, assigned_to, followers } = req.body;
         const comment = JSON.parse(req.body.comment);
         try {
@@ -484,8 +484,6 @@ export class NotificationsController {
             const postUserFullName = postUserData['full_name'];
             const userFullName = userData['full_name'];
             const userProfilePic = userData['profile_pic'];
-            const comment_content = JSON.parse(comment.content);
-            console.log('comment_content ==>', comment_content.ops[0].insert);
             const comment_object = {
                 name: userFullName,
                 text: `${userFullName} commented on ${postUserFullName}s ${comment._post.title}`,
