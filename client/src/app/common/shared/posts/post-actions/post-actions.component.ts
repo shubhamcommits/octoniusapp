@@ -31,9 +31,6 @@ export class PostActionsComponent implements OnInit {
   // Show Comment Editor Variable
   showCommentQuillEditor = false;
 
-  // Comments Array
-  comments: any = [];
-
   likedByUsers = [];
   followedByUsers = [];
 
@@ -60,7 +57,7 @@ export class PostActionsComponent implements OnInit {
     await this.post._followers.forEach(user => {
       this.followedByUsers.push(user['first_name'] + ' ' + user['last_name']);
     });
-    this.fetchComments();
+    //this.fetchComments();
     this.showComments = false;
   }
 
@@ -101,21 +98,6 @@ export class PostActionsComponent implements OnInit {
     this.showCommentQuillEditor = !this.showCommentQuillEditor;
   }
 
-  /**
-   * Fetch Comments
-   */
-  fetchComments() {
-    if (this.showComments==false){
-      this.commentService.getComments(this.post._id).subscribe((res)=>{
-        this.comments = res.comments;
-        this.post.comments = res.comments;
-      });
-    }
-    if (this.post.comments.length > 0){
-      this.showComments = !this.showComments
-    }
-  }
-
   hideCommentEditor(emiterState: string) {
     this.showCommentQuillEditor = !this.showCommentQuillEditor
   }
@@ -129,13 +111,7 @@ export class PostActionsComponent implements OnInit {
   }
 
   newComment(comment: any) {
-    this.comments.unshift(comment);
-    this.post.comments = this.comments;
     this.newCommentEmitter.emit(comment);
-  }
-
-  removeComment(index: number){
-    this.comments.splice(index, 1);
   }
 
   postModalCloseEvent(post) {

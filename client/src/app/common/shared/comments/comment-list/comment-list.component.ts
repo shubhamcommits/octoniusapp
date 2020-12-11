@@ -27,7 +27,10 @@ export class CommentListComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-
+    this.commentService.getComments(this.postId).subscribe((res) => {
+      this.comments = res['comments'];
+      this.displayShowMore = this.length > this.comments.length;
+    });
   }
 
   ngOnChanges() {
@@ -39,11 +42,6 @@ export class CommentListComponent implements OnInit, OnChanges {
       this.displayShowMore = this.comments.length > 5;
       this.length++;
       this.comments.splice(5);
-    } else {
-      this.commentService.getComments(this.postId).subscribe((res) => {
-        this.comments = res['comments'];
-        this.displayShowMore = this.length > this.comments.length;
-      });
     }
 
     // Return the function via stopping the loader
