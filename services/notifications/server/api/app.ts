@@ -6,6 +6,7 @@ import compression from 'compression';
 import { developmentConfig, productionConfig } from '../configs';
 // import { billingRoutes, workspaceRoutes } from './routes';
 import { notificationRoutes } from './routes/notifications.routes';
+import bodyParser from 'body-parser';
 
 // Defining new Express application
 const app = express();
@@ -27,6 +28,9 @@ app.use(express.json())
 // cors middleware for orign and Headers
 app.use(cors());
 
+// body parsers
+app.use(bodyParser.json({limit:'60mb'}));
+app.use(bodyParser.urlencoded({limit: '60mb',parameterLimit: 100000, extended: true }));
 // Use Morgan middleware for logging every request status on console
 app.use(morgan('dev'));
 
