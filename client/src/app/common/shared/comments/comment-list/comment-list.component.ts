@@ -16,13 +16,11 @@ export class CommentListComponent implements OnInit, OnChanges {
   @Input() length;
   @Input() newComment;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-
   // IsLoading behaviou subject maintains the state for loading spinner
   public isLoading$ = new BehaviorSubject(false);
 
   comments = [];
-  commmentsToShow = [];
+  displayShowMore = false;
 
   constructor(
     private commentService: CommentService) {
@@ -37,26 +35,16 @@ export class CommentListComponent implements OnInit, OnChanges {
     this.isLoading$.next(true);
 
     if (this.newComment) {
-      this.length++;
-      this.paginator.pageIndex = 0;
       this.comments.unshift(this.newComment);
-      this.commmentsToShow =  this.comments.slice(0, this.paginator.pageSize);
+      this.displayShowMore = this.comments.length > 5;
+      this.length++;
+      this.comments.splice(5);
     } else {
-      this.commentService.getAllComments(this.postId).subscribe((res) => {
+      this.commentService.getComments(this.postId).subscribe((res) => {
         this.comments = res['comments'];
-        this.commmentsToShow =  this.comments.slice(0, this.paginator.pageSize);
+        this.displayShowMore = this.length > this.comments.length;
       });
     }
-
-    // Return the function via stopping the loader
-    return this.isLoading$.next(false);
-  }
-
-  pageChangeEvent(event) {
-    // Start the loading spinner
-    this.isLoading$.next(true);
-
-    this.commmentsToShow =  this.comments.slice(event.pageIndex * event.pageSize, event.pageIndex * event.pageSize + event.pageSize);
 
     // Return the function via stopping the loader
     return this.isLoading$.next(false);
@@ -66,10 +54,23 @@ export class CommentListComponent implements OnInit, OnChanges {
     // Start the loading spinner
     this.isLoading$.next(true);
 
-    this.length--;
     const index = this.comments.findIndex(c => c._id == commentId);
     this.comments.splice(index, 1);
-    this.commmentsToShow =  this.comments.slice(this.paginator.pageIndex * this.paginator.pageSize, this.paginator.pageIndex * this.paginator.pageSize + this.paginator.pageSize);
+    this.length = this.length--;
+    this.displayShowMore = this.length > 5;
+
+    // Return the function via stopping the loader
+    return this.isLoading$.next(false);
+  }
+
+  loadAllComments() {
+    // Start the loading spinner
+    this.isLoading$.next(true);
+
+    this.commentService.getAllComments(this.postId).subscribe((res) => {
+      this.comments = res['comments'];
+      this.displayShowMore = false;
+    });
 
     // Return the function via stopping the loader
     return this.isLoading$.next(false);

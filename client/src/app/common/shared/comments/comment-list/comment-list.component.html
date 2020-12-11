@@ -1,21 +1,15 @@
-<div class="content-box" *ngIf="comments && length > 0">
+<div class="content-box" *ngIf="comments && comments.length > 0">
 
-  <mat-paginator (page)="pageChangeEvent($event)"
-    #paginator [length]="length"
-    [pageSize]="5"
-    [pageSizeOptions]="[5, 10, 25, 100]">
-  </mat-paginator>
-
-  <section *ngFor="let comment of commmentsToShow; let index = index;">
+  <section *ngFor="let comment of comments; let index = index;">
       <post-comment [comment]="comment" [index]="index" [userData]="userData"
           [groupId]="groupId" (remove)="removeComment(comment._id)"></post-comment>
   </section>
 
-  <mat-paginator (page)="pageChangeEvent($event)"
-    #paginator [length]="length"
-    [pageSize]="5"
-    [pageSizeOptions]="[5, 10, 25, 100]">
-  </mat-paginator>
+  <div *ngIf="displayShowMore" style="text-align: center;">
+    <button (click)="loadAllComments()" type="button" class="btn btn-primary">
+      Show all ...<span class="badge badge-light"></span>
+    </button>
+  </div>
 
   <!-- Loading Spinner Starts -->
   <ng-container *ngIf="isLoading$ | async">
