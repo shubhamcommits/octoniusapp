@@ -51,11 +51,13 @@
 
 
 <section *ngIf="showComments && comments && post && userData && !fullscreen">
-    <section *ngFor="let comment of comments; let index = index;">
-        <post-comment [comment]="comment" [index]="index" [userData]="userData"
-            [groupId]="post._group || post._group._id" (remove)="removeComment($event)">
-        </post-comment>
-    </section>
+  <!-- COMMENTS -->
+  <app-comment-list
+    [postId]="post?._id"
+    [userData]="userData"
+    [groupId]="post?._group?._id || post?._group"
+    [length]="post?.comments_count"
+    [newComment]="newComment"></app-comment-list>
 </section>
 
 <!-- END CARD FOOTER and footer component-->

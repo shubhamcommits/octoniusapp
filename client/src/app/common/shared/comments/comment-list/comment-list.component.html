@@ -1,0 +1,11 @@
+<div class="content-box" *ngIf="comments && length > 0">
+  <section *ngFor="let comment of commmentsToShow; let index = index;">
+      <post-comment [comment]="comment" [index]="index" [userData]="userData"
+          [groupId]="groupId" (remove)="removeComment(comment._id)"></post-comment>
+  </section>
+  <mat-paginator (page)="pageChangeEvent($event)"
+    #paginator [length]="length"
+    [pageSize]="5"
+    [pageSizeOptions]="[5, 10, 25, 100]">
+  </mat-paginator>
+</div>

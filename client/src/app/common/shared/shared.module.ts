@@ -92,6 +92,8 @@ import { MultipleAssignmentsComponent } from './posts/multiple-assignments/multi
 import { HighlightDirective } from './posts/multiple-assignments/highlight.directive';
 import { FilterPipe } from './posts/multiple-assignments/filter.pipe';
 import { AssigneeAvatarComponent } from './assignee-avatar/assignee-avatar.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { CommentListComponent } from './comments/comment-list/comment-list.component';
 
 
 
@@ -197,7 +199,8 @@ import { AssigneeAvatarComponent } from './assignee-avatar/assignee-avatar.compo
     HighlightDirective,
     FilterPipe,
 
-    AssigneeAvatarComponent
+    AssigneeAvatarComponent,
+    CommentListComponent
   ],
   imports: [
     CommonModule,
@@ -239,7 +242,8 @@ import { AssigneeAvatarComponent } from './assignee-avatar/assignee-avatar.compo
     ChartsModule,
     ResizableModule,
     MatMenuModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatPaginatorModule
   ],
   exports: [
     AttachFilesComponent,
@@ -317,7 +321,8 @@ import { AssigneeAvatarComponent } from './assignee-avatar/assignee-avatar.compo
     TaskActionsComponent,
 
     MultipleAssignmentsComponent,
-    AssigneeAvatarComponent
+    AssigneeAvatarComponent,
+    CommentListComponent
   ],
   providers: [
     { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },

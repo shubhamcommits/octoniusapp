@@ -5,13 +5,10 @@ import { PublicFunctions } from 'modules/public.functions';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { GroupService } from 'src/shared/services/group-service/group.service';
-import { CommentService } from 'src/shared/services/comment-service/comment.service';
 import moment from 'moment';
 // ShareDB Client
-import * as ShareDB from 'sharedb/lib/client';
 import { BehaviorSubject } from 'rxjs';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
-import { Router } from '@angular/router';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
 
 @Component({
@@ -102,13 +99,14 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
   flows = [];
 
+  newComment;
+
   constructor(
     private postService: PostService,
     private groupService: GroupService,
     private utilityService: UtilityService,
     private flowService: FlowService,
     private injector: Injector,
-    private commentService: CommentService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private mdDialogRef: MatDialogRef<GroupCreatePostDialogComponent>
     ) {}
@@ -214,8 +212,6 @@ export class GroupCreatePostDialogComponent implements OnInit {
     }
 
     this.tags = this.postData.tags;
-
-    this.fetchComments();
 
     // Return the function via stopping the loader
     return this.isLoading$.next(false);
@@ -377,21 +373,9 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.closeEvent.emit(this.postData);
   }
 
-  /**
-   * Fetch Comments
-   */
-  fetchComments() {
-    this.commentService.getComments(this.postData._id).subscribe((res) => {
-      this.comments = res.comments;
-    });
-  }
-
-  newCommentAdded(event) {
-    this.comments.unshift(event);
-  }
-
-  removeComment(index: number) {
-    this.comments.splice(index, 1);
+  newCommentAdded(comment) {
+    // this.comments.unshift(comment);
+    this.newComment = comment;
   }
 
   /**
