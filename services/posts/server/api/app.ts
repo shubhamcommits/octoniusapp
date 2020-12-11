@@ -6,7 +6,7 @@ import compression from 'compression';
 import { developmentConfig, productionConfig } from '../configs';
 import fileUpload from 'express-fileupload';
 import { postRoutes, commentRoutes } from './routes';
-import body from 'body-parser';
+import bodyParser from 'body-parser';
 
 
 // Defining new Express application
@@ -24,14 +24,14 @@ else {
 require('../db');
 
 // Adding The 'body-parser' middleware only handles JSON and urlencoded data
-app.use(express.json())
+app.use(express.json());
 
 // cors middleware for orign and Headers
 app.use(cors());
 
 //body parsers
-app.use(body.json());
-app.use(body.urlencoded({extended:false}));
+app.use(bodyParser.json({limit:'60mb'}));
+app.use(bodyParser.urlencoded({limit: '60mb',parameterLimit: 100000, extended: true }));
 
 // Use Morgan middleware for logging every request status on console
 app.use(morgan('dev'));
