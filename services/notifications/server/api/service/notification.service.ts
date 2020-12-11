@@ -242,13 +242,13 @@ export class NotificationsService {
     * This function is responsible for notifying the user getting a new comment
     * @param { _id, _commented_by, _post, _posted_by } comment 
     */
-   async newComment(comment: any, owner: string) {
+   async newComment(comment: any, postApiData:any, owner: string) {
       try {
       const notification = await Notification.create({
         _actor: comment._commented_by,
         _owner: owner,
         _origin_comment: comment._id,
-        _origin_post: comment._post,
+        _origin_post: postApiData,
         message: 'commented on',
         type: 'comment'
       });

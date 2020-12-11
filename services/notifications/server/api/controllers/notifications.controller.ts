@@ -450,13 +450,12 @@ export class NotificationsController {
         console.log('newComment Function');
         console.log('req.body of newComment inside notifications-server ==>', req.body);
         const { posted_by, assigned_to, followers } = req.body;
-        const comment = JSON.parse(req.body.comment);
         try {
+            const comment = JSON.parse(req.body.comment);
             // Call Service Function for newComment
             const commented_by = comment._commented_by._id;
-            const postId = comment._post._id;
-            console.log('Commented By ==>', commented_by)
-            await notificationService.newComment(comment, posted_by);
+            const postId = comment._post_id;
+            console.log('Commented By ==>', commented_by);
 
             const postData = await Post.findById(postId, (err, data) => {
                 if(err){
@@ -465,6 +464,7 @@ export class NotificationsController {
                     return data;
                 }
             });
+            await notificationService.newComment(comment, postData, posted_by);
             const userData = await User.findById(commented_by, (err, data) => {
                 if(err){
                     console.log('db error ==>', err);
@@ -481,12 +481,13 @@ export class NotificationsController {
             });
     
             const groupId = postData['_group'];
+            const title = postData['title'];
             const postUserFullName = postUserData['full_name'];
             const userFullName = userData['full_name'];
             const userProfilePic = userData['profile_pic'];
             const comment_object = {
                 name: userFullName,
-                text: `${userFullName} commented on ${postUserFullName}s ${comment._post.title}`,
+                text: `${userFullName} commented on ${postUserFullName}'s ${title}`,
                 image: userProfilePic,
                 content: '\n ',
                 group_id: groupId,
@@ -500,14 +501,14 @@ export class NotificationsController {
               });
             if (assigned_to) {
                 assigned_to.forEach(async assignee => {
-                    await notificationService.newComment(comment, assignee); 
+                    await notificationService.newComment(comment, postData, assignee);
                 });
             }
             if(followers) {
                 followers.forEach(async follower => {
                     const index = assigned_to.findIndex(assignee => assignee === follower);
                     if (follower !== posted_by && index < 0) {
-                        await notificationService.newComment(comment, follower);
+                        await notificationService.newComment(comment, postData, follower);
                     }
                 });
             }
