@@ -178,6 +178,27 @@ const fs = require('fs');
         }
       };
 
+      /**
+       * Function to get all comments of a post
+       * @param { postId }
+       */
+      getAllComments = async (postId) => {
+        try {
+          const comments = await Comment.find({
+            _post: postId
+          })
+            //  sorting them on ID will make the more recent ones be fetched first
+            .sort('-_id')
+            .populate('_commented_by', 'first_name last_name profile_pic')
+            .populate('_liked_by', 'first_name last_name profile_pic')
+            .lean();
+      
+          return comments;
+        } catch (err) {
+          throw(err);
+        }
+      };
+
 
       /**
        * Function to get first 5 comments on a post
@@ -190,7 +211,7 @@ const fs = require('fs');
           })
             //  sorting them on ID will make the more recent ones be fetched first
             .sort('-_id')
-            //.limit(5)
+            .limit(5)
             .populate('_commented_by', 'first_name last_name profile_pic')
             .populate('_liked_by', 'first_name last_name profile_pic')
             .lean();

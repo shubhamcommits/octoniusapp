@@ -42,7 +42,7 @@ export class CommentListComponent implements OnInit, OnChanges {
       this.comments.unshift(this.newComment);
       this.commmentsToShow =  this.comments.slice(0, this.paginator.pageSize);
     } else {
-      this.commentService.getComments(this.postId).subscribe((res) => {
+      this.commentService.getAllComments(this.postId).subscribe((res) => {
         this.comments = res['comments'];
         this.commmentsToShow =  this.comments.slice(0, this.paginator.pageSize);
       });

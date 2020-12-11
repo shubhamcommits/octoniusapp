@@ -26,6 +26,9 @@ router.post('/edit-comment', commentFileHandler, commentsController.editComment)
 router.get('/get-comment', commentsController.getComment);
 
 // This route is used to get first 5 comments
+router.get('/allComments', commentsController.getAllComments);
+
+// This route is used to get first 5 comments
 router.get('/comments', commentsController.getComments);
 
 // This route is used to get next 5 comments
