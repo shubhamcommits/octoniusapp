@@ -155,7 +155,35 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges {
    */
   onModelChange(dateObject: any) {
     this.value = dateObject.value;
-    this.saveData();
+    this.updateDate(this.value, 'due_date');
+  }
+
+  async updateDate(date, property) {
+    await this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
+      if (property === 'due_date') {
+        this.postService.changeTaskDueDate(this.domainObject._id, date)
+          .then((res) => {
+            // Emit the post to other components
+            this.post.emit({post: res['post']});
+
+            // Resolve with success
+            resolve(this.utilityService.resolveAsyncPromise(`Date updated!`));
+          })
+          .catch(() => {
+            reject(this.utilityService.rejectAsyncPromise(`Unable to update the date, please try again!`));
+          });
+      } else if(property === 'start_date' || property === 'end_date') {
+        this.postService.saveTaskDates(this.domainObject._id, date, property)
+          .then((res) => {
+            this.domainObject = res['post'];
+            // Resolve with success
+            resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
+          })
+          .catch(() => {
+            reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
+          });
+      }
+    }));
   }
 
   onCustomFieldChange($event: Event) {
@@ -201,7 +229,7 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges {
       tags: this.domainObject.tags,
       _read_by: this.domainObject._read_by,
       task: this.domainObject.task,
-      assigned_to: (this.domainObject._assigned_to) ? this.domainObject._assigned_to._id : '',
+      assigned_to: (this.domainObject._assigned_to) ? this.domainObject._assigned_to : [],
       start_date: this.domainObject.task.start_date,
       end_date: this.domainObject.task.end_date
     };
