@@ -9,6 +9,7 @@ import { PageNotFoundComponent } from './common/page-not-found/page-not-found.co
 import { AuthenticationGuard } from 'src/shared/guards/authentication-guard/authentication.guard';
 import { RoutingGuard } from 'src/shared/guards/routing-guard/routing.guard';
 import { DenyNavigationGuard } from 'src/shared/guards/deny-navigation-guard/deny-navigation.guard';
+import { FolioGuard } from 'src/shared/guards/folio-guard/folio.guard';
 
 // Preloading Routes Strategy
 // import { QuicklinkStrategy, QuicklinkModule } from 'ngx-quicklink';
@@ -51,7 +52,7 @@ const routes: Routes = [
     path: 'document',
     loadChildren: () => import('modules/folio/folio.module')
       .then((module) => module.FolioModule),
-    canActivate: [AuthenticationGuard]
+    canActivate: [AuthenticationGuard, FolioGuard]
   },
 
   // NOT FOUND ROUTE
@@ -74,6 +75,6 @@ const routes: Routes = [
 
   ],
   exports: [RouterModule],
-  providers: [AuthenticationGuard, DenyNavigationGuard]
+  providers: [AuthenticationGuard, DenyNavigationGuard, FolioGuard]
 })
 export class AppRoutingModule { }

@@ -82,6 +82,29 @@ export class CommentsController{
 
 
     /**
+     * Function to get all comments of a post
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async getAllComments(req: Request, res: Response, next: NextFunction){
+        try {
+            const { postId } = req.query;
+            // Service function to get all comments
+            const comments = await commentsService.getAllComments(postId);
+
+            // Status 200 response
+            return res.status(200).json({
+                message: 'Comments found!',
+                comments: comments
+            });
+        } catch (error) {
+            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
+        }
+    }
+
+
+    /**
      * Function to get first 5 comments on a post
      * @param req 
      * @param res 
@@ -90,7 +113,7 @@ export class CommentsController{
     async getComments(req: Request, res: Response, next: NextFunction){
         try {
             const { postId } = req.query;
-            // Service function to get all comments
+            // Service function to get top 5 comments
             const comments = await commentsService.getComments(postId);
 
             // Status 200 response

@@ -80,6 +80,16 @@ export class CommentService {
    * This function is responsible for fetching all comments
    * @param postId
    */
+  getAllComments(postId: any): Observable<any>{
+    return this._http.get(this.baseURL + '/comments/allComments', {
+      params: {postId}
+    });
+  }
+
+  /**
+   * This function is responsible for fetching top 5 comments
+   * @param postId
+   */
   getComments(postId: any): Observable<any>{
     return this._http.get(this.baseURL + '/comments/comments', {
       params: {postId}
@@ -120,7 +130,7 @@ export class CommentService {
     }).toPromise();
   }
 
-  getCommentsCount(postId: string, period: any) {
+  getCommentsCount(postId: string, period?: any) {
     return this._http.get(this.baseURL + `/comments/count`, {params:{
       period: period,
       postId: postId
