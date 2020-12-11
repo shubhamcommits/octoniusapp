@@ -71,12 +71,12 @@ const fs = require('fs');
           var forward_data_object = {
             _id: null,
             _commented_by: '',
-            _post: ''
+            _post_id: null
           };
 
           forward_data_object._id = newComment._id;
           forward_data_object._commented_by = newComment._commented_by;
-          forward_data_object._post = newComment._post;
+          forward_data_object._post_id = newComment._post._id;
           console.log('forward_data_object ==>', forward_data_object);
           await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-comment`, {
               comment: JSON.stringify(forward_data_object),
