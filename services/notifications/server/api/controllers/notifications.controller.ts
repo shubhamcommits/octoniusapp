@@ -457,29 +457,11 @@ export class NotificationsController {
             const postId = comment._post_id;
             console.log('Commented By ==>', commented_by);
 
-            const postData = await Post.findById(postId, (err, data) => {
-                if(err){
-                    console.log('db error ==>', err);
-                } else {
-                    return data;
-                }
-            });
-            await notificationService.newComment(comment, postData, posted_by);
-            const userData = await User.findById(commented_by, (err, data) => {
-                if(err){
-                    console.log('db error ==>', err);
-                } else {
-                    return data;
-                }
-            });
-            const postUserData = await User.findById(posted_by, (err, data) => {
-                if(err){
-                    console.log('db error ==>', err);
-                } else {
-                    return data;
-                }
-            });
-    
+            const postData = await Post.findById({ _id: postId }, { _group: 1, title: 1, content: 1 });
+            await notificationService.newComment(comment, postId, posted_by);
+            const userData = await User.findById({_id: commented_by}, {full_name:1, profile_pic:1});
+            const postUserData = await User.findById({_id: posted_by}, {full_name:1});
+
             const groupId = postData['_group'];
             const title = postData['title'];
             const postUserFullName = postUserData['full_name'];
@@ -501,14 +483,14 @@ export class NotificationsController {
               });
             if (assigned_to) {
                 assigned_to.forEach(async assignee => {
-                    await notificationService.newComment(comment, postData, assignee);
+                    await notificationService.newComment(comment, postId, assignee);
                 });
             }
             if(followers) {
                 followers.forEach(async follower => {
                     const index = assigned_to.findIndex(assignee => assignee === follower);
                     if (follower !== posted_by && index < 0) {
-                        await notificationService.newComment(comment, postData, follower);
+                        await notificationService.newComment(comment, postId, follower);
                     }
                 });
             }
