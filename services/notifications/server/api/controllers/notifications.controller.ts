@@ -477,10 +477,10 @@ export class NotificationsController {
                 btn_title:'view comment'
             }
             console.log('comment_object ==>', comment_object);
-            // await axios.post(`${process.env.INTEGRATION_SERVER_API}/slack-notify`, {
-            //     data: JSON.stringify(comment_object),
-            //     userid: posted_by
-            //   });
+            await axios.post(`${process.env.INTEGRATION_SERVER_API}/slack-notify`, {
+                data: JSON.stringify(comment_object),
+                userid: posted_by
+              });
             if (assigned_to) {
                 assigned_to.forEach(async assignee => {
                     await notificationService.newComment(comment, postId, assignee);
