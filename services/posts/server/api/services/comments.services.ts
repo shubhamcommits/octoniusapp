@@ -169,7 +169,8 @@ const fs = require('fs');
             _id: commentId
           })
             .populate('_commented_by', '_id first_name last_name profile_pic')
-            .populate({ path: '_post', populate: { path: '_group' } })
+            .populate({path: '_post', select: '_id _group', populate: {path: '_group'}})
+            // .populate({ path: '_post', populate: { path: '_group' } })
             .lean();
       
           return comment;
