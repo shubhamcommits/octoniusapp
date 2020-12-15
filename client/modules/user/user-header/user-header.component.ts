@@ -49,28 +49,14 @@ export class UserHeaderComponent implements OnInit, OnDestroy {
   public publicFunctions = new PublicFunctions(this.injector);
 
   async ngOnInit() {
-
-    // Reuse this route as userId as the queryParam will change
-    // this.publicFunctions.reuseRoute(this._router)
-
-    // Get current loggedIn user data
-    this.userData = await this.publicFunctions.getCurrentUser();
-
+    // Fetch the userData from the server
+    await this.publicFunctions.getOtherUser(this.router.snapshot.queryParams['userId']).then(res => {
+      console.log(res);
+      this.userData = res;
+      this.utilityService.updateOtherUserData(this.userData);
+    });
     // Get current workspaceData
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
-
-    // Check if the profile view is private or is it for the other user
-    this.isCurrentUser = this.checkIsCurrentUser(this.userData);
-
-    // If this not the current user
-    if(!this.isCurrentUser){
-
-      // Fetch the userData from the server
-      this.userData = await this.publicFunctions.getOtherUser(this.router.snapshot.queryParams['userId']);
-
-      // Update the other user data over the shared service
-      this.utilityService.updateOtherUserData(this.userData);
-    }
 
     // Setting Home State
     this.publicFunctions.sendUpdatesToRouterState({
@@ -90,12 +76,18 @@ export class UserHeaderComponent implements OnInit, OnDestroy {
    * This function checks if this is currently loggedIn user
    * @param userData
    */
-  checkIsCurrentUser(userData: any) {
+  async checkIsCurrentUser() {
+
+    // Get current loggedIn user data
+    const userData = await this.publicFunctions.getCurrentUser();
+    const userId = this.router.snapshot.queryParams['userId'];
+
     // If this is current loggedIn user
-    if (this.router.snapshot.queryParams['userId'] == userData._id)
-      return true
-    else
-      return false
+    if (userId == userData._id) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   /**
