@@ -1,6 +1,6 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-user-profile',

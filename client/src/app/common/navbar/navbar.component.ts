@@ -4,7 +4,7 @@ import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { retry } from 'rxjs/internal/operators/retry';
 import { SubSink } from 'subsink';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { PublicFunctions } from 'modules/public.functions';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
@@ -26,6 +26,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     private _ActivatedRoute: ActivatedRoute,
     private socketService: SocketService,
     private injector: Injector,
+    private _router: Router
     ) { }
 
   // CURRENT USER DATA
@@ -102,6 +103,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   async ngOnInit() {
+
+    this.publicFunctions.reuseRoute(this._router)
 
     // FETCH THE USER DETAILS FROM THE SERVER
     this.userData = await this.getCurrentUser();
