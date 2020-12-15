@@ -27,15 +27,17 @@ export class CommentListComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.commentService.getComments(this.postId).subscribe((res) => {
-      this.comments = res['comments'];
-      this.displayShowMore = this.length > this.comments.length;
-    });
   }
 
   ngOnChanges() {
     // Start the loading spinner
     this.isLoading$.next(true);
+
+    this.comments = [];
+    this.commentService.getComments(this.postId).subscribe((res) => {
+      this.comments = res['comments'];
+      this.displayShowMore = this.length > this.comments.length;
+    });
 
     if (this.newComment) {
       this.comments.unshift(this.newComment);
