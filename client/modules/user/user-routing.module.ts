@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { UserHeaderComponent } from './user-header/user-header.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserCloudsComponent } from './user-clouds/user-clouds.component';
 

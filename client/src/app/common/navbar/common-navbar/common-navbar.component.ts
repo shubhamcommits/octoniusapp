@@ -22,6 +22,8 @@ export class CommonNavbarComponent implements OnInit, AfterContentChecked {
   // My user nav variable check
   isUserNav: boolean = this.isUserNavigation();
 
+  isCurrentUser: boolean = false;
+
   // User Data
   userData: any;
 
@@ -38,9 +40,15 @@ export class CommonNavbarComponent implements OnInit, AfterContentChecked {
   public publicFunctions = new PublicFunctions(this.injector)
 
   async ngOnInit() {
+    // Get current loggedIn user data
+    const currentUserData = await this.publicFunctions.getCurrentUser();
 
     // Fetch the current user
-    this.userData = await this.publicFunctions.getCurrentUser();
+    await this.publicFunctions.getOtherUser(this.router.snapshot.queryParamMap.get('userId')).then(async res => {
+      this.userData = res;
+
+      this.isCurrentUser = await this.checkIsCurrentUser(currentUserData._id);
+    });
 
     // Subscribe to the change in workspace data from the socket server
     this.subSink.add(this.utilityService.currentWorkplaceData.subscribe((res) => {
@@ -50,13 +58,20 @@ export class CommonNavbarComponent implements OnInit, AfterContentChecked {
     }));
   }
 
-  ngAfterContentChecked() {
+  async ngAfterContentChecked() {
     // My user nav variable check
     this.isUserNav = this.isUserNavigation();
   }
 
   isUserNavigation() {
     return this.router.snapshot.queryParamMap.has('userId') ? true : false;
+  }
+
+  /**
+   * This function checks if this is currently loggedIn user
+   */
+  async checkIsCurrentUser(currentUserId) {
+    return (this.userData._id == currentUserId) ? true : false;
   }
 
   /**

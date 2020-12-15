@@ -1,7 +1,5 @@
 import { Component, OnInit, Injector } from '@angular/core';
-import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
-import { UserHeaderComponent } from '../user-header/user-header.component';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -12,10 +10,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class UserProfileComponent implements OnInit {
 
   constructor(
-    private utilityService: UtilityService,
     private injector: Injector,
-    private router: ActivatedRoute,
-    private _route: Router
+    private router: ActivatedRoute
   ) { }
 
   // User Data Variable
@@ -24,50 +20,42 @@ export class UserProfileComponent implements OnInit {
   // Public functions class member
   publicFunctions = new PublicFunctions(this.injector);
 
-  // Create user header component class
-  userHeaderComponent = new UserHeaderComponent(this.router, this._route, this.injector, this.utilityService);
-
   // Is current user component
-  isCurrentUser: boolean = this.userHeaderComponent.isCurrentUser;
+  isCurrentUser: boolean = false;
 
   async ngOnInit() {
 
     // Setting Home State
     this.publicFunctions.sendUpdatesToRouterState({
       state: 'admin'
-    })
+    });
 
-    // Subscribe to the change in userData
-    this.utilityService.currentUserData.subscribe((res) => {
+    const userId = this.router.snapshot.queryParams['userId'];
+
+    await this.publicFunctions.getOtherUser(userId).then((res) => {
       if(JSON.stringify(res) != JSON.stringify({})){
         this.userData = res;
       }
-    })
-
-    // Start the Foreground Loader
-    // this.utilityService.startForegroundLoader();
-
-    // Intialise the userData variable
-    this.userData = await this.publicFunctions.getCurrentUser();
+    });
 
     // Instantiate the current user value
-    this.isCurrentUser = this.userHeaderComponent.checkIsCurrentUser(this.userData);
-
-    // Initialise the other userData
-    if(!this.isCurrentUser)
-      this.utilityService.otherUserData.subscribe((res) => {
-        console.log(res);
-        if(JSON.stringify(res) != JSON.stringify({})){
-          this.userData = res;
-        }
-      })
+    await this.checkIsCurrentUser(userId);
   }
 
-  ngAfterViewChecked(): void {
+  /**
+   * This function checks if this is currently loggedIn user
+   * @param userData
+   */
+  async checkIsCurrentUser(userId: string) {
 
-    // Stop the Foreground Loader
-    // this.utilityService.stopForegroundLoader();
+    // Get current loggedIn user data
+    const userData = await this.publicFunctions.getCurrentUser();
+
+    // If this is current loggedIn user
+    if (userId == userData._id) {
+      this.isCurrentUser = true;
+    } else {
+      this.isCurrentUser = false;
+    }
   }
-
-
 }
