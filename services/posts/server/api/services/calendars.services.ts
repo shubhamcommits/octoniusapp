@@ -43,6 +43,8 @@ export class CalendarService {
                 .populate('_group', this.groupFields)
                 .populate('_posted_by', this.userFields)
                 .populate('_assigned_to', this.userFields)
+                .populate('_followers', this.userFields)
+                .populate('_liked_by', this.userFields)
                 .lean();
 
         // Find user's month tasks
@@ -60,6 +62,8 @@ export class CalendarService {
                 .populate('_group', this.groupFields)
                 .populate('_posted_by', this.userFields)
                 .populate('_assigned_to', this.userFields)
+                .populate('_followers', this.userFields)
+                .populate('_liked_by', this.userFields)
                 .lean();
 
         // Return tasks
@@ -95,6 +99,8 @@ export class CalendarService {
             .sort('event.due_to')
             .populate('_posted_by', this.userFields)
             .populate('_group', this.groupFields)
+            .populate('_followers', this.userFields)
+            .populate('_liked_by', this.userFields)
             .lean();
 
         // Find the user's month events
@@ -112,6 +118,8 @@ export class CalendarService {
             .sort('event.due_to')
             .populate('_posted_by', this.userFields)
             .populate('_group', this.groupFields)
+            .populate('_followers', this.userFields)
+            .populate('_liked_by', this.userFields)
             .lean();
 
         // Return Events

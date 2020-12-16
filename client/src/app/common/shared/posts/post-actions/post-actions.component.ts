@@ -48,16 +48,20 @@ export class PostActionsComponent implements OnInit {
   @Output() closeModalEvent = new EventEmitter();
 
   async ngOnInit() {
-    await this.post._liked_by.forEach(userId => {
-      this.publicFunctions.getOtherUser(userId).then(user => {
+    await this.post._liked_by.forEach(user => {
+      if(user._id) {
         this.likedByUsers.push(user['first_name'] + ' ' + user['last_name']);
-      });
+      } else {
+        this.publicFunctions.getOtherUser(user).then(otherUser => {
+          this.likedByUsers.push(otherUser['first_name'] + ' ' + otherUser['last_name']);
+        });
+      }
     });
 
     await this.post._followers.forEach(user => {
       this.followedByUsers.push(user['first_name'] + ' ' + user['last_name']);
     });
-    //this.fetchComments();
+
     this.showComments = false;
   }
 
