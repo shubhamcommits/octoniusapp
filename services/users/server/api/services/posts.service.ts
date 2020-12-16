@@ -35,6 +35,8 @@ export class PostsService {
             .populate('_group', this.groupFields)
             .populate('_posted_by', this.userFields)
             .populate('_assigned_to', this.userFields)
+            .populate('_followers', this.userFields)
+            .populate('_liked_by', this.userFields)
             .lean();
 
         // Return Tasks
@@ -63,6 +65,8 @@ export class PostsService {
             .populate('_group', this.groupFields)
             .populate('_posted_by', this.userFields)
             .populate('_assigned_to', this.userFields)
+            .populate('_followers', this.userFields)
+            .populate('_liked_by', this.userFields)
             .lean();
 
         // Return tasks
@@ -95,6 +99,8 @@ export class PostsService {
             .populate('_group', this.groupFields)
             .populate('_posted_by', this.userFields)
             .populate('_assigned_to', this.userFields)
+            .populate('_followers', this.userFields)
+            .populate('_liked_by', this.userFields)
             .lean();
 
         // Return tasks
@@ -127,6 +133,8 @@ export class PostsService {
             .populate('_group', this.groupFields)
             .populate('_posted_by', this.userFields)
             .populate('_assigned_to', this.userFields)
+            .populate('_followers', this.userFields)
+            .populate('_liked_by', this.userFields)
             .lean();
 
         // Return tasks
@@ -152,6 +160,8 @@ export class PostsService {
             .populate('_group', this.groupFields)
             .populate('_posted_by', this.userFields)
             .populate('_assigned_to', this.userFields)
+            .populate('_followers', this.userFields)
+            .populate('_liked_by', this.userFields)
             .lean();
 
         // Filter the tasks array
@@ -190,6 +200,8 @@ export class PostsService {
             .sort('event.due_to')
             .populate('_posted_by', this.userFields)
             .populate('_group', this.groupFields)
+            .populate('_followers', this.userFields)
+            .populate('_liked_by', this.userFields)
 
         // Return Events
         return events;
@@ -221,6 +233,8 @@ export class PostsService {
             .sort('event.due_to')
             .populate('_posted_by', this.userFields)
             .populate('_group', this.groupFields)
+            .populate('_followers', this.userFields)
+            .populate('_liked_by', this.userFields)
 
         // Return Events
         return events;
@@ -247,6 +261,8 @@ export class PostsService {
             .populate('_group', this.groupFields)
             .populate('_posted_by', this.userFields)
             .populate('_assigned_to', this.userFields)
+            .populate('_followers', this.userFields)
+            .populate('_liked_by', this.userFields)
             .lean() || []
 
         // Filter out the posts belonging to the current user
