@@ -392,39 +392,26 @@ export class NotificationsController {
                 }
             });
 
-            const postData = await Post.findById(postId, (err, data) => {
-                if(err){
-                    console.log('db error ==>', err);
-                } else {
-                    // console.log('post document ==> ', data);
-                    return data;
-                }
-            });
-            const userAssignedData = await User.findById(assigned_to, (err, data) => {
-                if(err){
-                    console.log('db error ==>', err);
-                } else {
-                    // console.log('post document ==> ', data);
-                    return data;
-                }
-            });
-            const userData = await User.findById(userId, (err, data) => {
-                if(err){
-                    console.log('db error ==>', err);
-                } else {
-                    // console.log('post document ==> ', data);
-                    return data;
-                }
-            });
+            const postData = await Post.findById(postId, { _group: 1, title: 1 });
+            const userAssignedData = await User.findById(assigned_to, { full_name: 1 });
+            const userData = await User.findById(userId, {full_name: 1, profile_pic: 1});
+            console.log('postData ==>', postData);
+            console.log('assigned_to ==>', assigned_to);
+            console.log('userData ==>', userData);
             const userFullName = userData['full_name'];
-            const userAssignedFullName = userAssignedData['full_name'];
             const userProfilePic = userData['profile_pic'];
             const groupId = postData['_group'];
             const postTitle = postData['title'];
-            console.log('Posted By ==>', );
+            var notification_text = '';
+            if(assigned_to && userAssignedData){
+                const userAssignedFullName = userAssignedData['full_name'];
+                notification_text = `${userAssignedFullName}'s assignment status changed by ${userFullName} on post ${postTitle} `;
+            } else {
+                notification_text = `${postTitle} post status changed by ${userFullName}`;
+            }
             const comment_object = {
                 name: userFullName,
-                text: `${userAssignedFullName}'s assignment status changed by ${userFullName} on post ${postTitle} `,
+                text: notification_text,
                 image: userProfilePic,
                 content: '\n ',
                 group_id: groupId,
@@ -432,10 +419,21 @@ export class NotificationsController {
                 btn_title:'view task'
             }
             console.log('comment_object ==>', comment_object);
-            await axios.post(`${process.env.INTEGRATION_SERVER_API}/slack-notify`, {
-                data: JSON.stringify(comment_object),
-                userid: userId
-              });
+            if( assigned_to && userAssignedData ){
+                console.log('inside if assigned_to && userAssignedData')
+                await axios.post(`${process.env.INTEGRATION_SERVER_API}/slack-notify`, {
+                    data: JSON.stringify(comment_object),
+                    userid: assigned_to
+                  });
+            }
+            if( userId ) {
+                console.log('inside if to send notifications to post creator')
+                await axios.post(`${process.env.INTEGRATION_SERVER_API}/slack-notify`, {
+                    data: JSON.stringify(comment_object),
+                    userid: userId
+                  });
+            }
+
             // Send status 200 response
             return res.status(200).json({
                 message: 'New Task Status Change Succeded!'
