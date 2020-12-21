@@ -49,7 +49,7 @@ export class AuthsController {
             }
 
             // Resolve the promise
-            resolve();
+            resolve({});
         })
 
     }
@@ -256,10 +256,11 @@ export class AuthsController {
                     ] }).countDocuments();
 
                     // Update the subscription details
-                    let subscription = await stripe.subscriptions.update(workspace.billing.subscription_id, {
-                        price: workspace.billing.price_id,
-                        quantity: usersCount
-                    });
+                    if(workspace.billing.subscription_id)
+                        stripe.subscriptions.update(workspace.billing.subscription_id, {
+                            price: workspace.billing.price_id,
+                            quantity: usersCount
+                        });
 
                     // Update the4 workspace details
                     await Workspace.findOneAndUpdate({

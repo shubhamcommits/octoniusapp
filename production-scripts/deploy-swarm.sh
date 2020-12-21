@@ -20,10 +20,6 @@ docker login
 
 # Pull the images
 
-
-# Mongo Image Name
-export MONGO_IMAGE_NAME=mongo:latest
-
 # Client Microservice Image Name
 export CLIENT_IMAGE_NAME=octoniusapp/octonius-prod:client
 
@@ -64,8 +60,6 @@ export INTEGRATIONS_IMAGE_NAME=octoniusapp/octonius-prod:integrations-server
 export NGINX_IMAGE_NAME=octoniusapp/octonius-prod:nginx
 
 # pull the new Docker image to the Docker registry
-          docker pull $MONGO_IMAGE_NAME
-          docker pull $CLIENT_IMAGE_NAME
           docker pull $MAILS_IMAGE_NAME
           docker pull $AUTHS_IMAGE_NAME
           docker pull $GROUPS_IMAGE_NAME
@@ -77,6 +71,7 @@ export NGINX_IMAGE_NAME=octoniusapp/octonius-prod:nginx
           docker pull $FOLIO_IMAGE_NAME
           docker pull $SEARCH_IMAGE_NAME
           docker pull $INTEGRATIONS_IMAGE_NAME
+          docker pull $CLIENT_IMAGE_NAME
           docker pull $NGINX_IMAGE_NAME
 
 # Deploy the Stack
