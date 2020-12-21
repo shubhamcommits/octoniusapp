@@ -20,6 +20,10 @@ docker login
 
 # Pull the images
 
+
+# Mongo Image Name
+export MONGO_IMAGE_NAME=mongo:latest
+
 # Client Microservice Image Name
 export CLIENT_IMAGE_NAME=octoniusapp/octonius-prod:client
 
