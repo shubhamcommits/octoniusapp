@@ -1,7 +1,7 @@
 // DNS Details
 const url = {
   protocol: `https`, // standard protocol
-  domain: `workplace.octonius.com`, // your domain name where application is supposed to be visible
+  domain: `app.octonius.com`, // your domain name where application is supposed to be visible
   websocket: `wss` // wss in case of https protocol, else pass ws here
 }
 
