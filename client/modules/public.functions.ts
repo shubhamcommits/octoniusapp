@@ -1173,7 +1173,9 @@ export class PublicFunctions {
   }
 
   executeActionFlow(flows: any[], flowIndex: number, stepIndex: number, post: any, userId: string, groupId: string) {
-      flows[flowIndex].steps[stepIndex].action.forEach(async action => {
+console.log(flows[flowIndex].steps[stepIndex]);
+    flows[flowIndex].steps[stepIndex].action.forEach(async action => {
+console.log(action);
           switch (action.name) {
               case 'Assign to':
                   action._user.forEach(async userAction => {
@@ -1184,14 +1186,14 @@ export class PublicFunctions {
                         }
                     });
               case 'Custom Field':
-                  post.task.custom_fields[flows[flowIndex].steps[stepIndex].action.custom_field.name] = flows[flowIndex].steps[stepIndex].action.custom_field.value;
-                  return await this.executedAutomationFlowsPropertiesFront(flows, 'Custom Field', flows[flowIndex].steps[stepIndex].action.custom_field, groupId, post, userId);
+                  post.task.custom_fields[action.custom_field.name] = action.custom_field.value;
+                  return await this.executedAutomationFlowsPropertiesFront(flows, 'Custom Field', action.custom_field, groupId, post, userId);
               case 'Move to':
-                  post.task._column.title = flows[flowIndex].steps[stepIndex].action.section;
-                  return await this.executedAutomationFlowsPropertiesFront(flows, 'Section is', flows[flowIndex].steps[stepIndex].action.section, groupId, post, userId);
+                  post.task._column.title = action.section;
+                  return await this.executedAutomationFlowsPropertiesFront(flows, 'Section is', action.section, groupId, post, userId);
               case 'Change Status to':
-                  post.task.status = flows[flowIndex].steps[stepIndex].action.status
-                  return await this.executedAutomationFlowsPropertiesFront(flows, 'Status is', flows[flowIndex].steps[stepIndex].action.status, groupId, post, userId);
+                  post.task.status = action.status
+                  return await this.executedAutomationFlowsPropertiesFront(flows, 'Status is', action.status, groupId, post, userId);
               default:
                   break;
           }
