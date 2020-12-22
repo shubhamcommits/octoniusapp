@@ -1033,6 +1033,7 @@ export class PublicFunctions {
         this.subSink.unsubscribe();
     }
 
+    /*
     executedAutomationFlowsPropertiesFront(post: any, triggerText: string, flows, cfTrigger?: any) {
 
       if (flows && flows.length > 0) {
@@ -1089,4 +1090,112 @@ export class PublicFunctions {
 
       return post;
     }
+    */
+
+    executedAutomationFlowsPropertiesFront(flows: any[], triggerType: string, value: any, groupId: string, post: any, userId: string) {
+      if (flows && flows.length > 0) {
+          flows.forEach((flow, flowIndex) => {
+              const steps = flow['steps'];
+              if (steps && steps.length > 0) {
+                  steps.forEach(async (step, stepIndex) => {
+                      const triggerIndex = step.trigger.findIndex(trigger => trigger.name == triggerType);
+                      if (triggerIndex >= 0) {
+                          if (this.isTriggerValueMatch(triggerIndex, triggerType, step.trigger, value)
+                              && this.isMultipleTriggers(triggerIndex, step.trigger, post)) {
+
+                              await this.executeActionFlow(flows, flowIndex, stepIndex, post, userId, groupId);
+                          }
+                      }
+                  });
+              }
+          });
+      }
+      return post;
+  }
+
+  isTriggerValueMatch(triggerIndex: number, triggerTpe: string, triggers: any[], value: any) {
+
+      switch (triggerTpe) {
+          case 'Assigned to':
+              const userIndex = triggers[triggerIndex]._user.findIndex(userTrigger => (userTrigger._id == value || userTrigger == value));
+              return (userIndex > -1);
+          case 'Custom Field':
+              return (triggers[triggerIndex].custom_field.name.toUpperCase() == value.name.toUpperCase()
+                  && triggers[triggerIndex].custom_field.value.toUpperCase() == value.value.toUpperCase());
+          case 'Section is':
+              return triggers[triggerIndex].section.toUpperCase() == value.toUpperCase();
+          case 'Status is':
+              return triggers[triggerIndex].status.toUpperCase() == value.toUpperCase();
+          case 'Task is CREATED':
+              return true;
+          default:
+              return false;
+      }
+  }
+
+  isMultipleTriggers(triggerIndex: number, triggers: any[], post: any) {
+      let retValue = false;
+      if (triggers && triggers.length > 1) {
+          triggers = triggers.splice(triggerIndex, 1);
+          triggers.forEach(trigger => {
+              switch (trigger.name) {
+                  case 'Assigned to':
+                      const usersMatch = trigger._user.filter((triggerUser) => {
+                          for(var i=0; i < post._assigned_to.length; i++){
+                            if(triggerUser._id == post._assigned_to[i]._id){
+                              return false;
+                            }
+                          }
+                          return true;
+                      });
+                      retValue = (usersMatch.length > 0);
+                      break;
+                  case 'Custom Field':
+                      retValue = post.custom_field[trigger.custom_field.name] == trigger.custom_field.value;
+                      break;
+                  case 'Section is':
+                      retValue = trigger.section.toUpperCase() == post.task._column.title.toUpperCase();
+                      break;
+                  case 'Status is':
+                      retValue = trigger.status.toUpperCase() == post.task.status.toUpperCase();
+                      break;
+                  case 'Task is CREATED':
+                      retValue = true;
+                      break;
+                  default:
+                      retValue = false;
+                      break;
+              }
+          });
+      }
+      return retValue
+
+  }
+
+  executeActionFlow(flows: any[], flowIndex: number, stepIndex: number, post: any, userId: string, groupId: string) {
+      flows[flowIndex].steps[stepIndex].action.forEach(async action => {
+          switch (action.name) {
+              case 'Assign to':
+                  action._user.forEach(async userAction => {
+                        const indexAction = post._assigned_to.findIndex(assignee => assignee._id == userAction._id || assignee._id == userAction);
+                        if (indexAction >= 0) {
+                          post._assigned_to.push(userAction);
+                          return await this.executedAutomationFlowsPropertiesFront(flows, 'Assigned to', userAction._id, groupId, post, userId);
+                        }
+                    });
+              case 'Custom Field':
+                  post.task.custom_fields[flows[flowIndex].steps[stepIndex].action.custom_field.name] = flows[flowIndex].steps[stepIndex].action.custom_field.value;
+                  return await this.executedAutomationFlowsPropertiesFront(flows, 'Custom Field', flows[flowIndex].steps[stepIndex].action.custom_field, groupId, post, userId);
+              case 'Move to':
+                  post.task._column.title = flows[flowIndex].steps[stepIndex].action.section;
+                  return await this.executedAutomationFlowsPropertiesFront(flows, 'Section is', flows[flowIndex].steps[stepIndex].action.section, groupId, post, userId);
+              case 'Change Status to':
+                  post.task.status = flows[flowIndex].steps[stepIndex].action.status
+                  return await this.executedAutomationFlowsPropertiesFront(flows, 'Status is', flows[flowIndex].steps[stepIndex].action.status, groupId, post, userId);
+              default:
+                  break;
+          }
+      });
+      return post;
+  }
 }

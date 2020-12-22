@@ -182,11 +182,13 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
    */
   async updateTask(post: any, cfTrigger?: any) {
     if (post) {
+
       if (cfTrigger) {
         post.task.custom_fields[cfTrigger.name] = cfTrigger.value;
+        post = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, 'Custom Field', cfTrigger, this.groupData._id, post, this.userData._id);
       }
-
-      post = await this.publicFunctions.executedAutomationFlowsPropertiesFront(post, '', this.flows, cfTrigger);
+      // TODO - check if this is needed
+      // post = await this.publicFunctions.executedAutomationFlowsPropertiesFront(post, '', this.flows, cfTrigger);
 
       // Find the index of the task
       const indexTask = this.tasks.findIndex((task: any) => task._id === post._id);
