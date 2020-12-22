@@ -1,5 +1,43 @@
 <div class="board">
   <div class="board-wrapper">
-    <scheduler [tasks]="tasks"></scheduler>
+    <!-- <scheduler [tasks]="tasks"></scheduler> -->
+    <svg width="1500" height="600" id="main-svg">
+      <g>
+        <text x="100" y="30" font-family="Verdana" font-size="16" fill="black">{{date[0].month}}</text>
+      </g>
+      <g *ngFor="let item of date; let i =index">
+      <g *ngIf="item.day==3">
+        <text [attr.x]="(i*50+25)" y="30" font-family="Verdana" font-size="16" fill="black">{{item.month}}</text>
+      </g>
+      <rect  [attr.x]="i*50" y="40" width="50" height="40" fill='none' > 
+      </rect>
+      <text [attr.x]="(i*50+25)" y="60" font-family="Verdana" font-size="16" fill="black">{{item.day}}</text>
+    </g>
+    
+    <g>
+      <rect  x="100"  y="100"  width="50" height="40" rx="0" ry="3"  style="stroke:gray;fill: #ffffff;stroke-opacity: .3"></rect>
+      <rect  x="100"  y="100"  width="3" height="40" style="fill: #ffab00;"></rect>
+      <defs>
+        <clipPath id="myCircle">
+           <circle cx="126" cy="120" r="18" fill="#FFFFFF" />
+        </clipPath>
+     </defs>
+     <image xlink:href="https://workplace.octonius.com/uploads/users/1606119053071_Screenshot 2020-11-23 at 13.09.57.png" clip-path="url(#myCircle)" />
+    </g>
+
+    <g>
+      <rect  x="400"  y="140"  width="150" height="40" rx="0" ry="3"  style="stroke:gray;fill: #ffffff;stroke-opacity: .3"></rect>
+      <rect  x="400"  y="140"  width="3" height="40" style="fill: #ffab00;"></rect>
+      <text x="450" y="165" font-family="Nunito" font-size="12" fill="black">Task 1</text>
+      <defs>
+        <clipPath id="myCircle1">
+           <circle cx="426" cy="160" r="18" fill="#FFFFFF" />
+        </clipPath>
+     </defs>
+     <image x="400" y="140" xlink:href="http://localhost:10000/uploads/groups/1607585036796ahmed-shah-feat.jpg" clip-path="url(#myCircle1)" />
+    </g>
+
+  </svg>
+
   </div>
 </div>
