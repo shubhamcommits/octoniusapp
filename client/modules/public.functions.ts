@@ -1103,7 +1103,7 @@ export class PublicFunctions {
                           if (this.isTriggerValueMatch(triggerIndex, triggerType, step.trigger, value)
                               && this.isMultipleTriggers(triggerIndex, step.trigger, post)) {
 
-                              await this.executeActionFlow(flows, flowIndex, stepIndex, post, userId, groupId);
+                              post = await this.executeActionFlow(flows, flowIndex, stepIndex, post, userId, groupId);
                           }
                       }
                   });
@@ -1173,18 +1173,16 @@ export class PublicFunctions {
   }
 
   executeActionFlow(flows: any[], flowIndex: number, stepIndex: number, post: any, userId: string, groupId: string) {
-console.log(flows[flowIndex].steps[stepIndex]);
     flows[flowIndex].steps[stepIndex].action.forEach(async action => {
-console.log(action);
           switch (action.name) {
               case 'Assign to':
                   action._user.forEach(async userAction => {
-                        const indexAction = post._assigned_to.findIndex(assignee => assignee._id == userAction._id || assignee._id == userAction);
-                        if (indexAction >= 0) {
-                          post._assigned_to.push(userAction);
-                          return await this.executedAutomationFlowsPropertiesFront(flows, 'Assigned to', userAction._id, groupId, post, userId);
-                        }
-                    });
+                      const indexAction = post._assigned_to.findIndex(assignee => (assignee._id || assignee) == (userAction._id || userAction));
+                      if (indexAction < 0) {
+                        post._assigned_to.push(userAction);
+                        return await this.executedAutomationFlowsPropertiesFront(flows, 'Assigned to', userAction._id, groupId, post, userId);
+                      }
+                  });
               case 'Custom Field':
                   post.task.custom_fields[action.custom_field.name] = action.custom_field.value;
                   return await this.executedAutomationFlowsPropertiesFront(flows, 'Custom Field', action.custom_field, groupId, post, userId);
@@ -1192,7 +1190,7 @@ console.log(action);
                   post.task._column.title = action.section;
                   return await this.executedAutomationFlowsPropertiesFront(flows, 'Section is', action.section, groupId, post, userId);
               case 'Change Status to':
-                  post.task.status = action.status
+                  post.task.status = action.status;
                   return await this.executedAutomationFlowsPropertiesFront(flows, 'Status is', action.status, groupId, post, userId);
               default:
                   break;

@@ -50,7 +50,10 @@ export class FlowController {
             // Find the Group based on the groupId
             const flows = await Flow.find({
                 _group: req.params.groupId
-            }).sort('name')
+            })
+            .sort('name')
+            .populate('steps.action._user', '_id profile_pic')
+            //.populate({ path: 'action', populate: { path: '_user', select: '_id profile_pic' }})
             .lean();
 
             // Check if group already exist with the same groupId
