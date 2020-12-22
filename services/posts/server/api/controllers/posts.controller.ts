@@ -1307,10 +1307,10 @@ export class PostController {
                         let index = -1;
                         if (post._assigned_to) {
                             index = post._assigned_to.findIndex(assignee => (assignee._id || assignee) == (userAction._id || userAction));
-                        }
 
-                        if (index < 0) {
-                            post = await this.callAddAssigneeService(post._id, userAction, userId, groupId);
+                            if (index < 0) {
+                                post = await this.callAddAssigneeService(post._id, userAction, userId, groupId);
+                            }
                         }
                     });
 
