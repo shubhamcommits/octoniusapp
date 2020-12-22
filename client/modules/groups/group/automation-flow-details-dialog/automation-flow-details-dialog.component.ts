@@ -168,7 +168,7 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
     }
     this.flowSteps[stepIndex].trigger.push({ name: trigger });
 
-    this.newTrigger = !this.newTrigger;
+    this.newTrigger = false;
   }
 
   selectAction(action: string, stepIndex: number) {
@@ -177,7 +177,7 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
     }
     this.flowSteps[stepIndex].action.push({ name: action });
 
-    this.newAction = !this.newAction;
+    this.newAction = false;
   }
 
   getMember(event: any, type: string, stepIndex: number, index: number) {
