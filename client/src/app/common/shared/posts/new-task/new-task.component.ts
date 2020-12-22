@@ -158,7 +158,7 @@ export class NewTaskComponent implements OnInit {
           let postData = res['post'];
 
           if (postData.type === 'task') {
-            postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, 'Task is CREATED', status, this.groupData._id, postData, this.userData._id);
+            postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, status, this.groupData._id, postData, this.userData._id, true);
           }
 
           // Emit the Post to the other compoentns

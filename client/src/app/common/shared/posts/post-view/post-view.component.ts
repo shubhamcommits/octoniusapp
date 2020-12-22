@@ -82,7 +82,7 @@ export class PostViewComponent implements OnInit {
     // Update the UI for the task status change
     this.post.task.status = status;
 
-    this.post = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, 'Status is', status, (this.post._group._id || this.post._group), this.post, this.userData._id);
+    this.post = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, status, (this.post._group._id || this.post._group), this.post, this.userData._id);
 
     // Emit the taskStatus to other components
     this.taskStatus.emit(status);

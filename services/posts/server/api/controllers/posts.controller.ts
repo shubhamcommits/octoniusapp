@@ -63,7 +63,7 @@ export class PostController {
 
         if (post.type === 'task') {
             // Execute Automation Flows
-            post = await this.executeAutomationFlows('Task is CREATED', (post._group._id || post._group), post, '', userId);
+            post = await this.executeAutomationFlows((post._group._id || post._group), post, '', userId, true);
         }
 
         return post;
@@ -575,7 +575,7 @@ export class PostController {
         let post = await postService.addAssignee(postId, assigneeId, userId);
 
         // Execute Automation Flows
-        post = await this.executeAutomationFlows('Assigned to', groupId, post, assigneeId, userId);
+        post = await this.executeAutomationFlows(groupId, post, assigneeId, userId);
 
         if (post._assigned_to) {
             const index = post._assigned_to.findIndex(assignee => assignee._id == assigneeId);
@@ -626,7 +626,7 @@ export class PostController {
         let post = await postService.changeTaskAssignee(postId, assigneeId, userId);
 
         // Execute Automation Flows
-        post = await this.executeAutomationFlows('Assigned to', (post._group || post._group._id), post, assigneeId, userId);
+        post = await this.executeAutomationFlows((post._group || post._group._id), post, assigneeId, userId);
         
         post.task._assigned_to = assigneeId;
 
@@ -729,7 +729,7 @@ export class PostController {
             });
 
         // Execute Automation Flows
-        post = await this.executeAutomationFlows('Status is', groupId, post, status, userId);
+        post = await this.executeAutomationFlows(groupId, post, status, userId);
 
         post.task.status = status;
         
@@ -773,7 +773,7 @@ export class PostController {
         let post = await postService.changeTaskColumn(postId, sectionTitle, userId);
 
         // Execute Automation Flows
-        post = await this.executeAutomationFlows('Section is', groupId, post, sectionTitle, userId);
+        post = await this.executeAutomationFlows(groupId, post, sectionTitle, userId);
 
         post.task._column.title = sectionTitle;
 
@@ -901,7 +901,7 @@ export class PostController {
         let post = await postService.changeCustomFieldValue(postId, cfName, cfValue);
 
         // Execute Automation Flows
-        post = await this.executeAutomationFlows('Custom Field', groupId, post, {name: cfName, value: cfValue}, userId);
+        post = await this.executeAutomationFlows(groupId, post, {name: cfName, value: cfValue}, userId);
 
         post.task.custom_fields[cfName] = cfValue;
 
@@ -1235,7 +1235,7 @@ export class PostController {
         }
     }
 
-    async executeAutomationFlows(triggerType: string, groupId: string, post: any, value: any, userId: string) {
+    async executeAutomationFlows(groupId: string, post: any, value: any, userId: string, isCreationTaskTrigger?: boolean) {
         try {
             const flows = await flowService.getAtomationFlows(groupId);
             if (flows && flows.length > 0) {
@@ -1244,13 +1244,9 @@ export class PostController {
 
                     if (steps && steps.length > 0) {
                         steps.forEach(async step => {
-                            const triggerIndex = step.trigger.findIndex(trigger => trigger.name == triggerType);
-                            if (triggerIndex >= 0) {
-                                if (this.isTriggerValueMatch(triggerIndex, triggerType, step.trigger, value)
-                                    && this.isMultipleTriggers(triggerIndex, step.trigger, post)) {
-                                        
-                                    await this.executeActionFlow(step.action, post, userId, groupId);
-                                }
+                            if (this.doesTriggersMatch(step.trigger, post, isCreationTaskTrigger)) {
+                                    
+                                await this.executeActionFlow(step.action, post, userId, groupId);
                             }
                         });
                     }
@@ -1262,31 +1258,10 @@ export class PostController {
             throw error;
         }
     }
-
-    isTriggerValueMatch(triggerIndex: number, triggerTpe: string, triggers: any[], value: any) {
-        
-        switch (triggerTpe) {
-            case 'Assigned to':
-                const userIndex = triggers[triggerIndex]._user.findIndex(userTrigger => (userTrigger._id == value || userTrigger == value));
-                return (userIndex > -1);
-            case 'Custom Field':
-                return (triggers[triggerIndex].custom_field.name.toUpperCase() == value.name.toUpperCase()
-                    && triggers[triggerIndex].custom_field.value.toUpperCase() == value.value.toUpperCase());
-            case 'Section is':
-                return triggers[triggerIndex].section.toUpperCase() == value.toUpperCase();
-            case 'Status is':
-                return triggers[triggerIndex].status.toUpperCase() == value.toUpperCase();
-            case 'Task is CREATED':
-                return true;
-            default:
-                return false;
-        }
-    }
-
-    isMultipleTriggers(triggerIndex: number, triggers: any[], post: any) {
+    
+    doesTriggersMatch(triggers: any[], post: any, isCreationTaskTrigger?: boolean) {
         let retValue = false;
         if (triggers && triggers.length > 1) {
-            triggers = triggers.splice(triggerIndex, 1);
             triggers.forEach(trigger => {
                 switch (trigger.name) {
                     case 'Assigned to':
@@ -1310,7 +1285,9 @@ export class PostController {
                         retValue = trigger.status.toUpperCase() == post.task.status.toUpperCase();
                         break;
                     case 'Task is CREATED':
-                        retValue = true;
+                        if (isCreationTaskTrigger) {
+                            retValue = true;
+                        }
                         break;
                     default:
                         retValue = false;
@@ -1353,4 +1330,25 @@ export class PostController {
         });
         return post;
     }
+    /*
+    isTriggerValueMatch(triggerIndex: number, triggerTpe: string, triggers: any[], value: any) {
+        
+        switch (triggerTpe) {
+            case 'Assigned to':
+                const userIndex = triggers[triggerIndex]._user.findIndex(userTrigger => (userTrigger._id == value || userTrigger == value));
+                return (userIndex > -1);
+            case 'Custom Field':
+                return (triggers[triggerIndex].custom_field.name.toUpperCase() == value.name.toUpperCase()
+                    && triggers[triggerIndex].custom_field.value.toUpperCase() == value.value.toUpperCase());
+            case 'Section is':
+                return triggers[triggerIndex].section.toUpperCase() == value.toUpperCase();
+            case 'Status is':
+                return triggers[triggerIndex].status.toUpperCase() == value.toUpperCase();
+            case 'Task is CREATED':
+                return true;
+            default:
+                return false;
+        }
+    }
+    */
 }
