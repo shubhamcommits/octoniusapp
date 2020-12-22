@@ -1235,66 +1235,6 @@ export class PostController {
         }
     }
 
-    /*
-    async executeAutomationFlows(groupId: string, post: any, triggerText: string, userId: string, cfTrigger?: any) {
-        try {
-            const flows = await flowService.getAtomationFlows(groupId);
-            if (flows && flows.length > 0) {
-                await flows.forEach(flow => {
-                    const steps = flow['steps'];
-
-                    if (steps && steps.length > 0) {
-                        steps.forEach(async step => {
-
-                            let triggerIndex = -1;
-                            if (step.trigger.name === 'Assigned to' && step.trigger._user) {
-                                triggerIndex = step.trigger._user.findIndex(userTrigger => (userTrigger._id === triggerText || userTrigger === triggerText));
-                            }
-                            
-                            if ((step.trigger.name === 'Assigned to' && (triggerIndex >= 0))
-                                || (step.trigger.name === 'Section is' && step.trigger.section.toUpperCase() === triggerText.toUpperCase())
-                                || (step.trigger.name === 'Status is' && step.trigger.status.toUpperCase() === triggerText.toUpperCase())
-                                || (step.trigger.name === 'Custom Field' && cfTrigger
-                                    && step.trigger.custom_field.name.toUpperCase() === cfTrigger.name.toUpperCase()
-                                    && step.trigger.custom_field.value.toUpperCase() === cfTrigger.value.toUpperCase())
-                                || (step.trigger.name === 'Task is CREATED')) {
-
-                                if (step.action.name === 'Assign to') {
-                                    step.action._user.forEach(async userAction => {
-                                        let index = -1;
-                                        if (post._assigned_to) {
-                                            index = post._assigned_to.findIndex(assignee => assignee._id == userAction._id || assignee._id == userAction);
-                                        }
-                                        if (index < 0) {
-                                            return await this.callAddAssigneeService(post._id, userAction, userId, groupId);
-                                        }
-                                    });
-                                }
-                                
-                                if (step.action.name === 'Change Status to') {
-                                    return await this.callChangeTaskStatusService(post._id, step.action.status, userId, groupId);
-                                }
-
-                                if (step.action.name === 'Custom Field') {
-                                    return await this.callChangeCustomFieldValueService(groupId, post._id, step.action.custom_field.name, step.action.custom_field.value, userId);
-                                }
-
-                                if (step.action.name === 'Move to') {
-                                    return await this.changeTaskSection(post._id, step.action.section, userId, groupId);
-                                }
-                            }
-                        });
-                    }
-                });
-            }
-            return post;
-        } catch (error) {
-            console.log(`\n⛔️ Error:\n ${error}`);
-            throw error;
-        }
-    }
-    */
-
     async executeAutomationFlows(triggerType: string, groupId: string, post: any, value: any, userId: string) {
         try {
             const flows = await flowService.getAtomationFlows(groupId);
@@ -1383,27 +1323,29 @@ export class PostController {
     }
 
     executeActionFlow(actions: any[], post: any, userId: string, groupId: string) {
-        actions.forEach(action => {
+        actions.forEach(async action => {
             switch (action.name) {
                 case 'Assign to':
                     action._user.forEach(async userAction => {
                         let index = -1;
                         if (post._assigned_to) {
-                            index = post._assigned_to.findIndex(assignee => assignee._id == userAction._id || assignee._id == userAction);
+                            index = post._assigned_to.findIndex(assignee => (assignee._id || assignee) == (userAction._id || userAction));
                         }
+
                         if (index < 0) {
                             post = await this.callAddAssigneeService(post._id, userAction, userId, groupId);
                         }
                     });
+
                     break;
                 case 'Custom Field':
-                    post = this.callChangeCustomFieldValueService(groupId, post._id, action.custom_field.name, action.custom_field.value, userId);
+                    post = await this.callChangeCustomFieldValueService(groupId, post._id, action.custom_field.name, action.custom_field.value, userId);
                     break;
                 case 'Move to':
-                    post = this.changeTaskSection(post._id, action.section, userId, groupId);
+                    post = await this.changeTaskSection(post._id, action.section, userId, groupId);
                     break;
                 case 'Change Status to':
-                    post = this.callChangeTaskStatusService(post._id, action.status, userId, groupId);
+                    post = await this.callChangeTaskStatusService(post._id, action.status, userId, groupId);
                     break;
                 default:
                     break;

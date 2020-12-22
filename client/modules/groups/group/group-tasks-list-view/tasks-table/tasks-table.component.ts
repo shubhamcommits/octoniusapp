@@ -206,12 +206,6 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
     }
   }
 
-  /*
-  async onCloseDoneTaskModalEvent(post) {
-    this.updateTask(post);
-  }
-  */
-
   getCustomField(fieldName: string) {
     const index = this.customFields.findIndex((f: any) => f.name === fieldName);
     return this.customFields[index];
