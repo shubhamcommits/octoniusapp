@@ -63,7 +63,7 @@ export class PostController {
 
         if (post.type === 'task') {
             // Execute Automation Flows
-            post = await this.executeAutomationFlows((post._group._id || post._group), post, '', userId, true);
+            post = await this.executeAutomationFlows((post._group._id || post._group), post, userId, true);
         }
 
         return post;
@@ -575,7 +575,7 @@ export class PostController {
         let post = await postService.addAssignee(postId, assigneeId, userId);
 
         // Execute Automation Flows
-        post = await this.executeAutomationFlows(groupId, post, assigneeId, userId);
+        post = await this.executeAutomationFlows(groupId, post, userId);
 
         if (post._assigned_to) {
             const index = post._assigned_to.findIndex(assignee => assignee._id == assigneeId);
@@ -626,7 +626,7 @@ export class PostController {
         let post = await postService.changeTaskAssignee(postId, assigneeId, userId);
 
         // Execute Automation Flows
-        post = await this.executeAutomationFlows((post._group || post._group._id), post, assigneeId, userId);
+        post = await this.executeAutomationFlows((post._group || post._group._id), post, userId);
         
         post.task._assigned_to = assigneeId;
 
@@ -729,7 +729,7 @@ export class PostController {
             });
 
         // Execute Automation Flows
-        post = await this.executeAutomationFlows(groupId, post, status, userId);
+        post = await this.executeAutomationFlows(groupId, post, userId);
 
         post.task.status = status;
         
@@ -773,7 +773,7 @@ export class PostController {
         let post = await postService.changeTaskColumn(postId, sectionTitle, userId);
 
         // Execute Automation Flows
-        post = await this.executeAutomationFlows(groupId, post, sectionTitle, userId);
+        post = await this.executeAutomationFlows(groupId, post, userId);
 
         post.task._column.title = sectionTitle;
 
@@ -901,7 +901,7 @@ export class PostController {
         let post = await postService.changeCustomFieldValue(postId, cfName, cfValue);
 
         // Execute Automation Flows
-        post = await this.executeAutomationFlows(groupId, post, {name: cfName, value: cfValue}, userId);
+        post = await this.executeAutomationFlows(groupId, post, userId);
 
         post.task.custom_fields[cfName] = cfValue;
 
@@ -1235,7 +1235,7 @@ export class PostController {
         }
     }
 
-    async executeAutomationFlows(groupId: string, post: any, value: any, userId: string, isCreationTaskTrigger?: boolean) {
+    async executeAutomationFlows(groupId: string, post: any, userId: string, isCreationTaskTrigger?: boolean) {
         try {
             const flows = await flowService.getAtomationFlows(groupId);
             if (flows && flows.length > 0) {
