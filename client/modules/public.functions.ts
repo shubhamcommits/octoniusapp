@@ -1067,7 +1067,7 @@ export class PublicFunctions {
                       retValue = (usersMatch.length > 0);
                       break;
                   case 'Custom Field':
-                      retValue = post.custom_field[trigger.custom_field.name] == trigger.custom_field.value;
+                      retValue = post.task.custom_fields[trigger.custom_field.name] == trigger.custom_field.value;
                       break;
                   case 'Section is':
                       retValue = trigger.section.toUpperCase() == post.task._column.title.toUpperCase();

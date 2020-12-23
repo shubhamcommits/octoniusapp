@@ -722,16 +722,16 @@ export class PostController {
     }
 
     async callChangeTaskStatusService(postId: string, status: string, userId: string, groupId: string) {
+
         // Call Service function to change the assignee
         let post = await postService.changeTaskStatus(postId, status, userId)
             .catch((err) => {
                 throw err;
             });
+        post.task.status = status;
 
         // Execute Automation Flows
         post = await this.executeAutomationFlows(groupId, post, userId);
-
-        post.task.status = status;
         
         return post;
     }
@@ -898,12 +898,11 @@ export class PostController {
     }
 
     async callChangeCustomFieldValueService(groupId: string, postId: string, cfName: string, cfValue: string, userId: string) {
-        let post = await postService.changeCustomFieldValue(postId, cfName, cfValue);
-
-        // Execute Automation Flows
-        post = await this.executeAutomationFlows(groupId, post, userId);
+        let post =await postService.changeCustomFieldValue(postId, cfName, cfValue);
 
         post.task.custom_fields[cfName] = cfValue;
+        // Execute Automation Flows
+        post = await this.executeAutomationFlows(groupId, post, userId);
 
         return post;
     }
@@ -1245,7 +1244,7 @@ export class PostController {
                     if (steps && steps.length > 0) {
                         steps.forEach(async step => {
                             if (this.doesTriggersMatch(step.trigger, post, isCreationTaskTrigger)) {
-                                    
+console.log("EXECUTE!!!!!!")
                                 await this.executeActionFlow(step.action, post, userId, groupId);
                             }
                         });
@@ -1260,43 +1259,48 @@ export class PostController {
     }
     
     doesTriggersMatch(triggers: any[], post: any, isCreationTaskTrigger?: boolean) {
-        let retValue = false;
+        let retValue = true;
         if (triggers && triggers.length > 1) {
             triggers.forEach(trigger => {
-                switch (trigger.name) {
-                    case 'Assigned to':
-                        const usersMatch = trigger._user.filter((triggerUser) => {
-                            for(var i=0; i < post._assigned_to.length; i++){
-                              if(triggerUser._id == post._assigned_to[i]._id){
+                if (retValue) {
+console.log('trigger', trigger.name);
+console.log('retValue 0', retValue);
+                    switch (trigger.name) {
+                        case 'Assigned to':
+                            const usersMatch = trigger._user.filter((triggerUser) => {
+                                for (var i = 0; i < post._assigned_to.length; i++) {
+                                    if (triggerUser._id == post._assigned_to[i]._id) {
+                                        return true;
+                                    }
+                                }
                                 return false;
-                              }
+                            });
+                            retValue = (usersMatch && usersMatch.length > 0);
+                            break;
+                        case 'Custom Field':
+                            retValue = post.task.custom_fields[trigger.custom_field.name] == trigger.custom_field.value;
+                            break;
+                        case 'Section is':
+                            retValue = trigger.section.toUpperCase() == post.task._column.title.toUpperCase();
+                            break;
+                        case 'Status is':
+                            retValue = trigger.status.toUpperCase() == post.task.status.toUpperCase();
+                            break;
+                        case 'Task is CREATED':
+                            if (isCreationTaskTrigger) {
+                                retValue = true;
                             }
-                            return true;
-                        });
-                        retValue = (usersMatch.length > 0);
-                        break;
-                    case 'Custom Field':
-                        retValue = post.custom_field[trigger.custom_field.name] == trigger.custom_field.value;
-                        break;
-                    case 'Section is':
-                        retValue = trigger.section.toUpperCase() == post.task._column.title.toUpperCase();
-                        break;
-                    case 'Status is':
-                        retValue = trigger.status.toUpperCase() == post.task.status.toUpperCase();
-                        break;
-                    case 'Task is CREATED':
-                        if (isCreationTaskTrigger) {
+                            break;
+                        default:
                             retValue = true;
-                        }
-                        break;
-                    default:
-                        retValue = false;
-                        break;
+                            break;
+                    }
+console.log('retValue 1', retValue);
                 }
             });
         }
-        return retValue
-
+console.log('retValue 2', retValue);
+        return retValue;
     }
 
     executeActionFlow(actions: any[], post: any, userId: string, groupId: string) {
