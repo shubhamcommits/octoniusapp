@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-gantt-view',
@@ -8,9 +9,17 @@ import { Component, Input, OnInit } from '@angular/core';
 export class GanttViewComponent implements OnInit {
 
   @Input() tasks;
+
+
+  // Base URL of the uploads
+  baseUrl = environment.UTILITIES_USERS_UPLOADS;
+
   //Calendaer start and end date
   datestoshow:any={start:'2020-12-30',end:'2021-01-15'}
   
+  //task parsed data
+  tasksdata:any=[]
+
   //date for calendar Nav
   date:any=[]
 
@@ -19,6 +28,9 @@ export class GanttViewComponent implements OnInit {
   
   //container Width
   svg_width:any
+
+  //container height
+  svg_height:any
 
   //Grid column width
   step=50;
@@ -30,7 +42,7 @@ export class GanttViewComponent implements OnInit {
   constructor() {}
 
   //Generate the dates for Nav
-  generateNavDate(){
+  async generateNavDate(){
     
     // Find duration between start and end date
     console.log("from calendar",this.datestoshow);
@@ -38,7 +50,7 @@ export class GanttViewComponent implements OnInit {
     const date2=new Date(this.datestoshow.end)
     var Difference_In_Time = date2.getTime() - date1.getTime(); 
     var Difference_In_Days = Math.ceil(Difference_In_Time / (1000 * 3600 * 24));
-    
+    Difference_In_Days=Difference_In_Days+10;
     console.log("Difference_In_Days",Difference_In_Days);
 
     //Continer width
@@ -47,10 +59,12 @@ export class GanttViewComponent implements OnInit {
     console.log("this.svg_width",this.svg_width);
 
     //Populating the dates.
-    for(var i=0; i<=Difference_In_Days; i++){
+    for(var i=0; i<Difference_In_Days; i++){
       const cueerntDate = new Date(this.datestoshow.start);
+      console.log("cueerntDate",cueerntDate,this.datestoshow.start);
       const reqdate = new Date(this.datestoshow.start);
-      reqdate.setDate(cueerntDate.getDate()+i);
+      reqdate.setDate(cueerntDate.getDate()+(i));
+      // console.log("reqdate",reqdate,i);
       this.date.push({day:reqdate.getDate(),date:reqdate,month:this.months[reqdate.getMonth()]});
     }
 
@@ -58,40 +72,165 @@ export class GanttViewComponent implements OnInit {
   }
 
   //Parsing the data
+  async parsedTasks(tasksdata){
 
+    if(tasksdata.length > 0){
+
+      //Sorted Tasks
+      var SortedTask: any=[];
+
+      //Child Indexd Task
+      var child_index:any =[];
+
+      //Tasks before Sorting
+      var sortedBefore:any = [];
+
+
+      for(var a =0 ; a < tasksdata.length ; a++) {
+
+          if(tasksdata[a].task._parent_task) {
+
+              child_index.push(tasksdata[a]);
+
+          } else {
+
+              sortedBefore.push(tasksdata[a]);
+          }
+      }
+      
+      child_index.map(child => {
+
+          sortedBefore.push(child);
+      });
+
+      // Tasks before Sorting
+      console.log("sortedBefore",sortedBefore);
+
+
+      SortedTask.push(sortedBefore[0]);
+
+      for(var i= 0; i < sortedBefore.length; i++) {
+        // C heck bit task is already pushed or not  
+        var already=false;
+
+        //Checking Task already pused or not
+        for(var k =SortedTask.length-1; k >=0 ; k--) {
+
+          if(sortedBefore[i]._id==SortedTask[k]._id) {
+                  already=true;
+          }
+        }
+          
+        //If not already pushed pushing into  SortedTask array.
+        if(!already){
+
+          SortedTask.push(sortedBefore[i]);
+        }
+
+        //Finding the child of the current task and pushing into  SortedTask array.
+        if(i < sortedBefore.length-1) {                  
+          for(var j =i+1 ; j < sortedBefore.length ; j++) {
+            if(sortedBefore[j].task._parent_task) {
+              const parenttaskID=sortedBefore[j].task._parent_task;
+              const idi = sortedBefore[i]._id+'';
+              const idj = parenttaskID._id+'';
+              if(idi===idj) {
+                SortedTask.push(sortedBefore[j]);
+              }
+            }
+          }
+        }
+      }
+      
+      //Saving the only required fields of the task in tasksData array.
+      SortedTask.map(x => {
+          const startdate:any=new Date(x.task.start_date);
+          const endate:any=new Date(x.task.due_to);
+          var Difference_In_Time = endate.getTime() - startdate.getTime(); 
+          var Difference_In_Days = Math.floor(Difference_In_Time / (1000 * 3600 * 24));    
+          if(x.task.due_to && x.task.start_date){
+              this.tasksdata.push({
+                  id:x._id,
+                  name:x.title,
+                  start:x.task.start_date,
+                  end:x.task.due_to,
+                  progress:'0',
+                  difference:Difference_In_Days,
+                  custom_class: x.task.status,
+                  image:(x?._assigned_to?.length>0)?this.baseUrl+'/'+x._assigned_to[0].profile_pic:undefined,
+                  noOfParticipants:(x?._assigned_to?.length>1)?x?._assigned_to?.length-1:undefined,
+                  dependencies:(x.task._parent_task)?x.task._parent_task._id:'',
+                  task: x
+              })
+          }
+      });
+    } else {
+      console.log("no data to show");
+    }
+
+  }
 
   //Get the Min date
-  min_date(all_dates) {
-    var min_dt = all_dates[0],
-    min_dtObj = new Date(all_dates[0]);
+  async min_date(all_dates) {
+    var min_dt = all_dates[0].start,
+    min_dtObj = new Date(all_dates[0].start);
     all_dates.forEach(function(dt, index) {
-      if ( new Date( dt ) < min_dtObj) {
-        min_dt = dt;
-        min_dtObj = new Date(dt);
+      if ( new Date( dt.start ) < min_dtObj) {
+        min_dt = dt.start;
+        min_dtObj = new Date(dt.start);
       }
     });
     return min_dt;
   }
 
   //Get the Min date
-  max_date(all_dates) {
-    var max_dt = all_dates[0],
-    max_dtObj = new Date(all_dates[0]);
+  async max_date(all_dates) {
+    var max_dt = all_dates[0].end,
+    max_dtObj = new Date(all_dates[0].end);
     all_dates.forEach(function(dt, index) {
-      if ( new Date( dt ) > max_dtObj) {
-        max_dt = dt;
-        max_dtObj = new Date(dt);
+      if ( new Date( dt.end ) > max_dtObj) {
+        max_dt = dt.end;
+        max_dtObj = new Date(dt.end);
       }
     });
     return max_dt;
   }
 
-  ngOnInit() {
-    this.generateNavDate();
-    console.log("this.tasks",this.tasks);
-    console.log(this.min_date(['2015-02-01', '2015-02-02', '2015-01-03']));
-    console.log(this.max_date(['2015/02/01', '2015/02/02', '2015/01/03']));
+  // Find Index of date
+   find_index(date){
+    var dateindex;
+    console.log("date",date);
+    this.date.forEach((dt,index)=> {
+     var a = new Date(dt.date);
+     var b = new Date(date);
+     
+     if(a.getTime() == b.getTime()){
+        console.log("amaasafs")
+        dateindex=index;
+      }
+    });
 
+    return dateindex;;
+  }
+
+  //ADD INDEX
+  async add_index(){
+    this.tasksdata.forEach((task,index) => {
+      console.log("find_index",this.find_index(task.start));
+      this.tasksdata[index].index_date=this.find_index(task.start);
+    });
+  }
+
+  async ngOnInit() {
+    console.log("this.tasks",this.tasks);
+    await this.parsedTasks(this.tasks);
+    this.datestoshow.start= await this.min_date(this.tasksdata);
+    this.datestoshow.end=await this.max_date(this.tasksdata)
+    await this.generateNavDate();
+    await this.add_index();
+    console.log("this.tasksdata",this.tasksdata);
+    this.svg_height=100+this.tasksdata.length*60
+    console.log("this.svg_height",this.svg_height);
   }
 
 }
